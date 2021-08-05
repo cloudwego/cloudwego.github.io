@@ -1,4 +1,5 @@
 
 [submodule "themes/docsy"]
 	path = themes/docsy
-	url = https://github.com/google/docsy
+	url = https://github.com/cloudwego/docsy
+	branch = cloudwego
