@@ -1,3 +1,6 @@
-FROM klakegg/hugo:ext-alpine
+FROM klakegg/hugo:ext-debian
 
-RUN apk add git
+WORKDIR /app
+COPY ./ /app
+
+CMD ["server"]

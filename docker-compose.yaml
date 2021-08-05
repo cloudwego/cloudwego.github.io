@@ -3,7 +3,7 @@ version: "3.3"
 services:
 
   site:
-    image: docsy/docsy-example
+    image: klakegg/hugo:ext-debian
     build:
       context: .
     command: server
