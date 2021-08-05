@@ -4,24 +4,27 @@ linkTitle = "CloudWeGo"
 
 +++
 
-{{< blocks/cover title="Welcome to CloudWeGo" subtitle="A leading practice for building enterprise cloud native middleware!" image_anchor="top" height="full" color="dark" >}}
-<p class="home-overview-btn-group">
-	<a class="home-overview-btn" href="{{< relref "/docs" >}}">
-		<span class="home-overview-btn-bg"></span>
-		Get Started <i class="fas fa-arrow-alt-circle-right ml-2"></i>
-	</a>
-	<a class="home-overview-btn home-overview-btn-with-no-margin" target="_blank" href="https://github.com/cloudwego">
-		<span class="home-overview-btn-bg"></span>
-		Download <i class="fab fa-github ml-2 "></i>
-	</a>
-</p>
+{{< blocks/cover title="欢迎使用 CloudWeGo" image_anchor="top" height="full" color="dark" >}}
+<div class="home-overview">
+	<p class="home-overview-title">构建企业级云原生中间件的领先实践！</p>
+	<p class="home-overview-btn-group">
+		<a class="home-btn home-btn-primary" href="{{< relref "/docs" >}}">
+			<span class="home-btn-bg"></span>
+			开始 <i class="fas fa-arrow-alt-circle-right ml-2"></i>
+		</a>
+		<a class="home-btn home-btn-with-no-margin" href="https://github.com/cloudwego">
+			<span class="home-btn-bg"></span>
+			下载 <i class="fab fa-github ml-2 "></i>
+		</a>
+	</p>
+</div>
 <div class="home-overview-link-down">
 	{{< blocks/link-down color="info" >}}
 </div>
 {{< /blocks/cover >}}
 
 {{% blocks/lead color="primary" %}}
-<h2 class="home-section-title">Why CloudWeGo?</h2>
+<h2 class="home-section-title">为什么选 CloudWeGo?</h2>
 <p class="home-description">
 	CloudWeGo is ByteDance's open source Golang-centric middleware that can be used to quickly build enterprise-class cloud native architectures.It contains many components, including the RPC framework KiteX, the basic network library Netpoll, thrfitgo, and netpol-http2.
 By combining the community's excellent open source products, developers can quickly build a complete set of micro-service systems.
@@ -30,45 +33,45 @@ By combining the community's excellent open source products, developers can quic
 {{% /blocks/lead %}}
 
 {{< blocks/section color="white" >}}
-{{% blocks/feature icon="fab" title="Open" %}}
-<div class="home-feature-item">Fully open source, community neutral, compatible with the community open source ecology, pluggable components, CloudWeGo components and other open source components can be integrated or replaced with each other</div>
+{{% blocks/feature icon="fab" title="开放" %}}
+<div class="home-feature-item">技术栈全面开源共建、保持社区中立、兼容社区开源生态，组件可插拔，CloudWeGo 组件与其它开源组件可互相集成或替换。</div>
 {{% /blocks/feature %}}
 
 
-{{% blocks/feature icon="fab" title="Industry-standard" %}}
-<div class="home-feature-item">Contains the components needed to build an enterprise-class cloud-native architecture, allowing users to focus more on business development, meet the current and future needs of user scenarios, and experience the refinement of large-scale scenarios</div>
+{{% blocks/feature icon="fab" title="企业级" %}}
+<div class="home-feature-item">包含构建企业级云原生架构所需的各个组件，让用户更加专注于业务开发，满足用户场景的现状和未来需求，经历过大规模场景的锤炼。</div>
 {{% /blocks/feature %}}
 
 
-{{% blocks/feature icon="fab" title="Cloud Native" %}}
-<div class="home-feature-item">Quickly build a cloud-native microservice system and develop more reliable, scalable and easy-to-maintain cloud-native applications.</div>
+{{% blocks/feature icon="fab" title="云原生" %}}
+<div class="home-feature-item">基于 CloudWeGo 可快速搭建云原生微服务体系，快速开发更具可靠性、扩展性、易维护的云原生应用。</div>
 {{% /blocks/feature %}}
 
 
 {{< /blocks/section >}}
 
 {{< blocks/section color="white" >}}
-<h2 class="home-section-title home-section-title-projects">Projects</h2>
+<h2 class="home-section-title home-section-title-projects">项目</h2>
 <div class="row top-hr">
-	<div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+	<div class="col-md-3 col-sm-6 col-xs-12 project-item">
 		<a href="https://github.com/cloudwego/kitex">
 			<h2>KiteX</h2>
 			<p>Next generation high performance, highly scalable Golang RPC framework.</p>
 		</a>
 	</div>
-	<div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+	<div class="col-md-3 col-sm-6 col-xs-12 project-item">
 		<a href="https://github.com/cloudwego/netpoll">
 			<h2>Netpoll</h2>
 			<p>High-performance NIO (Non-blocking I/O) network library, focusing on RPC scenarios.</p>
 		</a>
 	</div>
-	<div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+	<div class="col-md-3 col-sm-6 col-xs-12 project-item">
 		<a href="https://github.com/cloudwego/thriftgo">
 			<h2>Thrfitgo</h2>
 			<p>A thrift compiler implemented by Golang supports plug-in mechanism.</p>
 		</a>
 	</div>
-	<div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+	<div class="col-md-3 col-sm-6 col-xs-12 project-item">
 		<a href="https://github.com/cloudwego/netpoll-http2">
 			<h2>Netpoll-http2</h2>
 			<p>High-performance HTTP2 communication based on official HTTP2 source transformation.</p>
@@ -96,7 +99,7 @@ By combining the community's excellent open source products, developers can quic
 			<img class="used-by-logo" src="/img/usedby/byte.png" alt="volc logo">
 		</a>
 	</div>
-	<h2 class="home-section-title">Used by</h2>
+	<h2 class="home-section-title">谁在用</h2>
 	<div class="row home-used-by-wrapper">
 		<a class="home-used-by-item" href="/" target="_blank" rel="noopener">
 			<img class="used-by-logo" src="/img/usedby/byte.png" alt="volc logo">
@@ -144,7 +147,7 @@ By combining the community's excellent open source products, developers can quic
 		<div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
 			<div class="home-footer-links-item-title">Contact Us</div>
 			<ul>
-				<li><a href="http://github.com/cloudwego">Github Issues</a></li>
+				<li><a href="#">QR Code</a></li>
 			</ul>
 		</div>
 	</div>
