@@ -159,9 +159,18 @@ enable = false
 
 [params.links]
 # End user relevant links. These will show up on left side of footer and in the community page if you have one.
+# [[params.links.user]]
+# name = "CloudWeGo"
+# url = "https://github.com/cloudwego"
+# desc = "Desc of CloudWeGo"
 
 [[params.links.developer]]
-	name = "GitHub"
-	url = "https://github.com/cloudwego"
-	icon = "fab fa-github"
-        desc = "Development takes place here!"
+  name = "GitHub"
+  url = "https://github.com/cloudwego"
+  icon = "fab fa-github"
+  desc = "Development takes place here!"
+[[params.links.developer]]
+  name = "Slack"
+  url = "https://join.slack.com/t/cloudwego/shared_invite/zt-tmcbzewn-UjXMF3ZQsPhl7W3tEDZboA"
+  icon = "fab fa-slack"
+  desc = "Join our CloudWeGo Slack Channel"
