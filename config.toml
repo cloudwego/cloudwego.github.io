@@ -89,9 +89,6 @@ rss_sections = ["blog"]
 copyright = "The CloudWeGo Authors"
 privacy_policy = "https://github.com/cloudwego"
 
-# First one is picked as the Twitter card image if not set on page.
-# images = ["images/project-illustration.png"]
-
 # Menu title if your navbar has a versions selector to access old versions of your site.
 # This menu appears only if you have at least one [params.versions] set.
 version_menu = "Releases"
@@ -166,18 +163,6 @@ enable = false
 # name = "CloudWeGo"
 # url = "https://github.com/cloudwego"
 # desc = "Desc of CloudWeGo"
-
-[[params.links.developer]]
-  name = "GitHub"
-  url = "https://github.com/cloudwego"
-  icon = "fab fa-github"
-  desc = "Development takes place here!"
-[[params.links.developer]]
-  name = "Slack"
-  url = "https://join.slack.com/t/cloudwego/shared_invite/zt-tmcbzewn-UjXMF3ZQsPhl7W3tEDZboA"
-  icon = "fab fa-slack"
-  desc = "Join our CloudWeGo Slack Channel"
-
 
 
 # For a full list of parameters used in Docsy sites, see:
