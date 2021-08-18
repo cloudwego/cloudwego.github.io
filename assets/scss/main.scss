@@ -29,6 +29,7 @@
 @import "taxonomy";
 
 @import "home";
+@import "about";
 
 @if $td-enable-google-fonts {
     @import url($web-font-path);
