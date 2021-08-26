@@ -1,7 +1,7 @@
 ---
-title: "Getting Started"
-linkTitle: "Getting Started"
-weight: 1
+title: "快速开始"
+linkTitle: "快速开始"
+weight: 2
 description: >
   
 ---
