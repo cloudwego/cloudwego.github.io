@@ -1,14 +1,10 @@
 ---
-title: "Overview"
-linkTitle: "Overview"
+title: "概览"
+linkTitle: "概览"
 weight: 1
 description: >
 
 ---
-
-{{% pageinfo %}}
-New to CloudWeGo? Get started from this page.
-{{% /pageinfo %}}
 
 
 ## CloudWeGo-Kitex
