@@ -6,11 +6,11 @@ description: >
   
 ---
 
-# CloudWeGo-Kitex
+## CloudWeGo-Kitex
 
 Kitex [kaɪt'eks] is a Golang-based, scalable and performant RPC framework that can help developers build microservices. As more and more organizations are now choosing Golang, if you have requirements for microservice performance and want to do some customization, Kitex will be a good choice.
 
-## Basic Features
+### Basic Features
 
 - **High performance**
 
