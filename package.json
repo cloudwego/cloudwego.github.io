@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/cloudwego/cloudwego.github.io#readme",
   "devDependencies": {
-    "autoprefixer": "^9.8.6",
+    "autoprefixer": "^10.3.3",
     "postcss-cli": "^7.1.2"
   }
 }
