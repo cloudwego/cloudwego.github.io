@@ -3,36 +3,40 @@ title: "Overview"
 linkTitle: "Overview"
 weight: 1
 description: >
-  Here's where your user finds out if your project is for them.
+  
 ---
 
-{{% pageinfo %}}
-This is a placeholder page that shows you how to use this template site.
-{{% /pageinfo %}}
+# CloudWeGo-Kitex
 
+Kitex [kaɪt'eks] is a Golang-based, scalable and performant RPC framework that can help developers build microservices. As more and more organizations are now choosing Golang, if you have requirements for microservice performance and want to do some customization, Kitex will be a good choice.
 
-The Overview is where your users find out about your project. Depending on the size of your docset, you can have a separate overview page (like this one) or put your overview contents in the Documentation landing page (like in the Docsy User Guide). 
+## Basic Features
 
-Try answering these questions for your user in this page:
+- **High performance**
 
-## What is it?
+Kitex supports [Netpoll](https://github.com/cloudwego/netpoll), a self-developed high-performance network library, which has significant performance advantages over go net.
 
-Introduce your project, including what it does or lets you do, why you would use it, and its primary goal (and how it achieves it). This should be similar to your README description, though you can go into a little more detail here if you want.
+- **Scalability**
 
-## Why do I want it?
+Kitex provides more extension interfaces and default extension implementations. Developers can also customize extensions according to their own needs (please refer to the framework extension section below).
 
-Help your user know if your project will help them. Useful information can include: 
+- **Multi-message protocol**
 
-* **What is it good for?**: What types of problems does your project solve? What are the benefits of using it?
+Kitex is designed to be extensible to support multiple RPC messaging protocols. The initial release contains support for **Thrift**, **Kitex Protobuf** and **gRPC**, in which Kitex Protobuf is a Kitex custom Protobuf messaging protocol with a protocol format similar to Thrift. Kitex also supports developers extending their own messaging protocols.
 
-* **What is it not good for?**: For example, point out situations that might intuitively seem suited for your project, but aren't for some reason. Also mention known limitations, scaling issues, or anything else that might let your users know if the project is not for them.
+- **Multi-transport protocol**
 
-* **What is it *not yet* good for?**: Highlight any useful features that are coming soon.
+For service governance, Kitex supports **TTHeader** and **HTTP2**. TTHeader can be used in conjunction with Thrift and Kitex Protobuf; HTTP2 is currently mainly used with the gRPC protocol, and it will support Thrift in the future.
 
-## Where should I go next?
+- *Multi-interaction*
 
-Give your users next steps from the Overview. For example:
+Kitex supports **PingPong**, **one-way**, and **two-way Streaming**. Among them, One-way currently only supports Thrift protocol, two-way Streaming only supports gRPC, and Kitex will support Thrift's two-way Streaming in the future.
 
-* [Getting Started](/docs/getting-started/): Get started with $project
-* [Examples](/docs/examples/): Check out some example code!
+- **Service Governance**
+
+Kitex integrates service governance modules such as service registry, service discovery, load balancing, fusing, current limiting, retry, monitoring, link tracking, logging, diagnostics, etc. Most of these have been provided with default extensions, and users can choose to integrate.
+
+- **Code generation**
+
+Kitex has built-in code generation tools that support generating **Thrift**, **Protobuf**, and scaffold code.
 
