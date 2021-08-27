@@ -16,7 +16,6 @@
     "url": "https://github.com/cloudwego/cloudwego.github.io/issues"
   },
   "homepage": "https://github.com/cloudwego/cloudwego.github.io#readme",
-  "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^9.8.6",
     "postcss-cli": "^7.1.2"
