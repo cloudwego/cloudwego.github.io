@@ -7,11 +7,11 @@ description: >
 
 # Transport Pipeline-Bound 扩展
 
-![remote_module](../../images/remote_module.png)
+![remote_module](/img/docs/remote_module.png)
 
 Transport Pipeline 参考 Netty ChannelPipeline，提供 Inbound 和Outbound 接口，支持对消息或 I/O 事件扩展。基于 In/OutboundHandler 可以扩展实现 TLS、限流、透传消息处理等。如下图所示，各个BoundHandler会串行依次执行。
 
-![trans_pipeline](../../images/trans_pipeline.png)
+![trans_pipeline](/img/docs/trans_pipeline.png)
 
 ## 接口定义
 
