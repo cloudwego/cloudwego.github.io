@@ -5,8 +5,6 @@ weight: 12
 description: >
 ---
 
-# 日志
-
 ## pkg/klog
 
 Kitex 在 pkg/klog 里定义了 `Logger`、`CtxLogger`、`FormatLogger` 等几个接口，并提供了一个 `FormatLogger` 的默认实现，可以通过 `klog.DefaultLogger()` 获取到其实例。
@@ -20,7 +18,6 @@ pkg/klog 同时也提供了若干全局函数，例如 `klog.Info`、`klog.Error
 client 和 server 都提供了一个 `WithLogger` 的选项，用于注入自定义的 logger 实现，随后中间件以及框架的其他部分可以用该 logger 来输出日志。
 
 默认使用的是 `klog.DefaultLogger`。
-
 
 ## 在中间件里打日志
 

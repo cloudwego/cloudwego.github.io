@@ -5,8 +5,6 @@ weight: 8
 description: >
 ---
 
-# 负载均衡
-
 Kitex 默认提供了两种 LoadBalancer（下面简称 lb）：
 
 * WeightedRandom
@@ -32,7 +30,7 @@ Kitex 默认使用的是 WeightedRandom。
 
 ### 使用
 
-如果要使用一致性哈希，可以在初始化 client 的时候传入`client.WithLoadBalancer(loadbalance.NewConsistBalancer(loadbalance.NewConsistentHashOption(keyFunc)))`。
+如果要使用一致性哈希，可以在初始化 client 的时候传入 `client.WithLoadBalancer(loadbalance.NewConsistBalancer(loadbalance.NewConsistentHashOption(keyFunc)))`。
 
 `ConsistentHashOption` 定义如下：
 

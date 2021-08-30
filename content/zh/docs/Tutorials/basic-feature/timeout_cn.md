@@ -5,11 +5,9 @@ weight: 6
 description: >
 ---
 
-# 超时控制
-
 Kitex 支持了两种超时，RPC 超时和连接超时，两种超时均支持 client 级别和调用级别的配置。
 
-## RPC超时
+## RPC 超时
 
 1. 在 client 初始化时配置，配置的 RPC 超时将对此 client 的所有调用生效
 
@@ -60,4 +58,3 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
-
