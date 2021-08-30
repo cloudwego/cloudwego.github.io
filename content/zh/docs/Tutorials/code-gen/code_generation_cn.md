@@ -5,8 +5,6 @@ weight: 1
 description: >
 ---
 
-# kitex -- Kitex 框架的代码生成工具
-
 **kitex** 是 Kitex 框架提供的用于生成代码的一个命令行工具。目前，kitex 支持 thrift 和 protobuf 的 IDL，并支持生成一个服务端项目的骨架。
 
 ## 安装
@@ -80,7 +78,6 @@ option go_package = "hello.world"; // or hello/world
 
 生成的 import path 会是 `${当前目录的 import path}/kitex_gen/hello/world`。
 
-
 ## 使用
 
 ### 基础使用
@@ -115,19 +112,19 @@ kitex -service service_name path_to_your_idl.thrift
 .
 ├── build.sh                     // 服务的构建脚本，会创建一个名为 output 的目录并生成启动服务所需的文件到里面
 ├── conf                         // 配置文件的目录，该目录下的文件会被 build.sh 拷贝到 output/conf 下
-│   └── kitex.yml                // 默认的配置文件
+│   └── kitex.yml                // 默认的配置文件
 ├── handler.go                   // 用户在该文件里实现 IDL service 定义的方法
 ├── kitex_gen                    // IDL 内容相关的生成代码
-│   ├── base                     // base.thrift 的生成代码
-│   │   ├── base.go              // thriftgo 的产物，包含 base.thrift 定义的内容的 go 代码
-│   │   └── k-base.go            // kitex 在 thriftgo 的产物之外生成的代码
-│   └── demo                     // demo.thrift 的生成代码
-│       ├── demo.go              // thriftgo 的产物，包含 demo.thrift 定义的内容的 go 代码
-│       ├── k-demo.go            // kitex 在 thriftgo 的产物之外生成的代码
-│       └── demoservice          // kitex 为 demo.thrift 里定义的 demo service 生成的代码
-│           ├── demoservice.go   // 提供了 client.go 和 server.go 共用的一些定义
-│           ├── client.go        // 提供了 NewClient API
-│           └── server.go        // 提供了 NewServer API
+│   ├── base                     // base.thrift 的生成代码
+│   │   ├── base.go              // thriftgo 的产物，包含 base.thrift 定义的内容的 go 代码
+│   │   └── k-base.go            // kitex 在 thriftgo 的产物之外生成的代码
+│   └── demo                     // demo.thrift 的生成代码
+│       ├── demo.go              // thriftgo 的产物，包含 demo.thrift 定义的内容的 go 代码
+│       ├── k-demo.go            // kitex 在 thriftgo 的产物之外生成的代码
+│       └── demoservice          // kitex 为 demo.thrift 里定义的 demo service 生成的代码
+│           ├── demoservice.go   // 提供了 client.go 和 server.go 共用的一些定义
+│           ├── client.go        // 提供了 NewClient API
+│           └── server.go        // 提供了 NewServer API
 ├── main.go                      // 程序入口
 └── script                       // 构建脚本
     └── bootstrap.sh             // 服务的启动脚本，会被 build.sh 拷贝至 output 下
@@ -186,6 +183,3 @@ kitex -service service_name path_to_your_idl.thrift
 #### `-thrift value`
 
 传递给 thriftgo 的参数。会拼接在 `-g go:` 的参数后面。可用的值参考 `thriftgo` 的帮助文档。kitex 默认传递了 `naming_style=golint,ignore_initialisms,gen_setter,gen_deep_equal`，可以被覆盖。
-
-
-
