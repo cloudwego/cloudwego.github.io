@@ -7,7 +7,7 @@ description: >
 
 # 编解码(协议)扩展
 
-![image](/img/docs/remote_module.png)
+![remote_module](/img/docs/remote_module.png)
 
 Kitex 支持扩展协议，包括整体的Codec和PayloadCodec。通常 RPC 协议中包含应用层传输协议和 Payload 协议，如 HTTP/HTTP2 属于应用层传输协议，基于 HTTP/HTTP2 可以承载不同格式和不同协议的 Payload，Kitex 默认支持内置的 TTHeader 传输协议，Payload 支持 Thrift 、KitexProtobuf、gRPC。Kitex 集成 nhttp2 支持 HTTP2，所以未对 HTTP2 单独扩展。
 

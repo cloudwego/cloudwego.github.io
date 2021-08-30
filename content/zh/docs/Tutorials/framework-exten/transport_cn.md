@@ -7,7 +7,7 @@ description: >
 
 # 传输模块扩展
 
-![remote_module](../../images/remote_module.png)
+![remote_module](/img/docs/remote_module.png)
 
 Kitex 默认集成了自研的高性能网络库 Netpoll，同时也支持使用者扩展其他网络库按需选择。Kitex 还提供了 Shm IPC 进一步提升 IPC 性能，该扩展会在后续开源。
 
