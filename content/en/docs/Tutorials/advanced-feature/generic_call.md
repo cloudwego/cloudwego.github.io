@@ -1,27 +1,27 @@
 ---
-title: "Kitex 泛化调用使用指南"
-date: 2021-08-26
+title: "Generic Call"
+date: 2021-08-31
 weight: 1
 description: >
 ---
 
-目前仅支持 Thrift 泛化调用，通常用于不需要生成代码的中台服务。
+Generic call is typically used for mid-platform services that do not need generated code, and only Thrift generic call is supported currently.
 
-## 支持场景
+## Supported Scenarios
 
-1. 二进制泛化调用：用于流量中转场景
-2. HTTP映射泛化调用：用于 API 网关场景
-3. Map映射泛化调用
+1. Binary Generic Call: for traffic transit scenario
+2. HTTP Mapping Generic Call: for API Gateway scenario
+3. Map Mapping Generic Call
 
-## 使用方式示例
+## Example of Usage
 
-### 1. 二进制泛化调用
+### 1. Binary Generic
 
-#### 调用端使用
+#### Client Usage
 
-应用场景：比如中台服务，可以通过二进制流转发将收到的原始 Thrift 协议包发给目标服务。
+Application scenario: mid-platform services can forward the received original Thrift protocol packets to the target miscoservice through Binary Forwarding.
 
-- 初始化Client
+- Client Initialization
 
   ```go
   import (
@@ -34,11 +34,11 @@ description: >
   }
   ```
 
-- 泛化调用
+- Generic Call
 
-  若自行编码，需要使用 Thrift 编码格式 [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)。注意，二进制编码不是对原始的 Thrift 请求参数编码，是 method 参数封装的 **XXXArgs**。可以参考 github.com/cloudwego/kitex/generic/generic_test.go。
-
-  Kitex 提供了 thrift 编解码包`github.com/cloudwego/kitex/pkg/utils.NewThriftMessageCodec`。
+  If you encode by yourself, you have to use Thrift serialization protocol [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message). Note that you shouldn't encode original function parameter, but the **XXXArgs** which wraps function parameters. You can refer to github.com/cloudwego/kitex/generic/generic_test.go.
+  
+  Kitex provides a thrift codec package `github.com/cloudwego/kitex/pkg/utils.NewThriftMessageCodec`.
   
   ```go
   rc := utils.NewThriftMessageCodec()
@@ -47,11 +47,11 @@ description: >
   resp, err := genericCli.GenericCall(ctx, "actualMethod", buf)
   ```
 
-#### 服务端使用
+#### Server Usage
 
-​	二进制泛化 Client 和 Server **并不是配套**使用的，Client 传入**正确的 Thrift 编码二进制**，可以访问普通的 Thrift Server。
+It is not necessary to use Client and Server of Binary Generic Call together. Binary Generic Client can access normal Thrift Server if the correct Thrift encoded binary is passed.
 
-​    二进制泛化 Server 只支持 Framed 或 TTHeader 请求，不支持 Bufferd Binary，需要 Client 通过 Option 指定，如：`client.WithTransportProtocol(transport.Framed)`。
+The server just supports request with a length header like Framed and TTheader, Bufferd Binary is not ok. So the client has to specify the transport protocol with an option, eg: client.WithTransportProtocol(transport.Framed).
 
 ```go
 package main
@@ -86,11 +86,11 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-### 2. HTTP 映射泛化调用
+### 2. HTTP Mapping Generic Call
 
-HTTP 映射泛化调用只针对客户端，要求 Thrift IDL 遵从接口映射规范，具体规范见 [ByteAPI IDL规范](TODO)（待整理）。
+The HTTP Mapping Generic Call is only for the client, and requires Thrift IDL to comply with the interface mapping specification. See the specific specification[ByteAPI IDL specification](https://bytedance.feishu.cn/docs/doccn4wmKylFJl0OpTCEkf)(To be sorted out)
 
-#### IDL 定义示例
+#### IDL Definition Example
 
 ```thrift
 namespace go http
@@ -136,15 +136,15 @@ service BizService {
 
 
 
-#### 泛化调用示例
+#### Generic Call Example
 
 - **Request**
 
-类型：*generic.HTTPReqeust
+Type: *generic.HTTPReqeust
 
 - **Response**
 
-类型：*generic.HTTPResponse
+Type: *generic.HTTPResponse
 
 ```go
 package main
@@ -155,14 +155,13 @@ import (
 )
 
 func main() {
-    // 本地文件idl解析
-    // YOUR_IDL_PATH thrift文件路径: 举例 ./idl/example.thrift
-    // includeDirs: 指定include路径，默认用当前文件的相对路径寻找include
+    // Parse IDL with Local Files
+	// YOUR_IDL_PATH thrift file path, eg: ./idl/example.thrift
+    // includeDirs: specify include path
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // 构造http类型的泛化调用
     g, err := generic.HTTPThriftGeneric(p)
     if err != nil {
         panic(err)
@@ -171,7 +170,6 @@ func main() {
     if err != nil {
         panic(err)
     }
-    // 构造request，或者从ginex获取
     body := map[string]interface{}{
         "text": "text",
         "some": map[string]interface{}{
@@ -189,24 +187,23 @@ func main() {
     if err != nil {
         panic(err)
     }
-    url := "http://example.com/life/client/1/1?v_int64=1&req_items=item1,item2,itme3&cids=1,2,3&vids=1,2,3"
+    url := "http://example.com/1/1?v_int64=1&req_items=item1,item2,itme3&cids=1,2,3&vids=1,2,3"
     req, err := http.NewRequest(http.MethodGet, url, bytes.NewBuffer(data))
     if err != nil {
         panic(err)
     }
     req.Header.Set("token", "1")
-    customReq, err := generic.FromHTTPRequest(req) // 考虑到业务有可能使用第三方http request，可以自行构造转换函数
+    customReq, err := generic.FromHTTPRequest(req) 
     // customReq *generic.HttpRequest
-    // 由于http泛化的method是通过bam规则从http request中获取的，所以填空就行
     resp, err := cli.GenericCall(ctx, "", customReq)
     realResp := resp.(*generic.HttpResponse)
-    realResp.Write(w) // 写回ResponseWriter，用于http网关
+    realResp.Write(w)
 }
 ```
 
-#### 注解扩展
+#### Annotation Extension
 
-比如增加一个 `xxx.source='not_body_struct'` 注解，表示某个字段本身没有对 HTTP 请求字段的映射，需要遍历其子字段从 HTTP 请求中获取对应的值。使用方式如下：
+For example, add a `xxx.source = 'not_body_struct'` annotation to indicate that a certain field itself does not have a mapping to the HTTP request fields, and you need to traverse its subfields to obtain the corresponding value from the HTTP request. The usage is as follows:
 
 ```thrift
 struct Request {
@@ -220,14 +217,14 @@ struct CommonParam {
 }
 ```
 
-扩展方式如下：
+Extension way：
 
 ```go
 func init() {
         descriptor.RegisterAnnotation(new(notBodyStruct))
 }
 
-// 实现descriptor.Annotation
+// Implement descriptor.Annotation
 type notBodyStruct struct {
 }
 
@@ -235,7 +232,7 @@ func (a * notBodyStruct) Equal(key, value string) bool {
         return key == "xxx.source" && value == "not_body_struct"
 }
 
-// Handle 目前支持四种类型：HttpMapping, FieldMapping, ValueMapping, Router
+// Support 4 types Handle: HttpMapping, FieldMapping, ValueMapping, Router
 func (a * notBodyStruct) Handle() interface{} {
         return newNotBodyStruct
 }
@@ -248,7 +245,6 @@ var newNotBodyStruct descriptor.NewHttpMapping = func(value string) descriptor.H
 
 // get value from request
 func (m *notBodyStruct) Request(req *descriptor.HttpRequest, field *descriptor.FieldDescriptor) (interface{}, bool) {
-        // not_body_struct 注解的作用相当于 step into，所以直接返回req本身，让当前filed继续从Request中查询所需要的值
         return req, true
 }
 
@@ -257,21 +253,23 @@ func (m *notBodyStruct) Response(resp *descriptor.HttpResponse, field *descripto
 }
 ```
 
-### 3. Map 映射泛化调用
+### 3. Map Mapping Generic Call
 
-Map 映射泛化调用是指用户可以直接按照规范构造 Map 请求参数或返回，Kitex 会对应完成 Thrift 编解码。
+Map Mapping Generic Call means that the user can directly construct Map request or response according to the specification, and Kitex will do Thrift codec accordingly.
 
-#### Map 构造
+#### Build Map 
 
-Kitex 会根据给出的 IDL 严格校验用户构造的字段名和类型，字段名只支持字符串类型对应 Map Key，字段 Value 的类型映射见类型映射表。
+Kitex will strictly verify the field name and type constructed according to the given IDL. The field name only supports string type corresponding to the Map Key. The type mapping of the field Value is shown in the Type Mapping Table below.
 
-对于Response会校验 Field ID 和类型，并根据 IDL 的 Field Name 生成相应的 Map Key。
+Returns the Field ID and type that will verify the Response and generate the corresponding Map Key based on the Field Name of the IDL.
 
-##### 类型映射
+For response, the Field ID and Type will be verified, and return Map to user  corresponding to the IDL.
 
-Golang 与 Thrift IDL 类型映射如下：
+##### Type Mapping Table
 
-| **Golang 类型**             | **Thrift IDL 类型** |
+The Mapping between Golang and Thrift:
+
+| **Golang Type**             | **Thrift IDL Type** |
 | --------------------------- | ------------------- |
 | bool                        | bool                |
 | int8                        | i8                  |
@@ -286,9 +284,9 @@ Golang 与 Thrift IDL 类型映射如下：
 | map[string]interface{}      | struct              |
 | int32                       | enum                |
 
-##### 示例
+#### Example
 
-以下面的 IDL 为例：
+Take the following IDL as an example:
 
 ```thrift
 enum ErrorCode {
@@ -318,7 +316,7 @@ struct EchoRequest {
 }
 ```
 
-构造请求如下：
+The request construction is as follows:
 
 ```go
 req := map[string]interface{}{
@@ -343,9 +341,9 @@ req := map[string]interface{}{
         }
 ```
 
-#### 泛化调用示例
+#### Generic Call Example
 
-示例 IDL ：
+Example IDL:
 
 `base.thrift`
 
@@ -394,15 +392,15 @@ service ExampleService {
 }
 ```
 
-##### 客户端使用
+##### Client Usage
 
 - **Request**
 
-类型：map[string]interface{}
+Type: map[string]interface{}
 
 - **Response**
 
-类型：map[string]interface{}
+Type: map[string]interface{}
 
 ```go
 package main
@@ -413,14 +411,12 @@ import (
 )
 
 func main() {
-    // 本地文件idl解析
-    // YOUR_IDL_PATH thrift文件路径: 举例 ./idl/example.thrift
-    // includeDirs: 指定include路径，默认用当前文件的相对路径寻找include
+    // Parse IDL with Local Files
+    // YOUR_IDL_PATH thrift file path, eg:./idl/example.thrift
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // 构造map 请求和返回类型的泛化调用
     g, err := generic.MapThriftGeneric(p)
     if err != nil {
         panic(err)
@@ -429,7 +425,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    // 'ExampleMethod' 方法名必须包含在idl定义中
+    // 'ExampleMethod' method name must be passed as param
     resp, err := cli.GenericCall(ctx, "ExampleMethod", map[string]interface{}{
         "Msg": "hello",
     })
@@ -437,15 +433,15 @@ func main() {
 }
 ```
 
-##### 服务端使用
+##### Server Usage
 
 - **Request**
 
-类型：map[string]interface{}
+Type: map[string]interface{}
 
 - **Response**
 
-类型：map[string]interface{}
+Type: map[string]interface{}
 
 ```go
 package main
@@ -456,13 +452,12 @@ import (
 )
 
 func main() {
-    // 本地文件idl解析
-    // YOUR_IDL_PATH thrift文件路径: e.g. ./idl/example.thrift
+    // Parse IDL with Local Files
+  	// YOUR_IDL_PATH thrift file path,eg: ./idl/example.thrift
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // 构造map请求和返回类型的泛化调用
     g, err := generic.MapThriftGeneric(p)
     if err != nil {
         panic(err)
@@ -493,11 +488,11 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 ## IDLProvider
 
-HTTP/Map 映射的泛化调用虽然不需要生成代码，但需要使用者提供 IDL。
+Generic Call of HTTP/Map mapping does not require generated code, but requires IDL which need users to provide.
 
-目前 Kitex 有两种 IDLProvider 实现，使用者可以选择指定 IDL 路径，也可以选择传入 IDL 内容。当然也可以根据需求自行扩展 `generci.DescriptorProvider`。
+At present, Kitex has two IDLProvider implementations. Users can choose to specify the IDL path or pass in IDL content. Of course, you can also expand the `generic.DescriptorProvider` according to your needs.
 
-### 基于本地文件解析 IDL
+### Parse IDL with Local Files
 
 ```go
 p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
@@ -506,9 +501,9 @@ p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
  }
 ```
 
-### 基于内存解析 IDL
+### Parse IDL with Memory 
 
-所有 IDL 需要构造成 Map ，Key 是 Path，Value 是 IDL 定义，使用方式如下：
+All IDLs need to be constructed into a Map, Key is Path, Value is IDL definition, and the usage is as follows:
 
 ```go
 p, err := generic.NewThriftContentProvider("YOUR_MAIN_IDL_CONTENT", map[string]string{/*YOUR_INCLUDES_IDL_CONTENT*/})
@@ -523,7 +518,7 @@ if err != nil {
 }
 ```
 
-简单实例（为最小化展示 Path 构造，并非真实的 IDL）：
+Simple example (not real IDL, just for minimizing display Path constructs):
 
 ```go
 path := "a/b/main.thrift"
@@ -548,9 +543,9 @@ p, err := NewThriftContentProvider(path, includes)
 
 
 
-#### 支持绝对路径的 include path 寻址
+#### Absolute Path including path Addressing
 
-若为方便构造 IDL Map，也可以通过 `NewThriftContentWithAbsIncludePathProvider` 使用绝对路径作为 Key。
+If you construct an IDL Map for convenience, you can also use an absolute path as a Key through  `NewThriftContentWithAbsIncludePathProvider` .
 
 ```go
 p, err := generic.NewThriftContentWithAbsIncludePathProvider("YOUR_MAIN_IDL_PATH", "YOUR_MAIN_IDL_CONTENT", map[string]string{"ABS_INCLUDE_PATH": "CONTENT"})
@@ -565,7 +560,7 @@ if err != nil {
 }
 ```
 
-简单实例（为最小化展示 Path 构造，并非真实的 IDL）：
+Simple example (not real IDL, just for minimizing display Path constructs):
 
 ```go
 path := "a/b/main.thrift"

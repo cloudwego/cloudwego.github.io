@@ -73,8 +73,8 @@ Timeline:
 
 client stats events timeline:
 
-![client stats events timeline](../../images/client_tracing_timeline.png)
+![client_tracing_timeline](/img/docs/client_tracing_timeline.png)
 
 server stats events timeline:
 
-![server stats events timeline](../../images/server_tracing_timeline.png)
+![server_tracing_timeline](/img/docs/server_tracing_timeline.png)
