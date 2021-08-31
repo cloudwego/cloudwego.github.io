@@ -8,7 +8,7 @@
 
     @include media-breakpoint-up(md) {
         @supports (position: sticky) {
-            max-height: calc(100vh - 10rem);
+            max-height: calc(100vh - 6rem);
             overflow-y: auto;
         }
     }
