@@ -5,8 +5,6 @@ weight: 3
 description: >
 ---
 
-# 链路跟踪
-
 Kitex 提供了对 opentracing 的支持，也支持用户自定义链路跟踪。
 
 ## opentracing
@@ -151,4 +149,3 @@ if err := svr.Run(); err != nil {
 	log.Println("server stopped")
 }
 ```
-

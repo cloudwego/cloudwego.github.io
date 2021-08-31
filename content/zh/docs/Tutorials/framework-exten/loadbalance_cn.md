@@ -5,8 +5,6 @@ weight: 5
 description: >
 ---
 
-# 自定义 LoadBalancer
-
 在 Kitex 中，提供了两种 LoadBalancer：
 
 1. WeightedRandom
@@ -16,12 +14,12 @@ description: >
 
 ## 接口
 
-LoadBalancer 接口在`pkg/loadbalance/loadbalancer.go`中，具体定义如下：
+LoadBalancer 接口在 `pkg/loadbalance/loadbalancer.go` 中，具体定义如下：
 
 ```go
 // Loadbalancer generates pickers for the given service discovery result.
 type Loadbalancer interface {
-	GetPicker(discovery.Result) Picker
+    GetPicker(discovery.Result) Picker
     // 名称需要唯一
     Name() string
 }
@@ -32,7 +30,7 @@ type Loadbalancer interface {
 ```go
 // Picker picks an instance for next RPC call.
 type Picker interface {
-	Next(ctx context.Context, request interface{}) discovery.Instance
+    Next(ctx context.Context, request interface{}) discovery.Instance
 }
 ```
 
@@ -45,8 +43,8 @@ type Picker interface {
 ```go
 // Rebalancer is a kind of Loadbalancer that performs rebalancing when the result of service discovery changes.
 type Rebalancer interface {
-	Rebalance(discovery.Change)
-	Delete(discovery.Change)
+    Rebalance(discovery.Change)
+    Delete(discovery.Change)
 }
 ```
 
