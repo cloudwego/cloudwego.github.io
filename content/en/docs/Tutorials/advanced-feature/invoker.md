@@ -1,4 +1,9 @@
-# Server SDK Mode
+---
+title: "Server SDK Mode"
+date: 2021-08-31
+weight: 2
+description: >
+---
 
 SDK Mode（invoker）provides a way to call Kitex server just like a SDK.
 
