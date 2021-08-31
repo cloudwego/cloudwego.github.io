@@ -21,7 +21,7 @@
 {{- template "_internal/schema.html" . -}}
 {{- template "_internal/twitter_cards.html" . -}}
 
-{{ template "_internal/google_analytics_async.html" . }}
+{{ partial "google_analytics.html" . }}
 
 {{ partialCached "head-css.html" . "asdf" }}
 <script
