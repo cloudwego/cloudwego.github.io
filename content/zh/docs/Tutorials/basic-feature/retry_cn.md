@@ -11,7 +11,7 @@ description: >
  - 超时重试：提高服务整体的成功率
  - Backup Request：减少服务的延迟波动
 
-因为很多业务请求不具有幂等性，这两类重试不会作为默认策略。
+因为很多的业务请求不具有幂等性，这两类重试不会作为默认策略。
 
 #### 1.1 注意：
 
@@ -120,9 +120,9 @@ bp.WithRetrySameNode()
 
 当开启了服务的熔断配置可以复用熔断的统计减少额外的 CPU 消耗，注意重试的熔断阈值须低于服务的熔断阈值，使用如下：
 ```go
-// 1. 初始化kitex内置的 cbsuite 
+// 1. 初始化 kitex 内置的 cbsuite
 cbs := circuitbreak.NewCBSuite(circuitbreak.RPCInfo2Key)
-// 2. 初始化retryContainer，传入ServiceControl和ServicePanel
+// 2. 初始化 retryContainer，传入ServiceControl和ServicePanel
 retryC := retry.NewRetryContainerWithCB(cs.cbs.ServiceControl(), cs.cbs.ServicePanel())
 
 var opts []client.Option
@@ -131,7 +131,7 @@ opts = append(opts, client.WithRetryContainer(retryC))
 // 4. 配置 Service circuit breaker
 opts = append(opts, client.WithMiddleware(cbs.ServiceCBMW()))
 
-// 5. 初始化Client, 传入配置 option
+// 5. 初始化 Client, 传入配置 option
 cli, err := xxxservice.NewClient(targetService, opts...)
 ```
 
@@ -142,7 +142,7 @@ cli, err := xxxservice.NewClient(targetService, opts...)
 ```go
 retryC := retry.NewRetryContainer()
 // demo
-// 1. define your change func 
+// 1. define your change func
 // 2. exec yourChangeFunc in your config module
 yourChangeFunc := func(key string, oldData, newData interface{}) {
     newConf := newData.(*retry.Policy)
@@ -171,7 +171,7 @@ if retryTag, ok := toInfo.Tag(rpcinfo.RetryTag); ok {
 }
 ````
 
-### 5. 下游识别重试请求  
+### 5. 下游识别重试请求
 
 如果使用 TTHeader 作为传输协议，下游 handler 可以通过如下方式判断当前是否是重试请求，自行决定是否继续处理。
 ```go
@@ -180,5 +180,5 @@ retryReqCount, exist := metainfo.GetPersistentValue(ctx,retry.TransitKey)
 比如 retryReqCount = 2，表示第二次重试请求（不包括首次请求），则采取业务降级策略返回部分或 mock 数据返回（非重试请求没有该信息）。
 
 > Q: 框架默认开启链路中止，业务是否还有必要识别重试请求？
-> 
+>
 > 链路中止是指链路上的重试请求不会重试，比如 A->B->C，A 向 B 发送的是重试请求，如果 B->C 超时了或者配置了 Backup，则 B 不会再发送重试请求到 C。如果业务自行识别重试请求，可以直接决定是否继续请求到 C。简言之链路中止避免了 B 向 C 发送重试请求导致重试放大，业务自己控制可以完全避免 B 到 C 的请求。
