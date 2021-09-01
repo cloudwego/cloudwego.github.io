@@ -3,22 +3,22 @@ title: "Overview"
 linkTitle: "Overview"
 weight: 1
 description: >
-  
+
 ---
 
 ## CloudWeGo-Kitex
 
-Kitex [kaɪt'eks] is a Golang-based, scalable and performant RPC framework that can help developers build microservices. As more and more organizations are now choosing Golang, if you have requirements for microservice performance and want to do some customization, Kitex will be a good choice.
+Kitex [kaɪt'eks] is a **high-performance** and **strong-extensibility** Golang RPC framework that helps developers build microservices. If the performance and extensibility are the main concerns when you develop microservices, Kitex can be a good choice.
 
 ### Basic Features
 
 - **High Performance**
 
-Kitex supports [Netpoll](https://github.com/cloudwego/netpoll), a self-developed high-performance network library, which has significant performance advantages over [go net](https://pkg.go.dev/net).
+Kitex integrates [Netpoll](https://github.com/cloudwego/netpoll), a high-performance network library, which offers significant performance advantage over [go net](https://pkg.go.dev/net).
 
-- **Scalability**
+- **Extensibility**
 
-Kitex provides more extension interfaces and default extension implementations. Developers can also customize extensions according to their own needs (please refer to the framework extension section below).
+Kitex provides many interfaces with default implementation for users to customize. You can extend or inject them into Kitex to fulfill your needs (please refer to the framework extension section below).
 
 - **Multi-message Protocol**
 
@@ -30,11 +30,11 @@ For service governance, Kitex supports **TTHeader** and **HTTP2**. TTHeader can 
 
 - **Multi-message Type**
 
-Kitex supports **PingPong**, **one-way**, and **two-way Streaming**. Among them, One-way currently only supports Thrift protocol, two-way Streaming only supports gRPC, and Kitex will support Thrift's two-way Streaming in the future.
+Kitex supports **PingPong**, **One-way**, and **Bidirectional Streaming**. Among them, One-way currently only supports Thrift protocol, two-way Streaming only supports gRPC, and Kitex will support Thrift's two-way Streaming in the future.
 
 - **Service Governance**
 
-Kitex integrates service governance modules such as service registry, service discovery, load balancing, circuit breaker, current limiting, retry, monitoring, tracer, logging, diagnosis, etc. Most of these have been provided with default extensions, and users can choose to integrate.
+Kitex integrates service governance modules such as service registry, service discovery, load balancing, circuit breaker, rate limiting, retry, monitoring, tracing, logging, diagnosis, etc. Most of these have been provided with default extensions, and users can choose to integrate.
 
 - **Code Generation**
 
@@ -53,9 +53,9 @@ We compared the performance of Kitex with some popular RPC frameworks ([test cod
 - OS: Debian 5.4.56.bsk.1-amd64 x86_64 GNU/Linux
 - Go: 1.15.4
 
-### Concurrency performance 
+### Concurrency performance
 
-Echo 1KB, change the amount of concurrency.
+Change the concurrency with a fixed packet size 1KB.
 
 | QPS                                                  |                         TP99                          |                         TP999                          |
 | :--------------------------------------------------- | :---------------------------------------------------: | :----------------------------------------------------: |
@@ -63,7 +63,7 @@ Echo 1KB, change the amount of concurrency.
 
 ### Throughput performance
 
-Concurrent 100, change packet size.
+Change packet size with a fixed concurrency of 100.
 
 | QPS                                                |                        TP99                         |                        TP999                         |
 | :------------------------------------------------- | :-------------------------------------------------: | :--------------------------------------------------: |
