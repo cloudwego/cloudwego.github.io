@@ -25,6 +25,6 @@ description: >
 
 ## Docs:
 
-We have updated some documentations in this version.
+- We have updated some documentations in this version.
 
-Several lint issues and typos are fixed thanks to @rleungx @Huangxuny1 @JeffreyBool.
+- Several lint issues and typos are fixed thanks to @rleungx @Huangxuny1 @JeffreyBool.
