@@ -264,7 +264,7 @@ Kitex 自带了一个同名的命令行工具 `kitex`，用来帮助大家很方
 
 #### 使用
 
-kitex 的具体使用请参考[代码生成工具](basic-features/code_generation_cn.md)
+kitex 的具体使用请参考[代码生成工具](basic-features/code_generation.md)
 
 ### 编写 IDL
 
