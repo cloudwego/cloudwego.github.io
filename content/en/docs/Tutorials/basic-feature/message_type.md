@@ -12,8 +12,8 @@ The table below is message types, codecs and transports supported by Kitex.
 
 |Message Types|Codec|Transport|
 |--------|-------|--------|
-|PingPong|Thrift / Protobuf| [TTHeader](../extension/codec.md) / HTTP2(gRPC)|
-|Oneway|Thrift| [TTHeader](../extension/codec.md) |
+|PingPong|Thrift / Protobuf| [TTHeader](../../framework-exten/codec) / HTTP2(gRPC)|
+|Oneway|Thrift| [TTHeader](../../framework-exten/codec) |
 |Streaming|Protobuf|HTTP2(gRPC)|
 
 - PingPong: the client always waits for a response after sending a request

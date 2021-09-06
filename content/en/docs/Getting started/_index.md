@@ -263,7 +263,7 @@ If you see something like `command not found`, you should add `$GOPATH/bin` to `
 
 #### Usage
 
-You can visit [Compiler](basic-features/code_generation.md) for detailed usage.
+You can visit [Compiler](../tutorials/code-gen/code_generation) for detailed usage.
 
 ### Write IDL
 
