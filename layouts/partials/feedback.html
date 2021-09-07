@@ -14,15 +14,15 @@
   }
 </style>
 <div class="d-print-none">
-<h2 class="feedback--title">Feedback</h2>
-<p class="feedback--question">Was this page helpful?</p>
-<button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
-<button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button>
+<h2 class="feedback--title">{{ T "feedback_title" }}</h2>
+<p class="feedback--question">{{ T "feedback_description" }}</p>
+<button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">{{ T "feedback_yes" }}</button>
+<button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">{{ T "feedback_no" }}</button>
 <p class="feedback--response feedback--response-yes">
-  {{ .yes | safeHTML }}
+  <a href="{{  .Site.Params.github_repo }}/issues/new">{{ T "feedback_tip" }}</a>.
 </p>
 <p class="feedback--response feedback--response-no">
-  {{ .no | safeHTML }}
+  <a href="{{  .Site.Params.github_repo }}/issues/new">{{ T "feedback_tip" }}</a>.
 </p>
 </div>
 <script>
