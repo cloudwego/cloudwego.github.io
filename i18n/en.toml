@@ -59,3 +59,14 @@ other = "Click here to print"
 other = "Return to the regular view of this page"
 [print_entire_section]
 other = "Print entire section"
+
+[feedback_title]
+other = "Feedback"
+[feedback_description]
+other = "Was this page helpful?"
+[feedback_yes]
+other = "Yes"
+[feedback_no]
+other = "No"
+[feedback_tip]
+other = "Please tell us how we can improve"

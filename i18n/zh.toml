@@ -53,3 +53,14 @@ other = "点击此处打印"
 other = "返回本页常规视图"
 [print_entire_section]
 other = "整节打印"
+
+[feedback_title]
+other = "反馈"
+[feedback_description]
+other = "当前页面对你有帮助吗？"
+[feedback_yes]
+other = "是"
+[feedback_no]
+other = "否"
+[feedback_tip]
+other = "请告诉我们如何改进"
