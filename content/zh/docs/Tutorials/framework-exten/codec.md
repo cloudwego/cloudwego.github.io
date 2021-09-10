@@ -82,7 +82,7 @@ Kitex 默认支持的 Payload 有 Thrift、Kitex Protobuf 以及 gRPC 协议。�
 
 特别地，Kitex 的泛化调用也是通过扩展 PayloadCodec 实现：
 
-![remoteModule](../../images/generic_codec_extension.png)
+![remote_module](/img/docs/remote_module.png)
 
 ## 指定自定义 Codec 和 PayloadCodec
 
