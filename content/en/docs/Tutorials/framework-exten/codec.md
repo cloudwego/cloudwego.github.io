@@ -82,7 +82,7 @@ By default, the payload supported by Kitex includes Thrift, Kitex Protobuf and g
 
 In particular, generic call of Kitex is also implemented by extending payloadcodec:
 
-![remoteModule](../../images/generic_codec_extension.png)
+![remote_module](/img/docs/remote_module.png)
 
 ## Customized Codec or PayloadCodec Usage
 
