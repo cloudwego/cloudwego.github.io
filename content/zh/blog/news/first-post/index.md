@@ -96,3 +96,6 @@ CloudWeGo 开源后除向内部提供支持外，我们也希望 CloudWeGo 能�
 就开源一个月的反馈看，大家对 Protobuf 的诉求较为强烈。坦诚来说 Kitex 虽然支持多协议，但字节内部 RPC 通信协议是 Thrift，对 Protobuf 无论是 Kitex Protobuf 还是兼容 gRPC 更多的是支持少部分内部用户的需求，所以暂时未开展性能优化，生成代码也是直接使用 Protobuf 官方的二进制（gogo/protobuf 是基于生成代码优化 Protobuf 序列化性能的优秀开源库，但很遗憾该库目前是停止维护状态，所以 Kitex 并未选择 gogo），但鉴于大家强烈的诉求，我们会计划开展 Kitex 对 Protobuf 支持的性能优化。
 
 欢迎大家向 CloudWeGo 提交 issue 和 PR 共建 CloudWeGo，我们诚心期待更多的开发者加入，也期待 CloudWeGo 助力越来越多的企业快速构建云原生架构。如果企业客户想内部试用，我们可以排期提供专项技术支持和交流，欢迎入群咨询。
+
+
+![!image](/img/blog/LarkGroup.png)
