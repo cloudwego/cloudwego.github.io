@@ -35,7 +35,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - run: npm ci
-      - run: hugo --minify --verbose
+      - run: HUGO_ENV=production hugo --minify --verbose
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
