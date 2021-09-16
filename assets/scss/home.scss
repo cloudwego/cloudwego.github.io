@@ -228,3 +228,21 @@
         padding-bottom: 3rem;
     }
 }
+
+.home-landscape {
+    background-color: #bae0eb;
+    color: #000;
+
+    .home-landscape-wrapper {
+        text-align: center;
+        width: 100%;
+    }
+
+    .home-landscape-desc {
+        padding: 12px 0;
+    }
+
+    a {
+        color: #3c8fa8 !important;
+    }
+}
