@@ -7,7 +7,7 @@ description: >
 
 ## Usage Scenarios
 
-There cloud be decades method defined in service, but only one or two methods is needed by client.
+There could be decades method defined in service, but only one or two methods is needed by client.
 Combine Service provides a way to split one service into several services.
 For Example, there is a `ExampleService`
 ```thrift
