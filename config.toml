@@ -83,7 +83,7 @@ time_format_default = "January 2, 2006"
 # Sections to publish in the main RSS feed.
 rss_sections = ["blog"]
 copyright = "The CloudWeGo Authors"
-privacy_policy = "https://github.com/cloudwego"
+
 
 # Menu title if your navbar has a versions selector to access old versions of your site.
 # This menu appears only if you have at least one [params.versions] set.
