@@ -1,5 +1,5 @@
 ---
-title: "Release v0.0.2"
+title: "Kitex Release v0.0.2"
 linkTitle: "Release v0.0.2"
 date: 2021-07-30
 weight: 2
