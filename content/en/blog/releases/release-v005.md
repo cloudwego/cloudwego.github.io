@@ -35,7 +35,7 @@ description: >
 ## Docs:
 
 - English is available for README and all other documents.
-- Guide for generic call. [English](https://github.com/cloudwego/kitex/blob/develop/docs/guide/advanced-features/generic_call.md) | [中文](https://github.com/cloudwego/kitex/blob/develop/docs/guide/advanced-features/generic_call_cn.md)
+- Guide for generic call. [English](https://www.cloudwego.io/docs/tutorials/advanced-feature/generic_call) | [中文](https://www.cloudwego.io/zh/docs/tutorials/advanced-features/generic_call/)
 - Landscape and Roadmap in README.
 
 ## Dependency Change:
