@@ -5,6 +5,8 @@
 }
 
 .home-overview-btn-group {
+    display: flex;
+    justify-content: center;
     margin-bottom: 3rem;
 }
 
@@ -244,5 +246,27 @@
 
     a {
         color: #3c8fa8 !important;
+    }
+}
+
+@media(max-width: 768px) {
+    .td-box .row {
+        flex-direction: column !important;
+    }
+    .home-project-item {
+        margin: 8px 0;
+        max-width: unset;
+    }
+
+    .home-quote-text {
+        width: 100%;
+    }
+
+    .home-footer-links-item {
+        max-width: unset;
+    }
+
+    .home-overview-subtitle {
+        padding: unset;
     }
 }
