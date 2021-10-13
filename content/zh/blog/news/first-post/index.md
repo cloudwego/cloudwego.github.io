@@ -3,7 +3,7 @@ date: 2021-09-07
 title: "字节跳动开源内部微服务中间件 CloudWeGo"
 linkTitle: "字节跳动开源内部微服务中间件 CloudWeGo"
 weight: 1
-description: "CloudWeGo-Kitex 正式开源！"
+description: >
 author: 字节跳动基础架构团队
 ---
 
@@ -82,21 +82,21 @@ CloudWeGo 下与内部生态没有耦合的项目，如 Netpoll，直接迁移�
 
 ## 未来展望
 
-  - 继续开源其他内部项目
+**继续开源其他内部项目**
 
-我们会继续开源其他内部项目，如 HTTP 框架 Hertz、基于共享内存的 IPC 通信库 ShmIPC 等，提供更多场景的微服务需求支持。
+* 我们会继续开源其他内部项目，如 HTTP 框架 Hertz、基于共享内存的 IPC 通信库 ShmIPC 等，提供更多场景的微服务需求支持。
 
-  - 逐步开源经验证的、稳定的特性
+**逐步开源经验证的、稳定的特性**
 
-CloudWeGo 的主要项目均为字节内部微服务提供支持，新的特性通常会在内部验证，相对成熟后我们会逐步开源出去，比如对 ShmIPC 的集成、无序列化、无生成代码的支持等等。
+* CloudWeGo 的主要项目均为字节内部微服务提供支持，新的特性通常会在内部验证，相对成熟后我们会逐步开源出去，比如对 ShmIPC 的集成、无序列化、无生成代码的支持等等。
 
-  - 结合内外部用户需求，持续迭代
+**结合内外部用户需求，持续迭代**
 
-CloudWeGo 开源后除向内部提供支持外，我们也希望 CloudWeGo 能为外部用户提供良好的支持，帮助大家快速搭建自己的微服务体系，所以我们会面向内外部用户迭代。
+* CloudWeGo 开源后除向内部提供支持外，我们也希望 CloudWeGo 能为外部用户提供良好的支持，帮助大家快速搭建自己的微服务体系，所以我们会面向内外部用户迭代。
 
-就开源一个月的反馈看，大家对 Protobuf 的诉求较为强烈。坦诚来说 Kitex 虽然支持多协议，但字节内部 RPC 通信协议是 Thrift，对 Protobuf 无论是 Kitex Protobuf 还是兼容 gRPC 更多的是支持少部分内部用户的需求，所以暂时未开展性能优化，生成代码也是直接使用 Protobuf 官方的二进制（gogo/protobuf 是基于生成代码优化 Protobuf 序列化性能的优秀开源库，但很遗憾该库目前是停止维护状态，所以 Kitex 并未选择 gogo），但鉴于大家强烈的诉求，我们会计划开展 Kitex 对 Protobuf 支持的性能优化。
+* 就开源一个月的反馈看，大家对 Protobuf 的诉求较为强烈。坦诚来说 Kitex 虽然支持多协议，但字节内部 RPC 通信协议是 Thrift，对 Protobuf 无论是 Kitex Protobuf 还是兼容 gRPC 更多的是支持少部分内部用户的需求，所以暂时未开展性能优化，生成代码也是直接使用 Protobuf 官方的二进制（gogo/protobuf 是基于生成代码优化 Protobuf 序列化性能的优秀开源库，但很遗憾该库目前是停止维护状态，所以 Kitex 并未选择 gogo），但鉴于大家强烈的诉求，我们会计划开展 Kitex 对 Protobuf 支持的性能优化。
 
-欢迎大家向 CloudWeGo 提交 issue 和 PR 共建 CloudWeGo，我们诚心期待更多的开发者加入，也期待 CloudWeGo 助力越来越多的企业快速构建云原生架构。如果企业客户想内部试用，我们可以排期提供专项技术支持和交流，欢迎入群咨询。
+* 欢迎大家向 CloudWeGo 提交 issue 和 PR 共建 CloudWeGo，我们诚心期待更多的开发者加入，也期待 CloudWeGo 助力越来越多的企业快速构建云原生架构。如果企业客户想内部试用，我们可以排期提供专项技术支持和交流，欢迎入群咨询。
 
 
 ![!image](/img/blog/LarkGroup.png)
