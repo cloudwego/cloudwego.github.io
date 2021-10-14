@@ -11,12 +11,12 @@ description: >
 
 - 默认支持 TCP_NODELAY。
 - 支持在一个循环中读写。
-- 返回 nocopy rw 的实误差。
+- 返回 nocopy rw 的真实报错。
 - 更改了循环策略的默认数量。
-- 从新定义了 EventLoop.Serve arg: Listener -> net.Listener。
+- 重新定义了 EventLoop.Serve arg: Listener -> net.Listener。
 - 在 DisableGopool 中增加了API。
-- 取消了读取锁定。
-- 禁用了 conn flush API。
+- 删除了读锁。
+- 连接 Flush API 调整为阻塞（同步）的。
 
 ## Bug 修复:
 
