@@ -13,7 +13,7 @@ description: >
 
 ## Bug 修复:
 
-- 复用 RPCInfo 不对 stats level 归零， 以修复在使用 netpollmux 时 metric 丢失问题。
+- 复用 RPCInfo 不对 stats level 重置， 以修复在使用 netpollmux 时 metric 丢失问题。
 - 清理不存在节点的连接池。
 - Streaming 中增加 Netpoll EOF 错误判断来清除冗余的 warning 日志。
 - 修改熔断错误统计类型，非 Ignorable 错误类型均做熔断统计，以修复开源版本熔断无法正确生效和内部版本在开启mesh后重试熔断无法生效问题。

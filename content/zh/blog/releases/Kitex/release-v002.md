@@ -9,7 +9,7 @@ description: >
 
 ## 优化：
 
-- Kitex 已经禁用了所有的 stats 以优化在没有 tracer 时的性能表现。
+- Kitex 在没有 tracer 时关闭 stats 分阶段耗时采集，避免无 Trace 时额外的性能消耗。
 - Kitex client 默认使用连接池。
 
 ## Bug 修复:
