@@ -7,4 +7,4 @@ description: >
   
 ---
 
-Kitex 项目启动。
+Kitex 项目初始化。

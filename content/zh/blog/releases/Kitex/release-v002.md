@@ -10,17 +10,17 @@ description: >
 ## 优化：
 
 - Kitex 已经禁用了所有的 stats 以优化在没有 tracer 时的性能表现。
-- Kitex client 默认连接复用。
+- Kitex client 默认使用连接池。
 
 ## Bug 修复:
 
 - 修复了一个 lbcache 中 nil-pointer 的错误。
-- 修复了一个 retry 重试（备份请求）中的数据竟态问题。
+- 修复了一个 retry 重试（Backup Request）中的 data race 问题。
 
 
 ## 工具:
 
-- Kitex 工具不再生成默认配置文件
+- Kitex 工具去掉默认生成的配置文件。
 - Kitex 工具现在使用最新的 thriftgo API 以避免老版 API 在生成代码时的几个边角案例。
 - Kitex 工具现在会检查代码中是否包含 go 命令，不再假设它的存在。感谢 @anqiansong 的贡献。
 
