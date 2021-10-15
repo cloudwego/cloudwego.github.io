@@ -1,12 +1,11 @@
 ---
-title: "Kitex Release v0.0.3"
+title: "Kitex v0.0.3 版本发布"
 linkTitle: "Release v0.0.3"
 date: 2021-08-01
 weight: 3
 description: >
   
 ---
+## Bug 修复:
 
-## Bugfix:
-
-- Prevent connection pool from being overridden.
+- 防止连接池被覆盖。
