@@ -1,7 +1,7 @@
 ---
 date: 2021-09-23
-title: "字节跳动 Go RPC 框架 KiteX 性能优化实践"
-linkTitle: "字节跳动 Go RPC 框架 KiteX 性能优化实践"
+title: "字节跳动 Go RPC 框架 Kitex 性能优化实践"
+linkTitle: "字节跳动 Go RPC 框架 Kitex 性能优化实践"
 weight: 2
 description: >
 author: 字节跳动基础架构团队
@@ -9,9 +9,9 @@ author: 字节跳动基础架构团队
 
 ## 前言
 
-KiteX 是字节跳动框架组研发的下一代高性能、强可扩展性的 Go RPC 框架。除具备丰富的服务治理特性外，相比其他框架还有以下特点：集成了自研的网络库 Netpoll；支持多消息协议（Thrift、Protobuf）和多交互方式（Ping-Pong、Oneway、 Streaming）；提供了更加灵活可扩展的代码生成器。
+Kitex 是字节跳动框架组研发的下一代高性能、强可扩展性的 Go RPC 框架。除具备丰富的服务治理特性外，相比其他框架还有以下特点：集成了自研的网络库 Netpoll；支持多消息协议（Thrift、Protobuf）和多交互方式（Ping-Pong、Oneway、 Streaming）；提供了更加灵活可扩展的代码生成器。
 
-目前公司内主要业务线都已经大范围使用 KiteX，据统计当前接入服务数量多达 8k。KiteX 推出后，我们一直在不断地优化性能，本文将分享我们在 Netpoll 和 序列化方面的优化工作。
+目前公司内主要业务线都已经大范围使用 Kitex，据统计当前接入服务数量多达 8k。Kitex 推出后，我们一直在不断地优化性能，本文将分享我们在 Netpoll 和 序列化方面的优化工作。
 
 ## 自研网络库 Netpoll 优化
 
@@ -170,7 +170,7 @@ Cap'n Proto 直接操作 buffer，也是减少了内存分配和内存拷贝（�
 
 无论是序列化还是反序列化，都是从一块内存拷贝数据到另一块内存，这就涉及到内存分配和内存拷贝操作，尽量避免内存操作可以减少不必要的系统调用、锁和 GC 等开销。
 
-事实上 KiteX 已经提供了 LinkBuffer 用于 buffer 的管理，LinkBuffer 设计上采用链式结构，由多个 block 组成，其中 block 是大小固定的内存块，构建对象池维护空闲 block，由此复用 block，减少内存占用和 GC。
+事实上 Kitex 已经提供了 LinkBuffer 用于 buffer 的管理，LinkBuffer 设计上采用链式结构，由多个 block 组成，其中 block 是大小固定的内存块，构建对象池维护空闲 block，由此复用 block，减少内存占用和 GC。
 
 刚开始我们简单地采用 sync.Pool 来复用 netpoll 的 LinkBufferNode，但是这样仍然无法解决对于大包场景下的内存复用（大的 Node 不能回收，否则会导致内存泄漏）。目前我们改成了维护一组 sync.Pool，每组中的 buffer size 都不同，新建 block 时根据最接近所需 size 的 pool 中去获取，这样可以尽可能复用内存，从测试来看内存分配和 GC 优化效果明显。
 
@@ -491,7 +491,7 @@ Cap'n Proto 作为无拷贝序列化的标杆，那么我们就看看 Cap'n Prot
 
 ## 后记
 
-希望以上的分享能够对社区有所帮助。同时，我们也在尝试 share memory-based IPC、io_uring、tcp zero copy 、RDMA 等，更好地提升 KiteX 性能；重点优化同机、同容器的通讯场景。欢迎各位感兴趣的同学加入我们，共同建设 Go 语言生态！
+希望以上的分享能够对社区有所帮助。同时，我们也在尝试 share memory-based IPC、io_uring、tcp zero copy 、RDMA 等，更好地提升 Kitex 性能；重点优化同机、同容器的通讯场景。欢迎各位感兴趣的同学加入我们，共同建设 Go 语言生态！
 
 ## 参考资料
 
