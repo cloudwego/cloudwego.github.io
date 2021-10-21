@@ -25,7 +25,7 @@ author: 字节跳动基础架构团队
 ### Reactor - 事件监听和调度核心 
 netpoll 核心是 Reactor 事件监听调度器，主要功能为使用 epoll 监听连接的文件描述符（fd），通过回调机制触发连接上的 读、写、关闭 三种事件。  
 <br/>
-![image](https://raw.githubusercontent.com/cloudwego/cloudwego.github.io/blog/news/new_post/static/img/blog/bytedance_gonet_practice_img/reactor.png)
+![image](/img/blog/bytedance_gonet_practice_img/reactor.png)
 
 ### Server - 主从 Reactor 实现 
 
@@ -36,12 +36,12 @@ netpoll 将 Reactor 以 1:N 的形式组合成主从模式。
 3. netpoll 在 I/O Task 中引入了主动的内存管理，向上层提供 NoCopy 的调用接口，由此支持 NoCopy RPC。
 4. 使用协程池集中处理 I/O Task，减少 goroutine 数量和调度开销。  
 <br/>
-![image](https://raw.githubusercontent.com/cloudwego/cloudwego.github.io/blog/news/new_post/static/img/blog/bytedance_gonet_practice_img/server_reactor.png)
+![image](/img/blog/bytedance_gonet_practice_img/server_reactor.png)
 
 ### Client - 共享 Reactor 能力 
 client 端和 server 端共享 SubReactor，netpoll 同样实现了 dialer，提供创建连接的能力。client 端使用上和 net.Conn 相似，netpoll 提供了 write -> wait read callback 的底层支持。  
 <br/>
-![image](https://raw.githubusercontent.com/cloudwego/cloudwego.github.io/blog/news/new_post/static/img/blog/bytedance_gonet_practice_img/client_reactor.png)
+![image](/img/blog/bytedance_gonet_practice_img/client_reactor.png)
 
 ## Nocopy Buffer
 ### 为什么需要 Nocopy Buffer ?
@@ -58,7 +58,7 @@ client 端和 server 端共享 SubReactor，netpoll 同样实现了 dialer，提
 ### Nocopy Buffer 设计和优势
 Nocopy Buffer 基于链表数组实现，如下图所示，我们将 []byte 数组抽象为 block，并以链表拼接的形式将 block 组合为 Nocopy Buffer，同时引入了引用计数、nocopy API 和对象池。  
 <br/> 
-![image](https://raw.githubusercontent.com/cloudwego/cloudwego.github.io/blog/news/new_post/static/img/blog/bytedance_gonet_practice_img/buffer.png)  
+![image](/img/blog/bytedance_gonet_practice_img/buffer.png)  
 <br/>
 Nocopy Buffer 相比常见的 bytes、bufio、ringbuffer 等有以下优势：
 
@@ -81,7 +81,7 @@ RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定�
 
 基于 netpoll 的连接多路复用设计如下图所示，我们将 Nocopy Buffer(及其分片) 抽象为虚拟连接，使得上层代码保持同 net.Conn 相同的调用体验。与此同时，在底层代码上通过协议分包将真实连接上的数据灵活的分配到虚拟连接上；或通过协议编码合并发送虚拟连接数据。  
 <br/>
-![image](https://raw.githubusercontent.com/cloudwego/cloudwego.github.io/blog/news/new_post/static/img/blog/bytedance_gonet_practice_img/client_server.png)    
+![image](/img/blog/bytedance_gonet_practice_img/client_server.png)    
 <br/>
 连接多路复用方案包含以下核心要素：
 
@@ -100,11 +100,11 @@ RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定�
 
 ## ZeroCopy 
 这里所说的 ZeroCopy，指的是 Linux 所提供的 ZeroCopy 的能力。上一章中我们说了业务层的零拷贝，而众所周知，当我们调用 sendmsg 系统调用发包的时候，实际上仍然是会产生一次数据的拷贝的，并且在大包场景下这个拷贝的消耗非常明显。以 100M 为例，perf 可以看到如下结果：  <br/>  
-![image](https://raw.githubusercontent.com/cloudwego/cloudwego.github.io/blog/news/new_post/static/img/blog/bytedance_gonet_practice_img/perf.png)  
+![image](/img/blog/bytedance_gonet_practice_img/perf.png)  
 <br/>
 这还仅仅是普通 tcp 发包的占用，在我们的场景下，大部分服务都会接入 Service Mesh，所以在一次发包中，一共会有 3 次拷贝：业务进程到内核、内核到 sidecar、sidecar 再到内核。这使得有大包需求的业务，拷贝所导致的 cpu 占用会特别明显，如下图：  
 <br/>
-![image](https://raw.githubusercontent.com/cloudwego/cloudwego.github.io/blog/news/new_post/static/img/blog/bytedance_gonet_practice_img/cpu.png)  
+![image](/img/blog/bytedance_gonet_practice_img/cpu.png)  
 <br/>
 为了解决这个问题，我们选择了使用 Linux 提供的 ZeroCopy API（在 4.14 以后支持 send；5.4 以后支持 receive）。但是这引入了一个额外的工程问题：ZeroCopy send API 和原先调用方式不兼容，无法很好地共存。这里简单介绍一下 ZeroCopy send 的工作方式：业务进程调用 sendmsg 之后，sendmsg 会记录下 iovec 的地址并立即返回，这时候业务进程不能释放这段内存，需要通过 epoll 等待内核回调一个信号表明某段 iovec 已经发送成功之后才能释放。由于我们并不希望更改业务方的使用方法，需要对上层提供同步收发的接口，所以很难基于现有的 API 同时提供 ZeroCopy 和非 ZeroCopy 的抽象；而由于 ZeroCopy 在小包场景下是有性能损耗的，所以也不能将这个作为默认的选项。
 
@@ -112,14 +112,14 @@ RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定�
 
 在使用了 ZeroCopy send 后，perf 可以看到内核不再有 copy 的占用：  
 <br/>
-![image](https://raw.githubusercontent.com/cloudwego/cloudwego.github.io/blog/news/new_post/static/img/blog/bytedance_gonet_practice_img/perf2.png)  
+![image](/img/blog/bytedance_gonet_practice_img/perf2.png)  
 <br/>
 从 cpu 占用数值上看，大包场景下 ZeroCopy 能够比非 ZeroCopy 节省一半的 cpu。 
 
 ## Go 调度导致的延迟问题分享 
 在我们实践过程中，发现我们新写的 netpoll 虽然在 avg 延迟上表现胜于 Go 原生的 net 库，但是在 p99 和 max 延迟上要普遍略高于 Go 原生的 net 库，并且尖刺也会更加明显，如下图（Go 1.13，蓝色为 netpoll + 多路复用，绿色为 netpoll + 长连接，黄色为 net 库 + 长连接）：  
 <br/>
-![image](https://raw.githubusercontent.com/cloudwego/cloudwego.github.io/blog/news/new_post/static/img/blog/bytedance_gonet_practice_img/delay.png)  
+![image](/img/blog/bytedance_gonet_practice_img/delay.png)  
 <br/>
 我们尝试了很多种办法去优化，但是收效甚微。最终，我们定位出这个延迟并非是由于 netpoll 本身的开销导致的，而是由于 go 的调度导致的，比如说：
 1. 由于在 netpoll 中，SubReactor 本身也是一个 goroutine，受调度影响，不能保证 EpollWait 回调之后马上执行，所以这一块会有延迟；
