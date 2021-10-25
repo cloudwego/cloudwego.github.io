@@ -2,7 +2,6 @@
 title: "Kitex v0.0.2 版本发布"
 linkTitle: "Release v0.0.2"
 date: 2021-07-30
-weight: 2
 description: >
   
 ---
