@@ -47,7 +47,7 @@ TransServer 是服务端的启动接口，ServerTransHandler  和 ClientTransHan
 
 如下是 Kitex 对 Netpoll 同步 IO 的扩展，分别实现了Extension、ByteBuffer、TransServer 接口。
 
-![netpoll_extension](../../images/netpoll_extension.png)
+![netpoll_extension](/img/docs/netpoll_extension.png)
 
 ## 指定自定义的传输模块
 
