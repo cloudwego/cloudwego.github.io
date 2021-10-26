@@ -17,10 +17,8 @@ Kitex 提供了熔断器的实现，但是没有默认开启，需要用户主�
 // build a new CBSuite
 cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
 
-// add service circuit breaker with middleware
-opts = append(opts, client.WithMiddleware(cbs.ServiceCBMW()))
-// add instance circuit breaker with instance middleware
-opts = append(opts, client.WithInstanceMW(cbs.InstanceCBMW()))
+// add to the client options
+opts = append(opts, client.WithCircuitBreaker(cbs))
 
 // init client
 cli, err := xxxservice.NewClient(targetService, opts)
@@ -156,4 +154,4 @@ Options 中的 BucketTime 和 BucketNums，就分别对应了每个桶维护的�
 
 如划分 2000 个桶，则抖动对整体的数据的影响最多也就 1/2000； 在该包中，默认的桶个数也是 2000，桶时间为 5ms，总体窗口为 10S；
 
-当时曾想过多种技术办法来避免这种问题，但是都会引入跟多其他的问题，如果你有好的思路，请 issue 或者 PR.
+当时曾想过多种技术办法来避免这种问题，但是都会引入更多其他的问题，如果你有好的思路，请 issue 或者 PR.

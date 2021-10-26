@@ -17,10 +17,8 @@ The following document will introduce that how to enable circuit breaker and con
 // build a new CBSuite
 cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
 
-// add service circuit breaker with middleware
-opts = append(opts, client.WithMiddleware(cbs.ServiceCBMW()))
-// add instance circuit breaker with instance middleware
-opts = append(opts, client.WithInstanceMW(cbs.InstanceCBMW()))
+// add to the client options
+opts = append(opts, client.WithCircuitBreaker(cbs))
 
 // init client
 cli, err := xxxservice.NewClient(targetService, opts)
