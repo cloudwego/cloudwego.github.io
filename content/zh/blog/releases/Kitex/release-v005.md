@@ -34,7 +34,7 @@ description: >
 ## 文档:
 
 - 提供了英文版的README和其他文档。
-- 补充了泛化调用手册： [English](https://www.cloudwego.io/docs/tutorials/advanced-feature/generic_call/) | [中文](https://www.cloudwego.io/zh/docs/tutorials/advanced-features/generic_call/)。
+- 补充了泛化调用手册： [English](https://www.cloudwego.io/docs/tutorials/advanced-feature/generic_call/) | [中文](https://www.cloudwego.io/zh/docs/tutorials/advanced-feature/generic_call/)。
 - README 中增加了 landsapce 和 roadmap。
 
 ## 依赖变化:

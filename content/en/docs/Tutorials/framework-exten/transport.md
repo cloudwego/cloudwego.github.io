@@ -5,7 +5,7 @@ weight: 9
 description: >
 ---
 
-![remote_module](../../images/remote_module.png)
+![remote_module](/img/docs/remote_module.png)
 
 By default, Kitex integrates the self-developed high-performance network library [Netpoll](https://github.com/cloudwego/netpoll). But Kitex is not strongly bound with Netpoll, it also supports users to extend other network libraries and choose one on demand. In addition, Kitex provides ShmIPC to further improve IPC performance, this extension will be open source later.
 
@@ -47,7 +47,7 @@ type ServerTransHandlerFactory interface {
 
 Below figure is Kitex's extension to netpoll synchronous IO, which implements `Extension`, `ByteBuffer`, `TransServer` interfaces.
 
-![netpoll_extension](../../images/netpoll_extension.png)
+![netpoll_extension](/img/docs/netpoll_extension.png)
 
 ## Customized Transport Module Usage
 
