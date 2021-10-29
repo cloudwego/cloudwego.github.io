@@ -416,7 +416,7 @@ if err != nil {
   log.Fatal(err)
 }
 ```
-上述代码中，`echo.NewClient` 用于创建 `client`，其第一个参数为调用的 *服务名*，第二个参数为 *options*，用于传入参数，此处的 `client.WithHostPorts` 用于指定服务端的地址，更多参数可参考 *** 基本特性*** 一节。
+上述代码中，`echo.NewClient` 用于创建 `client`，其第一个参数为调用的 *服务名*，第二个参数为 *options*，用于传入参数，此处的 `client.WithHostPorts` 用于指定服务端的地址，更多参数可参考[基本特性](../tutorials/basic-feature)一节。
 
 #### 发起调用
 
