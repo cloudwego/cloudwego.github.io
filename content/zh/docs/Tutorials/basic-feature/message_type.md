@@ -275,7 +275,7 @@ import (
 }
 
 func main() {
-    cli, err := echoseervice.NewClient("p.s.m")
+    cli, err := echoservice.NewClient("p.s.m")
     if err != nil {
         panic(err)
     }
@@ -304,7 +304,7 @@ import (
 }
 
 func main() {
-    cli, err := echoseervice.NewClient("p.s.m")
+    cli, err := echoservice.NewClient("p.s.m")
     if err != nil {
         panic(err)
     }
@@ -335,7 +335,7 @@ import (
 }
 
 func main() {
-    cli, err := echoseervice.NewClient("p.s.m")
+    cli, err := echoservice.NewClient("p.s.m")
     if err != nil {
         panic(err)
     }
