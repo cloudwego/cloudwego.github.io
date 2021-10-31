@@ -35,6 +35,10 @@ thriftgo x.x.x
 ```
 4. 如果在安装阶段发生问题，可能主要是由于对 Golang 的不当使用造成，请依照报错信息进行检索
 
+### 确定代码放置位置
+1. 若将代码放置于 GOPATH/src 下，需多创建目录，再获取代码： `mkdir -p github.com/cloudwego`
+2. 若将代码放置于 GOPATH 之外，可直接获取
+
 ### 获取示例代码
 
 1. 你可以直接点击 [此处](https://github.com/cloudwego/kitex-examples/archive/refs/heads/main.zip) 下载示例仓库
