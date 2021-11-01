@@ -36,9 +36,11 @@ thriftgo x.x.x
 4. 如果在安装阶段发生问题，可能主要是由于对 Golang 的不当使用造成，请依照报错信息进行检索
 
 ### 确定代码放置位置
-1. 若将代码放置于 $GOPATH/src 下，需在 $GOPATH/src 下创建额外目录，进入该目录后再获取代码： ```shell
+1. 若将代码放置于 `$GOPATH/src` 下，需在 `$GOPATH/src` 下创建额外目录，进入该目录后再获取代码： 
+```shell
 mkdir -p $(go env GOPATH)/src/github.com/cloudwego
 cd $(go env GOPATH)/src/github.com/cloudwego
+```
 2. 若将代码放置于 GOPATH 之外，可直接获取
 
 ### 获取示例代码
