@@ -2,7 +2,6 @@
 date: 2021-09-23
 title: "字节跳动 Go RPC 框架 Kitex 性能优化实践"
 linkTitle: "字节跳动 Go RPC 框架 Kitex 性能优化实践"
-weight: 2
 description: >
 author: 字节跳动基础架构团队
 ---

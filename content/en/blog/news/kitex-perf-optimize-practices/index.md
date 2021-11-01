@@ -2,7 +2,6 @@
 date: 2021-09-23
 title: "Performance Optimization on Kitex"
 linkTitle: "Performance Optimization on Kitex"
-weight: 2
 description: >
 author: ByteDance Architecture Team
 ---
