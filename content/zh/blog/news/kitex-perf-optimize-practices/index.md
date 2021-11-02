@@ -209,13 +209,13 @@ func StringToSliceByte(s string) []byte {
 
    - 上面的优化只能针对容器元素类型为基本类型的有效，那么对于元素类型为 struct 的是否也能优化呢？答案是肯定的。
 
- - 沿用上面的思路，假如 struct 中如果存在基本类型的 field，也可以预先计算出这些 field 的大小，在序列化时为这些 field 提前分配 buffer，写的时候也把这些 field 顺序统一放到前面写，这样也能在一定程度上减少 malloc 的次数。
+   - 沿用上面的思路，假如 struct 中如果存在基本类型的 field，也可以预先计算出这些 field 的大小，在序列化时为这些 field 提前分配 buffer，写的时候也把这些 field 顺序统一放到前面写，这样也能在一定程度上减少 malloc 的次数。
 
 - 一次性计算
 
    - 上面提到的是基本类型的优化，如果在序列化时，先遍历一遍 request 所有 field，便可以计算得到整个 request 的大小，提前分配好 buffer，在序列化和反序列时直接操作 buffer，这样对于非基本类型也能有优化效果。
 
->  定义新的 codec 接口：
+- 定义新的 codec 接口：
 
 ```go
 type thriftMsgFastCodec interface {
@@ -225,7 +225,7 @@ type thriftMsgFastCodec interface {
 }
 ```
 
-> 在 Marshal 和 Unmarshal 接口中做相应改造：
+- 在 Marshal 和 Unmarshal 接口中做相应改造：
 
 ```go
 func (c thriftCodec) Marshal(ctx context.Context, message remote.Message, out remote.ByteBuffer) error {
@@ -269,7 +269,7 @@ if msg, ok := data.(thriftMsgFastCodec); ok && message.PayloadLen() != 0 {
 }
 ```
 
-> 生成代码中也做相应改造：
+- 生成代码中也做相应改造：
 
 ```go
 func (p *Demo) BLength() int {
