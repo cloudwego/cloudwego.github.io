@@ -2,7 +2,6 @@
 date: 2021-09-23
 title: "Performance Optimization on Kitex"
 linkTitle: "Performance Optimization on Kitex"
-weight: 2
 description: >
 author: ByteDance Architecture Team
 ---
@@ -413,4 +412,4 @@ Hope the above sharing can be helpful to the community. At the same time, we are
 ## Reference
 - https://github.com/alecthomas/go_serialization_benchmarks
 - https://capnproto.org/
-- https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-2/intrinsics-for-shuffle-operations-1/mm256-shuffle-epi8.html
+- [Intel C++ Compiler Classic Developer Guide and Reference](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-2/intrinsics-for-shuffle-operations-1/mm256-shuffle-epi8.html)
