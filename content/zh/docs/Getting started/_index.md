@@ -309,8 +309,6 @@ service Echo {
 ```
 .
 |-- build.sh
-|-- conf
-|   `-- kitex.yml
 |-- echo.thrift
 |-- handler.go
 |-- kitex_gen
