@@ -41,7 +41,7 @@ struct Response {
 
 service EchoService {
     Response Echo(1: Request req); // pingpong method
-    oneway void Echo(1: Request req); // oneway method
+    oneway void Echo1(1: Request req); // oneway method
 }
 ```
 

@@ -110,8 +110,6 @@ Then in an empty directory, `kitex -service demo dem.thrift` produces a skeleton
 ```
 .
 ├── build.sh                     // A script to build a server. It creates necessary files and puts them into a folder named 'output'.
-├── conf                         // The directory for config files. Will be copied to output/conf by build.sh.
-│   └── kitex.yml                // The default config file.
 ├── handler.go                   // Implementation of methods of the service defined in the IDL.
 ├── kitex_gen                    // IDL relevant generated codes.
 │   ├── base                     // Code generated for base.thrift.

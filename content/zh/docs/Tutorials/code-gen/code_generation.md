@@ -111,8 +111,6 @@ kitex -service service_name path_to_your_idl.thrift
 ```
 .
 ├── build.sh                     // 服务的构建脚本，会创建一个名为 output 的目录并生成启动服务所需的文件到里面
-├── conf                         // 配置文件的目录，该目录下的文件会被 build.sh 拷贝到 output/conf 下
-│   └── kitex.yml                // 默认的配置文件
 ├── handler.go                   // 用户在该文件里实现 IDL service 定义的方法
 ├── kitex_gen                    // IDL 内容相关的生成代码
 │   ├── base                     // base.thrift 的生成代码
