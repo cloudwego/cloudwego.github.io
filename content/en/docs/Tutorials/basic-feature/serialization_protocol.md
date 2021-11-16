@@ -12,7 +12,7 @@ Kitex support had support two serialization protocol: Thrift and Protobuf.
 
 Kitex only support Thrift [Binary](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md) protocol codec, [Compact](https://github.com/apache/thrift/blob/master/doc/specs/thrift-compact-protocol.md) currently is not supported.
 
-If you want using thrift protocol encoding, should generate codes by kitex cmd:
+If you are using thrift protocol encoding, codes should be generate by kitex cmd:
 
 Client side：
 
@@ -32,7 +32,7 @@ We have optimized Thrift's Binary protocol codec. For details of the optimizatio
 
 ### Protocol Type
 
-There are two types suporting of protobuf:
+Kitex supports two types of protocol for protobuf:
 
 1. **Custom message protocol**: it's been considered as kitex protobuf, the way of generated code is consistent with Thrift.
 2. **gRPC protocol**: it can communication with grpc directly, and support streaming.

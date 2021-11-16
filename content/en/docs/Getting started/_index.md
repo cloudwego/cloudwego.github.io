@@ -128,7 +128,12 @@ When you complete it, `hello.thrift` should be just like above.
 
 Run below command, then `kitex` compiler will recompile `hello.thrift` and update generated code.
 
-`kitex -service a.b.c hello.thrift`
+```bash
+kitex -service a.b.c hello.thrift
+
+# If the current directory is not under $GOPATH/src, you need to add the -module parameter which usually is same as the module name in go.mod
+kitex -module "your_module_name" -service a.b.c hello.thrift
+```
 
 After you run the above command, `kitex` compiler will update these files:
 
@@ -205,7 +210,8 @@ Shutdown server and client we have run, then:
 
 `go run .`
 
-1. run client
+<br/>
+2. run client
 
 open another terminal, and `go run ./client`
 
@@ -245,10 +251,9 @@ enter directory
 
 You can use following command to install and upgrade `kitex`:
 
-`$ go get github.com/cloudwego/kitex/tool/cmd/kitex`
+`$ go install github.com/cloudwego/kitex/tool/cmd/kitex`
 
-After that, you can just run it to check whether it's installed successfully.
-完成后，可以通过执行kitex来检测是否安装成功。   
+After that, you can just run it to check whether it's installed successfully.  
 
 `$ kitex`   
 
@@ -320,7 +325,7 @@ Generated project layout:
 
 Kitex expect project to use go module as dependency manager. It cloud be easy to upgrade Kitex:
 ```
-$ go get github.com/cloudwego/kitex
+$ go get github.com/cloudwego/kitex@latest
 $ go mod tidy
 ```
 

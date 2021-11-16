@@ -72,7 +72,7 @@ xxxCli := xxxservice.NewClient("destServiceName", client.WithLongConnection(conn
 
 ## 连接多路复用
 
-开启连接多路复用，Client 访问 Server 常规**1个连接**即可，相比连接池极限测试吞吐表现更好（目前的极限测试配置了2个连接），且能大大减少连接数量。
+开启连接多路复用，Client 访问 Server 常规只需要**1个连接**即可，相比连接池极限测试吞吐表现更好（目前的极限测试配置了2个连接），且能大大减少连接数量。
 
 特别说明：
 

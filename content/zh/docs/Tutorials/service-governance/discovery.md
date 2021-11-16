@@ -12,7 +12,7 @@ description: >
 
 ```go
 import (
-    "github.com/kitex-contrib/dns-resolver"
+    "github.com/kitex-contrib/resolver-dns"
     kClient "github.com/cloudwego/kitex/client"
 )
 

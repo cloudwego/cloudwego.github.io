@@ -29,8 +29,8 @@ Application scenario: mid-platform services can forward the received original Th
      "github.com/cloudwego/kitex/client/genericclient"
      "github.com/cloudwego/kitex/pkg/generic"
   )
-  func NewGenericClient(psm string) genericclient.Client {
-      genericCli := genericclient.NewClient(psm, generic.BinaryThriftGeneric())
+  func NewGenericClient(destServiceName string) genericclient.Client {
+      genericCli := genericclient.NewClient(destServiceName, generic.BinaryThriftGeneric())
       return genericCli
   }
   ```
@@ -167,7 +167,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    cli, err := genericclient.NewClient("psm", g, opts...)
+    cli, err := genericclient.NewClient("destServiceName", g, opts...)
     if err != nil {
         panic(err)
     }
@@ -422,7 +422,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    cli, err := genericclient.NewClient("psm", g, opts...)
+    cli, err := genericclient.NewClient("destServiceName", g, opts...)
     if err != nil {
         panic(err)
     }
@@ -713,7 +713,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 ## IDLProvider
 
-Generic Call of HTTP/Map mapping does not require generated code, but requires IDL which need users to provide.
+Generic Call of HTTP/Map/JSON mapping does not require generated code, but requires IDL which need users to provide.
 
 At present, Kitex has two IDLProvider implementations. Users can choose to specify the IDL path or pass in IDL content. Of course, you can also expand the `generic.DescriptorProvider` according to your needs.
 
