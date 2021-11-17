@@ -1,6 +1,6 @@
 ---
 title: "Service Discovery"
-date: 2021-08-31
+date: 2021-11-15
 weight: 1
 description: >
 ---
@@ -15,12 +15,20 @@ Extended repository: [Extended Repository](https://github.com/kitex-contrib)
 
 ```go
 import (
-    "github.com/kitex-contrib/resolver-dns"
-    kClient "github.com/cloudwego/kitex/client"
+
+    ...
+    dns "github.com/kitex-contrib/resolver-dns"
+    "github.com/cloudwego/kitex/client"
+    ...
+
 )
 
-...
-    // init client with dns resolver
-	client, _ := testClient.NewClient("DestServiceName", kClient.WithResolver(dns.NewDNSResolver()))
-...
+func main() {
+    ...
+    client, err := echo.NewClient("echo", client.WithResolver(dns.NewDNSResolver()))
+	if err != nil {
+		log.Fatal(err)
+	}
+    ...
+}
 ```
