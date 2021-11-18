@@ -12,7 +12,7 @@ git submodule update --init --recursive --depth 1
 
 ## Documentation
 
-making sure you have installed all the prerequisites listed above, and you can setup by:
+making sure you have installed all the prerequisites listed above, and you can setup by: 
 
 ```sh
 docker-compose up
