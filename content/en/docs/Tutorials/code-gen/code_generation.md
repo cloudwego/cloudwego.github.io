@@ -10,7 +10,7 @@ description: >
 ## Installation
 
 ```
-go get github.com/cloudwego/kitex/tool/cmd/kitex
+go install github.com/cloudwego/kitex/tool/cmd/kitex
 ```
 
 You can use the go command to install kitex or build and install it from source. To check where kitex will be installed, try
@@ -131,7 +131,7 @@ If the `-service` flag is not specified, then only kitex_gen will be generated.
 
 ### Options
 
-The option decription here may be outdated. Run `kitex -h` or `kitex --help` to get all usable options of kitex.
+The option description here may be outdated. Run `kitex -h` or `kitex --help` to get all usable options of kitex.
 
 #### `-service service_name`
 
@@ -181,4 +181,4 @@ Pass an argument to protoc. The argument will be appended to the `-go_out` for p
 
 Pass an argument to thriftgo. The argument will be appended to the `-g go:` for thriftgo. See the documentation of thriftgo for available values.
 
-Kitex by default passes `naming_style=golint,ignore_initialisms,gen_setter,gen_deep_equal` to thriftgo and it can be overrided if you specify the same parameter in addition.
+Kitex by default passes `naming_style=golint,ignore_initialisms,gen_setter,gen_deep_equal` to thriftgo and it can be overridden if you specify the same parameter in addition.

@@ -137,7 +137,12 @@ service Hello {
 
 运行如下命令后，`kitex` 工具将根据 `hello.thrift` 更新代码文件。
 
-`kitex -service a.b.c hello.thrift`
+```bash
+kitex -service a.b.c hello.thrift
+
+# 若当前目录不在 $GOPATH/src 下，需要加上 -module 参数，一般为 go.mod 下的名字
+kitex -module "your_module_name" -service a.b.c hello.thrift
+```
 
 执行完上述命令后，`kitex` 工具将更新下述文件
 
@@ -256,7 +261,7 @@ Kitex 自带了一个同名的命令行工具 `kitex`，用来帮助大家很方
 
 可以使用以下命令来安装或者更新 kitex：   
 
-`$ go get github.com/cloudwego/kitex/tool/cmd/kitex`
+`$ go install github.com/cloudwego/kitex/tool/cmd/kitex`
 
 完成后，可以通过执行 kitex 来检测是否安装成功。   
 
@@ -330,7 +335,7 @@ service Echo {
 
 由于 kitex 要求使用 go mod 进行依赖管理，所以我们要升级 kitex 框架会很容易，只需要执行以下命令即可：
 ```
-$ go get github.com/cloudwego/kitex
+$ go get github.com/cloudwego/kitex@latest
 $ go mod tidy
 ```
 

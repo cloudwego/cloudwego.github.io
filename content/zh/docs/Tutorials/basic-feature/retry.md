@@ -57,7 +57,7 @@ description: >
 // import "github.com/cloudwego/kitex/pkg/retry"
 fp := retry.NewFailurePolicy()
 fp.WithMaxRetryTimes(3) // 配置最多重试3次
-xxxCli := xxxservice.NewClient("psm", client.WithFailureRetry(fp))
+xxxCli := xxxservice.NewClient("destServiceName", client.WithFailureRetry(fp))
 ```
 
 - 策略选择：
@@ -97,7 +97,7 @@ fp.WithRetrySameNode()
 ```go
 // 首次请求 xxx ms未返回，发起 backup 请求，并开启链路中止
 bp := retry.NewBackupPolicy(xxx)
-xxxCli := xxxservice.NewClient("psm", client.WithBackupRequest(bp))
+xxxCli := xxxservice.NewClient("destServiceName", client.WithBackupRequest(bp))
 ```
 - 策略选择：
 ```go

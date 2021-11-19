@@ -15,10 +15,12 @@ Extended repository: [Extended Repository](https://github.com/kitex-contrib)
 
 ```go
 import (
+
     ...
     dns "github.com/kitex-contrib/resolver-dns"
     "github.com/cloudwego/kitex/client"
     ...
+
 )
 
 func main() {
