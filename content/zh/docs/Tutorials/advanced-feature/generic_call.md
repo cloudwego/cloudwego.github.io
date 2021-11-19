@@ -37,7 +37,7 @@ description: >
 
 - 泛化调用
 
-  若自行编码，需要使用 Thrift 编码格式 [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)。注意，二进制编码不是对原始的 Thrift 请求参数编码，是 method 参数封装的 **XXXArgs**。可以参考 github.com/cloudwego/kitex/generic/generic_test.go。
+  若自行编码，需要使用 Thrift 编码格式 [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)。注意，二进制编码不是对原始的 Thrift 请求参数编码，是 method 参数封装的 **XXXArgs**。可以参考 [generic/binary_test/generic_test.go](https://github.com/cloudwego/kitex/blob/develop/pkg/generic/binary_test/generic_test.go#L161-L174)。
 
   Kitex 提供了 thrift 编解码包`github.com/cloudwego/kitex/pkg/utils.NewThriftMessageCodec`。
 
