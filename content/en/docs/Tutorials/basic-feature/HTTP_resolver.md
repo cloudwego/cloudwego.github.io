@@ -7,7 +7,7 @@ description: >
 
 ## Specify RPC URL
 
-You can use `callopt.WithURL` to specify a URL, which will be resolved by default DNS resolver to get host and port. It's functionally equal to `callopt.WithHostPort`。
+You can use `callopt.WithURL` to specify a URL, which will be resolved by default DNS resolver to get host and port. It's functionally equal to `callopt.WithHostPort`.
 
 ```go
 import "github.com/cloudwego/kitex/client/callopt"

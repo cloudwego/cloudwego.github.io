@@ -5,7 +5,6 @@ weight: 7
 description: >
 ---
 
-# 日志
 
 ## pkg/klog
 

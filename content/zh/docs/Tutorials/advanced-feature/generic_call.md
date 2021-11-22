@@ -29,15 +29,15 @@ description: >
      "github.com/cloudwego/kitex/client/genericclient"
      "github.com/cloudwego/kitex/pkg/generic"
   )
-  func NewGenericClient(psm string) genericclient.Client {
-      genericCli := genericclient.NewClient(psm, generic.BinaryThriftGeneric())
+  func NewGenericClient(destServiceName string) genericclient.Client {
+      genericCli := genericclient.NewClient(destServiceName, generic.BinaryThriftGeneric())
       return genericCli
   }
   ```
 
 - 泛化调用
 
-  若自行编码，需要使用 Thrift 编码格式 [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)。注意，二进制编码不是对原始的 Thrift 请求参数编码，是 method 参数封装的 **XXXArgs**。可以参考 [generic/binary_test/generic_test.go](https://github.com/cloudwego/kitex/blob/develop/pkg/generic/binary_test/generic_test.go#L161-L174)。
+  若自行编码，需要使用 Thrift 编码格式 [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)。注意，二进制编码不是对原始的 Thrift 请求参数编码，是 method 参数封装的 **XXXArgs**。可以参考 github.com/cloudwego/kitex/generic/generic_test.go。
 
   Kitex 提供了 thrift 编解码包`github.com/cloudwego/kitex/pkg/utils.NewThriftMessageCodec`。
 
@@ -168,7 +168,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    cli, err := genericclient.NewClient("psm", g, opts...)
+    cli, err := genericclient.NewClient("destServiceName", g, opts...)
     if err != nil {
         panic(err)
     }
@@ -426,7 +426,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    cli, err := genericclient.NewClient("psm", g, opts...)
+    cli, err := genericclient.NewClient("destServiceName", g, opts...)
     if err != nil {
         panic(err)
     }
@@ -652,7 +652,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    cli, err := genericclient.NewClient("psm", g, opts...)
+    cli, err := genericclient.NewClient("destServiceName", g, opts...)
     if err != nil {
         panic(err)
     }
@@ -717,7 +717,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 ## IDLProvider
 
-HTTP/Map 映射的泛化调用虽然不需要生成代码，但需要使用者提供 IDL。
+HTTP/Map/JSON 映射的泛化调用虽然不需要生成代码，但需要使用者提供 IDL。
 
 目前 Kitex 有两种 IDLProvider 实现，使用者可以选择指定 IDL 路径，也可以选择传入 IDL 内容。当然也可以根据需求自行扩展 `generci.DescriptorProvider`。
 
