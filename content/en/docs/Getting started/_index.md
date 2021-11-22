@@ -206,16 +206,15 @@ for {
 
 Shutdown server and client we have run, then:
 
-1.run server
+1. run server
 
-`go run .`
+        `go run .`  
 
-<br/>
 2. run client
 
-open another terminal, and `go run ./client`
+        open another terminal, and `go run ./client`
 
-Now, you can see outputs of `add` RPC.
+        Now, you can see outputs of `add` RPC.
 
 ## Tutorial
 
