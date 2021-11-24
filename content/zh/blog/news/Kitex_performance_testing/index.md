@@ -3,6 +3,7 @@ date: 2021-11-24
 title: "RPC 框架 Kitex 实践入门：性能测试指南"
 linkTitle: "RPC 框架 Kitex 实践入门：性能测试指南"
 description: >
+author: 字节跳动基础架构团队
 ---
 
 > 2021 年 9 月 8 日，字节跳动宣布正式开源 CloudWeGo。CloudWeGo 是一套字节跳动内部微服务中间件集合，具备高性能、强扩展性和稳定性的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。CloudWeGo 第一批开源了四个项目：Kitex、Netpoll、Thriftgo 和 netpoll-http2，以 RPC 框架 Kitex 和网络库 Netpoll 为主。
