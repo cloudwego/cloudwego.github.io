@@ -34,7 +34,7 @@ Kitex 诞生于字节跳动大规模微服务架构实践，面向的场景自�
 
 衡量一个 RPC 框架的性能需要从两个视角分别去思考：Client 视角与 Server 视角。在大规模的业务架构中，上游 Client 不见得使用的也是下游的框架，而开发者调用的下游服务也同样如此，如果再考虑到 Service Mesh 的情况就更复杂了。
 
-一些压测项目通常会把 Client 和 Server 进程混部进行压测，然后得出整个框架的性能数据，这其实和线上实际运行情况很可能是不符的。
+一些压测项目通常会把 Client 和 Server 进程混部进行压测，然后得出**整个框架**的性能数据，这其实和线上实际运行情况很可能是不符的。
 
 如果要压测 Server，应该给 Client 尽可能多的资源，把 Server 压到极限，反之亦然。如果 Client 和 Server 都只给了 4 核 CPU 进行压测，会导致开发者无法判断最终得出来的性能数据是哪个视角下的，更无法给线上服务做实际的参考。  
 
@@ -55,7 +55,7 @@ Kitex 最早为保证最大程度的兼容性，在 Client 端默认使用了短
 
 对于 RPC 框架来说，不考虑服务治理的话，计算开销主要都集中在序列化与反序列化中。
 
-Kitex 对于 Protobuf 的序列化使用的是官方的 [Protobuf](https://github.com/golang/protobuf) 库，对于 Thrift 的序列化，则专门进行了性能优化，这方面的内容在官网博客中有介绍。
+Kitex 对于 Protobuf 的序列化使用的是官方的 [Protobuf](https://github.com/golang/protobuf) 库，对于 Thrift 的序列化，则专门进行了性能优化，这方面的内容在[官网博客](https://www.cloudwego.io/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/#thrift-%E5%BA%8F%E5%88%97%E5%8C%96%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BC%98%E5%8C%96)中有介绍。
 
 当前开源框架大多优先支持 Protobuf，而部分框架内置使用的 Protobuf 其实是做了许多性能优化的 [gogo/protobuf](https://github.com/gogo/protobuf) 版本，但由于 gogo/protobuf 当前有[失去维护的风险](https://github.com/gogo/protobuf/issues/691)，所以出于可维护性角度考虑，我们依然决定只使用官方的 Protobuf 库，当然后续我们也会计划对 Protobuf 进行优化。  
 
