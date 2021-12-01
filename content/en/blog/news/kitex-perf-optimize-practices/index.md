@@ -3,9 +3,8 @@ date: 2021-09-23
 title: "Performance Optimization on Kitex"
 linkTitle: "Performance Optimization on Kitex"
 description: >
-author: ByteDance Architecture Team
+author: <a href="https://github.com/Hchenn" target="_blank">Hchen</a>, <a href="https://github.com/PureWhiteWu" target="_blank">Pure White</a>, <a href="https://github.com/simon0-o" target="_blank">Simon Wang</a>, <a href="https://github.com/SinnerA" target="_blank">bytexw</a>
 ---
-
 ## Preface
 Kitex is the next generation high-performance and extensible Go RPC framework developed by Bytedance Service Framework Team. Compared with other RPC frameworks, in addition to its rich features for service governance,  it has the following characteristics: Integrated with the in-house developed network library - Netpoll; Supports multiple Message Protocols (Thrift, Protobuf) and Interactive Models (Ping-Pong, Oneway, Streaming); Provides a more flexible and extensible code generator.
 

@@ -3,7 +3,7 @@ date: 2021-10-09
 title: "字节跳动在 Go 网络库上的实践"
 linkTitle: "字节跳动在 Go 网络库上的实践"
 description: >
-author: 字节跳动基础架构团队
+author: <a href="https://github.com/Hchenn" target="_blank">Hchen</a>, <a href="https://github.com/PureWhiteWu" target="_blank">Pure White</a>
 ---
 
 

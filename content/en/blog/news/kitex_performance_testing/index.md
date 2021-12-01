@@ -3,7 +3,7 @@ date: 2021-11-24
 title: "Getting Started With RPC Practices: Performance Testing Guide"
 linkTitle: "Getting Started With RPC Practices: Performance Testing Guide"
 description: >
-author: ByteDance Architecture Team
+author: <a href="https://github.com/joway" target="_blank">Joway</a>
 ---
 
 > On September 8, 2021, ByteDance announced the launch of CloudWeGo open source project. CloudWeGo is a set of microservice middleware developed by ByteDance with high performance, scalability, and stability. It focuses on microservice communication and governance, and meets the demands of different services in various scenarios. CloudWeGo currently has 4 Repos: Kitex, Netpoll, Thriftgo and Netpoll-HTTP2, featuring the RPC framework -- Kitex and the network library -- Netpoll.  

@@ -3,7 +3,7 @@ date: 2021-09-23
 title: "字节跳动 Go RPC 框架 Kitex 性能优化实践"
 linkTitle: "字节跳动 Go RPC 框架 Kitex 性能优化实践"
 description: >
-author: 字节跳动基础架构团队
+author: <a href="https://github.com/Hchenn" target="_blank">Hchen</a>, <a href="https://github.com/PureWhiteWu" target="_blank">Pure White</a>, <a href="https://github.com/simon0-o" target="_blank">Simon Wang</a>, <a href="https://github.com/SinnerA" target="_blank">bytexw</a>
 ---
 
 ## 前言
