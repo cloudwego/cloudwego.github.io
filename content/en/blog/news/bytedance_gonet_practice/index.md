@@ -3,7 +3,7 @@ date: 2021-10-09
 title: "ByteDance Practices on Go Network Library"
 linkTitle: "ByteDance Practices on Go Network Library"
 description: >
-author: ByteDance Architecture Team
+author: <a href="https://github.com/Hchenn" target="_blank">Hchen</a>, <a href="https://github.com/PureWhiteWu" target="_blank">Pure White</a>
 ---
 
 > This article is excerpted from the ByteDance Architecture Practice series.  
