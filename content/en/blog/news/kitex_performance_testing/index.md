@@ -74,7 +74,7 @@ In order to meet the above requirements, we compared the stress test results of 
 Each mainstream Golang open source RPC framework actually has its own focus in terms of design goals: some focus on generality, some on scenarios with light business logic like Redis, some on throughput performance, and some on P99 delay.
 In the daily iteration of ByteDance's business, it is common for a feature to cause one indicator to rise and another indicator to decline. Therefore, Kitex was more inclined to solve various problems in large-scale microservice scenarios at the beginning of its design.  
 
-Since the launch of Kitex, we have received a large amount of self-testing data from our users. We appreciate the community for their attention and support. We also encourage developers to use the testing guide provided in this article, and select the appropriate tools for their own scenarios. For more questions, please make an Issue on GitHub.  
+Since the launch of Kitex, we have received a large amount of self-testing data from our users. We appreciate the community for their attention and support. We also encourage developers to use the testing guide provided in this article, and select appropriate tools for their own scenarios. For more questions, please make an Issue on GitHub.  
 
 ## Pertinent Links
 
