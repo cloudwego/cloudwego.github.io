@@ -13,10 +13,12 @@ client 侧，默认使用 opentracing `GlobalTracer`
 
 ```go
 import (
-	internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
+    "github.com/cloudwego/kitex/client"
+    internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
 )
 ...
-client, err := echo.NewClient("echo", internal_opentracing.DefaultClientOption())
+tracer := internal_opentracing.NewDefaultClientSuite()
+client, err := echo.NewClient("echo", client.WithSuite(tracer))
 if err != nil {
 	log.Fatal(err)
 }
@@ -26,10 +28,12 @@ server 侧，默认使用 opentracing `GlobalTracer`
 
 ```go
 import (
-	internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
+    "github.com/cloudwego/kitex/server"
+    internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
 )
 ...
-svr, err := echo.NewServer(internal_opentracing.DefaultServerOption())
+tracer := internal_opentracing.NewDefaultServerSuite()
+svr, err := echo.NewServer(new(EchoImpl), server.WithSuite(tracer))
 if err := svr.Run(); err != nil {
 	log.Println("server stopped with error:", err)
 } else {
