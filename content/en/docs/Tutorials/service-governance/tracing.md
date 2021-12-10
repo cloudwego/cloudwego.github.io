@@ -31,7 +31,7 @@ server side, use opentracing `GlobalTracer` by default
 import (
     "github.com/cloudwego/kitex/server"
     "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-	internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
+    internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
 )
 ...
 tracer := internal_opentracing.NewDefaultServerSuite()
