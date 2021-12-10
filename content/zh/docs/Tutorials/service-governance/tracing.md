@@ -14,6 +14,7 @@ client 侧，默认使用 opentracing `GlobalTracer`
 ```go
 import (
     "github.com/cloudwego/kitex/client"
+    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
     internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
 )
 ...
@@ -29,6 +30,7 @@ server 侧，默认使用 opentracing `GlobalTracer`
 ```go
 import (
     "github.com/cloudwego/kitex/server"
+    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
     internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
 )
 ...
