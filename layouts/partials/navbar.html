@@ -6,7 +6,20 @@
 	<div class="td-navbar-nav-scroll ml-md-auto" id="main_navbar">
 		<ul class="navbar-nav mt-2 mt-lg-0">
 			{{ $p := . }}
-			{{ range .Site.Menus.main }}
+			{{ range .Site.Menus.main	 }}
+			{{ if .HasChildren }}
+			<li class="dropdown sub-menu{{if $p.HasMenuCurrent "main" . }} active{{end}}">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{ .Pre }}
+					<span>{{ .Name }}</span>
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					{{ range .Children }}
+					<a class="dropdown-item" href="{{ .URL }}">{{ .Name }}</a>
+					{{ end }}
+				</div>
+			</li>
+			{{ else }}
 			<li class="nav-item mr-4 mb-2 mb-lg-0">
 				{{ $active := or ($p.IsMenuCurrent "main" .) ($p.HasMenuCurrent "main" .) }}
 				{{ with .Page }}
@@ -18,6 +31,7 @@
 				{{ $baseurl := urls.Parse $.Site.Params.Baseurl }}
 				<a class="nav-link{{if $active }} active{{end}}" href="{{ with .Page }}{{ .RelPermalink }}{{ else }}{{ .URL | relLangURL }}{{ end }}" {{ if ne $url.Host $baseurl.Host }}target="_blank" {{ end }}>{{ with .Pre}}{{ $pre }}{{ end }}<span{{if $active }} class="active"{{end}}>{{ .Name }}</span>{{ with .Post}}{{ $post }}{{ end }}</a>
 			</li>
+			{{ end }}
 			{{ end }}
 			{{ if  .Site.Params.versions }}
 			<li class="nav-item dropdown mr-4 d-none d-lg-block">
