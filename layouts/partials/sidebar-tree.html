@@ -33,6 +33,7 @@
     </ul>
   </nav>
 </div>
+
 {{ define "section-tree-nav-section" -}}
 {{ $s := .section -}}
 {{ $p := .page -}}
@@ -50,6 +51,11 @@
 {{ $withChild := gt (len $pages) 0 -}}
 {{ $manualLink := cond (isset $s.Params "manuallink") $s.Params.manualLink ( cond (isset $s.Params "manuallinkrelref") (relref $s $s.Params.manualLinkRelref) $s.RelPermalink) -}}
 {{ $manualLinkTitle := cond (isset $s.Params "manuallinktitle") $s.Params.manualLinkTitle $s.Title -}}
+
+{{ if and ($s.Parent.Params.isFolder) (not $activePath) }}
+<!-- skip render -->
+{{else}}
+<!-- render for current-active -->
 <li class="td-sidebar-nav__section-title td-sidebar-nav__section{{ if $withChild }} with-child{{ else }} without-child{{ end }}{{ if $activePath }} active-path{{ end }}{{ if (not (or $show $p.Site.Params.ui.sidebar_menu_foldable )) }} collapse{{ end }}" id="{{ $mid }}-li">
   {{ if (and $p.Site.Params.ui.sidebar_menu_foldable (ge $ulNr 1)) -}}
   <input type="checkbox" id="{{ $mid }}-check"{{ if $activePath}} checked{{ end }}/>
@@ -68,4 +74,6 @@
   </ul>
   {{- end }}
 </li>
+{{ end }}
+
 {{- end }}
