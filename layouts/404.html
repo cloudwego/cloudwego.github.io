@@ -5,4 +5,14 @@
           <p>Oops! This page doesn't exist. Try going back to our <a href="{{ "/" | relURL }}">home page</a>.</p>
       </div>
     </main>
+    <script>
+      function startsWith(str, search) {
+        return str.substring(0, search.length) === search;
+      }
+      const pathname = window.location.pathname;
+      // alias-mock for folder: /docs -> /docs/kitex
+      if (startsWith(pathname, '/docs/') && !startsWith(pathname, '/docs/kitex')) {
+        window.location.href = window.location.origin + pathname.replace('/docs', '/docs/kitex')
+      }
+    </script>
 {{ end }}
