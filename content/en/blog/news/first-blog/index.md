@@ -40,7 +40,7 @@ Kitex integrates Netpoll, a high-performance network library which offers signif
 
 - Extensibility
 
-Kitex employs a modular design and provides many interfaces with default implementation for users to customize. Users can then extend or inject them into Kitex to fulfill their needs. Please refer to the official [doc](https://www.cloudwego.io/docs/tutorials/framework-exten/) for the extensibility of Kitex. For their network library, developers can freely choose other network libraries aside from netpoll.
+Kitex employs a modular design and provides many interfaces with default implementation for users to customize. Users can then extend or inject them into Kitex to fulfill their needs. Please refer to the official [doc](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/) for the extensibility of Kitex. For their network library, developers can freely choose other network libraries aside from netpoll.
 
 - Multi-message Protocol
 

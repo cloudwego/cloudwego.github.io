@@ -2,8 +2,9 @@
 ---
 title: "文档"
 linkTitle: "文档"
-weight: 20
+weight: 1
+isFolder: true
 menu:
   main:
-    weight: 20
+    weight: 1
 ---

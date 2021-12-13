@@ -15,7 +15,7 @@ description: >
 
 **Q: 是否支持 HTTP？**
 * Kitex 不专门提供 HTTP 请求支持，CloudWeGo 后续会开源 HTTP 框架 Hertz，预计开源时间是 2022 上半年。
-* 如果是 API 网关场景，针对 Thrift 提供了 [HTTP 映射的泛化调用](https://www.cloudwego.io/zh/docs/tutorials/advanced-feature/generic_call/)，Kitex 会将 HTTP 请求做 Thrift 编码发给服务端。
+* 如果是 API 网关场景，针对 Thrift 提供了 [HTTP 映射的泛化调用](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic_call/)，Kitex 会将 HTTP 请求做 Thrift 编码发给服务端。
 
 **Q: 如何配置开启连接多路复用？**  
 * 如果使用 Thrift 或 Kitex Protobuf ，开启连接多路复用：服务端配置 WithMuxTransport()，调用端配置 WithMuxConnection(1)。

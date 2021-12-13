@@ -13,7 +13,7 @@ description: >
 
 **Q: Does Kitex support HTTP？**  
 * Kitex does not specifically provide HTTP request support, CloudWeGo is expected to open source HTTP framework "Hertz" in the first half of 2022. 
-* For API gateway scenario, Kitex provides a [HTTP mapping generic call](https://www.cloudwego.io/docs/tutorials/advanced-feature/generic_call/#2-http-mapping-generic-call) regarding Thrift and sends the Thrift encoding of the HTTP request to the server.
+* For API gateway scenario, Kitex provides a [HTTP mapping generic call](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic_call/#2-http-mapping-generic-call) regarding Thrift and sends the Thrift encoding of the HTTP request to the server.
 
 **Q: How to configure multiplexing?**
 * If you are using Thrift or Kitex Protobuf, to configure multiplexing:
