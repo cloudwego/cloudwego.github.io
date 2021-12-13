@@ -10,7 +10,11 @@ description: >
 
 ### 泛化调用  
 
+<<<<<<< Updated upstream
 * 泛化调用 client 支持合并多 service 的方法  
+=======
+* IDL 解析支持多 Service
+>>>>>>> Stashed changes
 * 暴露 SetSeqID 方法便于二进制泛化场景 server 侧使用  
 * 泛化 client 支持关闭，规避内存泄漏问题  
 
@@ -61,7 +65,11 @@ description: >
 * 修复失效的中文链接
 * 将全部 doc 移至官网 cloudwego.io  
 
+<<<<<<< Updated upstream
 ## Breaking Change:
+=======
+## Netpoll API Change:
+>>>>>>> Stashed changes
 
 * 适应 netpoll.Writer.Append 的 API 改动，返回值从 2个 变为 1个  
 

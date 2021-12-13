@@ -62,7 +62,11 @@ description: >
 * Fix link in readme_zh
 * Remove docs; mantain cloudwego.io only
 
+<<<<<<< Updated upstream
 ## Breaking Change
+=======
+## Netpoll API Change
+>>>>>>> Stashed changes
 
 * Adapt netpoll.Writer.Append API
 
