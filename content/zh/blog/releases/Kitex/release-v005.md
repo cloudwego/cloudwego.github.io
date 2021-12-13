@@ -10,7 +10,7 @@ description: >
 
 - 增加默认的 ErrorHandler 封装 Error（用户指定会被覆盖）。
 - metainfo 支持反向传递。
-- 支持了 JSON 泛化调用，使用指南可参考：[Kitex 泛化调用使用指南](https://www.cloudwego.io/zh/docs/tutorials/advanced-feature/generic_call/)。
+- 支持了 JSON 泛化调用，使用指南可参考：[Kitex 泛化调用使用指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic_call/)。
 
 ## 优化:
 
@@ -34,7 +34,7 @@ description: >
 ## 文档:
 
 - 提供了英文版的README和其他文档。
-- 补充了泛化调用手册： [English](https://www.cloudwego.io/docs/tutorials/advanced-feature/generic_call/) | [中文](https://www.cloudwego.io/zh/docs/tutorials/advanced-feature/generic_call/)。
+- 补充了泛化调用手册： [English](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic_call/) | [中文](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic_call/)。
 - README 中增加了 landsapce 和 roadmap。
 
 ## 依赖变化:
