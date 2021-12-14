@@ -6,13 +6,17 @@
       </div>
     </main>
     <script>
-      function startsWith(str, search) {
-        return str.substring(0, search.length) === search;
-      }
-      const pathname = window.location.pathname;
-      // alias-mock for folder: /docs -> /docs/kitex
-      if (startsWith(pathname, '/docs/') && !startsWith(pathname, '/docs/kitex')) {
-        window.location.href = window.location.origin + pathname.replace('/docs', '/docs/kitex')
-      }
+      (function () {
+        function startsWith(str, search) {
+          return str.substring(0, search.length) === search;
+        }
+        var matchPath = '/{{.Site.Language.Lang}}/docs/';
+        var targetPath = '/{{.Site.Language.Lang}}/docs/kitex/';
+        var pathname = window.location.pathname;
+        // alias-mock for folder: /docs -> /docs/kitex
+        if (startsWith(pathname, matchPath) && !startsWith(pathname, targetPath)) {
+          window.location.href = window.location.origin + pathname.replace(matchPath, targetPath)
+        }
+      })();
     </script>
 {{ end }}
