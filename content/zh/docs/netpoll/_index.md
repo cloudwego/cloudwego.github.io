@@ -5,5 +5,5 @@ weight: 1
 menu:
   main:
     weight: 1
-    parent: 'Documentation'
+    parent: '文档'
 ---
