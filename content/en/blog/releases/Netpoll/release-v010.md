@@ -19,8 +19,10 @@ description: >
 * ensure EventLoop object will not be finalized before serve return
 
 ## Chore
+
 * update readme 
 * update issue templates
 
 ## Breaking Change
+
 * remove Append and WriteBuffer returned parameter n
