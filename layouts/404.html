@@ -7,15 +7,16 @@
     </main>
     <script>
       (function () {
-        function startsWith(str, search) {
-          return str.substring(0, search.length) === search;
+        function isDocs(str) {
+          return /^\/([A-Za-z0-9-]+\/)?docs\//.test(str);
         }
-        var matchPath = '/{{.Site.Language.Lang}}/docs/';
-        var targetPath = '/{{.Site.Language.Lang}}/docs/kitex/';
+        function isKitexDocs(str) {
+          return /^\/([A-Za-z0-9-]+\/)?docs\/kitex\//.test(str);
+        }
         var pathname = window.location.pathname;
         // alias-mock for folder: /docs -> /docs/kitex
-        if (startsWith(pathname, matchPath) && !startsWith(pathname, targetPath)) {
-          window.location.href = window.location.origin + pathname.replace(matchPath, targetPath)
+        if (isDocs(pathname) && !isKitexDocs(pathname)) {
+          window.location.href = window.location.origin + pathname.replace('/docs/', '/docs/kitex/')
         }
       })();
     </script>
