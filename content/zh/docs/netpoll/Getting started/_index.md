@@ -5,7 +5,7 @@ weight: 1
 description: >
 ---
 
-> 本教程通过一些简单的 [示例][Examples] 帮助您开始使用 [Netpoll][Netpoll]，包括如何使用 [Server](#1-使用-sever)、[Client](#2-使用-dialer) 和 [nocopy API](#3-使用-nocopy-api)。
+> 本教程通过一些简单的示例帮助您开始使用 **Netpoll**，包括如何使用 [Server](#1-使用-sever)、[Client](#2-使用-dialer) 和 [nocopy API](#3-使用-nocopy-api)。
 
 ## 1. 使用 Sever
 
@@ -123,11 +123,11 @@ func main() {
 
 ## 2. 使用 Dialer
 
-[Netpoll][Netpoll] 也支持在 Client 端使用，提供了 `Dialer`，类似于 `net.Dialer`。同样的，[这里][client-example] 展示了一个简单的 Client 端示例，接下来我们详细介绍一下：
+Netpoll 也支持在 Client 端使用，提供了 `Dialer`，类似于 `net.Dialer`。同样的，[这里][client-example] 展示了一个简单的 Client 端示例，接下来我们详细介绍一下：
 
 ### 2.1 快速方式
 
-与 [Net][net] 类似，[Netpoll][Netpoll] 提供了几个用于直接建立连接的公共方法，可以直接调用。 如：
+与 Net 类似，Netpoll 提供了几个用于直接建立连接的公共方法，可以直接调用。 如：
 
 ```go
 DialConnection(network, address string, timeout time.Duration) (connection Connection, err error)
@@ -139,7 +139,7 @@ DialUnix(network string, laddr, raddr *UnixAddr) (*UnixConnection, error)
 
 ### 2.2 创建 Dialer
 
-[Netpoll][Netpoll] 还定义了`Dialer` 接口。 用法如下：（通常推荐使用上一节的快速方式）
+Netpoll 还定义了`Dialer` 接口。 用法如下：（通常推荐使用上一节的快速方式）
 
 ```go
 package main
@@ -211,7 +211,7 @@ func main() {
 
 ### 3.2 高阶用法
 
-如果你想使用单个连接来发送（或接收）多组数据（如连接多路复用），那么你将面临数据打包和分包。在 [net][net] 上，这种工作一般都是通过复制来完成的。一个例子如下：
+如果你想使用单个连接来发送（或接收）多组数据（如连接多路复用），那么你将面临数据打包和分包。在 net 上，这种工作一般都是通过复制来完成的。一个例子如下：
 
 ```go
 package main
@@ -248,7 +248,7 @@ func main() {
 }
 ```
 
-但是，[Netpoll][Netpoll] 不需要这样做，nocopy APIs 支持对 buffer 进行原地址操作（原地址组包和分包），并通过引用计数实现资源的自动回收和重用。
+但是，Netpoll 不需要这样做，nocopy APIs 支持对 buffer 进行原地址操作（原地址组包和分包），并通过引用计数实现资源的自动回收和重用。
 
 示例如下（使用方法 `Reader.Slice` 和 `Writer.Append`）：
 

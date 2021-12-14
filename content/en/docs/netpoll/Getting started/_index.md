@@ -5,7 +5,7 @@ weight: 1
 description: >
 ---
 
-> This tutorial gets you started with [Netpoll][Netpoll] through some simple [examples][Examples], includes how to
+> This tutorial gets you started with **Netpoll** through some simple [examples][Examples], includes how to
 use [Server](#1-use-sever), [Client](#2-use-dialer) and [nocopy APIs](#3-use-nocopy-api).
 
 ## 1. Use Sever
@@ -128,12 +128,12 @@ func main() {
 
 ## 2. Use Dialer
 
-[Netpoll][Netpoll] also has the ability to be used on the Client side. It provides `Dialer`, similar to `net.Dialer`.
+Netpoll also has the ability to be used on the Client side. It provides `Dialer`, similar to `net.Dialer`.
 Again, [here][client-example] is a simple client demo, and then we introduce it in detail.
 
 ### 2.1 The Fast Way
 
-Similar to [Net][net], [Netpoll][Netpoll] provides several public functions for directly dialing a connection. such as:
+Similar to Net, Netpoll provides several public functions for directly dialing a connection. such as:
 
 ```go
 DialConnection(network, address string, timeout time.Duration) (connection Connection, err error)
@@ -145,7 +145,7 @@ DialUnix(network string, laddr, raddr *UnixAddr) (*UnixConnection, error)
 
 ### 2.2 Create Dialer
 
-[Netpoll][Netpoll] also defines the `Dialer` interface. The usage is as follows:
+Netpoll also defines the `Dialer` interface. The usage is as follows:
 (of course, you can usually use the fast way)
 
 ```go
@@ -227,7 +227,7 @@ func main() {
 If you want to use the connection to send (or receive) multiple sets of data, then you will face the work of packing and
 unpacking the data.
 
-On [net][net], this kind of work is generally done by copying. An example is as follows:
+On net, this kind of work is generally done by copying. An example is as follows:
 
 ```go
 package main
@@ -264,7 +264,7 @@ func main() {
 }
 ```
 
-But, this is not necessary in [Netpoll][Netpoll], nocopy APIs supports operations on the original address of the buffer,
+But, this is not necessary in Netpoll, nocopy APIs supports operations on the original address of the buffer,
 and realizes automatic recycling and reuse of resources through reference counting.
 
 Examples are as follows(use function `Reader.Slice` and `Writer.Append`):
