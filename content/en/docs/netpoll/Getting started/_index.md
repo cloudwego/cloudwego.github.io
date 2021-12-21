@@ -1,7 +1,7 @@
 ---
 title: "Getting Started"
 linkTitle: "Getting Started"
-weight: 1
+weight: 2
 description: >
 ---
 
@@ -306,8 +306,6 @@ func main() {
 	}
 }
 ```
-
-## Reference
 
 [Netpoll]: https://github.com/cloudwego/netpoll
 
