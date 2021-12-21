@@ -5,11 +5,11 @@ weight: 1
 description: >
 ---
 
-> 本教程通过一些简单的示例帮助您开始使用 **Netpoll**，包括如何使用 [Server](#1-使用-sever)、[Client](#2-使用-dialer) 和 [nocopy API](#3-使用-nocopy-api)。
+> 本教程通过一些简单的[示例](https://github.com/cloudwego/netpoll-examples)帮助您开始使用 **Netpoll**，包括如何使用 [Server](#1-使用-sever)、[Client](#2-使用-dialer) 和 [nocopy API](#3-使用-nocopy-api)。
 
 ## 1. 使用 Sever
 
-[这里][server-example] 是一个简单的 server 例子，接下来我们会解释它是如何构建的。
+[这里](https://github.com/cloudwego/netpoll-examples/blob/main/server.go) 是一个简单的 server 例子，接下来我们会解释它是如何构建的。
 
 ### 1.1 创建 Listener
 
@@ -52,8 +52,8 @@ func main() {
 
 参数说明:
 
-* `OnRequest` 是用户应该自己实现来处理业务逻辑的接口。 [注释][netpoll.go] 详细描述了它的行为。
-* `Option` 用于自定义 `EventLoop` 创建时的配置，下面的例子展示了它的用法。更多详情请参考 [options][netpoll_options.go]。
+* `OnRequest` 是用户应该自己实现来处理业务逻辑的接口。 [注释](https://github.com/cloudwego/netpoll/blob/main/netpoll.go) 详细描述了它的行为。
+* `Option` 用于自定义 `EventLoop` 创建时的配置，下面的例子展示了它的用法。更多详情请参考 [options](https://github.com/cloudwego/netpoll/blob/main/netpoll_options.go) 。
 
 创建过程如下：
 
@@ -123,7 +123,7 @@ func main() {
 
 ## 2. 使用 Dialer
 
-Netpoll 也支持在 Client 端使用，提供了 `Dialer`，类似于 `net.Dialer`。同样的，[这里][client-example] 展示了一个简单的 Client 端示例，接下来我们详细介绍一下：
+Netpoll 也支持在 Client 端使用，提供了 `Dialer`，类似于 `net.Dialer`。同样的，[这里](https://github.com/cloudwego/netpoll-examples/blob/main/client.go) 展示了一个简单的 Client 端示例，接下来我们详细介绍一下：
 
 ### 2.1 快速方式
 
@@ -182,7 +182,7 @@ Nocopy API 设计为两步操作。
 
 同样，使用 `Writer` 时，首先需要分配一个 `[]byte` 来写入数据，然后调用 `Flush` 确认所有数据都已经写入。`Writer` 还提供了丰富的 API 来分配 buffer，例如 `Malloc`、`WriteString` 等。
 
-下面是一些简单的读写数据的例子。 更多详情请参考 [说明][nocopy.go]。
+下面是一些简单的读写数据的例子。 更多详情请参考 [说明](https://github.com/cloudwego/netpoll/blob/main/nocopy.go)。
 
 ```go
 package main
@@ -290,7 +290,7 @@ func main() {
 }
 ```
 
-## Reference
+## 相关链接
 
 - **Netpoll**: https://github.com/cloudwego/netpoll
 

@@ -5,12 +5,12 @@ weight: 1
 description: >
 ---
 
-> This tutorial gets you started with **Netpoll** through some simple [examples][Examples], includes how to
+> This tutorial gets you started with **Netpoll** through some simple [examples](https://github.com/cloudwego/netpoll-examples), includes how to
 use [Server](#1-use-sever), [Client](#2-use-dialer) and [nocopy APIs](#3-use-nocopy-api).
 
 ## 1. Use Sever
 
-[Here][server-example] is a simple server demo, we will explain how it is constructed next.
+[Here](https://github.com/cloudwego/netpoll-examples/blob/main/server.go) is a simple server demo, we will explain how it is constructed next.
 
 ### 1.1 Create Listener
 
@@ -55,9 +55,9 @@ etc.
 params:
 
 * `OnRequest` is an interface that users should implement by themselves to process business
-  logic. [Code Comment][netpoll.go] describes its behavior in detail.
+  logic. [Code Comment](https://github.com/cloudwego/netpoll/blob/main/netpoll.go) describes its behavior in detail.
 * `Option` is used to customize the configuration when creating `EventLoop`, and the following example shows its usage.
-  For more details, please refer to [options][netpoll_options.go].
+  For more details, please refer to [options](https://github.com/cloudwego/netpoll/blob/main/netpoll_options.go).
 
 The creation process is as follows:
 
@@ -129,7 +129,7 @@ func main() {
 ## 2. Use Dialer
 
 Netpoll also has the ability to be used on the Client side. It provides `Dialer`, similar to `net.Dialer`.
-Again, [here][client-example] is a simple client demo, and then we introduce it in detail.
+Again, [here](https://github.com/cloudwego/netpoll-examples/blob/main/client.go) is a simple client demo, and then we introduce it in detail.
 
 ### 2.1 The Fast Way
 
@@ -195,7 +195,7 @@ data has been written.
 `Writer` also provides rich APIs to allocate buffers, such as `Malloc`, `WriteString` and so on.
 
 The following shows some simple examples of reading and writing data. For more details, please refer to
-the [code comments][nocopy.go].
+the [code comments](https://github.com/cloudwego/netpoll/blob/main/nocopy.go).
 
 ```go
 package main
