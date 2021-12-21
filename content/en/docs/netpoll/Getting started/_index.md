@@ -5,12 +5,12 @@ weight: 1
 description: >
 ---
 
-> This tutorial gets you started with **Netpoll** through some simple [examples](https://github.com/cloudwego/netpoll-examples), includes how to
+> This tutorial gets you started with [Netpoll][Netpoll] through some simple [examples][Examples], includes how to
 use [Server](#1-use-sever), [Client](#2-use-dialer) and [nocopy APIs](#3-use-nocopy-api).
 
 ## 1. Use Sever
 
-[Here](https://github.com/cloudwego/netpoll-examples/blob/main/server.go) is a simple server demo, we will explain how it is constructed next.
+[Here][server-example] is a simple server demo, we will explain how it is constructed next.
 
 ### 1.1 Create Listener
 
@@ -55,9 +55,9 @@ etc.
 params:
 
 * `OnRequest` is an interface that users should implement by themselves to process business
-  logic. [Code Comment](https://github.com/cloudwego/netpoll/blob/main/netpoll.go) describes its behavior in detail.
+  logic. [Code Comment][netpoll.go] describes its behavior in detail.
 * `Option` is used to customize the configuration when creating `EventLoop`, and the following example shows its usage.
-  For more details, please refer to [options](https://github.com/cloudwego/netpoll/blob/main/netpoll_options.go).
+  For more details, please refer to [options][netpoll_options.go].
 
 The creation process is as follows:
 
@@ -128,12 +128,12 @@ func main() {
 
 ## 2. Use Dialer
 
-Netpoll also has the ability to be used on the Client side. It provides `Dialer`, similar to `net.Dialer`.
-Again, [here](https://github.com/cloudwego/netpoll-examples/blob/main/client.go) is a simple client demo, and then we introduce it in detail.
+[Netpoll][Netpoll] also has the ability to be used on the Client side. It provides `Dialer`, similar to `net.Dialer`.
+Again, [here][client-example] is a simple client demo, and then we introduce it in detail.
 
 ### 2.1 The Fast Way
 
-Similar to Net, Netpoll provides several public functions for directly dialing a connection. such as:
+Similar to [Net][net], [Netpoll][Netpoll] provides several public functions for directly dialing a connection. such as:
 
 ```go
 DialConnection(network, address string, timeout time.Duration) (connection Connection, err error)
@@ -145,7 +145,7 @@ DialUnix(network string, laddr, raddr *UnixAddr) (*UnixConnection, error)
 
 ### 2.2 Create Dialer
 
-Netpoll also defines the `Dialer` interface. The usage is as follows:
+[Netpoll][Netpoll] also defines the `Dialer` interface. The usage is as follows:
 (of course, you can usually use the fast way)
 
 ```go
@@ -195,7 +195,7 @@ data has been written.
 `Writer` also provides rich APIs to allocate buffers, such as `Malloc`, `WriteString` and so on.
 
 The following shows some simple examples of reading and writing data. For more details, please refer to
-the [code comments](https://github.com/cloudwego/netpoll/blob/main/nocopy.go).
+the [code comments][nocopy.go].
 
 ```go
 package main
@@ -227,7 +227,7 @@ func main() {
 If you want to use the connection to send (or receive) multiple sets of data, then you will face the work of packing and
 unpacking the data.
 
-On net, this kind of work is generally done by copying. An example is as follows:
+On [net][net], this kind of work is generally done by copying. An example is as follows:
 
 ```go
 package main
@@ -264,7 +264,7 @@ func main() {
 }
 ```
 
-But, this is not necessary in Netpoll, nocopy APIs supports operations on the original address of the buffer,
+But, this is not necessary in [Netpoll][Netpoll], nocopy APIs supports operations on the original address of the buffer,
 and realizes automatic recycling and reuse of resources through reference counting.
 
 Examples are as follows(use function `Reader.Slice` and `Writer.Append`):
@@ -309,20 +309,20 @@ func main() {
 
 ## Reference
 
-- **Netpoll**: https://github.com/cloudwego/netpoll
+[Netpoll]: https://github.com/cloudwego/netpoll
 
-- **net**: https://github.com/golang/go/tree/master/src/net
+[net]: https://github.com/golang/go/tree/master/src/net
 
-- **gopool**: https://github.com/bytedance/gopkg/tree/develop/util/gopool
+[gopool]: https://github.com/bytedance/gopkg/tree/develop/util/gopool
 
-- **Examples**: https://github.com/cloudwego/netpoll-examples
+[Examples]: https://github.com/cloudwego/netpoll-examples
 
-- **server-example**: https://github.com/cloudwego/netpoll-examples/blob/main/server.go
+[server-example]: https://github.com/cloudwego/netpoll-examples/blob/main/server.go
 
-- **client-example**: https://github.com/cloudwego/netpoll-examples/blob/main/client.go
+[client-example]: https://github.com/cloudwego/netpoll-examples/blob/main/client.go
 
-- **netpoll.go**: https://github.com/cloudwego/netpoll/blob/main/netpoll.go
+[netpoll.go]: https://github.com/cloudwego/netpoll/blob/main/netpoll.go
 
-- **netpoll_options.go**: https://github.com/cloudwego/netpoll/blob/main/netpoll_options.go
+[netpoll_options.go]: https://github.com/cloudwego/netpoll/blob/main/netpoll_options.go
 
-- **nocopy.go**: https://github.com/cloudwego/netpoll/blob/main/nocopy.go
+[nocopy.go]: https://github.com/cloudwego/netpoll/blob/main/nocopy.go
