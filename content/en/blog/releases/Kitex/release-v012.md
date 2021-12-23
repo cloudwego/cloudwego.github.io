@@ -9,7 +9,7 @@ description: >
 ## Hotfix
 
 * Fix some gRPC request bugs which are involved by v0.1.0
-* Fix mistake gRPC method path when no package definition in ID
+* Fix mistake gRPC method path when no package definition in IDL
 
 ## Dependency Change
 
