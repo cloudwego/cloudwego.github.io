@@ -8,10 +8,8 @@ description: >
 
 ## Hotfix
 
-* Revert: revert optimization of gRPC connpool
-* Perf: Improve the grpc performance by connpool
-* Revert: revert "perf: recycle grpc codec buffer by close linkbuffer"
-* Fix(gRPC): mistake gRPC method path when no package definition in IDL
+* Fix some bugs which are involved by v0.1.0
+* Fix mistake gRPC method path when no package definition in ID
 
 ## Dependency Change
 
@@ -19,4 +17,4 @@ description: >
 
 ## Chore
 
-* Chore: use GitHub's `PULL_REQUEST_TEMPLATE` to create a PR.
+* Chore: use GitHub's `PULL_REQUEST_TEMPLATE` to create a PR
