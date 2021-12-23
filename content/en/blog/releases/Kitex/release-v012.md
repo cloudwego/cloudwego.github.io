@@ -8,7 +8,7 @@ description: >
 
 ## Hotfix
 
-* Fix some bugs which are involved by v0.1.0
+* Fix some gRPC request bugs which are involved by v0.1.0
 * Fix mistake gRPC method path when no package definition in ID
 
 ## Dependency Change

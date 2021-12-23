@@ -8,7 +8,7 @@ description: >
 
 ## Hotfix
 
-* 修复 v0.1.0 gRPC 优化引入的部分问题
+* 修复 v0.1.0 gRPC 请求优化引入的部分问题
 * 修复 IDL 中未定义 package 时，gRPC 的方法信息错误问题
 
 ## 依赖更新
