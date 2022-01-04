@@ -1,5 +1,5 @@
 ---
-title: "Kitex Release v0.1.3"
+title: "Kitex v0.1.3 版本发布"
 linkTitle: "Release v0.1.3"
 date: 2021-12-30
 description: >
