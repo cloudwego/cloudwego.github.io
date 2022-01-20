@@ -10,7 +10,7 @@ description: >
 
 * JSON 泛化调用场景，向服务端传递 Base 信息，从而服务端可获取 Caller 等信息
 
-## Bugfix
+## Bug 修复
 
 * 修复 streaming 的 metric 上报（server侧）丢失 method 信息的问题
 * 修复 JSON 和 HTTP 泛化中 base64 和 binary 的不兼容改动
