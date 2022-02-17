@@ -7,7 +7,7 @@ description: >
 
 ![remote_module](/img/docs/remote_module.png)
 
-Kitex supports extending protocols, including overall Codec and Payloadcodec. Generally, RPC protocol includes application layer transport protocol and payload protocol. For example, HTTP/HTTP2 belong to application layer transport protocol, payloads with different formats and protocols can be carried over HTTP/HTTP2. 
+Kitex supports extending protocols, including overall Codec and Payloadcodec. Generally, RPC protocol includes application layer transport protocol and payload protocol. For example, HTTP/HTTP2 belong to application layer transport protocol, payloads with different formats and protocols can be carried over HTTP/HTTP2.
 
 Kitex supports built-in TTHeader as transport protocol, and supports Thrift, Kitex Protobuf, gRPC protocol as payload. In addition, Kitex integrates  [netpoll-http2](https://github.com/cloudwego/netpoll-http2) to support HTTP2. At present, it is mainly used for gRPC,  Thrift over HTTP2 is considered to support in the future.
 
@@ -83,6 +83,23 @@ By default, the payload supported by Kitex includes Thrift, Kitex Protobuf and g
 In particular, generic call of Kitex is also implemented by extending payloadcodec:
 
 ![genericCodecExtension](/img/docs/generic_codec_extension.png)
+
+## Default Codec Usage
+
+Kitex will use the built-in Codec if no customized codec provider set.
+
+- Set default codec size limit, no limit by default
+  option: `codec.NewDefaultCodecWithSizeLimit`
+
+```go
+maxSizeBytes = 1024 * 1024 * 10 // 10 MB
+
+// server side
+svr := stservice.NewServer(handler, server.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
+
+// client side
+cli, err := xxxservice.NewClient(targetService, client.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
+```
 
 ## Customized Codec or PayloadCodec Usage
 
