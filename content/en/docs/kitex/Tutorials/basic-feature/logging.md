@@ -1,74 +1,23 @@
 ---
 title: "Logging"
-date: 2021-08-31
+date: 2021-08-26
 weight: 12
 description: >
 ---
 
 ## pkg/klog
 
-The pkg/klog package of Kitex defines several logger interfaces: `Logger`, `CtxLogger` and `FormatLogger`. It also provides a default implementation of `FormatLogger`, the instance of which can be retrieved by `klog.DefaultLogger()`.
+Kitex defines serveral interfaces in the package `pkg/klog`: `Logger`, `CtxLoggerKey` and `FormatLogger`. And it provides a default logger that implements those interfaces and can be accessed by calling `klog.DefaultLogger()`.
 
-The pkg/klog package also provides some global functions that invoke the corresponding methods of the default logger to help simplifying the usage, such as `klog.Info`, `klog.Errorf` and others.
+There are global functions in the package `pkg/klog` that expose the ability of the default logger, like `klog.Info`, `klog.Errorf` and so on.
 
-Note that the default logger uses the `log.Logger` from the standard library, the log entry in the log message that indicates where the logging function is called depends on the setting of call depth of the logger. So wrapping the implementation provided by klog might cause the file name and line number in the log message become inaccurate.
+Note that the default logger uses the `log.Logger` from the standard library as its underlying output. So the filename and line number shown in the log messages depend on the setting of call depth. Thus wrapping the implementation of `klog.DefaultLogger` may causes inaccuracies for these two value.
 
-## Customized Logger Implementation
+## Injecting your own logger
 
-The client module and server module of Kitex both have a `WithLogger` option to serve the purpose of injecting customized logger implementations. Middlewares and the other parts of the framework will use it to output logs.
+You can use `klog.SetLogger` to replace the default logger.
 
-By default, the framework uses `klog.DefaultLogger()`.
-
-## Logging in a Middleware
-
-When you create a middleware and wish to write some logs in it using the logger provided by the framework while getting along with the logger injected by the `WithLogger` option, just inject the middleware with `WithMiddlewareBuilder` instead of the `WithMiddleware` option.
-
-The `endpoint.MiddlewareBuilder` injected by the `WithMiddlewareBuilder` will be invoked with a `context.Context` argument that carries the logger being injected. The latter can be retrieved by `ctx.Value(endpoint.CtxLoggerKey)`.
-
-```go
-func MyMiddlewareBuilder(mwCtx context.Context) endpoint.Middleware { // middleware builder
-
-    logger := mwCtx.Value(endpoint.CtxLoggerKey).(klog.FormatLogger)  // get the logger
-
-    return func(next endpoint.Endpoint) endpoint.Endpoint {           // middleware
-        return func(ctx context.Context, request, response interface{}) error {
-
-            err := next(ctx, request, response)
-
-            logger.Debugf("This is a log message from MyMiddleware! err: %v", err)
-
-            return err
-        }
-    }
-}
-```
 
 ## Redirecting the Output of the Default Logger
 
 The `klog.SetOutput` can be used to redirect the output of the default logger provided by the pkg/klog package.
-
-Note that this function does not affect those customized implementations injected using `WithLogger` options.  
-
-For example, to redirect the output of the default logger to a file name `./output.log` under the launch directory, a possible implementation might be:
-
-```go
-package main
-
-import (
-    "os"
-
-    "github.com/cloudwego/kitex/pkg/klog"
-)
-
-func main() {
-    f, err := os.OpenFile("./output.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-    if err != nil {
-    	panic(err)
-    }
-    defer f.Close()
-    klog.SetOutput(f)
-
-    ... // continue to set up your server
-}
-```
-
