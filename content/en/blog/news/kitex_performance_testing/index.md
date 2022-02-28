@@ -13,7 +13,7 @@ author: <a href="https://github.com/joway" target="_blank">Joway</a>
 
 Recently, ByteDance Service Framework Team officially announced the open source of CloudWeGo. It includes the Golang microservice RPC framework -- Kitex, which has been deeply used in Douyin and Toutiao.
 
-The purpose of this article aims to share the scenarios and technical issues that developers need to know when stress testing Kitex.
+This article aims to share the scenarios and technical issues that developers need to know when stress testing Kitex.
 These guides will help users adjust and optimize Kitex to better match their business needs, and maximize Kitex's performance in real RPC scenarios.
 Users can also refer to the official stress test project -- [kitex-benchmark](https://github.com/cloudwego/kitex-benchmark) for more details.
 
