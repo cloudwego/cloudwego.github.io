@@ -10,6 +10,7 @@ description: >
 1. If you don't setup golang development environment, please follow [Install Go](https://golang.org/doc/install) to install go.
 2. We strongly recommend you use latest golang version. And compatibility is guaranteed within two latest minor version (for now **v1.15**).
 3. Ensure `GO111MODULE` is set to `on`.
+4. Currently Windows is not particularly supported by Kitex, if your development environment is Windows, you are suggested to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install).
 
 ## Quick Start
 
@@ -22,7 +23,6 @@ First of all, let's install compilers we gonna work with.
 1. Ensure `GOPATH` environment variable is defined properly (for example `export GOPATH=~/go`), then add `$GOPATH/bin` to `PATH` environment variable (for example `export PATH=$GOPATH/bin:$PATH`). Make sure `GOPATH` is accessible.
 2. Install kitex: `go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`
 3. Install thriftgo: `go install github.com/cloudwego/thriftgo@latest`
-4. Currently Windows is not particularly supported by Kitex, if your development environment is Windows, you are suggested to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install).
 
 Now you can run `kitex --version` and `thriftgo --version`, and you can see some outputs just like below if you setup compilers successfully.
 
