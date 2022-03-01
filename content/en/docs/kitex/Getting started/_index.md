@@ -10,6 +10,7 @@ description: >
 1. If you don't setup golang development environment, please follow [Install Go](https://golang.org/doc/install) to install go.
 2. We strongly recommend you use latest golang version. And compatibility is guaranteed within two latest minor version (for now **v1.15**).
 3. Ensure `GO111MODULE` is set to `on`.
+4. Currently Windows is not particularly supported by Kitex, if your development environment is Windows, you are suggested to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install).
 
 ## Quick Start
 
