@@ -88,7 +88,7 @@ Kitex 默认支持的 Payload 有 Thrift、Kitex Protobuf 以及 gRPC 协议。�
 
 如果用户不指定 Codec ，则使用默认的内置 Codec。
 
-- 指定默认 Codec 的包大小限制
+- 指定默认 Codec 的包大小限制，默认无限制
   option: `codec.NewDefaultCodecWithSizeLimit`
 
 ```go
