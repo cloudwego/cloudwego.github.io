@@ -3,7 +3,7 @@ title: "快速开始"
 linkTitle: "快速开始"
 weight: 2
 description: >
-  
+
 ---
 
 ## 准备 Golang 开发环境
@@ -25,7 +25,6 @@ description: >
 2. 安装 kitex：`go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`
 3. 安装 thriftgo：`go install github.com/cloudwego/thriftgo@latest`
 
-
 安装成功后，执行 `kitex --version` 和 `thriftgo --version` 应该能够看到具体版本号的输出（版本号有差异，以 x.x.x 示例）：
 
  ```shell
@@ -38,7 +37,7 @@ thriftgo x.x.x
 4. 如果在安装阶段发生问题，可能主要是由于对 Golang 的不当使用造成，请依照报错信息进行检索
 
 ### 确定代码放置位置
-1. 若将代码放置于 `$GOPATH/src` 下，需在 `$GOPATH/src` 下创建额外目录，进入该目录后再获取代码： 
+1. 若将代码放置于 `$GOPATH/src` 下，需在 `$GOPATH/src` 下创建额外目录，进入该目录后再获取代码：
 ```shell
 mkdir -p $(go env GOPATH)/src/github.com/cloudwego
 cd $(go env GOPATH)/src/github.com/cloudwego
@@ -239,19 +238,19 @@ Kitex 框架及命令行工具，默认支持 `thrift` 和 `proto3` 两种 IDL�
 
 ### 为什么要使用 IDL
 
-如果我们要进行 RPC，就需要知道对方的接口是什么，需要传什么参数，同时也需要知道返回值是什么样的，就好比两个人之间交流，需要保证在说的是同一个语言、同一件事。这时候，就需要通过 IDL 来约定双方的协议，就像在写代码的时候需要调用某个函数，我们需要知道函数签名一样。  
+如果我们要进行 RPC，就需要知道对方的接口是什么，需要传什么参数，同时也需要知道返回值是什么样的，就好比两个人之间交流，需要保证在说的是同一个语言、同一件事。这时候，就需要通过 IDL 来约定双方的协议，就像在写代码的时候需要调用某个函数，我们需要知道函数签名一样。
 
-Thrift IDL 语法可参考：[Thrift interface description language](http://thrift.apache.org/docs/idl)。   
+Thrift IDL 语法可参考：[Thrift interface description language](http://thrift.apache.org/docs/idl)。
 
 proto3 语法可参考：[Language Guide(proto3)](https://developers.google.com/protocol-buffers/docs/proto3)。
 
 ### 创建项目目录
 
-在开始后续的步骤之前，想让我们创建一个项目目录用于后续的教程。   
+在开始后续的步骤之前，想让我们创建一个项目目录用于后续的教程。
 
-`$ mkdir example`   
+`$ mkdir example`
 
-然后让我们进入项目目录   
+然后让我们进入项目目录
 
 `$ cd example`
 
@@ -261,21 +260,21 @@ Kitex 自带了一个同名的命令行工具 `kitex`，用来帮助大家很方
 
 #### 安装
 
-可以使用以下命令来安装或者更新 kitex：   
+可以使用以下命令来安装或者更新 kitex：
 
 `$ go install github.com/cloudwego/kitex/tool/cmd/kitex`
 
-完成后，可以通过执行 kitex 来检测是否安装成功。   
+完成后，可以通过执行 kitex 来检测是否安装成功。
 
-`$ kitex`   
+`$ kitex`
 
-如果出现如下输出，则安装成功。   
+如果出现如下输出，则安装成功。
 
-`$ kitex`   
+`$ kitex`
 
-`No IDL file found.`   
+`No IDL file found.`
 
-如果出现 `command not found` 错误，可能是因为没有把 `$GOPATH/bin` 加入到 `$PATH` 中，详见环境准备一章。   
+如果出现 `command not found` 错误，可能是因为没有把 `$GOPATH/bin` 加入到 `$PATH` 中，详见环境准备一章。
 
 #### 使用
 
@@ -283,9 +282,9 @@ kitex 的具体使用请参考[代码生成工具](../tutorials/code-gen/code_ge
 
 ### 编写 IDL
 
-首先我们需要编写一个 IDL，这里以 thrift IDL 为例。   
+首先我们需要编写一个 IDL，这里以 thrift IDL 为例。
 
-首先创建一个名为 `echo.thrift` 的 thrift IDL 文件。   
+首先创建一个名为 `echo.thrift` 的 thrift IDL 文件。
 
 然后在里面定义我们的服务
 ```thrift
@@ -306,11 +305,11 @@ service Echo {
 
 ### 生成 echo 服务代码
 
-有了 IDL 以后我们便可以通过 kitex 工具生成项目代码了，执行如下命令：   
+有了 IDL 以后我们便可以通过 kitex 工具生成项目代码了，执行如下命令：
 
-`$ kitex -module example -service example echo.thrift`   
+`$ kitex -module example -service example echo.thrift`
 
-上述命令中，`-module` 表示生成的该项目的 go module 名，`-service` 表明我们要生成一个服务端项目，后面紧跟的 `example` 为该服务的名字。最后一个参数则为该服务的 IDL 文件。   
+上述命令中，`-module` 表示生成的该项目的 go module 名，`-service` 表明我们要生成一个服务端项目，后面紧跟的 `example` 为该服务的名字。最后一个参数则为该服务的 IDL 文件。
 
 生成后的项目结构如下：
 ```
@@ -341,9 +340,9 @@ $ go get github.com/cloudwego/kitex@latest
 $ go mod tidy
 ```
 
-如果遇到类似如下报错：   
+如果遇到类似如下报错：
 
-`github.com/apache/thrift/lib/go/thrift: ambiguous import: found package github.com/apache/thrift/lib/go/thrift in multiple modules`   
+`github.com/apache/thrift/lib/go/thrift: ambiguous import: found package github.com/apache/thrift/lib/go/thrift in multiple modules`
 
 先执行一遍下述命令，再继续操作：
 ```
@@ -374,9 +373,9 @@ func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Respon
 
 ```
 
-这里的 `Echo` 函数就对应了我们之前在 IDL 中定义的 `echo` 方法。   
+这里的 `Echo` 函数就对应了我们之前在 IDL 中定义的 `echo` 方法。
 
-现在让我们修改一下服务端逻辑，让 `Echo` 服务名副其实。   
+现在让我们修改一下服务端逻辑，让 `Echo` 服务名副其实。
 
 修改 `Echo` 函数为下述代码：
 
@@ -388,15 +387,15 @@ func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Respon
 
 ### 编译运行
 
-kitex 工具已经帮我们生成好了编译和运行所需的脚本：   
+kitex 工具已经帮我们生成好了编译和运行所需的脚本：
 
-编译：   
+编译：
 
-`$ sh build.sh`   
+`$ sh build.sh`
 
-执行上述命令后，会生成一个 `output` 目录，里面含有我们的编译产物。   
+执行上述命令后，会生成一个 `output` 目录，里面含有我们的编译产物。
 
-运行：   
+运行：
 
 `$ sh output/bootstrap.sh`
 
@@ -406,15 +405,15 @@ kitex 工具已经帮我们生成好了编译和运行所需的脚本：
 
 有了服务端后，接下来就让我们编写一个客户端用于调用刚刚运行起来的服务端。
 
-首先，同样的，先创建一个目录用于存放我们的客户端代码：   
+首先，同样的，先创建一个目录用于存放我们的客户端代码：
 
 `$ mkdir client`
 
-进入目录：   
+进入目录：
 
 `$ cd client`
 
-创建一个 `main.go` 文件，然后就开始编写客户端代码了。   
+创建一个 `main.go` 文件，然后就开始编写客户端代码了。
 
 #### 创建 client
 
@@ -445,20 +444,20 @@ if err != nil {
 }
 log.Println(resp)
 ```
-上述代码中，我们首先创建了一个请求 `req` , 然后通过 `c.Echo` 发起了调用。   
+上述代码中，我们首先创建了一个请求 `req` , 然后通过 `c.Echo` 发起了调用。
 
-其第一个参数为 `context.Context`，通过通常用其传递信息或者控制本次调用的一些行为，你可以在后续章节中找到如何使用它。   
+其第一个参数为 `context.Context`，通过通常用其传递信息或者控制本次调用的一些行为，你可以在后续章节中找到如何使用它。
 
-其第二个参数为本次调用的请求。   
+其第二个参数为本次调用的请求。
 
-其第三个参数为本次调用的 `options` ，Kitex 提供了一种 `callopt` 机制，顾名思义——调用参数 ，有别于创建 client 时传入的参数，这里传入的参数仅对此次生效。   
+其第三个参数为本次调用的 `options` ，Kitex 提供了一种 `callopt` 机制，顾名思义——调用参数 ，有别于创建 client 时传入的参数，这里传入的参数仅对此次生效。
 此处的 `callopt.WithRPCTimeout` 用于指定此次调用的超时（通常不需要指定，此处仅作演示之用）同样的，你可以在 *** 基础特性*** 一节中找到更多的参数。
 
 ### 发起调用
 
 在编写完一个简单的客户端后，我们终于可以发起调用了。
 
-你可以通过下述命令来完成这一步骤：   
+你可以通过下述命令来完成这一步骤：
 
 `$ go run main.go`
 
