@@ -84,6 +84,23 @@ Kitex 默认支持的 Payload 有 Thrift、Kitex Protobuf 以及 gRPC 协议。�
 
 ![genericCodecExtension](/img/docs/generic_codec_extension.png)
 
+## 默认的 Codec
+
+如果用户不指定 Codec ，则使用默认的内置 Codec。
+
+- 指定默认 Codec 的包大小限制，默认无限制
+  option: `codec.NewDefaultCodecWithSizeLimit`
+
+```go
+maxSizeBytes = 1024 * 1024 * 10 // 10 MB
+
+// server side
+svr := stservice.NewServer(handler, server.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
+
+// client side
+cli, err := xxxservice.NewClient(targetService, client.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
+```
+
 ## 指定自定义 Codec 和 PayloadCodec
 
 通过 option 指定 Codec 和 PayloadCodec。
