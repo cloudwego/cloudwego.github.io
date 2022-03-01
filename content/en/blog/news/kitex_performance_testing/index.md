@@ -1,7 +1,7 @@
 ---
 date: 2021-11-24
-title: "Getting Started With Kitex's Practices: Performance Testing Guide"
-linkTitle: "Getting Started With Kitex's Practices: Performance Testing Guide"
+title: "Getting Started With Kitex's Practice: Performance Testing Guide"
+linkTitle: "Getting Started With Kitex's Practice: Performance Testing Guide"
 description: >
 author: <a href="https://github.com/joway" target="_blank">Joway</a>
 ---
@@ -23,12 +23,12 @@ Kitex was born in ByteDance's large-scale microservices architecture practice. T
 Therefore, the following will first introduce the characteristics of microservices, so that developers can understand Kitex's design thinking in depth.
 
 * **RPC Communication Model**
-An RPC call often requires multiple microservices to collaborate, and downstream services have their own dependencies,  so the entire call chain will be a complex network structure.
-
-* **Complex Call Chain**
 The communication between microservices is usually based on PingPong model. So, in addition to the conventional throughput performance index, developers also need to consider the average latency of each RPC.
 
-In these kind of complex call chains, the latency fluctuation of one intermediate node may be transmitted to the entire chain，resulting in an overall timeout.
+* **Complex Call Chain**
+An RPC call often requires multiple microservices to collaborate, and downstream services have their own dependencies,  so the entire call chain will be a complex network structure.
+
+In this kind of complex call chains, the latency fluctuation of one intermediate node may be transmitted to the entire chain，resulting in an overall timeout.
 When there are many nodes on the chain, even if the fluctuation probability of each node is very low, the timeout probability that eventually converges on the chain will be magnified.
 Therefore, the latency fluctuation of a single service, notably P99, is also a key indicator that has a significant impact on online services.
 
@@ -92,7 +92,7 @@ In addition, if possible, using physical machines makes the test results more pr
 
 On the premise of meeting the above requirements, we compared the stress test results of multiple frameworks using Protobuf.
 The stress test source code can be found in [kitex-benchmark](https://github.com/gogo/protobuf/issues/691) repo.
-When Servier is fully loaded, P99 Latency of Kitex in connection pool mode is the lowest of all frameworks. In multiplexing mode, Kitex also performs well in each indicator.
+When Server is fully loaded, P99 Latency of Kitex in connection pool mode is the lowest of all frameworks. In multiplexing mode, Kitex also performs well in each indicator.
 
 **Configuration**
 - Client 16 CPUs，Server 4 CPUs
