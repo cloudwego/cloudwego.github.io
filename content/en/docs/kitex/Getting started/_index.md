@@ -418,7 +418,7 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
-`echo.NewClient` is used to new a `client`, th first parameter is *service name*, the second parameter is *options* which is used to pass options. `client.WithHostPorts` is used to specify server address, see chapter **Basic Feature** for detail.
+`echo.NewClient` is used to new a `client`, the first parameter is *service name*, the second parameter is *options* which is used to pass options. `client.WithHostPorts` is used to specify server address, see chapter **Basic Feature** for details.
 
 #### Do RPC
 
