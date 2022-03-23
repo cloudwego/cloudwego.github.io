@@ -141,7 +141,7 @@ service BizService {
 
 - **Request**
 
-Type: *generic.HTTPReqeust
+Type: *generic.HTTPRequest
 
 - **Response**
 
