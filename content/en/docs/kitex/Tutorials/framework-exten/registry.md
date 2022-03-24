@@ -49,7 +49,7 @@ Specify your own registration module and customized registration information thr
 
   ```go
   ebi := &rpcinfo.EndpointBasicInfo{
-  		ServiceName: 'yourSerivceName',
+  		ServiceName: 'yourServiceName',
   		Tags:        make(map[string]string),
   }
   ebi.Tags[idc] = "xxx"

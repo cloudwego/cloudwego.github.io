@@ -7,7 +7,7 @@ description: >
 
 ## pkg/klog
 
-Kitex defines serveral interfaces in the package `pkg/klog`: `Logger`, `CtxLoggerKey` and `FormatLogger`. And it provides a default logger that implements those interfaces and can be accessed by calling `klog.DefaultLogger()`.
+Kitex defines several interfaces in the package `pkg/klog`: `Logger`, `CtxLoggerKey` and `FormatLogger`. And it provides a default logger that implements those interfaces and can be accessed by calling `klog.DefaultLogger()`.
 
 There are global functions in the package `pkg/klog` that expose the ability of the default logger, like `klog.Info`, `klog.Errorf` and so on.
 
