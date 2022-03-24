@@ -3,7 +3,7 @@ title: "Kitex Release v0.0.5"
 linkTitle: "Release v0.0.5"
 date: 2021-09-26
 description: >
-  
+
 ---
 
 ## Feature:
@@ -17,7 +17,7 @@ description: >
 - Use new netpoll API to improve throughput and reduce latency for mux.
 - Backward and forward metainfo is supported for mux.
 - Client will use RPCTimeout middleware when necessary.
-- Add validity verification of idle connection in ConnecitonPool.
+- Add validity verification of idle connection in ConnectionPool.
 - QPS limiter token will be reset when QPS limit updates.
 - Reduce the deviation of QPS Limiter.
 

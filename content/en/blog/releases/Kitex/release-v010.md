@@ -3,21 +3,21 @@ title: "Kitex Release v0.1.0"
 linkTitle: "Release v0.1.0"
 date: 2021-12-13
 description: >
-  
----  
+
+---
 
 ## Feature
 
 ### Generic Call
 
 * Support combined services
-* Export SetSeqID and add GetSeqID for binary generic call of server side 
-* Support close generic client to avoid memory leak  
+* Export SetSeqID and add GetSeqID for binary generic call of server side
+* Support close generic client to avoid memory leak
 
 
 ### Log
 
-* Use key=value style in log messages  
+* Use key=value style in log messages
 * Use klog as global log in some logs
 * Use the global default logger across kitex
 * Print detail loginfo by ctx
@@ -47,7 +47,7 @@ description: >
 ## Bugfix
 
 * Enable server error handle middleware
-* Adjust Balancer initialization in lbcache 
+* Adjust Balancer initialization in lbcache
 * Init TraceCtl when it is nil (only affect unit test)
 * Set default rpctimeout and disable timeout logic if rpctimeout == 0
 * Defaultlogger wrong calldepth
@@ -60,7 +60,7 @@ description: >
 ## Docs
 
 * Fix link in readme_zh
-* Remove docs; mantain cloudwego.io only
+* Remove docs; maintain cloudwego.io only
 
 ## Netpoll API Change
 
