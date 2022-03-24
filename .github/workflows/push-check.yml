@@ -10,5 +10,3 @@ jobs:
 
       - name: typos-action
         uses: crate-ci/typos@v1.3.3
-        with:
-          path: ~/content
