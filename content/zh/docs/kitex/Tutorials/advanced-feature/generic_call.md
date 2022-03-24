@@ -141,7 +141,7 @@ service BizService {
 
 - **Request**
 
-类型：*generic.HTTPReqeust
+类型：*generic.HTTPRequest
 
 - **Response**
 
