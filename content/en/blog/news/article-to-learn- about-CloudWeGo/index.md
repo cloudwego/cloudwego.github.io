@@ -3,7 +3,7 @@ date: 2022-03-25
 title: "An Article to Learn About ByteDance Microservices Middleware CloudWeGo"
 linkTitle: "An Article to Learn About ByteDance Microservices Middleware CloudWeGo"
 description: >
-author: <a href="https://github.com/GuangmingLuo" target="_blank">GuangmingLuo</a>, <a href="https://github.com/YangruiEmma" target="_blank">YangruiEmma</a>, <a href="https://github.com/pkumza" target="_blank">Ma Zi'ang</a>
+author: <a href="https://www.infoq.cn/u/junbao/publish" target="_blank">Junbao Zhang</a>
 ---
 
 In the cloud native era, infrastructures across all industries are undergoing a microservice architecture transformation, and all internet companies are concerned about R&D efficiency and stability. Developers who want to build microservices can never forgo supporting microservice governance, such as governance platforms, monitoring, tracing, registration/discovery, configuration centers, service mesh, etc. With Golang gradually becoming the dominating programming language in the cloud native era, there is a strong demand for Golang-based microservices middleware in the open source community.
