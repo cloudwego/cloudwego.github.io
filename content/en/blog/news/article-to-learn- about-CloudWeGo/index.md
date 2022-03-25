@@ -59,3 +59,5 @@ Regarding "open source", ByteDance CloudWeGo technology experts have a clear vis
 
 **Interviewees:** ByteDance CloudWeGo technical experts (Guangming Luo, Rui Yang, Ziang Ma).
 
+**Reference link:** [https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j](https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j)
+
