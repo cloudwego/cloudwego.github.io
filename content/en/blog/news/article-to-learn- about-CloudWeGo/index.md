@@ -47,7 +47,7 @@ However, CloudWeGo has its own limitations. ByteDance CloudWeGo technical expert
 
 At present, CloudWeGo is dynamic in the community. Before the official announcement of open source, Kitex gained 1.2k stars and Netpoll gathered 700+ stars within one month. After ByteDance officially announced the open source CloudWeGo on September 8, as of early October, the overall number of stars in the project has exceeded 4,800 and has been included in the CNCF landscape. The overall star number of the project has exceeded 4800, and it has been included in the CNCF landscape.
 
-![](https://bytedance.feishu.cn/space/api/box/stream/download/asynccode/?code=ODM0YTUyMDQzM2VkMGQ4YjhjMTBlNWQ3MGI2MGYxMTRfR1FUSndybzlGTHlGbHN4V0NrOEo3R25FSmRkRkZsbjRfVG9rZW46Ym94Y256UW9OdWJjTXF2NlZKaDRuajVUTVVmXzE2NDgxOTM2NTU6MTY0ODE5NzI1NV9WNA)
+![image](/img/blog/article_to_learn_about_CloudWeGo/image.png)
 
 ByteDance CloudWeGo technical experts said, "We have received a lot of feedback from the community. For example, many users call for Protobuf. In response to this feedback, we plan to implement Kitex performance optimizations for Protobuf support. We welcome you to submit issues and PRs to CloudWeGo. We've also set up customized support for enterprises and organizations to use Kitex and Netpoll, and hope that CloudWeGo will truly become a universal, available open-source solution to microservices communication and governance in the future."
 
