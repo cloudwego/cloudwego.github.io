@@ -1,6 +1,12 @@
-# 一文了解字节跳动微服务中间件 CloudWeGo
+---
+date: 2022-03-28
+title: "一文了解字节跳动微服务中间件 CloudWeGo"
+linkTitle: "一文了解字节跳动微服务中间件 CloudWeGo"
+description: >
+author: <a href="https://www.infoq.cn/u/junbao/publish" target="_blank">Junbao Zhang</a>
+---
 
-云原生时代，各行各业的基础架构都在经历微服务架构转型，研发效率和稳定性是所有互联网公司需要考虑的问题。开发者想要搭建微服务，离不开配套的微服务治理，如治理平台、监控、链路跟踪、注册 / 发现、配置中心、服务网格等。随着 Golang 逐渐成为云原生时代的主要编程语言，基于 Golang 的微服务中间件在开源社区有着较强的诉求。
+云原生时代，各行各业的基础架构都在经历微服务架构转型，研发效率和稳定性是所有互联网公司需要考虑的问题。开发者想要搭建微服务，离不开配套的微服务治理，如治理平台、监控、链路跟踪、注册/发现、配置中心、服务网格等。随着 Golang 逐渐成为云原生时代的主要编程语言，基于 Golang 的微服务中间件在开源社区有着较强的诉求。
 
 字节跳动也同样面临这些问题。2014 年，字节跳动引入 Golang 解决长连接推送业务面临的高并发问题，两年后，内部技术团队基于 Golang 推出了一个名为 Kite 的框架，同时对开源项目 Gin 做了一层很薄的封装，推出了 Ginex。字节跳动基础架构 / 服务框架团队负责人成国柱在 QCon 2021 的分享中表示，这两个原始框架的推出，极大推动了 Golang 在公司内部的应用。
 
@@ -12,11 +18,11 @@
 
 2021 年 9 月 8 日，字节跳动宣布正式开源 CloudWeGo。
 
-## **中间件****“工具箱”CloudWeGo**
+## **中间件“工具箱”CloudWeGo**
 
 CloudWeGo 是一套字节跳动内部微服务中间件集合，具备高性能、强扩展性和稳定性的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。此外，CloudWeGo 也重视与云原生生态的集成，支持对接 K8s 注册中心、Prometheus 监控以及 OpenTracing 链路追踪等。
 
-目前，CloudWeGo 第一批开源了四个项目：[Kitex](https://www.infoq.cn/article/sPAsFYqGaAID5RGUINl4)、Netpoll、Thriftgo 和 netpoll-http2，以 RPC 框架 Kitex 和网络库 Netpoll 为主。Kitex 内置了部分治理策略以及丰富的扩展接口，便于融入微服务体系中；Netpoll 主要面向对高性能有诉求的场景。
+目前，CloudWeGo 第一批开源了四个项目：[Kitex](https://github.com/cloudwego/kitex)、[Netpoll](https://github.com/cloudwego/netpoll)、[Thriftgo](https://github.com/cloudwego/thriftgo) 和 [netpoll-http2](https://github.com/cloudwego/cloudwego.github.io)，以 RPC 框架 Kitex 和网络库 Netpoll 为主。Kitex 内置了部分治理策略以及丰富的扩展接口，便于融入微服务体系中；Netpoll 主要面向对高性能有诉求的场景。
 
 CloudWeGo 的每一个组件都可以单独使用。“很多人担心 Kitex 是一个很重的框架，其实 Kitex 没有耦合任何其他组件包括 Netpoll，Kitex 内置的一些治理能力，用户也可以选择性集成。Netpoll 作为一个网络库，其他 RPC 框架、HTTP 框架都可以单独接入使用。Thriftgo 是 Thrift IDL 解析和代码生成器，也是独立的工具，并且提供插件机制，用户可定制生成代码。”字节跳动 CloudWeGo 技术专家表示，“我们会继续开源其他内部项目，如 HTTP 框架 Hertz、基于共享内存的 IPC 通信库 ShmIPC 等，提供更多场景的微服务需求支持。”
 
@@ -37,12 +43,11 @@ CloudWeGo 的优势在于，已经在字节跳动经过大规模生产流量验�
 
 不过 CloudWeGo 依然有自己的局限性。字节跳动 CloudWeGo 技术专家告诉 InfoQ：CloudWeGo 功能的丰富度和多样性还不够，还需要进一步完善，字节跳动技术团队会收集外部用户的需求，评估排期支持，期待更多的开发者加入。目前 Kitex Server 性能优势明显，但 Client 相比 Server 性能表现不佳，后续会重点对 Client 进行优化。此外，基于不同的语言框架，默认场景必须能兼容互通而非性能最佳。“刚开源时得到大家的关注，看到一些压测对比显示 Kitex 性能表现一般，主要是压测场景未对齐，后续我们也会考虑面向开源尽量提供性能较优的策略。”
 
-## **“开源”不是为了“完成 ****KPI****”**
+## **“开源”不是为了“完成 KPI ”**
 
 目前，CloudWeGo 在社区中也比较有活力。据悉，在未被正式宣布开源前，一个月内 Kitex 收获了 1.2k stars，Netpoll 收获了 700+ stars。9 月 8 日，字节跳动正式宣布开源 CloudWeGo 后，截至 10 月初，项目整体 star 数已经超过 4800，且已被收录进 CNCF landscape。
 
-![](https://bytedance.feishu.cn/space/api/box/stream/download/asynccode/?code=YTFjYzRiMzE0MzhhMzUxYmRkMDM0NTc3YTQ3YTE1NGNfTGFSem50N2ZJNWNFMmVYeUllSnlWVG5aY0tmZWVEbGJfVG9rZW46Ym94Y25KUk1JcWxZOVFDeGNLOFYyWHo5ZFJmXzE2NDgxOTQzNTM6MTY0ODE5Nzk1M19WNA)
- CNCF 云原生全景图谱
+![image](/img/blog/article_to_learn_about_CloudWeGo/image.png)
 
 字节跳动 CloudWeGo 技术专家表示：“我们收到了来自社区的大量反馈，如很多用户对 Protobuf 的诉求较为强烈，我们已经针对这个问题，计划开展 Kitex 对 Protobuf 支持的性能优化。欢迎大家向 CloudWeGo 提交 issue 和 PR，共建 CloudWeGo。我们也为企业和组织使用 Kitex 和 Netpoll 设置了专项支持，希望 CloudWeGo 将来能真正成为通用的、可落地的微服务通信与治理开源方案。”
 
@@ -53,4 +58,6 @@ CloudWeGo 的优势在于，已经在字节跳动经过大规模生产流量验�
 **项目地址：**[https://github.com/cloudwego](https://github.com/cloudwego)
 
 **受访嘉宾:**  字节跳动 CloudWeGo 技术专家罗广明、杨芮、马子昂
+
+**原文链接:** [https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j](https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j)
 
