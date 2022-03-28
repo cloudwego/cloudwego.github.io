@@ -22,7 +22,7 @@ author: <a href="https://www.infoq.cn/u/junbao/publish" target="_blank">Junbao Z
 
 CloudWeGo 是一套字节跳动内部微服务中间件集合，具备高性能、强扩展性和稳定性的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。此外，CloudWeGo 也重视与云原生生态的集成，支持对接 K8s 注册中心、Prometheus 监控以及 OpenTracing 链路追踪等。
 
-目前，CloudWeGo 第一批开源了四个项目：[Kitex](https://www.infoq.cn/article/sPAsFYqGaAID5RGUINl4)、Netpoll、Thriftgo 和 netpoll-http2，以 RPC 框架 Kitex 和网络库 Netpoll 为主。Kitex 内置了部分治理策略以及丰富的扩展接口，便于融入微服务体系中；Netpoll 主要面向对高性能有诉求的场景。
+目前，CloudWeGo 第一批开源了四个项目：[Kitex](https://github.com/cloudwego/kitex)、[Netpoll](https://github.com/cloudwego/netpoll)、[Thriftgo](https://github.com/cloudwego/thriftgo) 和 [netpoll-http2](https://github.com/cloudwego/cloudwego.github.io)，以 RPC 框架 Kitex 和网络库 Netpoll 为主。Kitex 内置了部分治理策略以及丰富的扩展接口，便于融入微服务体系中；Netpoll 主要面向对高性能有诉求的场景。
 
 CloudWeGo 的每一个组件都可以单独使用。“很多人担心 Kitex 是一个很重的框架，其实 Kitex 没有耦合任何其他组件包括 Netpoll，Kitex 内置的一些治理能力，用户也可以选择性集成。Netpoll 作为一个网络库，其他 RPC 框架、HTTP 框架都可以单独接入使用。Thriftgo 是 Thrift IDL 解析和代码生成器，也是独立的工具，并且提供插件机制，用户可定制生成代码。”字节跳动 CloudWeGo 技术专家表示，“我们会继续开源其他内部项目，如 HTTP 框架 Hertz、基于共享内存的 IPC 通信库 ShmIPC 等，提供更多场景的微服务需求支持。”
 
@@ -59,6 +59,6 @@ CloudWeGo 的优势在于，已经在字节跳动经过大规模生产流量验�
 
 **受访嘉宾:**  字节跳动 CloudWeGo 技术专家罗广明、杨芮、马子昂
 
-**引用链接:** [https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j](https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j)
+**原文链接:** [https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j](https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j)
 
 
