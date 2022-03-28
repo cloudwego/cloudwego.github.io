@@ -33,7 +33,7 @@ CloudWeGo 的每一个组件都可以单独使用。“很多人担心 Kitex 是
 * 能解决实际业务问题和上生产抗流量，且易用性高、可治理、成熟稳定
 * 技术是开源的，且开源项目的 star 数、项目活跃度（Issue&PR）、文档更新频率、发版周期稳定可靠
 
-CloudWeGo 的优势在于，已经在字节跳动经过大规模生产流量验证，有可以参考的稳定性和可靠性实际案例。“CloudWeGo 的特点之一是高性能，但实际上在开发之初它经常遇到性能瓶颈，于是内部专门进行了网络库、Thrift 序列化的专项优化，优化的过程会比较漫长，一个瓶颈点要花很长时间反复测试调整实现，我们也发过两篇文章[《字节跳动 Go RPC 框架 Kitex 性能优化实践》](https://mp.weixin.qq.com/s?__biz=MzI1MzYzMjE0MQ==&mid=2247487656&idx=1&sn=e6e125db1fa1bad01048f341a4b7165a&scene=21#wechat_redirect)和[《字节跳动在 Go 网络库上的实践》](https://mp.weixin.qq.com/s?__biz=MzI1MzYzMjE0MQ==&mid=2247485756&idx=1&sn=4d2712e4bfb9be27a790fa15159a7be1&chksm=e9d0c2dedea74bc8179af39888a5b2b99266587cad32744ad11092b91ec2e2babc74e69090e6&scene=21#wechat_redirect)分享了优化实践。”字节跳动 CloudWeGo 技术专家表示。
+CloudWeGo 的优势在于，已经在字节跳动经过大规模生产流量验证，有可以参考的稳定性和可靠性实际案例。“CloudWeGo 的特点之一是高性能，但实际上在开发之初它经常遇到性能瓶颈，于是内部专门进行了网络库、Thrift 序列化的专项优化，优化的过程会比较漫长，一个瓶颈点要花很长时间反复测试调整实现，我们也发过两篇文章[《字节跳动 Go RPC 框架 Kitex 性能优化实践》](http://www.cloudwego.io/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/)和[《字节跳动在 Go 网络库上的实践》](http://www.cloudwego.io/zh/blog/2021/10/09/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)分享了优化实践。”字节跳动 CloudWeGo 技术专家表示。
 
 据悉，与同类型项目相比，CloudWeGo 开发团队不仅考虑了高性能、强扩展性，还考虑到了易用性。“以 Kitex 为例，目前从治理功能的多样性上不及一些开源框架，从性能、扩展性、使用体验多维度综合来看，Kitex 具有一定的优势。Kitex 支持多协议，由于内部以 Thrift 为主，Kitex 对 Thrift 支持也做了性能优化，如果使用 Thrift，Kitex 将是最佳的选择。”字节跳动 CloudWeGo 技术专家告诉 InfoQ。
 
