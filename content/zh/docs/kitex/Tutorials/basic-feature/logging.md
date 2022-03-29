@@ -21,3 +21,22 @@ pkg/klog 同时也提供了若干全局函数，例如 `klog.Info`、`klog.Error
 ## 重定向默认 logger 的输出
 
 可以使用 `klog.SetOutput` 来重定向 klog 提供的默认 logger 的输出。
+
+例如，要把默认 logger 的输出重定向到启动路径下的 ./output.log，可以这样实现：
+
+```go
+package main
+import (
+    "os"
+    "github.com/cloudwego/kitex/pkg/klog"
+)
+func main() {
+    f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+    if err != nil {
+    	panic(err)
+    }
+    defer f.Close()
+    klog.SetOutput(f)
+    ... // continue to set up your server
+}
+```
