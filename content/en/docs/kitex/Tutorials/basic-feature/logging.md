@@ -21,3 +21,23 @@ You can use `klog.SetLogger` to replace the default logger.
 ## Redirecting the Output of the Default Logger
 
 The `klog.SetOutput` can be used to redirect the output of the default logger provided by the pkg/klog package.
+
+For example, to redirect the output of the default logger to a file name `./output.log` under the launch directory, a possible implementation might be:
+
+```go
+package main
+import (
+    "os"
+    "github.com/cloudwego/kitex/pkg/klog"
+)
+func main() {
+    f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+    if err != nil {
+    	panic(err)
+    }
+    defer f.Close()
+    klog.SetOutput(f)
+    ... // continue to set up your server
+}
+```
+
