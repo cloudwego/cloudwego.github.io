@@ -16,7 +16,7 @@ ByteDance refactored Kite as Kitex, designed revolving around performance and sc
 
 "After Kitex became widely used within ByteDance, we decided to gradually entail our practice open-source revolving around microservices and keep it in line with the outside." ByteDance CloudWeGo technical experts said, "But there are many microservice-related projects, and each project is open-source alone, which is not friendly to external users. So we named the project as CloudWeGo and gradually enabled the entire internal microservice system to be open-source, using open-source libraries internally and externally. Each project iterates mainly with open-source libraries."
 
-On September 8, 2021, ByteDance officially announced the open source CloudWeGo.
+On September 8, 2021, ByteDance officially announced the open-source CloudWeGo.
 
 ## CloudWeGo
 
