@@ -1,6 +1,12 @@
-CloudWeGo 助 NextArch 基金会推动标准化建设
+---
+date: 2022-04-01
+title: "CloudWeGo 助 NextArch 基金会推动标准化建设"
+linkTitle: "CloudWeGo 助 NextArch 基金会推动标准化建设"
+description: >
+author: <a href="https://github.com/nextarch" target="_blank">NextArch</a>
+---
 
-导语：2022 年 3 月，NextArch 基金会正式成立微服务技术小组，致力于推动微服务技术和开源生态的持续发展，根据各个企业在微服务生产实践中遇到的问题，针对不同行业和应用场景输出标准化解决方案，并且联合 PolarisMesh、TARS、go-zero、GoFrame、**[CloudWeGo](https://github.com/cloudwego)** 和 Spring Cloud Tencent 等开源社区提供开箱即用的实现，降低终端用户的使用门槛。来自腾讯、字节跳动、七牛云、快手、BIGO、好未来和蓝色光标等多家企业的技术专家已经加入技术小组，欢迎更多企业和开源社区加入。
+>  导语：2022 年 3 月，NextArch 基金会正式成立微服务技术小组，致力于推动微服务技术和开源生态的持续发展，根据各个企业在微服务生产实践中遇到的问题，针对不同行业和应用场景输出标准化解决方案，并且联合 PolarisMesh、TARS、go-zero、GoFrame、**[CloudWeGo](https://github.com/cloudwego)** 和 Spring Cloud Tencent 等开源社区提供开箱即用的实现，降低终端用户的使用门槛。来自腾讯、字节跳动、七牛云、快手、BIGO、好未来和蓝色光标等多家企业的技术专家已经加入技术小组，欢迎更多企业和开源社区加入。
 
 2021 年 11 月，Linux 基金会正式成立 NextArch 基金会，共计 40 余家企业或单位联合参与了该基金会的筹建工作，并作为首批共建和支持单位加入，目前已增至 53 家企业。NextArch 基金会致力于在异构基础设施、多元化技术栈和混合云场景下的构建下一代技术架构，始终秉承一个开放中立的治理模式，发展适合企业数字化转型的开源生态。
 
@@ -8,7 +14,7 @@ CloudWeGo 助 NextArch 基金会推动标准化建设
 
 为了降低微服务架构的落地成本，来自腾讯、快手、字节跳动、好未来、七牛云和蓝色光标等多家企业的技术专家在 NextArch 基金会成立微服务技术小组，共同探讨各自企业在微服务领域中遇到的问题，分享大家在生产过程中的实践经验，并且面向不同的应用场景和终端用户，联合相关开源社区输出标准化的解决方案。
 
-![](https://bytedance.feishu.cn/space/api/box/stream/download/asynccode/?code=YmYxMzQyMzk1ZWFmYjM5OGQ2ODcwMzc3ZjM4NzRjMGNfMmw5Vk1OUjVObE0wZ2o4b3NGc1Z0VndsVUxCSUk5SHZfVG9rZW46Ym94Y25BbndXcEM2VjBoaE8yaWk1UGVQdjdjXzE2NDg3OTY0NzU6MTY0ODgwMDA3NV9WNA)
+![image](/img/blog/CloudWeGo_helps_NextArch/community.png)
 
 在采用微服务架构之前，我们需要思考为什么采用微服务架构，并不是所有的开发团队和发展阶段都适合采用微服务架构。通常，采用微服务架构可以解决以下问题：首先，开发团队具有一定的规模，所有成员共同开发一个单体应用的内耗太高，如果采用微服务架构，每个服务可以由单个或者少数成员独立负责。第二，业务系统的功能模块很多，耦合在一起会增加测试和部署的成本，任何一个模块故障也会导致整个系统故障。第三，功能模块之间的负载无法隔离，容易互相影响，没有办法针对热点模块的计算层或者存储层进行扩容。
 
@@ -16,9 +22,9 @@ CloudWeGo 助 NextArch 基金会推动标准化建设
 
 目前，这个方向还没有开箱即用的解决方案，终端用户必须在不同的基础设施和适当的工具之间做出抉择，才能解决各种问题。近日，NextArch 微服务技术小组向基金会提交了首个提案，根据各自企业在分布式或者微服务生产实践中的经验和痛点，面向多语言、多框架和异构基础设施，针对不同行业和应用场景输出微服务落地的标准化方案，并且依托相关开源社区提供推荐实现，方便终端用户落地。我们也期待更多企业和开源社区加入 NextArch 基金会，共同探讨分布式或者微服务治理的标准化方案。
 
-![](https://bytedance.feishu.cn/space/api/box/stream/download/asynccode/?code=MmY0Zjk1MmJkYjdiNmJjZGQwYTgzMDVmY2M3OTM4MDBfZVFoQTJORVFJamEyRHZxTU9ydnZUMWl2dUhsU2NIb3VfVG9rZW46Ym94Y25iZDlDbFFCOHFoU2tzSkZQNjQwaWRIXzE2NDg3OTY0NzU6MTY0ODgwMDA3NV9WNA)
+![image](/img/blog/CloudWeGo_helps_NextArch/framework.png)
 
-部分 NextArch Microservice SIG 成员引文：
+### 部分 NextArch Microservice SIG 成员引文：
 
 **PolarisMesh 单家骏**
 
