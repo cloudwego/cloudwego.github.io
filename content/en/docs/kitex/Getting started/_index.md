@@ -46,7 +46,7 @@ Tips: If you encounter any problem during installation, it's probably you don't 
 
 1. enter `hello` directory
 
-   `cd examples/hello`
+   `cd kitex-examples/hello`
 
 2. run server
 
@@ -60,7 +60,7 @@ Tips: If you encounter any problem during installation, it's probably you don't 
 
 1. enter the example directory
 
-   `cd examples`
+   `cd kitex-examples`
 
 2. build the example project
 
