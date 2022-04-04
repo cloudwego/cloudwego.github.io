@@ -55,7 +55,7 @@ cd $(go env GOPATH)/src/github.com/cloudwego
 
 1. 进入示例仓库的 `hello` 目录
 
-   `cd examples/hello`
+   `cd kitex-examples/hello`
 
 2. 运行 server
 
@@ -69,7 +69,7 @@ cd $(go env GOPATH)/src/github.com/cloudwego
 
 1. 进入示例仓库目录
 
-   `cd examples`
+   `cd kitex-examples`
 
 2. 编译项目
 
