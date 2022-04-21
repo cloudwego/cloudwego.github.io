@@ -159,7 +159,7 @@ func StringToSliceByte(s string) []byte {
    }))
 }
 ```
-The meaning of this demonstrated code is to take the address of the string first, and then give it a slice byte header, so that the "string" can be converted into "[] byte" without copying the data. Note that the resulting "[]byte" is not writable, or the behavior is undefined.
+The meaning of this demonstrated code is to take the address of the string first, and then give it a slice byte header, so that the "string" can be converted into "[]byte" without copying the data. Note that the resulting "[]byte" is not writable, or the behavior is undefined.
 
 **Pre-Calculation**  
 Some services support transmissions of large data package, which incurs considerable serialization / deserialization overhead. Generally, large packages are associated with the large size of the container type. If the buffer can be pre-calculated, some O(n) operations can be reduced to O(1), and further reduce the frequency of function calls. In the case of large data packages, the number of memory allocation can also be greatly reduced, bringing considerable benefits.
