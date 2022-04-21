@@ -409,7 +409,7 @@ Summary of the test results:
 - In large data package scenario, the performance of non-serialization is better. When processing packages larger than 4K, the performance of non-serialization is 7%-40% better compared with "FastWrite/FastRead".  
 
 ## Postscript
-Hope the above sharing can be helpful to the community. At the same time, we are trying to share memory-based IPC, io_uring, TCP zero copy, RDMA, etc., to better improve Kitex performance. And we will also focus on optimizing the communication scenarios of the same device and container. Welcome to join us and contribute to Go ecology together!  
+Hope the above sharing can be helpful to the community. At the same time, we are trying to share memory-based IPC, io_uring, TCP zero copy, RDMA, etc., to better improve Kitex performance. And we will also focus on improving the communication scenarios of the same device and container. Welcome to join us and contribute to Go ecology together!  
 
 ## Reference
 - https://github.com/alecthomas/go_serialization_benchmarks
