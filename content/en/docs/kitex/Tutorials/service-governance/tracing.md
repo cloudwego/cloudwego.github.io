@@ -5,7 +5,7 @@ weight: 3
 description: >
 ---
 
-Kitex supports opentelemetry tracer 、opentracing tracer, and also customized tracer.
+Kitex supports opentelemetry tracer, opentracing tracer, and also customized tracer.
 
 ## opentelemetry
 
