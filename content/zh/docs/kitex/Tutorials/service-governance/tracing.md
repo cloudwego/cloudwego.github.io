@@ -5,7 +5,74 @@ weight: 3
 description: >
 ---
 
-Kitex 提供了对 opentracing 的支持，也支持用户自定义链路跟踪。
+Kitex 提供了对 opentelemetry 和 opentracing 的支持，也支持用户自定义链路跟踪。
+
+## opentelemetry
+Kitex 的 opentelemetry扩展 提供了 `tracing`、`Metrics`、`logging` 的支持
+
+client 侧
+```go
+import (
+    ...
+    "github.com/kitex-contrib/obs-opentelemetry/provider"
+    "github.com/kitex-contrib/obs-opentelemetry/tracing"
+)
+
+func main(){
+    serviceName := "echo-client"
+
+    p := provider.NewOpenTelemetryProvider(
+        provider.WithServiceName(serviceName),
+        provider.WithExportEndpoint("localhost:4317"),
+        provider.WithInsecure(),
+    )
+    defer p.Shutdown(context.Background())
+
+    c, err := echo.NewClient(
+        "echo",
+        client.WithSuite(tracing.NewClientSuite()),
+        // Please keep the same as provider.WithServiceName
+        client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+    )
+    if err != nil {
+        klog.Fatal(err)
+    }
+
+}
+
+```
+
+server 侧
+```go
+import (
+    ...
+    "github.com/kitex-contrib/obs-opentelemetry/provider"
+    "github.com/kitex-contrib/obs-opentelemetry/tracing"
+)
+
+
+func main()  {
+    serviceName := "echo"
+
+    p := provider.NewOpenTelemetryProvider(
+        provider.WithServiceName(serviceName),
+        provider.WithExportEndpoint("localhost:4317"),
+        provider.WithInsecure(),
+    )
+    defer p.Shutdown(context.Background())
+
+    svr := echo.NewServer(
+        new(EchoImpl),
+        server.WithSuite(tracing.NewServerSuite()),
+        // Please keep the same as provider.WithServiceName
+        server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+    )
+    if err := svr.Run(); err != nil {
+        klog.Fatalf("server stopped with error:", err)
+    }
+}
+```
+更多信息参考 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry)
 
 ## opentracing
 
@@ -42,6 +109,8 @@ if err := svr.Run(); err != nil {
 	log.Println("server stopped")
 }
 ```
+更多信息参考 [tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing)
+
 
 ### 自定义 opentracing tracer 和 operation name
 
