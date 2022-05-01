@@ -13,7 +13,7 @@ Kitex's opentelemetry extension provides support for `tracing`, `metrics` and `l
 
 Example
 
-client:
+client side:
 
 ```go
 import (
@@ -46,7 +46,7 @@ func main(){
 
 ```
 
-server:
+server side:
 
 ```go
 import (
@@ -122,7 +122,7 @@ For more information see [tracer-opentracing](https://github.com/kitex-contrib/t
 
 ### Customize opentracing tracer and operation name
 
-client side
+client side:
 
 ```go
 import (
@@ -146,7 +146,7 @@ if err != nil {
 }
 ```
 
-server side
+server side:
 
 ```go
 import (
