@@ -8,7 +8,7 @@ description: >
 Kitex 提供了对 opentelemetry 和 opentracing 的支持，也支持用户自定义链路跟踪。
 
 ## opentelemetry
-Kitex 的 opentelemetry扩展 提供了 `tracing`、`Metrics`、`logging` 的支持
+Kitex 的 opentelemetry 扩展 提供了 `tracing`、`Metrics`、`logging` 的支持
 
 client 侧
 ```go
