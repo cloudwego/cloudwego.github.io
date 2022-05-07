@@ -17,10 +17,10 @@
         {{ end }}
       </div>
       <div class="col-12 col-sm-4 text-center py-2 order-sm-2">
-        {{ with .Site.Params.copyright }}<small class="text-white">&copy; {{ now.Year}} {{ .}} {{ T "footer_all_rights_reserved" }}</small>{{ end }}
+        {{ with .Site.Params.copyright }}<small class="text-white">&copy; {{ now.Year}} {{ .}}</small>{{ end }}
         {{ with .Site.Params.privacy_policy }}<small class="ml-1"><a class="cloudwego-link" href="{{ . }}" target="_blank" rel="noopener">{{ T "footer_privacy_policy" }}</a></small>{{ end }}
 	{{ if not .Site.Params.ui.footer_about_disable }}
-		{{ with .Site.GetPage "about" }}<p class="mt-2"><a class="cloudwego-link" href="{{ .RelPermalink }}">{{ .Title }}</a></p>{{ end }}
+		{{ with .Site.GetPage "about" }}<p class="mt-2"><a class="cloudwego-link" href="{{ .RelPermalink }}">About</a> | <a class="cloudwego-link" href="https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE">License</a></p>{{ end }}
 	{{ end }}
       </div>
     </div>
