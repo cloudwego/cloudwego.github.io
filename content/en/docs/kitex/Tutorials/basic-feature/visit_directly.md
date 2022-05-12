@@ -5,7 +5,7 @@ weight: 4
 description: >
 ---
 
-If you want to send the requet to downstream that address determined, you can choose visiting directly without service discovery.
+If you want to send the request to downstream that address determined, you can choose visiting directly without service discovery.
 
 ## Specify RPC Host and Port
 You can use `callopt.WithHostPort` to specify host and port, supports two parameters:
