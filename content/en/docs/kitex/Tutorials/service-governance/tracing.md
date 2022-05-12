@@ -5,7 +5,81 @@ weight: 3
 description: >
 ---
 
-Kitex supports original opentracing tracer, and also customized tracer.
+Kitex supports opentelemetry tracer, opentracing tracer, and also customized tracer.
+
+## opentelemetry
+
+Kitex's opentelemetry extension provides support for `tracing`, `metrics` and `logging`.
+
+Example
+
+client side:
+
+```go
+import (
+    ...
+    "github.com/kitex-contrib/obs-opentelemetry/provider"
+    "github.com/kitex-contrib/obs-opentelemetry/tracing"
+)
+
+func main(){
+    serviceName := "echo-client"
+
+    p := provider.NewOpenTelemetryProvider(
+        provider.WithServiceName(serviceName),
+        provider.WithExportEndpoint("localhost:4317"),
+        provider.WithInsecure(),
+    )
+    defer p.Shutdown(context.Background())
+
+    c, err := echo.NewClient(
+        "echo",
+        client.WithSuite(tracing.NewClientSuite()),
+        // Please keep the same as provider.WithServiceName
+        client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+    )
+    if err != nil {
+        klog.Fatal(err)
+    }
+
+}
+
+```
+
+server side:
+
+```go
+import (
+    ...
+    "github.com/kitex-contrib/obs-opentelemetry/provider"
+    "github.com/kitex-contrib/obs-opentelemetry/tracing"
+)
+
+
+func main()  {
+    serviceName := "echo"
+
+    p := provider.NewOpenTelemetryProvider(
+        provider.WithServiceName(serviceName),
+        provider.WithExportEndpoint("localhost:4317"),
+        provider.WithInsecure(),
+    )
+    defer p.Shutdown(context.Background())
+
+    svr := echo.NewServer(
+        new(EchoImpl),
+        server.WithSuite(tracing.NewServerSuite()),
+        // Please keep the same as provider.WithServiceName
+        server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+    )
+    if err := svr.Run(); err != nil {
+        klog.Fatalf("server stopped with error:", err)
+    }
+}
+```
+
+For more information see [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry)
+
 
 ## opentracing
 
@@ -43,9 +117,12 @@ if err := svr.Run(); err != nil {
 }
 ```
 
+For more information see [tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing)
+
+
 ### Customize opentracing tracer and operation name
 
-client side
+client side:
 
 ```go
 import (
@@ -69,7 +146,7 @@ if err != nil {
 }
 ```
 
-server side
+server side:
 
 ```go
 import (
