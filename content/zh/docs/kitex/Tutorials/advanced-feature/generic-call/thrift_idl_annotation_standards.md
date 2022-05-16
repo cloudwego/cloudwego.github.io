@@ -1,3 +1,11 @@
+---
+title: "CloudWeGo Thrift IDL 注解规范"
+date: 2022-05-16
+weight: 3
+description: >
+---
+
+## CloudWeGo Thrift IDL 注解规范
 
 本规范是一系列与`thrift`结合的接口定义标准，包括服务、接口以及请求 `request`、`response` 参数定义规范和错误码定义规范。
 
