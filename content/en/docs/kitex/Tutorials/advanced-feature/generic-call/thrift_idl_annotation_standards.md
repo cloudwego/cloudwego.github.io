@@ -1,3 +1,10 @@
+---
+title: "CloudWeGo Thrift IDL Annotation Standards"
+date: 2022-05-16
+weight: 3
+description: >
+---
+
 ## CloudWeGo Thrift IDL Annotation Standards
 
 This document is a series of API definition standards associated with `thrift` IDL. It contains definition standards of service, endpoint, `request` and `response` parameters.
