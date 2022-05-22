@@ -84,7 +84,7 @@ struct BizRequest {
 | annotation | description | field restrict | is KiteX supported |
 | --- | ---- | ------ | ----- |
 | `api.header` | `api.header` corresponds `header` parameter for HTTP response | Only basic types and `list` split by , are supported | ✅|
-| `api.http_code` | `api.HTTP_code` corresponds HTTP code for HTTP response，such as 200, 500 and so on | | ✅|
+| `api.http_code` | `api.http_code` corresponds HTTP code for HTTP response，such as 200, 500 and so on | | ✅|
 | `api.body` | `api.body` corresponds `body` parameter for HTTP response | | ✅|
 | `api.none` | `api.body` indicates the field will be ignored for  HTTP `response` | | ✅|
 | `api.js_conv` | `api.js_conv` indicates the field should be trans to `string` in response since it is int64 | | ✅|
@@ -104,10 +104,10 @@ struct BizResponse {
     // This field will be filled in the header returned to the client
     2: optional map<i64, RspItem> rsp_items  (api.body='rsp_items')
     // first level key = 'rsp_items'
-    3: optional i32 v_enum  (api.none = '') // Ignore current parameter
+    3: optional i32 v_enum  (api.none = 'true') // Ignore current parameter
     4: optional list<RspItem> rsp_item_list  (api.body = 'rsp_item_list')
-    5: optional i32 http_code  (api.http_code = '') 
-    // The business specifies the HTTPCode itself. If not specified, baseResp.StatuCode=0 -> HTTPCode=200,  other HTTPCode=500      
+    // The business specifies the HTTP Code itself. If not specified, baseResp.StatuCode=0 -> HTTPCode=200,  other HTTPCode=500      
+    5: optional i32 http_code  (api.http_code = 'http_code') 
     6: optional list<i64> item_count (api.header = 'item_count') // Comma separated list when setting header
 }
 ```
