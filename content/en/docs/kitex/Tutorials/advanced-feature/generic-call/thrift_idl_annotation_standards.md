@@ -68,11 +68,6 @@ struct BizRequest {
     9: optional list<i64> cids(api.query = 'cids')
     // Corresponding to comma separated numbers in query, for example: cids=1,2,3,4 Only supported list<i64>、list<i32>
     10: optional list<string> vids(api.query = 'vids')
-    // Corresponding to the comma separated string in query, for example:  vids=a,b,c,d   Only supported list<string>
-    252: optional BizCommonParam biz_common_param // Business public parameters, as described below
-    253: optional TTNetCommonParam ttnet_common_param // TTNET public parameters, as described below
-    254: optional AgwCommonParam agw_common_param // AGW loader General parameters，as described below，use only when accessing AGW
-    255: optional base.Base Base 
 }
 ```
 
