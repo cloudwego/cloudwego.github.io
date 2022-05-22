@@ -66,11 +66,6 @@ struct BizRequest {
     9: optional list<i64> cids(api.query = 'cids')
     // 对应query里面逗号隔开的数字, 如 cids=1,2,3,4仅支持list<i64>、list<i32>
     10: optional list<string> vids(api.query = 'vids')
-    // 对应query里面逗号隔开的字符串 如  vids=a,b,c,d   仅支持 list<string>
-    252: optional BizCommonParam biz_common_param // 业务公参，下文说明
-    253: optional TTNetCommonParam ttnet_common_param // TTNET公共参数，下文说明
-    254: optional AgwCommonParam agw_common_param // AGW loader通用参数，下文说明，仅在接入agw情况下使用
-    255: optional base.Base Base 
 }
 ```
 
@@ -111,7 +106,6 @@ struct BizResponse {
     5: optional i32 http_code  (api.http_code = '') 
     // 业务自己指定了HTTPCode,  如果没有指定, baseResp.StatuCode=0 -> HTTPCode=200,  其他 HTTPCode=500      
     6: optional list<i64> item_count (api.header = 'item_count') // 当设置header时以逗号相隔的列表
-    255: optional base.BaseResp BaseResp,
 }
 ```
 
