@@ -1,6 +1,7 @@
 ---
 title: "IDL Definition Standards for mapping between Thrift and HTTP"
 date: 2022-05-21
+author: wangjingpei
 weight: 1
 description: >
 ---
