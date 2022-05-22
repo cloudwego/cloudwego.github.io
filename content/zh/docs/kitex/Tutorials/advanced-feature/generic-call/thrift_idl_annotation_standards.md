@@ -75,7 +75,7 @@ struct BizRequest {
 ### 约束
 
 - `header` 不支持除逗号相隔并且 `value` 为基本类型的 `list` 以外的复杂类型
-- 直接按照业务自己定义的 `reponse。默认` `json` 序列化到 `body`，`key`为字段名，注解可为空
+- 直接按照业务自己定义的 `response。默认` `json` 序列化到 `body`，`key`为字段名，注解可为空
 
 ### 注解说明 （Annotation description）
 
@@ -84,7 +84,7 @@ struct BizRequest {
 | `api.header` |`api.header` 设置HTTP 请求回复中的header | 只支持基本类型和逗号分隔的`list` | 支持 |
 | `api.http_code` | `api.HTTP_cod`e 对应HTTP 回复中的status code，200/500等 | | 支持 |
 | `api.body` | `api.body` 对应HTTP 回复中的body参数 | | 支持 |
-| `api.none` | 忽略标识该字段在 `resonse`中将会被忽略 | | 支持 |
+| `api.none` | 忽略标识该字段在 `response`中将会被忽略 | | 支持 |
 | `api.js_conv` | 兼容js int64问题，`response`时需要将int64表示为string | | 支持 |
 | `api.raw_body` | `api.raw_body` 设置该字段`content`作为HTTP response的完整body | | 支持 |
 | `api.cookie` | `api.cookie` 设置HTTP 回复中的cookie （`string`类型，后端自行拼接） | | 支持 | 
@@ -95,7 +95,7 @@ struct BizRequest {
 // 最终将把BizResponse json序列化之后作为给客户端的返包
 struct RspItem{
     1: optional i64 item_id // 默认被以字段名作key序列化，等价于使用gotag `json:"item_id"`
-    2: optioanl string text
+    2: optional string text
 }
 struct BizResponse {
     1: optional string T  (api.header= 'T') 
