@@ -51,7 +51,7 @@ This specification is the IDL definition standard for mapping between Thrift and
 ```thrift
 struct Item{
     // For nested structures, if you want to set the serialization key, use gotag, such as ` JSON: "Id"`
-    1: optional i64 id(go.tag = "json:\"id\"")
+    1: optional i64 id(go.tag = 'json:"id"')
     2: optional string text
 }
 typedef string JsonDict
