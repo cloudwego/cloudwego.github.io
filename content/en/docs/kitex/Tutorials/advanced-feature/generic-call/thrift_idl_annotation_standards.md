@@ -50,7 +50,7 @@ This specification is the IDL definition standard for mapping between Thrift and
 
 ```thrift
 struct Item{
-    // For nested structures, if you want to set the serialization key, use gotag, such as ` JSON: "Id"`
+    // For nested structures, if you want to set the serialization key, use gotag, such as `json: "Id"`
     1: optional i64 id(go.tag = 'json:"id"')
     2: optional string text
 }
@@ -76,7 +76,7 @@ struct BizRequest {
 
 #### Restrict
 
-- Only basic type like int64, string, bool and list split by , are supported for header value
+- Only basic type like `int64`, `string`, `bool` and `list` split by `,` are supported for header value
 - Response is defined directly by the business itself. The default JSON is serialized to the body, the key is the field name, and the annotation can be empty
 
 #### Annotation Description
