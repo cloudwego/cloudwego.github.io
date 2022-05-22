@@ -1,3 +1,10 @@
+---
+title: "Thrift-HTTP 映射的 IDL 规范"
+date: 2022-05-21
+weight: 1
+description: >
+---
+
 ## Thrift-HTTP 映射的 IDL 规范
 
 本规范是 `Thrift` 与 `HTTP` 接口映射的 IDL 定义标准，包括服务、接口以及请求 `request`、`response` 参数定义规范和错误码定义规范。Kitex 部分实现了该规范，注解说明有标注支持情况。
