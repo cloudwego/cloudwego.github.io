@@ -136,7 +136,7 @@ service BizService{
         api.get = '/life/client/:action/:biz', 
         api.baseurl = 'ib.snssdk.com', 
         api.param = 'true',
-        api.category = `demo`
+        api.category = 'demo'
     )
 
     // 例子2:   post请求
