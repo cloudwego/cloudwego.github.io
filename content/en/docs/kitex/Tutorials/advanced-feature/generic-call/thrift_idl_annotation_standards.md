@@ -1,3 +1,10 @@
+---
+title: "IDL Definition Standards for mapping between Thrift and HTTP"
+date: 2022-05-21
+weight: 1
+description: >
+---
+
 ## IDL Definition Standards for mapping between Thrift and HTTP
 
 This specification is the IDL definition standard for mapping between Thrift and HTTP. It contains definition standards of service, endpoint, `request` and `response` parameters. Kitex partially implements the specification, and the parts of annotation description indicate if it is supported.
