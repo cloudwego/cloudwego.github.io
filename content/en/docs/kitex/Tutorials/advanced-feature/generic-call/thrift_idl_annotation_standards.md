@@ -18,21 +18,21 @@ This specification is the IDL definition standard for mapping between Thrift and
 
 （3）The annotations mentioned above must be in lower-case, uppercase or mixed case letters are not supported. for example `api.get`, `api.header` and so on.
 
-## standards for whole file
+## Standards for Whole File
 
 - A service corresponds to only one thrift main file. The methods in the main file are for the corresponding API of the current service. The main IDL file can refer to other thrift file definitions
 - In principle, each method corresponds to one `request` and one `response` definition
 - In principle, `response` can be reused, while `request` reuse is not recommended
   
-## standards for request
+## Standards for Request
 
-#### restrict
+#### Restrict
 
 1. We should specify the name and type of associated HTTP API parameters, such as header, cookie and name   by annotations. If not specified, the GET method  corresponds to query parameters, while the POST method corresponds to body parameters automatically. The field name is used as parameter key
 2. If the HTTP request uses GET method, `api.body` annotation occurred in request definitions is  invalid. Only annotations such as `api.query`, `api.path` or `api.cookie` are supported
 3. If one HTTP request uses POST method and the serialization strategy is `form`, the request field type like `object` and `map` is not supported. But Kitex doesn't support form now, only `json` format.
 
-#### Annotation description
+#### Annotation Description
 
 | annotation | description | field restrict | is KiteX supported |
 | --- | ---- | ------ | ----- |
@@ -46,7 +46,7 @@ This specification is the IDL definition standard for mapping between Thrift and
 | `api.js_conv` | `api.js_conv` indicates the field should be string while the definition is in64, since int64 is not supported by typescript | | ✅|
 | `api.raw_uri` | `api.raw_uri` is used for protocol exchange from HTTP to RPC, the RPC service can get the raw uri by the field | Only `string` type is supported | ❌ |
 
-#### example
+#### Example
 
 ```thrift
 struct Item{
@@ -72,14 +72,14 @@ struct BizRequest {
 }
 ```
 
-## standards for response
+## Standards for Response
 
-#### restrict
+#### Restrict
 
 - Only basic type like int64, string, bool and list split by , are supported for header value
 - Response is defined directly by the business itself. The default JSON is serialized to the body, the key is the field name, and the annotation can be empty
 
-#### Annotation description
+#### Annotation Description
 
 | annotation | description | field restrict | is KiteX supported |
 | --- | ---- | ------ | ----- |
@@ -91,7 +91,7 @@ struct BizRequest {
 | `api.raw_body` | `api.raw_body` indicates the field will be treated as raw body  for response | | ✅|
 | `api.cookie` | `api.cookie` indicates the field will be treated as cookie  for  HTTP response | | ✅|
 
-#### example
+#### Example
 
 ```thrift
 // Finally, BizResponse json will be serialized as a return package to the client
@@ -112,14 +112,14 @@ struct BizResponse {
 }
 ```
 
-## standards for Method
+## Standards for Method
 
-#### restrict
+#### Restrict
 
 - The serialization specified by the `api.serializer` is valid for GET request
 - Each URI corresponds one `method` in IDL by annotation, the  annotation must be written
 
-#### Annotation description
+#### Annotation Description
 
 | annotation | type | description | example | is KiteX supported |
 | --- | ---- | --- | --- | ------ |
@@ -130,7 +130,7 @@ struct BizResponse {
 | `api.patch` | `string` | `api.delete` corresponds DELETE method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.patch='/life/client/favorite/collect'` | ✅|
 | `api.serializer` | `string` | Request serialization type of client request | Such as `form`, `json`, `thrift` or `pb` | ❌ |
 
-#### example
+#### Example
 
 ```thrift
 service BizService{
