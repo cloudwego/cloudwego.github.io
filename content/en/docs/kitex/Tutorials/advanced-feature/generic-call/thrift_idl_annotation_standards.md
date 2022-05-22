@@ -108,7 +108,6 @@ struct BizResponse {
     5: optional i32 http_code  (api.http_code = '') 
     // The business specifies the HTTPCode itself. If not specified, baseResp.StatuCode=0 -> HTTPCode=200,  other HTTPCode=500      
     6: optional list<i64> item_count (api.header = 'item_count') // Comma separated list when setting header
-    255: optional base.BaseResp BaseResp,
 }
 ```
 
