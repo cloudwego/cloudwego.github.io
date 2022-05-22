@@ -14,7 +14,7 @@ This specification is the IDL definition standard for mapping between Thrift and
 
 （1）The standards use annotations to describe API details such as API `method`, `path`, `position` and name of `request` and `response` parameters and so on
 
-（2）The annotations mentioned above are in the form of `api.{key}={value}`, the key is usually used to specify the position occured of the parameter, such as `header`，`cookie`，`query`，`body` and so on. The `value` is used to specify the actual name of fields, some functional annotations like `api.none`, `api.js_conv` are exceptions
+（2）The annotations mentioned above are in the form of `api.{key}={value}`, the key is usually used to specify the position occurred of the parameter, such as `header`，`cookie`，`query`，`body` and so on. The `value` is used to specify the actual name of fields, some functional annotations like `api.none`, `api.js_conv` are exceptions
 
 （3）The annotations mentioned above must be in lower-case, uppercase or mixed case letters are not supported. for example `api.get`, `api.header` and so on.
 
@@ -77,7 +77,7 @@ struct BizRequest {
 #### restrict
 
 - Only basic type like int64, string, bool and list split by , are supported for header value
-- Reponse is defined directly by the business itself. The default JSON is serialized to the body, the key is the field name, and the annotation can be empty
+- Response is defined directly by the business itself. The default JSON is serialized to the body, the key is the field name, and the annotation can be empty
 
 #### Annotation description
 
@@ -97,7 +97,7 @@ struct BizRequest {
 // Finally, BizResponse json will be serialized as a return package to the client
 struct RspItem{
     1: optional i64 item_id // By default, it is serialized with the field name as key, which is equivalent to using gotag `json:"item_id"`
-    2: optioanl string text
+    2: optional string text
 }
 struct BizResponse {
     1: optional string T  (api.header= 'T') 
