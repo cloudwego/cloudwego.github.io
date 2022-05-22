@@ -123,9 +123,9 @@ struct BizResponse {
 
 | annotation | type | description | example | is KiteX supported |
 | --- | ---- | --- | --- | ------ |
-| `api.get` | `string` | `api.get` corresponds GET method, the value is the HTTP path, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | For example  `api.get = '/life/client/favorite/collect'` |  ✅|
-| `api.post` | `string` | `api.post` corresponds POST method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | For example `api.post='/life/client/favorite/collect'` |  ✅|
-| `api.put` | `string` | `api.put` corresponds PUT method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | For example <br>`api.put='/life/client/favorite/collect'` | ✅|
+| `api.get` | `string` | `api.get` corresponds GET method, the value is the HTTP path, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.get = '/life/client/favorite/collect'` |  ✅|
+| `api.post` | `string` | `api.post` corresponds POST method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.post='/life/client/favorite/collect'` |  ✅|
+| `api.put` | `string` | `api.put` corresponds PUT method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.put='/life/client/favorite/collect'` | ✅|
 | `api.delete` | `string` | `api.delete` corresponds DELETE method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.delete='/life/client/favorite/collect'` | ✅|
 | `api.patch` | `string` | `api.delete` corresponds DELETE method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.patch='/life/client/favorite/collect'` | ✅|
 | `api.serializer` | `string` | Request serialization type of client request | Such as `form`, `json`, `thrift` or `pb` | ❌ |
