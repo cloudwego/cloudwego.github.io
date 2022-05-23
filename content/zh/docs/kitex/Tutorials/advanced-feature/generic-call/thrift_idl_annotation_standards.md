@@ -14,7 +14,7 @@ description: >
 
 （1）本规范采用注解方式来描述接口信息，包括接口的 `method`, `path` 以及接口请求参数，返回参数位置（如 `header`，`cookie` )、名称等信息
 
-（2）本规范所述注解采用 `api.{key}={value}` 的形式，其中`key`通常用于指定该字段出现的位置如（`header`，`cookie`，`query`，`body` 等), `value` 用于指定该字段在对应位置的实际名称, 一些功能性注解（如`api.none`, `api.js_conv`) 除外
+（2）本规范所述注解采用 `api.{key}={value}` 的形式，其中`key`通常用于指定该字段出现的位置如（`header`，`cookie`，`query`，`body` 等), `value` 用于指定该字段在对应位置的实际名称, 一些功能性注解（如`api.none`, `api.js_conv`, `api.http_code`) 除外
 
 （3）本规范中定义的IDL注解如 `api.get`, `api.header` 等，只支持小写，不支持大写或者大小写混用如`api.GET`, `api.Header`
 
@@ -43,14 +43,14 @@ description: >
 | `api.body` | `api.body` 对应 HTTP 的 body 参数<br>支持 body 为 `json` 和 `form` 两种格式 |在未指定接口序列化方式下默认`json`格式，也可以在`method`注解中使用`api.serializer`来指定`json/form` | 支持，但目前仅支持 `JSON` 格式 |
 | `api.raw_body` | `api.raw_body` HTTP 原始 body，少数接口 body 加密了，可以拿到原始的 body（二进制数组) | |  支持 |
 | `api.vd` | 参数校验，使用了[HTTPs://github.com/bytedance/go-tagexpr/tree/master/validator](HTTPs://github.com/bytedance/go-tagexpr/tree/master/validator)库，检验表达式语法参见包内readme文件 | | 暂未支持 |
-| `api.js_conv` | `api.js_conv` 标识该字段传入参数需要进行 string to int64 转换，来解决前端 js 不支持 int64 的场景 | | 支持 |
+| `api.js_conv` | `api.js_conv` 标识该字段传入参数需要进行 string to int64 转换，来解决前端 js 不支持 int64 的场景 |value通常写true，其它情况与不写该注解等价 | 支持 |
 | `api.raw_uri` | `api.raw_uri` 用于 HTTP to RPC 协议转换，RPC 服务获取 HTTP接口对应的原始 uri | 只支持 `string` 类型 | 暂未支持 |
 
 ### 举例
 
 ```thrift
 struct Item{
-    1: optional i64 id(go.tag = "json:\"id\"") // 对于嵌套结构体，如果要设置序列化key,使用gotag 如 `json:"id"`
+    1: optional i64 id(go.tag = `json:"id"`) // 对于嵌套结构体，如果要设置序列化key,使用gotag 如 `json:"id"`
     2: optional string text
 }
 typedef string JsonDict
