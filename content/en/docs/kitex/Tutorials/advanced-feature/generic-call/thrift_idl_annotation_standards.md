@@ -6,8 +6,6 @@ weight: 1
 description: >
 ---
 
-### Update Record
-
 | date | version | author | update content |
 | --- | ---- | ------ | ------------ |
 | 2022-05-22 | v1.0  | wangjingpei | first version of IDL Definition Standards for Mapping between Thrift and HTTP |
