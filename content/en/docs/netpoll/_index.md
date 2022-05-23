@@ -1,9 +1,9 @@
 ---
 title: 'Netpoll'
 linkTitle: 'Netpoll'
-weight: 1
+weight: 3
 menu:
   main:
-    weight: 1
+    weight: 3
     parent: 'Documentation'
 ---
