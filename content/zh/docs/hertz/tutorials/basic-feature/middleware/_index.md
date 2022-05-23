@@ -7,7 +7,9 @@ description: >
 ---
 
 ## Server
-![middleware](/img/docs/hertz_middleware.png)
+|![middleware](/img/docs/hertz_middleware.png )|
+|:--:|
+|Figure 1: middleware call chain|
 
 ### 实现一个中间件
 Hertz 有两种方式实现中间件：
