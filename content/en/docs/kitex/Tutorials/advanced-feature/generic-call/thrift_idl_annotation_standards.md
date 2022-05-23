@@ -100,10 +100,10 @@ struct RspItem{
     2: optional string text
 }
 struct BizResponse {
-    1: optional string T  (api.header= 'T') 
     // This field will be filled in the header returned to the client
-    2: optional map<i64, RspItem> rsp_items  (api.body='rsp_items')
+    1: optional string T  (api.header= 'T') 
     // first level key = 'rsp_items'
+    2: optional map<i64, RspItem> rsp_items  (api.body='rsp_items')
     3: optional i32 v_enum  (api.none = 'true') // Ignore current parameter
     4: optional list<RspItem> rsp_item_list  (api.body = 'rsp_item_list')
     // The business specifies the HTTP Code itself. If not specified, baseResp.StatuCode=0 -> HTTPCode=200,  other HTTPCode=500      
