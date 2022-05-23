@@ -82,10 +82,10 @@ struct BizRequest {
 | 注解 | 说明 | 字段约束 | Kitex 支持情况 |
 | --- | ---- | ------ | ------------- |
 | `api.header` |`api.header` 设置HTTP 请求回复中的header | 只支持基本类型和逗号分隔的`list` | 支持 |
-| `api.http_code` | `api.HTTP_cod`e 对应HTTP 回复中的status code，200/500等 | | 支持 |
+| `api.http_code` | `api.http_code` 对应HTTP 回复中的status code，200/500等 |value通常写true，其它情况与不写该注解等价 | 支持 |
 | `api.body` | `api.body` 对应HTTP 回复中的body参数 | | 支持 |
-| `api.none` | 忽略标识该字段在 `response`中将会被忽略 | | 支持 |
-| `api.js_conv` | 兼容js int64问题，`response`时需要将int64表示为string | | 支持 |
+| `api.none` | 标识该字段在 `response`中将会被忽略|value通常写true，其它情况与不写该注解等价| 支持 |
+| `api.js_conv` | 兼容js int64问题，`response`时需要将int64表示为string|value通常写true，其它情况与不写该注解等价| 支持 |
 | `api.raw_body` | `api.raw_body` 设置该字段`content`作为HTTP response的完整body | | 支持 |
 | `api.cookie` | `api.cookie` 设置HTTP 回复中的cookie （`string`类型，后端自行拼接） | | 支持 | 
 
@@ -102,11 +102,12 @@ struct BizResponse {
     // 该字段将填入给客户端返回的header中
     2: optional map<i64, RspItem> rsp_items  (api.body='rsp_items')
     // 一级key = 'rsp_items'
-    3: optional i32 v_enum  (api.none = '') // 忽略当前参数
+    3: optional i32 v_enum  (api.none = 'true') // 该注解value通常写true，其它情况与不写该注解等价
     4: optional list<RspItem> rsp_item_list  (api.body = 'rsp_item_list')
-    5: optional i32 http_code  (api.http_code = '') 
-    // 业务自己指定了HTTPCode,  如果没有指定, baseResp.StatuCode=0 -> HTTPCode=200,  其他 HTTPCode=500      
+    // 业务自己指定了HTTPCode,  如果没有指定, baseResp.StatuCode=0 -> HTTPCode=200,  其他 HTTPCode=500  
+    5: optional i32 http_code  (api.http_code = 'true')    
     6: optional list<i64> item_count (api.header = 'item_count') // 当设置header时以逗号相隔的列表
+    7: optional string token (api.cookie = 'token') // 对应 response Cookie 字段
 }
 ```
 
