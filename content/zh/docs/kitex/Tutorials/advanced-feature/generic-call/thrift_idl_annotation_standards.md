@@ -6,7 +6,6 @@ weight: 1
 description: >
 ---
 
-## Thrift-HTTP 映射的 IDL 规范
 
 本规范是 `Thrift` 与 `HTTP` 接口映射的 IDL 定义标准，包括服务、接口以及请求 `request`、`response` 参数定义规范和错误码定义规范。Kitex 部分实现了该规范，注解说明有标注支持情况。
 
@@ -77,7 +76,7 @@ struct BizRequest {
 - `header` 不支持除逗号相隔并且 `value` 为基本类型的 `list` 以外的复杂类型
 - 直接按照业务自己定义的 `response。默认` `json` 序列化到 `body`，`key`为字段名，注解可为空
 
-### 注解说明 （Annotation description）
+### 注解说明 
 
 | 注解 | 说明 | 字段约束 | Kitex 支持情况 |
 | --- | ---- | ------ | ------------- |
@@ -89,7 +88,7 @@ struct BizRequest {
 | `api.raw_body` | `api.raw_body` 设置该字段`content`作为HTTP response的完整body | | 支持 |
 | `api.cookie` | `api.cookie` 设置HTTP 回复中的cookie （`string`类型，后端自行拼接） | | 支持 | 
 
-### 举例（example)
+### 举例
 
 ```thrift
 // 最终将把BizResponse json序列化之后作为给客户端的返包
