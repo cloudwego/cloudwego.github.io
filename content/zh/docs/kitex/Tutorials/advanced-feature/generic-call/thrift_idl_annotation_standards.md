@@ -50,7 +50,7 @@ description: >
 
 ```thrift
 struct Item{
-    1: optional i64 id(go.tag = `json:"id"`) // 对于嵌套结构体，如果要设置序列化key,使用gotag 如 `json:"id"`
+    1: optional i64 id(go.tag = 'json:"id"') // 对于嵌套结构体，如果要设置序列化key,使用gotag 如 `json:"id"`
     2: optional string text
 }
 typedef string JsonDict
