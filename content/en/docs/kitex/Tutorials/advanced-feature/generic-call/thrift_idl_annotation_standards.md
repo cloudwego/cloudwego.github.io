@@ -14,7 +14,7 @@ This specification is the IDL definition standard for mapping between Thrift and
 
 （1）The standards use annotations to describe API details such as API `method`, `path`, `position` and name of `request` and `response` parameters and so on
 
-（2）The annotations mentioned above are in the form of `api.{key}={value}`, the key is usually used to specify the position occurred of the parameter, such as `header`，`cookie`，`query`，`body` and so on. The `value` is used to specify the actual name of fields, some functional annotations like `api.none`, `api.js_conv` are exceptions
+（2）The annotations mentioned above are in the form of `api.{key}={value}`, the key is usually used to specify the position occurred of the parameter, such as `header`，`cookie`，`query`，`body` and so on. The `value` is used to specify the actual name of fields, some functional annotations like `api.none`, `api.js_conv`, `api.http_code` are exceptions
 
 （3）The annotations mentioned above must be in lower-case, uppercase or mixed case letters are not supported. for example `api.get`, `api.header` and so on.
 
@@ -84,10 +84,10 @@ struct BizRequest {
 | annotation | description | field restrict | is KiteX supported |
 | --- | ---- | ------ | ----- |
 | `api.header` | `api.header` corresponds `header` parameter for HTTP response | Only basic types and `list` split by , are supported | ✅|
-| `api.http_code` | `api.http_code` corresponds HTTP code for HTTP response，such as 200, 500 and so on | | ✅|
+| `api.http_code` | `api.http_code` corresponds HTTP code for HTTP response，such as 200, 500 and so on |The annotation value should be `true`, if else will be treated as invalid | ✅|
 | `api.body` | `api.body` corresponds `body` parameter for HTTP response | | ✅|
-| `api.none` | `api.body` indicates the field will be ignored for  HTTP `response` | | ✅|
-| `api.js_conv` | `api.js_conv` indicates the field should be trans to `string` in response since it is int64 | | ✅|
+| `api.none` | `api.body` indicates the field will be ignored for  HTTP `response` |The annotation value should be `true`, if else will be treated as invalid | ✅|
+| `api.js_conv` | `api.js_conv` indicates the field should be trans to `string` in response since it is int64 |The annotation value should be `true`, if else will be treated as invalid| ✅|
 | `api.raw_body` | `api.raw_body` indicates the field will be treated as raw body  for response | | ✅|
 | `api.cookie` | `api.cookie` indicates the field will be treated as cookie  for  HTTP response | | ✅|
 
@@ -109,6 +109,7 @@ struct BizResponse {
     // The business specifies the HTTP Code itself. If not specified, baseResp.StatuCode=0 -> HTTPCode=200,  other HTTPCode=500      
     5: optional i32 http_code  (api.http_code = 'http_code') 
     6: optional list<i64> item_count (api.header = 'item_count') // Comma separated list when setting header
+    7: optional string token (api.cookie = 'token') // 对应 response Cookie 字段
 }
 ```
 
