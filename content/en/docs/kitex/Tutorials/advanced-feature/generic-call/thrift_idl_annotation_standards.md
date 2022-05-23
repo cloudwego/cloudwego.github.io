@@ -43,7 +43,7 @@ This specification is the IDL definition standard for mapping between Thrift and
 |` api.body` | `api.body `corresponds body parameter for HTTP request<br>Both serialization type like  `json` and `form` in body are supported | `Json` is supported by default . The `api.serializer` annotation for `method` can sepify serialization `json or form` |  ✅, but only `json` format |
 | `api.raw_body` | `api.raw_body` corresponds raw body for HTTP request, we can get raw binary body | | ✅|
 | `api.vd` | Parameter valid, we can refer [HTTPs://github.com/bytedance/go-tagexpr/tree/master/validator](HTTPs://github.com/bytedance/go-tagexpr/tree/master/validator) for details | | ❌ |
-| `api.js_conv` | `api.js_conv` indicates the field should be string while the definition is in64, since int64 is not supported by typescript | | ✅|
+| `api.js_conv` | `api.js_conv` indicates the field should be string while the definition is in64, since int64 is not supported by typescript |The annotation value should be `true`, if else will be treated as invalid | ✅|
 | `api.raw_uri` | `api.raw_uri` is used for protocol exchange from HTTP to RPC, the RPC service can get the raw uri by the field | Only `string` type is supported | ❌ |
 
 #### Example
