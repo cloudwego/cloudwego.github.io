@@ -451,7 +451,7 @@ log.Println(resp)
 其第二个参数为本次调用的请求。
 
 其第三个参数为本次调用的 `options` ，Kitex 提供了一种 `callopt` 机制，顾名思义——调用参数 ，有别于创建 client 时传入的参数，这里传入的参数仅对此次生效。
-此处的 `callopt.WithRPCTimeout` 用于指定此次调用的超时（通常不需要指定，此处仅作演示之用）同样的，你可以在 *** 基础特性*** 一节中找到更多的参数。
+此处的 `callopt.WithRPCTimeout` 用于指定此次调用的超时（通常不需要指定，此处仅作演示之用）同样的，你可以在[基本特性](../tutorials/basic-feature)一节中找到更多的参数。
 
 ### 发起调用
 
