@@ -1,7 +1,7 @@
 ---
 title: "Thrift-HTTP 映射的 IDL 规范"
 date: 2022-05-21
-author: wangjingpei
+author: 王景佩
 weight: 1
 description: >
 ---
