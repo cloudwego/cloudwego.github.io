@@ -10,11 +10,11 @@ description: >
 
 目前 Kitex 支持的消息类型、编解码协议和传输协议
 
-| 消息类型 | 编码协议 | 传输协议 |
-|--------|-------|--------|
-|PingPong|Thrift / Protobuf| [TTHeader](../../framework-exten/codec) / HTTP2(gRPC)|
-|Oneway|Thrift| [TTHeader](../../framework-exten/codec) |
-|Streaming|Protobuf|HTTP2(gRPC)|
+| 消息类型 | 编码协议 | 传输协议                                                  |
+|--------|-------|-------------------------------------------------------|
+|PingPong|Thrift / Protobuf| [TTHeader](../../framework-exten/codec) / HTTP2(gRPC) |
+|Oneway|Thrift| [TTHeader](../../framework-exten/codec)               |
+|Streaming|Protobuf| HTTP2(gRPC)                                           |
 
 - PingPong：客户端发起一个请求后会等待一个响应才可以进行下一次请求
 - Oneway：客户端发起一个请求后不等待一个响应

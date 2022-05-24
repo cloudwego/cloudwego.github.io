@@ -1,5 +1,5 @@
 ---
-title: "IDL Definition Standards for Mapping between Thrift and HTTP"
+title: "IDL Definition Specification for Mapping between Thrift and HTTP"
 date: 2022-05-21
 author: wangjingpei
 weight: 1
@@ -8,7 +8,7 @@ description: >
 
 | date | version | author | update content |
 | --- | ---- | ------ | ------------ |
-| 2022-05-22 | v1.0  | wangjingpei | first version of IDL Definition Standards for Mapping between Thrift and HTTP |
+| 2022-05-22 | v1.0  | wangjingpei | first version of IDL Definition Specification for Mapping between Thrift and HTTP |
 
 This specification is the IDL definition standard for mapping between Thrift and HTTP. It contains definition standards of service, endpoint, `request` and `response` parameters. Kitex partially implements the specification, and the parts of annotation description indicate if it is supported.
 
@@ -25,7 +25,7 @@ This specification is the IDL definition standard for mapping between Thrift and
 - A service corresponds to only one thrift main file. The methods in the main file are for the corresponding API of the current service. The main IDL file can refer to other thrift file definitions
 - In principle, each method corresponds to one `request` and one `response` definition
 - In principle, `response` can be reused, while `request` reuse is not recommended
-  
+
 ## Standards for Request
 
 #### Restrict
@@ -59,7 +59,7 @@ struct Item{
 typedef string JsonDict
 struct BizRequest {
     // Corresponding to v_int64 in HTTP query, and the value range is (0, 200)
-    1: optional i64 v_int64(api.query = 'v_int64') 
+    1: optional i64 v_int64(api.query = 'v_int64')
     2: optional string text(api.body = 'text') // Corresponding serialization key = text
     3: optional i32 token(api.header = 'token') // Corresponding token in HTTP header
     4: optional JsonDict json_header(api.header = 'json_header')
@@ -103,13 +103,13 @@ struct RspItem{
 }
 struct BizResponse {
     // This field will be filled in the header returned to the client
-    1: optional string T  (api.header= 'T') 
+    1: optional string T  (api.header= 'T')
     // first level key = 'rsp_items'
     2: optional map<i64, RspItem> rsp_items  (api.body='rsp_items')
     3: optional i32 v_enum  (api.none = 'true') // Ignore current parameter
     4: optional list<RspItem> rsp_item_list  (api.body = 'rsp_item_list')
-    // The business specifies the HTTP Code itself. If not specified, baseResp.StatuCode=0 -> HTTPCode=200,  other HTTPCode=500      
-    5: optional i32 http_code  (api.http_code = 'true') 
+    // The business specifies the HTTP Code itself. If not specified, baseResp.StatuCode=0 -> HTTPCode=200,  other HTTPCode=500
+    5: optional i32 http_code  (api.http_code = 'true')
     6: optional list<i64> item_count (api.header = 'item_count') // Comma separated list when setting header
     7: optional string token (api.cookie = 'token') // 对应 response Cookie 字段
 }
@@ -139,25 +139,25 @@ struct BizResponse {
 service BizService{
     // Example 1: get request
     BizResponse BizMethod1(1: biz.BizRequest req)(
-        api.get = '/life/client/:action/:biz', 
-        api.baseurl = 'ib.snssdk.com', 
+        api.get = '/life/client/:action/:biz',
+        api.baseurl = 'ib.snssdk.com',
         api.param = 'true',
         api.category = 'demo'
     )
 
     // Example 2:   post request
     BizResponse BizMethod2(1: biz.BizRequest req)(
-        api.post = '/life/client/:action/:biz', 
-        api.baseurl = 'ib.snssdk.com', 
-        api.param = 'true', 
+        api.post = '/life/client/:action/:biz',
+        api.baseurl = 'ib.snssdk.com',
+        api.param = 'true',
         api.serializer = 'form'
     )
 
     // Example 3:   delete request
     BizResponse BizMethod3(1: biz.BizRequest req)(
-        api.post = '/life/client/:action/:biz', 
-        api.baseurl = 'ib.snssdk.com', 
-        api.param = 'true', 
+        api.post = '/life/client/:action/:biz',
+        api.baseurl = 'ib.snssdk.com',
+        api.param = 'true',
         api.serializer = 'json'
     )
 }

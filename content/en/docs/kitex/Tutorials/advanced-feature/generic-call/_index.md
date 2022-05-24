@@ -89,7 +89,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 ### 2. HTTP Mapping Generic Call
 
-The HTTP Mapping Generic Call is only for the client, and requires Thrift IDL to comply with the interface mapping specification. See the specific specification[ByteAPI IDL specification](https://bytedance.feishu.cn/docs/doccn4wmKylFJl0OpTCEkf)(To be sorted out)
+The HTTP Mapping Generic Call is only for the client, and requires Thrift IDL to comply with the interface mapping specification. See the specific specification [IDL Definition Specification for Mapping between Thrift and HTTP](thrift_idl_annotation_standards)
 
 #### IDL Definition Example
 
