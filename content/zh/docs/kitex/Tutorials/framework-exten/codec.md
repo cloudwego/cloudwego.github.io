@@ -78,7 +78,7 @@ type PayloadCodec interface {
 }
 ```
 
-Kitex 默认支持的 Payload 有 Thrift、Kitex Protobuf 以及 gRPC 协议。其中 Kitex Protobuf 是 Kitex 基本 Protobuf 定义的消息协议，协议定义与 Thrift Message 类似。
+Kitex 默认支持的 Payload 有 Thrift、Kitex Protobuf 以及 gRPC 协议。其中 Kitex Protobuf 是 Kitex 基于 Protobuf 定义的消息协议，协议定义与 Thrift Message 类似。
 
 特别地，Kitex 的泛化调用也是通过扩展 PayloadCodec 实现：
 
