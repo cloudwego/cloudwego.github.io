@@ -11,56 +11,33 @@ hertz 使用开源库 [go-tagexpr](https://github.com/bytedance/go-tagexpr) 进�
 ## 使用方法
 
 ```go
-package main
-
-import (
-   "context"
-   "fmt"
-
-   "github.com/cloudwego/hertz/pkg/app"
-   "github.com/cloudwego/hertz/pkg/app/server"
-   "github.com/cloudwego/hertz/pkg/common/utils"
-   "github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
 func main() {
-   r := server.New()
+	r := server.New()
 
-   r.POST("/hello", func(c context.Context, ctx *app.RequestContext) {
-      // 参数绑定需要配合特定的go tag使用
-      type Test struct {
-          A string `query:"a" vd:"$!='Hertz'"`
-      }
+    r.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+        // 参数绑定需要配合特定的go tag使用
+		type Test struct {
+            A string `query:"a" vd:"$!='Hertz'"`
+        }
 
-      // BindAndValidate
-      var req Test
-      err := ctx.BindAndValidate(&req)
-      if err != nil {
-         fmt.Println(err)
-      }else {
-         fmt.Println(req)
-      }
-      // Bind
-      req = Test{}
-      err = ctx.Bind(&req)
-      if err != nil {
-         fmt.Println(err)
-      }else {
-         fmt.Println(req)
-      }
-      // Validate
-      err = ctx.Validate(&req)
-      if err != nil {
-         fmt.Println(err)
-      }else {
-         fmt.Println(req)
-      }
+        // BindAndValidate
+        var req Test
+        err := ctx.BindAndValidate(&req)
 
-   })
+        ...
 
-   register(r)
+	    // Bind
+        req = Test{}
+        err = ctx.Bind(&req)
 
-   r.Spin()
+        ...
+
+        // Validate，需要使用 "vd" tag
+        err = ctx.Validate(&req)
+
+        ...
+    })
+...
 }
 ```
 
@@ -89,7 +66,7 @@ path > form > query > cookie > header > json > raw_body
 
 ### 自定义 bind 和 validate 的 Error
 
-绑定参数发生错误和参数校验失败的时候用户可以自定义的 Error，demo 如下：
+绑定参数发生错误和参数校验失败的时候，用户可以自定义的 Error（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_error) ），使用方法如下：
 
 ```go
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
@@ -145,7 +122,7 @@ func init() {
 
 ### 自定义类型解析
 
-在参数绑定的时候，所有的 request 参数都是 `string` 或者 `[]string`；当有一些 field 的类型为非基础类型或者无法直接通过 `string` 转换，则可以自定义类型解析。demo 如下：
+在参数绑定的时候，所有的 request 参数都是 `string` 或者 `[]string`；当有一些 field 的类型为非基础类型或者无法直接通过 `string` 转换，则可以自定义类型解析（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_type_resolve) ）。使用方法如下:
 
 ```go
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
@@ -175,7 +152,7 @@ func init() {
 
 ### 自定义验证函数
 
-可以通过注册自定义验证函数，在'vd'注解中实现复杂的验证逻辑，demo 如下：
+可以通过注册自定义验证函数，在'vd'注解中实现复杂的验证逻辑（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_validate_func) ），使用方法如下：
 
 ```go
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
@@ -196,7 +173,8 @@ func init() {
 
 ### 配置 looseZero
 
-在一些场景下，前端有时候传来的信息只有 key 没有 value，这会导致绑定数值类型的时候，会报错 `cause=parameter type does not match binding data`。这时需要配置 looseZero 模式：
+在一些场景下，前端有时候传来的信息只有 key 没有 value，这会导致绑定数值类型的时候，会报错 `cause=parameter type does not match binding data`。
+这时需要配置 looseZero 模式（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/loose_zero) ），使用方法如下：
 
 ```go
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
@@ -209,7 +187,7 @@ func init() {
 
 ### 配置其他 json unmarshal 库
 
-在绑定参数的时候，如果请求体为 json，会进行一次 json 的 unmarshal，可以根据自己的需求来配置 json unmarshal 方法。
+在绑定参数的时候，如果请求体为 json，会进行一次 json 的 unmarshal，如果用户需要使用特定的 json 库可以自己配置（hertz 默认使用开源 json 库 [sonic](https://github.com/bytedance/sonic) ）。使用方法如下：
 
 ```go
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
@@ -228,7 +206,7 @@ func init() {
 
 ### 设置默认值
 
-参数支持 "default" tag 进行默认值的配置，demo 如下：
+参数支持 "default" tag 进行默认值的配置，使用方法如下：
 
 ```go
 // 生成的代码
@@ -238,6 +216,8 @@ type UserInfoResponse struct {
 ```
 
 ### 绑定文件
+
+参数绑定支持绑定文件，使用方法如下：
 
 ```go
 // 需要请求的content-type为：multipart/form-data
@@ -253,63 +233,10 @@ h.POST("/upload", func(ctx context.Context, c *app.RequestContext) {
 
 ## 常见问题分析
 
-**1. string 转 int 报错：json: cannot unmarshal string into Go struct field xxx of type int**
+**1. string 转 int 报错：json: cannot unmarshal string into Go struct field xxx of type intxx**
 
 原因：默认不支持 `string` 和 `int` 互转
 
 解决方法：
-- 建议使用标准包 json 的 `string` tag 或者 `json.Number`
-- 配置 gjson 或者其它第三方 json 库进行 unmarshal
-
-**2. 前端不支持int64**
-
-当 go 使用 `int64` 的时候，前端 js 不支持 `int64` 精度，这样可能会出现精度丢失的问题。因此需要在返回前将 go 的 `int64` 转换为 `string`，才不会丢失精度。
-
-解决方法：
-- 使用 json 的 `string` 选项(使用这个只能转换特定的类型：字符串、浮点数、整数、布尔)
-
-```go
-type TestResp struct {
-   F int64 `json:"f,string"` // 或者 `json:",string"`
-}
-
-func main() {
-   r := byted.Default()
-
-   r.POST("/hello", func(c context.Context, ctx *app.RequestContext) {
-      resp := TestResp{
-         F: 23,
-      }
-      ctx.JSON(200, resp)
-   })
-
-   r.Spin()
-}
-```
-
-- 自定义 MarshalJSON() 行为: 定义一个 int64 的别名，然后自定义 MarshalJSON()，这样即使 int64 切片也可以 Marshal。
-
-```go
-type IntString int64
-
-func (i IntString) MarshalJSON() ([]byte, error) {
-   return []byte(fmt.Sprintf("\"%v\"", i)), nil
-}
-
-type TestResp struct {
-   F IntString
-}
-
-func main() {
-   r := byted.Default()
-
-   r.POST("/hello", func(c context.Context, ctx *app.RequestContext) {
-      resp := TestResp{
-         F: 23,
-      }
-      ctx.JSON(200, resp)
-   })
-
-   r.Spin()
-}
-```
+- 建议使用标准包 json 的 `string` tag ，example：A int `json:"A, string"`
+- 配置其他支持这种行为的 json 库
