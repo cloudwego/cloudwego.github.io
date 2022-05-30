@@ -8,8 +8,9 @@ description: >
 ## Set Up Golang Development Environment
 1. If you haven't set up your Golang Enviornmrnt, you can refer to [Golang Install](https://golang.org/doc/install).
 2. We recommend you to use the Golang latest version, or make sure it's >= v1.15. You can choose to use the earlier versions, but the compatibility and stability are not assured.
-3. Make sure the go mod support is on. (for Golang versions >= v1.15, it is on by default).
-Note: Hertz does not support Windows environments currently.
+3. Make sure the go mod support is on (for Golang versions >= v1.15, it is on by default).
+
+> Note: Hertz does not support Windows environments currently.
 
 ## Quick Start
 After you have prepared the Golang environment, the chapter will help you to quickly get familiar with Hertz.
@@ -81,7 +82,7 @@ Now, you have already launched Hertz Server successfully and completed an API ca
 As for the project dictionary layout, here is a project layout sample that you can refer to. You can also organize the layout based on your business scenario.
 
 ## Directory Structure
-As for the project directory structure ，you may check [Project Layout](https://github.com/golang-standards/project-layout) for reference,
+As for the project directory structure, you may check [Project Layout](https://github.com/golang-standards/project-layout) for reference,
 it can be organized according to the actual situation of the business logic.
 
 ## More examples
