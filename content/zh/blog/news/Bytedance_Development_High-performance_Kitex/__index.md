@@ -1,4 +1,10 @@
-## 字节微服务框架的挑战和演进
+---
+date: 2022-05-16
+title: "字节微服务框架的挑战和演进"
+linkTitle: "字节微服务框架的挑战和演进"
+description: >
+author: <a href="https://github.com/lsjbd" target="_blank">lsjbd</a>
+---
 
 2014 年以来，字节跳动内部业务的快速发展，推动了长连接推送服务，它们面临着高并发的业务需求问题，对性能和开发效率都有很高要求。当时的业务，大部分都是由 Python 开发，难以应对新出现的问题。项目负责人在一众现存的技术栈中选择了 Golang 这一门新兴的编程语言，快速解决了性能和开发效率的问题。随后，字节跳动内部开始逐渐推广使用 Golang 进行服务开发。
 
@@ -111,7 +117,7 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 
 ### 与内部基础设施的集成
 
-谈到落地，第一步就是 Kitex 和字节跳动内部的基础设施进行结合。字节跳动内部的所有基础设施都是以依赖的方式注入到 Kitex 的。我们将日志、监控、tracing 都定义为 tracer，然后通过 WithTracer 这个 Option 将其注入到 Kitex 里；服务发现是 WithResolver；Service Mesh 则是 WtihProxy 等。字节跳动内部的基础设施都是通过 Option 被注入到 Kitex 的，而且所有的 Option 都是通过前面说的 Suite 打包，简单地添加到业务的代码里完成。
+谈到落地，第一步就是 Kitex 和字节跳动内部的基础设施进行结合。字节跳动内部的所有基础设施都是以依赖的方式注入到 Kitex 的。我们将日志、监控、tracing 都定义为 tracer，然后通过 WithTracer 这个 Option 将其注入到 Kitex 里；服务发现是 WithResolver；Service Mesh 则是 WithProxy 等。字节跳动内部的基础设施都是通过 Option 被注入到 Kitex 的，而且所有的 Option 都是通过前面说的 Suite 打包，简单地添加到业务的代码里完成。
 
 ![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3ZjaqKeH0IMI4fCMaibsiaGiaYyFwShSoRtuhJc8E5wlqSLia5rn5lopBEbuQ/640?wx_fmt=png)
 
