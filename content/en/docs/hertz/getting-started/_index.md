@@ -82,7 +82,7 @@ Now, you have already launched Hertz Server successfully and completed an API ca
 As for the project dictionary layout, here is a project layout sample that you can refer to. You can also organize the layout based on your business scenario.
 
 ## Directory Structure
-As for the project directory structure ，you may check [Project Layout](https://github.com/golang-standards/project-layout) for reference,
+As for the project directory structure, you may check [Project Layout](https://github.com/golang-standards/project-layout) for reference,
 it can be organized according to the actual situation of the business logic.
 
 ## More examples
