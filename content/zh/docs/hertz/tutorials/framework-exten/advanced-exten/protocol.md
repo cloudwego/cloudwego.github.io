@@ -33,8 +33,11 @@ type myServer struct{
 
 func (s *myServer)Serve(c context.Context, conn network.Conn) error{
     // 解析协议
+	...
     // 转到业务注册的逻辑函数（路由、中间件、Handler）
+	...
     // 将数据写回
+	...
 }
 ```
 
@@ -74,9 +77,11 @@ type myServer struct{
 }
 
 func (s *myServer)Serve(c context.Context, conn network.Conn) error{
-    解析协议
+    // 解析协议
+	...
     Core.ServeHTTP(c, ctx)
-    将数据写回
+    // 将数据写回
+	...
 }
 ```
 
