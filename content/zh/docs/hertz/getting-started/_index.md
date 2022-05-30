@@ -7,7 +7,7 @@ description: >
 ---
 
 ## 准备 Golang 开发环境
-1. 如果您之前未搭建 Golang 开发环境， 可以参考[Golang 安装](https://golang.org/doc/install)
+1. 如果您之前未搭建 Golang 开发环境， 可以参考 [Golang 安装](https://golang.org/doc/install)
 2. 推荐使用最新版本的 Golang，或保证现有 Golang 版本 >= 1.15。小于 1.15 版本，可以自行尝试使用但不保障兼容性和稳定性
 3. 确保打开 go mod 支持 (Golang >= 1.15时，默认开启)
 注意：目前 Hertz 不支持 Windows 环境。
@@ -40,13 +40,13 @@ import (
 )
 
 func main() {
-h := server.Default()
+    h := server.Default()
 
-        h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-                ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-        })
+    h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+            ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+    })
 
-        h.Spin()
+    h.Spin()
 }
 ```
 

@@ -11,7 +11,7 @@ Hertz Server & Client 目前只有 标准网络库 支持 TLS，[Netpoll](https:
 使用参考： [Hertz 示例](/zh/docs/hertz/tutorials/example/) 和 [Hertz 配置](/zh/docs/hertz/reference/config/)
 
 ## ALPN
-开启TLS之后，可以通过开关控制 ALPN 是否开启（依赖当前是否通过 Protocol Suite 注册了所需要的所有协议 Servers）
+开启 TLS 之后，可以通过开关控制 ALPN 是否开启（依赖当前是否通过 Protocol Suite 注册了所需要的所有协议 Servers）
 
 ## WebSocket
 内部生产环境已在使用，如有需求可提 issue，敬请期待。

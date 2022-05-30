@@ -67,7 +67,7 @@ type Dialer interface {
 }
 ```
 
-### 自定义网络库
+## 自定义网络库
 
 Hertz 的 Server 和 Client 分别提供了初始化配置项
 
