@@ -1,238 +1,193 @@
----
-date: 2022-05-26
-title: "从 CloudWeGo 谈云原生时代的微服务与开源"
-linkTitle: "从 CloudWeGo 谈云原生时代的微服务与开源"
-description: >
-author: <a href="https://github.com/GuangmingLuo" target="_blank">GuangmingLuo</a>
----
+## 字节微服务框架的挑战和演进
 
-![图片](https://mmbiz.qpic.cn/mmbiz_gif/BvYvvlJIDbIibY9gGMXwpNZvoOsx7EzevjdCKHvuHYNAz29xNhqLvUElleX49ibu44ycASmqQStXmpXxp3Oh1KzQ/640?wx_fmt=gif&wxfrom=5&wx_lazy=1)
+2014 年以来，字节跳动内部业务的快速发展，推动了长连接推送服务，它们面临着高并发的业务需求问题，对性能和开发效率都有很高要求。当时的业务，大部分都是由 Python 开发，难以应对新出现的问题。项目负责人在一众现存的技术栈中选择了 Golang 这一门新兴的编程语言，快速解决了性能和开发效率的问题。随后，字节跳动内部开始逐渐推广使用 Golang 进行服务开发。
 
-> 本文整理自罗广明在 DIVE 全球基础软件创新大会 2022 的演讲分享，主题为《从 CloudWeGo 谈云原生时代的微服务与开源》。
+2016 年， 第一代 Golang RPC 框架 Kite 正式发布。Kite 是一个基于 Apache Thrift 进行包装的 RPC 框架，它在 Facebook 开源的 Thrift 之上提供了结合字节跳动内部基础设施的治理功能，同时还提供了一套简单易用的生成工具。随着 Kite 的发展，业务开始大规模使用 Golang。然而，在业务发展的过程中，由于研发专注于实现业务需求，对于框架的可维护性考量不足，Kite 逐渐背上了一些技术包袱，越来越难以满足业务在高性能和新特性方面的需求。因此我们决定对 Kite 进行重新设计，于是出现了 Kitex。
 
-## **01 项目创造的思考与哲学**
+2020 年，Kitex 在内部发布了 V1.0.0，并且直接接入了 1,000+ 服务。由于 Kitex 的优秀性能和易用性，Kitex 在内部得到了大规模发展。直到 2021 年年中，字节跳动内部已有 2w+ 服务使用了 Kitex。因此，我们决定全面优化 Kitex，将其实践成果进行开源，反馈给开源社区。
 
-我们团队经常会被人问到，你们为什么创造一个新的项目？我认为这是一个哲学问题。
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3ZjQ2aTMxA3nhgEwUNNB7x3wAvkeWsWltmibcYwLskh3vVPENWVxxxnOlw/640?wx_fmt=png)
 
-纵观整个开源社区，每个时间段都会有各种各样的项目被重复地创造出来，这其中的大部分项目很快便销声匿迹了，只有一部分项目能够存活下来。当旁观者看到这样一番景象时，渐渐地，越来越多的人停留于项目搜寻，而放弃了成为项目创作者的机会。久而久之，我们开始忧虑下一代是否还会有新的项目可以使用？难道未来在同一领域，一个项目就能统一整个市场？
+字节跳动 Golang RPC 框架的演进
 
-其实，在程序员的世界里，参考旧的项目来创造新的项目一点都不可耻。创造不仅意味着思考、权衡与设计，更需要我们贡献项目的特殊与差异。这其中涌现了很多后起之秀，正是他们促成了开源社区的多样性。“每一行代码都是一次精心的设计”是我们对优秀创造者的最佳赞誉。而一项优秀的代码设计往往包含两个最基本的特性：正确性和可维护性。同时，这两种特性恰恰又对应了两种不同的人格。
+### Kite 的缺陷
 
-第一种人格，设计者与实现者，其驾驭是相对简单的，只要功能实现，通过测试，运行正确就算完成了。然而，第二种人格，阅读者和维护者，却要求更高的代码质量，更明晰的代码结构和更好的扩展性。只有同时具备这两种人格，开发者才能游刃有余地创造出一个优秀的项目。
+Kite 作为字节跳动第一代 Golang RPC 框架，主要存在以下缺陷：
 
-优秀的项目被创造出来意味着什么呢？千千万万的用户可以评估并且使用它。这也从侧面表明了开源本身可以避免更多项目被重复地创造出来。
+1. Kite 为了快速支持业务发展需求，不可避免地耦合了部分中台业务的功能；
+2. Kite 对 Go modules 支持不友好（Go modules 在 2019 年才进入语言核心）；
+3. Kite 自身的代码拆分成多仓库，版本更新时推动业务升级困难；
+4. Kite 强耦合了早期版本的 Apache Thrift，协议和功能拓展困难；
+5. Kite 的生成代码逻辑与框架接口强耦合，成为了性能优化的天花板。
 
-## **02 CloudWeGo 简介**
+因此，业务的快速发展和需求场景的多样化，催生了新一代 Golang RPC 框架 Kitex。
 
-CloudWeGo 是字节跳动基础架构团队开源出来的项目，它是一套可快速构建**企业级**云原生架构的中间件集合，它专注于微服务通信与治理，具备**高性能**、**可扩展**、**高可靠**的特点，且关注**易用性**。
+### Kitex
 
-CloudWeGo 在第一阶段开源了四个项目：
+Kitex 的架构主要包括四个部分：Kitex Tool、Kitex Core、Kitex Byted、Second Party Pkg。
 
-* [**Kitex**](https://github.com/cloudwego/kitex)：高性能、强可扩展的 Golang RPC 框架
-* [**Netpoll**](https://github.com/cloudwego/netpoll)：高性能、I/O 非阻塞、专注于 RPC 场景的网络框架
-* [**Thriftgo**](https://github.com/cloudwego/thriftgo)：Golang 实现的 thrift 编译器，支持插件机制和语义检查
-* [**Netpoll-http2**](https://github.com/cloudwego/netpoll-http2)：基于 Netpoll 的 HTTP/2 实现
+* Kitex Core 是一个携带了一套微服务治理功能的 RPC 框架，它是 Kitex 的核心部分。
+* Kitex Byted 是一套结合了字节跳动内部基础设施的拓展集合。通过这一套拓展集合，Kitex 能够在内部支持业务的发展。
+* Kitex Tool 是一个命令行工具，能够在命令行生成我们的代码以及服务的脚手架，可以提供非常便捷的开发体验。
+* Second Party Pkg，例如 netpoll， netpoll-http2，是 Kitex 底层的网络库，这两个库也开源在 CloudWeGo 组织中。
 
-除了这几个主要项目外，CloudWeGo 紧随其后陆续开源了 [**Kitex-benchmark**](https://github.com/cloudwego/kitex-benchmark)、[**Netpoll-benchmark**](https://github.com/cloudwego/netpoll-benchmark)、[**Thrift-gen-validator**](https://github.com/cloudwego/thrift-gen-validator)、[**Kitex-examples**](https://github.com/cloudwego/kitex-examples) 、[**Netpoll-examples**](https://github.com/cloudwego/netpoll-examples)等项目。
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3ZjOicEs3fMjH49n4XZnod1gCsvPffdOuvBwebIIqbSBpwKxlSdyZDicomQ/640?wx_fmt=png)
 
-鉴于文章篇幅有限，下文将重点介绍 CloudWeGo 核心项目 Kitex。
+Kitex 的架构设计
 
-从**演进历史**来看，2014 年，字节跳动技术团队引入 Golang 解决长连接推送业务面临的高并发问题，两年后，内部技术团队基于 Golang 推出了一个名为 Kite 的框架，同时对开源项目 Gin 做了一层很薄的封装，推出了 Ginex。这两个框架极大推动了 Golang 在公司内部的应用。此后，围绕性能和可扩展性设计，字节跳动重构 Kite，并在次年 10 月完成并发布Kitex，投入到内部应用中。据悉，截至 2021 年 9 月，线上有 3w+ 微服务使用 Kitex，大部分服务迁移新框架后可以收获 CPU 和延迟上的收益。
+总的来说， Kitex 主要有五个特点：面向开源、功能丰富、灵活可拓展、支持多协议、高性能。
 
-![图片](https://mmbiz.qpic.cn/mmbiz_jpg/BvYvvlJIDbJt06tOof14xibrDbC5CSibGmUsOuZVuiaDVY77asbSwRCibMXOKqtnibbHnhicDstmkrL2eqXSuvA0ytZg/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)
+### 面向开源
 
-从**架构**上看，Kitex 主要分为两部分。其中 Kitex Core 是它的的主干逻辑，定义了框架的层次结构、接口，还有接口的默认实现。最上面 Client 和 Server 是对用户暴露的，包含 Option 配置以及其初始化的逻辑；中间的 Modules 模块是框架治理层面的功能模块和交互元信息，而 Remote 模块是与对端交互的模块，包括编解码和网络通信。另一部分 Kitex Tool 则是对应生成代码相关的实现，生成代码工具就是编译这个包得到的，里面包括 IDL 解析、校验、代码生成、插件支持、自更新等。
+由于之前已经体验过了 Kite 维护的各种问题，我们在立项之初就考虑到了未来可能会开源 Kitex。因此，我们设计的第一个宗旨就是不将 Kitex 和公司内部的基础设施进行强耦合或者硬编码绑定。Kitex Core 是一个非常简洁的框架，公司内部的所有基础设施都以拓展的方式注入到 Kitex Core 里。即使我们现在已经开源了，它也以这种形式存在。公司内部基础设施的更新换代，和 Kitex 自身的迭代是相互独立的，这对于业务来说是非常好的体验。同时，在 Kitex 的接口设计上，我们使用了 Golang 经典的 Option 模式，它是可变参数，通过 Option 能够提供各种各样的功能，这为我们的开发和业务的使用都带来了非常大的灵活性。
 
-从**功能与特性**这两个角度来看，主要可以分为以下七个方面：
+### Kitex 的功能特性
 
-![](https://bytedance.feishu.cn/space/api/box/stream/download/asynccode/?code=YmM2NjQ0OWYxYTAzYTRlYWRjMmVlNDIzZTE1ZThhYTdfU1pMcXdnbWMzeVdoSHM3aDhQNGM0VmVtaFJtdnJZWFFfVG9rZW46Ym94Y255S2hnelhMWTFROEFBVDNUbUE2UWZjXzE2NTM4ODI4Njc6MTY1Mzg4NjQ2N19WNA)
+#### 治理能力
 
-* **高性能**：网络传输模块 Kitex 默认集成了自研的网络库 Netpoll，性能相较使用 go net 有显著优势；除了网络库带来的性能收益，Kitex 对 Thrift 编解码也做了深度优化。关于性能数据可参考 [kitex-benchmark](https://github.com/cloudwego/kitex-benchmark)。
-* **扩展性**：Kitex 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 CloudWeGo [官网文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/)。Kitex 也并未耦合 Netpoll，开发者也可以选择其它网络库扩展使用。
-* **消息协议**：RPC 消息协议默认支持 Thrift、Kitex Protobuf、gRPC。Thrift 支持 Buffered 和 Framed 二进制协议；Kitex Protobuf 是 Kitex 自定义的 Protobuf 消息协议，协议格式类似 Thrift；gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 互通。除此之外，使用者也可以扩展自己的消息协议。
-* **传输协议**：传输协议封装消息协议进行 RPC 互通，传输协议可以额外透传元信息，用于服务治理，Kitex 支持的传输协议有 TTHeader、HTTP2。TTHeader 可以和 Thrift、Kitex Protobuf 结合使用；HTTP2 目前主要是结合 gRPC 协议使用，后续也会支持 Thrift。
-* **多消息类型**：支持 PingPong、Oneway、双向 Streaming。其中 Oneway 目前只对 Thrift 协议支持，双向 Streaming 只对 gRPC 支持，后续会考虑支持 Thrift 的双向 Streaming。
-* **服务治理**：支持服务注册/发现、负载均衡、熔断、限流、重试、监控、链路跟踪、日志、诊断等服务治理模块，大部分均已提供默认扩展，使用者可选择集成。
-* **Kitex 内置代码生成工具，可支持生成 Thrift、Protobuf 以及脚手架代码**。原生的 Thrift 代码由本次一起开源的 Thriftgo 生成，Kitex 对 Thrift 的优化由 Kitex Tool 作为插件支持。Protobuf 代码由 Kitex 作为官方 protoc 插件生成 ，目前暂未单独支持 Protobuf IDL 的解析和代码生成。
+Kitex 内置了丰富的服务治理能力，例如超时熔断、重试、负载均衡、泛化调用、数据透传等功能。业务或者外部的用户使用 Kitex 都是可以开箱即用的。如果你有非常特殊的需求，你也可以通过我们的注入点去进行定制化操作，比如你可以自定义中间件去过滤或者拦截请求，定义跟踪器去注入日志、去注入服务发现等。在 Kitex 中，几乎一切跟策略相关的东西都是可以定制的。
 
-简单总结一下，CloudWeGo 不仅仅是一个开源的项目，也是一个真实的、超大规模的**企业级**最佳实践。它源自企业，所以天生就适合在企业内部落地；它源自开源，最终也拥抱了开源，从 Go 基础库，到 Go 网络库和 Thrift 编译器，再到上层的服务框架，以及框架拥有的所有企业级治理能力，均对外开放开源。
+以服务发现为例，Kitex 的核心库里定义了一个 Resolver interface 。任何一个实现了这四个方法的类型都可以作为一个服务发现的组件，然后注入到 Kitex 来取代 Kitex 的服务发现功能。在使用时，客户端只需要创建一个 Resolver 的对象，然后通过 client.WithResolver 注入客户端，就可以使用自己开发的服务发现组件。
 
-![](https://bytedance.feishu.cn/space/api/box/stream/download/asynccode/?code=YzU0MzhlZGU5YzBjYzA2ZjUxODc5ZTEwY2Q3MzdlNmVfcVRvQzYyc0U0UVpIa0VSMW95Q0RsQ1h0ZWEwelRuME1fVG9rZW46Ym94Y25jekYzZmw0bWl1dVRFRWRadEcxRHRlXzE2NTM4ODI5OTc6MTY1Mzg4NjU5N19WNA)
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3Zj4HtP0OCBkfAOcoMQfDksAsBnzYu1eJCAQhZDpuIBX4WGxNpO1WC9Hw/640?wx_fmt=png)
 
-## **03 CloudWeGo 的微服务治理**
+Kitex 的一个创新之处是使用 Suite 来打包自定义的功能，提供一键配置基础依赖的体验。
 
-微服务架构是当前软件开发领域的技术热点。大系统终究会拆解成小系统，“合久必分，分而治之”，传统行业的系统架构大多都是庞大的单体架构，微服务是架构发展过程中一个非常自然的演变状态。
+它能在什么地方起作用呢？例如，一个外部企业想要启用或者接入 Kitex， 它不可能拥有字节跳动内部的所有基础设施。那么企业在使用的时候肯定需要定制化，他可能需要定义自己的注册中心、负载均衡、连接池等等。如果业务方要使用这些功能的话，就需要加入非常非常多的参数。而 Suite 可以通过一个简单的类一次性包装这些功能，由此，业务方使用时，仍然是以单一的参数的方式添加，十分方便。又例如，我现在开发一个叫 mysuite 的东西，我可能提供一个特殊的服务发现功能，提供了一个拦截的中间件，还有负载均衡功能等。业务方使用时，不需要感知很多东西去配置，只需要添加一个 suite 就足够了，这点非常方便一些中台方或者第三方去做定制。
 
-那么，什么是微服务治理呢？众说纷纭，业界没有达成一个共识。广义上，服务治理关注服务生命周期相关要素，包括服务的架构设计、应用发布、注册发现、流量管理，监控与可观测性、故障定位、安全性等；又或将其分为架构治理、研发治理、测试治理、运维治理、管理治理。狭义上，服务治理技术包括服务注册与发现、可观测性、流量管理、安全、控制。后续主要是从狭义上服务治理的角度出发，展开介绍 CloudWeGo-Kitex 相关的思考和探索。
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3Zj3VZd1hichuS28bj2ib9ArjTbGVib7G4dc6KFoIKpvsujCAqsIibXuMc5Vw/640?wx_fmt=png)
 
-### **服务注册与发现**
+示例
 
-Kitex 并不提供默认的服务注册发现，体现了框架的**中立**特征。Kitex 支持自定义注册模块和发现模块，使用者可自行扩展集成其他注册中心和服务发现实现，该扩展分别定义在 Pkg/Registry 和 Pkg/Discovery 下。
+#### 多协议
 
-Kitex 服务注册扩展接口如下所示，更多详情可以查看官网框架扩展 -> [服务注册扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/registry/)。
+Kitex 网络层基于高性能网络库 Netpoll 实现。在 Netpoll 上，我们构建了 Thrift 和 netpoll-http2；在 Thrift 上，我们还做了一些特殊的定制，例如，支持 Thrift 的泛化调用，还有基于 Thrift 的连接多路复用。
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/BvYvvlJIDbIibY9gGMXwpNZvoOsx7EzevNAVsKgbibSXia7DJ4Jm5naR0Gqs1eZ0nuXEIibicaakpcZTKwLkH8YvLSQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3ZjNJW8IQvN3wEowpBDvvHicKCQwjcCuc95uSf4P3icJhLza1AL0Iz3V6fg/640?wx_fmt=png)
 
-Kitex 服务发现扩展接口如下所示，更多详情可以查看官网框架扩展 -> [服务发现扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/service_discovery/)。
+多协议
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/BvYvvlJIDbIibY9gGMXwpNZvoOsx7Ezev1icGK0m6jXfVGb6v07xydYdK1g5KiarHc3CIb5vWWHUBsBmocOxPHSkg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+#### 代码生成工具
 
-截止日前，Kitex 已经通过社区开发者的支持，完成了 ETCD、ZooKeeper、Eureka、Consul、Nacos、Polaris 多种服务发现模式，当然也支持 DNS 解析以及 Static IP 直连访问模式，建立起了强大且完备的社区生态，供用户按需灵活选用。
+和 Kitex 一同出现的，还有我们开发的一个简单易用的命令行工具。如果我们写了一个 IDL， 只需要提供一个 module 参数和一个服务名称，Kitex 就会为你生成服务代码脚手架。
 
-![](https://bytedance.feishu.cn/space/api/box/stream/download/asynccode/?code=YTkwYTJjZTRhZGMxMzIyYWVmZGNlOGJjOGRhNjViMzFfMjEwSFFrUzVTNGMxY2h3d1BnZzdiOTNLUGwxOUxjTTRfVG9rZW46Ym94Y241UVljV09MR2FqNERQdlp3aTBVbVB4XzE2NTM4ODMxMTQ6MTY1Mzg4NjcxNF9WNA)
+目前 Kitex 支持了 Protobuf 和 Thrift 这两种 IDL 的定义。命令行工具内置丰富的选项，可以进行项目代码定制；同时，它底层依赖 Protobuf 官方的编译器，和我们自研的 Thriftgo 的编译器，两者都支持自定义的生成代码插件。
 
-特别鸣谢 @li-jin-gou @liu-song @baiyutang @duduainankai @horizonzy @Hanson 等几位社区贡献者对上述服务发现扩展库的实现与支持。更多代码详情可以查看 [https://github.com/kitex-contrib](https://github.com/kitex-contrib) 。
+### Kitex 的性能表现
 
-### **熔断**
+字节跳动内部 RPC 框架使用的协议主要都是基于 Thrift，所以我们在 Thrift 上深耕已久。结合自研的 netpoll 能力，它可以直接暴露底层连接的 buffer。在此基础上，我们设计出了 FastRead/FastWrite 编解码实现，测试发现它具有远超过 apache thrift 生成代码的性能。整体而言，Kitex 的性能相当不错，今年 1 月份的数据如下图所示，可以看到，Kitex 在使用 Thrift 作为 Payload 的情况下，性能优于官方 gRPC，吞吐接近 gRPC 的两倍；此外，在 Kitex 使用定制的 Protobuf 协议时，性能也优于 gRPC。
 
-前面介绍了 Kitex 服务注册与发现机制，这一点对于业务接入框架非常重要，缺少这一环节微服务之间无法实现互通。那么熔断对于微服务有什么作用呢？
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3Zj99Am8Dic4FDibk4eoyNjIMul9tKQr5ACrRibkMwR2uicTSGJsaqQZPFHlw/640?wx_fmt=png)
 
-在微服务进行 RPC 调用时，下游服务难免会出错，当下游出现问题时，如果上游继续对其进行调用，既妨碍了下游的恢复，也浪费了上游的资源。为了解决这个问题，可以设置一些动态开关，当下游出错时，手动的关闭对下游的调用，然而更好的办法是使用熔断器，自动解决这个问题。
+Kitex/gRPC 性能对比（2022 年 1 月数据）
 
-Kitex 提供了熔断器的实现，但是没有默认开启，需要用户主动开启后即可使用。
+### Kitex：一个 demo
 
-Kitex 大部分服务治理模块都是通过 Middleware 集成，熔断也是一样。Kitex 提供了一套 CBSuite，封装了服务粒度的熔断器和实例粒度的熔断器。
+下面简单演示一下 Kitex 是如何开发一个服务的。
 
-* **服务粒度熔断**：按照服务粒度进行熔断统计，通过 WithMiddleware 添加。服务粒度的具体划分取决于 Circuit Breaker Key，即熔断统计的 Key，初始化 CBSuite 时需要传入 **GenServiceCBKeyFunc**。默认提供的是 `circuitbreaker.RPCInfo2Key`，该 Key 的格式是 `fromServiceName/toServiceName/method`，即按照方法级别的异常做熔断统计。
-* **实例粒度熔断**：按照实例粒度进行熔断统计，主要用于解决单实例异常问题，如果触发了实例级别熔断，框架会自动重试。
+首先，定义 IDL。这里使用 Thrift 作为 IDL 的定义，编写一个名为 Demo 的 service。方法 Test 的参数是 String，它的返回也是 String。编写完这个 demo.thrift 文件之后，就可以使用 Kitex 在命令行生成指定的生成代码。如图所示，只需要传入 module name，service name 和目标 IDL 就行了。
 
-**熔断器的思路很简单根据 RPC 成功或失败的情况，限制对下游的访问**。通常熔断器分为三个时期：CLOSED、OPEN、HALFOPEN。当RPC 正常时，为 CLOSED；当 RPC 错误增多时，熔断器会被触发，进入 OPEN；OPEN 后经过一定的冷却时间，熔断器变为 HALFOPEN；HALFOPEN 时会对下游进行一些有策略的访问，然后根据结果决定是变为 CLOSED，还是 OPEN。总的来说三个状态的转换大致如下图：
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3ZjlPbmzSwCgicJZ8N4PrwpJ9RSMfhcGvqnwib3Olf0MORGrARBU7e5MDDA/640?wx_fmt=png)
 
-![](https://bytedance.feishu.cn/space/api/box/stream/download/asynccode/?code=OWFiMDlmNDc5ZDNkNGRlYThjYTcxNmI0MmRkODZjNmNfM3pkNHdPaFBhcUJ3SGR1c3NPSkU0VGpiY0JZYjI2S3VfVG9rZW46Ym94Y244RU4xZ2NKWENzdDJ1NHBDMExOb21iXzE2NTM4ODMzNDQ6MTY1Mzg4Njk0NF9WNA)
+定义 IDL
 
-关于 Kitex 熔断器实现的更多细节和原理，可以查看官网基本特性 -> [熔断器](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/circuitbreaker/)章节。
+随后，我们需要填充业务逻辑。文件中除了第 12 行，全部代码都是 Kitex 命令行工具生成的。通常一个 RPC 方法需要返回一个 Response，例如这里需要返回一个字符串，那么我们给 Response 赋值即可。接下来需要通过 go mod tidy 把依赖拉下来，然后用 build.sh 构建，就可以启动服务了。Kitex 默认的接听端口是 8888。
 
-### **限流**
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3ZjBKCKl4W1b27Z4Z3cIqPOGagMheIGHx1L3HMqoEibADr1Wf5icdJGTeHA/640?wx_fmt=png)
 
-如果说熔断是从客户端出发保护调用链，以防止系统雪崩，那么限流则是一种保护服务端的措施，防止上游某个 Client 流量突增导致 Server 过载。
+定义 Handler 方法
 
-Kitex 支持限制最大连接数和最大 QPS。在初始化 Server 的时候，增加一个 Option：
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3Zjic9pzwaXI2YRl0Sm57BvYENVY1VUicpq1njmkKwsUrxMH9WML9R2FJHA/640?wx_fmt=png)
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/BvYvvlJIDbIibY9gGMXwpNZvoOsx7EzevQNX9BgiaEcIQ1OBtSJDd2mic3fzB6dzP841aQMuncK6kl2c59ObYYRibw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+编译、运行
 
-其中 `MaxConnections` 表示最大连接数，MaxQPS` 表示最大 QPS，此外，Kitex 还提供了动态修改限流阈值的能力。
+对于刚刚启动的服务端，我们可以写一个简单的客户端去调用它。服务端写完之后，写客户端也是非常方便的。这里同样是 import 刚刚生成的生成代码，创建 Client、指定服务名字、构成相应的参数，填上“Hello，word！” ，然后就可以调用了。
 
-Kitex 分别使用了 ConcurrencyLimiter 和 RateLimiter 对最大连接数和最大 QPS 进行限流，其中 ConcurrencyLimiter 采用了简单的计数器算法，RateLimiter 采用了“令牌桶算法”。
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3Zj24rWJ5DTbLXP7ytuiaCAX5Y0pLfBicOnicEPqsydMeogppfIpUI62qALw/640?wx_fmt=png)
 
-限流状态的监控也是重要的一环，Kitex 定义了 `LimitReporter` 接口，用于限流状态监控，例如当前连接数过多、QPS 过大等。如有需求，用户需要自行实现该接口，并通过 `WithLimitReporter` 注入。
+编写 Client
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/BvYvvlJIDbIibY9gGMXwpNZvoOsx7Ezev9TzmOKUf5fccAhic9R4ibUWKkguxoI4DfibwzhMaZrsBUvBvWPEHnlib6Q/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+## Kitex 在字节内部的落地
 
-### **请求重试**
+### 与内部基础设施的集成
 
-Kitex 提供三类重试：超时重试、Backup Request，建连失败重试。其中建连失败是网络层面问题，由于请求未发出，框架会默认重试，下面重点介绍前两类重试的使用。需要注意的是，因为很多的业务请求不具有**幂等性**，这两类重试不会作为默认策略，用户需要按需开启。
+谈到落地，第一步就是 Kitex 和字节跳动内部的基础设施进行结合。字节跳动内部的所有基础设施都是以依赖的方式注入到 Kitex 的。我们将日志、监控、tracing 都定义为 tracer，然后通过 WithTracer 这个 Option 将其注入到 Kitex 里；服务发现是 WithResolver；Service Mesh 则是 WtihProxy 等。字节跳动内部的基础设施都是通过 Option 被注入到 Kitex 的，而且所有的 Option 都是通过前面说的 Suite 打包，简单地添加到业务的代码里完成。
 
-* **超时重试**：错误重试的一种，即客户端收到超时错误的时候，发起重试请求。
-* **Backup Request**：客户端在一段时间内还没收到返回，发起重试请求，任一请求成功即算成功。Backup Request 的等待时间 `RetryDelay` 建议配置为 TP99，一般远小于配置的超时时间 `Timeout`。
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3ZjaqKeH0IMI4fCMaibsiaGiaYyFwShSoRtuhJc8E5wlqSLia5rn5lopBEbuQ/640?wx_fmt=png)
 
-![](https://bytedance.feishu.cn/space/api/box/stream/download/asynccode/?code=NGRkMmUxN2M2OTM1Njk4MWE1ZjM1NmYzOTQ3Y2I2MmNfUzRWOWsxdGRMOW9iNU84eUtKSG1LUXN4bkpjYjFOS0pfVG9rZW46Ym94Y25zQ3ZwTkNoRmNmaDRCdFdOcDZsQzljXzE2NTM4ODM1NDA6MTY1Mzg4NzE0MF9WNA)
+与内部基础设施的集成
 
-服务中的长尾请求增加了服务的整体延迟，而长尾请求占比很低，如上图所示，一个真实服务的延迟分布，能明显看出长尾现象，最大延迟 60ms，而 99% 服务可以在 13ms 返回。当请求延迟达到 13ms 的时候就已经进入长尾请求，这个时候我们可以再发出一条请求，这条请求大概率会在 13ms 内返回，任意一次请求返回我们就认为请求成功，即通过增加适当的负载，大大减少了响应时间的波动。关于超时重试和 Backup Request 的优缺点以及适用场景，可见下表：
+### 内部落地的经典案例：合并部署
 
-![图片](https://mmbiz.qpic.cn/mmbiz_jpg/BvYvvlJIDbJt06tOof14xibrDbC5CSibGmicbnOw8euJtYpVjqzqL4QAtgJIKTTNKKgd7ic97rvp2Poub6zLEKickibg/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)
+这里介绍一个内部落地的经典案例：合并部署。其背景是，在开发微服务时，由于业务拆分和业务场景的多样化，微服务容易出现过微的情况。当服务数量越来越多，网络传输和序列化开销就会越来越大，变得不可忽视。因此，Kitex 框架需要考虑如何减小网络传输和序列化的开销。
 
-### **负载均衡**
+字节跳动基础架构经过一系列的探索和实践，最终推出了合并部署的机制。**它的思路**是：将有强依赖关系的服务进行同机部署，减少它们之间的调用开销。理论上说起来比较简单，实际过程中需要非常多的组件进行配合。
 
-Kitex 默认提供了两种负载均衡算法实现：
+**Kitex 的做法**是：首先，它会依赖一套中心化的部署调度和流量控制；其次，我们开发了一套基于共享内存的通信协议，它可以使得我们两个不同的服务在同一台机器部署时，不需要通过网络进行数据传输，直接通过共享内存，减少额外的数据拷贝。
 
-* **WeightedRandom**：这个算法使用的是基于权重的随机策略，也是 Kitex 的默认策略。它会依据实例的权重进行加权随机，并保证每个实例分配到的负载和自己的权重成比例。
-* **ConsistentHash**：一致性哈希主要适用于对上下文（如实例本地缓存）依赖程度高的场景，如希望同一个类型的请求打到同一台机器，则可使用该负载均衡方法。
+在服务合并部署的模式下，我们需要特殊的服务发现和连接池的实现、定制化的服务启动和监听逻辑。这些在 Kitex 框架里都是通过依赖注入的方式给添加进来的。Kitex 服务在启动过程中会感知到我们 PaaS 平台提供的指定的环境变量。当它察觉到自己需要按合并部署的方式启动之后，就会启动一个预先注入的特定 Suite，随后将相应的功能全都添加进来再启动，就可以执行我们的合并部署。
 
-ConsistentHash 在使用时，需要注意如下事项：
+那么，它的效果如何呢？在 2021 年的实践过程中，我们对抖音的某个服务约 30% 的流量进行了合并，服务端的 CPU 的消耗减少了 19%， TP99 延迟下降到 29%，效果相当显著。
 
-* 下游节点发生变动时，一致性哈希结果可能会改变，某些 Key 可能会发生变化；
-* 如果下游节点非常多，第一次冷启动时 Build 时间可能会较长，如果 RPC 超时短的话可能会导致超时；
-* 如果第一次请求失败，并且 Replica 不为 0，那么会请求到 Replica 上；而第二次及以后仍然会请求第一个实例。
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3Zj0SrjMxnbdED92dTETR0VQuyWfhMNHU6HZWUkEkz3L7eJIjtaO28x6w/640?wx_fmt=png)
 
-### **可观测性**
+内部落地的经典案例：合并部署
 
-框架自身不提供监控打点实现，提供了 `Tracer` 接口，用户可以根据需求实现该接口，并通过 `WithTracer` Option 注入到框架中。
+### 微服务框架推进的痛点
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/BvYvvlJIDbIibY9gGMXwpNZvoOsx7EzevjOibyia2XRNvW9QlIHtfEiaplKrKcWAmPqIdE16JlF29nCZfQiaH5HXsPQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+* 升级慢
 
-Kitex 的监控打点、Metrics 上报以及链路追踪，都可以通过上述接口进行扩展。
+大家可能好奇 Kitex 在字节跳动内部推广是不是很顺畅？其实并不是。作为一个相对而言比较新的框架， Kitex 和其它新生项目一样，在推广的过程中都会遇到同样的问题。特别是， Kitex 作为一个 RPC 框架，我们提供给用户的其实是一个代码的 SDK, 我们的更新是需要业务方的用户去感知、升级、部署上线，才能最终体现在他们的服务逻辑里，因此具有升级慢的问题。
 
-目前 [kitex-contrib](https://github.com/kitex-contrib) 组织下提供了 [Prometheus](https://github.com/kitex-contrib/monitor-prometheus) 的监控扩展，[OpenTracing](https://github.com/kitex-contrib/tracer-opentracing) 的链路追踪扩展，以及 [OpenTelemetry](https://github.com/kitex-contrib/obs-opentelemetry) 可观测性全家桶（Metrics + Tracing + Logging）扩展实现，用户可以按需接入相应的扩展。
+* 召回慢
 
-### **微服务框架与服务网格**
+同时，因为代码都是由研发人员编写，如果代码出现了 bug，我们就需要及时地去感知定位问题，通知负责人去更新版本。因此，会有召回慢的问题。
 
-**服务框架**是传统微服务技术的核心所在。早期微服务技术中的服务注册、发现、调用、治理、观测都离不开服务框架。这也带来了一些问题，比如业务研发者需要感知并使用服务框架的服务治理能力，框架版本升级困难，框架越来越重难于维护等等。
+* 问题排查困难
 
-**服务网格（Service Mesh）** 是将无侵入服务治理定义的更为深入的微服务架构方案，被称为第二代微服务架构。通过将微服务治理能力以独立组件（Sidecar）整合并下沉到基础设施，服务网格可以实现应用业务逻辑与服务治理逻辑完全分离，这也使支持**多语言**、**热升级**等高阶特性变得顺理成章。
+业务方的用户在写代码时，他们其实往往关注的是自己的业务逻辑，他们不会深入理解一个框架内部的实现。所以如果出现问题，他们往往会不知所措，需要依赖我们的业务同学才能进行相应的问题排查。所以会有问题排查困难的问题。
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/doctSB4KKp87TRicX9dbDDye8VSTKFR7nq1JeIG10riaHSa6HNpSJcADFicnjWxGsFVDyS0nhIKk1CoNibjrJxwGvg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+针对**升级慢**，我们有两个操作。一是，代码生成工具支持自动更新：当用户在使用时，我们会检查最新版本，然后直接将我们的版本更新到最新版本，这样可以及时把我们的框架新 feature、bug fix 直接推送到业务方；二是，用户群发版周知：我们有一个几千人的用户群，当有了新版本，我们会在用群里周知，可以最大范围的覆盖到我们的目标用户。
 
-进入云原生时代，随着服务网格技术的逐步发展，我们也要用发展的眼光进行架构规划和设计，微服务框架和服务网格未来必定会是并存的，统一组成服务治理体系。在字节跳动，服务治理体系就是由服务框架和服务治理组成。以 Golang 服务为例，CloudWeGo 提供业务强相关、强侵入的服务治理，字节 Service Mesh 提供业务弱相关、弱侵入的服务治理，相互搭配，相互协商，既解决了业务开发所需的脚手架和开发模式，又让服务治理的接入更加容易。
+针对**召回慢**，我们有三个操作。一是，我们在线上建立完整的版本分布统计，监控所有服务上线部署的框架的版本；二是，我们会跟 PaaS 平台合作，在服务上线时进行卡点操作，检查它们使用的框架版本是不是有 bug，是否需要拦截；三是，针对有问题的版本，我们会及时封禁，及时推动用户更新。
 
-与此同时，在服务网格和服务框架同时使用的场景下，服务框架必须要支持灵活卸载治理能力，服务网格也需要保证功能的稳定性。在未来技术的演进方向上，服务框架也主要专注于编解码、通信效率、多协议支持等方面，而服务网格则可以深入更多无侵入的服务治理功能研发中。
+针对**问题排查困难**，我们有两个操作。一是，我们积累了非常丰富的 Wiki 和问题排查手册，例如超时问题、 协议解析问题等。二是，如果遇到难以解决的问题，我们在线上服务默认开启了 Debug 端口，保证框架开发同学可以第一时间赶到现场去排查。
 
-此外，在大规模场景下，针对服务治理新功能的研发需求决策，我们往往还需要考虑以下因素：
+### Kitex 在字节内部的发展
 
-* **性能:** 大部分业务很在意，也是团队一直努力的重点；
-* **普遍性**:需要评估是不是所有业务都需要的能力；
-* **简洁**: 通俗说，我们不太希望引入太多的线上问题或者太复杂的使用说明文档；
-* **ROI**：功能迭代、产品升级需要考虑整体投资回报率。
+数据显示，在 2020 年，v1.0 版本发布的初始阶段，用户的接受度比较低。直到 2020 年 6 月，线上接受 Kitex 的数量还不到 1000。随后进入快速发展的阶段，到 2021 年年初，累积接近 1w+ 的服务开始使用 Kitex。2021 年底，4w+服务使用 Kitex。
 
-## **04 CloudWeGo 的开源之路**
+![](https://mmbiz.qpic.cn/mmbiz_png/5EcwYhllQOjcWQjQCbWdTKwy3tjjL3Zj1o4RmpqRrzekYXB3QjnSTBBYNMtB0Ric10xY0GOM0KCTI7ktLg4ywpw/640?wx_fmt=png)
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/BvYvvlJIDbJt06tOof14xibrDbC5CSibGmef5tH7p7r85Yodo9P59AKtA4XqWicu1cCZmKwvaiap2b2ZUgMV1wPyBw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+### **Kitex 的开源实践**
 
-字节内部版本的 Kitex 是依赖于开源版本的 Kitex，因此可以理解为 Kitex 内外同源，不存在两个 Kitex。
+开源工作主要包括代码、文档和社区运营三个层面。
 
-### **开源的原因**
+#### **代码层面**
 
-回到开篇的问题，为什么要创造一个新的项目，并且开源 CloudWeGo 呢？
+* 代码拆分、脱敏；
+* 内部仓库引用开源仓库，避免内外多副本同时维护；
+* 在开源过程中确保内部用户平滑切换、体验无损；
 
-首先，CloudWeGo 里面的项目都是在字节内部经过大规模落地实践验证的，开源后每个功能的迭代也都是第一时间在内部使用验证过的，是一个真正的企业级落地项目，开源用户和字节内部业务使用的是同一套服务框架；其次，CloudWeGo 提供的功能，尤其是协议支持和服务治理，都是能解决真实业务痛点的，每一行代码优化都能实实在在地提升用户服务的性能；最后，CloudWeGo 的研发也借鉴了一些知名开源项目的设计思路，同时也依赖一些开源项目的实现，我们把 CloudWeGo 开源出去也是为了回馈社区，给开源社区贡献一份力量。
+#### **文档层面**
 
-CloudWeGo 在设计之初，就同时考虑了正确性和可维护性，除了代码逻辑的正确性，高质量的代码、明晰的代码结构和优良的扩展性一直都是 CloudWeGo 追求的方向和实践的信条。
+* 重新梳理用户文档，覆盖方方面面；
+* 建立详尽的用例仓库(CloudWeGo/Kitex-examples)。
 
-CloudWeGo 服务于用户、需求驱动，为用户提供开箱即用的服务框架及相关中间件，希望可以服务于更多企业和独立开发者，避免用户重复创造。
+#### **社区运营**
 
-### **开源的历程**
+* 官网建设；
+* 组建用户群，进行答疑解惑；
+* 飞书机器人对接 Github 的 Issue 管理、PR 管理之类的业务，可以快速响应；
+* 对优秀贡献者进行奖励。
 
-![图片](https://mmbiz.qpic.cn/mmbiz_jpg/BvYvvlJIDbIibY9gGMXwpNZvoOsx7EzevIz0kj3w5iayeqbkdicaJViaWJ0ib3LwlwEgl7hibLeIzVrc230hVchtsoPA/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)
+在以上努力下，CloudWeGo/Kitex 仓库目前收获了 4.1k+ stars；Kitex-Contrib 获得多个外部用户贡献的仓库；CloudWeGo 飞书用户群近 950 个用户……
 
-CloudWeGo 自 2021 年 9 月 8 日正式对外官宣，主要子项目 Kitex 先后发布 v0.1.0 和 v0.2.0，支持了许多新的功能，对性能、代码、文档也相继做了许多优化。截止到 2022 年 4 月，距离首次官宣 7 个月，仅 CloudWeGo-Kitex 就收获了 **4000** 个 Star，累计近 **50** 个 Contributors，达到了一个新的里程碑，这很有趣，并且十分振奋人心，不是吗？
+## 未来展望
 
-CloudWeGo 团队自开源之初就非常重视社区建设，“**Community Over Code**” 也是 CloudWeGo 社区所遵循的文化和目标。
+首先，我们仍然会持续向开源社区反馈最新的技术进展。例如在 Thrift 协议上，虽然对 Thrift 的编解码已经做到非常极致的优化了，我们还在探索利用 JIT 手段来提供更多的性能提升；在 Protobuf 上，我们会补足短板，将在 Thrift 方面的优化经验迁移到 Protobuf 上，对 Protobuf 的生成代码和编解码进行优化；Kitex 后续也会进一步融入云原生社区，所以也在考虑支持 xDS 协议。其次，我们会去拓展更多的开源组件，去对接现存的云原生社区的各种常用的或者热门组件。最后，我们也会尝试去对接更多的公有云基础设施，使得用户在公有云上使用 Kitex 时能够拥有愉悦的体验。
 
-从搭建用户群，建设官网和文档，积极维护项目 Issue，及时处理新的 PR，再到我们与贡献者的深入沟通和对他们的培养，每一个动作都体现我们的决心。为了推进社区建设规范化和标准化，CloudWeGo 团队先后创建了 Community 仓库用来定义社区成员晋升机制以及存档社区材料。
+项目官网：[https://www.cloudwego.io/](https://www.cloudwego.io/)
 
-为了践行公开透明和开源开放的开源文化，搭建开放的对话与交流平台，CloudWeGo 组织了社区双周例会，在例会上同步社区近期计划并积极听取社区成员的建议，与社区贡献者讨论相关技术方案实现。
-
-截止目前，通过社区 Maintainer 的培养、Contributor 的主动申请、社区管理委员会的投票审批，已经正式通过了 5 位 Committer 的加入申请，极大地壮大了 CloudWeGo 社区核心力量，他们为社区的发展作出了重大贡献。
-
-### **后续的规划**
-
-CloudWeGo 在 2021 年底收录进入 CNCF Landscape，丰富了 CNCF 在 RPC 领域的生态，给全球用户在做技术选型时提供了一套新的选择。
-
-尽管取得了一些小小的成绩，但是 CloudWeGo 仍旧还是一个年轻的项目，开源贵在持之以恒、长期建设，CloudWeGo 团队也会持续完善，继续向前。
-
-从社区建设方面来看，CloudWeGo 团队将继续提供更多新人友好的 Good-first-issue，坚持组织社区例会，定期举办开源技术沙龙，提供更易于理解的技术文档，另外也将继续欢迎更多新的开发者参与到社区建设中来。
-
-从开源规划来看，HTTP 框架 Hertz 开源在即，还有更多中间件小工具、扩展库也都在持续开源中。此外，CloudWeGo 主创团队还研发了一套 Rust RPC 框架，正在内部落地实践验证中，在不久的将来，也将对外开源。
-
-![图片](https://mmbiz.qpic.cn/mmbiz_png/vIlfEebgqpzQJV3hadWYKl5f3mtE0fqjJgL1cM8E5lickFp1XvF5C5uAj6GJQKWKW0aqONwuD6ATxgHbKROqphA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
-
-从功能研发计划来看，以 CloudWeGo-Kitex 为例，将继续以内外部用户需求为驱动力，持续开发新的功能并迭代完善已有的功能。其中，包括支持连接预热、自定义异常重试、对 Protobuf 支持的性能优化，支持 xDS 协议等。
-
-
-从开源生态来看，目前 CloudWeGo-Kitex 已经完成了诸多开源项目的对接，未来也将会按需支持更多开源生态。此外，CloudWeGo 也在和国内外主流公有云厂商进行合作对接，提供开箱即用、稳定可靠的微服务托管与治理产品的基座；CloudWeGo 也积极与国内外软件基金会开展合作和交流，探索新的合作模式。
-
-CloudWeGo 未来可期，我们期待更多用户使用我们的项目，也期待有更多开发者可以加入共建 CloudWeGo 社区，共同见证云原生时代一个初生但了不起的微服务中间件和开源项目。
-
-## **项目地址**
-
-GitHub：[https://github.com/cloudwego](https://github.com/cloudwego)
-
-官网：[www.cloudwego.io](www.cloudwego.io)
-
-## **活动预告**
-
-5 月，CloudWeGo 社区第一期源码解读活动已经上线，欢迎大家持续关注并积极参与。
-
-活动地址：[https://github.com/cloudwego/community/issues/24](https://github.com/cloudwego/community/issues/24)。
-
-![图片](https://mmbiz.qpic.cn/mmbiz_gif/BvYvvlJIDbIibY9gGMXwpNZvoOsx7EzevrVdBuenfDPIicyoNViaYib0Iic0IkkluljnffenT0KibQfzhicUzwbFrBuxg/640?wx_fmt=gif&wxfrom=5&wx_lazy=1)
+项目地址：[https://github.com/cloudwego](https://github.com/cloudwego )
 
