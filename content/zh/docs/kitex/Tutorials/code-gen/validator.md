@@ -109,7 +109,7 @@ func (p *Request) IsValid() error {
 
 ## 数字类型
 
-包括 i8, i16, i32, i64, double。
+包括 i8，i16，i32，i64，double。
 
 1. const，必须为指定值。
 2. lt，le，gt，ge，分别表示小于，小于等于，大于，大于等于。
