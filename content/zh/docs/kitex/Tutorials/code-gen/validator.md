@@ -9,17 +9,17 @@ description: >
 
 # 概述
 
-Validator是用于支持结构体校验能力的thriftgo插件。
+Validator 是用于支持结构体校验能力的 thriftgo 插件。
 
-在IDL中通过注解来描述约束，插件会根据注解给对应的struct生成`IsValid() error`方法，生成在xxx-validator.go文件。
+在 IDL 中通过注解来描述约束，插件会根据注解给对应的 struct 生成  `IsValid() error ` 方法，生成在 xxx-validator.go 文件。
 
-注解采用 `vt.{ConstraintType} = "Value"` 这种形式描述。
+注解采用  `vt.{ConstraintType} = "Value"`  这种形式描述。
 
-适用范围：struct/union中的每个field。
+适用范围：struct/union 中的每个 field 。
 
 校验形式：用户主动校验。（可提供中间件，统一对所有参数/结果校验）
 
-IDL示例：
+IDL 示例：
 
 ```
 enum MapKey {
@@ -42,7 +42,7 @@ struct Response {
 
 # 使用
 
-以[快速开始](https://www.cloudwego.io/zh/docs/kitex/getting-started/)里的Kitex Hello项目为例，进入示例仓库的`hello`目录，在`hello.thrift`中添加注解，例如我们对`Request`结构体的`message`字段进行约束，约束长度不超过8且要以"kitex-"前缀开头：
+以[快速开始](https://www.cloudwego.io/zh/docs/kitex/getting-started/)里的 Kitex Hello 项目为例，进入示例仓库的  `hello`  目录，在  `hello.thrift`  中添加注解，例如我们对  `Request`  结构体的  `message`  字段进行约束，约束长度不超过8且要以 "kitex-" 前缀开头：
 
 ```
 struct Request {
@@ -50,13 +50,13 @@ struct Request {
 }
 ```
 
-在生成Kitex代码时，加上 `--thrift-plugin validator` 参数，即可生成validator文件。
+在生成Kitex代码时，加上  `--thrift-plugin validator`  参数，即可生成 validator 文件。
 
 ```
 kitex --thrift-plugin validator -service a.b.c hello.thrift
 ```
 
-执行后，可以看见新生成的Validator：
+执行后，可以看见新生成的 Validator：
 
 ```
 ├── kitex_gen
@@ -72,7 +72,7 @@ kitex --thrift-plugin validator -service a.b.c hello.thrift
         └── k-hello.go
 ```
 
-其中对于`Request`结构体，新生成了`IsValid()`方法：
+其中对于  `Request`  结构体，新生成了 `IsValid()`  方法：
 
 ```
 func (p *Request) IsValid() error {
@@ -87,7 +87,7 @@ func (p *Request) IsValid() error {
 }
 ```
 
-在后续的使用中，调用`IsValid()`方法对结构体进行校验即可：
+在后续的使用中，调用  `IsValid()`  方法对结构体进行校验即可：
 
 ```
 		
@@ -105,7 +105,7 @@ func (p *Request) IsValid() error {
 
 # 支持的校验能力
 
-校验顺序以定义顺序为准，'in' 和 'not_in' 这类可以定义多次的，以第一次出现的顺序为准。
+校验顺序以定义顺序为准， 'in'  和 'not_in' 这类可以定义多次的，以第一次出现的顺序为准。
 
 ## 数字类型
 
@@ -114,7 +114,7 @@ func (p *Request) IsValid() error {
 1. const，必须为指定值。
 2. lt，le，gt，ge，分别表示小于，小于等于，大于，大于等于。
 3. in，not_in，分别表示可以使用的值和不可以使用的值，可多次指定，一次指定一个值。
-4. not_nil，该字段不能为空。（仅当字段为optional时合法）
+4. not_nil，该字段不能为空。（仅当字段为 optional 时合法）
 
 ```Thrift
 struct NumericDemo {
@@ -131,7 +131,7 @@ struct NumericDemo {
 3. pattern，正则匹配。
 4. prefix，suffix，contains，not_contains，限制前缀，限制后缀，必须包含，不能包含。
 5. in，not_in，分别表示可以使用的值和不可以使用的值，二者不能同时使用，可多次指定，一次指定一个值。
-6. not_nil，该字段不能为空。（仅当字段为optional时合法）
+6. not_nil，该字段不能为空。（仅当字段为 optional 时合法）
 
 ```Thrift
 struct StringDemo {
@@ -147,7 +147,7 @@ struct StringDemo {
 ## bool
 
 1. const，必须为指定值。
-2. not_nil，该字段不能为空。（仅当字段为optional时合法）
+2. not_nil，该字段不能为空。（仅当字段为 optional 时合法）
 
 ```Thrift
 struct BoolDemo {
@@ -159,8 +159,8 @@ struct BoolDemo {
 ## enum
 
 1. const，必须为指定值。
-2. defined_only，必须在enum中定义的值中。
-3. not_nil，该字段不能为空。（仅当字段为optional时合法）
+2. defined_only，必须在 enum 中定义的值中。
+3. not_nil，该字段不能为空。（仅当字段为 optional 时合法）
 
 ```Thrift
 enum Type {
@@ -189,7 +189,7 @@ struct SetListDemo {
 ## map
 
 1. min_size，max_size，最小键值对数，最大键值对数。
-2. no_sparse，value为指针时，不能为nil。
+2. no_sparse，value 为指针时，不能为 nil 。
 3. key，value，键约束，值约束。
 
 ```Thrift
@@ -202,7 +202,7 @@ struct MapDemo {
 
 ## struct/union/exception
 
-1. skip，跳过该struct/union/exception的递归校验。（作为单独字段时默认为 false，作为元素时默认为 true ）
+1. skip，跳过该 struct/union/exception 的递归校验。（作为单独字段时默认为 false，作为元素时默认为 true ）
 2. not_nil，该字段不能为空。
 
 ```Thrift
@@ -218,7 +218,7 @@ struct OuterRequest {
 前置符'$'表示某个变量的引用，可用于**跨字段校验**：
 
 1. $x代表名为x的变量，变量名为 \[a-zA-Z0-9_]\，其作用域规则为**当前结构体**。
-2. $表示validator所处的当前字段。
+2. $表示 validator 所处的当前字段。
 
 ```Thrift
 struct Example {
@@ -233,7 +233,7 @@ struct Example {
 前置符‘@’表示内置的工具函数来计算校验值，目前支持的工具函数：
 
 1. sprintf(fmt, $1, $2...)，用于输出特定字符。
-2. len($x)，输出变量大小。（字符串长度、list元素个数）
+2. len($x)，输出变量大小。（字符串长度、list 元素个数）
 
 ```Thrift
 struct Example {
