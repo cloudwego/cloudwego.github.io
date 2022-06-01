@@ -31,8 +31,6 @@ struct Request {
     2: i32 ID (vt.gt = "1000", vt.lt = "10000")
     3: list<double> Values (vt.elem.gt = "0.25")
     4: map<MapKey, binary> KeyValues (vt.key.defined_only = "true", vt.min_size = "1")
-
-    255: optional base.Base Base;
 }
 
 struct Response {
@@ -67,7 +65,7 @@ The code will be generated in the directory bellow:
         │   ├── invoker.go
         │   └── server.go
         ├── hello.go
-  -->   ├── hello_validator.go 
+  -->   ├── hello_validator.go
         ├── k-consts.go
         └── k-hello.go
 ```
@@ -90,7 +88,7 @@ func (p *Request) IsValid() error {
 So just simply call `IsValid()` to verify the struct：
 
 ```
-		
+
 		req := &api.Request{
 			//....
 		}
@@ -98,9 +96,9 @@ So just simply call `IsValid()` to verify the struct：
 		if err != nil {
 			//invalid ....
 		}
-		
+
 		//valid ...
-		
+
 ```
 
 # Supported Validators
@@ -120,7 +118,7 @@ Including i8, i16, i32, i64, double.
 struct NumericDemo {
     1: double Value (vt.gt = "1000.1", vt.lt = "10000.1")
     2: i8 Type (vt.in = "1", vt.in = "2", vt.in = "4")
-    3: i64 MagicNumber (vt.const = "0x5f3759df") 
+    3: i64 MagicNumber (vt.const = "0x5f3759df")
 }
 ```
 
