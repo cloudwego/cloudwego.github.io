@@ -8,8 +8,6 @@ author: <a href="https://github.com/GuangmingLuo" target="_blank">GuangmingLuo</
 
 # 从 CloudWeGo 谈云原生时代的微服务与开源
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/On.gif)
-
 > 本文整理自罗广明在 DIVE 全球基础软件创新大会 2022 的演讲分享，主题为《从 CloudWeGo 谈云原生时代的微服务与开源》。
 
 ## **01 项目创造的思考与哲学**
@@ -41,13 +39,13 @@ CloudWeGo 在第一阶段开源了四个项目：
 
 从**演进历史**来看，2014 年，字节跳动技术团队引入 Golang 解决长连接推送业务面临的高并发问题，两年后，内部技术团队基于 Golang 推出了一个名为 Kite 的框架，同时对开源项目 Gin 做了一层很薄的封装，推出了 Ginex。这两个框架极大推动了 Golang 在公司内部的应用。此后，围绕性能和可扩展性设计，字节跳动重构 Kite，并在次年 10 月完成并发布Kitex，投入到内部应用中。据悉，截至 2021 年 9 月，线上有 3w+ 微服务使用 Kitex，大部分服务迁移新框架后可以收获 CPU 和延迟上的收益。
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Framework.PNG)
+![image](/img/blog/Microservices_Open_CloudWeGo/Framework.PNG)
 
 从**架构**上看，Kitex 主要分为两部分。其中 Kitex Core 是它的的主干逻辑，定义了框架的层次结构、接口，还有接口的默认实现。最上面 Client 和 Server 是对用户暴露的，包含 Option 配置以及其初始化的逻辑；中间的 Modules 模块是框架治理层面的功能模块和交互元信息，而 Remote 模块是与对端交互的模块，包括编解码和网络通信。另一部分 Kitex Tool 则是对应生成代码相关的实现，生成代码工具就是编译这个包得到的，里面包括 IDL 解析、校验、代码生成、插件支持、自更新等。
 
 从**功能与特性**这两个角度来看，主要可以分为以下七个方面：
 
-![](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Functions_Features.PNG)
+![image](/img/blog/Microservices_Open_CloudWeGo/Functions_Features.PNG)
 
 * **高性能**：网络传输模块 Kitex 默认集成了自研的网络库 Netpoll，性能相较使用 go net 有显著优势；除了网络库带来的性能收益，Kitex 对 Thrift 编解码也做了深度优化。关于性能数据可参考 [kitex-benchmark](https://github.com/cloudwego/kitex-benchmark)。
 * **扩展性**：Kitex 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 CloudWeGo [官网文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/)。Kitex 也并未耦合 Netpoll，开发者也可以选择其它网络库扩展使用。
@@ -59,7 +57,7 @@ CloudWeGo 在第一阶段开源了四个项目：
 
 简单总结一下，CloudWeGo 不仅仅是一个开源的项目，也是一个真实的、超大规模的**企业级**最佳实践。它源自企业，所以天生就适合在企业内部落地；它源自开源，最终也拥抱了开源，从 Go 基础库，到 Go 网络库和 Thrift 编译器，再到上层的服务框架，以及框架拥有的所有企业级治理能力，均对外开放开源。
 
-![](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Enterprise.PNG)
+![image](/img/blog/Microservices_Open_CloudWeGo/Enterprise.PNG)
 
 ## **03 CloudWeGo 的微服务治理**
 
@@ -73,15 +71,15 @@ Kitex 并不提供默认的服务注册发现，体现了框架的**中立**特�
 
 Kitex 服务注册扩展接口如下所示，更多详情可以查看官网框架扩展 -> [服务注册扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/registry/)。
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Service_registry.png)
+![image](/img/blog/Microservices_Open_CloudWeGo/Service_registry.png)
 
 Kitex 服务发现扩展接口如下所示，更多详情可以查看官网框架扩展 -> [服务发现扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/service_discovery/)。
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Service_discovery.png)
+![image](/img/blog/Microservices_Open_CloudWeGo/Service_discovery.png)
 
 截止日前，Kitex 已经通过社区开发者的支持，完成了 ETCD、ZooKeeper、Eureka、Consul、Nacos、Polaris 多种服务发现模式，当然也支持 DNS 解析以及 Static IP 直连访问模式，建立起了强大且完备的社区生态，供用户按需灵活选用。
 
-![](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Community_ecology.PNG)
+![image](/img/blog/Microservices_Open_CloudWeGo/Community_ecology.PNG)
 
 特别鸣谢 @li-jin-gou @liu-song @baiyutang @duduainankai @horizonzy @Hanson 等几位社区贡献者对上述服务发现扩展库的实现与支持。更多代码详情可以查看 [https://github.com/kitex-contrib](https://github.com/kitex-contrib) 。
 
@@ -100,7 +98,7 @@ Kitex 大部分服务治理模块都是通过 Middleware 集成，熔断也是�
 
 **熔断器的思路很简单根据 RPC 成功或失败的情况，限制对下游的访问**。通常熔断器分为三个时期：CLOSED、OPEN、HALFOPEN。当RPC 正常时，为 CLOSED；当 RPC 错误增多时，熔断器会被触发，进入 OPEN；OPEN 后经过一定的冷却时间，熔断器变为 HALFOPEN；HALFOPEN 时会对下游进行一些有策略的访问，然后根据结果决定是变为 CLOSED，还是 OPEN。总的来说三个状态的转换大致如下图：
 
-![](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Conversion.png)
+![image](/img/blog/Microservices_Open_CloudWeGo/Conversion.png)
 
 关于 Kitex 熔断器实现的更多细节和原理，可以查看官网基本特性 -> [熔断器](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/circuitbreaker/)章节。
 
@@ -110,7 +108,7 @@ Kitex 大部分服务治理模块都是通过 Middleware 集成，熔断也是�
 
 Kitex 支持限制最大连接数和最大 QPS。在初始化 Server 的时候，增加一个 Option：
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Server.png)
+![image](/img/blog/Microservices_Open_CloudWeGo/Server.png)
 
 其中 `MaxConnections` 表示最大连接数，MaxQPS` 表示最大 QPS，此外，Kitex 还提供了动态修改限流阈值的能力。
 
@@ -118,7 +116,7 @@ Kitex 分别使用了 ConcurrencyLimiter 和 RateLimiter 对最大连接数和�
 
 限流状态的监控也是重要的一环，Kitex 定义了 `LimitReporter` 接口，用于限流状态监控，例如当前连接数过多、QPS 过大等。如有需求，用户需要自行实现该接口，并通过 `WithLimitReporter` 注入。
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/LimitReporter.png)
+![image](/img/blog/Microservices_Open_CloudWeGo/LimitReporter.png)
 
 ### **请求重试**
 
@@ -127,11 +125,11 @@ Kitex 提供三类重试：超时重试、Backup Request，建连失败重试。
 * **超时重试**：错误重试的一种，即客户端收到超时错误的时候，发起重试请求。
 * **Backup Request**：客户端在一段时间内还没收到返回，发起重试请求，任一请求成功即算成功。Backup Request 的等待时间 `RetryDelay` 建议配置为 TP99，一般远小于配置的超时时间 `Timeout`。
 
-![](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Timeout.png)
+![image](/img/blog/Microservices_Open_CloudWeGo/Timeout.png)
 
 服务中的长尾请求增加了服务的整体延迟，而长尾请求占比很低，如上图所示，一个真实服务的延迟分布，能明显看出长尾现象，最大延迟 60ms，而 99% 服务可以在 13ms 返回。当请求延迟达到 13ms 的时候就已经进入长尾请求，这个时候我们可以再发出一条请求，这条请求大概率会在 13ms 内返回，任意一次请求返回我们就认为请求成功，即通过增加适当的负载，大大减少了响应时间的波动。关于超时重试和 Backup Request 的优缺点以及适用场景，可见下表：
 
-![图片(https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Backup_Request.PNG)
+![image](/img/blog/Microservices_Open_CloudWeGo/Backup_Request.PNG)
 
 ### **负载均衡**
 
@@ -150,7 +148,7 @@ ConsistentHash 在使用时，需要注意如下事项：
 
 框架自身不提供监控打点实现，提供了 `Tracer` 接口，用户可以根据需求实现该接口，并通过 `WithTracer` Option 注入到框架中。
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Tracer.png)
+![image](/img/blog/Microservices_Open_CloudWeGo/Tracer.png)
 
 Kitex 的监控打点、Metrics 上报以及链路追踪，都可以通过上述接口进行扩展。
 
@@ -162,7 +160,7 @@ Kitex 的监控打点、Metrics 上报以及链路追踪，都可以通过上述
 
 **服务网格（Service Mesh）** 是将无侵入服务治理定义的更为深入的微服务架构方案，被称为第二代微服务架构。通过将微服务治理能力以独立组件（Sidecar）整合并下沉到基础设施，服务网格可以实现应用业务逻辑与服务治理逻辑完全分离，这也使支持**多语言**、**热升级**等高阶特性变得顺理成章。
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Service_Mesh.png)
+![image](/img/blog/Microservices_Open_CloudWeGo/Service_Mesh.png)
 
 进入云原生时代，随着服务网格技术的逐步发展，我们也要用发展的眼光进行架构规划和设计，微服务框架和服务网格未来必定会是并存的，统一组成服务治理体系。在字节跳动，服务治理体系就是由服务框架和服务治理组成。以 Golang 服务为例，CloudWeGo 提供业务强相关、强侵入的服务治理，字节 Service Mesh 提供业务弱相关、弱侵入的服务治理，相互搭配，相互协商，既解决了业务开发所需的脚手架和开发模式，又让服务治理的接入更加容易。
 
@@ -177,7 +175,7 @@ Kitex 的监控打点、Metrics 上报以及链路追踪，都可以通过上述
 
 ## **04 CloudWeGo 的开源之路**
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Library.png)
+![image](/img/blog/Microservices_Open_CloudWeGo/Library.png)
 
 字节内部版本的 Kitex 是依赖于开源版本的 Kitex，因此可以理解为 Kitex 内外同源，不存在两个 Kitex。
 
@@ -193,7 +191,7 @@ CloudWeGo 服务于用户、需求驱动，为用户提供开箱即用的服务�
 
 ### **开源的历程**
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Course.PNG)
+![image](/img/blog/Microservices_Open_CloudWeGo/Course.PNG)
 
 CloudWeGo 自 2021 年 9 月 8 日正式对外官宣，主要子项目 Kitex 先后发布 v0.1.0 和 v0.2.0，支持了许多新的功能，对性能、代码、文档也相继做了许多优化。截止到 2022 年 4 月，距离首次官宣 7 个月，仅 CloudWeGo-Kitex 就收获了 **4000** 个 Star，累计近 **50** 个 Contributors，达到了一个新的里程碑，这很有趣，并且十分振奋人心，不是吗？
 
@@ -215,7 +213,7 @@ CloudWeGo 在 2021 年底收录进入 CNCF Landscape，丰富了 CNCF 在 RPC �
 
 从开源规划来看，HTTP 框架 Hertz 开源在即，还有更多中间件小工具、扩展库也都在持续开源中。此外，CloudWeGo 主创团队还研发了一套 Rust RPC 框架，正在内部落地实践验证中，在不久的将来，也将对外开源。
 
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Plan.png)
+![image](/img/blog/Microservices_Open_CloudWeGo/Plan.png)
 
 从功能研发计划来看，以 CloudWeGo-Kitex 为例，将继续以内外部用户需求为驱动力，持续开发新的功能并迭代完善已有的功能。其中，包括支持连接预热、自定义异常重试、对 Protobuf 支持的性能优化，支持 xDS 协议等。
 
@@ -223,17 +221,3 @@ CloudWeGo 在 2021 年底收录进入 CNCF Landscape，丰富了 CNCF 在 RPC �
 从开源生态来看，目前 CloudWeGo-Kitex 已经完成了诸多开源项目的对接，未来也将会按需支持更多开源生态。此外，CloudWeGo 也在和国内外主流公有云厂商进行合作对接，提供开箱即用、稳定可靠的微服务托管与治理产品的基座；CloudWeGo 也积极与国内外软件基金会开展合作和交流，探索新的合作模式。
 
 CloudWeGo 未来可期，我们期待更多用户使用我们的项目，也期待有更多开发者可以加入共建 CloudWeGo 社区，共同见证云原生时代一个初生但了不起的微服务中间件和开源项目。
-
-## **项目地址**
-
-GitHub：[https://github.com/cloudwego](https://github.com/cloudwego)
-
-官网：[www.cloudwego.io](www.cloudwego.io)
-
-## **活动预告**
-
-5 月，CloudWeGo 社区第一期源码解读活动已经上线，欢迎大家持续关注并积极参与。
-
-活动地址：[https://github.com/cloudwego/community/issues/24](https://github.com/cloudwego/community/issues/24)。
-
-![图片](https://github.com/cyyolo/cloudwego.github.io/blob/main/static/img/blog/Microservices_Open_CloudWeGo/Public.gif)
