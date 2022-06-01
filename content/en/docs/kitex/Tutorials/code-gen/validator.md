@@ -1,7 +1,7 @@
 ---
 title: "Thrift Validator"
 date: 2022-06-01
-weight: 2
+weight: 3
 description: >
 ---
 
