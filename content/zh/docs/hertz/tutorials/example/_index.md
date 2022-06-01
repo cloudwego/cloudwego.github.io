@@ -22,8 +22,8 @@ description: >
 
 ### 中间件
 - [CORS](https://github.com/cloudwego/hertz-examples/tree/main/middleware/CORS) ：使用 CORS 中间件的示例
-- [basic_auth](https://github.com/cloudwego/hertz-examples/tree/main/middleware/basicauth) : 使用 basic auth 中间的示例
-- [custom](https://github.com/cloudwego/hertz-examples/tree/main/middleware/custom) : 自定义中间的示例
+- [basic_auth](https://github.com/cloudwego/hertz-examples/tree/main/middleware/basicauth) : 使用 basic auth 中间件的示例
+- [custom](https://github.com/cloudwego/hertz-examples/tree/main/middleware/custom) : 自定义中间件的示例
 
 ### 参数绑定及验证
 - [binding](https://github.com/cloudwego/hertz-examples/tree/main/binding) ：参数绑定及验证的示例
