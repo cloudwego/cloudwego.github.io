@@ -1,9 +1,11 @@
 ---
 title: "Combine Service"
-date: 2021-08-26
+date: 2022-06-02
 weight: 2
 description: >
 ---
+
+> **本功能仅支持 Thrift 场景**
 
 ## 使用场景
 
@@ -79,3 +81,85 @@ service ExampleService1 extends thriftB.Service1 {
 service ExampleService2 extends thriftC.Service2 {
 }
 ```
+
+# 使用示例
+
+本功能只支持 Thrift 场景。例如目前有三个 Service 需要合并，编写 Thrift IDL 文件 `demo.thrift` 如下：
+
+```Thrift
+namespace go api
+
+struct ExampleRequest {
+	1: string message
+}
+
+struct ExampleResponse {
+	1: string message
+}
+
+service ExampleService0 {
+    ExampleResponse Method0(1: ExampleRequest req)
+}
+
+service ExampleService1 {
+    ExampleResponse Method1(1: ExampleRequest req)
+}
+
+service ExampleService2 {
+    ExampleResponse Method2(1: ExampleRequest req)
+}
+```
+
+执行如下命令，添加 `--combine-service` 进行合并服务的代码生成：
+
+```
+kitex --combine-service -service demo.kitex.combine demo.thrift
+```
+
+得到的生成内容如下：
+
+```
+├── kitex_gen
+    └── api
+        ├── combineservice
+        │   ├── client.go
+        │   ├── combineservice.go
+        │   ├── invoker.go
+        │   └── server.go
+        ├── demo.go
+        ├── exampleservice0
+        │   ├── client.go
+        │   ├── exampleservice0.go
+        │   ├── invoker.go
+        │   └── server.go
+        ├── exampleservice1
+        │   ├── client.go
+        │   ├── exampleservice1.go
+        │   ├── invoker.go
+        │   └── server.go
+        ├── exampleservice2
+        │   ├── client.go
+        │   ├── exampleservice2.go
+        │   ├── invoker.go
+        │   └── server.go
+        ├── k-consts.go
+        └── k-demo.go
+```
+
+其中，`exampleservice0`，`exampleservice1`，`exampleservice2` 都是正常生成的代码
+
+而 `combineservice` 则为 `--combine-service` 生成的合并服务的代码，其中各个方法都是对另外的 Service 进行的聚合，可以通过这个 Service 进行统一的使用。
+
+所以在服务端启动时，只需要运行这个合并服务的 Service，就可以将所有的方法一起运行：
+
+```go
+func main() {
+	svr := api.NewServer(new(combineservice.CombineService))
+
+	err := svr.Run()
+	if err != nil {
+		log.Println(err.Error())
+	}
+}
+```
+
