@@ -10,7 +10,6 @@ description: >
 
 * Fix: Loops 缩容不再全部重置
 * Chore: mcache bsr 计算使用 math/bits.Len 代替，以提升性能。
-  perf: [https://github.com/bytedance/gopkg/pull/129](https://github.com/bytedance/gopkg/pull/129)
 * Feat: 修复 LinkBuffer Close 时没有回收 caches 的问题（不是内存泄漏）
 
 ## Fix
