@@ -12,7 +12,7 @@ Middleware is the major method to extend the Kitex framework. Most of the Kitex-
 Before extending, it is important to remember two principles:
 
 1. Middleware and Suit are only allowed to be set before initializing Server and Client, do not allow modified dynamically.
-2. Behind override ahead.
+2. Middlewares are executed in the order in which they were added.
 
 Middleware is defined in `pkg/endpoint/endpoint.go`, the two major types are:
 
@@ -27,10 +27,10 @@ Middleware should be used in series, by calling the next, you can get the respon
 
 There are two ways to add client-side middleware:
 
-1. `client.WithMiddleware` adds a middleware to the current client, executes before all the rest of the middleware.
-2. `client.WithInstanceMW` adds a middleware to the current client and executes after service discovery and load balancing (if `Proxy` is used, it will not be called).
+1. `client.WithMiddleware` adds a middleware to the current client, executes after service circuit breaker middleware and timeout middleware.
+2. `client.WithInstanceMW` adds a middleware to the current client and executes after service discovery and load balancing. If there has instance circuit breaker, this middleware will execute after instance circuit breaker.  (if `Proxy` is used, it will not be called).
 
-Note that the above functions should all be passed as `Option`s when creating the client. 
+Note that the above functions should all be passed as `Option`s when creating the client.
 
 The order of client middleware calls:
 1. the middleware set by `client.WithMiddleware`
