@@ -60,6 +60,9 @@ The Hertz framework currently supports middleware registration on Server, routin
 
 The Hertz framework already presets the commonly used Recover middleware, which can be registered by Default with `server.Default()`.
 
+### Middlewares we provide
+Hertz provides frequently-used middlewares such as BasicAuth, CORS, JWT, Swagger...If you need others, please make an issue.
+
 ## Client-side Middleware
 
 ### Implement customized middleware

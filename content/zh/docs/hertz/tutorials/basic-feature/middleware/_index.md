@@ -55,7 +55,7 @@ Hertz 框架目前支持在 Server、路由组、单一路由上注册中间件�
 Hertz 框架已经预置了常用的 recover 中间件，使用 `server.Default()` 默认可以注册该中间件。
 
 ### 常用中间件
-Hertz 提供了常用的 BasicAuth 和 CORS 中间件，其他中间件如有需求，可提 issue 告诉我们。
+Hertz 提供了常用的 BasicAuth、CORS、JWT、Swagger 等中间件，其他中间件如有需求，可提 issue 告诉我们。
 
 ## Client
 
