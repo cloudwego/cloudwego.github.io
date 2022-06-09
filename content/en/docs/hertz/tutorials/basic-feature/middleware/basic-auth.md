@@ -9,7 +9,7 @@ description: >
 In HTTP, Basic Access Authentication is a form of login authentication that allows web browsers or other client programs to provide credentials in the form of a username and password upon request.
 Hertz also provides an [implementation](https://github.com/cloudwego/hertz/tree/main/pkg/app/middlewares/server/basic_auth) of Basic Auth, referencing gin's [implementation](https://github.com/gin-gonic/gin#using-basicauth-middleware).
 
-As for usage, you may refer to hertz [example](https://github.com/cloudwego/hertz-examples/blob/main/middleware/basicauth/main.go) and gin [documentaion](https://github.com/gin-gonic/gin#using-basicauth-middleware) 。
+As for usage, you may refer to hertz [example](https://github.com/cloudwego/hertz-examples/blob/main/middleware/basicauth/main.go) and gin [documentation](https://github.com/gin-gonic/gin#using-basicauth-middleware) 。
 
 ```go
 package main
