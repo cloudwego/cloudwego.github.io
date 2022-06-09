@@ -18,12 +18,12 @@ package main
 import (
    "time"
 
-   "github.com/cloudwego/hertz/byted"
-   "github.com/hertz-contrib/cors"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/hertz-contrib/cors"
 )
 
 func main() {
-   h := byted.Default()
+	h := server.Default()
    // CORS for https://foo.com and https://github.com origins, allowing:
    // - PUT and PATCH methods
    // - Origin header
