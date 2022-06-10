@@ -6,7 +6,7 @@ description: >
 
 ---
 swagger 是一个规范和完整的框架，用于生成、描述、调用和可视化 RESTful 风格的 Web 服务。
-hertz也提供了swagger的[实现](https://github.com/hertz-contrib/swagger) ，参考了gin的[实现](https://github.com/swaggo/gin-swagger) 。
+hertz 也提供了 swagger 的[实现](https://github.com/hertz-contrib/swagger) ，参考了 gin 的[实现](https://github.com/swaggo/gin-swagger) 。
 
 使用方法可参考如下 [example](https://github.com/hertz-contrib/swagger/blob/main/example/basic/main.go)
 ```go

@@ -5,8 +5,8 @@ weight: 3
 description: >
 
 ---
-JSON Web Token（JWT）是一个轻量级的认证规范，这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。其本质是一个token，是一种紧凑的URL安全方法，用于在网络通信的双方之间传递。
-hertz也提供了jwt的[实现](https://github.com/hertz-contrib/jwt) ，参考了gin的[实现](https://github.com/appleboy/gin-jwt) 。
+JSON Web Token（JWT）是一个轻量级的认证规范，这个规范允许我们使用 JWT 在用户和服务器之间传递安全可靠的信息。其本质是一个 token ，是一种紧凑的 URL 安全方法，用于在网络通信的双方之间传递。
+hertz 也提供了 jwt 的[实现](https://github.com/hertz-contrib/jwt) ，参考了 gin 的[实现](https://github.com/appleboy/gin-jwt) 。
 
 使用方法可参考如下 [example](https://github.com/hertz-contrib/jwt/blob/main/example/basic/main.go)
 
