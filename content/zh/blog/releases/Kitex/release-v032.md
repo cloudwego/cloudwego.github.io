@@ -1,5 +1,5 @@
 ---
-title: "Kitex v0.3.2 版本"
+title: "Kitex v0.3.2 版本发布"
 linkTitle: "Release v0.3.2"
 date: 2022-06-02
 description: >
@@ -10,10 +10,9 @@ description: >
 
 * [[#473](https://github.com/cloudwego/kitex/pull/473)] 功能 (grpc): 为 Kitex gRPC unary 模式增加短连接功能。
 * [[#431](https://github.com/cloudwego/kitex/pull/431)] 功能 (limiter):
-
-1. 支持自定义的限流实现，接口增加了请求参数的传递；
-2. 修复多路复用场景下 Server 的 QPS 限流器问题，添加基于 OnMessage 的限流；
-3. 调整默认的限流生效时机，只有使用框架 QPS 限流且非多路复用的场景下，才使用基于 OnRead 的限流。
+  1. 支持自定义的限流实现，接口增加了请求参数的传递；
+  2. 修复多路复用场景下 Server 的 QPS 限流器问题，添加基于 OnMessage 的限流；
+  3. 调整默认的限流生效时机，只有使用框架 QPS 限流且非多路复用的场景下，才使用基于 OnRead 的限流。
 
 ## Optimize:
 
@@ -26,10 +25,8 @@ description: >
 * [[#485](https://github.com/cloudwego/kitex/pull/485)] 修复 (grpc): 修复 grpc 内不恰当的 int 类型转换。
 * [[#474](https://github.com/cloudwego/kitex/pull/474)] 修复 (trans): 在 detection handler 中增加检测。当 OnInactive 比 OnActive 先发生，或者 OnActive 返回 error 时，防止空指针 panic。
 * [[#445](https://github.com/cloudwego/kitex/pull/445)] 修复 (retry):
-
-1. 修复重试中 `callTimes` 字段的 race 问题；
-2. 修复 `rpcStats` 中一些字段的 race 问题。
-
+  1. 修复重试中 `callTimes` 字段的 race 问题；
+  2. 修复 `rpcStats` 中一些字段的 race 问题。
 * [[#471](https://github.com/cloudwego/kitex/pull/471)] 修复 (retry): 修复在 backup request 中的一个 race 问题。
 
 ## Test:
@@ -37,7 +34,7 @@ description: >
 * [[#404](https://github.com/cloudwego/kitex/pull/404)] test: 增加 pkg/retry 的单测。
 * [[#439](https://github.com/cloudwego/kitex/pull/439), [#472](https://github.com/cloudwego/kitex/pull/472)] test: 增加 pkg/remote/remotecli 的单测。
 * [[#462](https://github.com/cloudwego/kitex/pull/462), [#457](https://github.com/cloudwego/kitex/pull/457)] test: 增加 pkg/remote/trans/nphttp2/grpc 的单测。
-* [[#420](https://github.com/cloudwego/kitex/pull/420)] test: 增加 pkg/remote/trans/nphttp2/grpc 的单测。
+* [[#420](https://github.com/cloudwego/kitex/pull/420)] test: 增加 pkg/remote/trans/nphttp2 的单测。
 
 ## Refactor:
 
