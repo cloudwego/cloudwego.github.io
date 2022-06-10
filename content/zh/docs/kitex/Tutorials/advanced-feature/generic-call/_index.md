@@ -172,7 +172,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    // 构造 request
+    // 构造 request（用于测试），实际应用可以直接使用原始的 HTTP Request
     body := map[string]interface{}{
         "text": "text",
         "some": map[string]interface{}{
