@@ -7,7 +7,7 @@ description: >
 ---
 
 JSON Web Token (JWT) is a lightweight authentication specification that allows us to use JWT to deliver secure and reliable information between users and servers. Essentially a token, it is a compact security method for passing between two sides of network communication.
-hertz also provides an [implementation](https://github.com/hertz-contrib/jwt) of JWT, it used gin [implementation](https://github.com/appleboy/gin-jwt) for reference.
+Hertz also provides an [implementation](https://github.com/hertz-contrib/jwt) of JWT, it uses gin [implementation](https://github.com/appleboy/gin-jwt) for reference.
 
 As for usage, you may refer to hertz [example](https://github.com/hertz-contrib/jwt/blob/main/example/basic/main.go)
 

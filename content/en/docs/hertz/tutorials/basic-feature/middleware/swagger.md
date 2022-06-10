@@ -6,7 +6,7 @@ description: >
 
 ---
 Swagger is a standard and complete framework for generating, describing, calling, and visualizing RESTful style Web services.
-hertz also provides an [implementation](https://github.com/hertz-contrib/swagger) of swagger, it used gin [implementation](https://github.com/swaggo/gin-swagger) for reference.
+Hertz also provides an [implementation](https://github.com/hertz-contrib/swagger) of swagger, it uses gin [implementation](https://github.com/swaggo/gin-swagger) for reference.
 
 As for usage, you may refer to hertz [example](https://github.com/hertz-contrib/swagger/blob/main/example/basic/main.go)
 ```go
