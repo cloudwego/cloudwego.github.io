@@ -10,9 +10,9 @@ description: >
 ## 支持场景
 
 1. 二进制泛化调用：用于流量中转场景
-2. HTTP映射泛化调用：用于 API 网关场景
-3. Map映射泛化调用
-4. JSON映射泛化调用
+2. HTTP 映射泛化调用：用于 API 网关场景
+3. Map 映射泛化调用
+4. JSON 映射泛化调用
 
 ## 使用方式示例
 
@@ -22,7 +22,7 @@ description: >
 
 应用场景：比如中台服务，可以通过二进制流转发将收到的原始 Thrift 协议包发给目标服务。
 
-- 初始化Client
+- 初始化 Client
 
   ```go
   import (
@@ -50,9 +50,9 @@ description: >
 
 #### 服务端使用
 
-​	二进制泛化 Client 和 Server **并不是配套**使用的，Client 传入**正确的 Thrift 编码二进制**，可以访问普通的 Thrift Server。
+二进制泛化 Client 和 Server **并不是配套**使用的，Client 传入**正确的 Thrift 编码二进制**，可以访问普通的 Thrift Server。
 
-​    二进制泛化 Server 只支持 Framed 或 TTHeader 请求，不支持 Bufferd Binary，需要 Client 通过 Option 指定，如：`client.WithTransportProtocol(transport.Framed)`。
+二进制泛化 Server 只支持 Framed 或 TTHeader 请求，不支持 Bufferd Binary，需要 Client 通过 Option 指定，如：`client.WithTransportProtocol(transport.Framed)`。
 
 ```go
 package main
@@ -156,14 +156,14 @@ import (
 )
 
 func main() {
-    // 本地文件idl解析
-    // YOUR_IDL_PATH thrift文件路径: 举例 ./idl/example.thrift
-    // includeDirs: 指定include路径，默认用当前文件的相对路径寻找include
+    // 本地文件 idl 解析
+    // YOUR_IDL_PATH thrift 文件路径: 举例 ./idl/example.thrift
+    // includeDirs: 指定 include 路径，默认用当前文件的相对路径寻找 include
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // 构造http类型的泛化调用
+    // 构造 http 类型的泛化调用
     g, err := generic.HTTPThriftGeneric(p)
     if err != nil {
         panic(err)
@@ -172,7 +172,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    // 构造request，或者从ginex获取
+    // 构造 request（用于测试），实际应用可以直接使用原始的 HTTP Request
     body := map[string]interface{}{
         "text": "text",
         "some": map[string]interface{}{
@@ -196,12 +196,12 @@ func main() {
         panic(err)
     }
     req.Header.Set("token", "1")
-    customReq, err := generic.FromHTTPRequest(req) // 考虑到业务有可能使用第三方http request，可以自行构造转换函数
+    customReq, err := generic.FromHTTPRequest(req) // 考虑到业务有可能使用第三方 http request，可以自行构造转换函数
     // customReq *generic.HttpRequest
-    // 由于http泛化的method是通过bam规则从http request中获取的，所以填空就行
+    // 由于 http 泛化的 method 是通过 bam 规则从 http request 中获取的，所以填空就行
     resp, err := cli.GenericCall(ctx, "", customReq)
     realResp := resp.(*generic.HttpResponse)
-    realResp.Write(w) // 写回ResponseWriter，用于http网关
+    realResp.Write(w) // 写回 ResponseWriter，用于 http 网关
 }
 ```
 
@@ -228,7 +228,7 @@ func init() {
         descriptor.RegisterAnnotation(new(notBodyStruct))
 }
 
-// 实现descriptor.Annotation
+// 实现 descriptor.Annotation
 type notBodyStruct struct {
 }
 
@@ -249,7 +249,7 @@ var newNotBodyStruct descriptor.NewHttpMapping = func(value string) descriptor.H
 
 // get value from request
 func (m *notBodyStruct) Request(req *descriptor.HttpRequest, field *descriptor.FieldDescriptor) (interface{}, bool) {
-        // not_body_struct 注解的作用相当于 step into，所以直接返回req本身，让当前filed继续从Request中查询所需要的值
+        // not_body_struct 注解的作用相当于 step into，所以直接返回 req 本身，让当前 filed 继续从 Request 中查询所需要的值
         return req, true
 }
 
@@ -414,14 +414,14 @@ import (
 )
 
 func main() {
-    // 本地文件idl解析
-    // YOUR_IDL_PATH thrift文件路径: 举例 ./idl/example.thrift
-    // includeDirs: 指定include路径，默认用当前文件的相对路径寻找include
+    // 本地文件 idl 解析
+    // YOUR_IDL_PATH thrift 文件路径: 举例 ./idl/example.thrift
+    // includeDirs: 指定 include 路径，默认用当前文件的相对路径寻找 include
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // 构造map 请求和返回类型的泛化调用
+    // 构造 map 请求和返回类型的泛化调用
     g, err := generic.MapThriftGeneric(p)
     if err != nil {
         panic(err)
@@ -430,7 +430,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    // 'ExampleMethod' 方法名必须包含在idl定义中
+    // 'ExampleMethod' 方法名必须包含在 idl 定义中
     resp, err := cli.GenericCall(ctx, "ExampleMethod", map[string]interface{}{
         "Msg": "hello",
     })
@@ -457,13 +457,13 @@ import (
 )
 
 func main() {
-    // 本地文件idl解析
-    // YOUR_IDL_PATH thrift文件路径: e.g. ./idl/example.thrift
+    // 本地文件 idl 解析
+    // YOUR_IDL_PATH thrift 文件路径: e.g. ./idl/example.thrift
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // 构造map请求和返回类型的泛化调用
+    // 构造 map 请求和返回类型的泛化调用
     g, err := generic.MapThriftGeneric(p)
     if err != nil {
         panic(err)
@@ -640,14 +640,14 @@ import (
 )
 
 func main() {
-    // 本地文件idl解析
-    // YOUR_IDL_PATH thrift文件路径: 举例 ./idl/example.thrift
-    // includeDirs: 指定include路径，默认用当前文件的相对路径寻找include
+    // 本地文件 idl 解析
+    // YOUR_IDL_PATH thrift 文件路径: 举例 ./idl/example.thrift
+    // includeDirs: 指定 include 路径，默认用当前文件的相对路径寻找 include
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // 构造JSON 请求和返回类型的泛化调用
+    // 构造 JSON 请求和返回类型的泛化调用
     g, err := generic.JSONThriftGeneric(p)
     if err != nil {
         panic(err)
@@ -656,7 +656,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    // 'ExampleMethod' 方法名必须包含在idl定义中
+    // 'ExampleMethod' 方法名必须包含在 idl 定义中
     resp, err := cli.GenericCall(ctx, "ExampleMethod", "{\"Msg\": \"hello\"}")
     // resp is a JSON string
 }
@@ -681,13 +681,13 @@ import (
 )
 
 func main() {
-    // 本地文件idl解析
-    // YOUR_IDL_PATH thrift文件路径: e.g. ./idl/example.thrift
+    // 本地文件 idl 解析
+    // YOUR_IDL_PATH thrift 文件路径: e.g. ./idl/example.thrift
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // 构造JSON请求和返回类型的泛化调用
+    // 构造 JSON 请求和返回类型的泛化调用
     g, err := generic.JSONThriftGeneric(p)
     if err != nil {
         panic(err)
