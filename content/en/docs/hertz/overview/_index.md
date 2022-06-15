@@ -11,6 +11,9 @@ Hertz [həːts] is a high-usability, high-performance and high-extensibility Gol
 It was designed with reference to other open-source frameworks like [fasthttp](https://github.com/valyala/fasthttp)、[gin](https://github.com/gin-gonic/gin)、[echo](https://github.com/labstack/echo) and combined with the internal requirements in ByteDance.
 At present, it has been widely used inside ByteDance. Nowadays, more and more microservices use Golang. If you have requirements for microservice performance and hope that the framework can fully meet the internal customizable requirements, Hertz will be a good choice.
 
+## Architecture
+![HERTZ](/img/docs/hertz.png)
+
 ## Basic Features
 - High usability
 
