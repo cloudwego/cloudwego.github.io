@@ -14,13 +14,13 @@
 }
 #gallery {
   display: flex;
-  max-width: 100vw;
+  max-width: 100%;
   gap: 0.75rem;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
 
-  img.community-gallery-desktop {
+  img {
     display: block;
     flex-basis: 0;
     flex-grow: 0;
@@ -62,7 +62,6 @@
   text-align: center;
   padding-top: 2%;
   padding-bottom: 2%;
-  word-spacing: 3%;
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 400;
@@ -89,7 +88,6 @@
       text-align: center;
       padding-top: 2%;
       padding-bottom: 2%;
-      word-spacing: 3%;
       text-decoration: none;
       font-weight: 400;
       font-size: 28px;
@@ -179,10 +177,9 @@
   }
 
   #navigation-items {
-    max-width: min(85em, 100em);
+    max-width: 85em;
     margin-left: auto;
     margin-right: auto;
-
   }
 }
 
@@ -231,7 +228,6 @@
     width: 100%;
     display: flex;
     gap: 2em;
-    flex-wrap: none;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
@@ -267,25 +263,9 @@
   margin: 1em auto 0.75em auto;
 }
 
-.resourcebox {
-  height: 100%;
-  min-height: 370px;
-}
 
-body .community-section#meetups {
-  margin-top: 0;
-  background: url('/img/community/kubernetes-community-final.jpg') no-repeat, repeat 100% center, left center;
-  background-size: auto 100%, cover;
-  color: #fff;
-
-  width: 100%;
-  /* fallback in case calc() fails */
-  min-height: min(24vh, 50vh);
-  padding: 5vw calc((100vw - min(75vw, 100em)) / 2) 1em;
-}
 
 a.community-cta-button {
-  appearance: button;
   display: inline-block;
   margin: 0.75em auto 0 auto; /* gap before button */
 
@@ -324,7 +304,7 @@ a.community-cta-button > span.community-cta {
   margin-left: 0;
 }
 
-@media only screen and (max-width: 1024px){
+@media only screen and (max-width: 1300px){
   #gallery img.community-gallery-desktop {
     display: none;
   }
