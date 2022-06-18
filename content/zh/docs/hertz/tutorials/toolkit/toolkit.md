@@ -770,7 +770,7 @@ OPTIONS:
 
 <!---->
 
--   option_package/P: 指定包的路径，({inlude_path}={import_path})
+-   option_package/P: 指定包的路径，({include_path}={import_path})
 
 <!---->
 
@@ -860,7 +860,7 @@ OPTIONS:
 
 <!---->
 
--   option_package/P: 指定包的路径，({inlude_path}={import_path})
+-   option_package/P: 指定包的路径，({include_path}={import_path})
 
 <!---->
 
@@ -953,7 +953,7 @@ hz new -idl demo.thrift
 ```
 hz update -idl demo.thrift --model_dir=my_model
 
-此时，hz 不会更新"biz/model"下的 mdoel 代码，而是会在"my_model"下；这时"biz/model"和"my_model"下的代码就会重复，且新生成的handler会依赖"my_model"，之前的handler会依赖"biz/model"，这时就需要用户手动删除&改动一些代码了。
+此时，hz 不会更新"biz/model"下的 model 代码，而是会在"my_model"下；这时"biz/model"和"my_model"下的代码就会重复，且新生成的handler会依赖"my_model"，之前的handler会依赖"biz/model"，这时就需要用户手动删除&改动一些代码了。
 ```
 
 因此，**我们希望用户使用 update 命令的时候，自定义的路径 "client_dir"、"model_dir"、"handler_dir"，最好 new 和相同。**
