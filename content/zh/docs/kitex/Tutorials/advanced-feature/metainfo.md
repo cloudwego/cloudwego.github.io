@@ -28,7 +28,7 @@ import "github.com/bytedance/gopkg/cloud/metainfo"
 func main() {
     ...
     ctx := context.Background()
-    cli := myservice.MustNewCilent(...)
+    cli := myservice.MustNewClient(...)
     req := myservice.NewSomeRequest()
 
     ctx = metainfo.WithValue(ctx, "temp", "temp-value")       // 附加元信息到 context 里
@@ -47,7 +47,7 @@ import (
     "github.com/bytedance/gopkg/cloud/metainfo"
 )
 
-var cli2 = myservice2.MustNewCilent(...) // 更下游的服务的客户端
+var cli2 = myservice2.MustNewClient(...) // 更下游的服务的客户端
 
 func (MyServiceImpl) SomeMethod(ctx context.Context, req *SomeRequest) (res *SomeResponse, err error) {
     temp, ok1 := metainfo.GetValue(ctx, "temp")
@@ -78,7 +78,7 @@ import "github.com/bytedance/gopkg/cloud/metainfo"
 func main() {
     ...
     ctx := context.Background()
-    cli := myservice.MustNewCilent(...)
+    cli := myservice.MustNewClient(...)
     req := myservice.NewSomeRequest()
 
     ctx = metainfo.WithBackwardValues(ctx) // 标记要接收反向传递的数据的 context
@@ -104,7 +104,7 @@ import (
 func (MyServiceImpl) SomeMethod(ctx context.Context, req *SomeRequest) (res *SomeResponse, err error) {
     ok := metainfo.SendBackwardValue(ctx, "something-from-server")
 
-    if !ok) {
+    if !ok {
         panic("It looks like the protocol does not support transmitting meta information backward")
     }
     ...

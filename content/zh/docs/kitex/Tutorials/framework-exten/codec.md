@@ -78,11 +78,28 @@ type PayloadCodec interface {
 }
 ```
 
-Kitex 默认支持的 Payload 有 Thrift、Kitex Protobuf 以及 gRPC 协议。其中 Kitex Protobuf 是 Kitex 基本 Protobuf 定义的消息协议，协议定义与 Thrift Message 类似。
+Kitex 默认支持的 Payload 有 Thrift、Kitex Protobuf 以及 gRPC 协议。其中 Kitex Protobuf 是 Kitex 基于 Protobuf 定义的消息协议，协议定义与 Thrift Message 类似。
 
 特别地，Kitex 的泛化调用也是通过扩展 PayloadCodec 实现：
 
 ![genericCodecExtension](/img/docs/generic_codec_extension.png)
+
+## 默认的 Codec
+
+如果用户不指定 Codec ，则使用默认的内置 Codec。
+
+- 指定默认 Codec 的包大小限制，默认无限制
+  option: `codec.NewDefaultCodecWithSizeLimit`
+
+```go
+maxSizeBytes = 1024 * 1024 * 10 // 10 MB
+
+// server side
+svr := stservice.NewServer(handler, server.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
+
+// client side
+cli, err := xxxservice.NewClient(targetService, client.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
+```
 
 ## 指定自定义 Codec 和 PayloadCodec
 

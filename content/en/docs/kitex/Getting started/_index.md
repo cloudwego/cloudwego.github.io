@@ -8,8 +8,9 @@ description: >
 ## Prerequisites
 
 1. If you don't setup golang development environment, please follow [Install Go](https://golang.org/doc/install) to install go.
-2. We strongly recommend you use latest golang version. And compatibility is guaranteed within two latest minor version (for now **v1.15**).
+2. We strongly recommend you use latest golang version. And compatibility is guaranteed within three latest minor release version (for now >= **v1.16**).
 3. Ensure `GO111MODULE` is set to `on`.
+4. Currently Windows is not particularly supported by Kitex, if your development environment is Windows, you are suggested to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install).
 
 ## Quick Start
 
@@ -17,7 +18,7 @@ This chapter gonna get you started with Kitex with a simple executable example.
 
 ### Install Compiler
 
-First of all, let's install compilers we gonna work with. 
+First of all, let's install compilers we gonna work with.
 
 1. Ensure `GOPATH` environment variable is defined properly (for example `export GOPATH=~/go`), then add `$GOPATH/bin` to `PATH` environment variable (for example `export PATH=$GOPATH/bin:$PATH`). Make sure `GOPATH` is accessible.
 2. Install kitex: `go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`
@@ -41,11 +42,11 @@ Tips: If you encounter any problem during installation, it's probably you don't 
 
 ### Run the example
 
-#### Run by go 
+#### Run by go
 
 1. enter `hello` directory
 
-   `cd examples/hello`
+   `cd kitex-examples/hello`
 
 2. run server
 
@@ -58,16 +59,16 @@ Tips: If you encounter any problem during installation, it's probably you don't 
 #### Run by docker
 
 1. enter the example directory
-   
-   `cd examples`
-   
+
+   `cd kitex-examples`
+
 2. build the example project
-   
+
    `docker build -t kitex-examples .`
 3. run server
-   
+
    `docker run --network host kitex-examples ./hello-server`
-   
+
 4. run client
 
    open another terminal, and `docker run --network host kitex-examples ./hello-client`
@@ -192,8 +193,8 @@ for {
         }
         log.Println(resp)
         time.Sleep(time.Second)
-  			addReq := &api.AddRequest{First: 512, Second: 512}
-  			addResp, err := client.Add(context.Background(), addReq)
+        addReq := &api.AddRequest{First: 512, Second: 512}
+        addResp, err := client.Add(context.Background(), addReq)
         if err != nil {
                 log.Fatal(err)
         }
@@ -208,7 +209,7 @@ Shutdown server and client we have run, then:
 
 1. run server
 
-        `go run .`  
+        `go run .`
 
 2. run client
 
@@ -228,15 +229,15 @@ Kitex compiler supports both `thrift` and `proto3` IDL, and fairly Kitex support
 
 We use IDL to define interface.
 
-Thrift IDL grammar: [Thrift interface description language](http://thrift.apache.org/docs/idl)。   
+Thrift IDL grammar: [Thrift interface description language](http://thrift.apache.org/docs/idl).
 
-proto3 grammar: [Language Guide(proto3)](https://developers.google.com/protocol-buffers/docs/proto3)。
+proto3 grammar: [Language Guide(proto3)](https://developers.google.com/protocol-buffers/docs/proto3).
 
 ### Create project directory
 
 Let's create a directory to setup project.
 
-`$ mkdir example`   
+`$ mkdir example`
 
 enter directory
 
@@ -252,18 +253,18 @@ You can use following command to install and upgrade `kitex`:
 
 `$ go install github.com/cloudwego/kitex/tool/cmd/kitex`
 
-After that, you can just run it to check whether it's installed successfully.  
+After that, you can just run it to check whether it's installed successfully.
 
-`$ kitex`   
+`$ kitex`
 
 If you see some outputs like below, congratulation!
 
-`$ kitex`   
+`$ kitex`
 
-`No IDL file found.`   
+`No IDL file found.`
 
 
-If you see something like `command not found`, you should add `$GOPATH/bin` to `$PATH`. For detail, see chapter **Prerequisites** .  
+If you see something like `command not found`, you should add `$GOPATH/bin` to `$PATH`. For detail, see chapter **Prerequisites** .
 
 #### Usage
 
@@ -271,7 +272,7 @@ You can visit [Compiler](../tutorials/code-gen/code_generation) for detailed usa
 
 ### Write IDL
 
-For example, a thrift IDL. 
+For example, a thrift IDL.
 
 create a `echo.thrift` file, and define a service like below:
 
@@ -293,9 +294,9 @@ service Echo {
 
 ### Generate echo service code
 
-We can use `kitex` compiler to compile the IDL file to generate whole project. 
+We can use `kitex` compiler to compile the IDL file to generate whole project.
 
-`$ kitex -module example -service example echo.thrift`   
+`$ kitex -module example -service example echo.thrift`
 
 `-module` indicates go module name of project，`-service` indicates expected to generate a executable service named `example`, the last parameter is path to IDL file.
 
@@ -330,7 +331,7 @@ $ go mod tidy
 
 If you encounter something like below :
 
-`github.com/apache/thrift/lib/go/thrift: ambiguous import: found package github.com/apache/thrift/lib/go/thrift in multiple modules`   
+`github.com/apache/thrift/lib/go/thrift: ambiguous import: found package github.com/apache/thrift/lib/go/thrift in multiple modules`
 
 Run following command, and try again:
 
@@ -362,9 +363,9 @@ func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Respon
 
 ```
 
-`Echo` method represents the `echo` we defined in thrift IDL.   
+`Echo` method represents the `echo` we defined in thrift IDL.
 
-Now let's make `Echo` a real echo.   
+Now let's make `Echo` a real echo.
 
 modify `Echo` method:
 
@@ -378,13 +379,13 @@ func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Respon
 
 kitex compiler has generated scripts to compile and run the project:
 
-Compile:   
+Compile:
 
-`$ sh build.sh`   
+`$ sh build.sh`
 
 There should be a `output` directory After you execute above command, which includes compilation productions   .
 
-Run:   
+Run:
 
 `$ sh output/bootstrap.sh`
 
@@ -394,7 +395,7 @@ Now, `Echo` service is running!
 
 Let's write a client to call `Echo` server.
 
-create a directory as client package:   
+create a directory as client package:
 
 `$ mkdir client`
 
@@ -417,7 +418,7 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
-`echo.NewClient` is used to new a `client`, th first parameter is *service name*, the second parameter is *options* which is used to pass options. `client.WithHostPorts` is used to specify server address, see chapter **Basic Feature** for detail.
+`echo.NewClient` is used to new a `client`, the first parameter is *service name*, the second parameter is *options* which is used to pass options. `client.WithHostPorts` is used to specify server address, see chapter **Basic Feature** for details.
 
 #### Do RPC
 
@@ -437,14 +438,14 @@ We new a request `req`, then we use `c.Echo` to do a RPC call.
 
 The first parameter `context.Context`, is used to transfer information or to control some call behaviors. You will see detailed usage in behind chapters.\
 
-The seconde parameter is request. 
+The seconde parameter is request.
 
-The third parameter is call `options`, which is called `callopt`, these options only works for this RPC call.  
+The third parameter is call `options`, which is called `callopt`, these options only works for this RPC call.
 `callopt.WithRPCTimeout` is used to specify timeout for this RPC call. See chapter **Basic Feature** for detail.
 
 ### Run Client
 
-You can run following command to run a client:  
+You can run following command to run a client:
 
 `$ go run main.go`
 

@@ -12,7 +12,7 @@ Middleware 是扩展 Kitex 框架的一个主要的方法，大部分基于 Kite
 在扩展过程中，要记得两点原则：
 
 1. 中间件和套件都只允许在初始化 Server、Client 的时候设置，不允许动态修改。
-2. 后设置的会覆盖先设置的。
+2. Middleware 是按照添加的先后顺序执行的。
 
 Kitex 的中间件定义在 `pkg/endpoint/endpoint.go` 中，其中最主要的是两个类型：
 
@@ -27,10 +27,10 @@ Kitex 的中间件定义在 `pkg/endpoint/endpoint.go` 中，其中最主要的�
 
 有两种方法可以添加客户端中间件：
 
-1. `client.WithMiddleware` 对当前 client 增加一个中间件，在其余所有中间件之前执行；
-2. `client.WithInstanceMW` 对当前 client 增加一个中间件，在服务发现和负载均衡之后执行（如果使用了 `Proxy` 则不会调用到）。
+1. `client.WithMiddleware` 对当前 client 增加一个中间件，在 Service 熔断和超时中间件之后执行；
+2. `client.WithInstanceMW` 对当前 client 增加一个中间件，在服务发现、负载均衡之后执行，如果有实例熔断器，会在实例熔断器后执行（如果使用了 Proxy 则不会调用到，如 Mesh 模式下）。
 
-注意，上述函数都应该在创建 client 时作为传入的 `Option`。 
+注意，上述函数都应该在创建 client 时作为传入的 `Option`。
 
 客户端中间件调用顺序 :
 1. `client.WithMiddleware` 设置的中间件

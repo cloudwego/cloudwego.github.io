@@ -64,4 +64,3 @@ func main() {
 
 To improve performance,  Kitex reusing `Resolver`, so the `Resolver` method implementation must be concurrent security.
 
- 
