@@ -20,8 +20,6 @@ description: >
 1. 确保 `GOPATH` 环境变量已经被正确地定义（例如 `export GOPATH=~/go`）并且将`$GOPATH/bin`添加到 `PATH` 环境变量之中(例如 `export PATH=$GOPATH/bin:$PATH`)；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录
 2. 安装 hz：`go install github.com/cloudwego/hertz/cmd/hz@latest`
 
-> 注意：目前 hz 不支持 Windows 环境。
-
 更多 hz 使用方法可参考: [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/)
 
 ### 确定代码放置位置
