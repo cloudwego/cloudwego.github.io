@@ -246,7 +246,7 @@ proto3 语法可参考：[Language Guide(proto3)](https://developers.google.com/
 
 ### 创建项目目录
 
-在开始后续的步骤之前，想让我们创建一个项目目录用于后续的教程。
+在开始后续的步骤之前，先让我们创建一个项目目录用于后续的教程。
 
 `$ mkdir example`
 
