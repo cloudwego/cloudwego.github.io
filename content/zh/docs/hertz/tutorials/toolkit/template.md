@@ -11,13 +11,13 @@ Hertz 提供的命令行工具(以下称为"hz")支持自定义模板功能，�
 
 用户可自己提供模板以及渲染参数，并结合 hz 的能力，来完成自定义的代码生成结构。
 
-# 自定义layout模板
+# 自定义 layout 模板
 
 > 用户可根据默认模板来修改或重写，从而满足自身需求
 
-hz 利用了 go template 支持以"yaml"的格式定义模板，并使用"json"定义模板渲染数据。
+hz 利用了 go template 支持以 "yaml" 的格式定义模板，并使用 "json" 定义模板渲染数据。
 
-所谓的 layout 模板是指整个项目的结构，这些结构与具体的 idl 定义无关，不需要idl也可以直接生成，默认的结构如下：
+所谓的 layout 模板是指整个项目的结构，这些结构与具体的 idl 定义无关，不需要 idl 也可以直接生成，默认的结构如下：
 
 ```
 .
@@ -151,20 +151,20 @@ layouts:
 
 当指定了自定义模板以及渲染数据后，此时命令行指定的选项将不会被作为渲染数据，因此，模板中的渲染数据需要用户自己定义。
 
-hz 使用了"json"来指定渲染数据，下面介绍下
+hz 使用了"json"来指定渲染数据，下面进行介绍
 
 ```
 {
   // 全局的渲染参数
   "*": {
-    "GoModule": "github.com/hertztool/test", // 要和命令行指定的一致，否则后续生成model、handler等代码将使用命令行指定的mod，导致出现不一致。
+    "GoModule": "github.com/hz/test", // 要和命令行指定的一致，否则后续生成model、handler等代码将使用命令行指定的mod，导致出现不一致。
     "ServiceName": "p.s.m", // 要和命令行指定的一致
     "UseApacheThrift": false // 根据是否使用"thrift"设置"true"/"false"
   },
   // router_gen.go 路由注册的渲染数据，
   // "biz/router"指向默认idl注册的路由代码的module，不要修改
   "router_gen.go": {
-    "RouterPkgPath": "github.com/hertztool/test/biz/router"
+    "RouterPkgPath": "github.com/hz/test/biz/router"
   }
 }
 ```
@@ -242,10 +242,10 @@ layouts:
 > 用户可根据默认模板来修改或重写，从而符合自身需求
 
 -   所谓的 package 模板是指与 idl 定义服务相关的代码，这部分代码涉及到定义 idl 的时候指定的service、go_package/namespace等，主要包括以下几部分：
--   -   handler.go : 处理函数模板逻辑
+-   handler.go : 处理函数模板逻辑
 -   router.go：具体的 idl 定义的服务的路由注册逻辑
 -   register.go：调用router.go中内容的逻辑
--   ~~model代码：不过由于目前使用插件来生成model代码工具没权限来修改model的模板，所以这部分功能先不开放~~
+-   ~~model代码：生成的 go struct；不过由于目前使用插件来生成model代码工具没权限来修改model的模板，所以这部分功能先不开放~~
 
 ## 命令
 
@@ -338,7 +338,7 @@ c,\n\t}, nil\n}\n\t\t"
 ### template:
 
 ```
- # 以下数据都是yaml mashal得到的，所以可能看起来比较乱
+ # 以下数据都是yaml marshal得到的，所以可能看起来比较乱
 layouts:
   # path只表示handler.go的模板，具体的handler路径由默认路径和handler_dir决定
 - path: handler.go
@@ -456,10 +456,10 @@ func OtherMethod(ctx context.Context, c *app.RequestContext) {
 
 # 注意事项
 
-## 使用 layoout 模板的注意事项
+## 使用 layout 模板的注意事项
 
-当用户使用了 layout 自定义模板后，那么生成的 layout 和 渲染数据都由用户接管，所以用户需要提供其定义的 layout 的渲染数据。
+当用户使用了 layout 自定义模板后，那么生成的 layout 和渲染数据都由用户接管，所以用户需要提供其定义的 layout 的渲染数据。
 
 ## 使用 package 模板的注意事项
 
-一般来说，用户使用 package 模板的时候大多数是为了修改默认的 handler 模板；不过，目前 hz 没有提供单个 handler 的模板，所以当 update 已经存在的 handler 文件时，会使用默认 handler 模板在 handler 文件尾追加新的 handler function。当对应的 handler 文件不存在的时候，才会使用自定义自定义模板来生成 handler 文件。
+一般来说，用户使用 package 模板的时候大多数是为了修改默认的 handler 模板；不过，目前 hz 没有提供单个 handler 的模板，所以当 update 已经存在的 handler 文件时，会使用默认 handler 模板在 handler 文件尾追加新的 handler function。当对应的 handler 文件不存在的时候，才会使用自定义模板来生成 handler 文件。
