@@ -15,6 +15,13 @@ description: >
 ## Quick Start
 After you have prepared the Golang environment, the chapter will help you to quickly get familiar with Hertz.
 
+### Install the commend tool of hz
+First, you need to install the commend tool hz which is used in this chapter
+1. Confirm the `GOPATH` environment has been defined correctly (For example `export GOPATH=~/go`)
+and the `$GOPATH/bin` has been added to `PATH` environment (For example `export PATH=$GOPATH/bin:$PATH`);
+Attention, do not set a directory in which you have no read and write permission as `GOPATH`.
+2. Install hz: `go install github.com/cloudwego/hertz/cmd/hz@latest`
+
 ### Determine Where to Store Your Code
 1. If your codes are placed under `$GOPATH/src`, you need to create additional dictionary under `$GOPATH/src` and retrieve your code under the dictionary.
 ```console
