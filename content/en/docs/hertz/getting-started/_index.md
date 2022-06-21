@@ -6,7 +6,7 @@ description: >
 ---
 
 ## Set Up Golang Development Environment
-1. If you haven't set up your Golang Enviornmrnt, you can refer to [Golang Install](https://golang.org/doc/install).
+1. If you haven't set up your Golang Environment, you can refer to [Golang Install](https://golang.org/doc/install).
 2. We recommend you to use the Golang latest version, or make sure it's >= v1.15. You can choose to use the earlier versions, but the compatibility and stability are not assured.
 3. Make sure the go mod support is on (for Golang versions >= v1.15, it is on by default).
 
@@ -30,7 +30,7 @@ Attention, do not set a directory in which you have no read and write permission
 ```
 2. If your codes are not placed under GOPATH, you can retrieve them directly.
 
-### Complete the Sample Code
+### Generate/Complete the Sample Code
 1. Create the hertz_demo folder in the current directory and go to that directory
 2. Create the `main.go` file
 3. Add the following code to the `main.go` file
@@ -61,13 +61,13 @@ func main() {
 ```console
   $ go mod init hertz_demo
 ```
-5. Generate the `go.sum` file
+5. Get & tidy dependencies
 ```console
   $ go mod tidy
 ```
 
 ### Run the Sample Code
-After you have completed the previous steps, you are able to launch the server
+After you have completed the previous steps, you are able to compile & launch the server
 ```console
 $ go run main.go
 ```
