@@ -43,7 +43,7 @@ func WithHostPorts(hostports ...string) Option
 func WithTransportProtocol(tp transport.Protocol) Option
 ```
 
-设置传输协议，目前支持 Thrift 和 gRPC 协议，其中 Thrift 支持 PurePayload、Framed、TTHeader 与 TTHeaderFramed 四种方式，默认使用 Thrift PurePayload 方式。若要使用 gRPC 协议传输，则需要搭配 Protobuf IDL。
+设置传输协议，在消息协议上配置传输协议。Thrift/KitexProtobuf 可以配置 TTHeader、TTHeaderFramed、Framed，另外，Framed 严格意义上并不算传输协议，为区分用于 PurePayload 将其也作为传输协议配置，PurePayload 表示没有传输协议；如果配置为 GRPC 表示使用 GRPC 协议，GRPC 的传输协议是 HTTP2，但为便于用户理解，直接作为传输协议的配置，注意配置 GRPC 需要用 Protobuf 定义 Service，如果没有配置 GRPC，默认使用的是 KitexProtobuf 协议。
 
 
 
