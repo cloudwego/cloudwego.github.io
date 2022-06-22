@@ -10,12 +10,12 @@ description: >
 ```go
 // Tracer is executed at the start and finish of an HTTP.
 type Tracer interface {
-	Start(ctx context.Context, c *app.RequestContext) context.Context
+    Start(ctx context.Context, c *app.RequestContext) context.Context
     Finish(ctx context.Context, c *app.RequestContext)
 }
 ```
 
-hertz-contrib 中提供了默认的 prometheus 的监控扩展，能够实现:
+[hertz-contrib](https://github.com/hertz-contrib/monitor-prometheus) 中提供了默认的 prometheus 的监控扩展，能够实现:
 - 请求量监控
 - 时延监控
 
