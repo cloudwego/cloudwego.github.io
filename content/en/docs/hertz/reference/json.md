@@ -1,0 +1,35 @@
+---
+title: "JSON Marshal Library"
+linkTitle: "JSON Marshal Library"
+weight: 3
+description: >
+
+---
+
+
+Hertz integrates [sonic](https://github.com/bytedance/sonic) by default as a json marshal library for serializing data with the ctx.JSON interface. sonic is an ultra-high performance golang json library, see Sonic [README](https://github.com/bytedance/sonic) for details.
+
+The following are currently required to enable Sonic:
+- Go 1.15/1.16/1.17/1.18
+- Linux / darwin OS / Windows
+- Amd64 CPU with AVX instruction set
+
+Automatically fallback to golang's encoding/json library if not supported.
+
+In addition,sonic
+- disabled html enscape by default
+- disabled keysort by default
+
+If sonic does not meet your needs, you can customize the json marshal library in the following way:
+
+```go
+import (
+    "encoding/json"
+
+    "github.com/cloudwego/hertz/pkg/app/server/render"
+)
+
+func main() {
+    render.ResetJSONMarshal(json.Marshal)
+}
+```
