@@ -238,5 +238,8 @@ h.POST("/upload", func(ctx context.Context, c *app.RequestContext) {
 原因：默认不支持 `string` 和 `int` 互转
 
 解决方法：
-- 建议使用标准包 json 的 `string` tag ，example：A int `json:"A, string"`
+- 建议使用标准包 json 的 `string` tag, 例如：
+  ```go
+  A int `json:"A, string"`
+  ```
 - 配置其他支持这种行为的 json 库
