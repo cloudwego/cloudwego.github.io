@@ -7,7 +7,7 @@ description: >
 ---
 
 ## CloudWeGo-Hertz
-Hertz [həːts] is a high-performance, extensible HTTP framework for Go. It's designed to simplify building microservices for developers.
+Hertz [həːts] is a high-performance, high-usability, extensible HTTP framework for Go. It's designed to simplify building microservices for developers.
 
 Hertz was inspired by other open-source frameworks like [fasthttp](https://github.com/valyala/fasthttp), [gin](https://github.com/gin-gonic/gin), and [echo](https://github.com/labstack/echo), in combination with unique challenges faced by ByteDance, Hertz has become production ready and powered ByteDance's internal services over the years.
 
@@ -22,7 +22,7 @@ Nowadays, as Go gain popularity in microservice development, Hertz will be the r
 In modern software engineering, it is agreed that the delivery of high-quality code in a short period of time has become more important in a highly competitive environment. With that in mind, in the initial interactions of Hertz, we actively listen to users' feedback and endeavour to polish the framework to improve user experience and help developers to get the job done quickly and correctly.
 
 - High performance
-Hertz uses Netpoll, a high-performance network library built from sketch, by default. In comparison to go net implementation, the benchmark indicates that in some scenarios, Hertz's performance is better in terms of both QPS and time delay. 
+Hertz uses Netpoll, a high-performance network library built from sketch, by default. In comparison to go net implementation, the benchmark indicates that in some scenarios, Hertz's performance is better in terms of both QPS and time delay.
 
 The following diagrams show how Hertz performs in comparison with other popular frameworks for echo requests.
  ![Performance](/img/docs/hertz_performance.png)
@@ -30,11 +30,11 @@ Please refer to https://github.com/cloudwego/hertz-benchmark for more details ab
 
 ### High extensibility
 
-Hertz adopts a layered architecture to deliver a "batteries included" experience. Due to its layered design, the framework is high extensible while its core functionality remains robust. Hertz comes with default implementations for many modules but also enables users to extend them to fit their own needs. At present, only stable capabilities have been made available to the open source community. More planning refers to [RoadMap](https://github.com/cloudwego/hertz/blob/main/ROADMAP.md).
+Hertz adopts a layered architecture to deliver a "batteries included" experience. Due to its layered design, the framework is highly extensible while its core functionality remains robust. Hertz comes with default implementations for many modules but also enables users to extend them to fit their own needs. At present, only stable capabilities have been made available to the open source community. More planning refers to [RoadMap](https://github.com/cloudwego/hertz/blob/main/ROADMAP.md).
 
 ### Multi-protocol support
 
-Hertz framework provides out-of-box support for HTTP1.1, and ALPN protocol. In addition, due to the layered design, Hertz supports the custom implementation of the protocol layer to adapt to different use cases.
+Hertz framework provides out-of-box support for HTTP 1.1 and ALPN protocol. In addition, due to the layered design, Hertz supports the custom implementation of the protocol layer to adapt to different use cases.
 
 ### Switching Network layer on demand
 
@@ -50,7 +50,7 @@ We provide the [hertz-benchmark](https://github.com/cloudwego/hertz-benchmark) p
 ## Related Projects
 - [Netpoll](https://github.com/cloudwego/netpoll): A high-performance network library. Hertz uses it by default.
 - [Hertz-Contrib](https://github.com/hertz-contrib): A collection of Hertz extensions.
-- [Example](https://github.com/cloudwego/hertz-examples): An example of a Hertz project.
+- [Example](https://github.com/cloudwego/hertz-examples): A repository to host examples for Hertz.
 
 ## Blogs
 - [ByteDance Practice on Go Network Library](https://www.cloudwego.io/blog/2021/10/09/bytedance-practices-on-go-network-library/)
