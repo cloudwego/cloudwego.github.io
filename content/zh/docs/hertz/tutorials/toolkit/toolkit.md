@@ -15,7 +15,7 @@ go install github.com/cloudwego/hertz/cmd/hz@latest
 ```
 3. 验证是否安装成功 `hz -v`, 如果显示如下版本的信息，则说明安装成功
 ```
-hz version 0.0.1
+hz version v0.1.0
 ```
 
 **注意**，由于 hz 会为自身的二进制文件创建软链接，因此请确保 hz 的安装路径具有可写权限。
