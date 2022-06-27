@@ -1,6 +1,6 @@
 ---
-title: CloudWeGo第05期周报
-linkTitle: CloudWeGo第05期周报
+title: CloudWeGo 第05期周报
+linkTitle: CloudWeGo 第05期周报
 weight: 1
 description: >
 ---
