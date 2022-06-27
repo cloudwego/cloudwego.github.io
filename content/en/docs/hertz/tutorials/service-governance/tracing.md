@@ -25,7 +25,7 @@ Hertz will execute the Start method of all tracers before the request starts (be
 - When the Start method is executed, it just starts accepting packets, and at this time `requestContext` is an "empty" `requestContext`, so we can't get information about this request. If you want to get some information (such as the traceID in the header, etc.) after unpacking, you can use the middleware capability to inject the traceID into the span.
 - Changes to the context within the middleware are invalid.
 
-there is `traceInfo` In the `requestContext` memory, which has the following information
+There is `traceInfo` in the `requestContext` memory, which has the following information
 
 ```go
 type HTTPStats interface {
@@ -61,6 +61,4 @@ The above information is available at Finish
 
 At the same time, if you don't want to log this information, you don't have to register any tracer, and the framework stops logging this information.
 
-An extension for opentracing is provided in hertz-contrib, and a demo for calling from http to rpc is also available in hertz-examples.
-
-Related Repository： https://github.com/hertz-contrib/tracer
+An extension for opentracing is provided in hertz-contrib, and a demo for calling from http to rpc is also available in hertz-examples.Related Repository： https://github.com/hertz-contrib/tracer
