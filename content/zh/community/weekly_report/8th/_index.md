@@ -1,6 +1,6 @@
 ---
-title: CloudWeGo第08期周报
-linkTitle: CloudWeGo第08期周报
+title: CloudWeGo 第08期周报
+linkTitle: CloudWeGo 第08期周报
 weight: 1
 description: >
 ---
