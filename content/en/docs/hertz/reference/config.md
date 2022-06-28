@@ -7,8 +7,7 @@ description: >
 ---
 
 ## Server
-The configuration items of the server side are in the format of `server.xxx`
-when initializing the server, such as:
+The configuration items on the Server side all use `server.xxx` when initializing the Server, such as:
 ```go
 package main
 
@@ -22,9 +21,9 @@ func main() {
 
 |  Configuration Name   | Type  |  Description  |
 |  :----  | :----  | :---- |
-| WithTransport  | network.NewTransporter | Replace low-level transport. Default：netpoll.NewTransporter |
-| WithHostPorts  | string | Determine the listening address and port |
-| WithKeepAliveTimeout | time.Duration | The keep-alive time of tcp persistent connection, it is no need to modified generally,you should pay more attention to idleTimeout than to modify it. Default: 1min |
+| WithTransport  | network.NewTransporter | Replace the transport. Default：netpoll.NewTransporter |
+| WithHostPorts  | string | Specify the listening address and port |
+| WithKeepAliveTimeout | time.Duration | Set the keep-alive time of tcp persistent connection, generally no need to modify it, you should more pay attention to idleTimeout rather than modify it. Default: 1min |
 | WithReadTimeout | time.Duration | The timeout of underlying data reading. Default：3min |
 | WithIdleTimeout | time.Duration | The free timeout of the request link for persistent connection. Default: 3min |
 | WithMaxRequestBodySize | int | Max body size of a request. Default: 4M (the corresponding value of 4M is 4\*1024\*1024) |
@@ -48,7 +47,7 @@ func main() {
 
 
 ## Client
-The configuration items of the client side are in the format of `client.xxx`
+The configuration items on the Client side all use `server.xxx` when initializing the Server, such as:
 
 ```go
 package main
