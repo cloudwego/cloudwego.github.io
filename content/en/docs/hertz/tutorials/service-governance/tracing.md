@@ -61,4 +61,6 @@ The above information is available at Finish
 
 At the same time, if you don't want to log this information, you don't have to register any tracer, and the framework stops logging this information.
 
-An extension for opentracing is provided in hertz-contrib, and a demo for calling from http to rpc is also available in hertz-examples.Related Repository： https://github.com/hertz-contrib/tracer
+An extension for opentracing is provided in hertz-contrib, and a [demo]((https://github.com/cloudwego/hertz-examples/tree/main/tracer)) for calling from http to rpc is also available in hertz-examples.
+
+Related Repository： https://github.com/hertz-contrib/tracer
