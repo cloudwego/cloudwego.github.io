@@ -10,7 +10,7 @@ A good project can't be built without unit tests. To help users build good proje
 
 The principle is similar to that of golang httptest, both of them just execute `ServeHTTP` without going through the network and return the response after execution.
 
-Example
+## Example
 
 ```go
 import (
