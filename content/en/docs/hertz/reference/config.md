@@ -23,7 +23,7 @@ func main() {
 |  :----  | :----  | :---- |
 | WithTransport  | network.NewTransporter | Replace the transport. Default：netpoll.NewTransporter |
 | WithHostPorts  | string | Specify the listening address and port |
-| WithKeepAliveTimeout | time.Duration | Set the keep-alive time of tcp persistent connection, generally no need to modify it, you should more pay attention to idleTimeout rather than modify it. Default: 1min |
+| WithKeepAliveTimeout | time.Duration | Set the keep-alive time of tcp persistent connection, generally no need to modify it, you should more pay attention to idleTimeout rather than modifying it. Default: 1min |
 | WithReadTimeout | time.Duration | The timeout of underlying data reading. Default：3min |
 | WithIdleTimeout | time.Duration | The free timeout of the request link for persistent connection. Default: 3min |
 | WithMaxRequestBodySize | int | Max body size of a request. Default: 4M (the corresponding value of 4M is 4\*1024\*1024) |
