@@ -7,16 +7,16 @@ description: >
 ---
 
 
-Hertz integrates [sonic](https://github.com/bytedance/sonic) by default as a json marshal library for serializing data with the ctx.JSON interface. sonic is an ultra-high performance golang json library, see Sonic [README](https://github.com/bytedance/sonic) for details.
+Hertz integrates [Sonic](https://github.com/bytedance/sonic) by default as a json marshal library for serializing data with the `ctx.JSON` interface. Sonic is an ultra-high performance golang json library, see Sonic [README](https://github.com/bytedance/sonic) for details.
 
 The following are currently required to enable Sonic:
 - Go 1.15/1.16/1.17/1.18
 - Linux / darwin OS / Windows
 - Amd64 CPU with AVX instruction set
 
-Automatically fallback to golang's encoding/json library if not supported.
+Automatically fallback to golang's encoding/json library if the above requirements are not satisfied.
 
-In addition,sonic
+In addition, Sonic
 - disabled html enscape by default
 - disabled keysort by default
 
