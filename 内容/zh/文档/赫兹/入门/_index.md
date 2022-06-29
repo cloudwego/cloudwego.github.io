@@ -85,8 +85,6 @@ If your IDE prompts you  that the tag '& &' is not a valid statement delimiter i
 ```console
 $ go build -o hertz_demo ; ./hertz_demo
 ```
-
-
 If the server is launched successfully, you will see following message
 ```console
 2022/05/17 21:47:09.626332 engine.go:567: [Debug] HERTZ: Method=GET    absolutePath=/ping   --> handlerName=main.main.func1 (num=2 handlers)
