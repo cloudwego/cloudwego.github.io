@@ -1,16 +1,16 @@
 ---
-title: "单测"
+title: "Unit Test"
 date: 2022-05-23
 weight: 10
 description: >
 
 ---
 
-一个好的项目的构建离不开单元测试。为了帮助使用者构建出好的项目，hertz 当然也提供了单元测试的工具。
+A good project can't be built without unit tests. To help users build good projects, hertz of course provides unit testing tools.
 
-原理和 golang httptest 类似，都是不经过网络只执行 `ServeHTTP` 返回执行后的 response。
+The principle is similar to that of golang httptest, both of them just execute `ServeHTTP` without going through the network and return the response after execution.
 
-## 例子
+## Example
 
 ```go
 import (
@@ -43,4 +43,4 @@ func TestPerformRequest(t *testing.T) {
 }
 ```
 
-更多 examples 参考 [pkg/common/ut](https://github.com/cloudwego/hertz/tree/main/pkg/common/ut) 中的单测文件。
+For more examples, refer to the unit test file in [pkg/common/ut](https://github.com/cloudwego/hertz/tree/main/pkg/common/ut).
