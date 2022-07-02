@@ -23,11 +23,11 @@ The so-called layout template refers to the structure of the entire project. The
 ├── biz
 │   ├── handler
 │   │   └── ping.go
-│   │   └── ****.go               // set of handlers divided by service, the position can be changed according to handler_dir 
+│   │   └── ****.go               // Set of handlers divided by service, the position can be changed according to handler_dir 
 │   ├── model
 │   │   └── model.go              // idl generated struct, the position can be changed according to model_dir 
 │   └── router //undeveloped custom dir 
-│        └── register.go          // route registration, used to call the specific route registration 
+│        └── register.go          // Route registration, used to call the specific route registration 
 │             └── route.go        // Specific route registration location 
 │             └── middleware.go   // Default middleware build location
 ├── .hz                           // hz Create code flags 
