@@ -7,7 +7,7 @@ description: >
 ---
 
 
-Hertz 默认集成 [sonic](https://github.com/bytedance/sonic) 作为 json marshal 库，用于ctx.JSON接口对数据进行序列化。sonic 是一款超高性能 golang json 库，详情参考 Sonic [README](https://github.com/bytedance/sonic) 。
+Hertz 默认集成 [Sonic](https://github.com/bytedance/sonic) 作为 json marshal 库，用于`ctx.JSON`接口对数据进行序列化。Sonic 是一款超高性能 golang json 库，详情参考 Sonic [README](https://github.com/bytedance/sonic) 。
 
 目前开启 Sonic 需要以下条件：
 - Go 1.15/1.16/1.17/1.18
@@ -16,11 +16,11 @@ Hertz 默认集成 [sonic](https://github.com/bytedance/sonic) 作为 json marsh
 
 在不支持的条件下会自动 fallback 到 golang 的 encoding/json 库。
 
-另外 sonic
+另外 Sonic
 - 默认关闭 html enscape
 - 默认关闭 keysort
 
-如果 sonic 不能够满足您的需求，可以使用以下方式自定义 json marshal 库:
+如果 Sonic 不能够满足您的需求，可以使用以下方式自定义 json marshal 库:
 
 ```go
 import (
