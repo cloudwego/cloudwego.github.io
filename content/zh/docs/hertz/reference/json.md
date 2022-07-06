@@ -46,8 +46,8 @@ func main() {
 
 #### 如需更改 sonic 配置，比如和标准库对齐
 
-```
-render.ResetJSONMarshaler(sonic.ConfigStd.Marshal)
+```go
+    render.ResetJSONMarshaler(sonic.ConfigStd.Marshal)
 ```
 
 ### Mac M1 上编译报错
