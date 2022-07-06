@@ -6,7 +6,7 @@ description: >
 author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 ---
 
-# **01 前言**
+## 01 前言
 
 Hertz 是字节跳动服务框架团队研发的超大规模的企业级微服务 HTTP 框架，具有高易用性、易扩展、低时延等特点。在经过了字节跳动内部一年多的使用和迭代后，如今已在 CloudWeGo 正式开源。目前，Hertz 已经成为了字节跳动内部最大的 HTTP 框架，线上接入的服务数量超过 1 万，峰值 QPS 超过 4 千万。除了各个业务线的同学使用外，也服务于内部很多基础组件，如：函数计算平台 FaaS、压测平台、各类网关、Service Mesh 控制面等，均收到不错的使用反馈。在如此大规模的场景下，Hertz 拥有极强的稳定性和性能，在内部实践中某些典型服务，如框架占比较高的服务、网关等服务，迁移 Hertz 后相比 Gin 框架，资源使用显著减少，CPU 使用率随流量大小降低 30%—60%，时延也有明显降低。
 
@@ -14,13 +14,13 @@ Hertz 坚持 **内外维护一套代码** ，为开源使用提供了强有力�
 
 本文将重点关注 Hertz 的**架构设计**与 **功能特性** 。
 
-# **02 项目缘起**
+## 02 项目缘起
 
 最初，字节跳动内部的 HTTP 框架是对 Gin 框架的封装，具备不错的易用性、生态完善等优点。随着内部业务的不断发展，高性能、多场景的需求日渐强烈。而 Gin 是对 Golang 原生 net/http 进行的二次开发，在按需扩展和性能优化上受到很大局限。因此，为了满足业务需求，更好的服务各大业务线，2020 年初，字节跳动服务框架团队经过内部使用场景和外部主流开源 HTTP 框架 Fasthttp、Gin、Echo 的调研后，开始基于自研网络库 Netpoll 开发内部框架 Hertz，让 Hertz 在面对企业级需求时，有更好的性能及稳定性表现，也能够满足业务发展和应对不断演进的技术需求。
 
-# **03 架构设计**
+## 03 架构设计
 
-Hertz 设计之初调研了大量业界优秀的 HTTP 框架，同时参考了近年来内部实践中积累的经验。为了保证框架整体上满足：1. 极致性能优化的可能性；2. 面对未来不可控需求的扩展能力， Hertz 采用了 4 层分层设计，保证各个层级功能内聚，同时通过层级之间的接口达到灵活扩展的目标。整体架构图如图1所示。
+Hertz 设计之初调研了大量业界优秀的 HTTP 框架，同时参考了近年来内部实践中积累的经验。为了保证框架整体上满足：1. 极致性能优化的可能性；2. 面对未来不可控需求的扩展能力， Hertz 采用了 4 层分层设计，保证各个层级功能内聚，同时通过层级之间的接口达到灵活扩展的目标。整体架构图如图 1 所示。
 
 ![image](/img/blog/Go_HTTP_Hertz/Hertz_Architectural.png)
 
@@ -30,7 +30,7 @@ Hertz 设计之初调研了大量业界优秀的 HTTP 框架，同时参考了�
 
 Hertz 从上到下分为：应用层、路由层、协议层和传输层，每一层各司其职，同时公共能力被统一抽象到公共层（Common），做到跨层级复用。另外，同主库一同发布的还有作为子模块的 Hz 脚手架，它能够协助使用者快速搭建出项目核心骨架以及提供实用的构建工具链。
 
-## **应用层**
+### 应用层
 
 应用层是和用户直接交互的一层，提供丰富易用的 API，主要包括 Server、Client 和一些其他通用抽象。Server 提供了注册 HandlerFunc、Binding、Rendering 等能力；Client 提供了调用下游和服务发现等能力；以及抽象一个 HTTP 请求所必须涉及到的请求（Request）、响应（Response）、上下文（RequestContext）、中间件（Middleware）等等。Hertz 的 Server 和 Client 都能够提供中间件这样的扩展能力。
 
@@ -38,19 +38,19 @@ Hertz 从上到下分为：应用层、路由层、协议层和传输层，每�
 
 ![image](/img/blog/Go_HTTP_Hertz/RequestContext.png)
 
-## **路由层**
+### 路由层
 
 路由层负责根据 URI 匹配对应的处理函数。
 
 起初，Hertz 的路由基于 httprouter 开发，但随着使用的用户越来越多，httprouter 渐渐不能够满足需求，主要体现在 httprouter 不能够同时注册静态路由和参数路由，即 `/a/b`， `/:c/d` 这两个路由不能够同时注册；甚至有一些更特殊的需求，如 `/a/b`、`/:c/b` ，当匹配 `/a/b` 路由时，两个路由都能够匹配上。
 
-Hertz 为满足这些需求重新构造了路由树，用户在注册路由时拥有很高的自由度：支持静态路由、参数路由的注册；支持按优先级匹配，如上述例子会优先匹配静态路由 `/a/b`；支持路由回溯，如注册 `/a/b`、`/:c/d`，当匹配 `/a/d` 时仍然能够匹配上；支持尾斜线重定向，如注册 `/a/b`，当匹配 `/a/b/` 时能够重定向到  `/a/b`上。Hertz 提供了丰富的路由能力来满足用户的需求，更多的功能可以参考 Hertz 配置文档。
+Hertz 为满足这些需求重新构造了路由树，用户在注册路由时拥有很高的自由度：支持静态路由、参数路由的注册；支持按优先级匹配，如上述例子会优先匹配静态路由 `/a/b`；支持路由回溯，如注册 `/a/b`、`/:c/d`，当匹配 `/a/d` 时仍然能够匹配上；支持尾斜线重定向，如注册 `/a/b`，当匹配 `/a/b/` 时能够重定向到  `/a/b` 上。Hertz 提供了丰富的路由能力来满足用户的需求，更多的功能可以参考 Hertz 配置文档。
 
 **Httprouter**：https://github.com/julienschmidt/httprouter
 
 **Hertz 配置文档：** https://www.cloudwego.io/zh/docs/hertz/reference/config/
 
-## **协议层**
+### 协议层
 
 协议层负责不同协议的实现和扩展。
 
@@ -61,7 +61,7 @@ https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/advanced-exten/
 
 ![image](/img/blog/Go_HTTP_Hertz/Server.png)
 
-## **传输层**
+### 传输层
 
 传输层负责底层的网络库的抽象和实现。
 
@@ -70,13 +70,13 @@ Hertz 支持底层网络库的扩展。Hertz 原生完美适配 Netpoll，在时
 **网络库的扩展**：
 https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/
 
-## **Hz 脚手架**
+### Hz 脚手架
 
 与 Hertz 一并开源的还有一个易用的命令行工具 Hz，用户只需提供一个 IDL，根据定义好的接口信息，Hz 便可以一键生成项目脚手架，让 Hertz 达到开箱即用的状态；Hz 也支持基于 IDL 的更新能力，能够基于 IDL 变动智能地更新项目代码。目前 Hz 支持了 Thrift 和 Protobuf 两种 IDL 定义。命令行工具内置丰富的选项，可以根据自己的需求使用。同时它底层依赖 Protobuf 官方的编译器和自研的 Thriftgo 的编译器，两者都支持自定义的生成代码插件。如果默认模板不能够满足需求，完全能够按需定义。
 
 未来，我们将继续迭代 Hz，持续集成各种常用的中间件，提供更高层面的模块化构建能力。给 Hertz 的用户提供按需调整的能力，通过灵活的自定义配置打造一套满足自身开发需求的脚手架。
 
-## **Common 组件**
+### Common 组件
 
 Common 组件主要存放一些公共的能力，比如错误处理、单元测试能力、可观测性相关能力（Log、Trace、Metrics 等）。对于服务可观测性的能力，Hertz 提供了默认的实现，用户可以按需装配；如果用户有特殊的需求，也可以通过 Hertz 提供的接口注入。比如对于 Trace 能力，Hertz 提供了默认的实现，也提供了将 Hertz 和 Kitex 串起来的 Example。如果想注入自己的实现，也可以实现下面的接口：
 
@@ -85,9 +85,9 @@ Common 组件主要存放一些公共的能力，比如错误处理、单元测�
 **Example**：
 https://github.com/cloudwego/hertz-examples/blob/main/tracer/README.md
 
-# **04 功能特性**
+## 04 功能特性
 
-## **中间件**
+### 中间件
 
 Hertz 除了提供 Server 的中间件能力，还提供了 Client 中间件能力。用户可以使用中间件能力将通用逻辑（如：日志记录、性能统计、异常处理、鉴权逻辑等等）和业务逻辑区分开，让用户更加专注于业务代码。Server 和 Client 中间件使用方式相同，使用 Use 方法注册中间件，中间件执行顺序和注册顺序相同，同时支持预处理和后处理逻辑。
 
@@ -101,7 +101,7 @@ Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，
 
 其核心是需要一个地方存下当前的调用位置 index，并始终保持其递增。恰好 RequestContext 就是一个存储 index 合适的位置。但是对于 Client，由于没有合适的地方存储 index，我们只能退而求其次，抛弃 index 的实现，将所有的中间件构造在同一调用链上，需要用户手动调用下一个中间件。
 
-## **流式处理**
+### 流式处理
 
 Hertz 提供 Server 和 Client 的流式处理能力。HTTP  的文件场景是十分常见的场景，除了 Server 侧的上传场景之外，Client 的下载场景也十分常见。为此，Hertz 支持了 Server 和 Client 的流式处理。在内部网关场景中，从 Gin 迁移到 Hertz 后，CPU 使用量随流量大小不同可节省 30%—60% 不等，服务压力越大，收益越大。Hertz 开启流式功能的方式也很容易，只需要在 Server 上或 Client 上添加一个配置即可，可参考 CloudWeGo 官网 Hertz 文档的流式处理部分。
 
@@ -111,7 +111,7 @@ Hertz 提供 Server 和 Client 的流式处理能力。HTTP  的文件场景是�
 
 **流式处理**：https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/stream/
 
-# **05 性能表现**
+## 05 性能表现
 
 Hertz 使用字节跳动自研高性能网络库 Netpoll，在提高网络库效率方面有诸多实践，参考已发布文章 **字节跳动在 Go 网络库上的实践** 。除此之外，Netpoll 还针对 HTTP 场景进行优化，通过减少拷贝和系统调用次数提高吞吐以及降低时延。为了衡量 Hertz 性能指标，我们选取了社区中有代表性的框架 Gin（net/http）和 Fasthttp 作为对比，如图3所示。可以看到，Hertz 的极限吞吐、TP99 等指标均处于业界领先水平。未来，Hertz 还将继续和 Netpoll 深度配合，探索 HTTP 框架性能的极限。
 
@@ -121,7 +121,7 @@ Hertz 使用字节跳动自研高性能网络库 Netpoll，在提高网络库效
 图3  Hertz 和其他框架性能对比
 </p>
 
-# **06 一个Demo**
+## 06 一个Demo
 
 下面简单演示一下 Hertz 是如何开发一个服务的。
 
@@ -147,15 +147,15 @@ Hertz 使用字节跳动自研高性能网络库 Netpoll，在提高网络库效
 
 以上 Demo 可以在 Hertz-Examples 中查看，之后就可以愉快地构建自己的项目了。
 
-# **07 后记**
+## 07 后记
 
 希望以上的分享能够让大家对 Hertz 有一个整体上的认识。同时，我们也在不断地迭代 Hertz、完善CloudWeGo 整体生态。欢迎各位感兴趣的同学们加入我们，共同建设 CloudWeGo。
 
-# **08 参考资料**
+## 08 参考资料
 
 **Hertz**：https://github.com/cloudwego/hertz
 
 **Hertz Doc**：https://www.cloudwego.io/zh/docs/hertz/
 
-**字节跳动在 Go 网络库上的实践:** https://www.cloudwego.io/zh/blog/2021/10/09/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/
+官网文章：[**字节跳动在 Go 网络库上的实践** ](https://www.cloudwego.io/zh/blog/2021/10/09/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)
 
