@@ -245,8 +245,8 @@ hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_l
 >
 > 用户可根据默认模板来修改或重写，从而符合自身需求
 
--   所谓的 package 模板是指与 idl 定义服务相关的代码，这部分代码涉及到定义 idl 的时候指定的service、go_package/namespace等，主要包括以下几部分：
--   handler.go : 处理函数模板逻辑
+-   所谓的 package 模板是指与 idl 定义相关的服务代码，这部分代码涉及到定义 idl 时指定的service、go_package/namespace等，主要包括以下几部分：
+-   handler.go : 处理函数逻辑
 -   router.go：具体的 idl 定义的服务的路由注册逻辑
 -   register.go：调用router.go中内容的逻辑
 -   ~~model代码：生成的 go struct；不过由于目前使用插件来生成model代码工具没权限来修改model的模板，所以这部分功能先不开放~~
@@ -260,7 +260,7 @@ hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/h
 
 ## 默认 package 模板
 
-注意：自定义 package 模板功能没有给出渲染数据，这里主要是因为这些渲染数据是 hz 工具解析生成的，所以暂时不提供自己写渲染数据的功能。可以修改下模板里面与渲染数据无关的部分，以满足自身需求。
+注意：自定义 package 模板没有提供渲染数据的功能，这里主要是因为这些渲染数据是 hz 工具解析生成的，所以暂时不提供自己写渲染数据的功能。可以修改下模板里面与渲染数据无关的部分，以满足自身需求。
 
 ```
 # 以下数据都是 yaml marshal 得到的，所以可能看起来比较乱
