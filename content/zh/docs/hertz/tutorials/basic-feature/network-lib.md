@@ -9,7 +9,7 @@ description: >
 Hertz 默认集成了 Netpoll 和 Golang 原生网络库 两个网络库，用户可以根据自己的场景选择合适的网络库以达到最佳性能。
 
 ## 使用方式
-对于 Server 来说，默认未使用 netpoll ，可以通过配置项进行更改：
+对于 Server 来说，windows默认未使用 netpoll ，非windows默认使用netpoll，可以通过配置项进行更改：
 
 ```go
 server.New(server.WithTransport(standard.NewTransporter))
