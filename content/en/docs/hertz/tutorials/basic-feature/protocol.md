@@ -14,7 +14,7 @@ Usage Reference: [Hertz Example](/en/docs/hertz/tutorials/example/) and [Hertz C
 ALPN can be switched on or off with a switch after TLS is enabled.(depending on whether all required protocol Servers are currently registered via Protocol Suite)
 
 ## WebSocket
-The internal production environment is already in use, so please look forward to hearing from us. Please feel free to raise an issue if you need it.
+WebSocket is already in use in internal production environments, so please look forward to hearing from us. Please feel free to raise an issue if you need it.
 
 ## HTTP2
-The internal production environment is already in use, so please look forward to hearing from us. Please feel free to raise an issue if you need it.
+HTTP2 is already in use in internal production environments, so please look forward to hearing from us. Please feel free to raise an issue if you need it.

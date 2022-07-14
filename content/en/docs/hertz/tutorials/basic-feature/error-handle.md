@@ -11,13 +11,13 @@ description: >
 In order to handle errors more efficiently, Hertz has predefined the following error types:
 
 ```go
-// Process Error for binding 
+// Error in binding process 
 ErrorTypeBind ErrorType = 1 << iota
-// Process Error for rendering 
+// Error in rendering process
 ErrorTypeRender
-// Internal Error, that Hertz business needs not be perceived
+// Hertz private errors that business need not be aware
 ErrorTypePrivate
-// External Error, that requires perception as opposed to Private
+// Hertz public errors that require external perception as opposed to Private
 ErrorTypePublic
 // Other Error
 ErrorTypeAny
@@ -49,7 +49,7 @@ func New(err error, t ErrorType, meta interface{}) *Error {
 
 ## ErrorChain
 
-In addition to the conventions for error definition, the framework also provides ErrorChain capability. As the name implies, it is easy for the business to bind all errors encountered on a request processing to the error chain, which can facilitate the subsequent for all errors to be handled uniformly, usually in the middleware.
+In addition to the conventions for error definition, the framework also provides ErrorChain capability. As the name implies, it is easy for the business to bind all errors encountered on a request processing to the error chain, which can facilitate the subsequent (usually in the middleware) unified processing of all errors.
 The corresponding API is: `RequestContext.Error(err)`, and calling this API will tie the err to the corresponding request context.
 
 Method to get all the errors that have been bound by the request context: `RequestContext.Errors` (ErrorChain). ErrorChain currently provides the following API:

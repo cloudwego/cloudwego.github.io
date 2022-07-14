@@ -6,7 +6,7 @@ description: >
 
 ---
 
-Hertz provides a default way to print logs in the standard output. It also provides several global functions, such as `hlog.Info`, `hlog.Errorf`, `hlog.CtxTracef`, etc., to call the corresponding methods of the default logger, those implemented in `pkg/common/hlog`.
+Hertz provides a default way to print logs in the standard output. It also provides several global functions, such as `hlog.Info`, `hlog.Errorf`, `hlog.CtxTracef`, etc., which are implemented in `pkg/common/hlog`, to call the corresponding methods of the default logger.
 
 ## How to print logs
 
@@ -29,7 +29,7 @@ func AccessLog() app.HandlerFunc {
 ## Redirects the output of the default logger
 
 Hertz can use `hlog.SetOutput` to redirect the output of the default logger provided by hlog.
-For example, to redirect the output of the default logger to `. /output.log`, this can be done as follows:
+For example, to redirect the output of the default logger to `. /output.log`, you may do as follows:
 
 ```go
 package main
