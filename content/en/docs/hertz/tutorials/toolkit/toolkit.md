@@ -1,6 +1,6 @@
 ---
 title: 'hz command line toolkit usage'
-date: 2022-06-18
+date: 2022-07-15
 weight: 1
 description: >
 ---
