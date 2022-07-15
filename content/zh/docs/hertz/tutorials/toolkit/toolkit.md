@@ -1,5 +1,5 @@
 ---
-title: "hz 命令行工具使用"
+title: 'hz 命令行工具使用'
 date: 2022-06-18
 weight: 1
 description: >
@@ -7,28 +7,32 @@ description: >
 
 hz 是 Hertz 框架提供的一个用于生成代码的命令行工具。目前，hz 可以基于 thrift 和 protobuf 的 IDL 生成 Hertz 项目的脚手架。
 
-# 安装
+## 安装
+
 1. 确保 `GOPATH` 环境变量已经被正确地定义（例如 `export GOPATH=~/go`）并且将`$GOPATH/bin`添加到 `PATH` 环境变量之中（例如 `export PATH=$GOPATH/bin:$PATH`）；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录
 2. 安装 hz：
-```
+
+```bash
 go install github.com/cloudwego/hertz/cmd/hz@latest
 ```
+
 3. 验证是否安装成功 `hz -v`, 如果显示如下版本的信息，则说明安装成功
-```
+
+```console
 hz version v0.1.0
 ```
 
 **注意**，由于 hz 会为自身的二进制文件创建软链接，因此请确保 hz 的安装路径具有可写权限。
 
-# 运行模式
+## 运行模式
 
 要使用 thrift 或 protobuf 的 IDL 生成代码，需要安装相应的编译器：[thriftgo](https://github.com/cloudwego/thriftgo) 或 [protoc](https://github.com/protocolbuffers/protobuf/releases) 。
 
-hz 生成的代码里，一部分是底层的编译器生成的（通常是关于 IDL 里定义的结构体），另一部分是IDL 中用户定义的路由、method 等信息。用户可直接运行该代码。
+hz 生成的代码里，一部分是底层的编译器生成的（通常是关于 IDL 里定义的结构体），另一部分是 IDL 中用户定义的路由、method 等信息。用户可直接运行该代码。
 
 从执行流上来说，当 hz 使用 thrift IDL 生成代码时，hz 会调用 thriftgo 来生成 go 结构体代码，并将自身作为 thriftgo 的一个插件（名为 thrift-gen-hertz）来执行来生成其他代码。当用于 protobuf IDL 时亦是如此。
 
-```
+```console
 $> hz  ... --idl=IDL
     |
     | thrift-IDL
@@ -38,17 +42,17 @@ $> hz  ... --idl=IDL
      ---------> protoc --hertz_out=... --hertz_opt=... IDL
 ```
 
-如何安装thriftgo/protoc:
+如何安装 thriftgo/protoc:
 
 thriftgo:
 
-```
-$ GO111MODULE=on go install github.com/cloudwego/thriftgo
+```console
+$ GO111MODULE=on go install github.com/cloudwego/thriftgo@latest
 ```
 
 protoc:
 
-```
+```console
 // brew 安装
 $ brew install protobuf
 
@@ -60,15 +64,15 @@ $ cp bin/protoc /usr/local/bin/protoc
 $ cp -r include/google /usr/local/include/google
 ```
 
-# 使用
+## 使用
 
-## 基本使用
+### 基本使用
 
-### new: 创建一个 Hertz 新项目
+#### new: 创建一个 Hertz 新项目
 
 1.  创建新项目
 
-```
+```bash
 // GOPATH 下执行，go mod 名字默认为当前路径相对GOPATH的路径，也可自己指定
 hz new
 
@@ -83,7 +87,7 @@ go mod tidy
 
 2.  编译项目
 
-```
+```bash
 go build
 ```
 
@@ -91,25 +95,25 @@ go build
 
 运行项目：
 
-```
+```bash
 ./{{your binary}}
 ```
 
 测试：
 
-```
+```bash
 curl 127.0.0.1:8888/ping
 ```
 
 如果返回`{"message":"pong"}`，说明接口调通。
 
-## 基于 thrift IDL 创建项目
+### 基于 thrift IDL 创建项目
 
-### new: 创建一个新项目
+#### new: 创建一个新项目
 
 1.  在当前目录下创建 thrift idl 文件
 
-```
+```thrift
 // idl/hello.thrift
 namespace go hello.example
 
@@ -129,7 +133,7 @@ service HelloService {
 
 2.  创建新项目
 
-```
+```bash
 // GOPATH 下执行
 hz new -idl idl/hello.thrift
 
@@ -137,9 +141,9 @@ hz new -idl idl/hello.thrift
 go mod tidy
 ```
 
-3.  修改handler，添加自己的逻辑
+3.  修改 handler，添加自己的逻辑
 
-```
+```go
 // handler path: biz/handler/hello/example/hello_service.go
 // 其中 "hello/example" 是 thrift idl 的 namespace
 // "hello_service.go" 是 thrift idl 中 service 的名字，所有 service 定义的方法都会生成在这个文件中
@@ -166,7 +170,7 @@ func HelloMethod(ctx context.Context, c *app.RequestContext) {
 
 4.  编译项目
 
-```
+```bash
 go build
 ```
 
@@ -174,23 +178,23 @@ go build
 
 运行项目：
 
-```
+```bash
 ./{{your binary}}
 ```
 
 测试：
 
-```
+```bash
 curl --location --request GET 'http://127.0.0.1:8888/hello?name=hertz'
 ```
 
 如果返回`{"RespBody":"hello,hertz"}`，说明接口调通。
 
-### update: 更新一个已有的项目
+#### update: 更新一个已有的项目
 
 1.  如果你的 thrift idl 有更新，例如：
 
-```
+```thrift
 // idl/hello.thrift
 namespace go hello.example
 
@@ -223,18 +227,18 @@ service NewService {
 
 2.  切换到执行 new 命令的目录，更新修改后的 thrift idl
 
-```
+```bash
 hz update -idl idl/hello.thrift
 ```
 
 3. 可以看到
 
-    在 "biz/handler/hello/example/hello_service.go" 下新增了新的方法<br>
-    在 "biz/handler/hello/example" 下新增了文件 "new_service.go" 以及对应的 "NewMethod" 方法。
+   在 "biz/handler/hello/example/hello_service.go" 下新增了新的方法<br>
+   在 "biz/handler/hello/example" 下新增了文件 "new_service.go" 以及对应的 "NewMethod" 方法。
 
 下面我们来开发 "OtherMethod" 接口
 
-```
+```go
 // HelloMethod .
 // @router /hello [GET]
 func HelloMethod(ctx context.Context, c *app.RequestContext) {
@@ -277,7 +281,7 @@ func OtherMethod(ctx context.Context, c *app.RequestContext) {
 
 4.  编译项目
 
-```
+```bash
 go build
 ```
 
@@ -285,13 +289,13 @@ go build
 
 运行项目：
 
-```
+```bash
 ./{{your binary}}
 ```
 
 测试：
 
-```
+```bash
 curl --location --request POST 'http://127.0.0.1:8888/other' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -301,15 +305,15 @@ curl --location --request POST 'http://127.0.0.1:8888/other' \
 
 如果返回`{"Resp":"Other method: other method"}`，说明接口调通。
 
-## 基于 protobuf IDL 创建项目
+### 基于 protobuf IDL 创建项目
 
-### new: 创建一个新项目
+#### new: 创建一个新项目
 
 1. 在当前目录下创建 protobuf idl 文件
 
-    *注*：为在 protobuf 中支持 api 注解，请在使用了注解的 proto 文件中，import 下面的文件
+   _注_：为在 protobuf 中支持 api 注解，请在使用了注解的 proto 文件中，import 下面的文件
 
-```
+```protobuf
 // idl/api.proto; 注解拓展
 syntax = "proto2";
 
@@ -358,7 +362,7 @@ extend google.protobuf.EnumValueOptions {
 
 主 idl 定义：
 
-```
+```protobuf
 // idl/hello/hello.proto
 syntax = "proto3";
 
@@ -385,7 +389,7 @@ service HelloService {
 
 2.  创建新项目
 
-```
+```bash
 // GOPATH 下执行, 如果主IDL的依赖和主IDL不在同一路径下，需要加入 -I 选项，其含义为IDL搜索路径，等同于 protoc 的 -I 命令
 hz new -I idl -idl idl/hello/hello.proto
 
@@ -393,9 +397,9 @@ hz new -I idl -idl idl/hello/hello.proto
 go mod tidy
 ```
 
-3.  修改handler，添加自己的逻辑
+3.  修改 handler，添加自己的逻辑
 
-```
+```go
 // handler path: biz/handler/hello/hello_service.go
 // 其中 "/hello" 是 protobuf idl 中 go_package 的最后一级
 // "hello_service.go" 是 protobuf idl 中 service 的名字，所有 service 定义的方法都会生成在这个文件中
@@ -422,7 +426,7 @@ func Method1(ctx context.Context, c *app.RequestContext) {
 
 4.  编译项目
 
-```
+```bash
 go build
 ```
 
@@ -430,23 +434,23 @@ go build
 
 运行项目：
 
-```
+```bash
 ./{{your binary}}
 ```
 
 测试：
 
-```
+```bash
 curl --location --request GET 'http://127.0.0.1:8888/hello?name=hertz'
 ```
 
 如果返回`{"RespBody":"hello,hertz"}`，说明接口调通。
 
-### update: 更新一个已有的项目
+#### update: 更新一个已有的项目
 
 1.  如果你的 protobuf idl 有更新，例如：
 
-```
+```protobuf
 // idl/hello/hello.proto
 syntax = "proto3";
 
@@ -490,15 +494,17 @@ service NewService {
 
 2.  切换到执行 new 命令的目录，更新修改后的 protobuf idl
 
-```
+```bash
 hz update -I idl -idl idl/hello/hello.proto
 ```
 
-3.  可以看到 "biz/handler/hello/hello_service.go" 下新增了新的方法，在 "biz/handler/hello" 下新增了文件 "new_service.go" 以及对应的 "Method3" 方法。
+3.  可以看到
+    在"biz/handler/hello/hello_service.go" 下新增了新的方法
+    在"biz/handler/hello" 下新增了文件 "new_service.go" 以及对应的 "Method3" 方法。
 
 下面我们来开发 "Method2" 接口
 
-```
+```go
 // Method1 .
 // @router /hello [GET]
 func Method1(ctx context.Context, c *app.RequestContext) {
@@ -540,7 +546,7 @@ func Method2(ctx context.Context, c *app.RequestContext) {
 
 4.  编译项目
 
-```
+```bash
 go build
 ```
 
@@ -548,13 +554,13 @@ go build
 
 运行项目：
 
-```
+```bash
 ./{{your binary}}
 ```
 
 测试：
 
-```
+```bash
 curl --location --request POST 'http://127.0.0.1:8888/other' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -564,9 +570,9 @@ curl --location --request POST 'http://127.0.0.1:8888/other' \
 
 如果返回`{"Resp":"Other method: other method"}`，说明接口调通。
 
-## 生成代码的结构
+### 生成代码的结构
 
-hz 生成的代码结构都类似，下面以"基于 thrift IDL 创建项目"小节生成的代码结构为例，说明hz生成的代码的含义。
+hz 生成的代码结构都类似，下面以"基于 thrift IDL 创建项目"小节生成的代码结构为例，说明 hz 生成的代码的含义。
 
 ```
 .
@@ -595,46 +601,46 @@ hz 生成的代码结构都类似，下面以"基于 thrift IDL 创建项目"小
 └── router_gen.go                      // hz 生成的路由注册代码，用于调用用户自定义的路由以及 hz 生成的路由
 ```
 
-## 支持的 api 注解
+### 支持的 api 注解
 
 > Field 注解可用于[参数绑定及校验](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/)
 >
 > Method 注解可用于生成路由注册相关代码
 
-### 支持的 api 注解：
+#### 支持的 api 注解：
 
-| *Field 注解*                          |                          |
-| ------------------------------------ | ------------------------ |
-| 注解                                  | 说明                       |
-| api.raw_body                         | 生成 "raw_body" tag        |
-| api.query                            | 生成 "query" tag           |
-| api.header                           | 生成 "header" tag          |
-| api.cookie                           | 生成 "cookie" tag          |
-| api.body                             | 生成 "json" tag            |
-| api.path                             | 生成 "path" tag            |
-| api.form                             | 生成 "form" tag            |
-| api.go_tag (protobuf)<br>go.tag (thrift) | 透传go_tag，会生成go_tag里定义的内容 |
-| api.vd                               | 生成 "vd" tag              |
+| _Field 注解_                             |                                         |
+| ---------------------------------------- | --------------------------------------- |
+| 注解                                     | 说明                                    |
+| api.raw_body                             | 生成 "raw_body" tag                     |
+| api.query                                | 生成 "query" tag                        |
+| api.header                               | 生成 "header" tag                       |
+| api.cookie                               | 生成 "cookie" tag                       |
+| api.body                                 | 生成 "json" tag                         |
+| api.path                                 | 生成 "path" tag                         |
+| api.form                                 | 生成 "form" tag                         |
+| api.go_tag (protobuf)<br>go.tag (thrift) | 透传 go_tag，会生成 go_tag 里定义的内容 |
+| api.vd                                   | 生成 "vd" tag                           |
 
-| *Method 注解*   |                  |
-| ----------- | ---------------- |
-| 注解          | 说明               |
-| api.get     | 定义 GET 方法及路由     |
-| api.post    | 定义 POST 方法及路由    |
-| api.put     | 定义 PUT 方法及路由     |
-| api.delete  | 定义 DELETE 方法及路由  |
-| api.patch   | 定义 PATCH 方法及路由   |
-| api.options | 定义 OPTIONS 方法及路由 |
-| api.head    | 定义 HEAD 方法及路由    |
-| api.any     | 定义 ANY 方法及路由     |
+| _Method 注解_ |                         |
+| ------------- | ----------------------- |
+| 注解          | 说明                    |
+| api.get       | 定义 GET 方法及路由     |
+| api.post      | 定义 POST 方法及路由    |
+| api.put       | 定义 PUT 方法及路由     |
+| api.delete    | 定义 DELETE 方法及路由  |
+| api.patch     | 定义 PATCH 方法及路由   |
+| api.options   | 定义 OPTIONS 方法及路由 |
+| api.head      | 定义 HEAD 方法及路由    |
+| api.any       | 定义 ANY 方法及路由     |
 
-### 使用方法：
+#### 使用方法：
 
-#### Field 注解：
+##### Field 注解：
 
 Thrift：
 
-```
+```thrift
 struct Demo {
     1: string Demo (api.query="demo", api.path="demo");
     2: string GoTag (go.tag="goTag:"tag"");
@@ -644,7 +650,7 @@ struct Demo {
 
 Protobuf:
 
-```
+```protobuf
 message Demo {
   string Demo = 1[(api.query)="demo",(api.path)="demo"];
   string GoTag = 2[(api.go_tag)="goTag:"tag""];
@@ -652,11 +658,11 @@ message Demo {
 }
 ```
 
-#### Method 注解：
+##### Method 注解：
 
 Thrift：
 
-```
+```thrift
 service Demo {
     Resp Method(1: Req request) (api.get="/route");
 }
@@ -664,7 +670,7 @@ service Demo {
 
 Protobuf:
 
-```
+```protobuf
 service Demo {
   rpc Method(Req) returns(Resp) {
     option (api.get) = "/route";
@@ -672,11 +678,11 @@ service Demo {
 }
 ```
 
-## 命令行参数说明
+### 命令行参数说明
 
-### Global:
+#### Global:
 
-```
+```console
 $ hz --help
 NAME:
    hz - A idl parser and code generator for Hertz projects
@@ -698,15 +704,15 @@ GLOBAL OPTIONS:
    --version, -v  print the version (default: false)
 ```
 
--   New: 创建一个新的 Hertz 项目
+- New: 创建一个新的 Hertz 项目
 
 <!---->
 
--   update: 更新一个已存在的 Hertz 项目
+- update: 更新一个已存在的 Hertz 项目
 
-### New:
+#### New:
 
-```
+```console
 $ hz help new
 NAME:
    hz new - Generate a new Hertz project
@@ -734,79 +740,79 @@ OPTIONS:
    --thriftgo value, -t value        Specify arguments for the thriftgo. ({flag}={value})  (accepts mul
 ```
 
--   client_dir: 指定 client 侧代码的生成路径，如果不指定则不生成；当前为每个 service 生成一个全局的client，后续会提供更丰富的 client 代码能力
+- client_dir: 指定 client 侧代码的生成路径，如果不指定则不生成；当前为每个 service 生成一个全局的 client，后续会提供更丰富的 client 代码能力
 
 <!---->
 
--   customize_layout: 自定义项目 layout 模板，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/)
+- customize_layout: 自定义项目 layout 模板，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/)
 
 <!---->
 
--   customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/)
+- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/)
 
 <!---->
 
--   exclude_file: 不需要更新的文件(相对项目路径，支持多个)
+- exclude_file: 不需要更新的文件(相对项目路径，支持多个)
 
 <!---->
 
--   handler_dir: 指定 handler 的生成路径，默认为 "biz/handler"
+- handler_dir: 指定 handler 的生成路径，默认为 "biz/handler"
 
 <!---->
 
--   idl: idl 文件路径(.thrift 或者.proto)
+- idl: idl 文件路径(.thrift 或者.proto)
 
 <!---->
 
--   json_enumstr: 当 idl 为 thrift 时，json enums 使用 string 代替 num(透传给 thriftgo 的选项)
+- json_enumstr: 当 idl 为 thrift 时，json enums 使用 string 代替 num(透传给 thriftgo 的选项)
 
 <!---->
 
--   model_dir: 指定 model 的生成路径，默认为"biz/model"
+- model_dir: 指定 model 的生成路径，默认为"biz/model"
 
 <!---->
 
--   module/mod: 指定 go mod 的名字，非 GOPATH 下必须指定，GOPATH 下默认以相对于GOPATH 的路径作为名字
+- module/mod: 指定 go mod 的名字，非 GOPATH 下必须指定，GOPATH 下默认以相对于 GOPATH 的路径作为名字
 
 <!---->
 
--   no_recurse: 只生成主 idl 的 model 代码
+- no_recurse: 只生成主 idl 的 model 代码
 
 <!---->
 
--   option_package/P: 指定包的路径，({include_path}={import_path})
+- option_package/P: 指定包的路径，({include_path}={import_path})
 
 <!---->
 
--   out_dir: 指定项目生成路径
+- out_dir: 指定项目生成路径
 
 <!---->
 
--   proto_path/I: 当 idl 为 protobuf 时，指定 idl 的搜索路径，同 protoc 的 -I 指令
+- proto_path/I: 当 idl 为 protobuf 时，指定 idl 的搜索路径，同 protoc 的 -I 指令
 
 <!---->
 
--   protoc/p: 透传给 protoc 的选项({flag}={value})
+- protoc/p: 透传给 protoc 的选项({flag}={value})
 
 <!---->
 
--   service: 服务名，为之后做服务发现等功能预留
+- service: 服务名，为之后做服务发现等功能预留
 
 <!---->
 
--   snake_tag: tag 使用 snake_case 风格命名(仅对 form、query、json 生效)
+- snake_tag: tag 使用 snake_case 风格命名(仅对 form、query、json 生效)
 
 <!---->
 
--   thriftgo/t: 透传给 thriftgo 的选项({flag}={value})
+- thriftgo/t: 透传给 thriftgo 的选项({flag}={value})
 
 <!---->
 
--   unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 omitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional"还是"required"决定
+- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 omitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional"还是"required"决定
 
-### Update:
+#### Update:
 
-```
+```console
 $ hz help update
 NAME:
    hz update - Update an existing Hertz project
@@ -832,63 +838,63 @@ OPTIONS:
    --unset_omitempty                 Remove 'omitempty' tag for generated struct. (default: false)
 ```
 
--   client_dir: 指定 client 侧代码的生成路径，如果不指定则不生成；当前为每个 service 生成一个全局的client，后续会提供更丰富的 client 代码能力。注意：如果对同一套 idl 进行update，需要 client_dir 的值与使用 new 的时候相同，否则会生成冗余的代码，需要用户自行删除。
+- client_dir: 指定 client 侧代码的生成路径，如果不指定则不生成；当前为每个 service 生成一个全局的 client，后续会提供更丰富的 client 代码能力。注意：如果对同一套 idl 进行 update，需要 client_dir 的值与使用 new 的时候相同，否则会生成冗余的代码，需要用户自行删除。
 
 <!---->
 
--   customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/) 。注意：对于已经存在的 handler 文件会按照默认模板新增 handler 函数，对于还未存在的 handler 文件，则会按照自定义模板来生成 handler。
+- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/) 。注意：对于已经存在的 handler 文件会按照默认模板新增 handler 函数，对于还未存在的 handler 文件，则会按照自定义模板来生成 handler。
 
 <!---->
 
--   exclude_file: 不需要更新的文件(相对项目路径，支持多个)
+- exclude_file: 不需要更新的文件(相对项目路径，支持多个)
 
 <!---->
 
--   handler_dir: 指定 handler 的生成路径，默认为"biz/handler"；注意：如果对同一套 idl 进行update，需要 handler_dir 的值与使用 new 的时候相同，否则会生成冗余的代码，需要用户自行删除。
+- handler_dir: 指定 handler 的生成路径，默认为"biz/handler"；注意：如果对同一套 idl 进行 update，需要 handler_dir 的值与使用 new 的时候相同，否则会生成冗余的代码，需要用户自行删除。
 
 <!---->
 
--   idl: idl 文件路径(.thrift 或者.proto)
+- idl: idl 文件路径(.thrift 或者.proto)
 
 <!---->
 
--   json_enumstr: 当 idl 为 thrift 时，json enums 使用 string 代替 num(透传给 thriftgo 的选项)
+- json_enumstr: 当 idl 为 thrift 时，json enums 使用 string 代替 num(透传给 thriftgo 的选项)
 
 <!---->
 
--   model_dir: 指定 model 的生成路径，默认为"biz/model"；注意：如果对同一套 idl 进行update，需要 model_dir 的值与使用 new 的时候相同，否则会生成重复的 model 代码且导致 handler 引用不一致。
+- model_dir: 指定 model 的生成路径，默认为"biz/model"；注意：如果对同一套 idl 进行 update，需要 model_dir 的值与使用 new 的时候相同，否则会生成重复的 model 代码且导致 handler 引用不一致。
 
 <!---->
 
--   no_recurse: 只生成主 idl 的 model 代码
+- no_recurse: 只生成主 idl 的 model 代码
 
 <!---->
 
--   option_package/P: 指定包的路径，({include_path}={import_path})
+- option_package/P: 指定包的路径，({include_path}={import_path})
 
 <!---->
 
--   out_dir: 指定项目生成路径
+- out_dir: 指定项目生成路径
 
 <!---->
 
--   proto_path/I: 当 idl 为 protobuf 时，指定 idl 的搜索路径，同 protoc 的 -I 指令
+- proto_path/I: 当 idl 为 protobuf 时，指定 idl 的搜索路径，同 protoc 的 -I 指令
 
 <!---->
 
--   protoc/p: 透传给 protoc 的选项({flag}={value})
+- protoc/p: 透传给 protoc 的选项({flag}={value})
 
 <!---->
 
--   snake_tag: tag 使用 snake_case 风格命名(仅对 form、query、json 生效)
+- snake_tag: tag 使用 snake_case 风格命名(仅对 form、query、json 生效)
 
 <!---->
 
--   thriftgo/t: 透传给 thriftgo 的选项({flag}={value})
+- thriftgo/t: 透传给 thriftgo 的选项({flag}={value})
 
 <!---->
 
--   unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 mitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional"还是"required"决定
+- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 mitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional"还是"required"决定
 
 ## 注意事项
 
@@ -896,11 +902,11 @@ OPTIONS:
 
 hz 目前支持 [proto2](https://developers.google.com/protocol-buffers/docs/proto) / [proto3](https://developers.google.com/protocol-buffers/docs/proto3) 的语法
 
-**我们希望用户在定义 protobuf idl 的时候指定 go_package**，这样一来符合 protobuf 的语义，二来生成的 model 位置可以通过 go_package来决定。如果用户不指定 go_package，hz 会默认将 proto文件的 package 做为 go_package，可能会有一些预期外的命名冲突。
+**我们希望用户在定义 protobuf idl 的时候指定 go_package**，这样一来符合 protobuf 的语义，二来生成的 model 位置可以通过 go_package 来决定。如果用户不指定 go_package，hz 会默认将 proto 文件的 package 做为 go_package，可能会有一些预期外的命名冲突。
 
 例如，可以这样定义 go_package
 
-```
+```protobuf
 option go_package = "hello.world"; // or hello/world
 ```
 
@@ -922,7 +928,7 @@ router 注册文件同样会取 go_package 最后一级作为生成路径，其�
 
 例如，可以这样定义 namespace
 
-```
+```thrift
  namespace go hello.world
 ```
 
@@ -946,27 +952,27 @@ hz 为了用户使用方便，提供了自定义 handler 路径、model 路径�
 
 创建新项目：
 
-```
+```bash
 hz new -idl demo.thrift
 
-此时，hz 会把 model 生成在 "biz/mdoel"下
+// 此时，hz 会把 model 生成在 "biz/mdoel"下
 ```
 
 更新项目：
 
-```
+```bash
 hz update -idl demo.thrift --model_dir=my_model
 
-此时，hz 不会更新"biz/model"下的 model 代码，而是会在"my_model"下；这时"biz/model"和"my_model"下的代码就会重复，且新生成的handler会依赖"my_model"，之前的handler会依赖"biz/model"，这时就需要用户手动删除&改动一些代码了。
+// 此时，hz 不会更新"biz/model"下的 model 代码，而是会在"my_model"下；这时"biz/model"和"my_model"下的代码就会重复，且新生成的handler会依赖"my_model"，之前的handler会依赖"biz/model"，这时就需要用户手动删除&改动一些代码了。
 ```
 
-因此，**我们希望用户使用 update 命令的时候，自定义的路径 "client_dir"、"model_dir"、"handler_dir"，最好 new 和相同。**
+因此，**我们希望用户使用 update 命令的时候，自定义的路径 "client_dir"、"model_dir"、"handler_dir"，最好和 new 相同。**
 
-2.  update handler的行为
+2.  update handler 的行为
 
 hz 在 new 项目的时候会根据默认模板/自定义模板来生成 handler，其中每个 service 生成一个文件，该文件包含了该 service 定义的所有 handler 代码；如果 idl 定义了多个 service，则每个 service 都会生成一个文件，这些文件都在同一路径下；举个例子：
 
-```
+```thrift
 // demo.thrift
 namespace go hello.example
 
@@ -989,24 +995,24 @@ ${handler_dir}/${namespace}/service2.go -> method2
 
 hz 在 new 的时候生成的 router 代码主要有如下三个：
 
--   biz/router/${namespace}/${idlName}.go: 每个主 idl 都会生成对应的路由注册代码文件，该文件以路由组的方式注册 idl 中定义的所有路由，并设置默认的中间件。
+- biz/router/${namespace}/${idlName}.go: 每个主 idl 都会生成对应的路由注册代码文件，该文件以路由组的方式注册 idl 中定义的所有路由，并设置默认的中间件。
 
 <!---->
 
--   biz/router/${namespace}/middleware.go: 每个主 idl 对应的默认中间件函数，用户可修改中间件函数，以此为特定的路由增加特定的中间件逻辑。
+- biz/router/${namespace}/middleware.go: 每个主 idl 对应的默认中间件函数，用户可修改中间件函数，以此为特定的路由增加特定的中间件逻辑。
 
 <!---->
 
--   biz/router/register.go：该文件负责调用不同 idl 生成的路由注册；比如我在两个 idl "demo1.thrift"、"demo2.thrift"中都定义了 service ，那么这两个文件都会生成对应的路由注册代码。register.go 负责调用这两部分的路由注册函数。
+- biz/router/register.go：该文件负责调用不同 idl 生成的路由注册；比如我在两个 idl "demo1.thrift"、"demo2.thrift"中都定义了 service ，那么这两个文件都会生成对应的路由注册代码。register.go 负责调用这两部分的路由注册函数。
 
 基于上述描述，给出 router 在 update 时的行为描述：
 
--   biz/${namespace}/${idlName}.go: 每次都基于 idl 重新生成，用户不要改该文件代码，否则会丢失代码。
+- biz/${namespace}/${idlName}.go: 每次都基于 idl 重新生成，用户不要改该文件代码，否则会丢失代码。
 
 <!---->
 
--   biz/${namespace}/middleware.go: 每次都会在尾部追加目前没有的 middleware。
+- biz/${namespace}/middleware.go: 每次都会在尾部追加目前没有的 middleware。
 
 <!---->
 
--   biz/router/register.go: 如果有新增的 idl 会插入新的 idl 的路由注册方式。
+- biz/router/register.go: 如果有新增的 idl 会插入新的 idl 的路由注册方式。
