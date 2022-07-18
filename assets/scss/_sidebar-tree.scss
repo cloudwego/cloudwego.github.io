@@ -31,7 +31,7 @@
 
         @include media-breakpoint-up(md) {
             & .ul-1 ul {
-                padding-left: 1.5em;
+                padding-left: 1.2em;
             }
         }
 
@@ -59,6 +59,7 @@
         &__page {
             color: $gray-700;
             font-weight: $font-weight-light;
+            font-size: $font-14;
         }
     }
 
@@ -85,7 +86,7 @@
 
     & > .td-sidebar-nav__section {
         padding-top: .5rem;
-        padding-left: 1.5rem;
+        padding-left: 1.2rem;
     }
 
     li i { // Layout of icons
