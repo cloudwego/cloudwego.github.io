@@ -14,3 +14,6 @@ tech-doc-hugo
 # IDE files
 .idea
 .vscode
+
+# hugo
+.hugo_build.lock
