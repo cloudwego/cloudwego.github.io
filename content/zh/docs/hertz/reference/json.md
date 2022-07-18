@@ -56,7 +56,7 @@ render.ResetJSONMarshal(json.Marshal)
     binding.ResetJSONUnmarshaler(json.Unmarshal)
 }
 ```
-## 常见 FAQ
+## 常见问题
 ### Mac M1 上编译报错
 
 #### Unsupported CPU, maybe it's too old to run Sonic
