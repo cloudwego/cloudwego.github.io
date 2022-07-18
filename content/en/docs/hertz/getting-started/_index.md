@@ -6,14 +6,23 @@ description: >
 ---
 
 ## Set Up Golang Development Environment
-1. If you haven't set up your Golang Enviornmrnt, you can refer to [Golang Install](https://golang.org/doc/install).
+1. If you haven't set up your Golang Environment, you can refer to [Golang Install](https://golang.org/doc/install).
 2. We recommend you to use the Golang latest version, or make sure it's >= v1.15. You can choose to use the earlier versions, but the compatibility and stability are not assured.
 3. Make sure the go mod support is on (for Golang versions >= v1.15, it is on by default).
 
-> Note: Hertz does not support Windows environments currently.
+>Currently, Hertz supports Linux, macOS, and Windows systems.
 
 ## Quick Start
 After you have prepared the Golang environment, the chapter will help you to quickly get familiar with Hertz.
+
+### Install the commend tool of hz
+First, you need to install the commend tool hz which is used in this chapter
+1. Confirm the `GOPATH` environment has been defined correctly (For example `export GOPATH=~/go`)
+and the `$GOPATH/bin` has been added to `PATH` environment (For example `export PATH=$GOPATH/bin:$PATH`);
+Attention, do not set a directory in which you have no read and write permission as `GOPATH`.
+2. Install hz: `go install github.com/cloudwego/hertz/cmd/hz@latest`
+
+For more information on how to use hz, please refer to: [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/)
 
 ### Determine Where to Store Your Code
 1. If your codes are placed under `$GOPATH/src`, you need to create additional dictionary under `$GOPATH/src` and retrieve your code under the dictionary.
@@ -23,7 +32,15 @@ After you have prepared the Golang environment, the chapter will help you to qui
 ```
 2. If your codes are not placed under GOPATH, you can retrieve them directly.
 
-### Complete the Sample Code
+### Generate/Complete the Sample Code
+1. Create the hertz_demo folder in the current directory and go to that directory
+2. Generate code `hz new`
+3. Tidy & get dependencies
+```console
+$ go mod tidy
+```
+If you are currently using a Windows system, you can write the following sample code.
+
 1. Create the hertz_demo folder in the current directory and go to that directory
 2. Create the `main.go` file
 3. Add the following code to the `main.go` file
@@ -33,10 +50,10 @@ package main
 import (
     "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 func main() {
@@ -54,15 +71,15 @@ func main() {
 ```console
   $ go mod init hertz_demo
 ```
-5. Generate the `go.sum` file
+5. Tidy & get dependencies
 ```console
   $ go mod tidy
 ```
 
 ### Run the Sample Code
-After you have completed the previous steps, you are able to launch the server
+After you have completed the previous steps, you are able to compile & launch the server
 ```console
-$ go run main.go
+$ go build -o hertz_demo && ./hertz_demo
 ```
 If the server is launched successfully, you will see following message
 ```console

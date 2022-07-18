@@ -11,7 +11,7 @@ Kitex defines several interfaces in the package `pkg/klog`: `Logger`, `CtxLogger
 
 There are global functions in the package `pkg/klog` that expose the ability of the default logger, like `klog.Info`, `klog.Errorf` and so on.
 
-Note that the default logger uses the `log.Logger` from the standard library as its underlying output. So the filename and line number shown in the log messages depend on the setting of call depth. Thus wrapping the implementation of `klog.DefaultLogger` may causes inaccuracies for these two value.
+Note that the default logger uses the `log.Logger` from the standard library as its underlying output. So the filename and line number shown in the log messages depend on the setting of call depth. Thus wrapping the implementation of `klog.DefaultLogger` may cause inaccuracies for these two values.
 
 ## Injecting your own logger
 
