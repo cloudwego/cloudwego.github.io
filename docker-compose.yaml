@@ -1,11 +1,13 @@
 version: "3.3"
 
 services:
+
   site:
     image: klakegg/hugo:ext-debian
-    working_dir: /app
+    build:
+      context: .
     command: server
     ports:
       - "1313:1313"
     volumes:
-      - .:/app
+      - .:/src
