@@ -1,10 +1,14 @@
 {{ $cover := .HasShortcode "blocks/cover" }}
-<nav class="js-navbar-scroll navbar navbar-expand navbar-dark {{ if $cover}} td-navbar-cover {{ end }}flex-column flex-md-row td-navbar">
-        <a class="navbar-brand" href="{{ .Site.Home.RelPermalink }}">
+<nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark {{ if $cover}} td-navbar-cover {{ end }} td-navbar">
+    <a class="navbar-brand" href="{{ .Site.Home.RelPermalink }}">
 		<span class="navbar-logo"><img src="{{ .Site.Params.ui.navbar_logo  }}"></span>
 	</a>
-	<div class="td-navbar-nav-scroll ml-md-auto" id="main_navbar">
-		<ul class="navbar-nav mt-2 mt-lg-0">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_navbar"
+		aria-controls="main_navbar" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id="main_navbar">
+		<ul class="navbar-nav mt-2 mt-lg-0 ml-auto">
 			{{ $p := . }}
 			{{ range .Site.Menus.main	 }}
 			{{ if .HasChildren }}
@@ -34,12 +38,12 @@
 			{{ end }}
 			{{ end }}
 			{{ if  .Site.Params.versions }}
-			<li class="nav-item dropdown mr-4 d-none d-lg-block">
+			<li class="nav-item dropdown mr-4">
 				{{ partial "navbar-version-selector.html" . }}
 			</li>
 			{{ end }}
 			{{ if  (gt (len .Site.Home.Translations) 0) }}
-			<li class="nav-item dropdown mr-4 d-none d-lg-block">
+			<li class="nav-item dropdown mr-4">
 				{{ partial "navbar-lang-selector.html" . }}
 			</li>
 			{{ end }}
