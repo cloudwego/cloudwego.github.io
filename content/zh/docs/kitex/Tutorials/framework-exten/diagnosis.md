@@ -31,10 +31,10 @@ type Service interface {
 // new diagnosisi service
 var ds diagnosis.service = NewYourService()
 
-// eg: register dump func to get discovery instances. 
+// eg: register dump func to get discovery instances.
 ds.RegisterProbeFunc("instances", dr.Dump)
 
-// eg: wrap the config data as probe func, register func to get config info. 
+// eg: wrap the config data as probe func, register func to get config info.
 ds.RegisterProbeFunc("config_info", diagnosis.WrapAsProbeFunc(config))
 
 ```
@@ -63,7 +63,7 @@ const (
 
 ```go
 // server side
-svr := stservice.NewServer(handler, server.WithDiagnosisService(yourDiagnosisService))
+svr := xxxservice.NewServer(handler, server.WithDiagnosisService(yourDiagnosisService))
 
 // client side
 cli, err := xxxservice.NewClient(targetService, client.WithDiagnosisService(yourDiagnosisService))
