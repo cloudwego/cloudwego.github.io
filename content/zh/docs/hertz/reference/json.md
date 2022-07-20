@@ -28,10 +28,10 @@ Hertz 默认集成并使用 [Sonic](https://github.com/bytedance/sonic) 用于�
 
 具体来说，默认情况下，Sonic：
 - 禁用 html escape：Sonic 不会转义 HTML中的特殊字符
-- 禁用 key-sort：Sonic 不会按照键对JSON排序。
+- 禁用 key-sort：Sonic 不会按照键对JSON排序
 
 
-你可以通过调用 render 包中的`ResetJSONMarshaler`函数来修改Sonic的行为，比如和标准库兼容。
+你可以通过调用 render 包中的`ResetJSONMarshaler`函数来修改Sonic的行为，比如保持和标准库兼容。
 
 ```go
 render.ResetJSONMarshaler(sonic.ConfigStd.Marshal)
@@ -60,12 +60,12 @@ render.ResetJSONMarshal(json.Marshal)
 ### Mac M1 上编译报错
 
 #### Unsupported CPU, maybe it's too old to run Sonic
-一般是因为尝试在不支持的Go运行时中运行Sonic：
-#### 安装了非 arm 版本的 go 镜像**
+一般为是因为 Go 镜像版本或构建参数和 Sonic 不兼容
+#### 安装了非 arm 版本的 go 镜像
 请安装 arm 版本 Go 镜像（go1.16某些 arm 镜像存在 bug 会导致 link 错误的 x86 文件，推荐 go1.17 以上版本）
 #### **设置了 GOARCH=amd64**
 请去除该参数或设置为 arm64
 #### 使用了转译器运行 x86 环境下编译出来的程序
 目前不支持这种使用方式
 ###Build constraints exclude all Go files in xxx
-一般是 Go 版本导致的问题，sonic 目前支持的版本为见 [sonic#Requirement](https://github.com/bytedance/sonic#requirement)
+一般是 Go 版本导致的问题，sonic 目前支持的版本见 [sonic#Requirement](https://github.com/bytedance/sonic#requirement)

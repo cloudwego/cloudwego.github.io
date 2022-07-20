@@ -33,7 +33,7 @@ render.ResetJSONMarshaler(sonic.ConfigStd.Marshal)
 
 ## Bringing Your Own JSON Marshal Library
 
-If Sonic and `encoding/json` does not meet your needs, you may provide your own implementation by calling `ResetJSONMarshal` for render and `ResetJSONUnmarshaler` for binding.
+If Sonic does not meet your needs, you may provide your own implementation by calling `ResetJSONMarshal` for render and `ResetJSONUnmarshaler` for binding.
 
 ```go
 import (
@@ -55,10 +55,11 @@ func main() {
 
 ### Compilation Error on Mac M1
 #### Unsupported CPU, maybe it’s too old to run Sonic
-In most cases, this is because you attempted to run Sonic on an incompatible runtime
+In most cases, this is because the go binary and/or build configuration is incompatible with Sonic.
 
-#####Installed non-arm version of go image
-please install arm version of Go image (go1.16 some arm images have bugs that cause link error x86 files, go1.17 or above is recommended)
+##### Go binary is not built for ARM64
+Please use a go binary compiled for ARM64. You may encounter issues on go1.16 as compiler incorrectly links x86 files due to bugs.
+Therefore, go1.17 or above is highly recommended.
 ##### GOARCH is set to amd64 `i.e. GOARCH=amd64`
 You can either remove the flag or set its value to `arm64`.
 ##### Ran Binaries compiled in an x86 environment with a translator
