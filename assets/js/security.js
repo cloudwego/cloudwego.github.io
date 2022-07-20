@@ -16,25 +16,18 @@ limitations under the License.
 (function($){
     $.safetyData = [{
         id: 1,
-        bulletin: 'CloudWeGo-SA-2021-1',
-        digest: 'Custom errhandler fix',
-        influence: ['kitex-v0.0.8'],
+        bulletin: 'CloudWeGo-SA-2022-1',
+        digest: 'Connection Leaking',
+        influence: ['kitex-v0.1.3'],
         level: 'Low',
-        publish: '2021-11-23'
+        publish: '2022-01-13'
     },{
         id: 2,
-        bulletin: 'CloudWeGo-SA-2022-1',
-        digest: 'Netpoll Panic fix',
+        bulletin: 'CloudWeGo-SA-2022-2',
+        digest: 'Netpoll Panic',
         influence: ['netpoll-v0.2.2', 'kitex-v0.3.0'],
         level: 'Middle',
         publish: '2022-05-09'
-    },{
-        id: 3,
-        bulletin: 'CloudWeGo-SA-2022-2',
-        digest: 'Mutex unlocked fix',
-        influence: ['hertz-v0.1.0'],
-        level: 'Low',
-        publish: '2022-06-25'
     }];
 })(jQuery);
 
