@@ -1,18 +1,17 @@
 ---
-title: "编解码协议"
+title: "序列化协议"
 date: 2021-08-26
 weight: 2
 description: >
-  支持 Thrift, Protobuf。
 ---
 
-目前，Kitex 支持了 thrift 和 protobuf 两种编解码协议。
+目前，Kitex 支持了 Thrift 和 Protobuf 两种编解码。
 
 ## Thrift
 
 Kitex 支持了 Thrift 的 [Binary](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md) 协议，暂时没有支持 [Compact](https://github.com/apache/thrift/blob/master/doc/specs/thrift-compact-protocol.md) 协议。
 
-生成代码时指定 thrift 协议，也可以不指定，默认就是 thrift：
+生成代码时指定 Thrift 协议，也可以不指定，默认就是 Thrift：
 
 - 客户端
 
@@ -26,7 +25,7 @@ Kitex 支持了 Thrift 的 [Binary](https://github.com/apache/thrift/blob/master
   kitex -type thrift -service ${service_name} ${idl_name}.thrift
   ```
 
-我们针对 thrift 的 binary 协议编解码进行了优化，具体优化细节参考 "Reference - 高性能 Thrift 编解码 " 篇章，假如想要关闭这些优化，生成代码时可以加上 `-no-fast-api` 参数。
+我们针对 Thrift 的 binary 协议编解码进行了优化，具体优化细节参考 "Reference - 高性能 Thrift 编解码 " 篇章，假如想要关闭这些优化，生成代码时可以加上 `-no-fast-api` 参数。
 
 ## Protobuf
 
