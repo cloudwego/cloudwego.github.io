@@ -41,7 +41,6 @@ limitations under the License.
             $tbody.html('<tr><td colspan="5">&nbsp;</td></tr>');
             return;
         }
-        console.log(isCN);
         for(let i =0;i< data.length;i++){
             const item = data[i];
             const bulletinList = [
