@@ -41,7 +41,7 @@ opts = append(opts, client.WithTransportProtocol(transport.TTHeader))
 opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
 cli, err := xxxservice.NewClient(targetService, opts...)
 
-// server side no need to config transport protocol, but MetaHandler is needed
+// server side no need to config transport protocol
 var opts []server.Option
 // use TTHeader meta handler. >= v0.3.4 ServerTTHeaderHandler is added by default, don't need to do setup
 opts = append(opts, server.WithMetaHandler(transmeta.ServerTTHeaderHandler))
@@ -60,7 +60,7 @@ opts = append(opts, client.WithMetaHandler(transmeta.ClientHTTP2Handler))
 cli, err := xxxservice.NewClient(targetService, opts...)
 
 
-// server side no need to config transport protocol, but MetaHandler is needed
+// server side no need to config transport protocol
 var opts []server.Option
 // use HTTP2 meta handler. >= v0.3.4 ServerHTTP2Handler is added by default, don't need to do setup
 opts = append(opts, server.WithMetaHandler(transmeta.ServerHTTP2Handler))
