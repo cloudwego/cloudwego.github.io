@@ -35,15 +35,17 @@ limitations under the License.
     'use strict';
     function renderSafetyTable($, data) {
         const $tbody = $('#bulletinTable > tbody');
+        const isCN = location.href.indexOf('zh') > -1 ? '/zh' : '';
         let html = '';
         if (data.length === 0) {
             $tbody.html('<tr><td colspan="5">&nbsp;</td></tr>');
             return;
         }
+        console.log(isCN);
         for(let i =0;i< data.length;i++){
             const item = data[i];
             const bulletinList = [
-                '<tr><td><a href=\'/security/safety-bulletin/detail/'+ item.bulletin.toLowerCase() + '/\'>'+ item.bulletin + '</a>',
+                '<tr><td><a href=\''+ isCN + '/security/safety-bulletin/detail/'+ item.bulletin.toLowerCase() + '/\'>'+ item.bulletin + '</a>',
                 '<td>'+ item.digest + '</td>',
                 '<td>'+ item.level + '</td>',
                 '<td>'+ item.influence.join('<br/>') + '</td>',
