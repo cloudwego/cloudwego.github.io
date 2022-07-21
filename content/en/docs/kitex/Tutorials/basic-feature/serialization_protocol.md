@@ -5,7 +5,7 @@ weight: 2
 description: >
 ---
 
-Kitex support two serialization protocol: Thrift and Protobuf.
+Kitex supports two serialization protocols: Thrift and Protobuf.
 
 ## Thrift
 
