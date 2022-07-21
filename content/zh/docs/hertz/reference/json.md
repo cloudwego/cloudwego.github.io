@@ -58,14 +58,10 @@ render.ResetJSONMarshal(json.Marshal)
 ```
 ## 常见问题
 ### Mac M1 上编译报错
-
 #### Unsupported CPU, maybe it's too old to run Sonic
-一般为是因为 Go 镜像版本或构建参数和 Sonic 不兼容
-#### 安装了非 arm 版本的 go 镜像
-请安装 arm 版本 Go 镜像（go1.16某些 arm 镜像存在 bug 会导致 link 错误的 x86 文件，推荐 go1.17 以上版本）
-#### 设置了 GOARCH=amd64
-请去除该参数或设置为 arm64
-#### 使用了转译器运行 x86 环境下编译出来的程序
-目前不支持这种使用方式
+- 一般为是因为 Go 镜像版本或构建参数和 Sonic 不兼容
+- 安装了非 arm 版本的 go 镜像。请安装 arm 版本 Go 镜像（go1.16某些 arm 镜像存在 bug 会导致 link 错误的 x86 文件，推荐 go1.17 以上版本）
+- 设置了 GOARCH=amd64。请去除该参数或设置为 arm64
+- 使用了转译器运行 x86 环境下编译出来的程序。目前不支持这种使用方式
 ###Build constraints exclude all Go files in xxx
 一般是 Go 版本导致的问题，sonic 目前支持的版本见 [sonic#Requirement](https://github.com/bytedance/sonic#requirement)

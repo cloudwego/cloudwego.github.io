@@ -18,10 +18,10 @@ Sonic automatically fallback to golang's `encoding/json` library when the above 
 
 ## Compatibility With `encoding/json`
 
-Currently, Hertz uses the default configuration for Sonic (i.e.`sonic.ConfigDefault`, which behaves different from JSON `encoding/json`.
+Currently, Hertz uses the default configuration for Sonic (i.e.`sonic.ConfigDefault`), which behaves different from JSON `encoding/json`.
 Specifically, by default, Sonic are configured to:
 - disable html escape: Sonic will not escape HTML's special characters
-- disable key-sort by default: Sonic will not sort json based on keys
+- disable key-sort by default: Sonic will not sort json in lexicographical order
 
 To find more about the compatibility with `encoding/json`, you may want to see [sonic#Compatibility](https://github.com/bytedance/sonic#compatibility).
 You may change Sonic's behavior (e.g. behaving exactly the same way as `encoding/json`) by calling `ResetJSONMarshaler` for render.
@@ -55,15 +55,10 @@ func main() {
 
 ### Compilation Error on Mac M1
 #### Unsupported CPU, maybe it’s too old to run Sonic
-In most cases, this is because the go binary and/or build configuration is incompatible with Sonic.
-
-##### Go binary is not built for ARM64
-Please use a go binary compiled for ARM64. You may encounter issues on go1.16 as compiler incorrectly links x86 files due to bugs.
+In most cases, this is because the go binary and/or build configuration is not consistent with ARM arch.
+- Go binary is not built for ARM64. Please use a go binary compiled for ARM64. You may encounter issues on go1.16 as compiler incorrectly links x86 files due to official bugs.
 Therefore, go1.17 or above is highly recommended.
-##### GOARCH is set to amd64 `i.e. GOARCH=amd64`
-You can either remove the flag or set its value to `arm64`.
-##### Ran Binaries compiled in an x86 environment with a translator
-This is not supported yet.
-
-### Build constraints exclude all Go files in xxx
+- GOARCH is set to amd64 `i.e. GOARCH=amd64`. You can either remove the flag or set its value to `arm64`.
+- Running go binary compiled for x86 with a translator (e.g. Rosetta). This is not supported yet.
+####Build constraints exclude all Go files in xxx
 This is mostly because Sonic does not work on your go version. See [sonic#Requirement](https://github.com/bytedance/sonic#requirement) for a list of supported go versions.
