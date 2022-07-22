@@ -1,7 +1,7 @@
 ---
 title: "Server SDK化"
 date: 2021-08-26
-weight: 2
+weight: 3
 description: >
 ---
 

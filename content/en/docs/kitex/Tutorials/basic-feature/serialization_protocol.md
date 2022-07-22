@@ -3,10 +3,9 @@ title: "Serialization Protocol"
 date: 2021-08-31
 weight: 2
 description: >
-  Support Thrift, Protobuf.
 ---
 
-Kitex support had support two serialization protocol: Thrift and Protobuf.
+Kitex supports two serialization protocols: Thrift and Protobuf.
 
 ## Thrift
 
