@@ -11,7 +11,7 @@ description: >
 * [[#116](https://github.com/cloudwego/hertz/pull/116)] feat: update 也可使用模板更新 handler 及 middleware。
 * [[#130](https://github.com/cloudwego/hertz/pull/130)] feat: 如果 Cookie.Value 中存在非法字符，则打印告警日志。
 * [[#143](https://github.com/cloudwego/hertz/pull/143)] feat: 增加一个接口支持自定义信号捕捉逻辑，以便根据场景调节优雅退出需要应对的信号类型。
-* [[#114](https://github.com/cloudwego/hertz/pull/114)] feat: 标准网络库 Read 方法中调用 connecton.Release()，防止在多次少量调用 Read 方法时不回收内存导致的 OOM。
+* [[#114](https://github.com/cloudwego/hertz/pull/114)] feat: 标准网络库 Read 方法中调用 connection.Release()，防止在多次少量调用 Read 方法时不回收内存导致的 OOM。
 * [[#112](https://github.com/cloudwego/hertz/pull/112)] feat: 修正了 x-www-form-urlencoded 编码下无法读到 bodystream 类型数据。
 * [[#105](https://github.com/cloudwego/hertz/pull/105)] feat: client 为 ALPN 和 http2 抽象出协议层 HostClient。client 删除 readbuffersize 和 writebuffersize 配置项。
 * [[#92](https://github.com/cloudwego/hertz/pull/92)] feat: hz 命名行工具支持 windows。
