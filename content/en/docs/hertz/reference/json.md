@@ -30,7 +30,6 @@ You may change Sonic's behavior (e.g. behaving exactly the same way as `encoding
 render.ResetJSONMarshaler(sonic.ConfigStd.Marshal)
 ```
 
-
 ## Bringing Your Own JSON Marshal Library
 
 If Sonic does not meet your needs, you may provide your own implementation by calling `ResetJSONMarshal` for render and `ResetJSONUnmarshaler` for binding.
@@ -51,14 +50,21 @@ func main() {
     binding.ResetJSONUnmarshaler(json.Unmarshal)
 }
 ```
+
 ## Common FAQs
 
 ### Compilation Error on Mac M1
+
 #### Unsupported CPU, maybe it’s too old to run Sonic
+
 In most cases, this is because the go binary and/or build configuration is not consistent with ARM arch.
-- Go binary is not built for ARM64. Please use a go binary compiled for ARM64. You may encounter issues on go1.16 as compiler incorrectly links x86 files due to official bugs.
-Therefore, go1.17 or above is highly recommended.
+
+- Go binary is not built for ARM64. Please use a go binary compiled for ARM64. You may encounter issues on go1.16 as
+  compiler incorrectly links x86 files due to official bugs. Therefore, go1.17 or above is highly recommended.
 - GOARCH is set to amd64 `i.e. GOARCH=amd64`. You can either remove the flag or set its value to `arm64`.
 - Running go binary compiled for x86 with a translator (e.g. Rosetta). This is not supported yet.
-####Build constraints exclude all Go files in xxx
-This is mostly because Sonic does not work on your go version. See [sonic#Requirement](https://github.com/bytedance/sonic#requirement) for a list of supported go versions.
+
+#### Build constraints exclude all Go files in xxx
+
+This is mostly because Sonic does not work on your go version.
+See [sonic#Requirement](https://github.com/bytedance/sonic#requirement) for a list of supported go versions.
