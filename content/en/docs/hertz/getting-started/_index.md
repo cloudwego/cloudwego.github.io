@@ -19,7 +19,7 @@ After you have prepared the Golang environment, the chapter will help you to qui
 First, you need to install the commend tool hz which is used in this chapter
 1. Confirm the `GOPATH` environment has been defined correctly (For example `export GOPATH=~/go`)
 and the `$GOPATH/bin` has been added to `PATH` environment (For example `export PATH=$GOPATH/bin:$PATH`);
-Attention, do not set a directory in which you have no read and write permission as `GOPATH`.
+Attention, do not set `GOPATH` to a directory that the current user does not have read/write access to.
 2. Install hz: `go install github.com/cloudwego/hertz/cmd/hz@latest`
 
 For more information on how to use hz, please refer to: [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/)
