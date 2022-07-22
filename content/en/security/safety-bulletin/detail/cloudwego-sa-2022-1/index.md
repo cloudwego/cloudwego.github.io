@@ -5,24 +5,23 @@ linkTitle: "CloudWeGo-SA-2022-1"
 description: "Connection Leaking"
 ---
 
-## 简介
-修复客户端编码失败时连接会泄漏的问题
+## Overview
+Fixed connection leak when client encoding failed
 
-## 严重级别
+## Severity Level
 Low
 
-## 描述
+## Description
+Fixed connection leak when client encoding failed
 
-修复客户端编码失败时连接会泄漏的问题
+## Solution
+When client encoding fails, the connection is released
 
-## 解决办法
-当客户端编码失败时，释放连接
-
-## 影响组件
+## Affected Components
 kitex-v0.1.3
 
 ## CVE
-无
+None
 
-## 参考链接
+## References
 - https://github.com/cloudwego/kitex/pull/315
