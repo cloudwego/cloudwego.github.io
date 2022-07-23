@@ -95,7 +95,7 @@ Kitex 默认支持的 Payload 有 Thrift、Kitex Protobuf 以及 gRPC 协议。�
 maxSizeBytes = 1024 * 1024 * 10 // 10 MB
 
 // server side
-svr := stservice.NewServer(handler, server.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
+svr := xxxservice.NewServer(handler, server.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
 
 // client side
 cli, err := xxxservice.NewClient(targetService, client.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
@@ -110,7 +110,7 @@ cli, err := xxxservice.NewClient(targetService, client.WithCodec(codec.NewDefaul
 
 ```go
 // server side
-svr := stservice.NewServer(handler, server.WithCodec(yourCodec))
+svr := xxxservice.NewServer(handler, server.WithCodec(yourCodec))
 
 // client side
 cli, err := xxxservice.NewClient(targetService, client.WithCodec(yourCodec))
@@ -122,7 +122,7 @@ cli, err := xxxservice.NewClient(targetService, client.WithCodec(yourCodec))
 
 ```go
 // server side
-svr := stservice.NewServer(handler, server.WitWithPayloadCodechCodec(yourPayloadCodec))
+svr := xxxservice.NewServer(handler, server.WitWithPayloadCodechCodec(yourPayloadCodec))
 
 // client side
 cli, err := xxxservice.NewClient(targetService, client.WithPayloadCodec(yourPayloadCodec))

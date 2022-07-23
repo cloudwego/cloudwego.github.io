@@ -1,6 +1,6 @@
 ---
-title: "传输协议"
-linkTitle: "传输协议"
+title: "TTHeader"
+linkTitle: "TTHeader"
 weight: 1
 description: >
 
@@ -27,7 +27,7 @@ description: >
                    (and starts at offset 14)
 
 +----------------------------------------------------------------+
-| PROTOCOL ID  |NUM TRANSFORMS . |TRANSFORM 0 ID (uint8)| 
+| PROTOCOL ID  |NUM TRANSFORMS . |TRANSFORM 0 ID (uint8)|
 +----------------------------------------------------------------+
 |  TRANSFORM 0 DATA ...
 +----------------------------------------------------------------+

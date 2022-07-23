@@ -31,6 +31,8 @@
 @import "home";
 @import "about";
 @import "community";
+@import "markdown";
+@import "safety";
 
 @if $td-enable-google-fonts {
     @import url($web-font-path);

@@ -10,7 +10,7 @@ description: >
 
 原理和 golang httptest 类似，都是不经过网络只执行 `ServeHTTP` 返回执行后的 response。
 
-例子
+## 例子
 
 ```go
 import (

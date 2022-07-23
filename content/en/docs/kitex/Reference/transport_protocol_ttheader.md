@@ -1,6 +1,6 @@
 ---
-title: "Transport Protocol"
-linkTitle: "Transport Protocol"
+title: "TTHeader"
+linkTitle: "TTHeader"
 weight: 1
 description: >
 
@@ -27,7 +27,7 @@ Referring to the [Thrift THeader protocol](https://github.com/apache/thrift/blob
                    (and starts at offset 14)
 
 +----------------------------------------------------------------+
-| PROTOCOL ID  |NUM TRANSFORMS . |TRANSFORM 0 ID (uint8)| 
+| PROTOCOL ID  |NUM TRANSFORMS . |TRANSFORM 0 ID (uint8)|
 +----------------------------------------------------------------+
 |  TRANSFORM 0 DATA ...
 +----------------------------------------------------------------+

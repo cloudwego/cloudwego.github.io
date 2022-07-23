@@ -6,24 +6,24 @@ linkTitle = "CloudWeGo"
 
 {{< blocks/cover title="欢迎使用 CloudWeGo" subtitle="构建企业级云原生中间件的领先实践！" image_anchor="top" height="full" color="dark" >}}
 <p class="home-overview-btn-group">
-  <a class="home-overview-btn" href="{{< relref "/docs" >}}">
-  <span class="home-overview-btn-bg"></span>
-  开始 <i class="fas fa-arrow-alt-circle-right ml-2"></i>
-  </a>
-  <a class="home-overview-btn home-overview-btn-with-no-margin" href="https://github.com/cloudwego">
+    <a class="home-overview-btn" href="{{< relref "/docs" >}}">
     <span class="home-overview-btn-bg"></span>
-    Github <i class="fab fa-github ml-2 "></i>
-  </a>
+    开始 <i class="fas fa-arrow-alt-circle-right ml-2"></i>
+    </a>
+    <a class="home-overview-btn home-overview-btn-with-no-margin" href="https://github.com/cloudwego">
+        <span class="home-overview-btn-bg"></span>
+        Github <i class="fab fa-github ml-2 "></i>
+    </a>
 </p>
 <div class="home-overview-link-down">
-  {{< blocks/link-down color="info" >}}
+    {{< blocks/link-down color="info" >}}
 </div>
 {{< /blocks/cover >}}
 
 {{% blocks/lead color="primary" %}}
 <h2 class="home-section-title">为什么选 CloudWeGo?</h2>
 <p class="home-description">
-  CloudWeGo 是一套由字节跳动开源的、以 Golang 语言为核心的、可快速构建企业级云原生架构的相关项目集合。CloudWeGo 的特点是高性能、可扩展、高可靠，专注于微服务通信与治理。
+    CloudWeGo 是一套由字节跳动开源的、可快速构建企业级云原生微服务架构的中间件集合。CloudWeGo 项目共同的特点是高性能、高扩展性、高可靠，专注于微服务通信与治理。
 </p>
 
 {{% /blocks/lead %}}
@@ -49,146 +49,145 @@ linkTitle = "CloudWeGo"
 {{< blocks/section color="white" >}}
 <h2 class="home-section-title home-section-title-projects">项目</h2>
 <div class="row top-hr">
-  <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-    <a href="https://github.com/cloudwego/kitex">
-      <h2>Kitex</h2>
-      <p>下一代高性能、强可扩展的 Golang RPC 框架。</p>
-    </a>
-  </div>
-  <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-    <a href="https://github.com/cloudwego/netpoll">
-      <h2>Netpoll</h2>
-      <p>高性能、I/O非阻塞的网络框架，专注于 RPC 场景。</p>
-    </a>
-  </div>
-  <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-    <a href="https://github.com/cloudwego/thriftgo">
-      <h2>Thriftgo</h2>
-      <p>Go 语言实现的 thrift 编译器，支持插件机制，支持完整的 thrift IDL 语法和完善的语义检查。</p>
-    </a>
-  </div>
-  <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-    <a href="https://github.com/cloudwego/netpoll-http2">
-      <h2>Netpoll-http2</h2>
-      <p>基于官方 HTTP2 源码改造使用 Netpoll，提供高性能的 HTTP2 通信。</p>
-    </a>
-  </div>
-  <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-    <a href="https://github.com/cloudwego/hertz">
-      <h2>Hertz</h2>
-      <p>下一代高性能、强可扩展的 Golang HTTP 框架。</p>
-    </a>
-  </div>
-  <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-    <a href="https://github.com/cloudwego/frugal">
-      <h2>Frugal</h2>
-      <p>一款基于 JIT 编译的高性能动态 Thrift 编解码器。</p>
-    </a>
-  </div>
-  <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-    <a href="https://github.com/bytedance/sonic">
-      <h2>Sonic</h2>
-      <p>一个非常快的由 JIT 和 SIMD 加速的 JSON 序列化和反序列化库。</p>
-    </a>
-  </div>
-  <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-    <a href="https://github.com/bytedance/monoio">
-      <h2>Monoio</h2>
-      <p>一个基于 io_uring/epoll/kqueue 和 thread-per-core 模型 Rust Runtime。</p>
-    </a>
-  </div>
+    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+        <a href="https://github.com/cloudwego/kitex">
+            <h2>Kitex</h2>
+            <p>下一代高性能、强可扩展的 Golang RPC 框架。</p>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+        <a href="https://github.com/cloudwego/netpoll">
+            <h2>Netpoll</h2>
+            <p>高性能、I/O非阻塞的网络框架，专注于 RPC 场景。</p>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+        <a href="https://github.com/cloudwego/thriftgo">
+            <h2>Thriftgo</h2>
+            <p>Go 语言实现的 thrift 编译器，支持插件机制，支持完整的 thrift IDL 语法和完善的语义检查。</p>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+        <a href="https://github.com/cloudwego/hertz">
+            <h2>Hertz</h2>
+            <p>下一代高性能、强可扩展的 Golang HTTP 框架。</p>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+        <a href="https://github.com/cloudwego/frugal">
+            <h2>Frugal</h2>
+            <p>一款基于 JIT 编译的高性能动态 Thrift 编解码器。</p>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+        <a href="https://github.com/bytedance/sonic">
+            <h2>Sonic</h2>
+            <p>一个非常快的由 JIT 和 SIMD 加速的 JSON 序列化和反序列化库。</p>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
+        <a href="https://github.com/bytedance/monoio">
+            <h2>Monoio</h2>
+            <p>一个基于 io_uring/epoll/kqueue 和 thread-per-core 模型 Rust Runtime。</p>
+        </a>
+    </div>
 </div>
 
 {{< /blocks/section >}}
 
 {{< blocks/section color="secondary" >}}
 <div class="home-quote">
-  <div class="home-quote-text">
-    "近三年来，字节跳动的微服务数量和规模迎来快速发展。2018 年，我们的在线微服务数大约是 7000-8000，到 2021 年五月份，这一数字已经突破 5 万。现在我们决定把这些技术开源出来，帮助更多开发者。"
-  </div>
-  <div class="home-quote-author">
-    — 字节跳动服务框架团队
-  </div>
+    <div class="home-quote-text">
+        "近三年来，字节跳动的微服务数量和规模迎来快速发展。2018 年，我们的在线微服务数大约是 7000-8000，到 2021 年五月份，这一数字已经突破 5 万。现在我们决定把这些技术开源出来，帮助更多开发者。"
+    </div>
+    <div class="home-quote-author">
+        — 字节跳动服务框架团队
+    </div>
 </div>
 {{< /blocks/section >}}
 
 {{< blocks/section color="white" >}}
 <h2 class="home-section-title">出品方</h2>
 <div class="row home-used-by-wrapper home-used-by-created">
-  <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
-    <img class="used-by-logo" src="/img/usedby/bytedance.png" alt="bytedance logo">
-  </a>
+    <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/bytedance.png" alt="bytedance logo">
+    </a>
 </div>
 <h2 class="home-section-title">谁在用</h2>
 <div class="row home-used-by-wrapper">
-  <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
-    <img class="used-by-logo" src="/img/usedby/douyin.png" alt="douyin logo">
-  </a>
-  <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
-    <img class="used-by-logo" src="/img/usedby/toutiao.png" alt="toutiao logo">
-  </a>
-  <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
-    <img class="used-by-logo" src="/img/usedby/xigua.png" alt="xigua logo">
-  </a>
-  <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
-    <img class="used-by-logo" src="/img/usedby/dongchedi.png" alt="dongchedi logo">
-  </a>
-  <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
-    <img class="used-by-logo" src="/img/usedby/jianying.png" alt="jianying logo">
-  </a>
-  <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
-    <img class="used-by-logo" src="/img/usedby/fanqie.png" alt="fanqie logo">
-  </a>
-  <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
-    <img class="used-by-logo" src="/img/usedby/feishu.png" alt="feishu logo">
-  </a>
-  <a class="home-used-by-item" href="https://www.semir.com/" target="_blank" rel="noopener">
-    <img class="used-by-logo" src="/img/usedby/semir.png" alt="semir logo">
-  </a>
-  <a class="home-used-by-item" href="https://www.huaxingsec.com" target="_blank" rel="noopener">
-    <img class="used-by-logo" src="/img/usedby/huaxing.png" alt="huaxingsec logo">
-  </a>
+    <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/douyin.png" alt="douyin logo">
+    </a>
+    <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/toutiao.png" alt="toutiao logo">
+    </a>
+    <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/xigua.png" alt="xigua logo">
+    </a>
+    <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/dongchedi.png" alt="dongchedi logo">
+    </a>
+    <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/jianying.png" alt="jianying logo">
+    </a>
+    <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/fanqie.png" alt="fanqie logo">
+    </a>
+    <a class="home-used-by-item" href="/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/feishu.png" alt="feishu logo">
+    </a>
+    <a class="home-used-by-item" href="https://www.semir.com/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/semir.png" alt="semir logo">
+    </a>
+    <a class="home-used-by-item" href="https://www.huaxingsec.com" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/huaxing.png" alt="huaxingsec logo">
+    </a>
+    <a class="home-used-by-item" href="https://www.tanwan.com/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/tanwan.png" alt="tanwan logo">
+    </a>
+    <a class="home-used-by-item" href="https://www.moonton.com/" target="_blank" rel="noopener">
+        <img class="used-by-logo" src="/img/usedby/moonton.png" alt="moonton logo">
+    </a>
 </div>
 {{< /blocks/section >}}
 
 {{< blocks/section class="home-landscape" >}}
 <div class="home-landscape-wrapper">
-  <img src="https://landscape.cncf.io/images/left-logo.svg" width="150"/>
-  <img src="https://landscape.cncf.io/images/right-logo.svg" width="200"/>
-  <div class="home-landscape-desc">
-    CloudWeGo 丰富了 <a href="https://landscape.cncf.io/">CNCF 云原生生态</a>.
-  </div>
+    <img src="https://landscape.cncf.io/images/left-logo.svg" width="150"/>
+    <img src="https://landscape.cncf.io/images/right-logo.svg" width="200"/>
+    <div class="home-landscape-desc">
+        CloudWeGo 丰富了 <a href="https://landscape.cncf.io/">CNCF 云原生生态</a>.
+    </div>
 </div>
 {{< /blocks/section >}}
 
 {{< blocks/section color="dark" >}}
 <div class="row top-hr home-footer-links">
-  <div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
-    <div class="home-footer-links-item-title">文档</div>
-    <ul>
-      <li><a href="{{< relref "/docs/kitex">}}">Kitex</a></li>
-      <li><a href="{{< relref "/docs/hertz">}}">Hertz</a></li>
-      <li><a href="{{< relref "/docs/netpoll">}}">Netpoll</a></li>
-    </ul>
-  </div>
-  <div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
-    <div class="home-footer-links-item-title">项目</div>
-    <ul>
-      <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/kitex">Kitex</a></li>
-      <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/hertz">Hertz</a></li>
-      <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/netpoll">Netpoll</a></li>
-      <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/thriftgo">Thriftgo</a></li>
-      <li><a target="_blank" rel="noopener noreferrer"
-             href="https://github.com/cloudwego/netpoll-http2">Netpoll-http2</a></li>
-    </ul>
-  </div>
-  <div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
-    <div class="home-footer-links-item-title">联系我们</div>
-    <ul>
-      <li><a href="mailto:conduct@cloudwego.io">邮箱：conduct@cloudwego.io</a></li>
-      <li><a href="https://join.slack.com/t/cloudwego/shared_invite/zt-tmcbzewn-UjXMF3ZQsPhl7W3tEDZboA">加入 Slack</a>
-      </li>
-    </ul>
-  </div>
+    <div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
+        <div class="home-footer-links-item-title">文档</div>
+        <ul>
+            <li><a href="{{< relref "/docs/kitex">}}">Kitex</a></li>
+            <li><a href="{{< relref "/docs/hertz">}}">Hertz</a></li>
+            <li><a href="{{< relref "/docs/netpoll">}}">Netpoll</a></li>
+        </ul>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
+        <div class="home-footer-links-item-title">项目</div>
+        <ul>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/kitex">Kitex</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/hertz">Hertz</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/netpoll">Netpoll</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/thriftgo">Thriftgo</a></li>
+        </ul>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
+        <div class="home-footer-links-item-title">联系我们</div>
+        <ul>
+            <li><a href="mailto:conduct@cloudwego.io">邮箱：conduct@cloudwego.io</a></li>
+            <li><a href="https://join.slack.com/t/cloudwego/shared_invite/zt-tmcbzewn-UjXMF3ZQsPhl7W3tEDZboA">加入
+                Slack</a>
+            </li>
+        </ul>
+    </div>
 </div>
 {{< /blocks/section >}}
