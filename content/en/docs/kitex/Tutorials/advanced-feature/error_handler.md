@@ -9,7 +9,7 @@ Some users will ask how to let the client-side receive the corresponding error t
 
 ## Recommended Usage
 
-ErrorHandler is configured via the client/server Option, but usually, a microservice system will have a unified error handler specification, if you are an enterprise user, it is recommended to customize the Option through the [Suite](...). /... /framework-exten/suite), so that the service developer does not need to pay attention to the configuration of error handler.
+ErrorHandler is configured via the client/server Option, but usually, a microservice system will have a unified error handler specification, if you are an enterprise user, it is recommended to customize the Option through the [Suite](../../framework-exten/suite), so that the service developer does not need to pay attention to the configuration of error handler.
 
 ### Server-side Configuration
 
