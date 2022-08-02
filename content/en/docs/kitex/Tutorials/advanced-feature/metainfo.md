@@ -101,6 +101,7 @@ import (
 )
 
 func (MyServiceImpl) SomeMethod(ctx context.Context, req *SomeRequest) (res *SomeResponse, err error) {
+    ctx = metainfo.WithBackwardValuesToSend(ctx)
     ok := metainfo.SendBackwardValue(ctx, "something-from-server")
 
     if !ok {
