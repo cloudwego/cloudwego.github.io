@@ -2,7 +2,7 @@
 type: docs
 title: "引入 CloudWeGo 后飞书管理后台平台化改造的演进史"
 linkTitle: "飞书"
-weight: 2
+weight: 3
 ---
 
 随着企业用户逐渐增多，面对不同场景下不同需求和技术问题，CloudWeGo 团队将会持续分享不同企业的落地实践，包含不同行业面临的技术问题、选型参考和最终落地性能和使用分享，来帮助更多用户开始使用 CloudWeGo 。
