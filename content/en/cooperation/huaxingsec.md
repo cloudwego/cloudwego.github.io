@@ -9,6 +9,7 @@ weight: 1
 <div  align="center">
 <img src="/img/usedby/huaxing.png" width = "400"  alt="huaxingsec" />
 </div>
+<br/><br/>
 
 华兴证券是 CloudWeGo 企业用户，使用 Kitex 框架完成混合云部署下的跨机房调用。
 
