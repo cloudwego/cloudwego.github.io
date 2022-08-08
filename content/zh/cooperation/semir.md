@@ -81,9 +81,7 @@ Istio 基于 Enovy 的 xDS 协议扩展了其控制平面，每个 Pod 中放入
 右侧是使用了基于 Istio 的服务网格。大概流程是 Client 访问目标服务的时候，流量先进入 Service 的 Proxy，被 Proxy 拦截，Proxy 会从服务发现（Pilot）拿到服务与服务实例的映射关系，
 同时会拿到负载均衡的策略，去选择 Service 一个实例。总体来看，这两种流程大致相同，但实现方式有所差别，各有所长。
 
-<center class="half">
-    <img src="/img/users/semir/semir5.png" /><img src="/img/users/semir/semir6.png" />
-</center>
+![semir-5-6](/img/users/semir/semir-5-6.png)
 
 ### 天枢系统基本架构
 
@@ -117,9 +115,7 @@ Istio 基于 Enovy 的 xDS 协议扩展了其控制平面，每个 Pod 中放入
 - 集群：Kubernetes 1.20.11；
 - 服务网格：Istio v1.10.5.39。
 
-<center class="half">
-    <img src="/img/users/semir/semir11.png" /><img src="/img/users/semir/semir12.png" />
-</center>
+![semir-11-12](/img/users/semir/semir-11-12.png)
 
 通过对比发现，在指定时间相同的情况下，Kitex 在单位时间内处理订单数量更多。在指定订单数量的情况下，Kitex 对于处理相同数量的订单所需时间更短，且订单量越大，这种性能差别越明显。总体来看，Kitex 在处理大批订单时优势还是非常突出的。
 
