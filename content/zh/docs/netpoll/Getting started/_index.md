@@ -5,7 +5,7 @@ weight: 2
 description: >
 ---
 
-> 本教程通过一些简单的[示例][Examples]帮助您开始使用 [Netpoll][Netpoll]，包括如何使用 [Server](#1-使用-sever)、[Client](#2-使用-dialer) 和 [nocopy API](#3-使用-nocopy-api)。
+> 本教程通过一些简单的[示例][Examples]帮助您开始使用 [Netpoll][Netpoll]，包括如何使用 [Server](#1-使用-server)、[Client](#2-使用-dialer) 和 [nocopy API](#3-使用-nocopy-api)。
 
 ## 1. 使用 Server
 
