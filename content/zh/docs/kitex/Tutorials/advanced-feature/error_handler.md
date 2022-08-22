@@ -5,7 +5,7 @@ weight: 4
 description: >
 ---
 
-部分用户会问如何让调用端收到服务端对应的错误类型，这里解释一下，RPC 是通过协议进行通信，错误的处理也是基于协议，通常服务端返回 Error，RPC 框架统一进行错误编码返回会调用端，如果要让调用端返回和服务端一样的错误，需要定义一套错误码进行处理。但考虑到 RPC 并没有统一的错误码规范且内部的错误码不一定适用于外部用户，所以 Kitex 的开源部分没有暴露错误码定义，用户可以通过提供 **ErrorHandler** 来定制自己的错误处理。
+部分用户会问如何让调用端收到服务端对应的错误类型，这里解释一下，RPC 是通过协议进行通信，错误的处理也是基于协议，通常服务端返回 Error，RPC 框架统一进行错误编码返回回调用端，如果要让调用端返回和服务端一样的错误，需要定义一套错误码进行处理。但考虑到 RPC 并没有统一的错误码规范且内部的错误码不一定适用于外部用户，所以 Kitex 的开源部分没有暴露错误码定义，用户可以通过提供 **ErrorHandler** 来定制自己的错误处理。
 
 ## 建议使用方式
 
@@ -58,7 +58,7 @@ func ServerErrorHandler(err error) error {
 client.WithErrorHandler(yourClientErrorHandler)
 ```
 
-该 handler 在远程调用结束，中间件执行前被执行。框架有默认的 ClientErrorHandler，如果未配置将使用默认的，默认 Handler 的行为是：接收到服务端的错误返回或者调用端在传输层出现了异常，统一返回 **ErrRemoteOrNetwork**。另外，对于 Thrift 和 KitexProtobuf，error msg 会包含 '[remote]' 信息用来标识这是对端的错误；对于 gRPC 如果对端通过 status.Error 构造的错误返回，本端使用 status.FromError(err) 可以获取 *status.Status，注意 Status 需使用 Kitex 提供的，包路径是  `github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status`。
+该 handler 在远程调用结束，中间件执行前被执行。框架有默认的 ClientErrorHandler，如果未配置将使用默认的，默认 Handler 的行为是：接收到服务端的错误返回或者调用端在传输层出现了异常，统一返回 **ErrRemoteOrNetwork**。另外，对于 Thrift 和 KitexProtobuf，error msg 会包含 '[remote]' 信息用来标识这是对端的错误；对于 gRPC 如果对端通过 `status.Error` 构造的错误返回，本端使用 `status.FromError(err)` 可以获取 `*status.Status`，注意 `Status` 需使用 Kitex 提供的，包路径是  `github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status`。
 
 * ErrorHandler 示例：
 
