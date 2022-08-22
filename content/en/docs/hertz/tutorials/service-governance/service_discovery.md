@@ -5,11 +5,11 @@ weight: 3
 description: >
 ---
 
-The service discovery extensions currently supported in the open source version of Hertz are stored in the [registry](https://github.com/hertz-contrib/registry) and are welcome to contribute to and maintain the project.
+The service discovery extensions currently supported in the open source version of Hertz are stored in the [registry](https://github.com/hertz-contrib/registry). You are welcomed to join us in contributing and maintaining for this project.
 
 ## Usage
 
-The Nacos Registry Center is used as an example for reference only. You can adjust the relevant parameters by yourself in the production environment.
+The implementation of the Nacos registry is used as an example for reference. You can adjust the relevant parameters by yourself in the production environment.
 
 ### Service Registration
 
@@ -44,7 +44,7 @@ func main(){
 
 ### Service Discovery
 
-- Use the `sd.Discovery` built-in middleware to support incoming custom service discovery extensions as well as load balancing extensions.
+- Use the `sd.Discovery` built-in middleware to support incoming custom service discovery extensions as well as load balance extensions.
 - When using service discovery, replace Host with the service name and use `config.WithSD` to confirm that this request uses service registration.
 
 ```go
