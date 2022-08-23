@@ -24,6 +24,7 @@ USAGE:
 
 OPTIONS:
     -h, --help       Print help information
+    -n, --entry-name <ENTRY_NAME>    The entry name, defaults to 'default'. [default: default]
     -v, --verbose    Turn on the verbose mode.
     -V, --version    Print version information
 

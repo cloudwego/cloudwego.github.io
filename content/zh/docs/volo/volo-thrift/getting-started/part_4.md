@@ -15,10 +15,10 @@ description: >
 pub struct LogService<S>(S);
 
 #[volo::service]
-impl<Cx, Req, S> Service<Cx, Req> for LogService<S>
+impl<Cx, Req, S> volo::Service<Cx, Req> for LogService<S>
 where
     Req: std::fmt::Debug + Send + 'static,
-    S: Send + 'static + Service<Cx, Req>,
+    S: Send + 'static + volo::Service<Cx, Req>,
     S::Response: std::fmt::Debug,
     S::Error: std::fmt::Debug,
     Cx: Send + 'static,
@@ -39,7 +39,7 @@ where
 ```rust
 pub struct LogLayer;
 
-impl<S> Layer<S> for LogLayer {
+impl<S> volo::Layer<S> for LogLayer {
     type Service = LogService<S>;
 
     fn layer(self, inner: S) -> Self::Service {
@@ -57,7 +57,7 @@ use volo_example::LogLayer;
 static ref CLIENT: volo_gen::volo::example::ItemServiceClient = {
     let addr: SocketAddr = "127.0.0.1:8080".parse().unwrap();
     volo_gen::volo::example::ItemServiceClientBuilder::new("volo-example")
-        .layer(LogLayer)
+        .layer_inner(LogLayer)
         .target(addr)
         .build()
 };

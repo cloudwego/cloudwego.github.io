@@ -109,12 +109,12 @@ $ volo idl add -g git@github.com:org/repo.git -r main /path/to/your/idl.thrift
 pub struct S;
 
 #[volo::async_trait]
-impl volo_gen::volo::example::item::ItemService for S {
+impl volo_gen::volo::example::ItemService for S {
     // 这部分是我们需要增加的代码
     async fn get_item(
         &self,
-        req: volo_gen::volo::example::item::GetItemRequest,
-    ) -> core::result::Result<volo_gen::volo::example::item::GetItemResponse, pilota::AnyhowError>
+        _req: volo_gen::volo::example::GetItemRequest,
+    ) -> core::result::Result<volo_gen::volo::example::GetItemResponse, pilota::AnyhowError>
     {
         Ok(Default::default())
     }

@@ -76,7 +76,7 @@ $ volo idl add idl/volo_example.proto
 | 插播一个广告，volo 工具还支持从 git 下载 IDL 并生成代码哦，如：
 
 ```bash
-$ volo idl add -g git@github.com:org/repo.git -r main /path/to/your/idl.thrift
+$ volo idl add -g git@github.com:org/repo.git -r main /path/to/your/idl.proto
 ```
 
 | 感兴趣可以直接输入 volo 看详细用法~ 接下来回到正题~
