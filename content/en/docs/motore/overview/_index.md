@@ -71,7 +71,7 @@ where
 }
 ```
 
-We also provided the `#[motore::service]` macro to make writing a `Serivce` more async-native:
+We also provided the `#[motore::service]` macro to make writing a `Service` more async-native:
 
 ```rust
 use motore::service;

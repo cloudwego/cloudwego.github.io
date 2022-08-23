@@ -69,7 +69,7 @@ where
 }
 ```
 
-我们还提供了`#[motore::service]`宏以使编写 `Serivce` 更加像编写原生异步 Rust：
+我们还提供了`#[motore::service]`宏以使编写 `Service` 更加像编写原生异步 Rust：
 
 ```rust
 use motore::service;
