@@ -43,7 +43,7 @@ message Item {
     string title = 2;
     string content = 3;
 
-    map<string, string> extra = 10；
+    map<string, string> extra = 10;
 }
 
 message GetItemRequest {
@@ -62,7 +62,7 @@ service ItemService {
 保存退出后，我们执行以下命令：
 
 ```bash
-$ volo init volo-example idl/volo_example.proto
+$ volo init --includes=idl volo-example idl/volo_example.proto
 ```
 
 **这里我们使用`init`命令，后面跟了我们项目的名字，意思是需要生成模板代码。在末尾，需要指定一个 IDL 表示 server 使用的 IDL。**
