@@ -67,7 +67,8 @@ pub struct StaticDiscover {
 
 impl Discover for StaticDiscover {
     type Key = ();
-    type DiscFut<'a> = impl Future<Output = anyhow::Result<Vec<Arc<Instance>>>> + 'a;
+    type Error = Infallible;
+    type DiscFut<'a> = impl Future<Output = Result<Vec<Arc<Instance>>, Self::Error>> + 'a;
 
     fn discover(&self, _: &Endpoint) -> Self::DiscFut<'_> {
         async { Ok(self.instances.clone()) }
@@ -75,7 +76,7 @@ impl Discover for StaticDiscover {
 
     fn key(&self, _: &Endpoint) -> Self::Key {}
 
-    fn watch(&self) -> Option<Receiver<Change<Self::Key>>> {
+    fn watch(&self) -> Option<async_broadcast::Receiver<Change<Self::Key>>> {
         None
     }
 }
@@ -123,9 +124,9 @@ impl Iterator for InstancePicker {
     type Item = Address;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let i = self.instances.get(index);
+        let i = self.instances.get(self.index);
         self.index += 1;
-        i
+        i.map(|i| i.clone().address.clone())
     }
 }
 
@@ -162,7 +163,7 @@ where
                 }
             };
             Ok(InstancePicker {
-                instances: list,
+                instances: list.to_vec(),
                 index: 0
             })
         }
