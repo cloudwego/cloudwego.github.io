@@ -22,7 +22,7 @@ pub struct CallOpt {
 }
 ```
 
-其中 `callee_tags` 指代的是本地的一些元信息，`caller_tags` 指代的是对端的元信息，这两个 TypeMap 主要是给服务发现、负载均衡、路由等中间件扩展使用的。
+其中 `callee_tags` 指代的是对端的一些元信息，`caller_tags` 指代的是本地的元信息，这两个 TypeMap 主要是给服务发现、负载均衡、路由等中间件扩展使用的。
 
 `address` 代表下游的地址，如果设置了，原则上就不需要经过服务发现和负载均衡等组件了。
 
@@ -35,8 +35,8 @@ lazy_static! {
     static ref CLIENT: volo_gen::volo::example::ItemServiceClient = {
         let addr: SocketAddr = "127.0.0.1:8080".parse().unwrap();
         volo_gen::volo::example::ItemServiceClientBuilder::new("volo-example-item")
-            .layer(LogLayer)
-            .target(addr)
+            .layer_inner(LogLayer)
+            .address(addr)
             .build()
     };
 }

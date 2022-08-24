@@ -50,17 +50,8 @@ where
             let tick = quanta::Instant::now();
             let ret = self.inner.call(cx, req).await;
             let elapsed = quanta::Instant::now().duration_since(tick);
-            let rpc_info = cx.rpc_info();
-            let (remote_method, remote_service, remote_address) =
-                get_rpc_info(rpc_info, rpc_info.caller(), rpc_info.callee());
 
-            tracing::info!(
-                rpc_type = "rpcCall",
-                cost = elapsed.as_micros() as i64,
-                remoteService = remote_service,
-                remoteMethod = remote_method,
-                remoteAddress = &*remote_address,
-            );
+            tracing::info!(rpc_type = "rpcCall", cost = elapsed.as_micros() as i64,);
             ret
         }
     }
