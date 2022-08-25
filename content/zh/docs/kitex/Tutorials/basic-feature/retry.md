@@ -227,7 +227,7 @@ opts = append(opts, methodPolicies, otherMethodPolicy)
 xxxCli := xxxservice.NewClient(targetService, opts...)
 ```
 
-> 如果同时配置了 WithFailureRetry 或 WithBackupRequest，则 WithRetryMethodPolicies 未配置的方法会按照 WithFailureRetry 或 WithBackupRequest 策略执行。但 WithFailureRetry 和 WithBackupRequest 因为会对 client 所有方法生效，不能同时配置。
+> 如果同时配置了 `WithFailureRetry` 或 `WithBackupRequest`，则 `WithRetryMethodPolicies` 未配置的方法会按照 `WithFailureRetry` 或 `WithBackupRequest` 策略执行。但 `WithFailureRetry` 和 `WithBackupRequest` 因为会对 client 所有方法生效，不能同时配置。
 
 ##### 3.1.4 请求级别配置重试（callopt）
 
@@ -277,7 +277,7 @@ cli, err := xxxservice.NewClient(targetService, opts...)
 
 #### 3.3 动态开启或调整策略
 
-若需要结合远程配置，动态开启重试或运行时调整策略，可以通过 retryContainer 的 NotifyPolicyChange 方法生效，目前 Kitex 开源版本暂未提供远程配置模块，使用者可集成自己的配置中心。注意：若已通过代码配置开启，动态配置则无法生效。
+若需要结合远程配置，动态开启重试或运行时调整策略，可以通过 retryContainer 的 `NotifyPolicyChange` 方法生效，目前 Kitex 开源版本暂未提供远程配置模块，使用者可集成自己的配置中心。注意：若已通过代码配置开启，动态配置则无法生效。
 
 - 配置示例：
 
