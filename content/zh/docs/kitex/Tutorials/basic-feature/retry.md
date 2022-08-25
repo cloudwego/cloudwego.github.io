@@ -90,6 +90,7 @@ fp.WithRetrySameNode()
 
 ###### 3.1.1.1 指定结果重试（异常/Resp）
 
+支持版本 v0.4.0。
 可配置支持指定结果重试，结果可以是请求失败，也可以指定 Resp。因为业务可能在 Resp 设置状态信息，针对某类返回重试，所以支持指定 Resp 重试，这里统称为异常重试。
 
 - 配置示例：
@@ -173,8 +174,6 @@ respRetry := func(resp interface{}, ri rpcinfo.RPCInfo) bool {
 }
 ```
 
-
-
 ##### 3.1.2 Backup Request 配置
 
 - Retry Delay 建议
@@ -205,6 +204,7 @@ bp.WithRetrySameNode()
 
 ##### 3.1.3 方法粒度配置重试
 
+支持版本 v0.4.0。
 3.1.1,3.1.2 的示例配置会对所有方法生效，如果希望只对部分方法配置重试，或对不同方法分别配置 失败重试 或 BackupRequest，配置如下：
 
 - 配置实例：
@@ -226,6 +226,8 @@ xxxCli := xxxservice.NewClient(targetService, opts...)
 > 如果同时配置了 WithFailureRetry 或 WithBackupRequest，则 WithRetryMethodPolicies 未配置的方法会按照 WithFailureRetry 或 WithBackupRequest 策略执行。但 WithFailureRetry 和 WithBackupRequest 因为会对 client 所有方法生效，不能同时配置。
 
 ##### 3.1.4 请求级别配置重试（callopt）
+
+支持版本 v0.4.0。
 
 - 配置示例：
 
