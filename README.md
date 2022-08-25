@@ -10,12 +10,10 @@ The [cloudwego.github.io](https://cloudwego.github.io/) site, built using [Hugo]
 git submodule update --init --recursive --depth 1
 ```
 
-## Documentation
-
-making sure you have installed all the prerequisites listed above, and you can setup by:
+## Preview
 
 ```sh
-docker-compose up
+hugo server -D
 ```
 
 ## Contributing ![GitHub](https://img.shields.io/github/contributors/cloudwego/cloudwego.github.io)
