@@ -121,9 +121,9 @@ type ShouldResultRetry struct {
 
 - 指定 异常/Resp 实现示例：
 
-  - 关于Resp：
+  - 关于 Resp：
 
-    Thrift 和 KitexProtobuf 协议 Resp 对应的是生成代码中的 *XXXResult，不是真实的业务 Resp，获取真实的 Resp 需要断言 interface{ GetResult() interface{} }；
+    Thrift 和 KitexProtobuf 协议 Resp 对应的是生成代码中的 *XXXResult，不是真实的业务 Resp，获取真实的 Resp 需要断言 `interface{ GetResult() interface{} }`；
 
   - 关于 Error：
 
