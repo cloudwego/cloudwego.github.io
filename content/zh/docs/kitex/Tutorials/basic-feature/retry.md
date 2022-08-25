@@ -1,7 +1,9 @@
+---
 title: "请求重试"
 date: 2022-08-25
 weight: 7
 description: >
+---
 
 ### 1. 重试功能说明
 
@@ -91,6 +93,7 @@ fp.WithRetrySameNode()
 ###### 3.1.1.1 指定结果重试（异常/Resp）
 
 支持版本 v0.4.0。
+
 可配置支持指定结果重试，结果可以是请求失败，也可以指定 Resp。因为业务可能在 Resp 设置状态信息，针对某类返回重试，所以支持指定 Resp 重试，这里统称为异常重试。
 
 - 配置示例：
@@ -106,7 +109,7 @@ xxxCli := xxxservice.NewClient(targetService, opts...)
 
 - retry.ShouldResultRetry 定义
 
-为了能具体到方法粒度对 error 和 resp 做判断，提供 rpcinfo 作为入参，可以通过 ri.To().Method() 获取方法。
+为了能具体到方法粒度对 error 和 resp 做判断，提供 rpcinfo 作为入参，可以通过 `ri.To().Method()` 获取方法。
 
 ```go
 // ShouldResultRetryit is used for specifying which error or resp need to be retried
@@ -124,7 +127,7 @@ type ShouldResultRetry struct {
 
   - 关于 Error：
 
-    对端返回的 error，kitex 都会统一封装为 kerrors.ErrRemoteOrNetwork，对于 Thrift 和 KitexProtobuf 以下示例可以获取对端返回 Error Msg；对于 gRPC 如果对端通过 `status.Error` 构造的错误返回，本端使用 `status.FromError(err)` 可以获取 `*status.Status`，注意 `Status` 需使用 Kitex 提供的，包路径是 `github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status`。
+    对端返回的 error，kitex 都会统一封装为 `kerrors.ErrRemoteOrNetwork`，对于 Thrift 和 KitexProtobuf 以下示例可以获取对端返回 Error Msg；对于 gRPC 如果对端通过 `status.Error` 构造的错误返回，本端使用 `status.FromError(err)` 可以获取 `*status.Status`，注意 `Status` 需使用 Kitex 提供的，包路径是 `github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status`。
 
 ```go
 // retry with specify Resp for one method
@@ -205,6 +208,7 @@ bp.WithRetrySameNode()
 ##### 3.1.3 方法粒度配置重试
 
 支持版本 v0.4.0。
+
 3.1.1,3.1.2 的示例配置会对所有方法生效，如果希望只对部分方法配置重试，或对不同方法分别配置 失败重试 或 BackupRequest，配置如下：
 
 - 配置实例：
