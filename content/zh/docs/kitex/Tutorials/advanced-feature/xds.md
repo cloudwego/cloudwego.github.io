@@ -8,7 +8,7 @@ description: >
 [xDS](https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol) 是一组发现服务的总称，全称为 "X Discovery Service"，其中的 "X" 代指多种发现服务，包含 LDS (Listener), RDS (RouteConfiguration), CDS (Cluster), 和 EDS (Endpoint/ClusterLoadAssignment) 等。
 数据面可以利用 xDS API 与控制平面（如 Istio）通信，完成配置信息的动态发现。
 
-Kitex 通过外部扩展 [kitex-contrib/xds](https://github.com/kitex-contrib/xds) 的形式对 xDS API 进行了支持，可通过代码配置开启 xDS 模块，让Kitex 服务以 Proxyless 的模式运行，被服务网格统一纳管。具体的设计方案参见 [proposal](https://github.com/cloudwego/kitex/issues/461)。
+Kitex 通过外部扩展 [kitex-contrib/xds](https://github.com/kitex-contrib/xds) 的形式对 xDS API 进行了支持，可通过代码配置开启 xDS 模块，让 Kitex 服务以 Proxyless 的模式运行，被服务网格统一纳管。具体的设计方案参见 [proposal](https://github.com/cloudwego/kitex/issues/461)。
 
 ## 已支持的功能
 
@@ -16,18 +16,18 @@ Kitex 通过外部扩展 [kitex-contrib/xds](https://github.com/kitex-contrib/xd
 * 服务路由：当前仅支持 `header` 与 `method` 的精确匹配。
     * [HTTP route configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/http/http_routing#arch-overview-http-routing): 通过 [VirtualService](https://istio.io/latest/docs/reference/config/networking/virtual-service/) 进行配置
     * [ThriftProxy](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/thrift_proxy/v3/thrift_proxy.proto): 通过 [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/) 进行配置。
-* 超时配置:
-    * HTTP route configuration 内包含的配置，同样通过 VirtualService 来配置。
+* 超时:
+    * `HTTP route configuration` 内包含的配置，同样通过 VirtualService 来配置。
 
 ## 开启方式
 开启的步骤分为两个部分：1. xDS 模块的初始化和 2. Kitex Client/Server 的 Option 配置。
 
 ### xDS 模块
-调用 `xds.Init()` 便可开启对 xDS 模块的初始化，其中包括 `xdsResourceManager` ，负责 xDS 资源的管理，`xdsClient`，负责与控制面进行交互。
+调用 `xds.Init()` 便可开启对 xDS 模块的初始化，其中包括 `xdsResourceManager` - 负责 xDS 资源的管理，`xdsClient` - 负责与控制面进行交互。
 
 
 #### Bootstrap
-xdsClient 负责与控制面（例如 Istio）交互，以获得所需的 xDS 资源。在初始化时，需要读取环境变量用于构建 node 标识。所以，需要在K8S 的容器配置文件 `spec.containers.env` 部分加入以下几个环境变量。
+`xdsClient` 负责与控制面（例如 Istio）交互，以获得所需的 xDS 资源。在初始化时，需要读取环境变量用于构建 node 标识。所以，需要在 K8S 的容器配置文件 `spec.containers.env` 部分加入以下几个环境变量。
 
 
 * `POD_NAMESPACE`: 当前 pod 所在的 namespace。
@@ -76,7 +76,7 @@ client.WithXDSSuite(xds.ClientSuite{
 
 我们可以通过 Istio 中的 [VirtualService](https://istio.io/latest/docs/reference/config/networking/virtual-service/) 来定义流量路由配置。
 
-下面的例子表示 header 内包含 {"stage":"canary"} 的 tag 时，则将请求路由到 `kitex-server` 的 `v1` 子集群。
+下面的例子表示 header 内包含 `{"stage":"canary"}` 的 tag 时，则将请求路由到 `kitex-server` 的 `v1` 子集群。
 
 ```
 apiVersion: networking.istio.io/v1alpha3
@@ -194,7 +194,7 @@ spec:
 ### 有限的服务治理功能
 当前版本仅支持客户端通过 xDS 进行服务发现、流量路由和超时配置。
 
-xDS 所支持的其他服务治理功能，包括负载平衡、速率限制和重试等，将在未来补齐。
+xDS 所支持的其他服务治理功能，包括负载均衡、限流和重试等，将在未来补齐。
 
 ## 依赖
 Kitex >= v0.4.0
