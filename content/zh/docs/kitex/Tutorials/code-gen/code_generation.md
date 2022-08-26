@@ -19,8 +19,6 @@ go install github.com/cloudwego/kitex/tool/cmd/kitex
 go list -f {{.Target}} github.com/cloudwego/kitex/tool/cmd/kitex
 ```
 
-**注意**，由于 kitex 会为自身的二进制文件创建软链接，因此请确保 kitex 的安装路径具有可写权限。
-
 ## 依赖与运行模式
 
 ### 底层编译器
@@ -29,22 +27,16 @@ go list -f {{.Target}} github.com/cloudwego/kitex/tool/cmd/kitex
 
 kitex 生成的代码里，一部分是底层的编译器生成的（通常是关于 IDL 里定义的结构体的编解码逻辑），另一部分是用于连接 Kitex 框架与生成代码并提供给终端用户良好界面的胶水代码。
 
-从执行流上来说，当 kitex 被要求来给一个 thrift IDL 生成代码时，kitex 会调用 thriftgo 来生成结构体编解码代码，并将自身作为 thriftgo 的一个插件（名为 thrift-gen-kitex）来执行来生成胶水代码。当用于 protobuf IDL 时亦是如此。
-
-而以哪个名字运行，决定了 kitex 的执行模式是命令行入口还是一个插件（thriftgo 的或 protoc 的），所以 kitex 的安装目录需要具备可写权限，用于 kitex 建立必要的软链接以区分不同的执行模式。
+从执行流上来说，当 kitex 被要求来给一个 thrift IDL 生成代码时，kitex 会调用 thriftgo 来生成结构体编解码代码，并将自身作为 thriftgo 的一个插件执行来生成胶水代码。当用于 protobuf IDL 时亦是如此。
 
 ```
 $> kitex IDL
     |
     | thrift-IDL
     |---------> thriftgo --gen go:... -plugin=... -out ... IDL
-    |        |
-    |        -----> thrift-gen-kitex (symbol link to kitex)
     |
     | protobuf-IDL
     ----------> protoc --kitex_out=... --kitex_opt=... IDL
-             |
-             -----> protoc-gen-kitex (symbol link to kitex)
 ```
 
 ### 库依赖
@@ -77,6 +69,14 @@ option go_package = "hello.world"; // or hello/world
 ```
 
 生成的 import path 会是 `${当前目录的 import path}/kitex_gen/hello/world`。
+
+如果你给 `go_package` 赋值一个完整的导入路径（import path），那么该路径必须匹配到当前模块的 kitex_gen 才会生成代码。即：
+
+* `go_package="${当前模块的 import path}/kitex_gen/hello/world";`：OK，kitex 会为该 IDL 生成代码；
+* `go_package="${当前模块的 import path}/hello/world";`：kitex 不会为该 IDL 生成代码；
+* `go_package="any.other.domain/some/module/kitex_gen/hello/world";`：kitex 不会为该 IDL 生成代码；
+
+你可以通过命令行参数 `--protobuf Msome.proto=your.package.name/kitex_gen/wherever/you/like` 来覆盖某个 proto 文件的 `go_package` 值。具体用法说明可以参考 Protocol Buffers 的[官方文档](https://developers.google.com/protocol-buffers/docs/reference/go-generated#package)。
 
 ## 使用
 
@@ -156,7 +156,9 @@ kitex -service service_name path_to_your_idl.thrift
 
 #### `-type type`
 
-指明当前使用的 IDL 类型，当前可选的值有 `thrift`（默认）和 `protobuf`。
+指明当前使用的 IDL 类型，当前可选的值有 `thrift` 和 `protobuf`。
+
+Kitex 会根据文件的扩展名来猜测相应的 IDL 类型，`.thrift` 是 thrift，`.proto` 是 protobuf。
 
 #### `-v` 或 `-verbose`
 
