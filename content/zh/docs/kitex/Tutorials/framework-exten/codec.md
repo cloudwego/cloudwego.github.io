@@ -127,7 +127,3 @@ svr := xxxservice.NewServer(handler, server.WitWithPayloadCodechCodec(yourPayloa
 // client side
 cli, err := xxxservice.NewClient(targetService, client.WithPayloadCodec(yourPayloadCodec))
 ```
-
-### 高性能动态编解码器
-
-Frugal 是一款我们提供的基于 JIT 编译的高性能动态 Thrift 编解码器。得益于 JIT 技术，使得我们在无需生成编解码代码的同时，获得了较高的编解码性能。使用详情请参考 [Frugal](https://github.com/cloudwego/frugal)。
