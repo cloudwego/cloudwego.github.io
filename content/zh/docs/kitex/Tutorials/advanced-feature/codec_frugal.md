@@ -5,8 +5,6 @@ weight: 4
 description: >
 ---
 
-# Frugal
-
 [Frugal](https://github.com/cloudwego/frugal) 是一款基于 JIT 编译的高性能动态 Thrift 编解码器。
 
 ## 特点

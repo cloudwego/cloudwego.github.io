@@ -5,8 +5,6 @@ weight: 4
 description: >
 ---
 
-# Frugal
-
 [Frugal](https://github.com/cloudwego/frugal) is a very fast dynamic Thrift serializer &amp; deserializer based on just-in-time compilation.
 
 ## Features
