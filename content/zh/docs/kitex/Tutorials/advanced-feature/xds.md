@@ -5,7 +5,8 @@ weight: 1
 description: >
 ---
 
-[xDS](https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol) 是一类发现服务 API 的总称，数据面可以利用 xDS API 来完成配置信息的动态发现，包含LDS、RDS、 CDS、EDS 等。
+[xDS](https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol) 是一组发现服务的总称，全称为 "X Discovery Service"，其中的 "X" 代指多种发现服务，包含 LDS (Listener), RDS (RouteConfiguration), CDS (Cluster), 和 EDS (Endpoint/ClusterLoadAssignment) 等。
+数据面可以利用 xDS API 与控制平面（如 Istio）通信，完成配置信息的动态发现。
 
 Kitex 通过外部扩展 [kitex-contrib/xds](https://github.com/kitex-contrib/xds) 的形式对 xDS API 进行了支持，可通过代码配置开启 xDS 模块，让Kitex 服务以 Proxyless 的模式运行，被服务网格统一纳管。具体的设计方案参见 [proposal](https://github.com/cloudwego/kitex/issues/461)。
 

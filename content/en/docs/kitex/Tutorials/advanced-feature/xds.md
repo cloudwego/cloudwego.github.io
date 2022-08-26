@@ -5,9 +5,10 @@ weight: 1
 description: >
 ---
 
-[xDS](https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol) is a set of discovery services that enables date-plane to discover various dynamic resources via querying from the management servers.
+[xDS](https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol) is a set of discovery services, with the full name of "X Discovery Service", in which "X" refers to different type of discovery services, including LDS (Listener), RDS (RouteConfiguration), CDS (Cluster), and EDS (Endpoint/ClusterLoadAssignment), etc.
+xDS API enables the date-plane to communicate with the control plane (i.e. Istio) and perform discovery of dynamic service configuration resource.
 
-Kitex supports xDS API via the extention of [kitex-contrib/xds](https://github.com/kitex-contrib/xds), which enables Kitex to perform in Proxyless mode. For more details of the design, please refer to the [proposal](https://github.com/cloudwego/kitex/issues/461).
+Kitex supports xDS API via the extension of [kitex-contrib/xds](https://github.com/kitex-contrib/xds), which enables Kitex to perform in Proxyless mode. For more details of the design, please refer to the [proposal](https://github.com/cloudwego/kitex/issues/461).
 
 ## Feature
 
