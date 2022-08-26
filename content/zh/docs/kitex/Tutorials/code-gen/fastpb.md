@@ -5,7 +5,7 @@ weight: 4
 description: >
 ---
 
-###版本要求
+### 版本要求
 
 kitex version >= v0.4.0
 
