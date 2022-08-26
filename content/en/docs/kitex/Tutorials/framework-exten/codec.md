@@ -127,4 +127,3 @@ svr := xxxservice.NewServer(handler, server.WitWithPayloadCodechCodec(yourPayloa
 // client side
 cli, err := xxxservice.NewClient(targetService, client.WithPayloadCodec(yourPayloadCodec))
 ```
-
