@@ -33,7 +33,7 @@ description: >
 ### 生成/编写示例代码
 
 1. 在当前目录下创建 hertz_demo 文件夹，进入该目录中
-2. 生成代码 `hz new`
+2. 生成代码 `hz new`（注意修改go.mod里sonic的版本为1.4.0，否则编译时会报错）
 3. 整理 & 拉取依赖
 ```console
 $ go mod tidy
