@@ -69,10 +69,10 @@ UnmarshalAllSize_Parallel/large-16      4.80k ± 0%      0.76k ± 0%    -84.10%
 
 ### 配合 Kitex 使用
 
-#### 1. 更新 Kitex 到 frugal_test 分支
+#### 1. 更新 Kitex 到 v0.4.2 以上版本
 
 ```shell
-go get github.com/cloudwego/kitex@frugal_test
+go get github.com/cloudwego/kitex@latest
 ```
 
 #### 2. 带上 `-thrift frugal_tag` 参数重新生成一次代码
@@ -81,6 +81,12 @@ go get github.com/cloudwego/kitex@frugal_test
 
 ```shell
 kitex -thrift frugal_tag -service a.b.c my.thrift
+```
+
+如果不需要编解码代码，可以带上 `-thrift template=slim` 参数
+
+```shell
+kitex -thrift frugal_tag,template=slim -service a.b.c my.thrift
 ```
 
 #### 3. 初始化 client 和 server 时使用 `WithPayloadCodec(thrift.NewThriftFrugalCodec())` option
@@ -94,13 +100,14 @@ import (
     "context"
 
 
-"code.byted.org/kite/kitex/client"
-"example.com/kitex_test/client/kitex_gen/a/b/c/echo"
-"github.com/cloudwego/kitex/pkg/remote/codec/thrift"
+    "github.com/cloudwego/kitex/client"
+    "example.com/kitex_test/client/kitex_gen/a/b/c/echo"
+    "github.com/cloudwego/kitex/pkg/remote/codec/thrift"
 )
 
 func Echo() {
-    cli := echo.MustNewClient("a.b.c", client.WithPayloadCodec(thrift.NewThriftFrugalCodec()))
+    code := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
+    cli := echo.MustNewClient("a.b.c", client.WithPayloadCodec(codec))
     ...
 }
 ```
@@ -119,7 +126,8 @@ import (
 )
 
 func main() {
-    svr := c.NewServer(new(EchoImpl), server.WithPayloadCodec(thrift.NewThriftFrugalCodec()))
+    code := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
+    svr := c.NewServer(new(EchoImpl), server.WithPayloadCodec(code))
 
     err := svr.Run()
     if err != nil {
@@ -149,6 +157,12 @@ struct MyStruct {
 
 ```shell
 thriftgo -r -o thrift -g go:frugal_tag,package_prefix=example.com/kitex_test/thrift my.thrift
+```
+
+如果不需要编解码代码，可以带上 `template=slim` 参数
+
+```shell
+thriftgo -r -o thrift -g go:frugal_tag,template=slim,package_prefix=example.com/kitex_test/thrift my.thrift
 ```
 
 #### 使用 Frugal 进行编解码
