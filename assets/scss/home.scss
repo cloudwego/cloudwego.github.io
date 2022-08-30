@@ -249,6 +249,63 @@
         color: #3c8fa8 !important;
     }
 }
+.m-l-16 {
+    margin-left: 16px;
+}
+.m-l-40 {
+    margin-left: 32px;
+}
+$golang-color: rgb(144, 216, 247);
+$rust-color: rgba(203, 46, 88, 0.85);
+.projects-block-container {
+    display: flex;
+    width: 100%;
+    margin-bottom: 16px;
+    .golang-card {
+        background-color: $golang-color;
+    }
+    .rust-card {
+        background-color: $rust-color;
+    }
+
+    .projects-block {
+        width: auto;
+        flex: 1;
+        min-height: 165px;
+        .projects-block-name {
+            height: 44px;
+            background-color: rgb(86, 43, 231);
+            text-align: center;
+            font-size: 22px;
+            color: #fff;
+            line-height: 44px;
+        }
+        .projects-block-content {
+            margin-top: 16px;
+            display: flex;
+            width: 100%;
+            height: calc(100% - 60px);
+            min-height: 105px;
+            .projects-block-card {
+                flex: 1;
+                padding: 12px 12px 16px 12px;
+                a {
+                    color: #000;
+                    display: flex;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .projects-block-card-name {
+                    font-size: 22px;
+                }
+                .projects-block-card-intro {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
 
 @media(max-width: 768px) {
     .td-box .row {

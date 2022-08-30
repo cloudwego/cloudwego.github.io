@@ -49,71 +49,109 @@ linkTitle = "CloudWeGo"
 {{< blocks/section color="white" >}}
 <h2 class="home-section-title home-section-title-projects">项目</h2>
 <div class="row top-hr">
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/kitex">
-            <h2>Kitex</h2>
-            <p>下一代高性能、强可扩展的 Golang RPC 框架。</p>
-        </a>
+    <div class="projects-block-container">
+        <div class="projects-block">
+            <div class="projects-block-name">框 架</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card golang-card">
+                    <a href="https://github.com/cloudwego/kitex">
+                        <div class="projects-block-card-name">Kitex</div>
+                        <div class="projects-block-card-intro">下一代高性能、强可扩展的 Golang RPC 框架</div>
+                    </a>
+                </div>
+                <div class="projects-block-card golang-card m-l-16">
+                    <a href="https://github.com/cloudwego/hertz">
+                        <div class="projects-block-card-name">Hertz</div>
+                        <div class="projects-block-card-intro">下一代高性能、强可扩展的 Golang HTTP 框架</div>
+                    </a>
+                </div>
+                <div class="projects-block-card rust-card m-l-40">
+                    <a href="https://github.com/cloudwego/volo">
+                        <div class="projects-block-card-name">Volo</div>
+                        <div class="projects-block-card-intro">Rust RPC 框架</div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/hertz">
-            <h2>Hertz</h2>
-            <p>下一代高性能、强可扩展的 Golang HTTP 框架。</p>
-        </a>
+    <div class="projects-block-container">
+        <div class="projects-block">
+            <div class="projects-block-name">编 解 码</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card golang-card">
+                    <a href="https://github.com/cloudwego/frugal">
+                        <div class="projects-block-card-name">Frugal</div>
+                        <div class="projects-block-card-intro">一款基于 JIT 编译的高性能动态 Thrift 编解码器</div>
+                    </a>
+                </div>
+                <div class="projects-block-card golang-card m-l-16">
+                    <a href="https://github.com/cloudwego/fastpb">
+                        <div class="projects-block-card-name">Fastpb</div>
+                        <div class="projects-block-card-intro">高性能 protobuf 序列化反序列化库</div>
+                    </a>
+                </div>
+                <div class="projects-block-card rust-card m-l-40">
+                    <a href="https://github.com/cloudwego/pilota">
+                        <div class="projects-block-card-name">Pilota</div>
+                        <div class="projects-block-card-intro">基于 Rust 的 thrift/protobuf 序列化反序列化库</div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/netpoll">
-            <h2>Netpoll</h2>
-            <p>高性能、I/O非阻塞的网络框架，专注于 RPC 场景。</p>
-        </a>
+    <div class="projects-block-container">
+        <div class="projects-block">
+            <div class="projects-block-name">网 络 库</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card golang-card">
+                    <a href="https://github.com/cloudwego/netpoll">
+                        <div class="projects-block-card-name">Netpoll</div>
+                        <div class="projects-block-card-intro">高性能 NIO(Non-blocking I/O) 网络库 专注于 RPC 场景</div>
+                    </a>
+                </div>
+                <div class="projects-block-card rust-card m-l-40">
+                    <a href="https://github.com/cloudwego/monoio">
+                        <div class="projects-block-card-name">Monoio</div>
+                        <div class="projects-block-card-intro">一个基于 io_uring/epoll/kqueue 的 Rust 运行时</div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/thriftgo">
-            <h2>Thriftgo</h2>
-            <p>Go 语言实现的 Thrift 编译器，支持插件机制，支持完整的 Thrift IDL 语法和完善的语义检查。</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/volo">
-            <h2>Volo</h2>
-            <p>高性能、强可扩展的 Rust RPC 框架。</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/bytedance/monoio">
-            <h2>Monoio</h2>
-            <p>基于 io_uring/epoll/kqueue 和 thread-per-core 模型的 Rust Runtime。</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/motore">
-            <h2>Motore</h2>
-            <p>基于 GAT 和 TAIT 的异步中间件抽象。</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/pilota">
-            <h2>Pilota</h2>
-            <p>一个在纯 Rust 中具有高性能和可扩展性的 Thrift 和 Protobuf 实现。</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/bytedance/sonic">
-            <h2>Sonic</h2>
-            <p>非常快的由 JIT 和 SIMD 加速的 JSON 序列化和反序列化库。</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/frugal">
-            <h2>Frugal</h2>
-            <p>基于 JIT 编译的高性能动态 Thrift 编解码器。</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/fastpb">
-            <h2>Fastpb</h2>
-            <p>非常快的 Protobuf 序列化和反序列化库。</p>
-        </a>
+    <div class="projects-block-container">
+        <div class="projects-block">
+            <div class="projects-block-name">基 础 库</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card golang-card">
+                    <a href="https://github.com/cloudwego/sonic">
+                        <div class="projects-block-card-name">Sonic</div>
+                        <div class="projects-block-card-intro">基于 JIT + SMID 的 JSON 序列化返序列化库</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-block m-l-16">
+            <div class="projects-block-name">辅 助 工 具</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card golang-card">
+                    <a href="https://github.com/cloudwego/thriftgo">
+                        <div class="projects-block-card-name">Thriftgo</div>
+                        <div class="projects-block-card-intro">可扩展的 golang thrift 代码生成工具</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-block m-l-40">
+            <div class="projects-block-name">中 间 件</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card rust-card">
+                    <a href="https://github.com/cloudwego/motore">
+                        <div class="projects-block-card-name">Motore</div>
+                        <div class="projects-block-card-intro">基于 Rust 的中间件抽象库</div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -195,10 +233,7 @@ linkTitle = "CloudWeGo"
         <ul>
             <li><a href="{{< relref "/docs/kitex">}}">Kitex</a></li>
             <li><a href="{{< relref "/docs/hertz">}}">Hertz</a></li>
-            <li><a href="{{< relref "/docs/volo">}}">Volo</a></li>
             <li><a href="{{< relref "/docs/netpoll">}}">Netpoll</a></li>
-            <li><a href="{{< relref "/docs/motore">}}">Motore</a></li>
-            <li><a href="{{< relref "/docs/pilota">}}">Pilota</a></li>
         </ul>
     </div>
     <div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
@@ -206,10 +241,8 @@ linkTitle = "CloudWeGo"
         <ul>
             <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/kitex">Kitex</a></li>
             <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/hertz">Hertz</a></li>
-            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/volo">Volo</a></li>
             <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/netpoll">Netpoll</a></li>
-            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/motore">Motore</a></li>
-            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/pilota">Pilota</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/thriftgo">Thriftgo</a></li>
         </ul>
     </div>
     <div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
