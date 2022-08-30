@@ -58,71 +58,109 @@ linkTitle = "CloudWeGo"
 {{< blocks/section color="white" >}}
 <h2 class="home-section-title home-section-title-projects">Projects</h2>
 <div class="row top-hr">
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/kitex">
-            <h2>Kitex</h2>
-            <p>Next generation high performance, highly scalable Golang RPC framework.</p>
-        </a>
+    <div class="projects-block-container">
+        <div class="projects-block">
+            <div class="projects-block-name">Framework</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card golang-card">
+                    <a href="https://github.com/cloudwego/kitex">
+                        <div class="projects-block-card-name">Kitex</div>
+                        <div class="projects-block-card-intro">Next generation high performance, highly scalable Golang RPC framework</div>
+                    </a>
+                </div>
+                <div class="projects-block-card golang-card m-l-16">
+                    <a href="https://github.com/cloudwego/hertz">
+                        <div class="projects-block-card-name">Hertz</div>
+                        <div class="projects-block-card-intro">Next generation high performance, highly scalable Golang HTTP framework</div>
+                    </a>
+                </div>
+                <div class="projects-block-card rust-card m-l-40">
+                    <a href="https://github.com/cloudwego/volo">
+                        <div class="projects-block-card-name">Volo</div>
+                        <div class="projects-block-card-intro">Rust RPC framework</div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/hertz">
-            <h2>Hertz</h2>
-            <p>Next generation high performance, highly scalable Golang HTTP framework.</p>
-        </a>
+    <div class="projects-block-container">
+        <div class="projects-block">
+            <div class="projects-block-name">Serializer & Deserializer</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card golang-card">
+                    <a href="https://github.com/cloudwego/frugal">
+                        <div class="projects-block-card-name">Frugal</div>
+                        <div class="projects-block-card-intro">A very fast dynamic Thrift serializer & deserializer based on just-in-time compilation</div>
+                    </a>
+                </div>
+                <div class="projects-block-card golang-card m-l-16">
+                    <a href="https://github.com/cloudwego/fastpb">
+                        <div class="projects-block-card-name">Fastpb</div>
+                        <div class="projects-block-card-intro">High-performance protobuf serialization and deserialization library</div>
+                    </a>
+                </div>
+                <div class="projects-block-card rust-card m-l-40">
+                    <a href="https://github.com/cloudwego/pilota">
+                        <div class="projects-block-card-name">Pilota</div>
+                        <div class="projects-block-card-intro">Rust-based thrift/protobuf serialization and deserialization library</div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/netpoll">
-            <h2>Netpoll</h2>
-            <p>High-performance NIO (Non-blocking I/O) network library, focusing on RPC scenarios.</p>
-        </a>
+    <div class="projects-block-container">
+        <div class="projects-block">
+            <div class="projects-block-name">Network Library</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card golang-card">
+                    <a href="https://github.com/cloudwego/netpoll">
+                        <div class="projects-block-card-name">Netpoll</div>
+                        <div class="projects-block-card-intro">High-performance NIO (Non-blocking I/O) network library focused on RPC scenarios</div>
+                    </a>
+                </div>
+                <div class="projects-block-card rust-card m-l-40">
+                    <a href="https://github.com/cloudwego/monoio">
+                        <div class="projects-block-card-name">Monoio</div>
+                        <div class="projects-block-card-intro">A thread-per-core Rust runtime with io_uring/epoll/kqueue</div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/thriftgo">
-            <h2>Thriftgo</h2>
-            <p>A thrift compiler implemented by Golang supports plug-in mechanism.</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/volo">
-            <h2>Volo</h2>
-            <p>A high-performance and strong-extensibility Rust RPC framework.</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/bytedance/monoio">
-            <h2>Monoio</h2>
-            <p>A thread-per-core Rust runtime with io_uring/epoll/kqueue.</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/motore">
-            <h2>Motore</h2>
-            <p>Async middleware abstraction powered by GAT and TAIT.</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/pilota">
-            <h2>Pilota</h2>
-            <p>A thrift and protobuf implementation in pure rust with high performance and extensibility.</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/bytedance/sonic">
-            <h2>Sonic</h2>
-            <p>A blazingly fast JSON serializing & deserializing library, accelerated by JIT and SIMD.</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/frugal">
-            <h2>Frugal</h2>
-            <p>A very fast dynamic Thrift serializer & deserializer based on just-in-time compilation.</p>
-        </a>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12 home-project-item">
-        <a href="https://github.com/cloudwego/fastpb">
-            <h2>Fastpb</h2>
-            <p>A faster Protobuf serializer & deserializer.</p>
-        </a>
+    <div class="projects-block-container">
+        <div class="projects-block">
+            <div class="projects-block-name">Base Library</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card golang-card">
+                    <a href="https://github.com/cloudwego/sonic">
+                        <div class="projects-block-card-name">Sonic</div>
+                        <div class="projects-block-card-intro">A blazingly fast JSON serializing & deserializing library, accelerated by JIT and SIMD</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-block m-l-16">
+            <div class="projects-block-name">Auxiliary Tool</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card golang-card">
+                    <a href="https://github.com/cloudwego/thriftgo">
+                        <div class="projects-block-card-name">Thriftgo</div>
+                        <div class="projects-block-card-intro">Extensible golang thrift code generation tool</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-block m-l-40">
+            <div class="projects-block-name">Middleware</div>
+            <div class="projects-block-content">
+                <div class="projects-block-card rust-card">
+                    <a href="https://github.com/cloudwego/motore">
+                        <div class="projects-block-card-name">Motore</div>
+                        <div class="projects-block-card-intro">Rust-based middleware abstraction library</div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -206,10 +244,7 @@ linkTitle = "CloudWeGo"
         <ul>
             <li><a href="{{< relref "/docs/kitex">}}">Kitex</a></li>
             <li><a href="{{< relref "/docs/hertz">}}">Hertz</a></li>
-            <li><a href="{{< relref "/docs/volo">}}">Volo</a></li>
             <li><a href="{{< relref "/docs/netpoll">}}">Netpoll</a></li>
-            <li><a href="{{< relref "/docs/motore">}}">Motore</a></li>
-            <li><a href="{{< relref "/docs/pilota">}}">Pilota</a></li>
         </ul>
     </div>
     <div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
@@ -217,10 +252,8 @@ linkTitle = "CloudWeGo"
         <ul>
             <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/kitex">Kitex</a></li>
             <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/hertz">Hertz</a></li>
-            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/volo">Volo</a></li>
             <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/netpoll">Netpoll</a></li>
-            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/motore">Motore</a></li>
-            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/pilota">Pilota</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/cloudwego/thriftgo">Thriftgo</a></li>
         </ul>
     </div>
     <div class="col-md-4 col-sm-6 col-xs-12 home-footer-links-item">
