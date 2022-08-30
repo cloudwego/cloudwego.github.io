@@ -69,10 +69,10 @@ If you don't want any Thrift files, and you want serialize or deserialize a cust
 
 ### Using with Kitex
 
-#### 1. Update Kitex to frugal_test branch
+#### 1. Update Kitex to v0.4.2 or higher version
 
 ```shell
-go get github.com/cloudwego/kitex@frugal_test
+go get github.com/cloudwego/kitex@latest
 ```
 
 #### 2. Generate code with `-thrift frugal_tag` option
@@ -81,6 +81,12 @@ Example:
 
 ```shell
 kitex -thrift frugal_tag -service a.b.c my.thrift
+```
+
+If you don't need codec code, you can use `-thrift template=slim` option.
+
+```shell
+kitex -thrift frugal_tag,template=slim -service a.b.c my.thrift
 ```
 
 #### 3. Init clients and servers with `WithPayloadCodec(thrift.NewThriftFrugalCodec())` option
@@ -94,13 +100,14 @@ import (
     "context"
 
 
-"code.byted.org/kite/kitex/client"
-"example.com/kitex_test/client/kitex_gen/a/b/c/echo"
-"github.com/cloudwego/kitex/pkg/remote/codec/thrift"
+    "github.com/cloudwego/kitex/client"
+    "example.com/kitex_test/client/kitex_gen/a/b/c/echo"
+    "github.com/cloudwego/kitex/pkg/remote/codec/thrift"
 )
 
 func Echo() {
-    cli := echo.MustNewClient("a.b.c", client.WithPayloadCodec(thrift.NewThriftFrugalCodec()))
+    code := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
+    cli := echo.MustNewClient("a.b.c", client.WithPayloadCodec(codec))
     ...
 }
 ```
@@ -119,7 +126,8 @@ import (
 )
 
 func main() {
-    svr := c.NewServer(new(EchoImpl), server.WithPayloadCodec(thrift.NewThriftFrugalCodec()))
+    code := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
+    svr := c.NewServer(new(EchoImpl), server.WithPayloadCodec(code))
 
     err := svr.Run()
     if err != nil {
@@ -151,6 +159,12 @@ Example:
 
 ```shell
 thriftgo -r -o thrift -g go:frugal_tag,package_prefix=example.com/kitex_test/thrift my.thrift
+```
+
+If you don't need codec code, you can use `template=slim` option
+
+```shell
+thriftgo -r -o thrift -g go:frugal_tag,template=slim,package_prefix=example.com/kitex_test/thrift my.thrift
 ```
 
 #### Use Frugal to serialize or deserialize
