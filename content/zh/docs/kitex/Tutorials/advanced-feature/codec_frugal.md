@@ -106,7 +106,7 @@ import (
 )
 
 func Echo() {
-    code := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
+    codec := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
     cli := echo.MustNewClient("a.b.c", client.WithPayloadCodec(codec))
     ...
 }
@@ -126,8 +126,8 @@ import (
 )
 
 func main() {
-    code := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
-    svr := c.NewServer(new(EchoImpl), server.WithPayloadCodec(code))
+    codec := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
+    svr := c.NewServer(new(EchoImpl), server.WithPayloadCodec(codec))
 
     err := svr.Run()
     if err != nil {
