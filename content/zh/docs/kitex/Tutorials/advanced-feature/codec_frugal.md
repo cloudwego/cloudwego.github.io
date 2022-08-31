@@ -53,13 +53,13 @@ UnmarshalAllSize_Parallel/large-16      4.80k ± 0%      0.76k ± 0%    -84.10%
 
 ## 用 Frugal 可以做什么？
 
-### 使用 Frugal 作为 [Kitex](https://github.com/cloudwego/kitex) 的编解码
+### 使用 Frugal 作为 Kitex 的编解码
 
 可以不用再生成大量的编解码代码，使仓库变得干净整洁，review 时也不用再带上一堆无意义的 diff。然后相比于生成的编解码代码，Frugal 的性能更高。
 
-### 在 [Thriftgo](https://github.com/cloudwego/thriftgo) 生成的 struct 上进行编解码
+### 在 Thriftgo 生成的 struct 上进行编解码
 
-如果你只需要使用 Thrift 的编解码能力，同时也定义好了 IDL，那么只需要用 Thriftgo 生成 IDL 对应的 Go 语言 struct，就可以使用 Frugal 的编解码能力了。
+如果你只需要使用 Thrift 的编解码能力，同时也定义好了 IDL，那么只需要用 [Thriftgo](https://github.com/cloudwego/thriftgo) 生成 IDL 对应的 Go 语言 struct，就可以使用 Frugal 的编解码能力了。
 
 ### 直接定义 struct 进行编解码
 
@@ -140,7 +140,7 @@ func main() {
 
 #### 编写 Thrift 文件
 
-现在假设我们有如下 Thrift 文件：  
+现在假设我们有如下 Thrift 文件：
 my.thrift:
 
 ```thrift
@@ -167,7 +167,7 @@ thriftgo -r -o thrift -g go:frugal_tag,template=slim,package_prefix=example.com/
 
 #### 使用 Frugal 进行编解码
 
-生成所需要的结构体后，直接使用 Frugal 进行编解码即可。  
+生成所需要的结构体后，直接使用 Frugal 进行编解码即可。
 示例：
 
 ```go
@@ -204,7 +204,7 @@ func main() {
 type MyStruct struct {
     Msg     string
     Code    int64
-    Numbers []int64 
+    Numbers []int64
 }
 ```
 
@@ -255,7 +255,7 @@ type Example struct {
 
 #### 使用 Frugal 进行编解码
 
-直接使用 Frugal 进行编解码即可。  
+直接使用 Frugal 进行编解码即可。
 示例：
 
 ```go
