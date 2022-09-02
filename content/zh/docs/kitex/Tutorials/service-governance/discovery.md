@@ -9,7 +9,7 @@ Kitex 已经通过社区开发者的支持，完成了 ETCD、ZooKeeper、Eureka
 
 比如 DNS Resolver, 适合使用 DNS 作为服务发现的场景， 常见的用于 [Kubernetes](https://kubernetes.io/) 集群。
 
-更多服务发现组件参看扩展仓库：[registry-etcd](https://github.com/kitex-contrib/registry-etcd)、[registry-nacos](https://github.com/kitex-contrib/registry-nacos)、[registry-zookeeper](https://github.com/kitex-contrib/registry-nacos)、[registry-polaris](https://github.com/kitex-contrib/registry-nacos)、[registry-eureka](https://github.com/kitex-contrib/registry-nacos)、[registry-consul](https://github.com/kitex-contrib/registry-nacos) 。
+更多服务发现组件参看扩展仓库：[registry-etcd](https://github.com/kitex-contrib/registry-etcd)、[registry-nacos](https://github.com/kitex-contrib/registry-nacos)、[registry-zookeeper](https://github.com/kitex-contrib/registry-zookeeper)、[registry-polaris](https://github.com/kitex-contrib/registry-polaris)、[registry-eureka](https://github.com/kitex-contrib/registry-eureka)、[registry-consul](https://github.com/kitex-contrib/registry-consul) 。
 
 ## 使用方式
 

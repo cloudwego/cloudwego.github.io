@@ -9,7 +9,7 @@ Kitex has completed ETCD, ZooKeeper, Eureka, Consul, Nacos, Polaris multiple ser
 
 For example, DNS Resolver is suitable for the clusters where DNS is used as a service discovery, commonly used for [Kubernetes](https://kubernetes.io/) clusters.
 
-More service discovery components in extended repository: [registry-etcd](https://github.com/kitex-contrib/registry-etcd)、[registry-nacos](https://github.com/kitex-contrib/registry-nacos)、[registry-zookeeper](https://github.com/kitex-contrib/registry-nacos)、[registry-polaris](https://github.com/kitex-contrib/registry-nacos)、[registry-eureka](https://github.com/kitex-contrib/registry-nacos)、[registry-consul](https://github.com/kitex-contrib/registry-nacos) 。
+More service discovery components in extended repository: [registry-etcd](https://github.com/kitex-contrib/registry-etcd)、[registry-nacos](https://github.com/kitex-contrib/registry-nacos)、[registry-zookeeper](https://github.com/kitex-contrib/registry-zookeeper)、[registry-polaris](https://github.com/kitex-contrib/registry-polaris)、[registry-eureka](https://github.com/kitex-contrib/registry-eureka)、[registry-consul](https://github.com/kitex-contrib/registry-consul) .
 
 ## Usage
 
