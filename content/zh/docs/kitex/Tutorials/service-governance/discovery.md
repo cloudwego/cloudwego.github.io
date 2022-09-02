@@ -16,7 +16,6 @@ Kitex 已经通过社区开发者的支持，完成了 ETCD、ZooKeeper、Eureka
 ```go
 
 import (
-
     ...
     dns "github.com/kitex-contrib/resolver-dns"
     "github.com/cloudwego/kitex/client"

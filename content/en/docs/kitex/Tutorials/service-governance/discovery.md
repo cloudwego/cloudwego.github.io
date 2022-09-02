@@ -15,7 +15,6 @@ More service discovery components in extended repository: [registry-etcd](https:
 
 ```go
 import (
-
     ...
     dns "github.com/kitex-contrib/resolver-dns"
     "github.com/cloudwego/kitex/client"
