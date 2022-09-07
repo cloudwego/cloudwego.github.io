@@ -122,7 +122,7 @@ impl<Req, S> Service<Req> for LogService<S> {
 fn call<'cx, 's>(&'s mut self, cx: &'cx mut Context, req: Request) -> Future<'cx>;
 ```
 
-那么我们该怎么约束的 `Future` 的 lifetime 为 `'cx` 呢
+那么我们该怎么约束返回的 `Future` 的 lifetime 为 `'cx` 呢
 1. 使用 `Pin<Box<dyn Future<Output = Result<Self::Response, Self::Error>> + 'cx>>`
 2. GAT
 
