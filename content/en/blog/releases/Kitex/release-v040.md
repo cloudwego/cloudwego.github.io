@@ -10,7 +10,7 @@ description: >
 * [[#571](https://github.com/cloudwego/kitex/pull/571)] feat(protobuf): integrate [fastpb](https://github.com/cloudwego/fastpb) into kitex, refer to [doc](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/fastpb/).
 * [[#592](https://github.com/cloudwego/kitex/pull/592)] feat(generic): add default value defined in thrift idl for HTTP/Map/JSON generic call.
 * [[#600](https://github.com/cloudwego/kitex/pull/600)] feat(thrift): support no codec gen-code when using frugal.
-* [[#607](https://github.com/cloudwego/kitex/pull/607), [#610](https://github.com/cloudwego/kitex/pull/610)] feat(proxyless): add option for xDS extention. Support traffic route, timeout config and service discovery based on xDS.
+* [[#607](https://github.com/cloudwego/kitex/pull/607), [#610](https://github.com/cloudwego/kitex/pull/610)] feat(proxyless): add option for xDS extension. Support traffic route, timeout config and service discovery based on xDS.
 * [[#541](https://github.com/cloudwego/kitex/pull/541)] feat(trans): Add the go net extension to the transport layer, and choose it as the transmission mode by default in Windows OS.
 * [[#540](https://github.com/cloudwego/kitex/pull/540)] feat(retry): support retry with specified error or response and add retry option for setup method retry policy.
 * [[#533](https://github.com/cloudwego/kitex/pull/533)] feat(generic): js_conv annotation of generic call supports map type conversion.
