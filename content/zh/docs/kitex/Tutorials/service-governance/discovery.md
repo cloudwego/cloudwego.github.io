@@ -9,10 +9,10 @@ Kitex 已经通过社区开发者的支持，完成了 ETCD、ZooKeeper、Eureka
 
 比如 DNS Resolver, 适合使用 DNS 作为服务发现的场景， 常见的用于 [Kubernetes](https://kubernetes.io/) 集群。
 
-更多服务发现组件参看扩展仓库：[registry-etcd](https://github.com/kitex-contrib/registry-etcd)、[registry-nacos](https://github.com/kitex-contrib/registry-nacos)、[registry-zookeeper](https://github.com/kitex-contrib/registry-zookeeper)、[polaris](https://github.com/kitex-contrib/polaris)、[registry-eureka](https://github.com/kitex-contrib/registry-eureka)、[registry-consul](https://github.com/kitex-contrib/registry-consul) 。
+更多服务发现组件参看扩展仓库：[registry-etcd](https://github.com/kitex-contrib/registry-etcd)、[registry-nacos](https://github.com/kitex-contrib/registry-nacos)、[registry-zookeeper](https://github.com/kitex-contrib/registry-zookeeper)、[polaris](https://github.com/kitex-contrib/polaris)、[registry-eureka](https://github.com/kitex-contrib/registry-eureka)、[registry-consul](https://github.com/kitex-contrib/registry-consul)、[registry-servicecomb](https://github.com/kitex-contrib/registry-servicecomb) 。
 
 ## 使用方式
-
+以 DNS Resolver 为例
 ```go
 
 import (
@@ -24,7 +24,6 @@ import (
 
 func main() {
     ...
-    // 以 DNS Resolver 为例
     client, err := echo.NewClient("echo", client.WithResolver(dns.NewDNSResolver()))
 	if err != nil {
 		log.Fatal(err)

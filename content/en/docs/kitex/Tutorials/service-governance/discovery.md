@@ -9,10 +9,10 @@ Kitex has completed ETCD, ZooKeeper, Eureka, Consul, Nacos, Polaris multiple ser
 
 For example, DNS Resolver is suitable for the clusters where DNS is used as a service discovery, commonly used for [Kubernetes](https://kubernetes.io/) clusters.
 
-More service discovery components in extended repository: [registry-etcd](https://github.com/kitex-contrib/registry-etcd)、[registry-nacos](https://github.com/kitex-contrib/registry-nacos)、[registry-zookeeper](https://github.com/kitex-contrib/registry-zookeeper)、[polaris](https://github.com/kitex-contrib/polaris)、[registry-eureka](https://github.com/kitex-contrib/registry-eureka)、[registry-consul](https://github.com/kitex-contrib/registry-consul) .
+More service discovery components in extended repository: [registry-etcd](https://github.com/kitex-contrib/registry-etcd)、[registry-nacos](https://github.com/kitex-contrib/registry-nacos)、[registry-zookeeper](https://github.com/kitex-contrib/registry-zookeeper)、[polaris](https://github.com/kitex-contrib/polaris)、[registry-eureka](https://github.com/kitex-contrib/registry-eureka)、[registry-consul](https://github.com/kitex-contrib/registry-consul)、[registry-servicecomb](https://github.com/kitex-contrib/registry-servicecomb) .
 
 ## Usage
-
+In the case of DNS Resolver
 ```go
 import (
     ...
@@ -24,7 +24,6 @@ import (
 
 func main() {
     ...
-    // In the case of DNS Resolver
     client, err := echo.NewClient("echo", client.WithResolver(dns.NewDNSResolver()))
 	if err != nil {
 		log.Fatal(err)
