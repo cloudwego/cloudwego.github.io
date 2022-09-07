@@ -5,9 +5,9 @@ weight: 4
 description: >
 ---
 
-[kitex-contrib](https://github.com/kitex-contrib/resolver-dns) has provided the DNS service discovery extensions.
+[kitex-contrib](https://github.com/kitex-contrib/resolver-dns) has provided multiple service discovery extensions: DNS, ETCD, ZooKeeper, Eureka, Consul, Nacos, Polaris.
 
-If you want to adopt other service discovery protocol, such as ETCD, you can implement the `Resolver` interface, and clients can inject it by `WithResolver` Option.
+If you want to adopt other service discovery protocol, you can implement the `Resolver` interface, and clients can inject it by `WithResolver` Option.
 
 ## Interface Definition
 
