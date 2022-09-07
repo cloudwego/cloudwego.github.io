@@ -14,7 +14,7 @@ description: >
 * [[#9]](https://github.com/hertz-contrib/registry/pull/9) feat: add polaris registry.
 * [[#14]](https://github.com/hertz-contrib/registry/pull/14) feat: add etcd registry.
 * [[#15]](https://github.com/hertz-contrib/registry/pull/15) feat: support servicecomb.
-* [[#16]](https://github.com/hertz-contrib/registry/pull/16) feat: support service registeration and discovery with Netflix Eureka.
+* [[#16]](https://github.com/hertz-contrib/registry/pull/16) feat: support service registration and discovery with Netflix Eureka.
 
 ## Refactor
 
