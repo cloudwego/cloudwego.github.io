@@ -5,9 +5,9 @@ weight: 4
 description: >
 ---
 
-[kitex-contrib](https://github.com/kitex-contrib) 中提供了 DNS 服务发现扩展。
+[kitex-contrib](https://github.com/kitex-contrib) 中已经提供了多种服务发现扩展：DNS, ETCD, ZooKeeper, Eureka, Consul, Nacos, Polaris。
 
-用户如果需要更换其他的服务发现，例如 ETCD，用户可以根据需求实现 `Resolver ` 接口，client 通过 `WithResolver` Option 来注入。
+用户如果需要更换其他的服务发现，用户可以根据需求实现 `Resolver ` 接口，client 通过 `WithResolver` Option 来注入。
 
 ## 接口定义
 
