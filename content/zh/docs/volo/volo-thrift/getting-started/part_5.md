@@ -19,7 +19,7 @@ Volo 维护的相关生态会集中在：https://github.com/volo-rs 中，我们
 同时，欢迎加入我们的飞书用户群，交流 Volo 的使用心得～
 
 <div  align="center">
-<img src="/img/blog/LarkGroup.png" width = "400"  alt="Volo_feishu" />
+<img src="/img/blog/LarkGroup.png" width = "400"  alt="LarkGroup" />
 </div>
 <br/><br/>
 
