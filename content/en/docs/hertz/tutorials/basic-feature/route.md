@@ -1,16 +1,16 @@
 ---
-title: "路由"
+title: "route"
 date: 2022-09-06
 weight: 2
 description: >
 
 ---
 
-## 路由注册
+## Route Registration
 
-Hertz 提供了 `GET`、`POST`、`PUT`、`DELETE`、`ANY` 等方法用于注册路由。
+Hertz provides methods like `GET`, `POST`, `PUT`, `DELETE`, `ANY` for registering routes.
 
-示例代码:
+Sample Code:
 ```go
 package main
 
@@ -49,12 +49,12 @@ func main(){
 
 ```
 
-## 路由组
+## Group
 
-Hertz 提供了路由组( `Group` )的能力，用于支持路由分组的功能，同时中间件也可以注册到路由组上。
+Hertz provides the capability of `Group`, which are used to support route grouping functionality, and the middleware can also register with `Group`.
 
 
-示例代码:
+Sample Code:
 ```go
 package main
 
@@ -89,28 +89,28 @@ func main(){
 
 ```
 
-## 路由类型
+## Route Types
 
-Hertz 支持丰富的路由类型用于实现复杂的功能，包括静态路由、参数路由、通配路由。
+Hertz supports a variety of route types for complex functions, including static route, parametric route, and wildcard route.
 
-路由的优先级:`静态路由` > `命名路由` > `通配路由`
+Priority of the route: `static route` > `parametric route` > `wildcard route`
 
-### 静态路由
-具体示例见上文
+### Static Route
+See above for specific examples.
 
-### 参数路由
-Hertz 支持使用 `:name` 这样的命名参数设置路由，并且命名参数只匹配单个路径段。
+### Parametric Route
+Hertz supports the use of named parameters such as `:name` to set routes, and named parameters match only a single path segment.
 
-如果我们设置`/user/:name`路由，匹配情况如下
+If we set the route `/user/:name`, the match is as follows
 
 |  path   |   |
 |  ----  | ----  |
-| /user/gordon  | 匹配 |
-| /user/you  | 匹配 |
-| /user/gordon/profile  | 不匹配 |
-|  /user/  | 不匹配 |
+| /user/gordon  | matched |
+| /user/you  | matched |
+| /user/gordon/profile  | mismatched |
+|  /user/  | mismatched |
 
-示例代码:
+Sample Code:
 ```go
 package main
 
@@ -134,19 +134,19 @@ func main(){
 
 ```
 
-### 通配路由
-Hertz 支持使用 `*filepath` 这样的通配参数设置路由，并且通配参数会匹配所有内容。
+### Wildcard Route
+Hertz supports routing with wildcard parameters such as `*filepath`, and the wildcard parameter will match all contents of the current path segment.
 
-如果我们设置`/src/*filepath`路由，匹配情况如下
+If we set the route `/src/*filepath`, the match is as follows
 
 |  path   |   |
 |  ----  | ----  |
-| /src/  | 匹配 |
-| /src/somefile.go   | 匹配 |
-| /src/subdir/somefile.go  | 不匹配 |
+| /src/  | matched |
+| /src/somefile.go   | matched |
+| /src/subdir/somefile.go  | mismatched |
 
 
-示例代码:
+Sample Code:
 ```go
 package main
 
@@ -171,4 +171,4 @@ func main(){
 
 
 ```
-更详细的示例参考[example](https://github.com/cloudwego/hertz-examples/tree/main/route)
+Refer to the [example](https://github.com/cloudwego/hertz-examples/tree/main/route) for more detailed examples.
