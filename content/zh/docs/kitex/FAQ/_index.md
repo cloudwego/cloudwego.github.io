@@ -11,10 +11,10 @@ description: >
 ## Kitex 框架
 
 **Q: 支持 Windows 吗？**
-* 暂时没有针对 Windows 做支持，如果本地开发环境是 Windows 建议使用 [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install)。
+* Kitex 在 v0.4.0 版本已支持在 Windows 环境下编译运行了。但代码生成工具暂未支持 Windows 环境。
 
 **Q: 是否支持 HTTP？**
-* Kitex 不专门提供 HTTP 请求支持，CloudWeGo 后续会开源 HTTP 框架 Hertz，预计开源时间是 2022 上半年。
+* Kitex 不专门提供 HTTP 请求支持，相关支持可参考 CloudWeGo 开源的 HTTP 框架 [Hertz](https://www.cloudwego.io/zh/docs/hertz/).
 * 如果是 API 网关场景，针对 Thrift 提供了 [HTTP 映射的泛化调用](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic_call/)，Kitex 会将 HTTP 请求做 Thrift 编码发给服务端。
 
 **Q: 如何配置开启连接多路复用？**
@@ -36,6 +36,12 @@ description: >
 **Q: 安装代码生成工具，出现了 'not enough arguments' 问题**
 * 请开启go mod：GO111MODULE=on go get github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
+**Q: 为什么 IDL 里的 set 生成了 slice?**
+* Apache Thrift 官方从 JSON 序列化的角度考虑，v0.11.0 开始，[将 set 的生成类型从 map 改为了 slice](https://issues.apache.org/jira/browse/THRIFT-4011)，Kitex 从兼容性角度考虑，对齐了该行为。
+
+**Q: 为什么有些字段名字后面多了条下划线?**
+* thrift 的官方实现为了避免命名冲突，限制了以「Result」和「Args」结尾的标识符。 官方 Thrift 的冲突规避策略：当 Thrift 文件中的类型名、Service 名和方法名，以 New 开头 或者 以 Result 或者 以 Args 结尾时，Thrift 会自动在名字末尾添加下划线。参考 https://jira.apache.org/jira/browse/THRIFT-4410，Kitex 使用了 Thriftgo 进行代码生成，Thriftgo 为了尽可能和官方实现保持一致，采取了类似的策略。
+
 **Q: 新增接口重新生成代码，是否会覆盖handler.go**
 * kitex_gen/ 下的生成代码会重新生成覆盖，但服务端的 handler.go 不会覆盖，只会新增对应方法。
 
@@ -43,4 +49,5 @@ description: >
 * 目前没有支持自定义模板的打算，因为传参设计会复杂很多。现在的插件机制完全可以实现任意等价的功能
 
 **Q: 代码生成工具中的 –type 是否可以通过 IDL 文件扩展名自动确定, –module 能否默认使用找到的 go.mod 里的模块名，仅在没有 go.mod 或者有歧义的时候才要求指定值？**
-* -type 需要更多讨论，目前是限制了后缀，但将来可能会支持任意后缀；-module 的这个建议我们会考虑一下。
+* Kitex 在 v0.4.0 版本已支持根据文件后缀生成代码，无需再添加 -type 参数。
+* -module 的这个建议我们会考虑一下。
