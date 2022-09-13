@@ -11,8 +11,8 @@ SDK化（invoker）允许用户将 Kitex server 当作一个本地 SDK 调用。
 
 ```go
 import (
-		...
-    "github.com/cloudwego/kitex/sdk/message"
+    ...
+    "github.com/cloudwego/kitex/server/invoke"
   	...
 )
 
@@ -23,7 +23,7 @@ func main() {
     // init local/remote
     ...
     ivk := echo.NewInvoker(new(EchoImpl))
-    msg := message.NewMessage(local, remote)
+    msg := invoke.NewMessage(local, remote)
     // 装载payload
     msg.SetRequestBytes(reqPayload)
     // 发起调用

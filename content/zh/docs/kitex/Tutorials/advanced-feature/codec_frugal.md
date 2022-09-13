@@ -99,14 +99,13 @@ package client
 import (
     "context"
 
-
+    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
     "github.com/cloudwego/kitex/client"
-    "example.com/kitex_test/client/kitex_gen/a/b/c/echo"
     "github.com/cloudwego/kitex/pkg/remote/codec/thrift"
 )
 
 func Echo() {
-    code := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
+    codec := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
     cli := echo.MustNewClient("a.b.c", client.WithPayloadCodec(codec))
     ...
 }
@@ -120,14 +119,14 @@ package main
 import (
     "log"
 
-    "code.byted.org/kite/kitex/server"
-    c "example.com/kitex_test/kitex_gen/a/b/c/echo"
+    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
     "github.com/cloudwego/kitex/pkg/remote/codec/thrift"
+    "github.com/cloudwego/kitex/server"
 )
 
 func main() {
-    code := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
-    svr := c.NewServer(new(EchoImpl), server.WithPayloadCodec(code))
+    codec := thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite | thrift.FrugalRead | thrift.FrugalWrite)
+    svr := server.NewServer(new(EchoImpl), server.WithPayloadCodec(codec))
 
     err := svr.Run()
     if err != nil {
@@ -175,8 +174,6 @@ package main
 
 import (
     "github.com/cloudwego/frugal"
-
-    "example.com/kitex_test/thrift"
 )
 
 func main() {
