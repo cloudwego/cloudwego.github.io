@@ -40,7 +40,7 @@ description: >
 * Apache Thrift 官方从 JSON 序列化的角度考虑，v0.11.0 开始，[将 set 的生成类型从 map 改为了 slice](https://issues.apache.org/jira/browse/THRIFT-4011)，Kitex 从兼容性角度考虑，对齐了该行为。
 
 **Q: 为什么有些字段名字后面多了条下划线?**
-* thrift 的官方实现为了避免命名冲突，限制了以「Result」和「Args」结尾的标识符。 官方 Thrift 的冲突规避策略：当 Thrift 文件中的类型名、Service 名和方法名，以 New 开头 或者 以 Result 或者 以 Args 结尾时，Thrift 会自动在名字末尾添加下划线。参考 https://jira.apache.org/jira/browse/THRIFT-4410，Kitex 使用了 Thriftgo 进行代码生成，Thriftgo 为了尽可能和官方实现保持一致，采取了类似的策略。
+* Thrift 的官方实现为了避免命名冲突，限制了以「Result」和「Args」结尾的标识符。 官方 Thrift 的冲突规避策略：当 Thrift 文件中的类型名、Service 名和方法名，以 New 开头 或者 以 Result 或者 以 Args 结尾时，Thrift 会自动在名字末尾添加下划线。参考 https://jira.apache.org/jira/browse/THRIFT-4410，Kitex 使用了 Thriftgo 进行代码生成，Thriftgo 为了尽可能和官方实现保持一致，采取了类似的策略。
 
 **Q: 新增接口重新生成代码，是否会覆盖handler.go**
 * kitex_gen/ 下的生成代码会重新生成覆盖，但服务端的 handler.go 不会覆盖，只会新增对应方法。
@@ -48,6 +48,5 @@ description: >
 **Q: 请问目前代码生成工具中的模板是否支持用户自定义?**
 * 目前没有支持自定义模板的打算，因为传参设计会复杂很多。现在的插件机制完全可以实现任意等价的功能
 
-**Q: 代码生成工具中的 –type 是否可以通过 IDL 文件扩展名自动确定, –module 能否默认使用找到的 go.mod 里的模块名，仅在没有 go.mod 或者有歧义的时候才要求指定值？**
+**Q: 代码生成工具中的 –type 是否可以通过 IDL 文件扩展名自动确定？**
 * Kitex 在 v0.4.0 版本已支持根据文件后缀生成代码，无需再添加 -type 参数。
-* -module 的这个建议我们会考虑一下。
