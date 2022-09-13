@@ -69,14 +69,14 @@ We provide the `SetXxx()` method for setting private properties
 type ReverseProxy struct {
     client *client.Client
 
-	// target is set as a reverse proxy address
-	target string
+    // target is set as a reverse proxy address
+    target string
 
-	// director must be a function which modifies the request
-	// into a new request. Its response is then redirected
-	// back to the original client unmodified.
-	// director must not access the provided Request
-	// after returning.
+    // director must be a function which modifies the request
+    // into a new request. Its response is then redirected
+    // back to the original client unmodified.
+    // director must not access the provided Request
+    // after returning.
     director func (*protocol.Request)
 
     // modifyResponse is an optional function that modifies the
