@@ -10,7 +10,7 @@ WebSocket 是一种可以在单个 TCP 连接上进行全双工通信，位于 O
 Hertz 提供了 WebSocket 的支持，参考 [gorilla/websocket](http://github.com/gorilla/websocket) 库使用`hijack`的方式在 Hertz 进行了适配，用法和参数基本保持一致。
 
 用法示例：
-```
+```go
 package main
 
 import (
