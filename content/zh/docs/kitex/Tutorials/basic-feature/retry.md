@@ -159,7 +159,7 @@ opts = append(opts, client.WithSpecifiedResultRetry(yourResultRetry))
 特别地，对于 Thrift 的 Exception，rpc 调用层面虽然返回了 error，但对框架内部处理其实视为一次成本的 RPC 请求（因为有实际的返回），如果要对其做判断需注意两点：
 
 1. 通过 resp 做判断而不是 error
-2. 若该方法重试成功既 `GetSuccess() != nil`，需重置 Exception 为 nil，因为重试使用的是一个 XXXResult，且 Resp 和 Exception 对应的是 XXXResult 的两个字段，第一次返回 Exception 已经做了赋值，第二次成功对 Resp 赋值但框架层面不会重置 Exception，需要用户自行重置。
+2. 若该方法重试成功即 `GetSuccess() != nil`，需重置 Exception 为 nil，因为重试使用的是一个 XXXResult，且 Resp 和 Exception 对应的是 XXXResult 的两个字段，第一次返回 Exception 已经做了赋值，第二次成功对 Resp 赋值但框架层面不会重置 Exception，需要用户自行重置。
 
 示例如下：
 
