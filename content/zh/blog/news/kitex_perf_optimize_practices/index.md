@@ -139,7 +139,7 @@ pd := *(**pollDesc)(unsafe.Pointer(&ev.data))
 
 序列化是指把数据结构或对象转换成字节序列的过程，反序列化则是相反的过程。RPC 在通信时需要约定好序列化协议，client 在发送请求前进行序列化，字节序列通过网络传输到 server，server 再反序列进行逻辑处理，完成一次 RPC 请求。Thrift 支持 Binary、Compact 和 JSON 序列化协议。目前公司内部使用的基本都是 Binary，这里只介绍 Binary 协议。
 
-Binary 采用 TLV 编码实现，即每个字段都由 TLV 结构来描述，TLV 意为：Type 类型， Lenght 长度，Value 值，Value 也可以是个 TLV 结构，其中 Type 和 Length 的长度固定，Value 的长度则由 Length 的值决定。TLV 编码结构简单清晰，并且扩展性较好，但是由于增加了 Type 和 Length，有额外的内存开销，特别是在大部分字段都是基本类型的情况下有不小的空间浪费。
+Binary 采用 TLV 编码实现，即每个字段都由 TLV 结构来描述，TLV 意为：Type 类型， Length 长度，Value 值，Value 也可以是个 TLV 结构，其中 Type 和 Length 的长度固定，Value 的长度则由 Length 的值决定。TLV 编码结构简单清晰，并且扩展性较好，但是由于增加了 Type 和 Length，有额外的内存开销，特别是在大部分字段都是基本类型的情况下有不小的空间浪费。
 
 序列化和反序列的性能优化从大的方面来看可以从空间和时间两个维度进行优化。从兼容已有的 Binary 协议来看，空间上的优化似乎不太可行，只能从时间维度进行优化，包括：
 
