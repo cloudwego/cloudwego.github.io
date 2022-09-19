@@ -31,11 +31,10 @@ If the framework reports the following error codes, you can check it for possibl
 ### 404
 
 1. Access to the wrong port, commonly access to the debug port.
-   1. Solution: Distinguish between listening port for framework service and listening port for debug server, the default is xxx.
+   1. Solution: Distinguish between listening port for framework service and listening port for debug server, the default is 8888.
 2. No routes matched
    1. Check whether all expected routes are registered correctly based on the startup log.
    2. Check that the access method is correct.
-   3. Check those certain configuration items are enabled, such as xxx.
 
 ### 417
 
