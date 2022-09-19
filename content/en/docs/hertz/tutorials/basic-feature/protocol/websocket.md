@@ -13,7 +13,7 @@ Hertz provides support for WebSocket and adapts it in Hertz by referring to [gor
 The usage and parameters are basically the same.
 
 For example:
-```
+```go
 package main
 
 import (
