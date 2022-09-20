@@ -1,15 +1,15 @@
 ---
 title: "Retry"
-date: 2021-09-01
+date: 2022-08-25
 weight: 7
 description: >
 ---
 
 ### 1. Introduction
 
-There are currently three types of retries: `Timeout Retry`, `Backup Request` and `Connection Failed Retry`. Among them, `Connection Failed Retry` is a network-level problem, since the request is not sent, the framework will retry by default. Here we only present the use of the first two types of retries:
+There are currently three types of retries: `Exception Retry`, `Backup Request` and `Connection Failed Retry`. Among them, `Connection Failed Retry` is a network-level problem, since the request is not sent, the framework will retry by default. Here we only present the use of the first two types of retries:
 
-- `Timeout Retry`: Improve the overall success rate of the service.
+- `Exception Retry`: Improve the overall success rate of the service.
 - `Backup Request`: Reduce delay jitter of request.
 
 Because many requests are not idempotent, these two types of retries are not used as the default policy.
@@ -17,21 +17,23 @@ Because many requests are not idempotent, these two types of retries are not use
 #### 1.1 Attention
 
 - Confirm that your service is idempotent before enable retry.
-- `Timeout Retry` will increase overall latency.
+- `Exception Retry` will increase overall latency.
 
 ### 2. Retry Policy
 
-Only one of the `Timeout Retry` and `Backup Request` policies can be configured.
+Only one of the `Exception Retry` and `Backup Request` policies can be configured at method granularity.
 
-- `Timeout Retry`
+- `Exception Retry`
+
+The default is for timeout retry only, and it can be configured to support specific exception or Resp retry.
 
 Configuration Item|Default value|Description|Limit
 ----|----|----|----
 `MaxRetryTimes`|2|The first request is not included. If it is configured as 0, it means to stop retrying.|Value: [0-5]
 `MaxDurationMS`|0|Including the time-consuming of the first failed request and the retry request. If the limit is reached, the subsequent retry will be stopped. 0 means unlimited. Note: if configured, the configuration item must be greater than the request timeout.
 `EERThreshold`|10%|If the method-level request error rate exceeds the threshold, retry stops.|Value: (0-30%]
-`ChainStop`|-|`Chain Stop` is enabled by default. If the upstream request is a retry request, it will not be retried after timeout.|>= v0.0.5 as the default policy.
-`DDLStop`|false|If the timeout period of overall request chain is reached, the retry request won't be sent with this policy. Notice, Kitex doesn't provide build-in implementation, use `retry.RegisterDDLStop(ddlStopFunc)` to register is needed. 
+`ChainStop`|-|`Chain Stop` is enabled by default. If the upstream request is a retry request, it will not be retried.|>= v0.0.5 as the default policy.
+`DDLStop`|false|If the timeout period of overall request chain is reached, the retry request won't be sent with this policy. Notice, Kitex doesn't provide build-in implementation, use `retry.RegisterDDLStop(ddlStopFunc)` to register is needed.
 `BackOff`|None|Retry waiting strategy, `NoneBackOff` by default. Optional: `FixedBackOff`, `RandomBackOff`.
 `RetrySameNode`|false|By default, Kitex selects another node to retry. If you want to retry on the same node, set this parameter to true.
 
@@ -51,7 +53,7 @@ Configuration Item|Default value|Description|Limit
 
 Note: Dynamic configuration (see 3.3) cannot take effect if retry is enabled by code configuration.
 
-##### 3.1.1 Timeout Retry Configuration
+##### 3.1.1 Exception Retry Configuration
 
 - Configuration e.g.
 
@@ -90,6 +92,95 @@ fp.WithRetryBreaker(errRate float64)
 fp.WithRetrySameNode()
 ```
 
+###### 3.1.1.1 Retry with Specific Result（Exception/Resp）
+
+v0.4.0 is supported.
+
+It can be configured to support specific result to retry, and the result can be request failure or Resp. Because the business may set status information in Resp, and return retry for a certain type. This is collectively referred to as exception retry.
+
+- Configuration e.g.
+
+```go
+// import "github.com/cloudwego/kitex/pkg/retry"
+
+var opts []client.Option
+opts = append(opts, client.WithSpecifiedResultRetry(yourResultRetry))
+
+xxxCli := xxxservice.NewClient(targetService, opts...)
+```
+
+- retry.ShouldResultRetry Definition
+
+In order to judge error and resp at specific method granularity, rpcinfo is provided as an input argument. The method can be obtained through `ri.To().Method()`.
+
+```go
+// ShouldResultRetryit is used for specifying which error or resp need to be retried
+type ShouldResultRetry struct {
+   ErrorRetry func(err error, ri rpcinfo.RPCInfo) bool
+   RespRetry  func(resp interface{}, ri rpcinfo.RPCInfo) bool
+}
+```
+
+- Specific Exception/Resp Implementation e.g.
+
+    - Resp:
+
+      Resp of Thrift and KitexProtobuf protocol correspond to *XXXResult in the generated code, not the real business Resp. To get the real Resp, you need to assert `interface{ GetResult() interface{} }`.
+
+    - Error:
+
+      The error returned by the peer, kitex will be uniformly encapsulated as `kerrors.ErrRemoteOrNetwork`. For Thrift and KitexProtobuf, the following examples can get the Error Msg returned by the peer. For gRPC, if the peer returns an error constructed by `status.Error`, and the local can use `status.FromError(err)` to get `*status.Status`. Pay attention to `Status` needs to be provided by Kitex, and the package path is `github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status`.
+
+```go
+// retry with specify Resp for one method
+respRetry := func(resp interface{}, ri rpcinfo.RPCInfo) bool {
+   if ri.To().Method() == "mock" {
+        // Notice: you should test with your code, this is only a demo, thrift gen-code of Kitex has GetResult() interface{}
+        if respI, ok1 := resp.(interface{ GetResult() interface{} }); ok1 {
+            if r, ok2 := respI.GetResult().(*xxx.YourResp); ok2 && r.Msg == retryMsg {
+              return true
+            }
+			}
+   }
+   return false
+}
+// retry with specify Error for one method
+errorRetry := func(err error, ri rpcinfo.RPCInfo) bool {
+   if ri.To().Method() == "mock" {
+      if te, ok := errors.Unwrap(err).(*remote.TransError); ok && te.TypeID() == -100 {
+         return true
+      }
+   }
+   return false
+}
+// client option
+yourResultRetry := &retry.ShouldResultRetry{ErrorRetry:errorRetry , RespRetry: respRetry}
+opts = append(opts, client.WithSpecifiedResultRetry(yourResultRetry))
+```
+
+In particular, for Thrift's Exception, although the rpc call layer returns an error, the internal processing of the framework is actually regarded as a one-time cost RPC request (because there is an actual return). If you want to judge it, you need to pay attention to two points:
+
+1. Judge by resp instead of error.
+2. If the method retry is successful, namely, `GetSuccess() != nil`,  you need to reset Exception to nil. Because the retry uses the XXXResult, and the Resp and Exception correspond to the two fields of XXXResult. Exception has been set for the first, and the second successfully set to Resp. However, the framework layer will not reset Exception, and the user needs to reset it by himself.
+
+e.g.
+
+```go
+respRetry := func(resp interface{}, ri rpcinfo.RPCInfo) bool {
+    if ri.To().Method() == "testException" {
+        teResult := resp.(*stability.TestExceptionResult)
+        if teResult.GetSuccess() != nil {
+           teResult.SetStException(nil)
+        } else if teResult.IsSetXXException() && teResult.XxException.Message == xxx {
+           return true
+        }
+    }
+    return false
+}
+```
+
+
+
 ##### 3.1.2 Backup Request Configuration
 
 - Retry Delay recommendations
@@ -101,7 +192,7 @@ It is recommended to configure as TP99, then 1% request will trigger `Backup Req
 ```go
 // If the first request is not returned after XXX ms, the backup request will be initiated and the `Chain Retry Stop` is enabled
 bp := retry.NewBackupPolicy(xxx)
-xxxCli := xxxservice.NewClient("destServiceName", client.WithBackupRequest(bp))
+xxxCli := xxxservice.NewClient("targetService", client.WithBackupRequest(bp))
 ```
 
 - Strategy selection:
@@ -122,9 +213,58 @@ bp.WithRetryBreaker(errRate float64)
 bp.WithRetrySameNode()
 ```
 
+##### 3.1.3 Method Granularity Configuration Retry
+
+v0.4.0 is supported.
+
+The sample configuration of 3.1.1, 3.1.2 will take effect for all methods. If you want to configure retry only for some methods, or configure on Failure Retry or BackupRequest for different methods respectively, configure as follows:
+
+- Configuration e.g.
+
+```go
+// import "github.com/cloudwego/kitex/pkg/retry"
+methodPolicies := client.WithRetryMethodPolicies(map[string]retry.Policy{
+   "method1":        retry.BuildFailurePolicy(retry.NewFailurePolicy()),
+   "method2":       retry.BuildFailurePolicy(retry.NewFailurePolicyWithResultRetry(yourResultRetry))})
+
+// other methods do backup request except above methods
+otherMethodPolicy := client.WithBackupRequest(retry.NewBackupPolicy(10))
+var opts []client.Option
+opts = append(opts, methodPolicies, otherMethodPolicy)
+
+xxxCli := xxxservice.NewClient(targetService, opts...)
+```
+
+> If both `WithFailureRetry` or `WithBackupRequest` are configured, methods not configured in `WithRetryMethodPolicies` will be executed according to the `WithFailureRetry` or `WithBackupRequest` policy. But `WithFailureRetry` and `WithBackupRequest` cannot be configured at the same time because they will take effect on all client methods.
+
+##### 3.1.4 Request Level Configuration Retry（callopt）
+
+v0.4.0 is supported.
+
+- Configuration e.g.
+
+```go
+import (
+    "github.com/cloudwego/kitex/pkg/retry"
+)
+// demo1: call with failure retry policy, default retry error is Timeout
+resp, err := cli.Mock(ctx, req, callopt.WithRetryPolicy(retry.BuildFailurePolicy(retry.NewFailurePolicy())))
+
+// demo2: call with customized failure retry policy
+resp, err := cli.Mock(ctx, req, callopt.WithRetryPolicy(retry.BuildFailurePolicy(retry. NewFailurePolicyWithResultRetry(retry.AllErrorRetry()))))
+
+// demo3: call with backup request policy
+bp := retry.NewBackupPolicy(10)
+bp.WithMaxRetryTimes(1)
+resp, err := cli.Mock(ctx, req, callopt.WithRetryPolicy(retry.BuildBackupRequest(bp)))
+```
+
+
 #### 3.2 Circuit Breaker Reuse
 
-When circuit breaker is enabled for a service, you can reuse the breaker's statistics to reduce additional CPU consumption. Note that the error rate threshold for retries must be lower than the threshold for a service, as follows:
+When circuit breaker is enabled for a service, you can reuse the breaker's statistics to reduce additional CPU consumption. Note that the error rate threshold for retries must be lower than the threshold for a service.
+
+- Configuration e.g.
 
 ```go
 // 1. Initialize kitex's built-in cbsuite
@@ -145,12 +285,12 @@ cli, err := xxxservice.NewClient(targetService, opts...)
 
 If you want to adjust the policy in combination with remote configuration, dynamic open retry, or runtime, you can take effect through the `NotifyPolicyChange` method of `retryContainer`. Currently, the open source version of Kitex does not provide a remote configuration module, and users can integrate their own configuration center. Note: If it is turned on through code configuration, dynamic configuration cannot take effect.
 
-Use case:
+- Configuration e.g.
 
 ```go
 retryC := retry.NewRetryContainer()
 // demo
-// 1. define your change func 
+// 1. define your change func
 // 2. exec yourChangeFunc in your config module
 yourChangeFunc := func(key string, oldData, newData interface{}) {
     newConf := newData.(*retry.Policy)
