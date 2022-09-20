@@ -211,7 +211,7 @@ bp.WithRetrySameNode()
 
 3.1.1,3.1.2 的示例配置会对所有方法生效，如果希望只对部分方法配置重试，或对不同方法分别配置 失败重试 或 BackupRequest，配置如下：
 
-- 配置实例：
+- 配置示例：
 
 ```go
 // import "github.com/cloudwego/kitex/pkg/retry"
@@ -257,7 +257,7 @@ resp, err := cli.Mock(ctx, req, callopt.WithRetryPolicy(retry.BuildBackupRequest
 
 当开启了服务的熔断配置可以复用熔断的统计减少额外的 CPU 消耗，注意重试的熔断阈值须低于服务的熔断阈值。
 
-- 配置实例：
+- 配置示例：
 
 ```go
 // 1. 初始化 kitex 内置的 cbsuite

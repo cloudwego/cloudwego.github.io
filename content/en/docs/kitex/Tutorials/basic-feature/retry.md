@@ -219,7 +219,7 @@ v0.4.0 is supported.
 
 The sample configuration of 3.1.1, 3.1.2 will take effect for all methods. If you want to configure retry only for some methods, or configure on Failure Retry or BackupRequest for different methods respectively, configure as follows:
 
-- Configuration Instance:
+- Configuration e.g.
 
 ```go
 // import "github.com/cloudwego/kitex/pkg/retry"
