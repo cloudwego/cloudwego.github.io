@@ -1,5 +1,5 @@
 ---
-title: "pprof扩展"
+title: "pprof"
 date: 2022-09-24
 weight: 7
 description: >
@@ -7,21 +7,23 @@ description: >
 ---
 
 
-Hertz 提供了 [pprof扩展](https://github.com/hertz-contrib/pprof)，它参考了 Gin 的[实现](https://github.com/gin-contrib/pprof)。
+Hertz 提供了 [pprof](https://github.com/hertz-contrib/pprof) 扩展，帮助用户对 Hertz 项目进行性能分析，[pprof](https://github.com/hertz-contrib/pprof) 扩展的实现参考了 [Gin](https://github.com/gin-contrib/pprof) 的实现。
 
-使用方法可参考如下 [example](https://github.com/hertz-contrib/pprof/tree/main/example)。
 
 ## 安装
+
 ```shell
 go get github.com/hertz-contrib/pprof
 ```
 
-## 使用
-### 代码实例1：基本使用
+## 示例代码
 
 ```go
+package main
+
 import (
 	"context"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/utils"
@@ -42,17 +44,24 @@ func main() {
 }
 ```
 
-### 代码实例2: 自定义前缀
+## 进阶使用
 
+### 自定义前缀
+
+`pprof` 的默认前缀为 `debug/pprof`，即用户在 Hertz 项目中注册并使用 `pprof` 后，用户可以通过访问
+`localhost:8888/debug/pprof` 来查看当前项目的采样信息。
+此外，用户可以在注册 `pprof` 时指定自定义前缀。
+
+函数签名如下：
 ```go
-import (
-    "context"
-    "github.com/cloudwego/hertz/pkg/app"
-    "github.com/cloudwego/hertz/pkg/app/server"
-    "github.com/cloudwego/hertz/pkg/common/utils"
-    "github.com/cloudwego/hertz/pkg/protocol/consts"
-    "hertz-contrib-beiye/pprof"
-)
+Register(r *server.Hertz, prefixOptions ...string)
+```
+
+示例代码:
+```go
+package main
+
+// ...
 
 func main() {
     h := server.Default()
@@ -66,19 +75,25 @@ func main() {
     
     h.Spin()
 }
-
 ```
 
-### 代码实例3: 自定义路由组
+### 自定义路由组
 
+`pprof` 不仅可以注册到 Hertz 对象上，还可以注册到路由组（RouterGroup）上。
+
+函数签名如下：
 ```go
-import (
-    "context"
-    "github.com/cloudwego/hertz/pkg/app"
-    "github.com/cloudwego/hertz/pkg/app/server"
-    "hertz-contrib-beiye/pprof"
-    "net/http"
-)
+RouteRegister(rg *route.RouterGroup, prefixOptions ...string)
+```
+本方式注册后的 `pprof` 前缀为路由组的前缀与自定义前缀拼接后的结果。
+* 用户不指定前缀，注册后的 `pprof` 的前缀为路由组的前缀与默认前缀 `/debug/pprof` 拼接后的结果，即为 `/xxx/debug/pprof` （`xxx` 为路由组前缀）；
+* 用户指定前缀，注册后的 `pprof` 的前缀为路由组的的前缀与自定义前缀拼接后的结果，比如下文示例中注册后的 `pprof` 前缀为 `/admin/pprof`。
+
+示例代码:
+```go
+package main
+
+// ...
 
 func main() {
     h := server.Default()
@@ -87,18 +102,16 @@ func main() {
 
     adminGroup := h.Group("/admin")
     adminGroup.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-    ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+        ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
     })
     
     pprof.RouteRegister(adminGroup, "pprof")
     
     h.Spin()
 }
-
 ```
 
-
-## 查看pprof
+## 查看pprof采样信息
 
 ### 1. 通过浏览器查看
 
@@ -106,6 +119,7 @@ func main() {
 
 * Hertz端口号默认为 8888
 * pprof默认地址前缀为 `debug/pprof`
+* 端口号和访问路由与用户实际端口号和 `pprof` 前缀一致
 
 ### 2. 通过 `go tool pprof` 查看
 
@@ -121,7 +135,7 @@ go tool pprof http://localhost:8888/debug/pprof/heap
 go tool pprof http://localhost:8888/debug/pprof/profile
 ```
 
-默认采样时间为 30s ，可通过查询字符串来自定义采样时间：
+> 默认采样时间为 30s ，可通过查询字符串来自定义采样时间：
 
 ```bash
 go tool pprof http://localhost:8888/debug/pprof/profile?seconds=10
@@ -133,7 +147,7 @@ go tool pprof http://localhost:8888/debug/pprof/profile?seconds=10
 go tool pprof http://localhost:8888/debug/pprof/block
 ```
 
-使用 `go tool pprof` 工具查看 5s 内的执行 trace：
+获取 5s 内的执行 trace 信息：
 
 ```bash
 wget http://localhost:8888/debug/pprof/trace?seconds=5
@@ -147,3 +161,5 @@ wget http://localhost:8888/debug/pprof/trace?seconds=5
 ```bash
 go tool pprof -http :8080 localhost:8888/debug/pprof/profile?seconds=10
 ```
+
+完整用法示例详见 [example](https://github.com/hertz-contrib/pprof/tree/main/example)
