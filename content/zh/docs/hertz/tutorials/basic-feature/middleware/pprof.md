@@ -113,7 +113,7 @@ func main() {
 
 ## 查看pprof采样信息
 
-### 1. 通过浏览器查看
+### 通过浏览器查看
 
 通过浏览器访问 `localhost:8888/debug/pprof`
 
@@ -121,7 +121,7 @@ func main() {
 * pprof默认地址前缀为 `debug/pprof`
 * 端口号和访问路由与用户实际端口号和 `pprof` 前缀一致
 
-### 2. 通过 `go tool pprof` 查看
+### 通过 `go tool pprof` 查看
 
 使用 `go tool pprof` 工具查看堆栈采样信息：
 
@@ -154,7 +154,7 @@ wget http://localhost:8888/debug/pprof/trace?seconds=5
 ```
 
 
-### 3. 通过 `go tool pprof` 查看火焰图
+### 通过 `go tool pprof` 查看火焰图
 
 安装 [graphviz](http://www.graphviz.org/download/)
 
