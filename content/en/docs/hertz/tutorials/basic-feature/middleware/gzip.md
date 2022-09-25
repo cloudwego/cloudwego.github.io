@@ -88,15 +88,13 @@ func main() {
 
 Function Signature
 
-```
-func WithExcludedExtensions(args []string) Option
-```
 
-Sample Code
 
 ```go
 func WithExcludedPaths(args []string) Option
 ```
+
+Sample Code
 
 ```go
 package main
