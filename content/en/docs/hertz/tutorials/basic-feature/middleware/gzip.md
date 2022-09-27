@@ -168,4 +168,4 @@ func main() {
 }
 ```
 
-Refer to the [gzip](https://github.com/hertz-contrib/gzip) for more usage examples
+Refer to the [gzip](https://github.com/cloudwego/hertz-examples/tree/main/gzip) for more usage examples

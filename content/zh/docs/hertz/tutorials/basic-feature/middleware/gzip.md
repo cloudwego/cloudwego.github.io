@@ -68,7 +68,7 @@ package main
 
 func main() {
 	h := server.Default(server.WithHostPorts(":8080"))
-    //BestCompression option 
+    //BestCompression option
 	h.Use(gzip.Gzip(gzip.BestCompression))
     //BestSpeed option
     h.Use(gzip.Gzip(gzip.BestSpeed))
@@ -172,4 +172,4 @@ func main() {
 
 
 
-更多用法示例详见 [gzip](https://github.com/hertz-contrib/gzip)
+更多用法示例详见 [gzip](https://github.com/cloudwego/hertz-examples/tree/main/gzip)
