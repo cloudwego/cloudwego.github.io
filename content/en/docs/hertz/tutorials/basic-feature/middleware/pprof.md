@@ -46,7 +46,7 @@ func main() {
 
 ## Advanced
 
-### custom prefix
+### Custom prefix
 
 The default prefix of `pprof` is `debug/pprof`, that is, after the user registers and uses `pprof` extension in the Hertz project, the user can view the sampling information of the current project by visiting `localhost:8888/debug/pprof`. Additionally, `pprof` supports user-defined prefixes.
 
@@ -60,23 +60,31 @@ Sample code:
 ```go
 package main
 
-// ...
+import (
+	"context"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"github.com/hertz-contrib/pprof"
+)
 
 func main() {
-    h := server.Default()
-    
-    // default is "debug/pprof"
-    pprof.Register(h, "dev/pprof")
-    
-    h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-        ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-    })
-    
-    h.Spin()
+	h := server.Default()
+
+	// default is "debug/pprof"
+	pprof.Register(h, "dev/pprof")
+
+	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+	})
+
+	h.Spin()
 }
 ```
 
-### custom routing group
+### Custom routing group
 
 `pprof` can be registered not only on the Hertz object, but also on the router group (RouterGroup).
 
@@ -92,21 +100,30 @@ Sample code:
 ```go
 package main
 
-// ...
+import (
+	"context"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"github.com/hertz-contrib/pprof"
+)
 
 func main() {
-    h := server.Default()
-    
-    pprof.Register(h)
+	h := server.Default()
 
-    adminGroup := h.Group("/admin")
-    adminGroup.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-        ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-    })
-    
-    pprof.RouteRegister(adminGroup, "pprof")
-    
-    h.Spin()
+	pprof.Register(h)
+
+	adminGroup := h.Group("/admin")
+
+	adminGroup.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+	})
+
+	pprof.RouteRegister(adminGroup, "pprof")
+
+	h.Spin()
 }
 ```
 
