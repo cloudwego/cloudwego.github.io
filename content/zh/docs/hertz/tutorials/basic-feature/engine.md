@@ -5,10 +5,12 @@ weight: 2
 description: >
 ---
 
-## 简介
+## server.Hertz
+
+### 介绍
 
 Hertz 的路由、中间件的注册，服务启动，退出等重要方法都是包含在 `server.Hertz` 这个**核心**类型之中的。
-它由 `route.Engine` 以及 `signalWaiter` 组成。
+它由 `route.Engine` 以及 `signalWaiter` 组成。以下方法为
 
 ```go
 // Hertz is the core struct of hertz.
@@ -18,7 +20,7 @@ type Hertz struct {
 }
 ```
 
-## 配置服务器
+### 初始化服务器
 
 Hertz 在 `server` 包中提供了 `New` 和 `Default` 函数用于初始化服务器。
 
@@ -40,7 +42,7 @@ func Default(opts ...config.Option) *Hertz {
 	return h
 }
 ```
-若想详细的了解可选的配置项, 可以在 [server/option.go](https://github.com/cloudwego/hertz/blob/develop/pkg/app/server/option.go) 中进行查看。
+若想详细的了解可选的配置项, 可以在[配置说明](../../reference/config.md)中进行查看。
 
 示例代码
 
@@ -56,7 +58,44 @@ func main() {
 }
 ```
 
-## 注册中间件
+
+
+### 运行服务
+
+`Hertz` 提供了 `Spin` 函数用于启动服务器。
+
+和 `route.Engine` 中提供的 `Run` 不同, 除非有**特殊**需求，不然一般使用 `Spin` 函数用于运行服务。
+
+在使用[服务注册发现](../service-governance/service_discovery.md)的功能时, `Spin` 会在服务启动时将服务注册进入注册中心，并使用 `signalWaiter` 监测服务异常。
+只有使用 `Spin` 来启动服务才能支持[优雅退出](graceful-shutdown.md)的特性。
+
+示例代码
+
+```go
+package main
+
+// ...
+
+func main(){
+    h := server.New()
+    // 我们通常推荐使用 Spin
+    h.Spin()
+    // 使用 Run 函数启动
+    if err := h.Run(); err != nil {
+		// ...
+    }
+}
+```
+
+
+
+## route.Engine
+
+### 介绍
+
+`route.Engine` 为 `server.Hertz` 的重要组成部分, 其中拥有大量的在开发中常用的方法, 尤为重要
+
+### 注册中间件
 
 Hertz 提供 `Use` 函数用于将中间件注册进入路由。
 
@@ -94,37 +133,13 @@ func exampleMiddleware() app.handlerFunc {
     }
 }
 ```
+更多示例详见[仓库](https://github.com/cloudwego/hertz-examples/tree/main/middleware)
 
-## 服务启动
-
-`Hertz` 提供了 `Spin` 和 `Run` 函数用于启动服务器。 但是除非有**特殊**需求，不然一般使用 `Spin` 函数。
-
-在使用[服务注册发现](../service-governance/service_discovery.md)的功能时, `Spin` 会在服务启动时将服务注册进入注册中心，并使用 `signalWaiter` 监测服务异常。
-只有使用 `Spin` 来启动服务才能支持[优雅退出](graceful-shutdown.md)的特性。
-
-示例代码
-
-```go
-package main
-
-// ...
-
-func main(){
-    h := server.New()
-    // 我们通常推荐使用 Spin
-    h.Spin()
-    // 使用 Run 函数启动
-    if err := h.Run(); err != nil {
-		// ...
-    }
-}
-```
-
-## 服务注销
+### 服务退出
 
 hertz 提供 `Shutdown` 函数用于进行优雅退出。
 
-若是使用了[服务注册与发现](../service-governance/service_discovery.md)的能力, 服务注销发生时也会从注册中心下线相应数据。
+若是使用了[服务注册与发现](../service-governance/service_discovery.md)的能力, 服务退出发生时也会从注册中心下线相应数据。
 
 函数签名:
 ```go
@@ -147,3 +162,10 @@ func main() {
 	h.Spin()
 }
 ```
+### 错误处理器
+
+#### ContinueHandler
+
+#### PanicHandler
+
+#### NotFound

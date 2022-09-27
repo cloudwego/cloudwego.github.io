@@ -20,32 +20,278 @@ func main() {
     ...
 }
 ```
+### WithKeepAliveTimeout
 
-|  配置名称   | 类型  |  说明  |
-|  :----  | :----  | :---- |
-| WithTransport  | network.NewTransporter | 更换底层 transport，默认值：netpoll.NewTransporter |
-| WithHostPorts  | string | 指定监听的地址和端口 |
-| WithKeepAliveTimeout | time.Duration | tcp 长连接保活时间，一般情况下不用修改，更应该关注 idleTimeout。默认值：1min |
-| WithReadTimeout | time.Duration | 底层读取数据超时时间。默认值：3min |
-| WithIdleTimeout | time.Duration | 长连接请求链接空闲超时时间。默认值：3min |
-| WithMaxRequestBodySize | int | 配置最大的请求体大小，默认4M（4M对应的填的值是4\*1024\*1024） |
-| WithRedirectTrailingSlash | bool | 自动根据末尾的 / 转发，例如：如果 router 只有 /foo/，那么 /foo 会重定向到 /foo/ ；如果只有 /foo，那么 /foo/ 会重定向到 /foo。默认开启 |
-| WithRemoveExtraSlash | bool | RemoveExtraSlash 当有额外的 / 时也可以当作参数。如: user/:name，如果开启该选项 user//xiaoming 也可匹配上参数。默认关闭 |
-| WithUnescapePathValues | bool | 如果开启，请求路径会被自动转义（eg. '%2F' -> '/'）。如果 UseRawPath 为 false（默认情况），则 UnescapePathValues 实际上为 true，因为 .URI().Path() 将被使用，它已经是转义后的。设置该参数为 false，需要配合 WithUseRawPath(true)。 默认开启(true) |
-| WithUseRawPath | bool | 如果开启， 会使用原始 path 进行路由匹配。默认关闭 |
-| WithHandleMethodNotAllowed | bool | 如果开启，当当前路径不能被匹配上时，server 会去检查其他方法是否注册了当前路径的路由，如果存在则会响应"Method Not Allowed"，并返回状态码405; 如果没有，则会用 NotFound 的 handler 进行处理。默认关闭 |
-| WithDisablePreParseMultipartForm | bool | 如果开启，则不会预处理 multipart form。可以通过 ctx.Request.Body() 获取到 body 后由用户处理。默认关闭 |
-| WithStreamBody | bool | 如果开启，则会使用流式处理 body。默认关闭 |
-| WithNetwork | string | 设置网络协议，可选：tcp，udp，unix（unix domain socket），默认为tcp |
-| ContinueHandler | func(header *RequestHeader) bool | 在接收到 Expect 100 Continue 头之后调用 ContinueHandler。使用 ContinueHandler，服务器可以决定是否根据标头读取可能很大的请求正文 |
-| PanicHandler | HandlerFunc | 处理 panic，用来生成错误页面并返回500 |
-| NotFound | HandlerFunc | 当路由匹配不上时被调用的 handler |
-| WithExitWaitTime | time.Duration | 设置优雅退出时间。Server 会停止建立新的连接，并对关闭后的每一个请求设置 Connection: Close 的 header，当到达设定的时间关闭 Server。当所有连接已经关闭时，Server 可以提前关闭。默认 5s |
-| WithTLS | tls.Config | 配置 server tls 能力 |
-| WithListenConfig | net.ListenConfig | 设置监听器配置，可用于设置是否允许 reuse port 等|
-| WithALPN | bool | 是否开启 ALPN。默认关闭 |
-| WithTracer | tracer.Tracer | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭 |
-| WithTraceLevel | stats.Level | 设置 trace level，默认 LevelDetailed |
+类型: `time.Duration`, 默认值: `1 * time.Minute`
+
+`WithKeepAliveTimeout` 用于设置请求头 Keep-Alive: timeout, 即 tcp 长连接保活时间
+
+在大多数情况下，其实没有必要关心这个选项
+
+示例代码:
+
+```go
+package main
+
+// ...
+
+func main()  {
+	h := server.Default(server.WithKeepAliveTimeout(2 * time.Minute))
+	// ...
+}
+```
+
+### WithKeepAlive
+
+类型: `bool`, 默认值: `true`
+
+`WithKeepAlive` 用于设置是否使用长连接, 即设置请求头 Connection: Keep-Alive
+
+当设置值为 false 时, `WithKeepAliveTimeout` 的设置没有意义
+
+示例代码:
+
+```go
+package main
+
+// ...
+
+func main()  {
+	h := server.Default(server.WithKeepAlive(false))
+	// ...
+}
+```
+
+### WithReadTimeout
+
+`WithReadTimeout` 用于设置读取超时的时限, 默认时间为 `3 * time.Minute`, hertz 会在当读取请求超时时关闭连接
+
+示例代码:
+
+```go
+package main
+
+// ...
+
+func main()  {
+	h := server.Default(server.WithReadTimeout(3 * time.Minute))
+	// ...
+}
+```
+
+### WithIdleTimeout
+
+类型: `time.Duration`, 默认值: `3 * time.Minute`
+
+`WithIdleTimeout` 用于设置 tcp 长连接请求链接空闲超时时间
+
+当连续的请求超时时, 在 keepalive 模式下会直接关闭连接。设置这一点是为了保护服务器不受恶意请求的影响。
+
+示例代码:
+
+```go
+package main
+
+// ...
+
+func main()  {
+	h := server.Default(server.WithIdleTimeout(3 * time.Minute))
+	// ...
+}
+```
+
+### WithRedirectTrailingSlash
+
+`WithRedirectTrailingSlash` 用于设置是否启用重定向模糊匹配尾部斜线。
+
+默认为启用, 即请求为 `/foo/` 但实际上服务器中只有 `/foo` 的路径时, 请求会重定向到 `/foo` 并且 GET 方法的请求会设置状态码为 301,
+其余的情况会设置状态码为 307
+
+
+示例代码:
+
+```go
+package main
+
+// ...
+
+func main()  {
+	h := server.Default(server.WithRedirectTrailingSlash(true))
+	// 当请求路径为 /ping/ 时, 实际进行处理的路径为 /ping
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {})
+	// ...
+}
+```
+### WithRedirectFixedPath
+
+`WithRedirectFixedPath` 用于设置是否修复请求路径, 默认值为 false
+
+如果启用, router 将会尝试将请求的路径修复为已有的路径, 使用已有处理逻辑在被修复的请求路径上。
+
+请求的大致步骤:
+- 删除多余的路径元素, 例如 `./` 和 `//`
+- 对修复过的路径进行忽略大小写的查找
+- 如果找到符合的路径, GET 方法的请求的状态码设置为 301, 其它的为 308
+
+例如 `/FOO` 或 `/..//FoO` 会被重定向到 `/foo`, 本选项和 `WithRedirectTrailingSlash` 函数的配置没有相关联。
+
+示例代码:
+```go
+package main
+
+// ...
+
+func main()  {
+	h := server.Default(server.WithRedirectFixedPath(true))
+	// 当请求路径为 /../PinG 之类时, 则会匹配为 /ping 进行逻辑处理
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {})
+	// ...
+}
+```
+
+### WithHandleMethodNotAllowed
+
+类型: `bool`, 默认值: `false`
+
+`WithHandleMethodNotAllowed` 设置为 `true` 时, 在请求时如若当前路径无法匹配时
+1. 检查其他方法是否注册了该路径的路由, 如若存在则返回 "Method Not Allowed", 并设置状态码为 405
+2. 如果没有搜寻到，则会用 NotFound 的 handler 进行处理
+
+示例代码:
+```go
+package main
+
+// ...
+
+func main()  {
+	h := server.Default(server.WithRedirectFixedPath(true))
+	// 当请求方法为 POST, 路径为 /ping, 则返回 "Method Not Allowed", 并设置状态码为 405
+	// 其余情况使用 NotFound 的 handler 进行处理
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {})
+	// ...
+}
+```
+
+### WithUseRawPath
+
+
+
+### WithUnescapePathValues
+
+
+### WithRemoveExtraSlash
+
+类型: `bool`, 默认值: `false`
+
+`WithRemoveExtraSlash` 设置为 `true` 时, 会将多余 `/` 移除
+
+若 `/user/:name` 为路径, 则当请求路径为 `/user//unknown`时,取出的参数仍为 `unknown`
+
+示例代码:
+```go
+package main
+
+// ...
+
+func main()  {
+	h := server.Default(server.WithRemoveExtraSlash(true))
+	h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
+		// 当请求路径为 `/user//unknown`时,取出的参数仍为 `unknown`
+		param := ctx.Param("name")
+        // ...
+	})
+	// ...
+}
+```
+
+### WithDisablePreParseMultipartForm
+
+类型: `bool`, 默认值: `false`
+
+`WithDisablePreParseMultipartForm` 设置为 `true` 时, 并不会预处理 multipart form
+
+可以由用户通过 ctx.Request.Body() 获取到 body 处理
+
+### WithHostPorts
+
+类型: `string`, 默认值: `:8888`
+
+`WithHostPorts` 用于指定监听的地址和端口
+
+示例代码:
+```go
+package main
+
+// ...
+
+func main()  {
+	// ":8080" 用于设置端口, 地址为自动获取
+	h := server.Default(server.WithHostPorts(":8080"))
+	// "127.0.0.1:8080" 同时指定了监听的地址和端口
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+	// ...
+}
+```
+
+
+### WithMaxRequestBodySize
+
+### WithMaxKeepBodySize
+
+### WithGetOnly
+
+### WithKeepAlive
+
+### WithStreamBody
+
+### WithNetwork
+
+### WithExitWaitTime
+
+### WithTLS
+
+### WithListenConfig
+
+### WithTransport
+
+### WithH2C
+
+### WithReadBufferSize
+
+### WithALPN
+
+### WithTraceLevel
+
+### WithRegistry
+
+### WithAutoReloadRender
+
+
+| 配置名称                             | 类型                               | 说明                                                                                                                                                                             |
+|:---------------------------------|:---------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| WithTransport                    | network.NewTransporter           | 更换底层 transport，默认值：netpoll.NewTransporter                                                                                                                                      |
+| WithHostPorts                    | string                           | 指定监听的地址和端口                                                                                                                                                                     |
+| WithKeepAliveTimeout             | time.Duration                    | tcp 长连接保活时间，一般情况下不用修改，更应该关注 idleTimeout。默认值：1min                                                                                                                               |
+| WithReadTimeout                  | time.Duration                    | 底层读取数据超时时间。默认值：3min                                                                                                                                                            |
+| WithIdleTimeout                  | time.Duration                    | 长连接请求链接空闲超时时间。默认值：3min                                                                                                                                                         |
+| WithMaxRequestBodySize           | int                              | 配置最大的请求体大小，默认4M（4M对应的填的值是4\*1024\*1024）                                                                                                                                        |
+| WithRedirectTrailingSlash        | bool                             | 自动根据末尾的 / 转发，例如：如果 router 只有 /foo/，那么 /foo 会重定向到 /foo/ ；如果只有 /foo，那么 /foo/ 会重定向到 /foo。默认开启                                                                                     |
+| WithRemoveExtraSlash             | bool                             | RemoveExtraSlash 当有额外的 / 时也可以当作参数。如: user/:name，如果开启该选项 user//xiaoming 也可匹配上参数。默认关闭                                                                                            |
+| WithUnescapePathValues           | bool                             | 如果开启，请求路径会被自动转义（eg. '%2F' -> '/'）。如果 UseRawPath 为 false（默认情况），则 UnescapePathValues 实际上为 true，因为 .URI().Path() 将被使用，它已经是转义后的。设置该参数为 false，需要配合 WithUseRawPath(true)。 默认开启(true) |
+| WithUseRawPath                   | bool                             | 如果开启， 会使用原始 path 进行路由匹配。默认关闭                                                                                                                                                   |
+| WithHandleMethodNotAllowed       | bool                             | 如果开启，当当前路径不能被匹配上时，server 会去检查其他方法是否注册了当前路径的路由，如果存在则会响应"Method Not Allowed"，并返回状态码405; 如果没有，则会用 NotFound 的 handler 进行处理。默认关闭                                                    |
+| WithDisablePreParseMultipartForm | bool                             | 如果开启，则不会预处理 multipart form。可以通过 ctx.Request.Body() 获取到 body 后由用户处理。默认关闭                                                                                                        |
+| WithStreamBody                   | bool                             | 如果开启，则会使用流式处理 body。默认关闭                                                                                                                                                        |
+| WithNetwork                      | string                           | 设置网络协议，可选：tcp，udp，unix（unix domain socket），默认为tcp                                                                                                                              |
+| ContinueHandler                  | func(header *RequestHeader) bool | 在接收到 Expect 100 Continue 头之后调用 ContinueHandler。使用 ContinueHandler，服务器可以决定是否根据标头读取可能很大的请求正文                                                                                     |
+| PanicHandler                     | HandlerFunc                      | 处理 panic，用来生成错误页面并返回500                                                                                                                                                        |
+| NotFound                         | HandlerFunc                      | 当路由匹配不上时被调用的 handler                                                                                                                                                           |
+| WithExitWaitTime                 | time.Duration                    | 设置优雅退出时间。Server 会停止建立新的连接，并对关闭后的每一个请求设置 Connection: Close 的 header，当到达设定的时间关闭 Server。当所有连接已经关闭时，Server 可以提前关闭。默认 5s                                                            |
+| WithTLS                          | tls.Config                       | 配置 server tls 能力                                                                                                                                                               |
+| WithListenConfig                 | net.ListenConfig                 | 设置监听器配置，可用于设置是否允许 reuse port 等                                                                                                                                                 |
+| WithALPN                         | bool                             | 是否开启 ALPN。默认关闭                                                                                                                                                                 |
+| WithTracer                       | tracer.Tracer                    | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭                                                                                                                                               |
+| WithTraceLevel                   | stats.Level                      | 设置 trace level，默认 LevelDetailed                                                                                                                                                |
 
 ## Client
 
