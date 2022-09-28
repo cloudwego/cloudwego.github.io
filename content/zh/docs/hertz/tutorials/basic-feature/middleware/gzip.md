@@ -62,22 +62,22 @@ func Gzip(level int, options ...Option) app.HandlerFunc
 ```
 示例代码
 ```go
-package main
+    package main
 
- // ...
+     // ...
 
-func main() {
-	h := server.Default(server.WithHostPorts(":8080"))
-    //BestCompression option
-	h.Use(gzip.Gzip(gzip.BestCompression))
-    //BestSpeed option
-    h.Use(gzip.Gzip(gzip.BestSpeed))
-    //DefaultCompression option
-    h.Use(gzip.Gzip(gzip.DefaultCompression))
-    //NoCompression option
-    h.Use(gzip.Gzip(gzip.NoCompression))
-	// ...
-}
+    func main() {
+    	h := server.Default(server.WithHostPorts(":8080"))
+        //BestCompression option
+    	h.Use(gzip.Gzip(gzip.BestCompression))
+        //BestSpeed option
+        h.Use(gzip.Gzip(gzip.BestSpeed))
+        //DefaultCompression option
+        h.Use(gzip.Gzip(gzip.DefaultCompression))
+        //NoCompression option
+        h.Use(gzip.Gzip(gzip.NoCompression))
+    	// ...
+    }
 ```
 
 ### WithExcludedExtensions
@@ -86,31 +86,27 @@ func main() {
 
 函数签名如下：
 
-```
-func WithExcludedExtensions(args []string) Option
+```go
+func WithExcludedPaths(args []string) Option
 ```
 
 示例代码：
 
 ```go
-func WithExcludedPaths(args []string) Option
-```
+    package main
 
-```go
-package main
+    // ...
 
-// ...
-
-func main() {
-	h := server.Default(server.WithHostPorts(":8080"))
-	h.Use(
-		gzip.Gzip(
-			gzip.DefaultCompression,
-			gzip.WithExcludedExtensions([]string{".pdf", ".mp4"}),
-		),
-	)
-// ...
-}
+    func main() {
+    	h := server.Default(server.WithHostPorts(":8080"))
+    	h.Use(
+    		gzip.Gzip(
+    			gzip.DefaultCompression,
+    			gzip.WithExcludedExtensions([]string{".pdf", ".mp4"}),
+    		),
+    	)
+    // ...
+    }
 ```
 
 ### WithExcludedPaths
@@ -126,20 +122,20 @@ func WithExcludedPaths(args []string) Option
 示例代码如下：
 
 ```go
-package main
+    package main
 
-// ...
+    // ...
 
-func main() {
-	h := server.Default(server.WithHostPorts(":8080"))
-    h.Use(
-		gzip.Gzip(
-			gzip.DefaultCompression,
-            gzip.WithExcludedPaths([]string{"/api/"}),
-		),
-	)
-// ...
-}
+    func main() {
+    	h := server.Default(server.WithHostPorts(":8080"))
+        h.Use(
+    		gzip.Gzip(
+    			gzip.DefaultCompression,
+                        gzip.WithExcludedPaths([]string{"/api/"}),
+    		),
+    	)
+    // ...
+    }
 ```
 ### WithExcludedPathRegexes
 
@@ -154,20 +150,20 @@ func WithExcludedPathRegexes(args []string) Option
 示例代码如下：
 
 ```go
-package main
+    package main
 
-// ...
+        // ...
 
-func main() {
-   h := server.Default(server.WithHostPorts(":8080"))
-   h.Use(
-		gzip.Gzip(
-			gzip.DefaultCompression,
-           gzip.WithExcludedPathRegexes([]string{".*"}),
-		),
-	)
-// ...
-}
+        func main() {
+           h := server.Default(server.WithHostPorts(":8080"))
+           h.Use(
+        		gzip.Gzip(
+        			gzip.DefaultCompression,
+	    			gzip.WithExcludedPathRegexes([]string{".*"}),
+        		),
+        	)
+        // ...
+    }
 ```
 
 

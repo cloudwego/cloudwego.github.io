@@ -18,7 +18,7 @@ Refer to the below for usage [example](https://github.com/hertz-contrib/gzip/tre
 go get github.com/hertz-contrib/gzip
 ```
 
-## Sample Code
+## Sample Code:
 ```go
 package main
 
@@ -62,24 +62,24 @@ Function Signature
 ```go
 func Gzip(level int, options ...Option) app.HandlerFunc
 ```
-Sample Code
+Sample Code:
 ```go
-package main
+    package main
 
- // ...
+     // ...
 
-func main() {
-	h := server.Default(server.WithHostPorts(":8080"))
-    //BestCompression option
-	h.Use(gzip.Gzip(gzip.BestCompression))
-    //BestSpeed option
-    h.Use(gzip.Gzip(gzip.BestSpeed))
-    //DefaultCompression option
-    h.Use(gzip.Gzip(gzip.DefaultCompression))
-    //NoCompression option
-    h.Use(gzip.Gzip(gzip.NoCompression))
-	// ...
-}
+    func main() {
+    	h := server.Default(server.WithHostPorts(":8080"))
+        //BestCompression option
+    	h.Use(gzip.Gzip(gzip.BestCompression))
+        //BestSpeed option
+        h.Use(gzip.Gzip(gzip.BestSpeed))
+        //DefaultCompression option
+        h.Use(gzip.Gzip(gzip.DefaultCompression))
+        //NoCompression option
+        h.Use(gzip.Gzip(gzip.NoCompression))
+    	// ...
+    }
 ```
 
 ### WithExcludedExtensions
@@ -94,7 +94,7 @@ Function Signature
 func WithExcludedPaths(args []string) Option
 ```
 
-Sample Code
+Sample Code:
 
 ```go
 package main
@@ -121,23 +121,23 @@ func main() {
 func WithExcludedPaths(args []string) Option
 ```
 
-Sample Code
+Sample Code:
 
 ```go
-package main
+    package main
 
-// ...
+    // ...
 
-func main() {
-	h := server.Default(server.WithHostPorts(":8080"))
-    h.Use(
-		gzip.Gzip(
-			gzip.DefaultCompression,
-            gzip.WithExcludedPaths([]string{"/api/"}),
-		),
-	)
-// ...
-}
+    func main() {
+    	h := server.Default(server.WithHostPorts(":8080"))
+        h.Use(
+    		gzip.Gzip(
+    			gzip.DefaultCompression,
+                        gzip.WithExcludedPaths([]string{"/api/"}),
+    		),
+    	)
+    // ...
+    }
 ```
 ### WithExcludedPathRegexes
 
@@ -149,7 +149,7 @@ Function Signature
 func WithExcludedPathRegexes(args []string) Option
 ```
 
-Sample Code
+Sample Code:
 
 ```go
 package main
