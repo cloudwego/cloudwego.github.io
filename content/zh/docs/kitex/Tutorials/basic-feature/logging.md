@@ -40,3 +40,7 @@ func main() {
     ... // continue to set up your server
 }
 ```
+
+## 日志实现
+
+[obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) 扩展下也提供了基于 [logrus](https://github.com/sirupsen/logrus) 和 [zap](https://github.com/uber-go/zap) 的日志实现
