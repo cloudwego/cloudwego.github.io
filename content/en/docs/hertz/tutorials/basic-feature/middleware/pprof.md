@@ -44,9 +44,9 @@ func main() {
 }
 ```
 
-## Advanced
+## Config
 
-### Custom prefix
+### PrefixOptions
 
 The default prefix of `pprof` is `debug/pprof`, that is, after the user registers and uses `pprof` extension in the Hertz project, the user can view the sampling information of the current project by visiting `localhost:8888/debug/pprof`. Additionally, `pprof` supports user-defined prefixes.
 
@@ -84,7 +84,7 @@ func main() {
 }
 ```
 
-### Custom routing group
+### RouteRegister
 
 `pprof` can be registered not only on the Hertz object, but also on the router group (RouterGroup).
 

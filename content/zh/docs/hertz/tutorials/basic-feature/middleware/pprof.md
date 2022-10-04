@@ -44,9 +44,9 @@ func main() {
 }
 ```
 
-## 进阶使用
+## 配置
 
-### 自定义前缀
+### PrefixOptions
 
 `pprof` 的默认前缀为 `debug/pprof`，即用户在 Hertz 项目中注册并使用 `pprof` 后，用户可以通过访问
 `localhost:8888/debug/pprof` 来查看当前项目的采样信息。
@@ -85,7 +85,7 @@ func main() {
 }
 ```
 
-### 自定义路由组
+### RouteRegister
 
 `pprof` 不仅可以注册到 Hertz 对象上，还可以注册到路由组（RouterGroup）上。
 
