@@ -12,8 +12,8 @@ description: >
 
 | 消息类型 | 编码协议 | 传输协议                                                  |
 |--------|-------|-------------------------------------------------------|
-|PingPong|Thrift / Protobuf| [TTHeader](../../framework-exten/codec) / HTTP2(gRPC) |
-|Oneway|Thrift| [TTHeader](../../framework-exten/codec)               |
+|PingPong|Thrift / Protobuf| [TTHeader](../../../reference/transport_protocol_ttheader) / HTTP2(gRPC) |
+|Oneway|Thrift| [TTHeader](../../../reference/transport_protocol_ttheader)               |
 |Streaming|Protobuf| HTTP2(gRPC)                                           |
 
 - PingPong：客户端发起一个请求后会等待一个响应才可以进行下一次请求

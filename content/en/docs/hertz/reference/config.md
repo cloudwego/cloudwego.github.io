@@ -7,15 +7,17 @@ description: >
 ---
 
 ## Server
+
 The configuration items on the Server side all use `server.xxx` when initializing the Server, such as:
+
 ```go
 package main
 
 import "github.com/cloudwego/hertz/pkg/app/server"
 
 func main() {
-    h := server.New(server.WithXXXX())
-    ...
+	h := server.New(server.WithXXXX())
+	...
 }
 ```
 
@@ -45,8 +47,16 @@ func main() {
 | WithTracer | tracer.Tracer | Inject tracer implementation, if not inject Tracer. Default: close. |
 | WithTraceLevel | stats.Level | Set trace level, Default: LevelDetailed. |
 
+Server Connection limitation:
+
+* If you are using the standard network library, there is no such restriction.
+* If netpoll is used, the maximum number of connections is 10000 (this is
+  the [gopool](https://github.com/bytedance/gopkg/blob/b9c1c36b51a6837cef4c2223e11522e3a647460c/util/gopool/gopool.go#L46))
+  used at the bottom of netpoll. Yes, the modification method is also very simple, just call the function provided by
+  gopool: `gopool.SetCap(xxx)` (you can call it once in main.go).
 
 ## Client
+
 The configuration items on the Client side all use `server.xxx` when initializing the Server, such as:
 
 ```go
