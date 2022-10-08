@@ -5,7 +5,7 @@ weight: 7
 description: >
 ---
 
-### 1. 重试功能说明
+## 1. 重试功能说明
 
 目前有三类重试：异常重试、Backup Request，建连失败重试（默认）。其中建连失败是网络层面问题，由于请求未发出，框架会默认重试。 本文档介绍前两类重试的使用：
  - 异常重试：提高服务整体的成功率
@@ -13,12 +13,12 @@ description: >
 
 因为很多的业务请求不具有幂等性，这两类重试不会作为默认策略。
 
-#### 1.1 注意：
+### 1.1 注意：
 
-- 确认你的服务具有幂等性，再开启重试
+- 确认你的服务具有**幂等性**，再开启重试
 - 异常重试会增加延迟
 
-### 2. 重试策略
+## 2. 重试策略
 
 异常重试和 Backup Request 策略方法粒度上只能配置其中之一。
 - 异常重试
@@ -45,13 +45,13 @@ description: >
 | `ChainStop`           | -  | 链路中止, 默认启用。如果上游请求是重试请求，不会发送 Backup Request。                                              |   >= v0.0.5 后作为默认策略              |
 | `RetrySameNode`       | false  | 框架默认选择其他节点重试，若需要同节点重试，可配置为 true                                               |                 |
 
-### 3. 使用方式
+## 3. 使用方式
 
-#### 3.1 代码配置开启
+### 3.1 代码配置开启
 
 注意：若通过代码配置开启重试，动态配置 (见 3.3) 则无法生效。
 
-##### 3.1.1 异常重试配置
+#### 3.1.1 异常重试配置
 
 - 配置示例：
 
@@ -90,7 +90,7 @@ fp.WithRetryBreaker(errRate float64)
 fp.WithRetrySameNode()
 ```
 
-###### 3.1.1.1 指定结果重试（异常/Resp）
+##### 3.1.1.1 指定结果重试（异常/Resp）
 
 支持版本 v0.4.0。
 
@@ -177,7 +177,7 @@ respRetry := func(resp interface{}, ri rpcinfo.RPCInfo) bool {
 }
 ```
 
-##### 3.1.2 Backup Request 配置
+#### 3.1.2 Backup Request 配置
 
 - Retry Delay 建议
 
@@ -205,7 +205,7 @@ bp.WithRetryBreaker(errRate float64)
 bp.WithRetrySameNode()
 ```
 
-##### 3.1.3 方法粒度配置重试
+#### 3.1.3 方法粒度配置重试
 
 支持版本 v0.4.0。
 
@@ -229,7 +229,7 @@ xxxCli := xxxservice.NewClient(targetService, opts...)
 
 > 如果同时配置了 `WithFailureRetry` 或 `WithBackupRequest`，则 `WithRetryMethodPolicies` 未配置的方法会按照 `WithFailureRetry` 或 `WithBackupRequest` 策略执行。但 `WithFailureRetry` 和 `WithBackupRequest` 因为会对 client 所有方法生效，不能同时配置。
 
-##### 3.1.4 请求级别配置重试（callopt）
+#### 3.1.4 请求级别配置重试（callopt）
 
 支持版本 v0.4.0。
 
@@ -251,9 +251,7 @@ bp.WithMaxRetryTimes(1)
 resp, err := cli.Mock(ctx, req, callopt.WithRetryPolicy(retry.BuildBackupRequest(bp)))
 ```
 
-
-
-#### 3.2 复用熔断器
+### 3.2 复用熔断器
 
 当开启了服务的熔断配置可以复用熔断的统计减少额外的 CPU 消耗，注意重试的熔断阈值须低于服务的熔断阈值。
 
@@ -275,7 +273,7 @@ opts = append(opts, client.WithMiddleware(cbs.ServiceCBMW()))
 cli, err := xxxservice.NewClient(targetService, opts...)
 ```
 
-#### 3.3 动态开启或调整策略
+### 3.3 动态开启或调整策略
 
 若需要结合远程配置，动态开启重试或运行时调整策略，可以通过 retryContainer 的 `NotifyPolicyChange` 方法生效，目前 Kitex 开源版本暂未提供远程配置模块，使用者可集成自己的配置中心。注意：若已通过代码配置开启，动态配置则无法生效。
 
@@ -297,9 +295,10 @@ yourChangeFunc := func(key string, oldData, newData interface{}) {
 cli, err := xxxservice.NewClient(targetService, client.WithRetryContainer(retryC))
 ```
 
-### 4. 监控埋点
+## 4. 监控埋点
 
 Kitex 对重试的请求在 rpcinfo 中记录了重试次数和之前请求的耗时，可以在Client侧的 metric 或日志中根据 retry tag 区分上报或输出。获取方式：
+
 ```go
 var retryCount string
 var lastCosts string
@@ -311,14 +310,16 @@ if retryTag, ok := toInfo.Tag(rpcinfo.RetryTag); ok {
       lastCosts = lastCostTag
    }
 }
-````
+```
 
-### 5. 下游识别重试请求
+## 5. 下游识别重试请求
 
 如果使用 TTHeader 作为传输协议，下游 handler 可以通过如下方式判断当前是否是重试请求，自行决定是否继续处理。
+
 ```go
 retryReqCount, exist := metainfo.GetPersistentValue(ctx,retry.TransitKey)
 ```
+
 比如 retryReqCount = 2，表示第二次重试请求（不包括首次请求），则采取业务降级策略返回部分或 mock 数据返回（非重试请求没有该信息）。
 
 > Q: 框架默认开启链路中止，业务是否还有必要识别重试请求？

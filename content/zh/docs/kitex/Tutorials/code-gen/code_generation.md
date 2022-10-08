@@ -10,7 +10,7 @@ description: >
 ## 安装
 
 ```
-go install github.com/cloudwego/kitex/tool/cmd/kitex
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 ```
 
 用 go 命令来安装是最简单的，你也可以选择自己从源码构建和安装。要查看 kitex 的安装位置，可以用：
@@ -52,7 +52,7 @@ kitex 生成的代码会依赖相应的 Go 语言代码库：
 go get github.com/apache/thrift@v0.13.0
 ```
 
-或用 `replace` 指令强制固定该版本： 
+或用 `replace` 指令强制固定该版本：
 
 ```
 go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0

@@ -209,13 +209,13 @@ Shutdown server and client we have run, then:
 
 1. run server
 
-        `go run .`
+    `go run .`
 
 2. run client
 
-        open another terminal, and `go run ./client`
+    open another terminal, and `go run ./client`
 
-        Now, you can see outputs of `add` RPC.
+    Now, you can see outputs of `add` RPC.
 
 ## Tutorial
 
@@ -251,7 +251,7 @@ enter directory
 
 You can use following command to install and upgrade `kitex`:
 
-`$ go install github.com/cloudwego/kitex/tool/cmd/kitex`
+`$ go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`
 
 After that, you can just run it to check whether it's installed successfully.
 

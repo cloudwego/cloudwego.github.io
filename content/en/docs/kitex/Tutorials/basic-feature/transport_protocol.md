@@ -23,9 +23,10 @@ Here are the available combination options of transport protocols and message pr
 
 If you want to use custom implementations for the message or transport protocol, you can find help here [Extension of Codec](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/codec/).
 
-# Configuration
+## Configuration
 
 You can configure the transport protocol when initializing the client:
+
 ```go
 // client option
 client.WithTransportProtocol(transport.XXX)
@@ -33,9 +34,9 @@ client.WithTransportProtocol(transport.XXX)
 
 Kitex Server supports protocol detection for all supported protocols and doesn't require explicit configuration.
 
-# Usage
+## Usage
 
-## Thrift + TTHeader
+### Thrift + TTHeader
 
 ```go
 // client side
@@ -52,7 +53,7 @@ opts = append(opts, server.WithMetaHandler(transmeta.ServerTTHeaderHandler))
 cli, err := xxxservice.NewServer(handler, opts...)
 ```
 
-## gRPC
+### gRPC
 
 ```go
 // client side
