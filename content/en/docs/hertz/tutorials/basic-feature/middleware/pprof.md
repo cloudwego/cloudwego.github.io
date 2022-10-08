@@ -52,11 +52,13 @@ The default prefix of `pprof` is `debug/pprof`, that is, after the user register
 
 
 The function signature is as follows:
+
 ```go
 Register(r *server.Hertz, prefixOptions ...string)
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -89,14 +91,17 @@ func main() {
 `pprof` can be registered not only on the Hertz object, but also on the router group (RouterGroup).
 
 The function signature is as follows:
+
 ```go
 RouteRegister(rg *route.RouterGroup, prefixOptions ...string)
 ```
+
 The `pprof` prefix registered in this way is the result of splicing the prefix of the routing group and the custom prefix.
 * If the user does not specify a prefix, the prefix of the registered `pprof` is the result of concatenating the prefix of the routing group and the default prefix `/debug/pprof`, that is, `/xxx/debug/pprof` (xxx is the prefix of the routing group);
 * If the user specifies a prefix, the prefix of the registered `pprof` is the result of concatenating the prefix of the routing group and the custom prefix. For example, in the following example, the registered `pprof` prefix is `/admin/pprof`.
 
 Sample code:
+
 ```go
 package main
 
@@ -145,7 +150,7 @@ Use the `go tool pprof` tool to view stack sampling information:
 go tool pprof http://localhost:8888/debug/pprof/heap
 ```
 
-Use the `go tool pprof` tool to view the CPU sampling information for 30s:
+Use the `go tool pprof` tool to view the CPU sampling information:
 
 ```bash
 go tool pprof http://localhost:8888/debug/pprof/profile
@@ -163,7 +168,7 @@ Use the `go tool pprof` tool to view the blocking information of the go coroutin
 go tool pprof http://localhost:8888/debug/pprof/block
 ```
 
-Get the execution trace information within 5s:
+Get the execution trace information:
 
 ```bash
 wget http://localhost:8888/debug/pprof/trace?seconds=5

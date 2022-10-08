@@ -53,11 +53,13 @@ func main() {
 此外，用户可以在注册 `pprof` 时指定自定义前缀。
 
 函数签名如下：
+
 ```go
 Register(r *server.Hertz, prefixOptions ...string)
 ```
 
 示例代码:
+
 ```go
 package main
 
@@ -90,14 +92,17 @@ func main() {
 `pprof` 不仅可以注册到 Hertz 对象上，还可以注册到路由组（RouterGroup）上。
 
 函数签名如下：
+
 ```go
 RouteRegister(rg *route.RouterGroup, prefixOptions ...string)
 ```
+
 本方式注册后的 `pprof` 前缀为路由组的前缀与自定义前缀拼接后的结果。
 * 用户不指定前缀，注册后的 `pprof` 的前缀为路由组的前缀与默认前缀 `/debug/pprof` 拼接后的结果，即为 `/xxx/debug/pprof` （`xxx` 为路由组前缀）；
 * 用户指定前缀，注册后的 `pprof` 的前缀为路由组的的前缀与自定义前缀拼接后的结果，比如下文示例中注册后的 `pprof` 前缀为 `/admin/pprof`。
 
 示例代码:
+
 ```go
 package main
 
@@ -128,14 +133,14 @@ func main() {
 }
 ```
 
-## 查看pprof采样信息
+## 查看 pprof 采样信息
 
 ### 通过浏览器查看
 
 通过浏览器访问 `localhost:8888/debug/pprof`
 
-* Hertz端口号默认为 8888
-* pprof默认地址前缀为 `debug/pprof`
+* Hertz 端口号默认为 8888
+* pprof 默认地址前缀为 `debug/pprof`
 * 端口号和访问路由与用户实际端口号和 `pprof` 前缀一致
 
 ### 通过 `go tool pprof` 查看
@@ -146,7 +151,7 @@ func main() {
 go tool pprof http://localhost:8888/debug/pprof/heap
 ```
 
-使用 `go tool pprof` 工具查看 30s 的 CPU 采样信息：
+使用 `go tool pprof` 工具查看 CPU 采样信息：
 
 ```bash
 go tool pprof http://localhost:8888/debug/pprof/profile
@@ -164,7 +169,7 @@ go tool pprof http://localhost:8888/debug/pprof/profile?seconds=10
 go tool pprof http://localhost:8888/debug/pprof/block
 ```
 
-获取 5s 内的执行 trace 信息：
+获取执行 trace 信息：
 
 ```bash
 wget http://localhost:8888/debug/pprof/trace?seconds=5
