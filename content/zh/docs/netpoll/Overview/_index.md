@@ -53,7 +53,7 @@ goroutine，大幅增加调度开销。此外，[net.Conn][net.Conn] 没有提�
 
 我们提供了 [netpoll-benchmark][netpoll-benchmark] 项目用来长期追踪和比较 [Netpoll][Netpoll] 与其他框架在不同情况下的性能数据以供参考。
 
-更多测试参考 [kitex-benchmark][kitex-benchmark] 和 [hertz-benchmark][hertz-benchmark] (即将开源)
+更多测试参考 [kitex-benchmark][kitex-benchmark] 和 [hertz-benchmark][hertz-benchmark]
 
 ## 参考
 
