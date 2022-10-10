@@ -77,7 +77,7 @@ func main() {
 | WithMaxConnDuration | time.Duration | 设置连接存活的最大时长，超过这个时间的连接在完成当前请求后会被关闭，默认无限长 |
 | WithMaxConnWaitTimeout | time.Duration | 设置等待空闲连接的最大时间，默认不等待 |
 | WithKeepAlive | bool | 是否使用长连接，默认开启 |
-| WithMaxIdempotentCallAttempts | int | 设置失败重试次数，默认5次 |
+| WithRetryConfig | ...retry.Option | 设置 client 的 retry config |
 | WithClientReadTimeout | time.Duration | 设置读取 response 的最长时间，默认无限长 |
 | WithTLSConfig | *tls.Config | 双向 TLS 认证时，设置 client 的 TLS config |
 | WithDialer | network.Dialer | 设置 client 使用的网络库，默认 netpoll |
