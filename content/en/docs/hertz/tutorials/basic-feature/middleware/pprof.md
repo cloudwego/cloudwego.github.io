@@ -1,5 +1,5 @@
 ---
-title: "pprof"
+title: "Pprof"
 date: 2022-09-24
 weight: 7
 description: >
@@ -33,13 +33,13 @@ import (
 
 func main() {
     h := server.Default()
-    
+
     pprof.Register(h)
-    
+
     h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
     ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
     })
-    
+
     h.Spin()
 }
 ```
@@ -142,7 +142,7 @@ Access `localhost:8888/debug/pprof` via browser
 * pprof default address prefix is `debug/pprof`
 * The port number and access route are the same as the user's actual port number and `pprof` prefix
 
-### Via `go tool pprof` 
+### Via `go tool pprof`
 
 Use the `go tool pprof` tool to view stack sampling information:
 
