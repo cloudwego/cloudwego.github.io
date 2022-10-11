@@ -1,5 +1,5 @@
 ---
-title: "pprof"
+title: "Pprof"
 date: 2022-09-24
 weight: 7
 description: >
@@ -33,13 +33,13 @@ import (
 
 func main() {
     h := server.Default()
-    
+
     pprof.Register(h)
-    
+
     h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
     ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
     })
-    
+
     h.Spin()
 }
 ```
