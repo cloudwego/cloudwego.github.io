@@ -41,7 +41,6 @@ func main() {
 	})
 	h.Spin()
 }
-
 ```
 ## Configuration
 
@@ -63,7 +62,7 @@ func Gzip(level int, options ...Option) app.HandlerFunc
 ```
 Sample Code:
 ```go
-    package main
+package main
 
 import (
 	"context"
@@ -76,21 +75,21 @@ import (
 	"github.com/hertz-contrib/gzip"
 )
 
-    func main() {
-    	h := server.Default(server.WithHostPorts(":8080"))
-        //BestCompression option
-    	h.Use(gzip.Gzip(gzip.BestCompression))
-        //BestSpeed option
-        h.Use(gzip.Gzip(gzip.BestSpeed))
-        //DefaultCompression option
-        h.Use(gzip.Gzip(gzip.DefaultCompression))
-        //NoCompression option
-        h.Use(gzip.Gzip(gzip.NoCompression))
-		h.GET("/api/book", func(ctx context.Context, c *app.RequestContext) {
-			c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
-		})
-		h.Spin()
-    }
+func main() {
+	h := server.Default(server.WithHostPorts(":8080"))
+	// BestCompression option
+	h.Use(gzip.Gzip(gzip.BestCompression))
+	// BestSpeed option
+	h.Use(gzip.Gzip(gzip.BestSpeed))
+	// DefaultCompression option
+	h.Use(gzip.Gzip(gzip.DefaultCompression))
+	// NoCompression option
+	h.Use(gzip.Gzip(gzip.NoCompression))
+	h.GET("/api/book", func(ctx context.Context, c *app.RequestContext) {
+		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
+	})
+	h.Spin()
+} 
 ```
 
 ### WithExcludedExtensions
@@ -147,7 +146,7 @@ func WithExcludedPaths(args []string) Option
 Sample Code:
 
 ```go
-    package main
+package main
 
 import (
 	"context"
@@ -160,19 +159,26 @@ import (
 	"github.com/hertz-contrib/gzip"
 )
 
-    func main() {
-    	h := server.Default(server.WithHostPorts(":8080"))
-        h.Use(
-    		gzip.Gzip(
-				gzip.DefaultCompression,
-				gzip.WithExcludedPaths([]string{"/api/"}),
-    		),
-    	)
-		h.GET("/api/book", func(ctx context.Context, c *app.RequestContext) {
-			c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
-		})
-		h.Spin()
-    }
+func main() {
+	h := server.Default(server.WithHostPorts(":8080"))
+	h.Use(
+		gzip.Gzip(
+			gzip.DefaultCompression,
+			// This WithExcludedPaths takes as its parameter the file path
+			gzip.WithExcludedPaths([]string{"/api/"}),
+		),
+	)
+	// This is before compression
+	h.GET("/api/book", func(ctx context.Context, c *app.RequestContext) {
+		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
+	})
+	// This is the compressed
+	h.GET("/book", func(ctx context.Context, c *app.RequestContext) {
+		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
+	})
+	h.Spin()
+}
+
 ```
 ### WithExcludedPathRegexes
 
@@ -201,14 +207,20 @@ import (
 )
 
 func main() {
-   h := server.Default(server.WithHostPorts(":8080"))
-   h.Use(
+	h := server.Default(server.WithHostPorts(":8080"))
+	h.Use(
 		gzip.Gzip(
 			gzip.DefaultCompression,
-            gzip.WithExcludedPathRegexes([]string{".*"}),
+			// This WithExcludedPathRegexes takes as an argument a regular expression that describes the path to be excluded
+			gzip.WithExcludedPathRegexes([]string{"/api.*"}),
 		),
 	)
+	// This is before compression
 	h.GET("/api/book", func(ctx context.Context, c *app.RequestContext) {
+		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
+	})
+	// This is the compressed
+	h.GET("/book", func(ctx context.Context, c *app.RequestContext) {
 		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
 	})
 	h.Spin()
