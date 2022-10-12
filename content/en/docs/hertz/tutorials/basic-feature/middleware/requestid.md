@@ -6,7 +6,8 @@ description: >
 
 ---
 
-[Request ID middleware](https://github.com/hertz-contrib/requestid) for Hertz framework, inspired by [gin](https://github.com/gin-contrib/requestid), able to add an identifier to the response using the `X-Request-ID` header, and passes the `X-Request-ID` value back to the caller if it's sent in the request headers.
+`X-Request-ID` is a common non-standard response fields, used to correlate HTTP requests between a client and server.
+Hertz also provides an [implementation](https://github.com/hertz-contrib/requestid) of Request ID, inspired by gin's [implementation](https://github.com/gin-contrib/requestid).
 
 ## Install
 
@@ -61,6 +62,17 @@ func main() {
 ```
 
 ## Config
+
+Hertz is able to add an identifier to the response using the `X-Request-ID` header, and passes the `X-Request-ID` value back to the caller if it's sent in the request headers by using middleware.
+Custom configuration of the `config` allows you to define the implementation details of Request ID according to different scenarios.
+
+In the **Example** above, only two custom configurations are passed in. More common configurations for the `config` are as follows:
+
+| Attribute | Description                                                                                |
+|-----------|--------------------------------------------------------------------------------------------|
+| generator | Define a function that generates a Request ID. By default, a UUID identifier is generated. |
+| headerKey | Define the key value of the Request ID. By default, the key value is `X-Request-ID`.       |
+| handler   | Define the handler function fo the Request ID.                                             |
 
 ### New
 
@@ -298,3 +310,7 @@ func main() {
 	h.Spin()
 }
 ```
+
+## Full Example
+
+As for usage, you may refer to hertz [example](https://github.com/hertz-contrib/requestid/tree/main/example)
