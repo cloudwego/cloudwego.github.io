@@ -20,17 +20,17 @@ go get github.com/hertz-contrib/gzip
 ```go
 package main
 
-import (
-	"context"
-	"fmt"
-	"net/http"
-	"time"
+    import (
+    	"context"
+    	"fmt"
+    	"net/http"
+    	"time"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/hertz-contrib/gzip"
+    	"github.com/cloudwego/hertz/pkg/app"
+    	"github.com/cloudwego/hertz/pkg/app/server"
+    	"github.com/hertz-contrib/gzip"
 
-)
+    )
 
 func main() {
 	h := server.Default(server.WithHostPorts(":8080"))
@@ -64,7 +64,17 @@ func Gzip(level int, options ...Option) app.HandlerFunc
 ```go
     package main
 
-     // ...
+    import (
+    	"context"
+    	"fmt"
+    	"net/http"
+    	"time"
+
+    	"github.com/cloudwego/hertz/pkg/app"
+    	"github.com/cloudwego/hertz/pkg/app/server"
+    	"github.com/hertz-contrib/gzip"
+
+    )
 
     func main() {
     	h := server.Default(server.WithHostPorts(":8080"))
@@ -76,7 +86,10 @@ func Gzip(level int, options ...Option) app.HandlerFunc
         h.Use(gzip.Gzip(gzip.DefaultCompression))
         //NoCompression option
         h.Use(gzip.Gzip(gzip.NoCompression))
-    	// ...
+		h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+			c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
+		})
+		h.Spin()
     }
 ```
 
@@ -95,7 +108,17 @@ func WithExcludedPaths(args []string) Option
 ```go
     package main
 
-    // ...
+    import (
+    	"context"
+    	"fmt"
+    	"net/http"
+    	"time"
+
+    	"github.com/cloudwego/hertz/pkg/app"
+    	"github.com/cloudwego/hertz/pkg/app/server"
+    	"github.com/hertz-contrib/gzip"
+
+    )
 
     func main() {
     	h := server.Default(server.WithHostPorts(":8080"))
@@ -105,7 +128,10 @@ func WithExcludedPaths(args []string) Option
     			gzip.WithExcludedExtensions([]string{".pdf", ".mp4"}),
     		),
     	)
-    // ...
+		h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+			c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
+		})
+		h.Spin()
     }
 ```
 
@@ -124,7 +150,17 @@ func WithExcludedPaths(args []string) Option
 ```go
     package main
 
-    // ...
+    import (
+    	"context"
+    	"fmt"
+    	"net/http"
+    	"time"
+
+    	"github.com/cloudwego/hertz/pkg/app"
+    	"github.com/cloudwego/hertz/pkg/app/server"
+    	"github.com/hertz-contrib/gzip"
+
+    )
 
     func main() {
     	h := server.Default(server.WithHostPorts(":8080"))
@@ -134,7 +170,10 @@ func WithExcludedPaths(args []string) Option
                         gzip.WithExcludedPaths([]string{"/api/"}),
     		),
     	)
-    // ...
+		h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+			c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
+		})
+		h.Spin()
     }
 ```
 ### WithExcludedPathRegexes
@@ -152,7 +191,17 @@ func WithExcludedPathRegexes(args []string) Option
 ```go
     package main
 
-        // ...
+    import (
+    	"context"
+    	"fmt"
+    	"net/http"
+    	"time"
+
+    	"github.com/cloudwego/hertz/pkg/app"
+    	"github.com/cloudwego/hertz/pkg/app/server"
+    	"github.com/hertz-contrib/gzip"
+
+    )
 
         func main() {
            h := server.Default(server.WithHostPorts(":8080"))
@@ -161,8 +210,11 @@ func WithExcludedPathRegexes(args []string) Option
         			gzip.DefaultCompression,
 	    			gzip.WithExcludedPathRegexes([]string{".*"}),
         		),
-        	)
-        // ...
+				)
+		   h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+			   c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
+		   })
+		   h.Spin()
     }
 ```
 
