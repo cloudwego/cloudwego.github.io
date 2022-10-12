@@ -1,6 +1,6 @@
 ---
 title: "基本认证"
-date: 2022-05-21
+date: 2022-10-13
 weight: 2
 description: >
 
@@ -9,7 +9,7 @@ description: >
 在 HTTP 中，基本认证（Basic access authentication）是一种用来允许网页浏览器或其他客户端程序在请求时提供用户名和密码形式的身份凭证的一种登录验证方式。
 在基本认证中，请求包含一个格式为 `Authorization: Basic <credentials>` 的头部字段，其中 credentials 是用户名和密码的 Base64 编码，用一个冒号 `:` 连接。
 
-hertz 也提供了 basic auth 的[实现](https://github.com/cloudwego/hertz/tree/main/pkg/app/middlewares/server/basic_auth) ，参考了 gin 的[实现](https://github.com/gin-gonic/gin#using-basicauth-middleware) 。
+Hertz 也提供了 basic auth 的[实现](https://github.com/cloudwego/hertz/tree/main/pkg/app/middlewares/server/basic_auth) ，参考了 gin 的[实现](https://github.com/gin-gonic/gin#using-basicauth-middleware) 。
 
 ## 安装
 
@@ -49,11 +49,23 @@ func main() {
 
 ## 配置
 
+Hertz通过使用中间件可以实现让网页浏览器或其他客户端程序在请求时提供用户名和密码形式作为身份凭证进行登录验证，Hertz提供了两种函数帮助用户快速使用基本认证（Basic access authentication）功能，用户可以根据业务场景自行选择不同的函数进行使用。
+
+上述**示例代码**中，只使用了基本配置函数 `BasicAuth`，扩展配置函数 `BasicAuthForRealm` 的参数配置项如下：
+
+**注意：** `BasicAuth` 是对 `BasicAuthForRealm` 的封装并提供了默认配置项。
+
+| 参数       | 介绍                                              |
+|----------|-------------------------------------------------|
+| accounts | Accounts类型是map[string]string的别名，以键值对的形式存储用户名和密码 |
+| realm    | 安全域字符串，默认值为 `Authorization Required`            |
+| userKey  | 认证通过后在上下文中设置的用户名所对应的键值，默认值为 `user`              |
+
 ### BasicAuth
 
 `basic_auth` 中间件提供了 `BasicAuth` 用于在客户端对服务端发起请求时进行用户名密码形式的身份验证。
 
-BasicAuth的函数签名如下：
+函数签名：
 
 ```go
 // Accounts类型是map[string]string的别名
@@ -94,7 +106,7 @@ func main() {
 
 `basic_auth` 中间件提供了 `BasicAuthForRealm` 用于在使用 `BasicAuth` 进行身份验证的基础上提供更多例如Realm等的扩展配置。
 
-BasicAuthForRealm的函数签名如下：
+函数签名：
 
 ```go
 // Accounts类型是map[string]string的别名
@@ -132,3 +144,7 @@ func main() {
 	h.Spin()
 }
 ```
+
+## 完整示例
+
+完整用法示例详见 [example](https://github.com/cloudwego/hertz-examples/blob/main/middleware/basicauth/main.go)

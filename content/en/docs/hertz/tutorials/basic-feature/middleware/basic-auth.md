@@ -1,6 +1,6 @@
 ---
 title: "Basic Auth"
-date: 2022-06-09
+date: 2022-10-13
 weight: 2
 description: >
 
@@ -48,6 +48,20 @@ func main() {
 ```
 
 ## Config
+
+Hertz uses basic-auth middleware that allows web browsers or other client programs to provide a username and password form of credentials for login verification upon request.
+Hertz provides two functions to help users get started with basic access authentication functions.
+Users can choose different functions to use according to their scenarios.
+
+In the **Example** above, only the base config function `BasicAuth` is used, and the extended config function `BasicAuthForRealm` has the following configurable parameters:
+
+**Note:** `BasicAuth` is a wrapper around `BasicAuthForRealm` and provides default configuration options.
+
+| Attribute | Description                                                                                                       |
+|-----------|-------------------------------------------------------------------------------------------------------------------|
+| accounts  | Accounts is an alias to map[string]string, store the username and password as key-value pairs.                    |
+| realm     | Name of realm, the default value is `Authorization Required`.                                                     |
+| userKey   | The key corresponding to the username which set in the context after authentication, the default value is `user`. |
 
 ### BasicAuth
 
@@ -132,3 +146,7 @@ func main() {
 	h.Spin()
 }
 ```
+
+## Full Example
+
+As for usage, you may refer to hertz [example](https://github.com/cloudwego/hertz-examples/blob/main/middleware/basicauth/main.go)
