@@ -1,13 +1,13 @@
 ---
 title: "Request ID"
 date: 2022-10-01
-weight: 7
+weight: 8
 description: >
 
 ---
 
 `X-Request-ID` 是一种HTTP非标准响应字段，通常用来关联客户端和服务器之间的HTTP请求。
-Hertz 也提供了 Request ID 的[实现](https://github.com/hertz-contrib/requestid)，参考了gin的[实现](https://github.com/gin-contrib/requestid)。
+Hertz 也提供了 Request ID 的[实现](https://github.com/hertz-contrib/requestid)，参考了 gin 的[实现](https://github.com/gin-contrib/requestid)。
 
 ## 安装
 
@@ -63,20 +63,20 @@ func main() {
 
 ## 配置
 
-Hertz通过使用中间件，可以在响应头中添加一个键为 `X-Request-ID` 的标识符，如果在请求头中设置了 `X-Request-ID` 字段，则会在响应头中将 `X-Request-ID` 原样返回。
+Hertz 通过使用中间件，可以在响应头中添加一个键为 `X-Request-ID` 的标识符，如果在请求头中设置了 `X-Request-ID` 字段，则会在响应头中将 `X-Request-ID` 原样返回。
 其中 `config` 结构体定义了 Request ID 的配置信息，并提供了默认配置，用户也可以依据业务场景进行定制。
 
 上述**示例代码**中，只传入了两项自定义的配置。关于 `config` 的更多常用配置如下：
 
-| 参数        | 介绍                                 |
-|-----------|------------------------------------|
-| generator | 定义生成Request ID的函数，默认生成uuid标识符      |
-| headerKey | 定义Request ID的键值，默认为 `X-Request-ID` |
-| handler   | 定义Request ID的处理函数                  |
+| 参数        | 介绍                                   |
+|-----------|--------------------------------------|
+| generator | 定义生成 Request ID 的函数，默认生成 uuid 标识符    |
+| headerKey | 定义 Request ID 的键值，默认为 `X-Request-ID` |
+| handler   | 定义 Request ID 的处理函数                  |
 
 ### New
 
-`requestid` 中间件提供了 `New` 用于在响应头添加Request ID字段。
+`requestid` 中间件提供了 `New` 用于在响应头添加 Request ID 字段。
 
 函数签名：
 
@@ -118,7 +118,7 @@ func main() {
 
 ### WithCustomHeaderStrKey
 
-`requestid` 中间件提供了 `WithCustomHeaderStrKey` 用于自定义Request ID键值。
+`requestid` 中间件提供了 `WithCustomHeaderStrKey` 用于自定义 Request ID 键值。
 
 注意：如果需要在请求头中设置 `X-Request-ID` ，则需要保持和自定义响应头键值一致。
 
@@ -165,7 +165,7 @@ func main() {
 
 ### WithGenerator
 
-`requestid` 中间件提供了 `WithGenerator` 用于自定义Request ID值生成。
+`requestid` 中间件提供了 `WithGenerator` 用于自定义 Request ID 值生成。
 
 函数签名：
 
@@ -210,7 +210,7 @@ func main() {
 
 ### WithHandler
 
-`requestid` 中间件提供了 `WithHandler` 用于自定义Request ID Handler。
+`requestid` 中间件提供了 `WithHandler` 用于自定义 Request ID Handler。
 
 函数签名：
 
@@ -265,7 +265,7 @@ func main() {
 
 ### Get
 
-`requestid` 中间件提供了 `Get` 用于从请求头中获取Request ID，它也支持使用 `requestid.WithCustomHeaderStrKey` 自定义Request ID键值。
+`requestid` 中间件提供了 `Get` 用于从请求头中获取 Request ID，它也支持使用 `requestid.WithCustomHeaderStrKey` 自定义 Request ID 键值。
 
 函数签名：
 
