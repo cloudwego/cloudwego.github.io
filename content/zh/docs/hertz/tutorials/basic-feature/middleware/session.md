@@ -6,9 +6,9 @@ description: >
 
 ---
 
-Hertz 提供了 [Session扩展](https://github.com/hertz-contrib/sessions) ，它参考了 Gin 的 [实现](https://github.com/gin-contrib/sessions) 。
+Session 是服务器为了保存用户状态而创建的一种特殊的对象。
 
-使用方法可参考如下 [example](https://github.com/hertz-contrib/sessions/tree/main/_example)
+Hertz 也提供了 Session 的 [实现](https://github.com/hertz-contrib/sessions) ，它参考了 Gin 的 [实现](https://github.com/gin-contrib/sessions) 。
 
 ## 安装
 
@@ -61,13 +61,29 @@ func main() {
 
 ## 配置
 
+Hertz 通过使用中间件，可以对 Session 进行一系列的操作配置。其中 `Session` 接口定义了对 Session 操作配置的主要方法，接口方法的介绍如下：
+
+**注意：** Session 接口对 [gorilla-session](https://github.com/gorilla/sessions) 的方法进行了简单封装。
+
+| 方法       | 函数签名                                          | 介绍                              |
+|----------|-----------------------------------------------|---------------------------------|
+| ID       | `ID() string`                                 | 用于获取存储时生成的Session ID，它不应该用于用户数据 |
+| Get      | `Get(key interface{}) interface{}`            | 用于根据给定的键值参数获取Session值           |
+| Set      | `Set(key, val interface{})`                   | 用于设置与给定键值相关联的Session值           |
+| Delete   | `Delete(key interface{})`                     | 用于根据给定的键值删除相关联的Session值         |
+| Clear    | `Clear()`                                     | 用于删除Session中存储的所有值              |
+| AddFlash | `AddFlash(value interface{}, vars ...string)` | 用于向Session添加一条flash message     |
+| Flashes  | `Flashes(vars ...string) []interface{}`       | 用于获取Session中的flash message      |
+| Options  | `Options(Options)`                            | 用于设置Session的配置                  |
+| Save     | `Save() error`                                | 用于保存当前请求期间使用的所有会话               |
+
 ### NewStore
 
-`sessions`中间件提供了`NewStore`用于将Session存储在Cookie或者Redis中。
+`sessions` 中间件提供了 `NewStore` 用于将 Session 存储在 Cookie 或者 Redis 中。
 
 #### Cookie
 
-`cookie.NewStore` 函数签名如下：
+函数签名：
 
 ```go
 func NewStore(keyPairs ...[]byte) Store
@@ -112,7 +128,7 @@ func main() {
 
 #### Redis
 
-`redis.NewStore` 函数签名如下：
+函数签名：
 
 ```go
 func NewStore(size int, network, addr, passwd string, keyPairs ...[]byte) (Store, error)
@@ -158,9 +174,9 @@ func main() {
 
 ### Sessions
 
-`sessions`中间件提供了`Sessions`用于创建单个Session。
+`sessions` 中间件提供了 `Sessions` 用于创建单个 Session。
 
-Sessions 函数签名如下：
+函数签名：
 
 ```go
 func Sessions(name string, store Store) app.HandlerFunc
@@ -201,9 +217,9 @@ func main() {
 
 ### SessionsMany
 
-`sessions`中间件提供了`SessionsMany`用于创建多个Session。
+`sessions` 中间件提供了 `SessionsMany` 用于创建多个 Session。
 
-SessionsMany 函数签名如下：
+函数签名：
 
 ```go
 func SessionsMany(names []string, store Store) app.HandlerFunc
@@ -254,9 +270,10 @@ func main() {
 
 ### Default
 
-`sessions`中间件提供了`Default`用于获取单个Session。
+`sessions` 中间件提供了 `Default` 用于获取单个 Session。
 
-Default 函数签名如下：
+函数签名：
+
 ```go
 func Default(c *app.RequestContext) Session
 ```
@@ -296,9 +313,10 @@ func main() {
 
 ### DefaultMany
 
-`sessions`中间件提供了`DefaultMany`用于根据Session名获取Session。
+`sessions` 中间件提供了 `DefaultMany` 用于根据 Session 名获取 Session。
 
-DefaultMany 函数签名如下：
+函数签名：
+
 ```go
 func DefaultMany(c *app.RequestContext, name string) Session
 ```
@@ -345,21 +363,7 @@ func main() {
 }
 ```
 
-### Session接口
+## 完整示例
 
-Session接口对[gorilla-session](https://github.com/gorilla/sessions)的方法进行了简单封装。
-
-| 方法       | 函数签名                                          | 介绍                              |
-|----------|-----------------------------------------------|---------------------------------|
-| ID       | `ID() string`                                 | 用于获取存储时生成的Session ID，它不应该用于用户数据 |
-| Get      | `Get(key interface{}) interface{}`            | 用于根据给定的键值参数获取Session值           |
-| Set      | `Set(key, val interface{})`                   | 用于设置与给定键值相关联的Session值           |
-| Delete   | `Delete(key interface{})`                     | 用于根据给定的键值删除相关联的Session值         |
-| Clear    | `Clear()`                                     | 用于删除Session中存储的所有值              |
-| AddFlash | `AddFlash(value interface{}, vars ...string)` | 用于向Session添加一条flash message     |
-| Flashes  | `Flashes(vars ...string) []interface{}`       | 用于获取Session中的flash message      |
-| Options  | `Options(Options)`                            | 用于设置Session的配置                  |
-| Save     | `Save() error`                                | 用于保存当前请求期间使用的所有会话               |
-
-
+完整用法示例详见 [example](https://github.com/hertz-contrib/sessions/tree/main/_example)
 
