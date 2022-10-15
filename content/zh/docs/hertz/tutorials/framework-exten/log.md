@@ -29,3 +29,80 @@ type FullLogger interface {
 
 Hertz 提供 `SetLogger` 接口用于注入用户自定义的 logger 实现，也可以使用 `SetOutput` 接口重定向默认的 logger 输出，随后的中间件以及框架的其他部分可以使用 hlog 中的全局方法来输出日志。
 默认使用 hertz 默认实现的 logger。
+
+## 已支持日志拓展
+
+目前在 Hertz 的开源版本支持的日志扩展都存放在 [obs-opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry) 中，欢迎大家参与项目贡献与维护。
+
+### Zap
+
+用法示例：
+```go
+import (
+	"context"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	hertzzap "github.com/hertz-contrib/obs-opentelemetry/logging/zap"
+	"go.uber.org/zap"
+)
+
+func main() {
+	h := server.Default()
+
+	logger := hertzzap.NewLogger(
+		hertzzap.WithTraceErrorSpanLevel(zap.WarnLevel),
+		hertzzap.WithRecordStackTraceInSpan(true),
+	)
+
+	hlog.SetLogger(logger)
+
+	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+		hlog.Info("Hello, hertz")
+		c.String(consts.StatusOK, "Hello hertz!")
+	})
+
+	h.Spin()
+}
+```
+
+更多用法示例详见 [hertz-contrib/obs-opentelemetry/logging/zap/](https://github.com/hertz-contrib/obs-opentelemetry/tree/main/logging/zap)。
+
+### Logrus
+
+用法示例：
+```go
+import (
+	"context"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	hertzlogrus "github.com/hertz-contrib/obs-opentelemetry/logging/logrus"
+	"github.com/sirupsen/logrus"
+)
+
+func main() {
+	h := server.Default()
+
+	logger := hertzlogrus.NewLogger(
+		hertzlogrus.WithTraceHookErrorSpanLevel(logrus.WarnLevel),
+		hertzlogrus.WithTraceHookLevels(logrus.AllLevels),
+		hertzlogrus.WithRecordStackTraceInSpan(true),
+	)
+
+	hlog.SetLogger(logger)
+
+	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+		hlog.Info("Hello, hertz")
+		c.String(consts.StatusOK, "Hello hertz!")
+	})
+
+	h.Spin()
+}
+```
+
+更多用法示例详见 [hertz-contrib/obs-opentelemetry/logging/logrus/](https://github.com/hertz-contrib/obs-opentelemetry/tree/main/logging/logrus)。

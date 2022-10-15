@@ -71,3 +71,7 @@ LevelWarn
 LevelError
 LevelFatal
 ```
+
+## 日志拓展
+
+目前 hlog 支持 zap 和 logrus 的拓展使用，日志拓展[详见](https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/log/)。
