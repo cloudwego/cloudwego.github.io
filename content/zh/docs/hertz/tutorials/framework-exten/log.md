@@ -34,7 +34,7 @@ Hertz 提供 `SetLogger` 接口用于注入用户自定义的 logger 实现，�
 
 目前在 Hertz 的开源版本支持的日志扩展都存放在 [obs-opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry) 中，欢迎大家参与项目贡献与维护。
 
-### zap
+### Zap
 
 用法示例：
 ```go
@@ -70,7 +70,7 @@ func main() {
 
 更多用法示例详见 [hertz-contrib/obs-opentelemetry/logging/zap/](https://github.com/hertz-contrib/obs-opentelemetry/tree/main/logging/zap)。
 
-### logrus
+### Logrus
 
 用法示例：
 ```go

@@ -35,7 +35,7 @@ By default, Hertz's default logger is used.
 
 The log extensions currently supported in the open source version of Hertz are stored in the [obs-opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry). You are welcomed to join us in contributing and maintaining for this project.
 
-### zap
+### Zap
 
 Example：
 ```go
@@ -71,7 +71,7 @@ func main() {
 
 For more details, see [hertz-contrib/obs-opentelemetry/logging/zap/](https://github.com/hertz-contrib/obs-opentelemetry/tree/main/logging/zap)。
 
-### logrus
+### Logrus
 
 Example：
 ```go
