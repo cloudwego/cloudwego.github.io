@@ -10,7 +10,7 @@ description: >
 到现在为止，支持的服务发现拓展有 [nacos](https://github.com/hertz-contrib/registry/tree/main/nacos), [consul](https://github.com/hertz-contrib/registry/tree/main/consul), [etcd](https://github.com/hertz-contrib/registry/tree/main/etcd), [eureka](https://github.com/hertz-contrib/registry/tree/main/eureka)
 , [polaris](https://github.com/hertz-contrib/registry/tree/main/polaris), [servicecomb](https://github.com/hertz-contrib/registry/tree/main/servicecomb), [zookeeper](https://github.com/hertz-contrib/registry/tree/main/zookeeper)
 
-## nacos
+## Nacos
 
 ### 安装
 
@@ -18,7 +18,140 @@ description: >
 go get github.com/hertz-contrib/registry/nacos
 ```
 
-### 示例代码
+### 服务注册
+
+#### NewDefaultNacosRegistry
+
+`NewDefaultNacosRegistry` 使用 nacos 创建一个默认的服务注册中心。会调用 `NewDefaultNacosConfig` 使用默认的客户端，设置 RegionID 为默认的 `cn-hangzhou` 且不会在开始时加载缓存。可自定义服务注册中心配置。
+
+函数签名：
+
+```go
+func NewDefaultNacosRegistry(opts ...RegistryOption) (registry.Registry, error)
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	r, err := nacos.NewDefaultNacosRegistry()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+#### NewNacosRegistry
+
+`NewNacosRegistry`使用 nacos 创建一个可配置客户端的服务注册中心，需要传入自行配置的客户端。可自定义服务注册中心配置。
+
+函数签名：
+
+```go
+func NewNacosRegistry(client naming_client.INamingClient, opts ...RegistryOption) registry.Registry
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	cli, err := clients.NewNamingClient(
+		vo.NacosClientParam{
+			ClientConfig:  &cc,
+			ServerConfigs: sc,
+		},
+	)
+	// ...
+	r := nacos.NewNacosRegistry(cli)
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	// ...
+}
+```
+
+### 服务发现
+
+#### NewDefaultNacosResolver
+
+`NewDefaultNacosResolver` 使用 nacos 创建一个默认的服务发现中心。会调用 `NewDefaultNacosConfig` 使用默认的客户端，设置 RegionID 为默认的 `cn-hangzhou` 且不会在开始时加载缓存。可自定义服务发现中心配置。
+
+函数签名：
+
+```go
+func NewDefaultNacosResolver(opts ...ResolverOption) (discovery.Resolver, error)
+```
+
+示例代码：
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := nacos.NewDefaultNacosResolver()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	client.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+#### NewNacosResolver
+
+`NewNacosResolver` 使用 nacos 创建一个可配置客户端的服务发现中心，需要传入自行配置的客户端。可自定义服务发现中心配置。
+
+函数签名：
+
+```go
+func NewNacosResolver(cli naming_client.INamingClient, opts ...ResolverOption) discovery.Resolver
+```
+
+示例代码：
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+  // ...
+	nacosCli, err := clients.NewNamingClient(
+		vo.NacosClientParam{
+			ClientConfig:  &cc,
+			ServerConfigs: sc,
+		})
+	if err != nil {
+		panic(err)
+	}
+	r := nacos.NewNacosResolver(nacosCli)
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+### 使用示例
 
 #### 服务端
 
@@ -98,152 +231,15 @@ func main() {
 }
 ```
 
-#### 运行实例代码
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run server
-
-```go
-go run ./example/standard/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/standard/client/main.go
-```
-
 ### 配置
 
-[配置文档](https://github.com/nacos-group/nacos-sdk-go)
-
-#### 自定义配置示例代码
-
-##### 服务端
-
-```go
-import (
-	"context"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/app/server/registry"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/registry/nacos"
-	"github.com/nacos-group/nacos-sdk-go/clients"
-	"github.com/nacos-group/nacos-sdk-go/common/constant"
-	"github.com/nacos-group/nacos-sdk-go/vo"
-)
-
-func main() {
-	sc := []constant.ServerConfig{
-		*constant.NewServerConfig("127.0.0.1", 8848),
-	}
-
-	cc := constant.ClientConfig{
-		NamespaceId:         "public",
-		TimeoutMs:           5000,
-		NotLoadCacheAtStart: true,
-		LogDir:              "/tmp/nacos/log",
-		CacheDir:            "/tmp/nacos/cache",
-		LogLevel:            "info",
-	}
-
-	cli, err := clients.NewNamingClient(
-		vo.NacosClientParam{
-			ClientConfig:  &cc,
-			ServerConfigs: sc,
-		},
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	addr := "127.0.0.1:8888"
-	r := nacos.NewNacosRegistry(cli)
-	h := server.Default(
-		server.WithHostPorts(addr),
-		server.WithRegistry(r, &registry.Info{
-			ServiceName: "hertz.test.demo",
-			Addr:        utils.NewNetAddr("tcp", addr),
-			Weight:      10,
-			Tags:        nil,
-		}))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-	})
-	h.Spin()
-}
-```
-
-##### 客户端
-
-```go
-import (
-	"context"
-
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/middlewares/client/sd"
-	"github.com/cloudwego/hertz/pkg/common/config"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/hertz-contrib/registry/nacos"
-	"github.com/nacos-group/nacos-sdk-go/clients"
-	"github.com/nacos-group/nacos-sdk-go/common/constant"
-	"github.com/nacos-group/nacos-sdk-go/vo"
-)
-
-func main() {
-	cli, err := client.NewClient()
-	if err != nil {
-		panic(err)
-	}
-	sc := []constant.ServerConfig{
-		*constant.NewServerConfig("127.0.0.1", 8848),
-	}
-	cc := constant.ClientConfig{
-		NamespaceId:         "public",
-		TimeoutMs:           5000,
-		NotLoadCacheAtStart: true,
-		LogDir:              "/tmp/nacos/log",
-		CacheDir:            "/tmp/nacos/cache",
-		LogLevel:            "info",
-	}
-
-	nacosCli, err := clients.NewNamingClient(
-		vo.NacosClientParam{
-			ClientConfig:  &cc,
-			ServerConfigs: sc,
-		})
-	if err != nil {
-		panic(err)
-	}
-	r := nacos.NewNacosResolver(nacosCli)
-	cli.Use(sd.Discovery(r))
-	for i := 0; i < 10; i++ {
-		status, body, err := cli.Get(context.Background(), nil, "http://hertz.test.demo/ping", config.WithSD(true))
-		if err != nil {
-			hlog.Fatal(err)
-		}
-		hlog.Infof("code=%d,body=%s", status, string(body))
-	}
-}
-```
-
-### 兼容性
-
-Nacos2.0 服务完全兼容 1.X nacos-sdk-go，[详见](https://nacos.io/en-us/docs/2.0.0-compatibility.html)
+参考 [nacos-sdk-go](https://github.com/nacos-group/nacos-sdk-go) 配置。
 
 ### 完整示例
 
-完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/nacos/examples)
+完整用法示例详见 [example ](https://github.com/hertz-contrib/registry/tree/main/nacos/examples) 。
 
-## consul
+## Consul
 
 ### 安装
 
@@ -251,7 +247,72 @@ Nacos2.0 服务完全兼容 1.X nacos-sdk-go，[详见](https://nacos.io/en-us/d
 go get github.com/hertz-contrib/registry/consul
 ```
 
-### 示例代码
+### 服务注册
+
+#### NewConsulRegister
+
+`NewConsulRegister` 使用 consul 创建一个新的服务注册中心，需要传入客户端。其中客户端使用 `NewClient` 创建，若不传入配置则会使用默认客户端配置。可自定义服务注册中心配置。
+
+函数签名：
+
+```go
+func NewConsulRegister(consulClient *api.Client, opts ...Option) registry.Registry
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	consulClient, err := consulapi.NewClient(config)
+	// ...
+	r := consul.NewConsulRegister(consulClient)
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+### 服务发现
+
+#### NewConsulResolver
+
+`NewConsulResolver` 使用 consul 创建一个新的服务发现中心，需要传入客户端。其中客户端使用 `NewClient` 创建，若不传入配置则会使用默认客户端配置。可自定义服务发现中心配置。
+
+函数签名：
+
+```go
+func NewConsulResolver(consulClient *api.Client, opts ...Option) discovery.Resolver
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	consulClient, err := consulapi.NewClient(consulConfig)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	r := consul.NewConsulResolver(consulClient)
+
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+}
+```
+
+### 使用示例
 
 #### 服务端
 
@@ -333,80 +394,15 @@ func main() {
 }
 ```
 
-#### 运行实例代码
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
-```
-
 ### 配置
 
-[配置文档](https://developer.hashicorp.com/consul/docs/agent/config/config-files)
-
-#### 自定义服务检查
-
-consul 有用于服务检查的默认配置，如下所示
-
-```
-check.Timeout = "5s"
-check.Interval = "5s"
-check.DeregisterCriticalServiceAfter = "1m"
-```
-
-你可以使用 `WithCheck` 去修改你的配置
-
-```go
-import (
-	"log"
-
-	consulapi "github.com/hashicorp/consul/api"
-	"github.com/hertz-contrib/registry/consul"
-)
-
-func main() {
-	// build a consul client
-	config := consulapi.DefaultConfig()
-	config.Address = "127.0.0.1:8500"
-	consulClient, err := consulapi.NewClient(config)
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	// build a consul register with the check option
-	check := new(consulapi.AgentServiceCheck)
-	check.Timeout = "10s"
-	check.Interval = "10s"
-	check.DeregisterCriticalServiceAfter = "1m"
-	r := consul.NewConsulRegister(consulClient, consul.WithCheck(check))
-}
-```
-
-### 兼容性
-
-兼容 consul v1.11.x 到 v1.13.x.
-
-[consul version list](https://releases.hashicorp.com/consul)
+参考 [consul](https://github.com/hashicorp/consul) 配置
 
 ### 完整实例
 
-完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/consul/example)
+完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/consul/example) 。
 
-## etcd
+## Etcd
 
 ### 安装
 
@@ -414,7 +410,69 @@ func main() {
 go get github.com/hertz-contrib/registry/etcd
 ```
 
-### 示例代码
+### 服务注册
+
+#### NewEtcdRegistry
+
+`NewEtcdRegistry` 使用 etcd 创建一个新的服务注册中心，需要传入端点值。可自定义客户端配置并传入 `New` 创建一个新的客户端。可自定义服务注册中心配置。
+
+函数签名：
+
+```go
+func NewEtcdRegistry(endpoints []string, opts ...Option) (registry.Registry, error)
+```
+
+示例代码：
+
+```go
+func main() {
+	r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"})
+	if err != nil {
+		panic(err)
+	}
+	// ...
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	// ...
+}
+```
+
+### 服务发现
+
+#### NewEtcdResolver
+
+`NewEtcdResolver` 使用 etcd 创建一个新的服务发现中心，需要传入端点值。可自定义客户端配置并传入 `New` 创建一个新的客户端。可自定义服务发现中心配置。
+
+函数签名：
+
+```go
+func NewEtcdResolver(endpoints []string, opts ...Option) (discovery.Resolver, error)
+```
+
+示例代码：
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+### 使用示例
 
 #### 服务端
 
@@ -484,45 +542,15 @@ func main() {
 }
 ```
 
-#### 运行实例代码
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run etcd cluster
-
-```bash
-make prepare-cluster
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
-```
-
 ### 配置
 
-[配置文档](https://pkg.go.dev/go.etcd.io/etcd/client/v3)
-
-### 兼容性
-
-与 etcd-clientv3 (3.0.0 - 3.5.4) 兼容 [详见](https://github.com/etcd-io/etcd/tree/main/client/v3)
+参考 [etcd-client](https://pkg.go.dev/go.etcd.io/etcd/client/v3) 配置。
 
 ### 完整示例
 
-完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/etcd/example)
+完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/etcd/example) 。
 
-## eureka
+## Eureka
 
 ### 安装
 
@@ -530,7 +558,187 @@ go run ./example/client/main.go
 go get github.com/hertz-contrib/eureka
 ```
 
-### 示例代码
+### 服务注册
+
+#### NewEurekaRegistry
+
+`NewEurekaRegistry` 使用 eureka 创建一个新的服务注册中心，需要将服务 Url 通过一个字符串切片传入 `NewConn` ，并同时传入心跳间隔时长。
+
+函数签名：
+
+```go
+func NewEurekaRegistry(servers []string, heatBeatInterval time.Duration) *eurekaRegistry
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	r := eureka.NewEurekaRegistry([]string{"http://127.0.0.1:8761/eureka"}, 40*time.Second)
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.discovery.eureka",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	//...
+}
+```
+
+#### NewEurekaRegistryFromConfig
+
+`NewEurekaRegistryFromConfig` 使用 eureka 创建一个新的服务注册中心，需要传入配置并调用 `NewConnFromConfig` ，也需要传入心跳间隔时长。
+
+函数签名：
+
+```go
+func NewEurekaRegistryFromConfig(config fargo.Config, heatBeatInterval time.Duration) *eurekaRegistry
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+  config := fargo.Config{
+	// ...
+	}
+	r := eureka.NewEurekaRegistryFromConfig(config, 40*time.Second)
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.discovery.eureka",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	//...
+}
+```
+
+#### NewEurekaRegistryFromConn
+
+`NewEurekaRegistryFromConn` 使用 eureka 创建一个新的服务注册中心，需要直接传入 conn ，也需要传入心跳间隔时长。
+
+函数签名：
+
+```go
+func NewEurekaRegistryFromConn(conn fargo.EurekaConnection, heatBeatInterval time.Duration) *eurekaRegistry
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+  conn := fargo.EurekaConnection{
+	// ...
+	}
+	r := eureka.NewEurekaRegistryFromConn(conn, 40*time.Second)
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.discovery.eureka",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	//...
+}
+```
+
+### 服务发现
+
+#### NewEurekaResolver
+
+`NewEurekaResolver` 使用 eureka 创建一个新的服务发现中心，需要将服务 Url 通过一个字符串切片传入 `NewConn` 。
+
+函数签名：
+
+```go
+func NewEurekaResolver(servers []string) *eurekaResolver
+```
+
+示例代码：
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		hlog.Fatal(err)
+		return
+	}
+	r := eureka.NewEurekaResolver([]string{"http://127.0.0.1:8761/eureka"})
+
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+#### NewEurekaResolverFromConfig
+
+`NewEurekaResolverFromConfig` 使用 eureka 创建一个新的服务发现中心，需要传入配置并调用 `NewConnFromConfig` 。
+
+函数签名：
+
+```go
+func NewEurekaResolverFromConfig(config fargo.Config) *eurekaResolver
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+  config := fargo.Config{
+	// ...
+	}
+	cli, err := client.NewClient()
+	if err != nil {
+		hlog.Fatal(err)
+		return
+	}
+	r := eureka.NewEurekaResolverFromConfig(config)
+
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+#### NewEurekaResolverFromConn
+
+`NewEurekaResolverFromConn` 使用 eureka 创建一个新的服务发现中心，需要直接传入 conn 。
+
+函数签名：
+
+```go
+func NewEurekaResolverFromConn(conn fargo.EurekaConnection) *eurekaResolver
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+  conn := fargo.EurekaConnection{
+	// ...
+	}
+	cli, err := client.NewClient()
+	if err != nil {
+		hlog.Fatal(err)
+		return
+	}
+	r := eureka.NewEurekaResolverFromConn(conn)
+
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+### 使用示例
 
 #### 服务端
 
@@ -597,97 +805,15 @@ func main() {
 }
 ```
 
-#### 运行实例代码
-
-##### run docker
-
-```bash
-docker-compose up
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
-```
-
 ### 配置
 
 本项目使用 [fargo](https://github.com/hudl/fargo) 作为 eureka 客户端。 您应该参考 [fargo](https://github.com/hudl/fargo) 文档以了解高级配置。
 
-有多种方法可以创建一个 `eurekaRegistry`
-
-- `NewEurekaRegistry` 创建一个带有 eureka 服务器地址的 registry。
-- `NewEurekaRegistryFromConfig` 使用给定的 `fargo.Config` 进行创建。
-- `NewEurekaRegistryFromConn` 使用现有的 `fargo.EurekaConnection` 进行创建。
-
-同样适用于 `eurekaResolver`.
-
-- `NewEurekaResolver` 创建一个带有 eureka 服务器地址的 resolver。
-- `NewEurekaResolverFromConfig` 使用给定的 `fargo.Config` 进行创建。
-- `NewEurekaResolverFromConn` 使用现有的 `fargo.EurekaConnection` 进行创建。
-
-#### 验证
-
-一种直接的方法是[在 uri 中传递凭据](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#access_using_credentials_in_the_url)，e.g. `[]string{"http://username:password@127.0.0.1:8080/eureka"`。 或者，您可以将现有连接传递给 `NewEurekaRegistryFromConn` 或 `NewEurekaResolverFromConn`。
-
-#### 设置日志级别
-
-该项目使用 fargo 作为 eureka 客户端，它依赖于 [go-logging](https://github.com/hertz-contrib/registry/blob/main/eureka/github.com/op/go-logging) 进行日志记录。不幸的是，[go-logging](https://github.com/hertz-contrib/registry/blob/main/eureka/github.com/op/go-logging) 没有提供调整日志级别的接口。 以下代码演示了如何设置日志级别。
-
-```go
-import (
-	"context"
-	"github.com/op/go-logging"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/app/server/registry"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/eureka"
-)
-
-func main() {
-
-	logging.SetLevel(logging.WARNING, "fargo")
-	// set this to a higher level if you wish to check responses from eureka 
-	logging.SetLevel(logging.WARNING, "fargo.metadata")
-	logging.SetLevel(logging.WARNING, "fargo.marshal")
-
-	addr := "127.0.0.1:8888"
-	r := eureka.NewEurekaRegistry([]string{"http://127.0.0.1:8761/eureka"}, 40*time.Second)
-	h := server.Default(
-		server.WithHostPorts(addr),
-		server.WithRegistry(r, &registry.Info{
-			ServiceName: "hertz.discovery.eureka",
-			Addr:        utils.NewNetAddr("tcp", addr),
-			Weight:      10,
-			Tags:        nil,
-		}))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong2"})
-	})
-	h.Spin()
-}
-```
-
-### 兼容性
-
-与 eureka server v1. 兼容
-
 ### 完整示例
 
-完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/eureka/example)
+完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/eureka/example) 。
 
-## polaris
+## Polaris
 
 ### 安装
 
@@ -695,7 +821,67 @@ func main() {
 go get github.com/hertz-contrib/registry/polaris
 ```
 
-### 示例代码
+### 服务注册
+
+#### NewPolarisRegistry
+
+`NewPolarisRegistry` 使用 polaris 创建一个新的服务注册中心，可传入配置文件并调用 `GetPolarisConfig` ，若不传入则使用默认配置。
+
+函数签名：
+
+```go
+func NewPolarisRegistry(configFile ...string) (Registry, error)
+```
+
+示例代码：
+
+```go
+func main() {
+	r, err := polaris.NewPolarisRegistry(confPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	Info := &registry.Info{
+		ServiceName: "hertz.test.demo",
+		Addr:        utils.NewNetAddr("tcp", "127.0.0.1:8888"),
+		Tags: map[string]string{
+			"namespace": Namespace,
+		},
+	}
+	h := server.Default(server.WithRegistry(r, Info), server.WithExitWaitTime(10*time.Second))
+  // ...
+}
+```
+
+### 服务发现
+
+#### NewPolarisResolver
+
+`NewPolarisResolver` 使用 polaris 创建一个新的服务发现中心，可传入配置文件并调用 `GetPolarisConfig` ，若不传入则使用默认配置。
+
+函数签名：
+
+```go
+func NewPolarisResolver(configFile ...string) (Resolver, error)
+```
+
+示例代码：
+
+```go
+func main() {
+	r, err := polaris.NewPolarisResolver(confPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	client, err := hclient.NewClient()
+	client.Use(sd.Discovery(r))
+	//...
+}
+```
+
+### 使用示例
 
 #### 服务端
 
@@ -787,39 +973,15 @@ func main() {
 }
 ```
 
-#### 运行实例代码
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
-```
-
 ### 配置
 
-Polaris 支持单机和集群。 更多信息可以在[参考文档](https://polarismesh.cn/zh/doc/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C/%E6%A6%82%E8%BF%B0.html#%E6%A6%82%E8%BF%B0)中找到
-
-### 兼容性
-
-兼容 polaris（v1.4.0 - v1.10.0），推荐最新稳定版本。 如果您想使用其他版本，请在 Makefile 中修改版本进行测试。
+参考 [polaris-go](https://pkg.go.dev/github.com/polarismesh/polaris-go/api#section-readme) 配置。
 
 ### 完整示例
 
-完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/polaris/example)
+完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/polaris/example) 。
 
-## servicecomb
+## Servicecomb
 
 ### 安装
 
@@ -827,7 +989,139 @@ Polaris 支持单机和集群。 更多信息可以在[参考文档](https://pol
 go get github.com/hertz-contrib/registry/servicecomb
 ```
 
-### 示例代码
+### 服务注册
+
+#### NewDefaultSCRegistry
+
+`NewDefaultSCRegistry` 使用 service-comb 创建一个默认服务注册中心，需要传入端点值。可自定义服务注册中心配置。
+
+函数签名：
+
+```go
+func NewDefaultSCRegistry(endPoints []string, opts ...RegistryOption) (registry.Registry, error)
+```
+
+示例代码：
+
+```go
+func main() {
+  // ...
+  r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr})
+  if err != nil {
+    log.Fatal(err)
+    return
+  }
+  h := server.Default(
+    server.WithHostPorts(addr),
+    server.WithRegistry(r, &registry.Info{
+      ServiceName: "hertz.servicecomb.demo",
+      Addr:        utils.NewNetAddr("tcp", addr),
+      Weight:      10,
+      Tags:        nil,
+    }),
+  )
+  // ...
+}
+```
+
+#### NewSCRegistry
+
+`NewSCRegistry` 使用 service-comb 创建一个新的服务注册中心。需要传入自定义客户端。可自定义服务注册中心配置。
+
+函数签名：
+
+```go
+func NewSCRegistry(client *sc.Client, opts ...RegistryOption) registry.Registry
+```
+
+示例代码：
+
+```go
+func main() {
+  client := &sc.Client{
+  // ...
+  }
+  // ...
+  r, err := servicecomb.NewSCRegistry(config)
+  if err != nil {
+    log.Fatal(err)
+    return
+  }
+  h := server.Default(
+    server.WithHostPorts(addr),
+    server.WithRegistry(r, &registry.Info{
+      ServiceName: "hertz.servicecomb.demo",
+      Addr:        utils.NewNetAddr("tcp", addr),
+      Weight:      10,
+      Tags:        nil,
+    }),
+  )
+  // ...
+}
+```
+
+### 服务发现
+
+#### NewDefaultSCResolver
+
+`NewDefaultSCResolver` 使用 service-comb 创建一个默认服务发现中心，需要传入端点值。可自定义服务发现中心配置。
+
+函数签名：
+
+```go
+func NewDefaultSCResolver(endPoints []string, opts ...ResolverOption) (discovery.Resolver, error)
+```
+
+示例代码：
+
+```go
+func main() {
+  // ...
+  r, err := servicecomb.NewDefaultSCResolver([]string{scAddr})
+  if err != nil {
+    panic(err)
+  }
+  cli, err := client.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  cli.Use(sd.Discovery(r))
+  // ...
+}
+```
+
+#### NewSCResolver
+
+`NewSCReslover` 使用 service-comb 创建一个新的服务发现中心。需要传入自定义客户端。可自定义服务发现中心配置。
+
+函数签名：
+
+```go
+func NewSCResolver(cli *sc.Client, opts ...ResolverOption) discovery.Resolver
+```
+
+示例代码：
+
+```go
+func main() {
+  client := &sc.Client{
+  // ...
+  }
+  // ...
+  r, err := servicecomb.NewSCResolver(client)
+  if err != nil {
+    panic(err)
+  }
+  cli, err := client.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  cli.Use(sd.Discovery(r))
+  // ...
+}
+```
+
+### 使用示例
 
 #### 服务端
 
@@ -873,7 +1167,6 @@ func main() {
 #### 客户端
 
 ```go
-
 import (
 	"context"
 
@@ -886,61 +1179,36 @@ import (
 
 func main() {
     const scAddr = "127.0.0.1:30100"
-	// build a servicecomb resolver 
-	r, err := servicecomb.NewDefaultSCResolver([]string{scAddr})
-	if err != nil {
-		panic(err)
-	}
-	// build a hertz client with the servicecomb resolver
-	cli, err := client.NewClient()
-	if err != nil {
-		panic(err)
-	}
-	cli.Use(sd.Discovery(r))
-	for i := 0; i < 10; i++ {
-		status, body, err := cli.Get(context.Background(), nil, "http://hertz.servicecomb.demo/ping", config.WithSD(true))
-		if err != nil {
-			hlog.Fatal(err)
-		}
-		hlog.Infof("code=%d,body=%s", status, string(body))
-	}
+    // build a servicecomb resolver
+    r, err := servicecomb.NewDefaultSCResolver([]string{scAddr})
+    if err != nil {
+      panic(err)
+    }
+    // build a hertz client with the servicecomb resolver
+    cli, err := client.NewClient()
+    if err != nil {
+      panic(err)
+    }
+    cli.Use(sd.Discovery(r))
+    for i := 0; i < 10; i++ {
+      status, body, err := cli.Get(context.Background(), nil, "http://hertz.servicecomb.demo/ping", config.WithSD(true))
+      if err != nil {
+        hlog.Fatal(err)
+      }
+      hlog.Infof("code=%d,body=%s", status, string(body))
+    }
 }
-
-```
-
-#### 运行实例代码
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
 ```
 
 ### 配置
 
-[配置文档](https://service-center.readthedocs.io/en/latest/user-guides.html)
-
-### 兼容性
-
-兼容 v2.0.0 - 最新版本，推荐最新稳定版本。 如果您想使用其他版本，请在 Makefile 中修改版本进行测试。
+参考 [go-chassis/sc-client](https://github.com/go-chassis/sc-client) 配置
 
 ### 完整示例
 
-完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/servicecomb/example)
+完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/servicecomb/example) 。
 
-## zookeeper
+## Zookeeper
 
 ### 安装
 
@@ -948,7 +1216,127 @@ go run ./example/client/main.go
 go get github.com/hertz-contrib/registry/zookeeper
 ```
 
-### 示例代码
+### 服务注册
+
+#### NewZookeeperRegistry
+
+`NewZookeeperRegistry` 使用 zookeeper 创建一个服务注册中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect` 。
+
+函数签名：
+
+```go
+func NewZookeeperRegistry(servers []string, sessionTimeout time.Duration) (registry.Registry, error)
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	r, err := zookeeper.NewZookeeperRegistry([]string{"127.0.0.1:2181"}, 40*time.Second)
+	if err != nil {
+		panic(err)
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	// ...
+}
+```
+
+#### NewZookeeperRegistryWithAuth
+
+`NewZookeeperRegistryWithAuth` 使用 zookeeper 创建一个服务注册中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect` 。除此之外还需要传入用户与密码来调用 `AddAuth` ，用户与密码不能为空。
+
+函数签名：
+
+```go
+func NewZookeeperRegistryWithAuth(servers []string, sessionTimeout time.Duration, user, password string)
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	r, err := zookeeper.NewZookeeperRegistryWithAuth([]string{"127.0.0.1:2181"}, 20*time.Second, "hertzuser", "hertzpass")
+	if err != nil {
+		panic(err)
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	// ...
+}
+```
+
+### 服务发现
+
+#### NewZookeeperResolver
+
+`NewZookeeperResolver` 使用 zookeeper 创建一个服务发现中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect` 。
+
+函数签名：
+
+```go
+func NewZookeeperResolver(servers []string, sessionTimeout time.Duration) (discovery.Resolver, error)
+```
+
+示例代码：
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := zookeeper.NewZookeeperResolver([]string{"127.0.0.1:2181"}, 40*time.Second)
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+#### NewZookeeperResolverWithAuth
+
+`NewZookeeperResolverWithAuth` 使用 zookeeper 创建一个服务发现中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect` 。除此之外还需要传入用户与密码来调用 `AddAuth` ，用户与密码不能为空。
+
+函数签名：
+
+```go
+func NewZookeeperResolverWithAuth(servers []string, sessionTimeout time.Duration, user, password string)
+```
+
+示例代码：
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := zookeeper.NewZookeeperResolverWithAuth([]string{"127.0.0.1:2181"}, 40*time.Second, "hertzuser", "hertzpass")
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+### 使用示例
 
 #### 服务端
 
@@ -1020,30 +1408,10 @@ func main() {
 }
 ```
 
-#### 运行实例代码
+### 配置
 
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
-```
-
-### 兼容性
-
-兼容 v3.4.0 - v3.7.0，推荐最新稳定版本。 如果您想使用其他版本，请在 Makefile 中修改版本进行测试。
+参考 [go-zookeeper/zk](https://github.com/go-zookeeper/zk) 配置。
 
 ### 完整示例
 
-完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/zookeeper/example)
+完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/zookeeper/example) 。

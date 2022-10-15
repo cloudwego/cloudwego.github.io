@@ -8,9 +8,9 @@ description: >
 The service discovery extensions currently supported in the open source version of Hertz are stored in the [registry](https://github.com/hertz-contrib/registry). You are welcomed to join us in contributing and maintaining for this project.
 
 As of now, the supported service discovery extensions are [nacos](https://github.com/hertz-contrib/registry/tree/main/nacos), [consul](https://github.com/hertz-contrib/registry/tree/main/consul), [etcd](https://github.com/hertz-contrib/registry/tree/main/etcd), [eureka](https://github.com/hertz-contrib/registry/tree/main/eureka)
-, [polaris](https://github.com/hertz-contrib/registry/tree/main/polaris), [servicecomb](https://github.com/hertz-contrib/registry/tree/main/servicecomb), [zookeeper](https://github.com/hertz-contrib/registry/tree/main/zookeeper)
+, [polaris](https://github.com/hertz-contrib/registry/tree/main/polaris), [servicecomb](https://github.com/hertz-contrib/registry/tree/main/servicecomb), [zookeeper](https://github.com/hertz-contrib/registry/tree/main/zookeeper).
 
-## nacos
+## Nacos
 
 ### Install
 
@@ -18,7 +18,140 @@ As of now, the supported service discovery extensions are [nacos](https://github
 go get github.com/hertz-contrib/registry/nacos
 ```
 
-### Example
+### Service Registry
+
+#### NewDefaultNacosRegistry
+
+`NewDefaultNacosRegistry` creates a default service registry using nacos. Will call `NewDefaultNacosConfig` to use the default client, set the RegionID to the default `cn-hangzhou` and not load the cache at the beginning. Customizable service registry configuration.
+
+Function signature:
+
+```go
+func NewDefaultNacosRegistry(opts ...RegistryOption) (registry.Registry, error)
+```
+
+Example：
+
+```go
+func main() {
+	// ...
+	r, err := nacos.NewDefaultNacosRegistry()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+#### NewNacosRegistry
+
+`NewNacosRegistry` uses nacos to create a service registry that can configure clients, and needs to pass in self-configured clients. Customizable service registry configuration.
+
+Function signature：
+
+```go
+func NewNacosRegistry(client naming_client.INamingClient, opts ...RegistryOption) registry.Registry
+```
+
+Example：
+
+```go
+func main() {
+	// ...
+	cli, err := clients.NewNamingClient(
+		vo.NacosClientParam{
+			ClientConfig:  &cc,
+			ServerConfigs: sc,
+		},
+	)
+	// ...
+	r := nacos.NewNacosRegistry(cli)
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	// ...
+}
+```
+
+### Service Discovery
+
+#### NewDefaultNacosResolver
+
+`NewDefaultNacosResolver` creates a default service discovery center using nacos. Will call `NewDefaultNacosConfig` to use the default client, set the RegionID to the default `cn-hangzhou` and not load the cache at the beginning. Customizable Service Discovery Center configuration.
+
+Function signature：
+
+```go
+func NewDefaultNacosResolver(opts ...ResolverOption) (discovery.Resolver, error)
+```
+
+Example:
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := nacos.NewDefaultNacosResolver()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	client.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+#### NewNacosResolver
+
+`NewNacosResolver` uses nacos to create a service discovery center with a configurable client, which needs to be passed in a self-configured client. Customizable Service Discovery Center configuration.
+
+Function signature:
+
+```go
+func NewNacosResolver(cli naming_client.INamingClient, opts ...ResolverOption) discovery.Resolver
+```
+
+Example:
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+  // ...
+	nacosCli, err := clients.NewNamingClient(
+		vo.NacosClientParam{
+			ClientConfig:  &cc,
+			ServerConfigs: sc,
+		})
+	if err != nil {
+		panic(err)
+	}
+	r := nacos.NewNacosResolver(nacosCli)
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+### How to use
 
 #### Server
 
@@ -98,152 +231,15 @@ func main() {
 }
 ```
 
-#### Run example
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run server
-
-```go
-go run ./example/standard/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/standard/client/main.go
-```
-
 ### Configuration
 
-[Configuration Doc](https://github.com/nacos-group/nacos-sdk-go)
+Refer to the configuration of [nacos-sdk-go](https://github.com/nacos-group/nacos-sdk-go) .
 
-#### Custom configuration example
+### Complete Example
 
-##### Server
+For more, see [example ](https://github.com/hertz-contrib/registry/tree/main/nacos/examples) .
 
-```go
-import (
-	"context"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/app/server/registry"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/registry/nacos"
-	"github.com/nacos-group/nacos-sdk-go/clients"
-	"github.com/nacos-group/nacos-sdk-go/common/constant"
-	"github.com/nacos-group/nacos-sdk-go/vo"
-)
-
-func main() {
-	sc := []constant.ServerConfig{
-		*constant.NewServerConfig("127.0.0.1", 8848),
-	}
-
-	cc := constant.ClientConfig{
-		NamespaceId:         "public",
-		TimeoutMs:           5000,
-		NotLoadCacheAtStart: true,
-		LogDir:              "/tmp/nacos/log",
-		CacheDir:            "/tmp/nacos/cache",
-		LogLevel:            "info",
-	}
-
-	cli, err := clients.NewNamingClient(
-		vo.NacosClientParam{
-			ClientConfig:  &cc,
-			ServerConfigs: sc,
-		},
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	addr := "127.0.0.1:8888"
-	r := nacos.NewNacosRegistry(cli)
-	h := server.Default(
-		server.WithHostPorts(addr),
-		server.WithRegistry(r, &registry.Info{
-			ServiceName: "hertz.test.demo",
-			Addr:        utils.NewNetAddr("tcp", addr),
-			Weight:      10,
-			Tags:        nil,
-		}))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-	})
-	h.Spin()
-}
-```
-
-##### Client
-
-```go
-import (
-	"context"
-
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/middlewares/client/sd"
-	"github.com/cloudwego/hertz/pkg/common/config"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/hertz-contrib/registry/nacos"
-	"github.com/nacos-group/nacos-sdk-go/clients"
-	"github.com/nacos-group/nacos-sdk-go/common/constant"
-	"github.com/nacos-group/nacos-sdk-go/vo"
-)
-
-func main() {
-	cli, err := client.NewClient()
-	if err != nil {
-		panic(err)
-	}
-	sc := []constant.ServerConfig{
-		*constant.NewServerConfig("127.0.0.1", 8848),
-	}
-	cc := constant.ClientConfig{
-		NamespaceId:         "public",
-		TimeoutMs:           5000,
-		NotLoadCacheAtStart: true,
-		LogDir:              "/tmp/nacos/log",
-		CacheDir:            "/tmp/nacos/cache",
-		LogLevel:            "info",
-	}
-
-	nacosCli, err := clients.NewNamingClient(
-		vo.NacosClientParam{
-			ClientConfig:  &cc,
-			ServerConfigs: sc,
-		})
-	if err != nil {
-		panic(err)
-	}
-	r := nacos.NewNacosResolver(nacosCli)
-	cli.Use(sd.Discovery(r))
-	for i := 0; i < 10; i++ {
-		status, body, err := cli.Get(context.Background(), nil, "http://hertz.test.demo/ping", config.WithSD(true))
-		if err != nil {
-			hlog.Fatal(err)
-		}
-		hlog.Infof("code=%d,body=%s", status, string(body))
-	}
-}
-```
-
-### Compatibility
-
-The server of Nacos2.0 is fully compatible with 1.X nacos-sdk-go. [see](https://nacos.io/en-us/docs/2.0.0-compatibility.html)
-
-### Complete example
-
-For complete [example](https://github.com/hertz-contrib/registry/tree/main/nacos/examples)
-
-## consul
+## Consul
 
 ### Install
 
@@ -251,7 +247,72 @@ For complete [example](https://github.com/hertz-contrib/registry/tree/main/nacos
 go get github.com/hertz-contrib/registry/consul
 ```
 
-### Example
+### Service Registry
+
+#### NewConsulRegister
+
+`NewConsulRegister` uses consul to create a new service registry, you need to pass in the client. The client is created with `NewClient`, if no configuration is passed in, the default client configuration will be used. The service registry configuration can be customized.
+
+Function signature:
+
+```go
+func NewConsulRegister(consulClient *api.Client, opts ...Option) registry.Registry
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	consulClient, err := consulapi.NewClient(config)
+	// ...
+	r := consul.NewConsulRegister(consulClient)
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+### Service Discovery
+
+#### NewConsulResolver
+
+`NewConsulResolver` uses consul to create a new service discovery center, you need to pass in the client. The client is created using `NewClient`, if no configuration is passed in, the default client configuration will be used. The service discovery center configuration can be customized.
+
+Function signature:
+
+```go
+func NewConsulResolver(consulClient *api.Client, opts ...Option) discovery.Resolver
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	consulClient, err := consulapi.NewClient(consulConfig)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	r := consul.NewConsulResolver(consulClient)
+
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+}
+```
+
+### How to use
 
 #### Server
 
@@ -333,80 +394,15 @@ func main() {
 }
 ```
 
-#### Run example
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
-```
-
 ### Configuration
 
-[Configuration Doc](https://developer.hashicorp.com/consul/docs/agent/config/config-files)
+Refer to the configuration of [consul](https://github.com/hashicorp/consul).
 
-#### Customize Service Check
+### Complete Example
 
-registry has a default config for service check as below
+For more, see [example](https://github.com/hertz-contrib/registry/tree/main/consul/example) .
 
-```
-check.Timeout = "5s"
-check.Interval = "5s"
-check.DeregisterCriticalServiceAfter = "1m"
-```
-
-you can also use `WithCheck` to modify your config
-
-```go
-import (
-	"log"
-
-	consulapi "github.com/hashicorp/consul/api"
-	"github.com/hertz-contrib/registry/consul"
-)
-
-func main() {
-	// build a consul client
-	config := consulapi.DefaultConfig()
-	config.Address = "127.0.0.1:8500"
-	consulClient, err := consulapi.NewClient(config)
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	// build a consul register with the check option
-	check := new(consulapi.AgentServiceCheck)
-	check.Timeout = "10s"
-	check.Interval = "10s"
-	check.DeregisterCriticalServiceAfter = "1m"
-	r := consul.NewConsulRegister(consulClient, consul.WithCheck(check))
-}
-```
-
-### Compatibility
-
-Compatible with consul from v1.11.x to v1.13.x.
-
-[consul version list](https://releases.hashicorp.com/consul)
-
-### Complete example
-
-For complete [example](https://github.com/hertz-contrib/registry/tree/main/consul/example)
-
-## etcd
+## Etcd
 
 ### Install
 
@@ -414,7 +410,69 @@ For complete [example](https://github.com/hertz-contrib/registry/tree/main/consu
 go get github.com/hertz-contrib/registry/etcd
 ```
 
-### Example
+### Service Registry
+
+#### NewEtcdRegistry
+
+`NewEtcdRegistry` uses etcd to create a new service registry, requires passing in the endpoint value. Customizable client configuration and passing in `New` creates a new client. Customizable service registry configuration.
+
+Function signature:
+
+```go
+func NewEtcdRegistry(endpoints []string, opts ...Option) (registry.Registry, error)
+```
+
+Example:
+
+```go
+func main() {
+	r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"})
+	if err != nil {
+		panic(err)
+	}
+	// ...
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	// ...
+}
+```
+
+### Service Discovery
+
+#### NewEtcdResolver
+
+`NewEtcdResolver` uses etcd to create a new service discovery center, needs to pass in the endpoint value. You can customize the client configuration and pass `New` to create a new client. Customize the service discovery center configuration.
+
+Function signature:
+
+```go
+func NewEtcdResolver(endpoints []string, opts ...Option) (discovery.Resolver, error)
+```
+
+Example:
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+### How to use
 
 #### Server
 
@@ -484,45 +542,15 @@ func main() {
 }
 ```
 
-#### Run example
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run etcd cluster
-
-```bash
-make prepare-cluster
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
-```
-
 ### Configuration
 
-[Configuration Doc](https://pkg.go.dev/go.etcd.io/etcd/client/v3)
+Refer to the configuration of [etcd-client](https://pkg.go.dev/go.etcd.io/etcd/client/v3).
 
-### Compatibility
+### Complete Example
 
-Compatible with server (3.0.0 - 3.5.4) etcd-clientv3 [see](https://github.com/etcd-io/etcd/tree/main/client/v3)
+For more, see [example](https://github.com/hertz-contrib/registry/tree/main/etcd/example) .
 
-### Complete example
-
-For complete [example](https://github.com/hertz-contrib/registry/tree/main/etcd/example)
-
-## eureka
+## Eureka
 
 ### Install
 
@@ -530,7 +558,187 @@ For complete [example](https://github.com/hertz-contrib/registry/tree/main/etcd/
 go get github.com/hertz-contrib/eureka
 ```
 
-### Example
+### Service Registry
+
+#### NewEurekaRegistry
+
+`NewEurekaRegistry` uses eureka to create a new service registry, you need to pass the service Url into `NewConn` through a string slice, and also pass in the heartbeat interval.
+
+Function signature:
+
+```go
+func NewEurekaRegistry(servers []string, heatBeatInterval time.Duration) *eurekaRegistry
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	r := eureka.NewEurekaRegistry([]string{"http://127.0.0.1:8761/eureka"}, 40*time.Second)
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.discovery.eureka",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	//...
+}
+```
+
+#### NewEurekaRegistryFromConfig
+
+`NewEurekaRegistryFromConfig` uses eureka to create a new service registry, you need to pass in the configuration and call `NewConnFromConfig` , and also need to pass in the heartbeat interval.
+
+Function signature:
+
+```go
+func NewEurekaRegistryFromConfig(config fargo.Config, heatBeatInterval time.Duration) *eurekaRegistry
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+  config := fargo.Config{
+	// ...
+	}
+	r := eureka.NewEurekaRegistryFromConfig(config, 40*time.Second)
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.discovery.eureka",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	//...
+}
+```
+
+#### NewEurekaRegistryFromConn
+
+`NewEurekaRegistryFromConn` uses eureka to create a new service registry, you need to pass in conn directly, and also need to pass in the heartbeat interval.
+
+Function signature:
+
+```go
+func NewEurekaRegistryFromConn(conn fargo.EurekaConnection, heatBeatInterval time.Duration) *eurekaRegistry
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+  conn := fargo.EurekaConnection{
+	// ...
+	}
+	r := eureka.NewEurekaRegistryFromConn(conn, 40*time.Second)
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.discovery.eureka",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	//...
+}
+```
+
+### Service Discovery
+
+#### NewEurekaResolver
+
+`NewEurekaResolver` uses eureka to create a new service discovery center, you need to pass the service Url through a string slice to `NewConn`.
+
+Function signature:
+
+```go
+func NewEurekaResolver(servers []string) *eurekaResolver
+```
+
+Example:
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		hlog.Fatal(err)
+		return
+	}
+	r := eureka.NewEurekaResolver([]string{"http://127.0.0.1:8761/eureka"})
+
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+#### NewEurekaResolverFromConfig
+
+`NewEurekaResolverFromConfig` uses eureka to create a new service discovery center, requires passing in the configuration and calling `NewConnFromConfig`.
+
+Function signature:
+
+```go
+func NewEurekaResolverFromConfig(config fargo.Config) *eurekaResolver
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+  config := fargo.Config{
+	// ...
+	}
+	cli, err := client.NewClient()
+	if err != nil {
+		hlog.Fatal(err)
+		return
+	}
+	r := eureka.NewEurekaResolverFromConfig(config)
+
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+#### NewEurekaResolverFromConn
+
+`NewEurekaResolverFromConn` uses eureka to create a new service discovery center, which needs to be passed directly to conn.
+
+Function signature:
+
+```go
+func NewEurekaResolverFromConn(conn fargo.EurekaConnection) *eurekaResolver
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+  conn := fargo.EurekaConnection{
+	// ...
+	}
+	cli, err := client.NewClient()
+	if err != nil {
+		hlog.Fatal(err)
+		return
+	}
+	r := eureka.NewEurekaResolverFromConn(conn)
+
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+### How to use
 
 #### Server
 
@@ -597,97 +805,15 @@ func main() {
 }
 ```
 
-#### Run example
-
-##### run docker
-
-```bash
-docker-compose up
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
-```
-
 ### Configuration
 
 This project uses [fargo](https://github.com/hudl/fargo) as eureka client. You should refer to [fargo](https://github.com/hudl/fargo) documentation for advanced configuration.
 
-There are multiple ways to crate a `eurekaRegistry`.
+### Complete Example
 
-- `NewEurekaRegistry` creates a registry with a slice of eureka server addresses.
-- `NewEurekaRegistryFromConfig` creates a registry with given `fargo.Config`.
-- `NewEurekaRegistryFromConn` creates a registry using existing `fargo.EurekaConnection` .
+For more, see [example](https://github.com/hertz-contrib/registry/tree/main/eureka/example) .
 
-The same also applies for `eurekaResolver`.
-
-- `NewEurekaResolver` creates a resolver with a slice of eureka server addresses.
-- `NewEurekaResolverFromConfig` creates a resolver with given `fargo.Config`.
-- `NewEurekaResolverFromConn` creates a resolver using existing `fargo.EurekaConnection` .
-
-#### Authentication
-
-A straight-forward approach is passing [credentials in uri](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#access_using_credentials_in_the_url) e.g. `[]string{"http://username:password@127.0.0.1:8080/eureka"`. Alternatively, you can pass existing connection to `NewEurekaRegistryFromConn` or `NewEurekaResolverFromConn`.
-
-#### Setting Log Level
-
-As discussed above, this project uses fargo as eureka client, which relies on [go-logging](https://github.com/hertz-contrib/registry/blob/main/eureka/github.com/op/go-logging) for logging. Unfortunately, [go-logging](https://github.com/hertz-contrib/registry/blob/main/eureka/github.com/op/go-logging) does not provide an interface to adjust log level. The following code demonstrates how to set log level.
-
-```go
-import (
-	"context"
-	"github.com/op/go-logging"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/app/server/registry"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/eureka"
-)
-
-func main() {
-
-	logging.SetLevel(logging.WARNING, "fargo")
-	// set this to a higher level if you wish to check responses from eureka
-	logging.SetLevel(logging.WARNING, "fargo.metadata")
-	logging.SetLevel(logging.WARNING, "fargo.marshal")
-
-	addr := "127.0.0.1:8888"
-	r := eureka.NewEurekaRegistry([]string{"http://127.0.0.1:8761/eureka"}, 40*time.Second)
-	h := server.Default(
-		server.WithHostPorts(addr),
-		server.WithRegistry(r, &registry.Info{
-			ServiceName: "hertz.discovery.eureka",
-			Addr:        utils.NewNetAddr("tcp", addr),
-			Weight:      10,
-			Tags:        nil,
-		}))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong2"})
-	})
-	h.Spin()
-}
-```
-
-### Compatibility
-
-This project is compatible with eureka server v1.
-
-### Complete example
-
-For complete [example](https://github.com/hertz-contrib/registry/tree/main/eureka/example)
-
-## polaris
+## Polaris
 
 ### Install
 
@@ -695,7 +821,67 @@ For complete [example](https://github.com/hertz-contrib/registry/tree/main/eurek
 go get github.com/hertz-contrib/registry/polaris
 ```
 
-### Example
+### Service Registry
+
+#### NewPolarisRegistry
+
+`NewPolarisRegistry` creates a new service registry using polaris, passing in a configuration file and calling `GetPolarisConfig` , using the default configuration if not passed in.
+
+Function signature:
+
+```go
+func NewPolarisRegistry(configFile ...string) (Registry, error)
+```
+
+Example:
+
+```go
+func main() {
+	r, err := polaris.NewPolarisRegistry(confPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	Info := &registry.Info{
+		ServiceName: "hertz.test.demo",
+		Addr:        utils.NewNetAddr("tcp", "127.0.0.1:8888"),
+		Tags: map[string]string{
+			"namespace": Namespace,
+		},
+	}
+	h := server.Default(server.WithRegistry(r, Info), server.WithExitWaitTime(10*time.Second))
+  // ...
+}
+```
+
+### Service Discovery
+
+#### NewPolarisResolver
+
+`NewPolarisResolver` uses polaris to create a new service discovery center, passing in a configuration file and calling `GetPolarisConfig` , using the default configuration if not passed in.
+
+Function signature:
+
+```go
+func NewPolarisResolver(configFile ...string) (Resolver, error)
+```
+
+Example:
+
+```go
+func main() {
+	r, err := polaris.NewPolarisResolver(confPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	client, err := hclient.NewClient()
+	client.Use(sd.Discovery(r))
+	//...
+}
+```
+
+### How to use
 
 #### Server
 
@@ -787,39 +973,15 @@ func main() {
 }
 ```
 
-#### Run example
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
-```
-
 ### Configuration
 
-Polaris support stand-alone and cluster. More information can be found in [install polaris](https://polarismesh.cn/zh/doc/快速入门/安装服务端/安装单机版.html#单机版安装)
+Refer to the configuration of [polaris-go](https://pkg.go.dev/github.com/polarismesh/polaris-go/api#section-readme).
 
-### Compatibility
+### Complete Example
 
-Compatible with polaris (v1.4.0 - v1.10.0), latest stable version is recommended. If you want to use other server version, please modify the version in `Makefile` to test.
+For more, see [example](https://github.com/hertz-contrib/registry/tree/main/polaris/example) .
 
-### Complete exmaple
-
-For complete [example](https://github.com/hertz-contrib/registry/tree/main/polaris/example)
-
-## servicecomb
+## Servicecomb
 
 ### Install
 
@@ -827,7 +989,139 @@ For complete [example](https://github.com/hertz-contrib/registry/tree/main/polar
 go get github.com/hertz-contrib/registry/servicecomb
 ```
 
-### Example
+### Service Registry
+
+#### NewDefaultSCRegistry
+
+`NewDefaultSCRegistry` uses service-comb to create a default service registry, which needs to pass in the endpoint value. The service registry configuration can be customized.
+
+Function signature:
+
+```go
+func NewDefaultSCRegistry(endPoints []string, opts ...RegistryOption) (registry.Registry, error)
+```
+
+Example:
+
+```go
+func main() {
+  // ...
+  r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr})
+  if err != nil {
+    log.Fatal(err)
+    return
+  }
+  h := server.Default(
+    server.WithHostPorts(addr),
+    server.WithRegistry(r, &registry.Info{
+      ServiceName: "hertz.servicecomb.demo",
+      Addr:        utils.NewNetAddr("tcp", addr),
+      Weight:      10,
+      Tags:        nil,
+    }),
+  )
+  // ...
+}
+```
+
+#### NewSCRegistry
+
+``NewSCRegistry` uses service-comb to create a new service registry. It needs to pass in a custom client. Customizable service registry configuration.
+
+Function signature:
+
+```go
+func NewSCRegistry(client *sc.Client, opts ...RegistryOption) registry.Registry
+```
+
+Example:
+
+```go
+func main() {
+  client := &sc.Client{
+  // ...
+  }
+  // ...
+  r, err := servicecomb.NewSCRegistry(config)
+  if err != nil {
+    log.Fatal(err)
+    return
+  }
+  h := server.Default(
+    server.WithHostPorts(addr),
+    server.WithRegistry(r, &registry.Info{
+      ServiceName: "hertz.servicecomb.demo",
+      Addr:        utils.NewNetAddr("tcp", addr),
+      Weight:      10,
+      Tags:        nil,
+    }),
+  )
+  // ...
+}
+```
+
+### Service Discovery
+
+#### NewDefaultSCResolver
+
+`NewDefaultSCResolver` uses service-comb to create a default service discovery center, which needs to pass in the endpoint value. Service discovery center configuration can be customized.
+
+Function signature:
+
+```go
+func NewDefaultSCResolver(endPoints []string, opts ...ResolverOption) (discovery.Resolver, error)
+```
+
+Example:
+
+```go
+func main() {
+  // ...
+  r, err := servicecomb.NewDefaultSCResolver([]string{scAddr})
+  if err != nil {
+    panic(err)
+  }
+  cli, err := client.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  cli.Use(sd.Discovery(r))
+  // ...
+}
+```
+
+#### NewSCResolver
+
+`NewSCReslover` uses service-comb to create a new service discovery center. It needs to pass in a custom client. The configuration of the service discovery center can be customized.
+
+Function signature:
+
+```go
+func NewSCResolver(cli *sc.Client, opts ...ResolverOption) discovery.Resolver
+```
+
+Example:
+
+```go
+func main() {
+  client := &sc.Client{
+  // ...
+  }
+  // ...
+  r, err := servicecomb.NewSCResolver(client)
+  if err != nil {
+    panic(err)
+  }
+  cli, err := client.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  cli.Use(sd.Discovery(r))
+  // ...
+}
+```
+
+### How to use
 
 #### Server
 
@@ -885,61 +1179,36 @@ import (
 
 func main() {
     const scAddr = "127.0.0.1:30100"
-	// build a servicecomb resolver
-	r, err := servicecomb.NewDefaultSCResolver([]string{scAddr})
-	if err != nil {
-		panic(err)
-	}
-	// build a hertz client with the servicecomb resolver
-	cli, err := client.NewClient()
-	if err != nil {
-		panic(err)
-	}
-	cli.Use(sd.Discovery(r))
-	for i := 0; i < 10; i++ {
-		status, body, err := cli.Get(context.Background(), nil, "http://hertz.servicecomb.demo/ping", config.WithSD(true))
-		if err != nil {
-			hlog.Fatal(err)
-		}
-		hlog.Infof("code=%d,body=%s", status, string(body))
-	}
+    // build a servicecomb resolver
+    r, err := servicecomb.NewDefaultSCResolver([]string{scAddr})
+    if err != nil {
+      panic(err)
+    }
+    // build a hertz client with the servicecomb resolver
+    cli, err := client.NewClient()
+    if err != nil {
+      panic(err)
+    }
+    cli.Use(sd.Discovery(r))
+    for i := 0; i < 10; i++ {
+      status, body, err := cli.Get(context.Background(), nil, "http://hertz.servicecomb.demo/ping", config.WithSD(true))
+      if err != nil {
+        hlog.Fatal(err)
+      }
+      hlog.Infof("code=%d,body=%s", status, string(body))
+    }
 }
-
-```
-
-#### Run example
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
 ```
 
 ### Configuration
 
-[Configuration Doc](https://service-center.readthedocs.io/en/latest/user-guides.html)
+Refer to the configuration of [go-chassis/sc-client](https://github.com/go-chassis/sc-client).
 
-### Compatibility
+### Complete Example
 
-Compatible with server (2.0.0 - latest), If you want to use older server version, please modify the version in `Makefile` to test.
+For more, see [example](https://github.com/hertz-contrib/registry/tree/main/servicecomb/example) .
 
-### Complete example
-
-For complete [example](https://github.com/hertz-contrib/registry/tree/main/servicecomb/example)
-
-## zookeeper
+## Zookeeper
 
 ### Install
 
@@ -947,7 +1216,127 @@ For complete [example](https://github.com/hertz-contrib/registry/tree/main/servi
 go get github.com/hertz-contrib/registry/zookeeper
 ```
 
-### Example
+### Service Registry
+
+#### NewZookeeperRegistry
+
+`NewZookeeperRegistry` uses zookeeper to create a service registry. You need to pass the service to `Connect` through a string slice together with the session timeout.
+
+Function signature:
+
+```go
+func NewZookeeperRegistry(servers []string, sessionTimeout time.Duration) (registry.Registry, error)
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	r, err := zookeeper.NewZookeeperRegistry([]string{"127.0.0.1:2181"}, 40*time.Second)
+	if err != nil {
+		panic(err)
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	// ...
+}
+```
+
+#### NewZookeeperRegistryWithAuth
+
+`NewZookeeperRegistryWithAuth` uses zookeeper to create a service registry. You need to pass the service into `Connect` through a string slice and session timeout time. In addition, you need to pass in the user and password to call `AddAuth`, the user and password Can not be empty.
+
+Function signature:
+
+```go
+func NewZookeeperRegistryWithAuth(servers []string, sessionTimeout time.Duration, user, password string)
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	r, err := zookeeper.NewZookeeperRegistryWithAuth([]string{"127.0.0.1:2181"}, 20*time.Second, "hertzuser", "hertzpass")
+	if err != nil {
+		panic(err)
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	// ...
+}
+```
+
+### Service Discovery
+
+#### NewZookeeperResolver
+
+`NewZookeeperResolver` uses zookeeper to create a service discovery center, which needs to pass a string slice and session timeout to `Connect`.
+
+Function signature:
+
+```go
+func NewZookeeperResolver(servers []string, sessionTimeout time.Duration) (discovery.Resolver, error)
+```
+
+Example:
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := zookeeper.NewZookeeperResolver([]string{"127.0.0.1:2181"}, 40*time.Second)
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+#### NewZookeeperResolverWithAuth
+
+`NewZookeeperResolverWithAuth` uses zookeeper to create a service discovery center. You need to pass the service into `Connect` through a string slice and session timeout. In addition, you need to pass in the user and password to call `AddAuth`, the user and password Can not be empty.
+
+Function signature:
+
+```go
+func NewZookeeperResolverWithAuth(servers []string, sessionTimeout time.Duration, user, password string)
+```
+
+Example:
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := zookeeper.NewZookeeperResolverWithAuth([]string{"127.0.0.1:2181"}, 40*time.Second, "hertzuser", "hertzpass")
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+### How to use
 
 #### Server
 
@@ -1019,30 +1408,10 @@ func main() {
 }
 ```
 
-#### Run example
-
-##### run docker
-
-```bash
-make prepare
-```
-
-##### run server
-
-```go
-go run ./example/server/main.go
-```
-
-##### run client
-
-```go
-go run ./example/client/main.go
-```
-
 ### Configuration
 
-Compatible with server (3.4.0 - 3.7.0), If you want to use older server version, please modify the version in `Makefile` to test.
+Refer to the configuration of [go-zookeeper/zk](https://github.com/go-zookeeper/zk).
 
-### Complete example
+### Complete Example
 
-For complete [example](https://github.com/hertz-contrib/registry/tree/main/zookeeper/example)
+For more, see [example](https://github.com/hertz-contrib/registry/tree/main/zookeeper/example) .
