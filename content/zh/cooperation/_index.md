@@ -3,7 +3,7 @@ title: '案例'
 linkTitle: '用户案例'
 menu:
   main:
-    weight: 50
+    weight: 40
 ---
 
 {{< blocks/cover title="谁在使用CloudWeGo" image_anchor="bottom" height="min" >}}
