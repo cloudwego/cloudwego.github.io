@@ -7,8 +7,15 @@ description: >
 
 目前在 Hertz 的开源版本支持的服务发现扩展都存放在 [registry](https://github.com/hertz-contrib/registry) 中，欢迎大家参与项目贡献与维护。
 
-到现在为止，支持的服务发现拓展有 [nacos](https://github.com/hertz-contrib/registry/tree/main/nacos), [consul](https://github.com/hertz-contrib/registry/tree/main/consul), [etcd](https://github.com/hertz-contrib/registry/tree/main/etcd), [eureka](https://github.com/hertz-contrib/registry/tree/main/eureka)
-, [polaris](https://github.com/hertz-contrib/registry/tree/main/polaris), [servicecomb](https://github.com/hertz-contrib/registry/tree/main/servicecomb), [zookeeper](https://github.com/hertz-contrib/registry/tree/main/zookeeper)
+到现在为止，支持的服务发现拓展有
+
+- [nacos](https://github.com/hertz-contrib/registry/tree/main/nacos)
+- [consul](https://github.com/hertz-contrib/registry/tree/main/consul)
+- [etcd](https://github.com/hertz-contrib/registry/tree/main/etcd)
+- [eureka](https://github.com/hertz-contrib/registry/tree/main/eureka)
+- [polaris](https://github.com/hertz-contrib/registry/tree/main/polaris)
+- [servicecomb](https://github.com/hertz-contrib/registry/tree/main/servicecomb)
+- [zookeeper](https://github.com/hertz-contrib/registry/tree/main/zookeeper)
 
 ## Nacos
 

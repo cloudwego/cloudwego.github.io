@@ -7,8 +7,15 @@ description: >
 
 The service discovery extensions currently supported in the open source version of Hertz are stored in the [registry](https://github.com/hertz-contrib/registry). You are welcomed to join us in contributing and maintaining for this project.
 
-As of now, the supported service discovery extensions are [nacos](https://github.com/hertz-contrib/registry/tree/main/nacos), [consul](https://github.com/hertz-contrib/registry/tree/main/consul), [etcd](https://github.com/hertz-contrib/registry/tree/main/etcd), [eureka](https://github.com/hertz-contrib/registry/tree/main/eureka)
-, [polaris](https://github.com/hertz-contrib/registry/tree/main/polaris), [servicecomb](https://github.com/hertz-contrib/registry/tree/main/servicecomb), [zookeeper](https://github.com/hertz-contrib/registry/tree/main/zookeeper).
+As of now, the supported service discovery extensions are
+
+- [nacos](https://github.com/hertz-contrib/registry/tree/main/nacos)
+- [consul](https://github.com/hertz-contrib/registry/tree/main/consul)
+- [etcd](https://github.com/hertz-contrib/registry/tree/main/etcd)
+- [eureka](https://github.com/hertz-contrib/registry/tree/main/eureka)
+- [polaris](https://github.com/hertz-contrib/registry/tree/main/polaris)
+- [servicecomb](https://github.com/hertz-contrib/registry/tree/main/servicecomb)
+- [zookeeper](https://github.com/hertz-contrib/registry/tree/main/zookeeper)
 
 ## Nacos
 
