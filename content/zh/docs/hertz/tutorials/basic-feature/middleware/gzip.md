@@ -88,7 +88,7 @@ func main() {
 		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
 	})
 	h.Spin()
-} 
+}
 ```
 
 ### WithExcludedExtensions
@@ -167,7 +167,7 @@ func main() {
 			gzip.WithExcludedPaths([]string{"/api/"}),
 		),
 	)
-	// This is before compression
+	// This is No compression
 	h.GET("/api/book", func(ctx context.Context, c *app.RequestContext) {
 		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
 	})
@@ -214,7 +214,7 @@ func main() {
 			gzip.WithExcludedPathRegexes([]string{"/api.*"}),
 		),
 	)
-	// This is before compression
+	// This is No compression
 	h.GET("/api/book", func(ctx context.Context, c *app.RequestContext) {
 		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
 	})

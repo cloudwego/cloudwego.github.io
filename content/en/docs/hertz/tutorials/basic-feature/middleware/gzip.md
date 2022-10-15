@@ -8,8 +8,6 @@ description: >
 
 In HTTP, GNUzip(Gzip) compression coding is a way to optimize the performance of Web applications, and Hertz also provides an [implementation](https://github.com/hertz-contrib/gzip) of Gzip.
 
-Refer to the below for usage [example](https://github.com/hertz-contrib/gzip/tree/main/example)
-
 
 
 ## Installation
@@ -89,7 +87,7 @@ func main() {
 		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
 	})
 	h.Spin()
-} 
+}
 ```
 
 ### WithExcludedExtensions
@@ -168,7 +166,7 @@ func main() {
 			gzip.WithExcludedPaths([]string{"/api/"}),
 		),
 	)
-	// This is before compression
+	// This is No compression
 	h.GET("/api/book", func(ctx context.Context, c *app.RequestContext) {
 		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
 	})
@@ -215,7 +213,7 @@ func main() {
 			gzip.WithExcludedPathRegexes([]string{"/api.*"}),
 		),
 	)
-	// This is before compression
+	// This is No compression
 	h.GET("/api/book", func(ctx context.Context, c *app.RequestContext) {
 		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
 	})
