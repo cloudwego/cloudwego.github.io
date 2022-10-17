@@ -133,11 +133,11 @@ func main() {
 	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
 
 	// your-realm:   name of realm, in this case it will be stored in the response header as Www-Authenticate: Basic realm="your-realm"
-    // your-userKey: once authenticated, it will be set to the context with userKey as the key and username as the value
-    h.Use(basic_auth.BasicAuthForRealm(map[string]string{
-        "username3": "password3",
-        "username4": "password4",
-    }, "your-realm", "your-userKey"))
+	// your-userKey: once authenticated, it will be set to the context with userKey as the key and username as the value
+	h.Use(basic_auth.BasicAuthForRealm(map[string]string{
+		"username3": "password3",
+		"username4": "password4",
+	}, "your-realm", "your-userKey"))
 
 	h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "hello hertz")
