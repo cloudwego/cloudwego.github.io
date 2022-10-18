@@ -23,27 +23,27 @@ import "github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 func main() {
-	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+    h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
 
-	h.Use(basic_auth.BasicAuth(map[string]string{
-		"username1": "password1",
-		"username2": "password2",
-	}))
+    h.Use(basic_auth.BasicAuth(map[string]string{
+        "username1": "password1",
+        "username2": "password2",
+    }))
 
-	h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
-		c.String(consts.StatusOK, "hello hertz")
-	})
+    h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
+        c.String(consts.StatusOK, "hello hertz")
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
@@ -80,27 +80,27 @@ Sample Code:
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 func main() {
-	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+    h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
 
-	h.Use(basic_auth.BasicAuth(map[string]string{
-		"username1": "password1",
-		"username2": "password2",
-	}))
+    h.Use(basic_auth.BasicAuth(map[string]string{
+        "username1": "password1",
+        "username2": "password2",
+    }))
 
-	h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
-		c.String(consts.StatusOK, "hello hertz")
-	})
+    h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
+        c.String(consts.StatusOK, "hello hertz")
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
@@ -121,29 +121,29 @@ Sample Code:
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 func main() {
-	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+    h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
 
-	// your-realm:   name of realm, in this case it will be stored in the response header as Www-Authenticate: Basic realm="your-realm"
-	// your-userKey: once authenticated, it will be set to the context with userKey as the key and username as the value
-	h.Use(basic_auth.BasicAuthForRealm(map[string]string{
-		"username3": "password3",
-		"username4": "password4",
-	}, "your-realm", "your-userKey"))
+    // your-realm:   name of realm, in this case it will be stored in the response header as Www-Authenticate: Basic realm="your-realm"
+    // your-userKey: once authenticated, it will be set to the context with userKey as the key and username as the value
+    h.Use(basic_auth.BasicAuthForRealm(map[string]string{
+        "username3": "password3",
+        "username4": "password4",
+    }, "your-realm", "your-userKey"))
 
-	h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
-		c.String(consts.StatusOK, "hello hertz")
-	})
+    h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
+        c.String(consts.StatusOK, "hello hertz")
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 

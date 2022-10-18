@@ -23,27 +23,27 @@ import "github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 func main() {
-	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+    h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
 
-	h.Use(basic_auth.BasicAuth(map[string]string{
-		"username1": "password1",
-		"username2": "password2",
-	}))
+    h.Use(basic_auth.BasicAuth(map[string]string{
+        "username1": "password1",
+        "username2": "password2",
+    }))
 
-	h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
-		c.String(consts.StatusOK, "hello hertz")
-	})
+    h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
+        c.String(consts.StatusOK, "hello hertz")
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
@@ -78,27 +78,27 @@ func BasicAuth(accounts Accounts) app.HandlerFunc
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 func main() {
-	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+    h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
 
-	h.Use(basic_auth.BasicAuth(map[string]string{
-		"username1": "password1",
-		"username2": "password2",
-	}))
+    h.Use(basic_auth.BasicAuth(map[string]string{
+        "username1": "password1",
+        "username2": "password2",
+    }))
 
-	h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
-		c.String(consts.StatusOK, "hello hertz")
-	})
+    h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
+        c.String(consts.StatusOK, "hello hertz")
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
@@ -119,29 +119,29 @@ func BasicAuthForRealm(accounts Accounts, realm, userKey string) app.HandlerFunc
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 func main() {
-	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+    h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
 
-	// your-realm:   安全域字符串，本例中会以 Www-Authenticate: Basic realm="your-realm" 的形式保存在响应头中
-	// your-userKey: 认证通过后会以 userKey 为键 username 为值的形式设置在上下文中
-	h.Use(basic_auth.BasicAuthForRealm(map[string]string{
-		"username3": "password3",
-		"username4": "password4",
-	}, "your-realm", "your-userKey"))
+    // your-realm:   安全域字符串，本例中会以 Www-Authenticate: Basic realm="your-realm" 的形式保存在响应头中
+    // your-userKey: 认证通过后会以 userKey 为键 username 为值的形式设置在上下文中
+    h.Use(basic_auth.BasicAuthForRealm(map[string]string{
+        "username3": "password3",
+        "username4": "password4",
+    }, "your-realm", "your-userKey"))
 
-	h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
-		c.String(consts.StatusOK, "hello hertz")
-	})
+    h.GET("/basicAuth", func(ctx context.Context, c *app.RequestContext) {
+        c.String(consts.StatusOK, "hello hertz")
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
