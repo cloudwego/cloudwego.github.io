@@ -16,7 +16,7 @@ description: >
 
 ## Optimize
 
-* [[#53](https://github.com/cloudwego/volo/pull/53)] fix: write_field_begin args. 
+* [[#53](https://github.com/cloudwego/volo/pull/53)] fix: `write_field_begin` args. 
 
 ## Fix
 
