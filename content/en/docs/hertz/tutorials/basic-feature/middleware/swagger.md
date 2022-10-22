@@ -17,13 +17,13 @@ The implementation of the [swagger](https://github.com/hertz-contrib/swagger) ex
 2. Download [Swag](https://github.com/swaggo/swag) for Go by using:
 
 ```sh
-go get -u github.com/swaggo/swag/cmd/swag
+go get github.com/swaggo/swag/cmd/swag
 ```
 
 Starting in Go 1.17, installing executables with `go get` is deprecated. `go install` may be used instead:
 
 ```sh
-go install github.com/swaggo/swag/cmd/swag
+go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
 3. Run the [Swag](https://github.com/swaggo/swag) at your Go project root path(for instance `~/root/go-peoject-name`),

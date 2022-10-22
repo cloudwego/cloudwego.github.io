@@ -17,13 +17,13 @@ description: >
 2. 下载 Go 对应的 [Swag](https://github.com/swaggo/swag) 通过运行以下命令:
 
 ```sh
-go get -u github.com/swaggo/swag/cmd/swag
+go get github.com/swaggo/swag/cmd/swag
 ```
 
 从 Go 1.17开始，用`go get`来安装可执行文件的方式不再推荐了。可以使用 `go install `来代替。
 
 ```sh
-go install github.com/swaggo/swag/cmd/swag
+go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
 3. 在你的 Go 项目的根目录下运行 [Swag](https://github.com/swaggo/swag) (例如 `~/root/go-peoject-name`),[Swag](https://github.com/swaggo/swag) 将解析注释并生成必要的文件(`docs` 文件夹和 `docs/doc.go`)在 `~/root/go-peoject-name/docs`目录下。
@@ -63,7 +63,7 @@ func PingHandler(c context.Context, ctx *app.RequestContext) {
 
 如何在 api 上面使用 hertz-swagger？只要按照下面的步骤即可。
 
-1. 使用 hertz-swagger 规则为 apis 和主函数添加注释，如下所示：
+1. 使用 hertz-swagger 规则为 api 和主函数添加注释，如下所示：
 
 ```go
 // PingHandler 测试handler
@@ -83,7 +83,7 @@ func PingHandler(c context.Context, ctx *app.RequestContext) {
 
 3. 像这样导入文档:
 
-   假设你的项目名为 `github.com/go-project-name/docs`.
+   假设你的项目名为 `github.com/go-project-name/docs`。
 
 ```go
 import (
@@ -187,5 +187,5 @@ func main() {
 | DeepLinking              | bool   | true       | 如果设置为 `true`，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。 |
 | DefaultModelsExpandDepth | int    | 1          | 模型的默认扩展深度（设置为-1完全隐藏模型）。                 |
 | InstanceName             | string | "swagger"  | swagger 文档的实例名称。如果要在一个 Hertz 路由 上部署多个不同的swagger 实例，请确保每个实例有一个唯一的名字（使用_-instanceName _参数，用` swag init`  生成swagger 文档）。 |
-| PersistAuthorization     | bool   | false      | 如果设置为 `true`，它就会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。 |
+| PersistAuthorization     | bool   | false      | 如果设置为 `true`，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。 |
 | Oauth2DefaultClientID    | string | ""         | 如果设置了这个字段，它将用于预填 OAuth2授权对话框的 *client_id* 字段。 |
