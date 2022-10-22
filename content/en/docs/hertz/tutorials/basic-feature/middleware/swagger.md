@@ -107,9 +107,9 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 )
 
-// PingHandler 测试handler
-// @Summary 测试Summary
-// @Description 测试Description
+// PingHandler Testhandler
+// @Summary TestSummary
+// @Description TestDescription
 // @Accept application/json
 // @Produce application/json
 // @Router /ping [get]
