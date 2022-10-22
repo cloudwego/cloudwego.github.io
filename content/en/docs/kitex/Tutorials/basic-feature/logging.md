@@ -41,3 +41,6 @@ func main() {
 }
 ```
 
+## Logger Implementation
+
+[obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) provide logger implementation base on [logrus](https://github.com/sirupsen/logrus) and [zap](https://github.com/uber-go/zap)

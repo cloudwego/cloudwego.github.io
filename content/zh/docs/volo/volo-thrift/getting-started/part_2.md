@@ -103,7 +103,6 @@ $ volo idl add -g git@github.com:org/repo.git -r main /path/to/your/idl.thrift
 然后，我们打开 `src/lib.rs`，在 impl 块中加入方法的实现，最终的代码应该是这样的：
 
 ```rust
-#![feature(generic_associated_types)]
 #![feature(type_alias_impl_trait)]
 
 pub struct S;
@@ -114,7 +113,7 @@ impl volo_gen::volo::example::ItemService for S {
     async fn get_item(
         &self,
         _req: volo_gen::volo::example::GetItemRequest,
-    ) -> core::result::Result<volo_gen::volo::example::GetItemResponse, pilota::AnyhowError>
+    ) -> core::result::Result<volo_gen::volo::example::GetItemResponse, volo_thrift::AnyhowError>
     {
         Ok(Default::default())
     }

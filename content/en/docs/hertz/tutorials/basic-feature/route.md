@@ -1,5 +1,5 @@
 ---
-title: "route"
+title: "Route"
 date: 2022-09-06
 weight: 2
 description: >
@@ -10,18 +10,18 @@ description: >
 
 Hertz provides methods like `GET`, `POST`, `PUT`, `DELETE`, `ANY` for registering routes.
 
-| Method  | Introduce  |
-| ------------ | ------------ |
-|  `Hertz.GET`   |  The method used to register the HTTP Method as GET    |
-|  `Hertz.POST` |  The method used to register the HTTP Method as POST  |
-|  `Hertz.DELETE` |  The method used to register the HTTP Method as DELETE  |
-|  `Hertz.PUT` |  The method used to register the HTTP Method as PUT  |
-|  `Hertz.PATCH` |  The method used to register the HTTP Method as PATCH  |
-|  `Hertz.HEAD` |  The method used to register the HTTP Method as HEAD  |
-|  `Hertz.OPTIONS` |  The method used to register the HTTP Method as OPTIONS  |
-|  `Hertz.Handle` |  这个方法支持用户手动传入 HTTP Method 用来注册方法，当用于注册普通的 HTTP Method 方法时和上述的方法作用是一致的，并且这个方法同时也支持用于注册自定义 HTTP Method 方法 |
-|  `Hertz.Any` |  The method for registering all HTTP Methods    |
-|  `Hertz.StaticFile/Static/StaticFS` |  For registering static files  |
+| Method  | Introduce                                                                                                                                                                                             |
+| ------------ |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  `Hertz.GET`   | The method used to register the HTTP Method as GET                                                                                                                                                    |
+|  `Hertz.POST` | The method used to register the HTTP Method as POST                                                                                                                                                   |
+|  `Hertz.DELETE` | The method used to register the HTTP Method as DELETE                                                                                                                                                 |
+|  `Hertz.PUT` | The method used to register the HTTP Method as PUT                                                                                                                                                    |
+|  `Hertz.PATCH` | The method used to register the HTTP Method as PATCH                                                                                                                                                  |
+|  `Hertz.HEAD` | The method used to register the HTTP Method as HEAD                                                                                                                                                   |
+|  `Hertz.OPTIONS` | The method used to register the HTTP Method as OPTIONS                                                                                                                                                |
+|  `Hertz.Handle` | The method supports to register a HTTP Method flexibly, which is the same as the above method when used to register a normal HTTP Method, and it also supports the registration of custom HTTP Method |
+|  `Hertz.Any` | The method for registering all HTTP Methods                                                                                                                                                           |
+|  `Hertz.StaticFile/Static/StaticFS` | For registering static files                                                                                                                                                                          |
 
 
 Sample Code:
