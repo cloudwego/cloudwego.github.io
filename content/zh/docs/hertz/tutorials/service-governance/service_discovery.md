@@ -27,9 +27,18 @@ go get github.com/hertz-contrib/registry/nacos
 
 ### 服务注册
 
+#### Option
+
+nacos 拓展在服务注册部分中提供了 option 配置。
+
+| 配置    | 描述                                    |
+| ------- | --------------------------------------- |
+| cluster | nacos 的集群配置。                      |
+| group   | nacos 的配置管理可通过 group 进行分组。 |
+
 #### NewDefaultNacosRegistry
 
-`NewDefaultNacosRegistry` 使用 nacos 创建一个默认的服务注册中心。会调用 `NewDefaultNacosConfig` 使用默认的客户端，设置 RegionID 为默认的 `cn-hangzhou` 且不会在开始时加载缓存。可自定义服务注册中心配置。
+`NewDefaultNacosRegistry` 使用 nacos 创建一个默认的服务注册中心。会调用 `NewDefaultNacosConfig` 使用默认的客户端，默认设置 RegionID 为 `cn-hangzhou`、地址为 `127.0.0.1`、端口号为`8848`，且不会在开始时加载缓存。可自定义服务注册中心配置。
 
 函数签名：
 
@@ -97,9 +106,18 @@ func main() {
 
 ### 服务发现
 
+#### Option
+
+Nacos 拓展在服务发现部分中提供了 option 配置。
+
+| 配置    | 描述                                    |
+| ------- | --------------------------------------- |
+| cluster | Nacos 的集群配置。                      |
+| group   | Nacos 的配置管理可通过 group 进行分组。 |
+
 #### NewDefaultNacosResolver
 
-`NewDefaultNacosResolver` 使用 nacos 创建一个默认的服务发现中心。会调用 `NewDefaultNacosConfig` 使用默认的客户端，设置 RegionID 为默认的 `cn-hangzhou` 且不会在开始时加载缓存。可自定义服务发现中心配置。
+`NewDefaultNacosResolver` 使用 nacos 创建一个默认的服务发现中心。会调用 `NewDefaultNacosConfig` 使用默认的客户端，默认设置 RegionID 为 `cn-hangzhou`、地址为 `127.0.0.1`、端口号为`8848`，且不会在开始时加载缓存。可自定义服务注册中心配置。
 
 函数签名：
 
@@ -143,7 +161,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-  // ...
+	// ...
 	nacosCli, err := clients.NewNamingClient(
 		vo.NacosClientParam{
 			ClientConfig:  &cc,
@@ -240,11 +258,11 @@ func main() {
 
 ### 配置
 
-参考 [nacos-sdk-go](https://github.com/nacos-group/nacos-sdk-go) 配置。
+可自定义 Nacos 客户端以及服务端的配置，参考 [nacos-sdk-go](https://github.com/nacos-group/nacos-sdk-go) 配置。
 
 ### 完整示例
 
-完整用法示例详见 [example ](https://github.com/hertz-contrib/registry/tree/main/nacos/examples) 。
+完整用法示例详见 [example](https://github.com/hertz-contrib/registry/tree/main/nacos/examples) 。
 
 ## Consul
 
@@ -256,9 +274,17 @@ go get github.com/hertz-contrib/registry/consul
 
 ### 服务注册
 
+#### Option
+
+Consul 拓展在服务注册部分中提供了 option 配置。
+
+| 配置  | 描述                     |
+| ----- | ------------------------ |
+| check | 配置 Consul 的健康检查。 |
+
 #### NewConsulRegister
 
-`NewConsulRegister` 使用 consul 创建一个新的服务注册中心，需要传入客户端。其中客户端使用 `NewClient` 创建，若不传入配置则会使用默认客户端配置。可自定义服务注册中心配置。
+`NewConsulRegister` 使用 consul 创建一个新的服务注册中心，需要传入客户端，其中客户端使用 `NewClient` 创建。可自定义服务注册中心配置，若不传入配置则设置 `check.Timeout` 为5秒，`check.Internal` 为5秒，`check.DeregisterCriticalServiceAfter` 为 1分钟。
 
 函数签名：
 
@@ -289,9 +315,17 @@ func main() {
 
 ### 服务发现
 
+#### Option
+
+Consul 拓展在服务发现部分中提供了 option 配置。
+
+| 配置  | 描述                     |
+| ----- | ------------------------ |
+| check | 配置 Consul 的健康检查。 |
+
 #### NewConsulResolver
 
-`NewConsulResolver` 使用 consul 创建一个新的服务发现中心，需要传入客户端。其中客户端使用 `NewClient` 创建，若不传入配置则会使用默认客户端配置。可自定义服务发现中心配置。
+`NewConsulResolver` 使用 consul 创建一个新的服务发现中心，需要传入客户端，其中客户端使用 `NewClient` 创建。可自定义服务发现中心配置。
 
 函数签名：
 
@@ -403,7 +437,7 @@ func main() {
 
 ### 配置
 
-参考 [consul](https://github.com/hashicorp/consul) 配置
+可自定义 Nacos 客户端以及服务端的配置，参考 [consul](https://github.com/hashicorp/consul) 配置。
 
 ### 完整实例
 
@@ -418,6 +452,14 @@ go get github.com/hertz-contrib/registry/etcd
 ```
 
 ### 服务注册
+
+#### Option
+
+Etcd 拓展在服务注册部分中提供了 option 配置。
+
+| 配置 | 描述                   |
+| ---- | ---------------------- |
+| TLS  | TLS 持有客户端安全凭证 |
 
 #### NewEtcdRegistry
 
@@ -451,6 +493,14 @@ func main() {
 ```
 
 ### 服务发现
+
+#### Option
+
+Etcd 拓展在服务发现部分中提供了 option 配置。
+
+| 配置 | 描述                   |
+| ---- | ---------------------- |
+| TLS  | TLS 持有客户端安全凭证 |
 
 #### NewEtcdResolver
 
@@ -551,7 +601,7 @@ func main() {
 
 ### 配置
 
-参考 [etcd-client](https://pkg.go.dev/go.etcd.io/etcd/client/v3) 配置。
+可自定义 Etcd 客户端以及服务端的配置，参考 [etcd-client](https://pkg.go.dev/go.etcd.io/etcd/client/v3) 配置。
 
 ### 完整示例
 
@@ -982,7 +1032,7 @@ func main() {
 
 ### 配置
 
-参考 [polaris-go](https://pkg.go.dev/github.com/polarismesh/polaris-go/api#section-readme) 配置。
+可自定义 polaris 客户端以及服务端的配置，参考 [polaris-go](https://pkg.go.dev/github.com/polarismesh/polaris-go/api#section-readme) 配置。
 
 ### 完整示例
 
@@ -998,6 +1048,17 @@ go get github.com/hertz-contrib/registry/servicecomb
 
 ### 服务注册
 
+#### Option
+
+Servicecomb 拓展在服务注册部分中提供了 option 配置。
+
+| 配置              | 描述                   |
+| ----------------- | ---------------------- |
+| appID             | Servicecomb 的 appID   |
+| versionRule       | Servicecomb 的版本要求 |
+| hostName          | Servicecomb 的主机名   |
+| heartbeatInterval | 发送心跳包的间隔时长   |
+
 #### NewDefaultSCRegistry
 
 `NewDefaultSCRegistry` 使用 service-comb 创建一个默认服务注册中心，需要传入端点值。可自定义服务注册中心配置。
@@ -1012,22 +1073,22 @@ func NewDefaultSCRegistry(endPoints []string, opts ...RegistryOption) (registry.
 
 ```go
 func main() {
-  // ...
-  r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr})
-  if err != nil {
-    log.Fatal(err)
-    return
-  }
-  h := server.Default(
-    server.WithHostPorts(addr),
-    server.WithRegistry(r, &registry.Info{
-      ServiceName: "hertz.servicecomb.demo",
-      Addr:        utils.NewNetAddr("tcp", addr),
-      Weight:      10,
-      Tags:        nil,
-    }),
-  )
-  // ...
+	// ...
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr})
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
 }
 ```
 
@@ -1045,29 +1106,39 @@ func NewSCRegistry(client *sc.Client, opts ...RegistryOption) registry.Registry
 
 ```go
 func main() {
-  client := &sc.Client{
-  // ...
-  }
-  // ...
-  r, err := servicecomb.NewSCRegistry(config)
-  if err != nil {
-    log.Fatal(err)
-    return
-  }
-  h := server.Default(
-    server.WithHostPorts(addr),
-    server.WithRegistry(r, &registry.Info{
-      ServiceName: "hertz.servicecomb.demo",
-      Addr:        utils.NewNetAddr("tcp", addr),
-      Weight:      10,
-      Tags:        nil,
-    }),
-  )
-  // ...
+	client := &sc.Client{
+		// ...
+	}
+	// ...
+	r, err := servicecomb.NewSCRegistry(config)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
 }
 ```
 
 ### 服务发现
+
+#### Option
+
+Servicecomb 拓展在服务发现部分中提供了 option 配置。
+
+| 配置        | 描述                      |
+| ----------- | ------------------------- |
+| appID       | Servicecomb 的 appID      |
+| versionRule | Servicecomb 的版本要求    |
+| consumerId  | Servicecomb 的 comsumerId |
 
 #### NewDefaultSCResolver
 
@@ -1111,20 +1182,20 @@ func NewSCResolver(cli *sc.Client, opts ...ResolverOption) discovery.Resolver
 
 ```go
 func main() {
-  client := &sc.Client{
-  // ...
-  }
-  // ...
-  r, err := servicecomb.NewSCResolver(client)
-  if err != nil {
-    panic(err)
-  }
-  cli, err := client.NewClient()
-  if err != nil {
-    panic(err)
-  }
-  cli.Use(sd.Discovery(r))
-  // ...
+	client := &sc.Client{
+		// ...
+	}
+	// ...
+	r, err := servicecomb.NewSCResolver(client)
+	if err != nil {
+		panic(err)
+	}
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	// ...
 }
 ```
 
@@ -1147,27 +1218,27 @@ import (
 )
 
 func main() {
-    const scAddr = "127.0.0.1:30100"
-    const addr = "127.0.0.1:8701"
-    r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr})
-    if err != nil {
-        log.Fatal(err)
-        return
-    }
-    h := server.Default(
-        server.WithHostPorts(addr),
-        server.WithRegistry(r, &registry.Info{
-            ServiceName: "hertz.servicecomb.demo",
-            Addr:        utils.NewNetAddr("tcp", addr),
-            Weight:      10,
-            Tags:        nil,
-        }),
-    )
+	const scAddr = "127.0.0.1:30100"
+	const addr = "127.0.0.1:8701"
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr})
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
 
-    h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-        ctx.JSON(consts.StatusOK, utils.H{"ping": "pong1"})
-    })
-    h.Spin()
+	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong1"})
+	})
+	h.Spin()
 }
 ```
 
@@ -1185,31 +1256,31 @@ import (
 )
 
 func main() {
-    const scAddr = "127.0.0.1:30100"
-    // build a servicecomb resolver
-    r, err := servicecomb.NewDefaultSCResolver([]string{scAddr})
-    if err != nil {
-      panic(err)
-    }
-    // build a hertz client with the servicecomb resolver
-    cli, err := client.NewClient()
-    if err != nil {
-      panic(err)
-    }
-    cli.Use(sd.Discovery(r))
-    for i := 0; i < 10; i++ {
-      status, body, err := cli.Get(context.Background(), nil, "http://hertz.servicecomb.demo/ping", config.WithSD(true))
-      if err != nil {
-        hlog.Fatal(err)
-      }
-      hlog.Infof("code=%d,body=%s", status, string(body))
-    }
+	const scAddr = "127.0.0.1:30100"
+	// build a servicecomb resolver
+	r, err := servicecomb.NewDefaultSCResolver([]string{scAddr})
+	if err != nil {
+		panic(err)
+	}
+	// build a hertz client with the servicecomb resolver
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	for i := 0; i < 10; i++ {
+		status, body, err := cli.Get(context.Background(), nil, "http://hertz.servicecomb.demo/ping", config.WithSD(true))
+		if err != nil {
+			hlog.Fatal(err)
+		}
+		hlog.Infof("code=%d,body=%s", status, string(body))
+	}
 }
 ```
 
 ### 配置
 
-参考 [go-chassis/sc-client](https://github.com/go-chassis/sc-client) 配置
+可自定义 Servicecomb 客户端以及服务端的配置，参考 [go-chassis/sc-client](https://github.com/go-chassis/sc-client) 配置
 
 ### 完整示例
 
@@ -1417,7 +1488,7 @@ func main() {
 
 ### 配置
 
-参考 [go-zookeeper/zk](https://github.com/go-zookeeper/zk) 配置。
+可自定义 zookeeper 客户端以及服务端的配置，参考 [go-zookeeper/zk](https://github.com/go-zookeeper/zk) 配置。
 
 ### 完整示例
 

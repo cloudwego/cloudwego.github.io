@@ -27,9 +27,18 @@ go get github.com/hertz-contrib/registry/nacos
 
 ### Service Registry
 
+#### Option
+
+Nacos extension provides option configuration in the service registry section.
+
+| Option  | Description                                                  |
+| ------- | ------------------------------------------------------------ |
+| cluster | Cluster configuration for nacos.                             |
+| group   | The configuration management of nacos can be grouped by group. |
+
 #### NewDefaultNacosRegistry
 
-`NewDefaultNacosRegistry` creates a default service registry using nacos. Will call `NewDefaultNacosConfig` to use the default client, set the RegionID to the default `cn-hangzhou` and not load the cache at the beginning. Customizable service registry configuration.
+`NewDefaultNacosRegistry` creates a default service registry using nacos. `NewDefaultNacosConfig` will be called to use the default client. By default, the RegionID is `cn-hangzhou`, the address is `127.0.0.1`, the port number is `8848`, and the cache will not be loaded at the beginning. Service registry configuration can be customized.
 
 Function signature:
 
@@ -97,9 +106,18 @@ func main() {
 
 ### Service Discovery
 
+#### Option
+
+Nacos extension provides option configuration in the service discovery section.
+
+| Option  | Description                                                  |
+| ------- | ------------------------------------------------------------ |
+| cluster | Cluster configuration for nacos.                             |
+| group   | The configuration management of nacos can be grouped by group. |
+
 #### NewDefaultNacosResolver
 
-`NewDefaultNacosResolver` creates a default service discovery center using nacos. Will call `NewDefaultNacosConfig` to use the default client, set the RegionID to the default `cn-hangzhou` and not load the cache at the beginning. Customizable Service Discovery Center configuration.
+`NewDefaultNacosResolver` creates a default service discovery center using nacos. `NewDefaultNacosConfig` will be called to use the default client. By default, the RegionID is `cn-hangzhou`, the address is `127.0.0.1`, the port number is `8848`, and the cache will not be loaded at the beginning. Service registry configuration can be customized.
 
 Function signature：
 
@@ -143,7 +161,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-  // ...
+	// ...
 	nacosCli, err := clients.NewNamingClient(
 		vo.NacosClientParam{
 			ClientConfig:  &cc,
@@ -240,11 +258,11 @@ func main() {
 
 ### Configuration
 
-Refer to the configuration of [nacos-sdk-go](https://github.com/nacos-group/nacos-sdk-go) .
+The configuration of Nacos client and server can be customized, refer to the configuration of [nacos-sdk-go](https://github.com/nacos-group/nacos-sdk-go) .
 
 ### Complete Example
 
-For more, see [example ](https://github.com/hertz-contrib/registry/tree/main/nacos/examples) .
+For more, see [example](https://github.com/hertz-contrib/registry/tree/main/nacos/examples) .
 
 ## Consul
 
@@ -256,9 +274,17 @@ go get github.com/hertz-contrib/registry/consul
 
 ### Service Registry
 
+#### Option
+
+Consul extension provides option configuration in the service registry section.
+
+| Option | Description                       |
+| ------ | --------------------------------- |
+| check  | Configure Consul's health checks. |
+
 #### NewConsulRegister
 
-`NewConsulRegister` uses consul to create a new service registry, you need to pass in the client. The client is created with `NewClient`, if no configuration is passed in, the default client configuration will be used. The service registry configuration can be customized.
+`NewConsulRegister` uses consul to create a new service registry, which needs to be passed in a client, which is created with `NewClient`. The service registry configuration can be customized. If no configuration is passed in, set `check.Timeout` to 5 seconds, `check.Internal` to 5 seconds, and `check.DeregisterCriticalServiceAfter` to 1 minute.
 
 Function signature:
 
@@ -289,9 +315,17 @@ func main() {
 
 ### Service Discovery
 
+#### Option
+
+Consul extension provides option configuration in the service discovery section.
+
+| Option | Description                       |
+| ------ | --------------------------------- |
+| check  | Configure Consul's health checks. |
+
 #### NewConsulResolver
 
-`NewConsulResolver` uses consul to create a new service discovery center, you need to pass in the client. The client is created using `NewClient`, if no configuration is passed in, the default client configuration will be used. The service discovery center configuration can be customized.
+`NewConsulResolver` uses consul to create a new service discovery center, you need to pass in the client. The client is created using `NewClient`. The service discovery center configuration can be customized.
 
 Function signature:
 
@@ -403,7 +437,7 @@ func main() {
 
 ### Configuration
 
-Refer to the configuration of [consul](https://github.com/hashicorp/consul).
+The configuration of Consul client and server can be customized, refer to the configuration of [consul](https://github.com/hashicorp/consul).
 
 ### Complete Example
 
@@ -418,6 +452,14 @@ go get github.com/hertz-contrib/registry/etcd
 ```
 
 ### Service Registry
+
+#### Option
+
+Etcd extension provides option configuration in the service registry section.
+
+| Option | Description                            |
+| ------ | -------------------------------------- |
+| TLS    | TLS holds client security credentials. |
 
 #### NewEtcdRegistry
 
@@ -451,6 +493,14 @@ func main() {
 ```
 
 ### Service Discovery
+
+#### Option
+
+Etcd extension provides option configuration in the service discovery section.
+
+| Option | Description                            |
+| ------ | -------------------------------------- |
+| TLS    | TLS holds client security credentials. |
 
 #### NewEtcdResolver
 
@@ -551,7 +601,7 @@ func main() {
 
 ### Configuration
 
-Refer to the configuration of [etcd-client](https://pkg.go.dev/go.etcd.io/etcd/client/v3).
+The configuration of Etcd client and server can be customized, refer to the configuration of [etcd-client](https://pkg.go.dev/go.etcd.io/etcd/client/v3).
 
 ### Complete Example
 
@@ -857,7 +907,7 @@ func main() {
 		},
 	}
 	h := server.Default(server.WithRegistry(r, Info), server.WithExitWaitTime(10*time.Second))
-  // ...
+	// ...
 }
 ```
 
@@ -982,7 +1032,7 @@ func main() {
 
 ### Configuration
 
-Refer to the configuration of [polaris-go](https://pkg.go.dev/github.com/polarismesh/polaris-go/api#section-readme).
+The configuration of Polaris client and server can be customized, refer to the configuration of [polaris-go](https://pkg.go.dev/github.com/polarismesh/polaris-go/api#section-readme).
 
 ### Complete Example
 
@@ -998,6 +1048,17 @@ go get github.com/hertz-contrib/registry/servicecomb
 
 ### Service Registry
 
+#### Option
+
+Servicecomb extension provides option configuration in the service registry section.
+
+| Option            | Description                                     |
+| ----------------- | ----------------------------------------------- |
+| appID             | AppID of Servicecomb.                           |
+| versionRule       | Version requirements for Servicecomb.           |
+| hostName          | Servicecomb's hostname.                         |
+| heartbeatInterval | The interval between sending heartbeat packets. |
+
 #### NewDefaultSCRegistry
 
 `NewDefaultSCRegistry` uses service-comb to create a default service registry, which needs to pass in the endpoint value. The service registry configuration can be customized.
@@ -1012,22 +1073,22 @@ Example:
 
 ```go
 func main() {
-  // ...
-  r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr})
-  if err != nil {
-    log.Fatal(err)
-    return
-  }
-  h := server.Default(
-    server.WithHostPorts(addr),
-    server.WithRegistry(r, &registry.Info{
-      ServiceName: "hertz.servicecomb.demo",
-      Addr:        utils.NewNetAddr("tcp", addr),
-      Weight:      10,
-      Tags:        nil,
-    }),
-  )
-  // ...
+	// ...
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr})
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
 }
 ```
 
@@ -1045,29 +1106,39 @@ Example:
 
 ```go
 func main() {
-  client := &sc.Client{
-  // ...
-  }
-  // ...
-  r, err := servicecomb.NewSCRegistry(config)
-  if err != nil {
-    log.Fatal(err)
-    return
-  }
-  h := server.Default(
-    server.WithHostPorts(addr),
-    server.WithRegistry(r, &registry.Info{
-      ServiceName: "hertz.servicecomb.demo",
-      Addr:        utils.NewNetAddr("tcp", addr),
-      Weight:      10,
-      Tags:        nil,
-    }),
-  )
-  // ...
+	client := &sc.Client{
+		// ...
+	}
+	// ...
+	r, err := servicecomb.NewSCRegistry(config)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
 }
 ```
 
 ### Service Discovery
+
+#### Option
+
+Servicecomb extension provides option configuration in the service discovery section.
+
+| Option      | Description                           |
+| ----------- | ------------------------------------- |
+| appID       | AppID of Servicecomb.                 |
+| versionRule | Version requirements for Servicecomb. |
+| consumerId  | ConsumerId of Servicecomb.            |
 
 #### NewDefaultSCResolver
 
@@ -1111,20 +1182,20 @@ Example:
 
 ```go
 func main() {
-  client := &sc.Client{
-  // ...
-  }
-  // ...
-  r, err := servicecomb.NewSCResolver(client)
-  if err != nil {
-    panic(err)
-  }
-  cli, err := client.NewClient()
-  if err != nil {
-    panic(err)
-  }
-  cli.Use(sd.Discovery(r))
-  // ...
+	client := &sc.Client{
+		// ...
+	}
+	// ...
+	r, err := servicecomb.NewSCResolver(client)
+	if err != nil {
+		panic(err)
+	}
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	// ...
 }
 ```
 
@@ -1147,27 +1218,27 @@ import (
 )
 
 func main() {
-    const scAddr = "127.0.0.1:30100"
-    const addr = "127.0.0.1:8701"
-    r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr})
-    if err != nil {
-        log.Fatal(err)
-        return
-    }
-    h := server.Default(
-        server.WithHostPorts(addr),
-        server.WithRegistry(r, &registry.Info{
-            ServiceName: "hertz.servicecomb.demo",
-            Addr:        utils.NewNetAddr("tcp", addr),
-            Weight:      10,
-            Tags:        nil,
-        }),
-    )
+	const scAddr = "127.0.0.1:30100"
+	const addr = "127.0.0.1:8701"
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr})
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
 
-    h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-        ctx.JSON(consts.StatusOK, utils.H{"ping": "pong1"})
-    })
-    h.Spin()
+	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong1"})
+	})
+	h.Spin()
 }
 ```
 
@@ -1185,31 +1256,31 @@ import (
 )
 
 func main() {
-    const scAddr = "127.0.0.1:30100"
-    // build a servicecomb resolver
-    r, err := servicecomb.NewDefaultSCResolver([]string{scAddr})
-    if err != nil {
-      panic(err)
-    }
-    // build a hertz client with the servicecomb resolver
-    cli, err := client.NewClient()
-    if err != nil {
-      panic(err)
-    }
-    cli.Use(sd.Discovery(r))
-    for i := 0; i < 10; i++ {
-      status, body, err := cli.Get(context.Background(), nil, "http://hertz.servicecomb.demo/ping", config.WithSD(true))
-      if err != nil {
-        hlog.Fatal(err)
-      }
-      hlog.Infof("code=%d,body=%s", status, string(body))
-    }
+	const scAddr = "127.0.0.1:30100"
+	// build a servicecomb resolver
+	r, err := servicecomb.NewDefaultSCResolver([]string{scAddr})
+	if err != nil {
+		panic(err)
+	}
+	// build a hertz client with the servicecomb resolver
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	for i := 0; i < 10; i++ {
+		status, body, err := cli.Get(context.Background(), nil, "http://hertz.servicecomb.demo/ping", config.WithSD(true))
+		if err != nil {
+			hlog.Fatal(err)
+		}
+		hlog.Infof("code=%d,body=%s", status, string(body))
+	}
 }
 ```
 
 ### Configuration
 
-Refer to the configuration of [go-chassis/sc-client](https://github.com/go-chassis/sc-client).
+The configuration of Servicecomb client and server can be customized, refer to the configuration of [go-chassis/sc-client](https://github.com/go-chassis/sc-client).
 
 ### Complete Example
 
@@ -1417,7 +1488,7 @@ func main() {
 
 ### Configuration
 
-Refer to the configuration of [go-zookeeper/zk](https://github.com/go-zookeeper/zk).
+The configuration of Zookeeper client and server can be customized, refer to the configuration of [go-zookeeper/zk](https://github.com/go-zookeeper/zk).
 
 ### Complete Example
 
