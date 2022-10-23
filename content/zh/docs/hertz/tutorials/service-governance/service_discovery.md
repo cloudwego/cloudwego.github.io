@@ -1138,7 +1138,7 @@ Servicecomb 拓展在服务发现部分中提供了 option 配置。
 | ----------- | ------------------------- |
 | appID       | Servicecomb 的 appID      |
 | versionRule | Servicecomb 的版本要求    |
-| consumerId  | Servicecomb 的 comsumerId |
+| consumerId  | Servicecomb 的 consumerId |
 
 #### NewDefaultSCResolver
 
