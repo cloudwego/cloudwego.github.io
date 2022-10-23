@@ -1094,7 +1094,7 @@ func main() {
 
 #### NewSCRegistry
 
-``NewSCRegistry` uses service-comb to create a new service registry. It needs to pass in a custom client. Customizable service registry configuration.
+`NewSCRegistry` uses service-comb to create a new service registry. It needs to pass in a custom client. Customizable service registry configuration.
 
 Function signature:
 
