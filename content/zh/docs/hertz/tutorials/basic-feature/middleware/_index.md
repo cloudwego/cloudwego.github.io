@@ -19,9 +19,9 @@ Hertz 服务端中间件是 HTTP 请求－响应周期中的一个函数，提�
 |:--:|
 |图1：中间件调用链|
 
-中间件可以在请求更深入地传递到应用程序之前或之后执行：
-- 中间件可以在请求到达业务处理之前执行，比如执行身份认证和权限认证，当中间件只有初始化（pre-handle）相关逻辑，且没有和 real handler 在一个函数调用栈中的需求时，中间件中可以省略掉最后的`.Next`，如图1的中间件 B。
-- 中间件也可以在执行过业务处理之后执行，比如记录响应时间和从异常中恢复，如果在业务 handler 处理之后有其它处理逻辑（ post-handle ），或对函数调用链（栈）有强需求，则必须显式调用`.Next`，如图1的中间件 C。
+中间件可以在请求更深入地传递到业务逻辑之前或之后执行：
+- 中间件可以在请求到达业务逻辑之前执行，比如执行身份认证和权限认证，当中间件只有初始化（pre-handle）相关逻辑，且没有和 real handler 在一个函数调用栈中的需求时，中间件中可以省略掉最后的`.Next`，如图1的中间件 B。
+- 中间件也可以在执行过业务逻辑之后执行，比如记录响应时间和从异常中恢复。如果在业务 handler 处理之后有其它处理逻辑（ post-handle ），或对函数调用链（栈）有强需求，则必须显式调用`.Next`，如图1的中间件 C。
 
 ### 实现一个中间件
 
@@ -50,9 +50,9 @@ func MyMiddleware() app.HandlerFunc {
 - `AbortWithMsg(msg string, statusCode int)`：终止后续调用，并设置 response中body，和状态码
 - `AbortWithStatus(code int)`：终止后续调用，并设置状态码
 
-### Server级别中间件
+### Server 级别中间件
 
-Server级别中间件会对整个server的路由生效
+Server 级别中间件会对整个server的路由生效
 
 ```go
 h := server.Default()
@@ -155,7 +155,7 @@ Hertz 提供了常用的 BasicAuth、CORS、JWT等中间件，更多实现可以
 
 ### 实现一个中间件
 
-客户端中间件实现和服务端中间件不同。Client 侧无法拿到中间件 index 实现递增，因此 Client 中间件采用提前构建嵌套函数的形式实现中间件，在实现一个中间件时，可以参考下面的代码。
+客户端中间件实现和服务端中间件不同。Client 侧无法拿到中间件 index 实现递增，因此 Client 中间件采用提前构建嵌套函数的形式实现，在实现一个中间件时，可以参考下面的代码。
 
 ```go
 func MyMiddleware(next client.Endpoint) client.Endpoint {

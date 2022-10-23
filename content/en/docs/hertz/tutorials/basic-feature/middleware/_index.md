@@ -21,7 +21,7 @@ Server-side middleware is a function in the HTTP request-response cycle that pro
 
 Middleware can perform tasks before or after passing the request deeper into the application:
 - Middleware can be executed before the request reaches business processing, such as performing identity authentication and authorization authentication. When the middleware only has pre-handle logic and there is no requirement to be in a function call stack with real handler, the `.Next` can be omitted.
-- Middleware can also be executed after business processing has been performed, such as logging response times and recovering from a panic, If there is other processing logic (post-handle) after the business handler, or there is a strong requirement for the function call chain (stack), then the `.Next` must be called explicitly, see middleware C in Figure 1.
+- Middleware can also be executed after business processing has been performed, such as logging response times and recovering from a panic. If there is other processing logic (post-handle) after the business handler, or there is a strong requirement for the function call chain (stack), then the `.Next` must be called explicitly, see middleware C in Figure 1.
 
 ### Implement customized middleware
 
@@ -31,6 +31,7 @@ func MyMiddleware() app.HandlerFunc {
    return func(ctx context.Context, c *app.RequestContext) {
       // pre-handle
       // ...
+      // if there is no 'post-handle' logic, the 'c.Next(ctx)' can be omitted.
       c.Next(ctx)
    }
 }
