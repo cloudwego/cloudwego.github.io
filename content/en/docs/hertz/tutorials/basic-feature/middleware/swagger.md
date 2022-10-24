@@ -82,7 +82,7 @@ func PingHandler(c context.Context, ctx *app.RequestContext) {
 ```
 
 2. Use `swag init` command to generate a docs, docs generated will be stored at `docs/`.
-3. Import the docs like this:
+3. Import the generated docs package into the current project:
    I assume your project named `github.com/go-project-name/docs`.
 
 ```go
@@ -99,12 +99,13 @@ import (
 package main
 
 import (
-	"context"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/hertz-contrib/swagger"
-	_ "github.com/hertz-contrib/swagger/example/basic/docs"
-	swaggerFiles "github.com/swaggo/files"
+   "context"
+
+   "github.com/cloudwego/hertz/pkg/app"
+   "github.com/cloudwego/hertz/pkg/app/server"
+   "github.com/hertz-contrib/swagger"
+   _ "github.com/hertz-contrib/swagger/example/basic/docs"
+   swaggerFiles "github.com/swaggo/files"
 )
 
 // PingHandler Testhandler

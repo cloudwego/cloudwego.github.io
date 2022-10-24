@@ -26,7 +26,7 @@ go get github.com/swaggo/swag/cmd/swag
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-3. 在你的 Go 项目的根目录下运行 [Swag](https://github.com/swaggo/swag) (例如 `~/root/go-peoject-name`),[Swag](https://github.com/swaggo/swag) 将解析注释并生成必要的文件(`docs` 文件夹和 `docs/doc.go`)在 `~/root/go-peoject-name/docs`目录下。
+3. 在你的 Go 项目的根目录下运行 [Swag](https://github.com/swaggo/swag) (例如 `~/root/go-peoject-name`)，[Swag](https://github.com/swaggo/swag) 将解析注释并生成必要的文件(`docs` 文件夹和 `docs/doc.go`)在 `~/root/go-peoject-name/docs` 目录下。
 
 ```sh
 swag init
@@ -81,7 +81,7 @@ func PingHandler(c context.Context, ctx *app.RequestContext) {
 
 2. 使用 `swag init` 命令来生成文档, 生成的文档将被存储在`docs/`目录下。
 
-3. 像这样导入文档:
+3. 将生成的 docs 包导入当前项目中:
 
    假设你的项目名为 `github.com/go-project-name/docs`。
 
@@ -99,12 +99,13 @@ import (
 package main
 
 import (
-	"context"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/hertz-contrib/swagger"
-	_ "github.com/hertz-contrib/swagger/example/basic/docs"
-	swaggerFiles "github.com/swaggo/files"
+   "context"
+
+   "github.com/cloudwego/hertz/pkg/app"
+   "github.com/cloudwego/hertz/pkg/app/server"
+   "github.com/hertz-contrib/swagger"
+   _ "github.com/hertz-contrib/swagger/example/basic/docs"
+   swaggerFiles "github.com/swaggo/files"
 )
 
 // PingHandler 测试handler
@@ -180,12 +181,12 @@ func main() {
 ```
 
 
-| 选项                     | 类型   | 默认值     | 描述                                                         |
-| ------------------------ | ------ | ---------- | ------------------------------------------------------------ |
-| URL                      | string | "doc.json" | 指向 API 定义的 URL                                          |
-| DocExpansion             | string | "list"     | 控制操作和标签的默认扩展设置。它可以是 `list`（只展开标签）、`full`（展开标签和操作）或 `none`（不展开）。 |
-| DeepLinking              | bool   | true       | 如果设置为 `true`，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。 |
-| DefaultModelsExpandDepth | int    | 1          | 模型的默认扩展深度（设置为-1完全隐藏模型）。                 |
-| InstanceName             | string | "swagger"  | swagger 文档的实例名称。如果要在一个 Hertz 路由 上部署多个不同的swagger 实例，请确保每个实例有一个唯一的名字（使用_-instanceName _参数，用` swag init`  生成swagger 文档）。 |
-| PersistAuthorization     | bool   | false      | 如果设置为 `true`，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。 |
-| Oauth2DefaultClientID    | string | ""         | 如果设置了这个字段，它将用于预填 OAuth2授权对话框的 *client_id* 字段。 |
+| 选项                     | 类型   | 默认值     | 描述                                                                                                                   |
+| ------------------------ | ------ | ---------- |----------------------------------------------------------------------------------------------------------------------|
+| URL                      | string | "doc.json" | 指向 API 定义的 URL                                                                                                       |
+| DocExpansion             | string | "list"     | 控制操作和标签的默认扩展设置。它可以是 `list`（只展开标签）、`full`（展开标签和操作）或 `none`（不展开）。                                                      |
+| DeepLinking              | bool   | true       | 如果设置为 `true`，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。                                                                           |
+| DefaultModelsExpandDepth | int    | 1          | 模型的默认扩展深度（设置为-1完全隐藏模型）。                                                                                              |
+| InstanceName             | string | "swagger"  | swagger 文档的实例名称。如果要在一个 Hertz 路由 上部署多个不同的swagger 实例，请确保每个实例有一个唯一的名字（使用_-instanceName _参数，用`swag init` 生成 swagger 文档）。 |
+| PersistAuthorization     | bool   | false      | 如果设置为 `true`，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。                                                                             |
+| Oauth2DefaultClientID    | string | ""         | 如果设置了这个字段，它将用于预填 OAuth2 授权对话框的 *client_id* 字段。                                                                       |
