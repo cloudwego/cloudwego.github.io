@@ -20,7 +20,7 @@ The implementation of the [swagger](https://github.com/hertz-contrib/swagger) ex
 go get github.com/swaggo/swag/cmd/swag
 ```
 
-Starting in Go 1.17, installing executables with `go get` is deprecated. `go install` may be used instead:
+Starting in Go 1.17, `go mod` mode by `go get` to download the corresponding library can not be automatically compiled and installed to `$GOPATH/bin`, installing executables with `go get` is deprecated. `go install` may be used instead:
 
 ```sh
 go install github.com/swaggo/swag/cmd/swag@latest
