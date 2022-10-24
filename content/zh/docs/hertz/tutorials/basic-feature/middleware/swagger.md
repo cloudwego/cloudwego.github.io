@@ -16,9 +16,12 @@ description: >
 
 2. 下载 Go 对应的 [Swag](https://github.com/swaggo/swag) 通过运行以下命令:
 
+`go get` 安装可执行文件需配合 `GOPATH` 模式工作。
+
 ```sh
 go get github.com/swaggo/swag/cmd/swag
 ```
+
 
 从 Go 1.17 开始，`go mod` 模式下通过 `go get` 下载对应库无法自动编译并安装到 `$GOPATH/bin` ，用 `go get` 来安装可执行文件的方式不再推荐了。可以使用 `go install`来代替。
 
