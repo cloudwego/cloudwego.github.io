@@ -6,7 +6,7 @@ description: >
 
 ---
 
-这是一个用 Swagger 2.0来自动生成 RESTful API 文档的 Hertz 中间件。
+这是一个用 Swagger 2.0 来自动生成 RESTful API 文档的 Hertz 中间件。
 
 参考了 gin 的[实现](https://github.com/swaggo/gin-swagger)，对 Hertz 进行了适配。
 
@@ -20,7 +20,7 @@ description: >
 go get github.com/swaggo/swag/cmd/swag
 ```
 
-从 Go 1.17开始，用`go get`来安装可执行文件的方式不再推荐了。可以使用 `go install `来代替。
+从 Go 1.17 开始，用`go get`来安装可执行文件的方式不再推荐了。可以使用 `go install`来代替。
 
 ```sh
 go install github.com/swaggo/swag/cmd/swag@latest
