@@ -218,13 +218,13 @@ for {
 
 1. 运行 server
 
-`go run .`
+    `go run .`
 
 2. 运行 client
 
-另起一个终端后，`go run ./client`
+    另起一个终端后，`go run ./client`
 
-现在，你应该能看到客户端在调用 `Add` 方法了。
+    现在，你应该能看到客户端在调用 `Add` 方法了。
 
 ## 基础教程
 
@@ -262,7 +262,7 @@ Kitex 自带了一个同名的命令行工具 `kitex`，用来帮助大家很方
 
 可以使用以下命令来安装或者更新 kitex：
 
-`$ go install github.com/cloudwego/kitex/tool/cmd/kitex`
+`$ go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`
 
 完成后，可以通过执行 kitex 来检测是否安装成功。
 

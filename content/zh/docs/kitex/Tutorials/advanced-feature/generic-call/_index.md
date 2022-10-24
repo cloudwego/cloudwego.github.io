@@ -1,5 +1,5 @@
 ---
-title: "Kitex 泛化调用使用指南"
+title: "泛化调用"
 date: 2021-09-26
 weight: 1
 description: >

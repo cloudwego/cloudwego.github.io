@@ -1,9 +1,9 @@
 ---
-title: 'cooperation'
-linkTitle: 'cooperation'
+title: 'Cooperation'
+linkTitle: 'Cooperation'
 menu:
   main:
-    weight: 50
+    weight: 40
 ---
 
 {{< blocks/cover title="谁在使用CloudWeGo" image_anchor="bottom" height="min" >}}

@@ -16,8 +16,8 @@ package main
 import "github.com/cloudwego/hertz/pkg/app/server"
 
 func main() {
-    h := server.New(server.WithXXXX())
-    ...
+	h := server.New(server.WithXXXX())
+	...
 }
 ```
 
@@ -46,6 +46,13 @@ func main() {
 | WithALPN | bool | 是否开启 ALPN。默认关闭 |
 | WithTracer | tracer.Tracer | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭 |
 | WithTraceLevel | stats.Level | 设置 trace level，默认 LevelDetailed |
+
+Server Connection 数量限制:
+
+* 如果是使用标准网络库，无此限制
+* 如果是使用 netpoll，最大连接数为 10000
+  （这个是netpoll底层使用的 [gopool](https://github.com/bytedance/gopkg/blob/b9c1c36b51a6837cef4c2223e11522e3a647460c/util/gopool/gopool.go#L46)
+  ）控制的，修改方式也很简单，调用 gopool 提供的函数即可：`gopool.SetCap(xxx)`(main.go 中调用一次即可)。
 
 ## Client
 
@@ -76,4 +83,3 @@ func main() {
 | WithDialer | network.Dialer | 设置 client 使用的网络库，默认 netpoll |
 | WithResponseBodyStream | bool | 设置是否使用流式处理，默认关闭 |
 | WithDialFunc | client.DialFunc | 设置 Dial Function |
-
