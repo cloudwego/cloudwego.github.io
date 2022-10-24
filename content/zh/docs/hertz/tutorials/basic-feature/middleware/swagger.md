@@ -146,7 +146,7 @@ func main() {
 
 ```
 
-样例的项目目录结构树如下, `swag init` 运行在相对的目录 `.`下。
+样例的项目目录结构树如下, `swag init` 运行在相对的目录 `.` 下。
 
 ```
 .
@@ -181,12 +181,12 @@ func main() {
 ```
 
 
-| 选项                     | 类型   | 默认值     | 描述                                                                                                                   |
-| ------------------------ | ------ | ---------- |----------------------------------------------------------------------------------------------------------------------|
-| URL                      | string | "doc.json" | 指向 API 定义的 URL                                                                                                       |
-| DocExpansion             | string | "list"     | 控制操作和标签的默认扩展设置。它可以是 `list`（只展开标签）、`full`（展开标签和操作）或 `none`（不展开）。                                                      |
-| DeepLinking              | bool   | true       | 如果设置为 `true`，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。                                                                           |
-| DefaultModelsExpandDepth | int    | 1          | 模型的默认扩展深度（设置为-1完全隐藏模型）。                                                                                              |
-| InstanceName             | string | "swagger"  | swagger 文档的实例名称。如果要在一个 Hertz 路由 上部署多个不同的swagger 实例，请确保每个实例有一个唯一的名字（使用_-instanceName _参数，用`swag init` 生成 swagger 文档）。 |
-| PersistAuthorization     | bool   | false      | 如果设置为 `true`，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。                                                                             |
-| Oauth2DefaultClientID    | string | ""         | 如果设置了这个字段，它将用于预填 OAuth2 授权对话框的 *client_id* 字段。                                                                       |
+| 选项                     | 类型   | 默认值     | 描述                                                                                                                     |
+| ------------------------ | ------ | ---------- |------------------------------------------------------------------------------------------------------------------------|
+| URL                      | string | "doc.json" | 指向 API 定义的 URL                                                                                                         |
+| DocExpansion             | string | "list"     | 控制操作和标签的默认扩展设置。它可以是 `list`（只展开标签）、`full`（展开标签和操作）或 `none`（不展开）。                                                        |
+| DeepLinking              | bool   | true       | 如果设置为 `true`，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。                                                                             |
+| DefaultModelsExpandDepth | int    | 1          | 模型的默认扩展深度（设置为-1完全隐藏模型）。                                                                                                |
+| InstanceName             | string | "swagger"  | swagger 文档的实例名称。如果要在一个 Hertz 路由 上部署多个不同的 swagger 实例，请确保每个实例有一个唯一的名字（使用_-instanceName _参数，用 `swag init` 生成 swagger 文档）。 |
+| PersistAuthorization     | bool   | false      | 如果设置为 `true`，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。                                                                               |
+| Oauth2DefaultClientID    | string | ""         | 如果设置了这个字段，它将用于预填 OAuth2 授权对话框的 *client_id* 字段。                                                                         |
