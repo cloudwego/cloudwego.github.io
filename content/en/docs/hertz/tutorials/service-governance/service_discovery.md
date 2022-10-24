@@ -31,10 +31,75 @@ go get github.com/hertz-contrib/registry/nacos
 
 Nacos extension provides option configuration in the service registry section.
 
-| Option  | Description                                                  |
-| ------- | ------------------------------------------------------------ |
-| cluster | Cluster configuration for nacos.                             |
-| group   | The configuration management of nacos can be grouped by group. |
+##### WithRegistryCluster
+
+Nacos extension provides `WithRegistryCluster` to help users configure custom clusters. Defaults to "DEFAULT" .
+
+Function signature:
+
+```go
+func WithRegistryCluster(cluster string) RegistryOption
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	r, err := nacos.NewDefaultNacosRegistry(
+		nacos.WithRegistryCluster("Cluster123"),
+	)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+##### WithRegistryGroup
+
+Nacos extension provides `WithRegistryGroup` to help users configure custom clusters. Defaults to "DEFAULT_GROUP" .
+
+Function signature:
+
+```go
+func WithRegistryGroup(group string) RegistryOption
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	r, err := nacos.NewDefaultNacosRegistry(
+		nacos.WithRegistryGroup("Group1"),
+	)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
 
 #### NewDefaultNacosRegistry
 
@@ -46,7 +111,7 @@ Function signature:
 func NewDefaultNacosRegistry(opts ...RegistryOption) (registry.Registry, error)
 ```
 
-Example：
+Example:
 
 ```go
 func main() {
@@ -110,10 +175,65 @@ func main() {
 
 Nacos extension provides option configuration in the service discovery section.
 
-| Option  | Description                                                  |
-| ------- | ------------------------------------------------------------ |
-| cluster | Cluster configuration for nacos.                             |
-| group   | The configuration management of nacos can be grouped by group. |
+##### WithRegistryCluster
+
+Nacos extension provides `WithRegistryCluster` to help users configure custom clusters. Defaults to "DEFAULT" .
+
+Function signature:
+
+```go
+func WithRegistryCluster(cluster string) RegistryOption
+```
+
+Example:
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := nacos.NewDefaultNacosResolver(
+    nacos.WithRegistryCluster("Cluster123"),
+  )
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	client.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+##### WithRegistryGroup
+
+Nacos extension provides `WithRegistryGroup` to help users configure custom clusters. Defaults to "DEFAULT_GROUP" .
+
+Function signature:
+
+```go
+func WithRegistryGroup(group string) RegistryOption
+```
+
+Example:
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := nacos.NewDefaultNacosResolver(
+    nacos.WithRegistryGroup("Group1"),
+  )
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	client.Use(sd.Discovery(r))
+	// ...
+}
+```
 
 #### NewDefaultNacosResolver
 
@@ -278,9 +398,39 @@ go get github.com/hertz-contrib/registry/consul
 
 Consul extension provides option configuration in the service registry section.
 
-| Option | Description                       |
-| ------ | --------------------------------- |
-| check  | Configure Consul's health checks. |
+##### WithRegistryGroup
+
+Consul extension provides `WithCheck` to help users configure the `AgentServiceCheck` option in Consul. `defaultCheck()` is called by default.
+
+Function signature:
+
+```go
+func WithCheck(check *api.AgentServiceCheck) Option
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	consulClient, err := consulapi.NewClient(config)
+	// ...
+	check := &consulapi.AgentServiceCheck{
+		// ...
+	}
+	r := consul.NewConsulRegister(consulClient, consul.WithCheck(check))
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
 
 #### NewConsulRegister
 
@@ -319,9 +469,38 @@ func main() {
 
 Consul extension provides option configuration in the service discovery section.
 
-| Option | Description                       |
-| ------ | --------------------------------- |
-| check  | Configure Consul's health checks. |
+##### WithRegistryGroup
+
+Consul extension provides `WithCheck` to help users configure the `AgentServiceCheck` option in Consul. `defaultCheck()` is called by default.
+
+Function signature:
+
+```go
+func WithCheck(check *api.AgentServiceCheck) Option
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	consulClient, err := consulapi.NewClient(consulConfig)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+  check := &consulapi.AgentServiceCheck{
+		// ...
+	}
+	r := consul.NewConsulResolver(consulClient, consul.WithCheck(check))
+
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+}
+```
 
 #### NewConsulResolver
 
@@ -457,9 +636,38 @@ go get github.com/hertz-contrib/registry/etcd
 
 Etcd extension provides option configuration in the service registry section.
 
-| Option | Description                            |
-| ------ | -------------------------------------- |
-| TLS    | TLS holds client security credentials. |
+##### WithTLSOpt
+
+Etcd extension provides `WithTLSOpt` to help users configure an option to authenticate via tls/ssl.
+
+Function signature:
+
+```go
+func WithTLSOpt(certFile, keyFile, caFile string) Option
+```
+
+Example:
+
+```go
+func main() {
+	r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+		etcd.WithTLSOpt(certFile, keyFile, caFile),
+	)
+	if err != nil {
+		panic(err)
+	}
+	// ...
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	// ...
+}
+```
 
 #### NewEtcdRegistry
 
@@ -498,9 +706,34 @@ func main() {
 
 Etcd extension provides option configuration in the service discovery section.
 
-| Option | Description                            |
-| ------ | -------------------------------------- |
-| TLS    | TLS holds client security credentials. |
+##### WithTLSOpt
+
+Etcd extension provides `WithTLSOpt` to help users configure an option to authenticate via tls/ssl.
+
+Function signature:
+
+```go
+func WithTLSOpt(certFile, keyFile, caFile string) Option
+```
+
+Example:
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+		etcd.WithTLSOpt(certFile, keyFile, caFile),
+	)
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
 
 #### NewEtcdResolver
 
@@ -1052,12 +1285,145 @@ go get github.com/hertz-contrib/registry/servicecomb
 
 Servicecomb extension provides option configuration in the service registry section.
 
-| Option            | Description                                     |
-| ----------------- | ----------------------------------------------- |
-| appID             | AppID of Servicecomb.                           |
-| versionRule       | Version requirements for Servicecomb.           |
-| hostName          | Servicecomb's hostname.                         |
-| heartbeatInterval | The interval between sending heartbeat packets. |
+##### WithAppId
+
+Servicecomb extension provides `WithAppId` to help users configure the AppId of Servicecomb. Defaults to "DEFAULT" .
+
+Function signature:
+
+```go
+func WithAppId(appId string) RegistryOption
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithAppId("appID"),
+		)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+##### WithRegistryVersionRule
+
+Servicecomb extension provides `WithRegistryVersionRule` to help users configure the version requirements of Servicecomb. Defaults to 1.0.0 .
+
+Function signature:
+
+```go
+func WithRegistryVersionRule(versionRule string) RegistryOption
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithRegistryVersionRule("1.1.0"),
+		)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+##### WithRegistryHostName
+
+Servicecomb extension provides `WithRegistryHostName` to help users configure Servicecomb's hostname. Defaults to "DEFAULT" .
+
+Function signature:
+
+```go
+func WithRegistryHostName(hostName string) RegistryOption
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithRegistryHostName("hostName"),
+		)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+##### WithRegistryHeartbeatInterval
+
+Servicecomb extension provides `WithRegistryHeartbeatInterval` to help users configure the interval for sending heartbeat packets. Default is 5.
+
+Function signature:
+
+```go
+func WithRegistryHeartbeatInterval(second int32) RegistryOption
+```
+
+Example:
+
+```go
+func main() {
+	// ...
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithRegistryHeartbeatInterval(10),
+		)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
 
 #### NewDefaultSCRegistry
 
@@ -1134,11 +1500,95 @@ func main() {
 
 Servicecomb extension provides option configuration in the service discovery section.
 
-| Option      | Description                           |
-| ----------- | ------------------------------------- |
-| appID       | AppID of Servicecomb.                 |
-| versionRule | Version requirements for Servicecomb. |
-| consumerId  | ConsumerId of Servicecomb.            |
+##### WithAppId
+
+Servicecomb extension provides `WithAppId` to help users configure the AppId of Servicecomb. Defaults to "DEFAULT" .
+
+Function signature:
+
+```go
+func WithResolverAppId(appId string) ResolverOption
+```
+
+Example:
+
+```go
+func main() {
+  // ...
+  r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithAppId("appID"),
+		)
+  if err != nil {
+    panic(err)
+  }
+  cli, err := client.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  cli.Use(sd.Discovery(r))
+  // ...
+}
+```
+
+##### WithResolverVersionRule
+
+Servicecomb extension provides `WithResolverVersionRule` to help users configure Servicecomb's version requirements. Defaults to latest .
+
+Function signature:
+
+```go
+func WithResolverVersionRule(versionRule string) ResolverOption
+```
+
+Example:
+
+```go
+func main() {
+  // ...
+  r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithResolverVersionRule("1.0.0"),
+		)
+  if err != nil {
+    panic(err)
+  }
+  cli, err := client.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  cli.Use(sd.Discovery(r))
+  // ...
+}
+```
+
+##### WithResolverConsumerId
+
+Servicecomb extension provides `WithResolverConsumerId` to help users configure Servicecomb's ConsumerId . Default is empty .
+
+Function signature:
+
+```go
+func WithResolverConsumerId(consumerId string) ResolverOption
+```
+
+Example:
+
+```go
+func main() {
+  // ...
+  r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithResolverConsumerId("1"),
+		)
+  if err != nil {
+    panic(err)
+  }
+  cli, err := client.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  cli.Use(sd.Discovery(r))
+  // ...
+}
+```
 
 #### NewDefaultSCResolver
 

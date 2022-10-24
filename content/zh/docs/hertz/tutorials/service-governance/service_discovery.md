@@ -29,12 +29,77 @@ go get github.com/hertz-contrib/registry/nacos
 
 #### Option
 
-nacos 拓展在服务注册部分中提供了 option 配置。
+Nacos 拓展在服务注册部分中提供了 option 配置。
 
-| 配置    | 描述                                    |
-| ------- | --------------------------------------- |
-| cluster | nacos 的集群配置。                      |
-| group   | nacos 的配置管理可通过 group 进行分组。 |
+##### WithRegistryCluster
+
+Nacos 扩展提供了 `WithRegistryCluster` 用于帮助用户配置自定义的集群。默认为 “DEFAULT” 。
+
+函数签名：
+
+```go
+func WithRegistryCluster(cluster string) RegistryOption
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	r, err := nacos.NewDefaultNacosRegistry(
+		nacos.WithRegistryCluster("Cluster123"),
+	)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+##### WithRegistryGroup
+
+Nacos 扩展提供了 `WithRegistryGroup` 用于帮助用户配置自定义的集群。默认为 "DEFAULT_GROUP" 。
+
+函数签名：
+
+```go
+func WithRegistryGroup(group string) RegistryOption
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	r, err := nacos.NewDefaultNacosRegistry(
+		nacos.WithRegistryGroup("Group1"),
+	)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
 
 #### NewDefaultNacosRegistry
 
@@ -110,10 +175,65 @@ func main() {
 
 Nacos 拓展在服务发现部分中提供了 option 配置。
 
-| 配置    | 描述                                    |
-| ------- | --------------------------------------- |
-| cluster | Nacos 的集群配置。                      |
-| group   | Nacos 的配置管理可通过 group 进行分组。 |
+##### WithRegistryCluster
+
+Nacos 扩展提供了 `WithRegistryCluster` 用于帮助用户配置自定义的集群。默认为 “DEFAULT” 。
+
+函数签名：
+
+```go
+func WithRegistryCluster(cluster string) RegistryOption
+```
+
+示例代码：
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := nacos.NewDefaultNacosResolver(
+    nacos.WithRegistryCluster("Cluster123"),
+  )
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	client.Use(sd.Discovery(r))
+	// ...
+}
+```
+
+##### WithRegistryGroup
+
+Nacos 扩展提供了 `WithRegistryGroup` 用于帮助用户配置自定义的集群。默认为 "DEFAULT_GROUP" 。
+
+函数签名：
+
+```go
+func WithRegistryGroup(group string) RegistryOption
+```
+
+示例代码：
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := nacos.NewDefaultNacosResolver(
+    nacos.WithRegistryGroup("Group1"),
+  )
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	client.Use(sd.Discovery(r))
+	// ...
+}
+```
 
 #### NewDefaultNacosResolver
 
@@ -278,9 +398,39 @@ go get github.com/hertz-contrib/registry/consul
 
 Consul 拓展在服务注册部分中提供了 option 配置。
 
-| 配置  | 描述                     |
-| ----- | ------------------------ |
-| check | 配置 Consul 的健康检查。 |
+##### WithRegistryGroup
+
+Consul 扩展提供了 `WithCheck` 用于帮助用户配置 Consul 中的 `AgentServiceCheck` 选项。默认调用 `defaultCheck()` 。
+
+函数签名：
+
+```go
+func WithCheck(check *api.AgentServiceCheck) Option
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	consulClient, err := consulapi.NewClient(config)
+	// ...
+	check := &consulapi.AgentServiceCheck{
+		// ...
+	}
+	r := consul.NewConsulRegister(consulClient, consul.WithCheck(check))
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
 
 #### NewConsulRegister
 
@@ -319,9 +469,38 @@ func main() {
 
 Consul 拓展在服务发现部分中提供了 option 配置。
 
-| 配置  | 描述                     |
-| ----- | ------------------------ |
-| check | 配置 Consul 的健康检查。 |
+##### WithRegistryGroup
+
+Consul 扩展提供了 `WithCheck` 用于帮助用户配置 Consul 中的 `AgentServiceCheck` 选项。默认调用 `defaultCheck()` 。
+
+函数签名：
+
+```go
+func WithCheck(check *api.AgentServiceCheck) Option
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	consulClient, err := consulapi.NewClient(consulConfig)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+  check := &consulapi.AgentServiceCheck{
+		// ...
+	}
+	r := consul.NewConsulResolver(consulClient, consul.WithCheck(check))
+
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+}
+```
 
 #### NewConsulResolver
 
@@ -457,9 +636,38 @@ go get github.com/hertz-contrib/registry/etcd
 
 Etcd 拓展在服务注册部分中提供了 option 配置。
 
-| 配置 | 描述                   |
-| ---- | ---------------------- |
-| TLS  | TLS 持有客户端安全凭证 |
+##### WithTLSOpt
+
+Etcd 扩展提供了 `WithTLSOpt` 用于帮助用户配置一个通过 tls/ssl 进行身份验证的选项。
+
+函数签名：
+
+```go
+func WithTLSOpt(certFile, keyFile, caFile string) Option
+```
+
+示例代码：
+
+```go
+func main() {
+	r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+		etcd.WithTLSOpt(certFile, keyFile, caFile),
+	)
+	if err != nil {
+		panic(err)
+	}
+	// ...
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}))
+	// ...
+}
+```
 
 #### NewEtcdRegistry
 
@@ -498,9 +706,34 @@ func main() {
 
 Etcd 拓展在服务发现部分中提供了 option 配置。
 
-| 配置 | 描述                   |
-| ---- | ---------------------- |
-| TLS  | TLS 持有客户端安全凭证 |
+##### WithTLSOpt
+
+Etcd 扩展提供了 `WithTLSOpt` 用于帮助用户配置一个通过 tls/ssl 进行身份验证的选项。
+
+函数签名：
+
+```go
+func WithTLSOpt(certFile, keyFile, caFile string) Option
+```
+
+示例代码：
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+		etcd.WithTLSOpt(certFile, keyFile, caFile),
+	)
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	// ...
+}
+```
 
 #### NewEtcdResolver
 
@@ -1052,12 +1285,145 @@ go get github.com/hertz-contrib/registry/servicecomb
 
 Servicecomb 拓展在服务注册部分中提供了 option 配置。
 
-| 配置              | 描述                   |
-| ----------------- | ---------------------- |
-| appID             | Servicecomb 的 appID   |
-| versionRule       | Servicecomb 的版本要求 |
-| hostName          | Servicecomb 的主机名   |
-| heartbeatInterval | 发送心跳包的间隔时长   |
+##### WithAppId
+
+Servicecomb 扩展提供了 `WithAppId` 用于帮助用户配置 Servicecomb 的 AppId 。默认为 “DEFAULT" 。
+
+函数签名：
+
+```go
+func WithAppId(appId string) RegistryOption
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithAppId("appID"),
+		)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+##### WithRegistryVersionRule
+
+Servicecomb 扩展提供了 `WithRegistryVersionRule` 用于帮助用户配置 Servicecomb 的版本要求 。默认为 1.0.0 。
+
+函数签名：
+
+```go
+func WithRegistryVersionRule(versionRule string) RegistryOption
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithRegistryVersionRule("1.1.0"),
+		)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+##### WithRegistryHostName
+
+Servicecomb 扩展提供了 `WithRegistryHostName` 用于帮助用户配置 Servicecomb 的主机名 。默认为 ”DEFAULT" 。
+
+函数签名：
+
+```go
+func WithRegistryHostName(hostName string) RegistryOption
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithRegistryHostName("hostName"),
+		)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
+
+##### WithRegistryHeartbeatInterval
+
+Servicecomb 扩展提供了 `WithRegistryHeartbeatInterval` 用于帮助用户配置发送心跳包的间隔时长 。默认为5。
+
+函数签名：
+
+```go
+func WithRegistryHeartbeatInterval(second int32) RegistryOption
+```
+
+示例代码：
+
+```go
+func main() {
+	// ...
+	r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithRegistryHeartbeatInterval(10),
+		)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.servicecomb.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
+}
+```
 
 #### NewDefaultSCRegistry
 
@@ -1134,11 +1500,95 @@ func main() {
 
 Servicecomb 拓展在服务发现部分中提供了 option 配置。
 
-| 配置        | 描述                      |
-| ----------- | ------------------------- |
-| appID       | Servicecomb 的 appID      |
-| versionRule | Servicecomb 的版本要求    |
-| consumerId  | Servicecomb 的 consumerId |
+##### WithAppId
+
+Servicecomb 扩展提供了 `WithAppId` 用于帮助用户配置 Servicecomb 的 AppId 。默认为 “DEFAULT" 。
+
+函数签名：
+
+```go
+func WithResolverAppId(appId string) ResolverOption
+```
+
+示例代码：
+
+```go
+func main() {
+  // ...
+  r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithAppId("appID"),
+		)
+  if err != nil {
+    panic(err)
+  }
+  cli, err := client.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  cli.Use(sd.Discovery(r))
+  // ...
+}
+```
+
+##### WithResolverVersionRule
+
+Servicecomb 扩展提供了 `WithResolverVersionRule` 用于帮助用户配置 Servicecomb 的版本要求 。默认为 latest 。
+
+函数签名：
+
+```go
+func WithResolverVersionRule(versionRule string) ResolverOption
+```
+
+示例代码：
+
+```go
+func main() {
+  // ...
+  r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithResolverVersionRule("1.0.0"),
+		)
+  if err != nil {
+    panic(err)
+  }
+  cli, err := client.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  cli.Use(sd.Discovery(r))
+  // ...
+}
+```
+
+##### WithResolverConsumerId
+
+Servicecomb 扩展提供了 `WithResolverConsumerId` 用于帮助用户配置 Servicecomb 的 ConsumerId 。默认为空 。
+
+函数签名：
+
+```go
+func WithResolverConsumerId(consumerId string) ResolverOption
+```
+
+示例代码：
+
+```go
+func main() {
+  // ...
+  r, err := servicecomb.NewDefaultSCRegistry([]string{scAddr},
+		servicecomb.WithResolverConsumerId("1"),
+		)
+  if err != nil {
+    panic(err)
+  }
+  cli, err := client.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  cli.Use(sd.Discovery(r))
+  // ...
+}
+```
 
 #### NewDefaultSCResolver
 
