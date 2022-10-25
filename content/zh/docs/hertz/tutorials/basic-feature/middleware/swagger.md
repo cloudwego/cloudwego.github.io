@@ -39,8 +39,8 @@ swag init
 4. 下载 [hertz-swagger](https://github.com/hertz-contrib/swagger) 通过运行以下命令:
 
 ```sh
-go get -u github.com/hertz-contrib/swagger
-go get -u github.com/swaggo/files
+go get github.com/hertz-contrib/swagger
+go get github.com/swaggo/files
 ```
 
 并在你的代码中引用如下:

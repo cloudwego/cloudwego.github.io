@@ -40,8 +40,8 @@ swag init
 4. Download [hertz-swagger](https://github.com/hertz-contrib/swagger) by using:
 
 ```sh
-go get -u github.com/hertz-contrib/swagger
-go get -u github.com/swaggo/files
+go get github.com/hertz-contrib/swagger
+go get github.com/swaggo/files
 ```
 
 Import following in your code:
