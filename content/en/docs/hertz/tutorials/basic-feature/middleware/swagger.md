@@ -12,9 +12,9 @@ The implementation of the [swagger](https://github.com/hertz-contrib/swagger) ex
 
 ## Uasge
 
-1. Add comments to your API source code, [See Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format).
+1. Add comments to your API source code, See [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format).
 
-2. Download [Swag](https://github.com/swaggo/swag) for Go by using:
+2. Download [Swag]([Swag]) for Go by using:
 
 `go get`install executables needs to work with `GOPATH` mode.
 
@@ -28,8 +28,8 @@ Starting in Go 1.17,installing executables with `go get` is deprecated. `go inst
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-3. Run the [Swag](https://github.com/swaggo/swag) at your Go project root path(for instance `~/root/go-peoject-name`),
-   [Swag](https://github.com/swaggo/swag) will parse comments and generate required files(`docs` folder and `docs/doc.go`)
+3. Run the [Swag]([Swag]) at your Go project root path(for instance `~/root/go-peoject-name`),
+   [Swag]([Swag]) will parse comments and generate required files(`docs` folder and `docs/doc.go`)
    at `~/root/go-peoject-name/docs`.
 
 ```sh
@@ -193,3 +193,5 @@ func main() {
 | PersistAuthorization     | bool   | false      | If set to true, it persists authorization data and it would not be lost on browser close/refresh. |
 | Oauth2DefaultClientID    | string | ""         | If set, it's used to prepopulate the *client_id* field of the OAuth2 Authorization dialog. |
 ---
+
+[Swag]: https://github.com/swaggo/swag
