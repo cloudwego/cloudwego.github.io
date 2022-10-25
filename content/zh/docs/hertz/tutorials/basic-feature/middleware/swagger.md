@@ -14,7 +14,7 @@ description: >
 
 1. 在你的 API 源代码中添加注释, 参考 [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format)。
 
-2. 下载 Go 对应的 [Swag]([Swag]) 通过运行以下命令:
+2. 下载 Go 对应的 [Swag][Swag] 通过运行以下命令:
 
 `go get` 安装可执行文件需配合 `GOPATH` 模式工作。
 
@@ -29,7 +29,7 @@ go get github.com/swaggo/swag/cmd/swag
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-3. 在你的 Go 项目的根目录下运行 [Swag]([Swag]) (例如 `~/root/go-peoject-name`)，[Swag]([Swag]) 将解析注释并生成必要的文件(`docs` 文件夹和 `docs/doc.go`)在 `~/root/go-peoject-name/docs` 目录下。
+3. 在你的 Go 项目的根目录下运行 [Swag][Swag] (例如 `~/root/go-peoject-name`)，[Swag][Swag] 将解析注释并生成必要的文件(`docs` 文件夹和 `docs/doc.go`)在 `~/root/go-peoject-name/docs` 目录下。
 
 ```sh
 swag init

@@ -10,11 +10,11 @@ Hertz middleware to automatically generate RESTful API documentation with Swagge
 
 The implementation of the [swagger](https://github.com/hertz-contrib/swagger) extension refers to the implementation of [Gin](https://github.com/swaggo/gin-swagger).
 
-## Uasge
+## Usage
 
 1. Add comments to your API source code, See [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format).
 
-2. Download [Swag]([Swag]) for Go by using:
+2. Download [Swag][Swag] for Go by using:
 
 `go get`install executables needs to work with `GOPATH` mode.
 
@@ -28,8 +28,8 @@ Starting in Go 1.17,installing executables with `go get` is deprecated. `go inst
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-3. Run the [Swag]([Swag]) at your Go project root path(for instance `~/root/go-peoject-name`),
-   [Swag]([Swag]) will parse comments and generate required files(`docs` folder and `docs/doc.go`)
+3. Run the [Swag][Swag] at your Go project root path(for instance `~/root/go-peoject-name`),
+   [Swag][Swag] will parse comments and generate required files(`docs` folder and `docs/doc.go`)
    at `~/root/go-peoject-name/docs`.
 
 ```sh
@@ -70,9 +70,9 @@ So how to use hertz-swagger on api above? Just follow the following guide.
 1. Add Comments for apis and main function with hertz-swagger rules like following:
 
 ```go
-// PingHandler 测试handler
-// @Summary 测试Summary
-// @Description 测试Description
+// PingHandler TestHandler
+// @Summary TestSummary
+// @Description TestDescription
 // @Accept application/json
 // @Produce application/json
 // @Router /ping [get]
@@ -148,7 +148,7 @@ func main() {
 
 ```
 
-Demo project tree, `swag init` is run at relative `.`
+Demo project tree, `swag init` is run at relative `.`.
 
 ```
 .
@@ -163,11 +163,11 @@ Demo project tree, `swag init` is run at relative `.`
 
 ## Multiple APIs
 
-This feature was introduced in swag v1.7.9
+This feature was introduced in swag v1.7.9.
 
 ## Configuration
 
-You can configure Swagger using different configuration options
+You can configure Swagger using different configuration options.
 
 ```go
 func main() {
