@@ -6,8 +6,8 @@ description: >
 
 ---
 
-`X-Request-ID` is a common non-standard response fields, used to correlate HTTP requests between a client and server.
-Hertz also provides an [implementation](https://github.com/hertz-contrib/requestid) of Request ID, inspired by gin's [implementation](https://github.com/gin-contrib/requestid).
+`X-Request-ID` is a common non-standard response fields in HTTP Headers, used to correlate HTTP requests between a client and server.
+Hertz also provides [Request ID middleware](https://github.com/hertz-contrib/requestid) that can operate on `X-Request-ID`, inspired by gin's [implementation](https://github.com/gin-contrib/requestid).
 
 ## Install
 
@@ -64,15 +64,13 @@ func main() {
 ## Config
 
 Hertz is able to add an identifier to the response using the `X-Request-ID` header, and passes the `X-Request-ID` value back to the caller if it's sent in the request headers by using middleware.
-Custom configuration of the `config` allows you to define the implementation details of Request ID according to different scenarios.
+The Request ID middleware provides the default configuration, you can also customize the following configuration using `WithGenerator`, `WithCustomHeaderStrKey`, `WithHandler` functions according to different scenarios.
 
-In the **Example** above, only two custom configurations are passed in. More common configurations for the `config` are as follows:
-
-| Attribute | Description                                                                                |
-|-----------|--------------------------------------------------------------------------------------------|
-| generator | Define a function that generates a Request ID. By default, a UUID identifier is generated. |
-| headerKey | Define the key value of the Request ID. By default, the key value is `X-Request-ID`.       |
-| handler   | Define the handler function fo the Request ID.                                             |
+| configuration | Description                                                                                |
+|---------------|--------------------------------------------------------------------------------------------|
+| generator     | Define a function that generates a Request ID. By default, a UUID identifier is generated. |
+| headerKey     | Define the key value of the Request ID. By default, the key value is `X-Request-ID`.       |
+| handler       | Define the handler function fo the Request ID.                                             |
 
 ### New
 
@@ -266,8 +264,6 @@ func main() {
 ### Get
 
 `requestid` middleware provides `Get` which is a helper function to retrieve request id from request headers. It also works with customised header as defined with `requestid.WithCustomHeaderStrKey`.
-
-Note: You may get empty string if request id is not present in the request.
 
 Function signatures:
 
