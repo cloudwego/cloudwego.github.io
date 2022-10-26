@@ -16,7 +16,7 @@ The implementation of the [swagger](https://github.com/hertz-contrib/swagger) ex
 
 2. Download [Swag][Swag] for Go by using:
 
-`go get`install executables needs to work with `GOPATH` mode.
+`go get` install executables needs to work with `GOPATH` mode.
 
 ```sh
 go get github.com/swaggo/swag/cmd/swag
@@ -28,9 +28,9 @@ Starting in Go 1.17,installing executables with `go get` is deprecated. `go inst
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-3. Run the [Swag][Swag] at your Go project root path(for instance `~/root/go-peoject-name`),
-   [Swag][Swag] will parse comments and generate required files(`docs` folder and `docs/doc.go`)
-   at `~/root/go-peoject-name/docs`.
+3. Run the [Swag][Swag] at your Go project root path(for instance `~/root/go-project-name`),
+[Swag][Swag] will parse comments and generate required files(`docs` folder and `docs/doc.go`)
+at `~/root/go-project-name/docs`.
 
 ```sh
 swag init
@@ -49,7 +49,6 @@ Import following in your code:
 ```go
 import "github.com/hertz-contrib/swagger" // hertz-swagger middleware
 import "github.com/swaggo/files" // swagger embed files
-
 ```
 
 ## Example
@@ -176,7 +175,7 @@ func main() {
 	h.GET("/ping", PingHandler)
 
 	url := swagger.URL("http://localhost:8888/swagger/doc.json") // The url pointing to API definition
-		h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url, swagger.DefaultModelsExpandDepth(-1)))
+	h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url, swagger.DefaultModelsExpandDepth(-1)))
 	h.Spin()
 }
 

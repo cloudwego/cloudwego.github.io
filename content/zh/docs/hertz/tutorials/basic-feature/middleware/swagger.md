@@ -14,41 +14,41 @@ description: >
 
 1. 在你的 API 源代码中添加注释, 参考 [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format)。
 
-2. 下载 Go 对应的 [Swag][Swag] 通过运行以下命令:
+2. 可以通过运行以下命令下载 Go 对应的 [Swag][Swag] 可执行文件:
 
-`go get` 安装可执行文件需配合 `GOPATH` 模式工作。
+但是需要**注意**的是， `go get` 安装可执行文件需要配合 `GOPATH` 模式工作。
 
 ```sh
 go get github.com/swaggo/swag/cmd/swag
 ```
 
 
-从 Go 1.17 开始，`go mod` 模式下通过 `go get` 下载对应库无法自动编译并安装到 `$GOPATH/bin` ，用 `go get` 来安装可执行文件的方式不再推荐了。可以使用 `go install`来代替。
+因为从 Go 1.17 开始，在 `go mod` 模式下通过 `go get` 下载对应库文件将无法自动编译并安装到 `$GOPATH/bin` 的路径，
+所以不再推荐用 `go get` 来安装可执行文件的方式。可以使用 `go install`来代替。
 
 ```sh
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-3. 在你的 Go 项目的根目录下运行 [Swag][Swag] (例如 `~/root/go-peoject-name`)，[Swag][Swag] 将解析注释并生成必要的文件(`docs` 文件夹和 `docs/doc.go`)在 `~/root/go-peoject-name/docs` 目录下。
-
+3. 在你的 Go 项目的根目录下运行 [Swag][Swag] (例如 `~/root/go-project-name`)
 ```sh
 swag init
 ```
+[Swag][Swag] 会解析注释并在 `~/root/go-project-name/docs` 目录下生成必要的文件(`docs` 文件夹和 `docs/doc.go`)。
 
 
-4. 下载 [hertz-swagger](https://github.com/hertz-contrib/swagger) 通过运行以下命令:
+
+4. 通过运行以下命令在工程中下载 [hertz-swagger](https://github.com/hertz-contrib/swagger) :
 
 ```sh
 go get github.com/hertz-contrib/swagger
 go get github.com/swaggo/files
 ```
 
-并在你的代码中引用如下:
-
+并在你的代码中引用如下代码:
 ```go
 import "github.com/hertz-contrib/swagger" // hertz-swagger middleware
 import "github.com/swaggo/files" // swagger embed files
-
 ```
 
 ## 示例代码
@@ -64,7 +64,7 @@ func PingHandler(c context.Context, ctx *app.RequestContext) {
 
 ```
 
-如何在 api 上面使用 hertz-swagger？只要按照下面的步骤即可。
+那么如何在 api 上面使用 hertz-swagger？只要按照下面的步骤即可。
 
 1. 使用 hertz-swagger 规则为 api 和主函数添加注释，如下所示：
 
@@ -177,7 +177,7 @@ func main() {
 	h.GET("/ping", PingHandler)
 
 	url := swagger.URL("http://localhost:8888/swagger/doc.json") // The url pointing to API definition
-		h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url, swagger.DefaultModelsExpandDepth(-1)))
+	h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url, swagger.DefaultModelsExpandDepth(-1)))
 	h.Spin()
 }
 
