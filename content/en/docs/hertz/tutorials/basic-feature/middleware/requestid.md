@@ -70,7 +70,7 @@ The Request ID middleware provides the default configuration, you can also custo
 |---------------|--------------------------------------------------------------------------------------------|
 | generator     | Define a function that generates a Request ID. By default, a UUID identifier is generated. |
 | headerKey     | Define the key value of the Request ID. By default, the key value is `X-Request-ID`.       |
-| handler       | Define the handler function fo the Request ID.                                             |
+| handler       | Define the handler function of the Request ID.                                             |
 
 ### New
 
