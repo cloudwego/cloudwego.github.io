@@ -29,35 +29,35 @@ import "github.com/hertz-contrib/requestid"
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/requestid"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/hertz-contrib/requestid"
 )
 
 func main() {
-	h := server.Default()
+    h := server.Default()
 
-	h.Use(
-		// provide your own request id generator here
-		requestid.New(
-			requestid.WithGenerator(func() string {
-				return "cloudwego.io"
-			}),
-			// set custom header for request id
-			requestid.WithCustomHeaderStrKey("your-customised-key"),
-		),
-	)
+    h.Use(
+        // provide your own request id generator here
+        requestid.New(
+            requestid.WithGenerator(func() string {
+                return "cloudwego.io"
+            }),
+            // set custom header for request id
+            requestid.WithCustomHeaderStrKey("your-customised-key"),
+        ),
+    )
 
-	// Example ping request.
-	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-	})
+    // Example ping request.
+    h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+        c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
@@ -89,28 +89,28 @@ Sample Code:
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/requestid"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/hertz-contrib/requestid"
 )
 
 func main() {
-	h := server.Default()
+    h := server.Default()
 
-	h.Use(
-		requestid.New(),
-	)
+    h.Use(
+        requestid.New(),
+    )
 
-	// Example ping request.
-	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-	})
+    // Example ping request.
+    h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+        c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
@@ -133,31 +133,31 @@ Sample Code:
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/requestid"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/hertz-contrib/requestid"
 )
 
 func main() {
-	h := server.Default()
+    h := server.Default()
 
-	// define your own header to save request id here
-	h.Use(
-		requestid.New(
-			requestid.WithCustomHeaderStrKey("Your-Header-StrKey"),
-		),
-	)
+    // define your own header to save request id here
+    h.Use(
+        requestid.New(
+            requestid.WithCustomHeaderStrKey("Your-Header-StrKey"),
+        ),
+    )
 
-	// Example ping request.
-	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-	})
+    // Example ping request.
+    h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+        c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
@@ -179,30 +179,30 @@ Sample Code:
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/requestid"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/hertz-contrib/requestid"
 )
 
 func main() {
-	h := server.Default()
+    h := server.Default()
 
-	h.Use(
-		// define your own request id generator here
-		requestid.New(requestid.WithGenerator(func() string {
-			return "cloudwego.io"
-		})),
-	)
+    h.Use(
+        // define your own request id generator here
+        requestid.New(requestid.WithGenerator(func() string {
+            return "cloudwego.io"
+        })),
+    )
 
-	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-	})
+    h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+        c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
@@ -224,40 +224,40 @@ Sample Code:
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/requestid"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/hertz-contrib/requestid"
 )
 
 func main() {
-	h := server.Default()
+    h := server.Default()
 
-	var bar string
+    var bar string
 
-	h.Use(
-		requestid.New(
-			requestid.WithGenerator(func() string {
-				return "hello"
-			}),
-			// define your request id handler here
-			requestid.WithHandler(func(ctx context.Context, c *app.RequestContext, requestID string) {
-				bar = requestID + " hertz"
-			}),
-		),
-	)
+    h.Use(
+        requestid.New(
+            requestid.WithGenerator(func() string {
+                return "hello"
+            }),
+            // define your request id handler here
+            requestid.WithHandler(func(ctx context.Context, c *app.RequestContext, requestID string) {
+                bar = requestID + " hertz"
+            }),
+        ),
+    )
 
-	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		c.JSON(consts.StatusOK, utils.H{
-			"ping": "pong",
-			"foo":  bar, // hello hertz
-		})
-	})
+    h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+        c.JSON(consts.StatusOK, utils.H{
+            "ping": "pong",
+            "foo":  bar, // hello hertz
+        })
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
@@ -277,33 +277,33 @@ Sample Code:
 package main
 
 import (
-	"context"
+    "context"
 
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/requestid"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/hertz-contrib/requestid"
 )
 
 func main() {
-	h := server.Default()
+    h := server.Default()
 
-	h.Use(
-		requestid.New(requestid.WithGenerator(func() string {
-			return "cloudwego.io"
-		})),
-	)
+    h.Use(
+        requestid.New(requestid.WithGenerator(func() string {
+            return "cloudwego.io"
+        })),
+    )
 
-	// You may retrieve request id from header by calling requestid.Get
-	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		c.JSON(consts.StatusOK, utils.H{
-			"ping":       "pong",
-			"request-id": requestid.Get(c),
-		})
-	})
+    // You may retrieve request id from header by calling requestid.Get
+    h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+        c.JSON(consts.StatusOK, utils.H{
+            "ping":       "pong",
+            "request-id": requestid.Get(c),
+        })
+    })
 
-	h.Spin()
+    h.Spin()
 }
 ```
 
