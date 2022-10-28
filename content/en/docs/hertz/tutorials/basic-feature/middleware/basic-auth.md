@@ -11,7 +11,7 @@ In basic HTTP authentication, a request contains a header field in the form of `
 
 Hertz also provides an [implementation](https://github.com/cloudwego/hertz/tree/main/pkg/app/middlewares/server/basic_auth) of Basic Auth, referencing gin's [implementation](https://github.com/gin-gonic/gin#using-basicauth-middleware).
 
-## Import
+## Install
 
 ```go
 import "github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"

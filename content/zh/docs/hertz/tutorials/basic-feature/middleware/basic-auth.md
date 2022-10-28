@@ -11,7 +11,7 @@ description: >
 
 Hertz 也提供了 basic auth 的[实现](https://github.com/cloudwego/hertz/tree/main/pkg/app/middlewares/server/basic_auth) ，参考了 gin 的[实现](https://github.com/gin-gonic/gin#using-basicauth-middleware) 。
 
-## 导入
+## 安装
 
 ```go
 import "github.com/cloudwego/hertz/pkg/app/middlewares/server/basic_auth"
