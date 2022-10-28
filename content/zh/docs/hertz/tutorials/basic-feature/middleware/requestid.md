@@ -33,7 +33,7 @@ import (
 
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
+    "github.com/cloudwego/hertz/pkg/common/hlog"
     "github.com/cloudwego/hertz/pkg/common/utils"
     "github.com/cloudwego/hertz/pkg/protocol/consts"
     "github.com/hertz-contrib/requestid"
@@ -55,7 +55,7 @@ func main() {
 
     // Example ping request.
     h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		hlog.Info(string(c.Response.Header.Header()))
+        hlog.Info(string(c.Response.Header.Header()))
         c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
     })
 
