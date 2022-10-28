@@ -33,6 +33,7 @@ import (
 
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
     "github.com/cloudwego/hertz/pkg/common/utils"
     "github.com/cloudwego/hertz/pkg/protocol/consts"
     "github.com/hertz-contrib/requestid"
@@ -48,12 +49,13 @@ func main() {
                 return "cloudwego.io"
             }),
             // 自定义 request id 响应头键值
-            requestid.WithCustomHeaderStrKey("your-customised-key"),
+            requestid.WithCustomHeaderStrKey("Your-Customised-Key"),
         ),
     )
 
     // Example ping request.
     h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		hlog.Info(string(c.Response.Header.Header()))
         c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
     })
 
@@ -66,13 +68,13 @@ func main() {
 Hertz 通过使用中间件，可以在响应头中添加一个键为 `X-Request-ID` 的标识符，如果在请求头中设置了 `X-Request-ID` 字段，则会在响应头中将 `X-Request-ID` 原样返回。
 Request ID 中间件提供了默认配置，用户也可以依据业务场景使用 `WithGenerator`，`WithCustomHeaderStrKey`，`WithHandler` 函数对以下配置项进行定制。
 
-| 配置        | 介绍                                   |
-|-----------|--------------------------------------|
-| generator | 定义生成 Request ID 的函数，默认生成 uuid 标识符    |
-| headerKey | 定义 Request ID 的键值，默认为 `X-Request-ID` |
-| handler   | 定义 Request ID 的处理函数                  |
+| 配置                     | 介绍                                   |
+|------------------------|--------------------------------------|
+| WithGenerator          | 定义生成 Request ID 的函数，默认生成 UUID 标识符    |
+| WithCustomHeaderStrKey | 定义 Request ID 的键值，默认为 `X-Request-ID` |
+| WithHandler            | 定义 Request ID 的处理函数                  |
 
-### New
+### 初始化 Request ID
 
 `requestid` 中间件提供了 `New` 用于在响应头添加 Request ID 字段。
 
@@ -114,7 +116,7 @@ func main() {
 }
 ```
 
-### WithCustomHeaderStrKey
+### 自定义 Request ID 键值
 
 `requestid` 中间件提供了 `WithCustomHeaderStrKey` 用于自定义 Request ID 键值。
 
@@ -161,9 +163,9 @@ func main() {
 }
 ```
 
-### WithGenerator
+### 自定义 Request ID 值
 
-`requestid` 中间件提供了 `WithGenerator` 用于自定义 Request ID 值生成。
+`requestid` 中间件提供了 `WithGenerator` 用于自定义 Request ID 值的生成。
 
 函数签名：
 
@@ -206,9 +208,9 @@ func main() {
 }
 ```
 
-### WithHandler
+### 自定义 Request ID Handler
 
-`requestid` 中间件提供了 `WithHandler` 用于自定义 Request ID Handler。
+`requestid` 中间件提供了 `WithHandler` 用于自定义 Request ID 的处理函数。
 
 函数签名：
 
@@ -261,9 +263,9 @@ func main() {
 }
 ```
 
-### Get
+### 获取 Request ID
 
-`requestid` 中间件提供了 `Get` 用于从请求头中获取 Request ID，它也支持使用 `requestid.WithCustomHeaderStrKey` 自定义 Request ID 键值。
+`requestid` 中间件提供了 `Get` 用于从请求头中获取 Request ID，它也支持获取使用 `requestid.WithCustomHeaderStrKey` 自定义 Request ID 键值。
 
 函数签名：
 

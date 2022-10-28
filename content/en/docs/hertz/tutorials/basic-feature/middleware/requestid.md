@@ -33,6 +33,7 @@ import (
 
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
     "github.com/cloudwego/hertz/pkg/common/utils"
     "github.com/cloudwego/hertz/pkg/protocol/consts"
     "github.com/hertz-contrib/requestid"
@@ -48,12 +49,13 @@ func main() {
                 return "cloudwego.io"
             }),
             // set custom header for request id
-            requestid.WithCustomHeaderStrKey("your-customised-key"),
+            requestid.WithCustomHeaderStrKey("Your-Customised-Key"),
         ),
     )
 
     // Example ping request.
     h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		hlog.Info(string(c.Response.Header.Header()))
         c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
     })
 
@@ -66,11 +68,11 @@ func main() {
 Hertz is able to add an identifier to the response using the `X-Request-ID` header, and passes the `X-Request-ID` value back to the caller if it's sent in the request headers by using middleware.
 The Request ID middleware provides the default configuration, you can also customize the following configuration using `WithGenerator`, `WithCustomHeaderStrKey`, `WithHandler` functions according to different scenarios.
 
-| configuration | Description                                                                                |
-|---------------|--------------------------------------------------------------------------------------------|
-| generator     | Define a function that generates a Request ID. By default, a UUID identifier is generated. |
-| headerKey     | Define the key value of the Request ID. By default, the key value is `X-Request-ID`.       |
-| handler       | Define the handler function of the Request ID.                                             |
+| configuration          | Description                                                                                |
+|------------------------|--------------------------------------------------------------------------------------------|
+| WithGenerator          | Define a function that generates a Request ID. By default, a UUID identifier is generated. |
+| WithCustomHeaderStrKey | Define the key value of the Request ID. By default, the key value is `X-Request-ID`.       |
+| WithHandler            | Define the handler function of the Request ID.                                             |
 
 ### New
 
