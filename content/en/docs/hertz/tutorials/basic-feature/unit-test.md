@@ -43,4 +43,51 @@ func TestPerformRequest(t *testing.T) {
 }
 ```
 
+## Another Example
+
+Assume you have a handler go file and a function called ```Ping()```
+```go
+
+package handler
+
+import (
+	"context"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+)
+
+// Ping .
+func Ping(ctx context.Context, c *app.RequestContext) {
+	c.JSON(200, utils.H{
+		"message": "pong",
+	})
+}
+```
+
+Now you can do some unit test directly to the ```Ping()``` function.
+```go
+package handler
+
+import (
+	"bytes"
+	"testing"
+
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/test/assert"
+	"github.com/cloudwego/hertz/pkg/common/ut"
+)
+
+func TestPerformRequest(t *testing.T) {
+	h := server.Default()
+	h.GET("/ping", Ping)
+	w := ut.PerformRequest(h.Engine, "GET", "/ping", &ut.Body{bytes.NewBufferString("1"), 1},
+		ut.Header{"Connection", "close"})
+	resp := w.Result()
+	assert.DeepEqual(t, 201, resp.StatusCode())
+	assert.DeepEqual(t, "{\"message\":\"pong\"}", string(resp.Body()))
+}
+```
+Every time you change the ```Ping()``` behavior, you don't need to copy ti to test file again and again.
+
 For more examples, refer to the unit test file in [pkg/common/ut](https://github.com/cloudwego/hertz/tree/main/pkg/common/ut).
