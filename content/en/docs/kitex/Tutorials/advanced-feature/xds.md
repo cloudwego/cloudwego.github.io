@@ -174,7 +174,7 @@ func main() {
 }
 ```
 
-Detailed examples can be found here [kitex-proxyless-example](https://github.com/ppzqh/kitex-proxyless-test/tree/example).
+Detailed examples can be found here [kitex-proxyless-example](https://github.com/cloudwego/kitex-examples/tree/main/proxyless).
 
 ## Limitation
 ### mTLS
