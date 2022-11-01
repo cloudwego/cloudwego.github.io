@@ -174,7 +174,7 @@ func main() {
 }
 ```
 
-更详细的例子可以参考该仓库：[kitex-proxyless-example](https://github.com/ppzqh/kitex-proxyless-test/tree/example).
+更详细的例子可以参考该仓库：[kitex-proxyless-example](https://github.com/cloudwego/kitex-examples/tree/main/proxyless).
 
 ## 当前版本的不足
 ### mTLS
