@@ -43,7 +43,7 @@ func TestPerformRequest(t *testing.T) {
 }
 ```
 
-## 另一个例子
+## 与业务handler配合使用
 
 假如已经创建了handler以及一个函数`Ping()`
 ```go

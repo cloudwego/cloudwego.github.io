@@ -43,7 +43,7 @@ func TestPerformRequest(t *testing.T) {
 }
 ```
 
-## Another Example
+## Work with biz handler
 
 Assume you have a handler go file and a function called `Ping()`
 ```go
