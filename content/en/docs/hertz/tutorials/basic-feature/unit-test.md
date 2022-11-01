@@ -45,7 +45,7 @@ func TestPerformRequest(t *testing.T) {
 
 ## Another Example
 
-Assume you have a handler go file and a function called ```Ping()```
+Assume you have a handler go file and a function called `Ping()`
 ```go
 
 package handler
