@@ -30,7 +30,7 @@ Comparison of four frameworks:
 
 ![Performance](/img/docs/hertz-performance-4.png)
 
-Latency comparison of three frameworks:
+Comparison of three frameworks:
 
 ![Performance](/img/docs/hertz-performance-3.png)
 
