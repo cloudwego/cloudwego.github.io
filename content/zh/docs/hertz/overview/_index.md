@@ -29,7 +29,7 @@ Hertz[həːts] 是一个 Golang 微服务 HTTP 框架，在设计之初参考了
 
   ![Performance](/img/docs/hertz-performance-4.png)
 
-  三个框架的时延对比:
+  三个框架的对比:
 
   ![Performance](/img/docs/hertz-performance-3.png)
 
