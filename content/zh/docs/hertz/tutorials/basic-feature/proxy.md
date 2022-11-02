@@ -52,7 +52,7 @@ func main() {
 	c.SetProxy(protocol.ProxyURI(parsedProxyURL))
 
 	upstreamURL := "http://google.com"
-	_, body, _ := client.Get(context.Background(), nil, upstreamURL)
+	_, body, _ := c.Get(context.Background(), nil, upstreamURL)
 }
 ```
 
