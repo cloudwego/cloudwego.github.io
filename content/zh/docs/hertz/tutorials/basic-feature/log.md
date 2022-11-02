@@ -41,7 +41,7 @@ import (
 )
 
 func main() {
-    f, err := os.OpenFile("./output.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+    f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
     if err != nil {
             panic(err)
     }
