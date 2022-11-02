@@ -53,18 +53,16 @@ func main() {
 
 ## Common FAQs
 
-### Compilation Error on Mac M1
-
-#### Unsupported CPU, maybe it’s too old to run Sonic
-
-In most cases, this is because the go binary and/or build configuration is not consistent with ARM arch.
-
-- Go binary is not built for ARM64. Please use a go binary compiled for ARM64. You may encounter issues on go1.16 as
-  compiler incorrectly links x86 files due to official bugs. Therefore, go1.17 or above is highly recommended.
-- GOARCH is set to amd64 `i.e. GOARCH=amd64`. You can either remove the flag or set its value to `arm64`.
-- Running go binary compiled for x86 with a translator (e.g. Rosetta). This is not supported yet.
+### Error when using Sonic on M1
 
 #### Build constraints exclude all Go files in xxx
 
-This is mostly because Sonic does not work on your go version.
-See [sonic#Requirement](https://github.com/bytedance/sonic#requirement) for a list of supported go versions.
+Usually because the Go version or environment parameters do not meet Sonic requirements.
+
+- Go version: go1.15 or above, recommend go1.17 or above. For the currently supported versions of Sonic, please see [Sonic#Requirement](https://github.com/bytedance/sonic#requirement)
+- Go environment parameters: set GOARCH=**amd64**. Because Sonic already supports the binary translation software Rosetta, with Rosetta, the programs compiled under the x86 environment can be run on the M1.
+
+#### Unable to Debug
+
+If you want to debug, you can set GOARCH=**arm64**. Because the Rosetta will cause the binary of Sonic to fail to debug.
+Note that the performance of Sonic will be hurt, because Sonic will fallback to the standard library in this environment.
