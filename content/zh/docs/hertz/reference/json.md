@@ -60,9 +60,11 @@ render.ResetJSONMarshal(json.Marshal)
 一般为是因为 Go 镜像版本或环境参数不符合 Sonic 要求。
 
 - Go 版本: go1.15 或以上，推荐 go1.17 以上版本。Sonic 目前支持的版本见 [Sonic#Requirement](https://github.com/bytedance/sonic#requirement)
+
 - Go 环境参数：设置 GOARCH=**amd64**。 因为，Sonic 已经支持二进制翻译软件 Rosetta，借助 Rosetta，在 M1 上可运行 x86 环境下编译出来的程序。
 
 #### 无法 Debug
 
 如果想调试，可设置 GOARCH=**arm64**。因为 Rosetta 技术会导致 Sonic 的编译产物无法调试。
-注意，设置为 arm64 后将损失 Sonic 的高性能，因为 Sonic 内部在此环境下，会 fallback 到标准库。
+
+注意，设置为 arm64 后将损失 Sonic 的高性能，因为 Sonic 内部在此环境下，会 fallback 到性能较差的标准库。

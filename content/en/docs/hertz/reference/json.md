@@ -60,9 +60,11 @@ func main() {
 Usually because the Go version or environment parameters do not meet Sonic requirements.
 
 - Go version: go1.15 or above, recommend go1.17 or above. For the currently supported versions of Sonic, please see [Sonic#Requirement](https://github.com/bytedance/sonic#requirement)
+
 - Go environment parameters: set GOARCH=**amd64**. Because Sonic already supports the binary translation software Rosetta, with Rosetta, the programs compiled under the x86 environment can be run on the M1.
 
 #### Unable to Debug
 
 If you want to debug, you can set GOARCH=**arm64**. Because the Rosetta will cause the binary of Sonic to fail to debug.
+
 Note that the performance of Sonic will be hurt, because Sonic will fallback to the standard library in this environment.
