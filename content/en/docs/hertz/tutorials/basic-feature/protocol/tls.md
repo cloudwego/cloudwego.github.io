@@ -112,8 +112,6 @@ func main() {
 	// set TLS server
 	// default is standard.NewTransporter
 	h := server.Default(server.WithTLS(cfg), server.WithHostPorts(":8443"))
-	// netpoll.NewTransporter is not supported yet
-	// h := server.Default(server.WithTLS(cfg), server.WithTransport(netpoll.NewTransporter))
 
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "TLS test\n")
@@ -122,6 +120,9 @@ func main() {
 	h.Spin()
 }
 ```
+
+> Note：Currently, Hertz TLS server is not supported Netpoll network library temporarily. <br />
+> `h := server.Default(server.WithTLS(cfg), server.WithTransport(netpoll.NewTransporter))` support is still on the way.
 
 ## Client
 
@@ -186,8 +187,6 @@ func main() {
 		// default dialer is standard
 		client.WithTLSConfig(cfg),
 		client.WithDialer(standard.NewDialer()),
-		// netpoll is not supported yet
-		// client.WithDialer(netpoll.NewDialer()),
 	)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -195,6 +194,9 @@ func main() {
     // ...
 }
 ```
+
+> Note：Currently, Hertz TLS server is not supported Netpoll network library temporarily. <br />
+> `c, err := client.NewClient(client.WithTLSConfig(cfg), client.WithDialer(netpoll.NewDialer())` support is still on the way.
 
 For a complete usage example, see [example](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) .
 
