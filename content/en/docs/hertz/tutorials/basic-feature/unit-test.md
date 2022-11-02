@@ -88,6 +88,6 @@ func TestPerformRequest(t *testing.T) {
 	assert.DeepEqual(t, "{\"message\":\"pong\"}", string(resp.Body()))
 }
 ```
-Every time you change the `Ping()` behavior, you don't need to copy ti to test file again and again.
+Every time you change the `Ping()` behavior, you don't need to copy it to test file again and again.
 
 For more examples, refer to the unit test file in [pkg/common/ut](https://github.com/cloudwego/hertz/tree/main/pkg/common/ut).
