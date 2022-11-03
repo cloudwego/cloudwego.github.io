@@ -7,13 +7,13 @@ description: >
 
 ## 介绍
 
-从 v0.4.3 版本开始，kitex 代码生成工具新增一个名为 `-template-extension` 的参数，支持了对生成代码的模板进行一定程度的拓展。
+从 v0.4.3 版本开始，Kitex 代码生成工具新增一个名为 `-template-extension` 的参数，支持了对生成代码的模板进行一定程度的拓展。
 
 用法：`kitex -template-extension extensions.json YOUR_IDL`。
 
 其中 **extensions.json** 是一个 JSON 文件，其内容必须是一个 [TemplateExtension](https://pkg.go.dev/github.com/cloudwego/kitex/tool/internal_pkg/generator#TemplateExtension) 对象的序列化结果。这个对象的各个字段将被注入到 kitex 的代码生成器后端，以在特定位置插入指定的代码。
 
-kitex 会在 kitex_gen 目录下面为 IDL 里定义的每一个 service 定义生成一个对应的 package，在其中包含了 `NewClient`、`NewServer` 等 API。
+kitex 会在 kitex_gen 目录下面为 IDL 里出现的每一个 service 定义生成一个对应的 package，在其中包含了 `NewClient`、`NewServer` 等 API。
 
 extensions.json 文件提供的内容将会被应用到所有 service 定义对应的 package。其中 `ExtendClient`、`ExtendServer` 等字段是对 client.go 和 server.go 的拓展。
 

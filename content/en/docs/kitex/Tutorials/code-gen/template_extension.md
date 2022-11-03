@@ -7,7 +7,7 @@ description: >
 
 ## Introduction
 
-From version v0.4.3, kitex tool proivides a new flag named `-template-extension`, to support extending the templates of generated code.
+From version v0.4.3, Kitex tool proivides a new flag named `-template-extension`, to support extending the templates of generated code.
 
 Usage: `kitex -template-extension extensions.json YOUR_IDL`.
 
