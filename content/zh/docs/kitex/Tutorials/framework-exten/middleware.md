@@ -42,6 +42,16 @@ Kitex 的中间件定义在 `pkg/endpoint/endpoint.go` 中，其中最主要的�
 
 客户端所有中间件的调用顺序可以看 `client/client.go`。
 
+## Context 中间件
+
+Context 中间件本质上也是一种客户端中间件，但是区别是，其由 ctx 来控制是否注入以及注入哪些中间件。
+
+Context 中间件的引入是为了提供一种能够全局或者动态注入 Client 中间件的方法，典型的使用场景比如统计某个接口调用了哪些下游。但是这种全局性设置只会在 ctx 调用链中存在，可以规避第三方库注入不可控的中间件引起的问题。
+
+可以通过 `ctx = client.WithContextMiddlewares(ctx, mw)` 来向 ctx 注入中间件。
+
+注意：Context 中间件会在 Client 中间件之前执行。
+
 ## 服务端中间件
 
 服务端的中间件和客户端有一定的区别。
