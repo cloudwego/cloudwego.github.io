@@ -26,6 +26,7 @@ connpool2.IdleConfig{
    MaxIdlePerAddress: 10,
    MaxIdleGlobal:     100,
    MaxIdleTimeout:    time.Minute,
+   MinIdlePerAddress: 2,
 }
 ```
 
@@ -40,7 +41,9 @@ Parameter description:
 - `MaxIdlePerAddress`: the maximum number of idle connections per downstream instance
 - `MaxIdleGlobal`: the global maximum number of idle connections
 - `MaxIdleTimeout`: the idle duration of the connection. A connection that has been idle for more than MaxIdleTimeout will be closed (minimum value is 3s, the default value is 30s)
-
+- `MinIdlePerAddress`(Kitex >= v0.4.3)
+  - the minimum number of idle connections per downstream instance, which will not be cleaned up even if the idle time exceeds the `MaxIdleTimeout`.
+  - For now, `MinIdlePerAddress` should be less than 5.
 ### Internal Implementation
 
 Each downstream address corresponds to a connection pool, the connection pool is a ring composed of connections, and the size of the ring is `MaxIdlePerAddress`.
@@ -63,6 +66,9 @@ The setting of parameters is suggested as follows:
   - For example, the cost of each request is 100ms, and the request spread to each downstream address is 100QPS, the value is suggested to set to 10, because each connection handles 10 requests per second, 100QPS requires 10 connections to handle
   - In the actual scenario, the fluctuation of traffic is also necessary to be considered. Pay attention, the connection within MaxIdleTimeout will be recycled if it is not used
   - Summary: this value be set too large or too small would lead to degenerating to the short connection
+- `MinIdlePerAddress`: Assuming that there are periodic requests and the period is greater than `MaxIdleTimeout`, setting this parameter can avoid creating a new connection every time.
+  - The parameter consideration is similar to `MaxIdlePerAddress` and can be set according to the average latency of requests and the throughput.
+  - For example, if `MinIdlePerAddress` is set to 5 and the response time of each request is 100ms. 50 requests can be processed per second (50QPS) without creating a new connection.
 - `MaxIdleGlobal`: should be larger than the total number of `downstream targets number * MaxIdlePerAddress`
   - Notice: this value is not very valuable, it is suggested to set it to a super large value. In subsequent versions, considers discarding this parameter and providing a new interface
 - `MaxIdleTimeout`: since the server will clean up inactive connections within 10min, the client also needs to clean up long-idle connections in time to avoid using invalid connections. This value cannot exceed 10min when the downstream is also a Kitex service
