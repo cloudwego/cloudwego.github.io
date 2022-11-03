@@ -61,7 +61,7 @@ In the RPC scenario, concurrency and timeout are necessary support items.
 We provide the [netpoll-benchmark][netpoll-benchmark] project to track and compare
 the performance of [Netpoll][Netpoll] and other frameworks under different conditions for reference.
 
-More benchmarks reference [kitex-benchmark][kitex-benchmark] and [hertz-benchmark][hertz-benchmark] (open source soon).
+More benchmarks reference [kitex-benchmark][kitex-benchmark] and [hertz-benchmark][hertz-benchmark]
 
 ## Reference
 

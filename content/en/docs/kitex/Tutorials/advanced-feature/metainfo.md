@@ -11,7 +11,7 @@ As an RPC framework, Kitex services communicate with each other through protocol
 
 However, in the production environment, we somehow may need to send special information to a remote server and that information is temporary or has an unstable format which can not be explicitly defined in the IDL. Such a situation requests the framework to be capable of sending meta information.
 
-When the underlying transport protocol supports (such as TTHeader, HTTP), then Kitex can transmit meta information.
+**NOTE** *MUST use the underlying transport protocol that supports passthrough of meta information，such as TTHeader, HTTP*。
 
 To decouple with the underlying transport protocols, and interoperate with other frameworks, Kitex does not provide APIs to read or write meta information directly. Instead, it uses a stand-alone library [metainfo][metainfo] to support meta information transmitting.
 

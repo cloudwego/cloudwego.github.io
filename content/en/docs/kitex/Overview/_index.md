@@ -77,7 +77,7 @@ Change packet size with a fixed concurrency of 100.
 
 - [Netpoll](https://github.com/cloudwego/netpoll): A high-performance network library.
 - [kitex-contrib](https://github.com/kitex-contrib): A partial extension library of Kitex, which users can integrate into Kitex through options according to their needs.
-- [Example](https://github.com/cloudwego/kitex/blob/develop/TODO): Use examples of Kitex.
+- [Example](https://github.com/cloudwego/kitex-examples): Use examples of Kitex.
 
 ## Blogs
 

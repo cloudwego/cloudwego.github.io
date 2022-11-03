@@ -49,7 +49,7 @@ type Info struct {
 
   ```go
   ebi := &rpcinfo.EndpointBasicInfo{
-      ServiceName: 'yourServiceName',
+      ServiceName: "yourServiceName",
       Tags:        make(map[string]string),
   }
   ebi.Tags[idc] = "xxx"

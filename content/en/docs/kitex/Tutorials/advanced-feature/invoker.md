@@ -14,9 +14,9 @@ Then call `Call` method of `invoker` to start a call. After call, you can use `G
 
 ```go
 import (
-	...
-	"github.com/cloudwego/kitex/sdk/message"
-  	...
+    ...
+    "github.com/cloudwego/kitex/server/invoke"
+    ...
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
     // init local/remote
     ...
     ivk := echo.NewInvoker(new(EchoImpl))
-    msg := message.NewMessage(local, remote)
+    msg := invoke.NewMessage(local, remote)
     // setup request payload
     msg.SetRequestBytes(reqPayload)
     // start a call

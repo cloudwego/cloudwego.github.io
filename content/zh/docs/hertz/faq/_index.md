@@ -29,11 +29,10 @@ description: >
 
 ### 404
 1. 访问到了错误的端口上了，常见访问到了 debug 端口
-   1. 解决方案：区分框架服务的监听端口和 debug server 的监听端口，默认 xxx
+   1. 解决方案：区分框架服务的监听端口和 debug server 的监听端口，默认:8888
 2. 未匹配到路由
    1. 根据启动日志查看是否所有预期路由都正常注册
    2. 查看访问方法是否正确
-   3. 查看某些配置项是否开启，如 xxx
 
 ### 417
 server 在执行完自定义的 `ContinueHandler` 之后返回 `false`（server 主动拒绝掉 100 Continue 后续的 body）。

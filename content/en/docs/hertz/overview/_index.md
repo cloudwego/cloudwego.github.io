@@ -25,7 +25,15 @@ In modern software engineering, it is agreed that the delivery of high-quality c
 Hertz uses Netpoll, a high-performance network library built from sketch, by default. In comparison to go net implementation, the benchmark indicates that in some scenarios, Hertz's performance is better in terms of both QPS and time delay.
 
 The following diagrams show how Hertz performs in comparison with other popular frameworks for echo requests.
- ![Performance](/img/docs/hertz_performance.png)
+
+Comparison of four frameworks:
+
+![Performance](/img/docs/hertz-performance-4.png)
+
+Comparison of three frameworks:
+
+![Performance](/img/docs/hertz-performance-3.png)
+
 Please refer to https://github.com/cloudwego/hertz-benchmark for more details about benchmarking.
 
 ### High extensibility
