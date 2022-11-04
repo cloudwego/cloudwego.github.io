@@ -2,13 +2,12 @@
 date: 2022-11-01
 title: "HTTP 框架 Hertz 实践入门：性能测试指南"
 linkTitle: "HTTP 框架 Hertz 实践入门：性能测试指南"
-description: >
 keywords: ["CloudWeGo", "Hertz", "HTTP 框架", "性能测试"]
 description: "本文旨在分享开发者在压测 Hertz 需要了解的场景和技术问题，并且基于当前最新版本对多个框架进行了压测对比，提供了性能参考数据，有助于用户更好地结合真实 HTTP 场景对 Hertz 进行调优，使之更贴合业务需要、发挥最佳性能。"
 author: <a href="https://github.com/Duslia" target="_blank">Duslia</a>
 ---
 
->  导语：2021 年 9 月 8 日，字节跳动宣布正式开源 [CloudWeGo](https://github.com/cloudwego)。[CloudWeGo](https://github.com/cloudwego) 是一套字节跳动内部微服务中间件集合，具备**高性能、强扩展性和稳定性**的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。2022 年 6 月 21 日，[Hertz](https://github.com/cloudwego/hertz) 正式开源。日前，[CloudWeGo](https://github.com/cloudwego) 团队正式开源字节跳动最大的 HTTP 框架 [Hertz](https://github.com/cloudwego/hertz)。[Hertz](https://github.com/cloudwego/hertz) 在发布之后得到了大量用户的关注，开源四个月以来，[Hertz](https://github.com/cloudwego/hertz) 已经收获了 2K+ star。有很多用户自己进行了测试，感谢社区对我们的关注和支持。本文旨在分享开发者在压测 [Hertz](https://github.com/cloudwego/hertz) 时需要了解的场景和技术问题。这些建议有助于用户更好地结合真实 HTTP 场景对 [Hertz](https://github.com/cloudwego/hertz) 进行调优，使之更贴合业务需要、发挥最佳性能。用户也可以参考官方提供的压测项目 [hertz-benchmark](https://github.com/cloudwego/hertz-benchmark) 了解更多细节。
+>  导语：2021 年 9 月 8 日，字节跳动宣布正式开源 CloudWeGo。CloudWeGo 是一套字节跳动内部微服务中间件集合，具备**高性能、强扩展性和稳定性**的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。2022 年 6 月 21 日，[Hertz](https://github.com/cloudwego/hertz) 正式开源。日前，CloudWeGo 团队正式开源字节跳动最大的 HTTP 框架 [Hertz](https://github.com/cloudwego/hertz)。[Hertz](https://github.com/cloudwego/hertz) 在发布之后得到了大量用户的关注，开源四个月以来，[Hertz](https://github.com/cloudwego/hertz) 已经收获了 2K+ star。有很多用户自己进行了测试，感谢社区对我们的关注和支持。本文旨在分享开发者在压测 [Hertz](https://github.com/cloudwego/hertz) 时需要了解的场景和技术问题。这些建议有助于用户更好地结合真实 HTTP 场景对 [Hertz](https://github.com/cloudwego/hertz) 进行调优，使之更贴合业务需要、发挥最佳性能。用户也可以参考官方提供的压测项目 [hertz-benchmark](https://github.com/cloudwego/hertz-benchmark) 了解更多细节。
 
 # 01 微服务 HTTP 场景的特点
 
