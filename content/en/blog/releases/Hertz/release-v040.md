@@ -10,7 +10,7 @@ description: >
 * [[#289](https://github.com/cloudwego/hertz/pull/289)] feat: render support IndentedJSON.
 * [[#304](https://github.com/cloudwego/hertz/pull/304)] feat: support errors format for the recovery middleware.
 * [[#278](https://github.com/cloudwego/hertz/pull/278)] feat: add compile tag for json implementation.
-* [[#239](https://github.com/cloudwego/hertz/pull/239)] feat: add retry extention for client.
+* [[#239](https://github.com/cloudwego/hertz/pull/239)] feat: add retry extension for client.
 * [[#265](https://github.com/cloudwego/hertz/pull/265)] feat: add closeNoResetBuffer method for standard network.
 * [[#258](https://github.com/cloudwego/hertz/pull/258)] feat: errors support format.
 
