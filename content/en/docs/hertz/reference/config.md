@@ -78,7 +78,7 @@ func main() {
 | WithMaxConnDuration | time.Duration | Set the maximum keep-alive time of the connection, when the timeout expired, the connection will be closed after the current request is completed. Default: infinite. |
 | WithMaxConnWaitTimeout | time.Duration | Set the maximum time to wait for an idle connection. Default: no wait. |
 | WithKeepAlive | bool | Whether to use persistent connection. Default: true. |
-| WithMaxIdempotentCallAttempts | int | Set the times of failed retries. Default: 5. |
+| WithRetryConfig | ...retry.Option | Set the retry config of client. |
 | WithClientReadTimeout | time.Duration | Set the maximum time to read the response. Default: infinite. |
 | WithTLSConfig | *tls.Config | Set the client's TLS config for mutual TLS authentication. |
 | WithDialer | network.Dialer | Set the network library used by the client. Default: netpoll. |
