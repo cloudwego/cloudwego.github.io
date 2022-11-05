@@ -33,7 +33,7 @@ By default, Hertz's default logger is used.
 
 ## Supported Log Extension
 
-The log extensions currently supported in the open source version of Hertz are stored in the [obs-opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry). You are welcomed to join us in contributing and maintaining for this project.
+The log extensions currently supported in the open source version of Hertz are stored in the [hertz-logger](https://github.com/hertz-contrib/logger). You are welcomed to join us in contributing and maintaining for this project.
 
 ### Zap
 
@@ -46,16 +46,16 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	hertzzap "github.com/hertz-contrib/obs-opentelemetry/logging/zap"
-	"go.uber.org/zap"
+	hertzzap "github.com/hertz-contrib/logger/zap"
 )
 
 func main() {
 	h := server.Default()
 
 	logger := hertzzap.NewLogger(
-		hertzzap.WithTraceErrorSpanLevel(zap.WarnLevel),
-		hertzzap.WithRecordStackTraceInSpan(true),
+		hertzzap.WithZapOptions(
+			// ...
+		),
 	)
 
 	hlog.SetLogger(logger)
@@ -69,7 +69,7 @@ func main() {
 }
 ```
 
-For more details, see [hertz-contrib/obs-opentelemetry/logging/zap/](https://github.com/hertz-contrib/obs-opentelemetry/tree/main/logging/zap)。
+For more details, see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
 
 ### Logrus
 
@@ -82,7 +82,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	hertzlogrus "github.com/hertz-contrib/obs-opentelemetry/logging/logrus"
+	hertzlogrus "github.com/hertz-contrib/logger/logrus"
 	"github.com/sirupsen/logrus"
 )
 
@@ -90,9 +90,9 @@ func main() {
 	h := server.Default()
 
 	logger := hertzlogrus.NewLogger(
-		hertzlogrus.WithTraceHookErrorSpanLevel(logrus.WarnLevel),
-		hertzlogrus.WithTraceHookLevels(logrus.AllLevels),
-		hertzlogrus.WithRecordStackTraceInSpan(true),
+		hertzlogrus.WithLogger(&logrus.Logger{
+			// ...
+		}),
 	)
 
 	hlog.SetLogger(logger)
@@ -106,4 +106,4 @@ func main() {
 }
 ```
 
-For more details, see [hertz-contrib/obs-opentelemetry/logging/logrus/](https://github.com/hertz-contrib/obs-opentelemetry/tree/main/logging/logrus)。
+For more details, see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
