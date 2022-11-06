@@ -6,7 +6,7 @@ description: >
 
 ---
 
-Hertz provides users with customized retry logic，Let's take a look at how to use Client Retry(This section mainly configures the times of retry and the delay policy )
+Hertz provides users with customized retry logic,Let's take a look at how to use Client Retry(This section mainly configures the times of retry and the delay policy )
 
 ## Retry times and delay policy configuration
 
@@ -35,7 +35,7 @@ func main() {
 | WithInitDelay       | time.Duration                                                | Set initial delay time. Default: 1ms                         |
 | WithMaxDelay        | time.Duration                                                | Set the maximum delay time. Default: 100ms                   |
 | WithMaxJitter       | time.Duration                                                | Set the maximum jitter time, which needs to be used in conjunction with `RandomDelayPolicy`, and will generate a random time not exceeding the maximum jitter time. Default: 20ms |
-| WithDelayPolicy     | type DelayPolicyFunc func(attempts uint, err error, retryConfig *Config) time.Duration | Set the delay policy, you can use any combination of the following four policies， `FixedDelayPolicy`,  `BackOffDelayPolicy`, `RandomDelayPolicy`, `DefaultDelayPolicy`  ( [See the next section **Delay Policy** for details](#delay-policy) ) . Default: DefaultDelayPolicy  (That is, the retry delay is 0) |
+| WithDelayPolicy     | type DelayPolicyFunc func(attempts uint, err error, retryConfig *Config) time.Duration | Set the delay policy, you can use any combination of the following four policies, `FixedDelayPolicy`,  `BackOffDelayPolicy`, `RandomDelayPolicy`, `DefaultDelayPolicy`  ( [See the next section **Delay Policy** for details](#delay-policy) ) . Default: DefaultDelayPolicy  (That is, the retry delay is 0) |
 
 ### Delay Policy
 
