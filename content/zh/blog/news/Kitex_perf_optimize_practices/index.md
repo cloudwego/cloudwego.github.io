@@ -2,13 +2,15 @@
 date: 2021-09-23
 title: "字节跳动 Go RPC 框架 Kitex 性能优化实践"
 linkTitle: "字节跳动 Go RPC 框架 Kitex 性能优化实践"
-description: >
+keywords: ["Kitex", "性能优化", "Netpoll", "Thrift", "序列化"]
+description: "本文介绍了字节跳动 Go RPC 框架 Kitex 的性能优化实践，包括 Netpoll、Thrift、序列化等方面的优化。"
 author: <a href="https://github.com/Hchenn" target="_blank">Hchen</a>, <a href="https://github.com/PureWhiteWu" target="_blank">Pure White</a>, <a href="https://github.com/simon0-o" target="_blank">Simon Wang</a>, <a href="https://github.com/SinnerA" target="_blank">bytexw</a>
 ---
 
 ## 前言
 
-Kitex 是字节跳动框架组研发的下一代高性能、强可扩展性的 Go RPC 框架。除具备丰富的服务治理特性外，相比其他框架还有以下特点：集成了自研的网络库 Netpoll；支持多消息协议（Thrift、Protobuf）和多交互方式（Ping-Pong、Oneway、 Streaming）；提供了更加灵活可扩展的代码生成器。
+Kitex 是字节跳动框架组研发的下一代高性能、强可扩展性的 Go RPC 框架。除具备丰富的服务治理特性外，相比其他框架还有以下特点：
+集成了自研的网络库 Netpoll；支持多消息协议（Thrift、Protobuf）和多交互方式（Ping-Pong、Oneway、 Streaming）；提供了更加灵活可扩展的代码生成器。
 
 目前公司内主要业务线都已经大范围使用 Kitex，据统计当前接入服务数量多达 8k。Kitex 推出后，我们一直在不断地优化性能，本文将分享我们在 Netpoll 和 序列化方面的优化工作。
 
@@ -87,7 +89,8 @@ msec=0 仅单次调用耗时减少 50ns，影响太小，如果想要进一步�
 
 进一步思考：
 
-上述伪代码中，当无事件触发，调整 msec=-1 时，直接 continue 会立即再次执行 EpollWait，而由于无事件，msec=-1，当前 goroutine 会 block 并被 P 切换。但是被动切换效率较低，如果我们在 continue 前主动为 P 切换 goroutine，则可以节约时间。因此我们将上述伪代码改为如下：
+上述伪代码中，当无事件触发，调整 msec=-1 时，直接 continue 会立即再次执行 EpollWait，而由于无事件，msec=-1，当前 goroutine 会 block 并被 P 切换。
+但是被动切换效率较低，如果我们在 continue 前主动为 P 切换 goroutine，则可以节约时间。因此我们将上述伪代码改为如下：
 
 ```go
 var msec = -1
@@ -123,7 +126,8 @@ type epollevent struct {
 }
 ```
 
-我们看到，runtime 使用的 epollevent 是系统层 epoll 定义的原始结构；而对外版本则对其做了封装，将 epoll_data(epollevent.data) 拆分为固定的两字段：Fd 和 Pad。那么 runtime 又是如何使用的呢？在源码里我们看到这样的逻辑：
+我们看到，runtime 使用的 epollevent 是系统层 epoll 定义的原始结构；而对外版本则对其做了封装，将 epoll_data(epollevent.data) 拆分为固定的两字段：Fd 和 Pad。
+那么 runtime 又是如何使用的呢？在源码里我们看到这样的逻辑：
 
 ```go
 *(**pollDesc)(unsafe.Pointer(&ev.data)) = pd
@@ -131,15 +135,18 @@ type epollevent struct {
 pd := *(**pollDesc)(unsafe.Pointer(&ev.data))
 ```
 
-显然，runtime 使用 epoll_data(&ev.data) 直接存储了 fd 对应结构体(pollDesc)的指针，这样在事件触发时，可以直接找到结构体对象，并执行相应逻辑。而对外版本则由于只能获得封装后的 Fd 参数，因此需要引入额外的 Map 来增删改查结构体对象，这样性能肯定相差很多。
+显然，runtime 使用 epoll_data(&ev.data) 直接存储了 fd 对应结构体(pollDesc)的指针，这样在事件触发时，可以直接找到结构体对象，并执行相应逻辑。
+而对外版本则由于只能获得封装后的 Fd 参数，因此需要引入额外的 Map 来增删改查结构体对象，这样性能肯定相差很多。
 
 所以我们果断抛弃了 syscall.EpollWait，转而仿照 runtime 自行设计了 EpollWait 调用，同样采用 unsafe.Pointer 存取结构体对象。测试表明，该方案下 吞吐量 ↑10%，TP99 ↓10%，获得了较为明显的收益。
 
 ## Thrift 序列化/反序列化优化
 
-序列化是指把数据结构或对象转换成字节序列的过程，反序列化则是相反的过程。RPC 在通信时需要约定好序列化协议，client 在发送请求前进行序列化，字节序列通过网络传输到 server，server 再反序列进行逻辑处理，完成一次 RPC 请求。Thrift 支持 Binary、Compact 和 JSON 序列化协议。目前公司内部使用的基本都是 Binary，这里只介绍 Binary 协议。
+序列化是指把数据结构或对象转换成字节序列的过程，反序列化则是相反的过程。RPC 在通信时需要约定好序列化协议，client 在发送请求前进行序列化，
+字节序列通过网络传输到 server，server 再反序列进行逻辑处理，完成一次 RPC 请求。Thrift 支持 Binary、Compact 和 JSON 序列化协议。目前公司内部使用的基本都是 Binary，这里只介绍 Binary 协议。
 
-Binary 采用 TLV 编码实现，即每个字段都由 TLV 结构来描述，TLV 意为：Type 类型， Length 长度，Value 值，Value 也可以是个 TLV 结构，其中 Type 和 Length 的长度固定，Value 的长度则由 Length 的值决定。TLV 编码结构简单清晰，并且扩展性较好，但是由于增加了 Type 和 Length，有额外的内存开销，特别是在大部分字段都是基本类型的情况下有不小的空间浪费。
+Binary 采用 TLV 编码实现，即每个字段都由 TLV 结构来描述，TLV 意为：Type 类型， Length 长度，Value 值，Value 也可以是个 TLV 结构，其中 Type 和 Length 的长度固定，Value 的长度则由 Length 的值决定。
+TLV 编码结构简单清晰，并且扩展性较好，但是由于增加了 Type 和 Length，有额外的内存开销，特别是在大部分字段都是基本类型的情况下有不小的空间浪费。
 
 序列化和反序列的性能优化从大的方面来看可以从空间和时间两个维度进行优化。从兼容已有的 Binary 协议来看，空间上的优化似乎不太可行，只能从时间维度进行优化，包括：
 
@@ -171,11 +178,13 @@ Binary 采用 TLV 编码实现，即每个字段都由 TLV 结构来描述，TLV
 
 事实上 Kitex 已经提供了 LinkBuffer 用于 buffer 的管理，LinkBuffer 设计上采用链式结构，由多个 block 组成，其中 block 是大小固定的内存块，构建对象池维护空闲 block，由此复用 block，减少内存占用和 GC。
 
-刚开始我们简单地采用 sync.Pool 来复用 netpoll 的 LinkBufferNode，但是这样仍然无法解决对于大包场景下的内存复用（大的 Node 不能回收，否则会导致内存泄漏）。目前我们改成了维护一组 sync.Pool，每组中的 buffer size 都不同，新建 block 时根据最接近所需 size 的 pool 中去获取，这样可以尽可能复用内存，从测试来看内存分配和 GC 优化效果明显。
+刚开始我们简单地采用 sync.Pool 来复用 netpoll 的 LinkBufferNode，但是这样仍然无法解决对于大包场景下的内存复用（大的 Node 不能回收，否则会导致内存泄漏）。
+目前我们改成了维护一组 sync.Pool，每组中的 buffer size 都不同，新建 block 时根据最接近所需 size 的 pool 中去获取，这样可以尽可能复用内存，从测试来看内存分配和 GC 优化效果明显。
 
 **string / binary 零拷贝**
 
-对于有一些业务，比如视频相关的业务，会在请求或者返回中有一个很大的 Binary 二进制数据代表了处理后的视频或者图片数据，同时会有一些业务会返回很大的 String（如全文信息等）。这种场景下，我们通过火焰图看到的热点都在数据的 copy 上，那我们就想了，我们是否可以减少这种拷贝呢？
+对于有一些业务，比如视频相关的业务，会在请求或者返回中有一个很大的 Binary 二进制数据代表了处理后的视频或者图片数据，同时会有一些业务会返回很大的 String（如全文信息等）。
+这种场景下，我们通过火焰图看到的热点都在数据的 copy 上，那我们就想了，我们是否可以减少这种拷贝呢？
 
 答案是肯定的。既然我们底层使用的 Buffer 是个链表，那么就可以很容易地在链表中间插入一个节点。
 
@@ -183,7 +192,8 @@ Binary 采用 TLV 编码实现，即每个字段都由 TLV 结构来描述，TLV
 
 我们就采用了类似的思想，当序列化的过程中遇到了 string 或者 binary 的时候， 将这个节点的 buffer 分成两段，在中间原地插入用户的 string / binary 对应的 buffer，这样可以避免大的 string / binary 的拷贝了。
 
-这里再介绍一下，如果我们直接用 []byte(string) 去转换一个 string 到 []byte 的话实际上是会发生一次拷贝的，原因是 Go 的设计中 string 是 immutable 的但是 []byte 是 mutable 的，所以这么转换的时候会拷贝一次；如果要不拷贝转换的话，就需要用到 unsafe 了：
+这里再介绍一下，如果我们直接用 []byte(string) 去转换一个 string 到 []byte 的话实际上是会发生一次拷贝的，原因是 Go 的设计中 string 是 immutable 的但是 []byte 是 mutable 的，
+所以这么转换的时候会拷贝一次；如果要不拷贝转换的话，就需要用到 unsafe 了：
 
 ```go
 func StringToSliceByte(s string) []byte {
@@ -198,7 +208,8 @@ func StringToSliceByte(s string) []byte {
 
 这段代码的意思是，先把 string 的地址拿到，再拼装上一个 slice byte 的 header，这样就可以不拷贝数据而将 string 转换成 []byte 了，不过要注意这样生成的 []byte 不可写，否则行为未定义。
 
-**预计算**  
+**预计算**
+
 线上存在某些服务有大包传输的场景，这种场景下会引入不小的序列化 / 反序列化开销。一般大包都是容器类型的大小非常大导致的，如果能够提前计算出 buffer，一些 O(n) 的操作就能降到 O(1)，减少了函数调用次数，在大包场景下也大量减少了内存分配的次数，带来的收益是可观的。
 
 - 基本类型
@@ -396,7 +407,8 @@ data size: 6MB
 
 通过无拷贝序列化进行 RPC 调用，最早出自 Kenton Varda 的 Cap'n Proto 项目，Cap'n Proto 提供了一套数据交换格式和对应的编解码库。
 
-Cap'n Proto 本质上是开辟一个 bytes slice 作为 buffer ，所有对数据结构的读写操作都是直接读写 buffer，读写完成后，在头部添加一些 buffer 的信息就可以直接发送，对端收到后即可读取，因为没有 Go 语言结构体作为中间存储，所有无需序列化这个步骤，反序列化亦然。
+Cap'n Proto 本质上是开辟一个 bytes slice 作为 buffer ，所有对数据结构的读写操作都是直接读写 buffer，读写完成后，
+在头部添加一些 buffer 的信息就可以直接发送，对端收到后即可读取，因为没有 Go 语言结构体作为中间存储，所有无需序列化这个步骤，反序列化亦然。
 
 简单总结下 Cap'n Proto 的特点：
 
@@ -435,7 +447,8 @@ struct Ano {
 
 前面说了 Cap'n Proto 的优势，下面总结一下 Cap'n Proto 存在的一些问题：
 
-- Cap'n Proto 的连续内存存储这一特性带来的一个问题：当对不定大小数据进行 resize ，且需要的空间大于原有空间时，只能在后面重新分配一块空间，导致原来数据的空间成为了一个无法去掉的 hole 。这个问题随着调用链路的不断 resize 会越来越严重，要解决只能在整个链路上严格约束：尽量避免对不定大小字段的 resize ，当不得不 resize 的时候，重新构建一个结构体并对数据进行深拷贝。
+- Cap'n Proto 的连续内存存储这一特性带来的一个问题：当对不定大小数据进行 resize ，且需要的空间大于原有空间时，只能在后面重新分配一块空间，导致原来数据的空间成为了一个无法去掉的 hole 。
+  这个问题随着调用链路的不断 resize 会越来越严重，要解决只能在整个链路上严格约束：尽量避免对不定大小字段的 resize ，当不得不 resize 的时候，重新构建一个结构体并对数据进行深拷贝。
 
 - Cap'n Proto 因为没有 Go 语言结构体作为中间载体，使得所有的字段都只能通过接口进行读写，用户体验较差。
 
@@ -447,10 +460,13 @@ Cap'n Proto 作为无拷贝序列化的标杆，那么我们就看看 Cap'n Prot
 
 - 自然是无拷贝序列化的核心，不使用 Go 语言结构体作为中间载体，减少一次拷贝。此优化点是协议无关的，能够适用于任何已有的协议，自然也能和 Thrift 协议兼容，但是从 Cap'n Proto 的使用上来看，用户体验还需要仔细打磨一下。
 
-- Cap'n Proto 是在一段连续内存上进行操作，编码数据的读写可以一次完成。Cap'n Proto 得以在连续内存上操作的原因：有 pointer 机制，数据可以存储在任意位置，允许字段可以以任意顺序写入而不影响解码。但是一方面，在连续内存上容易因为误操作，导致在 resize 的时候留下 hole，另一方面，Thrift 没有类似于 pointer 的机制，故而对数据布局有着更严格的要求。这里有两个思路：
+- Cap'n Proto 是在一段连续内存上进行操作，编码数据的读写可以一次完成。Cap'n Proto 得以在连续内存上操作的原因：有 pointer 机制，数据可以存储在任意位置，允许字段可以以任意顺序写入而不影响解码。
+  但是一方面，在连续内存上容易因为误操作，导致在 resize 的时候留下 hole，另一方面，Thrift 没有类似于 pointer 的机制，故而对数据布局有着更严格的要求。这里有两个思路：
 
-	- 坚持在连续内存上进行操作，并对用户使用提出严格要求：1. resize 操作必须重新构建数据结构 2. 当存在结构体嵌套时，对字段写入顺序有着严格要求（可以想象为把一个存在嵌套的结构体从外往里展开，写入时需要按展开顺序写入），且因为 Binary 等 TLV 编码的关系，在每个嵌套开始写入时，需要用户主动声明（如 StartWriteFieldX）。
-	- 不完全在连续内存上操作，局部内存连续，可变字段则单独分配一块内存，既然内存不是完全连续的，自然也无法做到一次写操作便完成输出。为了尽可能接近一次写完数据的性能，我们采取了一种链式 buffer 的方案，一方面当可变字段 resize 时只需替换链式 buffer 的一个节点，无需像 Cap'n Proto 一样重新构建结构体，另一方面在需要输出时无需像 Thrift 一样需要感知实际的结构，只要把整个链路上的 buffer 写入即可。
+	- 坚持在连续内存上进行操作，并对用户使用提出严格要求：1. resize 操作必须重新构建数据结构 2. 当存在结构体嵌套时，对字段写入顺序有着严格要求（可以想象为把一个存在嵌套的结构体从外往里展开，写入时需要按展开顺序写入），
+      且因为 Binary 等 TLV 编码的关系，在每个嵌套开始写入时，需要用户主动声明（如 StartWriteFieldX）。
+	- 不完全在连续内存上操作，局部内存连续，可变字段则单独分配一块内存，既然内存不是完全连续的，自然也无法做到一次写操作便完成输出。为了尽可能接近一次写完数据的性能，我们采取了一种链式 buffer 的方案，
+      一方面当可变字段 resize 时只需替换链式 buffer 的一个节点，无需像 Cap'n Proto 一样重新构建结构体，另一方面在需要输出时无需像 Thrift 一样需要感知实际的结构，只要把整个链路上的 buffer 写入即可。
 
 先总结下目前确定的两个点：1. 不使用 Go 语言结构体作为中间载体，通过接口直接操作底层内存，在 Get/Set 时完成编解码 2. 通过链式 buffer 存储数据
 
@@ -460,9 +476,11 @@ Cap'n Proto 作为无拷贝序列化的标杆，那么我们就看看 Cap'n Prot
 
 	- 解决方案：改善 Get/Set 接口的使用体验，尽可能做到和 Go 语言结构体同等的易用
 
-- Cap'n Proto 的 Binary Format 是针对无拷贝序列化场景专门设计的，虽然每次 Get 时都会进行一次解码，但是解码代价非常小。而 Thrift 的协议（以 Binary 为例），没有类似于 pointer 的机制，当存在多个不定大小字段或者存在嵌套时，必须顺序解析而无法直接通过计算偏移拿到字段数据所在的位置，而每次 Get 都进行顺序解析的代价过于高昂。
+- Cap'n Proto 的 Binary Format 是针对无拷贝序列化场景专门设计的，虽然每次 Get 时都会进行一次解码，但是解码代价非常小。而 Thrift 的协议（以 Binary 为例），没有类似于 pointer 的机制，
+  当存在多个不定大小字段或者存在嵌套时，必须顺序解析而无法直接通过计算偏移拿到字段数据所在的位置，而每次 Get 都进行顺序解析的代价过于高昂。
 
-	- 解决方案：我们在表示结构体的时候，除了记录结构体的 buffer 节点，还加了一个索引，里面记录了每个不定大小字段开始的 buffer 节点的指针。下面是目前的无拷贝序列化方案与 FastRead/Write，在 4 核下的极限性能对比测试：
+	- 解决方案：我们在表示结构体的时候，除了记录结构体的 buffer 节点，还加了一个索引，里面记录了每个不定大小字段开始的 buffer 节点的指针。
+      下面是目前的无拷贝序列化方案与 FastRead/Write，在 4 核下的极限性能对比测试：
 
 |包大小|类型|QPS|TP90|TP99|TP999|CPU|
 |:----|:----|:----|:----|:----|:----|:----|
