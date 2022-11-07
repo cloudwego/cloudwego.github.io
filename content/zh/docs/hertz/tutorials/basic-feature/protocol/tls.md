@@ -19,7 +19,6 @@ Hertz 支持 TLS 安全传输，帮助用户实现了数据的保密性和完整
 |     CipherSuites      | 用于协商加密策略，支持 TLS 1.0-1.2 。              |
 |      MaxVersion       | 用于设置 TLS 支持的最大版本，目前是 1.3。              |
 
-
 ## 服务端
 
 Hertz 在 `server` 包提供了 `WithTLS` Option 用于配置 TLS 服务。但是目前 Hertz 只有 标准网络库 支持 TLS，[Netpoll](https://github.com/cloudwego/netpoll) 网络库的支持还在路上。
@@ -40,7 +39,6 @@ func WithTLS(cfg *tls.Config) config.Option {
 
 在 `tls.Config` 中，除了上述基本参数，服务端可以配置的参数如下：
 
-
 |          参数名          | 介绍                                                                   |
 |:---------------------:|:---------------------------------------------------------------------|
 |    GetCertificate     | 基于客户端 SNI 信息或证书集为空时，返回证书。                                            |
@@ -59,6 +57,7 @@ func WithTLS(cfg *tls.Config) config.Option {
 
 本次示例中的 `ca.key`、`ca.crt`、`server.key` 和 `server.crt` 均通过 openssl 生成。
 首先生成 CA 的私钥和证书，命令如下：
+
 ```shell
 openssl ecparam -genkey -name prime256v1 -out ca.key
 openssl req -new -key ca.key -out ca.req
@@ -67,6 +66,7 @@ openssl x509 -req -in ca.req -signkey ca.key -out ca.crt -days 365
 ```
 
 通过CA签名，生成服务端的私钥和证书，命令如下：
+
 ```shell
 openssl ecparam -genkey -name prime256v1 -out server.key
 openssl req -new -key server.key -out server.req
@@ -75,6 +75,7 @@ openssl x509 -req -in server.req -CA ca.crt -CAkey ca.key -out server.crt -CAcre
 ```
 
 服务端示例代码：
+
 ```go
 package main
 
@@ -98,16 +99,20 @@ func main() {
 	}
 	// set server tls.Config
 	cfg := &tls.Config{
-		Certificates: []tls.Certificate{cert}, // add certificate
+        // add certificate
+		Certificates: []tls.Certificate{cert},
 		MaxVersion:   tls.VersionTLS13,
-		ClientAuth:   tls.RequireAndVerifyClientCert, // enable client authentication
+        // enable client authentication
+		ClientAuth:   tls.RequireAndVerifyClientCert,
 		ClientCAs:    caCertPool,
-		CipherSuites: []uint16{ // cipher suites supported
+        // cipher suites supported
+		CipherSuites: []uint16{
 			tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
 			tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
 			tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
 		},
-		NextProtos: []string{http2.NextProtoTLS}, // set application protocol http2
+        // set application protocol http2
+		NextProtos: []string{http2.NextProtoTLS},
 	}
 	// set TLS server
 	// default is standard.NewTransporter
@@ -130,13 +135,11 @@ func main() {
 
 在 `tls.Config` 中，除了上述基本参数，客户端可以配置的参数如下：
 
-
 |          参数名          | 介绍                 |
 |:---------------------:|:-------------------|
 |      ServerName       | 根据返回的证书信息验证主机名。    |
 |  InsecureSkipVerify   | 用于客户端是否开启服务端的证书验证。 |
 |        RootCAs        | 用于客户端验证服务端的证书。     |
-
 
 客户端 TLS 主要流程：
 1. 载入根证书，用于验证服务器端的真实性。
@@ -144,10 +147,10 @@ func main() {
 3. 配置 `tls.Config`。
 4. 使用 `WithTLS` 配置客户端 TLS，默认使用标准库的 Dialer。
 
-
 ### 示例代码
 
 通过CA签名，生成客户端的私钥和证书，命令如下：
+
 ```shell
 openssl ecparam -genkey -name prime256v1 -out client.key
 openssl req -new -key client.key -out client.req
@@ -156,6 +159,7 @@ openssl x509 -req -in client.req -CA ca.crt -CAkey ca.key -out client.crt -CAcre
 ```
 
 客户端示例代码：
+
 ```go
 package main
 
@@ -181,8 +185,10 @@ func main() {
 	cfg := &tls.Config{
 		MaxVersion:   tls.VersionTLS13,
 		Certificates: []tls.Certificate{cert},
-		RootCAs:      caCertPool, // verify the server certificate
-		// InsecureSkipVerify: true, // ignored the server certificate
+        // verify the server certificate
+		RootCAs:      caCertPool,
+        // ignored the server certificate
+		InsecureSkipVerify: true,
 	}
 
 	c, err := client.NewClient(
@@ -202,7 +208,6 @@ func main() {
 
 完整用法示例详见 [example](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) 。
 
-
 ## Autotls 中间件
 
 Hertz 提供了 [autotls](https://github.com/hertz-contrib/autotls) 扩展适配 [Let's Encrypt](https://letsencrypt.org/) ，方便用户进行 TLS 服务自动配置。
@@ -220,6 +225,7 @@ go get github.com/hertz-contrib/autotls
 `autotls` 扩展提供了 `NewTlsConfig` 用于帮助用户使用一行代码支持 LetsEncrypt HTTPS servers。
 
 NewTlsConfig 函数签名如下：
+
 ```go
 func NewTlsConfig(domains ...string) *tls.Config
 ```
@@ -259,6 +265,7 @@ func main() {
 `autotls` 扩展提供了 `RunWithContext` 用于帮助用户使用一行代码支持 LetsEncrypt HTTPS servers 的同时能够让服务优雅关机。
 
 RunWithContext 函数签名如下：
+
 ```go
 func RunWithContext(ctx context.Context, h *server.Hertz) error
 ```
@@ -309,11 +316,13 @@ func main() {
 `autotls` 扩展提供了 `NewServerWithManagerAndTlsConfig` 用于帮助用户自动证书管理和 TLS 配置。
 
 NewServerWithManagerAndTlsConfig 函数签名如下：
+
 ```go
 func NewServerWithManagerAndTlsConfig(m *autocert.Manager, tlsc *tls.Config, opts ...config.Option) *server.Hertz
 ```
 
 示例代码：
+
 ```go
 package main
 
