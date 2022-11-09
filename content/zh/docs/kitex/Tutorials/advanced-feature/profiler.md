@@ -29,8 +29,8 @@ Kitex 处理请求分为两个阶段：
 
 在我们的微服务治理实践里，我们推荐把来源服务名这类通用信息放在 TTHeader 中，这样不需要完全反序列化请求便可以提前进行 Goroutine 的 labels 打点。
 
-- 如果需要从传输层采集 tags，则使用：`WithProfilerTransInfoTagging`。
-- 如果需要从消息层采集 tags，则使用：`WithProfilerMessageTagging`。
+- 如果需要从传输层采集 tags，则使用：`server.WithProfilerTransInfoTagging`。
+- 如果需要从消息层采集 tags，则使用：`server.WithProfilerMessageTagging`。
 
 使用示例：
 
@@ -59,7 +59,7 @@ var msgTagging remote.MessageTagging = func(ctx context.Context, msg remote.Mess
 }
 
 // register tagging function
-svr := xxxserver.NewServer(WithProfilerMessageTagging(msgTagging))
+svr := xxxserver.NewServer(server.WithProfilerMessageTagging(msgTagging))
 ```
 
 ### 编写数据处理回调函数
@@ -96,4 +96,3 @@ svr := xxxserver.NewServer(
 	server.WithProfiler(pc),
 )
 ```
-

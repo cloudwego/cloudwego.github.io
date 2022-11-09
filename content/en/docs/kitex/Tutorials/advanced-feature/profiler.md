@@ -23,13 +23,13 @@ We need to "color" the Goroutine and subsequent Goroutines according to Kitex re
 
 The process of a request has two stages:
 
-- Transport Stage: The stage where Kitex receives a complete binary packet. If it is the [TTHeader](https://www.cloudwego.io/docs/kitex/reference/transport_protocol_ttheader/) protocol, we can quickly parse metadata information from the thrift header without deserialization.
+- Transport Stage: The stage where Kitex receives a complete binary packet. If it is the [TTHeader](https://www.cloudwego.io/docs/kitex/reference/transport_protocol_ttheader/) protocol, we can quickly parse metadata information from the header without deserialization.
 - Message Stage: The stage where Kitex deserializes the binary packet into a Request struct. The deserialization part tends to account for a large part of the overall overhead if the structure of the request is complex.
 
 In our microservice governance practice, we recommend putting general information such as the source service name in the TTHeader, so that the Goroutine labels can be marked in advance without fully deserializing the request.
 
-- If you need to collect tags from the transport layer, use: `WithProfilerTransInfoTagging`.
-- If you need to collect tags from the message layer, use: `WithProfilerMessageTagging`.
+- If you need to collect tags from the transport layer, use: `server.WithProfilerTransInfoTagging`.
+- If you need to collect tags from the message layer, use: `server.WithProfilerMessageTagging`.
 
 Example:
 
@@ -58,7 +58,7 @@ var msgTagging remote.MessageTagging = func(ctx context.Context, msg remote.Mess
 }
 
 // register tagging function
-svr := xxxserver.NewServer(WithProfilerMessageTagging(msgTagging))
+svr := xxxserver.NewServer(server.WithProfilerMessageTagging(msgTagging))
 ```
 
 ### Write Processor functions
