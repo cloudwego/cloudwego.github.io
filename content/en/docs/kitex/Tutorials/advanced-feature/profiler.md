@@ -9,22 +9,22 @@ Kitex Profiler provides request-level runtime cost statistic capability.
 
 ## How it works
 
-Go provides the [SetGoroutineLabels](https://pkg.go.dev/runtime/pprof#SetGoroutineLabels) API that can set labels for a Goroutine (hereinafter referred to as `G`), and all other Gs started in this G will inherit the labels.
+Go provides the [SetGoroutineLabels](https://pkg.go.dev/runtime/pprof#SetGoroutineLabels) API that can set labels for a Goroutine, and all other Goroutines started in this Goroutine will inherit the labels.
 
 The Go Pprof sampler will sample and count the currently running function stack every 10ms, and summarize the cost times of Goroutine Labels including each stack. We can analyze this result, group by labels and finally get the runtime cost of different request tags.
 
-Kitex will create or reuse a G for each request, so as long as the labels are set for G at the beginning of the request process, the costs of business logic can be calculated on the labels.
+Kitex will create or reuse a Goroutine for each request, so as long as the labels are set for Goroutine at the beginning of the request process, the costs of business logic can be calculated on the labels.
 
 ## Usage
 
 ### Write Tagging functions
 
-We need to "color" the G and subsequent Gs according to Kitex request parameters.
+We need to "color" the Goroutine and subsequent Goroutines according to Kitex request parameters.
 
 The process of a request has two stages:
 
-- Transport Stage: The stage where Kitex receives a complete Thrift binary packet. If it is the [TTHeader](https://www.cloudwego.io/docs/kitex/reference/transport_protocol_ttheader/) protocol, we can quickly parse metadata information from the thrift header without deserialization.
-- Message Stage: The stage where Kitex deserializes the Thrift binary packet into a Thrift Request struct. The deserialization part tends to account for a large part of the overall overhead if the structure of the request is complex.
+- Transport Stage: The stage where Kitex receives a complete binary packet. If it is the [TTHeader](https://www.cloudwego.io/docs/kitex/reference/transport_protocol_ttheader/) protocol, we can quickly parse metadata information from the thrift header without deserialization.
+- Message Stage: The stage where Kitex deserializes the binary packet into a Request struct. The deserialization part tends to account for a large part of the overall overhead if the structure of the request is complex.
 
 In our microservice governance practice, we recommend putting general information such as the source service name in the TTHeader, so that the Goroutine labels can be marked in advance without fully deserializing the request.
 
@@ -58,7 +58,7 @@ var msgTagging remote.MessageTagging = func(ctx context.Context, msg remote.Mess
 }
 
 // register tagging function
-svr := NewServer(WithProfilerMessageTagging(msgTagging))
+svr := xxxserver.NewServer(WithProfilerMessageTagging(msgTagging))
 ```
 
 ### Write Processor functions
@@ -91,7 +91,7 @@ We can configure two settings for the profiler:
 ```go
 interval, window := time.Duration(0), 30*time.Second
 pc := profiler.NewProfiler(LogProcessor, interval, window)
-svr := echoserver.NewServer(
+svr := xxxserver.NewServer(
 	new(ServerImpl),
 	server.WithProfilerMessageTagging(msgTagging),
 	server.WithProfiler(pc),
