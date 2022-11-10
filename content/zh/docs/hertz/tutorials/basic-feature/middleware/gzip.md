@@ -59,7 +59,7 @@ func main() {
 ```go
 func Gzip(level int, options ...Option) app.HandlerFunc
 ```
-示例代码
+示例代码如下:
 ```go
 package main
 
@@ -95,13 +95,13 @@ func main() {
 
 `gzip` 提供 `WithExcludeExtensions ` 用于帮助用户设置不需要 `gzip` 压缩的文件后缀，默认值为`.png`, `.gif`, `.jpeg`, `.jpg`
 
-函数签名如下：
+函数签名如下:
 
 ```go
 func WithExcludedPaths(args []string) Option
 ```
 
-示例代码：
+示例代码如下:
 
 ```go
 package main
@@ -136,13 +136,13 @@ func main() {
 
 `gzip` 提供了 `WithExcludedPaths`用于帮助用户设置其不需要进行 `gzip` 压缩的文件路径
 
-函数签名如下：
+函数签名如下:
 
 ```go
 func WithExcludedPaths(args []string) Option
 ```
 
-示例代码如下：
+示例代码如下:
 
 ```go
 package main
@@ -183,13 +183,13 @@ func main() {
 
 `gzip` 提供了`WithExcludedPathRegexes`用于帮助用户设置自定义的正则表达式来过滤掉不需要 `gzip` 压缩的文件
 
-函数签名如下：
+函数签名如下:
 
 ```go
 func WithExcludedPathRegexes(args []string) Option
 ```
 
-示例代码如下：
+示例代码如下:
 
 ```go
 package main
