@@ -6,11 +6,11 @@ description: >
 
 ---
 
-Hertz provides users with customized retry logic,Let's take a look at how to use Client Retry(This section mainly configures the times of retry and the delay policy )
+Hertz provides users with customized retry logic,Let's take a look at how to use Client Retry. **Note: Hertz version >= v0.4.0**
 
 ## Retry times and delay policy configuration
 
-First create a Client, and use the configuration item `WithRetryConfig()` to configure the Retry related logic
+First create a Client, and use the configuration item `WithRetryConfig()` to configure the Retry related logic. (This section mainly configures the times of retry and the delay policy)
 
 ```go
 package main

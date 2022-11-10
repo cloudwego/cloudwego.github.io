@@ -6,7 +6,7 @@ description: >
 
 ---
 
-Hertz 为用户提供了自定义的重试逻辑，下面来看一下 Client 的 Retry 使用方法
+Hertz 为用户提供了自定义的重试逻辑，下面来看一下 Client 的 Retry 使用方法。**注意：Hertz 版本 >= v0.4.0**
 
 ## Retry 次数及延迟策略配置
 
