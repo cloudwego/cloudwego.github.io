@@ -78,7 +78,7 @@ func main() {
 | WithMaxConnDuration | time.Duration | Set the maximum keep-alive time of the connection, when the timeout expired, the connection will be closed after the current request is completed. Default: infinite. |
 | WithMaxConnWaitTimeout | time.Duration | Set the maximum time to wait for an idle connection. Default: no wait. |
 | WithKeepAlive | bool | Whether to use persistent connection. Default: true. |
-| WithRetryConfig | ...retry.Option | Set the retry config of client. Hertz version >= v0.4.0 |
+| WithRetryConfig | ...retry.Option | Set the retry config of client. Hertz version >= v0.4.0. |
 | ~~WithMaxIdempotentCallAttempts~~ | int | Set the maximum number of calls. If a call fails, it will be retried. Default: 1 (That is no retry). v0.4.0 is obsolete. Only available before v0.4.0. It is recommended to upgrade Hertz version >= v0.4.0 and use WithRetryConfig instead. |
 | WithClientReadTimeout | time.Duration | Set the maximum time to read the response. Default: infinite. |
 | WithTLSConfig | *tls.Config | Set the client's TLS config for mutual TLS authentication. |
