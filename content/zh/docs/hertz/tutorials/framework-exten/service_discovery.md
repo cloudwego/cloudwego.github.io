@@ -128,5 +128,5 @@ Hertz 默认提供了 WeightedRandom 负载均衡实现,同时也支持自定义
         panic(err)
     }
     r := nacos_demo.NewNacosResolver()
-    cli.Use(sd.Discovery(r),sd.WithLoadBalanceOptions(***,***))
+    cli.Use(sd.Discovery(r, sd.WithLoadBalanceOptions(***,***)))
 ```
