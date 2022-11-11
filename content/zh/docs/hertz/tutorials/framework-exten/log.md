@@ -127,7 +127,7 @@ func main() {
 
 	logger := hertzZerolog.New(
 		hertzZerolog.WithOutput(os.Stdout),     // allows to specify output
-		hertzZerolog.WithLevel(hlog.LevelWarn), // option with log level
+		hertzZerolog.WithLevel(hlog.LevelInfo), // option with log level
 		hertzZerolog.WithTimestamp(),           // option with timestamp
 		hertzZerolog.WithCaller(),              // option with caller
 		// ...
