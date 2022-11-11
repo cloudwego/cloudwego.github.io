@@ -69,7 +69,7 @@ func main() {
 }
 ```
 
-For more details, see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
+For more details, see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap).
 
 ### Logrus
 
@@ -106,4 +106,43 @@ func main() {
 }
 ```
 
-For more details, see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
+For more details, see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus).
+
+### Zerolog
+
+Example：
+```go
+import (
+	"context"
+	"os"
+	
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+	h := server.Default()
+
+	logger := hertzZerolog.New(
+		hertzZerolog.WithOutput(os.Stdout),     // allows to specify output
+		hertzZerolog.WithLevel(hlog.LevelWarn), // option with log level
+		hertzZerolog.WithTimestamp(),           // option with timestamp
+		hertzZerolog.WithCaller(),              // option with caller
+		// ...
+	)
+
+	hlog.SetLogger(logger)
+
+	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+		hlog.Info("Hello, hertz")
+		c.String(consts.StatusOK, "Hello hertz!")
+	})
+
+	h.Spin()
+}
+```
+
+For more details, see [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog).
