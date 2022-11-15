@@ -131,7 +131,7 @@ type ReverseProxy struct {
 func NewSingleHostReverseProxy(target string, opts ...config.Option) (*reverseProxy, error)
 ```
 
-> - For NewSingleHostReverseProxy function, if no `config.ClientOption` is passed it will use the default global `client.Client` instance.
+> - For `NewSingleHostReverseProxy` function, if no `config.ClientOption` is passed it will use the default global `client.Client` instance.
 When passing `config.ClientOption` it will initialize a local `client.Client` instance.
 Using `ReverseProxy.SetClient` if there is need for shared customized `client.Client` instance.
 > - The reverse proxy resets the header of the response, any such modifications before the request is made will be discarded.

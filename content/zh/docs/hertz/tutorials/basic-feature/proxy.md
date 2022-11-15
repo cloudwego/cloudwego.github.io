@@ -60,7 +60,7 @@ func main() {
 }
 ```
 
-> 客户端默认不支持TLS，如果要访问https地址，应该使用标准库
+> 客户端默认不支持 TLS，如果要访问 https 地址，应该使用标准库
 
 ```go
 c, err := client.NewClient(client.WithDialer(standard.NewDialer()))
@@ -91,38 +91,38 @@ go get github.com/hertz-contrib/reverseproxy
 
 ```go
 type ReverseProxy struct {
-    // 用于转发的客户端, 可以通过 SetClient 方法对其进行配置
+    // 用于转发的客户端，可以通过 SetClient 方法对其进行配置
     client *client.Client
 
     // 设置反向代理的目标地址
     target string
 
-    // 用于转换request, 可以通过 SetDirector 方法来自定义
+    // 用于转换 request，可以通过 SetDirector 方法来自定义
     // director  必须是将一个请求转换为一个新的请求的函数。
     // 响应直接未经修改重定向返回给原始客户端
     // 请求返回后 direcotr 不得访问
     director func (*protocol.Request)
 
-    // modifyResponse这是一个可选的函数，用于修改来自后端的响应
+    // modifyResponse 这是一个可选的函数，用于修改来自后端的响应
     // 可以通过 SetModifyResponse 方法进行修改
     // 如果后端返回任意响应，不管状态码是什么，这个方法将会被调用。
-    // 如果后端不可访问，errorHandler方法会使用错误信息做入参被调用。
-    // 如果modifyResponse 方法返回一个错误，errorHandler方法将会使用错误做入参被调用。
+    // 如果后端不可访问，errorHandler 方法会使用错误信息做入参被调用。
+    // 如果 modifyResponse 方法返回一个错误，errorHandler 方法将会使用错误做入参被调用。
     // 如果 errorHandler 未设置，将使用默认实现。
     modifyResponse func(*protocol.Response) error
 
-    // errorHandler 是一个可选的函数，用于处理到达后台的错误或来自modifyResponse的错误。
-    // 如果未进行设置, 默认返回 StatusBadGateway (502)
+    // errorHandler 是一个可选的函数，用于处理到达后台的错误或来自 modifyResponse 的错误。
+    // 如果未进行设置，默认返回 StatusBadGateway (502)
     errorHandler func(*app.RequestContext, error)
 }
 
 // NewSingleHostReverseProxy 返回一个新的反向代理来路由请求到指定后端。如果后端路径是 ”/base“ 请求路径是 ”/dir” ，目标路径将会是 “/base/dir” 。
 // NewSingleHostReverseProxy 不会重写 Host 请求头。
-// 要想覆盖Host请求头，可以选择自定义 director
+// 要想覆盖 Host 请求头，可以选择自定义 director
 func NewSingleHostReverseProxy(target string, opts ...config.Option) (*reverseProxy, error)
 ```
 
-> - NewSingleHostReverseProxy方法如果没有设置 `config.ClientOption` 将会使用默认的全局 `client.Client` 实例， 
+> - `NewSingleHostReverseProxy` 方法如果没有设置 `config.ClientOption` 将会使用默认的全局 `client.Client` 实例，
 如果设置了 `config.ClientOption` 将会初始化一个 `client.Client` 实例。
 如果你需要共享一个 `client.Client` 实例，可以使用 `ReverseProxy.SetClient` 来设置。
 > - 反向代理会重置响应头，如果在请求之前修改了响应头将不会生效。
@@ -134,7 +134,7 @@ func NewSingleHostReverseProxy(target string, opts ...config.Option) (*reversePr
 |  `SetDirector`   | 用于指定 protocol.Request    |
 |  `SetClient` | 用于指定转发的客户端 |
 |  `SetModifyResponse` | 用于指定响应修改方法 |
-|  `SetErrorHandler` |  用于指定处理到达后台的错误或来自modifyResponse的错误 |
+|  `SetErrorHandler` |  用于指定处理到达后台的错误或来自 modifyResponse 的错误 |
 
 ### 示例
 
