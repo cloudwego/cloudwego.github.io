@@ -1,6 +1,6 @@
 # full override: we're not tracking changes to the docsy base file.
 
-baseURL = "/"
+baseURL = "https://www.cloudwego.io"
 title = "CloudWeGo"
 googleAnalytics = "G-QYWRQRLPRM"
 
