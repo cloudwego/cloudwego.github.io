@@ -24,7 +24,7 @@ Kitex 目前支持两种传输协议：TTHeader、HTTP2，但实际提供配置�
 
 如果想自定义消息协议和传输协议参考：[编解码(协议)扩展](../../framework-exten/codec)
 
-### 配置项
+## 配置项
 
 Client 初始化时通过 `WithTransportProtocol` 配置传输协议：
 

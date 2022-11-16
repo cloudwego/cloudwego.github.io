@@ -8,7 +8,7 @@ description: >
 
 Motore 是一个使用了 GAT 和 TAIT 特性的中间件抽象层。
 
-基于 Motore，我们编写了一些模块化并且可服用的，用来编写 client 和 server 的组件。
+基于 Motore，我们编写了一些模块化并且可复用的，用来编写 client 和 server 的组件。
 
 Motore 深受[`Tower`][Tower] 启发。
 

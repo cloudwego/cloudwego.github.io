@@ -10,7 +10,7 @@ description: >
 ## Installation
 
 ```
-go install github.com/cloudwego/kitex/tool/cmd/kitex
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 ```
 
 You can use the go command to install kitex or build and install it from source. To check where kitex will be installed, try
@@ -103,7 +103,7 @@ When the command is done, in the current directory, there will be a folder named
 
 ### The Structure of Generated Codes
 
-Suppose we have two thrift IDLs, demo.thrift and base.thrift that demo.thrift includes base.thrift. In demo.thrift there is a service definition named `demo`. 
+Suppose we have two thrift IDLs, demo.thrift and base.thrift that demo.thrift includes base.thrift. In demo.thrift there is a service definition named `demo`.
 
 Then in an empty directory, `kitex -service demo dem.thrift` produces a skeleton of project:
 
@@ -157,7 +157,7 @@ Add a search path for IDLs.
 
 Specify the type of IDLs. Currently available values are `thrift` and `protobuf`.
 
-Kitex will guess the IDL type by the file extension. `.thrift` for thrift, `.proto` for protobuf. 
+Kitex will guess the IDL type by the file extension. `.thrift` for thrift, `.proto` for protobuf.
 
 #### `-v` or `-verbose`
 

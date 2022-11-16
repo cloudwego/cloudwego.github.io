@@ -1,7 +1,7 @@
 ---
 title: "单测"
 date: 2022-05-23
-weight: 10
+weight: 11
 description: >
 
 ---
@@ -42,5 +42,52 @@ func TestPerformRequest(t *testing.T) {
    assert.DeepEqual(t, "{\"hi\":\"hertz\"}", string(resp.Body()))
 }
 ```
+
+## 与业务handler配合使用
+
+假如已经创建了handler以及一个函数`Ping()`
+```go
+
+package handler
+
+import (
+	"context"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+)
+
+// Ping .
+func Ping(ctx context.Context, c *app.RequestContext) {
+	c.JSON(200, utils.H{
+		"message": "pong",
+	})
+}
+```
+
+可以在单元测试中直接对`ping()`函数进行测试
+```go
+package handler
+
+import (
+	"bytes"
+	"testing"
+
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/test/assert"
+	"github.com/cloudwego/hertz/pkg/common/ut"
+)
+
+func TestPerformRequest(t *testing.T) {
+	h := server.Default()
+	h.GET("/ping", Ping)
+	w := ut.PerformRequest(h.Engine, "GET", "/ping", &ut.Body{bytes.NewBufferString("1"), 1},
+		ut.Header{"Connection", "close"})
+	resp := w.Result()
+	assert.DeepEqual(t, 201, resp.StatusCode())
+	assert.DeepEqual(t, "{\"message\":\"pong\"}", string(resp.Body()))
+}
+```
+之后对`Ping()`函数进行修改，单元测试文件不需要复制相同的业务逻辑。
 
 更多 examples 参考 [pkg/common/ut](https://github.com/cloudwego/hertz/tree/main/pkg/common/ut) 中的单测文件。

@@ -42,6 +42,18 @@ The order in which the calls are returned is reversed.
 
 The order of all middleware calls on the client side can be seen in `client/client.go`.
 
+## Context Middleware
+
+Context middleware is also a client-side middleware, but the difference is that it is controlled by ctx whether to inject the middleware or which middleware should be injected.
+
+The introduction of Context Middleware is to provide a way to globally or dynamically inject Client Middleware. Typical usage scenario is to count which downstreams are called in this call-chain.
+
+Context Middleware only exists in the context call-chain, which can avoid problems caused by third-party libraries injecting uncontrollable middleware.
+
+Middleware can be injected into ctx with `ctx = client.WithContextMiddlewares(ctx, mw)` .
+
+Note: Context Middleware will be executed before Client Middleware.
+
 ## Server-side Middleware
 
 The server-side middleware is different from the client-side.
