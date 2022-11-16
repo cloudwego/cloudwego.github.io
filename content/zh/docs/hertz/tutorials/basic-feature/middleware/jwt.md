@@ -163,7 +163,7 @@ Hertz 通过使用中间件，为路由请求提供了 `jwt` 的校验功能。�
 | `MaxRefresh`                  | 用于设置最大 token 刷新时间，允许客户端在 `TokenTime` + `MaxRefresh` 内刷新 token 的有效时间，追加一个 `Timeout` 的时长 |
 | `Authenticator`               | 用于设置登录时认证用户信息的函数（必要配置）                                                                 |
 | `Authorizator`                | 用于设置授权已认证的用户路由访问权限的函数                                                                  |
-| `PayloadFunc`                 | 用于设置登录时为 token 添加额外的负载信息的函数                                                            |
+| `PayloadFunc`                 | 用于设置登陆成功后为向 token 中添加自定义负载信息的函数                                                        |
 | `Unauthorized`                | 用于设置 jwt 验证流程失败的响应函数                                                                   |
 | `LoginResponse`               | 用于设置登录的响应函数                                                                            |
 | `LogoutResponse`              | 用于设置登出的响应函数                                                                            |
@@ -291,7 +291,7 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 
 ### PayloadFunc
 
-用于设置登录时为 `token` 添加额外负载信息的函数，如果不传入这个参数，则 `token` 的 `payload` 部分默认存储 `token` 的过期时间和创建时间，如下则额外存储了用户名信息。
+用于设置登录时为 `token` 添加自定义负载信息的函数，如果不传入这个参数，则 `token` 的 `payload` 部分默认存储 `token` 的过期时间和创建时间，如下则额外存储了用户名信息。
 
 函数签名：
 
@@ -311,6 +311,31 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
         }
         return jwt.MapClaims{}
     },
+})
+```
+
+### IdentityHandler
+
+`IdentityHandler` 作用在登录成功后的每次请求中，用于设置从 token 提取用户信息的函数。这里提到的用户信息在用户成功登录时，触发 `PayloadFunc` 函数，已经存入 token 的负载部分。
+
+具体流程：通过在 `IdentityHandler` 内配合使用 `identityKey` ，将存储用户信息的 token 从请求上下文中取出并提取需要的信息，封装成 User 结构，以 `identityKey` 为 key，User 为 value 存入请求上下文当中以备后续使用。
+
+函数签名：
+
+```go
+func(ctx context.Context, c *app.RequestContext) interface{}
+```
+
+示例代码：
+
+```go
+authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
+    IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
+        claims := jwt.ExtractClaims(ctx, c)
+        return &User{
+            UserName: claims[identityKey].(string),
+        }
+    }
 })
 ```
 
@@ -411,31 +436,6 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 })
 // 在 RefreshHandler 内调用
 auth.GET("/refresh_token", authMiddleware.RefreshHandler)
-```
-
-### IdentityHandler
-
-`IdentityHandler` 作用在登录成功后的每次请求中，用于设置从 token 提取用户信息的函数。这里提到的用户信息在用户成功登录时，触发 `PayloadFunc` 函数，已经存入 token 的负载部分。
-
-具体流程：通过在 `IdentityHandler` 内配合使用 `identityKey` ，将存储用户信息的 token 从请求上下文中取出并提取需要的信息，封装成 User 结构，以 `identityKey` 为 key，User 为 value 存入请求上下文当中以备后续使用。
-
-函数签名：
-
-```go
-func(ctx context.Context, c *app.RequestContext) interface{}
-```
-
-示例代码：
-
-```go
-authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
-    IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
-        claims := jwt.ExtractClaims(ctx, c)
-        return &User{
-            UserName: claims[identityKey].(string),
-        }
-    }
-})
 ```
 
 ### TokenLookup
