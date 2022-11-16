@@ -2,6 +2,7 @@
 date: 2021-09-13
 title: "CloudWeGo Open Source Announcement"
 linkTitle: "CloudWeGo Open Source Announcement"
+keywords: ["CloudWeGo", "Open Source", "microservice", "ByteDance"]
 description: "ByteDance now offers open source through CloudWeGo！"
 author: ByteDance Architecture Team
 ---
