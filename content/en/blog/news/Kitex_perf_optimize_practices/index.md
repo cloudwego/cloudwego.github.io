@@ -2,7 +2,8 @@
 date: 2021-09-23
 title: "Performance Optimization on Kitex"
 linkTitle: "Performance Optimization on Kitex"
-description: >
+keywords: ["Kitex", "Optimization", "Netpoll", "Thrift", "Serialization"]
+description: "This blog introduces the performance optimization practice of Bytedance Go RPC framework Kitex, which includes Netpoll, Thrift, serialization and so on."
 author: <a href="https://github.com/Hchenn" target="_blank">Hchen</a>, <a href="https://github.com/PureWhiteWu" target="_blank">Pure White</a>, <a href="https://github.com/simon0-o" target="_blank">Simon Wang</a>, <a href="https://github.com/SinnerA" target="_blank">bytexw</a>
 ---
 ## Preface

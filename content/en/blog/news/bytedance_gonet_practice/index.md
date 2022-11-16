@@ -2,7 +2,8 @@
 date: 2021-10-09
 title: "ByteDance Practices on Go Network Library"
 linkTitle: "ByteDance Practices on Go Network Library"
-description: >
+keywords: ["Netpoll", "Go", "epoll", "Network Library", "Multiplexing", "ZeroCopy"]
+description: "This blog introduces the design and practice of Bytedance self-developed network library Netpoll as well as the actual problems and solutions, hope to provide you with some reference."
 author: <a href="https://github.com/Hchenn" target="_blank">Hchen</a>, <a href="https://github.com/PureWhiteWu" target="_blank">Pure White</a>
 ---
 
