@@ -58,7 +58,7 @@ For cross-origin access, in the case of a **simple request**, this is essentiall
 
 For **non-simple** cross-origin access requests (e.g. request method is `PUT` or `PATCH`, `Content-Type` field type is `application/json`, etc.), an HTTP preflight request is sent to verify that the client has access to the server before formal communication directly. A preflight request is a browser-initiated action that uses the HTTP Method `OPTIONS`.
 
-**Note: Some of the ** `hertz-cors` **configurations will only take effect when a preflight request occurs. **
+**Note: Some of the** `hertz-cors` **configurations will only take effect when a preflight request occurs.**
 
 ## Config
 
