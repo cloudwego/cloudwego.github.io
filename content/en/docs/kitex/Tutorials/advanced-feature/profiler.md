@@ -1,11 +1,13 @@
 ---
-title: "Profiler"
+title: "Request Profiler"
 date: 2022-11-07
 weight: 4
 description: >
 ---
 
 Kitex Profiler provides request-level runtime cost statistic capability.
+
+Note: There is additional performance overhead when enable profiler module, overhead cause by: background continuous pprof, and the processing functions written by users.
 
 ## How it works
 

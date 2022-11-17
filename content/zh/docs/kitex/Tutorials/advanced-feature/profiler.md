@@ -1,11 +1,13 @@
 ---
-title: "Profiler"
+title: "请求成本度量"
 date: 2022-11-07
 weight: 4
 description: >
 ---
 
 Kitex Profiler 模块提供了请求级别的运行时开销统计能力。
+
+注意：该模块的开启会产生额外的性能开销，包括：常驻后台 pprof 程序的运行开销，用户编写的处理函数开销。
 
 
 ## 工作原理
