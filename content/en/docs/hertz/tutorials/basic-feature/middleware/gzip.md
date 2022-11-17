@@ -10,13 +10,13 @@ In HTTP, GNUzip(Gzip) compression coding is a way to optimize the performance of
 
 
 
-## Installation
+## Install
 
 ```sh
 go get github.com/hertz-contrib/gzip
 ```
 
-## Sample Code:
+## Example
 ```go
 package main
 
@@ -40,7 +40,7 @@ func main() {
 	h.Spin()
 }
 ```
-## Configuration
+## Config
 
 ### Gzip
 
@@ -53,8 +53,7 @@ func main() {
 | DefaultCompression | Default compression rate                 |
 | NoCompression      | No compression                           |
 
-Function Signature
-
+Function Signature:
 ```go
 func Gzip(level int, options ...Option) app.HandlerFunc
 ```
@@ -89,21 +88,16 @@ func main() {
 	h.Spin()
 }
 ```
-
 ### WithExcludedExtensions
 
 `gzip` provides `WithExcludeExtensions` to help users set file extensions that do not require `gzip` compression, the default values are `.png`, `.gif`, `.jpeg`, `.jpg`
 
-Function Signature
-
-
+Function Signature:
 
 ```go
 func WithExcludedPaths(args []string) Option
 ```
-
 Sample Code:
-
 ```go
 package main
 
@@ -136,6 +130,8 @@ func main() {
 ### WithExcludedPaths
 
 `gzip` provides `WithExcludedPaths` to help users set the paths of files they do not want to compress with `gzip`
+
+Function Signature:
 
 ```go
 func WithExcludedPaths(args []string) Option
