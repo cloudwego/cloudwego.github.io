@@ -54,7 +54,6 @@ swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagg
 go get github.com/hertz-contrib/swagger
 go get github.com/swaggo/files
 ```
-    
 Import following in your code:
 
 ```go
