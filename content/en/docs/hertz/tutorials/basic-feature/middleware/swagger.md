@@ -35,8 +35,7 @@ at `~/root/go-project-name/docs`.
 ```sh
 swag init
 ```
-
- swag init with options(All options can be viewed via `swag init -h`)
+swag init with options(All options can be viewed via `swag init -h`).
 
 ```bash
 swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagger"
@@ -48,7 +47,6 @@ swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagg
 | parseDependency | false     | Parse go files inside dependency folder.                                                                                                                                         |
 | parseDepth      | 100       | Dependency parse depth.If you know the depth of the data structure to be parsed, it is recommended to use `parseDepth`, the swag command execution time will be greatly reduced. |
 | instanceName    | "swagger" | The instance name of the swagger document. If multiple different swagger instances should be deployed on one hertz router, ensure that each instance has a unique name.          |
-
 
 4. Download [hertz-swagger](https://github.com/hertz-contrib/swagger) by using:
 

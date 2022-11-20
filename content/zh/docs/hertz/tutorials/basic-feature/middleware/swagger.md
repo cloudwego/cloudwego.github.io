@@ -36,8 +36,7 @@ swag init
 ```
 [Swag][Swag] 会解析注释并在 `~/root/go-project-name/docs` 目录下生成必要的文件(`docs` 文件夹和 `docs/doc.go`)。
 
-使用参数运行 [Swag][Swag] (所有参数可以通过运行 `swag init -h` 查看)
-
+使用参数运行 [Swag][Swag] (所有参数可以通过运行 `swag init -h` 查看)。
 ```bash
 swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagger"
 ```
