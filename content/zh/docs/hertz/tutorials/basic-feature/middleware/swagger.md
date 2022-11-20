@@ -36,7 +36,18 @@ swag init
 ```
 [Swag][Swag] 会解析注释并在 `~/root/go-project-name/docs` 目录下生成必要的文件(`docs` 文件夹和 `docs/doc.go`)。
 
+使用参数运行 [Swag][Swag] (所有参数可以通过运行 `swag init -h` 查看)
 
+```bash
+swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagger"
+```
+
+| 选项      | 描述           | 默认值 |
+| --------------- | -------------- | ------ |
+| parseInternal   | 解析内部依赖包 | false  |
+| parseDependency | 解析外部依赖包 | false  |
+| parseDepth      | 解析依赖包深度 | 100    |
+| instanceName    |swagger 文档的实例名称。如果要在一个 Hertz 路由上部署多个不同的 swagger 实例，请确保每个实例有一个唯一的名字  | "swagger" |
 
 4. 通过运行以下命令在工程中下载 [hertz-swagger](https://github.com/hertz-contrib/swagger) :
 
@@ -184,14 +195,13 @@ func main() {
 ```
 
 
-| 选项                     | 类型   | 默认值     | 描述                                                                                                                     |
-| ------------------------ | ------ | ---------- |------------------------------------------------------------------------------------------------------------------------|
-| URL                      | string | "doc.json" | 指向 API 定义的 URL                                                                                                         |
-| DocExpansion             | string | "list"     | 控制操作和标签的默认扩展设置。它可以是 `list`（只展开标签）、`full`（展开标签和操作）或 `none`（不展开）。                                                        |
-| DeepLinking              | bool   | true       | 如果设置为 `true`，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。                                                                             |
-| DefaultModelsExpandDepth | int    | 1          | 模型的默认扩展深度（设置为-1完全隐藏模型）。                                                                                                |
-| InstanceName             | string | "swagger"  | swagger 文档的实例名称。如果要在一个 Hertz 路由 上部署多个不同的 swagger 实例，请确保每个实例有一个唯一的名字（使用_-instanceName _参数，用 `swag init` 生成 swagger 文档）。 |
-| PersistAuthorization     | bool   | false      | 如果设置为 `true`，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。                                                                               |
-| Oauth2DefaultClientID    | string | ""         | 如果设置了这个字段，它将用于预填 OAuth2 授权对话框的 *client_id* 字段。                                                                         |
+| 选项                     | 类型   | 默认值     | 描述                                                         |
+| ------------------------ | ------ | ---------- | ------------------------------------------------------------ |
+| URL                      | string | "doc.json" | 指向 API 定义的 URL                                          |
+| DocExpansion             | string | "list"     | 控制操作和标签的默认扩展设置。它可以是 `list`（只展开标签）、`full`（展开标签和操作）或 `none`（不展开）。 |
+| DeepLinking              | bool   | true       | 如果设置为 `true`，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。 |
+| DefaultModelsExpandDepth | int    | 1          | 模型的默认扩展深度（设置为-1完全隐藏模型）。                 |
+| PersistAuthorization     | bool   | false      | 如果设置为 `true`，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。 |
+| Oauth2DefaultClientID    | string | ""         | 如果设置了这个字段，它将用于预填 OAuth2 授权对话框的 *client_id* 字段。 |
 
 [Swag]: https://github.com/swaggo/swag
