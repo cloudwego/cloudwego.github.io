@@ -42,12 +42,12 @@ swag init
 swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagger"
 ```
 
-| 选项      | 描述           | 默认值 |
-| --------------- | -------------- | ------ |
-| parseInternal   | 解析内部依赖包 | false  |
-| parseDependency | 解析外部依赖包 | false  |
-| parseDepth      | 解析依赖包深度 | 100    |
-| instanceName    |swagger 文档的实例名称。如果要在一个 Hertz 路由上部署多个不同的 swagger 实例，请确保每个实例有一个唯一的名字  | "swagger" |
+| 选项      | 默认值       | 描述                                                                  |
+| --------------- |-----------|---------------------------------------------------------------------|
+| parseInternal   | false     | 解析内部依赖包。                                                            |
+| parseDependency | false     | 解析外部依赖包。                                                            |
+| parseDepth      | 100       | 解析依赖包深度,如果你知道解析结构的深度，推荐使用这个参数，swag命令的执行时间会显著减少。                     |
+| instanceName    | "swagger" | swagger 文档的实例名称。如果要在一个 Hertz 路由上部署多个不同的 swagger 实例，请确保每个实例有一个唯一的名字。 |
 
 4. 通过运行以下命令在工程中下载 [hertz-swagger](https://github.com/hertz-contrib/swagger) :
 
