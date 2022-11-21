@@ -3,11 +3,11 @@ date: 2022-11-08
 title: "Kitex Proxyless 之流量路由：配合 Istio 与 OpenTelemetry 实现全链路泳道"
 linkTitle: "Kitex Proxyless 之流量路由：配合 Istio 与 OpenTelemetry 实现全链路泳道"
 keywords: ["CloudWeGo", "Kitex Proxyless", "流量路由", "全链路泳道", "Bookinfo"]
-description: "本文旨在分享开发者在压测 Hertz 需要了解的场景和技术问题，并且基于当前最新版本对多个框架进行了压测对比，提供了性能参考数据，有助于用户更好地结合真实 HTTP 场景对 Hertz 进行调优，使之更贴合业务需要、发挥最佳性能。"
+description: "本文主要介绍了基于 Kitex Proxyless 实现流量路由，从而在 biz-demo 中使用 Kitex 和 Hertz 重写 bookinfo 项目，实现的目的是以实战的方式演示如何使用 xDS 实现全链路的流量泳道。"
 author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 ---
 
-> 导语：本文主要介绍了基于 Kitex Proxyless 实现流量路由，从而在 biz-demo 中使用 Kitex 和 Hertz 重写 bookinfo 项目，实现的目的是以实战的方式演示如何使用 xDS 实现全链路的流量泳道。
+> 导语：Kitex Proxyless 是 Kitex 服务能够不借助 envoy sidecar 直接与 istiod 交互，基于 xDS 协议动态获取控制面下发的服务治理规则，并转换为 Kitex 对应规则来实现一些服务治理功能，如流量路由。基于 Kitex Proxyless，能够实现 Kitex 无需代理就可以被 ServiceMesh 统一管理，进而实现多种部署模式下的治理规则 Spec、治理控制面、治理下发协议、异构数据治理能力的统一。本文在 biz-demo 中使用 Kitex 和 Hertz 重写 bookinfo 项目，以实战的方式演示了如何使用 xDS 实现全链路的流量泳道。
 
 ## 01 引言
 
