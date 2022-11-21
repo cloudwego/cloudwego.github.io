@@ -13,15 +13,15 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 ### **Kitex Proxyless**
 
-> [Kitex](https://github.com/cloudwego/kitex) 是字节开源的 Golang RPC 框架，已经原生支持了 xDS 标准协议，支持以 Proxyless 的方式被 ServiceMesh 统一纳管。
+> [Kitex][Kitex] 是字节开源的 Golang RPC 框架，已经原生支持了 xDS 标准协议，支持以 Proxyless 的方式被 ServiceMesh 统一纳管。
 > 
 > * 详细设计见：
 >   [Proposal: Kitex support xDS Protocol · Issue #461 · cloudwego/kitex](https://github.com/cloudwego/kitex/issues/461)
 > * 具体使用方式见[官方文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/xds/)
 
-**[Kitex](https://github.com/cloudwego/kitex) Proxyless** 简单来说就是 [Kitex](https://github.com/cloudwego/kitex) 服务能够不借助 envoy sidecar 直接与 istiod 交互，基于 xDS 协议动态获取控制面下发的服务治理规则，并转换为 [Kitex](https://github.com/cloudwego/kitex) 对应规则来实现一些服务治理功能（例如本文的重点：**流量路由**）。
+**[Kitex][Kitex] Proxyless** 简单来说就是 [Kitex][Kitex] 服务能够不借助 envoy sidecar 直接与 istiod 交互，基于 xDS 协议动态获取控制面下发的服务治理规则，并转换为 [Kitex][Kitex] 对应规则来实现一些服务治理功能（例如本文的重点：**流量路由**）。
 
-基于 **[Kitex](https://github.com/cloudwego/kitex) Proxyless**，让我们实现 [Kitex](https://github.com/cloudwego/kitex) 能够无需代理就可以被 ServiceMesh 统一管理，进而实现多种部署模式下的**治理规则 Spec、治理控制面、治理下发协议、异构数据治理能力**的统一。
+基于 **[Kitex][Kitex] Proxyless**，让我们实现 [Kitex][Kitex] 能够无需代理就可以被 ServiceMesh 统一管理，进而实现多种部署模式下的**治理规则 Spec、治理控制面、治理下发协议、异构数据治理能力**的统一。
 
 ![image](/img/blog/Kitex_Proxyless/1.png)
 
@@ -29,9 +29,9 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 > 流量路由是指，能够将流量**根据其自身特定的元数据标识路由**到指定目的地。
 
-流量路由属于服务治理中比较核心的能力之一，也是 [Kitex](https://github.com/cloudwego/kitex) Proxyless 优先支持的场景之一。
+流量路由属于服务治理中比较核心的能力之一，也是 [Kitex][Kitex] Proxyless 优先支持的场景之一。
 
-[Kitex](https://github.com/cloudwego/kitex) 基于 xDS 实现**流量路由**的方案大致如下：
+[Kitex][Kitex] 基于 xDS 实现**流量路由**的方案大致如下：
 
 ![image](/img/blog/Kitex_Proxyless/2.png)
 
@@ -98,11 +98,11 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 有了一套通用的全链路透传机制，业务方就只需要接入一遍 tracing 即可，无需每次业务属性标识发生变化就配合改造一次。
 
-下面会借助一个**具体的工程案例**介绍，来介绍并演示如何基于 [Kitex](https://github.com/cloudwego/kitex) Proxyless 和 OpenTelemetry Baggage 实现全链路泳道功能。
+下面会借助一个**具体的工程案例**介绍，来介绍并演示如何基于 [Kitex][Kitex] Proxyless 和 OpenTelemetry Baggage 实现全链路泳道功能。
 
 ## 03 案例介绍：Bookinfo
 
-> 该案例是使用 Hertz、[Kitex](https://github.com/cloudwego/kitex) 重写经典的 [Istio Bookinfo](https://istio.io/latest/zh/docs/examples/bookinfo/) 项目：
+> 该案例是使用 [Hertz](https://github.com/cloudwego/hertz)、[Kitex][Kitex] 重写经典的 [Istio Bookinfo](https://istio.io/latest/zh/docs/examples/bookinfo/) 项目：
 > 
 > * 使用 istiod 来作为 **xDS server**，作为 CRD 配置和下发的入口；
 > * 使用 wire 来实现**依赖注入**；
@@ -186,15 +186,14 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 ## 04 总结与展望
 
-至此我们已经基于 **[Kitex](https://github.com/cloudwego/kitex) Proxyless** 与 **OpenTelemetry**  实现了一个完整的全链路泳道，并且无需借助 Envoy sidecar，就能基于 Isito 标准治理规则 Spec，来为 Kitex 设置对应的路由规则了。
+至此我们已经基于 **[Kitex][Kitex] Proxyless** 与 **OpenTelemetry**  实现了一个完整的全链路泳道，并且无需借助 Envoy sidecar，就能基于 Isito 标准治理规则 Spec，来为 Kitex 设置对应的路由规则了。
 
-当然，除了满足**流量路由**能力之外，**[Kitex](https://github.com/cloudwego/kitex) Proxyless** 也在持续迭代优化，满足更多数据面治理能力需求。Proxyless 作为一种 ServiceMesh 数据面探索和实践，除了能够丰富网格数据面部署形态之外，也希望可以不断打磨 **[Kitex](https://github.com/cloudwego/kitex)**，增强其在开源生态兼容方面的能力，打造一个开放包容的微服务生态体系。
+当然，除了满足**流量路由**能力之外，**[Kitex][Kitex] Proxyless** 也在持续迭代优化，满足更多数据面治理能力需求。Proxyless 作为一种 ServiceMesh 数据面探索和实践，除了能够丰富网格数据面部署形态之外，也希望可以不断打磨 **[Kitex][Kitex]**，增强其在开源生态兼容方面的能力，打造一个开放包容的微服务生态体系。
 
 ## 05 相关项目链接
 
 下面是该案例涉及的项目清单：
 
-* Kitex: https://github.com/cloudwego/kitex
 * biz-demo: https://github.com/cloudwego/biz-demo
 * kitex: https://github.com/cloudwego/kitex
 * hertz: https://github.com/cloudwego/hertz
@@ -202,4 +201,7 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 * kitex-opentelemetry: https://github.com/kitex-contrib/obs-opentelemetry
 * hertz-opentelemetry: https://github.com/hertz-contrib/obs-opentelemetry
 
-该完整案例已提交在 [biz-demo](https://github.com/cloudwego/biz-demo) 仓库中，感兴趣的同学可以前往查阅。[biz-demo](https://github.com/cloudwego/biz-demo) 会包含一些基于 [CloudWeGo](https://github.com/cloudwego) 技术栈且具备一定业务场景的完整 Demo，初衷是能够为企业用户在生产中使用提供有价值的参考，非常欢迎更多同学能够参与到 [CloudWeGo](https://github.com/cloudwego) 相关场景与案例的贡献中来，一起来做一些有意思的尝试。
+该完整案例已提交在 [biz-demo][biz-demo] 仓库中，感兴趣的同学可以前往查阅。[biz-demo][biz-demo] 会包含一些基于 [CloudWeGo](https://github.com/cloudwego) 技术栈且具备一定业务场景的完整 Demo，初衷是能够为企业用户在生产中使用提供有价值的参考，非常欢迎更多同学能够参与到 [CloudWeGo](https://github.com/cloudwego) 相关场景与案例的贡献中来，一起来做一些有意思的尝试。
+
+[Kitex]: https://github.com/cloudwego/kitex
+[biz-demo]: https://github.com/cloudwego/biz-demo
