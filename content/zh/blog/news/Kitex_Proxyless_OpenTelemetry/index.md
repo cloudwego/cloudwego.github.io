@@ -2,7 +2,7 @@
 date: 2022-11-08
 title: "Kitex Proxyless 之流量路由：配合 Istio 与 OpenTelemetry 实现全链路泳道"
 linkTitle: "Kitex Proxyless 之流量路由：配合 Istio 与 OpenTelemetry 实现全链路泳道"
-keywords: ["CloudWeGo", "Kitex Proxyless", "流量路由", "全链路泳道", "Bookinfo"]
+keywords: ["CloudWeGo", "Proxyless", "流量路由", "全链路泳道", "Bookinfo"]
 description: "本文主要介绍了基于 Kitex Proxyless 实现流量路由，从而在 biz-demo 中使用 Kitex 和 Hertz 重写 bookinfo 项目，实现的目的是以实战的方式演示如何使用 xDS 实现全链路的流量泳道。"
 author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 ---
@@ -194,6 +194,7 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 下面是该案例涉及的项目清单：
 
+* Kitex: https://github.com/cloudwego/kitex
 * biz-demo: https://github.com/cloudwego/biz-demo
 * kitex: https://github.com/cloudwego/kitex
 * hertz: https://github.com/cloudwego/hertz
@@ -202,4 +203,3 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 * hertz-opentelemetry: https://github.com/hertz-contrib/obs-opentelemetry
 
 该完整案例已提交在 [biz-demo](https://github.com/cloudwego/biz-demo) 仓库中，感兴趣的同学可以前往查阅。[biz-demo](https://github.com/cloudwego/biz-demo) 会包含一些基于 [CloudWeGo](https://github.com/cloudwego) 技术栈且具备一定业务场景的完整 Demo，初衷是能够为企业用户在生产中使用提供有价值的参考，非常欢迎更多同学能够参与到 [CloudWeGo](https://github.com/cloudwego) 相关场景与案例的贡献中来，一起来做一些有意思的尝试。
-
