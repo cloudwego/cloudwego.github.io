@@ -46,6 +46,7 @@ func main() {
 | WithALPN | bool | 是否开启 ALPN。默认关闭 |
 | WithTracer | tracer.Tracer | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭 |
 | WithTraceLevel | stats.Level | 设置 trace level，默认 LevelDetailed |
+| WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长 |
 
 Server Connection 数量限制:
 
@@ -84,3 +85,4 @@ func main() {
 | WithDialer | network.Dialer | 设置 client 使用的网络库，默认 netpoll |
 | WithResponseBodyStream | bool | 设置是否使用流式处理，默认关闭 |
 | WithDialFunc | client.DialFunc | 设置 Dial Function |
+| WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长 |
