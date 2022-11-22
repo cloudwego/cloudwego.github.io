@@ -12,7 +12,7 @@ description: >
 
 ## 使用用法
 
-1. 在你的 API 源代码中添加注释, 参考 [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format)。
+1. 在你的 API 源代码中添加注释， 参考 [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format)。
 
 2. 可以通过运行以下命令下载 Go 对应的 [Swag][Swag] 可执行文件:
 
@@ -30,7 +30,7 @@ go get github.com/swaggo/swag/cmd/swag
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-3. 在你的 Go 项目的根目录下运行 [Swag][Swag] (例如 `~/root/go-project-name`),[Swag][Swag] 会解析注释并在 `~/root/go-project-name/docs` 目录下生成必要的文件(`docs` 文件夹和 `docs/doc.go`)。
+3. 在你的 Go 项目的根目录下运行 [Swag][Swag] (例如 `~/root/go-project-name`)，[Swag][Swag] 会解析注释并在 `~/root/go-project-name/docs` 目录下生成必要的文件(`docs` 文件夹和 `docs/doc.go`)。
 ```sh
 swag init
 ```
@@ -43,7 +43,7 @@ swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagg
 | --------------- |-----------|---------------------------------------------------------------------|
 | parseInternal   | false     | 解析内部依赖包。                                                            |
 | parseDependency | false     | 解析外部依赖包。                                                            |
-| parseDepth      | 100       | 解析依赖包深度,如果你知道解析结构的深度，推荐使用这个参数，swag命令的执行时间会显著减少。                     |
+| parseDepth      | 100       | 解析依赖包深度，如果你知道解析结构的深度，推荐使用这个参数，swag命令的执行时间会显著减少。                     |
 | instanceName    | "swagger" | swagger 文档的实例名称。如果要在一个 Hertz 路由上部署多个不同的 swagger 实例，请确保每个实例有一个唯一的名字。 |
 
 4. 通过运行以下命令在工程中下载 [hertz-swagger](https://github.com/hertz-contrib/swagger) :
@@ -90,7 +90,7 @@ func PingHandler(c context.Context, ctx *app.RequestContext) {
 }
 ```
 
-2. 使用 `swag init` 命令来生成文档, 生成的文档将被存储在`docs/`目录下。
+2. 使用 `swag init` 命令来生成文档，生成的文档将被存储在`docs/`目录下。
 
 3. 将生成的 docs 包导入当前项目中:
 
@@ -102,7 +102,7 @@ import (
 )
 ```
 
-4. 编译运行你的应用程序，之后在 http://localhost:8888/swagger/index.html ,可以看到 Swagger UI 界面。
+4. 编译运行你的应用程序，之后在 http://localhost:8888/swagger/index.html，可以看到 Swagger UI 界面。
 
 5. 完整的代码和文件依赖关系，如下所示:
 
@@ -157,7 +157,7 @@ func main() {
 
 ```
 
-样例的项目目录结构树如下, `swag init` 运行在相对的目录 `.` 下。
+样例的项目目录结构树如下， `swag init` 运行在相对的目录 `.` 下。
 
 ```
 .
