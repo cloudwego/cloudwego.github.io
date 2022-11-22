@@ -8,6 +8,10 @@ menu:
 
 {{< blocks/cover title="谁在使用CloudWeGo" image_anchor="bottom" height="min" >}}
 
+<p>
+CloudWeGo 项目介绍小蓝书 &nbsp&nbsp
+<a id="file_download_bluebook" href="https://github.com/cloudwego/community/raw/main/CloudWeGo_BlueBook_Project_Introduction.pdf"><i class="fas fa-download"></i></a>
+</p>
 <p class="lead mt-5">CloudWeGo 用户实践案例分享</p>
 
 {{< /blocks/cover >}}
@@ -45,3 +49,12 @@ CloudWeGo 是一套由字节跳动开源的、可快速构建企业级云原生�
 </div>
 </div>
 </div>
+
+<script>
+  document.getElementById("file_download_bluebook").addEventListener("click", function(){
+    gtag('event', 'file_download_bluebook', {
+      "event_name": "file_download_bluebook",
+    });
+
+  })
+</script>
