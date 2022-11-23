@@ -21,7 +21,7 @@ go get github.com/hertz-contrib/secure
 import "github.com/hertz-contrib/secure"
 ```
 
-## 快速开始
+## 示例代码
 
 ```go
 package main
@@ -49,7 +49,7 @@ func main() {
 
 ### 使用须知
 
-Secure 配置项大多为了简化用户自行配置 HTTP response headers, 如对 HTTP headers 的使用方法有困惑, 可以自行在 [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers) 中进行查询
+Secure 所提供的配置项是为了简化一些常见的 HTTP headers 的配置, 如对配置项配置 HTTP headers 的作用感到困惑, 可以自行在 [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers) 中进行查询它们的作用
 
 ### New
 
@@ -114,7 +114,7 @@ func WithSTSIncludeSubdomains(b bool) Option
 使用 `WithCustomFrameOptionsValue` 可以在 X-Frame-Options 中填入自定义的值
 
 **注意**:
-这一设置将会覆盖上文提到的 `WithFrameDeny ` 的设置
+这一设置将会覆盖上文提到的 `WithFrameDeny` 的设置
 
 函数签名:
 
@@ -148,11 +148,12 @@ package main
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"net/http"
-
+    "net/http"
+    
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+
 	"github.com/hertz-contrib/secure"
 )
 

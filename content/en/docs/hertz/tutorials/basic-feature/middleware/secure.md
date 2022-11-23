@@ -1,7 +1,7 @@
 ---
 title: "Secure"
 date: 2022-11-06
-weight: 9
+weight: 10
 description: >
 ---
 
@@ -13,7 +13,7 @@ The implementation of the [secure](https://github.com/hertz-contrib/secure) exte
 
 ## Install
 
-Install
+Download and install
 
 ```shell
 go get github.com/hertz-contrib/secure
@@ -25,7 +25,7 @@ Import in your code
 import "github.com/hertz-contrib/secure"
 ```
 
-## Quick Start
+## Example
 
 ```go
 package main
@@ -49,7 +49,7 @@ func main() {
 }
 ```
 
-## Configuration
+## Config
 
 ### Instructions 
 
@@ -70,6 +70,7 @@ Secure provides the `New()` function for integrating Secure into Hertz, which is
 | WithContentSecurityPolicy | `WithContentSecurityPolicy` is used to configure policies in Content-Security-Policy                                                                                                                                                                                           | "default-src 'self'"                                      |
 | WithIENoOpen              | `WithIENoOpen` is used to prevent Internet Explorer from executing download tasks in the website, the default setting is true, that is, to prevent downloading                                                                                                                 | true                                                      |
 | WIthSSLProxyHeaders       | `WIthSSLProxyHeaders` is used to set the **request headers map**. If the request is insecure, the information in the request header is matched against the information in the **request headers map**. If it matches the corresponding value, the request is considered secure | map[string]string{<br/>"X-Forwarded-Proto": "https"<br/>} |
+
 
 Of course, in addition to these default configuration items, we have other configuration items that will be introduced later
 
@@ -154,12 +155,13 @@ package main
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/common/utils"
 	"net/http"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/hertz-contrib/secure"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    
+    "github.com/hertz-contrib/secure"
 )
 
 func main() {
