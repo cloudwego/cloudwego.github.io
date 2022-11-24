@@ -65,17 +65,17 @@ Hertz 通过使用中间件，可以对 Session 进行一系列的操作配置�
 
 **注意：** Session 接口对 [gorilla-session](https://github.com/gorilla/sessions) 的方法进行了简单封装。
 
-| 方法       | 函数签名                                          | 介绍                              |
-|----------|-----------------------------------------------|---------------------------------|
-| ID       | `ID() string`                                 | 用于获取存储时生成的Session ID，它不应该用于用户数据 |
-| Get      | `Get(key interface{}) interface{}`            | 用于根据给定的键值参数获取Session值           |
-| Set      | `Set(key, val interface{})`                   | 用于设置与给定键值相关联的Session值           |
-| Delete   | `Delete(key interface{})`                     | 用于根据给定的键值删除相关联的Session值         |
-| Clear    | `Clear()`                                     | 用于删除Session中存储的所有值              |
-| AddFlash | `AddFlash(value interface{}, vars ...string)` | 用于向Session添加一条flash message     |
-| Flashes  | `Flashes(vars ...string) []interface{}`       | 用于获取Session中的flash message      |
-| Options  | `Options(Options)`                            | 用于设置Session的配置                  |
-| Save     | `Save() error`                                | 用于保存当前请求期间使用的所有会话               |
+| 方法       | 函数签名                                          | 介绍                                     |
+|----------|-----------------------------------------------|----------------------------------------|
+| ID       | `ID() string`                                 | 用于获取存储时生成的Session ID，它不应该作为用户信息的一部分去使用 |
+| Get      | `Get(key interface{}) interface{}`            | 用于根据给定的键值参数获取Session值                  |
+| Set      | `Set(key, val interface{})`                   | 用于设置与给定键值相关联的Session值                  |
+| Delete   | `Delete(key interface{})`                     | 用于根据给定的键值删除相关联的Session值                |
+| Clear    | `Clear()`                                     | 用于删除Session中存储的所有值                     |
+| AddFlash | `AddFlash(value interface{}, vars ...string)` | 用于向Session添加一条flash message            |
+| Flashes  | `Flashes(vars ...string) []interface{}`       | 用于获取Session中的flash message             |
+| Options  | `Options(Options)`                            | 用于设置Session的配置                         |
+| Save     | `Save() error`                                | 用于保存当前请求期间使用的所有会话                      |
 
 ### NewStore
 
