@@ -8,6 +8,8 @@ description: >
 
 Hertz supports TLS secure transmission, helping users achieve data confidentiality and integrity.
 
+> If you need TLS, Please use go net lib instead. netpoll is now working on it but not ready yet.
+
 In `tls.Config`, the parameters that the server and client both can use are as follows:
 
 |       Parameter       | Introduce                                                                                                                                       |
@@ -126,8 +128,7 @@ func main() {
 }
 ```
 
-> Note：Currently, Hertz TLS server is not supported Netpoll network library temporarily. <br />
-> `h := server.Default(server.WithTLS(cfg), server.WithTransport(netpoll.NewTransporter))` support is still on the way.
+For a complete usage example, see [example](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) .
 
 ## Client
 
@@ -356,3 +357,26 @@ func main() {
 ```
 
 For a complete usage example, see [example](https://github.com/hertz-contrib/autotls/tree/main/examples) .
+
+## Note
+
+### Client raise error not support tls
+
+Hertz uses `netpoll` as the network library by default and currently `netpoll` does not support TLS. To use TLS you need to switch to the standard network library with the following code:
+```go
+import (
+    "github.com/cloudwego/hertz/pkg/app/client"
+    "github.com/cloudwego/hertz/pkg/network/standard"
+    "github.com/cloudwego/hertz/pkg/protocol"
+)
+
+func main() {
+	clientCfg := &tls.Config{
+		InsecureSkipVerify: true,
+	}
+	c, err := client.NewClient(
+		client.WithTLSConfig(clientCfg), 
+		client.WithDialer(standard.NewDialer()), 
+	)
+}
+```

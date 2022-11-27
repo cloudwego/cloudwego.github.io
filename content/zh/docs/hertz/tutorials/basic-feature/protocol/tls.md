@@ -8,6 +8,8 @@ description: >
 
 Hertz 支持 TLS 安全传输，帮助用户实现了数据的保密性和完整性。
 
+> 如果有 TLS 的需求，请使用 go net 网络库。netpoll 正在实现对 TLS 的支持。
+
 在 `tls.Config`中，服务端和客户端都可使用的参数如下：
 
 |          参数名          | 介绍                                     |
@@ -126,8 +128,7 @@ func main() {
 }
 ```
 
-> 注意：目前 Hertz TLS 服务暂不支持 Netpoll 网络库。<br />
-> `h := server.Default(server.WithTLS(cfg), server.WithTransport(netpoll.NewTransporter))` 还在支持的路上。
+完整用法示例详见 [example](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) 。
 
 ## 客户端
 
@@ -202,9 +203,6 @@ func main() {
     // ...
 }
 ```
-
-> 注意：目前 Hertz TLS 服务暂不支持 Netpoll 网络库。<br/>
-> `c, err := client.NewClient(client.WithTLSConfig(cfg), client.WithDialer(netpoll.NewDialer())` 还在支持的路上。
 
 完整用法示例详见 [example](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) 。
 
@@ -356,3 +354,27 @@ func main() {
 ```
 
 完整用法示例详见 [example](https://github.com/hertz-contrib/autotls/tree/main/examples) 。
+
+## 注意
+
+### Client 报错 not support tls
+
+Hertz 默认使用了 `netpoll` 作为网络库并且目前 `netpoll` 不支持 TLS 。使用 TLS 需要切换到标准网络库，代码如下:
+
+```go
+import (
+    "github.com/cloudwego/hertz/pkg/app/client"
+    "github.com/cloudwego/hertz/pkg/network/standard"
+    "github.com/cloudwego/hertz/pkg/protocol"
+)
+
+func main() {
+	clientCfg := &tls.Config{
+		InsecureSkipVerify: true,
+	}
+	c, err := client.NewClient(
+		client.WithTLSConfig(clientCfg), 
+		client.WithDialer(standard.NewDialer()), 
+	)
+}
+```
