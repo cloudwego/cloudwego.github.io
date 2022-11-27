@@ -23,3 +23,16 @@ If you want to register the `hook` function, you can do so by getting the `Engin
 ```go
 h.Engine.OnShutdown = append(h.Engine.OnShutdown, shutDownFunc)
 ```
+
+`waitSignal` is default implementation for signal waiter,which is executed as follows:
+- SIGTERM triggers immediately close.
+- SIGHUP|SIGINT triggers graceful shutdown.
+
+If Default one is not met the requirement,`SetCustomSignalWaiter` set this function to customize.
+```go
+  h := server.New()
+	h.SetCustomSignalWaiter(func(err chan error) error {
+		return nil
+	})
+```
+Hertz will exit immediately if f returns an error,otherwise it will exit gracefully.
