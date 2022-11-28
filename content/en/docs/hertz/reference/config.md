@@ -46,6 +46,8 @@ func main() {
 | WithALPN | bool | Whether to enable ALPN. Default: false. |
 | WithTracer | tracer.Tracer | Inject tracer implementation, if not inject Tracer. Default: close. |
 | WithTraceLevel | stats.Level | Set trace level, Default: LevelDetailed. |
+| WithWriteTimeout | time.Duration | The timeout of data writing. Default：infinite.|
+
 
 Server Connection limitation:
 
@@ -85,3 +87,4 @@ func main() {
 | WithDialer | network.Dialer | Set the network library used by the client. Default: netpoll. |
 | WithResponseBodyStream | bool | Set whether to use stream processing. Default: false. |
 | WithDialFunc | client.DialFunc | Set Dial Function. |
+| WithWriteTimeout | time.Duration | The timeout of data writing. Default：infinite.|
