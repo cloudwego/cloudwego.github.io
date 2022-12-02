@@ -175,6 +175,12 @@ name = "License"
 url = "https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE"
 
 [[params.links.user]]
+	name = "Lark"
+	url = "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6"
+	icon = "fab fa-lark"
+	desc = "Chat with other cloudwego user use lark"
+
+[[params.links.user]]
 	name = "Twitter"
 	url = "https://twitter.com/CloudWeGo"
 	icon = "fab fa-twitter"
