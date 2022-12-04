@@ -122,7 +122,7 @@ Function Signature:
 func WithIgnoredMethods(methods []string) Option 
 ```
 
-Defalut: `{"GET", "HEAD", "OPTIONS", "TRACE"}`
+Default: `{"GET", "HEAD", "OPTIONS", "TRACE"}`
 
 
 
