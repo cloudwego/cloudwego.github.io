@@ -1,6 +1,6 @@
 ---
 title: "CSRF"
-date: 2022-12-2
+date: 2022-12-6
 weight: 12
 description: >
 
@@ -35,7 +35,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("secret"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New())
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -53,16 +53,14 @@ func main() {
 
 ## Config
 
-| Option        | Default                                                                     | Description                                                                                                                         |
-|---------------|-----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| Secret        | "csrfSecret"                                                                | Secret used to generate token.                                                                                                      |
-| IgnoreMethods | "GET", "HEAD", "OPTIONS", "TRACE"                                           | Ignored methods will be considered no protection required.                                                                          |
-| Next          | nil                                                                         | Next defines a function to skip this middleware when returned true.                                                                 |
-| KeyLookup     | "header:X-CSRF-TOKEN"                                                       | KeyLookup is a string in the form of "<source>:<key>" that is used to create an Extractor that extracts the token from the request. |
-| ErrorFunc     | func(ctx context.Context, c *app.RequestContext) { panic(c.Errors.Last()) } | ErrorFunc is executed when an error is returned from app.HandlerFunc.                                                               |
-| Extractor     | Default will create an Extractor based on KeyLookup.                        | Extractor returns the csrf token. If set this will be used in place of an Extractor based on KeyLookup.                             |
-
-
+| Option        | Default                                                                      | Description                                                                                                                         |
+| ------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Secret        | "csrfSecret"                                                                 | Secret used to generate token.                                                                                                      |
+| IgnoreMethods | "GET", "HEAD", "OPTIONS", "TRACE"                                            | Ignored methods will be considered no protection required.                                                                          |
+| Next          | nil                                                                          | Next defines a function to skip this middleware when returned true.                                                                 |
+| KeyLookup     | "header:X-CSRF-TOKEN"                                                        | KeyLookup is a string in the form of "<source>:<key>" that is used to create an Extractor that extracts the token from the request. |
+| ErrorFunc     | func(ctx context.Context, c \*app.RequestContext) { panic(c.Errors.Last()) } | ErrorFunc is executed when an error is returned from app.HandlerFunc.                                                               |
+| Extractor     | Default will create an Extractor based on KeyLookup.                         | Extractor returns the csrf token. If set this will be used in place of an Extractor based on KeyLookup.                             |
 
 ### WithSecret
 
@@ -76,8 +74,6 @@ func WithSecret(secret string) Option
 
 Default：`csrfSecret`
 
-
-
 Sample Code:
 
 ```go
@@ -85,7 +81,7 @@ package main
 
 import (
 	"context"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/csrf"
@@ -97,7 +93,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("store"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithSecret("your_secret")))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -119,12 +115,10 @@ The `csrf` middleware provides `WithIgnoredMethods` to help users set up custom 
 Function Signature:
 
 ```go
-func WithIgnoredMethods(methods []string) Option 
+func WithIgnoredMethods(methods []string) Option
 ```
 
 Default: `{"GET", "HEAD", "OPTIONS", "TRACE"}`
-
-
 
 Sample Code:
 
@@ -145,7 +139,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("secret"))
-	h.Use(sessions.Sessions("session", store))
+	h.Use(sessions.New("session", store))
 	h.Use(csrf.New(csrf.WithIgnoredMethods([]string{"GET", "HEAD", "TRACE"})))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -201,7 +195,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("store"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithErrorFunc(myErrFunc)))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -238,7 +232,7 @@ package main
 
 import (
 	"context"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/csrf"
@@ -250,7 +244,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("store"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithKeyLookUp("form:csrf")))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -271,12 +265,10 @@ The `csrf` middleware provides `WithNext` to facilitate user-defined settings to
 
 Function Signature:
 ```go
-func WithNext(f CsrfNextHandler) Option 
+func WithNext(f CsrfNextHandler) Option
 ```
 
 Default:`nil`
-
-
 
 Sample Code:
 
@@ -285,7 +277,7 @@ package main
 
 import (
 	"context"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/csrf"
@@ -305,7 +297,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("store"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 
 	//  skip csrf middleware when request method is post
 	h.Use(csrf.New(csrf.WithNext(isPostMethod)))
@@ -317,16 +309,16 @@ func main() {
 }
 ```
 
-
-
-###  WithExtractor
+### WithExtractor
 
 The `csrf` middleware provides `WithExtractor` for the user to get the `csrf-token` from the request via a custom method.
 
 Function Signature:
+
 ```go
 func WithExtractor(f CsrfExtractorHandler) Option
 ```
+
 Default:
 
 ```go
@@ -340,6 +332,7 @@ func CsrfFromHeader(param string) func(ctx context.Context, c *app.RequestContex
 	}
 }
 ```
+
 Sample Code:
 
 ```go
@@ -348,7 +341,7 @@ package main
 import (
 	"context"
 	"errors"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/csrf"
@@ -368,7 +361,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("secret"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithExtractor(myExtractor)))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {

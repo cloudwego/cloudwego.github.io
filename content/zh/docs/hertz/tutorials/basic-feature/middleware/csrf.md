@@ -1,6 +1,6 @@
 ---
 title: "CSRF"
-date: 2022-12-2
+date: 2022-12-6
 weight: 12
 description: >
 ---
@@ -34,7 +34,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("secret"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New())
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -52,16 +52,14 @@ func main() {
 
 ## 配置
 
-| 配置项             | 默认值                                                                           | 介绍                                                                   |
-|-----------------|-------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| `Secret`        | `csrfSecret`                                                                  | 用于生成令牌（必要配置）                                                         |
-| `IgnoreMethods` | "GET", "HEAD", "OPTIONS", "TRACE"                                             | 被忽略的方法将将视为无需 `csrf`保护                                                |
-| `Next`          | `nil`                                                                         | `Next` 定义了一个函数，当返回真时，跳过这个 `csrf` 中间件。                                |
-| `KeyLookup`     | `header：X-CSRF-TOKEN`                                                         | `KeyLookup` 是一个"<source>：<key>"形式的字符串，用于创建一个从请求中提取令牌的Extractor。      |
-| `ErrorFunc`     | `func(ctx context.Context, c *app.RequestContext) { panic(c.Errors.Last()) }` | 当 `app.HandlerFunc`返回一个错误时，`ErrorFunc` 被执行                           |
-| `Extractor`     | 基于KeyLookup创建                                                                 | `Extractor`返回`csrf token`。如果设置了这个，它将被用来代替基于`KeyLookup`的 `Extractor`。 |
-
-
+| 配置项          | 默认值                                                                        | 介绍                                                                                        |
+| --------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `Secret`        | `csrfSecret`                                                                  | 用于生成令牌（必要配置）                                                                    |
+| `IgnoreMethods` | "GET", "HEAD", "OPTIONS", "TRACE"                                             | 被忽略的方法将将视为无需 `csrf`保护                                                         |
+| `Next`          | `nil`                                                                         | `Next` 定义了一个函数，当返回真时，跳过这个 `csrf` 中间件。                                 |
+| `KeyLookup`     | `header：X-CSRF-TOKEN`                                                        | `KeyLookup` 是一个"<source>：<key>"形式的字符串，用于创建一个从请求中提取令牌的 Extractor。 |
+| `ErrorFunc`     | `func(ctx context.Context, c *app.RequestContext) { panic(c.Errors.Last()) }` | 当 `app.HandlerFunc`返回一个错误时，`ErrorFunc` 被执行                                      |
+| `Extractor`     | 基于 KeyLookup 创建                                                           | `Extractor`返回`csrf token`。如果设置了这个，它将被用来代替基于`KeyLookup`的 `Extractor`。  |
 
 ### WithSecret
 
@@ -75,8 +73,6 @@ func WithSecret(secret string) Option
 
 默认值：`csrfSecret`
 
-
-
 示例代码：
 
 ```go
@@ -84,7 +80,7 @@ package main
 
 import (
 	"context"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/csrf"
@@ -96,7 +92,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("store"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithSecret("your_secret")))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -123,8 +119,6 @@ func WithIgnoredMethods(methods []string) Option
 
 默认值：`{"GET", "HEAD", "OPTIONS", "TRACE"}`
 
-
-
 示例代码：
 
 ```go
@@ -144,7 +138,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("secret"))
-	h.Use(sessions.Sessions("session", store))
+
 	h.Use(csrf.New(csrf.WithIgnoredMethods([]string{"GET", "HEAD", "TRACE"})))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -180,7 +174,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/csrf"
@@ -200,7 +194,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("store"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithErrorFunc(myErrFunc)))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -237,7 +231,7 @@ package main
 
 import (
 	"context"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/csrf"
@@ -249,7 +243,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("store"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithKeyLookUp("form：csrf")))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -270,12 +264,10 @@ func main() {
 
 函数签名：
 ```go
-func WithNext(f CsrfNextHandler) Option 
+func WithNext(f CsrfNextHandler) Option
 ```
 
 默认：`nil`
-
-
 
 示例代码：
 
@@ -304,7 +296,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("store"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 
 	//  skip csrf middleware when request method is post
 	h.Use(csrf.New(csrf.WithNext(isPostMethod)))
@@ -367,7 +359,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("secret"))
-	h.Use(sessions.Sessions("csrf-session", store))
+	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithExtractor(myExtractor)))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
