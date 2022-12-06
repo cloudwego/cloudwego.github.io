@@ -244,7 +244,7 @@ func main() {
 
 	store := cookie.NewStore([]byte("store"))
 	h.Use(sessions.New("csrf-session", store))
-	h.Use(csrf.New(csrf.WithKeyLookUp("form：csrf")))
+	h.Use(csrf.New(csrf.WithKeyLookUp("form:csrf")))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
 		ctx.String(200, csrf.GetToken(ctx))
