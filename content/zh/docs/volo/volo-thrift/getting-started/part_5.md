@@ -1,6 +1,6 @@
 ---
-title: "Part 5. What's next?"
-linkTitle: "What's next?"
+title: "Part 5. What's Next?"
+linkTitle: "What's Next?"
 weight: 5
 description: >
 
