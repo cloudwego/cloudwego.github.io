@@ -1,14 +1,14 @@
 ---
-title: "Part 4. 添加一个中间件"
-linkTitle: "添加一个中间件"
+title: "Part 4. Add a Middleware"
+linkTitle: "Add a Middleware"
 weight: 4
 description: >
 
 ---
 
-接下来，让我们来看下如何给 Volo 添加一个中间件。
+Next, let's look at how to add middleware to Volo.
 
-例如，我们需要一个中间件，打印出我们收到的请求、返回的响应以及消耗的时间，那我们可以在 `lib.rs` 中写这么一个 Service：
+For example, if we need a middleware that prints out the received requests, the returned responses and the elapsed time, we could write a Service in `lib.rs`:
 
 ```rust
 #[derive(Clone)]
@@ -17,24 +17,20 @@ pub struct LogService<S>(S);
 #[volo::service]
 impl<Cx, Req, S> volo::Service<Cx, Req> for LogService<S>
 where
-    Req: std::fmt::Debug + Send + 'static,
+    Req: Send + 'static,
     S: Send + 'static + volo::Service<Cx, Req>,
-    S::Response: std::fmt::Debug,
-    S::Error: std::fmt::Debug,
     Cx: Send + 'static,
 {
     async fn call(&mut self, cx: &mut Cx, req: Req) -> Result<S::Response, S::Error> {
         let now = std::time::Instant::now();
-        tracing::debug!("Received request {:?}", &req);
         let resp = self.0.call(cx, req).await;
-        tracing::debug!("Sent response {:?}", &resp);
         tracing::info!("Request took {}ms", now.elapsed().as_millis());
         resp
     }
 }
 ```
 
-随后，我们给这个 Service 包装一层 Layer：
+Then we wrap a Layer around the Service:
 
 ```rust
 pub struct LogLayer;
@@ -48,7 +44,7 @@ impl<S> volo::Layer<S> for LogLayer {
 }
 ```
 
-最后，我们在 client 和 server 里面加一下这个 Layer：
+Finally, we add this Layer to client and server:
 
 ```rust
 use volo_example::LogLayer;
@@ -70,4 +66,4 @@ volo_gen::volo::example::ItemServiceServer::new(S)
     .unwrap();
 ```
 
-这时候，在 info 日志级别下，我们会打印出请求的耗时；在 debug 日志级别下，我们还会打出请求和响应的详细数据。
+At this point, it prints out how long the request took at the INFO log level.
