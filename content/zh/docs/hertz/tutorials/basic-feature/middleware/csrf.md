@@ -138,7 +138,7 @@ func main() {
 	h := server.Default()
 
 	store := cookie.NewStore([]byte("secret"))
-
+    h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithIgnoredMethods([]string{"GET", "HEAD", "TRACE"})))
 
 	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
@@ -184,9 +184,11 @@ import (
 )
 
 func myErrFunc(c context.Context, ctx *app.RequestContext) {
-	if ctx.Errors.Last() == nil {
-		fmt.Errorf("myErrFunc called when no error occurs")
-	}
+    if ctx.Errors.Last() == nil {
+        err := fmt.Errorf("myErrFunc called when no error occurs")
+        ctx.String(400, err.Error())
+        ctx.Abort()
+    }
 	ctx.AbortWithMsg(ctx.Errors.Last().Error(), http.StatusBadRequest)
 }
 
@@ -323,7 +325,7 @@ func WithExtractor(f CsrfExtractorHandler) Option
 ```go
 func CsrfFromHeader(param string) func(ctx context.Context, c *app.RequestContext) (string, error) {
 	return func(ctx context.Context, c *app.RequestContext) (string, error) {
-		token ：= c.GetHeader(param)
+		token := c.GetHeader(param)
 		if string(token) == "" {
 			return "", errMissingHeader
 		}
@@ -348,7 +350,7 @@ import (
 )
 
 func myExtractor(c context.Context, ctx *app.RequestContext) (string, error) {
-	token ：= ctx.FormValue("csrf-token")
+	token := ctx.FormValue("csrf-token")
 	if token == nil {
 		return "", errors.New("missing token in form-data")
 	}
