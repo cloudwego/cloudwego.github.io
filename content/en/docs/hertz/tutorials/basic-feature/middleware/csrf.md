@@ -185,9 +185,11 @@ import (
 )
 
 func myErrFunc(c context.Context, ctx *app.RequestContext) {
-	if ctx.Errors.Last() == nil {
-		fmt.Errorf("myErrFunc called when no error occurs")
-	}
+    if ctx.Errors.Last() == nil {
+        err := fmt.Errorf("myErrFunc called when no error occurs")
+        ctx.String(400, err.Error())
+        ctx.Abort()
+    }
 	ctx.AbortWithMsg(ctx.Errors.Last().Error(), http.StatusBadRequest)
 }
 
