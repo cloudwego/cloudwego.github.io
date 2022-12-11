@@ -36,9 +36,19 @@ h.Engine.OnShutdown = append(h.Engine.OnShutdown, shutDownFunc)
 
 If Default one is not met the requirement,`SetCustomSignalWaiter` set this function to customize.
 ```go
+package main
+
+import (
+	"github.com/cloudwego/hertz/pkg/app/server"
+)
+
+func main() {
 	h := server.New()
 	h.SetCustomSignalWaiter(func(err chan error) error {
 		return nil
 	})
+	...
+}
+
 ```
 Hertz will exit immediately if f returns an error,otherwise it will exit gracefully.

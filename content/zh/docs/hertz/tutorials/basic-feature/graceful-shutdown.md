@@ -31,10 +31,20 @@ Hertz 使用 `waitSignal` 函数作为信号处理的默认实现方式，处理
 
 当信号处理的默认实现方式无法满足需求时，可通过 `SetCustomSignalWaiter` 来自定义信号处理方式。
 ```go
+package main
+
+import (
+	"github.com/cloudwego/hertz/pkg/app/server"
+)
+
+func main() {
 	h := server.New()
 	h.SetCustomSignalWaiter(func(err chan error) error {
 		return nil
 	})
+	...
+}
+
 ```
 当自定义信号处理函数返回 `error` 时 Hertz 会立即退出，其他情况下则会优雅退出。
 
