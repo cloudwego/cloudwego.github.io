@@ -31,8 +31,8 @@ Hertz 使用 `waitSignal` 函数作为信号处理的默认实现方式，处理
 
 当信号处理的默认实现方式无法满足需求时，可通过 `SetCustomSignalWaiter` 来自定义信号处理方式。
 ```go
-    h := server.New()
-    h.SetCustomSignalWaiter(func(err chan error) error {
+	h := server.New()
+	h.SetCustomSignalWaiter(func(err chan error) error {
 		return nil
 	})
 ```
