@@ -24,14 +24,14 @@ Hertz 支持优雅退出，优雅退出过程如下：
 h.Engine.OnShutdown = append(h.Engine.OnShutdown, shutDownFunc)
 ```
 
-Hertz 使用 `waitSignal` 作为信号处理的默认实现方式，处理方式如下:
+Hertz 使用 `waitSignal` 函数作为信号处理的默认实现方式，处理如下:
 - 当接收到 `SIGTERM` 系统信号时触发立即退出。
 - 当接收到 `SIGHUP|SIGINT` 系统信号时触发优雅退出。
 
-当信号处理的默认实现方式无法满足需求时，可通过 `SetCustomSignalWaiter` 来进行自定义信号处理。
+当信号处理的默认实现方式无法满足需求时，可通过 `SetCustomSignalWaiter` 来自定义信号处理方式。
 ```go
-  h := server.New()
-	h.SetCustomSignalWaiter(func(err chan error) error {
+    h := server.New()
+    h.SetCustomSignalWaiter(func(err chan error) error {
 		return nil
 	})
 ```
