@@ -61,7 +61,7 @@ func main(){
 	h.Any("/ping_any", func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "any")
 	})
-	h.Handle("Load","/load", func(ctx context.Context, c *app.RequestContext) {
+	h.Handle("LOAD","/load", func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "load")
 	})
 	h.Spin()
