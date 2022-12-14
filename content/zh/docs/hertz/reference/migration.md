@@ -6,8 +6,6 @@ description: >
 
 ---
 
-# Hertz 迁移文档
-
 ## 迁移脚本
 
 Hertz-contrib 下提供了其他框架( FastHTTP ) 迁移至 Hertz 的脚本，具体使用方式如下
