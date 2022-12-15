@@ -1,17 +1,15 @@
 ---
 title: "HTTP2"
-date:  2022-12-12
+date: 2022-12-15
 weight: 2
 description: >
-
 ---
-HTTP/2是对HTTP "在线" 表达方式的一种替代。它并不是对协议的彻底重写；HTTP方法、状态码和语义都是一样的，而且应该可以使用与HTTP/1.x相同的API（可能会有一些小的补充）来表示协议。
 
-该协议的重点是性能；具体而言，最终用户感知的延迟、网络和服务器资源的使用。一个主要目标是允许使用从浏览器到网站的单一连接。
+HTTP/2 是对 HTTP "在线" 表达方式的一种替代。它并不是对协议的彻底重写；HTTP 方法、状态码和语义都是一样的，而且应该可以使用与 HTTP/1.x 相同的 API（可能会有一些小的补充）来表示协议。
+
+协议的侧重点是性能：缩短用户感知的延迟、减少网络和服务器资源的使用。一个主要目标是允许使用从浏览器到网站的单一连接。
 
 Hertz 同时支持 h2 和 h2c。参考了 [net/http2](https://github.com/golang/net/tree/master/http2) 的实现。
-
-
 
 ## 示例代码
 
@@ -33,6 +31,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
+
 	"github.com/hertz-contrib/http2/config"
 	"github.com/hertz-contrib/http2/factory"
 )
@@ -128,6 +127,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/client"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/protocol"
+
 	"github.com/hertz-contrib/http2/config"
 	"github.com/hertz-contrib/http2/factory"
 )
@@ -181,16 +181,14 @@ func main() {
 
 ```
 
-
-
 ## 配置
 
 ### 服务端
 
-| 配置                 | 默认值     | 介绍                     |
-|:-------------------|:--------|------------------------|
+| 配置               | 默认值  | 介绍                                         |
+| :----------------- | :------ | -------------------------------------------- |
 | `ReadTimeout`      | `0`     | 建立连接后，从服务器读取到可用资源的超时时间 |
-| `DisableKeepAlive` | `false` | 是否关闭 `Keep-Alive`模式    |
+| `DisableKeepAlive` | `false` | 是否关闭 `Keep-Alive`模式                    |
 
 示例代码：
 
@@ -210,6 +208,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
+
 	"github.com/hertz-contrib/http2/config"
 	"github.com/hertz-contrib/http2/factory"
 )
@@ -289,9 +288,7 @@ func main() {
 }
 ```
 
-
-
-####  WithReadTimeout
+#### WithReadTimeout
 
 用于设置 `ReadTimeout`,默认值为 `0`。
 
@@ -301,35 +298,32 @@ func main() {
 func WithReadTimeout(t time.Duration) Option
 ```
 
-
-
 #### WithDisableKeepAlive
 
-用于设置是否禁用 `keep-alive`，默任不禁用。
+用于设置是否禁用 `keep-alive`，默认不禁用。
 
 函数签名:
+
 ```go
 func WithDisableKeepAlive(disableKeepAlive bool) Option
 ```
 
-
-
 ### 客户端
 
-| 配置                           | 默认值                   | 介绍                                                |
-|------------------------------|-----------------------|---------------------------------------------------|
-| `MaxHeaderListSize`          | `0`，指使用默认的限制（10MB）    | 指http2规范中的`SETTINGS_MAX_HEADER_LIST_SIZE`。        |
-| `AllowHTTP`                  | `false`               | 设置是否允许http，h2c模式的开关                               |
-| `ReadIdleTimeout`            | `0`，即不进行健康检查          | 若连接在该段时间间隔内未接收到任何帧，将使用`ping`帧进行健康检查。              |
-| `PingTimeout`                | `15s`                 | 超时时间，如果未收到对 `Ping `的响应，连接将在该超时时间后关闭。              |
-| `WriteByteTimeout`           | `0`                   | 若在该段时间间隔内未写入任何数据，将关闭连接。                           |
-| `StrictMaxConcurrentStreams` | `false`               | 设置服务器的`SETTINGS_MAX_CONCURRENT_STREAMS`是否应该被全局使用。 |
-| `DialTimeout`                | `1s`                  | 与主机建立新连接的超时时间。                                    |
-| `MaxIdleConnDuration`        | `0`                   | 闲置的长连接在该段时间后关闭。                                   |
-| `DisableKeepAlive`           | `false`               | 是否在每次请求后关闭连接。                                     |
-| `Dialer`                     | `netpoll.NewDialer()` | 用于设置拨号器。                                          |
-| `TLSConfig`                  | `nil`                 | `TLS`配置                                           |
-| `RetryConfig `               | `nil`                 | 所有与重试有关的配置                                        |
+| 配置                         | 默认值                        | 介绍                                                               |
+| ---------------------------- | ----------------------------- | ------------------------------------------------------------------ |
+| `MaxHeaderListSize`          | `0`，指使用默认的限制（10MB） | 指 http2 规范中的`SETTINGS_MAX_HEADER_LIST_SIZE`。                 |
+| `AllowHTTP`                  | `false`                       | 设置是否允许 http，h2c 模式的开关                                  |
+| `ReadIdleTimeout`            | `0`，即不进行健康检查         | 若连接在该段时间间隔内未接收到任何帧，将使用`ping`帧进行健康检查。 |
+| `PingTimeout`                | `15s`                         | 超时时间，如果未收到对 `Ping `的响应，连接将在该超时时间后关闭。   |
+| `WriteByteTimeout`           | `0`                           | 若在该段时间间隔内未写入任何数据，将关闭连接。                     |
+| `StrictMaxConcurrentStreams` | `false`                       | 设置服务器的`SETTINGS_MAX_CONCURRENT_STREAMS`是否应该被全局使用。  |
+| `DialTimeout`                | `1s`                          | 与主机建立新连接的超时时间。                                       |
+| `MaxIdleConnDuration`        | `0`                           | 闲置的长连接在该段时间后关闭。                                     |
+| `DisableKeepAlive`           | `false`                       | 是否在每次请求后关闭连接。                                         |
+| `Dialer`                     | `netpoll.NewDialer()`         | 用于设置拨号器。                                                   |
+| `TLSConfig`                  | `nil`                         | `TLS`配置                                                          |
+| `RetryConfig `               | `nil`                         | 所有与重试有关的配置                                               |
 
 示例代码：
 
@@ -341,15 +335,16 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"github.com/cloudwego/hertz/pkg/app/client/retry"
 	"net/http"
 	"time"
 
+	"github.com/cloudwego/hertz/pkg/app/client/retry"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/client"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
+	
 	"github.com/hertz-contrib/http2/config"
 	"github.com/hertz-contrib/http2/factory"
 )
@@ -450,22 +445,17 @@ func main() {
 }
 ```
 
-
-
-
 #### WithMaxHeaderListSize
 
 用于设置 `SETTINGS_MAX_HEADER_LIST_SIZE`。
 
-与http2规范不同，这里的`0`表示使用默认限制（目前是10MB）。如果想表示无限，可以设置为一个尽可能大的值（`0xffffffff` 或 `1<<32-1`）。
+与 HTTP2 规范不同，这里的`0`表示使用默认限制（目前是 10MB）。如果想表示无限，可以设置为一个尽可能大的值（`0xffffffff` 或 `1<<32-1`）。
 
 函数签名：
 
 ```go
 func WithMaxHeaderListSize(maxHeaderListSize uint32) ClientOption
 ```
-
-
 
 #### WithReadIdleTimeout
 
@@ -481,8 +471,6 @@ func WithMaxHeaderListSize(maxHeaderListSize uint32) ClientOption
 func WithReadIdleTimeout(readIdleTimeout time.Duration) ClientOption
 ```
 
-
-
 #### WithWriteByteTimeout
 
 用于设置写入超时时间，超时后连接将被关闭。当数据可以写入时开始计时，并随数据的写入不断延长。
@@ -492,8 +480,6 @@ func WithReadIdleTimeout(readIdleTimeout time.Duration) ClientOption
 ```go
 func WithWriteByteTimeout(writeByteTimeout time.Duration) ClientOption
 ```
-
-
 
 #### WithStrictMaxConcurrentStreams
 
@@ -505,8 +491,6 @@ func WithWriteByteTimeout(writeByteTimeout time.Duration) ClientOption
 func WithStrictMaxConcurrentStreams(strictMaxConcurrentStreams bool) ClientOption
 ```
 
-
-
 #### WithPingTimeout
 
 设置`ping`响应的超时时间，如果未收到对 `Ping `的响应，连接将在该超时时间后关闭。
@@ -516,24 +500,20 @@ func WithStrictMaxConcurrentStreams(strictMaxConcurrentStreams bool) ClientOptio
 函数签名：
 
 ```go
-func WithPingTimeout(pt time.Duration) ClientOption 
+func WithPingTimeout(pt time.Duration) ClientOption
 ```
-
-
 
 #### WithAllowHTTP
 
-用于设置是否允许http。如果启用，客户端将使用 h2c 模式。默认不启用。
+用于设置是否允许 http。如果启用，客户端将使用 h2c 模式。默认不启用。
 
 函数签名：
 
 ```go
-func WithAllowHTTP(allow bool) ClientOption 
+func WithAllowHTTP(allow bool) ClientOption
 ```
 
-
-
-####  WithDialer
+#### WithDialer
 
 支持自定义拨号器，默认为`netpoll.NewDialer()`。
 
@@ -560,8 +540,6 @@ type Dialer interface {
 }
 ```
 
-
-
 #### WithDialTimeout
 
 用于设置与主机建立新连接的超时时间，默认为 `1s`。
@@ -571,8 +549,6 @@ type Dialer interface {
 ```go
 func WithDialTimeout(timeout time.Duration) ClientOption
 ```
-
-
 
 #### WithTLSConfig
 
@@ -584,8 +560,6 @@ func WithDialTimeout(timeout time.Duration) ClientOption
 func WithTLSConfig(tlsConfig *tls.Config) ClientOption
 ```
 
-
-
 #### WithMaxIdleConnDuration
 
 用于设置长连接的最长闲置时间，超过该时间后连接关闭。默认为`0`。
@@ -595,8 +569,6 @@ func WithTLSConfig(tlsConfig *tls.Config) ClientOption
 ```go
 func WithMaxIdleConnDuration(d time.Duration) ClientOption
 ```
-
-
 
 #### WithMaxIdempotentCallAttempts
 
@@ -608,8 +580,6 @@ func WithMaxIdleConnDuration(d time.Duration) ClientOption
 func WithMaxIdempotentCallAttempts(n int) ClientOption
 ```
 
-
-
 #### WithRetryConfig
 
 用于设置与重试有关的配置。
@@ -620,8 +590,6 @@ func WithMaxIdempotentCallAttempts(n int) ClientOption
 func WithRetryConfig(opts ...retry.Option) ClientOption
 ```
 
-
-
 #### WithClientDisableKeepAlive
 
 用于设置是否在每次请求后关闭连接。默认为`false`。
@@ -631,7 +599,5 @@ func WithRetryConfig(opts ...retry.Option) ClientOption
 ```go
 func WithClientDisableKeepAlive(disable bool) ClientOption
 ```
-
-
 
 更多用法示例详见 [hertz-contrib/http2](https://github.com/hertz-contrib/http2)。

@@ -1,6 +1,6 @@
 ---
 title: "HTTP2"
-date:  2022-12-12
+date:  2022-12-15
 weight: 2
 description: >
 
@@ -33,6 +33,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
+
 	"github.com/hertz-contrib/http2/config"
 	"github.com/hertz-contrib/http2/factory"
 )
@@ -86,7 +87,7 @@ func main() {
 	cfg.Certificates = append(cfg.Certificates, cert)
 	h := server.New(server.WithHostPorts(":8888"), server.WithALPN(true), server.WithTLS(cfg))
 
-	// register http2 server factory
+	// register HTTP2 server factory
 	h.AddProtocol("h2", factory.NewServerFactory(
 		config.WithReadTimeout(time.Minute),
 		config.WithDisableKeepAlive(false)))
@@ -128,6 +129,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/client"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/protocol"
+
 	"github.com/hertz-contrib/http2/config"
 	"github.com/hertz-contrib/http2/factory"
 )
@@ -158,7 +160,7 @@ func runClient() {
 func main() {
 	h := server.New(server.WithHostPorts(":8888"), server.WithH2C(true))
 
-	// register http2 server factory
+	// register HTTP2 server factory
 	h.AddProtocol("h2", factory.NewServerFactory())
 
 	h.POST("/", func(c context.Context, ctx *app.RequestContext) {
@@ -212,6 +214,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
+
 	"github.com/hertz-contrib/http2/config"
 	"github.com/hertz-contrib/http2/factory"
 )
@@ -265,7 +268,7 @@ func main() {
 	cfg.Certificates = append(cfg.Certificates, cert)
 	h := server.New(server.WithHostPorts(":8888"), server.WithALPN(true), server.WithTLS(cfg))
 
-	// register http2 server factory
+	// register HTTP2 server factory
 	h.AddProtocol("h2", factory.NewServerFactory(
 		config.WithReadTimeout(time.Minute),
 		config.WithDisableKeepAlive(false)))
@@ -319,8 +322,8 @@ func WithDisableKeepAlive(disableKeepAlive bool) Option
 
 | **Option**                   | **Default**                             | **Description**                                                                                                      |
 |------------------------------|-----------------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| `MaxHeaderListSize`          | `0`, means use the default limit (10MB) | Refers to `SETTINGS_MAX_HEADER_LIST_SIZE` in the http2 specification.                                                |
-| `AllowHTTP`                  | `false`                                 | Set whether to allow http,the h2c switch                                                                             |
+| `MaxHeaderListSize`          | `0`, means use the default limit (10MB) | Refers to `SETTINGS_MAX_HEADER_LIST_SIZE` in the HTTP2 specification.                                                |
+| `AllowHTTP`                  | `false`                                 | Set whether to allow HTTP,the h2c switch                                                                             |
 | `ReadIdleTimeout`            | `0`,which means no health check         | If the connection does not receive any frames during this interval, a health check is performed using `ping` frames. |
 | `PingTimeout`                | `15s`                                   | A timeout period after which the connection will be closed if no response to `Ping ` is received.                    |
 | `WriteByteTimeout`           | `0`                                     | If no data is written during this time interval, the connection will be closed.                                      |
@@ -342,15 +345,16 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"github.com/cloudwego/hertz/pkg/app/client/retry"
 	"net/http"
 	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/client/retry"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
+
 	"github.com/hertz-contrib/http2/config"
 	"github.com/hertz-contrib/http2/factory"
 )
@@ -425,7 +429,7 @@ func main() {
 	cfg.Certificates = append(cfg.Certificates, cert)
 	h := server.New(server.WithHostPorts(":8888"), server.WithALPN(true), server.WithTLS(cfg))
 
-	// register http2 server factory
+	// register HTTP2 server factory
 	h.AddProtocol("h2", factory.NewServerFactory(
 		config.WithReadTimeout(time.Minute),
 		config.WithDisableKeepAlive(false)))
@@ -458,7 +462,7 @@ func main() {
 
 Used to set `SETTINGS_MAX_HEADER_LIST_SIZE`.
 
-Unlike the http2 specification, `0` here indicates that the default limit is used (currently 10MB). If you want to indicate infinity, you can set it to a value as large as possible (`0xffffff` or `1<<32-1`).
+Unlike the HTTP2 specification, `0` here indicates that the default limit is used (currently 10MB). If you want to indicate infinity, you can set it to a value as large as possible (`0xffffff` or `1<<32-1`).
 
 Function Signature:
 
@@ -511,7 +515,7 @@ func WithStrictMaxConcurrentStreams(strictMaxConcurrentStreams bool) ClientOptio
 
 #### WithPingTimeout
 
-Sets the timeout for `Ping` responses, after which the connection will be closed if no response is received to `Ping `.The default is `15s`.
+Set the timeout for `Ping` responses, after which the connection will be closed if no response is received to `Ping `.The default is `15s`.
 
 Function Signature:
 
@@ -522,7 +526,7 @@ func WithPingTimeout(pt time.Duration) ClientOption
 
 #### WithAllowHTTP
 
-Used to set whether to allow http. if enabled, the client will use h2c mode. Not enabled by default.
+Used to set whether to allow HTTP. if enabled, the client will use h2c mode. Not enabled by default.
 
 Function Signature:
 
