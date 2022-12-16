@@ -42,7 +42,7 @@ import (
 func main() {
 	h := server.New(server.WithHostPorts(":8000"))
 	store := cookie.NewStore([]byte("secret"))
-	h.Use(sessions.Sessions("mysession", store))
+	h.Use(sessions.New("mysession", store))
 	h.GET("/incr", func(ctx context.Context, c *app.RequestContext) {
 		session := sessions.Default(c)
 		var count int
@@ -52,7 +52,7 @@ func main() {
 			count++
 		}
 		session.Set("count", count)
-		session.Save()
+		_ = session.Save()
 		c.JSON(200, utils.H{"count": count})
 	})
 	h.Spin()
@@ -109,7 +109,7 @@ import (
 func main() {
 	h := server.New(server.WithHostPorts(":8000"))
 	store := cookie.NewStore([]byte("secret"))
-	h.Use(sessions.Sessions("mysession", store))
+	h.Use(sessions.New("mysession", store))
 	h.GET("/incr", func(ctx context.Context, c *app.RequestContext) {
 		session := sessions.Default(c)
 		var count int
@@ -121,7 +121,7 @@ func main() {
 			count++
 		}
 		session.Set("count", count)
-		session.Save()
+		_ = session.Save()
 		c.JSON(200, utils.H{"count": count})
 	})
 	h.Spin()
@@ -154,7 +154,7 @@ import (
 func main() {
 	h := server.Default(server.WithHostPorts(":8000"))
 	store, _ := redis.NewStore(10, "tcp", "localhost:6379", "", []byte("secret"))
-	h.Use(sessions.Sessions("mysession", store))
+	h.Use(sessions.New("mysession", store))
 
 	h.GET("/incr", func(ctx context.Context, c *app.RequestContext) {
 		session := sessions.Default(c)
@@ -174,14 +174,14 @@ func main() {
 }
 ```
 
-### Sessions
+### New
 
-The `sessions` middleware provides `Sessions` to create a single Session.
+The `sessions` middleware provides `New` to create a single Session.
 
 Function signatures:
 
 ```go
-func Sessions(name string, store Store) app.HandlerFunc
+func New(name string, store Store) app.HandlerFunc
 ```
 
 Sample Code:
@@ -202,13 +202,13 @@ import (
 func main() {
 	h := server.New(server.WithHostPorts(":8000"))
 	store := cookie.NewStore([]byte("secret"))
-	h.Use(sessions.Sessions("mysession", store))
+	h.Use(sessions.New("mysession", store))
 	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
 		session := sessions.Default(c)
 
 		if session.Get("hello") != "world" {
 			session.Set("hello", "world")
-			session.Save()
+			_ = session.Save()
 		}
 
 		c.JSON(200, utils.H{"hello": session.Get("hello")})
@@ -217,14 +217,14 @@ func main() {
 }
 ```
 
-### SessionsMany
+### Many
 
-The `sessions` middleware provides `SessionsMany` to create multiple sessions.
+The `sessions` middleware provides `Many` to create multiple sessions.
 
 Function signatures:
 
 ```go
-func SessionsMany(names []string, store Store) app.HandlerFunc
+func Many(names []string, store Store) app.HandlerFunc
 ```
 
 Sample Code:
@@ -246,19 +246,19 @@ func main() {
 	h := server.New(server.WithHostPorts(":8000"))
 	store := cookie.NewStore([]byte("secret"))
 	sessionNames := []string{"a", "b"}
-	h.Use(sessions.SessionsMany(sessionNames, store))
+	h.Use(sessions.Many(sessionNames, store))
 	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
 		sessionA := sessions.DefaultMany(c, "a")
 		sessionB := sessions.DefaultMany(c, "b")
 
 		if sessionA.Get("hello") != "world!" {
 			sessionA.Set("hello", "world!")
-			sessionA.Save()
+			_ = sessionA.Save()
 		}
 
 		if sessionB.Get("hello") != "world?" {
 			sessionB.Set("hello", "world?")
-			sessionB.Save()
+			_ = sessionB.Save()
 		}
 
 		c.JSON(200, utils.H{
@@ -275,6 +275,7 @@ func main() {
 The `sessions` middleware provides `Default` to fetch a single Session.
 
 Function signatures:
+
 ```go
 func Default(c *app.RequestContext) Session
 ```
@@ -297,13 +298,13 @@ import (
 func main() {
 	h := server.New(server.WithHostPorts(":8000"))
 	store := cookie.NewStore([]byte("secret"))
-	h.Use(sessions.Sessions("mysession", store))
+	h.Use(sessions.New("mysession", store))
 	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
 		session := sessions.Default(c)
 
 		if session.Get("hello") != "world" {
 			session.Set("hello", "world")
-			session.Save()
+			_ = session.Save()
 		}
 
 		c.JSON(200, utils.H{"hello": session.Get("hello")})
@@ -317,11 +318,13 @@ func main() {
 The `sessions` middleware provides `DefaultMany` to get the Session based on its name.
 
 Function signatures:
+
 ```go
 func DefaultMany(c *app.RequestContext, name string) Session
 ```
 
 Sample Code:
+
 ```go
 package main
 
@@ -339,19 +342,19 @@ func main() {
 	h := server.New(server.WithHostPorts(":8000"))
 	store := cookie.NewStore([]byte("secret"))
 	sessionNames := []string{"a", "b"}
-	h.Use(sessions.SessionsMany(sessionNames, store))
+	h.Use(sessions.Many(sessionNames, store))
 	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
 		sessionA := sessions.DefaultMany(c, "a")
 		sessionB := sessions.DefaultMany(c, "b")
 
 		if sessionA.Get("hello") != "world!" {
 			sessionA.Set("hello", "world!")
-			sessionA.Save()
+			_ = sessionA.Save()
 		}
 
 		if sessionB.Get("hello") != "world?" {
 			sessionB.Set("hello", "world?")
-			sessionB.Save()
+			_ = sessionB.Save()
 		}
 
 		c.JSON(200, utils.H{
@@ -363,6 +366,69 @@ func main() {
 }
 ```
 
+## Distributed Session
+
+Hertz also provides a [bizdemo](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_session) for distributed session solution based on Redis.
+
+**Note: This demo is only a simple demonstration of the distributed session, the specific business code needs to be modified by the user combined with the corresponding business logic**
+
+> The distributed session solution based on redis is to store the sessions of different servers in redis or redis cluster,
+> which aims to solve the problem that the sessions of multiple servers are not synchronized in the case of distributed system.
+
+**Display of core code**
+
+1. Initialize session middleware:
+
+```go
+// biz/mw/session.go
+func InitSession(h *server.Hertz) {
+    store, err := redis.NewStore(consts.MaxIdleNum, consts.TCP, consts.RedisAddr, consts.RedisPasswd, []byte(consts.SessionSecretKey))
+    if err != nil {
+    panic(err)
+}
+h.Use(sessions.New(consts.HertzSession, store))
+}
+```
+
+2. Store the session after user sign in:
+
+```go
+// biz/handler/user/user_service.go/Login
+// ...
+session := sessions.Default(c)
+session.Set(consts.Username, req.Username)
+_ = session.Save()
+// ...
+```
+
+3. When the user visits the home page directly, determine whether the corresponding Session exists, and if not, then redirect to the login page (in this example) or restricts the resources that can be browsed or used after login:
+
+```go
+// pkg/render/render.go
+// ...
+session := sessions.Default(c)
+username := session.Get(consts.Username)
+if username == nil {
+    // ...
+    c.Redirect(http.StatusMovedPermanently, []byte("/login.html"))
+    return
+}
+// ...
+```
+
+4. Clear the session after user sign out:
+
+```go
+// biz/handler/user/user_service.go/Logout
+// ...
+session := sessions.Default(c)
+session.Delete(consts.Username)
+_ = session.Save()
+// ...
+```
+
+Session middleware encapsulates most of the complex logic, users only need to call the simple interfaces to complete the corresponding business process.
+
 ## Full Example
 
-As for usage, you may refer to hertz [example](https://github.com/hertz-contrib/sessions/tree/main/_example)
+As for usage, you may refer to [example](https://github.com/hertz-contrib/sessions/tree/main/_example) and [hertz_session](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_session)

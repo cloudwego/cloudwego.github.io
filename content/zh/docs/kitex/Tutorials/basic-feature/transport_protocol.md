@@ -43,13 +43,11 @@ Server 支持协议探测（在 Kitex 默认支持的协议内），无需配置
 // client side
 var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.TTHeader))
-// use TTHeader meta handler. >= v0.3.4 ClientTTHeaderHandler is added by default, don't need to do setup
 opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
 cli, err := xxxservice.NewClient(targetService, opts...)
 
 // server side no need to config transport protocol
 var opts []server.Option
-// use TTHeader meta handler. >= v0.3.4 ServerTTHeaderHandler is added by default, don't need to do setup
 opts = append(opts, server.WithMetaHandler(transmeta.ServerTTHeaderHandler))
 cli, err := xxxservice.NewServer(handler, opts...)
 ```
@@ -61,14 +59,12 @@ cli, err := xxxservice.NewServer(handler, opts...)
 // client side
 var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.GRPC))
-// use HTTP2 meta handler. >= v0.3.4 ClientHTTP2Handler is added by default, don't need to do setup
 opts = append(opts, client.WithMetaHandler(transmeta.ClientHTTP2Handler))
 cli, err := xxxservice.NewClient(targetService, opts...)
 
 
 // server side no need to config transport protocol
 var opts []server.Option
-// use HTTP2 meta handler. >= v0.3.4 ServerHTTP2Handler is added by default, don't need to do setup
 opts = append(opts, server.WithMetaHandler(transmeta.ServerHTTP2Handler))
 cli, err := xxxservice.NewServer(handler, opts...)
 ```
