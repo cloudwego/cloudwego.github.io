@@ -2160,7 +2160,7 @@ func main() {
 
 ##### WithWriteTimeout
 
-The Redis extension provides `WithReadTimeout` to configure the write socket timeout time, the default is `ReadTimeout`.
+The Redis extension provides `WithReadTimeout` to configure the write socket timeout time, the default is equivalent to `ReadTimeout`.
 
 Function signature:
 
@@ -2219,7 +2219,7 @@ func main() {
 
 #### Option
 
-Etcd extension provides option configuration in the service discovery section.
+Redis extension provides option configuration in the service discovery section.
 
 ##### WithPassword
 
@@ -2339,7 +2339,7 @@ func main() {
 
 ##### WithWriteTimeout
 
-The Redis extension provides `WithReadTimeout` to configure the write socket timeout time, the default is `ReadTimeout`.
+The Redis extension provides `WithReadTimeout` to configure the write socket timeout time, the default is equivalent to `ReadTimeout`.
 
 Function signature:
 
@@ -2458,4 +2458,4 @@ You can customize the configuration of redis client and server, refer to [go-red
 
 ### Complete Example
 
-For moer, see [example](https://github.com/hertz-contrib/registry/tree/main/redis/example).
+For more, see [example](https://github.com/hertz-contrib/registry/tree/main/redis/example).
