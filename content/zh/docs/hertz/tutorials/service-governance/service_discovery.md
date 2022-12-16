@@ -2160,7 +2160,7 @@ func main() {
 
 ##### WithWriteTimeout
 
-Redis 扩展提供了 `WithReadTimeout` 配置写入 socket 超时的时间，默认为 `ReadTimeout` 。
+Redis 扩展提供了 `WithReadTimeout` 配置写入 socket 超时的时间，默认等同于 `ReadTimeout` 。
 
 函数签名：
 
@@ -2220,7 +2220,7 @@ func main() {
 
 #### Option
 
-Etcd 拓展在服务发现部分中提供了 option 配置。
+Redis 拓展在服务发现部分中提供了 option 配置。
 
 ##### WithPassword
 
@@ -2340,7 +2340,7 @@ func main() {
 
 ##### WithWriteTimeout
 
-Redis 扩展提供了 `WithReadTimeout` 配置写入 socket 超时的时间，默认为 `ReadTimeout` 。
+Redis 扩展提供了 `WithReadTimeout` 配置写入 socket 超时的时间，默认等同于 `ReadTimeout` 。
 
 函数签名：
 
