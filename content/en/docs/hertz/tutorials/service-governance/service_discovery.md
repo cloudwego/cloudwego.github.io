@@ -22,6 +22,13 @@ As of now, the supported service discovery extensions are
 
 Some optional configurations are provided to users when using service discovery.
 
+| Configuration          | Description                                               |
+| ---------------------- | --------------------------------------------------------- |
+| WithSD                 | Set isSD to true , **required to use service discovery**. |
+| WithTag                | Set tag for requestOptions.                               |
+| WithCustomizedAddrs    | Customize the address of the target instance.             |
+| WithLoadBalanceOptions | Configure load balancing options.                         |
+
 ### WithSD
 
 `requestOptins` provides `WithSD` configuration item, when the incoming parameter is true, `isSD` will be set to true. The `WithSD` configuration item must be used when using service discovery requests.

@@ -22,6 +22,13 @@ description: >
 
 使用服务发现时会提供一些可选配置给用户。
 
+| 配置                   | 描述                                       |
+| ---------------------- | ------------------------------------------ |
+| WithSD                 | 设置 isSD 为 true ，**使用服务发现必选**。 |
+| WithTag                | 为 requestOptions 设置 tag 。              |
+| WithCustomizedAddrs    | 自定义目标实例地址。                       |
+| WithLoadBalanceOptions | 配置负载均衡选项。                         |
+
 ### WithSD
 
 `requestOptins` 提供 `WithSD` 配置项，传入参数为 true 时将会设置 `isSD` 为 true。使用服务发现请求时必须使用 `WithSD` 配置项。
