@@ -1,0 +1,24 @@
+{
+  "name": "cloudwego",
+  "version": "0.0.1",
+  "description": "Hugo theme for technical documentation.",
+  "main": "none.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloudwego/clouwego.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cloudwego/cloudwego.github.io/issues"
+  },
+  "homepage": "https://github.com/cloudwego/cloudwego.github.io#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.14",
+    "postcss-cli": "^10.1.0"
+  }
+}
