@@ -183,7 +183,7 @@ If we set the route `/user/:name`, the match is as follows
 |  ----  | ----  |
 | /user/gordon  | matched |
 | /user/you  | matched |
-| /user/gordon/profile  | mismatched |
+| /user/gordon/profile  | matched |
 |  /user/  | mismatched |
 
 By using the `RequestContext.Param` method, we can get the parameters carried in the route.
