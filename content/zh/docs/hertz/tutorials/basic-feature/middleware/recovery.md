@@ -8,6 +8,13 @@ description: >
 
 Recovery中间件是Hertz框架预置的中间件，使用 `server.Default()` 可以默认注册该中间件，为Hertz框架提供panic恢复的功能。
 
+如果你不使用`server.Default()`，你也可以通过以下方式注册Recovery中间件：
+
+```go
+h := server.New()
+h.Use(recovery.Recovery())
+```
+
 Recovery中间件会恢复Hertz框架运行中的任何panic，在panic发生之后，Recover中间件会默认打印出panic的时间、内容和堆栈信息，同时通过`*app.RequestContext`将返回响应的状态码设置成500。
 
 ## 导入
