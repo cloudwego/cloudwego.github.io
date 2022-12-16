@@ -16,6 +16,7 @@ As of now, the supported service discovery extensions are
 - [polaris](https://github.com/hertz-contrib/registry/tree/main/polaris)
 - [servicecomb](https://github.com/hertz-contrib/registry/tree/main/servicecomb)
 - [zookeeper](https://github.com/hertz-contrib/registry/tree/main/zookeeper)
+- [redis](https://github.com/hertz-contrib/registry/tree/main/redis)
 
 ## Configuration
 

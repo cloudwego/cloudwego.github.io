@@ -16,6 +16,7 @@ description: >
 - [polaris](https://github.com/hertz-contrib/registry/tree/main/polaris)
 - [servicecomb](https://github.com/hertz-contrib/registry/tree/main/servicecomb)
 - [zookeeper](https://github.com/hertz-contrib/registry/tree/main/zookeeper)
+- [redis](https://github.com/hertz-contrib/registry/tree/main/redis)
 
 ## 配置
 
