@@ -2160,7 +2160,7 @@ func main() {
 
 ##### WithWriteTimeout
 
-The Redis extension provides `WithReadTimeout` to configure the write socket timeout time, the default is equivalent to `ReadTimeout`.
+The Redis extension provides `WithWriteTimeout` to configure the write socket timeout time, the default is equivalent to `ReadTimeout`.
 
 Function signature:
 
@@ -2339,7 +2339,7 @@ func main() {
 
 ##### WithWriteTimeout
 
-The Redis extension provides `WithReadTimeout` to configure the write socket timeout time, the default is equivalent to `ReadTimeout`.
+The Redis extension provides `WithWriteTimeout` to configure the write socket timeout time, the default is equivalent to `ReadTimeout`.
 
 Function signature:
 
