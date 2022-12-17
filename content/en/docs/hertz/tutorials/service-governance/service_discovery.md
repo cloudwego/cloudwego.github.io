@@ -49,7 +49,7 @@ status, body, err := cli.Get(context.Background(), nil, "http://hertz.test.demo/
 
 ### WithCustomizedAddrs
 
-This configuration item specifies the target instance address during service discovery. It will overwrite the result from `Resolver`.
+This configuration item specifies the target instance address during service discovery. It will overwrite the result from `Resolver`. `Resolver` is a service discovery center for service discovery.
 
 Sample code:
 ```go

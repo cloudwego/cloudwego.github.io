@@ -49,7 +49,7 @@ status, body, err := cli.Get(context.Background(), nil, "http://hertz.test.demo/
 
 ### WithCustomizedAddrs
 
-此配置项指定服务发现时的目标实例地址。它将会覆盖来自 `Resolver` 的结果。
+此配置项指定服务发现时的目标实例地址。它将会覆盖来自 `Resolver` 的结果。`Resolver` 是服务发现中心，用于服务发现。
 
 示例代码：
 ```go
