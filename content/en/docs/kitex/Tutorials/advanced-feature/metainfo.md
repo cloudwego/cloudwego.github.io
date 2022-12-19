@@ -141,6 +141,7 @@ Server receives:
 
 
 ### Backward
+#### Unary
 In the unary scenario, the server sends meta information to the client as follows:
 
 Server settings:
@@ -161,6 +162,7 @@ Client receives:
   log.Println("header is ", header)
   log.Println("trailer is ", trailer)
 ```
+#### Streaming
 In the Streaming scenario, the server sends meta information to the client as follows:
 Server sends:
 ```golang

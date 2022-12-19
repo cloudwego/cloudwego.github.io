@@ -142,6 +142,7 @@ Server 接收：
 
 
 ### 反向传递
+#### Unary
 Unary 场景中，Server 向 Client 发送元信息方式如下：
 
 Server 设置:
@@ -162,6 +163,7 @@ Client 接收：
   log.Println("header is ", header)
   log.Println("trailer is ", trailer)
 ```
+#### Streaming
 Streaming 场景中，Server 向 Client 发送元信息方式如下：
 Server 发送：
 ```golang
