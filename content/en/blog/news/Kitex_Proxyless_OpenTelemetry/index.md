@@ -27,7 +27,7 @@ And those rules will be translated into Kitex corresponding rules to implement s
 Based on Kitex Proxyless, Kitex application can be managed by Service Mesh in a unified manner without sidecar, and thus the governance rule Spec, governance control plane, 
 governance delivery protocol, and heterogeneous data governance capability can be unified under multiple deployment modes.
 
-![image](/img/blog/Kitex_Proxyless/1.png)
+![image](/img/blog/Kitex_Proxyless/unify_architecture.svg)
 
 ### Traffic Routing
 
@@ -35,7 +35,7 @@ Traffic routing refers to the ability to route traffic to a specified destinatio
 
 Traffic routing is one of the core capabilities in service governance and one of the scenarios that Kitex Proxyless supports in the first place.
 
-The approach of Kitex implementing traffic routing base on xDS is as follows:
+The approach of [Kitex][Kitex] implementing traffic routing base on xDS is as follows:
 
 ![image](/img/blog/Kitex_Proxyless/2.png)
 
@@ -132,23 +132,22 @@ In keeping with Bookinfo, the overall business architecture is divided into four
 - The v2 version invokes the ratings services, and use five ⭐⭐⭐⭐⭐⭐ to display the ratings.
 - The v3 version won't call the ratings service
 
-![image](/img/blog/Kitex_Proxyless/5.png)
+![image](/img/blog/Kitex_Proxyless/bookinfo.svg)
 
 ### Diagram of Traffic Lanes
-
 
 The whole call chain is divided into 2 lanes:
 
 - Base lane: Undyed traffic is routed to the base lane.
 - Branch lane: dyed traffic is routed to the branch lane of reviews-v2 ->ratings-v2.
 
-![image](/img/blog/Kitex_Proxyless/6.png)
+![image](/img/blog/Kitex_Proxyless/lane.svg)
 
 ### Traffic Dyeing
 
 The gateway is responsible for traffic dyeing. For example, the request with `uid=100` in the request header is dyed and carries baggage of `env=dev`.
 
-![image](/img/blog/Kitex_Proxyless/7.png)
+![image](/img/blog/Kitex_Proxyless/dyeing.svg)
 
 The dye mode may vary according to different gateways. For example, when we select istio ingress as the gateway, we can use **EnvoyFilter + Lua** to write the gateway dye rules.
 
@@ -179,7 +178,7 @@ so we only need to match the route according to the header. Here is an example o
 
 1. Base Lane
 
-Requests without `uid=100` header in the inbound traffic are automatically routed to the base lane, which is a round robin of v1 and v3 of `reviews` service resulting in a random score of 0 or 1.
+Requests without `uid=100` header in the inbound traffic are automatically routed to the base lane, which is a round-robin of v1 and v3 of `reviews` service resulting in a round-robin score of 0 and 1.
 
 ![image](/img/blog/Kitex_Proxyless/11.png)
 
@@ -196,10 +195,10 @@ Click the refresh button again, you can find that the request hits the branch la
 ## 04 Summary and Outlook
 
 So far, we have implemented a complete full-path traffic lane based on Kitex Proxyless and OpenTelemetry. 
-And we can set corresponding routing rules for Kitex based on Isito standard governance rule Spec without Envoy sidecar.
+And we can set corresponding routing rules for Kitex based on Istio standard governance rule Spec without Envoy sidecar.
 
 In addition to traffic routing capabilities, Kitex Proxyless is also continuously iterating and optimizing to meet more requirements for data plane governance capabilities. 
-As an exploration and practice of Service Mesh data plane, Proxyless not only can enrich the deployment form of data plane, but also hopes to continuously polish Kitex, 
+As an exploration and practice of Service Mesh data plane, Proxyless not only can enrich the deployment form of data plane, but also hopes to continuously polish [Kitex][Kitex], 
 enhance its ability in open source ecological compatibility, and create a more open and inclusive microservice ecosystem.
 
 ## 05 Relevant Project
