@@ -181,7 +181,7 @@ Hertz 支持使用 `:name` 这样的命名参数设置路由，并且命名参�
 |  ----  | ----  |
 | /user/gordon  | 匹配 |
 | /user/you  | 匹配 |
-| /user/gordon/profile  | 不匹配 |
+| /user/gordon/profile  | 匹配 |
 |  /user/  | 不匹配 |
 
 通过使用 `RequestContext.Param` 方法，我们可以获取路由中携带的参数。
