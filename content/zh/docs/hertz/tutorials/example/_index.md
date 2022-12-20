@@ -6,24 +6,44 @@ description: >
 
 ---
 
+Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了解 Hertz 的特性，参考 [hertz-examples](https://github.com/cloudwego/hertz-examples) 以获取更多信息。
+
+## Bizdemo
+
+### hertz_gorm
+- [hertz_gorm](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_gorm) ：在 hertz server 中使用 gorm 的示例
+
+### hertz_gorm_gen
+- [hertz_gorm_gen](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_gorm_gen) ：在 hertz server 中使用 gorm/gen & proto IDL 的示例
+
+### hertz_jwt
+- [hertz_jwt](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_jwt) ：在 hertz server 中使用 jwt 的示例
+
+### hertz_session
+- [hertz_session](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_session) ：在 hertz server 中使用分布式 session 和 csrf 的示例
+
+
 ## Server
 
-### 启动hertz
-- [hello](https://github.com/cloudwego/hertz-examples/tree/main/hello) ：启动一个 hertz "hello world"应用的示例
+### 启动 Hertz
+- [hello](https://github.com/cloudwego/hertz-examples/tree/main/hello) ：启动对于 hertz 来说相当于 "hello world" 的示例
 
 ### 配置
 - [config](https://github.com/cloudwego/hertz-examples/tree/main/config) ：配置 hertz server 的示例
 
 ### 协议
-- [Protocol](https://github.com/cloudwego/hertz-examples/tree/main/protocol) ：hertz 使用 http1、tls 等协议的示例
+- [Protocol](https://github.com/cloudwego/hertz-examples/tree/main/protocol) ：hertz 使用 HTTP1、TLS 等协议的示例
 
 ### 路由
 - [Route](https://github.com/cloudwego/hertz-examples/tree/main/route) ：注册路由、使用路由组、参数路由的示例
 
 ### 中间件
-- [CORS](https://github.com/cloudwego/hertz-examples/tree/main/middleware/CORS) ：使用 CORS 中间件的示例
 - [basic_auth](https://github.com/cloudwego/hertz-examples/tree/main/middleware/basicauth) ：使用 basic auth 中间件的示例
+- [CORS](https://github.com/cloudwego/hertz-examples/tree/main/middleware/CORS) ：使用 CORS 中间件的示例
 - [custom](https://github.com/cloudwego/hertz-examples/tree/main/middleware/custom) ：自定义中间件的示例
+- [pprof](https://github.com/cloudwego/hertz-examples/tree/main/middleware/pprof) ：使用 pprof 中间件的示例
+- [requestid](https://github.com/cloudwego/hertz-examples/tree/main/middleware/requestid) ：使用 RequestID 中间件的示例
+- [gzip](https://github.com/cloudwego/hertz-examples/tree/main/gzip) ：在 hertz server 中使用 gzip 中间件的示例
 
 ### 参数绑定及验证
 - [binding](https://github.com/cloudwego/hertz-examples/tree/main/binding) ：参数绑定及验证的示例
@@ -32,10 +52,10 @@ description: >
 - [parameters](https://github.com/cloudwego/hertz-examples/tree/main/parameter) ：获取 query、form、cookie 等参数的示例
 
 ### 文件
-- [file](https://github.com/cloudwego/hertz-examples/tree/main/file) ：文件上传、文件下载、静态文件服务的示例
+- [file](https://github.com/cloudwego/hertz-examples/tree/main/file) ：关于如何上传，下载文件和搭建静态文件服务的示例
 
-### Render
-- [render](https://github.com/cloudwego/hertz-examples/tree/main/render) ：render body 为 json、html、protobuf 等的示例
+### 渲染
+- [render](https://github.com/cloudwego/hertz-examples/tree/main/render) ：渲染 json, html, protobuf 的示例
 
 ### 重定向
 - [redirect](https://github.com/cloudwego/hertz-examples/tree/main/redirect) ：重定向到内部/外部 URI 的示例
@@ -54,6 +74,21 @@ description: >
 
 ### 监控
 - [monitoring](https://github.com/cloudwego/hertz-examples/tree/main/monitoring) ：hertz 使用 Prometheus 进行指标监控的示例
+
+### 多端口服务
+- [multiple_service](https://github.com/cloudwego/hertz-examples/tree/main/multiple_service) ：使用 Hertz 启动多端口服务的示例
+
+### 适配器
+- [adaptor](https://github.com/cloudwego/hertz-examples/tree/main/adaptor) ：使用 adaptor 集成基于 `http.Handler` 接口开发的工具, 包含使用 [jade](https://github.com/Joker/jade) 作为模版引擎的示例
+
+### Sentinel
+- [sentinel:](https://github.com/cloudwego/hertz-examples/tree/main/sentinel) ：sentinel-golang 结合 hertz 使用的示例
+
+### 反向代理
+- [reverseproxy](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy) ：在 hertz server 中使用反向代理的示例
+
+### Hlog
+- [hlog:](https://github.com/cloudwego/hertz-examples/tree/main/hlog) ：使用 hlog 以及其日志拓展的示例
 
 
 ## Client
