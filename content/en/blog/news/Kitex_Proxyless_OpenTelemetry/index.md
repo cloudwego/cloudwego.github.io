@@ -1,5 +1,5 @@
 ---
-date: 2022-12-16
+date: 2022-12-20
 title: "Kitex Proxyless Practice：Traffic Lane Implementation with Istio and OpenTelemetry"
 linkTitle: "Kitex Proxyless Practice：Traffic Lane Implementation with Istio and OpenTelemetry"
 keywords: ["CloudWeGo", "Proxyless", "Traffic Route", "Lane", "Bookinfo"]
@@ -180,7 +180,7 @@ so we only need to match the route according to the header. Here is an example o
 
 Requests without `uid=100` header in the inbound traffic are automatically routed to the base lane, which is a round-robin of v1 and v3 of `reviews` service resulting in a round-robin score of 0 and 1.
 
-![image](/img/blog/Kitex_Proxyless/11.png)
+![image](/img/blog/Kitex_Proxyless/bookstore_base.png)
 
 2. Branch Lane
 
@@ -190,7 +190,7 @@ We use the **mod-header** plug-in of the browser to simulate the scenario where 
 
 Click the refresh button again, you can find that the request hits the branch lane, and the traffic lane takes effect successfully.
 
-![image](/img/blog/Kitex_Proxyless/13.png)
+![image](/img/blog/Kitex_Proxyless/bookstore_branch.jpeg)
 
 ## 04 Summary and Outlook
 
