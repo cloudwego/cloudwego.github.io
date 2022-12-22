@@ -43,7 +43,7 @@ pub trait Service<Cx, Request> {
     type Error;
 
     /// The future response value.
-    type Future<'cx>: Future<Output = Result<Self::Response, Self::Error>> + 'cx
+    type Future<'cx>: Future<Output = Result<Self::Response, Self::Error>> + Send + 'cx
     where
         Cx: 'cx,
         Self: 'cx;
@@ -56,8 +56,6 @@ pub trait Service<Cx, Request> {
 ```
 
 最明显的改动是，Service Trait 的方法 call() 的 self 参数由 `&mut self` 改为了 `&self`。这样做的目的是，之前依赖 `&mut self` 的话，在调用之前就得 clone 拿所有权才行，需要 Service 用户自己保证 Clone 的开销低；实际上，这个 clone 是完全没必要的，这个决策应该交给用户自己决定，如果真的有需求改变内部状态的话，自己内部加锁或者用 atomic 即可，这样可以节省 clone 的开销。
-
-另外一处改动是，Future 中的 Send trait bound 被移除了，这个改动的原因是，我们认为是否需要 Future 为 Send 可以交由实现者自己决定。
 
 ## gRPC 多 Service 支持
 
