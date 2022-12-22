@@ -2,10 +2,11 @@
 title: "Retry"
 date: 2022-08-25
 weight: 7
-description: >
+keywords: ["Kitex", "Retry", "Backup Request"]
+description: Kitex Exception retry and Backup Request policy Introduction and Usage Guide.
 ---
 
-## 1. Introduction
+## Introduction
 
 There are currently three types of retries: `Exception Retry`, `Backup Request` and `Connection Failed Retry`. Among them, `Connection Failed Retry` is a network-level problem, since the request is not sent, the framework will retry by default. Here we only present the use of the first two types of retries:
 
@@ -14,12 +15,12 @@ There are currently three types of retries: `Exception Retry`, `Backup Request` 
 
 Because many requests are not idempotent, these two types of retries are not used as the default policy.
 
-### 1.1 Attention
+### Attention
 
 - Confirm that your service is **idempotent** before enable retry.
 - `Exception Retry` will increase overall latency.
 
-## 2. Retry Policy
+## Retry Policy
 
 Only one of the `Exception Retry` and `Backup Request` policies can be configured at method granularity.
 
@@ -47,13 +48,13 @@ Configuration Item|Default value|Description|Limit
 `ChainStop`|false|`Chain Stop` is enabled by default. If the upstream request is a retry request, it will not be retried after timeout.|>= v0.0.5 as the default policy.
 `RetrySameNode`|false|By default, Kitex selects another node to retry. If you want to retry on the same node, set this parameter to true.
 
-## 3. How to use
+## How to use
 
-### 3.1 Enable by Code Configuration
+### Enable by Code Configuration
 
 Note: Dynamic configuration (see 3.3) cannot take effect if retry is enabled by code configuration.
 
-#### 3.1.1 Exception Retry Configuration
+#### Exception Retry Configuration
 
 - Configuration e.g.
 
@@ -92,7 +93,7 @@ fp.WithRetryBreaker(errRate float64)
 fp.WithRetrySameNode()
 ```
 
-##### 3.1.1.1 Retry with Specific Result（Exception/Resp）
+##### Retry with Specific Result（Exception/Resp）
 
 v0.4.0 is supported.
 
@@ -181,7 +182,7 @@ respRetry := func(resp interface{}, ri rpcinfo.RPCInfo) bool {
 
 
 
-#### 3.1.2 Backup Request Configuration
+#### Backup Request Configuration
 
 - Retry Delay recommendations
 
@@ -213,7 +214,7 @@ bp.WithRetryBreaker(errRate float64)
 bp.WithRetrySameNode()
 ```
 
-#### 3.1.3 Method Granularity Configuration Retry
+#### Method Granularity Configuration Retry
 
 v0.4.0 is supported.
 
@@ -237,7 +238,7 @@ xxxCli := xxxservice.NewClient(targetService, opts...)
 
 > If both `WithFailureRetry` or `WithBackupRequest` are configured, methods not configured in `WithRetryMethodPolicies` will be executed according to the `WithFailureRetry` or `WithBackupRequest` policy. But `WithFailureRetry` and `WithBackupRequest` cannot be configured at the same time because they will take effect on all client methods.
 
-#### 3.1.4 Request Level Configuration Retry（callopt）
+#### Request Level Configuration Retry（callopt）
 
 v0.4.0 is supported.
 
@@ -259,7 +260,7 @@ bp.WithMaxRetryTimes(1)
 resp, err := cli.Mock(ctx, req, callopt.WithRetryPolicy(retry.BuildBackupRequest(bp)))
 ```
 
-### 3.2 Circuit Breaker Reuse
+### Circuit Breaker Reuse
 
 When circuit breaker is enabled for a service, you can reuse the breaker's statistics to reduce additional CPU consumption. Note that the error rate threshold for retries must be lower than the threshold for a service.
 
@@ -280,7 +281,7 @@ opts = append(opts, client.WithMiddleware(cbs.ServiceCBMW()))
 cli, err := xxxservice.NewClient(targetService, opts...)
 ```
 
-### 3.3 Dynamic open or adjust strategy
+### Dynamic open or adjust strategy
 
 If you want to adjust the policy in combination with remote configuration, dynamic open retry, or runtime, you can take effect through the `NotifyPolicyChange` method of `retryContainer`. Currently, the open source version of Kitex does not provide a remote configuration module, and users can integrate their own configuration center. Note: If it is turned on through code configuration, dynamic configuration cannot take effect.
 
@@ -302,7 +303,7 @@ yourChangeFunc := func(key string, oldData, newData interface{}) {
 cli, err := xxxservice.NewClient(targetService, client.WithRetryContainer(retryC))
 ```
 
-## 4. Tracking
+## Tracking
 
 Kitex records the retry times and previous request time in `rpcInfo`. You can report or output a retry request based on the `retry Tag` in Client's `metric` or log through:
 
@@ -319,7 +320,7 @@ if retryTag, ok := toInfo.Tag(rpcinfo.RetryTag); ok {
 }
 ```
 
-## 5. Downstream identification
+## Downstream identification
 
 If using `TTHeader` as the transport protocol, you can determine if the downstream `handler` is currently a retry request and decide whether to continue processing.
 

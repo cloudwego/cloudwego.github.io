@@ -2,7 +2,8 @@
 title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 2
-description: >
+keywords: ["Kitex", "Golang", "Go", "Getting Started", "Guidelines"]
+description: "This doc covers development environment preparation, quick start and basic tutorials of Kitex."
 ---
 
 ## Prerequisites

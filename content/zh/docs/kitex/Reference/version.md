@@ -2,8 +2,8 @@
 title: "版本说明"
 linkTitle: "版本说明"
 weight: 3
-description: >
-
+keywords: ["Kitex", "版本发布", "语义化版本"]
+description: "Kitex 版本发布约定说明。"
 ---
 
 Kitex 遵从[语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 发布版本。

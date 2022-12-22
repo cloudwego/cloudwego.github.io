@@ -3,8 +3,10 @@ title: "FAQ"
 linkTitle: "FAQ"
 date: 2021-10-9
 weight: 5
-description: >
+keywords: ["Kitex", "HTTP", "Windows", "Thrift", "Q&A"]
+description: "Kitex Frequently Asked Questions and corresponding Answers."
 ---
+
 ## Kitex Framework
 
 **Q1: Does Kitex support Windows？**

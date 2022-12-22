@@ -2,19 +2,19 @@
 title: "限流"
 date: 2022-10-08
 weight: 10
-description: >
+keywords: ["Kitex", "限流", "限流器"]
+description: "Kitex 默认限流和自定义限流使用指南。"
 ---
+
+限流是一种保护 server 的措施，防止上游某个 client 流量突增导致 server 端过载。
+
+目前 Kitex 支持用户自定义的 QPS 限流器和连接数限流器，同时提供了默认的实现。
 
 ## 注意事项
 
 - 同时定义 `server.WithLimit` 和 `server.WithQPSLimiter` 或同时定义 `server.WithLimit` 和 `server.WithConnectionLimiter` 时，只有后者会生效。
 - 为节省请求反序列化开销提高性能，在非多路复用场景下，Kitex 默认的 QPS 限流器是在 `OnRead` hook 处生效的，而在多路复用或使用自定义 QPS 限流器场景下，限流器在 `OnMessage` hook 处生效。这是为了保证自定义限流器能获取到请求的基本信息，避免在例如按 method 限流等场景下无法生效的问题。
 - 目前的限流功能只对 Thrift、Kitexpb 协议生效，对 gRPC 协议暂不生效。gRPC 可采用流控在传输层面做流量限制，Kitex 提供了 `WithGRPCInitialWindowSize` 和 `WithGRPCInitialConnWindowSize` 分别用于设置 stream 和连接的流控窗口大小，详见[gRPC官方文档](https://pkg.go.dev/google.golang.org/grpc#InitialConnWindowSize)
-
-## 简介
-限流是一种保护 server 的措施，防止上游某个 client 流量突增导致 server 端过载。
-
-目前 Kitex 支持用户自定义的 QPS 限流器和连接数限流器，同时提供了默认的实现。
 
 ## 使用默认的限流器
 

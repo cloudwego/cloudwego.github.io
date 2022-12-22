@@ -3,10 +3,9 @@ title: "FAQ"
 linkTitle: "FAQ"
 date: 2021-10-9
 weight: 5
-description: >
+keywords: ["Kitex", "HTTP", "Windows", "Thrift", "Q&A"]
+description: "Kitex 常见问题解答。"
 ---
-
-这里列出与 Kitex 有关的常见问题。
 
 ## Kitex 框架
 
