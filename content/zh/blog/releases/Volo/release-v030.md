@@ -121,11 +121,16 @@ async fn main() {
 
 这是一个 breaking change，使用之前版本的用户在升级后可能会需要修改一下代码，一般来说只需要根据报错信息修改一下类型即可。
 
-如果仍旧有需求要针对 binary、string 生成 Vec<u8> 和 String 的话，可以在 thrift idl 文件中的对应字段加一个 pilota.rust_type="vec"或者 pilota.rust_type="string"的 annotation，如下：
+如果仍旧有需求要针对 string 生成 String 的话，可以在 thrift idl 文件中的对应字段加一个`pilota.rust_type="string"`的 annotation，如下：
 
 ```thrift
 struct Item {
-    1: required binary id (pilota.rust_type="vec");
-    2: required string name (pilota.rust_type="string");
+    1: required string name (pilota.rust_type="string");
 }
 ```
+
+除此之外，Pilota 还支持了其它的 Annotation，详情可以参考：https://www.cloudwego.io/zh/docs/pilota/guide/annotation/
+
+## 完整 Release Note
+
+完整的 Release Note 可以参考：https://github.com/cloudwego/volo/releases/tag/volo-0.3.0
