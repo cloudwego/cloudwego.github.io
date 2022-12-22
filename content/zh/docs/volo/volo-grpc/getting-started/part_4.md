@@ -59,7 +59,8 @@ static ref CLIENT: volo_gen::volo::example::ItemServiceClient = {
 };
 
 // server.rs
-volo_gen::volo::example::ItemServiceServer::new(S)
+Server::new()
+    .add_service(ServiceBuilder::new(volo_gen::volo::example::ItemServiceServer::new(S)).build())
     .layer(LogLayer)
     .run(addr)
     .await
