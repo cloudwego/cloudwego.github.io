@@ -21,7 +21,7 @@ where
     S: Send + 'static + volo::Service<Cx, Req>,
     Cx: Send + 'static,
 {
-    async fn call(&mut self, cx: &mut Cx, req: Req) -> Result<S::Response, S::Error> {
+    async fn call(&self, cx: &mut Cx, req: Req) -> Result<S::Response, S::Error> {
         let now = std::time::Instant::now();
         let resp = self.0.call(cx, req).await;
         tracing::info!("Request took {}ms", now.elapsed().as_millis());

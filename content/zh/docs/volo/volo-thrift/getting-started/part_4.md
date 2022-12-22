@@ -23,7 +23,7 @@ where
     S::Error: std::fmt::Debug,
     Cx: Send + 'static,
 {
-    async fn call(&mut self, cx: &mut Cx, req: Req) -> Result<S::Response, S::Error> {
+    async fn call(&self, cx: &mut Cx, req: Req) -> Result<S::Response, S::Error> {
         let now = std::time::Instant::now();
         tracing::debug!("Received request {:?}", &req);
         let resp = self.0.call(cx, req).await;

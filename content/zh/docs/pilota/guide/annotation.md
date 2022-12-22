@@ -1,7 +1,7 @@
 ---
 title: "Pilota 支持的注解"
 linkTitle: "pilota-annotation"
-weight: 1
+weight: 2
 description: >
 ---
 
