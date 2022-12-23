@@ -13,7 +13,8 @@ description: >
 首先确保：
 - kitex 命令行版本不低于 v0.4.4
 - thriftgo 版本不低于 v0.2.4
-  创建一个名为 idl-ref.yml 的文件，对特定的 IDL 配置你想使用的远端引用：
+
+创建一个名为 idl-ref.yml 的文件，对特定的 IDL 配置你想使用的远端引用：
 ```yaml
  ref:
   idl/base.thrift:  "github.com/xxxx/public_repo/base"
