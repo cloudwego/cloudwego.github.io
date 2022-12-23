@@ -2,10 +2,9 @@
 title: "超时控制"
 date: 2021-08-26
 weight: 6
-description: >
+keywords: ["Kitex", "超时"]
+description: Kitex 支持 RPC 超时和连接超时，两种超时均支持 client 级别和调用级别的配置。
 ---
-
-Kitex 支持了两种超时，RPC 超时和连接超时，两种超时均支持 client 级别和调用级别的配置。
 
 ## RPC 超时
 

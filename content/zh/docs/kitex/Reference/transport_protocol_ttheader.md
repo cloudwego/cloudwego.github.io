@@ -2,8 +2,8 @@
 title: "TTHeader"
 linkTitle: "TTHeader"
 weight: 1
-description: >
-
+keywords: ["Kitex", "TTheader", "协议编码"]
+description: "Kitex TTheader 协议设计。"
 ---
 
 参考 [Thrift THeader 协议](https://github.com/apache/thrift/blob/master/doc/specs/HeaderFormat.md) ，我们设计了 TTheader 协议。

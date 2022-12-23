@@ -2,10 +2,9 @@
 title: "Timeouts"
 date: 2021-08-31
 weight: 6
-description: >
+keywords: ["Kitex", "timeout"]
+description: Kitex supports RPC timeout and connection timeout, both of which support client-level and invocation-level configurations.
 ---
-
-There are two types of timeout in Kitex, RPC timeout and connection timeout. Both can be specified by client option and call option.
 
 ## RPC Timeout
 

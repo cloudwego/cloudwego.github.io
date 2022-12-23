@@ -2,17 +2,22 @@
 title: "Transport Protocol"
 date: 2022-07-20
 weight: 3
-description: >
+keywords: ["Kitex", "TTHeader", "HTTP2"]
+description: Kitex supports transport protocols of TTHeader、HTTP2.
 ---
 
-An RPC protocol generally includes a transport protocol in the application layer and a message protocol that tells how to access the payload. Transport protocols come with rich mechanisms that let you deal with additional metadata, which can be helpful for service governance. And Kitex allows you to read or write metadata through a protocol based on MetaHandler. The capability of carrying metadata enables us to track requests in their entirety as it travels across services of a distributed system, and thus makes transport protocol indispensable in Microservices.
+An RPC protocol generally includes a transport protocol in the application layer and a message protocol that tells how to access the payload. 
+Transport protocols come with rich mechanisms that let you deal with additional metadata, which can be helpful for service governance. 
+And Kitex allows you to read or write metadata through a protocol based on MetaHandler. The capability of carrying metadata enables us to track requests in their entirety 
+as it travels across services of a distributed system, and thus makes transport protocol indispensable in Microservices.
 
-Kitex already supports TTHeader and HTTP2. Available options for transport protocol are TTHeader、GRPC、Framed、TTHeaderFramed、PurePayload.
+Kitex already supports [TTHeader](../../../reference/transport_protocol_ttheader/) and HTTP2. Available options for transport protocol are TTHeader、GRPC、Framed、TTHeaderFramed、PurePayload.
 
 Some clarifications:
 
 - Kitex supports Protobuf in two ways: Kitex Protobuf and gRPC. We include gRPC as a transport protocol to make it easy to distinguish. Internally, Kitex will identify the protocol based on whether gRPC was configured.
-- Framed is not technically a transport protocol. It was just there for marking the extra 4 bytes header in Payload Size. But the message protocol does not enforce the need for Framed Header. For instance, PurePayload doesn't have any Header. Therefore, we also include Framed as an option for the transport protocol.
+- Framed is not technically a transport protocol. It was just there for marking the extra 4 bytes header in Payload Size. But the message protocol does not enforce the need for Framed Header. 
+  For instance, PurePayload doesn't have any Header. Therefore, we also include Framed as an option for the transport protocol.
 - Framed and TTHeader could be used together, which leads to TTHeaderFramed.
 
 Here are the available combination options of transport protocols and message protocols in Kitex:

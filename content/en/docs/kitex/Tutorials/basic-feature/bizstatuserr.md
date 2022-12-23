@@ -2,13 +2,19 @@
 title: "Business Exception"
 date: 2022-11-04
 weight: 9
-description: >
+keywords: ["Kitex", "Custom Exception"]
+description: "Kitex has provided business custom exceptions since v0.4.3. This doc covers the interface definition, user usage, and framework implementation."
 ---
 
-In version v0.4.3, Kitex provides business exception function, which is convenient for users to use err that implements a specific interface to transmit business exceptions, so as to distinguish them from RPC exceptions. An RPC exception usually indicates a failure of an RPC request, such as timeout, circuit breaker, or current limit. From the RPC level, it is a failed request. But the business error belongs to the business logic level, at the RPC level, the request is actually successful. It is recommended for service monitoring to report RPC errors as request failures and business-level errors as success, and use the additional biz_status_code field to report business exception status codes. This ability has certain value for engineering practice.
+Business custom exceptions is convenient for users to use err that implements a specific interface to transmit business exceptions, so as to distinguish them from RPC exceptions. 
+An RPC exception usually indicates a failure of an RPC request, such as timeout, circuit breaker, or current limit. From the RPC level, it is a failed request. 
+But the business error belongs to the business logic level, at the RPC level, the request is actually successful. 
+It is recommended for service monitoring to report RPC errors as request failures and business-level errors as success, and use the additional biz_status_code field to report business exception status codes. 
+This ability has certain value for engineering practice.
 
 ## BizStatusError interface definition
-The built-in `BizStatusErrorIface` provides a business exception interfaces. The framework also provides default implementations, and users can also customize implementations. The gRPC business Error can implement `GRPCStatusIface` at the same time, so as to reuse the Detail of Status to transparently transmit richer business information.
+The built-in `BizStatusErrorIface` provides a business exception interfaces. The framework also provides default implementations, and users can also customize implementations. 
+The gRPC business Error can implement `GRPCStatusIface` at the same time, so as to reuse the Detail of Status to transparently transmit richer business information.
 
 ````go
 type BizStatusErrorIface interface {
@@ -29,6 +35,7 @@ You can use the `NewBizStatusError` or `NewBizStatusErrorWithExtra` function in 
 
 ### Usage example
 Use TTHeader as transport protocol:
+
 ````go
 // Server side
 func (*MyServiceHandler) TestError(ctx context.Context, req *myservice.Request) (r *myservice.Response, err error) {
@@ -48,6 +55,7 @@ bizErr, isBizErr := kerrors.FromBizStatusError(err)
 
 To pass additional gRPC Detail, use `NewGRPCBizStatusError` or `NewGRPCBizStatusErrorWithExtra` to construct an exception:
 > Note: gRPC users can still use `NewBizStatusError` or `NewBizStatusErrorWithExtra` if not needed to pass gRPC Detail.
+
 ````go
 // Server side
 func (*Handler) Serve(ctx, Request) (Response, error) {
