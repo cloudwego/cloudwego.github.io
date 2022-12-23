@@ -2,7 +2,8 @@
 title: "生成引用结构体"
 date: 2022-12-21
 weight: 6
-description: >
+keywords: ["Kitex", "引用结构体", "公共结构体"]
+description: "使用 Kitex 命令行生成结构体引用，解决公共结构体问题"
 ---
 
 ## 使用场景

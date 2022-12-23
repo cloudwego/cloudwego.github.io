@@ -2,7 +2,8 @@
 title: "Generate Structs Reference "
 date: 2022-12-21
 weight: 6
-description: >
+keywords: ["Kitex", "Public Structs", "Struct Reference"]
+description: "Use Kitex tool to generate structs reference to solve public structs problem."
 ---
 
 ## Usage Scenarios
