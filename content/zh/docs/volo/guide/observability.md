@@ -32,7 +32,7 @@ pub struct LogService<S> {
 
 impl<Cx, Req, S> Service<Cx, Req> for LogService<S>
 where
-    S: Service<Cx, Req> + Send + 'static,
+    S: Service<Cx, Req> + Send + 'static + Sync,
     Cx: Context<Config = volo_thrift::context::Config> + 'static + Send,
     Req: Send + 'static,
 {
@@ -42,7 +42,7 @@ where
 
     type Future<'cx> = impl Future<Output = Result<Self::Response, Self::Error>> + 'cx;
 
-    fn call<'cx, 's>(&'s mut self, cx: &'cx mut Cx, req: Req) -> Self::Future<'cx>
+    fn call<'cx, 's>(&'s self, cx: &'cx mut Cx, req: Req) -> Self::Future<'cx>
     where
         's: 'cx,
     {

@@ -93,21 +93,24 @@ where
     D: Discover,
 {
     /// `InstanceIter` is an iterator of [`crate::discovery::Instance`].
-    type InstanceIter<'iter>: Iterator<Item = Address> + Send + 'iter;
-    /// `Error` is the error of the `get_picker` result.
-    type Error: std::error::Error + Send + Sync;
+    type InstanceIter: Iterator<Item = Address> + Send;
     /// `GetFut` is the return type of `get_picker`.
-    type GetFut<'future, 'iter>: Future<Output = Result<Self::InstanceIter<'iter>, Self::Error>>
-        + Send; // remove +'future temporarily, see https://github.com/rust-lang/rust/issues/100013
+    type GetFut<'future>: Future<Output = Result<Self::InstanceIter, LoadBalanceError>>
+        + Send
+        + 'future
+    where
+        Self: 'future;
 
     /// `get_picker` allows to get an instance iterator of a specified endpoint from self or
     /// service discovery.
-    fn get_picker<'future, 'iter>(
-        &'iter self,
+    fn get_picker<'future>(
+        &'future self,
         endpoint: &'future Endpoint,
         discover: &'future D,
-    ) -> Self::GetFut<'future, 'iter>;
-    /// `reblance` is the callback method be used in service discovering subscription.
+    ) -> Self::GetFut<'future>
+    where
+        Self: 'future;
+    /// `rebalance` is the callback method be used in service discovering subscription.
     fn rebalance(&self, changes: Change<D::Key>);
 }
 ```
@@ -142,16 +145,20 @@ impl<D> LoadBalance<D> for RoundRobin<D::Key>
 where
     D: Discover,
 {
-    type InstanceIter<'iter> = InstancePicker;
-    type Error = D::Error;
-    type GetFut<'future, 'iter> =
-        impl Future<Output = Result<Self::InstanceIter<'iter>, Self::Error>> + Send;
+    type InstanceIter = InstancePicker;
+    type GetFut<'future> =
+        impl Future<Output = Result<Self::InstanceIter, LoadBalanceError>> + Send + 'future
+        where
+            Self: 'future;
 
-    fn get_picker<'future, 'iter>(
-        &'iter self,
+    fn get_picker<'future>(
+        &'future self,
         endpoint: &'future Endpoint,
         discover: &'future D,
-    ) -> Self::GetFut<'future, 'iter> {
+    ) -> Self::GetFut<'future>
+    where
+        Self: 'future, 
+    {
         async {
             let key = discover.key(endpoint);
             let list = match self.router.entry(key) {
