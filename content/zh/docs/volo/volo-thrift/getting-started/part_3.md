@@ -26,7 +26,7 @@ lazy_static! {
 #[volo::main]
 async fn main() {
     tracing_subscriber::fmt::init();
-    let req = volo_gen::volo::example::GetItemRequest { id: 1024 };
+    let req = volo_gen::volo::example::GetItemRequest { id: Some(1024) };
     let resp = CLIENT.get_item(req).await;
     match resp {
         Ok(info) => tracing::info!("{:?}", info),
