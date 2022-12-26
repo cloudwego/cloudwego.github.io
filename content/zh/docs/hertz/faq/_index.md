@@ -62,11 +62,11 @@ type HandlerFunc func(c context.Context, ctx *RequestContext)
 
 除此之外，如果面对一定要异步传递 `ctx` 的场景，hertz 也提供了 `ctx.Copy()` 接口，方便业务能够获取到一个协程安全的副本。
 
-## JavaScript 精度丢失问题
+## 精度丢失问题
 
 ### 说明
 
-JavaScript 的数字类型一旦数字超过限值时将会丢失精度，进而导致前后端的值出现不一致。
+1. JavaScript 的数字类型一旦数字超过限值时将会丢失精度，进而导致前后端的值出现不一致。
 
 ```javascript
 var s = '{"x":6855337641038665531}';
@@ -75,6 +75,8 @@ alert (obj.x);
 
 // Output 6855337641038666000
 ```
+
+2. 在 JSON 的规范中，对于数字类型是不区分整形和浮点型的。 在使用 `json.Unmarshal` 进行 JSON 的反序列化的时候，如果没有指定数据类型，使用 `interface{}` 作为接收变量，将默认采用 `float64` 作为其数字的接受类型，当数字的精度超过float能够表示的精度范围时就会造成精度丢失的问题。
 
 ### 解决办法
 
@@ -136,9 +138,7 @@ func main() {
         if err != nil {
             panic(err)
         }
-        c.JSON(consts.StatusOK, utils.H{
-            "id": u.ID.String(),
-        })
+        c.JSON(consts.StatusOK, u)
     })
 
     h.Spin()
