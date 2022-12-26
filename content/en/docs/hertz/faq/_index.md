@@ -67,3 +67,86 @@ The `ctx` is primarily used to store request-level variables, which are recycled
 `c` is passed as the context between middleware `/handler`. With all the semantics of `context.Content` and safe coroutine. All that requires the `context.Content` interface as input arguments, just pass `c` directly.
 
 In addition, Hertz also provides the `ctx.Copy()` interface to make it easier for businesses to obtain a copy of the safe coroutine if they are faced with cases where they must pass `ctx` asynchronously.
+
+## Numeric Precision Problem
+
+### Description
+
+1. JavaScript's numeric type will lose precision once the number exceeds the limit, which will lead to inconsistencies between the front and back end values.
+
+```javascript
+var s = '{"x":6855337641038665531}';
+var obj = JSON. parse(s);
+alert(obj.x);
+
+// Output 6855337641038666000
+```
+
+2. In the JSON specification, integers and floating-point types are not distinguished for numeric types.When using `json.Unmarshal` for JSON deserialization, if no data type is specified, `interface{}` is used as the receiving variable, and `float64` is used as the accepted type of the number by default. When the precision of the number exceedsWhen the precision range that float can represent, it will cause the problem of loss of precision.
+
+### Solution
+
+1. Use the `string` tag of the json standard package.
+
+```go
+package main
+
+import (
+    "context"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+type User struct {
+    ID int `json:"id,string"`
+}
+
+func main() {
+    h := server.Default()
+
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        var u User
+        u.ID = 6855337641038665531
+        c.JSON(consts.StatusOK, u)
+    })
+
+    h.Spin()
+}
+```
+
+2. Using `json.Number`
+
+```go
+package main
+
+import (
+    "context"
+    "encoding/json"
+    
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+type User struct {
+    ID json.Number `json:"id"`
+}
+
+func main() {
+    h := server.Default()
+    
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        var u User
+        err := json.Unmarshal([]byte(`{"id":6855337641038665531}`), &u)
+        if err != nil {
+            panic(err)
+        }
+        c.JSON(consts.StatusOK, u)
+    })
+    
+    h.Spin()
+}
+```
