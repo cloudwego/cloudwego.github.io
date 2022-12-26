@@ -181,9 +181,10 @@ In the **Example** above, only **two necessary** custom configurations are passe
 | `CookieHTTPOnly`              | The property used to set allows clients to access the cookie for development purposes, the default value is `false`                                                                         |
 | `CookieDomain`                | The property used to set the domain to which the cookie belongs, the default value is empty                                                                                                 |
 | `SendAuthorization`           | The property used to set the token to be added to the response header of all requests, the default value is `false`                                                                         |
-| `DisabledAbort`               | The property used to set the request context to disable abort() calls if the jwt authentication process fails, the default value is `false`                                                 |
+| `DisabledAbort`               | The property used to set the request context to disable `abort()` calls if the jwt authentication process fails, the default value is `false`                                               |
 | `CookieName`                  | The property used to set the name of the cookie                                                                                                                                             |
 | `CookieSameSite`              | The property used to set the value of the SameSite property of a cookie using the parameters declared in `protocol.CookieSameSite`                                                          |
+| `ParseOptions`                | The property used to set the property values of `jwt.Parser` configured as a functional-style options argument declared with `jwt.ParserOption`                                             |
 
 ### Key
 
@@ -510,6 +511,26 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
     CookieDomain:      ".test.com",
     CookieName:        "jwt-cookie",
     CookieSameSite:    protocol.CookieSameSiteDisabled,
+})
+```
+
+### ParseOptions
+
+There are three related configurations that can be enabled using `ParseOptions`:
+
+- `WithValidMethods`: Used to supply algorithm methods that the parser will check. Only those methods will be considered valid
+- `WithJSONNumber`: Used to configure the underlying JSON parser with `UseNumber`
+- `WithoutClaimsValidation`: Used to disable claims validation
+
+Sample Code:
+
+```go
+authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
+    ParseOptions: []jwt.ParserOption{
+        jwt.WithValidMethods([]string{"HS256"}),
+        jwt.WithJSONNumber(),
+        jwt.WithoutClaimsValidation(),
+    },
 })
 ```
 
