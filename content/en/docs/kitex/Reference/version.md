@@ -2,8 +2,8 @@
 title: "Version Specification"
 linkTitle: "Version Specification"
 weight: 3
-description: >
-
+keywords: ["Kitex", "Version Release", "Semantic Versioning"]
+description: "Kitex Release conventions."
 ---
 
 Kitex complies with [Semantic Versioning 2.0.0](https://semver.org/) release version.

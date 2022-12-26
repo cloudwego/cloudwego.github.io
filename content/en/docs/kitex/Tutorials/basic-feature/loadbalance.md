@@ -2,13 +2,14 @@
 title: "LoadBalancer"
 date: 2021-08-31
 weight: 8
-description: >
+keywords: ["Kitex", "LoadBalancer", "LoadBalance", "ConsistentHash"]
+description: "This doc covers LoadBalancer implementation principles and usage guidelines provided by Kitex."
 ---
 
 Kitex provides two LoadBalancers officially:
 
-1. WeightedRandom
-2. ConsistentHash
+- WeightedRandom
+- ConsistentHash
 
 Kitex uses WeightedRandom by default.
 

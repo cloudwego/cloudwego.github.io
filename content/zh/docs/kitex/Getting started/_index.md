@@ -2,8 +2,8 @@
 title: "快速开始"
 linkTitle: "快速开始"
 weight: 2
-description: >
-
+keywords: ["Kitex", "Golang", "Go", "快速上手", "基础教程"]
+description: "Kitex 开发环境准备、快速上手与基础教程。"
 ---
 
 ## 准备 Golang 开发环境
@@ -234,11 +234,13 @@ Kitex 是一个 RPC 框架，既然是 RPC，底层就需要两大功能：
 1. Serialization 序列化
 2. Transport 传输
 
-Kitex 框架及命令行工具，默认支持 `thrift` 和 `proto3` 两种 IDL，对应的 Kitex 支持 `thrift` 和 `protobuf` 两种序列化协议。传输上 Kitex 使用扩展的 `thrift` 作为底层的传输协议（注：thrift 既是 IDL 格式，同时也是序列化协议和传输协议）。IDL 全称是 Interface Definition Language，接口定义语言。
+Kitex 框架及命令行工具，默认支持 `thrift` 和 `proto3` 两种 IDL，对应的 Kitex 支持 `thrift` 和 `protobuf` 两种序列化协议。
+传输上 Kitex 使用扩展的 `thrift` 作为底层的传输协议（注：thrift 既是 IDL 格式，同时也是序列化协议和传输协议）。IDL 全称是 Interface Definition Language，接口定义语言。
 
 ### 为什么要使用 IDL
 
-如果我们要进行 RPC，就需要知道对方的接口是什么，需要传什么参数，同时也需要知道返回值是什么样的，就好比两个人之间交流，需要保证在说的是同一个语言、同一件事。这时候，就需要通过 IDL 来约定双方的协议，就像在写代码的时候需要调用某个函数，我们需要知道函数签名一样。
+如果我们要进行 RPC，就需要知道对方的接口是什么，需要传什么参数，同时也需要知道返回值是什么样的，就好比两个人之间交流，需要保证在说的是同一个语言、同一件事。
+这时候，就需要通过 IDL 来约定双方的协议，就像在写代码的时候需要调用某个函数，我们需要知道函数签名一样。
 
 Thrift IDL 语法可参考：[Thrift interface description language](http://thrift.apache.org/docs/idl)。
 
@@ -428,7 +430,8 @@ if err != nil {
   log.Fatal(err)
 }
 ```
-上述代码中，`echo.NewClient` 用于创建 `client`，其第一个参数为调用的 *服务名*，第二个参数为 *options*，用于传入参数，此处的 `client.WithHostPorts` 用于指定服务端的地址，更多参数可参考[基本特性](../tutorials/basic-feature)一节。
+上述代码中，`echo.NewClient` 用于创建 `client`，其第一个参数为调用的 *服务名*，第二个参数为 *options*，用于传入参数，
+此处的 `client.WithHostPorts` 用于指定服务端的地址，更多参数可参考[基本特性](../tutorials/basic-feature)一节。
 
 #### 发起调用
 

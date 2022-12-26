@@ -2,19 +2,19 @@
 title: "Rate Limiting"
 date: 2022-10-08
 weight: 10
-description: >
+keywords: ["Kitex", "Rate Limit", "Limiter"]
+description: "Usage guide for Kitex Default and Custom rate limiting."
 ---
+
+Rate limiting is an imperative technique to protect server, which prevents server from overloaded by sudden traffic increase from a client.
+
+Kitex supports the user-defined QPS limiter and connections limiter, and provides default implementation.
 
 ## Note
 
 - When `server.WithLimit` and `server.WithQPSLimiter` or `server.WithLimit` and `server.WithConnectionLimiter` are used at the same time, only the latter will take effect.
 - To save request deserialization overhead and improve performance, in non-multiplexing scenarios, Kitex's default QPS limiter takes effect at the `OnRead` hook, while in multiplexing or user-defined QPS limiter scenarios, the current limiter takes effect at the `OnMessage` hook. This is to ensure that the user-defined QPS limiter can obtain the basic information of the request such as rpc method.
 - Rate limiting only works on Thrift or Kitexpb protocols, but not for gRPC protocols. gRPC can use flow control to limit traffic at transport layer. Kitex provides `WithGRPCInitialWindowSize` and `WithGRPCInitialConnWindowSize` to set the flow control window size of stream and connection respectively. For details, see [gRPC official documentation](https://pkg.go.dev/google.golang.org/grpc#InitialConnWindowSize)
-
-## Synopsis
-Rate limiting is an imperative technique to protect server, which prevents server from overloaded by sudden traffic increase from a client.
-
-Kitex supports the user-defined QPS limiter and connections limiter, and provides default implementation.
 
 ## Use default rate limiter
 

@@ -60,7 +60,7 @@ func main() {
     h := server.Default()
 
     h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-            ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+            ctx.JSON(consts.StatusOK, utils.H{"message": "pong"})
     })
 
     h.Spin()
@@ -92,7 +92,7 @@ $ curl http://127.0.0.1:8888/ping
 ```
 If nothing goes wrong, we can see the following output
 ```console
-$ {"ping":"pong"}
+$ {"message":"pong"}
 ```
 Now, you have already launched Hertz Server successfully and completed an API call. More API examples can be found at [API Examples](https://pkg.go.dev/github.com/cloudwego/hertz).
 

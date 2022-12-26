@@ -136,7 +136,7 @@ func main() {
 
 ### AllowOriginFunc
 
-以 origin 为形参，用于自定义 origin 的校验逻辑，返回 `ture` 表示校验通过。
+以 origin 为形参，用于自定义 origin 的校验逻辑，返回 `true` 表示校验通过。
 
 与 `AllowAllOrigins` 以及 `AllowOrigins` 配置**冲突**，同时只能配置一项。
 

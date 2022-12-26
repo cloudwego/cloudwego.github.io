@@ -2,10 +2,12 @@
 title: "Connection Type"
 date: 2021-09-28
 weight: 5
-description: >
+keywords: ["Kitex", "Short Connection", "Long Connection", "Connection Multiplexing"]
+description: "Kitex supports short connections, long connection pool, connection multiplexing and connection pool status monitoring."
 ---
 
-Kitex provides **Short Connection**,  **Long Connection Pool** and **Connection Multiplexing** for different business scenarios. Kitex uses Long Connection Pool by default after v0.0.2, but adjusting the Pool Config according to your need is suggested.
+Kitex provides **Short Connection**,  **Long Connection Pool** and **Connection Multiplexing** for different business scenarios. 
+Kitex uses Long Connection Pool by default after v0.0.2, but adjusting the Pool Config according to your need is suggested.
 
 ## Short Connection
 

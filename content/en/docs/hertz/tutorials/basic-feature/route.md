@@ -37,6 +37,9 @@ import (
 
 func main(){
 	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+	
+	h.StaticFS("/", &app.FS{Root: "./", GenerateIndexPages: true})
+
 	h.GET("/get", func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "get")
 	})
@@ -61,7 +64,7 @@ func main(){
 	h.Any("/ping_any", func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "any")
 	})
-	h.Handle("Load","/load", func(ctx context.Context, c *app.RequestContext) {
+	h.Handle("LOAD","/load", func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "load")
 	})
 	h.Spin()
@@ -180,7 +183,7 @@ If we set the route `/user/:name`, the match is as follows
 |  ----  | ----  |
 | /user/gordon  | matched |
 | /user/you  | matched |
-| /user/gordon/profile  | mismatched |
+| /user/gordon/profile  | matched |
 |  /user/  | mismatched |
 
 By using the `RequestContext.Param` method, we can get the parameters carried in the route.

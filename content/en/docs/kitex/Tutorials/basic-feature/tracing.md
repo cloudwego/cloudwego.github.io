@@ -2,13 +2,16 @@
 title: "Instrumentation Control"
 date: 2021-08-31
 weight: 11
-description: >
+keywords: ["Kitex", "Stats", "Instrumentation"]
+description: Kitex supports flexible enabling of basic and fine-grained Instrumentation.
 ---
 
 Stats Level:
 1. LevelDisabled, disable all events
 2. LevelBase, enable basic events 
 3. LevelDetailed, enable basic events and detailed events.
+
+## Stats Level
 
 Default Stats Level:
 1. No tracer is available, LevelDisabled by default

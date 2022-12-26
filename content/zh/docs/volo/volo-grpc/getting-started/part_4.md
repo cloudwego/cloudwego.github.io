@@ -18,10 +18,10 @@ pub struct LogService<S>(S);
 impl<Cx, Req, S> volo::Service<Cx, Req> for LogService<S>
 where
     Req: Send + 'static,
-    S: Send + 'static + volo::Service<Cx, Req>,
+    S: Send + 'static + volo::Service<Cx, Req> + Sync,
     Cx: Send + 'static,
 {
-    async fn call(&mut self, cx: &mut Cx, req: Req) -> Result<S::Response, S::Error> {
+    async fn call(&self, cx: &mut Cx, req: Req) -> Result<S::Response, S::Error> {
         let now = std::time::Instant::now();
         let resp = self.0.call(cx, req).await;
         tracing::info!("Request took {}ms", now.elapsed().as_millis());
@@ -53,14 +53,15 @@ use volo_example::LogLayer;
 static ref CLIENT: volo_gen::volo::example::ItemServiceClient = {
     let addr: SocketAddr = "127.0.0.1:8080".parse().unwrap();
     volo_gen::volo::example::ItemServiceClientBuilder::new("volo-example")
-        .layer_inner(LogLayer)
+        .layer_outer(LogLayer)
         .address(addr)
         .build()
 };
 
 // server.rs
-volo_gen::volo::example::ItemServiceServer::new(S)
-    .layer(LogLayer)
+Server::new()
+    .add_service(ServiceBuilder::new(volo_gen::volo::example::ItemServiceServer::new(S)).build())
+    .layer_front(LogLayer)
     .run(addr)
     .await
     .unwrap();
