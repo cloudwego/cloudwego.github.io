@@ -153,8 +153,8 @@ Hertz 通过使用中间件，为路由请求提供了 `jwt` 的校验功能。�
 
 上述**示例代码**中，只传入了**两项必要的**自定义的配置。关于 `HertzJWTMiddleware` 的更多常用配置如下：
 
-| 参数                          | 介绍                                                                                     |
-| :---------------------------- |:---------------------------------------------------------------------------------------|
+| 参数                            | 介绍                                                                                     |
+|:------------------------------|:---------------------------------------------------------------------------------------|
 | `Realm`                       | 用于设置所属领域名称，默认为 `hertz jwt`                                                             |
 | `SigningAlgorithm`            | 用于设置签名算法，可以是 HS256、HS384、HS512、RS256、RS384 或者 RS512等，默认为 `HS256`                       |
 | `Key`                         | 用于设置签名密钥（必要配置）                                                                         |
@@ -181,9 +181,10 @@ Hertz 通过使用中间件，为路由请求提供了 `jwt` 的校验功能。�
 | `CookieHTTPOnly`              | 用于设置允许客户端访问 cookie 以进行开发，默认为 `false`                                                   |
 | `CookieDomain`                | 用于设置 cookie 所属的域，默认为空                                                                  |
 | `SendAuthorization`           | 用于设置为所有请求的响应头添加授权的 token 信息，默认为 `false`                                                |
-| `DisabledAbort`               | 用于设置在 jwt 验证流程出错时，禁止请求上下文调用 abort()，默认为 `false`                                        |
+| `DisabledAbort`               | 用于设置在 jwt 验证流程出错时，禁止请求上下文调用 `abort()`，默认为 `false`                                      |
 | `CookieName`                  | 用于设置 cookie 的 name 值                                                                   |
 | `CookieSameSite`              | 用于设置使用 `protocol.CookieSameSite` 声明的参数设置 cookie 的 SameSite 属性值                         |
+ | `ParseOptions`                | 用于设置使用 `jwt.ParserOption` 声明的函数选项式参数配置 `jwt.Parser` 的属性值                               |
 
 ### Key
 
@@ -510,6 +511,26 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
     CookieDomain:      ".test.com",
     CookieName:        "jwt-cookie",
     CookieSameSite:    protocol.CookieSameSiteDisabled,
+})
+```
+
+### ParseOptions
+
+利用 ParseOptions 可以开启相关配置有三个，分别为
+ 
+- `WithValidMethods`: 用于提供解析器将检查的签名算法，只有被提供的签名算法才被认为是有效的
+- `WithJSONNumber`: 用于配置底层 JSON 解析器使用 `UseNumber` 方法
+- `WithoutClaimsValidation`: 用于禁用 claims 验证
+
+示例代码：
+
+```go
+authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
+    ParseOptions: []jwt.ParserOption{
+        jwt.WithValidMethods([]string{"HS256"}),
+        jwt.WithJSONNumber(),
+        jwt.WithoutClaimsValidation(),
+    },
 })
 ```
 
