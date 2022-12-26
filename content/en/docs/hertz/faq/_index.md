@@ -91,8 +91,6 @@ package main
 
 import (
     "context"
-    "encoding/json"
-    
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -104,20 +102,15 @@ type User struct {
 
 func main() {
     h := server.Default()
-    
+
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         var u User
         u.ID = 6855337641038665531
-        j, err := json.Marshal(&u)
-        if err != nil {
-            panic(err)
-        }
-        c.JSON(consts.StatusOK, string(j))
+        c.JSON(consts.StatusOK, u)
     })
-    
+
     h.Spin()
 }
-
 ```
 
 2. Using `json.Number`
