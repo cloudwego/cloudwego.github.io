@@ -95,6 +95,7 @@ import (
     
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 type User struct {
@@ -104,19 +105,19 @@ type User struct {
 func main() {
     h := server.Default()
     
-    var u User
-    u.ID = 6855337641038665531
-    j, err := json.Marshal(&u)
-    if err != nil {
-        panic(err)
-    }
-    
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
-        c.String(consts.StatusOK, string(j))
+        var u User
+        u.ID = 6855337641038665531
+        j, err := json.Marshal(&u)
+        if err != nil {
+            panic(err)
+        }
+        c.JSON(consts.StatusOK, string(j))
     })
     
     h.Spin()
 }
+
 ```
 
 2. Using `json.Number`
@@ -127,9 +128,10 @@ package main
 import (
     "context"
     "encoding/json"
-
+    
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
     "github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
@@ -139,17 +141,18 @@ type User struct {
 
 func main() {
     h := server.Default()
-
-    var u User
-    err := json.Unmarshal([]byte(`{"id":6855337641038665531}`), &u)
-    if err != nil {
-        panic(err)
-    }
-
+    
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
-        c.JSON(consts.StatusOK, u.ID.String())
+        var u User
+        err := json.Unmarshal([]byte(`{"id":6855337641038665531}`), &u)
+        if err != nil {
+            panic(err)
+        }
+        c.JSON(consts.StatusOK, utils.H{
+            "id": u.ID.String(),
+        })
     })
-
+    
     h.Spin()
 }
 ```
