@@ -67,3 +67,89 @@ The `ctx` is primarily used to store request-level variables, which are recycled
 `c` is passed as the context between middleware `/handler`. With all the semantics of `context.Content` and safe coroutine. All that requires the `context.Content` interface as input arguments, just pass `c` directly.
 
 In addition, Hertz also provides the `ctx.Copy()` interface to make it easier for businesses to obtain a copy of the safe coroutine if they are faced with cases where they must pass `ctx` asynchronously.
+
+## Javascript Numeric Precision Problem
+
+### Description
+
+JavaScript's numeric type will lose precision once the number exceeds the limit, which will lead to inconsistencies between the front and back end values.
+
+```javascript
+var s = '{"x":6855337641038665531}';
+var obj = JSON. parse(s);
+alert(obj.x);
+
+// Output 6855337641038666000
+```
+
+### Solution
+
+1. Use the `string` tag of the json standard package.
+
+```go
+package main
+
+import (
+    "context"
+    "encoding/json"
+    
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
+
+type User struct {
+    ID int `json:"id,string"`
+}
+
+func main() {
+    h := server.Default()
+    
+    var u User
+    u.ID = 6855337641038665531
+    j, err := json.Marshal(&u)
+    if err != nil {
+        panic(err)
+    }
+    
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        c.String(consts.StatusOK, string(j))
+    })
+    
+    h.Spin()
+}
+```
+
+2. Using `json.Number`
+
+```go
+package main
+
+import (
+    "context"
+    "encoding/json"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+type User struct {
+    ID json.Number `json:"id"`
+}
+
+func main() {
+    h := server.Default()
+
+    var u User
+    err := json.Unmarshal([]byte(`{"id":6855337641038665531}`), &u)
+    if err != nil {
+        panic(err)
+    }
+
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        c.JSON(consts.StatusOK, u.ID.String())
+    })
+
+    h.Spin()
+}
+```

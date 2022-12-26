@@ -61,3 +61,90 @@ type HandlerFunc func(c context.Context, ctx *RequestContext)
 `c` 作为上下文在中间件 `/handler` 之间传递。拥有 `context.Context` 的所有语义，协程安全。所有需要 `context.Context` 接口作为入参的地方，直接传递 `c` 即可。
 
 除此之外，如果面对一定要异步传递 `ctx` 的场景，hertz 也提供了 `ctx.Copy()` 接口，方便业务能够获取到一个协程安全的副本。
+
+## JavaScript 精度丢失问题
+
+### 说明
+
+JavaScript 的数字类型一旦数字超过限值时将会丢失精度，进而导致前后端的值出现不一致。
+
+```javascript
+var s = '{"x":6855337641038665531}';
+var obj = JSON.parse(s);
+alert (obj.x);
+
+// Output 6855337641038666000
+```
+
+### 解决办法
+
+1. 使用 json 标准包的 `string` tag。
+
+```go
+package main
+
+import (
+    "context"
+    "encoding/json"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
+
+type User struct {
+    ID int `json:"id,string"`
+}
+
+func main() {
+    h := server.Default()
+
+    var u User
+    u.ID = 6855337641038665531
+    j, err := json.Marshal(&u)
+    if err != nil {
+        panic(err)
+    }
+
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        c.String(consts.StatusOK, string(j))
+    })
+
+    h.Spin()
+}
+```
+
+2. 使用 `json.Number`
+
+```go
+package main
+
+import (
+    "context"
+    "encoding/json"
+    
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+type User struct {
+    ID json.Number `json:"id"`
+}
+
+func main() {
+    h := server.Default()
+    
+    var u User
+    err := json.Unmarshal([]byte(`{"id":6855337641038665531}`), &u)
+    if err != nil {
+        panic(err)
+    }
+    
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        c.JSON(consts.StatusOK, u.ID.String())
+    })
+    
+    h.Spin()
+}
+```
+
