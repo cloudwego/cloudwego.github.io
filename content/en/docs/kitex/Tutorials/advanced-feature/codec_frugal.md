@@ -1,8 +1,9 @@
 ---
 title: "Frugal"
 date: 2022-08-26
-weight: 4
-description: >
+weight: 7
+keywords: ["Frugal", "Codec", "Thrift"]
+description: By integrating Frugal, Kitex's performance can reach about 5 times that of traditional codec methods, and there is no need to generate codec codes in advance.
 ---
 
 [Frugal](https://github.com/cloudwego/frugal) is a very fast dynamic Thrift serializer &amp; deserializer based on just-in-time compilation.

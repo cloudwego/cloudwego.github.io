@@ -2,7 +2,8 @@
 title: "Metainfo"
 date: 2021-09-30
 weight: 2
-description: >
+keywords: ["Kitex", "Metainfo", "Metadata"]
+description: In addition to IDL-defined data structures, Kitex supports additional meta-info transmitting capabilities and interoperability with different frameworks.
 ---
 
 ## Meta Information

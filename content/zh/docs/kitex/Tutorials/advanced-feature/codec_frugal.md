@@ -1,8 +1,9 @@
 ---
 title: "Frugal"
 date: 2022-08-26
-weight: 4
-description: >
+weight: 7
+keywords: ["Frugal", "Codec", "Thrift"]
+description: Kitex 通过集成 Frugal，性能可以达到传统编解码方式的 5 倍左右，且无需提前生成编解码代码。
 ---
 
 [Frugal](https://github.com/cloudwego/frugal) 是一款基于 JIT 编译的高性能动态 Thrift 编解码器。

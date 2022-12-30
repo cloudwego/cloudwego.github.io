@@ -2,7 +2,8 @@
 title: "Metainfo"
 date: 2021-09-30
 weight: 2
-description: >
+keywords: ["Kitex", "Metainfo", "Metadata"]
+description: 除了 IDl 定义的数据结构外，Kitex 支持额外的元信息传递的能力，并且支持与不同框架之间的互通。
 ---
 
 ## 元信息
