@@ -2,10 +2,9 @@
 title: "Generic Call"
 date: 2021-09-26
 weight: 1
-description: >
+keywords: ["Kitex", "Generic Call", "HTTP", "Thrift"]
+description: Generic call is typically used for mid-platform services that do not need generated code, and only Thrift generic call is supported currently.
 ---
-
-Generic call is typically used for mid-platform services that do not need generated code, and only Thrift generic call is supported currently.
 
 ## Supported Scenarios
 

@@ -1,8 +1,9 @@
 ---
 title: "xDS 支持"
 date: 2022-08-26
-weight: 1
-description: >
+weight: 8
+keywords: ["Kitex", "xDS", "Proxyless", "Istio"]
+description: Kitex 支持 xDS 协议进而以 Proxyless 模式运行，被服务网格统一纳管。
 ---
 
 [xDS](https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol) 是一组发现服务的总称，全称为 "X Discovery Service"，其中的 "X" 代指多种发现服务，包含 LDS (Listener), RDS (RouteConfiguration), CDS (Cluster), 和 EDS (Endpoint/ClusterLoadAssignment) 等。

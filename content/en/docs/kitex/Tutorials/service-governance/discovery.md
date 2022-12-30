@@ -2,7 +2,8 @@
 title: "Service Discovery"
 date: 2021-11-15
 weight: 1
-description: >
+keywords: ["Kitex", "Service Discovery", "Resolver"]
+description: Kitex provides extensions for service registration and discovery, and already supports many popular registries.
 ---
 
 Kitex has completed ETCD, ZooKeeper, Eureka, Consul, Nacos, Polaris multiple service discovery component through the support of community developers. Of course, it also supports DNS resolution and Static IP direct access mode. A strong and complete community ecology has been established for users to choose flexibly according to their needs.

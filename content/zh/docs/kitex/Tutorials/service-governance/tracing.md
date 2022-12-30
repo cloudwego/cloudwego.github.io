@@ -2,13 +2,13 @@
 title: "链路跟踪"
 date: 2021-08-26
 weight: 3
-description: >
+keywords: ["Kitex", "链路追踪", "OpenTelemetry", "OpenTracing"]
+description: Kitex 提供了对 OpenTelemetry 和 OpenTracing 的支持，也支持用户自定义链路跟踪。
 ---
 
-Kitex 提供了对 opentelemetry 和 opentracing 的支持，也支持用户自定义链路跟踪。
+## OpenTelemetry
 
-## opentelemetry
-Kitex 的 opentelemetry 扩展 提供了 `tracing`、`metrics`、`logging` 的支持
+Kitex 的 OpenTelemetry 扩展 提供了 `tracing`、`metrics`、`logging` 的支持。
 
 示例:
 
@@ -76,9 +76,9 @@ func main()  {
 ```
 更多信息参考 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry)
 
-## opentracing
+## OpenTracing
 
-client 侧，默认使用 opentracing `GlobalTracer`
+client 侧，默认使用 OpenTracing `GlobalTracer`
 
 ```go
 import (
@@ -94,7 +94,7 @@ if err != nil {
 }
 ```
 
-server 侧，默认使用 opentracing `GlobalTracer`
+server 侧，默认使用 OpenTracing `GlobalTracer`
 
 ```go
 import (

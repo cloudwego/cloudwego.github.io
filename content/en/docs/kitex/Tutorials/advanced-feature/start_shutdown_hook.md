@@ -2,7 +2,8 @@
 title: "Customize Hook for Start/Shutdown of Server-side"
 date: 2022-07-26
 weight: 5
-description: >
+keywords: ["Kitex", "StartHook", "ShutdownHook"]
+description: Kitex supports customizing business logic before and after server startup and exit respectively.
 ---
 
 Kitex provides a global Hook for injecting your processing logic on the server-side **after** triggering **startup** and **before exiting**.
@@ -27,8 +28,6 @@ After triggering Server startup, the framework executes StartHooks and performs 
   // server.RegisterStartHooks(hook)
   ```
 
-
-
 ### Inject ShutdownHook triggered before exit
 
 After receiving an exit signal or when the user initiates a stop command, the framework executes ShutdownHooks first, followed by service deregistration (from the registry) and Shutdown of the service.
@@ -42,7 +41,6 @@ server.RegisterShutdownHook(yourShundownHook)
 // support inject multiple Hooks
 // server.RegisterShutdownHook(hook)
 ```
-
 
 ## Before the server-side startup and after exit
 

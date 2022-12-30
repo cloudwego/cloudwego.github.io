@@ -2,7 +2,8 @@
 title: "服务端 启动/退出 前后定制业务逻辑"
 date: 2022-06-09
 weight: 5
-description: >
+keywords: ["Kitex", "StartHook", "ShutdownHook"]
+description: Kitex 支持分别在服务端启动和退出前后定制业务逻辑。
 ---
 
 Kitex 提供了全局的 Hook 注入能力，用于在服务端**触发启动后**和**退出前**注入自己的处理逻辑。
@@ -27,8 +28,6 @@ Kitex 提供了全局的 Hook 注入能力，用于在服务端**触发启动后
   // server.RegisterStartHooks(hook)
   ```
 
-
-
 ### 注入退出前的 ShutdownHook
 
 接收到退出信号后或用户主动通过 Stop 退出时，框架会先执行 ShutdownHooks，然后执行服务注销（从注册中心注销）和服务的Shutdown。
@@ -42,7 +41,6 @@ Kitex 提供了全局的 Hook 注入能力，用于在服务端**触发启动后
   // support inject multiple Hooks
   // server.RegisterShutdownHook(hook)
   ```
-
 
 ## 服务启动前和退出后
 
@@ -68,9 +66,3 @@ func main() {
 }
 
 ```
-
-
-
-
-
-

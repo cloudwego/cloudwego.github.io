@@ -2,7 +2,8 @@
 title: "Server Option"
 date: 2022-06-20
 weight: 2
-description: >
+keywords: ["Kitex", "Server", "Option"]
+description: Kitex Server Option instructions.
 ---
 
 # Usage

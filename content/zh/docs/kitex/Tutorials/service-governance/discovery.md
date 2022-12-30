@@ -2,7 +2,8 @@
 title: "服务发现"
 date: 2021-11-15
 weight: 1
-description: >
+keywords: ["Kitex", "服务发现", "Resolver"]
+description: Kitex 框架提供服务注册与发现的扩展，目前已经支持与业界主流注册中心对接。
 ---
 
 Kitex 已经通过社区开发者的支持，完成了 ETCD、ZooKeeper、Eureka、Consul、Nacos、Polaris 多种服务发现模式，当然也支持 DNS 解析以及 Static IP 直连访问模式，建立起了强大且完备的社区生态，供用户按需灵活选用。

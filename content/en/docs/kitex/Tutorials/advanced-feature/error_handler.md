@@ -2,7 +2,8 @@
 title: "Customize Error Handler"
 date: 2022-07-22
 weight: 4
-description: >
+keywords: ["Kitex", "Error Handler", "Middleware"]
+description: RPC is based on the protocol and there is no unified error code specification, so Kitex provides ErrorHandler to customize error handling.
 ---
 
 Some users will ask how to let the client-side receive the corresponding error type of the server-side, here to explain, RPC communicates through the protocol, and error handling is also based on the protocol. Usually when the server returns Error, the framework will unify the Error encoding and return it to the client side. If you want the client to return the same error as the server-side, you need to define a set of error codes for handling. However, considering that RPC does not have a unified error code specification, and internal error codes are not necessarily applicable to external users, so the open source part of Kitex does not expose the error code definition, and users can customize their own error handler by using the provided **ErrorHandler**.
