@@ -45,7 +45,7 @@ func main() {
     h.Use(
         // 自定义 request id 生成逻辑
         requestid.New(
-            requestid.WithGenerator(func() string {
+            requestid.WithGenerator(func(ctx context.Context, c *app.RequestContext) string {
                 return "cloudwego.io"
             }),
             // 自定义 request id 响应头键值
@@ -81,7 +81,6 @@ Request ID 中间件提供了默认配置，用户也可以依据业务场景使
 函数签名：
 
 ```go
-// Option 类型是 func(*config) 的别名
 func New(opts ...Option) app.HandlerFunc
 ```
 
@@ -125,7 +124,7 @@ func main() {
 函数签名：
 
 ```go
-// Option 类型是 func(*config) 的别名
+// HeaderStrKey 类型是 string 的别名
 func WithCustomHeaderStrKey(s HeaderStrKey) Option
 ```
 
@@ -170,8 +169,7 @@ func main() {
 函数签名：
 
 ```go
-// Generator 类型是 func() string 的别名
-// Option 类型是 func(*config) 的别名
+// Generator 类型是 func(ctx context.Context, c *app.RequestContext) string 的别名
 func WithGenerator(g Generator) Option
 ```
 
@@ -195,7 +193,7 @@ func main() {
 
     h.Use(
         // define your own request id generator here
-        requestid.New(requestid.WithGenerator(func() string {
+        requestid.New(requestid.WithGenerator(func(ctx context.Context, c *app.RequestContext) string {
             return "cloudwego.io"
         })),
     )
@@ -216,7 +214,6 @@ func main() {
 
 ```go
 // Handler 类型是 func(ctx context.Context, c *app.RequestContext, requestID string) 的别名
-// Option 类型是 func(*config) 的别名
 func WithHandler(handler Handler) Option
 ```
 
@@ -242,7 +239,7 @@ func main() {
 
     h.Use(
         requestid.New(
-            requestid.WithGenerator(func() string {
+            requestid.WithGenerator(func(ctx context.Context, c *app.RequestContext) string {
                 return "hello"
             }),
             // define your request id handler here
@@ -292,7 +289,7 @@ func main() {
     h := server.Default()
 
     h.Use(
-        requestid.New(requestid.WithGenerator(func() string {
+        requestid.New(requestid.WithGenerator(func(ctx context.Context, c *app.RequestContext) string {
             return "cloudwego.io"
         })),
     )
