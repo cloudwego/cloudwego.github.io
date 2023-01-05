@@ -8,14 +8,17 @@ description: >
 
 ## 迁移脚本
 
-Hertz-contrib 下提供了其他框架( FastHTTP ) 迁移至 Hertz 的脚本，具体使用方式如下
+Hertz-contrib 下提供了其他框架( FastHTTP、Gin ) 迁移至 Hertz 的脚本，具体使用方式如下
 
 ```shell
 cd your_project_path
 sh -c "$(curl -fsSL https://raw.github.com/hertz-contrib/migrate/main/migrate.sh)"
 ```
 
-脚本处理后，仍有小部分无法自动迁移，需要手动迁移，迁移注意事项如下
+脚本处理后，仍有小部分无法自动迁移，需要手动迁移。
+迁移小 tip：比如要修改 Header 的 API，那 Header 是在 Request（Response）中，那 Hertz 中的 Api 就是 `ctx.Request.Header.XXX()`，其他 API 同理。为了方便用户使用，Hertz 也在 ctx 上添加了高频使用的 API，比如获取 Body 时使用 `ctx.Body` 就可以，不用使用 `ctx.Request.Body()` 了。
+
+其他迁移注意事项如下
 
 ## FastHTTP
 
@@ -29,7 +32,7 @@ sh -c "$(curl -fsSL https://raw.github.com/hertz-contrib/migrate/main/migrate.sh
 // fasthttp request handler
 type RequestHandler = func(ctx *fasthttp.RequestCtx)
 
-// the corresponding hertz request handler
+// the corresponding Hertz request handler
 type HandlerFunc = func(c context.Context, ctx *app.RequestContext)
 ```
 
@@ -87,7 +90,74 @@ func main() {
 ```
 
 ```Go
-// hertz example
+// Hertz example
+func main() {
+     r := server.Default(server.WithHostPorts(":8080"))
+
+     ...
+
+     r.Spin()
+}
+```
+
+## Gin
+
+### 处理函数
+
+- 相对于 Gin 的 RequestHandler ，Hertz 的 [HandlerFunc](https://pkg.go.dev/github.com/cloudwego/hertz@v0.4.1/pkg/app#HandlerFunc) 接受两个参数：context.Context 和 [RequestContext](https://pkg.go.dev/github.com/cloudwego/hertz@v0.4.1/pkg/app#RequestContext) context.Context 即 Gin 中的 ctx.Request.Context() 。详细可以参考：[字节跳动开源 Go HTTP 框架 Hertz 设计实践](https://www.cloudwego.io/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/#%E5%BA%94%E7%94%A8%E5%B1%82)
+- 具体例子如下
+
+```Go
+// Gin request handler
+type RequestHandler = func(ctx *gin.Context)
+
+// the corresponding Hertz request handler
+type HandlerFunc = func(c context.Context, ctx *app.RequestContext)
+```
+
+### 参数绑定
+
+- Hertz 目前只支持 Bind 绑定所有的数据，不支持单独绑定 Query 或是 Body 中的数据，详细内容请参考[绑定与校验](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/#%E6%94%AF%E6%8C%81%E7%9A%84-tag-%E5%8F%8A%E5%8F%82%E6%95%B0%E7%BB%91%E5%AE%9A%E4%BC%98%E5%85%88%E7%BA%A7)
+
+### 设置 Response 数据
+
+- Hertz 支持乱序设置 Response 的 Header 和 Body，不像 Gin 必须要求先设置 Header，再设置 Body。
+- 具体例子如下
+
+```Go
+// The example is valid on Hertz
+func Hello(c context.Context, ctx *app.RequestContext) {
+        // First, Set a body
+        fmt.Fprintf(ctx, "Hello, World\n")
+
+        // Then, Set a Header
+        ctx.Header("Hertz", "test")
+}
+```
+
+### ListenAndServe
+
+- Hertz 没有实现 [http.Handler](https://pkg.go.dev/net/http#Handler)，不能使用 http.Server 来监听端口。同时，Hertz 具体的监听参数要在初始化参数中确定，详细参数参考 [server package - github.com/cloudwego/hertz/pkg/app/server - Go Packages](https://pkg.go.dev/github.com/cloudwego/hertz@v0.4.1/pkg/app/server#New)。
+
+```Go
+// Gin Run or use http.Server
+func main() {
+    r := gin.Default()
+
+    ...
+
+    r.Run(":8080")
+
+    // or use http.Server
+    srv := &http.Server{
+        Addr:    ":8080",
+        Handler: r,
+    }
+}
+```
+
+```Go
+// Hertz example
 func main() {
      r := server.Default(server.WithHostPorts(":8080"))
 
@@ -100,5 +170,7 @@ func main() {
 ## 附录
 
 ### [FastHTTP -> Hertz conversion table](https://github.com/hertz-contrib/migrate/blob/main/fasthttp_to_hertz.md)
+
+### [Gin -> Hertz conversion table](https://github.com/hertz-contrib/migrate/blob/main/gin_to_hertz.md)
 
 ### [Hertz API Doc](https://pkg.go.dev/github.com/cloudwego/hertz)
