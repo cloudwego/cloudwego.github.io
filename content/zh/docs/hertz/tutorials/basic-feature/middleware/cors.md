@@ -85,13 +85,15 @@ Hertz 通过使用 cors 中间件，为客户端提供了跨源资源访问的�
 
 该参数设置为 `true` 之后，将允许来自任意 origin 的客户端跨源访问服务端资源。
 
-与 `AllowOriginFunc` 以及 `AllowOrigins` 配置**冲突**，同时只能配置一项。
+`AllowAllOrigins` 配置为 true 时， `AllowOriginFunc` 以及 `AllowOrigins` 配置不可以使用，否则将发生冲突。
 
 ### AllowOrigins
 
 描述了可以跨源访问的 origin 列表，如果列表中的任何 origin 携带通配符 `*` （每个 origin 内只允许使用一个通配符 `*`），则允许任何满足匹配逻辑的 origin 访问。
 
-与 `AllowAllOrigins` 以及 `AllowOriginFunc` 配置**冲突**，同时只能配置一项。
+与 `AllowAllOrigins` 配置**冲突**，同时只能配置一项。
+
+与 `AllowOriginFunc` 配置同时使用时，`AllowOriginFunc` 的优先级高于 `AllowOrigins`。
 
 若需要使用携带通配符的 origin，则 `AllowWildcard` 参数需同时设置为 `true`。
 
@@ -138,7 +140,9 @@ func main() {
 
 以 origin 为形参，用于自定义 origin 的校验逻辑，返回 `ture` 表示校验通过。
 
-与 `AllowAllOrigins` 以及 `AllowOrigins` 配置**冲突**，同时只能配置一项。
+与 `AllowAllOrigins` 配置**冲突**，同时只能配置一项。
+
+与 `AllowOrigins` 配置同时使用时，`AllowOriginFunc` 的优先级高于 `AllowOrigins`。
 
 函数签名：
 
