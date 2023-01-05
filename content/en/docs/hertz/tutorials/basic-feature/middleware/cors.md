@@ -85,13 +85,15 @@ Only part of the optional parameters are configured in the above **Example**, th
 
 If the property value is true, all cross-domain requests will be allowed.
 
-**Conflicts** with `AllowOriginFunc` and `AllowOrigins`, only one of which can be configured at a time.
+When `AllowAllOrigins` is true, `AllowOriginFunc` and `AllowOrigins` must not be used, otherwise, conflicts will occur.
 
 ### AllowOrigins
 
 The property set a list of origins that can be accessed cross-domain, any cross-domain requests that satisfies the matching logic can access resource (only one `*` is allowed within each origin).
 
-**Conflicts** with `AllowAllOrigins` and `AllowOriginFunc`, only one of which can be configured at a time.
+**Conflicts** with `AllowAllOrigins`, only one of which can be configured at a time.
+
+When used together with `AllowOriginFunc`, `AllowOriginFunc` takes precedence over `AllowOrigins`.
 
 If you want to use an origin with wildcards, the `AllowWildcard` parameter must also be set to `true`.
 
@@ -138,7 +140,9 @@ func main() {
 
 It takes the origin as an argument and returns true if allowed or false otherwise.
 
-**Conflicts** with `AllowAllOrigins` and `AllowOrigins`, only one of which can be configured at a time.
+**Conflicts** with `AllowAllOrigins`, only one of which can be configured at a time.
+
+When used together with `AllowOrigins`, `AllowOriginFunc` takes precedence over `AllowOrigins`.
 
 Function signatures:
 
