@@ -200,9 +200,9 @@ func fastHTTPCheckSameOrigin(ctx *app.RequestContext) bool {
 
 目前仅支持“无上下文接管”模式，详见 `HertzUpgrader.Upgrade` 的实现。
 
-## Set Deadline
+### SetReadTimeout/SetWriteTimeout
 
-当使用 websocket 进行读写的时候，可以通过类似如下方式设置超时时间（在每次读写过程中都会生效）。
+当使用 websocket 进行读写的时候，可以通过类似如下方式设置读超时或写超时的时间。
 
 示例代码：
 
@@ -212,7 +212,7 @@ func echo(_ context.Context, c *app.RequestContext) {
         defer conn.Close()
         // "github.com/cloudwego/hertz/pkg/network"
         conn.NetConn().(network.Conn).SetReadTimeout(1 * time.Second)
-        // conn.NetConn().(network.Conn).SetWriteTimeout(1 * time.Second)
+        conn.NetConn().(network.Conn).SetWriteTimeout(1 * time.Second)
         ...
     })
     if err != nil {
@@ -223,6 +223,7 @@ func echo(_ context.Context, c *app.RequestContext) {
 ```
 
 ## NoHijackConnPool
+> Hertz 连接劫持时所使用的 hijack conn 是池化管理的，因此被劫持的连接在 websocket 中使用的时候，不支持异步操作。
 
 劫持的连接仅能被关闭一次，第二次关闭会导致空指针异常。
 

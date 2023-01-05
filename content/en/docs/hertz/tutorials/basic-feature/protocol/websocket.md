@@ -206,19 +206,18 @@ The server accepts one or more extension fields that are included in the `Sec-We
 
 Currently only the "no context takeover" mode is supported, as described in the `HertzUpgrader.Upgrade`.
 
-### Set DeadLine
+### SetReadTimeout/SetWriteTimeout
 
-When using websocket for reading and writing, you can set the timeout time which takes effect during each read and write as follows.
+When using websockets for reading and writing, the read timeout or write timeout can be set similarly as follows.
 
 Sample Code:
-
 ```go
 func echo(_ context.Context, c *app.RequestContext) {
     err := upgrader.Upgrade(c, func(conn *websocket.Conn) {
         defer conn.Close()
         // "github.com/cloudwego/hertz/pkg/network"
         conn.NetConn().(network.Conn).SetReadTimeout(1 * time.Second)
-        // conn.NetConn().(network.Conn).SetWriteTimeout(1 * time.Second)
+        conn.NetConn().(network.Conn).SetWriteTimeout(1 * time.Second)
         ...
     })
     if err != nil {
@@ -229,6 +228,9 @@ func echo(_ context.Context, c *app.RequestContext) {
 ```
 
 ## NoHijackConnPool
+
+> The hijack conn used for Hertz connection hijacking is pooled and therefore does not support asynchronous operations when the hijacked connection is used in a websocket.
+
 
 A hijacked connection can only be closed once, and a second closure will result in a null pointer exception.
 
