@@ -24,7 +24,8 @@ svr := api.NewServer(new(DemoImpl), server.WithXXX...)
 func WithServerBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
 ```
 
-Set the basic infos for server, such as ServiceName, Method and Tags.
+Set the service infos for server, include ServiceName and customized Tags (Method is no need to set), customized Tag such as Cluster, IDC, Env.
+It is strongly recommended to configure this option, and those infos will be used for service register.
 
 
 
