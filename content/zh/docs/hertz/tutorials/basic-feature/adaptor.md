@@ -71,4 +71,13 @@ func main() {
 | GetCompatResponseWriter | `func GetCompatResponseWriter(resp *protocol.Response) http.ResponseWriter` | 通过 Hertz `protocol.Response` 构建并获取 Go 标准库 `http.ResponseWriter`                           |
 | compatResponse          | /                                                                           | `compatResponse` 结构体实现了 `http.ResponseWriter` 接口并对 `Header`，`Write`，`WriteHeader` 函数进行了适配 |
 
-参考 [hertz-example](https://github.com/cloudwego/hertz-examples/tree/main/adaptor) 以获取更多示例
+## Handler
+
+Hertz 的 pprof 中间件提供了 Go 标准库 `http.Handler` 和 `http.HandlerFunc` 的适配方法，以便用户适配为 Hertz `app.HandlerFunc` 进行开发。
+
+| 函数                      | 函数签名                                                               | 介绍                                                        |
+|-------------------------|--------------------------------------------------------------------|-----------------------------------------------------------|
+| NewHertzHTTPHandlerFunc | `func NewHertzHTTPHandlerFunc(h http.HandlerFunc) app.HandlerFunc` | 用于将 Go 标准库 `http.HandlerFunc` 转换为 Hertz `app.HandlerFunc` |
+| NewHertzHTTPHandler     | `func NewHertzHTTPHandler(h http.Handler) app.HandlerFunc`         | 用于将 Go 标准库 `http.Handler` 转换为 Hertz `app.HandlerFunc`     |
+
+参考 [hertz-example](https://github.com/cloudwego/hertz-examples/tree/main/adaptor) 和 [pprof](https://github.com/hertz-contrib/pprof/tree/main/adaptor) 以获取更多示例
