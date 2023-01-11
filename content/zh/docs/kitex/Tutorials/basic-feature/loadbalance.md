@@ -2,13 +2,13 @@
 title: "负载均衡"
 date: 2021-08-26
 weight: 8
-description: >
+keywords: ["Kitex", "负载均衡", "WeightedRandom", "ConsistentHash"]
+description: "Kitex 提供的负载均衡器实现原理和使用指南。"
 ---
 
 Kitex 默认提供了两种 LoadBalancer（下面简称 lb）：
-
-* WeightedRandom
-* ConsistentHash
+- WeightedRandom
+- ConsistentHash
 
 Kitex 默认使用的是 WeightedRandom。
 

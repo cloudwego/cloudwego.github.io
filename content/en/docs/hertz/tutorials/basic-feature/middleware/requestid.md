@@ -45,7 +45,7 @@ func main() {
     h.Use(
         // provide your own request id generator here
         requestid.New(
-            requestid.WithGenerator(func() string {
+            requestid.WithGenerator(func(ctx context.Context, c *app.RequestContext) string {
                 return "cloudwego.io"
             }),
             // set custom header for request id
@@ -81,7 +81,6 @@ The `requestid` middleware provides `New` to add the Request ID field to the res
 Function signatures:
 
 ```go
-// Option is an alias for func(*config)
 func New(opts ...Option) app.HandlerFunc
 ```
 
@@ -125,7 +124,7 @@ Note: If you want to set up the request id in the request header, you need to ke
 Function signatures:
 
 ```go
-// Option is an alias for func(*config)
+// HeaderStrKey is an alias for string
 func WithCustomHeaderStrKey(s HeaderStrKey) Option
 ```
 
@@ -170,8 +169,7 @@ The `requestid` middleware provides `WithGenerator` for custom Request ID value 
 Function signatures:
 
 ```go
-// Generator is an alias for func() string
-// Option is an alias for func(*config)
+// Generator is an alias for func(ctx context.Context, c *app.RequestContext) string
 func WithGenerator(g Generator) Option
 ```
 
@@ -195,7 +193,7 @@ func main() {
 
     h.Use(
         // define your own request id generator here
-        requestid.New(requestid.WithGenerator(func() string {
+        requestid.New(requestid.WithGenerator(func(ctx context.Context, c *app.RequestContext) string {
             return "cloudwego.io"
         })),
     )
@@ -216,7 +214,6 @@ Function signatures:
 
 ```go
 // Handler is an alias for func(ctx context.Context, c *app.RequestContext, requestID string)
-// Option is an alias for func(*config)
 func WithHandler(handler Handler) Option
 ```
 
@@ -242,7 +239,7 @@ func main() {
 
     h.Use(
         requestid.New(
-            requestid.WithGenerator(func() string {
+            requestid.WithGenerator(func(ctx context.Context, c *app.RequestContext) string {
                 return "hello"
             }),
             // define your request id handler here
@@ -292,7 +289,7 @@ func main() {
     h := server.Default()
 
     h.Use(
-        requestid.New(requestid.WithGenerator(func() string {
+        requestid.New(requestid.WithGenerator(func(ctx context.Context, c *app.RequestContext) string {
             return "cloudwego.io"
         })),
     )

@@ -5,6 +5,7 @@
     padding-right: 0.5rem;
     margin-right: -15px;
     margin-left: -15px;
+    margin-top: 15px;
 
     @include media-breakpoint-up(md) {
         @supports (position: sticky) {

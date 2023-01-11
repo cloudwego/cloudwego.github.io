@@ -46,6 +46,7 @@ func main() {
 | WithALPN | bool | 是否开启 ALPN。默认关闭 |
 | WithTracer | tracer.Tracer | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭 |
 | WithTraceLevel | stats.Level | 设置 trace level，默认 LevelDetailed |
+| WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长 |
 
 Server Connection 数量限制:
 
@@ -77,9 +78,11 @@ func main() {
 | WithMaxConnDuration | time.Duration | 设置连接存活的最大时长，超过这个时间的连接在完成当前请求后会被关闭，默认无限长 |
 | WithMaxConnWaitTimeout | time.Duration | 设置等待空闲连接的最大时间，默认不等待 |
 | WithKeepAlive | bool | 是否使用长连接，默认开启 |
-| WithMaxIdempotentCallAttempts | int | 设置失败重试次数，默认5次 |
+| WithRetryConfig | ...retry.Option | 设置 client 的 retry config。Hertz 版本需 >= v0.4.0|
+| ~~WithMaxIdempotentCallAttempts~~ | int | 设置最大调用次数，调用失败则会重试。默认1次即不重试。v0.4.0版本废止，该版本之前可用，建议升级 Hertz 版本 >= v0.4.0 并使用 WithRetryConfig 替代 |
 | WithClientReadTimeout | time.Duration | 设置读取 response 的最长时间，默认无限长 |
 | WithTLSConfig | *tls.Config | 双向 TLS 认证时，设置 client 的 TLS config |
 | WithDialer | network.Dialer | 设置 client 使用的网络库，默认 netpoll |
 | WithResponseBodyStream | bool | 设置是否使用流式处理，默认关闭 |
 | WithDialFunc | client.DialFunc | 设置 Dial Function |
+| WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长 |

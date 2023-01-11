@@ -2,8 +2,8 @@
 title: "Message Types"
 date: 2021-08-26
 weight: 1
-description: >
-  Support PingPong、Oneway、Streaming.
+keywords: ["Kitex", "PingPong", "Oneway", "Streaming"]
+description: Kitex supports message types of PingPong、Oneway、Streaming.
 ---
 
 ## Protocols

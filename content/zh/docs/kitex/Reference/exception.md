@@ -2,8 +2,8 @@
 title: "异常说明"
 linkTitle: "异常说明"
 weight: 2
-description: >
-
+keywords: ["Kitex", "异常", "Exception", "Error"]
+description: "Kitex 异常类型介绍以及异常判断指南。"
 ---
 
 ## 异常类型

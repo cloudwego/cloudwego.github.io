@@ -128,5 +128,5 @@ By using the Discovery middleware provided by Hertz, custom service discovery ex
         panic(err)
     }
     r := nacos_demo.NewNacosResolver()
-    cli.Use(sd.Discovery(r),sd.WithLoadBalanceOptions(***,***))
+    cli.Use(sd.Discovery(r, sd.WithLoadBalanceOptions(***,***)))
 ```

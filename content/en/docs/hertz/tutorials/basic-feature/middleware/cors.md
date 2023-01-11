@@ -58,7 +58,7 @@ For cross-origin access, in the case of a **simple request**, this is essentiall
 
 For **non-simple** cross-origin access requests (e.g. request method is `PUT` or `PATCH`, `Content-Type` field type is `application/json`, etc.), an HTTP preflight request is sent to verify that the client has access to the server before formal communication directly. A preflight request is a browser-initiated action that uses the HTTP Method `OPTIONS`.
 
-**Note: Some of the ** `hertz-cors` **configurations will only take effect when a preflight request occurs. **
+**Note: Some of the** `hertz-cors` **configurations will only take effect when a preflight request occurs.**
 
 ## Config
 
@@ -85,13 +85,15 @@ Only part of the optional parameters are configured in the above **Example**, th
 
 If the property value is true, all cross-domain requests will be allowed.
 
-**Conflicts** with `AllowOriginFunc` and `AllowOrigins`, only one of which can be configured at a time.
+When `AllowAllOrigins` is true, `AllowOriginFunc` and `AllowOrigins` must not be used, otherwise, conflicts will occur.
 
 ### AllowOrigins
 
 The property set a list of origins that can be accessed cross-domain, any cross-domain requests that satisfies the matching logic can access resource (only one `*` is allowed within each origin).
 
-**Conflicts** with `AllowAllOrigins` and `AllowOriginFunc`, only one of which can be configured at a time.
+**Conflicts** with `AllowAllOrigins`, only one of which can be configured at a time.
+
+When used together with `AllowOriginFunc`, `AllowOriginFunc` takes precedence over `AllowOrigins`.
 
 If you want to use an origin with wildcards, the `AllowWildcard` parameter must also be set to `true`.
 
@@ -138,7 +140,9 @@ func main() {
 
 It takes the origin as an argument and returns true if allowed or false otherwise.
 
-**Conflicts** with `AllowAllOrigins` and `AllowOrigins`, only one of which can be configured at a time.
+**Conflicts** with `AllowAllOrigins`, only one of which can be configured at a time.
+
+When used together with `AllowOrigins`, `AllowOriginFunc` takes precedence over `AllowOrigins`.
 
 Function signatures:
 

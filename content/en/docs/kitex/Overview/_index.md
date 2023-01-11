@@ -2,8 +2,8 @@
 title: "Overview"
 linkTitle: "Overview"
 weight: 1
-description: >
-
+keywords: ["RPC", "Golang", "Go", "Kitex", "Architecture Design"]
+description: "This doc covers architecture design, features and performance of Kitex."
 ---
 
 ## CloudWeGo-Kitex

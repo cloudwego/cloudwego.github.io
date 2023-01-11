@@ -2,7 +2,8 @@
 title: "Client Option"
 date: 2022-06-20
 weight: 1
-description: >
+keywords: ["Kitex", "Client", "Option"]
+description: Kitex Client Option instructions.
 ---
 
 # Usage

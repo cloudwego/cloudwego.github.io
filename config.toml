@@ -1,6 +1,6 @@
 # full override: we're not tracking changes to the docsy base file.
 
-baseURL = "/"
+baseURL = "https://www.cloudwego.io"
 title = "CloudWeGo"
 googleAnalytics = "G-QYWRQRLPRM"
 
@@ -122,12 +122,14 @@ algolia_docsearch = false
 offlineSearch = true
 
 # Enable syntax highlighting and copy buttons on code blocks with Prism
-prism_syntax_highlighting = false
+prism_syntax_highlighting = true
 
 # User interface configuration
 [params.ui]
 # Enable to show the side bar menu in its compact state.
 sidebar_menu_compact = false
+# Show expand/collapse icon for sidebar sections.
+sidebar_menu_foldable = true
 #  Set to true to disable breadcrumb navigation.
 breadcrumb_disable = false
 #  Set to true to hide the sidebar search box (the top nav search box will still be displayed if search is enabled)
@@ -171,6 +173,30 @@ url = "/about/"
 [[params.footerLinks.items]]
 name = "License"
 url = "https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE"
+
+[[params.links.user]]
+	name = "Lark"
+	url = "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6"
+	icon = "fab fa-lark"
+	desc = "Chat with other CloudWeGo users by lark"
+
+[[params.links.user]]
+	name = "Twitter"
+	url = "https://twitter.com/CloudWeGo"
+	icon = "fab fa-twitter"
+	desc = "Follow us on Twitter to get the latest news!"
+
+[[params.links.developer]]
+	name = "GitHub"
+	url = "https://github.com/cloudwego"
+	icon = "fab fa-github"
+	desc = "Development takes place here!"
+
+[[params.links.developer]]
+	name = "Slack"
+	url = "https://join.slack.com/t/cloudwego/shared_invite/zt-tmcbzewn-UjXMF3ZQsPhl7W3tEDZboA"
+	icon = "fab fa-slack"
+	desc = "Chat with other project developers"
 
 [outputFormats]
 [outputFormats.PRINT]

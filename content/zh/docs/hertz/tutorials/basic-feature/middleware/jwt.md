@@ -22,21 +22,27 @@ package main
 
 import (
     "context"
+    "fmt"
     "log"
+    "time"
 
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
     "github.com/hertz-contrib/jwt"
 )
 
 type login struct {
-    Username string `form:"username,required" json:"username,required"` //lint:ignore SA5008 ignoreCheck
-    Password string `form:"password,required" json:"password,required"` //lint:ignore SA5008 ignoreCheck
+    Username string `form:"username,required" json:"username,required"`
+    Password string `form:"password,required" json:"password,required"`
 }
 
+var identityKey = "id"
+
 func PingHandler(c context.Context, ctx *app.RequestContext) {
-    ctx.JSON(200, map[string]string{
-        "ping": "pong",
+    user, _ := ctx.Get(identityKey)
+    ctx.JSON(200, utils.H{
+        "message": fmt.Sprintf("username:%v", user.(*User).UserName),
     })
 }
 
@@ -49,9 +55,28 @@ type User struct {
 
 func main() {
     h := server.Default()
+
     // the jwt middleware
     authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
-        Key: []byte("secret key"),
+        Realm:       "test zone",
+        Key:         []byte("secret key"),
+        Timeout:     time.Hour,
+        MaxRefresh:  time.Hour,
+        IdentityKey: identityKey,
+        PayloadFunc: func(data interface{}) jwt.MapClaims {
+            if v, ok := data.(*User); ok {
+                return jwt.MapClaims{
+                    identityKey: v.UserName,
+                }
+            }
+            return jwt.MapClaims{}
+        },
+        IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
+            claims := jwt.ExtractClaims(ctx, c)
+            return &User{
+                UserName: claims[identityKey].(string),
+            }
+        },
         Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
             var loginVals login
             if err := c.BindAndValidate(&loginVals); err != nil {
@@ -67,15 +92,46 @@ func main() {
                     FirstName: "CloudWeGo",
                 }, nil
             }
+
             return nil, jwt.ErrFailedAuthentication
+        },
+        Authorizator: func(data interface{}, ctx context.Context, c *app.RequestContext) bool {
+            if v, ok := data.(*User); ok && v.UserName == "admin" {
+                return true
+            }
+
+            return false
+        },
+        Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
+            c.JSON(code, map[string]interface{}{
+                "code":    code,
+                "message": message,
+            })
         },
     })
     if err != nil {
         log.Fatal("JWT Error:" + err.Error())
     }
+
+    // When you use jwt.New(), the function is already automatically called for checking,
+    // which means you don't need to call it again.
+    errInit := authMiddleware.MiddlewareInit()
+
+    if errInit != nil {
+        log.Fatal("authMiddleware.MiddlewareInit() Error:" + errInit.Error())
+    }
+
     h.POST("/login", authMiddleware.LoginHandler)
 
+    h.NoRoute(authMiddleware.MiddlewareFunc(), func(ctx context.Context, c *app.RequestContext) {
+        claims := jwt.ExtractClaims(ctx, c)
+        log.Printf("NoRoute claims: %#v\n", claims)
+        c.JSON(404, map[string]string{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+    })
+
     auth := h.Group("/auth")
+    // Refresh time can be longer than token timeout
+    auth.GET("/refresh_token", authMiddleware.RefreshHandler)
     auth.Use(authMiddleware.MiddlewareFunc())
     {
         auth.GET("/ping", PingHandler)
@@ -97,8 +153,8 @@ Hertz 通过使用中间件，为路由请求提供了 `jwt` 的校验功能。�
 
 上述**示例代码**中，只传入了**两项必要的**自定义的配置。关于 `HertzJWTMiddleware` 的更多常用配置如下：
 
-| 参数                          | 介绍                                                                                     |
-| :---------------------------- |:---------------------------------------------------------------------------------------|
+| 参数                            | 介绍                                                                                     |
+|:------------------------------|:---------------------------------------------------------------------------------------|
 | `Realm`                       | 用于设置所属领域名称，默认为 `hertz jwt`                                                             |
 | `SigningAlgorithm`            | 用于设置签名算法，可以是 HS256、HS384、HS512、RS256、RS384 或者 RS512等，默认为 `HS256`                       |
 | `Key`                         | 用于设置签名密钥（必要配置）                                                                         |
@@ -107,7 +163,7 @@ Hertz 通过使用中间件，为路由请求提供了 `jwt` 的校验功能。�
 | `MaxRefresh`                  | 用于设置最大 token 刷新时间，允许客户端在 `TokenTime` + `MaxRefresh` 内刷新 token 的有效时间，追加一个 `Timeout` 的时长 |
 | `Authenticator`               | 用于设置登录时认证用户信息的函数（必要配置）                                                                 |
 | `Authorizator`                | 用于设置授权已认证的用户路由访问权限的函数                                                                  |
-| `PayloadFunc`                 | 用于设置登录时为 token 添加额外的负载信息的函数                                                            |
+| `PayloadFunc`                 | 用于设置登陆成功后为向 token 中添加自定义负载信息的函数                                                        |
 | `Unauthorized`                | 用于设置 jwt 验证流程失败的响应函数                                                                   |
 | `LoginResponse`               | 用于设置登录的响应函数                                                                            |
 | `LogoutResponse`              | 用于设置登出的响应函数                                                                            |
@@ -125,9 +181,10 @@ Hertz 通过使用中间件，为路由请求提供了 `jwt` 的校验功能。�
 | `CookieHTTPOnly`              | 用于设置允许客户端访问 cookie 以进行开发，默认为 `false`                                                   |
 | `CookieDomain`                | 用于设置 cookie 所属的域，默认为空                                                                  |
 | `SendAuthorization`           | 用于设置为所有请求的响应头添加授权的 token 信息，默认为 `false`                                                |
-| `DisabledAbort`               | 用于设置在 jwt 验证流程出错时，禁止请求上下文调用 abort()，默认为 `false`                                        |
+| `DisabledAbort`               | 用于设置在 jwt 验证流程出错时，禁止请求上下文调用 `abort()`，默认为 `false`                                      |
 | `CookieName`                  | 用于设置 cookie 的 name 值                                                                   |
 | `CookieSameSite`              | 用于设置使用 `protocol.CookieSameSite` 声明的参数设置 cookie 的 SameSite 属性值                         |
+ | `ParseOptions`                | 用于设置使用 `jwt.ParserOption` 声明的函数选项式参数配置 `jwt.Parser` 的属性值                               |
 
 ### Key
 
@@ -235,7 +292,7 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 
 ### PayloadFunc
 
-用于设置登录时为 `token` 添加额外负载信息的函数，如果不传入这个参数，则 `token` 的 `payload` 部分默认存储 `token` 的过期时间和创建时间，如下则额外存储了用户名信息。
+用于设置登录时为 `token` 添加自定义负载信息的函数，如果不传入这个参数，则 `token` 的 `payload` 部分默认存储 `token` 的过期时间和创建时间，如下则额外存储了用户名信息。
 
 函数签名：
 
@@ -255,6 +312,31 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
         }
         return jwt.MapClaims{}
     },
+})
+```
+
+### IdentityHandler
+
+`IdentityHandler` 作用在登录成功后的每次请求中，用于设置从 token 提取用户信息的函数。这里提到的用户信息在用户成功登录时，触发 `PayloadFunc` 函数，已经存入 token 的负载部分。
+
+具体流程：通过在 `IdentityHandler` 内配合使用 `identityKey` ，将存储用户信息的 token 从请求上下文中取出并提取需要的信息，封装成 User 结构，以 `identityKey` 为 key，User 为 value 存入请求上下文当中以备后续使用。
+
+函数签名：
+
+```go
+func(ctx context.Context, c *app.RequestContext) interface{}
+```
+
+示例代码：
+
+```go
+authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
+    IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
+        claims := jwt.ExtractClaims(ctx, c)
+        return &User{
+            UserName: claims[identityKey].(string),
+        }
+    }
 })
 ```
 
@@ -357,31 +439,6 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 ```
 
-### IdentityHandler
-
-`IdentityHandler` 作用在登录成功后的每次请求中，用于设置从 token 提取用户信息的函数。这里提到的用户信息在用户成功登录时，触发 `PayloadFunc` 函数，已经存入 token 的负载部分。
-
-具体流程：通过在 `IdentityHandler` 内配合使用 `identityKey` ，将存储用户信息的 token 从请求上下文中取出并提取需要的信息，封装成 User 结构，以 `identityKey` 为 key，User 为 value 存入请求上下文当中以备后续使用。
-
-函数签名：
-
-```go
-func(ctx context.Context, c *app.RequestContext) interface{}
-```
-
-示例代码：
-
-```go
-authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
-    IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
-        claims := jwt.ExtractClaims(ctx, c)
-        return &User{
-            UserName: claims[identityKey].(string),
-        }
-    }
-})
-```
-
 ### TokenLookup
 
 通过键值对的形式声明 token 的获取源，有四种可选的方式，默认值为 header:Authorization，如果同时声明了多个数据源则以 `，` 为分隔线，第一个满足输入格式的数据源将被选择，其余忽略。
@@ -454,6 +511,26 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
     CookieDomain:      ".test.com",
     CookieName:        "jwt-cookie",
     CookieSameSite:    protocol.CookieSameSiteDisabled,
+})
+```
+
+### ParseOptions
+
+利用 ParseOptions 可以开启相关配置有三个，分别为
+ 
+- `WithValidMethods`: 用于提供解析器将检查的签名算法，只有被提供的签名算法才被认为是有效的
+- `WithJSONNumber`: 用于配置底层 JSON 解析器使用 `UseNumber` 方法
+- `WithoutClaimsValidation`: 用于禁用 claims 验证
+
+示例代码：
+
+```go
+authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
+    ParseOptions: []jwt.ParserOption{
+        jwt.WithValidMethods([]string{"HS256"}),
+        jwt.WithJSONNumber(),
+        jwt.WithoutClaimsValidation(),
+    },
 })
 ```
 

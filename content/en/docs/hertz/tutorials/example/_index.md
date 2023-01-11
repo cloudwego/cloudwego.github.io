@@ -6,6 +6,23 @@ description: >
 
 ---
 
+Hertz provides a series of code examples designed to help users get start with Hertz and be familiar with its features. Refer to [hertz-examples](https://github.com/cloudwego/hertz-examples) for more information.
+
+## Bizdemo
+
+### hertz_gorm
+- [hertz_gorm](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_gorm) ：Example of using gorm in hertz server
+
+### hertz_gorm_gen
+- [hertz_gorm_gen](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_gorm_gen) ：Example of using gorm/gen & proto IDL in hertz server
+
+### hertz_jwt
+- [hertz_jwt](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_jwt) ：Example of using jwt in hertz server
+
+### hertz_session
+- [hertz_session](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_session) ：Example of using distributed session and csrf in hertz server
+
+
 ## Server
 
 ### Run hertz
@@ -15,15 +32,18 @@ description: >
 - [config](https://github.com/cloudwego/hertz-examples/tree/main/config) ：Example of configuring hertz  server
 
 ### Protocol
-- [Protocol](https://github.com/cloudwego/hertz-examples/tree/main/protocol) ：Example of hertz using protocols such as http1, tls, etc
+- [Protocol](https://github.com/cloudwego/hertz-examples/tree/main/protocol) ：Example of hertz using protocols such as HTTP1, TLS, etc
 
 ### Route
 - [Route](https://github.com/cloudwego/hertz-examples/tree/main/route) ：Examples of registering routes, using route groups, and parameter routes
 
 ### Middleware
-- [CORS](https://github.com/cloudwego/hertz-examples/tree/main/middleware/CORS) ：Example of using the CORS middleware
 - [basic_auth](https://github.com/cloudwego/hertz-examples/tree/main/middleware/basicauth) ：Example of using basic auth middleware
+- [CORS](https://github.com/cloudwego/hertz-examples/tree/main/middleware/CORS) ：Example of using the CORS middleware
 - [custom](https://github.com/cloudwego/hertz-examples/tree/main/middleware/custom) ：Example of custom middleware
+- [pprof](https://github.com/cloudwego/hertz-examples/tree/main/middleware/pprof) ：Example of using pprof middleware
+- [requestid](https://github.com/cloudwego/hertz-examples/tree/main/middleware/requestid) ：Example of using RequestID middleware
+- [gzip](https://github.com/cloudwego/hertz-examples/tree/main/gzip) ：Example of using gzip middleware in hertz server
 
 ### Parameter binding and validation
 - [binding](https://github.com/cloudwego/hertz-examples/tree/main/binding) ：Example of parameter binding and validation
@@ -54,6 +74,22 @@ description: >
 
 ### Monitoring
 - [monitoring](https://github.com/cloudwego/hertz-examples/tree/main/monitoring) ：hertz Example of metrics monitoring with Prometheus
+
+### Multiple service
+- [multiple_service](https://github.com/cloudwego/hertz-examples/tree/main/multiple_service) ：Example of using hertz with multiple services
+
+### Adaptor
+- [adaptor](https://github.com/cloudwego/hertz-examples/tree/main/adaptor) ：Example of using adaptor to integrate hertz with package built for `http.Handler` interface , including a demonstration on using [jade](https://github.com/Joker/jade)
+  as template engine.
+
+### Sentinel
+- [sentinel:](https://github.com/cloudwego/hertz-examples/tree/main/sentinel) ：Example of using sentinel-golang in hertz
+
+### Reverse proxy
+- [reverseproxy](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy) ：Example of using reverse proxy in hertz server
+
+### Hlog
+- [hlog:](https://github.com/cloudwego/hertz-examples/tree/main/hlog) ：Example of using hlog and its log extension
 
 
 ## Client

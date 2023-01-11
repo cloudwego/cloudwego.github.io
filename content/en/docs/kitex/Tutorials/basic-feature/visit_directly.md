@@ -2,10 +2,9 @@
 title: "Visit Directly"
 date: 2021-08-31
 weight: 4
-description: >
+keywords: ["Kitex", "URL", "DNS"]
+description: Kitex can opt for direct access without service discovery when the downstream address is clear.
 ---
-
-If you want to send the request to downstream that address determined, you can choose visiting directly without service discovery.
 
 ## Specify RPC Host and Port
 You can use `callopt.WithHostPort` to specify host and port, supports two parameters:
@@ -19,7 +18,6 @@ resp, err := cli.Echo(context.Background(), req, callopt.WithHostPort("127.0.0.1
 if err != nil {
    log.Fatal(err)
 }
-
 ```
 
 ## Specify RPC URL

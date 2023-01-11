@@ -1,5 +1,5 @@
 ---
-title: "Extend the Templates of Generated Code"
+title: "Extend the Templates of Service Generated Code"
 date: 2022-11-03
 weight: 5
 description: >
@@ -7,15 +7,23 @@ description: >
 
 ## Introduction
 
-From version v0.4.3, Kitex tool proivides a new flag named `-template-extension`, to support extending the templates of generated code.
+From version v0.4.3, Kitex tool provides a new flag named `-template-extension`, to support extending the templates of Service generated code.
 
-Usage: `kitex -template-extension extensions.json YOUR_IDL`.
+- **Usage**: `kitex -template-extension extensions.json YOUR_IDL`.
 
-The **extensions.json** is a JSON file, which contains the serialization result of a [TemplateExtension](https://pkg.go.dev/github.com/cloudwego/kitex/tool/internal_pkg/generator#TemplateExtension) object. The fields of this object will be injected into the backend of the kitex code generation tool, to insert certain codes at specific points. 
+The **extensions.json** is a JSON file, which contains the serialization result of a [TemplateExtension](https://pkg.go.dev/github.com/cloudwego/kitex/tool/internal_pkg/generator#TemplateExtension) object. The fields of this object will be injected into the backend of the Kitex code generation tool, to insert certain codes at specific points.
 
 Kitex will generate a package for each service definition in the IDL under the folder **kitex_gen**, in which the APIs `NewClient`, `NewServer`, etc. are provided.
 
-The content provided by extensions.json will apply to all packages of all service definitions. The fields `ExtendClient` and `ExtendServer` are extensions for file client.go and server.go.
+The content provided by extensions.json will apply to all packages of all service definitions, the fields `extend_client`, `extend_server`, `extend_invoker` are extensions for file client.go, server.go, invoker.go.
+
+### Application Scenario
+
+It is applicable to the scenario for customizing the unified suite.
+
+Enterprise users have a unified customization of the framework, thus there is a set of fixed option configurations normally. We suggest that these options be encapsulated in suite, so that only one option needs to be configured during initialization. However, business developers still need to configure this suite option. Actually, business developers do not need to pay attention to this configuration, because business developers do not need to pay attention to infrastructure capabilities.
+
+In ByteDance, a bytedSuite will be injected into the generated code. In order to facilitate the use of the external framework customization, the configuration customization capability is provided. Of course, if you want to further shield this detail from business developers, you can also encapsulate the Kitex tool and make this unified configuration built-in.
 
 ## Example
 
@@ -39,15 +47,17 @@ Assume we have an extensions.json file:
 }
 ```
 
-The **dependencies** field defines a set of packages that may be used in the template and the names they should be aliased as. 
+- **dependencies**: Defines a set of packages that may be used in the template and the names they should be aliased as.
 
-The **import_paths** in **extend_client** declares the package list that the code injected into client.go needs to import. Those packages must be declared in the **dependencies**.
+- **extend_client**: Customization for client.go
 
-The code snippet provided by the **extend_option** field will be injected into the `NewClient` function, where the default options are constructed. Thus, you can inject your own suite option.
+    - **import_paths**: Declare the package list that the code injected into client.go needs to import. Those packages must be declared in the **dependencies**.
 
-The code snippet provided by the **extend_file** field will be directly appended to client.go. You can add extra functions or constants here.
+    - **extend_option**: The code snippet will be injected into the `NewClient` function, where the default options are constructed. Thus, you can inject your own suite option.
 
-The **extend_server** field works like the **extend_client** field.
+    - **extend_file**: The code snippet will be directly appended to client.go. You can add extra functions or constants here.
+
+- **extend_server** field works like the **extend_client** field.
 
 An IDL that applied the extensions.json above may produce a cient.go like this (the injected part is highlighted):
 

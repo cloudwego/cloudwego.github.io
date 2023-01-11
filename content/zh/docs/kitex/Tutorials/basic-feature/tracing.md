@@ -2,13 +2,16 @@
 title: "埋点粒度"
 date: 2021-08-26
 weight: 11
-description: >
+keywords: ["Kitex", "埋点"]
+description: Kitex 支持灵活启用基本埋点和细粒度埋点。
 ---
 
 埋点粒度：
 1. LevelDisabled 禁用埋点
 2. LevelBase 仅启用基本埋点
 3. LevelDetailed 启用基本埋点和细粒度埋点
+
+## 埋点策略 & 埋点粒度控制
 
 默认埋点策略：
 1. 无 tracer 时，默认 LevelDisabled

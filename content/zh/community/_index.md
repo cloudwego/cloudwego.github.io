@@ -1,5 +1,5 @@
 ---
-title: "社区模块"
+title: "社区"
 linkTitle: "社区"
 menu:
   main:

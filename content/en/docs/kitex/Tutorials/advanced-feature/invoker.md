@@ -2,10 +2,9 @@
 title: "Server SDK Mode"
 date: 2021-08-31
 weight: 3
-description: >
+keywords: ["Kitex", "SDK 化"]
+description: SDK Mode（invoker）provides a way to call Kitex server just like a SDK.
 ---
-
-SDK Mode（invoker）provides a way to call Kitex server just like a SDK.
 
 `message` is used to start a call, you should use `local` and `remote` two `net.Addr` to initialize `message`.
 Which indicates local and remote address (used in logging and tracing).

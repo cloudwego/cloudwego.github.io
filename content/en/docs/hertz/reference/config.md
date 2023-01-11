@@ -46,6 +46,8 @@ func main() {
 | WithALPN | bool | Whether to enable ALPN. Default: false. |
 | WithTracer | tracer.Tracer | Inject tracer implementation, if not inject Tracer. Default: close. |
 | WithTraceLevel | stats.Level | Set trace level, Default: LevelDetailed. |
+| WithWriteTimeout | time.Duration | The timeout of data writing. Default：infinite.|
+
 
 Server Connection limitation:
 
@@ -78,9 +80,11 @@ func main() {
 | WithMaxConnDuration | time.Duration | Set the maximum keep-alive time of the connection, when the timeout expired, the connection will be closed after the current request is completed. Default: infinite. |
 | WithMaxConnWaitTimeout | time.Duration | Set the maximum time to wait for an idle connection. Default: no wait. |
 | WithKeepAlive | bool | Whether to use persistent connection. Default: true. |
-| WithMaxIdempotentCallAttempts | int | Set the times of failed retries. Default: 5. |
+| WithRetryConfig | ...retry.Option | Set the retry config of client. Hertz version >= v0.4.0. |
+| ~~WithMaxIdempotentCallAttempts~~ | int | Set the maximum number of calls. If a call fails, it will be retried. Default: 1 (That is no retry). v0.4.0 is obsolete. Only available before v0.4.0. It is recommended to upgrade Hertz version >= v0.4.0 and use WithRetryConfig instead. |
 | WithClientReadTimeout | time.Duration | Set the maximum time to read the response. Default: infinite. |
 | WithTLSConfig | *tls.Config | Set the client's TLS config for mutual TLS authentication. |
 | WithDialer | network.Dialer | Set the network library used by the client. Default: netpoll. |
 | WithResponseBodyStream | bool | Set whether to use stream processing. Default: false. |
 | WithDialFunc | client.DialFunc | Set Dial Function. |
+| WithWriteTimeout | time.Duration | The timeout of data writing. Default：infinite.|

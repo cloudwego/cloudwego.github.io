@@ -2,8 +2,8 @@
 title: "Exception Instruction"
 linkTitle: "Exception Instruction"
 weight: 2
-description: >
-
+keywords: ["Kitex", "Exception", "Error"]
+description: "Kitex Exception Types and exception judgement guide."
 ---
 
 ## Exception Type

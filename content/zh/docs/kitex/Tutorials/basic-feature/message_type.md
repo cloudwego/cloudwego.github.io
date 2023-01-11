@@ -2,8 +2,8 @@
 title: "消息类型"
 date: 2021-08-26
 weight: 1
-description: >
-  支持 PingPong、Oneway、Streaming。
+keywords: ["Kitex", "PingPong", "Oneway", "Streaming"]
+description: Kitex 支持 PingPong、Oneway、Streaming 消息类型。
 ---
 
 ## 协议支持

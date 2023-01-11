@@ -2,10 +2,11 @@
 title: "Monitoring"
 date: 2021-08-31
 weight: 2
-description: >
+keywords: ["Kitex", "Monitoring", "Tracer"]
+description: Kitex has monitoring capability built in, but does not have any monitoring features itself, and can be extended by the interface.
 ---
 
-The framework itself doesn‘t providing any monitoring, but only provides a `Tracer` interface, which users can implement it and inject by `WithTracer` Option.
+The framework provides a `Tracer` interface. Users can implement it and inject it by `WithTracer` Option.
 
 ```go
 // Tracer is executed at the start and finish of an RPC.
