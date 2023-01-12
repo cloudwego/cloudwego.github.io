@@ -24,7 +24,7 @@ client, err := echo.NewClient("targetService", client.WithXXXX...)
 func WithClientBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
 ```
 
-Set the service infos for client, include ServiceName and customized Tags (Method is no need to set), customized Tag such as Cluster, IDC, Env. 
+Set the service infos for client, including ServiceName and customized Tags, customized Tag such as Cluster, IDC, Env, and it is no need to set Method field of EndpointBasicInfo.
 It is strongly recommended to configure this option.
 
 

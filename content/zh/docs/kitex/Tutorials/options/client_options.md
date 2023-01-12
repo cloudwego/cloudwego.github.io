@@ -24,7 +24,7 @@ client, err := echo.NewClient("targetService", client.WithXXXX...)
 func WithClientBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
 ```
 
-设置 Client 侧的 Service 信息，包括 ServiceName 和自定义的 Tags (无需设置方法信息)，自定义 Tag 如 Cluster、IDC、Env。强烈建议配置该 Option。
+设置 Client 侧的 Service 信息，包括 ServiceName 和自定义的 Tags，自定义 Tag 如 Cluster、IDC、Env，无需设置 EndpointBasicInfo 的 Method 字段。强烈建议配置该 Option。
 
 
 
