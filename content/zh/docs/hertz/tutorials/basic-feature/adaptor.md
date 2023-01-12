@@ -66,7 +66,7 @@ func main() {
 
 ## http.ResponseWriter
 
-| 函数/结构体                  | 函数签名                                                                        | 介绍                                                                                        |
+| 函数 / 结构体                | 函数签名                                                                        | 介绍                                                                                        |
 |-------------------------|-----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
 | GetCompatResponseWriter | `func GetCompatResponseWriter(resp *protocol.Response) http.ResponseWriter` | 通过 Hertz `protocol.Response` 构建并获取 Go 标准库 `http.ResponseWriter`                           |
 | compatResponse          | /                                                                           | `compatResponse` 结构体实现了 `http.ResponseWriter` 接口并对 `Header`，`Write`，`WriteHeader` 函数进行了适配 |
