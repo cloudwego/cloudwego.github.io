@@ -1016,3 +1016,9 @@ hz 在 new 的时候生成的 router 代码主要有如下三个：
 <!---->
 
 - biz/router/register.go: 如果有新增的 idl 会插入新的 idl 的路由注册方式。
+
+### 使用 Windows 操作系统时的注意事项
+
+使用 `hz` 命令创建项目时将用到 `symlink` ，在 Windows 操作系统下你可能需要[开启开发者模式](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development)来启用用户权限的 symlink
+
+在基于 protobuf IDL 创建项目时，你需要手动安装 [protoc 命令行工具](https://github.com/protocolbuffers/protobuf/releases)至 PATH 环境变量，另外如果你使用 `google/protobuf` 包下的文件，你需要将protoc-win64.zip 中 include目录下的所有文件放在 protoc 同一目录。
