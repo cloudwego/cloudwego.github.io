@@ -1017,3 +1017,9 @@ Based on the above description, a description of the router's behavior during up
 <!---->
 
 - biz/router/register.go: If there is a new IDL, the route registration method of the new IDL will be inserted.
+
+### Notes on using Windows Operating System
+
+Hz uses `symlink` when creating & updating projects. For Windows, you may need to [enable your device's development mode](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) to get permission for your Windows user.
+
+When creating projects based on protobuf IDL, you need to manually download & install the `protoc` command from <https://github.com/protocolbuffers/protobuf/releases>. If your protobuf IDL contains a dependency on the `google/protobuf` package, you need to unzip `protoc-win64.zip` and put everything under the include directory in the same directory as your protoc binary file.
