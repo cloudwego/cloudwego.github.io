@@ -165,7 +165,7 @@ func (s *HelloImpl) Add(ctx context.Context, req *api.AddRequest) (resp *api.Add
 }
 ```
 
-### Call the 'add' method
+### Call the `add` method
 
 Let's add the `add` RPC to the client example.
 
@@ -455,4 +455,4 @@ You should see some outputs like below:
 
 `2021/05/20 16:51:35 Response({Message:my request})`
 
-Congratulation! You have written a Kitex server and client, and have done a RPC call.    
+Congratulation! You have written a Kitex server and client, and have done a RPC call.
