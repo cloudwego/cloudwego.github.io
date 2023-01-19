@@ -183,7 +183,7 @@ If we set the route `/user/:name`, the match is as follows
 |  ----  | ----  |
 | /user/gordon  | matched |
 | /user/you  | matched |
-| /user/gordon/profile  | matched |
+| /user/gordon/profile  | mismatched |
 |  /user/  | mismatched |
 
 By using the `RequestContext.Param` method, we can get the parameters carried in the route.
@@ -221,7 +221,7 @@ If we set the route `/src/*filepath`, the match is as follows
 |  ----  | ----  |
 | /src/  | matched |
 | /src/somefile.go   | matched |
-| /src/subdir/somefile.go  | mismatched |
+| /src/subdir/somefile.go  | matched |
 
 By using the `RequestContext.Param` method, we can get the parameters carried in the route.
 
