@@ -170,7 +170,7 @@ Hertz 通过使用中间件，为路由请求提供了 `jwt` 的校验功能。�
 | `RefreshResponse`             | 用于设置 token 有效时长刷新后的响应函数                                                                |
 | `IdentityHandler`             | 用于设置获取身份信息的函数，默认与 `IdentityKey` 配合使用                                                   |
 | `IdentityKey`                 | 用于设置检索身份的键，默认为 `identity`                                                              |
-| `TokenLookup`                 | 用于设置 token 的获取源，可以选择 `header`、`query`、`cookie`、`param`，默认为 `header:Authorization`      |
+| `TokenLookup`                 | 用于设置 token 的获取源，可以选择 `header`、`query`、`cookie`、`param`、`form`，默认为 `header:Authorization`  |
 | `TokenHeadName`               | 用于设置从 header 中获取 token 时的前缀，默认为 `Bearer`                                               |
 | `WithoutDefaultTokenHeadName` | 用于设置 `TokenHeadName` 为空，默认为 `false`                                                    |
 | `TimeFunc`                    | 用于设置获取当前时间的函数，默认为 `time.Now()`                                                         |
@@ -451,6 +451,7 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
     // - "query:<name>"
     // - "cookie:<name>"
     // - "param:<name>"
+	// - "form:<name>"
     TokenLookup: "header: Authorization, query: token, cookie: jwt"
 })
 ```

@@ -170,7 +170,7 @@ In the **Example** above, only **two necessary** custom configurations are passe
 | `RefreshResponse`             | The property used to set the response after the token has been valid for a refreshed period                                                                                                 |
 | `IdentityHandler`             | The property used to set the function to get identity information, the function used with `IdentityKey` by default                                                                          |
 | `IdentityKey`                 | The property used to set the key to retrieve the identity information, the default key is `identity`                                                                                        |
-| `TokenLookup`                 | The property used to set the source of the token, you can choose `header`, `query`, `cookie`, or `param`, the default value is `header:Authorization`                                       |
+| `TokenLookup`                 | The property used to set the source of the token, you can choose `header`, `query`, `cookie`, `param`, or `form`, the default value is `header:Authorization`                               |
 | `TokenHeadName`               | The property used to set the prefix for getting the token from the header, the default value is `Bearer`                                                                                    |
 | `WithoutDefaultTokenHeadName` | The property used to set the `TokenHeadName` to null, the default value is `false`                                                                                                          |
 | `TimeFunc`                    | The property used to set a function to get the current time, the default is `time.Now()`                                                                                                    |
@@ -451,6 +451,7 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
     // - "query:<name>"
     // - "cookie:<name>"
     // - "param:<name>"
+    // - "form:<name>"
     TokenLookup: "header: Authorization, query: token, cookie: jwt"
 })
 ```
