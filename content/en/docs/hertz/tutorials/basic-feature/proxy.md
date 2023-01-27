@@ -138,12 +138,12 @@ Using `ReverseProxy.SetClient` if there is need for shared customized `client.Cl
 
 We provide the `SetXxx()` method for setting private properties
 
-| Method | Description |
-| ------------ | ------------ |
-|  `SetDirector`   | use to customize protocol.Request    |
-|  `SetClient` | use to customize client |
-|  `SetModifyResponse` |  use to customize modify response function  |
-|  `SetErrorHandler` |  use to customize error handler  |
+| Method              | Description                               | Example                                                                                                                    |
+|---------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `SetDirector`       | use to customize protocol.Request         | [reverseproxy/discovery](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/discovery/discovery/main.go)   |
+| `SetClient`         | use to customize client                   | [reverseproxy/discovery](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/discovery/discovery/main.go)   |
+| `SetModifyResponse` | use to customize modify response function | [reverseproxy/modify_response](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/modify_response/main.go) |
+| `SetErrorHandler`   | use to customize error handler            | [reverseproxy/customize_error](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/customize_error/main.go) |
 
 ### Example
 
@@ -174,6 +174,136 @@ func main() {
 
     h.GET("/backend", proxy.ServeHTTP)
     h.Spin()
+}
+```
+
+### FAQ
+
+#### How to proxy HTTPS
+
+Proxying HTTPS requires configuring TLS in `NewSingleHostReverseProxy` method and using `WithDialer` to establish a connection.
+
+**Example Code**
+
+```go
+package main
+
+import (
+     "context"
+     "crypto/tls"
+     "fmt"
+     "sync"
+    
+     "github.com/cloudwego/hertz/pkg/app"
+     "github.com/cloudwego/hertz/pkg/app/client"
+     "github.com/cloudwego/hertz/pkg/app/server"
+     "github.com/cloudwego/hertz/pkg/common/utils"
+     "github.com/cloudwego/hertz/pkg/network/standard"
+     "github.com/hertz-contrib/reverseproxy"
+)
+
+func main() {
+     var wg sync.WaitGroup
+     wg. Add(2)
+     go func() {
+         defer wg. Done()
+         cfg := &tls. Config{
+             MinVersion: tls.VersionTLS12,
+             CurvePreferences: []tls.CurveID{tls.X25519, tls.CurveP256},
+             PreferServerCipherSuites: true,
+             CipherSuites: []uint16{
+                 tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
+                 tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+                 tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+             },
+         }
+         cert, err := tls.LoadX509KeyPair("tls/server.crt", "tls/server.key")
+         if err != nil {
+             fmt.Println(err.Error())
+         }
+         cfg. Certificates = append(cfg. Certificates, cert)
+    
+         h := server.New(
+             server.WithHostPorts(":8004"),
+             server.WithTLS(cfg),
+         )
+         h.GET("/backend", func(cc context.Context, c *app.RequestContext) {
+             c.JSON(200, utils.H{"msg": "pong"})
+         })
+         h. Spin()
+     }()
+    
+     go func() {
+         defer wg. Done()
+         h := server. New(server. WithHostPorts(":8001"))
+         proxy, err := reverseproxy.NewSingleHostReverseProxy("https://127.0.0.1:8004",
+             client.WithTLSConfig(&tls.Config{
+                 InsecureSkipVerify: true,
+             }),
+             client.WithDialer(standard.NewDialer()),
+         )
+         if err != nil {
+             panic(err)
+         }
+         h.GET("/backend", proxy.ServeHTTP)
+         h. Spin()
+     }()
+     wg. Wait()
+}
+```
+
+#### How to use with middleware
+
+Use the middleware through the `Use` method, and handle the reverse proxy in the middleware logic.
+
+**Example Code**
+
+```go
+package main
+
+import (
+     "context"
+    
+     "github.com/cloudwego/hertz/pkg/app"
+     "github.com/cloudwego/hertz/pkg/app/server"
+     "github.com/cloudwego/hertz/pkg/common/utils"
+     "github.com/hertz-contrib/reverseproxy"
+)
+
+func main() {
+     r := server.Default(server.WithHostPorts("127.0.0.1:9998"))
+    
+     r2 := server.Default(server.WithHostPorts("127.0.0.1:9997"))
+    
+     proxy, err := reverseproxy.NewSingleHostReverseProxy("http://127.0.0.1:9997")
+     if err != nil {
+         panic(err)
+     }
+    
+     r.Use(func(c context.Context, ctx *app.RequestContext) {
+         if ctx.Query("country") == "cn" {
+             proxy. ServeHTTP(c, ctx)
+             ctx.Response.Header.Set("key", "value")
+             ctx. Abort()
+         } else {
+             ctx. Next(c)
+         }
+     })
+    
+     r.GET("/backend", func(c context.Context, ctx *app.RequestContext) {
+         ctx.JSON(200, utils.H{
+             "message": "pong1",
+         })
+     })
+    
+     r2.GET("/backend", func(c context.Context, ctx *app.RequestContext) {
+         ctx.JSON(200, utils.H{
+             "message": "pong2",
+         })
+     })
+    
+     go r. Spin()
+     r2. Spin()
 }
 ```
 
