@@ -129,12 +129,12 @@ func NewSingleHostReverseProxy(target string, opts ...config.Option) (*reversePr
 
 我们提供了 `SetXxx()` 函数用于设置私有属性
 
-| 方法                  | 描述                                  | 示例                                                                                                                         |
-|---------------------|-------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| `SetDirector`       | 用于指定 protocol.Request               | [reverseproxy/discovery](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/discovery/discovery/main.go)   |
-| `SetClient`         | 用于指定转发的客户端                          | [reverseproxy/discovery](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/discovery/discovery/main.go)   |
-| `SetModifyResponse` | 用于指定响应修改方法                          | [reverseproxy/modify_response](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/modify_response/main.go) |
-| `SetErrorHandler`   | 用于指定处理到达后台的错误或来自 modifyResponse 的错误 | [reverseproxy/customize_error](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/customize_error/main.go) |
+| 方法                  | 描述                                  |
+|---------------------|-------------------------------------|
+| `SetDirector`       | 用于指定 protocol.Request               | 
+| `SetClient`         | 用于指定转发的客户端                          | 
+| `SetModifyResponse` | 用于指定响应修改方法                          | 
+| `SetErrorHandler`   | 用于指定处理到达后台的错误或来自 modifyResponse 的错误 | 
 
 ### 示例
 
@@ -172,65 +172,15 @@ func main() {
 
 #### 如何代理 HTTPS
 
-代理 HTTPS 需要在 `NewSingleHostReverseProxy` 方法中配置 TLS 并且使用 `WithDialer` 建立连接。
+> Netpoll 不支持 TLS，Client 需要使用标准网络库.
 
-**示例代码**
-
-```go
-package main
-
-import (
-    "context"
-    "crypto/tls"
-    "fmt"
-    "sync"
-    
-    "github.com/cloudwego/hertz/pkg/app"
-    "github.com/cloudwego/hertz/pkg/app/client"
-    "github.com/cloudwego/hertz/pkg/app/server"
-    "github.com/cloudwego/hertz/pkg/common/utils"
-    "github.com/cloudwego/hertz/pkg/network/standard"
-    "github.com/hertz-contrib/reverseproxy"
-)
-
-func main() {
-    var wg sync.WaitGroup
-    wg.Add(2)
-    go func() {
-        defer wg.Done()
-        // ...
-        h := server.New(
-            server.WithHostPorts(":8004"),
-            server.WithTLS(cfg),
-        )
-        h.GET("/backend", func(cc context.Context, c *app.RequestContext) {
-            c.JSON(200, utils.H{"msg": "pong"})
-        })
-        h.Spin()
-    }()
-    
-    go func() {
-        defer wg.Done()
-        h := server.New(server.WithHostPorts(":8001"))
-        proxy, err := reverseproxy.NewSingleHostReverseProxy("https://127.0.0.1:8004",
-            client.WithTLSConfig(&tls.Config{
-                InsecureSkipVerify: true,
-            }),
-            client.WithDialer(standard.NewDialer()),
-        )
-        if err != nil {
-            panic(err)
-        }
-        h.GET("/backend", proxy.ServeHTTP)
-        h.Spin()
-    }()
-    wg.Wait()
-}
-```
+代理 HTTPS 需要在额外做一些配置.
+- `NewSingleHostReverseProxy` 方法中使用 `WithDialer` 传递 `standard.NewDialer()` 指定标准网络库。
+- 使用 `SetClient` 设置一个使用标准网络库的 Hertz Client。
 
 #### 如何配合中间件使用
 
-通过 `Use` 方法使用中间件，在中间件逻辑中处理反向代理即可。
+可以在 hertz handler 中也使用 `ReverseProxy.ServeHTTP` 来实现复杂的需求而不是直接将 `ReverseProxy.ServeHTTP` 注册到路由。
 
 **示例代码**
 
@@ -238,24 +188,12 @@ func main() {
 package main
 
 import (
-    "context"
-    
-    "github.com/cloudwego/hertz/pkg/app"
-    "github.com/cloudwego/hertz/pkg/app/server"
-    "github.com/cloudwego/hertz/pkg/common/utils"
-    "github.com/hertz-contrib/reverseproxy"
+	//...
 )
 
 func main() {
-    r := server.Default(server.WithHostPorts("127.0.0.1:9998"))
-    
-    r2 := server.Default(server.WithHostPorts("127.0.0.1:9997"))
-    
-    proxy, err := reverseproxy.NewSingleHostReverseProxy("http://127.0.0.1:9997")
-    if err != nil {
-        panic(err)
-    }
-    
+	
+	//...
     r.Use(func(c context.Context, ctx *app.RequestContext) {
         if ctx.Query("country") == "cn" {
             proxy.ServeHTTP(c, ctx)
@@ -265,24 +203,16 @@ func main() {
             ctx.Next(c)
         }
     })
-    
-    r.GET("/backend", func(c context.Context, ctx *app.RequestContext) {
-        ctx.JSON(200, utils.H{
-            "message": "pong1",
-        })
-    })
-    
-    r2.GET("/backend", func(c context.Context, ctx *app.RequestContext) {
-        ctx.JSON(200, utils.H{
-            "message": "pong2",
-        })
-    })
-    
-    go r.Spin()
-    r2.Spin()
+   //...
 }
 ```
 
 ### 更多示例
 
-使用方法可参考如下 [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy)
+|  用途   | 示例代码  |
+|  ----  | ----  |
+| 代理 tls   | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls) |
+| 使用服务发现  |  [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery) |
+| 配合中间件使用 |  [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+
+更多使用方法可参考如下 [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy)
