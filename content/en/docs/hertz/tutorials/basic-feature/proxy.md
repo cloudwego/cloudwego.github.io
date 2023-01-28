@@ -152,7 +152,7 @@ package main
 
 import (
     "context"
-
+    
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/cloudwego/hertz/pkg/common/utils"
@@ -171,7 +171,7 @@ func main() {
             "msg": "proxy success!!",
         })
     })
-
+    
     h.GET("/backend", proxy.ServeHTTP)
     h.Spin()
 }
@@ -181,65 +181,15 @@ func main() {
 
 #### How to proxy HTTPS
 
-Proxying HTTPS requires configuring TLS in `NewSingleHostReverseProxy` method and using `WithDialer` to establish a connection.
+> Netpoll does not support TLS, Client needs to use standard network library.
 
-**Example Code**
-
-```go
-package main
-
-import (
-     "context"
-     "crypto/tls"
-     "fmt"
-     "sync"
-    
-     "github.com/cloudwego/hertz/pkg/app"
-     "github.com/cloudwego/hertz/pkg/app/client"
-     "github.com/cloudwego/hertz/pkg/app/server"
-     "github.com/cloudwego/hertz/pkg/common/utils"
-     "github.com/cloudwego/hertz/pkg/network/standard"
-     "github.com/hertz-contrib/reverseproxy"
-)
-
-func main() {
-     var wg sync.WaitGroup
-     wg. Add(2)
-     go func() {
-         defer wg. Done()
-         // ...
-         h := server.New(
-             server.WithHostPorts(":8004"),
-             server.WithTLS(cfg),
-         )
-         h.GET("/backend", func(cc context.Context, c *app.RequestContext) {
-             c.JSON(200, utils.H{"msg": "pong"})
-         })
-         h. Spin()
-     }()
-    
-     go func() {
-         defer wg. Done()
-         h := server. New(server. WithHostPorts(":8001"))
-         proxy, err := reverseproxy.NewSingleHostReverseProxy("https://127.0.0.1:8004",
-             client.WithTLSConfig(&tls.Config{
-                 InsecureSkipVerify: true,
-             }),
-             client.WithDialer(standard.NewDialer()),
-         )
-         if err != nil {
-             panic(err)
-         }
-         h.GET("/backend", proxy.ServeHTTP)
-         h. Spin()
-     }()
-     wg. Wait()
-}
-```
+Proxying HTTPS requires some additional configuration.
+- Use `WithDialer` in the `NewSingleHostReverseProxy` method to pass `standard.NewDialer()` to specify the standard network library.
+- Use `SetClient` to set up a Hertz Client using the standard networking library.
 
 #### How to use with middleware
 
-Use the middleware through the `Use` method, and handle the reverse proxy in the middleware logic.
+You can also use `ReverseProxy.ServeHTTP` in the hertz handler to implement complex requirements instead of registering `ReverseProxy.ServeHTTP` directly to the route.
 
 **Example Code**
 
@@ -247,24 +197,11 @@ Use the middleware through the `Use` method, and handle the reverse proxy in the
 package main
 
 import (
-     "context"
-    
-     "github.com/cloudwego/hertz/pkg/app"
-     "github.com/cloudwego/hertz/pkg/app/server"
-     "github.com/cloudwego/hertz/pkg/common/utils"
-     "github.com/hertz-contrib/reverseproxy"
+    //...
 )
 
-func main() {
-     r := server.Default(server.WithHostPorts("127.0.0.1:9998"))
-    
-     r2 := server.Default(server.WithHostPorts("127.0.0.1:9997"))
-    
-     proxy, err := reverseproxy.NewSingleHostReverseProxy("http://127.0.0.1:9997")
-     if err != nil {
-         panic(err)
-     }
-    
+func main() { 
+    //...
      r.Use(func(c context.Context, ctx *app.RequestContext) {
          if ctx.Query("country") == "cn" {
              proxy. ServeHTTP(c, ctx)
@@ -274,24 +211,16 @@ func main() {
              ctx. Next(c)
          }
      })
-    
-     r.GET("/backend", func(c context.Context, ctx *app.RequestContext) {
-         ctx.JSON(200, utils.H{
-             "message": "pong1",
-         })
-     })
-    
-     r2.GET("/backend", func(c context.Context, ctx *app.RequestContext) {
-         ctx.JSON(200, utils.H{
-             "message": "pong2",
-         })
-     })
-    
-     go r. Spin()
-     r2. Spin()
+    //...
 }
 ```
 
 ### More Examples
 
-As for usage, you may refer to the hertz [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy)
+| Purpose                 | Sample Code                                                                               |
+|-------------------------|-------------------------------------------------------------------------------------------|
+| proxy tls               | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
+| Using service discovery | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
+| Use with middleware     | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+
+For more usages, please refer to the following [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy).

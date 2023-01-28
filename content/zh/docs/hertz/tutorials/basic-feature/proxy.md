@@ -188,12 +188,11 @@ func main() {
 package main
 
 import (
-	//...
+    //...
 )
 
 func main() {
-	
-	//...
+    //...
     r.Use(func(c context.Context, ctx *app.RequestContext) {
         if ctx.Query("country") == "cn" {
             proxy.ServeHTTP(c, ctx)
@@ -203,16 +202,16 @@ func main() {
             ctx.Next(c)
         }
     })
-   //...
+    //...
 }
 ```
 
 ### 更多示例
 
-|  用途   | 示例代码  |
-|  ----  | ----  |
-| 代理 tls   | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls) |
-| 使用服务发现  |  [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery) |
-| 配合中间件使用 |  [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+| 用途      | 示例代码                                                                                      |
+|---------|-------------------------------------------------------------------------------------------|
+| 代理 tls  | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
+| 使用服务发现  | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
+| 配合中间件使用 | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
 
-更多使用方法可参考如下 [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy)
+更多使用方法可参考如下 [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy)。
