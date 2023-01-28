@@ -129,12 +129,12 @@ func NewSingleHostReverseProxy(target string, opts ...config.Option) (*reversePr
 
 我们提供了 `SetXxx()` 函数用于设置私有属性
 
-| 方法 | 描述 |
-| ------------ | ------------ |
-|  `SetDirector`   | 用于指定 protocol.Request    |
-|  `SetClient` | 用于指定转发的客户端 |
-|  `SetModifyResponse` | 用于指定响应修改方法 |
-|  `SetErrorHandler` |  用于指定处理到达后台的错误或来自 modifyResponse 的错误 |
+| 方法                  | 描述                                  |
+|---------------------|-------------------------------------|
+| `SetDirector`       | 用于指定 protocol.Request               | 
+| `SetClient`         | 用于指定转发的客户端                          | 
+| `SetModifyResponse` | 用于指定响应修改方法                          | 
+| `SetErrorHandler`   | 用于指定处理到达后台的错误或来自 modifyResponse 的错误 | 
 
 ### 示例
 
@@ -168,6 +168,50 @@ func main() {
 }
 ```
 
+### FAQ
+
+#### 如何代理 HTTPS
+
+> Netpoll 不支持 TLS，Client 需要使用标准网络库.
+
+代理 HTTPS 需要在额外做一些配置.
+- `NewSingleHostReverseProxy` 方法中使用 `WithDialer` 传递 `standard.NewDialer()` 指定标准网络库。
+- 使用 `SetClient` 设置一个使用标准网络库的 Hertz Client。
+
+#### 如何配合中间件使用
+
+可以在 hertz handler 中也使用 `ReverseProxy.ServeHTTP` 来实现复杂的需求而不是直接将 `ReverseProxy.ServeHTTP` 注册到路由。
+
+**示例代码**
+
+```go
+package main
+
+import (
+    //...
+)
+
+func main() {
+    //...
+    r.Use(func(c context.Context, ctx *app.RequestContext) {
+        if ctx.Query("country") == "cn" {
+            proxy.ServeHTTP(c, ctx)
+            ctx.Response.Header.Set("key", "value")
+            ctx.Abort()
+        } else {
+            ctx.Next(c)
+        }
+    })
+    //...
+}
+```
+
 ### 更多示例
 
-使用方法可参考如下 [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy)
+| 用途      | 示例代码                                                                                      |
+|---------|-------------------------------------------------------------------------------------------|
+| 代理 tls  | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
+| 使用服务发现  | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
+| 配合中间件使用 | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+
+更多使用方法可参考如下 [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy)。

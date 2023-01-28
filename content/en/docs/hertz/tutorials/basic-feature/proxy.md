@@ -138,12 +138,12 @@ Using `ReverseProxy.SetClient` if there is need for shared customized `client.Cl
 
 We provide the `SetXxx()` method for setting private properties
 
-| Method | Description |
-| ------------ | ------------ |
-|  `SetDirector`   | use to customize protocol.Request    |
-|  `SetClient` | use to customize client |
-|  `SetModifyResponse` |  use to customize modify response function  |
-|  `SetErrorHandler` |  use to customize error handler  |
+| Method              | Description                               | Example                                                                                                                    |
+|---------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `SetDirector`       | use to customize protocol.Request         | [reverseproxy/discovery](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/discovery/discovery/main.go)   |
+| `SetClient`         | use to customize client                   | [reverseproxy/discovery](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/discovery/discovery/main.go)   |
+| `SetModifyResponse` | use to customize modify response function | [reverseproxy/modify_response](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/modify_response/main.go) |
+| `SetErrorHandler`   | use to customize error handler            | [reverseproxy/customize_error](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/customize_error/main.go) |
 
 ### Example
 
@@ -152,7 +152,7 @@ package main
 
 import (
     "context"
-
+    
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/cloudwego/hertz/pkg/common/utils"
@@ -171,12 +171,56 @@ func main() {
             "msg": "proxy success!!",
         })
     })
-
+    
     h.GET("/backend", proxy.ServeHTTP)
     h.Spin()
 }
 ```
 
+### FAQ
+
+#### How to proxy HTTPS
+
+> Netpoll does not support TLS, Client needs to use standard network library.
+
+Proxying HTTPS requires some additional configuration.
+- Use `WithDialer` in the `NewSingleHostReverseProxy` method to pass `standard.NewDialer()` to specify the standard network library.
+- Use `SetClient` to set up a Hertz Client using the standard networking library.
+
+#### How to use with middleware
+
+You can also use `ReverseProxy.ServeHTTP` in the hertz handler to implement complex requirements instead of registering `ReverseProxy.ServeHTTP` directly to the route.
+
+**Example Code**
+
+```go
+package main
+
+import (
+    //...
+)
+
+func main() { 
+    //...
+     r.Use(func(c context.Context, ctx *app.RequestContext) {
+         if ctx.Query("country") == "cn" {
+             proxy. ServeHTTP(c, ctx)
+             ctx.Response.Header.Set("key", "value")
+             ctx. Abort()
+         } else {
+             ctx. Next(c)
+         }
+     })
+    //...
+}
+```
+
 ### More Examples
 
-As for usage, you may refer to the hertz [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy)
+| Purpose                 | Sample Code                                                                               |
+|-------------------------|-------------------------------------------------------------------------------------------|
+| proxy tls               | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
+| Using service discovery | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
+| Use with middleware     | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+
+For more usages, please refer to the following [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy).
