@@ -138,12 +138,12 @@ Using `ReverseProxy.SetClient` if there is need for shared customized `client.Cl
 
 We provide the `SetXxx()` method for setting private properties
 
-| Method              | Description                               | Example                                                                                                                    |
-|---------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| `SetDirector`       | use to customize protocol.Request         | [reverseproxy/discovery](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/discovery/discovery/main.go)   |
-| `SetClient`         | use to customize client                   | [reverseproxy/discovery](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/discovery/discovery/main.go)   |
-| `SetModifyResponse` | use to customize modify response function | [reverseproxy/modify_response](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/modify_response/main.go) |
-| `SetErrorHandler`   | use to customize error handler            | [reverseproxy/customize_error](https://github.com/cloudwego/hertz-examples/blob/main/reverseproxy/customize_error/main.go) |
+| Method              | Description                               |
+|---------------------|-------------------------------------------|
+| `SetDirector`       | use to customize protocol.Request         |
+| `SetClient`         | use to customize client                   |
+| `SetModifyResponse` | use to customize modify response function |
+| `SetErrorHandler`   | use to customize error handler            |
 
 ### Example
 
@@ -200,17 +200,17 @@ import (
     //...
 )
 
-func main() { 
+func main() {
     //...
-     r.Use(func(c context.Context, ctx *app.RequestContext) {
-         if ctx.Query("country") == "cn" {
-             proxy. ServeHTTP(c, ctx)
-             ctx.Response.Header.Set("key", "value")
-             ctx. Abort()
-         } else {
-             ctx. Next(c)
-         }
-     })
+    r.Use(func(c context.Context, ctx *app.RequestContext) {
+        if ctx.Query("country") == "cn" {
+            proxy.ServeHTTP(c, ctx)
+            ctx.Response.Header.Set("key", "value")
+            ctx.Abort()
+        } else {
+            ctx.Next(c)
+        }
+    })
     //...
 }
 ```
@@ -219,7 +219,7 @@ func main() {
 
 | Purpose                 | Sample Code                                                                               |
 |-------------------------|-------------------------------------------------------------------------------------------|
-| proxy tls               | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
+| Proxy tls               | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
 | Using service discovery | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
 | Use with middleware     | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
 
