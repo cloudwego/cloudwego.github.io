@@ -207,22 +207,7 @@ func main() {
      wg. Add(2)
      go func() {
          defer wg. Done()
-         cfg := &tls. Config{
-             MinVersion: tls.VersionTLS12,
-             CurvePreferences: []tls.CurveID{tls.X25519, tls.CurveP256},
-             PreferServerCipherSuites: true,
-             CipherSuites: []uint16{
-                 tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
-                 tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
-                 tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-             },
-         }
-         cert, err := tls.LoadX509KeyPair("tls/server.crt", "tls/server.key")
-         if err != nil {
-             fmt.Println(err.Error())
-         }
-         cfg. Certificates = append(cfg. Certificates, cert)
-    
+         // ...
          h := server.New(
              server.WithHostPorts(":8004"),
              server.WithTLS(cfg),
