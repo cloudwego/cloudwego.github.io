@@ -43,7 +43,7 @@ Hertz provides a series of code examples designed to help users get start with H
 - [custom](https://github.com/cloudwego/hertz-examples/tree/main/middleware/custom) ：Example of custom middleware
 - [pprof](https://github.com/cloudwego/hertz-examples/tree/main/middleware/pprof) ：Example of using pprof middleware
 - [requestid](https://github.com/cloudwego/hertz-examples/tree/main/middleware/requestid) ：Example of using RequestID middleware
-- [gzip](https://github.com/cloudwego/hertz-examples/tree/main/gzip) ：Example of using gzip middleware in hertz server
+- [gzip](https://github.com/cloudwego/hertz-examples/tree/main/middleware/gzip) ：Example of using gzip middleware in hertz server
 
 ### Parameter binding and validation
 - [binding](https://github.com/cloudwego/hertz-examples/tree/main/binding) ：Example of parameter binding and validation
@@ -117,3 +117,21 @@ Hertz provides a series of code examples designed to help users get start with H
 
 ### Forward proxy
 - [forward_proxy](https://github.com/cloudwego/hertz-examples/tree/main/client/forward_proxy) ：Example of configuring a forward proxy using the hertz client
+
+
+## Hz
+
+### Generate server code based on Thrift
+- [thrift](https://github.com/cloudwego/hertz-examples/tree/main/hz/thrift) ：Example of using hz with thrift to generate server code
+
+### Generate server code based on Protobuf
+- [protobuf](https://github.com/cloudwego/hertz-examples/tree/main/hz/protobuf) ：Example of using hz with protobuf to generate server code
+
+### Generate client code
+- [hz_client](https://github.com/cloudwego/hertz-examples/tree/main/hz/hz_client) ：Example of using hz to generate client code
+
+### Custom templates
+- [template](https://github.com/cloudwego/hertz-examples/tree/main/hz/template) ：Example of using hz custom templates to generate server code
+
+### Three-party plugins
+- [plugin](https://github.com/cloudwego/hertz-examples/tree/main/hz/plugin) ：Example of using hz to access third-party plugins
