@@ -43,7 +43,7 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 - [custom](https://github.com/cloudwego/hertz-examples/tree/main/middleware/custom) ：自定义中间件的示例
 - [pprof](https://github.com/cloudwego/hertz-examples/tree/main/middleware/pprof) ：使用 pprof 中间件的示例
 - [requestid](https://github.com/cloudwego/hertz-examples/tree/main/middleware/requestid) ：使用 RequestID 中间件的示例
-- [gzip](https://github.com/cloudwego/hertz-examples/tree/main/gzip) ：在 hertz server 中使用 gzip 中间件的示例
+- [gzip](https://github.com/cloudwego/hertz-examples/tree/main/middleware/gzip) ：在 hertz server 中使用 gzip 中间件的示例
 
 ### 参数绑定及验证
 - [binding](https://github.com/cloudwego/hertz-examples/tree/main/binding) ：参数绑定及验证的示例
@@ -116,3 +116,21 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 
 ### 正向代理
 - [forward_proxy](https://github.com/cloudwego/hertz-examples/tree/main/client/forward_proxy) ：使用 hertz client 配置正向代理的示例
+
+
+## Hz
+
+### 基于 Thrift 生成服务端代码
+- [thrift](https://github.com/cloudwego/hertz-examples/tree/main/hz/thrift) ：使用 hz 与 thrift 生成服务端代码的示例
+
+### 基于 Protobuf 生成服务端代码
+- [protobuf](https://github.com/cloudwego/hertz-examples/tree/main/hz/protobuf) ：使用 hz 与 protobuf 生成服务端代码的示例
+
+### 客户端代码生成
+- [hz_client](https://github.com/cloudwego/hertz-examples/tree/main/hz/hz_client) ：使用 hz 生成客户端代码的示例
+
+### 自定义模板
+- [template](https://github.com/cloudwego/hertz-examples/tree/main/hz/template) ：使用 hz 自定义模版生成服务端代码的示例
+
+### 接入第三方插件
+- [plugin](https://github.com/cloudwego/hertz-examples/tree/main/hz/plugin) ：使用 hz 接入第三方插件的示例
