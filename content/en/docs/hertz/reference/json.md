@@ -51,6 +51,13 @@ func main() {
 }
 ```
 
+## Conditional Compilation
+Hertz supports conditional compilation to control the actual json library used, you can use `-tags stdjson` to choose to use the standard library.
+
+```go
+go build -tags stdjson .
+```
+
 ## Common FAQs
 
 ### Error when using Sonic on M1

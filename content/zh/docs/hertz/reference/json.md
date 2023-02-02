@@ -16,9 +16,9 @@ Hertz 默认集成并使用 [Sonic](https://github.com/bytedance/sonic) 用于�
 
 当上述条件不能满足时，Sonic 会自动 fallback 到 golang 的 encoding/json 库。
 
-### 与 encoding/json 兼容性
+## 与 encoding/json 兼容性
 
-当前 hertz 使用Sonic的默认配置（即`sonic.ConfigDefault`），行为与标准库 encoding/json 有所差异，详见 [sonic#Compatibility](https://github.com/bytedance/sonic#compatibility)
+当前 Hertz 使用 Sonic 的默认配置（即`sonic.ConfigDefault`），行为与标准库 encoding/json 有所差异，详见 [sonic#Compatibility](https://github.com/bytedance/sonic#compatibility)
 
 具体来说，默认情况下，Sonic：
 - 禁用 html escape：Sonic 不会转义 HTML中的特殊字符
@@ -49,6 +49,13 @@ render.ResetJSONMarshal(json.Marshal)
     // Binding
     binding.ResetJSONUnmarshaler(json.Unmarshal)
 }
+```
+
+## 条件编译
+Hertz 支持条件编译来控制实际使用的 json 库，你可以通过 `-tags stdjson` 来选择使用标准库。
+
+```go
+go build -tags stdjson .
 ```
 
 ## 常见问题
