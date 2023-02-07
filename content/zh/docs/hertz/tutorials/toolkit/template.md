@@ -40,7 +40,7 @@ hz 利用了 go template 支持以 "yaml" 的格式定义模板，并使用 "jso
 
 ## IDL
 
-```
+```thrift
 // hello.thrift
 namespace go hello.example
 
@@ -60,7 +60,7 @@ service HelloService {
 
 ## 命令
 
-```
+```shell
 hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml:template/data.json
 ```
 
@@ -68,7 +68,7 @@ hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_l
 
 > 注：以下的 body 均为 go template
 
-```
+```yaml
 layouts:
   # 生成的 handler 的目录，只有目录下有文件才会生成
   - path: biz/handler/
@@ -221,7 +221,7 @@ layouts:
 
 hz 使用了"json"来指定渲染数据，下面进行介绍
 
-```
+```json5
 {
   // 全局的渲染参数
   "*": {
@@ -249,7 +249,7 @@ hz 使用了"json"来指定渲染数据，下面进行介绍
 
 ### template:
 
-```
+```yaml
 // layout.yaml
 layouts:
   # 项目 main 文件，
@@ -309,7 +309,7 @@ layouts:
 
 ### render data:
 
-```
+```json
 {
   "*": {
     "GoModule": "github.com/hertz/hello",
@@ -322,7 +322,7 @@ layouts:
 }
 ```
 命令：
-```
+```shell
 hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml:template/data.json
 ```
 
@@ -340,7 +340,7 @@ hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_l
 
 ## 命令
 
-```
+```shell
 # 之后会提供 package 模板渲染数据，所以输入命令的时候先保留了"k-v"的形式，customize_package 后需要加":"
 hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/hello.thrift --customize_package=template/package.yaml:
 ```
@@ -349,7 +349,7 @@ hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/h
 
 注意：自定义 package 模板没有提供渲染数据的功能，这里主要是因为这些渲染数据是 hz 工具解析生成的，所以暂时不提供自己写渲染数据的功能。可以修改下模板里面与渲染数据无关的部分，以满足自身需求。
 
-```
+```yaml
 # 以下数据都是 yaml marshal 得到的，所以可能看起来比较乱
 layouts:
   # path只表示handler.go的模板，具体的handler路径由默认路径和handler_dir决定
@@ -561,7 +561,7 @@ layouts:
 
 ### template:
 
-```
+```yaml
 # 以下数据都是 yaml marshal 得到的，所以可能看起来比较乱
 layouts:
   # path只表示handler.go的模板，具体的handler路径由默认路径和handler_dir决定
@@ -761,13 +761,13 @@ layouts:
       }
 ```
 命令：
-```
+```shell
 # 之后会提供 package 模板渲染数据，所以输入命令的时候先保留了"k-v"的形式，customize_package 后需要加":"
 hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/hello.thrift --customize_package=template/package.yaml:
 ```
 
 生成handler如下：
-```
+```go
 // this is my custom handler.
 
 package example
