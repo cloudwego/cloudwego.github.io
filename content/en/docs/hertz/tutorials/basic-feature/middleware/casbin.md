@@ -418,7 +418,9 @@ func main(){
 
 `expression` will be parsed like C-like artithmetic/string expression。
 
-**Attention**: when use `CUSTOM`, use `WithPermissionParser` Option is forbidden.
+**Attention**: 
+
+when use `CUSTOM`, use `WithPermissionParser` Option is forbidden, it is suggested using `WithPermissionParserSeparator` Option.
 
 Sample code:
 

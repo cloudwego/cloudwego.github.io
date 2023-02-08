@@ -420,9 +420,9 @@ func main(){
 
 `expression` 为类C表达式。
 
-**注意**：使用该模式时，不可使用选项 `WithPermissionParser`（执行鉴权逻辑时会产生不可预期的错误），
+**注意**：
 
-​			如有定义解析权限字符串之类的需求，建议使用选项 `WithPermissionParserSeparator`。
+使用该模式时，不可使用选项 `WithPermissionParser`（执行鉴权逻辑时会产生不可预期的错误），如有定义解析权限字符串之类的需求，建议使用选项 `WithPermissionParserSeparator`。
 
 示例代码：
 
