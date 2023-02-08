@@ -420,7 +420,7 @@ func main(){
 
 **Attention**: 
 
-when use `CUSTOM`, use `WithPermissionParser` Option is forbidden, it is suggested using `WithPermissionParserSeparator` Option.
+when using `CUSTOM`, use `WithPermissionParser` Option is forbidden, it is suggested using `WithPermissionParserSeparator` Option instead.
 
 Sample code:
 
