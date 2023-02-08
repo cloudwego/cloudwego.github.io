@@ -40,7 +40,7 @@ The so-called layout template refers to the structure of the entire project. The
 
 ## IDL
 
-```
+```thrift
 // hello.thrift
 namespace go hello.example
 
@@ -60,7 +60,7 @@ service HelloService {
 
 ## Command
 
-```
+```shell
 hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml:template/data.json
 ```
 
@@ -68,7 +68,7 @@ hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_l
 
 > Note: The following bodies are all go templates
 
-```
+```yaml
 layouts:
   # The directory of the generated handler will only be generated if there are files in the directory
   - path: biz/handler/
@@ -220,7 +220,7 @@ layouts:
 When a custom template and render data are specified, the options specified on the command line will not be used as render data, so the render data in the template needs to be defined by the user.
 
 Hz uses "json" to specify render data, as described below
-```
+```json5
 {
   // global render parameters
   "*": {
@@ -248,8 +248,8 @@ Assuming that the user only wants "main.go" and "go.mod" files, then we modify t
 
 ### template:
 
-```
-// layout.yaml
+```yaml
+# layout.yaml
 layouts:
   # project main file
   - path: main.go
@@ -308,7 +308,7 @@ layouts:
 
 ### render data:
 
-```
+```json5
 {
   "*": {
     "GoModule": "github.com/hertz/hello",
@@ -321,7 +321,7 @@ layouts:
 }
 ```
 Command:
-```
+```shell
 hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml:template/data.json
 ```
 
@@ -339,7 +339,7 @@ hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_l
 
 ## Command
 
-```
+```shell
 # After that, the package template rendering data will be provided, so the form of "k-v" is retained when entering the command, and ":" needs to be added after customize_package.
 hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/hello.thrift --customize_package=template/package.yaml:
 ```
@@ -348,7 +348,7 @@ hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/h
 
 Note: Custom package templates do not provide the ability to render data.
 
-```
+```yaml
 layouts:
   # Path only represents handler.go template, the specific handler path is determined by the default path and handler_dir
   - path: handler.go
@@ -559,7 +559,7 @@ Here is an example of a simple custom handler template, adding some comments to 
 
 ### template:
 
-```
+```yaml
 layouts:
   # Path only represents handler.go template, the specific handler path is determined by the default path and handler_dir
   - path: handler.go
@@ -759,13 +759,13 @@ layouts:
 
 ```
 Command:
-```
+```shell
 # After that, the package template rendering data will be provided, so the form of "k-v" is retained when entering the command, and ":" needs to be added after customize_package.
 hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/hello.thrift --customize_package=template/package.yaml:
 ```
 
 The handler is generated as follows:
-```
+```go
 // this is my custom handler.
 
 package example
