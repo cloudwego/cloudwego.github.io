@@ -5,7 +5,7 @@ weight: 13
 description: >
 ---
 
-[Casbin](https://casbin.org/)  is a powerful and efficient open-source access control library that supports various [access control models](https://en.wikipedia.org/wiki/Access_control#Access_control_models) ( such as `ACL/RBAC/ABAC`) for enforcing authorization across the board.
+[Casbin](https://casbin.org/) is a powerful and efficient open-source access control library that supports various [access control models](https://en.wikipedia.org/wiki/Access_control#Access_control_models) ( such as `ACL/RBAC/ABAC`) for enforcing authorization across the board.
 
 According to the user's use scenario, we provide [Casbin Middleware](https://github.com/hertz-contrib/casbin) that adapted to Hertz.
 
