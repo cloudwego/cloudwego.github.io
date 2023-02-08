@@ -97,7 +97,7 @@ Hertz 通过使用 casbin 中间件，为服务端提供了控制用户访问权
 
 通过提供 [Model](https://casbin.org/docs/model-storage) 和 [Policy](https://casbin.org/docs/policy-storage) 相关配置以及 `LookupHandler`（用于获取访问实体）来初始化中间件，
 
-该函数会根据提供的配置自动初始化 `*casbin.Enforcer` 用于鉴权操作
+该函数会根据提供的配置自动初始化 `*casbin.Enforcer` 用于鉴权操作。
 
 函数签名如下：
 
@@ -130,7 +130,7 @@ func main() {
 
 #### NewCasbinMiddlewareFromEnforcer
 
-通过提供 [enforcer](https://casbin.org/docs/enforcers) 以及 `LookupHandler`（用于获取访问实体）来初始化中间件
+通过提供 [enforcer](https://casbin.org/docs/enforcers) 以及 `LookupHandler`（用于获取访问实体）来初始化中间件。
 
 函数签名如下：
 
@@ -168,7 +168,7 @@ func main() {
 
 ### 中间件方法
 
-中间件方法用来判断用户的具体权限逻辑
+中间件方法用来判断用户的具体权限逻辑。
 
 该中间件的方法参数格式如下：
 
@@ -184,7 +184,7 @@ func (m *Middleware) exampleMiddlwareMethod(expression string, opts ...Option) a
 
     表达式含有一个或多个变量，变量之间用空格分隔，表达式的具体格式与`Logic`（见后文`选项说明`）相关，
 
-    表达式的计算最终值为 **True** or **False**，**True** 则代表通过鉴权中间件，**False** 则代表没有通过鉴权中间件
+    表达式的计算最终值为 **True** or **False**，**True** 则代表通过鉴权中间件，**False** 则代表没有通过鉴权中间件，
 
     如 `Logic` 为 **AND** or **OR**，则格式为：
 
@@ -217,23 +217,23 @@ r = sub, xxx, xxx
 
 **sub** 后面的参数集合，
 
-如
+如：
 
 ```
 [request_definition]
 r = sub, obj, act
 ```
 
-使用了默认的 `PermissionParser `时，**expression** 中的变量格式应该是：`"book:read"`
+使用了默认的 `PermissionParser `时，**expression** 中的变量格式应该是：`"book:read"`。
 
-如
+如：
 
 ```
 [request_definition]
 r = sub, dom, obj, act
 ```
 
-使用了默认的 `PermissionParser `时，**expression** 中的变量格式应该是：`"book1.com:book:read"`
+使用了默认的 `PermissionParser `时，**expression** 中的变量格式应该是：`"book1.com:book:read"`。
 
 函数签名如下：
 
@@ -243,7 +243,7 @@ func (m *Middleware) RequiresPermissions(expression string, opts ...Option) app.
 
 示例代码：
 
-用户只含有 `book:read` 权限时
+用户只含有 `book:read` 权限时，
 
 ```go
 func main(){
@@ -274,7 +274,7 @@ func main(){
 
 #### RequiresRoles
 
-寻找访问实体（Subject）及通过方法中提供的参数 `expression` （表达式中变量说明见下）判断访问实体所属的角色是否满足expression中的角色集合的关系
+寻找访问实体（Subject）及通过方法中提供的参数 `expression` （表达式中变量说明见下）判断访问实体所属的角色是否满足expression中的角色集合的关系。
 
 `expression`中的变量为 [RBAC](https://casbin.org/docs/rbac) 中的 **rule** 集合
 
@@ -286,7 +286,7 @@ func (m *Middleware) RequiresRoles(expression string, opts ...Option) app.Handle
 
 示例代码：
 
-用户属于 **user** 和 **reader** 角色时
+用户属于 **user** 和 **reader** 角色时，
 
 ```go
 func main(){
@@ -322,13 +322,13 @@ func main(){
 }
 ```
 
-**注意**：此方法当且仅当使用了 Casbin 当中基于角色的访问控制模式（即 RBAC）时使用
+**注意**：此方法当且仅当使用了 Casbin 当中基于角色的访问控制模式（即 RBAC）时使用。
 
 ### 选项说明
 
 #### WithLogic
 
-`Logic` 是在 `expression` 中的逻辑操作(`AND`/`OR`/`CUSTOM`) 
+`Logic` 是在 `expression` 中的逻辑操作(`AND`/`OR`/`CUSTOM`) 。
 
 函数签名：
 
@@ -348,11 +348,11 @@ const (
 
 **AND**
 
- `expression` 中的所有变量进行逻辑与操作
+ `expression` 中的所有变量进行逻辑与操作。
 
 示例代码：
 
-用户只含有 `book:read` 权限时
+用户只含有 `book:read` 权限时，
 
 ```go
 func main(){
@@ -387,7 +387,7 @@ func main(){
 
 示例代码：
 
-用户只含有 `book:read` 权限时
+用户只含有 `book:read` 权限时，
 
 ```go
 func main(){
@@ -418,15 +418,15 @@ func main(){
 
 **CUSTOM**
 
-`expression` 为类C表达式
+`expression` 为类C表达式。
 
 **注意**：使用该模式时，不可使用选项 `WithPermissionParser`（执行鉴权逻辑时会产生不可预期的错误），
 
-​			如有定义解析权限字符串之类的需求，建议使用选项 `WithPermissionParserSeparator`
+​			如有定义解析权限字符串之类的需求，建议使用选项 `WithPermissionParserSeparator`。
 
 示例代码：
 
-用户只含有 `book:read` 权限时
+用户只含有 `book:read` 权限时，
 
 ```go
 func main(){
@@ -471,7 +471,7 @@ func main(){
 
 #### WithPermissionParser
 
-`PermissionParserFunc` 是用于解析 `RequiresPermissions` 方法中 `expression` 的变量的函数
+`PermissionParserFunc` 是用于解析 `RequiresPermissions` 方法中 `expression` 的变量的函数。
 
 函数签名：
 
@@ -507,7 +507,7 @@ func main(){
 
 #### WithPermissionParserSeparator
 
-`PermissionParserSeparator` 是用于设置 `expression` 中变量内部的分隔符
+`PermissionParserSeparator` 是用于设置 `expression` 中变量内部的分隔符。
 
 函数签名：
 
@@ -540,7 +540,7 @@ func main(){
 ```
 #### WithUnauthorized
 
-`Unauthorized` 用于定义未通过授权中间件时的响应体（找不到访问实体，即 `LookupHandler` 返回的结果为空）
+`Unauthorized` 用于定义未通过授权中间件时的响应体（找不到访问实体，即 `LookupHandler` 返回的结果为空）。
 
 函数签名：
 
@@ -576,7 +576,7 @@ func main(){
 
 #### WithForbidden
 
-`Forbidden` 用于定义访问到禁止访问资源的响应体（访问实体没有相应权限）
+`Forbidden` 用于定义访问到禁止访问资源的响应体（访问实体没有相应权限）。
 
 函数签名：
 

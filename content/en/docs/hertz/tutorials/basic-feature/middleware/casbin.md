@@ -224,7 +224,7 @@ like:
 r = sub, dom, obj, act
 ```
 
-when use default `PermissionParser`,  **expression** format should be like `"book:read"`
+when use default `PermissionParser`,  **expression** format should be like `"book:read"`.
 
 like:
 
@@ -233,7 +233,7 @@ like:
 r = sub, dom, obj, act
 ```
 
-when use default `PermissionParser`, **expression** format should be like `""book1.com:book:read`
+when use default `PermissionParser`, **expression** format should be like `""book1.com:book:read`.
 
 The function signature is as follows:
 
@@ -243,7 +243,7 @@ func (m *Middleware) RequiresPermissions(expression string, opts ...Option) app.
 
 Sample code:
 
-when user has `book:read` permission
+when user has `book:read` permission,
 
 ```go
 func main(){
@@ -284,7 +284,7 @@ func (m *Middleware) RequiresRoles(expression string, opts ...Option) app.Handle
 
 Sample code:
 
-when user has role of **user** and **reader**
+when user has role of **user** and **reader**,
 
 ```go
 func main(){
@@ -320,7 +320,7 @@ func main(){
 }
 ```
 
-**Attention**: This method is only valid when use **RBAC**
+**Attention**: This method is only valid when use **RBAC**.
 
 ### Options description
 
@@ -350,7 +350,7 @@ all variables in `expression`  will perform **Logic AND** operation.
 
 Sample code:
 
-when user has `book:read` permission
+when user has `book:read` permission,
 
 ```go
 func main(){
@@ -385,7 +385,7 @@ all variables in `expression`  will perform **Logical OR** operation.
 
 Sample code:
 
-when user has `book:read` permission
+when user has `book:read` permission,
 
 ```go
 func main(){
@@ -416,13 +416,13 @@ func main(){
 
 **CUSTOM**
 
-`expression` will be parsed like C-like artithmetic/string expression
+`expression` will be parsed like C-like artithmetic/string expression。
 
-**Attention**: when use `CUSTOM`, use `WithPermissionParser` Option is forbidden
+**Attention**: when use `CUSTOM`, use `WithPermissionParser` Option is forbidden.
 
 Sample code:
 
-when user has `book:read` permission
+when user has `book:read` permission,
 
 ```go
 func main(){
@@ -467,7 +467,7 @@ func main(){
 
 #### WithPermissionParser
 
-`PermissionParserFunc` is used for parsing the permission to extract object and action usually
+`PermissionParserFunc` is used for parsing the permission to extract object and action usually.
 
 The function signature is as follows:
 
@@ -503,7 +503,7 @@ func main(){
 
 #### WithPermissionParserSeparator
 
-`PermissionParserSeparator` is used to set separator that divide permission to object and action usually
+`PermissionParserSeparator` is used to set separator that divide permission to object and action usually.
 
 The function signature is as follows:
 
@@ -537,7 +537,7 @@ func main(){
 
 #### WithUnauthorized
 
-`Unauthorized` defined the response body for unauthorized responses
+`Unauthorized` defined the response body for unauthorized responses.
 
 The function signature is as follows:
 
@@ -573,7 +573,7 @@ func main(){
 
 #### WithForbidden
 
-`Forbidden` defines the response body for forbidden responses
+`Forbidden` defines the response body for forbidden responses.
 
 The function signature is as follows:
 
