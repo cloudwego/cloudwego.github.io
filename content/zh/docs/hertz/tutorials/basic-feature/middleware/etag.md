@@ -1,5 +1,5 @@
 ---
-title: "Etag"
+title: "ETag"
 date: 2023-02-11
 weight: 14
 description: >
@@ -48,17 +48,15 @@ func main() {
 
 ## 配置
 
-| 配置           | 默认值   | 介绍                                   |
-|-------------|-------|--------------------------------------|
-| WithWeak    | false | Enable weak validator |
-| WithNext | nil   | Defines a function to skip etag middleware when return is true |
-|WithGenerator   | nil   | Custom etag generation logic |
-
-
+| 配置           | 默认值   | 介绍                                       |
+|-------------|-------|------------------------------------------|
+| WithWeak    | false | 使用弱验证器                                   |
+| WithNext | nil   | 定义一个 Next 函数，当返回值为 `true` 时跳过 `etag` 中间件 |
+|WithGenerator   | nil   | 自定义 ETag 生成逻辑                            |
 
 ### WithWeak
 
-`etag` 中间件提供`WithWeak`,“用于使用弱验证器”。
+`etag` 中间件提供了 `WithWeak`，用于使用弱验证器。
 
 函数签名：
 
@@ -92,7 +90,7 @@ func main() {
 
 ### WithNext
 
-`etag` 中间件提供`WithNext`,当“定义的” `next` 函数返回值为 `true` 时，跳过 `etag` 中间件。
+`etag` 中间件提供了 `WithNext`，当定义的 Next 函数返回值为 `true` 时，跳过 `etag` 中间件。
 
 函数签名：
 
@@ -135,9 +133,9 @@ func main() {
 
 ### WithGenerator
 
-`etag` 中间件提供`WithGenerator`供用户自定义 `etag` “生成逻辑”。
+`etag` 中间件提供 `WithGenerator`，以供用户自定义 ETag 的生成逻辑。
 
-**注意**：当与 `WithWeak` 一起使用时，不应该在你的自定义 `etag` 上添加一个弱的前缀。
+**注意**：当与 `WithWeak` 一起使用时，不应该在你的自定义 ETag 前添加 `W/` 前缀。
 
 函数签名：
 

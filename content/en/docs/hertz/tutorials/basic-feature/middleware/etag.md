@@ -1,5 +1,5 @@
 ---
-title: "Etag"
+title: "ETag"
 date: 2023-02-11
 weight: 14
 description: >
@@ -7,7 +7,7 @@ description: >
 ---
 
 The `ETag` (or entity tag) HTTP response header is an identifier for a specific version of a resource. It lets caches be more efficient and save bandwidth, as a web server does not need to resend a full response if the content was not changed. Additionally, etags help to prevent simultaneous updates of a resource from overwriting each other ("mid-air collisions").
-Hertz also provides [Etag middleware](https://github.com/hertz-contrib/etag) that can operate on `Etag`, inspired by fiber's [implementation](https://github.com/gofiber/fiber/tree/master/middleware/etag).
+Hertz also provides [Etag middleware](https://github.com/hertz-contrib/etag) that can operate on `ETag`, inspired by fiber's [implementation](https://github.com/gofiber/fiber/tree/master/middleware/etag).
 
 ## Install
 
@@ -59,7 +59,7 @@ func main() {
 
 ### WithWeak
 
-`WithWeak` will add `weak prefix` to the front of etag.
+`WithWeak` will enable weak validator for ETag.
 
 Function Signature:
 
@@ -92,7 +92,7 @@ func main() {
 
 ### WithNext
 
-`WithNext` will skip etag middleware when return is true
+`WithNext` will skip `etag` middleware when the defined function returns true.
 
 Function Signature:
 
@@ -134,9 +134,9 @@ func main() {
 
 ### WithGenerator
 
-`WithGenerator` will replace default etag generation with yours.
+`WithGenerator` will replace default ETag generation with yours.
 
-**Note:** you should not add a weak prefix to your custom etag when used with WithWeak
+**Note:** you should not add `W/` prefix to your custom ETag when used with `WithWeak`.
 
 Function Signature:
 
