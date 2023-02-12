@@ -5,14 +5,18 @@ weight: 14
 description: >
 ---
 
-`etag`（实体标签）HTTP响应头是一个资源的特定版本的标识符。它让缓存更有效，节省带宽，因为如果内容没有改变，网络服务器不需要重新发送完整的响应。此外，`etag` 有助于防止资源的同时更新互相覆盖（"半空碰撞"）。
+`ETag` HTTP 响应头是资源的特定版本的标识符。这可以让缓存更高效，并节省带宽，因为如果内容没有改变，Web 服务器不需要发送完整的响应。而如果内容发生了变化，使用 `ETag` 有助于防止资源的同时更新相互覆盖（“空中碰撞”）。
+Hertz 也提供了可以对 `ETag` 进行操作的 [ETag 中间件](https://github.com/hertz-contrib/etag)，参考了 fiber 的[实现](https://github.com/gofiber/fiber/tree/master/middleware/etag)。
+
 ## 安装
+
+下载并安装
 
 ```shell
 go get github.com/hertz-contrib/etag
 ```
 
-## 导入
+导入
 
 ```go
 import "github.com/hertz-contrib/etag"
@@ -53,7 +57,8 @@ func main() {
 
 
 ### WithWeak
-`etag` 中间件提供`WithWeak`,调用后将在`etag`的前面加上`weak`的前缀.
+
+`etag` 中间件提供`WithWeak`,“用于使用弱验证器”。
 
 函数签名：
 
@@ -86,7 +91,8 @@ func main() {
 ```
 
 ### WithNext
-`etag` 中间件提供`WithNext`,当调用 `next` 函数返回值为 `true` 时，跳过 `etag` 中间件。
+
+`etag` 中间件提供`WithNext`,当“定义的” `next` 函数返回值为 `true` 时，跳过 `etag` 中间件。
 
 函数签名：
 
@@ -129,7 +135,7 @@ func main() {
 
 ### WithGenerator
 
-`etag` 中间件提供`WithGenerator`供用户自定义 `etag` 生成器。
+`etag` 中间件提供`WithGenerator`供用户自定义 `etag` “生成逻辑”。
 
 **注意**：当与 `WithWeak` 一起使用时，不应该在你的自定义 `etag` 上添加一个弱的前缀。
 
@@ -166,5 +172,6 @@ func main() {
     h.Spin()
 }
 ```
+## 完整示例
 
 完整用法示例详见 [etag/example](https://github.com/hertz-contrib/etag/tree/main/example)

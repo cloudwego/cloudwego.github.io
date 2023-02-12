@@ -7,14 +7,17 @@ description: >
 ---
 
 The `ETag` (or entity tag) HTTP response header is an identifier for a specific version of a resource. It lets caches be more efficient and save bandwidth, as a web server does not need to resend a full response if the content was not changed. Additionally, etags help to prevent simultaneous updates of a resource from overwriting each other ("mid-air collisions").
+Hertz also provides [Etag middleware](https://github.com/hertz-contrib/etag) that can operate on `Etag`, inspired by fiber's [implementation](https://github.com/gofiber/fiber/tree/master/middleware/etag).
 
 ## Install
+
+Download and install
 
 ```shell
 go get github.com/hertz-contrib/etag
 ```
 
-## Import
+Import into your code
 
 ```go
 import "github.com/hertz-contrib/etag"
@@ -55,9 +58,11 @@ func main() {
 
 
 ### WithWeak
+
 `WithWeak` will add `weak prefix` to the front of etag.
 
 Function Signature:
+
 ```go
 func WithWeak() Option
 ```
@@ -86,12 +91,15 @@ func main() {
 ```
 
 ### WithNext
+
 `WithNext` will skip etag middleware when return is true
 
 Function Signature:
+
 ```go
 func WithNext(next NextFunc) Option 
 ```
+
 Sample Code:
 
 ```go
@@ -124,16 +132,18 @@ func main() {
 }
 ```
 
-
 ### WithGenerator
+
 `WithGenerator` will replace default etag generation with yours.
 
 **Note:** you should not add a weak prefix to your custom etag when used with WithWeak
 
 Function Signature:
+
 ```go
 func WithGenerator(gen Generator) Option
 ```
+
 Sample Code:
 
 ```go
@@ -161,4 +171,6 @@ func main() {
     h.Spin()
 }
 ```
+## Full Exapmle
+
 Refer to the [etag/example](https://github.com/hertz-contrib/etag/tree/main/example) for full usage examples.
