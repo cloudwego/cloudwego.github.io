@@ -171,6 +171,6 @@ func main() {
     h.Spin()
 }
 ```
-## Full Exapmle
+## Full Example
 
 Refer to the [etag/example](https://github.com/hertz-contrib/etag/tree/main/example) for full usage examples.
