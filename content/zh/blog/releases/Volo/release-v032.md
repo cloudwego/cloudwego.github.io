@@ -21,7 +21,8 @@ Volo 0.3.2 版本中，除了常规 bugfix 之外，还有多处改进。尤其�
 
 faststr 是我们参考 smol_str 改进的一个 string 库，实现了 immutable string 的零开销 clone。
 
-同时 FastStr 有一个不兼容变更：之前是为所有`AsRef<str>`实现了`From`，但是这样做会导致直接使用`into`会带来额外的内存分配和拷贝开销。在新的 0.2 版本中，我们只为 `'static str`、`String`、`Arc<str>`、`Arc<String>`四种类型实现了`From`，这四种类型 into 到 FastStr 是零开销的，通过这种形式避免用户不经意间带来的内存分配和拷贝问题。
+同时 FastStr 有一个不兼容变更：之前是为所有`AsRef<str>`实现了`From`，但是这样做会导致直接使用`into`会带来额外的内存分配和拷贝开销。
+在新的 0.2 版本中，我们只为 `'static str`、`String`、`Arc<str>`、`Arc<String>`四种类型实现了`From`，这四种类型调用 `into` 到 FastStr 是零开销的，通过这种形式避免用户不经意间带来的内存分配和拷贝问题。
 
 旧版本的`From`本质上就是调用了`FastStr::new(s)`，因此出现不兼容问题的话，直接改为显式调用`FastStr::new`即可。
 
