@@ -47,7 +47,19 @@ func main() {
 | WithTracer | tracer.Tracer | Inject tracer implementation, if not inject Tracer. Default: close. |
 | WithTraceLevel | stats.Level | Set trace level, Default: LevelDetailed. |
 | WithWriteTimeout | time.Duration | The timeout of data writing. Default：infinite.|
-
+| WithRedirectFixedPath | bool | If enabled, if the current request path does not match, the server will try to repair the request path and re-match, if the match is successful and the request is a GET request, it will return status code 301 for redirect, other requests will return 308 for redirect. Disabled by default |
+| WithBasePath | string | Set the base path, which must be prefixed and suffixed with `/`. The default is `/` |
+| WithMaxKeepBodySize | int | Sets the maximum size of the request body and response body to be retained during reclaim. Unit: Byte. Default value: 4 * 1024 * 1024 |
+| WithGetOnly | bool | If enabled, only GET requests are accepted. Disabled by default |
+| WithKeepAlive | bool | If enabled, use HTTP keepalive. Enabled by default |
+| WithAltTransport | network.NewTransporter | Set up the alternate transport. Default value: netpoll.NewTransporter |
+| WithH2C | bool | Sets whether H2C is enabled. Disabled by default |
+| WithReadBufferSize | int | Set the read buffer size while limiting the HTTP header size. Default value: 4 * 1024 |
+| WithRegistry | registry.Registry, *registry.Info | Setup registry configuration, service registration information. Default value: registry.NoopRegistry, nil |
+| WithAutoReloadRender | bool, time.Duration | Set up the automatic reload rendering configuration. Default value: false, 0 |
+| WithDisablePrintRoute | bool | Sets whether debugPrintRoute is disabled. Default disable |
+| WithOnAccept | func(conn net.Conn) context.Context | Set the callback function when a new connection is accepted but cannot receive data in netpoll. In go net, it will be called before converting tls connection. Default value: nil |
+| WithOnConnect | func(ctx context.Context, conn network.Conn) context.Context | Set the onConnect function. It can received data from connection in netpoll. In go net, it will be called after converting tls connection. Default value: nil |
 
 Server Connection limitation:
 

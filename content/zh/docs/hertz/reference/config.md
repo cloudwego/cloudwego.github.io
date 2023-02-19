@@ -47,6 +47,19 @@ func main() {
 | WithTracer | tracer.Tracer | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭 |
 | WithTraceLevel | stats.Level | 设置 trace level，默认 LevelDetailed |
 | WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长 |
+| WithRedirectFixedPath | bool | 如果开启，当当前请求路径不能匹配上时，server 会尝试修复请求路径并重新进行匹配，如果成功匹配并且为 GET 请求则会返回状态码 301 进行重定向，其他请求方式返回 308 进行重定向。默认关闭 |
+| WithBasePath | string | 设置基本路径，前缀和后缀必须为 `/`。默认为 `/` |
+| WithMaxKeepBodySize | int | 设置回收时保留的请求体和响应体的最大大小。单位:字节。默认值：4 * 1024 * 1024 |
+| WithGetOnly | bool | 如果开启则只接受 GET 请求。默认关闭 |
+| WithKeepAlive | bool | 如果开启则使用 HTTP 长连接。默认开启 |
+| WithAltTransport | network.NewTransporter | 设置备用 transport。默认值：netpoll.NewTransporter |
+| WithH2C | bool | 设置是否开启 H2C。默认关闭 |
+| WithReadBufferSize | int | 设置读缓冲区大小，同时限制 HTTP header 大小。默认值：4 * 1024 |
+| WithRegistry | registry.Registry, *registry.Info | 设置注册中心配置，服务注册信息。默认值：registry.NoopRegistry, nil |
+| WithAutoReloadRender | bool, time.Duration | 设置自动重载渲染配置。默认值：false, 0 |
+| WithDisablePrintRoute | bool | 设置是否禁用 debugPrintRoute。默认不禁用 |
+| WithOnAccept | func(conn net.Conn) context.Context | 设置在 netpoll 中当一个连接被接受但不能接收数据时的回调函数，在 go net 中在转换 TLS 连接之前被调用。默认值：nil |
+| WithOnConnect | func(ctx context.Context, conn network.Conn) context.Context | 设置 onConnect 函数。它可以接收来自 netpoll 连接的数据。在go net中，它将在转换 TLS 连接后被调用。默认值：nil |
 
 Server Connection 数量限制:
 
