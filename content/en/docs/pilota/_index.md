@@ -1,9 +1,9 @@
 ---
 title: 'Pilota'
 linkTitle: 'Pilota'
-weight: 6
+weight: 7
 menu:
   main:
-    weight: 6
+    weight: 7
     parent: 'Documentation'
 ---

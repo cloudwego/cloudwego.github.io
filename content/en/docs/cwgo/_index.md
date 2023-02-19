@@ -1,9 +1,9 @@
 ---
 title: 'Cwgo'
 linkTitle: 'Cwgo'
-weight: 7
+weight: 5
 menu:
   main:
-    weight: 7
+    weight: 5
     parent: 'Documentation'
 ---
