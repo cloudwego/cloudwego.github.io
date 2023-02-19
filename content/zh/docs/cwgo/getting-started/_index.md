@@ -134,7 +134,7 @@ $ cwgo server -service=a.b.c -type HTTP  -idl=idl/hello.thrift
 
 动态命令行
 
-![动态命令行](static/img/docs/cwgo_generate_type.png)
+![动态命令行](/img/docs/cwgo_dynamic.gif)
 
 5.  编译运行
 

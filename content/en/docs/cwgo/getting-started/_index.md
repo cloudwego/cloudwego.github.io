@@ -134,7 +134,7 @@ $ cwgo server -service=a.b.c -type HTTP -idl=idl/hello.thrift
 
 dynamic command line
 
-![Dynamic command line](static/img/docs/cwgo_generate_type.png)
+![Dynamic command line](/img/docs/cwgo_dynamic.gif)
 
 5. Compile and run
 

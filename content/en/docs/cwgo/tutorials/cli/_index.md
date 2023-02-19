@@ -39,7 +39,7 @@ Syntax: `cwgo init`
 
 After executing `cwgo init`, it will first ask for the type of project that needs to be generated, and multiple choices are supported. As shown in the figure below, server and client are selected
 
-![generate_type](static/img/docs/cwgo_generate_type.png)
+![generate_type](img/docs/cwgo_generate_type.png)
 
 After pressing Enter, the server and client information will be asked in turn. Proceed as follows
 

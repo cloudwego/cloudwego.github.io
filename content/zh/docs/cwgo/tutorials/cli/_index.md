@@ -39,7 +39,7 @@ cwgo 支持交互式命令行和静态命令行两种生成方式。并且**弱�
 
 执行 `cwgo init` 后，会首先询问需要生成的项目类型，支持多选，如下图所示，选择了 server 和 client
 
-![generate_type](static/img/docs/cwgo_generate_type.png)
+![generate_type](/img/docs/cwgo_generate_type.png)
 
 敲回车后，会依次询问 server 和 client 的信息。步骤如下
 
