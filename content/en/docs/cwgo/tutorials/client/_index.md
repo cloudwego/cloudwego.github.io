@@ -6,7 +6,6 @@ description: >
 
 ---
 
-# Client
 The cwgo tool supports generating the calling code of HTTP Client or RPC Client through IDL, which is convenient for users to develop.
 
 # Basic commands

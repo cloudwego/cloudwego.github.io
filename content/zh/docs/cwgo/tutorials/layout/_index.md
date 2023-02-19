@@ -6,7 +6,6 @@ description: >
 
 ---
 
-# Layout
 cwgo 工具支持目前支持生成 MVC Layout，未来还会拓展更多的模板供用户使用。
 
 # 代码结构

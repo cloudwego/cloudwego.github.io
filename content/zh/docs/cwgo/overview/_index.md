@@ -6,9 +6,8 @@ description: >
 
 ---
 
-# cwgo
-
 cwgo 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优势，提高开发者提体验。
+
 cwgo 工具可以方便生成工程化模版，其主要功能特点如下：
 
 ## 工具特点

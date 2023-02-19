@@ -6,9 +6,9 @@ description: >
 
 ---
 
-# cwgo
 
 cwgo is a CloudWeGo All in one code generation tool, which integrates the advantages of each component to improve the developer experience.
+
 The cwgo tool can easily generate engineering templates, and its main features are as follows:
 
 ## Features

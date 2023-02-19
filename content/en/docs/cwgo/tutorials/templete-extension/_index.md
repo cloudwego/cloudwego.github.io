@@ -6,7 +6,6 @@ description: >
 
 ---
 
-# Custom Template
 The cwgo tool also supports passing its own template, and the template syntax is the syntax of go template. cwgo also welcomes users to contribute their own templates. Due to the different concepts of RPC and HTTP, the corresponding template variables also have some differences, please refer to the following for details
 
 To pass a custom template, add the `-template` parameter to the command, such as

@@ -6,7 +6,6 @@ description: >
 
 ---
 
-# 命令行工具
 cwgo 是 CloudWeGo 提供的用于生成代码的一个命令行工具。目前 cwgo 支持 thrift 和 protobuf 的 IDL，支持生成 MVC Layout、Server、Client 和 DB 的代码。
 
 # 依赖与运行模式

@@ -6,7 +6,6 @@ description: >
 
 ---
 
-# DB
 cwgo integrates gorm/gen to help users generate Model code and basic CURD code.
 
 # Basic commands

@@ -6,7 +6,6 @@ description: >
 
 ---
 
-# Layout
 The cwgo tool supports the generation of MVC Layout at present, and more templates will be expanded for users to use in the future.
 
 # Code Structure

@@ -6,8 +6,7 @@ description: >
 
 ---
 
-# 快速开始
-**cwgo** 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优势，提高开发者提体验。
+cwgo 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优势，提高开发者提体验。
 
 ## 准备 Golang 开发环境
 
@@ -20,13 +19,13 @@ description: >
 
 ## 安装 cwgo 工具
 
-```
+```shell
 $ go install github.com/cloudwego/cwgo@latest
 ```
 
 用 go 命令来安装是最简单的，你也可以选择自己从源码构建和安装。要查看 cwgo 的安装位置，可以用：
 
-```
+```shell
 $ go list -f {{.Target}} github.com/cloudwego/cwgo
 ```
 
@@ -40,15 +39,18 @@ $ GO111MODULE=on go install github.com/cloudwego/thriftgo@latest
 
 protoc 安装
 
-```
-// brew 安装
-$ brew install protobuf
+```shell
+# brew 安装
+$ brew install protobuf 
 
-// 官方镜像安装，以 macos 为例
+```
+
+```shell
+# 官方镜像安装，以 macos 为例
 $ wget https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protoc-3.19.4-osx-x86_64.zip
 $ unzip protoc-3.19.4-osx-x86_64.zip
 $ cp bin/protoc /usr/local/bin/protoc
-// 确保 include/google 放入 /usr/local/include下
+# 确保 include/google 放入 /usr/local/include下
 $ cp -r include/google /usr/local/include/google
 ```
 
@@ -60,7 +62,7 @@ $ cp -r include/google /usr/local/include/google
 
 安装成功后，执行 `cwgo --version` 和 `thriftgo --version` 应该能够看到具体版本号的输出（版本号有差异，以 x.x.x 示例）：
 
-```
+```shell
 $ cwgo --version
 vx.x.x
 
@@ -75,7 +77,7 @@ libprotoc x.x.x
 
 1.  若将代码放置于 `$GOPATH/src` 下，需在 `$GOPATH/src` 下创建额外目录，进入该目录后再获取代码：
 
-```
+```shell
 $ mkdir -p $(go env GOPATH)/src/github.com/cloudwego
 $ cd $(go env GOPATH)/src/github.com/cloudwego
 ```
@@ -94,21 +96,21 @@ cwgo 的具体使用请参考[命令行工具](content/zh/docs/cwgo/tutorials/cl
 
 1.  首先创建一个目录
 
-```
+```shell
 $ mkdir -p $GOPATH/src/local/cwgo_test
 $ cd $GOPATH/src/local/cwgo_test
 ```
 
 2.  创建一个 idl 目录
 
-```
+```shell
 $ mkdir idl
 ```
 
 3.  编写 idl/hello.thrift 文件
 
-```
-// idl/hello.thrift
+```thrift
+# idl/hello.thrift
 namespace go hello.example
 
 struct HelloReq {
@@ -128,7 +130,7 @@ service HelloService {
 
 静态命令行
 
-```
+```shell
 $ cwgo server -service=a.b.c -type HTTP  -idl=idl/hello.thrift
 ```
 
@@ -138,14 +140,14 @@ $ cwgo server -service=a.b.c -type HTTP  -idl=idl/hello.thrift
 
 5.  编译运行
 
-```
+```shell
 $ go mod tidy && go mod verify
 $ sh build.sh && sh output/bootstrap.sh
 ```
 
 6.  发起调用
 
-```
+```shell
 $ curl http://127.0.0.1:8080/ping
 pong
 ```

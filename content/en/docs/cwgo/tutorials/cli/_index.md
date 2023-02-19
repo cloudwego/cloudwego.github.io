@@ -6,7 +6,6 @@ description: >
 
 ---
 
-# Command Line Tools
 cwgo is a command-line tool provided by CloudWeGo for generating code. Currently cwgo supports the IDL of thrift and protobuf, and supports the code generation of MVC Layout, Server, Client and DB.
 
 # Dependency and Run Mode
@@ -39,7 +38,7 @@ Syntax: `cwgo init`
 
 After executing `cwgo init`, it will first ask for the type of project that needs to be generated, and multiple choices are supported. As shown in the figure below, server and client are selected
 
-![generate_type](img/docs/cwgo_generate_type.png)
+![generate_type](/img/docs/cwgo_generate_type.png)
 
 After pressing Enter, the server and client information will be asked in turn. Proceed as follows
 

@@ -6,7 +6,6 @@ description: >
 
 ---
 
-# Client
 cwgo 工具支持通过 IDL 生成 HTTP Client 或 RPC Client 的调用代码，方便用户开发。
 
 # 基础命令
