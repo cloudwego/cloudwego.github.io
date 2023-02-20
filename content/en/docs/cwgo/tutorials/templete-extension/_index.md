@@ -17,7 +17,7 @@ cwgo server -type RPC -service {service name} -idl {idl path} -template {tpl pat
 # RPC
 
 1. The template file is delivered through the yaml folder, specified by the `--template-dir` command line parameter of kitex, all yaml files in this folder will be rendered, and if the template parsing fails, it will exit directly. Watch out for unknown hidden files.
-1. `extensions.yaml` in the folder is a specific file, the content of which is [Extended Service Code](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/ ) configuration file. If the file exists, there is no need to pass the `template-extension` parameter
+2. `extensions.yaml` in the folder is a specific file, the content of which is [Extended Service Code](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/ ) configuration file. If the file exists, there is no need to pass the `template-extension` parameter
 
 The yaml file is defined as follows:
 
@@ -34,8 +34,8 @@ body: template content # template content
 ```
 
 3. The data used by the template is PackageInfo. It is considered that this part contains all metadata, such as methodInfo, etc. The user only needs to pass the template file, and the data in the template is PackageInfo data. Commonly used content in PackageInfo can be found in the appendix.
-3. cwgo supports circularly rendering files according to methodinfo. There is only one element in the methodInfo list during cyclic rendering, which is the method currently being rendered.
-3. When updating, currently supports overwriting, skipping and adding files according to methods, and supports appending in one file. If the loop render file is enabled, only skip and cover are supported.
+4. cwgo supports circularly rendering files according to methodinfo. There is only one element in the methodInfo list during cyclic rendering, which is the method currently being rendered.
+5. When updating, currently supports overwriting, skipping and adding files according to methods, and supports appending in one file. If the loop render file is enabled, only skip and cover are supported.
 
 Best practice rpc example tpl can refer to [here](https://github.com/cloudwego/cwgo/tree/main/tpl/kitex/server/standard)
 

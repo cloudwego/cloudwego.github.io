@@ -24,7 +24,7 @@ cwgo
  
 ```
 
-Therefore, the precautions of corresponding tools also need to be followed, such as [kitex precautions](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/#%E4%BD%BF%E7%94%A8-protobuf-idl-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9) and generate HTTP code [Notes on hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9).
+Therefore, the precautions of corresponding tools also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#%E4%BD%BF%E7%94%A8-protobuf-idl-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9) and generate HTTP code [Notes on hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9).
 
 # use
 

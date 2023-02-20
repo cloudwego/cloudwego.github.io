@@ -85,7 +85,7 @@ $ cd $(go env GOPATH)/src/github.com/cloudwego
 
 ## Precautions
 
-The bottom layer of cwgo uses [kitex](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/), [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/), [gen](https://gorm.io/gen/index.html) tools, so the corresponding tool specifications also need to be followed, such as [kitex precautions](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/#%E4%BD%BF%E7%94%A8-protobuf-idl-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9) and [Notes for hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9).
+The bottom layer of cwgo uses [kitex](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/), [hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/toolkit/), [gen](https://gorm.io/gen/index.html) tools, so the corresponding tool specifications also need to be followed, such as [kitex precautions](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/#%E4%BD%BF%E7%94%A8-protobuf-idl-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9) and [Notes for hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9).
 
 # Using
 
@@ -151,4 +151,4 @@ $ curl http://127.0.0.1:8080/ping
 pong
 ```
 
-congratulations! So far you have successfully written a Cwgo server and completed a call!
+Congratulations! So far you have successfully written a Cwgo server and completed a call!

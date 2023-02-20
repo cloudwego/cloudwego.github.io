@@ -6,7 +6,7 @@ description: >
 
 ---
 
-cwgo 集成了 gorm/gen 用于帮助用户生成 Model 代码以及基础的CURD代码。
+cwgo 集成了 gorm/gen 用于帮助用户生成 Model 代码以及基础的 CURD 代码。
 
 # 基础命令
 
