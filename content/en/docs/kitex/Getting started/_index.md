@@ -2,29 +2,30 @@
 title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 2
-description: >
+keywords: ["Kitex", "Golang", "Go", "Getting Started", "Guidelines"]
+description: "This document covers the preparation of the development environment, quick start and basic tutorials of Kitex."
 ---
 
 ## Prerequisites
 
-1. If you don't setup golang development environment, please follow [Install Go](https://golang.org/doc/install) to install go.
-2. We strongly recommend you use latest golang version. And compatibility is guaranteed within three latest minor release version (for now >= **v1.16**).
-3. Ensure `GO111MODULE` is set to `on`.
-4. Currently Windows is not particularly supported by Kitex, if your development environment is Windows, you are suggested to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install).
+1. If you don't have the golang development environment set up, please follow [Install Go](https://golang.org/doc/install) to install go.
+2. We strongly recommend that you use the latest version of golang. And compatibility is guaranteed within three latest minor release versions (currently >= **v1.16**).
+3. Make sure that `GO111MODULE` is set to `on`.
+4. Currently Windows is not well supported by Kitex, if your development environment is Windows it is recommended to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install).
 
 ## Quick Start
 
-This chapter gonna get you started with Kitex with a simple executable example.
+This chapter will get you started with Kitex using a simple executable example.
 
-### Install Compiler
+### Install the compiler
 
-First of all, let's install compilers we gonna work with.
+First of all, let's install the compilers we will be working with.
 
-1. Ensure `GOPATH` environment variable is defined properly (for example `export GOPATH=~/go`), then add `$GOPATH/bin` to `PATH` environment variable (for example `export PATH=$GOPATH/bin:$PATH`). Make sure `GOPATH` is accessible.
-2. Install kitex: `go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`
-3. Install thriftgo: `go install github.com/cloudwego/thriftgo@latest`
+1. Make sure the `GOPATH` environment variable is properly defined (e.g. `export GOPATH=~/go`), then add `$GOPATH/bin` to the `PATH` environment variable (e.g. `export PATH=$GOPATH/bin:$PATH`). Make sure that `GOPATH` is accessible.
+2. Install Kitex: `go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`.
+3. Install thriftgo: `go install github.com/cloudwego/thriftgo@latest`.
 
-Now you can run `kitex --version` and `thriftgo --version`, and you can see some outputs just like below if you setup compilers successfully.
+Now you can run `kitex --version` and `thriftgo --version` and you should see some output like below if you have successfully set up the compilers.
 
  ```shell
 $ kitex --version
@@ -33,20 +34,20 @@ vx.x.x
 $ thriftgo --version
 thriftgo x.x.x
 ```
-Tips: If you encounter any problem during installation, it's probably you don't setup golang develop environment properly. In most cases you can search error message to find solution.
+Tips: If you encounter any problems during the installation, it's probably because you haven't set up the golang development environment properly. In most cases you can search the error message to find a solution.
 
 ### Get the example
 
-1. You can just click [HERE](https://github.com/cloudwego/kitex-examples/archive/refs/heads/main.zip) to download the example
-2. Or you can clone the example repository `git clone https://github.com/cloudwego/kitex-examples.git`
+1. You can simply click [HERE](https://github.com/cloudwego/kitex-examples/archive/refs/heads/main.zip) to download the example.
+2. Or you can clone the sample repository `git clone https://github.com/cloudwego/kitex-examples.git`.
 
 ### Run the example
 
-#### Run by go
+#### Run with go
 
-1. enter `hello` directory
+1. change to the `hello` directory
 
-   `cd kitex-examples/hello`
+`cd kitex-examples/hello`
 
 2. run server
 
@@ -54,30 +55,30 @@ Tips: If you encounter any problem during installation, it's probably you don't 
 
 3. run client
 
-   open a another terminal, and `go run ./client`
+   open another terminal and `go run ./client`.
 
-#### Run by docker
+#### Run with Docker
 
-1. enter the example directory
+1. go to the examples directory
 
    `cd kitex-examples`
 
 2. build the example project
 
    `docker build -t kitex-examples .`
-3. run server
+3. run the server
 
    `docker run --network host kitex-examples ./hello-server`
 
-4. run client
+4. run the client
 
-   open another terminal, and `docker run --network host kitex-examples ./hello-client`
+   Open another terminal and run `docker run --network host kitex-examples ./hello-client`
 
-congratulation! You successfully use Kitex to complete a RPC.
+Congratulations! You have successfully used Kitex to complete an RPC.
 
 ### Add a new method
 
-open `hello.thrift`, you will see code below:
+Open `hello.thrift`, you will see the following code:
 
 ```thrift
 namespace go api
@@ -95,7 +96,7 @@ service Hello {
 }
 ```
 
-Now let's define a new request and response`AddRequest` 和 `AddResponse`, after that add `add` method to `service Hello`:
+Now let's define a new request and response `AddRequest` 和 `AddResponse`, then add the `add` method to `service Hello`:
 
 ```thrift
 namespace go api
@@ -123,11 +124,11 @@ service Hello {
 }
 ```
 
-When you complete it, `hello.thrift` should be just like above.
+When you are finished, `hello.thrift` should look like the above.
 
 ### Regenerate code
 
-Run below command, then `kitex` compiler will recompile `hello.thrift` and update generated code.
+Run the command below, then the `kitex` compiler will recompile `hello.thrift` and update the generated code.
 
 ```bash
 kitex -service a.b.c hello.thrift
@@ -136,14 +137,14 @@ kitex -service a.b.c hello.thrift
 kitex -module "your_module_name" -service a.b.c hello.thrift
 ```
 
-After you run the above command, `kitex` compiler will update these files:
+After running the above command, the `kitex` compiler will update these files:
 
-	1. update `./handler.go`, add a basic implementation of `add` method.
-	2. update `./kitex_gen`, updates client and server implementation.
+1. update `./handler.go`, adding a simple implementation of the `add` method.
+2. update `./kitex_gen`, updating the client and server implementations.
 
 ### Update handler
 
-When you complete **Regenerate Code** chapter, `kitex` will add a basic implementation of `Add` to `./handler.go`, just like:
+When you finish the **Regenerate Code** chapter, `kitex` will add a basic implementation of `Add` to `./handler.go`, just like:
 
 ```go
 // Add implements the HelloImpl interface.
@@ -153,7 +154,7 @@ func (s *HelloImpl) Add(ctx context.Context, req *api.AddRequest) (resp *api.Add
 }
 ```
 
-Let's complete process logic, like:
+Let's complete the process logic, such as:
 
 ```go
 // Add implements the HelloImpl interface.
@@ -164,9 +165,9 @@ func (s *HelloImpl) Add(ctx context.Context, req *api.AddRequest) (resp *api.Add
 }
 ```
 
-### Call "add" method
+### Call the `add` method
 
-Let's add `add` RPC to client example.
+Let's add the `add` RPC to the client example.
 
 You can see something like below in `./client/main.go`:
 
@@ -182,7 +183,8 @@ for {
 }
 ```
 
-Let's add `add` RPC:
+Let's add the `add` RPC:
+
 
 ```go
 for {
@@ -203,20 +205,20 @@ for {
 }
 ```
 
-### Run application again
+### Run the application again
 
-Shutdown server and client we have run, then:
+Shut down the server and the client we ran. Then:
 
 1. run server
 
-        `go run .`
+    `go run .`
 
-2. run client
+2. run the client
 
-        open another terminal, and `go run ./client`
+    Open another terminal and `go run ./client`.
 
-        Now, you can see outputs of `add` RPC.
-
+    Now you can see the output of the `add` RPC.
+    
 ## Tutorial
 
 ### About Kitex
@@ -251,7 +253,7 @@ enter directory
 
 You can use following command to install and upgrade `kitex`:
 
-`$ go install github.com/cloudwego/kitex/tool/cmd/kitex`
+`$ go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`
 
 After that, you can just run it to check whether it's installed successfully.
 

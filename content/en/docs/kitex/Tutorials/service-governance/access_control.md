@@ -2,10 +2,11 @@
 title: "Customized Access Control"
 date: 2021-08-31
 weight: 4
-description: >
+keywords: ["Kitex", "Access Control", "ACL"]
+description: Kitex provides a simple middleware builder that supports self-defined access control logic to reject requests under certain conditions.
 ---
 
-The Kitex framework provides a middleware builder to support adding customized access control that rejects requests under certain conditions. The belowing is a simple example that randomly rejects 1% of all requests:
+Below is a simple example that randomly rejects 1% of all requests through self-defined access control logic:
 
 ```go
 package myaccesscontrol

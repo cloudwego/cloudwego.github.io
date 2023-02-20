@@ -6,14 +6,14 @@ description: >
 ---
 
 ## Set Up Golang Development Environment
-1. If you haven't set up your Golang Environment, you can refer to [Golang Install](https://golang.org/doc/install).
-2. We recommend you to use the Golang latest version, or make sure it's >= v1.15. You can choose to use the earlier versions, but the compatibility and stability are not assured.
-3. Make sure the go mod support is on (for Golang versions >= v1.15, it is on by default).
+1. If you haven't set up your Golang environment yet, you can refer to [Golang Install](https://golang.org/doc/install).
+2. We recommend that you use the latest version of Golang, or make sure it's >= v1.15. You can choose to use the earlier versions, but the compatibility and stability are not guaranteed.
+3. Make sure the go mod support is enabled (for Golang versions >= v1.15, it is enabled by default).
 
 >Currently, Hertz supports Linux, macOS, and Windows systems.
 
 ## Quick Start
-After you have prepared the Golang environment, the chapter will help you to quickly get familiar with Hertz.
+After you have prepared the Golang environment, this chapter will help you to get familiar with Hertz in a very short time.
 
 ### Install the commend tool of hz
 First, you need to install the commend tool hz which is used in this chapter
@@ -25,7 +25,7 @@ Attention, do not set `GOPATH` to a directory that the current user does not hav
 For more information on how to use hz, please refer to: [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/)
 
 ### Determine Where to Store Your Code
-1. If your codes are placed under `$GOPATH/src`, you need to create additional dictionary under `$GOPATH/src` and retrieve your code under the dictionary.
+1. If your codes are located in `$GOPATH/src`, you will need to create an additional dictionary in `$GOPATH/src` and retrieve your code from that dictionary.
 ```console
   $ mkdir -p $(go env GOPATH)/src/github.com/cloudwego
   $ cd $(go env GOPATH)/src/github.com/cloudwego
@@ -60,7 +60,7 @@ func main() {
     h := server.Default()
 
     h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-            ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+            ctx.JSON(consts.StatusOK, utils.H{"message": "pong"})
     })
 
     h.Spin()
@@ -92,11 +92,11 @@ $ curl http://127.0.0.1:8888/ping
 ```
 If nothing goes wrong, we can see the following output
 ```console
-$ {"ping":"pong"}
+$ {"message":"pong"}
 ```
-Now, you have already launched Hertz Server successfully and completed an API call. More API examples can be found at [API Examples](https://pkg.go.dev/github.com/cloudwego/hertz).
+You have now successfully launched Hertz Server successfully and completed an API call. More API examples can be found at [API Examples](https://pkg.go.dev/github.com/cloudwego/hertz).
 
-As for the project dictionary layout, here is a project layout sample that you can refer to. You can also organize the layout based on your business scenario.
+As for the layout of the Project Dictionary, here is a sample project layout that you can refer to. You can also organise the layout according to your business scenario.
 
 ## Directory Structure
 As for the project directory structure, you may check [Project Layout](https://github.com/golang-standards/project-layout) for reference,

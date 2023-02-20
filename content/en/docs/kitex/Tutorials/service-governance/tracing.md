@@ -2,14 +2,13 @@
 title: "Tracing"
 date: 2021-08-31
 weight: 3
-description: >
+keywords: ["Kitex", "Tracing", "OpenTelemetry", "OpenTracing"]
+description: Kitex supports OpenTelemetry tracer, OpenTracing tracer and also customized tracer.
 ---
 
-Kitex supports opentelemetry tracer, opentracing tracer, and also customized tracer.
+## OpenTelemetry
 
-## opentelemetry
-
-Kitex's opentelemetry extension provides support for `tracing`, `metrics` and `logging`.
+Kitex's OpenTelemetry extension provides support for `tracing`, `metrics` and `logging`.
 
 Example
 
@@ -81,9 +80,9 @@ func main()  {
 For more information see [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry)
 
 
-## opentracing
+## OpenTracing
 
-client side, use opentracing `GlobalTracer` by default
+client side, use OpenTracing `GlobalTracer` by default
 
 ```go
 import (
@@ -99,7 +98,7 @@ if err != nil {
 }
 ```
 
-server side, use opentracing `GlobalTracer` by default
+server side, use OpenTracing `GlobalTracer` by default
 
 ```go
 import (

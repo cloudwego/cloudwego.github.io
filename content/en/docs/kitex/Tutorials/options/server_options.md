@@ -2,7 +2,8 @@
 title: "Server Option"
 date: 2022-06-20
 weight: 2
-description: >
+keywords: ["Kitex", "Server", "Option"]
+description: Kitex Server Option instructions.
 ---
 
 # Usage
@@ -23,7 +24,8 @@ svr := api.NewServer(new(DemoImpl), server.WithXXX...)
 func WithServerBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
 ```
 
-Set the basic infos for server, such as ServiceName, Method and Tags.
+Set the service infos for server, including ServiceName and customized Tags, customized Tag such as Cluster, IDC, Env, and it is no need to set Method field of EndpointBasicInfo.
+It is strongly recommended to configure this option, and those infos will be used for service registration.
 
 
 

@@ -11,9 +11,12 @@ menu:
 {{< /blocks/cover >}}
 
 {{% blocks/lead color="primary" %}}
-CloudWeGo 是一套以 Go 语言为核心的、可快速构建企业级云原生架构的中间件。
-它包含许多组件：RPC 框架 Kitex，HTTP 框架 Hertz，网络框架 Netpoll，Go 语言 thrift 编译器 Thriftgo，以及基于 HTTP2 源码改造使用 Netpoll 的 netpoll-http2。
-通过结合社区优秀的开源产品和生态，可以快速搭建一套完善的微服务体系。
+<p class="home-description">
+  CloudWeGo 是一套可快速构建企业级云原生微服务架构的中间件集合。
+  它包含许多组件：Golang RPC 框架 Kitex，HTTP 框架 Hertz，Rust RPC 框架 Volo，网络库 Netpoll，Go 语言 Thrift 编译器 Thriftgo 等等。
+  通过结合社区优秀的开源产品和生态，可以快速搭建一套完善的云原生微服务体系。
+  更多生态能力对接，请参考 <a href="https://github.com/kitex-contrib">kitex-contrib</a> 和 <a href="https://github.com/hertz-contrib">hertz-contrib</a>。
+</p>
 {{% /blocks/lead %}}
 
 {{< blocks/section >}}
@@ -41,12 +44,5 @@ CloudWeGo 是一套以 Go 语言为核心的、可快速构建企业级云原生
 <div class="about-project col-12">
   <h2 class="home-section-title">Thriftgo</h2>
   <p class="lead mt-5">Go 语言实现的 thrift 编译器，支持插件机制，支持完整的 thrift IDL 语法和完善的语义检查。</p>
-</div>
-{{< /blocks/section >}}
-
-{{< blocks/section >}}
-<div class="about-project col-12">
-  <h2 class="home-section-title">Netpoll-http2</h2>
-  <p class="lead mt-5">基于官方 HTTP2 源码改造使用 Netpoll，提供高性能的 HTTP2 通信。</p>
 </div>
 {{< /blocks/section >}}

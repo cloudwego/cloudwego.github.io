@@ -49,7 +49,7 @@ type Info struct {
 
   ```go
   ebi := &rpcinfo.EndpointBasicInfo{
-      ServiceName: 'yourServiceName',
+      ServiceName: "yourServiceName",
       Tags:        make(map[string]string),
   }
   ebi.Tags[idc] = "xxx"
@@ -58,12 +58,14 @@ type Info struct {
   ```
 
 - 指定自定义注册模块
+
   option: `WithRegistry`
 
   ```go
   svr := xxxservice.NewServer(handler, server.WithServerBasicInfo(ebi), server.WithRegistry(yourRegistry))
   ```
 - 自定义 RegistryInfo
+
   Kitex 默认赋值 ServiceName、Addr 和 PayloadCodec，若需要其他注册信息需要使用者自行注入。option:  `WithRegistryInfo`
 
   ```go

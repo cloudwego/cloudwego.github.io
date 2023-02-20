@@ -2,7 +2,8 @@
 title: "Client Option"
 date: 2022-06-20
 weight: 1
-description: >
+keywords: ["Kitex", "Client", "Option"]
+description: Kitex Client Option instructions.
 ---
 
 # Usage
@@ -23,7 +24,8 @@ client, err := echo.NewClient("targetService", client.WithXXXX...)
 func WithClientBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
 ```
 
-Set the basic infos for client, such as ServiceName, Method and Tags.
+Set the service infos for client, including ServiceName and customized Tags, customized Tag such as Cluster, IDC, Env, and it is no need to set Method field of EndpointBasicInfo.
+It is strongly recommended to configure this option.
 
 
 

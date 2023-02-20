@@ -1,5 +1,5 @@
 ---
-title: "编解码(协议)扩展"
+title: "编解码 (协议) 扩展"
 date: 2021-08-26
 weight: 8
 description: >
@@ -9,7 +9,7 @@ description: >
 
 Kitex 支持扩展协议，包括整体的 Codec 和 PayloadCodec。通常 RPC 协议中包含应用层传输协议和 Payload 协议，如 HTTP/HTTP2 属于应用层传输协议，基于 HTTP/HTTP2 可以承载不同格式和不同协议的 Payload。
 
-Kitex 默认支持内置的 TTHeader 传输协议，Payload 支持 Thrift 、KitexProtobuf、gRPC。另外，Kitex 集成 [netpoll-http2](https://github.com/cloudwego/netpoll-http2) 支持 HTTP2，目前主要用于 gRPC，后续会考虑基于 HTTP2 支持 Thrift。
+Kitex 默认支持内置的 TTHeader 传输协议，Payload 支持 Thrift、KitexProtobuf、gRPC。另外，Kitex 集成 [netpoll-http2](https://github.com/cloudwego/netpoll-http2) 支持 HTTP2，目前主要用于 gRPC，后续会考虑基于 HTTP2 支持 Thrift。
 
 TTHeader 协议定义如下，通过 TTHeader 可以透传服务信息，便于服务治理。
 
@@ -86,7 +86,7 @@ Kitex 默认支持的 Payload 有 Thrift、Kitex Protobuf 以及 gRPC 协议。�
 
 ## 默认的 Codec
 
-如果用户不指定 Codec ，则使用默认的内置 Codec。
+如果用户不指定 Codec，则使用默认的内置 Codec。
 
 - 指定默认 Codec 的包大小限制，默认无限制
   option: `codec.NewDefaultCodecWithSizeLimit`

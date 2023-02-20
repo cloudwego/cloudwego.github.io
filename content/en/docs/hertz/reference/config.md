@@ -7,15 +7,17 @@ description: >
 ---
 
 ## Server
+
 The configuration items on the Server side all use `server.xxx` when initializing the Server, such as:
+
 ```go
 package main
 
 import "github.com/cloudwego/hertz/pkg/app/server"
 
 func main() {
-    h := server.New(server.WithXXXX())
-    ...
+	h := server.New(server.WithXXXX())
+	...
 }
 ```
 
@@ -44,9 +46,31 @@ func main() {
 | WithALPN | bool | Whether to enable ALPN. Default: false. |
 | WithTracer | tracer.Tracer | Inject tracer implementation, if not inject Tracer. Default: close. |
 | WithTraceLevel | stats.Level | Set trace level, Default: LevelDetailed. |
+| WithWriteTimeout | time.Duration | The timeout of data writing. Default：infinite.|
+| WithRedirectFixedPath | bool | If enabled, if the current request path does not match, the server will try to repair the request path and re-match, if the match is successful and the request is a GET request, it will return status code 301 for redirect, other requests will return 308 for redirect. Disabled by default |
+| WithBasePath | string | Set the base path, which must be prefixed and suffixed with `/`. The default is `/` |
+| WithMaxKeepBodySize | int | Sets the maximum size of the request body and response body to be retained during reclaim. Unit: Byte. Default value: 4 * 1024 * 1024 |
+| WithGetOnly | bool | If enabled, only GET requests are accepted. Disabled by default |
+| WithKeepAlive | bool | If enabled, use HTTP keepalive. Enabled by default |
+| WithAltTransport | network.NewTransporter | Set up the alternate transport. Default value: netpoll.NewTransporter |
+| WithH2C | bool | Sets whether H2C is enabled. Disabled by default |
+| WithReadBufferSize | int | Set the read buffer size while limiting the HTTP header size. Default value: 4 * 1024 |
+| WithRegistry | registry.Registry, *registry.Info | Setup registry configuration, service registration information. Default value: registry.NoopRegistry, nil |
+| WithAutoReloadRender | bool, time.Duration | Set up the automatic reload rendering configuration. Default value: false, 0 |
+| WithDisablePrintRoute | bool | Sets whether debugPrintRoute is disabled. Default disable |
+| WithOnAccept | func(conn net.Conn) context.Context | Set the callback function when a new connection is accepted but cannot receive data in netpoll. In go net, it will be called before converting tls connection. Default value: nil |
+| WithOnConnect | func(ctx context.Context, conn network.Conn) context.Context | Set the onConnect function. It can received data from connection in netpoll. In go net, it will be called after converting tls connection. Default value: nil |
 
+Server Connection limitation:
+
+* If you are using the standard network library, there is no such restriction.
+* If netpoll is used, the maximum number of connections is 10000 (this is
+  the [gopool](https://github.com/bytedance/gopkg/blob/b9c1c36b51a6837cef4c2223e11522e3a647460c/util/gopool/gopool.go#L46))
+  used at the bottom of netpoll. Yes, the modification method is also very simple, just call the function provided by
+  gopool: `gopool.SetCap(xxx)` (you can call it once in main.go).
 
 ## Client
+
 The configuration items on the Client side all use `server.xxx` when initializing the Server, such as:
 
 ```go
@@ -68,9 +92,11 @@ func main() {
 | WithMaxConnDuration | time.Duration | Set the maximum keep-alive time of the connection, when the timeout expired, the connection will be closed after the current request is completed. Default: infinite. |
 | WithMaxConnWaitTimeout | time.Duration | Set the maximum time to wait for an idle connection. Default: no wait. |
 | WithKeepAlive | bool | Whether to use persistent connection. Default: true. |
-| WithMaxIdempotentCallAttempts | int | Set the times of failed retries. Default: 5. |
+| WithRetryConfig | ...retry.Option | Set the retry config of client. Hertz version >= v0.4.0. |
+| ~~WithMaxIdempotentCallAttempts~~ | int | Set the maximum number of calls. If a call fails, it will be retried. Default: 1 (That is no retry). v0.4.0 is obsolete. Only available before v0.4.0. It is recommended to upgrade Hertz version >= v0.4.0 and use WithRetryConfig instead. |
 | WithClientReadTimeout | time.Duration | Set the maximum time to read the response. Default: infinite. |
 | WithTLSConfig | *tls.Config | Set the client's TLS config for mutual TLS authentication. |
 | WithDialer | network.Dialer | Set the network library used by the client. Default: netpoll. |
 | WithResponseBodyStream | bool | Set whether to use stream processing. Default: false. |
 | WithDialFunc | client.DialFunc | Set Dial Function. |
+| WithWriteTimeout | time.Duration | The timeout of data writing. Default：infinite.|

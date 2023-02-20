@@ -2,7 +2,8 @@
 title: "Server Option"
 date: 2022-06-20
 weight: 2
-description: >
+keywords: ["Kitex", "Server", "Option"]
+description: Kitex Server Option 使用说明。
 ---
 
 # 用法
@@ -23,7 +24,7 @@ svr := api.NewServer(new(DemoImpl), server.WithXXX...)
 func WithServerBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
 ```
 
-设置 Server 侧的 RPC 调用基本信息，例如 ServiceName，Method 和 Tags。
+设置 Server 侧的 Service 信息，包括 ServiceName 和自定义的 Tags，自定义 Tag 如 Cluster、IDC、Env，无需设置 EndpointBasicInfo 的 Method 字段。强烈建议配置该 Option，会用于服务注册。
 
 
 

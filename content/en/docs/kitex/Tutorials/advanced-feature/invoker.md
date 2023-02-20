@@ -2,10 +2,9 @@
 title: "Server SDK Mode"
 date: 2021-08-31
 weight: 3
-description: >
+keywords: ["Kitex", "SDK 化"]
+description: SDK Mode（invoker）provides a way to call Kitex server just like a SDK.
 ---
-
-SDK Mode（invoker）provides a way to call Kitex server just like a SDK.
 
 `message` is used to start a call, you should use `local` and `remote` two `net.Addr` to initialize `message`.
 Which indicates local and remote address (used in logging and tracing).
@@ -14,9 +13,9 @@ Then call `Call` method of `invoker` to start a call. After call, you can use `G
 
 ```go
 import (
-	...
-	"github.com/cloudwego/kitex/sdk/message"
-  	...
+    ...
+    "github.com/cloudwego/kitex/server/invoke"
+    ...
 )
 
 func main() {
@@ -26,7 +25,7 @@ func main() {
     // init local/remote
     ...
     ivk := echo.NewInvoker(new(EchoImpl))
-    msg := message.NewMessage(local, remote)
+    msg := invoke.NewMessage(local, remote)
     // setup request payload
     msg.SetRequestBytes(reqPayload)
     // start a call

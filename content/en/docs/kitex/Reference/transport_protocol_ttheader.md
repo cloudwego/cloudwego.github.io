@@ -2,8 +2,8 @@
 title: "TTHeader"
 linkTitle: "TTHeader"
 weight: 1
-description: >
-
+keywords: ["Kitex", "TTheader", "Protocol"]
+description: "Kitex protocol design of TTheader."
 ---
 
 Referring to the [Thrift THeader protocol](https://github.com/apache/thrift/blob/master/doc/specs/HeaderFormat.md), we designed the TTheader protocol.

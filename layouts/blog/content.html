@@ -4,6 +4,9 @@
 	<div class="td-byline mb-4">
 		{{ with .Params.author }}{{ T "post_byline_by" }} <b>{{ . | markdownify }}</b> |{{ end}}
 		<time datetime="{{  $.Date.Format "2006-01-02" }}" class="text-muted">{{ $.Date.Format $.Site.Params.time_format_blog  }}</time>
+                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                <div class="addthis_inline_share_toolbox" style="display:inline-block"></div>
+
 	</div>
 	<header class="article-meta">
 		{{ $context := . }}
@@ -28,4 +31,6 @@
 	{{ end }}
 
 	{{ partial "pager.html" . }}
+  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-636ce3c5c9ef4828"></script>
 </div>

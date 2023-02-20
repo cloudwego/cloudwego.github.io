@@ -29,11 +29,10 @@ description: >
 
 ### 404
 1. 访问到了错误的端口上了，常见访问到了 debug 端口
-   1. 解决方案：区分框架服务的监听端口和 debug server 的监听端口，默认 xxx
+   1. 解决方案：区分框架服务的监听端口和 debug server 的监听端口，默认:8888
 2. 未匹配到路由
    1. 根据启动日志查看是否所有预期路由都正常注册
    2. 查看访问方法是否正确
-   3. 查看某些配置项是否开启，如 xxx
 
 ### 417
 server 在执行完自定义的 `ContinueHandler` 之后返回 `false`（server 主动拒绝掉 100 Continue 后续的 body）。
@@ -62,3 +61,88 @@ type HandlerFunc func(c context.Context, ctx *RequestContext)
 `c` 作为上下文在中间件 `/handler` 之间传递。拥有 `context.Context` 的所有语义，协程安全。所有需要 `context.Context` 接口作为入参的地方，直接传递 `c` 即可。
 
 除此之外，如果面对一定要异步传递 `ctx` 的场景，hertz 也提供了 `ctx.Copy()` 接口，方便业务能够获取到一个协程安全的副本。
+
+## 精度丢失问题
+
+### 说明
+
+1. JavaScript 的数字类型一旦数字超过限值时将会丢失精度，进而导致前后端的值出现不一致。
+
+```javascript
+var s = '{"x":6855337641038665531}';
+var obj = JSON.parse(s);
+alert (obj.x);
+
+// Output 6855337641038666000
+```
+
+2. 在 JSON 的规范中，对于数字类型是不区分整形和浮点型的。 在使用 `json.Unmarshal` 进行 JSON 的反序列化的时候，如果没有指定数据类型，使用 `interface{}` 作为接收变量，将默认采用 `float64` 作为其数字的接受类型，当数字的精度超过float能够表示的精度范围时就会造成精度丢失的问题。
+
+### 解决办法
+
+1. 使用 json 标准包的 `string` tag。
+
+```go
+package main
+
+import (
+    "context"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+type User struct {
+    ID int `json:"id,string"`
+}
+
+func main() {
+    h := server.Default()
+
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        var u User
+        u.ID = 6855337641038665531
+        c.JSON(consts.StatusOK, u)
+    })
+
+    h.Spin()
+}
+```
+
+2. 使用 `json.Number`
+
+```go
+package main
+
+import (
+    "context"
+    "encoding/json"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+type User struct {
+    ID json.Number `json:"id"`
+}
+
+func main() {
+    h := server.Default()
+
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        var u User
+        err := json.Unmarshal([]byte(`{"id":6855337641038665531}`), &u)
+        if err != nil {
+            panic(err)
+        }
+        c.JSON(consts.StatusOK, u)
+    })
+
+    h.Spin()
+}
+
+```
+

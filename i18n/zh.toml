@@ -64,3 +64,8 @@ other = "是"
 other = "否"
 [feedback_tip]
 other = "请告诉我们如何改进"
+
+[error_404_were_you_looking_for]
+other = "也许你在寻找这些:"
+[error_page_title]
+other = "404, 访问的页面并不存在"

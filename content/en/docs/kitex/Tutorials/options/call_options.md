@@ -2,7 +2,8 @@
 title: "Call Option"
 date: 2022-06-20
 weight: 3
-description: >
+keywords: ["Kitex", "Call", "Option"]
+description: Kitex Call Option instructions.
 ---
 
 # Usage

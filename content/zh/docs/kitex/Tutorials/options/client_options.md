@@ -2,7 +2,8 @@
 title: "Client Option"
 date: 2022-06-20
 weight: 1
-description: >
+keywords: ["Kitex", "Client", "Option"]
+description: Kitex Client Option 使用说明。
 ---
 
 # 用法
@@ -23,7 +24,7 @@ client, err := echo.NewClient("targetService", client.WithXXXX...)
 func WithClientBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
 ```
 
-设置 Client 侧的 RPC 调用基本信息，例如 ServiceName，Method 和 Tags。
+设置 Client 侧的 Service 信息，包括 ServiceName 和自定义的 Tags，自定义 Tag 如 Cluster、IDC、Env，无需设置 EndpointBasicInfo 的 Method 字段。强烈建议配置该 Option。
 
 
 

@@ -16,8 +16,8 @@ package main
 import "github.com/cloudwego/hertz/pkg/app/server"
 
 func main() {
-    h := server.New(server.WithXXXX())
-    ...
+	h := server.New(server.WithXXXX())
+	...
 }
 ```
 
@@ -46,6 +46,27 @@ func main() {
 | WithALPN | bool | 是否开启 ALPN。默认关闭 |
 | WithTracer | tracer.Tracer | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭 |
 | WithTraceLevel | stats.Level | 设置 trace level，默认 LevelDetailed |
+| WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长 |
+| WithRedirectFixedPath | bool | 如果开启，当当前请求路径不能匹配上时，server 会尝试修复请求路径并重新进行匹配，如果成功匹配并且为 GET 请求则会返回状态码 301 进行重定向，其他请求方式返回 308 进行重定向。默认关闭 |
+| WithBasePath | string | 设置基本路径，前缀和后缀必须为 `/`。默认为 `/` |
+| WithMaxKeepBodySize | int | 设置回收时保留的请求体和响应体的最大大小。单位:字节。默认值：4 * 1024 * 1024 |
+| WithGetOnly | bool | 如果开启则只接受 GET 请求。默认关闭 |
+| WithKeepAlive | bool | 如果开启则使用 HTTP 长连接。默认开启 |
+| WithAltTransport | network.NewTransporter | 设置备用 transport。默认值：netpoll.NewTransporter |
+| WithH2C | bool | 设置是否开启 H2C。默认关闭 |
+| WithReadBufferSize | int | 设置读缓冲区大小，同时限制 HTTP header 大小。默认值：4 * 1024 |
+| WithRegistry | registry.Registry, *registry.Info | 设置注册中心配置，服务注册信息。默认值：registry.NoopRegistry, nil |
+| WithAutoReloadRender | bool, time.Duration | 设置自动重载渲染配置。默认值：false, 0 |
+| WithDisablePrintRoute | bool | 设置是否禁用 debugPrintRoute。默认不禁用 |
+| WithOnAccept | func(conn net.Conn) context.Context | 设置在 netpoll 中当一个连接被接受但不能接收数据时的回调函数，在 go net 中在转换 TLS 连接之前被调用。默认值：nil |
+| WithOnConnect | func(ctx context.Context, conn network.Conn) context.Context | 设置 onConnect 函数。它可以接收来自 netpoll 连接的数据。在go net中，它将在转换 TLS 连接后被调用。默认值：nil |
+
+Server Connection 数量限制:
+
+* 如果是使用标准网络库，无此限制
+* 如果是使用 netpoll，最大连接数为 10000
+  （这个是netpoll底层使用的 [gopool](https://github.com/bytedance/gopkg/blob/b9c1c36b51a6837cef4c2223e11522e3a647460c/util/gopool/gopool.go#L46)
+  ）控制的，修改方式也很简单，调用 gopool 提供的函数即可：`gopool.SetCap(xxx)`(main.go 中调用一次即可)。
 
 ## Client
 
@@ -70,10 +91,11 @@ func main() {
 | WithMaxConnDuration | time.Duration | 设置连接存活的最大时长，超过这个时间的连接在完成当前请求后会被关闭，默认无限长 |
 | WithMaxConnWaitTimeout | time.Duration | 设置等待空闲连接的最大时间，默认不等待 |
 | WithKeepAlive | bool | 是否使用长连接，默认开启 |
-| WithMaxIdempotentCallAttempts | int | 设置失败重试次数，默认5次 |
+| WithRetryConfig | ...retry.Option | 设置 client 的 retry config。Hertz 版本需 >= v0.4.0|
+| ~~WithMaxIdempotentCallAttempts~~ | int | 设置最大调用次数，调用失败则会重试。默认1次即不重试。v0.4.0版本废止，该版本之前可用，建议升级 Hertz 版本 >= v0.4.0 并使用 WithRetryConfig 替代 |
 | WithClientReadTimeout | time.Duration | 设置读取 response 的最长时间，默认无限长 |
 | WithTLSConfig | *tls.Config | 双向 TLS 认证时，设置 client 的 TLS config |
 | WithDialer | network.Dialer | 设置 client 使用的网络库，默认 netpoll |
 | WithResponseBodyStream | bool | 设置是否使用流式处理，默认关闭 |
 | WithDialFunc | client.DialFunc | 设置 Dial Function |
-
+| WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长 |

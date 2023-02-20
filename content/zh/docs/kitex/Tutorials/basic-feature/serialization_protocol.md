@@ -2,10 +2,9 @@
 title: "序列化协议"
 date: 2021-08-26
 weight: 2
-description: >
+keywords: ["Kitex", "序列化", "Thrift", "Protobuf"]
+description: Kitex 支持 Thrift 和 Protobuf 两种编解码。
 ---
-
-目前，Kitex 支持了 Thrift 和 Protobuf 两种编解码。
 
 ## Thrift
 
