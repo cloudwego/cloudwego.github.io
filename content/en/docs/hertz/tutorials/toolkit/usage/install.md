@@ -1,6 +1,6 @@
 ---
 title: 'hz install'
-date: 2022-07-15
+date: 2023-02-21
 weight: 1
 description: >
 ---
