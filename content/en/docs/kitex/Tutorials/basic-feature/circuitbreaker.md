@@ -16,7 +16,7 @@ The following document will introduce that how to enable circuit breaker and con
 
 ```go
 // build a new CBSuite
-cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
+cbs := circuitbreak.NewCBSuite(circuitbreak.RPCInfo2Key)//GenServiceCBKeyFunc
 
 // add to the client options
 opts = append(opts, client.WithCircuitBreaker(cbs))
@@ -33,7 +33,7 @@ Kitex provides a set of CBSuite that encapsulates both service-level breaker and
 
 	Statistics by service granularity, enabled via WithMiddleware.
 
-	The specific division of service granularity depends on the Circuit Breaker Key, which is the key for breaker statistics. When initializing the CBSuite, you need to pass it in **GenServiceCBKeyFunc**. The default key is `circuitbreaker.RPCInfo2Key`, and the format of RPCInfo2Key is ` fromServiceName/toServiceName/method`.
+	The specific division of service granularity depends on the Circuit Breaker Key, which is the key for breaker statistics. When initializing the CBSuite, you need to pass it in **GenServiceCBKeyFunc**. The default key is `circuitbreak.RPCInfo2Key`, and the format of RPCInfo2Key is ` fromServiceName/toServiceName/method`.
 
 - Instance-Level Breaker
 
