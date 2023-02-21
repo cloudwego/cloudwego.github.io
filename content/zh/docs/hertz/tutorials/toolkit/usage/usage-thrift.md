@@ -1,6 +1,6 @@
 ---
 title: 'hz 使用(thrift)'
-date: 2022-06-18
+date: 2023-02-21
 weight: 3
 description: >
 ---
