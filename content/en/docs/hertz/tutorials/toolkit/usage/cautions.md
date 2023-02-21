@@ -1,11 +1,9 @@
 ---
 title: 'note'
-date: 2022-07-15
+date: 2023-02-21
 weight: 8
 description: >
 ---
-## Notes
-
 ### Notes on using protobuf IDL
 
 hz currently supports the syntax of [proto2](https://developers.google.com/protocol-buffers/docs/proto) / [proto3](https://developers.google.com/protocol-buffers/docs/proto3)
