@@ -330,8 +330,7 @@ service Echo {
 |       `-- k-echo.go
 |-- main.go
 `-- script
-    |-- bootstrap.sh
-    `-- settings.py
+    `-- bootstrap.sh
 ```
 
 ### 获取最新的 Kitex 框架
