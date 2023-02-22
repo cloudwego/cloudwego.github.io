@@ -152,7 +152,18 @@ kitex -service service_name path_to_your_idl.thrift
 
 #### `-I path`
 
-添加一个 IDL 的搜索路径。
+添加一个 IDL 的搜索路径。支持添加多个，搜索 IDL（包括 IDL 里 include 的其他文件）时，会按照添加的路径顺序搜索。
+从 v0.4.4 版本起，path 输入支持 git 拉取，当前缀为 git@，http://，https:// 时，会拉取远程 git 仓库到本地，并将其列入搜索路径
+使用方式：
+- kitex -module xx -I xxx.git abc/xxx.thrift
+- kitex -module xx -I xxx.git@branch abc/xxx.thrift
+
+执行时会先拉取 git 仓库，存放于 ~/.kitex/cache/xxx/xxx/xxx@branch 目录下，然后再在此目录下搜索 abc/xxx.thrift 并生成代码
+如果出现类似如下错误：
+```
+  Failed to pull IDL from git: fatal: destination path '.' already exists and is not an empty directory.
+```
+可能是在调用 git 拉取时没能完整拉取仓库导致的。清除缓存，删除 ~/.kitex/cache 目录下的所有文件，重试即可。
 
 #### `-type type`
 
