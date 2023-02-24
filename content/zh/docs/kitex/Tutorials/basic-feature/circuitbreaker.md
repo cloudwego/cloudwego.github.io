@@ -14,7 +14,7 @@ Kitex 提供了熔断器的实现，但是没有默认开启，需要用户主�
 
 ```go
 // build a new CBSuite
-cbs := circuitbreak.NewCBSuite(circuitbreak.RPCInfo2Key) //GenServiceCBKeyFunc
+cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
 
 // add to the client options
 opts = append(opts, client.WithCircuitBreaker(cbs))
