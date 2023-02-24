@@ -16,7 +16,7 @@ The following document will introduce that how to enable circuit breaker and con
 
 ```go
 // build a new CBSuite
-cbs := circuitbreak.NewCBSuite(circuitbreak.RPCInfo2Key)//GenServiceCBKeyFunc
+cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
 
 // add to the client options
 opts = append(opts, client.WithCircuitBreaker(cbs))
