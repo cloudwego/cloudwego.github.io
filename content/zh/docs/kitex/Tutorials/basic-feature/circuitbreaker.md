@@ -29,7 +29,7 @@ Kitex 大部分服务治理模块都是通过 middleware 集成，熔断也是�
 
 - 服务粒度熔断
 
-    按照服务粒度进行熔断统计，通过 WithMiddleware 添加。服务粒度的具体划分取决于 Circuit Breaker Key，既熔断统计的 key，初始化 CBSuite 时需要传入 **GenServiceCBKeyFunc**，默认提供的是 circuitbreaker.RPCInfo2Key ，该 key 的格式是 `fromServiceName/toServiceName/method`，即按照方法级别的异常做熔断统计。
+    按照服务粒度进行熔断统计，通过 WithMiddleware 添加。服务粒度的具体划分取决于 Circuit Breaker Key，既熔断统计的 key，初始化 CBSuite 时需要传入 **GenServiceCBKeyFunc**，默认提供的是 circuitbreak.RPCInfo2Key ，该 key 的格式是 `fromServiceName/toServiceName/method`，即按照方法级别的异常做熔断统计。
 
 - 实例粒度熔断
 
