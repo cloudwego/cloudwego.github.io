@@ -2,7 +2,17 @@
 
 # CloudWeGo
 
-The [cloudwego.github.io](https://cloudwego.github.io/) site, built using [Hugo](https://gohugo.io/) and hosted on [Github Pages](https://pages.github.com/).
+The [cloudwego.io](https://www.cloudwego.io/) site, built using [Hugo](https://gohugo.io/) and hosted on [Github Pages](https://pages.github.com/).
+
+## Prerequisites
+
+The following are basic prerequisites for developing this project:
+
+- Install a recent release of the Hugo "extended" version. If you install from
+  the [Hugo release page](https://github.com/gohugoio/hugo/releases), make sure
+  you download the `_extended` version which supports SCSS.
+
+> If you have installed the latest version of go, you can install directly by command `go install -tags extended github.com/gohugoio/hugo@latest`
 
 ## Preview
 
