@@ -2,7 +2,7 @@
 
 # CloudWeGo
 
-The [cloudwego.io](https://www.cloudwego.io/) site, built using [Hugo](https://gohugo.io/) and hosted on [Github Pages](https://pages.github.com/).
+The [cloudwego.io](https://www.cloudwego.io/) site is built with [Hugo](https://gohugo.io/) and hosted on [Github Pages](https://pages.github.com/).
 
 ## Prerequisites
 
