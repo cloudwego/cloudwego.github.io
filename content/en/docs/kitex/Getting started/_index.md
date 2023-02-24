@@ -319,8 +319,7 @@ Generated project layout:
 |       `-- k-echo.go
 |-- main.go
 `-- script
-    |-- bootstrap.sh
-    `-- settings.py
+    `-- bootstrap.sh
 ```
 
 ### Get latest Kitex
@@ -335,12 +334,18 @@ If you encounter something like below :
 
 `github.com/apache/thrift/lib/go/thrift: ambiguous import: found package github.com/apache/thrift/lib/go/thrift in multiple modules`
 
+Or:
+
+`github.com/cloudwego/kitex@v0.X.X/pkg/utils/thrift.go: not enough arguments in call to t.tProt.WriteMessageBegin`
+
 Run following command, and try again:
 
 ```
 go mod edit -droprequire=github.com/apache/thrift/lib/go/thrift
 go mod edit -replace=github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 ```
+
+This is because the Thrift official release 0.14 introduced a breaking change to the Thrift interface, resulting in generated code that is incompatible.
 
 ### Write echo service process
 

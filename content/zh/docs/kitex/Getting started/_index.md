@@ -330,8 +330,7 @@ service Echo {
 |       `-- k-echo.go
 |-- main.go
 `-- script
-    |-- bootstrap.sh
-    `-- settings.py
+    `-- bootstrap.sh
 ```
 
 ### 获取最新的 Kitex 框架
@@ -346,11 +345,17 @@ $ go mod tidy
 
 `github.com/apache/thrift/lib/go/thrift: ambiguous import: found package github.com/apache/thrift/lib/go/thrift in multiple modules`
 
+或
+
+`github.com/cloudwego/kitex@v0.X.X/pkg/utils/thrift.go: not enough arguments in call to t.tProt.WriteMessageBegin`
+
 先执行一遍下述命令，再继续操作：
 ```
 go mod edit -droprequire=github.com/apache/thrift/lib/go/thrift
 go mod edit -replace=github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 ```
+
+这是因为 thrift 官方在 0.14 版本对 thrift 接口做了 breaking change，导致生成代码不兼容。
 
 ### 编写 echo 服务逻辑
 

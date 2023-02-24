@@ -1,11 +1,9 @@
 ---
 title: '注意事项'
-date: 2022-06-18
+date: 2023-02-21
 weight: 8
 description: >
 ---
-## 注意事项
-
 ### 使用 protobuf IDL 的注意事项
 
 hz 目前支持 [proto2](https://developers.google.com/protocol-buffers/docs/proto) / [proto3](https://developers.google.com/protocol-buffers/docs/proto3) 的语法
