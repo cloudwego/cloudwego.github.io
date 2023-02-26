@@ -1,12 +1,12 @@
 ---
-title: 'hz 使用(protobuf)'
+title: 'hz 使用 (protobuf)'
 date: 2023-02-21
 weight: 4
 description: >
 ---
-### 基于 protobuf IDL 创建项目
+## 基于 protobuf IDL 创建项目
 
-#### new: 创建一个新项目
+### new: 创建一个新项目
 
 1. 在当前目录下创建 protobuf idl 文件
 
@@ -145,7 +145,7 @@ curl --location --request GET 'http://127.0.0.1:8888/hello?name=hertz'
 
 如果返回`{"RespBody":"hello,hertz"}`，说明接口调通。
 
-#### update: 更新一个已有的项目
+### update: 更新一个已有的项目
 
 1.  如果你的 protobuf idl 有更新，例如：
 
