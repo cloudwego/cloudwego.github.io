@@ -4,7 +4,7 @@ date: 2023-02-21
 weight: 7
 description: >
 ---
-### 命令行参数说明
+## 命令行参数说明
 
 #### Global:
 
@@ -36,7 +36,7 @@ GLOBAL OPTIONS:
 
 - update: 更新一个已存在的 Hertz 项目
 
-#### New:
+### New
 
 ```console
 $ hz help new
@@ -136,7 +136,7 @@ OPTIONS:
 
 - unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 omitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional"还是"required"决定
 
-#### Update:
+### Update
 
 ```console
 $ hz help update

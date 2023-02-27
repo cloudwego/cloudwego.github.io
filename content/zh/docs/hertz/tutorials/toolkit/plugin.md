@@ -9,9 +9,9 @@ description: >
 
 因此，hz 提供了拓展第三方插件的方法。
 
-# ThriftGo 插件扩展
+## ThriftGo 插件扩展
 
-## 使用方法
+### 使用方法
 
 ```shell
 hz new  --idl={YOUR-IDL.thrift} --thrift-plugins={PLUGIN-NAME}
@@ -23,7 +23,7 @@ hz new  --idl={YOUR-IDL.thrift} --thrift-plugins={PLUGIN-NAME}
 hertztool new --idl={YOUR-IDL.thrift} --thrift-plugins={PLUGIN-NAME}:{YOUR-OPTION1,YOUR-OPTION2}
 ```
 
-## 示例
+### 示例
 
 目前， thriftgo 提供一个生成结构体参数验证函数的插件 "thrift-gen-validator"，可在生成 model 的时候一并生成结构体参数验证函数。
 
@@ -34,9 +34,9 @@ hertztool new --idl={YOUR-IDL.thrift} --thrift-plugins={PLUGIN-NAME}:{YOUR-OPTIO
 - 代码: [code](https://github.com/cloudwego/hertz-examples/tree/main/hz/plugin/thrift)
 
 
-# Protoc 插件拓展
+## Protoc 插件拓展
 
-## go_package 详解
+### go_package 详解
 
 Protoc 插件生成的 go 文件路径与 "option go_package" 的定义相关。因此先来仔细介绍下 "go_package" 的作用:
 "option go_package"  在 proto 文件中指该文件生成的 go 文件的 import 位置，如下
@@ -89,7 +89,7 @@ protoc go_out=. --go_opt=module=github.com/a/b psm.proto
 那么生成文件的位置为: c/psm.pb.go，不过，由于该项目的 module 为 "github.com/a/b"；所以如果引用该文件的生成内容的话，其 import 路径依然是 "github.com/a/b/c"
 
 
-## 使用方法
+### 使用方法
 
 目前 hz 为统一管理生成的 model， 对 "go_package" 进行了一些处理， 其规则如下:
 
@@ -109,7 +109,7 @@ protoc go_out=. --go_opt=module=github.com/a/b psm.proto
 hertztool new --idl={YOUR-IDL.proto} --protoc-plugins={PLUGIN_NAME}:{OPTION1,OPTION2}:{OUT_DIR} --mod={YOUR_MODULE}
 ```
 
-## 示例
+### 示例
 
 这里以使用 Hz 时集成 `protoc-gen-openapi` 插件用来生成 openapi 3.0 文档为例。
 
