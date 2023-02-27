@@ -1,5 +1,5 @@
 ---
-date: 2022-11-01
+date: 2023-02-24
 title: "HTTP 框架 Hertz 实践入门：性能测试指南"
 linkTitle: "HTTP 框架 Hertz 实践入门：性能测试指南"
 keywords: ["CloudWeGo", "Hertz", "HTTP 框架", "性能测试"]
@@ -7,13 +7,15 @@ description: "本文旨在分享开发者在压测 Hertz 需要了解的场景�
 author: <a href="https://github.com/Duslia" target="_blank">Duslia</a>
 ---
 
-> 导语：2021 年 9 月 8 日，字节跳动宣布正式开源 CloudWeGo。CloudWeGo 是一套字节跳动内部微服务中间件集合，具备**高性能、强扩展性和稳定性**的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。
-> 2022 年 6 月 21 日，Hertz 正式开源。日前，CloudWeGo 团队正式开源字节跳动最大的 HTTP 框架 Hertz。Hertz 在发布之后得到了大量用户的关注，开源四个月以来，Hertz 已经收获了 2K+ star。有很多用户自己进行了测试，感谢社区对我们的关注和支持。
-> 本文旨在分享开发者在压测 Hertz 时需要了解的场景和技术问题。这些建议有助于用户更好地结合真实 HTTP 场景对 Hertz 进行调优，使之更贴合业务需要、发挥最佳性能。用户也可以参考官方提供的压测项目 [hertz-benchmark][hertz-benchmark] 了解更多细节。
+## 背景
 
-# 01 微服务 HTTP 场景的特点
+2021 年 9 月 8 日，字节跳动宣布正式开源 [CloudWeGo][CloudWeGo]。CloudWeGo 是一套字节跳动内部微服务中间件集合，具备**高性能、强扩展性和稳定性**的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。
+2022 年 6 月 21 日，[Hertz][Hertz] 正式开源。日前，CloudWeGo 团队正式开源字节跳动最大的 HTTP 框架 Hertz。Hertz 自发布以来，得到了大量用户的关注，累计收获了 3K+ star。有很多用户自己进行了测试，感谢大家对我们的关注和支持。
+本文旨在分享开发者在压测 Hertz 时需要了解的场景和技术问题。这些建议有助于用户更好地结合真实 HTTP 场景对 Hertz 进行调优，使之更贴合业务需要、发挥最佳性能。用户也可以参考官方提供的压测项目 [hertz-benchmark][hertz-benchmark] 了解更多细节。
 
-[Hertz][Hertz] 诞生于字节跳动大规模微服务架构实践，面向的场景自然是微服务场景，因此下面会先介绍微服务 HTTP 场景的特点，方便开发者深入理解 [Hertz][Hertz] 在其中的设计思考。
+## 微服务 HTTP 场景的特点
+
+[Hertz][Hertz] 诞生于字节跳动大规模微服务架构实践，面向的场景自然是微服务场景，因此下面会先介绍微服务 HTTP 场景的特点，方便开发者深入理解 [Hertz][Hertz] 的设计思考。
 
 * **HTTP 通信模型**
 
@@ -40,9 +42,9 @@ HTTP 的 header 是标识符协议，在没有找到特定的标识符之前，�
 不同服务的连接使用率也不同，比如压测服务的连接使用率很高，一个请求完成后马上就会进行下一个请求；有的服务连接使用率很低，虽然是长连接，但是只使用一次。这两者使用的连接模型并不相同，
 前者应使用 goroutine per connection 的模型减少上下文的切换，后者应使用协程池减少过多 goroutine 的调度开销。[Hertz][Hertz] 也同时支持这两种场景，用户可以根据自己的业务场景选择合适的配置。
 
-# 02 针对 HTTP 场景进行压测
+## 针对 HTTP 场景进行压测
 
-## 使用贴近自己的场景
+### 使用贴近自己的场景
 
 Github 上的压测项目有很多，网络上也有很多性能测试报告，但是这些项目和测试不一定贴合自己。举个极端一点的例子，在真实场景中你会写一个项目无论 Client 发什么 Server 都只回 **`hello world`** 吗？很遗憾，很多的压测项目就是这么做的。
 
@@ -72,13 +74,13 @@ Github 上的压测项目有很多，网络上也有很多性能测试报告，�
 
 另外如果条件允许，相比云平台虚拟机，使用真实物理机会使得测试结果更加严谨与具备可复现性。
 
-# 03 性能数据参考
+## 性能数据参考
 
 在满足上述要求的前提下，我们基于当前最新版本对多个框架进行了压测对比，压测代码在 [hertz-benchmark][hertz-benchmark] 仓库。
 在充分压满 Server 的目标下，[Hertz][Hertz] 的 P99 延迟在所有压测框架中最低，吞吐也是属于第一梯队，且在持续优化中。
 
 * CPU: AMD EPYC 7Y83 64-Core Processor 2.7GHz
-  * 运行限定 server 4-CPUs，client 16-CPUS
+    * 运行限定 server 4-CPUs，client 16-CPUS
 * OS：Debian GNU/Linux 10 (buster)
 * Go 1.19
 * [hertz v0.3.2](https://github.com/cloudwego/hertz/releases/tag/v0.3.2)，[fasthttp v1.40.0](https://github.com/valyala/fasthttp/releases/tag/v1.40.0)，
@@ -91,10 +93,11 @@ Github 上的压测项目有很多，网络上也有很多性能测试报告，�
 
 <p align="center">三个框架的吞吐和时延比较</p>
 
-# 04 结语
+## 结语
 
-[Hertz][Hertz] 作为一个超大规模企业级的微服务 HTTP 框架，其在设计之初就更倾向于解决大规模微服务场景下的各种问题。在推广过程中也遇到了各种各样的服务，踩了各种各样的坑，
-也是基于这些服务和遇到的问题写了本文。欢迎广大开发者基于本文提供的测试指南，针对自己的实际场景选择合适的工具。更多问题，请在 GitHub 上提 [Issue](https://github.com/cloudwego/hertz/issues) 交流。
+作为一个超大规模企业级的微服务 HTTP 框架，[Hertz][Hertz] 在设计之初就更倾向于解决大规模微服务场景下的各种问题。在推广过程中也遇到了各种各样的服务，踩了各种各样的坑，也是基于以上经验写了本文。
+欢迎广大开发者基于本文提供的测试指南，针对自己的实际场景选择合适的工具。更多问题，请在 GitHub 上提 [Issue](https://github.com/cloudwego/hertz/issues) 交流。
 
+[CloudWeGo]: https://github.com/cloudwego
 [Hertz]: https://github.com/cloudwego/hertz
 [hertz-benchmark]: https://github.com/cloudwego/hertz-benchmark
