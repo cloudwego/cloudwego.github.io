@@ -92,6 +92,8 @@ service HelloService {
 // Execute under GOPATH, if the dependencies of the main IDL and the main IDL are not in the same path, you need to add the -I option, its meaning is IDL search path, equivalent to the option "-I" for protoc
 hz new -I idl -idl idl/hello/hello.proto
 
+go mod init
+
 // Tidy & get dependencies
 go mod tidy
 ```
