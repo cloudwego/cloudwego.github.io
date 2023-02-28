@@ -92,6 +92,8 @@ service HelloService {
 // GOPATH 下执行, 如果主IDL的依赖和主IDL不在同一路径下，需要加入 -I 选项，其含义为IDL搜索路径，等同于 protoc 的 -I 命令
 hz new -I idl -idl idl/hello/hello.proto
 
+go mod init
+
 // 整理 & 拉取依赖
 go mod tidy
 ```

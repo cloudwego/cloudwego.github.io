@@ -34,6 +34,8 @@ service HelloService {
 // GOPATH 下执行
 hz new -idl idl/hello.thrift
 
+go mod init
+
 go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 
 // 整理 & 拉取依赖
