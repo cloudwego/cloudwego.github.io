@@ -1,16 +1,16 @@
 ---
 title: 'hz annotation'
-date: 2022-07-15
+date: 2023-02-21
 weight: 6
 description: >
 ---
-### Supported api annotations
+**Supported api annotations**
 
 > Field annotation can be used for[parameter binding and validation](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/binding-and-validate/)
 >
 > Method annotation can be used to generate code that related to route registration
 
-#### Supported api annotations
+## Supported api annotations
 
 | _Field annotation_                       |                                                                    |
 | ---------------------------------------- | ------------------------------------------------------------------ |
@@ -37,9 +37,9 @@ description: >
 | api.head            | define HEAD methods and routes    |
 | api.any             | define ANY methods and routes     |
 
-#### Usage:
+## Usage:
 
-##### Field annotation:
+### Field annotation:
 
 Thrift:
 
@@ -61,7 +61,7 @@ message Demo {
 }
 ```
 
-##### Method annotation:
+### Method annotation:
 
 Thrift:
 

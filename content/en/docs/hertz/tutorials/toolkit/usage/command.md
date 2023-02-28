@@ -1,10 +1,10 @@
 ---
 title: 'hz commands'
-date: 2022-07-15
+date: 2023-02-21
 weight: 7
 description: >
 ---
-### Command line parameter description
+## Command line parameter description
 
 #### Global:
 
@@ -36,7 +36,7 @@ GLOBAL OPTIONS:
 
 - update: Updating an existing Hertz project
 
-#### New:
+### New
 
 ```console
 $ hz help new
@@ -136,7 +136,7 @@ OPTIONS:
 
 - unset_omitempty: When IDL is protobuf, the model field is generated and the omitempty tag is removed; when IDL is thrift, whether to add omitempty is determined by whether the field is "optional" or "required"
 
-#### Update:
+### Update
 
 ```console
 $ hz help update

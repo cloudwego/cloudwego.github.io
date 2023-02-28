@@ -1,15 +1,12 @@
 ---
-title: 'hz 使用'
-date: 2022-06-18
-weight: 1
+title: 'hz 的基本使用'
+date: 2023-02-21
+weight: 2
 description: >
 ---
+## 基本使用
 
-## 使用
-
-### 基本使用
-
-#### new: 创建一个 Hertz 新项目
+### new: 创建一个 Hertz 新项目
 
 1.  创建新项目
 

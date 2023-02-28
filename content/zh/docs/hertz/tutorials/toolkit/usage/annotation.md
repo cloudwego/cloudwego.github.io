@@ -1,16 +1,16 @@
 ---
 title: 'IDL 注解说明'
-date: 2022-06-18
+date: 2023-02-21
 weight: 6
 description: >
 ---
-### 支持的 api 注解
+**支持的 api 注解**
 
 > Field 注解可用于[参数绑定及校验](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/)
 >
 > Method 注解可用于生成路由注册相关代码
 
-#### 支持的 api 注解：
+## 支持的 api 注解：
 
 | _Field 注解_                             |                                         |
 | ---------------------------------------- | --------------------------------------- |
@@ -37,9 +37,9 @@ description: >
 | api.head      | 定义 HEAD 方法及路由    |
 | api.any       | 定义 ANY 方法及路由     |
 
-#### 使用方法：
+## 使用方法：
 
-##### Field 注解：
+### Field 注解：
 
 Thrift：
 
@@ -61,7 +61,7 @@ message Demo {
 }
 ```
 
-##### Method 注解：
+### Method 注解：
 
 Thrift：
 

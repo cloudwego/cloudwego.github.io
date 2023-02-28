@@ -1,12 +1,12 @@
 ---
 title: 'hz usage(thrift)'
-date: 2022-07-15
+date: 2023-02-21
 weight: 3
 description: >
 ---
-### Create a project based on thrift IDL
+## Create a project based on thrift IDL
 
-#### new: Create a new project
+### new: Create a new project
 
 1. Create the thrift IDL file in the current directory
 
@@ -87,7 +87,7 @@ curl --location --request GET 'http://127.0.0.1:8888/hello?name=hertz'
 
 If it returns `{"RespBody":"hello,hertz"}`, it works.
 
-#### update: Update an existing project
+### update: Update an existing project
 
 1. If your thrift IDL is updated, for example:
 

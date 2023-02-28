@@ -1,12 +1,12 @@
 ---
-title: 'hz usage'
-date: 2022-07-15
+title: 'hz basic usage'
+date: 2023-02-21
 weight: 2
 description: >
 ---
-### Basic Usage
+## Basic Usage
 
-#### new: Create a new Hertz project
+### new: Create a new Hertz project
 
 1.  Create a new project
 

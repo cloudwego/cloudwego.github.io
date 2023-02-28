@@ -1,12 +1,12 @@
 ---
 title: 'hz usage(protobuf)'
-date: 2022-07-15
+date: 2023-02-21
 weight: 4
 description: >
 ---
-### Create a project based on protobuf IDL
+## Create a project based on protobuf IDL
 
-#### new: Create a new project
+### new: Create a new project
 
 1. Create the protobuf IDL file in the current directory
 
@@ -145,7 +145,7 @@ curl --location --request GET 'http://127.0.0.1:8888/hello?name=hertz'
 
 If it returns `{"RespBody":"hello,hertz"}`, it works.
 
-#### update: Update an existing Hertz project
+### update: Update an existing Hertz project
 
 1. If your protobuf IDL is updated, for example:
 
