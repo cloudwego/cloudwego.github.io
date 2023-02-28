@@ -34,6 +34,8 @@ service HelloService {
 // Execute under GOPATH
 hz new -idl idl/hello.thrift
 
+go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
+
 // Tidy & get dependencies
 go mod tidy
 ```
