@@ -61,7 +61,7 @@ hz 为了用户使用方便，提供了自定义 handler 路径、model 路径�
 ```bash
 hz new -idl demo.thrift
 
-// 此时，hz 会把 model 生成在 "biz/mdoel"下
+// 此时，hz 会把 model 生成在 "biz/model"下
 ```
 
 更新项目：
