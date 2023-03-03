@@ -42,6 +42,14 @@ go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 go mod tidy
 ```
 
+```bash
+// Execute is not under GOPATH
+hz new -module `mod name` -idl idl/hello.thrift
+
+// Tidy & get dependencies
+go mod tidy
+```
+
 3. Modify the handler and add your own logic
 
 ```go
