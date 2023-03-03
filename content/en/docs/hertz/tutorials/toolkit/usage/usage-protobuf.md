@@ -97,6 +97,23 @@ go mod init
 // Tidy & get dependencies
 go mod tidy
 ```
+```bash
+// Execute is not under GOPATH, if the dependencies of the main IDL and the main IDL are not in the same path, you need to add the -I option, its meaning is IDL search path, equivalent to the option "-I" for protoc
+//option 1, you do not have a go.mod:
+
+hz new -module `mod name` -I idl -idl idl/hello/hello.proto
+
+// Tidy & get dependencies
+go mod tidy
+
+//option 2, you have a go.mod
+go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
+
+hz new -I idl -idl idl/hello/hello.proto
+
+// Tidy & get dependencies
+go mod tidy
+```
 
 3. Modify the handler and add your own logic
 
