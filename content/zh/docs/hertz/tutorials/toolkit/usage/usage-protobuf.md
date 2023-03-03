@@ -94,12 +94,22 @@ hz new -I idl -idl idl/hello/hello.proto
 
 go mod init
 
+go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
+
 // 整理 & 拉取依赖
 go mod tidy
 ```
 ```bash
 // 非GOPATH 下执行, 如果主IDL的依赖和主IDL不在同一路径下，需要加入 -I 选项，其含义为IDL搜索路径，等同于 protoc 的 -I 命令
+
+//选择一，你没有一个go.mod
 hz new -module `mod name` -I idl -idl idl/hello/hello.proto
+
+// 整理 & 拉取依赖
+go mod tidy
+
+//选择二，你已经有一个go.mod
+go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 
 // 整理 & 拉取依赖
 go mod tidy
