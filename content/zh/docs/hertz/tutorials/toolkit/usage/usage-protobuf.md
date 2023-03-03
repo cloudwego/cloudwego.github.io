@@ -105,7 +105,6 @@ hz new -module `mod name` -I idl -idl idl/hello/hello.proto
 // 整理 & 拉取依赖
 go mod tidy
 
-
 ```
 3.  修改 handler，添加自己的逻辑
 
