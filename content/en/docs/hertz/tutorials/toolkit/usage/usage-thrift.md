@@ -44,8 +44,8 @@ go mod tidy
 
 ```bash
 // Execute is not under GOPATH
-//option 1,you do not have a go.mod
-hz new -module `mod name` -idl idl/hello.thrift
+//option 1,you do not have a go.mod, add go mod name after - module
+hz new -module example.com/m -idl idl/hello.thrift
 
 // Tidy & get dependencies
 go mod tidy
