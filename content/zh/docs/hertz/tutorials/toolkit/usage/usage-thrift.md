@@ -44,8 +44,8 @@ go mod tidy
 
 ```bash
 // 非GOPATH 下执行
-//选择1，你没有一个go.mod
-hz new -module `mod name` -idl idl/hello.thrift
+//选择1，你没有一个go.mod ,在-module后添加 go mod 名
+hz new -module example.com/m -idl idl/hello.thrift
 
 // 整理 & 拉取依赖
 go mod tidy
