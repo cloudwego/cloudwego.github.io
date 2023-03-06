@@ -98,9 +98,9 @@ go mod init
 go mod tidy
 ```
 ```bash
-// Execute is not under GOPATH, if the dependencies of the main IDL and the main IDL are not in the same path, you need to add the -I option, its meaning is IDL search path, equivalent to the option "-I" for protoc
+// Execute is not under GOPATH, add go mod name after - module,if the dependencies of the main IDL and the main IDL are not in the same path, you need to add the -I option, its meaning is IDL search path, equivalent to the option "-I" for protoc
 
-hz new -module `mod name` -I idl -idl idl/hello/hello.proto
+hz new -module example/m -I idl -idl idl/hello/hello.proto
 
 // Tidy & get dependencies
 go mod tidy
