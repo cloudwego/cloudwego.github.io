@@ -98,9 +98,9 @@ go mod init
 go mod tidy
 ```
 ```bash
-// 非GOPATH 下执行, 如果主IDL的依赖和主IDL不在同一路径下，需要加入 -I 选项，其含义为IDL搜索路径，等同于 protoc 的 -I 命令
+// 非GOPATH 下执行, 需要指定 go mod 名, 如果主IDL的依赖和主IDL不在同一路径下，需要加入 -I 选项，其含义为IDL搜索路径，等同于 protoc 的 -I 命令
 
-hz new -module `mod name` -I idl -idl idl/hello/hello.proto
+hz new -module example.com/m -I idl -idl idl/hello/hello.proto
 
 // 整理 & 拉取依赖
 go mod tidy
