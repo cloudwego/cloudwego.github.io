@@ -1,7 +1,7 @@
 ---
 title: "Logging"
 date: 2022-12-22
-weight: 12
+weight: 13
 keywords: ["Kitex", "logger", "logrus", "zap"]
 description: "Kitex supports default logger implementation, injection of custom loggers and redirection of default logger output."
 ---
