@@ -18,9 +18,9 @@ description: Kitex 自定义 Fallback 使用指南。
 
 ### 1.1 支持 Fallback 的结果类型
 
-1. **RPC** **Error：**RPC 请求异常，如超时、熔断、限流、协议等 RPC 层面的异常
-2. **业务 Error：**业务自定义的异常，区别于 RPC 异常，具体是 [Kitex - 业务异常处理使用文档](https://bytedance.feishu.cn/wiki/wikcn3O7uOr3HcU3uzYbeRr9sIf)
-3. **Resp：**在没有使用业务异常的情况下，用户会在 Resp（BaseResp） 中定义错误返回，所以也支持对 Resp 判断做 fallback
+1. **RPC** **Error**：RPC 请求异常，如超时、熔断、限流、协议等 RPC 层面的异常
+2. **业务 Error**：业务自定义的异常，区别于 RPC 异常，具体是 [Kitex - 业务异常处理使用文档](../bizstatuserr)
+3. **Resp**：在没有使用业务异常的情况下，用户会在 Resp（BaseResp） 中定义错误返回，所以也支持对 Resp 判断做 fallback
 
 ### 1.2 监控上报
 
@@ -62,7 +62,7 @@ Kitex 提供两种 Fallback Func 定义：
 
 后者符合使用直觉，对用户更加友好，但不兼容有多个请求参数的 API，因此框架默认使用前一种方法。
 
-- **XXXArgs/XXXResult 作为 req/resp 参数**
+**XXXArgs/XXXResult 作为 req/resp 参数**
 
 注意：必须通过 result.SetSuccess(yourFallbackResult) 替换原返回值。
 
@@ -83,7 +83,7 @@ return
 }))
 ```
 
-- **真实的** **RPC** **Req/Resp 作为参数**
+**真实的** **RPC** **Req/Resp 作为参数**
 
 通过使用 Kitex 提供的 **fallback.UnwrapHelper**，可以定义签名为 RealReqRespFunc 的 Fallback Func，参数类型和 Handler 的 req、resp 一致。
 
@@ -124,7 +124,7 @@ fallback.NewFallbackPolicy(fallback.UnwrapHelper(func(ctx context.Context, req, 
 
 2. **只对 Error（包括业务 Error） 进行 Fallback**
 
-非 Error 不会执行 Fallback
+    非 Error 不会执行 Fallback
 
 ```Go
 // 1: XXXArgs/XXXResult as params
@@ -143,7 +143,7 @@ fallback.ErrorFallback(fallback.UnwrapHelper(func(ctx context.Context, req, resp
 
 3. **只对超时和熔断 Error 进行 Fallback**
 
-非 超时 和 熔断 Error 不会执行 Fallback
+    非 超时 和 熔断 Error 不会执行 Fallback
 
 ```Go
 // 1: XXXArgs/XXXResult as params
@@ -164,11 +164,18 @@ fallback.TimeoutAndCBFallback(fallback.UnwrapHelper(func(ctx context.Context, re
 
 框架默认以原来的 RPC 结果进行监控上报，fallback.Policy 提供了 **EnableReportAsFallback()** 方法可以选择以 Fallback 结果上报。
 
-**注意：**如果原结果本来就不是 RPC 失败（业务 Error），但如果在 Fallback 里返回了 error，即使 设置了 EnableReportAsFallback，框架也不会以 Fallback 结果上报。
+**注意**：如果原结果本来就不是 RPC 失败（业务 Error），但如果在 Fallback 里返回了 error，即使 设置了 EnableReportAsFallback，框架也不会以 Fallback 结果上报。
+
+| **原结果**                         | **是否使用 EnableReportAsFallback()** | **上报结果**                                                        |
+|---------------------------------|----------------------------------|-----------------------------------------------------------------|
+| RPC 失败                          | 是                                | fallback 结果                                                     |
+| RPC 失败                          | 否                                | is_error=1 <br/>(rpcinfo.GetRPCInfo(ctx).Stats().Error() is not nil) |
+| 业务错误 （Biz Err 或 BaseResp 非成功状态） | 是/否                        | is_error=0 <br/>(rpcinfo.GetRPCInfo(ctx).Stats().Error() is nil)                                                      |
+
 
 ### 2.4 配置示例
 
-#### **示例1：**只对 超时和熔断 error 做 fallback，且以 fallback 结果进行监控上报
+#### **示例1**：只对 超时和熔断 error 做 fallback，且以 fallback 结果进行监控上报
 
 ```Go
 yourFallbackPolicy := fallback.TimeoutAndCBFallback(func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
@@ -184,7 +191,7 @@ opts = append(opts, client.WithFallback(yourFallbackPolicy))
 xxxCli := xxxservice.NewClient("target_service", opts...)
 ```
 
-#### **示例2：对 Error 和 Resp 都需要 fallback，使用真实的** **RPC** **req/resp 类型作为参数，请求配置**
+#### **示例2**：对 Error 和 Resp 都需要 fallback，使用真实的 RPC req/resp 类型作为参数
 
 ```Go
 yourFallbackPolicy := fallback.NewFallbackPolicy(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
