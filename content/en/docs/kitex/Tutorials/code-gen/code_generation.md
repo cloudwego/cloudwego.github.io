@@ -148,10 +148,20 @@ This option is used to specify the Go module the generated codes belongs to. It 
     - If go.mod is not found, kitex will generated one with `go mod init`.
     - If go.mod is found, then kitex will check if the module name in go.mod is identical with the argument of `-module`; if they diffs, kitex will report an error and exit.
     - Finally, the position of go.mod and its module names determines the import path in generated codes.
-
 #### `-I path`
 
-Add a search path for IDLs.
+Add an IDL search path. Support adding multiple, when searching IDL, it will searching according to the order of the added path.
+From version v0.4.4, the path input supports git pull. When the prefix is git@, http://, https://, the remote git repository will be pulled to the local and included in the search path
+How to use:
+- kitex -module xx -I xxx.git abc/xxx.thrift
+- kitex -module xx -I xxx.git@branch abc/xxx.thrift
+
+When executing, it will first pull the git warehouse and store it in the ~/.kitex/cache/xxx/xxx/xxx@branch directory, and then search for abc/xxx.thrift in this directory and generate code
+If an error similar to the following occurs:
+```
+  Failed to pull IDL from git: fatal: destination path '.' already exists and is not an empty directory.
+```
+It may be caused by failing to pull the warehouse completely when calling git pull. Clear the cache, delete all files in the ~/.kitex/cache directory, and try again.
 
 #### `-type type`
 
