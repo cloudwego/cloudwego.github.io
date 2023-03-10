@@ -89,7 +89,7 @@ service HelloService {
 2. Create a new project
 
 ```bash
-// Execute under GOPATH, if the dependencies of the main IDL and the main IDL are not in the same path, you need to add the "-I" option, its meaning is IDL search path, equivalent to the option "-I" for protoc
+// Execute under GOPATH, if the dependencies of the main IDL and the main IDL are not in the same path, you need to add the -I option, its meaning is IDL search path, equivalent to the option -I for protoc
 hz new -I idl -idl idl/hello/hello.proto
 
 go mod init
