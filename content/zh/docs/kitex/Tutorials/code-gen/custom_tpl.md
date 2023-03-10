@@ -1,5 +1,5 @@
 ---
-title: "自定义模板"
+title: "自定义脚手架模板"
 date: 2023-03-09
 weight: 7
 description: >
@@ -16,13 +16,16 @@ Kitex 支持了自定义模板功能，如果默认的模板不能够满足大�
 1.  更新时，目前只支持覆盖、跳过和根据 methods 增加文件三种，支持在一个文件当中 append。增加文件就是比如我按照 methods 循环渲染，如果用户新增加了 methods，那就会新增加文件。
 1.  Kitex 代码生成分成两部分，kitex_gen 和 mainPkg(剩下的 main.go、handler.go )等等，kitex_gen 无论采用何种生成都不会改变；mainPkg 和 custom layout 只能二选一，如果制定了 custom layout 就不会再生成 mainPkg。
 
-使用方式：
+## 使用场景
+当默认的脚手架模板不能够满足用户的需求，比如想要生成 MVC Layout、统一进行错误处理等。
+
+## 使用方式
 
 ```console
 kitex -module ${module_name} -template-dir ${template dir_path} idl/hello.thrift
 ```
 
-Yaml 文件配置：
+## Yaml 文件配置
 
 ```yaml
 path: /a/main.go # 生成文件的路径及文件名，这会在项目根目录下创建 a 文件夹，并在文件夹内生成 main.go 文件
