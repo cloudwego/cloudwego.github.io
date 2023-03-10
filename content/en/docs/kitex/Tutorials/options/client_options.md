@@ -289,6 +289,15 @@ WithGRPCKeepaliveParams returns a DialOption that specifies keepalive parameters
 
 
 
+#### WithGRPCTLSConfig
+```go
+func WithGRPCTLSConfig(tlsConfig *tls.Config) Option
+```
+
+WithGRPCTLSConfig sets the TLS config to the connection options for Kitex gRPC client.
+
+
+
 # Advanced Options
 
 #### WithSuite
