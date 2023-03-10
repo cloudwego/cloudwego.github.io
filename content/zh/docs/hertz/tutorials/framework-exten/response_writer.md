@@ -1,17 +1,17 @@
 ---
-title: "Response Writer Extension"
-linkTitle: "Response Writer Extension"
+title: "Response 的 Writer 扩展"
+linkTitle: "Response 的 Writer 扩展"
 date: 2023-03-10
 weight: 4
 description: >
 
 ---
 
-Hertz provides response writer extension, if users need to hijack the writer of the response, they can implement the corresponding interfaces according to their needs.
+Hertz 提供了 response 的 writer 扩展， 用户可以根据自己的需要实现相应的接口去劫持 response 的 writer。
 
-## Interface Definition
+## 接口定义
 
-interface is defined in `pkg/network/write`.
+接口定义在 `pkg/network/write`.
 
 ```go
 type ExtWriter interface {
@@ -24,11 +24,11 @@ type ExtWriter interface {
 }
 ```
 
-### Hijack Your Own Response Writer
+### 劫持 Response 的 Writer
 
-Hertz provides `Response.HijackWriter` in `app.RequestContext` to allow users to hijack their own response writer, which provides another way for response writing process.
+Hertz 在 `app.RequestContext` 中提供了 `Response.HijackWriter` 方法让用户劫持 response 的 writer.
 
-Example:
+用法示例：
 ```go
 	h.GET("/hijack", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response
@@ -36,12 +36,12 @@ Example:
 	}
 ```
 
-## Supported Response Writer Extension
+## 已支持 Response 的 Writer 扩展
 
-Hertz provides `NewChunkedBodyWriter` to create a response writer which allow users to flush chunk immediately during the handler process, it is defined under `pkg/protocol/http1/resp/writer`, and you can implement your own response writer.
+Hertz 在 `pkg/protocol/http1/resp/writer` 下提供了 `NewChunkedBodyWriter` 方法来创建一个 response 的 writer，它允许用户在 handler 中立即刷新分块，用户也可以实现自己的 response 的 writer。
 
-### ChunkedBodyWriter
-Example:
+### ChunkedBodyWriter 
+用法示例：
 ```go
 	h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response
