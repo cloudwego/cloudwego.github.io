@@ -6,7 +6,7 @@ keywords: ["Kitex", "Client", "Option"]
 description: Kitex Client Option 使用说明。
 ---
 
-# 用法
+## 用法
 
 在创建客户端时，带上 Option 参数即可：
 
@@ -16,9 +16,9 @@ client, err := echo.NewClient("targetService", client.WithXXXX...)
 
 
 
-# 基础 Option
+## 基础 Option
 
-#### 基本信息 - WithClientBasicInfo
+### 基本信息 - WithClientBasicInfo
 
 ```go
 func WithClientBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
@@ -28,7 +28,7 @@ func WithClientBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
 
 
 
-#### IP 端口 - WithHostPorts
+### IP 端口 - WithHostPorts
 
 ```go
 func WithHostPorts(hostports ...string) Option
@@ -38,7 +38,7 @@ func WithHostPorts(hostports ...string) Option
 
 
 
-#### 传输协议 - WithTransportProtocol
+### 传输协议 - WithTransportProtocol
 
 ```go
 func WithTransportProtocol(tp transport.Protocol) Option
@@ -48,7 +48,7 @@ func WithTransportProtocol(tp transport.Protocol) Option
 
 
 
-#### 短连接 - WithShortConnection
+### 短连接 - WithShortConnection
 
 ```go
 func WithShortConnection() Option
@@ -58,7 +58,7 @@ func WithShortConnection() Option
 
 
 
-#### 长连接 - WithLongConnection
+### 长连接 - WithLongConnection
 
 ```go
 func WithLongConnection(cfg connpool.IdleConfig) Option
@@ -68,7 +68,7 @@ func WithLongConnection(cfg connpool.IdleConfig) Option
 
 
 
-#### 多路复用 - WithMuxConnection
+### 多路复用 - WithMuxConnection
 
 ```go
 func WithMuxConnection(connNum int) Option
@@ -78,7 +78,7 @@ func WithMuxConnection(connNum int) Option
 
 
 
-#### 中间件扩展 - WithMiddleware
+### 中间件扩展 - WithMiddleware
 
 ```go
 func WithMiddleware(mw endpoint.Middleware) Option
@@ -88,7 +88,7 @@ func WithMiddleware(mw endpoint.Middleware) Option
 
 
 
-#### 中间件扩展 - WithInstanceMW
+### 中间件扩展 - WithInstanceMW
 
 ```go
 func WithInstanceMW(mw endpoint.Middleware) Option
@@ -98,7 +98,7 @@ func WithInstanceMW(mw endpoint.Middleware) Option
 
 
 
-#### 中间件扩展 - WithMiddlewareBuilder
+### 中间件扩展 - WithMiddlewareBuilder
 
 ```go
 func WithMiddlewareBuilder(mwb endpoint.MiddlewareBuilder) Option
@@ -108,7 +108,7 @@ func WithMiddlewareBuilder(mwb endpoint.MiddlewareBuilder) Option
 
 
 
-#### 熔断器 - WithCircuitBreaker
+### 熔断器 - WithCircuitBreaker
 
 ```go
 func WithCircuitBreaker(s *circuitbreak.CBSuite) Option
@@ -134,7 +134,7 @@ cbs.UpdateInstanceCBConfig(key, config)
 
 关于熔断说明，详见[熔断器](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/circuitbreaker/)。
 
-#### 超时重试 - WithFailureRetry
+### 超时重试 - WithFailureRetry
 
 ```go
 func WithFailureRetry(p *retry.FailurePolicy) Option
@@ -144,7 +144,7 @@ func WithFailureRetry(p *retry.FailurePolicy) Option
 
 
 
-#### 备份请求 - WithBackupRequest
+### 备份请求 - WithBackupRequest
 
 ```go
 func WithBackupRequest(p *retry.BackupPolicy) Option
@@ -154,7 +154,7 @@ func WithBackupRequest(p *retry.BackupPolicy) Option
 
 
 
-#### 超时设置 - WithRPCTimeout
+### 超时设置 - WithRPCTimeout
 
 ```go
 func WithRPCTimeout(d time.Duration) Option
@@ -164,7 +164,7 @@ func WithRPCTimeout(d time.Duration) Option
 
 
 
-#### 超时设置 - WithConnectTimeout
+### 超时设置 - WithConnectTimeout
 
 ```go
 func WithConnectTimeout(d time.Duration) Option
@@ -174,7 +174,7 @@ func WithConnectTimeout(d time.Duration) Option
 
 
 
-#### 超时设置 - WithTimeoutProvider
+### 超时设置 - WithTimeoutProvider
 
 ```go
 func WithTimeoutProvider(p rpcinfo.TimeoutProvider) Option
@@ -184,7 +184,7 @@ func WithTimeoutProvider(p rpcinfo.TimeoutProvider) Option
 
 
 
-#### 指定服务 - WithDestService
+### 指定服务 - WithDestService
 
 ```go
 func WithDestService(svr string) Option
@@ -194,7 +194,7 @@ func WithDestService(svr string) Option
 
 
 
-#### 添加标签 - WithTag
+### 添加标签 - WithTag
 
 ```go
 func WithTag(key, val string) Option 
@@ -204,7 +204,7 @@ func WithTag(key, val string) Option
 
 
 
-#### 埋点粒度 - WithStatsLevel
+### 埋点粒度 - WithStatsLevel
 
 ```go
 func WithStatsLevel(level stats.Level) Optiong
@@ -288,9 +288,9 @@ func WithGRPCKeepaliveParams(kp grpc.ClientKeepalive) Option
 
 
 
-# 高级 Option
+## 高级 Option
 
-#### 配套扩展 - WithSuite
+### 配套扩展 - WithSuite
 
 ```go
 func WithSuite(suite Suite) Option
@@ -300,7 +300,7 @@ func WithSuite(suite Suite) Option
 
 
 
-#### 代理 - WithProxy
+### 代理 - WithProxy
 
 ```go
 func WithProxy(p proxy.ForwardProxy) Option
@@ -310,7 +310,7 @@ func WithProxy(p proxy.ForwardProxy) Option
 
 
 
-#### 重试 - WithRetryContainer
+### 重试 - WithRetryContainer
 
 ```go
 func WithRetryContainer(rc *retry.Container) Option
@@ -345,7 +345,7 @@ func WithRetryContainer(rc *retry.Container) Option
 
 
 
-#### 预热 - WithWarmingUp
+### 预热 - WithWarmingUp
 
 ```go
 func WithWarmingUp(wuo *warmup.ClientOption) Option 
@@ -383,7 +383,7 @@ cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{
 
 
 
-#### 设置关闭时回调 - WithCloseCallbacks
+### 设置关闭时回调 - WithCloseCallbacks
 
 ```go
 func WithCloseCallbacks(callback func() error) Option
@@ -393,7 +393,7 @@ func WithCloseCallbacks(callback func() error) Option
 
 
 
-#### 异常处理器 - WithErrorHandler
+### 异常处理器 - WithErrorHandler
 
 ```go
 func WithErrorHandler(f func(error) error) Option
@@ -403,7 +403,7 @@ func WithErrorHandler(f func(error) error) Option
 
 
 
-#### 泛化调用 - WithGeneric
+### 泛化调用 - WithGeneric
 
 ```go
 func WithGeneric(g generic.Generic) Option
@@ -413,7 +413,7 @@ func WithGeneric(g generic.Generic) Option
 
 
 
-#### 权限控制 - WithACLRules
+### 权限控制 - WithACLRules
 
 ```go
 func WithACLRules(rules ...acl.RejectFunc) Option
@@ -423,7 +423,7 @@ func WithACLRules(rules ...acl.RejectFunc) Option
 
 
 
-#### 连接池监控 - WithConnReporterEnabled
+### 连接池监控 - WithConnReporterEnabled
 
 ```go
 func WithConnReporterEnabled() Option
@@ -433,7 +433,7 @@ func WithConnReporterEnabled() Option
 
 
 
-#### 启用 HTTP 连接 - WithHTTPConnection
+### 启用 HTTP 连接 - WithHTTPConnection
 
 ```go
 func WithHTTPConnection() Option 
@@ -443,9 +443,9 @@ func WithHTTPConnection() Option
 
 
 
-# 扩展 Option
+## 扩展 Option
 
-#### 链路监控 - WithTracer
+### 链路监控 - WithTracer
 
 ```go
 func WithTracer(c stats.Tracer) Option
@@ -455,7 +455,7 @@ func WithTracer(c stats.Tracer) Option
 
 
 
-#### 服务发现 - WithResolver
+### 服务发现 - WithResolver
 
 ```go
 func WithResolver(r discovery.Resolver) Option
@@ -465,7 +465,7 @@ func WithResolver(r discovery.Resolver) Option
 
 
 
-#### HTTP 解析器 - WithHTTPResolver
+### HTTP 解析器 - WithHTTPResolver
 
 ```go
 func WithHTTPResolver(r http.Resolver) Option
@@ -475,7 +475,7 @@ func WithHTTPResolver(r http.Resolver) Option
 
 
 
-#### 负载均衡 - WithLoadBalancer
+### 负载均衡 - WithLoadBalancer
 
 ```go
 func WithLoadBalancer(lb loadbalance.Loadbalancer, opts ...*lbcache.Options) Option 
@@ -485,7 +485,7 @@ func WithLoadBalancer(lb loadbalance.Loadbalancer, opts ...*lbcache.Options) Opt
 
 
 
-#### IO Bound 处理器 - WithBoundHandler
+### IO Bound 处理器 - WithBoundHandler
 
 ```go
 func WithBoundHandler(h remote.BoundHandler) Option
@@ -495,7 +495,7 @@ func WithBoundHandler(h remote.BoundHandler) Option
 
 
 
-#### 编解码 - WithCodec
+### 编解码 - WithCodec
 
 ```go
 func WithCodec(c remote.Codec) Option
@@ -505,7 +505,7 @@ func WithCodec(c remote.Codec) Option
 
 
 
-#### Payload 编解码 - WithPayloadCodec
+### Payload 编解码 - WithPayloadCodec
 
 ```go
 func WithPayloadCodec(c remote.PayloadCodec) Option
@@ -515,7 +515,7 @@ func WithPayloadCodec(c remote.PayloadCodec) Option
 
 
 
-#### 元信息处理 - WithMetaHandler
+### 元信息处理 - WithMetaHandler
 
 ```go
 func WithMetaHandler(h remote.MetaHandler) Option
@@ -525,7 +525,7 @@ func WithMetaHandler(h remote.MetaHandler) Option
 
 
 
-#### 元信息处理 - WithFirstMetaHandler
+### 元信息处理 - WithFirstMetaHandler
 
 ```go
 func WithFirstMetaHandler(h remote.MetaHandler) Option
@@ -535,7 +535,7 @@ func WithFirstMetaHandler(h remote.MetaHandler) Option
 
 
 
-#### 传输设置 - WithTransHandlerFactory
+### 传输设置 - WithTransHandlerFactory
 
 ```go
 func WithTransHandlerFactory(f remote.ClientTransHandlerFactory) Option 
@@ -545,7 +545,7 @@ func WithTransHandlerFactory(f remote.ClientTransHandlerFactory) Option
 
 
 
-#### 诊断扩展 - WithDiagnosisService
+### 诊断扩展 - WithDiagnosisService
 
 ```go
 func WithDiagnosisService(ds diagnosis.Service) Option
@@ -555,7 +555,7 @@ func WithDiagnosisService(ds diagnosis.Service) Option
 
 
 
-#### Dialer 扩展 - WithDialer
+### Dialer 扩展 - WithDialer
 
 ```go
 func WithDialer(d remote.Dialer) Option
@@ -565,7 +565,7 @@ func WithDialer(d remote.Dialer) Option
 
 
 
-#### 连接池扩展 - WithConnPool
+### 连接池扩展 - WithConnPool
 
 ```go
 func WithConnPool(pool remote.ConnPool) Option
