@@ -11,7 +11,7 @@ Hertz provides response writer extension, if users need to hijack the writer of 
 
 ## Interface Definition
 
-interface is defined in `pkg/network/write`.
+interface is defined in `pkg/network/writer`.
 
 ```go
 type ExtWriter interface {

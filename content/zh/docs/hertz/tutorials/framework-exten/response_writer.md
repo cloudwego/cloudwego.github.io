@@ -11,7 +11,7 @@ Hertz 提供了 response 的 writer 扩展， 用户可以根据自己的需要�
 
 ## 接口定义
 
-接口定义在 `pkg/network/write`.
+接口定义在 `pkg/network/writer`.
 
 ```go
 type ExtWriter interface {
