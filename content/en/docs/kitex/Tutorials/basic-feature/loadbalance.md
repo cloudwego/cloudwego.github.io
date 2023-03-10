@@ -6,20 +6,29 @@ keywords: ["Kitex", "LoadBalancer", "LoadBalance", "ConsistentHash"]
 description: "This doc covers LoadBalancer implementation principles and usage guidelines provided by Kitex."
 ---
 
-Kitex provides two LoadBalancers officially:
+Kitex provides 3 LoadBalancers officially:
 
+- WeightedRoundRobin
 - WeightedRandom
 - ConsistentHash
 
-Kitex uses WeightedRandom by default.
+Kitex uses WeightedRoundRobin by default.
+
+## WeightedRoundRobin
+
+WeightedRoundRobin uses a round-robin strategy based on weights, which is also Kitex's default strategy.
+
+This LoadBalancer will make all instances have the min inflight requests to reduce the overload of instance. 
+
+If all instances have the same weights, it will use a pure round-robin implementation to avoid extra overhead of weighting calculations.
 
 ## WeightedRandom
 
-WeightedRandom uses a random strategy based on weights, which is also Kitex's default strategy.
+WeightedRandom uses a random strategy.
 
 This LoadBalancer will be weighted randomly according to the weight of the instance, and ensure that the load assigned to each instance is proportional to its own weight.
 
-If all instances have the same weights, Kitex has special optimization for this scenario and will use a purely random implementation to avoid extra overhead of weighting calculations, so there is no need to worry about the performance in this scenario.
+If all instances have the same weights, it uses a purely random implementation to avoid extra overhead of weighting calculations.
 
 ## ConsistentHash
 

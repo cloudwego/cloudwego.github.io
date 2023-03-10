@@ -6,19 +6,28 @@ keywords: ["Kitex", "负载均衡", "WeightedRandom", "ConsistentHash"]
 description: "Kitex 提供的负载均衡器实现原理和使用指南。"
 ---
 
-Kitex 默认提供了两种 LoadBalancer（下面简称 lb）：
+Kitex 默认提供了 3 种 LoadBalancer（下面简称 lb）：
+- WeightedRoundRobin
 - WeightedRandom
 - ConsistentHash
 
-Kitex 默认使用的是 WeightedRandom。
+Kitex 默认使用的是 WeightedRoundRobin。
+
+## WeightedRoundRobin
+
+该 lb 使用的是基于权重的轮询策略，也是 Kitex 的默认策略。
+
+该 lb 能让所有下游实例拥有最小的同时 inflight 请求数，以减少下游过载情况的发生。
+
+如果所有的实例的权重都一样，会使用一个纯轮询的实现，来避免加权计算的一些额外开销。
 
 ## WeightedRandom
 
-顾名思义，这个 lb 使用的是基于权重的随机策略，也是 Kitex 的默认策略。
+顾名思义，这个 lb 使用的是基于权重的随机策略。
 
 这个 lb 会依据实例的权重进行加权随机，并保证每个实例分配到的负载和自己的权重成比例。
 
-如果所有的实例的权重都一样，Kitex 针对这个场景做了特殊优化，会使用一个纯随机的实现，来避免加权计算的一些额外开销，所以不需要担心这个场景下的性能。
+如果所有的实例的权重都一样，会使用一个纯随机的实现，来避免加权计算的一些额外开销。
 
 ## ConsistentHash
 
