@@ -1,64 +1,143 @@
 ---
 title: "代码生成工具"
-date: 2021-08-26
+date: 2023-03-10
 weight: 1
 description: >
 ---
 
+> 本篇文档及示例所使用的 Kitex 代码生成工具版本为 v0.5.0 
+
 **kitex** 是 Kitex 框架提供的用于生成代码的一个命令行工具。目前，kitex 支持 thrift 和 protobuf 的 IDL，并支持生成一个服务端项目的骨架。
+
+
 
 ## 安装
 
-```
+> 目前 Kitex 命令行工具暂不支持 Windows 环境，预计在 v0.5.1 支持
+
+Kitex 代码生成依赖于 thriftgo 和 protoc，需要先安装相应的编译器：[thriftgo](https://github.com/cloudwego/thriftgo) 或 [protoc](https://github.com/protocolbuffers/protobuf/releases)。
+
+安装完上述工具后，通过 go 命令安装命令行工具本身
+
+```shell
 go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 ```
 
-用 go 命令来安装是最简单的，你也可以选择自己从源码构建和安装。要查看 kitex 的安装位置，可以用：
+你也可以自己下载 Kitex 源码后，进入 `tool/cmd/kitex` 目录执行 `go install` 进行安装
+
+完成后，可以通过执行  `kitex -version`  查看工具版本，或者  `kitex -help` 查看使用帮助。
+
+## 生成代码
+
+生成代码分两部分，一部分是结构体的编解码序列化代码，由底层编译器 thriftgo 或 protoc 生成；另一部分由 kitex 工具在前者产物上叠加，生成用于创建和发起 RPC 调用的桩代码。用户只需要执行 Kitex 代码生成工具，底层会自动完成所有代码的生成。
+
+kitex 工具生成代码的语法为 `kitex [options] xx.thrfit/xxx.proto` ，option 用法可参考文末。
+
+以 thrift 场景为例，有如下两个 IDL 文件：
+
+```thrift
+// 文件1：example.thrift
+namespace go test
+include "base.thrift"
+
+struct MyReq{
+    1:required string input
+    2:required base.BaseReq baseReq
+}
+
+service MyService{
+    string Hello(1:required MyReq req)
+}
+
+// 文件2：base.thrift
+struct BaseReq{
+    1:required string name
+}
+```
+
+如果当前目录在 Go Path 下，执行如下命令：
+
+```shell
+kitex example.thrift
+```
+
+若报错 `Outside of $GOPATH. Please specify a module name with the '-module' flag.` ，说明当前目录没在 Go Path 下，需要创建 go mod，并通过 `-module` 指定 go mod 并执行如下命令：
+
+```shell
+kitex -module xxx example.thrift
+```
+
+执行后，在当前目录下会生成一个名为 kitex_gen 目录，内容如下：
 
 ```
-go list -f {{.Target}} github.com/cloudwego/kitex/tool/cmd/kitex
+kitex_gen/
+├── base					// base.thrift 的生成内容，没有 go namespace 时，以 idl 文件名小写作为包名
+│   ├── base.go				// thriftgo 生成，包含 base.thrift 定义的内容的 go 代码
+│   ├── k-base.go			// kitex 生成，包含 kitex 提供的额外序列化优化实现
+│   └── k-consts.go			// 避免 import not used 的占位符文件
+└── test					// example.thrift 的生成内容，用 go namespace 为包名
+    ├── example.go			// thriftgo 生成，包含 example.thrift 定义的内容的 go 代码
+    ├── k-consts.go			// 避免 import not used 的占位符文件
+    ├── k-example.go		// kitex 生成，包含 kitex 提供的额外序列化优化实现
+    └── myservice			// kitex 为 example.thrift 里定义的 myservice 生成的代码
+        ├── client.go		// 提供了 NewClient API
+        ├── invoker.go		// 提供了 Server SDK 化的 API
+        ├── myservice.go	// 提供了 client.go 和 server.go 共用的一些定义
+        └── server.go		// 提供了 NewServer API
 ```
 
-## 依赖与运行模式
+### 生成带有脚手架的代码
 
-### 底层编译器
+上文的案例代码并不能直接运行，需要自己完成 NewClient 和 NewServer 的构建。kitex 命令行工具提供了 `-service` 参数能直接生成带有脚手架的代码，执行如下命令：
 
-要使用 thrift 或 protobuf 的 IDL 生成代码，需要安装相应的编译器：[thriftgo](https://github.com/cloudwego/thriftgo) 或 [protoc](https://github.com/protocolbuffers/protobuf/releases)。
-
-kitex 生成的代码里，一部分是底层的编译器生成的（通常是关于 IDL 里定义的结构体的编解码逻辑），另一部分是用于连接 Kitex 框架与生成代码并提供给终端用户良好界面的胶水代码。
-
-从执行流上来说，当 kitex 被要求来给一个 thrift IDL 生成代码时，kitex 会调用 thriftgo 来生成结构体编解码代码，并将自身作为 thriftgo 的一个插件执行来生成胶水代码。当用于 protobuf IDL 时亦是如此。
-
-```
-$> kitex IDL
-    |
-    | thrift-IDL
-    |---------> thriftgo --gen go:... -plugin=... -out ... IDL
-    |
-    | protobuf-IDL
-    ----------> protoc --kitex_out=... --kitex_opt=... IDL
+```shell
+kitex -service mydemoservice demo.thrift 
 ```
 
-### 库依赖
+生成结果如下：
+
+```
+├── build.sh			// 快速构建服务的脚步
+├── handler.go		    // 为 server 生成 handler 脚手架
+├── kitex_info.yaml  	// 记录元信息，用于与 cwgo 工具的集成
+├── main.go		 	 // 快速启动 server 的主函数
+└── script			 // 构建服务相关脚本
+│    └── bootstrap.sh
+├── kitex_gen
+     └── ....	 
+    
+```
+
+在 `handler.go` 的接口中填充业务代码后，执行 `main.go` 的主函数即可快速启动 Kitex Server。
+
+
+## 库依赖
 
 kitex 生成的代码会依赖相应的 Go 语言代码库：
 
 - 对于 thrift IDL，是 `github.com/apache/thrift v0.13.0`
 - 对于 protobuf IDL，是 ` google.golang.org/protobuf v1.26.0`
 
-要注意的一个地方是，`github.com/apache/thrift/lib/go/thrift` 的 `v0.14.0` 版本开始提供的 API 和之前的版本是**不兼容的**，如果在更新依赖的时候给 `go get` 命令增加了 `-u` 选项，会导致该库更新到不兼容的版本造成编译失败。你可以通过额外执行一个命令来指定正确的版本：
+要注意的一个地方是，`github.com/apache/thrift/lib/go/thrift` 的 `v0.14.0` 版本开始提供的 API 和之前的版本是**不兼容的**，如果在更新依赖的时候给 `go get` 命令增加了 `-u` 选项，会导致该库更新到不兼容的版本造成编译失败。通常会有这样的报错：
+如 not enough arguments in call to iprot.ReadStructBegin
 
-```
+
+你可以通过额外执行一个命令来指定正确的版本：
+
+```shell
 go get github.com/apache/thrift@v0.13.0
 ```
 
 或用 `replace` 指令强制固定该版本：
 
-```
+```shell
 go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 ```
 
-### 使用 protobuf IDL 的注意事项
+在 v0.4.5 后，工具会对 go mod 自动添加该约束
+
+
+## 使用 protobuf IDL 的注意事项
 
 kitex 仅支持 protocol buffers 的 [proto3](https://developers.google.com/protocol-buffers/docs/proto3) 版本的语法。
 
@@ -78,59 +157,8 @@ option go_package = "hello.world"; // or hello/world
 
 你可以通过命令行参数 `--protobuf Msome.proto=your.package.name/kitex_gen/wherever/you/like` 来覆盖某个 proto 文件的 `go_package` 值。具体用法说明可以参考 Protocol Buffers 的[官方文档](https://developers.google.com/protocol-buffers/docs/reference/go-generated#package)。
 
-## 使用
 
-### 基础使用
-
-语法：`kitex [options] IDL`
-
-下面以 thrift IDL 作为例子。 Protobuf IDL 的使用也是类似的。
-
-#### 生成客户端代码
-
-```
-kitex path_to_your_idl.thrift
-```
-
-执行后在当前目录下会生成一个名为 kitex_gen 目录，其中包含了 IDL 定义的数据结构，以及与 IDL 里定义的 service 相对应的 `*service` 包，提供了创建这些 service 的 client API。
-
-#### 生成服务端代码
-
-```
-kitex -service service_name path_to_your_idl.thrift
-```
-
-执行后在当前目录下会生成一个名为 kitex_gen 目录，同时包含一些用于创建和运行一个服务的脚手架代码。具体见[生成代码的结构](#生成代码的结构)一节的描述。
-
-### 生成代码的结构
-
-假设我们有两个 thrift IDL 文件，demo.thrift 和 base.thrift，其中 demo.thrift 依赖了 base.thrift，并且 demo.thrift 里定义了一个名为 `demo` 的 service 而 base 里没有 service 定义。
-
-那么在一个空目录下，`kitex -service demo demo.thrift` 生成的结果如下：
-
-```
-.
-├── build.sh                     // 服务的构建脚本，会创建一个名为 output 的目录并生成启动服务所需的文件到里面
-├── handler.go                   // 用户在该文件里实现 IDL service 定义的方法
-├── kitex_gen                    // IDL 内容相关的生成代码
-│   ├── base                     // base.thrift 的生成代码
-│   │   ├── base.go              // thriftgo 的产物，包含 base.thrift 定义的内容的 go 代码
-│   │   └── k-base.go            // kitex 在 thriftgo 的产物之外生成的代码
-│   └── demo                     // demo.thrift 的生成代码
-│       ├── demo.go              // thriftgo 的产物，包含 demo.thrift 定义的内容的 go 代码
-│       ├── k-demo.go            // kitex 在 thriftgo 的产物之外生成的代码
-│       └── demoservice          // kitex 为 demo.thrift 里定义的 demo service 生成的代码
-│           ├── demoservice.go   // 提供了 client.go 和 server.go 共用的一些定义
-│           ├── client.go        // 提供了 NewClient API
-│           └── server.go        // 提供了 NewServer API
-├── main.go                      // 程序入口
-└── script                       // 构建脚本
-    └── bootstrap.sh             // 服务的启动脚本，会被 build.sh 拷贝至 output 下
-```
-
-如果不指定 `-service` 参数，那么生成的只有 kitex_gen 目录。
-
-### 选项
+## 选项
 
 本文描述的选项可能会过时，可以用 `kitex -h` 或 `kitex --help` 来查看 kitex 的所有可用的选项。
 
@@ -152,19 +180,27 @@ kitex -service service_name path_to_your_idl.thrift
 
 #### `-I path`
 
-添加一个 IDL 的搜索路径。
+添加一个 IDL 的搜索路径。支持添加多个，搜索 IDL（包括 IDL 里 include 的其他文件）时，会按照添加的路径顺序搜索。
 
-#### `-type type`
+path 输入也可以支持 git 拉取，当前缀为 git@，http://，https:// 时，会拉取远程 git 仓库到本地，并将其列入搜索路径。使用方式如下：
 
-指明当前使用的 IDL 类型，当前可选的值有 `thrift` 和 `protobuf`。
+```shell
+kitex -module xx -I xxx.git abc/xxx.thrift 
+```
 
-Kitex 会根据文件的扩展名来猜测相应的 IDL 类型，`.thrift` 是 thrift，`.proto` 是 protobuf。
+或使用 `@xxx` 指定分支拉取：
+
+```shell
+kitex -module xx -I xxx.git@branch abc/xxx.thrift 
+
+```
+
+执行时会先拉取 git 仓库，存放于 ~/.kitex/cache/xxx/xxx/xxx@branch 目录下，然后再在此目录下搜索 abc/xxx.thrift 并生成代码
+
 
 #### `-v` 或 `-verbose`
 
 输出更多日志。
-
-### 高级选项
 
 #### `-use path`
 
@@ -172,9 +208,10 @@ Kitex 会根据文件的扩展名来猜测相应的 IDL 类型，`.thrift` 是 t
 
 #### `-combine-service`
 
-对于 thrift IDL，kitex 在生成服务端代码脚手架时，只会针对最后一个 service 生成相关的定义。如果你的 IDL 里定义了多个 service 定义并且希望在一个服务里同时提供这些 service 定义的能力时，可以使用 `-combine-service` 选项。
+对于 thrift IDL，kitex 在生成服务端代码脚手架时，只会针对最后一个 service 生成相关的定义。如果你的 IDL 里定义了多个 service 定义并且希望在一个服务里同时提供这些 service 定义的能力时，可以使用 `-combine-service` 选项，详见 [Combine Service](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/combine_service/).
 
 该选项会生成一个合并了目标 IDL 文件中所有 service 方法的 `CombineService`，并将其用作 main 包里使用的 service 定义。注意这个模式下，被合并的 service 之间不能有冲突的方法名。
+
 
 #### `-protobuf value`
 
@@ -183,3 +220,81 @@ Kitex 会根据文件的扩展名来猜测相应的 IDL 类型，`.thrift` 是 t
 #### `-thrift value`
 
 传递给 thriftgo 的参数。会拼接在 `-g go:` 的参数后面。可用的值参考 `thriftgo` 的帮助文档。kitex 默认传递了 `naming_style=golint,ignore_initialisms,gen_setter,gen_deep_equal`，可以被覆盖。
+
+
+#### `-record`
+
+有的场景下，可能需要多次运行 Kitex 命令，为多个 IDL 生成代码。 `-record` 参数用于自动记录每次执行的 Kitex 命令并生成脚本文件，以便更新时批量重新执行。
+
+使用方式：
+
+```shell
+kitex -module xxx -service xxx -record xxx.thrift
+```
+
+带上 -record 参数执行后，在执行目录下生成 kitex-all.sh 文件，记录本次命令
+若多次带有 -record 参数则多次进行记录
+kitex-all.sh 内容如下:
+
+```shell
+
+#!/bin/bash
+
+kitex -module xxx -service xxx xxx.thrift
+kitex -module xxx xxxa.thrift
+kitex -module xxx xxxb.thrift
+kitex -module xxx xxxc.thrift
+kitex -module xxx xxxd.thrift
+
+....新执行的命令继续记录
+
+```
+
+命令记录并不是每次都只往后追加，规则如下：
+
+- 只会记录一条带有 -service 的命令
+- 记录的命令的 idl path 如果是新的，则在末尾追加记录
+- 如果 idl path 是已存在的，则对原记录覆盖
+
+想重新生成代码，执行 kitex-all.sh 即可。若想手动调整，打开脚本文件直接编辑命令即可
+
+
+#### `-gen-path`
+
+> 目前只在 thrift 场景生效，protobuf 侧待后续完善实现。
+
+默认场景，kitex 会将代码生成在 kitex_gen 目录下，可以通过 -gen-path 进行调整
+
+#### `-protobuf-plugin`
+
+支持拓展 protoc 的插件，可接入丰富的 protoc 插件生态，为拓展生成代码提供方便
+
+使用方法如下：
+
+```shell
+kitex -protobuf-plugin {plugin_name:options:out_dir} idl/myservice.proto
+```
+
+其中：
+
+- plugin_name: 表示要执行的插件名；例如"protoc-gen-go"，那么他的插件名就为 "go"
+- options: 表示传递给插件的选项；通常会传递一些类似 "go module" 等信息
+- out_dir: 表示插件生成代码的路径；如无特殊需求，一般指定为 "." 即可
+
+以上 3 个选项可映射为如下的 protoc 命令，可被 kitex 自动拼接&执行: 
+
+```shell
+protoc
+    --{$plugin_name}_out={$out_dir}
+    --{$plugin_name}_opt={$options}        
+    idl/myservice.proto
+```    
+
+例如希望使用 [protoc-gen-validator](https://github.com/cloudwego/protoc-gen-validator) 插件，可以执行如下命令：
+
+```shell
+kitex 
+    -protobuf-plugin=validator:module=toutiao/middleware/kitex,recurse=true:.
+    idl/myservice.proto
+```
+ 
