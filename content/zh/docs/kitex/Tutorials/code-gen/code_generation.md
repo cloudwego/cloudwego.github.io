@@ -13,13 +13,13 @@ description: >
 
 ## 安装
 
-> 目前 Kitex 命令行工具暂不支持 Windows 环境，预计在下个版本（v0.5.1）支持
+> 目前 Kitex 命令行工具暂不支持 Windows 环境，预计在 v0.5.1 支持
 
 Kitex 代码生成依赖于 thriftgo 和 protoc，需要先安装相应的编译器：[thriftgo](https://github.com/cloudwego/thriftgo) 或 [protoc](https://github.com/protocolbuffers/protobuf/releases)。
 
 安装完上述工具后，通过 go 命令安装命令行工具本身
 
-```
+```shell
 go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 ```
 
@@ -35,7 +35,7 @@ kitex 工具生成代码的语法为 `kitex [options] xx.thrfit/xxx.proto` ，op
 
 以 thrift 场景为例，有如下两个 IDL 文件：
 
-```
+```thrift
 // 文件1：example.thrift
 namespace go test
 include "base.thrift"
@@ -57,13 +57,13 @@ struct BaseReq{
 
 如果当前目录在 Go Path 下，执行如下命令：
 
-```
+```shell
 kitex example.thrift
 ```
 
 若报错 `Outside of $GOPATH. Please specify a module name with the '-module' flag.` ，说明当前目录没在 Go Path 下，需要创建 go mod，并通过 `-module` 指定 go mod 并执行如下命令：
 
-```
+```shell
 kitex -module xxx example.thrift
 ```
 
@@ -90,14 +90,13 @@ kitex_gen/
 
 上文的案例代码并不能直接运行，需要自己完成 NewClient 和 NewServer 的构建。kitex 命令行工具提供了 `-service` 参数能直接生成带有脚手架的代码，执行如下命令：
 
-```
+```shell
 kitex -service mydemoservice demo.thrift 
 ```
 
 生成结果如下：
 
 ```
-
 ├── build.sh			// 快速构建服务的脚步
 ├── handler.go		    // 为 server 生成 handler 脚手架
 ├── kitex_info.yaml  	// 记录元信息，用于与 cwgo 工具的集成
@@ -106,6 +105,7 @@ kitex -service mydemoservice demo.thrift
 │    └── bootstrap.sh
 ├── kitex_gen
      └── ....	 
+    
 ```
 
 在 `handler.go` 的接口中填充业务代码后，执行 `main.go` 的主函数即可快速启动 Kitex Server。
@@ -124,13 +124,13 @@ kitex 生成的代码会依赖相应的 Go 语言代码库：
 
 你可以通过额外执行一个命令来指定正确的版本：
 
-```
+```shell
 go get github.com/apache/thrift@v0.13.0
 ```
 
 或用 `replace` 指令强制固定该版本：
 
-```
+```shell
 go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 ```
 
@@ -184,13 +184,13 @@ option go_package = "hello.world"; // or hello/world
 
 path 输入也可以支持 git 拉取，当前缀为 git@，http://，https:// 时，会拉取远程 git 仓库到本地，并将其列入搜索路径。使用方式如下：
 
-```
+```shell
 kitex -module xx -I xxx.git abc/xxx.thrift 
 ```
 
 或使用 `@xxx` 指定分支拉取：
 
-```
+```shell
 kitex -module xx -I xxx.git@branch abc/xxx.thrift 
 
 ```
@@ -228,7 +228,7 @@ kitex -module xx -I xxx.git@branch abc/xxx.thrift
 
 使用方式：
 
-```
+```shell
 kitex -module xxx -service xxx -record xxx.thrift
 ```
 
@@ -236,7 +236,7 @@ kitex -module xxx -service xxx -record xxx.thrift
 若多次带有 -record 参数则多次进行记录
 kitex-all.sh 内容如下:
 
-```
+```shell
 
 #!/bin/bash
 
@@ -264,3 +264,37 @@ kitex -module xxx xxxd.thrift
 > 目前只在 thrift 场景生效，protobuf 侧待后续完善实现。
 
 默认场景，kitex 会将代码生成在 kitex_gen 目录下，可以通过 -gen-path 进行调整
+
+#### `-protobuf-plugin`
+
+支持拓展 protoc 的插件，可接入丰富的 protoc 插件生态，为拓展生成代码提供方便
+
+使用方法如下：
+
+```shell
+kitex -protobuf-plugin {plugin_name:options:out_dir} idl/myservice.proto
+```
+
+其中：
+
+- plugin_name: 表示要执行的插件名；例如"protoc-gen-go"，那么他的插件名就为 "go"
+- options: 表示传递给插件的选项；通常会传递一些类似 "go module" 等信息
+- out_dir: 表示插件生成代码的路径；如无特殊需求，一般指定为 "." 即可
+
+以上 3 个选项可映射为如下的 protoc 命令，可被 kitex 自动拼接&执行: 
+
+```shell
+protoc
+    --{$plugin_name}_out={$out_dir}
+    --{$plugin_name}_opt={$options}        
+    idl/myservice.proto
+```    
+
+例如希望使用 [protoc-gen-validator](https://github.com/cloudwego/protoc-gen-validator) 插件，可以执行如下命令：
+
+```shell
+kitex 
+    -protobuf-plugin=validator:module=toutiao/middleware/kitex,recurse=true:.
+    idl/myservice.proto
+```
+ 
