@@ -20,7 +20,7 @@ goroutine，大幅增加调度开销。此外，[net.Conn][net.Conn] 没有提�
 因此 [Netpoll][Netpoll] 应运而生，它借鉴了 [evio][evio] 和 [netty][netty] 的优秀设计，具有出色的 [性能](#性能)，更适用于微服务架构。 同时，[Netpoll][Netpoll] 还提供了一些 [特性](#特性)，推荐在 RPC 设计中替代
 [net][net] 。
 
-基于 [Netpoll][Netpoll] 开发的 RPC 框架 [Kitex][Kitex] 和 HTTP 框架 [Hertz][Hertz] (即将开源)，性能均业界领先。
+基于 [Netpoll][Netpoll] 开发的 RPC 框架 [Kitex][Kitex] 和 HTTP 框架 [Hertz][Hertz]，其性能均业界领先。
 
 [范例][netpoll-example] 展示了如何使用 [Netpoll][Netpoll] 构建 RPC Client 和 Server。
 
