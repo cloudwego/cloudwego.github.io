@@ -6,7 +6,7 @@ keywords: ["Kitex", "Client", "Option"]
 description: Kitex Client Option instructions.
 ---
 
-# Usage
+## Usage
 
 Add some options when creating a client：
 
@@ -16,9 +16,9 @@ client, err := echo.NewClient("targetService", client.WithXXXX...)
 
 
 
-# Basic Options
+## Basic Options
 
-#### WithClientBasicInfo
+### WithClientBasicInfo
 
 ```go
 func WithClientBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
@@ -29,7 +29,7 @@ It is strongly recommended to configure this option.
 
 
 
-#### WithHostPorts
+### WithHostPorts
 
 ```go
 func WithHostPorts(hostports ...string) Option
@@ -39,7 +39,7 @@ Manually specifie one or more targets overrides the results discovered by the se
 
 
 
-#### WithTransportProtocol
+### WithTransportProtocol
 
 ```go
 func WithTransportProtocol(tp transport.Protocol) Option
@@ -48,7 +48,7 @@ func WithTransportProtocol(tp transport.Protocol) Option
 Set the transport protocol, configure the transport protocol on the message protocol. Thrift/KitexProtobuf can configure TTHeader, TTHeaderFramed, and Framed. In addition, Framed is not strictly a transmission protocol. In order to distinguish it for PurePayload, it is also configured as a transmission protocol. PurePayload means that there is no transmission protocol; if it is configured as GRPC, it means that the GRPC protocol is used. , the transmission protocol of GRPC is HTTP2, but for the convenience of users' understanding, it is directly used as the configuration of the transmission protocol. Note that configuring GRPC needs to use Protobuf to define Service. If GRPC is not configured, KitexProtobuf protocol is used by default.
 
 
-#### WithShortConnection
+### WithShortConnection
 
 ```go
 func WithShortConnection() Option
@@ -58,7 +58,7 @@ Enable short connections. [More](https://www.cloudwego.io/docs/kitex/tutorials/b
 
 
 
-#### WithLongConnection
+### WithLongConnection
 
 ```go
 func WithLongConnection(cfg connpool.IdleConfig) Option
@@ -68,7 +68,7 @@ Enable long connections. [More](https://www.cloudwego.io/docs/kitex/tutorials/ba
 
 
 
-#### WithMuxConnection
+### WithMuxConnection
 
 ```go
 func WithMuxConnection(connNum int) Option
@@ -78,7 +78,7 @@ Enable mux connections. Server side also need to turn on this option, or it won'
 
 
 
-#### WithMiddleware
+### WithMiddleware
 
 ```go
 func WithMiddleware(mw endpoint.Middleware) Option
@@ -88,7 +88,7 @@ Add a middleware that executes after service level circuit breaker and timeout m
 
 
 
-#### WithInstanceMW
+### WithInstanceMW
 
 ```go
 func WithInstanceMW(mw endpoint.Middleware) Option
@@ -98,7 +98,7 @@ Add a middleware that executes after service discovery and load balance. If inst
 
 
 
-#### WithMiddlewareBuilder
+### WithMiddlewareBuilder
 
 ```go
 func WithMiddlewareBuilder(mwb endpoint.MiddlewareBuilder) Option
@@ -108,7 +108,7 @@ Add middleware depends on the context passed in by the framework that contains r
 
 
 
-#### WithCircuitBreaker
+### WithCircuitBreaker
 
 ```go
 func WithCircuitBreaker(s *circuitbreak.CBSuite) Option
@@ -134,7 +134,7 @@ cbs.UpdateInstanceCBConfig(key, config)
 
 For more details, please visit [Circuit Breaker](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/circuitbreaker/).
 
-#### WithFailureRetry
+### WithFailureRetry
 
 ```go
 func WithFailureRetry(p *retry.FailurePolicy) Option
@@ -144,7 +144,7 @@ Set timeout retry rules, you can configure the maximum number of retries, the ma
 
 
 
-#### WithBackupRequest
+### WithBackupRequest
 
 ```go
 func WithBackupRequest(p *retry.BackupPolicy) Option
@@ -154,7 +154,7 @@ Set the policy for Backup Request, which can configure the number of requests, c
 
 
 
-#### WithRPCTimeout
+### WithRPCTimeout
 
 ```go
 func WithRPCTimeout(d time.Duration) Option
@@ -164,7 +164,7 @@ Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feat
 
 
 
-#### WithConnectTimeout
+### WithConnectTimeout
 
 ```go
 func WithConnectTimeout(d time.Duration) Option
@@ -174,7 +174,7 @@ Set connect timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-
 
 
 
-#### WithTimeoutProvider
+### WithTimeoutProvider
 
 ```go
 func WithTimeoutProvider(p rpcinfo.TimeoutProvider) Option
@@ -184,7 +184,7 @@ Add a TimeoutProvider to set the RPC timeout, connection timeout, etc. policies 
 
 
 
-#### WithDestService
+### WithDestService
 
 ```go
 func WithDestService(svr string) Option
@@ -194,7 +194,7 @@ Specify the service name of the target side of the call.
 
 
 
-#### WithTag
+### WithTag
 
 ```go
 func WithTag(key, val string) Option 
@@ -204,7 +204,7 @@ Add some meta information to the client, such as idc, cluster, etc., for scenari
 
 
 
-#### WithStatsLevel
+### WithStatsLevel
 
 ```go
 func WithStatsLevel(level stats.Level) Optiong
@@ -289,9 +289,18 @@ WithGRPCKeepaliveParams returns a DialOption that specifies keepalive parameters
 
 
 
-# Advanced Options
+#### WithGRPCTLSConfig
+```go
+func WithGRPCTLSConfig(tlsConfig *tls.Config) Option
+```
 
-#### WithSuite
+WithGRPCTLSConfig sets the TLS config to the connection options for Kitex gRPC client.
+
+
+
+## Advanced Options
+
+### WithSuite
 
 ```go
 func WithSuite(suite Suite) Option
@@ -301,7 +310,7 @@ Set up a specific configuration, customize according to the scene, configure mul
 
 
 
-#### WithProxy
+### WithProxy
 
 ```go
 func WithProxy(p proxy.ForwardProxy) Option
@@ -311,7 +320,7 @@ For proxy scenarios (such as Mesh Egress), do some configuration processing, ret
 
 
 
-#### WithRetryContainer
+### WithRetryContainer
 
 ```go
 func WithRetryContainer(rc *retry.Container) Option
@@ -345,7 +354,7 @@ To customize the built-in circuit breaker ServiceCBKeyFunc settings, you can use
 
 
 
-#### WithWarmingUp
+### WithWarmingUp
 
 ```go
 func WithWarmingUp(wuo *warmup.ClientOption) Option 
@@ -383,7 +392,7 @@ cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{
 
 
 
-#### WithCloseCallbacks
+### WithCloseCallbacks
 
 ```go
 func WithCloseCallbacks(callback func() error) Option
@@ -393,7 +402,7 @@ Set close callback function.
 
 
 
-#### WithErrorHandler
+### WithErrorHandler
 
 ```go
 func WithErrorHandler(f func(error) error) Option
@@ -403,7 +412,7 @@ Set the error handler function, which is executed after the server handler is ex
 
 
 
-#### WithGeneric
+### WithGeneric
 
 ```go
 func WithGeneric(g generic.Generic) Option
@@ -413,7 +422,7 @@ Specifie the generalization call type, which needs to be used in conjunction wit
 
 
 
-#### WithACLRules
+### WithACLRules
 
 ```go
 func WithACLRules(rules ...acl.RejectFunc) Option
@@ -423,7 +432,7 @@ Set ACL permission access control, which is executed before service discovery. [
 
 
 
-#### WithConnReporterEnabled
+### WithConnReporterEnabled
 
 ```go
 func WithConnReporterEnabled() Option
@@ -433,7 +442,7 @@ Enable connection pool reporter. [More](https://www.cloudwego.io/docs/kitex/tuto
 
 
 
-#### WithHTTPConnection
+### WithHTTPConnection
 
 ```go
 func WithHTTPConnection() Option 
@@ -443,9 +452,9 @@ Specifie client use RPC over http.
 
 
 
-# Extended Options
+## Extended Options
 
-#### WithTracer
+### WithTracer
 
 ```go
 func WithTracer(c stats.Tracer) Option
@@ -455,7 +464,7 @@ Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/s
 
 
 
-#### WithResolver
+### WithResolver
 
 ```go
 func WithResolver(r discovery.Resolver) Option
@@ -465,7 +474,7 @@ Specifie a resolver to do service discovery. [More](https://www.cloudwego.io/doc
 
 
 
-#### WithHTTPResolver
+### WithHTTPResolver
 
 ```go
 func WithHTTPResolver(r http.Resolver) Option
@@ -475,7 +484,7 @@ Set HTTP resolver. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-fe
 
 
 
-#### WithLoadBalancer
+### WithLoadBalancer
 
 ```go
 func WithLoadBalancer(lb loadbalance.Loadbalancer, opts ...*lbcache.Options) Option 
@@ -485,7 +494,7 @@ Set load balancer. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-fe
 
 
 
-####  WithBoundHandler
+###  WithBoundHandler
 
 ```go
 func WithBoundHandler(h remote.BoundHandler) Option
@@ -495,7 +504,7 @@ Add a new IO Bound handler. [More](https://www.cloudwego.io/docs/kitex/tutorials
 
 
 
-#### WithCodec
+### WithCodec
 
 ```go
 func WithCodec(c remote.Codec) Option
@@ -505,7 +514,7 @@ Specifie a Codec for scenarios that require custom protocol. [More](https://www.
 
 
 
-#### WithPayloadCodec
+### WithPayloadCodec
 
 ```go
 func WithPayloadCodec(c remote.PayloadCodec) Option
@@ -515,7 +524,7 @@ Specifie a PayloadCodec. [More](https://www.cloudwego.io/docs/kitex/tutorials/fr
 
 
 
-#### WithMetaHandler
+### WithMetaHandler
 
 ```go
 func WithMetaHandler(h remote.MetaHandler) Option
@@ -525,7 +534,7 @@ Add a meta handler for customizing transparent information in conjunction with t
 
 
 
-#### WithFirstMetaHandler
+### WithFirstMetaHandler
 
 ```go
 func WithFirstMetaHandler(h remote.MetaHandler) Option
@@ -535,7 +544,7 @@ Add a meta handler at the first position.
 
 
 
-#### WithTransHandlerFactory
+### WithTransHandlerFactory
 
 ```go
 func WithTransHandlerFactory(f remote.ClientTransHandlerFactory) Option 
@@ -545,7 +554,7 @@ Set transHandlerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/fr
 
 
 
-#### WithDiagnosisService
+### WithDiagnosisService
 
 ```go
 func WithDiagnosisService(ds diagnosis.Service) Option
@@ -555,7 +564,7 @@ Set diagnosis service. [More](https://www.cloudwego.io/docs/kitex/tutorials/fram
 
 
 
-#### WithDialer
+### WithDialer
 
 ```go
 func WithDialer(d remote.Dialer) Option
@@ -565,7 +574,7 @@ Set dialer.
 
 
 
-#### WithConnPool
+### WithConnPool
 
 ```go
 func WithConnPool(pool remote.ConnPool) Option
