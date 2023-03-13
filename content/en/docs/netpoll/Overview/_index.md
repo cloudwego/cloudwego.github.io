@@ -26,7 +26,7 @@ has excellent [Performance](#performance), and is more suitable for microservice
 Also [Netpoll][Netpoll] provides a number of [Features](#features),
 and it is recommended to replace [net][net] in some RPC scenarios.
 
-We developed the RPC framework [Kitex][Kitex] and HTTP framework [Hertz][Hertz] (coming soon) based on [Netpoll][Netpoll], both with industry-leading performance.
+We developed the RPC framework [Kitex][Kitex] and HTTP framework [Hertz][Hertz] based on [Netpoll][Netpoll], both with industry-leading performance.
 
 [Examples][netpoll-example] show how to build RPC client and server using [Netpoll][Netpoll].
 
