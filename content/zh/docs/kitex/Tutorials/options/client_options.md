@@ -286,6 +286,12 @@ func WithGRPCKeepaliveParams(kp grpc.ClientKeepalive) Option
 
 设置 gRPC 客户端 Keepalive 的各项参数。该设置只对传输协议使用 gRPC 的场景生效。
 
+#### WithGRPCTLSConfig
+```go
+func WithGRPCTLSConfig(tlsConfig *tls.Config) Option
+```
+
+设置 gRPC 客户端的 TLS 配置。 该设置只对传输协议使用 gRPC 的场景生效。
 
 
 ## 高级 Option
