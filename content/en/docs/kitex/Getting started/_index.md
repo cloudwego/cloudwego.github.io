@@ -47,7 +47,7 @@ Tips: If you encounter any problems during the installation, it's probably becau
 
 1. change to the `hello` directory
 
-`cd kitex-examples/hello`
+   `cd kitex-examples/hello`
 
 2. run server
 
