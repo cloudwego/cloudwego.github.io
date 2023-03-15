@@ -5,25 +5,25 @@ date: 2022-11-02
 description: >
 ---
 
-# 精简版
+## 重要变更介绍
 
-## Feature
+### 功能
 
-* **扩展 client/server 生成模板** ：新增 client/server 模板扩展功能，可以通过配置定制，适用于统一定制 suite 场景，详见[扩展 Service 代码生成模板](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/)。
-* **业务异常** ：新增业务自定义异常支持，可区分于 RPC 异常返回 error，使用详见[业务异常](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/)，背景详见[Proposal](https://github.com/cloudwego/kitex/issues/511)。
-* **请求 Profiler** ：新增功能可用于为不同的 RPC 请求提供成本分析统计的能力。
-* **Context Middleware** : 新增 Context Middleware，用于请求粒度添加 Middleware。
+1. **扩展 client/server 生成模板** ：新增 client/server 模板扩展功能，可以通过配置定制，适用于统一定制 suite 场景，详见[扩展 Service 代码生成模板](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/)。
+2. **业务异常** ：新增业务自定义异常支持，可区分于 RPC 异常返回 error，使用详见[业务异常](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/)，背景详见[Proposal](https://github.com/cloudwego/kitex/issues/511)。
+3. **请求 Profiler** ：新增功能可用于为不同的 RPC 请求提供成本分析统计的能力。
+4. **Context Middleware** : 新增 Context Middleware，用于请求粒度添加 Middleware。
 
-## Optimize
+### 优化
 
-* **Frugal 性能优化** ：支持在创建 Client/Server 阶段进行 Frugal “预编译”，减少动态编译对延迟的影响。
-* **连接池优化** ：重构连接池，完善空闲连接清理能力。
+1. **Frugal 性能优化** ：支持在创建 Client/Server 阶段进行 Frugal “预编译”，减少动态编译对延迟的影响。
+2. **连接池优化** ：重构连接池，完善空闲连接清理能力。
 
 ----
 
-# 完整版
+## 详细变更
 
-## Feature
+### Feature
 
 * [[#691](https://github.com/cloudwego/kitex/pull/691)] feat(client): 为 Client 添加上下文中间件，用于请求粒度添加中间件。
 * [[#649](https://github.com/cloudwego/kitex/pull/649)] feat(connpool): 长连接池的新实现，支持最小空闲连接数及空闲连接清理。
@@ -35,13 +35,13 @@ description: >
 * [[#657](https://github.com/cloudwego/kitex/pull/657)] feat(tool): 支持模板拓展。
 * [[#527](https://github.com/cloudwego/kitex/pull/527)] feat(profiler): 为不同的 RPC 请求提供成本分析统计的能力。
 
-## Optimize
+### Optimize
 
 * [[#690](https://github.com/cloudwego/kitex/pull/690)] optimize(meta): 移除 #503 添加 default metahandler 的错误逻辑。
 * [[#638](https://github.com/cloudwego/kitex/pull/638)] optimize(generic): httppb 泛化支持 map/list 元素类型为 struct。
 * [[#641](https://github.com/cloudwego/kitex/pull/641)] optimize(tool): 给 oneway 方法增加警告注释。
 
-## Fix
+### Fix
 
 * [[#611](https://github.com/cloudwego/kitex/pull/611)] fix(client): 在频繁重复创建 Client 场景下，修复由于 finalizer 未触发执行导致的资源泄漏。
 * [[#698](https://github.com/cloudwego/kitex/pull/698)] fix(connpool): 根据 Get 返回的连接数减少值来调整 globalIdle。
@@ -55,18 +55,18 @@ description: >
 * [[#630](https://github.com/cloudwego/kitex/pull/630)] fix(tool): 对于没有声明 “service” 的 pb 文件，去掉生成文件末尾冗余的 kitex 声明。
 * [[#627](https://github.com/cloudwego/kitex/pull/627)] fix(tool): 修复当一个 import 拥有不同的别名时 import 会丢失的问题。
 
-## Refactor
+### Refactor
 
 * [[#651](https://github.com/cloudwego/kitex/pull/651)] refactor(server): 重构 server trans handler 的 read/write 接口，返回新的 context。
 
-## Docs
+### Docs
 
 * [[#656](https://github.com/cloudwego/kitex/pull/656)] docs: 删除 CONTRIBUTING 文档中的错误信息。
 * [[#683](https://github.com/cloudwego/kitex/pull/683)] docs(kerrors): 修改了 kerrors WithCauseAndExtraMsg 方法注释。
 * [[#625](https://github.com/cloudwego/kitex/pull/625)] chore: 修正 pull request 模板的语法问题。
 * [[#623](https://github.com/cloudwego/kitex/pull/623)] chore: 修改 pull request 模板。
 
-## Test & CI
+### Test & CI
 
 * [[#646](https://github.com/cloudwego/kitex/pull/646)] test: 修复 InitRPCInfoFunc 未设置 rpcinfo 导致的单测失败。
 * [[#680](https://github.com/cloudwego/kitex/pull/680)] test: 修复重试单测的 race 问题。
