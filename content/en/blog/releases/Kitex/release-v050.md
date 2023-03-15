@@ -9,17 +9,17 @@ description: >
 
 ### **Feature**
 
-#### 1. Fallback:  Support fallback for client-side
+**1. Fallback:  Support fallback for client-side**
 
 When the RPC requests fail, users usually have some degradation measures to ensure the effective response (for example, construct the default response after the request timeout or circuit breaker). 
 Kitex's Fallback supports the processing of all error requests. At the same time, because business errors are usually returned through the Resp (BaseResp field), Kitex also supports the processing of Resp. 
 Refer to [Fallback](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/fallback/).
 
-#### 2. Kitex - gRPC: Client add TLS option configuration
+**2. Kitex - gRPC: Client add TLS option configuration**
 
 Setup via client.WithGRPCTLSConfig option.
 
-#### 3. Kitex - Tool
+**3. Kitex - Tool**
 
 - **Support customized scaffold templates**, refer to [自定义脚手架模板](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/custom_tpl/)
 - **Support specifying the directory for generating code**, refer to  [代码生成工具 -gen-path](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#-gen-path)
@@ -28,12 +28,12 @@ Setup via client.WithGRPCTLSConfig option.
 
 ### **Optimization**
 
-#### 1. Loadbalance：Use Weighted Round Robin algo as default Loadbalance policy
+**1. Loadbalance：Use Weighted Round Robin algo as default Loadbalance policy**
 
 The old version uses Weight Random to do the loadbalance by default. Random can achieve the global balance. However, in the case of a small number of server instances, there is a large probability of random continuous access to the same instance, resulting in an increase in the maximum concurrent requests of downstream nodes. Therefore, the new version adjusts the default policy to Weight Round Robin.
 Refer to [Loadbalance](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/loadbalance/)
 
-#### 2. Goroutine Resource of Connection Pool
+**2. Goroutine Resource of Connection Pool**
 
 When the old version uses a long connection, each client corresponds to a goroutine resource cleaning connection. When there are many clients, it will cause too many goroutines. The new version changes to share the goroutine to avoid the number of goroutines increasing with the number of clients.
 
