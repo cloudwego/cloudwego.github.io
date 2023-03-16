@@ -43,9 +43,14 @@ func main() {
 用户可以通过自定义初始化配置来设置访问日志的格式以及内容。
 
 ### WithFormat
-使用 `WithFormat` 自定义日志格式
+使用 `WithFormat` 自定义日志格式，默认的日志格式为 `[${time}] ${status} - ${latency} ${method} ${path}`。传入的格式方式为 `${tag}`，具体 tag 参数可以参考下面的[标签扩展](#标签扩展)。
 
-示例代码:
+
+函数签名：
+```go
+func WithFormat(s string) Option 
+```
+示例代码：
 
 ```go
 package main
@@ -73,9 +78,13 @@ func main() {
 ```
 
 ### WithTimeFormat
-使用 `WithTimeFormat` 自定义时间格式.
+使用 `WithTimeFormat` 自定义时间格式，默认时间格式为 `15:04:05`， 具体格式可以参考该[链接](https://programming.guide/go/format-parse-string-time-date-example.html)或者 go 的 [time](https://github.com/golang/go/blob/7bd22aafe41be40e2174335a3dc55431ca9548ec/src/time/format.go#L111) 包。
 
-示例代码:
+函数签名：
+```go
+func WithTimeFormat(s string) Option 
+```
+示例代码：
 
 ```go
 package main
@@ -105,9 +114,13 @@ func main() {
 ```
 
 ### WithTimeInterval
-使用 `WithTimeInterval` 配置时间戳的间隔.
+使用 `WithTimeInterval` 配置时间戳的刷新间隔，默认值为 `500ms`。
 
-示例代码:
+函数签名：
+```go
+func WithTimeInterval(t time.Duration) Option
+```
+示例代码：
 
 ```go
 package main
@@ -137,9 +150,14 @@ func main() {
 
 ```
 ### WithAccessLogFunc
-使用 `WithAccessLogFunc` 自定义日志打印函数.
+使用 `WithAccessLogFunc` 自定义日志打印函数。
 
-示例代码:
+函数签名：
+```go
+func WithAccessLogFunc(f func(ctx context.Context, format string, v ...interface{})) Option 
+```
+
+示例代码：
 ```go
 package main
 
@@ -159,6 +177,47 @@ func main() {
 	)
 	h.Use(accesslog.New(
 		accesslog.WithAccessLogFunc(hlog.CtxInfof),
+	))
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		c.JSON(200, utils.H{"msg": "pong"})
+	})
+	h.Spin()
+}
+```
+
+### WithTimeZoneLocation
+使用 `WithTimeZoneLocation` 自定义时区，默认使用当地时区。
+
+函数签名：
+```go
+func WithTimeZoneLocation(loc *time.Location) Option 
+```
+
+示例代码：
+```go
+package main
+
+import (
+	"context"
+	
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/hertz-contrib/logger/accesslog"
+)
+
+func main() {
+	h := server.Default(
+		server.WithHostPorts(":8080"),
+	)
+
+	location, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		return
+	}
+	h.Use(accesslog.New(
+		accesslog.WithTimeZoneLocation(location),
 	))
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		c.JSON(200, utils.H{"msg": "pong"})
@@ -207,7 +266,7 @@ func main() {
 | route             | 请求路由的路径                |
 
 ### 标签扩展
-支持自定义标签，前提要保证是线程安全的.
+支持自定义标签，前提要保证是线程安全的。
 
 代码示例:
 
