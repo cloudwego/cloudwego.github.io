@@ -1,19 +1,19 @@
 ---
-title: "访问日志"
+title: "access log"
 date: 2023-03-14
 weight: 10
 description: 
 
 ---
-访问日志可以收集所有 HTTP 请求的详细信息，包括时间、端口、请求方法等。Hertz 也提供了 access log 的[实现](https://github.com/hertz-contrib/logger)，这里的实现参考了 [fiber](https://github.com/gofiber/fiber/tree/master/middleware/logger)。
+This middleware is used to [hertz](https://github.com/cloudwego/hertz) that logs HTTP request/response details and inspired by [logger](https://github.com/gofiber/fiber/tree/master/middleware/logger).
 
-## 安装
+## Install
 
 ```shell
 go get github.com/hertz-contrib/logger/accesslog
 ```
 
-## 示例代码
+## Example
 
 ```go
 package main
@@ -38,19 +38,19 @@ func main() {
 	h.Spin()
 }
 ```
-## 配置
+## Config
 
-用户可以通过自定义初始化配置来设置访问日志的格式以及内容。
+Hertz provides the `accesslog.Option` function to custom the log format and content.
 
 ### WithFormat
-使用 `WithFormat` 自定义日志格式，默认的日志格式为 `[${time}] ${status} - ${latency} ${method} ${path}`。传入的格式方式为 `${tag}`，具体 tag 参数可以参考下面的[支持的标签](#支持的标签)。
+The `accesslog` provides `WithFormat` to help users set the format of the log, default is `[${time}] ${status} - ${latency} ${method} ${path}`. The format parameter consists of `${tag}`, The tag details are as follows [Supported tags](#supported-tags).
 
 
-函数签名：
+Function signatures:
 ```go
 func WithFormat(s string) Option 
 ```
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -78,13 +78,13 @@ func main() {
 ```
 
 ### WithTimeFormat
-使用 `WithTimeFormat` 自定义时间格式，默认时间格式为 `15:04:05`， 具体格式可以参考该[链接](https://programming.guide/go/format-parse-string-time-date-example.html)或者 go 的 [time](https://github.com/golang/go/blob/7bd22aafe41be40e2174335a3dc55431ca9548ec/src/time/format.go#L111) 包。
+The `accesslog` provides `WithTimeFormat` to help users set the format of the `time`, default is `15:04:05`. For specific information, please refer to the [time](https://github.com/golang/go/blob/7bd22aafe41be40e2174335a3dc55431ca9548ec/src/time/format.go#L111) package of go.
 
-函数签名：
+Function signatures:
 ```go
 func WithTimeFormat(s string) Option 
 ```
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -114,13 +114,14 @@ func main() {
 ```
 
 ### WithTimeInterval
-使用 `WithTimeInterval` 配置时间戳的刷新间隔，默认值为 `500ms`。
+The `accesslog` provides `WithTimeInterval` to help the user set the update interval of the timestamp, default is `500ms`.
 
-函数签名：
+Function signatures:
 ```go
 func WithTimeInterval(t time.Duration) Option
 ```
-示例代码：
+
+Sample Code:
 
 ```go
 package main
@@ -150,14 +151,14 @@ func main() {
 
 ```
 ### WithAccessLogFunc
-使用 `WithAccessLogFunc` 自定义日志打印函数。
+The `accesslog` provides `WithAccessLogFunc` to help users set the log printing functions.
 
-函数签名：
+Function signatures:
 ```go
 func WithAccessLogFunc(f func(ctx context.Context, format string, v ...interface{})) Option 
 ```
 
-示例代码：
+Sample Code:
 ```go
 package main
 
@@ -186,14 +187,15 @@ func main() {
 ```
 
 ### WithTimeZoneLocation
-使用 `WithTimeZoneLocation` 自定义时区，默认使用当地时区。
+The `accesslog` provides `WithTimeZoneLocation` to help users set the log printing location.
 
-函数签名：
+
+Function signatures:
 ```go
 func WithTimeZoneLocation(loc *time.Location) Option 
 ```
 
-示例代码：
+Sample Code:
 ```go
 package main
 
@@ -226,49 +228,49 @@ func main() {
 }
 ```
 
-## 日志格式
+## Log Format
 
-### 默认日志格式
+### Default Log Format
 ```
 [${time}] ${status} - ${latency} ${method} ${path}
 ```
 
-例子:
+example:
 ```
 [21:54:36] 200 - 2.906859ms GET /ping
 ```
 
-### 支持的标签
+### Supported tags
 
-| 标签				| 介绍						    |
+| tag				| Introduction						    |
 | ------------------|-------------------------------|
-| pid               | 进程 ID                       |
-| time              | 时间                          |
-| referer           | 当前请求的来源页面[地址](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Referer)      |
-| protocol          | 协议类型                      |
-| port              | 端口                          |
-| ip                | Host 中的 ip 地址             |
-| ips               | Header 中的 [X-Forwarded-For](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Forwarded-For)   |
-| host              | HTTP 中的 Host                |
-| method            | 请求方法                      |
-| path              | 请求路径                      |
-| url               | 请求 url                      |
-| ua                | User-Agent 的缩写             |
-| latency           | 处理消息的延迟                |
-| status            | HTTP 返回的状态码             |
-| resBody           | 返回内容                      |
-| reqHeaders        | 请求的 Header 内容            |
-| resHeaders        | 返回的 Header 内容            |
-| queryParams       | 请求的 query 参数             |
-| body              | 请求的消息体内容              |
-| bytesSent         | 返回的消息体长度              |
-| bytesReceived     | 请求的消息体长度              |
-| route             | 请求路由的路径                |
+| pid               | pid                       |
+| time              | time                          |
+| referer           | the [referer](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer) HTTP request header contains the absolute or partial address from which a resource has been requested      |
+| protocol          | protocol                     |
+| port              | port                          |
+| ip                | the ip info in Host             |
+| ips               | [X-Forwarded-For](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Forwarded-For)   |
+| host              | host                |
+| method            | method                      |
+| path              | path                      |
+| url               | url                      |
+| ua                | User-Agent             |
+| latency           | latency                |
+| status            | the status code of response             |
+| resBody           | response body                      |
+| reqHeaders        | request headers            |
+| resHeaders        | response headers            |
+| queryParams       | request parameters             |
+| body              | request body              |
+| bytesSent         | the length of response body              |
+| bytesReceived     | the length of request body              |
+| route             | the path of route                |
 
-### 标签扩展
-支持自定义标签，前提要保证是线程安全的。
+### Custom Tag
+We can add custom tags to the [accesslog.Tags](https://github.com/hertz-contrib/logger/blob/2de215a9fd505da955c4646f4fe9fd3c6d5bcff5/accesslog/tag.go#L79), but please note that it is not thread-safe.
 
-代码示例:
+Sample Code:
 
 ```go
 package main
