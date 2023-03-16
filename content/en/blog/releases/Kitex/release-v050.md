@@ -21,9 +21,9 @@ Setup via client.WithGRPCTLSConfig option.
 
 **3. Kitex - Tool**
 
-- **Support customized scaffold templates**, refer to [自定义脚手架模板](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/custom_tpl/)
-- **Support specifying the directory for generating code**, refer to  [代码生成工具 -gen-path](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#-gen-path)
-- **Support using protoc plugin**, refer to [代码生成工具 -protobuf-plugin](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#-protobuf-plugin)
+- **Support customized scaffold templates**, refer to [Custom Scaffold Template](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/custom_tpl/)
+- **Support specifying the directory for generating code**, refer to  [Code Generation Tool -gen-path](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#-gen-path)
+- **Support using protoc plugin**, refer to [Code Generation Tool -protobuf-plugin](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#-protobuf-plugin)
 
 
 ### **Optimization**
