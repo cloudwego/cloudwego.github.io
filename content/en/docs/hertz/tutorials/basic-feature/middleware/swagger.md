@@ -38,7 +38,7 @@ swag init
 swag init with options(All options can be viewed via `swag init -h`).
 
 ```bash
-swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagger"
+swag init --parseDependency --parseInternal --parseDepth 5 --instanceName "swagger"
 ```
 
 | Options         | Default   | Description                                                                                                                                                                      |
