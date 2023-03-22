@@ -1,6 +1,6 @@
 ---
 title: "Volo 0.3.0 版本发布"
-linkTitle: "Release 0.3.0"
+linkTitle: "Release v0.3.0"
 date: 2022-12-22
 description: >
 ---
