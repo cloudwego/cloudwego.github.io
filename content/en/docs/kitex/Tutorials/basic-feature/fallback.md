@@ -75,13 +75,14 @@ type Func func(ctx context.Context, args utils.KitexArgs, result utils.KitexResu
 
 // use demo
 client.WithFallback(
-fallback.NewFallbackPolicy(
-func(ctx context.Context, args utils.KitexArgs,
-result utils.KitexResult, err error) (fbErr error) {
-// your fallback logic...
-result.SetSuccess(yourFallbackResult)
-return
-}))
+    fallback.NewFallbackPolicy(
+        func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
+            // your fallback logic...
+            result.SetSuccess(yourFallbackResult)
+            return
+        }
+    )
+)
 ```
 
 **Use actual RPC Req/Resp as parameters** 
@@ -96,10 +97,16 @@ Note: If you need to return resp, you need to construct the actual RPC resp as t
 type RealReqRespFunc func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error)
 
 // use demo
-client.WithFallback(fallback.NewFallbackPolicy(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
-// your fallback logic...
-return fbResp, fbErr
-}))
+client.WithFallback(
+    fallback.NewFallbackPolicy(
+        fallback.UnwrapHelper(
+            func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
+                // your fallback logic...
+                return fbResp, fbErr
+            }
+        )
+    )
+)
 ```
 
 #### 2.3.2 Construct your Fallback Policy
@@ -109,20 +116,24 @@ The default constructor method for creating a Fallback Policy is NewFallbackPoli
 1. **Execute fallback based on judgment of both errors and responses**  
 
 ```Go
+// Method 1: XXXArgs/XXXResult as params
+fallback.NewFallbackPolicy(
+    func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
+        // your fallback logic...
+        result.SetSuccess(yourFallbackResult)
+        return
+    }
+)
 
-
-// Method 1：XXXArgs/XXXResult as params
-fallback.NewFallbackPolicy(func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
-   // your fallback logic...
-   result.SetSuccess(yourFallbackResult)
-   return
-})
-
-// Method 2：real rpc req/resp as params
-fallback.NewFallbackPolicy(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
-   // your fallback logic...
-   return
-})
+// Method 2: real rpc req/resp as params
+fallback.NewFallbackPolicy(
+    fallback.UnwrapHelper(
+        func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
+            // your fallback logic...
+            return
+        }
+    )
+)
 ```
 
 2. **Execute fallback only on Errors (including business errors)** 
@@ -131,17 +142,23 @@ fallback.NewFallbackPolicy(fallback.UnwrapHelper(func(ctx context.Context, req, 
 
 ```Go
 // 1: XXXArgs/XXXResult as params
-fallback.ErrorFallback(func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
-   // your fallback logic...
-   result.SetSuccess(yourFallbackResult)
-   return
-})
+fallback.ErrorFallback(
+    func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
+        // your fallback logic...
+        result.SetSuccess(yourFallbackResult)
+        return
+    }
+)
 
 // 2: real rpc req/resp as params
-fallback.ErrorFallback(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
-   // your fallback logic...
-   return
-})
+fallback.ErrorFallback(
+    fallback.UnwrapHelper(
+        func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
+            // your fallback logic...
+            return
+        }
+    )
+)
 ```
 
 3. **Execute fallback only on timeout and circuit-breaker errors**  
@@ -151,16 +168,16 @@ fallback.ErrorFallback(fallback.UnwrapHelper(func(ctx context.Context, req, resp
 ```Go
 // 1: XXXArgs/XXXResult as params
 fallback.TimeoutAndCBFallback(func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
-   // your fallback logic...
-   result.SetSuccess(yourFallbackResult)
-   return
+    // your fallback logic...
+    result.SetSuccess(yourFallbackResult)
+    return
 })
 
 // 2: real rpc req/resp as params
 fallback.TimeoutAndCBFallback(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
-   // your fallback logic...
-   return
-})
+    // your fallback logic...
+    return
+}))
 ```
 
 #### 2.3.3 How to report monitoring data based on Fallback result
@@ -198,9 +215,9 @@ xxxCli := xxxservice.NewClient("target_service", opts...)
 
 ```Go
 yourFallbackPolicy := fallback.NewFallbackPolicy(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
-   methodName := rpcinfo.GetRPCInfo(ctx).To().Method()
-   fbResp = buildFallbackRPCResp(methodName, req, resp)
-   return fbResp, nil
+    methodName := rpcinfo.GetRPCInfo(ctx).To().Method()
+    fbResp = buildFallbackRPCResp(methodName, req, resp)
+    return fbResp, nil
 })).EnableReportAsFallback()
 
 xxxCli.XXXMethod(ctx, req, callopt.WithFallback(yourFallbackPolicy))
