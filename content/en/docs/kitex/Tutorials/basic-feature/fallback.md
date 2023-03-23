@@ -8,18 +8,18 @@ description: Kitex Fallback Introduction and Usage Guide.
 
 > **Support Version: >= v0.5.0  （go.mod dependencies: [github/cloudwego/kitex](https://github.com/cloudwego/kitex))**
 >
-> Protobuf Generated code version：>=v0.5.0（The version can be found in the header of the generated code file and in the version comments.）
+> Protobuf Generated code version: >=v0.5.0（The version can be found in the header of the generated code file and in the version comments.）
 >
 > Thrift : No specific requirement for the generated code version
 
 ## 1.Kitex Fallback Functional Description
 
 
-After an RPC request fails, businesses usually take some fallback measures to ensure a valid response (such as constructing a default response when encountering timeouts or circuit breakers). Kitex's Fallback supports handling all exceptional requests. Additionally, as business exceptions usually return through Resp (BaseResp), Fallback also supports handling Resp.
+After an RPC request fails, businesses usually take some fallback measures to ensure a valid response (such as constructing a default response when encountering timeouts or circuit breakers). Kitex's Fallback supports handling all exceptional requests. Additionally, as business exceptions maybe return through Resp (BaseResp), Fallback also supports handling Resp.
 ### 1.1 Result types that support Fallback
 
 1. **RPC** **Error**: RPC request exceptions such as timeout, circuit breaker, rate limiting, and protocol errors at the RPC level.
-2. **Business Error**: Business Custom Exceptions distinct from RPC Exception,Specifically [Kitex - Business Exception Usage Guide](../bizstatuserr)
+2. **Business Error**: Business custom exception, which is distinct from RPC Exception, for the details please see [Kitex - Business Exception Usage Guide](../bizstatuserr)
 3. **Resp**: In the absence of using business exceptions, users will define error returns in Resp (BaseResp). Therefore, fallback can also be done by judging Resp.
 
 ### 1.2 Monitoring reporting
