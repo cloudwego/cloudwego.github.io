@@ -68,7 +68,7 @@ for {
    ...
 }
 ```
-Neverthless, our experiments have proved that the improvement is insignificant. Setting "msec = 0" merely reduces the delay of a single call by 50ns, which is not a considerable improvement. If we want to further reduce latency, adjustment must be made in Go runtime scheduling.
+Nevertheless, our experiments have proved that the improvement is insignificant. Setting "msec = 0" merely reduces the delay of a single call by 50ns, which is not a considerable improvement. If we want to further reduce latency, adjustment must be made in Go runtime scheduling.
 Thus, let's further explore this issue:
 In the pseudocode above, setting "msec= -1" with no triggered event, and "continue" directly will immediately execute "EpollWait" again. Since there is no triggered event while "msec = -1",  the current "goroutine" will block and be switched by "P" passively. However, it is less efficient, and we can save time if we actively switch "goroutine" for "P" before "continue". So we modified the above pseudocode as follows:
 ```go
@@ -299,7 +299,7 @@ It reveals that turning on the highest level of inlining intensity does eliminat
 
 ### Testing Results
 We built benchmarks to compare performance before and after optimization, and here are the results.
-Testing Enviornment: 
+Testing Environment: 
 Go 1.13.5 darwin/amd64 on a 2.5 GHz Intel Core i7 16GB   
 
 **Small Data Size**  

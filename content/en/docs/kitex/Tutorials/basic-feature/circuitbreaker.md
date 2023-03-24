@@ -27,7 +27,7 @@ cli, err := xxxservice.NewClient(targetService, opts)
 
 ### Introduction
 
-Kitex provides a set of CBSuite that encapsulates both service-level breaker and instance-level breaker, which are the implementions of Middleware.
+Kitex provides a set of CBSuite that encapsulates both service-level breaker and instance-level breaker, which are the implementations of Middleware.
 
 - Service-Level Breaker
 
