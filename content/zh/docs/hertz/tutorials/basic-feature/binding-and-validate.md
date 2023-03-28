@@ -62,6 +62,17 @@ path > form > query > cookie > header > json > raw_body
 ```
 > 注：如果请求的 content-type 为 `application/json`，那么会在参数绑定前做一次 json unmarshal 处理作为兜底。
 
+### 必传参数
+
+通过在 tag 中添加 `required`，可以将参数标记为必传。当绑定失败时`Bind`和`BindAndValidate`将会返回错误。当多个Tag包含`required`时，将会按照优先级绑定。如果所有tag都没有绑定上，则会返回错误。
+``` go  
+type TagRequiredReq struct {
+	// 当JSON中没有hertz字段时，默认错误为binding: expr_path=hertz, cause=missing required parameter
+	Hertz string `json:"hertz,required"`
+	Kitex string `query:"kitex,required" json:"kitex,required" `
+}
+```
+
 ## 常见用法
 
 ### 自定义 bind 和 validate 的 Error
