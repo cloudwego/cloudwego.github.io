@@ -1,5 +1,5 @@
 ---
-date: 2021-10-09
+date: 2020-05-24
 title: "字节跳动在 Go 网络库上的实践"
 linkTitle: "字节跳动在 Go 网络库上的实践"
 keywords: ["Netpoll", "Go", "epoll", "网络库", "连接多路复用", "ZeroCopy"]
@@ -123,6 +123,9 @@ RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定�
 从 cpu 占用数值上看，大包场景下 ZeroCopy 能够比非 ZeroCopy 节省一半的 cpu。
 
 ## Go 调度导致的延迟问题分享
+
+> PS: 该问题在新版本的 Netpoll 中已经修复，修复方法是通过 EpollWait Timeout 为 0 并且通过主动让出执行权，在 Goroutine 调度上做优化从而改善延迟。
+
 在我们实践过程中，发现我们新写的 Netpoll 虽然在 avg 延迟上表现胜于 Go 原生的 net 库，但是在 p99 和 max 延迟上要普遍略高于 Go 原生的 net 库，
 并且尖刺也会更加明显，如下图（Go 1.13，蓝色为 Netpoll + 多路复用，绿色为 Netpoll + 长连接，黄色为 net 库 + 长连接）：
 

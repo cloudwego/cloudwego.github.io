@@ -1,5 +1,5 @@
 ---
-date: 2021-10-09
+date: 2020-05-24
 title: "ByteDance Practices on Go Network Library"
 linkTitle: "ByteDance Practices on Go Network Library"
 keywords: ["Netpoll", "Go", "epoll", "Network Library", "Multiplexing", "ZeroCopy"]
@@ -112,6 +112,8 @@ After using "ZeroCopy send", we can see that the kernel is no longer occupied by
 In terms of CPU usage, ZeroCopy can save half the cpu of non-ZeroCopy in large package scenarios.
 
 ## Delay Caused By Go Scheduling
+
+> PS: This problem has been fixed in the new version of Netpoll. The solution is to set `EpollWait` timeout parameter to 0 and actively give up the execution right to optimize the goroutine scheduling to improve the efficiency.
 
 In our practice, we found that although our newly written "Netpoll" outperformed the "Go net" library in terms of avg delay, it was generally higher than the "Go net" library in terms of p99 and max delay, and the spikes would be more obvious, as shown in the following figure (Go 1.13, Netpoll + multiplexing in blue, Netpoll + persistent connection in green, Go net library + persistent connection in yellow):
 <br/>

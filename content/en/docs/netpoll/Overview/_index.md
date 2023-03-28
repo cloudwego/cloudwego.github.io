@@ -43,10 +43,8 @@ We developed the RPC framework [Kitex][Kitex] and HTTP framework [Hertz][Hertz] 
     - Linux, macOS (operating system)
 
 * **Future**
-    - [multisyscall][multisyscall] supports batch system calls
     - [io_uring][io_uring]
     - Shared Memory IPC
-    - Serial scheduling I/O, suitable for pure computing
     - TLS
     - UDP
 
@@ -90,5 +88,4 @@ More benchmarks reference [kitex-benchmark][kitex-benchmark] and [hertz-benchmar
 [LinkBuffer]: nocopy_linkbuffer.go
 [gopool]: https://github.com/bytedance/gopkg/tree/develop/util/gopool
 [mcache]: https://github.com/bytedance/gopkg/tree/develop/lang/mcache
-[multisyscall]: https://github.com/cloudwego/multisyscall
 [io_uring]: https://github.com/axboe/liburing
