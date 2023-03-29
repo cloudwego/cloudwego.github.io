@@ -38,6 +38,36 @@ struct Response {
 }
 ```
 
+# 安装
+
+使用 Validator 插件前前需要先进行安装，才可以使用，否则会报找不到 `thrift-gen-validator` 可执行文件错误（ `exec: "thrift-gen-validator": executable file not found in $PATH`）。
+
+如果你已经安装好 `Golang` 和 `Kitex`命令行工具，请执行如下命令安装 `thrift-gen-validator` 插件：
+
+```shell
+$ go install github.com/cloudwego/thrift-gen-validator@latest
+```
+
+执行完 `go install` 之后，会将编译后的 `thrift-gen-validator` 二进制文件安装到 `$GOPATH/bin` 下。
+
+可以执行下面的命令，验证是否安装成功。 
+
+`cd ~/` 是为了验证在任意目录下都可以愉快地调用。如果在执行该命令时出现类似上述找不到 `thrift-gen-validator` 可执行文件错误，请检查 `$GOPATH` 被正确设置到 `$PATH` 中。
+
+关于 `thrift-gen-validator` 的安装及其他更多信息，可参阅 `https://github.com/cloudwego/thrift-gen-validator`
+
+```shell
+$ cd $(go env GOPATH)/bin                     
+$ ls
+go1.20.1             goimports            hz                   thrift-gen-validator
+godotenv             golangci-lint        kitex                thriftgo
+$ cd ~ && thrift-gen-validator --help
+Usage of thrift-gen-validator:
+  -version
+        Show the version of thrift-gen-validator
+(0x1232358,0x1370f70)
+```
+
 # 使用
 
 以[快速开始](https://www.cloudwego.io/zh/docs/kitex/getting-started/)里的 Kitex Hello 项目为例，进入示例仓库的  `hello`  目录，在  `hello.thrift`  中添加注解，例如我们对  `Request`  结构体的  `message`  字段进行约束，约束长度不超过8且要以 "kitex-" 前缀开头：
