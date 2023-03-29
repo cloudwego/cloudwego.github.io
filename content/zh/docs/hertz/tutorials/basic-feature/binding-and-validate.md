@@ -64,7 +64,7 @@ path > form > query > cookie > header > json > raw_body
 
 ### 必传参数
 
-通过在 tag 中添加 `required`，可以将参数标记为必传。当绑定失败时`Bind`和`BindAndValidate`将会返回错误。当多个Tag包含`required`时，将会按照优先级绑定。如果所有tag都没有绑定上，则会返回错误。
+通过在 tag 中添加 `required`，可以将参数标记为必传。当绑定失败时 `Bind` 和 `BindAndValidate` 将会返回错误。当多个 tag 包含 `required` 时，将会按照优先级绑定。如果所有 tag 都没有绑定上，则会返回错误。
 ``` go  
 type TagRequiredReq struct {
 	// 当JSON中没有hertz字段时，默认错误为binding: expr_path=hertz, cause=missing required parameter
