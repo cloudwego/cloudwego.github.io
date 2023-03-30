@@ -38,7 +38,7 @@ struct Response {
 }
 ```
 
-# Installation
+## Installation
 Before using the Validator plugin, you should install it firstly. 
 
 Otherwise, an error message will be displayed stating that the `thrift-gen-validator` executable file cannot be found (exec: "thrift-gen-validator": executable file not found in $PATH). 

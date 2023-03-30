@@ -38,9 +38,9 @@ struct Response {
 }
 ```
 
-# 安装
+## 安装
 
-使用 Validator 插件前前需要先进行安装，才可以使用，否则会报找不到 `thrift-gen-validator` 可执行文件错误（ `exec: "thrift-gen-validator": executable file not found in $PATH`）。
+使用 Validator 插件前需要先进行安装，才可以使用，否则会报找不到 `thrift-gen-validator` 可执行文件错误（ `exec: "thrift-gen-validator": executable file not found in $PATH`）。
 
 如果你已经安装好 `Golang` 和 `Kitex`命令行工具，请执行如下命令安装 `thrift-gen-validator` 插件：
 
