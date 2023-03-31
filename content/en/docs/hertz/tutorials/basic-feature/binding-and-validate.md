@@ -70,8 +70,9 @@ You can specify a parameter as required with keyword `required` in tag. Both `Bi
 When multiple tags contain the`required` keyword, parameter with be bound in order of precedence defined above. If none of the tags bind, an error will be returned.
 ``` go  
 type TagRequiredReq struct {
-	// when field hertz is missing in json, default error message is binding: expr_path=hertz, cause=missing required parameter
+	// when field hertz is missing in JSON, a required error will be return: binding: expr_path=hertz, cause=missing required parameter
 	Hertz string `json:"hertz,required"`
+	// when field hertz is missing in both query and JSON, a required error will be return: binding: expr_path=hertz, cause=missing required parameter
 	Kitex string `query:"kitex,required" json:"kitex,required" `
 }
 ```
