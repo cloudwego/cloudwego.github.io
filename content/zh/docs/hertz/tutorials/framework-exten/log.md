@@ -114,7 +114,7 @@ hlog.LevelTrace; hlog.LevelDebug; hlog.LevelInfo; hlog.LevelNotice; hlog.LevelWa
 func (l *Logger)(level hlog.Level, kvs ...interface{})
 ```
 
-事例代码：
+示例代码：
 ```go
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 
@@ -129,7 +129,7 @@ logger.Log(hlog.LevelFatal,"msg")
 func (l *Logger)(level hlog.Level, format string, kvs ...interface{})
 ```
 
-事例代码：
+示例代码：
 ```go
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 
@@ -144,7 +144,7 @@ logger.Logf(hlog.LevelFatal,"The level is Fatal,message is:%s","msg")
 func (l *Logger)(level hlog.Level, ctx context.Context, format string, kvs ...interface{})
 ```
 
-事例代码：
+示例代码：
 ```go
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 
@@ -154,7 +154,7 @@ logger.Logf(hlog.LevelFatal,ctx,"The level is Fatal,message is:%s","msg")
 
 只需要输入日志信息，省去了日志等级
 
-事例代码：
+示例代码：
 ```go
 func (l *Logger) Trace(v ...interface{}) {
 	l.Log(hlog.LevelTrace, v...)
@@ -197,7 +197,7 @@ func (l *Logger) Fatal(v ...interface{}) {
 func (l *Logger)(level hlog.Level)
 ```
 
-事例代码：
+示例代码：
 ```go
 logger.SetLevel(hlog.LevelDebug)
 ```
@@ -210,7 +210,7 @@ logger.SetLevel(hlog.LevelDebug)
 func (l *Logger)()
 ```
 
-事例代码：
+示例代码：
 ```go
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 defer logger.Sync()
@@ -223,7 +223,7 @@ SetOutput为Logger提供了一个输出功能,重定向 Logger 提供的默认 l
 ```go
 func (l *Logger)(writer io.Writer)
 ```
-事例代码：
+示例代码：
 ```go
 f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 if err != nil {
@@ -283,7 +283,7 @@ NewLogger 用来创建一个logger
 func (opts ...Option) *Logger
 ```
 
-事例代码：
+示例代码：
 
 ```go
 logger := hertzlogrus.NewLogger(hertzlogrus.WithLogger(logrus.New()))
@@ -296,7 +296,7 @@ Logger函数返回一个Logger里的logrus.Logger
 func (l *Logger) Logger() *logrus.Logger
 ```
 
-事例代码：
+示例代码：
 ```go
 logger.Logger().Info("log from origin logrus")
 ```
@@ -312,7 +312,7 @@ func (l *Logger)(format string, v ...interface{})
 func (l *Logger)(ctx context.Context, format string, v ...interface{}) 
 ```
 
-事例代码：
+示例代码：
 ```go
 ctx:=context.Background()
 logger.Logger().Info("log from origin logrus")
@@ -365,7 +365,7 @@ l.l.Fatal(v...)
 func (l *Logger) SetLevel(level hlog.Level) 
 ```
 
-事例代码：
+示例代码：
 ```go
 hlog.SetLogger(logger)
 hlog.SetLevel(hlog.LevelError)
@@ -378,7 +378,7 @@ SetOutput为Logger提供了一个输出功能,重定向 Logger 提供的默认 l
 func (l *Logger)(writer io.Writer) 
 ```
 
-事例代码：
+示例代码：
 ```go
 buf := new(bytes.Buffer)
 
@@ -453,7 +453,7 @@ New返回一个新的Logger
 func (options ...Opt) *Logger
 ```
 
-事例代码：
+示例代码：
 ```go
 hlog.SetLogger(hertzZerolog.New())
 ```
@@ -465,7 +465,7 @@ From用一个已存在的Logger返回一个新的Logger
 func(log zerolog.Logger, options ...Opt) *Logger
 ```
 
-事例代码：
+示例代码：
 ```go
 zl := zerolog.New(b).With().Str("key", "test").Logger()
 l := From(zl)
@@ -480,7 +480,7 @@ GetLogger返回一个默认的logger
 func GetLogger() (Logger, error)
 ```
 
-事例代码：
+示例代码：
 ```go
 logger,err:=GetLogger()
 if err!=nil{
@@ -496,7 +496,7 @@ if err!=nil{
 func(log zerolog.Logger, options []Opt) *Logger
 ```
 
-事例代码：
+示例代码：
 ```go
 l:=NewLogger()
 ```
@@ -508,7 +508,7 @@ SetLevel为logger设定了一个日志等级
 func (l *Logger) SetLevel(level hlog.Level)
 ```
 
-事例代码：
+示例代码：
 ```go
 l := New()
 
@@ -522,7 +522,7 @@ SetOutput为Logger提供了一个输出功能,重定向 Logger 提供的默认 l
 func (l *Logger) (writer io.Writer) 
 ```
 
-事例代码：
+示例代码：
 ```go
 l := New()
 f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -540,7 +540,7 @@ WithContext返回一个带context的logger
 func (l *Logger)(ctx context.Context) context.Context
 ```
 
-事例代码：
+示例代码：
 ```go
 ctx := context.Background()
 l := New()
@@ -555,7 +555,7 @@ WithField给logger添加了一个字段
 func (l *Logger)(key string, value interface{}) Logger
 ```
 
-事例代码：
+示例代码：
 ```go
 b := &bytes.Buffer{}
 l := New()
@@ -570,7 +570,7 @@ Unwrap 返回下层的zerolog logger
 func (l *Logger) zerolog.Logger 
 ```
 
-事例代码：
+示例代码：
 ```go
 l := New()
 
@@ -585,7 +585,7 @@ Log使用一个具有特定日志等级的zerolog来记录日志
 func (l *Logger)(level hlog.Level, kvs ...interface{})
 ```
 
-事例代码：
+示例代码：
 ```go
 l := New()
 
@@ -599,7 +599,7 @@ Logf使用一个具有特定日志等级和格式的zerolog来记录日志
 func (l *Logger)(level hlog.Level, format string, kvs ...interface{})
 ```
 
-事例代码：
+示例代码：
 ```go
 l := New()
 
@@ -615,7 +615,7 @@ CtxLogf使用一个具有特定日志等级,格式和上下文的zerolog来记�
 func (l *Logger) CtxLogf(level hlog.Level, ctx context.Context, format string, kvs ...interface{})
 ```
 
-事例代码：
+示例代码：
 ```go
 ctx:=context.Background()
 l := New()
@@ -632,7 +632,7 @@ func (l *Logger)(format string, v ...interface{})
 func (l *Logger)(ctx context.Context, format string, v ...interface{})
 ```
 
-事例代码：
+示例代码：
 ```go
 ctx:=context.Background()
 l := New()
