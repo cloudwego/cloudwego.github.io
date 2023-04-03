@@ -7,7 +7,7 @@ description: >
 
 
 
-# 概述
+## 概述
 
 Validator 是用于支持结构体校验能力的 thriftgo 插件。
 
@@ -68,7 +68,7 @@ Usage of thrift-gen-validator:
 (0x1232358,0x1370f70)
 ```
 
-# 使用
+## 使用
 
 以[快速开始](https://www.cloudwego.io/zh/docs/kitex/getting-started/)里的 Kitex Hello 项目为例，进入示例仓库的  `hello`  目录，在  `hello.thrift`  中添加注解，例如我们对  `Request`  结构体的  `message`  字段进行约束，约束长度不超过8且要以 "kitex-" 前缀开头：
 
@@ -131,11 +131,11 @@ func (p *Request) IsValid() error {
 
 ```
 
-# 支持的校验能力
+## 支持的校验能力
 
 校验顺序以定义顺序为准， 'in'  和 'not_in' 这类可以定义多次的，以第一次出现的顺序为准。
 
-## 数字类型
+### 数字类型
 
 包括 i8，i16，i32，i64，double。
 
@@ -152,7 +152,7 @@ struct NumericDemo {
 }
 ```
 
-## string/binary
+### string/binary
 
 1. const，必须为指定值。
 2. min_size，max_size，最大长度，最小长度。
@@ -172,7 +172,7 @@ struct StringDemo {
 }
 ```
 
-## bool
+### bool
 
 1. const，必须为指定值。
 2. not_nil，该字段不能为空。（仅当字段为 optional 时合法）
@@ -184,7 +184,7 @@ struct BoolDemo {
 }
 ```
 
-## enum
+### enum
 
 1. const，必须为指定值。
 2. defined_only，必须在 enum 中定义的值中。
@@ -202,7 +202,7 @@ struct EnumDemo {
 }
 ```
 
-## set/list
+### set/list
 
 1. min_size，max_size，最小长度，最大长度。
 2. elem，元素约束。
@@ -214,7 +214,7 @@ struct SetListDemo {
 }
 ```
 
-## map
+### map
 
 1. min_size，max_size，最小键值对数，最大键值对数。
 2. no_sparse，value 为指针时，不能为 nil 。
@@ -228,7 +228,7 @@ struct MapDemo {
 }
 ```
 
-## struct/union/exception
+### struct/union/exception
 
 1. skip，跳过该 struct/union/exception 的递归校验。（作为单独字段时默认为 false，作为元素时默认为 true ）
 2. not_nil，该字段不能为空。
@@ -241,7 +241,7 @@ struct OuterRequest {
 }
 ```
 
-## 变量引用
+### 变量引用
 
 前置符 `$` 表示某个变量的引用，可用于**跨字段校验**：
 
@@ -256,7 +256,7 @@ struct Example {
 }
 ```
 
-## 工具函数
+### 工具函数
 
 前置符 `@` 表示内置的工具函数来计算校验值，目前支持的工具函数：
 

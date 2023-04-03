@@ -7,7 +7,7 @@ description: >
 
 
 
-# Overview
+## Overview
 
 Validator is a thrift plugin that supports struct validation.
 
@@ -72,7 +72,7 @@ Usage of thrift-gen-validator:
 ```
 
 
-# Usage
+## Usage
 
 Take the project "Kitex Hello" in [Getting Started](https://www.cloudwego.io/docs/kitex/getting-started/) as an example, add annotations in`hello.thrift`. For example, the code bellow requires the length and prefix for `Request.message`:
 
@@ -135,11 +135,11 @@ So just simply call `IsValid()` to verify the struct：
 
 ```
 
-# Supported Validators
+## Supported Validators
 
 The verification order is subject to the definition order,'in' and 'not_in' can be defined multiple times, whichever occurs first.
 
-## number
+### number
 
 Including i8, i16, i32, i64, double.
 
@@ -156,7 +156,7 @@ struct NumericDemo {
 }
 ```
 
-## string/binary
+### string/binary
 
 1. const, must be the specified value.
 2. min_size, max_size.
@@ -176,7 +176,7 @@ struct StringDemo {
 }
 ```
 
-## bool
+### bool
 
 1. const, must be the specified value.
 2. not_nil, the field cannot be empty (only valid if the field is optional).
@@ -188,7 +188,7 @@ struct BoolDemo {
 }
 ```
 
-## enum
+### enum
 
 1. const, must be the specified value.
 2. defined_only, must be in the value defined in the enum.
@@ -206,7 +206,7 @@ struct EnumDemo {
 }
 ```
 
-## set/list
+### set/list
 
 1. min_size, max_size.
 2. elem, element constraints.
@@ -218,7 +218,7 @@ struct SetListDemo {
 }
 ```
 
-## map
+### map
 
 1. min_size, max_size.
 2. no_sparse, means it can't be nil when value is a pointer.
@@ -232,7 +232,7 @@ struct MapDemo {
 }
 ```
 
-## struct/union/exception
+### struct/union/exception
 
 1. skip, means skipping recursive checks for struct/union/exception. (Defaults to false when used as a separate field, true by default when used as an element).
 2. not_nil, the field cannot be empty (only valid if the field is optional).
@@ -245,7 +245,7 @@ struct OuterRequest {
 }
 ```
 
-## variable reference
+### variable reference
 
 The prefix '$' represents a reference to a variable, which can be used for **cross-field verification**:
 
@@ -260,7 +260,7 @@ struct Example {
 }
 ```
 
-## utility function
+### utility function
 
 The prefix ‘@’ indicates the built-in tool function to calculate the check value. Currently supported tool functions:
 
