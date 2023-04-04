@@ -11,7 +11,7 @@ description: >
 
 ## Installation
 
-> At present, the Kitex command-line tool does not support the Windows environment. It is expected to be supported in version 0.5.1.
+> At present, the Kitex command-line tool does not support the Windows environment.
 
 Kitex code generation relies on thriftgo and protoc compilers. You need to install the corresponding compilers first: [thriftgo](https://github.com/cloudwego/thriftgo) or [protoc](https://github.com/protocolbuffers/protobuf/releases).
 
@@ -21,9 +21,9 @@ After installing the aforementioned tools, you can install the Kitex command-lin
 go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 ```
 
-Alternatively, you can download the Kitex source code and navigate to the tool/cmd/kitex directory. From there, you can execute go install to install the Kitex command-line tool:
+Alternatively, you can download the Kitex source code and navigate to the `tool/cmd/kitex` directory. From there, you can execute `go install` to install the Kitex command-line tool:
 
-After installation, you can check the version of the tool by executing kitex -version or view the usage help by executing kitex -help.
+After installation, you can check the version of the tool by executing `kitex -version` or view the usage help by executing `kitex -help`.
 
 ## Generate Code
 
