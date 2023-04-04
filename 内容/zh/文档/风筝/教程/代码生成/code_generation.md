@@ -13,7 +13,7 @@ description: >
 
 ## 安装
 
-> 目前 Kitex 命令行工具暂不支持 Windows 环境，预计在 v0.5.1 支持
+> 目前 Kitex 命令行工具暂不支持 Windows 环境
 
 Kitex 代码生成依赖于 thriftgo 和 protoc，需要先安装相应的编译器：[thriftgo](https://github.com/cloudwego/thriftgo) 或 [protoc](https://github.com/protocolbuffers/protobuf/releases)。
 
