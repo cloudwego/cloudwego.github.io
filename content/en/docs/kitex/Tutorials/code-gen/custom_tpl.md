@@ -7,8 +7,6 @@ description: >
 
 Kitex provides the ability to customize templates, if the default templates can not meet your needs, you can use the function of this custom template provided by Kitex. Now, it supports rendering single file and circular rendering according to methodInfo.
 
-
-
 # How to Use
 
 1. The data used by the template is PackageInfo and we assume that this section contains all the metadata(e.g. methodInfo ...). You only need to pass the template file, and the data in the template is PackageInfo data.
