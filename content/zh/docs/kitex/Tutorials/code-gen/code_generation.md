@@ -97,7 +97,7 @@ kitex -service mydemoservice demo.thrift
 生成结果如下：
 
 ```
-├── build.sh			// 快速构建服务的脚步
+├── build.sh			// 快速构建服务的脚本
 ├── handler.go		    // 为 server 生成 handler 脚手架
 ├── kitex_info.yaml  	// 记录元信息，用于与 cwgo 工具的集成
 ├── main.go		 	 // 快速启动 server 的主函数
