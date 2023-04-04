@@ -39,9 +39,10 @@ struct Response {
 ```
 
 ## Installation
-Before using the Validator plugin, you should install it firstly. 
 
-Otherwise, an error message will be displayed stating that the `thrift-gen-validator` executable file cannot be found (exec: "thrift-gen-validator": executable file not found in $PATH). 
+Before using the Validator plugin, you should install it first. 
+
+Otherwise, an error message will be displayed stating that the `thrift-gen-validator` executable file cannot be found (`exec: "thrift-gen-validator": executable file not found in $PATH`). 
 
 If you have already installed Golang and Kitex command-line tools, please run the following command to install the `thrift-gen-validator` plugin:
 
@@ -49,28 +50,27 @@ If you have already installed Golang and Kitex command-line tools, please run th
 $ go install github.com/cloudwego/thrift-gen-validator@latest
 ```
 
-After executing go install, the compiled thrift-gen-validator binary file will be installed under `$GOPATH/bin`. 
+After executing `go install`, the compiled `thrift-gen-validator` binary file will be installed under `$GOPATH/bin`. 
 
-You can run the following command to verify that the installation was successful. 
-
-`cd ~/` is used to verify that it can be called from any directory.
-
-If an error message similar to the one above appears when executing this command, please check that $GOPATH has been correctly set to $PATH.
-
-For more information on installing and using thrift-gen-validator, please refer to https://github.com/cloudwego/thrift-gen-validator.
+You can run the following command to verify that the installation was successful.
 
 ```shell
 $ cd $(go env GOPATH)/bin                     
 $ ls
 go1.20.1             goimports            hz                   thrift-gen-validator
 godotenv             golangci-lint        kitex                thriftgo
-$ cd ~ && thrift-gen-validator --help
+$ cd ~/ && thrift-gen-validator --help
 Usage of thrift-gen-validator:
   -version
         Show the version of thrift-gen-validator
 (0x1232358,0x1370f70)
 ```
 
+`cd ~/` command is used to verify that `thrift-gen-validator` can be called from any directory.
+
+If an error message similar to the one above appears when executing this command, please check whether `$GOPATH` has been correctly set to `$PATH`.
+
+For more information on installing and using `thrift-gen-validator`, please refer to [thirft-gen-validator](https://github.com/cloudwego/thrift-gen-validator).
 
 ## Usage
 

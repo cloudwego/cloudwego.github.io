@@ -42,7 +42,7 @@ struct Response {
 
 使用 Validator 插件前需要先进行安装，才可以使用，否则会报找不到 `thrift-gen-validator` 可执行文件错误（ `exec: "thrift-gen-validator": executable file not found in $PATH`）。
 
-如果你已经安装好 `Golang` 和 `Kitex`命令行工具，请执行如下命令安装 `thrift-gen-validator` 插件：
+如果你已经安装好 Golang 和 Kitex 命令行工具，请执行如下命令安装 `thrift-gen-validator` 插件：
 
 ```shell
 $ go install github.com/cloudwego/thrift-gen-validator@latest
@@ -52,21 +52,21 @@ $ go install github.com/cloudwego/thrift-gen-validator@latest
 
 可以执行下面的命令，验证是否安装成功。 
 
-`cd ~/` 是为了验证在任意目录下都可以愉快地调用。如果在执行该命令时出现类似上述找不到 `thrift-gen-validator` 可执行文件错误，请检查 `$GOPATH` 被正确设置到 `$PATH` 中。
-
-关于 `thrift-gen-validator` 的安装及其他更多信息，可参阅 `https://github.com/cloudwego/thrift-gen-validator`
-
 ```shell
 $ cd $(go env GOPATH)/bin                     
 $ ls
 go1.20.1             goimports            hz                   thrift-gen-validator
 godotenv             golangci-lint        kitex                thriftgo
-$ cd ~ && thrift-gen-validator --help
+$ cd ~/ && thrift-gen-validator --help
 Usage of thrift-gen-validator:
   -version
         Show the version of thrift-gen-validator
 (0x1232358,0x1370f70)
 ```
+
+`cd ~/` 是为了验证在任意目录下都可以愉快地调用 `thrift-gen-validator`。如果在执行该命令时出现类似上述找不到 `thrift-gen-validator` 可执行文件错误，请检查 `$GOPATH` 是否被正确设置到 `$PATH` 中。
+
+关于 `thrift-gen-validator` 的安装及其他更多信息，可参阅 [thrift-gen-validator](https://github.com/cloudwego/thrift-gen-validator)
 
 ## 使用
 
@@ -78,7 +78,7 @@ struct Request {
 }
 ```
 
-在生成Kitex代码时，加上  `--thrift-plugin validator`  参数，即可生成 validator 文件。
+在生成 Kitex 代码时，加上  `--thrift-plugin validator`  参数，即可生成 validator 文件。
 
 ```
 kitex --thrift-plugin validator -service a.b.c hello.thrift
