@@ -32,7 +32,7 @@ Hertz provides SetLogger interface to allow injection of your own logger. Beside
 
 ## Supported Log Extension
 
-The log extensions currently supported in the open source version of Hertz are stored in the hertz-logger. You are welcomed to join us in contributing and maintaining for this project.
+The log extensions currently supported in the open source version of Hertz are stored in the [hertz-logger](https://github.com/hertz-contrib/logger). You are welcomed to join us in contributing and maintaining for this project.
 
 ## Zap
 
