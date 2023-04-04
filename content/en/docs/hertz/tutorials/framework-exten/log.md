@@ -81,8 +81,8 @@ func main() {
 var _ hlog.FullLogger = (*Logger)(nil)
 
 type Logger struct {
-l      *zap.SugaredLogger
-config *config
+    l      *zap.SugaredLogger
+    config *config
 }
 
 ```
@@ -99,7 +99,6 @@ func(opts ...Option) *Logger
 sample code:
 ```go
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-
 hlog.SetLogger(logger)
 ```
 ### Log
@@ -118,7 +117,6 @@ func (l *Logger)(level hlog.Level, kvs ...interface{})
 sample code:
 ```go
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-
 logger.Log(hlog.LevelFatal,"msg")
 ```
 ### Logf
@@ -133,7 +131,6 @@ func (l *Logger)(level hlog.Level, format string, kvs ...interface{})
 sample code:
 ```go
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-
 logger.Logf(hlog.LevelFatal,"The level is Fatal,message is:%s","msg")
 ```
 ### CtxLogf
@@ -148,7 +145,6 @@ func (l *Logger)(level hlog.Level, ctx context.Context, format string, kvs ...in
 sample code:
 ```go
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-
 logger.Logf(hlog.LevelFatal,ctx,"The level is Fatal,message is:%s","msg")
 ```
 ### A function wrapped according to the log level
@@ -213,7 +209,7 @@ sample code:
 ```go
 f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 if err != nil {
-panic(err)
+	panic(err)
 }
 defer f.Close()
 logger := NewLogger()
@@ -236,7 +232,6 @@ package main
 
 import (
     "context"
-
     "github.com/cloudwego/hertz/pkg/common/hlog"
     hertzlogrus "github.com/hertz-contrib/logger/logrus"
 )
@@ -256,7 +251,7 @@ var _ hlog.FullLogger = (*Logger)(nil)
 
 // Logger logrus impl
 type Logger struct {
-l *logrus.Logger
+    l *logrus.Logger
 }
 
 ```
@@ -304,7 +299,6 @@ ctx:=context.Background()
 logger.Logger().Info("log from origin logrus")
 logger.Logger().Infof("the Info message is:%s","log from origin logrus")
 logger.Logger().CtxInfof(ctx,"the Info message is:%s","log from origin logrus")
-
 ```
 
 For other functions such as Debugf, CtxDebugf, etc., see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
@@ -315,7 +309,7 @@ Note: The set level must be the level mentioned above, such as: hlog.LevelTrace;
 
 Function Signature:
 ```go
-func (l *Logger) SetLevel(level hlog.Level) 
+func (l *Logger)(level hlog.Level) 
 ```
 
 sample code:
@@ -334,13 +328,10 @@ func (l *Logger)(writer io.Writer)
 sample code:
 ```go
 buf := new(bytes.Buffer)
-
 logger := NewLogger()
-
 // output to buffer
 logger.SetOutput(buf)
 ```
-
 
 For more usage examples see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
 
@@ -422,7 +413,6 @@ sample code:
 ```go
 zl := zerolog.New(b).With().Str("key", "test").Logger()
 l := From(zl)
-
 l.Info("foo")
 ```
 ### GetLogger
@@ -430,7 +420,7 @@ GetLogger returns a default logger
 
 Function Signature:
 ```go
-func GetLogger() (Logger, error)
+func ()(Logger, error)
 ```
 
 sample code:
@@ -439,7 +429,6 @@ logger,err:=GetLogger()
 if err!=nil{
 	printf("get logger failed")
 }
-
 ```
 ### NewLogger
 Create a new logger based on zerolog.logger
@@ -458,13 +447,12 @@ SetLevel sets a log level for logger
 
 Function Signature:
 ```go
-func (l *Logger) SetLevel(level hlog.Level)
+func (l *Logger)(level hlog.Level)
 ```
 
 sample code:
 ```go
 l := New()
-
 l.SetLevel(hlog.LevelDebug)
 ```
 ### SetOutput
@@ -472,7 +460,7 @@ SetOutput provides an output function for Logger, redirecting the output of the 
 
 Function Signature:
 ```go
-func (l *Logger) (writer io.Writer) 
+func (l *Logger)(writer io.Writer) 
 ```
 
 sample code:
@@ -480,7 +468,7 @@ sample code:
 l := New()
 f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 if err != nil {
-panic(err)
+    panic(err)
 }
 defer f.Close()
 l.SetOutput(f)
@@ -498,7 +486,6 @@ sample code:
 ctx := context.Background()
 l := New()
 c := l.WithContext(ctx)
-
 ```
 ### WithField
 WithField adds a field to logger
@@ -526,9 +513,7 @@ func (l *Logger) zerolog.Logger
 sample code:
 ```go
 l := New()
-
 logger := l.Unwrap()
-
 ```
 ### Log
 Log uses a zerolog with a specific log level to log
@@ -541,7 +526,6 @@ func (l *Logger)(level hlog.Level, kvs ...interface{})
 sample code:
 ```go
 l := New()
-
 l.Log(hlog.LevelDebug,"msg")
 ```
 ### Logf
@@ -555,7 +539,6 @@ func (l *Logger)(level hlog.Level, format string, kvs ...interface{})
 sample code:
 ```go
 l := New()
-
 l.Logf(hlog.LevelDebug,"the message is %s","msg")
 ```
 ### CtxLogf
@@ -565,14 +548,13 @@ DefaultContextLogger will be used if there is no associated logger, unless Defau
 
 Function Signature:
 ```go
-func (l *Logger) CtxLogf(level hlog.Level, ctx context.Context, format string, kvs ...interface{})
+func (l *Logger)(level hlog.Level, ctx context.Context, format string, kvs ...interface{})
 ```
 
 sample code:
 ```go
 ctx:=context.Background()
 l := New()
-
 l.Logf(hlog.LevelDebug,ctx,"the message is %s","msg")
 ```
 ### A function wrapped according to the log level

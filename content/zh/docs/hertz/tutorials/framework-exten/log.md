@@ -82,10 +82,9 @@ func main() {
 var _ hlog.FullLogger = (*Logger)(nil)
 
 type Logger struct {
-l      *zap.SugaredLogger
-config *config
+    l      *zap.SugaredLogger
+    config *config
 }
-
 ```
 ### NewLogger
 
@@ -100,7 +99,6 @@ func(opts ...Option) *Logger
 事例代码：
 ```go
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-
 hlog.SetLogger(logger)
 ```
 ### Log
@@ -211,7 +209,7 @@ func (l *Logger)(writer io.Writer)
 ```go
 f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 if err != nil {
-panic(err)
+    panic(err)
 }
 defer f.Close()
 logger := NewLogger()
@@ -234,7 +232,6 @@ package main
 
 import (
     "context"
-
     "github.com/cloudwego/hertz/pkg/common/hlog"
     hertzlogrus "github.com/hertz-contrib/logger/logrus"
 )
@@ -254,7 +251,7 @@ var _ hlog.FullLogger = (*Logger)(nil)
 
 // Logger logrus impl
 type Logger struct {
-l *logrus.Logger
+    l *logrus.Logger
 }
 
 ```
@@ -302,7 +299,6 @@ ctx:=context.Background()
 logger.Logger().Info("log from origin logrus")
 logger.Logger().Infof("the Info message is:%s","log from origin logrus")
 logger.Logger().CtxInfof(ctx,"the Info message is:%s","log from origin logrus")
-
 ```
 其他的诸如Debugf,CtxDebugf等函数详见 [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
 ### SetLevel
@@ -312,7 +308,7 @@ logger.Logger().CtxInfof(ctx,"the Info message is:%s","log from origin logrus")
 
 函数签名：
 ```go
-func (l *Logger) SetLevel(level hlog.Level) 
+func (l *Logger)(level hlog.Level) 
 ```
 
 示例代码：
@@ -331,9 +327,7 @@ func (l *Logger)(writer io.Writer)
 示例代码：
 ```go
 buf := new(bytes.Buffer)
-
 logger := NewLogger()
-
 // output to buffer
 logger.SetOutput(buf)
 ```
@@ -419,7 +413,6 @@ func(log zerolog.Logger, options ...Opt) *Logger
 ```go
 zl := zerolog.New(b).With().Str("key", "test").Logger()
 l := From(zl)
-
 l.Info("foo")
 ```
 ### GetLogger
@@ -427,7 +420,7 @@ GetLogger返回一个默认的logger
 
 函数签名：
 ```go
-func GetLogger() (Logger, error)
+func () (Logger, error)
 ```
 
 示例代码：
@@ -436,7 +429,6 @@ logger,err:=GetLogger()
 if err!=nil{
 	printf("get logger failed")
 }
-
 ```
 ### NewLogger
 根据zerolog.logger创建一个新的logger
@@ -455,13 +447,12 @@ SetLevel为logger设定了一个日志等级
 
 函数签名：
 ```go
-func (l *Logger) SetLevel(level hlog.Level)
+func (l *Logger)(level hlog.Level)
 ```
 
 示例代码：
 ```go
 l := New()
-
 l.SetLevel(hlog.LevelDebug)
 ```
 ### SetOutput
@@ -469,7 +460,7 @@ SetOutput为Logger提供了一个输出功能,重定向 Logger 提供的默认 l
 
 函数签名：
 ```go
-func (l *Logger) (writer io.Writer) 
+func (l *Logger)(writer io.Writer) 
 ```
 
 示例代码：
@@ -477,7 +468,7 @@ func (l *Logger) (writer io.Writer)
 l := New()
 f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 if err != nil {
-panic(err)
+	panic(err)
 }
 defer f.Close()
 l.SetOutput(f)
@@ -495,7 +486,6 @@ func (l *Logger)(ctx context.Context) context.Context
 ctx := context.Background()
 l := New()
 c := l.WithContext(ctx)
-
 ```
 ### WithField
 WithField给logger添加了一个字段
@@ -523,9 +513,7 @@ func (l *Logger) zerolog.Logger
 示例代码：
 ```go
 l := New()
-
 logger := l.Unwrap()
-
 ```
 ### Log
 Log使用一个具有特定日志等级的zerolog来记录日志
@@ -538,7 +526,6 @@ func (l *Logger)(level hlog.Level, kvs ...interface{})
 示例代码：
 ```go
 l := New()
-
 l.Log(hlog.LevelDebug,"msg")
 ```
 ### Logf
@@ -552,7 +539,6 @@ func (l *Logger)(level hlog.Level, format string, kvs ...interface{})
 示例代码：
 ```go
 l := New()
-
 l.Logf(hlog.LevelDebug,"the message is %s","msg")
 ```
 ### CtxLogf
@@ -562,14 +548,13 @@ CtxLogf使用一个具有特定日志等级,格式和上下文的zerolog来记�
 
 函数签名：
 ```go
-func (l *Logger) CtxLogf(level hlog.Level, ctx context.Context, format string, kvs ...interface{})
+func (l *Logger)(level hlog.Level, ctx context.Context, format string, kvs ...interface{})
 ```
 
 示例代码：
 ```go
 ctx:=context.Background()
 l := New()
-
 l.Logf(hlog.LevelDebug,ctx,"the message is %s","msg")
 ```
 ### 封装好日志等级的函数
