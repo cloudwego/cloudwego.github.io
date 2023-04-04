@@ -13,7 +13,7 @@ Kitex 支持了自定义模板功能，如果默认的模板不能够满足大�
 1.  模板渲染只能渲染单个文件内容，如果涉及到按照 methods 分文件渲染的话，需要在代码中控制。
 1.  模板文件通过 yaml 文件夹传递，通过 `--template-dir` 命令行参数指定。因为所有模板写到一个文件中会导致该文件巨大，所以改为指定文件夹。
 1.  文件夹内的 `extensions.yaml` 为特定文件，该文件的内容为[扩展 Service 代码](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/)的配置文件。如果该文件存在的话，则不用再传递 `template-extension` 参数。
-1.  更新时，目前支持覆盖、跳过、根据 methods 增加文件(loop_method)、在文件中追加四种。增加文件指使用 methods 循环渲染时，如果用户新增加了 methods，那就会新增加文件。更新行为的类型有三种：`skip` / `cover` / `append`。`append` 在开启了`loop_method`后为新增加文件；在不开启`loop_method`时为追加到文件末尾，通过指定更新时的`key`判断是否需要追加。
+1.  更新时，目前支持覆盖、跳过、根据 methods 增加文件(loop_method 为 true)、在文件末尾追加四种方式(loop_method 为 false)，通过 loop_method 和 update_behavior 中的 key 字段共同确定。update_behavior 中的 key 字段值有三种：`skip` / `cover` / `append`。其中`append` 在开启了`loop_method`后为新增加文件；在不开启`loop_method`时为追加到文件末尾，通过指定更新时的`key`判断是否需要追加。
 1.  Kitex 代码生成分成两部分，kitex_gen 和 mainPkg(剩下的 main.go、handler.go )等等，kitex_gen 无论采用何种生成都不会改变；mainPkg 和 custom layout 只能二选一，如果制定了 custom layout 就不会再生成 mainPkg。
 
 ## 使用场景
