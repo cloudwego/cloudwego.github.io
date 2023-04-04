@@ -7,7 +7,7 @@ description: >
 
 Kitex provides the ability to customize templates, if the default templates can not meet your needs, you can use the function of this custom template provided by Kitex. Now, it supports rendering single file and circular rendering according to methodInfo.
 
-# How to Use
+## How to Use
 
 1. The data used by the template is PackageInfo and we assume that this section contains all the metadata(e.g. methodInfo ...). You only need to pass the template file, and the data in the template is PackageInfo data.
 
@@ -23,13 +23,13 @@ Kitex provides the ability to customize templates, if the default templates can 
 
    
 
-# Usage Scenarios
+## Usage Scenarios
 
 The default templates can not meet your needs. (e.g. want to generate 'MVC Layout',uniform error handling ...)
 
 
 
-# Practice
+## Practice
 
 ```console
 kitex -module ${module_name} -template-dir ${template dir_path} idl/hello.thrift
@@ -37,7 +37,7 @@ kitex -module ${module_name} -template-dir ${template dir_path} idl/hello.thrift
 
 
 
-# YAML File
+## YAML File
 
 ```yaml
 path: /a/main.go # specifies the path and name to the file. It will create the 'a' folder and 'main.go' file in the 'a' folder
@@ -62,9 +62,9 @@ https://github.com/cloudwego/cwgo/tree/main/tpl/kitex
 
 
 
-# Appendix
+## Appendix
 
-## PackageInfo struct and some commonly used contents
+### PackageInfo struct and some commonly used contents
 
 ```go
 type PackageInfo struct {
