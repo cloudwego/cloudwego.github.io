@@ -154,35 +154,19 @@ logger.Logf(hlog.LevelFatal,ctx,"The level is Fatal,message is:%s","msg")
 
 只需要输入日志信息，省去了日志等级
 
+函数签名：
+```go
+func (l *Logger)(v ...interface{})
+func (l *Logger)(format string, v ...interface{})
+func (l *Logger)(ctx context.Context, format string, v ...interface{})
+```
 示例代码：
 ```go
-func (l *Logger) Trace(v ...interface{}) {
-	l.Log(hlog.LevelTrace, v...)
-}
-
-func (l *Logger) Debug(v ...interface{}) {
-	l.Log(hlog.LevelDebug, v...)
-}
-
-func (l *Logger) Info(v ...interface{}) {
-	l.Log(hlog.LevelInfo, v...)
-}
-
-func (l *Logger) Notice(v ...interface{}) {
-	l.Log(hlog.LevelNotice, v...)
-}
-
-func (l *Logger) Warn(v ...interface{}) {
-	l.Log(hlog.LevelWarn, v...)
-}
-
-func (l *Logger) Error(v ...interface{}) {
-	l.Log(hlog.LevelError, v...)
-}
-
-func (l *Logger) Fatal(v ...interface{}) {
-	l.Log(hlog.LevelFatal, v...)
-}
+ctx:=Context.Background()
+logger := NewLogger()
+logger.Debug("this is a debug log")
+logger.Debugf("the msg is:%s","this is a debug log")
+logger.CtxDebugf(ctx,"the msg is:%s","this is a debug log")
 ```
 
 其他的诸如Debugf,CtxDebugf等函数详见[hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)
@@ -319,40 +303,6 @@ logger.Logger().Info("log from origin logrus")
 logger.Logger().Infof("the Info message is:%s","log from origin logrus")
 logger.Logger().CtxInfof(ctx,"the Info message is:%s","log from origin logrus")
 
-```
-
-部分源码如下：
-```go
-func (l *Logger) Logger() *logrus.Logger {
-return l.l
-}
-
-func (l *Logger) Trace(v ...interface{}) {
-l.l.Trace(v...)
-}
-
-func (l *Logger) Debug(v ...interface{}) {
-l.l.Debug(v...)
-}
-
-func (l *Logger) Info(v ...interface{}) {
-l.l.Info(v...)
-}
-
-func (l *Logger) Notice(v ...interface{}) {
-l.l.Warn(v...)
-}
-
-func (l *Logger) Warn(v ...interface{}) {
-l.l.Warn(v...)
-}
-
-func (l *Logger) Error(v ...interface{}) {
-l.l.Error(v...)
-}
-
-func (l *Logger) Fatal(v ...interface{}) {
-l.l.Fatal(v...)
 ```
 其他的诸如Debugf,CtxDebugf等函数详见 [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
 ### SetLevel
@@ -637,43 +587,6 @@ func (l *Logger)(ctx context.Context, format string, v ...interface{})
 ctx:=context.Background()
 l := New()
 l.CtxDebugf(ctx,"the message is %s","msg")
-```
-部分源码：
-```go
-// Trace logs a message at trace level.
-func (l *Logger) Trace(v ...interface{}) {
-	l.Log(hlog.LevelTrace, v...)
-}
-
-// Debug logs a message at debug level.
-func (l *Logger) Debug(v ...interface{}) {
-	l.Log(hlog.LevelDebug, v...)
-}
-
-// Info logs a message at info level.
-func (l *Logger) Info(v ...interface{}) {
-	l.Log(hlog.LevelInfo, v...)
-}
-
-// Notice logs a message at notice level.
-func (l *Logger) Notice(v ...interface{}) {
-	l.Log(hlog.LevelNotice, v...)
-}
-
-// Warn logs a message at warn level.
-func (l *Logger) Warn(v ...interface{}) {
-	l.Log(hlog.LevelWarn, v...)
-}
-
-// Error logs a message at error level.
-func (l *Logger) Error(v ...interface{}) {
-	l.Log(hlog.LevelError, v...)
-}
-
-// Fatal logs a message at fatal level.
-func (l *Logger) Fatal(v ...interface{}) {
-	l.Log(hlog.LevelFatal, v...)
-}
 ```
 更多用法示例详见 [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。
 

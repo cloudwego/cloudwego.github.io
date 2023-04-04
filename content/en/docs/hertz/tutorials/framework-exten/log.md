@@ -155,35 +155,20 @@ logger.Logf(hlog.LevelFatal,ctx,"The level is Fatal,message is:%s","msg")
 
 Only need to enter the log information, ignoring the log level
 
+Function Signature:
+```go
+func (l *Logger)(v ...interface{})
+func (l *Logger)(format string, v ...interface{})
+func (l *Logger)(ctx context.Context, format string, v ...interface{})
+```
+
 sample code:
 ```go
-func (l *Logger) Trace(v ...interface{}) {
-	l.Log(hlog.LevelTrace, v...)
-}
-
-func (l *Logger) Debug(v ...interface{}) {
-	l.Log(hlog.LevelDebug, v...)
-}
-
-func (l *Logger) Info(v ...interface{}) {
-	l.Log(hlog.LevelInfo, v...)
-}
-
-func (l *Logger) Notice(v ...interface{}) {
-	l.Log(hlog.LevelNotice, v...)
-}
-
-func (l *Logger) Warn(v ...interface{}) {
-	l.Log(hlog.LevelWarn, v...)
-}
-
-func (l *Logger) Error(v ...interface{}) {
-	l.Log(hlog.LevelError, v...)
-}
-
-func (l *Logger) Fatal(v ...interface{}) {
-	l.Log(hlog.LevelFatal, v...)
-}
+ctx:=Context.Background()
+logger := NewLogger()
+logger.Debug("this is a debug log")
+logger.Debugf("the msg is:%s","this is a debug log")
+logger.CtxDebugf(ctx,"the msg is:%s","this is a debug log")
 ```
 
 For other functions such as Debugf, CtxDebugf, etc., see[hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)
@@ -322,39 +307,6 @@ logger.Logger().CtxInfof(ctx,"the Info message is:%s","log from origin logrus")
 
 ```
 
-Part of the source code is as follows：
-```go
-func (l *Logger) Logger() *logrus.Logger {
-return l.l
-}
-
-func (l *Logger) Trace(v ...interface{}) {
-l.l.Trace(v...)
-}
-
-func (l *Logger) Debug(v ...interface{}) {
-l.l.Debug(v...)
-}
-
-func (l *Logger) Info(v ...interface{}) {
-l.l.Info(v...)
-}
-
-func (l *Logger) Notice(v ...interface{}) {
-l.l.Warn(v...)
-}
-
-func (l *Logger) Warn(v ...interface{}) {
-l.l.Warn(v...)
-}
-
-func (l *Logger) Error(v ...interface{}) {
-l.l.Error(v...)
-}
-
-func (l *Logger) Fatal(v ...interface{}) {
-l.l.Fatal(v...)
-```
 For other functions such as Debugf, CtxDebugf, etc., see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
 ### SetLevel
 Set the log level of Logger
@@ -638,43 +590,6 @@ sample code:
 ctx:=context.Background()
 l := New()
 l.CtxDebugf(ctx,"the message is %s","msg")
-```
-Part of the source code：
-```go
-// Trace logs a message at trace level.
-func (l *Logger) Trace(v ...interface{}) {
-	l.Log(hlog.LevelTrace, v...)
-}
-
-// Debug logs a message at debug level.
-func (l *Logger) Debug(v ...interface{}) {
-	l.Log(hlog.LevelDebug, v...)
-}
-
-// Info logs a message at info level.
-func (l *Logger) Info(v ...interface{}) {
-	l.Log(hlog.LevelInfo, v...)
-}
-
-// Notice logs a message at notice level.
-func (l *Logger) Notice(v ...interface{}) {
-	l.Log(hlog.LevelNotice, v...)
-}
-
-// Warn logs a message at warn level.
-func (l *Logger) Warn(v ...interface{}) {
-	l.Log(hlog.LevelWarn, v...)
-}
-
-// Error logs a message at error level.
-func (l *Logger) Error(v ...interface{}) {
-	l.Log(hlog.LevelError, v...)
-}
-
-// Fatal logs a message at fatal level.
-func (l *Logger) Fatal(v ...interface{}) {
-	l.Log(hlog.LevelFatal, v...)
-}
 ```
 For more usage examples see [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。
 
