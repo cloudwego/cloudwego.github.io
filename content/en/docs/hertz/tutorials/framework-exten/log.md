@@ -24,15 +24,15 @@ type FullLogger interface {
 }
 ```
 
-Note that the default logger makes use of the standard library log.Logger as its underlying output. So the filenames and line numbers shown in the log messages depend on the settings of call depth. Thus wrapping the implementation of hlog may cause inaccuracies for these two values.
+Note that the default logger makes use of the standard library `log.Logger` as its underlying output. So the filenames and line numbers shown in the log messages depend on the settings of call depth. Thus wrapping the implementation of hlog may cause inaccuracies for these two values.
 
 ### Inject your own logger
 
-Hertz provides SetLogger interface to allow injection of your own logger. Besides, SetOutput can be used to redirect the default logger output, and then middlewares and the other components of the framework can use global methods in hlog to output logs. By default, Hertz's default logger is used.
+Hertz provides `SetLogger` interface to allow injection of your own logger. Besides, `SetOutput` can be used to redirect the default logger output, and then middlewares and the other components of the framework can use global methods in hlog to output logs. By default, Hertz's default logger is used.
 
 ## Supported Log Extension
 
-The log extensions currently supported in the open source version of Hertz are stored in the [hertz-logger](https://github.com/hertz-contrib/logger). You are welcomed to join us in contributing and maintaining for this project.
+The log extensions currently supported in the open source version of Hertz are stored in the [hertz-logger](https://github.com/hertz-contrib/logger). You are welcome to join us in contributing to and maintaining this project.
 
 ### Zap
 
@@ -167,12 +167,12 @@ logger.Debugf("the msg is:%s","this is a debug log")
 logger.CtxDebugf(ctx,"the msg is:%s","this is a debug log")
 ```
 
-For other functions such as Debugf, CtxDebugf, etc., see[hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)
+For other functions such as Debugf, CtxDebugf, etc., see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)
 
 #### SetLevel
 Set a level for Logger's level
 
-Note: The set level must be the level mentioned above, such as: hlog.LevelTrace; hlog.LevelDebug, etc. You cannot customize the level, otherwise the Logger level will be assigned zap.WarnLevel
+Note: The set level must be the level mentioned above, such as hlog.LevelTrace, hlog.LevelDebug, etc. You cannot customize the level, otherwise the Logger level will be assigned zap.WarnLevel
 
 Function Signature:
 ```go
@@ -305,7 +305,7 @@ For other functions such as Debugf, CtxDebugf, etc., see [hertz-contrib/logger/l
 #### SetLevel
 Set the log level of Logger
 
-Note: The set level must be the level mentioned above, such as: hlog.LevelTrace; hlog.LevelDebug, etc., the level cannot be customized, otherwise the Logger level will be assigned to logrus.WarnLevel
+Note: The set level must be the level mentioned above, such as hlog.LevelTrace, hlog.LevelDebug, etc., the level cannot be customized, otherwise the Logger level will be assigned to logrus.WarnLevel
 
 Function Signature:
 ```go
