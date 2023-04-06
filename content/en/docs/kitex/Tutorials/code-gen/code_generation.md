@@ -105,7 +105,7 @@ The generated results are as follows:
     
 ```
 
-After filling in the business code in the interface of `handler. go`, execute the main function of `main. go` to quickly start the Kitex Server.
+After filling in the business code in the generated function of `handler. go`, execute the main function of `main. go` to quickly start the Kitex Server.
 
 
 ### Library Dependencies
