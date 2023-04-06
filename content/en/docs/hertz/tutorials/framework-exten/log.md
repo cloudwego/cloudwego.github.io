@@ -75,7 +75,7 @@ func main() {
 ```
 #### More examples:
 
-#### Define the hlog.FullLogger and the Logger structure
+##### Define the hlog.FullLogger and the Logger structure
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -86,7 +86,7 @@ type Logger struct {
 }
 
 ```
-#### NewLogger
+##### NewLogger
 
 Create and initialize a logger
 
@@ -101,7 +101,7 @@ sample code:
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 hlog.SetLogger(logger)
 ```
-#### Log
+##### Log
 
 Print the corresponding log level and information based on the incoming parameters
 
@@ -119,7 +119,7 @@ sample code:
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 logger.Log(hlog.LevelFatal,"msg")
 ```
-#### Logf
+##### Logf
 
 The method of use is similar to Log, the difference is that a new parameter is introduced to output templated log records
 
@@ -133,7 +133,7 @@ sample code:
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 logger.Logf(hlog.LevelFatal,"The level is Fatal,message is:%s","msg")
 ```
-#### CtxLogf
+##### CtxLogf
 
 The method of use is similar to Logf, the difference is that an additional context is passed in
 
@@ -147,7 +147,7 @@ sample code:
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 logger.Logf(hlog.LevelFatal,ctx,"The level is Fatal,message is:%s","msg")
 ```
-#### A function wrapped according to the log level
+##### A function wrapped according to the log level
 
 Only need to enter the log information, ignoring the log level
 
@@ -169,7 +169,7 @@ logger.CtxDebugf(ctx,"the msg is:%s","this is a debug log")
 
 For other functions such as Debugf, CtxDebugf, etc., see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)
 
-#### SetLevel
+##### SetLevel
 Set a level for Logger's level
 
 Note: The set level must be the level mentioned above, such as hlog.LevelTrace, hlog.LevelDebug, etc. You cannot customize the level, otherwise the Logger level will be assigned zap.WarnLevel
@@ -183,7 +183,7 @@ sample code:
 ```go
 logger.SetLevel(hlog.LevelDebug)
 ```
-#### Sync
+##### Sync
 
 Synchronously flush all buffered log entries.
 
@@ -197,7 +197,7 @@ sample code:
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 defer logger.Sync()
 ```
-#### SetOutput
+##### SetOutput
 
 SetOutput provides an output function for Logger, redirecting the output of the default logger provided by Logger
 
@@ -226,7 +226,7 @@ For more usage examples see [hertz-contrib/logger/zap](https://github.com/hertz-
 go get github.com/hertz-contrib/logger/logrus
 ```
 
-A simple example：
+#### A simple example：
 ```go
 package main
 
@@ -245,7 +245,9 @@ func main() {
     hlog.CtxInfof(context.Background(), "hello %s", "hertz")
 }
 ```
-#### Define hlog.FullLogger and the Logger structure
+#### More examples:
+
+##### Define hlog.FullLogger and the Logger structure
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
 
@@ -255,7 +257,7 @@ type Logger struct {
 }
 
 ```
-#### NewLogger
+##### NewLogger
 NewLogger is used to create a logger
 
 Function Signature:
@@ -269,7 +271,7 @@ sample code:
 ```go
 logger := hertzlogrus.NewLogger(hertzlogrus.WithLogger(logrus.New()))
 ```
-#### Logger
+##### Logger
 The Logger function returns logrus.Logger in a Logger
 
 Function Signature:
@@ -281,7 +283,7 @@ sample code:
 ```go
 logger.Logger().Info("log from origin logrus")
 ```
-#### A function wrapped according to the log level
+##### A function wrapped according to the log level
 
 
 Pass in information and output the information at the corresponding log level
@@ -302,7 +304,7 @@ logger.Logger().CtxInfof(ctx,"the Info message is:%s","log from origin logrus")
 ```
 
 For other functions such as Debugf, CtxDebugf, etc., see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
-#### SetLevel
+##### SetLevel
 Set the log level of Logger
 
 Note: The set level must be the level mentioned above, such as hlog.LevelTrace, hlog.LevelDebug, etc., the level cannot be customized, otherwise the Logger level will be assigned to logrus.WarnLevel
@@ -317,7 +319,7 @@ sample code:
 hlog.SetLogger(logger)
 hlog.SetLevel(hlog.LevelError)
 ```
-#### SetOutput
+##### SetOutput
 SetOutput provides an output function for Logger, redirecting the output of the default logger provided by Logger
 
 Function Signature:
@@ -341,7 +343,7 @@ For more usage examples see [hertz-contrib/logger/logrus](https://github.com/her
 ```shell
 go get github.com/hertz-contrib/logger/zerolog
 ```
-A simple example：
+#### A simple example：
 ```go
 import (
 	"context"
@@ -377,7 +379,7 @@ func main() {
 ```
 #### More examples：
 
-#### Define hlog.FullLogger and the Logger structure
+##### Define hlog.FullLogger and the Logger structure
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -389,7 +391,7 @@ type Logger struct {
 	options []Opt
 }
 ```
-#### New
+##### New
 New returns a new Logger
 
 Function Signature:
@@ -401,7 +403,7 @@ sample code:
 ```go
 hlog.SetLogger(hertzZerolog.New())
 ```
-#### From
+##### From
 From returns a new Logger with an existing Logger
 
 Function Signature:
@@ -415,7 +417,7 @@ zl := zerolog.New(b).With().Str("key", "test").Logger()
 l := From(zl)
 l.Info("foo")
 ```
-#### GetLogger
+##### GetLogger
 GetLogger returns a default logger
 
 Function Signature:
@@ -430,7 +432,7 @@ if err!=nil{
 	printf("get logger failed")
 }
 ```
-#### NewLogger
+##### NewLogger
 Create a new logger based on zerolog.logger
 
 Function Signature:
@@ -442,7 +444,7 @@ sample code:
 ```go
 l:=NewLogger()
 ```
-#### SetLevel
+##### SetLevel
 SetLevel sets a log level for logger
 
 Function Signature:
@@ -455,7 +457,7 @@ sample code:
 l := New()
 l.SetLevel(hlog.LevelDebug)
 ```
-#### SetOutput
+##### SetOutput
 SetOutput provides an output function for Logger, redirecting the output of the default logger provided by Logger
 
 Function Signature:
@@ -473,7 +475,7 @@ if err != nil {
 defer f.Close()
 l.SetOutput(f)
 ```
-#### WithContext
+##### WithContext
 WithContext returns a logger with context
 
 Function Signature:
@@ -487,7 +489,7 @@ ctx := context.Background()
 l := New()
 c := l.WithContext(ctx)
 ```
-#### WithField
+##### WithField
 WithField adds a field to logger
 
 Function Signature:
@@ -502,7 +504,7 @@ l := New()
 l.SetOutput(b)
 l.WithField("service", "logging")
 ```
-#### Unwrap
+##### Unwrap
 Unwrap returns the underlying zerolog logger
 
 Function Signature:
@@ -515,7 +517,7 @@ sample code:
 l := New()
 logger := l.Unwrap()
 ```
-#### Log
+##### Log
 Log uses a zerolog with a specific log level to log
 
 Function Signature:
@@ -528,7 +530,7 @@ sample code:
 l := New()
 l.Log(hlog.LevelDebug,"msg")
 ```
-#### Logf
+##### Logf
 Logf uses a zerolog with a specific log level and format to log
 
 Function Signature:
@@ -541,7 +543,7 @@ sample code:
 l := New()
 l.Logf(hlog.LevelDebug,"the message is %s","msg")
 ```
-#### CtxLogf
+##### CtxLogf
 CtxLogf uses a zerolog with a specific log level, format and context to log
 
 DefaultContextLogger will be used if there is no associated logger, unless DefaultContextLoggers is nil, in which case a disabled logger is used
@@ -557,7 +559,7 @@ ctx:=context.Background()
 l := New()
 l.Logf(hlog.LevelDebug,ctx,"the message is %s","msg")
 ```
-#### A function wrapped according to the log level
+##### A function wrapped according to the log level
 Debug,Debugf,CtxDebugf等
 
 Function Signature:
