@@ -1,7 +1,7 @@
 ---
 title: "服务注册与发现"
 date: 2022-08-14
-weight: 3
+weight: 1
 description: >
 ---
 
