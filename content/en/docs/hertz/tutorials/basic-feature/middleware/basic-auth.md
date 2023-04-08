@@ -59,7 +59,7 @@ In the **Example** above, only the base config function `BasicAuth` is used, and
 
 | Attribute | Description                                                                                                       |
 |-----------|-------------------------------------------------------------------------------------------------------------------|
-| accounts  | Accounts is an alias to map[string]string, store the username and password as key-value pairs.                    |
+| accounts  | `Accounts` is a defined type of `map[string]string`, store the username and password as key-value pairs.              |
 | realm     | Name of realm, the default value is `Authorization Required`.                                                     |
 | userKey   | The key corresponding to the username which set in the context after authentication, the default value is `user`. |
 
@@ -70,7 +70,6 @@ The `basic_auth` middleware provides `BasicAuth` that web browsers or other clie
 Function signatures:
 
 ```go
-// Accounts is an alias to map[string]string
 func BasicAuth(accounts Accounts) app.HandlerFunc
 ```
 
@@ -111,7 +110,6 @@ The `basic_auth` middleware provides `BasicAuthForRealm` to provide more configu
 Function signatures:
 
 ```go
-// Accounts is an alias to map[string]string
 func BasicAuthForRealm(accounts Accounts, realm, userKey string) app.HandlerFunc
 ```
 
