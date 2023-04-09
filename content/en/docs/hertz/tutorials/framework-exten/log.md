@@ -73,9 +73,9 @@ func main() {
 	h.Spin()
 }
 ```
-#### More examples:
+#### Part of Logger usage:
 
-##### Define the hlog.FullLogger and the Logger structure
+##### Define hlog.FullLogger and Logger structure
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -84,140 +84,114 @@ type Logger struct {
     l      *zap.SugaredLogger
     config *config
 }
-
 ```
 ##### NewLogger
 
-Create and initialize a logger
+Create and initialize a Logger through `defaultConfig()`. The required configuration can be passed into the function as a parameter. If no parameter is passed in, the initial configuration will be installed to create a Logger
+For related configuration, please refer to "option configuration" below.
 
 Function Signature:
 
 ```go
-func(opts ...Option) *Logger
+func NewLogger(opts ...Option) *Logger
 ```
 
-sample code:
+Sample code:
 ```go
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 hlog.SetLogger(logger)
 ```
-##### Log
 
-Print the corresponding log level and information based on the incoming parameters
+#### Option configuration
 
-The corresponding log level has the following format:
 
-hlog.LevelTrace; hlog.LevelDebug; hlog.LevelInfo; hlog.LevelNotice; hlog.LevelWarn; hlog.LevelError; hlog.LevelFatal
+##### WithCoreEnc
 
-function signature:
-```go
-func (l *Logger)(level hlog.Level, kvs ...interface{})
-```
-
-sample code:
-```go
-logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-logger.Log(hlog.LevelFatal,"msg")
-```
-##### Logf
-
-The method of use is similar to Log, the difference is that a new parameter is introduced to output templated log records
+Encoder is a format-agnostic interface for all log entry marshalers, `WithCoreEnc` passes zapcore.Encoder into configuration
 
 Function Signature:
 ```go
-func (l *Logger)(level hlog.Level, format string, kvs ...interface{})
+func WithCoreEnc(enc zapcore.Encoder) Option
 ```
 
-sample code:
+Sample code:
 ```go
-logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-logger.Logf(hlog.LevelFatal,"The level is Fatal,message is:%s","msg")
+enc := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
+l:=NewLogger(WithCoreEnc(enc))
 ```
-##### CtxLogf
 
-The method of use is similar to Logf, the difference is that an additional context is passed in
+##### WithCoreWs
+
+`WithCoreWs` specifies the location where the log is written through the `zapcore.AddSync(file)`, and passes zapcore.WriteSyncer into the configuration
 
 Function Signature:
 ```go
-func (l *Logger)(level hlog.Level, ctx context.Context, format string, kvs ...interface{})
+func WithCoreWs(ws zapcore.WriteSyncer) Option
 ```
 
-sample code:
+Sample code:
 ```go
-logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-logger.Logf(hlog.LevelFatal,ctx,"The level is Fatal,message is:%s","msg")
+ws := zapcore.AddSync(os.Stdout)
+l:=NewLogger(WithCoreWs(ws))
 ```
-##### A function wrapped according to the log level
 
-Only need to enter the log information, ignoring the log level
+##### WithCoreLevel
+
+`WithCoreLevel` passes zap.AtomicLevel into configuration
 
 Function Signature:
 ```go
-func (l *Logger)(v ...interface{})
-func (l *Logger)(format string, v ...interface{})
-func (l *Logger)(ctx context.Context, format string, v ...interface{})
+func WithCoreLevel(lvl zap.AtomicLevel) Option 
 ```
 
-sample code:
+Sample code:
 ```go
-ctx:=Context.Background()
-logger := NewLogger()
-logger.Debug("this is a debug log")
-logger.Debugf("the msg is:%s","this is a debug log")
-logger.CtxDebugf(ctx,"the msg is:%s","this is a debug log")
+lvl := zap.NewAtomicLevelAt(zap.InfoLevel)
+l:=NewLogger(WithCoreLevel(lvl))
 ```
 
-For other functions such as Debugf, CtxDebugf, etc., see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)
+##### WithCores
 
-##### SetLevel
-Set a level for Logger's level
-
-Note: The set level must be the level mentioned above, such as hlog.LevelTrace, hlog.LevelDebug, etc. You cannot customize the level, otherwise the Logger level will be assigned zap.WarnLevel
+`WithCores` passes zapcore.Encoder, zapcore.WriteSyncer, zap.AtomicLevel into CoreConfig into the configuration
 
 Function Signature:
 ```go
-func (l *Logger)(level hlog.Level)
+func WithCores(coreConfigs ...CoreConfig) Option
 ```
 
-sample code:
+Sample code:
 ```go
-logger.SetLevel(hlog.LevelDebug)
-```
-##### Sync
+enc := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
+lvl := zap.NewAtomicLevelAt(zap.InfoLevel)
+ws := zapcore.AddSync(os.Stdout)
 
-Synchronously flush all buffered log entries.
-
-Function Signature:
-```go
-func (l *Logger)()
-```
-
-sample code:
-```go
-logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-defer logger.Sync()
-```
-##### SetOutput
-
-SetOutput provides an output function for Logger, redirecting the output of the default logger provided by Logger
-
-Function Signature:
-```go
-func (l *Logger)(writer io.Writer)
-```
-sample code:
-```go
-f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-if err != nil {
-	panic(err)
+cfg:=CoreConfig{
+    Enc: enc,
+    Ws:  ws,
+    Lvl: lvl,
 }
-defer f.Close()
-logger := NewLogger()
-defer logger.Sync()
-// output to the log
-logger.SetOutput(f)
+
+l:=NewLogger(WithCoreConfig(cfg))
 ```
-For more usage examples see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
+
+##### WithZapOptions
+
+`WithZapOptions` uses the `append()` method to append the original zap configuration
+
+Function Signature:
+```go
+func WithZapOptions(opts ...zap.Option) Option 
+```
+
+Sample code:
+```go
+lvl := zap.NewAtomicLevelAt(zap.InfoLevel)
+ws := zapcore.AddSync(os.Stdout)
+opts:=WithCoreLevel(lvl)
+l:=NewLogger(WithZapOptions(opts,WithCoreWs(ws)))
+```
+
+For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
 
 ### Logrus
 
@@ -245,9 +219,9 @@ func main() {
     hlog.CtxInfof(context.Background(), "hello %s", "hertz")
 }
 ```
-#### More examples:
+#### Part of Logger usage:
 
-##### Define hlog.FullLogger and the Logger structure
+##### Define hlog.FullLogger and Logger structure
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
 
@@ -258,85 +232,59 @@ type Logger struct {
 
 ```
 ##### NewLogger
-NewLogger is used to create a logger
+`NewLogger` uses `defaultConfig()` to create and initialize a Logger. The required configuration can be passed into the function as a parameter. If no parameter is passed in, the initial configuration will be installed to create `Logger`
+For related configuration, please refer to "option configuration" below.
 
 Function Signature:
 
 ```go
-func (opts ...Option) *Logger
+func NewLogger(opts ...Option) *Logger
 ```
 
-sample code:
+Sample code:
 
 ```go
 logger := hertzlogrus.NewLogger(hertzlogrus.WithLogger(logrus.New()))
 ```
-##### Logger
-The Logger function returns logrus.Logger in a Logger
+
+#### Option configuration
+
+##### WithLogger
+`WithLogger` passes logrus.Logger into configuration
 
 Function Signature:
 ```go
-func (l *Logger) Logger() *logrus.Logger
+func WithLogger(logger *logrus.Logger) Option 
 ```
 
-sample code:
+Sample code:
 ```go
-logger.Logger().Info("log from origin logrus")
+stdLogger := logrus.StandardLogger()
+l:=NewLogger(WithLogger(stdLogger))
 ```
-##### A function wrapped according to the log level
 
-
-Pass in information and output the information at the corresponding log level
+##### WithHook
+`WithHook` adds the incoming logrus.Hook to the hook in the configuration
 
 Function Signature:
 ```go
-func (l *Logger)(v ...interface{})
-func (l *Logger)(format string, v ...interface{})
-func (l *Logger)(ctx context.Context, format string, v ...interface{}) 
+func WithHook(hook logrus.Hook) Option 
 ```
 
-sample code:
+Sample code:
 ```go
-ctx:=context.Background()
-logger.Logger().Info("log from origin logrus")
-logger.Logger().Infof("the Info message is:%s","log from origin logrus")
-logger.Logger().CtxInfof(ctx,"the Info message is:%s","log from origin logrus")
+var h logrus.Hook
+l := NewLogger(WithHook(h))
+
+l.Info("Foo")
+l.Warn("Bar")
+//h.logs[0].level==zerolog.InfoLevel
+//h.logs[0].message=="Foo"
+//h.logs[1].level==zerolog.WarnLevel
+//h.logs[1].message=="Bar"
 ```
 
-For other functions such as Debugf, CtxDebugf, etc., see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
-##### SetLevel
-Set the log level of Logger
-
-Note: The set level must be the level mentioned above, such as hlog.LevelTrace, hlog.LevelDebug, etc., the level cannot be customized, otherwise the Logger level will be assigned to logrus.WarnLevel
-
-Function Signature:
-```go
-func (l *Logger)(level hlog.Level) 
-```
-
-sample code:
-```go
-hlog.SetLogger(logger)
-hlog.SetLevel(hlog.LevelError)
-```
-##### SetOutput
-SetOutput provides an output function for Logger, redirecting the output of the default logger provided by Logger
-
-Function Signature:
-```go
-func (l *Logger)(writer io.Writer) 
-```
-
-sample code:
-```go
-buf := new(bytes.Buffer)
-logger := NewLogger()
-// output to buffer
-logger.SetOutput(buf)
-```
-
-For more usage examples see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
-
+For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
 ### Zerolog
 
 #### Download and Install
@@ -377,9 +325,9 @@ func main() {
 	h.Spin()
 }
 ```
-#### More examples：
+#### Partial usage of Logger:
 
-##### Define hlog.FullLogger and the Logger structure
+##### Define hlog.FullLogger and Logger structure
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -391,189 +339,248 @@ type Logger struct {
 	options []Opt
 }
 ```
+
 ##### New
-New returns a new Logger
+`New` returns a new Logger instance via the `newLogger` function
 
 Function Signature:
 ```go
-func (options ...Opt) *Logger
+func New(options ...Opt) *Logger
 ```
 
-sample code:
+Sample code:
 ```go
 hlog.SetLogger(hertzZerolog.New())
 ```
 ##### From
-From returns a new Logger with an existing Logger
+`From` returns a new Logger using an existing Logger via `newLogger`
 
 Function Signature:
 ```go
-func(log zerolog.Logger, options ...Opt) *Logger
+func From(log zerolog.Logger, options ...Opt) *Logger
 ```
 
-sample code:
+Sample code:
 ```go
 zl := zerolog.New(b).With().Str("key", "test").Logger()
 l := From(zl)
 l.Info("foo")
 ```
 ##### GetLogger
-GetLogger returns a default logger
+`GetLogger` returns the default Logger instance and error via the `DefaultLogger()` method
 
 Function Signature:
 ```go
-func ()(Logger, error)
+func GetLogger() (Logger, error)
 ```
 
-sample code:
+Sample code:
 ```go
 logger,err:=GetLogger()
 if err!=nil{
 	printf("get logger failed")
 }
 ```
-##### NewLogger
-Create a new logger based on zerolog.logger
+
+#### Option configuration
+
+##### WithOutput
+
+`WithOutput` returns an Opt function through zerolog's `zerolog.Context.Logger().Output(out).With()`, allowing to specify the output of the logger. By default it is set to os.Stdout.
 
 Function Signature:
 ```go
-func(log zerolog.Logger, options []Opt) *Logger
+func WithOutput(out io.Writer) Opt 
 ```
 
-sample code:
-```go
-l:=NewLogger()
-```
-##### SetLevel
-SetLevel sets a log level for logger
-
-Function Signature:
-```go
-func (l *Logger)(level hlog.Level)
-```
-
-sample code:
-```go
-l := New()
-l.SetLevel(hlog.LevelDebug)
-```
-##### SetOutput
-SetOutput provides an output function for Logger, redirecting the output of the default logger provided by Logger
-
-Function Signature:
-```go
-func (l *Logger)(writer io.Writer) 
-```
-
-sample code:
-```go
-l := New()
-f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-if err != nil {
-    panic(err)
-}
-defer f.Close()
-l.SetOutput(f)
-```
-##### WithContext
-WithContext returns a logger with context
-
-Function Signature:
-```go
-func (l *Logger)(ctx context.Context) context.Context
-```
-
-sample code:
-```go
-ctx := context.Background()
-l := New()
-c := l.WithContext(ctx)
-```
-##### WithField
-WithField adds a field to logger
-
-Function Signature:
-```go
-func (l *Logger)(key string, value interface{}) Logger
-```
-
-sample code:
+Sample code:
 ```go
 b := &bytes.Buffer{}
-l := New()
+l := New(WithOutput(b))
+l.Info("foobar")
+```
+
+##### WithLevel
+
+`WithLevel` specifies the level of the logger through zerolog's built-in `zerolog.Context.Logger().Level(lvl).With()` method. Convert hlog.Level to zerolog.level by `matchHlogLevel()`. By default it is set to WarnLevel.
+
+Function Signature:
+```go
+func WithLevel(level hlog.Level) Opt 
+```
+
+Sample code:
+```go
+l:=New(WithLevel(hlog.LevelDebug))
+l.Debug("foobar")
+```
+
+##### WithField
+
+`WithField` adds a field to the logger's context through zerolog's `zerolog.Context.Interface(name, value)` method
+
+Function Signature:
+```go
+func WithField(name string, value interface{}) Opt 
+```
+
+Sample code:
+```go
+b := &bytes.Buffer{}
+l := New(WithField("service", "logging"))
 l.SetOutput(b)
-l.WithField("service", "logging")
+
+l.Info("foobar")
+
+type Log struct {
+    Level   string `json:"level"`
+    Service string `json:"service"`
+    Message string `json:"message"`
+}
+
+log := &Log{}
+
+err := json.Unmarshal(b.Bytes(), log)//log.service=="logging"
 ```
-##### Unwrap
-Unwrap returns the underlying zerolog logger
+
+##### WithFields
+
+`WithFields` adds some fields to the logger's context through zerolog's `zerolog.Context.Fields(fields)`
 
 Function Signature:
 ```go
-func (l *Logger) zerolog.Logger 
+func WithFields(fields map[string]interface{}) Opt 
 ```
 
-sample code:
+Sample code:
 ```go
-l := New()
-logger := l.Unwrap()
+b := &bytes.Buffer{}
+l := New(WithFields(map[string]interface{}{
+	"host": "localhost",
+	"port": 8080,
+}))//...
 ```
-##### Log
-Log uses a zerolog with a specific log level to log
+
+##### WithTimestamp
+
+`WithTimestamp` adds the timestamp field to the logger's context through zerolog's `zerolog.Context.Timestamp()`
 
 Function Signature:
 ```go
-func (l *Logger)(level hlog.Level, kvs ...interface{})
+func WithTimestamp() Opt 
 ```
 
-sample code:
+Sample code:
 ```go
-l := New()
-l.Log(hlog.LevelDebug,"msg")
+l := New(WithTimestamp())
+l.Info("foobar")
 ```
-##### Logf
-Logf uses a zerolog with a specific log level and format to log
+
+##### WithFormattedTimestamp
+
+`WithFormattedTimestamp` is similar to `WithTimestamp`, adding a formatted timestamp field to the logger's context
 
 Function Signature:
 ```go
-func (l *Logger)(level hlog.Level, format string, kvs ...interface{})
+func WithFormattedTimestamp(format string) Opt 
 ```
 
-sample code:
+Sample code:
 ```go
-l := New()
-l.Logf(hlog.LevelDebug,"the message is %s","msg")
+l := New(WithFormattedTimestamp(time.RFC3339Nano))
+l.Info("foobar")
 ```
-##### CtxLogf
-CtxLogf uses a zerolog with a specific log level, format and context to log
 
-DefaultContextLogger will be used if there is no associated logger, unless DefaultContextLoggers is nil, in which case a disabled logger is used
+##### WithCaller
+
+`WithCaller` adds a caller to the context of the logger through zerolog's built-in `zerolog.Context.Caller()`, and the caller will report the caller's information
 
 Function Signature:
 ```go
-func (l *Logger)(level hlog.Level, ctx context.Context, format string, kvs ...interface{})
+func WithCaller() Opt 
 ```
 
-sample code:
+Sample code:
 ```go
-ctx:=context.Background()
-l := New()
-l.Logf(hlog.LevelDebug,ctx,"the message is %s","msg")
+//get the last element of the path
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "github.com/hertz-contrib/logger/zerolog"
+    "path/filepath"
+    "strings"
+)
+
+func main() {
+    b := &bytes.Buffer{}
+    l := zerolog.New(zerolog.WithCaller())//add a caller
+    l.SetOutput(b)
+    l.Info("foobar")
+    type Log struct {
+        Level   string `json:"level"`
+        Caller  string `json:"caller"`
+        Message string `json:"message"`
+    }
+
+    log := &Log{}
+
+    err := json.Unmarshal(b.Bytes(), log)
+    if err!=nil {
+        //...
+    }
+
+    segments := strings.Split(log.Caller, ":")
+    filePath := filepath.Base(segments[0]) //filepath=="logger.go"
+}
 ```
-##### A function wrapped according to the log level
-Debug,Debugf,CtxDebugf等
+##### WithHook
+
+`WithHook` adds a hook to the context of logger through zerolog's `zerolog.Context.Logger().Hook(hook).With()`
 
 Function Signature:
 ```go
-func (l *Logger)(v ...interface{})
-func (l *Logger)(format string, v ...interface{})
-func (l *Logger)(ctx context.Context, format string, v ...interface{})
+func WithHook(hook zerolog.Hook) Opt 
 ```
 
-sample code:
+Sample code:
 ```go
-ctx:=context.Background()
-l := New()
-l.CtxDebugf(ctx,"the message is %s","msg")
-```
-For more usage examples see [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。
+h := &Hook{}
+l := New(WithHook(h))
 
+l.Info("Foo")
+l.Warn("Bar")
+//h.logs[0].level==zerolog.InfoLevel
+//h.logs[0].message=="Foo"
+//h.logs[1].level==zerolog.WarnLevel
+//h.logs[1].message=="Bar"
+```
+
+##### WithHookFunc
+
+`WithHookFunc` is similar to `WithHook`, adding a hook function to the context of logger
+
+Function Signature:
+```go
+func WithHookFunc(hook zerolog.HookFunc) Opt
+```
+
+Sample code:
+```go
+logs := make([]HookLog, 0, 2)   
+l := New(WithHookFunc(func(e *zerolog.Event, level zerolog.Level, message string) {
+    logs = append(logs, HookLog{
+    level:   level,
+    message: message,  
+    })
+}))
+
+l.Info("Foo")
+l.Warn("Bar")
+//h.logs[0].level==zerolog.InfoLevel
+//h.logs[0].message=="Foo"
+//h.logs[1].level==zerolog.WarnLevel
+//h.logs[1].message=="Bar"
+```
+For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。

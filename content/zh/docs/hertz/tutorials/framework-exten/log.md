@@ -12,7 +12,7 @@ Hertz 提供对日志的扩展，接口定义在 `pkg/common/hlog` 中。
 ## 接口定义
 
 Hertz 在 pkg/common/hlog 里定义了 `Logger`、`CtxLogger`、`FormatLogger` 几个接口实现不同的打日志方式，并定义了一个 Control 接口实现 logger 的控制。
-用户注入自己的 logger 实现时需要实现上面的所有接口( FullLogger )。Hertz提供了一个 `FullLogger` 默认实现。
+用户注入自己的 logger 实现时需要实现上面的所有接口(FullLogger)。Hertz提供了一个 `FullLogger` 默认实现。
 
 ```go
 // FullLogger is the combination of Logger, FormatLogger, CtxLogger and Control.
@@ -29,7 +29,7 @@ type FullLogger interface {
 ### 注入自己的 logger 实现
 
 Hertz 提供 `SetLogger` 接口用于注入用户自定义的 logger 实现，也可以使用 `SetOutput` 接口重定向默认的 logger 输出，随后的中间件以及框架的其他部分可以使用 hlog 中的全局方法来输出日志。
-默认使用 hertz 默认实现的 logger。
+默认使用 hertz 默认实现的 logger 。
 
 ## 已支持日志拓展
 
@@ -74,9 +74,9 @@ func main() {
 	h.Spin()
 }
 ```
-#### 更多用法：
+#### 部分 Logger 用法：
 
-##### 定义hlog.FullLogger和Logger结构体
+##### 定义 hlog.FullLogger 和 Logger 结构体
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -88,12 +88,13 @@ type Logger struct {
 ```
 ##### NewLogger
 
-创建并初始化一个Logger，便于后续的调用，可将所需配置作为参数传入函数,若不传入参数则安装初始配置创建Logger
+通过 `defaultConfig()` 创建并初始化一个 Logger ，便于后续的调用，可将所需配置作为参数传入函数，若不传入参数则安装初始配置创建 Logger
+相关配置请参考后面的 “option的配置”。
 
 函数签名：
 
 ```go
-func(opts ...Option) *Logger
+func NewLogger(opts ...Option) *Logger
 ```
 
 事例代码：
@@ -101,123 +102,96 @@ func(opts ...Option) *Logger
 logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
 hlog.SetLogger(logger)
 ```
-##### Log
 
-根据传入的参数打印出对应的日志等级与信息
-对应的日志等级有如下格式： 
-hlog.LevelTrace; hlog.LevelDebug; hlog.LevelInfo; hlog.LevelNotice; hlog.LevelWarn; hlog.LevelError; hlog.LevelFatal
+#### option 的配置
+
+##### WithCoreEnc
+
+Encoder 是一个提供给日志条目编码器的格式不可知的接口，`WithCoreEnc` 将 zapcore.Encoder 传入配置
 
 函数签名：
 ```go
-func (l *Logger)(level hlog.Level, kvs ...interface{})
+func WithCoreEnc(enc zapcore.Encoder) Option
 ```
 
 示例代码：
 ```go
-logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-
-logger.Log(hlog.LevelFatal,"msg")
+enc := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
+l:=NewLogger(WithCoreEnc(enc))
 ```
-##### Logf
 
-使用方法与Log相似，区别在于新引入一个参数以输出模板化的日志记录
+##### WithCoreWs
+
+`WithCoreWs` 通过内置的 `zapcore.AddSync(file)` 指定日志写入的位置，将 zapcore.WriteSyncer传入配置
 
 函数签名：
 ```go
-func (l *Logger)(level hlog.Level, format string, kvs ...interface{})
+func WithCoreWs(ws zapcore.WriteSyncer) Option
 ```
 
 示例代码：
 ```go
-logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-
-logger.Logf(hlog.LevelFatal,"The level is Fatal,message is:%s","msg")
-```
-##### CtxLogf
-
-使用方法与Logf相似,区别在于多传入了一个context上下文
-
-函数签名：
-```go
-func (l *Logger)(level hlog.Level, ctx context.Context, format string, kvs ...interface{})
+ws := zapcore.AddSync(os.Stdout)
+l:=NewLogger(WithCoreWs(ws))
 ```
 
-示例代码：
-```go
-logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
+##### WithCoreLevel
 
-logger.Logf(hlog.LevelFatal,ctx,"The level is Fatal,message is:%s","msg")
-```
-##### 根据日志等级包装出来的函数
-
-只需要输入日志信息，省去了日志等级
-
-函数签名：
-```go
-func (l *Logger)(v ...interface{})
-func (l *Logger)(format string, v ...interface{})
-func (l *Logger)(ctx context.Context, format string, v ...interface{})
-```
-示例代码：
-```go
-ctx:=Context.Background()
-logger := NewLogger()
-logger.Debug("this is a debug log")
-logger.Debugf("the msg is:%s","this is a debug log")
-logger.CtxDebugf(ctx,"the msg is:%s","this is a debug log")
-```
-
-其他的诸如Debugf,CtxDebugf等函数详见[hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)
-
-##### SetLevel
-给Logger的level设定一个等级
-
-注意：设定的等级必须为上文所提到的的等级如：hlog.LevelTrace；hlog.LevelDebug等，不能自定义等级，否则将给Logger等级赋为zap.WarnLevel
-
-函数签名：
-```go
-func (l *Logger)(level hlog.Level)
-```
-
-示例代码：
-```go
-logger.SetLevel(hlog.LevelDebug)
-```
-##### Sync
-
-同步刷新所有缓冲的日志条目。
-
-函数签名：
-```go
-func (l *Logger)()
-```
-
-示例代码：
-```go
-logger := NewLogger(WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-defer logger.Sync()
-```
-##### SetOutput
-
-SetOutput为Logger提供了一个输出功能,重定向 Logger 提供的默认 logger 的输出
+`WithCoreLevel` 将 zap.AtomicLevel 传入配置
 
 函数名称：
 ```go
-func (l *Logger)(writer io.Writer)
+func WithCoreLevel(lvl zap.AtomicLevel) Option 
 ```
+
 示例代码：
 ```go
-f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-if err != nil {
-    panic(err)
-}
-defer f.Close()
-logger := NewLogger()
-defer logger.Sync()
-// output to the log
-logger.SetOutput(f)
+lvl := zap.NewAtomicLevelAt(zap.InfoLevel)
+l:=NewLogger(WithCoreLevel(lvl))
 ```
-更多用法示例详见 [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
+
+##### WithCores
+
+`WithCores` 将 zapcore.Encoder ，zapcore.WriteSyncer ，zap.AtomicLevel 组合进的 CoreConfig 传入配置
+
+函数签名：
+```go
+func WithCores(coreConfigs ...CoreConfig) Option
+```
+
+示例代码：
+```go
+enc := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
+lvl := zap.NewAtomicLevelAt(zap.InfoLevel)
+ws := zapcore.AddSync(os.Stdout)
+
+cfg:=CoreConfig{
+    Enc: enc,
+    Ws:  ws,
+    Lvl: lvl,
+}
+
+l:=NewLogger(WithCoreConfig(cfg))
+```
+
+##### WithZapOptions
+
+`WithZapOptions` 利用 `apend()` 方法添加原始的 zap 配置
+
+函数签名：
+```go
+func WithZapOptions(opts ...zap.Option) Option 
+```
+
+示例代码：
+```go
+lvl := zap.NewAtomicLevelAt(zap.InfoLevel)
+ws := zapcore.AddSync(os.Stdout)
+opts:=WithCoreLevel(lvl)
+l:=NewLogger(WithZapOptions(opts,WithCoreWs(ws)))
+```
+
+适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
 
 ### Logrus
 
@@ -245,9 +219,9 @@ func main() {
     hlog.CtxInfof(context.Background(), "hello %s", "hertz")
 }
 ```
-#### 更多用法：
+#### 部分 Logger 用法：
 
-##### 定义hlog.FullLogger和Logger结构体
+##### 定义 hlog.FullLogger 和 Logger 结构体
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
 
@@ -258,12 +232,13 @@ type Logger struct {
 
 ```
 ##### NewLogger
-NewLogger 用来创建一个logger
+`NewLogger` 通过 `defaultConfig()` 来创建并初始化一个 Logger ，便于后续的调用，可将所需配置作为参数传入函数，若不传入参数则安装初始配置创建 `Logger`
+相关配置请参考后面的 “option的配置”。
 
 函数签名：
 
 ```go
-func (opts ...Option) *Logger
+func NewLogger(opts ...Option) *Logger
 ```
 
 示例代码：
@@ -271,71 +246,45 @@ func (opts ...Option) *Logger
 ```go
 logger := hertzlogrus.NewLogger(hertzlogrus.WithLogger(logrus.New()))
 ```
-##### Logger
-Logger函数返回一个Logger里的logrus.Logger
+
+#### option 的配置
+
+##### WithLogger
+`WithLogger` 将 logrus.Logger 传入配置
 
 函数签名：
 ```go
-func (l *Logger) Logger() *logrus.Logger
+func WithLogger(logger *logrus.Logger) Option 
 ```
 
 示例代码：
 ```go
-logger.Logger().Info("log from origin logrus")
+stdLogger := logrus.StandardLogger()
+l:=NewLogger(WithLogger(stdLogger))
 ```
-##### 封装好日志等级的函数
 
-
-传入信息然后将信息以对应的日志等级输出
+##### WithHook
+`WithHook` 将传入的 logrus.Hook 添加进配置中的 hook
 
 函数签名：
 ```go
-func (l *Logger)(v ...interface{})
-func (l *Logger)(format string, v ...interface{})
-func (l *Logger)(ctx context.Context, format string, v ...interface{}) 
+func WithHook(hook logrus.Hook) Option 
 ```
 
 示例代码：
 ```go
-ctx:=context.Background()
-logger.Logger().Info("log from origin logrus")
-logger.Logger().Infof("the Info message is:%s","log from origin logrus")
-logger.Logger().CtxInfof(ctx,"the Info message is:%s","log from origin logrus")
-```
-其他的诸如Debugf,CtxDebugf等函数详见 [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
-##### SetLevel
-设定Logger的日志等级
+var h logrus.Hook
+l := NewLogger(WithHook(h))
 
-注意：设定的等级必须为上文所提到的的等级如：hlog.LevelTrace；hlog.LevelDebug等，不能自定义等级，否则将给Logger等级赋为logrus.WarnLevel
-
-函数签名：
-```go
-func (l *Logger)(level hlog.Level) 
+l.Info("Foo")
+l.Warn("Bar")
+//h.logs[0].level==zerolog.InfoLevel
+//h.logs[0].message=="Foo"
+//h.logs[1].level==zerolog.WarnLevel
+//h.logs[1].message=="Bar"
 ```
 
-示例代码：
-```go
-hlog.SetLogger(logger)
-hlog.SetLevel(hlog.LevelError)
-```
-##### SetOutput
-SetOutput为Logger提供了一个输出功能,重定向 Logger 提供的默认 logger 的输出
-
-函数签名：
-```go
-func (l *Logger)(writer io.Writer) 
-```
-
-示例代码：
-```go
-buf := new(bytes.Buffer)
-logger := NewLogger()
-// output to buffer
-logger.SetOutput(buf)
-```
-
-
-更多用法示例详见 [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
+适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
 
 ### Zerolog
 
@@ -377,9 +326,9 @@ func main() {
 	h.Spin()
 }
 ```
-#### 更多用法：
+#### Logger 的部分用法：
 
-##### 定义hlog.FullLogger和Logger结构体
+##### 定义 hlog.FullLogger 和 Logger 结构体
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -391,12 +340,13 @@ type Logger struct {
 	options []Opt
 }
 ```
+
 ##### New
-New返回一个新的Logger
+`New` 通过 `newLogger` 函数返回一个新的 Logger 实例
 
 函数签名：
 ```go
-func (options ...Opt) *Logger
+func New(options ...Opt) *Logger
 ```
 
 示例代码：
@@ -404,11 +354,11 @@ func (options ...Opt) *Logger
 hlog.SetLogger(hertzZerolog.New())
 ```
 ##### From
-From用一个已存在的Logger返回一个新的Logger
+`From` 通过 `newLogger` 用一个已存在的 Logger 返回一个新的 Logger
 
 函数签名：
 ```go
-func(log zerolog.Logger, options ...Opt) *Logger
+func From(log zerolog.Logger, options ...Opt) *Logger
 ```
 
 示例代码：
@@ -418,11 +368,11 @@ l := From(zl)
 l.Info("foo")
 ```
 ##### GetLogger
-GetLogger返回一个默认的logger
+`GetLogger` 通过 `DefaultLogger()` 方法返回默认的 Logger 实例和 error
 
 函数签名：
 ```go
-func () (Logger, error)
+func GetLogger() (Logger, error)
 ```
 
 示例代码：
@@ -432,148 +382,207 @@ if err!=nil{
 	printf("get logger failed")
 }
 ```
-##### NewLogger
-根据zerolog.logger创建一个新的logger
+
+#### option 的配置
+
+##### WithOutput
+
+`WithOutput` 通过 zerolog 内置的 `zerolog.Context.Logger().Output(out).With()` 返回一个Opt的函数，允许指定 logger 的输出。默认情况下，它设置为 os.Stdout。
 
 函数签名：
 ```go
-func(log zerolog.Logger, options []Opt) *Logger
-```
-
-示例代码：
-```go
-l:=NewLogger()
-```
-##### SetLevel
-SetLevel为logger设定了一个日志等级
-
-函数签名：
-```go
-func (l *Logger)(level hlog.Level)
-```
-
-示例代码：
-```go
-l := New()
-l.SetLevel(hlog.LevelDebug)
-```
-##### SetOutput
-SetOutput为Logger提供了一个输出功能,重定向 Logger 提供的默认 logger 的输出
-
-函数签名：
-```go
-func (l *Logger)(writer io.Writer) 
-```
-
-示例代码：
-```go
-l := New()
-f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-if err != nil {
-	panic(err)
-}
-defer f.Close()
-l.SetOutput(f)
-```
-##### WithContext
-WithContext返回一个带context的logger
-
-函数签名：
-```go
-func (l *Logger)(ctx context.Context) context.Context
-```
-
-示例代码：
-```go
-ctx := context.Background()
-l := New()
-c := l.WithContext(ctx)
-```
-##### WithField
-WithField给logger添加了一个字段
-
-函数签名：
-```go
-func (l *Logger)(key string, value interface{}) Logger
+func WithOutput(out io.Writer) Opt 
 ```
 
 示例代码：
 ```go
 b := &bytes.Buffer{}
-l := New()
+l := New(WithOutput(b))
+l.Info("foobar")
+```
+
+##### WithLevel
+
+`WithLevel` 通过 zerolog 内置的 `zerolog.Context.Logger().Level(lvl).With()` 方法指定 logger 的级别。通过 `matchHlogLevel()` 将 hlog.Level 转换成 zerolog.level。默认情况下，它设置为 WarnLevel。
+
+函数签名：
+```go
+func WithLevel(level hlog.Level) Opt 
+```
+
+示例代码：
+```go
+l:=New(WithLevel(hlog.LevelDebug))
+l.Debug("foobar")
+```
+
+##### WithField
+
+`WithField` 通过 zerolog 内置的 `zerolog.Context.Interface(name, value)` 方法向 logger 的 context 添加一个字段
+
+函数签名：
+```go
+func WithField(name string, value interface{}) Opt 
+```
+
+示例代码：
+```go
+b := &bytes.Buffer{}
+l := New(WithField("service", "logging"))
 l.SetOutput(b)
-l.WithField("service", "logging")
+
+l.Info("foobar")
+
+type Log struct {
+    Level   string `json:"level"`
+    Service string `json:"service"`
+    Message string `json:"message"`
+}
+
+log := &Log{}
+
+err := json.Unmarshal(b.Bytes(), log)//log.service=="logging"
 ```
-##### Unwrap
-Unwrap 返回下层的zerolog logger
+
+##### WithFields
+
+`WithFields` 通过 zerolog 内置的 `zerolog.Context.Fields(fields)` 向 logger 的 context 添加一些字段
 
 函数签名：
 ```go
-func (l *Logger) zerolog.Logger 
+func WithFields(fields map[string]interface{}) Opt 
 ```
 
 示例代码：
 ```go
-l := New()
-logger := l.Unwrap()
+b := &bytes.Buffer{}
+l := New(WithFields(map[string]interface{}{
+	"host": "localhost",
+	"port": 8080,
+}))//...
 ```
-##### Log
-Log使用一个具有特定日志等级的zerolog来记录日志
+
+##### WithTimestamp
+
+`WithTimestamp` 通过 zerolog 内置的 `zerolog.Context.Timestamp()` 将时间戳字段添加到 logger 的 context 中
 
 函数签名：
 ```go
-func (l *Logger)(level hlog.Level, kvs ...interface{})
+func WithTimestamp() Opt 
 ```
 
 示例代码：
 ```go
-l := New()
-l.Log(hlog.LevelDebug,"msg")
+l := New(WithTimestamp())
+l.Info("foobar")
 ```
-##### Logf
-Logf使用一个具有特定日志等级和格式的zerolog来记录日志
+
+##### WithFormattedTimestamp
+
+`WithFormattedTimestamp` 与 `WithTimestamp` 类似，将格式化的时间戳字段添加到 logger 的 context 中
 
 函数签名：
 ```go
-func (l *Logger)(level hlog.Level, format string, kvs ...interface{})
+func WithFormattedTimestamp(format string) Opt 
 ```
 
 示例代码：
 ```go
-l := New()
-l.Logf(hlog.LevelDebug,"the message is %s","msg")
+l := New(WithFormattedTimestamp(time.RFC3339Nano))
+l.Info("foobar")
 ```
-##### CtxLogf
-CtxLogf使用一个具有特定日志等级,格式和上下文的zerolog来记录日志
 
-如果没有相关联的logger，DefaultContextLogger将被使用，除非DefaultContextLoggers为nil，在这种情况下使用无能力的logger
+##### WithCaller
+
+`WithCaller` 通过 zerolog 内置的 `zerolog.Context.Caller()` 添加一个 caller 到 logger 的 context 中，caller 会报告调用者的信息
 
 函数签名：
 ```go
-func (l *Logger)(level hlog.Level, ctx context.Context, format string, kvs ...interface{})
+func WithCaller() Opt 
 ```
 
 示例代码：
 ```go
-ctx:=context.Background()
-l := New()
-l.Logf(hlog.LevelDebug,ctx,"the message is %s","msg")
+//获取路径的最后一个元素
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "github.com/hertz-contrib/logger/zerolog"
+    "path/filepath"
+    "strings"
+)
+
+func main() {
+    b := &bytes.Buffer{}
+    l := zerolog.New(zerolog.WithCaller())//添加了一个调用者
+    l.SetOutput(b)
+    l.Info("foobar")
+    type Log struct {
+        Level   string `json:"level"`
+        Caller  string `json:"caller"`
+        Message string `json:"message"`
+    }
+
+    log := &Log{}
+
+    err := json.Unmarshal(b.Bytes(), log)
+    if err!=nil {
+        //...
+    }
+
+    segments := strings.Split(log.Caller, ":")
+    filePath := filepath.Base(segments[0]) //filepath=="logger.go"
+}
 ```
-##### 封装好日志等级的函数
-Debug,Debugf,CtxDebugf等
+##### WithHook
+
+`WithHook` 通过 zerolog 内置的 `zerolog.Context.Logger().Hook(hook).With()` 添加一个 hook 到 logger 的 context 中
 
 函数签名：
 ```go
-func (l *Logger)(v ...interface{})
-func (l *Logger)(format string, v ...interface{})
-func (l *Logger)(ctx context.Context, format string, v ...interface{})
+func WithHook(hook zerolog.Hook) Opt 
 ```
 
 示例代码：
 ```go
-ctx:=context.Background()
-l := New()
-l.CtxDebugf(ctx,"the message is %s","msg")
+h := &Hook{}
+l := New(WithHook(h))
+
+l.Info("Foo")
+l.Warn("Bar")
+//h.logs[0].level==zerolog.InfoLevel
+//h.logs[0].message=="Foo"
+//h.logs[1].level==zerolog.WarnLevel
+//h.logs[1].message=="Bar"
 ```
-更多用法示例详见 [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。
+
+##### WithHookFunc
+
+`WithHookFunc` 与 `WithHook` 类似，添加一个 hook 函数到 logger 的 context 中
+
+函数签名：
+```go
+func WithHookFunc(hook zerolog.HookFunc) Opt
+```
+
+示例代码：
+```go
+logs := make([]HookLog, 0, 2)   
+l := New(WithHookFunc(func(e *zerolog.Event, level zerolog.Level, message string) {
+    logs = append(logs, HookLog{
+    level:   level,
+    message: message,  
+    })
+}))
+
+l.Info("Foo")
+l.Warn("Bar")
+//h.logs[0].level==zerolog.InfoLevel
+//h.logs[0].message=="Foo"
+//h.logs[1].level==zerolog.WarnLevel
+//h.logs[1].message=="Bar"
+```
+适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。
 
