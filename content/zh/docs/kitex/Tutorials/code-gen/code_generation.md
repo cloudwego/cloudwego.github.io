@@ -13,7 +13,7 @@ description: >
 
 ## 安装
 
-> 目前 Kitex 命令行工具暂不支持 Windows 环境，预计在 v0.5.1 支持
+> 目前 Kitex 命令行工具暂不支持 Windows 环境
 
 Kitex 代码生成依赖于 thriftgo 和 protoc，需要先安装相应的编译器：[thriftgo](https://github.com/cloudwego/thriftgo) 或 [protoc](https://github.com/protocolbuffers/protobuf/releases)。
 
@@ -97,7 +97,7 @@ kitex -service mydemoservice demo.thrift
 生成结果如下：
 
 ```
-├── build.sh			// 快速构建服务的脚步
+├── build.sh			// 快速构建服务的脚本
 ├── handler.go		    // 为 server 生成 handler 脚手架
 ├── kitex_info.yaml  	// 记录元信息，用于与 cwgo 工具的集成
 ├── main.go		 	 // 快速启动 server 的主函数
