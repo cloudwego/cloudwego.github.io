@@ -1,7 +1,7 @@
 ---
-title: "Service Registration and Service Discovery"
+title: "Service Registration and Discovery"
 date: 2022-08-14
-weight: 3
+weight: 1
 description: >
 ---
 
