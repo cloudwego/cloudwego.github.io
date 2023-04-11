@@ -1,102 +1,10 @@
-### Zerolog
+---
+title: "zerolog概览"
+linkTitle: "zerolog概览"
+weight: 2
+description: >
 
-#### 下载并安装
-```shell
-go get github.com/hertz-contrib/logger/zerolog
-```
-#### 简单用法示例：
-```go
-import (
-	"context"
-	"os"
-	
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	hertzZerolog "github.com/hertz-contrib/logger/zerolog"
-)
-
-func main() {
-	h := server.Default()
-
-	logger := hertzZerolog.New(
-		hertzZerolog.WithOutput(os.Stdout),     // allows to specify output
-		hertzZerolog.WithLevel(hlog.LevelInfo), // option with log level
-		hertzZerolog.WithTimestamp(),           // option with timestamp
-		hertzZerolog.WithCaller(),              // option with caller
-		// ...
-	)
-
-	hlog.SetLogger(logger)
-
-	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
-		hlog.Info("Hello, hertz")
-		c.String(consts.StatusOK, "Hello hertz!")
-	})
-
-	h.Spin()
-}
-```
-#### Logger 的部分用法：
-
-##### 定义 hlog.FullLogger 和 Logger 结构体
-
-```go
-var _ hlog.FullLogger = (*Logger)(nil)
-
-type Logger struct {
-	log     zerolog.Logger
-	out     io.Writer
-	level   zerolog.Level
-	options []Opt
-}
-```
-
-##### New
-`New` 通过 `newLogger` 函数返回一个新的 Logger 实例
-
-函数签名：
-```go
-func New(options ...Opt) *Logger
-```
-
-示例代码：
-```go
-hlog.SetLogger(hertzZerolog.New())
-```
-##### From
-`From` 通过 `newLogger` 用一个已存在的 Logger 返回一个新的 Logger
-
-函数签名：
-```go
-func From(log zerolog.Logger, options ...Opt) *Logger
-```
-
-示例代码：
-```go
-zl := zerolog.New(b).With().Str("key", "test").Logger()
-l := From(zl)
-l.Info("foo")
-```
-##### GetLogger
-`GetLogger` 通过 `DefaultLogger()` 方法返回默认的 Logger 实例和 error
-
-函数签名：
-```go
-func GetLogger() (Logger, error)
-```
-
-示例代码：
-```go
-logger,err:=GetLogger()
-if err!=nil{
-	printf("get logger failed")
-}
-```
-
-#### option 的配置
-
+---
 ##### WithOutput
 
 `WithOutput` 通过 zerolog 内置的 `zerolog.Context.Logger().Output(out).With()` 返回一个Opt的函数，允许指定 logger 的输出。默认情况下，它设置为 os.Stdout。
@@ -108,9 +16,18 @@ func WithOutput(out io.Writer) Opt
 
 示例代码：
 ```go
-b := &bytes.Buffer{}
-l := New(WithOutput(b))
-l.Info("foobar")
+package main
+
+import (
+    "bytes"
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+    b := &bytes.Buffer{}
+    l := hertzZerolog.New(hertzZerolog.WithOutput(b))
+    l.Info("foobar")
+}
 ```
 
 ##### WithLevel
@@ -124,8 +41,18 @@ func WithLevel(level hlog.Level) Opt
 
 示例代码：
 ```go
-l:=New(WithLevel(hlog.LevelDebug))
-l.Debug("foobar")
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/common/hlog"
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+    l := hertzZerolog.New(hertzZerolog.WithLevel(hlog.LevelDebug))
+    l.Debug("foobar")
+}
+
 ```
 
 ##### WithField
@@ -139,21 +66,31 @@ func WithField(name string, value interface{}) Opt
 
 示例代码：
 ```go
-b := &bytes.Buffer{}
-l := New(WithField("service", "logging"))
-l.SetOutput(b)
+package main
 
-l.Info("foobar")
+import (
+    "bytes"
+    "github.com/cloudwego/hertz/pkg/common/json"
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+)
 
-type Log struct {
-    Level   string `json:"level"`
-    Service string `json:"service"`
-    Message string `json:"message"`
+func main() {
+    b := &bytes.Buffer{}
+    l := hertzZerolog.New(hertzZerolog.WithField("service", "logging"))
+    l.SetOutput(b)
+
+    l.Info("foobar")
+
+    type Log struct {
+        Level   string `json:"level"`
+        Service string `json:"service"`
+        Message string `json:"message"`
+    }
+
+    log := &Log{}
+
+    err := json.Unmarshal(b.Bytes(), log)//log.service=="logging"
 }
-
-log := &Log{}
-
-err := json.Unmarshal(b.Bytes(), log)//log.service=="logging"
 ```
 
 ##### WithFields
@@ -167,11 +104,20 @@ func WithFields(fields map[string]interface{}) Opt
 
 示例代码：
 ```go
-b := &bytes.Buffer{}
-l := New(WithFields(map[string]interface{}{
-	"host": "localhost",
-	"port": 8080,
-}))//...
+package main
+
+import (
+    "bytes"
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+    b := &bytes.Buffer{}
+    l := hertzZerolog.New(hertzZerolog.WithFields(map[string]interface{}{
+        "host": "localhost",
+        "port": 8080,
+    })) //...
+}
 ```
 
 ##### WithTimestamp
@@ -185,8 +131,16 @@ func WithTimestamp() Opt
 
 示例代码：
 ```go
-l := New(WithTimestamp())
-l.Info("foobar")
+package main
+
+import (
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+    l := hertzZerolog.New(hertzZerolog.WithTimestamp())
+    l.Info("foobar")
+}
 ```
 
 ##### WithFormattedTimestamp
@@ -200,8 +154,17 @@ func WithFormattedTimestamp(format string) Opt
 
 示例代码：
 ```go
-l := New(WithFormattedTimestamp(time.RFC3339Nano))
-l.Info("foobar")
+package main
+
+import (
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+    "time"
+)
+
+func main() {
+    l := hertzZerolog.New(hertzZerolog.WithFormattedTimestamp(time.RFC3339Nano))
+    l.Info("foobar")
+}
 ```
 
 ##### WithCaller
@@ -259,15 +222,32 @@ func WithHook(hook zerolog.Hook) Opt
 
 示例代码：
 ```go
-h := &Hook{}
-l := New(WithHook(h))
+package main
 
-l.Info("Foo")
-l.Warn("Bar")
-//h.logs[0].level==zerolog.InfoLevel
-//h.logs[0].message=="Foo"
-//h.logs[1].level==zerolog.WarnLevel
-//h.logs[1].message=="Bar"
+import (
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+    "github.com/rs/zerolog"
+)
+
+type Hook struct {
+    logs []HookLog
+}
+type HookLog struct {
+    level   zerolog.Level
+    message string
+}
+
+func main() {
+    h := Hook{}
+    l := hertzZerolog.New(hertzZerolog.WithHook(h))
+
+    l.Info("Foo")
+    l.Warn("Bar")
+    //h.logs[0].level==zerolog.InfoLevel
+    //h.logs[0].message=="Foo"
+    //h.logs[1].level==zerolog.WarnLevel
+    //h.logs[1].message=="Bar"
+}
 ```
 
 ##### WithHookFunc
@@ -281,19 +261,33 @@ func WithHookFunc(hook zerolog.HookFunc) Opt
 
 示例代码：
 ```go
-logs := make([]HookLog, 0, 2)   
-l := New(WithHookFunc(func(e *zerolog.Event, level zerolog.Level, message string) {
-    logs = append(logs, HookLog{
-    level:   level,
-    message: message,  
-    })
-}))
+package main
 
-l.Info("Foo")
-l.Warn("Bar")
-//h.logs[0].level==zerolog.InfoLevel
-//h.logs[0].message=="Foo"
-//h.logs[1].level==zerolog.WarnLevel
-//h.logs[1].message=="Bar"
+import (
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+    "github.com/rs/zerolog"
+)
+
+type HookLog struct {
+    level   zerolog.Level
+    message string
+}
+
+func main() {
+    logs := make([]HookLog, 0, 2)
+    l := hertzZerolog.New(hertzZerolog.WithHookFunc(func(e *zerolog.Event, level zerolog.Level, message string) {
+        logs = append(logs, HookLog{
+            level:   level,
+            message: message,
+        })
+    }))
+
+    l.Info("Foo")
+    l.Warn("Bar")
+    //h.logs[0].level==zerolog.InfoLevel
+    //h.logs[0].message=="Foo"
+    //h.logs[1].level==zerolog.WarnLevel
+    //h.logs[1].message=="Bar"
+}
 ```
 适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。
