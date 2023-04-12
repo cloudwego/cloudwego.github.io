@@ -65,4 +65,4 @@ We provide the [hertz-benchmark](https://github.com/cloudwego/hertz-benchmark) p
 - [Example](https://github.com/cloudwego/hertz-examples): A repository to host examples for Hertz.
 
 ## Blogs
-- [ByteDance Practice on Go Network Library](https://www.cloudwego.io/blog/2021/10/09/bytedance-practices-on-go-network-library/)
+- [ByteDance Practice on Go Network Library](https://www.cloudwego.io/blog/2020/05/24/bytedance-practices-on-go-network-library/)
