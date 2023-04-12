@@ -13,9 +13,9 @@ Hertz 的路由、中间件的注册，服务启动，退出等重要方法都�
 ```go
 // Hertz is the core struct of hertz.
 type Hertz struct {
-    *route.Engine
-    // 用于接收信号以达到优雅退出的目的
-    signalWaiter func (err chan error) error
+*route.Engine
+// 用于接收信号以达到优雅退出的目的
+signalWaiter func (err chan error) error
 }
 ```
 
@@ -28,19 +28,19 @@ Hertz 在 `server` 包中提供了 `New` 和 `Default` 函数用于初始化服�
 ```go
 // New creates a hertz instance without any default config.
 func New(opts ...config.Option) *Hertz {
-    options := config.NewOptions(opts)
-    h := &Hertz{Engine: route.NewEngine(options)}
-    return h
+options := config.NewOptions(opts)
+h := &Hertz{Engine: route.NewEngine(options)}
+return h
 }
 ```
 
 ```go
 // Default creates a hertz instance with default middlewares.
 func Default(opts ...config.Option) *Hertz {
-    h := New(opts...)
-    // 在 New 的基础上使用了内置的 Recovery 中间件
-    h.Use(recovery.Recovery())
-    return h
+h := New(opts...)
+// 在 New 的基础上使用了内置的 Recovery 中间件
+h.Use(recovery.Recovery())
+return h
 }
 ```
 
@@ -116,9 +116,9 @@ type Engine struct {
     maxParams uint16
     
     allNoMethod app.HandlersChain
-    allNoRoute app.HandlersChain
-    noRoute app.HandlersChain
-    noMethod app.HandlersChain
+    allNoRoute  app.HandlersChain
+    noRoute     app.HandlersChain
+    noMethod    app.HandlersChain
     
     // 用于渲染 HTML
     delims     render.Delims
@@ -193,6 +193,78 @@ func main() {
     h.Name = ""
 }
 ```
+### 渲染 template
+
+engine 提供了 `Delims`, `SetFuncMap`, `LoadHTMLGlob`, `LoadHTMLFiles`, `SetHTMLTemplate`, `SetAutoReloadHTMLTemplate` 
+等方法用于渲染 HTML或模板文件。
+
+#### Delims
+
+用于设置 template 的分隔符
+
+函数签名:
+
+```go
+func (engine *Engine) Delims(left, right string) *Engine 
+```
+#### SetFuncMap
+
+用于设置 template 的数据源
+
+函数签名:
+
+```go
+type FuncMap map[string]interface{}
+
+func (engine *Engine) SetFuncMap(funcMap template.FuncMap) 
+```
+
+```go
+package main
+
+func main() {
+    h := server.New()
+    h.SetFuncMap(template.FuncMap{
+        "time": time.Now.String(),
+    })
+}
+```
+#### LoadHTMLGlob
+
+用于全局加载 template 文件, 可以使用 `*` 通配符来指定模板文件夹
+
+函数签名:
+
+```go
+// LoadHTMLGlob loads HTML files identified by glob pattern
+// and associates the result with HTML renderer.
+func (engine *Engine) LoadHTMLGlob(pattern string) 
+```
+
+示例代码:
+
+```go
+// 加载 render/html 目录下的所有 html 模板文件
+h.LoadHTMLGlob("render/html/*")
+
+// 加载 render/html/index.tmpl 模板文件
+h.LoadHTMLGlob("index.tmpl")
+```
+
+#### LoadHTMLFiles
+
+用于加载指定的 template 文件, 参数为 string 切片
+
+函数签名:
+```go
+// LoadHTMLFiles loads a slice of HTML files
+// and associates the result with HTML renderer.
+func (engine *Engine) LoadHTMLFiles(files ...string) 
+```
+
+#### SetHTMLTemplate/SetAutoReloadHTMLTemplate
+
+这两个方法在渲染的内部逻辑使用, 不推荐直接使用
 
 ### 注册中间件
 
@@ -396,6 +468,7 @@ linux 默认使用 `netpoll`, windows 只能使用 `go net`.
 如果对如何使用对应的网络库有疑惑, 请查看[此处](../network-lib)
 
 函数签名:
+
 ```go
 func (engine *Engine) GetTransporterName() (tName string)
 
@@ -403,14 +476,16 @@ func (engine *Engine) GetTransporterName() (tName string)
 // Use engine.GetTransporterName for the real transporter used.
 func GetTransporterName() (tName string)
 ```
+
 ### SetTransporter
 
 `SetTransporter` 只设置 Engine 的全局默认值。
 所以具体在初始化 Engine 时使用 WithTransporter 来设置网络库时会覆盖掉 SetTransporter 的设置。
 
 函数签名:
+
 ```go
-func SetTransporter(transporter func(options *config.Options) network.Transporter)
+func SetTransporter(transporter func (options *config.Options) network.Transporter)
 ```
 
 ### IsRunning
@@ -418,17 +493,19 @@ func SetTransporter(transporter func(options *config.Options) network.Transporte
 判断当前 Engine 是否已经启动.
 
 函数签名:
+
 ```go
 func (engine *Engine) IsRunning() bool
 ```
 
 代码示例:
+
 ```go
 package main
 
 func main() {
     h := server.New()
-	// 可以通过 /live 接口来判断当前服务的运行状态
+    // 可以通过 /live 接口来判断当前服务的运行状态
     h.GET("/live", func(c context.Context, ctx *app.RequestContext) {
         ctx.JSON(200, utils.H{
             "isLive": h.IsRunning(),
@@ -443,6 +520,7 @@ func main() {
 判断是否启用了 trace 功能.
 
 函数签名:
+
 ```go
 func (engine *Engine) IsTraceEnable() bool
 ```
@@ -452,11 +530,13 @@ func (engine *Engine) IsTraceEnable() bool
 获取当前 Engine 的 ctxPool.
 
 函数签名:
+
 ```go
 func (engine *Engine) GetCtxPool() *sync.Pool
 ```
 
 代码示例:
+
 ```go
 h := server.New()
 // 从 ctxPool 中获取一个 ctx
@@ -465,3 +545,85 @@ h.GetCtxPool().Get().(*app.RequestContext)
 // 将 ctx 放回 ctxPool
 h.GetCtxPool().Put(ctx)
 ```
+
+### GetServiceName
+
+获取当前 Engine 的服务名.
+
+函数签名:
+
+```go
+func (engine *Engine) GetServerName() []byte 
+``` 
+
+### NoRoute
+
+用于设置当请求的路由不存在时的处理函数, 默认返回 404 状态码
+
+函数签名:
+
+```go
+// NoRoute adds handlers for NoRoute. It returns a 404 code by default.
+func (engine *Engine) NoRoute(handlers ...app.HandlerFunc)
+```
+
+示例代码:
+
+```go
+package main
+
+func main() {
+    h := server.New()
+    h.NoRoute(func(c context.Context, ctx *app.RequestContext) {
+        ctx.JSON(404, utils.H{
+            "msg": "cannot found resource",
+        })
+    })
+    h.Spin()
+}
+```
+
+### NoMethod
+
+用于设置当请求的方法不存在时的处理函数，它默认返回一个 405 状态码
+
+函数签名:
+
+```go
+// NoMethod adds handlers for NoMethod. It returns a 405 code by default.
+// NoMethod sets the handlers called when the HTTP method does not match.
+func (engine *Engine) NoMethod(handlers ...app.HandlerFunc) 
+```
+
+示例代码:
+
+```go
+package main
+
+func main() {
+    h := server.New()
+    h.NoRoute(func(c context.Context, ctx *app.RequestContext) {
+        ctx.JSON(405, utils.H{
+            "msg": "cannot match HTTP method",
+        })
+    })
+    h.Spin()
+}
+```
+
+### Delims
+
+请查看[此处](#delims)
+
+### SetFuncMap
+
+请查看[此处](#setfuncmap)
+
+### LoadHTMLGlob
+
+请查看[此处](#loadhtmlglob)
+
+### LoadHTMLFiles
+
+请查看[此处](#loadhtmlfiles)
+

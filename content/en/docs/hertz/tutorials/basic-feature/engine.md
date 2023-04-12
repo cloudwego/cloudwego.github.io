@@ -194,6 +194,81 @@ func main() {
     h.Name = ""
 }
 ```
+### Rendering template
+
+The engine provides methods such as `Delims`, `SetFuncMap`, `LoadHTMLGlob`, `LoadHTMLFiles`, `SetHTMLTemplate`, and `SetAutoReloadHTMLTemplate` for rendering HTML or template files.
+
+#### Delims
+
+Used to set the delimiter of the templates.
+
+Function signature:
+
+```go
+func (engine *Engine) Delims(left, right string) *Engine 
+```
+
+#### SetFuncMap
+
+Used to set data sources for templates.
+
+Function signature:
+
+```go
+type FuncMap map[string]interface{}
+
+func (engine *Engine) SetFuncMap(funcMap template.FuncMap) 
+```
+
+Example usage:
+
+```go
+package main
+    
+func main() {
+    h := server.New()
+    h.SetFuncMap(template.FuncMap{
+        "time": time.Now.String(),
+    })
+}
+```
+
+#### LoadHTMLGlob
+
+Used for global loading of template files. The `*` wildcard can be used to specify the template folder.
+
+Function signature:
+
+```go
+// LoadHTMLGlob loads HTML files identified by glob pattern
+// and associates the result with HTML renderer.
+func (engine *Engine) LoadHTMLGlob(pattern string) 
+```
+
+Example code:
+
+```go
+// Loads all html template files in render/html directory
+h.LoadHTMLGlob("render/html/*")
+
+// Loads index.tmpl template file
+h.LoadHTMLGlob("index.tmpl")
+```
+
+#### LoadHTMLFiles
+
+Used to load specified template files as a string slice.
+
+Function signature:
+```go
+// LoadHTMLFiles loads a slice of HTML files
+// and associates the result with HTML renderer.
+func (engine *Engine) LoadHTMLFiles(files ...string) 
+```
+
+#### SetHTMLTemplate/SetAutoReloadHTMLTemplate
+
+These two methods are used internally in rendering logic and are not recommended for direct use.
 
 ### Register Middleware
 
@@ -465,3 +540,19 @@ h.GetCtxPool().Get().(*app.RequestContext)
 // Return a ctx to the pool 
 h.GetCtxPool().Put(ctx)
 ```
+
+### Delims
+
+Please see [here](#delims)
+
+### SetFuncMap
+
+Please see [here](#setfuncmap)
+
+### LoadHTMLGlob
+
+Please see [here](#loadhtmlglob)
+
+### LoadHTMLFiles
+
+Please see [here](#loadhtmlfiles)
