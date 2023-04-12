@@ -116,11 +116,8 @@ type Engine struct {
     maxParams uint16
     
     allNoMethod app.HandlersChain
-    // 没有设置路由的处理函数
     allNoRoute app.HandlersChain
-    // 没有设置路由的处理函数
     noRoute app.HandlersChain
-    // 没有设置请求方法的处理函数
     noMethod app.HandlersChain
     
     // 用于渲染 HTML
