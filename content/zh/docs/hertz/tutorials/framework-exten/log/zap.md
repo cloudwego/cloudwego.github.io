@@ -1,10 +1,53 @@
 ---
-title: "zap的option配置"
-linkTitle: "zap的option配置"
+title: "zap"
+linkTitle: "zap"
 weight: 2
-description: >
+description: zap 的相关用法>
 
 ---
+# Logger 的部分用法
+
+## 定义 hlog.FullLogger 和 Logger 结构体
+
+```go
+var _ hlog.FullLogger = (*Logger)(nil)
+
+type Logger struct {
+    l      *zap.SugaredLogger
+    config *config
+}
+```
+## NewLogger
+
+通过 `defaultConfig()` 创建并初始化一个 Logger ，便于后续的调用，可将所需配置作为参数传入函数，若不传入参数则安装初始配置创建 Logger
+相关配置请参考后面的 “option的配置”。
+
+函数签名：
+
+```go
+func NewLogger(opts ...Option) *Logger
+```
+
+事例代码：
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/common/hlog"
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+    "go.uber.org/zap/zapcore"
+)
+
+func main() {
+    logger := hertzzap.NewLogger(hertzzap.WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
+
+    hlog.SetLogger(logger)
+}
+
+```
+
+# Option 的相关配置
 
 ## WithCoreEnc
 
@@ -141,5 +184,70 @@ func main() {
 }
 }
 ```
+## 一个完整的 zap 示例
 
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"os"
+	"path"
+	"time"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	hertzzap "github.com/hertz-contrib/logger/zap"
+	"gopkg.in/natefinch/lumberjack.v2"
+)
+
+func main() {
+	h := server.Default()
+
+	// 可定制的输出目录。
+	var logFilePath string
+	dir := "./hlog"
+	logFilePath = dir + "/logs/"
+	if err := os.MkdirAll(logFilePath, 0o777); err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	// 将文件名设置为日期
+	logFileName := time.Now().Format("2006-01-02") + ".log"
+	fileName := path.Join(logFilePath, logFileName)
+	if _, err := os.Stat(fileName); err != nil {
+		if _, err := os.Create(fileName); err != nil {
+			log.Println(err.Error())
+			return
+		}
+	}
+	
+	logger := hertzzap.NewLogger()
+	// 提供压缩和删除
+	lumberjackLogger := &lumberjack.Logger{
+		Filename:   fileName,
+		MaxSize:    20,   // 一个文件最大可达20M。
+		MaxBackups: 5,    // 最多同时保存 5 个文件。
+		MaxAge:     10,   // 一个文件最多可以保存 10 天。
+		Compress:   true, // 用 gzip 压缩。
+	}
+
+	logger.SetOutput(lumberjackLogger)
+	logger.SetLevel(hlog.LevelDebug)
+
+	hlog.SetLogger(logger)
+
+	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+		hlog.Info("Hello, hertz")
+		c.String(consts.StatusOK, "Hello hertz!")
+	})
+
+	h.Spin()
+}
+```
 适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
+
