@@ -181,7 +181,7 @@ Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，
 
 **Hertz Doc**：https://www.cloudwego.io/zh/docs/hertz/
 
-官网文章：[**字节跳动在 Go 网络库上的实践** ](https://www.cloudwego.io/zh/blog/2021/10/09/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)
+官网文章：[**字节跳动在 Go 网络库上的实践** ](https://www.cloudwego.io/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)
 
 [Hertz]: https://github.com/cloudwego/hertz
 [Kitex]: https://github.com/cloudwego/kitex
