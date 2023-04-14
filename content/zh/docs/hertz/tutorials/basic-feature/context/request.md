@@ -11,22 +11,177 @@ description: >
 ```go
 // TODO: API 说明
 func (ctx *RequestContext) Host() []byte 
+func (ctx *RequestContext) FullPath() string 
+func (ctx *RequestContext) SetFullPath(p string)
 func (ctx *RequestContext) Param(key string) string
 func (ctx *RequestContext) Query(key string) string
 func (ctx *RequestContext) DefaultQuery(key, defaultValue string) string
 func (ctx *RequestContext) GetQuery(key string) (string, bool) 
-func (ctx *RequestContext) FullPath() string 
-func (ctx *RequestContext) SetFullPath(p string)
-func (ctx *RequestContext) URI() *protocol.URI 
 func (ctx *RequestContext) QueryArgs() *protocol.Args
+func (ctx *RequestContext) URI() *protocol.URI 
 ```
 
 ### Host
+
+获取请求的主机地址。
 
 函数签名:
 
 ```go
 func (ctx *RequestContext) Host() []byte 
+```
+
+示例:
+
+```go
+// GET http://example.com
+h.GET("/", func(c context.Context, ctx *app.RequestContext) {
+    host := ctx.Host() // host == []byte("example.com")
+})
+```
+
+### FullPath
+
+获取匹配的路由完整路径，对于未匹配的路由返回空字符串。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) FullPath() string 
+```
+
+示例:
+
+```go
+h := server.Default(server.WithHandleMethodNotAllowed(true))
+
+// GET http://example.com/user/bar
+h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
+    fpath := ctx.FullPath() // fpath == "/user/:name"
+})
+
+// GET http://example.com/bar
+h.NoRoute(func(c context.Context, ctx *app.RequestContext) {
+    fpath := ctx.FullPath() // fpath == ""
+})
+
+// POST http://example.com/user/bar
+h.NoMethod(func(c context.Context, ctx *app.RequestContext) {
+    fpath := ctx.FullPath() // fpath == ""
+})
+```
+
+### SetFullPath
+
+设置 FullPath 的值。
+
+> 注意：FullPath 由路由查找时分配，通常你不需要使用 SetFullPath 去覆盖它。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetFullPath(p string)
+```
+
+示例:
+
+```go
+h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
+    ctx.SetFullPath("/v1/user/:name")
+    fpath := ctx.FullPath() // fpath == "/v1/user/:name"
+})
+```
+
+### Param
+
+获取路由参数的值
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Param(key string) string 
+```
+
+示例:
+
+```go
+// GET http://example.com/user/bar
+h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
+    name := ctx.Param("name") // name == "bar"
+    id := ctx.Param("id") // id == ""
+})
+```
+
+### Query
+
+获取路由 Query String 参数中指定属性的值，如果没有返回空字符串。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Query(key string) string
+```
+
+示例:
+
+```go
+// GET http://example.com/user?name=bar
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    name := ctx.Query("name") // name == "bar"
+    id := ctx.Query("id") // id == ""
+})
+```
+
+### DefaultQuery
+
+获取路由 Query String 参数中指定属性的值，如果没有返回设置的默认值。
+
+函数签名:
+
+```go
+func (ctx*RequestContext) DefaultQuery(key, defaultValue string) string
+```
+
+示例:
+
+```go
+// GET http://example.com/user?name=bar&&age=
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    name := ctx.DefaultQuery("name", "tom") // name == "bar"
+    id := ctx.DefaultQuery("id", "123") // id == "123"
+    age := ctx.DefaultQuery("age", "45") // age == ""
+})
+```
+
+### GetQuery
+
+获取路由 Query String 参数中指定属性的值以及属性是否存在。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetQuery(key string) (string, bool)
+```
+
+示例:
+
+```go
+// GET http://example.com/user?name=bar&&age=
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    name, hasName := ctx.GetQuery("name") // name == "bar", hasName == true
+    id, hasId := ctx.GetQuery("id") // id == "", hasId == false
+    age, hasAge := ctx.GetQuery("age") // age == "", hasAge == true
+})
+```
+
+### QueryArgs
+
+获取路由 Query String 参数对象
+
+函数签名:
+
+```go
+func (ctx *RequestContext) QueryArgs() *protocol.Args
 ```
 
 说明:
@@ -36,17 +191,36 @@ func (ctx *RequestContext) Host() []byte
 ```go
 ```
 
-### Param...SetFullPath (TODO)
+#### protocol.Args
+
+```go
+func (a *Args) Set(key, value string) 
+func (a *Args) Reset() 
+func (a *Args) CopyTo(dst *Args) 
+func (a *Args) Del(key string) 
+func (a *Args) DelBytes(key []byte) 
+func (a *Args) Has(key string) bool 
+func (a *Args) String() string 
+func (a *Args) QueryString() []byte 
+func (a *Args) ParseBytes(b []byte) 
+func (a *Args) Peek(key string) []byte 
+func (a *Args) PeekExists(key string) (string, bool) 
+func (a *Args) Len() int 
+func (a *Args) AppendBytes(dst []byte) []byte 
+func (a *Args) VisitAll(f func(key, value []byte)) 
+func (a *Args) WriteTo(w io.Writer) (int64, error) 
+func (a *Args) Add(key, value string) 
+```
 
 ### URI
+
+返回请求的 URI 对象
 
 函数签名:
 
 ```go
 func (ctx *RequestContext) URI() *protocol.URI 
 ```
-
-说明:
 
 示例:
 
@@ -89,42 +263,6 @@ func (ctx *RequestContext) URI() *protocol.URI
    func (u *URI) AppendBytes(dst []byte) []byte 
    func (u *URI) RequestURI() []byte 
    func (u *URI) FullURI() []byte 
-```
-
-### QueryArgs
-
-函数签名:
-
-```go
-func (ctx *RequestContext) QueryArgs() *protocol.Args
-```
-
-说明:
-
-示例:
-
-```go
-```
-
-#### protocol.Args
-
-```go
-func (a *Args) Set(key, value string) 
-func (a *Args) Reset() 
-func (a *Args) CopyTo(dst *Args) 
-func (a *Args) Del(key string) 
-func (a *Args) DelBytes(key []byte) 
-func (a *Args) Has(key string) bool 
-func (a *Args) String() string 
-func (a *Args) QueryString() []byte 
-func (a *Args) ParseBytes(b []byte) 
-func (a *Args) Peek(key string) []byte 
-func (a *Args) PeekExists(key string) (string, bool) 
-func (a *Args) Len() int 
-func (a *Args) AppendBytes(dst []byte) []byte 
-func (a *Args) VisitAll(f func(key, value []byte)) 
-func (a *Args) WriteTo(w io.Writer) (int64, error) 
-func (a *Args) Add(key, value string) 
 ```
 
 ## Header
