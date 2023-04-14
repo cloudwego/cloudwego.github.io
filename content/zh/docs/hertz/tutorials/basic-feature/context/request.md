@@ -184,32 +184,76 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 func (ctx *RequestContext) QueryArgs() *protocol.Args
 ```
 
-说明:
+#### Args 对象
+
+Args 对象提供了以下方法获取/修改 Query String 参数
+
+|函数签名|说明|
+|:--|:--|
+|`func (a *Args) Set(key, value string)`  |设置 Args 对象 key 的值 |
+|`func (a *Args) Reset()` |重制 Args 对象|
+|`func (a *Args) CopyTo(dst *Args)` |将 Args 对象拷贝到 dst |
+|`func (a *Args) Del(key string)` |删除 Args 对象 key 的键值对 |
+|`func (a *Args) DelBytes(key []byte)`|删除 Args 对象 key 的键值对|
+|`func (a *Args) Has(key string) bool` |获取 Args 对象是否存在 key 的键值对|
+|`func (a *Args) String() string` | 将 Args 对象转换为字符串类型的 Query String |
+|`func (a *Args) QueryString() []byte` |将 Args 对象转换为字节数组类型的 Query String|
+|`func (a *Args) ParseBytes(b []byte)` |解析 Query String|
+|`func (a *Args) Peek(key string) []byte` |获取 Args 对象 key 的值|
+|`func (a *Args) PeekExists(key string) (string, bool)` |获取 Args 对象 key 的值以及是否存在|
+|`func (a *Args) Len() int`| 获取 Args 对象键值对数量|
+|`func (a *Args) AppendBytes(dst []byte) []byte` |将 Args 对象 Query String 附加到 dst 中并返回|
+|`func (a *Args) VisitAll(f func(key, value []byte))` |遍历 Args 对象所有的键值对|
+|`func (a *Args) WriteTo(w io.Writer) (int64, error)`| 将 Args 对象 Query String 写入 io.Writer 中|
+|`func (a *Args) Add(key, value string)` |添加 Args 对象键为 key 的值 |
 
 示例:
 
 ```go
-```
+// GET http://example.com/user?name=bar&&age=&&pets=dog&&pets=cat
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    args := ctx.QueryArgs()
 
-#### protocol.Args
+    // get information from args
+    s := args.String()                    // s == "name=bar&age=&pets=dog&pets=cat"
+    qs := args.QueryString()              // qs == []byte("name=bar&age=&pets=dog&pets=cat")
+    cpqs := args.AppendBytes([]byte(nil)) // cpqs == []byte("name=bar&age=&pets=dog&pets=cat")
+    name := args.Peek("name")             // name == []byte("bar")
+    hasName := args.Has("name")           // hasName == true
+    age, hasAge := args.PeekExists("age") // age == "", hasAge == true
+    len := args.Len()                     // len == 4
 
-```go
-func (a *Args) Set(key, value string) 
-func (a *Args) Reset() 
-func (a *Args) CopyTo(dst *Args) 
-func (a *Args) Del(key string) 
-func (a *Args) DelBytes(key []byte) 
-func (a *Args) Has(key string) bool 
-func (a *Args) String() string 
-func (a *Args) QueryString() []byte 
-func (a *Args) ParseBytes(b []byte) 
-func (a *Args) Peek(key string) []byte 
-func (a *Args) PeekExists(key string) (string, bool) 
-func (a *Args) Len() int 
-func (a *Args) AppendBytes(dst []byte) []byte 
-func (a *Args) VisitAll(f func(key, value []byte)) 
-func (a *Args) WriteTo(w io.Writer) (int64, error) 
-func (a *Args) Add(key, value string) 
+    args.VisitAll(func(key, value []byte) {
+        // 1. key == []byte("name"), value == []byte("bar")
+        // 2. key == []byte("age"), value == nil
+        // 3. key == []byte("pets"), value == []byte("dog")
+        // 4. key == []byte("pets"), value == []byte("cat")
+    })
+
+    // change args
+    var newArgs protocol.Args
+    args.CopyTo(&newArgs)
+
+    newArgs.Set("version", "v1")
+    version := newArgs.Peek("version") //version == []byte("v1")
+
+    newArgs.Del("age")
+    hasAgeAfterDel := newArgs.Has("age") // hasAgeAfterDel == false
+
+    newArgs.DelBytes([]byte("name"))
+    hasNameAfterDel := newArgs.Has("name") // hasNameAfterDel == false
+
+    newArgs.Add("name", "foo")
+    newName := newArgs.Peek("name") //newName == []byte("foo")
+
+    newArgs.Reset()
+    empty := newArgs.String() // empty == ""
+
+    // parse args
+    var newArgs2 protocol.Args
+    newArgs2.ParseBytes([]byte("name=bar&age=20"))
+    nqs2 := newArgs2.String() // nqs2 == "name=bar&age=20"
+})
 ```
 
 ### URI
