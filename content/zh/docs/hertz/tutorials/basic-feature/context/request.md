@@ -547,6 +547,183 @@ func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string
 func (ctx *RequestContext) GetPostForm(key string) (string, bool) 
 ```
 
+### GetRawData
+
+获取请求的 body 数据
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetRawData() []byte
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Content-Type: application/x-www-form-urlencoded
+// pet=cat
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    data := ctx.GetRawData() // data == []byte("pet=cat")
+})
+
+// POST http://example.com/pet
+// Content-Type: application/json
+// {"pet":"cat"}
+h.Post("/pet", func(c context.Context, ctx *app.RequestContext) {
+    data := ctx.GetRawData() // data == []byte("{\"pet\":\"cat\"}")
+})
+```
+
+### Body
+
+获取请求的 body 数据，如果发生错误返回 error。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Body() ([]byte, error) 
+```
+
+示例:
+
+```go
+// POST http://example.com/pet
+// Content-Type: application/json
+// {"pet":"cat"}
+h.Post("/pet", func(c context.Context, ctx *app.RequestContext) {
+    data, err := ctx.Body() // data == []byte("{\"pet\":\"cat\"}") , err == nil
+})
+```
+
+### FormFile
+
+<!-- TODO -->
+
+函数签名:
+
+```go
+func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
+```
+
+示例:
+
+```go
+
+```
+
+### SaveUploadedFile
+
+<!-- TODO -->
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
+```
+
+示例:
+
+```go
+
+```
+
+### RequestBodyStream
+
+<!-- TODO -->
+
+函数签名:
+
+```go
+func (ctx *RequestContext) RequestBodyStream() io.Reader
+```
+
+示例:
+
+```go
+
+```
+
+### MultipartForm
+
+<!-- TODO -->
+
+函数签名:
+
+```go
+func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
+```
+
+示例:
+
+```go
+
+```
+
+### PostArgs
+
+<!-- TODO -->
+
+函数签名:
+
+```go
+func (ctx *RequestContext) PostArgs() *protocol.Args
+```
+
+示例:
+
+```go
+
+```
+
+### PostForm
+
+<!-- TODO -->
+
+函数签名:
+
+```go
+func (ctx *RequestContext) PostForm(key string) string
+```
+
+示例:
+
+```go
+
+```
+
+### DefaultPostForm
+
+<!-- TODO -->
+
+函数签名:
+
+```go
+func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string 
+```
+
+示例:
+
+```go
+
+```
+
+### GetPostForm
+
+<!-- TODO -->
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetPostForm(key string) (string, bool) 
+```
+
+示例:
+
+```go
+
+```
+
 ## 其他
 
 ```go
@@ -623,3 +800,17 @@ func (ctx *RequestContext) Hijacked() bool
 ```
 
 ### TODO 其他-子分类
+
+<!-- ### GetRawData
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetRawData() []byte
+```
+
+示例:
+
+```go
+
+``` -->
