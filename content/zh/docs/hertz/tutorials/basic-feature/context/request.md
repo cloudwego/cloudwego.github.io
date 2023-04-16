@@ -9,10 +9,10 @@ description: >
 ## URI
 
 ```go
-// TODO: API 说明
 func (ctx *RequestContext) Host() []byte 
 func (ctx *RequestContext) FullPath() string 
 func (ctx *RequestContext) SetFullPath(p string)
+func (ctx *RequestContext) Path() []byte 
 func (ctx *RequestContext) Param(key string) string
 func (ctx *RequestContext) Query(key string) string
 func (ctx *RequestContext) DefaultQuery(key, defaultValue string) string
@@ -92,6 +92,27 @@ h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
+### Path
+
+获取请求的路径。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Path() []byte 
+```
+
+示例:
+
+```go
+
+// GET http://example.com/user/bar
+h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
+    path := ctx.Path() // path == []byte("/user/bar")
+})
+
+```
+
 ### Param
 
 获取路由参数的值
@@ -114,7 +135,7 @@ h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
 
 ### Query
 
-获取路由 Query String 参数中指定属性的值，如果没有返回空字符串。
+获取路由 `Query String` 参数中指定属性的值，如果没有返回空字符串。
 
 函数签名:
 
@@ -134,7 +155,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### DefaultQuery
 
-获取路由 Query String 参数中指定属性的值，如果没有返回设置的默认值。
+获取路由 `Query String` 参数中指定属性的值，如果没有返回设置的默认值。
 
 函数签名:
 
@@ -155,7 +176,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetQuery
 
-获取路由 Query String 参数中指定属性的值以及属性是否存在。
+获取路由 `Query String` 参数中指定属性的值以及属性是否存在。
 
 函数签名:
 
@@ -176,7 +197,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### QueryArgs
 
-获取路由 Query String 参数对象
+获取路由 `Query String` 参数对象
 
 函数签名:
 
@@ -258,7 +279,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### URI
 
-返回请求的 URI 对象
+返回请求的 `URI` 对象
 
 函数签名:
 
@@ -269,6 +290,7 @@ func (ctx *RequestContext) URI() *protocol.URI
 示例:
 
 ```go
+TODO
 ```
 
 #### protocol.URI
@@ -317,14 +339,196 @@ func (ctx *RequestContext) IsGet() bool
 func (ctx *RequestContext) IsHead() bool
 func (ctx *RequestContext) IsPost() bool
 func (ctx *RequestContext) Method() []byte
-func (ctx *RequestContext) Path() []byte 
-func (ctx *RequestContext) NotModified()
-func (ctx *RequestContext) IfModifiedSince(lastModified time.Time) bool 
 func (ctx *RequestContext) ContentType() []byte
+func (ctx *RequestContext) IfModifiedSince(lastModified time.Time) bool 
 func (ctx *RequestContext) Cookie(key string) []byte
 func (ctx *RequestContext) UserAgent() []byte
 func (ctx *RequestContext) GetHeader(key string) []byte
 // TODO: RequestContext.Request.Header 
+```
+
+### IsGet
+
+判断请求方法的类型是否为 `GET` 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) IsGet() bool 
+```
+
+示例:
+
+```go
+// GET http://example.com/user
+h.Any("/user", func(c context.Context, ctx *app.RequestContext) {
+    isGet := ctx.IsGet() // isGet == true
+})
+```
+
+### IsHead
+
+判断请求方法的类型是否为 `HEAD` 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) IsHead() bool 
+```
+
+示例:
+
+```go
+// Head http://example.com/user
+h.Any("/user", func(c context.Context, ctx *app.RequestContext) {
+    isHead := ctx.IsHead() // isHead == true
+})
+```
+
+### IsPost
+
+判断请求方法的类型是否为 `POST` 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) IsPost() bool 
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+h.Any("/user", func(c context.Context, ctx *app.RequestContext) {
+    isPost := ctx.IsPost() // isPost == true
+})
+```
+
+### Method
+
+获取请求方法的类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Method() []byte
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+h.Any("/user", func(c context.Context, ctx *app.RequestContext) {
+    method := ctx.Method() // method == []byte("POST")
+})
+```
+
+### ContentType
+
+获取请求头 `Content-Type` 的值。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) ContentType() []byte
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Content-Type: application/json
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    contentType := ctx.ContentType() // contentType == []byte("application/json")
+})
+```
+
+### IfModifiedSince
+
+判断时间是否超过请求头 `If-Modified-Since` 的值。
+
+> 注意：如果请求头不包含 If-Modified-Since 也返回 true。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) IfModifiedSince(lastModified time.Time) bool
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// If-Modified-Since: Wed, 21 Oct 2023 07:28:00 GMT
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    t2022, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2022 07:28:00 GMT")
+    ifModifiedSince := ctx.IfModifiedSince(t2022) // ifModifiedSince == false
+
+    t2024, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2024 07:28:00 GMT")
+    ifModifiedSince = ctx.IfModifiedSince(t2024) // ifModifiedSince == true
+})
+```
+
+### Cookie
+
+获取请求头 `Cookie` 中 key 的值。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Cookie(key string) []byte
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Cookie: foo_cookie=choco; bar_cookie=strawberry
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    fCookie := ctx.Cookie("foo_cookie")     // fCookie == []byte("choco")
+    bCookie := ctx.Cookie("bar_cookie")     // bCookie == []byte("strawberry")
+    noneCookie := ctx.Cookie("none_cookie") // noneCookie == nil
+})
+```
+
+### UserAgent
+
+获取请求头 `User-Agent` 的值。
+
+函数签名:
+
+```go
+func (ctx*RequestContext) UserAgent() []byte
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// User-Agent: Chrome/51.0.2704.103 Safari/537.36
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    ua := ctx.UserAgent() // ua == []byte("Chrome/51.0.2704.103 Safari/537.36")
+})
+```
+
+### GetHeader
+
+获取请求头中 key 的值。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetHeader(key string) []byte
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Say-Hello: hello
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    customHeader := ctx.GetHeader("Say-Hello") // customHeader == []byte("hello")
+})
 ```
 
 ## Body
