@@ -537,14 +537,14 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 // TODO: API 说明
 func (ctx *RequestContext) GetRawData() []byte
 func (ctx *RequestContext) Body() ([]byte, error) 
-func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
-func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
 func (ctx *RequestContext) RequestBodyStream() io.Reader
 func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
-func (ctx *RequestContext) PostArgs() *protocol.Args
+func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
+func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
 func (ctx *RequestContext) PostForm(key string) string
 func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string 
 func (ctx *RequestContext) GetPostForm(key string) (string, bool) 
+func (ctx *RequestContext) PostArgs() *protocol.Args
 ```
 
 ### GetRawData
@@ -596,41 +596,9 @@ h.Post("/pet", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
-### FormFile
-
-<!-- TODO -->
-
-函数签名:
-
-```go
-func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
-```
-
-示例:
-
-```go
-
-```
-
-### SaveUploadedFile
-
-<!-- TODO -->
-
-函数签名:
-
-```go
-func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
-```
-
-示例:
-
-```go
-
-```
-
 ### RequestBodyStream
 
-<!-- TODO -->
+获取请求的 BodyStream 。
 
 函数签名:
 
@@ -641,12 +609,19 @@ func (ctx *RequestContext) RequestBodyStream() io.Reader
 示例:
 
 ```go
-
+// POST http://example.com/user
+// Content-Type: text/plain
+// abcdefg
+h := server.Default(server.WithStreamBody(true))
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    sr := ctx.RequestBodyStream()
+    data, _ := io.ReadAll(sr) // data == []byte("abcdefg")
+})
 ```
 
 ### MultipartForm
 
-<!-- TODO -->
+获取 `multipart.Form` 对象。(详情请参考 [multipart#Form](https://pkg.go.dev/mime/multipart#Form))
 
 函数签名:
 
@@ -657,28 +632,65 @@ func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 示例:
 
 ```go
-
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
+// Content-Disposition: form-data; name="name"
+// tom
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    form, err := ctx.MultipartForm()
+    avatarFile := form.File["avatar"][0] // avatarFile.Filename == "abc.jpg"
+    name := form.Value["name"][0] // name == "tom"
+})
 ```
 
-### PostArgs
+### FormFile
 
-<!-- TODO -->
+按名称检索 `multipart.Form.File` ，返回给定 name 的第一个 `multipart.FileHeader`。(详情请参考 [multipart#FileHeader](https://pkg.go.dev/mime/multipart#FileHeader))
 
 函数签名:
 
 ```go
-func (ctx *RequestContext) PostArgs() *protocol.Args
+func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
 ```
 
 示例:
 
 ```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
+})
+```
 
+### SaveUploadedFile
+
+保存 multipart 文件到磁盘。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
+    // save file
+    ctx.SaveUploadedFile(avatarFile, avatarFile.Filename) // save file "abc.jpg"
+})
 ```
 
 ### PostForm
 
-<!-- TODO -->
+按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值。
 
 函数签名:
 
@@ -689,12 +701,18 @@ func (ctx *RequestContext) PostForm(key string) string
 示例:
 
 ```go
-
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="name"
+// tom
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    name := ctx.PostForm("name") // name == "tom"
+})
 ```
 
 ### DefaultPostForm
 
-<!-- TODO -->
+按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值，如果不存在返回 defaultValue 。
 
 函数签名:
 
@@ -705,12 +723,19 @@ func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string
 示例:
 
 ```go
-
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="name"
+// tom
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    name := ctx.PostForm("name", "jack") // name == "tom"
+    age := ctx.PostForm("age", "10") // age == "10"
+})
 ```
 
 ### GetPostForm
 
-<!-- TODO -->
+按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值以及值是否存在。
 
 函数签名:
 
@@ -721,7 +746,44 @@ func (ctx *RequestContext) GetPostForm(key string) (string, bool)
 示例:
 
 ```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="name"
+// tom
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    name, existName := ctx.GetPostForm("name") // name == "tom", existName == true
+    age, existAge := ctx.GetPostForm("age") // age == "", existAge == false
+})
+```
 
+### PostArgs
+
+获取 `application/x-www-form-urlencoded` 参数对象。(详情请参考 [Args 对象](#args-对象))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) PostArgs() *protocol.Args
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Content-Type: application/x-www-form-urlencoded
+// name=tom&pet=cat&pet=dog
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    args := ctx.PostArgs()
+    name := args.Peek("name") // name == "tom"
+
+    var pets []string
+    args.VisitAll(func(key, value []byte) {
+        if string(key) == "pet" {
+        pets = append(pets, string(value))
+        }
+    })
+    // pets == []string{"cat", "dog"}
+})
 ```
 
 ## 其他
