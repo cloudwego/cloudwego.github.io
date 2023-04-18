@@ -1,7 +1,7 @@
 ---
 title: "请求"
 date: 2023-04-14
-weight: 4
+weight: 3
 description: >
 ---
 
@@ -160,7 +160,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 函数签名:
 
 ```go
-func (ctx*RequestContext) DefaultQuery(key, defaultValue string) string
+func (ctx *RequestContext) DefaultQuery(key, defaultValue string) string
 ```
 
 示例:
@@ -205,7 +205,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 func (ctx *RequestContext) QueryArgs() *protocol.Args
 ```
 
-#### Args 对象
+### Args 对象
 
 Args 对象提供了以下方法获取/修改 Query String 参数
 
@@ -293,7 +293,7 @@ func (ctx *RequestContext) URI() *protocol.URI
 TODO
 ```
 
-#### protocol.URI
+### protocol.URI
 
 ```go
    func (u *URI) CopyTo(dst *URI) 
@@ -334,7 +334,6 @@ TODO
 ## Header
 
 ```go
-// TODO: API 说明
 func (ctx *RequestContext) IsGet() bool 
 func (ctx *RequestContext) IsHead() bool
 func (ctx *RequestContext) IsPost() bool
@@ -344,7 +343,6 @@ func (ctx *RequestContext) IfModifiedSince(lastModified time.Time) bool
 func (ctx *RequestContext) Cookie(key string) []byte
 func (ctx *RequestContext) UserAgent() []byte
 func (ctx *RequestContext) GetHeader(key string) []byte
-// TODO: RequestContext.Request.Header 
 ```
 
 ### IsGet
@@ -498,7 +496,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 函数签名:
 
 ```go
-func (ctx*RequestContext) UserAgent() []byte
+func (ctx *RequestContext) UserAgent() []byte
 ```
 
 示例:
@@ -531,10 +529,13 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
+### Header 对象 (TODO)
+
+> ctx.Request.Header
+
 ## Body
 
 ```go
-// TODO: API 说明
 func (ctx *RequestContext) GetRawData() []byte
 func (ctx *RequestContext) Body() ([]byte, error) 
 func (ctx *RequestContext) RequestBodyStream() io.Reader
@@ -789,36 +790,10 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 ## 其他
 
 ```go
-// TODO: 综合类型 可能需要重新分类
-func (ctx *RequestContext) FormValue(key string) []byte 
-func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc) 
-func (ctx *RequestContext) BindAndValidate(obj interface{}) error 
-func (ctx *RequestContext) Bind(obj interface{}) error 
-func (ctx *RequestContext) Validate(obj interface{}) error 
-func (ctx *RequestContext) ResetWithoutConn() 
-func (ctx *RequestContext) Reset() 
-func (ctx *RequestContext) Finished() <-chan struct{} 
-func (ctx *RequestContext) GetRequest() (dst *protocol.Request) 
-func (ctx *RequestContext) Copy() *RequestContext 
-func (ctx *RequestContext) Error(err error) *errors.Error 
-
-// TODO: Handler
-func (ctx *RequestContext) Next(c context.Context) 
-func (ctx *RequestContext) Handler() HandlerFunc 
-func (ctx *RequestContext) Handlers() HandlersChain 
-func (ctx *RequestContext) SetHandlers(hc HandlersChain) 
-func (ctx *RequestContext) HandlerName() string 
-func (ctx *RequestContext) GetIndex() int8 
-func (ctx *RequestContext) Abort() 
-func (ctx *RequestContext) IsAborted() bool 
-
-// TODO: 上下文建值存取
-func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))
-func (ctx *RequestContext) Value(key interface{}) interface{}
+// Key-Value
 func (ctx *RequestContext) Set(key string, value interface{})
+func (ctx *RequestContext) Value(key interface{}) interface{}
 func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)
-
-// TODO: 类型转换
 func (ctx *RequestContext) MustGet(key string) interface{} 
 func (ctx *RequestContext) GetString(key string) (s string) 
 func (ctx *RequestContext) GetBool(key string) (b bool) 
@@ -836,14 +811,26 @@ func (ctx *RequestContext) GetStringSlice(key string) (ss []string)
 func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{}) 
 func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string) 
 func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string) 
+func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{})) 
 
-// TODO: Trace
+// Handler
+func (ctx *RequestContext) Next(c context.Context) 
+func (ctx *RequestContext) Handlers() HandlersChain 
+func (ctx *RequestContext) Handler() HandlerFunc 
+func (ctx *RequestContext) SetHandlers(hc HandlersChain) 
+func (ctx *RequestContext) HandlerName() string 
+func (ctx *RequestContext) GetIndex() int8 
+func (ctx *RequestContext) Abort() 
+func (ctx *RequestContext) IsAborted() bool 
+
+
+// Trace
 func (ctx *RequestContext) GetTraceInfo() traceinfo.TraceInfo 
 func (ctx *RequestContext) SetTraceInfo(t traceinfo.TraceInfo) 
 func (ctx *RequestContext) IsEnableTrace() bool 
 func (ctx *RequestContext) SetEnableTrace(enable bool) 
 
-// TODO: Conn
+// Conn
 func (ctx *RequestContext) SetConn(c network.Conn) 
 func (ctx *RequestContext) GetConn() network.Conn 
 func (ctx *RequestContext) GetReader() network.Reader 
@@ -852,27 +839,610 @@ func (ctx *RequestContext) RemoteAddr() net.Addr
 func (ctx *RequestContext) ClientIP() string 
 func (ctx *RequestContext) SetClientIPFunc(f ClientIP) 
 
-// TODO: Hijack
+// Hijack
 func (ctx *RequestContext) Flush() error 
 func (ctx *RequestContext) SetHijackHandler(h HijackHandler) 
 func (ctx *RequestContext) GetHijackHandler() HijackHandler 
 func (ctx *RequestContext) Hijack(handler HijackHandler) 
 func (ctx *RequestContext) Hijacked() bool 
 
+// Other
+func (ctx *RequestContext) FormValue(key string) []byte 
+func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc) 
+func (ctx *RequestContext) BindAndValidate(obj interface{}) error 
+func (ctx *RequestContext) Bind(obj interface{}) error 
+func (ctx *RequestContext) Validate(obj interface{}) error 
+func (ctx *RequestContext) ResetWithoutConn() 
+func (ctx *RequestContext) Reset() 
+func (ctx *RequestContext) Finished() <-chan struct{} 
+func (ctx *RequestContext) GetRequest() (dst *protocol.Request) 
+func (ctx *RequestContext) Copy() *RequestContext 
+func (ctx *RequestContext) Error(err error) *errors.Error 
 ```
 
-### TODO 其他-子分类
+### Set
 
-<!-- ### GetRawData
+在上下文中存储键值对。
 
 函数签名:
 
 ```go
-func (ctx *RequestContext) GetRawData() []byte
+func (ctx *RequestContext) Set(key string, value interface{})
 ```
 
 示例:
 
 ```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("version", "v1")
+    v := ctx.Value("version")  // v == interface {}(string) "v1"
+})
+```
 
-``` -->
+### Value
+
+获取上下文键为 key 的值。
+
+> 注意: key 类型需要为 `string` , 否则返回 nil 。(TOOD: 1. 需要确认是否是源码问题 2. 需要确认无锁是否正常)
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Value(key interface{}) interface{}
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("version", "v1")
+    v := ctx.Value("version")  // v == interface {}(string) "v1"
+})
+```
+
+### Get
+
+获取上下文键为 key 的值以及 key 是否存在。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("version", "v1")
+    v, exists := ctx.Get("version")  // v == interface {}(string) "v1", exists == true
+    v, exists = ctx.Get("pet")  // v == interface {} nil, exists == false
+})
+```
+
+### MustGet
+
+获取上下文键为 key 的值, 如果不存在会发生 panic 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) MustGet(key string) interface{}
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("version", "v1")
+    v := ctx.MustGet("version")  // v == interface {}(string) "v1"
+})
+```
+
+### GetString
+
+获取上下文键为 key 的值, 并转换为 `string` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetString(key string) (s string)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("version", "v1")
+    v := ctx.GetString("version")  // v == "v1"
+})
+```
+
+### GetBool
+
+获取上下文键为 key 的值, 并转换为 `bool` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetBool(key string) (b bool)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("isAdmin", true)
+    v := ctx.GetBool("isAdmin")  // v == true
+})
+```
+
+### GetInt
+
+获取上下文键为 key 的值, 并转换为 `int` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetInt(key string) (i int)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("age", 20)
+    v := ctx.GetInt("age")  // v == 20
+})
+```
+
+### GetInt32
+
+获取上下文键为 key 的值, 并转换为 `int32` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetInt32(key string) (i32 int32)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("age", int32(20))
+    v := ctx.GetInt32("age")  // v == 20
+})
+```
+
+### GetInt64
+
+获取上下文键为 key 的值, 并转换为 `int64` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetInt64(key string) (i64 int64)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("age", int64(20))
+    v := ctx.GetInt64("age")  // v == 20
+})
+```
+
+### GetUint
+
+获取上下文键为 key 的值, 并转换为 `uint` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetUint(key string) (ui uint)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("age", uint(20))
+    v := ctx.GetInt64("age")  // v == 20
+})
+```
+
+### GetUint32
+
+获取上下文键为 key 的值, 并转换为 `uint32` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetUint32(key string) (ui32 uint32)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("age", uint32(20))
+    v := ctx.GetUint32("age")  // v == 20
+})
+```
+
+### GetUint64
+
+获取上下文键为 key 的值, 并转换为 `uint64` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetUint64(key string) (ui64 uint64)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("age", uint64(20))
+    v := ctx.GetUint64("age")  // v == 20
+})
+```
+
+### GetFloat32
+
+获取上下文键为 key 的值, 并转换为 `float32` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetFloat32(key string) (f32 float32)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("age", float32(20.1))
+    v := ctx.GetFloat64("age")  // v == 20.1
+})
+```
+
+### GetFloat64
+
+获取上下文键为 key 的值, 并转换为 `float64` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetFloat64(key string) (f64 float64)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("age", 20.1)
+    v := ctx.GetFloat64("age")  // v == 20.1
+})
+```
+
+### GetTime
+
+获取上下文键为 key 的值, 并转换为 `time.Time` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetTime(key string) (t time.Time)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    t2022, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2022 07:28:00 GMT")
+    ctx.Set("birthday", t2022)
+    v := ctx.GetTime("birthday")  // v == t2022
+})
+```
+
+### GetDuration
+
+获取上下文键为 key 的值, 并转换为 `time.Duration` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetDuration(key string) (d time.Duration)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("duration", time.Minute)
+    v := ctx.GetDuration("duration")  // v == time.Minute
+})
+```
+
+### GetStringSlice
+
+获取上下文键为 key 的值, 并转换为 `[]string` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetStringSlice(key string) (ss []string)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("pet", []string{"cat", "dog"})
+    v := ctx.GetStringSlice("pet")  // v == []string{"cat", "dog"}
+})
+```
+
+### GetStringMap
+
+获取上下文键为 key 的值, 并转换为 `map[string]interface{}` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{})
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("info", map[string]interface{}{"name": "tom"})
+    v := ctx.GetStringMap("info") // v == map[string]interface{}{"name": "tom"}
+})
+```
+
+### GetStringMapString
+
+获取上下文键为 key 的值, 并转换为 `map[string]string` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("info", map[string]string{}{"name": "tom"})
+    v := ctx.GetStringMap("info") // v == map[string]string{}{"name": "tom"}
+})
+```
+
+### GetStringMapStringSlice
+
+获取上下文键为 key 的值, 并转换为 `map[string][]string` 类型。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string)
+
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("smss", map[string][]string{"pets": {"cat", "dog"}})
+    v := ctx.GetStringMapStringSlice("smss") // v == map[string][]string{"pets": {"cat", "dog"}}
+})
+```
+
+### ForEachKey
+
+为上下文中的每个键值对调用 fn 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("duration", time.Minute)
+    ctx.Set("version", "v1")
+    ctx.ForEachKey(func(k string, v interface{}) {
+        // 1. k == "duration", v == interface{}(time.Duration) time.Minute
+        // 2. k == "version", v == interface {}(string) "v1"
+    })
+})
+```
+
+### Next
+
+执行下一个 handler 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Next(c context.Context)
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Next(c)
+    v := ctx.GetString("version") // v == "v1"
+}, func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("version", "v1")
+})
+```
+
+### Handlers
+
+获取 handlers chain 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Handlers() HandlersChain
+```
+
+示例:
+
+```go
+middleware1 := func(c context.Context, ctx *app.RequestContext) {
+}
+
+handler1 := func(c context.Context, ctx *app.RequestContext) {
+    handlers := ctx.Handlers() // []Handler{middleware1, handler1}
+}
+
+h.POST("/user", middleware1, handler1)
+```
+
+### Handler
+
+获取 handlers chain 的最后一个 handler，一般来说，最后一个 handler 是 main handler。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Handler() HandlerFunc
+```
+
+示例:
+
+```go
+middleware1 := func(c context.Context, ctx *app.RequestContext) {
+    lastHandler := ctx.Handler() // lastHandler == handler1
+}
+
+handler1 := func(c context.Context, ctx *app.RequestContext) {
+}
+
+h.POST("/user", middleware1, handler1)
+```
+
+### SetHandlers
+
+设置 handlers chain 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetHandlers(hc HandlersChain)
+```
+
+示例:
+
+```go
+handler1 := func(c context.Context, ctx *app.RequestContext) {
+    ctx.Set("current", "handler1")
+}
+
+handler := func(c context.Context, ctx *app.RequestContext) {
+    hc := app.HandlersChain{ctx.Handlers()[0], handler1} // append handler1 into handlers chain
+    ctx.SetHandlers(hc)
+    ctx.Next(c)
+    current := ctx.GetString("current") // current == "handler1"
+    ctx.String(consts.StatusOK, current)
+}
+
+h.POST("/user", handler)
+```
+
+### HandlerName
+
+获取最后一个 handler 的函数名称。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) HandlerName() string
+```
+
+示例:
+
+```go
+package main
+
+func main() {
+    h := server.New()
+    h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+        hn := ctx.HandlerName() // hn == "main.main.func1"
+    })
+}
+```
+
+### GetIndex
+
+获取当前执行的 handler 在 handlers chain 中的 index 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetIndex() int8
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    index := ctx.GetIndex() // index == 0
+}, func(c context.Context, ctx *app.RequestContext) {
+    index := ctx.GetIndex() // index == 1
+})
+```
+
+### Abort
+
+终止后续的 handler 执行。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Abort()
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Abort()
+}, func(c context.Context, ctx *app.RequestContext) {
+    // will not execute
+})
+```
+
+### IsAborted
+
+获取后续的 handler 执行状态是否被终止。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) IsAborted() bool
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Abort()
+    isAborted := ctx.IsAborted() // isAborted == true
+}, func(c context.Context, ctx *app.RequestContext) {
+    // will not execute
+})
+```
