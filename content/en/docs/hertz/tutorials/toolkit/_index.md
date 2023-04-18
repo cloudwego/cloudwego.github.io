@@ -1,6 +1,6 @@
 ---
-title: "hz command line tool"
-weight: 5
+title: "Code Generation"
+weight: 6
 description: >
 
 ---

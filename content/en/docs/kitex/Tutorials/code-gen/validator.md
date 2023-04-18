@@ -7,7 +7,7 @@ description: >
 
 
 
-# Overview
+## Overview
 
 Validator is a thrift plugin that supports struct validation.
 
@@ -38,7 +38,41 @@ struct Response {
 }
 ```
 
-# Usage
+## Installation
+
+Before using the Validator plugin, you should install it first. 
+
+Otherwise, an error message will be displayed stating that the `thrift-gen-validator` executable file cannot be found (`exec: "thrift-gen-validator": executable file not found in $PATH`). 
+
+If you have already installed Golang and Kitex command-line tools, please run the following command to install the `thrift-gen-validator` plugin:
+
+```shell
+$ go install github.com/cloudwego/thrift-gen-validator@latest
+```
+
+After executing `go install`, the compiled `thrift-gen-validator` binary file will be installed under `$GOPATH/bin`. 
+
+You can run the following command to verify that the installation was successful.
+
+```shell
+$ cd $(go env GOPATH)/bin                     
+$ ls
+go1.20.1             goimports            hz                   thrift-gen-validator
+godotenv             golangci-lint        kitex                thriftgo
+$ cd ~/ && thrift-gen-validator --help
+Usage of thrift-gen-validator:
+  -version
+        Show the version of thrift-gen-validator
+(0x1232358,0x1370f70)
+```
+
+`cd ~/` command is used to verify that `thrift-gen-validator` can be called from any directory.
+
+If an error message similar to the one above appears when executing this command, please check whether `$GOPATH` has been correctly set to `$PATH`.
+
+For more information on installing and using `thrift-gen-validator`, please refer to [thirft-gen-validator](https://github.com/cloudwego/thrift-gen-validator).
+
+## Usage
 
 Take the project "Kitex Hello" in [Getting Started](https://www.cloudwego.io/docs/kitex/getting-started/) as an example, add annotations in`hello.thrift`. For example, the code bellow requires the length and prefix for `Request.message`:
 
@@ -101,11 +135,11 @@ So just simply call `IsValid()` to verify the struct：
 
 ```
 
-# Supported Validators
+## Supported Validators
 
 The verification order is subject to the definition order,'in' and 'not_in' can be defined multiple times, whichever occurs first.
 
-## number
+### number
 
 Including i8, i16, i32, i64, double.
 
@@ -122,7 +156,7 @@ struct NumericDemo {
 }
 ```
 
-## string/binary
+### string/binary
 
 1. const, must be the specified value.
 2. min_size, max_size.
@@ -142,7 +176,7 @@ struct StringDemo {
 }
 ```
 
-## bool
+### bool
 
 1. const, must be the specified value.
 2. not_nil, the field cannot be empty (only valid if the field is optional).
@@ -154,7 +188,7 @@ struct BoolDemo {
 }
 ```
 
-## enum
+### enum
 
 1. const, must be the specified value.
 2. defined_only, must be in the value defined in the enum.
@@ -172,7 +206,7 @@ struct EnumDemo {
 }
 ```
 
-## set/list
+### set/list
 
 1. min_size, max_size.
 2. elem, element constraints.
@@ -184,7 +218,7 @@ struct SetListDemo {
 }
 ```
 
-## map
+### map
 
 1. min_size, max_size.
 2. no_sparse, means it can't be nil when value is a pointer.
@@ -198,7 +232,7 @@ struct MapDemo {
 }
 ```
 
-## struct/union/exception
+### struct/union/exception
 
 1. skip, means skipping recursive checks for struct/union/exception. (Defaults to false when used as a separate field, true by default when used as an element).
 2. not_nil, the field cannot be empty (only valid if the field is optional).
@@ -211,7 +245,7 @@ struct OuterRequest {
 }
 ```
 
-## variable reference
+### variable reference
 
 The prefix '$' represents a reference to a variable, which can be used for **cross-field verification**:
 
@@ -226,7 +260,7 @@ struct Example {
 }
 ```
 
-## utility function
+### utility function
 
 The prefix ‘@’ indicates the built-in tool function to calculate the check value. Currently supported tool functions:
 

@@ -124,7 +124,6 @@ func main() {
 函数签名：
 
 ```go
-// HeaderStrKey 类型是 string 的别名
 func WithCustomHeaderStrKey(s HeaderStrKey) Option
 ```
 
@@ -169,7 +168,6 @@ func main() {
 函数签名：
 
 ```go
-// Generator 类型是 func(ctx context.Context, c *app.RequestContext) string 的别名
 func WithGenerator(g Generator) Option
 ```
 
@@ -213,7 +211,6 @@ func main() {
 函数签名：
 
 ```go
-// Handler 类型是 func(ctx context.Context, c *app.RequestContext, requestID string) 的别名
 func WithHandler(handler Handler) Option
 ```
 
