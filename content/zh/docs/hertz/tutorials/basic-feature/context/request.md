@@ -879,7 +879,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 获取上下文键为 key 的值。
 
-> 注意: key 类型需要为 `string` , 否则返回 nil 。(TOOD: 1. 需要确认是否是源码问题 2. 需要确认无锁是否正常)
+> 注意: key 类型需要为 `string` , 否则返回 nil 。(TODO: 1. 需要确认是否是源码问题 2. 需要确认无锁是否正常)
 
 函数签名:
 
