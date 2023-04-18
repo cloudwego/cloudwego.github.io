@@ -115,7 +115,7 @@ h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
 
 ### Param
 
-获取路由参数的值
+获取路由参数的值。
 
 函数签名:
 
@@ -823,7 +823,6 @@ func (ctx *RequestContext) GetIndex() int8
 func (ctx *RequestContext) Abort() 
 func (ctx *RequestContext) IsAborted() bool 
 
-
 // Trace
 func (ctx *RequestContext) GetTraceInfo() traceinfo.TraceInfo 
 func (ctx *RequestContext) SetTraceInfo(t traceinfo.TraceInfo) 
@@ -838,26 +837,23 @@ func (ctx *RequestContext) GetWriter() network.Writer
 func (ctx *RequestContext) RemoteAddr() net.Addr 
 func (ctx *RequestContext) ClientIP() string 
 func (ctx *RequestContext) SetClientIPFunc(f ClientIP) 
-
-// Hijack
-func (ctx *RequestContext) Flush() error 
+func (ctx *RequestContext) Hijack(handler HijackHandler) 
 func (ctx *RequestContext) SetHijackHandler(h HijackHandler) 
 func (ctx *RequestContext) GetHijackHandler() HijackHandler 
-func (ctx *RequestContext) Hijack(handler HijackHandler) 
 func (ctx *RequestContext) Hijacked() bool 
 
 // Other
 func (ctx *RequestContext) FormValue(key string) []byte 
 func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc) 
-func (ctx *RequestContext) BindAndValidate(obj interface{}) error 
 func (ctx *RequestContext) Bind(obj interface{}) error 
 func (ctx *RequestContext) Validate(obj interface{}) error 
+func (ctx *RequestContext) BindAndValidate(obj interface{}) error 
 func (ctx *RequestContext) ResetWithoutConn() 
 func (ctx *RequestContext) Reset() 
 func (ctx *RequestContext) Finished() <-chan struct{} 
-func (ctx *RequestContext) GetRequest() (dst *protocol.Request) 
 func (ctx *RequestContext) Copy() *RequestContext 
 func (ctx *RequestContext) Error(err error) *errors.Error 
+func (ctx *RequestContext) GetRequest() (dst *protocol.Request) 
 ```
 
 ### Set
@@ -1445,4 +1441,436 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 }, func(c context.Context, ctx *app.RequestContext) {
     // will not execute
 })
+```
+
+### SetTraceInfo
+
+设置 TraceInfo 。(更多内容请参考 [hertz-contrib/tracer](https://github.com/hertz-contrib/tracer))
+
+函数签名:
+
+```go
+func (ctx*RequestContext) SetTraceInfo(t traceinfo.TraceInfo)
+```
+
+示例:
+
+```go
+h.Use(func(c context.Context, ctx *app.RequestContext) {
+    ti := traceinfo.NewTraceInfo()
+    ti.Stats().SetLevel(stats.LevelBase)
+    ctx.SetTraceInfo(ti)
+})
+```
+
+### GetTraceInfo
+
+获取 TraceInfo 。(更多内容请参考 [hertz-contrib/tracer](https://github.com/hertz-contrib/tracer))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetTraceInfo() traceinfo.TraceInfo
+```
+
+示例:
+
+```go
+h.Use(func(c context.Context, ctx *app.RequestContext) {
+    info := ctx.GetTraceInfo()
+})
+```
+
+### SetEnableTrace
+
+设置是否允许 Trace 。
+
+函数签名:
+
+```go
+func (ctx*RequestContext) SetEnableTrace(enable bool)
+```
+
+示例:
+
+```go
+h.Use(func(c context.Context, ctx *app.RequestContext) {
+    ctx.SetEnableTrace(true)
+    isEnableTrace := ctx.IsEnableTrace() // isEnableTrace == true
+})
+```
+
+### IsEnableTrace
+
+获取是否允许 Trace 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) IsEnableTrace() bool
+```
+
+示例:
+
+```go
+h.Use(func(c context.Context, ctx *app.RequestContext) {
+    ctx.SetEnableTrace(true)
+    isEnableTrace := ctx.IsEnableTrace() // isEnableTrace == true
+})
+```
+
+### SetConn
+
+设置 network.Conn 。(更多内容请参考 [mock/network.go](https://github.com/cloudwego/hertz/blob/develop/pkg/common/test/mock/network.go#L151))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetConn(c network.Conn) 
+```
+
+示例:
+
+```go
+h.Use(func(c context.Context, ctx *app.RequestContext) {
+    ctx.SetConn(yourNetworkConn)
+})
+```
+
+### GetConn
+
+获取 network.Conn 。(更多内容请参考 [mock/network.go](https://github.com/cloudwego/hertz/blob/develop/pkg/common/test/mock/network.go#L151))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetConn() network.Conn 
+```
+
+示例:
+
+```go
+h.Use(func(c context.Context, ctx *app.RequestContext) {
+    conn := ctx.GetConn()
+})
+```
+
+### GetReader
+
+获取 network.Conn 的 network.Reader 接口。(更多内容请参考 [http1/server.go](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/server.go#L80))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetReader() network.Reader 
+```
+
+### GetWriter
+
+获取 network.Conn 的 network.Writer 接口。(更多内容请参考 [http1/server.go](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/server.go#L80))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetWriter() network.Writer 
+```
+
+### RemoteAddr
+
+获取请求的客户端 net.Addr 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) RemoteAddr() net.Addr 
+```
+
+示例:
+
+```go
+h.Use(func(c context.Context, ctx *app.RequestContext) {
+    addr := ctx.RemoteAddr()
+    strAddr := addr.String() // example: "192.0.2.1:25", "[2001:db8::1]:80"
+})
+```
+
+### ClientIP
+
+获取客户端 IP 的地址。(更多内容请参考 [ClientIPWithOption](https://github.com/cloudwego/hertz/blob/develop/pkg/app/context.go#L86))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) ClientIP() string 
+```
+
+示例:
+
+```go
+h.Use(func(c context.Context, ctx *app.RequestContext) {
+    ip := ctx.ClientIP() // example: 127.0.0.1
+})
+```
+
+### SetClientIPFunc
+
+设置获取客户端 IP 的地址的函数。(更多内容请参考 [ClientIPWithOption](https://github.com/cloudwego/hertz/blob/develop/pkg/app/context.go#L86))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetClientIPFunc(f ClientIP) 
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// X-Forwarded-For: 203.0.113.195
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ip := ctx.ClientIP() // ip == "127.0.0.1"
+
+    opts := app.ClientIPOptions{
+        RemoteIPHeaders: []string{"X-Forwarded-For", "X-Real-IP"},
+        TrustedProxies:  map[string]bool{ip: true},
+    }
+    ctx.SetClientIPFunc(app.ClientIPWithOption(opts))
+
+    ip = ctx.ClientIP() // ip == "203.0.113.195"
+    ctx.String(consts.StatusOK, ip)
+})
+```
+
+### Hijack
+
+设置 handler 去劫持 network.Conn 。(更多内容请参考 [hertz-contrib/websocket](https://github.com/hertz-contrib/websocket/blob/ba132d3eae952e3f17f233e0158652edeac76b65/server.go#L196))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Hijack(handler HijackHandler) 
+```
+
+### SetHijackHandler
+
+设置 handler 去劫持 network.Conn 。`Hijack` 的别名。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetHijackHandler(h HijackHandler) 
+```
+
+### GetHijackHandler
+
+获取劫持 network.Conn 的 handler 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetHijackHandler() HijackHandler 
+```
+
+### Hijacked
+
+是否设置了劫持 network.Conn 的 handler 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Hijacked() bool 
+```
+
+### FormValue
+
+按照以下顺序获取 key 的值。
+
+- 从 [QueryArgs](#queryargs) 中获取值。
+- 从 [PostArgs](#postargs) 中获取值。
+- 从 [MultipartForm](#multipartform) 中获取值。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) FormValue(key string) []byte 
+```
+
+示例:
+
+```go
+// POST http://example.com/user?name=tom
+// Content-Type: application/x-www-form-urlencoded
+// age=10
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    name := ctx.FormValue("name") // name == []byte("tom"), get by QueryArgs
+    age := ctx.FormValue("age") // age == []byte("10"), get by PostArgs
+})
+
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="name"
+// tom
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    name := ctx.FormValue("name") // name == []byte("tom"), get by MultipartForm
+})
+```
+
+### SetFormValueFunc
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc) 
+```
+
+示例:
+
+```go
+
+```
+
+### Bind
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Bind(obj interface{}) error 
+```
+
+示例:
+
+```go
+
+```
+
+### Validate
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Validate(obj interface{}) error 
+```
+
+示例:
+
+```go
+
+```
+
+### BindAndValidate
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) BindAndValidate(obj interface{}) error 
+```
+
+示例:
+
+```go
+
+```
+
+### ResetWithoutConn
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) ResetWithoutConn() 
+```
+
+示例:
+
+```go
+
+```
+
+### Reset
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Reset() 
+```
+
+示例:
+
+```go
+
+```
+
+### Finished
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Finished() <-chan struct{} 
+```
+
+示例:
+
+```go
+
+```
+
+### Copy
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Copy() *RequestContext 
+```
+
+示例:
+
+```go
+
+```
+
+### Error
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Error(err error) *errors.Error 
+```
+
+示例:
+
+```go
+
+```
+
+### GetRequest
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) GetRequest() (dst *protocol.Request) 
+```
+
+示例:
+
+```go
+
 ```

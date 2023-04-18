@@ -53,6 +53,23 @@ func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
 
 ```go
 // TODO: 分类
+func (ctx *RequestContext) Flush() error 
 func (ctx *RequestContext) GetResponse() (dst *protocol.Response) 
 // TODO: protocol.Response
 ```
+
+<!-- ### Flush
+
+TODO
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Flush() error 
+```
+
+示例:
+
+```go
+
+``` -->
