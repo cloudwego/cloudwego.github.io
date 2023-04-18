@@ -1717,7 +1717,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetFormValueFunc
 
-TODO
+设置 FormValue 函数。
 
 函数签名:
 
@@ -1728,12 +1728,31 @@ func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc)
 示例:
 
 ```go
+// POST http://example.com/user?name=tom
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="age"
+// 10
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    // only return multipart form value
+    ctx.SetFormValueFunc(func(rc *app.RequestContext, s string) []byte {
+        mf, err := rc.MultipartForm()
+        if err == nil && mf.Value != nil {
+            vv := mf.Value[s]
+            if len(vv) > 0 {
+                return []byte(vv[0])
+            }
+        }
+        return nil
+    })
 
+    name := ctx.FormValue("name") // name == nil
+    age := ctx.FormValue("age")   // age == []byte("10")
+})
 ```
 
 ### Bind
 
-TODO
+将请求参数绑定到到 obj 中。(更多内容请参考 [binding-and-validate](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate))
 
 函数签名:
 
@@ -1741,15 +1760,9 @@ TODO
 func (ctx *RequestContext) Bind(obj interface{}) error 
 ```
 
-示例:
-
-```go
-
-```
-
 ### Validate
 
-TODO
+验证请求参数是否合法。(更多内容请参考 [binding-and-validate](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate))
 
 函数签名:
 
@@ -1757,26 +1770,14 @@ TODO
 func (ctx *RequestContext) Validate(obj interface{}) error 
 ```
 
-示例:
-
-```go
-
-```
-
 ### BindAndValidate
 
-TODO
+绑定请求参数到 obj 中并验证参数是否合法。(更多内容请参考 [binding-and-validate](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate))
 
 函数签名:
 
 ```go
 func (ctx *RequestContext) BindAndValidate(obj interface{}) error 
-```
-
-示例:
-
-```go
-
 ```
 
 ### ResetWithoutConn
