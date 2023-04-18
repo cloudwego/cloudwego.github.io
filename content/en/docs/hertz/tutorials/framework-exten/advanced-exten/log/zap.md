@@ -2,12 +2,11 @@
 title: "zap"
 linkTitle: "zap"
 weight: 2
-description: zap 的相关用法>
-
+description: the usage of zap>
 ---
-# Logger 的部分用法
+# Part of Logger usage:
 
-## 定义 hlog.FullLogger 和 Logger 结构体
+## Define hlog.FullLogger and Logger structure
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -19,16 +18,16 @@ type Logger struct {
 ```
 ## NewLogger
 
-通过 `defaultConfig()` 创建并初始化一个 Logger ，便于后续的调用，可将所需配置作为参数传入函数，若不传入参数则安装初始配置创建 Logger
-相关配置请参考后面的 “option的配置”。
+Create and initialize a Logger through `defaultConfig()`. The required configuration can be passed into the function as a parameter. If no parameter is passed in, the initial configuration will be installed to create a Logger
+For related configuration, please refer to "option configuration" below.
 
-函数签名：
+Function Signature:
 
 ```go
 func NewLogger(opts ...Option) *Logger
 ```
 
-事例代码：
+Sample code:
 ```go
 package main
 
@@ -47,18 +46,18 @@ func main() {
 
 ```
 
-# Option 的相关配置
+# Option configuration
 
 ## WithCoreEnc
 
-Encoder 是一个提供给日志条目编码器的格式不可知的接口，`WithCoreEnc` 将 zapcore.Encoder 传入配置
+Encoder is a format-agnostic interface for all log entry marshalers, `WithCoreEnc` passes zapcore.Encoder into configuration
 
-函数签名：
+Function Signature:
 ```go
 func WithCoreEnc(enc zapcore.Encoder) Option
 ```
 
-示例代码：
+Sample code:
 ```go
 package main
 
@@ -77,14 +76,14 @@ func main() {
 
 ## WithCoreWs
 
-`WithCoreWs` 通过内置的 `zapcore.AddSync(file)` 指定日志写入的位置，将 zapcore.WriteSyncer传入配置
+`WithCoreWs` specifies the location where the log is written through the `zapcore.AddSync(file)`, and passes zapcore.WriteSyncer into the configuration
 
-函数签名：
+Function Signature:
 ```go
 func WithCoreWs(ws zapcore.WriteSyncer) Option
 ```
 
-示例代码：
+Sample code:
 ```go
 package main
 
@@ -103,14 +102,14 @@ func main() {
 
 ## WithCoreLevel
 
-`WithCoreLevel` 将 zap.AtomicLevel 传入配置
+`WithCoreLevel` passes zap.AtomicLevel into configuration
 
-函数名称：
+Function Signature:
 ```go
 func WithCoreLevel(lvl zap.AtomicLevel) Option 
 ```
 
-示例代码：
+Sample code:
 ```go
 package main
 
@@ -127,14 +126,14 @@ func main() {
 
 ## WithCores
 
-`WithCores` 将 zapcore.Encoder ，zapcore.WriteSyncer ，zap.AtomicLevel 组合进的 CoreConfig 传入配置
+`WithCores` passes zapcore.Encoder, zapcore.WriteSyncer, zap.AtomicLevel into CoreConfig into the configuration
 
-函数签名：
+Function Signature:
 ```go
 func WithCores(coreConfigs ...CoreConfig) Option
 ```
 
-示例代码：
+Sample code:
 ```go
 package main
 
@@ -162,14 +161,14 @@ func main() {
 
 ## WithZapOptions
 
-`WithZapOptions` 利用 `append()` 方法添加原始的 zap 配置
+`WithZapOptions` uses the `append()` method to append the original zap configuration
 
-函数签名：
+Function Signature:
 ```go
 func WithZapOptions(opts ...zap.Option) Option 
 ```
 
-示例代码：
+Sample code:
 ```go
 package main
 
@@ -184,7 +183,7 @@ func main() {
 }
 }
 ```
-## 一个完整的 zap 示例
+## A complete zap example
 
 ```go
 package main
@@ -207,7 +206,7 @@ import (
 func main() {
 	h := server.Default()
 
-	// 可定制的输出目录。
+	// Customizable output directory.
 	var logFilePath string
 	dir := "./hlog"
 	logFilePath = dir + "/logs/"
@@ -216,7 +215,7 @@ func main() {
 		return
 	}
 
-	// 将文件名设置为日期
+	// set filename to date
 	logFileName := time.Now().Format("2006-01-02") + ".log"
 	fileName := path.Join(logFilePath, logFileName)
 	if _, err := os.Stat(fileName); err != nil {
@@ -227,13 +226,13 @@ func main() {
 	}
 	
 	logger := hertzzap.NewLogger()
-	// 提供压缩和删除
+	// Provides compression and deletion
 	lumberjackLogger := &lumberjack.Logger{
 		Filename:   fileName,
-		MaxSize:    20,   // 一个文件最大可达20M。
-		MaxBackups: 5,    // 最多同时保存 5 个文件。
-		MaxAge:     10,   // 一个文件最多可以保存 10 天。
-		Compress:   true, // 用 gzip 压缩。
+		MaxSize:    20,   // A file can be up to 20M.
+		MaxBackups: 5,    // Save up to 5 files at the same time
+		MaxAge:     10,   // A file can be saved for up to 10 days.
+		Compress:   true, // Compress with gzip.
 	}
 
 	logger.SetOutput(lumberjackLogger)
@@ -249,5 +248,6 @@ func main() {
 	h.Spin()
 }
 ```
-适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
+For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
+
 

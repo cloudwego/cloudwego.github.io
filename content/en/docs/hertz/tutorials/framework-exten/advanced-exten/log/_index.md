@@ -1,42 +1,42 @@
 ---
-title: "日志扩展"
-linkTitle: "日志扩展"
+title: "Logger Extension"
+linkTitle: "Logger Extension"
 date: 2023-04-18
 weight: 4
-description: 日志拓展概览 >
+description: Logger Extension >
 ---
 
-Hertz 提供对日志的扩展，接口定义在 `pkg/common/hlog` 中。
+Hertz provides logger extension, and the interface is defined in `pkg/common/hlog`.
 
-# 接口定义
+# Interface Definition
 
-Hertz 在 pkg/common/hlog 里定义了 `Logger`、`CtxLogger`、`FormatLogger` 几个接口实现不同的打日志方式，并定义了一个 Control 接口实现 logger 的控制。
-用户注入自己的 logger 实现时需要实现上面的所有接口( FullLogger )。Hertz提供了一个 `FullLogger` 默认实现。
+In Hertz, the interfaces `Logger`, `CtxLogger`, `FormatLogger` are defined in `pkg/common/hlog`, and these interfaces are used to output logs in different ways, and a Control interface is defined to control the logger.
+If you'd like to inject your own logger implementation, you must implement all the above interfaces (i.e. FullLogger). Hertz already provides a default implementation of `FullLogger`.
 
 ```go
 // FullLogger is the combination of Logger, FormatLogger, CtxLogger and Control.
 type FullLogger interface {
-   Logger
-   FormatLogger
-   CtxLogger
-   Control
+Logger
+FormatLogger
+CtxLogger
+Control
 }
 ```
 
-注意，由于默认 logger 底层使用标准库的 `log.Logger` 实现，其在日志里输出的调用位置依赖于设置的调用深度（call depth），因此封装 hlog 提供的实现可能会导致日志内容里文件名和行数不准确。
+Note that the default logger makes use of the standard library `log.Logger` as its underlying output. So the filenames and line numbers shown in the log messages depend on the settings of call depth. Thus wrapping the implementation of hlog may cause inaccuracies for these two values.
 
-## 注入自己的 logger 实现
+## Inject your own logger
 
-Hertz 提供 `SetLogger` 接口用于注入用户自定义的 logger 实现，也可以使用 `SetOutput` 接口重定向默认的 logger 输出，随后的中间件以及框架的其他部分可以使用 hlog 中的全局方法来输出日志。
-默认使用 hertz 默认实现的 logger。
+Hertz provides `SetLogger` interface to allow injection of your own logger. Besides, `SetOutput` can be used to redirect the default logger output, and then middlewares and the other components of the framework can use global methods in hlog to output logs.
+By default, Hertz's default logger is used.
 
-# 已支持日志拓展
+# Supported Log Extension
 
-目前在 Hertz 的开源版本支持的日志扩展都存放在 [hertz-logger](https://github.com/hertz-contrib/logger) 中，欢迎大家参与项目贡献与维护。
+The log extensions currently supported in the open source version of Hertz are stored in the [hertz-logger](https://github.com/hertz-contrib/logger). You are welcomed to join us in contributing and maintaining for this project.
 
 ## Zap
 
-用法示例：
+Example：
 ```go
 import (
 	"context"
@@ -62,11 +62,11 @@ func main() {
 }
 ```
 
-更多用法示例详见 [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
+For more details, see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap).
 
 ## Logrus
 
-用法示例：
+Example：
 ```go
 import (
 	"context"
@@ -93,11 +93,11 @@ func main() {
 }
 ```
 
-更多用法示例详见 [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
+For more details, see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus).
 
-## Zerolog
+# Zerolog
 
-用法示例：
+Example：
 ```go
 import (
 	"context"
@@ -127,5 +127,4 @@ func main() {
 }
 ```
 
-更多用法示例详见 [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。
-
+For more details, see [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog).
