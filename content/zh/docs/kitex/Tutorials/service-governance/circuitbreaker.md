@@ -1,7 +1,7 @@
 ---
 title: "熔断器"
 date: 2021-08-26
-weight: 9
+weight: 5
 keywords: ["Kitex", "熔断", "熔断器"]
 description: "Kitex 熔断使用指南、原理介绍。"
 ---

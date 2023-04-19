@@ -1,7 +1,7 @@
 ---
 title: "埋点粒度"
 date: 2021-08-26
-weight: 12
+weight: 1
 keywords: ["Kitex", "埋点"]
 description: Kitex 支持灵活启用基本埋点和细粒度埋点。
 ---

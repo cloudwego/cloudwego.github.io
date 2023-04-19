@@ -1,7 +1,7 @@
 ---
 title: "Rate Limiting"
 date: 2022-10-08
-weight: 10
+weight: 7
 keywords: ["Kitex", "Rate Limit", "Limiter"]
 description: "Usage guide for Kitex Default and Custom rate limiting."
 ---
