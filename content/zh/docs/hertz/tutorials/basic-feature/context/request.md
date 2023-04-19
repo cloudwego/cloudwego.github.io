@@ -207,7 +207,7 @@ func (ctx *RequestContext) QueryArgs() *protocol.Args
 
 ### Args 对象
 
-Args 对象提供了以下方法获取/修改 Query String 参数
+Args 对象提供了以下方法获取/设置 Query String 参数
 
 |函数签名|说明|
 |:--|:--|
@@ -279,7 +279,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### URI
 
-返回请求的 `URI` 对象
+返回请求的 `URI` 对象。
 
 函数签名:
 
@@ -287,49 +287,45 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 func (ctx *RequestContext) URI() *protocol.URI 
 ```
 
-示例:
+### URI 对象
 
-```go
-TODO
-```
+URI 对象提供了以下方法获取/设置 URI 。
 
-### protocol.URI
-
-```go
-   func (u *URI) CopyTo(dst *URI) 
-   func (u *URI) QueryArgs() *Args 
-   func (u *URI) Hash() []byte 
-   func (u *URI) SetHash(hash string) 
-   func (u *URI) SetHashBytes(hash []byte) 
-   func (u *URI) Username() []byte 
-   func (u *URI) SetUsername(username string) 
-   func (u *URI) SetUsernameBytes(username []byte) 
-   func (u *URI) Password() []byte 
-   func (u *URI) SetPassword(password string) 
-   func (u *URI) SetPasswordBytes(password []byte) 
-   func (u *URI) QueryString() []byte 
-   func (u *URI) SetQueryString(queryString string) 
-   func (u *URI) SetQueryStringBytes(queryString []byte) 
-   func (u *URI) Path() []byte 
-   func (u *URI) SetPath(path string) 
-   func (u *URI) String() string 
-   func (u *URI) SetPathBytes(path []byte) 
-   func (u *URI) PathOriginal() []byte 
-   func (u *URI) Scheme() []byte 
-   func (u *URI) SetScheme(scheme string) 
-   func (u *URI) SetSchemeBytes(scheme []byte) 
-   func (u *URI) Reset() 
-   func (u *URI) Host() []byte 
-   func (u *URI) SetHost(host string) 
-   func (u *URI) SetHostBytes(host []byte) 
-   func (u *URI) LastPathSegment() []byte 
-   func (u *URI) Update(newURI string) 
-   func (u *URI) UpdateBytes(newURI []byte) 
-   func (u *URI) Parse(host, uri []byte) 
-   func (u *URI) AppendBytes(dst []byte) []byte 
-   func (u *URI) RequestURI() []byte 
-   func (u *URI) FullURI() []byte 
-```
+|函数签名|说明|
+|:--|:--|
+| `func (u *URI) CopyTo(dst *URI)`|TODO|
+| `func (u *URI) QueryArgs() *Args`|TODO|
+| `func (u *URI) Hash() []byte`|TODO|
+| `func (u *URI) SetHash(hash string)`|TODO|
+| `func (u *URI) SetHashBytes(hash []byte)`|TODO|
+| `func (u *URI) Username() []byte`|TODO|
+| `func (u *URI) SetUsername(username string)`|TODO|
+| `func (u *URI) SetUsernameBytes(username []byte)`|TODO|
+| `func (u *URI) Password() []byte`|TODO|
+| `func (u *URI) SetPassword(password string)`|TODO|
+| `func (u *URI) SetPasswordBytes(password []byte)`|TODO|
+| `func (u *URI) QueryString() []byte`|TODO|
+| `func (u *URI) SetQueryString(queryString string)`|TODO|
+| `func (u *URI) SetQueryStringBytes(queryString []byte)`|TODO|
+| `func (u *URI) Path() []byte`|TODO|
+| `func (u *URI) SetPath(path string)`|TODO|
+| `func (u *URI) String() string`|TODO|
+| `func (u *URI) SetPathBytes(path []byte)`|TODO|
+| `func (u *URI) PathOriginal() []byte`|TODO|
+| `func (u *URI) Scheme() []byte`|TODO|
+| `func (u *URI) SetScheme(scheme string)`|TODO|
+| `func (u *URI) SetSchemeBytes(scheme []byte)`|TODO|
+| `func (u *URI) Reset()`|TODO|
+| `func (u *URI) Host() []byte`|TODO|
+| `func (u *URI) SetHost(host string)`|TODO|
+| `func (u *URI) SetHostBytes(host []byte)`|TODO|
+| `func (u *URI) LastPathSegment() []byte`|TODO|
+| `func (u *URI) Update(newURI string)`|TODO|
+| `func (u *URI) UpdateBytes(newURI []byte)`|TODO|
+| `func (u *URI) Parse(host, uri []byte)`|TODO|
+| `func (u *URI) AppendBytes(dst []byte) []byte`|TODO|
+| `func (u *URI) RequestURI() []byte`|TODO|
+| `func (u *URI) FullURI() []byte`|TODO|
 
 ## Header
 
@@ -529,9 +525,94 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
-### Header 对象 (TODO)
+### RequestHeader 对象
 
-> ctx.Request.Header
+使用 `RequestContext.Request.Header` 获取 RequestHeader 对象，该对象提供了以下方法获取/设置请求头部。
+
+|函数签名|说明|
+|:--|:--|
+|`func (h *RequestHeader) SetRawHeaders(r []byte)`  | TODO |
+| `func (h *RequestHeader) Add(key, value string)`|TODO|
+| `func (h *RequestHeader) IsHTTP11() bool`|TODO|
+| `func (h *RequestHeader) SetProtocol(p string)`|TODO|
+| `func (h *RequestHeader) GetProtocol() string`|TODO|
+| `func (h *RequestHeader) SetNoHTTP11(b bool)`|TODO|
+| `func (h *RequestHeader) InitBufValue(size int)`|TODO|
+| `func (h *RequestHeader) GetBufValue() []byte`|TODO|
+| `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|TODO|
+| `func (h *RequestHeader) PeekIfModifiedSinceBytes() []byte`|TODO|
+| `func (h *RequestHeader) RequestURI() []byte`|TODO|
+| `func (h *RequestHeader) PeekArgBytes(key []byte) []byte`|TODO|
+| `func (h *RequestHeader) RawHeaders() []byte`|TODO|
+| `func (h *RequestHeader) AppendBytes(dst []byte) []byte`|TODO|
+| `func (h *RequestHeader) Header() []byte`|TODO|
+| `func (h *RequestHeader) IsPut() bool`|TODO|
+| `func (h *RequestHeader) IsHead() bool`|TODO|
+| `func (h *RequestHeader) IsPost() bool`|TODO|
+| `func (h *RequestHeader) IsDelete() bool`|TODO|
+| `func (h *RequestHeader) IsConnect() bool`|TODO|
+| `func (h *RequestHeader) IgnoreBody() bool`|TODO|
+| `func (h *RequestHeader) ContentLength() int`|TODO|
+| `func (h *RequestHeader) SetHost(host string)`|TODO|
+| `func (h *RequestHeader) PeekAll(key string) [][]byte`|TODO|
+| `func (h *RequestHeader) peekAll(key []byte) [][]byte`|TODO|
+| `func (h *RequestHeader) Len() int`|TODO|
+| `func (h *RequestHeader) Reset()`|TODO|
+| `func (h *RequestHeader) SetByteRange(startPos, endPos int)`|TODO|
+| `func (h *RequestHeader) DelBytes(key []byte)`|TODO|
+| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|TODO|
+| `func (h *RequestHeader) del(key []byte)`|TODO|
+| `func (h *RequestHeader) CopyTo(dst *RequestHeader)`|TODO|
+| `func (h *RequestHeader) Peek(key string) []byte`|TODO|
+| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`|TODO|
+| `func (h *RequestHeader) ContentLengthBytes() []byte`|TODO|
+| `func (h *RequestHeader) SetContentLengthBytes(contentLength []byte)`|TODO|
+| `func (h *RequestHeader) SetContentTypeBytes(contentType []byte)`|TODO|
+| `func (h *RequestHeader) ContentType() []byte`|TODO|
+| `func (h *RequestHeader) SetNoDefaultContentType(b bool)`|TODO|
+| `func (h *RequestHeader) SetContentLength(contentLength int)`|TODO|
+| `func (h *RequestHeader) InitContentLengthWithValue(contentLength int)`|TODO|
+| `func (h *RequestHeader) MultipartFormBoundary() []byte`|TODO|
+| `func (h *RequestHeader) ConnectionClose() bool`|TODO|
+| `func (h *RequestHeader) Method() []byte`|TODO|
+| `func (h *RequestHeader) IsGet() bool`|TODO|
+| `func (h *RequestHeader) IsOptions() bool`|TODO|
+| `func (h *RequestHeader) IsTrace() bool`|TODO|
+| `func (h *RequestHeader) SetHostBytes(host []byte)`|TODO|
+| `func (h *RequestHeader) SetRequestURIBytes(requestURI []byte)`|TODO|
+| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|TODO|
+| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|TODO|
+| `func (h *RequestHeader) SetUserAgentBytes(userAgent []byte)`|TODO|
+| `func (h *RequestHeader) SetCookie(key, value string)`|TODO|
+| `func (h *RequestHeader) Cookie(key string) []byte`|TODO|
+| `func (h *RequestHeader) Cookies() []*Cookie`|TODO|
+| `func (h *RequestHeader) PeekRange() []byte`|TODO|
+| `func (h *RequestHeader) PeekContentEncoding() []byte`|TODO|
+| `func (h *RequestHeader) FullCookie() []byte`|TODO|
+| `func (h *RequestHeader) DelCookie(key string)`|TODO|
+| `func (h *RequestHeader) DelAllCookies()`|TODO|
+| `func (h *RequestHeader) VisitAllCookie(f func(key, value []byte))`|TODO|
+| `func (h *RequestHeader) collectCookies()`|TODO|
+| `func (h *RequestHeader) SetConnectionClose(close bool)`|TODO|
+| `func (h *RequestHeader) ResetConnectionClose()`|TODO|
+| `func (h *RequestHeader) SetMethod(method string)`|TODO|
+| `func (h *RequestHeader) SetRequestURI(requestURI string)`|TODO|
+| `func (h *RequestHeader) Set(key, value string)`|TODO|
+| `func (h *RequestHeader) SetCanonical(key, value []byte)`|TODO|
+| `func (h *RequestHeader) ResetSkipNormalize()`|TODO|
+| `func (h *RequestHeader) Host() []byte`|TODO|
+| `func (h *RequestHeader) UserAgent() []byte`|TODO|
+| `func (h *RequestHeader) DisableNormalizing()`|TODO|
+| `func (h *RequestHeader) IsDisableNormalizing() bool`|TODO|
+| `func (h *RequestHeader) String() string`|TODO|
+| `func (h *RequestHeader) VisitAll(f func(key, value []byte))`|TODO|
+| `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`|TODO|
+| `func (h *RequestHeader) peek(key []byte) []byte`|TODO|
+| `func (h *RequestHeader) Get(key string) string`|TODO|
+| `func (h *RequestHeader) GetAll(key string) []string`|TODO|
+| `func (h *RequestHeader) SetMethodBytes(method []byte)`|TODO|
+| `func (h *RequestHeader) setSpecialHeader(key, value []byte) bool`|TODO|
+| `func (h *RequestHeader) Trailer() *Trailer`|TODO|
 
 ## Body
 
@@ -877,7 +958,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### Value
 
-获取上下文键为 key 的值。(TODO: 1. 需要确认 Value 没有加锁是否正常)
+获取上下文键为 key 的值。
 
 > 注意: key 类型需要为 `string` , 否则返回 nil 。
 
@@ -1780,41 +1861,9 @@ func (ctx *RequestContext) Validate(obj interface{}) error
 func (ctx *RequestContext) BindAndValidate(obj interface{}) error 
 ```
 
-### ResetWithoutConn
-
-TODO
-
-函数签名:
-
-```go
-func (ctx *RequestContext) ResetWithoutConn() 
-```
-
-示例:
-
-```go
-
-```
-
-### Reset
-
-TODO
-
-函数签名:
-
-```go
-func (ctx *RequestContext) Reset() 
-```
-
-示例:
-
-```go
-
-```
-
 ### Finished
 
-TODO
+用于等待请求结束，通常由 [ResetWithoutConn](#resetwithoutconn) 触发。
 
 函数签名:
 
@@ -1822,15 +1871,9 @@ TODO
 func (ctx *RequestContext) Finished() <-chan struct{} 
 ```
 
-示例:
-
-```go
-
-```
-
 ### Copy
 
-TODO
+拷贝 RequestContext 副本，提供协程安全的访问方式。
 
 函数签名:
 
@@ -1841,12 +1884,19 @@ func (ctx *RequestContext) Copy() *RequestContext
 示例:
 
 ```go
-
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx1 := ctx.Copy()
+    go func(context *app.RequestContext) {
+        // safely
+    }(ctx1)
+})
 ```
 
 ### Error
 
-TODO
+将错误列表储存到上下文中，方便中间件收集错误信息。
+
+> 注意: 如果 err 为 nil 会 panic 。
 
 函数签名:
 
@@ -1857,21 +1907,42 @@ func (ctx *RequestContext) Error(err error) *errors.Error
 示例:
 
 ```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Error(errors.New("first error"))
+    ctx.Error(errors.New("second error"))
+}, func(c context.Context, ctx *app.RequestContext) {
+    ctx.Errors.String() // Error #01: first error \n Error #02: second error
+})
+```
 
+### ResetWithoutConn
+
+重置 RequestContext 除了 Conn 的其他属性。(通常用于实现 [protocol.server](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/server.go#L26) 接口)
+
+函数签名:
+
+```go
+func (ctx *RequestContext) ResetWithoutConn() 
+```
+
+### Reset
+
+重置 RequestContext 。
+
+> 注意: 这是一个内部函数
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Reset() 
 ```
 
 ### GetRequest
 
-TODO
+获取 Request 的副本，通常与 [adaptor](https://github.com/cloudwego/hertz/blob/develop/pkg/common/adaptor/request.go) 一起使用。(更多内容请参考 [hertz-contrib/pprof](https://github.com/hertz-contrib/pprof/blob/main/adaptor/handler.go#L93))
 
 函数签名:
 
 ```go
 func (ctx *RequestContext) GetRequest() (dst *protocol.Request) 
-```
-
-示例:
-
-```go
-
 ```
