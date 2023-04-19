@@ -11,7 +11,7 @@ description: >
 **1. Fallback 功能: 支持 Client 侧的 Fallback 功能**
 
   业务在 RPC 请求失败后通常会有一些降级措施保证有效返回（比如在请求超时、熔断后，构造默认返回），Kitex 的 Fallback 支持对所有异常请求进行处理。
-  同时，因为业务异常通常会通过 BaseResp 字段返回，所以也支持对 Resp 进行处理。详见 [Fallback](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/fallback/)。
+  同时，因为业务异常通常会通过 BaseResp 字段返回，所以也支持对 Resp 进行处理。详见 [Fallback](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/fallback/)。
 
 **2. Kitex - gRPC：Client 增加 TLS 的配置**
 
@@ -27,7 +27,7 @@ description: >
 **1. 负载均衡：使用权重轮询作为默认 Loadbalance 策略**
 
 旧版本默认使用权重随机做 Loadbalance，Random 可以做到全局的均衡，但在服务端实例较少的情况下，随机有较大概率连续访问一个实例，导致下游节点最大并发请求数增加，所以新版本将默认策略调整为轮询。
-详见：[负载均衡](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/loadbalance/)。
+详见：[负载均衡](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/loadbalance/)。
 
 **2. 连接池协程问题**
 
@@ -43,7 +43,7 @@ description: >
 
 ### Feature
 
-- [[#840](https://github.com/cloudwego/kitex/pull/840)] feat(fallback): support fallback ability for kitex client-side, usage guide refer to [Fallback](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/fallback)
+- [[#840](https://github.com/cloudwego/kitex/pull/840)] feat(fallback): support fallback ability for kitex client-side, usage guide refer to [Fallback](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/fallback)
 - [[#841](https://github.com/cloudwego/kitex/pull/841)] feat(tool): add GetResult() and GetFirstArgument() methods for service params of protobuf
 - [[#791](https://github.com/cloudwego/kitex/pull/791)] feat(tool): merge two ways of passing extensions, to support two ways at sametime
 - [[#797](https://github.com/cloudwego/kitex/pull/797)] feat(loadbalance): use smooth weighted round robin algo as default Loadbalance policy
