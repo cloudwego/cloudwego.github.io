@@ -293,39 +293,39 @@ URI 对象提供了以下方法获取/设置 URI 。
 
 |函数签名|说明|
 |:--|:--|
-| `func (u *URI) CopyTo(dst *URI)`|TODO|
-| `func (u *URI) QueryArgs() *Args`|TODO|
-| `func (u *URI) Hash() []byte`|TODO|
-| `func (u *URI) SetHash(hash string)`|TODO|
-| `func (u *URI) SetHashBytes(hash []byte)`|TODO|
-| `func (u *URI) Username() []byte`|TODO|
-| `func (u *URI) SetUsername(username string)`|TODO|
-| `func (u *URI) SetUsernameBytes(username []byte)`|TODO|
-| `func (u *URI) Password() []byte`|TODO|
-| `func (u *URI) SetPassword(password string)`|TODO|
-| `func (u *URI) SetPasswordBytes(password []byte)`|TODO|
-| `func (u *URI) QueryString() []byte`|TODO|
-| `func (u *URI) SetQueryString(queryString string)`|TODO|
-| `func (u *URI) SetQueryStringBytes(queryString []byte)`|TODO|
-| `func (u *URI) Path() []byte`|TODO|
-| `func (u *URI) SetPath(path string)`|TODO|
-| `func (u *URI) String() string`|TODO|
-| `func (u *URI) SetPathBytes(path []byte)`|TODO|
-| `func (u *URI) PathOriginal() []byte`|TODO|
-| `func (u *URI) Scheme() []byte`|TODO|
-| `func (u *URI) SetScheme(scheme string)`|TODO|
-| `func (u *URI) SetSchemeBytes(scheme []byte)`|TODO|
-| `func (u *URI) Reset()`|TODO|
-| `func (u *URI) Host() []byte`|TODO|
-| `func (u *URI) SetHost(host string)`|TODO|
-| `func (u *URI) SetHostBytes(host []byte)`|TODO|
-| `func (u *URI) LastPathSegment() []byte`|TODO|
-| `func (u *URI) Update(newURI string)`|TODO|
-| `func (u *URI) UpdateBytes(newURI []byte)`|TODO|
-| `func (u *URI) Parse(host, uri []byte)`|TODO|
-| `func (u *URI) AppendBytes(dst []byte) []byte`|TODO|
-| `func (u *URI) RequestURI() []byte`|TODO|
-| `func (u *URI) FullURI() []byte`|TODO|
+| `func (u *URI) CopyTo(dst *URI)`| 拷贝 URI 对象的副本到 dst|
+| `func (u *URI) QueryArgs() *Args`| 获取 [Args 对象](#args-对象)|
+| `func (u *URI) Hash() []byte`| 获取 Hash 值，比如 <http://example.com/user?baz=123#qwe> 的 Hash 是 **qwe** |
+| `func (u *URI) SetHash(hash string)`|设置 Hash |
+| `func (u *URI) SetHashBytes(hash []byte)`|设置 `[]byte` 类型 Hash |
+| `func (u *URI) Username() []byte`|获取 Username|
+| `func (u *URI) SetUsername(username string)`|设置 Username|
+| `func (u *URI) SetUsernameBytes(username []byte)`|设置 `[]byte` 类型 Username|
+| `func (u *URI) Password() []byte`|获取 Password|
+| `func (u *URI) SetPassword(password string)`|设置 Password|
+| `func (u *URI) SetPasswordBytes(password []byte)`|设置 `[]byte` 类型 Password|
+| `func (u *URI) QueryString() []byte`|获取 `Query String`，比如 <http://example.com/user?baz=123> 的 `Query String` 是 **baz=123**|
+| `func (u *URI) SetQueryString(queryString string)`|设置 `Query String`|
+| `func (u *URI) SetQueryStringBytes(queryString []byte)`|设置 `[]byte` 类型的 `Query String`|
+| `func (u *URI) Path() []byte`| 获取 Path，比如 <http://example.com/user/he%20rtz> 的 Path 是 **/user/he rtz**
+| `func (u *URI) PathOriginal() []byte`|获取未转义的 Path，比如 <http://example.com/user/he%20rtz> 的 Path 是 **/user/he%20rtz**|
+| `func (u *URI) SetPath(path string)`|设置 Path|
+| `func (u *URI) SetPathBytes(path []byte)`|设置 `[]byte` 类型 Path|
+| `func (u *URI) String() string`|获取完整 URI <http://example.com/user?baz=123> |
+| `func (u *URI) FullURI() []byte`|获取 `[]byte` 类型的完整 URI |
+| `func (u *URI) Scheme() []byte`|获取协议，如 http|
+| `func (u *URI) SetScheme(scheme string)`|设置协议|
+| `func (u *URI) SetSchemeBytes(scheme []byte)`|设置 `[]byte` 类型的协议|
+| `func (u *URI) Host() []byte`|获取 Host，比如 <http://example.com/user> 的 Host 是 **example.com**|
+| `func (u *URI) SetHost(host string)`|设置 Host|
+| `func (u *URI) SetHostBytes(host []byte)`|设置 `[]byte` 类型 Host|
+| `func (u *URI) LastPathSegment() []byte`|获取 Path 的最后一部分，比如 Path **/foo/bar/baz.html** 的最后一部分是 **baz.html**|
+| `func (u *URI) Update(newURI string)`|更新 URI|
+| `func (u *URI) UpdateBytes(newURI []byte)`|更新 `[]byte` 类型的 URI|
+| `func (u *URI) Parse(host, uri []byte)`|初始化 URI|
+| `func (u *URI) AppendBytes(dst []byte) []byte`|将完整的 URI 赋值到 dst 中并返回 dst|
+| `func (u *URI) RequestURI() []byte`|获取 RequestURI，比如 <http://example.com/user?baz=123> 的 RequestURI 是 **/user?baz=123**|
+| `func (u *URI) Reset()`|重制 URI|
 
 ## Header
 
@@ -531,88 +531,85 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 
 |函数签名|说明|
 |:--|:--|
-|`func (h *RequestHeader) SetRawHeaders(r []byte)`  | TODO |
-| `func (h *RequestHeader) Add(key, value string)`|TODO|
-| `func (h *RequestHeader) IsHTTP11() bool`|TODO|
-| `func (h *RequestHeader) SetProtocol(p string)`|TODO|
-| `func (h *RequestHeader) GetProtocol() string`|TODO|
-| `func (h *RequestHeader) SetNoHTTP11(b bool)`|TODO|
-| `func (h *RequestHeader) InitBufValue(size int)`|TODO|
-| `func (h *RequestHeader) GetBufValue() []byte`|TODO|
-| `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|TODO|
-| `func (h *RequestHeader) PeekIfModifiedSinceBytes() []byte`|TODO|
-| `func (h *RequestHeader) RequestURI() []byte`|TODO|
-| `func (h *RequestHeader) PeekArgBytes(key []byte) []byte`|TODO|
-| `func (h *RequestHeader) RawHeaders() []byte`|TODO|
-| `func (h *RequestHeader) AppendBytes(dst []byte) []byte`|TODO|
-| `func (h *RequestHeader) Header() []byte`|TODO|
-| `func (h *RequestHeader) IsPut() bool`|TODO|
-| `func (h *RequestHeader) IsHead() bool`|TODO|
-| `func (h *RequestHeader) IsPost() bool`|TODO|
-| `func (h *RequestHeader) IsDelete() bool`|TODO|
-| `func (h *RequestHeader) IsConnect() bool`|TODO|
-| `func (h *RequestHeader) IgnoreBody() bool`|TODO|
-| `func (h *RequestHeader) ContentLength() int`|TODO|
-| `func (h *RequestHeader) SetHost(host string)`|TODO|
-| `func (h *RequestHeader) PeekAll(key string) [][]byte`|TODO|
-| `func (h *RequestHeader) peekAll(key []byte) [][]byte`|TODO|
-| `func (h *RequestHeader) Len() int`|TODO|
-| `func (h *RequestHeader) Reset()`|TODO|
-| `func (h *RequestHeader) SetByteRange(startPos, endPos int)`|TODO|
-| `func (h *RequestHeader) DelBytes(key []byte)`|TODO|
-| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|TODO|
-| `func (h *RequestHeader) del(key []byte)`|TODO|
-| `func (h *RequestHeader) CopyTo(dst *RequestHeader)`|TODO|
-| `func (h *RequestHeader) Peek(key string) []byte`|TODO|
-| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`|TODO|
-| `func (h *RequestHeader) ContentLengthBytes() []byte`|TODO|
-| `func (h *RequestHeader) SetContentLengthBytes(contentLength []byte)`|TODO|
-| `func (h *RequestHeader) SetContentTypeBytes(contentType []byte)`|TODO|
-| `func (h *RequestHeader) ContentType() []byte`|TODO|
-| `func (h *RequestHeader) SetNoDefaultContentType(b bool)`|TODO|
-| `func (h *RequestHeader) SetContentLength(contentLength int)`|TODO|
-| `func (h *RequestHeader) InitContentLengthWithValue(contentLength int)`|TODO|
-| `func (h *RequestHeader) MultipartFormBoundary() []byte`|TODO|
-| `func (h *RequestHeader) ConnectionClose() bool`|TODO|
-| `func (h *RequestHeader) Method() []byte`|TODO|
-| `func (h *RequestHeader) IsGet() bool`|TODO|
-| `func (h *RequestHeader) IsOptions() bool`|TODO|
-| `func (h *RequestHeader) IsTrace() bool`|TODO|
-| `func (h *RequestHeader) SetHostBytes(host []byte)`|TODO|
-| `func (h *RequestHeader) SetRequestURIBytes(requestURI []byte)`|TODO|
-| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|TODO|
-| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|TODO|
-| `func (h *RequestHeader) SetUserAgentBytes(userAgent []byte)`|TODO|
-| `func (h *RequestHeader) SetCookie(key, value string)`|TODO|
-| `func (h *RequestHeader) Cookie(key string) []byte`|TODO|
-| `func (h *RequestHeader) Cookies() []*Cookie`|TODO|
-| `func (h *RequestHeader) PeekRange() []byte`|TODO|
-| `func (h *RequestHeader) PeekContentEncoding() []byte`|TODO|
-| `func (h *RequestHeader) FullCookie() []byte`|TODO|
-| `func (h *RequestHeader) DelCookie(key string)`|TODO|
-| `func (h *RequestHeader) DelAllCookies()`|TODO|
-| `func (h *RequestHeader) VisitAllCookie(f func(key, value []byte))`|TODO|
-| `func (h *RequestHeader) collectCookies()`|TODO|
-| `func (h *RequestHeader) SetConnectionClose(close bool)`|TODO|
-| `func (h *RequestHeader) ResetConnectionClose()`|TODO|
-| `func (h *RequestHeader) SetMethod(method string)`|TODO|
-| `func (h *RequestHeader) SetRequestURI(requestURI string)`|TODO|
-| `func (h *RequestHeader) Set(key, value string)`|TODO|
-| `func (h *RequestHeader) SetCanonical(key, value []byte)`|TODO|
-| `func (h *RequestHeader) ResetSkipNormalize()`|TODO|
-| `func (h *RequestHeader) Host() []byte`|TODO|
-| `func (h *RequestHeader) UserAgent() []byte`|TODO|
-| `func (h *RequestHeader) DisableNormalizing()`|TODO|
-| `func (h *RequestHeader) IsDisableNormalizing() bool`|TODO|
-| `func (h *RequestHeader) String() string`|TODO|
-| `func (h *RequestHeader) VisitAll(f func(key, value []byte))`|TODO|
-| `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`|TODO|
-| `func (h *RequestHeader) peek(key []byte) []byte`|TODO|
-| `func (h *RequestHeader) Get(key string) string`|TODO|
-| `func (h *RequestHeader) GetAll(key string) []string`|TODO|
-| `func (h *RequestHeader) SetMethodBytes(method []byte)`|TODO|
-| `func (h *RequestHeader) setSpecialHeader(key, value []byte) bool`|TODO|
-| `func (h *RequestHeader) Trailer() *Trailer`|TODO|
+| `func (h *RequestHeader) Method() []byte`|获取 Method |
+| `func (h *RequestHeader) SetMethod(method string)`|设置 Method|
+| `func (h *RequestHeader) SetMethodBytes(method []byte)`|设置 `[]byte` 类型的 Method|
+| `func (h *RequestHeader) IsGet() bool`|判断 Method 是否是 GET|
+| `func (h *RequestHeader) IsHead() bool`|判断 Method 是否是 HEAD|
+| `func (h *RequestHeader) IsPost() bool`|判断 Method 是否是 POST|
+| `func (h *RequestHeader) IsPut() bool`|判断 Method 是否是 PUT|
+| `func (h *RequestHeader) IsDelete() bool`|判断 Method 是否是 DELETE|
+| `func (h *RequestHeader) IsConnect() bool`|判断 Method 是否是 CONNECT|
+| `func (h *RequestHeader) IsOptions() bool`|判断 Method 是否是 OPTIONS|
+| `func (h *RequestHeader) IsTrace() bool`|判断 Method 是否是 TRACE|
+| `func (h *RequestHeader) IgnoreBody() bool`|判断是否忽略 Body (Method GET/HEAD 忽略 Body)|
+| `func (h *RequestHeader) RequestURI() []byte`| 获取 RequestURI|
+| `func (h *RequestHeader) SetRequestURI(requestURI string)`|设置 RequestURI|
+| `func (h *RequestHeader) SetRequestURIBytes(requestURI []byte)`|设置 `[]byte` 类型的 RequestURI|
+| `func (h *RequestHeader) SetProtocol(p string)`|设置协议类型，比如 HTTP/1.0|
+| `func (h *RequestHeader) GetProtocol() string`|获取协议类型，比如 HTTP/1.1|
+| `func (h *RequestHeader) IsHTTP11() bool`|判断是否是 HTTP/1.1|
+| `func (h *RequestHeader) SetNoHTTP11(b bool)`|设置是否不是 HTTP/1.1|
+| `func (h *RequestHeader) Host() []byte`| 获取 Host|
+| `func (h *RequestHeader) SetHost(host string)`|设置 Host|
+| `func (h *RequestHeader) SetHostBytes(host []byte)`|设置 `[]byte` 类型的 Host|
+| `func (h *RequestHeader) ContentLength() int`|获取 Content-Length|
+| `func (h *RequestHeader) ContentLengthBytes() []byte`|获取 `[]byte` 类型的 Content-Length|
+| `func (h *RequestHeader) SetContentLength(contentLength int)`|设置 Content-Length|
+| `func (h *RequestHeader) SetContentLengthBytes(contentLength []byte)`|设置 `[]byte` 类型的 Content-Length|
+| `func (h *RequestHeader) InitContentLengthWithValue(contentLength int)`|初始化 Content-Length|
+| `func (h *RequestHeader) ContentType() []byte`|获取 Content-Type|
+| `func (h *RequestHeader) SetContentTypeBytes(contentType []byte)`|设置 Content-Type|
+| `func (h *RequestHeader) SetNoDefaultContentType(b bool)`|控制未指定 Content-Type 时的默认发送行为，false 发送默认 Content-Type 的值，true 不发送 Content-Type|
+| `func (h *RequestHeader) UserAgent() []byte`|获取 User-Agent|
+| `func (h *RequestHeader) SetUserAgentBytes(userAgent []byte)`|设置 User-Agent|
+| `func (h *RequestHeader) ConnectionClose() bool`|判断是否包含 Connection: close|
+| `func (h *RequestHeader) SetConnectionClose(close bool)`|设置 connectionClose 标志|
+| `func (h *RequestHeader) ResetConnectionClose()`|重制 connectionClose 标志为 false 并删除 Connection Header|
+| `func (h *RequestHeader) SetByteRange(startPos, endPos int)`| 设置 Range (Range: bytes=startPos-endPos)|
+| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`| 设置 Content-Type (Content-Type: multipart/form-data; boundary=----...) |
+| `func (h *RequestHeader) MultipartFormBoundary() []byte`|获取 boundary 的值|
+| `func (h *RequestHeader) Trailer() *Trailer`|获取 Trailer|
+| `func (h *RequestHeader) Cookie(key string) []byte`|获取 Cookie 键为 key 的值|
+| `func (h *RequestHeader) SetCookie(key, value string)`|设置 Cookie 的键值|
+| `func (h *RequestHeader) DelCookie(key string)`|删除键为 key 的 Cookie|
+| `func (h *RequestHeader) DelAllCookies()`|删除所有 Cookie |
+| `func (h *RequestHeader) FullCookie() []byte`|获取所有 Cookie|
+| `func (h *RequestHeader) Cookies() []*Cookie`|获取所有 Cookie 对象|
+| `func (h *RequestHeader) VisitAllCookie(f func(key, value []byte))`| 遍历所有 Cookie 的键值并执行 f 函数|
+| `func (h *RequestHeader) Peek(key string) []byte`|获取 `[]byte` 类型的键为 key 的值|
+| `func (h *RequestHeader) Get(key string) string`|获取键为 key 的值 |
+| `func (h *RequestHeader) PeekArgBytes(key []byte) []byte`|获取键为 key 的值|
+| `func (h *RequestHeader) PeekAll(key string) [][]byte`|获取 `[]byte` 类型的键为 key 的所有值（用于获取存在相同 key 的多个值）|
+| `func (h *RequestHeader) GetAll(key string) []string`|获取键为 key 的所有值|
+| `func (h *RequestHeader) PeekIfModifiedSinceBytes() []byte`|获取 If-Modified-Since|
+| `func (h *RequestHeader) PeekContentEncoding() []byte`|获取 Content-Encoding|
+| `func (h *RequestHeader) PeekRange() []byte`|获取 Range|
+| `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|判断是否存在 Accept-Encoding 以及 Accept-Encoding 是否包含 acceptEncoding|
+| `func (h *RequestHeader) RawHeaders() []byte`|获取原始 Header |
+| `func (h *RequestHeader) SetRawHeaders(r []byte)`  | 设置原始 Header |
+| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header。(以下 key 会覆盖 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
+| `func (h *RequestHeader) InitBufValue(size int)`|初始化缓冲区大小|
+| `func (h *RequestHeader) GetBufValue() []byte`|获取缓冲区的值|
+| `func (h *RequestHeader) SetCanonical(key, value []byte)`|设置 Header 键值，假设该键是规范形式。|
+| `func (h *RequestHeader) Set(key, value string)`|设置 Header 键值|
+| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|设置 Header 键值|
+| `func (h *RequestHeader) DelBytes(key []byte)`|删除 Header 中键为 key 的键值对|
+| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|添加 Header 键值 （key 不为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent）|
+| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|设置 Header 键值（key 不为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent）|
+| `func (h *RequestHeader) AppendBytes(dst []byte) []byte`|将完整的 Header 附加到 dst 中并返回|
+| `func (h *RequestHeader) Header() []byte`|获取 `[]byte` 类型的完整的 Header |
+| `func (h *RequestHeader) String() string`|获取完整的 Header |
+| `func (h *RequestHeader) CopyTo(dst *RequestHeader)`|获取 RequestHeader 的副本|
+| `func (h *RequestHeader) VisitAll(f func(key, value []byte))`|遍历所有 Header 的键值并执行 f 函数|
+| `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`|遍历所有 Header 的键值并执行 f 函数，以下 key 除外 Content-Type, Content-Length, Cookie, Host, User-Agent）|
+| `func (h *RequestHeader) Len() int`|返回 Header 的数量|
+| `func (h *RequestHeader) DisableNormalizing()`|禁用 Header 名字的规范化(首字母和破折号后第一个字母大写)|
+| `func (h *RequestHeader) IsDisableNormalizing() bool`|是否禁用 Header 名字的规范化|
+| `func (h *RequestHeader) ResetSkipNormalize()`|重制 Headers 除了 disableNormalizing 状态|
+| `func (h *RequestHeader) Reset()`|重制 Headers |
+
+TODO: 注释中的 VisitAllInOrder 并不存在
 
 ## Body
 
