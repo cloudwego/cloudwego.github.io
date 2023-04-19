@@ -28,12 +28,12 @@ description: >
   $ mkdir -p $(go env GOPATH)/src/github.com/cloudwego
   $ cd $(go env GOPATH)/src/github.com/cloudwego
 ```
-2. 若将代码放置于 GOPATH 之外，可直接获取
+2. 若将代码放置于`GOPATH`之外，可直接获取
 
 ### 生成/编写示例代码
 
 1. 在当前目录下创建 hertz_demo 文件夹，进入该目录中
-2. 生成代码 `hz new`
+2. 生成代码 `hz new`，若当前不在`GOPATH`，需要添加`-module` flag 指定一个自定义的模块名称。详细参考[这里](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/usage/)。
 3. 整理 & 拉取依赖
 ```console
 $ go mod tidy
