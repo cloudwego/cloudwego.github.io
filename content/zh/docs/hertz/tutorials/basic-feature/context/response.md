@@ -5,10 +5,234 @@ weight: 4
 description: >
 ---
 
+## Header
+
+```go
+func (ctx *RequestContext) SetContentType(contentType string)
+func (ctx *RequestContext) SetContentTypeBytes(contentType []byte)
+func (ctx *RequestContext) SetConnectionClose()
+func (ctx *RequestContext) SetStatusCode(statusCode int)
+func (ctx *RequestContext) Status(code int)
+func (ctx *RequestContext) NotFound()
+func (ctx *RequestContext) NotModified()
+func (ctx *RequestContext) Redirect(statusCode int, uri []byte)
+func (ctx *RequestContext) Header(key, value string)
+func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool)
+func (ctx *RequestContext) AbortWithStatus(code int)
+func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error 
+```
+
+### SetContentType
+
+设置 Content-Type 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetContentType(contentType string)
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Write([]byte(`{"foo":"bar"}`))
+    ctx.SetContentType("application/json; charset=utf-8")
+})
+```
+
+### SetContentTypeBytes
+
+以 `[]byte` 方式设置 Content-Type 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetContentTypeBytes(contentType []byte)
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Write([]byte(`{"foo":"bar"}`))
+    ctx.SetContentType([]byte("application/json; charset=utf-8"))
+})
+```
+
+### SetConnectionClose
+
+设置 Connection: close ，告知客户端服务器想关闭连接。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetConnectionClose()
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.SetConnectionClose()
+})
+```
+
+### SetStatusCode
+
+设置 Status Code
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetStatusCode(statusCode int)
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.SetStatusCode(consts.StatusOK)
+})
+```
+
+### Status
+
+设置 Status Code，[SetStatusCode](#setstatuscode) 的别名。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Status(code int)
+```
+
+### NotFound
+
+设置 Status Code 代码为 404 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) NotFound()
+```
+
+### NotModified
+
+设置 Status Code 代码为 304 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) NotModified()
+```
+
+### Redirect
+
+设置 Status Code 代码以及要跳转的地址 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Redirect(statusCode int, uri []byte)
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Redirect(consts.StatusFound, []byte("/pet"))
+})
+
+h.GET("/pet", func(c context.Context, ctx *app.RequestContext) {
+    ctx.String(consts.StatusOK, "cat")
+})
+```
+
+### Header
+
+设置或删除指定 Header 。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Header(key, value string)
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Header("My-Name", "tom")
+    ctx.Header("My-Name", "")
+    ctx.Header("My-Name-Not-Exists", "yes")
+})
+```
+
+### SetCookie
+
+设置 Cookie 。(更多内容请参考 [hertz-examples/parameter/cookie](https://github.com/cloudwego/hertz-examples/blob/main/parameter/cookie/main.go))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool)
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
+})
+```
+
+### AbortWithStatus
+
+设置 Status Code 并终止后续的 Handler。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) AbortWithStatus(code int)
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.AbortWithStatus(consts.StatusOK)
+}, func(c context.Context, ctx *app.RequestContext) {
+    // will not execute
+})
+```
+
+### AbortWithError
+
+设置 Status Code 收集 Error 并终止后续的 Handler，返回 Error。(更多内容请参考 [RequestContext/Error](/zh/docs/hertz/tutorials/basic-feature/context/request/#error))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error 
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    err := ctx.AbortWithError(consts.StatusOK)
+}, func(c context.Context, ctx *app.RequestContext) {
+    // will not execute
+})
+```
+
+### ResponseHeader 对象
+
+使用 RequestContext.Response.Header 获取 ResponseHeader 对象，它与 [RequestHeader](/zh/docs/hertz/tutorials/basic-feature/context/request/#requestheader-对象) 对象及提供的函数基本一致。
+
 ## Body
 
 ```go
-// TODO: API 说明
 func (ctx *RequestContext) SetBodyStream(bodyStream io.Reader, bodySize int)
 func (ctx *RequestContext) SetBodyString(body string)
 func (ctx *RequestContext) Write(p []byte) (int, error)
@@ -27,7 +251,6 @@ func (ctx *RequestContext) FileAttachment(filepath, filename string)
 func (ctx *RequestContext) FileFromFS(filepath string, fs *FS)
 func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
 func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
-// TODO: RequestContext.Response.BodyBuffer()
 ```
 
 ### SetBodyStream
@@ -305,7 +528,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### XML
 
-TODO
+设置 Status Code 以及通过 render.XML 设置 Body。
 
 函数签名:
 
@@ -364,7 +587,9 @@ func (ctx *RequestContext) FileAttachment(filepath, filename string)
 示例:
 
 ```go
-
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.FileAttachment("./main.go")
+})
 ```
 
 ### FileFromFS
@@ -433,37 +658,16 @@ func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
  })
 ```
 
-## Header
-
-```go
-// TODO: API 说明
-func (ctx *RequestContext) SetContentType(contentType string)
-func (ctx *RequestContext) SetContentTypeBytes(contentType []byte)
-func (ctx *RequestContext) SetConnectionClose()
-func (ctx *RequestContext) SetStatusCode(statusCode int)
-func (ctx *RequestContext) Status(code int)
-func (ctx *RequestContext) NotFound()
-func (ctx *RequestContext) NotModified()
-func (ctx *RequestContext) Redirect(statusCode int, uri []byte)
-func (ctx *RequestContext) Header(key, value string)
-func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool)
-func (ctx *RequestContext) AbortWithStatus(code int)
-func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error 
-// TODO: RequestContext.Response.Header
-```
-
 ## 其他
 
 ```go
-// TODO: 分类
 func (ctx *RequestContext) Flush() error 
 func (ctx *RequestContext) GetResponse() (dst *protocol.Response) 
-// TODO: protocol.Response
 ```
 
-<!-- ### Flush
+### Flush
 
-TODO
+把数据刷入被劫持的 Response Writer 中 。(更多内容请参考 [response_writer](/zh/docs/hertz/tutorials/framework-exten/response_writer/#%E5%8A%AB%E6%8C%81-response-%E7%9A%84-writer))
 
 函数签名:
 
@@ -471,8 +675,12 @@ TODO
 func (ctx *RequestContext) Flush() error 
 ```
 
-示例:
+### GetResponse
+
+获取 Response 对象。
+
+函数签名:
 
 ```go
-
-``` -->
+func (ctx *RequestContext) GetResponse() (dst *protocol.Response)
+```
