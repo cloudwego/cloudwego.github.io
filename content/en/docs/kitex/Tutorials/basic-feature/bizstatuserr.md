@@ -1,7 +1,7 @@
 ---
 title: "Business Exception"
 date: 2022-11-04
-weight: 14
+weight: 6
 keywords: ["Kitex", "Custom Exception"]
 description: "Kitex has provided business custom exceptions since v0.4.3. This doc covers the interface definition, user usage, and framework implementation."
 ---

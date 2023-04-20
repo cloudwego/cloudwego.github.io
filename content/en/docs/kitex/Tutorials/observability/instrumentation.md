@@ -1,7 +1,7 @@
 ---
 title: "Instrumentation Control"
 date: 2021-08-31
-weight: 12
+weight: 1
 keywords: ["Kitex", "Stats", "Instrumentation"]
 description: Kitex supports flexible enabling of basic and fine-grained Instrumentation.
 ---

@@ -1,7 +1,7 @@
 ---
 title: "限流"
 date: 2022-10-08
-weight: 10
+weight: 7
 keywords: ["Kitex", "限流", "限流器"]
 description: "Kitex 默认限流和自定义限流使用指南。"
 ---

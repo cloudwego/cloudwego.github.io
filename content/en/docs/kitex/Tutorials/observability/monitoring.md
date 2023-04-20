@@ -1,7 +1,7 @@
 ---
 title: "Monitoring"
 date: 2021-08-31
-weight: 2
+weight: 4
 keywords: ["Kitex", "Monitoring", "Tracer"]
 description: Kitex has monitoring capability built in, but does not have any monitoring features itself, and can be extended by the interface.
 ---

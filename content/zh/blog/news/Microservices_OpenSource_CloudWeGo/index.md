@@ -113,7 +113,7 @@ CloudWeGo 在第一阶段开源了四个项目：
 
 ![image](/img/blog/Microservices_Open_CloudWeGo/Conversion.png)
 
-关于 [Kitex][Kitex] 熔断器实现的更多细节和原理，可以查看官网基本特性 -> [熔断器](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/circuitbreaker/)章节。
+关于 [Kitex][Kitex] 熔断器实现的更多细节和原理，可以查看官网基本特性 -> [熔断器](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/circuitbreaker/)章节。
 
 ### **限流**
 

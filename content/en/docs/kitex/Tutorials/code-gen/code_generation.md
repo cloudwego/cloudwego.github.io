@@ -11,7 +11,7 @@ description: >
 
 ## Installation
 
-> At present, the Kitex command-line tool does not support the Windows environment.
+> If you want to use it in windows, please make sure the version of Kitex >= v0.5.2.
 
 Kitex code generation relies on thriftgo and protoc compilers. You need to install the corresponding compilers first: [thriftgo](https://github.com/cloudwego/thriftgo) or [protoc](https://github.com/protocolbuffers/protobuf/releases).
 

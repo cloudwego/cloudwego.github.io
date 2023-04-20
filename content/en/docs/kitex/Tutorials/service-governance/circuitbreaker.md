@@ -1,7 +1,7 @@
 ---
 title: "Circuit Breaker"
 date: 2021-08-31
-weight: 9
+weight: 5
 keywords: ["Kitex", "Circuit Breaker"]
 description: "This doc covers Kitex Circuit Breaker use guide and principle introduction."
 ---
