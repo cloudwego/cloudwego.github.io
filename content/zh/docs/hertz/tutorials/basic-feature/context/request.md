@@ -609,8 +609,6 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) ResetSkipNormalize()`|重制 Headers 除了 disableNormalizing 状态|
 | `func (h *RequestHeader) Reset()`|重制 Headers |
 
-TODO: 注释中的 VisitAllInOrder 并不存在
-
 ## Body
 
 ```go
