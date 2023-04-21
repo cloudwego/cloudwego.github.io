@@ -42,6 +42,21 @@ go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 go mod tidy
 ```
 
+```bash
+// 非GOPATH 下执行
+//选择1，你没有一个go.mod ,在 "-module" 后添加 go mod 名
+hz new -module example.com/m -idl idl/hello.thrift
+
+// 整理 & 拉取依赖
+go mod tidy
+
+//选择2，你已经有一个go.mod
+go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
+
+// 整理 & 拉取依赖
+go mod tidy
+```
+
 3.  修改 handler，添加自己的逻辑
 
 ```go

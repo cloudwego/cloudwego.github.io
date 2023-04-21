@@ -8,7 +8,7 @@ description: >
 
 ## TLS
 Hertz Server & Client currently only supports TLS for the standard network library, and the support for the [Netpoll](https://github.com/cloudwego/netpoll) network library is still on the way.
-Usage Reference: [Hertz Example](/en/docs/hertz/tutorials/example/) and [Hertz Config](/en/docs/hertz/reference/config/)
+Usage Reference: [Hertz Example](/docs/hertz/tutorials/example/) and [Hertz Config](/docs/hertz/reference/config/)
 
 ## ALPN
 ALPN can be switched on or off with a switch after TLS is enabled.(depending on whether all required protocol Servers are currently registered via Protocol Suite)

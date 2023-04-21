@@ -1,7 +1,7 @@
 ---
-title: "Service Registration and Service Discovery"
+title: "Service Registration and Discovery"
 date: 2022-08-14
-weight: 3
+weight: 1
 description: >
 ---
 
@@ -31,7 +31,7 @@ Some optional configurations are provided to users when using service discovery.
 
 ### WithSD
 
-`requestOptins` provides `WithSD` configuration item, when the incoming parameter is true, `isSD` will be set to true. The `WithSD` configuration item must be used when using service discovery requests.
+`requestOptions` provides `WithSD` configuration item, when the incoming parameter is true, `isSD` will be set to true. The `WithSD` configuration item must be used when using service discovery requests.
 
 Sample code:
 ```go
@@ -40,7 +40,7 @@ status, body, err := cli.Get(context.Background(), nil, "http://hertz.test.demo/
 
 ### WithTag
 
-`requestOptins` provides `WithTag` configuration item, using this configuration will set tag for `requestOptions`.
+`requestOptions` provides `WithTag` configuration item, using this configuration will set tag for `requestOptions`.
 
 Sample code:
 ```go

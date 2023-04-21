@@ -11,7 +11,7 @@ description: "Kitex 开发环境准备、快速上手与基础教程。"
 1. 如果您之前未搭建 Golang 开发环境， 可以参考 [Golang 安装](https://golang.org/doc/install)
 2. 推荐使用最新版本的 Golang，我们保证最新三个正式版本的兼容性(现在 >= **v1.16**)。
 3. 确保打开 go mod 支持 (Golang >= 1.15时，默认开启)
-4. kitex 暂时没有针对 Windows 做支持，如果本地开发环境是 Windows 建议使用 [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install)
+4. 在 Windows 环境使用，需要 kitex 版本 >= v0.5.2
 
 ## 快速上手
 

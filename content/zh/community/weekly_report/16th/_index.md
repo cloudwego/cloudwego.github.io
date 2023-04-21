@@ -7,5 +7,5 @@ description: >
 
 **第 16 期周报**
 
-![image](/img/community/weekly_report/CloudWeGo_16th_weekly_report.png)
+![image](https://raw.githubusercontent.com/cloudwego/community/main/weekly_report/CloudWeGo_16th_weekly_report.png)
 

@@ -9,4 +9,4 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: typos-action
-        uses: crate-ci/typos@v1.3.3
+        uses: crate-ci/typos@v1.14.3

@@ -1,7 +1,7 @@
 ---
 title: "服务注册与发现"
 date: 2022-08-14
-weight: 3
+weight: 1
 description: >
 ---
 
@@ -31,7 +31,7 @@ description: >
 
 ### WithSD
 
-`requestOptins` 提供 `WithSD` 配置项，传入参数为 true 时将会设置 `isSD` 为 true。使用服务发现请求时必须使用 `WithSD` 配置项。
+`requestOptions` 提供 `WithSD` 配置项，传入参数为 true 时将会设置 `isSD` 为 true。使用服务发现请求时必须使用 `WithSD` 配置项。
 
 示例代码：
 ```go
@@ -40,7 +40,7 @@ status, body, err := cli.Get(context.Background(), nil, "http://hertz.test.demo/
 
 ### WithTag
 
-`requestOptins` 提供 `WithTag` 配置项，使用此配置会为 `requestOptions` 设置 tag。
+`requestOptions` 提供 `WithTag` 配置项，使用此配置会为 `requestOptions` 设置 tag。
 
 示例代码：
 ```go
