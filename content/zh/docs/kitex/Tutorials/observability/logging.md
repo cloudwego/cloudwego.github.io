@@ -1,7 +1,7 @@
 ---
 title: "日志"
 date: 2022-12-22
-weight: 13
+weight: 3
 keywords: ["Kitex", "logger", "logrus", "zap"]
 description: "Kitex 支持默认 logger 实现和注入自定义 logger 以及重定向默认 logger 输出。"
 ---

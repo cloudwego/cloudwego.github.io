@@ -41,7 +41,7 @@ type Change struct {
 
 - `Resolve`：作为 `Resolver` 的核心方法， 从 target key 中获取我们需要的服务发现结果 `Result`。
 - `Target`：从 Kitex 提供的对端 EndpointInfo 中解析出 `Resolve` 需要使用的唯一 target, 同时这个 target 将作为缓存的唯一 key。
-- `Diff`：用于计算两次服务发现的变更， 计算结果一般用于通知其他组件， 如 [loadbalancer](../../basic-feature/loadbalance) 和熔断等， 返回的是变更 `Change`。
+- `Diff`：用于计算两次服务发现的变更， 计算结果一般用于通知其他组件， 如 [loadbalancer](../../service-governance/loadbalance) 和熔断等， 返回的是变更 `Change`。
 - `Name`：用于指定 Resolver 的唯一名称， 同时 Kitex 会用它来缓存和复用 Resolver。
 
 ## 自定义 Resolver

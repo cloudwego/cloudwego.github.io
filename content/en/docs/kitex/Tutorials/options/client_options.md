@@ -132,7 +132,7 @@ cbs.UpdateServiceCBConfig(key, config)
 cbs.UpdateInstanceCBConfig(key, config)
 ```
 
-For more details, please visit [Circuit Breaker](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/circuitbreaker/).
+For more details, please visit [Circuit Breaker](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/circuitbreaker/).
 
 ### WithFailureRetry
 
@@ -140,7 +140,7 @@ For more details, please visit [Circuit Breaker](https://www.cloudwego.io/docs/k
 func WithFailureRetry(p *retry.FailurePolicy) Option
 ```
 
-Set timeout retry rules, you can configure the maximum number of retries, the maximum time spent accumulated, the threshold of the retry circuit fault rate, the DDL abort and backoff policy. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/retry/)
+Set timeout retry rules, you can configure the maximum number of retries, the maximum time spent accumulated, the threshold of the retry circuit fault rate, the DDL abort and backoff policy. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/retry/)
 
 
 
@@ -150,7 +150,7 @@ Set timeout retry rules, you can configure the maximum number of retries, the ma
 func WithBackupRequest(p *retry.BackupPolicy) Option
 ```
 
-Set the policy for Backup Request, which can configure the number of requests, circuit breaker abort, and link abort. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/retry/)
+Set the policy for Backup Request, which can configure the number of requests, circuit breaker abort, and link abort. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/retry/)
 
 
 
@@ -160,7 +160,7 @@ Set the policy for Backup Request, which can configure the number of requests, c
 func WithRPCTimeout(d time.Duration) Option
 ```
 
-Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/timeout/)
+Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/timeout/)
 
 
 
@@ -170,7 +170,7 @@ Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feat
 func WithConnectTimeout(d time.Duration) Option
 ```
 
-Set connect timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/timeout/)
+Set connect timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/timeout/)
 
 
 
@@ -210,7 +210,7 @@ Add some meta information to the client, such as idc, cluster, etc., for scenari
 func WithStatsLevel(level stats.Level) Optiong
 ```
 
-Set the stats level for client. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/tracing/)
+Set the stats level for client. [More](https://www.cloudwego.io/docs/kitex/tutorials/observability/tracing/)
 
 
 
@@ -460,7 +460,7 @@ Specifie client use RPC over http.
 func WithTracer(c stats.Tracer) Option
 ```
 
-Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/tracing/)
+Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/observability/tracing/)
 
 
 
@@ -490,7 +490,7 @@ Set HTTP resolver. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-fe
 func WithLoadBalancer(lb loadbalance.Loadbalancer, opts ...*lbcache.Options) Option 
 ```
 
-Set load balancer. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/loadbalance/)
+Set load balancer. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/loadbalance/)
 
 
 

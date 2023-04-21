@@ -1,7 +1,7 @@
 ---
 title: "请求重试"
 date: 2022-08-25
-weight: 7
+weight: 4
 keywords: ["Kitex", "重试", "Backup Request"]
 description: Kitex 异常重试与 Backup Request 策略介绍与使用指南。
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Fallback"
 date: 2023-03-09
-weight: 11
+weight: 6
 keywords: ["Kitex", "Fallback", "降级"]
 description: Kitex 自定义 Fallback 使用指南。
 ---
@@ -19,7 +19,7 @@ description: Kitex 自定义 Fallback 使用指南。
 ### 1.1 支持 Fallback 的结果类型
 
 1. **RPC** **Error**：RPC 请求异常，如超时、熔断、限流、协议等 RPC 层面的异常
-2. **业务 Error**：业务自定义的异常，区别于 RPC 异常，具体是 [Kitex - 业务异常处理使用文档](../bizstatuserr)
+2. **业务 Error**：业务自定义的异常，区别于 RPC 异常，具体是 [Kitex - 业务异常处理使用文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/)
 3. **Resp**：在没有使用业务异常的情况下，用户会在 Resp（BaseResp） 中定义错误返回，所以也支持对 Resp 判断做 fallback
 
 ### 1.2 监控上报

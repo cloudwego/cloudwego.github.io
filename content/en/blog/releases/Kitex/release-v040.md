@@ -8,7 +8,7 @@ description: >
 ## **Introduction to Key Changes**
 
 ### **Feature**
-1. **Retry enhancement**: Support user-defined result retry; Support request-level configuration (priority is higher than Neptune). See [retry guide](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/retry/) for details
+1. **Retry enhancement**: Support user-defined result retry; Support request-level configuration (priority is higher than Neptune). See [retry guide](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/retry/) for details
 2. **Frugal (Thrift)**: Support default value of IDL; No codec code is supported by using frugal. See [frugal](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/codec_frugal/) for details
 3. **Tool-Protobuf**: Support depend on external libraries with go_package, see [Notes for Using Protobuf IDLs](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls);  Support Guess IDL type from the file extension, it is unnecessary to specify the type param when generating the protobuf code
 4. **Fastpb(protobuf)**: Support fastpb to optimize performance of protobuf, and it is integrated into Kite by default. See [fastpb](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/fastpb/) for details
