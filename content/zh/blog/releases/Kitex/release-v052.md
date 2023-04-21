@@ -10,8 +10,13 @@ description: >
 
 1. 异常重试：添加配置，支持不对超时错误进行重试，用于请求非幂等的场景。
 2. 代码生成工具：支持 windows 环境使用。
-3. 超时错误码拆分：支持细粒度的超时错误码，将 ErrRPCTimeout 细分为三个错误码：超时、业务cancel、业务timeout。
-4. Thrift Fast Codec：支持 unknown fields
+3. 超时错误类型拆分：支持细粒度的超时错误类型，将 ErrRPCTimeout 细分为三个错误类型：超时、业务cancel、业务timeout。
+4. Thrift FastCodec：支持 unknown fields。
+
+    unknown fields 使用场景：在 thrift 中，IDL 内增加字段对未更新 IDL 的一方是无感知的，必须更新 IDL 与生成代码以获取到新的字段。这会导致调用链路上某个节点更新 IDL 时，下游所有节点均需要进行更新。 
+
+    unknown fields 则支持保留未识别的字段，对于 IDL 内不存在的字段，读取并设置于结构体的 _unknownFields 字段。
+
 
 ### 修复
 1. 失败重试策略：修复失败重试策略被动态修改后，结果重试 (resultRetry) 策略失效的问题。
@@ -24,7 +29,7 @@ Feature:
 ---
 * [[#887](https://github.com/cloudwego/kitex/pull/887)] feat(retry): 增加配置，支持异常重试场景下不对超时做重试，用于请求非幂等的场景
 * [[#881](https://github.com/cloudwego/kitex/pull/881)] feat(tool): 支持 windows 场景下的代码生成
-* [[#880](https://github.com/cloudwego/kitex/pull/880)] feat(rpctimeout): 支持细粒度的超时错误码
+* [[#880](https://github.com/cloudwego/kitex/pull/880)] feat(rpctimeout): 支持细粒度的超时错误类型
 * [[#872](https://github.com/cloudwego/kitex/pull/872)] feat(thrift): 在 fast codec 中支持 unknown fields 的序列化及反序列化
 
 Optimize:
