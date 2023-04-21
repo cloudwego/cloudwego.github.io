@@ -17,6 +17,8 @@ description: >
 
     unknown fields 则支持保留未识别的字段，对于 IDL 内不存在的字段，读取并设置于结构体的 _unknownFields 字段。
 
+    使用方法：`kitex -thrift keep_unknown_fields your.thrift`
+
 
 ### 修复
 1. 失败重试策略：修复失败重试策略被动态修改后，结果重试 (resultRetry) 策略失效的问题。

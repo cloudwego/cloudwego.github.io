@@ -17,6 +17,8 @@ description: >
 
     "Unknown fields" supports retaining unrecognized fields. For fields that do not exist in the IDL, they are read and set in the "_unknownFields" field of the struct.
 
+    Usage: `kitex -thrift keep_unknown_fields your.thrift`
+
 ### **Fix**
 1. Result retry: fix the issue that the result retry becomes invalid after failure retry policy is modified dynamically
 
