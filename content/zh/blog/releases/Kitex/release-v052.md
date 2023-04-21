@@ -13,11 +13,11 @@ description: >
 3. 超时错误类型拆分：支持细粒度的超时错误类型，将 ErrRPCTimeout 细分为三个错误类型：超时、业务cancel、业务timeout。
 4. Thrift FastCodec：支持 unknown fields。
 
-    unknown fields 使用场景：在 thrift 中，IDL 内增加字段对未更新 IDL 的一方是无感知的，必须更新 IDL 与生成代码以获取到新的字段。这会导致调用链路上某个节点更新 IDL 时，下游所有节点均需要进行更新。 
+    * unknown fields 使用背景：在 thrift 中，IDL 内增加字段对未更新 IDL 的一方是无感知的，必须更新 IDL 与生成代码以获取到新的字段。这会导致调用链路上某个节点更新 IDL 时，下游所有节点均需要进行更新。 
 
-    unknown fields 则支持保留未识别的字段，对于 IDL 内不存在的字段，读取并设置于结构体的 _unknownFields 字段。
+    * unknown fields 则支持保留未识别的字段，对于 IDL 内不存在的字段，读取并设置于结构体的 `_unknownFields` 字段。
 
-    使用方法：`kitex -thrift keep_unknown_fields your.thrift`
+    * 使用方法：`kitex -thrift keep_unknown_fields your.thrift`
 
 
 ### 修复
