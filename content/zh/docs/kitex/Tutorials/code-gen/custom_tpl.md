@@ -33,7 +33,7 @@ update_behavior:
     type: skip / cover / append # 指定更新行为，如果 loop_method 为true，则不支持 append。默认是 skip
     key: Test{{.Name}} # 函数名
     append_tpl: # 更新的内容模板
-    import_tpl: # 新增的 import 内容，是一个 list，可以通过模版渲染
+    import_tpl: # 新增的 import 内容，是一个 list，可以通过模版渲染。每一条 list 内支持循环渲染多个 import，靠空格分割，如 "\"a/b/c\" \"d/e/f\""
 body: template content # 模板内容
 --------------------------------
 path: /handler/{{ .Name }}.go 

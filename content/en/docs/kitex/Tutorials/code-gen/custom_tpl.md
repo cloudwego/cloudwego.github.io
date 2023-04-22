@@ -45,7 +45,7 @@ update_behavior:
     type: skip / cover / append # specifies the update behavior, if 'loop_methor' is true, append is not supported.the default value is skip
     key: Test{{.Name}} # function name
     append_tpl: # the new tpl
-    import_tpl: # the new import, it is a list and it can be rendered
+    import_tpl: # the new import, it is a list and it can be rendered. Each item in the list supports rendering multiple imports in a loop, separated by spaces, such as: "\"a/b/c\" \"d/e/f\""
 body: template content # tql content
 --------------------------------
 path: /handler/{{ .Name }}.go 
