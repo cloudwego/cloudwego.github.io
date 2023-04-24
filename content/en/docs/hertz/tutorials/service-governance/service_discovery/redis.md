@@ -31,18 +31,18 @@ Sample code:
 
 ```go
 func main() {
-    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithPassword("123456"))
-    // ...
-    h := server.Default(
-    server.WithHostPorts(addr),
-    server.WithRegistry(r, &registry.Info{
-      ServiceName: "hertz.test.demo",
-      Addr:        utils.NewNetAddr("tcp", addr),
-      Weight:      10,
-      Tags:        nil,
-    }),
-    )
-    // ...
+	r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithPassword("123456"))
+	// ...
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	// ...
 }
 ```
 
