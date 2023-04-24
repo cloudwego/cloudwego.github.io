@@ -31,18 +31,18 @@ Sample code:
 
 ```go
 func main() {
-     r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithPassword("123456"))
-     //...
-     h := server.Default(
-     server.WithHostPorts(addr),
-     server.WithRegistry(r, &registry.Info{
-       ServiceName: "hertz.test.demo",
-       Addr: utils. NewNetAddr("tcp", addr),
-       Weight: 10,
-       Tags: nil,
-     }),
-     )
-     //...
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithPassword("123456"))
+    // ...
+    h := server.Default(
+    server.WithHostPorts(addr),
+    server.WithRegistry(r, &registry.Info{
+      ServiceName: "hertz.test.demo",
+      Addr:        utils.NewNetAddr("tcp", addr),
+      Weight:      10,
+      Tags:        nil,
+    }),
+    )
+    // ...
 }
 ```
 
@@ -60,18 +60,18 @@ Sample code:
 
 ```go
 func main() {
-     r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithDB(1))
-     //...
-     h := server.Default(
-         server.WithHostPorts(addr),
-         server.WithRegistry(r, &registry.Info{
-             ServiceName: "hertz.test.demo",
-             Addr: utils. NewNetAddr("tcp", addr),
-             Weight: 10,
-             Tags: nil,
-         }),
-     )
-     //...
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithDB(1))
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }),
+    )
+    // ...
 }
 ```
 
@@ -89,20 +89,20 @@ Sample code:
 
 ```go
 func main() {
-     r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithTLSConfig(&tls.Config{
-     //...
-     }))
-     //...
-     h := server.Default(
-         server.WithHostPorts(addr),
-         server.WithRegistry(r, &registry.Info{
-             ServiceName: "hertz.test.demo",
-             Addr: utils. NewNetAddr("tcp", addr),
-             Weight: 10,
-             Tags: nil,
-         }),
-     )
-     //...
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithTLSConfig(&tls.Config{
+    // ...
+    }))
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }),
+    )
+    // ...
 }
 ```
 
@@ -120,20 +120,20 @@ Sample code:
 
 ```go
 func main() {
-     r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithDialer(
-     //...
-     ))
-     //...
-     h := server. Default(
-         server.WithHostPorts(addr),
-         server.WithRegistry(r, &registry.Info{
-             ServiceName: "hertz.test.demo",
-             Addr: utils. NewNetAddr("tcp", addr),
-             Weight: 10,
-             Tags: nil,
-         }),
-     )
-     //...
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithDialer(
+    // ...
+    ))
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }),
+    )
+    // ...
 }
 ```
 
@@ -151,18 +151,18 @@ Sample code:
 
 ```go
 func main() {
-     r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithReadTimeout(5*time.Second))
-     //...
-     h := server.Default(
-         server.WithHostPorts(addr),
-         server.WithRegistry(r, &registry.Info{
-             ServiceName: "hertz.test.demo",
-             Addr: utils.NewNetAddr("tcp", addr),
-             Weight: 10,
-             Tags: nil,
-         }),
-     )
-     //...
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithReadTimeout(5*time.Second))
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }),
+    )
+    // ...
 }
 ```
 
@@ -209,18 +209,18 @@ Sample code:
 
 ```go
 func main() {
-     r := redis.NewRedisRegistry("127.0.0.1:6379")
-     //...
-     h := server. Default(
-         server.WithHostPorts(addr),
-         server.WithRegistry(r, &registry.Info{
-             ServiceName: "hertz.test.demo",
-             Addr: utils. NewNetAddr("tcp", addr),
-             Weight: 10,
-             Tags: nil,
-         }),
-     )
-     //...
+    r := redis.NewRedisRegistry("127.0.0.1:6379")
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }),
+    )
+    // ...
 }
 ```
 
@@ -244,11 +244,11 @@ Sample code:
 
 ```go
 func main() {
-     cli, err := client.NewClient()
-     //...
-     r := redis.NewRedisResolver("127.0.0.1:6379", redis.WithPassword("123456"))
-     cli. Use(sd. Discovery(r))
-     //...
+    cli, err := client.NewClient()
+    // ...
+    r := redis.NewRedisResolver("127.0.0.1:6379", redis.WithPassword("123456"))
+    cli.Use(sd.Discovery(r))
+    // ...
 }
 ```
 
@@ -266,11 +266,11 @@ Sample code:
 
 ```go
 func main() {
-     cli, err := client.NewClient()
-     //...
-     r := redis.NewRedisResolver("127.0.0.1:6379", redis.WithDB(1))
-     cli. Use(sd. Discovery(r))
-     //...
+    cli, err := client.NewClient()
+    // ...
+    r := redis.NewRedisResolver("127.0.0.1:6379", redis.WithDB(1))
+    cli.Use(sd.Discovery(r))
+    // ...
 }
 ```
 
@@ -288,13 +288,13 @@ Sample code:
 
 ```go
 func main() {
-     cli, err := client.NewClient()
-     //...
-     r := redis.NewRedisResolver("127.0.0.1:6379", redis.WithTLSConfig(&tls.Config{
-     //...
-     }))
-     cli. Use(sd. Discovery(r))
-     //...
+    cli, err := client.NewClient()
+    // ...
+    r := redis.NewRedisResolver("127.0.0.1:6379", redis.WithTLSConfig(&tls.Config{
+    // ...
+    }))
+    cli.Use(sd.Discovery(r))
+    // ...
 }
 ```
 
@@ -312,13 +312,13 @@ Sample code:
 
 ```go
 func main() {
-     cli, err := client.NewClient()
-     //...
-     r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithDialer(
-     //...
-     ))
-     cli. Use(sd. Discovery(r))
-     //...
+    cli, err := client.NewClient()
+    // ...
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithDialer(
+    // ...
+    ))
+    cli.Use(sd.Discovery(r))
+    // ...
 }
 ```
 
@@ -336,12 +336,12 @@ Sample code:
 
 ```go
 func main() {
-     cli, err := client.NewClient()
-     //...
-     r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithReadTimeout(5*time.Second))
-     //...
-     cli. Use(sd. Discovery(r))
-     //...
+    cli, err := client.NewClient()
+    // ...
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithReadTimeout(5*time.Second))
+    // ...
+    cli.Use(sd.Discovery(r))
+    // ...
 }
 ```
 
@@ -359,12 +359,12 @@ Sample code:
 
 ```go
 func main() {
-     cli, err := client. NewClient()
-     //...
-     r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithWriteTimeout(5*time.Second))
-     //...
-     cli. Use(sd. Discovery(r))
-     //...
+    cli, err := client.NewClient()
+    // ...
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithWriteTimeout(5*time.Second))
+    // ...
+    cli.Use(sd.Discovery(r))
+    // ...
 }
 ```
 
@@ -382,11 +382,11 @@ Sample code:
 
 ```go
 func main() {
-     cli, err := client. NewClient()
-     //...
-     r := redis.NewRedisResolver("127.0.0.1:6379")
-     cli. Use(sd. Discovery(r))
-     //...
+    cli, err := client.NewClient()
+    // ...
+    r := redis.NewRedisResolver("127.0.0.1:6379")
+    cli.Use(sd.Discovery(r))
+    // ...
 }
 ```
 
@@ -398,32 +398,32 @@ func main() {
 package main
 
 import (
-"context"
+	"context"
 
-"github.com/cloudwego/hertz/pkg/app"
-"github.com/cloudwego/hertz/pkg/app/server"
-"github.com/cloudwego/hertz/pkg/app/server/registry"
-"github.com/cloudwego/hertz/pkg/common/utils"
-"github.com/cloudwego/hertz/pkg/protocol/consts"
-"github.com/hertz-contrib/registry/redis"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/app/server/registry"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"github.com/hertz-contrib/registry/redis"
 )
 
 func main() {
-     r := redis.NewRedisRegistry("127.0.0.1:6379")
-     addr := "127.0.0.1:8888"
-     h := server. Default(
-         server.WithHostPorts(addr),
-         server.WithRegistry(r, &registry.Info{
-             ServiceName: "hertz.test.demo",
-             Addr: utils.NewNetAddr("tcp", addr),
-             Weight: 10,
-             Tags: nil,
-         }),
-     )
-     h.GET("/ping", func(_ context.Context, ctx *app.RequestContext) {
-         ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-     })
-     h. Spin()
+	r := redis.NewRedisRegistry("127.0.0.1:6379")
+	addr := "127.0.0.1:8888"
+	h := server.Default(
+		server.WithHostPorts(addr),
+		server.WithRegistry(r, &registry.Info{
+			ServiceName: "hertz.test.demo",
+			Addr:        utils.NewNetAddr("tcp", addr),
+			Weight:      10,
+			Tags:        nil,
+		}),
+	)
+	h.GET("/ping", func(_ context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+	})
+	h.Spin()
 }
 ```
 
@@ -433,29 +433,29 @@ func main() {
 package main
 
 import (
-"context"
+	"context"
 
-"github.com/cloudwego/hertz/pkg/app/client"
-"github.com/cloudwego/hertz/pkg/app/middlewares/client/sd"
-"github.com/cloudwego/hertz/pkg/common/config"
-"github.com/cloudwego/hertz/pkg/common/hlog"
-"github.com/hertz-contrib/registry/redis"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/middlewares/client/sd"
+	"github.com/cloudwego/hertz/pkg/common/config"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/hertz-contrib/registry/redis"
 )
 
 func main() {
-     cli, err := client.NewClient()
-     if err != nil {
-         panic(err)
-     }
-     r := redis.NewRedisResolver("127.0.0.1:6379")
-     cli. Use(sd. Discovery(r))
-     for i := 0; i < 10; i++ {
-         status, body, err := cli.Get(context.Background(), nil, "http://hertz.test.demo/ping", config.WithSD(true))
-         if err != nil {
-             hlog.Fatal(err)
-         }
-         hlog.Infof("HERTZ: code=%d, body=%s", status, string(body))
-     }
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r := redis.NewRedisResolver("127.0.0.1:6379")
+	cli.Use(sd.Discovery(r))
+	for i := 0; i < 10; i++ {
+		status, body, err := cli.Get(context.Background(), nil, "http://hertz.test.demo/ping", config.WithSD(true))
+		if err != nil {
+			hlog.Fatal(err)
+		}
+		hlog.Infof("HERTZ: code=%d, body=%s", status, string(body))
+	}
 }
 ```
 
