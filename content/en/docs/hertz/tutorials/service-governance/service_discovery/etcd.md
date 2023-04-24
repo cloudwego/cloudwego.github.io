@@ -138,7 +138,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+    r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"},
         etcd.WithTLSOpt(certFile, keyFile, caFile),
     )
     if err != nil {
@@ -167,7 +167,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+    r, err := etcd.NewEtcdResovler([]string{"127.0.0.1:2379"},
         etcd.WithAuthOpt("root","123456"),
     )
     if err != nil {
@@ -196,7 +196,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+    r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"},
         etcd.WithAuthOpt("root","123456"),
     )
     if err != nil {
