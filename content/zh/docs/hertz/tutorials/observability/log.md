@@ -135,7 +135,7 @@ func main() {
 ```
 ## 关闭 Engine 错误日志
 在生产环境中可能会遇到 `error when reading request headers` 类似的错误。这些错误从 server 的角度并不能解决，只能去排查来源。
-因此 Hertz 提供了一个配置，在初始化时添加如下代码
+因此 Hertz 提供了一个配置，在初始化时添加如下配置
 ```go
 hlog.SetSilentMode(true)
 ```
