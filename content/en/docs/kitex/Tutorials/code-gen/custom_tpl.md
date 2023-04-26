@@ -48,9 +48,10 @@ update_behavior:
     import_tpl: # the new import, it is a list and it can be rendered. Each item in the list supports rendering multiple imports in a loop, separated by spaces, such as: "\"a/b/c\" \"d/e/f\""
 body: template content # tql content
 --------------------------------
-path: /handler/{{ .Name }}.go 
-update_is_skip: true # specifies whether the file is skipped, if it is true,not skip.Because the Loopfield is specified, the file is added when updated
-loop_method: true
+path: /handler/{{ .Name }}.go # The path will first undergo template rendering. If loop_service and loop_method are specified, it will be loop rendered. The data used for rendering is the current rendered single service (method).
+update_is_skip: true # whether to skip this file when updating
+loop_method: true # loop rendering supports method
+loop_service: true # Multiple service support: If the "combine-service" command is set in the generation command and "loop_service: true" is specified in the template, the corresponding template file will be rendered in a loop according to the service during generation. It is the same format as loop_method, and will use the current template to loop render each service. It can be used simultaneously with loop_method.
 body: ... # tql content
 ```
 

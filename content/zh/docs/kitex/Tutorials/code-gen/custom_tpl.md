@@ -31,14 +31,15 @@ kitex -module ${module_name} -template-dir ${template dir_path} idl/hello.thrift
 path: /a/main.go # 生成文件的路径及文件名，这会在项目根目录下创建 a 文件夹，并在文件夹内生成 main.go 文件
 update_behavior:
     type: skip / cover / append # 指定更新行为，如果 loop_method 为true，则不支持 append。默认是 skip
-    key: Test{{.Name}} # 函数名
+    key: Test{{.Name}} # 函数名。
     append_tpl: # 更新的内容模板
     import_tpl: # 新增的 import 内容，是一个 list，可以通过模版渲染。每一条 list 内支持循环渲染多个 import，靠空格分割，如 "\"a/b/c\" \"d/e/f\""
 body: template content # 模板内容
 --------------------------------
-path: /handler/{{ .Name }}.go 
-update_is_skip: true # 更新时不跳过该文件，由于指定了 loopfield，所以更新时会增加文件
-loop_method: true
+path: /handler/{{ .Name }}.go # path 会先经过模版渲染。如指定了 loop_service、loop_method 则为循环渲染，渲染使用的数据内容为当前渲染的单个 service(method)
+update_is_skip: true # 更新时是否跳过该文件
+loop_method: true # 循环渲染 method 支持
+loop_service: true # 多 service 支持：生成命令中设置了 combine-service 并且在模版中指定了 loop_service: true，则在生成时，对应的模版文件会按照 service 循环渲染。形式同 loop_method，会使用当前的模板循环渲染每一个 service。可和 loop_method 同时使用
 body: ... # 模板内容
 ```
 
