@@ -1521,7 +1521,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetTraceInfo
 
-设置 TraceInfo 。(更多内容请参考 [hertz-contrib/tracer](https://github.com/hertz-contrib/tracer))
+设置 TraceInfo 。(更多内容请参考 [hertz-contrib/obs-opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry))
 
 函数签名:
 
@@ -1761,9 +1761,9 @@ func (ctx *RequestContext) Hijacked() bool
 
 按照以下顺序获取 key 的值。
 
-- 从 [QueryArgs](#queryargs) 中获取值。
-- 从 [PostArgs](#postargs) 中获取值。
-- 从 [MultipartForm](#multipartform) 中获取值。
+1. 从 [QueryArgs](#queryargs) 中获取值。
+2. 从 [PostArgs](#postargs) 中获取值。
+3. 从 [MultipartForm](#multipartform) 中获取值。
 
 函数签名:
 
