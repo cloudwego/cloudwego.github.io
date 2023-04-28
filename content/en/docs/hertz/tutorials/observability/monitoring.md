@@ -46,6 +46,6 @@ func main() {
 }
 ```
 
-Currently, `Client` doesn't expose `Tracer` interface, but monitoring capabilities can be implemented through [middleware](/en/docs/hertz/tutorials/basic-feature/middleware/).
+Currently, `Client` doesn't expose `Tracer` interface, but monitoring capabilities can be implemented through [middleware](/docs/hertz/tutorials/basic-feature/middleware/).
 
 Related Repository https://github.com/hertz-contrib/monitor-prometheus

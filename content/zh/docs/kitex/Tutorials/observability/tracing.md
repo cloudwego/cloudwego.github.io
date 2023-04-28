@@ -1,7 +1,7 @@
 ---
 title: "链路跟踪"
 date: 2021-08-26
-weight: 3
+weight: 2
 keywords: ["Kitex", "链路追踪", "OpenTelemetry", "OpenTracing"]
 description: Kitex 提供了对 OpenTelemetry 和 OpenTracing 的支持，也支持用户自定义链路跟踪。
 ---

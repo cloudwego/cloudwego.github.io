@@ -20,7 +20,7 @@ description: >
 1. 确保 `GOPATH` 环境变量已经被正确地定义（例如 `export GOPATH=~/go`）并且将`$GOPATH/bin`添加到 `PATH` 环境变量之中(例如 `export PATH=$GOPATH/bin:$PATH`)；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录
 2. 安装 hz：`go install github.com/cloudwego/hertz/cmd/hz@latest`
 
-更多 hz 使用方法可参考: [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/)
+更多 hz 使用方法可参考: [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/)
 
 ### 确定代码放置位置
 1. 若将代码放置于`$GOPATH/src`下，需在`$GOPATH/src`下创建额外目录，进入该目录后再获取代码：
@@ -28,12 +28,12 @@ description: >
   $ mkdir -p $(go env GOPATH)/src/github.com/cloudwego
   $ cd $(go env GOPATH)/src/github.com/cloudwego
 ```
-2. 若将代码放置于 GOPATH 之外，可直接获取
+2. 若将代码放置于`GOPATH`之外，可直接获取
 
 ### 生成/编写示例代码
 
 1. 在当前目录下创建 hertz_demo 文件夹，进入该目录中
-2. 生成代码 `hz new`
+2. 生成代码 `hz new`，若当前不在`GOPATH`，需要添加`-module` flag 指定一个自定义的模块名称。详细参考[这里](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/usage/)。
 3. 整理 & 拉取依赖
 ```console
 $ go mod tidy

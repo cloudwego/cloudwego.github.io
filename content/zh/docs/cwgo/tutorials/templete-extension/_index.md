@@ -41,7 +41,7 @@ body: template content # 模板内容
 
 # HTTP
 
-1.  模版文件通过 yaml 文件夹传递，但是与 RPC 的 layout 不同的是 HTTP 的 layout 是基于 hertz 的自定义模版实现的，这里我们需要指定的 yaml 文件名需要固定为 `layout.yaml` 与 `package.yaml` ，对于自定义模版的使用可以参考 [Hz 自定义模版使用文档](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/)。
+1.  模版文件通过 yaml 文件夹传递，但是与 RPC 的 layout 不同的是 HTTP 的 layout 是基于 hertz 的自定义模版实现的，这里我们需要指定的 yaml 文件名需要固定为 `layout.yaml` 与 `package.yaml` ，对于自定义模版的使用可以参考 [Hz 自定义模版使用文档](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/)。
 
 最佳实践的 http 示例 tpl 可参考[这里](https://github.com/cloudwego/cwgo/tree/main/tpl/hertz/standard)
 
