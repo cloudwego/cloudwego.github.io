@@ -24,7 +24,7 @@ Control
 }
 ```
 
-Note that the default logger makes use of the standard library `log.Logger` as its underlying output. So the filenames and line numbers shown in the log messages depend on the settings of call depth. Thus wrapping the implementation of hlog may cause inaccuracies for these two values.
+>Note that the default logger makes use of the standard library `log.Logger` as its underlying output. So the filenames and line numbers shown in the log messages depend on the settings of call depth. Thus wrapping the implementation of hlog may cause inaccuracies for these two values.
 
 ## Inject your own logger
 
