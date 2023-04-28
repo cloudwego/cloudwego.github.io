@@ -132,7 +132,7 @@ cbs.UpdateServiceCBConfig(key, config)
 cbs.UpdateInstanceCBConfig(key, config)
 ```
 
-关于熔断说明，详见[熔断器](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/circuitbreaker/)。
+关于熔断说明，详见[熔断器](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/circuitbreaker/)。
 
 ### 超时重试 - WithFailureRetry
 
@@ -140,7 +140,7 @@ cbs.UpdateInstanceCBConfig(key, config)
 func WithFailureRetry(p *retry.FailurePolicy) Option
 ```
 
-设置超时重试规则，可以配置最大重试次数，累计最大耗时，重试熔断错误率阈值，DDL 中止和退避策略等，详见[请求重试](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/retry/)。
+设置超时重试规则，可以配置最大重试次数，累计最大耗时，重试熔断错误率阈值，DDL 中止和退避策略等，详见[请求重试](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/retry/)。
 
 
 
@@ -150,7 +150,7 @@ func WithFailureRetry(p *retry.FailurePolicy) Option
 func WithBackupRequest(p *retry.BackupPolicy) Option
 ```
 
-设置 Backup Request 的策略，可以配置请求次数、熔断中止、链路中止等，详见[请求重试](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/retry/)。
+设置 Backup Request 的策略，可以配置请求次数、熔断中止、链路中止等，详见[请求重试](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/retry/)。
 
 
 
@@ -160,7 +160,7 @@ func WithBackupRequest(p *retry.BackupPolicy) Option
 func WithRPCTimeout(d time.Duration) Option
 ```
 
-进行 RPC 超时设置，详见[超时控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/timeout/)。
+进行 RPC 超时设置，详见[超时控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/)。
 
 
 
@@ -170,7 +170,7 @@ func WithRPCTimeout(d time.Duration) Option
 func WithConnectTimeout(d time.Duration) Option
 ```
 
-设置连接超时，详见[超时控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/timeout/)。
+设置连接超时，详见[超时控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/)。
 
 
 
@@ -210,7 +210,7 @@ func WithTag(key, val string) Option
 func WithStatsLevel(level stats.Level) Optiong
 ```
 
-为 Client 设置埋点粒度，详见[埋点粒度](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/tracing/)。
+为 Client 设置埋点粒度，详见[埋点粒度](https://www.cloudwego.io/zh/docs/kitex/tutorials/observability/tracing/)。
 
 
 
@@ -457,7 +457,7 @@ func WithHTTPConnection() Option
 func WithTracer(c stats.Tracer) Option
 ```
 
-额外添加一个 Tracer 进行链路监控，详见[链路跟踪-自定义 tracer](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/tracing/)。
+额外添加一个 Tracer 进行链路监控，详见[链路跟踪-自定义 tracer](https://www.cloudwego.io/zh/docs/kitex/tutorials/observability/tracing/)。
 
 
 
@@ -487,7 +487,7 @@ func WithHTTPResolver(r http.Resolver) Option
 func WithLoadBalancer(lb loadbalance.Loadbalancer, opts ...*lbcache.Options) Option 
 ```
 
-设置负载均衡器，详见[负载均衡](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/loadbalance/)。
+设置负载均衡器，详见[负载均衡](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/loadbalance/)。
 
 
 

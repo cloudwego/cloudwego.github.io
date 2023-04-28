@@ -10,7 +10,7 @@ description: "Kitex 常见问题解答。"
 ## Kitex 框架
 
 **Q1: 支持 Windows 吗？**
-* Kitex 在 v0.4.0 版本已支持在 Windows 环境下编译运行了。但代码生成工具暂未支持 Windows 环境。
+* 是的。Kitex 在 v0.4.0 版本已支持在 Windows 环境下编译运行了。代码生成工具在 v0.5.2 也支持了 Windows 环境。
 
 **Q2: 是否支持 HTTP？**
 * 目前 Kitex 没有支持 HTTP 请求，如果是 API 网关场景，针对 Thrift 提供了 [HTTP 映射的泛化调用](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/)，Kitex 会将 HTTP 请求做 Thrift 编码发给服务端。

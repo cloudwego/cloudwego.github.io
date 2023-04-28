@@ -1,7 +1,7 @@
 ---
 title: "Tracing"
 date: 2021-08-31
-weight: 3
+weight: 2
 keywords: ["Kitex", "Tracing", "OpenTelemetry", "OpenTracing"]
 description: Kitex supports OpenTelemetry tracer, OpenTracing tracer and also customized tracer.
 ---

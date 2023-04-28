@@ -1,14 +1,14 @@
 ---
-title: "Timeouts"
-date: 2021-08-31
-weight: 6
-keywords: ["Kitex", "timeout"]
-description: Kitex supports RPC timeout and connection timeout, both of which support client-level and invocation-level configurations.
+title: "超时控制"
+date: 2021-08-26
+weight: 3
+keywords: ["Kitex", "超时"]
+description: Kitex 支持 RPC 超时和连接超时，两种超时均支持 client 级别和调用级别的配置。
 ---
 
-## RPC Timeout
+## RPC 超时
 
-1. You can specify RPC timeout in client initialization, it will works for all RPC started by this client by default.
+1. 在 client 初始化时配置，配置的 RPC 超时将对此 client 的所有调用生效
 
 ```go
 import "github.com/cloudwego/kitex/client"
@@ -20,7 +20,7 @@ if err != nil {
 }
 ```
 
-1. And you can also specify timeout for a specific RPC call.
+2. 在发起调用时配置，配置的 RPC 超时仅对此次调用生效
 
 ```go
 import "github.com/cloudwego/kitex/client/callopt"
@@ -32,9 +32,9 @@ if err != nil {
 }
 ```
 
-## Connection Timeout
+## 连接超时
 
-1. You can specify connection timeout in client initialization, it will works for all RPC started by this client by default.
+1. 在 client 初始化时配置，配置的连接超时将对此 client 的所有调用生效
 
 ```go
 import "github.com/cloudwego/kitex/client"
@@ -46,7 +46,7 @@ if err != nil {
 }
 ```
 
-2. And you can also specify timeout for a specific RPC call.
+2. 在发起调用时配置，配置的连接超时仅对此次调用生效
 
 ```go
 import "github.com/cloudwego/kitex/client/callopt"
