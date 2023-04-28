@@ -123,7 +123,7 @@ import (
 func main() {
 	h := server.New(server.WithHostPorts(":8080"))
 
-	h.GET("/hello", handle1, handle2, handle3)
+	h.GET("/error", handle1, handle2, handle3)
 
 	h.Spin()
 }
