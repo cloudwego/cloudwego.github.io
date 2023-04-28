@@ -85,7 +85,7 @@ func NewPrivatef(format string, v ...interface{}) *Error {
 | Unwrap() error                   | 抛出错误                                         |
 | SetMeta(data interface{}) *Error | 设置元数据                                       |
 | IsType(flags ErrorType) bool     | 判断 `Error` 的 `ErrorType` 是否为给定的 `flags` |
-| JSON() interface{}               | 将错误转换为 json 对象                           |
+| JSON() interface{}               | 将错误转换为 `json` 对象                           |
 
 ## ErrorChain
 
@@ -99,11 +99,11 @@ func NewPrivatef(format string, v ...interface{}) *Error {
 | Errors() []string                | 将错误链转换为标准错误数组             |
 | ByType(typ ErrorType) ErrorChain | 按给定的错误类型返回对应的子错误链     |
 | Last() *Error                    | 返回最后（最新）的一个错误             |
-| JSON() interface{}               | 将所有错误转换为json对象               |
+| JSON() interface{}               | 将所有错误转换为 `json` 对象               |
 
 ### 如何使用
 
 对应的 API 为：`RequestContext.Error(err)`，调用该 API 会将 err 绑到对应的请求上下文上之上。
 
-获取请求上下文已绑定的所有错误的方式：`RequestContext.Errors`（ErrorChain）。
+获取请求上下文已绑定的所有错误的方式：`RequestContext.Errors`。
 
