@@ -18,7 +18,7 @@ type Logger struct {
 ## NewLogger
 
 Create and initialize a Logger through `defaultConfig()`. The required configuration can be passed into the function as a parameter. If no parameter is passed in, the initial configuration will be installed to create a Logger
-For related configuration, please refer to "option configuration" below.
+For related configuration, please refer to [option configuration](#option-configuration) below.
 
 Function Signature:
 
@@ -75,7 +75,7 @@ func main() {
 
 ### WithCoreWs
 
-`WithCoreWs` specifies the location where the log is written through the `zapcore.AddSync(file)`, and passes zapcore.WriteSyncer into the configuration
+`WithCoreWs` specifies the location where the log is written through the `zapcore.AddSync(file)`, and passes `zapcore.WriteSyncer` into the configuration
 
 Function Signature:
 ```go

@@ -45,7 +45,7 @@ func main() {
 
 ### WithLogger
 
-`WithLogger` 将 logrus.Logger 传入配置
+`WithLogger` 将 `logrus.Logger` 传入配置
 
 函数签名：
 ```go
@@ -68,7 +68,7 @@ func main() {
 ```
 
 ### WithHook
-`WithHook` 将传入的 logrus.Hook 添加进配置中的 hook
+`WithHook` 将传入的 `logrus.Hook` 添加进配置中的 hook
 
 函数签名：
 ```go

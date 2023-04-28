@@ -93,7 +93,7 @@ func main() {
 
 ### WithOutput
 
-`WithOutput` returns an Opt function through zerolog's `zerolog.Context.Logger().Output(out).With()`, allowing to specify the output of the logger. By default, it is set to os.Stdout.
+`WithOutput` returns an Opt function through zerolog's `zerolog.Context.Logger().Output(out).With()`, allowing to specify the output of the logger. By default, it is set to `os.Stdout`.
 
 Function Signature:
 ```go

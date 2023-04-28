@@ -19,7 +19,7 @@ type Logger struct {
 ## NewLogger
 
 通过 `defaultConfig()` 创建并初始化一个 Logger ，便于后续的调用，可将所需配置作为参数传入函数，若不传入参数则安装初始配置创建 Logger
-相关配置请参考后面的 “option的配置”。
+相关配置请参考后面的 [option的配置](#option-的相关配置)。
 
 函数签名：
 
@@ -50,7 +50,7 @@ func main() {
 
 ### WithCoreEnc
 
-Encoder 是一个提供给日志条目编码器的格式不可知的接口，`WithCoreEnc` 将 zapcore.Encoder 传入配置
+Encoder 是一个提供给日志条目编码器的格式不可知的接口，`WithCoreEnc` 将 `zapcore.Encoder` 传入配置
 
 函数签名：
 ```go
@@ -102,7 +102,7 @@ func main() {
 
 ### WithCoreLevel
 
-`WithCoreLevel` 将 zap.AtomicLevel 传入配置
+`WithCoreLevel` 将 `zap.AtomicLevel` 传入配置
 
 函数名称：
 ```go
@@ -126,7 +126,7 @@ func main() {
 
 ### WithCores
 
-`WithCores` 将 zapcore.Encoder ，zapcore.WriteSyncer ，zap.AtomicLevel 组合进的 CoreConfig 传入配置
+`WithCores` 将 `zapcore.Encoder` ，`zapcore.WriteSyncer` ，`zap.AtomicLevel` 组合进的 CoreConfig 传入配置
 
 函数签名：
 ```go

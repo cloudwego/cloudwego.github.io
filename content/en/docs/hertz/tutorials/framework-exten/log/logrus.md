@@ -49,12 +49,14 @@ func main() {
 
 `WithLogger` passes logrus.Logger into configuration
 
-函数签名：
+Function Signature:
+
 ```go
 func WithLogger(logger *logrus.Logger) Option 
 ```
 
-示例代码：
+Sample code:
+
 ```go
 package main
 

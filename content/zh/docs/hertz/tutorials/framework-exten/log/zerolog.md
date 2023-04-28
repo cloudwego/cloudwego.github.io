@@ -94,7 +94,7 @@ func main() {
 
 ### WithOutput
 
-`WithOutput` 通过 zerolog 内置的 `zerolog.Context.Logger().Output(out).With()` 返回一个Opt的函数，允许指定 logger 的输出。默认情况下，它设置为 os.Stdout。
+`WithOutput` 通过 zerolog 内置的 `zerolog.Context.Logger().Output(out).With()` 返回一个Opt的函数，允许指定 logger 的输出。默认情况下，它设置为 `os.Stdout`。
 
 函数签名：
 ```go
@@ -119,7 +119,7 @@ func main() {
 
 ### WithLevel
 
-`WithLevel` 通过 zerolog 内置的 `zerolog.Context.Logger().Level(lvl).With()` 方法指定 logger 的级别。通过 `matchHlogLevel()` 将 hlog.Level 转换成 zerolog.level。默认情况下，它设置为 WarnLevel。
+`WithLevel` 通过 zerolog 内置的 `zerolog.Context.Logger().Level(lvl).With()` 方法指定 logger 的级别。通过 `matchHlogLevel()` 将 `hlog.Level` 转换成 `zerolog.level`。默认情况下，它设置为 WarnLevel。
 
 函数签名：
 ```go

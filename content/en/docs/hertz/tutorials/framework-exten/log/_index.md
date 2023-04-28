@@ -11,16 +11,16 @@ Hertz provides logger extension, and the interface is defined in `pkg/common/hlo
 
 ## Interface Definition
 
-In Hertz, the interfaces `Logger`, `CtxLogger`, `FormatLogger` are defined in `pkg/common/hlog`, and these interfaces are used to output logs in different ways, and a Control interface is defined to control the logger.
+In Hertz, the interfaces `Logger`, `CtxLogger`, `FormatLogger` are defined in `pkg/common/hlog`, and these interfaces are used to output logs in different ways, and a `Control` interface is defined to control the logger.
 If you'd like to inject your own logger implementation, you must implement all the above interfaces (i.e. FullLogger). Hertz already provides a default implementation of `FullLogger`.
 
 ```go
 // FullLogger is the combination of Logger, FormatLogger, CtxLogger and Control.
 type FullLogger interface {
-Logger
-FormatLogger
-CtxLogger
-Control
+    Logger
+    FormatLogger
+    CtxLogger
+    Control
 }
 ```
 
