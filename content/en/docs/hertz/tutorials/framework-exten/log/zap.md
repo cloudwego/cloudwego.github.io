@@ -1,12 +1,11 @@
 ---
 title: "zap"
 linkTitle: "zap"
-weight: 2
-description: the usage of zap>
+weight: 3
+description: >
 ---
-# Part of Logger usage:
 
-## Define hlog.FullLogger and Logger structure
+## Logger
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -46,9 +45,9 @@ func main() {
 
 ```
 
-# Option configuration
+## Option configuration
 
-## WithCoreEnc
+### WithCoreEnc
 
 Encoder is a format-agnostic interface for all log entry marshalers, `WithCoreEnc` passes zapcore.Encoder into configuration
 
@@ -74,7 +73,7 @@ func main() {
 
 ```
 
-## WithCoreWs
+### WithCoreWs
 
 `WithCoreWs` specifies the location where the log is written through the `zapcore.AddSync(file)`, and passes zapcore.WriteSyncer into the configuration
 
@@ -100,7 +99,7 @@ func main() {
 
 ```
 
-## WithCoreLevel
+### WithCoreLevel
 
 `WithCoreLevel` passes zap.AtomicLevel into configuration
 
@@ -124,7 +123,7 @@ func main() {
 }
 ```
 
-## WithCores
+### WithCores
 
 `WithCores` passes zapcore.Encoder, zapcore.WriteSyncer, zap.AtomicLevel into CoreConfig into the configuration
 
@@ -159,7 +158,7 @@ func main() {
 }
 ```
 
-## WithZapOptions
+### WithZapOptions
 
 `WithZapOptions` uses the `append()` method to append the original zap configuration
 

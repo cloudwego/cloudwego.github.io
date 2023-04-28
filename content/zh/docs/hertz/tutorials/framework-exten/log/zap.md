@@ -1,13 +1,12 @@
 ---
 title: "zap"
 linkTitle: "zap"
-weight: 2
-description: zap 的相关用法>
+weight: 3
+description: >
 
 ---
-# Logger 的部分用法
 
-## 定义 hlog.FullLogger 和 Logger 结构体
+## Logger
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -47,9 +46,9 @@ func main() {
 
 ```
 
-# Option 的相关配置
+## Option 的相关配置
 
-## WithCoreEnc
+### WithCoreEnc
 
 Encoder 是一个提供给日志条目编码器的格式不可知的接口，`WithCoreEnc` 将 zapcore.Encoder 传入配置
 
@@ -75,7 +74,7 @@ func main() {
 
 ```
 
-## WithCoreWs
+### WithCoreWs
 
 `WithCoreWs` 通过内置的 `zapcore.AddSync(file)` 指定日志写入的位置，将 zapcore.WriteSyncer传入配置
 
@@ -101,7 +100,7 @@ func main() {
 
 ```
 
-## WithCoreLevel
+### WithCoreLevel
 
 `WithCoreLevel` 将 zap.AtomicLevel 传入配置
 
@@ -125,7 +124,7 @@ func main() {
 }
 ```
 
-## WithCores
+### WithCores
 
 `WithCores` 将 zapcore.Encoder ，zapcore.WriteSyncer ，zap.AtomicLevel 组合进的 CoreConfig 传入配置
 
@@ -160,7 +159,7 @@ func main() {
 }
 ```
 
-## WithZapOptions
+### WithZapOptions
 
 `WithZapOptions` 利用 `append()` 方法添加原始的 zap 配置
 

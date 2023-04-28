@@ -1,13 +1,11 @@
 ---
 title: "logrus"
 linkTitle: "logrus"
-weight: 1
-description: logrus 的相关用法>
+weight: 2
+description: >
 ---
 
-# Logger 的部分用法
-
-## 定义 hlog.FullLogger 和 Logger 结构体
+## Logger 
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -43,9 +41,9 @@ func main() {
 }
 ```
 
-# option 的相关配置
+## option 的相关配置
 
-## WithLogger
+### WithLogger
 
 `WithLogger` 将 logrus.Logger 传入配置
 
@@ -69,7 +67,7 @@ func main() {
 }
 ```
 
-## WithHook
+### WithHook
 `WithHook` 将传入的 logrus.Hook 添加进配置中的 hook
 
 函数签名：

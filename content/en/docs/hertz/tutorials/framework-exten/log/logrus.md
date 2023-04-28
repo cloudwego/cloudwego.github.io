@@ -1,13 +1,13 @@
 ---
 title: "logrus"
 linkTitle: "logrus"
-weight: 1
-description: the usage of logrus >
+weight: 2
+date: 2023-04-18
+description: >
+
 ---
 
-# Part of Logger usage:
-
-## Define hlog.FullLogger and Logger structure
+## Logger
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -43,9 +43,9 @@ func main() {
 }
 ```
 
-# Option configuration
+## Option configuration
 
-## WithLogger
+### WithLogger
 
 `WithLogger` passes logrus.Logger into configuration
 
@@ -69,7 +69,7 @@ func main() {
 }
 ```
 
-## WithHook
+### WithHook
 `WithHook` adds the incoming logrus.Hook to the hook in the configuration
 
 Function Signature:

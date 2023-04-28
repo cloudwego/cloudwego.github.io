@@ -1,13 +1,12 @@
 ---
 title: "zerolog"
 linkTitle: "zerolog"
-weight: 3
-description: zerolog 的相关用法>
+weight: 4
+description: >
 
 ---
-# Logger 的部分用法
 
-## 定义 hlog.FullLogger 和 Logger 结构体
+## Logger
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -91,9 +90,9 @@ func main() {
 }
 
 ```
-# Option 的相关配置
+## Option 的相关配置
 
-## WithOutput
+### WithOutput
 
 `WithOutput` 通过 zerolog 内置的 `zerolog.Context.Logger().Output(out).With()` 返回一个Opt的函数，允许指定 logger 的输出。默认情况下，它设置为 os.Stdout。
 
@@ -118,7 +117,7 @@ func main() {
 }
 ```
 
-## WithLevel
+### WithLevel
 
 `WithLevel` 通过 zerolog 内置的 `zerolog.Context.Logger().Level(lvl).With()` 方法指定 logger 的级别。通过 `matchHlogLevel()` 将 hlog.Level 转换成 zerolog.level。默认情况下，它设置为 WarnLevel。
 
@@ -143,7 +142,7 @@ func main() {
 
 ```
 
-## WithField
+### WithField
 
 `WithField` 通过 zerolog 内置的 `zerolog.Context.Interface(name, value)` 方法向 logger 的 context 添加一个字段
 
@@ -181,7 +180,7 @@ func main() {
 }
 ```
 
-## WithFields
+### WithFields
 
 `WithFields` 通过 zerolog 内置的 `zerolog.Context.Fields(fields)` 向 logger 的 context 添加一些字段
 
@@ -208,7 +207,7 @@ func main() {
 }
 ```
 
-## WithTimestamp
+### WithTimestamp
 
 `WithTimestamp` 通过 zerolog 内置的 `zerolog.Context.Timestamp()` 将时间戳字段添加到 logger 的 context 中
 
@@ -231,7 +230,7 @@ func main() {
 }
 ```
 
-## WithFormattedTimestamp
+### WithFormattedTimestamp
 
 `WithFormattedTimestamp` 与 `WithTimestamp` 类似，将格式化的时间戳字段添加到 logger 的 context 中
 
@@ -255,7 +254,7 @@ func main() {
 }
 ```
 
-## WithCaller
+### WithCaller
 
 `WithCaller` 通过 zerolog 内置的 `zerolog.Context.Caller()` 添加一个 caller 到 logger 的 context 中，caller 会报告调用者的信息
 
@@ -299,7 +298,7 @@ func main() {
     filePath := filepath.Base(segments[0]) //filepath=="logger.go"
 }
 ```
-## WithHook
+### WithHook
 
 `WithHook` 通过 zerolog 内置的 `zerolog.Context.Logger().Hook(hook).With()` 添加一个 hook 到 logger 的 context 中
 
@@ -338,7 +337,7 @@ func main() {
 }
 ```
 
-## WithHookFunc
+### WithHookFunc
 
 `WithHookFunc` 与 `WithHook` 类似，添加一个 hook 函数到 logger 的 context 中
 

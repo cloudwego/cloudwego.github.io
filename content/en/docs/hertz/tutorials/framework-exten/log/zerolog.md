@@ -1,13 +1,11 @@
 ---
 title: "zerolog"
 linkTitle: "zerolog"
-weight: 3
-description: the usage of zerolog>
+weight: 4
+description: >
 ---
 
-# Part of Logger usage:
-
-## Define hlog.FullLogger and Logger structure
+## Logger
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -91,9 +89,9 @@ func main() {
 }
 
 ```
-# Option configuration
+## Option configuration
 
-## WithOutput
+### WithOutput
 
 `WithOutput` returns an Opt function through zerolog's `zerolog.Context.Logger().Output(out).With()`, allowing to specify the output of the logger. By default, it is set to os.Stdout.
 
@@ -118,7 +116,7 @@ func main() {
 }
 ```
 
-## WithLevel
+### WithLevel
 
 `WithLevel` specifies the level of the logger through zerolog's built-in `zerolog.Context.Logger().Level(lvl).With()` method. Convert hlog.Level to zerolog.level by `matchHlogLevel()`. By default it is set to WarnLevel.
 
@@ -143,7 +141,7 @@ func main() {
 
 ```
 
-## WithField
+### WithField
 
 `WithField` adds a field to the logger's context through zerolog's `zerolog.Context.Interface(name, value)` method
 
@@ -181,7 +179,7 @@ func main() {
 }
 ```
 
-## WithFields
+### WithFields
 
 `WithFields` adds some fields to the logger's context through zerolog's `zerolog.Context.Fields(fields)`
 
@@ -208,7 +206,7 @@ func main() {
 }
 ```
 
-## WithTimestamp
+### WithTimestamp
 
 `WithTimestamp` adds the timestamp field to the logger's context through zerolog's `zerolog.Context.Timestamp()`
 
@@ -232,7 +230,7 @@ func main() {
 }
 ```
 
-## WithFormattedTimestamp
+### WithFormattedTimestamp
 
 `WithFormattedTimestamp` is similar to `WithTimestamp`, adding a formatted timestamp field to the logger's context
 
@@ -256,7 +254,7 @@ func main() {
 }
 ```
 
-## WithCaller
+### WithCaller
 
 `WithCaller` adds a caller to the context of the logger through zerolog's built-in `zerolog.Context.Caller()`, and the caller will report the caller's information
 
@@ -300,7 +298,7 @@ func main() {
     filePath := filepath.Base(segments[0]) //filepath=="logger.go"
 }
 ```
-## WithHook
+### WithHook
 
 `WithHook` adds a hook to the context of logger through zerolog's `zerolog.Context.Logger().Hook(hook).With()`
 
@@ -339,7 +337,7 @@ func main() {
 }
 ```
 
-## WithHookFunc
+### WithHookFunc
 
 `WithHookFunc` is similar to `WithHook`, adding a hook function to the context of logger
 
