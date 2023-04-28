@@ -1,6 +1,6 @@
 ---
 title: "错误处理"
-date: 2022-05-23
+date: 2023-04-18
 weight: 6
 description: >
 
@@ -106,4 +106,40 @@ func NewPrivatef(format string, v ...interface{}) *Error {
 对应的 API 为：`RequestContext.Error(err)`，调用该 API 会将 err 绑到对应的请求上下文上之上。
 
 获取请求上下文已绑定的所有错误的方式：`RequestContext.Errors`。
+
+```go
+// 运行此代码并打开游览器访问 localhost:8080/error
+package main
+
+import (
+	"context"
+	"errors"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+func main() {
+	h := server.New(server.WithHostPorts(":8080"))
+
+	h.GET("/hello", handle1, handle2, handle3)
+
+	h.Spin()
+}
+
+func handle1(_ context.Context, c *app.RequestContext) {
+	_ = c.Error(errors.New("first err"))
+}
+
+func handle2(_ context.Context, c *app.RequestContext) {
+	_ = c.Error(errors.New("second err"))
+}
+
+func handle3(_ context.Context, c *app.RequestContext) {
+	for _, v := range c.Errors.Errors() {
+		c.JSON(consts.StatusOK, v)
+	}
+}
+```
 
