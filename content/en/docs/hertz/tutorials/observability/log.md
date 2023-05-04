@@ -135,4 +135,4 @@ func main() {
 ```
 ## Log Extension
 
-Currently, hlog supports the extended use of zap, logrus and zerolog. For details on log extension, [see](https://www.cloudwego.io/en/docs/hertz/tutorials/framework-exten/log/).
+Currently, hlog supports the extended use of zap, logrus and zerolog. For details on log extension, [see](https://www.cloudwego.io/docs/hertz/tutorials/framework-exten/log/).
