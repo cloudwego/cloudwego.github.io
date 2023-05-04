@@ -1,11 +1,11 @@
 ---
 title: "Engine"
-date: 2022-09-24
-weight: 2
+date: 2023-04-24
+weight: 13
 description: >
 ---
 
-## server.Hertz
+## server.Hertz 和 route.Engine 的关系
 
 Hertz 的路由、中间件的注册，服务启动，退出等重要方法都是包含在 `server.Hertz` 这个**核心**类型之中的。
 它由 `route.Engine` 以及 `signalWaiter` 组成。以下是 `Hertz` 的定义:
@@ -28,19 +28,19 @@ Hertz 在 `server` 包中提供了 `New` 和 `Default` 函数用于初始化服�
 ```go
 // New creates a hertz instance without any default config.
 func New(opts ...config.Option) *Hertz {
-options := config.NewOptions(opts)
-h := &Hertz{Engine: route.NewEngine(options)}
-return h
+    options := config.NewOptions(opts)
+    h := &Hertz{Engine: route.NewEngine(options)}
+    return h
 }
 ```
 
 ```go
 // Default creates a hertz instance with default middlewares.
 func Default(opts ...config.Option) *Hertz {
-h := New(opts...)
-// 在 New 的基础上使用了内置的 Recovery 中间件
-h.Use(recovery.Recovery())
-return h
+    h := New(opts...)
+    // 在 New 的基础上使用了内置的 Recovery 中间件
+    h.Use(recovery.Recovery())
+    return h
 }
 ```
 
