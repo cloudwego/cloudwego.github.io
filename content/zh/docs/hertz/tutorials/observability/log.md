@@ -71,7 +71,68 @@ LevelWarn
 LevelError
 LevelFatal
 ```
+## hlog 打印日志并指定日志的 field
 
+以 zerolog 为例，zerolog 中实现了这样的函数：
+
+```go
+package main
+
+import (
+    "bytes"
+    "github.com/cloudwego/hertz/pkg/common/json"
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+    b := &bytes.Buffer{}
+    l := hertzZerolog.New(hertzZerolog.WithField("service", "logging"))
+    l.SetOutput(b)
+
+    l.Info("foobar")
+
+    type Log struct {
+        Level   string `json:"level"`
+        Service string `json:"service"`
+        Message string `json:"message"`
+    }
+
+    log := &Log{}
+
+    err := json.Unmarshal(b.Bytes(), log)//log.service=="logging"
+}
+```
+而在 zap 和 logrus 中并未直接实现这样的函数，需要手动添加原始 option
+
+以 zap 为例：
+```go
+package main
+
+import (
+	"bytes"
+	"github.com/cloudwego/hertz/pkg/common/json"
+	hertzzap "github.com/hertz-contrib/logger/zap"
+	"go.uber.org/zap"
+)
+
+func main() {
+	b := &bytes.Buffer{}
+	l := hertzzap.NewLogger(hertzzap.WithZapOptions(zap.Fields(zap.String("service", "logging"))))
+	l.SetOutput(b)
+
+	l.Info("foobar")
+
+	type Log struct {
+		Level   string `json:"level"`
+		Service string `json:"service"`
+		Message string `json:"message"`
+	}
+
+	log := &Log{}
+
+	err := json.Unmarshal(b.Bytes(), log) //log.service=="logging"
+}
+```
 ## 日志拓展
 
-目前 hlog 支持 zap 和 logrus 的拓展使用，日志拓展[详见](https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/log/)。
+目前 hlog 支持 zap , logrus 和 zerolog 的拓展使用，日志拓展[详见](https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/log/)。
