@@ -1,6 +1,6 @@
 ---
 title: "Error Handle"
-date: 2023-04-2
+date: 2023-04-18
 weight: 6
 description: >
 
@@ -136,9 +136,7 @@ func handle2(_ context.Context, c *app.RequestContext) {
 }
 
 func handle3(_ context.Context, c *app.RequestContext) {
-	for _, v := range c.Errors.Errors() {
-		c.JSON(consts.StatusOK, v)
-	}
+    c.JSON(consts.StatusOK, c.Errors.Errors())
 }
 ```
 

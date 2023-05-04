@@ -137,9 +137,7 @@ func handle2(_ context.Context, c *app.RequestContext) {
 }
 
 func handle3(_ context.Context, c *app.RequestContext) {
-	for _, v := range c.Errors.Errors() {
-		c.JSON(consts.StatusOK, v)
-	}
+    c.JSON(consts.StatusOK, c.Errors.Errors())
 }
 ```
 
