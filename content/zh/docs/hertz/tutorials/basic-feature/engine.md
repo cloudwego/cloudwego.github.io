@@ -1,27 +1,29 @@
 ---
 title: "Engine"
 date: 2023-04-24
-weight: 13
+weight: 1
 description: >
 ---
 
 ## server.Hertz 和 route.Engine 的关系
 
-Hertz 的路由、中间件的注册，服务启动，退出等重要方法都是包含在 `server.Hertz` 这个**核心**类型之中的。
+`Hertz` 的路由、中间件的注册，服务启动，退出等重要方法都是包含在 `server.Hertz` 这个**核心**类型之中的。
 它由 `route.Engine` 以及 `signalWaiter` 组成。以下是 `Hertz` 的定义:
 
 ```go
 // Hertz is the core struct of hertz.
 type Hertz struct {
-*route.Engine
-// 用于接收信号以达到优雅退出的目的
-signalWaiter func (err chan error) error
+	*route.Engine 
+	// 用于接收信号以实现优雅退出 
+	signalWaiter func (err chan error) error
 }
 ```
 
-### 初始化服务器
+## server.Hertz
 
-Hertz 在 `server` 包中提供了 `New` 和 `Default` 函数用于初始化服务器。
+### 初始化服务
+
+Hertz 在 `server` 包中提供了 `New` 和 `Default` 函数用于初始化服务。
 
 `Default` 默认使用了 `Recovery` 中间件以保证服务在运行时不会因为 `panic` 导致服务崩溃。
 
@@ -44,19 +46,22 @@ func Default(opts ...config.Option) *Hertz {
 }
 ```
 
-若想详细的了解可选的配置项, 可以在[配置说明](../../reference/config.md)中进行查看。
+若想详细的了解可选的配置项, 可以在[配置说明](https://www.cloudwego.io/zh/docs/hertz/reference/config/)中进行查看。
 
 示例代码
 
 ```go
 package main
 
-// ...
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
 
 func main() {
     h := server.New()
     // 使用 Default
-    h := server.Default()
+    // h := server.Default()
+    h.Spin()
 }
 ```
 
@@ -66,12 +71,16 @@ func main() {
 
 和 `route.Engine` 中提供的 `Run` 不同, 除非有**特殊**需求，不然一般使用 `Spin` 函数用于运行服务。
 
-在使用[服务注册发现](../service-governance/service_discovery.md)的功能时, `Spin`
+在使用[服务注册发现](https://www.cloudwego.io/zh/docs/hertz/tutorials/service-governance/service_discovery/)的功能时, `Spin`
 会在服务启动时将服务注册进入注册中心，并使用 `signalWaiter` 监测服务异常。
-只有使用 `Spin` 来启动服务才能支持[优雅退出](graceful-shutdown.md)的特性。
+只有使用 `Spin` 来启动服务才能支持[优雅退出](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)的特性。
 
 ```go
 package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
 
 func main() {
     h := server.New()
@@ -83,12 +92,16 @@ func main() {
 ```go
 package main
 
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
+
 func main() {
     h := server.New()
     // 使用 Run 函数启动
     if err := h.Run(); err != nil {
         // ...
-        hlog.Error("run server failed", err)
+    	panic(err)
     }
 }
 ```
@@ -318,7 +331,7 @@ func exampleMiddleware() app.handlerFunc {
 
 hertz 提供 `Shutdown` 函数用于进行优雅退出。
 
-若是使用了[服务注册与发现](../service-governance/service_discovery.md)的功能, 在服务退出发生时也会从注册中心下线相应数据。
+若是使用了[服务注册与发现](https://www.cloudwego.io/zh/docs/hertz/tutorials/service-governance/service_discovery/)的功能, 在服务退出发生时也会从注册中心下线相应数据。
 
 函数签名:
 
@@ -349,8 +362,6 @@ func main() {
 
 `OnRun` 和 `OnShutdown` 是两个 hook 函数的切片, 用于存储 hook 函数, 为了不影响原有的 hook 函数,
 在使用时需要使用 `append` 函数将新的 hook 函数添加进入切片.
-
-当然, 也可以直接使用 `OnRun = []CtxErrCallback{}` 的方式来覆盖原有的 hook 函数.
 
 详细设置方式见 [Hooks](../hooks)
 
@@ -435,13 +446,51 @@ func main() {
 }
 ```
 
+
+### 获取路由信息
+
+Hertz 提供了 `Routes` 获取注册的路由信息供用户使用。
+
+路由信息结构:
+
+```go
+// RouteInfo represents a request route's specification which contains method and path and its handler.
+type RouteInfo struct {
+    Method      string   // http method
+    Path        string   // url path
+    Handler     string   // handler name
+    HandlerFunc app.HandlerFunc
+}
+
+// RoutesInfo defines a RouteInfo array.
+type RoutesInfo []RouteInfo
+```
+
+示例代码:
+
+```go
+package main
+
+import (
+	//...
+	"github.com/cloudwego/hertz/pkg/app/server"
+    //...
+)
+
+func main() {
+	h := server.Default()
+	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+	})
+	routeInfo := h.Routes()
+	hlog.Info(routeInfo)
+	h.Spin()
+}
+```
+
 ## 配置
 
 这里是 engine 所涉及的可以使用的配置项集合
-
-### Name
-
-请查看[此处](#设置服务名)
 
 ### Use
 
@@ -586,6 +635,7 @@ func main() {
 ### NoMethod
 
 用于设置当请求的方法不存在时的处理函数，它默认返回一个 405 状态码
+> 当使用 NoMethod 时需要与 server.WithHandleMethodNotAllowed 配合使用
 
 函数签名:
 
