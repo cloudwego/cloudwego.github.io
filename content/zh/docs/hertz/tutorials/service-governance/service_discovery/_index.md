@@ -79,7 +79,14 @@ cli.Use(sd.Discovery(r, sd.WithCustomizedAddrs("127.0.0.1:8088")))
 
 ### WithLoadBalanceOptions
 
-此配置项可为客户端配置负载均衡算法和负载均衡参数。
+`WithLoadBalanceOptions`为客户端配置负载均衡实现和负载均衡参数。可以通过传递`loadbalance.Options`配置负载均衡参数，或者通过传递`loadbalance.DefaultOpts`使用默认负载均衡参数。若不使用此配置项，则客户端默认使用 WeightedRandom  负载均衡实现并且使用默认负载均衡参数。
+
+可以设置的负载均衡参数：
+
+| 负载均衡参数名  | 负载均衡参数默认值 | 描述               |
+| --------------- | ------------------ | ------------------ |
+| RefreshInterval | 5秒                | 刷新服务端信息间隔 |
+| ExpireInterval  | 15秒               | 服务端信息过期间隔 |
 
 函数签名：
 
@@ -95,3 +102,5 @@ cli.Use(sd.Discovery(r, sd.WithLoadBalanceOptions(loadbalance.NewWeightedBalance
     ExpireInterval:  15 * time.Second,
 })))
 ```
+
+自定义负载均衡扩展详见[负载均衡扩展](https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/service_discovery/#负载均衡扩展)。

@@ -91,7 +91,7 @@ func main() {
 Function signature:
 
 ```go
-func NewConsulResolver(consulClient *api.Client, opts ...Option) discovery.Resolver
+func NewConsulResolver(consulClient *api.Client) discovery.Resolver
 ```
 
 Example:
