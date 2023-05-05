@@ -95,3 +95,5 @@ cli.Use(sd.Discovery(r, sd.WithLoadBalanceOptions(loadbalance.NewWeightedBalance
      ExpireInterval: 15 * time. Second,
 })))
 ```
+
+Custom load-balance extensions are detailed in [Load Balancing Extensions](https://www.cloudwego.io/docs/hertz/tutorials/framework-exten/service_discovery/#load-balancing-extension).
