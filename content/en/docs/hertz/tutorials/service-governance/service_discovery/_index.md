@@ -24,15 +24,14 @@ Some optional configurations are provided to users when using service discovery.
 
 | Configuration          | Description                                               |
 | ---------------------- | --------------------------------------------------------- |
-| WithSD                 | Set isSD to true , **required to use service discovery**. |
-| WithTag                | Set tag for requestOptions.                               |
+| WithSD                 | Used in conjunction with service discovery, this request uses service discovery when `true` is passed. |
+| WithTag                | Used in conjunction with service discovery to set Tag information. |
 | WithCustomizedAddrs    | Customize the address of the target instance.             |
 | WithLoadBalanceOptions | Configure load balancing options.                         |
 
 ### WithSD
 
-`requestOptions` provides `WithSD` configuration item, when the incoming parameter is true, `isSD` will be set to true. The `WithSD` configuration item must be used when using service discovery requests.
-
+The `WithSD` configuration item is provided, and when the parameter is passed as true, this request uses service discovery. The `WithSD` configuration item must be used when using service discovery requests.
 Signature:
 
 ```go
@@ -47,8 +46,7 @@ status, body, err := cli.Get(context.Background(), nil, "http://hertz.test.demo/
 
 ### WithTag
 
-`requestOptions` provides `WithTag` configuration item, using this configuration will set tag for `requestOptions`.
-
+Provides the `WithTag` configuration, which is used to set the Tag information.
 Signature:
 
 ```go

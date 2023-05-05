@@ -24,14 +24,14 @@ description: >
 
 | 配置                   | 描述                                       |
 | ---------------------- | ------------------------------------------ |
-| WithSD                 | 设置 isSD 为 true ，**使用服务发现必选**。 |
-| WithTag                | 为 requestOptions 设置 tag 。              |
+| WithSD                 | 配合服务发现使用，传递 `true` 时，本次请求使用服务发现。 |
+| WithTag                | 配合服务发现使用，设置 Tag 信息。             |
 | WithCustomizedAddrs    | 自定义目标实例地址。                       |
 | WithLoadBalanceOptions | 配置负载均衡选项。                         |
 
 ### WithSD
 
-`RequestOptions` 提供 `WithSD` 配置项，传入参数为 true 时将会设置 `RequestOptions`中`isSD` 为 true。使用服务发现请求时必须使用 `WithSD` 配置项。
+提供 `WithSD` 配置项，传入参数为 true 时，本次请求使用服务发现。使用服务发现请求时必须使用 `WithSD` 配置项。
 
 函数签名：
 
@@ -47,7 +47,7 @@ status, body, err := cli.Get(context.Background(), nil, "http://hertz.test.demo/
 
 ### WithTag
 
-`RequestOptions` 提供 `WithTag` 配置项，使用此配置会为 `RequestOptions` 设置 tag。
+提供 `WithTag` 配置项，使用此配置用于设置 Tag 信息。
 
 函数签名：
 
