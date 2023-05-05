@@ -89,7 +89,15 @@ func main() {
 
 ### NewDefaultNacosRegistry
 
-`NewDefaultNacosRegistry` 使用 nacos 创建一个默认的服务注册中心。会调用 `NewDefaultNacosConfig` 创建一个默认的 nacos 客户端， RegionId 为 `cn-hangzhou`、服务器地址为 `127.0.0.1`、服务器端口号为`8848`，且不会在启动时自动预加载服务实例信息到本地缓存。可自定义服务注册中心配置。
+`NewDefaultNacosRegistry` 使用 nacos 创建一个默认的服务注册中心。会调用 `NewDefaultNacosConfig` 读取环境变量来创建一个默认的 nacos 客户端， 并设置RegionId 为 `cn-hangzhou`，且不会在启动时自动预加载服务实例信息到本地缓存。可自定义服务注册中心配置。
+
+环境变量：
+
+| 环境变量名 | 环境变量默认值 | 描述                    |
+| ---------- | -------------- | ----------------------- |
+| serverAddr | 127.0.0.1      | nacos 服务器地址        |
+| serverPort | 8848           | nacos 服务器端口        |
+| namespace  |                | nacos 中的 namespace Id |
 
 函数签名：
 
@@ -223,7 +231,15 @@ func main() {
 
 ### NewDefaultNacosResolver
 
-`NewDefaultNacosResolver` 使用 nacos 创建一个默认的服务发现中心。会调用 `NewDefaultNacosConfig` 使用默认的客户端，RegionId 为 `cn-hangzhou`、服务器地址为 `127.0.0.1`、服务器端口号为`8848`，且不会在启动时自动预加载服务实例信息到本地缓存。可自定义服务注册中心配置。
+`NewDefaultNacosResolver` 使用 nacos 创建一个默认的服务发现中心。会调用 `NewDefaultNacosConfig` 读取环境变量来创建一个默认的 nacos 客户端， 并设置RegionId 为 `cn-hangzhou`，且不会在启动时自动预加载服务实例信息到本地缓存。可自定义服务注册中心配置。
+
+环境变量：
+
+| 环境变量名 | 环境变量默认值 | 描述                    |
+| ---------- | -------------- | ----------------------- |
+| serverAddr | 127.0.0.1      | nacos 服务器地址        |
+| serverPort | 8848           | nacos 服务器端口        |
+| namespace  |                | nacos 中的 namespace Id |
 
 函数签名：
 

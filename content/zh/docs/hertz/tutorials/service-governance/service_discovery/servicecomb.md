@@ -208,7 +208,7 @@ func main() {
         // ...
     }
     // ...
-    r, err := servicecomb.NewSCRegistry(config)
+    r, err := servicecomb.NewSCRegistry(client)
     if err != nil {
         log.Fatal(err)
         return

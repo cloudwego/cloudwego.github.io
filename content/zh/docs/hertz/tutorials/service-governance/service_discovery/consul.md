@@ -91,7 +91,7 @@ func main() {
 函数签名：
 
 ```go
-func NewConsulResolver(consulClient *api.Client, opts ...Option) discovery.Resolver
+func NewConsulResolver(consulClient *api.Client) discovery.Resolver
 ```
 
 示例代码：
