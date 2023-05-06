@@ -193,7 +193,7 @@ type Engine struct {
 }
 ```
 
-### Set Service Name
+### Set ServiceName
 
 Sample code:
 
@@ -288,6 +288,9 @@ Hertz provides `Use` function for registering middleware into routes.
 
 We support user-defined middleware, and at the same time we also provide some commonly used middleware implementations,
 See details [hertz-contrib](https://github.com/hertz-contrib).
+
+"At the same time, although the common usage of middleware is to register it globally, we also support registration 
+at the routing level. For more details, [please see](http://localhost:1313/docs/hertz/tutorials/basic-feature/middleware/#group-level-middleware)
 
 The parameter type of `middleware` in the `Use` function must be a http processing function of `app.HandlerFunc`.
 

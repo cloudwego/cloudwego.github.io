@@ -192,7 +192,7 @@ type Engine struct {
 }
 ```
 
-### 设置服务名
+### 设置服务器名
 
 示例代码
 
@@ -284,6 +284,8 @@ Hertz 提供 `Use` 函数用于将中间件注册进入路由。
 
 我们支持用户自定义中间件，与此同时我们也提供了一些常用的中间件实现,
 详情见 [hertz-contrib](https://github.com/hertz-contrib)
+
+于此同时, 虽然常见的中间件的使用方法为**全局注册**, 但是我们也支持**路由组**级别和**单一路由**级别的注册, [详见](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/middleware/#%E8%B7%AF%E7%94%B1%E7%BB%84%E7%BA%A7%E5%88%AB%E4%B8%AD%E9%97%B4%E4%BB%B6) 
 
 `Use` 函数中 `middleware`的形参必须为 `app.HandlerFunc` 的 http 处理函数。
 
