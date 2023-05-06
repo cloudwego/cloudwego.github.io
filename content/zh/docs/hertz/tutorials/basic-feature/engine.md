@@ -5,7 +5,6 @@ weight: 1
 description: >
 ---
 
-## server.Hertz 和 route.Engine 的关系
 
 `Hertz` 的路由、中间件的注册，服务启动，退出等重要方法都是包含在 `server.Hertz` 这个**核心**类型之中的。
 它由 `route.Engine` 以及 `signalWaiter` 组成。以下是 `Hertz` 的定义:
@@ -356,6 +355,8 @@ func main() {
 }
 ```
 
+关于优雅退出的更多的信息见[文档](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)
+
 ### 设置 hook 函数
 
 在 Engine 启动和关闭时会触发相应的 hook 函数.
@@ -363,7 +364,7 @@ func main() {
 `OnRun` 和 `OnShutdown` 是两个 hook 函数的切片, 用于存储 hook 函数, 为了不影响原有的 hook 函数,
 在使用时需要使用 `append` 函数将新的 hook 函数添加进入切片.
 
-详细设置方式见 [Hooks](../hooks)
+详细设置方式见 [Hooks](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/hooks/)
 
 函数签名:
 
@@ -514,7 +515,7 @@ func main() {
 
 linux 默认使用 `netpoll`, windows 只能使用 `go net`.
 
-如果对如何使用对应的网络库有疑惑, 请查看[此处](../network-lib)
+如果对如何使用对应的网络库有疑惑, 请查看[此处](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/network-lib/)
 
 函数签名:
 

@@ -1,11 +1,10 @@
 ---
 title: "Engine"
 date: 2023-04-10
-weight: 2
+weight: 1
 description: >
 ---
 
-## server.Hertz
 
 The important methods of registering routes, middleware, starting and stopping services for Hertz are all included in the **core** type `server.Hertz`. It is composed of `route.Engine` and a `signalWaiter`. Here's the definition:
 
@@ -18,11 +17,13 @@ type Hertz struct {
 }
 ```
 
+## server.Hertz
+
 ### Initializing the Server
 
 Hertz provides two functions in the `server` package to initialize servers: `New` and `Default`.
 
-The default function, `Default` uses the middleware called `Recovery` to prevent service crashes caused by panicking 
+The default function `Default` uses the middleware called `Recovery` to prevent service crashes caused by panicking 
 during runtime.
 
 ```go
@@ -37,26 +38,29 @@ func New(opts ...config.Option) *Hertz {
 ```go
 // Default creates a hertz instance with default middlewares.
 func Default(opts ...config.Option) *Hertz {
-    h := New(opts...)
+     h := New(opts...)
      // Uses built-in Recovery middleware based on New method 
      h.Use(recovery.Recovery())
      return h  
 }
 ```
 
-For more information on optional configurations, refer to [Configuration Options](../../reference/config.md).
+For more information on optional configurations, refer to [Configuration Options](https://www.cloudwego.io/docs/hertz/reference/config/).
 
 Example Code
 
 ```go
 package main
 
-// ...
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
 
 func main() {
     h := server.New()
     // Use Default
-    h := server.Default()
+    // h := server.Default()
+    h.Spin()
 }
 ```
 
@@ -66,11 +70,15 @@ func main() {
 
 Unlike the `Run` provided in `route.Engine`, it is generally recommended to use `Spin` unless you have **special** needs when running services.
 
-When using [Service Registration and Discovery](../service-governance/service_discovery.md), `Spin`
-will register the service into a registry center when starting up, and use `signalWaiter` to monitor service exceptions. Only by using `Spin` can we support graceful exit.
+When using [Service Registration and Discovery](http://localhost:1313/docs/hertz/tutorials/service-governance/service_discovery/), `Spin`
+will register the service into a registry center when starting up, and use `signalWaiter` to monitor service exceptions. Only by using `Spin` can we support graceful shutdown.
 
 ```go
 package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
 
 func main() {
     h := server.New()
@@ -82,12 +90,16 @@ func main() {
 ```go
 package main
 
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
+
 func main() {
-    h: = server.New ()
+    h := server.New()
     // Start with Run function
-    if err: = h.Run (); err! = Nil {
-        //…
-        hlog.Error ("run server failed", err)
+    if err:= h.Run (); err != Nil {
+        //...
+        panic(err)
     }
 }
 ```
@@ -335,7 +347,10 @@ Example code:
 ```go
 package main
 
-// ...
+import (
+	//...
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
 
 func main() {
     h := server.New()
@@ -347,6 +362,8 @@ func main() {
 }
 ```
 
+For more information on graceful shutdown see [documentation](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/graceful-shutdown/)
+
 ### Set Hook Function
 
 The corresponding hook functions will be triggered when Engine starts up and shuts down.
@@ -354,9 +371,7 @@ The corresponding hook functions will be triggered when Engine starts up and shu
 `OnRun` and `OnShutdown` are two slices of hook functions used to store hook functions. To avoid affecting existing hook functions,
 you need to use the `append` function to add new hooks into slices.
 
-Of course, you can also directly cover original hook functions by setting  `OnRun=[]CtxErrCallback{}`.
-
-For detailed configuration methods, see [Hooks](../hooks).
+For detailed configuration methods, see [Hooks](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/hooks/).
 
 Function signature:
 
@@ -376,6 +391,10 @@ Example code:
 
 ```go
 package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
 
 func main() {
     h := server.New()
@@ -440,13 +459,54 @@ func main() {
 }
 ```
 
+### Get route info
+
+Hertz provides `Routes` to get the registered route information.
+
+Route information struct:
+
+```go
+// RouteInfo represents a request route's specification which contains method and path and its handler.
+type RouteInfo struct {
+	Method      string   // http method
+	Path        string   // url path
+	Handler     string   // handler name
+	HandlerFunc app.HandlerFunc
+}
+
+// RoutesInfo defines a RouteInfo array.
+type RoutesInfo []RouteInfo
+```
+
+Sample Code:
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+func main() {
+	h := server.Default()
+	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+	})
+	routeInfo := h.Routes()
+	hlog.Info(routeInfo)
+	h.Spin()
+}
+```
+
 ## Configuration
 
 Here is a collection of configuration options that can be used for the engine.
 
-### Name
-
-Please see [here](#set-service-name).
 
 ### Use
 
@@ -468,7 +528,7 @@ Please see [here](#panichandler).
 
 Get the name of the current network library being used. There are currently two options: Go's native `net` and `netpoll`. Linux uses `netpoll` by default, while Windows can only use Go's native `net`.
 
-If you're unsure about how to use one of these network libraries, please refer to [this page](../network-lib)
+If you're unsure about how to use one of these network libraries, please refer to [this page](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/network-lib/)
 
 Function signature:
 ```go
