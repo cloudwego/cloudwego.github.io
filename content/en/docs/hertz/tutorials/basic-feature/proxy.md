@@ -1,7 +1,7 @@
 ---
 title: "Forward Proxy and Reverse Proxy"
 date: 2022-09-08
-weight: 9
+weight: 10
 description: >
 
 ---
