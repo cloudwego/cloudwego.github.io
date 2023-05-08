@@ -173,7 +173,7 @@ func main() {
 
 ### ErrorFunc
 
-`WithErrorFunc` 设置ErrorHandler。
+`WithErrorFunc` 设置 ErrorHandler。
 
 `ErrorHandler` 定义一个在发生错误时执行的函数。
 
@@ -524,7 +524,7 @@ func main() {
 
 ### ParseFunc
 
-`WithParseFunc` 设置ParseFunc。
+`WithParseFunc` 设置 ParseFunc。
 
 `ParseFunc` 解析并验证令牌。
 
