@@ -11,7 +11,7 @@ description: "This document covers the preparation of the development environmen
 1. If you don't have the golang development environment set up, please follow [Install Go](https://golang.org/doc/install) to install go.
 2. We strongly recommend that you use the latest version of golang. And compatibility is guaranteed within three latest minor release versions (currently >= **v1.16**).
 3. Make sure that `GO111MODULE` is set to `on`.
-4. Currently Windows is not well supported by Kitex, if your development environment is Windows it is recommended to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install).
+4. If you want to use Kitex in Windows, please make sure the version of kitex >= v0.5.2
 
 ## Quick Start
 
@@ -47,7 +47,7 @@ Tips: If you encounter any problems during the installation, it's probably becau
 
 1. change to the `hello` directory
 
-`cd kitex-examples/hello`
+   `cd kitex-examples/hello`
 
 2. run server
 

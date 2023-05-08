@@ -5,25 +5,25 @@ date: 2022-11-02
 description: >
 ---
 
-# Lite Version
+## **Introduction to Key Changes**
 
-## Feature
+### **Feature**
 
-* **Extend the Generated Code of client/server**: Add a new feature which can extend generated client.go/server.go with config file. It is applicable to the scenario for customizing the unified suite. See [Extend the Templates of Service Generated Code]([https://www.cloudwego.io/docs/kitex/tutorials/code-gen/template_extension/]) for details.
-* **Biz Customized Exception** : Add supporting to return customized  biz error which can distinguish with RPC error. See [Business Exception](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/bizstatuserr/), [Proposal](https://github.com/cloudwego/kitex/issues/511).
-* **Request Profiler** : Add a new feature to do profiler for requests which can be used for cost statistics.
-* **Context Middleware** : Add Context Middleware which is used for adding request-level middlewares.
+1. **Extend the Generated Code of client/server**: Add a new feature which can extend generated client.go/server.go with config file. It is applicable to the scenario for customizing the unified suite. See [Extend the Templates of Service Generated Code]([https://www.cloudwego.io/docs/kitex/tutorials/code-gen/template_extension/]) for details.
+2. **Biz Customized Exception** : Add supporting to return customized  biz error which can distinguish with RPC error. See [Business Exception](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/bizstatuserr/), [Proposal](https://github.com/cloudwego/kitex/issues/511).
+3. **Request Profiler** : Add a new feature to do profiler for requests which can be used for cost statistics.
+4. **Context Middleware** : Add Context Middleware which is used for adding request-level middlewares.
 
-## **Optimization**
+### **Optimization**
 
-* **Frugal Performance Optimization** : Support frugal precompile (pretouch) when new client or server, which is to reduce the impact of dynamic compilation on latency.
-* **Connpool Optimiztion** : Refactor connection pool to improve the idle connections cleanup.
+1. **Frugal Performance Optimization** : Support frugal precompile (pretouch) when new client or server, which is to reduce the impact of dynamic compilation on latency.
+2. **Connpool Optimiztion** : Refactor connection pool to improve the idle connections cleanup.
 
 ---
 
-# Full Version
+## **Full Release Log**
 
-## Feature
+### Feature
 
 * [[#691](https://github.com/cloudwego/kitex/pull/691)] feat(client): add context middleware which is used for adding request-level middlewares.
 * [[#649](https://github.com/cloudwego/kitex/pull/649)] feat(connpool): new long connection pool with minIdle config and idle connections cleanup.
@@ -35,13 +35,13 @@ description: >
 * [[#657](https://github.com/cloudwego/kitex/pull/657)] feat(tool): support template extension.
 * [[#527](https://github.com/cloudwego/kitex/pull/527)] feat(profiler): profiler for rpc request which can be used for cost statistics.
 
-## Optimize
+### Optimize
 
 * [[#690](https://github.com/cloudwego/kitex/pull/690)] optimize(meta): remove error logic for adding default metaHandler in #503.
 * [[#638](https://github.com/cloudwego/kitex/pull/638)] optimize(generic): httppb generic support map/list elem type as struct.
 * [[#641](https://github.com/cloudwego/kitex/pull/641)] optimize(tool): add warnings comments for oneway methods.
 
-## Fix
+### Fix
 
 * [[#611](https://github.com/cloudwego/kitex/pull/611)] fix(client): fix resource leaks caused by Finalizer not being triggered in the scenario where clients are created frequently.
 * [[#698](https://github.com/cloudwego/kitex/pull/698)] fix(connpool): adjust globalIdle based on the number of connections decreased during the Get.
@@ -55,18 +55,18 @@ description: >
 * [[#630](https://github.com/cloudwego/kitex/pull/630)] fix(tool): remove redundant kitex comments for file that do not declare an interface.
 * [[#627](https://github.com/cloudwego/kitex/pull/627)] fix(tool): fix import missing when having different alias for the same path.
 
-## Refactor
+### Refactor
 
 * [[#651](https://github.com/cloudwego/kitex/pull/651)] refactor(server): server handler read/write interface return new context.
 
-## Docs
+### Docs
 
 * [[#656](https://github.com/cloudwego/kitex/pull/656)] docs: remove wrong message in CONTRIBUTING.md.
 * [[#683](https://github.com/cloudwego/kitex/pull/683)] docs(kerrors): fix kerrors WithCauseAndExtraMsg method comment.
 * [[#625](https://github.com/cloudwego/kitex/pull/625)] chore: fix grammar of pull request template.
 * [[#623](https://github.com/cloudwego/kitex/pull/623)] chore: modify the template of pull request.
 
-## Test & CI
+### Test & CI
 
 * [[#646](https://github.com/cloudwego/kitex/pull/646)] test: fix ut failure caused by InitRPCInfoFunc not setting rpcinfo.
 * [[#680](https://github.com/cloudwego/kitex/pull/680)] test: fix retry test race.

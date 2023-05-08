@@ -108,7 +108,7 @@ struct BizResponse {
     2: optional map<i64, RspItem> rsp_items  (api.body='rsp_items')
     3: optional i32 v_enum  (api.none = 'true') // Ignore current parameter
     4: optional list<RspItem> rsp_item_list  (api.body = 'rsp_item_list')
-    // The business specifies the HTTP Code itself. If not specified, baseResp.StatuCode=0 -> HTTPCode=200,  other HTTPCode=500
+    // The business specifies the HTTP Code itself. If not specified, baseResp.StatusCode=0 -> HTTPCode=200,  other HTTPCode=500
     5: optional i32 http_code  (api.http_code = 'true')
     6: optional list<i64> item_count (api.header = 'item_count') // Comma separated list when setting header
     7: optional string token (api.cookie = 'token') // 对应 response Cookie 字段

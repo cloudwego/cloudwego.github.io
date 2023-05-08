@@ -21,7 +21,7 @@ description: >
 
 1. 对 CloudWeGo 主仓库进行了简要介绍，欢迎社区成员对仓库进行补充加强。例如：欢迎大家在 Kitex_examples 仓库提交一些 Business demo，例如电商、医疗等不同行业场景下的典型案例 。
 2.  Community 仓库：首先，Community 仓库刚成立不久，主要用于归档社区相关的材料，包括双周会的会议纪要（meeting_notes）和周报（weekly_report）。其次，也欢迎大家成为该仓库的正式成员，后续的活动可以第一时间通知到大家，便于大家参与到核心功能的讨论与开发。
-3. Kitex-contrib 仓库：该仓库包含了各种扩展的对接实现，比如对接 Prometheus，对接Opentracing 等。其中，OpenTelementry 对接项目正处于提交 PR 的状态，欢迎大家参与到项目的共建和 review。
+3. Kitex-contrib 仓库：该仓库包含了各种扩展的对接实现，比如对接 Prometheus，对接Opentracing 等。其中，OpenTelemetry 对接项目正处于提交 PR 的状态，欢迎大家参与到项目的共建和 review。
 
 ## 议程 3：社区后续工作介绍
 

@@ -123,7 +123,7 @@ func WithMaxConnIdleTime(timeout time.Duration) Option
 func WithStatsLevel(level stats.Level) Option
 ```
 
-为 Server 设置埋点粒度，详见[埋点粒度](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/tracing/)。
+为 Server 设置埋点粒度，详见[埋点粒度](https://www.cloudwego.io/zh/docs/kitex/tutorials/observability/tracing/)。
 
 
 
@@ -313,7 +313,7 @@ func WithRegistry(r registry.Registry) Option
 func WithTracer(c stats.Tracer) Option
 ```
 
-额外添加一个 Tracer 进行链路监控，详见[链路跟踪-自定义 tracer](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/tracing/)。
+额外添加一个 Tracer 进行链路监控，详见[链路跟踪-自定义 tracer](https://www.cloudwego.io/zh/docs/kitex/tutorials/observability/tracing/)。
 
 
 

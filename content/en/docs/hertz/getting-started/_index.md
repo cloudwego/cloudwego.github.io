@@ -22,7 +22,7 @@ and the `$GOPATH/bin` has been added to `PATH` environment (For example `export 
 Attention, do not set `GOPATH` to a directory that the current user does not have read/write access to.
 2. Install hz: `go install github.com/cloudwego/hertz/cmd/hz@latest`
 
-For more information on how to use hz, please refer to: [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/)
+For more information on how to use hz, please refer to: [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/)
 
 ### Determine Where to Store Your Code
 1. If your codes are located in `$GOPATH/src`, you will need to create an additional dictionary in `$GOPATH/src` and retrieve your code from that dictionary.

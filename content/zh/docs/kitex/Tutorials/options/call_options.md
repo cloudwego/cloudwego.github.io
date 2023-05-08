@@ -58,7 +58,7 @@ resp, err := client.Call(ctx, req,callopt.WithTag("cluster", cluster),callopt.Wi
 func WithRPCTimeout(d time.Duration) Option
 ```
 
-指定本次 RPC 调用的超时时间，详见[超时控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/timeout/)。
+指定本次 RPC 调用的超时时间，详见[超时控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/)。
 
 
 
@@ -68,7 +68,7 @@ func WithRPCTimeout(d time.Duration) Option
 func WithConnectTimeout(d time.Duration) Option
 ```
 
-为本次 RPC 调用设置连接超时时间，详见[超时控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/timeout/)。
+为本次 RPC 调用设置连接超时时间，详见[超时控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/)。
 
 
 

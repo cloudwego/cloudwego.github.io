@@ -36,7 +36,7 @@ swag init
 ```
 使用参数运行 [Swag][Swag] (全部参数可以通过运行 `swag init -h` 查看)。
 ```bash
-swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagger"
+swag init --parseDependency --parseInternal --parseDepth 5 --instanceName "swagger"
 ```
 
 | 选项      | 默认值       | 描述                                                                  |

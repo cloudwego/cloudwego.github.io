@@ -69,7 +69,7 @@ Kitex 旧版本的代码
 * 用到的东西，你也不可能做得更好。
 
 那么为什么说 Go 语言里面没有零成本抽象呢？以 Thrift 编解码为例，我们最开始使用的是 Apache Thrift，它为了支持多种不同 Protocol、Transport 组合，
-抽象出了 TProtocol Interface、TTransport Interface，但 [Kitex][Kitex] 直接依赖具体的 BinaryProtocal 的实现（struct）。可以试想，Apache Thrift 这么做的代价是什么呢？这就是 Go 里面 Interface 带来的代价。
+抽象出了 TProtocol Interface、TTransport Interface，但 [Kitex][Kitex] 直接依赖具体的 BinaryProtocol 的实现（struct）。可以试想，Apache Thrift 这么做的代价是什么呢？这就是 Go 里面 Interface 带来的代价。
 
 Go 里面 Interface 是动态分发的，也就是运行时通过类型元数据和指针去动态调用所需方法，它会在运行时多做一次内存寻址。但这并不是最关键的，最关键的是它会使得编译器没有办法 inline 以及没有办法做很多优化。
 一般比较注重性能的语言都会同时提供静态分发和动态分发两种方式的抽象能力，但是 Go 语言只提供了 Interface 动态分发能力，也就可以理解为在 Go 语言中抽象和性能是不可兼得的，这也就是 Go 语言抽象能力比较弱的原因。

@@ -58,7 +58,7 @@ resp, err := client.Call(ctx, req,callopt.WithTag("cluster", cluster),callopt.Wi
 func WithRPCTimeout(d time.Duration) Option
 ```
 
-Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/timeout/)
+Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/timeout/)
 
 
 
@@ -68,7 +68,7 @@ Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feat
 func WithConnectTimeout(d time.Duration) Option
 ```
 
-Set connection timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/timeout/)
+Set connection timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/timeout/)
 
 
 

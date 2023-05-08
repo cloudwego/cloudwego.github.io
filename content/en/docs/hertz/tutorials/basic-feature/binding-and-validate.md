@@ -1,7 +1,7 @@
 ---
 title: "Binding and validate"
 date: 2022-06-21
-weight: 4
+weight: 6
 description: >
 
 ---
@@ -57,13 +57,25 @@ func main() {
 
 
 
-### Parameter binding priority
+### Parameter binding precedence
 
 ```text
 path > form > query > cookie > header > json > raw_body
 ```
 > Note: If the request content-type is `application/json`, json unmarshal processing will be done by default before parameter binding
 
+### Required parameter
+
+You can specify a parameter as required with keyword `required` in tag. Both `Bind` and `BindAndValidate` returns error when a required parameter is missing. 
+When multiple tags contain the`required` keyword, parameter with be bound in order of precedence defined above. If none of the tags bind, an error will be returned.
+``` go  
+type TagRequiredReq struct {
+	// when field hertz is missing in JSON, a required error will be return: binding: expr_path=hertz, cause=missing required parameter
+	Hertz string `json:"hertz,required"`
+	// when field hertz is missing in both query and JSON, a required error will be return: binding: expr_path=hertz, cause=missing required parameter
+	Kitex string `query:"kitex,required" json:"kitex,required" `
+}
+```
 
 ## Common uses
 

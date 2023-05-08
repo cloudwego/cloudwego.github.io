@@ -9,8 +9,9 @@ description: >
 ### new: 创建一个新项目
 
 1. 在当前目录下创建 protobuf idl 文件
-
-   _注_：为在 protobuf 中支持 api 注解，请在使用了注解的 proto 文件中，import 下面的文件
+> 1. 为在 protobuf 中支持 api 注解，请在使用了注解的 proto 文件中，import 下面的文件
+>
+> 2. 如果想自行拓展注解的使用，请不要以"5"作为序号的开头，避免出现冲突。例如 "optional string xxx = 77777;"
 
 ```protobuf
 // idl/api.proto; 注解拓展
@@ -89,7 +90,7 @@ service HelloService {
 2.  创建新项目
 
 ```bash
-// GOPATH 下执行, 如果主IDL的依赖和主IDL不在同一路径下，需要加入 -I 选项，其含义为IDL搜索路径，等同于 protoc 的 -I 命令
+// GOPATH 下执行, 如果主IDL的依赖和主IDL不在同一路径下，需要加入 "-I" 选项，其含义为IDL搜索路径，等同于 protoc 的 "-I" 命令
 hz new -I idl -idl idl/hello/hello.proto
 
 go mod init
@@ -97,7 +98,15 @@ go mod init
 // 整理 & 拉取依赖
 go mod tidy
 ```
+```bash
+// 非GOPATH 下执行, 需要指定 go mod 名, 如果主IDL的依赖和主IDL不在同一路径下，需要加入 "-I" 选项，其含义为IDL搜索路径，等同于 protoc 的 "-I" 命令
 
+hz new -module example.com/m -I idl -idl idl/hello/hello.proto
+
+// 整理 & 拉取依赖
+go mod tidy
+
+```
 3.  修改 handler，添加自己的逻辑
 
 ```go

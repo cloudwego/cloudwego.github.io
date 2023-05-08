@@ -41,7 +41,7 @@ Best practice rpc example tpl can refer to [here](https://github.com/cloudwego/c
 
 # HTTP
 
-1. The template file is delivered through the yaml folder, but unlike the RPC layout, the HTTP layout is implemented based on hertz's custom template. Here we need to specify the yaml file name to be fixed as `layout.yaml` and `package .yaml`, for the use of custom templates, please refer to [Hz custom template usage documentation](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/).
+1. The template file is delivered through the yaml folder, but unlike the RPC layout, the HTTP layout is implemented based on hertz's custom template. Here we need to specify the yaml file name to be fixed as `layout.yaml` and `package .yaml`, for the use of custom templates, please refer to [Hz custom template usage documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/template/).
 
 Best practice http example tpl can refer to [here](https://github.com/cloudwego/cwgo/tree/main/tpl/hertz/standard)
 

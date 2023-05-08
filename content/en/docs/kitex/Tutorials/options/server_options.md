@@ -124,7 +124,7 @@ Set the maximum amount of idle time allowed for the server-side connection to th
 func WithStatsLevel(level stats.Level) Option
 ```
 
-Set the stats level for the server. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/tracing/)
+Set the stats level for the server. [More](https://www.cloudwego.io/docs/kitex/tutorials/observability/tracing/)
 
 
 
@@ -319,7 +319,7 @@ Specify a Registry for service discovery registration reporting. [More](https://
 func WithTracer(c stats.Tracer) Option
 ```
 
-Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/tracing/)
+Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/observability/tracing/)
 
 
 

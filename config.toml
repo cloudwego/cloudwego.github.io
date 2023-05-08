@@ -116,10 +116,10 @@ github_project_repo = "https://github.com/cloudwego/kitex"
 github_branch= "main"
 
 # Enable Algolia DocSearch
-algolia_docsearch = false
+algolia_docsearch = true
 
 # Enable Lunr.js offline search
-offlineSearch = true
+offlineSearch = false
 
 # Enable syntax highlighting and copy buttons on code blocks with Prism
 prism_syntax_highlighting = true
