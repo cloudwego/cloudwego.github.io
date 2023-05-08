@@ -135,10 +135,10 @@ func main() {
 ```
 ## Mute engine error log
 In production environment, it may encounter errors like "error when reading request headers", which are often caused by the non-standard behavior of the client side. For the server, besides locating the specific client through its IP address and informing it to make improvements (if possible), there is not much that can be done. Therefore, Hertz provides a configuration that can be added during initialization to disable these logs.
+
 ```go
 hlog.SetSilentMode(true)
 ```
-
 
 ## Log Extension
 
