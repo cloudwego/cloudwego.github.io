@@ -82,7 +82,7 @@ func main() {
 | Option         | Default                                 | Description                                                                                                                         |
 | -------------- |-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | Next           | `nil`                                   | Next defines a function to skip this middleware when returned true.                                                                 |
-| ErrorHandler   | `output log and response 401`           | ErrorHandler defines a function which is executed when an error occurs.                                                             |
+| ErrorFunc      | `output log and response 401`           | ErrorFunc defines a function which is executed when an error occurs.                                                                |
 | SuccessHandler | `save the claims to app.RequestContext` | SuccessHandler defines a function which is executed    when the token is valid.                                                     |
 | KeyLookup      | `"header:Authorization"`                | KeyLookup is a string in the form of "<source>:<key>" that is used to create an Extractor that extracts the token from the request. |
 | TokenPrefix    | `""`                                    | TokenPrefix is a string that holds the prefix for the token lookup.                                                                 |
