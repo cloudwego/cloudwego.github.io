@@ -61,7 +61,7 @@ service HelloService {
 ### Command
 
 ```shell
-hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml:template/data.json
+hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml --customize_layout_data_path=template/data.json
 ```
 
 ### The meaning of the default layout template
@@ -220,7 +220,7 @@ layouts:
 When a custom template and render data are specified, the options specified on the command line will not be used as render data, so the render data in the template needs to be defined by the user.
 
 Hz uses "json" to specify render data, as described below
-```json5
+```
 {
   // global render parameters
   "*": {
@@ -322,7 +322,7 @@ layouts:
 ```
 Command:
 ```shell
-hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml:template/data.json
+hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml --customize_layout_data_path=template/data.json
 ```
 
 ## Custom package template
@@ -340,8 +340,7 @@ hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_l
 ### Command
 
 ```shell
-# After that, the package template rendering data will be provided, so the form of "k-v" is retained when entering the command, and ":" needs to be added after customize_package.
-hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/hello.thrift --customize_package=template/package.yaml:
+hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/hello.thrift --customize_package=template/package.yaml
 ```
 
 ### Default package template
