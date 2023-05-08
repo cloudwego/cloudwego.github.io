@@ -79,14 +79,14 @@ func main() {
 
 ## Options
 
-| Option         | Default                                 | Description                                                                                                                           |
-|----------------|-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| Next           | `nil`                                   | Used to defines a function to skip this middleware when returned true.                                                                |
-| ErrorHandler   | `output log and response 401`           | Used to defines a function which is executed when an error occurs.                                                                    |
-| SuccessHandler | `save the claims to app.RequestContext` | Used to defines a function which is executed    when the token is valid.                                                              |
-| KeyLookup      | `"header:Authorization"`                | Used to define a string in the form of "<source>:<key>" that is used to create an Extractor that extracts the token from the request. |
-| TokenPrefix    | `""`                                    | Used to define a string that holds the prefix for the token lookup.                                                                   |
-| ParseFunc      | `parse V4 Public Token`                 | Used to parse and verify token.                                                                                                       |
+| Option         | Default                               | Description                                                                                                                          |
+|----------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| Next           | nil                                   | Used to defines a function to skip this middleware when returned true                                                                |
+| ErrorHandler   | output log and response 401           | Used to defines a function which is executed when an error occurs                                                                    |
+| SuccessHandler | save the claims to app.RequestContext | Used to defines a function which is executed    when the token is valid                                                              |
+| KeyLookup      | header:Authorization                  | Used to define a string in the form of "<source>:<key>" that is used to create an Extractor that extracts the token from the request |
+| TokenPrefix    | ""                                    | Used to define a string that holds the prefix for the token lookup                                                                   |
+| ParseFunc      | parse V4 Public Token                 | Used to parse and verify token                                                                                                       |
 
 ### Next
 
