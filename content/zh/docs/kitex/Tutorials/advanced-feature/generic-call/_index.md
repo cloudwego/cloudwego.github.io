@@ -88,7 +88,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 ### 2. HTTP 映射泛化调用
 
-HTTP 映射泛化调用只针对客户端，要求 Thrift IDL 遵从接口映射规范，具体规范见 [Thrift-HTTP 映射的 IDL 规范](./thrift_idl_annotation_standards)。
+HTTP 映射泛化调用只针对客户端，要求 Thrift IDL 遵从接口映射规范，具体规范见 [Thrift-HTTP 映射的 IDL 规范](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/thrift_idl_annotation_standards/)。
 
 #### IDL 定义示例
 

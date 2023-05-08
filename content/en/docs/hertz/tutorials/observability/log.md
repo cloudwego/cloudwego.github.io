@@ -71,7 +71,75 @@ LevelWarn
 LevelError
 LevelFatal
 ```
+## hlog prints the log and specifies the field of the log
+
+Taking zerolog as an example, such a function is implemented in zerolog:
+
+```go
+package main
+
+import (
+    "bytes"
+    "github.com/cloudwego/hertz/pkg/common/json"
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+    b := &bytes.Buffer{}
+    l := hertzZerolog.New(hertzZerolog.WithField("service", "logging"))
+    l.SetOutput(b)
+
+    l.Info("foobar")
+
+    type Log struct {
+        Level   string `json:"level"`
+        Service string `json:"service"`
+        Message string `json:"message"`
+    }
+
+    log := &Log{}
+
+    err := json.Unmarshal(b.Bytes(), log)//log.service=="logging"
+}
+```
+However, such functions are not directly implemented in zap and logrus, and the original option needs to be added manually
+
+Take zap as an example:
+```go
+package main
+
+import (
+	"bytes"
+	"github.com/cloudwego/hertz/pkg/common/json"
+	hertzzap "github.com/hertz-contrib/logger/zap"
+	"go.uber.org/zap"
+)
+
+func main() {
+	b := &bytes.Buffer{}
+	l := hertzzap.NewLogger(hertzzap.WithZapOptions(zap.Fields(zap.String("service", "logging"))))
+	l.SetOutput(b)
+
+	l.Info("foobar")
+
+	type Log struct {
+		Level   string `json:"level"`
+		Service string `json:"service"`
+		Message string `json:"message"`
+	}
+
+	log := &Log{}
+
+	err := json.Unmarshal(b.Bytes(), log) //log.service=="logging"
+}
+```
+## Mute engine error log
+In production environment, it may encounter errors like "error when reading request headers", which are often caused by the non-standard behavior of the client side. For the server, besides locating the specific client through its IP address and informing it to make improvements (if possible), there is not much that can be done. Therefore, Hertz provides a configuration that can be added during initialization to disable these logs.
+
+```go
+hlog.SetSilentMode(true)
+```
 
 ## Log Extension
 
-Currently, hlog supports the extended use of zap and logrus. For details on log extension, [see](https://www.cloudwego.io/docs/hertz/tutorials/framework-exten/log/).
+Currently, hlog supports the extended use of zap, logrus and zerolog. For details on log extension, [see](https://www.cloudwego.io/docs/hertz/tutorials/framework-exten/log/).
