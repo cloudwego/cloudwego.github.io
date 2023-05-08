@@ -45,7 +45,7 @@ func Default(opts ...config.Option) *Hertz {
 }
 ```
 
-若想详细的了解可选的配置项, 可以在[配置说明](https://www.cloudwego.io/zh/docs/hertz/reference/config/)中进行查看。
+若想详细地了解可选的配置项, 可以在[配置说明](https://www.cloudwego.io/zh/docs/hertz/reference/config/)中查看。
 
 示例代码
 
