@@ -393,7 +393,7 @@ func main() {
 
 ### KeyLookup
 
-`WithKeyLookUp` 以 “＜source＞：＜key＞” 的形式设置一个字符串，用于创建从请求中提取令牌的“提取器”。
+`WithKeyLookUp` 以 “＜source＞:＜key＞” 的形式设置一个字符串，用于创建从请求中提取令牌的“提取器”。
 
 函数签名：
 
@@ -533,7 +533,7 @@ func main() {
 函数签名：
 
 ```go
-
+func WithParseFunc(f ParseFunc) Option
 ```
 
 示例代码：
