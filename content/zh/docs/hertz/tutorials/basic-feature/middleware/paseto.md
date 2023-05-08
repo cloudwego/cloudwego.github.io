@@ -1,11 +1,11 @@
+---
 title: "paseto"
 date: 2023-05-08
 weight: 15
 description: >
-
 ---
 
-Paseto拥有你喜欢JOSE的一切（JWT、JWE、JWS），没有任何[困扰JOSE标准的许多设计缺陷](https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid)
+Paseto 拥有你喜欢 JOSE 的一切（JWT、JWE、JWS）
 
 这是[Hertz](https://github.com/cloudwego/hertz)的PASETO中间件框架
 
@@ -79,16 +79,25 @@ func main() {
 
 ## 配置项
 
-| Option         | Default                                 | Description                                                  |
-| -------------- | --------------------------------------- | ------------------------------------------------------------ |
-| Next           | `nil`                                   | 接下来定义一个函数，当返回true时跳过这个中间件。             |
-| ErrorFunc      | `output log and response 401`           | ErrorFunc定义了一个在发生错误时执行的函数。                  |
-| SuccessHandler | `save the claims to app.RequestContext` | SuccessHandler定义了一个函数，该函数在令牌有效时执行。       |
-| KeyLookup      | `"header:Authorization"`                | KeyLookup是一个“＜source＞：＜key＞”形式的字符串，用于创建从请求中提取令牌的提取器。 |
-| TokenPrefix    | `""`                                    | TokenPrefix是一个字符串，用于保存令牌查找的前缀。            |
-| ParseFunc      | `parse V4 Public Token`                 | ParseFunc解析并验证令牌。                                    |
+| 配置             | 默认值                                     | 介绍                                            |
+|----------------|-----------------------------------------|-----------------------------------------------|
+| Next           | `nil`                                   | 用于设置一个函数，当返回true时跳过这个中间件                      |
+| ErrorFunc      | `output log and response 401`           | 用于设置一个在发生错误时执行的函数                             |
+| SuccessHandler | `save the claims to app.RequestContext` | 用于设置一个函数，该函数在令牌有效时执行。                         |
+| KeyLookup      | `"header:Authorization"`                | 用于设置一个“＜source＞：＜key＞”形式的字符串，用于创建从请求中提取令牌的提取器 |
+| TokenPrefix    | `""`                                    | 用于设置一个字符串，用于保存令牌查找的前缀                         |
+| ParseFunc      | `parse V4 Public Token`                 | 用于设置一个解析并验证令牌的函数                              |
 
 ### Next
+
+`WithNext`设置一个函数来判断是否跳过这个中间件。
+
+函数签名：
+
+```go
+func WithNext(f NextHandler) Option
+```
+示例代码：
 
 ```go
 package main
@@ -163,6 +172,18 @@ func main() {
 ```
 
 ### ErrorFunc
+
+`WithErrorFunc`设置ErrorHandler。
+
+`ErrorHandler`定义一个在发生错误时执行的函数。
+
+函数签名：
+
+```go
+func WithErrorFunc(f app.HandlerFunc) Option
+```
+
+示例代码：
 
 ```go
 package main
@@ -261,6 +282,16 @@ func main() {
 
 ### SuccessHandler
 
+`WithSuccessHandler `设置处理已解析令牌的逻辑。
+
+函数签名：
+
+```go
+func WithSuccessHandler(f SuccessHandler) Option
+```
+
+示例代码：
+
 ```go
 package main
 
@@ -358,7 +389,17 @@ func main() {
 }
 ```
 
+`WithKeyLookUp`以“＜source＞：＜key＞”的形式设置一个字符串，用于创建从请求中提取令牌的“提取器”。
+
 ### KeyLookup
+
+函数签名：
+
+```go
+func WithKeyLookUp(lookup string) Option
+```
+
+示例代码：
 
 ```go
 package main
@@ -483,6 +524,18 @@ func main() {
 
 ### ParseFunc
 
+`WithParseFunc`设置ParseFunc。
+
+`ParseFunc`解析并验证令牌。
+
+函数签名：
+
+```go
+
+```
+
+示例代码：
+
 ```go
 package main
 
@@ -567,10 +620,10 @@ func main() {
 
 ## 版本比较
 
-| Version | Local                                                        | Public                |
-| ------- | ------------------------------------------------------------ | --------------------- |
-| v1      | 使用“AES-256-CBC”加密并使用HMAC-SHA-256签名                  | 使用`RSA-SHA-256`签名 |
-| v2      | 使用“XSalsa20Poly-1305”加密并使用“HMAC-SHA-384”签名`       | 使用`EdDSA`（`Ed25519`）签名 |                       |
-| v3      | 使用“XChaCha20Poly1305”加密并使用“HMAC-SHA-384”签名`       | 使用`EdDSA`（`Ed25519`）签名 |                       |
-| v4      | 使用“XChaCha20Poly1305”加密，并使用“HMAC-SHA-512-256”签名` | 使用`EdDSA`（`Ed448`）签名 |                       |
+| 版本  | 本地                                               | 公共                     |
+|-----|--------------------------------------------------|------------------------|
+| v1  | 使用“AES-256-CBC”加密并使用HMAC-SHA-256签名               | 使用`RSA-SHA-256`签名      |
+| v2  | 使用“XSalsa20Poly-1305”加密并使用“HMAC-SHA-384”签名`      | 使用`EdDSA`（`Ed25519`）签名 |                       |
+| v3  | 使用“XChaCha20Poly1305”加密并使用“HMAC-SHA-384”签名`      | 使用`EdDSA`（`Ed25519`）签名 |                       |
+| v4  | 使用“XChaCha20Poly1305”加密，并使用“HMAC-SHA-512-256”签名` | 使用`EdDSA`（`Ed448`）签名   |                       |
 

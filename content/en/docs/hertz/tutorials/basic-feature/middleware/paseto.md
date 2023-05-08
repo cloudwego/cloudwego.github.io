@@ -1,13 +1,13 @@
+---
 title: "paseto"
 date: 2023-05-08
 weight: 15
 description: >
-
 ---
 
-Paseto is everything you love about JOSE (JWT, JWE, JWS) without any of the [many design deficits that plague the JOSE standards](https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid).
+Paseto is everything you love about JOSE (JWT, JWE, JWS) 
 
-This is the PASETO middleware for [Hertz](https://github.com/cloudwego/hertz) framework.
+This is the PASETO middleware for [Hertz](https://github.com/cloudwego/hertz) framework
 
 ## Install
 
@@ -79,16 +79,26 @@ func main() {
 
 ## Options
 
-| Option         | Default                                 | Description                                                                                                                         |
-| -------------- |-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| Next           | `nil`                                   | Next defines a function to skip this middleware when returned true.                                                                 |
-| ErrorFunc      | `output log and response 401`           | ErrorFunc defines a function which is executed when an error occurs.                                                                |
-| SuccessHandler | `save the claims to app.RequestContext` | SuccessHandler defines a function which is executed    when the token is valid.                                                     |
-| KeyLookup      | `"header:Authorization"`                | KeyLookup is a string in the form of "<source>:<key>" that is used to create an Extractor that extracts the token from the request. |
-| TokenPrefix    | `""`                                    | TokenPrefix is a string that holds the prefix for the token lookup.                                                                 |
-| ParseFunc      | `parse V4 Public Token`                 | ParseFunc parse and verify token.                                                                                                   |
+| Option         | Default                                 | Description                                                                                                                           |
+|----------------|-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| Next           | `nil`                                   | Used to defines a function to skip this middleware when returned true.                                                                |
+| ErrorHandler   | `output log and response 401`           | Used to defines a function which is executed when an error occurs.                                                                    |
+| SuccessHandler | `save the claims to app.RequestContext` | Used to defines a function which is executed    when the token is valid.                                                              |
+| KeyLookup      | `"header:Authorization"`                | Used to define a string in the form of "<source>:<key>" that is used to create an Extractor that extracts the token from the request. |
+| TokenPrefix    | `""`                                    | Used to define a string that holds the prefix for the token lookup.                                                                   |
+| ParseFunc      | `parse V4 Public Token`                 | Used to parse and verify token.                                                                                                       |
 
 ### Next
+
+`WithNext` sets a function to judge whether to skip this middleware.
+
+Function Signature：
+
+```go
+func WithNext(f NextHandler) Option
+```
+
+Sample code：
 
 ```go
 package main
@@ -163,6 +173,18 @@ func main() {
 ```
 
 ### ErrorFunc
+
+`WithErrorFunc` sets ErrorHandler.
+
+`ErrorHandler` defines a function which is executed when an error occurs.
+
+Function Signature：
+
+```go
+func WithErrorFunc(f app.HandlerFunc) Option
+```
+
+Sample code：
 
 ```go
 package main
@@ -260,6 +282,16 @@ func main() {
 ```
 
 ### SuccessHandler
+
+`WithSuccessHandler` sets the logic to handle the Parsed token.
+
+Function Signature：
+
+```go
+func WithSuccessHandler(f SuccessHandler) Option
+```
+
+Sample code：
 
 ```go
 package main
@@ -359,6 +391,17 @@ func main() {
 ```
 
 ### KeyLookup
+
+`WithKeyLookUp` sets a string in the form of "<source>:<key>" that is used to create an `Extractor` that extracts the token from the request.
+
+Function Signature：
+
+```go
+func WithKeyLookUp(lookup string) Option
+```
+
+Sample code：
+
 
 ```go
 package main
@@ -482,6 +525,18 @@ func main() {
 ```
 
 ### ParseFunc
+
+`WithParseFunc` sets the ParseFunc.
+
+`ParseFunc` parse and verify token.
+
+Function Signature：
+
+```go
+func WithParseFunc(f ParseFunc) Option
+```
+
+Sample code：
 
 ```go
 package main
