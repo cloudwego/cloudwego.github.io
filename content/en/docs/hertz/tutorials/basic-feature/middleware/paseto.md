@@ -1,11 +1,11 @@
 ---
 title: "paseto"
 date: 2023-05-08
-weight: 15
+weight: 16
 description: >
 ---
 
-Paseto is everything you love about JOSE (JWT, JWE, JWS) 
+Paseto is everything you love about JOSE (JWT, JWE, JWS) without any of the [many design deficits that plague the JOSE standards](https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid).
 
 This is the PASETO middleware for [Hertz](https://github.com/cloudwego/hertz) framework
 
@@ -79,14 +79,14 @@ func main() {
 
 ## Options
 
-| Option         | Default                                 | Description                                                                                                                           |
-|----------------|-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| Next           | `nil`                                   | Used to defines a function to skip this middleware when returned true.                                                                |
-| ErrorHandler   | `output log and response 401`           | Used to defines a function which is executed when an error occurs.                                                                    |
-| SuccessHandler | `save the claims to app.RequestContext` | Used to defines a function which is executed    when the token is valid.                                                              |
-| KeyLookup      | `"header:Authorization"`                | Used to define a string in the form of "<source>:<key>" that is used to create an Extractor that extracts the token from the request. |
-| TokenPrefix    | `""`                                    | Used to define a string that holds the prefix for the token lookup.                                                                   |
-| ParseFunc      | `parse V4 Public Token`                 | Used to parse and verify token.                                                                                                       |
+| Option         | Default                                                                                                  | Description                                                                                                                       |
+|----------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| Next           | [nil](https://github.com/hertz-contrib/paseto/blob/main/option.go#L88)                                   | Used to define a function to skip this middleware when returned true                                                              |
+| ErrorHandler   | [output log and response 401](https://github.com/hertz-contrib/paseto/blob/main/option.go#L89)           | Used to define a function which is executed when an error occurs                                                                  |
+| SuccessHandler | [save the claims to app.RequestContext](https://github.com/hertz-contrib/paseto/blob/main/option.go#L94) | Used to define a function which is executed    when the token is valid                                                            |
+| KeyLookup      | [header:Authorization](https://github.com/hertz-contrib/paseto/blob/main/option.go#L97)                  | Used to define a string in the form of "<source>:<key>" that is used to create an Extractor that extracts the token from the request |
+| TokenPrefix    | ""                                                                                                       | Used to define a string that holds the prefix for the token lookup                                                                |
+| ParseFunc      | [parse V4 Public Token](https://github.com/hertz-contrib/paseto/blob/main/option.go#L98)                 | Used to parse and verify token                                                                                                    |
 
 ### Next
 

@@ -1,13 +1,13 @@
 ---
 title: "paseto"
 date: 2023-05-08
-weight: 15
+weight: 16
 description: >
 ---
 
-Paseto 拥有你喜欢 JOSE 的一切（JWT、JWE、JWS）
+Paseto 拥有你喜欢 JOSE 的一切（JWT、JWE、JWS），没有困扰 JOSE 标准的[许多设计缺陷](https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid)。
 
-这是[Hertz](https://github.com/cloudwego/hertz)的PASETO中间件框架
+这是 [Hertz](https://github.com/cloudwego/hertz) 的 PASETO 中间件框架
 
 ## 安装
 
@@ -79,18 +79,18 @@ func main() {
 
 ## 配置项
 
-| 配置             | 默认值                                     | 介绍                                            |
-|----------------|-----------------------------------------|-----------------------------------------------|
-| Next           | `nil`                                   | 用于设置一个函数，当返回true时跳过这个中间件                      |
-| ErrorFunc      | `output log and response 401`           | 用于设置一个在发生错误时执行的函数                             |
-| SuccessHandler | `save the claims to app.RequestContext` | 用于设置一个函数，该函数在令牌有效时执行。                         |
-| KeyLookup      | `"header:Authorization"`                | 用于设置一个“＜source＞：＜key＞”形式的字符串，用于创建从请求中提取令牌的提取器 |
-| TokenPrefix    | `""`                                    | 用于设置一个字符串，用于保存令牌查找的前缀                         |
-| ParseFunc      | `parse V4 Public Token`                 | 用于设置一个解析并验证令牌的函数                              |
+| 配置             | 默认值                                                                                          | 介绍                                              |
+|----------------|----------------------------------------------------------------------------------------------|-------------------------------------------------|
+| Next           | [nil](https://github.com/hertz-contrib/paseto/blob/main/option.go#L88)                       | 用于设置一个函数，当返回 true 时跳过这个中间件                      |
+| ErrorFunc      | [输出日志并返回 401](https://github.com/hertz-contrib/paseto/blob/main/option.go#L89)               | 用于设置一个在发生错误时执行的函数                               |
+| SuccessHandler | [将声明保存到 app.RequestContext](https://github.com/hertz-contrib/paseto/blob/main/option.go#L94) | 用于设置一个函数，该函数在令牌有效时执行                            |
+| KeyLookup      | [header:Authorization](https://github.com/hertz-contrib/paseto/blob/main/option.go#L97)      | 用于设置一个 “＜source＞:＜key＞” 形式的字符串，用于创建从请求中提取令牌的提取器 |
+| TokenPrefix    | ""                                                                                           | 用于设置一个字符串，用于保存令牌查找的前缀                           |
+| ParseFunc      | [解析 V4 公共令牌](https://github.com/hertz-contrib/paseto/blob/main/option.go#L98)                | 用于设置一个解析并验证令牌的函数                                |
 
 ### Next
 
-`WithNext`设置一个函数来判断是否跳过这个中间件。
+`WithNext` 设置一个函数来判断是否跳过这个中间件。
 
 函数签名：
 
@@ -173,9 +173,9 @@ func main() {
 
 ### ErrorFunc
 
-`WithErrorFunc`设置ErrorHandler。
+`WithErrorFunc` 设置 ErrorHandler。
 
-`ErrorHandler`定义一个在发生错误时执行的函数。
+`ErrorHandler` 定义一个在发生错误时执行的函数。
 
 函数签名：
 
@@ -282,7 +282,7 @@ func main() {
 
 ### SuccessHandler
 
-`WithSuccessHandler `设置处理已解析令牌的逻辑。
+`WithSuccessHandler` 设置处理已解析令牌的逻辑。
 
 函数签名：
 
@@ -389,9 +389,9 @@ func main() {
 }
 ```
 
-`WithKeyLookUp`以“＜source＞：＜key＞”的形式设置一个字符串，用于创建从请求中提取令牌的“提取器”。
-
 ### KeyLookup
+
+`WithKeyLookUp` 以 “＜source＞:＜key＞” 的形式设置一个字符串，用于创建从请求中提取令牌的“提取器”。
 
 函数签名：
 
@@ -524,14 +524,14 @@ func main() {
 
 ### ParseFunc
 
-`WithParseFunc`设置ParseFunc。
+`WithParseFunc` 设置 ParseFunc。
 
-`ParseFunc`解析并验证令牌。
+`ParseFunc` 解析并验证令牌。
 
 函数签名：
 
 ```go
-
+func WithParseFunc(f ParseFunc) Option
 ```
 
 示例代码：
