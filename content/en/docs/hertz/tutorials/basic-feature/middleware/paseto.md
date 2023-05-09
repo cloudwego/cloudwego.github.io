@@ -628,3 +628,8 @@ func main() {
 | v2      | Encrypted with `XSalsa20Poly1305` and signed with `HMAC-SHA-384` | Signed with `EdDSA `(`Ed25519`) |
 | v3      | Encrypted with `XChaCha20Poly1305` and signed with` HMAC-SHA-384` | Signed with `EdDSA `(`Ed25519`) |
 | v4      | Encrypted with `XChaCha20Poly1305` and signed with `HMAC-SHA-512-256` | Signed with `EdDSA `(`Ed448`)   |
+
+
+## Full Example 
+
+Refer to the [paseto/example](https://github.com/hertz-contrib/paseto/tree/main/example) for full usage examples.

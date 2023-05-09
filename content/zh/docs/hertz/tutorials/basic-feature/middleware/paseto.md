@@ -627,3 +627,6 @@ func main() {
 | v3  | 使用“XChaCha20Poly1305”加密并使用“HMAC-SHA-384”签名`      | 使用`EdDSA`（`Ed25519`）签名 |                       |
 | v4  | 使用“XChaCha20Poly1305”加密，并使用“HMAC-SHA-512-256”签名` | 使用`EdDSA`（`Ed448`）签名   |                       |
 
+## 完整示例
+
+完成用法示例详见 [paseto/example](https://github.com/hertz-contrib/paseto/tree/main/example)
