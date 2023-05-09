@@ -133,6 +133,15 @@ func main() {
 	err := json.Unmarshal(b.Bytes(), log) //log.service=="logging"
 }
 ```
+## 关闭 Engine 错误日志
+在生产环境中可能会遇到 `error when reading request headers` 类似的错误，这类错误往往由于 client 侧不规范的行为导致。对于 server 来说除了通过 client IP 定位到具体 client 并告知其整改（如果可以的话）以外，能够做的并不多。
+因此 Hertz 提供了一个配置，在初始化时添加如下配置即可关闭这些日志
+
+```go
+hlog.SetSilentMode(true)
+```
+
 ## 日志拓展
 
 目前 hlog 支持 zap , logrus 和 zerolog 的拓展使用，日志拓展[详见](https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/log/)。
+
