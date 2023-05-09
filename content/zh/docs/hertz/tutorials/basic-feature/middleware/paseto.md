@@ -1,11 +1,11 @@
 ---
 title: "paseto"
 date: 2023-05-08
-weight: 15
+weight: 16
 description: >
 ---
 
-Paseto 拥有你喜欢 JOSE 的一切（JWT、JWE、JWS）
+Paseto 拥有你喜欢 JOSE 的一切（JWT、JWE、JWS），没有困扰 JOSE 标准的[许多设计缺陷](https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid)。
 
 这是 [Hertz](https://github.com/cloudwego/hertz) 的 PASETO 中间件框架
 
