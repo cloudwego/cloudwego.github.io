@@ -1922,7 +1922,7 @@ func (ctx *RequestContext) ResetWithoutConn()
 
 ### Reset
 
-重置 RequestContext 。
+重置 RequestContext ，通常会把重置后的 RequestContext 通过 `sync.Pool` 存取。(更多内容请参考 [protocol/http1](https://github.com/cloudwego/hertz/blob/0d8b98bc8cf61c16866359e551959e962597d33f/pkg/protocol/http1/server.go#L133))
 
 > 注意: 这是一个内部函数
 
