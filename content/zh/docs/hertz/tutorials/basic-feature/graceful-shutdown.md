@@ -1,7 +1,7 @@
 ---
 title: "优雅退出"
 date: 2022-05-23
-weight: 9
+weight: 10
 description: >
 
 ---
@@ -26,10 +26,12 @@ h.Engine.OnShutdown = append(h.Engine.OnShutdown, shutDownFunc)
 ```
 
 Hertz 使用 `waitSignal` 函数作为信号处理的默认实现方式，处理如下:
+
 - 当接收到 `SIGTERM` 系统信号时触发立即退出。
 - 当接收到 `SIGHUP|SIGINT` 系统信号时触发优雅退出。
 
 当信号处理的默认实现方式无法满足需求时，可通过 `SetCustomSignalWaiter` 来自定义信号处理方式。
+
 ```go
 package main
 
@@ -46,5 +48,5 @@ func main() {
 }
 
 ```
-当自定义信号处理函数返回 `error` 时 Hertz 会立即退出，其他情况下则会优雅退出。
 
+当自定义信号处理函数返回 `error` 时 Hertz 会立即退出，其他情况下则会优雅退出。

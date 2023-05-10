@@ -1,7 +1,7 @@
 ---
 title: "重试"
 date: 2022-10-01
-weight: 11
+weight: 12
 description: >
 
 ---
@@ -51,8 +51,6 @@ cli, err := client.NewClient(
 	)
 ```
 
-
-
 | 函数名称           | 说明                                                         |
 | :----------------- | :----------------------------------------------------------- |
 | CombineDelay       | 用于将下面四种策略进行任意组合，将所选策略计算出的值进行加和。当你只需要下面四种策略中的一种时，你可以选择使用 CombineDelay 或选择直接将任意一种策略传入 WithDelayPolicy 作为参数 |
@@ -92,8 +90,6 @@ func main() {
 	)
 }
 ```
-
-
 
 ## Retry 条件配置
 
@@ -147,8 +143,6 @@ func isIdempotent(req *protocol.Request, resp *protocol.Response, err error) boo
       req.Header.IsTrace()
 }
 ```
-
-
 
 <a id="table1">Table - 1</a> Hertz 源码 [doNonNilReqResp()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L411) 中 `canIdempotentRetry` 为 true 的情况
 

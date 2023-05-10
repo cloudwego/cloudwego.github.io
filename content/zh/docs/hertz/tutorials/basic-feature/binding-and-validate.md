@@ -1,7 +1,7 @@
 ---
 title: "绑定与校验"
 date: 2022-05-23
-weight: 6
+weight: 7
 description: >
 
 ---
@@ -60,11 +60,13 @@ func main() {
 ```text
 path > form > query > cookie > header > json > raw_body
 ```
+
 > 注：如果请求的 content-type 为 `application/json`，那么会在参数绑定前做一次 json unmarshal 处理作为兜底。
 
 ### 必传参数
 
 通过在 tag 中添加 `required`，可以将参数标记为必传。当绑定失败时 `Bind` 和 `BindAndValidate` 将会返回错误。当多个 tag 包含 `required` 时，将会按照优先级绑定。如果所有 tag 都没有绑定上，则会返回错误。
+
 ``` go  
 type TagRequiredReq struct {
 	// 当 JSON 中没有 hertz 字段时，会返回 required 错误：binding: expr_path=hertz, cause=missing required parameter
@@ -250,8 +252,11 @@ h.POST("/upload", func(ctx context.Context, c *app.RequestContext) {
 原因：默认不支持 `string` 和 `int` 互转
 
 解决方法：
+
 - 建议使用标准包 json 的 `string` tag, 例如：
+
   ```go
   A int `json:"A, string"`
   ```
+
 - 配置其他支持这种行为的 json 库
