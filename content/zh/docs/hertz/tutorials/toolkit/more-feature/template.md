@@ -61,7 +61,7 @@ service HelloService {
 ### 命令
 
 ```shell
-hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml:template/data.json
+hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml --customize_layout_data_path=template/data.json
 ```
 
 ### 默认 layout 模板的含义
@@ -221,7 +221,7 @@ layouts:
 
 hz 使用了"json"来指定渲染数据，下面进行介绍
 
-```json5
+```json
 {
   // 全局的渲染参数
   "*": {
@@ -323,7 +323,7 @@ layouts:
 ```
 命令：
 ```shell
-hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml:template/data.json
+hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml --customize_layout_data_path=template/data.json
 ```
 
 ## 自定义 package 模板
@@ -341,8 +341,7 @@ hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_l
 ### 命令
 
 ```shell
-# 之后会提供 package 模板渲染数据，所以输入命令的时候先保留了"k-v"的形式，customize_package 后需要加":"
-hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/hello.thrift --customize_package=template/package.yaml:
+hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/hello.thrift --customize_package=template/package.yaml
 ```
 
 ### 默认 package 模板
