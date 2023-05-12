@@ -169,7 +169,7 @@ hlog.SetSilentMode(true)
 ## Set trace
 The logger under hertz-contrib/logger does not have a direct trace function.
 
-There is a trace implementation based on hertz-contrib/logger at https://github.com/hertz-contrib/obs-opentelemetry/tree/main/logging.
+You can refer to the trace implementation document of https://www.cloudwego.io/docs/hertz/tutorials/observability/open-telemetry/
 ## Log Extension
 
 Currently, hlog supports the extended use of zap, logrus and zerolog. For details on log extension, [see](https://www.cloudwego.io/docs/hertz/tutorials/framework-exten/log/).
