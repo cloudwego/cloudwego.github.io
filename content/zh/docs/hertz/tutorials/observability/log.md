@@ -170,7 +170,7 @@ hlog.SetSilentMode(true)
 ## 设置 trace
 hertz-contrib/logger 下的 logger 不具备直接的 trace 功能。
 
-可以参照 https://www.cloudwego.io/zh/docs/hertz/tutorials/observability/open-telemetry/#logging 的 trace 实现文档
+可以参照 [Trace](https://www.cloudwego.io/zh/docs/hertz/tutorials/observability/open-telemetry/#logging) 文档的日志部分。
 
 ## 日志拓展
 
