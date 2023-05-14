@@ -1,16 +1,14 @@
 ---
-title: "Sse"
+title: "SSE"
 date: 2023-05-12
-weight: 17
+weight: 6
 description: >
 
 ---
 
-SSE is short for Server-Sent Events, which is a server push technology that allows the server to send events to clients through simple HTTP responses. It only supports **one-way** communication, after establishing a connection, it can only be sent from the server to the client and occupies one connection. If you need client-server communication, an additional connection must be opened.
+SSE is short for Server-Sent Events, which is a server push technology that allows the server to send events to clients through simple HTTP responses.
 
-In short, SSE is suitable for real-time data updates or message pushes.
-
-This project refers to [manucorporat/sse](https://github.com/manucorporat/sse) implementation. Hertz's own implementation can be found [here](https://github.com/hertz-contrib/sse).
+Hertz's implementation can be found [here](https://github.com/hertz-contrib/sse).
 
 ## Installation
 

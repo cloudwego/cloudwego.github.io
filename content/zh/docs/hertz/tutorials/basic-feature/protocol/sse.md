@@ -1,16 +1,14 @@
 ---
-title: "Sse"
+title: "SSE"
 date: 2023-05-12
-weight: 17
+weight: 6
 description: >
 
 ---
 
-SSE 是 Server-Sent Events 的缩写, 是一种服务器推送技术，它允许服务器端通过简单的 HTTP 响应向客户端发送事件。 只能**单工**通信, 建立连接后, 只能由服务端发往客户端, 且占用一个连接, 如需客户端向服务端通信, 需额外打开一个连接.
+SSE 是 Server-Sent Events 的缩写，是一种服务器推送技术，它允许服务器端通过简单的 HTTP 响应向客户端发送事件。
 
-简单的来说, sse 适用于实时更新数据或者消息推送等场景.
-
-本项目参考了 [manucorporat/sse](https://github.com/manucorporat/sse) 的实现, hertz 自己的实现则在[这里](https://github.com/hertz-contrib/sse)
+hertz 的实现见[这里](https://github.com/hertz-contrib/sse)。
 
 ## 安装
 
@@ -20,7 +18,7 @@ go get github.com/hertz-contrib/sse
 
 ## 示例代码
 
-在下面的示例中, 在访问 `/sse` 时, 服务端将每秒向客户端推送一个时间戳.
+在下面的示例中, 在访问 `/sse` 时，服务端将每秒向客户端推送一个时间戳。
 
 ```go
 package main
@@ -68,9 +66,9 @@ func main() {
 
 ### NewStream
 
-NewStream 用于创建一个流用于发送事件, 在默认情况下, 会设置 `Content-Type` 为 `text/event-stream` (最好不要修改 `Content-Type`), `Cache-Control` 为 `no-cache` 
+NewStream 用于创建一个流用于发送事件。在默认情况下，会设置 `Content-Type` 为 `text/event-stream` (最好不要修改 `Content-Type`)， `Cache-Control` 为 `no-cache`。
 
-如果服务器和客户端之间有任何代理, 那将建议设置响应头 `X-Accel-Buffering` 为 `no`
+如果服务器和客户端之间有任何代理, 那将建议设置响应头 `X-Accel-Buffering` 为 `no`。
 
 函数签名:
 
@@ -98,7 +96,7 @@ func main() {
 
 ### Publish
 
-Publish 用于向客户端发送事件, 事件的格式如下
+Publish 用于向客户端发送事件，事件的格式如下:
 
 ```go
 type Event struct {
@@ -120,7 +118,7 @@ func (c *Stream) Publish(event *Event) error
 ```
 ### GetLastEventID
 
-GetLastEventID 用于获取客户端发送的最后一个事件标识符, 如果客户端没有发送事件标识符, 则返回空字符串
+GetLastEventID 用于获取客户端发送的最后一个事件标识符。
 
 函数签名:
 
