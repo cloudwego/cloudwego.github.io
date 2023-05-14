@@ -52,6 +52,33 @@ func main() {
 }
 ```
 
+logger 的默认输出位置为 os.stdout，在重定向后将不会在终端输出。
+
+如果想同时输出到终端和路径，可参考以下代码：
+
+```go
+package main
+
+import (
+    "io"
+    "os"
+
+    "github.com/cloudwego/hertz/pkg/common/hlog"
+)
+
+func main() {
+    f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+    if err != nil {
+        panic(err)
+    }
+    defer f.Close()
+    fileWriter := io.MultiWriter(f,os.Stdout)
+    hlog.SetOutput(fileWriter)
+
+    ... // continue to set up your server
+}
+```
+
 ## 设置 logLevel
 
 可以使用 `hlog.SetLevel` 来设置日志等级，高于该日志等级的日志才能够被打印出来。
@@ -140,6 +167,10 @@ func main() {
 ```go
 hlog.SetSilentMode(true)
 ```
+## 设置 trace
+hertz-contrib/logger 下的 logger 不具备直接的 trace 功能。
+
+可以参照 [Trace](https://www.cloudwego.io/zh/docs/hertz/tutorials/observability/open-telemetry/#logging) 文档的日志部分。
 
 ## 日志拓展
 
