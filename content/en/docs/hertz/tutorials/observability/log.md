@@ -52,6 +52,33 @@ func main() {
 }
 ```
 
+The default output location of logger is os.stdout, which will not be output on the terminal after redirection.
+
+If you want to output to the terminal and path at the same time, you can refer to the following code:
+
+```go
+package main
+
+import (
+    "io"
+    "os"
+
+    "github.com/cloudwego/hertz/pkg/common/hlog"
+)
+
+func main() {
+    f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+    if err != nil {
+        panic(err)
+    }
+    defer f.Close()
+    fileWriter := io.MultiWriter(f,os.Stdout)
+    hlog.SetOutput(fileWriter)
+
+    ... // continue to set up your server
+}
+```
+
 ## Set the logLevel
 
 Hertz can use `hlog.SetLevel` to set the log level above which logs will be printed.
@@ -139,7 +166,10 @@ In production environment, it may encounter errors like "error when reading requ
 ```go
 hlog.SetSilentMode(true)
 ```
+## Set trace
+The logger under hertz-contrib/logger does not have a direct trace function.
 
+You can refer to the logging section of the [Trace](https://www.cloudwego.io/docs/hertz/tutorials/observability/open-telemetry/) documentation. 
 ## Log Extension
 
 Currently, hlog supports the extended use of zap, logrus and zerolog. For details on log extension, [see](https://www.cloudwego.io/docs/hertz/tutorials/framework-exten/log/).
