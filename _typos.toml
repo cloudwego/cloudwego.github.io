@@ -5,3 +5,5 @@ extend-exclude = ["*.json", "*.js", "static/*", "layouts/*", "assets/*", "i18n/*
 
 [default.extend-words]
 datas = "datas"
+mmaped = "mmaped"
+exten = "exten"
