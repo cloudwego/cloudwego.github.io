@@ -5,13 +5,11 @@ linkTitle: "贪玩游戏"
 weight: 4
 ---
 
-> CloudWeGo 开源的高性能微服务框架和高性能工具库，该项目已经吸引了全球 **8 万多用户关注**，以及近 **2 万 GitHub** **star**。数美科技、贪玩游戏、理想汽车、森马、晶泰科技、华兴证券等超过20家企业用户均已落地使用。
 > 
 > 3月，CloudWeGo Day  邀请了贪玩游戏、数美科技、字节跳动业务部门的一线架构师，为大家分享，在Java 转 go 场景下、企业高可用性挑战等场景下，如何通过 CloudWeGo 来落地微服务架构。本文为 **贪玩游戏技术经理 李华松** 分享内容。
 > 
 > **🔗 回放链接：** https://juejin.cn/live/cloudwegoday002
 > 
->  📘 **讲师 PPT**：[CloudWeGo Day#2-讲师PPT合集.pdf](https://mp.weixin.qq.com/s?
 
 ## 嘉宾介绍
 
