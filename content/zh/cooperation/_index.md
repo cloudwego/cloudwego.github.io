@@ -47,7 +47,7 @@ CloudWeGo 是一套由字节跳动开源的、可快速构建企业级云原生�
     
 {{< card header="CloudWeGo 在贪玩游戏 SDK 接口上的应用实践" >}}
 作为一个游戏公司，此前基于 php 的架构在性能和稳定性均存在较大的瓶颈，在转 Go 并落地了 CloudWeGo 之后，性能、稳定性、业务弹性、开发效率均得到显著提升，实现了降本增效。<br/><br/>
-<a href='{{< relref "feishu" >}}'>了解更多</a>
+<a href='{{< relref "tanwan" >}}'>了解更多</a>
 {{< /card >}}
 {{< /cardpane >}}
 
