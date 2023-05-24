@@ -6,6 +6,8 @@ description: >
 
 ---
 
+Hertz defines a set of constants for users to use, which are located in the 'github.com/cloudwego/Hertz/pkg/protocol/consts ' .
+
 ## Constants
 
 HTTP methods were copied from net/http.
