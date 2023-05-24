@@ -8,9 +8,8 @@ description: >
 
 Hertz defines a set of constants for users to use, which are located in the [github.com/cloudwego/hertz/pkg/protocol/consts](https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts).
 
-## Constants
 
-HTTP methods were copied from net/http.
+### HTTP method
 
 ```go
 // HTTP methods were copied from net/http.
@@ -27,7 +26,7 @@ const (
 )
 ```
 
-MIME types that are commonly used.
+### HTTP MIME type
 
 ```go
 const (	
@@ -108,7 +107,7 @@ const (
 )
 ```
 
-HTTP status codes were copied from net/http.
+### HTTP status code
 
 ```go
 // HTTP status codes were stolen from net/http.
@@ -180,7 +179,7 @@ const (
 )
 ```
 
-HTTP Headers.
+### HTTP Header
 
 ```go
 const (
@@ -250,7 +249,7 @@ const (
 )
 ```
 
-HTTP protocol version.
+### HTTP protocol version
 
 ```go
 const(

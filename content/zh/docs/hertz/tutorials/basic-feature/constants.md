@@ -6,11 +6,11 @@ description: >
  
 ---
 
-在 Hertz 中定义了一系列的常量以供用户使用，它们都位于 [github.com/cloudwego/hertz/pkg/protocol/consts](https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts)。
 
-## 常量
+在 Hertz 中定义了一系列的常量以供用户使用，它们都位于 [github.com/cloudwego/hertz/pkg/protocol/consts](https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts) 。
 
-HTTP 请求方法，参考 net/http 。
+
+### HTTP 请求方法
 
 ```go
 // HTTP methods were copied from net/http.
@@ -27,7 +27,7 @@ const (
 )
 ```
 
-常用 MIME 类型。
+### HTTP 常用 MIME 类型
 
 ```go
 const (	
@@ -108,7 +108,7 @@ const (
 )
 ```
 
-HTTP 状态码，参考 net/http 。
+### HTTP 状态码
 
 ```go
 // HTTP status codes were stolen from net/http.
@@ -180,7 +180,7 @@ const (
 )
 ```
 
-HTTP 请求头。
+### HTTP 头信息
 
 ```go
 const (
@@ -250,7 +250,7 @@ const (
 )
 ```
 
-HTTP 协议版本。
+### HTTP 协议版本
 
 ```go
 const(
