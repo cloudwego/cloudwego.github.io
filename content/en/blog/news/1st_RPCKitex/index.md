@@ -49,7 +49,7 @@ After successfully open-sourcing the gopkg library, we made necessary code adjus
 
 By providing insights into Kitex's development and open-source history, our aim is to address concerns that external developers may have regarding whether Kitex is a KPI project. We want to assure them that Kitex is a community-driven open-source project backed by our commitment to stability, compatibility, and continuous improvement.
 
-### The value of open source
+### The Value of Open Source
 Towards the end of the first part, let's briefly discuss the value that open source brings to us. Although Kitex was not initially developed solely for open source purposes, its implementation has been oriented towards open source from the start. **Kitex** itself is a project that has undergone extensive internal implementation within our organization. By open sourcing Kitex, our aim is to enable more users to swiftly build microservices internally.
 
 At the same time, open source allows us to gather valuable feedback from communities and enterprises. It also attracts external developers to contribute their expertise and insights. This collective engagement helps drive the evolution of Kitex towards supporting multiple scenarios and enriching its capabilities, making it applicable to a wider range of contexts and organizations.
@@ -64,13 +64,13 @@ Before delving into the one-year open source changes of Kitex, let us first disc
 ### Scalability
 A framework's scalability is crucial in determining its suitability for different platforms. If a framework is tightly coupled with internal capabilities and cannot be easily transplanted or expanded to support various scenarios, it may present challenges when used externally.
 
-### Ease of use
+### Usability
 The ease of use of a framework can be evaluated from two perspectives. Firstly, for business developers, a framework that requires meticulous attention to its internal details may not be suitable for teams with high research and development efficiency requirements. Secondly, for framework-oriented secondary developers who provide custom support, a framework with excessive expansion capabilities or insufficient scalability may impose limitations and high expansion costs.
 
-### Richness of functions
+### Richness of Functions
 While a framework can be customized based on extensibility, it is important to consider that not all developers have the capacity for extensive custom development. An ideal framework should offer a range of options for different expansion capabilities, allowing developers to select and combine them according to their underlying infrastructure and specific environment.
 
-### High performance
+### High Performance
 While the preceding three points are crucial considerations during the initial framework selection, as service scale and resource consumption increase, performance becomes an indispensable factor. It is imperative to prioritize performance when choosing a framework to avoid future issues such as the need for framework replacement or forced customized maintenance.
 
 Regarding the measurement indicators mentioned above, Kitex may not have achieved perfection in all areas, but these four elements have been carefully considered during its design and implementation. We are committed to ensuring a well-rounded framework that addresses these aspects without compromising on any one of them.
@@ -86,7 +86,7 @@ If Kitex can directly connect to Istio, users would be able to benefit from some
 
 Later on, the gRPC team also introduced Proxyless support, and Istio officials adopted Proxyless as a recommended approach for Istio usage. Kitex has now implemented support for Proxyless, primarily focusing on service discovery integration. The extensions supported by xDS have been open sourced separately in the [kitex-contrib/xds](https://github.com/kitex-contrib/xds) library and will undergo further enhancements in the future. To learn how to use Kitex to connect with Istio, please refer to the [README](https://github.com/istio/istio/blob/master/README.md) documentation.
 
-### JSON and Protobuf generalized call support
+### JSON and Protobuf generalized Call Support
 Initially, Kitex provided support for HTTP generalization in gateway scenarios, as well as Map and binary generalization for common service scenarios. However, after open sourcing Kitex, user feedback highlighted the need for JSON and Protobuf generalization, leading to their subsequent implementation.
 
 The generalization of Protobuf is also used in API gateway scenarios. While the original data format for HTTP generalization is JSON, the serialization of JSON can be bulky and inefficient, which negatively impacts performance. As a result, many mobile interfaces opt to transmit data using Protobuf due to its more compact representation. To address this demand, Kitex now includes support for Protobuf generalization.
@@ -96,7 +96,7 @@ Currently, Kitex's generalization primarily focuses on the back-end Thrift servi
 
 Now, you may wonder why the generalization is implemented on the calling side instead of the server side. Typically, when we think of generalization, we imagine the server parsing and processing the generalized request, with the caller providing a corresponding generalized client. However, generalization comes with a certain cost, making it less suitable for regular RPC scenarios. Moreover, generalization is meant for all back-end services, including those written in different languages like Golang, Java, C++, Python, Rust, and more. If every language framework had to support generalization, the cost would be significantly high. Additionally, achieving convergence across different language frameworks is a lengthy process. Considering these factors, Kitex supports generalization on the calling side. This approach allows for greater flexibility and enables users to take advantage of generalization selectively based on their specific needs.
 
-### Enhanced retry capability
+### Enhanced Retry Capability
 When Kitex was open sourced last year, it already supported the retry function. Initially, there were two types of retries available: timeout retry and Backup Request.
 For timeout retry, only the timeout exception was retried. However, to further improve the success rate of requests, users expressed the need to retry other exceptions or based on specific user-defined status codes. It became evident that supporting only timeout retry was insufficient to meet user requirements. In response, Kitex introduced retries with specified results. Users can now specify other exceptions or a particular type of response for which they want retries, and the framework will retry according to the specified results.
 
@@ -110,10 +110,10 @@ Thrift-gen-validator is a tool plug-in for Thriftgo, that enhances the code gene
 The example below demonstrates the usage of code generation commands and an IDL annotation definition. By specifying the Thrift Validator plugin during code generation, our tool will parse the annotations and generate the required validation code. We are also currently contributing the Thrift Validator functionality to Apache Thrift.
 ![image](/img/blog/Kitex_architecture_explained_en/10.png)
 
-## Performance optimization
+## Performance Optimization
 After highlighting the important functional features, let's move on to discussing several performance optimization features.
 
-### Thrift high-performance codec
+### Thrift High-Performance Codec
 [Frugal](https://github.com/cloudwego/frugal) is a dynamic Thrift codec that offers high-performance capabilities by leveraging Just-in-Time (JIT) compilation, eliminating the need for code generation. While we have already optimized the official Thrift codec and introduced FastThrift as part of our pre-open source optimization efforts, we wanted to further enhance performance by incorporating the design principles from our open source high-performance JSON library, Sonic. As a result, we have implemented the Thrift JIT codec in Frugal.
 The table below illustrates a performance comparison between Frugal, combined with Kitex, and FastThrift.
 ![image](/img/blog/Kitex_architecture_explained_en/frugal.png)
@@ -122,14 +122,14 @@ It is evident that Frugal offers superior RPC performance in most scenarios. In 
 
 To learn how to use Frugal in conjunction with Kitex, you can refer to the repository's [Readme](https://github.com/cloudwego/frugal#readme) file. users can also utilize Frugal as a standalone high-performance codec for Thrift. In the future, [Kitex](https://github.com/cloudwego/kitex) may consider incorporating Frugal as the default codec option.
 
-### Protobuf high-performance codec
+### Protobuf High-Performance Codec
 We primarily focused on supporting Thrift internally; however, we recognized that external users are more inclined towards using Protobuf or gRPC after the open-source release. Consequently, taking inspiration from Kitex FastThrift's optimization approach, we re-implemented the generated code for Protobuf.
 Starting from version v0.4.0, if users employ Kitex tools to generate Protobuf code, the default generation will include Fastpb codec code. Furthermore, when initiating RPC calls, Kitex will also utilize [Fastpb](https://github.com/cloudwego/fastpb) as the default serialization option.
 
 The figure below illustrates a performance comparison between Fastpb and the official Protobuf serialization library. It is evident that Fastpb outperforms the official library in terms of efficiency, memory allocation, encoding, and decoding.
 ![image](/img/blog/Kitex_architecture_explained_en/12.png)
 
-### gRPC performance optimization
+### gRPC Performance Optimization
 
 In the early days of open sourcing Kitex, our focus on stability and performance optimization for gRPC was relatively limited, as there were fewer internal use cases. However, after receiving feedback from numerous external users, we made dedicated efforts to address issues and optimize the performance of gRPC. In the middle of this year, we officially contributed these optimizations to the open-source library, which was released in version v0.4.0.
 
@@ -146,7 +146,7 @@ Now let's examine the performance comparison of streaming requests in a stress t
 
 While Kitex may not have achieved complete functional alignment at this stage, it is capable of fulfilling the requirements of the majority of scenarios. Moreover, we are committed to ongoing efforts to further align and enhance its functionality in the future.
 
-## Community co-development and advancement of ecosystem and enterprise integration
+## Development with Community and Advancement of Ecosystem and Enterprise Integration
 
 ### Kitex's Community-Driven Ecosystem Expansion
 
@@ -158,7 +158,7 @@ While we acknowledge the need for further enrichment in our docking capabilities
 
 We extend our heartfelt appreciation to the developers who have actively contributed to the growth of the CloudWeGo community. To explore the extensive ecosystem surrounding Kitex, we invite you to visit the [kitex-contrib](https://github.com/kitex-contrib) repository in our open-source warehouse.
 
-### Connect with external companies and assist in landing
+### Working with External Companies
 Our primary goal with the open-source release of Kitex was to assist external companies in swiftly establishing enterprise-level cloud-native architectures. Since then, we have been delighted to receive interest and engagement from notable organizations such as Semir, Huaxing Securities, Tanwan Games, and Heduo Technology. Their valuable feedback and specific requirements have shed light on unique usage scenarios and challenges distinct from our internal use cases, necessitating our attention, support, and optimization efforts.
 
 We are thrilled to witness the successful application of Kitex in these enterprise environments. In fact, during the CloudWeGo Meetup held on June 25th of this year, R&D professionals from [Semir](https://mp.weixin.qq.com/s/JAurW4P2E3NIduFaVY6jew) and [Huaxing Securities](https://mp.weixin.qq.com/s/QqGdzp-7rTdlxedy6bsXiw) shared their internal experiences and practical use cases, further validating the effectiveness and value of Kitex in real-world scenarios.
@@ -166,7 +166,7 @@ We are thrilled to witness the successful application of Kitex in these enterpri
 
 In addition to the above companies, we have also provided consultation to private inquiries from various organizations regarding usage issues. We are very grateful for the support and feedback from these corporate users. As mentioned earlier, gathering feedback from the community and enterprises plays a crucial role in driving the evolution of Kitex to support a wide range of scenarios. If enterprise users have any specific needs or requirements, we encourage them to reach out to us. 
 
-## How to use Kitex to integrate with existing infrastructure
+## How to use Kitex to Integrate with Existing Infrastructure
 Here is a brief introduction on how to use Kitex to integrate with your internal infrastructure. Let's take ByteDance as an example, there are extensions in the open source library within the internal warehouse. These extensions are designed to integrate internal capabilities specific to ByteDance. Within the BytedSuite, Kitex can be initialized to cater to various scenarios. Users simply need to add an option configuration while constructing the Client and Server components to achieve seamless integration. To ensure a hassle-free experience, we have incorporated this configuration within the generated scaffolding code. This means that users no longer need to specifically focus on integrating internal capabilities. Furthermore, we plan to share details about how this configuration is embedded in the generated code. By doing so, secondary developers working with external frameworks will be able to provide integration capabilities to business development teams in a similar manner. 
 ![image](/img/blog/Kitex_architecture_explained_en/18.png)
 
