@@ -1,14 +1,12 @@
 ---
 title: "常量"
 date: 2023-05-24
-weight: 14
+weight: 15
 description: >
  
 ---
 
-
-
-在 Hertz 中定义了一系列的常量以供用户使用，它们都位于 `github.com/cloudwego/hertz/pkg/protocol/consts` 。
+在 Hertz 中定义了一系列的常量以供用户使用，它们都位于 [github.com/cloudwego/hertz/pkg/protocol/consts](https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts)。
 
 ## 常量
 
