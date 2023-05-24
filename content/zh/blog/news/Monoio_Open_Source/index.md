@@ -150,7 +150,7 @@ enum SumFuture {
 impl Future for SumFuture {
     type Output = i32;
     
-    fn poll(self: Pin<&mut Self>, cx: &mut Context<' >) -> Poll<Self::0utput> {
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<' >) -> Poll<Self::Output> {
         let this = self.get mut( );
         loop {
             match this {

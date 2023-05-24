@@ -162,7 +162,7 @@ enum SumFuture {
 impl Future for SumFuture {
     type Output = i32;
     
-    fn poll(self: Pin<&mut Self>, cx: &mut Context<' >) -> Poll<Self::0utput> {
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<' >) -> Poll<Self::Output> {
         let this = self.get mut( );
         loop {
             match this {
@@ -321,7 +321,7 @@ Additionally, a more serious problem is that the buffer captured by the Future w
 When canceled, a `CancelOp` is pushed, and the user needs to continue waiting for the original Future to complete (as it has been canceled, it is expected to return within a short time). 
 The corresponding syscall may succeed or fail and return the buffer.
 
-### Automatic Driver Detection and Switching for Higher Level Componts
+### Automatic Driver Detection and Switching for Higher Level
 
 The second feature is automatic driver detection and switching for high level components.
 
