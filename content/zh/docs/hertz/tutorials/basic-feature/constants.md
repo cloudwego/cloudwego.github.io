@@ -8,7 +8,7 @@ description: >
 
 
 
-在 Hertz 中定义了一系列的常量以供用户使用，它们的位于 `github.com/cloudwego/hertz/pkg/protocol/consts` 。
+在 Hertz 中定义了一系列的常量以供用户使用，它们都位于 `github.com/cloudwego/hertz/pkg/protocol/consts` 。
 
 ## 常量
 
