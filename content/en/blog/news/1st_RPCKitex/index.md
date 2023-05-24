@@ -1,7 +1,7 @@
 ---
 date: 2022-09-30
-title: "CloudWeGo-Kitex: Unifying Open Source Practice for a High-Performance RPC Framework"
-linkTitle: "CloudWeGo-Kitex: Unifying Open Source Practice for a High-Performance RPC Framework"
+title: "Kitex: Unifying Open Source Practice for a High-Performance RPC Framework"
+linkTitle: "Kitex: Unifying Open Source Practice for a High-Performance RPC Framework"
 keywords: ["CloudWeGo", "RPC framework", "Kitex", "microservice framework", "ByteDance Open Source", "open source"]
 description: "This article provides an overview of CloudWeGo - Kitex, a high-performance RPC framework, including its origins, development history, and the progress made since its open-source release a year ago. It covers the evolution of functional features, contributions from the community to the ecosystem, and successful implementation practices by enterprises. It highlights the growth and improvements Kitex has undergone, showcasing its commitment to delivering a robust and efficient solution for RPC communication in various scenarios."
 author: <a href="https://github.com/cloudwego" target="_blank">CloudWeGo Team</a>
@@ -116,7 +116,7 @@ After highlighting the important functional features, let's move on to discussin
 ### Thrift high-performance codec
 [Frugal](https://github.com/cloudwego/frugal) is a dynamic Thrift codec that offers high-performance capabilities by leveraging Just-in-Time (JIT) compilation, eliminating the need for code generation. While we have already optimized the official Thrift codec and introduced FastThrift as part of our pre-open source optimization efforts, we wanted to further enhance performance by incorporating the design principles from our open source high-performance JSON library, Sonic. As a result, we have implemented the Thrift JIT codec in Frugal.
 The table below illustrates a performance comparison between Frugal, combined with Kitex, and FastThrift.
-![image](/img/blog/Kitex_architecture_explained_en/11.png)
+![image](/img/blog/Kitex_architecture_explained_en/frugal.png)
 
 It is evident that Frugal offers superior RPC performance in most scenarios. In addition to its performance advantages, Frugal provides another benefit: it eliminates the need to generate codec code. Compared to Protobuf, Thrift's generated code tends to be heavier. A complex IDL can generate files with tens of thousands of lines of code, which users are responsible for maintaining. Frugal simplifies this process by only requiring the generation of structure code, removing the need for codec code generation.
 

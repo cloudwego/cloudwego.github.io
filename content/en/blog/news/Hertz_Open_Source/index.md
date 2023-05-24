@@ -63,4 +63,4 @@ We welcome everyone to [contribute](https://github.com/cloudwego/hertz/blob/deve
 ## Related Links
 - Project [address](https://github.com/cloudwego/hertz)
 - Community [ecosystem](https://github.com/hertz-contrib)
-- Hertz benchmark [blog](https://github.com/cloudwego/cloudwego.github.io/tree/main/content/en/blog/news/Hertz_Benchmark)
+- Hertz benchmark [blog](https://www.cloudwego.io/blog/2023/02/24/getting-started-with-hertz-performance-testing-guide/)
