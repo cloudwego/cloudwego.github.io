@@ -1,12 +1,12 @@
 ---
 title: "Constants"
 date: 2023-05-24
-weight: 14
+weight: 15
 description: >
 
 ---
 
-Hertz defines a set of constants for users to use, which are located in the 'github.com/cloudwego/Hertz/pkg/protocol/consts ' .
+Hertz defines a set of constants for users to use, which are located in the [github.com/cloudwego/hertz/pkg/protocol/consts](https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts).
 
 ## Constants
 
