@@ -1,3 +1,11 @@
+---
+title: "Render"
+date: 2023-05-26
+weight: 10
+description: >
+
+---
+
 `Hertz` supports rendering of JSON,HTML,Protobuf,etc.
 
 ## JSON
@@ -62,7 +70,7 @@ func main() {
 }        
 ```
 
-Different from `JSON`,`Data` requires you to set the Content-Type yourself.In addition,`Data` only accpets **[]byte** .
+Different from `JSON`,`Data` requires you to set the Content-Type yourself.In addition,`Data` only accepts **[]byte** .
 
 Example Code:
 
