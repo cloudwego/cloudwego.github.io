@@ -6,21 +6,50 @@ keywords: ["Kitex", "熔断", "熔断器"]
 description: "Kitex 熔断使用指南、原理介绍。"
 ---
 
-Kitex 提供了熔断器的实现，但是没有默认开启，需要用户主动使用。 下面简单介绍一下如何使用以及 Kitex 熔断器的策略。
+Kitex 提供了熔断器的实现，但是没有默认开启，需要用户主动使用。下面简单介绍一下如何使用以及 Kitex 熔断器的策略。
 
 ## 如何使用
 
 ### 使用示例：
 
 ```go
-// build a new CBSuite
-cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
 
-// add to the client options
-opts = append(opts, client.WithCircuitBreaker(cbs))
+import (
+	...
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/circuitbreak"
+	"github.com/cloudwego/kitex/pkg/rpcinfo"
+)
 
-// init client
-cli, err := xxxservice.NewClient(targetService, opts)
+// GenServiceCBKeyFunc returns a key which determines the granularity of the CBSuite
+func GenServiceCBKeyFunc(ri rpcinfo.RPCInfo) string {
+	// circuitbreak.RPCInfo2Key returns "$fromServiceName/$toServiceName/$method"
+	return circuitbreak.RPCInfo2Key(ri)
+}
+
+func main() {
+	// build a new CBSuite with 
+	cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
+
+	var opts []client.Option
+	
+	// add to the client options
+	opts = append(opts, client.WithCircuitBreaker(cbs))
+	
+	// init client 
+	cli, err := echoservice.NewClient(targetService, opts...)
+	
+	// update circuit breaker config for a certain key (should be consistent with GenServiceCBKeyFunc)
+	// this can be called at any time, and will take effect for following requests
+	cbs.UpdateServiceCBConfig("fromServiceName/toServiceName/method", circuitbreak.CBConfig{
+		Enable: true,
+		ErrRate: 0.3,   // requests will be blocked if error rate >= 30%
+		MinSample: 200, // this config takes effect if sampled requests are more than `MinSample`
+	})
+
+	// send requests with the client above
+	...
+}
 ```
 
 ### 使用说明
