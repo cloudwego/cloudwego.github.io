@@ -10,7 +10,7 @@ description: >
 
 ## JSON
 
-Hertz支持渲染`JSON`。
+Hertz支持渲染 `JSON`。
 
 示例代码:
 
@@ -53,7 +53,7 @@ func main() {
 }
 ```
 
-`JSON`使用Unicode替换特殊的HTML字符 ，如果你想要按照字面意义编码这些字符，你可以使用 `PureJSON` 。
+`JSON` 使用Unicode替换特殊的HTML字符 ，如果你想要按照字面意义编码这些字符，你可以使用  `PureJSON` 。
 
 示例代码:
 
@@ -70,7 +70,7 @@ func main() {
 }        
 ```
 
-与`JSON`不同，`Data`需要你自行设置Content-Type。此外，`Data`只接收**[]byte**。
+与 `JSON` 不同，`Data` 需要你自行设置Content-Type。此外 `Data` 只接收 **[]byte**。
 
 示例代码:
 
@@ -90,7 +90,7 @@ func main() {
 
 ### 加载模板文件
 
-Hertz提供`LoadHTMLGlob`和`LoadHTMLFiles`来加载模板文件。
+Hertz提供 `LoadHTMLGlob` 和 `LoadHTMLFiles` 来加载模板文件。
 
 示例代码:
 
@@ -179,7 +179,7 @@ template1.html:
 
 ## Protobuf
 
-Hertz支持渲染`Protobuf`。
+Hertz支持渲染 `Protobuf`。
 
 示例代码:
 
@@ -209,7 +209,7 @@ func main() {
 }
 ```
 
-示例代码中的`body.bodyStruct`具体定义如下。
+示例代码中的 `body.bodyStruct` 具体定义如下。
 
 ```go
 type BodyStruct struct {
