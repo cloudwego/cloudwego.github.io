@@ -6,7 +6,7 @@ description: >
 
 ---
 
-`Hertz`支持对JSON,HTML,Protobuf等的渲染。
+`Hertz` 支持对 JSON, HTML, Protobuf 等的渲染。
 
 ## JSON
 
