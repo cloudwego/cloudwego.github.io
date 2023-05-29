@@ -30,7 +30,7 @@ Our core abstraction is as follows:
 
 ![image](/img/blog/opensource_volo/1.png)
 
-Thanks to the use of Rust's GAT feature, they address the lifecycle challenges associated with returning asynchronous Futures. Additionally, if `type_alias_impl_trait` is used , the effect will be better. For example, the following methods can be used to implement Timeout:
+Thanks to the use of Rust's GAT feature, they address the lifecycle challenges associated with returning asynchronous Futures. Additionally, if `impl_trait_in_assoc_type` is used , the effect will be better. For example, the following methods can be used to implement Timeout:
 ![image](/img/blog/opensource_volo/2.png)
 
 ### Easy to use

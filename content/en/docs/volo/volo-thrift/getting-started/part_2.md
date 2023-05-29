@@ -103,7 +103,7 @@ At this point, our entire directory structure looks like this:
 Then we open `src/lib.rs` and add the method implementation to the `impl` block. The resulting code should look like this:
 
 ```rust
-#![feature(type_alias_impl_trait)]
+#![feature(impl_trait_in_assoc_type)]
 
 pub struct S;
 
