@@ -10,7 +10,7 @@ Hertz 支持对 JSON，HTML，Protobuf 等的渲染。
 
 ## JSON
 
-Hertz支持渲染 `JSON`。
+Hertz 支持渲染 `JSON`。
 
 示例代码:
 

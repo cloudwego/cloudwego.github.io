@@ -70,7 +70,7 @@ func main() {
 }        
 ```
 
-Different from `JSON`,`Data` requires you to set the Content-Type yourself.In addition,`Data` only accepts **[]byte** .
+Different from `JSON`, `Data` requires you to set the Content-Type yourself.In addition,`Data` only accepts **[]byte** .
 
 Example Code:
 
@@ -111,7 +111,7 @@ func main(){
 
 ### Customizing Delimiters
 
-Hertz supports customizing  delimiters.
+Hertz supports customizing delimiters.
 
 Example Code:
 
