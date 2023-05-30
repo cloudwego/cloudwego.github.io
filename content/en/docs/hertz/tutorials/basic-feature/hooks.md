@@ -257,7 +257,7 @@ func main() {
 }
 ```
 
-Note:After sending the request,`OnConnect` function will be printed in the terminal.
+Note: After sending the request, `OnConnect` function will be printed in the terminal.
 
 ```
 main.go:19: [Info] onconnect
