@@ -256,7 +256,7 @@ func main() {
 }
 ```
 
-Note:在发出请求后,将在控制台打印`OnConnect`函数的日志。
+Note：在发出请求后，将在控制台打印 `OnConnect` 函数的日志。
 
 ```
 main.go:19: [Info] onconnect
