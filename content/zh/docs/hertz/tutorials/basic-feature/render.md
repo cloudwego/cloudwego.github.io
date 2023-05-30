@@ -6,7 +6,7 @@ description: >
 
 ---
 
-`Hertz` 支持对 JSON, HTML, Protobuf 等的渲染。
+Hertz 支持对 JSON，HTML，Protobuf 等的渲染。
 
 ## JSON
 
@@ -53,7 +53,7 @@ func main() {
 }
 ```
 
-`JSON` 使用Unicode替换特殊的HTML字符 ，如果你想要按照字面意义编码这些字符，你可以使用  `PureJSON` 。
+`JSON` 使用 Unicode 替换特殊的 HTML 字符，如果你想要按照字面意义编码这些字符，你可以使用 `PureJSON` 。
 
 示例代码:
 
@@ -70,7 +70,7 @@ func main() {
 }        
 ```
 
-与 `JSON` 不同，`Data` 需要你自行设置Content-Type。此外 `Data` 只接收 **[]byte**。
+与 `JSON` 不同，`Data` 需要你自行设置 `Content-Type`。此外 `Data` 只接收 **[]byte**。
 
 示例代码:
 
@@ -90,7 +90,7 @@ func main() {
 
 ### 加载模板文件
 
-Hertz提供 `LoadHTMLGlob` 和 `LoadHTMLFiles` 来加载模板文件。
+Hertz 提供 `LoadHTMLGlob` 和 `LoadHTMLFiles` 来加载模板文件。
 
 示例代码:
 
@@ -111,7 +111,7 @@ func main(){
 
 ### 自定义分隔符
 
-Hertz支持自定义分隔符。
+Hertz 支持自定义分隔符。
 
 示例代码:
 
@@ -125,7 +125,7 @@ Hertz支持自定义分隔符。
 
 ### 自定义模板功能
 
-Hertz支持自定义模板功能,示例代码如下。
+Hertz 支持自定义模板功能,示例代码如下。
 
 main.go:
 
@@ -179,7 +179,7 @@ template1.html:
 
 ## Protobuf
 
-Hertz支持渲染 `Protobuf`。
+Hertz 支持渲染 `Protobuf`。
 
 示例代码:
 
