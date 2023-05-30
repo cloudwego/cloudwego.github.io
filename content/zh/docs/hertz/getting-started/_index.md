@@ -36,6 +36,7 @@ description: >
 2. 生成代码 `hz new`，若当前不在`GOPATH`，需要添加`-module` flag 指定一个自定义的模块名称。详细参考[这里](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/usage/)。
 3. 整理 & 拉取依赖
 ```console
+$ go mod init
 $ go mod tidy
 ```
 

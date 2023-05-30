@@ -37,6 +37,7 @@ For more information on how to use hz, please refer to: [hz](https://www.cloudwe
 2. Generate code `hz new`
 3. Tidy & get dependencies
 ```console
+$ go mod init
 $ go mod tidy
 ```
 If you are currently using a Windows system, you can write the following sample code.
