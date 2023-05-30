@@ -212,7 +212,8 @@ func main() {
 }
 
 ```
-Note:After sending the request,`OnAccept` function will be printed in the terminal.
+
+Note: After sending the request, `OnAccept` function will be printed in the terminal.
 ```
 main.go:32: [Info] run the onAccept
 main.go:38: [Info] pong
@@ -220,7 +221,7 @@ main.go:38: [Info] pong
 
 
 ## OnConnect
-`OnConnect` is a function to be called **after** adding it to epoll.The difference is that onConnect can get data but OnAccept cannot.
+`OnConnect` is a function to be called **after** adding it to epoll. The difference is that onConnect can get data but OnAccept cannot.
 ```shell
 OnConnect func(ctx context.Context, conn network.Conn) context.Context
 ```
