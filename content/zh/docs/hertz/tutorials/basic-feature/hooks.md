@@ -219,7 +219,7 @@ main.go:32: [Info] run the onAccept
 main.go:38: [Info] pong
 ```
 ## OnConnect
-`OnConnect` 是一个在其被添加到epoll后调用的函数.它和OnAccept的不同之处在于它可以获取数据但是OnAccept不可以。
+`OnConnect` 是一个在其被添加到 epoll 后调用的函数。它和 OnAccept 的不同之处在于它可以获取数据但是 OnAccept 不可以。
 ```shell
 OnConnect func(ctx context.Context, conn network.Conn) context.Context
 ```
