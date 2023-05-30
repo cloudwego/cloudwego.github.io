@@ -6,7 +6,7 @@ description: >
 
 ---
 
-`Hertz` supports rendering of JSON,HTML,Protobuf,etc.
+Hertz supports rendering of JSON, HTML, Protobuf, etc.
 
 ## JSON
 
