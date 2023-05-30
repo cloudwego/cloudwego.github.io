@@ -104,7 +104,7 @@ $ volo idl add -g git@github.com:org/repo.git -r main /path/to/your/idl.proto
 然后，我们打开 `src/lib.rs`，在 impl 块中加入方法的实现，最终的代码应该是这样的：
 
 ```rust
-#![feature(type_alias_impl_trait)]
+#![feature(impl_trait_in_assoc_type)]
 
 pub struct S;
 
