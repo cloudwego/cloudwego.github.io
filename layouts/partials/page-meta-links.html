@@ -13,12 +13,10 @@
   {{ if hasPrefix $current_page "/docs" }}
     {{ if gt $current_url_arr_len 1  }}
       {{ $gh_project_repo = (printf "%s/%s" $gh_org (index $current_url_arr 2)) }}
-      {{ $gh_project_repo }}
     {{ end }}
   {{ else if hasPrefix $current_page "/zh/docs" }}
     {{ if gt $current_url_arr_len 2  }}
       {{ $gh_project_repo = (printf "%s/%s" $gh_org (index $current_url_arr 3)) }}
-      {{ $gh_project_repo }}
     {{ end }}
   {{ end }}
   <div class="td-page-meta ml-2 pb-1 pt-2 mb-0">
