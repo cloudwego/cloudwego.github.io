@@ -213,7 +213,7 @@ func main() {
 }
 
 ```
-提示:在发出请求后,将在控制台打印`OnAccept`函数的日志。
+提示：在发出请求后，将在控制台打印 `OnAccept` 函数的日志。
 ```
 main.go:32: [Info] run the onAccept
 main.go:38: [Info] pong
@@ -256,7 +256,7 @@ func main() {
 }
 ```
 
-Note：在发出请求后，将在控制台打印 `OnConnect` 函数的日志。
+提示：在发出请求后，将在控制台打印 `OnConnect` 函数的日志。
 
 ```
 main.go:19: [Info] onconnect
