@@ -124,6 +124,7 @@ Kitex reference [documentation](https://www.cloudwego.io/docs/kitex/tutorials/co
 --only_model Whether to only generate model code, the default is off
 --model_pkg specify model package name
 --nullable When the field is null, specify whether to generate a pointer, the default is off
+--signable Whether to detect integer field\'s unsigned type to adjust generated data type, the default is off
 --type_tag Whether to generate gorm column type tag for the field, default is not generated
 --index_tag Whether to generate gorm index tag for the field, default is not generated
 ```

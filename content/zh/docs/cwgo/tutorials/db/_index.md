@@ -34,6 +34,7 @@ OPTIONS:
    --only_model                       Specify only generate model code (default: false)
    --model_pkg value                  Specify model package name
    --nullable                         Specify generate with pointer when field is nullable (default: false)
+   --signable                         Specify detect integer field\'s unsigned type, adjust generated data type (default: false)
    --type_tag                         Specify generate field with gorm column type tag (default: false)
    --index_tag                        Specify generate field with gorm index tag (default: false)
    --help, -h                         show help (default: false)
@@ -51,6 +52,7 @@ OPTIONS:
    --only_model                       指定是否生成仅 model，默认为 false 
    --model_pkg value                  指定 model 的包名
    --nullable                         指定生成字段是否为指针当字段为 nullable，默认为 false
+   --signable                         指定字段是否检测整型列 unsigned 类型来调整生成相应的数据类型，默认为 false
    --type_tag                         指定字段是否生成 gorm 的 type tag，默认为 false
    --index_tag                        指定字段是否生成 gorm 的 index tag，默认为 false
 ```
