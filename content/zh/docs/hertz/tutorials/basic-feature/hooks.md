@@ -176,7 +176,7 @@ engine.go:276: [Info] HERTZ: Execute OnShutdownHooks timeout: error=context dead
 ## OnAccept
 `OnAccept` 是一个在连接建立后且被添加到epoll前调用的函数。
 
-```shell
+```go
 OnAccept  func(conn net.Conn) context.Context
 ```
 
