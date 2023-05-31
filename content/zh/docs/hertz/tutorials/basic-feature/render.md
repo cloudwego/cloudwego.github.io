@@ -1,9 +1,8 @@
 ---
-title: "渲染"
+title: '渲染'
 date: 2023-05-26
 weight: 10
 description: >
-
 ---
 
 Hertz 支持对 JSON，HTML，Protobuf 等的渲染。
@@ -22,19 +21,19 @@ func main() {
 	h.GET("/someJSON", func(ctx context.Context, c *app.RequestContext) {
 		c.JSON(consts.StatusOK, utils.H{"message": "hey", "status": consts.StatusOK})
 	})
-	
+
 	h.Spin()
 }
 ```
 
 你也可以使用一个结构体。
 
-示例代码:
+示例代码：
 
 ```go
 func main() {
 	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
-    
+
 	h.GET("/moreJSON", func(ctx context.Context, c *app.RequestContext) {
 		var msg struct {
 			Company  string `json:"company"`
@@ -48,40 +47,40 @@ func main() {
 		// Will output  :   {"company": "company", "Location": "location", "Number": 123}
 		c.JSON(consts.StatusOK, msg)
 	})
-    
+
     h.Spin()
 }
 ```
 
 `JSON` 使用 Unicode 替换特殊的 HTML 字符，如果你想要按照字面意义编码这些字符，你可以使用 `PureJSON` 。
 
-示例代码:
+示例代码：
 
 ```go
 func main() {
 	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
-    
+
 	h.GET("/pureJson", func(ctx context.Context, c *app.RequestContext) {
 		c.PureJSON(consts.StatusOK, utils.H{
 			"html": "<p> Hello World </p>",
 	})
-    
+
     h.Spin()
-}        
+}
 ```
 
 与 `JSON` 不同，`Data` 需要你自行设置 `Content-Type`。此外 `Data` 只接收 **[]byte**。
 
-示例代码:
+示例代码：
 
 ```go
 func main() {
 	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
-    
+
 	h.GET("/someData", func(ctx context.Context, c *app.RequestContext) {
 		c.Data(consts.StatusOK, "text/plain; charset=utf-8", []byte("hello"))
 	})
-    
+
     h.Spin()
 }
 ```
@@ -97,10 +96,10 @@ Hertz 提供 `LoadHTMLGlob` 和 `LoadHTMLFiles` 来加载模板文件。
 ```go
 func main(){
     h := server.Default(server.WithHostPorts(":8080"))
-    
+
     h.LoadHTMLGlob("render/html/*")
     //h.LoadHTMLFiles("render/html/index.tmpl")
-    
+
     h.GET("/index", func(c context.Context, ctx *app.RequestContext) {
 		ctx.HTML(http.StatusOK, "index.tmpl", utils.H{
 			"title": "Main website",
@@ -113,11 +112,11 @@ func main(){
 
 Hertz 支持自定义分隔符。
 
-示例代码:
+示例代码：
 
 ```go
 	h := server.Default(server.WithHostPorts(":8080"))
-	
+
 	h.Delims("{[{", "}]}")
 	//Left delimiter, defaults to {{.
 	//Right delimiter, defaults to }}.
@@ -152,7 +151,7 @@ func main() {
 	h := server.Default(server.WithHostPorts(":8080"))
 
 	h.Delims("{[{", "}]}")
-	
+
 	h.SetFuncMap(template.FuncMap{
 		"formatAsDate": formatAsDate,
 	})
@@ -164,7 +163,7 @@ func main() {
 			"now": time.Date(2017, 0o7, 0o1, 0, 0, 0, 0, time.UTC),
 		})
 	})
-    
+
 	h.Spin()
 }
 ```
@@ -181,7 +180,7 @@ template1.html:
 
 Hertz 支持渲染 `Protobuf`。
 
-示例代码:
+示例代码：
 
 ```go
 package main
