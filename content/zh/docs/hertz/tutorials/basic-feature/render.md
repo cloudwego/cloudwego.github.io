@@ -1,6 +1,6 @@
 ---
 title: '渲染'
-date: 2023-05-26
+date: 2023-06-01
 weight: 10
 description: >
 ---
@@ -8,6 +8,8 @@ description: >
 Hertz 支持对 JSON，HTML，Protobuf 等的渲染。
 
 ## JSON
+
+### JSON
 
 Hertz 支持渲染 `JSON`。
 
@@ -52,6 +54,8 @@ func main() {
 }
 ```
 
+### PureJSON
+
 `JSON` 使用 Unicode 替换特殊的 HTML 字符，如果你想要按照字面意义编码这些字符，你可以使用 `PureJSON` 。
 
 示例代码：
@@ -69,7 +73,42 @@ func main() {
 }
 ```
 
-与 `JSON` 不同，`Data` 需要你自行设置 `Content-Type`。此外 `Data` 只接收 **[]byte**。
+### IndentedJSON
+
+`IndentedJSON` 将给定的结构序列化为优雅的JSON (通过缩进 + 换行)。
+
+示例代码：
+
+```go
+func main() {
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+
+	h.GET("/indentedJSON", func(ctx context.Context, c *app.RequestContext) {
+        var msg struct {
+			Company  string
+			Location string
+			Number   int
+		}
+		msg.Company = "company"
+		msg.Location = "location"
+		msg.Number = 123
+        
+        c.IndentedJSON(consts.StatusOK, msg)
+        /* 
+        will output  :    {
+                              "Company": "company",
+   						      "Location": "location",
+    					      "Number": 123
+					      }                         
+    	*/
+        
+    h.Spin()
+}
+```
+
+## Data
+
+`Data` 需要你自行设置 `Content-Type`，而且 `Data` 只接收 **[]byte**。
 
 示例代码：
 
@@ -217,6 +256,42 @@ type BodyStruct struct {
 	unknownFields protoimpl.UnknownFields
 
 	Body []byte `protobuf:"bytes,1,opt,name=body" json:"body,omitempty"`
+}
+```
+
+## Text
+
+Hertz 支持渲染 `string`，它需要你自行设置 `format`。
+
+示例代码：
+
+```go
+func main() {
+	h := server.Default(server.WithHostPorts(":8080"))
+
+	h.GET("someText", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "message", "hello,world")
+	})
+    
+	h.Spin()
+}
+```
+
+## XML
+
+Hertz 支持渲染 `XML`。
+
+示例代码：
+
+```go
+func main() {
+	h := server.Default(server.WithHostPorts(":8080"))
+
+	h.GET("/someXML", func(ctx context.Context, c *app.RequestContext) {
+        c.XML(consts.StatusOK, "hello world")
+	})
+
+	h.Spin()
 }
 ```
 

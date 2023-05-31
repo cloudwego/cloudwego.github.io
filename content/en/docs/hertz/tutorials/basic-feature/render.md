@@ -1,6 +1,6 @@
 ---
 title: 'Render'
-date: 2023-05-26
+date: 2023-06-01
 weight: 10
 description: >
 ---
@@ -8,6 +8,8 @@ description: >
 Hertz supports rendering of JSON, HTML, Protobuf, etc.
 
 ## JSON
+
+### JSON
 
 Hertz supports rendering `JSON`.
 
@@ -52,6 +54,8 @@ func main() {
 }
 ```
 
+### PureJSON
+
 `JSON` replaces special html characters with their unicode entities, if you want to encode these characters literally,you can use `PureJSON`.
 
 Example Code:
@@ -69,7 +73,42 @@ func main() {
 }
 ```
 
-Different from `JSON`, `Data` requires you to set the Content-Type yourself. In addition, `Data` only accepts **[]byte** .
+### IndentedJSON
+
+`IndentedJSON` serializes the given struct as pretty JSON (indented + endlines).
+
+Example Code:
+
+```go
+func main() {
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+
+	h.GET("/indentedJSON", func(ctx context.Context, c *app.RequestContext) {
+        var msg struct {
+			Company  string
+			Location string
+			Number   int
+		}
+		msg.Company = "company"
+		msg.Location = "location"
+		msg.Number = 123
+        
+        c.IndentedJSON(consts.StatusOK, msg)
+        /* 
+        will output  :    {
+                              "Company": "company",
+   						      "Location": "location",
+    					      "Number": 123
+					      }                         
+    	*/
+        
+    h.Spin()
+}
+```
+
+## Data
+
+`Data` requires you to set the `Content-Type` yourself. In addition, `Data` only accepts **[]byte** .
 
 Example Code:
 
@@ -217,6 +256,42 @@ type BodyStruct struct {
 	unknownFields protoimpl.UnknownFields
 
 	Body []byte `protobuf:"bytes,1,opt,name=body" json:"body,omitempty"`
+}
+```
+
+## Text
+
+Hertz supports rendering `string`,it requires you to set the `format` yourself.
+
+Example Code:
+
+```go
+func main() {
+	h := server.Default(server.WithHostPorts(":8080"))
+
+	h.GET("someText", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "message", "hello,world")
+	})
+    
+	h.Spin()
+}
+```
+
+## XML
+
+Hertz supports rendering `XML`.
+
+Example Code:
+
+```go
+func main() {
+	h := server.Default(server.WithHostPorts(":8080"))
+
+	h.GET("/someXML", func(ctx context.Context, c *app.RequestContext) {
+        c.XML(consts.StatusOK, "hello world")
+	})
+
+	h.Spin()
 }
 ```
 
