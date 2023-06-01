@@ -28,27 +28,29 @@ server.WithErrorHandler(yourServerErrorHandler)
 ```go
 // convert errors that can be serialized
 func ServerErrorHandler(ctx context.Context, err error) error {
-   if errors.Is(err, kerrors.ErrBiz) {
-       err = errors.Unwrap(err)
-   }
-   if errCode, ok := GetErrorCode(err); ok {
-       // for Thrift、KitexProtobuf
-       return remote.NewTransError(errCode, err)
-   }
-   return err
+    // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
+    // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).From().Address()`
+    if errors.Is(err, kerrors.ErrBiz) {
+        err = errors.Unwrap(err)
+    }
+    if errCode, ok := GetErrorCode(err); ok {
+        // for Thrift、KitexProtobuf
+        return remote.NewTransError(errCode, err)
+    }
+    return err
 }
 
 // convert errors that can be serialized
 func ServerErrorHandler(ctx context.Context, err error) error {
-   if errors.Is(err, kerrors.ErrBiz) {
-       err = errors.Unwrap(err)
-   }
-   if errCode, ok := GetErrorCode(err); ok {
-       // for gRPC
-       // status use github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status
-     	 return status.Errorf(errCode, err.Error())
-   }
-   return err
+    if errors.Is(err, kerrors.ErrBiz) {
+        err = errors.Unwrap(err)
+    }
+    if errCode, ok := GetErrorCode(err); ok {
+        // for gRPC
+        // status use github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status
+        return status.Errorf(errCode, err.Error())
+    }
+    return err
 }
 ```
 
@@ -65,14 +67,17 @@ client.WithErrorHandler(yourClientErrorHandler)
 
 ```go
 func ClientErrorHandler(ctx context.Context, err error) error {
-  // for thrift、KitexProtobuf
+    // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
+    // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).To().Address()`
+    
+    // for thrift、KitexProtobuf
 	if e, ok := err.(*remote.TransError); ok {
-    // TypeID is error code
+        // TypeID is error code
 		return buildYourError(e.TypeID(), e)
 	}
-  // for gRPC
-  if s, ok := status.FromError(err); ok {
-		return buildYourErrorWithStatus(s.Code(), s)
+    // for gRPC
+    if s, ok := status.FromError(err); ok {
+	    return buildYourErrorWithStatus(s.Code(), s)
 	}
 	return kerrors.ErrRemoteOrNetwork.WithCause(err)
 }
