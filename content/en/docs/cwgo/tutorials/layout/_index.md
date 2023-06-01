@@ -32,7 +32,7 @@ The MVC layout is automatically generated when the server code is generated usin
 │ │ │ └── middleware.go // Default middleware function, hz adds a middleware to each generated routing group by default; when updating, it will search for existing middleware in the current file and append new middleware at the end
 │ │ └── register.go // call to register the routing definition in each idl file; when a new idl is added, it will automatically insert its routing registration call when updating; do not move
 │ ├── service // service layer, where business logic is stored. When updating, the new method appends the file.
-│ │ ├── hello_method.go specific business logic
+│ │ ├── hello_method.go // specific business logic
 │ │ └── hello_method_test.go
 │ └── utils // tool directory
 │ └── resp.go
