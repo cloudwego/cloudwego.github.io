@@ -30,6 +30,7 @@ server.WithErrorHandler(yourServerErrorHandler)
 func ServerErrorHandler(ctx context.Context, err error) error {
     // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
     // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).From().Address()`
+    
     if errors.Is(err, kerrors.ErrBiz) {
         err = errors.Unwrap(err)
     }
