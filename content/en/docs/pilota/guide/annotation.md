@@ -43,4 +43,8 @@ struct TEST {
      2: required list<list<A>> Name2(pilota.rust_wrapper_arc="true"), // will generate Vec<Vec<Arc<A>>>
      3: required map<i32, list<A>> Name3(pilota.rust_wrapper_arc="true"), // will generate Map<i32, Vec<Arc<A>>>
 }
+
+service TestService {
+    TEST(pilota.rust_wrapper_arc="true") test(1: TEST req(pilota.rust_wrapper_arc="true"));
+}
 ```
