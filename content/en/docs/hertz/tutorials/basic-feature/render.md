@@ -295,6 +295,81 @@ func main() {
 }
 ```
 
+## Customizing Rendering
+
+Hertz provides `Render` in the app package.
+
+Function Signature：
+
+```go
+func (ctx *RequestContext) Render(code int, r render.Render)
+```
+
+If you want to customize rendering,you must first implement `Render` interface in the render package.
+
+```go
+type Render interface {
+	// Render writes data with custom ContentType.
+	// Do not panic inside, RequestContext will handle it.
+	Render(resp *protocol.Response) error
+	// WriteContentType writes custom ContentType.
+	WriteContentType(resp *protocol.Response)
+}
+```
+
+Take the implementation of `YAML` rendering as an example.
+
+Example Code:
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"gopkg.in/yaml.v3"
+)
+
+func main() {
+	h := server.Default(server.WithHostPorts(":8080"))
+
+	h.GET("/someXML", func(ctx context.Context, c *app.RequestContext) {
+		c.Render(consts.StatusOK, YAML{Data: "hello,world"})
+	})
+
+	h.Spin()
+}
+
+type YAML struct {
+	Data interface{}
+}
+
+var yamlContentType = "application/yaml; charset=utf-8"
+
+func (r YAML) Render(resp *protocol.Response) error {
+	writeContentType(resp, yamlContentType)
+	yamlBytes, err := yaml.Marshal(r.Data)
+	if err != nil {
+		return err
+	}
+
+	resp.AppendBody(yamlBytes)
+
+	return nil
+}
+
+func (r YAML) WriteContentType(w *protocol.Response) {
+	writeContentType(w, yamlContentType)
+}
+
+func writeContentType(resp *protocol.Response, value string) {
+	resp.Header.SetContentType(value)
+}
+```
+
 ## Complete Example Code
 
 Full usage examples are available at [example](https://github.com/cloudwego/hertz-examples/tree/main/render).
