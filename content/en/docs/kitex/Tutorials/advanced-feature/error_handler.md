@@ -23,32 +23,35 @@ This function is executed after the server-side handler and before the middlewar
 
 * ErrorHandler example：
 
-  Kitex wraps the error returned by the handler as kerrors.ErrBiz, if you want to get the original error you need to Unwrap it first.
+  Kitex wraps the error returned by the server handler as kerrors.ErrBiz, if you want to get the original error you need to Unwrap it first.
 
 ```go
 // convert errors that can be serialized
-func ServerErrorHandler(err error) error {
-   if errors.Is(err, kerrors.ErrBiz) {
-       err = errors.Unwrap(err)
-   }
-   if errCode, ok := GetErrorCode(err); ok {
-       // for Thrift、KitexProtobuf
-       return remote.NewTransError(errCode, err)
-   }
-   return err
+func ServerErrorHandler(ctx context.Context, err error) error {
+    // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
+    // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).From().Address()`
+    
+    if errors.Is(err, kerrors.ErrBiz) {
+        err = errors.Unwrap(err)
+    }
+    if errCode, ok := GetErrorCode(err); ok {
+        // for Thrift、KitexProtobuf
+        return remote.NewTransError(errCode, err)
+    }
+    return err
 }
 
 // convert errors that can be serialized
-func ServerErrorHandler(err error) error {
-   if errors.Is(err, kerrors.ErrBiz) {
-       err = errors.Unwrap(err)
-   }
-   if errCode, ok := GetErrorCode(err); ok {
-       // for gRPC
-       // status use github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status
-       return status.Errorf(errCode, err.Error())
-   }
-   return err
+func ServerErrorHandler(ctx context.Context, err error) error {
+    if errors.Is(err, kerrors.ErrBiz) {
+        err = errors.Unwrap(err)
+    }
+    if errCode, ok := GetErrorCode(err); ok {
+        // for gRPC
+        // status use github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status
+        return status.Errorf(errCode, err.Error())
+    }
+    return err
 }
 ```
 
@@ -64,17 +67,20 @@ The handler is executed after the remote call and before the middleware is execu
 * ErrorHandler example：
 
 ```go
-func ClientErrorHandler(err error) error {
-  // for thrift、KitexProtobuf
- if e, ok := err.(*remote.TransError); ok {
-    // TypeID is error code
-  return buildYourError(e.TypeID(), e)
- }
-  // for gRPC
-  if s, ok := status.FromError(err); ok {
-  return buildYourErrorWithStatus(s.Code(), s)
- }
- return kerrors.ErrRemoteOrNetwork.WithCause(err)
+func ClientErrorHandler(ctx context.Context, err error) error {
+    // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
+    // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).To().Address()`
+    
+    // for thrift、KitexProtobuf
+    if e, ok := err.(*remote.TransError); ok {
+        // TypeID is error code
+        return buildYourError(e.TypeID(), e)
+    }
+    // for gRPC
+    if s, ok := status.FromError(err); ok {
+        return buildYourErrorWithStatus(s.Code(), s)
+    }
+    return kerrors.ErrRemoteOrNetwork.WithCause(err)
 }
 ```
 
