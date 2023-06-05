@@ -10,7 +10,6 @@ description: >
 
 Hertz 提供了 `GET`、`POST`、`PUT`、`DELETE`、`ANY` 等方法用于注册路由。
 
-
 | 方法  | 介绍  |
 | ------------ | ------------ |
 |  `Hertz.GET`   |  用于注册 HTTP Method 为 GET 的方法    |
@@ -25,6 +24,7 @@ Hertz 提供了 `GET`、`POST`、`PUT`、`DELETE`、`ANY` 等方法用于注册�
 |  `Hertz.StaticFile/Static/StaticFS` |  用于注册静态文件  |
 
 示例代码:
+
 ```go
 package main
 
@@ -74,10 +74,10 @@ func main(){
 
 ## 路由组
 
-Hertz 提供了路由组( `Group` )的能力，用于支持路由分组的功能，同时中间件也可以注册到路由组上。
-
+Hertz 提供了路由组 ( `Group` ) 的能力，用于支持路由分组的功能，同时中间件也可以注册到路由组上。
 
 示例代码:
+
 ```go
 package main
 
@@ -115,6 +115,7 @@ func main(){
 如下示例在路由组中使用 `BasicAuth` 中间件。
 
 示例代码 1:
+
 ```go
 package main
 
@@ -139,6 +140,7 @@ func main() {
 ```
 
 示例代码 2:
+
 ```go
 package main
 
@@ -164,7 +166,7 @@ func main() {
 
 ## 路由类型
 
-Hertz 支持丰富的路由类型用于实现复杂的功能，包括静态路由、参数路由(命名参数、通配参数)。
+Hertz 支持丰富的路由类型用于实现复杂的功能，包括静态路由、参数路由 (命名参数、通配参数)。
 
 路由的优先级:`静态路由` > `命名参数路由` > `通配参数路由`
 
@@ -173,6 +175,7 @@ Hertz 支持丰富的路由类型用于实现复杂的功能，包括静态路�
 具体示例可参见上文
 
 ### 命名参数路由
+
 Hertz 支持使用 `:name` 这样的命名参数设置路由，并且命名参数只匹配单个路径段。
 
 如果我们设置`/user/:name`路由，匹配情况如下
@@ -187,6 +190,7 @@ Hertz 支持使用 `:name` 这样的命名参数设置路由，并且命名参�
 通过使用 `RequestContext.Param` 方法，我们可以获取路由中携带的参数。
 
 示例代码:
+
 ```go
 package main
 
@@ -211,6 +215,7 @@ func main(){
 ```
 
 ### 通配参数路由
+
 Hertz 支持使用 `*path` 这样的通配参数设置路由，并且通配参数会匹配所有内容。
 
 如果我们设置`/src/*path`路由，匹配情况如下
@@ -224,6 +229,7 @@ Hertz 支持使用 `*path` 这样的通配参数设置路由，并且通配参�
 通过使用 `RequestContext.Param` 方法，我们可以获取路由中携带的参数。
 
 示例代码:
+
 ```go
 package main
 
@@ -248,8 +254,8 @@ func main(){
 
 
 ```
-完整用法示例详见 [example](https://github.com/cloudwego/hertz-examples/tree/main/route)
 
+完整用法示例详见 [example](https://github.com/cloudwego/hertz-examples/tree/main/route)
 
 ## 注意
 
@@ -279,7 +285,6 @@ func main() {
 	h.Spin()
 }
 ```
-
 
 ### 获取路由注册信息
 
@@ -331,6 +336,7 @@ Hertz 提供了 `NoRoute` 与 `NoMethod` 方法用于全局处理 HTTP 404 与 4
 当使用 `NoMethod` 时需要与 `WithHandleMethodNotAllowed` 配合使用。
 
 示例代码：
+
 ```go
 package main
 

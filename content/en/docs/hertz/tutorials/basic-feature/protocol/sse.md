@@ -118,9 +118,10 @@ type Event struct {
 
 Function signature:
 
-```go 
+```go
 func (c *Stream) Publish(event *Event) error 
 ```
+
 ### GetLastEventID
 
 GetLastEventID retrieves the ID number of last received SSE message from client. If no SSE messages were sent yet returns empty string.

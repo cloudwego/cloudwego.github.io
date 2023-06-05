@@ -8,7 +8,7 @@ description: >
 
 ### new: Create a new Hertz project
 
-1.  Create a new project
+1. Create a new project
 
 ```bash
 // Execute under GOPATH, go mod name defaults to the current path relative to GOPATH, or you can specify your own

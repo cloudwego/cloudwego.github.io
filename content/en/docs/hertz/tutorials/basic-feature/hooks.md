@@ -6,7 +6,7 @@ description: >
 
 ---
 
-**Hook** is a generic concept that indicates the action that accompanies an event when it is triggered. 
+**Hook** is a generic concept that indicates the action that accompanies an event when it is triggered.
 
 Hertz provides a global Hook for injecting your processing logic on the server-side **after triggering startup** and **before exiting**.
 

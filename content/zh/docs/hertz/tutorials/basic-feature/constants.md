@@ -9,7 +9,6 @@ description: >
 
 在 Hertz 中定义了一系列的常量以供用户使用，它们都位于 [github.com/cloudwego/hertz/pkg/protocol/consts](https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts) 。
 
-
 ### HTTP 请求方法
 
 ```go

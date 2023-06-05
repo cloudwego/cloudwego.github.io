@@ -48,7 +48,7 @@ func main() {
 
 #### WithDB
 
-Redis 扩展提供了 `WithDB` 配置连接到服务器后要选择的数据库。默认为0。
+Redis 扩展提供了 `WithDB` 配置连接到服务器后要选择的数据库。默认为 0。
 
 函数签名：
 
@@ -168,7 +168,7 @@ func main() {
 
 #### WithWriteTimeout
 
-Redis 扩展提供了 `WithWriteTimeout` 配置写入 socket 超时的时间，默认等同于 `ReadTimeout` 。
+Redis 扩展提供了 `WithWriteTimeout` 配置写入 socket 超时的时间，默认等同于 `ReadTimeout`。
 
 函数签名：
 
@@ -254,7 +254,7 @@ func main() {
 
 #### WithDB
 
-Redis 扩展提供了 `WithDB` 配置连接到服务器后要选择的数据库。默认为0。
+Redis 扩展提供了 `WithDB` 配置连接到服务器后要选择的数据库。默认为 0。
 
 函数签名：
 
@@ -347,7 +347,7 @@ func main() {
 
 #### WithWriteTimeout
 
-Redis 扩展提供了 `WithWriteTimeout` 配置写入 socket 超时的时间，默认等同于 `ReadTimeout` 。
+Redis 扩展提供了 `WithWriteTimeout` 配置写入 socket 超时的时间，默认等同于 `ReadTimeout`。
 
 函数签名：
 

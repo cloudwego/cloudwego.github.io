@@ -35,6 +35,7 @@ at `~/root/go-project-name/docs`.
 ```sh
 swag init
 ```
+
 swag init with options(All options can be viewed via `swag init -h`).
 
 ```bash
@@ -54,6 +55,7 @@ swag init --parseDependency --parseInternal --parseDepth 5 --instanceName "swagg
 go get github.com/hertz-contrib/swagger
 go get github.com/swaggo/files
 ```
+
 Import following in your code:
 
 ```go
@@ -190,7 +192,6 @@ func main() {
 }
 
 ```
-
 
 | Option                   | Type   | Default    | Description                                                  |
 | ------------------------ | ------ | ---------- | ------------------------------------------------------------ |

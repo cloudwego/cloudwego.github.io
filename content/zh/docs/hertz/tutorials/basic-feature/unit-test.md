@@ -43,9 +43,10 @@ func TestPerformRequest(t *testing.T) {
 }
 ```
 
-## 与业务handler配合使用
+## 与业务 handler 配合使用
 
-假如已经创建了handler以及一个函数`Ping()`
+假如已经创建了 handler 以及一个函数`Ping()`
+
 ```go
 
 package handler
@@ -66,6 +67,7 @@ func Ping(ctx context.Context, c *app.RequestContext) {
 ```
 
 可以在单元测试中直接对`ping()`函数进行测试
+
 ```go
 package handler
 
@@ -88,6 +90,7 @@ func TestPerformRequest(t *testing.T) {
 	assert.DeepEqual(t, "{\"message\":\"pong\"}", string(resp.Body()))
 }
 ```
+
 之后对`Ping()`函数进行修改，单元测试文件不需要复制相同的业务逻辑。
 
 更多 examples 参考 [pkg/common/ut](https://github.com/cloudwego/hertz/tree/main/pkg/common/ut) 中的单测文件。

@@ -7,8 +7,7 @@ description: >
 
 ---
 
-在 HTTP 中，GNUzip(Gzip) 压缩编码是一种用来优化 Web 应用程序性能的方式，并且 Hertz 也提供了 Gzip 的[实现](https://github.com/hertz-contrib/gzip) 。
-
+在 HTTP 中，GNUzip(Gzip) 压缩编码是一种用来优化 Web 应用程序性能的方式，并且 Hertz 也提供了 Gzip 的 [实现](https://github.com/hertz-contrib/gzip) 。
 
 ## 安装
 
@@ -17,6 +16,7 @@ go get github.com/hertz-contrib/gzip
 ```
 
 ## 示例代码
+
 ```go
 package main
 
@@ -41,6 +41,7 @@ func main() {
 }
 
 ```
+
 ## 配置
 
 ### Gzip
@@ -59,7 +60,9 @@ func main() {
 ```go
 func Gzip(level int, options ...Option) app.HandlerFunc
 ```
+
 示例代码如下:
+
 ```go
 package main
 
@@ -93,7 +96,7 @@ func main() {
 
 ### WithExcludedExtensions
 
-`gzip` 提供 `WithExcludeExtensions ` 用于帮助用户设置不需要 `gzip` 压缩的文件后缀，默认值为`.png`, `.gif`, `.jpeg`, `.jpg`
+`gzip` 提供 `WithExcludeExtensions` 用于帮助用户设置不需要 `gzip` 压缩的文件后缀，默认值为`.png`, `.gif`, `.jpeg`, `.jpg`
 
 函数签名如下:
 
@@ -179,6 +182,7 @@ func main() {
 }
 
 ```
+
 ### WithExcludedPathRegexes
 
 `gzip` 提供了`WithExcludedPathRegexes`用于帮助用户设置自定义的正则表达式来过滤掉不需要 `gzip` 压缩的文件
@@ -226,7 +230,5 @@ func main() {
 }
 
 ```
-
-
 
 更多用法示例详见 [gzip](https://github.com/cloudwego/hertz-examples/tree/main/gzip)

@@ -89,7 +89,7 @@ Hertz 通过使用中间件，整合了 Sentry-Go 的功能。其中 `hertzsentr
 | waitForDelivery | 用于配置是否要在继续处理响应之前阻止请求并清空缓存区（**只有异步传输时才真正意义上有清空缓存区的操作**）。如果使用 Recover 中间件，跳过这个选项或将其设置为 false 是安全的，默认为 false。 |
 | sendRequest     | 用于配置在捕获 sentry 事件时是否要添加当前的请求头信息，默认为 false。 |
 | sendBody        | 用于配置在捕获 sentry 事件时是否要添加当前的请求正文信息，默认为 false。 |
-| timeout         | 用于配置 sentry 事件传递请求的超时时长，默认为2秒。          |
+| timeout         | 用于配置 sentry 事件传递请求的超时时长，默认为 2 秒。          |
 
 ### Flush（Go-Sentry）
 

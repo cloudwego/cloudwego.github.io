@@ -52,7 +52,7 @@ router 注册文件同样会取 namespace 作为生成路径，其生成路径�
 
 ### 使用 update 命令时的行为说明
 
-1.  使用自定义路径的注意事项
+1. 使用自定义路径的注意事项
 
 hz 为了用户使用方便，提供了自定义 handler 路径、model 路径、模板等功能。但是 hz 在创建一个新项目的时候并没有保存当前项目的信息，所以在使用 update 命令时可以认为是一种无状态的更新。因此对于同一套 idl 在 new 和 update 的时候，使用了不同的自定义信息，可能会产生重复的代码，举个例子，如下：
 
@@ -69,12 +69,12 @@ hz new -idl demo.thrift
 ```bash
 hz update -idl demo.thrift --model_dir=my_model
 
-// 此时，hz 不会更新"biz/model"下的 model 代码，而是会在"my_model"下；这时"biz/model"和"my_model"下的代码就会重复，且新生成的handler会依赖"my_model"，之前的handler会依赖"biz/model"，这时就需要用户手动删除&改动一些代码了。
+// 此时，hz 不会更新"biz/model"下的 model 代码，而是会在"my_model"下；这时"biz/model"和"my_model"下的代码就会重复，且新生成的 handler 会依赖"my_model"，之前的 handler 会依赖"biz/model"，这时就需要用户手动删除&改动一些代码了。
 ```
 
 因此，**我们希望用户使用 update 命令的时候，自定义的路径 "client_dir"、"model_dir"、"handler_dir"，最好和 new 相同。**
 
-2.  update handler 的行为
+2. update handler 的行为
 
 hz 在 new 项目的时候会根据默认模板/自定义模板来生成 handler，其中每个 service 生成一个文件，该文件包含了该 service 定义的所有 handler 代码；如果 idl 定义了多个 service，则每个 service 都会生成一个文件，这些文件都在同一路径下；举个例子：
 
@@ -97,7 +97,7 @@ ${handler_dir}/${namespace}/service2.go -> method2
 
 **当该 idl 增加了新的 method 后，就会在对应 service 的文件的末尾追加 handler 模板；注意这里追加的 handler 会使用默认的模板，新生成 service 文件会根据情况使用自定义模板。**
 
-3.  update router 的行为
+3. update router 的行为
 
 hz 在 new 的时候生成的 router 代码主要有如下三个：
 
@@ -109,7 +109,7 @@ hz 在 new 的时候生成的 router 代码主要有如下三个：
 
 <!---->
 
-- biz/router/register.go：该文件负责调用不同 idl 生成的路由注册；比如我在两个 idl "demo1.thrift"、"demo2.thrift"中都定义了 service ，那么这两个文件都会生成对应的路由注册代码。register.go 负责调用这两部分的路由注册函数。
+- biz/router/register.go：该文件负责调用不同 idl 生成的路由注册；比如我在两个 idl "demo1.thrift"、"demo2.thrift"中都定义了 service，那么这两个文件都会生成对应的路由注册代码。register.go 负责调用这两部分的路由注册函数。
 
 基于上述描述，给出 router 在 update 时的行为描述：
 
@@ -125,6 +125,6 @@ hz 在 new 的时候生成的 router 代码主要有如下三个：
 
 ### 使用 Windows 操作系统时的注意事项
 
-使用 `hz` 命令创建项目时将用到 `symlink` ，在 Windows 操作系统下你可能需要[开启开发者模式](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development)来启用用户权限的 symlink
+使用 `hz` 命令创建项目时将用到 `symlink`，在 Windows 操作系统下你可能需要 [开启开发者模式](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) 来启用用户权限的 symlink
 
-在基于 protobuf IDL 创建项目时，你需要手动安装 [protoc 命令行工具](https://github.com/protocolbuffers/protobuf/releases)至 PATH 环境变量，另外如果你使用 `google/protobuf` 包下的文件，你需要将protoc-win64.zip 中 include目录下的所有文件放在 protoc 同一目录。
+在基于 protobuf IDL 创建项目时，你需要手动安装 [protoc 命令行工具](https://github.com/protocolbuffers/protobuf/releases) 至 PATH 环境变量，另外如果你使用 `google/protobuf` 包下的文件，你需要将 protoc-win64.zip 中 include 目录下的所有文件放在 protoc 同一目录。

@@ -43,6 +43,7 @@ func main() {
     h.Spin()
 }
 ```
+
 客户端:
 
 ```go
@@ -81,6 +82,7 @@ obs-opentelemetry 实现了什么:
 OpenTelemetry 结合了高度结构化的日志 API 以及高速日志处理系统。现有的日志 API 可以通过连接到 OpenTelemetry，以避免对应用程序进行重新测量。
 
 obs-opentelemetry 实现了什么:
+
 - 在 logrus 的基础上适配了 hertz 日志工具
 - 实现了链路追踪自动关联日志的功能
 
@@ -135,6 +137,7 @@ func main() {
     h.Spin()
 }
 ```
+
 [代码地址](https://github.com/hertz-contrib/obs-opentelemetry/tree/main/provider)
 
 ## Options
@@ -148,14 +151,11 @@ func main() {
 | WithResource              | 配置资源 (`resource.Resource`)          |
 | WithEnableTracing         | 是否启用 `tracing`                      |
 | WithEnableMetrics         | 是否启用 `metrics`                      |
-| WithTextMapPropagator     | 设置 ` propagation.TextMapPropagator` |
+| WithTextMapPropagator     | 设置 `propagation.TextMapPropagator` |
 | WithResourceDetector      | 配置 `resource.Detector`              |
 | WithHeaders               | 配置导出 telemetry 数据的 gRPC 请求头         |
 | WithInsecure              | 配置是否对导出的 gRPC 客户端使用安全认证             |
 
-
-
 ## 完整使用示例
 
 完整的使用示例详见 [example](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry)
-

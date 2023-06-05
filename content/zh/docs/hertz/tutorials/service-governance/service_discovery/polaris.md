@@ -15,7 +15,7 @@ go get github.com/hertz-contrib/registry/polaris
 
 ### NewPolarisRegistry
 
-`NewPolarisRegistry` 使用 polaris 创建一个新的服务注册中心，可传入配置文件并调用 `GetPolarisConfig` ，若不传入则使用默认配置。
+`NewPolarisRegistry` 使用 polaris 创建一个新的服务注册中心，可传入配置文件并调用 `GetPolarisConfig`，若不传入则使用默认配置。
 
 函数签名：
 
@@ -48,7 +48,7 @@ func main() {
 
 ### NewPolarisResolver
 
-`NewPolarisResolver` 使用 polaris 创建一个新的服务发现中心，可传入配置文件并调用 `GetPolarisConfig` ，若不传入则使用默认配置。
+`NewPolarisResolver` 使用 polaris 创建一个新的服务发现中心，可传入配置文件并调用 `GetPolarisConfig`，若不传入则使用默认配置。
 
 函数签名：
 

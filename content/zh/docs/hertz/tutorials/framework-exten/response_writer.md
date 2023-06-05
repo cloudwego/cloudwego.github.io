@@ -7,7 +7,7 @@ description: >
 
 ---
 
-Hertz 提供了 response 的 writer 扩展， 用户可以根据自己的需要实现相应的接口去劫持 response 的 writer。
+Hertz 提供了 response 的 writer 扩展，用户可以根据自己的需要实现相应的接口去劫持 response 的 writer。
 
 ## 接口定义
 
@@ -29,6 +29,7 @@ type ExtWriter interface {
 Hertz 在 `app.RequestContext` 中提供了 `Response.HijackWriter` 方法让用户劫持 response 的 writer.
 
 用法示例：
+
 ```go
 	h.GET("/hijack", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response
@@ -40,8 +41,10 @@ Hertz 在 `app.RequestContext` 中提供了 `Response.HijackWriter` 方法让用
 
 Hertz 在 `pkg/protocol/http1/resp/writer` 下提供了 `NewChunkedBodyWriter` 方法来创建一个 response 的 writer，它允许用户在 handler 中立即刷新分块，用户也可以实现自己的 response 的 writer。
 
-### ChunkedBodyWriter 
+### ChunkedBodyWriter
+
 用法示例：
+
 ```go
 	h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response

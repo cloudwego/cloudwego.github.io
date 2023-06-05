@@ -15,6 +15,7 @@ type Logger struct {
     config *config
 }
 ```
+
 ## NewLogger
 
 Create and initialize a Logger through `defaultConfig()`. The required configuration can be passed into the function as a parameter. If no parameter is passed in, the initial configuration will be installed to create a Logger
@@ -27,6 +28,7 @@ func NewLogger(opts ...Option) *Logger
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -52,11 +54,13 @@ func main() {
 Encoder is a format-agnostic interface for all log entry marshalers, `WithCoreEnc` passes zapcore.Encoder into configuration
 
 Function Signature:
+
 ```go
 func WithCoreEnc(enc zapcore.Encoder) Option
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -78,11 +82,13 @@ func main() {
 `WithCoreWs` specifies the location where the log is written through the `zapcore.AddSync(file)`, and passes `zapcore.WriteSyncer` into the configuration
 
 Function Signature:
+
 ```go
 func WithCoreWs(ws zapcore.WriteSyncer) Option
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -104,11 +110,13 @@ func main() {
 `WithCoreLevel` passes zap.AtomicLevel into configuration
 
 Function Signature:
+
 ```go
 func WithCoreLevel(lvl zap.AtomicLevel) Option 
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -128,11 +136,13 @@ func main() {
 `WithCores` passes zapcore.Encoder, zapcore.WriteSyncer, zap.AtomicLevel into CoreConfig into the configuration
 
 Function Signature:
+
 ```go
 func WithCores(coreConfigs ...CoreConfig) Option
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -163,11 +173,13 @@ func main() {
 `WithZapOptions` uses the `append()` method to append the original zap configuration
 
 Function Signature:
+
 ```go
 func WithZapOptions(opts ...zap.Option) Option 
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -182,6 +194,7 @@ func main() {
 }
 }
 ```
+
 ## A complete zap example
 
 ```go
@@ -247,6 +260,5 @@ func main() {
 	h.Spin()
 }
 ```
+
 For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
-
-

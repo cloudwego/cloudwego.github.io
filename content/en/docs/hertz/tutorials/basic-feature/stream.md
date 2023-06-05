@@ -31,7 +31,7 @@ Due to different trigger modes of *netpoll* and *go net*, netpoll streams are "p
 
 ## Client
 
-For example: 
+For example:
 
 ```go
 c, err := client.NewClient(client.WithResponseBodyStream(true))

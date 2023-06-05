@@ -46,7 +46,7 @@ How to install thriftgo/protoc:
 thriftgo:
 
 ```
-$ GO111MODULE=on go install github.com/cloudwego/thriftgo@latest
+GO111MODULE=on go install github.com/cloudwego/thriftgo@latest
 ```
 
 protoc:

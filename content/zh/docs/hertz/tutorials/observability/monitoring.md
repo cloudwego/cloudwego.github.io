@@ -7,6 +7,7 @@ description: >
 ---
 
 框架自身不带任何监控打点，只是提供了 `Tracer` 接口，用户可以根据需求实现该接口，并通过 `WithTracer` Option 来注入。
+
 ```go
 // Tracer is executed at the start and finish of an HTTP.
 type Tracer interface {
@@ -16,10 +17,11 @@ type Tracer interface {
 ```
 
 [hertz-contrib](https://github.com/hertz-contrib/monitor-prometheus) 中提供了默认的 prometheus 的监控扩展，能够实现:
+
 - 请求量监控
 - 时延监控
 
-默认的 tag 有： HTTP Method，statusCode。请求相关的信息存在 `RequestContext`，在打点上报时可以获取到该变量，用户可以根据自己的需要自行扩展打点功能。 使用方式：
+默认的 tag 有：HTTP Method，statusCode。请求相关的信息存在 `RequestContext`，在打点上报时可以获取到该变量，用户可以根据自己的需要自行扩展打点功能。使用方式：
 
 Server
 
@@ -44,6 +46,6 @@ func main() {
 }
 ```
 
-目前 Client 暂没有暴露 Tracer 接口，但是提供了[中间件](/zh/docs/hertz/tutorials/basic-feature/middleware/)能力，可以通过中间件实现监控能力。
+目前 Client 暂没有暴露 Tracer 接口，但是提供了 [中间件](/zh/docs/hertz/tutorials/basic-feature/middleware/) 能力，可以通过中间件实现监控能力。
 
 仓库 https://github.com/hertz-contrib/monitor-prometheus
