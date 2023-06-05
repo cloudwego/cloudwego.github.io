@@ -15,14 +15,42 @@ The following document will introduce that how to enable circuit breaker and con
 ### Example
 
 ```go
-// build a new CBSuite
-cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
+import (
+	...
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/circuitbreak"
+	"github.com/cloudwego/kitex/pkg/rpcinfo"
+)
 
-// add to the client options
-opts = append(opts, client.WithCircuitBreaker(cbs))
+// GenServiceCBKeyFunc returns a key which determines the granularity of the CBSuite
+func GenServiceCBKeyFunc(ri rpcinfo.RPCInfo) string {
+	// circuitbreak.RPCInfo2Key returns "$fromServiceName/$toServiceName/$method"
+	return circuitbreak.RPCInfo2Key(ri)
+}
 
-// init client
-cli, err := xxxservice.NewClient(targetService, opts)
+func main() {
+	// build a new CBSuite with 
+	cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
+
+	var opts []client.Option
+	
+	// add to the client options
+	opts = append(opts, client.WithCircuitBreaker(cbs))
+	
+	// init client 
+	cli, err := echoservice.NewClient(targetService, opts...)
+	
+	// update circuit breaker config for a certain key (should be consistent with GenServiceCBKeyFunc)
+	// this can be called at any time, and will take effect for following requests
+	cbs.UpdateServiceCBConfig("fromServiceName/toServiceName/method", circuitbreak.CBConfig{
+		Enable: true,
+		ErrRate: 0.3,   // requests will be blocked if error rate >= 30%
+		MinSample: 200, // this config takes effect if sampled requests are more than `MinSample`
+	})
+
+	// send requests with the client above
+	...
+}
 ```
 
 ### Introduction

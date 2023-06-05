@@ -6,7 +6,7 @@ keywords: ["Kitex", "Call", "Option"]
 description: Kitex Call Option instructions.
 ---
 
-# Usage
+## Usage
 
 When a client makes an RPC call, it adds an additional Option that takes precedence over client Option and overrides some configurations:
 
@@ -16,9 +16,9 @@ resp, err := client.Call(ctx, req, callopt.WithXXX....)
 
 
 
-# Options
+## Options
 
-#### WithHostPort
+### WithHostPort
 
 ```go
 func WithHostPort(hostport string) Option
@@ -28,7 +28,7 @@ Specifying a specific HostPort directly during this call phase will overwrite th
 
 
 
-#### WithURL
+### WithURL
 
 ```go
 func WithURL(url string) Option
@@ -38,7 +38,7 @@ Specifying a specified URL during this call phase to initiate the call. [More](h
 
 
 
-#### WithTag
+### WithTag
 
 ```go
 func WithTag(key, val string) Option
@@ -52,7 +52,7 @@ resp, err := client.Call(ctx, req,callopt.WithTag("cluster", cluster),callopt.Wi
 
 
 
-#### WithRPCTimeout
+### WithRPCTimeout
 
 ```go
 func WithRPCTimeout(d time.Duration) Option
@@ -62,7 +62,7 @@ Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-go
 
 
 
-#### WithConnectTimeout
+### WithConnectTimeout
 
 ```go
 func WithConnectTimeout(d time.Duration) Option
@@ -72,7 +72,7 @@ Set connection timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/ser
 
 
 
-#### WithHTTPHost
+### WithHTTPHost
 
 ```go
 func WithHTTPHost(host string) Option

@@ -124,6 +124,7 @@ kitex 参考[文档](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code
 --only_model  是否只生成 model 代码，默认关闭
 --model_pkg   指定 model package 名
 --nullable    当字段为 null 时，指定是否生成指针，默认关闭
+--signable    是否检测整型列 unsigned 类型来调整生成相应的数据类型，默认不生成
 --type_tag    是否给字段生成 gorm column type tag，默认不生成  
 --index_tag   是否给字段生成 gorm index tag，默认不生成          
 ```
