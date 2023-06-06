@@ -30,14 +30,14 @@ For more information on how to use hz, please refer to: [hz](https://www.cloudwe
   $ mkdir -p $(go env GOPATH)/src/github.com/cloudwego
   $ cd $(go env GOPATH)/src/github.com/cloudwego
 ```
-2. If your codes are not placed under GOPATH, you can retrieve them directly.
+2. If your codes are not placed under `GOPATH`, you can retrieve them directly.
 
 ### Generate/Complete the Sample Code
 1. Create the hertz_demo folder in the current directory and go to that directory
-2. Generate code `hz new`
+2. Generate code `hz new`. If your codes are not placed under `GOPATH`, you need to refer [here](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/usage/) and add `-module` (or `-mod`) flag to name your custom module.
 3. Tidy & get dependencies
 ```console
-$ go mod init
+$ go mod init // If your codes are not placed under `GOPATH`, you can skip `go mod init`.
 $ go mod tidy
 ```
 If you are currently using a Windows system, you can write the following sample code.

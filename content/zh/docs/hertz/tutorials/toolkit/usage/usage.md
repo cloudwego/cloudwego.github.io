@@ -10,11 +10,21 @@ description: >
 
 1.  创建新项目
 
+若当前项目目录位于 `GOPATH` 内：
+
 ```bash
 // GOPATH 下执行，go mod 名字默认为当前路径相对GOPATH的路径，也可自己指定
 hz new
 
-// 非GOPATH 下执行，需要指定 go mod 名
+// 整理 & 拉取依赖
+go mod init // 上一步在 GOPATH 下执行不会生成 go.mod
+go mod tidy
+```
+
+若当前项目目录位于 `GOPATH` 外：
+
+```bash
+// 非 GOPATH 下执行，需要指定 go mod 名
 hz new -mod hertz/demo
 
 // 整理 & 拉取依赖

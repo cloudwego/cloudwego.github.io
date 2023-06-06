@@ -10,10 +10,20 @@ description: >
 
 1.  Create a new project
 
+If your codes are placed under `GOPATH`:
+
 ```bash
 // Execute under GOPATH, go mod name defaults to the current path relative to GOPATH, or you can specify your own
 hz new
 
+// Tidy & get dependencies
+go mod init // `go.mod` will not be generated after the previous step executed under GOPATH.
+go mod tidy
+```
+
+If your codes are not placed under `GOPATH`:
+
+```bash
 // Execute under non-GOPATH, you need to specify the go mod name
 hz new -mod hertz/demo
 
