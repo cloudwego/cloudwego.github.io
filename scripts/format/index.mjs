@@ -1,8 +1,8 @@
 import { readdir, readFile, writeFile } from 'fs/promises';
 import { join, extname } from 'path';
 import chalk from 'chalk';
-import lint from './lint.js';
-import space from './space.js';
+import lint from './lint.mjs';
+import space from './space.mjs';
 
 async function main() {
   // chinese doc use markdownlint and autocorrect to format

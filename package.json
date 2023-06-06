@@ -3,11 +3,10 @@
   "version": "0.0.1",
   "description": "Hugo theme for technical documentation.",
   "main": "none.js",
-  "type": "module",
   "scripts": {
     "dev": "hugo server -D",
     "postinstall": "simple-git-hooks",
-    "format": "node scripts/format"
+    "format": "node scripts/format/index.mjs"
   },
   "simple-git-hooks": {
     "pre-commit": "npm run format"
