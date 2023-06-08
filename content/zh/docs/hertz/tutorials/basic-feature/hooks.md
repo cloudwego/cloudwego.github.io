@@ -173,14 +173,16 @@ hertz.go:77: [Info] HERTZ: Begin graceful shutdown, wait at most num=2 seconds..
 main.go:17: [Info] run shutdown hook
 engine.go:276: [Info] HERTZ: Execute OnShutdownHooks timeout: error=context deadline exceeded
 ```
+
 ## OnAccept
+
 `OnAccept` 是一个在连接建立后且被添加到epoll前调用的函数。
 
 ```go
-OnAccept  func(conn net.Conn) context.Context
+OnAccept func(conn net.Conn) context.Context
 ```
 
-Sample Code
+示例代码：
 
 ```go
 package main
@@ -219,11 +221,14 @@ main.go:32: [Info] run the onAccept
 main.go:38: [Info] pong
 ```
 ## OnConnect
+
 `OnConnect` 是一个在其被添加到 epoll 后调用的函数。它和 `OnAccept` 的不同之处在于它可以获取数据但是 `OnAccept` 不可以。
+
 ```go
 OnConnect func(ctx context.Context, conn network.Conn) context.Context
 ```
-Sample Code
+
+示例代码：
 
 ```go
 package main

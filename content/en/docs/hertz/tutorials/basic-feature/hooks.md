@@ -171,15 +171,17 @@ hertz.go:77: [Info] HERTZ: Begin graceful shutdown, wait at most num=2 seconds..
 main.go:17: [Info] run shutdown hook
 engine.go:276: [Info] HERTZ: Execute OnShutdownHooks timeout: error=context deadline exceeded
 ```
+
 ## OnAccept
+
 `OnAccept` is a function to be called **after** connection accepted
 but **before** adding it to epoll.
 
 ```go
-OnAccept  func(conn net.Conn) context.Context
+OnAccept func(conn net.Conn) context.Context
 ```
 
-Sample Code
+Sample Code:
 
 ```go
 package main
@@ -214,6 +216,7 @@ func main() {
 ```
 
 Note: After sending the request, `OnAccept` function will be printed in the terminal.
+
 ```
 main.go:32: [Info] run the onAccept
 main.go:38: [Info] pong
@@ -221,11 +224,14 @@ main.go:38: [Info] pong
 
 
 ## OnConnect
+
 `OnConnect` is a function to be called **after** adding it to epoll. The difference is that onConnect can get data but OnAccept cannot.
+
 ```go
 OnConnect func(ctx context.Context, conn network.Conn) context.Context
 ```
-Sample Code
+
+Sample Code:
 
 ```go
 package main
