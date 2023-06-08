@@ -6,7 +6,7 @@ keywords: ["Kitex", "Call", "Option"]
 description: Kitex Call Option 使用说明。
 ---
 
-# 用法
+## 用法
 
 客户端发起 RPC 调用时，额外添加一些 Option，优先级比 Client Option 高，会覆盖某些配置：
 
@@ -16,9 +16,9 @@ resp, err := client.Call(ctx, req, callopt.WithXXX....)
 
 
 
-# Option 说明
+## Option 说明
 
-#### IP 端口 - WithHostPort
+### IP 端口 - WithHostPort
 
 ```go
 func WithHostPort(hostport string) Option
@@ -28,7 +28,7 @@ func WithHostPort(hostport string) Option
 
 
 
-#### 指定 URL - WithURL
+### 指定 URL - WithURL
 
 ```go
 func WithURL(url string) Option
@@ -38,7 +38,7 @@ func WithURL(url string) Option
 
 
 
-#### 添加标签 - WithTag
+### 添加标签 - WithTag
 
 ```go
 func WithTag(key, val string) Option
@@ -52,7 +52,7 @@ resp, err := client.Call(ctx, req,callopt.WithTag("cluster", cluster),callopt.Wi
 
 
 
-#### 超时设置 - WithRPCTimeout
+### 超时设置 - WithRPCTimeout
 
 ```go
 func WithRPCTimeout(d time.Duration) Option
@@ -62,7 +62,7 @@ func WithRPCTimeout(d time.Duration) Option
 
 
 
-#### 超时设置 - WithConnectTimeout
+### 超时设置 - WithConnectTimeout
 
 ```go
 func WithConnectTimeout(d time.Duration) Option
@@ -72,7 +72,7 @@ func WithConnectTimeout(d time.Duration) Option
 
 
 
-#### HTTP Host 设置 - WithHTTPHost
+### HTTP Host 设置 - WithHTTPHost
 
 ```go
 func WithHTTPHost(host string) Option
