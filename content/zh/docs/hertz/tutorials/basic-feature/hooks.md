@@ -173,3 +173,100 @@ hertz.go:77: [Info] HERTZ: Begin graceful shutdown, wait at most num=2 seconds..
 main.go:17: [Info] run shutdown hook
 engine.go:276: [Info] HERTZ: Execute OnShutdownHooks timeout: error=context deadline exceeded
 ```
+
+## OnAccept
+
+`OnAccept` 是一个在连接建立后且被添加到 epoll 前调用的函数。
+
+```go
+OnAccept func(conn net.Conn) context.Context
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+    "context"
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+    "github.com/cloudwego/hertz/pkg/common/hlog"
+    "net"
+)
+
+func main() {
+
+    h := server.New(
+        server.WithOnAccept(func(conn net.Conn) context.Context {
+            hlog.Info("run the onAccept")
+            return context.Background()
+        }),
+        server.WithHostPorts("localhost:9230"))
+    h.GET("", func(c context.Context, ctx *app.RequestContext) {
+        hlog.Info("pong")
+        ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+    })
+
+    h.Spin()
+
+}
+
+```
+
+提示：在发出请求后，将在控制台打印 `OnAccept` 函数的日志。
+
+```
+main.go:32: [Info] run the onAccept
+main.go:38: [Info] pong
+```
+
+## OnConnect
+
+`OnConnect` 是一个在其被添加到 epoll 后调用的函数。它和 `OnAccept` 的不同之处在于它可以获取数据但是 `OnAccept` 不可以。
+
+```go
+OnConnect func(ctx context.Context, conn network.Conn) context.Context
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/cloudwego/hertz/pkg/network"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+func main() {
+
+	h := server.New(
+		server.WithHostPorts("localhost:9229"),
+		server.WithOnConnect(func(ctx context.Context, conn network.Conn) context.Context {
+			b, _ := conn.Peek(3)
+			hlog.Info("onconnect")
+			hlog.Info(b)
+			return ctx
+		}))
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+	})
+	h.Spin()
+
+}
+```
+
+提示：在发出请求后，将在控制台打印 `OnConnect` 函数的日志。
+
+```
+main.go:19: [Info] onconnect
+main.go:20: [Info] [71 69 84]
+```
