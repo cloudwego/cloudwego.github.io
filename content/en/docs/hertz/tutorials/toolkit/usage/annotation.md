@@ -37,9 +37,9 @@ description: >
 | api.head            | define HEAD methods and routes    |
 | api.any             | define ANY methods and routes     |
 
-## Usage:
+## Usage
 
-### Field annotation:
+### Field annotation
 
 Thrift:
 
@@ -61,7 +61,7 @@ message Demo {
 }
 ```
 
-### Method annotation:
+### Method annotation
 
 Thrift:
 

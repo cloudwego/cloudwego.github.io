@@ -38,18 +38,21 @@ func main() {
 	h.Spin()
 }
 ```
+
 ## Config
 
 Hertz provides the `accesslog.Option` function to custom the log format and content.
 
 ### WithFormat
+
 The `accesslog` provides `WithFormat` to help users set the format of the log, default is `[${time}] ${status} - ${latency} ${method} ${path}`. The format parameter consists of `${tag}`, The tag details are as follows [Supported tags](#supported-tags).
 
-
 Function signatures:
+
 ```go
 func WithFormat(s string) Option 
 ```
+
 Sample Code:
 
 ```go
@@ -78,12 +81,15 @@ func main() {
 ```
 
 ### WithTimeFormat
+
 The `accesslog` provides `WithTimeFormat` to help users set the format of the `time`, default is `15:04:05`. For specific information, please refer to the [time](https://github.com/golang/go/blob/7bd22aafe41be40e2174335a3dc55431ca9548ec/src/time/format.go#L111) package of go.
 
 Function signatures:
+
 ```go
 func WithTimeFormat(s string) Option 
 ```
+
 Sample Code:
 
 ```go
@@ -114,9 +120,11 @@ func main() {
 ```
 
 ### WithTimeInterval
+
 The `accesslog` provides `WithTimeInterval` to help the user set the update interval of the timestamp, default is `500ms`.
 
 Function signatures:
+
 ```go
 func WithTimeInterval(t time.Duration) Option
 ```
@@ -150,15 +158,19 @@ func main() {
 }
 
 ```
+
 ### WithAccessLogFunc
+
 The `accesslog` provides `WithAccessLogFunc` to help users set the log printing functions.
 
 Function signatures:
+
 ```go
 func WithAccessLogFunc(f func(ctx context.Context, format string, v ...interface{})) Option 
 ```
 
 Sample Code:
+
 ```go
 package main
 
@@ -187,15 +199,17 @@ func main() {
 ```
 
 ### WithTimeZoneLocation
+
 The `accesslog` provides `WithTimeZoneLocation` to help users set the log printing location.
 
-
 Function signatures:
+
 ```go
 func WithTimeZoneLocation(loc *time.Location) Option 
 ```
 
 Sample Code:
+
 ```go
 package main
 
@@ -231,18 +245,20 @@ func main() {
 ## Log Format
 
 ### Default Log Format
+
 ```
 [${time}] ${status} - ${latency} ${method} ${path}
 ```
 
 example:
+
 ```
 [21:54:36] 200 - 2.906859ms GET /ping
 ```
 
 ### Supported tags
 
-| tag				| Introduction						    |
+| tag    | Introduction          |
 | ------------------|-------------------------------|
 | pid               | pid                       |
 | time              | time                          |
@@ -268,6 +284,7 @@ example:
 | route             | the path of route                |
 
 ### Custom Tag
+
 We can add custom tags to the [accesslog.Tags](https://github.com/hertz-contrib/logger/blob/2de215a9fd505da955c4646f4fe9fd3c6d5bcff5/accesslog/tag.go#L79), but please note that it is not thread-safe.
 
 Sample Code:

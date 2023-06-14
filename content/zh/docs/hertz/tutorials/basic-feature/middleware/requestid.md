@@ -7,7 +7,7 @@ description: >
 ---
 
 `X-Request-ID` 在 HTTP Headers 中是一种非标准响应字段，通常用于关联客户端和服务器之间的 HTTP 请求。
-Hertz 也提供了可以对 `X-Request-ID` 进行操作的 [Request ID 中间件](https://github.com/hertz-contrib/requestid)，参考了 gin 的[实现](https://github.com/gin-contrib/requestid)。
+Hertz 也提供了可以对 `X-Request-ID` 进行操作的 [Request ID 中间件](https://github.com/hertz-contrib/requestid)，参考了 gin 的 [实现](https://github.com/gin-contrib/requestid)。
 
 ## 安装
 

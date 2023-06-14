@@ -29,6 +29,7 @@ type ExtWriter interface {
 Hertz provides `Response.HijackWriter` in `app.RequestContext` to allow users to hijack their own response writer, which provides another way for response writing process.
 
 Example:
+
 ```go
 	h.GET("/hijack", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response
@@ -41,7 +42,9 @@ Example:
 Hertz provides `NewChunkedBodyWriter` to create a response writer which allow users to flush chunk immediately during the handler process, it is defined under `pkg/protocol/http1/resp/writer`, and you can implement your own response writer.
 
 ### ChunkedBodyWriter
+
 Example:
+
 ```go
 	h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response

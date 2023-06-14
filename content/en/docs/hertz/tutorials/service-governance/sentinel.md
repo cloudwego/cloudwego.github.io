@@ -75,7 +75,6 @@ func main() {
 
 `WithServerBlockFallback` sets the fallback handler when requests are blocked for server side.
 
-
 Sample Code:
 
 ```go
@@ -159,6 +158,7 @@ func main() {
 `WithClientBlockFallback` sets the fallback handler when requests are blocked for client side.
 
 Sample Code:
+
 ```go
 package main
 

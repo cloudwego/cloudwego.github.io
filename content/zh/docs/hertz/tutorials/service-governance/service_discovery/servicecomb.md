@@ -19,7 +19,7 @@ Servicecomb 拓展在服务注册部分中提供了 option 配置。
 
 #### WithAppId
 
-Servicecomb 扩展提供了 `WithAppId` 用于帮助用户配置 Servicecomb 的 AppId 。默认为 “DEFAULT" 。
+Servicecomb 扩展提供了 `WithAppId` 用于帮助用户配置 Servicecomb 的 AppId。默认为“DEFAULT" 。
 
 函数签名：
 
@@ -54,7 +54,7 @@ func main() {
 
 #### WithRegistryVersionRule
 
-Servicecomb 扩展提供了 `WithRegistryVersionRule` 用于帮助用户配置 Servicecomb 的版本要求 。默认为 1.0.0 。
+Servicecomb 扩展提供了 `WithRegistryVersionRule` 用于帮助用户配置 Servicecomb 的版本要求。默认为 1.0.0。
 
 函数签名：
 
@@ -89,7 +89,7 @@ func main() {
 
 #### WithRegistryHostName
 
-Servicecomb 扩展提供了 `WithRegistryHostName` 用于帮助用户配置 Servicecomb 的主机名 。默认为 ”DEFAULT" 。
+Servicecomb 扩展提供了 `WithRegistryHostName` 用于帮助用户配置 Servicecomb 的主机名。默认为”DEFAULT" 。
 
 函数签名：
 
@@ -124,7 +124,7 @@ func main() {
 
 #### WithRegistryHeartbeatInterval
 
-Servicecomb 扩展提供了 `WithRegistryHeartbeatInterval` 用于帮助用户配置发送心跳包的间隔时长 。默认为5。
+Servicecomb 扩展提供了 `WithRegistryHeartbeatInterval` 用于帮助用户配置发送心跳包的间隔时长。默认为 5。
 
 函数签名：
 
@@ -234,7 +234,7 @@ Servicecomb 拓展在服务发现部分中提供了 option 配置。
 
 #### WithAppId
 
-Servicecomb 扩展提供了 `WithAppId` 用于帮助用户配置 Servicecomb 的 AppId 。默认为 “DEFAULT" 。
+Servicecomb 扩展提供了 `WithAppId` 用于帮助用户配置 Servicecomb 的 AppId。默认为“DEFAULT" 。
 
 函数签名：
 
@@ -264,7 +264,7 @@ func main() {
 
 #### WithResolverVersionRule
 
-Servicecomb 扩展提供了 `WithResolverVersionRule` 用于帮助用户配置 Servicecomb 的版本要求 。默认为 latest 。
+Servicecomb 扩展提供了 `WithResolverVersionRule` 用于帮助用户配置 Servicecomb 的版本要求。默认为 latest。
 
 函数签名：
 
@@ -294,7 +294,7 @@ func main() {
 
 #### WithResolverConsumerId
 
-Servicecomb 扩展提供了 `WithResolverConsumerId` 用于帮助用户配置 Servicecomb 的 ConsumerId 。默认为空 。
+Servicecomb 扩展提供了 `WithResolverConsumerId` 用于帮助用户配置 Servicecomb 的 ConsumerId。默认为空。
 
 函数签名：
 

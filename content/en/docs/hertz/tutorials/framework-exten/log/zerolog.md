@@ -19,14 +19,17 @@ type Logger struct {
 ```
 
 ## New
+
 `New` returns a new Logger instance via the `newLogger` function
 
 Function Signature:
+
 ```go
 func New(options ...Opt) *Logger
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -39,15 +42,19 @@ func main() {
     hlog.SetLogger(hertzZerolog.New())
 }
 ```
+
 ## From
+
 `From` returns a new Logger using an existing Logger via `newLogger`
 
 Function Signature:
+
 ```go
 func From(log zerolog.Logger, options ...Opt) *Logger
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -64,15 +71,19 @@ func main() {
     l.Info("foo")
 }
 ```
+
 ## GetLogger
+
 `GetLogger` returns the default Logger instance and error via the `DefaultLogger()` method
 
 Function Signature:
+
 ```go
 func GetLogger() (Logger, error)
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -89,6 +100,7 @@ func main() {
 }
 
 ```
+
 ## Option configuration
 
 ### WithOutput
@@ -96,11 +108,13 @@ func main() {
 `WithOutput` returns an Opt function through zerolog's `zerolog.Context.Logger().Output(out).With()`, allowing to specify the output of the logger. By default, it is set to `os.Stdout`.
 
 Function Signature:
+
 ```go
 func WithOutput(out io.Writer) Opt 
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -121,11 +135,13 @@ func main() {
 `WithLevel` specifies the level of the logger through zerolog's built-in `zerolog.Context.Logger().Level(lvl).With()` method. Convert hlog.Level to zerolog.level by `matchHlogLevel()`. By default it is set to WarnLevel.
 
 Function Signature:
+
 ```go
 func WithLevel(level hlog.Level) Opt 
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -146,11 +162,13 @@ func main() {
 `WithField` adds a field to the logger's context through zerolog's `zerolog.Context.Interface(name, value)` method
 
 Function Signature:
+
 ```go
 func WithField(name string, value interface{}) Opt 
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -184,11 +202,13 @@ func main() {
 `WithFields` adds some fields to the logger's context through zerolog's `zerolog.Context.Fields(fields)`
 
 Function Signature:
+
 ```go
 func WithFields(fields map[string]interface{}) Opt 
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -210,13 +230,14 @@ func main() {
 
 `WithTimestamp` adds the timestamp field to the logger's context through zerolog's `zerolog.Context.Timestamp()`
 
-
 Function Signature:
+
 ```go
 func WithTimestamp() Opt 
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -235,11 +256,13 @@ func main() {
 `WithFormattedTimestamp` is similar to `WithTimestamp`, adding a formatted timestamp field to the logger's context
 
 Function Signature:
+
 ```go
 func WithFormattedTimestamp(format string) Opt 
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -259,11 +282,13 @@ func main() {
 `WithCaller` adds a caller to the context of the logger through zerolog's built-in `zerolog.Context.Caller()`, and the caller will report the caller's information
 
 Function Signature:
+
 ```go
 func WithCaller() Opt 
 ```
 
 Sample code:
+
 ```go
 //get the last element of the path
 package main
@@ -298,16 +323,19 @@ func main() {
     filePath := filepath.Base(segments[0]) //filepath=="logger.go"
 }
 ```
+
 ### WithHook
 
 `WithHook` adds a hook to the context of logger through zerolog's `zerolog.Context.Logger().Hook(hook).With()`
 
 Function Signature:
+
 ```go
 func WithHook(hook zerolog.Hook) Opt 
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -342,11 +370,13 @@ func main() {
 `WithHookFunc` is similar to `WithHook`, adding a hook function to the context of logger
 
 Function Signature:
+
 ```go
 func WithHookFunc(hook zerolog.HookFunc) Opt
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -377,6 +407,7 @@ func main() {
     //h.logs[1].message=="Bar"
 }
 ```
+
 ## A complete logrus example
 
 ```go
@@ -442,4 +473,5 @@ func main() {
 	h.Spin()
 }
 ```
+
 For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。

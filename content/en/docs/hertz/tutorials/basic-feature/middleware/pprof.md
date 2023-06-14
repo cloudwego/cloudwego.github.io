@@ -9,7 +9,6 @@ description: >
 
 Hertz provides the [pprof](https://github.com/hertz-contrib/pprof) extension to help users perform performance analysis on Hertz projects. The implementation of the [pprof](https://github.com/hertz-contrib/pprof) extension refers to the implementation of [Gin](https://github.com/gin-contrib/pprof).
 
-
 ## Install
 
 ```shell
@@ -49,7 +48,6 @@ func main() {
 ### PrefixOptions
 
 The default prefix of `pprof` is `debug/pprof`, that is, after the user registers and uses `pprof` extension in the Hertz project, the user can view the sampling information of the current project by visiting `localhost:8888/debug/pprof`. Additionally, `pprof` supports user-defined prefixes.
-
 
 The function signature is as follows:
 
@@ -97,6 +95,7 @@ RouteRegister(rg *route.RouterGroup, prefixOptions ...string)
 ```
 
 The `pprof` prefix registered in this way is the result of splicing the prefix of the routing group and the custom prefix.
+
 * If the user does not specify a prefix, the prefix of the registered `pprof` is the result of concatenating the prefix of the routing group and the default prefix `/debug/pprof`, that is, `/xxx/debug/pprof` (xxx is the prefix of the routing group);
 * If the user specifies a prefix, the prefix of the registered `pprof` is the result of concatenating the prefix of the routing group and the custom prefix. For example, in the following example, the registered `pprof` prefix is `/admin/pprof`.
 
@@ -173,7 +172,6 @@ Get the execution trace information:
 ```bash
 wget http://localhost:8888/debug/pprof/trace?seconds=5
 ```
-
 
 ### View flame graphs with `go tool pprof`
 

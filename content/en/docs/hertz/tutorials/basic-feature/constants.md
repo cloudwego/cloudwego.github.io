@@ -7,7 +7,6 @@ description: >
 
 Hertz defines a set of constants for users to use, which are located in the [github.com/cloudwego/hertz/pkg/protocol/consts](https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts).
 
-
 ### HTTP method
 
 ```go

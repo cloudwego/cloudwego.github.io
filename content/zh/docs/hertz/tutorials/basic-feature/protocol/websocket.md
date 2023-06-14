@@ -97,7 +97,7 @@ go run server.go
 | `WriteBufferPool`   | 用于设置写操作的缓冲池。                                     |
 | `Subprotocols`      | 用于按优先顺序设置服务器支持的协议。如果这个字段不是 nil，那么 Upgrade 方法通过选择这个列表中与客户端请求的协议的第一个匹配来协商一个子协议。如果没有匹配，那么就不协商协议（Sec-Websocket-Protocol 头不包括在握手响应中）。 |
 | `Error`             | 用于设置生成 HTTP 错误响应的函数。                           |
-| `CheckOrigin`       | 用于设置针对请求的 Origin 头的校验函数， 如果请求的 Origin 头是可接受的，CheckOrigin 返回 true。 |
+| `CheckOrigin`       | 用于设置针对请求的 Origin 头的校验函数，如果请求的 Origin 头是可接受的，CheckOrigin 返回 true。 |
 | `EnableCompression` | 用于设置服务器是否应该尝试协商每个消息的压缩（RFC 7692）。将此值设置为 true 并不能保证压缩会被支持。 |
 
 ### WriteBufferPool
@@ -170,7 +170,7 @@ var upgrader = websocket.HertzUpgrader{
 
 ### CheckOrigin
 
-如果 CheckOrigin 为nil，则使用一个安全的默认值：如果Origin请求头存在，并且源主机不等于请求主机头，则返回false。CheckOrigin 函数应该仔细验证请求的来源，以防止跨站请求伪造。
+如果 CheckOrigin 为 nil，则使用一个安全的默认值：如果 Origin 请求头存在，并且源主机不等于请求主机头，则返回 false。CheckOrigin 函数应该仔细验证请求的来源，以防止跨站请求伪造。
 
 函数签名：
 
@@ -223,6 +223,7 @@ func echo(_ context.Context, c *app.RequestContext) {
 ```
 
 ## NoHijackConnPool
+>
 > Hertz 连接劫持时所使用的 hijack conn 是池化管理的，因此被劫持的连接在 websocket 中使用的时候，不支持异步操作。
 
 劫持的连接仅能被关闭一次，第二次关闭会导致空指针异常。

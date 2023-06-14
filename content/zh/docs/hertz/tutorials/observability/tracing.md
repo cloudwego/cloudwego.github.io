@@ -20,9 +20,9 @@ type Tracer interface {
 
 使用 `server.WithTracer()` 配置添加 tracer，可以添加多个 tracer。
 
-Hertz 会在请求开始之前(读包之前)执行所有 tracer 的 Start 方法，在请求结束之后(写回数据之后)执行所有 tracer 的Finish 方法。这种实现时需要注意：
+Hertz 会在请求开始之前 (读包之前) 执行所有 tracer 的 Start 方法，在请求结束之后 (写回数据之后) 执行所有 tracer 的 Finish 方法。这种实现时需要注意：
 
-- Start 方法执行时，刚开始接受包，这个时候 `requestContext` 是一个“空”的 `requestContext`，并不能拿到这次请求的相关信息。如果想在解包后中拿到一些信息(如在 header 中的 traceID 等)再进行操作时，可以使用中间件能力将 traceID 注入到 span 中。
+- Start 方法执行时，刚开始接受包，这个时候 `requestContext` 是一个“空”的 `requestContext`，并不能拿到这次请求的相关信息。如果想在解包后中拿到一些信息 (如在 header 中的 traceID 等) 再进行操作时，可以使用中间件能力将 traceID 注入到 span 中。
 - 在中间件内对 context 的修改是无效的。
 
 在 `requestContext` 内存有 `traceInfo`，其有以下信息
@@ -59,7 +59,7 @@ WriteFinish        = newEvent(writeFinish, LevelDetailed) // 写 response 结束
 
 在 Finish 时可以获取到上述信息。
 
-同时，如果不希望记录这些信息，可以不注册任何 tracer ，则框架停止对这些信息的记录。
+同时，如果不希望记录这些信息，可以不注册任何 tracer，则框架停止对这些信息的记录。
 
 hertz-contrib 中提供了 opentracing 的扩展方式，也在 hertz-examples 提供了可以从 http 到 rpc 调用的 demo。
-仓库： https://github.com/hertz-contrib/tracer
+仓库：https://github.com/hertz-contrib/tracer

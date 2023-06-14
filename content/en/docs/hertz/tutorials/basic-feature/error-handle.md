@@ -139,4 +139,3 @@ func handle3(_ context.Context, c *app.RequestContext) {
     c.JSON(consts.StatusOK, c.Errors.Errors())
 }
 ```
-

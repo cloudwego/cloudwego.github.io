@@ -17,6 +17,7 @@ type Logger struct {
     l *logrus.Logger
 }
 ```
+
 ## NewLogger
 
 `NewLogger` uses `defaultConfig()` to create and initialize a Logger. The required configuration can be passed into the function as a parameter. If no parameter is passed in, the initial configuration will be installed to create `Logger`
@@ -72,14 +73,17 @@ func main() {
 ```
 
 ### WithHook
+
 `WithHook` adds the incoming logrus.Hook to the hook in the configuration
 
 Function Signature:
+
 ```go
 func WithHook(hook logrus.Hook) Option 
 ```
 
 Sample code:
+
 ```go
 package main
 
@@ -101,7 +105,9 @@ func main() {
 }
 
 ```
+
 ## A complete logrus example
+
 ```go
 package main
 
@@ -165,4 +171,5 @@ func main() {
 	h.Spin()
 }
 ```
+
 For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。

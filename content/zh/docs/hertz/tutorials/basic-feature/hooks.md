@@ -78,7 +78,7 @@ main.go:25: [Info] run the third start hook
 
 `ShutdownHook` 在 Hertz 当中表示服务**退出前**需调用的函数，使用 `CtxCallback` 类型表示。Hertz 使用 `OnShutdown` 属性存储 `ShutdownHook` 列表。
 
-Server 退出前，框架会**并发地**调用所有声明的 `ShutdownHook` 函数，并且可以通过 `server.WithExitWaitTime`配置最大等待时长，默认为5秒，如果超时，则立刻终止服务。
+Server 退出前，框架会**并发地**调用所有声明的 `ShutdownHook` 函数，并且可以通过 `server.WithExitWaitTime`配置最大等待时长，默认为 5 秒，如果超时，则立刻终止服务。
 
 `ShutdownHook` 的调用本质上是 Hertz [优雅退出](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/) 的一环。
 
@@ -88,7 +88,7 @@ Server 退出前，框架会**并发地**调用所有声明的 `ShutdownHook` �
 type CtxCallback func(ctx context.Context)
 ```
 
-示例代码1：
+示例代码 1：
 
 ```go
 package main
@@ -134,7 +134,7 @@ main.go:19: [Info] run the second shutdown hook
 engine.go:279: [Info] HERTZ: Execute OnShutdownHooks finish
 ```
 
-示例代码2：
+示例代码 2：
 
 ```go
 package main
@@ -166,7 +166,7 @@ func main() {
 }
 ```
 
-提示：终止服务时，因为钩子函数执行时间超过2秒，打印超时日志。
+提示：终止服务时，因为钩子函数执行时间超过 2 秒，打印超时日志。
 
 ```shell
 hertz.go:77: [Info] HERTZ: Begin graceful shutdown, wait at most num=2 seconds...
@@ -176,7 +176,7 @@ engine.go:276: [Info] HERTZ: Execute OnShutdownHooks timeout: error=context dead
 
 ## OnAccept
 
-`OnAccept` 是一个在连接建立后且被添加到epoll前调用的函数。
+`OnAccept` 是一个在连接建立后且被添加到 epoll 前调用的函数。
 
 ```go
 OnAccept func(conn net.Conn) context.Context
@@ -215,11 +215,14 @@ func main() {
 }
 
 ```
+
 提示：在发出请求后，将在控制台打印 `OnAccept` 函数的日志。
+
 ```
 main.go:32: [Info] run the onAccept
 main.go:38: [Info] pong
 ```
+
 ## OnConnect
 
 `OnConnect` 是一个在其被添加到 epoll 后调用的函数。它和 `OnAccept` 的不同之处在于它可以获取数据但是 `OnAccept` 不可以。

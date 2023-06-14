@@ -15,7 +15,7 @@ go get github.com/hertz-contrib/eureka
 
 ### NewEurekaRegistry
 
-`NewEurekaRegistry` 使用 eureka 创建一个新的服务注册中心，需要将服务 Url 通过一个字符串切片传入 `NewConn` ，并同时传入心跳间隔时长。
+`NewEurekaRegistry` 使用 eureka 创建一个新的服务注册中心，需要将服务 Url 通过一个字符串切片传入 `NewConn`，并同时传入心跳间隔时长。
 
 函数签名：
 
@@ -43,7 +43,7 @@ func main() {
 
 ### NewEurekaRegistryFromConfig
 
-`NewEurekaRegistryFromConfig` 使用 eureka 创建一个新的服务注册中心，需要传入配置并调用 `NewConnFromConfig` ，也需要传入心跳间隔时长。
+`NewEurekaRegistryFromConfig` 使用 eureka 创建一个新的服务注册中心，需要传入配置并调用 `NewConnFromConfig`，也需要传入心跳间隔时长。
 
 函数签名：
 
@@ -74,7 +74,7 @@ func main() {
 
 ### NewEurekaRegistryFromConn
 
-`NewEurekaRegistryFromConn` 使用 eureka 创建一个新的服务注册中心，需要直接传入 conn ，也需要传入心跳间隔时长。
+`NewEurekaRegistryFromConn` 使用 eureka 创建一个新的服务注册中心，需要直接传入 conn，也需要传入心跳间隔时长。
 
 函数签名：
 
@@ -107,7 +107,7 @@ func main() {
 
 ### NewEurekaResolver
 
-`NewEurekaResolver` 使用 eureka 创建一个新的服务发现中心，需要将服务 Url 通过一个字符串切片传入 `NewConn` 。
+`NewEurekaResolver` 使用 eureka 创建一个新的服务发现中心，需要将服务 Url 通过一个字符串切片传入 `NewConn`。
 
 函数签名：
 
@@ -133,7 +133,7 @@ func main() {
 
 ### NewEurekaResolverFromConfig
 
-`NewEurekaResolverFromConfig` 使用 eureka 创建一个新的服务发现中心，需要传入配置并调用 `NewConnFromConfig` 。
+`NewEurekaResolverFromConfig` 使用 eureka 创建一个新的服务发现中心，需要传入配置并调用 `NewConnFromConfig`。
 
 函数签名：
 
@@ -163,7 +163,7 @@ func main() {
 
 ### NewEurekaResolverFromConn
 
-`NewEurekaResolverFromConn` 使用 eureka 创建一个新的服务发现中心，需要直接传入 conn 。
+`NewEurekaResolverFromConn` 使用 eureka 创建一个新的服务发现中心，需要直接传入 conn。
 
 函数签名：
 
@@ -260,7 +260,7 @@ func main() {
 
 ## 配置
 
-本项目使用 [fargo](https://github.com/hudl/fargo) 作为 eureka 客户端。 您应该参考 [fargo](https://github.com/hudl/fargo) 文档以了解高级配置。
+本项目使用 [fargo](https://github.com/hudl/fargo) 作为 eureka 客户端。您应该参考 [fargo](https://github.com/hudl/fargo) 文档以了解高级配置。
 
 ## 完整示例
 

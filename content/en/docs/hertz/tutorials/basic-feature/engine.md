@@ -23,7 +23,7 @@ type Hertz struct {
 
 Hertz provides two functions in the `server` package to initialize servers: `New` and `Default`.
 
-The default function `Default` uses the middleware called `Recovery` to prevent service crashes caused by panicking 
+The default function `Default` uses the middleware called `Recovery` to prevent service crashes caused by panicking
 during runtime.
 
 ```go
@@ -103,6 +103,7 @@ func main() {
     }
 }
 ```
+
 ## route.Engine
 
 `route.Engine` is an important part of `server.Hertz`, which contains a large number of commonly used methods in development, and is particularly **important**.
@@ -206,6 +207,7 @@ func main() {
     h.Name = ""
 }
 ```
+
 ### Rendering template
 
 The engine provides methods such as `Delims`, `SetFuncMap`, `LoadHTMLGlob`, `LoadHTMLFiles`, `SetHTMLTemplate`, and `SetAutoReloadHTMLTemplate` for rendering HTML or template files.
@@ -272,6 +274,7 @@ h.LoadHTMLGlob("index.tmpl")
 Used to load specified template files as a string slice.
 
 Function signature:
+
 ```go
 // LoadHTMLFiles loads a slice of HTML files
 // and associates the result with HTML renderer.
@@ -289,7 +292,7 @@ Hertz provides `Use` function for registering middleware into routes.
 We support user-defined middleware, and at the same time we also provide some commonly used middleware implementations,
 See details [hertz-contrib](https://github.com/hertz-contrib).
 
-"At the same time, although the common usage of middleware is to register it globally, we also support registration 
+"At the same time, although the common usage of middleware is to register it globally, we also support registration
 at the routing level. For more details, [please see](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/middleware/#group-level-middleware)
 
 The parameter type of `middleware` in the `Use` function must be a http processing function of `app.HandlerFunc`.
@@ -410,6 +413,7 @@ func main() {
     	})
 }
 ```
+
 ### Error Handlers
 
 #### PanicHandler
@@ -510,7 +514,6 @@ func main() {
 
 Here is a collection of configuration options that can be used for the engine.
 
-
 ### Use
 
 Please see [here](#register-middleware).
@@ -534,6 +537,7 @@ Get the name of the current network library being used. There are currently two 
 If you're unsure about how to use one of these network libraries, please refer to [this page](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/network-lib/)
 
 Function signature:
+
 ```go
 func (engine *Engine) GetTransporterName() (tName string)
 
@@ -547,6 +551,7 @@ func GetTransporterName() (tName string)
 `SetTransporter` sets only Engine's global defaults. When initializing Engine, use WithTransporter to set your network library instead.
 
 Function signature:
+
 ```go
 func SetTransporter(transporter func(options *config.Options) network.Transporter)
 ```
@@ -556,11 +561,13 @@ func SetTransporter(transporter func(options *config.Options) network.Transporte
 Check whether or not Engine has been started.
 
 Function signature:
+
 ```go
 func (engine *Engine) IsRunning() bool
 ```
 
 Code example:
+
 ```go
 package main
  
@@ -581,6 +588,7 @@ func main() {
 Check if tracing is enabled.
 
 Function signature:
+
 ```go
 func (engine *Engine) IsTraceEnable() bool
 ```
@@ -590,11 +598,13 @@ func (engine *Engine) IsTraceEnable() bool
 Get the current Engine's ctxPool.
 
 Function signature:
+
 ```go
 func (engine *Engine) GetCtxPool() *sync.Pool
 ```
 
 Code example:
+
 ```go
 h := server.New()
 // Retrieve a ctx from the ctxPool 

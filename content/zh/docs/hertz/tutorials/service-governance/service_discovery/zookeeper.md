@@ -15,7 +15,7 @@ go get github.com/hertz-contrib/registry/zookeeper
 
 ### NewZookeeperRegistry
 
-`NewZookeeperRegistry` 使用 zookeeper 创建一个服务注册中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect` 。
+`NewZookeeperRegistry` 使用 zookeeper 创建一个服务注册中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect`。
 
 函数签名：
 
@@ -46,7 +46,7 @@ func main() {
 
 ### NewZookeeperRegistryWithAuth
 
-`NewZookeeperRegistryWithAuth` 使用 zookeeper 创建一个服务注册中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect` 。除此之外还需要传入用户与密码来调用 `AddAuth` ，用户与密码不能为空。
+`NewZookeeperRegistryWithAuth` 使用 zookeeper 创建一个服务注册中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect`。除此之外还需要传入用户与密码来调用 `AddAuth`，用户与密码不能为空。
 
 函数签名：
 
@@ -79,7 +79,7 @@ func main() {
 
 ### NewZookeeperResolver
 
-`NewZookeeperResolver` 使用 zookeeper 创建一个服务发现中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect` 。
+`NewZookeeperResolver` 使用 zookeeper 创建一个服务发现中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect`。
 
 函数签名：
 
@@ -106,7 +106,7 @@ func main() {
 
 ### NewZookeeperResolverWithAuth
 
-`NewZookeeperResolverWithAuth` 使用 zookeeper 创建一个服务发现中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect` 。除此之外还需要传入用户与密码来调用 `AddAuth` ，用户与密码不能为空。
+`NewZookeeperResolverWithAuth` 使用 zookeeper 创建一个服务发现中心，需要将服务通过一个字符串切片与会话超时时间共同传入 `Connect`。除此之外还需要传入用户与密码来调用 `AddAuth`，用户与密码不能为空。
 
 函数签名：
 

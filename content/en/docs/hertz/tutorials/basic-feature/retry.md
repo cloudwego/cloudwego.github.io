@@ -51,8 +51,6 @@ cli, err := client.NewClient(
 	)
 ```
 
-
-
 | Function Name      | Description                                                  |
 | :----------------- | :----------------------------------------------------------- |
 | CombineDelay       | It is used to combine any of the following four policies and sum the values calculated by the selected policy. When you only need one of the following four policies, you can choose to use `CombineDelay` or directly pass any policy into `WithDelayPolicy` as a parameter |
@@ -92,8 +90,6 @@ func main() {
 	)
 }
 ```
-
-
 
 ## Retry condition configuration
 
@@ -147,8 +143,6 @@ func isIdempotent(req *protocol.Request, resp *protocol.Response, err error) boo
       req.Header.IsTrace()
 }
 ```
-
-
 
 <a id="table1">Table - 1</a> When `canIdempotentRetry` in Hertz source code [doNonNilReqResp()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L411)  is true.
 

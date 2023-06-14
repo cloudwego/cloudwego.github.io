@@ -5,7 +5,7 @@ weight: 16
 description: >
 ---
 
-Paseto 拥有你喜欢 JOSE 的一切（JWT、JWE、JWS），没有困扰 JOSE 标准的[许多设计缺陷](https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid)。
+Paseto 拥有你喜欢 JOSE 的一切（JWT、JWE、JWS），没有困扰 JOSE 标准的 [许多设计缺陷](https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid)。
 
 这是为 [Hertz](https://github.com/cloudwego/hertz) 实现的 PASETO 中间件。
 
@@ -84,7 +84,7 @@ func main() {
 | Next           | [nil](https://github.com/hertz-contrib/paseto/blob/main/option.go#L88)                       | 用于设置一个函数，当返回 true 时跳过这个中间件                      |
 | ErrorFunc      | [输出日志并返回 401](https://github.com/hertz-contrib/paseto/blob/main/option.go#L89)               | 用于设置一个在发生错误时执行的函数                               |
 | SuccessHandler | [将声明保存到 app.RequestContext](https://github.com/hertz-contrib/paseto/blob/main/option.go#L94) | 用于设置一个函数，该函数在令牌有效时执行                            |
-| KeyLookup      | [header:Authorization](https://github.com/hertz-contrib/paseto/blob/main/option.go#L97)      | 用于设置一个 “＜source＞:＜key＞” 形式的字符串，用于创建从请求中提取令牌的提取器 |
+| KeyLookup      | [header:Authorization](https://github.com/hertz-contrib/paseto/blob/main/option.go#L97)      | 用于设置一个“＜source＞:＜key＞”形式的字符串，用于创建从请求中提取令牌的提取器 |
 | TokenPrefix    | ""                                                                                           | 用于设置一个字符串，用于保存令牌查找的前缀                           |
 | ParseFunc      | [解析 V4 公共令牌](https://github.com/hertz-contrib/paseto/blob/main/option.go#L98)                | 用于设置一个解析并验证令牌的函数                                |
 
@@ -97,6 +97,7 @@ func main() {
 ```go
 func WithNext(f NextHandler) Option
 ```
+
 示例代码：
 
 ```go
@@ -391,7 +392,7 @@ func main() {
 
 ### KeyLookup
 
-`WithKeyLookUp` 以 “＜source＞:＜key＞” 的形式设置一个字符串，用于创建从请求中提取令牌的“提取器”。
+`WithKeyLookUp` 以“＜source＞:＜key＞”的形式设置一个字符串，用于创建从请求中提取令牌的“提取器”。
 
 函数签名：
 
@@ -622,7 +623,7 @@ func main() {
 
 | 版本  | 本地                                               | 公共                     |
 |-----|--------------------------------------------------|------------------------|
-| v1  | 使用“AES-256-CBC”加密并使用HMAC-SHA-256签名               | 使用`RSA-SHA-256`签名      |
+| v1  | 使用“AES-256-CBC”加密并使用 HMAC-SHA-256 签名               | 使用`RSA-SHA-256`签名      |
 | v2  | 使用“XSalsa20Poly-1305”加密并使用“HMAC-SHA-384”签名`      | 使用`EdDSA`（`Ed25519`）签名 |                       |
 | v3  | 使用“XChaCha20Poly1305”加密并使用“HMAC-SHA-384”签名`      | 使用`EdDSA`（`Ed25519`）签名 |                       |
 | v4  | 使用“XChaCha20Poly1305”加密，并使用“HMAC-SHA-512-256”签名` | 使用`EdDSA`（`Ed448`）签名   |                       |

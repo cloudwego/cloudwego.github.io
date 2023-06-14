@@ -6,6 +6,7 @@ Description: >
 ---
 
 Hertz provides command-line tools (hz) that support custom template features, including:
+
 - Customize the layout template (i.e., the directory structure of the generated code)
 - Custom package templates (i.e. service-related code structures, including handler, router, etc.)
 
@@ -214,12 +215,12 @@ layouts:
       }
 ```
 
-
 ### The meaning of template rendering parameter file
 
 When a custom template and render data are specified, the options specified on the command line will not be used as render data, so the render data in the template needs to be defined by the user.
 
 Hz uses "json" to specify render data, as described below
+
 ```
 {
   // global render parameters
@@ -320,7 +321,9 @@ layouts:
   }
 }
 ```
+
 Command:
+
 ```shell
 hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml --customize_layout_data_path=template/data.json
 ```
@@ -331,11 +334,11 @@ hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_l
 >
 > Users can modify or rewrite according to the default template to meet their own needs
 
--   The so-called package template refers to the code related to the idl definition. This part of the code involves the service, go_package/namespace, etc. specified when defining idl. It mainly includes the following parts:
--   handler.go: Handling function logic
--   router.go: the route registration logic of the service defined by the specific idl
--   register.go: logic for calling the content in `router.go`
--   ~~Model code: generated go struct; however, since the tool that uses plugins to generate model code currently does not have permission to modify the model template, this part of the function is not open for now~~
+- The so-called package template refers to the code related to the idl definition. This part of the code involves the service, go_package/namespace, etc. specified when defining idl. It mainly includes the following parts:
+- handler.go: Handling function logic
+- router.go: the route registration logic of the service defined by the specific idl
+- register.go: logic for calling the content in `router.go`
+- ~~Model code: generated go struct; however, since the tool that uses plugins to generate model code currently does not have permission to modify the model template, this part of the function is not open for now~~
 
 ### Command
 
@@ -554,7 +557,6 @@ layouts:
 >
 > Therefore, users can customize the generated handler template according to their own needs to speed up development; however, since the default handler template integrates some model information and package information, the hz tool is required to provide rendering data. This part of the user can modify it according to their own situation, and it is generally recommended to leave model information.
 
-
 #### Add a new template
 
 Considering that sometimes you may need to add your own implementation for some information of IDL, such as adding a single test for each generated handler. Therefore, the hz templates allow users to customize new templates and provide data sources for the template rendering parameters.
@@ -576,7 +578,7 @@ Template format:
 
 #### Template Data Source
 
--  File path rendering: The following rendering data can be used when specifying a file path
+- File path rendering: The following rendering data can be used when specifying a file path
 
 ```go
 type FilePathRenderInfo struct {
@@ -648,6 +650,7 @@ type Service struct {
 A simple example of a custom handler template is given below:
 
 #### example
+>
 > example: https://github.com/cloudwego/hertz-examples/tree/main/hz/template
 
 - Modify the content of the default handler

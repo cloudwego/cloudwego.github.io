@@ -15,7 +15,7 @@ func main() {
 	r := server.New()
 
     r.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
-        // 参数绑定需要配合特定的go tag使用
+        // 参数绑定需要配合特定的 go tag 使用
 		type Test struct {
             A string `query:"a" vd:"$!='Hertz'"`
         }
@@ -47,7 +47,7 @@ func main() {
 
 | go tag  |  说明  |
 | :----  | :---- |
-| path | 绑定 url 上的路径参数，相当于 hertz 路由{:param}或{*param}中拿到的参数。例如：如果定义的路由为: /v:version/example，可以把 path 的参数指定为路由参数：`path:"version"`，此时，url: http://127.0.0.1:8888/v1/example，可以绑定path参数"1" |
+| path | 绑定 url 上的路径参数，相当于 hertz 路由{:param}或{*param}中拿到的参数。例如：如果定义的路由为：/v:version/example，可以把 path 的参数指定为路由参数：`path:"version"`，此时，url: http://127.0.0.1:8888/v1/example，可以绑定path参数"1" |
 | form | 绑定请求的 body 内容。content-type -> `multipart/form-data` 或 `application/x-www-form-urlencoded`，绑定 form 的 key-value |
 | query | 绑定请求的 query 参数 |
 | header | 绑定请求的 header 参数 |
@@ -60,11 +60,13 @@ func main() {
 ```text
 path > form > query > cookie > header > json > raw_body
 ```
+
 > 注：如果请求的 content-type 为 `application/json`，那么会在参数绑定前做一次 json unmarshal 处理作为兜底。
 
 ### 必传参数
 
 通过在 tag 中添加 `required`，可以将参数标记为必传。当绑定失败时 `Bind` 和 `BindAndValidate` 将会返回错误。当多个 tag 包含 `required` 时，将会按照优先级绑定。如果所有 tag 都没有绑定上，则会返回错误。
+
 ``` go  
 type TagRequiredReq struct {
 	// 当 JSON 中没有 hertz 字段时，会返回 required 错误：binding: expr_path=hertz, cause=missing required parameter
@@ -192,7 +194,7 @@ func init() {
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
 
 func init() {
-    // 默认false，全局生效
+    // 默认 false，全局生效
     binding.SetLooseZeroMode(true)
 }
 ```
@@ -208,10 +210,10 @@ func init() {
     // 使用标准库
     binding.UseStdJSONUnmarshaler()
 
-    // 使用gjson
+    // 使用 gjson
     binding.UseGJSONUnmarshaler()
 
-    // 使用第三方json unmarshal方法
+    // 使用第三方 json unmarshal 方法
     binding.UseThirdPartyJSONUnmarshaler()
 }
 ```
@@ -232,7 +234,7 @@ type UserInfoResponse struct {
 参数绑定支持绑定文件，使用方法如下：
 
 ```go
-// 需要请求的content-type为：multipart/form-data
+// 需要请求的 content-type 为：multipart/form-data
 type FileParas struct {
    F   *multipart.FileHeader `form:"F1"`
 }
@@ -250,8 +252,11 @@ h.POST("/upload", func(ctx context.Context, c *app.RequestContext) {
 原因：默认不支持 `string` 和 `int` 互转
 
 解决方法：
+
 - 建议使用标准包 json 的 `string` tag, 例如：
+
   ```go
   A int `json:"A, string"`
   ```
+
 - 配置其他支持这种行为的 json 库
