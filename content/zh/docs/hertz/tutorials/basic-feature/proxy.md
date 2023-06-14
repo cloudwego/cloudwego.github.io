@@ -14,7 +14,7 @@ description: >
 
 ### 安装
 
-hertz内置了访问正向代理的功能
+hertz 内置了访问正向代理的功能
 
 ### 定义
 
@@ -116,7 +116,7 @@ type ReverseProxy struct {
     errorHandler func(*app.RequestContext, error)
 }
 
-// NewSingleHostReverseProxy 返回一个新的反向代理来路由请求到指定后端。如果后端路径是 ”/base“ 请求路径是 ”/dir” ，目标路径将会是 “/base/dir” 。
+// NewSingleHostReverseProxy 返回一个新的反向代理来路由请求到指定后端。如果后端路径是”/base“请求路径是”/dir” ，目标路径将会是“/base/dir” 。
 // NewSingleHostReverseProxy 不会重写 Host 请求头。
 // 要想覆盖 Host 请求头，可以选择自定义 director
 func NewSingleHostReverseProxy(target string, opts ...config.Option) (*reverseProxy, error)

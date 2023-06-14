@@ -538,4 +538,3 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 ## Full Example
 
 As for usage, you may refer to hertz [example](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_jwt)
-

@@ -209,23 +209,23 @@ func (ctx *RequestContext) QueryArgs() *protocol.Args
 
 Args 对象提供了以下方法获取/设置 Query String 参数
 
-|函数签名|说明|
+|函数签名 | 说明 |
 |:--|:--|
 |`func (a *Args) Set(key, value string)`  |设置 Args 对象 key 的值 |
-|`func (a *Args) Reset()` |重制 Args 对象|
+|`func (a *Args) Reset()` |重制 Args 对象 |
 |`func (a *Args) CopyTo(dst *Args)` |将 Args 对象拷贝到 dst |
 |`func (a *Args) Del(key string)` |删除 Args 对象 key 的键值对 |
-|`func (a *Args) DelBytes(key []byte)`|删除 Args 对象 key 的键值对|
-|`func (a *Args) Has(key string) bool` |获取 Args 对象是否存在 key 的键值对|
+|`func (a *Args) DelBytes(key []byte)`|删除 Args 对象 key 的键值对 |
+|`func (a *Args) Has(key string) bool` |获取 Args 对象是否存在 key 的键值对 |
 |`func (a *Args) String() string` | 将 Args 对象转换为字符串类型的 Query String |
 |`func (a *Args) QueryString() []byte` |将 Args 对象转换为字节数组类型的 Query String|
 |`func (a *Args) ParseBytes(b []byte)` |解析 Query String|
-|`func (a *Args) Peek(key string) []byte` |获取 Args 对象 key 的值|
-|`func (a *Args) PeekExists(key string) (string, bool)` |获取 Args 对象 key 的值以及是否存在|
-|`func (a *Args) Len() int`| 获取 Args 对象键值对数量|
-|`func (a *Args) AppendBytes(dst []byte) []byte` |将 Args 对象 Query String 附加到 dst 中并返回|
-|`func (a *Args) VisitAll(f func(key, value []byte))` |遍历 Args 对象所有的键值对|
-|`func (a *Args) WriteTo(w io.Writer) (int64, error)`| 将 Args 对象 Query String 写入 io.Writer 中|
+|`func (a *Args) Peek(key string) []byte` |获取 Args 对象 key 的值 |
+|`func (a *Args) PeekExists(key string) (string, bool)` |获取 Args 对象 key 的值以及是否存在 |
+|`func (a *Args) Len() int`| 获取 Args 对象键值对数量 |
+|`func (a *Args) AppendBytes(dst []byte) []byte` |将 Args 对象 Query String 附加到 dst 中并返回 |
+|`func (a *Args) VisitAll(f func(key, value []byte))` |遍历 Args 对象所有的键值对 |
+|`func (a *Args) WriteTo(w io.Writer) (int64, error)`| 将 Args 对象 Query String 写入 io.Writer 中 |
 |`func (a *Args) Add(key, value string)` |添加 Args 对象键为 key 的值 |
 
 示例:
@@ -289,9 +289,9 @@ func (ctx *RequestContext) URI() *protocol.URI
 
 ### URI 对象
 
-URI 对象提供了以下方法获取/设置 URI 。
+URI 对象提供了以下方法获取/设置 URI。
 
-|函数签名|说明|
+|函数签名 | 说明 |
 |:--|:--|
 | `func (u *URI) CopyTo(dst *URI)`| 拷贝 URI 对象的副本到 dst|
 | `func (u *URI) QueryArgs() *Args`| 获取 [Args 对象](#args-对象)|
@@ -314,8 +314,8 @@ URI 对象提供了以下方法获取/设置 URI 。
 | `func (u *URI) String() string`|获取完整 URI <http://example.com/user?baz=123> |
 | `func (u *URI) FullURI() []byte`|获取 `[]byte` 类型的完整 URI |
 | `func (u *URI) Scheme() []byte`|获取协议，如 http|
-| `func (u *URI) SetScheme(scheme string)`|设置协议|
-| `func (u *URI) SetSchemeBytes(scheme []byte)`|设置 `[]byte` 类型的协议|
+| `func (u *URI) SetScheme(scheme string)`|设置协议 |
+| `func (u *URI) SetSchemeBytes(scheme []byte)`|设置 `[]byte` 类型的协议 |
 | `func (u *URI) Host() []byte`|获取 Host，比如 <http://example.com/user> 的 Host 是 **example.com**|
 | `func (u *URI) SetHost(host string)`|设置 Host|
 | `func (u *URI) SetHostBytes(host []byte)`|设置 `[]byte` 类型 Host|
@@ -343,7 +343,7 @@ func (ctx *RequestContext) GetHeader(key string) []byte
 
 ### IsGet
 
-判断请求方法的类型是否为 `GET` 。
+判断请求方法的类型是否为 `GET`。
 
 函数签名:
 
@@ -362,7 +362,7 @@ h.Any("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### IsHead
 
-判断请求方法的类型是否为 `HEAD` 。
+判断请求方法的类型是否为 `HEAD`。
 
 函数签名:
 
@@ -381,7 +381,7 @@ h.Any("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### IsPost
 
-判断请求方法的类型是否为 `POST` 。
+判断请求方法的类型是否为 `POST`。
 
 函数签名:
 
@@ -529,7 +529,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 
 使用 `RequestContext.Request.Header` 获取 RequestHeader 对象，该对象提供了以下方法获取/设置请求头部。
 
-|函数签名|说明|
+|函数签名 | 说明 |
 |:--|:--|
 | `func (h *RequestHeader) Method() []byte`|获取 Method |
 | `func (h *RequestHeader) SetMethod(method string)`|设置 Method|
@@ -564,24 +564,24 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) UserAgent() []byte`|获取 User-Agent|
 | `func (h *RequestHeader) SetUserAgentBytes(userAgent []byte)`|设置 User-Agent|
 | `func (h *RequestHeader) ConnectionClose() bool`|判断是否包含 Connection: close|
-| `func (h *RequestHeader) SetConnectionClose(close bool)`|设置 connectionClose 标志|
+| `func (h *RequestHeader) SetConnectionClose(close bool)`|设置 connectionClose 标志 |
 | `func (h *RequestHeader) ResetConnectionClose()`|重制 connectionClose 标志为 false 并删除 Connection Header|
 | `func (h *RequestHeader) SetByteRange(startPos, endPos int)`| 设置 Range (Range: bytes=startPos-endPos)|
 | `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`| 设置 Content-Type (Content-Type: multipart/form-data; boundary=----...) |
-| `func (h *RequestHeader) MultipartFormBoundary() []byte`|获取 boundary 的值|
+| `func (h *RequestHeader) MultipartFormBoundary() []byte`|获取 boundary 的值 |
 | `func (h *RequestHeader) Trailer() *Trailer`|获取 Trailer|
-| `func (h *RequestHeader) Cookie(key string) []byte`|获取 Cookie 键为 key 的值|
-| `func (h *RequestHeader) SetCookie(key, value string)`|设置 Cookie 的键值|
+| `func (h *RequestHeader) Cookie(key string) []byte`|获取 Cookie 键为 key 的值 |
+| `func (h *RequestHeader) SetCookie(key, value string)`|设置 Cookie 的键值 |
 | `func (h *RequestHeader) DelCookie(key string)`|删除键为 key 的 Cookie|
 | `func (h *RequestHeader) DelAllCookies()`|删除所有 Cookie |
 | `func (h *RequestHeader) FullCookie() []byte`|获取所有 Cookie|
-| `func (h *RequestHeader) Cookies() []*Cookie`|获取所有 Cookie 对象|
-| `func (h *RequestHeader) VisitAllCookie(f func(key, value []byte))`| 遍历所有 Cookie 的键值并执行 f 函数|
-| `func (h *RequestHeader) Peek(key string) []byte`|获取 `[]byte` 类型的键为 key 的值|
+| `func (h *RequestHeader) Cookies() []*Cookie`|获取所有 Cookie 对象 |
+| `func (h *RequestHeader) VisitAllCookie(f func(key, value []byte))`| 遍历所有 Cookie 的键值并执行 f 函数 |
+| `func (h *RequestHeader) Peek(key string) []byte`|获取 `[]byte` 类型的键为 key 的值 |
 | `func (h *RequestHeader) Get(key string) string`|获取键为 key 的值 |
-| `func (h *RequestHeader) PeekArgBytes(key []byte) []byte`|获取键为 key 的值|
+| `func (h *RequestHeader) PeekArgBytes(key []byte) []byte`|获取键为 key 的值 |
 | `func (h *RequestHeader) PeekAll(key string) [][]byte`|获取 `[]byte` 类型的键为 key 的所有值（用于获取存在相同 key 的多个值）|
-| `func (h *RequestHeader) GetAll(key string) []string`|获取键为 key 的所有值|
+| `func (h *RequestHeader) GetAll(key string) []string`|获取键为 key 的所有值 |
 | `func (h *RequestHeader) PeekIfModifiedSinceBytes() []byte`|获取 If-Modified-Since|
 | `func (h *RequestHeader) PeekContentEncoding() []byte`|获取 Content-Encoding|
 | `func (h *RequestHeader) PeekRange() []byte`|获取 Range|
@@ -589,24 +589,24 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) RawHeaders() []byte`|获取原始 Header |
 | `func (h *RequestHeader) SetRawHeaders(r []byte)`  | 设置原始 Header |
 | `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header。(以下 key 会覆盖 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
-| `func (h *RequestHeader) InitBufValue(size int)`|初始化缓冲区大小|
-| `func (h *RequestHeader) GetBufValue() []byte`|获取缓冲区的值|
+| `func (h *RequestHeader) InitBufValue(size int)`|初始化缓冲区大小 |
+| `func (h *RequestHeader) GetBufValue() []byte`|获取缓冲区的值 |
 | `func (h *RequestHeader) SetCanonical(key, value []byte)`|设置 Header 键值，假设该键是规范形式。|
-| `func (h *RequestHeader) Set(key, value string)`|设置 Header 键值|
-| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|设置 Header 键值|
-| `func (h *RequestHeader) DelBytes(key []byte)`|删除 Header 中键为 key 的键值对|
-| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|添加 Header 键值 （key 不为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent）|
+| `func (h *RequestHeader) Set(key, value string)`|设置 Header 键值 |
+| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|设置 Header 键值 |
+| `func (h *RequestHeader) DelBytes(key []byte)`|删除 Header 中键为 key 的键值对 |
+| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|添加 Header 键值（key 不为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent）|
 | `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|设置 Header 键值（key 不为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent）|
-| `func (h *RequestHeader) AppendBytes(dst []byte) []byte`|将完整的 Header 附加到 dst 中并返回|
+| `func (h *RequestHeader) AppendBytes(dst []byte) []byte`|将完整的 Header 附加到 dst 中并返回 |
 | `func (h *RequestHeader) Header() []byte`|获取 `[]byte` 类型的完整的 Header |
 | `func (h *RequestHeader) String() string`|获取完整的 Header |
-| `func (h *RequestHeader) CopyTo(dst *RequestHeader)`|获取 RequestHeader 的副本|
-| `func (h *RequestHeader) VisitAll(f func(key, value []byte))`|遍历所有 Header 的键值并执行 f 函数|
+| `func (h *RequestHeader) CopyTo(dst *RequestHeader)`|获取 RequestHeader 的副本 |
+| `func (h *RequestHeader) VisitAll(f func(key, value []byte))`|遍历所有 Header 的键值并执行 f 函数 |
 | `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`|遍历所有 Header 的键值并执行 f 函数，以下 key 除外 Content-Type, Content-Length, Cookie, Host, User-Agent）|
-| `func (h *RequestHeader) Len() int`|返回 Header 的数量|
-| `func (h *RequestHeader) DisableNormalizing()`|禁用 Header 名字的规范化(首字母和破折号后第一个字母大写)|
-| `func (h *RequestHeader) IsDisableNormalizing() bool`|是否禁用 Header 名字的规范化|
-| `func (h *RequestHeader) ResetSkipNormalize()`|重制 Headers 除了 disableNormalizing 状态|
+| `func (h *RequestHeader) Len() int`|返回 Header 的数量 |
+| `func (h *RequestHeader) DisableNormalizing()`|禁用 Header 名字的规范化 (首字母和破折号后第一个字母大写)|
+| `func (h *RequestHeader) IsDisableNormalizing() bool`|是否禁用 Header 名字的规范化 |
+| `func (h *RequestHeader) ResetSkipNormalize()`|重制 Headers 除了 disableNormalizing 状态 |
 | `func (h *RequestHeader) Reset()`|重制 Headers |
 
 ## Body
@@ -675,7 +675,7 @@ h.Post("/pet", func(c context.Context, ctx *app.RequestContext) {
 
 ### RequestBodyStream
 
-获取请求的 BodyStream 。
+获取请求的 BodyStream。
 
 函数签名:
 
@@ -723,7 +723,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### FormFile
 
-按名称检索 `multipart.Form.File` ，返回给定 name 的第一个 `multipart.FileHeader`。(详情请参考 [multipart#FileHeader](https://pkg.go.dev/mime/multipart#FileHeader))
+按名称检索 `multipart.Form.File`，返回给定 name 的第一个 `multipart.FileHeader`。(详情请参考 [multipart#FileHeader](https://pkg.go.dev/mime/multipart#FileHeader))
 
 函数签名:
 
@@ -789,7 +789,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### DefaultPostForm
 
-按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值，如果不存在返回 defaultValue 。
+按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值，如果不存在返回 defaultValue。
 
 函数签名:
 
@@ -955,7 +955,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 获取上下文键为 key 的值。
 
-> 注意: key 类型需要为 `string` , 否则返回 nil 。
+> 注意：key 类型需要为 `string` , 否则返回 nil。
 
 函数签名:
 
@@ -994,7 +994,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### MustGet
 
-获取上下文键为 key 的值, 如果不存在会发生 panic 。
+获取上下文键为 key 的值，如果不存在会发生 panic。
 
 函数签名:
 
@@ -1013,7 +1013,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetString
 
-获取上下文键为 key 的值, 并转换为 `string` 类型。
+获取上下文键为 key 的值，并转换为 `string` 类型。
 
 函数签名:
 
@@ -1032,7 +1032,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetBool
 
-获取上下文键为 key 的值, 并转换为 `bool` 类型。
+获取上下文键为 key 的值，并转换为 `bool` 类型。
 
 函数签名:
 
@@ -1051,7 +1051,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetInt
 
-获取上下文键为 key 的值, 并转换为 `int` 类型。
+获取上下文键为 key 的值，并转换为 `int` 类型。
 
 函数签名:
 
@@ -1070,7 +1070,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetInt32
 
-获取上下文键为 key 的值, 并转换为 `int32` 类型。
+获取上下文键为 key 的值，并转换为 `int32` 类型。
 
 函数签名:
 
@@ -1089,7 +1089,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetInt64
 
-获取上下文键为 key 的值, 并转换为 `int64` 类型。
+获取上下文键为 key 的值，并转换为 `int64` 类型。
 
 函数签名:
 
@@ -1108,7 +1108,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetUint
 
-获取上下文键为 key 的值, 并转换为 `uint` 类型。
+获取上下文键为 key 的值，并转换为 `uint` 类型。
 
 函数签名:
 
@@ -1127,7 +1127,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetUint32
 
-获取上下文键为 key 的值, 并转换为 `uint32` 类型。
+获取上下文键为 key 的值，并转换为 `uint32` 类型。
 
 函数签名:
 
@@ -1146,7 +1146,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetUint64
 
-获取上下文键为 key 的值, 并转换为 `uint64` 类型。
+获取上下文键为 key 的值，并转换为 `uint64` 类型。
 
 函数签名:
 
@@ -1165,7 +1165,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetFloat32
 
-获取上下文键为 key 的值, 并转换为 `float32` 类型。
+获取上下文键为 key 的值，并转换为 `float32` 类型。
 
 函数签名:
 
@@ -1184,7 +1184,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetFloat64
 
-获取上下文键为 key 的值, 并转换为 `float64` 类型。
+获取上下文键为 key 的值，并转换为 `float64` 类型。
 
 函数签名:
 
@@ -1203,7 +1203,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetTime
 
-获取上下文键为 key 的值, 并转换为 `time.Time` 类型。
+获取上下文键为 key 的值，并转换为 `time.Time` 类型。
 
 函数签名:
 
@@ -1223,7 +1223,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetDuration
 
-获取上下文键为 key 的值, 并转换为 `time.Duration` 类型。
+获取上下文键为 key 的值，并转换为 `time.Duration` 类型。
 
 函数签名:
 
@@ -1242,7 +1242,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetStringSlice
 
-获取上下文键为 key 的值, 并转换为 `[]string` 类型。
+获取上下文键为 key 的值，并转换为 `[]string` 类型。
 
 函数签名:
 
@@ -1261,7 +1261,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetStringMap
 
-获取上下文键为 key 的值, 并转换为 `map[string]interface{}` 类型。
+获取上下文键为 key 的值，并转换为 `map[string]interface{}` 类型。
 
 函数签名:
 
@@ -1280,7 +1280,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetStringMapString
 
-获取上下文键为 key 的值, 并转换为 `map[string]string` 类型。
+获取上下文键为 key 的值，并转换为 `map[string]string` 类型。
 
 函数签名:
 
@@ -1299,7 +1299,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### GetStringMapStringSlice
 
-获取上下文键为 key 的值, 并转换为 `map[string][]string` 类型。
+获取上下文键为 key 的值，并转换为 `map[string][]string` 类型。
 
 函数签名:
 
@@ -1319,7 +1319,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### ForEachKey
 
-为上下文中的每个键值对调用 fn 。
+为上下文中的每个键值对调用 fn。
 
 函数签名:
 
@@ -1342,7 +1342,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### Next
 
-执行下一个 handler 。
+执行下一个 handler。
 
 函数签名:
 
@@ -1363,7 +1363,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### Handlers
 
-获取 handlers chain 。
+获取 handlers chain。
 
 函数签名:
 
@@ -1409,7 +1409,7 @@ h.POST("/user", middleware1, handler1)
 
 ### SetHandlers
 
-设置 handlers chain 。
+设置 handlers chain。
 
 函数签名:
 
@@ -1460,7 +1460,7 @@ func main() {
 
 ### GetIndex
 
-获取当前执行的 handler 在 handlers chain 中的 index 。
+获取当前执行的 handler 在 handlers chain 中的 index。
 
 函数签名:
 
@@ -1521,7 +1521,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetTraceInfo
 
-设置 TraceInfo 。(更多内容请参考 [hertz-contrib/obs-opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry))
+设置 TraceInfo。(更多内容请参考 [hertz-contrib/obs-opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry))
 
 函数签名:
 
@@ -1541,7 +1541,7 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### GetTraceInfo
 
-获取 TraceInfo 。(更多内容请参考 [hertz-contrib/tracer](https://github.com/hertz-contrib/tracer))
+获取 TraceInfo。(更多内容请参考 [hertz-contrib/tracer](https://github.com/hertz-contrib/tracer))
 
 函数签名:
 
@@ -1559,7 +1559,7 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### SetEnableTrace
 
-设置是否允许 Trace 。
+设置是否允许 Trace。
 
 函数签名:
 
@@ -1578,7 +1578,7 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### IsEnableTrace
 
-获取是否允许 Trace 。
+获取是否允许 Trace。
 
 函数签名:
 
@@ -1597,7 +1597,7 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### SetConn
 
-设置 network.Conn 。(更多内容请参考 [mock/network.go](https://github.com/cloudwego/hertz/blob/develop/pkg/common/test/mock/network.go#L151))
+设置 network.Conn。(更多内容请参考 [mock/network.go](https://github.com/cloudwego/hertz/blob/develop/pkg/common/test/mock/network.go#L151))
 
 函数签名:
 
@@ -1615,7 +1615,7 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### GetConn
 
-获取 network.Conn 。(更多内容请参考 [mock/network.go](https://github.com/cloudwego/hertz/blob/develop/pkg/common/test/mock/network.go#L151))
+获取 network.Conn。(更多内容请参考 [mock/network.go](https://github.com/cloudwego/hertz/blob/develop/pkg/common/test/mock/network.go#L151))
 
 函数签名:
 
@@ -1653,7 +1653,7 @@ func (ctx *RequestContext) GetWriter() network.Writer
 
 ### RemoteAddr
 
-获取请求的客户端 net.Addr 。
+获取请求的客户端 net.Addr。
 
 函数签名:
 
@@ -1719,7 +1719,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### Hijack
 
-设置 handler 去劫持 network.Conn 。(更多内容请参考 [hertz-contrib/websocket](https://github.com/hertz-contrib/websocket/blob/ba132d3eae952e3f17f233e0158652edeac76b65/server.go#L196))
+设置 handler 去劫持 network.Conn。(更多内容请参考 [hertz-contrib/websocket](https://github.com/hertz-contrib/websocket/blob/ba132d3eae952e3f17f233e0158652edeac76b65/server.go#L196))
 
 函数签名:
 
@@ -1729,7 +1729,7 @@ func (ctx *RequestContext) Hijack(handler HijackHandler)
 
 ### SetHijackHandler
 
-设置 handler 去劫持 network.Conn 。`Hijack` 的别名。
+设置 handler 去劫持 network.Conn。`Hijack` 的别名。
 
 函数签名:
 
@@ -1739,7 +1739,7 @@ func (ctx *RequestContext) SetHijackHandler(h HijackHandler)
 
 ### GetHijackHandler
 
-获取劫持 network.Conn 的 handler 。
+获取劫持 network.Conn 的 handler。
 
 函数签名:
 
@@ -1749,7 +1749,7 @@ func (ctx *RequestContext) GetHijackHandler() HijackHandler
 
 ### Hijacked
 
-是否设置了劫持 network.Conn 的 handler 。
+是否设置了劫持 network.Conn 的 handler。
 
 函数签名:
 
@@ -1891,7 +1891,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 将错误列表储存到上下文中，方便中间件收集错误信息。
 
-> 注意: 如果 err 为 nil 会 panic 。
+> 注意：如果 err 为 nil 会 panic。
 
 函数签名:
 
@@ -1922,9 +1922,9 @@ func (ctx *RequestContext) ResetWithoutConn()
 
 ### Reset
 
-重置 RequestContext ，通常会把重置后的 RequestContext 通过 `sync.Pool` 存取。(更多内容请参考 [protocol/http1](https://github.com/cloudwego/hertz/blob/0d8b98bc8cf61c16866359e551959e962597d33f/pkg/protocol/http1/server.go#L133))
+重置 RequestContext，通常会把重置后的 RequestContext 通过 `sync.Pool` 存取。(更多内容请参考 [protocol/http1](https://github.com/cloudwego/hertz/blob/0d8b98bc8cf61c16866359e551959e962597d33f/pkg/protocol/http1/server.go#L133))
 
-> 注意: 这是一个内部函数
+> 注意：这是一个内部函数
 
 函数签名:
 

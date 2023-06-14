@@ -315,7 +315,7 @@ func WithDisableKeepAlive(disableKeepAlive bool) Option
 | `MaxHeaderListSize`          | `0`，指使用默认的限制（10MB） | 指 http2 规范中的`SETTINGS_MAX_HEADER_LIST_SIZE`。                 |
 | `AllowHTTP`                  | `false`                       | 设置是否允许 http，h2c 模式的开关                                  |
 | `ReadIdleTimeout`            | `0`，即不进行健康检查         | 若连接在该段时间间隔内未接收到任何帧，将使用`ping`帧进行健康检查。 |
-| `PingTimeout`                | `15s`                         | 超时时间，如果未收到对 `Ping `的响应，连接将在该超时时间后关闭。   |
+| `PingTimeout`                | `15s`                         | 超时时间，如果未收到对 `Ping`的响应，连接将在该超时时间后关闭。   |
 | `WriteByteTimeout`           | `0`                           | 若在该段时间间隔内未写入任何数据，将关闭连接。                     |
 | `StrictMaxConcurrentStreams` | `false`                       | 设置服务器的`SETTINGS_MAX_CONCURRENT_STREAMS`是否应该被全局使用。  |
 | `DialTimeout`                | `1s`                          | 与主机建立新连接的超时时间。                                       |
@@ -323,7 +323,7 @@ func WithDisableKeepAlive(disableKeepAlive bool) Option
 | `DisableKeepAlive`           | `false`                       | 是否在每次请求后关闭连接。                                         |
 | `Dialer`                     | `netpoll.NewDialer()`         | 用于设置拨号器。                                                   |
 | `TLSConfig`                  | `nil`                         | `TLS`配置                                                          |
-| `RetryConfig `               | `nil`                         | 所有与重试有关的配置                                               |
+| `RetryConfig`               | `nil`                         | 所有与重试有关的配置                                               |
 
 示例代码：
 
@@ -493,7 +493,7 @@ func WithStrictMaxConcurrentStreams(strictMaxConcurrentStreams bool) ClientOptio
 
 #### WithPingTimeout
 
-设置`ping`响应的超时时间，如果未收到对 `Ping `的响应，连接将在该超时时间后关闭。
+设置`ping`响应的超时时间，如果未收到对 `Ping`的响应，连接将在该超时时间后关闭。
 
 默认为 `15s`
 
@@ -572,7 +572,7 @@ func WithMaxIdleConnDuration(d time.Duration) ClientOption
 
 #### WithMaxIdempotentCallAttempts
 
-设置` idempotent calls`的最大尝试次数。
+设置`idempotent calls`的最大尝试次数。
 
 函数签名：
 

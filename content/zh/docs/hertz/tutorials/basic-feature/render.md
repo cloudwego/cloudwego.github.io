@@ -56,7 +56,7 @@ func main() {
 
 ### PureJSON
 
-`JSON` 使用 Unicode 替换特殊的 HTML 字符，如果你想要按照字面意义编码这些字符，你可以使用 `PureJSON` 。
+`JSON` 使用 Unicode 替换特殊的 HTML 字符，如果你想要按照字面意义编码这些字符，你可以使用 `PureJSON`。
 
 示例代码：
 
@@ -75,7 +75,7 @@ func main() {
 
 ### IndentedJSON
 
-`IndentedJSON` 将给定的结构序列化为优雅的JSON (通过缩进 + 换行)。
+`IndentedJSON` 将给定的结构序列化为优雅的 JSON (通过缩进 + 换行)。
 
 示例代码：
 
@@ -163,7 +163,7 @@ Hertz 支持自定义分隔符。
 
 ### 自定义模板功能
 
-Hertz 支持自定义模板功能,示例代码如下。
+Hertz 支持自定义模板功能，示例代码如下。
 
 main.go:
 
@@ -213,7 +213,7 @@ template1.html:
 <h1>Date: {[{.now | formatAsDate}]}</h1>
 ```
 
-查看详细[示例代码]([hertz-examples/render/html at main · cloudwego/hertz-examples · GitHub](https://github.com/cloudwego/hertz-examples/tree/main/render/html))。
+查看详细 [示例代码]([hertz-examples/render/html at main · cloudwego/hertz-examples · GitHub](https://github.com/cloudwego/hertz-examples/tree/main/render/html))。
 
 ## Protobuf
 
@@ -372,4 +372,4 @@ func writeContentType(resp *protocol.Response, value string) {
 
 ## 完整示例
 
-完整用法示例详见[example](https://github.com/cloudwego/hertz-examples/tree/main/render)。
+完整用法示例详见 [example](https://github.com/cloudwego/hertz-examples/tree/main/render)。

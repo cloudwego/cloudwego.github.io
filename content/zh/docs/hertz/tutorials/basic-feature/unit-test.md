@@ -43,9 +43,9 @@ func TestPerformRequest(t *testing.T) {
 }
 ```
 
-## 与业务handler配合使用
+## 与业务 handler 配合使用
 
-假如已经创建了handler以及一个函数`Ping()`
+假如已经创建了 handler 以及一个函数`Ping()`
 
 ```go
 

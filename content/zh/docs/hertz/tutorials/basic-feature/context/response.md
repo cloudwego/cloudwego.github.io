@@ -24,7 +24,7 @@ func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
 
 ### SetContentType
 
-设置 Content-Type 。
+设置 Content-Type。
 
 函数签名:
 
@@ -43,7 +43,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetContentTypeBytes
 
-以 `[]byte` 方式设置 Content-Type 。
+以 `[]byte` 方式设置 Content-Type。
 
 函数签名:
 
@@ -62,7 +62,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetConnectionClose
 
-设置 Connection: close ，告知客户端服务器想关闭连接。
+设置 Connection: close，告知客户端服务器想关闭连接。
 
 函数签名:
 
@@ -108,7 +108,7 @@ func (ctx *RequestContext) Status(code int)
 
 ### NotFound
 
-设置 Status Code 代码为 404 。
+设置 Status Code 代码为 404。
 
 函数签名:
 
@@ -118,7 +118,7 @@ func (ctx *RequestContext) NotFound()
 
 ### NotModified
 
-设置 Status Code 代码为 304 。
+设置 Status Code 代码为 304。
 
 函数签名:
 
@@ -128,7 +128,7 @@ func (ctx *RequestContext) NotModified()
 
 ### Redirect
 
-设置 Status Code 代码以及要跳转的地址 。
+设置 Status Code 代码以及要跳转的地址。
 
 函数签名:
 
@@ -150,7 +150,7 @@ h.GET("/pet", func(c context.Context, ctx *app.RequestContext) {
 
 ### Header
 
-设置或删除指定 Header 。
+设置或删除指定 Header。
 
 函数签名:
 
@@ -170,7 +170,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetCookie
 
-设置 Cookie 。(更多内容请参考 [hertz-examples/parameter/cookie](https://github.com/cloudwego/hertz-examples/blob/main/parameter/cookie/main.go))
+设置 Cookie。(更多内容请参考 [hertz-examples/parameter/cookie](https://github.com/cloudwego/hertz-examples/blob/main/parameter/cookie/main.go))
 
 函数签名:
 
@@ -281,7 +281,7 @@ h.GET("/user1", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetBodyString
 
-设置 Body 。
+设置 Body。
 
 函数签名:
 
@@ -429,7 +429,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 设置 Status Code 以及通过 render.PureJSON 设置 Body。
 
-> 注意: 与 JSON 不同，PureJSON 不会用 unicode 字符替换 html 特殊字符。
+> 注意：与 JSON 不同，PureJSON 不会用 unicode 字符替换 html 特殊字符。
 
 函数签名:
 
@@ -455,7 +455,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 设置 Status Code 以及通过 render.IndentedJSON 设置 Body。
 
-> 注意: 与 JSON 不同，IndentedJSON 会提供换行与缩进。
+> 注意：与 JSON 不同，IndentedJSON 会提供换行与缩进。
 
 函数签名:
 
@@ -558,7 +558,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### File
 
-将指定文件写入到 Body Stream 。
+将指定文件写入到 Body Stream。
 
 函数签名:
 
@@ -594,7 +594,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### FileFromFS
 
-将指定文件写入到 Body Stream 。
+将指定文件写入到 Body Stream。
 
 函数签名:
 
@@ -667,7 +667,7 @@ func (ctx *RequestContext) GetResponse() (dst *protocol.Response)
 
 ### Flush
 
-把数据刷入被劫持的 Response Writer 中 。(更多内容请参考 [response_writer](/zh/docs/hertz/tutorials/framework-exten/response_writer/#%E5%8A%AB%E6%8C%81-response-%E7%9A%84-writer))
+把数据刷入被劫持的 Response Writer 中。(更多内容请参考 [response_writer](/zh/docs/hertz/tutorials/framework-exten/response_writer/#%E5%8A%AB%E6%8C%81-response-%E7%9A%84-writer))
 
 函数签名:
 

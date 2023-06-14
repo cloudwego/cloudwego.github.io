@@ -6,7 +6,7 @@ description: >
 ---
 ## 命令行参数说明
 
-#### Global:
+#### Global
 
 ```console
 $ hz --help
@@ -78,7 +78,7 @@ OPTIONS:
 
 <!---->
 
-- exclude_file: 不需要更新的文件(相对项目路径，支持多个)
+- exclude_file: 不需要更新的文件 (相对项目路径，支持多个)
 
 <!---->
 
@@ -86,7 +86,7 @@ OPTIONS:
 
 <!---->
 
-- idl: idl 文件路径(.thrift 或者.proto)
+- idl: idl 文件路径 (.thrift 或者.proto)
 
 <!---->
 
@@ -118,7 +118,7 @@ OPTIONS:
 
 <!---->
 
-- protoc/p: 透传给 protoc 的选项({flag}={value})
+- protoc/p: 透传给 protoc 的选项 ({flag}={value})
 
 <!---->
 
@@ -126,11 +126,11 @@ OPTIONS:
 
 <!---->
 
-- snake_tag: tag 使用 snake_case 风格命名(仅对 form、query、json 生效)
+- snake_tag: tag 使用 snake_case 风格命名 (仅对 form、query、json 生效)
 
 <!---->
 
-- thriftgo/t: 透传给 thriftgo 的选项({flag}={value})
+- thriftgo/t: 透传给 thriftgo 的选项 ({flag}={value})
 
 <!---->
 
@@ -172,7 +172,7 @@ OPTIONS:
 
 <!---->
 
-- exclude_file: 不需要更新的文件(相对项目路径，支持多个)
+- exclude_file: 不需要更新的文件 (相对项目路径，支持多个)
 
 <!---->
 
@@ -180,7 +180,7 @@ OPTIONS:
 
 <!---->
 
-- idl: idl 文件路径(.thrift 或者.proto)
+- idl: idl 文件路径 (.thrift 或者.proto)
 
 <!---->
 
@@ -208,15 +208,15 @@ OPTIONS:
 
 <!---->
 
-- protoc/p: 透传给 protoc 的选项({flag}={value})
+- protoc/p: 透传给 protoc 的选项 ({flag}={value})
 
 <!---->
 
-- snake_tag: tag 使用 snake_case 风格命名(仅对 form、query、json 生效)
+- snake_tag: tag 使用 snake_case 风格命名 (仅对 form、query、json 生效)
 
 <!---->
 
-- thriftgo/t: 透传给 thriftgo 的选项({flag}={value})
+- thriftgo/t: 透传给 thriftgo 的选项 ({flag}={value})
 
 <!---->
 

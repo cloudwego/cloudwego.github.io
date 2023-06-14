@@ -8,8 +8,6 @@ description: >
 
 In HTTP, GNUzip(Gzip) compression coding is a way to optimize the performance of Web applications, and Hertz also provides an [implementation](https://github.com/hertz-contrib/gzip) of Gzip.
 
-
-
 ## Install
 
 ```sh
@@ -17,6 +15,7 @@ go get github.com/hertz-contrib/gzip
 ```
 
 ## Example
+
 ```go
 package main
 
@@ -40,6 +39,7 @@ func main() {
 	h.Spin()
 }
 ```
+
 ## Config
 
 ### Gzip
@@ -54,10 +54,13 @@ func main() {
 | NoCompression      | No compression                           |
 
 Function Signature:
+
 ```go
 func Gzip(level int, options ...Option) app.HandlerFunc
 ```
+
 Sample Code:
+
 ```go
 package main
 
@@ -88,6 +91,7 @@ func main() {
 	h.Spin()
 }
 ```
+
 ### WithExcludedExtensions
 
 `gzip` provides `WithExcludeExtensions` to help users set file extensions that do not require `gzip` compression, the default values are `.png`, `.gif`, `.jpeg`, `.jpg`
@@ -97,7 +101,9 @@ Function Signature:
 ```go
 func WithExcludedPaths(args []string) Option
 ```
+
 Sample Code:
+
 ```go
 package main
 
@@ -174,6 +180,7 @@ func main() {
 }
 
 ```
+
 ### WithExcludedPathRegexes
 
 `gzip` provides `WithExcludedPathRegexes` to help users set custom regular expressions to filter out files that do not need to be compressed by `gzip`

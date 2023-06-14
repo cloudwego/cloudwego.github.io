@@ -55,8 +55,6 @@ func main() {
 | WithNext | nil | Defines a function to skip etag middleware when return is true |
 |WithGenerator | nil | Custom etag generation logic |
 
-
-
 ### WithWeak
 
 `WithWeak` will enable weak validator for ETag.
@@ -66,6 +64,7 @@ Function Signature:
 ```go
 func WithWeak() Option
 ```
+
 Sample Code:
 
 ```go
@@ -171,6 +170,7 @@ func main() {
     h.Spin()
 }
 ```
+
 ## Full Example
 
 Refer to the [etag/example](https://github.com/hertz-contrib/etag/tree/main/example) for full usage examples.

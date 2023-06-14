@@ -13,7 +13,7 @@ description: >
     若当前项目目录位于 `GOPATH` 内：
 
     ```bash
-    # GOPATH 下执行，go mod 名字默认为当前路径相对GOPATH的路径，也可自己指定
+    # GOPATH 下执行，go mod 名字默认为当前路径相对 GOPATH 的路径，也可自己指定
     hz new
 
     # 整理 & 拉取依赖

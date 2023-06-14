@@ -15,7 +15,7 @@ func main() {
 	r := server.New()
 
     r.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
-        // 参数绑定需要配合特定的go tag使用
+        // 参数绑定需要配合特定的 go tag 使用
 		type Test struct {
             A string `query:"a" vd:"$!='Hertz'"`
         }
@@ -47,7 +47,7 @@ func main() {
 
 | go tag  |  说明  |
 | :----  | :---- |
-| path | 绑定 url 上的路径参数，相当于 hertz 路由{:param}或{*param}中拿到的参数。例如：如果定义的路由为: /v:version/example，可以把 path 的参数指定为路由参数：`path:"version"`，此时，url: http://127.0.0.1:8888/v1/example，可以绑定path参数"1" |
+| path | 绑定 url 上的路径参数，相当于 hertz 路由{:param}或{*param}中拿到的参数。例如：如果定义的路由为：/v:version/example，可以把 path 的参数指定为路由参数：`path:"version"`，此时，url: http://127.0.0.1:8888/v1/example，可以绑定path参数"1" |
 | form | 绑定请求的 body 内容。content-type -> `multipart/form-data` 或 `application/x-www-form-urlencoded`，绑定 form 的 key-value |
 | query | 绑定请求的 query 参数 |
 | header | 绑定请求的 header 参数 |
@@ -194,7 +194,7 @@ func init() {
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
 
 func init() {
-    // 默认false，全局生效
+    // 默认 false，全局生效
     binding.SetLooseZeroMode(true)
 }
 ```
@@ -210,10 +210,10 @@ func init() {
     // 使用标准库
     binding.UseStdJSONUnmarshaler()
 
-    // 使用gjson
+    // 使用 gjson
     binding.UseGJSONUnmarshaler()
 
-    // 使用第三方json unmarshal方法
+    // 使用第三方 json unmarshal 方法
     binding.UseThirdPartyJSONUnmarshaler()
 }
 ```
@@ -234,7 +234,7 @@ type UserInfoResponse struct {
 参数绑定支持绑定文件，使用方法如下：
 
 ```go
-// 需要请求的content-type为：multipart/form-data
+// 需要请求的 content-type 为：multipart/form-data
 type FileParas struct {
    F   *multipart.FileHeader `form:"F1"`
 }

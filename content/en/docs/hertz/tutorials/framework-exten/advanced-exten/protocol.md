@@ -12,8 +12,6 @@ Thanks to the layered design of Hertz, in addition to the HTTP1/HTTP2 (to be ope
 
 In short, a server that implements the following interface can be added to Hertz as a custom extension server:
 
-
-
 ```go
 type Server interface {
    Serve(c context.Context, conn network.Conn) error

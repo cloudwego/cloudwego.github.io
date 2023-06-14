@@ -402,7 +402,6 @@ func WithKeyLookUp(lookup string) Option
 
 Sample code：
 
-
 ```go
 package main
 
@@ -625,11 +624,10 @@ func main() {
 | Version | Local                                                        | Public                          |
 | ------- | ------------------------------------------------------------ | ------------------------------- |
 | v1      | Encrypted with `AES-256-CBC` and signed with HMAC-SHA-256    | Signed with `RSA-SHA-256`       |
-| v2      | Encrypted with `XSalsa20Poly1305` and signed with `HMAC-SHA-384` | Signed with `EdDSA `(`Ed25519`) |
-| v3      | Encrypted with `XChaCha20Poly1305` and signed with` HMAC-SHA-384` | Signed with `EdDSA `(`Ed25519`) |
-| v4      | Encrypted with `XChaCha20Poly1305` and signed with `HMAC-SHA-512-256` | Signed with `EdDSA `(`Ed448`)   |
+| v2      | Encrypted with `XSalsa20Poly1305` and signed with `HMAC-SHA-384` | Signed with `EdDSA`(`Ed25519`) |
+| v3      | Encrypted with `XChaCha20Poly1305` and signed with`HMAC-SHA-384` | Signed with `EdDSA`(`Ed25519`) |
+| v4      | Encrypted with `XChaCha20Poly1305` and signed with `HMAC-SHA-512-256` | Signed with `EdDSA`(`Ed448`)   |
 
-
-## Full Example 
+## Full Example
 
 Refer to the [paseto/example](https://github.com/hertz-contrib/paseto/tree/main/example) for full usage examples.

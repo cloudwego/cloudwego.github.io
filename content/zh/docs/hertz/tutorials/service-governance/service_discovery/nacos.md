@@ -19,7 +19,7 @@ Nacos 拓展在服务注册部分中提供了 option 配置。
 
 #### WithRegistryCluster
 
-Nacos 扩展提供了 `WithRegistryCluster` 用于帮助用户配置自定义的集群。默认为 “DEFAULT” 。
+Nacos 扩展提供了 `WithRegistryCluster` 用于帮助用户配置自定义的集群。默认为“DEFAULT” 。
 
 函数签名：
 
@@ -89,7 +89,7 @@ func main() {
 
 ### NewDefaultNacosRegistry
 
-`NewDefaultNacosRegistry` 使用 nacos 创建一个默认的服务注册中心。会调用 `NewDefaultNacosConfig` 读取环境变量来创建一个默认的 nacos 客户端， 并设置RegionId 为 `cn-hangzhou`，且不会在启动时自动预加载服务实例信息到本地缓存。可自定义服务注册中心配置。
+`NewDefaultNacosRegistry` 使用 nacos 创建一个默认的服务注册中心。会调用 `NewDefaultNacosConfig` 读取环境变量来创建一个默认的 nacos 客户端，并设置 RegionId 为 `cn-hangzhou`，且不会在启动时自动预加载服务实例信息到本地缓存。可自定义服务注册中心配置。
 
 环境变量：
 
@@ -171,7 +171,7 @@ Nacos 拓展在服务发现部分中提供了 option 配置。
 
 #### WithResolverCluster
 
-Nacos 扩展提供了 `WithResolverCluster` 用于帮助用户配置自定义的集群。默认为 “DEFAULT” 。
+Nacos 扩展提供了 `WithResolverCluster` 用于帮助用户配置自定义的集群。默认为“DEFAULT” 。
 
 函数签名：
 
@@ -231,7 +231,7 @@ func main() {
 
 ### NewDefaultNacosResolver
 
-`NewDefaultNacosResolver` 使用 nacos 创建一个默认的服务发现中心。会调用 `NewDefaultNacosConfig` 读取环境变量来创建一个默认的 nacos 客户端， 并设置RegionId 为 `cn-hangzhou`，且不会在启动时自动预加载服务实例信息到本地缓存。可自定义服务注册中心配置。
+`NewDefaultNacosResolver` 使用 nacos 创建一个默认的服务发现中心。会调用 `NewDefaultNacosConfig` 读取环境变量来创建一个默认的 nacos 客户端，并设置 RegionId 为 `cn-hangzhou`，且不会在启动时自动预加载服务实例信息到本地缓存。可自定义服务注册中心配置。
 
 环境变量：
 
@@ -343,7 +343,7 @@ func main() {
 ### 客户端
 
 - 使用内置的 `sd.Discovery` 中间件，支持传入自定义的服务发现扩展以及负载均衡扩展。
-- 使用服务发现时需要将url中的域名替换为服务名，并使用 `config.WithSD` 确定本次请求使用服务注册。
+- 使用服务发现时需要将 url 中的域名替换为服务名，并使用 `config.WithSD` 确定本次请求使用服务注册。
 
 ```go
 import (

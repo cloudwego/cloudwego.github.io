@@ -56,6 +56,7 @@ go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 // Tidy & get dependencies
 go mod tidy
 ```
+
 3. Modify the handler and add your own logic
 
 ```go

@@ -30,9 +30,9 @@ type Error struct {
 ErrorTypeBind ErrorType = 1 << iota
 // rendering 过程的错误
 ErrorTypeRender
-// Hertz内部错误，业务无需感知
+// Hertz 内部错误，业务无需感知
 ErrorTypePrivate
-// 相对于Private来说，需要外部感知的错误
+// 相对于 Private 来说，需要外部感知的错误
 ErrorTypePublic
 // 其他错误
 ErrorTypeAny

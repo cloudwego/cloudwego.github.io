@@ -20,14 +20,17 @@ type Logger struct {
 ```
 
 ## New
+
 `New` 通过 `newLogger` 函数返回一个新的 Logger 实例
 
 函数签名：
+
 ```go
 func New(options ...Opt) *Logger
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -40,15 +43,19 @@ func main() {
     hlog.SetLogger(hertzZerolog.New())
 }
 ```
+
 ## From
+
 `From` 通过 `newLogger` 用一个已存在的 Logger 返回一个新的 Logger
 
 函数签名：
+
 ```go
 func From(log zerolog.Logger, options ...Opt) *Logger
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -65,15 +72,19 @@ func main() {
     l.Info("foo")
 }
 ```
+
 ## GetLogger
+
 `GetLogger` 通过 `DefaultLogger()` 方法返回默认的 Logger 实例和 error
 
 函数签名：
+
 ```go
 func GetLogger() (Logger, error)
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -90,18 +101,21 @@ func main() {
 }
 
 ```
+
 ## Option 的相关配置
 
 ### WithOutput
 
-`WithOutput` 通过 zerolog 内置的 `zerolog.Context.Logger().Output(out).With()` 返回一个Opt的函数，允许指定 logger 的输出。默认情况下，它设置为 `os.Stdout`。
+`WithOutput` 通过 zerolog 内置的 `zerolog.Context.Logger().Output(out).With()` 返回一个 Opt 的函数，允许指定 logger 的输出。默认情况下，它设置为 `os.Stdout`。
 
 函数签名：
+
 ```go
 func WithOutput(out io.Writer) Opt 
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -122,11 +136,13 @@ func main() {
 `WithLevel` 通过 zerolog 内置的 `zerolog.Context.Logger().Level(lvl).With()` 方法指定 logger 的级别。通过 `matchHlogLevel()` 将 `hlog.Level` 转换成 `zerolog.level`。默认情况下，它设置为 WarnLevel。
 
 函数签名：
+
 ```go
 func WithLevel(level hlog.Level) Opt 
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -147,11 +163,13 @@ func main() {
 `WithField` 通过 zerolog 内置的 `zerolog.Context.Interface(name, value)` 方法向 logger 的 context 添加一个字段
 
 函数签名：
+
 ```go
 func WithField(name string, value interface{}) Opt 
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -185,11 +203,13 @@ func main() {
 `WithFields` 通过 zerolog 内置的 `zerolog.Context.Fields(fields)` 向 logger 的 context 添加一些字段
 
 函数签名：
+
 ```go
 func WithFields(fields map[string]interface{}) Opt 
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -212,11 +232,13 @@ func main() {
 `WithTimestamp` 通过 zerolog 内置的 `zerolog.Context.Timestamp()` 将时间戳字段添加到 logger 的 context 中
 
 函数签名：
+
 ```go
 func WithTimestamp() Opt 
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -235,11 +257,13 @@ func main() {
 `WithFormattedTimestamp` 与 `WithTimestamp` 类似，将格式化的时间戳字段添加到 logger 的 context 中
 
 函数签名：
+
 ```go
 func WithFormattedTimestamp(format string) Opt 
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -259,11 +283,13 @@ func main() {
 `WithCaller` 通过 zerolog 内置的 `zerolog.Context.Caller()` 添加一个 caller 到 logger 的 context 中，caller 会报告调用者的信息
 
 函数签名：
+
 ```go
 func WithCaller() Opt 
 ```
 
 示例代码：
+
 ```go
 //获取路径的最后一个元素
 package main
@@ -298,16 +324,19 @@ func main() {
     filePath := filepath.Base(segments[0]) //filepath=="logger.go"
 }
 ```
+
 ### WithHook
 
 `WithHook` 通过 zerolog 内置的 `zerolog.Context.Logger().Hook(hook).With()` 添加一个 hook 到 logger 的 context 中
 
 函数签名：
+
 ```go
 func WithHook(hook zerolog.Hook) Opt 
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -342,11 +371,13 @@ func main() {
 `WithHookFunc` 与 `WithHook` 类似，添加一个 hook 函数到 logger 的 context 中
 
 函数签名：
+
 ```go
 func WithHookFunc(hook zerolog.HookFunc) Opt
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -377,7 +408,9 @@ func main() {
     //h.logs[1].message=="Bar"
 }
 ```
+
 ## 一个完整的 zerolog 示例
+
 ```go
 package main
 
@@ -422,7 +455,7 @@ func main() {
     // 提供压缩和删除
 	lumberjackLogger := &lumberjack.Logger{
 		Filename:   fileName,
-		MaxSize:    20,   // 一个文件最大可达20M。
+		MaxSize:    20,   // 一个文件最大可达 20M。
 		MaxBackups: 5,    // 最多同时保存 5 个文件。
 		MaxAge:     10,   // 一个文件最多可以保存 10 天。
 		Compress:   true, // 用 gzip 压缩。
@@ -441,6 +474,5 @@ func main() {
 	h.Spin()
 }
 ```
+
 适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。
-
-

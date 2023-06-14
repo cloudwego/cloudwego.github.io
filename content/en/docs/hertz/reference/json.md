@@ -10,6 +10,7 @@ By default, Hertz integrates with and uses [Sonic](https://github.com/bytedance/
 Sonic is an ultra-high performance golang json library, also see Sonic [README](https://github.com/bytedance/sonic) for details.
 
 The following are requirements to enable Sonic:
+
 - Go 1.15/1.16/1.17/1.18
 - Linux / darwin OS / Windows
 - Amd64 CPU with AVX instruction set
@@ -20,6 +21,7 @@ Sonic automatically fallback to golang's `encoding/json` library when the above 
 
 Currently, Hertz uses the default configuration for Sonic (i.e.`sonic.ConfigDefault`), which behaves different from JSON `encoding/json`.
 Specifically, by default, Sonic are configured to:
+
 - disable html escape: Sonic will not escape HTML's special characters
 - disable key-sort by default: Sonic will not sort json in lexicographical order
 
@@ -52,6 +54,7 @@ func main() {
 ```
 
 ## Conditional Compilation
+
 Hertz supports conditional compilation to control the actual json library used, you can use `-tags stdjson` to choose to use the standard library.
 
 ```go

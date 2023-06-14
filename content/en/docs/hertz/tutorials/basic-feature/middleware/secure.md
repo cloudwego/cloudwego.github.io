@@ -51,7 +51,7 @@ func main() {
 
 ## Config
 
-### Instructions 
+### Instructions
 
 Most of the Secure configuration items are designed to simplify the user's configuration of HTTP response headers, if you are confused about how to use HTTP headers, you can check it yourself in [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)
 
@@ -71,7 +71,6 @@ Secure provides the `New()` function for integrating Secure into Hertz, which is
 | WithIENoOpen              | `WithIENoOpen` is used to prevent Internet Explorer from executing download tasks in the website, the default setting is true, that is, to prevent downloading                                                                                                                 | true                                                      |
 | WIthSSLProxyHeaders       | `WIthSSLProxyHeaders` is used to set the **request headers map**. If the request is insecure, the information in the request header is matched against the information in the **request headers map**. If it matches the corresponding value, the request is considered secure | map[string]string{<br/>"X-Forwarded-Proto": "https"<br/>} |
 
-
 Of course, in addition to these default configuration items, we have other configuration items that will be introduced later
 
 ### WithAllowHosts
@@ -83,7 +82,6 @@ Function signature:
 ```go
 func WithAllowedHosts(ss []string) Option
 ```
-
 
 ### WithSSLTemporaryRedirect
 
@@ -120,7 +118,7 @@ func WithSTSIncludeSubdomains(b bool) Option
 Use `WithCustomFrame-OptionsValue` to fill in custom values in X-Frame-Options
 
 **Note**:
-This setting will override the `WithFrameDeny ` setting mentioned above
+This setting will override the `WithFrameDeny` setting mentioned above
 
 Function signature:
 
@@ -201,6 +199,3 @@ Function signature:
 ```go
 func WithDontRedirectIPV4Hostnames(b bool) Option
 ```
-
-
-

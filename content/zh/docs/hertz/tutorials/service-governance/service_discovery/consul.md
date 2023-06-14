@@ -19,7 +19,7 @@ Consul 拓展在服务注册部分中提供了 option 配置。
 
 #### WithCheck
 
-Consul 扩展提供了 `WithCheck` 用于帮助用户配置 Consul 中的 `AgentServiceCheck` 选项。若不使用，则默认设置 `check.Timeout` 为5秒，`check.Internal` 为5秒，`check.DeregisterCriticalServiceAfter` 为 1分钟。
+Consul 扩展提供了 `WithCheck` 用于帮助用户配置 Consul 中的 `AgentServiceCheck` 选项。若不使用，则默认设置 `check.Timeout` 为 5 秒，`check.Internal` 为 5 秒，`check.DeregisterCriticalServiceAfter` 为 1 分钟。
 
 函数签名：
 

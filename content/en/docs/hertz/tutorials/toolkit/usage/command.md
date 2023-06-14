@@ -6,7 +6,7 @@ description: >
 ---
 ## Command line parameter description
 
-#### Global:
+#### Global
 
 ```console
 $ hz --help
