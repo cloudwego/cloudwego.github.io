@@ -1,7 +1,7 @@
 ---
 title: "请求"
 date: 2023-04-14
-weight: 3
+weight: 1
 description: >
 ---
 
@@ -105,12 +105,10 @@ func (ctx *RequestContext) Path() []byte
 示例:
 
 ```go
-
 // GET http://example.com/user/bar
 h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
     path := ctx.Path() // path == []byte("/user/bar")
 })
-
 ```
 
 ### Param
