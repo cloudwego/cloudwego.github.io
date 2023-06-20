@@ -65,7 +65,7 @@ Upgrade netpoll library dependency to v0.4.0 and support for [configmanager] ( h
 
 ## Fix:
 - [[#963](https://github.com/cloudwego/kitex/pull/963)] fix(generic): generic-map writeInt8 fails on byte
-- [[#901](https://github.com/cloudwego/kitex/pull/901)] fix(mux): mux connection asynccallback dont create new goroutine and server wait all crrst packets recevied by client
+- [[#901](https://github.com/cloudwego/kitex/pull/901)] fix(mux): mux connection asynccallback dont create new goroutine and server wait all crrst packets received by client
 - [[#921](https://github.com/cloudwego/kitex/pull/921)] fix(loadbalance): fix consisthash byte[] length
 - [[#922](https://github.com/cloudwego/kitex/pull/922)] fix(mux): fix the problem that output unreasonable error when exit if enable mux and use Kitex Protobuf
 - [[#927](https://github.com/cloudwego/kitex/pull/927)] fix(connpool): long connection pool reports reuse success using reporter
