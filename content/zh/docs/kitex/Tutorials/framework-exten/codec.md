@@ -122,7 +122,7 @@ cli, err := xxxservice.NewClient(targetService, client.WithCodec(yourCodec))
 
 ```go
 // server side
-svr := xxxservice.NewServer(handler, server.WitWithPayloadCodechCodec(yourPayloadCodec))
+svr := xxxservice.NewServer(handler, server.WithPayloadCodec(yourPayloadCodec))
 
 // client side
 cli, err := xxxservice.NewClient(targetService, client.WithPayloadCodec(yourPayloadCodec))
