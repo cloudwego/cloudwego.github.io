@@ -5,7 +5,9 @@ weight: 3
 description: >
 ---
 
-## 快速开始
+
+
+## Quick Start
 
 ```go
 package main
@@ -43,41 +45,42 @@ func main() {
 
 ```
 
-## 配置
+## Config
 
-| 配置项                        | 默认值         | 描述                                                       |
-| ----------------------------- | -------------- | ---------------------------------------------------------- |
-| DialTimeout                   | time.Second    | 拨号超时时间                                               |
-| MaxConnsPerHost               | 512            | 每个主机可能建立的最大连接数                               |
-| MaxIdleConnDuration           | 10s            | 最大的空闲连接持续时间，空闲的保持连接在此持续时间后被关闭 |
-| MaxConnDuration               | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭。  |
-| MaxConnWaitTimeout            | 0s             | 等待自由连接的最大时间。                                   |
-| KeepAlive                     | true           | 是否使用 keep-alive 连接                                   |
-| ClientReadTimeout             | 0s             | 完整读取响应（包括body）的最大持续时间。                   |
-| TLSConfig                     | nil            | 用来创建一个 tls 连接的 tlsConfig                          |
-| Dialer                        | network.Dialer | 用户自定义拨号器                                           |
-| ResponseBodyStream            | false          | 是否在流中读取 body                                        |
-| DisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化                                       |
-| Name                          | ""             | 用户代理头中使用的客户端名称                               |
-| NoDefaultUserAgentHeader      | false          | 是否没有默认的User-Agent头                                 |
-| DisablePathNormalizing        | nil            | 是否禁用路径规范化。                                       |
-| RetryConfig                   | nil            | 重试配置                                                   |
-| WriteTimeout                  | 0s             | 写入超时时间                                               |
-| ConnStateObserve              | nil            | 设置连接状态观察函数                                       |
-| DialFunc                      | network.Dialer | 自定义拨号器功能,会覆盖自定义拨号器                        |
+| **Option**                    | **Default**    | **Description**                                              |
+| ----------------------------- | -------------- | ------------------------------------------------------------ |
+| DialTimeout                   | time.Second    | *dial timeout.*                                              |
+| MaxConnsPerHost               | 512            | *maximum number of connections per host which may be established.* |
+| MaxIdleConnDuration           | 10s            | *max idle connection duration, idle keep-alive connections are closed after this duration.* |
+| MaxConnDuration               | 0s             | *max connection duration, keep-alive connections are closed after this duration.* |
+| MaxConnWaitTimeout            | 0s             | *maximum duration for waiting for a free connection.*        |
+| KeepAlive                     | true           | *determines whether use keep-alive connection.*              |
+| ClientReadTimeout             | 0s             | *maximum duration for full response reading (including body).* |
+| TLSConfig                     | nil            | *tlsConfig to create a tls connection.*                      |
+| Dialer                        | network.Dialer | *specific dialer.*                                           |
+| ResponseBodyStream            | false          | *determine whether read body in stream or not.*              |
+| DisableHeaderNamesNormalizing | false          | *whether disable header names normalizing.*                  |
+| Name                          | ""             | *client name which used in User-Agent Header.*               |
+| NoDefaultUserAgentHeader      | false          | *whether no default User-Agent header.*                      |
+| DisablePathNormalizing        | nil            | *whether disable path normalizing.*                          |
+| RetryConfig                   | nil            | *retry configuration.*                                       |
+| WriteTimeout                  | 0s             | *write timeout.*                                             |
+| ConnStateObserve              | nil            | *the connection state observation function.*                 |
+| DialFunc                      | network.Dialer | *set dialer function.*                                       |
+
 
 
 ### WithDialTimeout
 
-`WithDialTimeout` 函数用于设置拨号超时时间。
+The `WithDialTimeout` function is used to set the dialing timeout.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithDialTimeout(dialTimeout time.Duration) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -102,15 +105,15 @@ func main() {
 
 ### WithMaxConnsPerHost
 
-`WithMaxConnsPerHost` 函数用于设置每个主机最大连接数。
+The `WithMaxConnsPerHost` function is used to set the maximum number of connections per host.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithMaxConnsPerHost(maxConns int) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -133,15 +136,15 @@ func main() {
 
 ### WithMaxIdleConnDuration
 
-`WithMaxIdleConnDuration` 函数用于设置空闲连接的最大持续时间。如果一条连接在空闲时间超过了设置的最大持续时间，它将被关闭。
+The `WithMaxIdleConnDuration` function is used to set the maximum duration of an idle connection. If a connection is idle for longer than the set maximum duration, it will be closed.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithMaxIdleConnDuration(maxIdleConnDuration time.Duration) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -166,15 +169,15 @@ func main() {
 
 ### WithMaxConnDuration
 
-`WithMaxConnDuration` 函数用于设置连接的最大持续时间。如果一条连接在持续时间超过了设置的最大持续时间，它将被关闭。
+The `WithMaxConnDuration` function is used to set the maximum duration of a connection. If a connection lasts longer than the set maximum duration, it will be closed.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithMaxConnDuration(maxConnDuration time.Duration) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -199,15 +202,15 @@ func main() {
 
 ### WithMaxConnWaitTimeout
 
-`WithMaxConnWaitTimeout` 函数用于设置等待空闲连接的最大持续时间。当 HTTP 客户端需要新的连接时，如果没有可用的空闲连接，它将等待最长时间来获得一个新的连接。如果等待时间超过了设置的最大持续时间，它将返回一个错误。
+The `WithMaxConnWaitTimeout` function is used to set the maximum duration of waiting for an idle connection. When the HTTP client needs a new connection, it will wait for the maximum time to get a new connection if there is no free connection available. If the wait time exceeds the set maximum duration, it will return an error.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithMaxConnWaitTimeout(t time.Duration) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -228,20 +231,19 @@ func main() {
     status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
     fmt.Printf("status=%v body=%v\n", status, string(body))
 }
-
 ```
 
 ### WithKeepAlive
 
-`WithKeepAlive` 函数用于设置 HTTP 客户端是否使用 keep-alive 连接。keep-alive 是一种 HTTP 的持久连接技术，它可以在一次 TCP 连接中处理多个 HTTP 请求和响应，减少了建立和关闭连接的开销，提高了网络性能。
+The `WithKeepAlive` function is used to set whether the HTTP client uses keep-alive connections. keep-alive is an HTTP persistent connection technique that allows multiple HTTP requests and responses to be handled in a single TCP connection, reducing the overhead of establishing and closing connections and improving network performance.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithKeepAlive(b bool) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -265,15 +267,15 @@ func main() {
 
 ### WithClientReadTimeout
 
-`WithClientReadTimeout` 函数用于设置客户端读取完整响应（包括 body）的最大持续时间。它接受一个 `time.Duration` 类型的参数，表示最大持续时间。如果读取完整响应的时间超过了设置的最大持续时间，客户端将返回一个错误。
+The `WithClientReadTimeout` function is used to set the maximum duration for the client to read the full response (including the body). It accepts a parameter of type `time.Duration`, indicating the maximum duration. If the time taken to read the full response exceeds the set maximum duration, the client will return an error.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithClientReadTimeout(t time.Duration) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -298,15 +300,15 @@ func main() {
 
 ### WithTLSConfig
 
-`WithTLSConfig` 函数用于设置 TLS 配置，以创建 TLS 连接。TLS（Transport Layer Security）是一种加密协议，用于保护网络通信的安全。
+The `WithTLSConfig` function is used to set the TLS configuration to create a TLS connection, TLS (Transport Layer Security) is an encryption protocol used to secure network communications.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithTLSConfig(cfg *tls.Config) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -334,15 +336,15 @@ func main() {
 
 ### WithDialer
 
-`WithDialer` 函数用于设置 HTTP 客户端使用的特定 dialer（拨号器）。dialer 用于创建网络连接。
+The `WithDialer` function is used to set a specific dialer to be used by the HTTP client. dialer is used to create a network connection.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithDialer(d network.Dialer) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -367,15 +369,15 @@ func main() {
 
 ### WithResponseBodyStream
 
-`WithResponseBodyStream` 函数用于设置 HTTP 客户端是否以流式方式读取响应体。如果设置为 true，客户端将在读取响应时使用流式读取，以避免一次性将整个响应体加载到内存中。如果设置为 false，客户端将一次性将整个响应体加载到内存中。
+The `WithResponseBodyStream` function is used to set whether the HTTP client reads the response body as a stream. If set to true, the client will use streaming when reading the response to avoid loading the entire response body into memory at once. If set to false, the client will load the entire response body into memory at once.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithResponseBodyStream(b bool) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -399,15 +401,15 @@ func main() {
 
 ### WithDisableHeaderNamesNormalizing
 
-`WithDisableHeaderNamesNormalizing` 函数用于设置 HTTP 客户端是否禁用标准化请求和响应头中的 header 名称。如果设置为 true，客户端将不会标准化请求和响应头中的 header 名称。否则，客户端将标准化请求和响应头中的 header 名称。
+The `WithDisableHeaderNamesNormalizing` function is used to set whether the HTTP client disables normalizing the header names in the request and response headers. If set to true, the client will not normalize the header names in the request and response headers. Otherwise, the client will normalize the header names in the request and response headers.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithDisableHeaderNamesNormalizing(disable bool) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -431,15 +433,15 @@ func main() {
 
 ### WithName
 
-`WithName` 函数用于设置 HTTP 客户端的名称，该名称将用于 User-Agent 头中。User-Agent 头是 HTTP 请求中的一个标头字段，它向服务器发送有关客户端应用程序、操作系统、版本和其他相关信息的字符串。
+The `WithName` function is used to set the name of the HTTP client that will be used in the User-Agent header, which is a header field in an HTTP request that sends the server a string of information about the client application, operating system, version, and other relevant information.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithName(name string) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -463,15 +465,15 @@ func main() {
 
 ### WithNoDefaultUserAgentHeader
 
-`WithNoDefaultUserAgentHeader` 函数用于设置 HTTP 客户端是否禁用默认的 User-Agent 头。如果设置为 true，客户端将不会在请求中发送默认的 User-Agent 头。否则，客户端将发送默认的 User-Agent 头。
+The `WithNoDefaultUserAgentHeader` function is used to set whether the HTTP client disables the default User-Agent header. If set to true, the client will not send the default User-Agent header in the request. Otherwise, the client will send the default User-Agent header.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithNoDefaultUserAgentHeader(isNoDefaultUserAgentHeader bool) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -495,15 +497,15 @@ func main() {
 
 ### WithDisablePathNormalizing
 
-`WithDisablePathNormalizing` 函数用于设置 HTTP 客户端是否禁用标准化请求路径。如果设置为 true，客户端将不会标准化请求路径。否则，客户端将标准化请求路径。
+The `WithDisablePathNormalizing` function is used to set whether the HTTP client disables normalizing the request path. If set to true, the client will not normalize the request path. Otherwise, the client will normalize the request path.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithDisablePathNormalizing(isDisablePathNormalizing bool) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -528,15 +530,15 @@ func main() {
 
 ### WithRetryConfig
 
-`WithRetryConfig` 函数用于设置 HTTP 客户端的重试配置。在发生网络故障或超时等问题时，客户端可以通过重试来尝试重新建立连接或重新发送请求。
+The `WithRetryConfig` function is used to set the retry configuration of the HTTP client. In case of problems such as network failure or timeout, the client can retry to try to re-establish the connection or resend the request.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithRetryConfig(opts ...retry.Option) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -566,15 +568,15 @@ func main() {
 
 ### WithWriteTimeout
 
-`WithWriteTimeout` 函数用于设置 HTTP 客户端的写入超时时间。在发送请求时，如果写入请求的数据超过了指定的超时时间，则客户端会中止请求并返回错误。
+The `WithWriteTimeout` function is used to set the write timeout for HTTP clients. When sending a request, if the data written to the request exceeds the specified timeout, the client will abort the request and return an error.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithWriteTimeout(t time.Duration) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -599,15 +601,15 @@ func main() {
 
 ### WithConnStateObserve
 
-`WithConnStateObserve` 函数用于设置 HTTP 客户端的连接状态观察函数。在客户端建立连接、关闭连接或发生其他连接状态变化时，该观察函数会被调用。
+The `WithConnStateObserve` function is used to set the connection state watch function for the HTTP client. This watch function is called when a client establishes a connection, closes a connection, or when other connection state changes occur.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithConnStateObserve(hs config.HostClientStateFunc, interval ...time.Duration) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -638,15 +640,15 @@ func main() {
 
 ### WithDialFunc
 
-`WithDialFunc` 函数用于设置 HTTP 客户端的拨号函数，即客户端用于建立连接的底层网络拨号器。该函数接受一个 `network.DialFunc` 类型的参数，表示客户端使用的自定义拨号函数。
+The `WithDialFunc` function is used to set the HTTP client's dial function, the underlying network dialer used by the client to establish a connection. This function accepts a parameter of type `network.DialFunc`, indicating the custom dialer function used by the client.
 
-函数签名：
+Function Signature:
 
 ```go
 func WithDialFunc(f network.DialFunc, dialers ...network.Dialer) config.ClientOption
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -675,19 +677,19 @@ func main() {
 
 ## Do
 
-Do 函数执行给定的 http 请求并填充给定的 http 响应。请求必须包含至少一个非零的RequestURI，其中包含完整的URL或非零的 Host header + RequestURI。
+The Do function executes the given http request and populates the given http response. The request must contain at least one non-zero RequestURI containing the full URL or a non-zero Host header + RequestURI.
 
-该函数不会跟随重定向。请使用 Ge t函数来跟随重定向。
+This function does not follow redirects. Please use the Ge t function to follow the redirect.
 
-如果resp为nil，则会忽略响应。如果所有针对请求主机的DefaultMaxConnsPerHost连接都已忙，则会返回`ErrNoFreeConns`错误。在性能关键的代码中，建议通过 AcquireRequest 和 AcquireResponse 获取 req 和resp。
+If resp is nil, the response will be ignored. If all DefaultMaxConnsPerHost connections against the requesting host are busy, an `ErrNoFreeConns` error will be returned. In performance-critical code, it is recommended that req and resp be obtained via AcquireRequest and AcquireResponse.
 
-函数签名：
+Function Signature:
 
 ```go
 func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error 
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -734,17 +736,17 @@ func main() {
 
 ## DoTimeout
 
-DoTimeout函数执行给定的请求并在给定的超时时间内等待响应。
+The DoTimeout function executes the given request and waits for a response within the given timeout period.
 
-如果 resp 为 nil，则会忽略响应。如果在给定的超时时间内未能收到响应，则会返回 errTimeout 错误。
+If resp is nil, the response is ignored. If the response is not received within the given timeout period, an errTimeout error is returned.
 
-函数签名： 
+Function Signature: 
 
 ```go
 func DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -795,16 +797,16 @@ func main() {
 
 ## DoDeadline
 
-DoDeadline 执行给定的请求并等待响应，直至给定的最后期限。
-如果resp为 nil，则会忽略响应。如果在给定的截止日期之前未能收到响应，则会返回 errTimeout 错误。
+DoDeadline executes the given request and waits for the response until the given deadline.
+If resp is nil, the response is ignored. If the response is not received by the given deadline, an errTimeout error is returned.
 
-函数签名： 
+Function Signature: 
 
 ```go
 func DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -854,15 +856,15 @@ func main() {
 
 ## DoRedirects
 
-DoRedirects 函数执行给定的 http 请求并填充给定的 http 响应，遵循最多 maxRedirectsCount 次重定向。当重定向次数超过maxRedirectsCount 时，将返回 ErrTooManyRedirects 错误。
+The DoRedirects function executes the given http request and populates the given http response, following a maximum of maxRedirectsCount redirects. When the number of redirects exceeds maxRedirectsCount, an ErrTooManyRedirects error is returned.
 
-函数签名：
+Function Signature:
 
 ```go
 func DoRedirects(ctx context.Context, req *protocol.Request, resp *protocol.Response, maxRedirectsCount int) error
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -915,17 +917,17 @@ func main() {
 
 ## Get
 
-Get 函数返回 URL 的状态码和响应体。如果 dst 太小，则将被响应体替换并返回，否则将分配一个新的切片。
+The Get function returns the status code of the URL and the response body. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned.
 
-该函数会自动跟随重定向。如果需要手动处理重定向，请使用 Do 函数。
+The function will automatically follow the redirect. If you need to handle redirects manually, use the Do function.
 
-函数签名：
+Function Signature:
 
 ```go
 func Get(ctx context.Context, dst []byte, url string, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -963,23 +965,23 @@ func main() {
 
 ## GetTimeOut
 
-GetTimeout函数返回URL的状态码和响应体。如果dst太小，则将被响应体替换并返回，否则将分配一个新的切片。该函数会自动跟随重定向。如果需要手动处理重定向，请使用Do函数。
+The GetTimeout function returns the status code of the URL and the response body. If the dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. This function will automatically follow the redirect. If the redirect needs to be handled manually, use the Do function.
 
-如果在给定的超时时间内无法获取URL的内容，则会返回`errTimeout`错误。
+If the content of the URL cannot be fetched within the given timeout, an `errTimeout` error will be returned.
 
-警告：GetTimeout不会终止请求本身。该请求将在后台继续进行，并且响应将被丢弃。如果请求时间过长且连接池已满，请尝试使用具有ReadTimeout配置的自定义Client实例或像下面这样设置请求级别的读取超时时间：
+Warning: GetTimeout will not terminate the request itself. The request will continue in the background and the response will be discarded. If the request takes too long and the connection pool is full, try using a custom Client instance with a ReadTimeout configuration or set a request-level read timeout like this:
 
 ```go
  codeGetTimeout(ctx, dst, url, timeout, config.WithReadTimeout(1 * time.Second)) 
 ```
 
-函数签名：
+Function Signature:
 
 ```go
 func GetTimeout(ctx context.Context, dst []byte, url string, timeout time.Duration, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -1022,23 +1024,23 @@ func main() {
 
 ## GetDeadline
 
-GetDeadline函数返回URL的状态码和响应体。如果dst太小，则将被响应体替换并返回，否则将分配一个新的切片。该函数会自动跟随重定向。如果需要手动处理重定向，请使用Do函数。
+The GetDeadline function returns the status code of the URL and the response body. If the dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. This function will automatically follow the redirect. If the redirect needs to be handled manually, use the Do function.
 
-如果在给定的截止时间之前无法获取URL的内容，则会返回`errTimeout`错误。
+If the content of the URL cannot be fetched before the given deadline, an `errTimeout` error will be returned.
 
-警告：GetDeadline不会终止请求本身。该请求将在后台继续进行，并且响应将被丢弃。如果请求时间过长且连接池已满，请尝试使用具有ReadTimeout配置的自定义Client实例或像下面这样设置请求级别的读取超时时间：
+Warning: GetDeadline will not terminate the request itself. The request will continue in the background and the response will be discarded. If the request takes too long and the connection pool is full, try using a custom Client instance with a ReadTimeout configuration or set a request-level read timeout like the following:
 
 ```gi
 GetDeadline(ctx, dst, url, deadline, config.WithReadTimeout(1 * time.Second))
 ```
 
-函数签名：
+Function Signature:
 
 ```go
 func GetDeadline(ctx context.Context, dst []byte, url string, deadline time.Time, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -1080,17 +1082,17 @@ func main() {
 
 ## Post
 
-Post 函数使用给定的 POST 参数向指定的 UR L发送 POST 请求。如果 dst 太小，则将被响应体替换并返回，否则将分配一个新的切片。该函数会自动跟随重定向。如果需要手动处理重定向，请使用 Do 函数。
+The Post function sends a POST request to the specified UR L using the given POST parameters. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. The function will automatically follow the redirect. If you need to handle redirects manually, use the Do function.
 
-如果 postArgs 为 nil ，则发送空的 POST 请求体。
+If postArgs is nil, then an empty POST request body is sent.
 
-函数签名：
+Function Signature:
 
 ```go
 func Post(ctx context.Context, dst []byte, url string, postArgs *protocol.Args, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -1131,17 +1133,17 @@ func main() {
 
 ## SetProxy
 
-SetProxy 用来设置客户端代理的。
+SetProxy is used to set the client proxy.
 
-注意，同一个客户端不能设置多个代理，如果需要使用另一个代理，请创建另一个客户端并为其设置代理。
+Note that multiple proxies cannot be set for the same client. If you need to use another proxy, please create another client and set a proxy for it.
 
-示例代码：
+Sample Code:
 
 ```go
 func (c *Client) SetProxy(p protocol.Proxy)
 ```
 
-函数签名：
+Function Signature:
 
 ```go
 package main
@@ -1205,15 +1207,15 @@ func main() {
 
 ## SetRetryIfFunc
 
-`SetRetryIfFunc` 方法用于设置客户端的重试函数，该函数用于判断在请求失败时是否应该重试。
+The `SetRetryIfFunc` method is used to set the client's retry function, which is used to determine whether a request should be retried if it fails.
 
-函数签名：
+Function Signature:
 
 ```go
 func (c *Client) SetRetryIfFunc(retryIf client.RetryIfFunc)
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -1247,15 +1249,15 @@ func main() {
 
 ## SetClientFactory
 
-`SetClientFactory` 方法用于设置客户端工厂对象，该工厂对象用于创建 HTTP 客户端对象。
+The `SetClientFactory` method is used to set the client factory object, which is used to create the HTTP client object.
 
-函数签名：
+Function Signature:
 
 ```go
 func (c *Client) SetClientFactory(cf suite.ClientFactory)
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -1284,15 +1286,15 @@ func main() {
 
 ## CloseIdleConnections
 
-`CloseIdleConnections` 方法用于关闭任何处于空闲状态的 "keep-alive" 连接。这些连接可能是之前的请求所建立的，但现在已经空闲了一段时间。该方法不会中断任何当前正在使用的连接。
+The `CloseIdleConnections` method is used to close any "keep-alive" connections that are in an idle state. These connections may have been established by a previous request, but have been idle for some time now. This method does not break any connections that are currently in use.
 
-函数签名：
+Function Signature:
 
 ```go
 func (c *Client) CloseIdleConnections()
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -1319,15 +1321,15 @@ func main() {
 
 ## GetDialerName
 
-`GetDialerName` 方法用于获取客户端当前使用的拨号器的名称。如果无法获取拨号器名称，则返回 "unknown"。
+The `GetDialerName` method is used to get the name of the dialer currently used by the client. If the dialer name cannot be retrieved, `unknown` is returned.
 
-函数签名：
+Function Signature:
 
 ```go
 func (c *Client) GetDialerName() (dName string, err error)
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -1360,15 +1362,15 @@ func main() {
 
 ## GetOptions
 
-`GetOptions` 函数返回 `Client` 实例的 `ClientOptions` 结构体指针。
+The `GetOptions` function returns a pointer to the `ClientOptions` structure of the `Client` instance.
 
-函数签名：
+Function Signature:
 
 ```go
 func (c *Client) GetOptions() *config.ClientOptions
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
@@ -1393,15 +1395,15 @@ func main() {
 
 ## Middleware
 
-使用 `Use` 方法对当前 client 增加一个中间件。
+Use the `Use` method to add a middleware to the current client.
 
-函数签名：
+Function Signature:
 
 ```go
 type Middleware func(Endpoint) Endpoint
 ```
 
-示例代码：
+Sample Code:
 
 ```go
 package main
