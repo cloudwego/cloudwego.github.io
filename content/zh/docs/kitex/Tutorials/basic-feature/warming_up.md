@@ -15,13 +15,13 @@ kitex v0.3.0 支持了客户端预热，可以在创建客户端的时候预先�
 
 `NewClient` 方法的 option：
 
-```
+```go
 client.WithWarmingUp(w *warmup.ClientOption) Option
 ```
 
 其中 `warmup.ClientOption` 是 v0.3.0 版本引入的 package `pkg/warmup` 提供的结构体：
 
-```
+```go
 // ClientOption controls the warming up of a client.
 type ClientOption struct {
     ErrorHandling
@@ -30,7 +30,7 @@ type ClientOption struct {
 }
 ```
 
-```
+```go
 // ErrorHandling controls how to handle error
 type ErrorHandling int
 
@@ -57,10 +57,10 @@ type PoolOption struct {
 
 ### 常见用法
 
-#### 1. 创建 client 的时候执行服务发现
+#### 创建 client 的时候执行服务发现
 
 
-```
+```go
 cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{
     ResolverOption: &warmup.ResolverOption{
         Dests: []*rpcinfo.EndpointBasicInfo{
@@ -76,9 +76,9 @@ cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{
 }))
 ```
 
-#### 2. 创建 client 的时候初始化连接池，每个下游实例建立两个连接
+#### 创建 client 的时候初始化连接池，每个下游实例建立两个连接
 
-```
+```go
 cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{
     PoolOption: &warmup.PoolOption{
         ConnNum: 2,

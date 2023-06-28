@@ -15,13 +15,13 @@ Kitex v0.3.0 supports Client warm-up, which can pre-initialize the relevant comp
 
 The option for `NewClient`:
 
-```
+```go
 client.WithWarmingUp(w *warmup.ClientOption) Option
 ```
 
 Where `warmup.ClientOption` is the struct introduced by package `pkg/warmup` since version v0.3.0:
 
-```
+```go
 // ClientOption controls the warming up of a client.
 type ClientOption struct {
     ErrorHandling
@@ -30,7 +30,7 @@ type ClientOption struct {
 }
 ```
 
-```
+```go
 // ErrorHandling controls how to handle error
 type ErrorHandling int
 
@@ -57,10 +57,10 @@ type PoolOption struct {
 
 ### Common Usage
 
-#### 1. Perform Service Discovery when creating client 
+#### Perform Service Discovery when creating client 
 
 
-```
+```go
 cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{
     ResolverOption: &warmup.ResolverOption{
         Dests: []*rpcinfo.EndpointBasicInfo{
@@ -76,9 +76,9 @@ cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{
 }))
 ```
 
-#### 2. 2. Initialize the connection pool when creating a client, and establish two connections for each downstream instance
+#### Initialize the connection pool when creating a client, and establish two connections for each downstream instance
 
-```
+```go
 cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{
     PoolOption: &warmup.PoolOption{
         ConnNum: 2,
