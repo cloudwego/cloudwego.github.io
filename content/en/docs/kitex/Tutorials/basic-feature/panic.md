@@ -1,12 +1,14 @@
 ---
 title: "Deal with panic"
 linkTitle: "Deal with panic"
-weight: 6
+weight: 8
 description: "This article introduces the way Kitex deals with panic"
 ---
 
 ## Introduction
-In order to ensure the stability of the service, the Kitex framework will automatically recover all panics, **except for** the panic that occurs in the goroutine created by the business code using the go keyword (due to the limit of Golang), the business code needs to recover the panic by itself.
+
+- The panic that occurs in the goroutine created by the business code using the go keyword, SHOULD be recovered by business code (Due to the limit of golang, it can not be recovered by Kitex)
+- In order to ensure the stability of the service, the Kitex framework will automatically recover all other panics.
 
 ## FAQ
 

@@ -1,7 +1,7 @@
 ---
 title: "Warming Up"
 linkTitle: "Warming Up"
-weight: 6
+weight: 7
 description: By warming up the Kite client, we can avoid large delays in the first request.
 ---
 

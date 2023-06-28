@@ -1,12 +1,14 @@
 ---
 title: "Panic 处理"
 linkTitle: "Panic 处理"
-weight: 6
+weight: 8
 description: "本文介绍 Kitex 对 panic 的处理说明。"
 ---
 
 ## 使用说明
-为了保证服务的稳定，Kitex 框架会自动 recover 所有 panic，**除了**业务代码使用 go 关键字创建的 goroutine 里发生的 panic（受限于语言提供的能力），需要业务自行 recover 。
+
+- 业务代码使用 go 关键字创建的 goroutine 里发生的 panic，需要业务自行 recover；受限于语言提供的能力, 无法由框架 Recover；
+- 为了保证服务的稳定，Kitex 框架会自动 recover 其他所有 panic。
 
 ## FAQ
 
