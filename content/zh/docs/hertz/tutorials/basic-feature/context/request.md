@@ -95,6 +95,7 @@ h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
 ### Path
 
 获取请求的路径。
+> 注意：出现参数路由时 Path 给出命名参数匹配后的路径，而 FullPath 给出原始路径。
 
 函数签名:
 
@@ -195,7 +196,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### QueryArgs
 
-获取路由 `Query String` 参数对象
+获取路由 `Query String` 参数对象。
 
 函数签名:
 
@@ -205,7 +206,7 @@ func (ctx *RequestContext) QueryArgs() *protocol.Args
 
 ### Args 对象
 
-Args 对象提供了以下方法获取/设置 Query String 参数
+Args 对象提供了以下方法获取/设置 Query String 参数。
 
 |函数签名 | 说明 |
 |:--|:--|
@@ -213,11 +214,11 @@ Args 对象提供了以下方法获取/设置 Query String 参数
 |`func (a *Args) Reset()` |重制 Args 对象 |
 |`func (a *Args) CopyTo(dst *Args)` |将 Args 对象拷贝到 dst |
 |`func (a *Args) Del(key string)` |删除 Args 对象 key 的键值对 |
-|`func (a *Args) DelBytes(key []byte)`|删除 Args 对象 key 的键值对 |
+|`func (a *Args) DelBytes(key []byte)`|删除 Args 对象字节数组类型 key 的键值对 |
 |`func (a *Args) Has(key string) bool` |获取 Args 对象是否存在 key 的键值对 |
 |`func (a *Args) String() string` | 将 Args 对象转换为字符串类型的 Query String |
 |`func (a *Args) QueryString() []byte` |将 Args 对象转换为字节数组类型的 Query String|
-|`func (a *Args) ParseBytes(b []byte)` |解析 Query String|
+|`func (a *Args) ParseBytes(b []byte)` |解析字节数组并将键值对存入 Args 对象|
 |`func (a *Args) Peek(key string) []byte` |获取 Args 对象 key 的值 |
 |`func (a *Args) PeekExists(key string) (string, bool)` |获取 Args 对象 key 的值以及是否存在 |
 |`func (a *Args) Len() int`| 获取 Args 对象键值对数量 |
@@ -309,7 +310,7 @@ URI 对象提供了以下方法获取/设置 URI。
 | `func (u *URI) PathOriginal() []byte`|获取未转义的 Path，比如 <http://example.com/user/he%20rtz> 的 Path 是 **/user/he%20rtz**|
 | `func (u *URI) SetPath(path string)`|设置 Path|
 | `func (u *URI) SetPathBytes(path []byte)`|设置 `[]byte` 类型 Path|
-| `func (u *URI) String() string`|获取完整 URI <http://example.com/user?baz=123> |
+| `func (u *URI) String() string`|获取完整 URI 比如 <http://example.com/user?baz=123> 的完整URI是 <http://example.com/user?baz=123> |
 | `func (u *URI) FullURI() []byte`|获取 `[]byte` 类型的完整 URI |
 | `func (u *URI) Scheme() []byte`|获取协议，如 http|
 | `func (u *URI) SetScheme(scheme string)`|设置协议 |
@@ -565,7 +566,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) SetConnectionClose(close bool)`|设置 connectionClose 标志 |
 | `func (h *RequestHeader) ResetConnectionClose()`|重制 connectionClose 标志为 false 并删除 Connection Header|
 | `func (h *RequestHeader) SetByteRange(startPos, endPos int)`| 设置 Range (Range: bytes=startPos-endPos)|
-| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`| 设置 Content-Type (Content-Type: multipart/form-data; boundary=----...) |
+| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`| 当 Content-Type=multipart/form-data 时为其设置boundary |
 | `func (h *RequestHeader) MultipartFormBoundary() []byte`|获取 boundary 的值 |
 | `func (h *RequestHeader) Trailer() *Trailer`|获取 Trailer|
 | `func (h *RequestHeader) Cookie(key string) []byte`|获取 Cookie 键为 key 的值 |
@@ -624,7 +625,7 @@ func (ctx *RequestContext) PostArgs() *protocol.Args
 
 ### GetRawData
 
-获取请求的 body 数据
+获取请求的 body 数据。
 
 函数签名:
 
@@ -766,6 +767,8 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 ### PostForm
 
 按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值。
+
+> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的content-type中获取 value 值。
 
 函数签名:
 
