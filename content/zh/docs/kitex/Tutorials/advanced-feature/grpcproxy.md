@@ -35,7 +35,7 @@ func RunServer(){
 
 下文对 Kitex Example 中的两种 Proxy 实现思路进行讲解，以便使用者参考，并按照自己的需求进行实现。
 
-# gRPC Frame 直接转发
+## gRPC Frame 直接转发
 
 当我们要实现的 gRPC Proxy 并不关心 RPC 的具体内容时，无需编解码，直接将拿到的 gRPC Frame 报文转发至目标端，不需要引入桩模块等其他代码。示例如下：
 
@@ -109,7 +109,7 @@ func redirectFrame(from, to nphttp2.GRPCConn) chan error {
 
 
 
-# 解码处理后转发
+## 解码处理后转发
 
 在有些 proxy server 的场景中，我们需要解码获取到结构体对象，并进行一些自定义的处理（例如读取请求做判断，或者修改请求的某些字段），再将结构体重新发送到远端。这种场景下，可能需要在 proxy server 的代码中引入对应的 client 桩模块代码。示例如下：
 
