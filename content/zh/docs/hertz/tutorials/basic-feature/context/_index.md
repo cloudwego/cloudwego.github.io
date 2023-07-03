@@ -5,7 +5,7 @@ weight: 4
 description: >
 ---
 
-请求上下文 `RequestContext` 是用于保存 HTTP 请求和设置 HTTP 响应的上下文，它提供了许多方便的 API 接口帮助用户开发
+请求上下文 `RequestContext` 是用于保存 HTTP 请求和设置 HTTP 响应的上下文，它提供了许多方便的 API 接口帮助用户开发。
 
 ## 上下文传递与并发安全
 
