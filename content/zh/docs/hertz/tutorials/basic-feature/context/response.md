@@ -38,6 +38,7 @@ func (ctx *RequestContext) SetContentType(contentType string)
 h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
     ctx.Write([]byte(`{"foo":"bar"}`))
     ctx.SetContentType("application/json; charset=utf-8")
+    // Content-Type: application/json; charset=utf-8
 })
 ```
 
@@ -57,6 +58,7 @@ func (ctx *RequestContext) SetContentTypeBytes(contentType []byte)
 h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
     ctx.Write([]byte(`{"foo":"bar"}`))
     ctx.SetContentType([]byte("application/json; charset=utf-8"))
+    // Content-Type: application/json; charset=utf-8
 })
 ```
 
@@ -93,6 +95,7 @@ func (ctx *RequestContext) SetStatusCode(statusCode int)
 ```go
 h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
     ctx.SetStatusCode(consts.StatusOK)
+    // Status Code: 200
 })
 ```
 
@@ -106,6 +109,15 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 func (ctx *RequestContext) Status(code int)
 ```
 
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Status(consts.StatusOK)
+    // Status Code: 200
+})
+```
+
 ### NotFound
 
 设置 Status Code 代码为 404。
@@ -116,6 +128,15 @@ func (ctx *RequestContext) Status(code int)
 func (ctx *RequestContext) NotFound()
 ```
 
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.NotFound()
+    // Status Code: 404
+})
+```
+
 ### NotModified
 
 设置 Status Code 代码为 304。
@@ -124,6 +145,15 @@ func (ctx *RequestContext) NotFound()
 
 ```go
 func (ctx *RequestContext) NotModified()
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.NotModified()
+    // Status Code: 304
+})
 ```
 
 ### Redirect
