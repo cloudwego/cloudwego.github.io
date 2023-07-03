@@ -257,6 +257,8 @@ func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
 
 设置 Body Stream 和可选的 Body 大小。
 
+> 注意：bodySize 小于 0 时数据全部写入，大于等于 0 时根据设置的bodySize大小写入数据。
+
 函数签名:
 
 ```go
