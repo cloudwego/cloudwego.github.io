@@ -793,6 +793,8 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值，如果不存在返回 defaultValue。
 
+> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的content-type中获取 value 值。
+
 函数签名:
 
 ```go
@@ -815,6 +817,8 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 ### GetPostForm
 
 按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值以及值是否存在。
+
+> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的content-type中获取 value 值。
 
 函数签名:
 
@@ -1344,7 +1348,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### Next
 
-执行下一个 handler。
+执行下一个 handler，该函数通常用于中间件 handler 中。
 
 函数签名:
 
