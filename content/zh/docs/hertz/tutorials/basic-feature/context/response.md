@@ -342,7 +342,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### Write
 
-将 p 添加到 Body 中。
+将字节数组 p 添加到 Body 中。
 
 函数签名:
 
