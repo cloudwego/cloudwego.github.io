@@ -200,7 +200,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetCookie
 
-设置 Cookie。(更多内容请参考 [hertz-examples/parameter/cookie](https://github.com/cloudwego/hertz-examples/blob/main/parameter/cookie/main.go))
+设置 Cookie。
 
 函数签名:
 
@@ -213,6 +213,8 @@ func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domai
 ```go
 h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
     ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
+    cookie := ctx.Response.Header.Get("Set-Cookie") 
+    // cookie == "user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=Lax"
 })
 ```
 
@@ -238,7 +240,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### AbortWithError
 
-设置 Status Code 收集 Error 并终止后续的 Handler，返回 Error。(更多内容请参考 [RequestContext/Error](/zh/docs/hertz/tutorials/basic-feature/context/request/#error))
+设置 Status Code 收集 Error 并终止后续的 Handler，返回 Error。
 
 函数签名:
 
@@ -250,7 +252,9 @@ func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
 
 ```go
 h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    err := ctx.AbortWithError(consts.StatusOK)
+    ctx.AbortWithError(consts.StatusOK, errors.New("hertz error"))
+	err := ctx.Errors.String()
+	// err == "Error #01: hertz error"
 }, func(c context.Context, ctx *app.RequestContext) {
     // will not execute
 })
@@ -260,13 +264,11 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 使用 RequestContext.Response.Header 获取 ResponseHeader 对象，它与 [RequestHeader](/zh/docs/hertz/tutorials/basic-feature/context/request/#requestheader-对象) 对象及提供的函数基本一致。
 
-## Body
+## 渲染
+
+支持对 JSON，HTML，Protobuf 等的渲染。(更多内容请参考 [渲染](/zh/docs/hertz/tutorials/basic-feature/render))
 
 ```go
-func (ctx *RequestContext) SetBodyStream(bodyStream io.Reader, bodySize int)
-func (ctx *RequestContext) SetBodyString(body string)
-func (ctx *RequestContext) Write(p []byte) (int, error)
-func (ctx *RequestContext) WriteString(s string) (int, error)
 func (ctx *RequestContext) Render(code int, r render.Render)
 func (ctx *RequestContext) String(code int, format string, values ...interface{})
 func (ctx *RequestContext) ProtoBuf(code int, obj interface{})
@@ -276,6 +278,15 @@ func (ctx *RequestContext) IndentedJSON(code int, obj interface{})
 func (ctx *RequestContext) HTML(code int, name string, obj interface{})
 func (ctx *RequestContext) Data(code int, contentType string, data []byte)
 func (ctx *RequestContext) XML(code int, obj interface{})
+```
+
+## Body
+
+```go
+func (ctx *RequestContext) SetBodyStream(bodyStream io.Reader, bodySize int)
+func (ctx *RequestContext) SetBodyString(body string)
+func (ctx *RequestContext) Write(p []byte) (int, error)
+func (ctx *RequestContext) WriteString(s string) (int, error)
 func (ctx *RequestContext) File(filepath string)
 func (ctx *RequestContext) FileAttachment(filepath, filename string)
 func (ctx *RequestContext) FileFromFS(filepath string, fs *FS)
@@ -367,225 +378,6 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
     size, _ := ctx.WriteString("hello world")// Body: "hello world", size == 11
 })
 
-```
-
-### Render
-
-设置 Status Code 并通过 Render 设置 ContentType 和 Body。(更多内容请参考 [server/render](https://github.com/cloudwego/hertz/tree/main/pkg/app/server/render))
-
-函数签名:
-
-```go
-func (ctx *RequestContext) Render(code int, r render.Render)
-```
-
-示例:
-
-```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Render(consts.StatusOK, render.String{
-        Format: "%s %s",
-        Data:   []interface{}{"hello", "world"},
-    })
-    // Status Code: 200
-    // Content-Type: text/plain; charset=utf-8 
-    // Body: hello world
-})
-```
-
-### String
-
-设置 Status Code 以及通过 render.String 设置 Body。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) String(code int, format string, values ...interface{})
-```
-
-示例:
-
-```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.String(consts.StatusOK, "%s %s", "hello", "world")
-    // Status Code: 200
-    // Content-Type: text/plain; charset=utf-8 
-    // Body: hello world
-})
-```
-
-### ProtoBuf
-
-设置 Status Code 以及通过 render.ProtoBuf 设置 Body。(更多内容请参考 [TestProtobuf](https://github.com/cloudwego/hertz/blob/main/pkg/app/context_test.go#L49))
-
-函数签名:
-
-```go
-func (ctx *RequestContext) ProtoBuf(code int, obj interface{})
-```
-
-示例:
-
-```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    obj := yourProtoStruct{...} // your proto struct here
-    ctx.ProtoBuf(consts.StatusOK, &obj)
-})
-```
-
-### JSON
-
-设置 Status Code 以及通过 render.JSONRender 设置 Body。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) JSON(code int, obj interface{})
-```
-
-示例:
-
-```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.JSON(consts.StatusOK, utils.H{
-        "foo":  "bar",
-        "html": "<b>",
-    })
-    // Status Code: 200
-    // Content-Type: application/json; charset=utf-8 
-    // Body: {"foo":"bar","html":"\u003cb\u003e"}
-})
-```
-
-### PureJSON
-
-设置 Status Code 以及通过 render.PureJSON 设置 Body。
-
-> 注意：与 JSON 不同，PureJSON 不会用 unicode 字符替换 html 特殊字符。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) PureJSON(code int, obj interface{})
-```
-
-示例:
-
-```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.JSON(consts.StatusOK, utils.H{
-        "foo":  "bar",
-        "html": "<b>",
-    })
-    // Status Code: 200
-    // Content-Type: application/json; charset=utf-8 
-    // Body: {"foo":"bar","html":"<b>"}
-})
-```
-
-### IndentedJSON
-
-设置 Status Code 以及通过 render.IndentedJSON 设置 Body。
-
-> 注意：与 JSON 不同，IndentedJSON 会提供换行与缩进。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) IndentedJSON(code int, obj interface{})
-```
-
-示例:
-
-```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.JSON(consts.StatusOK, utils.H{
-        "foo":  "bar",
-        "html": "<b>",
-    })
-    // Status Code: 200
-    // Content-Type: application/json; charset=utf-8 
-    // Body:
-    // {
-    //     "foo": "bar",
-    //     "html": "\u003cb\u003e"
-    // }
-})
-```
-
-### HTML
-
-设置 Status Code 以及通过 render.HTML 设置 Body。(更多内容请参考 [hertz-examples/render/html](https://github.com/cloudwego/hertz-examples/tree/main/render/html))
-
-函数签名:
-
-```go
-func (ctx *RequestContext) HTML(code int, name string, obj interface{})
-```
-
-示例:
-
-```go
-h.Delims("{[{", "}]}")
-h.LoadHTMLGlob("render/html/*")
-
-h.GET("/index", func(c context.Context, ctx *app.RequestContext) {
-    ctx.HTML(http.StatusOK, "index.tmpl", utils.H{
-        "title": "Main website",
-    })
-})
-```
-
-### Data
-
-设置 Status Code 以及通过 render.Data 设置 Body。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) Data(code int, contentType string, data []byte)
-```
-
-示例:
-
-```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    data := []byte(`{"foo":"bar","html":"<b>"}`)
-    ctx.Data(consts.StatusOK, "application/json; charset=utf-8", data)
-    // Status Code: 200
-    // Content-Type: application/json; charset=utf-8 
-    // Body: {"foo":"bar","html":"<b>"}
-})
-```
-
-### XML
-
-设置 Status Code 以及通过 render.XML 设置 Body。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) XML(code int, obj interface{})
-```
-
-示例:
-
-```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    type User struct {
-        XMLName  xml.Name `xml:"user"`
-        UserName string   `xml:"userName"`
-        UserAge  int64    `xml:"userAge"`
-    }
-
-    ctx.XML(consts.StatusOK, &User{
-        UserName: "foo",
-        UserAge:  10,
-    })
-    // Status Code: 200
-    // Content-Type: application/xml; charset=utf-8 
-    // Body: <user><userName>foo</userName><userAge>10</userAge></user>
-})
 ```
 
 ### File
