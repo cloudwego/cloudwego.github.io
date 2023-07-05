@@ -55,6 +55,11 @@ CloudWeGo 是一套由字节跳动开源的、可快速构建企业级云原生�
 <a href='{{< relref "shumei" >}}'>了解更多</a>
 {{< /card >}}
 
+{{< card header="字节跳动微服务体系下接口测试平台实践" img="/img/usedby/bytedance.png">}}
+字节跳动的微服务体系多样化，接口测试平台作为一款通用的平台型产品，通过 Kitex 客户端泛化调用的实现方式，带来了用户规模化、运维成本降低、响应时延降低等收益成果。<br/><br/>
+<a href='{{< relref "interface_testing" >}}'>了解更多</a>
+{{< /card >}}
+
 {{< /cardpane >}}
 
 </div>
