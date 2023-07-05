@@ -251,6 +251,11 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
         // 4. key == []byte("pets"), value == []byte("cat")
     })
 
+    // send information to io.Writer
+    req := protocol.AcquireRequest()
+	n, err := args.WriteTo(req.BodyWriter()) // n == 31 err == nil
+	s := req.BodyBuffer().String() // s == "name=bar&age=&pets=dog&pets=cat"
+	
     // change args
     var newArgs protocol.Args
     args.CopyTo(&newArgs)
@@ -325,11 +330,19 @@ URI 对象提供了以下方法获取/设置 URI。
 | `func (u *URI) Parse(host, uri []byte)`|初始化 URI|
 | `func (u *URI) AppendBytes(dst []byte) []byte`|将完整的 URI 赋值到 dst 中并返回 dst|
 | `func (u *URI) RequestURI() []byte`|获取 RequestURI，比如 <http://example.com/user?baz=123> 的 RequestURI 是 **/user?baz=123**|
-| `func (u *URI) Reset()`|重制 URI|
+| `func (u *URI) Reset()`|重置 URI|
 
 ## Header
 
 ```go
+// RequestHeader
+func (h *RequestHeader) Add(key, value string)
+func (h *RequestHeader) Set(key, value string)
+func (h *RequestHeader) Header() []byte
+func (h *RequestHeader) String() string
+func (h *RequestHeader) VisitAll(f func(key, value []byte))
+
+// RequestContext
 func (ctx *RequestContext) IsGet() bool 
 func (ctx *RequestContext) IsHead() bool
 func (ctx *RequestContext) IsPost() bool
@@ -341,61 +354,143 @@ func (ctx *RequestContext) UserAgent() []byte
 func (ctx *RequestContext) GetHeader(key string) []byte
 ```
 
-### IsGet
+### Add
 
-判断请求方法的类型是否为 `GET`。
+添加或设置键为 key 的 Header。
 
-函数签名:
+> 注意：Add 通常用于为同一个 Key 设置多个 Header，若要为同一个 Key 设置单个 Header 请使用 [Set](#set)。当作用于 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent 这些 Header 时，使用多个 Add 会覆盖掉旧值。
+
+函数签名：
 
 ```go
-func (ctx *RequestContext) IsGet() bool 
+func (h *RequestHeader) Add(key, value string)
 ```
 
-示例:
+示例：
 
 ```go
-// GET http://example.com/user
-h.Any("/user", func(c context.Context, ctx *app.RequestContext) {
-    isGet := ctx.IsGet() // isGet == true
-})
+hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
+	ctx.Request.Header.Add("hertz1", "value1")
+	ctx.Request.Header.Add("hertz1", "value2")
+	ctx.Request.Header.SetContentTypeBytes([]byte("application/x-www-form-urlencoded"))
+	contentType1 := ctx.Request.Header.ContentType() 
+    // contentType1 == []byte("application/x-www-form-urlencoded")
+	ctx.Request.Header.Add("Content-Type", "application/json; charset=utf-8")
+	hertz1 := ctx.Request.Header.GetAll("hertz1") 
+    // hertz1 == []string{"value1", "value2"}
+	contentType2 := ctx.Request.Header.ContentType() 
+    // contentType2 == []byte("application/json; charset=utf-8")
+	})
 ```
 
-### IsHead
+### Set
 
-判断请求方法的类型是否为 `HEAD`。
+设置 Header 键值。
 
-函数签名:
+> 注意：Set 通常用于为同一个 Key 设置单个 Header，若要为同一个 Key 设置多个 Header 请使用 [Add](#add)。
+
+函数签名：
 
 ```go
-func (ctx *RequestContext) IsHead() bool 
+func (h *RequestHeader) Set(key, value string)
 ```
 
-示例:
+示例：
 
 ```go
-// Head http://example.com/user
-h.Any("/user", func(c context.Context, ctx *app.RequestContext) {
-    isHead := ctx.IsHead() // isHead == true
-})
+hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
+	ctx.Request.Header.Set("hertz1", "value1")
+	ctx.Request.Header.Set("hertz1", "value2")
+	ctx.Request.Header.SetContentTypeBytes([]byte("application/x-www-form-urlencoded"))
+	contentType1 := ctx.Request.Header.ContentType() 
+    // contentType1 == []byte("application/x-www-form-urlencoded")
+	ctx.Request.Header.Set("Content-Type", "application/json; charset=utf-8")
+	hertz1 := ctx.Request.Header.GetAll("hertz1")    
+    // hertz1 == []string{"value2"}
+	contentType2 := ctx.Request.Header.ContentType() 
+    // contentType2 == []byte("application/json; charset=utf-8")
+	})
 ```
 
-### IsPost
+### Header
 
-判断请求方法的类型是否为 `POST`。
+获取 `[]byte` 类型的完整的 Header。
 
-函数签名:
+函数签名：
 
 ```go
-func (ctx *RequestContext) IsPost() bool 
+func (h *RequestHeader) Header() []byte
 ```
 
-示例:
+示例：
 
 ```go
-// POST http://example.com/user
-h.Any("/user", func(c context.Context, ctx *app.RequestContext) {
-    isPost := ctx.IsPost() // isPost == true
-})
+hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
+		ctx.Request.Header.Set("hertz1", "value1")
+		header := ctx.Request.Header.Header()
+		// header == []byte("GET /example HTTP/1.1
+		//User-Agent: PostmanRuntime-ApipostRuntime/1.1.0
+		//Host: localhost:8888
+		//Cache-Control: no-cache
+		//Accept: */*
+		//Accept-Encoding: gzip, deflate, br
+		//Connection: keep-alive
+		//Hertz1: value1")
+	})
+```
+
+### String
+
+获取完整的 Header。
+
+函数签名：
+
+```go
+func (h *RequestHeader) String() string
+```
+
+示例：
+
+```go
+hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
+		ctx.Request.Header.Set("hertz1", "value1")
+		header := ctx.Request.Header.String()
+		// header == "GET /example HTTP/1.1
+		//User-Agent: PostmanRuntime-ApipostRuntime/1.1.0
+		//Host: localhost:8888
+		//Cache-Control: no-cache
+		//Accept: */*
+		//Accept-Encoding: gzip, deflate, br
+		//Connection: keep-alive
+		//Hertz1: value1"
+	})
+```
+
+### 遍历 Header
+
+遍历所有 Header 的键值并执行 f 函数。
+
+函数签名：
+
+```go
+func (h *RequestHeader) VisitAll(f func(key, value []byte))
+```
+
+示例：
+
+```go
+hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
+	ctx.Request.Header.Add("Hertz1", "value1")
+	ctx.Request.Header.Add("Hertz1", "value2")
+
+	var hertzString []string
+	ctx.Request.Header.VisitAll(func(key, value []byte) {
+		if string(key) == "Hertz1" {
+			hertzString = append(hertzString, string(value))
+		}
+	})
+	// hertzString == []string{"value1", "value2"}
+	})
 ```
 
 ### Method
@@ -588,7 +683,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|判断是否存在 Accept-Encoding 以及 Accept-Encoding 是否包含 acceptEncoding|
 | `func (h *RequestHeader) RawHeaders() []byte`|获取原始 Header |
 | `func (h *RequestHeader) SetRawHeaders(r []byte)`  | 设置原始 Header |
-| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header。(以下 key 会覆盖 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
+| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header。( key 会覆盖以下Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
 | `func (h *RequestHeader) InitBufValue(size int)`|初始化缓冲区大小 |
 | `func (h *RequestHeader) GetBufValue() []byte`|获取缓冲区的值 |
 | `func (h *RequestHeader) SetCanonical(key, value []byte)`|设置 Header 键值，假设该键是规范形式。|
@@ -622,34 +717,8 @@ func (ctx *RequestContext) PostForm(key string) string
 func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string 
 func (ctx *RequestContext) GetPostForm(key string) (string, bool) 
 func (ctx *RequestContext) PostArgs() *protocol.Args
-```
-
-### GetRawData
-
-获取请求的 body 数据。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetRawData() []byte
-```
-
-示例:
-
-```go
-// POST http://example.com/user
-// Content-Type: application/x-www-form-urlencoded
-// pet=cat
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
-    data := ctx.GetRawData() // data == []byte("pet=cat")
-})
-
-// POST http://example.com/pet
-// Content-Type: application/json
-// {"pet":"cat"}
-h.Post("/pet", func(c context.Context, ctx *app.RequestContext) {
-    data := ctx.GetRawData() // data == []byte("{\"pet\":\"cat\"}")
-})
+func (ctx *RequestContext) FormValue(key string) []byte 
+func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc)  
 ```
 
 ### Body
@@ -814,31 +883,6 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
-### GetPostForm
-
-按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值以及值是否存在。
-
-> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的content-type中获取 value 值。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetPostForm(key string) (string, bool) 
-```
-
-示例:
-
-```go
-// POST http://example.com/user
-// Content-Type: multipart/form-data; 
-// Content-Disposition: form-data; name="name"
-// tom
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    name, existName := ctx.GetPostForm("name") // name == "tom", existName == true
-    age, existAge := ctx.GetPostForm("age") // age == "", existAge == false
-})
-```
-
 ### PostArgs
 
 获取 `application/x-www-form-urlencoded` 参数对象。(详情请参考 [Args 对象](#args-对象))
@@ -869,10 +913,78 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
-## 其他
+### FormValue
+
+按照以下顺序获取 key 的值。
+
+1. 从 [QueryArgs](#queryargs) 中获取值。
+2. 从 [PostArgs](#postargs) 中获取值。
+3. 从 [MultipartForm](#multipartform) 中获取值。
+
+函数签名:
 
 ```go
-// Key-Value
+func (ctx *RequestContext) FormValue(key string) []byte 
+```
+
+示例:
+
+```go
+// POST http://example.com/user?name=tom
+// Content-Type: application/x-www-form-urlencoded
+// age=10
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    name := ctx.FormValue("name") // name == []byte("tom"), get by QueryArgs
+    age := ctx.FormValue("age") // age == []byte("10"), get by PostArgs
+})
+
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="name"
+// tom
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    name := ctx.FormValue("name") // name == []byte("tom"), get by MultipartForm
+})
+```
+
+### SetFormValueFunc
+
+设置 FormValue 函数。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc) 
+```
+
+示例:
+
+```go
+// POST http://example.com/user?name=tom
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="age"
+// 10
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    // only return multipart form value
+    ctx.SetFormValueFunc(func(rc *app.RequestContext, s string) []byte {
+        mf, err := rc.MultipartForm()
+        if err == nil && mf.Value != nil {
+            vv := mf.Value[s]
+            if len(vv) > 0 {
+                return []byte(vv[0])
+            }
+        }
+        return nil
+    })
+
+    name := ctx.FormValue("name") // name == nil
+    age := ctx.FormValue("age")   // age == []byte("10")
+})
+```
+
+## RequestContext 中存储数据
+
+```go
 func (ctx *RequestContext) Set(key string, value interface{})
 func (ctx *RequestContext) Value(key interface{}) interface{}
 func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)
@@ -894,48 +1006,6 @@ func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{})
 func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string) 
 func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string) 
 func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{})) 
-
-// Handler
-func (ctx *RequestContext) Next(c context.Context) 
-func (ctx *RequestContext) Handlers() HandlersChain 
-func (ctx *RequestContext) Handler() HandlerFunc 
-func (ctx *RequestContext) SetHandlers(hc HandlersChain) 
-func (ctx *RequestContext) HandlerName() string 
-func (ctx *RequestContext) GetIndex() int8 
-func (ctx *RequestContext) Abort() 
-func (ctx *RequestContext) IsAborted() bool 
-
-// Trace
-func (ctx *RequestContext) GetTraceInfo() traceinfo.TraceInfo 
-func (ctx *RequestContext) SetTraceInfo(t traceinfo.TraceInfo) 
-func (ctx *RequestContext) IsEnableTrace() bool 
-func (ctx *RequestContext) SetEnableTrace(enable bool) 
-
-// Conn
-func (ctx *RequestContext) SetConn(c network.Conn) 
-func (ctx *RequestContext) GetConn() network.Conn 
-func (ctx *RequestContext) GetReader() network.Reader 
-func (ctx *RequestContext) GetWriter() network.Writer 
-func (ctx *RequestContext) RemoteAddr() net.Addr 
-func (ctx *RequestContext) ClientIP() string 
-func (ctx *RequestContext) SetClientIPFunc(f ClientIP) 
-func (ctx *RequestContext) Hijack(handler HijackHandler) 
-func (ctx *RequestContext) SetHijackHandler(h HijackHandler) 
-func (ctx *RequestContext) GetHijackHandler() HijackHandler 
-func (ctx *RequestContext) Hijacked() bool 
-
-// Other
-func (ctx *RequestContext) FormValue(key string) []byte 
-func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc) 
-func (ctx *RequestContext) Bind(obj interface{}) error 
-func (ctx *RequestContext) Validate(obj interface{}) error 
-func (ctx *RequestContext) BindAndValidate(obj interface{}) error 
-func (ctx *RequestContext) ResetWithoutConn() 
-func (ctx *RequestContext) Reset() 
-func (ctx *RequestContext) Finished() <-chan struct{} 
-func (ctx *RequestContext) Copy() *RequestContext 
-func (ctx *RequestContext) Error(err error) *errors.Error 
-func (ctx *RequestContext) GetRequest() (dst *protocol.Request) 
 ```
 
 ### Set
@@ -1346,6 +1416,19 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
+## Handler
+
+```go
+func (ctx *RequestContext) Next(c context.Context) 
+func (ctx *RequestContext) Handlers() HandlersChain 
+func (ctx *RequestContext) Handler() HandlerFunc 
+func (ctx *RequestContext) SetHandlers(hc HandlersChain) 
+func (ctx *RequestContext) HandlerName() string 
+func (ctx *RequestContext) GetIndex() int8 
+func (ctx *RequestContext) Abort() 
+func (ctx *RequestContext) IsAborted() bool
+```
+
 ### Next
 
 执行下一个 handler，该函数通常用于中间件 handler 中。
@@ -1525,9 +1608,128 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
+## 参数绑定与校验
+
+(更多内容请参考 [binding-and-validate](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate))
+
+```go
+func (ctx *RequestContext) Bind(obj interface{}) error 
+func (ctx *RequestContext) Validate(obj interface{}) error 
+func (ctx *RequestContext) BindAndValidate(obj interface{}) error
+```
+
+## ClientIP
+
+```go
+func (ctx *RequestContext) ClientIP() string 
+func (ctx *RequestContext) SetClientIPFunc(f ClientIP) 
+```
+
+### ClientIP
+
+获取客户端 IP 的地址。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) ClientIP() string 
+```
+
+示例:
+
+```go
+h.Use(func(c context.Context, ctx *app.RequestContext) {
+    ip := ctx.ClientIP() // example: 127.0.0.1
+})
+```
+
+### SetClientIPFunc
+
+设置获取客户端 IP 的地址的函数。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SetClientIPFunc(f ClientIP) 
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// X-Forwarded-For: 203.0.113.195
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ip := ctx.ClientIP() // ip == "127.0.0.1"
+
+    opts := app.ClientIPOptions{
+        RemoteIPHeaders: []string{"X-Forwarded-For", "X-Real-IP"},
+        TrustedProxies:  map[string]bool{ip: true},
+    }
+    ctx.SetClientIPFunc(app.ClientIPWithOption(opts))
+
+    ip = ctx.ClientIP() // ip == "203.0.113.195"
+    ctx.String(consts.StatusOK, ip)
+})
+```
+
+## 并发安全
+
+```go
+func (ctx *RequestContext) Copy() *RequestContext
+```
+
+### Copy
+
+拷贝 RequestContext 副本，提供协程安全的访问方式。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) Copy() *RequestContext 
+```
+
+示例:
+
+```go
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx1 := ctx.Copy()
+    go func(context *app.RequestContext) {
+        // safely
+    }(ctx1)
+})
+```
+
+## 其他
+
+```go 
+// Trace
+func (ctx *RequestContext) GetTraceInfo() traceinfo.TraceInfo 
+func (ctx *RequestContext) SetTraceInfo(t traceinfo.TraceInfo) 
+func (ctx *RequestContext) IsEnableTrace() bool 
+func (ctx *RequestContext) SetEnableTrace(enable bool) 
+
+// Conn
+func (ctx *RequestContext) SetConn(c network.Conn) 
+func (ctx *RequestContext) GetConn() network.Conn 
+func (ctx *RequestContext) GetReader() network.Reader 
+func (ctx *RequestContext) GetWriter() network.Writer 
+func (ctx *RequestContext) RemoteAddr() net.Addr 
+func (ctx *RequestContext) Hijack(handler HijackHandler) 
+func (ctx *RequestContext) SetHijackHandler(h HijackHandler) 
+func (ctx *RequestContext) GetHijackHandler() HijackHandler 
+func (ctx *RequestContext) Hijacked() bool 
+
+// Other
+func (ctx *RequestContext) ResetWithoutConn() 
+func (ctx *RequestContext) Reset() 
+func (ctx *RequestContext) Finished() <-chan struct{}  
+func (ctx *RequestContext) Error(err error) *errors.Error 
+func (ctx *RequestContext) GetRequest() (dst *protocol.Request) 
+```
+
 ### SetTraceInfo
 
-设置 TraceInfo。(更多内容请参考 [hertz-contrib/obs-opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry))
+设置 TraceInfo。(更多内容请参考 [链路追踪](/zh/docs/hertz/tutorials/observability/tracing/))
 
 函数签名:
 
@@ -1547,7 +1749,7 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### GetTraceInfo
 
-获取 TraceInfo。(更多内容请参考 [hertz-contrib/tracer](https://github.com/hertz-contrib/tracer))
+获取 TraceInfo。(更多内容请参考 [链路追踪](/zh/docs/hertz/tutorials/observability/tracing/))
 
 函数签名:
 
@@ -1603,7 +1805,7 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### SetConn
 
-设置 network.Conn。(更多内容请参考 [mock/network.go](https://github.com/cloudwego/hertz/blob/develop/pkg/common/test/mock/network.go#L151))
+设置 network.Conn。(更多内容请参考 [网络库扩展](/zh/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/))
 
 函数签名:
 
@@ -1621,7 +1823,7 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### GetConn
 
-获取 network.Conn。(更多内容请参考 [mock/network.go](https://github.com/cloudwego/hertz/blob/develop/pkg/common/test/mock/network.go#L151))
+获取 network.Conn。(更多内容请参考 [网络库扩展](/zh/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/))
 
 函数签名:
 
@@ -1639,7 +1841,7 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### GetReader
 
-获取 network.Conn 的 network.Reader 接口。(更多内容请参考 [http1/server.go](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/server.go#L80))
+获取 network.Conn 的 network.Reader 接口。(更多内容请参考 [网络库扩展](/zh/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/))
 
 函数签名:
 
@@ -1649,7 +1851,7 @@ func (ctx *RequestContext) GetReader() network.Reader
 
 ### GetWriter
 
-获取 network.Conn 的 network.Writer 接口。(更多内容请参考 [http1/server.go](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/server.go#L80))
+获取 network.Conn 的 network.Writer 接口。(更多内容请参考 [网络库扩展](/zh/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/))
 
 函数签名:
 
@@ -1676,56 +1878,9 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
-### ClientIP
-
-获取客户端 IP 的地址。(更多内容请参考 [ClientIPWithOption](https://github.com/cloudwego/hertz/blob/develop/pkg/app/context.go#L86))
-
-函数签名:
-
-```go
-func (ctx *RequestContext) ClientIP() string 
-```
-
-示例:
-
-```go
-h.Use(func(c context.Context, ctx *app.RequestContext) {
-    ip := ctx.ClientIP() // example: 127.0.0.1
-})
-```
-
-### SetClientIPFunc
-
-设置获取客户端 IP 的地址的函数。(更多内容请参考 [ClientIPWithOption](https://github.com/cloudwego/hertz/blob/develop/pkg/app/context.go#L86))
-
-函数签名:
-
-```go
-func (ctx *RequestContext) SetClientIPFunc(f ClientIP) 
-```
-
-示例:
-
-```go
-// POST http://example.com/user
-// X-Forwarded-For: 203.0.113.195
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ip := ctx.ClientIP() // ip == "127.0.0.1"
-
-    opts := app.ClientIPOptions{
-        RemoteIPHeaders: []string{"X-Forwarded-For", "X-Real-IP"},
-        TrustedProxies:  map[string]bool{ip: true},
-    }
-    ctx.SetClientIPFunc(app.ClientIPWithOption(opts))
-
-    ip = ctx.ClientIP() // ip == "203.0.113.195"
-    ctx.String(consts.StatusOK, ip)
-})
-```
-
 ### Hijack
 
-设置 handler 去劫持 network.Conn。(更多内容请参考 [hertz-contrib/websocket](https://github.com/hertz-contrib/websocket/blob/ba132d3eae952e3f17f233e0158652edeac76b65/server.go#L196))
+设置 handler 去劫持 network.Conn。(更多内容请参考 [Websocket](/zh/docs/hertz/tutorials/basic-feature/protocol/websocket/))
 
 函数签名:
 
@@ -1763,105 +1918,6 @@ func (ctx *RequestContext) GetHijackHandler() HijackHandler
 func (ctx *RequestContext) Hijacked() bool 
 ```
 
-### FormValue
-
-按照以下顺序获取 key 的值。
-
-1. 从 [QueryArgs](#queryargs) 中获取值。
-2. 从 [PostArgs](#postargs) 中获取值。
-3. 从 [MultipartForm](#multipartform) 中获取值。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) FormValue(key string) []byte 
-```
-
-示例:
-
-```go
-// POST http://example.com/user?name=tom
-// Content-Type: application/x-www-form-urlencoded
-// age=10
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    name := ctx.FormValue("name") // name == []byte("tom"), get by QueryArgs
-    age := ctx.FormValue("age") // age == []byte("10"), get by PostArgs
-})
-
-// POST http://example.com/user
-// Content-Type: multipart/form-data; 
-// Content-Disposition: form-data; name="name"
-// tom
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    name := ctx.FormValue("name") // name == []byte("tom"), get by MultipartForm
-})
-```
-
-### SetFormValueFunc
-
-设置 FormValue 函数。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc) 
-```
-
-示例:
-
-```go
-// POST http://example.com/user?name=tom
-// Content-Type: multipart/form-data; 
-// Content-Disposition: form-data; name="age"
-// 10
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    // only return multipart form value
-    ctx.SetFormValueFunc(func(rc *app.RequestContext, s string) []byte {
-        mf, err := rc.MultipartForm()
-        if err == nil && mf.Value != nil {
-            vv := mf.Value[s]
-            if len(vv) > 0 {
-                return []byte(vv[0])
-            }
-        }
-        return nil
-    })
-
-    name := ctx.FormValue("name") // name == nil
-    age := ctx.FormValue("age")   // age == []byte("10")
-})
-```
-
-### Bind
-
-将请求参数绑定到到 obj 中。(更多内容请参考 [binding-and-validate](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate))
-
-函数签名:
-
-```go
-func (ctx *RequestContext) Bind(obj interface{}) error 
-```
-
-### Validate
-
-验证请求参数是否合法。(更多内容请参考 [binding-and-validate](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate))
-
-函数签名:
-
-```go
-func (ctx *RequestContext) Validate(obj interface{}) error 
-```
-
-### BindAndValidate
-
-绑定请求参数到 obj 中并验证参数是否合法。(更多内容请参考 [binding-and-validate](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate))
-
-函数签名:
-
-```go
-func (ctx *RequestContext) BindAndValidate(obj interface{}) error 
-```
-
 ### Finished
 
 用于等待请求结束，通常由 [ResetWithoutConn](#resetwithoutconn) 触发。
@@ -1870,27 +1926,6 @@ func (ctx *RequestContext) BindAndValidate(obj interface{}) error
 
 ```go
 func (ctx *RequestContext) Finished() <-chan struct{} 
-```
-
-### Copy
-
-拷贝 RequestContext 副本，提供协程安全的访问方式。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) Copy() *RequestContext 
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx1 := ctx.Copy()
-    go func(context *app.RequestContext) {
-        // safely
-    }(ctx1)
-})
 ```
 
 ### Error
@@ -1928,7 +1963,7 @@ func (ctx *RequestContext) ResetWithoutConn()
 
 ### Reset
 
-重置 RequestContext，通常会把重置后的 RequestContext 通过 `sync.Pool` 存取。(更多内容请参考 [protocol/http1](https://github.com/cloudwego/hertz/blob/0d8b98bc8cf61c16866359e551959e962597d33f/pkg/protocol/http1/server.go#L133))
+重置 RequestContext，通常会把重置后的 RequestContext 通过 `sync.Pool` 存取。
 
 > 注意：这是一个内部函数
 
@@ -1940,7 +1975,7 @@ func (ctx *RequestContext) Reset()
 
 ### GetRequest
 
-获取 Request 的副本，通常与 [adaptor](https://github.com/cloudwego/hertz/blob/develop/pkg/common/adaptor/request.go) 一起使用。(更多内容请参考 [hertz-contrib/pprof](https://github.com/hertz-contrib/pprof/blob/main/adaptor/handler.go#L93))
+获取 Request 的副本，通常与 [adaptor](/zh/docs/hertz/tutorials/basic-feature/adaptor/) 一起使用。
 
 函数签名:
 
