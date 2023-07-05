@@ -106,7 +106,9 @@ weight: 6
 
 当平台用户的请求入参以及客户端代码的存储路径作为变量注入到模板代码里，就可以生成可正常向被测服务发送 RPC 请求的代码。这些代码经过编译生成可执行文件，最终会保存在文件系统中。之后，Explorer 调用这些可执行文件向被测服务发送 RPC 请求。
 
-![interface_testing6](/img/users/interface_testing/interface_testing6.png "发送 RPC 请求的模板代码")
+![interface_testing6](/img/users/interface_testing/interface_testing6.png)
+
+<center>发送 RPC 请求的模板代码</center>
 
 这就是 1. 0 系统的实现方案，逻辑上是比较简单清晰的。
 
@@ -134,7 +136,9 @@ weight: 6
 
 先来了解一下 gRPC 服务端反射的实现方式。gRPC 框架提供了一种服务端反射的技术实现来支持实现泛化调用，像 grpcurl 这种工具就支持了 gRPC 的服务端反射。常规的交互流程，如下图所示。
 
-![interface_testing7](/img/users/interface_testing/interface_testing7.png "业界基于 gRPC 服务端反射实现泛化调用的方式")
+![interface_testing7](/img/users/interface_testing/interface_testing7.png)
+
+<center>业界基于 gRPC 服务端反射实现泛化调用的方式</center>
 
 首先 gRPC server 除了对外提供自身的业务服务之外，还会注册一个反射服务。这个反射服务可以用来获取接口定义、请求参数、响应参数等等这些与服务定义相关的信息。有了服务定义的信息，客户端就可以将 JSON 这类明文请求映射成 Protobuf 的序列化协议，然后发起 RPC 调用。这种实现方式的优势在于：第一，**客户端本身不持有** **IDL** **信息，由服务端暴露 IDL 信息**，因此客户端依然足够轻量；第二，客户端所使用的服务端描述信息一定是与正在运行的被测服务保持一致的。
 
@@ -170,7 +174,9 @@ weight: 6
 
 这张图是 Executor 服务的流程图，我们来看一下它是怎么向被测服务去发起 RPC 调用的。
 
-![interface_testing9](/img/users/interface_testing/interface_testing9.png "Executor 结合 Kitex 泛化调用的实现")
+![interface_testing9](/img/users/interface_testing/interface_testing9.png)
+
+<center>Executor 结合 Kitex 泛化调用的实现</center>
 
 Executor 收到的请求会携带有被测服务的名字、要测试的接口，以及用 JSON 明文表达的请求体，还会有 IDL 分支等等这些信息，这些信息我们在后面的流程都会去使用到。
 
