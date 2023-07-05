@@ -9,7 +9,6 @@ weight: 6
 > 
 > **🔗 回放链接：** https://juejin.cn/live/cloudwegoday002
 
-
 ## 嘉宾介绍
 
 ![interface_testing1](/img/users/interface_testing/interface_testing1.png)
@@ -34,7 +33,6 @@ weight: 6
 下图是字节跳动微服务在内部环境的常见部署情况，从这张图中我们可以看到，在这个环境中部署了 3 个微服务，其中 service 1 是一个 HTTP 的服务，service 2 和 service 3 是一个 RPC 服务，它们都是基于 IDL 去定义它们的接口，服务之间的 RPC 通信通常会依赖下游的生成代码去进行。
 
 ![interface_testing2](/img/users/interface_testing/interface_testing2.png)
-
 
 可以注意到，这些微服务所使用的 RPC 协议和服务端语言是各种各样的。字节跳动内部支持的 RPC 协议除了用的最多的 Thrift 协议,还有会有 gRPC 和 Kitex Protobuffer 协议。服务端的语言除了常用的 Golang 和 Python，还会用到比如 C ++、Java 和 Rust 等语言。所以总结下来，字节跳动的微服务体系是比较多样化和开放的。
 
@@ -71,7 +69,6 @@ weight: 6
 
 ![interface_testing3](/img/users/interface_testing/interface_testing3.png)
 
-
 **接口测试平台的主要功能点**
 
 -   支持 Thrift 和 HTTP 两种协议
@@ -89,11 +86,7 @@ weight: 6
 
 这个篇幅会着重介绍 RPC 协议接口测试的实现方案。下图展示了一次 RPC 接口调用的常规执行流程。
 
-  
-
-
 ![interface_testing4](/img/users/interface_testing/interface_testing4.png)
-
 
 客户端为了向服务端发起 RPC 接口调用，会依赖 IDL 文件生成代码，这部分生成代码会包括两部分：一部分是结构体的编解码序列化代码，另一部分是可发起 RPC 调用的桩代码。有了这两部分代码之后，客户端就可以采用高效的序列化协议来向服务端发送二进制的字节流。
 
@@ -107,19 +100,13 @@ weight: 6
 
 ![interface_testing5](/img/users/interface_testing/interface_testing5.png)
 
-
-  
-
-
 图中的 Explorer 是接口测试平台的服务，当它接收到平台用户配置好的 RPC 请求，最终的目的是希望能调用 Kitex 客户端向被测服务发送 RPC 请求。那么为了完成这件事情，Explorer 首先会从 API 元数据中心查询被测服务的 IDL 信息，然后用 Kitex 命令结合 IDL 文件生成被测服务的客户端代码并保存在文件系统。
 
 有了可以发起 RPC 调用的客户端代码，那么我们接下来的步骤就比较关键了。我们事先在系统里面去定义好了一段发送 RPC 请求的模板代码，这段代码有 main 函数，最终可以将它编译成一个可执行文件。模板代码里面还抽象了两个函数：一个是获取 RPC 客户端的函数，另一个是执行 RPC 请求的函数。
 
 当平台用户的请求入参以及客户端代码的存储路径作为变量注入到模板代码里，就可以生成可正常向被测服务发送 RPC 请求的代码。这些代码经过编译生成可执行文件，最终会保存在文件系统中。之后，Explorer 调用这些可执行文件向被测服务发送 RPC 请求。
 
-![interface_testing6](/img/users/interface_testing/interface_testing6.png)
-
-发送 RPC 请求的模板代码
+![interface_testing6](/img/users/interface_testing/interface_testing6.png "发送 RPC 请求的模板代码")
 
 这就是 1. 0 系统的实现方案，逻辑上是比较简单清晰的。
 
@@ -147,10 +134,7 @@ weight: 6
 
 先来了解一下 gRPC 服务端反射的实现方式。gRPC 框架提供了一种服务端反射的技术实现来支持实现泛化调用，像 grpcurl 这种工具就支持了 gRPC 的服务端反射。常规的交互流程，如下图所示。
 
-![interface_testing7](/img/users/interface_testing/interface_testing7.png)
-
-
-业界基于 gRPC 服务端反射实现泛化调用的方式
+![interface_testing7](/img/users/interface_testing/interface_testing7.png "业界基于 gRPC 服务端反射实现泛化调用的方式")
 
 首先 gRPC server 除了对外提供自身的业务服务之外，还会注册一个反射服务。这个反射服务可以用来获取接口定义、请求参数、响应参数等等这些与服务定义相关的信息。有了服务定义的信息，客户端就可以将 JSON 这类明文请求映射成 Protobuf 的序列化协议，然后发起 RPC 调用。这种实现方式的优势在于：第一，**客户端本身不持有** **IDL** **信息，由服务端暴露 IDL 信息**，因此客户端依然足够轻量；第二，客户端所使用的服务端描述信息一定是与正在运行的被测服务保持一致的。
 
@@ -171,8 +155,8 @@ weight: 6
 
 ![interface_testing8](/img/users/interface_testing/interface_testing8.png)
 
-
-> **Executor**：从 API 元数据中心拉取 IDL，新建 Kitex 泛化客户端缓存 Kitex 泛化客户端，基于 IDL 动态实时更新 Kitex 泛化客户端 **Broker**：基于同机房的服务发现策略，选择最适合被测服务的 Executor
+> **Executor**：从 API 元数据中心拉取 IDL，新建 Kitex 泛化客户端缓存 Kitex 泛化客户端，基于 IDL 动态实时更新 Kitex 泛化客户端
+> **Broker**：基于同机房的服务发现策略，选择最适合被测服务的 Executor
 
 系统从 1.0 的有服有状态服务演变成了 2.0 这种可扩展的分层架构。其中我们的 Executor 和 blocker 是两个核心的服务。
 
@@ -186,10 +170,7 @@ weight: 6
 
 这张图是 Executor 服务的流程图，我们来看一下它是怎么向被测服务去发起 RPC 调用的。
 
-![interface_testing9](/img/users/interface_testing/interface_testing9.png)
-
-
-Executor 结合 Kitex 泛化调用的实现
+![interface_testing9](/img/users/interface_testing/interface_testing9.png "Executor 结合 Kitex 泛化调用的实现")
 
 Executor 收到的请求会携带有被测服务的名字、要测试的接口，以及用 JSON 明文表达的请求体，还会有 IDL 分支等等这些信息，这些信息我们在后面的流程都会去使用到。
 
@@ -203,15 +184,15 @@ Executor 收到的请求会携带有被测服务的名字、要测试的接口�
 
 随着我们平台逐渐切换到了 2.0 的一个系统，我们也取得了一些收益成果。
 
-1.  **用户规模化**
+1. **用户规模化**
 
 目前字节跳动内部大多数 Thrfit 协议和 HTTP 协议的服务，基本都能使用接口测试平台去做测试。
 
-2.  **运维成本降低**
+2. **运维成本降低**
 
 系统不再需要在文件系统里管理 IDL 生成的客户端代码，服务可以做到容器化、无状态化、可扩展。当平台需要支持业务测试一个新机房时，我们只需要在这个机房把执行器，也就是 Executor 服务给部署起来就好了。
 
-3.  **响应时延降低约50%~90%**
+3. **响应时延降低约50%~90%**
 
 虽然泛化调用相对于依赖 IDL 生成代码的方式，性能上是有损耗的，但是 1. 0 系统是需要额外增加两次 Shell 命令的执行开销，它所带来的成本是远远高于泛化调用带来的额外性能损耗。当被测试的服务的接口时延比较低时，这两次 Shell 命令的执行耗时占比就会很高，所以我们的响应时延最高能够降低约 90% 左右。
 
@@ -225,7 +206,7 @@ Executor 收到的请求会携带有被测服务的名字、要测试的接口�
 
 ## 未来展望
 
-1.  ### 提升系统性能和稳定性
+### 提升系统性能和稳定性
 
 -   降低接口测试请求的时延
 -   提高客户端缓存池的命中率
@@ -244,10 +225,10 @@ Executor 收到的请求会携带有被测服务的名字、要测试的接口�
 
 以上这些都是我们未来希望在系统性能和稳定性方向所做的一些长期工作。
 
-2.  ### 提升用户体验
+### 提升用户体验
 
 用户目前反映他们在做接口测试，最大的一个痛点主要来自于请求参数的构造。举个场景，我们的业务方，他们接入层的服务是需要验证请求头部所携带的一些票据信息的。现在业务方测试接入层的接口的时候，是需要先用一些抓包工具去抓取客户端的请求，然后导出 curl 命令，提取请求头部的票据信息，最后拷贝到接口测试平台去测试接入层的 HTTP 接口。整个流程体验下来其实是不够高效的，构造请求参数也是比较困难的，所以我们尝试在平台里面将这套流程自动化。比如我们希望结合 Service Mesh 的能力，将请求流量自动抓取下来，然后提取里面的票据信息，帮用户自动构造好请求。这是我们期望去解决的一个问题。
 
-3.  ### 产品功能增强
+### 产品功能增强
 
 最后，希望增强产品功能，比如我们支持更多的协议类型，支持GRPC，支持 Kitex Protobuf，支持这些协议能更好地覆盖业务的使用面，同时也希望能够增强执行接口测试时候的常用功能，比如对请求结果做断言，比如在请求结束的时候自动地生成测试报告。这些都是我们未来希望去做的事情。
