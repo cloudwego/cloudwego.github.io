@@ -253,8 +253,10 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
     // send information to io.Writer
     req := protocol.AcquireRequest()
-	n, err := args.WriteTo(req.BodyWriter()) // n == 31 err == nil
-	s := req.BodyBuffer().String() // s == "name=bar&age=&pets=dog&pets=cat"
+	n, err := args.WriteTo(req.BodyWriter())
+    // n == 31 err == nil
+	s := req.BodyBuffer().String()
+    // s == "name=bar&age=&pets=dog&pets=cat"
 	
     // change args
     var newArgs protocol.Args
