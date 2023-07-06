@@ -157,17 +157,31 @@ func main() {
 
 ## Configuration
 
+### Generic Configuration
+
 | Configuration                 | Default | Description                                                  |
-| ----------------------------- | ------- | ------------------------------------------------------------ |
-| WithCacheStrategyByRequest    | nil     | Used to set custom caching policies                          |
+| :---------------------------- | ------- | ------------------------------------------------------------ |
 | WithOnHitCache                | nil     | Used to set the callback function after a cache hits         |
 | WithOnMissCache               | nil     | Used to set the callback function for cache misses           |
 | WithBeforeReplyWithCache      | nil     | Used to set the callback function before returning the cached response |
 | WithOnShareSingleFlight       | nil     | Used to set the callback function when the result of a SingleFlight is shared by the request |
 | WithSingleFlightForgetTimeout | 0       | Used to set the timeout for SingleFlight                     |
-| WithIgnoreQueryOrder          | false   | Used to set the order in which query parameters are ignored when using a URI as the cached Key |
 | WithPrefixKey                 | ""      | Used to set the prefix of the cache response key             |
 | WithoutHeader                 | false   | Used to set whether response headers need to be cached       |
+
+### Additional Configuration for Each Mode
+
+#### NewCache Mode
+
+| Configuration              | Default | Description                         |
+| -------------------------- | ------- | ----------------------------------- |
+| WithCacheStrategyByRequest | nil     | Used to set custom caching policies |
+
+#### NewCacheByRequestURI Mode
+
+| Configuration        | Default | Description                                                  |
+| -------------------- | ------- | ------------------------------------------------------------ |
+| WithIgnoreQueryOrder | false   | Used to set the order in which query parameters are ignored when using a URI as the cached Key |
 
 ### WithCacheStrategyByRequest
 
