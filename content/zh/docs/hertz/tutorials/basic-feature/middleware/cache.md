@@ -157,17 +157,31 @@ func main() {
 
 ## 配置
 
-| 配置                          | 默认值 | 介绍                                                      |
-| ----------------------------- | ------ | --------------------------------------------------------- |
-| WithCacheStrategyByRequest    | nil    | 用于设置自定义的缓存策略                                  |
-| WithOnHitCache                | nil    | 用于设置缓存命中的回调函数                                |
-| WithOnMissCache               | nil    | 用于设置缓存未命中的回调函数                              |
-| WithBeforeReplyWithCache      | nil    | 用于设置返回缓存响应前的回调函数                          |
-| WithOnShareSingleFlight       | nil    | 用于设置请求共享 SingleFlight 结果时的回调函数            |
-| WithSingleFlightForgetTimeout | 0      | 用于设置 SingleFlight 的超时时间                          |
-| WithIgnoreQueryOrder          | false  | 用于设置当使用 URI 为缓存的 Key 时，忽略 query 参数的顺序 |
-| WithPrefixKey                 | ""     | 用于设置缓存响应 Key 的前缀                               |
-| WithoutHeader                 | false  | 用于设置是否需要缓存响应头                                |
+### 通用配置
+
+| 配置                          | 默认值 | 介绍                                           |
+| ----------------------------- | ------ | ---------------------------------------------- |
+| WithOnHitCache                | nil    | 用于设置缓存命中的回调函数                     |
+| WithOnMissCache               | nil    | 用于设置缓存未命中的回调函数                   |
+| WithBeforeReplyWithCache      | nil    | 用于设置返回缓存响应前的回调函数               |
+| WithOnShareSingleFlight       | nil    | 用于设置请求共享 SingleFlight 结果时的回调函数 |
+| WithSingleFlightForgetTimeout | 0      | 用于设置 SingleFlight 的超时时间               |
+| WithPrefixKey                 | ""     | 用于设置缓存响应 Key 的前缀                    |
+| WithoutHeader                 | false  | 用于设置是否需要缓存响应头                     |
+
+### 各模式的额外配置
+
+#### NewCache模式
+
+| 配置                       | 默认值 | 介绍                     |
+| -------------------------- | ------ | :----------------------- |
+| WithCacheStrategyByRequest | nil    | 用于设置自定义的缓存策略 |
+
+#### NewCacheByRequestURI模式
+
+| 配置                 | 默认值 | 介绍                                                      |
+| -------------------- | ------ | --------------------------------------------------------- |
+| WithIgnoreQueryOrder | false  | 用于设置当使用 URI 为缓存的 Key 时，忽略 query 参数的顺序 |
 
 ### WithCacheStrategyByRequest
 
