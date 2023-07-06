@@ -986,29 +986,31 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ## RequestContext 元数据存储
 
-```go
-func (ctx *RequestContext) Set(key string, value interface{})
-func (ctx *RequestContext) Value(key interface{}) interface{}
-func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)
-func (ctx *RequestContext) MustGet(key string) interface{} 
-func (ctx *RequestContext) GetString(key string) (s string) 
-func (ctx *RequestContext) GetBool(key string) (b bool) 
-func (ctx *RequestContext) GetInt(key string) (i int) 
-func (ctx *RequestContext) GetInt32(key string) (i32 int32) 
-func (ctx *RequestContext) GetInt64(key string) (i64 int64) 
-func (ctx *RequestContext) GetUint(key string) (ui uint) 
-func (ctx *RequestContext) GetUint32(key string) (ui32 uint32) 
-func (ctx *RequestContext) GetUint64(key string) (ui64 uint64) 
-func (ctx *RequestContext) GetFloat32(key string) (f32 float32) 
-func (ctx *RequestContext) GetFloat64(key string) (f64 float64) 
-func (ctx *RequestContext) GetTime(key string) (t time.Time) 
-func (ctx *RequestContext) GetDuration(key string) (d time.Duration) 
-func (ctx *RequestContext) GetStringSlice(key string) (ss []string) 
-func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{}) 
-func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string) 
-func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string) 
-func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{})) 
-```
+> 注意：RequestContext 在请求结束后会被回收，元数据会被置为 nil。如需异步使用，请使用 [Copy](#copy) 方法。
+
+|函数签名 | 说明 |
+|:--|:--|
+| `func (ctx *RequestContext) Set(key string, value interface{})`|在上下文中存储键值对|
+| `func (ctx *RequestContext) Value(key interface{}) interface{}`|获取上下文键为 key 的值|
+| `func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)`|获取上下文键为 key 的值以及 key 是否存在|
+| `func (ctx *RequestContext) MustGet(key string) interface{}`|获取上下文键为 key 的值，如果不存在会发生 panic|
+| `func (ctx *RequestContext) GetString(key string) (s string)`|获取上下文键为 key 的值，并转换为 `string` 类型|
+| `func (ctx *RequestContext) GetBool(key string) (b bool)`|获取上下文键为 key 的值，并转换为 `bool` 类型|
+| `func (ctx *RequestContext) GetInt(key string) (i int)`|获取上下文键为 key 的值，并转换为 `int` 类型|
+| `func (ctx *RequestContext) GetInt32(key string) (i32 int32)`|获取上下文键为 key 的值，并转换为 `int32` 类型|
+| `func (ctx *RequestContext) GetInt64(key string) (i64 int64)`|获取上下文键为 key 的值，并转换为 `int64` 类型|
+| `func (ctx *RequestContext) GetUint(key string) (ui uint)`|获取上下文键为 key 的值，并转换为 `uint` 类型|
+| `func (ctx *RequestContext) GetUint32(key string) (ui32 uint32)`|获取上下文键为 key 的值，并转换为 `uint32` 类型|
+| `func (ctx *RequestContext) GetUint64(key string) (ui64 uint64)`|获取上下文键为 key 的值，并转换为 `uint64` 类型|
+| `func (ctx *RequestContext) GetFloat32(key string) (f32 float32)`|获取上下文键为 key 的值，并转换为 `float32` 类型|
+| `func (ctx *RequestContext) GetFloat64(key string) (f64 float64)`|获取上下文键为 key 的值，并转换为 `float64` 类型|
+| `func (ctx *RequestContext) GetTime(key string) (t time.Time)`|获取上下文键为 key 的值，并转换为 `time.Time` 类型|
+| `func (ctx *RequestContext) GetDuration(key string) (d time.Duration)`|获取上下文键为 key 的值，并转换为 `time.Duration` 类型|
+| `func (ctx *RequestContext) GetStringSlice(key string) (ss []string)`|获取上下文键为 key 的值，并转换为 `[]string` 类型|
+| `func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{})`|获取上下文键为 key 的值，并转换为 `map[string]interface{}` 类型|
+| `func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string)`|获取上下文键为 key 的值，并转换为 `map[string]string` 类型|
+| `func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string)`|获取上下文键为 key 的值，并转换为 `map[string][]string` 类型|
+| `func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))`|为上下文中的每个键值对调用 fn|
 
 ### Set
 
