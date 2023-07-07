@@ -318,7 +318,7 @@ URI 对象提供了以下方法获取/设置 URI。
 | `func (u *URI) PathOriginal() []byte`|获取未转义的 Path，比如 <http://example.com/user/he%20rtz> 的 Path 是 **/user/he%20rtz**|
 | `func (u *URI) SetPath(path string)`|设置 Path|
 | `func (u *URI) SetPathBytes(path []byte)`|设置 `[]byte` 类型 Path|
-| `func (u *URI) String() string`|获取完整 URI 比如 <http://example.com/user?baz=123> 的完整URI是 <http://example.com/user?baz=123> |
+| `func (u *URI) String() string`|获取完整 URI 比如 <http://example.com/user?baz=123> 的完整 URI 是 <http://example.com/user?baz=123> |
 | `func (u *URI) FullURI() []byte`|获取 `[]byte` 类型的完整 URI |
 | `func (u *URI) Scheme() []byte`|获取协议，如 http|
 | `func (u *URI) SetScheme(scheme string)`|设置协议 |
@@ -664,7 +664,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) SetConnectionClose(close bool)`|设置 connectionClose 标志 |
 | `func (h *RequestHeader) ResetConnectionClose()`|重制 connectionClose 标志为 false 并删除 Connection Header|
 | `func (h *RequestHeader) SetByteRange(startPos, endPos int)`| 设置 Range (Range: bytes=startPos-endPos)|
-| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`| 当 Content-Type=multipart/form-data 时为其设置boundary |
+| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`| 当 Content-Type=multipart/form-data 时为其设置 boundary |
 | `func (h *RequestHeader) MultipartFormBoundary() []byte`|获取 boundary 的值 |
 | `func (h *RequestHeader) Trailer() *Trailer`|获取 Trailer|
 | `func (h *RequestHeader) Cookie(key string) []byte`|获取 Cookie 键为 key 的值 |
@@ -685,7 +685,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|判断是否存在 Accept-Encoding 以及 Accept-Encoding 是否包含 acceptEncoding|
 | `func (h *RequestHeader) RawHeaders() []byte`|获取原始 Header |
 | `func (h *RequestHeader) SetRawHeaders(r []byte)`  | 设置原始 Header |
-| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header。( key 会覆盖以下Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
+| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header。( key 会覆盖以下 Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
 | `func (h *RequestHeader) InitBufValue(size int)`|初始化缓冲区大小 |
 | `func (h *RequestHeader) GetBufValue() []byte`|获取缓冲区的值 |
 | `func (h *RequestHeader) SetCanonical(key, value []byte)`|设置 Header 键值，假设该键是规范形式。|
@@ -840,7 +840,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 
 按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值。
 
-> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的content-type中获取 value 值。
+> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的 content-type 中获取 value 值。
 
 函数签名:
 
@@ -864,7 +864,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值，如果不存在返回 defaultValue。
 
-> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的content-type中获取 value 值。
+> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的 content-type 中获取 value 值。
 
 函数签名:
 
@@ -990,26 +990,26 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 |函数签名 | 说明 |
 |:--|:--|
-| `func (ctx *RequestContext) Set(key string, value interface{})`|在上下文中存储键值对|
-| `func (ctx *RequestContext) Value(key interface{}) interface{}`|获取上下文键为 key 的值|
-| `func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)`|获取上下文键为 key 的值以及 key 是否存在|
+| `func (ctx *RequestContext) Set(key string, value interface{})`|在上下文中存储键值对 |
+| `func (ctx *RequestContext) Value(key interface{}) interface{}`|获取上下文键为 key 的值 |
+| `func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)`|获取上下文键为 key 的值以及 key 是否存在 |
 | `func (ctx *RequestContext) MustGet(key string) interface{}`|获取上下文键为 key 的值，如果不存在会发生 panic|
-| `func (ctx *RequestContext) GetString(key string) (s string)`|获取上下文键为 key 的值，并转换为 `string` 类型|
-| `func (ctx *RequestContext) GetBool(key string) (b bool)`|获取上下文键为 key 的值，并转换为 `bool` 类型|
-| `func (ctx *RequestContext) GetInt(key string) (i int)`|获取上下文键为 key 的值，并转换为 `int` 类型|
-| `func (ctx *RequestContext) GetInt32(key string) (i32 int32)`|获取上下文键为 key 的值，并转换为 `int32` 类型|
-| `func (ctx *RequestContext) GetInt64(key string) (i64 int64)`|获取上下文键为 key 的值，并转换为 `int64` 类型|
-| `func (ctx *RequestContext) GetUint(key string) (ui uint)`|获取上下文键为 key 的值，并转换为 `uint` 类型|
-| `func (ctx *RequestContext) GetUint32(key string) (ui32 uint32)`|获取上下文键为 key 的值，并转换为 `uint32` 类型|
-| `func (ctx *RequestContext) GetUint64(key string) (ui64 uint64)`|获取上下文键为 key 的值，并转换为 `uint64` 类型|
-| `func (ctx *RequestContext) GetFloat32(key string) (f32 float32)`|获取上下文键为 key 的值，并转换为 `float32` 类型|
-| `func (ctx *RequestContext) GetFloat64(key string) (f64 float64)`|获取上下文键为 key 的值，并转换为 `float64` 类型|
-| `func (ctx *RequestContext) GetTime(key string) (t time.Time)`|获取上下文键为 key 的值，并转换为 `time.Time` 类型|
-| `func (ctx *RequestContext) GetDuration(key string) (d time.Duration)`|获取上下文键为 key 的值，并转换为 `time.Duration` 类型|
-| `func (ctx *RequestContext) GetStringSlice(key string) (ss []string)`|获取上下文键为 key 的值，并转换为 `[]string` 类型|
-| `func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{})`|获取上下文键为 key 的值，并转换为 `map[string]interface{}` 类型|
-| `func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string)`|获取上下文键为 key 的值，并转换为 `map[string]string` 类型|
-| `func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string)`|获取上下文键为 key 的值，并转换为 `map[string][]string` 类型|
+| `func (ctx *RequestContext) GetString(key string) (s string)`|获取上下文键为 key 的值，并转换为 `string` 类型 |
+| `func (ctx *RequestContext) GetBool(key string) (b bool)`|获取上下文键为 key 的值，并转换为 `bool` 类型 |
+| `func (ctx *RequestContext) GetInt(key string) (i int)`|获取上下文键为 key 的值，并转换为 `int` 类型 |
+| `func (ctx *RequestContext) GetInt32(key string) (i32 int32)`|获取上下文键为 key 的值，并转换为 `int32` 类型 |
+| `func (ctx *RequestContext) GetInt64(key string) (i64 int64)`|获取上下文键为 key 的值，并转换为 `int64` 类型 |
+| `func (ctx *RequestContext) GetUint(key string) (ui uint)`|获取上下文键为 key 的值，并转换为 `uint` 类型 |
+| `func (ctx *RequestContext) GetUint32(key string) (ui32 uint32)`|获取上下文键为 key 的值，并转换为 `uint32` 类型 |
+| `func (ctx *RequestContext) GetUint64(key string) (ui64 uint64)`|获取上下文键为 key 的值，并转换为 `uint64` 类型 |
+| `func (ctx *RequestContext) GetFloat32(key string) (f32 float32)`|获取上下文键为 key 的值，并转换为 `float32` 类型 |
+| `func (ctx *RequestContext) GetFloat64(key string) (f64 float64)`|获取上下文键为 key 的值，并转换为 `float64` 类型 |
+| `func (ctx *RequestContext) GetTime(key string) (t time.Time)`|获取上下文键为 key 的值，并转换为 `time.Time` 类型 |
+| `func (ctx *RequestContext) GetDuration(key string) (d time.Duration)`|获取上下文键为 key 的值，并转换为 `time.Duration` 类型 |
+| `func (ctx *RequestContext) GetStringSlice(key string) (ss []string)`|获取上下文键为 key 的值，并转换为 `[]string` 类型 |
+| `func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{})`|获取上下文键为 key 的值，并转换为 `map[string]interface{}` 类型 |
+| `func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string)`|获取上下文键为 key 的值，并转换为 `map[string]string` 类型 |
+| `func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string)`|获取上下文键为 key 的值，并转换为 `map[string][]string` 类型 |
 | `func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))`|为上下文中的每个键值对调用 fn|
 
 ### Set
