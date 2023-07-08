@@ -46,7 +46,7 @@ Thrift：
 ```thrift
 struct Demo {
     1: string Demo (api.query="demo", api.path="demo");
-    2: string GoTag (go.tag="goTag:"tag"");
+    2: string GoTag (go.tag="goTag:\"tag\"");
     3: string Vd (api.vd="$!='your string'");
 }
 ```
