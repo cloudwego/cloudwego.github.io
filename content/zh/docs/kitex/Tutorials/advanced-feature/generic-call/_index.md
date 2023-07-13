@@ -194,6 +194,8 @@ func main() {
     if err != nil {
         panic(err)
     }
+    // Kitex 泛化目前直接支持的是标准库中的 http.Request，使用 hertz 需要通过做一个请求转换
+    // httpReq, err := adaptor.GetCompatRequest(hertzReqCtx)
     req.Header.Set("token", "1")
     customReq, err := generic.FromHTTPRequest(req) // 考虑到业务有可能使用第三方 http request，可以自行构造转换函数
     // customReq *generic.HttpRequest
