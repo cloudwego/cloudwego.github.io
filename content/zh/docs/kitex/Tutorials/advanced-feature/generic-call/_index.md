@@ -167,6 +167,7 @@ func main() {
     if err != nil {
         panic(err)
     }
+    // opts...配置cli的属性，例如client.WithHostPorts(":9999")
     cli, err := genericclient.NewClient("destServiceName", g, opts...)
     if err != nil {
         panic(err)
