@@ -192,6 +192,8 @@ func main() {
     if err != nil {
         panic(err)
     }
+    // Kitex generalization currently directly supports http.Request in the standard library.
+    // To use hertz, you need to make a request conversion httpReq, err := adapter.GetCompatRequest(hertzReqCtx)
     req.Header.Set("token", "1")
     customReq, err := generic.FromHTTPRequest(req)
     // customReq *generic.HttpRequest
