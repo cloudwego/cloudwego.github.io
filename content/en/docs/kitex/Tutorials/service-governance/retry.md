@@ -52,7 +52,7 @@ Configuration Item|Default value|Description|Limit
 
 ### Enable by Code Configuration
 
-Note: Dynamic configuration (see 3.3) cannot take effect if retry is enabled by code configuration.
+Note: Dynamic configuration (refer to "Dynamic open or adjust strategy") won't take effect if retry is enabled by code configuration, since code conf has high priority.
 
 #### Exception Retry Configuration
 
@@ -283,7 +283,9 @@ cli, err := xxxservice.NewClient(targetService, opts...)
 
 ### Dynamic open or adjust strategy
 
-If you want to adjust the policy in combination with remote configuration, dynamic open retry, or runtime, you can take effect through the `NotifyPolicyChange` method of `retryContainer`. Currently, the open source version of Kitex does not provide a remote configuration module, and users can integrate their own configuration center. Note: If it is turned on through code configuration, dynamic configuration cannot take effect.
+If you want to dynamically adjust the policy according to a remote configuration center, for example, to dynamically enable retry, or change the retry policy of a method on the run, you can invoke the `NotifyPolicyChange` method of the `retryContainer`. Currently, the open source version of Kitex does not provide integration with a remote configuration center, so Kitex users need to integrate their own configuration center with Kitex with some extra work.
+
+Note: If it is turned on through code configuration, dynamic configuration won't take effect.
 
 - Configuration e.g.
 
