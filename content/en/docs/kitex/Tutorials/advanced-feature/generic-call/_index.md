@@ -198,7 +198,7 @@ func main() {
     customReq, err := generic.FromHTTPRequest(req)
     // customReq *generic.HttpRequest
     resp, err := cli.GenericCall(ctx, "", customReq)
-    realResp := resp.(*generic.HttpResponse)
+    realResp := resp.(*generic.HTTPResponse)
     realResp.Write(w)
 }
 ```
