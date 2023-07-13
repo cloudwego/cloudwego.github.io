@@ -199,7 +199,7 @@ func main() {
     // customReq *generic.HttpRequest
     // 由于 http 泛化的 method 是通过 bam 规则从 http request 中获取的，所以填空就行
     resp, err := cli.GenericCall(ctx, "", customReq)
-    realResp := resp.(*generic.HttpResponse)
+    realResp := resp.(*generic.HTTPResponse)
     realResp.Write(w) // 写回 ResponseWriter，用于 http 网关
 }
 ```
