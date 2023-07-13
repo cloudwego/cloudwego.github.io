@@ -250,11 +250,11 @@ proto3 语法可参考：[Language Guide(proto3)](https://developers.google.com/
 
 在开始后续的步骤之前，先让我们创建一个项目目录用于后续的教程。
 
-`$ mkdir example`
+`$ mkdir example-server`
 
 然后让我们进入项目目录
 
-`$ cd example`
+`$ cd example-server`
 
 ### Kitex 命令行工具
 
@@ -309,9 +309,13 @@ service Echo {
 
 有了 IDL 以后我们便可以通过 kitex 工具生成项目代码了，执行如下命令：
 
-`$ kitex -module example -service example echo.thrift`
+`$ kitex -module example -service example-server echo.thrift`
 
-上述命令中，`-module` 表示生成的该项目的 go module 名，`-service` 表明我们要生成一个服务端项目，后面紧跟的 `example` 为该服务的名字。最后一个参数则为该服务的 IDL 文件。
+上述命令中：
+
+* `-module` 表示生成的该项目的 go module 名；**建议使用完整包名**，例如 `github.com/Yourname/exampleserver`
+* `-service` 表明我们要生成一个服务端项目，后面紧跟的 `example-server` 为该服务的名字
+* 最后一个参数则为该服务的 IDL 文件
 
 生成后的项目结构如下：
 ```
@@ -337,7 +341,7 @@ service Echo {
 
 由于 kitex 要求使用 go mod 进行依赖管理，所以我们要升级 kitex 框架会很容易，只需要执行以下命令即可：
 ```
-$ go get github.com/cloudwego/kitex@latest
+$ go get -v github.com/cloudwego/kitex@latest
 $ go mod tidy
 ```
 
@@ -366,7 +370,7 @@ package main
 
 import (
   "context"
-  "example/kitex_gen/api"
+  "example/kitex_gen/api" //如果修改了 -module 参数的值，这里的 'example' 也要相应替换
 )
 
 // EchoImpl implements the last service interface defined in the IDL.
@@ -420,17 +424,25 @@ kitex 工具已经帮我们生成好了编译和运行所需的脚本：
 
 `$ cd client`
 
-创建一个 `main.go` 文件，然后就开始编写客户端代码了。
+然后用 kitex 命令生成客户端所需的相关代码（如果该目录放在前述 example-server 目录下，则可省略此步，因为 server 代码中包含了 client 所需代码）：
+
+`$ kitex -module example echo.thrift`
+
+> 注:
+> 1. 客户端代码不需要指定 -service 参数，生成的代码在 kitex_gen 目录下；
+> 2. -module 参数 **建议使用完整的包名**，例如 `github.com/Yourname/exampleclient`
+
+然后创建一个 `main.go` 文件，就开始编写客户端代码了。
 
 #### 创建 client
 
 首先让我们创建一个调用所需的 `client`：
 
 ```go
-import "example/kitex_gen/api/echo"
+import "example/kitex_gen/api/echo" //如果修改了 -module 参数，这里要将 'example' 相应替换成相应的包名
 import "github.com/cloudwego/kitex/client"
 ...
-c, err := echo.NewClient("example", client.WithHostPorts("0.0.0.0:8888"))
+c, err := echo.NewClient("example-server", client.WithHostPorts("0.0.0.0:8888"))
 if err != nil {
   log.Fatal(err)
 }
