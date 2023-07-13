@@ -1,5 +1,5 @@
 ---
-title: "Client"
+title: "客户端"
 date: 2023-04-12
 weight: 3
 description: >
@@ -45,26 +45,27 @@ func main() {
 
 ## 配置
 
-| 配置项                        | 默认值         | 描述                                                       |
-| ----------------------------- | -------------- | ---------------------------------------------------------- |
-| DialTimeout                   | time.Second    | 拨号超时时间                                               |
-| MaxConnsPerHost               | 512            | 每个主机可能建立的最大连接数                               |
-| MaxIdleConnDuration           | 10s            | 最大的空闲连接持续时间，空闲的保持连接在此持续时间后被关闭 |
-| MaxConnDuration               | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭。  |
-| MaxConnWaitTimeout            | 0s             | 等待自由连接的最大时间。                                   |
-| KeepAlive                     | true           | 是否使用 keep-alive 连接                                   |
-| ClientReadTimeout             | 0s             | 完整读取响应（包括body）的最大持续时间。                   |
-| TLSConfig                     | nil            | 用来创建一个 tls 连接的 tlsConfig                          |
-| Dialer                        | network.Dialer | 用户自定义拨号器                                           |
-| ResponseBodyStream            | false          | 是否在流中读取 body                                        |
-| DisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化                                       |
-| Name                          | ""             | 用户代理头中使用的客户端名称                               |
-| NoDefaultUserAgentHeader      | false          | 是否没有默认的User-Agent头                                 |
-| DisablePathNormalizing        | nil            | 是否禁用路径规范化。                                       |
-| RetryConfig                   | nil            | 重试配置                                                   |
-| WriteTimeout                  | 0s             | 写入超时时间                                               |
-| ConnStateObserve              | nil            | 设置连接状态观察函数                                       |
-| DialFunc                      | network.Dialer | 自定义拨号器功能,会覆盖自定义拨号器                        |
+| 配置项                        | 默认值         | 描述                                                    |
+| ----------------------------- | -------------- | ------------------------------------------------------- |
+| DialTimeout                   | 1s             | 拨号超时时间                                            |
+| MaxConnsPerHost               | 512            | 每个主机可能建立的最大连接数                            |
+| MaxIdleConnDuration           | 10s            | 最大的空闲连接持续时间，空闲的连接在此持续时间后被关闭  |
+| MaxConnDuration               | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭 |
+| MaxConnWaitTimeout            | 0s             | 等待空闲连接的最大时间                                  |
+| KeepAlive                     | true           | 是否使用 keep-alive 连接                                |
+| ReadTimeout                   | 0s             | 完整读取响应（包括body）的最大持续时间                  |
+| TLSConfig                     | nil            | 用来创建一个 tls 连接的 tlsConfig                       |
+| Dialer                        | network.Dialer | 设置指定的拨号器                                        |
+| ResponseBodyStream            | false          | 是否在流中读取 body                                     |
+| DisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化                                    |
+| Name                          | ""             | 用户代理头中使用的客户端名称                            |
+| NoDefaultUserAgentHeader      | false          | 是否没有默认的User-Agent头                              |
+| DisablePathNormalizing        | false          | 是否禁用路径规范化。                                    |
+| RetryConfig                   | nil            | 重试配置                                                |
+| WriteTimeout                  | 0s             | 写入超时时间                                            |
+| HostClientStateObserve        | nil            | 观察和记录`HostClientState`的状态的函数                 |
+| ObservationInterval           | 5s             | 状态观察执行间隔                                        |
+| DialFunc                      | network.Dialer | 自定义拨号器功能，会覆盖自定义拨号器                    |
 
 
 ### WithDialTimeout
@@ -133,7 +134,7 @@ func main() {
 
 ### WithMaxIdleConnDuration
 
-`WithMaxIdleConnDuration` 函数用于设置空闲连接的最大持续时间。如果一条连接在空闲时间超过了设置的最大持续时间，它将被关闭。
+`WithMaxIdleConnDuration` 函数用于设置空闲连接的最大持续时间。如果一条连接的空闲时间超过了设置的最大持续时间，它将被关闭。
 
 函数签名：
 
@@ -166,7 +167,7 @@ func main() {
 
 ### WithMaxConnDuration
 
-`WithMaxConnDuration` 函数用于设置连接的最大持续时间。如果一条连接在持续时间超过了设置的最大持续时间，它将被关闭。
+`WithMaxConnDuration` 函数用于设置连接的最大持续时间。如果一条连接的持续时间超过了设置的最大持续时间，它将被关闭。
 
 函数签名：
 
@@ -530,6 +531,8 @@ func main() {
 
 `WithRetryConfig` 函数用于设置 HTTP 客户端的重试配置。在发生网络故障或超时等问题时，客户端可以通过重试来尝试重新建立连接或重新发送请求。
 
+[重试配置的详细信息](/zh/docs/hertz/tutorials/basic-feature/retry)
+
 函数签名：
 
 ```go
@@ -677,9 +680,9 @@ func main() {
 
 Do 函数执行给定的 http 请求并填充给定的 http 响应。请求必须包含至少一个非零的RequestURI，其中包含完整的URL或非零的 Host header + RequestURI。
 
-该函数不会跟随重定向。请使用 Ge t函数来跟随重定向。
+该函数不会跟随重定向。请使用 Get 函数来跟随重定向。
 
-如果resp为nil，则会忽略响应。如果所有针对请求主机的DefaultMaxConnsPerHost连接都已忙，则会返回`ErrNoFreeConns`错误。在性能关键的代码中，建议通过 AcquireRequest 和 AcquireResponse 获取 req 和resp。
+如果resp为nil，则会忽略响应。如果所有针对请求主机的DefaultMaxConnsPerHost连接都已忙，则会返回`ErrNoFreeConns`错误。在性能关键的代码中，建议通过 AcquireRequest 和 AcquireResponse 获取 req 和 resp。
 
 函数签名：
 
@@ -1080,7 +1083,7 @@ func main() {
 
 ## Post
 
-Post 函数使用给定的 POST 参数向指定的 UR L发送 POST 请求。如果 dst 太小，则将被响应体替换并返回，否则将分配一个新的切片。该函数会自动跟随重定向。如果需要手动处理重定向，请使用 Do 函数。
+Post 函数使用给定的 POST 参数向指定的 URL 发送 POST 请求。如果 dst 太小，则将被响应体替换并返回，否则将分配一个新的切片。该函数会自动跟随重定向。如果需要手动处理重定向，请使用 Do 函数。
 
 如果 postArgs 为 nil ，则发送空的 POST 请求体。
 
@@ -1131,7 +1134,7 @@ func main() {
 
 ## SetProxy
 
-SetProxy 用来设置客户端代理的。
+SetProxy 用来设置客户端代理。
 
 注意，同一个客户端不能设置多个代理，如果需要使用另一个代理，请创建另一个客户端并为其设置代理。
 

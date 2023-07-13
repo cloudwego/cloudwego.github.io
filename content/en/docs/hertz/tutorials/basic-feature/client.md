@@ -49,23 +49,24 @@ func main() {
 
 | **Option**                    | **Default**    | **Description**                                              |
 | ----------------------------- | -------------- | ------------------------------------------------------------ |
-| DialTimeout                   | time.Second    | *dial timeout.*                                              |
+| DialTimeout                   | 1s             | *dial timeout.*                                              |
 | MaxConnsPerHost               | 512            | *maximum number of connections per host which may be established.* |
 | MaxIdleConnDuration           | 10s            | *max idle connection duration, idle keep-alive connections are closed after this duration.* |
 | MaxConnDuration               | 0s             | *max connection duration, keep-alive connections are closed after this duration.* |
 | MaxConnWaitTimeout            | 0s             | *maximum duration for waiting for a free connection.*        |
 | KeepAlive                     | true           | *determines whether use keep-alive connection.*              |
-| ClientReadTimeout             | 0s             | *maximum duration for full response reading (including body).* |
+| ReadTimeout                   | 0s             | *maximum duration for full response reading (including body).* |
 | TLSConfig                     | nil            | *tlsConfig to create a tls connection.*                      |
 | Dialer                        | network.Dialer | *specific dialer.*                                           |
 | ResponseBodyStream            | false          | *determine whether read body in stream or not.*              |
 | DisableHeaderNamesNormalizing | false          | *whether disable header names normalizing.*                  |
 | Name                          | ""             | *client name which used in User-Agent Header.*               |
 | NoDefaultUserAgentHeader      | false          | *whether no default User-Agent header.*                      |
-| DisablePathNormalizing        | nil            | *whether disable path normalizing.*                          |
+| DisablePathNormalizing        | false          | *whether disable path normalizing.*                          |
 | RetryConfig                   | nil            | *retry configuration.*                                       |
 | WriteTimeout                  | 0s             | *write timeout.*                                             |
-| ConnStateObserve              | nil            | *the connection state observation function.*                 |
+| HostClientStateObserve        | nil            | *the connection state observation function.*                 |
+| ObservationInterval           | 5s             | StateObserve execution interval.                             |
 | DialFunc                      | network.Dialer | *set dialer function.*                                       |
 
 
@@ -532,6 +533,8 @@ func main() {
 
 The `WithRetryConfig` function is used to set the retry configuration of the HTTP client. In case of problems such as network failure or timeout, the client can retry to try to re-establish the connection or resend the request.
 
+[retryConfig detail](/docs/hertz/tutorials/basic-feature/retry/)
+
 Function Signature:
 
 ```go
@@ -679,7 +682,7 @@ func main() {
 
 The Do function executes the given http request and populates the given http response. The request must contain at least one non-zero RequestURI containing the full URL or a non-zero Host header + RequestURI.
 
-This function does not follow redirects. Please use the Ge t function to follow the redirect.
+This function does not follow redirects. Please use the Get function to follow the redirect.
 
 If resp is nil, the response will be ignored. If all DefaultMaxConnsPerHost connections against the requesting host are busy, an `ErrNoFreeConns` error will be returned. In performance-critical code, it is recommended that req and resp be obtained via AcquireRequest and AcquireResponse.
 
@@ -1082,7 +1085,7 @@ func main() {
 
 ## Post
 
-The Post function sends a POST request to the specified UR L using the given POST parameters. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. The function will automatically follow the redirect. If you need to handle redirects manually, use the Do function.
+The Post function sends a POST request to the specified URL using the given POST parameters. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. The function will automatically follow the redirect. If you need to handle redirects manually, use the Do function.
 
 If postArgs is nil, then an empty POST request body is sent.
 
