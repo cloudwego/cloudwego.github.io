@@ -776,7 +776,7 @@ layouts:
           append_tpl: |-
               func Test{{.Name}}(t *testing.T) {
                 h := server.Default()
-                h.GET("{{.Path}}", {{.Name}})
+                h.{{.HTTPMethod}}("{{.Path}}", {{.Name}})
                 w := ut.PerformRequest(h.Engine, "{{.HTTPMethod}}", "{{.Path}}", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
                 ut.Header{})
                 resp := w.Result()
@@ -797,7 +797,7 @@ layouts:
           {{range $_, $MethodInfo := $.Methods}}
             func Test{{$MethodInfo.Name}}(t *testing.T) {
             h := server.Default()
-            h.GET("{{$MethodInfo.Path}}", {{$MethodInfo.Name}})
+            h.{{$MethodInfo.HTTPMethod}}("{{$MethodInfo.Path}}", {{$MethodInfo.Name}})
             w := ut.PerformRequest(h.Engine, "{{$MethodInfo.HTTPMethod}}", "{{$MethodInfo.Path}}", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
             ut.Header{})
             resp := w.Result()
