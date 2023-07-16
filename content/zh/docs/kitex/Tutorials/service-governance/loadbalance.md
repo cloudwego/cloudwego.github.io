@@ -8,6 +8,7 @@ description: "Kitex 提供的负载均衡器实现原理和使用指南。"
 
 Kitex 默认提供了 3 种 LoadBalancer：
 - WeightedRoundRobin
+- InterleavedWeightedRoundRobin
 - WeightedRandom
 - ConsistentHash
 
@@ -20,6 +21,13 @@ Kitex 默认使用的是 WeightedRoundRobin。
 该 LoadBalancer 能让所有下游实例拥有最小的同时 inflight 请求数，以减少下游过载情况的发生。
 
 如果所有的实例的权重都一样，会使用一个纯轮询的实现，来避免加权计算的一些额外开销。
+
+## InterleavedWeightedRoundRobin
+
+与 [WeightedRoundRobin](#weightedroundrobin) 相同， 该 LoadBalancer 使用的也是基于权重的轮询策略。
+
+区别在于 [WeightedRoundRobin](#weightedroundrobin) 的空间复杂度是将所有实例按权重选择一遍的最小正周期（所有实例权重的和除以所有实例权重的最大公约数），
+而该 LoadBalancer 的空间复杂度是下游实例数，在下游实例数权重总和非常大时更节省空间。
 
 ## WeightedRandom
 

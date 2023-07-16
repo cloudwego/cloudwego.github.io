@@ -10,6 +10,7 @@ Kitex provides 3 LoadBalancers officially:
 
 - WeightedRoundRobin
 - WeightedRandom
+- InterleavedWeightedRoundRobin
 - ConsistentHash
 
 Kitex uses WeightedRoundRobin by default.
@@ -21,6 +22,13 @@ WeightedRoundRobin uses a round-robin strategy based on weights, which is also K
 This LoadBalancer will make all instances have the min inflight requests to reduce the overload of instance. 
 
 If all instances have the same weights, it will use a pure round-robin implementation to avoid extra overhead of weighting calculations.
+
+## InterleavedWeightedRoundRobin
+
+Same as [WeightedRoundRobin](#weightedroundrobin), this LoadBalancer also uses a round-robin strategy based on weights.
+
+The difference is that the space complexity of [WeightedRoundRobin](#weightedroundrobin) is the minimum positive cycle for selecting all instances by weight (the sum of all instance weights divided by the greatest common divisor of all instance weights),
+The space complexity of this LoadBalancer is the number of downstream instances, and it saves space when the sum of the weights of the downstream instances is very large.
 
 ## WeightedRandom
 
