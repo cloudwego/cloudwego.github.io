@@ -1,7 +1,7 @@
 ---
 title: "Binding and validate"
 date: 2022-06-21
-weight: 6
+weight: 7
 description: >
 
 ---
