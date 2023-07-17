@@ -28,7 +28,7 @@ func performRequest() {
 
 	req.SetMethod("GET")
 	_ = c.Do(context.Background(), req, resp)
-	fmt.Printf("get response: %s\n", resp.Body())
+	fmt.Printf("get response: %s\n", resp.Body())  // status == 200 resp.Body() == []byte("hello hertz")
 
 }
 
@@ -53,17 +53,17 @@ func main() {
 | MaxConnDuration               | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭 |
 | MaxConnWaitTimeout            | 0s             | 等待空闲连接的最大时间                                  |
 | KeepAlive                     | true           | 是否使用 keep-alive 连接                                |
-| ReadTimeout                   | 0s             | 完整读取响应（包括body）的最大持续时间                  |
+| ReadTimeout                   | 0s             | 完整读取响应（包括 body）的最大持续时间                  |
 | TLSConfig                     | nil            | 用来创建一个 tls 连接的 tlsConfig                       |
 | Dialer                        | network.Dialer | 设置指定的拨号器                                        |
 | ResponseBodyStream            | false          | 是否在流中读取 body                                     |
 | DisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化                                    |
 | Name                          | ""             | 用户代理头中使用的客户端名称                            |
-| NoDefaultUserAgentHeader      | false          | 是否没有默认的User-Agent头                              |
-| DisablePathNormalizing        | false          | 是否禁用路径规范化。                                    |
+| NoDefaultUserAgentHeader      | false          | 是否没有默认的 User-Agent 头                              |
+| DisablePathNormalizing        | false          | 是否禁用路径规范化                                   |
 | RetryConfig                   | nil            | 重试配置                                                |
 | WriteTimeout                  | 0s             | 写入超时时间                                            |
-| HostClientStateObserve        | nil            | 观察和记录`HostClientState`的状态的函数                 |
+| HostClientStateObserve        | nil            | 观察和记录 `HostClientState` 的状态的函数                 |
 | ObservationInterval           | 5s             | 状态观察执行间隔                                        |
 | DialFunc                      | network.Dialer | 自定义拨号器功能，会覆盖自定义拨号器                    |
 
@@ -119,16 +119,40 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
-func main() {
-	c, err := client.NewClient(client.WithMaxConnsPerHost(10))
+func performRequest() {
+	c, err := client.NewClient(client.WithMaxConnsPerHost(1))
 	if err != nil {
 		return
 	}
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
+
+	for i := 0; i < 10; i++ {
+		go func() {
+			status, body, err := c.Get(context.Background(), nil, "http://localhost:8080/hello")
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Printf("status=%v body=%v\n", status, string(body))
+			// Only one received the message: status == 200 resp.Body() == []byte("hello hertz"), 
+			// the error of others is "no free connections available to host".
+		}()
+	}
+}
+
+func main() {
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -280,20 +304,38 @@ func WithClientReadTimeout(t time.Duration) config.ClientOption
 package main
 
 import (
-    "context"
-    "fmt"
-    "time"
-
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"context"
+	"fmt"
+	"log"
+	"strings"
+	"time"
+	
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
+func performRequest() {
+	c1, err := client.NewClient(client.WithClientReadTimeout(time.Nanosecond))
+	if err != nil {
+		return
+	}
+
+	status, body, err = c1.Get(context.Background(), nil, "http://localhost:8080/hello")
+	if err != nil {
+		log.Fatal(err) // err.Error() == "timeout"
+	}
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+
 func main() {
-    c, err := client.NewClient(client.WithClientReadTimeout(10 * time.Second))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.String(consts.StatusOK, strings.Repeat("a", 1024*1024))
+	})
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -446,19 +488,32 @@ func WithName(name string) config.ClientOption
 package main
 
 import (
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
+func performRequest() {
+	c, err := client.NewClient(client.WithName("my-client"))
+	if err != nil {
+		return
+	}
+	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+
 func main() {
-    c, err := client.NewClient(client.WithName("my-client"))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		fmt.Printf("%s\n", ctx.Request.Header.Get("User-Agent")) // "my-client"
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -478,19 +533,40 @@ func WithNoDefaultUserAgentHeader(isNoDefaultUserAgentHeader bool) config.Client
 package main
 
 import (
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
+func performRequest() {
+	c, err := client.NewClient(client.WithNoDefaultUserAgentHeader(false))
+	if err != nil {
+		return
+	}
+	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// User-Agent == "hertz"
+
+	c, err = client.NewClient(client.WithNoDefaultUserAgentHeader(true))
+	if err != nil {
+		return
+	}
+	status, body, _ = c.Get(context.Background(), nil, "http://localhost:8080/hello")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// User-Agent == ""
+}
+
 func main() {
-    c, err := client.NewClient(client.WithNoDefaultUserAgentHeader(true))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -510,28 +586,46 @@ func WithDisablePathNormalizing(isDisablePathNormalizing bool) config.ClientOpti
 package main
 
 import (
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
-func main() {
-    c, err := client.NewClient(client.WithDisablePathNormalizing(true))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com/path/../path/./subpath")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
+func performRequest() {
+	c, err := client.NewClient(client.WithDisablePathNormalizing(false))
+	if err != nil {
+		return
+	}
+	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello/../hello")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// request url == "http://localhost:8080/hello"
+
+	c, err = client.NewClient(client.WithDisablePathNormalizing(true))
+	if err != nil {
+		return
+	}
+	status, body, _ = c.Get(context.Background(), nil, "http://localhost:8080/hello/../hello")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// request url == "http://localhost:8080/hello/../hello"
 }
 
+func main() {
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
+}
 ```
 
 ### WithRetryConfig
 
-`WithRetryConfig` 函数用于设置 HTTP 客户端的重试配置。在发生网络故障或超时等问题时，客户端可以通过重试来尝试重新建立连接或重新发送请求。
-
-[重试配置的详细信息](/zh/docs/hertz/tutorials/basic-feature/retry)
+`WithRetryConfig` 函数用于设置 HTTP 客户端的重试配置。在发生网络故障或超时等问题时，客户端可以通过重试来尝试重新建立连接或重新发送请求。（更多内容请参考 [重试](/zh/docs/hertz/tutorials/basic-feature/retry)）
 
 函数签名：
 
@@ -583,20 +677,42 @@ func WithWriteTimeout(t time.Duration) config.ClientOption
 package main
 
 import (
-    "context"
-    "fmt"
-    "time"
+	"context"
+	"fmt"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"log"
+	"strings"
+	"time"
 
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
+func performRequest() {
+	c, err := client.NewClient(client.WithWriteTimeout(time.Nanosecond))
+	if err != nil {
+		return
+	}
+
+	args := &protocol.Args{}
+	args.Set("data", strings.Repeat("a", 1024*1024))
+	status, body, err := c.Post(context.Background(), nil, "http://localhost:8080/hello", args)
+	if err != nil {
+		log.Fatal(err)
+	}
+	//err.Error() == "i/o timeout"
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+
 func main() {
-    c, err := client.NewClient(client.WithWriteTimeout(1*time.Second))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Post(context.Background(), nil, "https://www.example.com", []byte("hello, world!"))
-    fmt.Printf("status=%v body=%v\n", status, string(body))
+	h := server.New(server.WithHostPorts(":8080"))
+	h.POST("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -618,24 +734,38 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/cloudwego/hertz/pkg/common/config"
 	"time"
 
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/common/config"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
-func main() {
+func performRequest() {
 	observeInterval := 10 * time.Second
 	stateFunc := func(state config.HostClientState) {
-		fmt.Printf("state=%v\n", state)
+		fmt.Printf("state=%v\n", state.ConnPoolState().Addr)
+		// state.ConnPoolState().Addr == "localhost:8080"
 	}
 	c, err := client.NewClient(client.WithConnStateObserve(stateFunc, observeInterval))
 	if err != nil {
 		return
 	}
-  
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
+
+	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello")
 	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+
+func main() {
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	time.Sleep(time.Second)
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -678,11 +808,11 @@ func main() {
 
 ## Do
 
-Do 函数执行给定的 http 请求并填充给定的 http 响应。请求必须包含至少一个非零的RequestURI，其中包含完整的URL或非零的 Host header + RequestURI。
+Do 函数执行给定的 http 请求并填充给定的 http 响应。请求必须包含至少一个非零的 RequestURI，其中包含完整的 URL 或非零的 Host header + RequestURI。
 
-该函数不会跟随重定向。请使用 Get 函数来跟随重定向。
+该函数不会跟随重定向，请使用 Get 函数来跟随重定向。
 
-如果resp为nil，则会忽略响应。如果所有针对请求主机的DefaultMaxConnsPerHost连接都已忙，则会返回`ErrNoFreeConns`错误。在性能关键的代码中，建议通过 AcquireRequest 和 AcquireResponse 获取 req 和 resp。
+如果 resp 为 nil，则会忽略响应。如果所有针对请求主机的 DefaultMaxConnsPerHost 连接都已忙，则会返回 `ErrNoFreeConns` 错误。在性能关键的代码中，建议通过 AcquireRequest 和 AcquireResponse 获取 req 和 resp。
 
 函数签名：
 
@@ -707,7 +837,6 @@ import (
 )
 
 func performRequest() {
-
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -719,7 +848,7 @@ func performRequest() {
 
 	err = c.Do(context.Background(), req, res)
 	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
-
+	// resp.Body() == []byte("pong") err == <nil>
 }
 
 func main() {
@@ -737,9 +866,9 @@ func main() {
 
 ## DoTimeout
 
-DoTimeout函数执行给定的请求并在给定的超时时间内等待响应。
+DoTimeout 函数执行给定的请求并在给定的超时时间内等待响应。
 
-如果 resp 为 nil，则会忽略响应。如果在给定的超时时间内未能收到响应，则会返回 errTimeout 错误。
+如果 resp 为 nil，则会忽略响应。如果在给定的超时时间内未能收到响应，则会返回 `errTimeout` 错误。
 
 函数签名： 
 
@@ -765,7 +894,6 @@ import (
 )
 
 func performRequest() {
-
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -777,9 +905,11 @@ func performRequest() {
 
 	err = c.DoTimeout(context.Background(), req, res, time.Second*3)
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
+
 	err = c.DoTimeout(context.Background(), req, res, time.Second)
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
-
+	// res.Body() == []byte("") err.Error() == "timeout"
 }
 
 func main() {
@@ -799,7 +929,7 @@ func main() {
 ## DoDeadline
 
 DoDeadline 执行给定的请求并等待响应，直至给定的最后期限。
-如果resp为 nil，则会忽略响应。如果在给定的截止日期之前未能收到响应，则会返回 errTimeout 错误。
+如果 resp 为 nil，则会忽略响应。如果在给定的截止日期之前未能收到响应，则会返回 `errTimeout` 错误。
 
 函数签名： 
 
@@ -825,7 +955,6 @@ import (
 )
 
 func performRequest() {
-
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -837,8 +966,11 @@ func performRequest() {
 
 	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(3*time.Second))
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
+
 	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(1*time.Second))
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("") err.Error() == "timeout"
 
 }
 
@@ -857,7 +989,7 @@ func main() {
 
 ## DoRedirects
 
-DoRedirects 函数执行给定的 http 请求并填充给定的 http 响应，遵循最多 maxRedirectsCount 次重定向。当重定向次数超过maxRedirectsCount 时，将返回 ErrTooManyRedirects 错误。
+DoRedirects 函数执行给定的 http 请求并填充给定的 http 响应，遵循最多 maxRedirectsCount 次重定向。当重定向次数超过maxRedirectsCount 时，将返回 `ErrTooManyRedirects` 错误。
 
 函数签名：
 
@@ -893,9 +1025,11 @@ func performRequest() {
 
 	err = c.DoRedirects(context.Background(), req, res, 1)
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("") err.Error() == "too many redirects detected when doing the request"
 
 	err = c.DoRedirects(context.Background(), req, res, 2)
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
 }
 
 func main() {
@@ -951,6 +1085,7 @@ func performRequest() {
 	}
 	status, body, err := c.Get(context.Background(), nil, "http://localhost:8080/ping")
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 200 res.Body() == []byte("pong") err == <nil>
 }
 
 func main() {
@@ -966,11 +1101,11 @@ func main() {
 
 ## GetTimeOut
 
-GetTimeout函数返回URL的状态码和响应体。如果dst太小，则将被响应体替换并返回，否则将分配一个新的切片。该函数会自动跟随重定向。如果需要手动处理重定向，请使用Do函数。
+GetTimeout 函数返回 URL 的状态码和响应体。如果 dst 太小，则将被响应体替换并返回，否则将分配一个新的切片。该函数会自动跟随重定向。如果需要手动处理重定向，请使用 Do 函数。
 
-如果在给定的超时时间内无法获取URL的内容，则会返回`errTimeout`错误。
+如果在给定的超时时间内无法获取 URL 的内容，则会返回 `errTimeout` 错误。
 
-警告：GetTimeout不会终止请求本身。该请求将在后台继续进行，并且响应将被丢弃。如果请求时间过长且连接池已满，请尝试使用具有ReadTimeout配置的自定义Client实例或像下面这样设置请求级别的读取超时时间：
+警告：GetTimeout 不会终止请求本身。该请求将在后台继续进行，并且响应将被丢弃。如果请求时间过长且连接池已满，请尝试使用具有 ReadTimeout 配置的自定义 Client 实例或像下面这样设置请求级别的读取超时时间：
 
 ```go
  codeGetTimeout(ctx, dst, url, timeout, config.WithReadTimeout(1 * time.Second)) 
@@ -1005,9 +1140,11 @@ func performRequest() {
 	}
 	status, body, err := c.GetTimeout(context.Background(), nil, "http://localhost:8080/ping", 3*time.Second)
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 200 res.Body() == []byte("pong") err == <nil>
 
 	status, body, err = c.GetTimeout(context.Background(), nil, "http://localhost:8080/ping", 1*time.Second)
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 0 res.Body() == []byte("") err.Error() == "timeout"
 }
 
 func main() {
@@ -1025,11 +1162,11 @@ func main() {
 
 ## GetDeadline
 
-GetDeadline函数返回URL的状态码和响应体。如果dst太小，则将被响应体替换并返回，否则将分配一个新的切片。该函数会自动跟随重定向。如果需要手动处理重定向，请使用Do函数。
+GetDeadline 函数返回 URL 的状态码和响应体。如果 dst 太小，则将被响应体替换并返回，否则将分配一个新的切片。该函数会自动跟随重定向。如果需要手动处理重定向，请使用 Do 函数。
 
-如果在给定的截止时间之前无法获取URL的内容，则会返回`errTimeout`错误。
+如果在给定的截止时间之前无法获取 URL 的内容，则会返回 `errTimeout` 错误。
 
-警告：GetDeadline不会终止请求本身。该请求将在后台继续进行，并且响应将被丢弃。如果请求时间过长且连接池已满，请尝试使用具有ReadTimeout配置的自定义Client实例或像下面这样设置请求级别的读取超时时间：
+警告：GetDeadline 不会终止请求本身。该请求将在后台继续进行，并且响应将被丢弃。如果请求时间过长且连接池已满，请尝试使用具有ReadTimeout 配置的自定义 Client 实例或像下面这样设置请求级别的读取超时时间：
 
 ```gi
 GetDeadline(ctx, dst, url, deadline, config.WithReadTimeout(1 * time.Second))
@@ -1064,9 +1201,11 @@ func performRequest() {
 	}
 	status, body, err := c.GetDeadline(context.Background(), nil, "http://localhost:8080/ping", time.Now().Add(3*time.Second))
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 200 res.Body() == []byte("pong") err == <nil>
 
 	status, body, err = c.GetDeadline(context.Background(), nil, "http://localhost:8080/ping", time.Now().Add(time.Second))
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 0 res.Body() == []byte("") err.Error() == "timeout"
 }
 
 func main() {
@@ -1119,6 +1258,7 @@ func performRequest() {
 	postArgs.Set("name", "cloudwego") // Set post args
 	status, body, err := c.Post(context.Background(), nil, "http://localhost:8080/hello", &postArgs)
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 200 res.Body() == []byte("hello cloudwego") err == <nil>
 }
 
 func main() {
@@ -1170,9 +1310,10 @@ func performRequest() {
 		return
 	}
 	client.SetProxy(protocol.ProxyURI(protocol.ParseURI("http://localhost:8080")))
-	status, body, err := client.Get(context.Background(), nil, "http://localhost:8081/ping")
+	status, body, err := client.Get(context.Background(), nil, "http://localhost:8080/ping")
 
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 200 res.Body() == []byte("pong") err == <nil>
 }
 
 func main() {
@@ -1208,7 +1349,7 @@ func main() {
 
 ## SetRetryIfFunc
 
-`SetRetryIfFunc` 方法用于设置客户端的重试函数，该函数用于判断在请求失败时是否应该重试。
+`SetRetryIfFunc` 方法用于自定义配置重试发生的条件。（更多内容请参考 [retry-条件配置](/zh/docs/hertz/tutorials/basic-feature/retry/#retry-条件配置)）
 
 函数签名：
 
@@ -1229,7 +1370,6 @@ import (
 )
 
 func main() {
-
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -1287,7 +1427,7 @@ func main() {
 
 ## CloseIdleConnections
 
-`CloseIdleConnections` 方法用于关闭任何处于空闲状态的 "keep-alive" 连接。这些连接可能是之前的请求所建立的，但现在已经空闲了一段时间。该方法不会中断任何当前正在使用的连接。
+`CloseIdleConnections` 方法用于关闭任何处于空闲状态的 `keep-alive` 连接。这些连接可能是之前的请求所建立的，但现在已经空闲了一段时间。该方法不会中断任何当前正在使用的连接。
 
 函数签名：
 
@@ -1315,7 +1455,7 @@ func main() {
     status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
     fmt.Printf("status=%v body=%v\n", status, string(body))
 
-    // 关闭空闲连接
+    // close idle connections
     c.CloseIdleConnections()
 }
 ```
@@ -1336,29 +1476,43 @@ func (c *Client) GetDialerName() (dName string, err error)
 package main
 
 import (
-    "context"
-    "fmt"
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"context"
+	"fmt"
+	
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
-func main() {
+func performRequest() {
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/ping")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// status == 200 res.Body() == []byte("pong")
 
-    c, err := client.NewClient()
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
-
-    // 获取拨号器名称
-    dName, err := c.GetDialerName()
-    if err != nil {
-        fmt.Printf("GetDialerName failed: %v", err)
-        return
-    }
-    fmt.Printf("dialer name=%v\n", dName)
+	// get dialer name
+	dName, err := c.GetDialerName()
+	if err != nil {
+		fmt.Printf("GetDialerName failed: %v", err)
+		return
+	}
+	fmt.Printf("dialer name=%v\n", dName)
+	// dName == "standard"
 }
 
+func main() {
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+		ctx.String(consts.StatusOK, "pong")
+	})
+	go h.Spin()
+
+	performRequest()
+}
 ```
 
 ## GetOptions
@@ -1390,6 +1544,7 @@ func main() {
 
 	options := c.GetOptions()
 	fmt.Println(options.DialTimeout)
+	// options.DialTimeout == 1s
 }
 
 ```
@@ -1449,6 +1604,7 @@ func performRequest() {
 
 	err = client.Do(context.Background(), req, res)
 	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
 }
 
 func main() {
