@@ -192,11 +192,13 @@ func main() {
     if err != nil {
         panic(err)
     }
+    // Kitex generalization currently directly supports http.Request in the standard library.
+    // To use hertz, you need to make a request conversion httpReq, err := adapter.GetCompatRequest(hertzReqCtx)
     req.Header.Set("token", "1")
     customReq, err := generic.FromHTTPRequest(req)
     // customReq *generic.HttpRequest
     resp, err := cli.GenericCall(ctx, "", customReq)
-    realResp := resp.(*generic.HttpResponse)
+    realResp := resp.(*generic.HTTPResponse)
     realResp.Write(w)
 }
 ```
@@ -249,7 +251,7 @@ func (m *notBodyStruct) Request(req *descriptor.HttpRequest, field *descriptor.F
 }
 
 // set value to response
-func (m *notBodyStruct) Response(resp *descriptor.HttpResponse, field *descriptor.FieldDescriptor, val interface{}) {
+func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descriptor.FieldDescriptor, val interface{}) {
 }
 ```
 

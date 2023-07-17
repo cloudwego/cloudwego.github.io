@@ -194,12 +194,14 @@ func main() {
     if err != nil {
         panic(err)
     }
+    // Kitex 泛化目前直接支持的是标准库中的 http.Request，使用 hertz 需要通过做一个请求转换
+    // httpReq, err := adaptor.GetCompatRequest(hertzReqCtx)
     req.Header.Set("token", "1")
     customReq, err := generic.FromHTTPRequest(req) // 考虑到业务有可能使用第三方 http request，可以自行构造转换函数
     // customReq *generic.HttpRequest
     // 由于 http 泛化的 method 是通过 bam 规则从 http request 中获取的，所以填空就行
     resp, err := cli.GenericCall(ctx, "", customReq)
-    realResp := resp.(*generic.HttpResponse)
+    realResp := resp.(*generic.HTTPResponse)
     realResp.Write(w) // 写回 ResponseWriter，用于 http 网关
 }
 ```
@@ -253,7 +255,7 @@ func (m *notBodyStruct) Request(req *descriptor.HttpRequest, field *descriptor.F
 }
 
 // set value to response
-func (m *notBodyStruct) Response(resp *descriptor.HttpResponse, field *descriptor.FieldDescriptor, val interface{}) {
+func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descriptor.FieldDescriptor, val interface{}) {
 }
 ```
 
@@ -766,7 +768,7 @@ includes := map[string]string{
    `,
 }
 
-p, err := NewThriftContentProvider(path, includes)
+p, err := NewThriftContentProvider(content, includes)
 ```
 
 
@@ -808,5 +810,5 @@ includes := map[string]string{
    `,
    "a/z.thrift": "namespace go kitex.test.server",
 }
-p, err := NewThriftContentWithAbsIncludePathProvider(path, includes)
+p, err := NewThriftContentWithAbsIncludePathProvider(content, includes)
 ```
