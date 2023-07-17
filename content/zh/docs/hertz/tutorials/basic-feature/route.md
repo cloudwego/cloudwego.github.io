@@ -366,3 +366,11 @@ func main() {
 }
 
 ```
+
+### 特殊路由转发
+
+Hertz 在默认情况下会根据请求 path 末尾的 `/` 自动进行转发。如：如果 router 中只有 /foo/，那么请求 /foo 会被自动重定向到 /foo/；如果 router 中只有 /foo，那么 /foo/ 会被重定向到 /foo。
+
+这样的请求除 `GET`  以外的请求方法都会触发 `307Temporary Redirect` 状态码，而 `GET` 请求会触发 `301Moved Permanently` 状态码。
+
+可以在配置中设置这一情况，对应的配置为 `WithRedirectTrailingSlash` ，配置设置方法见：https://www.cloudwego.io/zh/docs/hertz/reference/config/#server
