@@ -30,7 +30,7 @@ func performRequest() {
 
 	req.SetMethod("GET")
 	_ = c.Do(context.Background(), req, resp)
-	fmt.Printf("get response: %s\n", resp.Body())
+	fmt.Printf("get response: %s\n", resp.Body()) // status == 200 resp.Body() == []byte("hello hertz")
 
 }
 
@@ -122,16 +122,40 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
-func main() {
-	c, err := client.NewClient(client.WithMaxConnsPerHost(10))
+func performRequest() {
+	c, err := client.NewClient(client.WithMaxConnsPerHost(1))
 	if err != nil {
 		return
 	}
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
+
+	for i := 0; i < 10; i++ {
+		go func() {
+			status, body, err := c.Get(context.Background(), nil, "http://localhost:8080/hello")
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Printf("status=%v body=%v\n", status, string(body))
+			// Only one received the message: status == 200 resp.Body() == []byte("hello hertz"), 
+			// the error of others is "no free connections available to host".
+		}()
+	}
+}
+
+func main() {
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -282,20 +306,38 @@ Sample Code:
 package main
 
 import (
-    "context"
-    "fmt"
-    "time"
-
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"context"
+	"fmt"
+	"log"
+	"strings"
+	"time"
+	
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
+func performRequest() {
+	c1, err := client.NewClient(client.WithClientReadTimeout(time.Nanosecond))
+	if err != nil {
+		return
+	}
+
+	status, body, err = c1.Get(context.Background(), nil, "http://localhost:8080/hello")
+	if err != nil {
+		log.Fatal(err) // err.Error() == "timeout"
+	}
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+
 func main() {
-    c, err := client.NewClient(client.WithClientReadTimeout(10 * time.Second))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.String(consts.StatusOK, strings.Repeat("a", 1024*1024))
+	})
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -448,19 +490,32 @@ Sample Code:
 package main
 
 import (
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
+func performRequest() {
+	c, err := client.NewClient(client.WithName("my-client"))
+	if err != nil {
+		return
+	}
+	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+
 func main() {
-    c, err := client.NewClient(client.WithName("my-client"))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		fmt.Printf("%s\n", ctx.Request.Header.Get("User-Agent")) // "my-client"
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -480,19 +535,40 @@ Sample Code:
 package main
 
 import (
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
+func performRequest() {
+	c, err := client.NewClient(client.WithNoDefaultUserAgentHeader(false))
+	if err != nil {
+		return
+	}
+	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// User-Agent == "hertz"
+
+	c, err = client.NewClient(client.WithNoDefaultUserAgentHeader(true))
+	if err != nil {
+		return
+	}
+	status, body, _ = c.Get(context.Background(), nil, "http://localhost:8080/hello")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// User-Agent == ""
+}
+
 func main() {
-    c, err := client.NewClient(client.WithNoDefaultUserAgentHeader(true))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -512,28 +588,46 @@ Sample Code:
 package main
 
 import (
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
-func main() {
-    c, err := client.NewClient(client.WithDisablePathNormalizing(true))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com/path/../path/./subpath")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
+func performRequest() {
+	c, err := client.NewClient(client.WithDisablePathNormalizing(false))
+	if err != nil {
+		return
+	}
+	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello/../hello")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// request url == "http://localhost:8080/hello"
+
+	c, err = client.NewClient(client.WithDisablePathNormalizing(true))
+	if err != nil {
+		return
+	}
+	status, body, _ = c.Get(context.Background(), nil, "http://localhost:8080/hello/../hello")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// request url == "http://localhost:8080/hello/../hello"
 }
 
+func main() {
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
+}
 ```
 
 ### WithRetryConfig
 
-The `WithRetryConfig` function is used to set the retry configuration of the HTTP client. In case of problems such as network failure or timeout, the client can retry to try to re-establish the connection or resend the request.
-
-[retryConfig detail](/docs/hertz/tutorials/basic-feature/retry/)
+The `WithRetryConfig` function is used to set the retry configuration of the HTTP client. In case of problems such as network failure or timeout, the client can retry to try to re-establish the connection or resend the request. (For more information, please refer to [retry](/docs/hertz/tutorials/basic-feature/retry/))
 
 Function Signature:
 
@@ -585,20 +679,42 @@ Sample Code:
 package main
 
 import (
-    "context"
-    "fmt"
-    "time"
+	"context"
+	"fmt"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"log"
+	"strings"
+	"time"
 
-    "github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
+func performRequest() {
+	c, err := client.NewClient(client.WithWriteTimeout(time.Nanosecond))
+	if err != nil {
+		return
+	}
+
+	args := &protocol.Args{}
+	args.Set("data", strings.Repeat("a", 1024*1024))
+	status, body, err := c.Post(context.Background(), nil, "http://localhost:8080/hello", args)
+	if err != nil {
+		log.Fatal(err)
+	}
+	//err.Error() == "i/o timeout"
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+
 func main() {
-    c, err := client.NewClient(client.WithWriteTimeout(1*time.Second))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Post(context.Background(), nil, "https://www.example.com", []byte("hello, world!"))
-    fmt.Printf("status=%v body=%v\n", status, string(body))
+	h := server.New(server.WithHostPorts(":8080"))
+	h.POST("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -620,24 +736,38 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/cloudwego/hertz/pkg/common/config"
 	"time"
 
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/common/config"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
-func main() {
+func performRequest() {
 	observeInterval := 10 * time.Second
 	stateFunc := func(state config.HostClientState) {
-		fmt.Printf("state=%v\n", state)
+		fmt.Printf("state=%v\n", state.ConnPoolState().Addr)
+		// state.ConnPoolState().Addr == "localhost:8080"
 	}
 	c, err := client.NewClient(client.WithConnStateObserve(stateFunc, observeInterval))
 	if err != nil {
 		return
 	}
-  
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
+
+	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello")
 	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+
+func main() {
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, "hello hertz")
+	})
+	time.Sleep(time.Second)
+	go performRequest()
+	h.Spin()
 }
 ```
 
@@ -680,9 +810,9 @@ func main() {
 
 ## Do
 
-The Do function executes the given http request and populates the given http response. The request must contain at least one non-zero RequestURI containing the full URL or a non-zero Host header + RequestURI.
+The `Do` function executes the given http request and populates the given http response. The request must contain at least one non-zero RequestURI containing the full URL or a non-zero Host header + RequestURI.
 
-This function does not follow redirects. Please use the Get function to follow the redirect.
+This function does not follow redirects. Please use the `Get` function to follow the redirect.
 
 If resp is nil, the response will be ignored. If all DefaultMaxConnsPerHost connections against the requesting host are busy, an `ErrNoFreeConns` error will be returned. In performance-critical code, it is recommended that req and resp be obtained via AcquireRequest and AcquireResponse.
 
@@ -721,7 +851,7 @@ func performRequest() {
 
 	err = c.Do(context.Background(), req, res)
 	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
-
+    // resp.Body() == []byte("pong") err == <nil>
 }
 
 func main() {
@@ -739,9 +869,9 @@ func main() {
 
 ## DoTimeout
 
-The DoTimeout function executes the given request and waits for a response within the given timeout period.
+The `DoTimeout` function executes the given request and waits for a response within the given timeout period.
 
-If resp is nil, the response is ignored. If the response is not received within the given timeout period, an errTimeout error is returned.
+If resp is nil, the response is ignored. If the response is not received within the given timeout period, an `errTimeout error` is returned.
 
 Function Signature: 
 
@@ -779,8 +909,11 @@ func performRequest() {
 
 	err = c.DoTimeout(context.Background(), req, res, time.Second*3)
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+    // res.Body() == []byte("pong") err == <nil>
+
 	err = c.DoTimeout(context.Background(), req, res, time.Second)
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+    // res.Body() == []byte("") err.Error() == "timeout"
 
 }
 
@@ -800,8 +933,8 @@ func main() {
 
 ## DoDeadline
 
-DoDeadline executes the given request and waits for the response until the given deadline.
-If resp is nil, the response is ignored. If the response is not received by the given deadline, an errTimeout error is returned.
+`DoDeadline` executes the given request and waits for the response until the given deadline.
+If resp is nil, the response is ignored. If the response is not received by the given deadline, an `errTimeout error` is returned.
 
 Function Signature: 
 
@@ -839,8 +972,11 @@ func performRequest() {
 
 	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(3*time.Second))
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+    // res.Body() == []byte("pong") err == <nil>
+
 	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(1*time.Second))
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+    // res.Body() == []byte("") err.Error() == "timeout"
 
 }
 
@@ -859,7 +995,7 @@ func main() {
 
 ## DoRedirects
 
-The DoRedirects function executes the given http request and populates the given http response, following a maximum of maxRedirectsCount redirects. When the number of redirects exceeds maxRedirectsCount, an ErrTooManyRedirects error is returned.
+The `DoRedirects` function executes the given http request and populates the given http response, following a maximum of maxRedirectsCount redirects. When the number of redirects exceeds maxRedirectsCount, an `ErrTooManyRedirects` error is returned.
 
 Function Signature:
 
@@ -895,9 +1031,11 @@ func performRequest() {
 
 	err = c.DoRedirects(context.Background(), req, res, 1)
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+    // res.Body() == []byte("") err.Error() == "too many redirects detected when doing the request"
 
 	err = c.DoRedirects(context.Background(), req, res, 2)
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+    // res.Body() == []byte("pong") err == <nil>
 }
 
 func main() {
@@ -920,9 +1058,9 @@ func main() {
 
 ## Get
 
-The Get function returns the status code of the URL and the response body. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned.
+The `Get` function returns the status code of the URL and the response body. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned.
 
-The function will automatically follow the redirect. If you need to handle redirects manually, use the Do function.
+The function will automatically follow the redirect. If you need to handle redirects manually, use the `Do` function.
 
 Function Signature:
 
@@ -953,6 +1091,7 @@ func performRequest() {
 	}
 	status, body, err := c.Get(context.Background(), nil, "http://localhost:8080/ping")
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+    // status == 200 res.Body() == []byte("pong") err == <nil>
 }
 
 func main() {
@@ -968,7 +1107,7 @@ func main() {
 
 ## GetTimeOut
 
-The GetTimeout function returns the status code of the URL and the response body. If the dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. This function will automatically follow the redirect. If the redirect needs to be handled manually, use the Do function.
+The `GetTimeout` function returns the status code of the URL and the response body. If the dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. This function will automatically follow the redirect. If the redirect needs to be handled manually, use the Do function.
 
 If the content of the URL cannot be fetched within the given timeout, an `errTimeout` error will be returned.
 
@@ -1007,9 +1146,11 @@ func performRequest() {
 	}
 	status, body, err := c.GetTimeout(context.Background(), nil, "http://localhost:8080/ping", 3*time.Second)
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+    // status == 200 res.Body() == []byte("pong") err == <nil>
 
 	status, body, err = c.GetTimeout(context.Background(), nil, "http://localhost:8080/ping", 1*time.Second)
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+    // status == 0 res.Body() == []byte("") err.Error() == "timeout"
 }
 
 func main() {
@@ -1027,13 +1168,13 @@ func main() {
 
 ## GetDeadline
 
-The GetDeadline function returns the status code of the URL and the response body. If the dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. This function will automatically follow the redirect. If the redirect needs to be handled manually, use the Do function.
+The `GetDeadline` function returns the status code of the URL and the response body. If the dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. This function will automatically follow the redirect. If the redirect needs to be handled manually, use the Do function.
 
 If the content of the URL cannot be fetched before the given deadline, an `errTimeout` error will be returned.
 
 Warning: GetDeadline will not terminate the request itself. The request will continue in the background and the response will be discarded. If the request takes too long and the connection pool is full, try using a custom Client instance with a ReadTimeout configuration or set a request-level read timeout like the following:
 
-```gi
+```go
 GetDeadline(ctx, dst, url, deadline, config.WithReadTimeout(1 * time.Second))
 ```
 
@@ -1066,9 +1207,11 @@ func performRequest() {
 	}
 	status, body, err := c.GetDeadline(context.Background(), nil, "http://localhost:8080/ping", time.Now().Add(3*time.Second))
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+    // status == 200 res.Body() == []byte("pong") err == <nil>
 
 	status, body, err = c.GetDeadline(context.Background(), nil, "http://localhost:8080/ping", time.Now().Add(time.Second))
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+    // status == 0 res.Body() == []byte("") err.Error() == "timeout"
 }
 
 func main() {
@@ -1085,7 +1228,7 @@ func main() {
 
 ## Post
 
-The Post function sends a POST request to the specified URL using the given POST parameters. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. The function will automatically follow the redirect. If you need to handle redirects manually, use the Do function.
+The `Post` function sends a POST request to the specified URL using the given POST parameters. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. The function will automatically follow the redirect. If you need to handle redirects manually, use the Do function.
 
 If postArgs is nil, then an empty POST request body is sent.
 
@@ -1121,6 +1264,7 @@ func performRequest() {
 	postArgs.Set("name", "cloudwego") // Set post args
 	status, body, err := c.Post(context.Background(), nil, "http://localhost:8080/hello", &postArgs)
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+    // status == 200 res.Body() == []byte("hello cloudwego") err == <nil>
 }
 
 func main() {
@@ -1136,7 +1280,7 @@ func main() {
 
 ## SetProxy
 
-SetProxy is used to set the client proxy.
+`SetProxy` is used to set the client proxy.
 
 Note that multiple proxies cannot be set for the same client. If you need to use another proxy, please create another client and set a proxy for it.
 
@@ -1175,6 +1319,7 @@ func performRequest() {
 	status, body, err := client.Get(context.Background(), nil, "http://localhost:8081/ping")
 
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+    // status == 200 res.Body() == []byte("pong") err == <nil>
 }
 
 func main() {
@@ -1210,7 +1355,7 @@ func main() {
 
 ## SetRetryIfFunc
 
-The `SetRetryIfFunc` method is used to set the client's retry function, which is used to determine whether a request should be retried if it fails.
+The `SetRetryIfFunc` method is used to customize the conditions under which retry occurs. (For more information, please refer to [retry-condition-configuration](/docs/hertz/tutorials/basic-feature/retry/#retry-condition-configuration))
 
 Function Signature:
 
@@ -1289,7 +1434,7 @@ func main() {
 
 ## CloseIdleConnections
 
-The `CloseIdleConnections` method is used to close any "keep-alive" connections that are in an idle state. These connections may have been established by a previous request, but have been idle for some time now. This method does not break any connections that are currently in use.
+The `CloseIdleConnections` method is used to close any `keep-alive` connections that are in an idle state. These connections may have been established by a previous request, but have been idle for some time now. This method does not break any connections that are currently in use.
 
 Function Signature:
 
@@ -1317,7 +1462,7 @@ func main() {
     status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
     fmt.Printf("status=%v body=%v\n", status, string(body))
 
-    // 关闭空闲连接
+    // close idle connections
     c.CloseIdleConnections()
 }
 ```
@@ -1343,22 +1488,23 @@ import (
     "github.com/cloudwego/hertz/pkg/app/client"
 )
 
-func main() {
+func performRequest() {
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/ping")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// status == 200 res.Body() == []byte("pong")
 
-    c, err := client.NewClient()
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
-
-    // 获取拨号器名称
-    dName, err := c.GetDialerName()
-    if err != nil {
-        fmt.Printf("GetDialerName failed: %v", err)
-        return
-    }
-    fmt.Printf("dialer name=%v\n", dName)
+	// get dialer name
+	dName, err := c.GetDialerName()
+	if err != nil {
+		fmt.Printf("GetDialerName failed: %v", err)
+		return
+	}
+	fmt.Printf("dialer name=%v\n", dName)
+	// dName == "standard"
 }
 
 ```
@@ -1392,6 +1538,7 @@ func main() {
 
 	options := c.GetOptions()
 	fmt.Println(options.DialTimeout)
+    // options.DialTimeout == 1s
 }
 
 ```
@@ -1451,6 +1598,7 @@ func performRequest() {
 
 	err = client.Do(context.Background(), req, res)
 	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
 }
 
 func main() {
