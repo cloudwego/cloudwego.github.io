@@ -2,7 +2,7 @@
 title: "连接类型"
 date: 2021-09-28
 weight: 5
-keywords: ["Kitex", "短连接", "长链接", "链接多路复用"]
+keywords: ["Kitex", "短连接", "长连接", "连接多路复用"]
 description: "Kitex 支持短连接、长连接池、连接多路复用以及连接池状态监控。"
 ---
 
