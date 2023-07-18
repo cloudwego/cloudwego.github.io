@@ -713,8 +713,6 @@ func (ctx *RequestContext) GetRawData() []byte
 func (ctx *RequestContext) Body() ([]byte, error) 
 func (ctx *RequestContext) RequestBodyStream() io.Reader
 func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
-func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
-func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
 func (ctx *RequestContext) PostForm(key string) string
 func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string 
 func (ctx *RequestContext) GetPostForm(key string) (string, bool) 
@@ -771,6 +769,8 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 
 Obtain the `multipart.Form` object. (For more information, please refer to [multipart#Form](https://pkg.go.dev/mime/multipart#Form))
 
+> Note: This function can obtain both ordinary values and files. Here is an example code for obtaining ordinary values. The example code for obtaining files can be found in [MultipartForm](#multipartform-1).
+
 Function Signature:
 
 ```go
@@ -782,57 +782,11 @@ Example Code:
 ```go
 // POST http://example.com/user
 // Content-Type: multipart/form-data; 
-// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
 // Content-Disposition: form-data; name="name"
 // tom
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
     form, err := ctx.MultipartForm()
-    avatarFile := form.File["avatar"][0] // avatarFile.Filename == "abc.jpg"
     name := form.Value["name"][0] // name == "tom"
-})
-```
-
-### FormFile
-
-Retrieve `multipart.Form.File` by name and return the first `multipart.FileHeader` of the given name. (For more information, please refer to [multipart#FileHeader](https://pkg.go.dev/mime/multipart#FileHeader))
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
-```
-
-Example Code:
-
-```go
-// POST http://example.com/user
-// Content-Type: multipart/form-data; 
-// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
-    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
-})
-```
-
-### SaveUploadedFile
-
-Save the multipart file to disk.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
-```
-
-Example Code:
-
-```go
-// POST http://example.com/user
-// Content-Type: multipart/form-data; 
-// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
-    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
-    // save file
-    ctx.SaveUploadedFile(avatarFile, avatarFile.Filename) // save file "abc.jpg"
 })
 ```
 
@@ -840,7 +794,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 
 Retrieve `multipart.Form.Value` by name and return the first value of the given name.
 
-> Note: This function supports obtaining values from content-type of application/x-www form urlencoded and multipart/form data.
+> Note: This function supports obtaining values from content-type of application/x-www form urlencoded and multipart/form data, and does not support obtaining file values.
 
 Function Signature:
 
@@ -864,7 +818,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 Retrieve `multipart.Form.Value` by name and return the first value of the given name. If it does not exist, return defaultValue.
 
-> Note: This function supports obtaining values from content-type of application/x-www form urlencoded and multipart/form data.
+> Note: This function supports obtaining values from content-type of application/x-www form urlencoded and multipart/form data, and does not support obtaining file values.
 
 Function Signature:
 
@@ -984,6 +938,82 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
+## File Operation
+
+```go
+func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
+func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
+func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
+```
+
+### MultipartForm
+
+Obtain the `multipart.Form` object. (For more information, please refer to [multipart#Form](https://pkg.go.dev/mime/multipart#Form))
+
+> Note: This function can obtain both ordinary values and files. Here is an example code for obtaining file values. The example code for obtaining ordinary values can be found in [MultipartForm](#multipartform).
+
+函数签名:
+
+```go
+func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    form, err := ctx.MultipartForm()
+    avatarFile := form.File["avatar"][0] // avatarFile.Filename == "abc.jpg"
+})
+```
+
+### FormFile
+
+Retrieve `multipart.Form.File` by name and return the first `multipart.FileHeader` of the given name. (For more information, please refer to [multipart#FileHeader](https://pkg.go.dev/mime/multipart#FileHeader))
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
+```
+
+Example Code:
+
+```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
+})
+```
+
+### SaveUploadedFile
+
+Save the multipart file to disk.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
+```
+
+Example Code:
+
+```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
+    // save file
+    ctx.SaveUploadedFile(avatarFile, avatarFile.Filename) // save file "abc.jpg"
+})
+```
+
 ## RequestContext Metadata Store
 
 > Note: RequestContext will be reclaimed after the request ends, and the metadata will be set to nil. To use asynchronously, please use the [Copy](#copy) method.
@@ -1012,412 +1042,78 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string)`|Obtain the value of the requestContext key as key and convert it to type `map[string][]string` |
 | `func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))`|Call fn for each key value pair in the context |
 
-### Set
-
-Store key value pairs in requestContext.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) Set(key string, value interface{})
-```
-
 Example Code:
 
 ```go
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("version", "v1")
-    v := ctx.Value("version")  // v == interface {}(string) "v1"
-})
-```
+		ctx.Set("version1", "v1")
+		v := ctx.Value("version1") // v == interface{}(string) "v1"
 
-### Value
+		ctx.Set("version2", "v2")
+		v, exists := ctx.Get("version2") // v == interface{}(string) "v2", exists == true
+		v, exists = ctx.Get("pet")       // v == interface{} nil, exists == false
 
-Gets the value of the requestContext key as key.
+		ctx.Set("version3", "v3")
+		v := ctx.MustGet("version3") // v == interface{}(string) "v3"
 
-> Note: The key type needs to be `string`, otherwise it will return nil.
+		ctx.Set("version4", "v4")
+		vString := ctx.GetString("version4") // vString == "v4"
 
-Function Signature:
+		ctx.Set("isAdmin", true)
+		vBool := ctx.GetBool("isAdmin") // vBool == true
 
-```go
-func (ctx *RequestContext) Value(key interface{}) interface{}
-```
+		ctx.Set("age1", 20)
+		vInt := ctx.GetInt("age1") // vInt == 20
 
-Example Code:
+		ctx.Set("age2", int32(20))
+		vInt32 := ctx.GetInt32("age2") // vInt32 == 20
 
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("version", "v1")
-    v := ctx.Value("version")  // v == interface {}(string) "v1"
-})
-```
+		ctx.Set("age3", int64(20))
+		vInt64 := ctx.GetInt64("age3") // vInt64 == 20
 
-### Get
+		ctx.Set("age4", uint(20))
+		vUInt := ctx.GetUint("age4") // vUInt == 20
 
-Obtain the value of the requestContext key as key and whether the key exists.
+		ctx.Set("age5", uint32(20))
+		vUInt32 := ctx.GetUint32("age5") // vUInt32 == 20
 
-Function Signature:
+		ctx.Set("age6", uint64(20))
+		vUInt64 := ctx.GetUint64("age6") // vUInt64 == 20
 
-```go
-func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)
-```
+		ctx.Set("age7", float32(20.1))
+		vFloat32 := ctx.GetFloat32("age7") // vFloat32 == 20.1
 
-Example Code:
+		ctx.Set("age8", 20.1)
+		vFloat64 := ctx.GetFloat64("age8") // vFloat64 == 20.1
 
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("version", "v1")
-    v, exists := ctx.Get("version")  // v == interface {}(string) "v1", exists == true
-    v, exists = ctx.Get("pet")  // v == interface {} nil, exists == false
-})
-```
+		t2022, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2022 07:28:00 GMT")
+		ctx.Set("birthday", t2022)
+		vTime := ctx.GetTime("birthday") // vTime == t2022
 
-### MustGet
+		ctx.Set("duration", time.Minute)
+		vDuration := ctx.GetDuration("duration") // vDuration == time.Minute
 
-Obtain the value of the requestContext key as key. If it does not exist, a panic will occur.
+		ctx.Set("pet", []string{"cat", "dog"})
+		vStringSlice := ctx.GetStringSlice("pet") // vStringSlice == []string{"cat", "dog"}
 
-Function Signature:
+		ctx.Set("info1", map[string]interface{}{"name": "tom"})
+		vStringMap := ctx.GetStringMap("info1") // vStringMap == map[string]interface{}{"name": "tom"}
 
-```go
-func (ctx *RequestContext) MustGet(key string) interface{}
-```
+		ctx.Set("info2", map[string]string{"name": "tom"})
+		vStringMapString := ctx.GetStringMapString("info2")
+		// vStringMapString == map[string]string{}{"name": "tom"}
 
-Example Code:
+		ctx.Set("smss", map[string][]string{"pets": {"cat", "dog"}})
+		vStringMapStringSlice := ctx.GetStringMapStringSlice("smss")
+		// vStringMapStringSlice == map[string][]string{"pets": {"cat", "dog"}}
 
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("version", "v1")
-    v := ctx.MustGet("version")  // v == interface {}(string) "v1"
-})
-```
-
-### GetString
-
-Obtain the value of the requestContext key as key and convert it to type `string`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetString(key string) (s string)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("version", "v1")
-    v := ctx.GetString("version")  // v == "v1"
-})
-```
-
-### GetBool
-
-Obtain the value of the requestContext key as key and convert it to type `bool`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetBool(key string) (b bool)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("isAdmin", true)
-    v := ctx.GetBool("isAdmin")  // v == true
-})
-```
-
-### GetInt
-
-Obtain the value of the requestContext key as key and convert it to type `int`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetInt(key string) (i int)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", 20)
-    v := ctx.GetInt("age")  // v == 20
-})
-```
-
-### GetInt32
-
-Obtain the value of the requestContext key as key and convert it to type `int32`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetInt32(key string) (i32 int32)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", int32(20))
-    v := ctx.GetInt32("age")  // v == 20
-})
-```
-
-### GetInt64
-
-Obtain the value of the requestContext key as key and convert it to type `int64`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetInt64(key string) (i64 int64)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", int64(20))
-    v := ctx.GetInt64("age")  // v == 20
-})
-```
-
-### GetUint
-
-Obtain the value of the requestContext key as key and convert it to type `uint`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetUint(key string) (ui uint)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", uint(20))
-    v := ctx.GetInt64("age")  // v == 20
-})
-```
-
-### GetUint32
-
-Obtain the value of the requestContext key as key and convert it to type `uint32`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetUint32(key string) (ui32 uint32)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", uint32(20))
-    v := ctx.GetUint32("age")  // v == 20
-})
-```
-
-### GetUint64
-
-Obtain the value of the requestContext key as key and convert it to type `uint64`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetUint64(key string) (ui64 uint64)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", uint64(20))
-    v := ctx.GetUint64("age")  // v == 20
-})
-```
-
-### GetFloat32
-
-Obtain the value of the requestContext key as key and convert it to type `float32`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetFloat32(key string) (f32 float32)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", float32(20.1))
-    v := ctx.GetFloat64("age")  // v == 20.1
-})
-```
-
-### GetFloat64
-
-Obtain the value of the requestContext key as key and convert it to type `float64`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetFloat64(key string) (f64 float64)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", 20.1)
-    v := ctx.GetFloat64("age")  // v == 20.1
-})
-```
-
-### GetTime
-
-Obtain the value of the requestContext key as key and convert it to type `time.Time`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetTime(key string) (t time.Time)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    t2022, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2022 07:28:00 GMT")
-    ctx.Set("birthday", t2022)
-    v := ctx.GetTime("birthday")  // v == t2022
-})
-```
-
-### GetDuration
-
-Obtain the value of the requestContext key as key and convert it to type `time.Duration`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetDuration(key string) (d time.Duration)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("duration", time.Minute)
-    v := ctx.GetDuration("duration")  // v == time.Minute
-})
-```
-
-### GetStringSlice
-
-Obtain the value of the requestContext key as key and convert it to type `[]string`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetStringSlice(key string) (ss []string)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("pet", []string{"cat", "dog"})
-    v := ctx.GetStringSlice("pet")  // v == []string{"cat", "dog"}
-})
-```
-
-### GetStringMap
-
-Obtain the value of the requestContext key as key and convert it to type `map[string]interface{}`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{})
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("info", map[string]interface{}{"name": "tom"})
-    v := ctx.GetStringMap("info") // v == map[string]interface{}{"name": "tom"}
-})
-```
-
-### GetStringMapString
-
-Obtain the value of the requestContext key as key and convert it to type `map[string]string`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string)
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("info", map[string]string{}{"name": "tom"})
-    v := ctx.GetStringMap("info") // v == map[string]string{}{"name": "tom"}
-})
-```
-
-### GetStringMapStringSlice
-
-Obtain the value of the requestContext key as key and convert it to type `map[string][]string`.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string)
-
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("smss", map[string][]string{"pets": {"cat", "dog"}})
-    v := ctx.GetStringMapStringSlice("smss") // v == map[string][]string{"pets": {"cat", "dog"}}
-})
-```
-
-### ForEachKey
-
-Call fn for each key value pair in the context.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))
-```
-
-Example Code:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("duration", time.Minute)
-    ctx.Set("version", "v1")
-    ctx.ForEachKey(func(k string, v interface{}) {
-        // 1. k == "duration", v == interface{}(time.Duration) time.Minute
-        // 2. k == "version", v == interface {}(string) "v1"
-    })
-})
+		ctx.Set("duration", time.Minute)
+		ctx.Set("version", "v1")
+		ctx.ForEachKey(func(k string, v interface{}) {
+			// 1. k == "duration", v == interface{}(time.Duration) time.Minute
+			// 2. k == "version", v == interface{}(string) "v1"
+		})
+	})
 ```
 
 ## Handler

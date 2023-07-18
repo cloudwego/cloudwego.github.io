@@ -82,7 +82,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetStatusCode
 
-设置 Status Code
+设置 Status Code。
 
 函数签名:
 
@@ -287,9 +287,6 @@ func (ctx *RequestContext) SetBodyStream(bodyStream io.Reader, bodySize int)
 func (ctx *RequestContext) SetBodyString(body string)
 func (ctx *RequestContext) Write(p []byte) (int, error)
 func (ctx *RequestContext) WriteString(s string) (int, error)
-func (ctx *RequestContext) File(filepath string)
-func (ctx *RequestContext) FileAttachment(filepath, filename string)
-func (ctx *RequestContext) FileFromFS(filepath string, fs *FS)
 func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
 func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
 ```
@@ -377,7 +374,57 @@ func (ctx *RequestContext) WriteString(s string) (int, error)
 h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
     size, _ := ctx.WriteString("hello world")// Body: "hello world", size == 11
 })
+```
 
+### AbortWithMsg
+
+设置 Status Code 和 Body 并终止后续的 Handler。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
+```
+
+示例:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.AbortWithMsg("abort", consts.StatusOK)
+}, func(c context.Context, ctx *app.RequestContext) {
+    // will not execute
+})
+```
+
+### AbortWithStatusJSON
+
+设置 Status Code 和 Json 格式 Body 并终止后续的 Handler。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
+```
+
+示例:
+
+```go
+ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+  ctx.AbortWithStatusJSON(consts.StatusOK, utils.H{
+   "foo":  "bar",
+   "html": "<b>",
+  })
+ }, func(c context.Context, ctx *app.RequestContext) {
+  // will not execute
+ })
+```
+
+## 文件操作
+
+```go
+func (ctx *RequestContext) File(filepath string)
+func (ctx *RequestContext) FileAttachment(filepath, filename string)
+func (ctx *RequestContext) FileFromFS(filepath string, fs *FS)
 ```
 
 ### File
@@ -437,49 +484,6 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
         AcceptByteRange:    true,
     })
 })
-```
-
-### AbortWithMsg
-
-设置 Status Code 和 Body 并终止后续的 Handler。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
-```
-
-示例:
-
-```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.AbortWithMsg("abort", consts.StatusOK)
-}, func(c context.Context, ctx *app.RequestContext) {
-    // will not execute
-})
-```
-
-### AbortWithStatusJSON
-
-设置 Status Code 和 Json 格式 Body 并终止后续的 Handler。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
-```
-
-示例:
-
-```go
- h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-  ctx.AbortWithStatusJSON(consts.StatusOK, utils.H{
-   "foo":  "bar",
-   "html": "<b>",
-  })
- }, func(c context.Context, ctx *app.RequestContext) {
-  // will not execute
- })
 ```
 
 ## 其他

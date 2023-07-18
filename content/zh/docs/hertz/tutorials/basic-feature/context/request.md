@@ -212,7 +212,7 @@ Args 对象提供了以下方法获取/设置 Query String 参数。
 |函数签名 | 说明 |
 |:--|:--|
 |`func (a *Args) Set(key, value string)`  |设置 Args 对象 key 的值 |
-|`func (a *Args) Reset()` |重制 Args 对象 |
+|`func (a *Args) Reset()` |重置 Args 对象 |
 |`func (a *Args) CopyTo(dst *Args)` |将 Args 对象拷贝到 dst |
 |`func (a *Args) Del(key string)` |删除 Args 对象 key 的键值对 |
 |`func (a *Args) DelBytes(key []byte)`|删除 Args 对象字节数组类型 key 的键值对 |
@@ -228,7 +228,7 @@ Args 对象提供了以下方法获取/设置 Query String 参数。
 |`func (a *Args) WriteTo(w io.Writer) (int64, error)`| 将 Args 对象 Query String 写入 io.Writer 中 |
 |`func (a *Args) Add(key, value string)` |添加 Args 对象键为 key 的值 |
 
-示例:
+示例：
 
 ```go
 // GET http://example.com/user?name=bar&&age=&&pets=dog&&pets=cat
@@ -662,7 +662,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) SetUserAgentBytes(userAgent []byte)`|设置 User-Agent|
 | `func (h *RequestHeader) ConnectionClose() bool`|判断是否包含 Connection: close|
 | `func (h *RequestHeader) SetConnectionClose(close bool)`|设置 connectionClose 标志 |
-| `func (h *RequestHeader) ResetConnectionClose()`|重制 connectionClose 标志为 false 并删除 Connection Header|
+| `func (h *RequestHeader) ResetConnectionClose()`|重置 connectionClose 标志为 false 并删除 Connection Header|
 | `func (h *RequestHeader) SetByteRange(startPos, endPos int)`| 设置 Range (Range: bytes=startPos-endPos)|
 | `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`| 当 Content-Type=multipart/form-data 时为其设置 boundary |
 | `func (h *RequestHeader) MultipartFormBoundary() []byte`|获取 boundary 的值 |
@@ -685,10 +685,10 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|判断是否存在 Accept-Encoding 以及 Accept-Encoding 是否包含 acceptEncoding|
 | `func (h *RequestHeader) RawHeaders() []byte`|获取原始 Header |
 | `func (h *RequestHeader) SetRawHeaders(r []byte)`  | 设置原始 Header |
-| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header。( key 会覆盖以下 Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
+| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header ( key 会覆盖以下 Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
 | `func (h *RequestHeader) InitBufValue(size int)`|初始化缓冲区大小 |
 | `func (h *RequestHeader) GetBufValue() []byte`|获取缓冲区的值 |
-| `func (h *RequestHeader) SetCanonical(key, value []byte)`|设置 Header 键值，假设该键是规范形式。|
+| `func (h *RequestHeader) SetCanonical(key, value []byte)`|设置 Header 键值，假设该键是规范形式 |
 | `func (h *RequestHeader) Set(key, value string)`|设置 Header 键值 |
 | `func (h *RequestHeader) SetBytesKV(key, value []byte)`|设置 Header 键值 |
 | `func (h *RequestHeader) DelBytes(key []byte)`|删除 Header 中键为 key 的键值对 |
@@ -699,12 +699,12 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) String() string`|获取完整的 Header |
 | `func (h *RequestHeader) CopyTo(dst *RequestHeader)`|获取 RequestHeader 的副本 |
 | `func (h *RequestHeader) VisitAll(f func(key, value []byte))`|遍历所有 Header 的键值并执行 f 函数 |
-| `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`|遍历所有 Header 的键值并执行 f 函数，以下 key 除外 Content-Type, Content-Length, Cookie, Host, User-Agent）|
+| `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`|遍历所有 Header 的键值并执行 f 函数，以下 key 除外：Content-Type, Content-Length, Cookie, Host, User-Agent）|
 | `func (h *RequestHeader) Len() int`|返回 Header 的数量 |
 | `func (h *RequestHeader) DisableNormalizing()`|禁用 Header 名字的规范化 (首字母和破折号后第一个字母大写)|
 | `func (h *RequestHeader) IsDisableNormalizing() bool`|是否禁用 Header 名字的规范化 |
-| `func (h *RequestHeader) ResetSkipNormalize()`|重制 Headers 除了 disableNormalizing 状态 |
-| `func (h *RequestHeader) Reset()`|重制 Headers |
+| `func (h *RequestHeader) ResetSkipNormalize()`|重置 Headers，除了 disableNormalizing 状态 |
+| `func (h *RequestHeader) Reset()`|重置 Headers |
 
 ## Body
 
@@ -713,8 +713,6 @@ func (ctx *RequestContext) GetRawData() []byte
 func (ctx *RequestContext) Body() ([]byte, error) 
 func (ctx *RequestContext) RequestBodyStream() io.Reader
 func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
-func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
-func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
 func (ctx *RequestContext) PostForm(key string) string
 func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string 
 func (ctx *RequestContext) GetPostForm(key string) (string, bool) 
@@ -769,7 +767,9 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### MultipartForm
 
-获取 `multipart.Form` 对象。(详情请参考 [multipart#Form](https://pkg.go.dev/mime/multipart#Form))
+获取 `multipart.Form` 对象，(详情请参考 [multipart#Form](https://pkg.go.dev/mime/multipart#Form))
+
+> 注意：此函数既可以获取普通值也可以获取文件，此处给出了获取普通值的示例代码，获取文件的示例代码可参考 [MultipartForm](#multipartform-1)。
 
 函数签名:
 
@@ -782,57 +782,11 @@ func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 ```go
 // POST http://example.com/user
 // Content-Type: multipart/form-data; 
-// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
 // Content-Disposition: form-data; name="name"
 // tom
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
     form, err := ctx.MultipartForm()
-    avatarFile := form.File["avatar"][0] // avatarFile.Filename == "abc.jpg"
     name := form.Value["name"][0] // name == "tom"
-})
-```
-
-### FormFile
-
-按名称检索 `multipart.Form.File`，返回给定 name 的第一个 `multipart.FileHeader`。(详情请参考 [multipart#FileHeader](https://pkg.go.dev/mime/multipart#FileHeader))
-
-函数签名:
-
-```go
-func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
-```
-
-示例:
-
-```go
-// POST http://example.com/user
-// Content-Type: multipart/form-data; 
-// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
-    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
-})
-```
-
-### SaveUploadedFile
-
-保存 multipart 文件到磁盘。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
-```
-
-示例:
-
-```go
-// POST http://example.com/user
-// Content-Type: multipart/form-data; 
-// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
-    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
-    // save file
-    ctx.SaveUploadedFile(avatarFile, avatarFile.Filename) // save file "abc.jpg"
 })
 ```
 
@@ -840,7 +794,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 
 按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值。
 
-> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的 content-type 中获取 value 值。
+> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的 content-type 中获取 value 值，且不支持获取文件值。
 
 函数签名:
 
@@ -864,7 +818,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 按名称检索 `multipart.Form.Value`，返回给定 name 的第一个值，如果不存在返回 defaultValue。
 
-> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的 content-type 中获取 value 值。
+> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的 content-type 中获取 value 值，且不支持获取文件值。
 
 函数签名:
 
@@ -984,6 +938,82 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
+## 文件操作
+
+```go 
+func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
+func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
+func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
+```
+
+### MultipartForm
+
+获取 `multipart.Form` 对象。(详情请参考 [multipart#Form](https://pkg.go.dev/mime/multipart#Form))
+
+> 注意：此函数既可以获取普通值也可以获取文件，此处给出了获取文件值的示例代码，获取普通值的示例代码可参考 [MultipartForm](#multipartform)。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
+h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    form, err := ctx.MultipartForm()
+    avatarFile := form.File["avatar"][0] // avatarFile.Filename == "abc.jpg"
+})
+```
+
+### FormFile
+
+按名称检索 `multipart.Form.File`，返回给定 name 的第一个 `multipart.FileHeader`。(详情请参考 [multipart#FileHeader](https://pkg.go.dev/mime/multipart#FileHeader))
+
+函数签名:
+
+```go
+func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
+})
+```
+
+### SaveUploadedFile
+
+保存 multipart 文件到磁盘。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data; 
+// Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
+h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
+    // save file
+    ctx.SaveUploadedFile(avatarFile, avatarFile.Filename) // save file "abc.jpg"
+})
+```
+
 ## RequestContext 元数据存储
 
 > 注意：RequestContext 在请求结束后会被回收，元数据会被置为 nil。如需异步使用，请使用 [Copy](#copy) 方法。
@@ -1010,414 +1040,80 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{})`|获取上下文键为 key 的值，并转换为 `map[string]interface{}` 类型 |
 | `func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string)`|获取上下文键为 key 的值，并转换为 `map[string]string` 类型 |
 | `func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string)`|获取上下文键为 key 的值，并转换为 `map[string][]string` 类型 |
-| `func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))`|为上下文中的每个键值对调用 fn|
+| `func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))`|为上下文中的每个键值对调用 fn |
 
-### Set
-
-在上下文中存储键值对。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) Set(key string, value interface{})
-```
-
-示例:
+示例：
 
 ```go
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("version", "v1")
-    v := ctx.Value("version")  // v == interface {}(string) "v1"
-})
-```
+		ctx.Set("version1", "v1")
+		v := ctx.Value("version1") // v == interface{}(string) "v1"
 
-### Value
+		ctx.Set("version2", "v2")
+		v, exists := ctx.Get("version2") // v == interface{}(string) "v2", exists == true
+		v, exists = ctx.Get("pet")       // v == interface{} nil, exists == false
 
-获取上下文键为 key 的值。
+		ctx.Set("version3", "v3")
+		v := ctx.MustGet("version3") // v == interface{}(string) "v3"
 
-> 注意：key 类型需要为 `string` , 否则返回 nil。
+		ctx.Set("version4", "v4")
+		vString := ctx.GetString("version4") // vString == "v4"
 
-函数签名:
+		ctx.Set("isAdmin", true)
+		vBool := ctx.GetBool("isAdmin") // vBool == true
 
-```go
-func (ctx *RequestContext) Value(key interface{}) interface{}
-```
+		ctx.Set("age1", 20)
+		vInt := ctx.GetInt("age1") // vInt == 20
 
-示例:
+		ctx.Set("age2", int32(20))
+		vInt32 := ctx.GetInt32("age2") // vInt32 == 20
 
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("version", "v1")
-    v := ctx.Value("version")  // v == interface {}(string) "v1"
-})
-```
+		ctx.Set("age3", int64(20))
+		vInt64 := ctx.GetInt64("age3") // vInt64 == 20
 
-### Get
+		ctx.Set("age4", uint(20))
+		vUInt := ctx.GetUint("age4") // vUInt == 20
 
-获取上下文键为 key 的值以及 key 是否存在。
+		ctx.Set("age5", uint32(20))
+		vUInt32 := ctx.GetUint32("age5") // vUInt32 == 20
 
-函数签名:
+		ctx.Set("age6", uint64(20))
+		vUInt64 := ctx.GetUint64("age6") // vUInt64 == 20
 
-```go
-func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)
-```
+		ctx.Set("age7", float32(20.1))
+		vFloat32 := ctx.GetFloat32("age7") // vFloat32 == 20.1
 
-示例:
+		ctx.Set("age8", 20.1)
+		vFloat64 := ctx.GetFloat64("age8") // vFloat64 == 20.1
 
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("version", "v1")
-    v, exists := ctx.Get("version")  // v == interface {}(string) "v1", exists == true
-    v, exists = ctx.Get("pet")  // v == interface {} nil, exists == false
-})
-```
+		t2022, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2022 07:28:00 GMT")
+		ctx.Set("birthday", t2022)
+		vTime := ctx.GetTime("birthday") // vTime == t2022
 
-### MustGet
+		ctx.Set("duration", time.Minute)
+		vDuration := ctx.GetDuration("duration") // vDuration == time.Minute
 
-获取上下文键为 key 的值，如果不存在会发生 panic。
+		ctx.Set("pet", []string{"cat", "dog"})
+		vStringSlice := ctx.GetStringSlice("pet") // vStringSlice == []string{"cat", "dog"}
 
-函数签名:
+		ctx.Set("info1", map[string]interface{}{"name": "tom"})
+		vStringMap := ctx.GetStringMap("info1") // vStringMap == map[string]interface{}{"name": "tom"}
 
-```go
-func (ctx *RequestContext) MustGet(key string) interface{}
-```
+		ctx.Set("info2", map[string]string{"name": "tom"})
+		vStringMapString := ctx.GetStringMapString("info2")
+		// vStringMapString == map[string]string{}{"name": "tom"}
 
-示例:
+		ctx.Set("smss", map[string][]string{"pets": {"cat", "dog"}})
+		vStringMapStringSlice := ctx.GetStringMapStringSlice("smss")
+		// vStringMapStringSlice == map[string][]string{"pets": {"cat", "dog"}}
 
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("version", "v1")
-    v := ctx.MustGet("version")  // v == interface {}(string) "v1"
-})
-```
-
-### GetString
-
-获取上下文键为 key 的值，并转换为 `string` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetString(key string) (s string)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("version", "v1")
-    v := ctx.GetString("version")  // v == "v1"
-})
-```
-
-### GetBool
-
-获取上下文键为 key 的值，并转换为 `bool` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetBool(key string) (b bool)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("isAdmin", true)
-    v := ctx.GetBool("isAdmin")  // v == true
-})
-```
-
-### GetInt
-
-获取上下文键为 key 的值，并转换为 `int` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetInt(key string) (i int)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", 20)
-    v := ctx.GetInt("age")  // v == 20
-})
-```
-
-### GetInt32
-
-获取上下文键为 key 的值，并转换为 `int32` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetInt32(key string) (i32 int32)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", int32(20))
-    v := ctx.GetInt32("age")  // v == 20
-})
-```
-
-### GetInt64
-
-获取上下文键为 key 的值，并转换为 `int64` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetInt64(key string) (i64 int64)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", int64(20))
-    v := ctx.GetInt64("age")  // v == 20
-})
-```
-
-### GetUint
-
-获取上下文键为 key 的值，并转换为 `uint` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetUint(key string) (ui uint)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", uint(20))
-    v := ctx.GetInt64("age")  // v == 20
-})
-```
-
-### GetUint32
-
-获取上下文键为 key 的值，并转换为 `uint32` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetUint32(key string) (ui32 uint32)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", uint32(20))
-    v := ctx.GetUint32("age")  // v == 20
-})
-```
-
-### GetUint64
-
-获取上下文键为 key 的值，并转换为 `uint64` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetUint64(key string) (ui64 uint64)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", uint64(20))
-    v := ctx.GetUint64("age")  // v == 20
-})
-```
-
-### GetFloat32
-
-获取上下文键为 key 的值，并转换为 `float32` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetFloat32(key string) (f32 float32)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", float32(20.1))
-    v := ctx.GetFloat64("age")  // v == 20.1
-})
-```
-
-### GetFloat64
-
-获取上下文键为 key 的值，并转换为 `float64` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetFloat64(key string) (f64 float64)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("age", 20.1)
-    v := ctx.GetFloat64("age")  // v == 20.1
-})
-```
-
-### GetTime
-
-获取上下文键为 key 的值，并转换为 `time.Time` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetTime(key string) (t time.Time)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    t2022, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2022 07:28:00 GMT")
-    ctx.Set("birthday", t2022)
-    v := ctx.GetTime("birthday")  // v == t2022
-})
-```
-
-### GetDuration
-
-获取上下文键为 key 的值，并转换为 `time.Duration` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetDuration(key string) (d time.Duration)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("duration", time.Minute)
-    v := ctx.GetDuration("duration")  // v == time.Minute
-})
-```
-
-### GetStringSlice
-
-获取上下文键为 key 的值，并转换为 `[]string` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetStringSlice(key string) (ss []string)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("pet", []string{"cat", "dog"})
-    v := ctx.GetStringSlice("pet")  // v == []string{"cat", "dog"}
-})
-```
-
-### GetStringMap
-
-获取上下文键为 key 的值，并转换为 `map[string]interface{}` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{})
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("info", map[string]interface{}{"name": "tom"})
-    v := ctx.GetStringMap("info") // v == map[string]interface{}{"name": "tom"}
-})
-```
-
-### GetStringMapString
-
-获取上下文键为 key 的值，并转换为 `map[string]string` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string)
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("info", map[string]string{}{"name": "tom"})
-    v := ctx.GetStringMap("info") // v == map[string]string{}{"name": "tom"}
-})
-```
-
-### GetStringMapStringSlice
-
-获取上下文键为 key 的值，并转换为 `map[string][]string` 类型。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string)
-
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("smss", map[string][]string{"pets": {"cat", "dog"}})
-    v := ctx.GetStringMapStringSlice("smss") // v == map[string][]string{"pets": {"cat", "dog"}}
-})
-```
-
-### ForEachKey
-
-为上下文中的每个键值对调用 fn。
-
-函数签名:
-
-```go
-func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))
-```
-
-示例:
-
-```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.Set("duration", time.Minute)
-    ctx.Set("version", "v1")
-    ctx.ForEachKey(func(k string, v interface{}) {
-        // 1. k == "duration", v == interface{}(time.Duration) time.Minute
-        // 2. k == "version", v == interface {}(string) "v1"
-    })
-})
+		ctx.Set("duration", time.Minute)
+		ctx.Set("version", "v1")
+		ctx.ForEachKey(func(k string, v interface{}) {
+			// 1. k == "duration", v == interface{}(time.Duration) time.Minute
+			// 2. k == "version", v == interface{}(string) "v1"
+		})
+	})
 ```
 
 ## Handler
