@@ -287,9 +287,6 @@ func (ctx *RequestContext) SetBodyStream(bodyStream io.Reader, bodySize int)
 func (ctx *RequestContext) SetBodyString(body string)
 func (ctx *RequestContext) Write(p []byte) (int, error)
 func (ctx *RequestContext) WriteString(s string) (int, error)
-func (ctx *RequestContext) File(filepath string)
-func (ctx *RequestContext) FileAttachment(filepath, filename string)
-func (ctx *RequestContext) FileFromFS(filepath string, fs *FS)
 func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
 func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
 ```
@@ -380,6 +377,57 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ```
 
+### AbortWithMsg
+
+Set the Status Code and Body and terminate subsequent handlers.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.AbortWithMsg("abort", consts.StatusOK)
+}, func(c context.Context, ctx *app.RequestContext) {
+    // will not execute
+})
+```
+
+### AbortWithStatusJSON
+
+Set Status Code and Json format Body and terminate subsequent handlers.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
+```
+
+Example Code:
+
+```go
+ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+  ctx.AbortWithStatusJSON(consts.StatusOK, utils.H{
+   "foo":  "bar",
+   "html": "<b>",
+  })
+ }, func(c context.Context, ctx *app.RequestContext) {
+  // will not execute
+ })
+```
+
+## File operation
+
+```go
+func (ctx *RequestContext) File(filepath string)
+func (ctx *RequestContext) FileAttachment(filepath, filename string)
+func (ctx *RequestContext) FileFromFS(filepath string, fs *FS)
+```
+
 ### File
 
 Write the specified file to Body Stream.
@@ -439,48 +487,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
-### AbortWithMsg
 
-Set the Status Code and Body and terminate subsequent handlers.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
-```
-
-Example Code:
-
-```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.AbortWithMsg("abort", consts.StatusOK)
-}, func(c context.Context, ctx *app.RequestContext) {
-    // will not execute
-})
-```
-
-### AbortWithStatusJSON
-
-Set Status Code and Json format Body and terminate subsequent handlers.
-
-Function Signature:
-
-```go
-func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
-```
-
-Example Code:
-
-```go
- h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-  ctx.AbortWithStatusJSON(consts.StatusOK, utils.H{
-   "foo":  "bar",
-   "html": "<b>",
-  })
- }, func(c context.Context, ctx *app.RequestContext) {
-  // will not execute
- })
-```
 
 ## Other Functions
 
