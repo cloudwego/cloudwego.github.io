@@ -952,13 +952,13 @@ Obtain the `multipart.Form` object. (For more information, please refer to [mult
 
 > Note: This function can obtain both ordinary values and files. Here is an example code for obtaining file values. The example code for obtaining ordinary values can be found in [MultipartForm](#multipartform).
 
-函数签名:
+Function Signature:
 
 ```go
 func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 ```
 
-示例:
+Example Code:
 
 ```go
 // POST http://example.com/user
