@@ -211,6 +211,7 @@ Currently only the "no context takeover" mode is supported, as described in the 
 When using websockets for reading and writing, the read timeout or write timeout can be set similarly as follows.
 
 Sample Code:
+
 ```go
 func echo(_ context.Context, c *app.RequestContext) {
     err := upgrader.Upgrade(c, func(conn *websocket.Conn) {
@@ -230,7 +231,6 @@ func echo(_ context.Context, c *app.RequestContext) {
 ## NoHijackConnPool
 
 > The hijack conn used for Hertz connection hijacking is pooled and therefore does not support asynchronous operations when the hijacked connection is used in a websocket.
-
 
 A hijacked connection can only be closed once, and a second closure will result in a null pointer exception.
 

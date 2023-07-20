@@ -108,6 +108,8 @@ github_repo = "https://github.com/cloudwego/cloudwego.github.io"
 # An optional link to a related project repo. For example, the sibling repository where your product code lives.
 github_project_repo = "https://github.com/cloudwego/kitex"
 
+github_org = "https://github.com/cloudwego"
+
 # Specify a value here if your content directory is not in your repo's root directory
 # github_subdir = ""
 
@@ -116,10 +118,10 @@ github_project_repo = "https://github.com/cloudwego/kitex"
 github_branch= "main"
 
 # Enable Algolia DocSearch
-algolia_docsearch = false
+algolia_docsearch = true
 
 # Enable Lunr.js offline search
-offlineSearch = true
+offlineSearch = false
 
 # Enable syntax highlighting and copy buttons on code blocks with Prism
 prism_syntax_highlighting = true

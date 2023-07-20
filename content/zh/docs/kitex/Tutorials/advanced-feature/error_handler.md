@@ -19,36 +19,39 @@ ErrorHandler 通过 client/server 的 Option 配置，但通常一个微服务�
 server.WithErrorHandler(yourServerErrorHandler)
 ```
 
-该函数会在服务端 handler 执行后，中间件执行前被执行，可以用于给调用端返回自定义的错误码和信息。注意，虽然对此提供了支持，但业务层面自定义的错误码依然不建议通过 ErrorHandler 处理，因为我们希望将 RPC 错误和业务的错误能够区分开，RPC 错误表示一次RPC 请求失败，比如超时、熔断、限流，从 RPC 层面是失败的请求，但业务错误属于业务逻辑层面，在 RPC 层面其实是请求成功。Kitex 会制定一个业务[自定义异常规范](https://github.com/cloudwego/kitex/issues/511)用于区分业务错误和RPC层面错误。
+该函数会在服务端 handler 执行后，中间件执行前被执行，可以用于给调用端返回自定义的错误码和信息。注意，虽然对此提供了支持，但业务层面自定义的错误码依然不建议通过 ErrorHandler 处理，因为我们希望将 RPC 错误和业务的错误能够区分开，RPC 错误表示一次RPC 请求失败，比如超时、熔断、限流，从 RPC 层面是失败的请求，但业务错误属于业务逻辑层面，在 RPC 层面其实是请求成功。Kitex 会制定一个业务[自定义异常规范](https://github.com/cloudwego/kitex/issues/511)用于区分业务错误和 RPC 层面错误。
 
 * ErrorHandler 示例：
 
-  Kitex 对 handler 返回的 error 统一封装为 kerrors.ErrBiz，如果要获取原始的 error 需要先进行 Unwrap。
+  Kitex 对 server handler 返回的 error 统一封装为 kerrors.ErrBiz，如果要获取原始的 error 需要先进行 Unwrap。
 
 ```go
 // convert errors that can be serialized
-func ServerErrorHandler(err error) error {
-   if errors.Is(err, kerrors.ErrBiz) {
-       err = errors.Unwrap(err)
-   }
-   if errCode, ok := GetErrorCode(err); ok {
-       // for Thrift、KitexProtobuf
-       return remote.NewTransError(errCode, err)
-   }
-   return err
+func ServerErrorHandler(ctx context.Context, err error) error {
+    // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
+    // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).From().Address()`
+    
+    if errors.Is(err, kerrors.ErrBiz) {
+        err = errors.Unwrap(err)
+    }
+    if errCode, ok := GetErrorCode(err); ok {
+        // for Thrift、KitexProtobuf
+        return remote.NewTransError(errCode, err)
+    }
+    return err
 }
 
 // convert errors that can be serialized
-func ServerErrorHandler(err error) error {
-   if errors.Is(err, kerrors.ErrBiz) {
-       err = errors.Unwrap(err)
-   }
-   if errCode, ok := GetErrorCode(err); ok {
-       // for gRPC
-       // status use github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status
-     	 return status.Errorf(errCode, err.Error())
-   }
-   return err
+func ServerErrorHandler(ctx context.Context, err error) error {
+    if errors.Is(err, kerrors.ErrBiz) {
+        err = errors.Unwrap(err)
+    }
+    if errCode, ok := GetErrorCode(err); ok {
+        // for gRPC
+        // status use github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status
+        return status.Errorf(errCode, err.Error())
+    }
+    return err
 }
 ```
 
@@ -64,15 +67,18 @@ client.WithErrorHandler(yourClientErrorHandler)
 * ErrorHandler 示例：
 
 ```go
-func ClientErrorHandler(err error) error {
-  // for thrift、KitexProtobuf
+func ClientErrorHandler(ctx context.Context, err error) error {
+    // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
+    // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).To().Address()`
+    
+    // for thrift、KitexProtobuf
 	if e, ok := err.(*remote.TransError); ok {
-    // TypeID is error code
+        // TypeID is error code
 		return buildYourError(e.TypeID(), e)
 	}
-  // for gRPC
-  if s, ok := status.FromError(err); ok {
-		return buildYourErrorWithStatus(s.Code(), s)
+    // for gRPC
+    if s, ok := status.FromError(err); ok {
+	    return buildYourErrorWithStatus(s.Code(), s)
 	}
 	return kerrors.ErrRemoteOrNetwork.WithCause(err)
 }

@@ -1,7 +1,7 @@
 ---
 title: "Forward Proxy and Reverse Proxy"
 date: 2022-09-08
-weight: 9
+weight: 11
 description: >
 
 ---
@@ -184,6 +184,7 @@ func main() {
 > Netpoll does not support TLS, Client needs to use standard network library.
 
 Proxying HTTPS requires some additional configuration.
+
 - Use `WithDialer` in the `NewSingleHostReverseProxy` method to pass `standard.NewDialer()` to specify the standard network library.
 - Use `SetClient` to set up a Hertz Client using the standard networking library.
 

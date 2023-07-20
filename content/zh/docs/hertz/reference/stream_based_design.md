@@ -1,7 +1,7 @@
 ---
 title: "Hertz 支持 QUIC & HTTP/3"
 linkTitle: "Hertz 支持 QUIC & HTTP/3 "
-weight: 5
+weight: 4
 description: >
 
 ---
@@ -26,10 +26,12 @@ QUIC 协议实现经过简单的适配和封装通过模块化的方式接入到
 #### 现状
 
 当前的网络传输层设计主要还是基于 TCP 协议，基本语义为：当连接建立完成（包括 TLS）后为上层提供一个处理协议的回调函数：
+
 ```go
 // Callback when data is ready on the connection
 type Serve func(ctx context.Context, conn Conn) error
 ```
+
 当前网络传输层提供的标准网络库和 Netpoll 都是在这套接口下面展开的；因此协议层只需要依赖这个接口进行实现，而无需关心网络传输层具体正在提供的实现是什么。
 在 TCP 协议提供的框架和语义下面，这套接口是完全够用的，目前 Hertz 基于此接口构建的 HTTP/1.1、HTTP/2 足以证明这一点。
 
@@ -49,6 +51,7 @@ type Conn interface {
 
 主体由 Reader（提供从连接上读数据的能力）/Writer（提供往连接上写数据的能力）构成。
 同时也是当前 Hertz 网络传输层高性能库实现的承载，具体定义为：
+
 ```go
 type Reader interface {
     // Peek returns the next n bytes without advancing the reader.
@@ -85,10 +88,11 @@ type Reader interface {
     Flush() error
 }
 ```
+
 #### 引入 QUIC
 
 UDP + QUIC 大致可以对应到 TCP + TLS（严格的层级关系可以参考下图），按照当前的分层结构，同属于 Hertz 的网络传输层。不过 QUIC
-的编程模型天然基于流（Stream）来进行的，而当前基于 TCP 的网络传输层提供的Reader /Writer本质上是基于字节流的编程模型。虽然
+的编程模型天然基于流（Stream）来进行的，而当前基于 TCP 的网络传输层提供的 Reader /Writer 本质上是基于字节流的编程模型。虽然
 HTTP/2 非常类似地拥有流（Stream）的概念，但实际上是在 TCP 的字节流之上（应用协议层中）进行的封装，并非如 QUIC
 这样原生实现到了传输协议内部。我们无法要求 TCP 直接内置流（Stream）的实现（这可能也是 HTTP/2 的愿望），换句话说，要想把 HTTP/2
 和 HTTP/3 中流的概念在当下 Hertz 的某一层中统一起来，逻辑上其实是办不到的（虽然它们本质上是那么的相似）。
@@ -96,7 +100,7 @@ HTTP/2 非常类似地拥有流（Stream）的概念，但实际上是在 TCP �
 ![quic & http3](/img/docs/quic_http3.png)
 
 明确了上述问题之后，引入 QUIC 后的网络库形态其实也就比较清晰了：基于 TCP 的网络抽象接口仍然保持原样，新增一套基于
-QUIC（UDP）的网络传输层抽象，协议层对应提供一个基于 QUIC（UDP）网络抽象的处理接口。关键点在于，不强制将 QUIC（UDP） 融合至当前基于
+QUIC（UDP）的网络传输层抽象，协议层对应提供一个基于 QUIC（UDP）网络抽象的处理接口。关键点在于，不强制将 QUIC（UDP）融合至当前基于
 TCP 的网络/协议层抽象当中来。
 
 ##### 接口设计
@@ -112,11 +116,14 @@ TCP 的网络/协议层抽象当中来。
 
 基于上述分层思想，一个和网络传输层 Serve 相对应的 QUIC 抽象其实就出具雏形了，命名为 OnStream，语义和 Serve 基本一致*
 ：当流完成准备。具体需要提供的实现就是上层协议（这里是 HTTP/3）。
+
 ```go
 type ServeStream func(ctx context.Context, stream Stream) error
 ```
-*注：ServeStream 语义和 Serve 一致具体指 HTTP/1 的 Serve 对应的其实就是“下一个请求的数据已经准备好”； 通过实现该接口就可以完成协议处理。
+
+*注：ServeStream 语义和 Serve 一致具体指 HTTP/1 的 Serve 对应的其实就是“下一个请求的数据已经准备好”；通过实现该接口就可以完成协议处理。
 如果进一步深入，其实和当前 Hertz HTTP/2 的实现其实并不完全对应，究其原因在于：
+
 1. HTTP/2
 的流实现在协议层上，本质上其实只是对引入的更小传输单元帧（Frame）的逻辑承载；
 2. 理想形态应该是将 HTTP/2
@@ -146,16 +153,18 @@ HTTP/2，HTTP/3 这样基于流（Stream）的应用层协议，一个核心特�
 1. 网络传输层负责这个连接的准备工作，当连接建立完成后直接将连接交给协议层
 2. 协议层直接操作建连完成后的链接，不过和 Hertz
    当前的网络传输层连接抽象不同，这个连接不具备直接（理论上）读/写数据的接口和能力，涉及到数据交互的操作需要通过连接提供的流（Stream）相关操作进行，比如要想读取数据，需要通过连接接口开启一个双/单向的流，之后的数据交换操作通过这个开启的流来完成
+
 ```go
 type ServeStream func(ctx context.Context, streamConn StreamConn) error
 ```
 
 ###### 详细设计
 
-明确新增接口的形态之后，StreamConn具体能够支持的语义就比较清晰了，具体来说，分为两部分：
+明确新增接口的形态之后，StreamConn 具体能够支持的语义就比较清晰了，具体来说，分为两部分：
 
 - 支持连接级别控制能力
 - 支持流（Stream）相关控制能力
+
 ```go
  // StreamConn is interface for stream-based connection abstraction.
 type StreamConn interface {
@@ -278,7 +287,7 @@ type ApplicationError interface {
 
 相比于 Hertz 当前存在的网络传输层抽象（主要是 HTTP/1.1 的实现），新增的这套抽象层级上并不完全对等（不过这个也是 HTTP
 协议大版本之间的一个明显的 break change），目前看起来，要想完全在抽象层面填平这个 gap
-困难相对较大。不过，新增的“基于流的连接”这个概念应该也不完全是一件坏事，针对拥有相似语义的协议簇具有统一语义的作用，不过也要求类似基于流来实现多路复用的协议最好能够按照抽象进行拆分（目前的Websocket、HTTP/2
+困难相对较大。不过，新增的“基于流的连接”这个概念应该也不完全是一件坏事，针对拥有相似语义的协议簇具有统一语义的作用，不过也要求类似基于流来实现多路复用的协议最好能够按照抽象进行拆分（目前的 Websocket、HTTP/2
 还不是此形态）
 
 ##### 方案选型
@@ -289,16 +298,18 @@ type ApplicationError interface {
 ### 协议层
 
 基于网络传输层方案 B 进一步往前走，协议层的实现就相对灵活的多了：针对 StreamConn 提供的接口管理连接，同时负责流（Stream）的开启和关闭即可。
-不过，由于引入的 StreamConn 和当前网络传输层的 Conn 接口定义不一致，因此协议层更多需要考虑的是基于 StreamConn 和Conn
+不过，由于引入的 StreamConn 和当前网络传输层的 Conn 接口定义不一致，因此协议层更多需要考虑的是基于 StreamConn 和 Conn
 的两套回调如何在协议层以及协议服务器（Protocol Server）注册阶段完成融合。基本的要求是对目前的现状不能有任何影响。
 
 #### 现状
 
 通过 Hertz 提供的接口就可以便捷的将实现了 Server 接口的自定义协议服务器（Protocol Server）添加到 Hertz 实例支持的协议 map
 中来。详细方式参考这里。本质上其实还是要求扩展 Server 实现
+
 ```go
 Serve(c context.Context, conn network.Conn) error
 ```
+
 这个接口，而目前的 HTTP/1.1、HTTP/2 的实现也都是按照这个方式来进行的。
 
 #### 引入 StreamConn
@@ -309,12 +320,15 @@ Serve(c context.Context, conn network.Conn) error
 QUIC & HTTP3 支持不能破坏存量抽象”的基本底线之上，更加合理的方式是显示增加一个独立且平行的基于流的 Server
 接口：
 StreamServer：
+
 ```go
 type StreamServer interface {
     Serve(c context.Context, conn network.StreamConn) error
 }
 ```
-Protocol server factory：
+
+Protocol server factory:
+
 ```go
 type StreamServerFactory interface {New(core Core) (server protocol.StreamServer, err error)}// Core is the core interface that promises to be provided for the protocol layer extensions
 type Core interface {// IsRunning Check whether engine is running or not
@@ -332,15 +346,16 @@ type Core interface {// IsRunning Check whether engine is running or not
 
 网络传输层原生提供：
 
-1. 基于netpoll的实现
+1. 基于 netpoll 的实现
 2. 基于标准库的实现
 
 协议层提供：
+
 1. HTTP/1.1
 2. HTTP/2
 
-排除掉 Netpoll 不支持 TLS 这一点来看，其实网络传输层和协议层是能够自由组合，总共4（2*2）种不同的搭配。
-但新引入的StreamConn（网络传输层） 、StreamServer（协议层）其实和上述实现完全平行，如果网络传输层采用 StreamConn 这套抽象接口，协议层也就只能是对接实现了 StreamServer 的 Server 了（目前的 HTTP/1.1、HTTP/2 都不是，不过 HTTP/2 是条流写回对存在改造/重写适配上 StreamConn & StreamServer 的可能性的）。
+排除掉 Netpoll 不支持 TLS 这一点来看，其实网络传输层和协议层是能够自由组合，总共 4（2*2）种不同的搭配。
+但新引入的 StreamConn（网络传输层） 、StreamServer（协议层）其实和上述实现完全平行，如果网络传输层采用 StreamConn 这套抽象接口，协议层也就只能是对接实现了 StreamServer 的 Server 了（目前的 HTTP/1.1、HTTP/2 都不是，不过 HTTP/2 是条流写回对存在改造/重写适配上 StreamConn & StreamServer 的可能性的）。
 
 ## 实现
 

@@ -102,7 +102,7 @@ import (
 )
 
 func (MyServiceImpl) SomeMethod(ctx context.Context, req *SomeRequest) (res *SomeResponse, err error) {
-    ok := metainfo.SendBackwardValue(ctx, "something-from-server")
+    ok := metainfo.SendBackwardValue(ctx, "something-from-server-key", "something-from-server-value")
 
     if !ok {
         panic("It looks like the protocol does not support transmitting meta information backward")

@@ -8,7 +8,7 @@ description: >
 
 ### new: 创建一个新项目
 
-1.  在当前目录下创建 thrift idl 文件
+1. 在当前目录下创建 thrift idl 文件
 
 ```thrift
 // idl/hello.thrift
@@ -28,10 +28,15 @@ service HelloService {
 }
 ```
 
-2.  创建新项目
+2. 创建新项目
+
+以下两个小节根据实际情况二选一执行即可。
+
+2.1. 非 go module 管理依赖
+
+如果当前项目路径处于`$GOPATH`之下则执行以下代码块，否则直接参考2.2小节。
 
 ```bash
-// GOPATH 下执行
 hz new -idl idl/hello.thrift
 
 go mod init
@@ -42,22 +47,24 @@ go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 go mod tidy
 ```
 
+2.2. Go module 管理依赖
+
+不在`$GOPATH`下的项目通过工具提供的`-module`命令指定一个自定义 module 名称即可：
+
 ```bash
-// 非GOPATH 下执行
-//选择1，你没有一个go.mod ,在 "-module" 后添加 go mod 名
 hz new -module example.com/m -idl idl/hello.thrift
 
 // 整理 & 拉取依赖
 go mod tidy
 
-//选择2，你已经有一个go.mod
+// 查看 go.mod 中 github.com/apache/thrift 版本是否为 v0.13.0，如果不是则继续执行 2.2 小节剩余代码
 go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 
 // 整理 & 拉取依赖
 go mod tidy
 ```
 
-3.  修改 handler，添加自己的逻辑
+3. 修改 handler，添加自己的逻辑
 
 ```go
 // handler path: biz/handler/hello/example/hello_service.go
@@ -84,13 +91,13 @@ func HelloMethod(ctx context.Context, c *app.RequestContext) {
 }
 ```
 
-4.  编译项目
+4. 编译项目
 
 ```bash
 go build
 ```
 
-5.  运行项目并测试
+5. 运行项目并测试
 
 运行项目：
 
@@ -108,7 +115,7 @@ curl --location --request GET 'http://127.0.0.1:8888/hello?name=hertz'
 
 ### update: 更新一个已有的项目
 
-1.  如果你的 thrift idl 有更新，例如：
+1. 如果你的 thrift idl 有更新，例如：
 
 ```thrift
 // idl/hello.thrift
@@ -141,7 +148,7 @@ service NewService {
 }
 ```
 
-2.  切换到执行 new 命令的目录，更新修改后的 thrift idl
+2. 切换到执行 new 命令的目录，更新修改后的 thrift idl
 
 ```bash
 hz update -idl idl/hello.thrift
@@ -178,7 +185,7 @@ func HelloMethod(ctx context.Context, c *app.RequestContext) {
 // @router /other [POST]
 func OtherMethod(ctx context.Context, c *app.RequestContext) {
    var err error
-   // example.OtherReq 对应的model文件也会重新生成
+   // example.OtherReq 对应的 model 文件也会重新生成
    var req example.OtherReq
    err = c.BindAndValidate(&req)
    if err != nil {
@@ -195,13 +202,13 @@ func OtherMethod(ctx context.Context, c *app.RequestContext) {
 }
 ```
 
-4.  编译项目
+4. 编译项目
 
 ```bash
 go build
 ```
 
-5.  运行项目并测试
+5. 运行项目并测试
 
 运行项目：
 

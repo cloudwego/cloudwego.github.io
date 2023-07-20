@@ -50,6 +50,7 @@ func main() {
 `keyauth` 扩展提供了 `WithFilter` 用于帮助用户设置自定义过滤逻辑用于跳过 `keyauth`扩展，默认为 `nil`，不跳过。
 
 Filter 函数签名如下:
+
 ```go
 type KeyAuthFilterHandler func(c context.Context, ctx *app.RequestContext) bool
 ```
@@ -89,6 +90,7 @@ func main() {
 `keyauth` 扩展提供了 `WithValidator` 用于帮助用户设置自定义的校验逻辑用于 `token` 校验，默认返回 `true` 和 `nil`。
 
 Validator 函数签名如下:
+
 ```go
 type KeyAuthValidatorHandler func(context.Context, *app.RequestContext, string) (bool, error)
 ```
@@ -127,6 +129,7 @@ func main() {
 ```
 
 ### WithSuccessHandler
+
 `keyauth` 扩展提供了 `WithSuccessHandler` 用于帮助用户设置校验 `token` 通过的自定义处理逻辑。
 
 示例代码:
@@ -164,11 +167,13 @@ func main() {
 `keyauth` 扩展提供了 `WithErrorHandler` 用于帮助用户设置校验 `token` 失败的自定义处理逻辑。
 
 ErrorHandler 函数签名如下:
+
 ```go
 type KeyAuthErrorHandler func(context.Context, *app.RequestContext, error)
 ```
 
 默认处理逻辑如下:
+
 ```go
 func errHandler(c context.Context, ctx *app.RequestContext, err error) {
 	if err == ErrMissingOrMalformedAPIKey {
@@ -183,7 +188,7 @@ func errHandler(c context.Context, ctx *app.RequestContext, err error) {
 
 `keyauth` 扩展提供了 `WithKeyLookUp` 帮助用户设置 `keyLookup`。
 
-`keyLookup` 用于从 `source`(支持的 `source` 包括 `cookie`、`header` 、`param`、`query`、`form`) 中提取 `token`。
+`keyLookup` 用于从 `source`(支持的 `source` 包括 `cookie`、`header`、`param`、`query`、`form`) 中提取 `token`。
 
 格式为 `<source>:<token_name>`，默认值为:`header:Authorization`。
 

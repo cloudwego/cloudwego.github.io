@@ -6,7 +6,7 @@ description: >
 ---
 ## 命令行参数说明
 
-#### Global:
+#### Global
 
 ```console
 $ hz --help
@@ -70,15 +70,15 @@ OPTIONS:
 
 <!---->
 
-- customize_layout: 自定义项目 layout 模板，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/)
+- customize_layout: 自定义项目 layout 模板，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 
-- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/)
+- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 
-- exclude_file: 不需要更新的文件(相对项目路径，支持多个)
+- exclude_file: 不需要更新的文件 (相对项目路径，支持多个)
 
 <!---->
 
@@ -86,7 +86,7 @@ OPTIONS:
 
 <!---->
 
-- idl: idl 文件路径(.thrift 或者.proto)
+- idl: idl 文件路径 (.thrift 或者.proto)
 
 <!---->
 
@@ -118,7 +118,7 @@ OPTIONS:
 
 <!---->
 
-- protoc/p: 透传给 protoc 的选项({flag}={value})
+- protoc/p: 透传给 protoc 的选项 ({flag}={value})
 
 <!---->
 
@@ -126,11 +126,11 @@ OPTIONS:
 
 <!---->
 
-- snake_tag: tag 使用 snake_case 风格命名(仅对 form、query、json 生效)
+- snake_tag: tag 使用 snake_case 风格命名 (仅对 form、query、json 生效)
 
 <!---->
 
-- thriftgo/t: 透传给 thriftgo 的选项({flag}={value})
+- thriftgo/t: 透传给 thriftgo 的选项 ({flag}={value})
 
 <!---->
 
@@ -168,11 +168,11 @@ OPTIONS:
 
 <!---->
 
-- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/template/) 。注意：对于已经存在的 handler 文件会按照默认模板新增 handler 函数，对于还未存在的 handler 文件，则会按照自定义模板来生成 handler。
+- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/) 。注意：对于已经存在的 handler 文件会按照默认模板新增 handler 函数，对于还未存在的 handler 文件，则会按照自定义模板来生成 handler。
 
 <!---->
 
-- exclude_file: 不需要更新的文件(相对项目路径，支持多个)
+- exclude_file: 不需要更新的文件 (相对项目路径，支持多个)
 
 <!---->
 
@@ -180,7 +180,7 @@ OPTIONS:
 
 <!---->
 
-- idl: idl 文件路径(.thrift 或者.proto)
+- idl: idl 文件路径 (.thrift 或者.proto)
 
 <!---->
 
@@ -208,15 +208,15 @@ OPTIONS:
 
 <!---->
 
-- protoc/p: 透传给 protoc 的选项({flag}={value})
+- protoc/p: 透传给 protoc 的选项 ({flag}={value})
 
 <!---->
 
-- snake_tag: tag 使用 snake_case 风格命名(仅对 form、query、json 生效)
+- snake_tag: tag 使用 snake_case 风格命名 (仅对 form、query、json 生效)
 
 <!---->
 
-- thriftgo/t: 透传给 thriftgo 的选项({flag}={value})
+- thriftgo/t: 透传给 thriftgo 的选项 ({flag}={value})
 
 <!---->
 

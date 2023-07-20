@@ -36,7 +36,7 @@ description: Kitex 目前仅支持 Thrift 泛化调用，通常用于不需要�
 
 - 泛化调用
 
-  若自行编码，需要使用 Thrift 编码格式 [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)。注意，二进制编码不是对原始的 Thrift 请求参数编码，是 method 参数封装的 **XXXArgs**。可以参考 github.com/cloudwego/kitex/generic/generic_test.go。
+  若自行编码，需要使用 Thrift 编码格式 [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)。注意，二进制编码不是对原始的 Thrift 请求参数编码，是 method 参数封装的 **XXXArgs**。可以参考 [github.com/cloudwego/kitex/generic/generic_test.go](https://github.com/cloudwego/kitex/blob/develop/pkg/generic/generic_test.go)。
 
   Kitex 提供了 thrift 编解码包`github.com/cloudwego/kitex/pkg/utils.NewThriftMessageCodec`。
 
@@ -88,7 +88,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 ### 2. HTTP 映射泛化调用
 
-HTTP 映射泛化调用只针对客户端，要求 Thrift IDL 遵从接口映射规范，具体规范见 [Thrift-HTTP 映射的 IDL 规范](thrift_idl_annotation_standards)。
+HTTP 映射泛化调用只针对客户端，要求 Thrift IDL 遵从接口映射规范，具体规范见 [Thrift-HTTP 映射的 IDL 规范](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/thrift_idl_annotation_standards/)。
 
 #### IDL 定义示例
 
@@ -194,12 +194,14 @@ func main() {
     if err != nil {
         panic(err)
     }
+    // Kitex 泛化目前直接支持的是标准库中的 http.Request，使用 hertz 需要通过做一个请求转换
+    // httpReq, err := adaptor.GetCompatRequest(hertzReqCtx)
     req.Header.Set("token", "1")
     customReq, err := generic.FromHTTPRequest(req) // 考虑到业务有可能使用第三方 http request，可以自行构造转换函数
     // customReq *generic.HttpRequest
     // 由于 http 泛化的 method 是通过 bam 规则从 http request 中获取的，所以填空就行
     resp, err := cli.GenericCall(ctx, "", customReq)
-    realResp := resp.(*generic.HttpResponse)
+    realResp := resp.(*generic.HTTPResponse)
     realResp.Write(w) // 写回 ResponseWriter，用于 http 网关
 }
 ```
@@ -242,7 +244,7 @@ func (a * notBodyStruct) Handle() interface{} {
 
 type notBodyStruct struct{}
 
-var newNotBodyStruct descriptor.NewHttpMapping = func(value string) descriptor.HttpMapping {
+var newNotBodyStruct descriptor.NewHTTPMapping = func(value string) descriptor.HTTPMapping {
         return &notBodyStruct{}
 }
 
@@ -253,7 +255,7 @@ func (m *notBodyStruct) Request(req *descriptor.HttpRequest, field *descriptor.F
 }
 
 // set value to response
-func (m *notBodyStruct) Response(resp *descriptor.HttpResponse, field *descriptor.FieldDescriptor, val interface{}) {
+func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descriptor.FieldDescriptor, val interface{}) {
 }
 ```
 
@@ -766,7 +768,7 @@ includes := map[string]string{
    `,
 }
 
-p, err := NewThriftContentProvider(path, includes)
+p, err := NewThriftContentProvider(content, includes)
 ```
 
 
@@ -808,5 +810,5 @@ includes := map[string]string{
    `,
    "a/z.thrift": "namespace go kitex.test.server",
 }
-p, err := NewThriftContentWithAbsIncludePathProvider(path, includes)
+p, err := NewThriftContentWithAbsIncludePathProvider(content, includes)
 ```

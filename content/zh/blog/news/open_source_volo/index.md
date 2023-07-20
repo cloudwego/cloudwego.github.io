@@ -46,7 +46,7 @@ Tower：https://github.com/tower-rs/tower
 
 ![image](/img/blog/opensource_volo/1.png)
 
-由于使用了 Rust 的 GAT 特性，因此我们可以解决返回异步 Future 带来的生命周期问题。同时，如果配合 `type_alias_impl_trait` 使用，效果更佳，比如实现 Timeout 可以使用如下方式：
+由于使用了 Rust 的 GAT 特性，因此我们可以解决返回异步 Future 带来的生命周期问题。同时，如果配合 `impl_trait_in_assoc_type` 使用，效果更佳，比如实现 Timeout 可以使用如下方式：
 
 ![image](/img/blog/opensource_volo/2.png)
 

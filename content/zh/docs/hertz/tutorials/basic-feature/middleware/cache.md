@@ -6,7 +6,7 @@ description: >
 
 ---
 
-cache 是一个用于缓存 HTTP 响应的中间件，开启后有助于提高服务器的并发访问能力。Hertz 也提供了对 cache 的[适配](https://github.com/hertz-contrib/cache)，支持 multi-backend，参考了 [gin-cache](https://github.com/chenyahui/gin-cache) 的实现。
+cache 是一个用于缓存 HTTP 响应的中间件，开启后有助于提高服务器的并发访问能力。Hertz 也提供了对 cache 的 [适配](https://github.com/hertz-contrib/cache)，支持 multi-backend，参考了 [gin-cache](https://github.com/chenyahui/gin-cache) 的实现。
 
 ## 安装
 

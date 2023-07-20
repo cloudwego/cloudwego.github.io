@@ -24,7 +24,7 @@ cwgo
  
 ```
 
-所以相对应工具的注意事项也需要遵守， 如生成 RPC 代码时 [kitex 的注意事项](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/#%E4%BD%BF%E7%94%A8-protobuf-idl-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)和生成 HTTP 代码时 [hz 的注意事项](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/toolkit/#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)。
+所以相对应工具的注意事项也需要遵守， 如生成 RPC 代码时 [kitex 的注意事项](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/#%E4%BD%BF%E7%94%A8-protobuf-idl-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)和生成 HTTP 代码时 [hz 的注意事项](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/cautions/)。
 
 # 使用
 
@@ -63,7 +63,7 @@ db 询问的信息为：
 1.  输入数据库 DSN。必填
 1.  选择是否使用默认配置去生成项目。如选择否，则会要求输入传递给生成工具的参数
 
-对于传递给工具的参数，hz 参考[文档](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/toolkit/#command-line-parameter-description)，kitex 参考[文档](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/)。
+对于传递给工具的参数，hz 参考[文档](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/command/)，kitex 参考[文档](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/)。
 
 ## 静态命令行
 
@@ -109,7 +109,7 @@ pass 参数说明：
 
 
 传递给工具的参数
-hz 参考[文档](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/toolkit/#command-line-parameter-description)，
+hz 参考[文档](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/command/)，
 kitex 参考[文档](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/)。
 
 ### Model 命令
@@ -124,6 +124,7 @@ kitex 参考[文档](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code
 --only_model  是否只生成 model 代码，默认关闭
 --model_pkg   指定 model package 名
 --nullable    当字段为 null 时，指定是否生成指针，默认关闭
+--signable    是否检测整型列 unsigned 类型来调整生成相应的数据类型，默认不生成
 --type_tag    是否给字段生成 gorm column type tag，默认不生成  
 --index_tag   是否给字段生成 gorm index tag，默认不生成          
 ```

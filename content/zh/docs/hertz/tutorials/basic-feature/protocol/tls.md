@@ -18,13 +18,13 @@ Hertz 支持 TLS 安全传输，帮助用户实现了数据的保密性和完整
 | VerifyPeerCertificate | 用于验证对端证书。<br/>在任意一端证书验证后调用。            |
 |   VerifyConnection    | 在两端证书均验证后，进行 TLS 连接验证。                 |
 |      NextProtos       | 用于设置支持的应用层协议。                          |
-|     CipherSuites      | 用于协商加密策略，支持 TLS 1.0-1.2 。              |
+|     CipherSuites      | 用于协商加密策略，支持 TLS 1.0-1.2。              |
 |      MaxVersion       | 用于设置 TLS 支持的最大版本，目前是 1.3。              |
 
 ## 服务端
 
 Hertz 在 `server` 包提供了 `WithTLS` Option 用于配置 TLS 服务。但是目前 Hertz 只有 标准网络库 支持 TLS，[Netpoll](https://github.com/cloudwego/netpoll) 网络库的支持还在路上。
-`WithTLS` 的 `Transporter` 默认设置为标准库的 `Transporter` 。
+`WithTLS` 的 `Transporter` 默认设置为标准库的 `Transporter`。
 
 ```go
 // WithTLS sets TLS config to start a tls server.
@@ -50,6 +50,7 @@ func WithTLS(cfg *tls.Config) config.Option {
  |       ClientCAs       | 当启用了 `ClientAuth`, 用于验证客户端证书的真实性。                                    |
 
 服务器端 TLS 主要流程：
+
 1. 载入根证书，用于验证客户端的真实性。
 2. 载入服务器证书，用于发送给客户端以验证服务器真实性。
 3. 配置 `tls.Config`。
@@ -67,7 +68,7 @@ openssl req -new -key ca.key -out ca.req
 openssl x509 -req -in ca.req -signkey ca.key -out ca.crt -days 365
 ```
 
-通过CA签名，生成服务端的私钥和证书，命令如下：
+通过 CA 签名，生成服务端的私钥和证书，命令如下：
 
 ```shell
 openssl ecparam -genkey -name prime256v1 -out server.key
@@ -143,6 +144,7 @@ func main() {
 |        RootCAs        | 用于客户端验证服务端的证书。     |
 
 客户端 TLS 主要流程：
+
 1. 载入根证书，用于验证服务器端的真实性。
 2. 载入客户证书，用于发送给服务器端以验证客户端的真实性。
 3. 配置 `tls.Config`。
@@ -150,7 +152,7 @@ func main() {
 
 ### 示例代码
 
-通过CA签名，生成客户端的私钥和证书，命令如下：
+通过 CA 签名，生成客户端的私钥和证书，命令如下：
 
 ```shell
 openssl ecparam -genkey -name prime256v1 -out client.key
@@ -359,7 +361,7 @@ func main() {
 
 ### Client 报错 not support tls
 
-Hertz 默认使用了 `netpoll` 作为网络库并且目前 `netpoll` 不支持 TLS 。使用 TLS 需要切换到标准网络库，代码如下:
+Hertz 默认使用了 `netpoll` 作为网络库并且目前 `netpoll` 不支持 TLS。使用 TLS 需要切换到标准网络库，代码如下:
 
 ```go
 import (

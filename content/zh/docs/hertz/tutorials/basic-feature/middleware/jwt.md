@@ -1,13 +1,13 @@
 ---
-title: "JWT认证"
+title: "JWT 认证"
 date: 2022-06-09
 weight: 3
 description: >
 
 ---
 
-JSON Web Token（JWT）是一个轻量级的认证规范，这个规范允许我们使用 JWT 在用户和服务器之间传递安全可靠的信息。其本质是一个 token ，是一种紧凑的 URL 安全方法，用于在网络通信的双方之间传递。
-Hertz 也提供了 jwt 的[实现](https://github.com/hertz-contrib/jwt) ，参考了 gin 的[实现](https://github.com/appleboy/gin-jwt) 。
+JSON Web Token（JWT）是一个轻量级的认证规范，这个规范允许我们使用 JWT 在用户和服务器之间传递安全可靠的信息。其本质是一个 token，是一种紧凑的 URL 安全方法，用于在网络通信的双方之间传递。
+Hertz 也提供了 jwt 的 [实现](https://github.com/hertz-contrib/jwt) ，参考了 gin 的 [实现](https://github.com/appleboy/gin-jwt) 。
 
 ## 安装
 
@@ -156,7 +156,7 @@ Hertz 通过使用中间件，为路由请求提供了 `jwt` 的校验功能。�
 | 参数                            | 介绍                                                                                     |
 |:------------------------------|:---------------------------------------------------------------------------------------|
 | `Realm`                       | 用于设置所属领域名称，默认为 `hertz jwt`                                                             |
-| `SigningAlgorithm`            | 用于设置签名算法，可以是 HS256、HS384、HS512、RS256、RS384 或者 RS512等，默认为 `HS256`                       |
+| `SigningAlgorithm`            | 用于设置签名算法，可以是 HS256、HS384、HS512、RS256、RS384 或者 RS512 等，默认为 `HS256`                       |
 | `Key`                         | 用于设置签名密钥（必要配置）                                                                         |
 | `KeyFunc`                     | 用于设置获取签名密钥的回调函数，设置后 token 解析时将从 `KeyFunc` 获取 `jwt` 签名密钥                                |
 | `Timeout`                     | 用于设置 token 过期时间，默认为一小时                                                                 |
@@ -319,7 +319,7 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 
 `IdentityHandler` 作用在登录成功后的每次请求中，用于设置从 token 提取用户信息的函数。这里提到的用户信息在用户成功登录时，触发 `PayloadFunc` 函数，已经存入 token 的负载部分。
 
-具体流程：通过在 `IdentityHandler` 内配合使用 `identityKey` ，将存储用户信息的 token 从请求上下文中取出并提取需要的信息，封装成 User 结构，以 `identityKey` 为 key，User 为 value 存入请求上下文当中以备后续使用。
+具体流程：通过在 `IdentityHandler` 内配合使用 `identityKey`，将存储用户信息的 token 从请求上下文中取出并提取需要的信息，封装成 User 结构，以 `identityKey` 为 key，User 为 value 存入请求上下文当中以备后续使用。
 
 函数签名：
 
@@ -518,7 +518,7 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 ### ParseOptions
 
 利用 ParseOptions 可以开启相关配置有三个，分别为
- 
+
 - `WithValidMethods`: 用于提供解析器将检查的签名算法，只有被提供的签名算法才被认为是有效的
 - `WithJSONNumber`: 用于配置底层 JSON 解析器使用 `UseNumber` 方法
 - `WithoutClaimsValidation`: 用于禁用 claims 验证

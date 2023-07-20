@@ -5,9 +5,9 @@ weight: 12
 description: >
 ---
 
-Cross-site request forgery（CSRF）是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法。
+Cross-site request forgery（CSRF）是一种挟制用户在当前已登录的 Web 应用程序上执行非本意的操作的攻击方法。
 
-Hertz 提供了 [CSRF](https://github.com/hertz-contrib/csrf) 中间件,可帮助您防止跨站点请求伪造攻击。
+Hertz 提供了 [CSRF](https://github.com/hertz-contrib/csrf) 中间件，可帮助您防止跨站点请求伪造攻击。
 
 ## 安装
 
@@ -63,7 +63,7 @@ func main() {
 
 ### WithSecret
 
-`csrf` 中间件提供了 `WithSecret` 用于帮助用户设置自定义秘钥用于签发 `token` ，默认为 `csrfSecret`。
+`csrf` 中间件提供了 `WithSecret` 用于帮助用户设置自定义秘钥用于签发 `token`，默认为 `csrfSecret`。
 
 函数签名：
 
@@ -153,14 +153,17 @@ func main() {
 ```
 
 ### WithErrorFunc
+
 `csrf` 中间件提供了 `WithErrorFunc` 方便用户自定义错误处理逻辑。
 
 函数签名：
+
 ```go
 func WithErrorFunc(f app.HandlerFunc) Option
 ```
 
 默认实现：
+
 ```go
 func(ctx context.Context, c *app.RequestContext) { panic(c.Errors.Last()) }
 ```
@@ -214,7 +217,7 @@ func main() {
 
 `csrf` 中间件提供了 `WithKeyLookUp` 帮助用户设置 `keyLookup`。
 
-`csrf` 用于从 `source`(支持的 `source` 包括 `header` 、`param`、`query`、`form`) 中提取 `token`。
+`csrf` 用于从 `source`(支持的 `source` 包括 `header`、`param`、`query`、`form`) 中提取 `token`。
 
 格式为 `<source>：<key>`，默认值为：`header：X-CSRF-TOKEN`。
 
@@ -224,7 +227,7 @@ func main() {
 func WithKeyLookUp(lookup string) Option
 ```
 
-默认值： `header：X-CSRF-TOKEN"`
+默认值：`header：X-CSRF-TOKEN"`
 
 示例代码：
 
@@ -265,6 +268,7 @@ func main() {
 `csrf` 中间件提供了 `WithNext` 方便用户自定义设置，以在特定条件下跳过 `csrf`中间件。
 
 函数签名：
+
 ```go
 func WithNext(f CsrfNextHandler) Option
 ```
@@ -310,16 +314,16 @@ func main() {
 }
 ```
 
-
-
-###  WithExtractor
+### WithExtractor
 
 `csrf` 中间件提供了 `WithExtractor`,供用户通过自定义的方法从请求中获取`csrf-token`。
 
 函数签名：
+
 ```go
 func WithExtractor(f CsrfExtractorHandler) Option
 ```
+
 默认实现：
 
 ```go
@@ -333,6 +337,7 @@ func CsrfFromHeader(param string) func(ctx context.Context, c *app.RequestContex
 	}
 }
 ```
+
 示例代码：
 
 ```go

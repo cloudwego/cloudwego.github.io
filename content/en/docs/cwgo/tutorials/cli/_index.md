@@ -24,7 +24,7 @@ cwgo
  
 ```
 
-Therefore, the precautions of corresponding tools also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and generate HTTP code [Notes on hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/toolkit/#notes).
+Therefore, the precautions of corresponding tools also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and generate HTTP code [Notes on hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/cautions/).
 
 # Using
 
@@ -63,7 +63,7 @@ The information requested by db is:
 1. Enter the database DSN. required
 1. Choose whether to use the default configuration to generate the project. If you choose No, you will be asked to enter the parameters to pass to the build tool
 
-For parameters passed to the tool, refer to [documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/toolkit/#command-line-parameter-description) for hz and [documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/toolkit/#command-line-parameter-description) ://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/).
+For parameters passed to the tool, refer to [documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/command/) for hz and [documentation](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/) for kitex.
 
 ## Static command line
 
@@ -109,7 +109,7 @@ To pass the `handler_dir' parameter of `hz`, you should enter --pass "--handler_
 
 
 Parameters passed to the tool
-hz refer to [Documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/toolkit/#command-line-parameter-description),
+hz refer to [Documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/command/),
 Kitex reference [documentation](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/).
 
 ### Model commands
@@ -124,6 +124,7 @@ Kitex reference [documentation](https://www.cloudwego.io/docs/kitex/tutorials/co
 --only_model Whether to only generate model code, the default is off
 --model_pkg specify model package name
 --nullable When the field is null, specify whether to generate a pointer, the default is off
+--signable Whether to detect integer field\'s unsigned type to adjust generated data type, the default is off
 --type_tag Whether to generate gorm column type tag for the field, default is not generated
 --index_tag Whether to generate gorm index tag for the field, default is not generated
 ```

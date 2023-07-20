@@ -6,7 +6,7 @@ keywords: ["Kitex", "Server", "Option"]
 description: Kitex Server Option instructions.
 ---
 
-# Usage
+## Usage
 
 Add some options when creating a server：
 
@@ -16,9 +16,9 @@ svr := api.NewServer(new(DemoImpl), server.WithXXX...)
 
 
 
-# Basic Options
+## Basic Options
 
-#### WithServerBasicInfo
+### WithServerBasicInfo
 
 ```go
 func WithServerBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
@@ -29,7 +29,7 @@ It is strongly recommended to configure this option, and those infos will be use
 
 
 
-#### WithServiceAddr
+### WithServiceAddr
 
 ```go
 func WithServiceAddr(addr net.Addr) Option
@@ -46,7 +46,7 @@ When local server has multiple IP addresses, you can also use this method to spe
 
 
 
-#### WithMuxTransport
+### WithMuxTransport
 
 ```go
 func WithMuxTransport() Option
@@ -56,7 +56,7 @@ Enable Kitex multiplexing transport feature on the server side. Client side also
 
 
 
-#### WithMiddleware
+### WithMiddleware
 
 ```go
 func WithMiddleware(mw endpoint.Middleware) Option
@@ -66,7 +66,7 @@ Add a middleware.  [More](https://www.cloudwego.io/docs/kitex/tutorials/framewor
 
 
 
-#### WithMiddlewareBuilder
+### WithMiddlewareBuilder
 
 ```go
 func WithMiddlewareBuilder(mwb endpoint.MiddlewareBuilder, funcName ...string) Option
@@ -76,7 +76,7 @@ Add middleware depends on the context passed in by the framework that contains r
 
 
 
-#### WithLimit
+### WithLimit
 
 ```go
 func WithLimit(lim *limit.Option) Option
@@ -86,7 +86,7 @@ Set the throttling threshold, which allows you to set a limit on QPS and the num
 
 
 
-#### WithReadWriteTimeout
+### WithReadWriteTimeout
 
 ```go
 func WithReadWriteTimeout(d time.Duration) Option
@@ -98,7 +98,7 @@ Note: This feature may be changed or removed in subsequent releases.
 
 
 
-#### WithExitWaitTime
+### WithExitWaitTime
 
 ```go
 func WithExitWaitTime(timeout time.Duration) Option
@@ -108,7 +108,7 @@ Set the wait time for graceful shutdown of graceful shutdown on the server side.
 
 
 
-#### WithMaxConnIdleTime
+### WithMaxConnIdleTime
 
 ```go
 func WithMaxConnIdleTime(timeout time.Duration) Option 
@@ -118,13 +118,13 @@ Set the maximum amount of idle time allowed for the server-side connection to th
 
 
 
-#### WithStatsLevel
+### WithStatsLevel
 
 ```go
 func WithStatsLevel(level stats.Level) Option
 ```
 
-Set the stats level for the server. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/tracing/)
+Set the stats level for the server. [More](https://www.cloudwego.io/docs/kitex/tutorials/observability/tracing/)
 
 
 
@@ -219,9 +219,9 @@ WithGRPCMaxHeaderListSize returns a ServerOption that sets the max (uncompressed
 
 
 
-# Advanced Options
+## Advanced Options
 
-#### WithSuite
+### WithSuite
 
 ```go
 func WithSuite(suite Suite) Option
@@ -231,7 +231,7 @@ Set up a specific configuration, customize according to the scene, configure mul
 
 
 
-#### WithProxy
+### WithProxy
 
 ```go
 func WithProxy(p proxy.ReverseProxy) Option
@@ -241,7 +241,7 @@ If the server has a proxy, such as Mesh Ingress, you can modify the listening ad
 
 
 
-#### WithRegistryInfo
+### WithRegistryInfo
 
 ```go
 func WithRegistryInfo(info *registry.Info) Option
@@ -251,7 +251,7 @@ Customize the registration information reported by the service. [More](https://w
 
 
 
-#### WithGeneric
+### WithGeneric
 
 ```go
 func WithGeneric(g generic.Generic) Option
@@ -261,7 +261,7 @@ Specify the generalization call type, which needs to be used in conjunction with
 
 
 
-#### WithErrorHandler
+### WithErrorHandler
 
 ```go
 func WithErrorHandler(f func(error) error) Option
@@ -271,7 +271,7 @@ Set the error handler function, which is executed after the server handler is ex
 
 
 
-#### WithACLRules
+### WithACLRules
 
 ```go
 func WithACLRules(rules ...acl.RejectFunc) Option
@@ -281,7 +281,7 @@ Set ACL permission access control, which is executed before service discovery. [
 
 
 
-#### WithExitSignal
+### WithExitSignal
 
 ```go
 func WithExitSignal(f func() <-chan error) Option 
@@ -291,7 +291,7 @@ Set the server exit signal. Kitex has a built-in implementation, if you need som
 
 
 
-#### WithReusePort
+### WithReusePort
 
 ```go
 func WithReusePort(reuse bool) Option
@@ -301,9 +301,9 @@ Set port reuse, that is, whether to enable the underlying TCP port multiplexing 
 
 
 
-# Extended Options
+## Extended Options
 
-#### WithRegistry
+### WithRegistry
 
 ```go
 func WithRegistry(r registry.Registry) Option
@@ -313,17 +313,17 @@ Specify a Registry for service discovery registration reporting. [More](https://
 
 
 
-#### WithTracer
+### WithTracer
 
 ```go
 func WithTracer(c stats.Tracer) Option
 ```
 
-Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/tracing/)
+Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/observability/tracing/)
 
 
 
-#### WithCodec
+### WithCodec
 
 ```go
 func WithCodec(c remote.Codec) Option
@@ -333,7 +333,7 @@ Specify a Codec for scenarios that require custom protocol. [More](https://www.c
 
 
 
-#### WithPayloadCodec
+### WithPayloadCodec
 
 ```go
 func WithPayloadCodec(c remote.PayloadCodec) Option
@@ -343,7 +343,7 @@ Specifie a PayloadCodec. [More](https://www.cloudwego.io/docs/kitex/tutorials/fr
 
 
 
-#### WithMetaHandler
+### WithMetaHandler
 
 ```go
 func WithMetaHandler(h remote.MetaHandler) Option
@@ -353,7 +353,7 @@ Add a meta handler for customizing transparent information in conjunction with t
 
 
 
-#### WithBoundHandler
+### WithBoundHandler
 
 ```go
 func WithBoundHandler(h remote.BoundHandler) Option
@@ -363,7 +363,7 @@ Set IO Bound handlers. [More](https://www.cloudwego.io/docs/kitex/tutorials/fram
 
 
 
-#### WithConcurrencyLimiter
+### WithConcurrencyLimiter
 
 ```go
 func WithConcurrencyLimiter(conLimit limiter.ConcurrencyLimiter) Option
@@ -373,7 +373,7 @@ Set the concurrency limit for server.
 
 
 
-#### WithQPSLimiter
+### WithQPSLimiter
 
 ```go
 func WithQPSLimiter(qpsLimit limiter.RateLimiter) Option
@@ -383,7 +383,7 @@ Set the QPS limit for server.
 
 
 
-#### WithLimitReporter
+### WithLimitReporter
 
 ```go
 func WithLimitReporter(r limiter.LimitReporter) Option
@@ -393,7 +393,7 @@ Set LimitReporter, and when QPS throttling or connection limiting occurs, you ca
 
 
 
-#### WithTransHandlerFactory
+### WithTransHandlerFactory
 
 ```go
 func WithTransHandlerFactory(f remote.ServerTransHandlerFactory) Option
@@ -403,7 +403,7 @@ Set transHandlerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/fr
 
 
 
-#### WithTransServerFactory
+### WithTransServerFactory
 
 ```go
 func WithTransServerFactory(f remote.TransServerFactory) Option
@@ -413,7 +413,7 @@ Set transServerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/fra
 
 
 
-#### WithDiagnosisService
+### WithDiagnosisService
 
 ```go
 func WithDiagnosisService(ds diagnosis.Service) Option

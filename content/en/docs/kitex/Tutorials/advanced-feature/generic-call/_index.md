@@ -36,7 +36,7 @@ Application scenario: mid-platform services can forward the received original Th
 
 - Generic Call
 
-  If you encode by yourself, you have to use Thrift serialization protocol [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message). Note that you shouldn't encode original function parameter, but the **XXXArgs** which wraps function parameters. You can refer to github.com/cloudwego/kitex/generic/generic_test.go.
+  If you encode by yourself, you have to use Thrift serialization protocol [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message). Note that you shouldn't encode original function parameter, but the **XXXArgs** which wraps function parameters. You can refer to  [github.com/cloudwego/kitex/generic/generic_test.go](https://github.com/cloudwego/kitex/blob/develop/pkg/generic/generic_test.go).
 
   Kitex provides a thrift codec package `github.com/cloudwego/kitex/pkg/utils.NewThriftMessageCodec`.
 
@@ -88,7 +88,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 ### 2. HTTP Mapping Generic Call
 
-The HTTP Mapping Generic Call is only for the client, and requires Thrift IDL to comply with the interface mapping specification. See the specific specification [IDL Definition Specification for Mapping between Thrift and HTTP](thrift_idl_annotation_standards)
+The HTTP Mapping Generic Call is only for the client, and requires Thrift IDL to comply with the interface mapping specification. See the specific specification [IDL Definition Specification for Mapping between Thrift and HTTP](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/thrift_idl_annotation_standards/)
 
 #### IDL Definition Example
 
@@ -192,11 +192,13 @@ func main() {
     if err != nil {
         panic(err)
     }
+    // Kitex generalization currently directly supports http.Request in the standard library.
+    // To use hertz, you need to make a request conversion httpReq, err := adapter.GetCompatRequest(hertzReqCtx)
     req.Header.Set("token", "1")
     customReq, err := generic.FromHTTPRequest(req)
     // customReq *generic.HttpRequest
     resp, err := cli.GenericCall(ctx, "", customReq)
-    realResp := resp.(*generic.HttpResponse)
+    realResp := resp.(*generic.HTTPResponse)
     realResp.Write(w)
 }
 ```
@@ -239,7 +241,7 @@ func (a * notBodyStruct) Handle() interface{} {
 
 type notBodyStruct struct{}
 
-var newNotBodyStruct descriptor.NewHttpMapping = func(value string) descriptor.HttpMapping {
+var newNotBodyStruct descriptor.NewHTTPMapping = func(value string) descriptor.HTTPMapping {
         return &notBodyStruct{}
 }
 
@@ -249,7 +251,7 @@ func (m *notBodyStruct) Request(req *descriptor.HttpRequest, field *descriptor.F
 }
 
 // set value to response
-func (m *notBodyStruct) Response(resp *descriptor.HttpResponse, field *descriptor.FieldDescriptor, val interface{}) {
+func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descriptor.FieldDescriptor, val interface{}) {
 }
 ```
 

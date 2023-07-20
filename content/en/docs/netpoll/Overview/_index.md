@@ -85,7 +85,7 @@ More benchmarks reference [kitex-benchmark][kitex-benchmark] and [hertz-benchmar
 [Redis]: https://redis.io
 [HAProxy]: http://www.haproxy.org
 
-[LinkBuffer]: nocopy_linkbuffer.go
+[LinkBuffer]: https://github.com/cloudwego/netpoll/blob/develop/nocopy_linkbuffer.go
 [gopool]: https://github.com/bytedance/gopkg/tree/develop/util/gopool
 [mcache]: https://github.com/bytedance/gopkg/tree/develop/lang/mcache
 [io_uring]: https://github.com/axboe/liburing

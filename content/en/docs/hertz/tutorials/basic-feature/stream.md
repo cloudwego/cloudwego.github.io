@@ -1,7 +1,7 @@
 ---
 title: "Stream"
 date: 2022-06-21
-weight: 5
+weight: 8
 description: >
 
 ---
@@ -31,7 +31,7 @@ Due to different trigger modes of *netpoll* and *go net*, netpoll streams are "p
 
 ## Client
 
-For example: 
+For example:
 
 ```go
 c, err := client.NewClient(client.WithResponseBodyStream(true))

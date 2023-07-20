@@ -18,6 +18,7 @@ type Tracer interface {
 ```
 
 [hertz-contrib](https://github.com/hertz-contrib/monitor-prometheus) provides a default prometheus monitoring extension，which can be used to do:
+
 - Server throughput monitoring
 - Request latency monitoring
 
@@ -46,6 +47,6 @@ func main() {
 }
 ```
 
-Currently, `Client` doesn't expose `Tracer` interface, but monitoring capabilities can be implemented through [middleware](/en/docs/hertz/tutorials/basic-feature/middleware/).
+Currently, `Client` doesn't expose `Tracer` interface, but monitoring capabilities can be implemented through [middleware](/docs/hertz/tutorials/basic-feature/middleware/).
 
 Related Repository https://github.com/hertz-contrib/monitor-prometheus

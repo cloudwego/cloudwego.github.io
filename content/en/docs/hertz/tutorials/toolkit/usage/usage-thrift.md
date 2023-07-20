@@ -30,8 +30,13 @@ service HelloService {
 
 2. Create a new project
 
+The following two subsections can be implemented according to the actual situation.
+
+2.1. Without go module dependencies management
+
+If the current project path is under `$GOPATH`, execute the following code block, otherwise directly refer to section 2.2.
+
 ```bash
-// Execute under GOPATH
 hz new -idl idl/hello.thrift
 
 go mod init
@@ -42,20 +47,23 @@ go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 go mod tidy
 ```
 
+2.2. With Go module dependencies management
+
+For projects not under `$GOPATH`, specify a custom module name through the `-module` command provided by the tool:
+
 ```bash
-// Execute is not under GOPATH
-//option 1,you do not have a go.mod, add go mod name after "-module"
 hz new -module example.com/m -idl idl/hello.thrift
 
 // Tidy & get dependencies
 go mod tidy
 
-//option 2,you already have a go.mod
+// Check whether the github.com/apache/thrift version in go.mod is v0.13.0, if not, continue to execute the remaining code in section 2.2
 go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 
 // Tidy & get dependencies
 go mod tidy
 ```
+
 3. Modify the handler and add your own logic
 
 ```go

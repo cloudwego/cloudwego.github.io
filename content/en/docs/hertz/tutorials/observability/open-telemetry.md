@@ -105,8 +105,8 @@ func main()  {
 
 - Out-of-the-box default opentelemetry provider
 - Support setting via environment variables:
-    - [Exporter](https://opentelemetry.io/docs/reference/specification/protocol/exporter/)
-    - [SDK](https://opentelemetry.io/docs/reference/specification/sdk-environment-variables/#general-sdk-configuration)
+  - [Exporter](https://opentelemetry.io/docs/reference/specification/protocol/exporter/)
+  - [SDK](https://opentelemetry.io/docs/reference/specification/sdk-environment-variables/#general-sdk-configuration)
 
 Examples:
 
@@ -153,7 +153,7 @@ func main() {
 | WithResource              | Configure resources (`resource.Resource`)                                |
 | WithEnableTracing         | Enable `tracing`                                                         |
 | WithEnableMetrics         | Enable `metrics`                                                         |
-| WithTextMapPropagator     | Configure ` propagation.TextMapPropagator`                               |
+| WithTextMapPropagator     | Configure `propagation.TextMapPropagator`                               |
 | WithResourceDetector      | Configure `resource.Detector`                                            |
 | WithHeaders               | Configure the gRPC request header for exporting telemetry data           |
 | WithInsecure              | Configure whether to use secure authentication for exported gRPC clients |
@@ -161,4 +161,3 @@ func main() {
 ## Full Examples
 
 For a full usage: [example](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry)
-

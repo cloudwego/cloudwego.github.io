@@ -11,7 +11,7 @@ description: "This document covers the preparation of the development environmen
 1. If you don't have the golang development environment set up, please follow [Install Go](https://golang.org/doc/install) to install go.
 2. We strongly recommend that you use the latest version of golang. And compatibility is guaranteed within three latest minor release versions (currently >= **v1.16**).
 3. Make sure that `GO111MODULE` is set to `on`.
-4. Currently Windows is not well supported by Kitex, if your development environment is Windows it is recommended to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install).
+4. If you want to use Kitex in Windows, please make sure the version of kitex >= v0.5.2
 
 ## Quick Start
 
@@ -239,11 +239,11 @@ proto3 grammar: [Language Guide(proto3)](https://developers.google.com/protocol-
 
 Let's create a directory to setup project.
 
-`$ mkdir example`
+`$ mkdir example-server`
 
 enter directory
 
-`$ cd example`
+`$ cd example-server`
 
 ### Kitex compiler
 
@@ -253,7 +253,7 @@ enter directory
 
 You can use following command to install and upgrade `kitex`:
 
-`$ go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`
+`$ go install -v github.com/cloudwego/kitex/tool/cmd/kitex@latest`
 
 After that, you can just run it to check whether it's installed successfully.
 
@@ -298,9 +298,12 @@ service Echo {
 
 We can use `kitex` compiler to compile the IDL file to generate whole project.
 
-`$ kitex -module example -service example echo.thrift`
+`$ kitex -module example -service example-server echo.thrift`
 
-`-module` indicates go module name of project，`-service` indicates expected to generate a executable service named `example`, the last parameter is path to IDL file.
+Note:
+* `-module` indicates go module name of project; full package name suggested, e.g. `github.com/YourName/exampleserver`
+* `-service` indicates expected to generate a executable service named `example`
+* the last parameter is path to IDL file.
 
 Generated project layout:
 ```
@@ -326,7 +329,7 @@ Generated project layout:
 
 Kitex expect project to use go module as dependency manager. It cloud be easy to upgrade Kitex:
 ```
-$ go get github.com/cloudwego/kitex@latest
+$ go get -v github.com/cloudwego/kitex@latest
 $ go mod tidy
 ```
 
@@ -356,7 +359,7 @@ package main
 
 import (
 	"context"
-	"example/kitex_gen/api"
+	"example/kitex_gen/api" // replace `example` with the value of `-module`
 )
 
 // EchoImpl implements the last service interface defined in the IDL.
@@ -402,25 +405,33 @@ Now, `Echo` service is running!
 
 Let's write a client to call `Echo` server.
 
-create a directory as client package:
+Create a directory as client package:
 
 `$ mkdir client`
 
-enter directory:
+Enter directory:
 
 `$ cd client`
 
-create a `main.go` file.
+Generate code for clients with kitex (if this directory is under the `example-server` in previous section, you can skip this step since code for clients are already generated for kitex server):
+
+`$ kitex -module example echo.thrift`
+
+Note:
+1. To generate code for clients, don't specify the param `-service`; the code will be under directory `kitex_gen`;
+2. Full package name is suggested for the param `-module`, e.g. `github.com/YourName/exampleclient`
+
+Then create a `main.go` file with the following code.
 
 #### Create Client
 
 Let's new a `client` to do RPC：
 
 ```go
-import "example/kitex_gen/api/echo"
+import "example/kitex_gen/api/echo" // replace `example` with the value of `-module`
 import "github.com/cloudwego/kitex/client"
 ...
-c, err := echo.NewClient("example", client.WithHostPorts("0.0.0.0:8888"))
+c, err := echo.NewClient("example-server", client.WithHostPorts("0.0.0.0:8888"))
 if err != nil {
 	log.Fatal(err)
 }
@@ -432,7 +443,7 @@ if err != nil {
 Let's write call code:
 
 ```go
-import "example/kitex_gen/api"
+import "example/kitex_gen/api" // replace `example` with the value of `-module`
 ...
 req := &api.Request{Message: "my request"}
 resp, err := c.Echo(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))

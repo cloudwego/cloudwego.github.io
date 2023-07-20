@@ -32,7 +32,7 @@ cwgo 工具支持目前支持生成 MVC Layout，未来还会拓展更多的模�
 │   │   │       └── middleware.go // 默认中间件函数，hz 为每一个生成的路由组都默认加了一个中间件；update 时会查找当前文件已有的 middleware 在尾部追加新的 middleware
 │   │   └── register.go // 调用注册每一个 idl 文件中的路由定义；当有新的 idl 加入，在更新的时候会自动插入其路由注册的调用；勿动
 │   ├── service // service 层，业务逻辑存放的地方。更新时，新的方法会追加文件。
-│   │   ├── hello_method.go 具体的业务逻辑
+│   │   ├── hello_method.go // 具体的业务逻辑
 │   │   └── hello_method_test.go
 │   └── utils // 工具目录
 │       └── resp.go 

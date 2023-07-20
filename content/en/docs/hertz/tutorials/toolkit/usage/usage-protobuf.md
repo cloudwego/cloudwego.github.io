@@ -9,9 +9,11 @@ description: >
 ### new: Create a new project
 
 1. Create the protobuf IDL file in the current directory
-
-   _Note_: In order to support api annotations in protobuf, please import the following file in the proto file where the annotation is used
-
+>
+> 1. In order to support api annotations in protobuf, please import the following file in the proto file where the annotation is used
+>
+> 2. If you want to extend the annotations, please do not use "5" as the beginning of the serial number to avoid conflicts. For example, "optional string xxx = 77777;"
+>
 ```protobuf
 // idl/api.proto; Annotation extension
 syntax = "proto2";
@@ -97,6 +99,7 @@ go mod init
 // Tidy & get dependencies
 go mod tidy
 ```
+
 ```bash
 // Execute is not under GOPATH, add go mod name after "-module", if the dependencies of the main IDL and the main IDL are not in the same path, you need to add the "-I" option, its meaning is IDL search path, equivalent to the option "-I" for protoc
 
