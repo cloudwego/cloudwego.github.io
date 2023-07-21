@@ -367,3 +367,25 @@ func main() {
 }
 
 ```
+
+### Redirect tail slash
+
+By default, Hertz automatically forwards requests based on the `/` at the end of the path. If the router only has `/foo/`, then the request for `/foo` will be automatically redirected to `/foo/`; if the router only has `/foo`, then `/foo/` will be redirected to `/foo`.
+
+The `307 Temporary Redirect` status code is triggered by any of the request methods other than `GET` and the `301 Moved Permanently` status code is triggered by the `GET` request.
+
+You can cancel it in the configuration as follows:
+
+````go
+package main
+
+import "github.com/cloudwego/hertz/pkg/app/server"
+
+func main() {
+    h := server.New(server.WithRedirectTrailingSlash(false))
+	...
+}
+````
+
+For more configuration-related information: https://www.cloudwego.io/docs/hertz/reference/config/
+
