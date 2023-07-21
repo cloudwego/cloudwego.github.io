@@ -169,10 +169,22 @@ func (ctx *RequestContext) Redirect(statusCode int, uri []byte)
 Example Code:
 
 ```go
+// internal redirection
+// GET http://www.example.com:8888/user
 h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
     ctx.Redirect(consts.StatusFound, []byte("/pet"))
 })
+// GET http://www.example.com:8888/pet
+h.GET("/pet", func(c context.Context, ctx *app.RequestContext) {
+    ctx.String(consts.StatusOK, "cat")
+})
 
+// external redirection
+// GET http://www.example.com:8888/user
+h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+    ctx.Redirect(consts.StatusFound, []byte("http://www.example1.com:8888/pet"))
+})
+// GET http://www.example1.com:8888/pet
 h.GET("/pet", func(c context.Context, ctx *app.RequestContext) {
     ctx.String(consts.StatusOK, "cat")
 })
