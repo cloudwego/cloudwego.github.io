@@ -31,7 +31,6 @@ func performRequest() {
 	req.SetMethod("GET")
 	_ = c.Do(context.Background(), req, resp)
 	fmt.Printf("get response: %s\n", resp.Body()) // status == 200 resp.Body() == []byte("hello hertz")
-
 }
 
 func main() {
@@ -42,777 +41,91 @@ func main() {
 	go performRequest()
 	h.Spin()
 }
-
 ```
 
 ## Config
 
 | **Option**                    | **Default**    | **Description**                                              |
 | ----------------------------- | -------------- | ------------------------------------------------------------ |
-| DialTimeout                   | 1s             | *dial timeout.*                                              |
-| MaxConnsPerHost               | 512            | *maximum number of connections per host which may be established.* |
-| MaxIdleConnDuration           | 10s            | *max idle connection duration, idle keep-alive connections are closed after this duration.* |
-| MaxConnDuration               | 0s             | *max connection duration, keep-alive connections are closed after this duration.* |
-| MaxConnWaitTimeout            | 0s             | *maximum duration for waiting for a free connection.*        |
-| KeepAlive                     | true           | *determines whether use keep-alive connection.*              |
-| ReadTimeout                   | 0s             | *maximum duration for full response reading (including body).* |
-| TLSConfig                     | nil            | *tlsConfig to create a tls connection.*                      |
-| Dialer                        | network.Dialer | *specific dialer.*                                           |
-| ResponseBodyStream            | false          | *determine whether read body in stream or not.*              |
-| DisableHeaderNamesNormalizing | false          | *whether disable header names normalizing.*                  |
-| Name                          | ""             | *client name which used in User-Agent Header.*               |
-| NoDefaultUserAgentHeader      | false          | *whether no default User-Agent header.*                      |
-| DisablePathNormalizing        | false          | *whether disable path normalizing.*                          |
-| RetryConfig                   | nil            | *retry configuration.*                                       |
-| WriteTimeout                  | 0s             | *write timeout.*                                             |
-| HostClientStateObserve        | nil            | *the connection state observation function.*                 |
+| DialTimeout                   | 1s             | dial timeout.                                            |
+| MaxConnsPerHost               | 512            | maximum number of connections per host which may be established. |
+| MaxIdleConnDuration           | 10s            | max idle connection duration, idle keep-alive connections are closed after this duration. |
+| MaxConnDuration               | 0s             | max connection duration, keep-alive connections are closed after this duration. |
+| MaxConnWaitTimeout            | 0s             | maximum duration for waiting for a free connection.       |
+| KeepAlive                     | true           | determines whether use keep-alive connection, default use.              |
+| ReadTimeout                   | 0s             | maximum duration for full response reading (including body). |
+| TLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls -config](https://pkg.go.dev/crypto/tls#Config).                      |
+| Dialer                        | network.Dialer | specific dialer.                                           |
+| ResponseBodyStream            | false          | determine whether read body in stream or not, default not read in stream.              |
+| DisableHeaderNamesNormalizing | false          | whether disable header names normalizing, default not disabled, for example, cONTENT-lenGTH -> Content-Length.                |
+| Name                          | ""             | client name which used in User-Agent Header.               |
+| NoDefaultUserAgentHeader      | false          | whether no default User-Agent header, default with User-Agent header.                    |
+| DisablePathNormalizing        | false          | whether disable path normalizing, default specification path, for example, http://localhost:8080/hello/../ hello -> http://localhost:8080/hello.                         |
+| RetryConfig                   | nil            | retry configuration, for specific configuration information, please refer to [retry](/docs/hertz/tutorials/basic-feature/retry/).                                      |
+| WriteTimeout                  | 0s             | write timeout.                                             |
+| HostClientStateObserve        | nil            | the connection state observation function.                 |
 | ObservationInterval           | 5s             | StateObserve execution interval.                             |
-| DialFunc                      | network.Dialer | *set dialer function.*                                       |
-
-
-
-### WithDialTimeout
-
-The `WithDialTimeout` function is used to set the dialing timeout.
-
-Function Signature:
-
-```go
-func WithDialTimeout(dialTimeout time.Duration) config.ClientOption
-```
+| DialFunc                      | network.Dialer | set dialer function.                                       |
 
 Sample Code:
 
 ```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app/client"
-)
-
 func main() {
-	c, err := client.NewClient(client.WithDialTimeout(1 * time.Second))
-	if err != nil {
-		return
-	}
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-```
-
-### WithMaxConnsPerHost
-
-The `WithMaxConnsPerHost` function is used to set the maximum number of connections per host.
-
-Function Signature:
-
-```go
-func WithMaxConnsPerHost(maxConns int) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"log"
-	
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-	c, err := client.NewClient(client.WithMaxConnsPerHost(1))
-	if err != nil {
-		return
-	}
-
-	for i := 0; i < 10; i++ {
-		go func() {
-			status, body, err := c.Get(context.Background(), nil, "http://localhost:8080/hello")
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Printf("status=%v body=%v\n", status, string(body))
-			// Only one received the message: status == 200 resp.Body() == []byte("hello hertz"), 
-			// the error of others is "no free connections available to host".
-		}()
-	}
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, "hello hertz")
-	})
-	go performRequest()
-	h.Spin()
-}
-```
-
-### WithMaxIdleConnDuration
-
-The `WithMaxIdleConnDuration` function is used to set the maximum duration of an idle connection. If a connection is idle for longer than the set maximum duration, it will be closed.
-
-Function Signature:
-
-```go
-func WithMaxIdleConnDuration(maxIdleConnDuration time.Duration) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "time"
-
-    "github.com/cloudwego/hertz/pkg/app/client"
-)
-
-func main() {
-    c, err := client.NewClient(client.WithMaxIdleConnDuration(30 * time.Second))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-```
-
-### WithMaxConnDuration
-
-The `WithMaxConnDuration` function is used to set the maximum duration of a connection. If a connection lasts longer than the set maximum duration, it will be closed.
-
-Function Signature:
-
-```go
-func WithMaxConnDuration(maxConnDuration time.Duration) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "time"
-
-    "github.com/cloudwego/hertz/pkg/app/client"
-)
-
-func main() {
-    c, err := client.NewClient(client.WithMaxConnDuration(10 * time.Second))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-```
-
-### WithMaxConnWaitTimeout
-
-The `WithMaxConnWaitTimeout` function is used to set the maximum duration of waiting for an idle connection. When the HTTP client needs a new connection, it will wait for the maximum time to get a new connection if there is no free connection available. If the wait time exceeds the set maximum duration, it will return an error.
-
-Function Signature:
-
-```go
-func WithMaxConnWaitTimeout(t time.Duration) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "time"
-
-    "github.com/cloudwego/hertz/pkg/app/client"
-)
-
-func main() {
-    c, err := client.NewClient(client.WithMaxConnWaitTimeout(5 * time.Second))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-```
-
-### WithKeepAlive
-
-The `WithKeepAlive` function is used to set whether the HTTP client uses keep-alive connections. keep-alive is an HTTP persistent connection technique that allows multiple HTTP requests and responses to be handled in a single TCP connection, reducing the overhead of establishing and closing connections and improving network performance.
-
-Function Signature:
-
-```go
-func WithKeepAlive(b bool) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-
-    "github.com/cloudwego/hertz/pkg/app/client"
-)
-
-func main() {
-    c, err := client.NewClient(client.WithKeepAlive(true))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-```
-
-### WithClientReadTimeout
-
-The `WithClientReadTimeout` function is used to set the maximum duration for the client to read the full response (including the body). It accepts a parameter of type `time.Duration`, indicating the maximum duration. If the time taken to read the full response exceeds the set maximum duration, the client will return an error.
-
-Function Signature:
-
-```go
-func WithClientReadTimeout(t time.Duration) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"log"
-	"strings"
-	"time"
-	
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-	c1, err := client.NewClient(client.WithClientReadTimeout(time.Nanosecond))
-	if err != nil {
-		return
-	}
-
-	status, body, err = c1.Get(context.Background(), nil, "http://localhost:8080/hello")
-	if err != nil {
-		log.Fatal(err) // err.Error() == "timeout"
-	}
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
-		ctx.String(consts.StatusOK, strings.Repeat("a", 1024*1024))
-	})
-	go performRequest()
-	h.Spin()
-}
-```
-
-### WithTLSConfig
-
-The `WithTLSConfig` function is used to set the TLS configuration to create a TLS connection, TLS (Transport Layer Security) is an encryption protocol used to secure network communications.
-
-Function Signature:
-
-```go
-func WithTLSConfig(cfg *tls.Config) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"crypto/tls"
-	"fmt"
-
-	"github.com/cloudwego/hertz/pkg/app/client"
-)
-
-func main() {
-	tlsConfig := &tls.Config{
-		InsecureSkipVerify: true,
-	}
-	c, err := client.NewClient(client.WithTLSConfig(tlsConfig))
-	if err != nil {
-		return
-	}
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-```
-
-### WithDialer
-
-The `WithDialer` function is used to set a specific dialer to be used by the HTTP client. dialer is used to create a network connection.
-
-Function Signature:
-
-```go
-func WithDialer(d network.Dialer) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/network/netpoll"
-)
-
-func main() {
-	c, err := client.NewClient(client.WithDialer(netpoll.NewDialer()))
-	if err != nil {
-		return
-	}
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-```
-
-### WithResponseBodyStream
-
-The `WithResponseBodyStream` function is used to set whether the HTTP client reads the response body as a stream. If set to true, the client will use streaming when reading the response to avoid loading the entire response body into memory at once. If set to false, the client will load the entire response body into memory at once.
-
-Function Signature:
-
-```go
-func WithResponseBodyStream(b bool) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-
-    "github.com/cloudwego/hertz/pkg/app/client"
-)
-
-func main() {
-    c, err := client.NewClient(client.WithResponseBodyStream(true))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-```
-
-### WithDisableHeaderNamesNormalizing
-
-The `WithDisableHeaderNamesNormalizing` function is used to set whether the HTTP client disables normalizing the header names in the request and response headers. If set to true, the client will not normalize the header names in the request and response headers. Otherwise, the client will normalize the header names in the request and response headers.
-
-Function Signature:
-
-```go
-func WithDisableHeaderNamesNormalizing(disable bool) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-
-    "github.com/cloudwego/hertz/pkg/app/client"
-)
-
-func main() {
-    c, err := client.NewClient(client.WithDisableHeaderNamesNormalizing(true))
-    if err != nil {
-        return
-    }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-    fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-```
-
-### WithName
-
-The `WithName` function is used to set the name of the HTTP client that will be used in the User-Agent header, which is a header field in an HTTP request that sends the server a string of information about the client application, operating system, version, and other relevant information.
-
-Function Signature:
-
-```go
-func WithName(name string) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-	c, err := client.NewClient(client.WithName("my-client"))
-	if err != nil {
-		return
-	}
-	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
-		fmt.Printf("%s\n", ctx.Request.Header.Get("User-Agent")) // "my-client"
-		ctx.JSON(consts.StatusOK, "hello hertz")
-	})
-	go performRequest()
-	h.Spin()
-}
-```
-
-### WithNoDefaultUserAgentHeader
-
-The `WithNoDefaultUserAgentHeader` function is used to set whether the HTTP client disables the default User-Agent header. If set to true, the client will not send the default User-Agent header in the request. Otherwise, the client will send the default User-Agent header.
-
-Function Signature:
-
-```go
-func WithNoDefaultUserAgentHeader(isNoDefaultUserAgentHeader bool) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-	c, err := client.NewClient(client.WithNoDefaultUserAgentHeader(false))
-	if err != nil {
-		return
-	}
-	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-	// User-Agent == "hertz"
-
-	c, err = client.NewClient(client.WithNoDefaultUserAgentHeader(true))
-	if err != nil {
-		return
-	}
-	status, body, _ = c.Get(context.Background(), nil, "http://localhost:8080/hello")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-	// User-Agent == ""
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, "hello hertz")
-	})
-	go performRequest()
-	h.Spin()
-}
-```
-
-### WithDisablePathNormalizing
-
-The `WithDisablePathNormalizing` function is used to set whether the HTTP client disables normalizing the request path. If set to true, the client will not normalize the request path. Otherwise, the client will normalize the request path.
-
-Function Signature:
-
-```go
-func WithDisablePathNormalizing(isDisablePathNormalizing bool) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-	c, err := client.NewClient(client.WithDisablePathNormalizing(false))
-	if err != nil {
-		return
-	}
-	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello/../hello")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-	// request url == "http://localhost:8080/hello"
-
-	c, err = client.NewClient(client.WithDisablePathNormalizing(true))
-	if err != nil {
-		return
-	}
-	status, body, _ = c.Get(context.Background(), nil, "http://localhost:8080/hello/../hello")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-	// request url == "http://localhost:8080/hello/../hello"
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, "hello hertz")
-	})
-	go performRequest()
-	h.Spin()
-}
-```
-
-### WithRetryConfig
-
-The `WithRetryConfig` function is used to set the retry configuration of the HTTP client. In case of problems such as network failure or timeout, the client can retry to try to re-establish the connection or resend the request. (For more information, please refer to [retry](/docs/hertz/tutorials/basic-feature/retry/))
-
-Function Signature:
-
-```go
-func WithRetryConfig(opts ...retry.Option) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/client/retry"
-)
-
-func main() {
-	c, err := client.NewClient(client.WithRetryConfig(
-		retry.WithMaxAttemptTimes(3),
-		retry.WithInitDelay(1000),
-		retry.WithMaxDelay(10000),
-		retry.WithDelayPolicy(retry.DefaultDelayPolicy),
-		retry.WithMaxJitter(1000),
-	))
-	if err != nil {
-		return
-	}
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-```
-
-### WithWriteTimeout
-
-The `WithWriteTimeout` function is used to set the write timeout for HTTP clients. When sending a request, if the data written to the request exceeds the specified timeout, the client will abort the request and return an error.
-
-Function Signature:
-
-```go
-func WithWriteTimeout(t time.Duration) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"github.com/cloudwego/hertz/pkg/protocol"
-	"log"
-	"strings"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-	c, err := client.NewClient(client.WithWriteTimeout(time.Nanosecond))
-	if err != nil {
-		return
-	}
-
-	args := &protocol.Args{}
-	args.Set("data", strings.Repeat("a", 1024*1024))
-	status, body, err := c.Post(context.Background(), nil, "http://localhost:8080/hello", args)
-	if err != nil {
-		log.Fatal(err)
-	}
-	//err.Error() == "i/o timeout"
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.POST("/hello", func(c context.Context, ctx *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, "hello hertz")
-	})
-	go performRequest()
-	h.Spin()
-}
-```
-
-### WithConnStateObserve
-
-The `WithConnStateObserve` function is used to set the connection state watch function for the HTTP client. This watch function is called when a client establishes a connection, closes a connection, or when other connection state changes occur.
-
-Function Signature:
-
-```go
-func WithConnStateObserve(hs config.HostClientStateFunc, interval ...time.Duration) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"github.com/cloudwego/hertz/pkg/common/config"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
 	observeInterval := 10 * time.Second
 	stateFunc := func(state config.HostClientState) {
 		fmt.Printf("state=%v\n", state.ConnPoolState().Addr)
-		// state.ConnPoolState().Addr == "localhost:8080"
 	}
-	c, err := client.NewClient(client.WithConnStateObserve(stateFunc, observeInterval))
-	if err != nil {
-		return
-	}
-
-	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/hello")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, "hello hertz")
-	})
-	time.Sleep(time.Second)
-	go performRequest()
-	h.Spin()
-}
-```
-
-### WithDialFunc
-
-The `WithDialFunc` function is used to set the HTTP client's dial function, the underlying network dialer used by the client to establish a connection. This function accepts a parameter of type `network.DialFunc`, indicating the custom dialer function used by the client.
-
-Function Signature:
-
-```go
-func WithDialFunc(f network.DialFunc, dialers ...network.Dialer) config.ClientOption
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/network"
-	"github.com/cloudwego/hertz/pkg/network/netpoll"
-)
-
-func main() {
 	var customDialFunc network.DialFunc = func(addr string) (network.Conn, error) {
 		return nil, nil
 	}
-	c, err := client.NewClient(client.WithDialFunc(customDialFunc, netpoll.NewDialer()))
+	c, err := client.NewClient(
+		client.WithDialTimeout(1*time.Second),
+		client.WithMaxConnsPerHost(1024),
+		client.WithMaxIdleConnDuration(10*time.Second),
+		client.WithMaxConnDuration(10*time.Second),
+		client.WithMaxConnWaitTimeout(10*time.Second),
+		client.WithKeepAlive(true),
+		client.WithClientReadTimeout(10*time.Second),
+		client.WithDialer(standard.NewDialer()),
+		client.WithResponseBodyStream(true),
+		client.WithDisableHeaderNamesNormalizing(true),
+		client.WithName("my-client"),
+		client.WithNoDefaultUserAgentHeader(true),
+		client.WithDisablePathNormalizing(true),
+		client.WithRetryConfig(
+			retry.WithMaxAttemptTimes(3),
+			retry.WithInitDelay(1000),
+			retry.WithMaxDelay(10000),
+			retry.WithDelayPolicy(retry.DefaultDelayPolicy),
+			retry.WithMaxJitter(1000),
+		),
+		client.WithWriteTimeout(10*time.Second),
+		client.WithConnStateObserve(stateFunc, observeInterval),
+		client.WithDialFunc(customDialFunc, netpoll.NewDialer()),
+	)
 	if err != nil {
 		return
 	}
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
+
+	status, body, _ := c.Get(context.Background(), nil, "http://www.example.com")
 	fmt.Printf("status=%v body=%v\n", status, string(body))
 }
 ```
 
-## Do
+## Send Request
+
+```go
+func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error
+func (c *Client) DoRedirects(ctx context.Context, req *protocol.Request, resp *protocol.Response, maxRedirectsCount int) error
+func (c *Client) Get(ctx context.Context, dst []byte, url string, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+func (c *Client) Post(ctx context.Context, dst []byte, url string, postArgs *protocol.Args, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+```
+
+### Do
 
 The `Do` function executes the given http request and populates the given http response. The request must contain at least one non-zero RequestURI containing the full URL or a non-zero Host header + RequestURI.
 
-This function does not follow redirects. Please use the `Get` function to follow the redirect.
+This function does not follow redirects. Please use the [Get](#get) function, [DoRedirects](#doredirects) function, or [Post](#post) function to follow the redirection.
 
 If resp is nil, the response will be ignored. If all DefaultMaxConnsPerHost connections against the requesting host are busy, an `ErrNoFreeConns` error will be returned. In performance-critical code, it is recommended that req and resp be obtained via AcquireRequest and AcquireResponse.
 
@@ -825,21 +138,8 @@ func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.R
 Sample Code:
 
 ```go
-package main
-
-import (
-	"context"
-	"fmt"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -851,175 +151,29 @@ func performRequest() {
 
 	err = c.Do(context.Background(), req, res)
 	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
-    // resp.Body() == []byte("pong") err == <nil>
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		ctx.String(consts.StatusOK, "pong")
-	})
-
-	go performRequest()
-
-	h.Spin()
-}
-
-```
-
-## DoTimeout
-
-The `DoTimeout` function executes the given request and waits for a response within the given timeout period.
-
-If resp is nil, the response is ignored. If the response is not received within the given timeout period, an `errTimeout error` is returned.
-
-Function Signature: 
-
-```go
-func DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-
-	c, err := client.NewClient()
-	if err != nil {
-		return
-	}
-
-	req, res := &protocol.Request{}, &protocol.Response{}
-	req.SetMethod(consts.MethodGet)
-	req.SetRequestURI("http://localhost:8080/ping")
-
-	err = c.DoTimeout(context.Background(), req, res, time.Second*3)
-	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
-    // res.Body() == []byte("pong") err == <nil>
-
-	err = c.DoTimeout(context.Background(), req, res, time.Second)
-	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
-    // res.Body() == []byte("") err.Error() == "timeout"
-
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		time.Sleep(2 * time.Second)
-		ctx.String(consts.StatusOK, "pong")
-	})
-
-	go performRequest()
-
-	h.Spin()
-}
-
-```
-
-## DoDeadline
-
-`DoDeadline` executes the given request and waits for the response until the given deadline.
-If resp is nil, the response is ignored. If the response is not received by the given deadline, an `errTimeout error` is returned.
-
-Function Signature: 
-
-```go
-func DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-
-	c, err := client.NewClient()
-	if err != nil {
-		return
-	}
-
-	req, res := &protocol.Request{}, &protocol.Response{}
-	req.SetMethod(consts.MethodGet)
-	req.SetRequestURI("http://localhost:8080/ping")
-
-	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(3*time.Second))
-	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
-    // res.Body() == []byte("pong") err == <nil>
-
-	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(1*time.Second))
-	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
-    // res.Body() == []byte("") err.Error() == "timeout"
-
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		time.Sleep(2 * time.Second)
-		ctx.String(consts.StatusOK, "pong")
-	})
-
-	go performRequest()
-
-	h.Spin()
+	// resp.Body() == []byte("pong") err == <nil>
 }
 ```
 
-## DoRedirects
+### DoRedirects
 
 The `DoRedirects` function executes the given http request and populates the given http response, following a maximum of maxRedirectsCount redirects. When the number of redirects exceeds maxRedirectsCount, an `ErrTooManyRedirects` error is returned.
 
 Function Signature:
 
 ```go
-func DoRedirects(ctx context.Context, req *protocol.Request, resp *protocol.Response, maxRedirectsCount int) error
+func (c *Client) DoRedirects(ctx context.Context, req *protocol.Request, resp *protocol.Response, maxRedirectsCount int) error
 ```
 
 Sample Code:
 
 ```go
-package main
+func main() {
+	// hertz server
+	// http://localhost:8080/redirect ctx.Redirect(consts.StatusMovedPermanently, []byte("/redirect2"))
+	// http://localhost:8080/redirect2 ctx.Redirect(consts.StatusMovedPermanently, []byte("/redirect3"))
+	// http://localhost:8080/redirect3 ctx.String(consts.StatusOK, "pong")
 
-import (
-	"context"
-	"fmt"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -1031,329 +185,163 @@ func performRequest() {
 
 	err = c.DoRedirects(context.Background(), req, res, 1)
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
-    // res.Body() == []byte("") err.Error() == "too many redirects detected when doing the request"
+	// res.Body() == []byte("") err.Error() == "too many redirects detected when doing the request"
 
 	err = c.DoRedirects(context.Background(), req, res, 2)
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
-    // res.Body() == []byte("pong") err == <nil>
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/redirect", func(c context.Context, ctx *app.RequestContext) {
-		ctx.Redirect(consts.StatusMovedPermanently, []byte("/redirect2"))
-	})
-	h.GET("/redirect2", func(c context.Context, ctx *app.RequestContext) {
-		ctx.Redirect(consts.StatusMovedPermanently, []byte("/redirect3"))
-	})
-	h.GET("/redirect3", func(c context.Context, ctx *app.RequestContext) {
-		ctx.String(consts.StatusOK, "pong")
-	})
-
-	go performRequest()
-
-	h.Spin()
+	// res.Body() == []byte("pong") err == <nil>
 }
 ```
 
-## Get
+### Get
 
 The `Get` function returns the status code of the URL and the response body. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned.
 
-The function will automatically follow the redirect. If you need to handle redirects manually, use the `Do` function.
+The function will automatically follow the redirect. 
 
 Function Signature:
 
 ```go
-func Get(ctx context.Context, dst []byte, url string, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+func (c *Client) Get(ctx context.Context, dst []byte, url string, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
 ```
 
 Sample Code:
 
 ```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
 	c, err := client.NewClient()
 	if err != nil {
 		return
 	}
 	status, body, err := c.Get(context.Background(), nil, "http://localhost:8080/ping")
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-    // status == 200 res.Body() == []byte("pong") err == <nil>
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		ctx.String(consts.StatusOK, "pong")
-	})
-	go performRequest()
-
-	h.Spin()
+	// status == 200 res.Body() == []byte("pong") err == <nil>
 }
 ```
 
-## GetTimeOut
+### Post
 
-The `GetTimeout` function returns the status code of the URL and the response body. If the dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. This function will automatically follow the redirect. If the redirect needs to be handled manually, use the Do function.
+The `Post` function sends a POST request to the specified URL using the given POST parameters. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. 
 
-If the content of the URL cannot be fetched within the given timeout, an `errTimeout` error will be returned.
-
-Warning: GetTimeout will not terminate the request itself. The request will continue in the background and the response will be discarded. If the request takes too long and the connection pool is full, try using a custom Client instance with a ReadTimeout configuration or set a request-level read timeout like this:
-
-```go
- codeGetTimeout(ctx, dst, url, timeout, config.WithReadTimeout(1 * time.Second)) 
-```
-
-Function Signature:
-
-```go
-func GetTimeout(ctx context.Context, dst []byte, url string, timeout time.Duration, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-	c, err := client.NewClient()
-	if err != nil {
-		return
-	}
-	status, body, err := c.GetTimeout(context.Background(), nil, "http://localhost:8080/ping", 3*time.Second)
-	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-    // status == 200 res.Body() == []byte("pong") err == <nil>
-
-	status, body, err = c.GetTimeout(context.Background(), nil, "http://localhost:8080/ping", 1*time.Second)
-	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-    // status == 0 res.Body() == []byte("") err.Error() == "timeout"
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		time.Sleep(2 * time.Second)
-		ctx.String(consts.StatusOK, "pong")
-	})
-	go performRequest()
-
-	h.Spin()
-}
-
-```
-
-## GetDeadline
-
-The `GetDeadline` function returns the status code of the URL and the response body. If the dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. This function will automatically follow the redirect. If the redirect needs to be handled manually, use the Do function.
-
-If the content of the URL cannot be fetched before the given deadline, an `errTimeout` error will be returned.
-
-Warning: GetDeadline will not terminate the request itself. The request will continue in the background and the response will be discarded. If the request takes too long and the connection pool is full, try using a custom Client instance with a ReadTimeout configuration or set a request-level read timeout like the following:
-
-```go
-GetDeadline(ctx, dst, url, deadline, config.WithReadTimeout(1 * time.Second))
-```
-
-Function Signature:
-
-```go
-func GetDeadline(ctx context.Context, dst []byte, url string, deadline time.Time, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-	c, err := client.NewClient()
-	if err != nil {
-		return
-	}
-	status, body, err := c.GetDeadline(context.Background(), nil, "http://localhost:8080/ping", time.Now().Add(3*time.Second))
-	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-    // status == 200 res.Body() == []byte("pong") err == <nil>
-
-	status, body, err = c.GetDeadline(context.Background(), nil, "http://localhost:8080/ping", time.Now().Add(time.Second))
-	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-    // status == 0 res.Body() == []byte("") err.Error() == "timeout"
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		time.Sleep(2 * time.Second)
-		ctx.String(consts.StatusOK, "pong")
-	})
-	go performRequest()
-
-	h.Spin()
-}
-```
-
-## Post
-
-The `Post` function sends a POST request to the specified URL using the given POST parameters. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. The function will automatically follow the redirect. If you need to handle redirects manually, use the Do function.
+The function will automatically follow the redirect.
 
 If postArgs is nil, then an empty POST request body is sent.
 
 Function Signature:
 
 ```go
-func Post(ctx context.Context, dst []byte, url string, postArgs *protocol.Args, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+func (c *Client) Post(ctx context.Context, dst []byte, url string, postArgs *protocol.Args, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
 ```
 
 Sample Code:
 
 ```go
-package main
-
-import (
-	"context"
-	"fmt"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
+func main() {
+	// hertz server:http://localhost:8080/hello ctx.String(consts.StatusOK, "hello %s", ctx.PostForm("name"))
 	c, err := client.NewClient()
 	if err != nil {
 		return
 	}
-  
+
 	var postArgs protocol.Args
 	postArgs.Set("name", "cloudwego") // Set post args
 	status, body, err := c.Post(context.Background(), nil, "http://localhost:8080/hello", &postArgs)
 	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-    // status == 200 res.Body() == []byte("hello cloudwego") err == <nil>
-}
-
-func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.POST("/hello", func(c context.Context, ctx *app.RequestContext) {
-		ctx.String(consts.StatusOK, "hello %s", ctx.PostForm("name"))
-	})
-	go performRequest()
-
-	h.Spin()
+	// status == 200 res.Body() == []byte("hello cloudwego") err == <nil>
 }
 ```
 
-## SetProxy
+## Request Timeout
 
-`SetProxy` is used to set the client proxy.
+```go
+func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
+func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
+```
 
-Note that multiple proxies cannot be set for the same client. If you need to use another proxy, please create another client and set a proxy for it.
+### DoTimeout
+
+The `DoTimeout` function executes the given request and waits for a response within the given timeout period.
+
+This function does not follow redirects. Please use the [Get](#get) function, [DoRedirects](#doredirects) function, or [Post](#post) function to follow the redirection.
+
+If resp is nil, the response is ignored. If the response is not received within the given timeout period, an `errTimeout error` is returned.
+
+Function Signature: 
+
+```go
+func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
+```
 
 Sample Code:
 
 ```go
-func (c *Client) SetProxy(p protocol.Proxy)
-```
-
-Function Signature:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"log"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/network/standard"
-	"github.com/cloudwego/hertz/pkg/protocol"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func performRequest() {
-
-	client, err := client.NewClient(client.WithDialer(standard.NewDialer()))
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
+	c, err := client.NewClient()
 	if err != nil {
-		log.Print(err)
 		return
 	}
-	client.SetProxy(protocol.ProxyURI(protocol.ParseURI("http://localhost:8080")))
-	status, body, err := client.Get(context.Background(), nil, "http://localhost:8081/ping")
 
-	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-    // status == 200 res.Body() == []byte("pong") err == <nil>
-}
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8080/ping")
 
-func main() {
+	err = c.DoTimeout(context.Background(), req, res, time.Second*3)
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
 
-	h1 := server.New(server.WithHostPorts(":8080"))
-
-	h1.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		cli, err := client.NewClient()
-		if err != nil {
-			log.Printf("client.NewClient err: %v", err)
-		}
-
-		req, res := &protocol.Request{}, &protocol.Response{}
-		req.SetMethod(consts.MethodGet)
-		req.SetRequestURI("http://localhost:8081/ping")
-
-		cli.Do(context.Background(), req, res)
-		ctx.String(res.StatusCode(), res.BodyBuffer().String())
-
-	})
-	go h1.Spin()
-
-	h2 := server.New(server.WithHostPorts(":8081"))
-	h2.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		ctx.String(consts.StatusOK, "pong")
-	})
-	go h2.Spin()
-
-	performRequest()
-
+	err = c.DoTimeout(context.Background(), req, res, time.Second)
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("") err.Error() == "timeout"
 }
 ```
 
-## SetRetryIfFunc
+### DoDeadline
+
+`DoDeadline` executes the given request and waits for the response until the given deadline.
+
+This function does not follow redirects. Please use the [Get](#get) function, [DoRedirects](#doredirects) function, or [Post](#post) function to follow the redirection.
+
+If resp is nil, the response is ignored. If the response is not received by the given deadline, an `errTimeout error` is returned.
+
+Function Signature: 
+
+```go
+func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
+```
+
+Sample Code:
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8080/ping")
+
+	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(3*time.Second))
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
+
+	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(1*time.Second))
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("") err.Error() == "timeout"
+}
+```
+
+## Request Retry
+
+```go
+func (c *Client) SetRetryIfFunc(retryIf client.RetryIfFunc)
+```
+
+### SetRetryIfFunc
 
 The `SetRetryIfFunc` method is used to customize the conditions under which retry occurs. (For more information, please refer to [retry-condition-configuration](/docs/hertz/tutorials/basic-feature/retry/#retry-condition-configuration))
 
@@ -1366,73 +354,224 @@ func (c *Client) SetRetryIfFunc(retryIf client.RetryIfFunc)
 Sample Code:
 
 ```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/protocol"
-)
-
 func main() {
-
 	c, err := client.NewClient()
 	if err != nil {
 		return
 	}
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-
 	var customRetryIfFunc = func(req *protocol.Request, resp *protocol.Response, err error) bool {
 		return true
 	}
-
 	c.SetRetryIfFunc(customRetryIfFunc)
-
-	status2, body2, _ := c.Get(context.Background(), nil, "https://www.example.com")
+	status2, body2, _ := c.Get(context.Background(), nil, "http://www.example.com")
 	fmt.Printf("status=%v body=%v\n", status2, string(body2))
 }
 ```
 
-## SetClientFactory
+## Add Request Content
 
-The `SetClientFactory` method is used to set the client factory object, which is used to create the HTTP client object.
-
-Function Signature:
-
-```go
-func (c *Client) SetClientFactory(cf suite.ClientFactory)
-```
+Hertz's client can add various forms of request content in HTTP requests, such as `query` parameters, `www url encoded`, ` multipart/form data`, and `JSON`.
 
 Sample Code:
 
 ```go
-package main
-
-import (
-	"context"
-	"fmt"
-	
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/protocol/http1/factory"
-)
-
 func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	req := &protocol.Request{}
+	res := &protocol.Response{}
 
-	c, err := client.NewClient()
+	// Use SetQueryString to set query parameters
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind")
+	req.SetQueryString("query=query&q=q1&q=q2&vd=1")
+	err = client.Do(context.Background(), req, res)
 	if err != nil {
 		return
 	}
 
-	c.SetClientFactory(factory.NewClientFactory(nil))
+	// Send "www-url-encoded" request
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind?query=query&q=q1&q=q2&vd=1")
+	req.SetFormData(map[string]string{
+		"form": "test form",
+	})
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
 
-	status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
+	// Send "multipart/form-data" request
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind?query=query&q=q1&q=q2&vd=1")
+	req.SetMultipartFormData(map[string]string{
+		"form": "test form",
+	})
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+
+	// Send "Json" request
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.Header.SetContentTypeBytes([]byte("application/json"))
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind?query=query&q=q1&q=q2&vd=1")
+	data := struct {
+		Json string `json:"json"`
+	}{
+		"test json",
+	}
+	jsonByte, _ := json.Marshal(data)
+	req.SetBody(jsonByte)
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
 }
 ```
 
-## CloseIdleConnections
+## Upload File
+
+Hertz's client supports uploading files to the server.
+
+Sample Code:
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+	req.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/singleFile")
+	req.SetFile("file", "your file path")
+
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+	fmt.Println(err, string(res.Body()))
+}
+```
+
+## Streaming Read Response Content
+
+Hertz's client supports streaming read HTTP response content. For more information, please refer to [Client](/docs/hertz/tutorials/basic-feature/stream/#client).
+
+Sample Code:
+
+```go
+func main() {
+	c, _ := client.NewClient(client.WithResponseBodyStream(true))
+	req := &protocol.Request{}
+	resp := &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://127.0.0.1:8080/streamWrite")
+	err := c.Do(context.Background(), req, resp)
+	if err != nil {
+		return
+	}
+	bodyStream := resp.BodyStream()
+	p := make([]byte, resp.Header.ContentLength()/2)
+	_, err = bodyStream.Read(p)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	left, _ := ioutil.ReadAll(bodyStream)
+	fmt.Println(string(p), string(left))
+}
+```
+
+## Service Discovery
+
+The Hertz client supports finding target servers through service discovery.
+
+Hertz supports custom service discovery modules. For more information, please refer to [service-discovery-extension](/docs/hertz/tutorials/framework-exten/service_discovery/#service-discovery-extension).
+
+The relevant content of the service discovery center that Hertz has currently accessed can be found in [Service Registration and Service Discovery Extensions](/docs/hertz/tutorials/framework-exten/service_discovery/).
+
+## TLS
+
+The network library `netpoll` used by Hertz client by default does not support TLS. If you want to configure TLS to access https addresses, you should use the Standard library.
+
+For TLS related configuration information, please refer to [tls-config](https://pkg.go.dev/crypto/tls#Config).
+
+Sample Code:
+
+```go
+func main() {
+	clientCfg := &tls.Config{
+		InsecureSkipVerify: true,
+	}
+	c, err := client.NewClient(
+		client.WithTLSConfig(clientCfg),
+		client.WithDialer(standard.NewDialer()),
+	)
+	if err != nil {
+		return
+	}
+	
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("https://www.example.com")
+
+	err = c.Do(context.Background(), req, res)
+	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
+}
+```
+
+## Forward Proxy
+
+```go
+func (c *Client) SetProxy(p protocol.Proxy)
+```
+
+### SetProxy
+
+`SetProxy` is used to set the client proxy. (For more information, please refer to [retry-condition-configuration](/docs/hertz/tutorials/basic-feature/proxy/#forward-proxy))
+
+> Note: Multiple proxies cannot be set for the same client. If you need to use another proxy, please create another client and set a proxy for it.
+
+Sample Code:
+
+```go
+func (c *Client) SetProxy(p protocol.Proxy)
+```
+
+Function Signature:
+
+```go
+func main() {
+	// Proxy address
+	proxyURL := "http://<__user_name__>:<__password__>@<__proxy_addr__>:<__proxy_port__>"
+
+	parsedProxyURL := protocol.ParseURI(proxyURL)
+	client, err := client.NewClient(client.WithDialer(standard.NewDialer()))
+	if err != nil {
+		return
+	}
+	client.SetProxy(protocol.ProxyURI(parsedProxyURL))
+	upstreamURL := "http://google.com"
+	_, body, _ := client.Get(context.Background(), nil, upstreamURL)
+	fmt.Println(string(body))
+}
+```
+
+## Close Idle Connections
+
+```go
+func (c *Client) CloseIdleConnections()
+```
+
+### CloseIdleConnections
 
 The `CloseIdleConnections` method is used to close any `keep-alive` connections that are in an idle state. These connections may have been established by a previous request, but have been idle for some time now. This method does not break any connections that are currently in use.
 
@@ -1445,21 +584,12 @@ func (c *Client) CloseIdleConnections()
 Sample Code:
 
 ```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "github.com/cloudwego/hertz/pkg/app/client"
-)
-
 func main() {
-
     c, err := client.NewClient()
     if err != nil {
         return
     }
-    status, body, _ := c.Get(context.Background(), nil, "https://www.example.com")
+    status, body, _ := c.Get(context.Background(), nil, "http://www.example.com")
     fmt.Printf("status=%v body=%v\n", status, string(body))
 
     // close idle connections
@@ -1467,7 +597,13 @@ func main() {
 }
 ```
 
-## GetDialerName
+## Get Dialer Name
+
+```go
+func (c *Client) GetDialerName() (dName string, err error)
+```
+
+### GetDialerName
 
 The `GetDialerName` method is used to get the name of the dialer currently used by the client. If the dialer name cannot be retrieved, `unknown` is returned.
 
@@ -1480,23 +616,11 @@ func (c *Client) GetDialerName() (dName string, err error)
 Sample Code:
 
 ```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "github.com/cloudwego/hertz/pkg/app/client"
-)
-
-func performRequest() {
+func main() {
 	c, err := client.NewClient()
 	if err != nil {
 		return
 	}
-	status, body, _ := c.Get(context.Background(), nil, "http://localhost:8080/ping")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
-	// status == 200 res.Body() == []byte("pong")
-
 	// get dialer name
 	dName, err := c.GetDialerName()
 	if err != nil {
@@ -1506,109 +630,88 @@ func performRequest() {
 	fmt.Printf("dialer name=%v\n", dName)
 	// dName == "standard"
 }
-
-```
-
-## GetOptions
-
-The `GetOptions` function returns a pointer to the `ClientOptions` structure of the `Client` instance.
-
-Function Signature:
-
-```go
-func (c *Client) GetOptions() *config.ClientOptions
-```
-
-Sample Code:
-
-```go
-package main
-
-import (
-	"fmt"
-
-	"github.com/cloudwego/hertz/pkg/app/client"
-)
-
-func main() {
-	c, err := client.NewClient()
-	if err != nil {
-		return
-	}
-
-	options := c.GetOptions()
-	fmt.Println(options.DialTimeout)
-    // options.DialTimeout == 1s
-}
-
 ```
 
 ## Middleware
 
-Use the `Use` method to add a middleware to the current client.
+```go
+func (c *Client) Use(mws ...Middleware)
+func (c *Client) UseAsLast(mw Middleware) error
+func (c *Client) TakeOutLastMiddleware() Middleware
+```
+
+### Use
+
+Use the `Use` method to add a middleware to the current client. (For more information, please refer to [client-side-middleware](/docs/hertz/tutorials/basic-feature/middleware/#client-side-middleware))
 
 Function Signature:
 
 ```go
-type Middleware func(Endpoint) Endpoint
+func (c *Client) Use(mws ...Middleware)
+```
+
+### UseAsLast
+
+The `UseAsLast` function adds the middleware to the end of the client middleware chain.
+
+If the client middleware chain has already set the last middleware before, the `UseAsLast` function will return an `errorLastMiddlewareExist` error. Therefore, to ensure that the last middleware in the client middleware chain is empty, you can first use the [TakeOutLastMiddleware](#takeoutlastmiddleware) function to clear the last middleware in the client middleware chain.
+
+>Note: The `UseAsLast` function sets the middleware in `c.lastMiddleware`, while the middleware chain set using the [Use](#use) function is stored in `c.mws`. The two functions are relatively independent. `c.lastMiddleware` is executed only at the end of the client middleware chain. Therefore, the ` UseAsLast` function can be called before or after the [Use](#use) function.
+
+Function Signature:
+
+```go
+func (c *Client) UseAsLast(mw Middleware) error
 ```
 
 Sample Code:
 
 ```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/protocol"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func MyMiddleware(next client.Endpoint) client.Endpoint {
-	return func(ctx context.Context, req *protocol.Request, resp *protocol.Response) (err error) {
-		// pre-handle
-		fmt.Println("pre-clientHandle")
-		if err = next(ctx, req, resp); err != nil {
-			fmt.Println(err)
-			return err
-		}
-		// post-handle
-		fmt.Println("post-clientHandle")
-		return nil
-	}
-}
-
-func performRequest() {
-
-	time.Sleep(1 * time.Second)
+func main() {
 	client, err := client.NewClient()
 	if err != nil {
 		return
 	}
-
 	client.Use(MyMiddleware)
-	req, res := &protocol.Request{}, &protocol.Response{}
-	req.SetRequestURI("http://127.0.0.1:8080/ping")
-
+	client.UseAsLast(LastMiddleware)
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+	req.SetRequestURI("http://www.example.com")
 	err = client.Do(context.Background(), req, res)
-	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
-	// res.Body() == []byte("pong") err == <nil>
+	if err != nil {
+		return
+	}
 }
+```
 
+### TakeOutLastMiddleware
+
+The `TakeOutLastMiddleware` function returns the last middleware set in the [UseAsLast](#useaslast) function and clears it. If it is not set, it returns `nil`.
+
+Function Signature:
+
+```go
+func (c *Client) TakeOutLastMiddleware() Middleware
+```
+
+Sample Code:
+
+```go
 func main() {
-	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		ctx.String(consts.StatusOK, "pong")
-	})
-
-	go performRequest()
-
-	h.Spin()
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	client.Use(MyMiddleware)
+	client.UseAsLast(LastMiddleware)
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+	req.SetRequestURI("http://www.example.com")
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+	middleware := client.TakeOutLastMiddleware() // middleware == LastMiddleware
+	middleware = client.TakeOutLastMiddleware() // middleware == nil
 }
 ```

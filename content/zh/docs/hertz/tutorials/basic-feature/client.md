@@ -110,36 +110,6 @@ func main() {
 }
 ```
 
-## 获取客户端配置信息
-
-```go
-func (c *Client) GetOptions() *config.ClientOptions
-```
-
-### GetOptions
-
-`GetOptions` 函数返回 `Client` 实例的 `ClientOptions` 结构体指针。
-
-函数签名：
-
-```go
-func (c *Client) GetOptions() *config.ClientOptions
-```
-
-示例代码：
-
-```go
-func main() {
-	c, err := client.NewClient()
-	if err != nil {
-		return
-	}
-	options := c.GetOptions()
-	fmt.Println(options.DialTimeout)
-	// options.DialTimeout == 1s
-}
-```
-
 ## 发送请求
 
 ```go
@@ -285,8 +255,6 @@ func main() {
 ```go
 func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
 func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
-func (c *Client) GetTimeout(ctx context.Context, dst []byte, url string, timeout time.Duration, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
-func (c *Client) GetDeadline(ctx context.Context, dst []byte, url string, deadline time.Time, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
 ```
 
 ### DoTimeout
@@ -362,84 +330,6 @@ func main() {
 	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(1*time.Second))
 	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
 	// res.Body() == []byte("") err.Error() == "timeout"
-}
-```
-
-### GetTimeOut
-
-GetTimeout 函数返回 URL 的状态码和响应体。如果 dst 太小，则将被响应体替换并返回，否则将分配一个新的切片。
-
-该函数会自动跟随重定向。
-
-如果在给定的超时时间内无法获取 URL 的内容，则会返回 `errTimeout` 错误。
-
-> 注意：GetTimeout 不会终止请求本身。该请求将在后台继续进行，并且响应将被丢弃。如果请求时间过长且连接池已满，请尝试使用具有 ReadTimeout 配置的自定义 Client 实例或像下面这样设置请求级别的读取超时时间：
-
-```go
- codeGetTimeout(ctx, dst, url, timeout, config.WithReadTimeout(1 * time.Second)) 
-```
-
-函数签名：
-
-```go
-func (c *Client) GetTimeout(ctx context.Context, dst []byte, url string, timeout time.Duration, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
-```
-
-示例代码：
-
-```go
-func main() {
-	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
-	c, err := client.NewClient()
-	if err != nil {
-		return
-	}
-	status, body, err := c.GetTimeout(context.Background(), nil, "http://localhost:8080/ping", 3*time.Second)
-	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-	// status == 200 res.Body() == []byte("pong") err == <nil>
-
-	status, body, err = c.GetTimeout(context.Background(), nil, "http://localhost:8080/ping", 1*time.Second)
-	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-	// status == 0 res.Body() == []byte("") err.Error() == "timeout"
-}
-```
-
-### GetDeadline
-
-GetDeadline 函数返回 URL 的状态码和响应体。如果 dst 太小，则将被响应体替换并返回，否则将分配一个新的切片。
-
-该函数会自动跟随重定向。
-
-如果在给定的截止时间之前无法获取 URL 的内容，则会返回 `errTimeout` 错误。
-
-> 注意：GetDeadline 不会终止请求本身。该请求将在后台继续进行，并且响应将被丢弃。如果请求时间过长且连接池已满，请尝试使用具有ReadTimeout 配置的自定义 Client 实例或像下面这样设置请求级别的读取超时时间：
-
-```go
-GetDeadline(ctx, dst, url, deadline, config.WithReadTimeout(1 * time.Second))
-```
-
-函数签名：
-
-```go
-func (c *Client) GetDeadline(ctx context.Context, dst []byte, url string, deadline time.Time, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
-```
-
-示例代码：
-
-```go
-func main() {
-	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
-	c, err := client.NewClient()
-	if err != nil {
-		return
-	}
-	status, body, err := c.GetDeadline(context.Background(), nil, "http://localhost:8080/ping", time.Now().Add(3*time.Second))
-	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-	// status == 200 res.Body() == []byte("pong") err == <nil>
-
-	status, body, err = c.GetDeadline(context.Background(), nil, "http://localhost:8080/ping", time.Now().Add(time.Second))
-	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
-	// status == 0 res.Body() == []byte("") err.Error() == "timeout"
 }
 ```
 
@@ -606,10 +496,6 @@ Hertz 支持自定义服务发现模块，更多内容可参考 [服务发现拓
 
 Hertz 目前已接入的服务发现中心相关内容可参考 [服务注册与发现](/zh/docs/hertz/tutorials/service-governance/service_discovery/)。
 
-## 负载均衡
-
-Hertz 客户端默认提供了 `WeightedRandom` 负载均衡实现，同时也支持自定义负载均衡实现，更多内容可参考 [负载均衡拓展](/zh/docs/hertz/tutorials/framework-exten/service_discovery/#负载均衡扩展)。
-
 ## TLS
 
 Hertz 客户端默认使用的网络库 netpoll 不支持 TLS，如果要配置 TLS 访问 https 地址，应该使用标准库。
@@ -674,38 +560,6 @@ func main() {
 	upstreamURL := "http://google.com"
 	_, body, _ := client.Get(context.Background(), nil, upstreamURL)
 	fmt.Println(string(body))
-}
-```
-
-## 设置客户端工厂对象
-
-```go
-func (c *Client) SetClientFactory(cf suite.ClientFactory)
-```
-
-### SetClientFactory
-
-`SetClientFactory` 方法用于设置客户端工厂对象，该工厂对象用于创建 HTTP 客户端对象。
-
-函数签名：
-
-```go
-func (c *Client) SetClientFactory(cf suite.ClientFactory)
-```
-
-示例代码：
-
-```go
-func main() {
-	c, err := client.NewClient()
-	if err != nil {
-		return
-	}
-
-	c.SetClientFactory(factory.NewClientFactory(nil))
-
-	status, body, _ := c.Get(context.Background(), nil, "http://www.example.com")
-	fmt.Printf("status=%v body=%v\n", status, string(body))
 }
 ```
 
