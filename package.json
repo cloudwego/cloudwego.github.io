@@ -29,6 +29,6 @@
     "chalk": "^5.3.0",
     "jsonc-parser": "^3.2.0",
     "markdownlint": "^0.29.0",
-    "simple-git-hooks": "^2.8.1"
+    "simple-git-hooks": "^2.9.0"
   }
 }
