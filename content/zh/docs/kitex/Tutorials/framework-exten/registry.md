@@ -66,7 +66,7 @@ type Info struct {
   ```
 - 自定义 RegistryInfo
 
-  Kitex 默认赋值 ServiceName、Addr、PayloadCodec和Tags，若需要其他注册信息需要使用者自行注入。option:  `WithRegistryInfo`
+  Kitex 默认赋值 ServiceName、Addr、PayloadCodec 和 Tags，若需要其他注册信息需要使用者自行注入。option:  `WithRegistryInfo`
 
   ```go
   svr := xxxservice.NewServer(handler, server.WithRegistry(yourRegistry), server.WithRegistryInfo(yourRegistryInfo))
