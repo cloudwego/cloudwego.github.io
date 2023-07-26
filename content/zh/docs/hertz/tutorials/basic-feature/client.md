@@ -286,8 +286,32 @@ func main() {
 ## 请求超时
 
 ```go
+func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error
 func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
 func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
+```
+
+### Do
+
+Do 函数虽然不能以传参的方式设置请求超时返回，但可以通过 [Client Request 配置](#client-request-配置) 中的 `WithRequestTimeout` 配置项来设置请求超时返回。
+
+示例代码：
+
+```go
+func main() {
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetOptions(config.WithReadTimeout(5 * time.Second))
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8888/ping")
+
+	err = c.Do(context.Background(), req, res)
+	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
+}
 ```
 
 ### DoTimeout
