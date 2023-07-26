@@ -1,6 +1,6 @@
 ---
 title: "客户端"
-date: 2023-04-12
+date: 2023-07-25
 weight: 3
 description: >
 ---
@@ -41,7 +41,7 @@ func main() {
 }
 ```
 
-## 配置
+## Client 配置
 
 | 配置项                        | 默认值         | 描述                                                    |
 | ----------------------------- | -------------- | ------------------------------------------------------- |
@@ -52,7 +52,7 @@ func main() {
 | MaxConnWaitTimeout            | 0s             | 等待空闲连接的最大时间                                  |
 | KeepAlive                     | true           | 是否使用 keep-alive 连接，默认使用                                |
 | ReadTimeout                   | 0s             | 完整读取响应（包括 body）的最大持续时间                  |
-| TLSConfig                     | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls-config](https://pkg.go.dev/crypto/tls#Config)                       |
+| TLSConfig                     | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/)                      |
 | Dialer                        | network.Dialer | 设置指定的拨号器                                        |
 | ResponseBodyStream            | false          | 是否在流中读取 body，默认不在流中读取                                     |
 | DisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化，默认不禁用，如 cONTENT-lenGTH -> Content-Length                                    |
@@ -107,6 +107,39 @@ func main() {
 
 	status, body, _ := c.Get(context.Background(), nil, "http://www.example.com")
 	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+```
+
+## Client Request 配置
+
+| 配置项                        | 默认值         | 描述                                                    |
+| ----------------------------- | -------------- | ------------------------------------------------------- |
+| WithDialTimeout                   | 0s             | 拨号超时时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                                            |
+| WithReadTimeout               | 0s              | 完整读取响应（包括 body）的最大持续时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                            |
+| WithWriteTimeout           | 0s            | HTTP 客户端的写入超时时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**  |
+| WithRequestTimeout               | 0s             | 完整的 HTTP 请求的超时时间 |
+| WithTag            | make(map[string]string)             | 以 key-value 形式设置 tags 字段，该字段用于客户端服务发现的 `TargetInfo` 结构体                                 |
+| WithSD                     | false          | 设置 isSD 字段，该字段用于客户端服务发现中间件                             |
+
+示例代码：
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetOptions(config.WithDialTimeout(1*time.Second),
+		config.WithReadTimeout(3*time.Second),
+		config.WithWriteTimeout(3*time.Second),
+		config.WithReadTimeout(5*time.Second),
+		config.WithSD(true),
+		config.WithTag("tag", "tag"))
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://www.example.com")
+	err = cli.Do(context.Background(), req, res)
+	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
 }
 ```
 
@@ -500,7 +533,7 @@ Hertz 目前已接入的服务发现中心相关内容可参考 [服务注册与
 
 Hertz 客户端默认使用的网络库 netpoll 不支持 TLS，如果要配置 TLS 访问 https 地址，应该使用标准库。
 
-TLS 相关的配置信息可参考 [tls-config](https://pkg.go.dev/crypto/tls#Config)。
+TLS 相关的配置信息可参考 [tls](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/)。
 
 示例代码：
 
@@ -713,4 +746,3 @@ func main() {
 	middleware = client.TakeOutLastMiddleware() // middleware == nil
 }
 ```
-

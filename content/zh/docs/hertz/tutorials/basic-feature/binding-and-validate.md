@@ -1,7 +1,7 @@
 ---
 title: "绑定与校验"
 date: 2022-05-23
-weight: 7
+weight: 8
 description: >
 
 ---

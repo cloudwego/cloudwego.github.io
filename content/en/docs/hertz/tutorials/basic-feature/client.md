@@ -1,6 +1,6 @@
 ---
 title: "Client"
-date: 2023-04-12
+date: 2023-07-25
 weight: 3
 description: >
 ---
@@ -43,7 +43,7 @@ func main() {
 }
 ```
 
-## Config
+## Client Config
 
 | **Option**                    | **Default**    | **Description**                                              |
 | ----------------------------- | -------------- | ------------------------------------------------------------ |
@@ -54,7 +54,7 @@ func main() {
 | MaxConnWaitTimeout            | 0s             | maximum duration for waiting for a free connection.       |
 | KeepAlive                     | true           | determines whether use keep-alive connection, default use.              |
 | ReadTimeout                   | 0s             | maximum duration for full response reading (including body). |
-| TLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls -config](https://pkg.go.dev/crypto/tls#Config).                      |
+| TLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/protocol/tls/).                      |
 | Dialer                        | network.Dialer | specific dialer.                                           |
 | ResponseBodyStream            | false          | determine whether read body in stream or not, default not read in stream.              |
 | DisableHeaderNamesNormalizing | false          | whether disable header names normalizing, default not disabled, for example, cONTENT-lenGTH -> Content-Length.                |
@@ -109,6 +109,39 @@ func main() {
 
 	status, body, _ := c.Get(context.Background(), nil, "http://www.example.com")
 	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+```
+
+## Client Request Config
+
+| **Option**                        | **Default**         | **Description**                                                    |
+| ----------------------------- | -------------- | ------------------------------------------------------- |
+| WithDialTimeout                   | 0s             | Dial timeout time, **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.                                           |
+| WithReadTimeout               | 0s              | The maximum duration of a complete read response (including body), **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.                            |
+| WithWriteTimeout           | 0s            | HTTP client write timeout, **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.  |
+| WithRequestTimeout               | 0s             | The timeout for a complete HTTP request. |
+| WithTag            | make(map[string]string)             | Set the tags field in the form of key-value, which is used for the `TargetInfo` structure by the client service discovery.                                 |
+| WithSD                     | false          | Set the isSD field, which is used for client service discovery middleware.                             |
+
+Sample Code:
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetOptions(config.WithDialTimeout(1*time.Second),
+		config.WithReadTimeout(3*time.Second),
+		config.WithWriteTimeout(3*time.Second),
+		config.WithReadTimeout(5*time.Second),
+		config.WithSD(true),
+		config.WithTag("tag", "tag"))
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://www.example.com")
+	err = cli.Do(context.Background(), req, res)
+	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
 }
 ```
 
@@ -502,7 +535,7 @@ The relevant content of the service discovery center that Hertz has currently ac
 
 The network library `netpoll` used by Hertz client by default does not support TLS. If you want to configure TLS to access https addresses, you should use the Standard library.
 
-For TLS related configuration information, please refer to [tls-config](https://pkg.go.dev/crypto/tls#Config).
+For TLS related configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/protocol/tls/).
 
 Sample Code:
 
