@@ -288,8 +288,41 @@ func main() {
 ## Request Timeout
 
 ```go
+func WithReadTimeout(t time.Duration) RequestOption
 func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
 func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
+```
+
+### WithReadTimeout
+
+Although the `Do`, `DoRedirects`, `Get`, `Post` function cannot set the request timeout by passing parameters, it can be set through the `WithRequestTimeout` configuration item in the [Client Request Configuration](#client-request-config).
+
+Sample Code:
+
+```go
+func main() {
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	// Do
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetOptions(config.WithRequestTimeout(5 * time.Second))
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8888/get")
+	err = c.Do(context.Background(), req, res)
+
+	// DoRedirects
+	err = c.DoRedirects(context.Background(), req, res, 5)
+
+	// Get
+	_, _, err = c.Get(context.Background(), nil, "http://localhost:8888/get", config.WithRequestTimeout(5*time.Second))
+
+	// Post
+	postArgs := &protocol.Args{}
+	_, _, err = c.Post(context.Background(), nil, "http://localhost:8888/post", postArgs, config.WithRequestTimeout(5*time.Second))
+}
 ```
 
 ### DoTimeout
