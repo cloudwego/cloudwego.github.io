@@ -305,7 +305,7 @@ func main() {
 	}
 
 	req, res := &protocol.Request{}, &protocol.Response{}
-	req.SetOptions(config.WithReadTimeout(5 * time.Second))
+	req.SetOptions(config.WithRequestTimeout(5 * time.Second))
 	req.SetMethod(consts.MethodGet)
 	req.SetRequestURI("http://localhost:8888/ping")
 
