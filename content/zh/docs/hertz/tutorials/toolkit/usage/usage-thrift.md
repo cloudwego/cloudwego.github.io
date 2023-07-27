@@ -30,8 +30,13 @@ service HelloService {
 
 2. 创建新项目
 
+以下两个小节根据实际情况二选一执行即可。
+
+2.1. 非 go module 管理依赖
+
+如果当前项目路径处于`$GOPATH`之下则执行以下代码块，否则直接参考2.2小节。
+
 ```bash
-// GOPATH 下执行
 hz new -idl idl/hello.thrift
 
 go mod init
@@ -42,15 +47,17 @@ go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 go mod tidy
 ```
 
+2.2. Go module 管理依赖
+
+不在`$GOPATH`下的项目通过工具提供的`-module`命令指定一个自定义 module 名称即可：
+
 ```bash
-// 非 GOPATH 下执行
-//选择 1，你没有一个 go.mod ,在 "-module" 后添加 go mod 名
 hz new -module example.com/m -idl idl/hello.thrift
 
 // 整理 & 拉取依赖
 go mod tidy
 
-//选择 2，你已经有一个 go.mod
+// 查看 go.mod 中 github.com/apache/thrift 版本是否为 v0.13.0，如果不是则继续执行 2.2 小节剩余代码
 go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 
 // 整理 & 拉取依赖

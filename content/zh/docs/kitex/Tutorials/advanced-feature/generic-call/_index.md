@@ -244,7 +244,7 @@ func (a * notBodyStruct) Handle() interface{} {
 
 type notBodyStruct struct{}
 
-var newNotBodyStruct descriptor.NewHttpMapping = func(value string) descriptor.HttpMapping {
+var newNotBodyStruct descriptor.NewHTTPMapping = func(value string) descriptor.HTTPMapping {
         return &notBodyStruct{}
 }
 
@@ -768,7 +768,7 @@ includes := map[string]string{
    `,
 }
 
-p, err := NewThriftContentProvider(path, includes)
+p, err := NewThriftContentProvider(content, includes)
 ```
 
 
@@ -810,5 +810,5 @@ includes := map[string]string{
    `,
    "a/z.thrift": "namespace go kitex.test.server",
 }
-p, err := NewThriftContentWithAbsIncludePathProvider(path, includes)
+p, err := NewThriftContentWithAbsIncludePathProvider(content, includes)
 ```
