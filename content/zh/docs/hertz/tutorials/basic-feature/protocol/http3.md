@@ -18,6 +18,33 @@ go get github.com/hertz-contrib/http3
 
 >注意：go 版本需大于等于 1.19。
 
+## 网络层与协议层注册
+
+### 网络层注册
+
+```go
+server.New(server.WithTransport(quic.NewTransporter))
+```
+
+### 协议层注册
+
+```go
+server.New(server.WithTransport(quic.NewTransporter))
+h.AddProtocol(suite.HTTP3, factory.NewServerFactory(&http3.Option{}))
+```
+
+## 配置说明
+
+### 服务端
+
+| 配置               |  说明                                         |
+| :----------------- | -------------------------------------------- |
+| WithTransport      | 设置 HTTP3 实现的网络库 `quic.NewTransporter` |
+| WithAltTransport | 设置备用网络库 `netpoll` 或 `go net`，适用于同时在 TCP 和 QUIC 监听的场景  |   
+| WithALPN | 设置是否启用 ALPN |   
+| WithTLS | 设置 TLS 配置 |
+| WithHostPorts | 设置开启服务的域名和端口号 |   
+
 ## 示例代码
 
 ### 服务端
@@ -209,3 +236,5 @@ func main() {
 	wg.Wait()
 }
 ```
+ 
+
