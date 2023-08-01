@@ -164,7 +164,7 @@ func main() {
 	h.POST("/", func(c context.Context, ctx *app.RequestContext) {
 		var j map[string]string
 		_ = json.Unmarshal(ctx.Request.Body(), &j)
-		fmt.Printf("server çreceived request: %+v\n", j)
+		fmt.Printf("server received request: %+v\n", j)
 		r := map[string]string{
 			"msg": "hello world",
 		}
