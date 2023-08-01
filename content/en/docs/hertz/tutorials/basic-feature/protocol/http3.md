@@ -6,50 +6,50 @@ description: >
 
 ---
 
-QUIC 协议是一种传输层网络协议，提供与 TLS/SSL 相当的安全性，同时具有更低的连接和传输延迟。QUIC 目前主要应用于 HTTP 协议，HTTP-over-QUIC 协议即为 HTTP/3，是 HTTP 协议的第三个正式版本。
+`QUIC` protocol is a transport layer network protocol that provides security equivalent to TLS/SSL, while also having lower connection and transmission latency. `QUIC` is currently mainly used in the `HTTP` protocol, which is known as `HTTP/3` and is the third official version of the `HTTP` protocol.
 
-HTTP3 基于 [quic-go](https://github.com/quic-go/quic-go) 实现，[实现链接](https://github.com/hertz-contrib/http3)。
+`HTTP3` implementation based [quic-go](https://github.com/quic-go/quic-go), [Implementation Link](https://github.com/hertz-contrib/http3).
 
-## 安装
+## Install
 
 ```go
 go get github.com/hertz-contrib/http3
 ```
 
->注意：go 版本需大于等于 1.19。
+>Note: The go version must be greater than or equal to 1.19.
 
-## 网络层与协议层注册
+## Network Layer and Protocol Layer Registration
 
-### 网络层注册
+### Network Layer Registration
 
 ```go
 server.New(server.WithTransport(quic.NewTransporter))
 ```
 
-### 协议层注册
+### Protocol Layer Registration
 
 ```go
 server.New(server.WithTransport(quic.NewTransporter))
 h.AddProtocol(suite.HTTP3, factory.NewServerFactory(&http3.Option{}))
 ```
 
-## 配置说明
+## Config Description
 
-### 服务端
+### Server
 
-| 配置               |  说明                                         |
+| **Option**               |  **Description**                                         |
 | :----------------- | -------------------------------------------- |
-| WithTransport      | 设置 HTTP3 实现的网络库 `quic.NewTransporter` |
-| WithAltTransport | 设置备用网络库 `netpoll` 或 `go net`，适用于同时在 TCP 和 QUIC 监听的场景  |   
-| WithALPN | 设置是否启用 ALPN |   
-| WithTLS | 设置 TLS 配置 |
-| WithHostPorts | 设置开启服务的域名和端口号 |   
+| WithTransport      | Set the network layer implementation |
+| WithAltTransport |  Set the alternative network layer implementation. The AltTransporter will be used for parallel listening - both in `TCP` and `QUIC` |   
+| WithALPN | Set whether to enable `ALPN` |   
+| WithTLS | Set `TLS` Config |
+| WithHostPorts | Set the host and port for starting the service |   
 
-## 示例代码
+## Sample Code
 
-### 服务端
+### Server
 
->注意：QUIC 协议依赖于 TLS 协议，因此需要提供 TLS配置。
+>Note: The `QUIC` protocol relies on the `TLS` protocol, so `TLS` configuration needs to be provided.
 
 ```go
 package main
@@ -118,9 +118,9 @@ func run() {
 }
 ```
 
-### 客户端
+### Client
 
-Hertz-HTTP3 目前没有提供客户端的实现，但 [服务端](#服务端) 示例代码的 TLS 配置直接拷贝于 [quic-go](https://github.com/quic-go/quic-go)，因此可以直接使用 [quic-go](https://github.com/quic-go/quic-go) 中的 [客户端示例代码](https://github.com/quic-go/quic-go/blob/master/example/client/main.go) 。
+Hertz-HTTP3 currently does not provide a client implementation, but the `TLS` configuration of the [server](#server) sample code is directly copied to [quic-go](https://github.com/quic-go/quic-go). Therefore, you can directly use the [Client Example Code](https://github.com/quic-go/quic-go/blob/master/example/client/main.go) in [quic-go](https://github.com/quic-go/quic-go).
 
 ```go
 package main
