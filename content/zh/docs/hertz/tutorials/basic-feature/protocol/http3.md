@@ -10,6 +10,8 @@ QUIC 协议是一种传输层网络协议，提供与 TLS/SSL 相当的安全性
 
 Hertz-HTTP3 基于 [quic-go](https://github.com/quic-go/quic-go) 实现，[实现链接](https://github.com/hertz-contrib/http3)。
 
+关于 Hertz 为支持 Hertz-HTTP3 在网络传输层和协议层提供的接口设计方案可参考 [Hertz 支持 QUIC & HTTP/3](/zh/blog/2023/08/02/hertz-支持-quic-http/3/)。
+
 ## 安装
 
 ```go

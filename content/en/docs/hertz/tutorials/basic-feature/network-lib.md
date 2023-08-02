@@ -12,6 +12,8 @@ Hertz integrated Netpoll and Golang network lib by default. Users can choose the
 
 While creating a server, Hertz uses netpoll by default, but this behavior can be modified by configuration:
 
+>Note: Netpoll currently does not support Windows. Windows will automatically switch the network library to go net through conditional compilation.
+
 ```go
 server.New(server.WithTransport(standard.NewTransporter))
 server.New(server.WithTransport(netpoll.NewTransporter))
