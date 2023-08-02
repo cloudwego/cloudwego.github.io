@@ -35,7 +35,7 @@ A gRPC Proxy Server can be implemented through the gRPCUnknownServiceHandler pro
 
 The following two proxy implementation ideas in Kitex Example are explained, so that users can refer to them and implement them according to their own needs.
 
-# Redirecting gRPC Frame
+## Redirecting gRPC Frame
 
 When the gRPC Proxy we want to implement does not care about the specific content of RPC, it does not need to encode and decode, and directly forwards the obtained gRPC Frame message to the target end, without introducing other codes such as stub modules. An example is as follows:
 
@@ -107,9 +107,7 @@ func redirectFrame(from, to nphttp2.GRPCConn) chan error {
 
 ReadFrame is used to continuously read gRPC Frame and write to the forwarding destination. When the last read ReadFrame receives a Data Frame with an EndStream identifier, ReadFrame will receive io.EOF, which means the connection is in a half-closed state. At this time, the values of hdr and data are both nil, so using WriteFrame is also far away. The end sends an empty packet with EndStream, indicating that the sending content is over, otherwise the proxy server may be blocked.
 
-
-
-# Decoding and Redrecting
+## Decoding and Redrecting
 
 In some proxy server scenarios, we need to decode and obtain the structure object, perform some custom processing (such as reading the request for judgment, or modify some fields of the request), and then resend the structure to the remote end. In this scenario, it may be necessary to introduce the corresponding client stub module code in the proxy server code. An example is as follows:
 

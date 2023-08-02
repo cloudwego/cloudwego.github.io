@@ -101,7 +101,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### Status
 
-Set Status Code, which is an alias for [SetStatusCode](#setStatuscode).
+Set Status Code, which is an alias for [SetStatusCode](#setstatuscode).
 
 Function Signature:
 
@@ -272,7 +272,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 ```
 
-### ResponseHeader 
+### ResponseHeader
 
 Use RequestContext.Response.Header to obtain the ResponseHeader object, which is basically consistent with the [RequestHeader](/docs/hertz/tutorials/basic-feature/context/request/#requestheader-object) object and the provided functions.
 
@@ -498,8 +498,6 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
     })
 })
 ```
-
-
 
 ## Other Functions
 

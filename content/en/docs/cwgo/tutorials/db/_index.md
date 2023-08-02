@@ -3,12 +3,11 @@ title: "DB"
 linkTitle: "DB"
 weight: 4
 description: >
-
 ---
 
 cwgo integrates gorm/gen to help users generate Model code and basic CURD code.
 
-# Basic commands
+## Basic commands
 
 Use `cwgo model -h` to view usage details
 
@@ -42,7 +41,7 @@ OPTIONS:
 
 ## Specification
 
-```
+```console
     --dsn value specify database DSN
     --db_type value specifies the database type (mysql or sqlserver or sqlite or postgres) (default mysql)
     --out_dir value specifies the output directory path, the default is biz/dao/query
