@@ -10,7 +10,7 @@ QUIC protocol is a transport layer network protocol that provides security equiv
 
 Hertz-HTTP3 implementation based [quic-go](https://github.com/quic-go/quic-go), [Implementation Link](https://github.com/hertz-contrib/http3).
 
-For the interface design scheme provided by Hertz to support Hertz HTTP3 in the network transport layer and protocol layer, please refer to [hertz-support-quic-http/3](/zh/blog/2023/08/02/hertz-支持-quic-http/3/).
+For the interface design scheme provided by Hertz to support Hertz HTTP3 in the network transport layer and protocol layer, please refer to [Hertz Support QUIC & HTTP/3](/zh/blog/2023/08/02/hertz-支持-quic-http/3/).
 
 ## Install
 
