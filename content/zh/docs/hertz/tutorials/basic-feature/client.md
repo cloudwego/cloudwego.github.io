@@ -257,7 +257,7 @@ Post 函数使用给定的 POST 参数向指定的 URL 发送 POST 请求。如�
 
 该函数会自动跟随重定向。
 
-如果 postArgs 为 nil ，则发送空的 POST 请求体。
+如果 postArgs 为 nil，则发送空的 POST 请求体。
 
 函数签名：
 
@@ -331,7 +331,7 @@ DoTimeout 函数执行给定的请求并在给定的超时时间内等待响应�
 
 如果 resp 为 nil，则会忽略响应。如果在给定的超时时间内未能收到响应，则会返回 `errTimeout` 错误。
 
-函数签名： 
+函数签名：
 
 ```go
 func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
@@ -369,7 +369,7 @@ DoDeadline 执行给定的请求并等待响应，直至给定的最后期限。
 
 如果 resp 为 nil，则会忽略响应。如果在给定的截止日期之前未能收到响应，则会返回 `errTimeout` 错误。
 
-函数签名： 
+函数签名：
 
 ```go
 func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
@@ -720,7 +720,7 @@ func (c *Client) Use(mws ...Middleware)
 
 如果客户端中间件链在之前已经设置了最后一个中间件，`UseAsLast` 函数将会返回 `errorLastMiddlewareExist` 错误。因此，为确保客户端中间件链的最后一个中间件为空，可以先使用 [TakeOutLastMiddleware](#takeoutlastmiddleware) 函数清空客户端中间件链的最后一个中间件。
 
->注意：`UseAsLast` 函数将中间件设置在了 `c.lastMiddleware` 中，而使用[Use](#use) 函数设置的中间件链存放在`c.mws`中，两者相对独立，只是在执行客户端中间件链的最后才执行 `c.lastMiddleware`，因此 `UseAsLast` 函数在 [Use](#use) 函数之前或之后调用皆可。
+>注意：`UseAsLast` 函数将中间件设置在了 `c.lastMiddleware` 中，而使用 [Use](#use) 函数设置的中间件链存放在`c.mws`中，两者相对独立，只是在执行客户端中间件链的最后才执行 `c.lastMiddleware`，因此 `UseAsLast` 函数在 [Use](#use) 函数之前或之后调用皆可。
 
 函数签名：
 
