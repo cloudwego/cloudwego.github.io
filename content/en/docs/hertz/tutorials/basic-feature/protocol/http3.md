@@ -6,9 +6,9 @@ description: >
 
 ---
 
-`QUIC` protocol is a transport layer network protocol that provides security equivalent to TLS/SSL, while also having lower connection and transmission latency. `QUIC` is currently mainly used in the `HTTP` protocol, which is known as `HTTP/3` and is the third official version of the `HTTP` protocol.
+QUIC protocol is a transport layer network protocol that provides security equivalent to TLS/SSL, while also having lower connection and transmission latency. `QUIC` is currently mainly used in the `HTTP` protocol, which is known as `HTTP/3` and is the third official version of the `HTTP` protocol.
 
-`HTTP3` implementation based [quic-go](https://github.com/quic-go/quic-go), [Implementation Link](https://github.com/hertz-contrib/http3).
+Hertz-HTTP3 implementation based [quic-go](https://github.com/quic-go/quic-go), [Implementation Link](https://github.com/hertz-contrib/http3).
 
 ## Install
 

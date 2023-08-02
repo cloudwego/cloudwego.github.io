@@ -8,7 +8,7 @@ description: >
 
 QUIC 协议是一种传输层网络协议，提供与 TLS/SSL 相当的安全性，同时具有更低的连接和传输延迟。QUIC 目前主要应用于 HTTP 协议，HTTP-over-QUIC 协议即为 HTTP/3，是 HTTP 协议的第三个正式版本。
 
-HTTP3 基于 [quic-go](https://github.com/quic-go/quic-go) 实现，[实现链接](https://github.com/hertz-contrib/http3)。
+Hertz-HTTP3 基于 [quic-go](https://github.com/quic-go/quic-go) 实现，[实现链接](https://github.com/hertz-contrib/http3)。
 
 ## 安装
 
@@ -49,7 +49,7 @@ h.AddProtocol(suite.HTTP3, factory.NewServerFactory(&http3.Option{}))
 
 ### 服务端
 
->注意：QUIC 协议依赖于 TLS 协议，因此需要提供 TLS配置。
+>注意：QUIC 协议依赖于 TLS 协议，因此需要提供 TLS 配置。
 
 ```go
 package main
