@@ -20,6 +20,7 @@ service ExampleService {
 ```
 
 用户 IDL 定义可以拆分为三个 Service：
+
 ```thrift
 service ExampleService0 {
     ExampleResponse Method0(3: ExampleRequest req)
@@ -39,6 +40,7 @@ service ExampleService2 {
 ## 具体描述
 
 当 root thrift 文件中存在形如下述定义时：
+
 ```thrift
 service ExampleService0 {
     ExampleResponse Method0(3: ExampleRequest req)
@@ -55,6 +57,7 @@ service ExampleService2 {
 
 带上`--combine-service` 参数后，会生成一个名为 CombineService 的新 service 及其对应的 client/server 代码。
 其定义为：
+
 ```thrift
 service CombineService {
     ExampleResponse Method0(3: ExampleRequest req)
@@ -71,6 +74,7 @@ Tips：
 配合 `extends` 关键字，可以实现跨文件的 CombineService
 
 如：
+
 ```
 service ExampleService0 extends thriftA.Service0 {
 }
@@ -82,7 +86,7 @@ service ExampleService2 extends thriftC.Service2 {
 }
 ```
 
-# 使用示例
+## 使用示例
 
 本功能只支持 Thrift 场景。例如目前有三个 Service 需要合并，编写 Thrift IDL 文件 `demo.thrift` 如下：
 
@@ -162,4 +166,3 @@ func main() {
 	}
 }
 ```
-

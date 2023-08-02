@@ -3,12 +3,11 @@ title: "Client"
 linkTitle: "Client"
 weight: 3
 description: >
-
 ---
 
 The cwgo tool supports generating the calling code of HTTP Client or RPC Client through IDL, which is convenient for users to develop.
 
-# Basic commands
+## Basic commands
 
 Use `cwgo client -h` to view the help command for generating client code.
 
@@ -42,7 +41,7 @@ OPTIONS:
 
 ## Specification
 
-```
+```console
 --service specify service name
 --type specifies the generation type, supports parameters RPC, HTTP
 --module specifies the generated module name
@@ -53,9 +52,9 @@ OPTIONS:
 --pass value parameter passed to hz and kitex
 ```
 
-# RPC Client
+## RPC Client
 
-## Write IDL
+### Write IDL
 
 ```go
   // hello. thrift
@@ -76,15 +75,15 @@ service HelloService {
 }
 ```
 
-## Order
+### Commands
 
 ```sh
 cwgo client --type RPC --idl hello.thrift --service hellotest
 ```
 
-## Generate Code
+### Generate Code
 
-```
+```console
 ├── hello. thrift # IDL file
 ├── kitex_gen # Generate code related to IDL content
 │ └── hello
@@ -104,9 +103,9 @@ cwgo client --type RPC --idl hello.thrift --service hellotest
          └── hellotest_init.go # client initialization code
 ```
 
-# HTTP Client
+## HTTP Client
 
-## Write IDL
+### Write IDL
 
 To write a simple IDL to generate HTTP Client, you need to add `api.$method` and `api.base_domain` to fill `uri` and `host`.
 
@@ -132,7 +131,7 @@ service HelloService {
   )
 ```
 
-## Order
+### Commands
 
 Execute the following basic commands to generate the client
 
@@ -140,11 +139,11 @@ Execute the following basic commands to generate the client
 cwgo client --type HTTP --idl hello.thrift --service hellotest
 ```
 
-## Generate Code
+### Generate Code
 
 A default client implementation is provided in `hello_service.go`, and users can use it directly. If there is a need for custom configuration, you can use the `options` provided in `hertz_client.go` to customize the complex configuration of the Client.
 
-```
+```console
 .
 ├── biz
 │ └── http

@@ -3,12 +3,11 @@ title: "DB"
 linkTitle: "DB"
 weight: 4
 description: >
-
 ---
 
 cwgo 集成了 gorm/gen 用于帮助用户生成 Model 代码以及基础的 CURD 代码。
 
-# 基础命令
+## 基础命令
 
 使用 `cwgo model -h` 查看使用详情
 
@@ -42,14 +41,14 @@ OPTIONS:
 
 ## 详细参数
 
-```
+```console
    --dsn value                        指定数据库DSN
    --db_type value                    指定数据库类型(mysql or sqlserver or sqlite or postgres) (默认 mysql)
    --out_dir value                    指定输出目录路径，默认为 biz/dao/query
    --out_file value                   指定输出文件名，默认为 gen.go
    --tables value                     指定数据库表，默认为全表
    --unittest                         指定是否生成单测，默认为 false
-   --only_model                       指定是否生成仅 model，默认为 false 
+   --only_model                       指定是否生成仅 model，默认为 false
    --model_pkg value                  指定 model 的包名
    --nullable                         指定生成字段是否为指针当字段为 nullable，默认为 false
    --signable                         指定字段是否检测整型列 unsigned 类型来调整生成相应的数据类型，默认为 false
