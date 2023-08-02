@@ -40,7 +40,7 @@ The cwgo tool can easily generate engineering templates, and its main features a
 
 ```bash
 # Go 1.16 and later
-GOPROXY=https://goproxy.cn/, direct go install github.com/cloudwego/cwgo@latest
+GOPROXY=https://goproxy.cn/ go install github.com/cloudwego/cwgo@latest
 ```
 
 {{% /codetab %}}
@@ -49,7 +49,7 @@ GOPROXY=https://goproxy.cn/, direct go install github.com/cloudwego/cwgo@latest
 
 ```bash
 # Go 1.15 and earlier versions
-GO111MODULE=on GOPROXY=https://goproxy.cn/, direct go get github.com/cloudwego/cwgo@latest
+GO111MODULE=on GOPROXY=https://goproxy.cn/ go get github.com/cloudwego/cwgo@latest
 ```
 
 {{% /codetab %}}
