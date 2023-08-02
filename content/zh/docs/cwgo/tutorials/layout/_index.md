@@ -3,20 +3,19 @@ title: "Layout"
 linkTitle: "Layout"
 weight: 2
 description: >
-
 ---
 
 cwgo 工具支持目前支持生成 MVC Layout，未来还会拓展更多的模板供用户使用。
 
-# 代码结构
+## 代码结构
 
 使用 cwgo 工具生成 server 代码时会自动生成 MVC layout。完成[快速上手](https://www.cloudwego.io/zh/docs/cwgo/getting-started/)里面的步骤指引，会在本地生成一个 demo，其 HTTP 项目目录如下:
 
-```
+```console
 ├── biz // 业务逻辑目录
 │   ├── dal // 数据访问层
 │   │   ├── init.go
-│   │   ├── mysql  
+│   │   ├── mysql
 │   │   │   └── init.go
 │   │   └── redis
 │   │       └── init.go
@@ -35,7 +34,7 @@ cwgo 工具支持目前支持生成 MVC Layout，未来还会拓展更多的模�
 │   │   ├── hello_method.go // 具体的业务逻辑
 │   │   └── hello_method_test.go
 │   └── utils // 工具目录
-│       └── resp.go 
+│       └── resp.go
 ├── build.sh // 编译脚本
 ├── conf // 存放不同环境下的配置文件
 │     └── ...
@@ -53,7 +52,7 @@ cwgo 工具支持目前支持生成 MVC Layout，未来还会拓展更多的模�
 
 RPC 项目目录如下
 
-```
+```console
 ├── biz // 业务逻辑目录
 │   ├── dal // 数据访问层
 │   │   ├── init.go

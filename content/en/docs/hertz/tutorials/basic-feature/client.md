@@ -230,7 +230,7 @@ func main() {
 
 The `Get` function returns the status code of the URL and the response body. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned.
 
-The function will automatically follow the redirect. 
+The function will automatically follow the redirect.
 
 Function Signature:
 
@@ -255,7 +255,7 @@ func main() {
 
 ### Post
 
-The `Post` function sends a POST request to the specified URL using the given POST parameters. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned. 
+The `Post` function sends a POST request to the specified URL using the given POST parameters. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned.
 
 The function will automatically follow the redirect.
 
@@ -333,7 +333,7 @@ This function does not follow redirects. Please use the [Get](#get) function, [D
 
 If resp is nil, the response is ignored. If the response is not received within the given timeout period, an `errTimeout error` is returned.
 
-Function Signature: 
+Function Signature:
 
 ```go
 func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
@@ -371,7 +371,7 @@ This function does not follow redirects. Please use the [Get](#get) function, [D
 
 If resp is nil, the response is ignored. If the response is not received by the given deadline, an `errTimeout error` is returned.
 
-Function Signature: 
+Function Signature:
 
 ```go
 func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
@@ -436,7 +436,7 @@ func main() {
 
 ## Add Request Content
 
-Hertz's client can add various forms of request content in HTTP requests, such as `query` parameters, `www url encoded`, ` multipart/form data`, and `JSON`.
+Hertz's client can add various forms of request content in HTTP requests, such as `query` parameters, `www url encoded`, `multipart/form data`, and `JSON`.
 
 Sample Code:
 
@@ -722,7 +722,7 @@ The `UseAsLast` function adds the middleware to the end of the client middleware
 
 If the client middleware chain has already set the last middleware before, the `UseAsLast` function will return an `errorLastMiddlewareExist` error. Therefore, to ensure that the last middleware in the client middleware chain is empty, you can first use the [TakeOutLastMiddleware](#takeoutlastmiddleware) function to clear the last middleware in the client middleware chain.
 
->Note: The `UseAsLast` function sets the middleware in `c.lastMiddleware`, while the middleware chain set using the [Use](#use) function is stored in `c.mws`. The two functions are relatively independent. `c.lastMiddleware` is executed only at the end of the client middleware chain. Therefore, the ` UseAsLast` function can be called before or after the [Use](#use) function.
+>Note: The `UseAsLast` function sets the middleware in `c.lastMiddleware`, while the middleware chain set using the [Use](#use) function is stored in `c.mws`. The two functions are relatively independent. `c.lastMiddleware` is executed only at the end of the client middleware chain. Therefore, the `UseAsLast` function can be called before or after the [Use](#use) function.
 
 Function Signature:
 

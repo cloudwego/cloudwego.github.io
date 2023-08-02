@@ -3,16 +3,15 @@ title: "Layout"
 linkTitle: "Layout"
 weight: 2
 description: >
-
 ---
 
 The cwgo tool supports the generation of MVC Layout at present, and more templates will be expanded for users to use in the future.
 
-# Code Structure
+## Code Structure
 
 The MVC layout is automatically generated when the server code is generated using the cwgo tool. When using the demo in [Quick Start](https://www.cloudwego.io/docs/cwgo/getting-started/), the generated HTTP project directory is as follows
 
-```
+```console
 ├── biz // business logic directory
 │ ├── dal // data access layer
 │ │ ├── init.go
@@ -53,7 +52,7 @@ The MVC layout is automatically generated when the server code is generated usin
 
 The RPC project directory is as follows
 
-```
+```console
 ├── biz // business logic directory
 │ ├── dal // data access layer
 │ │ ├── init.go
