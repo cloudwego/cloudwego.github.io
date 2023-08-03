@@ -51,7 +51,7 @@ Hertz provides a series of code examples designed to help users get start with H
 - [pprof](https://github.com/cloudwego/hertz-examples/tree/main/middleware/pprof) ：Example of using pprof middleware
 - [requestid](https://github.com/cloudwego/hertz-examples/tree/main/middleware/requestid) ：Example of using RequestID middleware
 - [gzip](https://github.com/cloudwego/hertz-examples/tree/main/middleware/gzip) ：Example of using gzip middleware in hertz server
-- - [csrf](https://github.com/cloudwego/hertz-examples/tree/main/middleware/csrf) ：Example of using csrf middleware in hertz server
+- [csrf](https://github.com/cloudwego/hertz-examples/tree/main/middleware/csrf) ：Example of using csrf middleware in hertz server
 - [loadbalance](https://github.com/cloudwego/hertz-examples/tree/main/middleware/loadbalance/round_robin) ：Example of using loadbalance middleware in hertz server
 
 ### Parameter binding and validation
@@ -98,10 +98,14 @@ Hertz provides a series of code examples designed to help users get start with H
 - [reverseproxy](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy) ：Example of using reverse proxy in hertz server
 
 ### Hlog
-- [hlog](https://github.com/cloudwego/hertz-examples/tree/main/hlog) ：Example of using hlog and its log extension
+- [standard](https://github.com/cloudwego/hertz-examples/tree/main/hlog/standard) ：Example of using Hertz's default implementation for logging
+- [custom](https://github.com/cloudwego/hertz-examples/tree/main/hlog/custom) ：Example of log extension
+- [zap](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zap) ：Example of docking with zap in hertz server
+- [logrus](https://github.com/cloudwego/hertz-examples/tree/main/hlog/logrus) ：Example of docking with logrus in hertz server
+- [zerolog](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zerolog) ：Example of docking with zerolog in hertz server
 
 ### Opentelemetry
-- [opentelemetry](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry) ：Example of using obs-opentelemetry
+- [opentelemetry](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry) ：Example of using obs opentelemetry for docking with opentelemetry
 
 ### HTTP Trailer
 - [trailer](https://github.com/cloudwego/hertz-examples/tree/main/trailer) ：Example of using HTTP Trailer 
@@ -132,6 +136,8 @@ Hertz provides a series of code examples designed to help users get start with H
 ### Forward proxy
 - [forward_proxy](https://github.com/cloudwego/hertz-examples/tree/main/client/forward_proxy) ：Example of configuring a forward proxy using the hertz client
 
+### HTTP Trailer
+- [trailer](https://github.com/cloudwego/hertz-examples/tree/main/trailer) ：Example of using HTTP Trailer
 
 ## Hz
 
