@@ -17,21 +17,6 @@ The following are requirements to enable Sonic:
 
 Sonic automatically fallback to golang's `encoding/json` library when the above requirements have not been satisfied.
 
-## Compatibility With `encoding/json`
-
-Currently, Hertz uses the default configuration for Sonic (i.e.`sonic.ConfigDefault`), which behaves different from JSON `encoding/json`.
-Specifically, by default, Sonic are configured to:
-
-- disable html escape: Sonic will not escape HTML's special characters
-- disable key-sort by default: Sonic will not sort json in lexicographical order
-
-To find more about the compatibility with `encoding/json`, you may want to see [sonic#Compatibility](https://github.com/bytedance/sonic#compatibility).
-You may change Sonic's behavior (e.g. behaving exactly the same way as `encoding/json`) by calling `ResetJSONMarshaler` for render.
-
-```go
-render.ResetJSONMarshaler(sonic.ConfigStd.Marshal)
-```
-
 ## Bringing Your Own JSON Marshal Library
 
 If Sonic does not meet your needs, you may provide your own implementation by calling `ResetJSONMarshal` for render and `ResetJSONUnmarshaler` for binding.
@@ -58,23 +43,10 @@ func main() {
 Hertz supports conditional compilation to control the actual json library used, you can use `-tags stdjson` to choose to use the standard library.
 
 ```go
-go build -tags stdjson .
+go build -tags stdjson 
 ```
 
-## Common FAQs
+## Sonic related issues
 
-### Error when using Sonic on M1
+If there are issues related to Sonic, please refer to Sonic [README](https://github.com/bytedance/sonic) or propose an issue.
 
-#### Build constraints exclude all Go files in xxx
-
-Usually because the Go version or environment parameters do not meet Sonic requirements.
-
-- Go version: go1.16 or above, recommend go1.17 or above. For the currently supported versions of Sonic, please see [Sonic#Requirement](https://github.com/bytedance/sonic#requirement).
-
-- Go environment parameters: set GOARCH=**amd64**. Because Sonic already supports the binary translation software Rosetta, with Rosetta, the programs compiled under the x86 environment can be run on the M1.
-
-#### Unable to Debug
-
-If you want to debug, you can set GOARCH=**arm64**. Because the Rosetta will cause the binary of Sonic to fail to debug.
-
-Note that the performance of Sonic will be hurt, because Sonic will fallback to the standard library in this environment.
