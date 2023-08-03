@@ -1,17 +1,15 @@
 ---
-title: "JSON Marshal 库"
-linkTitle: "JSON Marshal 库"
-weight: 3
+title: 'JSON Marshal 库'
+date: 2023-08-03
+weight: 19
 description: >
-
 ---
-
 
 Hertz 默认集成并使用 [Sonic](https://github.com/bytedance/sonic) 用于序列化`ctx.JSON`接口，以及反序列化`binding`包中的请求。Sonic 是一款超高性能 golang json 库，详情参考 Sonic [README](https://github.com/bytedance/sonic) 。
 
 开启 Sonic 需要满足以下条件：
 
-- Go 1.15/1.16/1.17/1.18
+- Go 1.16 以上
 - Linux / darwin OS / Windows
 - Amd64 CPU with AVX instruction set
 
@@ -45,8 +43,8 @@ import (
 
 )
 func main() {
-// Render
-render.ResetJSONMarshal(json.Marshal)
+    // Render
+    render.ResetJSONMarshal(json.Marshal)
 
     // Binding
     binding.ResetJSONUnmarshaler(json.Unmarshal)
@@ -67,9 +65,9 @@ go build -tags stdjson .
 
 #### Build constraints exclude all Go files in xxx
 
-一般为是因为 Go 镜像版本或环境参数不符合 Sonic 要求。
+一般是因为 Go 镜像版本或环境参数不符合 Sonic 要求。
 
-- Go 版本：go1.15 或以上，推荐 go1.17 以上版本。Sonic 目前支持的版本见 [Sonic#Requirement](https://github.com/bytedance/sonic#requirement)
+- Go 版本：go1.16 或以上，推荐 go1.17 以上版本。Sonic 目前支持的版本见 [Sonic#Requirement](https://github.com/bytedance/sonic#requirement)。
 
 - Go 环境参数：设置 GOARCH=**amd64**。因为，Sonic 已经支持二进制翻译软件 Rosetta，借助 Rosetta，在 M1 上可运行 x86 环境下编译出来的程序。
 

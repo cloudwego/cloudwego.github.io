@@ -1,9 +1,8 @@
 ---
-title: "JSON Marshal Library"
-linkTitle: "JSON Marshal Library"
-weight: 3
+title: 'JSON Marshal Library'
+date: 2023-08-03
+weight: 19
 description: >
-
 ---
 
 By default, Hertz integrates with and uses [Sonic](https://github.com/bytedance/sonic) for serializing `ctx.JSON` interface and deserialization requests as defined in the `binding` package.
@@ -11,7 +10,7 @@ Sonic is an ultra-high performance golang json library, also see Sonic [README](
 
 The following are requirements to enable Sonic:
 
-- Go 1.15/1.16/1.17/1.18
+- Go 1.16 or above
 - Linux / darwin OS / Windows
 - Amd64 CPU with AVX instruction set
 
@@ -69,7 +68,7 @@ go build -tags stdjson .
 
 Usually because the Go version or environment parameters do not meet Sonic requirements.
 
-- Go version: go1.15 or above, recommend go1.17 or above. For the currently supported versions of Sonic, please see [Sonic#Requirement](https://github.com/bytedance/sonic#requirement)
+- Go version: go1.16 or above, recommend go1.17 or above. For the currently supported versions of Sonic, please see [Sonic#Requirement](https://github.com/bytedance/sonic#requirement).
 
 - Go environment parameters: set GOARCH=**amd64**. Because Sonic already supports the binary translation software Rosetta, with Rosetta, the programs compiled under the x86 environment can be run on the M1.
 
