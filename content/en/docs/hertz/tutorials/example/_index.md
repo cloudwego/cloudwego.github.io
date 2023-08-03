@@ -22,6 +22,13 @@ Hertz provides a series of code examples designed to help users get start with H
 ### hertz_session
 - [hertz_session](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_session) ：Example of using distributed session and csrf in hertz server
 
+### tiktok_demo
+
+- [tiktok_demo](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/tiktok_demo) ：A simple hertz server that provides user, video, interactive, and social backend services for tiktok app
+
+### hz_kitex_demo
+
+- [hz_kitex_demo](https://github.com/cloudwego/hertz-examples/tree/main/hz_kitex_demo) ：Example of using hertz and kitex together
 
 ## Server
 
@@ -44,6 +51,8 @@ Hertz provides a series of code examples designed to help users get start with H
 - [pprof](https://github.com/cloudwego/hertz-examples/tree/main/middleware/pprof) ：Example of using pprof middleware
 - [requestid](https://github.com/cloudwego/hertz-examples/tree/main/middleware/requestid) ：Example of using RequestID middleware
 - [gzip](https://github.com/cloudwego/hertz-examples/tree/main/middleware/gzip) ：Example of using gzip middleware in hertz server
+- - [csrf](https://github.com/cloudwego/hertz-examples/tree/main/middleware/csrf) ：Example of using csrf middleware in hertz server
+- [loadbalance](https://github.com/cloudwego/hertz-examples/tree/main/middleware/loadbalance/round_robin) ：Example of using loadbalance middleware in hertz server
 
 ### Parameter binding and validation
 - [binding](https://github.com/cloudwego/hertz-examples/tree/main/binding) ：Example of parameter binding and validation
@@ -83,14 +92,19 @@ Hertz provides a series of code examples designed to help users get start with H
   as template engine.
 
 ### Sentinel
-- [sentinel:](https://github.com/cloudwego/hertz-examples/tree/main/sentinel) ：Example of using sentinel-golang in hertz
+- [sentinel](https://github.com/cloudwego/hertz-examples/tree/main/sentinel) ：Example of using sentinel-golang in hertz
 
 ### Reverse proxy
 - [reverseproxy](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy) ：Example of using reverse proxy in hertz server
 
 ### Hlog
-- [hlog:](https://github.com/cloudwego/hertz-examples/tree/main/hlog) ：Example of using hlog and its log extension
+- [hlog](https://github.com/cloudwego/hertz-examples/tree/main/hlog) ：Example of using hlog and its log extension
 
+### Opentelemetry
+- [opentelemetry](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry) ：Example of using obs-opentelemetry
+
+### HTTP Trailer
+- [trailer](https://github.com/cloudwego/hertz-examples/tree/main/trailer) ：Example of using HTTP Trailer 
 
 ## Client
 
