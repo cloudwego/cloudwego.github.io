@@ -99,9 +99,9 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 ### Hlog
 - [standard](https://github.com/cloudwego/hertz-examples/tree/main/hlog/standard) ：使用 hertz 默认实现的日志的示例
 - [custom](https://github.com/cloudwego/hertz-examples/tree/main/hlog/custom) ：日志扩展的示例
-- [zap](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zap) ：在 hertz server 中对接 zap 的示例
-- [logrus](https://github.com/cloudwego/hertz-examples/tree/main/hlog/logrus) ：在 hertz server 中对接 logrus 的示例
-- [zerolog](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zerolog) ：在 hertz server 中对接 zerolog 的示例
+- [zap](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zap) ：在 hertz server 中对接 zap 和 lumberjack 的示例
+- [logrus](https://github.com/cloudwego/hertz-examples/tree/main/hlog/logrus) ：在 hertz server 中对接 logrus 和 lumberjack 的示例
+- [zerolog](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zerolog) ：在 hertz server 中对接 zerolog 和 lumberjack 的示例
 
 ### Opentelemetry
 - [opentelemetry](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry) ：使用 obs-opentelemetry 的示例用于对接 opentelemetry
