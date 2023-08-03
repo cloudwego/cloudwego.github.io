@@ -51,7 +51,7 @@ Hertz provides a series of code examples designed to help users get start with H
 - [pprof](https://github.com/cloudwego/hertz-examples/tree/main/middleware/pprof) ：Example of using pprof middleware
 - [requestid](https://github.com/cloudwego/hertz-examples/tree/main/middleware/requestid) ：Example of using RequestID middleware
 - [gzip](https://github.com/cloudwego/hertz-examples/tree/main/middleware/gzip) ：Example of using gzip middleware in hertz server
-- - [csrf](https://github.com/cloudwego/hertz-examples/tree/main/middleware/csrf) ：Example of using csrf middleware in hertz server
+- [csrf](https://github.com/cloudwego/hertz-examples/tree/main/middleware/csrf) ：Example of using csrf middleware in hertz server
 - [loadbalance](https://github.com/cloudwego/hertz-examples/tree/main/middleware/loadbalance/round_robin) ：Example of using loadbalance middleware in hertz server
 
 ### Parameter binding and validation
