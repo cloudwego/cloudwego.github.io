@@ -1,5 +1,6 @@
 ---
-title: 'JSON Marshal Library'
+title: "JSON Marshal Library"
+linkTitle: "JSON Marshal Library"
 date: 2023-08-03
 weight: 19
 description: >
