@@ -1,56 +1,67 @@
 ---
-title: 'hz basic usage'
+title: "hz basic usage"
 date: 2023-02-21
 weight: 2
 description: >
 ---
+
 ## Basic Usage
 
 ### new: Create a new Hertz project
 
 1. Create a new project
 
-    If your codes are placed under `GOPATH`:
+   {{< tabs "Execute outside GOPATH" "Execute under GOPATH">}}
+    <!-- Execute outside GOPATH -->
 
-    ```bash
-    # Execute under GOPATH, go mod name defaults to the current path relative to GOPATH, or you can specify your own
-    hz new
+   {{% codetab %}}
 
-    # Tidy & get dependencies
-    go mod init # `go.mod` will not be generated after the previous step executed under GOPATH.
-    go mod tidy
-    ```
+   ```bash
+   # Execute outside GOPATH, you need to specify the go mod name
+   hz new -module hertz/demo
 
-    If your codes are not placed under `GOPATH`:
+   # Tidy & get dependencies
+   go mod tidy
+   ```
 
-    ```bash
-    # Execute under non-GOPATH, you need to specify the go mod name
-    hz new -mod hertz/demo
+   {{% /codetab %}}
+   <!-- Execute under GOPATH -->
 
-    # Tidy & get dependencies
-    go mod tidy
-    ```
+   {{% codetab %}}
 
-    After executed, it generates a scaffold for the Hertz project in the current directory.
+   ```shell
+   # Execute under GOPATH, go mod name defaults to the current path relative to GOPATH, or you can specify your own
+   hz new
+
+   # Tidy & get dependencies
+   go mod init # `go.mod` will not be generated after the previous step executed under GOPATH.
+   go mod tidy
+   ```
+
+   {{% /codetab %}}
+
+   {{< /tabs >}}
+
+   After executed, it generates a scaffold for the Hertz project in the current directory.
 
 2. Compiling Projects
 
-    ```bash
-    go build
-    ```
+   ```bash
+   go build
+   ```
 
 3. Run the project and test it
 
-    Run the project:
+   Run the project:
 
-    ```bash
-    ./{{your binary}}
-    ```
+   ```bash
+   ./{{your binary}}
+   ```
 
-    Test:
+   Test:
 
-    ```bash
-    curl 127.0.0.1:8888/ping
-    ```
+   ```bash
+   curl 127.0.0.1:8888/ping
+   ```
 
-    If it returns `{"message":"pong"}`, it works.
+   If it returns `{"message":"pong"}`, it works.
