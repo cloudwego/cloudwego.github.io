@@ -1,6 +1,7 @@
 ---
 date: 2021-11-24
 title: "Getting Started With Kitex's Practice: Performance Testing Guide"
+projects: ["Kitex"]
 linkTitle: "Getting Started With Kitex's Practice: Performance Testing Guide"
 keywords: ["Kitex", "Performance Testing", "RPC"]
 description: "This blog describes how to use Kitex for performance testing and how to analyze the test results to help users tune Kitex with real RPC scenarios to better match business needs and maximize performance."

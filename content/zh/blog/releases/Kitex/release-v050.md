@@ -1,6 +1,7 @@
 ---
 title: "Kitex v0.5.0 版本发布"
 linkTitle: "Release v0.5.0"
+projects: ["Kitex"]
 date: 2023-03-08
 description: >
 ---

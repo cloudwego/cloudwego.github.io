@@ -1,6 +1,7 @@
 ---
 date: 2022-08-30
 title: "国内首个基于 Rust 语言的 RPC 框架 — Volo 正式开源！"
+projects: ["Volo"]
 linkTitle: "国内首个基于 Rust 语言的 RPC 框架 — Volo 正式开源！"
 keywords: ["rust", "rpc", "volo", "开源", "GAT"]
 description: "本文介绍了字节跳动正式开源 Rust RPC 框架 — Volo，并着重介绍了项目的起源，主要特性以及相关生态。"

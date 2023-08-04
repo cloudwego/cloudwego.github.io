@@ -1,6 +1,7 @@
 ---
 date: 2022-08-30
 title: "China's First Rust-based RPC Framework - Volo is Officially Open Source!"
+projects: ["Volo"]
 linkTitle: "China's first RPC framework based on Rust language - Volo is officially open source!"
 keywords: ["CloudWeGo", "RPC framework", "Volo", "Rust", "ByteDance Open Source", "open source"]
 description: "This article introduces ByteDance's official open source Rust RPC framework — Volo, and focuses on the project's origin, main features and related ecosystem."

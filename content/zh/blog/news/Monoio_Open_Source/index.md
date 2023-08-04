@@ -1,6 +1,7 @@
 ---
 date: 2023-04-17
 title: "字节开源 Monoio ：基于 io-uring 的高性能 Rust Runtime"
+projects: ["Monoio"]
 linkTitle: "字节开源 Monoio ：基于 io-uring 的高性能 Rust Runtime"
 keywords: ["CloudWeGo", "Monoio", "io-uring", "开源", "Rust"]
 description: "本文介绍了 Rust 异步机制、Monoio 的设计概要、Runtime 对比选型和应用等。"
@@ -8,13 +9,16 @@ author: <a href="https://github.com/cloudwego" target="_blank">CloudWeGo Rust Te
 ---
 
 ## 概述
+
 尽管 Tokio 目前已经是 Rust 异步运行时的事实标准，但要实现极致性能的网络中间件还有一定距离。为了这个目标，[CloudWeGo][CloudWeGo] Rust Team 探索基于 io-uring 为 Rust 提供异步支持，并在此基础上研发通用网关。
 本文包括以下内容：
+
 1. 介绍 Rust 异步机制；
 2. [Monoio][Monoio] 的一些设计精要；
 3. Runtime 对比选型与应用。
 
 ## Rust 异步机制
+
 借助 Rustc 和 llvm，Rust 可以生成足够高效且安全的机器码。但是一个应用程序除了计算逻辑以外往往还有 IO，特别是对于网络中间件，IO 其实是占了相当大比例的。
 
 程序做 IO 需要和操作系统打交道，编写异步程序通常并不是一件简单的事情，在 Rust 中是怎么解决这两个问题的呢？比如，在 C++里面，可能经常会写一些 callback ，但是我们并不想在 Rust 里面这么做，这样的话会遇到很多生命周期相关的问题。
@@ -24,6 +28,7 @@ Rust 允许自行实现 Runtime 来调度任务和执行 syscall；并提供了 
 ![image](/img/blog/Monoio_Open_Source/1_2_zh.png)
 
 ### Example
+
 这里从一个简单的例子入手，看一看这套系统到底是怎么工作的。
 
 当并行下载两个文件时，在任何语言中都可以启动两个 Thread，分别下载一个文件，然后等待 thread 执行结束；但并不想为了 IO 等待启动多余的线程，如果需要等待 IO，我们希望这时线程可以去干别的，等 IO 就绪了再做就好。
@@ -94,6 +99,7 @@ pub enum Poll<T> {
 ```
 
 Future 描述状态机对外暴露的接口：
+
 1. 推动状态机执行：Poll 方法顾名思义就是去推动状态机执行，给定一个任务，就会推动这个任务做状态转换。
 2. 返回执行结果：
    1. 遇到了阻塞：Pending
@@ -149,7 +155,7 @@ enum SumFuture {
 
 impl Future for SumFuture {
     type Output = i32;
-    
+
     fn poll(self: Pin<&mut Self>, cx: &mut Context<' >) -> Poll<Self::Output> {
         let this = self.get mut( );
         loop {
@@ -185,7 +191,7 @@ impl Future for SumFuture {
 首先当我们创建 TCP stream 的时候，这个组件内部就会把它注册到一个 poller 上去，这个 poller 可以简单地认为是一个 epoll 的封装（具体使用什么 driver 是根据平台而异的）。
 
 按照顺序来看，现在有一个 task ，要把这个 task spawn 出去执行。那么 spawn 本质上就是把 task 放到了 runtime 的任务队列里，
-然后 runtime 内部会不停地从任务队列里面取出任务并且执行——执行就是推动状态机动一动，即调用它的 poll 方法，之后我们就来到了第2步。
+然后 runtime 内部会不停地从任务队列里面取出任务并且执行——执行就是推动状态机动一动，即调用它的 poll 方法，之后我们就来到了第 2 步。
 
 ![image](/img/blog/Monoio_Open_Source/6.png)
 
@@ -230,6 +236,7 @@ Future trait 里面除了有包含自身状态机的可变以借用以外，还�
 ![image](/img/blog/Monoio_Open_Source/7.png)
 
 用户使用 listener.accept() 生成 AcceptFut 并等待:
+
 1. fut.await 内部使用 cx 调用 Future 的 poll 方法
 2. poll 内部执行 syscall
 3. 当前无连接拨入，kernel 返回 WOULD_BLOCK
@@ -244,8 +251,9 @@ Future trait 里面除了有包含自身状态机的可变以借用以外，还�
 12. 12/13. kernel 返回 syscall 结果，poll 返回 Ready
 
 ### Runtime
+
 1. 先从 executor 看起，它有一个执行器和一个任务队列，它的工作是不停地取出任务，推动任务运行，之后在所有任务执行完毕必须等待时，把执行权交给 Reactor。
-2. Reactor 拿到了执行权之后，会与 kernel 打交道，等待 IO 就绪，IO就绪好了之后，我们需要标记这个 IO 的就绪状态，并且把这个 IO 所关联的任务给唤醒。唤醒之后，我们的执行权又会重新交回给 executor 。在 executor 执行这个任务的时候，就会调用到 IO 组件所提供的一些能力。
+2. Reactor 拿到了执行权之后，会与 kernel 打交道，等待 IO 就绪，IO 就绪好了之后，我们需要标记这个 IO 的就绪状态，并且把这个 IO 所关联的任务给唤醒。唤醒之后，我们的执行权又会重新交回给 executor 。在 executor 执行这个任务的时候，就会调用到 IO 组件所提供的一些能力。
 3. IO 组件要能够提供这些异步的接口，比如说当用户想用 tcb stream 的时候，得用 runtime 提供的一个 TcpStream， 而不是直接用标准库的。第二，能够将自己的 fd 注册到 Reactor 上。第三，在 IO 没有就绪的时候，我们能把这个 waker 放到任务相关联的区域里。
 
 整个 Rust 的异步机制大概就是这样。
@@ -253,14 +261,17 @@ Future trait 里面除了有包含自身状态机的可变以借用以外，还�
 ![image](/img/blog/Monoio_Open_Source/8.png)
 
 ## Monoio 设计
+
 以下将会分为四个部分介绍 [Monoio][Monoio] Runtime 的设计要点：
+
 1. 基于 GAT(Generic associated types) 的异步 IO 接口；
 2. 上层无感知的 Driver 探测与切换；
 3. 如何兼顾性能与功能；
 4. 提供兼容 Tokio 的接口
 
 ### 基于 GAT 的纯异步 IO 接口
-首先介绍一下两种通知机制。第一种是和 epoll 类似的，基于就绪状态的一种通知。第二种是 io-uring 的模式，它是一个基于“完成通知”的模式。 
+
+首先介绍一下两种通知机制。第一种是和 epoll 类似的，基于就绪状态的一种通知。第二种是 io-uring 的模式，它是一个基于“完成通知”的模式。
 
 ![image](/img/blog/Monoio_Open_Source/9.png)
 
@@ -287,6 +298,7 @@ io_uring 允许用户和内核共享两个无锁队列，submission queue 是用
 针对这两个问题 [Monoio][Monoio] 支持了带取消能力的 IO trait，取消时会推入 CancelOp，用户需要在取消后继续等待原 Future 执行结束（由于它已经被取消了，所以会预期在较短的时间内返回），对应的 syscall 可能执行成功或失败，并返还 buffer。
 
 ### 上层无感知的 Driver 探测和切换
+
 第二个特性是支持上层无感知的 Driver 探测和切换。
 
 ```rust
@@ -301,23 +313,26 @@ trait OpAble {
 2. 暴露统一的 IO 接口，即 AsyncReadRent 和 AsyncWriteRent
 3. 内部利用 OpAble 统一组件实现（对 Read、Write 等 Op 做抽象）
 
-具体来说，比如想做 accept、connect 或者 read、write 之类的，这些 op 是实现了 OpAble  的，实际对应这三个 fn ：
+具体来说，比如想做 accept、connect 或者 read、write 之类的，这些 op 是实现了 OpAble 的，实际对应这三个 fn ：
 
 1. uring_op：生成对应 uring SQE
 2. legacy_interest：返回其关注的读写方向
-3. legacy_call：直接执行syscall
+3. legacy_call：直接执行 syscall
 
 ![image](/img/blog/Monoio_Open_Source/11.png)
 
 整个流程会将一个实现了 opable 的结构 submit 到的 driver 上，然后会返回一个实现了 future 的东西，之后它 poll 的时候和 drop 的时候具体地会分发到两个 driver 实现中的一个，就会用这三个函数里面的一个或者两个。
 
 ### 性能
+
 性能是 [Monoio][Monoio] 的出发点和最大的优点。除了 io_uring 带来的提升外，它设计上是一个 thread-per-core 模式的 Runtime。
+
 1. 所有 Task 均仅在固定线程运行，无任务窃取。
 2. Task Queue 为 thread local 结构操作无锁无竞争。
 
 高性能主要源于两个方面：
-1. Runtime内部高性能：基本等价于裸对接syscall
+
+1. Runtime 内部高性能：基本等价于裸对接 syscall
 2. 用户代码高性能：结构尽量 thread local 不跨线程
 
 任务窃取和 thread-per-core 两种机制的对比：
@@ -338,6 +353,7 @@ trait OpAble {
 我们做了一些 benchmark，[Monoio][Monoio] 的性能水平扩展性是非常好的。当 CPU 核数增加的时候，只需要增加对应的线程就可以了。
 
 ### 功能性
+
 Thread-per-core 不代表没有跨线程能力。用户依旧可以使用一些跨线程共享的结构，这些和 Runtime 无关；Runtime 提供了跨线程等待的能力。
 
 任务在本线程执行，但可以等待其他线程上的任务，这个是一个很重要的能力。举例来说，用户需要用单线程去拉取远程配置，并下发到所有线程上。基于这个能力，用户就可以非常轻松地实现这个功能。
@@ -350,6 +366,7 @@ Thread-per-core 不代表没有跨线程能力。用户依旧可以使用一些�
 除了提供跨线程等待能力外，[Monoio][Monoio] 也提供了 spawn_blocking 能力，供用户执行较重的计算逻辑，以免影响到同线程的其他任务。
 
 ### 兼容接口
+
 由于目前很多组件（如 hyper 等）绑定了 tokio 的 IO trait，而前面讲了由于地层 driver 的原因这两种 IO trait 不可能统一，所以生态上会比较困难。对于一些非热路径的组件，需要允许用户以兼容方式使用，即便付出一些性能代价。
 
 ![image](/img/blog/Monoio_Open_Source/14.png)
@@ -366,6 +383,7 @@ let monoio_tcp = monoio::net::TcpStream::connect("1.1.1.1:80").await.unwrap();
 我们提供了一个 Wrapper，内置了一个 buffer，用户使用时需要多付出一次内存拷贝开销。通过这种方式，我们可以为 [monoio][Monoio] 的组件包装出 tokio 的兼容接口，使其可以使用兼容组件。
 
 ## Runtime 对比&应用
+
 这部分介绍 runtime 的一些对比选型和应用。
 
 前面已经提到了关于均匀调度和 thread-per-core 的一些对比，这里主要说一下应用场景。对于较大量的轻任务，thread-per-core 模式是适合的。特别是代理、网关和文件 IO 密集的应用，使用 Monoio 就非常合适。
@@ -373,7 +391,7 @@ let monoio_tcp = monoio::net::TcpStream::connect("1.1.1.1:80").await.unwrap();
 还有一点，Tokio 致力于一个通用跨平台，但是 [monoio][Monoio] 设计之初就是为了极致性能，所以是期望以 io_uring 为主的。虽然也可以支持 epoll 和 kqueue，但仅作 fallback。
 比如 kqueue 其实就是为了让用户能够在 Mac 上去开发的便利性，其实不期望用户真的把它跑在这（未来将支持 Windows）。
 
-生态部分，Tokio  的生态是比较全的，[monoio][Monoio] 的比较缺乏，即便有兼容层，兼容层本身是有开销的。Tokio 有任务窃取，可以在较多的场景表现很好，但其水平扩展性不佳。
+生态部分，Tokio 的生态是比较全的，[monoio][Monoio] 的比较缺乏，即便有兼容层，兼容层本身是有开销的。Tokio 有任务窃取，可以在较多的场景表现很好，但其水平扩展性不佳。
 [monoio][Monoio] 的水平扩展就比较好，但是对这个业务场景和编程模型其实是有限制的。所以 [monoio][Monoio] 比较适合的一些场景就是代理、网关还有缓存数据聚合等。以及还有一些会做文件 io 的，因为 io_uring 对文件 io 非常好。
 如果不用 io_uring 的话，在 Linux 下其实是没有真异步的文件 io 可以用的，只有用 io_uring 才能做到这一点。还适用于这种文件 io 比较密集的，比如说像 DB 类型的组件。
 
@@ -384,6 +402,7 @@ Tokio-uring 其实是一个构建在 tokio 之上的一层，有点像是一层�
 如果选择了 uring，那么编译产物就无法在旧版本 linux 上运行。而 [Monoio][Monoio] 很好的支持了这一点，支持动态探测 uring 的可用性。
 
 ### Monoio 应用
+
 1. Monoio Gateway: 基于 [Monoio][Monoio] 生态的网关服务，我们优化版本 Benchmark 下来性能优于 Nginx；
 2. Volo: [CloudWeGo][CloudWeGo] Team 开源的 RPC 框架，目前在集成中，PoC 版本性能相比基于 Tokio 提升 26%
 

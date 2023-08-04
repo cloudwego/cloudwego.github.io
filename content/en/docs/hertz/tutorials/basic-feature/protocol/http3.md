@@ -42,10 +42,10 @@ h.AddProtocol(suite.HTTP3, factory.NewServerFactory(&http3.Option{}))
 | **Option**               |  **Description**                                         |
 | :----------------- | -------------------------------------------- |
 | WithTransport      | Set the network layer implementation |
-| WithAltTransport |  Set the alternative network layer implementation. The AltTransporter will be used for parallel listening - both in `TCP` and `QUIC` |   
-| WithALPN | Set whether to enable `ALPN` |   
+| WithAltTransport |  Set the alternative network layer implementation. The AltTransporter will be used for parallel listening - both in `TCP` and `QUIC` |
+| WithALPN | Set whether to enable `ALPN` |
 | WithTLS | Set `TLS` Config |
-| WithHostPorts | Set the host and port for starting the service |   
+| WithHostPorts | Set the host and port for starting the service |
 
 ## Sample Code
 
@@ -236,5 +236,3 @@ func main() {
 	wg.Wait()
 }
 ```
- 
-

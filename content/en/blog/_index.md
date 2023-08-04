@@ -1,6 +1,7 @@
 ---
 title: "Blog"
 linkTitle: "Blog"
+projects: []
 menu:
   main:
     weight: 20

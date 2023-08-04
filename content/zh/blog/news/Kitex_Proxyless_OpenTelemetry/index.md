@@ -1,6 +1,7 @@
 ---
 date: 2022-11-08
 title: "Kitex Proxyless 之流量路由：配合 Istio 与 OpenTelemetry 实现全链路泳道"
+projects: ["Kitex"]
 linkTitle: "Kitex Proxyless 之流量路由：配合 Istio 与 OpenTelemetry 实现全链路泳道"
 keywords: ["CloudWeGo", "Proxyless", "流量路由", "全链路泳道", "Bookinfo"]
 description: "本文主要介绍了基于 Kitex Proxyless 实现流量路由，从而在 biz-demo 中使用 Kitex 和 Hertz 重写 bookinfo 项目，实现的目的是以实战的方式演示如何使用 xDS 实现全链路的流量泳道。"

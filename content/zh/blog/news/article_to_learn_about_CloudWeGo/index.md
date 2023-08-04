@@ -1,6 +1,7 @@
 ---
 date: 2022-03-28
 title: "一文了解字节跳动微服务中间件 CloudWeGo"
+projects: ["CloudWeGo"]
 linkTitle: "一文了解字节跳动微服务中间件 CloudWeGo"
 keywords: ["CloudWeGo", "微服务", "字节跳动", "开源"]
 description: "本文通过访谈的方式以外部视角介绍字节跳动微服务中间件 CloudWeGo 的开源背景、优势和局限以及开源目标等。"
@@ -40,8 +41,8 @@ CloudWeGo 的每一个组件都可以单独使用。“很多人担心 [Kitex][K
 
 微服务中间件和业务紧密联系，是整个业务架构的基础，在进行技术选型时必须慎重。业内公认的选型标准关键在于两方面：
 
-* 能解决实际业务问题和上生产抗流量，且易用性高、可治理、成熟稳定
-* 技术是开源的，且开源项目的 star 数、项目活跃度（Issue&PR）、文档更新频率、发版周期稳定可靠
+- 能解决实际业务问题和上生产抗流量，且易用性高、可治理、成熟稳定
+- 技术是开源的，且开源项目的 star 数、项目活跃度（Issue&PR）、文档更新频率、发版周期稳定可靠
 
 CloudWeGo 的优势在于，已经在字节跳动经过大规模生产流量验证，有可以参考的稳定性和可靠性实际案例。“CloudWeGo 的特点之一是高性能，但实际上在开发之初它经常遇到性能瓶颈，
 于是内部专门进行了网络库、Thrift 序列化的专项优化，优化的过程会比较漫长，一个瓶颈点要花很长时间反复测试调整实现，我们也发过两篇文章[《字节跳动 Go RPC 框架 Kitex 性能优化实践》](http://www.cloudwego.io/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/)和[《字节跳动在 Go 网络库上的实践》](https://www.cloudwego.io/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)分享了优化实践。”字节跳动 CloudWeGo 技术专家表示。
@@ -79,7 +80,7 @@ CloudWeGo 的优势在于，已经在字节跳动经过大规模生产流量验�
 
 **项目地址：**[https://github.com/cloudwego](https://github.com/cloudwego)
 
-**受访嘉宾:**  字节跳动 CloudWeGo 技术专家罗广明、杨芮、马子昂
+**受访嘉宾:** 字节跳动 CloudWeGo 技术专家罗广明、杨芮、马子昂
 
 **原文链接:** [https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j](https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j)
 

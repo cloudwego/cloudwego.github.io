@@ -1,6 +1,7 @@
 ---
 title: "Kitex v0.0.8 版本发布"
 linkTitle: "Release v0.0.8"
+projects: ["Kitex"]
 date: 2021-11-05
 description: >
 ---

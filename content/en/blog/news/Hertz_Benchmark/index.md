@@ -1,6 +1,7 @@
 ---
 date: 2023-02-24
 title: "Getting Started with Hertz: Performance Testing Guide"
+projects: ["Hertz"]
 linkTitle: "Getting Started with Hertz: Performance Testing Guide"
 keywords: ["CloudWeGo", "Hertz", "HTTP framework", "performance testing"]
 description: "The purpose of this blog is to share the scenarios and technical issues that developers need to know when they need to conduct load testing on Hertz.

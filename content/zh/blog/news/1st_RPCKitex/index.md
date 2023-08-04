@@ -1,6 +1,7 @@
 ---
 date: 2022-09-20
 title: "高性能 RPC 框架 CloudWeGo-Kitex 内外统一的开源实践"
+projects: ["Kitex"]
 linkTitle: "高性能 RPC 框架 CloudWeGo-Kitex 内外统一的开源实践"
 keywords: ["Kitex", "CloudWeGo", "RPC", "开源", "Kite", "Golang", "Thrift", "Protobuf", "gRPC", "xDS"]
 description: "本文介绍了高性能 RPC 框架 CloudWeGo-Kitex 的起源与发展历史，以及开源一年以来的功能特性变更、社区共建生态成果、企业落地实践等方面。"
