@@ -1,6 +1,6 @@
 ---
 title: "Netpoll Release"
 linkTitle: "Netpoll"
-projects: []
+projects: ["Netpoll"]
 weight: 3
 ---

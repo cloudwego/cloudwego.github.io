@@ -3,16 +3,7 @@ date: 2023-06-15
 title: "CloudWeGo: A leading practice for building enterprise cloud native middleware!"
 projects: ["CloudWeGo"]
 linkTitle: "CloudWeGo: A leading practice for building enterprise cloud native middleware!"
-keywords:
-  [
-    "CloudWeGo",
-    "middleware",
-    "Kitex",
-    "microservice framework",
-    "ByteDance Open Source",
-    "open source",
-    "cloud native",
-  ]
+keywords: ["CloudWeGo", "middleware", "Kitex", "microservice framework", "ByteDance Open Source", "open source", "cloud native"]
 description: "This article provides an overview of CloudWeGo"
 author: <a href="https://github.com/vinijaiswal" target="_blank">Vini Jaiswal</a>
 ---
@@ -82,7 +73,8 @@ The CloudWeGo project is subdivided into subprojects under:
 - [Shmipc](https://github.com/cloudwego/shmipc-go) (shmipc-spec & shmipc-go)
 - [Volo](https://github.com/cloudwego/volo) (Volo & Volo ecosystem & volo-rs & Motore & Pilota)
 - [Website & Docs](https://github.com/cloudwego/community) (cloudwego.github.io & community)
-  Kitex is equipped with built-in governance strategies and expansion interfaces for frictionless integration into the microservice system. Hertz is a Go HTTP framework with high-performance and strong-extensibility for building micro-services. Netpoll is aimed at scenarios that demand high performance on RPC scenarios. Shmipc is a high performance inter-process communication library, built on Linux's shared memory technology and uses unix or tcp connection to do process synchronization and finally implements zero copy communication across inter-processes. Volo is a high-performance and strong-extensibility Rust RPC framework that helps developers build microservices. Each component of CloudWeGo can be used separately.
+
+Kitex is equipped with built-in governance strategies and expansion interfaces for frictionless integration into the microservice system. Hertz is a Go HTTP framework with high-performance and strong-extensibility for building micro-services. Netpoll is aimed at scenarios that demand high performance on RPC scenarios. Shmipc is a high performance inter-process communication library, built on Linux's shared memory technology and uses unix or tcp connection to do process synchronization and finally implements zero copy communication across inter-processes. Volo is a high-performance and strong-extensibility Rust RPC framework that helps developers build microservices. Each component of CloudWeGo can be used separately.
 
 We welcome you to [contribute](https://github.com/cloudwego/community/blob/main/CONTRIBUTING.md) by submitting issues and PRs to build CloudWeGo together. Contributing to CloudWeGo involves various roles and responsibilities within the project's GitHub organization. The roles include Member, Committer, Reviewer, Approver, and Maintainer. Members are active contributors in the community and are expected to participate in discussions and make multiple contributions to the project. Committers are active code contributors and play a role in reviewing and approving code contributions. Reviewers have expertise in the codebase and provide feedback on contributions. Approvers review and approve code contributions, ensuring their holistic acceptance. Maintainers are responsible for setting technical direction, making design decisions, and ensuring the overall health of a subproject. The responsibilities and privileges of each role vary, but they all contribute to the growth and success of CloudWeGo. The responsibilities of contributor roles in CloudWeGo are outlined in our [community membership document](https://github.com/cloudwego/community/blob/main/COMMUNITY_MEMBERSHIP.md).
 

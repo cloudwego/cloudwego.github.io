@@ -1,14 +1,14 @@
 ---
 date: 2022-05-19
 title: "字节微服务框架的挑战和演进"
-projects: ["CloudWeGo", "Kitex"]
+projects: ["Kitex"]
 linkTitle: "字节微服务框架的挑战和演进"
 keywords: ["微服务框架", "字节跳动", "Kitex", "Kite", "Go"]
 description: "本文介绍了随着字节跳动内部业务的快速发展，字节微服务框架面临的挑战，以及为了应对这些挑战做了哪些演进，最后介绍了面向开源的 Kitex 的功能特性和内部落地的经典案例等。"
 author: <a href="https://github.com/lsjbd" target="_blank">lsjbd</a>
 ---
 
-# 字节微服务框架的挑战和演进
+## 字节微服务框架的挑战和演进
 
 2014 年以来，字节跳动内部业务的快速发展，推动了长连接推送服务，它们面临着高并发的业务需求问题，对性能和开发效率都有很高要求。当时的业务，大部分都是由 Python 开发，难以应对新出现的问题。
 项目负责人在一众现存的技术栈中选择了 Golang 这一门新兴的编程语言，快速解决了性能和开发效率的问题。随后，字节跳动内部开始逐渐推广使用 Golang 进行服务开发。
@@ -26,7 +26,7 @@ author: <a href="https://github.com/lsjbd" target="_blank">lsjbd</a>
 字节跳动 Golang RPC 框架的演进
 </p>
 
-## Kite 的缺陷
+### Kite 的缺陷
 
 Kite 作为字节跳动第一代 Golang RPC 框架，主要存在以下缺陷：
 
@@ -38,7 +38,7 @@ Kite 作为字节跳动第一代 Golang RPC 框架，主要存在以下缺陷：
 
 因此，业务的快速发展和需求场景的多样化，催生了新一代 Golang RPC 框架 [Kitex][Kitex]。
 
-## Kitex
+### Kitex
 
 [Kitex][Kitex] 的架构主要包括四个部分：Kitex Tool、Kitex Core、Kitex Byted、Second Party Pkg。
 
@@ -55,16 +55,16 @@ Kitex 的架构设计
 
 总的来说， [Kitex][Kitex] 主要有五个特点：面向开源、功能丰富、灵活可拓展、支持多协议、高性能。
 
-## 面向开源
+### 面向开源
 
 由于之前已经体验过了 Kite 维护的各种问题，我们在立项之初就考虑到了未来可能会开源 [Kitex][Kitex]。因此，我们设计的第一个宗旨就是不将 [Kitex][Kitex] 和公司内部的基础设施进行强耦合或者硬编码绑定。
 Kitex Core 是一个非常简洁的框架，公司内部的所有基础设施都以拓展的方式注入到 Kitex Core 里。即使我们现在已经开源了，它也以这种形式存在。
 公司内部基础设施的更新换代，和 [Kitex][Kitex] 自身的迭代是相互独立的，这对于业务来说是非常好的体验。同时，在 [Kitex][Kitex] 的接口设计上，我们使用了 Golang 经典的 Option 模式，
 它是可变参数，通过 Option 能够提供各种各样的功能，这为我们的开发和业务的使用都带来了非常大的灵活性。
 
-## Kitex 的功能特性
+### Kitex 的功能特性
 
-### 治理能力
+#### 治理能力
 
 [Kitex][Kitex] 内置了丰富的服务治理能力，例如超时熔断、重试、负载均衡、泛化调用、数据透传等功能。业务或者外部的用户使用 [Kitex][Kitex] 都是可以开箱即用的。
 如果你有非常特殊的需求，你也可以通过我们的注入点去进行定制化操作，比如你可以自定义中间件去过滤或者拦截请求，定义跟踪器去注入日志、去注入服务发现等。
@@ -88,7 +88,7 @@ Kitex Core 是一个非常简洁的框架，公司内部的所有基础设施都
 示例
 </p>
 
-### 多协议
+#### 多协议
 
 [Kitex][Kitex] 网络层基于高性能网络库 [Netpoll][Netpoll] 实现。在 [Netpoll][Netpoll] 上，我们构建了 Thrift 和 Netpoll-http2；在 Thrift 上，我们还做了一些特殊的定制，例如，支持 Thrift 的泛化调用，还有基于 Thrift 的连接多路复用。
 
@@ -98,13 +98,13 @@ Kitex Core 是一个非常简洁的框架，公司内部的所有基础设施都
 多协议
 </p>
 
-### 代码生成工具
+#### 代码生成工具
 
 和 [Kitex][Kitex] 一同出现的，还有我们开发的一个简单易用的命令行工具 kitex。如果我们写了一个 IDL，只需要提供一个 module 参数和一个服务名称，kitex 就会为你生成服务代码脚手架。
 
 目前 [Kitex][Kitex] 支持了 Protobuf 和 Thrift 这两种 IDL 的定义。命令行工具内置丰富的选项，可以进行项目代码定制；同时，它底层依赖 Protobuf 官方的编译器，和我们自研的 Thriftgo 的编译器，两者都支持自定义的生成代码插件。
 
-## Kitex 的性能表现
+### Kitex 的性能表现
 
 字节跳动内部 RPC 框架使用的协议主要都是基于 Thrift，所以我们在 Thrift 上深耕已久。结合自研的 [Netpoll][Netpoll] 能力，它可以直接暴露底层连接的 buffer。
 在此基础上，我们设计出了 FastRead/FastWrite 编解码实现，测试发现它具有远超过 apache thrift 生成代码的性能。整体而言，[Kitex][Kitex] 的性能相当不错，今年 1 月份的数据如下图所示，
@@ -116,7 +116,7 @@ Kitex Core 是一个非常简洁的框架，公司内部的所有基础设施都
 Kitex/gRPC 性能对比（2022 年 1 月数据）
 </p>
 
-## Kitex：一个 demo
+### Kitex：一个 demo
 
 下面简单演示一下 [Kitex][Kitex] 是如何开发一个服务的。
 
@@ -153,9 +153,9 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 编写 Client
 </p>
 
-# Kitex 在字节内部的落地
+## Kitex 在字节内部的落地
 
-## 与内部基础设施的集成
+### 与内部基础设施的集成
 
 谈到落地，第一步就是 [Kitex][Kitex] 和字节跳动内部的基础设施进行结合。字节跳动内部的所有基础设施都是以依赖的方式注入到 [Kitex][Kitex] 的。
 我们将日志、监控、tracing 都定义为 tracer，然后通过 WithTracer 这个 Option 将其注入到 [Kitex][Kitex] 里；服务发现是 WithResolver；Service Mesh 则是 WithProxy 等。
@@ -167,7 +167,7 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 与内部基础设施的集成
 </p>
 
-## 内部落地的经典案例：合并部署
+### 内部落地的经典案例：合并部署
 
 这里介绍一个内部落地的经典案例：合并部署。其背景是，在开发微服务时，由于业务拆分和业务场景的多样化，微服务容易出现过微的情况。
 当服务数量越来越多，网络传输和序列化开销就会越来越大，变得不可忽视。因此，[Kitex][Kitex] 框架需要考虑如何减小网络传输和序列化的开销。
@@ -187,7 +187,7 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 内部落地的经典案例：合并部署
 </p>
 
-## 微服务框架推进的痛点
+### 微服务框架推进的痛点
 
 - 升级慢
 
@@ -218,7 +218,7 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 
 ![image](/img/blog/Evolution_Kitex_High-performance/Number_of_AccessServices.png)
 
-# Kitex 的开源实践
+## Kitex 的开源实践
 
 开源工作主要包括代码、文档和社区运营三个层面。
 
@@ -242,7 +242,7 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 
 在以上努力下，[CloudWeGo/Kitex](https://github.com/cloudwego/kitex) 仓库目前收获了 4.1k+ stars；[kitex-contrib](https://github.com/kitex-contrib) 获得多个外部用户贡献的仓库；CloudWeGo 飞书用户群近 950 个用户……
 
-# 未来展望
+## 未来展望
 
 首先，我们仍然会持续向开源社区反馈最新的技术进展。例如在 Thrift 协议上，虽然对 Thrift 的编解码已经做到非常极致的优化了，我们还在探索利用 JIT 手段来提供更多的性能提升；
 在 Protobuf 上，我们会补足短板，将在 Thrift 方面的优化经验迁移到 Protobuf 上，对 Protobuf 的生成代码和编解码进行优化； [Kitex][Kitex] 后续也会进一步融入云原生社区，所以也在考虑支持 xDS 协议。

@@ -49,4 +49,3 @@ go build -tags stdjson
 ## Sonic related issues
 
 If there are issues related to Sonic, please refer to Sonic [README](https://github.com/bytedance/sonic) or propose an [issue](https://github.com/bytedance/sonic/issues).
-
