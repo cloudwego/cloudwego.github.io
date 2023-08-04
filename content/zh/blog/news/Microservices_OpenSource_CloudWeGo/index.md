@@ -1,9 +1,9 @@
 ---
 date: 2022-05-26
 title: "从 CloudWeGo 谈云原生时代的微服务与开源"
-projects: []
+projects: ["CloudWeGo"]
 linkTitle: "从 CloudWeGo 谈云原生时代的微服务与开源"
-keywords: ["CloudWeGo","微服务","开源"]
+keywords: ["CloudWeGo", "微服务", "开源"]
 description: "本文将从 CloudWeGo 的角度，介绍云原生时代的微服务与开源的关系，以及 CloudWeGo 在微服务开源领域的探索与实践。"
 author: <a href="https://github.com/GuangmingLuo" target="_blank">GuangmingLuo</a>
 ---
@@ -33,10 +33,10 @@ CloudWeGo 是字节跳动基础架构团队开源出来的项目，它是一套�
 
 CloudWeGo 在第一阶段开源了四个项目：
 
-* [Kitex][Kitex]：高性能、强可扩展的 Golang RPC 框架
-* [Netpoll][Netpoll]：高性能、I/O 非阻塞、专注于 RPC 场景的网络框架
-* [Thriftgo][Thriftgo]：Golang 实现的 thrift 编译器，支持插件机制和语义检查
-* Netpoll-http2：基于 [Netpoll][Netpoll] 的 HTTP/2 实现
+- [Kitex][Kitex]：高性能、强可扩展的 Golang RPC 框架
+- [Netpoll][Netpoll]：高性能、I/O 非阻塞、专注于 RPC 场景的网络框架
+- [Thriftgo][Thriftgo]：Golang 实现的 thrift 编译器，支持插件机制和语义检查
+- Netpoll-http2：基于 [Netpoll][Netpoll] 的 HTTP/2 实现
 
 除了这几个主要项目外，CloudWeGo 紧随其后陆续开源了 [**Kitex-benchmark**](https://github.com/cloudwego/kitex-benchmark)、[**Netpoll-benchmark**](https://github.com/cloudwego/netpoll-benchmark)、
 [**Thrift-gen-validator**](https://github.com/cloudwego/thrift-gen-validator)、[**Kitex-examples**](https://github.com/cloudwego/kitex-examples) 、[**Netpoll-examples**](https://github.com/cloudwego/netpoll-examples)等项目。
@@ -44,7 +44,7 @@ CloudWeGo 在第一阶段开源了四个项目：
 鉴于文章篇幅有限，下文将重点介绍 CloudWeGo 核心项目 [Kitex][Kitex]。
 
 从**演进历史**来看，2014 年，字节跳动技术团队引入 Golang 解决长连接推送业务面临的高并发问题，两年后，内部技术团队基于 Golang 推出了一个名为 Kite 的框架，同时对开源项目 Gin 做了一层很薄的封装，推出了 Ginex。
-这两个框架极大推动了 Golang 在公司内部的应用。此后，围绕性能和可扩展性设计，字节跳动重构 Kite，并在次年 10 月完成并发布Kitex，投入到内部应用中。据悉，截至 2021 年 9 月，线上有 3w+ 微服务使用 Kitex，大部分服务迁移新框架后可以收获 CPU 和延迟上的收益。
+这两个框架极大推动了 Golang 在公司内部的应用。此后，围绕性能和可扩展性设计，字节跳动重构 Kite，并在次年 10 月完成并发布 Kitex，投入到内部应用中。据悉，截至 2021 年 9 月，线上有 3w+ 微服务使用 Kitex，大部分服务迁移新框架后可以收获 CPU 和延迟上的收益。
 
 ![image](/img/blog/Microservices_Open_CloudWeGo/Framework.PNG)
 
@@ -56,13 +56,13 @@ CloudWeGo 在第一阶段开源了四个项目：
 
 ![image](/img/blog/Microservices_Open_CloudWeGo/Functions_Features.PNG)
 
-* **高性能**：网络传输模块 [Kitex][Kitex] 默认集成了自研的网络库 [Netpoll][Netpoll]，性能相较使用 go net 有显著优势；除了网络库带来的性能收益，[Kitex][Kitex] 对 Thrift 编解码也做了深度优化。关于性能数据可参考 [kitex-benchmark](https://github.com/cloudwego/kitex-benchmark)。
-* **扩展性**：[Kitex][Kitex] 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 CloudWeGo [官网文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/)。[Kitex][Kitex] 也并未耦合 [Netpoll][Netpoll]，开发者也可以选择其它网络库扩展使用。
-* **消息协议**：RPC 消息协议默认支持 Thrift、Kitex Protobuf、gRPC。Thrift 支持 Buffered 和 Framed 二进制协议；Kitex Protobuf 是 [Kitex][Kitex] 自定义的 Protobuf 消息协议，协议格式类似 Thrift；gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 互通。除此之外，使用者也可以扩展自己的消息协议。
-* **传输协议**：传输协议封装消息协议进行 RPC 互通，传输协议可以额外透传元信息，用于服务治理，[Kitex][Kitex] 支持的传输协议有 TTHeader、HTTP2。TTHeader 可以和 Thrift、Kitex Protobuf 结合使用；HTTP2 目前主要是结合 gRPC 协议使用，后续也会支持 Thrift。
-* **多消息类型**：支持 PingPong、Oneway、双向 Streaming。其中 Oneway 目前只对 Thrift 协议支持，双向 Streaming 只对 gRPC 支持，后续会考虑支持 Thrift 的双向 Streaming。
-* **服务治理**：支持服务注册/发现、负载均衡、熔断、限流、重试、监控、链路跟踪、日志、诊断等服务治理模块，大部分均已提供默认扩展，使用者可选择集成。
-* **[Kitex][Kitex] 内置代码生成工具，可支持生成 Thrift、Protobuf 以及脚手架代码**。原生的 Thrift 代码由本次一起开源的 [Thriftgo][Thriftgo] 生成，[Kitex][Kitex] 对 Thrift 的优化由 Kitex Tool 作为插件支持。Protobuf 代码由 Kitex 作为官方 protoc 插件生成 ，目前暂未单独支持 Protobuf IDL 的解析和代码生成。
+- **高性能**：网络传输模块 [Kitex][Kitex] 默认集成了自研的网络库 [Netpoll][Netpoll]，性能相较使用 go net 有显著优势；除了网络库带来的性能收益，[Kitex][Kitex] 对 Thrift 编解码也做了深度优化。关于性能数据可参考 [kitex-benchmark](https://github.com/cloudwego/kitex-benchmark)。
+- **扩展性**：[Kitex][Kitex] 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 CloudWeGo [官网文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/)。[Kitex][Kitex] 也并未耦合 [Netpoll][Netpoll]，开发者也可以选择其它网络库扩展使用。
+- **消息协议**：RPC 消息协议默认支持 Thrift、Kitex Protobuf、gRPC。Thrift 支持 Buffered 和 Framed 二进制协议；Kitex Protobuf 是 [Kitex][Kitex] 自定义的 Protobuf 消息协议，协议格式类似 Thrift；gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 互通。除此之外，使用者也可以扩展自己的消息协议。
+- **传输协议**：传输协议封装消息协议进行 RPC 互通，传输协议可以额外透传元信息，用于服务治理，[Kitex][Kitex] 支持的传输协议有 TTHeader、HTTP2。TTHeader 可以和 Thrift、Kitex Protobuf 结合使用；HTTP2 目前主要是结合 gRPC 协议使用，后续也会支持 Thrift。
+- **多消息类型**：支持 PingPong、Oneway、双向 Streaming。其中 Oneway 目前只对 Thrift 协议支持，双向 Streaming 只对 gRPC 支持，后续会考虑支持 Thrift 的双向 Streaming。
+- **服务治理**：支持服务注册/发现、负载均衡、熔断、限流、重试、监控、链路跟踪、日志、诊断等服务治理模块，大部分均已提供默认扩展，使用者可选择集成。
+- **[Kitex][Kitex] 内置代码生成工具，可支持生成 Thrift、Protobuf 以及脚手架代码**。原生的 Thrift 代码由本次一起开源的 [Thriftgo][Thriftgo] 生成，[Kitex][Kitex] 对 Thrift 的优化由 Kitex Tool 作为插件支持。Protobuf 代码由 Kitex 作为官方 protoc 插件生成 ，目前暂未单独支持 Protobuf IDL 的解析和代码生成。
 
 简单总结一下，CloudWeGo 不仅仅是一个开源的项目，也是一个真实的、超大规模的**企业级**最佳实践。它源自企业，所以天生就适合在企业内部落地；它源自开源，最终也拥抱了开源，从 Go 基础库，到 Go 网络库和 Thrift 编译器，再到上层的服务框架，以及框架拥有的所有企业级治理能力，均对外开放开源。
 
@@ -104,11 +104,11 @@ CloudWeGo 在第一阶段开源了四个项目：
 
 [Kitex][Kitex] 大部分服务治理模块都是通过 Middleware 集成，熔断也是一样。[Kitex][Kitex] 提供了一套 CBSuite，封装了服务粒度的熔断器和实例粒度的熔断器。
 
-* **服务粒度熔断**：按照服务粒度进行熔断统计，通过 WithMiddleware 添加。服务粒度的具体划分取决于 Circuit Breaker Key，即熔断统计的 Key，初始化 CBSuite 时需要传入 **GenServiceCBKeyFunc**。
+- **服务粒度熔断**：按照服务粒度进行熔断统计，通过 WithMiddleware 添加。服务粒度的具体划分取决于 Circuit Breaker Key，即熔断统计的 Key，初始化 CBSuite 时需要传入 **GenServiceCBKeyFunc**。
   默认提供的是 `circuitbreaker.RPCInfo2Key`，该 Key 的格式是 `fromServiceName/toServiceName/method`，即按照方法级别的异常做熔断统计。
-* **实例粒度熔断**：按照实例粒度进行熔断统计，主要用于解决单实例异常问题，如果触发了实例级别熔断，框架会自动重试。
+- **实例粒度熔断**：按照实例粒度进行熔断统计，主要用于解决单实例异常问题，如果触发了实例级别熔断，框架会自动重试。
 
-**熔断器的思路很简单根据 RPC 成功或失败的情况，限制对下游的访问**。通常熔断器分为三个时期：CLOSED、OPEN、HALFOPEN。当RPC 正常时，为 CLOSED；
+**熔断器的思路很简单根据 RPC 成功或失败的情况，限制对下游的访问**。通常熔断器分为三个时期：CLOSED、OPEN、HALFOPEN。当 RPC 正常时，为 CLOSED；
 当 RPC 错误增多时，熔断器会被触发，进入 OPEN；OPEN 后经过一定的冷却时间，熔断器变为 HALFOPEN；HALFOPEN 时会对下游进行一些有策略的访问，
 然后根据结果决定是变为 CLOSED，还是 OPEN。总的来说三个状态的转换大致如下图：
 
@@ -136,8 +136,8 @@ CloudWeGo 在第一阶段开源了四个项目：
 
 [Kitex][Kitex] 提供三类重试：超时重试、Backup Request，建连失败重试。其中建连失败是网络层面问题，由于请求未发出，框架会默认重试，下面重点介绍前两类重试的使用。需要注意的是，因为很多的业务请求不具有**幂等性**，这两类重试不会作为默认策略，用户需要按需开启。
 
-* **超时重试**：错误重试的一种，即客户端收到超时错误的时候，发起重试请求。
-* **Backup Request**：客户端在一段时间内还没收到返回，发起重试请求，任一请求成功即算成功。Backup Request 的等待时间 `RetryDelay` 建议配置为 TP99，一般远小于配置的超时时间 `Timeout`。
+- **超时重试**：错误重试的一种，即客户端收到超时错误的时候，发起重试请求。
+- **Backup Request**：客户端在一段时间内还没收到返回，发起重试请求，任一请求成功即算成功。Backup Request 的等待时间 `RetryDelay` 建议配置为 TP99，一般远小于配置的超时时间 `Timeout`。
 
 ![image](/img/blog/Microservices_Open_CloudWeGo/Timeout.png)
 
@@ -151,14 +151,14 @@ CloudWeGo 在第一阶段开源了四个项目：
 
 [Kitex][Kitex] 默认提供了两种负载均衡算法实现：
 
-* **WeightedRandom**：这个算法使用的是基于权重的随机策略，也是 [Kitex][Kitex] 的默认策略。它会依据实例的权重进行加权随机，并保证每个实例分配到的负载和自己的权重成比例。
-* **ConsistentHash**：一致性哈希主要适用于对上下文（如实例本地缓存）依赖程度高的场景，如希望同一个类型的请求打到同一台机器，则可使用该负载均衡方法。
+- **WeightedRandom**：这个算法使用的是基于权重的随机策略，也是 [Kitex][Kitex] 的默认策略。它会依据实例的权重进行加权随机，并保证每个实例分配到的负载和自己的权重成比例。
+- **ConsistentHash**：一致性哈希主要适用于对上下文（如实例本地缓存）依赖程度高的场景，如希望同一个类型的请求打到同一台机器，则可使用该负载均衡方法。
 
 ConsistentHash 在使用时，需要注意如下事项：
 
-* 下游节点发生变动时，一致性哈希结果可能会改变，某些 Key 可能会发生变化；
-* 如果下游节点非常多，第一次冷启动时 Build 时间可能会较长，如果 RPC 超时短的话可能会导致超时；
-* 如果第一次请求失败，并且 Replica 不为 0，那么会请求到 Replica 上；而第二次及以后仍然会请求第一个实例。
+- 下游节点发生变动时，一致性哈希结果可能会改变，某些 Key 可能会发生变化；
+- 如果下游节点非常多，第一次冷启动时 Build 时间可能会较长，如果 RPC 超时短的话可能会导致超时；
+- 如果第一次请求失败，并且 Replica 不为 0，那么会请求到 Replica 上；而第二次及以后仍然会请求第一个实例。
 
 ### **可观测性**
 
@@ -188,10 +188,10 @@ ConsistentHash 在使用时，需要注意如下事项：
 
 此外，在大规模场景下，针对服务治理新功能的研发需求决策，我们往往还需要考虑以下因素：
 
-* **性能:** 大部分业务很在意，也是团队一直努力的重点；
-* **普遍性**:需要评估是不是所有业务都需要的能力；
-* **简洁**: 通俗说，我们不太希望引入太多的线上问题或者太复杂的使用说明文档；
-* **ROI**：功能迭代、产品升级需要考虑整体投资回报率。
+- **性能:** 大部分业务很在意，也是团队一直努力的重点；
+- **普遍性**:需要评估是不是所有业务都需要的能力；
+- **简洁**: 通俗说，我们不太希望引入太多的线上问题或者太复杂的使用说明文档；
+- **ROI**：功能迭代、产品升级需要考虑整体投资回报率。
 
 ## **04 CloudWeGo 的开源之路**
 
@@ -239,7 +239,6 @@ CloudWeGo 在 2021 年底收录进入 CNCF Landscape，丰富了 CNCF 在 RPC �
 ![image](/img/blog/Microservices_Open_CloudWeGo/Plan.png)
 
 从功能研发计划来看，以 [Kitex][Kitex] 为例，将继续以内外部用户需求为驱动力，持续开发新的功能并迭代完善已有的功能。其中，包括支持连接预热、自定义异常重试、对 Protobuf 支持的性能优化，支持 xDS 协议等。
-
 
 从开源生态来看，目前 [Kitex][Kitex] 已经完成了诸多开源项目的对接，未来也将会按需支持更多开源生态。
 此外，CloudWeGo 也在和国内外主流公有云厂商进行合作对接，提供开箱即用、稳定可靠的微服务托管与治理产品的基座；CloudWeGo 也积极与国内外软件基金会开展合作和交流，探索新的合作模式。

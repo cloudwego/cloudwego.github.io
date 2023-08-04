@@ -1,9 +1,9 @@
 ---
 date: 2022-05-19
 title: "字节微服务框架的挑战和演进"
-projects: ["Kitex"]
+projects: ["CloudWeGo", "Kitex"]
 linkTitle: "字节微服务框架的挑战和演进"
-keywords: ["微服务框架","字节跳动", "Kitex", "Kite", "Go"]
+keywords: ["微服务框架", "字节跳动", "Kitex", "Kite", "Go"]
 description: "本文介绍了随着字节跳动内部业务的快速发展，字节微服务框架面临的挑战，以及为了应对这些挑战做了哪些演进，最后介绍了面向开源的 Kitex 的功能特性和内部落地的经典案例等。"
 author: <a href="https://github.com/lsjbd" target="_blank">lsjbd</a>
 ---
@@ -21,6 +21,7 @@ author: <a href="https://github.com/lsjbd" target="_blank">lsjbd</a>
 直到 2021 年年中，字节跳动内部已有 2w+ 服务使用了 [Kitex][Kitex]。因此，我们决定全面优化 [Kitex][Kitex]，将其实践成果进行开源，反馈给开源社区。
 
 ![image](/img/blog/Evolution_Kitex_High-performance/GolangRPC.png)
+
 <p align="center">
 字节跳动 Golang RPC 框架的演进
 </p>
@@ -41,12 +42,13 @@ Kite 作为字节跳动第一代 Golang RPC 框架，主要存在以下缺陷：
 
 [Kitex][Kitex] 的架构主要包括四个部分：Kitex Tool、Kitex Core、Kitex Byted、Second Party Pkg。
 
-* Kitex Core 是一个携带了一套微服务治理功能的 RPC 框架，它是 [Kitex][Kitex] 的核心部分。
-* Kitex Byted 是一套结合了字节跳动内部基础设施的拓展集合。通过这一套拓展集合，[Kitex][Kitex] 能够在内部支持业务的发展。
-* Kitex Tool 是一个命令行工具，能够在命令行生成我们的代码以及服务的脚手架，可以提供非常便捷的开发体验。
-* Second Party Pkg，例如 [Netpoll][Netpoll]， Netpoll-http2，是 [Kitex][Kitex] 底层的网络库，这两个库也开源在 CloudWeGo 组织中。
+- Kitex Core 是一个携带了一套微服务治理功能的 RPC 框架，它是 [Kitex][Kitex] 的核心部分。
+- Kitex Byted 是一套结合了字节跳动内部基础设施的拓展集合。通过这一套拓展集合，[Kitex][Kitex] 能够在内部支持业务的发展。
+- Kitex Tool 是一个命令行工具，能够在命令行生成我们的代码以及服务的脚手架，可以提供非常便捷的开发体验。
+- Second Party Pkg，例如 [Netpoll][Netpoll]， Netpoll-http2，是 [Kitex][Kitex] 底层的网络库，这两个库也开源在 CloudWeGo 组织中。
 
 ![image](/img/blog/Evolution_Kitex_High-performance/Architecture_design.png)
+
 <p align="center">
 Kitex 的架构设计
 </p>
@@ -63,7 +65,6 @@ Kitex Core 是一个非常简洁的框架，公司内部的所有基础设施都
 ## Kitex 的功能特性
 
 ### 治理能力
-
 
 [Kitex][Kitex] 内置了丰富的服务治理能力，例如超时熔断、重试、负载均衡、泛化调用、数据透传等功能。业务或者外部的用户使用 [Kitex][Kitex] 都是可以开箱即用的。
 如果你有非常特殊的需求，你也可以通过我们的注入点去进行定制化操作，比如你可以自定义中间件去过滤或者拦截请求，定义跟踪器去注入日志、去注入服务发现等。
@@ -82,6 +83,7 @@ Kitex Core 是一个非常简洁的框架，公司内部的所有基础设施都
 业务方使用时，不需要感知很多东西去配置，只需要添加一个 Suite 就足够了，这点非常方便一些中台方或者第三方去做定制。
 
 ![image](/img/blog/Evolution_Kitex_High-performance/Suite.png)
+
 <p align="center">
 示例
 </p>
@@ -91,6 +93,7 @@ Kitex Core 是一个非常简洁的框架，公司内部的所有基础设施都
 [Kitex][Kitex] 网络层基于高性能网络库 [Netpoll][Netpoll] 实现。在 [Netpoll][Netpoll] 上，我们构建了 Thrift 和 Netpoll-http2；在 Thrift 上，我们还做了一些特殊的定制，例如，支持 Thrift 的泛化调用，还有基于 Thrift 的连接多路复用。
 
 ![image](/img/blog/Evolution_Kitex_High-performance/Multi-protocol.png)
+
 <p align="center">
 多协议
 </p>
@@ -108,6 +111,7 @@ Kitex Core 是一个非常简洁的框架，公司内部的所有基础设施都
 可以看到，[Kitex][Kitex] 在使用 Thrift 作为 Payload 的情况下，性能优于官方 gRPC，吞吐接近 gRPC 的两倍；此外，在 [Kitex][Kitex] 使用定制的 Protobuf 协议时，性能也优于 gRPC。
 
 ![image](/img/blog/Evolution_Kitex_High-performance/Kitex_gRPC.png)
+
 <p align="center">
 Kitex/gRPC 性能对比（2022 年 1 月数据）
 </p>
@@ -120,6 +124,7 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 编写完这个 demo.thrift 文件之后，就可以使用 [Kitex][Kitex] 在命令行生成指定的生成代码。如图所示，只需要传入 module name，service name 和目标 IDL 就行了。
 
 ![image](/img/blog/Evolution_Kitex_High-performance/IDL.png)
+
 <p align="center">
 定义 IDL
 </p>
@@ -128,11 +133,13 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 接下来需要通过 go mod tidy 把依赖拉下来，然后用 build.sh 构建，就可以启动服务了。[Kitex][Kitex] 默认的接听端口是 8888。
 
 ![image](/img/blog/Evolution_Kitex_High-performance/Handler.png)
+
 <p align="center">
 定义 Handler 方法
 </p>
 
 ![image](/img/blog/Evolution_Kitex_High-performance/Compile_run.png)
+
 <p align="center">
 编译、运行
 </p>
@@ -141,6 +148,7 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 这里同样是 import 刚刚生成的生成代码，创建 Client、指定服务名字、构成相应的参数，填上“ Hello，word！” ，然后就可以调用了。
 
 ![image](/img/blog/Evolution_Kitex_High-performance/Client.png)
+
 <p align="center">
 编写 Client
 </p>
@@ -154,6 +162,7 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 字节跳动内部的基础设施都是通过 Option 被注入到 [Kitex][Kitex] 的，而且所有的 Option 都是通过前面说的 Suite 打包，简单地添加到业务的代码里完成。
 
 ![image](/img/blog/Evolution_Kitex_High-performance/Integration.png)
+
 <p align="center">
 与内部基础设施的集成
 </p>
@@ -173,22 +182,23 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 那么，它的效果如何呢？在 2021 年的实践过程中，我们对抖音的某个服务约 30% 的流量进行了合并，服务端的 CPU 的消耗减少了 19%， TP99 延迟下降到 29%，效果相当显著。
 
 ![image](/img/blog/Evolution_Kitex_High-performance/Merge_deployment.png)
+
 <p align="center">
 内部落地的经典案例：合并部署
 </p>
 
 ## 微服务框架推进的痛点
 
-* 升级慢
+- 升级慢
 
 大家可能好奇 [Kitex][Kitex] 在字节跳动内部推广是不是很顺畅？其实并不是。作为一个相对而言比较新的框架， [Kitex][Kitex] 和其它新生项目一样，在推广的过程中都会遇到同样的问题。
 特别是， [Kitex][Kitex] 作为一个 RPC 框架，我们提供给用户的其实是一个代码的 SDK, 我们的更新是需要业务方的用户去感知、升级、部署上线，才能最终体现在他们的服务逻辑里，因此具有升级慢的问题。
 
-* 召回慢
+- 召回慢
 
 同时，因为代码都是由研发人员编写，如果代码出现了 bug，我们就需要及时地去感知定位问题，通知负责人去更新版本。因此，会有召回慢的问题。
 
-* 问题排查困难
+- 问题排查困难
 
 业务方的用户在写代码时，他们其实往往关注的是自己的业务逻辑，他们不会深入理解一个框架内部的实现。所以如果出现问题，他们往往会不知所措，需要依赖我们的业务同学才能进行相应的问题排查。所以会有问题排查困难的问题。
 
@@ -214,21 +224,21 @@ Kitex/gRPC 性能对比（2022 年 1 月数据）
 
 **代码层面**
 
-* 代码拆分、脱敏；
-* 内部仓库引用开源仓库，避免内外多副本同时维护；
-* 在开源过程中确保内部用户平滑切换、体验无损；
+- 代码拆分、脱敏；
+- 内部仓库引用开源仓库，避免内外多副本同时维护；
+- 在开源过程中确保内部用户平滑切换、体验无损；
 
 **文档层面**
 
-* 重新梳理用户文档，覆盖方方面面；
-* 建立详尽的用例仓库(CloudWeGo/Kitex-examples)。
+- 重新梳理用户文档，覆盖方方面面；
+- 建立详尽的用例仓库(CloudWeGo/Kitex-examples)。
 
 **社区运营**
 
-* 官网建设；
-* 组建用户群，进行答疑解惑；
-* 飞书机器人对接 Github 的 Issue 管理、PR 管理之类的业务，可以快速响应；
-* 对优秀贡献者进行奖励。
+- 官网建设；
+- 组建用户群，进行答疑解惑；
+- 飞书机器人对接 Github 的 Issue 管理、PR 管理之类的业务，可以快速响应；
+- 对优秀贡献者进行奖励。
 
 在以上努力下，[CloudWeGo/Kitex](https://github.com/cloudwego/kitex) 仓库目前收获了 4.1k+ stars；[kitex-contrib](https://github.com/kitex-contrib) 获得多个外部用户贡献的仓库；CloudWeGo 飞书用户群近 950 个用户……
 
