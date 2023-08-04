@@ -46,4 +46,4 @@ go build -tags stdjson
 
 ## Sonic 相关问题
 
-若出现与 Sonic 相关的问题，可参考 Sonic [README](https://github.com/bytedance/sonic) 或提 issue 解决。
+若出现与 Sonic 相关的问题，可参考 Sonic [README](https://github.com/bytedance/sonic) 或提 [issue](https://github.com/bytedance/sonic/issues) 解决。
