@@ -1,6 +1,7 @@
 ---
 date: 2022-03-28
 title: "一文了解字节跳动微服务中间件 CloudWeGo"
+projects: []
 linkTitle: "一文了解字节跳动微服务中间件 CloudWeGo"
 keywords: ["CloudWeGo", "微服务", "字节跳动", "开源"]
 description: "本文通过访谈的方式以外部视角介绍字节跳动微服务中间件 CloudWeGo 的开源背景、优势和局限以及开源目标等。"

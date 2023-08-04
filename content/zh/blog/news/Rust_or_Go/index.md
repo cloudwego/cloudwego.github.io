@@ -1,6 +1,7 @@
 ---
 date: 2022-09-06
 title: "选择 Go 还是 Rust？CloudWeGo-Volo 基于 Rust 语言的探索实践"
+projects: ["Volo"]
 linkTitle: "选择 Go 还是 Rust？CloudWeGo-Volo 基于 Rust 语言的探索实践"
 keywords: ["Rust", "Go", "CloudWeGo", "Volo"]
 description: "本文介绍了 CloudWeGo-Volo 的起源、设计和实现，以及基于 Rust 语言的探索实践，包括 Go 的代价有哪些，Rust 的优势有哪些。"

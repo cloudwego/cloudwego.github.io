@@ -1,6 +1,7 @@
 ---
 date: 2022-05-26
 title: "从 CloudWeGo 谈云原生时代的微服务与开源"
+projects: []
 linkTitle: "从 CloudWeGo 谈云原生时代的微服务与开源"
 keywords: ["CloudWeGo","微服务","开源"]
 description: "本文将从 CloudWeGo 的角度，介绍云原生时代的微服务与开源的关系，以及 CloudWeGo 在微服务开源领域的探索与实践。"

@@ -1,6 +1,7 @@
 ---
 date: 2023-04-17
 title: "字节开源 Monoio ：基于 io-uring 的高性能 Rust Runtime"
+projects: []
 linkTitle: "字节开源 Monoio ：基于 io-uring 的高性能 Rust Runtime"
 keywords: ["CloudWeGo", "Monoio", "io-uring", "开源", "Rust"]
 description: "本文介绍了 Rust 异步机制、Monoio 的设计概要、Runtime 对比选型和应用等。"

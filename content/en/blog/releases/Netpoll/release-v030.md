@@ -1,6 +1,7 @@
 ---
 title: "Netpoll Release v0.3.0"
 linkTitle: "Release v0.3.0"
+projects: []
 date: 2022-11-09
 description: >
 ---

@@ -1,6 +1,7 @@
 ---
 date: 2023-04-04
 title: "Introducing Shmipc: A High Performance Inter-process Communication Library"
+projects: []
 linkTitle: "Introducing Shmipc: A High Performance Inter-process Communication Library"
 keywords: ["CloudWeGo", "zero copy", "shared memory", "IPC"]
 description: "This blog introduces the background, design ideas and performance of CloudWeGo-Shmipc project, as well as the lessons learned from ByteDance and project roadmap。"

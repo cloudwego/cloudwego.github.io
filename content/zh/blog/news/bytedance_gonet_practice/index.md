@@ -1,6 +1,7 @@
 ---
 date: 2020-05-24
 title: "字节跳动在 Go 网络库上的实践"
+projects: []
 linkTitle: "字节跳动在 Go 网络库上的实践"
 keywords: ["Netpoll", "Go", "epoll", "网络库", "连接多路复用", "ZeroCopy"]
 description: "本文将简单介绍字节跳动自研网络库 Netpoll 的设计及实践；以及我们实际遇到的问题和解决思路，希望能为大家提供一些参考。"

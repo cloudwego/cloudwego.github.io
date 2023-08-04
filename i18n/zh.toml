@@ -69,3 +69,8 @@ other = "请告诉我们如何改进"
 other = "也许你在寻找这些:"
 [error_page_title]
 other = "404, 访问的页面并不存在"
+
+[taxo.projects]
+title = '项目列表'
+[taxo.page.header]
+projects = '项目'

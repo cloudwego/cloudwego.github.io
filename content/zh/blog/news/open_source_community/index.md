@@ -1,6 +1,7 @@
 ---
 date: 2022-09-13
 title: "开源社区的长期主义与新变化 — CloudWeGo 开源社区实践"
+projects: []
 linkTitle: "开源社区的长期主义与新变化 — CloudWeGo 开源社区实践"
 keywords: ["社区", "开源", "长期主义", "社区运营", "社区治理", "CloudWeGo"]
 description: "本文介绍了 CloudWeGo 开源社区的运营模式，以及社区的长期主义与新变化。"

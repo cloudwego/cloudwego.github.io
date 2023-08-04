@@ -1,6 +1,7 @@
 ---
 date: 2022-09-27
 title: "助力字节降本增效，大规模企业级 HTTP 框架 Hertz 设计实践"
+projects: ["Hertz"]
 linkTitle: "助力字节降本增效，大规模企业级 HTTP 框架 Hertz 设计实践"
 keywords: ["Hertz", "HTTP", "Golang", "Gin", "高性能","可扩展"]
 description: "本文描述了字节跳动内部的大规模企业级 HTTP 框架 Hertz 的设计实践，包括 Hertz 的项目起源、架构设计、功能特性，性能表现等方面。"

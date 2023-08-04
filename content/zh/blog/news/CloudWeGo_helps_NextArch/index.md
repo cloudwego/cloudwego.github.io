@@ -1,6 +1,7 @@
 ---
 date: 2022-04-01
 title: "CloudWeGo 助 NextArch 基金会推动标准化建设"
+projects: []
 linkTitle: "CloudWeGo 助 NextArch 基金会推动标准化建设"
 keywords: ["CloudWeGo", "NextArch", "微服务", "标准化建设"]
 description: "CloudWeGo 加入 NextArch 基金会微服务技术小组，推动微服务技术和开源生态的持续发展，针对不同行业和应用场景输出标准化解决方案。"

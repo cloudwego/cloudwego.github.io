@@ -1,6 +1,7 @@
 ---
 date: 2023-06-15
 title: "CloudWeGo: A leading practice for building enterprise cloud native middleware!"
+projects: ["Kitex"]
 linkTitle: "CloudWeGo: A leading practice for building enterprise cloud native middleware!"
 keywords: ["CloudWeGo", "middleware", "Kitex", "microservice framework", "ByteDance Open Source", "open source", "cloud native"]
 description: "This article provides an overview of CloudWeGo"

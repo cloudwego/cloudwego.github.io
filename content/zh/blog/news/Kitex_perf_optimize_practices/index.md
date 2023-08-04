@@ -1,6 +1,7 @@
 ---
 date: 2021-09-23
 title: "字节跳动 Go RPC 框架 Kitex 性能优化实践"
+projects: ["Kitex"]
 linkTitle: "字节跳动 Go RPC 框架 Kitex 性能优化实践"
 keywords: ["Kitex", "性能优化", "Netpoll", "Thrift", "序列化"]
 description: "本文介绍了字节跳动 Go RPC 框架 Kitex 的性能优化实践，包括 Netpoll、Thrift、序列化等方面的优化。"

@@ -1,6 +1,7 @@
 ---
 date: 2022-03-25
 title: "An Article to Learn About ByteDance Microservices Middleware CloudWeGo"
+projects: []
 linkTitle: "An Article to Learn About ByteDance Microservices Middleware CloudWeGo"
 keywords: ["CloudWeGo", "Microservices", "ByteDance", "Open Source"]
 description: "This blog introduces the open-source background, advantages, limitations and goals of CloudWeGo from an external perspective through interviews."

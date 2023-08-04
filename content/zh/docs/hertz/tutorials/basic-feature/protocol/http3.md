@@ -42,10 +42,10 @@ h.AddProtocol(suite.HTTP3, factory.NewServerFactory(&http3.Option{}))
 | 配置               |  说明                                         |
 | :----------------- | -------------------------------------------- |
 | WithTransport      | 设置 HTTP3 实现的网络库 `quic.NewTransporter` |
-| WithAltTransport | 设置备用网络库 `netpoll` 或 `go net`，适用于同时在 TCP 和 QUIC 监听的场景  |   
-| WithALPN | 设置是否启用 ALPN |   
+| WithAltTransport | 设置备用网络库 `netpoll` 或 `go net`，适用于同时在 TCP 和 QUIC 监听的场景  |
+| WithALPN | 设置是否启用 ALPN |
 | WithTLS | 设置 TLS 配置 |
-| WithHostPorts | 设置开启服务的域名和端口号 |   
+| WithHostPorts | 设置开启服务的域名和端口号 |
 
 ## 示例代码
 
@@ -236,5 +236,3 @@ func main() {
 	wg.Wait()
 }
 ```
- 
-

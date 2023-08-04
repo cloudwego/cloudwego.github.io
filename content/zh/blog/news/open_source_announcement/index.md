@@ -1,6 +1,7 @@
 ---
 date: 2021-09-07
 title: "字节跳动开源内部微服务中间件 CloudWeGo"
+projects: []
 linkTitle: "字节跳动开源内部微服务中间件 CloudWeGo"
 keywords: ["CloudWeGo", "开源", "微服务", "字节跳动"]
 description: "字节跳动宣布正式开源内部微服务中间件 CloudWeGo"

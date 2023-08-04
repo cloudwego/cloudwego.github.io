@@ -1,6 +1,7 @@
 ---
 date: 2022-12-20
 title: "Kitex Proxyless Practice：Traffic Lane Implementation with Istio and OpenTelemetry"
+projects: ["Kitex", "Hertz"]
 linkTitle: "Kitex Proxyless Practice：Traffic Lane Implementation with Istio and OpenTelemetry"
 keywords: ["CloudWeGo", "Proxyless", "Traffic Route", "Lane", "Bookinfo"]
 description: "This blog mainly introduces the realization of traffic routing based on Kitex Proxyless and the bookinfo demo rewrote with Kitex and Hertz. 

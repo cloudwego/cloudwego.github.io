@@ -1,6 +1,7 @@
 ---
 date: 2023-04-17
 title: "Introducing Monoio: a high-performance Rust Runtime based on io-uring"
+projects: []
 linkTitle: "Introducing Monoio: a high-performance Rust Runtime based on io-uring"
 keywords: ["CloudWeGo", "Monoio", "io-uring", "Open Source", "Rust"]
 description: "This blog introduces the asynchronous mechanism of Rust, the design outline of Monoio, the comparison selection and application of Runtime, etc."

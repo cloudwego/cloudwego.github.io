@@ -1,6 +1,7 @@
 ---
 date: 2023-04-04
 title: "字节跳动开源 Shmipc：基于共享内存的高性能 IPC"
+projects: []
 linkTitle: "字节跳动开源 Shmipc：基于共享内存的高性能 IPC"
 keywords: ["CloudWeGo", "zero copy", "shared memory", "IPC"]
 description: "本文介绍了 CloudWeGo-Shmipc 项目的背景、设计思路和性能表现，以及在字节内部落地的踩坑记录，并分享了后续规划。"
