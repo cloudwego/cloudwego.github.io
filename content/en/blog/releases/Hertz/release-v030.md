@@ -1,6 +1,7 @@
 ---
 title: "Hertz Release v0.3.0"
 linkTitle: "Release v0.3.0"
+projects: ["Hertz"]
 date: 2022-08-29
 description: >
 ---

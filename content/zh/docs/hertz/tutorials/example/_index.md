@@ -22,6 +22,13 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 ### hertz_session
 - [hertz_session](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_session) ：在 hertz server 中使用分布式 session 和 csrf 的示例
 
+### tiktok_demo
+
+- [tiktok_demo](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/tiktok_demo) ：拥有用户、视频、互动、社交功能的仿 tiktok hertz server
+
+### hz_kitex_demo
+
+- [hz_kitex_demo](https://github.com/cloudwego/hertz-examples/tree/main/hz_kitex_demo) ：hertz 和 kitex 配合使用的示例
 
 ## Server
 
@@ -44,6 +51,8 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 - [pprof](https://github.com/cloudwego/hertz-examples/tree/main/middleware/pprof) ：使用 pprof 中间件的示例
 - [requestid](https://github.com/cloudwego/hertz-examples/tree/main/middleware/requestid) ：使用 RequestID 中间件的示例
 - [gzip](https://github.com/cloudwego/hertz-examples/tree/main/middleware/gzip) ：在 hertz server 中使用 gzip 中间件的示例
+- [csrf](https://github.com/cloudwego/hertz-examples/tree/main/middleware/csrf) ：在 hertz server 中使用 csrf 中间件的示例
+- [loadbalance](https://github.com/cloudwego/hertz-examples/tree/main/middleware/loadbalance/round_robin) ：在 hertz server 中使用 loadbalance 中间件的示例
 
 ### 参数绑定及验证
 - [binding](https://github.com/cloudwego/hertz-examples/tree/main/binding) ：参数绑定及验证的示例
@@ -82,14 +91,23 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 - [adaptor](https://github.com/cloudwego/hertz-examples/tree/main/adaptor) ：使用 adaptor 集成基于 `http.Handler` 接口开发的工具, 包含使用 [jade](https://github.com/Joker/jade) 作为模版引擎的示例
 
 ### Sentinel
-- [sentinel:](https://github.com/cloudwego/hertz-examples/tree/main/sentinel) ：sentinel-golang 结合 hertz 使用的示例
+- [sentinel](https://github.com/cloudwego/hertz-examples/tree/main/sentinel) ：sentinel-golang 结合 hertz 使用的示例
 
 ### 反向代理
 - [reverseproxy](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy) ：在 hertz server 中使用反向代理的示例
 
 ### Hlog
-- [hlog:](https://github.com/cloudwego/hertz-examples/tree/main/hlog) ：使用 hlog 以及其日志拓展的示例
+- [standard](https://github.com/cloudwego/hertz-examples/tree/main/hlog/standard) ：使用 hertz 默认实现的日志的示例
+- [custom](https://github.com/cloudwego/hertz-examples/tree/main/hlog/custom) ：日志扩展的示例
+- [zap](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zap) ：在 hertz server 中对接 zap 和 lumberjack 的示例
+- [logrus](https://github.com/cloudwego/hertz-examples/tree/main/hlog/logrus) ：在 hertz server 中对接 logrus 和 lumberjack 的示例
+- [zerolog](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zerolog) ：在 hertz server 中对接 zerolog 和 lumberjack 的示例
 
+### Opentelemetry
+- [opentelemetry](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry) ：使用 obs-opentelemetry 的示例用于对接 opentelemetry
+
+### HTTP Trailer
+- [trailer](https://github.com/cloudwego/hertz-examples/tree/main/trailer) ：使用 HTTP Trailer 的示例
 
 ## Client
 
@@ -117,6 +135,8 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 ### 正向代理
 - [forward_proxy](https://github.com/cloudwego/hertz-examples/tree/main/client/forward_proxy) ：使用 hertz client 配置正向代理的示例
 
+### HTTP Trailer
+- [trailer](https://github.com/cloudwego/hertz-examples/tree/main/trailer) ：使用 HTTP Trailer 的示例
 
 ## Hz
 
@@ -134,3 +154,4 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 
 ### 接入第三方插件
 - [plugin](https://github.com/cloudwego/hertz-examples/tree/main/hz/plugin) ：使用 hz 接入第三方插件的示例
+

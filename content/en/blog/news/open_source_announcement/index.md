@@ -1,6 +1,7 @@
 ---
 date: 2021-09-13
 title: "CloudWeGo Open Source Announcement"
+projects: ["CloudWeGo"]
 linkTitle: "CloudWeGo Open Source Announcement"
 keywords: ["CloudWeGo", "Open Source", "microservice", "ByteDance"]
 description: "ByteDance now offers open source through CloudWeGo！"
@@ -9,9 +10,9 @@ author: ByteDance Architecture Team
 
 ## Background
 
-ByteDance is proud to announce the launch of open source software [CloudWeGo](https://github.com/cloudwego).  Focusing on microservice communication and governance, it offers high performance, strong extensibility, and high reliability which enables quick construction of an enterprise-level cloud native architecture.
+ByteDance is proud to announce the launch of open source software [CloudWeGo](https://github.com/cloudwego). Focusing on microservice communication and governance, it offers high performance, strong extensibility, and high reliability which enables quick construction of an enterprise-level cloud native architecture.
 
-ByteDance uses Golang as its main development language, and supports the reliable communication of tens of thousands of Golang microservices. We are experienced in microservices after practicing under massive traffic, and so we decided to offer open source software in order to enrich the community's ecology. 
+ByteDance uses Golang as its main development language, and supports the reliable communication of tens of thousands of Golang microservices. We are experienced in microservices after practicing under massive traffic, and so we decided to offer open source software in order to enrich the community's ecology.
 
 We have built the CloudWeGo project to gradually open source the internal microservices system and try to make the projects friendly to external users, and our internal projects will also use this open source project as a library for iterative development. CloudWeGo will follow a key principle of maintaining one set of code internally and externally, iterating them as a whole. As we needed to migrate our internal users to open source libraries transparently, we did not initially pursue any publicity. However, it has been gratifying to see Kitex gain 1.2k stars and Netpoll gain 700+ stars within one month organically.
 
@@ -23,13 +24,13 @@ Because the projects under CloudWeGo depend on many internal basic tool librarie
 
 ## CloudWeGo
 
-To begin with, the two main projects included within CloudWeGo are the [Kitex](https://github.com/cloudwego/kitex) RPC framework and the [Netpoll](https://github.com/cloudwego/netpoll) network library. We chose not to publicise these projects prematurely, to ensure our open source technologies were ready and had sufficient verification upon launch. 
+To begin with, the two main projects included within CloudWeGo are the [Kitex](https://github.com/cloudwego/kitex) RPC framework and the [Netpoll](https://github.com/cloudwego/netpoll) network library. We chose not to publicise these projects prematurely, to ensure our open source technologies were ready and had sufficient verification upon launch.
 
 ### Kitex
 
-Kitex [kaɪt'eks] is a **high-performance** and **strong-extensibility** Golang RPC framework used in Bytedance.  Before Kitex, the internal Golang framework was Kite, which was strongly coupled with Thrift - the code generation part of which covered intricate logic in the code.
+Kitex [kaɪt'eks] is a **high-performance** and **strong-extensibility** Golang RPC framework used in Bytedance. Before Kitex, the internal Golang framework was Kite, which was strongly coupled with Thrift - the code generation part of which covered intricate logic in the code.
 
-Due to these factors, it was difficult to optimize the framework from the network model or codec level. 
+Due to these factors, it was difficult to optimize the framework from the network model or codec level.
 
 Adding new features will inevitably lead to more bloated code and would have hindered the iteration process. Instead we designed a new framework, Kitex, to address these concerns. Although Kitex is a new framework, it has been applied online internally for more than a year. At present, more than 50% of Golang microservices in Bytedance use Kitex.
 
@@ -75,7 +76,7 @@ Netpoll has been designed to solve these problems. It draws inspiration from the
 
 ### Thriftgo
 
-Thriftgo is an implementation of [thrift](https://thrift.apache.org/docs/idl) compiler in go language that supports complete syntax and semantic checking of Thrift IDL. 
+Thriftgo is an implementation of [thrift](https://thrift.apache.org/docs/idl) compiler in go language that supports complete syntax and semantic checking of Thrift IDL.
 
 Compared with the official Golang code generation by Apache Thrift, Thriftgo made some bug fixes and supports a plugin mechanism. Users can customize the generated code according to their needs.
 
@@ -83,8 +84,7 @@ Thriftgo is the code generation tool of Kitex. CloudWeGo will soon opensource **
 
 Although Thriftgo currently only supports the generation of Golang Thrift code, it is positioned to support Thrift code generation in various languages. If there is a need in future, we will also consider supporting code generation for other programming languages. At the same time, we will try to contribute Thriftgo to the Apache Thrift community.
 
-
-## Maintenance 
+## Maintenance
 
 A complete microservice system builds upon a basic cloud ecosystem. No matter how the microservices are developed; based on the public cloud, a private cloud or your own infrastructure, additional services (including service governance platform, monitoring, tracing, service registry and discovery, configuration and service mesh etc) and some customized standards are needed to provide better service governance. At Bytedance we have complete internal services to support the microservice system, but these services cannot be open source in the short term. So, how will CloudWeGo maintain a set of code internally and externally, and iterate them as a whole?
 
@@ -94,24 +94,23 @@ Kitex's code is split into two parts, including the core of Kitex which has been
 
 For open source users who use Kitex, they can also extend Kitex and integrate Kitex into their own microservice system. We hope, and expect, that more developers will contribute their own extensions to [kitex-contrib](https://github.com/kitex-contrib), providing help and convenience for more users.
 
-## Future directions 
+## Future directions
 
-  - Open source other internal projects
+- Open source other internal projects
 
 We will continue to open source other internal projects, such as HTTP framework **Hertz**, shared memory-based IPC communication library **ShmIPC** and others, to provide more support for microservice scenarios.
 
-  - Open source verified and stable features
+- Open source verified and stable features
 
 The main projects of CloudWeGo provide support for internal microservices of Bytedance. New features are usually verified internally, and we will gradually open source them when they are relatively mature, such as the integration of **ShmIPC**, **no serialization**, and **no code generation**.
 
-  - Combine internal and external needs and iterate
+- Combine internal and external needs and iterate
 
 After launching open source software, in addition to supporting internal users we also hope that CloudWeGo can provide good support for external users and help everyone quickly build their own microservice system. As such, we will iterate based on the needs of both internal and external users.
 
-Following initial feedback, users have shown a stronger demand for Protobuf. Although Kitex supports multiple protocols, the internal RPC communication protocol of Bytedance is Thrift. Protobuf, Kitex Protobuf or compatibility with gRPC is supported only to fulfill the needs of a small number of internal users, so performance [for Protobuf] has not been optimized yet. In terms of code generation, we have not made any optimizations, and currently utilize Protobuf's official binary directly. 
+Following initial feedback, users have shown a stronger demand for Protobuf. Although Kitex supports multiple protocols, the internal RPC communication protocol of Bytedance is Thrift. Protobuf, Kitex Protobuf or compatibility with gRPC is supported only to fulfill the needs of a small number of internal users, so performance [for Protobuf] has not been optimized yet. In terms of code generation, we have not made any optimizations, and currently utilize Protobuf's official binary directly.
 
-Gogo/protobuf is an excellent open source library that optimizes Protobuf serialization performance based on generated code, but unfortunately the library is currently out of maintenance, which is why Kitex did not choose gogo. 
+Gogo/protobuf is an excellent open source library that optimizes Protobuf serialization performance based on generated code, but unfortunately the library is currently out of maintenance, which is why Kitex did not choose gogo.
 In order to meet the growing needs of developers, we are planning to carry out Kitex's performance optimization for Protobuf support.
 
-You are welcome to submit issues and PRs to build CloudWeGo together. We are excited for more developers to join, and also look forward to CloudWeGo helping more and more companies quickly build cloud-native architectures. If any corporate customers want to employ CloudWeGo in your internal projects, we can provide technical support. Feel free to raise an issue in [Github](https://github.com/cloudwego) if you have any questions. 
-
+You are welcome to submit issues and PRs to build CloudWeGo together. We are excited for more developers to join, and also look forward to CloudWeGo helping more and more companies quickly build cloud-native architectures. If any corporate customers want to employ CloudWeGo in your internal projects, we can provide technical support. Feel free to raise an issue in [Github](https://github.com/cloudwego) if you have any questions.

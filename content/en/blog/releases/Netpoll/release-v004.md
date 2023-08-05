@@ -1,9 +1,9 @@
 ---
 title: "Netpoll Release v0.0.4"
 linkTitle: "Release v0.0.4"
+projects: ["Netpoll"]
 date: 2021-09-16
 description: >
-  
 ---
 
 ## Improvement:
@@ -20,4 +20,3 @@ description: >
 ## Bugfix:
 
 - Set leftover wait read size
-

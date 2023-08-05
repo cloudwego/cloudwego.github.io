@@ -3,14 +3,13 @@ title: "Client"
 linkTitle: "Client"
 weight: 3
 description: >
-
 ---
 
 cwgo 工具支持通过 IDL 生成 HTTP Client 或 RPC Client 的调用代码，方便用户开发。
 
-# 基础命令
+## 基础命令
 
-使用 ` cwgo client -h  `查看生成 client 代码的帮助命令。
+使用 `cwgo client -h` 查看生成 client 代码的帮助命令。
 
 ```sh
 $ cwgo client -h
@@ -42,7 +41,7 @@ OPTIONS:
 
 ## 详细参数
 
-```
+```console
 --service    指定服务名称
 --type       指定生成类型，支持参数 RPC、HTTP
 --module     指定生成 module 名称
@@ -53,9 +52,9 @@ OPTIONS:
 --pass value 传递给 hz 和 kitex 的参数
 ```
 
-# RPC Client
+## RPC Client
 
-## 编写 IDL
+### 编写 IDL
 
 ```go
  // hello.thrift
@@ -82,9 +81,9 @@ service HelloService {
 cwgo client  --type RPC  --idl hello.thrift  --service hellotest
 ```
 
-## 生成代码
+### 生成代码
 
-```
+```console
 ├── hello.thrift # IDL 文件
 ├── kitex_gen    # IDL 内容相关的生成代码
 │   └── hello
@@ -104,14 +103,11 @@ cwgo client  --type RPC  --idl hello.thrift  --service hellotest
         └── hellotest_init.go     # client 初始化代码
 ```
 
+## HTTP Client
 
+### 编写 IDL
 
-
-# HTTP Client
-
-## 编写 IDL
-
-编写一个简单的 IDL 用于生成 HTTP Client，需要添加 `api.$method` 与 `api.base_domain` 用于填充 `uri` 与`host`。
+编写一个简单的 IDL 用于生成 HTTP Client，需要添加 `api.$method` 与 `api.base_domain` 用于填充 `uri` 与 `host`。
 
 ```thrift
  // hello.thrift
@@ -135,7 +131,7 @@ service HelloService {
  )
 ```
 
-## 命令
+### 命令
 
 执行如下基础命令生成客户端
 
@@ -143,17 +139,17 @@ service HelloService {
 cwgo client  --type HTTP  --idl hello.thrift  --service hellotest
 ```
 
-## 生成代码
+### 生成代码
 
-`hello_service.go` 中提供了一个默认 client 实现 ，用户可以直接使用它。如果有自定义配置需求，则可以使用 `hertz_client.go` 中提供的 `options` 用于自定义复杂配置的Client。
+`hello_service.go` 中提供了一个默认 client 实现 ，用户可以直接使用它。如果有自定义配置需求，则可以使用 `hertz_client.go` 中提供的 `options` 用于自定义复杂配置的 Client。
 
-```
+```console
 .
 ├── biz
 │   └── http
 │       └── hello_service
 │           ├── hello_service.go # client 初始化以及调用代码
-│           └── hertz_client.go  # client 具体实现代码 
+│           └── hertz_client.go  # client 具体实现代码
 ├── hello.thrift # IDL 文件
 └── hertz_gen    #IDL 内容相关的生成代码
     └── hello

@@ -1,9 +1,11 @@
 ---
+date: 2023-08-02
 title: "Hertz 支持 QUIC & HTTP/3"
-linkTitle: "Hertz 支持 QUIC & HTTP/3 "
-weight: 4
-description: >
-
+projects: ["Hertz"]
+linkTitle: "Hertz 支持 QUIC & HTTP/3"
+keywords: ['Go', 'Hertz', 'QUIC', 'HTTP/3', '接口设计']
+description: "本文介绍了 Hertz 为支持 QUIC & HTTP/3 在网络传输层和协议层提供的接口设计方案。"
+author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 ---
 
 ## 概述
@@ -359,4 +361,4 @@ type Core interface {// IsRunning Check whether engine is running or not
 
 ## 实现
 
-https://github.com/cloudwego/hertz/issues/458
+https://github.com/hertz-contrib/http3

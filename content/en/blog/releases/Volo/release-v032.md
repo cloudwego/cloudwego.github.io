@@ -1,6 +1,7 @@
 ---
 title: "Volo Release 0.3.2"
 linkTitle: "Release 0.3.2"
+projects: ["Volo"]
 date: 2023-02-07
 description: >
 ---

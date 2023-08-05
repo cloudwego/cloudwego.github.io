@@ -107,8 +107,6 @@ func redirectFrame(from, to nphttp2.GRPCConn) chan error {
 
 这里使用 ReadFrame 不断读取 gRPC Frame 并写入转发目标端。当最后一次读取 ReadFrame 收到带有 EndStream 标识符的 Data Frame 后，ReadFrame 会收到 io.EOF，代表连接处于半关闭状态，此时 hdr 和 data 的值都为 nil，所以使用 WriteFrame 也向远端发送一个带有 EndStream 的空包，表示发送内容结束，否则可能会出现 proxy server 阻塞的场景。
 
-
-
 ## 解码处理后转发
 
 在有些 proxy server 的场景中，我们需要解码获取到结构体对象，并进行一些自定义的处理（例如读取请求做判断，或者修改请求的某些字段），再将结构体重新发送到远端。这种场景下，可能需要在 proxy server 的代码中引入对应的 client 桩模块代码。示例如下：

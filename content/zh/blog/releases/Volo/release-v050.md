@@ -1,6 +1,7 @@
 ---
 title: 'Volo 0.5.0 版本发布'
 linkTitle: 'Release v0.5.0'
+projects: ["Volo"]
 date: 2023-06-02
 description: >
 ---

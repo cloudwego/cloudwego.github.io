@@ -1,16 +1,20 @@
 ---
 date: 2022-09-30
 title: "Kitex: Unifying Open Source Practice for a High-Performance RPC Framework"
+projects: ["Kitex"]
 linkTitle: "Kitex: Unifying Open Source Practice for a High-Performance RPC Framework"
 keywords: ["CloudWeGo", "RPC framework", "Kitex", "microservice framework", "ByteDance Open Source", "open source"]
 description: "This article provides an overview of CloudWeGo - Kitex, a high-performance RPC framework, including its origins, development history, and the progress made since its open-source release a year ago. It covers the evolution of functional features, contributions from the community to the ecosystem, and successful implementation practices by enterprises. It highlights the growth and improvements Kitex has undergone, showcasing its commitment to delivering a robust and efficient solution for RPC communication in various scenarios."
 author: <a href="https://github.com/cloudwego" target="_blank">CloudWeGo Team</a>
 ---
+
 ## From Development to Open Source Transition
+
 Many researchers and practitioners may have just learned about CloudWeGo, so let's first introduce the relationship between CloudWeGo and [Kitex](https://github.com/cloudwego/kitex).
 
 ## CloudWeGo and Kitex
-Kitex is CloudWeGo's first open-source microservice framework, designed to empower developers in building high-performance and extensible microservices using Golang. Kitex encompasses the entire stack, including the network library, serialization library, and framework implementation, making it a comprehensive self-developed RPC framework. 
+
+Kitex is CloudWeGo's first open-source microservice framework, designed to empower developers in building high-performance and extensible microservices using Golang. Kitex encompasses the entire stack, including the network library, serialization library, and framework implementation, making it a comprehensive self-developed RPC framework.
 
 One notable feature of Kitex is its support for the gRPC protocol. Leveraging the official gRPC source code, Kitex optimizes the gRPC implementation, resulting in superior performance compared to the official gRPC framework. This sets Kitex apart from other Golang frameworks that offer open-source support for the gRPC protocol. Developers seeking both gRPC functionality and high-performance capabilities will find Kitex to be an excellent choice.
 
@@ -21,6 +25,7 @@ Based on feedback from the community, there have been discussions surrounding wh
 ![image](/img/blog/Kitex_architecture_explained_en/2.png)
 
 ## Kitex Development History
+
 In 2014, ByteDance began adopting Golang as a programming language. The internal services of ByteDance were established in 2015, where the Thrift protocol was chosen for RPC (Remote Procedure Call) scenarios, and an internal RPC framework was supported. In 2016, the first Golang RPC framework called Kite was officially launched. During the initial stages of rapid company growth, the primary focus is on quickly implementing requirements and addressing relatively simple scenarios. Therefore, there may not be extensive considerations in the design process. This approach is reasonable since the exploration phase lacks complete clarity on which scenarios will require support, and excessive consideration can lead to over-design issues.
 
 As business scenarios became more complex, the demand for diversified functionalities increased, resulting in a rise in the number of access services and calls each year. Kite, the initial Golang RPC framework, eventually proved inadequate to support subsequent iterations. Recognizing this, a new project called Kitex was initiated in 2019, following over three years of online service. The official version of Kitex was released in early 2020, and by the end of the same year, over 10,000 services within Byte were connected to Kitex, showcasing its widespread adoption.
@@ -50,6 +55,7 @@ After successfully open-sourcing the gopkg library, we made necessary code adjus
 By providing insights into Kitex's development and open-source history, our aim is to address concerns that external developers may have regarding whether Kitex is a KPI project. We want to assure them that Kitex is a community-driven open-source project backed by our commitment to stability, compatibility, and continuous improvement.
 
 ### The Value of Open Source
+
 Towards the end of the first part, let's briefly discuss the value that open source brings to us. Although Kitex was not initially developed solely for open source purposes, its implementation has been oriented towards open source from the start. **Kitex** itself is a project that has undergone extensive internal implementation within our organization. By open sourcing Kitex, our aim is to enable more users to swiftly build microservices internally.
 
 At the same time, open source allows us to gather valuable feedback from communities and enterprises. It also attracts external developers to contribute their expertise and insights. This collective engagement helps drive the evolution of Kitex towards supporting multiple scenarios and enriching its capabilities, making it applicable to a wider range of contexts and organizations.
@@ -58,27 +64,35 @@ This symbiotic process of open source fosters a positive cycle of mutual benefit
 ![image](/img/blog/Kitex_architecture_explained_en/6.png)
 
 ## A Year-long Review of Open Source Changes
+
 ### Framework Metrics
+
 Before delving into the one-year open source changes of Kitex, let us first discuss the key metrics that should be considered when choosing a framework.
 
 ### Scalability
+
 A framework's scalability is crucial in determining its suitability for different platforms. If a framework is tightly coupled with internal capabilities and cannot be easily transplanted or expanded to support various scenarios, it may present challenges when used externally.
 
 ### Usability
+
 The ease of use of a framework can be evaluated from two perspectives. Firstly, for business developers, a framework that requires meticulous attention to its internal details may not be suitable for teams with high research and development efficiency requirements. Secondly, for framework-oriented secondary developers who provide custom support, a framework with excessive expansion capabilities or insufficient scalability may impose limitations and high expansion costs.
 
 ### Richness of Functions
+
 While a framework can be customized based on extensibility, it is important to consider that not all developers have the capacity for extensive custom development. An ideal framework should offer a range of options for different expansion capabilities, allowing developers to select and combine them according to their underlying infrastructure and specific environment.
 
 ### High Performance
+
 While the preceding three points are crucial considerations during the initial framework selection, as service scale and resource consumption increase, performance becomes an indispensable factor. It is imperative to prioritize performance when choosing a framework to avoid future issues such as the need for framework replacement or forced customized maintenance.
 
 Regarding the measurement indicators mentioned above, Kitex may not have achieved perfection in all areas, but these four elements have been carefully considered during its design and implementation. We are committed to ensuring a well-rounded framework that addresses these aspects without compromising on any one of them.
 
 ## Features
+
 The following is an overview of several significant functional features that have been introduced in Kitex's open source journey over the past year.
 
 ### Proxyless
+
 Proxyless is a feature in Kitex that caters to open source scenarios. During the initial stages of Kitex's open source release, there were internal discussions on whether to support xDS integration with [Istio](https://github.com/istio/istio). For external users, leveraging Istio allows for the quick establishment of a basic microservices architecture, resolving issues such as service discovery, traffic routing, and configuration delivery. However, utilizing the complete Istio solution necessitates the introduction of Envoy, which can increase operational and maintenance costs. Moreover, using the official Envoy solution directly may result in performance degradation, additional CPU overhead, and increased latency.
 
 If Kitex can directly connect to Istio, users would be able to benefit from some of Istio's capabilities while avoiding the performance loss, deployment complexity, and maintenance costs associated with Envoy. However, in the early days of open source, we did not encounter clear user demands, so we did not provide high-quality support for this.
@@ -87,6 +101,7 @@ If Kitex can directly connect to Istio, users would be able to benefit from some
 Later on, the gRPC team also introduced Proxyless support, and Istio officials adopted Proxyless as a recommended approach for Istio usage. Kitex has now implemented support for Proxyless, primarily focusing on service discovery integration. The extensions supported by xDS have been open sourced separately in the [kitex-contrib/xds](https://github.com/kitex-contrib/xds) library and will undergo further enhancements in the future. To learn how to use Kitex to connect with Istio, please refer to the [README](https://github.com/istio/istio/blob/master/README.md) documentation.
 
 ### JSON and Protobuf generalized Call Support
+
 Initially, Kitex provided support for HTTP generalization in gateway scenarios, as well as Map and binary generalization for common service scenarios. However, after open sourcing Kitex, user feedback highlighted the need for JSON and Protobuf generalization, leading to their subsequent implementation.
 
 The generalization of Protobuf is also used in API gateway scenarios. While the original data format for HTTP generalization is JSON, the serialization of JSON can be bulky and inefficient, which negatively impacts performance. As a result, many mobile interfaces opt to transmit data using Protobuf due to its more compact representation. To address this demand, Kitex now includes support for Protobuf generalization.
@@ -97,6 +112,7 @@ Currently, Kitex's generalization primarily focuses on the back-end Thrift servi
 Now, you may wonder why the generalization is implemented on the calling side instead of the server side. Typically, when we think of generalization, we imagine the server parsing and processing the generalized request, with the caller providing a corresponding generalized client. However, generalization comes with a certain cost, making it less suitable for regular RPC scenarios. Moreover, generalization is meant for all back-end services, including those written in different languages like Golang, Java, C++, Python, Rust, and more. If every language framework had to support generalization, the cost would be significantly high. Additionally, achieving convergence across different language frameworks is a lengthy process. Considering these factors, Kitex supports generalization on the calling side. This approach allows for greater flexibility and enables users to take advantage of generalization selectively based on their specific needs.
 
 ### Enhanced Retry Capability
+
 When Kitex was open sourced last year, it already supported the retry function. Initially, there were two types of retries available: timeout retry and Backup Request.
 For timeout retry, only the timeout exception was retried. However, to further improve the success rate of requests, users expressed the need to retry other exceptions or based on specific user-defined status codes. It became evident that supporting only timeout retry was insufficient to meet user requirements. In response, Kitex introduced retries with specified results. Users can now specify other exceptions or a particular type of response for which they want retries, and the framework will retry according to the specified results.
 
@@ -105,15 +121,18 @@ The example below illustrates the usage of request granularity retry configurati
 ![image](/img/blog/Kitex_architecture_explained_en/9.png)
 
 ### Thrift Validator
+
 Thrift-gen-validator is a tool plug-in for Thriftgo, that enhances the code generation process. It allows users to describe and enforce constraints on the generated `struct`'s `IsValid()` error method based on annotations defined in the Thrift IDL. This ensures the legality of field values. Usually when making an RPC call, the user may verify the validity of some fields. If the user directly writes these verification codes, the investment cost will be high. To address this, we provide annotation support. As long as users define annotations in IDL according to the specified format, Kitex can help users generate verification code.
 
 The example below demonstrates the usage of code generation commands and an IDL annotation definition. By specifying the Thrift Validator plugin during code generation, our tool will parse the annotations and generate the required validation code. We are also currently contributing the Thrift Validator functionality to Apache Thrift.
 ![image](/img/blog/Kitex_architecture_explained_en/10.png)
 
 ## Performance Optimization
+
 After highlighting the important functional features, let's move on to discussing several performance optimization features.
 
 ### Thrift High-Performance Codec
+
 [Frugal](https://github.com/cloudwego/frugal) is a dynamic Thrift codec that offers high-performance capabilities by leveraging Just-in-Time (JIT) compilation, eliminating the need for code generation. While we have already optimized the official Thrift codec and introduced FastThrift as part of our pre-open source optimization efforts, we wanted to further enhance performance by incorporating the design principles from our open source high-performance JSON library, Sonic. As a result, we have implemented the Thrift JIT codec in Frugal.
 The table below illustrates a performance comparison between Frugal, combined with Kitex, and FastThrift.
 ![image](/img/blog/Kitex_architecture_explained_en/frugal.png)
@@ -123,6 +142,7 @@ It is evident that Frugal offers superior RPC performance in most scenarios. In 
 To learn how to use Frugal in conjunction with Kitex, you can refer to the repository's [Readme](https://github.com/cloudwego/frugal#readme) file. users can also utilize Frugal as a standalone high-performance codec for Thrift. In the future, [Kitex](https://github.com/cloudwego/kitex) may consider incorporating Frugal as the default codec option.
 
 ### Protobuf High-Performance Codec
+
 We primarily focused on supporting Thrift internally; however, we recognized that external users are more inclined towards using Protobuf or gRPC after the open-source release. Consequently, taking inspiration from Kitex FastThrift's optimization approach, we re-implemented the generated code for Protobuf.
 Starting from version v0.4.0, if users employ Kitex tools to generate Protobuf code, the default generation will include Fastpb codec code. Furthermore, when initiating RPC calls, Kitex will also utilize [Fastpb](https://github.com/cloudwego/fastpb) as the default serialization option.
 
@@ -133,7 +153,7 @@ The figure below illustrates a performance comparison between Fastpb and the off
 
 In the early days of open sourcing Kitex, our focus on stability and performance optimization for gRPC was relatively limited, as there were fewer internal use cases. However, after receiving feedback from numerous external users, we made dedicated efforts to address issues and optimize the performance of gRPC. In the middle of this year, we officially contributed these optimizations to the open-source library, which was released in version v0.4.0.
 
-The figure below provides a comparison of unary request throughput between Kitex-gRPC and the official gRPC framework before and after optimization. On the left side, you can see the throughput comparison before optimization. 
+The figure below provides a comparison of unary request throughput between Kitex-gRPC and the official gRPC framework before and after optimization. On the left side, you can see the throughput comparison before optimization.
 
 The figure below provides a comparison of unary request throughput between Kitex-gRPC and the official gRPC framework before and after optimization. On the left side, you can see the throughput comparison before optimization. At relatively low concurrency, Kitex's throughput does not exhibit an advantage over the official gRPC framework. However, when using Fastpb, Kitex's throughput performance improves compared to the pre-optimization stage. Despite this improvement, the low-concurrency throughput is still lower than that of the official gRPC framework. On the right side of the figure, you can observe the throughput comparison after optimization. The throughput has increased by 46% - 70% compared to the pre-optimization stage, and when compared to the official gRPC framework, the throughput has increased by 51% - 70%.
 ![image](/img/blog/Kitex_architecture_explained_en/13.png)
@@ -155,29 +175,34 @@ Since its open-source release, we have been thrilled by the enthusiastic respons
 While we acknowledge the need for further enrichment in our docking capabilities, we are proud to state that, in conjunction with our existing support, Kitex already possesses the necessary features to facilitate the construction of microservice architectures for external users.
 ![image](/img/blog/Kitex_architecture_explained_en/16.png)
 
-
 We extend our heartfelt appreciation to the developers who have actively contributed to the growth of the CloudWeGo community. To explore the extensive ecosystem surrounding Kitex, we invite you to visit the [kitex-contrib](https://github.com/kitex-contrib) repository in our open-source warehouse.
 
 ### Working with External Companies
+
 Our primary goal with the open-source release of Kitex was to assist external companies in swiftly establishing enterprise-level cloud-native architectures. Since then, we have been delighted to receive interest and engagement from notable organizations such as Semir, Huaxing Securities, Tanwan Games, and Heduo Technology. Their valuable feedback and specific requirements have shed light on unique usage scenarios and challenges distinct from our internal use cases, necessitating our attention, support, and optimization efforts.
 
 We are thrilled to witness the successful application of Kitex in these enterprise environments. In fact, during the CloudWeGo Meetup held on June 25th of this year, R&D professionals from [Semir](https://mp.weixin.qq.com/s/JAurW4P2E3NIduFaVY6jew) and [Huaxing Securities](https://mp.weixin.qq.com/s/QqGdzp-7rTdlxedy6bsXiw) shared their internal experiences and practical use cases, further validating the effectiveness and value of Kitex in real-world scenarios.
 ![image](/img/blog/Kitex_architecture_explained_en/17.png)
 
-In addition to the above companies, we have also provided consultation to private inquiries from various organizations regarding usage issues. We are very grateful for the support and feedback from these corporate users. As mentioned earlier, gathering feedback from the community and enterprises plays a crucial role in driving the evolution of Kitex to support a wide range of scenarios. If enterprise users have any specific needs or requirements, we encourage them to reach out to us. 
+In addition to the above companies, we have also provided consultation to private inquiries from various organizations regarding usage issues. We are very grateful for the support and feedback from these corporate users. As mentioned earlier, gathering feedback from the community and enterprises plays a crucial role in driving the evolution of Kitex to support a wide range of scenarios. If enterprise users have any specific needs or requirements, we encourage them to reach out to us.
 
 ## How to use Kitex to Integrate with Existing Infrastructure
-Here is a brief introduction on how to use Kitex to integrate with your internal infrastructure. Let's take ByteDance as an example, there are extensions in the open source library within the internal warehouse. These extensions are designed to integrate internal capabilities specific to ByteDance. Within the BytedSuite, Kitex can be initialized to cater to various scenarios. Users simply need to add an option configuration while constructing the Client and Server components to achieve seamless integration. To ensure a hassle-free experience, we have incorporated this configuration within the generated scaffolding code. This means that users no longer need to specifically focus on integrating internal capabilities. Furthermore, we plan to share details about how this configuration is embedded in the generated code. By doing so, secondary developers working with external frameworks will be able to provide integration capabilities to business development teams in a similar manner. 
+
+Here is a brief introduction on how to use Kitex to integrate with your internal infrastructure. Let's take ByteDance as an example, there are extensions in the open source library within the internal warehouse. These extensions are designed to integrate internal capabilities specific to ByteDance. Within the BytedSuite, Kitex can be initialized to cater to various scenarios. Users simply need to add an option configuration while constructing the Client and Server components to achieve seamless integration. To ensure a hassle-free experience, we have incorporated this configuration within the generated scaffolding code. This means that users no longer need to specifically focus on integrating internal capabilities. Furthermore, we plan to share details about how this configuration is embedded in the generated code. By doing so, secondary developers working with external frameworks will be able to provide integration capabilities to business development teams in a similar manner.
 ![image](/img/blog/Kitex_architecture_explained_en/18.png)
 
 ## Summary and Future Perspectives
+
 ### Summarize
+
 This blog introduces the following key points:
+
 1. The transition of Kitex from an internally used framework to an open-source framework while ensuring compatibility between internal and external versions.
 2. Overview of important functional features and performance optimizations released during the past year of open source.
 3. The origination and development of Kitex's ecosystem with contributions from the community, examples of enterprise adoption, and elegant integration of internal capabilities using Kitex.
 
 ### Future Perspectives
+
 1. Collaborate with the community to further enrich the ecosystem and foster active participation from developers.
 2. Enhance the usability of Kitex by incorporating engineering practices and providing greater convenience for microservice developers.
 3. Continuously improve the BDThrift ecosystem and optimize support for Protobuf and gRPC.

@@ -1,6 +1,7 @@
 ---
 date: 2022-06-21
 title: "字节跳动开源 Go HTTP 框架 Hertz 设计实践"
+projects: ["Hertz"]
 linkTitle: "字节跳动开源 Go HTTP 框架 Hertz 设计实践"
 keywords: ['Go', 'HTTP', 'Hertz', '架构设计', "功能特性"]
 description: "本文介绍了字节跳动开源 Go HTTP 框架 Hertz 的项目起源、架构设计、功能特性以及性能表现。"
