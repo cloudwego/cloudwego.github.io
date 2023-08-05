@@ -341,6 +341,57 @@ func exampleMiddleware() app.handlerFunc {
 }
 ```
 
+## 流式处理
+
+```go
+func WithStreamBody(b bool) config.Option
+func (engine *Engine) IsStreamRequestBody() bool
+```
+
+### WithStreamBody
+
+Hertz 支持 Server 的流式处理。
+
+由于 netpoll 和 go net 触发模式不同，netpoll 流式为 “伪” 流式（由于 LT 触发，会由网络库将数据读取到网络库的 buffer 中），在大包的场景下（如：上传文件等）可能会有内存问题，推荐使用 go net。
+
+示例代码：
+
+```go
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/network/standard"
+    )
+
+func main() {
+    h := server.New(
+        server.WithStreamBody(true),
+        server.WithTransport(standard.NewTransporter),
+    )
+    ...
+}
+```
+
+### IsStreamRequestBody
+
+判断是否以流式方式处理请求 body。
+
+函数签名：
+
+```go
+func (engine *Engine) IsStreamRequestBody() bool
+```
+
+示例代码：
+
+```go
+func main() {
+	h := server.New(server.WithStreamBody(true))
+	isStreamRequestBody := h.IsStreamRequestBody()
+	fmt.Printf("%v\n", isStreamRequestBody)
+	// isStreamRequestBody == true
+}
+```
+
 ## 设置客户端 IP 地址
 
 ```go
@@ -649,33 +700,6 @@ func main() {
         })
     })
     h.Spin()
-}
-```
-
-## 判断是否流式处理请求
-
-```go
-func (engine *Engine) IsStreamRequestBody() bool
-```
-
-### IsStreamRequestBody
-
-判断是否以流式方式处理请求 body。
-
-函数签名：
-
-```go
-func (engine *Engine) IsStreamRequestBody() bool
-```
-
-示例代码：
-
-```go
-func main() {
-	h := server.New(server.WithStreamBody(true))
-	isStreamRequestBody := h.IsStreamRequestBody()
-	fmt.Printf("%v\n", isStreamRequestBody)
-	// isStreamRequestBody == true
 }
 ```
 
