@@ -17,7 +17,7 @@ USAGE:
    hz [global options] command [command options] [arguments...]
 
 VERSION:
-   0.0.1
+   0.x.x
 
 COMMANDS:
    new      Generate a new Hertz project
@@ -63,7 +63,7 @@ OPTIONS:
    --protoc value, -p value          Specify arguments for the protoc. ({flag}={value})                    (accepts multiple inputs)
    --service value                   Specify the service name.
    --snake_tag                       Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
-   --thriftgo value, -t value        Specify arguments for the thriftgo. ({flag}={value})  (accepts mul
+   --thriftgo value, -t value        Specify arguments for the thriftgo. ({flag}={value})  (accepts mul)
 ```
 
 - client_dir: 指定 client 侧代码的生成路径，如果不指定则不生成；当前为每个 service 生成一个全局的 client，后续会提供更丰富的 client 代码能力
@@ -134,7 +134,7 @@ OPTIONS:
 
 <!---->
 
-- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 omitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional"还是"required"决定
+- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 omitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional" 还是 "required" 决定
 
 ### Update
 
@@ -176,7 +176,7 @@ OPTIONS:
 
 <!---->
 
-- handler_dir: 指定 handler 的生成路径，默认为"biz/handler"；注意：如果对同一套 idl 进行 update，需要 handler_dir 的值与使用 new 的时候相同，否则会生成冗余的代码，需要用户自行删除。
+- handler_dir: 指定 handler 的生成路径，默认为 "biz/handler"；注意：如果对同一套 idl 进行 update，需要 handler_dir 的值与使用 new 的时候相同，否则会生成冗余的代码，需要用户自行删除。
 
 <!---->
 
@@ -188,7 +188,7 @@ OPTIONS:
 
 <!---->
 
-- model_dir: 指定 model 的生成路径，默认为"biz/model"；注意：如果对同一套 idl 进行 update，需要 model_dir 的值与使用 new 的时候相同，否则会生成重复的 model 代码且导致 handler 引用不一致。
+- model_dir: 指定 model 的生成路径，默认为 "biz/model"；注意：如果对同一套 idl 进行 update，需要 model_dir 的值与使用 new 的时候相同，否则会生成重复的 model 代码且导致 handler 引用不一致。
 
 <!---->
 
@@ -220,4 +220,4 @@ OPTIONS:
 
 <!---->
 
-- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 mitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional"还是"required"决定
+- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 mitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional" 还是 "required" 决定

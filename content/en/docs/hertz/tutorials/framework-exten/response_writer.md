@@ -34,7 +34,7 @@ Example:
 	h.GET("/hijack", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response
 		ctx.Response.HijackWriter(yourResponseWriter)
-	}
+	})
 ```
 
 ## Supported Response Writer Extension
