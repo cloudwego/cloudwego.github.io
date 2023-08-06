@@ -12,6 +12,8 @@ description: >
 
 ## 支持的 api 注解
 
+Field 注解 tag 说明可参考 [支持的-tag](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/#%E6%94%AF%E6%8C%81%E7%9A%84-tag)。
+
 | _Field 注解_                             |                                         |
 | ---------------------------------------- | --------------------------------------- |
 | 注解                                     | 说明                                    |

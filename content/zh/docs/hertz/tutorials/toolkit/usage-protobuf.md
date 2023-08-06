@@ -1,22 +1,22 @@
 ---
-title: "hz usage(protobuf)"
+title: "hz 使用 (protobuf)"
 date: 2023-02-21
 weight: 4
 description: >
 ---
 
-## Create a project based on protobuf IDL
+## 基于 protobuf IDL 创建项目
 
-### new: Create a new project
+### new: 创建一个新项目
 
-1. Create the protobuf IDL file in the current directory
+1. 在当前目录下创建 protobuf idl 文件
 
-   > 1. In order to support api annotations in protobuf, please import the following file in the proto file where the annotation is used
+   > 1. 为在 protobuf 中支持 api 注解，请在使用了注解的 proto 文件中，import 下面的文件
    >
-   > 2. If you want to extend the annotations, please do not use "5" as the beginning of the serial number to avoid conflicts. For example, "optional string xxx = 77777;"
+   > 2. 如果想自行拓展注解的使用，请不要以"5"作为序号的开头，避免出现冲突。例如 "optional string xxx = 77777;"
 
    ```protobuf
-   // idl/api.proto; Annotation extension
+   // idl/api.proto; 注解拓展
    syntax = "proto2";
 
    package api;
@@ -62,7 +62,7 @@ description: >
    }
    ```
 
-   Main IDL definition
+   主 idl 定义：
 
    ```protobuf
    // idl/hello/hello.proto
@@ -89,43 +89,45 @@ description: >
    }
    ```
 
-2. Create a new project
+2. 创建新项目
 
-   {{< tabs "Execute outside GOPATH" "Execute under GOPATH">}}
+   {{< tabs "在 GOPATH 外执行" "在 GOPATH 下执行" >}}
 
    {{% codetab %}}
 
    ```bash
-   # Execute is not under GOPATH, add go mod name after "-module", if the dependencies of the main IDL and the main IDL are not in the same path, you need to add the "-I" option, its meaning is IDL search path, equivalent to the option "-I" for protoc
+   # 在 GOPATH 外执行，需要指定 go mod 名，如果主 IDL 的依赖和主 IDL 不在同一路径下，需要加入 "-I" 选项，其含义为 IDL 搜索路径，等同于 protoc 的 "-I" 命令
 
-   hz new -module example/m -I idl -idl idl/hello/hello.proto
+   hz new -module example.com/m -I idl -idl idl/hello/hello.proto
 
-   # Tidy & get dependencies
+   # 整理 & 拉取依赖
    go mod tidy
+
    ```
 
    {{% /codetab %}}
+
    {{% codetab %}}
 
    ```bash
-   # Execute under GOPATH, if the dependencies of the main IDL and the main IDL are not in the same path, you need to add the "-I" option, its meaning is IDL search path, equivalent to the option "-I" for protoc
+   # GOPATH 下执行，如果主 IDL 的依赖和主 IDL 不在同一路径下，需要加入 "-I" 选项，其含义为 IDL 搜索路径，等同于 protoc 的 "-I" 命令
    hz new -I idl -idl idl/hello/hello.proto
 
    go mod init
 
-   # Tidy & get dependencies
+   # 整理 & 拉取依赖
    go mod tidy
    ```
 
    {{% /codetab %}}
    {{< /tabs >}}
 
-3. Modify the handler and add your own logic
+3. 修改 handler，添加自己的逻辑
 
    ```go
    // handler path: biz/handler/hello/hello_service.go
-   // where "/hello" is the last level of go_package in protobuf IDL
-   // "hello_service.go" is the name of the service in protobuf IDL, all methods defined by the service will be generated in this file
+   // 其中 "/hello" 是 protobuf idl 中 go_package 的最后一级
+   // "hello_service.go" 是 protobuf idl 中 service 的名字，所有 service 定义的方法都会生成在这个文件中
 
    // Method1 .
    // @router /hello [GET]
@@ -140,38 +142,38 @@ description: >
 
    resp := new(hello.HelloResp)
 
-   // You can modify the logic of the entire function, not just the current template
-   resp.RespBody = "hello," + req.Name // added logic
+   // 你可以修改整个函数的逻辑，而不仅仅局限于当前模板
+   resp.RespBody = "hello," + req.Name // 添加的逻辑
 
    c.JSON(200, resp)
    }
    ```
 
-4. Compile the project
+4. 编译项目
 
    ```bash
    go build
    ```
 
-5. Run the project and test it
+5. 运行项目并测试
 
-   Run the project：
+   运行项目：
 
    ```bash
    ./{{your binary}}
    ```
 
-   Test：
+   测试：
 
    ```bash
    curl --location --request GET 'http://127.0.0.1:8888/hello?name=hertz'
    ```
 
-   If it returns `{"RespBody":"hello,hertz"}`, it works.
+   如果返回`{"RespBody":"hello,hertz"}`，说明接口调通。
 
-### update: Update an existing Hertz project
+### update: 更新一个已有的项目
 
-1. If your protobuf IDL is updated, for example:
+1. 如果你的 protobuf idl 有更新，例如：
 
    ```protobuf
    // idl/hello/hello.proto
@@ -215,18 +217,17 @@ description: >
    }
    ```
 
-2. Switch to the directory where the new command was executed and update the modified IDL
+2. 切换到执行 new 命令的目录，更新修改后的 protobuf idl
 
    ```bash
    hz update -I idl -idl idl/hello/hello.proto
    ```
 
-3. As you can see
+3. 可以看到
+   在"biz/handler/hello/hello_service.go" 下新增了新的方法
+   在"biz/handler/hello" 下新增了文件 "new_service.go" 以及对应的 "Method3" 方法。
 
-   Add new method under "biz/handler/hello/hello_service.go"<br>
-   The file "new_service.go" and the corresponding "Method3" method have been added under "biz/handler/hello"
-
-   Now let's develop the "Method2" interface
+   下面我们来开发 "Method2" 接口：
 
    ```go
    // Method1 .
@@ -242,8 +243,8 @@ description: >
 
    resp := new(hello.HelloResp)
 
-   // You can modify the logic of the entire function, not just the current template
-   resp.RespBody = "hello," + req.Name // added logic
+   // 你可以修改整个函数的逻辑，而不仅仅局限于当前模板
+   resp.RespBody = "hello," + req.Name // 添加的逻辑
 
    c.JSON(200, resp)
    }
@@ -261,28 +262,28 @@ description: >
 
    resp := new(hello.OtherResp)
 
-   // added logic
+   // 增加的逻辑
    resp.Resp = "Other method: " + req.Other
 
    c.JSON(200, resp)
    }
    ```
 
-4. Compile the project
+4. 编译项目
 
    ```bash
    go build
    ```
 
-5. Run the project and test it
+5. 运行项目并测试
 
-   Run the project:
+   运行项目：
 
    ```bash
    ./{{your binary}}
    ```
 
-   Test：
+   测试：
 
    ```bash
    curl --location --request POST 'http://127.0.0.1:8888/other' \
@@ -292,4 +293,4 @@ description: >
    }'
    ```
 
-   If it returns `{"Resp":"Other method: other method"}`, it works.
+   如果返回`{"Resp":"Other method: other method"}`，说明接口调通。

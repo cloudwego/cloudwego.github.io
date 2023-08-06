@@ -34,7 +34,7 @@ Hertz 在 `app.RequestContext` 中提供了 `Response.HijackWriter` 方法让用
 	h.GET("/hijack", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response
 		ctx.Response.HijackWriter(yourResponseWriter)
-	}
+	})
 ```
 
 ## 已支持 Response 的 Writer 扩展

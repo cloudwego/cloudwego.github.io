@@ -162,7 +162,7 @@ description: >
    Add new method under "biz/handler/hello/example/hello_service.go"<br>
    The file "new_service.go" and the corresponding "NewMethod" method have been added under "biz/handler/hello/example"
 
-   Now let's develop the "OtherMethod" interface
+   Now let's develop the "OtherMethod" interface:
 
    ```go
    // HelloMethod .
