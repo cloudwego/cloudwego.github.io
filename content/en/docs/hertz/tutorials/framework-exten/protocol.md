@@ -1,24 +1,80 @@
 ---
 title: "Protocol extension"
 linkTitle: "Protocol extension"
-weight: 2
+weight: 5
 description: >
 
 ---
 
 ## Overview
 
-Thanks to the layered design of Hertz, in addition to the HTTP1/HTTP2 (to be open source) protocol server that comes with the Hertz framework by default, users can easily add/customize protocol processing logic that meets the needs of their own business scenarios according to their own needs.
+Thanks to the layered design of Hertz, in addition to the HTTP1/HTTP2/HTTP3 protocol server that comes with the Hertz framework by default, users of the framework can also customize the protocol server through the `protocol.Server` or `protocol.StreamServer` interface.
 
-In short, a server that implements the following interface can be added to Hertz as a custom extension server:
+## Interface Definition
+
+### protocol.Server
+
+This interface can be used to implement protocol servers based on byte stream transmission, such as HTTP1/HTTP2.
+
+>Note: If using this interface, the underlying network library needs to implement the [network.Conn](/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/#networkconn) interface.
 
 ```go
 type Server interface {
-   Serve(c context.Context, conn network.Conn) error
+	Serve(c context.Context, conn network.Conn) error
+}
+
+type ServerFactory interface {
+   New(core Core) (server protocol.Server, err error)
+}
+
+// Core is the core interface that promises to be provided for the protocol layer extensions
+type Core interface {
+   // IsRunning Check whether engine is running or not
+   IsRunning() bool
+   // A RequestContext pool ready for protocol server impl
+   GetCtxPool() *sync.Pool
+   // Business logic entrance
+   // After pre-read works, protocol server may call this method
+   // to introduce the middlewares and handlers
+   ServeHTTP(c context.Context, ctx *app.RequestContext)
+   // GetTracer for tracing requirement
+   GetTracer() tracer.Controller
+}
+```
+
+### protocol.StreamServer
+
+This interface can be used to implement streaming based protocol servers, such as HTTP3.
+
+>Note: If using this interface, the underlying network library needs to implement the [network.streamConn](/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/#networkstreamconn) interface.
+
+```go
+type StreamServer interface {
+	Serve(c context.Context, conn network.StreamConn) error
+}
+
+type ServerFactory interface {
+	New(core Core) (server protocol.Server, err error)
+}
+
+// Core is the core interface that promises to be provided for the protocol layer extensions
+type Core interface {
+   // IsRunning Check whether engine is running or not
+   IsRunning() bool
+   // A RequestContext pool ready for protocol server impl
+   GetCtxPool() *sync.Pool
+   // Business logic entrance
+   // After pre-read works, protocol server may call this method
+   // to introduce the middlewares and handlers
+   ServeHTTP(c context.Context, ctx *app.RequestContext)
+   // GetTracer for tracing requirement
+   GetTracer() tracer.Controller
 }
 ```
 
 ## Three elements of protocol layer extension
+
+Taking the [protocol.Server](#protocolserver) interface as an example to illustrate the three elements of protocol layer extension, the extension of the [protocol.StreamServer](#protocolstreamserver) interface is similar.
 
 ### Protocol layer server initialization
 
@@ -99,7 +155,9 @@ func (engine *Engine) AddProtocol(protocol string, factory suite.ServerFactory) 
 
 It is only necessary to register the user's custom server generation factory with the engine according to the parameters specified by the interface. But it is worth noting that the protocol (string) registered here actually corresponds to the protocol negotiation key in ALPN (Application-Layer Protocol Negotiation), so if you want to access a custom protocol server through ALPN , directly specify the key as the corresponding key during ALPN negotiation. Currently, Hertz integrates an HTTP1 protocol server by default (the corresponding key is "http/1.1"). If you need to customize the HTTP1 protocol processing logic, you can directly specify the key as "http/1.1" within `AddProtocol` to overwrite.
 
-## Example
+## Sample Code
+
+Taking the [protocol.Server](#protocolserver) interface as an example, the [protocol.StreamServer](#protocolstreamserver) interface is similar.
 
 ```go
 package main
