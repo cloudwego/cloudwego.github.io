@@ -2,7 +2,7 @@
 title: "Response Writer Extension"
 linkTitle: "Response Writer Extension"
 date: 2023-03-10
-weight: 4
+weight: 6
 description: >
 
 ---

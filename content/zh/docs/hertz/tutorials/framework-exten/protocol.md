@@ -1,28 +1,82 @@
 ---
 title: "协议扩展"
 linkTitle: "协议扩展"
-weight: 2
+weight: 5
 description: >
 
 ---
 
-## 概述
+得益于 Hertz 的分层设计，除了 Hertz 框架默认自带的 HTTP1/HTTP2/HTTP3 等协议 server，框架的使用者还可以通过 `protocol.Server` 或 `protocol.StreamServer` 接口自定义协议 server。
 
-得益于 Hertz 的分层设计，除了 Hertz 框架默认自带的 HTTP1/HTTP2（即将开源）协议 server，框架的使用者能够非常容易的按照自身的需求增加/定制符合自身业务场景需求的协议处理逻辑。
+## 接口定义
 
-简单来说实现了以下接口的 server 即可作为自定义扩展 server 加入到 Hertz 当中来：
+### protocol.Server
+
+该接口可用于实现基于字节流传输的协议 server，如 HTTP1/HTTP2。
+
+>注意：若使用该接口，底层网络库需实现 [network.Conn](/zh/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/#networkconn) 接口。
 
 ```go
 type Server interface {
-   Serve(c context.Context, conn network.Conn) error
+	Serve(c context.Context, conn network.Conn) error
+}
+
+type ServerFactory interface {
+   New(core Core) (server protocol.Server, err error)
+}
+
+// Core is the core interface that promises to be provided for the protocol layer extensions
+type Core interface {
+   // IsRunning Check whether engine is running or not
+   IsRunning() bool
+   // A RequestContext pool ready for protocol server impl
+   GetCtxPool() *sync.Pool
+   // Business logic entrance
+   // After pre-read works, protocol server may call this method
+   // to introduce the middlewares and handlers
+   ServeHTTP(c context.Context, ctx *app.RequestContext)
+   // GetTracer for tracing requirement
+   GetTracer() tracer.Controller
+}
+```
+
+### protocol.StreamServer
+
+该接口可用于实现基于流传输的协议 server，如 HTTP3。
+
+>注意：若使用该接口，底层网络库需实现 [network.streamConn](/zh/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/#networkstreamconn) 接口。
+
+```go
+type StreamServer interface {
+	Serve(c context.Context, conn network.StreamConn) error
+}
+
+type ServerFactory interface {
+	New(core Core) (server protocol.Server, err error)
+}
+
+// Core is the core interface that promises to be provided for the protocol layer extensions
+type Core interface {
+   // IsRunning Check whether engine is running or not
+   IsRunning() bool
+   // A RequestContext pool ready for protocol server impl
+   GetCtxPool() *sync.Pool
+   // Business logic entrance
+   // After pre-read works, protocol server may call this method
+   // to introduce the middlewares and handlers
+   ServeHTTP(c context.Context, ctx *app.RequestContext)
+   // GetTracer for tracing requirement
+   GetTracer() tracer.Controller
 }
 ```
 
 ## 协议层扩展三要素
 
+以 [protocol.Server](#protocolserver) 接口为例说明协议层扩展的三要素，[protocol.StreamServer](#protocolstreamserver) 接口的扩展与之类似。
+
 ### 协议层 server 初始化
 
-前言里面提到的接口其实就是网络层将数据准备好之后的一个标准回调，即当有新的请求建立连接之后，进入到我们的协议层的处理逻辑。
+前面提到的接口其实就是网络层将数据准备好之后的一个标准回调，即当有新的请求建立连接之后，进入到我们的协议层的处理逻辑。
 在这个逻辑中我们可以自定义诸如协议解析方式，引入业务 Handler 执行，数据写回等协议层标准行为。这也是我们的自定义 server 的核心逻辑所在。
 
 ```go
@@ -101,7 +155,9 @@ func (engine *Engine) AddProtocol(protocol string, factory suite.ServerFactory) 
 所以，如果是想通过 ALPN 的方式接入自定义的协议 server，直接将 key 指定为对应的 ALPN 协商时的 key 即可。当前 Hertz 默认集成了一个 HTTP1 的协议 server（对应的 key 为"http/1.1"），
 如果有自定义 HTTP1 协议处理逻辑的需求，在 `AddProtocol` 时直接将 key 指定为"http/1.1"即可完成覆盖。
 
-## 例子
+## 示例代码
+
+以 [protocol.Server](#protocolserver) 接口为例说明，[protocol.StreamServer](#protocolstreamserver) 接口与之类似。
 
 ```go
 package main
