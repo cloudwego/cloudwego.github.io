@@ -3,7 +3,6 @@ title: "协议扩展"
 linkTitle: "协议扩展"
 weight: 5
 description: >
-
 ---
 
 得益于 Hertz 的分层设计，除了 Hertz 框架默认自带的 HTTP1/HTTP2/HTTP3 等协议 server，框架的使用者还可以通过 `protocol.Server` 或 `protocol.StreamServer` 接口自定义协议 server。
@@ -14,7 +13,7 @@ description: >
 
 该接口可用于实现基于字节流传输的协议 server，如 HTTP1/HTTP2。
 
->注意：若使用该接口，底层网络库需实现 [network.Conn](/zh/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/#networkconn) 接口。
+> 注意：若使用该接口，底层网络库需实现 [network.Conn](/zh/docs/hertz/tutorials/framework-exten/network-lib/#networkconn) 接口。
 
 ```go
 type Server interface {
@@ -44,7 +43,7 @@ type Core interface {
 
 该接口可用于实现基于流传输的协议 server，如 HTTP3。
 
->注意：若使用该接口，底层网络库需实现 [network.streamConn](/zh/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/#networkstreamconn) 接口。
+> 注意：若使用该接口，底层网络库需实现 [network.streamConn](/zh/docs/hertz/tutorials/framework-exten/network-lib/#networkstreamconn) 接口。
 
 ```go
 type StreamServer interface {
