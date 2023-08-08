@@ -23,7 +23,7 @@ cwgo
 
 ```
 
-Therefore, the precautions of corresponding tools also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and generate HTTP code [Notes on hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/cautions/).
+Therefore, the precautions of corresponding tools also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and generate HTTP code [Notes on hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/cautions/).
 
 ## Using
 
@@ -62,7 +62,7 @@ The information requested by db is:
 1. Enter the database DSN. required
 1. Choose whether to use the default configuration to generate the project. If you choose No, you will be asked to enter the parameters to pass to the build tool
 
-For parameters passed to the tool, refer to [documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/command/) for hz and [documentation](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/) for kitex.
+For parameters passed to the tool, refer to [documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/command/) for hz and [documentation](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/) for kitex.
 
 ## Static command line
 
@@ -107,7 +107,7 @@ pass parameter description:
 To pass the `handler_dir' parameter of `hz`, you should enter --pass "--handler_dir ./handler"
 
 Parameters passed to the tool
-hz refer to [Documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/command/),
+hz refer to [Documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/command/),
 Kitex reference [documentation](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/).
 
 ### Model commands

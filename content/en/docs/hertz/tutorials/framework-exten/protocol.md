@@ -3,7 +3,6 @@ title: "Protocol extension"
 linkTitle: "Protocol extension"
 weight: 5
 description: >
-
 ---
 
 ## Overview
@@ -16,7 +15,7 @@ Thanks to the layered design of Hertz, in addition to the HTTP1/HTTP2/HTTP3 prot
 
 This interface can be used to implement protocol servers based on byte stream transmission, such as HTTP1/HTTP2.
 
->Note: If using this interface, the underlying network library needs to implement the [network.Conn](/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/#networkconn) interface.
+> Note: If using this interface, the underlying network library needs to implement the [network.Conn](/docs/hertz/tutorials/framework-exten/network-lib/#networkconn) interface.
 
 ```go
 type Server interface {
@@ -46,7 +45,7 @@ type Core interface {
 
 This interface can be used to implement streaming based protocol servers, such as HTTP3.
 
->Note: If using this interface, the underlying network library needs to implement the [network.streamConn](/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/#networkstreamconn) interface.
+> Note: If using this interface, the underlying network library needs to implement the [network.streamConn](/docs/hertz/tutorials/framework-exten/network-lib/#networkstreamconn) interface.
 
 ```go
 type StreamServer interface {

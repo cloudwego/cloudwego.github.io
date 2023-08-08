@@ -84,7 +84,7 @@ libprotoc x.x.x
 
 ## Precautions
 
-The bottom layer of cwgo uses [kitex](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/), [hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/), [gen](https://gorm.io/gen/index.html) tools, so the corresponding tool specifications also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and [Notes for hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/cautions/).
+The bottom layer of cwgo uses [kitex](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/), [hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/), [gen](https://gorm.io/gen/index.html) tools, so the corresponding tool specifications also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and [Notes for hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/cautions/).
 
 ## Using
 
