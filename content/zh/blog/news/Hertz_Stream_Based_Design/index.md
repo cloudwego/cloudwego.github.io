@@ -187,11 +187,11 @@ type StreamConn interface {
 }
 
 type Streamer interface {
-    // AcceptStream returns the next stream opened by the peer, blocking until one is     available.
+    // AcceptStream returns the next stream opened by the peer, blocking until one is available.
     // If the connection was closed due to a timeout, the error satisfies
     // the net.Error interface, and Timeout() will be true.
     AcceptStream(context.Context) (Stream, error)
-    // AcceptUniStream returns the next unidirectional stream opened by the peer,     blocking until one is available.
+    // AcceptUniStream returns the next unidirectional stream opened by the peer, blocking until one is available.
     // If the connection was closed due to a timeout, the error satisfies
     // the net.Error interface, and Timeout() will be true.
     AcceptUniStream(context.Context) (ReceiveStream, error)

@@ -6,11 +6,13 @@ description: >
 ---
 **Supported api annotations**
 
-> Field annotation can be used for[parameter binding and validation](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/binding-and-validate/)
+> Field annotation can be used for [parameter binding and validation](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/binding-and-validate/)
 >
 > Method annotation can be used to generate code that related to route registration
 
 ## Supported api annotations
+
+Field annotation tag description can be referenced [supported-tags](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/binding-and-validate/#supported-tags).
 
 | _Field annotation_                       |                                                                    |
 | ---------------------------------------- | ------------------------------------------------------------------ |

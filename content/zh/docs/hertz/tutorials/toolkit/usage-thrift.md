@@ -162,7 +162,7 @@ description: >
    在 "biz/handler/hello/example/hello_service.go" 下新增了新的方法<br>
    在 "biz/handler/hello/example" 下新增了文件 "new_service.go" 以及对应的 "NewMethod" 方法。
 
-   下面我们来开发 "OtherMethod" 接口
+   下面我们来开发 "OtherMethod" 接口：
 
    ```go
    // HelloMethod .

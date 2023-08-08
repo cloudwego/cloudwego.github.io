@@ -2,7 +2,7 @@
 title: "Response Writer Extension"
 linkTitle: "Response Writer Extension"
 date: 2023-03-10
-weight: 4
+weight: 6
 description: >
 
 ---
@@ -34,7 +34,7 @@ Example:
 	h.GET("/hijack", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response
 		ctx.Response.HijackWriter(yourResponseWriter)
-	}
+	})
 ```
 
 ## Supported Response Writer Extension
