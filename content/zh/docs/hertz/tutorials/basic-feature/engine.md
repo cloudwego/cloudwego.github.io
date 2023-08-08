@@ -16,89 +16,7 @@ type Hertz struct {
 }
 ```
 
-`route.Engine` 为 `server.Hertz` 的重要组成部分，以下是 `Engine` 的定义：
-
-```go
-type Engine struct {
-    //禁止拷贝
-    noCopy nocopy.NoCopy 
-    
-    // Engine 名称
-    Name       string
-    serverName atomic.Value
-    
-    // 路由和协议服务器的选项
-    options *config.Options
-    
-    // router 前缀树 
-    RouterGroup
-    trees     MethodTrees
-    maxParams uint16
-    
-    allNoMethod app.HandlersChain
-    allNoRoute  app.HandlersChain
-    noRoute     app.HandlersChain
-    noMethod    app.HandlersChain
-    
-    // 用于渲染 HTML
-    delims     render.Delims
-    funcMap    template.FuncMap
-    htmlRender render.HTMLRender
-    
-    // NoHijackConnPool 将控制是否使用缓存池来获取/释放劫持连接
-    // 如果很难保证 hijackConn 不会重复关闭，请将其设置为 true
-    NoHijackConnPool bool
-    hijackConnPool   sync.Pool
-    
-    // KeepHijackedConns 是一个可选择的禁用连接的选项
-    // 在连接的 HijackHandler 返回后由 Hertz 关闭。
-    // 这的选项允许保存在 goroutine 中
-    // 例如当 hertz 将 http 连接升级为 websocket 时，
-    // 连接会转到另一个处理程序，该处理程序会在需要时关闭它
-    KeepHijackedConns bool
-    
-    // 底层传输的网络库，现在有 go net 和 netpoll 两个选择
-    transport network.Transporter
-    
-    // 用于链路追踪
-    tracerCtl   tracer.Controller
-    enableTrace bool
-    
-    // 用于管理协议层
-    protocolSuite         *suite.Config
-    protocolServers       map[string]protocol.Server
-    protocolStreamServers map[string]protocol.StreamServer
-    
-    // RequestContext 连接池
-    ctxPool sync.Pool
-    
-    // 处理从 http 处理程序中恢复的 panic 的函数
-    // 它应该用于生成错误页面并返回 http 错误代码 500（内部服务器错误）
-    // 处理程序可用于防止服务器因未恢复的 panic 而崩溃
-    PanicHandler app.HandlerFunc
-    
-    // 在收到 Expect 100 Continue Header 后调用 ContinueHandler。
-    //
-    // https://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3
-    // https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.1.1
-    // 使用 ContinueHandler，服务器可以基于头信息决定是否读取可能较大的请求正文。
-    //
-    // 默认情况下就像它们是普通请求一样，自动读取 Expect 100 Continue 请求的请求正文，
-    ContinueHandler func(header *protocol.RequestHeader) bool
-    
-    // 用于表示 Engine 状态（Init/Running/Shutdown/Closed）
-    status uint32
-    
-    // Engine 启动时依次触发的 hook 函数
-    OnRun []CtxErrCallback
-    
-    // Engine 关闭时同时触发的 hook 函数
-    OnShutdown []CtxCallback
-    
-    clientIPFunc  app.ClientIP
-    formValueFunc app.FormValueFunc
-}
-```
+`route.Engine` 为 `server.Hertz` 的重要组成部分，`Engine` 的定义位于 [Engine](https://github.com/cloudwego/hertz/blob/main/pkg/route/engine.go)。
 
 ## 配置
 
@@ -277,21 +195,6 @@ func main() {
 }
 ```
 
-## 设置服务器名
-
-用于设置 response header 中的 Server 字段，默认为 Hertz。
-
-示例代码:
-
-```go
-package main
-
-func main() {
-    h := server.New()
-    h.Name = "server"
-}
-```
-
 ## 中间件
 
 ```go
@@ -343,11 +246,6 @@ func exampleMiddleware() app.handlerFunc {
 
 ## 流式处理
 
-```go
-func WithStreamBody(b bool) config.Option
-func (engine *Engine) IsStreamRequestBody() bool
-```
-
 ### WithStreamBody
 
 Hertz 支持 Server 的流式处理。
@@ -371,26 +269,11 @@ func main() {
 }
 ```
 
-### IsStreamRequestBody
+更多示例代码可参考 [example](/zh/docs/hertz/tutorials/example/#流式读写)。
 
-判断是否以流式方式处理请求 body。
+### Response 的 Writer 扩展
 
-函数签名：
-
-```go
-func (engine *Engine) IsStreamRequestBody() bool
-```
-
-示例代码：
-
-```go
-func main() {
-	h := server.New(server.WithStreamBody(true))
-	isStreamRequestBody := h.IsStreamRequestBody()
-	fmt.Printf("%v\n", isStreamRequestBody)
-	// isStreamRequestBody == true
-}
-```
+Hertz 提供了 response 的 writer 扩展，用户可以根据自己的需要实现相应的接口去劫持 response 的 writer，详情可参考 [Response 的 Writer 扩展](/zh/docs/hertz/tutorials/framework-exten/response_writer/#劫持-response-的-writer)。
 
 ## 设置客户端 IP 地址
 
@@ -460,7 +343,7 @@ func main() {
 
 Hertz 提供了全局的 Hook 注入能力，用于在服务触发启动后和退出前注入自己的处理逻辑，详细信息可见 [Hooks](/zh/docs/hertz/tutorials/basic-feature/hooks/)。
 
-## 错误处理
+## Panic 处理函数
 
 用于设置当程序发生 panic 时的处理函数，默认为 `nil`。
 
@@ -509,7 +392,6 @@ Hertz 提供了 `NoRoute` 与 `NoMethod` 方法用于全局处理 HTTP 404 与 4
 
 ```go
 func (engine *Engine) Routes() (routes RoutesInfo)
-func (engine *Engine) PrintRoute(method string)
 ```
 
 ### Routes
@@ -544,34 +426,6 @@ func main() {
 	routesInfo := h.Routes()
 	fmt.Printf("%v\n", routesInfo)
 	// [{GET /get main.getHandler.func1 0xb2afa0} {POST /post main.postHandler.func1 0xb2b060}]
-}
-```
-
-### PrintRoute
-
-`PrintRoute` 函数根据 HTTP 方法名打印路由前缀树信息。
-
-函数签名：
-
-```go
-func (engine *Engine) PrintRoute(method string)
-```
-
-示例代码：
-
-```go
-func main() {
-	h := server.Default()
-	h.GET("/get", getHandler())
-	h.GET("/get/user", getHandler())
-	h.PrintRoute(consts.MethodGet)
-	// node.prefix: /get
-	//node.ppath: /get
-	//level: 0
-	//
-	//node.prefix: /user
-	//node.ppath: /get/user
-	//level: 1
 }
 ```
 
@@ -645,33 +499,6 @@ name := h.GetServerName()
 fmt.Printf("%s\n", name) // name == "hertz"
 ```
 
-## 获取服务器配置
-
-```go
-func (engine *Engine) GetOptions() *config.Options
-```
-
-### GetOptions
-
-获取服务器配置。
-
-函数签名：
-
-```go
-func (engine *Engine) GetOptions() *config.Options
-```
-
-示例代码：
-
-```go
-func main() {
-	h := server.New(server.WithHostPorts(":8888"))
-	option := h.GetOptions()
-	fmt.Printf("%v\n", option.Addr)
-	// option.Addr == ":8888"
-}
-```
-
 ## 判断 Engine 是否启动
 
 ```go
@@ -703,51 +530,9 @@ func main() {
 }
 ```
 
-## 获取链路追踪信息
+## 链路追踪
 
-```go
-func (engine *Engine) IsTraceEnable() bool
-func (engine *Engine) GetTracer() tracer.Controller
-```
-
-### IsTraceEnable
-
-判断是否启用了链路追踪功能。
-
-函数签名：
-
-```go
-func (engine *Engine) IsTraceEnable() bool
-```
-
-示例代码：
-
-```go
-h := server.New()
-isTraceEnable := h.IsTraceEnable() // false
-```
-
-### GetTracer
-
-获取设置的 `tracer.Controller` 接口信息。如何设置链路追踪请参考 [链路追踪](/zh/docs/hertz/tutorials/observability/tracing/)。
-
-函数签名：
-
-```go
-func (engine *Engine) GetTracer() tracer.Controller
-```
-
-示例代码：
-
-```go
-func main() {
-	h := server.Default(server.WithTracer(hertztracer.NewTracer(ht, func(c *app.RequestContext) string {
-		return "test.hertz.server" + "::" + c.FullPath()
-	})))
-	h.Use(hertztracer.ServerCtx())
-	tracer := h.GetTracer()
-}
-```
+Hertz 提供了链路追踪的能力，也支持用户自定义链路跟踪，详情可参考 [链路追踪](/zh/docs/hertz/tutorials/observability/tracing/)。
 
 ## Hijack
 
