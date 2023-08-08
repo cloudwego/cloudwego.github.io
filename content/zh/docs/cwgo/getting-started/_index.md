@@ -1,6 +1,6 @@
 ---
-title: '快速开始'
-linkTitle: '快速开始'
+title: "快速开始"
+linkTitle: "快速开始"
 weight: 2
 description: >
 ---
@@ -84,7 +84,7 @@ libprotoc x.x.x
 
 ## 注意事项
 
-cwgo 底层使用 [kitex](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/)、[hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/)、[gen](https://gorm.io/gen/index.html) 工具，所以其相应的工具规范也需要遵守，如 [kitex 的注意事项](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/#%E4%BD%BF%E7%94%A8-protobuf-idl-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)和 [hz 的注意事项](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/cautions/)。
+cwgo 底层使用 [kitex](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/)、[hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/)、[gen](https://gorm.io/gen/index.html) 工具，所以其相应的工具规范也需要遵守，如 [kitex 的注意事项](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/#%E4%BD%BF%E7%94%A8-protobuf-idl-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)和 [hz 的注意事项](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/cautions/)。
 
 ## 使用
 
