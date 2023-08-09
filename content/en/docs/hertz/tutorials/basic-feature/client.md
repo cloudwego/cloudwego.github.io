@@ -538,7 +538,7 @@ Since the client has the problem of multiplexing connections, if streaming is us
 
 2. Users can recycle the connection by calling the relevant interface. After recycling, the connection will be put into the connection pool for reuse, so as to achieve higher resource utilization and better performance. The following methods will recycle the connection. Warning: Recycling can only be done once.
    1. Explicit call: `protocol.ReleaseResponse(), resp.Reset(), resp.ResetBody()`.
-   1. Implicit call: The server side will also recycle the response. Assign the client side response to the server side or pass the server side response to the client (eg: client uses reverse proxy), there is no need to display the method of calling the recovery.
+   1. Implicit call: The server side will also recycle the response. Assign the client side response to the server side or pass the server side response to the client (eg: client uses reverse proxy), there is no need to explicitly call the recycling method anymore.
 
 Sample Code:
 
