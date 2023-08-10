@@ -298,7 +298,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 |`func (h *ResponseHeader) Peek(key string) []byte` |获取 `[]byte` 类型的键为 key 的值，并发不安全，竞争访问时使用 `Get` |
 |`func (h *ResponseHeader) PeekAll(key string) [][]byte` |获取 `[]byte` 类型的键为 key 的所有值（用于获取存在相同 key 的多个值），并发不安全，竞争访问时使用 `GetAll` |
 |`func (h *ResponseHeader) Set(key, value string)` |设置 Header 键值，用于为同一个 Key 设置单个 Header |
-|`func (h *ResponseHeader) SetBytesV(key string, value []byte)` |添加 Header 键值 |
+|`func (h *ResponseHeader) SetBytesV(key string, value []byte)` |设置 `[]byte` 类型的 Header 键值，用于为同一个 Key 设置单个 Header |
 |`func (h *ResponseHeader) Add(key, value string)` |设置 Header 键值，用于为同一个 Key 设置多个 Header，但 key 会覆盖以下 Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent |
 |`func (h *ResponseHeader) Del(key string)` |删除 Header 中键为 key 的键值对 |
 |`func (h *ResponseHeader) DelBytes(key []byte)` |删除 Header 中键为 key 的键值对 |

@@ -685,12 +685,12 @@ Use `RequestContext.Request.Header` to obtain the RequestHeader object, which pr
 | `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|Determine whether Accept-Encoding exists and whether Accept-Encoding includes acceptEncoding|
 | `func (h *RequestHeader) RawHeaders() []byte`|Get original Header |
 | `func (h *RequestHeader) SetRawHeaders(r []byte)`  | Set original Header |
-| `func (h *RequestHeader) Add(key, value string)`| Add or set the header with the key as key. (The key will overwrite the following headers: Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent)|
+| `func (h *RequestHeader) Add(key, value string)`| Set the header key value to set multiple headers for the same key, but the key will overwrite the following headers: Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent|
 | `func (h *RequestHeader) InitBufValue(size int)`|Initialize buffer size |
 | `func (h *RequestHeader) GetBufValue() []byte`|Get the value of the buffer |
 | `func (h *RequestHeader) SetCanonical(key, value []byte)`|Set the Header key value, assuming that the key is in canonical form |
-| `func (h *RequestHeader) Set(key, value string)`|Set Header Key Values |
-| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|Set Header Key Values |
+| `func (h *RequestHeader) Set(key, value string)`|Set the header key value to set a single header for the same key |
+| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|Set the header key value of type `[]byte` to set a single header for the same key |
 | `func (h *RequestHeader) DelBytes(key []byte)`|Delete key value pairs with key in the header |
 | `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|Add Header key value (key is not Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent)|
 | `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|Set Header key value (key is not Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent)|
