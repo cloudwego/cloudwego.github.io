@@ -274,7 +274,66 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### ResponseHeader 对象
 
-使用 RequestContext.Response.Header 获取 ResponseHeader 对象，它与 [RequestHeader](/zh/docs/hertz/tutorials/basic-feature/context/request/#requestheader-对象) 对象及提供的函数基本一致。
+使用 RequestContext.Response.Header 获取 ResponseHeader 对象，该对象提供了以下方法获取/设置响应头部。
+
+|函数签名 | 说明 |
+|:--|:--|
+|`func (h *ResponseHeader) IsHTTP11() bool` |判断是否是 `HTTP/1.1` 协议，true 表示是 `HTTP/1.1` 协议  |
+|`func (h *ResponseHeader) SetHeaderLength(length int)`  |设置响应头的大小 |
+|`func (h *ResponseHeader) GetHeaderLength()` |获取响应头的大小 |
+|`func (h *ResponseHeader) SetContentRange(startPos, endPos, contentLength int)` |在响应头中设置 `Content-Range: bytes startPos-endPos/contentLength`，如 `Content-Range: bytes 1-5/10` |
+|`func (h *ResponseHeader) NoDefaultContentType() bool` |获取未指定 Content-Type 时的默认发送行为，false 表示发送默认 Content-Type 的值，true 表示不发送，默认 Content-Type 的值为 `text/plain; charset=utf-8` |
+|`func (h *ResponseHeader) SetNoDefaultContentType(b bool)` |设置未指定 Content-Type 时的默认发送行为，false 表示发送默认 Content-Type 的值，true 表示不发送，默认 Content-Type 的值为 `text/plain; charset=utf-8` |
+|`func (h *ResponseHeader) SetContentType(contentType string)` |设置 Content-Type |
+|`func (h *ResponseHeader) ContentType() []byte` |获取 Content-Type |
+|`func (h *ResponseHeader) SetContentTypeBytes(contentType []byte)` |设置 Content-Type |
+|`func (h *ResponseHeader) ContentLength() int` |获取 Content-Length，可以是负值，-1 表示 `Transfer-Encoding: chunked`，-2 表示 `Transfer-Encoding: identity` |
+|`func (h *ResponseHeader) SetContentLength(contentLength int)` |设置 Content-Length，可以是负值，-1 表示 `Transfer-Encoding: chunked`，-2 表示 `Transfer-Encoding: identity` |
+|`func (h *ResponseHeader) SetContentLengthBytes(contentLength []byte)` |设置 `[]byte` 类型的 Content-Length，可以是负值，-1 表示 `Transfer-Encoding: chunked`，-2 表示 `Transfer-Encoding: identity` |
+|`func (h *ResponseHeader) CopyTo(dst *ResponseHeader)` |返回响应头的副本，在对响应头存在竞争访问时可以使用 |
+|`func (h *ResponseHeader) GetHeaders() []argsKV` |以键值对的形式返回所有响应头 |
+|`func (h *ResponseHeader) VisitAll(f func(key, value []byte))` |遍历所有 Header 的键值并执行 f 函数 |
+|`func (h *ResponseHeader) Get(key string) string` |获取键为 key 的值，并发安全 |
+|`func (h *ResponseHeader) GetAll(key string) []string` |获取 `[]byte` 类型的键为 key 的所有值（用于获取存在相同 key 的多个值），并发安全 |
+|`func (h *ResponseHeader) Peek(key string) []byte` |获取 `[]byte` 类型的键为 key 的值，并发不安全，竞争访问时使用 `Get` |
+|`func (h *ResponseHeader) PeekAll(key string) [][]byte` |获取 `[]byte` 类型的键为 key 的所有值（用于获取存在相同 key 的多个值），并发不安全，竞争访问时使用 `GetAll` |
+|`func (h *ResponseHeader) Set(key, value string)` |设置 Header 键值，用于为同一个 Key 设置单个 Header |
+|`func (h *ResponseHeader) SetBytesV(key string, value []byte)` |添加 Header 键值 |
+|`func (h *ResponseHeader) Add(key, value string)` |设置 Header 键值，用于为同一个 Key 设置多个 Header，但 key 会覆盖以下 Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent |
+|`func (h *ResponseHeader) Del(key string)` |删除 Header 中键为 key 的键值对 |
+|`func (h *ResponseHeader) DelBytes(key []byte)` |删除 Header 中键为 key 的键值对 |
+|`func (h *ResponseHeader) AppendBytes(dst []byte) []byte` |将完整的 Header 附加到 dst 中并返回 |
+|`func (h *ResponseHeader) Header() []byte` |获取 `[]byte` 类型的完整的 Header |
+|`func (h *ResponseHeader) PeekLocation() []byte` |返回 Header 中 key 为 `Location` 的值  |
+|`func (h *ResponseHeader) Cookie(cookie *Cookie) bool` |填充给定 cookie.Key 的 cookie，如果 cookie.Key 不存在则返回 false |
+|`func (h *RequestHeader) FullCookie() []byte` |以字节数组形式返回完整的 cookie |
+|`func (h *ResponseHeader) SetCookie(cookie *Cookie)` |设置 Cookie 的键值 |
+|`func (h *ResponseHeader) VisitAllCookie(f func(key, value []byte))` |遍历所有 Cookie 的键值并执行 f 函数 |
+|`func (h *ResponseHeader) DelAllCookies()` |删除所有 Cookie |
+|`func (h *ResponseHeader) DelCookie(key string)` |删除响应头中键为 key 的 Cookie，若要删除来自客户端的 Cookie，请使用 `DelClientCookie` 函数 |
+|`func (h *ResponseHeader) DelCookieBytes(key []byte)` |删除响应头中键为 key 的 Cookie，若要删除来自客户端的 Cookie，请使用 `DelClientCookieBytes` 函数 |
+|`func (h *ResponseHeader) DelClientCookie(key string)` |删除来自客户端键为 key 的 Cookie |
+|`func (h *ResponseHeader) DelClientCookieBytes(key []byte)` |删除来自客户端键为 key 的 Cookie |
+|`func (h *ResponseHeader) SetConnectionClose(close bool)`|在响应头中设置 `Connection: close` 标志 |
+|`func (h *ResponseHeader) ConnectionClose() bool` |判断是否包含 Connection: close |
+|`func (h *ResponseHeader) ContentEncoding() []byte` |获取 Content-Encoding |
+|`func (h *ResponseHeader) SetContentEncoding(contentEncoding string)` |设置 Content-Encoding |
+|`func (h *ResponseHeader) SetContentEncodingBytes(contentEncoding []byte)` |设置 Content-Encoding |
+|`func (h *ResponseHeader) SetCanonical(key, value []byte)` |设置 Header 键值，假设该键是规范形式 |
+|`func (h *ResponseHeader) Server() []byte` |返回 Header 中 key 为 `Server` 的值 |
+|`func (h *ResponseHeader) SetServerBytes(server []byte)` |设置 Header 中 key 为 Server 的值 |
+|`func (h *ResponseHeader) MustSkipContentLength() bool` |判断是否有响应 body（HTTP/1.1 协议规定，响应状态码为 1xx、204、304 时没有响应 body） |
+|`func (h *ResponseHeader) StatusCode() int` |获取响应状态码 |
+|`func (h *ResponseHeader) SetStatusCode(statusCode int)`| 设置响应状态码 |
+|`func (h *ResponseHeader) Len() int` |返回 Header 的数量 |
+|`func (h *ResponseHeader) DisableNormalizing()` |禁用 Header 名字的规范化 (首字母和破折号后第一个字母大写) |
+|`func (h *ResponseHeader) IsDisableNormalizing() bool` |是否禁用 Header 名字的规范化 |
+|`func (h *ResponseHeader) Trailer() *Trailer` |获取 Trailer |
+|`func (h *ResponseHeader) SetProtocol(p string)` |设置协议名 |
+|`func (h *ResponseHeader) GetProtocol() string` |获取协议名 |
+|`func (h *ResponseHeader) Reset()`|重置响应头 |
+|`func (h *ResponseHeader) ResetSkipNormalize()` |重置响应头，除了 `disableNormalizing` 状态 |
+|`func (h *ResponseHeader) ResetConnectionClose()` |重置 connectionClose 标志为 false 并删除 Connection Header |
 
 ## 渲染
 

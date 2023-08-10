@@ -685,7 +685,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|判断是否存在 Accept-Encoding 以及 Accept-Encoding 是否包含 acceptEncoding|
 | `func (h *RequestHeader) RawHeaders() []byte`|获取原始 Header |
 | `func (h *RequestHeader) SetRawHeaders(r []byte)`  | 设置原始 Header |
-| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header ( key 会覆盖以下 Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
+| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header (key 会覆盖以下 Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
 | `func (h *RequestHeader) InitBufValue(size int)`|初始化缓冲区大小 |
 | `func (h *RequestHeader) GetBufValue() []byte`|获取缓冲区的值 |
 | `func (h *RequestHeader) SetCanonical(key, value []byte)`|设置 Header 键值，假设该键是规范形式 |
