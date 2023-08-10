@@ -144,10 +144,12 @@ To learn how to use Frugal in conjunction with Kitex, you can refer to the repos
 ### Protobuf High-Performance Codec
 
 We primarily focused on supporting Thrift internally; however, we recognized that external users are more inclined towards using Protobuf or gRPC after the open-source release. Consequently, taking inspiration from Kitex FastThrift's optimization approach, we re-implemented the generated code for Protobuf.
-Starting from version v0.4.0, if users employ Kitex tools to generate Protobuf code, the default generation will include Fastpb codec code. Furthermore, when initiating RPC calls, Kitex will also utilize [Fastpb](https://github.com/cloudwego/fastpb) as the default serialization option.
+Starting from version v0.4.0, if users employ Kitex tools to generate Protobuf code, the default generation will include [Fastpb][Fastpb] codec code. Furthermore, when initiating RPC calls, Kitex will also utilize [Fastpb][Fastpb] as the default serialization option.
 
-The figure below illustrates a performance comparison between Fastpb and the official Protobuf serialization library. It is evident that Fastpb outperforms the official library in terms of efficiency, memory allocation, encoding, and decoding.
-![image](/img/blog/Kitex_architecture_explained_en/12.png)
+The figures below illustrate a performance comparison between [Fastpb][Fastpb] and the official Protobuf serialization library. It is evident that Fastpb outperforms the official library in terms of efficiency, memory allocation, encoding, and decoding.
+
+- FastWrite: **(ns/op) ↓67.8% ，(B/op) ↓83.9%**
+- FastRead: **(ns/op) ↓41.5% ，(B/op) ↓4.5%**
 
 ### gRPC Performance Optimization
 
@@ -209,3 +211,8 @@ This blog introduces the following key points:
 4. Explore and implement additional feature support and open sourcing, such as ShmIPC (shared memory IPC), QUIC (Quick UDP Internet Connections), and generalization for Protobuf.
 
 By pursuing these goals, Kitex aims to meet the evolving needs of users and further strengthen its position as a reliable and efficient framework for building cloud-native architectures.
+
+[Kitex]: https://github.com/cloudwego/kitex
+[Frugal]: https://github.com/cloudwego/frugal
+[Fastpb]: https://github.com/cloudwego/fastpb
+[Istio]: https://github.com/istio/istio
