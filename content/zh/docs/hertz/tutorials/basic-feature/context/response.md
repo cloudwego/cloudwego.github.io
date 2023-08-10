@@ -300,6 +300,8 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 |`func (h *ResponseHeader) Set(key, value string)` |设置 Header 键值，用于为同一个 Key 设置单个 Header |
 |`func (h *ResponseHeader) SetBytesV(key string, value []byte)` |设置 `[]byte` 类型的 Header 键值，用于为同一个 Key 设置单个 Header |
 |`func (h *ResponseHeader) Add(key, value string)` |设置 Header 键值，用于为同一个 Key 设置多个 Header，但 key 会覆盖以下 Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent |
+| `func (h *ResponseHeader) AddArgBytes(key, value []byte, noValue bool)`|添加 Header 键值（与 `Add` 不同，key 为 Content-Type, Content-Length, Content-Encoding, Connection, Server, Set-Cookie, Transfer-Encoding 时不会被标准化）|
+| `func (h *ResponseHeader) SetArgBytes(key, value []byte, noValue bool)`|设置 Header 键值（与 `Set` 不同，key 为 Content-Type, Content-Length, Content-Encoding, Connection, Server, Set-Cookie, Transfer-Encoding 时不会被标准化）|
 |`func (h *ResponseHeader) Del(key string)` |删除 Header 中键为 key 的键值对 |
 |`func (h *ResponseHeader) DelBytes(key []byte)` |删除 Header 中键为 key 的键值对 |
 |`func (h *ResponseHeader) AppendBytes(dst []byte) []byte` |将完整的 Header 附加到 dst 中并返回 |

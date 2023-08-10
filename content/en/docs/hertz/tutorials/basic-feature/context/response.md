@@ -300,6 +300,8 @@ Use RequestContext.Response.Header to obtain the ResponseHeader object, this obj
 |`func (h *ResponseHeader) Set(key, value string)` |Set the header key value to set a single header for the same key |
 |`func (h *ResponseHeader) SetBytesV(key string, value []byte)` |Set the header key value of type `[]byte` to set a single header for the same key |
 |`func (h *ResponseHeader) Add(key, value string)` |Set the header key value to set multiple headers for the same key, but the key will overwrite the following headers: Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent |
+| `func (h *ResponseHeader) AddArgBytes(key, value []byte, noValue bool)`|Add Header key value (different from `Add`, keys such as Content-Type, Content-Length, Content-Encoding, Connection, Server, Set-Cookie, Transfer-Encoding)|
+| `func (h *ResponseHeader) SetArgBytes(key, value []byte, noValue bool)`|Set Header key value (different from `Set`, keys such as Content-Type, Content-Length, Content-Encoding, Connection, Server, Set-Cookie, Transfer-Encoding)|
 |`func (h *ResponseHeader) Del(key string)` |Delete key value pairs with key in the header |
 |`func (h *ResponseHeader) DelBytes(key []byte)` |Delete key value pairs with key in the header |
 |`func (h *ResponseHeader) AppendBytes(dst []byte) []byte` |Attach the complete header to the dst and return |

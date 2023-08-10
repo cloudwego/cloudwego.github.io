@@ -692,8 +692,8 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) Set(key, value string)`|设置 Header 键值，用于为同一个 Key 设置单个 Header |
 | `func (h *RequestHeader) SetBytesKV(key, value []byte)`|设置 `[]byte` 类型的 Header 键值，用于为同一个 Key 设置单个 Header |
 | `func (h *RequestHeader) DelBytes(key []byte)`|删除 Header 中键为 key 的键值对 |
-| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|添加 Header 键值（key 不为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent）|
-| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|设置 Header 键值（key 不为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent）|
+| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|添加 Header 键值（与 `Add` 不同，key 为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent 时不会被标准化）|
+| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|设置 Header 键值（与 `Set` 不同，key 为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent 时不会被标准化）|
 | `func (h *RequestHeader) AppendBytes(dst []byte) []byte`|将完整的 Header 附加到 dst 中并返回 |
 | `func (h *RequestHeader) Header() []byte`|获取 `[]byte` 类型的完整的 Header |
 | `func (h *RequestHeader) String() string`|获取完整的 Header |
