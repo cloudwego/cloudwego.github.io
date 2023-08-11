@@ -45,7 +45,9 @@ func main() {
 
 ### 支持的 tag
 
-> 注意：使用 IDL 生成代码时会自动添加 `form`、`json`、`query` tag，使用其他 tag 需手动添加；用户只添加 `form` 或 `json` tag 时会生成 `form` 和 `json` tag，不会生成 `query` tag；用户只添加 `query` tag 时会生成 `json` 和 `query` tag，不会生成 `form` tag。
+不通过 IDL 生成代码时若字段不添加任何 tag 则会遍历所有 tag 并按照优先级绑定参数，添加 tag 则会根据对应的 tag 按照优先级去绑定参数。
+
+通过 IDL 生成代码时若不添加 [api注解](/zh/docs/hertz/tutorials/toolkit/annotation/#支持的-api-注解) 则字段默认添加 `form`、`json`、`query` tag，添加 [api注解](/zh/docs/hertz/tutorials/toolkit/annotation/#支持的-api-注解) 会为字段添加相应需求的 tag。
 
 | go tag  |  说明  |
 | :----  | :---- |

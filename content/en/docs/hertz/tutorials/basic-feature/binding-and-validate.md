@@ -45,7 +45,9 @@ func main() {
 
 ### Supported tags
 
-> Note: When using IDL to generate code, `form`, `JSON`, and `query` tags will be automatically added, while using other tags requires manual addition; When users only add `form` or `JSON` tags, they will generate `form` and `JSON` tags, but not `query` tags; When users only add `query` tags, `JSON` and `query` tags will be generated, and `form` tags will not be generated.
+When generating code without IDL, if no tags are added to the field, it will traverse all tags and bind parameters according to priority. Adding tags will bind parameters according to the corresponding tag's priority.
+
+If [api-annotations](/docs/hertz/tutorials/toolkit/annotation/#supported-api-annotations) are not added when generating code through IDL, the fields will default to adding `form`, `JSON`, and `query` tags. Adding [api-annotations](/docs/hertz/tutorials/toolkit/annotation/#supported-api-annotations) will add the corresponding required tags for the fields.
 
 | go tag   | description                                                  |
 | -------- | ------------------------------------------------------------ |
