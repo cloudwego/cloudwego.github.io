@@ -45,15 +45,19 @@ func main() {
 
 ### Supported tags
 
+> Note: When using IDL to generate code, `form`, `JSON`, and `query` tags will be automatically added, while using other tags requires manual addition; When users only add `form` or `JSON` tags, they will generate `form` and `JSON` tags, but not `query` tags; When users only add `query` tags, `JSON` and `query` tags will be generated, and `form` tags will not be generated.
+
 | go tag   | description                                                  |
 | -------- | ------------------------------------------------------------ |
 | path     | This tag is used to bind parameters on url like `{:param}` or `{*param}`. For example: if we defined route is: `/v:version/example`, you can specify the path parameter as the route parameter: `path:"version"`. In this case if url is http://127.0.0.1:8888/v1/ , you can bind the path parameter "1". |
 | form     | This tag is used to bind the key-value of the form in request body which content-type is `multipart/form-data` or `application/x-www-form-urlencoded` |
 | query    | This tag is used to bind query parameter in request          |
+| cookie | This tag is used to bind cookie parameter in request |
 | header   | This tag is used to bind header parameters in request        |
 | json     | This tag is used to bind json parameters in the request body which content-type is `application/json` |
 | raw_body | This tag is used to bind the original body (bytes type) of the request, and parameters can be bound even if the bound field name is not specified. (Note: raw_body has the lowest binding priority. When multiple tags are specified, once other tags successfully bind parameters, the body content will not be bound) |
 | vd       | `vd` short for validator, [The grammar of validation parameter](https://github.com/bytedance/go-tagexpr/tree/master/validator) |
+| default | Set default value |
 
 ### Parameter binding precedence
 

@@ -45,15 +45,19 @@ func main() {
 
 ### 支持的 tag
 
+> 注意：使用 IDL 生成代码时会自动添加 `form`、`json`、`query` tag，使用其他 tag 需手动添加；用户只添加 `form` 或 `json` tag 时会生成 `form` 和 `json` tag，不会生成 `query` tag；用户只添加 `query` tag 时会生成 `json` 和 `query` tag，不会生成 `form` tag。
+
 | go tag  |  说明  |
 | :----  | :---- |
 | path | 绑定 url 上的路径参数，相当于 hertz 路由{:param}或{*param}中拿到的参数。例如：如果定义的路由为：/v:version/example，可以把 path 的参数指定为路由参数：`path:"version"`，此时，url: http://127.0.0.1:8888/v1/example，可以绑定path参数"1" |
 | form | 绑定请求的 body 内容。content-type -> `multipart/form-data` 或 `application/x-www-form-urlencoded`，绑定 form 的 key-value |
 | query | 绑定请求的 query 参数 |
+| cookie | 绑定请求的 cookie 参数 |
 | header | 绑定请求的 header 参数 |
 | json | 绑定请求的 body 内容 content-type -> `application/json`，绑定 json 参数 |
 | raw_body | 绑定请求的原始 body(bytes)，绑定的字段名不指定，也能绑定参数。（注：raw_body 绑定优先级最低，当指定多个 tag 时，一旦其他 tag 成功绑定参数，则不会绑定 body 内容。） |
 | vd | 参数校验，[校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator) |
+| default | 设置默认值 |
 
 ### 参数绑定优先级
 
