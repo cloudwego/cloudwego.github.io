@@ -45,25 +45,24 @@ func main() {
 
 | 配置项                        | 默认值         | 描述                                                    |
 | ----------------------------- | -------------- | ------------------------------------------------------- |
-| DialTimeout                   | 1s             | 拨号超时时间                                            |
-| MaxConnsPerHost               | 512            | 每个主机可能建立的最大连接数                            |
-| MaxIdleConnDuration           | 10s            | 最大的空闲连接持续时间，空闲的连接在此持续时间后被关闭  |
-| MaxConnDuration               | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭 |
-| MaxConnWaitTimeout            | 0s             | 等待空闲连接的最大时间                                  |
-| KeepAlive                     | true           | 是否使用 keep-alive 连接，默认使用                                |
-| ReadTimeout                   | 0s             | 完整读取响应（包括 body）的最大持续时间                  |
-| TLSConfig                     | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/)                      |
-| Dialer                        | network.Dialer | 设置指定的拨号器                                        |
-| ResponseBodyStream            | false          | 是否在流中读取 body，默认不在流中读取                                     |
-| DisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化，默认不禁用，如 cONTENT-lenGTH -> Content-Length                                    |
-| Name                          | ""             | 用户代理头中使用的客户端名称                            |
-| NoDefaultUserAgentHeader      | false          | 是否没有默认的 User-Agent 头，默认有 User-Agent 头                             |
-| DisablePathNormalizing        | false          | 是否禁用路径规范化，默认规范路径，如 http://localhost:8080/hello/../ hello -> http://localhost:8080/hello                                 |
-| RetryConfig                   | nil            | HTTP 客户端的重试配置，重试配置详细说明请看 [重试](/zh/docs/hertz/tutorials/basic-feature/retry/)                                                |
-| WriteTimeout                  | 0s             | HTTP 客户端的写入超时时间                                            |
-| HostClientStateObserve        | nil            | 观察和记录 HTTP 客户端的连接状态的函数                |
-| ObservationInterval           | 5s             | HTTP 客户端连接状态的观察执行间隔                                        |
-| DialFunc                      | network.Dialer | 设置 HTTP 客户端拨号器函数，会覆盖自定义拨号器                    |
+| WithDialTimeout                   | 1s             | 拨号超时时间                                            |
+| WithMaxConnsPerHost               | 512            | 每个主机可能建立的最大连接数                            |
+| WithMaxIdleConnDuration           | 10s            | 最大的空闲连接持续时间，空闲的连接在此持续时间后被关闭  |
+| WithMaxConnDuration               | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭 |
+| WithMaxConnWaitTimeout            | 0s             | 等待空闲连接的最大时间                                  |
+| WithKeepAlive                     | true           | 是否使用 keep-alive 连接，默认使用                                |
+| WithClientReadTimeout                   | 0s             | 完整读取响应（包括 body）的最大持续时间                  |
+| WithTLSConfig                     | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/)                      |
+| WithDialer                       | network.Dialer | 设置指定的拨号器                                        |
+| WithResponseBodyStream            | false          | 是否在流中读取 body，默认不在流中读取                                     |
+| WithDisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化，默认不禁用，如 cONTENT-lenGTH -> Content-Length                                    |
+| WithName                          | ""             | 用户代理头中使用的客户端名称                            |
+| WithNoDefaultUserAgentHeader      | false          | 是否没有默认的 User-Agent 头，默认有 User-Agent 头                             |
+| WithDisablePathNormalizing       | false          | 是否禁用路径规范化，默认规范路径，如 http://localhost:8080/hello/../ hello -> http://localhost:8080/hello                                 |
+| WithRetryConfig                   | nil            | HTTP 客户端的重试配置，重试配置详细说明请看 [重试](/zh/docs/hertz/tutorials/basic-feature/retry/)                                                |
+| WithWriteTimeout                 | 0s             | HTTP 客户端的写入超时时间                                            |
+| WithConnStateObserve       | nil, 5s            | 设置观察和记录 HTTP 客户端的连接状态的函数以及观察执行间隔                |
+| WithDialFunc                    | network.Dialer | 设置 HTTP 客户端拨号器函数，会覆盖自定义拨号器                    |
 
 示例代码：
 
@@ -285,13 +284,15 @@ func main() {
 
 ## 请求超时
 
+> 注意：Do、DoRedirects、Get、Post 等请求函数可以通过 WithRequestTimeout 设置请求超时时间，DoTimeout 和 DoDeadline 函数通过传参的形式设置请求超时时间，两者都是修改 `RequestOptions.requestTimeout` 字段，所以在使用 DoTimeout 和 DoDeadline 函数时无需使用 WithRequestTimeout 函数，若同时使用了，请求超时时间以最后一次设置的为准。
+
 ```go
-func WithReadTimeout(t time.Duration) RequestOption
+func WithRequestTimeout(t time.Duration) RequestOption
 func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
 func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
 ```
 
-### WithReadTimeout
+### WithRequestTimeout
 
 Do、DoRedirects、Get、Post 等请求函数虽然不能以传参的方式设置请求超时返回，但可以通过 [Client Request 配置](#client-request-配置) 中的 `WithRequestTimeout` 配置项来设置请求超时返回。
 
@@ -341,7 +342,7 @@ func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *pro
 
 ```go
 func main() {
-	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong") biz handler time: 1.5s
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -379,7 +380,7 @@ func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *pr
 
 ```go
 func main() {
-	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong") biz handler time: 1.5s
 	c, err := client.NewClient()
 	if err != nil {
 		return
