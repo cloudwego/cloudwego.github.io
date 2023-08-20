@@ -295,7 +295,7 @@ Hertz Server 支持流式写入响应。
 
     ```go
     func main() {
-        h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true))
+        h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
 
         h.GET("/streamWrite1", func(c context.Context, ctx *app.RequestContext) {
             rw := newChunkReader()
