@@ -905,7 +905,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetFormValueFunc
 
-设置 FormValue 函数。
+若 [FormValue](#formvalue) 函数提供的默认获取 key 的值的方式不满足需求，用户可以使用该函数自定义获取 key 的值的方式。
 
 函数签名:
 
@@ -1327,7 +1327,7 @@ func (ctx *RequestContext) SetClientIPFunc(f ClientIP)
 
 ### ClientIP
 
-获取客户端 IP 的地址。
+获取客户端的 remote ip，若 remote ip 为 `0.0.0.0`，Hertz Server 还会检查 `X-Forwarded-For` 和 `X-Real-IP` Header 是否存在 ip 地址并返回（优先返回 `X-Forwarded-For`  Header）。
 
 函数签名:
 
@@ -1345,7 +1345,9 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### SetClientIPFunc
 
-设置获取客户端 IP 的地址的函数。
+若 [ClientIP](#clientip) 函数提供的默认方式不满足需求，用户可以使用该函数自定义获取客户端 ip 的方式。
+
+该函数可用于即使 remote ip 存在，也希望从 `X-Forwarded-For` 或 `X-Real-IP` Header 获取 ip 的场景（多重代理，想从 `X-Forwarded-For` 或 `X-Real-IP` Header 获得最初的 ip）。
 
 函数签名:
 

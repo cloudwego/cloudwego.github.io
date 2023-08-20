@@ -1,319 +1,230 @@
 ---
 title: "Engine"
-date: 2023-04-10
+date: 2023-08-18
 weight: 1
 description: >
 ---
 
 
-The important methods of registering routes, middleware, starting and stopping services for Hertz are all included in the **core** type `server.Hertz`. It is composed of `route.Engine` and a `signalWaiter`. Here's the definition:
+`Server.Hertz` is the core type of `Hertz`, consisting of `route.Engine` and `signalWaiter`. The important methods for starting, registering routes, registering middleware, and exiting the `Hertz` server are all included in `server.Hertz`. The following is the definition of `server.Hertz`:
 
 ```go
-// Hertz is the core struct of hertz.
 type Hertz struct {
-    *route.Engine
-    // Used to receive signals for graceful shutdown
-    signalWaiter func(err chan error) error
+    *route.Engine 
+    // used to receive signal for elegant exit
+    signalWaiter func (err chan error) error
 }
 ```
 
-## server.Hertz
+`Route.Engine` is an important component of `server.Hertz`, and the definition of `Engine` is located in [Engine](https://github.com/cloudwego/hertz/blob/main/pkg/route/engine.go).
 
-### Initializing the Server
+## Client Config
 
-Hertz provides two functions in the `server` package to initialize servers: `New` and `Default`.
+|  **Option**   | **Default**  |  **Description**  |
+|  :----  | :----  | :---- |
+| WithTransport  | network.NewTransporter | Replace the transport |
+| WithHostPorts  | `:8888` | Specify the listening address and port |
+| WithKeepAliveTimeout | 1min | Set the keep-alive time of tcp persistent connection, generally no need to modify it, you should more pay attention to idleTimeout rather than modifying it |
+| WithReadTimeout | 3min | The timeout of data reading |
+| WithIdleTimeout | 3min | The free timeout of the request link for persistent connection |
+| WithMaxRequestBodySize | 4 * 1024 * 1024 | Max body size of a request |
+| WithRedirectTrailingSlash | true | Whether to redirect with the / which is at the end of the router automatically. For example： If there is only /foo/ in the router, /foo will be redirected to /foo/. And if there is only /foo in the router, /foo/ will be redirected to /foo |
+| WithRemoveExtraSlash | flase | RemoveExtraSlash makes the parameter still valid when it contains an extra /. For example, if WithRemoveExtraSlash is true user//xiaoming can match the user/:name router |
+| WithUnescapePathValues | true | If true, the request path will be escaped automatically (eg. '%2F' -> '/'). If UseRawPath is false (the default), UnescapePathValues is true, because  URI().Path() will be used and it is already escaped. To set WithUnescapePathValues to false, you need to set WithUseRawPath to true |
+| WithUseRawPath | false | If true, the original path will be used to match the route |
+| WithHandleMethodNotAllowed | false | If true when the current path cannot match any method, the server will check whether other methods are registered with the route of the current path, and if exist other methods, it will respond "Method Not Allowed" and return the status code 405; if not, it will use the handler of NotFound to handle it |
+| WithDisablePreParseMultipartForm | false | If true, the multipart form will not be preprocessed. The body can be obtained via ctx.Request.Body() and then can be processed by user |
+| WithStreamBody | false | If true, the body will be handled by stream processing |
+| WithNetwork | "tcp" | Set the network protocol, optional: tcp，udp，unix(unix domain socket) |
+| WithExitWaitTime | 5s | Set the graceful exit time. the Server will stop connection establishment for new requests and set the Connection: Close header for each request after closing. When the set time is reached, Server will to be closed. the Server can be closed early when all connections have been closed |
+| WithTLS | nil | Configuring server tls capabilities, For detailed information, please refer to [TLS](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/) |
+| WithListenConfig | nil | Set the listener configuration. Can be used to set whether to allow reuse ports, etc.|
+| WithALPN | false | Whether to enable ALPN |
+| WithTracer | []interface{}{} | Inject tracer implementation, if not inject Tracer, default: close. |
+| WithTraceLevel | LevelDetailed | Set trace level |
+| WithWriteTimeout | infinite | The timeout of data writing |
+| WithRedirectFixedPath | false | If enabled, if the current request path does not match, the server will try to repair the request path and re-match, if the match is successful and the request is a GET request, it will return status code 301 for redirect, other requests will return 308 for redirect |
+| WithBasePath | `/` | Set the base path, which must be prefixed and suffixed with `/` |
+| WithMaxKeepBodySize | 4 * 1024 * 1024 | Sets the maximum size of the request body and response body to be retained during reclaim. Unit: Byte |
+| WithGetOnly | false | If enabled, only GET requests are accepted |
+| WithKeepAlive | true | If enabled, use HTTP keepalive |
+| WithAltTransport | network.NewTransporter | Set up the alternate transport |
+| WithH2C | false | Sets whether H2C is enabled |
+| WithReadBufferSize | 4 * 1024 | Set the read buffer size while limiting the HTTP header size |
+| WithRegistry | registry.NoopRegistry, nil | Setup registry configuration, service registration information |
+| WithAutoReloadRender | false, 0 | Set up the automatic reload rendering configuration |
+| WithDisablePrintRoute | false | Sets whether debugPrintRoute is disabled |
+| WithOnAccept | nil | Set the callback function when a new connection is accepted but cannot receive data in netpoll. In go net, it will be called before converting tls connection |
+| WithOnConnect | nil | Set the onConnect function. It can received data from connection in netpoll. In go net, it will be called after converting tls connection |
 
-The default function `Default` uses the middleware called `Recovery` to prevent service crashes caused by panicking
-during runtime.
+Server Connection limitation:
+
+* If you are using the standard network library, there is no such restriction.
+* If netpoll is used, the maximum number of connections is 10000 (this is
+  the [gopool](https://github.com/bytedance/gopkg/blob/b9c1c36b51a6837cef4c2223e11522e3a647460c/util/gopool/gopool.go#L46))
+  used at the bottom of netpoll. Yes, the modification method is also very simple, just call the function provided by
+  gopool: `gopool.SetCap(xxx)` (you can call it once in main.go).
+
+The configuration items on the server side are initialized using the `server.WithXXX` method, such as:
 
 ```go
-// New creates a hertz instance without any default config.
-func New(opts ...config.Option) *Hertz {
-    options := config.NewOptions(opts)
-    h := &Hertz{Engine: route.NewEngine(options)}
-    return h
-}
-```
-
-```go
-// Default creates a hertz instance with default middlewares.
-func Default(opts ...config.Option) *Hertz {
-     h := New(opts...)
-     // Uses built-in Recovery middleware based on New method 
-     h.Use(recovery.Recovery())
-     return h  
-}
-```
-
-For more information on optional configurations, refer to [Configuration Options](https://www.cloudwego.io/docs/hertz/reference/config/).
-
-Example Code
-
-```go
-package main
-
-import (
-    "github.com/cloudwego/hertz/pkg/app/server"
-)
-
 func main() {
-    h := server.New()
-    // Use Default
-    // h := server.Default()
+	h := server.New(server.WithXXXX())
+	...
+}
+```
+
+## Initial Service
+
+```go
+func Default(opts ...config.Option) *Hertz
+func New(opts ...config.Option) *Hertz
+```
+
+### Default
+
+`Default` is used to initialize the service, and the `Recovery` middleware is used by default to ensure that the service will not crash during runtime due to `panic`.
+
+Function Signature:
+
+```go
+func Default(opts ...config.Option) *Hertz
+```
+
+Example Code:
+
+```go
+func main() {
+    h := server.Default()
     h.Spin()
 }
 ```
 
-### Run Service
+### New
 
-`Hertz` provides the `Spin` function to start the server.
+`New` is used to initialize service and does not use the default `Recovery` middleware.
 
-Unlike the `Run` provided in `route.Engine`, it is generally recommended to use `Spin` unless you have **special** needs when running services.
-
-When using [Service Registration and Discovery](http://localhost:1313/docs/hertz/tutorials/service-governance/service_discovery/), `Spin`
-will register the service into a registry center when starting up, and use `signalWaiter` to monitor service exceptions. Only by using `Spin` can we support graceful shutdown.
+Function Signature:
 
 ```go
-package main
+func New(opts ...config.Option) *Hertz
+```
 
-import (
-    "github.com/cloudwego/hertz/pkg/app/server"
-)
+Example Code:
 
+```go
 func main() {
     h := server.New()
-    // We usually recommend using Spin 
     h.Spin()
 }
 ```
 
+## Service Run and Exit
+
 ```go
-package main
+func (h *Hertz) Spin()
+func (engine *Engine) Run() (err error)
+func (h *Hertz) SetCustomSignalWaiter(f func(err chan error) error)
+```
 
-import (
-    "github.com/cloudwego/hertz/pkg/app/server"
-)
+### Spin
 
+The `Spin` function is used to run the Hertz server and can exit the service upon receiving an exit signal.
+
+This function supports graceful shutdown of services. For detailed information on graceful shutdown, please refer to [graceful-shutdown](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
+
+When using the function of [service_discovery](https://www.cloudwego.io/docs/hertz/tutorials/service-governance/service_discovery/), `Spin` will register the service into the registry when it is started, and use `signalWaiter` to monitor service exceptions.
+
+Function Signature:
+
+```go
+func (h *Hertz) Spin()
+```
+
+Example Code:
+
+```go
 func main() {
-    h := server.New()
-    // Start with Run function
-    if err:= h.Run (); err != Nil {
-        //...
-        panic(err)
+    h := server.Default()
+    h.Spin()
+}
+```
+
+### Run
+
+The `Run` function is used to run the Hertz server and can exit the service upon receiving an exit signal.
+
+This function does not support graceful shutdown of service. Unless there are **special** requirements, the [Spin](#spin) function is generally used to run service.
+
+Function Signature:
+
+```go
+func (engine *Engine) Run() (err error)
+```
+
+Example Code:
+
+```go
+func main() {
+    h := server.Default()
+    if err := h.Run(); err != nil {
+        // ...
+    	panic(err)
     }
 }
 ```
 
-## route.Engine
+### SetCustomSignalWaiter
 
-`route.Engine` is an important part of `server.Hertz`, which contains a large number of commonly used methods in development, and is particularly **important**.
+The `SetCustomimSignalWaiter` function is used to customize the processing function of the server after receiving signals. If no custom function is set, Hertz uses the `waitSignal` function as the default implementation method for signal processing. For more details, please refer to [graceful-shutdown](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
+
+Function Signature:
 
 ```go
-type Engine struct {
-    noCopy nocopy.NoCopy //lint:ignore U1000 until noCopy is used
-
-	// engine name
-	Name       string
-	serverName atomic.Value
-
-	// Options for route and protocol server
-	options *config.Options
-
-	// route
-	RouterGroup
-	trees MethodTrees
-
-	maxParams uint16
-
-	allNoMethod app.HandlersChain
-	allNoRoute  app.HandlersChain
-	noRoute     app.HandlersChain
-	noMethod    app.HandlersChain
-
-	// For render HTML
-	delims     render.Delims
-	funcMap    template.FuncMap
-	htmlRender render.HTMLRender
-
-	// NoHijackConnPool will control whether invite pool to acquire/release the hijackConn or not.
-	// If it is difficult to guarantee that hijackConn will not be closed repeatedly, set it to true.
-	NoHijackConnPool bool
-	hijackConnPool   sync.Pool
-	// KeepHijackedConns is an opt-in disable of connection
-	// close by hertz after connections' HijackHandler returns.
-	// This allows to save goroutines, e.g. when hertz used to upgrade
-	// http connections to WS and connection goes to another handler,
-	// which will close it when needed.
-	KeepHijackedConns bool
-
-	// underlying transport
-	transport network.Transporter
-
-	// trace
-	tracerCtl   tracer.Controller
-	enableTrace bool
-
-	// protocol layer management
-	protocolSuite         *suite.Config
-	protocolServers       map[string]protocol.Server
-	protocolStreamServers map[string]protocol.StreamServer
-
-	// RequestContext pool
-	ctxPool sync.Pool
-
-	// Function to handle panics recovered from http handlers.
-	// It should be used to generate an error page and return the http error code
-	// 500 (Internal Server Error).
-	// The handler can be used to keep your server from crashing because of
-	// unrecovered panics.
-	PanicHandler app.HandlerFunc
-
-	// ContinueHandler is called after receiving the Expect 100 Continue Header
-	//
-	// https://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3
-	// https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.1.1
-	// Using ContinueHandler a server can make decisioning on whether or not
-	// to read a potentially large request body based on the headers
-	//
-	// The default is to automatically read request bodies of Expect 100 Continue requests
-	// like they are normal requests
-	ContinueHandler func(header *protocol.RequestHeader) bool
-
-	// Indicates the engine status (Init/Running/Shutdown/Closed).
-	status uint32
-
-	// Hook functions get triggered sequentially when engine start
-	OnRun []CtxErrCallback
-
-	// Hook functions get triggered simultaneously when engine shutdown
-	OnShutdown []CtxCallback
-
-	// Custom Functions
-	clientIPFunc  app.ClientIP
-	formValueFunc app.FormValueFunc
-}
+func (h *Hertz) SetCustomSignalWaiter(f func(err chan error) error)
 ```
 
-### Set ServiceName
-
-Sample code:
+Example Code:
 
 ```go
-package main
-
 func main() {
-    h := server.New()
-    // Used to set the Server field in response header, default is Hertz.
-    h.Name = ""
+	h := server.New()
+	h.SetCustomSignalWaiter(func(err chan error) error {
+		return nil
+	})
+	h.Spin()
 }
 ```
 
-### Rendering template
-
-The engine provides methods such as `Delims`, `SetFuncMap`, `LoadHTMLGlob`, `LoadHTMLFiles`, `SetHTMLTemplate`, and `SetAutoReloadHTMLTemplate` for rendering HTML or template files.
-
-#### Delims
-
-Used to set the delimiter of the templates.
-
-Function signature:
-
-```go
-func (engine *Engine) Delims(left, right string) *Engine 
-```
-
-#### SetFuncMap
-
-Used to set data sources for templates.
-
-Function signature:
-
-```go
-type FuncMap map[string]interface{}
-
-func (engine *Engine) SetFuncMap(funcMap template.FuncMap) 
-```
-
-Example usage:
-
-```go
-package main
-    
-func main() {
-    h := server.New()
-    h.SetFuncMap(template.FuncMap{
-        "time": time.Now.String(),
-    })
-}
-```
-
-#### LoadHTMLGlob
-
-Used for global loading of template files. The `*` wildcard can be used to specify the template folder.
-
-Function signature:
-
-```go
-// LoadHTMLGlob loads HTML files identified by glob pattern
-// and associates the result with HTML renderer.
-func (engine *Engine) LoadHTMLGlob(pattern string) 
-```
-
-Example code:
-
-```go
-// Loads all html template files in render/html directory
-h.LoadHTMLGlob("render/html/*")
-
-// Loads index.tmpl template file
-h.LoadHTMLGlob("index.tmpl")
-```
-
-#### LoadHTMLFiles
-
-Used to load specified template files as a string slice.
-
-Function signature:
-
-```go
-// LoadHTMLFiles loads a slice of HTML files
-// and associates the result with HTML renderer.
-func (engine *Engine) LoadHTMLFiles(files ...string) 
-```
-
-#### SetHTMLTemplate/SetAutoReloadHTMLTemplate
-
-These two methods are used internally in rendering logic and are not recommended for direct use.
-
-### Register Middleware
-
-Hertz provides `Use` function for registering middleware into routes.
-
-We support user-defined middleware, and at the same time we also provide some commonly used middleware implementations,
-See details [hertz-contrib](https://github.com/hertz-contrib).
-
-"At the same time, although the common usage of middleware is to register it globally, we also support registration
-at the routing level. For more details, [please see](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/middleware/#group-level-middleware)
-
-The parameter type of `middleware` in the `Use` function must be a http processing function of `app.HandlerFunc`.
-
-```go
-type HandlerFunc func (ctx context.Context, c *app.RequestContext)
-```
-
-Function signature:
+## Middleware
 
 ```go
 func (engine *Engine) Use(middleware ...app.HandlerFunc) IRoutes
 ```
 
-Sample code:
+### Use
+
+The `Use` function is used to register the middleware into the router.
+
+Hertz supports user-defined middleware, and has implemented some commonly used middleware. Please refer to [hertz contrib](https://github.com/hertz-contrib) for details.
+
+The usage methods of middleware supported by Hertz include **global registration**, **routing group** level, and **single routing** level registration. For details, please refer to [server-side-middleware](/docs/hertz/tutorials/basic-feature/middleware/#server-side-middleware).
+
+The formal parameter of `middleware` in the `Use` function must be the http processing function of `app.HandlerFunc`:
 
 ```go
-package main
+type HandlerFunc func (ctx context.Context, c *app.RequestContext)
+```
 
-// ...
+Function Signature:
 
+```go
+func (engine *Engine) Use(middleware ...app.HandlerFunc) IRoutes
+```
+
+Example Code:
+
+```go
 func main() {
     h := server.New()
     // Register built-in Recovery middleware into routes.
@@ -334,103 +245,223 @@ func exampleMiddleware() app.handlerFunc {
 }
 ```
 
-For more examples, see [repository](https://github.com/cloudwego/hertz-examples/tree/main/middleware).
+## Streaming
 
-### Service Shutdown
+Hertz supports server streaming processing, including streaming read and streaming write.
 
-hertz provides the `Shutdown` function for graceful shutdown.
+> Note: Due to the different triggering modes between netpoll and go net, netpoll streaming is "pseudo" (due to LT triggering, data will be read into the buffer of the network library by the network library). In scenarios with large packets (such as uploading files), there may be memory issues, and it is recommended to use go net.
 
-If you are using service registration and discovery, the corresponding data will also be deregistered from the registry when the service exits.
+### Streaming Write
 
-Function signature:
+Hertz Server supports streaming read request content.
 
-```go
-func (engine *Engine) Shutdown(ctx context.Context) (err error)
-```
-
-Example code:
+Example Code:
 
 ```go
-package main
-
-import (
-	//...
-    "github.com/cloudwego/hertz/pkg/app/server"
-)
-
 func main() {
-    h := server.New()
-    // When accessing this path, it triggers the shutdown function to go offline
-    h.GET("/shutdown", func(ctx context.Context, c *app.RequestContext) {
-        h.ShutDown(ctx)
-    })
-    h.Spin()
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
+
+	h.POST("/bodyStream", handler)
+
+	h.Spin()
+}
+
+func handler(ctx context.Context, c *app.RequestContext) {
+	// Acquire body streaming
+	bodyStream := c.RequestBodyStream()
+	// Read half of body bytes
+	p := make([]byte, c.Request.Header.ContentLength()/2)
+	r, err := bodyStream.Read(p)
+	if err != nil {
+		panic(err)
+	}
+	left, _ := ioutil.ReadAll(bodyStream)
+	c.String(consts.StatusOK, "bytes streaming_read: %d\nbytes left: %d\n", r, len(left))
 }
 ```
 
-For more information on graceful shutdown see [documentation](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/graceful-shutdown/)
+### Streaming Read
 
-### Set Hook Function
+Hertz Server supports streaming write responses.
 
-The corresponding hook functions will be triggered when Engine starts up and shuts down.
+Two methods are provided:
 
-`OnRun` and `OnShutdown` are two slices of hook functions used to store hook functions. To avoid affecting existing hook functions,
-you need to use the `append` function to add new hooks into slices.
+1. The user passes in a `io.Reader` through the `ctx.SetBodyStream` function in the handler, and then reads and writes data in blocks in a similar manner to the example code (using channel to control data partitioning and read/write order) **Note that data needs to be written asynchronously**.
+   
+    If the user knows the total length of the transmitted data in advance, they can pass in the length in the `ctx.SetBodyStream` function for streaming writing, as shown in the example code `/streamWrite1`.
 
-For detailed configuration methods, see [Hooks](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/hooks/).
+    If the user does not know the total length of the transmitted data in advance, they can pass in -1 in the `ctx.SetBodyStream` function to write the stream in the form of `Transfer-Encoding: chunked`, as shown in the example code `/streamWrite2`.
 
-Function signature:
+    Example Code:
 
-```go
-type CtxCallback func (ctx context.Context)
+    ```go
+    func main() {
+        h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true))
 
-type CtxErrCallback func (ctx context.Context) error
+        h.GET("/streamWrite1", func(c context.Context, ctx *app.RequestContext) {
+            rw := newChunkReader()
+            line := []byte("line\r\n")
+            ctx.SetBodyStream(rw, 500*len(line))
 
-// Hook Functions triggered during engine startup.
-OnRun []CtxErrCallback 
+            go func() {
+                for i := 1; i <= 500; i++ {
+                    // For each streaming_write, the upload_file prints
+                    rw.Write(line)
+                    fmt.Println(i)
+                    time.Sleep(10 * time.Millisecond)
+                }
+                rw.Close()
+            }()
 
-// Hook Functions triggered during engine shutdown.
-OnShutdown []CtxCallback 
-```
+            go func() {
+                <-ctx.Finished()
+                fmt.Println("request process end")
+            }()
+        })
 
-Example code:
+        h.GET("/streamWrite2", func(c context.Context, ctx *app.RequestContext) {
+            rw := newChunkReader()
+            // Content-Length may be negative:
+            // -1 means Transfer-Encoding: chunked.
+            ctx.SetBodyStream(rw, -1)
 
-```go
-package main
+            go func() {
+                for i := 1; i < 1000; i++ {
+                    // For each streaming_write, the upload_file prints
+                    rw.Write([]byte(fmt.Sprintf("===%d===\n", i)))
+                    fmt.Println(i)
+                    time.Sleep(100 * time.Millisecond)
+                }
+                rw.Close()
+            }()
 
-import (
-    "github.com/cloudwego/hertz/pkg/app/server"
-)
+            go func() {
+                <-ctx.Finished()
+                fmt.Println("request process end")
+            }()
+        })
 
-func main() {
-    h := server.New()
-    h.OnRun = append(h.OnRun, func(ctx context.Context) error {
-        return nil
-    })
+        h.Spin()
+    }
+
+    type ChunkReader struct {
+        rw  bytes.Buffer
+        w2r chan struct{}
+        r2w chan struct{}
+    }
+
+    func newChunkReader() *ChunkReader {
+        var rw bytes.Buffer
+        w2r := make(chan struct{})
+        r2w := make(chan struct{})
+        cr := &ChunkReader{rw, w2r, r2w}
+        return cr
+    }
+
+    var closeOnce = new(sync.Once)
+
+    func (cr *ChunkReader) Read(p []byte) (n int, err error) {
+        for {
+            _, ok := <-cr.w2r
+            if !ok {
+                closeOnce.Do(func() {
+                    close(cr.r2w)
+                })
+                n, err = cr.rw.Read(p)
+                return
+            }
+
+            n, err = cr.rw.Read(p)
+
+            cr.r2w <- struct{}{}
+
+            if n == 0 {
+                continue
+            }
+            return
+        }
+    }
+
+    func (cr *ChunkReader) Write(p []byte) (n int, err error) {
+        n, err = cr.rw.Write(p)
+        cr.w2r <- struct{}{}
+        <-cr.r2w
+        return
+    }
+
+    func (cr *ChunkReader) Close() {
+        close(cr.w2r)
+    }
     
-  	h.OnShutdown = append(h.OnShutdown, func(ctx context.Context) {
-        //...
-    	})
-}
-```
+    ```
 
-### Error Handlers
+2. Users can use the `NewChunkedBodyWriter` method provided under `pkg/protocol/http1/resp/writer` in the handler to hijack the response writer, and then use the `ctx.Write` function to write the partitioned data to the body and immediately send it to the client using the `ctx.Flush` function.
 
-#### PanicHandler
+    Example Code:
 
-Used to set the handling function when a program panics, default is `nil`.
+    ```go
+    h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
+		// Hijack the writer of response
+		ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
 
-**Note**: If both `PanicHandler` and `Recovery` middleware are set at the same time, then the logic in `Recovery` middleware will override that of `PanicHandler`.
+		for i := 0; i < 10; i++ {
+			ctx.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+			ctx.Flush()                                                                 // nolint: errcheck
+			time.Sleep(200 * time.Millisecond)
+		}
+	})
+    ```
 
-Example code:
+**The difference between these two methods: the first method sends the data to the client in blocks after executing the handler logic, and the second method can send the partitioned data out in the handler logic.**
+
+For more example code, please refer to [example](/docs/hertz/tutorials/example/#streaming-readwrite).
+
+## Register Custom Protocol
 
 ```go
-package main
+func (engine *Engine) AddProtocol(protocol string, factory interface{})
+```
 
+Detailed information can be found in [registration-of-custom-protocol-server-into-hertz](/docs/hertz/tutorials/framework-exten/protocol/#registration-of-custom-protocol-server-into-hertz).
+
+## SetClientIPFunc
+
+The parameter f of this function will be passed to the `RequestContext.SetClientIPFunc` function. The function and example code are shown in [SetClientIPFunc](/docs/hertz/tutorials/basic-feature/context/request/#setclientipfunc).
+
+Function Signature:
+
+```go
+func (engine *Engine) SetClientIPFunc(f app.ClientIP)
+```
+
+## SetFormValueFunc
+
+The parameter f of this function will be passed to the `RequestContext.SetFormValueFunc` function. The function and example code are shown in [SetFormValueFunc](/docs/hertz/tutorials/basic-feature/context/request/#setformvaluefunc).
+
+Function Signature:
+
+```go
+func (engine *Engine) SetFormValueFunc(f app.FormValueFunc)
+```
+
+## Hooks
+
+Hook function is a general concept that represents the operations that accompany an event when it is triggered.
+
+Hertz provides global Hook injection capabilities for injecting its own processing logic after service triggering and before exiting. For detailed information, please refer to [Hooks](/docs/hertz/tutorials/basic-feature/hooks/).
+
+## PanicHandler
+
+Used to set the handler function when panic occurs in the program, default to `nil`.
+
+> Note: If both `PanicHandler` and `Recovery` middleware are set, the `Recovery` middleware will override the handler logic of `PanicHandler`.
+
+Example Code:
+
+```go
 func main() {
     h := server.New()
-    // When panic occurs, the function in PanicHandler will be triggered,
-    // returning a 500 status code with error message.
+    // When in Panic, the function in PanicHandler will be triggered, returning a 500 status code and carrying error information
     h.PanicHandler = func(c context.Context, ctx *app.RequestContext) {
         ctx.JSON(500, utils.H{
             "message": "panic",
@@ -443,9 +474,121 @@ func main() {
 }
 ```
 
-### Hijack
+## ContinueHandler
 
-#### NoHijackConnPool
+Call ContinueHandler after receiving the Expect 100 Continue header sent by the client. Using ContinueHandler, the server can decide whether to read potentially large request bodies, which will be read by default.
+
+Example Code:
+
+```go
+h := server.Default()
+h.ContinueHandler = func(header *protocol.RequestHeader) bool {
+	return false
+}
+```
+
+## Rendering Template
+
+Hertz provides methods such as `Delims`, `SetFuncMap`, `LoadHTMLGlob`, and `LoadHTMLFiles` for rendering HTML or template files. For detailed information, please refer to [HTML](/docs/hertz/tutorials/basic-feature/render/#html).
+
+## Using NoRoute and NoMethod
+
+Hertz provides `NoRoute` and `NoMethod` methods for global processing of HTTP 404 and 405 requests. For detailed information, please refer to [NoRoute And NoMethod](/docs/hertz/tutorials/basic-feature/route/#noroute-and-nomethod).
+
+## Get Route Information
+
+```go
+func (engine *Engine) Routes() (routes RoutesInfo)
+```
+
+### Routes
+
+The `Routes` function returns a slice divided by HTTP methods that contains routing information (HTTP method name, routing path, request handler function name).
+
+Function Signature:
+
+```go
+func (engine *Engine) Routes() (routes RoutesInfo)
+```
+
+Example Code:
+
+```go
+func getHandler() app.HandlerFunc {
+	return func(c context.Context, ctx *app.RequestContext) {
+		ctx.String(consts.StatusOK, "get handler")
+	}
+}
+
+func postHandler() app.HandlerFunc {
+	return func(c context.Context, ctx *app.RequestContext) {
+		ctx.String(consts.StatusOK, "post handler")
+	}
+}
+
+func main() {
+	h := server.Default()
+	h.GET("/get", getHandler())
+	h.POST("/post", postHandler())
+	routesInfo := h.Routes()
+	fmt.Printf("%v\n", routesInfo)
+	// [{GET /get main.getHandler.func1 0xb2afa0} {POST /post main.postHandler.func1 0xb2b060}]
+}
+```
+
+## Transporter
+
+```go
+func (engine *Engine) GetTransporterName() (tName string)
+func SetTransporter(transporter func (options *config.Options) network.Transporter)
+```
+
+### GetTransporterName
+
+Obtain the name of the currently used network library, which now has two native options: `go net` and `netpoll`.
+
+Linux uses `netpoll` by default, while Windows can only use `go net`.
+
+If you have any doubts about how to use the corresponding network library, please refer to [here](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/network-lib/).
+
+Function Signature:
+
+```go
+func (engine *Engine) GetTransporterName() (tName string)
+```
+
+Example Code:
+
+```go
+h := server.New()
+tName := h.GetTransporterName()
+```
+
+### SetTransporter
+
+`SetTransporter` is used to set network library.
+
+> Note: `SetTransporter` only sets the global default values of the Engine, so using `WithTransporter` to set the network library when initializing the Engine will overwrite the settings of `SetTransporter`.
+
+Function Signature:
+
+```go
+func SetTransporter(transporter func (options *config.Options) network.Transporter)
+```
+
+Example Code:
+
+```go
+route.SetTransporter(standard.NewTransporter)
+```
+
+## Tracing
+
+Hertz provides the capability of link tracking and also supports user-defined link tracking. For details, please refer to [tracking](/docs/hertz/tutorials/observability/tracing/).
+
+## Hijack
+
+### NoHijackConnPool
 
 > The hijacked connection used during Hertz connection hijacking is managed by pool management. Therefore, when the hijacked connection is used for websockets it does not support asynchronous operations.
 
@@ -455,177 +598,23 @@ NoHijackConnPool controls whether to use cache pools to obtain/release hijacked 
 
 If it is difficult to ensure that hijackConn won't be closed repeatedly, it can be set as true.
 
-Example code:
+Example Code:
 
 ```go
 package main
 
 func main() {
-     // https://github.com/cloudwego/hertz/issues/121
-     h.NoHijackConnPool = true
+    // https://github.com/cloudwego/hertz/issues/121
+    h.NoHijackConnPool = true
 }
 ```
 
-### Get route info
+### HijackConnHandle
 
-Hertz provides `Routes` to get the registered route information.
+Set the Hijack connection processing function.
 
-Route information struct:
-
-```go
-// RouteInfo represents a request route's specification which contains method and path and its handler.
-type RouteInfo struct {
-	Method      string   // http method
-	Path        string   // url path
-	Handler     string   // handler name
-	HandlerFunc app.HandlerFunc
-}
-
-// RoutesInfo defines a RouteInfo array.
-type RoutesInfo []RouteInfo
-```
-
-Sample Code:
+Function Signature:
 
 ```go
-package main
-
-import (
-	"context"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-)
-
-func main() {
-	h := server.Default()
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-	})
-	routeInfo := h.Routes()
-	hlog.Info(routeInfo)
-	h.Spin()
-}
+func (engine *Engine) HijackConnHandle(c network.Conn, h app.HijackHandler)
 ```
-
-## Configuration
-
-Here is a collection of configuration options that can be used for the engine.
-
-### Use
-
-Please see [here](#register-middleware).
-
-### NoHijackConnPool
-
-Please see [here](#nohijackconnpool).
-
-### OnRun/OnShutdown
-
-Please see [here](#set-hook-function).
-
-### PanicHandler
-
-Please see [here](#panichandler).
-
-### GetTransporterName
-
-Get the name of the current network library being used. There are currently two options: Go's native `net` and `netpoll`. Linux uses `netpoll` by default, while Windows can only use Go's native `net`.
-
-If you're unsure about how to use one of these network libraries, please refer to [this page](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/network-lib/)
-
-Function signature:
-
-```go
-func (engine *Engine) GetTransporterName() (tName string)
-
-// Deprecated: This only get the global default transporter - may not be the real one used by the engine.
-// Use engine.GetTransporterName for the real transporter used.
-func GetTransporterName() (tName string)
-```
-
-### SetTransporter
-
-`SetTransporter` sets only Engine's global defaults. When initializing Engine, use WithTransporter to set your network library instead.
-
-Function signature:
-
-```go
-func SetTransporter(transporter func(options *config.Options) network.Transporter)
-```
-
-### IsRunning
-
-Check whether or not Engine has been started.
-
-Function signature:
-
-```go
-func (engine *Engine) IsRunning() bool
-```
-
-Code example:
-
-```go
-package main
- 
-func main() {
-    h := server.New()
-	// Check if service is running via /live interface 
-    h.GET("/live", func(c context.Context, ctx *app.RequestContext) {
-        ctx.JSON(200, utils.H{
-            "isLive": h.IsRunning(),
-        })
-    })
-    h.Spin()
-}
-```
-
-### IsTraceEnable
-
-Check if tracing is enabled.
-
-Function signature:
-
-```go
-func (engine *Engine) IsTraceEnable() bool
-```
-
-### GetCtxPool
-
-Get the current Engine's ctxPool.
-
-Function signature:
-
-```go
-func (engine *Engine) GetCtxPool() *sync.Pool
-```
-
-Code example:
-
-```go
-h := server.New()
-// Retrieve a ctx from the ctxPool 
-h.GetCtxPool().Get().(*app.RequestContext)
-
-// Return a ctx to the pool 
-h.GetCtxPool().Put(ctx)
-```
-
-### Delims
-
-Please see [here](#delims)
-
-### SetFuncMap
-
-Please see [here](#setfuncmap)
-
-### LoadHTMLGlob
-
-Please see [here](#loadhtmlglob)
-
-### LoadHTMLFiles
-
-Please see [here](#loadhtmlfiles)
