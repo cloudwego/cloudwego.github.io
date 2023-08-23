@@ -6,11 +6,11 @@ keywords: ["Kitex", "LoadBalancer", "LoadBalance", "ConsistentHash"]
 description: "This doc covers LoadBalancer implementation principles and usage guidelines provided by Kitex."
 ---
 
-Kitex provides 3 LoadBalancers officially:
+Kitex provides these LoadBalancers officially:
 
 - WeightedRoundRobin
+- InterleavedWeightedRoundRobin (kitex > v0.7.0)
 - WeightedRandom
-- InterleavedWeightedRoundRobin
 - ConsistentHash
 
 Kitex uses WeightedRoundRobin by default.
