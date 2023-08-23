@@ -27,13 +27,14 @@ First of all, let's install the compilers we will be working with.
 
 Now you can run `kitex --version` and `thriftgo --version` and you should see some output like below if you have successfully set up the compilers.
 
- ```shell
+```shell
 $ kitex --version
 vx.x.x
 
 $ thriftgo --version
 thriftgo x.x.x
 ```
+
 Tips: If you encounter any problems during the installation, it's probably because you haven't set up the golang development environment properly. In most cases you can search the error message to find a solution.
 
 ### Get the example
@@ -66,6 +67,7 @@ Tips: If you encounter any problems during the installation, it's probably becau
 2. build the example project
 
    `docker build -t kitex-examples .`
+
 3. run the server
 
    `docker run --network host kitex-examples ./hello-server`
@@ -185,7 +187,6 @@ for {
 
 Let's add the `add` RPC:
 
-
 ```go
 for {
         req := &api.Request{Message: "my request"}
@@ -211,14 +212,14 @@ Shut down the server and the client we ran. Then:
 
 1. run server
 
-    `go run .`
+   `go run .`
 
 2. run the client
 
-    Open another terminal and `go run ./client`.
+   Open another terminal and `go run ./client`.
 
-    Now you can see the output of the `add` RPC.
-    
+   Now you can see the output of the `add` RPC.
+
 ## Tutorial
 
 ### About Kitex
@@ -265,7 +266,6 @@ If you see some outputs like below, congratulation!
 
 `No IDL file found.`
 
-
 If you see something like `command not found`, you should add `$GOPATH/bin` to `$PATH`. For detail, see chapter **Prerequisites** .
 
 #### Usage
@@ -301,11 +301,13 @@ We can use `kitex` compiler to compile the IDL file to generate whole project.
 `$ kitex -module example -service example-server echo.thrift`
 
 Note:
-* `-module` indicates go module name of project; full package name suggested, e.g. `github.com/YourName/exampleserver`
-* `-service` indicates expected to generate a executable service named `example`
-* the last parameter is path to IDL file.
+
+- `-module` indicates go module name of project; full package name suggested, e.g. `github.com/YourName/exampleserver`
+- `-service` indicates expected to generate a executable service named `example`
+- the last parameter is path to IDL file.
 
 Generated project layout:
+
 ```
 .
 |-- build.sh
@@ -328,6 +330,7 @@ Generated project layout:
 ### Get latest Kitex
 
 Kitex expect project to use go module as dependency manager. It cloud be easy to upgrade Kitex:
+
 ```
 $ go get -v github.com/cloudwego/kitex@latest
 $ go mod tidy
@@ -393,7 +396,7 @@ Compile:
 
 `$ sh build.sh`
 
-There should be a `output` directory After you execute above command, which includes compilation productions   .
+There should be a `output` directory After you execute above command, which includes compilation productions .
 
 Run:
 
@@ -418,6 +421,7 @@ Generate code for clients with kitex (if this directory is under the `example-se
 `$ kitex -module example echo.thrift`
 
 Note:
+
 1. To generate code for clients, don't specify the param `-service`; the code will be under directory `kitex_gen`;
 2. Full package name is suggested for the param `-module`, e.g. `github.com/YourName/exampleclient`
 
@@ -436,7 +440,8 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
-`echo.NewClient` is used to new a `client`, the first parameter is *service name*, the second parameter is *options* which is used to pass options. `client.WithHostPorts` is used to specify server address, see chapter **Basic Feature** for details.
+
+`echo.NewClient` is used to new a `client`, the first parameter is _service name_, the second parameter is _options_ which is used to pass options. `client.WithHostPorts` is used to specify server address, see chapter **Basic Feature** for details.
 
 #### Do RPC
 
@@ -452,6 +457,7 @@ if err != nil {
 }
 log.Println(resp)
 ```
+
 We new a request `req`, then we use `c.Echo` to do a RPC call.
 
 The first parameter `context.Context`, is used to transfer information or to control some call behaviors. You will see detailed usage in behind chapters.\

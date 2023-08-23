@@ -685,15 +685,15 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|判断是否存在 Accept-Encoding 以及 Accept-Encoding 是否包含 acceptEncoding|
 | `func (h *RequestHeader) RawHeaders() []byte`|获取原始 Header |
 | `func (h *RequestHeader) SetRawHeaders(r []byte)`  | 设置原始 Header |
-| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header ( key 会覆盖以下 Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent)|
+| `func (h *RequestHeader) Add(key, value string)`| 添加或设置键为 key 的 Header，用于为同一个 Key 设置多个 Header，但 key 会覆盖以下 Header: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent|
 | `func (h *RequestHeader) InitBufValue(size int)`|初始化缓冲区大小 |
 | `func (h *RequestHeader) GetBufValue() []byte`|获取缓冲区的值 |
 | `func (h *RequestHeader) SetCanonical(key, value []byte)`|设置 Header 键值，假设该键是规范形式 |
-| `func (h *RequestHeader) Set(key, value string)`|设置 Header 键值 |
-| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|设置 Header 键值 |
+| `func (h *RequestHeader) Set(key, value string)`|设置 Header 键值，用于为同一个 Key 设置单个 Header |
+| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|设置 `[]byte` 类型的 Header 键值，用于为同一个 Key 设置单个 Header |
 | `func (h *RequestHeader) DelBytes(key []byte)`|删除 Header 中键为 key 的键值对 |
-| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|添加 Header 键值（key 不为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent）|
-| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|设置 Header 键值（key 不为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent）|
+| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|添加 Header 键值（与 `Add` 不同，key 一定不会被规范化且 key 为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent 时不会做特殊处理）|
+| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|设置 Header 键值（与 `Set` 不同，key 一定不会被规范化且 key 为 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent 时不会做特殊处理）|
 | `func (h *RequestHeader) AppendBytes(dst []byte) []byte`|将完整的 Header 附加到 dst 中并返回 |
 | `func (h *RequestHeader) Header() []byte`|获取 `[]byte` 类型的完整的 Header |
 | `func (h *RequestHeader) String() string`|获取完整的 Header |
@@ -702,7 +702,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 | `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`|遍历所有 Header 的键值并执行 f 函数，以下 key 除外：Content-Type, Content-Length, Cookie, Host, User-Agent）|
 | `func (h *RequestHeader) Len() int`|返回 Header 的数量 |
 | `func (h *RequestHeader) DisableNormalizing()`|禁用 Header 名字的规范化 (首字母和破折号后第一个字母大写)|
-| `func (h *RequestHeader) IsDisableNormalizing() bool`|是否禁用 Header 名字的规范化 |
+| `func (h *RequestHeader) IsDisableNormalizing() bool`|是否禁用 Header 名字的规范化，默认不禁用 |
 | `func (h *RequestHeader) ResetSkipNormalize()`|重置 Headers，除了 disableNormalizing 状态 |
 | `func (h *RequestHeader) Reset()`|重置 Headers |
 
@@ -940,7 +940,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ## 文件操作
 
-```go 
+```go
 func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
 func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 

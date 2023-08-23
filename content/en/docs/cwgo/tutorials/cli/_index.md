@@ -3,16 +3,15 @@ title: "CLI"
 linkTitle: "CLI"
 weight: 1
 description: >
-
 ---
 
 cwgo is a command-line tool provided by CloudWeGo for generating code. Currently cwgo supports the IDL of thrift and protobuf, and supports the code generation of MVC Layout, Server, Client and DB.
 
-# Dependency and Run Mode
+## Dependency and Run Mode
 
 The cwgo tool does not directly generate code, but calls the generation function of the corresponding tool after the template is constructed.
 
-```
+```console
 cwgo
   |
   | HTTP server/client
@@ -21,12 +20,12 @@ cwgo
   |-----------> kitex
   | DB
   ------------> gorm/gen
- 
+
 ```
 
-Therefore, the precautions of corresponding tools also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and generate HTTP code [Notes on hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/cautions/).
+Therefore, the precautions of corresponding tools also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and generate HTTP code [Notes on hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/cautions/).
 
-# Using
+## Using
 
 cwgo supports two generation methods of interactive command line and static command line. And **weakened the concept of new and update**, just input the previous command directly when updating.
 
@@ -52,8 +51,8 @@ After pressing Enter, the server and client information will be asked in turn. P
 
 1. Whether to use the default configuration to generate the project
 
-    1. Default configuration: no service discovery component, no other parameters
-    1. Non-default configuration: select the service discovery component; enter the parameters passed to the generation tool
+   1. Default configuration: no service discovery component, no other parameters
+   1. Non-default configuration: select the service discovery component; enter the parameters passed to the generation tool
 
 The questions asked by the client are roughly the same as those asked by the server. The difference is that the number of generated clients will be asked first, and then the information of each client will be input in a loop.
 
@@ -63,13 +62,13 @@ The information requested by db is:
 1. Enter the database DSN. required
 1. Choose whether to use the default configuration to generate the project. If you choose No, you will be asked to enter the parameters to pass to the build tool
 
-For parameters passed to the tool, refer to [documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/command/) for hz and [documentation](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/) for kitex.
+For parameters passed to the tool, refer to [documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/command/) for hz and [documentation](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/) for kitex.
 
 ## Static command line
 
 ### Command description
 
-```
+```shell
 $ cwgo -h
 NAME:
     cwgo - All in one tools for CloudWeGo
@@ -91,7 +90,7 @@ GLOBAL OPTIONS:
 
 ### Server and Client commands
 
-```
+```console
 --service specify service name
 --type specify build type
 --module specifies the generated module name
@@ -107,14 +106,13 @@ pass parameter description:
 
 To pass the `handler_dir' parameter of `hz`, you should enter --pass "--handler_dir ./handler"
 
-
 Parameters passed to the tool
-hz refer to [Documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/command/),
+hz refer to [Documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/command/),
 Kitex reference [documentation](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/).
 
 ### Model commands
 
-```
+```console
 --dsn specify database DSN
 --db_type specifies the database type
 --out_dir specifies the output folder, default biz/dao/query
@@ -129,22 +127,22 @@ Kitex reference [documentation](https://www.cloudwego.io/docs/kitex/tutorials/co
 --index_tag Whether to generate gorm index tag for the field, default is not generated
 ```
 
-## Common commands
+### Common commands
 
 Server
 
-```
+```shell
 cwgo server --type {{RPC/HTTP}} --idl {{path/to/IDL_file.thrift}} --service {{svc_name}}
 ```
 
 Client
 
-```
+```shell
 cwgo client --type {{RPC/HTTP}} --idl {{path/to/IDL_file.thrift}} --service {{svc_name}}
 ```
 
 model
 
-```
+```shell
 cwgo model --db_type mysql --dsn "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local"
 ```

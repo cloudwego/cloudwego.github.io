@@ -1,6 +1,7 @@
 ---
 date: 2021-11-24
 title: "RPC 框架 Kitex 实践入门：性能测试指南"
+projects: ["Kitex"]
 linkTitle: "RPC 框架 Kitex 实践入门：性能测试指南"
 keywords: ["Kitex", "性能测试", "压测", "RPC"]
 description: "本文介绍了如何使用 Kitex 进行性能测试，以及如何分析测试结果，有助于用户更好地结合真实 RPC 场景对 Kitex 进行调优，使之更贴合业务需要、发挥最佳性能。"

@@ -1,6 +1,7 @@
 ---
 date: 2022-06-21
 title: "Hertz, an Ultra Large Scale Enterprise-Level Microservice HTTP Framework, is Now Officially Open Source!"
+projects: ["Hertz"]
 linkTitle: "Hertz, an Ultra Large Scale Enterprise-Level Microservice HTTP Framework, is Now Officially Open Source!"
 keywords: ["CloudWeGo", "http framework", "large scale high performance", "Hertz", "ByteDance Open Source", "open source"]
 description: "This article introduces Hertz, the official open source ultra-large-scale enterprise-level microservice HTTP framework developed by ByteDance"

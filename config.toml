@@ -15,7 +15,14 @@ defaultContentLanguageInSubdir = false
 # Useful when translating.
 enableMissingTranslationPlaceholders = true
 
-disableKinds = ["taxonomy", "taxonomyTerm"]
+#disableKinds = ["taxonomy", "taxonomyTerm"]
+[taxonomies]
+projects = "projects"
+
+[params.taxonomy]
+taxonomyCloud = ["projects"]
+taxonomyCloudTitle = ["taxo.projects.title"]
+taxonomyPageHeader = ["projects"]            # i18n prefix taxo.page.header
 
 # Highlighting config
 pygmentsCodeFences = true
@@ -50,26 +57,26 @@ anchor = "smart"
 contentDir = "content/en"
 title = "CloudWeGo"
 description = "A leading practice for building enterprise cloud native middleware!"
-languageName ="English"
+languageName = "English"
 # Weight used for sorting.
 weight = 1
 [languages.zh]
 contentDir = "content/zh"
 title = "CloudWeGo"
 description = "A leading practice for building enterprise cloud native middleware!"
-languageName ="中文"
+languageName = "中文"
 # Weight used for sorting.
 weight = 1
 
 [markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
-  [markup.highlight]
-      # See a complete list of available styles at https://xyproto.github.io/splash/docs/all.html
-      style = "tango"
-      # Uncomment if you want your chosen highlight style used for code blocks without a specified language
-      # guessSyntax = "true"
+[markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true
+[markup.highlight]
+# See a complete list of available styles at https://xyproto.github.io/splash/docs/all.html
+style = "tango"
+# Uncomment if you want your chosen highlight style used for code blocks without a specified language
+# guessSyntax = "true"
 
 # Everything below this are Site Params
 
@@ -115,7 +122,7 @@ github_org = "https://github.com/cloudwego"
 
 # Uncomment this if you have a newer GitHub repo with "main" as the default branch,
 # or specify a new value if you want to reference another branch in your GitHub links
-github_branch= "main"
+github_branch = "main"
 
 # Enable Algolia DocSearch
 algolia_docsearch = true
@@ -177,28 +184,28 @@ name = "License"
 url = "https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE"
 
 [[params.links.user]]
-	name = "Lark"
-	url = "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6"
-	icon = "fab fa-lark"
-	desc = "Chat with other CloudWeGo users by lark"
+name = "Lark"
+url = "https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6"
+icon = "fab fa-lark"
+desc = "Chat with other CloudWeGo users by lark"
 
 [[params.links.user]]
-	name = "Twitter"
-	url = "https://twitter.com/CloudWeGo"
-	icon = "fab fa-twitter"
-	desc = "Follow us on Twitter to get the latest news!"
+name = "Twitter"
+url = "https://twitter.com/CloudWeGo"
+icon = "fab fa-twitter"
+desc = "Follow us on Twitter to get the latest news!"
 
 [[params.links.developer]]
-	name = "GitHub"
-	url = "https://github.com/cloudwego"
-	icon = "fab fa-github"
-	desc = "Development takes place here!"
+name = "GitHub"
+url = "https://github.com/cloudwego"
+icon = "fab fa-github"
+desc = "Development takes place here!"
 
 [[params.links.developer]]
-	name = "Slack"
-	url = "https://join.slack.com/t/cloudwego/shared_invite/zt-tmcbzewn-UjXMF3ZQsPhl7W3tEDZboA"
-	icon = "fab fa-slack"
-	desc = "Chat with other project developers"
+name = "Slack"
+url = "https://join.slack.com/t/cloudwego/shared_invite/zt-tmcbzewn-UjXMF3ZQsPhl7W3tEDZboA"
+icon = "fab fa-slack"
+desc = "Chat with other project developers"
 
 [outputFormats]
 [outputFormats.PRINT]

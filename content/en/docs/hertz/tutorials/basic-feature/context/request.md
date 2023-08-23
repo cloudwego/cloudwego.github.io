@@ -664,7 +664,7 @@ Use `RequestContext.Request.Header` to obtain the RequestHeader object, which pr
 | `func (h *RequestHeader) SetConnectionClose(close bool)`|Set connectionClose |
 | `func (h *RequestHeader) ResetConnectionClose()`|Reset connectionClose to false and delete Connection Header|
 | `func (h *RequestHeader) SetByteRange(startPos, endPos int)`|Set Range (Range: bytes=startPos-endPos)|
-| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`| Set the boundary for Content Type=multipart/form data |
+| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`| Set the boundary for Content-Type=multipart/form data |
 | `func (h *RequestHeader) MultipartFormBoundary() []byte`|Get the value of boundary |
 | `func (h *RequestHeader) Trailer() *Trailer`|Get Trailer|
 | `func (h *RequestHeader) Cookie(key string) []byte`|Obtain the value of Cookie key as key |
@@ -685,24 +685,24 @@ Use `RequestContext.Request.Header` to obtain the RequestHeader object, which pr
 | `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|Determine whether Accept-Encoding exists and whether Accept-Encoding includes acceptEncoding|
 | `func (h *RequestHeader) RawHeaders() []byte`|Get original Header |
 | `func (h *RequestHeader) SetRawHeaders(r []byte)`  | Set original Header |
-| `func (h *RequestHeader) Add(key, value string)`| Add or set the header with the key as key. (The key will overwrite the following headers: Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent)|
+| `func (h *RequestHeader) Add(key, value string)`| Set the header key value to set multiple headers for the same key, but the key will overwrite the following headers: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent|
 | `func (h *RequestHeader) InitBufValue(size int)`|Initialize buffer size |
 | `func (h *RequestHeader) GetBufValue() []byte`|Get the value of the buffer |
 | `func (h *RequestHeader) SetCanonical(key, value []byte)`|Set the Header key value, assuming that the key is in canonical form |
-| `func (h *RequestHeader) Set(key, value string)`|Set Header Key Values |
-| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|Set Header Key Values |
+| `func (h *RequestHeader) Set(key, value string)`|Set the header key value to set a single header for the same key |
+| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|Set the header key value of type `[]byte` to set a single header for the same key |
 | `func (h *RequestHeader) DelBytes(key []byte)`|Delete key value pairs with key in the header |
-| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|Add Header key value (key is not Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent)|
-| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|Set Header key value (key is not Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent)|
+| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|Add Header key value (different from `Add`, the key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, or User-Agent)|
+| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|Set Header key value (different from `Set`, The key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, or User-Agent)|
 | `func (h *RequestHeader) AppendBytes(dst []byte) []byte`|Attach the complete header to the dst and return |
 | `func (h *RequestHeader) Header() []byte`|Obtain the complete header of type `[]byte` |
 | `func (h *RequestHeader) String() string`|Obtain the complete header |
 | `func (h *RequestHeader) CopyTo(dst *RequestHeader)`|Obtain a copy of RequestHeader |
 | `func (h *RequestHeader) VisitAll(f func(key, value []byte))`|Traverse the key values of all headers and execute the f function |
-| `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`|Traverse the key values of all headers and execute the f function, except for Content Type, Content Length, Cookie, Host, User Agent|
+| `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`|Traverse the key values of all headers and execute the f function, except for Content-Type, Content-Length, Cookie, Host, User-Agent|
 | `func (h *RequestHeader) Len() int`|Return the number of key value pairs in the header |
 | `func (h *RequestHeader) DisableNormalizing()`|Disable the normalization of header name (capitalize the first letter and the first letter after the Em dash)|
-| `func (h *RequestHeader) IsDisableNormalizing() bool`|Whether to disable standardized for header name |
+| `func (h *RequestHeader) IsDisableNormalizing() bool`|Whether to disable standardized for header name, default not disabled |
 | `func (h *RequestHeader) ResetSkipNormalize()`|Reset Headers except for disableNormalizing status |
 | `func (h *RequestHeader) Reset()`|Reset Headers |
 

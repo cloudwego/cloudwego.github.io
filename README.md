@@ -2,11 +2,17 @@
 
 # CloudWeGo
 
-The [cloudwego.io](https://www.cloudwego.io/) site is built with [Hugo](https://gohugo.io/) and hosted on [Github Pages](https://pages.github.com/).
+The [cloudwego.io](https://www.cloudwego.io/) site is built with [Hugo](https://gohugo.io/) and hosted on [Vercel](https://vercel.com/?utm_source=CloudWeGo&utm_campaign=oss).
 
 ## Prerequisites
 
 The following are basic prerequisites for developing this project:
+
+- The npm command is installed locally. Get npm packages and other prerequisites:
+
+  ```shell
+  npm install
+  ```
 
 - Install a recent release of the Hugo "extended" version. If you install from
   the [Hugo release page](https://github.com/gohugoio/hugo/releases), make sure

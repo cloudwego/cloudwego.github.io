@@ -3,7 +3,6 @@ title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 2
 description: >
-
 ---
 
 cwgo is a CloudWeGo All in one code generation tool that integrates the advantages of each component to improve the developer experience.
@@ -76,18 +75,18 @@ libprotoc x.x.x
 
 1. If the code is placed under `$GOPATH/src`, you need to create an additional directory under `$GOPATH/src`, and then get the code after entering this directory:
 
-```shell
-$ mkdir -p $(go env GOPATH)/src/github.com/cloudwego
-$ cd $(go env GOPATH)/src/github.com/cloudwego
-```
+   ```shell
+   $ mkdir -p $(go env GOPATH)/src/github.com/cloudwego
+   $ cd $(go env GOPATH)/src/github.com/cloudwego
+   ```
 
 2. If you put the code outside GOPATH, you can get it directly
 
 ## Precautions
 
-The bottom layer of cwgo uses [kitex](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/), [hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/), [gen](https://gorm.io/gen/index.html) tools, so the corresponding tool specifications also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and [Notes for hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/cautions/).
+The bottom layer of cwgo uses [kitex](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/), [hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/), [gen](https://gorm.io/gen/index.html) tools, so the corresponding tool specifications also need to be followed, such as [kitex precautions](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and [Notes for hz](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/cautions/).
 
-# Using
+## Using
 
 For specific usage of cwgo, please refer to [Command Line Tool](/docs/cwgo/tutorials/cli)
 
@@ -95,60 +94,60 @@ Let's take thrift as an example
 
 1. First create a directory
 
-```shell
-$ mkdir -p $GOPATH/src/local/cwgo_test
-$ cd $GOPATH/src/local/cwgo_test
-```
+   ```shell
+   $ mkdir -p $GOPATH/src/local/cwgo_test
+   $ cd $GOPATH/src/local/cwgo_test
+   ```
 
 2. Create an idl directory
 
-```shell
-$ mkdir idl
-```
+   ```shell
+   $ mkdir idl
+   ```
 
 3. Write the idl/hello.thrift file
 
-```thrift
-# idl/hello.thrift
-namespace go hello.example
+   ```thrift
+   # idl/hello.thrift
+   namespace go hello.example
 
-struct HelloReq {
-     1: string Name (api.query="name"); // Add api annotations to facilitate parameter binding
-}
+   struct HelloReq {
+       1: string Name (api.query="name"); // Add api annotations to facilitate parameter binding
+   }
 
-struct HelloResp {
-     1: string RespBody;
-}
+   struct HelloResp {
+       1: string RespBody;
+   }
 
-service HelloService {
-     HelloResp HelloMethod(1: HelloReq request) (api. get="/hello");
-}
-```
+   service HelloService {
+       HelloResp HelloMethod(1: HelloReq request) (api. get="/hello");
+   }
+   ```
 
 4. Generate project layout
 
-static command line
+   static command line
 
-```shell
-$ cwgo server -service=a.b.c -type HTTP -idl=idl/hello.thrift
-```
+   ```shell
+   $ cwgo server -service=a.b.c -type HTTP -idl=idl/hello.thrift
+   ```
 
-dynamic command line
+   dynamic command line
 
-![Dynamic command line](/img/docs/cwgo_dynamic.gif)
+   ![Dynamic command line](/img/docs/cwgo_dynamic.gif)
 
 5. Compile and run
 
-```shell
-$ go mod tidy && go mod verify
-$ sh build.sh && sh output/bootstrap.sh
-```
+   ```shell
+   $ go mod tidy && go mod verify
+   $ sh build.sh && sh output/bootstrap.sh
+   ```
 
 6. Initiate the call
 
-```shell
-$ curl http://127.0.0.1:8080/ping
-pong
-```
+   ```shell
+   $ curl http://127.0.0.1:8080/ping
+   pong
+   ```
 
 Congratulations! So far you have successfully written a Cwgo server and completed a call!

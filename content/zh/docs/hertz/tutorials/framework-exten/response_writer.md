@@ -2,7 +2,7 @@
 title: "Response 的 Writer 扩展"
 linkTitle: "Response 的 Writer 扩展"
 date: 2023-03-10
-weight: 4
+weight: 6
 description: >
 
 ---
@@ -34,7 +34,7 @@ Hertz 在 `app.RequestContext` 中提供了 `Response.HijackWriter` 方法让用
 	h.GET("/hijack", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response
 		ctx.Response.HijackWriter(yourResponseWriter)
-	}
+	})
 ```
 
 ## 已支持 Response 的 Writer 扩展

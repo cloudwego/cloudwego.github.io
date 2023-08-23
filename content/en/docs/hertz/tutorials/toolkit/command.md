@@ -17,7 +17,7 @@ USAGE:
    hz [global options] command [command options] [arguments...]
 
 VERSION:
-   0.0.1
+   0.x.x
 
 COMMANDS:
    new      Generate a new Hertz project
@@ -63,7 +63,7 @@ OPTIONS:
    --protoc value, -p value          Specify arguments for the protoc. ({flag}={value})                    (accepts multiple inputs)
    --service value                   Specify the service name.
    --snake_tag                       Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
-   --thriftgo value, -t value        Specify arguments for the thriftgo. ({flag}={value})  (accepts mul
+   --thriftgo value, -t value        Specify arguments for the thriftgo. ({flag}={value})  (accepts mul)
 ```
 
 - client_dir: Specify the path to generate client-side code, if not specified, it will not be generated; currently generates a global client for each service, and will provide rich client code capabilities later

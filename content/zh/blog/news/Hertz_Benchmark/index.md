@@ -1,6 +1,7 @@
 ---
 date: 2023-02-24
 title: "HTTP 框架 Hertz 实践入门：性能测试指南"
+projects: ["Hertz"]
 linkTitle: "HTTP 框架 Hertz 实践入门：性能测试指南"
 keywords: ["CloudWeGo", "Hertz", "HTTP 框架", "性能测试"]
 description: "本文旨在分享开发者在压测 Hertz 需要了解的场景和技术问题，并且基于当前最新版本对多个框架进行了压测对比，提供了性能参考数据，有助于用户更好地结合真实 HTTP 场景对 Hertz 进行调优，使之更贴合业务需要、发挥最佳性能。"

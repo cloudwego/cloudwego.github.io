@@ -1,12 +1,13 @@
 ---
-title: 'hz 生成代码的结构'
+title: "hz 生成代码的结构"
 date: 2023-02-21
 weight: 5
 description: >
 ---
+
 ### 生成代码的结构
 
-hz 生成的代码结构都类似，下面以"基于 thrift IDL 创建项目"小节生成的代码结构为例，说明 hz 生成的代码的含义。
+hz 生成的代码结构都类似，下面以 [hz 使用 (thrift)](/zh/docs/hertz/tutorials/toolkit/usage-thrift/) 小节生成的代码结构为例，说明 hz 生成的代码的含义。
 
 ```
 .
