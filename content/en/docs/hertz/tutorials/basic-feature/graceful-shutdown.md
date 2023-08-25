@@ -2,7 +2,8 @@
 title: "Graceful Shutdown"
 date: 2022-05-23
 weight: 11
-description: >
+keywords: ["Graceful Shutdown"]
+description: "The graceful shutdown function provided by Hertz when stopping service."
 
 ---
 

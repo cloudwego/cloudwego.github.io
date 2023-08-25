@@ -2,7 +2,8 @@
 title: "常量"
 date: 2023-05-24
 weight: 17
-description: >
+keywords: ["常量", "HTTP 请求方法", "HTTP 常用 MIME 类型", "HTTP 状态码", "HTTP 头信息", "HTTP 协议版本"]
+description: "Hertz 中定义的供用户使用的常量。"
  
 ---
 

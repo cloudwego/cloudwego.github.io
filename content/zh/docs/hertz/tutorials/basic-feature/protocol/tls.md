@@ -2,7 +2,8 @@
 title: "TLS"
 date: 2022-11-06
 weight: 5
-description: >
+keywords: ["TLS", "HTTP"]
+description: "Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。"
 
 ---
 

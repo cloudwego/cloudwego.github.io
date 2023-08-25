@@ -2,7 +2,8 @@
 title: 'note'
 date: 2023-02-21
 weight: 8
-description: >
+keywords: ["note", "protobuf", "thrift"]
+description: "Precautions when using hz."
 ---
 ### Notes on using protobuf IDL
 

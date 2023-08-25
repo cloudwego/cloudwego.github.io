@@ -2,7 +2,8 @@
 title: "zookeeper"
 date: 2023-04-22
 weight: 8
-description: >
+keywords: ["Service Registration and Discovery", "zookeeper"]
+description: "Service Registration and Discovery zookeeper Extensions provided by Hertz."
 ---
 
 ## Install

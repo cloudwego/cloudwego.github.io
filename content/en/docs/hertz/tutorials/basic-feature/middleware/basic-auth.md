@@ -2,7 +2,8 @@
 title: "Basic Auth"
 date: 2022-10-13
 weight: 2
-description: >
+keywords: ["HTTP", "Basic Auth"]
+description: "Hertz provides an [implementation](https://github.com/cloudwego/hertz/tree/main/pkg/app/middlewares/server/basic_auth) of Basic Auth, referencing gin's [implementation](https://github.com/gin-gonic/gin#using-basicauth-middleware)."
 
 ---
 

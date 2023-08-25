@@ -2,7 +2,8 @@
 title: 'api.none annotation usage'
 date: 2023-04-23
 weight: 5
-description: >
+keywords: ["api.none", "thrift", "protobuf"]
+description: "Description of the api.none annotation provided by hz."
 ---
 ## Introduction
 

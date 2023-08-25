@@ -2,7 +2,8 @@
 title: 'hz annotation'
 date: 2023-02-21
 weight: 6
-description: >
+keywords: ["hz annotation", "api annotation", "Field annotation", "Method annotation"]
+description: "The IDL annotation provided by hz."
 ---
 **Supported api annotations**
 

@@ -2,7 +2,8 @@
 title: "nacos"
 date: 2023-04-22
 weight: 2
-description: >
+keywords: ["服务注册与发现", "nacos"]
+description: "Hertz 提供的服务注册与发现 nacos 拓展。"
 ---
 
 ## 安装

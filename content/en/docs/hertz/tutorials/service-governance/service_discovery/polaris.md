@@ -2,7 +2,8 @@
 title: "polaris"
 date: 2023-04-22
 weight: 6
-description: >
+keywords: ["Service Registration and Discovery", "polaris"]
+description: "Service Registration and Discovery polaris Extensions provided by Hertz."
 ---
 
 ## Install

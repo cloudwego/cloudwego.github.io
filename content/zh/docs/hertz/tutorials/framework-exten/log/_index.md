@@ -3,11 +3,10 @@ title: "日志扩展"
 linkTitle: "日志扩展"
 date: 2023-04-18
 weight: 1
-description: >
+keywords: ["日志扩展"]
+description: "Hertz 提供对日志的扩展，接口定义在 `pkg/common/hlog` 中。"
 
 ---
-
-Hertz 提供对日志的扩展，接口定义在 `pkg/common/hlog` 中。
 
 ## 接口定义
 

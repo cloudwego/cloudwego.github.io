@@ -2,11 +2,10 @@
 title: "代码示例"
 linkTitle: "代码示例"
 weight: 1
-description: >
+keywords: ["Hertz", "hertz-examples", "Bizdemo", "Server", "Client", "Hz"]
+description: "Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了解 Hertz 的特性，参考 [hertz-examples](https://github.com/cloudwego/hertz-examples) 以获取更多信息。"
 
 ---
-
-Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了解 Hertz 的特性，参考 [hertz-examples](https://github.com/cloudwego/hertz-examples) 以获取更多信息。
 
 ## Bizdemo
 

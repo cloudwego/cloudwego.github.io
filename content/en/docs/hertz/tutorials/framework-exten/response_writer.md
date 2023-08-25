@@ -3,7 +3,8 @@ title: "Response Writer Extension"
 linkTitle: "Response Writer Extension"
 date: 2023-03-10
 weight: 6
-description: >
+keywords: ["Response Writer Extension", "Response.HijackWriter"]
+description: "Response Writer Extension provided by Hertz."
 
 ---
 

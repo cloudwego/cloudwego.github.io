@@ -2,7 +2,8 @@
 title: "Pprof"
 date: 2022-09-24
 weight: 7
-description: >
+keywords: ["pprof", "performance analysis"]
+description: "Hertz provides the [pprof](https://github.com/hertz-contrib/pprof) extension to help users perform performance analysis on Hertz projects. "
 
 ---
 

@@ -2,7 +2,8 @@
 title: "CSRF"
 date: 2022-12-6
 weight: 12
-description: >
+keywords: ["CSRF", "跨站点请求伪造攻击"]
+description: "Hertz 提供了 [CSRF](https://github.com/hertz-contrib/csrf) 中间件，可帮助您防止跨站点请求伪造攻击。"
 ---
 
 Cross-site request forgery（CSRF）是一种挟制用户在当前已登录的 Web 应用程序上执行非本意的操作的攻击方法。

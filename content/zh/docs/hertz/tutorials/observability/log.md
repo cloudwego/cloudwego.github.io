@@ -2,7 +2,8 @@
 title: "日志"
 date: 2022-05-23
 weight: 1
-description: >
+keywords: ["日志", "logLevel"]
+description: "Hertz 提供的日志能力。"
 
 ---
 

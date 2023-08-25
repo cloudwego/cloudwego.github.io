@@ -2,7 +2,8 @@
 title: "hz usage(protobuf)"
 date: 2023-02-21
 weight: 4
-description: >
+keywords: ["hz usage(protobuf)", "protobuf", "new", "update"]
+description: "hz usage(protobuf)."
 ---
 
 ## Create a project based on protobuf IDL

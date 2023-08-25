@@ -2,7 +2,8 @@
 title: "redis"
 date: 2023-04-22
 weight: 9
-description: >
+keywords: ["服务注册与发现", "redis"]
+description: "Hertz 提供的服务注册与发现 redis 拓展。"
 ---
 
 ## 安装

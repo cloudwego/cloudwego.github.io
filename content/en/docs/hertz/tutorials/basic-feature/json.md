@@ -3,7 +3,8 @@ title: "JSON Marshal Library"
 linkTitle: "JSON Marshal Library"
 date: 2023-08-03
 weight: 19
-description: >
+keywords: ["JSON Marshal", "Sonic", "Conditional Compilation", "Bringing Your Own JSON Marshal Library"]
+description: "The JSON Marshal library and customization capabilities used by Hertz."
 ---
 
 By default, Hertz integrates with and uses [Sonic](https://github.com/bytedance/sonic) for serializing `ctx.JSON` interface and deserialization requests as defined in the `binding` package.

@@ -2,7 +2,8 @@
 title: "zookeeper"
 date: 2023-04-22
 weight: 8
-description: >
+keywords: ["服务注册与发现", "zookeeper"]
+description: "Hertz 提供的服务注册与发现 zookeeper 拓展。"
 ---
 
 ## 安装

@@ -2,7 +2,8 @@
 title: "JWT"
 date: 2022-06-09
 weight: 3
-description: >
+keywords: ["JWT authentication", "JSON Web Token", "JWT"]
+description: "Hertz provides an [implementation](https://github.com/hertz-contrib/jwt) of JWT, it uses gin [implementation](https://github.com/appleboy/gin-jwt) for reference."
 
 ---
 

@@ -2,7 +2,8 @@
 title: "客户端"
 date: 2023-07-25
 weight: 3
-description: >
+keywords: ["Client 配置", "发送请求", "请求超时", "流式处理", "中间件", "服务发现"]
+description: "Hertz 客户端相关功能。"
 ---
 
 ## 快速开始
@@ -117,8 +118,8 @@ func main() {
 | WithReadTimeout               | 0s              | 完整读取响应（包括 body）的最大持续时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                            |
 | WithWriteTimeout           | 0s            | HTTP 客户端的写入超时时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**  |
 | WithRequestTimeout               | 0s             | 完整的 HTTP 请求的超时时间 |
-| WithTag            | make(map[string]string)             | 以 key-value 形式设置 tags 字段，该字段用于客户端服务发现的 `TargetInfo` 结构体                                 |
-| WithSD                     | false          | 设置 isSD 字段，该字段用于客户端服务发现中间件                             |
+| WithTag            | make(map[string]string)             | 以 key-value 形式设置 tags 字段，配合服务发现使用，详情见 [WithTag](/zh/docs/hertz/tutorials/service-governance/service_discovery/#withtag)                                 |
+| WithSD                     | false          | 配合服务发现使用，传递 true 时，本次请求使用服务发现，详情见 [WithSD](/zh/docs/hertz/tutorials/service-governance/service_discovery/#withsd)                                    |
 
 示例代码：
 

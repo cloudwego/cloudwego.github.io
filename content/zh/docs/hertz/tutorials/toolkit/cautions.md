@@ -2,7 +2,8 @@
 title: '注意事项'
 date: 2023-02-21
 weight: 8
-description: >
+keywords: ["注意事项", "protobuf", "thrift"]
+description: "使用 hz 时的注意事项。"
 ---
 ### 使用 protobuf IDL 的注意事项
 

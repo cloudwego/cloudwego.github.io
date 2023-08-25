@@ -2,11 +2,10 @@
 title: "网络库"
 date: 2022-05-20
 weight: 4
-description: >
+keywords: ["netpoll", "go net"]
+description: "Hertz 默认集成了 Netpoll 和 Golang 原生网络库两个网络库，用户可以根据自己的场景选择合适的网络库以达到最佳性能。"
 
 ---
-
-Hertz 默认集成了 Netpoll 和 Golang 原生网络库两个网络库，用户可以根据自己的场景选择合适的网络库以达到最佳性能。
 
 ## 使用方式
 

@@ -2,7 +2,8 @@
 title: 'IDL 注解说明'
 date: 2023-02-21
 weight: 6
-description: >
+keywords: ["IDL 注解说明", "api 注解", "Field 注解", "Method 注解"]
+description: "hz 提供的 IDL 注解说明。"
 ---
 **支持的 api 注解**
 

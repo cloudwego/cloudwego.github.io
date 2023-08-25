@@ -2,7 +2,8 @@
 title: "ETag"
 date: 2023-02-11
 weight: 14
-description: >
+keywords: ["ETag"]
+description: "Hertz provides [Etag middleware](https://github.com/hertz-contrib/etag) that can operate on `ETag`, inspired by fiber's [implementation](https://github.com/gofiber/fiber/tree/master/middleware/etag)."
 
 ---
 

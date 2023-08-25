@@ -2,6 +2,7 @@
 title: "请求上下文"
 date: 2023-04-12
 weight: 5
+keywords: ["RequestContext", "HTTP", "上下文传递", "元数据存储", "并发安全"]
 description: >
 ---
 

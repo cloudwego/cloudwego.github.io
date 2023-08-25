@@ -3,7 +3,8 @@ title: "logrus"
 linkTitle: "logrus"
 weight: 2
 date: 2023-04-18
-description: >
+keywords: ["Logger Extension", "logrus"]
+description: "Hertz interfaces with logrus and lumberjack."
 
 ---
 

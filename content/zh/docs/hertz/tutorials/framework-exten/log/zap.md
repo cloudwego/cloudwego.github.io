@@ -2,7 +2,8 @@
 title: "zap"
 linkTitle: "zap"
 weight: 3
-description: >
+keywords: ["日志扩展", "zap"]
+description: "Hertz 对接 zap 和 lumberjack。"
 
 ---
 

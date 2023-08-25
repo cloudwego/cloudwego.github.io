@@ -2,7 +2,8 @@
 title: "redis"
 date: 2023-04-22
 weight: 9
-description: >
+keywords: ["Service Registration and Discovery", "redis"]
+description: "Service Registration and Discovery redis Extensions provided by Hertz."
 ---
 
 ## Install

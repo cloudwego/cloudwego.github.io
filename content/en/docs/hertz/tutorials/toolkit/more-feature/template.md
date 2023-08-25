@@ -2,7 +2,8 @@
 Title: "hz custom template use"
 Date: 2023-02-20
 Weight: 2
-Description: >
+keywords: ["hz client", "layout", "package"]
+description: "hz custom template use."
 ---
 
 Hertz provides command-line tools (hz) that support custom template features, including:

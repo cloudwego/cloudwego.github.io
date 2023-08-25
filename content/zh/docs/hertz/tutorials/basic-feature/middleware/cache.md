@@ -2,7 +2,8 @@
 title: "Cache"
 date: 2023-02-25
 weight: 15
-description: >
+keywords: ["HTTP响应", "缓存"]
+description: "Hertz 提供了对 cache 的 [适配](https://github.com/hertz-contrib/cache)，支持 multi-backend，参考了 [gin-cache](https://github.com/chenyahui/gin-cache) 的实现。"
 
 ---
 

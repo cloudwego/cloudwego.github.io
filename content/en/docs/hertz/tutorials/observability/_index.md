@@ -2,6 +2,7 @@
 title: "Observability"
 linkTitle: "Observability"
 weight: 3
-description: >
+keywords: ["Observability", "Log", "Tracing", "Monitoring", "OpenTelemetry"]
+description: "The observability capability provided by Hertz."
 
 ---

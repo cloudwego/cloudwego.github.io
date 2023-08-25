@@ -2,7 +2,8 @@
 title: "Log"
 date: 2022-05-23
 weight: 1
-description: >
+keywords: ["Log", "logLevel"]
+description: "Hertz provides logging capabilities."
 
 ---
 

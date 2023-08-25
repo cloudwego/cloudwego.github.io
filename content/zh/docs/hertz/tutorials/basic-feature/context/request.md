@@ -2,7 +2,8 @@
 title: "请求"
 date: 2023-04-14
 weight: 1
-description: >
+keywords: ["RequestContext", "URI", "Header", "Body", "文件操作", "元数据存储", "Handler", "请求", "参数绑定与校验", "ClientIP", "并发安全"]
+description: "RequestContext 中与请求相关的功能。"
 ---
 
 

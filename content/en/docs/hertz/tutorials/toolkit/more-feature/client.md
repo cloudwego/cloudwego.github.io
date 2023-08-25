@@ -2,7 +2,8 @@
 title: 'hz client code generation'
 date: 2023-02-20
 weight: 4
-description: >
+keywords: ["hz client", "Advanced Settings"]
+description: "hz client code generation."
 ---
 
 ## Introduction

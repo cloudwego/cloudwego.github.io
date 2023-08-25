@@ -2,7 +2,8 @@
 title: 'hz client 代码生成'
 date: 2023-02-20
 weight: 4
-description: >
+keywords: ["hz client", "高级设置"]
+description: "hz client 代码生成。"
 ---
 
 ## 介绍

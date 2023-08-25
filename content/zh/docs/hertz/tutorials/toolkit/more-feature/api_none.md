@@ -2,7 +2,8 @@
 title: 'api.none 注解说明'
 date: 2023-04-23
 weight: 5
-description: >
+keywords: ["api.none", "thrift", "protobuf"]
+description: "hz 提供的 api.none 注解说明。"
 ---
 ## 介绍
 

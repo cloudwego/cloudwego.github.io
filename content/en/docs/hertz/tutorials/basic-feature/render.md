@@ -2,8 +2,9 @@
 title: 'Render'
 date: 2023-06-01
 weight: 18
-description: >
----
+keywords: ["Render", "JSON", "Data", "HTML", "Protobuf", "Text", "XML", "Customizing Rendering"]
+description: "The rendering capabilities provided by Hertz."
+--- 
 
 Hertz supports rendering of JSON, HTML, Protobuf, etc.
 

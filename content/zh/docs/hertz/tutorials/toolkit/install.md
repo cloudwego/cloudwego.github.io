@@ -2,7 +2,8 @@
 title: 'hz 安装'
 date: 2023-02-21
 weight: 1
-description: >
+keywords: ["hz 安装"]
+description: "hz 安装。"
 ---
 
 hz 是 Hertz 框架提供的一个用于生成代码的命令行工具。目前，hz 可以基于 thrift 和 protobuf 的 IDL 生成 Hertz 项目的脚手架。

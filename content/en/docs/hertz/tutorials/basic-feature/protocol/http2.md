@@ -2,7 +2,8 @@
 title: "HTTP2"
 date:  2022-12-15
 weight: 2
-description: >
+keywords: ["HTTP/2", "HTTP", "h2", "h2c"]
+description: "Hertz supports both h2 and h2c. It uses [net/http2](https://github.com/golang/net/tree/master/http2) implementation for reference."
 
 
 ---
@@ -11,7 +12,7 @@ HTTP/2 is a replacement for how HTTP is expressed “on the wire.” It is not a
 
 The focus of the protocol is on performance; specifically, end-user perceived latency, network and server resource usage. One major goal is to allow the use of a single connection from browsers to a Web site.
 
-Hertz supports both h2 and h2c.  It uses [net/http2](https://github.com/golang/net/tree/master/http2)  implementation for reference.
+Hertz supports both h2 and h2c. It uses [net/http2](https://github.com/golang/net/tree/master/http2) implementation for reference.
 
 ## Example
 

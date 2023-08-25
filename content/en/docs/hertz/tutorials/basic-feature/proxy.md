@@ -2,7 +2,8 @@
 title: "Forward Proxy and Reverse Proxy"
 date: 2022-09-08
 weight: 12
-description: >
+keywords: ["Forward proxy", "Reverse proxy"]
+description: "Hertz provides forward and reverse proxy capabilities."
 
 ---
 

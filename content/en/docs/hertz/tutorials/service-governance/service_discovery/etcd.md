@@ -2,7 +2,8 @@
 title: "etcd"
 date: 2023-04-22
 weight: 4
-description: >
+keywords: ["Service Registration and Discovery", "etcd"]
+description: "Service Registration and Discovery etcd Extensions provided by Hertz."
 ---
 
 ## Install

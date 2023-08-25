@@ -2,7 +2,8 @@
 title: "链路追踪"
 linkTitle: "链路追踪"
 weight: 2
-description: >
+keywords: ["链路追踪"]
+description: "Hertz 提供的链路追踪能力。"
 
 ---
 

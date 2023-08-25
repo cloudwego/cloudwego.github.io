@@ -2,7 +2,8 @@
 title: "Sentry"
 date: 2022-11-25
 weight: 11
-description: >
+keywords: ["Sentry", "实时错误监控"]
+description: "Hertz 通过使用中间件 [hertzsentry](https://github.com/hertz-contrib/hertzsentry) ，整合了 [Sentry-Go](https://docs.sentry.io/platforms/go/) 的 SDK。"
 
 ---
 

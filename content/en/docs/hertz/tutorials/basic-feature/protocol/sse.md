@@ -2,7 +2,8 @@
 title: "SSE"
 date: 2023-05-12
 weight: 6
-description: >
+keywords: ["SSE", "HTTP", "Server-Sent Events"]
+description: "Hertz supports SSE, allowing the server to send events to the client through simple HTTP response."
 
 ---
 

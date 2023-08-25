@@ -2,7 +2,8 @@
 title: '渲染'
 date: 2023-06-01
 weight: 18
-description: >
+keywords: ["渲染", "JSON", "Data", "HTML", "Protobuf", "Text", "XML", "自定义渲染"]
+description: "Hertz 提供的渲染能力。"
 ---
 
 Hertz 支持对 JSON，HTML，Protobuf 等的渲染。
