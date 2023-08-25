@@ -9,7 +9,7 @@ description: "This doc covers LoadBalancer implementation principles and usage g
 Kitex provides these LoadBalancers officially:
 
 - WeightedRoundRobin
-- InterleavedWeightedRoundRobin (kitex > v0.7.0)
+- InterleavedWeightedRoundRobin (kitex >= v0.7.0)
 - WeightedRandom
 - ConsistentHash
 

@@ -9,7 +9,7 @@ description: "Kitex 提供的负载均衡器实现原理和使用指南。"
 Kitex 默认提供了以下几种 LoadBalancer：
 
 - WeightedRoundRobin
-- InterleavedWeightedRoundRobin
+- InterleavedWeightedRoundRobin（kitex >= v0.7.0）
 - WeightedRandom
 - ConsistentHash
 
