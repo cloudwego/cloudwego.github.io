@@ -73,5 +73,5 @@ description: >
 [[#1074](https://github.com/cloudwego/kitex/pull/1074)] chore: update thriftgo to v0.3.0
 [[#1031](https://github.com/cloudwego/kitex/pull/1031)] chore: remove wechat group in readme
 [[#1008](https://github.com/cloudwego/kitex/pull/1008)] chore: update dynamicgo to v0.1.1
-[[#1006](https://github.com/cloudwego/kitex/pull/1006)] chore: remove unecessary replace for frugal
+[[#1006](https://github.com/cloudwego/kitex/pull/1006)] chore: remove unnecessary replace for frugal
 [[#1007](https://github.com/cloudwego/kitex/pull/1007)] chore: upgrade netpoll to v0.4.1
