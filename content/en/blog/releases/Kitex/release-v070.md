@@ -1,5 +1,5 @@
 ---
-title: "Kitex v0.7.0 版本发布"
+title: "Kitex Release v0.7.0"
 linkTitle: "Release v0.7.0"
 projects: ["Kitex"]
 date: 2023-08-14
