@@ -66,11 +66,11 @@ entries:
 
 ### Motivation
 
-优化提升Skip逻辑的性能，在代理和Unknown Fields等场景下Skip是关键路径。
+优化提升 Skip 逻辑的性能，在代理和 Unknown Fields 等场景下 Skip 是关键路径。
 
 ### Solution
 
-1. Thrift Binary Protocol  Scalar Types 是定长编码，比如 i32 编码 4 Bytes ，那么 map/list/set 和定长类型组成的这些复合类型（Compound Types）就可以特殊处理，比如list<i32>，按之前的Skip算法是O(n)操作循环Skip，可以提前计算总长度直接跳过，算法复杂度变成了O(1)；
+1. Thrift Binary Protocol  Scalar Types 是定长编码，比如 i32 编码 4 Bytes ，那么 map/list/set 和定长类型组成的这些复合类型（Compound Types）就可以特殊处理，比如 list<i32>，按之前的 Skip 算法是 O(n) 操作循环 Skip，可以提前计算总长度直接跳过，算法复杂度变成了 O(1)；
 
 2. 使用循环替换递归；
 
