@@ -2,7 +2,7 @@
 title: "快速开始"
 linkTitle: "快速开始"
 weight: 2
-keywords: ["Golang", "Go", "Hertz", "开发环境", "快速上手", "代码生成工具"]
+keywords: ["Hertz", "开发环境", "快速上手", "代码生成工具"]
 description: "Hertz 开发环境准备、快速上手与代码生成工具 hz 基本使用。"
 ---
 

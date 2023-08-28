@@ -2,7 +2,7 @@
 title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 2
-keywords: ["Golang", "Go", "Hertz", "Development Environment", "Quick Start", "Code Generation Tool"]
+keywords: ["Hertz", "Development Environment", "Quick Start", "Code Generation Tool"]
 description: "Preparation of Hertz development environment, quick start, and basic use of code generation tool hz."
 ---
 

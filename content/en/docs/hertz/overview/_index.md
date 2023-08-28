@@ -2,7 +2,7 @@
 title: "Overview"
 linkTitle: "Overview"
 weight: 1
-keywords: ["HTTP", "Golang", "Go", "Hertz", "Architecture", "Features", "Performance", "Related Projects", "Blogs"]
+keywords: ["HTTP", "Hertz", "Architecture", "Features", "Performance"]
 description: "This doc covers architecture design, features and performance of Hertz."
 
 ---

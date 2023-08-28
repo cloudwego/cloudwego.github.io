@@ -3,7 +3,7 @@
 title: "Gzip 压缩"
 date: 2022-09-01
 weight: 4
-keywords: ["Gzip 压缩", "压缩"]
+keywords: ["Gzip", "压缩"]
 description: "Hertz 提供了 Gzip 的 [实现](https://github.com/hertz-contrib/gzip) 。"
 
 ---
