@@ -2,11 +2,10 @@
 title: "Network Lib"
 date: 2022-06-20
 weight: 3
-description: >
+keywords: ["netpoll", "go net"]
+description: "Hertz integrated Netpoll and Golang network lib by default. Users can choose the appropriate one according to the actual scenarios to meet the best performance."
 
 ---
-
-Hertz integrated Netpoll and Golang network lib by default. Users can choose the appropriate one according to the actual scenarios to meet the best performance.
 
 ## Usage
 

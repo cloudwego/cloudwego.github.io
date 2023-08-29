@@ -2,7 +2,8 @@
 title: "Recovery"
 date: 2022-12-15
 weight: 2
-description: >
+keywords: ["Recovery", "panic 恢复"]
+description: "Recovery 中间件是 Hertz 框架预置的中间件，为 Hertz 框架提供 panic 恢复的功能。"
 
 ---
 

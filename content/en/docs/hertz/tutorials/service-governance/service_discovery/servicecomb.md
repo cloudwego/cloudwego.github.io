@@ -2,7 +2,8 @@
 title: "servicecomb"
 date: 2023-04-22
 weight: 7
-description: >
+keywords: ["Service Registration and Discovery", "servicecomb"]
+description: "Service Registration and Discovery servicecomb Extensions provided by Hertz."
 ---
 
 ## Install

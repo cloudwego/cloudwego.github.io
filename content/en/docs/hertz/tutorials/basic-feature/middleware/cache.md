@@ -2,7 +2,8 @@
 title: "Cache"
 date: 2023-02-25
 weight: 15
-description: >
+keywords: ["HTTP Response", "Cache"]
+description: "Hertz provides the adaptation of cache, supporting multi-backend."
 
 ---
 

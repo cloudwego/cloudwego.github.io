@@ -2,7 +2,8 @@
 title: 'hz 接入第三方生成代码插件'
 date: 2023-01-21
 weight: 3
-description: >
+keywords: ["插件", "ThriftGo", "Protoc", "go_package"]
+description: "hz 接入第三方生成代码插件。"
 ---
 
 目前，hz 的代码生成是基于 "thriftgo" 和 "protoc" 的插件模式生成的，这对于接入一些第三方的插件提供了很大的帮助，尤其是对于 "protoc" 来说，目前其支持的插件生态相当丰富。

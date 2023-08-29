@@ -2,7 +2,8 @@
 title: "响应"
 date: 2023-04-14
 weight: 2
-description: >
+keywords: ["RequestContext", "渲染", "Header", "Body", "文件操作", "响应", "Flush"]
+description: "RequestContext 中与响应相关的功能。"
 ---
 
 ## Header

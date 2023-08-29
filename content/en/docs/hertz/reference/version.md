@@ -2,7 +2,8 @@
 title: "Version Descriptions"
 linkTitle: "Version Descriptions"
 weight: 2
-description: >
+keywords: ["Version Description"]
+description: "Hertz version description."
 
 ---
 

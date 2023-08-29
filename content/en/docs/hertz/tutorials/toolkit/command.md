@@ -2,7 +2,8 @@
 title: 'hz commands'
 date: 2023-02-21
 weight: 7
-description: >
+keywords: ["hz commands", "New", "Update"]
+description: "hz commands."
 ---
 ## Command line parameter description
 

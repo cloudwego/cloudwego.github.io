@@ -2,7 +2,8 @@
 title: "协议扩展"
 linkTitle: "协议扩展"
 weight: 5
-description: >
+keywords: ["协议扩展", "protocol.Server", "protocol.StreamServer", "HTTP"]
+description: "Hertz 提供的协议扩展。"
 ---
 
 得益于 Hertz 的分层设计，除了 Hertz 框架默认自带的 HTTP1/HTTP2/HTTP3 等协议 server，框架的使用者还可以通过 `protocol.Server` 或 `protocol.StreamServer` 接口自定义协议 server。

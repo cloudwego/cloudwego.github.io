@@ -2,7 +2,8 @@
 title: "nacos"
 date: 2023-04-22
 weight: 2
-description: >
+keywords: ["Service Registration and Discovery", "nacos"]
+description: "Service Registration and Discovery nacos Extensions provided by Hertz."
 ---
 
 ## Install

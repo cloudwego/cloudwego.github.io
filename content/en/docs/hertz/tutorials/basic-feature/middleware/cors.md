@@ -2,7 +2,8 @@
 title: "CORS"
 date: 2022-05-21
 weight: 1
-description: >
+keywords: ["CORS"]
+description: "Hertz provides implementation of CORS middleware."
 
 ---
 

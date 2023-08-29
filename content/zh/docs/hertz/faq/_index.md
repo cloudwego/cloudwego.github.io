@@ -2,7 +2,8 @@
 title: "常见问题"
 linkTitle: "常见问题"
 weight: 4
-description: >
+keywords: ["内存使用率", "常见错误码", "上下文使用", "精度丢失问题"]
+description: "Hertz 常见问题解答。"
 
 ---
 

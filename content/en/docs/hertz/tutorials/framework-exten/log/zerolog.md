@@ -2,7 +2,8 @@
 title: "zerolog"
 linkTitle: "zerolog"
 weight: 4
-description: >
+keywords: ["Logger Extension", "zerolog"]
+description: "Hertz interfaces with zerolog and lumberjack."
 ---
 
 ## Logger

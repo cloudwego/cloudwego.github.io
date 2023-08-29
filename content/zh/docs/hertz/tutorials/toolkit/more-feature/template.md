@@ -2,7 +2,8 @@
 title: "hz 自定义模板使用"
 date: 2023-02-20
 weight: 2
-description: >
+keywords: ["hz client", "layout", "package"]
+description: "hz 自定义模板使用。"
 ---
 
 Hertz 提供的命令行工具 (以下称为"hz") 支持自定义模板功能，包括:

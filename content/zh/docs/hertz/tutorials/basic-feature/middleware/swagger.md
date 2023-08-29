@@ -2,7 +2,8 @@
 title: "Swagger"
 date: 2022-10-06
 weight: 8
-description: >
+keywords: ["Swagger", "RESTful API"]
+description: "用 Swagger 2.0 来自动生成 RESTful API 文档的 Hertz 中间件。"
 
 ---
 

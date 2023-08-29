@@ -2,7 +2,8 @@
 title: "OpenTelemetry"
 date: 2022-09-13
 weight: 4
-description: >
+keywords: ["OpenTelemetry"]
+description: "Hertz provides openTelemetry capabilities."
 ---
 
 [OpenTelemetry](https://opentelemetry.io/) is an open source observability framework

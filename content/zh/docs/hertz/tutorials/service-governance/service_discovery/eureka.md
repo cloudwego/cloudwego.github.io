@@ -2,7 +2,8 @@
 title: "eureka"
 date: 2023-04-22
 weight: 5
-description: >
+keywords: ["服务注册与发现", "eureka"]
+description: "Hertz 提供的服务注册与发现 eureka 拓展。"
 ---
 
 ## 安装

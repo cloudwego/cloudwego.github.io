@@ -2,7 +2,8 @@
 title: "RequestContext"
 date: 2023-07-11
 weight: 5
-description: >
+keywords: ["RequestContext", "HTTP", "Context Passing", "Metadata Storage", "concurrent security"]
+description: "Functions related to the request context."
 ---
 
 Request Context `RequestContext` is a context used to save HTTP requests and set HTTP responses. It provides many convenient API interfaces to help users develop.

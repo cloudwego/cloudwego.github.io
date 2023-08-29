@@ -2,7 +2,8 @@
 title: "服务注册与发现"
 date: 2023-04-22
 weight: 1
-description: >
+keywords: ["服务注册与发现", "nacos", "consul", "etcd", "eureka", "polaris", "servicecomb", "zookeeper", "redis"]
+description: "Hertz 提供的服务注册与发现拓展。"
 ---
 
 目前在 Hertz 的开源版本支持的服务发现拓展都存放在 [registry](https://github.com/hertz-contrib/registry) 中，欢迎大家参与项目贡献与维护。

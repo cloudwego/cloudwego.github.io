@@ -2,7 +2,8 @@
 title: "etcd"
 date: 2023-04-22
 weight: 4
-description: >
+keywords: ["服务注册与发现", "etcd"]
+description: "Hertz 提供的服务注册与发现 etcd 拓展。"
 ---
 
 ## 安装

@@ -2,7 +2,8 @@
 title: "hz basic usage"
 date: 2023-02-21
 weight: 2
-description: >
+keywords: ["hz basic usage", "new"]
+description: "hz basic usage."
 ---
 
 ## Basic Usage

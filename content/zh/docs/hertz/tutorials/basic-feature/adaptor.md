@@ -2,13 +2,14 @@
 title: "适配器"
 date: 2023-01-11
 weight: 16
-description: >
+keywords: ["适配器", "http.Request", "http.ResponseWriter", "net/http"]
+description: "Hertz 提供获取 Go 标准库的 `http.Request` 和 `http.ResponseWriter` 的方式及其相关方法。"
 
 ---
 
 Hertz 提供了获取 Go 标准库的 `http.Request` 和 `http.ResponseWriter` 的方式及其相关方法，以便于用户集成 `net/http` 进行开发。
 
-注意：这种适配性是以性能损耗为代价的
+注意：这种适配性是以性能损耗为代价的。
 
 ## 示例代码
 

@@ -2,7 +2,8 @@
 title: "consul"
 date: 2023-04-22
 weight: 3
-description: >
+keywords: ["服务注册与发现", "consul"]
+description: "Hertz 提供的服务注册与发现 consul 拓展。"
 ---
 
 ## 安装

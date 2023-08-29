@@ -2,7 +2,8 @@
 title: "Binding and validate"
 date: 2022-06-21
 weight: 8
-description: >
+keywords: ["Binding and validate", "go-tagexpr", "tag", "Parameter binding precedence"]
+description: "The parameter binding and validation related functions and usage supported by Hertz."
 
 ---
 

@@ -2,7 +2,8 @@
 title: "Request"
 date: 2023-07-11
 weight: 1
-description: >
+keywords: ["RequestContext", "URI", "Header", "Body", "File Operation", "Metadata Store", "Handler", "Request", "Binding and validate", "ClientIP", "Concurrent Security"]
+description: "The functions related to the request in RequestContext."
 ---
 
 

@@ -2,7 +2,8 @@
 title: "基本认证"
 date: 2022-10-13
 weight: 2
-description: >
+keywords: ["HTTP", "基本认证"]
+description: "Hertz 提供了 basic auth 的实现。"
 
 ---
 

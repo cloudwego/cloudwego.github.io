@@ -2,7 +2,8 @@
 title: "servicecomb"
 date: 2023-04-22
 weight: 7
-description: >
+keywords: ["服务注册与发现", "servicecomb"]
+description: "Hertz 提供的服务注册与发现 servicecomb 拓展。"
 ---
 
 ## 安装

@@ -2,7 +2,8 @@
 title: "Tracing"
 linkTitle: "Tracing"
 weight: 2
-description: >
+keywords: ["Tracing"]
+description: "Hertz provides tracing capabilities."
 
 ---
 

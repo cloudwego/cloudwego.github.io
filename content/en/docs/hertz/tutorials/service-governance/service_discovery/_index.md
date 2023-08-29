@@ -2,7 +2,8 @@
 title: "Service Registration and Discovery"
 date: 2023-04-22
 weight: 1
-description: >
+keywords: ["Service Registration and Discovery", "nacos", "consul", "etcd", "eureka", "polaris", "servicecomb", "zookeeper", "redis"]
+description: "Service Registration and Discovery Extensions provided by Hertz."
 ---
 
 The service discovery extensions currently supported in the open source version of Hertz are stored in the [registry](https://github.com/hertz-contrib/registry). You are welcomed to join us in contributing and maintaining for this project.

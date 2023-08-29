@@ -2,7 +2,8 @@
 title: "eureka"
 date: 2023-04-22
 weight: 5
-description: >
+keywords: ["Service Registration and Discovery", "eureka"]
+description: "Service Registration and Discovery eureka Extensions provided by Hertz."
 ---
 
 ## Install

@@ -2,7 +2,8 @@
 title: "Request ID"
 date: 2022-10-01
 weight: 9
-description: >
+keywords: ["Request ID", "X-Request-ID"]
+description: "Hertz provides Request ID middleware that can operate on `X-Request-ID`."
 
 ---
 

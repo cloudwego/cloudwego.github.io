@@ -2,7 +2,8 @@
 title: 'hz install'
 date: 2023-02-21
 weight: 1
-description: >
+keywords: ["hz install"]
+description: "hz install."
 ---
 hz is a tool provided by the Hertz framework for generating code. Currently, hz can generate scaffolding for Hertz projects based on thrift and protobuf's IDL.
 

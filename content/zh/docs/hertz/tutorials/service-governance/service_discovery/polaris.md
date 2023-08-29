@@ -2,7 +2,8 @@
 title: "polaris"
 date: 2023-04-22
 weight: 6
-description: >
+keywords: ["服务注册与发现", "polaris"]
+description: "Hertz 提供的服务注册与发现 polaris 拓展。"
 ---
 
 ## 安装

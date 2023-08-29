@@ -2,7 +2,8 @@
 title: "Response"
 date: 2023-07-10
 weight: 2
-description: >
+keywords: ["RequestContext", "Render", "Header", "Body", "File operation", "Response", "Flush"]
+description: "The functions related to the response in RequestContext."
 ---
 
 ## Header

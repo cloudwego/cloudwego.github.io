@@ -2,7 +2,8 @@
 title: "配置说明"
 linkTitle: "配置说明"
 weight: 1
-description: >
+keywords: ["配置说明"]
+description: "Hertz 配置说明。"
 
 ---
 

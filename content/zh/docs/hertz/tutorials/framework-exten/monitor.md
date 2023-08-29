@@ -2,7 +2,8 @@
 title: "监控扩展"
 linkTitle: "监控扩展"
 weight: 1
-description: >
+keywords: ["监控扩展"]
+description: "Hertz 提供的监控扩展。"
 
 ---
 

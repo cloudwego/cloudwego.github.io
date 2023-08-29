@@ -2,7 +2,8 @@
 title: 'hz access plugin'
 date: 2023-01-21
 weight: 3
-description: >
+keywords: ["plugin", "ThriftGo", "Protoc", "go_package"]
+description: "hz access third-party generated code plugins."
 ---
 
 Currently, hz code generation is based on the plugin model of "thriftgo" and "protoc", which is a great help in accessing some third party plugins, especially for "protoc" which currently supports a rich plugin ecosystem.

@@ -1,7 +1,8 @@
 ---
 title: "Migration to Hertz"
 weight: 7
-description: >
+keywords: ["Migration to Hertz"]
+description: "Hertz provides the ability to migrate from other frameworks (FastHTTP, Gin) to Hertz."
 
 ---
 

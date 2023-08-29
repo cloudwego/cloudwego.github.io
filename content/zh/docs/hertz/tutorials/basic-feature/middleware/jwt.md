@@ -2,7 +2,8 @@
 title: "JWT 认证"
 date: 2022-06-09
 weight: 3
-description: >
+keywords: ["JWT 认证", "JSON Web Token", "JWT"]
+description: "Hertz 提供了 jwt 的实现。"
 
 ---
 

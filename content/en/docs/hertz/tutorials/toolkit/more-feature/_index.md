@@ -1,5 +1,6 @@
 ---
 title: "more features"
 weight: 9
-description: >
+keywords: ["more features", "custom template", "plugin", "hz client", "api.none"]
+description: "More features provided by hz."
 ---

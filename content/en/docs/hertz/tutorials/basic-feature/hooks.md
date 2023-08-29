@@ -2,7 +2,8 @@
 title: "Hooks"
 date: 2022-10-16
 weight: 14
-description: >
+keywords: ["Hooks", "StartHook", "ShutdownHook", "OnAccept", "OnConnect"]
+description: "The hooks function provided by Hertz."
 
 ---
 

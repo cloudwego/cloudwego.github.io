@@ -2,7 +2,8 @@
 title: "Paseto"
 date: 2023-05-08
 weight: 16
-description: >
+keywords: ["Paseto", "JOSE", "JWT", "JWE", "JWS"]
+description: "This is the PASETO middleware for Hertz framework."
 ---
 
 Paseto is everything you love about JOSE (JWT, JWE, JWS) without any of the [many design deficits that plague the JOSE standards](https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid).
