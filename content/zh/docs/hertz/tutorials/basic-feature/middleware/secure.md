@@ -3,7 +3,7 @@ title: "Secure"
 date: 2022-11-06
 weight: 10
 keywords: ["Secure", "访问请求安全"]
-description: "本 [中间件](https://github.com/hertz-contrib/secure) 参考了 [gin-contrib/secure](https://github.com/gin-contrib/secure) 的实现。"
+description: "Secure 是 Hertz 的一个 HTTP 中间件 , 它可以通过检查 HTTP 请求以达到快速的保证访问请求安全。"
 ---
 
 Secure 是 Hertz 的一个 HTTP 中间件 , 它可以通过检查 HTTP 请求以达到快速的保证访问请求安全 (secure),

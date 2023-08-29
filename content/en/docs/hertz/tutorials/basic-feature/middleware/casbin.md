@@ -3,7 +3,7 @@ title: "Casbin"
 date: 2023-02-06
 weight: 13
 keywords: ["Casbin", "access control"]
-description: "According to the user's use scenario, we provide [Casbin Middleware](https://github.com/hertz-contrib/casbin) that adapted to Hertz."
+description: "According to the user's use scenario, we provide Casbin Middleware that adapted to Hertz."
 ---
 
 [Casbin](https://casbin.org/) is a powerful and efficient open-source access control library that supports various [access control models](https://en.wikipedia.org/wiki/Access_control#Access_control_models) ( such as `ACL/RBAC/ABAC`) for enforcing authorization across the board.

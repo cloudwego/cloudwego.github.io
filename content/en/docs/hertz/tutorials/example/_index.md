@@ -3,9 +3,11 @@ title: "Example code"
 linkTitle: "Example code"
 weight: 1
 keywords: ["Hertz", "hertz-examples", "Bizdemo", "Server", "Client", "Hz"]
-description: "Hertz provides a series of code examples designed to help users get start with Hertz and be familiar with its features. Refer to [hertz-examples](https://github.com/cloudwego/hertz-examples) for more information."
+description: "Hertz provides a series of code examples designed to help users get start with Hertz and be familiar with its features."
 
 ---
+
+Hertz provides a series of code examples designed to help users get start with Hertz and be familiar with its features. Refer to [hertz-examples](https://github.com/cloudwego/hertz-examples) for more information.
 
 ## Bizdemo
 

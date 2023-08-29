@@ -3,7 +3,7 @@ title: "Sentry"
 date: 2022-11-25
 weight: 11
 keywords: ["Sentry", "real-time error monitoring"]
-description: "Hertz integrates with the [Sentry-Go](https://docs.sentry.io/platforms/go/) SDK by using the middleware [hertzsentry](https://github.com/hertz-contrib/hertzsentry). "
+description: "Hertz integrates with the Sentry-Go SDK by using the middleware hertzsentry. "
 
 ---
 

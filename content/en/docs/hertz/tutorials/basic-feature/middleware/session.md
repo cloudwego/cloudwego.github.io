@@ -3,7 +3,7 @@ title: "Session Extension"
 date: 2022-10-07
 weight: 6
 keywords: ["Session"]
-description: "Hertz provides an [implementation](https://github.com/hertz-contrib/sessions) of Session, which references Gin’s [implementation](https://github.com/gin-contrib/sessions)."
+description: "Hertz provides an implementation of Session."
 
 ---
 

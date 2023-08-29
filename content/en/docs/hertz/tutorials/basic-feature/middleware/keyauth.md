@@ -3,7 +3,7 @@ title: "KeyAuth"
 date: 2022-09-22
 weight: 7
 keywords: ["KeyAuth", "token authentication"]
-description: "Hertz provides the [keyauth](https://github.com/hertz-contrib/keyauth) extension to help users achieve `token` authentication. "
+description: "Hertz provides the keyauth extension to help users achieve `token` authentication."
 
 ---
 

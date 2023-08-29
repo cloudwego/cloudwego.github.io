@@ -3,7 +3,7 @@ title: "基本认证"
 date: 2022-10-13
 weight: 2
 keywords: ["HTTP", "基本认证"]
-description: "Hertz 提供了 basic auth 的 [实现](https://github.com/cloudwego/hertz/tree/main/pkg/app/middlewares/server/basic_auth) ，参考了 gin 的 [实现](https://github.com/gin-gonic/gin#using-basicauth-middleware) 。"
+description: "Hertz 提供了 basic auth 的实现。"
 
 ---
 

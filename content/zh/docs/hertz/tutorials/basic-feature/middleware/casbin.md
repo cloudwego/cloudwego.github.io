@@ -3,7 +3,7 @@ title: "Casbin"
 date: 2023-02-06
 weight: 13
 keywords: ["Casbin", "权限管理", "访问控制"]
-description: "针对用户的使用场景，提供 [Casbin 中间件](https://github.com/hertz-contrib/casbin)，对 Hertz 进行了适配。"
+description: "针对用户的使用场景，提供 Casbin 中间件，对 Hertz 进行了适配。"
 ---
 
 [Casbin](https://casbin.org/) 是⼀个强⼤的、⾼效的开源访问控制框架，其权限管理机制支持常用的多种 [访问控制模型](https://en.wikipedia.org/wiki/Access_control#Access_control_models)，如 `ACL/RBAC/ABAC` 等。可以实现灵活的访问权限控制。

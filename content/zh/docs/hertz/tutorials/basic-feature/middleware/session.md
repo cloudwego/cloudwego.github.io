@@ -3,7 +3,7 @@ title: "Session 扩展"
 date: 2022-10-07
 weight: 6
 keywords: ["Session"]
-description: "Hertz 提供了 Session 的 [实现](https://github.com/hertz-contrib/sessions)，它参考了 Gin 的 [实现](https://github.com/gin-contrib/sessions)。"
+description: "Hertz 提供了 Session 的实现。"
 
 ---
 

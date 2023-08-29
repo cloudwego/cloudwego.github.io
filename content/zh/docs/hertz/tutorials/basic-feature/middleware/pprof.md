@@ -3,7 +3,7 @@ title: "Pprof"
 date: 2022-09-24
 weight: 7
 keywords: ["pprof", "性能分析"]
-description: "Hertz 提供了 [pprof](https://github.com/hertz-contrib/pprof) 扩展，帮助用户对 Hertz 项目进行性能分析。"
+description: "Hertz 提供了 pprof 扩展，帮助用户对 Hertz 项目进行性能分析。"
 
 ---
 

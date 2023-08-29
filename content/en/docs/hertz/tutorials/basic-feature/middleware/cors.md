@@ -3,7 +3,7 @@ title: "CORS"
 date: 2022-05-21
 weight: 1
 keywords: ["CORS"]
-description: "Hertz provides [implementation](https://github.com/hertz-contrib/cors) of CORS middleware. The implementation here refers to GIN's [cors](https://github.com/gin-contrib/cors)."
+description: "Hertz provides implementation of CORS middleware."
 
 ---
 

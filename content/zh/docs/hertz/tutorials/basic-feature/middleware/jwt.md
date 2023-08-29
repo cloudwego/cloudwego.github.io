@@ -3,7 +3,7 @@ title: "JWT 认证"
 date: 2022-06-09
 weight: 3
 keywords: ["JWT 认证", "JSON Web Token", "JWT"]
-description: "Hertz 提供了 jwt 的 [实现](https://github.com/hertz-contrib/jwt) ，参考了 gin 的 [实现](https://github.com/appleboy/gin-jwt) 。"
+description: "Hertz 提供了 jwt 的实现。"
 
 ---
 

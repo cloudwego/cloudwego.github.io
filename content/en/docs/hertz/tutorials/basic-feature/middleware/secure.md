@@ -3,7 +3,7 @@ title: "Secure"
 date: 2022-11-06
 weight: 10
 keywords: ["Secure", "secure access request"]
-description: "The implementation of the [secure](https://github.com/hertz-contrib/secure) extension refers to the implementation of [gin-contrib/secure](https://github.com/gin-contrib/secure)."
+description: "Secure is an HTTP middleware from Hertz that checks HTTP requests to quickly secure access requests."
 ---
 
 Secure is an HTTP middleware from Hertz that checks HTTP requests to quickly secure access requests.

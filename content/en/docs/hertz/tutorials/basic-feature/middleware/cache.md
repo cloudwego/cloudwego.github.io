@@ -3,7 +3,7 @@ title: "Cache"
 date: 2023-02-25
 weight: 15
 keywords: ["HTTP Response", "Cache"]
-description: "Hertz provides the [adaptation](https://github.com/hertz-contrib/cache) of cache, supporting multi-backend, referring to [gin-cache](https://github.com/chenyahui/gin-cache)."
+description: "Hertz provides the adaptation of cache, supporting multi-backend."
 
 ---
 

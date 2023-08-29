@@ -3,7 +3,7 @@ title: "HTTP2"
 date:  2022-12-15
 weight: 2
 keywords: ["HTTP/2", "HTTP", "h2", "h2c"]
-description: "Hertz supports both h2 and h2c. It uses [net/http2](https://github.com/golang/net/tree/master/http2) implementation for reference."
+description: "Hertz supports both h2 and h2c. It uses net/http2 implementation for reference."
 
 
 ---

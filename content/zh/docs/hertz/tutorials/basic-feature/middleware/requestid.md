@@ -4,7 +4,7 @@ date: 2022-10-01
 weight: 9
 description: >
 keywords: ["Request ID", "X-Request-ID"]
-description: "Hertz 提供了可以对 `X-Request-ID` 进行操作的 [Request ID 中间件](https://github.com/hertz-contrib/requestid)，参考了 gin 的 [实现](https://github.com/gin-contrib/requestid)。"
+description: "Hertz 提供了可以对 `X-Request-ID` 进行操作的 Request ID 中间件。"
 
 ---
 
