@@ -244,7 +244,7 @@ hz 使用了 "json" 来指定渲染数据，包括全局的渲染参数和各个
 
 |  渲染参数名   | 默认值  |  说明  |
 |  :----  | :----  | :---- |
-| GoModule  | - | go moudle，可通过 --module 指定 |
+| GoModule  | - | go module，可通过 --module 指定 |
 | ServiceName  | hertz_service | 服务名，可通过 --service 指定 |
 | UseApacheThrift | - | idl 为 thrift 时为 true，否则为 false |
 | HandlerPkg | handler | handler_dir 的最后一级路径，可通过 --handler_dir 修改 |

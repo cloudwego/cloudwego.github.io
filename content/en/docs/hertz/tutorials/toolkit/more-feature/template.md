@@ -253,7 +253,7 @@ The key for global rendering parameters is "*", and hz provides the following fi
 
 |  rendering parameter name   | default  |  description  |
 |  :----  | :----  | :---- |
-| GoModule  | - | go moudle, can be specified through --module |
+| GoModule  | - | go module, can be specified through --module |
 | ServiceName  | hertz_service | service name, which can be specified through --service |
 | UseApacheThrift | - | true when idl is thrift, otherwise false |
 | HandlerPkg | handler | the last level path of the handler_dir, can be modified through --handler_dir |
