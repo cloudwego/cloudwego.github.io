@@ -29,7 +29,7 @@ type Hertz struct {
 | WithIdleTimeout | 3min | The free timeout of the request link for persistent connection |
 | WithMaxRequestBodySize | 4 * 1024 * 1024 | Max body size of a request |
 | WithRedirectTrailingSlash | true | Whether to redirect with the / which is at the end of the router automatically. For example： If there is only /foo/ in the router, /foo will be redirected to /foo/. And if there is only /foo in the router, /foo/ will be redirected to /foo |
-| WithRemoveExtraSlash | flase | RemoveExtraSlash makes the parameter still valid when it contains an extra /. For example, if WithRemoveExtraSlash is true user//xiaoming can match the user/:name router |
+| WithRemoveExtraSlash | false | RemoveExtraSlash makes the parameter still valid when it contains an extra /. For example, if WithRemoveExtraSlash is true user//xiaoming can match the user/:name router |
 | WithUnescapePathValues | true | If true, the request path will be escaped automatically (eg. '%2F' -> '/'). If UseRawPath is false (the default), UnescapePathValues is true, because  URI().Path() will be used and it is already escaped. To set WithUnescapePathValues to false, you need to set WithUseRawPath to true |
 | WithUseRawPath | false | If true, the original path will be used to match the route |
 | WithHandleMethodNotAllowed | false | If true when the current path cannot match any method, the server will check whether other methods are registered with the route of the current path, and if exist other methods, it will respond "Method Not Allowed" and return the status code 405; if not, it will use the handler of NotFound to handle it |
