@@ -1327,7 +1327,7 @@ func (ctx *RequestContext) SetClientIPFunc(f ClientIP)
 
 ### ClientIP
 
-获取客户端的 remote ip，若 remote ip 为 `0.0.0.0`，Hertz Server 还会检查 `X-Forwarded-For` 和 `X-Real-IP` Header 是否存在 ip 地址并返回（优先返回 `X-Forwarded-For`  Header）。
+获取客户端 IP 的地址。
 
 函数签名:
 
