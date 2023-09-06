@@ -29,7 +29,7 @@ type Hertz struct {
 | WithIdleTimeout | 3min | 长连接请求链接空闲超时时间 |
 | WithMaxRequestBodySize | 4 * 1024 * 1024 | 配置最大的请求体大小 |
 | WithRedirectTrailingSlash | true | 自动根据末尾的 / 转发，例如：如果 router 只有 /foo/，那么 /foo 会重定向到 /foo/ ；如果只有 /foo，那么 /foo/ 会重定向到 /foo |
-| WithRemoveExtraSlash | flase | RemoveExtraSlash 当有额外的 / 时也可以当作参数。如：user/:name，如果开启该选项 user//xiaoming 也可匹配上参数 |
+| WithRemoveExtraSlash | false | RemoveExtraSlash 当有额外的 / 时也可以当作参数。如：user/:name，如果开启该选项 user//xiaoming 也可匹配上参数 |
 | WithUnescapePathValues | true | 如果开启，请求路径会被自动转义（eg. '%2F' -> '/'）。如果 UseRawPath 为 false（默认情况），则 UnescapePathValues 实际上为 true，因为 .URI().Path() 将被使用，它已经是转义后的。设置该参数为 false，需要配合 WithUseRawPath(true) |
 | WithUseRawPath | false | 如果开启，会使用原始 path 进行路由匹配 |
 | WithHandleMethodNotAllowed | false | 如果开启，当当前路径不能被匹配上时，server 会去检查其他方法是否注册了当前路径的路由，如果存在则会响应"Method Not Allowed"，并返回状态码 405; 如果没有，则会用 NotFound 的 handler 进行处理 |
