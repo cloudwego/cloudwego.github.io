@@ -5,31 +5,41 @@ weight: 8
 keywords: ["注意事项", "protobuf", "thrift"]
 description: "使用 hz 时的注意事项。"
 ---
-### 使用 protobuf IDL 的注意事项
-
+## 使用 protobuf IDL 时的 biz 层代码生成位置
 hz 目前支持 [proto2](https://developers.google.com/protocol-buffers/docs/proto) / [proto3](https://developers.google.com/protocol-buffers/docs/proto3) 的语法。
+
+### model 文件的位置
 
 **我们希望用户在定义 protobuf idl 的时候指定 go_package**，这样一来符合 protobuf 的语义，二来生成的 model 位置可以通过 go_package 来决定。如果用户不指定 go_package，hz 会默认将 proto 文件的 package 作为 go_package，可能会有一些预期外的命名冲突。
 
-例如，可以这样定义 go_package：
+目前 hz 为统一管理生成的 model，对 "go_package" 进行了一些处理，其规则如下:
 
-```protobuf
-option go_package = "hello.world"; // or hello/world
-```
+假设当前项目是 github.com/a/b (module=github.com/a/b):
 
-model 生成的路径会是：
+- go_package="github.com/a/b/c/d": 会在 "/biz/model/c/d" 下生成代码；
+- go_package="github.com/a/b/biz/model/c/d": 会在 "/biz/model/c/d" 下生成 model，其中 "biz/model" 是默认的 model 生成路径，可使用 "--model_dir" 选项修改；
+- go_package="x/y/z": 会在 "biz/model/x/y/z" 下生成代码（相对路径补全）；
+- go_package="biz/model/c/d": 会在"biz/model/biz/model/c/d" 下生成代码。
+  
+**推荐用户定义如 “{$MODULE}/{$MODEL_DIR}/x/y/z”  (其中 {$MODEL_DIR} 默认为"biz/model", 用户也可使用 “model_dir” 选项来定义) 这样的 “go_package”。**
 
-`${项目路径}/${model_dir}/hello/world`
+### handler 文件的位置
 
-handler 文件会取 go_package 最后一级作为生成路径，其生成路径会是：
+handler 文件会取 go_package 最后一级作为生成路径。
+
+例如，若 go_package = "hello.world"，其生成路径会是：
 
 `${项目路径}/${handler_dir}/world`
 
-router 注册文件同样会取 go_package 最后一级作为生成路径，其生成路径会是：
+### router 文件的位置
 
-`${项目路径}/biz/router/world`
+router 注册文件同样会取 go_package 最后一级作为生成路径。
 
-### 使用 thrift IDL 的注意事项
+例如，若 go_package = "hello.world"，其生成路径会是：
+
+`${项目路径}/${router_dir}/world`
+
+## 使用 thrift IDL 时的 biz 层代码生成位置
 
 **hz 对于 thrift idl 的定义无特殊要求**，符合语法规范即可。代码的生成路径会和 thrift 的 namespace 相关。
 
@@ -49,9 +59,9 @@ handler 文件会取 namespace 作为生成路径，其生成路径会是：
 
 router 注册文件同样会取 namespace 作为生成路径，其生成路径会是：
 
-`${项目路径}/biz/router/hello/world`
+`${项目路径}/${router_dir}/hello/world`
 
-### 使用 update 命令时的行为说明
+## 使用 update 命令时的行为说明
 
 1. 使用自定义路径的注意事项
 
@@ -124,7 +134,7 @@ router 注册文件同样会取 namespace 作为生成路径，其生成路径�
 
 - biz/router/register.go: 如果有新增的 idl 会插入新的 idl 的路由注册方式。
 
-### 使用 Windows 操作系统时的注意事项
+## 使用 Windows 操作系统时的注意事项
 
 使用 `hz` 命令创建项目时将用到 `symlink`，在 Windows 操作系统下你可能需要 [开启开发者模式](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) 来启用用户权限的 symlink。
 

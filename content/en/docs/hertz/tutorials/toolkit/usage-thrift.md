@@ -166,43 +166,24 @@ description: "hz usage(thrift)."
    Now let's develop the "OtherMethod" interface:
 
    ```go
-   // HelloMethod .
-   // @router /hello [GET]
-   func HelloMethod(ctx context.Context, c *app.RequestContext) {
-   var err error
-   var req example.HelloReq
-   err = c.BindAndValidate(&req)
-   if err != nil {
-       c.String(400, err.Error())
-       return
-   }
-
-   resp := new(example.HelloResp)
-
-   // You can modify the logic of the entire function, not just the current template
-   resp.RespBody = "hello," + req.Name // added logic
-
-   c.JSON(200, resp)
-   }
-
    // OtherMethod .
    // @router /other [POST]
    func OtherMethod(ctx context.Context, c *app.RequestContext) {
-   var err error
-   // The model file corresponding to example.OtherReq will also be regenerated
-   var req example.OtherReq
-   err = c.BindAndValidate(&req)
-   if err != nil {
-       c.String(400, err.Error())
-       return
-   }
+        var err error
+        // The model file corresponding to example.OtherReq will also be regenerated
+        var req example.OtherReq
+        err = c.BindAndValidate(&req)
+        if err != nil {
+            c.String(400, err.Error())
+            return
+        }
 
-   resp := new(example.OtherResp)
+        resp := new(example.OtherResp)
 
-   // added logic
-   resp.Resp = "Other method: " + req.Other
+        // added logic
+        resp.Resp = "Other method: " + req.Other
 
-   c.JSON(200, resp)
+        c.JSON(200, resp)
    }
    ```
 
@@ -231,3 +212,5 @@ description: "hz usage(thrift)."
    ```
 
    If it returns `{"Resp":"Other method: other method"}`, it works.
+
+For more example code, please refer to [code](https://github.com/cloudwego/hertz-examples/tree/main/hz/thrift).

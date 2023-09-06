@@ -13,6 +13,8 @@ description: "hz 提供的 IDL 注解说明。"
 
 ## 支持的 api 注解
 
+### hz
+
 Field 注解 tag 说明可参考 [支持的-tag](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/#%E6%94%AF%E6%8C%81%E7%9A%84-tag)。
 
 | _Field 注解_                             |                                         |
@@ -27,6 +29,7 @@ Field 注解 tag 说明可参考 [支持的-tag](https://www.cloudwego.io/zh/doc
 | api.form                                 | 生成 "form" tag                         |
 | api.go_tag (protobuf)<br>go.tag (thrift) | 透传 go_tag，会生成 go_tag 里定义的内容 |
 | api.vd                                   | 生成 "vd" tag                           |
+| api.none                                   | 生成 "-" tag，详情参考 [api.none 注解说明](/zh/docs/hertz/tutorials/toolkit/more-feature/api_none/)                           |
 
 | _Method 注解_ |                         |
 | ------------- | ----------------------- |
@@ -39,6 +42,16 @@ Field 注解 tag 说明可参考 [支持的-tag](https://www.cloudwego.io/zh/doc
 | api.options   | 定义 OPTIONS 方法及路由 |
 | api.head      | 定义 HEAD 方法及路由    |
 | api.any       | 定义 ANY 方法及路由     |
+
+### hz client
+
+除 [hz](#hz) 提供的注解外，为针对 client 的场景，额外增加了两种注解。
+
+| _Client 注解_ |                         |
+| ------------- | ----------------------- |
+| 注解          | 说明                    |
+| api.file_name       | 指定文件     |
+| api.base_domain      | 指定默认访问的请求 domain    |
 
 ## 使用方法
 
@@ -81,5 +94,36 @@ service Demo {
   rpc Method(Req) returns(Resp) {
     option (api.get) = "/route";
   }
+}
+```
+
+### Client 注解
+
+Thrift：
+
+```thrift
+struct Demo {
+    1: string FileValue (api.file_name="file1");
+}
+
+service Demo {
+    Resp Method(1: Req request) (api.get="/route");
+}(
+    api.base_domain="http://127.0.0.1:8888";
+)
+```
+
+Protobuf:
+
+```protobuf
+message Demo {
+  string FileValue = 1[(api.file_name)="file1"];
+}
+
+service Demo {
+  rpc Method(Req) returns(Resp) {
+    option (api.get) = "/route";
+  }
+  option (api.base_domain) = "http://127.0.0.1:8888";
 }
 ```

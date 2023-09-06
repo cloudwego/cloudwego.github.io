@@ -5,31 +5,42 @@ weight: 8
 keywords: ["note", "protobuf", "thrift"]
 description: "Precautions when using hz."
 ---
-### Notes on using protobuf IDL
+## Location of biz layer code generation when using protobuf IDL
 
 hz currently supports the syntax of [proto2](https://developers.google.com/protocol-buffers/docs/proto) / [proto3](https://developers.google.com/protocol-buffers/docs/proto3).
 
+### Location of model files
+
 **We hope that users specify go_package when defining the protobuf IDL**, so that one is consistent with the semantics of protobuf and the location of the generated model can be determined by go_package. If the user does not specify go_package, hz will default the package of the proto file to go_package, which may have some unintended naming conflicts.
 
-For example, go_package can be defined like this:
+At present, hz has implemented some processing on "go_package" for the model generated for unified management, with the following rules:
 
-```protobuf
-option go_package = "hello.world"; // or hello/world
-```
+Assuming the current project is (module=github.com/a/b):
 
-The generated path of model will be:
+- go_package="github.com/a/b/c/d": Generate code under "/biz/model/c/d";
+- go_package="github.com/a/b/biz/model/c/d": Model will be generated under "/biz/model/c/d", where "biz/model" is the default model generation path and can be modified using the "--model_dir" option;
+- go_package="x/y/z": Generate code under "biz/model/x/y/z" (relative path completion);
+- go_package="biz/model/c/d": Generate code under "biz/model/biz/model/c/d".
+  
+**It is recommended that users define "go_package" such as "{$MODULE}/{$MODEL_DIR}/x/y/z" (where {$MODEL_DIR} defaults to "biz/model", and users can also use the "model_dir" option to define it).**
 
-`${project path}/${model_dir}/hello/world`
+### The location of the handler file
 
-The handler file will take the last level of go_package as the generation path, and its generation path will be:
+The handler file will take the last level of go_package as the generation path.
+
+For example, if go_package = "hello.world", the generated path will be:
 
 `${project path}/${handler_dir}/world`
 
-The router registration file will also take the last level of the go_package as the generation path, and the generation path will be:
+### The location of the router file
 
-`${project path}/biz/router/world`
+The router registration file will also take the last level of go_package as the generation path.
 
-### Notes on using thrift IDL
+For example, if go_package = "hello.world", the generated path will be:
+
+`${project path}/${router_dir}/world`
+
+## Location of biz layer code generation when using thrift IDL
 
 **hz has no special requirements for the definition of thrift IDL**, it only needs to comply with the grammar specification. The code generation path will be related to the thrift namespace
 
@@ -49,9 +60,9 @@ The handler file will take namespace as the generation path, and its generation 
 
 The router registration file will also take namespace as the generation path, and its generation path will be:
 
-`${project path}/biz/router/hello/world`
+`${project path}/${router_dir}/hello/world`
 
-### Description of the behavior when using the update command
+## Description of the behavior when using the update command
 
 1. Notes on using custom path
 
@@ -124,7 +135,7 @@ The router registration file will also take namespace as the generation path, an
 
 - biz/router/register.go: If there is a new IDL, the route registration method of the new IDL will be inserted.
 
-### Notes on using Windows Operating System
+## Notes on using Windows Operating System
 
 Hz uses `symlink` when creating & updating projects. For Windows, you may need to [enable your device's development mode](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) to get permission for your Windows user.
 

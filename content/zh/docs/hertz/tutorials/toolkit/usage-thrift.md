@@ -166,43 +166,24 @@ description: "hz 使用 (thrift)。"
    下面我们来开发 "OtherMethod" 接口：
 
    ```go
-   // HelloMethod .
-   // @router /hello [GET]
-   func HelloMethod(ctx context.Context, c *app.RequestContext) {
-   var err error
-   var req example.HelloReq
-   err = c.BindAndValidate(&req)
-   if err != nil {
-       c.String(400, err.Error())
-       return
-   }
-
-   resp := new(example.HelloResp)
-
-   // 你可以修改整个函数的逻辑，而不仅仅局限于当前模板
-   resp.RespBody = "hello," + req.Name // 添加的逻辑
-
-   c.JSON(200, resp)
-   }
-
    // OtherMethod .
    // @router /other [POST]
    func OtherMethod(ctx context.Context, c *app.RequestContext) {
-   var err error
-   // example.OtherReq 对应的 model 文件也会重新生成
-   var req example.OtherReq
-   err = c.BindAndValidate(&req)
-   if err != nil {
-       c.String(400, err.Error())
-       return
-   }
+        var err error
+        // example.OtherReq 对应的 model 文件也会重新生成
+        var req example.OtherReq
+        err = c.BindAndValidate(&req)
+        if err != nil {
+            c.String(400, err.Error())
+            return
+        }
 
-   resp := new(example.OtherResp)
+        resp := new(example.OtherResp)
 
-   // 增加的逻辑
-   resp.Resp = "Other method: " + req.Other
+        // 增加的逻辑
+        resp.Resp = "Other method: " + req.Other
 
-   c.JSON(200, resp)
+        c.JSON(200, resp)
    }
    ```
 
@@ -231,3 +212,5 @@ description: "hz 使用 (thrift)。"
    ```
 
    如果返回`{"Resp":"Other method: other method"}`，说明接口调通。
+
+更多示例代码请参考 [code](https://github.com/cloudwego/hertz-examples/tree/main/hz/thrift)。   

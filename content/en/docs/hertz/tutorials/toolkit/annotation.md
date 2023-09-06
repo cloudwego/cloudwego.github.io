@@ -13,6 +13,8 @@ description: "The IDL annotation provided by hz."
 
 ## Supported api annotations
 
+### hz
+
 Field annotation tag description can be referenced [supported-tags](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/binding-and-validate/#supported-tags).
 
 | _Field annotation_                       |                                                                    |
@@ -27,6 +29,7 @@ Field annotation tag description can be referenced [supported-tags](https://www.
 | api.form                                 | generate "form" tag                                                |
 | api.go_tag (protobuf)<br>go.tag (thrift) | passing go_tag through will generate the content defined in go_tag |
 | api.vd                                   | generate "vd" tag                                                  |
+| api.none                                   | Generate "-" tag, please refer to [api.none annotation usage](/docs/hertz/tutorials/toolkit/more-feature/api_none/) for details |
 
 | _Method annotation_ |                                   |
 | ------------------- | --------------------------------- |
@@ -39,6 +42,16 @@ Field annotation tag description can be referenced [supported-tags](https://www.
 | api.options         | define OPTIONS methods and routes |
 | api.head            | define HEAD methods and routes    |
 | api.any             | define ANY methods and routes     |
+
+### hz client
+
+In addition to the annotations provided by [hz](#hz), two additional annotations have been added for client scenarios.
+
+| _Client annotation_ |                         |
+| ------------- | ----------------------- |
+| annotation          | description                    |
+| api.file_name       | specify file     |
+| api.base_domain      | specify the default access request domain    |
 
 ## Usage
 
@@ -81,5 +94,36 @@ service Demo {
   rpc Method(Req) returns(Resp) {
     option (api.get) = "/route";
   }
+}
+```
+
+### Client annotation
+
+Thrift：
+
+```thrift
+struct Demo {
+    1: string FileValue (api.file_name="file1");
+}
+
+service Demo {
+    Resp Method(1: Req request) (api.get="/route");
+}(
+    api.base_domain="http://127.0.0.1:8888";
+)
+```
+
+Protobuf:
+
+```protobuf
+message Demo {
+  string FileValue = 1[(api.file_name)="file1"];
+}
+
+service Demo {
+  rpc Method(Req) returns(Resp) {
+    option (api.get) = "/route";
+  }
+  option (api.base_domain) = "http://127.0.0.1:8888";
 }
 ```
