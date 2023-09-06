@@ -367,7 +367,7 @@ func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
 
 ### SetBodyStream
 
-Set Body Stream and optional Body Size.
+Set Body Stream and optional Body Size. This function is used for streaming processing on Hertz Server, as detailed in [Streaming](/docs/hertz/tutorials/basic-feature/engine/#streaming).
 
 > Note: When the bodySize is less than 0, all data is written. When it is greater than or equal to 0, data is written based on the set bodySize size.
 

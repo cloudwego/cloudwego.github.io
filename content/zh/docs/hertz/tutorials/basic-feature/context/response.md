@@ -367,7 +367,7 @@ func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
 
 ### SetBodyStream
 
-设置 Body Stream 和可选的 Body 大小。
+设置 Body Stream 和可选的 Body 大小。该函数用于 Hertz Server 的流式处理，详情可见 [流式处理](/zh/docs/hertz/tutorials/basic-feature/engine/#流式处理)。
 
 > 注意：bodySize 小于 0 时数据全部写入，大于等于 0 时根据设置的 bodySize 大小写入数据。
 

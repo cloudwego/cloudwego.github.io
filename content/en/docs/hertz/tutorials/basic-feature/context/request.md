@@ -906,7 +906,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ### SetFormValueFunc
 
-Set the FormValue function.
+If the default method provided by the [FormValue](#formvalue) function to obtain the value of the key does not meet the requirements, users can use this function to customize the method of obtaining the value of the key.
 
 Function Signature:
 
@@ -1346,7 +1346,9 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 ### SetClientIPFunc
 
-Set the address of the client IP.
+If the default method provided by the [ClientIP](#clientip) function does not meet the requirements, users can use this function to customize the way to obtain the client ip.
+
+This function can be used in scenarios where you want to obtain an ip from the `X-Forwarded-For` or `X-Real-IP` header even if a remote ip exists (multiple proxies, want to obtain the initial ip from the `X-Forwarded-For` or `X-Real-IP` header).
 
 Function Signature:
 
