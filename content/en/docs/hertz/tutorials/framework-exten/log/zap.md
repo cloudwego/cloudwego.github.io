@@ -2,7 +2,8 @@
 title: "zap"
 linkTitle: "zap"
 weight: 3
-description: >
+keywords: ["Logger Extension", "zap"]
+description: "Hertz interfaces with zap and lumberjack."
 ---
 
 ## Logger

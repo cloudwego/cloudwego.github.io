@@ -2,7 +2,8 @@
 title: "Network Library Extensions"
 linkTitle: "Network Library Extensions"
 weight: 4
-description: >
+keywords: ["Network Library Extensions", "network.Conn", "network.StreamConn", "network.Dialer"]
+description: "Network Library Extensions provided by Hertz."
 
 ---
 

@@ -2,7 +2,8 @@
 title: "Constants"
 date: 2023-05-24
 weight: 17
-description: >
+keywords: ["Constants", "HTTP method", "HTTP MIME type", "HTTP status code", "HTTP Header", "HTTP protocol version"]
+description: "Constants defined in Hertz for user use."
 ---
 
 Hertz defines a set of constants for users to use, which are located in the [github.com/cloudwego/hertz/pkg/protocol/consts](https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts).

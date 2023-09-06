@@ -2,7 +2,8 @@
 title: 'hz 命令梳理'
 date: 2023-02-21
 weight: 7
-description: >
+keywords: ["hz 命令梳理", "New", "Update"]
+description: "hz 命令梳理。"
 ---
 ## 命令行参数说明
 

@@ -3,7 +3,8 @@ title: "JSON Marshal 库"
 linkTitle: "JSON Marshal 库"
 date: 2023-08-03
 weight: 19
-description: >
+keywords: ["JSON Marshal", "Sonic", "条件编译", "自定义 JSON Marshall 库"]
+description: "Hertz 使用的 JSON Marshal 库及自定义能力。"
 ---
 
 Hertz 默认集成并使用 [Sonic](https://github.com/bytedance/sonic) 用于序列化 `ctx.JSON` 接口，以及反序列化 `binding` 包中的请求。Sonic 是一款超高性能 golang json 库，详情参考 Sonic [README](https://github.com/bytedance/sonic) 。

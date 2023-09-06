@@ -2,9 +2,11 @@
 title: "访问日志"
 date: 2023-03-14
 weight: 10
-description: 
+keywords: ["HTTP", "访问日志"]
+description: "访问日志可以收集所有 HTTP 请求的详细信息，包括时间、端口、请求方法等。Hertz 也提供了 access log 的实现。"
 
 ---
+
 访问日志可以收集所有 HTTP 请求的详细信息，包括时间、端口、请求方法等。Hertz 也提供了 access log 的 [实现](https://github.com/hertz-contrib/logger)，这里的实现参考了 [fiber](https://github.com/gofiber/fiber/tree/master/middleware/logger)。
 
 ## 安装

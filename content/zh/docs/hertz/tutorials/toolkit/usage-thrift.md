@@ -2,7 +2,8 @@
 title: "hz 使用 (thrift)"
 date: 2023-02-21
 weight: 3
-description: >
+keywords: ["hz 使用 (thrift)", "thrift", "new", "update"]
+description: "hz 使用 (thrift)。"
 ---
 
 ## 基于 thrift IDL 创建项目

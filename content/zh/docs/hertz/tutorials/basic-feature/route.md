@@ -2,7 +2,8 @@
 title: "路由"
 date: 2022-09-06
 weight: 2
-description: >
+keywords: ["路由", "路由组", "静态路由", "参数路由", "路由优先级", "NoRoute", "NoMethod"]
+description: "Hertz 提供的路由功能。"
 
 ---
 

@@ -2,6 +2,7 @@
 title: "Reference"
 linkTitle: "Reference"
 weight: 5
-description: >
+keywords: ["Configuration instruction", "Version Descriptions"]
+description: "Hertz related references."
 
 ---

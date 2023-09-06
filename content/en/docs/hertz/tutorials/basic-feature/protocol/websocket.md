@@ -2,7 +2,8 @@
 title: "Websocket"
 date:  2022-09-13
 weight: 4
-description: >
+keywords: ["WebSocket", "HTTP", "hijack", "TCP"]
+description: "Hertz implements support for WebSocket based on hijack."
 
 ---
 WebSocket is a type of full-duplex communication that can be performed on a single TCP connection and is located at the application layer of the OSI model.

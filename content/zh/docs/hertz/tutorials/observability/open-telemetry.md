@@ -2,12 +2,12 @@
 title: "OpenTelemetry"
 date: 2022-09-01
 weight: 4
-description: >
+keywords: ["OpenTelemetry"]
+description: "Hertz 提供的 OpenTelemetry 能力。"
 ---
 
 
-[OpenTelemetry](https://opentelemetry.io/) 是 [CNCF](https://www.cncf.io/) 的一个开源可观测能力框架，
-是由一系列工具，API 和 SDK 组成的。可以使 IT 团队能够检测、生成、收集和导出远程监测数据以进行分析和了解软件性能和行为。
+[OpenTelemetry](https://opentelemetry.io/) 是 [CNCF](https://www.cncf.io/) 的一个开源可观测能力框架，是由一系列工具，API 和 SDK 组成的。可以使 IT 团队能够检测、生成、收集和导出远程监测数据以进行分析和了解软件性能和行为。
 
 hertz-contrib 中提供了 [obs-opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry) 扩展，
 可以使 hertz 通过简易设置就能集成 OpenTelemetry。

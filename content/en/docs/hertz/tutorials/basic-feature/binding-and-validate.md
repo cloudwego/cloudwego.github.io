@@ -2,7 +2,8 @@
 title: "Binding and validate"
 date: 2022-06-21
 weight: 8
-description: >
+keywords: ["Binding and validate", "go-tagexpr", "tag", "Parameter binding precedence"]
+description: "The parameter binding and validation related functions and usage supported by Hertz."
 
 ---
 
@@ -45,15 +46,21 @@ func main() {
 
 ### Supported tags
 
+When generating code without IDL, if no tags are added to the field, it will traverse all tags and bind parameters according to priority. Adding tags will bind parameters according to the corresponding tag's priority.
+
+If [api-annotations](/docs/hertz/tutorials/toolkit/annotation/#supported-api-annotations) are not added when generating code through IDL, the fields will default to adding `form`, `JSON`, and `query` tags. Adding [api-annotations](/docs/hertz/tutorials/toolkit/annotation/#supported-api-annotations) will add the corresponding required tags for the fields.
+
 | go tag   | description                                                  |
 | -------- | ------------------------------------------------------------ |
 | path     | This tag is used to bind parameters on url like `{:param}` or `{*param}`. For example: if we defined route is: `/v:version/example`, you can specify the path parameter as the route parameter: `path:"version"`. In this case if url is http://127.0.0.1:8888/v1/ , you can bind the path parameter "1". |
 | form     | This tag is used to bind the key-value of the form in request body which content-type is `multipart/form-data` or `application/x-www-form-urlencoded` |
 | query    | This tag is used to bind query parameter in request          |
+| cookie | This tag is used to bind cookie parameter in request |
 | header   | This tag is used to bind header parameters in request        |
 | json     | This tag is used to bind json parameters in the request body which content-type is `application/json` |
 | raw_body | This tag is used to bind the original body (bytes type) of the request, and parameters can be bound even if the bound field name is not specified. (Note: raw_body has the lowest binding priority. When multiple tags are specified, once other tags successfully bind parameters, the body content will not be bound) |
 | vd       | `vd` short for validator, [The grammar of validation parameter](https://github.com/bytedance/go-tagexpr/tree/master/validator) |
+| default | Set default value |
 
 ### Parameter binding precedence
 

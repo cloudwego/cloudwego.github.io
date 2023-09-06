@@ -2,7 +2,8 @@
 title: "跨源资源共享"
 date: 2022-05-21
 weight: 1
-description: >
+keywords: ["跨源资源共享"]
+description: "hertz 提供 cors 跨域中间件的实现。"
 
 ---
 

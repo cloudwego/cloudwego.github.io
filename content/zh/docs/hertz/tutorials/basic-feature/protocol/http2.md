@@ -2,7 +2,8 @@
 title: "HTTP2"
 date: 2022-12-15
 weight: 2
-description: >
+keywords: ["HTTP/2", "HTTP", "h2", "h2c"]
+description: "Hertz 同时支持 h2 和 h2c。参考了 net/http2 的实现。"
 ---
 
 HTTP/2 是对 HTTP "在线" 表达方式的一种替代。它并不是对协议的彻底重写；HTTP 方法、状态码和语义都是一样的，而且应该可以使用与 HTTP/1.x 相同的 API（可能会有一些小的补充）来表示协议。

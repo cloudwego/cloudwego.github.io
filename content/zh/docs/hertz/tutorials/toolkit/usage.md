@@ -2,7 +2,8 @@
 title: "hz 的基本使用"
 date: 2023-02-21
 weight: 2
-description: >
+keywords: ["hz 的基本使用", "new"]
+description: "hz 的基本使用。"
 ---
 
 ## 基本使用

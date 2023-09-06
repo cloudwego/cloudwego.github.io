@@ -2,7 +2,8 @@
 title: "KeyAuth"
 date: 2022-09-22
 weight: 7
-description: >
+keywords: ["KeyAuth", "token 鉴权"]
+description: "Hertz 提供了 keyauth 扩展用于帮助用户实现 `token` 鉴权。"
 
 ---
 

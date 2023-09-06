@@ -2,7 +2,8 @@
 title: "Swagger"
 date: 2022-10-06
 weight: 8
-description: >
+keywords: ["Swagger", "RESTful API"]
+description: "Hertz middleware to automatically generate RESTful API documentation with Swagger 2.0."
 
 ---
 

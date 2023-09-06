@@ -2,7 +2,8 @@
 title: "hz 生成代码的结构"
 date: 2023-02-21
 weight: 5
-description: >
+keywords: ["hz 生成代码的结构"]
+description: "hz 生成代码的结构。"
 ---
 
 ### 生成代码的结构

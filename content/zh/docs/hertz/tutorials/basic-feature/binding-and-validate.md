@@ -2,7 +2,8 @@
 title: "绑定与校验"
 date: 2022-05-23
 weight: 8
-description: >
+keywords: ["绑定与校验", "go-tagexpr", "tag", "参数绑定优先级"]
+description: "Hertz 支持的参数绑定与校验相关功能及用法。"
 
 ---
 
@@ -45,15 +46,21 @@ func main() {
 
 ### 支持的 tag
 
+不通过 IDL 生成代码时若字段不添加任何 tag 则会遍历所有 tag 并按照优先级绑定参数，添加 tag 则会根据对应的 tag 按照优先级去绑定参数。
+
+通过 IDL 生成代码时若不添加 [api注解](/zh/docs/hertz/tutorials/toolkit/annotation/#支持的-api-注解) 则字段默认添加 `form`、`json`、`query` tag，添加 [api注解](/zh/docs/hertz/tutorials/toolkit/annotation/#支持的-api-注解) 会为字段添加相应需求的 tag。
+
 | go tag  |  说明  |
 | :----  | :---- |
 | path | 绑定 url 上的路径参数，相当于 hertz 路由{:param}或{*param}中拿到的参数。例如：如果定义的路由为：/v:version/example，可以把 path 的参数指定为路由参数：`path:"version"`，此时，url: http://127.0.0.1:8888/v1/example，可以绑定path参数"1" |
 | form | 绑定请求的 body 内容。content-type -> `multipart/form-data` 或 `application/x-www-form-urlencoded`，绑定 form 的 key-value |
 | query | 绑定请求的 query 参数 |
+| cookie | 绑定请求的 cookie 参数 |
 | header | 绑定请求的 header 参数 |
 | json | 绑定请求的 body 内容 content-type -> `application/json`，绑定 json 参数 |
 | raw_body | 绑定请求的原始 body(bytes)，绑定的字段名不指定，也能绑定参数。（注：raw_body 绑定优先级最低，当指定多个 tag 时，一旦其他 tag 成功绑定参数，则不会绑定 body 内容。） |
 | vd | 参数校验，[校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator) |
+| default | 设置默认值 |
 
 ### 参数绑定优先级
 

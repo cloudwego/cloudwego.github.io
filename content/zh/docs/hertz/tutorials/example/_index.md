@@ -2,7 +2,8 @@
 title: "代码示例"
 linkTitle: "代码示例"
 weight: 1
-description: >
+keywords: ["Hertz", "hertz-examples", "Bizdemo", "Server", "Client", "Hz"]
+description: "Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了解 Hertz 的特性。"
 
 ---
 

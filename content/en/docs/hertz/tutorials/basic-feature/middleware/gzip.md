@@ -2,7 +2,8 @@
 title: "Gzip Compress"
 date: 2022-09-25
 weight: 4
-description: >
+keywords: ["Gzip", "Compress"]
+description: "Hertz provides an implementation of Gzip."
 
 ---
 

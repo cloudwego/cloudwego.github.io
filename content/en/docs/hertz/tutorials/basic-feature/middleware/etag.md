@@ -2,7 +2,8 @@
 title: "ETag"
 date: 2023-02-11
 weight: 14
-description: >
+keywords: ["ETag"]
+description: "Hertz provides Etag middleware that can operate on `ETag`."
 
 ---
 

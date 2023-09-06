@@ -3,7 +3,8 @@ title: "Response 的 Writer 扩展"
 linkTitle: "Response 的 Writer 扩展"
 date: 2023-03-10
 weight: 6
-description: >
+keywords: ["Response 的 Writer 扩展", "Response.HijackWriter"]
+description: "Hertz 提供的 Response 的 Writer 扩展。"
 
 ---
 

@@ -2,7 +2,8 @@
 title: "Example code"
 linkTitle: "Example code"
 weight: 1
-description: >
+keywords: ["Hertz", "hertz-examples", "Bizdemo", "Server", "Client", "Hz"]
+description: "Hertz provides a series of code examples designed to help users get start with Hertz and be familiar with its features."
 
 ---
 

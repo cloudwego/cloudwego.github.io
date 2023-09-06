@@ -2,7 +2,8 @@
 title: "logrus"
 linkTitle: "logrus"
 weight: 2
-description: >
+keywords: ["日志扩展", "logrus"]
+description: "Hertz 对接 logrus 和 lumberjack。"
 ---
 
 ## Logger

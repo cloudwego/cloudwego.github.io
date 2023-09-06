@@ -2,11 +2,12 @@
 title: "Retry"
 date: 2022-10-01
 weight: 13
-description: >
+keywords: ["Retry", "Client"]
+description: "Hertz provides custom retry logic for users."
 
 ---
 
-Hertz provides users with customized retry logic,Let's take a look at how to use Client Retry. **Note: Hertz version >= v0.4.0**
+Hertz provides users with customized retry logic, Let's take a look at how to use Client Retry. **Note: Hertz version >= v0.4.0**
 
 ## Retry times and delay policy configuration
 

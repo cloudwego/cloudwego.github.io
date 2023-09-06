@@ -2,9 +2,11 @@
 title: "access log"
 date: 2023-03-14
 weight: 10
-description: 
+keywords: ["HTTP", "access log"]
+description: "This middleware is used to hertz that logs HTTP request/response details."
 
 ---
+
 This middleware is used to [hertz](https://github.com/cloudwego/hertz) that logs HTTP request/response details and inspired by [logger](https://github.com/gofiber/fiber/tree/master/middleware/logger).
 
 ## Install

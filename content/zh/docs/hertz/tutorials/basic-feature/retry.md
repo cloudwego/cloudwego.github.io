@@ -2,7 +2,8 @@
 title: "重试"
 date: 2022-10-01
 weight: 13
-description: >
+keywords: ["重试", "Client"]
+description: "Hertz 为用户提供的自定义重试逻辑。"
 
 ---
 

@@ -3,7 +3,8 @@ title: "错误处理"
 
 date: 2022-05-23
 weight: 10
-description: >
+keywords: ["错误处理", "自定义错误"]
+description: "Hertz 提供的错误处理功能。"
 
 ---
 

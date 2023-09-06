@@ -2,7 +2,8 @@
 title: "版本说明"
 linkTitle: "版本说明"
 weight: 2
-description: >
+keywords: ["版本说明"]
+description: "Hertz 版本说明。"
 
 ---
 

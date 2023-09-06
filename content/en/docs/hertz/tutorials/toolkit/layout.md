@@ -2,7 +2,8 @@
 title: "hz layout"
 date: 2023-02-21
 weight: 5
-description: >
+keywords: ["hz layout"]
+description: "The structure of hz generated code."
 ---
 
 ### The structure of the generated code

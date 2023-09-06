@@ -2,7 +2,8 @@
 title: "服务注册与发现扩展"
 date: 2022-08-14
 weight: 3
-description: >
+keywords: ["服务注册与发现扩展", "服务注册扩展", "服务发现扩展", "负载均衡扩展"]
+description: "Hertz 提供的服务注册与发现扩展。"
 ---
 
 ## 服务注册扩展

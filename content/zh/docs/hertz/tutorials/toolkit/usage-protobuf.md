@@ -3,6 +3,8 @@ title: "hz 使用 (protobuf)"
 date: 2023-02-21
 weight: 4
 description: >
+keywords: ["hz 使用 (protobuf)", "protobuf", "new", "update"]
+description: "hz 使用 (protobuf)。"
 ---
 
 ## 基于 protobuf IDL 创建项目

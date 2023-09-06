@@ -2,7 +2,8 @@
 title: "zerolog"
 linkTitle: "zerolog"
 weight: 4
-description: >
+keywords: ["日志扩展", "zerolog"]
+description: "Hertz 对接 zerolog 和 lumberjack。"
 
 ---
 

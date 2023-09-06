@@ -3,6 +3,8 @@ title: "Request ID"
 date: 2022-10-01
 weight: 9
 description: >
+keywords: ["Request ID", "X-Request-ID"]
+description: "Hertz 提供了可以对 `X-Request-ID` 进行操作的 Request ID 中间件。"
 
 ---
 

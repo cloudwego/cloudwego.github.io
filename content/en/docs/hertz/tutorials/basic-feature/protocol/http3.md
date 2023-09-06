@@ -2,7 +2,8 @@
 title: "HTTP3"
 date: 2023-07-29
 weight: 3
-description: >
+keywords: ["QUIC", "HTTP", "HTTP3"]
+description: "Hertz-HTTP3 implementation based quic-go."
 
 ---
 

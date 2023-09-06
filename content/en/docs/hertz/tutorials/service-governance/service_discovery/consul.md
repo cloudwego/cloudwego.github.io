@@ -2,7 +2,8 @@
 title: "consul"
 date: 2023-04-22
 weight: 3
-description: >
+keywords: ["Service Registration and Discovery", "consul"]
+description: "Service Registration and Discovery consul Extensions provided by Hertz."
 ---
 
 ## Install

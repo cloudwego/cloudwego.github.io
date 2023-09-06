@@ -2,7 +2,8 @@
 title: "网络库扩展"
 linkTitle: "网络库扩展"
 weight: 4
-description: >
+keywords: ["网络库扩展", "network.Conn", "network.StreamConn", "network.Dialer"]
+description: "Hertz 提供的网络库扩展。"
 
 ---
 

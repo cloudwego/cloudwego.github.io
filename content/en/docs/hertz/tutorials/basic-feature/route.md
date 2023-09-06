@@ -2,7 +2,8 @@
 title: "Route"
 date: 2022-09-06
 weight: 2
-description: >
+keywords: ["Route", "Route Group", "Static Route", "Parametric Route", "Routing Priority", "NoRoute", "NoMethod"]
+description: "The routing function provided by Hertz."
 
 ---
 

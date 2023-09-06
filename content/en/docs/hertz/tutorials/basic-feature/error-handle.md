@@ -2,7 +2,8 @@
 title: "Error Handle"
 date: 2023-04-18
 weight: 10
-description: >
+keywords: ["Error Handle", "Custom Error"]
+description: "The error handling function provided by Hertz."
 
 ---
 

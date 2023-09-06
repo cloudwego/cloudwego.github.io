@@ -2,7 +2,8 @@
 title: "概览"
 linkTitle: "概览"
 weight: 1
-description: >
+keywords: ["HTTP", "Hertz", "架构设计", "框架特点", "框架性能"]
+description: "Hertz 架构设计、框架特点、框架性能。"
 
 ---
 
