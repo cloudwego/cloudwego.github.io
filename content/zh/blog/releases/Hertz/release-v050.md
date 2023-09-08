@@ -33,7 +33,7 @@ Hertz 0.5.0 版本中，除了常规迭代优化之外，我们还带来了多�
 Hertz 核心库能力已经发布，具体实现后续将以[扩展包](https://github.com/hertz-contrib/http3/pull/1)的形式发布，欢迎试用~
 
 
-更多详细的设计说明可以参考：[Hertz 支持 QUIC & HTTP/3](https://www.cloudwego.io/zh/docs/hertz/reference/stream_based_design/)
+更多详细的设计说明可以参考：[Hertz 支持 QUIC & HTTP/3](https://www.cloudwego.io/zh/blog/2023/08/02/hertz-%E6%94%AF%E6%8C%81-quic-http/3/)
 
 ## 脚手架工具支持生成 hertz client 代码
 >https://github.com/cloudwego/hertz/pull/471
