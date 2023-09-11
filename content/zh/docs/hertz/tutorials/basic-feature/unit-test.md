@@ -19,7 +19,7 @@ func CreateUtRequestContext(method, url string, body *Body, headers ...Header) *
 
 ### CreateUtRequestContext
 
-返回一个 app.RequestContext 对象，用于单元测试。
+返回一个 `app.RequestContext` 对象，用于单元测试。
 
 函数签名：
 
@@ -112,7 +112,7 @@ func TestPerformRequest(t *testing.T) {
 
 ## 接收响应
 
-在执行 [PerformRequest](#performrequest) 函数时，内部已经调用了 [NewRecorder](#newrecorder), [Header](#header), [Write](#write), [WriteHeader](#writeheader), [Flush](#flush) 等函数，用户只需调用 [Result](#result) 函数拿到返回的 protocol.Response 对象进行单测即可。
+在执行 [PerformRequest](#performrequest) 函数时，内部已经调用了 [NewRecorder](#newrecorder), [Header](#header), [Write](#write), [WriteHeader](#writeheader), [Flush](#flush) 等函数，用户只需调用 [Result](#result) 函数拿到返回的 `protocol.Response` 对象进行单测即可。
 
 ```go
 func NewRecorder() *ResponseRecorder
@@ -156,7 +156,7 @@ type ResponseRecorder struct {
 
 ### NewRecorder
 
-返回初始化后的 ResponseRecorder 对象。
+返回初始化后的 `ResponseRecorder` 对象。
 
 函数签名：
 
@@ -166,7 +166,7 @@ func NewRecorder() *ResponseRecorder
 
 ### Header
 
-返回 ResponseRecorder.header。
+返回 `ResponseRecorder.header`。
 
 函数签名：
 
@@ -176,7 +176,7 @@ func (rw *ResponseRecorder) Header() *protocol.ResponseHeader
 
 ### Write
 
-将 []byte 类型的数据写入 ResponseRecorder.Body。
+将 `[]byte` 类型的数据写入 `ResponseRecorder.Body`。
 
 函数签名：
 
@@ -186,7 +186,7 @@ func (rw *ResponseRecorder) Write(buf []byte) (int, error)
 
 ### WriteString
 
-将 string 类型的数据写入 ResponseRecorder.Body。
+将 `string` 类型的数据写入 `ResponseRecorder.Body`。
 
 函数签名：
 
@@ -196,7 +196,7 @@ func (rw *ResponseRecorder) WriteString(str string) (int, error)
 
 ### WriteHeader
 
-设置 ResponseRecorder.Code 以及 ResponseRecorder.header.SetStatusCode(code)。
+设置 `ResponseRecorder.Code` 以及 `ResponseRecorder.header.SetStatusCode(code)`。
 
 函数签名：
 
@@ -206,7 +206,7 @@ func (rw *ResponseRecorder) WriteHeader(code int)
 
 ### Flush
 
-实现了 http.Flusher，将 ResponseRecorder.Flushed 设置为 true。
+实现了 `http.Flusher`，将 `ResponseRecorder.Flushed` 设置为 true。
 
 函数签名：
 

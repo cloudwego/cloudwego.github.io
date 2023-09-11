@@ -19,7 +19,7 @@ func CreateUtRequestContext(method, url string, body *Body, headers ...Header) *
 
 ### CreateUtRequestContext
 
-Return an app.RequestContext for testing purposes.
+Return an `app.RequestContext` for testing purposes.
 
 Function Signature:
 
@@ -112,7 +112,7 @@ func TestPerformRequest(t *testing.T) {
 
 ## Receive Response
 
-When executing the [PerformRequest](#performarequest) function, functions such as [NewRecord](#newrecord), [Header](#header), [Write](#write), [WriteHeader](#writeheader), [Flush](#flush) have already been called internally. The user only needs to call the [Result](#result) function to obtain the returned protocol.Response object, and then perform unit testing.
+When executing the [PerformRequest](#performarequest) function, functions such as [NewRecord](#newrecord), [Header](#header), [Write](#write), [WriteHeader](#writeheader), [Flush](#flush) have already been called internally. The user only needs to call the [Result](#result) function to obtain the returned `protocol.Response` object, and then perform unit testing.
 
 ```go
 func NewRecorder() *ResponseRecorder
@@ -156,7 +156,7 @@ type ResponseRecorder struct {
 
 ### NewRecorder
 
-Return the initialized ResponseRecorder object.
+Return the initialized `ResponseRecorder` object.
 
 Function Signature:
 
@@ -166,7 +166,7 @@ func NewRecorder() *ResponseRecorder
 
 ### Header
 
-Return ResponseRecorder.header.
+Return `ResponseRecorder.header`.
 
 Function Signature:
 
@@ -176,7 +176,7 @@ func (rw *ResponseRecorder) Header() *protocol.ResponseHeader
 
 ### Write
 
-Write data of type []byte to ResponseRecorder.Body.
+Write data of type `[]byte` to `ResponseRecorder.Body`.
 
 Function Signature:
 
@@ -186,7 +186,7 @@ func (rw *ResponseRecorder) Write(buf []byte) (int, error)
 
 ### WriteString
 
-Write data of type string to ResponseRecorder.Body.
+Write data of type `string` to `ResponseRecorder.Body`.
 
 Function Signature:
 
@@ -196,7 +196,7 @@ func (rw *ResponseRecorder) WriteString(str string) (int, error)
 
 ### WriteHeader
 
-Set ResponseRecorder.Code and ResponseRecorder.header.SetStatusCode(code).
+Set `ResponseRecorder.Code` and `ResponseRecorder.header.SetStatusCode(code)`.
 
 Function Signature:
 
@@ -206,7 +206,7 @@ func (rw *ResponseRecorder) WriteHeader(code int)
 
 ### Flush
 
-Implemented http.Flusher, set ResponseRecorder.Flushed to true.
+Implemented `http.Flusher`, set `ResponseRecorder.Flushed` to true.
 
 Function Signature:
 
