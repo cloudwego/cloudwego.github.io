@@ -112,17 +112,7 @@ func TestPerformRequest(t *testing.T) {
 
 ## 接收响应
 
-在执行 [PerformRequest](#performrequest) 函数时，内部已经调用了 [NewRecorder](#newrecorder), [Header](#header), [Write](#write), [WriteHeader](#writeheader), [Flush](#flush) 等函数，用户只需调用 [Result](#result) 函数拿到返回的 `protocol.Response` 对象进行单测即可。
-
-```go
-func NewRecorder() *ResponseRecorder
-func (rw *ResponseRecorder) Header() *protocol.ResponseHeader
-func (rw *ResponseRecorder) Write(buf []byte) (int, error)
-func (rw *ResponseRecorder) WriteString(str string) (int, error)
-func (rw *ResponseRecorder) WriteHeader(code int)
-func (rw *ResponseRecorder) Flush()
-func (rw *ResponseRecorder) Result() *protocol.Response
-```
+在执行 [PerformRequest](#performrequest) 函数时，内部已经调用了 `NewRecorder`, `Header`, `Write`, `WriteHeader`, `Flush` 等函数，用户只需调用 `Result` 函数拿到返回的 `protocol.Response` 对象进行单测即可。
 
 ### ResponseRecorder 对象
 
@@ -154,77 +144,17 @@ type ResponseRecorder struct {
 }
 ```
 
-### NewRecorder
+该对象提供的方法如下：
 
-返回初始化后的 `ResponseRecorder` 对象。
-
-函数签名：
-
-```go
-func NewRecorder() *ResponseRecorder
-```
-
-### Header
-
-返回 `ResponseRecorder.header`。
-
-函数签名：
-
-```go
-func (rw *ResponseRecorder) Header() *protocol.ResponseHeader
-```
-
-### Write
-
-将 `[]byte` 类型的数据写入 `ResponseRecorder.Body`。
-
-函数签名：
-
-```go
-func (rw *ResponseRecorder) Write(buf []byte) (int, error)
-```
-
-### WriteString
-
-将 `string` 类型的数据写入 `ResponseRecorder.Body`。
-
-函数签名：
-
-```go
-func (rw *ResponseRecorder) WriteString(str string) (int, error)
-```
-
-### WriteHeader
-
-设置 `ResponseRecorder.Code` 以及 `ResponseRecorder.header.SetStatusCode(code)`。
-
-函数签名：
-
-```go
-func (rw *ResponseRecorder) WriteHeader(code int)
-```
-
-### Flush
-
-实现了 `http.Flusher`，将 `ResponseRecorder.Flushed` 设置为 true。
-
-函数签名：
-
-```go
-func (rw *ResponseRecorder) Flush()
-```
-
-### Result
-
-返回 handler 生成的响应信息。
-
-返回的响应信息至少包含 StatusCode, Header, Body 以及可选的 Trailer，未来将支持返回更多的响应信息。
-
-函数签名：
-
-```go
-func (rw *ResponseRecorder) Result() *protocol.Response
-```
+|函数签名 | 说明 |
+|:--|:--|
+|`func NewRecorder() *ResponseRecorder`  |返回初始化后的 `ResponseRecorder` 对象 |
+|`func (rw *ResponseRecorder) Header() *protocol.ResponseHeader` |返回 `ResponseRecorder.header` |
+|`func (rw *ResponseRecorder) Write(buf []byte) (int, error)` |将 `[]byte` 类型的数据写入 `ResponseRecorder.Body` |
+|`func (rw *ResponseRecorder) WriteString(str string) (int, error)` |将 `string` 类型的数据写入 `ResponseRecorder.Body` |
+|`func (rw *ResponseRecorder) WriteHeader(code int)`|设置 `ResponseRecorder.Code` 以及 `ResponseRecorder.header.SetStatusCode(code)` |
+|`func (rw *ResponseRecorder) Flush()` |实现了 `http.Flusher`，将 `ResponseRecorder.Flushed` 设置为 true |
+|`func (rw *ResponseRecorder) Result() *protocol.Response` | 返回 handler 生成的响应信息，至少包含 StatusCode, Header, Body 以及可选的 Trailer，未来将支持返回更多的响应信息 |
 
 ## 与业务 handler 配合使用
 
