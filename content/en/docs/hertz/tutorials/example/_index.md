@@ -37,10 +37,15 @@ Hertz provides a series of code examples designed to help users get start with H
 - [hello](https://github.com/cloudwego/hertz-examples/tree/main/hello) ：Example of launching a hertz "hello world" application
 
 ### Config
-- [config](https://github.com/cloudwego/hertz-examples/tree/main/config) ：Example of configuring hertz  server
+- [config](https://github.com/cloudwego/hertz-examples/tree/main/config) ：Example of configuring hertz server
 
 ### Protocol
-- [Protocol](https://github.com/cloudwego/hertz-examples/tree/main/protocol) ：Example of hertz using protocols such as HTTP1, TLS, etc
+- [HTTP1](https://github.com/cloudwego/hertz-examples/tree/main/protocol/http1) : Example of hertz using HTTP1 protocol
+- [TLS](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) : Example of hertz using TLS protocol
+- [HTTP2](https://github.com/hertz-contrib/http2/tree/main/examples) : Example of hertz using HTTP2 protocol
+- [HTTP3](https://github.com/hertz-contrib/http3/tree/main/examples/quic-go) : Example of hertz using HTTP3 protocol
+- [Websocket](https://github.com/hertz-contrib/websocket/tree/main/examples) : Example of hertz using Websocket protocol
+- [SSE](https://github.com/hertz-contrib/sse/tree/main/examples) : Example of hertz using SSE protocol
 
 ### Route
 - [Route](https://github.com/cloudwego/hertz-examples/tree/main/route) ：Examples of registering routes, using route groups, and parameter routes
@@ -54,6 +59,19 @@ Hertz provides a series of code examples designed to help users get start with H
 - [gzip](https://github.com/cloudwego/hertz-examples/tree/main/middleware/gzip) ：Example of using gzip middleware in hertz server
 - [csrf](https://github.com/cloudwego/hertz-examples/tree/main/middleware/csrf) ：Example of using csrf middleware in hertz server
 - [loadbalance](https://github.com/cloudwego/hertz-examples/tree/main/middleware/loadbalance/round_robin) ：Example of using loadbalance middleware in hertz server
+- [Recovery](/zh/docs/hertz/tutorials/basic-feature/middleware/recovery/) ：Example of using Recovery middleware
+- [jwt]([/zh/docs/hertz/tutorials/basic-feature/middleware/recovery/](https://github.com/hertz-contrib/jwt/tree/main/example/basic)) ：Example of using jwt middleware
+- [i18n](https://github.com/hertz-contrib/i18n/tree/main/example) ：Example of using i18n middleware
+- [session](https://github.com/hertz-contrib/sessions/tree/main/_example) ：Example of using session middleware
+- [KeyAuth](https://github.com/hertz-contrib/keyauth/tree/main/example) ：Example of using KeyAuth middleware
+- [Swagger](https://github.com/swaggo/gin-swagger/tree/master/example) ：Example of using Swagger middleware
+- [access log](https://github.com/hertz-contrib/logger/tree/main/accesslog/example) ：Example of using access log middleware
+- [Secure](https://github.com/hertz-contrib/secure/tree/main/example/custom) ：Example of using Secure middleware
+- [Sentry](https://github.com/hertz-contrib/hertzsentry) ：Example of using Sentry middleware
+- [Casbin](https://github.com/hertz-contrib/casbin/tree/main/example) ：Example of using Casbin middleware
+- [ETag](https://github.com/hertz-contrib/etag/tree/main/example) ：Example of using ETag middleware
+- [Cache](https://github.com/hertz-contrib/cache/tree/main/example) ：Example of using Cache middleware
+- [Paseto](https://github.com/hertz-contrib/paseto/tree/main/example) ：Example of using Paseto middleware
 
 ### Parameter binding and validation
 - [binding](https://github.com/cloudwego/hertz-examples/tree/main/binding) ：Example of parameter binding and validation
