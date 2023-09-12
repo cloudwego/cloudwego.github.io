@@ -60,7 +60,7 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 - [csrf](https://github.com/cloudwego/hertz-examples/tree/main/middleware/csrf) ：在 hertz server 中使用 csrf 中间件的示例
 - [loadbalance](https://github.com/cloudwego/hertz-examples/tree/main/middleware/loadbalance/round_robin) ：在 hertz server 中使用 loadbalance 中间件的示例
 - [Recovery](/zh/docs/hertz/tutorials/basic-feature/middleware/recovery/) ：使用 Recovery 中间件的示例
-- [jwt]([/zh/docs/hertz/tutorials/basic-feature/middleware/recovery/](https://github.com/hertz-contrib/jwt/tree/main/example/basic)) ：使用 jwt 中间件的示例
+- [jwt](https://github.com/hertz-contrib/jwt/tree/main/example/basic) ：使用 jwt 中间件的示例
 - [i18n](https://github.com/hertz-contrib/i18n/tree/main/example) ：使用 i18n 中间件的示例
 - [session](https://github.com/hertz-contrib/sessions/tree/main/_example) ：使用 session 中间件的示例
 - [KeyAuth](https://github.com/hertz-contrib/keyauth/tree/main/example) ：使用 KeyAuth 中间件的示例

@@ -60,7 +60,7 @@ Hertz provides a series of code examples designed to help users get start with H
 - [csrf](https://github.com/cloudwego/hertz-examples/tree/main/middleware/csrf) ：Example of using csrf middleware in hertz server
 - [loadbalance](https://github.com/cloudwego/hertz-examples/tree/main/middleware/loadbalance/round_robin) ：Example of using loadbalance middleware in hertz server
 - [Recovery](/zh/docs/hertz/tutorials/basic-feature/middleware/recovery/) ：Example of using Recovery middleware
-- [jwt]([/zh/docs/hertz/tutorials/basic-feature/middleware/recovery/](https://github.com/hertz-contrib/jwt/tree/main/example/basic)) ：Example of using jwt middleware
+- [jwt](https://github.com/hertz-contrib/jwt/tree/main/example/basic) ：Example of using jwt middleware
 - [i18n](https://github.com/hertz-contrib/i18n/tree/main/example) ：Example of using i18n middleware
 - [session](https://github.com/hertz-contrib/sessions/tree/main/_example) ：Example of using session middleware
 - [KeyAuth](https://github.com/hertz-contrib/keyauth/tree/main/example) ：Example of using KeyAuth middleware
