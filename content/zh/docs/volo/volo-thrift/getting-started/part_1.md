@@ -6,9 +6,10 @@ description: >
 
 ---
 
-Volo 提供了同名的命令行工具，用来初始化项目、管理 IDL 等。我们可以先通过以下命令来安装 Volo：
+Volo 提供了同名的命令行工具，用来初始化项目、管理 IDL 等。目前 Volo 工具需要使用 nightly rust 安装，我们可以通过以下命令来安装 Volo：
 
 ```bash
+$ rustup default nightly
 $ cargo install volo-cli
 ```
 
