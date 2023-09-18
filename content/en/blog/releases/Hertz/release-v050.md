@@ -36,7 +36,7 @@ At the same time, we have added an auxiliary function that can convert with the 
 
 The Hertz core library capability has been released, and the specific implementation will be released in the form of [extension package](https://github.com/hertz-contrib/http3/pull/1), welcome to try~
 
-For more detailed design instructions, please refer to: [Hertz supports QUIC & HTTP/3](https://www.cloudwego.io/zh/docs/hertz/reference/stream_based_design/)
+For more detailed design instructions, please refer to: [Hertz supports QUIC & HTTP/3](https://www.cloudwego.io/zh/blog/2023/08/02/hertz-%E6%94%AF%E6%8C%81-quic-http/3/)
 
 ## Scaffolding tools support generating hertz client code
 

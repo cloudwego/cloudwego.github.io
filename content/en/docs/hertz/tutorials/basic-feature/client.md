@@ -532,7 +532,15 @@ func main() {
 
 ## Streaming Read Response Content
 
-Hertz's client supports streaming read HTTP response content. For more information, please refer to [Client](/docs/hertz/tutorials/basic-feature/stream/#client).
+Hertz's client supports streaming read HTTP response content. 
+
+Since the client has the problem of multiplexing connections, if streaming is used, the connection will be handled by the user(`resp.BodyStream()` is encapsulated by connection) once streaming is used. There are some differences in the management of connections in the above case:
+
+1. If the user doesn't close the connection, the connection will eventually be closed by the GC without causing a connection leak. However, due to the need to wait for 2 Round-Trip Time to close the connection, in the case of high concurrency, the consequence is that there will be too many open files and creating a new connection will be impossible.
+
+2. Users can recycle the connection by calling the relevant interface. After recycling, the connection will be put into the connection pool for reuse, so as to achieve higher resource utilization and better performance. The following methods will recycle the connection. Warning: Recycling can only be done once.
+   1. Explicit call: `protocol.ReleaseResponse(), resp.Reset(), resp.ResetBody()`.
+   1. Implicit call: The server side will also recycle the response. If the client and server use the same response, there is no need to explicitly call the recycling method
 
 Sample Code:
 
@@ -541,6 +549,10 @@ func main() {
 	c, _ := client.NewClient(client.WithResponseBodyStream(true))
 	req := &protocol.Request{}
 	resp := &protocol.Response{}
+	defer func() {
+		protocol.ReleaseRequest(req)
+		protocol.ReleaseResponse(resp)
+	}()
 	req.SetMethod(consts.MethodGet)
 	req.SetRequestURI("http://127.0.0.1:8080/streamWrite")
 	err := c.Do(context.Background(), req, resp)

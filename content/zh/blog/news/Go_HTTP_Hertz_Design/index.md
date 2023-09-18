@@ -125,7 +125,7 @@ Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，
 
 [Hertz][Hertz] 提供 Server 和 Client 的流式处理能力。HTTP 的文件场景是十分常见的场景，除了 Server 侧的上传场景之外，Client 的下载场景也十分常见。
 为此，[Hertz][Hertz] 支持了 Server 和 Client 的流式处理。在内部网关场景中，从 Gin 迁移到 [Hertz][Hertz] 后，CPU 使用量随流量大小不同可节省 30%—60% 不等，服务压力越大，收益越大。
-[Hertz][Hertz] 开启流式功能的方式也很容易，只需要在 Server 上或 Client 上添加一个配置即可，可参考 CloudWeGo 官网 Hertz 文档的[流式处理](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/stream/)部分。
+[Hertz][Hertz] 开启流式功能的方式也很容易，只需要在 Server 上或 Client 上添加一个配置即可，可参考 CloudWeGo 官网 Hertz 文档的 [Server 流式处理](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/engine/#流式处理) 部分和 [Client 流式处理](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/client/#流式读响应内容) 部分。
 
 由于 [Netpoll][Netpoll] 采用 LT 的触发模式，由网络库主动将将数据从 TCP 缓冲区读到用户态，并存储到 buffer 中，否则 epoll 事件会持续触发。
 因此 Server 在超大请求的场景下，由于 [Netpoll][Netpoll] 持续将数据读到用户态内存中，可能会有 OOM 的风险。HTTP 文件上传场景就是一个典型的场景，但 HTTP 上传服务又是很常见的场景，
