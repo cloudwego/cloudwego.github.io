@@ -47,12 +47,6 @@ func MyMiddleware() app.HandlerFunc {
 }
 ```
 
-中间件会按定义的先后顺序依次执行，如果想快速终止中间件调用，可以使用以下方法，注意**当前中间件仍将执行**。
-
-- `Abort()`：终止后续调用
-- `AbortWithMsg(msg string, statusCode int)`：终止后续调用，并设置 response中body，和状态码
-- `AbortWithStatus(code int)`：终止后续调用，并设置状态码
-
 ### Server 级别中间件
 
 Server 级别中间件会对整个server的路由生效
@@ -232,3 +226,21 @@ func main() {
 ```
 
 > 中间件可能执行不止一次，比如发生跳转等，需要考虑幂等性
+
+## 注意
+
+### RequestContext 相关操作
+
+在实现服务端中间件的时候通常会用到 `RequestContext` 相关操作，见 [请求上下文](/zh/docs/hertz/tutorials/basic-feature/context/)。
+
+### Handler 相关操作
+
+一个服务端中间件即为一个 Handler，Handler 相关操作见 [Handler](/zh/docs/hertz/tutorials/basic-feature/context/request/#handler)。
+
+### 快速中止服务端中间件
+
+服务端中间件会按定义的先后顺序依次执行，如果想快速终止中间件调用，可以使用以下方法，注意**当前中间件仍将执行**。
+
+- `c.Abort()`：终止后续调用
+- `c.AbortWithMsg(msg string, statusCode int)`：终止后续调用，并设置 response 中 body 和状态码
+- `c.AbortWithStatus(code int)`：终止后续调用，并设置状态码
