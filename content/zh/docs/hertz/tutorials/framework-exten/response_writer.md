@@ -8,11 +8,11 @@ description: "Hertz 提供的 Response 的 Writer 扩展。"
 
 ---
 
-按照 Hertz 的[分层架构](https://www.cloudwego.io/zh/docs/hertz/overview/)设计，HTTP 响应实际的写操作实际是在应用层用户处理逻辑返回之后进行的。用户在这个限制下是不能够灵活按需控制写操作的行为的，这个限制在类似控制 chunk 分块编码写逻辑、[SSE](https://github.com/hertz-contrib/sse#hertz-sse) 的场景下尤为明显。
+按照 Hertz 的[分层架构](https://www.cloudwego.io/zh/docs/hertz/overview/)设计，HTTP 响应实际的写操作是在应用层用户处理逻辑返回之后进行的。用户在这个限制下是不能够灵活按需控制写操作的行为的，这个限制在类似控制 chunk 分块编码写逻辑、[SSE](https://github.com/hertz-contrib/sse#hertz-sse) 的场景下尤为明显。
 
-为了解决这个问题，Hertz 提供了一个叫做「Response Writer 劫持」扩展，它能够以正交的方式垂直打通分层架构所带来的写响应局限。让用户可以根据自己的需求在应用层即可自由的定制写响应的逻辑，提升框架易用性。
+为了解决这个问题，Hertz 提供了一个叫做「Response Writer 劫持」扩展，它能够以正交的方式垂直打通分层架构所带来的写响应局限。让用户可以根据自己的需求在应用层自由的定制写响应的逻辑，提升框架易用性。
 
-## 核心接口
+## 核心设计
 
 ### 接口定义
 
