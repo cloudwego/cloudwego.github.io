@@ -6,9 +6,10 @@ description: >
 
 ---
 
-Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more. To install Volo tool, run the following command:
+Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more. To install Volo tool, you need to switch to `nightly` channel and run the following command:
 
 ```bash
+$ rustup default nightly
 $ cargo install volo-cli
 ```
 
