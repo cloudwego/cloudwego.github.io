@@ -27,7 +27,6 @@ hz client 生成的代码结构可以参考 [hz client](/zh/docs/hertz/tutorials
 >IDL 的定义和语义与目前的定义完全相同，所以基本不用修改原先的 IDL 即可生成 client 代码。
 
 >但是为针对 client 的场景，增加了两种注解，
->api.file_name：指定文件；
 >api.base_domain：指定默认访问的请求 domain。
 
 ```thrift
@@ -35,7 +34,6 @@ namespace go toutiao.middleware.hertz_client
 
 struct FormReq {
     1: string FormValue (api.form="form1"); // form 注解用来声明 form 参数 ("multipart/form-data")
-    2: string FileValue (api.file_name="file1"); // file_name 用来声明要上传文件的 key，其实际的值为文件名
 }
 
 struct QueryReq {

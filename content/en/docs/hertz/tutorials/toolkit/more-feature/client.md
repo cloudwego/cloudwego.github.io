@@ -27,7 +27,6 @@ This example is based on thrift, and protoc is similar to it.
 >The definition and semantics of the IDL are exactly the same as the current definition, so it is basically possible to generate client code without modifying the original IDL.
 
 >But for the client scenario, two annotations have been added,
->api.file_name: specify the file;
 >api.base_domain: specifies the default request domain to access.
 
 ```thrift
@@ -35,7 +34,6 @@ namespace go toutiao.middleware.hertz_client
 
 struct FormReq {
     1: string FormValue (api.form="form1"); // form annotation is used to declare the form parameter ("multipart/form-data")
-    2: string FileValue (api.file_name="file1"); // file_name is used to declare the key of the file to be uploaded, its actual value is the file name
 }
 
 struct QueryReq {
