@@ -13,83 +13,117 @@ description: "hz 使用 (protobuf)。"
 
 1. 在当前目录下创建 protobuf idl 文件
 
-   > 1. 为在 protobuf 中支持 api 注解，请在使用了注解的 proto 文件中，import 下面的文件
-   >
-   > 2. 如果想自行拓展注解的使用，请不要以"5"作为序号的开头，避免出现冲突。例如 "optional string xxx = 77777;"
+   1. 创建 api.proto 
 
-   ```protobuf
-   // idl/api.proto; 注解拓展
-   syntax = "proto2";
+      api.proto 是 hz 提供的注解文件，内容如下，请在使用了注解的 proto 文件中，import 该文件。
+      
+      如果想自行拓展注解的使用，请不要以 "5" 作为序号的开头，避免出现冲突。例如 "optional string xxx = 77777;"。
 
-   package api;
+      ```protobuf
+      // idl/api.proto; 注解拓展
+      syntax = "proto2";
 
-   import "google/protobuf/descriptor.proto";
+      package api;
 
-   option go_package = "/api";
+      import "google/protobuf/descriptor.proto";
 
-   extend google.protobuf.FieldOptions {
-   optional string raw_body = 50101;
-   optional string query = 50102;
-   optional string header = 50103;
-   optional string cookie = 50104;
-   optional string body = 50105;
-   optional string path = 50106;
-   optional string vd = 50107;
-   optional string form = 50108;
-   optional string go_tag = 51001;
-   optional string js_conv = 50109;
-   }
+      option go_package = "/api";
 
-   extend google.protobuf.MethodOptions {
-   optional string get = 50201;
-   optional string post = 50202;
-   optional string put = 50203;
-   optional string delete = 50204;
-   optional string patch = 50205;
-   optional string options = 50206;
-   optional string head = 50207;
-   optional string any = 50208;
-   optional string gen_path = 50301;
-   optional string api_version = 50302;
-   optional string tag = 50303;
-   optional string name = 50304;
-   optional string api_level = 50305;
-   optional string serializer = 50306;
-   optional string param = 50307;
-   optional string baseurl = 50308;
-   }
+      extend google.protobuf.FieldOptions {
+      optional string raw_body = 50101;
+      optional string query = 50102;
+      optional string header = 50103;
+      optional string cookie = 50104;
+      optional string body = 50105;
+      optional string path = 50106;
+      optional string vd = 50107;
+      optional string form = 50108;
+      optional string js_conv = 50109;
+      optional string file_name = 50110;
+      optional string none = 50111;
 
-   extend google.protobuf.EnumValueOptions {
-   optional int32 http_code = 50401;
-   }
-   ```
+      // 50131~50160 used to extend field option by hz
+      optional string form_compatible = 50131;
+      optional string js_conv_compatible = 50132;
+      optional string file_name_compatible = 50133;
+      optional string none_compatible = 50134;
+      // 50135 is reserved to vt_compatible
+      // optional FieldRules vt_compatible = 50135;
 
-   主 idl 定义：
+      optional string go_tag = 51001;
+      }
 
-   ```protobuf
-   // idl/hello/hello.proto
-   syntax = "proto3";
+      extend google.protobuf.MethodOptions {
+      optional string get = 50201;
+      optional string post = 50202;
+      optional string put = 50203;
+      optional string delete = 50204;
+      optional string patch = 50205;
+      optional string options = 50206;
+      optional string head = 50207;
+      optional string any = 50208;
+      optional string gen_path = 50301; // The path specified by the user when the client code is generated, with a higher priority than api_version
+      optional string api_version = 50302; // Specify the value of the :version variable in path when the client code is generated
+      optional string tag = 50303; // rpc tag, can be multiple, separated by commas
+      optional string name = 50304; // Name of rpc
+      optional string api_level = 50305; // Interface Level
+      optional string serializer = 50306; // Serialization method
+      optional string param = 50307; // Whether client requests take public parameters
+      optional string baseurl = 50308; // Baseurl used in ttnet routing
+      optional string handler_path = 50309; // handler_path specifies the path to generate the method
 
-   package hello;
+      // 50331~50360 used to extend method option by hz
+      optional string handler_path_compatible = 50331; // handler_path specifies the path to generate the method
+      }
 
-   option go_package = "hertz/hello";
+      extend google.protobuf.EnumValueOptions {
+      optional int32 http_code = 50401;
 
-   import "api.proto";
+      // 50431~50460 used to extend enum option by hz
+      }
 
-   message HelloReq {
-   string Name = 1[(api.query)="name"];
-   }
+      extend google.protobuf.ServiceOptions {
+      optional string base_domain = 50402;
 
-   message HelloResp {
-   string RespBody = 1;
-   }
+      // 50731~50760 used to extend service option by hz
+      optional string base_domain_compatible = 50731;
+      }
 
-   service HelloService {
-   rpc Method1(HelloReq) returns(HelloResp) {
-       option (api.get) = "/hello";
-   }
-   }
-   ```
+      extend google.protobuf.MessageOptions {
+      // optional FieldRules msg_vt = 50111;
+
+      optional string reserve = 50830;
+      // 550831 is reserved to msg_vt_compatible
+      // optional FieldRules msg_vt_compatible = 50831;
+      }
+      ```
+
+   2. 创建主 IDL
+
+      ```protobuf
+      // idl/hello/hello.proto
+      syntax = "proto3";
+
+      package hello;
+
+      option go_package = "hertz/hello";
+
+      import "api.proto";
+
+      message HelloReq {
+         string Name = 1[(api.query)="name"];
+      }
+
+      message HelloResp {
+         string RespBody = 1;
+      }
+
+      service HelloService {
+         rpc Method1(HelloReq) returns(HelloResp) {
+            option (api.get) = "/hello";
+         }
+      }
+      ```
 
 2. 创建新项目
 
@@ -134,20 +168,20 @@ description: "hz 使用 (protobuf)。"
    // Method1 .
    // @router /hello [GET]
    func Method1(ctx context.Context, c *app.RequestContext) {
-   var err error
-   var req hello.HelloReq
-   err = c.BindAndValidate(&req)
-   if err != nil {
-       c.String(400, err.Error())
-       return
-   }
+      var err error
+      var req hello.HelloReq
+      err = c.BindAndValidate(&req)
+      if err != nil {
+         c.String(400, err.Error())
+         return
+      }
 
-   resp := new(hello.HelloResp)
+      resp := new(hello.HelloResp)
 
-   // 你可以修改整个函数的逻辑，而不仅仅局限于当前模板
-   resp.RespBody = "hello," + req.Name // 添加的逻辑
+      // 你可以修改整个函数的逻辑，而不仅仅局限于当前模板
+      resp.RespBody = "hello," + req.Name // 添加的逻辑
 
-   c.JSON(200, resp)
+      c.JSON(200, resp)
    }
    ```
 
@@ -188,34 +222,34 @@ description: "hz 使用 (protobuf)。"
    import "api.proto";
 
    message HelloReq {
-   string Name = 1[(api.query)="name"];
+      string Name = 1[(api.query)="name"];
    }
 
    message HelloResp {
-   string RespBody = 1;
+      string RespBody = 1;
    }
 
    message OtherReq {
-   string Other = 1[(api.body)="other"];
+      string Other = 1[(api.body)="other"];
    }
 
    message OtherResp {
-   string Resp = 1;
+      string Resp = 1;
    }
 
    service HelloService {
-   rpc Method1(HelloReq) returns(HelloResp) {
-       option (api.get) = "/hello";
-   }
-   rpc Method2(OtherReq) returns(OtherResp) {
-       option (api.post) = "/other";
-   }
+      rpc Method1(HelloReq) returns(HelloResp) {
+         option (api.get) = "/hello";
+      }
+      rpc Method2(OtherReq) returns(OtherResp) {
+         option (api.post) = "/other";
+      }
    }
 
    service NewService {
-   rpc Method3(OtherReq) returns(OtherResp) {
-       option (api.get) = "/new";
-   }
+      rpc Method3(OtherReq) returns(OtherResp) {
+         option (api.get) = "/new";
+      }
    }
    ```
 
@@ -226,48 +260,29 @@ description: "hz 使用 (protobuf)。"
    ```
 
 3. 可以看到
-   在"biz/handler/hello/hello_service.go" 下新增了新的方法
-   在"biz/handler/hello" 下新增了文件 "new_service.go" 以及对应的 "Method3" 方法。
+   在 "biz/handler/hello/hello_service.go" 下新增了新的方法；
+   在 "biz/handler/hello" 下新增了文件 "new_service.go" 以及对应的 "Method3" 方法。
 
    下面我们来开发 "Method2" 接口：
 
    ```go
-   // Method1 .
-   // @router /hello [GET]
-   func Method1(ctx context.Context, c *app.RequestContext) {
-   var err error
-   var req hello.HelloReq
-   err = c.BindAndValidate(&req)
-   if err != nil {
-       c.String(400, err.Error())
-       return
-   }
-
-   resp := new(hello.HelloResp)
-
-   // 你可以修改整个函数的逻辑，而不仅仅局限于当前模板
-   resp.RespBody = "hello," + req.Name // 添加的逻辑
-
-   c.JSON(200, resp)
-   }
-
    // Method2 .
    // @router /other [POST]
    func Method2(ctx context.Context, c *app.RequestContext) {
-   var err error
-   var req hello.OtherReq
-   err = c.BindAndValidate(&req)
-   if err != nil {
-       c.String(400, err.Error())
-       return
-   }
+      var err error
+      var req hello.OtherReq
+      err = c.BindAndValidate(&req)
+      if err != nil {
+         c.String(400, err.Error())
+         return
+      }
 
-   resp := new(hello.OtherResp)
+      resp := new(hello.OtherResp)
 
-   // 增加的逻辑
-   resp.Resp = "Other method: " + req.Other
+      // 增加的逻辑
+      resp.Resp = "Other method: " + req.Other
 
-   c.JSON(200, resp)
+      c.JSON(200, resp)
    }
    ```
 
@@ -296,3 +311,5 @@ description: "hz 使用 (protobuf)。"
    ```
 
    如果返回`{"Resp":"Other method: other method"}`，说明接口调通。
+
+更多示例代码请参考 [code](https://github.com/cloudwego/hertz-examples/tree/main/hz/protobuf)。

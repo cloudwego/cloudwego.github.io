@@ -8,70 +8,65 @@ description: "hz 自定义模板使用。"
 
 Hertz 提供的命令行工具 (以下称为"hz") 支持自定义模板功能，包括:
 
-- 自定义 layout 模板 (即生成代码的目录结构)
-- 自定义 package 模板 (即与 service 相关的代码结构，包括 handler、router 等)
+- 自定义 layout 模板 (即生成代码的目录结构，这些结构与具体的 idl 定义无关，不需要 idl 也可以直接生成)
+- 自定义 package 模板 (即与 idl 定义相关的代码结构，包括 handler、model、router 等)
 
-用户可自己提供模板以及渲染参数，并结合 hz 的能力，来完成自定义的代码生成结构。
-
-## 自定义 layout 模板
-
-> 用户可根据默认模板来修改或重写，从而满足自身需求
-
-hz 利用了 go template 支持以 "yaml" 的格式定义模板，并使用 "json" 定义模板渲染数据。
-
-所谓的 layout 模板是指整个项目的结构，这些结构与具体的 idl 定义无关，不需要 idl 也可以直接生成，默认的结构如下:
+以 [hz 生成代码的结构](/zh/docs/hertz/tutorials/toolkit/layout/) 中的代码结构为例（集成 hz 和 hz client 生成的代码），介绍 hz 提供的默认模板：
 
 ```
 .
-├── biz
-│   ├── handler
-│   │   └── ping.go
-│   │   └── ****.go               // 按照服务划分的 handler 集合，位置可根据 handler_dir 改变
-│   ├── model
-│   │   └── model.go              // idl 生成的 struct，位置可根据 model_dir 改变
-│   └── router // 未开发自定义 dir
-│        └── register.go          // 路由注册，用来调用具体的路由注册
-│             └── route.go        // 具体路由注册位置
-│             └── middleware.go   // 默认 middleware 生成位置
-├── .hz                           // hz 创建代码标志
-├── go.mod
-├── main.go                       // 启动入口
-├── router.go                     // 用户自定义路由写入位置
-└── router_gen.go                 // hz 生成的路由注册调用
+├── biz                                
+│   ├── handler                          // biz/handler 为默认 handler_dir，可通过 --handler_dir 修改
+│   │   ├── hello                        // handler 相关代码，与 idl 有关，package 模板生成
+│   │   │   └── example
+│   │   │       └── hello_service.go 
+│   │   └── ping.go                      // layout 模板生成
+│   ├── model                            // biz/model 为默认 model_dir，可通过 --model_dir 修改
+│   │   └── hello                      
+│   │       └── example
+│   │           └── hello.go             // 由 hz 调用 thriftgo 生成，不涉及 layout 模板和 package 模板
+│   │           └── hello_service        // 调用 hz client 命令得到，与 idl 有关，package 模板生成
+│   │               └── hello_service.go
+│   │               └── hertz_client.go
+│   └── router                           // biz/router 为默认 router_dir，可通过 --router_dir 修改
+│       ├── hello                        // router 相关代码，与 idl 有关，package 模板生成
+│       │   └── example
+│       │       ├── hello.go           
+│       │       └── middleware.go      
+│       └── register.go                  // 未指定 idl 时，由 layout 模板生成；指定 idl 时，由 package 模板生成
+├── go.mod                               // go.mod 文件，layout 模板生成
+├── main.go                              // 程序入口，layout 模板生成
+├── router.go                            // 用户自定义除 idl 外的路由方法，layout 模板生成
+└── router_gen.go                        // hz 生成的路由注册代码，用于调用用户自定义的路由以及 hz 生成的路由，layout 模板生成
+├── .hz                                
+├── build.sh                             // 程序编译脚本，layout 模板生成
+├── script                                
+│   └── bootstrap.sh                     // 程序运行脚本，layout 模板生成
+└── .gitignore                           // layout 模板生成
 ```
 
-### IDL
+用户可自己提供模板以及渲染参数，并结合 hz 的能力，来完成自定义的代码生成结构。
 
-```thrift
-// hello.thrift
-namespace go hello.example
+## layout 模板
 
-struct HelloReq {
-    1: string Name (api.query="name");
-}
+hz 利用了 go template 支持以 "yaml" 的格式定义 layout 模板，并使用 "json" 定义模板渲染数据。
 
-struct HelloResp {
-    1: string RespBody;
-}
+用户可根据默认模板来修改或重写，从而满足自身需求。
 
+> 注意：当在命令行中未指定自定义模板渲染文件时，hz 会使用 [默认渲染参数](#文件渲染参数) 渲染自定义 layout 模板，此时应保证自定义 layout 模板的渲染参数在 [默认渲染参数](#文件渲染参数) 的范围内。
 
-service HelloService {
-    HelloResp HelloMethod(1: HelloReq request) (api.get="/hello");
-}
-```
-
-### 命令
-
-```shell
-hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml --customize_layout_data_path=template/data.json
-```
-
-### 默认 layout 模板的含义
+### 默认 layout 模板
 
 > 注：以下的 body 均为 go template
 
 ```yaml
 layouts:
+  # 生成的 dal 的目录，只有目录下有文件才会生成
+  - path: biz/dal/
+    delims:
+      - ""
+      - ""
+    body: ""
   # 生成的 handler 的目录，只有目录下有文件才会生成
   - path: biz/handler/
     delims:
@@ -84,7 +79,13 @@ layouts:
       - ""
       - ""
     body: ""
-  # 项目 main 文件，
+  # 生成的 service 的目录，只有目录下有文件才会生成
+  - path: biz/service/
+    delims:
+      - ""
+      - ""
+    body: ""  
+  # 项目 main.go 文件
   - path: main.go
     delims:
       - ""
@@ -104,7 +105,7 @@ layouts:
       	register(h)
       	h.Spin()
       }
-  # go.mod 文件，需要模板渲染数据{{.GoModule}}才能生成
+  # go.mod 文件，需要模板渲染数据 {{.GoModule}} {{.UseApacheThrift}} 才能生成
   - path: go.mod
     delims:
       - '{{'
@@ -121,16 +122,7 @@ layouts:
       - ""
     body: "*.o\n*.a\n*.so\n_obj\n_test\n*.[568vq]\n[568vq].out\n*.cgo1.go\n*.cgo2.c\n_cgo_defun.c\n_cgo_gotypes.go\n_cgo_export.*\n_testmain.go\n*.exe\n*.exe~\n*.test\n*.prof\n*.rar\n*.zip\n*.gz\n*.psd\n*.bmd\n*.cfg\n*.pptx\n*.log\n*nohup.out\n*settings.pyc\n*.sublime-project\n*.sublime-workspace\n!.gitkeep\n.DS_Store\n/.idea\n/.vscode\n/output\n*.local.yml\ndumped_hertz_remote_config.json\n\t\t
     \ "
-  # .hz 文件，包含 hz 版本，是 hz 创建的项目的标志，不需要传渲染数据
-  - path: .hz
-    delims:
-      - '{{'
-      - '}}'
-    body: |-
-      // Code generated by hz. DO NOT EDIT.
-
-      hz version: {{.hzVersion}}
-  # ping 自带 ping 的 handler
+  # handler 中的 ping.go 文件，需要模板渲染数据 {{.HandlerPkg}} 才能生成
   - path: biz/handler/ping.go
     delims:
       - ""
@@ -138,22 +130,23 @@ layouts:
     body: |-
       // Code generated by hertz generator.
 
-      package handler
+      package {{.HandlerPkg}}
 
       import (
       	"context"
 
       	"github.com/cloudwego/hertz/pkg/app"
       	"github.com/cloudwego/hertz/pkg/common/utils"
+        "github.com/cloudwego/hertz/pkg/protocol/consts"
       )
 
       // Ping .
       func Ping(ctx context.Context, c *app.RequestContext) {
-      	c.JSON(200, utils.H{
+      	c.JSON(consts.StatusOK, utils.H{
       		"message": "pong",
       	})
       }
-  # 定义路由注册的文件，需要模板渲染数据{{.RouterPkgPath}}才能生成
+  # 定义路由注册的文件，需要模板渲染数据 {{.RouterPkgPath}} 才能生成
   - path: router_gen.go
     delims:
       - ""
@@ -175,7 +168,7 @@ layouts:
 
       	customizedRegister(r)
       }
-  # 自定义路由注册的文件
+  # 自定义路由注册的文件，需要模板渲染数据 {{.HandlerPkgPath}} 才能生成
   - path: router.go
     delims:
       - ""
@@ -196,7 +189,7 @@ layouts:
 
       	// your code ...
       }
-  # 默认路由注册文件，不要修改
+  # 默认路由注册文件，不要修改，需要模板渲染数据 {{.RouterPkg}} 才能生成
   - path: biz/router/register.go
     delims:
       - ""
@@ -204,7 +197,7 @@ layouts:
     body: |-
       // Code generated by hertz generator. DO NOT EDIT.
 
-      package router
+      package {{.RouterPkg}}
 
       import (
       	"github.com/cloudwego/hertz/pkg/app/server"
@@ -214,30 +207,72 @@ layouts:
       func GeneratedRegister(r *server.Hertz){
       	//INSERT_POINT: DO NOT DELETE THIS LINE!
       }
-
+  # 编译脚本，需要模板渲染数据 {{.ServiceName}} 才能生成
+  - path: build.sh
+    delims:
+      - ""
+      - ""
+    body: |-
+      #!/bin/bash
+      RUN_NAME={{.ServiceName}}
+      mkdir -p output/bin
+      cp script/* output 2>/dev/null
+      chmod +x output/bootstrap.sh
+      go build -o output/bin/${RUN_NAME}
+  # 运行脚本，需要模板渲染数据 {{.ServiceName}} 才能生成
+  - path: script/bootstrap.sh
+    delims:
+      - ""
+      - ""
+    body: |-
+      #!/bin/bash
+      CURDIR=$(cd $(dirname $0); pwd)
+      BinaryName={{.ServiceName}}
+      echo "$CURDIR/bin/${BinaryName}"
+      exec $CURDIR/bin/${BinaryName} 
 ```
 
-### 模板渲染参数文件的含义
+### 模板渲染参数文件
 
-当指定了自定义模板以及渲染数据后，此时命令行指定的选项将不会被作为渲染数据，因此，模板中的渲染数据需要用户自己定义。
+hz 使用了 "json" 来指定渲染数据，包括全局的渲染参数和各个文件的渲染参数。
 
-hz 使用了"json"来指定渲染数据，下面进行介绍
+全局渲染参数在各个文件中都能使用，文件渲染参数只能用于所属文件。
+
+#### 全局渲染参数
+
+全局渲染参数的 key 为 "*"，hz 默认提供了如下五个全局渲染参数：
+
+|  渲染参数名   | 默认值  |  说明  |
+|  :----  | :----  | :---- |
+| GoModule  | - | go module，可通过 --module 指定 |
+| ServiceName  | hertz_service | 服务名，可通过 --service 指定 |
+| UseApacheThrift | - | idl 为 thrift 时为 true，否则为 false |
+| HandlerPkg | handler | handler_dir 的最后一级路径，可通过 --handler_dir 修改 |
+| RouterPkg | router | router_dir 的最后一级路径，可通过 --router_dir 修改 |
+
+> 注意：除 UseApacheThrift 外，其它参数都可以通过命令行指定，此时若在自定义渲染参数文件中也指定了该参数，应保证两处参数的值一致，否则可能会出现问题。因此我们建议，在使用自定义模板时 ServiceName, HandlerPkg, RouterPkg 不需要在命令行中指定，在渲染参数文件中指出即可，GOPATH 外指定 go mod 时应保证两处的一致性。
+
+用户可以根据需求自定义全局渲染参数名和值，但需保证 key 为 "*"。
+
+#### 文件渲染参数
+
+hz 默认提供了如下文件渲染参数：
 
 ```json
 {
-  // 全局的渲染参数
-  "*": {
-    "GoModule": "github.com/hz/test", // 要和命令行指定的一致，否则后续生成 model、handler 等代码将使用命令行指定的 mod，导致出现不一致。
-    "ServiceName": "p.s.m", // 要和命令行指定的一致
-    "UseApacheThrift": false // 根据是否使用"thrift"设置"true"/"false"
-  },
-  // router_gen.go 路由注册的渲染数据，
-  // "biz/router"指向默认 idl 注册的路由代码的 module，不要修改
   "router_gen.go": {
-    "RouterPkgPath": "github.com/hz/test/biz/router"
+    "RouterPkgPath": "{GoModule}/biz/router",
+    "HandlerPkgPath": "{GoModule}/biz/handler"
+  },
+
+  "router.go": {
+    "RouterPkgPath": "{GoModule}/biz/router",
+    "HandlerPkgPath": "{GoModule}/biz/handler"
   }
 }
 ```
+
+文件渲染参数仅作用于所属文件，key 为文件名（基于 out_dir 的相对路径），值可任意定义。
 
 ### 自定义一个 layout 模板
 
@@ -245,7 +280,7 @@ hz 使用了"json"来指定渲染数据，下面进行介绍
 >
 > 不过如果用户想要一个别的 layout，当然也可以根据自身需求来删除相应的文件 (除"biz/register.go"外，其余都可以动)
 >
-> 我们十分欢迎用户来贡献自己的模板
+> 我们十分欢迎用户来贡献自己的模板。
 
 下面假设用户只想要 "main.go" 以及 "go.mod" 文件，那么我们对默认模板进行修改，如下：
 
@@ -254,7 +289,7 @@ hz 使用了"json"来指定渲染数据，下面进行介绍
 ```yaml
 // layout.yaml
 layouts:
-  # 项目 main 文件，
+  # 项目 main.go 文件
   - path: main.go
     delims:
       - ""
@@ -330,30 +365,15 @@ layouts:
 hz new --mod=github.com/hertz/hello --idl=./hertzDemo/hello.thrift --customize_layout=template/layout.yaml --customize_layout_data_path=template/data.json
 ```
 
-## 自定义 package 模板
+## package 模板
 
-> hz 模板的模板地址：
->
-> 用户可根据默认模板来修改或重写，从而符合自身需求
+package 模板与 idl 定义相关，包括 handler、model、router 等。
 
-- 所谓的 package 模板是指与 idl 定义相关的服务代码，这部分代码涉及到定义 idl 时指定的 service、go_package/namespace 等，主要包括以下几部分：
-- handler.go：处理函数逻辑
-- router.go：具体的 idl 定义的服务的路由注册逻辑
-- register.go：调用 router.go 中内容的逻辑
-- ~~model 代码：生成的 go struct；不过由于目前使用插件来生成 model 代码工具没权限来修改 model 的模板，所以这部分功能先不开放~~
-
-### 命令
-
-```shell
-hz new --mod=github.com/hertz/hello --handler_dir=handler_test --idl=hertzDemo/hello.thrift --customize_package=template/package.yaml
-```
+用户可根据默认模板来修改或重写，从而满足自身需求。
 
 ### 默认 package 模板
 
-注意：自定义 package 模板没有提供渲染数据的功能，这里主要是因为这些渲染数据是 hz 工具解析生成的，所以暂时不提供自己写渲染数据的功能。可以修改下模板里面与渲染数据无关的部分，以满足自身需求。
-
 ```yaml
-# 以下数据都是 yaml marshal 得到的，所以可能看起来比较乱
 layouts:
   # path 只表示 handler.go 的模板，具体的 handler 路径由默认路径和 handler_dir 决定
   - path: handler.go
@@ -369,6 +389,7 @@ layouts:
       	"context"
 
       	"github.com/cloudwego/hertz/pkg/app"
+        "github.com/cloudwego/hertz/pkg/protocol/consts"
 
       {{- range $k, $v := .Imports}}
       	{{$k}} "{{$v.Package}}"
@@ -383,16 +404,16 @@ layouts:
       	var req {{$MethodInfo.RequestTypeName}}
       	err = c.BindAndValidate(&req)
       	if err != nil {
-      		c.String(400, err.Error())
+      		c.String(consts.StatusBadRequest, err.Error())
       		return
       	}
       	{{end}}
       	resp := new({{$MethodInfo.ReturnTypeName}})
 
-      	c.{{.Serializer}}(200, resp)
+      	c.{{.Serializer}}(consts.StatusOK, resp)
       }
       {{end}}
-  # path 只表示 router.go 的模板，其路径固定在:biz/router/namespace/
+  # path 只表示 router.go 的模板，具体的路径由默认路径和 router_dir 决定
   - path: router.go
     delims:
       - '{{'
@@ -440,7 +461,7 @@ layouts:
       func Register(r *server.Hertz) {
       {{template "G" .Router}}
       }
-  # path 只表示 register.go 的模板，register 的路径固定为 biz/router/register.go
+  # path 只表示 register.go 的模板，具体的路径由默认路径和 router_dir 决定
   - path: register.go
     delims:
       - ""
@@ -448,7 +469,7 @@ layouts:
     body: |-
       // Code generated by hertz generator. DO NOT EDIT.
 
-      package router
+      package {{.PackageName}}
 
       import (
       	"github.com/cloudwego/hertz/pkg/app/server"
@@ -465,7 +486,7 @@ layouts:
       - ""
       - ""
     body: ""
-  # path 只表示 middleware.go 的模板，middleware 的路径和 router.go 一样为：biz/router/namespace/
+  # path 只表示 middleware.go 的模板，middleware 的路径和 router.go 相同
   - path: middleware.go
     delims:
       - '{{'
@@ -488,7 +509,7 @@ layouts:
       {{- end}}
 
       {{template "M" .Router}}
-  # path 只表示 client.go 的模板，client 代码的生成路径由用户指定"${client_dir}"
+  # path 只表示 client.go 的模板，仅当使用 hz new --client_dir 或 hz update --client_dir 时生成，路径由 out_dir 和 client_dir 决定
   - path: client.go
     delims:
       - '{{'
@@ -499,7 +520,7 @@ layouts:
       package {{$.PackageName}}
 
       import (
-          "github.com/cloudwego/hertz/pkg/app/client"
+        "github.com/cloudwego/hertz/pkg/app/client"
       	"github.com/cloudwego/hertz/pkg/common/config"
       )
 
@@ -531,13 +552,13 @@ layouts:
       	var req {{.RequestTypeName}}
       	err = c.BindAndValidate(&req)
       	if err != nil {
-      		c.String(400, err.Error())
+      		c.String(consts.StatusBadRequest, err.Error())
       		return
       	}
       	{{end}}
       	resp := new({{.ReturnTypeName}})
 
-      	c.{{.Serializer}}(200, resp)
+      	c.{{.Serializer}}(consts.StatusOK, resp)
       }
   # middleware_single 表示单独的 middleware 模板，用于 update 的时候更新每一个新增的 middleware_single
   - path: middleware_single.go
@@ -549,14 +570,98 @@ layouts:
       	// your code...
       	return nil
       }
-
+  # hertz_client 由 hz client 命令生成，详细代码请参考 https://github.com/cloudwego/hertz/blob/develop/cmd/hz/generator/package_tpl.go#L271
+  - path: hertz_client.go
+    delims:
+      - '{{'
+      - '}}'
+  # idl_client 由 hz client 命令生成，详细代码请参考 https://github.com/cloudwego/hertz/blob/develop/cmd/hz/generator/package_tpl.go#L862
+  - path: idl_client.go
+    delims:
+      - '{{'
+      - '}}'
 ```
+
+### 模板渲染参数
+
+> 注意：与 layout 模板不同，自定义 package 模板没有提供渲染数据的功能，这里主要是因为这些渲染数据是 hz 工具解析生成的，所以暂时不提供自己写渲染数据的功能。可以修改下模板里面与渲染数据无关的部分，以满足自身需求。
+
+下面介绍 hz 默认提供的模板渲染参数。
+
+- 文件路径渲染：在指定文件路径的时候使用如下渲染数据
+
+  ```go
+  type FilePathRenderInfo struct {
+    MasterIDLName  string // master IDL name 
+    GenPackage     string // master IDL generate code package 
+    HandlerDir     string // handler generate dir 
+    ModelDir       string // model generate dir 
+    RouterDir      string // router generate dir 
+    ProjectDir     string // projectDir 
+    GoModule       string // go module 
+    ServiceName    string // service name, changed as services are traversed 
+    MethodName     string // method name, changed as methods are traversed 
+    HandlerGenPath string // "api.gen_path" value
+  }
+  ```
+
+- 单个文件的渲染数据：在单独定义一个文件时使用的渲染数据，可根据 "IDLPackageRenderInfo" 的定义解出所有 IDL 的信息
+
+  ```go
+  type CustomizedFileForIDL struct {
+    *IDLPackageRenderInfo
+    FilePath    string
+    FilePackage string
+  }
+  ```
+
+- Method 级别的渲染数据：当指定 "loop_method" 时，会使用到的渲染数据，会以每个 method 为单位生成一个文件
+
+  ```go
+  type CustomizedFileForMethod struct {
+    *HttpMethod // 每个 method 定义的解析出来的具体信息 
+    FilePath    string // 当循环生成 method 文件时，该文件路径 
+    FilePackage string // 当循环生成 method 文件时，该文件的 go package 名 
+    ServiceInfo *Service // 该 method 所属的 service 定义的信息
+  }
+    
+  type HttpMethod struct {
+    Name            string
+    HTTPMethod      string
+    Comment         string
+    RequestTypeName string
+    ReturnTypeName  string
+    Path            string // 请求路由 
+    Serializer      string
+    OutputDir       string
+    Models map[string]*model.Model
+  }
+  ```
+
+- Service 级别的渲染数据：当指定 "loop_service" 时，会使用到的渲染数据，会以每个 service 为单位生成一个文件
+
+  ```go
+  type CustomizedFileForService struct {
+    *Service // 该 service 的具体信息，包括 service 名字，servide 内定义的 method 的信息等 
+    FilePath       string // 当循环生成 service 文件时，该文件路径 
+    FilePackage    string // 当循环生成 service 文件时，该文件的 go package 名 
+    IDLPackageInfo *IDLPackageRenderInfo // 该 service 所属的 IDL 定义的信息
+  }
+
+  type Service struct {
+    Name          string
+    Methods       []*HttpMethod
+    ClientMethods []*ClientMethod
+    Models        []*model.Model // all dependency models 
+    BaseDomain    string         // base domain for client code
+  }
+  ```
 
 ### 自定义一个 package 模板
 
 > 与 layout 模板一样，用户同样可以自定义 package 模板。
 >
-> 就 package 提供的模板来说，一般用户可能只有自定义 handler.go 的模板的需求，因为 router.go/middleware.go/register.go 一般与 idl 定义相关而用户无需关心，因此 hz 目前也将这些模板生成的位置固定了，一般也无需修改。
+> 就 package 提供的模板来说，一般用户可能只有自定义 handler.go 模板的需求，因为 router.go/middleware.go/register.go 一般与 idl 定义相关而用户无需关心，一般也无需修改。
 >
 > 因此，用户可根据自身的需求来自定义生成的 handler 模板，加速开发速度；但是由于默认的 handler 模板集成了一些 model 的信息以及 package 信息，所以需要 hz 工具来提供渲染数据。这部分用户可根据自身情况酌情来修改，一般建议留下 model 信息。
 
@@ -579,11 +684,13 @@ layouts:
 - 如果指定了同名模板会覆盖掉默认的内容
 - 如果没指定同名模板会使用默认的模板
 
-因此，大家在自定义模板的时候需要根据自己的实际情况来考虑是否需要覆盖掉这些模板
+因此，大家在自定义模板的时候需要根据自己的实际情况来考虑是否需要覆盖掉这些模板。
+
+> 注意：用户在自定义模板时若要覆盖上述模板只需指出文件名，无需给出相对路径（如 handler.go），但新增自己的实现时需要给出基于 out_dir 的相对路径。
 
 #### 添加一个新的模板
 
-考虑到大家有时可能需要针对 IDL 的某些信息新增自己的一些实现，例如为每个生成的 handler 加一下单测等需求。因此，hz 的模板里允许用户自定义新的模板，并提供模板的渲染参数数据源。
+考虑到大家有时可能需要针对 IDL 的某些信息新增自己的一些实现，例如为每个生成的 handler 加一下单测等需求。因此，hz 的模板里允许用户自定义新的模板，渲染参数可参考 [模板渲染参数](#模板渲染参数)。
 
 模板形式：
 
@@ -593,82 +700,11 @@ layouts:
     loop_service: bool // 是否按照 idl 中定义的 service 生成多个文件，配合 path 渲染使用
     update_behavior: // 在使用 hz update 的时候对于该文件的更新行为
       type: string // 更新行为:skip/cover/append
-      append_key: "method"/"service" // 在 append 行为的时候，指定追加的渲染数据源，method/service
-      insert_key: string // 在 append 行为的时候追加逻辑的“key”，根据这个 key 判断是否需要进行追加
+      append_key: string // 在 append 行为的时候，指定追加的渲染数据源，method/service
+      insert_key: string // 在 append 行为的时候追加逻辑的 “key”，根据这个 key 判断是否需要进行追加
       append_content_tpl: string // 在 append 行为的时候，指定追加内容的模板
       import_tpl: []string // 要新增的 import 的模板
     body: string // 生成文件的模板内容
-```
-
-#### 模板数据源
-
-- 文件路径渲染：在指定文件路径的时候可使用如下渲染数据
-
-```go
-type FilePathRenderInfo struct {
-	MasterIDLName  string // master IDL name 
-	GenPackage     string // master IDL generate code package 
-	HandlerDir     string // handler generate dir 
-	ModelDir       string // model generate dir 
-	RouterDir      string // router generate dir 
-	ProjectDir     string // projectDir 
-	GoModule       string // go module 
-	ServiceName    string // service name, changed as services are traversed 
-	MethodName     string // method name, changed as methods are traversed 
-	HandlerGenPath string // "api.gen_path" value
-}
-```
-
-- 单个文件的渲染数据：在单独定义一个文件时使用的渲染数据，可根据 "IDLPackageRenderInfo" 的定义解出所有 IDL 的信息
-
-```go
-type CustomizedFileForIDL struct {
-	*IDLPackageRenderInfo
-	FilePath    string
-	FilePackage string
-}
-```
-
-- Method 级别的渲染数据：当指定"loop_method"时，会使用到的渲染数据，会以每个 method 为单位生成一个文件
-
-```go
-type CustomizedFileForMethod struct {
-	*HttpMethod // 每个 method 定义的解析出来的具体信息 
-	FilePath    string // 当循环生成 method 文件时，该文件路径 
-	FilePackage string // 当循环生成 method 文件时，该文件的 go package 名 
-	ServiceInfo *Service // 该 method 所属的 service 定义的信息
-}
-   
-type HttpMethod struct {
-	Name            string
-	HTTPMethod      string
-	Comment         string
-	RequestTypeName string
-	ReturnTypeName  string
-	Path            string // 请求路由 
-	Serializer      string
-	OutputDir       string
-	Models map[string]*model.Model
-}
-```
-
-- Service 级别的渲染数据：当指定"loop_service"时，会使用到的渲染数据，会以每个 service 为单位生成一个文件
-
-```go
-type CustomizedFileForService struct {
-	*Service // 该 service 的具体信息，包括 service 名字，servide 内定义的 method 的信息等 
-	FilePath       string // 当循环生成 service 文件时，该文件路径 
-	FilePackage    string // 当循环生成 service 文件时，该文件的 go package 名 
-	IDLPackageInfo *IDLPackageRenderInfo // 该 service 所属的 IDL 定义的信息
-}
-
-type Service struct {
-	Name          string
-	Methods       []*HttpMethod
-	ClientMethods []*ClientMethod
-	Models        []*model.Model // all dependency models 
-	BaseDomain    string         // base domain for client code
-}
 ```
 
 下面给出一个简单的自定义 handler 模板的示例：
@@ -815,10 +851,6 @@ Hertz 提供了 一个 MVC 自定义模版的最佳实践，代码详见 [code](
 
 ## 注意事项
 
-### 使用 layout 模板的注意事项
-
-当用户使用了 layout 自定义模板后，那么生成的 layout 和渲染数据都由用户接管，所以用户需要提供其定义的 layout 的渲染数据。
-
 ### 使用 package 模板的注意事项
 
-一般来说，用户使用 package 模板的时候大多数是为了修改默认的 handler 模板；不过，目前 hz 没有提供单个 handler 的模板，所以当 update 已经存在的 handler 文件时，会使用默认 handler 模板在 handler 文件尾追加新的 handler function。当对应的 handler 文件不存在的时候，才会使用自定义模板来生成 handler 文件。
+一般来说，用户使用 package 模板的时候大多数是为了修改默认的 handler 模板；不过，目前 hz 没有提供单个 handler 的模板，所以当 update 已经存在的 handler 文件时，会使用默认 handler_single 模板在 handler 文件尾追加新的 handler function。当对应的 handler 文件不存在的时候，才会使用自定义模板来生成 handler 文件。
