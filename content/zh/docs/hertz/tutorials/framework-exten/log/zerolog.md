@@ -292,7 +292,6 @@ func WithCaller() Opt
 示例代码：
 
 ```go
-//获取路径的最后一个元素
 package main
 
 import (
@@ -323,6 +322,30 @@ func main() {
 
     segments := strings.Split(log.Caller, ":")
     filePath := filepath.Base(segments[0]) //filepath=="logger.go"
+}
+```
+
+### WithCallerSkipFrameCount
+
+`WithCallerSkipFrameCount` 将调用者字段添加到记录器的上下文中， 指定的 `int` 类型的 `skipFrameCount` 将覆盖此上下文各自记录器的全局 `CallerSkipFrameCount`。 如果设置为 -1，将使用全局 `CallerSkipFrameCount`。
+
+函数签名：
+
+```go
+func WithCallerSkipFrameCount(skipFrameCount int) Opt 
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+    "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+    l := zerolog.New(zerolog.WithCallerSkipFrameCount(-1))
 }
 ```
 

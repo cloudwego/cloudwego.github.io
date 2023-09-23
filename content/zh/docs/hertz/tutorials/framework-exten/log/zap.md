@@ -194,6 +194,55 @@ func main() {
     opts := zap.AddCaller()
     l := hertzzap.NewLogger(hertzzap.WithZapOptions(opts,zap.Hooks()))
 }
+```
+### WithExtraKeys
+
+`WithExtraKeys` 用来从上下文中记录额外的值
+
+函数签名：
+
+```go
+type ExtraKey String
+
+func WithExtraKeys(keys []ExtraKey) Option
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+)
+
+func main() {
+    l := hertzzap.NewLogger(hertzzap.WithExtraKeys())
+}
+```
+### WithExtraKeyAsStr
+
+`WithExtraKeyAsStr` 从上下文检索值时将 extraKey 转换为字符串类型，但为了一些情况下的兼容性，并不推荐使用
+
+函数签名：
+
+```go
+func WithExtraKeyAsStr() Option
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+)
+
+func main() {
+    l := hertzzap.NewLogger(hertzzap.WithExtraKeyAsStr())
 }
 ```
 
