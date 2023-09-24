@@ -61,3 +61,11 @@ description: "hz 的基本使用。"
    ```
 
    如果返回`{"message":"pong"}`，说明接口调通。
+
+### 注意事项
+
+`hz new` 只用于初始化项目, 更新项目则使用 `hz update`,
+具体使用方法可参考[使用 protobuf](./usage-protobuf.md) 和 [使用 thrift](./usage-thrift.md)。
+
+
+

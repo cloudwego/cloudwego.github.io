@@ -157,11 +157,14 @@ description: "hz 使用 (thrift)。"
    ```bash
    hz update -idl idl/hello.thrift
    ```
+   **注意**:
+   1. 在编写 update 命令时, 只需要指定定义 `service` 的 IDL文件，hz 会自动将该文件的所有依赖文件都进行生成。
+
 
 3. 可以看到
 
-   在 "biz/handler/hello/example/hello_service.go" 下新增了新的方法<br>
-   在 "biz/handler/hello/example" 下新增了文件 "new_service.go" 以及对应的 "NewMethod" 方法。
+   在 `biz/handler/hello/example/hello_service.go` 下新增了新的方法<br>
+   在 `biz/handler/hello/example` 下新增了文件 `new_service.go` 以及对应的 "NewMethod" 方法。
 
    下面我们来开发 "OtherMethod" 接口：
 

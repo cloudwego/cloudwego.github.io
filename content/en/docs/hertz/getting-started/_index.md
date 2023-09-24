@@ -111,7 +111,18 @@ For more information on how to use hz, please refer to: [hz](https://www.cloudwe
 ### Generate/Complete the Sample Code
 
 1. Create the hertz_demo folder in the current directory and go to that directory.
-2. Generate code `hz new`. If your codes are not placed under `GOPATH`, you need to refer [here](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/) and add `-module` (or `-mod`) flag to name your custom module.
+2. Generating code
+- Use `hz new` directly, if not currently in `GOPATH`, you need to add `-module` or `-mod` flag to specify a custom module name. See [here](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/) for details.
+  - Code generation by specifying an already defined idl file, e.g. `hz new -idl hello.thrift`.
+    ```thrift
+    namespace go hello.world
+
+    service HelloService {
+        string Hello(1: string name); 
+    }
+    ```
+    After execution, a scaffolding of the Hertz project is created in the current directory, with a `ping` interface for testing.
+
 3. Tidy & get dependencies.
 
    ```bash
@@ -147,6 +158,25 @@ If nothing goes wrong, we can see the following output:
 ```
 
 You have now successfully launched Hertz Server successfully and completed an API call.
+
+### Updating project code
+
+If you need to make further updates to the project, you should use the `hz update` command, here is an example of adding a `Bye` method.
+
+```thrift
+namespace go hello.world
+
+service HelloService {
+    string Hello(1: string name); 
+    string Bye(1: string name);
+}
+```
+
+At this point, run `hz update` from the project root directory to update the project.
+
+```bash
+hz update -idl hello.thrift
+```
 
 ## More examples
 

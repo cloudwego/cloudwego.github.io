@@ -109,7 +109,19 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具，可以�
 ### 生成/编写示例代码
 
 1. 在当前目录下创建 hertz_demo 文件夹，进入该目录中。
-2. 生成代码 `hz new`，若当前不在 `GOPATH`，需要添加 `-module` 或者 `-mod` flag 指定一个自定义的模块名称。详细参考[这里](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/)。
+
+2. 生成代码
+  - 直接使用 `hz new`，若当前不在 `GOPATH`，需要添加 `-module` 或者 `-mod` flag 指定一个自定义的模块名称。详细参考[这里](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/)。
+  - 通过指定已经定义好的 idl 文件进行代码生成，例如 `hz new -idl hello.thrift`。
+    ```thrift
+    namespace go hello.world
+    
+    service HelloService {
+        string Hello(1: string name);
+    }
+    ```
+    执行完毕后, 会在当前目录下生成 Hertz 项目的脚手架, 自带一个 `ping` 接口用于测试。 
+
 3. 整理 & 拉取依赖。
 
    ```bash
@@ -145,6 +157,25 @@ curl http://127.0.0.1:8888/ping
 ```
 
 到现在，我们已经成功启动了 Hertz Server，并完成了一次调用。
+
+### 更新项目代码
+
+如果需要对项目进行进一步的更新, 应使用 `hz update` 命令, 这里以添加一个 `Bye` 方法为例。
+
+```thrift
+namespace go hello.world
+
+service HelloService {
+    string Hello(1: string name);
+    string Bye(1: string name);
+}
+```
+
+此时在项目根目录执行 `hz update` 更新项目。
+
+```bash
+hz update -idl hello.thrift
+```
 
 ## 更多示例
 

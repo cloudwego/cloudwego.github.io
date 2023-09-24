@@ -66,3 +66,8 @@ description: "hz basic usage."
    ```
 
    If it returns `{"message":"pong"}`, it works.
+
+### Note
+
+`hz new` is only used to initialize the project, use `hz update` to update the project.
+See [using protobuf](./usage-protobuf.md) and [use thrift](./usage-thrift.md).
