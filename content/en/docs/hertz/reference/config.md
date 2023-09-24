@@ -72,7 +72,7 @@ Server Connection limitation:
 
 ## Client
 
-The configuration items on the Client side all use `server.xxx` when initializing the Server, such as:
+The configuration items on the Client side all use `client.xxx` when initializing the Client, such as:
 
 ```go
 package main
