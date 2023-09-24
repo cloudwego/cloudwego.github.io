@@ -197,7 +197,7 @@ func main() {
 ```
 ### WithExtraKeys
 
-`WithExtraKeys` 用来从上下文中记录额外的值
+ExtraKey是 `zap.config`结构体中用来存储额外键的字段，`WithExtraKeys` 对传入参数进行判断，如果没有被添加到 `zap.config` 中，则将传入的参数添加到`zap.config`
 
 函数签名：
 
@@ -223,7 +223,9 @@ func main() {
 ```
 ### WithExtraKeyAsStr
 
-`WithExtraKeyAsStr` 从上下文检索值时将 extraKey 转换为字符串类型，但为了一些情况下的兼容性，并不推荐使用
+`WithExtraKeyAsStr` 从上下文检索值时将 extraKey 转换为字符串类型，但为了一些情况下的兼容性，并不推荐使用。
+
+一般与 `WithExtraKeys` 一起使用
 
 函数签名：
 
@@ -242,7 +244,7 @@ import (
 )
 
 func main() {
-    l := hertzzap.NewLogger(hertzzap.WithExtraKeyAsStr())
+    l := hertzzap.NewLogger(hertzzap.WithExtraKeys(),hertzzap.WithExtraKeyAsStr())
 }
 ```
 
