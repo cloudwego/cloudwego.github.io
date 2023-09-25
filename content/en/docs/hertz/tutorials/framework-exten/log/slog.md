@@ -2,8 +2,8 @@
 title: "slog"
 linkTitle: "slog"
 weight: 5
-keywords: ["日志扩展", "slog"]
-description: "Hertz 对接 slog 和 lumberjack。"
+keywords: ["Logger Extension", "slog"]
+description: "Hertz interfaces with slog and lumberjack."
 
 ---
 
@@ -20,18 +20,18 @@ type Logger struct {
 
 ## NewLogger
 
-通过 `defaultConfig()` 创建并初始化一个 Logger，便于后续的调用，可将所需配置作为参数传入函数，若不传入参数则安装初始配置创建 Logger
-相关配置请参考后面的 [option 的配置](#option-的相关配置)。
+Create and initialize a Logger through `defaultConfig()`. The required configuration can be passed into the function as a parameter. If no parameters are passed in, the initial configuration will be installed to create the Logger.
+For related configuration, please refer to [option configuration](#option-configuration) below.
 
-目前只支持 slog 库里的 `slog.NewJSONHandler()`，不支持 `slog.NewTextHandler()`
+Currently only `slog.NewJSONHandler()` in the slog library is supported, `slog.NewTextHandler()` is not supported
 
-函数签名：
+Function Signature:
 
 ```go
 func NewLogger(opts ...Option) *Logger
 ```
 
-示例代码：
+Sample code:
 
 ```go
 package main
@@ -47,19 +47,19 @@ func main() {
 }
 ```
 
-## Option 的相关配置
+## Option configuration
 
 ### WithOutput
 
-`WithOutput` 用来设置日志的输出位置
+`WithOutput` is used to set the output location of the log
 
-函数签名：
+Function Signature:
 
 ```go
 func WithOutput(writer io.Writer) Option
 ```
 
-示例代码：
+Sample code:
 
 ```go
 package main
@@ -78,17 +78,17 @@ func main() {
 
 ### WithLevel
 
-`WithLevel` 对传入的 `*slog.LevelVar` 进行判断，高于或等于这个日志级别的才会被记录
+`WithLevel` judges the incoming `*slog.LevelVar`. Only log levels higher than or equal to this will be recorded.
 
-值得注意的是，如果 `WithLevel` 与 `WithHandlerOptions` 一起设置，WithLevel的日志等级会覆盖掉WithHandlerOptions中的日志等级
+It is worth noting that if `WithLevel` is set together with `WithHandlerOptions`, the log level of WithLevel will override the log level in WithHandlerOptions
 
-函数签名：
+Function Signature:
 
 ```go
 func WithLevel(lvl *slog.LevelVar) Option
 ```
 
-示例代码：
+Sample code:
 
 ```go
 package main
@@ -98,10 +98,10 @@ import (
 )
 
 func main() {
-    // 空的 LevelVar 对应 LevelInfo
+    //Empty LevelVar corresponds to LevelInfo
     logger := hertzslog.NewLogger(hertzslog.WithLevel(&slog.LevelVar{}))
 
-    // 动态设置日志登记为 LevelDebug
+    //Dynamically set the log level to Level Debug
     levelVar := slog.LevelVar{}
     levelVar.Set(slog.LevelDebug)
     logger := hertzslog.NewLogger(hertzslog.WithLevel(&slog.LevelVar{})) 
@@ -111,15 +111,15 @@ func main() {
 
 ### WithHandlerOptions
 
-`WithHandlerOptions` 将 `*slog.HandlerOptions` 传入配置
+`WithHandlerOptions` passes `*slog.HandlerOptions` into the configuration
 
-函数名称：
+Function Signature:
 
 ```go
 func WithHandlerOptions(opts *slog.HandlerOptions) Option 
 ```
 
-示例代码：
+Sample code:
 
 ```go
 package main
@@ -137,7 +137,7 @@ func main() {
 }
 ```
 
-## 一个完整的 slog 示例
+## A complete slog example
 
 ```go
 package main
@@ -160,7 +160,7 @@ import (
 func main() {
 	h := server.Default()
 
-	// 可定制的输出目录。
+	// Customizable output directory.
 	var logFilePath string
 	dir := "./hlog"
 	logFilePath = dir + "/logs/"
@@ -180,13 +180,13 @@ func main() {
 	}
 	
 	logger := hertzslog.NewLogger()
-	// 提供压缩和删除
+	// set filename to date
 	lumberjackLogger := &lumberjack.Logger{
-		Filename:   fileName,
-		MaxSize:    20,   // 一个文件最大可达 20M。
-		MaxBackups: 5,    // 最多同时保存 5 个文件。
-		MaxAge:     10,   // 一个文件最多可以保存 10 天。
-		Compress:   true, // 用 gzip 压缩。
+        Filename:   fileName,
+        MaxSize:    20,   // A file can be up to 20M.
+        MaxBackups: 5,    // Save up to 5 files at the same time
+        MaxAge:     10,   // A file can be saved for up to 10 days.
+        Compress:   true, // Compress with gzip.
 	}
 
 	logger.SetOutput(lumberjackLogger)
@@ -203,4 +203,4 @@ func main() {
 }
 ```
 
-适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/slog](https://github.com/hertz-contrib/logger/tree/main/slog)。
+For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/slog](https://github.com/hertz-contrib/logger/tree/main/slog)。

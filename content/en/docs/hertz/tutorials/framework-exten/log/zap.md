@@ -196,6 +196,60 @@ func main() {
 }
 ```
 
+### WithExtraKeys
+
+ExtraKey is a field in the `zap.config` structure used to store extra keys. `WithExtraKeys` judges the incoming parameters. If they are not added to `zap.config`, the incoming parameters are added to `zap .config`
+
+Function Signature:
+
+```go
+type ExtraKey String
+
+func WithExtraKeys(keys []ExtraKey) Option
+```
+
+Sample code:
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+)
+
+func main() {
+    l := hertzzap.NewLogger(hertzzap.WithExtraKeys())
+}
+```
+
+### WithExtraKeyAsStr
+
+`WithExtraKeyAsStr` converts the extraKey to string type when retrieving the value from the context, but this is not recommended for compatibility in some cases.
+
+Typically used with `WithExtraKeys`
+
+Function Signature:
+
+```go
+func WithExtraKeyAsStr() Option
+```
+
+Sample code:
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+)
+
+func main() {
+    l := hertzzap.NewLogger(hertzzap.WithExtraKeys(),hertzzap.WithExtraKeyAsStr())
+}
+```
+
 ## A complete zap example
 
 ```go

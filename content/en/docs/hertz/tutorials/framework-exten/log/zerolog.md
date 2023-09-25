@@ -324,6 +324,33 @@ func main() {
     filePath := filepath.Base(segments[0]) //filepath=="logger.go"
 }
 ```
+### WithCallerSkipFrameCount
+
+`WithCallerSkipFrameCount` adds `caller` to `logger`'s Context. `CallerWithSkipFrameCount` is a method of zerolog's Context structure. It is used to add the caller's file name and line number in the log record, and uses `zerolog.CallerFieldName ` as key name.
+
+This method accepts a `skipFrameCount` parameter, which specifies the number of stack frames to skip to determine the correct caller location. If the `skipFrameCount` parameter is set to -1, the global `CallerSkipFrameCount` value is used.
+
+After calling the `CallerWithSkipFrameCount` method, a new Context structure is created, and the `newCallerHook` method is used to create a new hook and add it to the logger.
+
+Function Signature:
+
+```go
+func WithCallerSkipFrameCount(skipFrameCount int) Opt 
+```
+
+Sample code:
+
+```go
+package main
+
+import (
+    "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+    l := zerolog.New(zerolog.WithCallerSkipFrameCount(-1))
+}
+```
 
 ### WithHook
 
