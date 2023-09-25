@@ -6,7 +6,7 @@ keywords: ["日志扩展", "logrus"]
 description: "Hertz 对接 logrus 和 lumberjack。"
 ---
 
-## Logger
+## Logger 结构体
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -40,6 +40,32 @@ import (
 
 func main() {
     logger := hertzlogrus.NewLogger(hertzlogrus.WithLogger(logrus.New()))
+}
+```
+
+## Logger
+
+`Logger` 用来返回一个 *logrus.Logger 实例以满足复杂操作
+
+函数签名：
+
+```go
+func (l *Logger) Logger() *logrus.Logger
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+    hertzlogrus "github.com/hertz-contrib/logger/logrus"
+    "github.com/sirupsen/logrus"
+)
+
+func main() {
+    logger := hertzlogrus.NewLogger(hertzlogrus.WithLogger(logrus.New()))
+    l := logger.Logger()
 }
 ```
 

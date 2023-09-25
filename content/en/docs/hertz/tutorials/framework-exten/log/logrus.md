@@ -8,7 +8,7 @@ description: "Hertz interfaces with logrus and lumberjack."
 
 ---
 
-## Logger
+## Logger structure
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -42,6 +42,32 @@ import (
 
 func main() {
     logger := hertzlogrus.NewLogger(hertzlogrus.WithLogger(logrus.New()))
+}
+```
+
+## Logger
+
+`Logger` is used to return an instance of *logrus.Logger for custom fields, etc.
+
+Function Signature:
+
+```go
+func (l *Logger) Logger() *logrus.Logger
+```
+
+Sample code:
+
+```go
+package main
+
+import (
+    hertzlogrus "github.com/hertz-contrib/logger/logrus"
+    "github.com/sirupsen/logrus"
+)
+
+func main() {
+    logger := hertzlogrus.NewLogger(hertzlogrus.WithLogger(logrus.New()))
+    l := logger.Logger()
 }
 ```
 

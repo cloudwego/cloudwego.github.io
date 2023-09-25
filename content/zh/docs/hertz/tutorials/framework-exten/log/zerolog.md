@@ -7,7 +7,7 @@ description: "Hertz 对接 zerolog 和 lumberjack。"
 
 ---
 
-## Logger
+## Logger 结构体
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -97,8 +97,38 @@ import (
 func main() {
     logger, err := hertzZerolog.GetLogger()
     if err != nil {
-        fmt.printf("get logger failed")
+        fmt.Printf("get logger failed")
     }
+}
+
+```
+
+## Unwrap
+
+`Unwrap` 返回底层的 zerolog 记录器
+
+函数签名：
+
+```go
+func (l *Logger) Unwrap() zerolog.Logger
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+    "fmt"
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+    logger, err := hertzZerolog.GetLogger()
+    if err != nil {
+        fmt.Printf("get logger failed")
+    }
+    l := logger.Unwrap()
 }
 
 ```

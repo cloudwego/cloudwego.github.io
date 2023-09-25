@@ -6,7 +6,7 @@ keywords: ["Logger Extension", "zap"]
 description: "Hertz interfaces with zap and lumberjack."
 ---
 
-## Logger
+## Logger structure
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -45,6 +45,36 @@ func main() {
 
     hlog.SetLogger(logger)
 }
+
+```
+
+## Logger
+
+`Logger` is used to return an instance of *zap.Logger for custom fields, etc.
+
+Function Signature:
+
+```go
+func (l *Logger) Logger() *zap.Logger
+```
+
+Sample code:
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+    "go.uber.org/zap/zapcore"
+)
+
+func main() {
+    logger := hertzzap.NewLogger(hertzzap.WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
+
+    l := logger.Logger()
+}
+
 
 ```
 

@@ -6,7 +6,7 @@ keywords: ["Logger Extension", "zerolog"]
 description: "Hertz interfaces with zerolog and lumberjack."
 ---
 
-## Logger
+## Logger structure
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -96,8 +96,38 @@ import (
 func main() {
     logger, err := hertzZerolog.GetLogger()
     if err != nil {
-        fmt.printf("get logger failed")
+        fmt.Printf("get logger failed")
     }
+}
+
+```
+
+## Unwrap
+
+`Unwrap` returns the underlying zerolog logger
+
+Function Signature:
+
+```go
+func (l *Logger) Unwrap() zerolog.Logger
+```
+
+Sample code:
+
+```go
+package main
+
+import (
+    "fmt"
+    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
+)
+
+func main() {
+    logger, err := hertzZerolog.GetLogger()
+    if err != nil {
+        fmt.Printf("get logger failed")
+    }
+    l := logger.Unwrap()
 }
 
 ```

@@ -7,7 +7,7 @@ description: "Hertz 对接 slog 和 lumberjack。"
 
 ---
 
-## Logger
+## Logger 结构体
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -39,11 +39,38 @@ package main
 import (
     "github.com/cloudwego/hertz/pkg/common/hlog"
     hertzslog "github.com/hertz-contrib/logger/slog"
+    "os"
 )
 
 func main() {
     logger := hertzslog.NewLogger(hertzslog.WithOutput(os.Stdout))
     hlog.SetLogger(logger)
+}
+```
+
+## Logger
+
+`Logger` 用于获取 *slog.Logger 以满足复杂操作
+
+函数签名：
+
+```go
+func (l *Logger) Logger() *slog.Logger
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+    hertzslog "github.com/hertz-contrib/logger/slog"
+    "os"
+)
+
+func main() {
+    logger := hertzslog.NewLogger(hertzslog.WithOutput(os.Stdout))
+    l := logger.Logger()
 }
 ```
 

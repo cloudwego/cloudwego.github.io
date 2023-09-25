@@ -7,7 +7,7 @@ description: "Hertz 对接 zap 和 lumberjack。"
 
 ---
 
-## Logger
+## Logger 结构体
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -46,6 +46,36 @@ func main() {
 
     hlog.SetLogger(logger)
 }
+
+```
+
+## Logger
+
+`Logger` 用来返回一个 *zap.Logger 实例以满足复杂操作
+
+函数签名：
+
+```go
+func (l *Logger) Logger() *zap.Logger
+```
+
+事例代码：
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+    "go.uber.org/zap/zapcore"
+)
+
+func main() {
+    logger := hertzzap.NewLogger(hertzzap.WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
+
+    l := logger.Logger()
+}
+
 
 ```
 
