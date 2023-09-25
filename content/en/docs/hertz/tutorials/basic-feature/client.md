@@ -104,8 +104,9 @@ func main() {
 		client.WithConnStateObserve(stateFunc, observeInterval),
 		client.WithDialFunc(customDialFunc, netpoll.NewDialer()),
 		client.WithHostClientConfigHook(func(hc interface{}) error {
-			hct, ok := hc.(*http1.HostClient)
-			hct.Addr = "FOO.BAR:443"
+			if hct, ok := hc.(*http1.HostClient); ok {
+				hct.Addr = "FOO.BAR:443"
+			}
 			return nil
 		})
 	)

@@ -84,20 +84,20 @@ func main() {
 }
 ```
 
-|  配置名称 | 类型 | 说明                      |
-|  :----  | :----  |:------------------------|
-| WithDialTimeout | time.Duration | 连接建立超时时间，默认 1s          |
+|  配置名称 | 类型 | 说明 |
+|  :----  | :----  |:-|
+| WithDialTimeout | time.Duration | 连接建立超时时间，默认 1s |
 | WithMaxConnsPerHost | int | 设置为每个 host 建立的最大连接数，默认 512 |
 | WithMaxIdleConnDuration | time.Duration | 设置空闲连接超时时间，当超时后会关闭该连接，默认 10s |
 | WithMaxConnDuration | time.Duration | 设置连接存活的最大时长，超过这个时间的连接在完成当前请求后会被关闭，默认无限长 |
-| WithMaxConnWaitTimeout | time.Duration | 设置等待空闲连接的最大时间，默认不等待     |
-| WithKeepAlive | bool | 是否使用长连接，默认开启            |
+| WithMaxConnWaitTimeout | time.Duration | 设置等待空闲连接的最大时间，默认不等待 |
+| WithKeepAlive | bool | 是否使用长连接，默认开启 |
 | WithRetryConfig | ...retry.Option | 设置 client 的 retry config。Hertz 版本需 >= v0.4.0 |
 | ~~WithMaxIdempotentCallAttempts~~ | int | 设置最大调用次数，调用失败则会重试。默认 1 次即不重试。v0.4.0 版本废止，该版本之前可用，建议升级 Hertz 版本 >= v0.4.0 并使用 WithRetryConfig 替代 |
 | WithClientReadTimeout | time.Duration | 设置读取 response 的最长时间，默认无限长 |
 | WithTLSConfig | *tls.Config | 双向 TLS 认证时，设置 client 的 TLS config |
 | WithDialer | network.Dialer | 设置 client 使用的网络库，默认 netpoll |
-| WithResponseBodyStream | bool | 设置是否使用流式处理，默认关闭         |
-| WithDialFunc | client.DialFunc | 设置 Dial Function        |
-| WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长        |
-| WithHostClientConfigHook | func(hc interface{}) error | 设置hook函数来重新配置host client|
+| WithResponseBodyStream | bool | 设置是否使用流式处理，默认关闭 |
+| WithDialFunc | client.DialFunc | 设置 Dial Function |
+| WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长 |
+| WithHostClientConfigHook | func(hc interface{}) error | 设置hook函数来重新配置host client，传入的func需要将参数hc断言为需要的结构体，比如http1.HostClient，再进行具体处理|
