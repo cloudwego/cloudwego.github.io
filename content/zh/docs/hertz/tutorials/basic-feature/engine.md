@@ -20,7 +20,7 @@ type Hertz struct {
 
 ## 配置
 
-|  配置项   | 默认值  |  说明  |
+|  配置项   | 默认值  | 说明   |
 |  :----  | :----  | :---- |
 | WithTransport  | network.NewTransporter | 更换底层 transport |
 | WithHostPorts  | `:8888` | 指定监听的地址和端口 |
@@ -56,6 +56,7 @@ type Hertz struct {
 | WithDisablePrintRoute | false | 设置是否禁用 debugPrintRoute |
 | WithOnAccept | nil | 设置在 netpoll 中当一个连接被接受但不能接收数据时的回调函数，在 go net 中在转换 TLS 连接之前被调用 |
 | WithOnConnect | nil | 设置 onConnect 函数。它可以接收来自 netpoll 连接的数据。在 go net 中，它将在转换 TLS 连接后被调用 |
+| WithDisableHeaderNamesNormalizing|false|设置是否禁用 Request 和 Response Header 名字的规范化 (首字母和破折号后第一个字母大写)|
 
 Server Connection 数量限制:
 
@@ -286,7 +287,7 @@ Hertz Server 支持流式写入响应。
 提供了两种方式：
 
 1. 用户在 handler 中通过 `ctx.SetBodyStream` 函数传入一个 `io.Reader`，然后按与示例代码（利用 channel 控制数据分块及读写顺序）类似的方式分块读写数据。**注意，数据需异步写入。**
-   
+  
     若用户事先知道传输数据的总长度，可以在 `ctx.SetBodyStream` 函数中传入该长度进行流式写，示例代码如 `/streamWrite1`。
 
     若用户事先不知道传输数据的总长度，可以在 `ctx.SetBodyStream` 函数中传入 -1 以 `Transfer-Encoding: chunked` 的方式进行流式写，示例代码如 `/streamWrite2`。
@@ -296,12 +297,12 @@ Hertz Server 支持流式写入响应。
     ```go
     func main() {
         h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
-
+    
         h.GET("/streamWrite1", func(c context.Context, ctx *app.RequestContext) {
             rw := newChunkReader()
             line := []byte("line\r\n")
             ctx.SetBodyStream(rw, 500*len(line))
-
+    
             go func() {
                 for i := 1; i <= 500; i++ {
                     // For each streaming_write, the upload_file prints
@@ -311,19 +312,19 @@ Hertz Server 支持流式写入响应。
                 }
                 rw.Close()
             }()
-
+    
             go func() {
                 <-ctx.Finished()
                 fmt.Println("request process end")
             }()
         })
-
+    
         h.GET("/streamWrite2", func(c context.Context, ctx *app.RequestContext) {
             rw := newChunkReader()
             // Content-Length may be negative:
             // -1 means Transfer-Encoding: chunked.
             ctx.SetBodyStream(rw, -1)
-
+    
             go func() {
                 for i := 1; i < 1000; i++ {
                     // For each streaming_write, the upload_file prints
@@ -333,22 +334,22 @@ Hertz Server 支持流式写入响应。
                 }
                 rw.Close()
             }()
-
+    
             go func() {
                 <-ctx.Finished()
                 fmt.Println("request process end")
             }()
         })
-
+    
         h.Spin()
     }
-
+    
     type ChunkReader struct {
         rw  bytes.Buffer
         w2r chan struct{}
         r2w chan struct{}
     }
-
+    
     func newChunkReader() *ChunkReader {
         var rw bytes.Buffer
         w2r := make(chan struct{})
@@ -356,9 +357,9 @@ Hertz Server 支持流式写入响应。
         cr := &ChunkReader{rw, w2r, r2w}
         return cr
     }
-
+    
     var closeOnce = new(sync.Once)
-
+    
     func (cr *ChunkReader) Read(p []byte) (n int, err error) {
         for {
             _, ok := <-cr.w2r
@@ -369,25 +370,25 @@ Hertz Server 支持流式写入响应。
                 n, err = cr.rw.Read(p)
                 return
             }
-
+    
             n, err = cr.rw.Read(p)
-
+    
             cr.r2w <- struct{}{}
-
+    
             if n == 0 {
                 continue
             }
             return
         }
     }
-
+    
     func (cr *ChunkReader) Write(p []byte) (n int, err error) {
         n, err = cr.rw.Write(p)
         cr.w2r <- struct{}{}
         <-cr.r2w
         return
     }
-
+    
     func (cr *ChunkReader) Close() {
         close(cr.w2r)
     }
@@ -402,7 +403,7 @@ Hertz Server 支持流式写入响应。
     h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
 		// Hijack the writer of response
 		ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
-
+    
 		for i := 0; i < 10; i++ {
 			ctx.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
 			ctx.Flush()                                                                 // nolint: errcheck
