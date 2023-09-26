@@ -46,27 +46,27 @@ func main() {
 
 ## Client Config
 
-| **Option**                    | **Default**    | **Description** |
-| ----------------------------- |----------------| --------------- |
-| WithDialTimeout                   | 1s             | dial timeout.   |
+| **Option**                    | **Default**    | **Description**                                         |
+| ----------------------------- |----------------|---------------------------------------------------------|
+| WithDialTimeout                   | 1s             | dial timeout.                                           |
 | WithMaxConnsPerHost               | 512            | maximum number of connections per host which may be established. |
 | WithMaxIdleConnDuration           | 10s            | max idle connection duration, idle keep-alive connections are closed after this duration. |
 | WithMaxConnDuration               | 0s             | max connection duration, keep-alive connections are closed after this duration. |
-| WithMaxConnWaitTimeout            | 0s             | maximum duration for waiting for a free connection. |
+| WithMaxConnWaitTimeout            | 0s             | maximum duration for waiting for a free connection.     |
 | WithKeepAlive                     | true           | determines whether use keep-alive connection, default use. |
 | WithClientReadTimeout             | 0s             | maximum duration for full response reading (including body). |
 | WithTLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/protocol/tls/). |
-| WithDialer                        | network.Dialer | specific dialer. |
+| WithDialer                        | network.Dialer | specific dialer.                                        |
 | WithResponseBodyStream            | false          | determine whether read body in stream or not, default not read in stream. |
 | WithDisableHeaderNamesNormalizing | false          | whether disable header names normalizing, default not disabled, for example, cONTENT-lenGTH -> Content-Length. |
-| WithName                          | ""             | client name which used in User-Agent Header. |
+| WithName                          | ""             | client name which used in User-Agent Header.            |
 | WithNoDefaultUserAgentHeader      | false          | whether no default User-Agent header, default with User-Agent header. |
 | WithDisablePathNormalizing        | false          | whether disable path normalizing, default specification path, for example, http://localhost:8080/hello/../ hello -> http://localhost:8080/hello. |
 | WithRetryConfig                   | nil            | retry configuration, for specific configuration information, please refer to [retry](/docs/hertz/tutorials/basic-feature/retry/). |
-| WithWriteTimeout                  | 0s             | write timeout.  |
+| WithWriteTimeout                  | 0s             | write timeout.                                          |
 | WithConnStateObserve        | nil, 5s        | set function to observe and record the connection status of HTTP client, as well as observe execution intervals. |
-| WithDialFunc                      | network.Dialer | set dialer function. |
-| WithHostClientConfigHook          | nil            | Set the function hook for re-configure the host client|
+| WithDialFunc                      | network.Dialer | set dialer function.                                    |
+| WithHostClientConfigHook          | nil            | Set the function hook for re-configure the host client. |
 
 Sample Code:
 
