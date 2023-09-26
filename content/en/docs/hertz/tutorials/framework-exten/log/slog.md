@@ -21,7 +21,7 @@ type Logger struct {
 ## NewLogger
 
 Create and initialize a Logger through `defaultConfig()`. The required configuration can be passed into the function as a parameter. If no parameters are passed in, the initial configuration will be installed to create the Logger.
-For related configuration, please refer to [option configuration](#option-configuration) below.
+For related configuration, please refer to [option configuration](#option-configuration) below
 
 Currently only `slog.NewJSONHandler()` in the slog library is supported, `slog.NewTextHandler()` is not supported
 
@@ -105,7 +105,7 @@ func main() {
 
 ### WithLevel
 
-`WithLevel` judges the incoming `*slog.LevelVar`. Only log levels higher than or equal to this will be recorded.
+`WithLevel` judges the incoming `*slog.LevelVar`. Only log levels higher than or equal to this will be recorded
 
 It is worth noting that if `WithLevel` is set together with `WithHandlerOptions`, the log level of WithLevel will override the log level in WithHandlerOptions
 
@@ -180,7 +180,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-    hertzslog "github.com/hertz-contrib/logger/slog"
+	hertzslog "github.com/hertz-contrib/logger/slog"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -230,4 +230,4 @@ func main() {
 }
 ```
 
-For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/slog](https://github.com/hertz-contrib/logger/tree/main/slog)。
+For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/slog](https://github.com/hertz-contrib/logger/tree/main/slog)

@@ -21,7 +21,7 @@ type Logger struct {
 ## NewLogger
 
 通过 `defaultConfig()` 创建并初始化一个 Logger，便于后续的调用，可将所需配置作为参数传入函数，若不传入参数则安装初始配置创建 Logger
-相关配置请参考后面的 [option 的配置](#option-的相关配置)。
+相关配置请参考后面的 [option 的配置](#option-的相关配置)
 
 函数签名：
 
@@ -29,7 +29,7 @@ type Logger struct {
 func NewLogger(opts ...Option) *Logger
 ```
 
-事例代码：
+示例代码：
 
 ```go
 package main
@@ -59,7 +59,7 @@ func main() {
 func (l *Logger) Logger() *zap.Logger
 ```
 
-事例代码：
+示例代码：
 
 ```go
 package main
@@ -344,4 +344,4 @@ func main() {
 }
 ```
 
-适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
+适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)

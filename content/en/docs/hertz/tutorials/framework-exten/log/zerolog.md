@@ -136,7 +136,7 @@ func main() {
 
 ### WithOutput
 
-`WithOutput` returns an Opt function through zerolog's `zerolog.Context.Logger().Output(out).With()`, allowing to specify the output of the logger. By default, it is set to `os.Stdout`.
+`WithOutput` returns an Opt function through zerolog's `zerolog.Context.Logger().Output(out).With()`, allowing to specify the output of the logger. By default, it is set to `os.Stdout`
 
 Function Signature:
 
@@ -163,7 +163,7 @@ func main() {
 
 ### WithLevel
 
-`WithLevel` specifies the level of the logger through zerolog's built-in `zerolog.Context.Logger().Level(lvl).With()` method. Convert hlog.Level to zerolog.level by `matchHlogLevel()`. By default it is set to WarnLevel.
+`WithLevel` specifies the level of the logger through zerolog's built-in `zerolog.Context.Logger().Level(lvl).With()` method. Convert hlog.Level to zerolog.level by `matchHlogLevel()`. By default it is set to WarnLevel
 
 Function Signature:
 
@@ -356,11 +356,11 @@ func main() {
 ```
 ### WithCallerSkipFrameCount
 
-`WithCallerSkipFrameCount` adds `caller` to `logger`'s Context. `CallerWithSkipFrameCount` is a method of zerolog's Context structure. It is used to add the caller's file name and line number in the log record, and uses `zerolog.CallerFieldName ` as key name.
+`WithCallerSkipFrameCount` adds `caller` to `logger`'s Context. `CallerWithSkipFrameCount` is a method of zerolog's Context structure. It is used to add the caller's file name and line number in the log record, and uses `zerolog.CallerFieldName ` as key name
 
-This method accepts a `skipFrameCount` parameter, which specifies the number of stack frames to skip to determine the correct caller location. If the `skipFrameCount` parameter is set to -1, the global `CallerSkipFrameCount` value is used.
+This method accepts a `skipFrameCount` parameter, which specifies the number of stack frames to skip to determine the correct caller location. If the `skipFrameCount` parameter is set to -1, the global `CallerSkipFrameCount` value is used
 
-After calling the `CallerWithSkipFrameCount` method, a new Context structure is created, and the `newCallerHook` method is used to create a new hook and add it to the logger.
+After calling the `CallerWithSkipFrameCount` method, a new Context structure is created, and the `newCallerHook` method is used to create a new hook and add it to the logger
 
 Function Signature:
 
@@ -532,4 +532,4 @@ func main() {
 }
 ```
 
-For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)。
+For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/zerolog](https://github.com/hertz-contrib/logger/tree/main/zerolog)

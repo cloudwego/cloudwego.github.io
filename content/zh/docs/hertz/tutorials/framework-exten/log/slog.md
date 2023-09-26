@@ -21,7 +21,7 @@ type Logger struct {
 ## NewLogger
 
 通过 `defaultConfig()` 创建并初始化一个 Logger，便于后续的调用，可将所需配置作为参数传入函数，若不传入参数则安装初始配置创建 Logger
-相关配置请参考后面的 [option 的配置](#option-的相关配置)。
+相关配置请参考后面的 [option 的配置](#option-的相关配置)
 
 目前只支持 slog 库里的 `slog.NewJSONHandler()`，不支持 `slog.NewTextHandler()`
 
@@ -180,7 +180,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-    hertzslog "github.com/hertz-contrib/logger/slog"
+	hertzslog "github.com/hertz-contrib/logger/slog"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -230,4 +230,4 @@ func main() {
 }
 ```
 
-适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/slog](https://github.com/hertz-contrib/logger/tree/main/slog)。
+适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/slog](https://github.com/hertz-contrib/logger/tree/main/slog)

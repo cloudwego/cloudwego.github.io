@@ -22,7 +22,7 @@ type Logger struct {
 ## NewLogger
 
 `NewLogger` uses `defaultConfig()` to create and initialize a Logger. The required configuration can be passed into the function as a parameter. If no parameter is passed in, the initial configuration will be installed to create `Logger`
-For related configuration, please refer to "option configuration" below.
+For related configuration, please refer to "option configuration" below
 
 Function Signature:
 
@@ -47,7 +47,7 @@ func main() {
 
 ## Logger
 
-`Logger` is used to return an instance of *logrus.Logger for custom fields, etc.
+`Logger` is used to return an instance of *logrus.Logger for custom fields, etc
 
 Function Signature:
 
@@ -199,4 +199,4 @@ func main() {
 }
 ```
 
-For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)。
+For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/logrus](https://github.com/hertz-contrib/logger/tree/main/logrus)
