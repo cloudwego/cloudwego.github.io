@@ -102,4 +102,4 @@ func main() {
 | WithResponseBodyStream | bool | Set whether to use stream processing. Default: false. |
 | WithDialFunc | client.DialFunc | Set Dial Function. |
 | WithWriteTimeout | time.Duration | The timeout of data writing. Default：infinite. |
-| WithHostClientConfigHook | func(hc interface{}) error | Set the function hook for re-configure the host client.The func needs to assert the parameter hc as the required struct, such as http1.HostClient, and then perform specific processing.|
+| WithHostClientConfigHook | func(hc interface{}) error | Set the function hook for re-configure the host client. The function needs to assert the parameter hc as the required struct, such as http1.HostClient, and then perform specific processing. |
