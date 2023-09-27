@@ -51,7 +51,7 @@ func main() {
 
 ## Logger
 
-`Logger` 用来返回一个 *zap.Logger 实例以满足复杂操作
+`Logger` 用来返回一个 `*zap.Logger` 实例以满足复杂操作
 
 函数签名：
 
@@ -111,7 +111,7 @@ func main() {
 
 ### WithCoreWs
 
-`WithCoreWs` 通过内置的 `zapcore.AddSync(file)` 指定日志写入的位置，将 zapcore.WriteSyncer 传入配置
+`WithCoreWs` 通过内置的 `zapcore.AddSync(file)` 指定日志写入的位置，将 `zapcore.WriteSyncer` 传入配置
 
 函数签名：
 
@@ -165,7 +165,7 @@ func main() {
 
 ### WithCores
 
-`WithCores` 将 `zapcore.Encoder`，`zapcore.WriteSyncer`，`zap.AtomicLevel` 组合进的 CoreConfig 传入配置
+`WithCores` 将 `zapcore.Encoder`，`zapcore.WriteSyncer`，`zap.AtomicLevel` 组合进的 `CoreConfig` 传入配置
 
 函数签名：
 
@@ -227,7 +227,7 @@ func main() {
 ```
 ### WithExtraKeys
 
-ExtraKey是 `zap.config`结构体中用来存储额外键的字段，`WithExtraKeys` 对传入参数进行判断，如果没有被添加到 `zap.config` 中，则将传入的参数添加到`zap.config`
+`ExtraKey` 是 `zap.config`结构体中用来存储额外键的字段，`WithExtraKeys` 对传入参数进行判断，如果没有被添加到 `zap.config` 中，则将传入的参数添加到`zap.config`
 
 函数签名：
 
@@ -253,7 +253,7 @@ func main() {
 ```
 ### WithExtraKeyAsStr
 
-`WithExtraKeyAsStr` 从上下文检索值时将 extraKey 转换为字符串类型，但为了一些情况下的兼容性，并不推荐使用。
+`WithExtraKeyAsStr` 从上下文检索值时将 `extraKey` 转换为字符串类型，但为了一些情况下的兼容性，并不推荐使用。
 
 一般与 `WithExtraKeys` 一起使用
 

@@ -50,7 +50,7 @@ func main() {
 
 ## Logger
 
-`Logger` is used to return an instance of *zap.Logger for custom fields, etc
+`Logger` is used to return an instance of `*zap.Logger` for custom fields, etc
 
 Function Signature:
 
@@ -82,7 +82,7 @@ func main() {
 
 ### WithCoreEnc
 
-Encoder is a format-agnostic interface for all log entry marshalers, `WithCoreEnc` passes zapcore.Encoder into configuration
+Encoder is a format-agnostic interface for all log entry marshalers, `WithCoreEnc` passes `zapcore.Encoder` into configuration
 
 Function Signature:
 
@@ -138,7 +138,7 @@ func main() {
 
 ### WithCoreLevel
 
-`WithCoreLevel` passes zap.AtomicLevel into configuration
+`WithCoreLevel` passes `zap.AtomicLevel` into configuration
 
 Function Signature:
 
@@ -164,7 +164,7 @@ func main() {
 
 ### WithCores
 
-`WithCores` passes zapcore.Encoder, zapcore.WriteSyncer, zap.AtomicLevel into CoreConfig into the configuration
+`WithCores` passes `zapcore.Encoder`, `zapcore.WriteSyncer`, `zap.AtomicLevel` into `CoreConfig` into the configuration
 
 Function Signature:
 
@@ -228,7 +228,7 @@ func main() {
 
 ### WithExtraKeys
 
-ExtraKey is a field in the `zap.config` structure used to store extra keys. `WithExtraKeys` judges the incoming parameters. If they are not added to `zap.config`, the incoming parameters are added to `zap .config`
+`ExtraKey` is a field in the `zap.config` structure used to store extra keys. `WithExtraKeys` judges the incoming parameters. If they are not added to `zap.config`, the incoming parameters are added to `zap .config`
 
 Function Signature:
 
