@@ -6,10 +6,9 @@ description: >
 
 ---
 
-hertz 使用开源库 [go-tagexpr](https://github.com/bytedance/go-tagexpr) 进行参数的绑定及验证，下面分别介绍参数绑定和参数验证的用法。
-
 ## 使用方法
 
+### 示例
 ```go
 func main() {
 	r := server.New()
@@ -20,17 +19,18 @@ func main() {
             A string `query:"a" vd:"$!='Hertz'"`
         }
 
-        // BindAndValidate
+        // BindAndValidate 在绑定成功后还会做一次参数校验
         var req Test
         err := ctx.BindAndValidate(&req)
 
         ...
 
-	    // Bind
+	    // Bind 只做参数绑定
         req = Test{}
         err = ctx.Bind(&req)
 
         ...
+		
 
         // Validate，需要使用 "vd" tag
         err = ctx.Validate(&req)
@@ -41,19 +41,35 @@ func main() {
 }
 ```
 
+### 全部 API
+
+| API                 | 说明                                                                                                                                      |
+|:--------------------|:----------------------------------------------------------------------------------------------------------------------------------------|
+| ctx.BindAndValidate | 利用下述的 go-tag 进行参数绑定，并在绑定成功后做一次参数校验(如果有校验 tag 的话)                                                                                        |
+| ctx.Bind                | 同 "BindAndValidate" 但是不做参数校验                                                                                                            |
+| ctx.BindQuery           | 绑定所有 Query 参数，相当于给每一个 field 声明一个 'query' tag，适用于没写 tag 的场景                                                                              |
+| ctx.BindHeader          | 绑定所有 Header 参数，相当于给每一个 field 声明一个 'header' tag，适用于没写 tag 的场景                                                                            |
+| ctx.BindPath            | 绑定所有 Path 参数，相当于给每一个 field 声明一个 'path' tag，适用于没写 tag 的场景                                                                                |
+| ctx.BindForm            | 绑定所有 Form 参数，相当于给每一个 field 声明一个 'form' tag，需要 Content-Type 为: "application/x-www-form-urlencoded"/"multipart/form-data",  适用于没写 tag 的场景 |
+| ctx.BindJSON            | 绑定 JSON Body，调用 json.Unmarshal() 进行反序列化，需要 Body 为 "application/json" 格式                                                                 |
+| ctx.BindProtobuf        | 绑定 Protobuf Body，调用 proto.Unmarshal() 进行反序列化，需要 Body 为 "application/x-protobuf" 格式                                                      |
+| ctx.BindByContentType   | 根据 Content-Type 来自动选择绑定的方法，其中 "GET" 请求会调用 BindQuery(), 带有 Body 的请求会根据 Content-Type 自动选择                                                 |
+| ctx.Validate            | 进行参数校验，需要校验 tag 配合使用(默认校验 tag: vd)                                                                                                      |
+
+
 ## 支持的 tag 及参数绑定优先级
 
 ### 支持的 tag
 
-| go tag  |  说明  |
-| :----  | :---- |
-| path | 绑定 url 上的路径参数，相当于 hertz 路由{:param}或{*param}中拿到的参数。例如：如果定义的路由为: /v:version/example，可以把 path 的参数指定为路由参数：`path:"version"`，此时，url: http://127.0.0.1:8888/v1/example，可以绑定path参数"1" |
-| form | 绑定请求的 body 内容。content-type -> `multipart/form-data` 或 `application/x-www-form-urlencoded`，绑定 form 的 key-value |
-| query | 绑定请求的 query 参数 |
-| header | 绑定请求的 header 参数 |
-| json | 绑定请求的 body 内容 content-type -> `application/json`，绑定 json 参数 |
-| raw_body | 绑定请求的原始 body(bytes)，绑定的字段名不指定，也能绑定参数。（注：raw_body 绑定优先级最低，当指定多个 tag 时，一旦其他 tag 成功绑定参数，则不会绑定 body 内容。） |
-| vd | 参数校验，[校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator) |
+| go tag  |  说明  | 示例                    |
+| :----  | :---- |:----------------------|
+| path | 绑定 url 上的路径参数，相当于 hertz 路由{:param}或{*param}中拿到的参数。例如：如果定义的路由为: /v:version/example，可以把 path 的参数指定为路由参数：`path:"version"`，此时，url: http://127.0.0.1:8888/v1/example，可以绑定path参数"1" | `path:"verison"`      |
+| form | 绑定请求的 body 内容。content-type -> `multipart/form-data` 或 `application/x-www-form-urlencoded`，绑定 form 的 key-value | `form:"form-key"`     |
+| query | 绑定请求的 query 参数 | `query:"query-key"`   |
+| header | 绑定请求的 header 参数 | `header:"header-key"` |
+| json | 绑定请求的 body 内容 content-type -> `application/json`，绑定 json 参数 | `json:"json-key"`     |
+| raw_body | 绑定请求的原始 body(bytes)，绑定的字段名不指定，也能绑定参数。（注：raw_body 绑定优先级最低，当指定多个 tag 时，一旦其他 tag 成功绑定参数，则不会绑定 body 内容。） | `raw_body:""`         |
+| vd | 参数校验，[校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator) | `vd:"$>0"`            |
 
 ### 参数绑定优先级
 
@@ -67,20 +83,174 @@ path > form > query > cookie > header > json > raw_body
 通过在 tag 中添加 `required`，可以将参数标记为必传。当绑定失败时 `Bind` 和 `BindAndValidate` 将会返回错误。当多个 tag 包含 `required` 时，将会按照优先级绑定。如果所有 tag 都没有绑定上，则会返回错误。
 ``` go  
 type TagRequiredReq struct {
-	// 当 JSON 中没有 hertz 字段时，会返回 required 错误：binding: expr_path=hertz, cause=missing required parameter
+	// 当 JSON 中没有 hertz 字段时，会返回 required 错误
 	Hertz string `json:"hertz,required"`
-	// 当 query 和 JSON 中同时没有 kitex 字段时，会返回 required 错误：binding: expr_path=hertz, cause=missing required parameter"
+	// 当 query 和 JSON 中同时没有 kitex 字段时，会返回 required 错误
 	Kitex string `query:"kitex,required" json:"kitex,required" `
 }
 ```
 
-## 常见用法
+## 常用配置
+> hertz 在 v0.7.0 版本对参数绑定&校验进行重构，重构后配置的行为发生变更，下面将分别介绍<br>
+> 如果还想使用之前的绑定器，目前已把其实现放到了 hertz-contrib 下，可通过自定义 binder 引入
+
+### 自定义 binder
+> hertz version >= v0.7.0 支持
+
+需要实现 Binder 接口，并通过配置方式注入到 hertz engine
+```go
+type Binder interface {
+	Name() string // 绑定器的名字
+	// 下面为各种绑定方法
+	Bind(*protocol.Request, interface{}, param.Params) error
+	BindAndValidate(*protocol.Request, interface{}, param.Params) error
+	BindQuery(*protocol.Request, interface{}) error
+	BindHeader(*protocol.Request, interface{}) error
+	BindPath(*protocol.Request, interface{}, param.Params) error
+	BindForm(*protocol.Request, interface{}) error
+	BindJSON(*protocol.Request, interface{}) error
+	BindProtobuf(*protocol.Request, interface{}) error
+}
+```
+注入
+```go
+
+func main() {
+    // 通过配置的方式注入自定义 binder
+    h := server.New(server.WithCustomBinder(&mockBinder{}))
+    ...
+    h.Spin()
+}
+
+
+type mockBinder struct{}
+
+func (m *mockBinder) Name() string {
+	return "test binder"
+}
+
+func (m *mockBinder) Bind(request *protocol.Request, i interface{}, params param.Params) error {
+	return nil
+}
+
+func (m *mockBinder) BindAndValidate(request *protocol.Request, i interface{}, params param.Params) error {
+	return fmt.Errorf("test binder")
+}
+
+func (m *mockBinder) BindQuery(request *protocol.Request, i interface{}) error {
+	return nil
+}
+
+func (m *mockBinder) BindHeader(request *protocol.Request, i interface{}) error {
+	return nil
+}
+
+func (m *mockBinder) BindPath(request *protocol.Request, i interface{}, params param.Params) error {
+	return nil
+}
+
+func (m *mockBinder) BindForm(request *protocol.Request, i interface{}) error {
+	return nil
+}
+
+func (m *mockBinder) BindJSON(request *protocol.Request, i interface{}) error {
+	return nil
+}
+
+func (m *mockBinder) BindProtobuf(request *protocol.Request, i interface{}) error {
+	return nil
+}
+
+```
+
+目前已拓展的绑定器：
+* go-tagexpr:  
+
+### 自定义 validator
+> hertz version >= v0.7.0 支持
+
+需要实现 Validator 接口，并通过配置方式注入到 hertz engine
+```go
+type StructValidator interface {
+    ValidateStruct(interface{}) error // 校验函数
+    Engine() interface{} // 返回底层的 Validator
+    ValidateTag() string // 校验的 tag, 声明校验器使用的 tag
+}
+```
+注入
+```go
+
+func main() {
+	// 通过配置的方式注入自定义 binder
+    h := server.New(server.WithCustomValidator(&mockValidator{}))
+    ...
+    h.Spin()
+}
+
+type mockValidator struct{}
+
+func (m *mockValidator) ValidateStruct(interface{}) error {
+    return fmt.Errorf("test mock validator")
+}
+
+func (m *mockValidator) Engine() interface{} {
+    return nil
+}
+
+func (m *mockValidator) ValidateTag() string {
+    return "vt"
+}
+
+```
+目前已拓展的校验器：
+* go-playground/validator: 
 
 ### 自定义 bind 和 validate 的 Error
+绑定参数发生错误和参数校验失败的时候，用户可以自定义 Error 的内容，使用方法如下：<br>
+**hertz version >= v0.7.0**
+> 暂不支持自定义 bind error
 
-绑定参数发生错误和参数校验失败的时候，用户可以自定义的 Error（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_error) ），使用方法如下：
-
+自定义错误 error:
 ```go
+package main
+import (
+	"github.com/cloudwego/hertz/pkg/app/server/binding"
+	"github.com/cloudwego/hertz/pkg/app/server"
+)
+
+type ValidateError struct {
+   ErrType, FailField, Msg string
+}
+
+// Error implements error interface.
+func (e *ValidateError) Error() string {
+   if e.Msg != "" {
+      return e.ErrType + ": expr_path=" + e.FailField + ", cause=" + e.Msg
+   }
+   return e.ErrType + ": expr_path=" + e.FailField + ", cause=invalid"
+}
+
+func main() {
+    validateConfig := &binding.ValidateConfig{}
+    validateConfig.SetValidatorErrorFactory(func(failField, msg string) error {
+        err := ValidateError{
+            ErrType:   "validateErr",
+            FailField: "[validateFailField]: " + failField,
+            Msg:       "[validateErrMsg]: " + msg,
+        }
+        
+        return &err
+        })
+    h := server.New(server.WithValidateConfig(validateConfig))
+    ...
+    h.Spin()
+}
+```
+**hertz version < v0.7.0**<br>
+[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_error)
+```go
+package main
+
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
 
 type BindError struct {
@@ -133,10 +303,53 @@ func init() {
 ```
 
 ### 自定义类型解析
+在参数绑定的时候, 针对某些特殊类型, 默认行为无法满足需求, 可使用自定义类型解析来解决, 使用方法如下:<br>
+**hertz version >= v0.7.0**<br>
+```go
+package main
 
-在参数绑定的时候，所有的 request 参数都是 `string` 或者 `[]string`；当有一些 field 的类型为非基础类型或者无法直接通过 `string` 转换，则可以自定义类型解析（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_type_resolve) ）。使用方法如下:
+import (
+    "github.com/cloudwego/hertz/pkg/app/server/binding"
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
+
+type Nested struct {
+   B string
+   C string
+}
+
+type TestBind struct {
+   A Nested `query:"a,required"`
+}
+
+func main() {
+    bindConfig := &binding.BindConfig{}
+	// v0.7.0 重构后，在原基础上增加了请求 Request 内容以及路由参数，可方便用户更加灵活的自定义类型解析
+    bindConfig.MustRegTypeUnmarshal(reflect.TypeOf(Nested{}), func(req *protocol.Request, params param.Params, text string) (reflect.Value, error) {
+        if text == "" {
+            return reflect.ValueOf(Nested{}), nil
+        }
+        val := Nested{
+            B: text[:5],
+            C: text[5:],
+        }
+        // 此外，也可以利用 req, params 来获取其他参数进行参数绑定
+        return reflect.ValueOf(val), nil
+    })
+    h := server.New(server.WithBindConfig(bindConfig))
+    
+    ...
+    h.Spin()
+}
+```
+
+**hertz version < v0.7.0**<br>
+
+[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_type_resolve) 
 
 ```go
+package main
+
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
 
 type Nested struct {
@@ -163,8 +376,39 @@ func init() {
 ```
 
 ### 自定义验证函数
+可以通过注册自定义验证函数，在'vd'注解中实现复杂的验证逻辑:<br>
+**hertz version >= v0.7.0**<br>
+```go
+package main
 
-可以通过注册自定义验证函数，在'vd'注解中实现复杂的验证逻辑（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_validate_func) ），使用方法如下：
+import (
+    "github.com/cloudwego/hertz/pkg/app/server/binding"
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
+
+func main() {
+    type Req struct {
+        A int `query:"a" vd:"test($)"`
+    }
+    validateConfig := &binding.ValidateConfig{}
+    validateConfig.MustRegValidateFunc("test", func(args ...interface{}) error {
+        if len(args) != 1 {
+            return fmt.Errorf("the args must be one")
+        }
+        s, _ := args[0].(string)
+        if s == "123" {
+            return fmt.Errorf("the args can not be 123")
+        }
+    return nil
+    })
+    h := server.New(server.WithValidateConfig(validateConfig))
+    ...
+    h.Spin()
+}
+```
+
+**hertz version < v0.7.0**<br>
+[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_validate_func)
 
 ```go
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
@@ -185,9 +429,26 @@ func init() {
 
 ### 配置 looseZero
 
-在一些场景下，前端有时候传来的信息只有 key 没有 value，这会导致绑定数值类型的时候，会报错 `cause=parameter type does not match binding data`。
-这时需要配置 looseZero 模式（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/loose_zero) ），使用方法如下：
+在一些场景下，前端有时候传来的信息只有 key 没有 value，这会导致绑定数值类型的时候报错 这时需要配置 looseZero 模式，使用方法如下：
+**hertz version >= v0.7.0**<br>
+```go
+package main
 
+import (
+    "github.com/cloudwego/hertz/pkg/app/server/binding"
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
+
+func main() {
+    bindConfig := binding.NewBindConfig()
+    bindConfig.LooseZeroMode = true
+    h := server.New(server.WithBindConfig(bindConfig))
+    ...
+    h.Spin()
+}
+```
+**hertz version < v0.7.0**<br>
+[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/loose_zero) 
 ```go
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
 
@@ -199,8 +460,24 @@ func init() {
 
 ### 配置其他 json unmarshal 库
 
-在绑定参数的时候，如果请求体为 json，会进行一次 json 的 unmarshal，如果用户需要使用特定的 json 库可以自己配置（hertz 默认使用开源 json 库 [sonic](https://github.com/bytedance/sonic) ）。使用方法如下：
+在绑定参数的时候，如果请求体为 json，会进行一次 json 的 unmarshal，如果用户需要使用特定的 json 库可以自己配置（hertz 默认使用开源 json 库 [sonic](https://github.com/bytedance/sonic) ）。使用方法如下：<br>
+**hertz version >= v0.7.0**<br>
+```go
+import (
+    "github.com/cloudwego/hertz/pkg/app/server/binding"
+    "github.com/cloudwego/hertz/pkg/app/server"
+)
 
+func main() {
+    bindConfig := binding.NewBindConfig()
+    bindConfig.UseStdJSONUnmarshaler() // 使用标准库， hertz 默认使用 sonic 作为 json 序列化/反序列化器
+    //bindConfig.UseThirdPartyJSONUnmarshaler(sonic.Unmarshal) // 使用 sonic 作为 json 序列化/反序列化器
+    h := server.New(server.WithBindConfig(bindConfig))
+    ...
+    h.Spin()
+}
+```
+**hertz version < v0.7.0**<br>
 ```go
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
 
@@ -217,6 +494,7 @@ func init() {
 ```
 
 ### 设置默认值
+> 重构前后使用方式都一样
 
 参数支持 "default" tag 进行默认值的配置，使用方法如下：
 
@@ -228,6 +506,7 @@ type UserInfoResponse struct {
 ```
 
 ### 绑定文件
+> 重构前后使用方式一样，IDL 场景不支持文件绑定
 
 参数绑定支持绑定文件，使用方法如下：
 
