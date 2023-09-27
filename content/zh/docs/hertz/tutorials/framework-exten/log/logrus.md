@@ -20,7 +20,7 @@ type Logger struct {
 ## NewLogger
 
 `NewLogger` 通过 `defaultConfig()` 来创建并初始化一个 Logger，便于后续的调用，可将所需配置作为参数传入函数，若不传入参数则安装初始配置创建 `Logger`
-相关配置请参考后面的“option 的配置”
+相关配置请参考后面的[option 的相关配置](#option-的相关配置)
 
 函数签名：
 
@@ -45,7 +45,7 @@ func main() {
 
 ## Logger
 
-`Logger` 用来返回一个 *logrus.Logger 实例以满足复杂操作
+`Logger` 用来返回一个 `*logrus.Logger` 实例以满足复杂操作
 
 函数签名：
 

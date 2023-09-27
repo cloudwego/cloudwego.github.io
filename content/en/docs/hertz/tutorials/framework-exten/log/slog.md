@@ -50,7 +50,7 @@ func main() {
 
 ## Logger
 
-`Logger` is used to obtain *slog.Logger to meet complex operations
+`Logger` is used to obtain `*slog.Logger` to meet complex operations
 
 Function Signature:
 
@@ -107,7 +107,7 @@ func main() {
 
 `WithLevel` judges the incoming `*slog.LevelVar`. Only log levels higher than or equal to this will be recorded
 
-It is worth noting that if `WithLevel` is set together with `WithHandlerOptions`, the log level of WithLevel will override the log level in WithHandlerOptions
+>It is worth noting that if `WithLevel` is set together with `WithHandlerOptions`, the log level of WithLevel will override the log level in WithHandlerOptions
 
 Function Signature:
 

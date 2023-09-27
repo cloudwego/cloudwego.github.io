@@ -50,7 +50,7 @@ func main() {
 
 ## Logger
 
-`Logger` 用于获取 *slog.Logger 以满足复杂操作
+`Logger` 用于获取 `*slog.Logger` 以满足复杂操作
 
 函数签名：
 
@@ -107,7 +107,7 @@ func main() {
 
 `WithLevel` 对传入的 `*slog.LevelVar` 进行判断，高于或等于这个日志级别的才会被记录
 
-值得注意的是，如果 `WithLevel` 与 `WithHandlerOptions` 一起设置，WithLevel的日志等级会覆盖掉WithHandlerOptions中的日志等级
+>值得注意的是，如果 `WithLevel` 与 `WithHandlerOptions` 一起设置，WithLevel的日志等级会覆盖掉WithHandlerOptions中的日志等级
 
 函数签名：
 
