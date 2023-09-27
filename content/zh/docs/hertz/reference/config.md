@@ -86,7 +86,7 @@ func main() {
 ```
 
 |  配置名称 | 类型 | 说明 |
-|  :----  | :----  |:-|
+|  :----  | :----  |:---|
 | WithDialTimeout | time.Duration | 连接建立超时时间，默认 1s |
 | WithMaxConnsPerHost | int | 设置为每个 host 建立的最大连接数，默认 512 |
 | WithMaxIdleConnDuration | time.Duration | 设置空闲连接超时时间，当超时后会关闭该连接，默认 10s |
@@ -101,4 +101,4 @@ func main() {
 | WithResponseBodyStream | bool | 设置是否使用流式处理，默认关闭 |
 | WithDialFunc | client.DialFunc | 设置 Dial Function |
 | WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长 |
-| WithHostClientConfigHook | func(hc interface{}) error | 设置hook函数来重新配置host client，传入的func需要将参数hc断言为需要的结构体，比如http1.HostClient，再进行具体处理|
+| WithHostClientConfigHook | func(hc interface{}) error | 设置hook函数来重新配置host client，传入的func需要将参数hc断言为需要的结构体，比如http1.HostClient，再进行具体处理 |

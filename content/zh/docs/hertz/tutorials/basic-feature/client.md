@@ -44,27 +44,27 @@ func main() {
 
 ## Client 配置
 
-| 配置项                        | 默认值            | 描述                                |
-| ----------------------------- |----------------|-----------------------------------|
-| WithDialTimeout                 | 1s             | 拨号超时时间                            |
-| WithMaxConnsPerHost             | 512            | 每个主机可能建立的最大连接数                    |
-| WithMaxIdleConnDuration         | 10s            | 最大的空闲连接持续时间，空闲的连接在此持续时间后被关闭       |
-| WithMaxConnDuration             | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭 |
-| WithMaxConnWaitTimeout          | 0s             | 等待空闲连接的最大时间                       |
-| WithKeepAlive                   | true           | 是否使用 keep-alive 连接，默认使用           |
-| WithClientReadTimeout           | 0s             | 完整读取响应（包括 body）的最大持续时间            |
-| WithTLSConfig                   | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/) |
-| WithDialer                      | network.Dialer | 设置指定的拨号器                          |
-| WithResponseBodyStream          | false          | 是否在流中读取 body，默认不在流中读取             |
-| WithDisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化，默认不禁用，如 cONTENT-lenGTH -> Content-Length |
-| WithName                        | ""             | 用户代理头中使用的客户端名称                    |
-| WithNoDefaultUserAgentHeader    | false          | 是否没有默认的 User-Agent 头，默认有 User-Agent 头 |
-| WithDisablePathNormalizing      | false          | 是否禁用路径规范化，默认规范路径，如 http://localhost:8080/hello/../ hello -> http://localhost:8080/hello |
-| WithRetryConfig                 | nil            | HTTP 客户端的重试配置，重试配置详细说明请看 [重试](/zh/docs/hertz/tutorials/basic-feature/retry/) |
-| WithWriteTimeout                | 0s             | HTTP 客户端的写入超时时间                   |
-| WithConnStateObserve       | nil, 5s        | 设置观察和记录 HTTP 客户端的连接状态的函数以及观察执行间隔  |
-| WithDialFunc                    | network.Dialer | 设置 HTTP 客户端拨号器函数，会覆盖自定义拨号器        |
-| WithHostClientConfigHook        | nil            | 设置hook函数来重新配置host client          |
+| 配置项                                | 默认值            | 描述 |
+|------------------------------------|----------------| ---- |
+| WithDialTimeout                    | 1s             | 拨号超时时间 |
+| WithMaxConnsPerHost                | 512            | 每个主机可能建立的最大连接数 |
+| WithMaxIdleConnDuration            | 10s            | 最大的空闲连接持续时间，空闲的连接在此持续时间后被关闭 |
+| WithMaxConnDuration                | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭 |
+| WithMaxConnWaitTimeout             | 0s             | 等待空闲连接的最大时间 |
+| WithKeepAlive                      | true           | 是否使用 keep-alive 连接，默认使用 |
+| WithClientReadTimeout              | 0s             | 完整读取响应（包括 body）的最大持续时间 |
+| WithTLSConfig                      | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/) |
+| WithDialer                         | network.Dialer | 设置指定的拨号器 |
+| WithResponseBodyStream             | false          | 是否在流中读取 body，默认不在流中读取 |
+| WithDisableHeaderNamesNormalizing  | false          | 是否禁用头名称规范化，默认不禁用，如 cONTENT-lenGTH -> Content-Length |
+| WithName                           | ""             | 用户代理头中使用的客户端名称 |
+| WithNoDefaultUserAgentHeader       | false          | 是否没有默认的 User-Agent 头，默认有 User-Agent 头 |
+| WithDisablePathNormalizing         | false          | 是否禁用路径规范化，默认规范路径，如 http://localhost:8080/hello/../ hello -> http://localhost:8080/hello |
+| WithRetryConfig                    | nil            | HTTP 客户端的重试配置，重试配置详细说明请看 [重试](/zh/docs/hertz/tutorials/basic-feature/retry/) |
+| WithWriteTimeout                   | 0s             | HTTP 客户端的写入超时时间 |
+| WithConnStateObserve               | nil, 5s        | 设置观察和记录 HTTP 客户端的连接状态的函数以及观察执行间隔 |
+| WithDialFunc                       | network.Dialer | 设置 HTTP 客户端拨号器函数，会覆盖自定义拨号器 |
+| WithHostClientConfigHook           | nil            | 设置hook函数来重新配置host client |
 
 示例代码：
 
