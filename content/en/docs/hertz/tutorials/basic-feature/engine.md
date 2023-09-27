@@ -56,6 +56,7 @@ type Hertz struct {
 | WithDisablePrintRoute | false | Sets whether debugPrintRoute is disabled |
 | WithOnAccept | nil | Set the callback function when a new connection is accepted but cannot receive data in netpoll. In go net, it will be called before converting tls connection |
 | WithOnConnect | nil | Set the onConnect function. It can received data from connection in netpoll. In go net, it will be called after converting tls connection |
+| WithDisableHeaderNamesNormalizing|false|Sets whether or not to disable Request and Response Header name normalization (capitalization of the first letter and the first letter after a dash)|
 
 Server Connection limitation:
 
