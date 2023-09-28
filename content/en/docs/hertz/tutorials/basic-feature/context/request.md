@@ -1352,8 +1352,6 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 If the default method provided by the [ClientIP](#clientip) function does not meet the requirements, users can use this function to customize the way to obtain the client ip.
 
-> Note: `TrustedCIDRs` requires user customization (if not set, fixed return to remote address), representing trusted routes. If the remote address is within the trusted routing range, it will choose to obtain the ip from `RemoteIPHeaders`, otherwise it will return the remote address.
-
 Function Signature:
 
 ```go
@@ -1364,17 +1362,12 @@ Example Code:
 
 ```go
 // POST http://example.com/user
-// X-Forwarded-For: 30.30.30.30
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    _, cidr, _ = net.ParseCIDR("127.0.0.1/32")
-	opts = app.ClientIPOptions{
-		RemoteIPHeaders: []string{"X-Forwarded-For", "X-Real-IP"},
-		TrustedCIDRs:    []*net.IPNet{cidr},
+    customClientIPFunc := func(ctx *app.RequestContext) string {
+			return "127.0.0.1"
 	}
-    ctx.SetClientIPFunc(app.ClientIPWithOption(opts))
-
-    ip = ctx.ClientIP() // ip == "30.30.30.30"
-    ctx.String(consts.StatusOK, ip)
+	ctx.SetClientIPFunc(customClientIPFunc)
+	ip := ctx.ClientIP() // ip == "127.0.0.1"
 })
 ```
 
