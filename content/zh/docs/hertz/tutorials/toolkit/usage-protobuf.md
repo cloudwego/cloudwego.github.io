@@ -259,7 +259,7 @@ description: >
 hz update -I idl -idl idl/hello/hello.proto
 ```
 **注意**: 
-- 如果 IDL 的依赖和主 IDL 不在同一路径下，需要加入 `-I` 选项，其含义为 IDL 搜索路径，等同于 protoc 的 `-I` 命令。
+- 如果主 IDL 的依赖和主 IDL 不在同一路径下，需要加入 `-I` 选项，其含义为 IDL 搜索路径，等同于 protoc 的 `-I` 命令。
 - 在编写 update 命令时, 不仅需要指定定义 `service` 的 IDL文件, 还需要指定所有的依赖文件, 因为 protobuf 的依赖文件不会自动更新。
 
 3. 可以看到

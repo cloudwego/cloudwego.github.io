@@ -158,7 +158,7 @@ description: "hz 使用 (thrift)。"
    hz update -idl idl/hello.thrift
    ```
    **注意**:
-   1. 在编写 update 命令时, 只需要指定定义 `service` 的 IDL文件，hz 会自动将该文件的所有依赖文件都进行生成。
+   1. 与 protobuf 不同, 在编写 update 命令时, 只需要指定定义 `service` 的 IDL 文件，hz 会自动将该文件的所有依赖文件都进行生成。
 
 
 3. 可以看到

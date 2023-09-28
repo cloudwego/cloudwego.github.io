@@ -64,8 +64,8 @@ description: "hz 的基本使用。"
 
 ### 注意事项
 
-`hz new` 只用于初始化项目, 更新项目则使用 `hz update`,
+1. `hz new` 只用于初始化项目, 更新项目则使用 `hz update`,
 具体使用方法可参考[使用 protobuf](./usage-protobuf.md) 和 [使用 thrift](./usage-thrift.md)。
 
-
+2. hz 判断一个项目是否存在是看生成的 `.hz` 文件的。若 .hz 文件存在使用 `hz new` 会报错，不存在使用 `hz update` 会报错
 
