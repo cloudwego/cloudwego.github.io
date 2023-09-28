@@ -1330,6 +1330,8 @@ func (ctx *RequestContext) SetClientIPFunc(f ClientIP)
 
 Obtain the address of the client IP.
 
+The default behavior of this function: If there is an ip in the `X-Forwarded-For` or `X-Real-IP` headers, read the ip from these two headers and return it (priority `X-Forwarded-For` greater than `X-Real-IP`), otherwise return remote address.
+
 Function Signature:
 
 ```go
@@ -1339,8 +1341,10 @@ func (ctx *RequestContext) ClientIP() string
 Example Code:
 
 ```go
+// X-Forwarded-For: 20.20.20.20, 30.30.30.30
+// X-Real-IP: 10.10.10.10
 h.Use(func(c context.Context, ctx *app.RequestContext) {
-    ip := ctx.ClientIP() // example: 127.0.0.1
+    ip := ctx.ClientIP() // 20.20.20.20
 })
 ```
 
@@ -1348,7 +1352,9 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 If the default method provided by the [ClientIP](#clientip) function does not meet the requirements, users can use this function to customize the way to obtain the client ip.
 
-This function can be used in scenarios where you want to obtain an ip from the `X-Forwarded-For` or `X-Real-IP` header even if a remote ip exists (multiple proxies, want to obtain the initial ip from the `X-Forwarded-For` or `X-Real-IP` header).
+Users can implement custom functions themselves or by setting `app.ClientIPOptions`.
+
+> Note: When setting `app.ClientIPOptions`, `TrustedCIDRs` requires user customization(if not set, fixed return to remote address), representing trusted routes. If the remote address is within the trusted routing range, it will choose to obtain the ip from `RemoteIPHeaders`, otherwise it will return the remote address.
 
 Function Signature:
 
@@ -1360,18 +1366,24 @@ Example Code:
 
 ```go
 // POST http://example.com/user
-// X-Forwarded-For: 203.0.113.195
+// X-Forwarded-For: 30.30.30.30
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ip := ctx.ClientIP() // ip == "127.0.0.1"
+    // method 1
+    customClientIPFunc := func(ctx *app.RequestContext) string {
+			return "127.0.0.1"
+	}
+	ctx.SetClientIPFunc(customClientIPFunc)
+	ip := ctx.ClientIP() // ip == "127.0.0.1"
 
-    opts := app.ClientIPOptions{
-        RemoteIPHeaders: []string{"X-Forwarded-For", "X-Real-IP"},
-        TrustedProxies:  map[string]bool{ip: true},
-    }
-    ctx.SetClientIPFunc(app.ClientIPWithOption(opts))
+    // method 2
+    _, cidr, _ := net.ParseCIDR("127.0.0.1/32")
+	opts := app.ClientIPOptions{
+		RemoteIPHeaders: []string{"X-Forwarded-For", "X-Real-IP"},
+		TrustedCIDRs:    []*net.IPNet{cidr},
+	}
+	ctx.SetClientIPFunc(app.ClientIPWithOption(opts))
 
-    ip = ctx.ClientIP() // ip == "203.0.113.195"
-    ctx.String(consts.StatusOK, ip)
+	ip = ctx.ClientIP() // ip == "30.30.30.30"
 })
 ```
 
