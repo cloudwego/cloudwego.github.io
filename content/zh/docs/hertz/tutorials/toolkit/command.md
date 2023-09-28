@@ -451,8 +451,6 @@ OPTIONS:
    --snake_tag                                                        Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
    --rm_tag value [ --rm_tag value ]                                  Remove the specified tag
    --exclude_file value, -E value [ --exclude_file value, -E value ]  Specify the files that do not need to be updated.
-   --customize_layout value                                           Specify the path for layout template.
-   --customize_layout_data_path value                                 Specify the path for layout template render data.
    --customize_package value                                          Specify the path for package template.
    --protoc-plugins value [ --protoc-plugins value ]                  Specify plugins for the protoc. ({plugin_name}:{options}:{out_dir})
    --thrift-plugins value [ --thrift-plugins value ]                  Specify plugins for the thriftgo. ({plugin_name}:{options})
@@ -528,14 +526,6 @@ OPTIONS:
 <!---->
 
 - exclude_file/E: 不需要更新的文件 (相对项目路径，支持多个)
-
-<!---->
-
-- customize_layout: 自定义项目 layout 模板，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
-
-<!---->
-
-- customize_layout_data_path value: 自定义项目 layout 模板渲染参数，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 

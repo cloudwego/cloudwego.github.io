@@ -49,7 +49,7 @@ referenced [supported-tags](https://www.cloudwego.io/docs/hertz/tutorials/basic-
 
 ### hz client
 
-In addition to the annotations provided by [hz](#hz), two additional annotations have been added for client scenarios.
+In addition to the annotations provided by [hz](#hz), one additional annotation has been added for client scenarios.
 
 | _Client annotation_ |                                           |
 |---------------------|-------------------------------------------|
