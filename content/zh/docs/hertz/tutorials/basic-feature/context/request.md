@@ -1330,6 +1330,8 @@ func (ctx *RequestContext) SetClientIPFunc(f ClientIP)
 
 获取客户端 IP 的地址。
 
+该函数的默认行为：若 `X-Forwarded-For` 或 `X-Real-IP` Header 中存在 ip，则从这两个 Header 中读 ip 并返回（优先级 `X-Forwarded-For` 大于 `X-Real-IP`），否则返回 remote address。
+
 函数签名:
 
 ```go
@@ -1339,8 +1341,10 @@ func (ctx *RequestContext) ClientIP() string
 示例:
 
 ```go
+// X-Forwarded-For: 20.20.20.20, 30.30.30.30
+// X-Real-IP: 10.10.10.10
 h.Use(func(c context.Context, ctx *app.RequestContext) {
-    ip := ctx.ClientIP() // example: 127.0.0.1
+    ip := ctx.ClientIP() // 20.20.20.20
 })
 ```
 
@@ -1348,7 +1352,9 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 若 [ClientIP](#clientip) 函数提供的默认方式不满足需求，用户可以使用该函数自定义获取客户端 ip 的方式。
 
-该函数可用于即使 remote ip 存在，也希望从 `X-Forwarded-For` 或 `X-Real-IP` Header 获取 ip 的场景（多重代理，想从 `X-Forwarded-For` 或 `X-Real-IP` Header 获得最初的 ip）。
+用户可以自己实现自定义函数，也可以通过设置 `app.ClientIPOptions` 实现。
+
+> 注意：在设置 `app.ClientIPOptions` 时，`TrustedCIDRs` 需用户自定义（若不设置则固定返回 remote address），代表可信任的路由。若 remote address 位于可信任的路由范围内，则会选择从 `RemoteIPHeaders` 中获取 ip，否则返回 remote address。
 
 函数签名:
 
@@ -1360,18 +1366,24 @@ func (ctx *RequestContext) SetClientIPFunc(f ClientIP)
 
 ```go
 // POST http://example.com/user
-// X-Forwarded-For: 203.0.113.195
+// X-Forwarded-For: 30.30.30.30
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
-    ip := ctx.ClientIP() // ip == "127.0.0.1"
+    // method 1
+    customClientIPFunc := func(ctx *app.RequestContext) string {
+			return "127.0.0.1"
+	}
+	ctx.SetClientIPFunc(customClientIPFunc)
+	ip := ctx.ClientIP() // ip == "127.0.0.1"
 
-    opts := app.ClientIPOptions{
-        RemoteIPHeaders: []string{"X-Forwarded-For", "X-Real-IP"},
-        TrustedProxies:  map[string]bool{ip: true},
-    }
-    ctx.SetClientIPFunc(app.ClientIPWithOption(opts))
+    // method 2
+    _, cidr, _ := net.ParseCIDR("127.0.0.1/32")
+	opts := app.ClientIPOptions{
+		RemoteIPHeaders: []string{"X-Forwarded-For", "X-Real-IP"},
+		TrustedCIDRs:    []*net.IPNet{cidr},
+	}
+	ctx.SetClientIPFunc(app.ClientIPWithOption(opts))
 
-    ip = ctx.ClientIP() // ip == "203.0.113.195"
-    ctx.String(consts.StatusOK, ip)
+	ip = ctx.ClientIP() // ip == "30.30.30.30"
 })
 ```
 
