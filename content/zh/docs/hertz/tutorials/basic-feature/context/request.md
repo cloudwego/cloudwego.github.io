@@ -1352,6 +1352,10 @@ h.Use(func(c context.Context, ctx *app.RequestContext) {
 
 若 [ClientIP](#clientip) 函数提供的默认方式不满足需求，用户可以使用该函数自定义获取客户端 ip 的方式。
 
+用户可以自己实现自定义函数，也可以通过设置 `app.ClientIPOptions` 实现。
+
+> 注意：在设置 `app.ClientIPOptions` 时，`TrustedCIDRs` 需用户自定义（若不设置则固定返回 remote address），代表可信任的路由。若 remote address 位于可信任的路由范围内，则会选择从 `RemoteIPHeaders` 中获取 ip，否则返回 remote address。
+
 函数签名:
 
 ```go
@@ -1362,12 +1366,24 @@ func (ctx *RequestContext) SetClientIPFunc(f ClientIP)
 
 ```go
 // POST http://example.com/user
+// X-Forwarded-For: 30.30.30.30
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    // method 1
     customClientIPFunc := func(ctx *app.RequestContext) string {
 			return "127.0.0.1"
 	}
 	ctx.SetClientIPFunc(customClientIPFunc)
 	ip := ctx.ClientIP() // ip == "127.0.0.1"
+
+    // method 2
+    _, cidr, _ := net.ParseCIDR("127.0.0.1/32")
+	opts := app.ClientIPOptions{
+		RemoteIPHeaders: []string{"X-Forwarded-For", "X-Real-IP"},
+		TrustedCIDRs:    []*net.IPNet{cidr},
+	}
+	ctx.SetClientIPFunc(app.ClientIPWithOption(opts))
+
+	ip = ctx.ClientIP() // ip == "30.30.30.30"
 })
 ```
 
