@@ -255,7 +255,9 @@ func main() {
 
 ### WithExtraKeyAsStr
 
-`WithExtraKeyAsStr` converts the extraKey to string type when retrieving the value from the context, but this is not recommended for compatibility in some cases
+`WithExtraKeyAsStr` convert `extraKey` to a string type when retrieving value from context
+
+Not recommended for use, only for compatibility with certain situations
 
 Typically used with `WithExtraKeys`
 

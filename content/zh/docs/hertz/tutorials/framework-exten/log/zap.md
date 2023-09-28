@@ -253,7 +253,7 @@ func main() {
 ```
 ### WithExtraKeyAsStr
 
-`WithExtraKeyAsStr` 从上下文检索值时将 `extraKey` 转换为字符串类型，但为了一些情况下的兼容性，并不推荐使用。
+`WithExtraKeyAsStr` 从上下文检索值时将 `extraKey` 转换为字符串类型，只是为了一些情况下的兼容性，并不推荐使用。
 
 一般与 `WithExtraKeys` 一起使用
 
