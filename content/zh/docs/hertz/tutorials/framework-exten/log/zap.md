@@ -7,7 +7,7 @@ description: "Hertz 对接 zap 和 lumberjack。"
 
 ---
 
-## Logger
+## Logger 结构体
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -21,7 +21,7 @@ type Logger struct {
 ## NewLogger
 
 通过 `defaultConfig()` 创建并初始化一个 Logger，便于后续的调用，可将所需配置作为参数传入函数，若不传入参数则安装初始配置创建 Logger
-相关配置请参考后面的 [option 的配置](#option-的相关配置)。
+相关配置请参考后面的 [option 的配置](#option-的相关配置)
 
 函数签名：
 
@@ -29,7 +29,7 @@ type Logger struct {
 func NewLogger(opts ...Option) *Logger
 ```
 
-事例代码：
+示例代码：
 
 ```go
 package main
@@ -46,6 +46,36 @@ func main() {
 
     hlog.SetLogger(logger)
 }
+
+```
+
+## Logger
+
+`Logger` 用来返回一个 `*zap.Logger` 实例以满足复杂操作
+
+函数签名：
+
+```go
+func (l *Logger) Logger() *zap.Logger
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+    "go.uber.org/zap/zapcore"
+)
+
+func main() {
+    logger := hertzzap.NewLogger(hertzzap.WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
+
+    l := logger.Logger()
+}
+
 
 ```
 
@@ -81,7 +111,7 @@ func main() {
 
 ### WithCoreWs
 
-`WithCoreWs` 通过内置的 `zapcore.AddSync(file)` 指定日志写入的位置，将 zapcore.WriteSyncer 传入配置
+`WithCoreWs` 通过内置的 `zapcore.AddSync(file)` 指定日志写入的位置，将 `zapcore.WriteSyncer` 传入配置
 
 函数签名：
 
@@ -135,7 +165,7 @@ func main() {
 
 ### WithCores
 
-`WithCores` 将 `zapcore.Encoder`，`zapcore.WriteSyncer`，`zap.AtomicLevel` 组合进的 CoreConfig 传入配置
+`WithCores` 将 `zapcore.Encoder`，`zapcore.WriteSyncer`，`zap.AtomicLevel` 组合进的 `CoreConfig` 传入配置
 
 函数签名：
 
@@ -194,6 +224,57 @@ func main() {
     opts := zap.AddCaller()
     l := hertzzap.NewLogger(hertzzap.WithZapOptions(opts,zap.Hooks()))
 }
+```
+### WithExtraKeys
+
+`ExtraKey` 是 `zap.config`结构体中用来存储额外键的字段，`WithExtraKeys` 对传入参数进行判断，如果没有被添加到 `zap.config` 中，则将传入的参数添加到`zap.config`
+
+函数签名：
+
+```go
+type ExtraKey String
+
+func WithExtraKeys(keys []ExtraKey) Option
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+)
+
+func main() {
+    l := hertzzap.NewLogger(hertzzap.WithExtraKeys())
+}
+```
+### WithExtraKeyAsStr
+
+`WithExtraKeyAsStr` 从上下文检索值时将 `extraKey` 转换为字符串类型，只是为了一些情况下的兼容性，并不推荐使用。
+
+一般与 `WithExtraKeys` 一起使用
+
+函数签名：
+
+```go
+func WithExtraKeyAsStr() Option
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+)
+
+func main() {
+    l := hertzzap.NewLogger(hertzzap.WithExtraKeys(),hertzzap.WithExtraKeyAsStr())
 }
 ```
 
@@ -263,4 +344,4 @@ func main() {
 }
 ```
 
-适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
+适配 hlog 的接口的方法等更多用法详见 [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)

@@ -6,7 +6,7 @@ keywords: ["Logger Extension", "zap"]
 description: "Hertz interfaces with zap and lumberjack."
 ---
 
-## Logger
+## Logger structure
 
 ```go
 var _ hlog.FullLogger = (*Logger)(nil)
@@ -20,7 +20,7 @@ type Logger struct {
 ## NewLogger
 
 Create and initialize a Logger through `defaultConfig()`. The required configuration can be passed into the function as a parameter. If no parameter is passed in, the initial configuration will be installed to create a Logger
-For related configuration, please refer to [option configuration](#option-configuration) below.
+For related configuration, please refer to [option configuration](#option-configuration) below
 
 Function Signature:
 
@@ -48,11 +48,41 @@ func main() {
 
 ```
 
+## Logger
+
+`Logger` is used to return an instance of `*zap.Logger` for custom fields, etc
+
+Function Signature:
+
+```go
+func (l *Logger) Logger() *zap.Logger
+```
+
+Sample code:
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+    "go.uber.org/zap/zapcore"
+)
+
+func main() {
+    logger := hertzzap.NewLogger(hertzzap.WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
+
+    l := logger.Logger()
+}
+
+
+```
+
 ## Option configuration
 
 ### WithCoreEnc
 
-Encoder is a format-agnostic interface for all log entry marshalers, `WithCoreEnc` passes zapcore.Encoder into configuration
+Encoder is a format-agnostic interface for all log entry marshalers, `WithCoreEnc` passes `zapcore.Encoder` into configuration
 
 Function Signature:
 
@@ -108,7 +138,7 @@ func main() {
 
 ### WithCoreLevel
 
-`WithCoreLevel` passes zap.AtomicLevel into configuration
+`WithCoreLevel` passes `zap.AtomicLevel` into configuration
 
 Function Signature:
 
@@ -134,7 +164,7 @@ func main() {
 
 ### WithCores
 
-`WithCores` passes zapcore.Encoder, zapcore.WriteSyncer, zap.AtomicLevel into CoreConfig into the configuration
+`WithCores` passes `zapcore.Encoder`, `zapcore.WriteSyncer`, `zap.AtomicLevel` into `CoreConfig` into the configuration
 
 Function Signature:
 
@@ -193,6 +223,62 @@ func main() {
     opts := zap.AddCaller()
     l := hertzzap.NewLogger(hertzzap.WithZapOptions(opts,zap.Hooks()))
 }
+}
+```
+
+### WithExtraKeys
+
+`ExtraKey` is a field in the `zap.config` structure used to store extra keys. `WithExtraKeys` judges the incoming parameters. If they are not added to `zap.config`, the incoming parameters are added to `zap .config`
+
+Function Signature:
+
+```go
+type ExtraKey String
+
+func WithExtraKeys(keys []ExtraKey) Option
+```
+
+Sample code:
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+)
+
+func main() {
+    l := hertzzap.NewLogger(hertzzap.WithExtraKeys())
+}
+```
+
+### WithExtraKeyAsStr
+
+`WithExtraKeyAsStr` convert `extraKey` to a string type when retrieving value from context
+
+Not recommended for use, only for compatibility with certain situations
+
+Typically used with `WithExtraKeys`
+
+Function Signature:
+
+```go
+func WithExtraKeyAsStr() Option
+```
+
+Sample code:
+
+```go
+package main
+
+import (
+    hertzzap "github.com/hertz-contrib/logger/zap"
+    "go.uber.org/zap"
+)
+
+func main() {
+    l := hertzzap.NewLogger(hertzzap.WithExtraKeys(),hertzzap.WithExtraKeyAsStr())
 }
 ```
 
@@ -262,4 +348,4 @@ func main() {
 }
 ```
 
-For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)。
+For more details on how to adapt the interface of hlog, see [hertz-contrib/logger/zap](https://github.com/hertz-contrib/logger/tree/main/zap)
