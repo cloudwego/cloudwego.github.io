@@ -158,10 +158,13 @@ description: "hz usage(thrift)."
    hz update -idl idl/hello.thrift
    ```
 
+**Note**: 
+1. When writing the update command, you only need to specify the IDL file that defines the `service`. hz will automatically generate all the dependencies for that file.
+
 3. As you can see
 
-   Add new method under "biz/handler/hello/example/hello_service.go"<br>
-   The file "new_service.go" and the corresponding "NewMethod" method have been added under "biz/handler/hello/example"
+   Add new method under `biz/handler/hello/example/hello_service.go`<br>
+   The file `new_service.go` and the corresponding "NewMethod" method have been added under `biz/handler/hello/example`.
 
    Now let's develop the "OtherMethod" interface:
 
