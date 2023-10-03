@@ -37,9 +37,9 @@ hz 生成的代码结构都类似，下面以 [hz 使用 (thrift)](/zh/docs/hert
 ├── router.go                          // 用户自定义除 idl 外的路由方法
 ├── router_gen.go                      // hz 生成的路由注册代码，用于调用用户自定义的路由以及 hz 生成的路由
 ├── .hz                                // hz 创建代码标志，无需改动
-├── build.sh                           // 程序编译脚本，Windows 下不能运行，可直接使用 go build 命令编译程序
+├── build.sh                           // 程序编译脚本，Windows 下默认不生成，可直接使用 go build 命令编译程序
 ├── script                                
-│   └── bootstrap.sh                   // 程序运行脚本，Windows 下不能运行，可直接运行 main.go
+│   └── bootstrap.sh                   // 程序运行脚本，Windows 下默认不生成，可直接运行 main.go
 └── .gitignore
 ```
 

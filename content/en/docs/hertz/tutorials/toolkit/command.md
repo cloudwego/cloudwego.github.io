@@ -451,8 +451,6 @@ OPTIONS:
    --snake_tag                                                        Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
    --rm_tag value [ --rm_tag value ]                                  Remove the specified tag
    --exclude_file value, -E value [ --exclude_file value, -E value ]  Specify the files that do not need to be updated.
-   --customize_layout value                                           Specify the path for layout template.
-   --customize_layout_data_path value                                 Specify the path for layout template render data.
    --customize_package value                                          Specify the path for package template.
    --protoc-plugins value [ --protoc-plugins value ]                  Specify plugins for the protoc. ({plugin_name}:{options}:{out_dir})
    --thrift-plugins value [ --thrift-plugins value ]                  Specify plugins for the thriftgo. ({plugin_name}:{options})
@@ -528,14 +526,6 @@ OPTIONS:
 <!---->
 
 - exclude_file/E: Files that do not require updates (relative to project path, supports multiple)
-
-<!---->
-
-- customize_layout: Customize the project layout template, please refer to [hz custom template use](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/template/)
-
-<!---->
-
-- customize_layout_data_path value: Custom project layout template rendering parameters, please refer to [hz custom template use](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 

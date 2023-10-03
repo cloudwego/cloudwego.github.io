@@ -26,7 +26,7 @@ hz client 生成的代码结构可以参考 [hz client](/zh/docs/hertz/tutorials
 
 >IDL 的定义和语义与目前的定义完全相同，所以基本不用修改原先的 IDL 即可生成 client 代码。
 
->但是为针对 client 的场景，增加了两种注解，
+>但是为针对 client 的场景，增加了一种注解，
 >api.base_domain：指定默认访问的请求 domain。
 
 ```thrift

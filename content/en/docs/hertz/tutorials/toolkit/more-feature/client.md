@@ -26,7 +26,7 @@ This example is based on thrift, and protoc is similar to it.
 
 >The definition and semantics of the IDL are exactly the same as the current definition, so it is basically possible to generate client code without modifying the original IDL.
 
->But for the client scenario, two annotations have been added,
+>But for the client scenario, one annotation has been added,
 >api.base_domain: specifies the default request domain to access.
 
 ```thrift
