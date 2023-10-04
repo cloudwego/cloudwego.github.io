@@ -201,7 +201,7 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 
 ### KeyFunc
 
-The program executes with `KeyFunc` as a parameter to `jwt.Parse()`, which is responsible for providing the signing key for token parsing. By customizing the logic of `KeyFunc`, you can perform some custom operations before parsing the token, such as checking the validity of the signing method, selecting the corresponding signing key, storing the token in the request context, etc.
+The program executes with `KeyFunc` as a parameter to `jwt.Parse()`, which is responsible for providing the signing key for token parsing. By customizing the logic of `KeyFunc`, you can perform some custom operations before parsing the token, such as checking the validity of the signing method.
 
 Function signatures:
 

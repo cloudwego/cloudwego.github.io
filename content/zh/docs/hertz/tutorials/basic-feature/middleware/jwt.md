@@ -201,7 +201,7 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 
 ### KeyFunc
 
-程序执行时 `KeyFunc` 作为 `jwt.Parse()` 的参数，负责为 token 解析提供签名密钥，通过自定义 `KeyFunc` 的逻辑，可以在解析 token 之前完成一些自定义的操作，如：校验签名方法的有效性、选择对应的签名密钥、将 token 存入请求上下文等。
+程序执行时 `KeyFunc` 作为 `jwt.Parse()` 的参数，负责为 token 解析提供签名密钥，通过自定义 `KeyFunc` 的逻辑，可以在解析 token 之前完成一些自定义的操作，如：校验签名方法的有效性。
 
 函数签名：
 
