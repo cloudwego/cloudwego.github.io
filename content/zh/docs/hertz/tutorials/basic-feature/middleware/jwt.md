@@ -444,7 +444,7 @@ auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 
 ### TokenLookup
 
-通过键值对的形式声明 token 的获取源，有四种可选的方式，默认值为 header:Authorization，如果同时声明了多个数据源则以 `，` 为分隔线，第一个满足输入格式的数据源将被选择，如果没有获取到 token 则继续从下一个声明的数据源获取。
+通过键值对的形式声明 token 的获取源，有四种可选的方式，默认值为 header:Authorization，如果同时声明了多个数据源则以 `,` 为分隔线，第一个满足输入格式的数据源将被选择，如果没有获取到 token 则继续从下一个声明的数据源获取。
 
 示例代码：
 
