@@ -181,7 +181,7 @@ func main() {
 
 | 配置                 | 默认值 | 介绍                                                      |
 | -------------------- | ------ | --------------------------------------------------------- |
-| WithIgnoreQueryOrder | false  | 用于设置当使用 URI 为缓存的 Key 时，忽略 query 参数的顺序 |
+| WithIgnoreQueryOrder | false  | 当使用 URI 为缓存的 Key 时，忽略 query 参数的顺序 |
 
 ### WithCacheStrategyByRequest
 
