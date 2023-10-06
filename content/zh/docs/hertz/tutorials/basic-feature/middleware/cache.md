@@ -165,7 +165,7 @@ func main() {
 | WithOnMissCache               | nil    | 用于设置缓存未命中的回调函数                   |
 | WithBeforeReplyWithCache      | nil    | 用于设置返回缓存响应前的回调函数               |
 | WithOnShareSingleFlight       | nil    | 用于设置请求共享 SingleFlight 结果时的回调函数 |
-| WithSingleFlightForgetTimeout | 0      | 用于设置 SingleFlight 的超时时间               |
+| WithSingleFlightForgetTimeout | 0      | 设置 SingleFlight 的超时时间，以控制并发操作的行为，确保请求在一定时间内被处理或者超时被取消 |
 | WithPrefixKey                 | ""     | 用于设置缓存响应 Key 的前缀                    |
 | WithoutHeader                 | false  | 用于设置是否需要缓存响应头                     |
 
