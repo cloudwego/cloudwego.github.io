@@ -17,8 +17,10 @@ Kitex's Middleware is defined in `pkg/endpoint/endpoint.go`, the most important 
 ```golang
 type Middleware func(Endpoint) Endpoint
 ```
-3. In fact, a middleware is essentially a function that takes an Endpoint as input and returns an Endpoint as output. This ensures transparency to the application, as the application itself is unaware of whether it is being decorated by middleware. Due to this feature, middlewares can be nested and used in combination.
-4. Middlewares are used in a chained manner. By invoking the provided next function, you can obtain the response (if any) and error returned by the subsequent middleware. Based on this, you can perform the necessary processing and return an error to the previous middleware (be sure to check for errors returned by next and avoid swallowing errors) or set the response accordingly.
+
+In fact, a middleware is essentially a function that takes an Endpoint as input and returns an Endpoint as output. This ensures transparency to the application, as the application itself is unaware of whether it is being decorated by middleware. Due to this feature, middlewares can be nested and used in combination.
+
+Middlewares are used in a chained manner. By invoking the provided next function, you can obtain the response (if any) and error returned by the subsequent middleware. Based on this, you can perform the necessary processing and return an error to the previous middleware (be sure to check for errors returned by next and avoid swallowing errors) or set the response accordingly.
 
 ### Client Middleware
 
@@ -168,7 +170,7 @@ Explanation of the request/response parameter types obtained within the Kitex mi
 Middleware is indeed a lower-level implementation of extensions, typically used to inject simple code containing specific functionalities. However, in complex scenarios, single middleware may not be sufficient to meet the business requirements. In such cases, a more comprehensive approach is needed, which involves assembling multiple middlewares or options into a complete middleware layer.  Users can develop this requirement based on suites, refer to [Suite Extend](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/suite/)
 
 ## FAQ
-### Hope to recover handler panic in middleware
+### How to recover handler panic in middleware
 Question:
 A handler who wanted to recover their own business in middleware threw a panic and found that the panic had already been recovered by the framework.
 
@@ -185,3 +187,78 @@ func TestServerMiddleware(next endpoint.Endpoint) endpoint.Endpoint {
    }
 }
 ```
+### How to get the real Request/Response in Middleware?
+
+Due to implementation needs, the req and resp passed in middlewares are not the req and resp passed by the real user, but an object wrapped by Kitex, specifically a structure similar to the following.
+
+#### Thrift
+
+```golang
+// req
+type ${XService}${XMethod}Args struct {
+    Req *${XRequest} `thrift:"req,1" json:"req"`
+}
+
+func (p *${XService}${XMethod}Args) GetFirstArgument() interface{} {
+    return p.Req
+}
+
+
+// resp
+type ${XService}${XMethod}Result struct {
+    Success *${XResponse} `thrift:"success,0" json:"success,omitempty"`
+}
+
+func (p *${XService}${XMethod}Result) GetResult() interface{} {
+    return p.Success
+}
+```
+
+#### Protobuf
+
+```golang
+// req
+type ${XMethod}Args struct {
+    Req *${XRequest}
+}
+
+func (p *${XMethod}Args) GetReq() *${XRequest} {
+    if !p.IsSetReq() {
+        return ${XMethod}Args_Req_DEFAULT
+    }
+    return p.Req
+}
+
+
+// resp
+type ${XMethod}Result struct {
+    Success *${XResponse}
+}
+
+func (p *${XMethod}Result) GetSuccess() *${XResponse} {
+    if !p.IsSetSuccess() {
+        return ${XMethod}Result_Success_DEFAULT
+    }
+    return p.Success
+}
+```
+
+The above generated code can be seen in kitex_gen directory.
+Therefore, there are three solutions for the business side to obtain the real req and resp:
+1. If you can determine which method is being called and the type of req used, you can directly obtain the specific Args type through type assertion, and then obtain the real req through the GetReq method.
+2. For thrift generated code, by asserting `GetFirstArgument` or `GetResult` , obtain `interface{}`, and then do type assertion to the real req or resp (Note: Since the returned `interface{}` contains a type, judging `interface{}` nil cannot intercept the case where req/resp itself is a null pointer, so we need to judge whether the asserted req/resp is a null pointer again);
+3. Obtain the real request/response body through reflection method, refer to the code:
+
+```golang
+var ExampleMW endpoint.Middleware = func(next endpoint.Endpoint) endpoint.Endpoint {
+    return func(ctx context.Context, request, response interface{}) error {
+        reqV := reflect.ValueOf(request).MethodByName("GetReq").Call(nil)[0]
+        log.Infof(ctx, "request: %T", reqV.Interface())
+        err := next(ctx, request, response)
+        respV := reflect.ValueOf(response).MethodByName("GetSuccess").Call(nil)[0]
+        log.Infof(ctx, "response: %T", respV.Interface())
+        return err
+    }
+} 
+```
+

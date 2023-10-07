@@ -9,8 +9,8 @@ description: >
 
 Suite（套件）是一种对于扩展的高级抽象，可以理解为是对于 Option 和 Middleware 的组合和封装。
 在扩展过程中，我们需要要记得两点原则：
-1. Suite套件只允许在初始化 Server、Client 的时候设置，不允许动态修改。
-2. suite套件是按设置的顺序来执行的，client是先设置先执行，而server则相反。
+1. Suite 套件只允许在初始化 Server、Client 的时候设置，不允许动态修改。
+2. suite 套件是按设置的顺序来执行的，client 是先设置先执行，而 server 则相反。
 
 Suite 的定义如下：
 
@@ -40,7 +40,7 @@ func (m *mockSuite) Options() []Option {
 }
 ```
 
-以上代码定义了一个简单的Client suite实现，我们可以在代码中使用client.WithSuite(&mockSuite{})来使用这个suite封装的所有middleware/option。
+以上代码定义了一个简单的 Client suite 实现，我们可以在代码中使用 `client.WithSuite(&mockSuite{})` 来使用这个 suite 封装的所有 middleware/option。
 
 ## 总结
 
