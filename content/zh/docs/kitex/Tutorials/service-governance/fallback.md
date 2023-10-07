@@ -42,11 +42,6 @@ xxxCli := xxxservice.NewClient("target_service", opts...)
 ### 2.2 Call 维度配置
 
 ```Go
-import (
-"github.com/cloudwego/kitex/pkg/retry"
-bretry "code.byted.org/kite/kitex/pkg/retry"
-)
-
 xxxCli.XXXMethod(ctx, req, callopt.WithFallback(yourFallbackPolicy))
 ```
 

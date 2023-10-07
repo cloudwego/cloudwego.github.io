@@ -42,11 +42,6 @@ xxxCli := xxxservice.NewClient("target_service", opts...)
 ### Call-level configuration
 
 ```Go
-import (
-    "github.com/cloudwego/kitex/pkg/retry"
-    bretry "code.byted.org/kite/kitex/pkg/retry"
-)
-
 xxxCli.XXXMethod(ctx, req, callopt.WithFallback(yourFallbackPolicy))
 ```
 
