@@ -7,8 +7,6 @@ description: "Hertz 支持的参数绑定与校验相关功能及用法。"
 
 ---
 
-hertz 使用开源库 [go-tagexpr](https://github.com/bytedance/go-tagexpr) 进行参数的绑定及验证，下面分别介绍参数绑定和参数验证的用法。
-
 ## 使用方法
 
 ```go
@@ -84,7 +82,7 @@ func main() {
 path > form > query > cookie > header > json > raw_body
 ```
 
-> 注：如果请求的 content-type 为 `application/json`，那么会在参数绑定前做一次 json unmarshal 处理作为兜底。
+> 注：如果请求的 content-type 为 `application/json`，`BindAndValidate()`、`Bind()`那么会在参数绑定前做一次 json unmarshal 处理作为兜底。
 
 ### 必传参数
 
@@ -172,7 +170,7 @@ func (m *mockBinder) BindProtobuf(request *protocol.Request, i interface{}) erro
 ```
 
 目前已拓展的绑定器：
-* bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr
+* bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (重构前使用的绑定库)
 
 ### 自定义 validator
 > hertz version >= v0.7.0 支持
@@ -219,7 +217,7 @@ func (m *mockValidator) ValidateTag() string {
 **hertz version >= v0.7.0**
 > 暂不支持自定义 bind error
 
-自定义错误 error:
+自定义 validate error:
 ```go
 package main
 import (
@@ -334,6 +332,7 @@ type TestBind struct {
 func main() {
     bindConfig := &binding.BindConfig{}
 	// v0.7.0 重构后，在原基础上增加了请求 Request 内容以及路由参数，可方便用户更加灵活的自定义类型解析
+	// 注意：只有 tag 成功匹配后，才会走到自定义的逻辑
     bindConfig.MustRegTypeUnmarshal(reflect.TypeOf(Nested{}), func(req *protocol.Request, params param.Params, text string) (reflect.Value, error) {
         if text == "" {
             return reflect.ValueOf(Nested{}), nil
@@ -446,6 +445,7 @@ import (
 
 func main() {
     bindConfig := binding.NewBindConfig()
+    // 默认 false，当前 Hertz Engine 下生效，多份 engine 实例不会冲突
     bindConfig.LooseZeroMode = true
     h := server.New(server.WithBindConfig(bindConfig))
     ...
@@ -458,7 +458,7 @@ func main() {
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
 
 func init() {
-    // 默认 false，全局生效
+    // 默认 false，全局生效，如何其他组件也使用相关配置，可能会发生冲突
     binding.SetLooseZeroMode(true)
 }
 ```
@@ -474,8 +474,8 @@ import (
 
 func main() {
     bindConfig := binding.NewBindConfig()
-    bindConfig.UseStdJSONUnmarshaler() // 使用标准库， hertz 默认使用 sonic 作为 json 序列化/反序列化器
-    //bindConfig.UseThirdPartyJSONUnmarshaler(sonic.Unmarshal) // 使用 sonic 作为 json 序列化/反序列化器
+    bindConfig.UseStdJSONUnmarshaler() // 使用标准库作为 JSON 反序列化工具， hertz 默认使用 sonic 作为 JSON 反序列化器
+    //bindConfig.UseThirdPartyJSONUnmarshaler(sonic.Unmarshal) // 使用 sonic 作为 JSON 反序列化器
     h := server.New(server.WithBindConfig(bindConfig))
     ...
     h.Spin()
@@ -486,13 +486,13 @@ func main() {
 import "github.com/cloudwego/hertz/pkg/app/server/binding"
 
 func init() {
-    // 使用标准库
+    // 使用标准库作为 JSON 反序列化工具
     binding.UseStdJSONUnmarshaler()
 
-    // 使用 gjson
+    // 使用 GJSON 作为 JSON 反序列化工具
     binding.UseGJSONUnmarshaler()
 
-    // 使用第三方 json unmarshal 方法
+    // 使用第三方 JSON 库作为 JSON 反序列化工具
     binding.UseThirdPartyJSONUnmarshaler()
 }
 ```
@@ -511,6 +511,7 @@ type UserInfoResponse struct {
 
 ### 绑定文件
 > 重构前后使用方式一样，IDL 场景不支持文件绑定
+> 文件类型需为: `multipart.FileHeader`
 
 参数绑定支持绑定文件，使用方法如下：
 
