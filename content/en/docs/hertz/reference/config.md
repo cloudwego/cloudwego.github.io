@@ -73,7 +73,7 @@ Server Connection limitation:
 
 ## Client
 
-The configuration items on the Client side all use `server.xxx` when initializing the Server, such as:
+The configuration items on the Client side all use `client.xxx` when initializing the Client, such as:
 
 ```go
 package main
@@ -86,8 +86,8 @@ func main() {
 }
 ```
 
-|  Configuration Name   | Type  |  Description  |
-|  :----  | :----  | :---- |
+|  Configuration Name | Type | Description |
+|  :----  | :----  |:----|
 | WithDialTimeout | time.Duration | Connection establishment timeout. Default: 1s. |
 | WithMaxConnsPerHost | int | Set the maximum number of connections for every host. Default: 512. |
 | WithMaxIdleConnDuration | time.Duration | Set the idle connection timeout, which will close the connection after the timeout Default: 10s. |
@@ -101,4 +101,5 @@ func main() {
 | WithDialer | network.Dialer | Set the network library used by the client. Default: netpoll. |
 | WithResponseBodyStream | bool | Set whether to use stream processing. Default: false. |
 | WithDialFunc | client.DialFunc | Set Dial Function. |
-| WithWriteTimeout | time.Duration | The timeout of data writing. Default：infinite.|
+| WithWriteTimeout | time.Duration | The timeout of data writing. Default：infinite. |
+| WithHostClientConfigHook | func(hc interface{}) error | Set the function hook for re-configure the host client. The function needs to assert the parameter hc as the required struct, such as http1.HostClient, and then perform specific processing. |
