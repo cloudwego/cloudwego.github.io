@@ -62,3 +62,11 @@ Hertz 在 `app.RequestContext` 中提供了 `Response.HijackWriter` 方法让用
 		}
 	})
 ```
+
+效果展示：
+
+在 localhost:8888 开启示例中的接口，然后使用如下命令观察效果：
+
+```bash 
+curl -N --location localhost:8888//flush/chunk
+```
