@@ -5,52 +5,39 @@ weight: 2
 description: >
 ---
 
-## Encapsulating Custom Governance Modules
+## Introduction
+Suite is a high-level abstraction for extensions, which can be understood as a combination and encapsulation of Option and Middleware.
+In the process of expansion, we need to remember two principles:
+1. Suite can only be set when initializing Server and Client, and dynamic modification is not allowed.
+2. The suite is executed in the order of the settings. For the client, it executes in the order of the settings, while for the server, it is the opposite.
 
-Suite is a high-level abstraction of extensions, a combination and encapsulation of Option and Middleware.
-
-As mentioned in the middleware extensions document, there are two principles should be remembered in extensions:
-
-1. Middleware and Suit are only allowed to be set before initializing Server and Client, do not allow modified dynamically.
-2. Behind override ahead.
-
-These tow principle is also valid for Suite.
-
-Suite is defined as follows:
-
-```go
+The definition of Suite is as follows:
+```golang
 type Suite interface {
     Options() []Option
 }
 ```
 
-// TODO: Add example.
+Both Server and Client use the `WithSuite` method to enable the new suite.
 
-Both Server side and Client side use the `WithSuite` method to enable new Suite.
-
-When initializing Server and Client, Suite is setup in DFS(Deep First Search) way.
-
-For example, if we have the following code:
-
-```go
-type s1 struct {
-    timeout time.Duration 
+## Example
+```golang
+type mockSuite struct{
+    config *Config
 }
 
-func (s s1) Options() []client.Option {
-    return []client.Option { client.WithRPCTimeout(s.timeout)}
-}
-
-type s2 struct {
-}
-
-func (s2) Options() []client.Option {
-    return []client.Option{client.WithSuite(s1{timeout:1*time.Second}), client.WithRPCTimeout(2*time.Second)}
+func (m *mockSuite) Options() []Option {
+    return []Option{
+       WithClientBasicInfo(mockEndpointBasicInfo),
+       WithDiagnosisService(mockDiagnosisService),
+       WithRetryContainer(mockRetryContainer),
+       WithMiddleware(mockMW(m.config)),
+       WithSuite(mockSuite2),
+    }
 }
 ```
 
-Then if we use `client.WithSuite(s2{}), client.WithRPCTimeout(3*time.Second)`, it will execute `client.WithSuite(s1{})` first, followed by `client. WithRPCTimeout(1*time.Second)`, followed by `client.WithRPCTimeout(2*time.Second)`, and finally `client.WithRPCTimeout(3*time.Second)`. After this initialization, the value of RPCTimeout will be set to 3s (see the principle described at the beginning).
+The above code defines a simple client suite implementation, and we can use `client.WithSuite(&mockSuite{})` in the code to use all middleware/options encapsulated by this suite.
 
 ## Summary
-
-Suite is a higher-level combination and encapsulation, and it is recommended that third-party developers provide Kitex extensions based on Suite. Suite allows dynamically injecting values at creation time, or dynamically specifying values in its own middleware at runtime, making it easier for users and third-party developers to use and develop without relying on global variables, and making it possible to use different configurations for each client.
+Suite is a higher-level combination and encapsulation. It is highly recommended for third-party developers to provide Kitex extensions to the outside world based on Suite. Suite allows dynamic injection of values during creation or dynamically specifying values in its middleware based on certain runtime values. This makes it more convenient for users and third-party developers, eliminating the need for reliance on global variables and enabling the possibility of using different configurations for each client.
