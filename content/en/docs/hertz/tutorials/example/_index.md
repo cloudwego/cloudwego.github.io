@@ -122,6 +122,7 @@ Hertz provides a series of code examples designed to help users get start with H
 - [zap](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zap) ：Example of docking with zap and lumberjack in hertz server
 - [logrus](https://github.com/cloudwego/hertz-examples/tree/main/hlog/logrus) ：Example of docking with logrus and lumberjack in hertz server
 - [zerolog](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zerolog) ：Example of docking with zerolog and lumberjack in hertz server
+- [slog](https://github.com/cloudwego/hertz-examples/tree/main/hlog/slog) ：Example of docking with slog and lumberjack in hertz server
 
 ### Opentelemetry
 - [opentelemetry](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry) ：Example of using obs opentelemetry for docking with opentelemetry
