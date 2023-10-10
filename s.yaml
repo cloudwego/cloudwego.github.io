@@ -8,12 +8,6 @@ vars:
 services:
   portal-www:
     component: oss
-    actions:
-      post-deploy:
-        - plugin: cdn-cache-plugin
-          args:
-            operateType: refresh
-            objectPath: https://cloudwego.cn/
     props:
       region: ${vars.region}
       bucket: ${vars.oss.bucketName}
