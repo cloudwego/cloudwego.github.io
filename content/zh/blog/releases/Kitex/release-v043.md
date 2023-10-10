@@ -9,8 +9,8 @@ description: >
 
 ### 功能
 
-1. **扩展 client/server 生成模板** ：新增 client/server 模板扩展功能，可以通过配置定制，适用于统一定制 suite 场景，详见[扩展 Service 代码生成模板](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/)。
-2. **业务异常** ：新增业务自定义异常支持，可区分于 RPC 异常返回 error，使用详见[业务异常](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/)，背景详见[Proposal](https://github.com/cloudwego/kitex/issues/511)。
+1. **扩展 client/server 生成模板** ：新增 client/server 模板扩展功能，可以通过配置定制，适用于统一定制 suite 场景，详见[扩展 Service 代码生成模板](/zh/docs/kitex/tutorials/code-gen/template_extension/)。
+2. **业务异常** ：新增业务自定义异常支持，可区分于 RPC 异常返回 error，使用详见[业务异常](/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/)，背景详见[Proposal](https://github.com/cloudwego/kitex/issues/511)。
 3. **请求 Profiler** ：新增功能可用于为不同的 RPC 请求提供成本分析统计的能力。
 4. **Context Middleware** : 新增 Context Middleware，用于请求粒度添加 Middleware。
 

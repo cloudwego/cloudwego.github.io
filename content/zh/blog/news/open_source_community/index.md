@@ -155,7 +155,7 @@ CloudWeGo 开源社区坚持的长期主义：
 
 #### 华兴证券
 
-案例链接：https://www.cloudwego.io/zh/cooperation/huaxingsec/
+[案例链接](/zh/cooperation/huaxingsec/)
 
 华兴证券的张天老师团队向社区贡献了来自证券行业使用 [Kitex][Kitex] 完成混合云部署下跨机房使用场景的案例。
 
@@ -168,7 +168,7 @@ CloudWeGo 开源社区坚持的长期主义：
 
 #### 森马
 
-案例链接：https://www.cloudwego.io/zh/cooperation/semir/
+[案例链接](/zh/cooperation/semir/)
 
 CloudWeGo 和森马共同梳理了与电商行业相关的一个整体使用场景。非常感谢森马团队，贡献了电商行业使用 [Kitex][Kitex] 接入 Istio，以提高对高并发订单处理能力的使用场景。
 
@@ -178,7 +178,7 @@ CloudWeGo 和森马共同梳理了与电商行业相关的一个整体使用场�
 
 #### 飞书
 
-案例链接：https://www.cloudwego.io/zh/cooperation/feishu/
+[案例链接](/zh/cooperation/feishu/)
 
 [Hertz][Hertz] 开源后，很多用户会问到内部网关平台架构的设计思路，包括内部网关平台如何配合 [Hertz][Hertz] 整体使用？
 

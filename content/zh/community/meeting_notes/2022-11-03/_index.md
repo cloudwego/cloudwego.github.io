@@ -10,13 +10,13 @@ description: >
 
 **参会人** ：GuangmingLuo, Cheng Guozhu, welkeyever, YangruiEmma, liu-song, Chen Rui, li-jin-gou, joway, liuq19, Duslia, bodhisatan, L2ncE, Code:Z, justlorain, CarlCao17, HeyJavaBean, jayantxie, Yang Hong, baiyutang, skyenought, rogerogers, cyyolo, cloudwegoIce, chens, Bai Yang
 
-**会前必读** ：http://www.cloudwego.io/ ; https://github.com/cloudwego
+**会前必读** ：[官网](/) ; https://github.com/cloudwego
 
 ### 议程一：Kitex 生成代码定制默认注入自定义 Suite 介绍 @jayantxie
 
-1. 官网链接：[Extend the Templates of Service Generated Code](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/template_extension/)
+1. 官网链接：[Extend the Templates of Service Generated Code](/docs/kitex/tutorials/code-gen/template_extension/)
 2. 目前字节内部的治理逻辑会封装到 Suite 里面，通过直接生成代码的方式提供给用户，用户在启动的时候就不用手动地引入 Suite Option。为了方便外部用户在生成代码里面扩展这个功能，我们也提供了这样一个功能。用户在生成代码时，可以通过 `-template-extension` 传入一个 `extensions.json` 文件，这个文件可以把 Suite 的代码注入到生代码里。`extensions.json` 是一个 JSON 文件，实现的是 [TemplateExtension](https://pkg.go.dev/github.com/cloudwego/kitex/tool/internal_pkg/generator#TemplateExtension) 的对象，这个对象里面有一些已经完成定义、可以注入到特定位置的代码。
-3. Example: https://www.cloudwego.io/docs/kitex/tutorials/code-gen/template_extension/#example 如果 Client 端需要注入一个 Suite，可以通过 `extend_option` 加一行代码，把用户自定义 package 里面的 Suite 注入进来，我们生成的代码里面就自动包含了这个 Suite，方便用户使用。具体字段含义是，通过 `import_paths` 导入包，`extend_file` 主要功能是可以在生成代码里面提供一些全局的工具函数，如果用户需要提供公共方法，那么可以在这里注入。Server 端与之类似，比如需要公司内限流之类的功能，也可以通过封装到 Server Suite 里面注入代码即可实现，业务不用再导入对应的包。
+3. Example: /docs/kitex/tutorials/code-gen/template_extension/#example 如果 Client 端需要注入一个 Suite，可以通过 `extend_option` 加一行代码，把用户自定义 package 里面的 Suite 注入进来，我们生成的代码里面就自动包含了这个 Suite，方便用户使用。具体字段含义是，通过 `import_paths` 导入包，`extend_file` 主要功能是可以在生成代码里面提供一些全局的工具函数，如果用户需要提供公共方法，那么可以在这里注入。Server 端与之类似，比如需要公司内限流之类的功能，也可以通过封装到 Server Suite 里面注入代码即可实现，业务不用再导入对应的包。
 
 ---
 
@@ -24,7 +24,7 @@ description: >
 
 1. Issue 地址：https://github.com/cloudwego/kitex/issues/511
 
-官网：https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/
+官网：/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/
 
 2. 背景：这是在 Kitex v0.4.3 提供的功能。我们内部对于用户自定义的异常和 RPC 异常做了区分，因此希望把这个功能提供给外部用户使用，能够将 RPC 错误和业务的错误区分开。在出现故障或排查问题的时候，可以方便找到是链路侧的故障还是业务侧的故障。因此我们对 Kitex 异常处理重新做了实现。
 3. 我们内置 `BizStatusErrorIface` 提供用户实现自定义异常接口，框架同时提供默认实现，用户只需要在 `ServiceHandler` 里返回 Error，就可以在 Kitex 处理的时候把它编码到 TTheader 或 grpc  trailer 中。封装完成后通过 Server 传递到 Client 端，Kitex 在解码的时候会对 TTheader 或 trailer 里面字段做特殊处理，把它转成业务 Error，再返回给 Client。这种方式在中间件处理或治理采集时直接跳过了用户自定义异常的处理。因此我们通过在业务 handler 里面直接返回 `BizStatusErrorIface` 不会触发熔断和链路异常等情况，它仅用于用户之间业务 Error 的传递。

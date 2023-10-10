@@ -9,7 +9,7 @@ description: "hz 提供的 IDL 注解说明。"
 **支持的 api 注解**
 
 > Field
-> 注解可用于 [参数绑定及校验](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/)
+> 注解可用于 [参数绑定及校验](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/)
 >
 > Method 注解可用于生成路由注册相关代码
 
@@ -18,7 +18,7 @@ description: "hz 提供的 IDL 注解说明。"
 ### hz
 
 Field 注解 tag
-说明可参考 [支持的-tag](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/#%E6%94%AF%E6%8C%81%E7%9A%84-tag)。
+说明可参考 [支持的-tag](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/#%E6%94%AF%E6%8C%81%E7%9A%84-tag)。
 
 | _Field 注解_                               |                                                                                          |
 |------------------------------------------|------------------------------------------------------------------------------------------|

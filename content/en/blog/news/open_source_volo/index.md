@@ -80,8 +80,8 @@ We hope this article has provided you with a basic understanding of [Volo](https
 
 ### References
 
-- Volo overview: https://github.com/cloudwego/volo
-- Volo Tutorial: https://www.cloudwego.io/docs/volo/
-- Volo Documentation: https://docs.rs/volo
-- Volo-rs organization: https://github.com/volo-rs
+- [Volo overview](https://github.com/cloudwego/volo)
+- [Volo Tutorial](/docs/volo/)
+- [Volo Documentation](https://docs.rs/volo)
+- [Volo-rs organization](https://github.com/volo-rs)
 

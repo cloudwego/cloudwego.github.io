@@ -167,7 +167,7 @@ Explanation of the request/response parameter types obtained within the Kitex mi
 | Kitex-gRPC Client Streaming      | nil                       | *streaming.Result           |
 
 ## Summary
-Middleware is indeed a lower-level implementation of extensions, typically used to inject simple code containing specific functionalities. However, in complex scenarios, single middleware may not be sufficient to meet the business requirements. In such cases, a more comprehensive approach is needed, which involves assembling multiple middlewares or options into a complete middleware layer.  Users can develop this requirement based on suites, refer to [Suite Extend](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/suite/)
+Middleware is indeed a lower-level implementation of extensions, typically used to inject simple code containing specific functionalities. However, in complex scenarios, single middleware may not be sufficient to meet the business requirements. In such cases, a more comprehensive approach is needed, which involves assembling multiple middlewares or options into a complete middleware layer.  Users can develop this requirement based on suites, refer to [Suite Extend](/zh/docs/kitex/tutorials/framework-exten/suite/)
 
 ## FAQ
 ### How to recover handler panic in middleware

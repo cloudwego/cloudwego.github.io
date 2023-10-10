@@ -39,7 +39,7 @@ CloudWeGo 第一批以 [Kitex][Kitex] RPC 框架和 [Netpoll][Netpoll] 网络库
 
 - 高性能：网络传输模块 [Kitex][Kitex] 默认集成了自研的网络库 [Netpoll][Netpoll]，性能相较使用 go net 有显著优势；除了网络库带来的性能收益，[Kitex][Kitex] 对 Thrift 编解码也做了优化，详见 [优化实践](https://mp.weixin.qq.com/s/Xoaoiotl7ZQoG2iXo9_DWg)。关于性能数据可参考 [kitex-benchmark](https://github.com/cloudwego/kitex-benchmark)。
 
-- 扩展性：[Kitex][Kitex] 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 [文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/)。[Kitex][Kitex] 也并未耦合 [Netpoll][Netpoll]，开发者也可以选择其它网络库扩展使用。
+- 扩展性：[Kitex][Kitex] 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 [文档](/zh/docs/kitex/tutorials/framework-exten/)。[Kitex][Kitex] 也并未耦合 [Netpoll][Netpoll]，开发者也可以选择其它网络库扩展使用。
 
 - 消息协议：RPC 消息协议默认支持 Thrift、Kitex Protobuf、gRPC。Thrift 支持 Buffered 和 Framed 二进制协议；Kitex Protobuf 是 [Kitex][Kitex] 自定义的 Protobuf 消息协议，协议格式类似 Thrift；gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 互通。除此之外，使用者也可以扩展自己的消息协议。
 

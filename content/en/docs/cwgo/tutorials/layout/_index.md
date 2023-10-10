@@ -9,7 +9,7 @@ The cwgo tool supports the generation of MVC Layout at present, and more templat
 
 ## Code Structure
 
-The MVC layout is automatically generated when the server code is generated using the cwgo tool. When using the demo in [Quick Start](https://www.cloudwego.io/docs/cwgo/getting-started/), the generated HTTP project directory is as follows
+The MVC layout is automatically generated when the server code is generated using the cwgo tool. When using the demo in [Quick Start](/docs/cwgo/getting-started/), the generated HTTP project directory is as follows
 
 ```console
 ├── biz // business logic directory

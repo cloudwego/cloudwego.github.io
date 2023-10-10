@@ -208,7 +208,7 @@ kitex -module xx -I xxx.git@branch abc/xxx.thrift
 
 #### `-combine-service`
 
-对于 thrift IDL，kitex 在生成服务端代码脚手架时，只会针对最后一个 service 生成相关的定义。如果你的 IDL 里定义了多个 service 定义并且希望在一个服务里同时提供这些 service 定义的能力时，可以使用 `-combine-service` 选项，详见 [Combine Service](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/combine_service/).
+对于 thrift IDL，kitex 在生成服务端代码脚手架时，只会针对最后一个 service 生成相关的定义。如果你的 IDL 里定义了多个 service 定义并且希望在一个服务里同时提供这些 service 定义的能力时，可以使用 `-combine-service` 选项，详见 [Combine Service](/zh/docs/kitex/tutorials/code-gen/combine_service/).
 
 该选项会生成一个合并了目标 IDL 文件中所有 service 方法的 `CombineService`，并将其用作 main 包里使用的 service 定义。注意这个模式下，被合并的 service 之间不能有冲突的方法名。
 

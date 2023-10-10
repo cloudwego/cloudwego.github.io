@@ -28,7 +28,7 @@ Hertz has also added commonly used APIs to ctx, such as using `ctx.Body` to obta
   [RequestContext](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#RequestContext).
   context.Context is used to address the issue of request context being unable to extend as needed,
   while also reducing the maintenance complexity as the request context no longer needs to implement the context interface.
-  For more information, please refer to: [Hertz: Design and Practice of the Go HTTP Framework Open-Sourced by ByteDance](https://www.cloudwego.io/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/#%E5%BA%94%E7%94%A8%E5%B1%82).
+  For more information, please refer to: [Hertz: Design and Practice of the Go HTTP Framework Open-Sourced by ByteDance](/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/#%E5%BA%94%E7%94%A8%E5%B1%82).
 
 - Example as follows:
 
@@ -113,7 +113,7 @@ func main() {
 
 - Compared to Gin's RequestHandler, Hertz's [HandlerFunc](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#HandlerFunc) accepts two parameters:
   context.Context and [RequestContext](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#RequestContext), which is equivalent to
-  ctx.Request.Context() in Gin. For more details, please refer to: [Hertz: Design and Practice of the Go HTTP Framework Open-Sourced by ByteDance](https://www.cloudwego.io/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/#%E5%BA%94%E7%94%A8%E5%B1%82).
+  ctx.Request.Context() in Gin. For more details, please refer to: [Hertz: Design and Practice of the Go HTTP Framework Open-Sourced by ByteDance](/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/#%E5%BA%94%E7%94%A8%E5%B1%82).
 - Example as follows:
 
 ```Go
@@ -127,7 +127,7 @@ type HandlerFunc = func(c context.Context, ctx *app.RequestContext)
 ### Parameter Binding
 
 - Hertz currently only supports binding all data with 'Bind', and does not support binding data separately in Query or Body. For more details,
-  please refer to [Binding and Validation](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/#%E6%94%AF%E6%8C%81%E7%9A%84-tag-%E5%8F%8A%E5%8F%82%E6%95%B0%E7%BB%91%E5%AE%9A%E4%BC%98%E5%85%88%E7%BA%A7).
+  please refer to [Binding and Validation](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/#%E6%94%AF%E6%8C%81%E7%9A%84-tag-%E5%8F%8A%E5%8F%82%E6%95%B0%E7%BB%91%E5%AE%9A%E4%BC%98%E5%85%88%E7%BA%A7).
 
 ### Set Response Data
 

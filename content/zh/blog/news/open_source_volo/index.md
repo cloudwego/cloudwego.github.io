@@ -97,13 +97,13 @@ Rust 以难学难用而闻名，我们希望尽可能降低用户使用 [Volo][V
 
 ### 参考资料
 
-* Volo 概览: https://github.com/cloudwego/volo
+* [Volo 概览](https://github.com/cloudwego/volo)
 
-* Volo Tutorial: https://www.cloudwego.io/zh/docs/volo/
+* [Volo Tutorial](/zh/docs/volo/)
 
-* Volo 文档: https://docs.rs/volo
+* [Volo 文档](https://docs.rs/volo)
 
-* Volo-rs 组织: https://github.com/volo-rs
+* [Volo-rs 组织](https://github.com/volo-rs)
 
 [Kitex]: https://github.com/cloudwego/kitex
 [Volo]: https://github.com/cloudwego/volo

@@ -76,7 +76,7 @@ Later, in order to accommodate the common scenario of open source users, Kitex s
 For RPC frameworks, regardless of service governance, the computation overhead is mainly generated in serialization and deserialization.
 
 Kitex uses the [Go protobuf library](https://github.com/golang/protobuf) to serialize Protobuf.
-And for serialization of Thrift, Kitex has specific performance optimization, which is introduced in the [blog post](https://www.cloudwego.io/blog/2021/09/23/performance-optimization-on-kitex/#serializationdeserialization-optimization-of-thrift) on our official web.
+And for serialization of Thrift, Kitex has specific performance optimization, which is introduced in the [blog post](/blog/2021/09/23/performance-optimization-on-kitex/#serializationdeserialization-optimization-of-thrift) on our official web.
 
 Most of the current open source frameworks support Protobuf in preference, and some built-in Protobuf are actually [gogo/protobuf](https://github.com/gogo/protobuf) versions with performance optimizations.
 However, gogo/protobuf is currently at risk of [maintenance absence](https://github.com/gogo/protobuf/issues/691).
@@ -124,10 +124,10 @@ We also encourage developers to use the testing guide provided in this article, 
 
 ## Pertinent Links
 
-- CloudWeGo Official Website: https://www.cloudwego.io
-- Kitex: https://github.com/cloudwego/kitex
-- Netpoll: https://github.com/cloudwego/netpoll
-- kitex-benchmark: https://github.com/cloudwego/kitex-benchmark
-- netpoll-benchmark: https://github.com/cloudwego/netpoll-benchmark
-- Go Protobuf Library: https://github.com/golang/protobuf
-- Thriftgo：https://github.com/cloudwego/thriftgo
+- [CloudWeGo Official Website](/)
+- [Kitex](https://github.com/cloudwego/kitex)
+- [Netpoll](https://github.com/cloudwego/netpoll)
+- [kitex-benchmark](https://github.com/cloudwego/kitex-benchmark)
+- [netpoll-benchmark](https://github.com/cloudwego/netpoll-benchmark)
+- [Go Protobuf Library](https://github.com/golang/protobuf)
+- [Thriftgo](https://github.com/cloudwego/thriftgo)

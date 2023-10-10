@@ -165,7 +165,7 @@ func DemoGRPCMiddleware(next endpoint.Endpoint) endpoint.Endpoint {
  | Kitex-gRPC Client Streaming       | nil                     | *streaming.Result         |
 
 ## 总结
-Middleware 是一种比较低层次的扩展的实现，一般用于注入包含特定功能的简单代码。而在复杂场景下，一个 middleware 封装通常无法满足业务需求，这时候需要更完善的套件组装多个 middleware/options 来实现一个完整的中间层，用户可基于 suite 来进行开发，参考[扩展套件Suite](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/suite/)
+Middleware 是一种比较低层次的扩展的实现，一般用于注入包含特定功能的简单代码。而在复杂场景下，一个 middleware 封装通常无法满足业务需求，这时候需要更完善的套件组装多个 middleware/options 来实现一个完整的中间层，用户可基于 suite 来进行开发，参考[扩展套件Suite](/zh/docs/kitex/tutorials/framework-exten/suite/)
 
 ## FAQ
 ### 如何在 middleware 里 recover  handler 排除的 panic

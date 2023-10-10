@@ -95,4 +95,4 @@ cli.Use(sd.Discovery(r, sd.WithLoadBalanceOptions(loadbalance.NewWeightedBalance
 })))
 ```
 
-Custom load-balance extensions are detailed in [Load Balancing Extensions](https://www.cloudwego.io/docs/hertz/tutorials/framework-exten/service_discovery/#load-balancing-extension).
+Custom load-balance extensions are detailed in [Load Balancing Extensions](/docs/hertz/tutorials/framework-exten/service_discovery/#load-balancing-extension).

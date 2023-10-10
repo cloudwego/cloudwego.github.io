@@ -388,4 +388,4 @@ func main() {
 }
 ````
 
-For more configuration-related information: https://www.cloudwego.io/docs/hertz/reference/config/
+For more configuration-related information: [Configuration instruction](/docs/hertz/reference/config/)

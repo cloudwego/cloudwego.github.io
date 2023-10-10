@@ -8,7 +8,7 @@ description: "Response Writer Extension provided by Hertz."
 
 ---
 
-According to Hertz's [layered architecture](https://www.cloudwego.io/zh/docs/hertz/overview/), the actual write
+According to Hertz's [layered architecture](/zh/docs/hertz/overview/), the actual write
 operation of the HTTP response is performed after the application layer user processing logic returns. Under this
 constraint, users cannot flexibly control the behavior of write operations on demand. This limitation is especially
 obvious in scenarios such as controlling chunked encoding write logic

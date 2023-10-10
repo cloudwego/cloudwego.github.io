@@ -54,8 +54,8 @@ goroutine，大幅增加调度开销。此外，[net.Conn][net.Conn] 没有提�
 
 ## 参考
 
-* [官方网站](https://www.cloudwego.io/zh/)
-* [使用文档](https://www.cloudwego.io/zh/docs/netpoll/getting-started/)
+* [官方网站](/zh/)
+* [使用文档](/zh/docs/netpoll/getting-started/)
 
 [Netpoll]: https://github.com/cloudwego/netpoll
 [net]: https://github.com/golang/go/tree/master/src/net

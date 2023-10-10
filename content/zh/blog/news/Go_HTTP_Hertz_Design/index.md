@@ -62,13 +62,13 @@ author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 
 [Hertz][Hertz] 为满足这些需求重新构造了路由树，用户在注册路由时拥有很高的自由度：支持静态路由、参数路由的注册；支持按优先级匹配，如上述例子会优先匹配静态路由 `/a/b`；支持路由回溯，
 如注册 `/a/b`、`/:c/d`，当匹配 `/a/d` 时仍然能够匹配上；支持尾斜线重定向，如注册 `/a/b`，当匹配 `/a/b/` 时能够重定向到 `/a/b` 上。
-[Hertz][Hertz] 提供了丰富的路由能力来满足用户的需求，更多的功能可以参考 [Hertz 配置文档](https://www.cloudwego.io/zh/docs/hertz/reference/config/)。
+[Hertz][Hertz] 提供了丰富的路由能力来满足用户的需求，更多的功能可以参考 [Hertz 配置文档](/zh/docs/hertz/reference/config/)。
 
 ### 协议层
 
 协议层负责不同协议的实现和扩展。
 
-[Hertz][Hertz] 支持[协议的扩展](https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/protocol/)，用户只需要实现下面的接口便可以按照自己的需求在引擎（Engine）上扩展协议，
+[Hertz][Hertz] 支持[协议的扩展](/zh/docs/hertz/tutorials/framework-exten/protocol/)，用户只需要实现下面的接口便可以按照自己的需求在引擎（Engine）上扩展协议，
 同时也支持通过 ALPN 协议协商的方式注册。[Hertz][Hertz] 首批只开源了 HTTP1 实现，未来会陆续开源 HTTP2、QUIC 等实现。
 协议层扩展提供的灵活性甚至可以超越 HTTP 协议的范畴，用户完全可以按需注册任意符合自身需求的协议层实现，并且加入到 [Hertz][Hertz] 的引擎中来，同时，也能够无缝享受到传输层带来的极致性能。
 
@@ -82,7 +82,7 @@ author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 为此 [Hertz][Hertz] 底层同时支持基于 Golang 标准网络库的实现适配，同时支持网络库的一键切换，用户可根据自己的需求选择合适的网络库进行替换。如果用户有更加高效的网络库或其他网络库需求，也完全可以根据需求自行扩展。
 
 **网络库的扩展**：
-https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/network-lib/
+[网络库扩展](/zh/docs/hertz/tutorials/framework-exten/network-lib/)
 
 ### Hz 脚手架
 
@@ -125,7 +125,7 @@ Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，
 
 [Hertz][Hertz] 提供 Server 和 Client 的流式处理能力。HTTP 的文件场景是十分常见的场景，除了 Server 侧的上传场景之外，Client 的下载场景也十分常见。
 为此，[Hertz][Hertz] 支持了 Server 和 Client 的流式处理。在内部网关场景中，从 Gin 迁移到 [Hertz][Hertz] 后，CPU 使用量随流量大小不同可节省 30%—60% 不等，服务压力越大，收益越大。
-[Hertz][Hertz] 开启流式功能的方式也很容易，只需要在 Server 上或 Client 上添加一个配置即可，可参考 CloudWeGo 官网 Hertz 文档的 [Server 流式处理](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/engine/#流式处理) 部分和 [Client 流式处理](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/client/#流式读响应内容) 部分。
+[Hertz][Hertz] 开启流式功能的方式也很容易，只需要在 Server 上或 Client 上添加一个配置即可，可参考 CloudWeGo 官网 Hertz 文档的 [Server 流式处理](/zh/docs/hertz/tutorials/basic-feature/engine/#流式处理) 部分和 [Client 流式处理](/zh/docs/hertz/tutorials/basic-feature/client/#流式读响应内容) 部分。
 
 由于 [Netpoll][Netpoll] 采用 LT 的触发模式，由网络库主动将将数据从 TCP 缓冲区读到用户态，并存储到 buffer 中，否则 epoll 事件会持续触发。
 因此 Server 在超大请求的场景下，由于 [Netpoll][Netpoll] 持续将数据读到用户态内存中，可能会有 OOM 的风险。HTTP 文件上传场景就是一个典型的场景，但 HTTP 上传服务又是很常见的场景，
@@ -180,9 +180,9 @@ Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，
 
 ## 08 参考资料
 
-**Hertz Doc**：https://www.cloudwego.io/zh/docs/hertz/
+[**Hertz Doc**](/zh/docs/hertz/)
 
-官网文章：[**字节跳动在 Go 网络库上的实践** ](https://www.cloudwego.io/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)
+[**字节跳动在 Go 网络库上的实践** ](/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)
 
 [Hertz]: https://github.com/cloudwego/hertz
 [Kitex]: https://github.com/cloudwego/kitex

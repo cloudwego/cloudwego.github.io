@@ -13,8 +13,8 @@ description: "Kitex Frequently Asked Questions and corresponding Answers."
 * Yes. Kitex has already supported to compile and run in Windows since v0.4.0 version. And code generation tool support the Windows environment since v0.5.2.
 
 **Q2: Does Kitex support HTTP？**
-* Kitex does not specifically provide HTTP request support. For API gateway scenario, Kitex provides a [HTTP mapping generic call](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/#2-http-mapping-generic-call) regarding Thrift and sends the Thrift encoding of the HTTP request to the server.
-* For related support, please refer to another CloudWeGo HTTP framework [Hertz](https://www.cloudwego.io/zh/docs/hertz/).
+* Kitex does not specifically provide HTTP request support. For API gateway scenario, Kitex provides a [HTTP mapping generic call](/docs/kitex/tutorials/advanced-feature/generic-call/#2-http-mapping-generic-call) regarding Thrift and sends the Thrift encoding of the HTTP request to the server.
+* For related support, please refer to another CloudWeGo HTTP framework [Hertz](/zh/docs/hertz/).
 
 **Q3: How to configure multiplexing?**
 * If you are using Thrift or Kitex Protobuf, to configure multiplexing:

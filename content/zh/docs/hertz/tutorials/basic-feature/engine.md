@@ -131,9 +131,9 @@ func (h *Hertz) SetCustomSignalWaiter(f func(err chan error) error)
 
 `Spin` 函数用于运行 Hertz 服务器，接收到退出信号后可退出服务。
 
-该函数支持服务的优雅退出，优雅退出的详细内容请看 [优雅退出](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)。
+该函数支持服务的优雅退出，优雅退出的详细内容请看 [优雅退出](/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)。
 
-在使用 [服务注册发现](https://www.cloudwego.io/zh/docs/hertz/tutorials/service-governance/service_discovery/) 的功能时，`Spin` 会在服务启动时将服务注册进入注册中心，并使用 `signalWaiter` 监测服务异常。
+在使用 [服务注册发现](/zh/docs/hertz/tutorials/service-governance/service_discovery/) 的功能时，`Spin` 会在服务启动时将服务注册进入注册中心，并使用 `signalWaiter` 监测服务异常。
 
 函数签名：
 
@@ -176,7 +176,7 @@ func main() {
 
 ### SetCustomSignalWaiter
 
-`SetCustomSignalWaiter` 函数用于自定义服务器接收信号后的处理函数，若没有设置自定义函数，Hertz 使用 `waitSignal` 函数作为信号处理的默认实现方式，详细内容请看[优雅退出](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)。
+`SetCustomSignalWaiter` 函数用于自定义服务器接收信号后的处理函数，若没有设置自定义函数，Hertz 使用 `waitSignal` 函数作为信号处理的默认实现方式，详细内容请看[优雅退出](/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)。
 
 函数签名：
 
@@ -549,7 +549,7 @@ func SetTransporter(transporter func (options *config.Options) network.Transport
 
 linux 默认使用 `netpoll`, windows 只能使用 `go net`。
 
-如果对如何使用对应的网络库有疑惑，请查看 [此处](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/network-lib/)。
+如果对如何使用对应的网络库有疑惑，请查看 [此处](/zh/docs/hertz/tutorials/basic-feature/network-lib/)。
 
 函数签名:
 

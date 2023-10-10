@@ -95,7 +95,7 @@ First, you need to install the command tool hz which is used in this chapter:
    Attention, do not set `GOPATH` to a directory that the current user does not have read/write access to.
 2. Install hz: `go install github.com/cloudwego/hertz/cmd/hz@latest`.
 
-For more information on how to use hz, please refer to: [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/).
+For more information on how to use hz, please refer to: [hz](/zh/docs/hertz/tutorials/toolkit/usage/).
 
 ### Determine Where to Store Your Code
 
@@ -112,7 +112,7 @@ For more information on how to use hz, please refer to: [hz](https://www.cloudwe
 
 1. Create the hertz_demo folder in the current directory and go to that directory.
 2. Generating code
-- Use `hz new` directly, if not currently in `GOPATH`, you need to add `-module` or `-mod` flag to specify a custom module name. See [here](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/) for details.
+- Use `hz new` directly, if not currently in `GOPATH`, you need to add `-module` or `-mod` flag to specify a custom module name. See [here](/docs/hertz/tutorials/toolkit/usage/) for details.
   - Code generation by specifying an already defined idl file, e.g. `hz new -idl hello.thrift`.
     ```thrift
     namespace go hello.world

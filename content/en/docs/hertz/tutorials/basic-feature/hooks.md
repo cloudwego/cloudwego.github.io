@@ -81,7 +81,7 @@ main.go:25: [Info] run the third start hook
 
 Hook functions get triggered **simultaneously** before the server-side exiting. The user can configure the max expiration time by `server.WithExitWaitTime`, the default is 5 seconds, and once timeout, the server is terminated.
 
-The `ShutdownHook` call process is essentially a part of the Hertz [Graceful Shutdown](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
+The `ShutdownHook` call process is essentially a part of the Hertz [Graceful Shutdown](/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
 
 Function signatures:
 

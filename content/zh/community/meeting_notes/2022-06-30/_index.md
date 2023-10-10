@@ -10,7 +10,7 @@ description: >
 
 **参会人** ：GuangmingLuo, welkeyever, YangruiEmma, liu-song, byene0923, Ivnszn, ylck, li-jin-gou, stephenzhang0713, Li Zheming, debug-LiXiwen, joway, yccpt, Yin Xuran, JZK-Keven, Li Weiting, Fan Guangyu, Jacob953, errocks, Huang Xiaolong, towelong, powerxu519, jayantxie, baiyutang, skyenought, yiyun, baize, yunwei37, 834810071, LhdDream
 
-**会前必读** ：http://www.cloudwego.io/；https://github.com/cloudwego
+**会前必读** ：[官网](/)；https://github.com/cloudwego
 
 ### 议程 1 ：新人自我介绍 @GuangmingLuo
 
