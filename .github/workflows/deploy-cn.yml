@@ -1,0 +1,40 @@
+name: cloudwego.cn deploy
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.119.0"
+          extended: true
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm install
+      - run: HUGO_ENV=production hugo --minify --verbose -b http://cloudwego.cn
+      - name: upload to oss
+        uses: doggycool/ossutil-github-action@master
+        with:
+          ossArgs: "cp -r -u public oss://cloudwego-website-cn"
+          accessKey: ${{ secrets.ACCESS_KEYID }}
+          accessSecret: ${{ secrets.ACCESS_KEYSECRET }}
+          endpoint: oss-cn-beijing.aliyuncs.com
