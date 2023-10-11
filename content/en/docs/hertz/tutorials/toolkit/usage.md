@@ -70,4 +70,4 @@ description: "hz basic usage."
 ### Note
 
 `hz new` is only used to initialize the project, use `hz update` to update the project.
-See [using protobuf](./usage-protobuf.md) and [use thrift](./usage-thrift.md).
+See [using protobuf](../usage-protobuf) and [use thrift](../usage-thrift).
