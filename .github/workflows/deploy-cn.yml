@@ -30,7 +30,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm install
-      - run: HUGO_ENV=production hugo --minify --verbose -b https://www.cloudwego.cn
+      - run: HUGO_ENV=production hugo --minify --verbose -b http://cloudwego.cn
       - name: upload to oss
         uses: doggycool/ossutil-github-action@master
         with:
