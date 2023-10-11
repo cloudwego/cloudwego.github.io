@@ -11,7 +11,7 @@ description: >
 
 - Add default ErrorHandler to wrap remote error when no ErrorHandler is specified.
 - Backward metainfo is supported.
-- JSON generic call is supported. Usage guide: [link](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/#4-json-mapping-generic-call).
+- JSON generic call is supported. Usage guide: [link](/docs/kitex/tutorials/advanced-feature/generic-call/#4-json-mapping-generic-call).
 
 ## Improvement:
 
@@ -35,7 +35,7 @@ description: >
 ## Docs:
 
 - English is available for README and all other documents.
-- Guide for generic call. [English](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call) | [中文](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/)
+- Guide for generic call. [English](/docs/kitex/tutorials/advanced-feature/generic-call) | [中文](/zh/docs/kitex/tutorials/advanced-feature/generic-call/)
 - Landscape and Roadmap in README.
 
 ## Dependency Change:

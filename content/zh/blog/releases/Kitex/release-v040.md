@@ -10,10 +10,10 @@ description: >
 
 ### 功能
 
-1. **重试功能增强**：支持自定义结果重试；支持请求粒度配置重试，详见 [重试指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/retry/)
-2. **Frugal(thrift)**: 支持了 IDL 默认值；使用 Frugal 可以支持不生成编解码代码，详见 [frugal](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/codec_frugal/#2-带上--thrift-frugal_tag-参数重新生成一次代码)
-3. **Tool-Protobuf**：结合 go_package 配置支持依赖外部库，详见 [protobuf IDL 的注意事项](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/#使用-protobuf-idl-的注意事项)；支持从文件扩展名猜测 IDL 的类型，生成 proto 代码时无需再指定 type 参数
-4. **Fastpb(protobuf)**: 支持 fastpb 优化 pb 编解码，并默认集成到 Kitex，详见 [fastpb](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/fastpb/)
+1. **重试功能增强**：支持自定义结果重试；支持请求粒度配置重试，详见 [重试指南](/zh/docs/kitex/tutorials/service-governance/retry/)
+2. **Frugal(thrift)**: 支持了 IDL 默认值；使用 Frugal 可以支持不生成编解码代码，详见 [frugal](/zh/docs/kitex/tutorials/advanced-feature/codec_frugal/#2-带上--thrift-frugal_tag-参数重新生成一次代码)
+3. **Tool-Protobuf**：结合 go_package 配置支持依赖外部库，详见 [protobuf IDL 的注意事项](/zh/docs/kitex/tutorials/code-gen/code_generation/#使用-protobuf-idl-的注意事项)；支持从文件扩展名猜测 IDL 的类型，生成 proto 代码时无需再指定 type 参数
+4. **Fastpb(protobuf)**: 支持 fastpb 优化 pb 编解码，并默认集成到 Kitex，详见 [fastpb](/zh/docs/kitex/tutorials/code-gen/fastpb/)
 5. **泛化调用**：支持 HTTP+Protobuf 泛化调用
 6. **Kitex 依赖库支持 Windows**：便于 Windows 环境运行（工具暂未支持）
 
@@ -28,7 +28,7 @@ description: >
 
 ### Feature
 
-* [[#571](https://github.com/cloudwego/kitex/pull/571)] 功能(protobuf): 默认集成 [fastpb](https://github.com/cloudwego/fastpb) 到 Kitex，详情参考 [doc](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/fastpb/)。
+* [[#571](https://github.com/cloudwego/kitex/pull/571)] 功能(protobuf): 默认集成 [fastpb](https://github.com/cloudwego/fastpb) 到 Kitex，详情参考 [doc](/docs/kitex/tutorials/code-gen/fastpb/)。
 * [[#592](https://github.com/cloudwego/kitex/pull/592)] 功能(generic): HTTP/Map/JSON 泛化调用支持 Thrift 默认值。
 * [[#600](https://github.com/cloudwego/kitex/pull/600)] 功能(thrift): 支持当使用 frugal 时不生成编解码代码。
 * [[#607](https://github.com/cloudwego/kitex/pull/607), [#610](https://github.com/cloudwego/kitex/pull/610)] 功能(proxyless): 提供 xDS 扩展的接口。支持基于 xDS 的流量路由，超时配置及服务发现。

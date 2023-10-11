@@ -26,7 +26,7 @@ Here are the available combination options of transport protocols and message pr
 - KitexProtobuf: **TTHeader**(recommend), Framed, TTHeaderFramed
 - gRPC: HTTP2
 
-If you want to use custom implementations for the message or transport protocol, you can find help here [Extension of Codec](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/codec/).
+If you want to use custom implementations for the message or transport protocol, you can find help here [Extension of Codec](/docs/kitex/tutorials/framework-exten/codec/).
 
 ## Configuration
 

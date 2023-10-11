@@ -10,7 +10,7 @@ description: >
 
 **参会人：** YangruiEmma, ag9920, Jiang Xuewu, liu-song, Joway, yccpt, Huang Yuting, CoderPoet, li-jin-gou, GuangmingLuo, simon0-o, scotty, yiyun, Authorixy, JZK-Keven, bodhisatan, ppzqh, Jacob953, Ivnszn, cyyolo, debug-LiXiwen, baize
 
-**会前必读：** http://www.cloudwego.io/
+**会前必读：** [官网](/)
              https://github.com/cloudwego
 
 **录屏链接：** https://bytedance.feishu.cn/minutes/obcn3zdn1g46avv887i11ms9?from=from_copylink

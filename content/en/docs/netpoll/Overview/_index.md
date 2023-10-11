@@ -63,8 +63,8 @@ More benchmarks reference [kitex-benchmark][kitex-benchmark] and [hertz-benchmar
 
 ## Reference
 
-* [Official Website](https://www.cloudwego.io)
-* [Getting Started](https://www.cloudwego.io/docs/netpoll/getting-started/)
+* [Official Website](/)
+* [Getting Started](/docs/netpoll/getting-started/)
 
 
 [Netpoll]: https://github.com/cloudwego/netpoll

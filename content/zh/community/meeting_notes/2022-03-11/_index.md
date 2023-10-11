@@ -10,7 +10,7 @@ description: >
 
 **参会人员：** CoderPoet, liu-song, GuangmingLuo, Zheming Li, YangruiEmma, li-jin-gou, simon0-o, Dianjun Suo, jasondeng1997, lvnszn, baiyutang, Duslia, joway, Xuewu Jiang, AshleeT, yccpt.
 
-**会前必读：** http://www.cloudwego.io/;
+**会前必读：** [官网](/)；
               https://github.com/cloudwego
 
 ## 议程 1 ：新人自我介绍

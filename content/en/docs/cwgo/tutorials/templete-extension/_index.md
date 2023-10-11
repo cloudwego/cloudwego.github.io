@@ -16,7 +16,7 @@ cwgo server -type RPC -service {service name} -idl {idl path} -template {tpl pat
 ## RPC
 
 1. The template file is delivered through the yaml folder, specified by the `--template-dir` command line parameter of kitex, all yaml files in this folder will be rendered, and if the template parsing fails, it will exit directly. Watch out for unknown hidden files.
-2. `extensions.yaml` in the folder is a specific file, the content of which is [Extended Service Code](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/) configuration file. If the file exists, there is no need to pass the `template-extension` parameter
+2. `extensions.yaml` in the folder is a specific file, the content of which is [Extended Service Code](/zh/docs/kitex/tutorials/code-gen/template_extension/) configuration file. If the file exists, there is no need to pass the `template-extension` parameter
 
    The yaml file is defined as follows:
 
@@ -40,7 +40,7 @@ Best practice rpc example tpl can refer to [here](https://github.com/cloudwego/c
 
 ## HTTP
 
-1. The template file is delivered through the yaml folder, but unlike the RPC layout, the HTTP layout is implemented based on hertz's custom template. Here we need to specify the yaml file name to be fixed as `layout.yaml` and `package .yaml`, for the use of custom templates, please refer to [Hz custom template usage documentation](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/template/).
+1. The template file is delivered through the yaml folder, but unlike the RPC layout, the HTTP layout is implemented based on hertz's custom template. Here we need to specify the yaml file name to be fixed as `layout.yaml` and `package .yaml`, for the use of custom templates, please refer to [Hz custom template usage documentation](/docs/hertz/tutorials/toolkit/more-feature/template/).
 
 Best practice http example tpl can refer to [here](https://github.com/cloudwego/cwgo/tree/main/tpl/hertz/standard)
 

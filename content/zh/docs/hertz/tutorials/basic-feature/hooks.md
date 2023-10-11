@@ -81,7 +81,7 @@ main.go:25: [Info] run the third start hook
 
 Server 退出前，框架会**并发地**调用所有声明的 `ShutdownHook` 函数，并且可以通过 `server.WithExitWaitTime`配置最大等待时长，默认为 5 秒，如果超时，则立刻终止服务。
 
-`ShutdownHook` 的调用本质上是 Hertz [优雅退出](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/) 的一环。
+`ShutdownHook` 的调用本质上是 Hertz [优雅退出](/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/) 的一环。
 
 函数签名：
 

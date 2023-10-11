@@ -10,7 +10,7 @@ author: <a href="https://github.com/vinijaiswal" target="_blank">Vini Jaiswal</a
 
 ## CloudWeGo Overview
 
-[CloudWeGo](https://www.cloudwego.io/) is a set of microservices middleware developed by ByteDance that can be used to quickly build enterprise-class cloud-native architectures. It is a collection of high-performance, high-extensible, and highly-reliable projects that are focused on microservices communication and governance. It contains many components, including the RPC framework [Kitex](https://github.com/cloudwego/kitex), the HTTP framework [Hertz](https://github.com/cloudwego/hertz), the basic network library Netpoll, inter-process communication library [shmipc](https://github.com/cloudwego/shmipc-go), Rust-based RPC framework [Volo](https://github.com/cloudwego/volo) etc.
+[CloudWeGo](/) is a set of microservices middleware developed by ByteDance that can be used to quickly build enterprise-class cloud-native architectures. It is a collection of high-performance, high-extensible, and highly-reliable projects that are focused on microservices communication and governance. It contains many components, including the RPC framework [Kitex](https://github.com/cloudwego/kitex), the HTTP framework [Hertz](https://github.com/cloudwego/hertz), the basic network library Netpoll, inter-process communication library [shmipc](https://github.com/cloudwego/shmipc-go), Rust-based RPC framework [Volo](https://github.com/cloudwego/volo) etc.
 
 ## CloudWeGo Background
 
@@ -61,7 +61,7 @@ Some of the applications include:
 
 ## Getting Started
 
-To begin your journey with CloudWeGo projects, you can refer to our [comprehensive documentation](https://www.cloudwego.io/docs/), which provides step-by-step instructions. Additionally, we regularly publish insightful blogs on various topics, including the latest innovations in [Kitex](https://github.com/cloudwego/kitex), [Hertz](https://github.com/cloudwego/hertz), [Monoio](https://www.cloudwego.io/blog/2023/04/17/introducing-monoio-a-high-performance-rust-runtime-based-on-io-uring/), [Shmipc](https://github.com/cloudwego/shmipc-go), and [Volo](https://github.com/cloudwego/volo). We also publish best practices blogs and have a dedicated blog that explores best practices for using [Kitex without a proxy](https://www.cncf.io/blog/2023/01/11/kitex-proxyless-practice-traffic-lane-implementation-with-istio-and-opentelemetry/). These resources serve as valuable references to help you make the most of CloudWeGo's offerings and stay up-to-date with the latest developments in the ecosystem.
+To begin your journey with CloudWeGo projects, you can refer to our [comprehensive documentation](/docs/), which provides step-by-step instructions. Additionally, we regularly publish insightful blogs on various topics, including the latest innovations in [Kitex](https://github.com/cloudwego/kitex), [Hertz](https://github.com/cloudwego/hertz), [Monoio](/blog/2023/04/17/introducing-monoio-a-high-performance-rust-runtime-based-on-io-uring/), [Shmipc](https://github.com/cloudwego/shmipc-go), and [Volo](https://github.com/cloudwego/volo). We also publish best practices blogs and have a dedicated blog that explores best practices for using [Kitex without a proxy](https://www.cncf.io/blog/2023/01/11/kitex-proxyless-practice-traffic-lane-implementation-with-istio-and-opentelemetry/). These resources serve as valuable references to help you make the most of CloudWeGo's offerings and stay up-to-date with the latest developments in the ecosystem.
 
 ## Contributing
 

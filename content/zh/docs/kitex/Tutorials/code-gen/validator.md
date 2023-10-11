@@ -70,7 +70,7 @@ Usage of thrift-gen-validator:
 
 ## 使用
 
-以[快速开始](https://www.cloudwego.io/zh/docs/kitex/getting-started/)里的 Kitex Hello 项目为例，进入示例仓库的  `hello`  目录，在  `hello.thrift`  中添加注解，例如我们对  `Request`  结构体的  `message`  字段进行约束，约束长度不超过8且要以 "kitex-" 前缀开头：
+以[快速开始](/zh/docs/kitex/getting-started/)里的 Kitex Hello 项目为例，进入示例仓库的  `hello`  目录，在  `hello.thrift`  中添加注解，例如我们对  `Request`  结构体的  `message`  字段进行约束，约束长度不超过8且要以 "kitex-" 前缀开头：
 
 ```
 struct Request {

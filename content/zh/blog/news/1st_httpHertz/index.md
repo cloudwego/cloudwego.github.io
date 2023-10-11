@@ -201,7 +201,7 @@ Ginex 是一个基于 Gin 的开源封装，所以它本身在迭代方面是受
 目前我们已经内置了两个高性能的传输层实现。一个是**基于 CloudWeGo 开源的高性能网络库 [Netpoll][Netpoll]** 的传输层扩展，另一个是支持**基于标准库**的传输层扩展。此外，我们也同样能支持在传输层上进行**自定义传输层协议扩展** 。
 
 下图每一层中标红的能力都能够体现出，我们能够在框架的任何一个分层上支撑用户做最大程度的自由定制，这样可以最大程度地满足企业级内部用户和潜在用户的业务需求。
-如果同学们想要深入了解 [Hertz][Hertz]，可以参考 CloudWeGo 官网的 [Hertz](https://www.cloudwego.io/zh/docs/hertz/) 部分，上述所有内容均有具体描述。
+如果同学们想要深入了解 [Hertz][Hertz]，可以参考 CloudWeGo 官网的 [Hertz](/zh/docs/hertz/) 部分，上述所有内容均有具体描述。
 
 ![image](/img/blog/1st_HTTP_Hertz/11.png)
 

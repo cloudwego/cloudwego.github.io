@@ -24,7 +24,7 @@ resp, err := client.Call(ctx, req, callopt.WithXXX....)
 func WithHostPort(hostport string) Option
 ```
 
-Specifying a specific HostPort directly during this call phase will overwrite the resolver result for direct access. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/visit_directly/)
+Specifying a specific HostPort directly during this call phase will overwrite the resolver result for direct access. [More](/docs/kitex/tutorials/basic-feature/visit_directly/)
 
 
 
@@ -34,7 +34,7 @@ Specifying a specific HostPort directly during this call phase will overwrite th
 func WithURL(url string) Option
 ```
 
-Specifying a specified URL during this call phase to initiate the call. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/visit_directly/)
+Specifying a specified URL during this call phase to initiate the call. [More](/docs/kitex/tutorials/basic-feature/visit_directly/)
 
 
 
@@ -58,7 +58,7 @@ resp, err := client.Call(ctx, req,callopt.WithTag("cluster", cluster),callopt.Wi
 func WithRPCTimeout(d time.Duration) Option
 ```
 
-Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/timeout/)
+Set RPC timeout. [More](/docs/kitex/tutorials/service-governance/timeout/)
 
 
 
@@ -68,7 +68,7 @@ Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-go
 func WithConnectTimeout(d time.Duration) Option
 ```
 
-Set connection timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/timeout/)
+Set connection timeout. [More](/docs/kitex/tutorials/service-governance/timeout/)
 
 
 

@@ -24,7 +24,7 @@ resp, err := client.Call(ctx, req, callopt.WithXXX....)
 func WithHostPort(hostport string) Option
 ```
 
-在本次调用阶段直接指定一个具体的 HostPort ，会覆盖掉 Resolver 的结果进行直接访问，详见[直连访问-指定 IP 和 Port 进行调用](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/visit_directly/)。
+在本次调用阶段直接指定一个具体的 HostPort ，会覆盖掉 Resolver 的结果进行直接访问，详见[直连访问-指定 IP 和 Port 进行调用](/zh/docs/kitex/tutorials/basic-feature/visit_directly/)。
 
 
 
@@ -34,7 +34,7 @@ func WithHostPort(hostport string) Option
 func WithURL(url string) Option
 ```
 
-在本次调用阶段重新指定一个指定 URL 发起调用，详见[直连访问-指定 URL 进行调用](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/visit_directly/)。
+在本次调用阶段重新指定一个指定 URL 发起调用，详见[直连访问-指定 URL 进行调用](/zh/docs/kitex/tutorials/basic-feature/visit_directly/)。
 
 
 
@@ -58,7 +58,7 @@ resp, err := client.Call(ctx, req,callopt.WithTag("cluster", cluster),callopt.Wi
 func WithRPCTimeout(d time.Duration) Option
 ```
 
-指定本次 RPC 调用的超时时间，详见[超时控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/)。
+指定本次 RPC 调用的超时时间，详见[超时控制](/zh/docs/kitex/tutorials/service-governance/timeout/)。
 
 
 
@@ -68,7 +68,7 @@ func WithRPCTimeout(d time.Duration) Option
 func WithConnectTimeout(d time.Duration) Option
 ```
 
-为本次 RPC 调用设置连接超时时间，详见[超时控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/)。
+为本次 RPC 调用设置连接超时时间，详见[超时控制](/zh/docs/kitex/tutorials/service-governance/timeout/)。
 
 
 

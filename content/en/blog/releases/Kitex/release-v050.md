@@ -14,7 +14,7 @@ description: >
 
 When the RPC requests fail, users usually have some degradation measures to ensure the effective response (for example, construct the default response after the request timeout or circuit breaker). 
 Kitex's Fallback supports the processing of all error requests. At the same time, because business errors are usually returned through the Resp (BaseResp field), Kitex also supports the processing of Resp. 
-Refer to [Fallback](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/fallback/).
+Refer to [Fallback](/docs/kitex/tutorials/service-governance/fallback/).
 
 **2. Kitex - gRPC: Client add TLS option configuration**
 
@@ -22,9 +22,9 @@ Setup via client.WithGRPCTLSConfig option.
 
 **3. Kitex - Tool**
 
-- **Support customized scaffold templates**, refer to [Custom Scaffold Template](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/custom_tpl/)
-- **Support specifying the directory for generating code**, refer to  [Code Generation Tool -gen-path](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#-gen-path)
-- **Support using protoc plugin**, refer to [Code Generation Tool -protobuf-plugin](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/#-protobuf-plugin)
+- **Support customized scaffold templates**, refer to [Custom Scaffold Template](/docs/kitex/tutorials/code-gen/custom_tpl/)
+- **Support specifying the directory for generating code**, refer to  [Code Generation Tool -gen-path](/docs/kitex/tutorials/code-gen/code_generation/#-gen-path)
+- **Support using protoc plugin**, refer to [Code Generation Tool -protobuf-plugin](/docs/kitex/tutorials/code-gen/code_generation/#-protobuf-plugin)
 
 
 ### **Optimization**
@@ -32,7 +32,7 @@ Setup via client.WithGRPCTLSConfig option.
 **1. Loadbalance：Use Weighted Round Robin algo as default Loadbalance policy**
 
 The old version uses Weight Random to do the loadbalance by default. Random can achieve the global balance. However, in the case of a small number of server instances, there is a large probability of random continuous access to the same instance, resulting in an increase in the maximum concurrent requests of downstream nodes. Therefore, the new version adjusts the default policy to Weight Round Robin.
-Refer to [Loadbalance](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/loadbalance/)
+Refer to [Loadbalance](/docs/kitex/tutorials/service-governance/loadbalance/)
 
 **2. Goroutine Resource of Connection Pool**
 
@@ -48,7 +48,7 @@ Upgrade the frugal and pid dependency lib to support go 1.20.
 
 ### Feature
 
-- [[#840](https://github.com/cloudwego/kitex/pull/840)] feat(fallback): support fallback ability for kitex client-side, usage guide refer to [Fallback](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/fallback)
+- [[#840](https://github.com/cloudwego/kitex/pull/840)] feat(fallback): support fallback ability for kitex client-side, usage guide refer to [Fallback](/docs/kitex/tutorials/service-governance/fallback)
 - [[#841](https://github.com/cloudwego/kitex/pull/841)] feat(tool): add GetResult() and GetFirstArgument() methods for service params of protobuf
 - [[#791](https://github.com/cloudwego/kitex/pull/791)] feat(tool): merge two ways of passing extensions, to support two ways at sametime
 - [[#797](https://github.com/cloudwego/kitex/pull/797)] feat(loadbalance): use smooth weighted round robin algo as default Loadbalance policy

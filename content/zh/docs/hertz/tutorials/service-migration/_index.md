@@ -22,7 +22,7 @@ sh -c "$(curl -fsSL https://raw.github.com/hertz-contrib/migrate/main/migrate.sh
 
 ### 处理函数
 
-- 相对于 FastHTTP 的 RequestHandler ，Hertz 的 [HandlerFunc](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#HandlerFunc) 接受两个参数：context.Context 和 [RequestContext](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#RequestContext) 。context.Context 用于解决请求上下文无法按需延长的问题，同时请求上下文不再需要实现上下文接口，降低了维护难度。详细可以参考：[字节跳动开源 Go HTTP 框架 Hertz 设计实践](https://www.cloudwego.io/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/#%E5%BA%94%E7%94%A8%E5%B1%82) 。
+- 相对于 FastHTTP 的 RequestHandler ，Hertz 的 [HandlerFunc](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#HandlerFunc) 接受两个参数：context.Context 和 [RequestContext](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#RequestContext) 。context.Context 用于解决请求上下文无法按需延长的问题，同时请求上下文不再需要实现上下文接口，降低了维护难度。详细可以参考：[字节跳动开源 Go HTTP 框架 Hertz 设计实践](/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/#%E5%BA%94%E7%94%A8%E5%B1%82) 。
 
 - 具体例子如下：
 
@@ -102,7 +102,7 @@ func main() {
 
 ### 处理函数
 
-- 相对于 Gin 的 RequestHandler ，Hertz 的 [HandlerFunc](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#HandlerFunc) 接受两个参数：context.Context 和 [RequestContext](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#RequestContext) context.Context 即 Gin 中的 ctx.Request.Context() 。详细可以参考：[字节跳动开源 Go HTTP 框架 Hertz 设计实践](https://www.cloudwego.io/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/#%E5%BA%94%E7%94%A8%E5%B1%82) 。
+- 相对于 Gin 的 RequestHandler ，Hertz 的 [HandlerFunc](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#HandlerFunc) 接受两个参数：context.Context 和 [RequestContext](https://pkg.go.dev/github.com/cloudwego/hertz/pkg/app#RequestContext) context.Context 即 Gin 中的 ctx.Request.Context() 。详细可以参考：[字节跳动开源 Go HTTP 框架 Hertz 设计实践](/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/#%E5%BA%94%E7%94%A8%E5%B1%82) 。
 - 具体例子如下：
 
 ```Go
@@ -115,7 +115,7 @@ type HandlerFunc = func(c context.Context, ctx *app.RequestContext)
 
 ### 参数绑定
 
-- Hertz 目前只支持 Bind 绑定所有的数据，不支持单独绑定 Query 或是 Body 中的数据，详细内容请参考[绑定与校验](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/#%E6%94%AF%E6%8C%81%E7%9A%84-tag-%E5%8F%8A%E5%8F%82%E6%95%B0%E7%BB%91%E5%AE%9A%E4%BC%98%E5%85%88%E7%BA%A7) 。
+- Hertz 目前只支持 Bind 绑定所有的数据，不支持单独绑定 Query 或是 Body 中的数据，详细内容请参考[绑定与校验](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/#%E6%94%AF%E6%8C%81%E7%9A%84-tag-%E5%8F%8A%E5%8F%82%E6%95%B0%E7%BB%91%E5%AE%9A%E4%BC%98%E5%85%88%E7%BA%A7) 。
 
 ### 设置 Response 数据
 

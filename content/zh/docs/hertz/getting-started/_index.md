@@ -93,7 +93,7 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具，可以�
 1. 确保 `GOPATH` 环境变量已经被正确地定义（例如 `export GOPATH=~/go`）并且将 `$GOPATH/bin` 添加到 `PATH` 环境变量之中（例如 `export PATH=$GOPATH/bin:$PATH`）；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录。
 2. 安装 hz：`go install github.com/cloudwego/hertz/cmd/hz@latest`。
 
-更多 hz 使用方法可参考: [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/)。
+更多 hz 使用方法可参考: [hz](/zh/docs/hertz/tutorials/toolkit/)。
 
 ### 确定代码放置位置
 
@@ -111,7 +111,7 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具，可以�
 1. 在当前目录下创建 hertz_demo 文件夹，进入该目录中。
 
 2. 生成代码
-  - 直接使用 `hz new`，若当前不在 `GOPATH`，需要添加 `-module` 或者 `-mod` flag 指定一个自定义的模块名称。详细参考[这里](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage/)。
+  - 直接使用 `hz new`，若当前不在 `GOPATH`，需要添加 `-module` 或者 `-mod` flag 指定一个自定义的模块名称。详细参考[这里](/zh/docs/hertz/tutorials/toolkit/usage/)。
   - 通过指定已经定义好的 idl 文件进行代码生成，例如 `hz new -idl hello.thrift`。
     ```thrift
     namespace go hello.world
