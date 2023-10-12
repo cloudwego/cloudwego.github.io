@@ -177,9 +177,11 @@ client.WithTransportProtocol(transport.Framed)
 ```
 
 注：
-1. 非必须；如不指定 Framed，Server 端可能无法用 frugal 解码（详见 "Kitex Server -> 注意事项"）；
+1. 如不指定 Framed，可能存在如下问题:
+    1. Server 端可能无法用 frugal 解码（因为读不到 Payload Size，详见 "Kitex Server -> 注意事项"）；
+    2. Server 端不会返回 Framed Payload，Client 可能无法用 frugal 解码（因为读不到 Payload Size）；
 2. 如果目标 Server 不支持 Framed，则不应指定。不影响 Client 侧使用 frugal 编码；但 Server 回包如不是 Framed，Client 可能无法用 frugal 解码（这种情况慎用 slim 模板）；
-3. 也可使用 TTHeaderFramed。
+3. 也可使用 TTHeaderFramed（即 `TTHeader | Framed` 位与结果）。
 
 ##### 示例代码
 
