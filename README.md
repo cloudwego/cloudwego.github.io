@@ -4,7 +4,7 @@
 
 The CloudWeGo site is currently built with [Hugo](https://gohugo.io/).
 
-For CN users, please visit : [cloudwego.cn](https://www.cloudwego.cn/) ; 
+For CN users, please visit : [cloudwego.cn](https://www.cloudwego.cn/zh) ; 
 For Non-CN users, please visit: [cloudwego.io](https://www.cloudwego.io/) 
 
 ## Prerequisites
