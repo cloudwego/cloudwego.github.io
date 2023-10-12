@@ -2,7 +2,10 @@
 
 # CloudWeGo
 
-The [cloudwego.io](https://www.cloudwego.io/) site is built with [Hugo](https://gohugo.io/) and hosted on [Vercel](https://vercel.com/?utm_source=CloudWeGo&utm_campaign=oss).
+The CloudWeGo site is currently built with [Hugo](https://gohugo.io/).
+
+For CN users, please visit : [cloudwego.cn](https://www.cloudwego.cn/zh) ; 
+For Non-CN users, please visit: [cloudwego.io](https://www.cloudwego.io/) 
 
 ## Prerequisites
 
@@ -39,6 +42,6 @@ This project is overridden from [docsy](http://github.com/google/docsy), and we'
 
 ## Credits
 
-The website is deployed on [Vercel](https://vercel.com/?utm_source=CloudWeGo&utm_campaign=oss).
+The [cloudwego.io](https://www.cloudwego.io/)  website is deployed on [Vercel](https://vercel.com/?utm_source=CloudWeGo&utm_campaign=oss).
 
 ![Vercel](https://images.ctfassets.net/e5382hct74si/78Olo8EZRdUlcDUFQvnzG7/fa4cdb6dc04c40fceac194134788a0e2/1618983297-powered-by-vercel.svg)
