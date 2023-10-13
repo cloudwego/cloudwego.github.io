@@ -24,7 +24,7 @@ Kitex 会对每一个请求都开启或重用一个 Goroutine，所以只要在�
 
 Kitex 处理请求分为两个阶段：
 
-- 传输层：Kitex 收到了一个完整的二进制数据包的阶段。如果是 [TTHeader](https://www.cloudwego.io/zh/docs/kitex/reference/transport_protocol_ttheader/) 协议，在二进制包中，我们就能快速解析出一些 metadata 信息，而无需反序列化。
+- 传输层：Kitex 收到了一个完整的二进制数据包的阶段。如果是 [TTHeader](/zh/docs/kitex/reference/transport_protocol_ttheader/) 协议，在二进制包中，我们就能快速解析出一些 metadata 信息，而无需反序列化。
 - 消息层：Kitex 将二进制反序列化为一个 Request 结构体的阶段。当结构体比较复杂时，反序列化部分对服务总体开销占比往往会比较大。
 
 在我们的微服务治理实践里，我们推荐把来源服务名这类通用信息放在 TTHeader 中，这样不需要完全反序列化请求便可以提前进行 Goroutine 的 labels 打点。

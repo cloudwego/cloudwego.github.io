@@ -57,7 +57,7 @@ CloudWeGo 在第一阶段开源了四个项目：
 ![image](/img/blog/Microservices_Open_CloudWeGo/Functions_Features.PNG)
 
 - **高性能**：网络传输模块 [Kitex][Kitex] 默认集成了自研的网络库 [Netpoll][Netpoll]，性能相较使用 go net 有显著优势；除了网络库带来的性能收益，[Kitex][Kitex] 对 Thrift 编解码也做了深度优化。关于性能数据可参考 [kitex-benchmark](https://github.com/cloudwego/kitex-benchmark)。
-- **扩展性**：[Kitex][Kitex] 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 CloudWeGo [官网文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/)。[Kitex][Kitex] 也并未耦合 [Netpoll][Netpoll]，开发者也可以选择其它网络库扩展使用。
+- **扩展性**：[Kitex][Kitex] 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 CloudWeGo [官网文档](/zh/docs/kitex/tutorials/framework-exten/)。[Kitex][Kitex] 也并未耦合 [Netpoll][Netpoll]，开发者也可以选择其它网络库扩展使用。
 - **消息协议**：RPC 消息协议默认支持 Thrift、Kitex Protobuf、gRPC。Thrift 支持 Buffered 和 Framed 二进制协议；Kitex Protobuf 是 [Kitex][Kitex] 自定义的 Protobuf 消息协议，协议格式类似 Thrift；gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 互通。除此之外，使用者也可以扩展自己的消息协议。
 - **传输协议**：传输协议封装消息协议进行 RPC 互通，传输协议可以额外透传元信息，用于服务治理，[Kitex][Kitex] 支持的传输协议有 TTHeader、HTTP2。TTHeader 可以和 Thrift、Kitex Protobuf 结合使用；HTTP2 目前主要是结合 gRPC 协议使用，后续也会支持 Thrift。
 - **多消息类型**：支持 PingPong、Oneway、双向 Streaming。其中 Oneway 目前只对 Thrift 协议支持，双向 Streaming 只对 gRPC 支持，后续会考虑支持 Thrift 的双向 Streaming。
@@ -80,11 +80,11 @@ CloudWeGo 在第一阶段开源了四个项目：
 
 [Kitex][Kitex] 并不提供默认的服务注册发现，体现了框架的**中立**特征。[Kitex][Kitex] 支持自定义注册模块和发现模块，使用者可自行扩展集成其他注册中心和服务发现实现，该扩展分别定义在 Pkg/Registry 和 Pkg/Discovery 下。
 
-[Kitex][Kitex] 服务注册扩展接口如下所示，更多详情可以查看官网框架扩展 -> [服务注册扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/registry/)。
+[Kitex][Kitex] 服务注册扩展接口如下所示，更多详情可以查看官网框架扩展 -> [服务注册扩展](/zh/docs/kitex/tutorials/framework-exten/registry/)。
 
 ![image](/img/blog/Microservices_Open_CloudWeGo/Service_registry.png)
 
-[Kitex][Kitex] 服务发现扩展接口如下所示，更多详情可以查看官网框架扩展 -> [服务发现扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/service_discovery/)。
+[Kitex][Kitex] 服务发现扩展接口如下所示，更多详情可以查看官网框架扩展 -> [服务发现扩展](/zh/docs/kitex/tutorials/framework-exten/service_discovery/)。
 
 ![image](/img/blog/Microservices_Open_CloudWeGo/Service_discovery.png)
 
@@ -114,7 +114,7 @@ CloudWeGo 在第一阶段开源了四个项目：
 
 ![image](/img/blog/Microservices_Open_CloudWeGo/Conversion.png)
 
-关于 [Kitex][Kitex] 熔断器实现的更多细节和原理，可以查看官网基本特性 -> [熔断器](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/circuitbreaker/)章节。
+关于 [Kitex][Kitex] 熔断器实现的更多细节和原理，可以查看官网基本特性 -> [熔断器](/zh/docs/kitex/tutorials/service-governance/circuitbreaker/)章节。
 
 ### **限流**
 

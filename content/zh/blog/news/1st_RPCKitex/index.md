@@ -19,9 +19,9 @@ author: <a href="https://github.com/YangruiEmma" target="_blank">YangruiEmma</a>
 同时这也是 [Kitex][Kitex] 与目前已经开源的、支持 gRPC 协议的其他 Golang 框架的主要差异。如果用户想使用 gRPC 又对性能有很高的要求，那么 [Kitex][Kitex] 框架将会是一个很不错的选择。
 
 继 [Kitex][Kitex] 开源后，今年 CloudWeGo 又陆续开源了 Golang HTTP 框架 [Hertz](https://github.com/cloudwego/hertz)，Rust RPC 框架 [Volo](https://github.com/cloudwego/volo)，同时围绕这些微服务框架和微服务的一些通用能力，
-我们还开源了一些高性能的基础库。关于更多 CloudWeGo 开源的子项目，可以进入 CloudWeGo [官网](https://www.cloudwego.io/zh/)详细了解。
+我们还开源了一些高性能的基础库。关于更多 CloudWeGo 开源的子项目，可以进入 CloudWeGo [官网](/zh/)详细了解。
 
-CloudWeGo 官网：https://www.cloudwego.io/
+[CloudWeGo 官网](/)
 
 ![image](/img/blog/1st_RPC_Kitex/1.png)
 

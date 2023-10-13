@@ -128,7 +128,7 @@ CloudWeGo 团队来森马做技术支持时讲到对自研网络库 Netpoll 做�
 - 序列化/反序列化优化；
 - .......
 
-更多资料可以查看 [CloudWeGo 官网](https://www.cloudwego.io)或参考官网[博客](https://www.cloudwego.io/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/)
+更多资料可以查看 [CloudWeGo 官网](/)或参考官网[博客](/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/)
 
 ### CloudWeGo 团队的技术支持
 

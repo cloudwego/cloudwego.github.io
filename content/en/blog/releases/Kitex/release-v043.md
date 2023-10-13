@@ -10,8 +10,8 @@ description: >
 
 ### **Feature**
 
-1. **Extend the Generated Code of client/server**: Add a new feature which can extend generated client.go/server.go with config file. It is applicable to the scenario for customizing the unified suite. See [Extend the Templates of Service Generated Code]([https://www.cloudwego.io/docs/kitex/tutorials/code-gen/template_extension/]) for details.
-2. **Biz Customized Exception** : Add supporting to return customized  biz error which can distinguish with RPC error. See [Business Exception](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/bizstatuserr/), [Proposal](https://github.com/cloudwego/kitex/issues/511).
+1. **Extend the Generated Code of client/server**: Add a new feature which can extend generated client.go/server.go with config file. It is applicable to the scenario for customizing the unified suite. See [Extend the Templates of Service Generated Code]([/docs/kitex/tutorials/code-gen/template_extension/]) for details.
+2. **Biz Customized Exception** : Add supporting to return customized  biz error which can distinguish with RPC error. See [Business Exception](/docs/kitex/tutorials/basic-feature/bizstatuserr/), [Proposal](https://github.com/cloudwego/kitex/issues/511).
 3. **Request Profiler** : Add a new feature to do profiler for requests which can be used for cost statistics.
 4. **Context Middleware** : Add Context Middleware which is used for adding request-level middlewares.
 

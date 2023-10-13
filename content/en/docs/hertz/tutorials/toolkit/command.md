@@ -177,15 +177,15 @@ OPTIONS:
 
 <!---->
 
-- customize_layout: Customize the project layout template, please refer to [hz custom template use](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/template/)
+- customize_layout: Customize the project layout template, please refer to [hz custom template use](/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 
-- customize_layout_data_path value: Custom project layout template rendering parameters, please refer to [hz custom template use](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/template/)
+- customize_layout_data_path value: Custom project layout template rendering parameters, please refer to [hz custom template use](/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 
-- customize_package: Customized project package related templates can mainly be customized for handler templates. Please refer to [hz custom template use](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/template/)
+- customize_package: Customized project package related templates can mainly be customized for handler templates. Please refer to [hz custom template use](/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 
@@ -316,7 +316,7 @@ OPTIONS:
 
 <!---->
 
-- customize_package: Customized project package related templates can mainly be customized for handler templates. Please refer to [hz custom template use](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/template/). Note: For existing handler files, a new handler function will be added according to the default template. For non existing handler files, a custom template will be used to generate the handler.
+- customize_package: Customized project package related templates can mainly be customized for handler templates. Please refer to [hz custom template use](/docs/hertz/tutorials/toolkit/more-feature/template/). Note: For existing handler files, a new handler function will be added according to the default template. For non existing handler files, a custom template will be used to generate the handler.
 
 <!---->
 
@@ -529,7 +529,7 @@ OPTIONS:
 
 <!---->
 
-- customize_package: Customized project package related templates can mainly be customized for handler templates. Please refer to [hz custom template use](https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/template/)
+- customize_package: Customized project package related templates can mainly be customized for handler templates. Please refer to [hz custom template use](/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 

@@ -10,7 +10,7 @@ description: >
 
 **参会人员：** Joway, YangruiEmma, liu-song, AshleeT, li-jin-gou, Hchenn, PureWhiteWu, GuangmingLuo, baiyutang, yccpt, horizonzy.
 
-**会前必读：** http://www.cloudwego.io/;
+**会前必读：** [官网](/)；
               https://github.com/cloudwego
 
 ## 议程 1 ：自我介绍+历史贡献介绍

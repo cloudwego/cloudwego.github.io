@@ -178,8 +178,8 @@ hlog.SetSilentMode(true)
 
 hertz-contrib/logger 下的 logger 不具备直接的 trace 功能。
 
-可以参照 [Trace](https://www.cloudwego.io/zh/docs/hertz/tutorials/observability/open-telemetry/#logging) 文档的日志部分。
+可以参照 [Trace](/zh/docs/hertz/tutorials/observability/open-telemetry/#logging) 文档的日志部分。
 
 ## 日志拓展
 
-目前 hlog 支持 zap , logrus 和 zerolog 的拓展使用，日志拓展 [详见](https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/log/)。
+目前 hlog 支持 zap , logrus 和 zerolog 的拓展使用，日志拓展 [详见](/zh/docs/hertz/tutorials/framework-exten/log/)。

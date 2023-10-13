@@ -10,7 +10,7 @@ description: >
 
 **参会人** ：YangruiEmma, baiyutang, joway, yccpt, Huang Yuting, CoderPoet, li-jin-gou, GuangmingLuo, simon0-o, yiyun, JZK-Keven, bodhisatan, Jacob953, cyyolo, debug-LiXiwen, baize, zstone12, You Gaoming, HeyJavaBean, jayantxie, Skyenought
 
-**会前必读** ：http://www.cloudwego.io/；https://github.com/cloudwego
+**会前必读** ：[官网](/)；https://github.com/cloudwego
 
 ### 议程 1 ：新人介绍
 

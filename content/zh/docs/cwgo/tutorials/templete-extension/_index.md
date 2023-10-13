@@ -16,7 +16,7 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template {tpl pa
 ## RPC
 
 1. 模板文件通过 yaml 文件夹传递，通过 kitex 的 `--template-dir` 命令行参数指定，该文件夹下的所有 yaml 文件都会被渲染，模版解析失败会直接退出。请注意是否存在未知的隐藏文件。
-1. 文件夹内的 `extensions.yaml` 为特定文件，该文件的内容为[扩展 Service 代码](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/)的配置文件。如果该文件存在的话，则不需要再传递 `template-extension` 参数
+1. 文件夹内的 `extensions.yaml` 为特定文件，该文件的内容为[扩展 Service 代码](/zh/docs/kitex/tutorials/code-gen/template_extension/)的配置文件。如果该文件存在的话，则不需要再传递 `template-extension` 参数
 
    Yaml 文件定义如下：
 
@@ -40,7 +40,7 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template {tpl pa
 
 ## HTTP
 
-1. 模版文件通过 yaml 文件夹传递，但是与 RPC 的 layout 不同的是 HTTP 的 layout 是基于 hertz 的自定义模版实现的，这里我们需要指定的 yaml 文件名需要固定为 `layout.yaml` 与 `package.yaml` ，对于自定义模版的使用可以参考 [Hz 自定义模版使用文档](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/)。
+1. 模版文件通过 yaml 文件夹传递，但是与 RPC 的 layout 不同的是 HTTP 的 layout 是基于 hertz 的自定义模版实现的，这里我们需要指定的 yaml 文件名需要固定为 `layout.yaml` 与 `package.yaml` ，对于自定义模版的使用可以参考 [Hz 自定义模版使用文档](/zh/docs/hertz/tutorials/toolkit/more-feature/template/)。
 
 最佳实践的 http 示例 tpl 可参考[这里](https://github.com/cloudwego/cwgo/tree/main/tpl/hertz/standard)
 

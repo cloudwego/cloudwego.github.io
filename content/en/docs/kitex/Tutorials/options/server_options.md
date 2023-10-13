@@ -52,7 +52,7 @@ When local server has multiple IP addresses, you can also use this method to spe
 func WithMuxTransport() Option
 ```
 
-Enable Kitex multiplexing transport feature on the server side. Client side also need to turn on this option, or it won't work.  [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/connection_type/)
+Enable Kitex multiplexing transport feature on the server side. Client side also need to turn on this option, or it won't work.  [More](/docs/kitex/tutorials/basic-feature/connection_type/)
 
 
 
@@ -62,7 +62,7 @@ Enable Kitex multiplexing transport feature on the server side. Client side also
 func WithMiddleware(mw endpoint.Middleware) Option
 ```
 
-Add a middleware.  [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/middleware/)
+Add a middleware.  [More](/docs/kitex/tutorials/framework-exten/middleware/)
 
 
 
@@ -124,7 +124,7 @@ Set the maximum amount of idle time allowed for the server-side connection to th
 func WithStatsLevel(level stats.Level) Option
 ```
 
-Set the stats level for the server. [More](https://www.cloudwego.io/docs/kitex/tutorials/observability/tracing/)
+Set the stats level for the server. [More](/docs/kitex/tutorials/observability/tracing/)
 
 
 
@@ -227,7 +227,7 @@ WithGRPCMaxHeaderListSize returns a ServerOption that sets the max (uncompressed
 func WithSuite(suite Suite) Option
 ```
 
-Set up a specific configuration, customize according to the scene, configure multiple options and middlewares combinations and encapsulations in the Suite. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/suite/)
+Set up a specific configuration, customize according to the scene, configure multiple options and middlewares combinations and encapsulations in the Suite. [More](/docs/kitex/tutorials/framework-exten/suite/)
 
 
 
@@ -247,7 +247,7 @@ If the server has a proxy, such as Mesh Ingress, you can modify the listening ad
 func WithRegistryInfo(info *registry.Info) Option
 ```
 
-Customize the registration information reported by the service. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/discovery/)
+Customize the registration information reported by the service. [More](/docs/kitex/tutorials/service-governance/discovery/)
 
 
 
@@ -257,7 +257,7 @@ Customize the registration information reported by the service. [More](https://w
 func WithGeneric(g generic.Generic) Option
 ```
 
-Specify the generalization call type, which needs to be used in conjunction with the generalization Client/Server. [More](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/)
+Specify the generalization call type, which needs to be used in conjunction with the generalization Client/Server. [More](/docs/kitex/tutorials/advanced-feature/generic-call/)
 
 
 
@@ -277,7 +277,7 @@ Set the error handler function, which is executed after the server handler is ex
 func WithACLRules(rules ...acl.RejectFunc) Option
 ```
 
-Set ACL permission access control, which is executed before service discovery. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
+Set ACL permission access control, which is executed before service discovery. [More](/docs/kitex/tutorials/service-governance/access_control/)
 
 
 
@@ -309,7 +309,7 @@ Set port reuse, that is, whether to enable the underlying TCP port multiplexing 
 func WithRegistry(r registry.Registry) Option
 ```
 
-Specify a Registry for service discovery registration reporting. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/discovery/)
+Specify a Registry for service discovery registration reporting. [More](/docs/kitex/tutorials/service-governance/discovery/)
 
 
 
@@ -319,7 +319,7 @@ Specify a Registry for service discovery registration reporting. [More](https://
 func WithTracer(c stats.Tracer) Option
 ```
 
-Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/observability/tracing/)
+Add an additional Tracer. [More](/docs/kitex/tutorials/observability/tracing/)
 
 
 
@@ -329,7 +329,7 @@ Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/o
 func WithCodec(c remote.Codec) Option
 ```
 
-Specify a Codec for scenarios that require custom protocol. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/codec/)
+Specify a Codec for scenarios that require custom protocol. [More](/docs/kitex/tutorials/framework-exten/codec/)
 
 
 
@@ -339,7 +339,7 @@ Specify a Codec for scenarios that require custom protocol. [More](https://www.c
 func WithPayloadCodec(c remote.PayloadCodec) Option
 ```
 
-Specifie a PayloadCodec. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/codec/)
+Specifie a PayloadCodec. [More](/docs/kitex/tutorials/framework-exten/codec/)
 
 
 
@@ -349,7 +349,7 @@ Specifie a PayloadCodec. [More](https://www.cloudwego.io/docs/kitex/tutorials/fr
 func WithMetaHandler(h remote.MetaHandler) Option
 ```
 
-Add a meta handler for customizing transparent information in conjunction with the transport protocol, such as service name, invocation method, machine room, cluster, env, tracerInfo. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/transmeta/)
+Add a meta handler for customizing transparent information in conjunction with the transport protocol, such as service name, invocation method, machine room, cluster, env, tracerInfo. [More](/docs/kitex/tutorials/framework-exten/transmeta/)
 
 
 
@@ -359,7 +359,7 @@ Add a meta handler for customizing transparent information in conjunction with t
 func WithBoundHandler(h remote.BoundHandler) Option
 ```
 
-Set IO Bound handlers. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/trans_pipeline/)
+Set IO Bound handlers. [More](/docs/kitex/tutorials/framework-exten/trans_pipeline/)
 
 
 
@@ -399,7 +399,7 @@ Set LimitReporter, and when QPS throttling or connection limiting occurs, you ca
 func WithTransHandlerFactory(f remote.ServerTransHandlerFactory) Option
 ```
 
-Set transHandlerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/transport/)
+Set transHandlerFactory. [More](/docs/kitex/tutorials/framework-exten/transport/)
 
 
 
@@ -409,7 +409,7 @@ Set transHandlerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/fr
 func WithTransServerFactory(f remote.TransServerFactory) Option
 ```
 
-Set transServerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/transport/)
+Set transServerFactory. [More](/docs/kitex/tutorials/framework-exten/transport/)
 
 
 
@@ -419,4 +419,4 @@ Set transServerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/fra
 func WithDiagnosisService(ds diagnosis.Service) Option
 ```
 
-Set diagnosis service. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/diagnosis/)
+Set diagnosis service. [More](/docs/kitex/tutorials/framework-exten/diagnosis/)

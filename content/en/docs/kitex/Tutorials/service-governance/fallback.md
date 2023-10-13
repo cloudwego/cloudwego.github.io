@@ -19,7 +19,7 @@ After an RPC request fails, businesses usually take some fallback measures to en
 ### 1.1 Result types that support Fallback
 
 1. **RPC** **Error**: RPC request exceptions such as timeout, circuit breaker, rate limiting, and protocol errors at the RPC level.
-2. **Business Error**: Business custom exception, which is distinct from RPC Exception, for the details please see [Kitex - Business Exception Usage Guide]((https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/bizstatuserr/)
+2. **Business Error**: Business custom exception, which is distinct from RPC Exception, for the details please see [Kitex - Business Exception Usage Guide]((/docs/kitex/tutorials/basic-feature/bizstatuserr/)
 3. **Resp**: In the absence of using business exceptions, users will define error returns in Resp (BaseResp). Therefore, fallback can also be done by judging Resp.
 
 ### 1.2 Monitoring reporting
@@ -42,11 +42,6 @@ xxxCli := xxxservice.NewClient("target_service", opts...)
 ### Call-level configuration
 
 ```Go
-import (
-    "github.com/cloudwego/kitex/pkg/retry"
-    bretry "code.byted.org/kite/kitex/pkg/retry"
-)
-
 xxxCli.XXXMethod(ctx, req, callopt.WithFallback(yourFallbackPolicy))
 ```
 

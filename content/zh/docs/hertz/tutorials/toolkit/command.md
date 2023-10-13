@@ -177,15 +177,15 @@ OPTIONS:
 
 <!---->
 
-- customize_layout: 自定义项目 layout 模板，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
+- customize_layout: 自定义项目 layout 模板，具体详见：[自定义模板使用](/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 
-- customize_layout_data_path value: 自定义项目 layout 模板渲染参数，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
+- customize_layout_data_path value: 自定义项目 layout 模板渲染参数，具体详见：[自定义模板使用](/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 
-- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
+- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 
@@ -316,7 +316,7 @@ OPTIONS:
 
 <!---->
 
-- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/) 。注意：对于已经存在的 handler 文件会按照默认模板新增 handler 函数，对于还未存在的 handler 文件，则会按照自定义模板来生成 handler。
+- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](/zh/docs/hertz/tutorials/toolkit/more-feature/template/) 。注意：对于已经存在的 handler 文件会按照默认模板新增 handler 函数，对于还未存在的 handler 文件，则会按照自定义模板来生成 handler。
 
 <!---->
 
@@ -529,7 +529,7 @@ OPTIONS:
 
 <!---->
 
-- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
+- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
 
 <!---->
 

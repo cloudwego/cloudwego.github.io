@@ -387,4 +387,4 @@ func main() {
 }
 ````
 
-获取更多配置相关信息：https://www.cloudwego.io/zh/docs/hertz/reference/config/
+获取更多配置相关信息：[配置说明](/zh/docs/hertz/reference/config/)

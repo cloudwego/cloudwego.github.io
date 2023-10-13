@@ -30,7 +30,7 @@ Key features of Hertz include:
 ### High Usability
   Hertz prioritizes the ability to write correct code quickly during development. When designing the API, Hertz considers user usage habits and draws inspiration from the industry's mainstream framework API usage. Continuous iteration and user feedback contribute to the framework's refinement. For instance, many users hope that the Client also has the ability to trace. For this reason, Hertz Client supports middleware capabilities. Additionally, the Client supports stream processing in proxy scenarios. Middleware and stream processing are designed with the user's actual habits in mind, promoting faster development of correct code. Hertz also provides a one-click command-line tool for code generation, enhancing the framework's ease of use.
 ### Easy expandability
-  Hertz employs a layered design, offering a range of interfaces and default extension implementations for users to expand upon. Details regarding [Hertz extension](https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/) can be found on the [CloudWeGo official website](https://www.cloudwego.io). The framework's layered design enhances its scalability. Currently, only stable capabilities are open-sourced, with more planned for the future. Please refer to the [Hertz roadmap](https://github.com/cloudwego/hertz/blob/develop/ROADMAP.md) for further details.
+  Hertz employs a layered design, offering a range of interfaces and default extension implementations for users to expand upon. Details regarding [Hertz extension](/zh/docs/hertz/tutorials/framework-exten/) can be found on the [CloudWeGo official website](/). The framework's layered design enhances its scalability. Currently, only stable capabilities are open-sourced, with more planned for the future. Please refer to the [Hertz roadmap](https://github.com/cloudwego/hertz/blob/develop/ROADMAP.md) for further details.
 
 ### Low latency
   Hertz utilizes the internally developed high-performance network library,  [Netpoll](https://github.com/cloudwego/netpoll), by default. In certain special scenarios, Hertz demonstrates advantages in terms of QPS and delay compared to the go net package.
@@ -64,4 +64,4 @@ We welcome everyone to [contribute](https://github.com/cloudwego/hertz/blob/deve
 ## Related Links
 - Project [address](https://github.com/cloudwego/hertz)
 - Community [ecosystem](https://github.com/hertz-contrib)
-- Hertz benchmark [blog](https://www.cloudwego.io/blog/2023/02/24/getting-started-with-hertz-performance-testing-guide/)
+- Hertz benchmark [blog](/blog/2023/02/24/getting-started-with-hertz-performance-testing-guide/)

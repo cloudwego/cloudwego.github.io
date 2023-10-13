@@ -130,7 +130,7 @@ struct Item {
 }
 ```
 
-In addition, Pilota also supports other annotations. For details, please refer to: https://www.cloudwego.io/docs/pilota/guide/annotation/
+In addition, Pilota also supports other annotations. For details, please refer to: [Pilota Supported Annotations](/docs/pilota/guide/annotation/)
 
 ## Full Release Note
 

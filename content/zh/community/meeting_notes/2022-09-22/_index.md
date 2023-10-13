@@ -10,7 +10,7 @@ description: >
 
 **参会人** ：GuangmingLuo, simon0-o, liu-song, YangruiEmma, CoderPoet, li-jin-gou, wangbei98, FlyDangerFox, Authority, derek3, FGYFFFF, ppzqh, Code:Z, LemonFish, justlorain, HeyJavaBean, Yang Hong, baiyutang, rogerogers, skyenought, baize, Millione, chens
 
-**会前必读** ：http://www.cloudwego.io/；https://github.com/cloudwego
+**会前必读** ：[官网](/)；https://github.com/cloudwego
 
 ### 议程 1 ：新人自我介绍
 

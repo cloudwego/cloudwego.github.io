@@ -15,7 +15,7 @@ Kitex provides the ability to customize templates, if the default templates can 
 
 3. Templates are passed via the YAML folder and specified with the `--template-dir` command-line parameter. To avoid large files, templates are now organized into a dedicated directory.
 
-4. `extensions.yaml` in the YAML folder is a specific file. The content of this configuration file is [extending the service code](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/template_extension/). If it exists, there is no need to pass the 'template-extension' parameter.
+4. `extensions.yaml` in the YAML folder is a specific file. The content of this configuration file is [extending the service code](/docs/kitex/tutorials/code-gen/template_extension/). If it exists, there is no need to pass the 'template-extension' parameter.
 
 5. There are currently four update options available: overwrite, skip, append or add files based on specified methods (`loop_method` is true). The behavior is determined by the `key` field in `update_behavior`, which can be `skip`, `cover` or `append`. When `loop_method` is enabled, `append` adds new files; otherwise, it appends to the end of the file, and the specified `key` during the update determines the behavior.
 

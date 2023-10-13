@@ -201,7 +201,9 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 
 ### KeyFunc
 
-The program executes with `KeyFunc` as a parameter to `jwt.Parse()`, which is responsible for providing the signing key for token parsing. By customizing the logic of `KeyFunc`, you can perform some custom operations before parsing the token, such as checking the validity of the signing method, selecting the corresponding signing key, storing the token in the request context, etc.
+The program executes with `KeyFunc` as a parameter to `jwt.Parse()`, which is responsible for providing the signing key for token parsing. By customizing the logic of `KeyFunc`, you can perform some custom operations before parsing the token, such as checking the validity of the signing method.
+
+**Note: `KeyFunc` only takes effect when the token is parsed, not when the token is issued**
 
 Function signatures:
 
@@ -442,7 +444,7 @@ auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 
 ### TokenLookup
 
-There are four options for declaring the source of a token as a key-value pair, with the default value being `header:Authorization`. If more than one token source is declared, the first that satisfies the input format is selected while the rest are ignored.
+There are four options for declaring the source of a token as a key-value pair, with the default value being `header:Authorization`. If more than one token source is declared, the first that satisfies the input format is selected, separated by `,`. If the token is not obtained, it will continue to obtain token from the next declared data source.
 
 Sample Code:
 

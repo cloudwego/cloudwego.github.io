@@ -51,7 +51,7 @@ func WithServiceAddr(addr net.Addr) Option
 func WithMuxTransport() Option
 ```
 
-服务端启用多路复用。需要配合客户端的同时开启，详见[连接类型-连接多路复用](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/connection_type/)。
+服务端启用多路复用。需要配合客户端的同时开启，详见[连接类型-连接多路复用](/zh/docs/kitex/tutorials/basic-feature/connection_type/)。
 
 
 
@@ -61,7 +61,7 @@ func WithMuxTransport() Option
 func WithMiddleware(mw endpoint.Middleware) Option
 ```
 
-添加一个中间件，使用方式和 client 一致。用法参考 [Middleware 扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/middleware/)。
+添加一个中间件，使用方式和 client 一致。用法参考 [Middleware 扩展](/zh/docs/kitex/tutorials/framework-exten/middleware/)。
 
 
 
@@ -123,7 +123,7 @@ func WithMaxConnIdleTime(timeout time.Duration) Option
 func WithStatsLevel(level stats.Level) Option
 ```
 
-为 Server 设置埋点粒度，详见[埋点粒度](https://www.cloudwego.io/zh/docs/kitex/tutorials/observability/tracing/)。
+为 Server 设置埋点粒度，详见[埋点粒度](/zh/docs/kitex/tutorials/observability/tracing/)。
 
 
 
@@ -221,7 +221,7 @@ func WithGRPCMaxHeaderListSize(s uint32) Option
 func WithSuite(suite Suite) Option
 ```
 
-设置一套特定配置，可根据场景进行定制，在 Suite 中配置多个 Option 和 Middleware 的组合和封装，详见 [ Suite 扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/suite/)。
+设置一套特定配置，可根据场景进行定制，在 Suite 中配置多个 Option 和 Middleware 的组合和封装，详见 [ Suite 扩展](/zh/docs/kitex/tutorials/framework-exten/suite/)。
 
 
 
@@ -241,7 +241,7 @@ func WithProxy(p proxy.ReverseProxy) Option
 func WithRegistryInfo(info *registry.Info) Option
 ```
 
-自定义服务上报的注册信息，用法详见[服务发现](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/discovery/)。
+自定义服务上报的注册信息，用法详见[服务发现](/zh/docs/kitex/tutorials/service-governance/discovery/)。
 
 
 
@@ -251,7 +251,7 @@ func WithRegistryInfo(info *registry.Info) Option
 func WithGeneric(g generic.Generic) Option
 ```
 
-指定泛化调用类型，泛化需要结合泛化 Client/Server 使用，详见 [Kitex 泛化调用使用指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/)。
+指定泛化调用类型，泛化需要结合泛化 Client/Server 使用，详见 [Kitex 泛化调用使用指南](/zh/docs/kitex/tutorials/advanced-feature/generic-call/)。
 
 
 
@@ -271,7 +271,7 @@ func WithErrorHandler(f func(error) error) Option
 func WithACLRules(rules ...acl.RejectFunc) Option
 ```
 
-设置 ACL 权限访问控制，该模块会在服务发现之前执行，具体用法详见[自定义访问控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/access_control/)。
+设置 ACL 权限访问控制，该模块会在服务发现之前执行，具体用法详见[自定义访问控制](/zh/docs/kitex/tutorials/service-governance/access_control/)。
 
 
 
@@ -303,7 +303,7 @@ func WithReusePort(reuse bool) Option
 func WithRegistry(r registry.Registry) Option
 ```
 
-指定一个 Registry 进行服务发现的注册上报，用法详见[服务发现](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/discovery/)。
+指定一个 Registry 进行服务发现的注册上报，用法详见[服务发现](/zh/docs/kitex/tutorials/service-governance/discovery/)。
 
 
 
@@ -313,7 +313,7 @@ func WithRegistry(r registry.Registry) Option
 func WithTracer(c stats.Tracer) Option
 ```
 
-额外添加一个 Tracer 进行链路监控，详见[链路跟踪-自定义 tracer](https://www.cloudwego.io/zh/docs/kitex/tutorials/observability/tracing/)。
+额外添加一个 Tracer 进行链路监控，详见[链路跟踪-自定义 tracer](/zh/docs/kitex/tutorials/observability/tracing/)。
 
 
 
@@ -323,7 +323,7 @@ func WithTracer(c stats.Tracer) Option
 func WithCodec(c remote.Codec) Option
 ```
 
-指定 Codec，用于需要自定义协议的场景，详见[编解码协议扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/codec/)。
+指定 Codec，用于需要自定义协议的场景，详见[编解码协议扩展](/zh/docs/kitex/tutorials/framework-exten/codec/)。
 
 
 
@@ -333,7 +333,7 @@ func WithCodec(c remote.Codec) Option
 func WithPayloadCodec(c remote.PayloadCodec) Option
 ```
 
-指定 PayloadCodec，详见[编解码协议扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/codec/)。
+指定 PayloadCodec，详见[编解码协议扩展](/zh/docs/kitex/tutorials/framework-exten/codec/)。
 
 
 
@@ -343,7 +343,7 @@ func WithPayloadCodec(c remote.PayloadCodec) Option
 func WithMetaHandler(h remote.MetaHandler) Option
 ```
 
-添加一个元信息处理器，用于结合传输协议定制透传信息，如服务名、调用方法、机房、集群、env、TracerInfo，用法详见[元信息传递扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/transmeta/)。
+添加一个元信息处理器，用于结合传输协议定制透传信息，如服务名、调用方法、机房、集群、env、TracerInfo，用法详见[元信息传递扩展](/zh/docs/kitex/tutorials/framework-exten/transmeta/)。
 
 
 
@@ -353,7 +353,7 @@ func WithMetaHandler(h remote.MetaHandler) Option
 func WithBoundHandler(h remote.BoundHandler) Option
 ```
 
-自定义 IO Bound，详见 [Transport Pipeline-Bound 扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/trans_pipeline/)。
+自定义 IO Bound，详见 [Transport Pipeline-Bound 扩展](/zh/docs/kitex/tutorials/framework-exten/trans_pipeline/)。
 
 
 
@@ -393,7 +393,7 @@ func WithLimitReporter(r limiter.LimitReporter) Option
 func WithTransHandlerFactory(f remote.ServerTransHandlerFactory) Option
 ```
 
-自定义传输模块，详见[传输模块扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/transport/)。
+自定义传输模块，详见[传输模块扩展](/zh/docs/kitex/tutorials/framework-exten/transport/)。
 
 
 
@@ -403,7 +403,7 @@ func WithTransHandlerFactory(f remote.ServerTransHandlerFactory) Option
 func WithTransServerFactory(f remote.TransServerFactory) Option
 ```
 
-自定义传输模块，详见[传输模块扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/transport/)。
+自定义传输模块，详见[传输模块扩展](/zh/docs/kitex/tutorials/framework-exten/transport/)。
 
 
 
@@ -413,4 +413,4 @@ func WithTransServerFactory(f remote.TransServerFactory) Option
 func WithDiagnosisService(ds diagnosis.Service) Option
 ```
 
-添加一个自定义的 DiagnosisService，用来获取更多的诊断信息，详见[诊断模块扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/diagnosis/)。
+添加一个自定义的 DiagnosisService，用来获取更多的诊断信息，详见[诊断模块扩展](/zh/docs/kitex/tutorials/framework-exten/diagnosis/)。

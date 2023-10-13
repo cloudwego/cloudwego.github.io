@@ -20,7 +20,7 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>, <a
 
 [Kitex][Kitex] is a Golang RPC framework open-sourced by ByteDance that already natively supports the xDS standard protocol and can be managed by Service Mesh in Proxyless way. 
 Refer to this doc for detailed design: [Proposal: Kitex support xDS Protocol](https://github.com/cloudwego/kitex/issues/461). 
-Official doc is also available here at [Kitex/Tutorials/Advanced Feature/xDS Support](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/xds/)
+Official doc is also available here at [Kitex/Tutorials/Advanced Feature/xDS Support](/docs/kitex/tutorials/advanced-feature/xds/)
 
 Kitex Proxyless Simply means that Kitex services can interact directly with istiod without envoy sidecar and dynamically obtain service governance rules delivered by the control plane based on the xDS protocol. 
 And those rules will be translated into Kitex corresponding rules to implement some service governance functions (such as traffic routing which is the focus of this blog).

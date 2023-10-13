@@ -103,4 +103,4 @@ cli.Use(sd.Discovery(r, sd.WithLoadBalanceOptions(loadbalance.NewWeightedBalance
 	ExpireInterval:  15 * time.Second,
 })))
 ```
-自定义负载均衡扩展详见[负载均衡扩展](https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/service_discovery/#负载均衡扩展)。
+自定义负载均衡扩展详见[负载均衡扩展](/zh/docs/hertz/tutorials/framework-exten/service_discovery/#负载均衡扩展)。

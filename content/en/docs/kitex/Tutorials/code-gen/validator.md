@@ -74,7 +74,7 @@ For more information on installing and using `thrift-gen-validator`, please refe
 
 ## Usage
 
-Take the project "Kitex Hello" in [Getting Started](https://www.cloudwego.io/docs/kitex/getting-started/) as an example, add annotations in`hello.thrift`. For example, the code bellow requires the length and prefix for `Request.message`:
+Take the project "Kitex Hello" in [Getting Started](/docs/kitex/getting-started/) as an example, add annotations in`hello.thrift`. For example, the code bellow requires the length and prefix for `Request.message`:
 
 ```
 struct Request {

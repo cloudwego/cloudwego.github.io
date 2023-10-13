@@ -132,9 +132,9 @@ func (h *Hertz) SetCustomSignalWaiter(f func(err chan error) error)
 
 The `Spin` function is used to run the Hertz server and can exit the service upon receiving an exit signal.
 
-This function supports graceful shutdown of services. For detailed information on graceful shutdown, please refer to [graceful-shutdown](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
+This function supports graceful shutdown of services. For detailed information on graceful shutdown, please refer to [graceful-shutdown](/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
 
-When using the function of [service_discovery](https://www.cloudwego.io/docs/hertz/tutorials/service-governance/service_discovery/), `Spin` will register the service into the registry when it is started, and use `signalWaiter` to monitor service exceptions.
+When using the function of [service_discovery](/docs/hertz/tutorials/service-governance/service_discovery/), `Spin` will register the service into the registry when it is started, and use `signalWaiter` to monitor service exceptions.
 
 Function Signature:
 
@@ -177,7 +177,7 @@ func main() {
 
 ### SetCustomSignalWaiter
 
-The `SetCustomimSignalWaiter` function is used to customize the processing function of the server after receiving signals. If no custom function is set, Hertz uses the `waitSignal` function as the default implementation method for signal processing. For more details, please refer to [graceful-shutdown](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
+The `SetCustomimSignalWaiter` function is used to customize the processing function of the server after receiving signals. If no custom function is set, Hertz uses the `waitSignal` function as the default implementation method for signal processing. For more details, please refer to [graceful-shutdown](/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
 
 Function Signature:
 
@@ -550,7 +550,7 @@ Obtain the name of the currently used network library, which now has two native 
 
 Linux uses `netpoll` by default, while Windows can only use `go net`.
 
-If you have any doubts about how to use the corresponding network library, please refer to [here](https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/network-lib/).
+If you have any doubts about how to use the corresponding network library, please refer to [here](/docs/hertz/tutorials/basic-feature/network-lib/).
 
 Function Signature:
 
