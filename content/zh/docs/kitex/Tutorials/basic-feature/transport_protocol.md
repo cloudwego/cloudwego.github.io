@@ -14,60 +14,60 @@ description: Kitex 支持 TTHeader、HTTP2 传输协议。
 Kitex 目前支持两种传输协议：[TTHeader](../../../reference/transport_protocol_ttheader/)、HTTP2，但实际提供配置的 Transport Protocol 是：TTHeader、GRPC、Framed、TTHeaderFramed、PurePayload。
 
 这里做一些说明：
-
 - 因为 Kitex 对 Protobuf 的支持有 Kitex Protobuf 和 gRPC，为方便区分将 gRPC 作为传输协议的分类，框架会根据是否有配置 gRPC 决定使用哪个协议；
 - Framed 严格意义上并不是传输协议，只是标记 Payload Size 额外增加的 4 字节头，但消息协议对是否有 Framed 头并不是强制的，PurePayload 即没有任何头部的，所以将 Framed 也作为传输协议的分类；
 - Framed 和 TTHeader 也可以结合使用，所以有 TTHeaderFramed 。
 
 消息协议可选的传输协议组合如下：
 
-* Thrift: **TTHeader**(建议)、Framed、TTHeaderFramed
-* KitexProtobuf: **TTHeader**(建议)、Framed、TTHeaderFramed
+* Thrift: **TTHeader** (建议)、Framed、TTHeaderFramed
+* KitexProtobuf: **TTHeader** (建议)、Framed、TTHeaderFramed
 * gRPC: HTTP2
 
 如果想自定义消息协议和传输协议参考：[编解码(协议)扩展](../../framework-exten/codec)
 
-## 配置项
+## 配置方式
+### Client
+#### Thrift
 
-Client 初始化时通过 `WithTransportProtocol` 配置传输协议：
-
+1. 默认 Buffered：PurePayload
+2. 指定 Framed：PurePayload前增加 4 个字节（int32）指定 Payload Size
 ```go
-// client option
-client.WithTransportProtocol(transport.XXX)
+cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.Framed))
 ```
-
-Server 支持协议探测（在 Kitex 默认支持的协议内），无需配置传输协议。
-
-## 使用示例
-
-### Thrift + TTHeader
-
+3. 指定TTHeader：
 ```go
-// client side
 var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.TTHeader))
 opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
-cli, err := xxxservice.NewClient(targetService, opts...)
 
-// server side no need to config transport protocol
-var opts []server.Option
-opts = append(opts, server.WithMetaHandler(transmeta.ServerTTHeaderHandler))
-cli, err := xxxservice.NewServer(handler, opts...)
+cli := xxx.NewClient("service_name", opts)
+```
+4. 指定 TTHeaderFramed：TTHeader | Framed (Bit OR)
+```go
+var opts []client.Option
+opts = append(opts, client.WithTransportProtocol(transport.TTHeaderFramed))
+opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
+cli := xxx.NewClient("service_name", opts)
 ```
 
-
 ### gRPC
-
+client 指定 gRPC 协议：
 ```go
-// client side
-var opts []client.Option
-opts = append(opts, client.WithTransportProtocol(transport.GRPC))
-opts = append(opts, client.WithMetaHandler(transmeta.ClientHTTP2Handler))
-cli, err := xxxservice.NewClient(targetService, opts...)
+cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.GRPC))
+```
 
-
-// server side no need to config transport protocol
+### Server 
+支持协议探测（在 Kitex 默认支持的协议内），无需配置传输协议。为了支持基于 header 的信息透传，需要配置 metaHandler
+#### Thrift (TTHeader)
+```go
+var opts []server.Option
+opts = append(opts, server.WithMetaHandler(transmeta.ServerTTHeaderHandler))
+svr, err := xxxservice.NewServer(handler, opts...)
+```
+#### gRPC
+```go
 var opts []server.Option
 opts = append(opts, server.WithMetaHandler(transmeta.ServerHTTP2Handler))
-cli, err := xxxservice.NewServer(handler, opts...)
+svr, err := xxxservice.NewServer(handler, opts...)
 ```

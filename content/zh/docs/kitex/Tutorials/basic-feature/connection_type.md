@@ -47,19 +47,19 @@ xxxCli := xxxservice.NewClient("destServiceName", client.WithLongConnection(conn
   - 当前版本的`MinIdlePerAddress`的值不能超过5。
 ### 实现
 
-长连接池的实现方案是每个 address 对应一个连接池，这个连接池是一个由连接构成的 ring，ring 的大小为 MaxIdlePerAddress。
+长连接池的实现方案是每个 address 对应一个连接池，池的大小为 `MaxIdlePerAddress`。
 
 当选择好目标地址并需要获取一个连接时，按以下步骤处理 :
 
-1. 首先尝试从这个 ring 中获取，如果获取失败（没有空闲连接），则发起新的连接建立请求，即连接数量可能会超过 MaxIdlePerAddress
-2. 如果从 ring 中获取成功，则检查该连接的空闲时间（自上次放入连接池后）是否超过了 MaxIdleTimeout，如果超过则关闭该连接并新建
+1. 首先尝试从连接池中获取，如果获取失败(没有空闲连接)，则发起新的连接建立请求，即连接数量可能会超过 `MaxIdlePerAddress`
+2. 如果获取成功，则检查该连接的空闲时间(自上次放入连接池后)是否超过了 `MaxIdleTimeout`, 如果超过则关闭该连接并新建
 3. 全部成功后返回给上层使用
 
 在连接使用完毕准备归还时，按以下步骤依次处理：
 
 1. 检查连接是否正常，如果不正常则直接关闭
-2. 查看空闲连接是否超过全局的 MaxIdleGlobal，如果超过则直接关闭
-3. 待归还到的连接池的 ring 中是否还有空闲空间，如果有则直接放入，否则直接关闭
+2. 查看空闲连接是否超过全局的 `MaxIdleGlobal`，如果超过则直接关闭
+3. 待归还到的连接池是否还有空闲空间，如果有则直接放入，否则直接关闭
 
 ### 参数设置建议
 
