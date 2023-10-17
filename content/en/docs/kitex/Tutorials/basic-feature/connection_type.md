@@ -18,7 +18,7 @@ To enable short connection：
 xxxCli := xxxservice.NewClient("destServiceName", client.WithShortConnection())
 ```
 
-## Long Connection Pool
+## Long Connection Pool (Default)
 
 Kitex enable Long Connection Pool after >= v0.0.2, default config params are as below：
 

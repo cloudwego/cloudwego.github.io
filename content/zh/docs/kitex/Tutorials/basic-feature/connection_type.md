@@ -18,7 +18,7 @@ description: "Kitex 支持短连接、长连接池、连接多路复用以及连
 xxxCli := xxxservice.NewClient("destServiceName", client.WithShortConnection())
 ```
 
-## 长连接池
+## 长连接池（默认）
 
 Kitex >= v0.0.2 默认配置了连接池，配置参数如下：
 
