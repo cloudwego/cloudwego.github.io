@@ -30,7 +30,7 @@ description: "Kitex Frequently Asked Questions and corresponding Answers."
 * gRPC provides support to gRPC message protocol and enables Kitex to interact with gRPC framework.
 
 **Q6: Issues regarding Thrift interface compiling, such as "not enough arguments in call to iprot.ReadStructBegin"**
-* Based on Thrift v0.13, Kitex cannot be upgraded directly, as there is a breaking change in the interface of Apache Thrift v0.14. The reason for such problems could be that a new version of Thrift is pulled during upgrades. The use of -u parameters is not recommended during upgrades, you can run the following command to fix the version: "go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0"
+* Based on Thrift v0.13, Kitex cannot be upgraded directly, as there is a breaking change in the interface of Apache Thrift v0.14. The reason for such problems could be that a new version of Thrift is pulled during upgrades. The use of -u parameters is not recommended during upgrades, you can run the following command to fix the version: `go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0`
 
 ## Kitex Code Generation Tool
 

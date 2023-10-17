@@ -28,7 +28,7 @@ description: "Kitex 常见问题解答。"
 * gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 框架互通。
 
 **Q6: 出现 Thrift 接口编译问题，如 not enough arguments in call to iprot.ReadStructBegin**
-* Kitex 依赖 Thrift v0.13，因为Apache Thrift v0.14 接口有 breaking change，无法直接升级。出现该问题是拉到了新版本的 Thrift，升级版本时建议不使用 -u 参数，可以执行命令固定版本 go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
+* Kitex 依赖 Thrift v0.13，因为Apache Thrift v0.14 接口有 breaking change，无法直接升级。出现该问题是拉到了新版本的 Thrift，升级版本时建议不使用 -u 参数，可以执行命令固定版本 `go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0`
 
 ## Kitex 代码生成工具
 
