@@ -1,6 +1,6 @@
 ---
 title: "Transport Protocol"
-date: 2022-07-20
+date: 2023-10-16
 weight: 3
 keywords: ["Kitex", "TTHeader", "HTTP2"]
 description: Kitex supports transport protocols of TTHeader、HTTP2.
@@ -29,46 +29,52 @@ Here are the available combination options of transport protocols and message pr
 If you want to use custom implementations for the message or transport protocol, you can find help here [Extension of Codec](/docs/kitex/tutorials/framework-exten/codec/).
 
 ## Configuration
-
-You can configure the transport protocol when initializing the client:
-
+### Client
+#### Thrift
+1. Buffered: PurePayload (by default)
+2. configure Framed: prepend a 4-byte (int32) length before the Thrift pure payload
 ```go
-// client option
-client.WithTransportProtocol(transport.XXX)
+cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.Framed))
 ```
-
-Kitex Server supports protocol detection for all supported protocols and doesn't require explicit configuration.
-
-## Usage
-
-### Thrift + TTHeader
-
+3. configure TTHeader: the protocol for Byted Mesh (Service Mesh 协议 )
 ```go
-// client side
 var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.TTHeader))
 opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
-cli, err := xxxservice.NewClient(targetService, opts...)
 
-// server side no need to config transport protocol
-var opts []server.Option
-opts = append(opts, server.WithMetaHandler(transmeta.ServerTTHeaderHandler))
-cli, err := xxxservice.NewServer(handler, opts...)
+cli := xxx.NewClient("service_name", opts)
+```
+4. configure TTHeaderFramed: TTHeader | Framed (Bit OR)
+```go
+var opts []client.Option
+opts = append(opts, client.WithTransportProtocol(transport.TTHeaderFramed))
+opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
+cli := xxx.NewClient("service_name", opts)
 ```
 
-### gRPC
-
+#### gRPC
+client configures gRPC protocol：
 ```go
-// client side
 var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.GRPC))
 opts = append(opts, client.WithMetaHandler(transmeta.ClientHTTP2Handler))
-cli, err := xxxservice.NewClient(targetService, opts...)
+cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.GRPC))
+```
+NOTE: if there's no streaming API in the IDL, this option is needed for enabling gRPC protocol, otherwise kitex will only send protobuf binary (not gRPC).
 
+### Server
+Multi-protocol is supported by default. Metahandlers should be configured to enable transparent information transmission.
 
-// server side no need to config transport protocol
+#### Thrift (TTHeader)
+```go
+var opts []server.Option
+opts = append(opts, server.WithMetaHandler(transmeta.ServerTTHeaderHandler))
+svr, err := xxxservice.NewServer(handler, opts...)
+```
+#### gRPC
+```go
 var opts []server.Option
 opts = append(opts, server.WithMetaHandler(transmeta.ServerHTTP2Handler))
-cli, err := xxxservice.NewServer(handler, opts...)
-
+svr, err := xxxservice.NewServer(handler, opts...)
 ```
+
