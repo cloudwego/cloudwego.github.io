@@ -3,7 +3,7 @@ title: "绑定与校验"
 date: 2022-05-23
 weight: 8
 keywords: ["绑定与校验", "go-tagexpr", "tag", "参数绑定优先级"]
-description: Hertz 支持的参数绑定与校验相关功能及用法。
+description: "Hertz 支持的参数绑定与校验相关功能及用法。"
 ---
 
 ## 使用方法

@@ -3,7 +3,7 @@ title: "Binding and validate"
 date: 2022-06-21
 weight: 8
 keywords: ["Binding and validate", "go-tagexpr", "tag", "Parameter binding precedence"]
-description: The parameter binding and validation related functions and usage supported by Hertz.
+description: "The parameter binding and validation related functions and usage supported by Hertz."
 ---
 
 ## Usage
@@ -43,7 +43,7 @@ func main() {
 >
 > hertz version >= v0.7.0
 
-| API                   | 说明                                                                                                                                                                                                     |
+| API                   | Description                                                                                                                                                                                            |
 |:----------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ctx.BindAndValidate   | Use the following go-tag for parameter binding, and do a parameter validation after successful binding (if there is a validation tag)                                                                  |
 | ctx.Bind              | Same as `BindAndValidate` but without parameter validation                                                                                                                                             |
