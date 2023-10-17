@@ -55,8 +55,12 @@ cli := xxx.NewClient("service_name", opts)
 #### gRPC
 client configures gRPC protocol：
 ```go
+var opts []client.Option
+opts = append(opts, client.WithTransportProtocol(transport.GRPC))
+opts = append(opts, client.WithMetaHandler(transmeta.ClientHTTP2Handler))
 cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.GRPC))
 ```
+NOTE: if there's no streaming API in the IDL, this option is needed for enabling gRPC protocol, otherwise kitex will only send protobuf binary (not gRPC).
 
 ### Server
 Multi-protocol is supported by default. Metahandlers should be configured to enable transparent information transmission.

@@ -41,6 +41,7 @@ xxxCli := xxxservice.NewClient("destServiceName", client.WithLongConnection(conn
 
 - `MaxIdlePerAddress` 表示每个后端实例可允许的最大闲置连接数
 - `MaxIdleGlobal` 表示全局最大闲置连接数
+  - 从 v0.7.2 开始, 如果未设置 `MaxIdleGlobal`，默认没有限制.
 - `MaxIdleTimeout` 表示连接的闲置时长，超过这个时长的连接会被关闭（最小值 3s，默认值 30s ）
 - `MinIdlePerAddress`(Kitex >= v0.4.3)
   - 表示对每个后端实例维护的最小空闲连接数，这部分连接即使空闲时间超过 `MaxIdleTimeout` 也不会被清理。

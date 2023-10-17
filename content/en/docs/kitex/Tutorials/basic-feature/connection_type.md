@@ -57,7 +57,7 @@ When the connection is ready to be returned after used, proceed as follows:
 
 1. Check whether the connection is normal, if not, close it directly
 2. Check whether the idle connection number exceeds  `MaxIdleGlobal`, and if yes, close it directly
-3. 3. Check whether free space remained in the pool of the target connection pool. If yes, put it into the pool, otherwise close it directly
+3. Check whether free space remained in the pool of the target connection pool. If yes, put it into the pool, otherwise close it directly
 
 ### Parameter Setting Suggestion
 
@@ -67,12 +67,13 @@ The setting of parameters is suggested as follows:
   - For example, the cost of each request is 100ms, and the request spread to each downstream address is 100QPS, the value is suggested to set to 10, because each connection handles 10 requests per second, 100QPS requires 10 connections to handle
   - In the actual scenario, the fluctuation of traffic is also necessary to be considered. Pay attention, the connection within MaxIdleTimeout will be recycled if it is not used
   - Summary: this value be set too large or too small would lead to degenerating to the short connection
-- `MinIdlePerAddress`: Assuming that there are periodic requests and the period is greater than `MaxIdleTimeout`, setting this parameter can avoid creating a new connection every time.
-  - The parameter consideration is similar to `MaxIdlePerAddress` and can be set according to the average latency of requests and the throughput.
-  - For example, if `MinIdlePerAddress` is set to 5 and the response time of each request is 100ms. 50 requests can be processed per second (50QPS) without creating a new connection.
 - `MaxIdleGlobal`: should be larger than the total number of `downstream targets number * MaxIdlePerAddress`
   - Notice: this value is not very valuable, it is suggested to set it to a super large value. In subsequent versions, considers discarding this parameter and providing a new interface
+  - Since v0.7.2, no limit for `MaxIdleGlobal` if not set. 
 - `MaxIdleTimeout`: since the server will clean up inactive connections within 10min, the client also needs to clean up long-idle connections in time to avoid using invalid connections. This value cannot exceed 10min when the downstream is also a Kitex service
+- `MinIdlePerAddress` (Kitex >= v0.4.3): Assuming that there are periodic requests and the period is greater than `MaxIdleTimeout`, setting this parameter can avoid creating a new connection every time.
+  - The parameter consideration is similar to `MaxIdlePerAddress` and can be set according to the average latency of requests and the throughput.
+  - For example, if `MinIdlePerAddress` is set to 5 and the response time of each request is 100ms. 50 requests can be processed per second (50QPS) without creating a new connection.
 
 ## Connection Multiplexing
 

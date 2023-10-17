@@ -54,8 +54,12 @@ cli := xxx.NewClient("service_name", opts)
 ### gRPC
 client 指定 gRPC 协议：
 ```go
+var opts []client.Option
+opts = append(opts, client.WithTransportProtocol(transport.GRPC))
+opts = append(opts, client.WithMetaHandler(transmeta.ClientHTTP2Handler))
 cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.GRPC))
 ```
+注意: 如果 IDL 中没有 Streaming API，则需要此选项来启用 gRPC 协议，否则 kitex 将仅发送 protobuf binary（而不是 gRPC）。
 
 ### Server 
 支持协议探测（在 Kitex 默认支持的协议内），无需配置传输协议。为了支持基于 header 的信息透传，需要配置 metaHandler
