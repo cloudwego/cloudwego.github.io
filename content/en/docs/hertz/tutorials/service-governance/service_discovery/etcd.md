@@ -1,6 +1,6 @@
 ---
 title: "etcd"
-date: 2023-04-22
+date: 2023-10-18
 weight: 4
 keywords: ["Service Registration and Discovery", "etcd"]
 description: "Service Registration and Discovery etcd Extensions provided by Hertz."
@@ -67,6 +67,117 @@ Example:
 func main() {
     r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
         etcd.WithAuthOpt("root","123456"),
+    )
+    if err != nil {
+        panic(err)
+    }
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }))
+    // ...
+}
+```
+
+#### Retry
+
+After the service is registered to `ETCD`, it will regularly check the status of the service. If any abnormal status is found, it will try to register the service again. `observeDelay` is the delay time for checking the service status under normal conditions, and `retryDelay` is the delay time for attempting to register the service after disconnecting.
+
+**Default Config**
+
+| Config Name         | Default Value    | Description                                                  |
+| ------------------- | ---------------- | ------------------------------------------------------------ |
+| WithMaxAttemptTimes | 5                | Used to set the maximum number of attempts, if 0, it means infinite attempts |
+| WithObserveDelay    | 30 * time.Second | Used to set the delay time for checking service status under normal connection conditions |
+| WithRetryDelay      | 10 * time.Second | Used to set the retry delay time after disconnecting         |
+
+##### WithMaxAttemptTimes
+
+`WithMaxAttemptTimes` sets the maximum number of call attempt times, including the initial call.
+
+Function signature:
+
+```go
+func WithMaxAttemptTimes(maxAttemptTimes uint) Option 
+```
+
+Example:
+
+```go
+func main() {
+    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+        etcd.WithMaxAttemptTimes(10),
+    )
+    if err != nil {
+        panic(err)
+    }
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }))
+    // ...
+}
+```
+
+##### WithObserveDelay
+
+`WithObserveDelay` sets the delay time for checking the service status under normal conditions.
+
+Function signature:
+
+```go
+func WithObserveDelay(observeDelay time.Duration) Option
+```
+
+Example:
+
+```go
+func main() {
+    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+        etcd.WithObserveDelay(20*time.Second),
+    )
+    if err != nil {
+        panic(err)
+    }
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }))
+    // ...
+}
+```
+
+##### WithRetryDelay
+
+`WithRetryDelay`  sets the delay time of retry.
+
+Function signature:
+
+```go
+func WithRetryDelay(t time.Duration) Option 
+```
+
+Example:
+
+```go
+func main() {
+    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+        etcd.WithRetryDelay(5*time.Second),
     )
     if err != nil {
         panic(err)
