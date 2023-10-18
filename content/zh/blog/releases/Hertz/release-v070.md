@@ -9,7 +9,7 @@ description: >
 Hertz v0.7.0 版本中，除了常规迭代优化之外，我们还带来了一个重要 feature。
 
 ## 参数绑定重构
-在 Hertz v0.7.0 版本中，我们支持了重构了 hertz 参数绑定
+在 Hertz v0.7.0 版本中，我们重构了 hertz 参数绑定
 >https://github.com/cloudwego/hertz/pull/541
 
 ### 重构说明
