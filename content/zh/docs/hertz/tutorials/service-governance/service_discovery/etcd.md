@@ -1,6 +1,6 @@
 ---
 title: "etcd"
-date: 2023-04-22
+date: 2023-10-18
 weight: 4
 keywords: ["服务注册与发现", "etcd"]
 description: "Hertz 提供的服务注册与发现 etcd 拓展。"
@@ -67,6 +67,117 @@ func WithAuthOpt(username, password string) Option
 func main() {
     r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
         etcd.WithAuthOpt("root","123456"),
+    )
+    if err != nil {
+        panic(err)
+    }
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }))
+    // ...
+}
+```
+
+#### Retry
+
+在服务注册到 etcd 之后，它会定期检查服务的状态。如果发现任何异常状态，它将尝试重新注册服务。observeDelay 是正常情况下检查服务状态的延迟时间，而 retryDelay 是断开连接后尝试注册服务的延迟时间。
+
+**默认配置**
+
+| 配置名              | 默认值           | 描述                                          |
+| ------------------- | ---------------- | --------------------------------------------- |
+| WithMaxAttemptTimes | 5                | 用于设置最大尝试次数，如果为0，则表示无限尝试 |
+| WithObserveDelay    | 30 * time.Second | 用于设置正常连接条件下检查服务状态的延迟时间  |
+| WithRetryDelay      | 10 * time.Second | 用于设置断开连接后重试的延迟时间              |
+
+##### WithMaxAttemptTimes
+
+`WithMaxAttemptTimes` 用于设置最大尝试次数，包括初始调用。
+
+函数签名：
+
+```go
+func WithMaxAttemptTimes(maxAttemptTimes uint) Option 
+```
+
+示例代码：
+
+```go
+func main() {
+    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+        etcd.WithMaxAttemptTimes(10),
+    )
+    if err != nil {
+        panic(err)
+    }
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }))
+    // ...
+}
+```
+
+##### WithObserveDelay
+
+`WithObserveDelay` 用于设置正常连接条件下检查服务状态的延迟时间。
+
+函数签名：
+
+```go
+func WithObserveDelay(observeDelay time.Duration) Option
+```
+
+示例代码：
+
+```go
+func main() {
+    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+        etcd.WithObserveDelay(20*time.Second),
+    )
+    if err != nil {
+        panic(err)
+    }
+    // ...
+    h := server.Default(
+        server.WithHostPorts(addr),
+        server.WithRegistry(r, &registry.Info{
+            ServiceName: "hertz.test.demo",
+            Addr:        utils.NewNetAddr("tcp", addr),
+            Weight:      10,
+            Tags:        nil,
+        }))
+    // ...
+}
+```
+
+##### WithRetryDelay
+
+`WithRetryDelay`用于设置断开连接后重试的延迟时间。
+
+函数签名：
+
+```go
+func WithRetryDelay(t time.Duration) Option 
+```
+
+示例代码：
+
+```go
+func main() {
+    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"},
+        etcd.WithRetryDelay(5*time.Second),
     )
     if err != nil {
         panic(err)
