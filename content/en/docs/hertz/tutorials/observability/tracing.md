@@ -4,7 +4,6 @@ linkTitle: "Tracing"
 weight: 2
 keywords: ["Tracing"]
 description: "Hertz provides tracing capabilities."
-
 ---
 
 In microservices, link tracing is a very important capability, which plays an important role in quickly locating problems, analyzing business bottlenecks, and restoring the link status of a request. Hertz provides the capability of link tracking and also supports user-defined link tracking.
@@ -62,6 +61,6 @@ The above information is available at Finish
 
 At the same time, if you don't want to log this information, you don't have to register any tracer, and the framework stops logging this information.
 
-An extension for opentracing is provided in hertz-contrib, and a [demo]((https://github.com/cloudwego/hertz-examples/tree/main/tracer)) for calling from http to rpc is also available in hertz-examples.
+An extension for opentracing is provided in hertz-contrib, and a demo for calling from http to rpc is also available in [hertz-examples](https://github.com/cloudwego/hertz-examples/tree/main/tracer).
 
 Related Repository： https://github.com/hertz-contrib/tracer

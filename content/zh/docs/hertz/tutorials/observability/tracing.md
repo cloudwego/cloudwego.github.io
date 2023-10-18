@@ -62,5 +62,5 @@ WriteFinish        = newEvent(writeFinish, LevelDetailed) // 写 response 结束
 
 同时，如果不希望记录这些信息，可以不注册任何 tracer，则框架停止对这些信息的记录。
 
-hertz-contrib 中提供了 opentracing 的扩展方式，也在 hertz-examples 提供了可以从 http 到 rpc 调用的 demo。
+hertz-contrib 中提供了 opentracing 的扩展方式，也在 [hertz-examples](https://github.com/cloudwego/hertz-examples/tree/main/tracer) 提供了可以从 http 到 rpc 调用的 demo。
 仓库：https://github.com/hertz-contrib/tracer
