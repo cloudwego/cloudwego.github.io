@@ -76,6 +76,6 @@ Effect display:
 
 Open the interface in the example at localhost:8888, and then use the following command to observe the effect:
 
-```bash 
+```bash
 curl -N --location localhost:8888/flush/chunk
 ```

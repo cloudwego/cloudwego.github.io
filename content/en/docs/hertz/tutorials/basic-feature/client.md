@@ -68,7 +68,6 @@ func main() {
 | WithDialFunc                      | network.Dialer | set dialer function. |
 | WithHostClientConfigHook          | nil            | Set the hook function for re-configure the host client. |
 
-
 Sample Code:
 
 ```go
@@ -540,7 +539,7 @@ func main() {
 
 ## Streaming Read Response Content
 
-Hertz's client supports streaming read HTTP response content. 
+Hertz's client supports streaming read HTTP response content.
 
 Since the client has the problem of multiplexing connections, if streaming is used, the connection will be handled by the user(`resp.BodyStream()` is encapsulated by connection) once streaming is used. There are some differences in the management of connections in the above case:
 

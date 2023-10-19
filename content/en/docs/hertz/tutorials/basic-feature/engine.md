@@ -288,7 +288,7 @@ Hertz Server supports streaming write responses.
 Two methods are provided:
 
 1. The user passes in a `io.Reader` through the `ctx.SetBodyStream` function in the handler, and then reads and writes data in blocks in a similar manner to the example code (using channel to control data partitioning and read/write order) **Note that data needs to be written asynchronously**.
-   
+
     If the user knows the total length of the transmitted data in advance, they can pass in the length in the `ctx.SetBodyStream` function for streaming writing, as shown in the example code `/streamWrite1`.
 
     If the user does not know the total length of the transmitted data in advance, they can pass in -1 in the `ctx.SetBodyStream` function to write the stream in the form of `Transfer-Encoding: chunked`, as shown in the example code `/streamWrite2`.

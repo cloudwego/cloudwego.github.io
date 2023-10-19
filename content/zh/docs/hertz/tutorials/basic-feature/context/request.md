@@ -223,6 +223,7 @@ Args 对象提供了以下方法获取/设置 Query String 参数。
 |`func (a *Args) ParseBytes(b []byte)` |解析字节数组并将键值对存入 Args 对象 |
 |`func (a *Args) Peek(key string) []byte` |获取 Args 对象 key 的值 |
 |`func (a *Args) PeekExists(key string) (string, bool)` |获取 Args 对象 key 的值以及是否存在 |
+|`func (a *Args) PeekAll(key string) [][]byte` | 获取 Args 对象 key 的所有值 |
 |`func (a *Args) Len() int`| 获取 Args 对象键值对数量 |
 |`func (a *Args) AppendBytes(dst []byte) []byte` |将 Args 对象 Query String 附加到 dst 中并返回 |
 |`func (a *Args) VisitAll(f func(key, value []byte))` |遍历 Args 对象所有的键值对 |
@@ -251,6 +252,8 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
         // 3. key == []byte("pets"), value == []byte("dog")
         // 4. key == []byte("pets"), value == []byte("cat")
     })
+
+    pets := args.PeekAll("pets") // pets == [][]byte{[]byte("dog"), []byte("cat")}
 
     // send information to io.Writer
     req := protocol.AcquireRequest()

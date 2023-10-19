@@ -2,7 +2,7 @@
 title: "Cache"
 date: 2023-02-25
 weight: 15
-keywords: ["HTTP响应", "缓存"]
+keywords: ["HTTP 响应", "缓存"]
 description: "Hertz 提供了对 cache 的适配，支持 multi-backend。"
 
 ---

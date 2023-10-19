@@ -176,7 +176,7 @@ func main() {
 
 ### SetCustomSignalWaiter
 
-`SetCustomSignalWaiter` 函数用于自定义服务器接收信号后的处理函数，若没有设置自定义函数，Hertz 使用 `waitSignal` 函数作为信号处理的默认实现方式，详细内容请看[优雅退出](/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)。
+`SetCustomSignalWaiter` 函数用于自定义服务器接收信号后的处理函数，若没有设置自定义函数，Hertz 使用 `waitSignal` 函数作为信号处理的默认实现方式，详细内容请看 [优雅退出](/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)。
 
 函数签名：
 
@@ -249,7 +249,7 @@ func exampleMiddleware() app.handlerFunc {
 
 Hertz 支持 Server 的流式处理，包括流式读和流式写。
 
-> 注意：由于 netpoll 和 go net 触发模式不同，netpoll 流式为 “伪” 流式（由于 LT 触发，会由网络库将数据读取到网络库的 buffer 中），在大包的场景下（如：上传文件等）可能会有内存问题，推荐使用 go net。
+> 注意：由于 netpoll 和 go net 触发模式不同，netpoll 流式为“伪”流式（由于 LT 触发，会由网络库将数据读取到网络库的 buffer 中），在大包的场景下（如：上传文件等）可能会有内存问题，推荐使用 go net。
 
 ### 流式读
 
@@ -454,7 +454,7 @@ Hertz 提供了全局的 Hook 注入能力，用于在服务触发启动后和�
 
 用于设置当程序发生 panic 时的处理函数，默认为 `nil`。
 
->注意: 如果同时设置了 `PanicHandler` 和 `Recovery` 中间件，则 `Recovery` 中间件会覆盖 `PanicHandler` 的处理逻辑。
+>注意：如果同时设置了 `PanicHandler` 和 `Recovery` 中间件，则 `Recovery` 中间件会覆盖 `PanicHandler` 的处理逻辑。
 
 示例代码:
 

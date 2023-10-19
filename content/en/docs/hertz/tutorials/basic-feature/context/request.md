@@ -223,6 +223,7 @@ The Args object provides the following methods to obtain/set `Query String` para
 |`func (a *Args) ParseBytes(b []byte)` |Parsing byte arrays and storing key value pairs in Args object |
 |`func (a *Args) Peek(key string) []byte` |Obtain the value of Args object key |
 |`func (a *Args) PeekExists(key string) (string, bool)` |Obtain the value of Args object key and its existence |
+|`func (a *Args) PeekAll(key string) [][]byte` | Obtain all values of Args object key |
 |`func (a *Args) Len() int`|Obtain the number of Args object key-value pairs |
 |`func (a *Args) AppendBytes(dst []byte) []byte` |Append Args object Query String to dst and return |
 |`func (a *Args) VisitAll(f func(key, value []byte))` |Visit all key value pairs of Args object |
@@ -251,6 +252,8 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
         // 3. key == []byte("pets"), value == []byte("dog")
         // 4. key == []byte("pets"), value == []byte("cat")
     })
+
+    pets := args.PeekAll("pets") // pets == [][]byte{[]byte("dog"), []byte("cat")}
 
     // send information to io.Writer
     req := protocol.AcquireRequest()

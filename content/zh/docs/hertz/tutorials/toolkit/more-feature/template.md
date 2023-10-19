@@ -701,7 +701,7 @@ layouts:
     update_behavior: // 在使用 hz update 的时候对于该文件的更新行为
       type: string // 更新行为:skip/cover/append
       append_key: string // 在 append 行为的时候，指定追加的渲染数据源，method/service
-      insert_key: string // 在 append 行为的时候追加逻辑的 “key”，根据这个 key 判断是否需要进行追加
+      insert_key: string // 在 append 行为的时候追加逻辑的“key”，根据这个 key 判断是否需要进行追加
       append_content_tpl: string // 在 append 行为的时候，指定追加内容的模板
       import_tpl: []string // 要新增的 import 的模板
     body: string // 生成文件的模板内容

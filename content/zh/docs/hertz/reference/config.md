@@ -101,4 +101,4 @@ func main() {
 | WithResponseBodyStream | bool | 设置是否使用流式处理，默认关闭 |
 | WithDialFunc | client.DialFunc | 设置 Dial Function |
 | WithWriteTimeout | time.Duration | 写入数据超时时间，默认值：无限长 |
-| WithHostClientConfigHook | func(hc interface{}) error | 设置 hook 函数来重新配置 host client，传入的 func 需要将参数 hc 断言为需要的结构体，比如 http1.HostClient ，再进行具体处理 |
+| WithHostClientConfigHook | func(hc interface{}) error | 设置 hook 函数来重新配置 host client，传入的 func 需要将参数 hc 断言为需要的结构体，比如 http1.HostClient，再进行具体处理 |
