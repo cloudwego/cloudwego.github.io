@@ -18,6 +18,8 @@ go get github.com/hertz-contrib/gzip
 
 ## 示例代码
 
+### Gzip
+
 ```go
 package main
 
@@ -40,12 +42,41 @@ func main() {
 	})
 	h.Spin()
 }
+```
 
+### GzipStream
+
+服务端先将数据压缩再流式写出去。
+
+> 注意：使用该中间件会劫持 response writer，可能会对其他接口造成影响，因此，只需要在有流式 gzip 需求的接口使用该中间件。
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/hertz-contrib/gzip"
+)
+
+func main() {
+	h := server.Default(server.WithHostPorts(":8080"))
+	h.Use(gzip.GzipStream(gzip.DefaultCompression))
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		c.String(http.StatusOK, "pong "+fmt.Sprint(time.Now().Unix()))
+	})
+	h.Spin()
+}
 ```
 
 ## 配置
 
-### Gzip
+> 以下配置对 `GzipStream` 同样适用。
 
 `Gzip`提供了四种压缩选项:`BestCompression`,`BestSpeed`,`DefaultCompression`,`NoCompression` 用于用户自定义压缩模式
 
@@ -230,93 +261,6 @@ func main() {
 	h.Spin()
 }
 
-```
-
-### 流式压缩
-
-服务端先将数据压缩再流式写出去
-
-> 注意：使用该中间件会劫持 response writer，可能会对其他接口造成影响，因此，只需要在有流式 gzip 需求的接口使用该中间件。
-
-示例代码如下:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"io/ioutil"
-	"strings"
-	"time"
-
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/compress"
-	"github.com/cloudwego/hertz/pkg/protocol"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/hertz-contrib/gzip"
-)
-
-func main() {
-	h := server.Default(server.WithHostPorts(":8081"))
-
-	// Note: Using this middleware will hijack the response writer and may have an impact on other interfaces.
-	// Therefore, it is only necessary to use this middleware on interfaces with streaming gzip requirements.
-	h.GET("/ping", gzip.GzipStream(gzip.DefaultCompression), func(ctx context.Context, c *app.RequestContext) {
-		for i := 0; i < 10; i++ {
-			c.Write([]byte(fmt.Sprintf("chunk %d: %s\n", i, strings.Repeat("hi~", i)))) // nolint: errcheck
-			c.Flush()                                                                   // nolint: errcheck
-			time.Sleep(time.Second)
-		}
-	})
-	go h.Spin()
-
-	cli, err := client.NewClient(client.WithResponseBodyStream(true))
-	if err != nil {
-		panic(err)
-	}
-
-	req := protocol.AcquireRequest()
-	res := protocol.AcquireResponse()
-
-	req.SetMethod(consts.MethodGet)
-	req.SetRequestURI("http://localhost:8081/ping")
-	req.Header.Set("Accept-Encoding", "gzip")
-
-	if err = cli.Do(context.Background(), req, res); err != nil {
-		panic(err)
-	}
-
-	bodyStream := res.BodyStream()
-
-	r, err := compress.AcquireGzipReader(bodyStream)
-	if err != nil {
-		panic(err)
-	}
-
-	firstChunk := make([]byte, 10)
-	_, err = r.Read(firstChunk)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(fmt.Printf("%s", firstChunk))
-
-	secondChunk := make([]byte, 13)
-	_, err = r.Read(secondChunk)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(fmt.Printf("%s", secondChunk))
-
-	otherChunks, _ := ioutil.ReadAll(r)
-	fmt.Println(fmt.Printf("%s", otherChunks))
-
-	if r != nil {
-		compress.ReleaseGzipReader(r)
-	}
-}
 ```
 
 更多用法示例详见 [gzip](https://github.com/cloudwego/hertz-examples/tree/main/gzip)
