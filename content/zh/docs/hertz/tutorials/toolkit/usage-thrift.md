@@ -157,9 +157,9 @@ description: "hz 使用 (thrift)。"
    ```bash
    hz update -idl idl/hello.thrift
    ```
-   **注意**:
-   1. 与 protobuf 不同, 在编写 update 命令时, 只需要指定定义 `service` 的 IDL 文件，hz 会自动将该文件的所有依赖文件都进行生成。
 
+   **注意**:
+   1. 与 protobuf 不同，在编写 update 命令时，只需要指定定义 `service` 的 IDL 文件，hz 会自动将该文件的所有依赖文件都进行生成。
 
 3. 可以看到
 
@@ -216,4 +216,4 @@ description: "hz 使用 (thrift)。"
 
    如果返回`{"Resp":"Other method: other method"}`，说明接口调通。
 
-更多示例代码请参考 [code](https://github.com/cloudwego/hertz-examples/tree/main/hz/thrift)。   
+更多示例代码请参考 [code](https://github.com/cloudwego/hertz-examples/tree/main/hz/thrift)。

@@ -12,10 +12,10 @@ description: "hz usage(protobuf)."
 
 1. Create the protobuf IDL file in the current directory
 
-   1. Create api.proto 
+   1. Create api.proto
 
       api.proto is an annotation file provided by hz, with the following content. Please import the file in the annotated proto file.
-      
+
       If you want to expand the use of annotations on your own, please do not use "5" as the beginning of the sequence number to avoid conflicts. For example, "optional string xxx = 77777;".
 
       ```protobuf
@@ -123,7 +123,7 @@ description: "hz usage(protobuf)."
          }
       }
       ```
-   
+
 2. Create a new project
 
    {{< tabs "Execute outside GOPATH" "Execute under GOPATH">}}
@@ -255,7 +255,9 @@ description: "hz usage(protobuf)."
    ```bash
    hz update -I idl -idl idl/hello/hello.proto
    ```
+
 **Note**.
+
 - If the dependency of the IDL is not in the same path as the main IDL, you need to add the `-I` option, which means the path to search for the IDL, equivalent to the `-I` command of protoc.
 - When writing update command, you need to specify not only the IDL file that defines `service`, but also all the dependency files, because protobuf's dependency files will not be updated automatically.
 

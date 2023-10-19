@@ -252,6 +252,8 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
         // 4. key == []byte("pets"), value == []byte("cat")
     })
 
+    pets := args.PeekAll("pets") // pets == [][]byte{[]byte("dog"), []byte("cat")}
+
     // send information to io.Writer
     req := protocol.AcquireRequest()
 	n, err := args.WriteTo(req.BodyWriter())

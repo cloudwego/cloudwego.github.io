@@ -158,7 +158,8 @@ description: "hz usage(thrift)."
    hz update -idl idl/hello.thrift
    ```
 
-**Note**: 
+**Note**:
+
 1. When writing the update command, you only need to specify the IDL file that defines the `service`. hz will automatically generate all the dependencies for that file.
 
 3. As you can see

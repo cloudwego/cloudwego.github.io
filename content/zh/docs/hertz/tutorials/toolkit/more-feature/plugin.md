@@ -36,7 +36,7 @@ hz new --idl={YOUR-IDL.thrift} --thrift-plugins={PLUGIN-NAME}:{YOUR-OPTION1,YOUR
 
 ## Protoc 插件拓展
 
-Protoc 插件相关的代码生成位置与 proto 文件的 go_package 有关，详情可 [参考](/zh/docs/hertz/tutorials/toolkit/cautions/#使用-protobuf-idl-时的-biz-层代码生成位置)。 
+Protoc 插件相关的代码生成位置与 proto 文件的 go_package 有关，详情可 [参考](/zh/docs/hertz/tutorials/toolkit/cautions/#使用-protobuf-idl-时的-biz-层代码生成位置)。
 
 ### 使用方法
 

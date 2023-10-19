@@ -114,7 +114,7 @@ func TestPerformRequest(t *testing.T) {
 
 When executing the [PerformRequest](#performarequest) function, functions such as `NewRecorder`, `Header`, `Write`, `WriteHeader`, `Flush` have already been called internally. The user only needs to call the `Result` function to obtain the returned `protocol.Response` object, and then perform unit testing.
 
-### ResponseRecorder 
+### ResponseRecorder
 
 Used to record the response information of the handler, as follows:
 

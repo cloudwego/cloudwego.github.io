@@ -6,6 +6,7 @@ keywords: ["注意事项", "protobuf", "thrift"]
 description: "使用 hz 时的注意事项。"
 ---
 ## 使用 protobuf IDL 时的 biz 层代码生成位置
+
 hz 目前支持 [proto2](https://developers.google.com/protocol-buffers/docs/proto) / [proto3](https://developers.google.com/protocol-buffers/docs/proto3) 的语法。
 
 ### model 文件的位置
@@ -21,7 +22,7 @@ hz 目前支持 [proto2](https://developers.google.com/protocol-buffers/docs/pro
 - go_package="x/y/z": 会在 "biz/model/x/y/z" 下生成代码（相对路径补全）；
 - go_package="biz/model/c/d": 会在"biz/model/biz/model/c/d" 下生成代码。
   
-**推荐用户定义如 “{$MODULE}/{$MODEL_DIR}/x/y/z”  (其中 {$MODEL_DIR} 默认为"biz/model", 用户也可使用 “model_dir” 选项来定义) 这样的 “go_package”。**
+**推荐用户定义如“{$MODULE}/{$MODEL_DIR}/x/y/z”  (其中 {$MODEL_DIR} 默认为"biz/model", 用户也可使用“model_dir”选项来定义) 这样的“go_package”。**
 
 ### handler 文件的位置
 

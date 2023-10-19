@@ -60,5 +60,3 @@ hz 生成的代码结构都类似，下面以 [hz 使用 (thrift)](/zh/docs/hert
 └── idl                                  // 用户定义的 idl，位置可任意
     └── hello.thrift
 ```
-
-

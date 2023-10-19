@@ -13,10 +13,10 @@ description: >
 
 1. 在当前目录下创建 protobuf idl 文件
 
-   1. 创建 api.proto 
+   1. 创建 api.proto
 
       api.proto 是 hz 提供的注解文件，内容如下，请在使用了注解的 proto 文件中，import 该文件。
-      
+
       如果想自行拓展注解的使用，请不要以 "5" 作为序号的开头，避免出现冲突。例如 "optional string xxx = 77777;"。
 
       ```protobuf
@@ -258,9 +258,11 @@ description: >
 ```bash
 hz update -I idl -idl idl/hello/hello.proto
 ```
-**注意**: 
+
+**注意**:
+
 - 如果主 IDL 的依赖和主 IDL 不在同一路径下，需要加入 `-I` 选项，其含义为 IDL 搜索路径，等同于 protoc 的 `-I` 命令。
-- 在编写 update 命令时, 不仅需要指定定义 `service` 的 IDL文件, 还需要指定所有的依赖文件, 因为 protobuf 的依赖文件不会自动更新。
+- 在编写 update 命令时，不仅需要指定定义 `service` 的 IDL 文件，还需要指定所有的依赖文件，因为 protobuf 的依赖文件不会自动更新。
 
 3. 可以看到
    在 `biz/handler/hello/hello_service.go` 下新增了新的方法；

@@ -58,7 +58,7 @@ func main() {
 | WithResponseBodyStream             | false          | 是否在流中读取 body，默认不在流中读取 |
 | WithDisableHeaderNamesNormalizing  | false          | 是否禁用头名称规范化，默认不禁用，如 cONTENT-lenGTH -> Content-Length |
 | WithName                           | ""             | 设置用户代理头中使用的客户端名称 |
-| WithNoDefaultUserAgentHeader       | false          | 设置是否应该在请求中包含默认的 User-Agent 头, 默认包含 User-Agent 头 |
+| WithNoDefaultUserAgentHeader       | false          | 设置是否应该在请求中包含默认的 User-Agent 头，默认包含 User-Agent 头 |
 | WithDisablePathNormalizing         | false          | 是否禁用路径规范化，默认规范路径，如 http://localhost:8080/hello/../ hello -> http://localhost:8080/hello |
 | WithRetryConfig                    | nil            | HTTP 客户端的重试配置，重试配置详细说明请看 [重试](/zh/docs/hertz/tutorials/basic-feature/retry/) |
 | WithWriteTimeout                   | 0s             | HTTP 客户端的写入超时时间 |

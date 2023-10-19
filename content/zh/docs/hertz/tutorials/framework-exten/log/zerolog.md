@@ -357,7 +357,7 @@ func main() {
 
 ### WithCallerSkipFrameCount
 
-`WithCallerSkipFrameCount` 将 `caller` 添加到 `logger` 的 Context 中， `CallerWithSkipFrameCount` 是 zerolog 的 Context 结构体的方法，它用于在日志记录中添加调用者的文件名和行号，并使用 `zerolog.CallerFieldName` 作为键名
+`WithCallerSkipFrameCount` 将 `caller` 添加到 `logger` 的 Context 中，`CallerWithSkipFrameCount` 是 zerolog 的 Context 结构体的方法，它用于在日志记录中添加调用者的文件名和行号，并使用 `zerolog.CallerFieldName` 作为键名
 
 该方法接受一个 `skipFrameCount` 参数，用于指定要跳过的堆栈帧数，以确定正确的调用者位置。如果 `skipFrameCount` 参数设为 -1，则使用全局的 `CallerSkipFrameCount` 值
 

@@ -169,7 +169,7 @@ OPTIONS:
 
 <!---->
 
-- rm_tag value: Remove the specified tag 
+- rm_tag value: Remove the specified tag
 
 <!---->
 
@@ -308,7 +308,7 @@ OPTIONS:
 
 <!---->
 
-- rm_tag value: Remove the specified tag 
+- rm_tag value: Remove the specified tag
 
 <!---->
 
@@ -410,7 +410,7 @@ OPTIONS:
 
 <!---->
 
-- rm_tag value: Remove the specified tag 
+- rm_tag value: Remove the specified tag
 
 <!---->
 
@@ -521,7 +521,7 @@ OPTIONS:
 
 <!---->
 
-- rm_tag value: Remove the specified tag 
+- rm_tag value: Remove the specified tag
 
 <!---->
 
