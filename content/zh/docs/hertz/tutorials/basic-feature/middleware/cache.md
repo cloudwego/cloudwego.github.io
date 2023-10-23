@@ -155,9 +155,41 @@ func main() {
 }
 ```
 
-## 配置
+### NewCacheByRequestURIWithIgnoreQueryOrder
 
-### 通用配置
+创建使用 URI 作为 key 并忽略查询参数顺序的缓存中间件
+
+函数签名
+```go
+func NewCacheByRequestURIWithIgnoreQueryOrder(defaultCacheStore persist.CacheStore, defaultExpire time.Duration, opts ...Option) app.HandlerFunc
+```
+
+示例代码：
+
+```go
+func main() {
+    h := server.New()
+
+    memoryStore := persist.NewMemoryStore(1 * time.Minute)
+
+    h.Use(cache.NewCacheByRequestURIWithIgnoreQueryOrder(
+        memoryStore,
+        2*time.Second,
+        cache.WithCacheStrategyByRequest(func(ctx context.Context, c *app.RequestContext) (bool, cache.Strategy) {
+            return true, cache.Strategy{
+                CacheKey: c.Request.URI().String(),
+            }
+        }),
+    ))
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        c.String(http.StatusOK, "hello world")
+    })
+
+    h.Spin()
+}
+```
+
+## 配置
 
 | 配置                          | 默认值 | 介绍                                           |
 | ----------------------------- | ------ | ---------------------------------------------- |
@@ -168,20 +200,7 @@ func main() {
 | WithSingleFlightForgetTimeout | 0      | 设置 SingleFlight 的超时时间，以控制并发操作的行为，确保请求在一定时间内被处理或者超时被取消 |
 | WithPrefixKey                 | ""     | 用于设置缓存响应 Key 的前缀                    |
 | WithoutHeader                 | false  | 用于设置是否需要缓存响应头                     |
-
-### 各模式的额外配置
-
-#### NewCache模式
-
-| 配置                       | 默认值 | 介绍                     |
-| -------------------------- | ------ | :----------------------- |
-| WithCacheStrategyByRequest | nil    | 用于设置自定义的缓存策略 |
-
-#### NewCacheByRequestURI模式
-
-| 配置                 | 默认值 | 介绍                                                      |
-| -------------------- | ------ | --------------------------------------------------------- |
-| WithIgnoreQueryOrder | false  | 当使用 URI 为缓存的 Key 时，忽略 query 参数的顺序 |
+| WithCacheStrategyByRequest    | nil    | 用于设置自定义的缓存策略 |
 
 ### WithCacheStrategyByRequest
 
@@ -336,43 +355,6 @@ func main() {
         c.String(http.StatusOK, "hello world")
     })
 
-    h.Spin()
-}
-```
-
-### WithIgnoreQueryOrder
-
-通过使用 `WithIgnoreQueryOrder` 设置当使用 `NewCacheByRequestURI` 方法创建缓存中间件时，忽略 URI 的 query 参数顺序（为 true 触发参数排序）。
-
-函数签名：
-
-```go
-func WithIgnoreQueryOrder(b bool) Option
-```
-
-示例代码：
-
-```go
-func main() {
-    h := server.New()
-
-    memoryStore := persist.NewMemoryStore(1 * time.Minute)
-
-    h.Use(cache.NewCacheByRequestPath(
-        memoryStore,
-        60*time.Second,
-        cache.WithIgnoreQueryOrder(true),
-        cache.WithOnHitCache(func(c context.Context, ctx *app.RequestContext) {
-            hlog.Infof("hit cache IgnoreQueryOrder")
-        }),
-        cache.WithOnMissCache(func(c context.Context, ctx *app.RequestContext) {
-            hlog.Infof("miss cache IgnoreQueryOrder")
-        }),
-    ))
-    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
-        c.String(http.StatusOK, "hello world")
-    })
-    
     h.Spin()
 }
 ```
