@@ -103,11 +103,8 @@ At this point, our entire directory structure looks like this:
 Then we open `src/lib.rs` and add the method implementation to the `impl` block. The resulting code should look like this:
 
 ```rust
-#![feature(impl_trait_in_assoc_type)]
-
 pub struct S;
 
-#[volo::async_trait]
 impl volo_gen::volo::example::ItemService for S {
     // This is the part of the code we need to add
     async fn get_item(

@@ -1,6 +1,6 @@
 ---
 title: "Gzip Compress"
-date: 2022-09-25
+date: 2022-10-19
 weight: 4
 keywords: ["Gzip", "Compress"]
 description: "Hertz provides an implementation of Gzip."
@@ -16,6 +16,8 @@ go get github.com/hertz-contrib/gzip
 ```
 
 ## Example
+
+### Gzip
 
 ```go
 package main
@@ -41,9 +43,94 @@ func main() {
 }
 ```
 
+### Gzip Stream
+
+If the user has a need for gzip compression combined with chunked streaming writing, they can use this middleware. The behavior of this middleware is to chunk each chunk, compress it with gzip, and then send it to the client. Each chunk is a separate compressed data, so each chunk received by the client can be independently decompressed and used.
+
+> Note: Using this middleware will hijack the response writer and may have an impact on other interfaces. Therefore, it is only necessary to use this middleware on interfaces with streaming gzip requirements.
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"io/ioutil"
+	"strings"
+	"time"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/compress"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"github.com/hertz-contrib/gzip"
+)
+
+func main() {
+	h := server.Default(server.WithHostPorts(":8081"))
+
+	// Note: Using this middleware will hijack the response writer and may have an impact on other interfaces.
+	// Therefore, it is only necessary to use this middleware on interfaces with streaming gzip requirements.
+	h.GET("/ping", gzip.GzipStream(gzip.DefaultCompression), func(ctx context.Context, c *app.RequestContext) {
+		for i := 0; i < 10; i++ {
+			c.Write([]byte(fmt.Sprintf("chunk %d: %s\n", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+			c.Flush()                                                                   // nolint: errcheck
+			time.Sleep(time.Second)
+		}
+	})
+	go h.Spin()
+
+	cli, err := client.NewClient(client.WithResponseBodyStream(true))
+	if err != nil {
+		panic(err)
+	}
+
+	req := protocol.AcquireRequest()
+	res := protocol.AcquireResponse()
+
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8081/ping")
+	req.Header.Set("Accept-Encoding", "gzip")
+
+	if err = cli.Do(context.Background(), req, res); err != nil {
+		panic(err)
+	}
+
+	bodyStream := res.BodyStream()
+
+	r, err := compress.AcquireGzipReader(bodyStream)
+	if err != nil {
+		panic(err)
+	}
+
+	firstChunk := make([]byte, 10)
+	_, err = r.Read(firstChunk)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(fmt.Printf("%s", firstChunk))
+
+	secondChunk := make([]byte, 13)
+	_, err = r.Read(secondChunk)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(fmt.Printf("%s", secondChunk))
+
+	otherChunks, _ := ioutil.ReadAll(r)
+	fmt.Println(fmt.Printf("%s", otherChunks))
+
+	if r != nil {
+		compress.ReleaseGzipReader(r)
+	}
+}
+```
+
 ## Config
 
-### Gzip
+> The following configuration is also applicable to `Gzip Stream`.
 
 `Gzip` provides four compression options: `BestCompression`, `BestSpeed`, `DefaultCompression`, `NoCompression` for user-defined compression modes
 
