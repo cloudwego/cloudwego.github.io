@@ -1,3 +1,11 @@
+---
+title: "熔断"
+date: 2023-10-23
+weight: 1
+keywords: ["Kitex","熔断"]
+description: ""
+---
+
 # 熔断
 
 ## 介绍
