@@ -1,8 +1,8 @@
-"Kitex - Circuit Breaker","Kitex - EN"---
+---
 title: "Kitex - Circuit Breaker"
-date: 2023-10-23
-weight: 1
-keywords: [[Kitex - Circuit Breaker Kitex - EN]]
+date: %!s(int=1)
+weight: %!d(string=2023-10-23)
+keywords: ["Kitex - Circuit Breaker","Kitex - EN"]
 description: ""
 ---
 
