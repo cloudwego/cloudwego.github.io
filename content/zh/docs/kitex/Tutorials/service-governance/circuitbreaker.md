@@ -1,14 +1,12 @@
-# Kitex - Circuit Breaker | circuitbreaker
+# 熔断
 
-## Introduction
+## 介绍
 
-Kitex provides a default implementation of Circuit Breaker, but it’s disabled by default.
+Kitex 提供了熔断器的实现，但是没有默认开启，需要用户主动使用。下面简单介绍一下如何使用以及 Kitex 熔断器的策略。
 
-The following document will introduce that how to enable circuit breaker and configure the policy.
+## 使用方式
 
-## How to use
-
-### Example
+### 使用示例：
 
 ```go
 import (
@@ -48,135 +46,128 @@ func main() {
         ...
 }
 
-
 ```
 
-### Introduction
+### 使用说明
 
-Kitex provides a set of CBSuite that encapsulates both service-level breaker and instance-level breaker, which are the implementations of Middleware.
+Kitex 大部分服务治理模块都是通过 middleware 集成，熔断也是一样。Kitex 提供了一套 CBSuite，封装了服务粒度的熔断器和实例粒度的熔断器。
 
-- Service-Level Breaker
+- 服务粒度熔断
 
-  - Statistics by service granularity, enabled via WithMiddleware.
-  - The specific service granularity depends on the Circuit Breaker Key, which is the key for breaker statistics. When initializing the CBSuite, you need to pass it in **GenServiceCBKeyFunc**. The default key is `circuitbreak.RPCInfo2Key`, and the format of RPCInfo2Key is `fromServiceName/toServiceName/method`.
-- Instance-Level Breaker
+  - 按照服务粒度进行熔断统计，通过 WithMiddleware 添加。服务粒度的具体划分取决于 Circuit Breaker Key，既熔断统计的 key，初始化 CBSuite 时需要传入 **GenServiceCBKeyFunc**，默认提供的是 circuitbreak.RPCInfo2Key ，该 key 的格式是 `fromServiceName/toServiceName/method`，即按照方法级别的异常做熔断统计。
+- 实例粒度熔断
 
-  - Statistics by instance granularity, enabled via WithInstanceMW.
-  - Instance-Level Breaker is used to solve the single-instance exception problem. If it’s triggered, the framework will automatically retry the request.
-  - Note that the premise of retry is that you need to enable breaker with **WithInstanceMW**, which will be executed after load balancing.
-- Threshold and **Threshold Change**
+  - 按照实例粒度进行熔断统计，主要用于解决单实例异常问题，如果触发了实例级别熔断，框架会自动重试。
+  - 注意，框架自动重试的前提是需要通过 **WithInstanceMW** 添加，WithInstanceMW 添加的 middleware 会在负载均衡后执行。
+- 熔断阈值及**阈值变更**
 
-The default breaker threshold is `ErrRate: 0.5, MinSample: 200`, which means it’s triggered by an error rate of 50% and requires the amount of requests > 200.
+  - 默认的熔断阈值是 `ErrRate: 0.5, MinSample: 200`，错误率达到 50% 触发熔断，同时要求统计量 >200。若要调整阈值，调用 CBSuite 的 `UpdateServiceCBConfig` 和 `UpdateInstanceCBConfig` 来更新 Key 的阈值。
 
-If you want to change the threshold, you can modify the `UpdateServiceCBConfig` and `UpdateInstanceCBConfig` in CBSuite.
+## 熔断器作用
 
-## The Role of Circuit Breaker
+在进行 RPC 调用时，下游服务难免会出错；
 
-When making RPC calls, errors are inevitable for downstream services.
+当下游出现问题时，如果上游继续对其进行调用，既妨碍了下游的恢复，也浪费了上游的资源；
 
-When a downstream has a problem, if the upstream continues to make calls to it, it both prevents the downstream from recovering and wastes the upstream’s resources.
+为了解决这个问题，你可以设置一些动态开关，当下游出错时，手动的关闭对下游的调用；
 
-To solve this problem, you can set up some dynamic switches that manually shut down calls to the downstream when it goes wrong.
+然而更好的办法是使用熔断器，自动化的解决这个问题。
 
-A better approach, however, is to use Circuit Breaker.
+这里是一篇更详细的[熔断器介绍](https://msdn.microsoft.com/zh-cn/library/dn589784.aspx)。
 
-Here is a more detailed document [Circuit Breaker Pattern](https://docs.microsoft.com/en-us/previous-versions/msp-n-p/dn589784(v=pandp.10)?redirectedfrom=MSDN).
+比较出名的熔断器当属 hystrix 了，这里是它的[设计文档](https://github.com/Netflix/Hystrix/wiki)。
 
-One of the famous circuit breakers is hystrix, and here is its [design](https://github.com/Netflix/Hystrix/wiki).
+### 熔断策略
 
-## Breaker Strategy
+**熔断器的思路很简单：根据****RPC****的成功失败情况，限制对下游的访问；**
 
-The idea of a Circuit Breaker is simple: restrict access to downstream based on successful failures of RPC Calls.
+通常熔断器分为三个时期： CLOSED、OPEN、HALFOPEN；
 
-The Circuit Breaker is usually divided into three periods: CLOSED, OPEN, and HALFOPEN.
+RPC 正常时，为 CLOSED；
 
-- CLOSED when the RPC is normal.
-- OPEN when RPC errors increase.
-- HALFOPEN after a certain cooling time after OPEN.
+当 RPC 错误增多时，熔断器会被触发，进入 OPEN；
 
-HALFOPEN will make some strategic access to the downstream, and then decide whether to become CLOSED or OPEN according to the result.
+OPEN 后经过一定的冷却时间，熔断器变为 HALFOPEN；
 
-In general, the transition of the three states is roughly as follows:
+HALFOPEN 时会对下游进行一些有策略的访问，然后根据结果决定是变为 CLOSED，还是 OPEN；
+
+总的来说三个状态的转换大致如下图：
 
 ```
  [CLOSED] ---> tripped ----> [OPEN]<-------+
-    ^ | ^
-    | v
-    + | detect fail
-    | | v
-    | cooling timeout |
-    The timeout for cooling
-    | v
-    +-- detect succeed --<-[HALFOPEN]-->--+
+    ^                          |           ^
+    |                          v           |
+    +                          |      detect fail
+    |                          |           |
+    |                    cooling timeout   |
+    ^                          |           ^
+    |                          v           |
+    +--- detect succeed --<-[HALFOPEN]-->--+
 
 ```
 
-### Trigger Strategies
+### 触发策略
 
-Kitex provides three basic fuse triggering strategies by default:
+Kitex 默认提供了三个基本的熔断触发策略：
 
-- Number of consecutive errors reaches threshold (ConsecutiveTripFunc)
-- Error count reaches threshold (ThresholdTripFunc)
-- Error rate reaches the threshold (RateTripFunc)
+- 连续错误数达到阈值 (ConsecutiveTripFunc)
+- 错误数达到阈值 (ThresholdTripFunc)
+- 错误率达到阈值 (RateTripFunc)
 
-Of course, you can write your own triggering strategy by implementing the TripFunc function.
+当然，你可以通过实现 TripFunc 函数来写自己的熔断触发策略；
 
-Circuitbreaker will call TripFunc when Fail or Timeout happen to decide whether to trigger breaker.
+Circuitbreaker 会在每次 Fail 或者 Timeout 时，去调用 TripFunc，来决定是否触发熔断；
 
-### Cooling Strategy
+### 冷却策略
 
-After entering the OPEN state, the breaker will cool down for a period of time, the default is 10 seconds which is also configurable (with CoolingTimeout).
+进入 OPEN 状态后，熔断器会冷却一段时间，默认是 10 秒，当然该参数可配置 (CoolingTimeout)；
 
-During this period, all IsAllowed() requests will be returned false.
+在这段时期内，所有的 IsAllowed() 请求将会被返回 false；
 
-Entering HALFOPEN when cooling is complete.
+冷却完毕后进入 HALFOPEN；
 
-### Half-Open Strategy
+### 半打开时策略
 
-During HALFOPEN, the breaker will let a request go every “interval”, and after a “number” of consecutive successful requests, the breaker will become CLOSED; If any of them fail, it will become OPEN.
+在 HALFOPEN 时，熔断器每隔 " 一段时间 " 便会放过一个请求，当连续成功 " 若干数目 " 的请求后，熔断器将变为 CLOSED； 如果其中有任意一个失败，则将变为 OPEN；
 
-The process is a gradual-trial process.
+该过程是一个逐渐试探下游，并打开的过程；
 
-Both the “interval” (DetectTimeout) and the “number” (DEFAULT_HALFOPEN_SUCCESSES) are configurable.
+上述的 " 一段时间 “(DetectTimeout) 和 " 若干数目 “(DEFAULT_HALFOPEN_SUCCESSES) 都是可以配置的；
 
-## Statistics Algothrithm
+## 统计算法
 
-### Default Config
+### 默认参数
 
-The breaker counts successes, failures and timeouts within a period of time window(default window size is 10 seconds).
+熔断器会统计一段时间窗口内的成功，失败和超时，默认窗口大小是 10S；
 
-The time window can be set by two parameters, but usually you can leave it alone.
+时间窗口可以通过两个参数设置，不过通常情况下你可以不用关心 .
 
-### Statistics Implementation
+### 统计方法
 
-The statistics will divide the time window into buckets, each bucket recording data for a fixed period of time.
+统计方法是将该段时间窗口分为若干个桶，每个桶记录一定固定时长内的数据；
 
-For example, to count data within 10 seconds, you can spread the 10 second time period over 100 buckets, each bucket counting data within a 100ms time period.
+比如统计 10 秒内的数据，于是可以将 10 秒的时间段分散到 100 个桶，每个桶统计 100ms 时间段内的数据；
 
-The BucketTime and BucketNums in Options correspond to the time period of each bucket, and the number of buckets.
+Options 中的 BucketTime 和 BucketNums，就分别对应了每个桶维护的时间段，和桶的个数；
 
-If BucketTime is set to 100ms, and BucketNums is set to 100, this corresponds to a 10 second time window.
+如将 BucketTime 设置为 100ms，将 BucketNums 设置为 100，则对应了 10 秒的时间窗口；
 
-### Jitter
+### 抖动
 
-As time moves, the oldest bucket in the window expires. The jitter occurs when the last bucket expires.
+随着时间的移动，窗口内最老的那个桶会过期，当最后那个桶过期时，则会出现了抖动；
 
-As an example:
+举个例子：
 
-- You divide 10 seconds into 10 buckets, bucket 0 corresponds to a time of [0S, 1S), bucket 1 corresponds to [1S, 2S), … , and bucket 9 corresponds to [9S, 10S).
-- At 10.1S, a Succ is executed, and the following operations occur within the circuitbreaker.
+- 你将 10 秒分为了 10 个桶，0 号桶对应了 [0S，1S) 的时间，1 号桶对应 [1S，2S)，…，9 号桶对应 [9S，10S)；
+- 在 10.1S 时，执行一次 Succ，则 circuitbreaker 内会发生下述的操作；
 
-  - (1) detects that bucket 0 has expired and discards it;
-  - (2) creates a new bucket 10, corresponding to [10S, 11S);
-  - (3) puts that Succ into bucket 10.
-- At 10.2S, you execute Successes() to query the number of successes in the window, then you get the actual statistics for [1S, 10.2S), not [0.2S, 10.2S).
+  - (1) 检测到 0 号桶已经过期，将其丢弃；
+  - (2) 创建新的 10 号桶，对应 [10S，11S)；
+  - (3) 将该次 Succ 放入 10 号桶内；
+- 在 10.2S 时，你执行 Successes() 查询窗口内成功数，则你得到的实际统计值是 [1S，10.2S) 的数据，而不是 [0.2S，10.2S)；
 
-Such jitter cannot be avoided if you use time-window-bucket statistics. A compromise approach is to increase the number of buckets, which can reduce the impact of jitter.
+如果使用分桶计数的办法，这样的抖动是无法避免的，比较折中的一个办法是将桶的个数增多，可以降低抖动的影响；
 
-If 2000 buckets are divided, the impact of jitter on the overall data is at most 1/2000. In this package, the default number of buckets is 2000, the bucket time is 5ms, and the time window is 10S.
+如划分 2000 个桶，则抖动对整体的数据的影响最多也就 1/2000； 在该包中，默认的桶个数也是 2000，桶时间为 5ms，总体窗口为 10S；
 
-There are various technical solutions to avoid this problem, but they all introduce other problems, so if you have good ideas, please create a issue or PR.
-
----
-
-# Internal Supplementary information
+当时曾想过多种技术办法来避免这种问题，但是都会引入更多其他的问题，如果你有好的思路，请 issue 或者 PR.
