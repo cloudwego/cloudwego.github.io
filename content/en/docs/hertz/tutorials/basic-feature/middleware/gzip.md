@@ -45,7 +45,7 @@ func main() {
 
 ### Gzip Stream
 
-The server first compresses the data before streaming it out.
+If the user has a need for gzip compression combined with chunked streaming writing, they can use this middleware. The behavior of this middleware is to chunk each chunk, compress it with gzip, and then send it to the client. Each chunk is a separate compressed data, so each chunk received by the client can be independently decompressed and used.
 
 > Note: Using this middleware will hijack the response writer and may have an impact on other interfaces. Therefore, it is only necessary to use this middleware on interfaces with streaming gzip requirements.
 
