@@ -2,7 +2,7 @@
 title: "Circuit Breaker"
 date: 2023-10-23
 weight: 1
-keywords: ["Kitex - Circuit Breaker","Kitex - EN"]
+keywords: ["Kitex - EN","Circuit Breaker"]
 description: ""
 ---
 
@@ -141,11 +141,11 @@ Entering HALFOPEN when cooling is complete.
 
 ### Half-Open Strategy
 
-During HALFOPEN, the breaker will let a request go every “interval”, and after a “number” of consecutive successful requests, the breaker will become CLOSED; If any of them fail, it will become OPEN.
+During HALFOPEN, the breaker will let a request go every "interval", and after a "number" of consecutive successful requests, the breaker will become CLOSED; If any of them fail, it will become OPEN.
 
 The process is a gradual-trial process.
 
-Both the “interval” (DetectTimeout) and the “number” (DEFAULT_HALFOPEN_SUCCESSES) are configurable.
+Both the “interval” (DetectTimeout) and the "number" (DEFAULT_HALFOPEN_SUCCESSES) are configurable.
 
 ## Statistics Algothrithm
 
