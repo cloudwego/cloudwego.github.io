@@ -1,3 +1,11 @@
+"Kitex - Circuit Breaker","Kitex - EN"---
+title: "Kitex - Circuit Breaker"
+date: 2023-10-23
+weight: 1
+keywords: [[Kitex - Circuit Breaker Kitex - EN]]
+description: ""
+---
+
 # Kitex - Circuit Breaker | circuitbreaker
 
 ## Introduction
