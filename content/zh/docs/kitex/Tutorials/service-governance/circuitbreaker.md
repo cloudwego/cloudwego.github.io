@@ -1,8 +1,8 @@
-"熔断","Kitex"---
+---
 title: "熔断"
-date: 2023-10-23
-weight: 1
-keywords: [[熔断 Kitex]]
+date: %!s(int=1)
+weight: %!d(string=2023-10-23)
+keywords: ["熔断","Kitex"]
 description: ""
 ---
 
