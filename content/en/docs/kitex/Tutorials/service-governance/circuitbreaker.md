@@ -1,7 +1,7 @@
 ---
 title: "Kitex - Circuit Breaker"
-date: %!s(int=1)
-weight: %!d(string=2023-10-23)
+date: 2023-10-23
+weight: 1
 keywords: ["Kitex - Circuit Breaker","Kitex - EN"]
 description: ""
 ---
