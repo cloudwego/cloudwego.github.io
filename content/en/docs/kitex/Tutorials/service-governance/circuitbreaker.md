@@ -1,5 +1,5 @@
 ---
-title: "Kitex - Circuit Breaker"
+title: "Circuit Breaker"
 date: 2023-10-23
 weight: 1
 keywords: ["Kitex - Circuit Breaker","Kitex - EN"]
