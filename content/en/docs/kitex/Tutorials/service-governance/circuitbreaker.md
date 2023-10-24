@@ -1,11 +1,3 @@
----
-title: "Circuit Breaker"
-date: 2023-10-24
-weight: 5
-keywords: ["Kitex - EN","Circuit Breaker"]
-description: "This doc covers Kitex Circuit Breaker use guide and principle introduction."
----
-
 ## Introduction
 
 Kitex provides a default implementation of Circuit Breaker, but it’s disabled by default.
