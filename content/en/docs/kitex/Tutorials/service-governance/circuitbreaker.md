@@ -3,7 +3,7 @@ title: "Circuit Breaker"
 date: 2023-10-24
 weight: 5
 keywords: ["Kitex - EN","Circuit Breaker"]
-description: ""
+description: "This doc covers Kitex Circuit Breaker use guide and principle introduction."
 ---
 
 ## Introduction
