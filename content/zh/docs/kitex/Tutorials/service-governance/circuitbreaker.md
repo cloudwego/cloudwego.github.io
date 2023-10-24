@@ -1,7 +1,7 @@
 ---
 title: "熔断"
 date: 2023-10-24
-weight: 1
+weight: 5
 keywords: ["Kitex","熔断"]
 description: ""
 ---
