@@ -1,7 +1,7 @@
 ---
 title: "监控"
 linkTitle: "监控"
-weight: 3
+weight: 4
 keywords: ["监控"]
 description: "Hertz 提供的监控能力。"
 
