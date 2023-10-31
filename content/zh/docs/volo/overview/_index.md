@@ -2,7 +2,8 @@
 title: "概览"
 linkTitle: "概览"
 weight: 1
-description: >
+keywords: ["RPC", "Rust", "Volo", "AFIT", "RPITIT"]
+description: "Volo 架构设计、框架特性、相关生态简介。"
 
 ---
 
