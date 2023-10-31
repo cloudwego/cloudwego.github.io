@@ -2,7 +2,8 @@
 title: "Overview"
 linkTitle: "Overview"
 weight: 1
-description: >
+keywords: ["RPC", "Rust", "Volo", "AFIT", "RPITIT"]
+description: "The architecture design, framework features, and related ecology of Volo."
 
 ---
 
