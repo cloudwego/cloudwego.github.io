@@ -50,8 +50,8 @@ func main() {
 
 > If you do not want to record this information, you can either not register any tracer or set the tracking strategy to LevelDisabled, and the framework will not record this information.
 >
-> - **Setting the stats level of a certain node in the link to `LevelDisabled` will result in the loss of spans/metrics for that node, but it will not cause the link to be interrupted.**
-> - **Not registering any tracer will also result in the loss of spans/metrics for that node, and it will also cause the link to be interrupted.**
+> - **Setting the stats level of a certain node in the tracing to `LevelDisabled` will result in the loss of spans/metrics for that node, but it will not cause the tracing to be interrupted.**
+> - **Not registering any tracer will also result in the loss of spans/metrics for that node, and it will also cause the tracing to be interrupted.**
 
 ### Timeline
 
