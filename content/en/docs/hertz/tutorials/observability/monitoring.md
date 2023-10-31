@@ -2,7 +2,7 @@
 title: "Monitoring"
 linkTitle: "Monitoring"
 date: 2022-06-21
-weight: 3
+weight: 4
 keywords: ["Monitoring"]
 description: "Hertz provides monitoring capabilities."
 
