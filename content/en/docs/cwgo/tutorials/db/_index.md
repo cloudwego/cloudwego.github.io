@@ -29,6 +29,7 @@ OPTIONS:
     --out_dir value Specify output directory (default: biz/dao/query)
     --out_file value Specify output filename (default: gen.go)
     --tables value [ --tables value ] Specify databases tables
+    --exclude_tables value [ --exclude_tables value ]  Specify exclude tables
     --unittest Specify generate unit test (default: false)
     --only_model Specify only generate model code (default: false)
     --model_pkg value Specify model package name
@@ -39,6 +40,8 @@ OPTIONS:
     --help, -h show help (default: false)
 ```
 
+> All tables in the SQLite database that **start with sqlite** will be ignored, such as sqlite_sequence and sqlite_master.
+
 ## Specification
 
 ```console
@@ -47,6 +50,7 @@ OPTIONS:
     --out_dir value specifies the output directory path, the default is biz/dao/query
     --out_file value specify the output file name, the default is gen.go
     --tables value specifies the database table, the default is the full table
+    --exclude_tables value [ --exclude_tables value ]  Specify exclude tables, the default is empty
     --unittest specifies whether to generate unit tests, the default is false
     --only_model specifies whether to generate only model, default is false
     --model_pkg value specifies the package name of the model
