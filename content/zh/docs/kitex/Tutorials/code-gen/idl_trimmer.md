@@ -110,7 +110,7 @@ struct Useless{
 ```
 即使该结构没有被引用，其仍然会在裁剪后被保留。  
 
-本功能默认开启，可以通过设置-p或-preseve参数为false将其禁用。例如： 
+本功能默认开启，可以通过设置-p或-preserve参数为false将其禁用。例如： 
 ```bash
 trimmer -p false sample.thrift
 ```
