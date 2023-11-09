@@ -17,7 +17,7 @@ Currently, the feature is only available for **gRPC** transport protocol.
 For instance, suppose you have two proto files, each containing one service.
 By running the kitex command, you can automatically generate the code.
 
-```thrift
+```protobuf
 // File1：servicea.proto
 syntax = "proto3";
 
@@ -38,7 +38,7 @@ message ReplyA {
 }
 
 
-// File2：base.thrift
+// File2：serviceb.proto
 syntax = "proto3";
 
 option go_package = "myservice";
