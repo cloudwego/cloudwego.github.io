@@ -29,6 +29,7 @@ OPTIONS:
    --out_dir value                    Specify output directory (default: biz/dao/query)
    --out_file value                   Specify output filename (default: gen.go)
    --tables value [ --tables value ]  Specify databases tables
+   --exclude_tables value [ --exclude_tables value ]  Specify exclude tables
    --unittest                         Specify generate unit test (default: false)
    --only_model                       Specify only generate model code (default: false)
    --model_pkg value                  Specify model package name
@@ -39,6 +40,8 @@ OPTIONS:
    --help, -h                         show help (default: false)
 ```
 
+> 会忽略 sqlite 数据库所有 **sqlite 开头**的表，比如 sqlite_sequence、sqlite_master
+
 ## 详细参数
 
 ```console
@@ -47,6 +50,7 @@ OPTIONS:
    --out_dir value                    指定输出目录路径，默认为 biz/dao/query
    --out_file value                   指定输出文件名，默认为 gen.go
    --tables value                     指定数据库表，默认为全表
+   --exclude_tables value [ --exclude_tables value ]  指定排除的表，默认为空
    --unittest                         指定是否生成单测，默认为 false
    --only_model                       指定是否生成仅 model，默认为 false
    --model_pkg value                  指定 model 的包名

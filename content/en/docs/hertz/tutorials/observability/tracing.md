@@ -3,7 +3,7 @@ title: "Tracing"
 linkTitle: "Tracing"
 weight: 2
 keywords: ["Tracing"]
-description: "Hertz provides tracing capabilities."
+description: "Hertz provides tracing capabilities"
 ---
 
 In microservices, link tracing is a very important capability, which plays an important role in quickly locating problems, analyzing business bottlenecks, and restoring the link status of a request. Hertz provides the capability of link tracking and also supports user-defined link tracking.
@@ -41,26 +41,13 @@ type HTTPStats interface {
 }
 ```
 
-Events include：
+Hertz supports flexible enabling of basic and fine-grained instrumentation. For more details, please refer to [Instrumentation](../instrumentation).
 
-```go
-HTTPStart  = newEvent(httpStart, LevelBase) // Request start
-HTTPFinish = newEvent(httpFinish, LevelBase) // Request end
+The hertz-contrib provides the extension methods for [opentracing](https://opentracing.io/) and [opentelemetry](https://opentelemetry.io), and the hertz-examples also provide the [opentracing example](https://github.com/cloudwego/hertz-examples/tree/main/tracer) and [opentelemetry example](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry).
 
-ServerHandleStart  = newEvent(serverHandleStart, LevelDetailed) // Business handler start
-ServerHandleFinish = newEvent(serverHandleFinish, LevelDetailed) // Business handler end
-ReadHeaderStart    = newEvent(readHeaderStart, LevelDetailed) // Read header start
-ReadHeaderFinish   = newEvent(readHeaderFinish, LevelDetailed) // Read header end
-ReadBodyStart      = newEvent(readBodyStart, LevelDetailed) // Read body start
-ReadBodyFinish     = newEvent(readBodyFinish, LevelDetailed) // Read body end
-WriteStart         = newEvent(writeStart, LevelDetailed) // Write response start
-WriteFinish        = newEvent(writeFinish, LevelDetailed) // Write response end
-```
+Related repositories:
 
-The above information is available at Finish
+- [hertz opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry/)
+- [hertz opentracing](https://github.com/hertz-contrib/tracer)
 
-At the same time, if you don't want to log this information, you don't have to register any tracer, and the framework stops logging this information.
-
-An extension for opentracing is provided in hertz-contrib, and a demo for calling from http to rpc is also available in [hertz-examples](https://github.com/cloudwego/hertz-examples/tree/main/tracer).
-
-Related Repository： https://github.com/hertz-contrib/tracer
+> OpenTracing has been deprecated. For specific reasons, please refer to [Deprecating OpenTracing](https://github.com/opentracing/specification/issues/163). Unless there are specific reasons, it is recommended to use [Opentelemetry](../open-telemetry).

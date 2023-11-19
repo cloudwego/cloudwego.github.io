@@ -1,7 +1,7 @@
 ---
 
 title: "Gzip 压缩"
-date: 2022-09-01
+date: 2022-10-19
 weight: 4
 keywords: ["Gzip", "压缩"]
 description: "Hertz 提供了 Gzip 的实现。"
@@ -17,6 +17,8 @@ go get github.com/hertz-contrib/gzip
 ```
 
 ## 示例代码
+
+### Gzip
 
 ```go
 package main
@@ -40,12 +42,96 @@ func main() {
 	})
 	h.Spin()
 }
+```
 
+### GzipStream
+
+若用户有 gzip 压缩加 chunk 流式写的需求，可以使用该中间件。该中间件的行为是：将每个 chunk 分块先 gzip 压缩再发送给客户端。每个 chunk 分块都是一份独立的压缩数据，所以客户端收到的每个 chunk 分块都可以独立解压使用。
+
+> 注意：使用该中间件会劫持 response writer，可能会对其他接口造成影响，因此，只需要在有流式 gzip 需求的接口使用该中间件。
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"io/ioutil"
+	"strings"
+	"time"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/compress"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"github.com/hertz-contrib/gzip"
+)
+
+func main() {
+	h := server.Default(server.WithHostPorts(":8081"))
+
+	// Note: Using this middleware will hijack the response writer and may have an impact on other interfaces.
+	// Therefore, it is only necessary to use this middleware on interfaces with streaming gzip requirements.
+	h.GET("/ping", gzip.GzipStream(gzip.DefaultCompression), func(ctx context.Context, c *app.RequestContext) {
+		for i := 0; i < 10; i++ {
+			c.Write([]byte(fmt.Sprintf("chunk %d: %s\n", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+			c.Flush()                                                                   // nolint: errcheck
+			time.Sleep(time.Second)
+		}
+	})
+	go h.Spin()
+
+	cli, err := client.NewClient(client.WithResponseBodyStream(true))
+	if err != nil {
+		panic(err)
+	}
+
+	req := protocol.AcquireRequest()
+	res := protocol.AcquireResponse()
+
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8081/ping")
+	req.Header.Set("Accept-Encoding", "gzip")
+
+	if err = cli.Do(context.Background(), req, res); err != nil {
+		panic(err)
+	}
+
+	bodyStream := res.BodyStream()
+
+	r, err := compress.AcquireGzipReader(bodyStream)
+	if err != nil {
+		panic(err)
+	}
+
+	firstChunk := make([]byte, 10)
+	_, err = r.Read(firstChunk)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(fmt.Printf("%s", firstChunk))
+
+	secondChunk := make([]byte, 13)
+	_, err = r.Read(secondChunk)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(fmt.Printf("%s", secondChunk))
+
+	otherChunks, _ := ioutil.ReadAll(r)
+	fmt.Println(fmt.Printf("%s", otherChunks))
+
+	if r != nil {
+		compress.ReleaseGzipReader(r)
+	}
+}
 ```
 
 ## 配置
 
-### Gzip
+> 以下配置对 `GzipStream` 同样适用。
 
 `Gzip`提供了四种压缩选项:`BestCompression`,`BestSpeed`,`DefaultCompression`,`NoCompression` 用于用户自定义压缩模式
 

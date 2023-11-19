@@ -1,55 +1,57 @@
 ---
-title: "熔断器"
-date: 2021-08-26
+title: "熔断"
+date: 2023-10-24
 weight: 5
-keywords: ["Kitex", "熔断", "熔断器"]
+keywords: ["Kitex","熔断","熔断器"]
 description: "Kitex 熔断使用指南、原理介绍。"
 ---
 
+## 介绍
+
 Kitex 提供了熔断器的实现，但是没有默认开启，需要用户主动使用。下面简单介绍一下如何使用以及 Kitex 熔断器的策略。
 
-## 如何使用
+## 使用方式
 
 ### 使用示例：
 
 ```go
-
 import (
-	...
-	"github.com/cloudwego/kitex/client"
-	"github.com/cloudwego/kitex/pkg/circuitbreak"
-	"github.com/cloudwego/kitex/pkg/rpcinfo"
+        ...
+        "github.com/cloudwego/kitex/client"
+        "github.com/cloudwego/kitex/pkg/circuitbreak"
+        "github.com/cloudwego/kitex/pkg/rpcinfo"
 )
 
 // GenServiceCBKeyFunc returns a key which determines the granularity of the CBSuite
 func GenServiceCBKeyFunc(ri rpcinfo.RPCInfo) string {
-	// circuitbreak.RPCInfo2Key returns "$fromServiceName/$toServiceName/$method"
-	return circuitbreak.RPCInfo2Key(ri)
+        // circuitbreak.RPCInfo2Key returns "$fromServiceName/$toServiceName/$method"
+        return circuitbreak.RPCInfo2Key(ri)
 }
 
 func main() {
-	// build a new CBSuite with 
-	cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
+        // build a new CBSuite with 
+        cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
 
-	var opts []client.Option
-	
-	// add to the client options
-	opts = append(opts, client.WithCircuitBreaker(cbs))
-	
-	// init client 
-	cli, err := echoservice.NewClient(targetService, opts...)
-	
-	// update circuit breaker config for a certain key (should be consistent with GenServiceCBKeyFunc)
-	// this can be called at any time, and will take effect for following requests
-	cbs.UpdateServiceCBConfig("fromServiceName/toServiceName/method", circuitbreak.CBConfig{
-		Enable: true,
-		ErrRate: 0.3,   // requests will be blocked if error rate >= 30%
-		MinSample: 200, // this config takes effect if sampled requests are more than `MinSample`
-	})
+        var opts []client.Option
+        
+        // add to the client options
+        opts = append(opts, client.WithCircuitBreaker(cbs))
+        
+        // init client 
+        cli, err := echoservice.NewClient(targetService, opts...)
+        
+        // update circuit breaker config for a certain key (should be consistent with GenServiceCBKeyFunc)
+        // this can be called at any time, and will take effect for following requests
+        cbs.UpdateServiceCBConfig("fromServiceName/toServiceName/method", circuitbreak.CBConfig{
+                Enable: true,
+                ErrRate: 0.3,   // requests will be blocked if error rate >= 30%
+                MinSample: 200, // this config takes effect if sampled requests are more than `MinSample`
+        })
 
-	// send requests with the client above
-	...
+        // send requests with the client above
+        ...
 }
+
 ```
 
 ### 使用说明
@@ -58,19 +60,14 @@ Kitex 大部分服务治理模块都是通过 middleware 集成，熔断也是�
 
 - 服务粒度熔断
 
-    按照服务粒度进行熔断统计，通过 WithMiddleware 添加。服务粒度的具体划分取决于 Circuit Breaker Key，既熔断统计的 key，初始化 CBSuite 时需要传入 **GenServiceCBKeyFunc**，默认提供的是 circuitbreak.RPCInfo2Key ，该 key 的格式是 `fromServiceName/toServiceName/method`，即按照方法级别的异常做熔断统计。
-
+  - 按照服务粒度进行熔断统计，通过 WithMiddleware 添加。服务粒度的具体划分取决于 Circuit Breaker Key，既熔断统计的 key，初始化 CBSuite 时需要传入 **GenServiceCBKeyFunc**，默认提供的是 circuitbreak.RPCInfo2Key ，该 key 的格式是 `fromServiceName/toServiceName/method`，即按照方法级别的异常做熔断统计。
 - 实例粒度熔断
 
-    按照实例粒度进行熔断统计，主要用于解决单实例异常问题，如果触发了实例级别熔断，框架会自动重试。
-
-    注意，框架自动重试的前提是需要通过 **WithInstanceMW** 添加，WithInstanceMW 添加的 middleware 会在负载均衡后执行。
-
+  - 按照实例粒度进行熔断统计，主要用于解决单实例异常问题，如果触发了实例级别熔断，框架会自动重试。
+  - 注意，框架自动重试的前提是需要通过 **WithInstanceMW** 添加，WithInstanceMW 添加的 middleware 会在负载均衡后执行。
 - 熔断阈值及**阈值变更**
 
-  默认的熔断阈值是 `ErrRate: 0.5, MinSample: 200`，错误率达到 50% 触发熔断，同时要求统计量 >200。若要调整阈值，调用 CBSuite 的 `UpdateServiceCBConfig` 和 `UpdateInstanceCBConfig` 来更新 Key 的阈值。
-
-***
+  - 默认的熔断阈值是 `ErrRate: 0.5, MinSample: 200`，错误率达到 50% 触发熔断，同时要求统计量 >200。若要调整阈值，调用 CBSuite 的 `UpdateServiceCBConfig` 和 `UpdateInstanceCBConfig` 来更新 Key 的阈值。
 
 ## 熔断器作用
 
@@ -88,7 +85,7 @@ Kitex 大部分服务治理模块都是通过 middleware 集成，熔断也是�
 
 ### 熔断策略
 
-**熔断器的思路很简单：根据 RPC 的成功失败情况，限制对下游的访问；**
+**熔断器的思路很简单：根据****RPC****的成功失败情况，限制对下游的访问；**
 
 通常熔断器分为三个时期： CLOSED、OPEN、HALFOPEN；
 
@@ -112,6 +109,7 @@ HALFOPEN 时会对下游进行一些有策略的访问，然后根据结果决�
     ^                          |           ^
     |                          v           |
     +--- detect succeed --<-[HALFOPEN]-->--+
+
 ```
 
 ### 触发策略
@@ -119,9 +117,7 @@ HALFOPEN 时会对下游进行一些有策略的访问，然后根据结果决�
 Kitex 默认提供了三个基本的熔断触发策略：
 
 - 连续错误数达到阈值 (ConsecutiveTripFunc)
-
 - 错误数达到阈值 (ThresholdTripFunc)
-
 - 错误率达到阈值 (RateTripFunc)
 
 当然，你可以通过实现 TripFunc 函数来写自己的熔断触发策略；
@@ -142,9 +138,9 @@ Circuitbreaker 会在每次 Fail 或者 Timeout 时，去调用 TripFunc，来�
 
 该过程是一个逐渐试探下游，并打开的过程；
 
-上述的 " 一段时间 "(DetectTimeout) 和 " 若干数目 "(DEFAULT_HALFOPEN_SUCCESSES) 都是可以配置的；
+上述的 " 一段时间 “(DetectTimeout) 和 " 若干数目 “(DEFAULT_HALFOPEN_SUCCESSES) 都是可以配置的；
 
-## 统计
+## 统计算法
 
 ### 默认参数
 
@@ -168,14 +164,12 @@ Options 中的 BucketTime 和 BucketNums，就分别对应了每个桶维护的�
 
 举个例子：
 
-- 你将 10 秒分为了 10 个桶，0 号桶对应了 [0S，1S) 的时间，1 号桶对应 [1S，2S)，...，9 号桶对应 [9S，10S)；
-
+- 你将 10 秒分为了 10 个桶，0 号桶对应了 [0S，1S) 的时间，1 号桶对应 [1S，2S)，…，9 号桶对应 [9S，10S)；
 - 在 10.1S 时，执行一次 Succ，则 circuitbreaker 内会发生下述的操作；
 
-  - (1) 检测到 0 号桶已经过期，将其丢弃； 
+  - (1) 检测到 0 号桶已经过期，将其丢弃；
   - (2) 创建新的 10 号桶，对应 [10S，11S)；
   - (3) 将该次 Succ 放入 10 号桶内；
-
 - 在 10.2S 时，你执行 Successes() 查询窗口内成功数，则你得到的实际统计值是 [1S，10.2S) 的数据，而不是 [0.2S，10.2S)；
 
 如果使用分桶计数的办法，这样的抖动是无法避免的，比较折中的一个办法是将桶的个数增多，可以降低抖动的影响；

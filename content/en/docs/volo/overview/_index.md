@@ -2,7 +2,8 @@
 title: "Overview"
 linkTitle: "Overview"
 weight: 1
-description: >
+keywords: ["RPC", "Rust", "Volo", "AFIT", "RPITIT"]
+description: "The architecture design, framework features, and related ecology of Volo."
 
 ---
 
@@ -10,7 +11,7 @@ description: >
 
 Volo is a **high-performance** and **strong-extensibility** Rust RPC framework that helps developers build microservices.
 
-Volo uses [Motore](https://github.com/cloudwego/motore) as its middleware abstraction, which is powered by GAT.
+Volo uses [Motore](https://github.com/cloudwego/motore) as its middleware abstraction, which is powered by AFIT and RPITIT.
 
 ## Architecture
 
@@ -18,11 +19,11 @@ Volo uses [Motore](https://github.com/cloudwego/motore) as its middleware abstra
 
 ## Features
 
-### Powered by GAT
+### Powered by AFIT and RPITIT
 
-Volo uses Motore as its middleware abstraction, which is powered by GAT.
+Volo uses Motore as its middleware abstraction, which is powered by AFIT and RPITIT.
 
-Through GAT, we can avoid many unnecessary Box memory allocations, improve ease of use,
+Through AFIT and RPITIT, we can avoid many unnecessary Box memory allocations, improve ease of use,
 and provide users with a more friendly programming interface and a more ergonomic programming paradigm.
 
 ### High Performance
@@ -55,5 +56,5 @@ We have also created an organization [Volo-rs](http://github.com/volo-rs), any c
 
 1. [Volo-rs](http://github.com/volo-rs)：The volo ecosystem which contains a lot of useful components.
 2. [Pilota](https://github.com/cloudwego/pilota)：A thrift and protobuf implementation in pure rust with high performance and extensibility.
-3. [Motore](https://github.com/cloudwego/motore)：Middleware abstraction layer powered by GAT.
+3. [Motore](https://github.com/cloudwego/motore)：Middleware abstraction layer powered by AFIT and RPITIT.
 4. [Metainfo](https://github.com/cloudwego/metainfo)：Transmissing metainfo across components.

@@ -3,8 +3,7 @@ title: "链路追踪"
 linkTitle: "链路追踪"
 weight: 2
 keywords: ["链路追踪"]
-description: "Hertz 提供的链路追踪能力。"
-
+description: "Hertz 提供的链路追踪能力"
 ---
 
 在微服务中，链路追踪是一项很重要的能力，在快速定位问题，分析业务瓶颈，还原一次请求的链路情况等方面发挥重要作用。Hertz 提供了链路追踪的能力，也支持用户自定义链路跟踪。
@@ -42,25 +41,13 @@ type HTTPStats interface {
 }
 ```
 
-事件包括：
+Hertz 支持灵活启用基本埋点和细粒度埋点，具体请参考 [埋点](../instrumentation)
 
-```go
-HTTPStart  = newEvent(httpStart, LevelBase) // 请求开始
-HTTPFinish = newEvent(httpFinish, LevelBase) // 请求结束
+hertz-contrib 中提供了 [opentracing](https://opentracing.io/) 和 [opentelemetry](https://opentelemetry.io/) 的扩展方式，也在 hertz-examples 中提供了 [opentracing example](https://github.com/cloudwego/hertz-examples/tree/main/tracer) 以及 [opentelemetry example](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry)
 
-ServerHandleStart  = newEvent(serverHandleStart, LevelDetailed) // 业务 handler 开始
-ServerHandleFinish = newEvent(serverHandleFinish, LevelDetailed) // 业务 handler 结束
-ReadHeaderStart    = newEvent(readHeaderStart, LevelDetailed) // 读取 header 开始
-ReadHeaderFinish   = newEvent(readHeaderFinish, LevelDetailed) // 读取 header 结束
-ReadBodyStart      = newEvent(readBodyStart, LevelDetailed) // 读取 body 开始
-ReadBodyFinish     = newEvent(readBodyFinish, LevelDetailed) // 读取 body 结束
-WriteStart         = newEvent(writeStart, LevelDetailed) // 写 response 开始
-WriteFinish        = newEvent(writeFinish, LevelDetailed) // 写 response 结束
-```
+相关仓库：
 
-在 Finish 时可以获取到上述信息。
+- [hertz opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry/)
+- [hertz opentracing](https://github.com/hertz-contrib/tracer)
 
-同时，如果不希望记录这些信息，可以不注册任何 tracer，则框架停止对这些信息的记录。
-
-hertz-contrib 中提供了 opentracing 的扩展方式，也在 [hertz-examples](https://github.com/cloudwego/hertz-examples/tree/main/tracer) 提供了可以从 http 到 rpc 调用的 demo。
-仓库：https://github.com/hertz-contrib/tracer
+> OpenTracing 已经被弃用，具体原因可以查看 [Deprecating OpenTracing](https://github.com/opentracing/specification/issues/163)，如果没有特殊的理由，推荐使用 [Opentelemetry](../open-telemetry)

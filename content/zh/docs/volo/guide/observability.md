@@ -40,20 +40,13 @@ where
 
     type Error = S::Error;
 
-    type Future<'cx> = impl Future<Output = Result<Self::Response, Self::Error>> + 'cx;
+    async fn call<'s, 'cx>(&'s self, cx: &'cx mut Cx, req: Req) -> Result<Self::Response, Self::Error> {
+        let tick = quanta::Instant::now();
+        let ret = self.inner.call(cx, req).await;
+        let elapsed = quanta::Instant::now().duration_since(tick);
 
-    fn call<'cx, 's>(&'s self, cx: &'cx mut Cx, req: Req) -> Self::Future<'cx>
-    where
-        's: 'cx,
-    {
-        async move {
-            let tick = quanta::Instant::now();
-            let ret = self.inner.call(cx, req).await;
-            let elapsed = quanta::Instant::now().duration_since(tick);
-
-            tracing::info!(rpc_type = "rpcCall", cost = elapsed.as_micros() as i64,);
-            ret
-        }
+        tracing::info!(rpc_type = "rpcCall", cost = elapsed.as_micros() as i64,);
+        ret
     }
 }
 ```
