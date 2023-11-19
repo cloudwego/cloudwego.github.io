@@ -19,6 +19,8 @@ go get github.com/hertz-contrib/sse
 
 ## 示例代码
 
+### 服务端
+
 在下面的示例中，在访问 `/sse` 时，服务端将每秒向客户端推送一个时间戳。
 
 ```go
@@ -63,7 +65,102 @@ func main() {
 }
 ```
 
-## 配置
+### 客户端
+
+```go
+package main
+
+import (
+	"context"
+	"sync"
+
+	"github.com/hertz-contrib/sse"
+
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+)
+
+var wg sync.WaitGroup
+
+func main() {
+  wg.Add(2)	
+  go func() {
+    // 传入 server 端 URL 初始化客户端  	  
+    c := sse.NewClient("http://127.0.0.1:8888/sse")
+
+    // 连接到服务端的时候触发
+    c.OnConnect(func(ctx context.Context, client *sse.Client) {
+      hlog.Infof("client1 connect to server %s success with %s method", c.URL, c.Method)
+    })
+
+    // 服务端断开连接的时候触发
+    c.OnDisconnect(func(ctx context.Context, client *sse.Client) {
+      hlog.Infof("client1 disconnect to server %s success with %s method", c.URL, c.Method)
+    })
+
+    events := make(chan *sse.Event)
+    errChan := make(chan error)
+    go func() {
+      cErr := c.Subscribe(func(msg *sse.Event) {
+        if msg.Data != nil {
+          events <- msg
+          return
+        }
+      })
+      errChan <- cErr
+    }()
+    for {
+      select {
+      case e := <-events:
+        hlog.Info(e)
+      case err := <-errChan:
+        hlog.CtxErrorf(context.Background(), "err = %s", err.Error())
+		wg.Done()
+        return
+      }
+    }
+  }()
+
+  go func() {
+    // 传入 server 端 URL 初始化客户端  
+    c := sse.NewClient("http://127.0.0.1:8888/sse")
+
+    // 连接到服务端的时候触发
+    c.OnConnect(func(ctx context.Context, client *sse.Client) {
+      hlog.Infof("client2 %s connect to server success with %s method", c.URL, c.Method)
+    })
+
+    // 服务端断开连接的时候触发
+    c.OnDisconnect(func(ctx context.Context, client *sse.Client) {
+      hlog.Infof("client2 %s disconnect to server success with %s method", c.URL, c.Method)
+    })
+
+    events := make(chan *sse.Event)
+    errChan := make(chan error)
+    go func() {
+      cErr := c.Subscribe(func(msg *sse.Event) {
+        if msg.Data != nil {
+          events <- msg
+          return
+        }
+      })
+      errChan <- cErr
+    }()
+    for {
+      select {
+      case e := <-events:
+        hlog.Info(e)
+      case err := <-errChan:
+        hlog.CtxErrorf(context.Background(), "err = %s", err.Error())
+		wg.Done()
+        return
+      }
+    }
+  }()
+
+  select {}
+}
+```
+## 服务端配置
 
 ### NewStream
 
@@ -127,3 +224,121 @@ GetLastEventID 用于获取客户端发送的最后一个事件标识符。
 ```go
 func GetLastEventID(c *app.RequestContext) string
 ```
+
+## 客户端配置
+
+### NewClient
+
+传入 server 端 URL 完成对客户端的初始化，默认设置 `maxBufferSize` 为 1 << 16 ，`Method` 请求方法为 `GET`
+
+可以设置 Client.Onconnect 和 Client.OnDisconnect 来进行连接和中断连接之后的自定义处理
+
+目前暂不支持中断重连
+
+函数签名:
+
+`func NewClient(url string) *Client`
+
+### Subscribe
+
+客户端对服务端进行订阅监听，`handler` 是自定义的对收到事件的处理函数
+
+函数签名:
+
+`func (c *Client) Subscribe(handler func(msg *Event)) error`
+
+示例代码：
+
+```go
+package main
+
+func main() {
+    events := make(chan *sse.Event)
+    errChan := make(chan error)
+    go func() {
+        cErr := c.Subscribe(func(msg *sse.Event) {
+            if msg.Data != nil {
+                events <- msg
+                return
+            }
+        })
+        errChan <- cErr
+    }()
+    for {
+        select {
+        case e := <-events:
+            hlog.Info(e)
+        case err := <-errChan:
+            hlog.CtxErrorf(context.Background(), "err = %s", err.Error())
+            wg.Done()
+            return
+        }
+    }
+}
+```
+
+### SubscribeWithContext
+
+客户端对服务端进行订阅监听，可传入一个自定义的 `ctx`，其他功能与 `Subscribe` 相同
+
+函数签名:
+
+`func (c *Client) Subscribe(ctx context.Context, handler func(msg *Event)) error`
+
+示例代码：
+
+```go
+package main
+
+func main() {
+    events := make(chan *sse.Event)
+    errChan := make(chan error)
+    go func() {
+        cErr := c.Subscribe(func(msg *sse.Event) {
+            if msg.Data != nil {
+                events <- msg
+                return
+            }
+        })
+        errChan <- cErr
+    }()
+    for {
+        select {
+        case e := <-events:
+            hlog.Info(e)
+        case err := <-errChan:
+            hlog.CtxErrorf(context.Background(), "err = %s", err.Error())
+            wg.Done()
+            return
+        }
+    }
+}
+```
+
+### OnDisconnect
+
+设置服务端连接中断时触发的函数
+
+函数签名:
+
+`func (c *Client) OnDisconnect(fn ConnCallback)`
+
+`type ConnCallback func(ctx context.Context, client *Client)`
+
+### OnDisconnect
+
+设置连接服务端时触发的函数
+
+函数签名:
+
+`func (c *Client) OnConnect(fn ConnCallback)`
+
+`type ConnCallback func(ctx context.Context, client *Client)`
+
+### SetMaxBufferSize
+
+设置 sse client 的最大缓冲区大小
+
+函数签名：
+
+`func (c *Client) SetMaxBufferSize(size int)`
