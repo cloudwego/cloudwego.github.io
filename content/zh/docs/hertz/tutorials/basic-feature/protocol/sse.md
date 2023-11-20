@@ -325,7 +325,7 @@ func main() {
 
 `type ConnCallback func(ctx context.Context, client *Client)`
 
-### OnDisconnect
+### OnConnect
 
 设置连接服务端时触发的函数
 

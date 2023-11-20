@@ -326,7 +326,7 @@ Function signature:
 
 `type ConnCallback func(ctx context.Context, client *Client)`
 
-### OnDisconnect
+### OnConnect
 
 Set the function that is triggered when connecting to the server
 
