@@ -50,8 +50,7 @@ func main() {
 
 > 如果不希望记录这些信息，可以不注册任何 tracer 或者将埋点策略设置为 `LevelDisabled`，则框架不会记录这些信息。
 >
-> - **将链路中某节点埋点策略设置为 `LevelDisabled`，会导致本节点 span/matrics 丢失，不会导致链路中断**
-> - **不注册任何 tracer，也会导致本节点 span/metrics 丢失，同时也会导致链路中断**
+> **将链路中某节点埋点策略设置为 `LevelDisabled` 或者不注册任何 tracer，会导致本节点 span/metrics 丢失，同时也会导致链路中断。**
 
 ### 时序图
 
