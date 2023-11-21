@@ -174,7 +174,7 @@ NewStream 用于创建一个流用于发送事件。在默认情况下，会设�
 func NewStream(c *app.RequestContext) *Stream
 ```
 
-示例代码
+示例代码:
 
 ```go
 package main
@@ -247,7 +247,7 @@ func GetLastEventID(c *app.RequestContext) string
 
 `func (c *Client) Subscribe(handler func(msg *Event)) error`
 
-示例代码：
+示例代码:
 
 ```go
 package main
@@ -283,18 +283,20 @@ func main() {
 
 函数签名:
 
-`func (c *Client) Subscribe(ctx context.Context, handler func(msg *Event)) error`
+`func (c *Client) SubscribeWithContext(ctx context.Context, handler func(msg *Event)) error`
 
-示例代码：
+示例代码:
 
 ```go
 package main
+
+import "context"
 
 func main() {
     events := make(chan *sse.Event)
     errChan := make(chan error)
     go func() {
-        cErr := c.Subscribe(func(msg *sse.Event) {
+        cErr := c.SubscribeWithContext(context.Background(), func(msg *sse.Event) {
             if msg.Data != nil {
                 events <- msg
                 return
@@ -315,23 +317,23 @@ func main() {
 }
 ```
 
-### OnDisconnect
+### SetDisconnectValidator
 
 设置服务端连接中断时触发的函数
 
 函数签名:
 
-`func (c *Client) OnDisconnect(fn ConnCallback)`
+`func (c *Client) SetDisconnectValidator(fn ConnCallback)`
 
 `type ConnCallback func(ctx context.Context, client *Client)`
 
-### OnConnect
+### SetOnConnectValidator
 
 设置连接服务端时触发的函数
 
 函数签名:
 
-`func (c *Client) OnConnect(fn ConnCallback)`
+`func (c *Client) SetOnConnectValidator(fn ConnCallback)`
 
 `type ConnCallback func(ctx context.Context, client *Client)`
 
@@ -339,6 +341,64 @@ func main() {
 
 设置 sse client 的最大缓冲区大小
 
-函数签名：
+函数签名:
 
 `func (c *Client) SetMaxBufferSize(size int)`
+
+### SetURL
+
+设置 sse client 连接的 URL
+
+函数签名:
+
+`func (c *Client) SetURL(url string)`
+
+### SetMethod
+
+设置 sse client 连接请求的 Method
+
+函数签名:
+
+`func (c *Client) SetMethod(method string)`
+
+### SetHeaders
+
+设置 sse client 的 Headers
+
+函数签名:
+
+`func (c *Client) SetHeaders(headers map[string]string)`
+
+### SetResponseValidator
+
+设置 sse client 的请求响应自定义处理
+
+函数签名:
+
+`func (c *Client) SetResponseValidator(responseValidator ResponseValidator) `
+
+`type ResponseValidator func(ctx context.Context, req *protocol.Request, resp *protocol.Response) error`
+
+### GetURL
+
+获取 sse client 连接的 URL
+
+函数签名:
+
+`func (c *Client) GetURL() string`
+
+### GetMethod
+
+获取 sse client 请求的 Method
+
+函数签名:
+
+`func (c *Client) GetMethod() string`
+
+### GetHeaders
+
+获取 sse client 的 Headers
+
+函数签名:
+
+`func (c *Client) GetHeaders() map[string]string`

@@ -284,18 +284,20 @@ The client subscribes to the server and can pass in a custom `ctx`. Other functi
 
 Function signature:
 
-`func (c *Client) Subscribe(ctx context.Context, handler func(msg *Event)) error`
+`func (c *Client) SubscribeWithContext(ctx context.Context, handler func(msg *Event)) error`
 
 Example code:
 
 ```go
 package main
 
+import "context"
+
 func main() {
     events := make(chan *sse.Event)
     errChan := make(chan error)
     go func() {
-        cErr := c.Subscribe(func(msg *sse.Event) {
+        cErr := c.Subscribe(context.Background(), func(msg *sse.Event) {
             if msg.Data != nil {
                 events <- msg
                 return
@@ -316,7 +318,7 @@ func main() {
 }
 ```
 
-### OnDisconnect
+### SetDisconnectValidator
 
 Set the function that is triggered when the server connection is interrupted
 
@@ -326,7 +328,7 @@ Function signature:
 
 `type ConnCallback func(ctx context.Context, client *Client)`
 
-### OnConnect
+### SetOnConnectValidator
 
 Set the function that is triggered when connecting to the server
 
@@ -343,3 +345,61 @@ Set the maximum buffer size for sse client
 Function signature:
 
 `func (c *Client) SetMaxBufferSize(size int)`
+
+### SetURL
+
+Set the request url for sse client 
+
+Function signature:
+
+`func (c *Client) SetURL(url string)`
+
+### SetMethod
+
+Set the request method for sse client
+
+Function signature:
+
+`func (c *Client) SetMethod(method string)`
+
+### SetHeaders
+
+Set the headers for sse client
+
+Function signature:
+
+`func (c *Client) SetHeaders(headers map[string]string)`
+
+### SetResponseValidator
+
+Set the request response custom processing of sse client
+
+Function signature:
+
+`func (c *Client) SetResponseValidator(responseValidator ResponseValidator) `
+
+`type ResponseValidator func(ctx context.Context, req *protocol.Request, resp *protocol.Response) error`
+
+### GetURL
+
+get request url for sse client 
+
+Function signature:
+
+`func (c *Client) GetURL() string`
+
+### GetMethod
+
+get request method for sse client
+
+Function signature:
+
+`func (c *Client) GetMethod() string`
+
+### GetHeaders
+
+get headers for sse client
+
+Function signature:
+
+`func (c *Client) GetHeaders() map[string]string`
