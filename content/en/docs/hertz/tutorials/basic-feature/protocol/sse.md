@@ -318,7 +318,7 @@ func main() {
 }
 ```
 
-### SetDisconnectValidator
+### SetDisconnectCallback
 
 Set the function that is triggered when the server connection is interrupted
 
@@ -328,7 +328,7 @@ Function signature:
 
 `type ConnCallback func(ctx context.Context, client *Client)`
 
-### SetOnConnectValidator
+### SetOnConnectCallback
 
 Set the function that is triggered when connecting to the server
 
@@ -370,15 +370,31 @@ Function signature:
 
 `func (c *Client) SetHeaders(headers map[string]string)`
 
-### SetResponseValidator
+### SetResponseCallback
 
 Set the request response custom processing of sse client
 
 Function signature:
 
-`func (c *Client) SetResponseValidator(responseValidator ResponseValidator) `
+`func (c *Client) SetResponseCallback(responseCallback ResponseCallback) `
 
-`type ResponseValidator func(ctx context.Context, req *protocol.Request, resp *protocol.Response) error`
+`type ResponseCallback func(ctx context.Context, req *protocol.Request, resp *protocol.Response) error`
+
+### SetHertzClient
+
+set sse client
+
+Function signature:
+
+`func (c *Client) SetHertzClient(hertzClient *client.Client)`
+
+### SetEncodingBase64
+
+set whether you use Base64 for sse client
+
+Function signature:
+
+`func (c *Client) SetEncodingBase64(encodingBase64 bool)`
 
 ### GetURL
 
@@ -403,3 +419,19 @@ get headers for sse client
 Function signature:
 
 `func (c *Client) GetHeaders() map[string]string`
+
+### GetHertzClient
+
+get sse client
+
+Function signature:
+
+`func (c *Client) GetHertzClient() *client.Client`
+
+### GetLastEventID
+
+get LastEventID for sse client
+
+Function signature:
+
+`func (c *Client) GetLastEventID() []byte`

@@ -317,23 +317,23 @@ func main() {
 }
 ```
 
-### SetDisconnectValidator
+### SetDisconnectCallback
 
 设置服务端连接中断时触发的函数
 
 函数签名:
 
-`func (c *Client) SetDisconnectValidator(fn ConnCallback)`
+`func (c *Client) SetDisconnectCallback(fn ConnCallback)`
 
 `type ConnCallback func(ctx context.Context, client *Client)`
 
-### SetOnConnectValidator
+### SetOnConnectCallback
 
 设置连接服务端时触发的函数
 
 函数签名:
 
-`func (c *Client) SetOnConnectValidator(fn ConnCallback)`
+`func (c *Client) SetOnConnectCallback(fn ConnCallback)`
 
 `type ConnCallback func(ctx context.Context, client *Client)`
 
@@ -369,15 +369,32 @@ func main() {
 
 `func (c *Client) SetHeaders(headers map[string]string)`
 
-### SetResponseValidator
+### SetResponseCallback
 
 设置 sse client 的请求响应自定义处理
 
 函数签名:
 
-`func (c *Client) SetResponseValidator(responseValidator ResponseValidator) `
+`func (c *Client) SetResponseCallback(responseCallback ResponseCallback) `
 
-`type ResponseValidator func(ctx context.Context, req *protocol.Request, resp *protocol.Response) error`
+`type ResponseCallback func(ctx context.Context, req *protocol.Request, resp *protocol.Response) error`
+
+### SetHertzClient
+
+设置 sse client
+
+函数签名:
+
+`func (c *Client) SetHertzClient(hertzClient *client.Client)`
+
+### SetEncodingBase64
+
+设置 sse client 是否使用了 Base64 编码
+
+函数签名:
+
+`func (c *Client) SetEncodingBase64(encodingBase64 bool)`
+
 
 ### GetURL
 
@@ -402,3 +419,19 @@ func main() {
 函数签名:
 
 `func (c *Client) GetHeaders() map[string]string`
+
+### GetHertzClient
+
+获取 sse client
+
+函数签名:
+
+`func (c *Client) GetHertzClient() *client.Client`
+
+### GetLastEventID
+
+获取 sse client 的 LastEventID
+
+函数签名:
+
+`func (c *Client) GetLastEventID() []byte`
