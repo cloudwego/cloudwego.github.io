@@ -316,8 +316,8 @@ The URI object provides the following methods to obtain/set URI.
 | `func (u *URI) SetPassword(password string)`|Set Password |
 | `func (u *URI) SetPasswordBytes(password []byte)`|Set Password of type `[]byte` |
 | `func (u *URI) QueryString() []byte`|Get `Query String`, such as <http://example.com/user?baz=123> `Query String` is **baz=123**|
-| `func (u *URI) SetQueryString(queryString string)`|Set `Query String` |
-| `func (u *URI) SetQueryStringBytes(queryString []byte)`|Set `Query String` of type `[]byte`|
+| `func (u *URI) SetQueryString(queryString string)`|Set `Query String`, note that after this method, use `RequestHeader.SetRequestURI` may overwrite the originally intended value|
+| `func (u *URI) SetQueryStringBytes(queryString []byte)`|Set `Query String` of type `[]byte`, note that after this method, use `RequestHeader.SetRequestURI` may overwrite the originally intended value|
 | `func (u *URI) Path() []byte`| Get Path, such as <http://example.com/user/he%20rtz> Path is **/user/he rtz** |
 | `func (u *URI) PathOriginal() []byte`|Get Unescaped Path, such as <http://example.com/user/he%20rtz> Path is **/user/he%20rtz**|
 | `func (u *URI) SetPath(path string)`|Set Path|
