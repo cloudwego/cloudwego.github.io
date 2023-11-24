@@ -5,3 +5,21 @@ Nothing defined here. The Hugo project that uses this theme can override Bootstr
 assets/scss/_styles_project.scss
 
 */
+
+.o-banner {
+  @include media-breakpoint-up(md) {
+    width: 100%;
+    position: fixed;
+    margin-left: -15px;
+    z-index: 1;
+    top: 4rem;
+  }
+
+  background: $gray-100;
+  text-align: center;
+
+  & p {
+    padding: 0.5rem;
+    margin-bottom: initial;
+  }
+}
