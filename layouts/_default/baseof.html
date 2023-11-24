@@ -8,6 +8,7 @@
       {{ partial "navbar.html" . }}
     </header>
     <div class="container-fluid td-default td-outer">
+      {{- partial "banner.md" . | markdownify }}
       <main role="main" class="td-main">
         {{ block "main" . }}{{ end }}
       </main>
