@@ -17,25 +17,9 @@ Hertz 默认集成并使用 [Sonic](https://github.com/bytedance/sonic) 用于�
 
 当上述条件不能满足时，Sonic 会自动 fallback 到 golang 的 encoding/json 库。
 
-## 自定义 JSON Marshall 库
+## 自定义 JSON Marshall Unmarshal 库
 
-如果 Sonic 不能够满足您的需求，你可以使用以下方式自定义 json marshal 库的实现:
-
-```go
-import (
-    "encoding/json"
-
-    "github.com/bytedance/go-tagexpr/v2/binding"
-    "github.com/cloudwego/hertz/pkg/app/server/render"
-)
-func main() {
-    // Render
-    render.ResetJSONMarshal(json.Marshal)
-
-    // Binding
-    binding.ResetJSONUnmarshaler(json.Unmarshal)
-}
-```
+如果 Sonic 不能够满足您的需求，你可以使用以下方式配置 [binding](/zh/docs/hertz/tutorials/basic-feature/binding-and-validate/#%E9%85%8D%E7%BD%AE%E5%85%B6%E4%BB%96-json-unmarshal-%E5%BA%93) 或 [render](/zh/docs/hertz/tutorials/basic-feature/render/#配置其他-json-marshal-库) 的自定义 json marshal unmarshal 库:
 
 ## 条件编译
 

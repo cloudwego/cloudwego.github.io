@@ -107,6 +107,24 @@ func main() {
 }
 ```
 
+### Customizing json marshal library
+
+If users need to use other json library (hertz uses the open source json library [sonic](https://github.com/bytedance/sonic) by default), you may provide your own implementation by calling `ResetJSONMarshal`.
+
+Example Code:
+
+```go
+import (
+    "encoding/json"
+
+    "github.com/cloudwego/hertz/pkg/app/server/render"
+)
+
+func main() {
+    render.ResetJSONMarshal(json.Marshal)
+}
+```
+
 ## Data
 
 `Data` requires you to set the `Content-Type` yourself. In addition, `Data` only accepts **[]byte** .

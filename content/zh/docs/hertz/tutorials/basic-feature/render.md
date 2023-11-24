@@ -107,6 +107,24 @@ func main() {
 }
 ```
 
+### 配置其他 json marshal 库
+
+hertz 默认使用开源 `JSON` 库 [sonic](https://github.com/bytedance/sonic)，你也可以通过 `ResetJSONMarshal` 指定自己的 `JSON` 序列化库。
+
+示例代码：
+
+```go
+import (
+    "encoding/json"
+
+    "github.com/cloudwego/hertz/pkg/app/server/render"
+)
+
+func main() {
+    render.ResetJSONMarshal(json.Marshal)
+}
+```
+
 ## Data
 
 `Data` 需要你自行设置 `Content-Type`，而且 `Data` 只接收 **[]byte**。
