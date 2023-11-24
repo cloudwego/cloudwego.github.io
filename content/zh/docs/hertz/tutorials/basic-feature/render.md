@@ -109,7 +109,7 @@ func main() {
 
 ### 配置其他 json marshal 库
 
-hertz 默认使用开源 `JSON` 库 [sonic](https://github.com/bytedance/sonic)，你也可以通过 `ResetJSONMarshal` 指定自己的 `JSON` 序列化库。
+hertz 默认使用开源 json 库 [sonic](https://github.com/bytedance/sonic)，你也可以通过 `ResetJSONMarshal` 指定自己的 json 序列化库。
 
 示例代码：
 
