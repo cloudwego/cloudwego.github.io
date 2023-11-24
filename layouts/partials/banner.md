@@ -2,8 +2,8 @@
 
 <div class="o-banner">
 
-**Contribfest** at _KubeCon NA 2023_ was a success!
-[Read about it](/blog/2023/contribfest-na/)
+CloudWeGo 技术白皮书重磅推出 > 
+[下载电子书](https://wenjuan.feishu.cn/m/cfm?t=sbiSTvnHOMRi-7dzf)
 
 </div>
 {{ end -}}
