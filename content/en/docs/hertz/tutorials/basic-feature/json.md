@@ -20,24 +20,7 @@ Sonic automatically fallback to golang's `encoding/json` library when the above 
 
 ## Bringing Your Own JSON Marshal Library
 
-If Sonic does not meet your needs, you may provide your own implementation by calling `ResetJSONMarshal` for render and `ResetJSONUnmarshaler` for binding.
-
-```go
-import (
-    "encoding/json"
-
-    "github.com/bytedance/go-tagexpr/v2/binding"
-    "github.com/cloudwego/hertz/pkg/app/server/render"
-)
-
-func main() {
-    // Render
-    render.ResetJSONMarshal(json.Marshal)
-
-    // Binding
-    binding.ResetJSONUnmarshaler(json.Unmarshal)
-}
-```
+If Sonic does not meet your needs, you may provide your own implementation by calling [ResetJSONMarshal](/docs/hertz/tutorials/basic-feature/render/#customizing-json-marshal-library) for render and [configure your own json unmarshal library](/docs/hertz/tutorials/basic-feature/binding-and-validate/#configure-other-json-unmarshal-libraries) for binding.
 
 ## Conditional Compilation
 

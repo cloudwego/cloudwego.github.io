@@ -160,6 +160,7 @@ func main() {
 创建使用 URI 作为 key 并忽略查询参数顺序的缓存中间件
 
 函数签名
+
 ```go
 func NewCacheByRequestURIWithIgnoreQueryOrder(defaultCacheStore persist.CacheStore, defaultExpire time.Duration, opts ...Option) app.HandlerFunc
 ```

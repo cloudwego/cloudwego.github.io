@@ -316,8 +316,8 @@ URI 对象提供了以下方法获取/设置 URI。
 | `func (u *URI) SetPassword(password string)`|设置 Password|
 | `func (u *URI) SetPasswordBytes(password []byte)`|设置 `[]byte` 类型 Password|
 | `func (u *URI) QueryString() []byte`|获取 `Query String`，比如 <http://example.com/user?baz=123> 的 `Query String` 是 **baz=123**|
-| `func (u *URI) SetQueryString(queryString string)`|设置 `Query String`，注意，在该方法之后使用 `RequestHeader.SetRequestURI` 可能会覆盖掉原来想设置的值|
-| `func (u *URI) SetQueryStringBytes(queryString []byte)`|设置 `[]byte` 类型的 `Query String`，注意，在该方法之后使用 `RequestHeader.SetRequestURI` 可能会覆盖掉原来想设置的值|
+| `func (u *URI) SetQueryString(queryString string)`|设置 `Query String`，注意，在该方法之后使用 `RequestHeader.SetRequestURI` 可能会覆盖掉原来想设置的值 |
+| `func (u *URI) SetQueryStringBytes(queryString []byte)`|设置 `[]byte` 类型的 `Query String`，注意，在该方法之后使用 `RequestHeader.SetRequestURI` 可能会覆盖掉原来想设置的值 |
 | `func (u *URI) Path() []byte`| 获取 Path，比如 <http://example.com/user/he%20rtz> 的 Path 是 **/user/he rtz**
 | `func (u *URI) PathOriginal() []byte`|获取未转义的 Path，比如 <http://example.com/user/he%20rtz> 的 Path 是 **/user/he%20rtz**|
 | `func (u *URI) SetPath(path string)`|设置 Path|
