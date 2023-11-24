@@ -19,6 +19,9 @@ go get github.com/hertz-contrib/sse
 
 ## Example Code
 
+
+### Server
+
 In the following example code, when accessing `/sse`, the server will push a timestamp to the client every second.
 
 ```go
@@ -64,8 +67,100 @@ func main() {
 	h.Spin()
 }
 ```
+### Client
 
-## Configuration
+```go
+package main
+
+import (
+	"context"
+	"sync"
+
+	"github.com/hertz-contrib/sse"
+
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+)
+
+var wg sync.WaitGroup
+
+func main() {
+    wg.Add(2)
+    go func() {
+        c := sse.NewClient("http://127.0.0.1:8888/sse")
+
+        // touch off when connected to the server
+        c.OnConnect(func(ctx context.Context, client *sse.Client) {
+            hlog.Infof("client1 connect to server %s success with %s method", c.URL, c.Method)
+        })
+
+        // touch off when the connection is shutdown
+        c.OnDisconnect(func(ctx context.Context, client *sse.Client) {
+            hlog.Infof("client1 disconnect to server %s success with %s method", c.URL, c.Method)
+        })
+
+        events := make(chan *sse.Event)
+        errChan := make(chan error)
+        go func() {
+            cErr := c.Subscribe(func(msg *sse.Event) {
+                if msg.Data != nil {
+                    events <- msg
+                    return
+                }
+            })
+            errChan <- cErr
+        }()
+        for {
+            select {
+            case e := <-events:
+                hlog.Info(e)
+            case err := <-errChan:
+                hlog.CtxErrorf(context.Background(), "err = %s", err.Error())
+                wg.Done()
+                return
+            }
+        }
+    }()
+
+    go func() {
+        c := sse.NewClient("http://127.0.0.1:8888/sse")
+
+        // touch off when connected to the server
+        c.OnConnect(func(ctx context.Context, client *sse.Client) {
+            hlog.Infof("client2 %s connect to server success with %s method", c.URL, c.Method)
+        })
+
+        // touch off when the connection is shutdown
+        c.OnDisconnect(func(ctx context.Context, client *sse.Client) {
+            hlog.Infof("client2 %s disconnect to server success with %s method", c.URL, c.Method)
+        })
+
+        events := make(chan *sse.Event)
+        errChan := make(chan error)
+        go func() {
+            cErr := c.Subscribe(func(msg *sse.Event) {
+                if msg.Data != nil {
+                    events <- msg
+                    return
+                }
+            })
+            errChan <- cErr
+        }()
+        for {
+            select {
+            case e := <-events:
+                hlog.Info(e)
+            case err := <-errChan:
+                hlog.CtxErrorf(context.Background(), "err = %s", err.Error())
+                wg.Done()
+                return
+            }
+        }
+    }()
+
+    wg.Wait()
+}
+```
+## Server-Configuration
 
 ### NewStream
 
@@ -132,3 +227,211 @@ Function signature:
 ```go
 func GetLastEventID(c *app.RequestContext) string
 ```
+## Client-Configuration
+
+### NewClient
+
+Pass in the server-side URL to complete the initialization of the client. The default setting of `maxBufferSize` is 1 << 16, and the `Method` request method is `GET`
+
+You can set Client.Onconnect and Client.OnDisconnect to perform custom processing after connecting and disconnecting.
+
+Interruption and reconnection are currently not supported
+
+Function signature:
+
+`func NewClient(url string) *Client`
+
+### Subscribe
+
+The client subscribes and monitors the server. `handler` is a custom processing function for received events.
+Function signature:
+
+`func (c *Client) Subscribe(handler func(msg *Event)) error`
+
+Example code:
+
+```go
+package main
+
+func main() {
+    events := make(chan *sse.Event)
+    errChan := make(chan error)
+    go func() {
+        cErr := c.Subscribe(func(msg *sse.Event) {
+            if msg.Data != nil {
+                events <- msg
+                return
+            }
+        })
+        errChan <- cErr
+    }()
+    for {
+        select {
+        case e := <-events:
+            hlog.Info(e)
+        case err := <-errChan:
+            hlog.CtxErrorf(context.Background(), "err = %s", err.Error())
+            wg.Done()
+            return
+        }
+    }
+}
+```
+
+### SubscribeWithContext
+
+The client subscribes to the server and can pass in a custom `ctx`. Other functions are the same as `Subscribe`.
+
+Function signature:
+
+`func (c *Client) SubscribeWithContext(ctx context.Context, handler func(msg *Event)) error`
+
+Example code:
+
+```go
+package main
+
+import "context"
+
+func main() {
+    events := make(chan *sse.Event)
+    errChan := make(chan error)
+    go func() {
+        cErr := c.Subscribe(context.Background(), func(msg *sse.Event) {
+            if msg.Data != nil {
+                events <- msg
+                return
+            }
+        })
+        errChan <- cErr
+    }()
+    for {
+        select {
+        case e := <-events:
+            hlog.Info(e)
+        case err := <-errChan:
+            hlog.CtxErrorf(context.Background(), "err = %s", err.Error())
+            wg.Done()
+            return
+        }
+    }
+}
+```
+
+### SetDisconnectCallback
+
+Set the function that is triggered when the server connection is interrupted
+
+Function signature:
+
+`func (c *Client) OnDisconnect(fn ConnCallback)`
+
+`type ConnCallback func(ctx context.Context, client *Client)`
+
+### SetOnConnectCallback
+
+Set the function that is triggered when connecting to the server
+
+Function signature:
+
+`func (c *Client) OnConnect(fn ConnCallback)`
+
+`type ConnCallback func(ctx context.Context, client *Client)`
+
+### SetMaxBufferSize
+
+Set the maximum buffer size for sse client
+
+Function signature:
+
+`func (c *Client) SetMaxBufferSize(size int)`
+
+### SetURL
+
+Set the request url for sse client 
+
+Function signature:
+
+`func (c *Client) SetURL(url string)`
+
+### SetMethod
+
+Set the request method for sse client
+
+Function signature:
+
+`func (c *Client) SetMethod(method string)`
+
+### SetHeaders
+
+Set the headers for sse client
+
+Function signature:
+
+`func (c *Client) SetHeaders(headers map[string]string)`
+
+### SetResponseCallback
+
+Set the request response custom processing of sse client
+
+Function signature:
+
+`func (c *Client) SetResponseCallback(responseCallback ResponseCallback) `
+
+`type ResponseCallback func(ctx context.Context, req *protocol.Request, resp *protocol.Response) error`
+
+### SetHertzClient
+
+set sse client
+
+Function signature:
+
+`func (c *Client) SetHertzClient(hertzClient *client.Client)`
+
+### SetEncodingBase64
+
+set whether you use Base64 for sse client
+
+Function signature:
+
+`func (c *Client) SetEncodingBase64(encodingBase64 bool)`
+
+### GetURL
+
+get request url for sse client 
+
+Function signature:
+
+`func (c *Client) GetURL() string`
+
+### GetMethod
+
+get request method for sse client
+
+Function signature:
+
+`func (c *Client) GetMethod() string`
+
+### GetHeaders
+
+get headers for sse client
+
+Function signature:
+
+`func (c *Client) GetHeaders() map[string]string`
+
+### GetHertzClient
+
+get sse client
+
+Function signature:
+
+`func (c *Client) GetHertzClient() *client.Client`
+
+### GetLastEventID
+
+get LastEventID for sse client
+
+Function signature:
+
+`func (c *Client) GetLastEventID() []byte`
