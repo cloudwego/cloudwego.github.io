@@ -1,0 +1,46 @@
+---
+title: "Acquire Kitex RPC Info "
+date: 2023-11-29
+weight: 1
+keywords: ["Acquire Kitex RPC Info "]
+description: ""
+---
+
+## Acquire RPC information
+
+The default lifecycle of Kitex's RPCInfo is from the start of the request to the return of the request (performance considerations), and then it will be placed in sync.Pool to reuse. On the Server side, if it is asynchronously obtained and used in the business Handler, it may lead to read dirty data, nil panic.
+
+### 1.1 Synchronous usage
+
+### 1.2 Asynchronous usage
+
+If you need to get RPCInfo in the new goroutine, there are two ways to use it. Choose one and get the specific information as above.
+
+- **Method 1:**Use the rpcinfo.FreezeRPCInfo provided by Kitex to copy the initial RPCInfo and then use it.
+
+However, there is additional consumption due to deep copying of rpcinfo.
+
+```go
+import (
+    "github.com/cloudwego/kitex/pkg/rpcinfo"
+    "github.com/cloudwego/kitex/pkg/utils/kitexutil"
+)
+// this creates a read-only copy of `ri` and attaches it to the new context
+**ctx2** := rpcinfo.FreezeRPCInfo(ctx) 
+go func(ctx context.Context) {
+    // ...
+    ri := rpcinfo.GetRPCInfo(ctx) // OK
+    
+    // eg: get client psm
+    // caller, ok := kitexutil.GetCaller(ctx)
+    //...
+}(**ctx2**)
+
+```
+
+- **Method 2 [****Kitex****v0.8.0+]:**Disable RPCInfo pool
+  Set environment variables _KITEX_DISABLE_RPCINFO_POOL=true_ or configure _rpcinfo.EnablePool(false)_ in the code.
+
+## Meta Info Transparent Transmission
+
+Please see [Meta Info Transparent Transmission](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/metainfo/).
