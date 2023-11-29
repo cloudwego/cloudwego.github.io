@@ -1,9 +1,9 @@
 ---
 title: "GLS Feature Usage"
 date: 2023-11-29
-weight: 1
-keywords: ["GLS Feature Usage"]
-description: ""
+weight: 11
+keywords: ["GLS","context"]
+description: "Goroutine local storage for implicitly pass context"
 ---
 
 ## Server side enable request context backup
