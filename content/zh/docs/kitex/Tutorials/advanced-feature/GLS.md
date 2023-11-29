@@ -43,10 +43,10 @@ func(prev, cur context.Context) (ctx context.Context, backup bool)
 
 ```
 
-- `p``rev` 参数表示备份的 context
-- `c``ur` 参数表示当前 client 拿到的 context
-- `c``tx` 返回值表示用户处理完成的最终 context
-- `b``ackup` 返回值表示是否继续进行 localsession[ 内置的兜底备份](https://github.com/cloudwego/localsession/blob/main/backup/metainfo.go#L54)，当前主要是 metainfo Persistent KVS 的透传
+- prev 参数表示备份的 context
+- cur 参数表示当前 client 拿到的 context
+- ctx 返回值表示用户处理完成的最终 context
+- backup 返回值表示是否继续进行 localsession[ 内置的兜底备份](https://github.com/cloudwego/localsession/blob/main/backup/metainfo.go#L54)，当前主要是 metainfo Persistent KVS 的透传
 
 ```go
 var expectedKey interface{}
