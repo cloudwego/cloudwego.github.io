@@ -9,7 +9,7 @@ author:  <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>,
 ---
 
 
-![Image](img/blog/The_Role_of_CloudWeGo_in_Modern_Cloud_Native_Applications/1.png)
+![Image](/img/blog/The_Role_of_CloudWeGo_in_Modern_Cloud_Native_Applications/1.png)
 
 # I. Introduction
 
@@ -111,7 +111,7 @@ To overcome these challenges, they turned to CloudWeGo, employing the Hertz fram
 1. **Performance and stability improvement**: As an example, each Pod of 1c2g succeeded in handling over 400 QPS, with the latency within the network being astonishingly low and rendering a failure rate close to 0%.
 2. **Enhanced development efficiency, simplified deployment processes, more convenient auto-scaling, increased business elasticity, and reduced costs**.
 
-![Image](img/blog/The_Role_of_CloudWeGo_in_Modern_Cloud_Native_Applications/2.png)
+![Image](/img/blog/The_Role_of_CloudWeGo_in_Modern_Cloud_Native_Applications/2.png)
 
 ### Safeguarding the Financial Industry's Securities' Products
 
@@ -121,13 +121,13 @@ Let's consider [Huaxing Securities](https://www.huaxing.com), which utilized Kit
 
 This meticulous implementation resulted in several evident benefits within a mere span of four months, such as rapid construction and launch of the new application, a comprehensive observability system encompassing Log, Trace, and Metrics around the Kitex RPC framework, and efficient cross-cluster invocations.
 
-![Image](img/blog/The_Role_of_CloudWeGo_in_Modern_Cloud_Native_Applications/3.png)
+![Image](/img/blog/The_Role_of_CloudWeGo_in_Modern_Cloud_Native_Applications/3.png)
 
 ### Elevating E-commerce
 
 The e-commerce industry faces high concurrency and performance challenges. When [Semir](https://semirshop.com) opted for Kitex as the RPC framework, they were able to significantly amplify their capacity to manage peak traffic and ensure synchronized order processing. In tandem with [Istio](https://istio.io), they managed traffic utilizing the Ingress Gateway mesh entry management program and the VirtualService traffic handling logic, thus directing orders to a plethora of services within the mesh.
 
-![Image](img/blog/The_Role_of_CloudWeGo_in_Modern_Cloud_Native_Applications/4.png)
+![Image](/img/blog/The_Role_of_CloudWeGo_in_Modern_Cloud_Native_Applications/4.png)
 
 The benefits of integrating CloudWeGo were immediately evident:
 - An improved ability to process a higher number of orders within a given timeframe.
@@ -142,7 +142,7 @@ When it came to AI SaaS companies like [NextData](https://intl.ishumei.com/#HOME
 
 Upon deploying CloudWeGo, the access layer's RPC client and the logical business layer's RPC server & RPC client underwent refactoring with the Kitex framework, using the Thrift protocol to address limitations of the native Apache Thrift framework. Integration of services like rate limiting, circuit breaking, and overload protection allowed the system to adaptively resolve traffic-related stability issues.
 
-![Image](img/blog/The_Role_of_CloudWeGo_in_Modern_Cloud_Native_Applications/5.png)
+![Image](/img/blog/The_Role_of_CloudWeGo_in_Modern_Cloud_Native_Applications/5.png)
 
 Through case studies across diverse industries, from gaming to AI, it is evident that CloudWeGo can tackle a myriad of challenges while delivering optimal solutions, reflecting its commitment to versatility, power, and high-standard performance all in equal measure.
 
