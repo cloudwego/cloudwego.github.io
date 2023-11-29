@@ -14,7 +14,7 @@ Kitex 的 RPCInfo 的生命周期默认是从请求开始到请求返回（性�
 
 同步的使用方式是指用户没有在新起的 Goroutine 里获取 RPCInfo。
 
-| **获取的信息**                | **Kitex****获取方式**                                                                                                                                                                                |
+| **获取的信息**                | **Kitex 获取方式**                                                                                                                                                                                |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 获取调用方的 Service          | caller, ok :=  kitexutil.GetCaller(ctx)                                                                                                                                                              |
 | 获取 RPC 方法名               | method, ok := kitexutil.GetMethod(ctx)                                                                                                                                                               |
@@ -28,7 +28,7 @@ Kitex 的 RPCInfo 的生命周期默认是从请求开始到请求返回（性�
 
 如果需要在新的 Goroutine 里获取 RPCInfo，有两种使用方式，选择其中一种，获取具体信息与上面一样。
 
-- **方式一：**用 Kitex 提供的 rpcinfo.FreezeRPCInfo 复制初始的 RPCInfo 再使用
+- **方式一：** 用 Kitex 提供的 rpcinfo.FreezeRPCInfo 复制初始的 RPCInfo 再使用
 
 ```go
 import (
@@ -48,7 +48,7 @@ go func(ctx context.Context) {
 
 ```
 
-- **方式二 [****Kitex****v0.8.0+]：**关闭 RPCInfo 回收，以下二选一即可
+- **方式二 [Kitex v0.8.0+]：** 关闭 RPCInfo 回收，以下二选一即可
   环境变量设置 `KITEX_DISABLE_RPCINFO_POOL=true` 或者代码里配置 `rpcinfo.EnablePool(false)`。
 
 ## 元信息透传
