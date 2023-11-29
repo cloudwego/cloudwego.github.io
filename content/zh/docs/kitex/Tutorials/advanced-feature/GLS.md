@@ -1,9 +1,9 @@
 ---
 title: "Goroutine-Local-Storage 功能使用"
 date: 2023-11-29
-weight: 1
-keywords: ["Goroutine-Local-Storage 功能使用"]
-description: ""
+weight: 11
+keywords: ["GLS","上下文"]
+description: "协程上下文隐式传递"
 ---
 
 ## Introduction
