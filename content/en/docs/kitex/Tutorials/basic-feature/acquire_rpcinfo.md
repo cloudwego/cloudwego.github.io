@@ -1,7 +1,7 @@
 ---
 title: "Acquire Kitex RPC Info "
 date: 2023-11-29
-weight: 1
+weight: 9
 keywords: ["Acquire Kitex RPC Info "]
 description: ""
 ---
