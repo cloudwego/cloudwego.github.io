@@ -12,7 +12,7 @@ The default lifecycle of Kitex's RPCInfo is from the start of the request to the
 
 ### 1.1 Synchronous usage
 
-| **Information obtained**                     | **Kitex****fetch method**                                                                                                                                                                                                |
+| **Information obtained**                     | **Kitex fetch method**                                                                                                                                                                                                |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Get Caller's Service                         | caller, ok :=  kitexutil.GetCaller(ctx)                                                                                                                                                                                  |
 | Get RPC Method                               | method, ok := kitexutil.GetMethod(ctx)                                                                                                                                                                                   |
@@ -26,7 +26,7 @@ The default lifecycle of Kitex's RPCInfo is from the start of the request to the
 
 If you need to get RPCInfo in the new goroutine, there are two ways to use it. Choose one and get the specific information as above.
 
-- **Method 1:**Use the rpcinfo.FreezeRPCInfo provided by Kitex to copy the initial RPCInfo and then use it.
+- **Method 1:** Use the rpcinfo.FreezeRPCInfo provided by Kitex to copy the initial RPCInfo and then use it.
   However, there is additional consumption due to deep copying of rpcinfo.
 
 ```go
@@ -35,7 +35,7 @@ import (
     "github.com/cloudwego/kitex/pkg/utils/kitexutil"
 )
 // this creates a read-only copy of `ri` and attaches it to the new context
-**ctx2** := rpcinfo.FreezeRPCInfo(ctx) 
+ctx2 := rpcinfo.FreezeRPCInfo(ctx) 
 go func(ctx context.Context) {
     // ...
     ri := rpcinfo.GetRPCInfo(ctx) // OK
@@ -43,11 +43,11 @@ go func(ctx context.Context) {
     // eg: get client psm
     // caller, ok := kitexutil.GetCaller(ctx)
     //...
-}(**ctx2**)
+}(ctx2)
 
 ```
 
-- **Method 2 [****Kitex****v0.8.0+]:**Disable RPCInfo pool
+- **Method 2 [Kitex v0.8.0+]:** Disable RPCInfo pool
   Set environment variables _KITEX_DISABLE_RPCINFO_POOL=true_ or configure _rpcinfo.EnablePool(false)_ in the code.
 
 ## Meta Info Transparent Transmission
