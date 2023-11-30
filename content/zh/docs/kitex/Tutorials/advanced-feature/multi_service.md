@@ -62,8 +62,6 @@ message ReplyB {
 
 首先，创建一个 server。然后，通过调用该 server 上的 `RegisterService` 函数，就可以注册 service 了。
 
-可以在同一台 server 上提供多个 service，根据需要注册多个 service。
-
 ```golang
 package main
 
