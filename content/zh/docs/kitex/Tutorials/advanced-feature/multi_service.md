@@ -1,9 +1,9 @@
 ---
-title: "单 server 多 service"
+title: "单 Server 多 Service"
 date: 2023-11-30
 weight: 10
-keywords: ["Kitex", "多 Service", "单端口多服务", "gRPC"]
-description: Kitex 支持在一个 server 上注册多个 service。
+keywords: ["Kitex", "多 Service", "单端口多Service", "gRPC"]
+description: Kitex 支持在一个 Server 上注册多个 Service。
 ---
 
 注：当前这个功能仅支持 **gRPC** 传输协议。
@@ -56,7 +56,7 @@ message ReplyB {
 }
 ```
 
-### 如何在一个 server 上注册多个 service
+### 如何在一个 Server 上注册多个 Service
 
 在一个 server 上注册多个 service 是一个简单的过程。
 
