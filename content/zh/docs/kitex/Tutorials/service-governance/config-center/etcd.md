@@ -4,9 +4,13 @@ linkTitle: "config-etcd"
 date: 2023-11-29
 weight: 2
 keywords: ["配置中心扩展","config-etcd"]
-description: "kitex 对接 etcd 配置中心"
+description: "使用 etcd 作为 Kitex 的服务治理配置中心"
 
 ---
+## 安装
+
+`go get github.com/kitex-contrib/config-etcd`
+
 ## Options 结构体
 ```go
 type Options struct {
@@ -50,121 +54,6 @@ func main() {
 type ConfigParser interface {
 	Decode(data string, config interface{}) error
 }
-```
-
-## NewSuite(server)
-
-获取 Suite 信息
-
-```go
-type EtcdServerSuite struct {
-    uid        int64
-    etcdClient etcd.Client
-    service    string
-    opts       utils.Options
-}
-```
-
-函数签名:
-
-`func NewSuite(service string, cli etcd.Client, opts ...utils.Option,) *EtcdServerSuite`
-
-示例代码:
-
-```go
-package main
-
-import (
-	"context"
-	"log"
-
-	"github.com/cloudwego/kitex-examples/kitex_gen/api"
-	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cloudwego/kitex/pkg/rpcinfo"
-	"github.com/cloudwego/kitex/server"
-	"github.com/kitex-contrib/config-etcd/etcd"
-	etcdServer "github.com/kitex-contrib/config-etcd/server"
-)
-
-var _ api.Echo = &EchoImpl{}
-
-// EchoImpl implements the last service interface defined in the IDL.
-type EchoImpl struct{}
-
-// Echo implements the Echo interface.
-func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
-	klog.Info("echo called")
-	return &api.Response{Message: req.Message}, nil
-}
-
-func main() {
-	klog.SetLevel(klog.LevelDebug)
-	serviceName := "ServiceName" // your server-side service name
-	etcdClient, _ := etcd.NewClient(etcd.Options{})
-	svr := echo.NewServer(
-		new(EchoImpl),
-		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
-		server.WithSuite(etcdServer.NewSuite(serviceName, etcdClient)),
-	)
-	if err := svr.Run(); err != nil {
-		log.Println("server stopped with error:", err)
-	} else {
-		log.Println("server stopped")
-	}
-}
-```
-
-## NewSuite(client)
-
-获取 Suite 信息
-
-```go
-type EtcdServerSuite struct {
-    uid        int64
-    etcdClient etcd.Client
-    service    string
-    opts       utils.Options
-}
-```
-
-函数签名:
-
-`func NewSuite(service,client string, cli etcd.Client, opts ...utils.Option,) *EtcdServerSuite`
-
-示例代码:
-
-```go
-package main
-
-import (
-    "log"
-
-    "github.com/cloudwego/kitex-examples/kitex_gen/api"
-    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-    "github.com/cloudwego/kitex/client"
-    etcdclient "github.com/kitex-contrib/config-etcd/client"
-    "github.com/kitex-contrib/config-etcd/etcd"
-)
-
-func main() {
-    etcdClient, err := etcd.NewClient(etcd.Options{})
-    if err != nil {
-        panic(err)
-    }
-
-    serviceName := "ServiceName" // your server-side service name
-    clientName := "ClientName"   // your client-side service name
-    client, err := echo.NewClient(
-        serviceName,
-        client.WithHostPorts("0.0.0.0:8888"),
-        client.WithSuite(etcdclient.NewSuite(serviceName, clientName, etcdClient)),
-    )
-    if err != nil {
-        log.Fatal(err)
-    }
-}
-
 ```
 
 ## Etcd 配置

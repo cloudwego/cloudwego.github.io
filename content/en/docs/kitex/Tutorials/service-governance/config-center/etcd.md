@@ -4,9 +4,13 @@ linkTitle: "config-etcd"
 date: 2023-11-29
 weight: 2
 keywords: ["ConfigCenter Extension","config-etcd"]
-description: "provide etcd configuration center for kitex"
+description: "Use etcd as Kitex’s service governance configuration center"
 
 ---
+## Install
+
+`go get github.com/kitex-contrib/config-etcd`
+
 ## Options Struct
 ```go
 type Options struct {
