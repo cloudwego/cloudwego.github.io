@@ -23,7 +23,7 @@ Map 泛化支持通过 SetBinaryWithByteSlice 设置对 binary 字段返回 []by
 
 **2. RPCInfo 异步使用**
 
-允许关闭 RPCInfo 复用，简化异步使用方式，详见 [Acquire RPC information](/zh/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/#12-asynchronous-usage).
+允许关闭 RPCInfo 复用，简化异步使用方式，详见 [Acquire RPC information](/zh/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/#12-异步使用方式).
 
 
 ### 其它
