@@ -10,11 +10,11 @@ description: >
 ### 功能
 **1. gRPC 协议支持多 Service**
 
-Kitex gRPC 支持多 Service 的能力，详见 [Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/).
+Kitex gRPC 支持多 Service 的能力，详见 [Multiple Services](/zh/docs/kitex/tutorials/advanced-feature/multi_service/).
 
 **2. Acquire Kitex RPCInfo**
 
-提供 kitexutil 方法以方便从 RPCInfo 获取 rpc 信息, 详见 [Acquire RPC information](/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/).
+提供 kitexutil 方法以方便从 RPCInfo 获取 rpc 信息, 详见 [Acquire RPC information](/zh/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/).
 
 ### 优化
 **1. Map 泛化调用**
@@ -23,7 +23,7 @@ Map 泛化支持通过 SetBinaryWithByteSlice 设置对 binary 字段返回 []by
 
 **2. RPCInfo 异步使用**
 
-允许关闭 RPCInfo 复用，简化异步使用方式，详见 [Acquire RPC information](/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/#12-asynchronous-usage).
+允许关闭 RPCInfo 复用，简化异步使用方式，详见 [Acquire RPC information](/zh/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/#12-asynchronous-usage).
 
 
 ### 其它
