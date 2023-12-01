@@ -10,7 +10,7 @@ description: >
 ### Features
 **1. gRPC Compression Support**
 
-Implemented compression support for KiteX gRPC, allowing compression methods like gzip to reduce payload size.
+Implemented compression support for Kitex gRPC, allowing compression methods like gzip to reduce payload size.
 
 **2. GLS (Goroutine Local Storage)**
 
@@ -23,7 +23,7 @@ Implemented unserialization of unknown fields, resulting in a performance improv
 
 **2. Integration with DynamicGo**
 
-Integrated [dynamicgo](https://github.com/cloudwego/dynamicgo) into KiteX's generic module to enhance performance of JSON/HTTP generic invocations (+50% to 200%).
+Integrated [dynamicgo](https://github.com/cloudwego/dynamicgo) into Kitex's generic module to enhance performance of JSON/HTTP generic invocations (+50% to 200%).
 
 ### Others 
 
