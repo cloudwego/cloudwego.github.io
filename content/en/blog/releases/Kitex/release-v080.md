@@ -10,7 +10,7 @@ description: >
 ### Features
 **1. gRPC Multi-Service Support**
 
-Implemented multi-service registration for KiteX gRPC, please refer to [Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/).
+Implemented multi-service registration for Kitex gRPC, please refer to [Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/).
 
 **2. Acquire Kitex RPCInfo**
 
