@@ -1,18 +1,19 @@
 ---
-title: "Multiple Services"
-date: 2023-11-09
+title: "单 Server 多 Service"
+date: 2023-11-30
 weight: 10
-keywords: ["Kitex", "Multi Services", "gRPC"]
-description: Kitex supports multiple service registration on a server.
+keywords: ["Kitex", "多 Service", "单端口多Service", "gRPC"]
+description: Kitex 支持在一个 Server 上注册多个 Service。
 ---
 
-Note: currently, the feature is only available for **gRPC** transport protocol.
+注：当前这个功能仅支持 **gRPC** 传输协议。
 
-## Usage
+## 使用
 
-### gRPC service definition
-For instance, suppose you have two proto files as follows, each containing one service.
-By running the kitex command, you can automatically generate the code.
+### gRPC service 定义
+
+例如，假设您有两个 proto 文件（如下所示），每个包含一个 service。
+通过执行 kitex 命令，可以自动生成对应的代码。
 
 ```protobuf
 // File1：servicea.proto
@@ -55,13 +56,11 @@ message ReplyB {
 }
 ```
 
-### Register multi-service on a server
+### 如何在一个 Server 上注册多个 Service
 
-Registering services on a server is a straightforward process.
+在一个 server 上注册多个 service 是一个简单的过程。
 
-First, create a server. Then, by calling the `RegisterService` function on that server, a service can be registered.
-
-Multiple services can be called on the same server, registering as many services as needed.
+首先，创建一个 server。然后，通过调用该 server 上的 `RegisterService` 函数，就可以注册 service 了。
 
 ```golang
 package main
