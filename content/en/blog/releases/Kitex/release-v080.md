@@ -23,20 +23,17 @@ Map generic call supports returning []byte for binary fields via SetBinaryWithBy
 
 **2. RPCInfo asynchronous use**
 
-Added an option to disable reusing RPCInfo, facilitating asynchronous usage, please refer to please refer to [Acquire RPC information](/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/).
+Added an option to disable reusing RPCInfo, facilitating asynchronous usage, please refer to please refer to [Acquire RPC information](/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/#12-asynchronous-usage).
 
 
 ### Others
 
-- Upgraded thriftgo to [v0.3.3](https://github.com/cloudwego/thriftgo/releases/tag/v0.3.3)
-- Upgraded frugal to [v0.1.12](https://github.com/cloudwego/frugal/releases/tag/v0.1.12), fixing some concurrency issues when compiling types, especially the issue when registering new modules which may conflict with sonic.  
+Upgraded frugal to [v0.1.12](https://github.com/cloudwego/frugal/releases/tag/v0.1.12), fixing some concurrency issues when compiling types, especially the issue when registering new modules which may conflict with sonic.  
   It's STRONGLY SUGGESTED updating both frugal and sonic to the latest version by  
   ```shell
     go get github.com/cloudwego/frugal@latest
     go get github.com/bytedance/sonic@latest
   ```
-- Upgraded dynamicgo to [v0.1.6](https://github.com/cloudwego/dynamicgo/releases/tag/v0.1.6)
-
 ## **Full Release Log**
 
 ### Feature:
