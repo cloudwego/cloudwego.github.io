@@ -98,6 +98,9 @@ type Key struct {
 | Prefix           | /KitexConfig                                                | Etcd 中的 prefix                                                                                                         |
 | ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ClientServiceName` `ServiceName` `Category` 三个元数据 |
 | ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据                     |
+| Timeout          | 5 * time.Second                                             | 五秒超时时间                                                                                                                 |
+| LoggerConfig     | NULL                                                        | 默认日志                                                                                                                   |
+| ConfigParser     | defaultConfigParser                                         | 解析 json 数据的解析器                                                                                                         |
 
 
 ### 治理策略

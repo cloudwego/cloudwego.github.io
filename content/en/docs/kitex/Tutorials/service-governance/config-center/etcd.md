@@ -98,6 +98,9 @@ type Key struct {
 | Prefix           | /KitexConfig                                                | The prefix of Etcd                                                                                                                                                                              |
 | ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ClientServiceName` `ServiceName` `Category` three metadata that can be customised |
 | ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised                      |
+| Timeout          | 5 * time.Second                                             | five seconds timeout                                                                                                                                                                            |
+| LoggerConfig     | NULL                                                        | Default Logger                                                                                                                                                                                  |
+| ConfigParser     | defaultConfigParser                                         | The default is the parser that parses json                                                                                                                                                      |
 
 ### Governance Policy
 > The configPath and configPrefix in the following example use default values, the service name is `ServiceName` and the client name is `ClientName`.
