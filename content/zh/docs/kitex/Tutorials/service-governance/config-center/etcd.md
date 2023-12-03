@@ -46,6 +46,8 @@ func main() {
 
 设置反序列化 etcd 配置的自定义解析器，若不指定则为默认解析器
 
+默认设置的解析器解析的是 json 格式的配置
+
 函数签名:
 
 `func (c *client) SetParser(parser ConfigParser)`
@@ -53,6 +55,25 @@ func main() {
 ```go
 type ConfigParser interface {
 	Decode(data string, config interface{}) error
+}
+```
+
+示例代码:
+
+设置解析 yaml 类型的配置
+```go
+func (p *parser) Decode(data string, config interface{}) error {
+	return yaml.Unmarshal([]byte(data), config)
+}
+
+type parser struct{}
+
+func main() {
+    etcdClient, err := etcd.NewClient(etcd.Options{})
+    if err!=nil {
+        panic(err)
+    }
+    etcdClient.SetParser(&parser{})
 }
 ```
 
@@ -73,8 +94,7 @@ type Key struct {
 
 | 参数               | 变量默认值                                                       | 作用                                                                                                                     |
 |------------------|-------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| Address          | 127.0.0.1                                                   | Etcd 服务器地址                                                                                                             |
-| Port             | 2379                                                        | Etcd 服务器端口                                                                                                             |
+| Node             | 127.0.0.1:2379                                              | Etcd 服务器节点                                                                                                             |
 | Prefix           | /KitexConfig                                                | Etcd 中的 prefix                                                                                                         |
 | ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ClientServiceName` `ServiceName` `Category` 三个元数据 |
 | ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据                     |
@@ -208,6 +228,113 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
   }
 }
 ```
+## 基本示例
+
+将下列代码保存为 `main.go`，并分别执行 `go run main.go`，即可启动一个服务端和一个客户端
+
+随后即可监听 etcd 中的治理特性配置变化，当配置发生变化时，服务端和客户端会自动更新配置
+
+### Server
+```go
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/cloudwego/kitex-examples/kitex_gen/api"
+	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/pkg/rpcinfo"
+	"github.com/cloudwego/kitex/server"
+	"github.com/kitex-contrib/config-etcd/etcd"
+	etcdServer "github.com/kitex-contrib/config-etcd/server"
+)
+
+var _ api.Echo = &EchoImpl{}
+
+type EchoImpl struct{}
+
+func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
+	klog.Info("echo called")
+	return &api.Response{Message: req.Message}, nil
+}
+
+func main() {
+	klog.SetLevel(klog.LevelDebug)
+	serviceName := "ServiceName" // 你的服务端服务名称
+	etcdClient, _ := etcd.NewClient(etcd.Options{})
+	svr := echo.NewServer(
+		new(EchoImpl),
+		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+		server.WithSuite(etcdServer.NewSuite(serviceName, etcdClient)),
+	)
+	if err := svr.Run(); err != nil {
+		log.Println("server stopped with error:", err)
+	} else {
+		log.Println("server stopped")
+	}
+}
+
+```
+### Client
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"time"
+
+	"github.com/cloudwego/kitex-examples/kitex_gen/api"
+	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
+	etcdclient "github.com/kitex-contrib/config-etcd/client"
+	"github.com/kitex-contrib/config-etcd/etcd"
+	"github.com/kitex-contrib/config-etcd/utils"
+)
+
+type configLog struct{}
+
+func (cl *configLog) Apply(opt *utils.Options) {
+	fn := func(k *etcd.Key) {
+		klog.Infof("etcd config %v", k)
+	}
+	opt.EtcdCustomFunctions = append(opt.EtcdCustomFunctions, fn)
+}
+
+func main() {
+	etcdClient, err := etcd.NewClient(etcd.Options{})
+	if err != nil {
+		panic(err)
+	}
+
+	cl := &configLog{}
+
+	serviceName := "ServiceName" // 你的服务端服务名称
+	clientName := "ClientName"   // 你的客户端服务名称
+	client, err := echo.NewClient(
+		serviceName,
+		client.WithHostPorts("0.0.0.0:8888"),
+		client.WithSuite(etcdclient.NewSuite(serviceName, clientName, etcdClient, cl)),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for {
+		req := &api.Request{Message: "my request"}
+		resp, err := client.Echo(context.Background(), req)
+		if err != nil {
+			klog.Errorf("take request error: %v", err)
+		} else {
+			klog.Infof("receive response %v", resp)
+		}
+		time.Sleep(time.Second * 10)
+	}
+}
+```
+
 ## 更多信息
 
 更多示例请参考 [example](https://github.com/kitex-contrib/config-etcd/tree/main/example)

@@ -46,6 +46,8 @@ func main() {
 
 Set a custom parser for deserializing etcd configuration. If not specified, it will be the default parser.
 
+The default parser parses configuration in json format
+
 Function Signature:
 
 `func (c *client) SetParser(parser ConfigParser)`
@@ -56,120 +58,25 @@ type ConfigParser interface {
 }
 ```
 
-## NewSuite(server)
-
-Get Suite info
-
-```go
-type EtcdServerSuite struct {
-    uid        int64
-    etcdClient etcd.Client
-    service    string
-    opts       utils.Options
-}
-```
-
-Function Signature:
-
-`func NewSuite(service string, cli etcd.Client, opts ...utils.Option,) *EtcdServerSuite`
-
 Sample code:
 
+Set the configuration for parsing yaml types
 ```go
-package main
-
-import (
-	"context"
-	"log"
-
-	"github.com/cloudwego/kitex-examples/kitex_gen/api"
-	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cloudwego/kitex/pkg/rpcinfo"
-	"github.com/cloudwego/kitex/server"
-	"github.com/kitex-contrib/config-etcd/etcd"
-	etcdServer "github.com/kitex-contrib/config-etcd/server"
-)
-
-var _ api.Echo = &EchoImpl{}
-
-// EchoImpl implements the last service interface defined in the IDL.
-type EchoImpl struct{}
-
-// Echo implements the Echo interface.
-func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
-	klog.Info("echo called")
-	return &api.Response{Message: req.Message}, nil
+func (p *parser) Decode(data string, config interface{}) error {
+	return yaml.Unmarshal([]byte(data), config)
 }
 
-func main() {
-	klog.SetLevel(klog.LevelDebug)
-	serviceName := "ServiceName" // your server-side service name
-	etcdClient, _ := etcd.NewClient(etcd.Options{})
-	svr := echo.NewServer(
-		new(EchoImpl),
-		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
-		server.WithSuite(etcdServer.NewSuite(serviceName, etcdClient)),
-	)
-	if err := svr.Run(); err != nil {
-		log.Println("server stopped with error:", err)
-	} else {
-		log.Println("server stopped")
-	}
-}
-```
-
-## NewSuite(client)
-
-Get Suite info
-
-```go
-type EtcdServerSuite struct {
-    uid        int64
-    etcdClient etcd.Client
-    service    string
-    opts       utils.Options
-}
-```
-
-Function Signature:
-
-`func NewSuite(service,client string, cli etcd.Client, opts ...utils.Option,) *EtcdServerSuite`
-
-Sample code:
-
-```go
-package main
-
-import (
-    "log"
-
-    "github.com/cloudwego/kitex-examples/kitex_gen/api"
-    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-    "github.com/cloudwego/kitex/client"
-    etcdclient "github.com/kitex-contrib/config-etcd/client"
-    "github.com/kitex-contrib/config-etcd/etcd"
-)
+type parser struct{}
 
 func main() {
     etcdClient, err := etcd.NewClient(etcd.Options{})
-    if err != nil {
+    if err!=nil {
         panic(err)
     }
-
-    serviceName := "ServiceName" // your server-side service name
-    clientName := "ClientName"   // your client-side service name
-    client, err := echo.NewClient(
-        serviceName,
-        client.WithHostPorts("0.0.0.0:8888"),
-        client.WithSuite(etcdclient.NewSuite(serviceName, clientName, etcdClient)),
-    )
-    if err != nil {
-        log.Fatal(err)
-    }
+    etcdClient.SetParser(&parser{})
 }
-
 ```
+
 
 ## Etcd Configuration
 
@@ -187,8 +94,7 @@ type Key struct {
 
 | Variable Name    | Default Value                                               | Introduction                                                                                                                                                                                    |
 |------------------|-------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Address          | 127.0.0.1                                                   | Etcd server address                                                                                                                                                                             |
-| Port             | 2379                                                        | Etcd server port                                                                                                                                                                                |
+| Node             | 127.0.0.1:2379                                              | Etcd server nodes                                                                                                                                                                               |
 | Prefix           | /KitexConfig                                                | The prefix of Etcd                                                                                                                                                                              |
 | ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ClientServiceName` `ServiceName` `Category` three metadata that can be customised |
 | ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised                      |
@@ -321,6 +227,116 @@ The echo method uses the following configuration (0.3, 100) and other methods us
   }
 }
 ```
+## Basic Example
+
+Save the following code as `main.go` and execute `go run main.go` respectively to start a server and a client
+
+You can then monitor the governance feature configuration changes in etcd. When the configuration changes, the server and client will automatically update the configuration
+
+### Server
+```go
+package main
+
+import (
+    "context"
+    "log"
+
+    "github.com/cloudwego/kitex-examples/kitex_gen/api"
+    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+    "github.com/cloudwego/kitex/pkg/klog"
+    "github.com/cloudwego/kitex/pkg/rpcinfo"
+    "github.com/cloudwego/kitex/server"
+    "github.com/kitex-contrib/config-etcd/etcd"
+    etcdServer "github.com/kitex-contrib/config-etcd/server"
+)
+
+var _ api.Echo = &EchoImpl{}
+
+// EchoImpl implements the last service interface defined in the IDL.
+type EchoImpl struct{}
+
+// Echo implements the Echo interface.
+func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
+    klog.Info("echo called")
+    return &api.Response{Message: req.Message}, nil
+}
+
+func main() {
+    klog.SetLevel(klog.LevelDebug)
+    serviceName := "ServiceName" // your server-side service name
+    etcdClient, _ := etcd.NewClient(etcd.Options{})
+    svr := echo.NewServer(
+        new(EchoImpl),
+        server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+        server.WithSuite(etcdServer.NewSuite(serviceName, etcdClient)),
+    )
+    if err := svr.Run(); err != nil {
+        log.Println("server stopped with error:", err)
+    } else {
+        log.Println("server stopped")
+    }
+}
+
+```
+### Client
+```go
+package main
+
+import (
+    "context"
+    "log"
+    "time"
+
+    "github.com/cloudwego/kitex-examples/kitex_gen/api"
+    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+    "github.com/cloudwego/kitex/client"
+    "github.com/cloudwego/kitex/pkg/klog"
+    etcdclient "github.com/kitex-contrib/config-etcd/client"
+    "github.com/kitex-contrib/config-etcd/etcd"
+    "github.com/kitex-contrib/config-etcd/utils"
+)
+
+type configLog struct{}
+
+func (cl *configLog) Apply(opt *utils.Options) {
+    fn := func(k *etcd.Key) {
+        klog.Infof("etcd config %v", k)
+    }
+    opt.EtcdCustomFunctions = append(opt.EtcdCustomFunctions, fn)
+}
+
+func main() {
+    etcdClient, err := etcd.NewClient(etcd.Options{})
+    if err != nil {
+        panic(err)
+    }
+
+    cl := &configLog{}
+
+    serviceName := "ServiceName" // your server-side service name
+    clientName := "ClientName"   // your client-side service name
+    client, err := echo.NewClient(
+        serviceName,
+        client.WithHostPorts("0.0.0.0:8888"),
+        client.WithSuite(etcdclient.NewSuite(serviceName, clientName, etcdClient, cl)),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+    for {
+        req := &api.Request{Message: "my request"}
+        resp, err := client.Echo(context.Background(), req)
+        if err != nil {
+            klog.Errorf("take request error: %v", err)
+        } else {
+            klog.Infof("receive response %v", resp)
+        }
+        time.Sleep(time.Second * 10)
+    }
+}
+```
+
+
 ## More Info
 
 Refer to [example](https://github.com/kitex-contrib/config-etcd/tree/main/example) for more usage.

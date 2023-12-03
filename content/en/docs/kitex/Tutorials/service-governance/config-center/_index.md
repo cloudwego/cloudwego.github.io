@@ -14,7 +14,7 @@ Kitex provides dynamically configurable service management capabilities, includi
 
 kitex-contrib provides an extension to the community's mainstream configuration center and realizes dynamic configuration docking with kitex governance features.
 
-Microservice developers can dynamically obtain service governance configurations and take effect in quasi-real-time. These capabilities are very helpful in improving the SLA of microservices.
+Microservice developers can use the configuration center to dynamically obtain service governance configurations, which take effect in near real-time
 
 Currently supported configuration centers are
 
@@ -44,7 +44,7 @@ The following is taking etcd as an example to add Suite to Server and Client:
 ```go
 type EtcdServerSuite struct {
     uid        int64
-    etcdClient etcd.Client
+    etcdClient etcd.Client // etcd client in config-etcd
     service    string
     opts       utils.Options
 }
@@ -104,7 +104,7 @@ func main() {
 ```go
 type EtcdServerSuite struct {
     uid        int64
-    etcdClient etcd.Client
+    etcdClient etcd.Client // etcd client in config-etcd
     service    string
     opts       utils.Options
 }

@@ -14,7 +14,7 @@ Kitex 提供了可动态配置的服务治理能力，包括客户端的超时�
 
 kitex-contrib 提供了对于社区主流配置中心的拓展，实现了动态配置对接 kitex 治理特性
 
-微服务的开发者可以动态获取服务治理配置，并且是准实时生效，这些能力对提高微服务的 SLA 非常有帮助。
+微服务的开发者可以使用配置中心来动态获取服务治理配置，并且是准实时生效
 
 目前支持的配置中心有
 
@@ -44,7 +44,7 @@ Server 端和 Client 端都是通过 WithSuite 这个方法来启用新的套件
 ```go
 type EtcdServerSuite struct {
     uid        int64
-    etcdClient etcd.Client
+    etcdClient etcd.Client // config-etcd 中的 etcd client
     service    string
     opts       utils.Options
 }
@@ -104,7 +104,7 @@ func main() {
 ```go
 type EtcdServerSuite struct {
     uid        int64
-    etcdClient etcd.Client
+    etcdClient etcd.Client // config-etcd 中的 etcd client
     service    string
     opts       utils.Options
 }
