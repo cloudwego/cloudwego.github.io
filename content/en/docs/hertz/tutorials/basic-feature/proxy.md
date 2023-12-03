@@ -217,6 +217,34 @@ func main() {
 }
 ```
 
+### Websocket Reverse Proxy
+
+Websocket reverse proxy for Hertz, inspired by [fasthttp-reverse-proxy](https://github.com/yeqown/fasthttp-reverse-proxy)
+
+#### Example 
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/reverseproxy"
+)
+
+func main() {
+    h := server.Default()
+    h.GET("/backend", reverseproxy.NewWSReverseProxy("ws://example.com").ServeHTTP)
+    h.Spin()
+}
+```
+#### Configuration
+
+| Configuration  | Default                   | Description                  |
+|----------------|---------------------------|------------------------------|
+| `WithDirector` | `nil`                     | customize the forward header |
+| `WithDialer`   | `gorillaws.DefaultDialer` | for dialer customization     |
+| `WithUpgrader` | `hzws.HertzUpgrader`      | for upgrader customization   |
+
 ### More Examples
 
 | Purpose                 | Sample Code                                                                               |
@@ -224,5 +252,6 @@ func main() {
 | Proxy tls               | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
 | Using service discovery | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
 | Use with middleware     | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+| Proxy websocket         | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/websocket)      |
 
 For more usages, please refer to the following [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy).
