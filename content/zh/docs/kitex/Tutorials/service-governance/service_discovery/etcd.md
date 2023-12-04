@@ -171,7 +171,7 @@ Etcd 拓展在服务注册部分中提供了 option 配置。
 
 #### WithTLSOpt
 
-Etcd 扩展提供了 `WithTLSOpt` 用于帮助用户配置 Etcd 中的`TLS`选项。
+Etcd 扩展提供了 `WithTLSOpt` 用于帮助用户配置 Etcd 中的 `TLS` 选项。
 
 函数签名：
 
@@ -181,7 +181,7 @@ func WithTLSOpt(certFile, keyFile, caFile string) Option
 
 #### WithAuthOpt
 
-Etcd 扩展提供了`WithAuthOpt`用于帮助用户配置 Etcd 中的`Username`和`Password`选项。
+Etcd 扩展提供了 `WithAuthOpt` 用于帮助用户配置 Etcd 中的 `Username` 和 `Password` 选项。
 
 函数签名：
 
@@ -191,7 +191,7 @@ func WithAuthOpt(username, password string) Option
 
 #### WithDialTimeoutOpt
 
-Etcd 扩展提供了`WithTimeoutOpt`用于帮助用户配置连接超时时间。
+Etcd 扩展提供了 `WithTimeoutOpt` 用于帮助用户配置连接超时时间。
 
 ```go
 func WithDialTimeoutOpt(dialTimeout time.Duration) Option
