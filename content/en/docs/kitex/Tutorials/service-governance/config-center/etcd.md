@@ -1,15 +1,130 @@
 ---
-title: "config-etcd"
-linkTitle: "config-etcd"
+title: "etcd"
+linkTitle: "etcd"
 date: 2023-11-29
 weight: 2
-keywords: ["ConfigCenter Extension","config-etcd"]
+keywords: ["ConfigCenter Extension","etcd"]
 description: "Use etcd as Kitex’s service governance configuration center"
 
 ---
 ## Install
 
 `go get github.com/kitex-contrib/config-etcd`
+
+## Suite
+The configuration center adapter of etcd, kitex uses `WithSuite` to convert the configuration in etcd into the governance feature configuration of kitex
+
+The following is a complete usage example
+
+### Server
+
+```go
+type EtcdServerSuite struct {
+    uid        int64
+    etcdClient etcd.Client // etcd client in config-etcd
+    service    string
+    opts       utils.Options
+}
+```
+
+Function Signature:
+
+`func NewSuite(service string, cli etcd.Client, opts ...utils.Option,) *EtcdServerSuite`
+
+Sample code:
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/cloudwego/kitex-examples/kitex_gen/api"
+	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/pkg/rpcinfo"
+	"github.com/cloudwego/kitex/server"
+	"github.com/kitex-contrib/config-etcd/etcd"
+	etcdServer "github.com/kitex-contrib/config-etcd/server"
+)
+
+var _ api.Echo = &EchoImpl{}
+
+// EchoImpl implements the last service interface defined in the IDL.
+type EchoImpl struct{}
+
+// Echo implements the Echo interface.
+func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
+	klog.Info("echo called")
+	return &api.Response{Message: req.Message}, nil
+}
+
+func main() {
+	serviceName := "ServiceName" // your server-side service name
+	etcdClient, _ := etcd.NewClient(etcd.Options{})
+	svr := echo.NewServer(
+		new(EchoImpl),
+		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+		server.WithSuite(etcdServer.NewSuite(serviceName, etcdClient)),
+	)
+	if err := svr.Run(); err != nil {
+		log.Println("server stopped with error:", err)
+	} else {
+		log.Println("server stopped")
+	}
+}
+```
+
+### Client
+
+```go
+type EtcdServerSuite struct {
+    uid        int64
+    etcdClient etcd.Client // etcd client in config-etcd
+    service    string
+    opts       utils.Options
+}
+```
+
+Function Signature:
+
+`func NewSuite(service,client string, cli etcd.Client, opts ...utils.Option,) *EtcdServerSuite`
+
+Sample code:
+
+```go
+package main
+
+import (
+    "log"
+
+    "github.com/cloudwego/kitex-examples/kitex_gen/api"
+    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+    "github.com/cloudwego/kitex/client"
+    etcdclient "github.com/kitex-contrib/config-etcd/client"
+    "github.com/kitex-contrib/config-etcd/etcd"
+)
+
+func main() {
+    etcdClient, err := etcd.NewClient(etcd.Options{})
+    if err != nil {
+        panic(err)
+    }
+
+    serviceName := "ServiceName" // your server-side service name
+    clientName := "ClientName"   // your client-side service name
+    client, err := echo.NewClient(
+        serviceName,
+        client.WithHostPorts("0.0.0.0:8888"),
+        client.WithSuite(etcdclient.NewSuite(serviceName, clientName, etcdClient)),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+
+```
 
 ## Options Struct
 ```go
@@ -25,7 +140,7 @@ type Options struct {
 ```
 ## NewClient
 
-Create etcd client 
+Create client 
 
 Function Signature:
 
@@ -34,11 +149,15 @@ Function Signature:
 Sample code:
 
 ```go
+package main
+
+import "github.com/kitex-contrib/config-etcd/etcd"
+
 func main() {
-	etcdClient, err := etcd.NewClient(etcd.Options{})
-	if err!=nil {
-		panic(err)
-	}
+    etcdClient, err := etcd.NewClient(etcd.Options{})
+    if err!=nil {
+        panic(err)
+    }
 }
 ```
 
@@ -62,8 +181,12 @@ Sample code:
 
 Set the configuration for parsing yaml types
 ```go
+package main
+
+import "github.com/kitex-contrib/config-etcd/etcd"
+
 func (p *parser) Decode(data string, config interface{}) error {
-	return yaml.Unmarshal([]byte(data), config)
+    return yaml.Unmarshal([]byte(data), config)
 }
 
 type parser struct{}
@@ -230,115 +353,6 @@ The echo method uses the following configuration (0.3, 100) and other methods us
   }
 }
 ```
-## Basic Example
-
-Save the following code as `main.go` and execute `go run main.go` respectively to start a server and a client
-
-You can then monitor the governance feature configuration changes in etcd. When the configuration changes, the server and client will automatically update the configuration
-
-### Server
-```go
-package main
-
-import (
-    "context"
-    "log"
-
-    "github.com/cloudwego/kitex-examples/kitex_gen/api"
-    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-    "github.com/cloudwego/kitex/pkg/klog"
-    "github.com/cloudwego/kitex/pkg/rpcinfo"
-    "github.com/cloudwego/kitex/server"
-    "github.com/kitex-contrib/config-etcd/etcd"
-    etcdServer "github.com/kitex-contrib/config-etcd/server"
-)
-
-var _ api.Echo = &EchoImpl{}
-
-// EchoImpl implements the last service interface defined in the IDL.
-type EchoImpl struct{}
-
-// Echo implements the Echo interface.
-func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
-    klog.Info("echo called")
-    return &api.Response{Message: req.Message}, nil
-}
-
-func main() {
-    klog.SetLevel(klog.LevelDebug)
-    serviceName := "ServiceName" // your server-side service name
-    etcdClient, _ := etcd.NewClient(etcd.Options{})
-    svr := echo.NewServer(
-        new(EchoImpl),
-        server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
-        server.WithSuite(etcdServer.NewSuite(serviceName, etcdClient)),
-    )
-    if err := svr.Run(); err != nil {
-        log.Println("server stopped with error:", err)
-    } else {
-        log.Println("server stopped")
-    }
-}
-
-```
-### Client
-```go
-package main
-
-import (
-    "context"
-    "log"
-    "time"
-
-    "github.com/cloudwego/kitex-examples/kitex_gen/api"
-    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-    "github.com/cloudwego/kitex/client"
-    "github.com/cloudwego/kitex/pkg/klog"
-    etcdclient "github.com/kitex-contrib/config-etcd/client"
-    "github.com/kitex-contrib/config-etcd/etcd"
-    "github.com/kitex-contrib/config-etcd/utils"
-)
-
-type configLog struct{}
-
-func (cl *configLog) Apply(opt *utils.Options) {
-    fn := func(k *etcd.Key) {
-        klog.Infof("etcd config %v", k)
-    }
-    opt.EtcdCustomFunctions = append(opt.EtcdCustomFunctions, fn)
-}
-
-func main() {
-    etcdClient, err := etcd.NewClient(etcd.Options{})
-    if err != nil {
-        panic(err)
-    }
-
-    cl := &configLog{}
-
-    serviceName := "ServiceName" // your server-side service name
-    clientName := "ClientName"   // your client-side service name
-    client, err := echo.NewClient(
-        serviceName,
-        client.WithHostPorts("0.0.0.0:8888"),
-        client.WithSuite(etcdclient.NewSuite(serviceName, clientName, etcdClient, cl)),
-    )
-    if err != nil {
-        log.Fatal(err)
-    }
-    for {
-        req := &api.Request{Message: "my request"}
-        resp, err := client.Echo(context.Background(), req)
-        if err != nil {
-            klog.Errorf("take request error: %v", err)
-        } else {
-            klog.Infof("receive response %v", resp)
-        }
-        time.Sleep(time.Second * 10)
-    }
-}
-```
-
 
 ## More Info
 

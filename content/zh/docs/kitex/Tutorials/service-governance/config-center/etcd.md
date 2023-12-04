@@ -1,15 +1,126 @@
 ---
-title: "config-etcd"
-linkTitle: "config-etcd"
+title: "etcd"
+linkTitle: "etcd"
 date: 2023-11-29
 weight: 2
-keywords: ["配置中心扩展","config-etcd"]
+keywords: ["配置中心扩展","etcd"]
 description: "使用 etcd 作为 Kitex 的服务治理配置中心"
 
 ---
 ## 安装
 
 `go get github.com/kitex-contrib/config-etcd`
+
+## Suite
+etcd 的配置中心适配器，kitex 通过 `WithSuite` 将 etcd 中的配置转换为 kitex 的治理特性配置
+
+以下是完整的使用样例
+
+### Server
+
+```go
+type EtcdServerSuite struct {
+    uid        int64
+    etcdClient etcd.Client // config-etcd 中的 etcd client
+    service    string
+    opts       utils.Options
+}
+```
+
+函数签名:
+
+`func NewSuite(service string, cli etcd.Client, opts ...utils.Option,) *EtcdServerSuite`
+
+示例代码:
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/cloudwego/kitex-examples/kitex_gen/api"
+	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/pkg/rpcinfo"
+	"github.com/cloudwego/kitex/server"
+	"github.com/kitex-contrib/config-etcd/etcd"
+	etcdServer "github.com/kitex-contrib/config-etcd/server"
+)
+
+var _ api.Echo = &EchoImpl{}
+
+type EchoImpl struct{}
+
+func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
+	klog.Info("echo called")
+	return &api.Response{Message: req.Message}, nil
+}
+
+func main() {
+	serviceName := "ServiceName" // 你的服务端名称
+	etcdClient, _ := etcd.NewClient(etcd.Options{})
+	svr := echo.NewServer(
+		new(EchoImpl),
+		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+		server.WithSuite(etcdServer.NewSuite(serviceName, etcdClient)),
+	)
+	if err := svr.Run(); err != nil {
+		log.Println("server stopped with error:", err)
+	} else {
+		log.Println("server stopped")
+	}
+}
+```
+
+### Client
+```go
+type EtcdServerSuite struct {
+    uid        int64
+    etcdClient etcd.Client // config-etcd 中的 etcd client
+    service    string
+    opts       utils.Options
+}
+```
+函数签名:
+
+`func NewSuite(service,client string, cli etcd.Client, opts ...utils.Option,) *EtcdServerSuite`
+
+示例代码:
+
+```go
+package main
+
+import (
+    "log"
+
+    "github.com/cloudwego/kitex-examples/kitex_gen/api"
+    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+    "github.com/cloudwego/kitex/client"
+    etcdclient "github.com/kitex-contrib/config-etcd/client"
+    "github.com/kitex-contrib/config-etcd/etcd"
+)
+
+func main() {
+    etcdClient, err := etcd.NewClient(etcd.Options{})
+    if err != nil {
+        panic(err)
+    }
+
+    serviceName := "ServiceName" // 你的服务端名称
+    clientName := "ClientName"   // 你的客户端名称
+    client, err := echo.NewClient(
+        serviceName,
+        client.WithHostPorts("0.0.0.0:8888"),
+        client.WithSuite(etcdclient.NewSuite(serviceName, clientName, etcdClient)),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+
+```
 
 ## Options 结构体
 ```go
@@ -25,7 +136,7 @@ type Options struct {
 ```
 ## NewClient
 
-创建 etcd client 客户端
+创建 client 客户端
 
 函数签名:
 
@@ -34,6 +145,10 @@ type Options struct {
 示例代码:
 
 ```go
+package main
+
+import "github.com/kitex-contrib/config-etcd/etcd"
+
 func main() {
 	etcdClient, err := etcd.NewClient(etcd.Options{})
 	if err!=nil {
@@ -62,6 +177,10 @@ type ConfigParser interface {
 
 设置解析 yaml 类型的配置
 ```go
+package main
+
+import "github.com/kitex-contrib/config-etcd/etcd"
+
 func (p *parser) Decode(data string, config interface{}) error {
 	return yaml.Unmarshal([]byte(data), config)
 }
@@ -229,112 +348,6 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
     "err_rate": 0.3,
     "min_sample": 100
   }
-}
-```
-## 基本示例
-
-将下列代码保存为 `main.go`，并分别执行 `go run main.go`，即可启动一个服务端和一个客户端
-
-随后即可监听 etcd 中的治理特性配置变化，当配置发生变化时，服务端和客户端会自动更新配置
-
-### Server
-```go
-package main
-
-import (
-	"context"
-	"log"
-
-	"github.com/cloudwego/kitex-examples/kitex_gen/api"
-	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cloudwego/kitex/pkg/rpcinfo"
-	"github.com/cloudwego/kitex/server"
-	"github.com/kitex-contrib/config-etcd/etcd"
-	etcdServer "github.com/kitex-contrib/config-etcd/server"
-)
-
-var _ api.Echo = &EchoImpl{}
-
-type EchoImpl struct{}
-
-func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
-	klog.Info("echo called")
-	return &api.Response{Message: req.Message}, nil
-}
-
-func main() {
-	klog.SetLevel(klog.LevelDebug)
-	serviceName := "ServiceName" // 你的服务端服务名称
-	etcdClient, _ := etcd.NewClient(etcd.Options{})
-	svr := echo.NewServer(
-		new(EchoImpl),
-		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
-		server.WithSuite(etcdServer.NewSuite(serviceName, etcdClient)),
-	)
-	if err := svr.Run(); err != nil {
-		log.Println("server stopped with error:", err)
-	} else {
-		log.Println("server stopped")
-	}
-}
-
-```
-### Client
-```go
-package main
-
-import (
-	"context"
-	"log"
-	"time"
-
-	"github.com/cloudwego/kitex-examples/kitex_gen/api"
-	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-	"github.com/cloudwego/kitex/client"
-	"github.com/cloudwego/kitex/pkg/klog"
-	etcdclient "github.com/kitex-contrib/config-etcd/client"
-	"github.com/kitex-contrib/config-etcd/etcd"
-	"github.com/kitex-contrib/config-etcd/utils"
-)
-
-type configLog struct{}
-
-func (cl *configLog) Apply(opt *utils.Options) {
-	fn := func(k *etcd.Key) {
-		klog.Infof("etcd config %v", k)
-	}
-	opt.EtcdCustomFunctions = append(opt.EtcdCustomFunctions, fn)
-}
-
-func main() {
-	etcdClient, err := etcd.NewClient(etcd.Options{})
-	if err != nil {
-		panic(err)
-	}
-
-	cl := &configLog{}
-
-	serviceName := "ServiceName" // 你的服务端服务名称
-	clientName := "ClientName"   // 你的客户端服务名称
-	client, err := echo.NewClient(
-		serviceName,
-		client.WithHostPorts("0.0.0.0:8888"),
-		client.WithSuite(etcdclient.NewSuite(serviceName, clientName, etcdClient, cl)),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-	for {
-		req := &api.Request{Message: "my request"}
-		resp, err := client.Echo(context.Background(), req)
-		if err != nil {
-			klog.Errorf("take request error: %v", err)
-		} else {
-			klog.Infof("receive response %v", resp)
-		}
-		time.Sleep(time.Second * 10)
-	}
 }
 ```
 
