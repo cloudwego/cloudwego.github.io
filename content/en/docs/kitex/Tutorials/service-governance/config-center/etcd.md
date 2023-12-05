@@ -12,9 +12,9 @@ description: "Use etcd as Kitex’s service governance configuration center"
 `go get github.com/kitex-contrib/config-etcd`
 
 ## Suite
-The configuration center adapter of etcd, kitex uses `WithSuite` to convert the configuration in etcd into the governance feature configuration of kitex
+The configuration center adapter of etcd, kitex uses `WithSuite` to convert the configuration in etcd into the governance feature configuration of kitex.
 
-The following is a complete usage example
+The following is a complete usage example:
 
 ### Server
 
@@ -126,21 +126,9 @@ func main() {
 
 ```
 
-## Options Struct
-```go
-type Options struct {
-	Node             []string
-	Prefix           string
-	ServerPathFormat string
-	ClientPathFormat string
-	Timeout          time.Duration
-	LoggerConfig     *zap.Config
-	ConfigParser     ConfigParser
-}
-```
 ## NewClient
 
-Create client 
+Create client.
 
 Function Signature:
 
@@ -161,11 +149,11 @@ func main() {
 }
 ```
 
-## SetParser
+### SetParser
 
 Set a custom parser for deserializing etcd configuration. If not specified, it will be the default parser.
 
-The default parser parses configuration in json format
+The default parser parses configuration in json format.
 
 Function Signature:
 
@@ -179,7 +167,7 @@ type ConfigParser interface {
 
 Sample code:
 
-Set the configuration for parsing yaml types
+Set the configuration for parsing yaml types.
 ```go
 package main
 
@@ -203,32 +191,42 @@ func main() {
 
 ## Etcd Configuration
 
-### CustomFunction
-
-Provide the mechanism to custom the etcd parameter `Key`.
+### Options Struct
+```go
+type Options struct {
+	Node             []string
+	Prefix           string
+	ServerPathFormat string
+	ClientPathFormat string
+	Timeout          time.Duration
+	LoggerConfig     *zap.Config
+	ConfigParser     ConfigParser
+}
+```
+### Options Variable
 ```go
 type Key struct {
     Prefix string
     Path   string
 }
 ```
+The key in etcd consists of prefix and path, where prefix is the prefix and path is the path.
 
-### Options Variable
-
-| Variable Name    | Default Value                                               | Introduction                                                                                                                                                                                    |
-|------------------|-------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Node             | 127.0.0.1:2379                                              | Etcd server nodes                                                                                                                                                                               |
-| Prefix           | /KitexConfig                                                | The prefix of Etcd                                                                                                                                                                              |
-| ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ClientServiceName` `ServiceName` `Category` three metadata that can be customised |
-| ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised                      |
-| Timeout          | 5 * time.Second                                             | five seconds timeout                                                                                                                                                                            |
-| LoggerConfig     | NULL                                                        | Default Logger                                                                                                                                                                                  |
-| ConfigParser     | defaultConfigParser                                         | The default is the parser that parses json                                                                                                                                                      |
+| Variable Name    | Default Value                                               | Introduction                                                                                                                                                                                                                              |
+|------------------|-------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Node             | 127.0.0.1:2379                                              | Etcd server nodes                                                                                                                                                                                                                         |
+| Prefix           | /KitexConfig                                                | The prefix of Etcd                                                                                                                                                                                                                        |
+| ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ClientServiceName` `ServiceName` `Category` three metadata that can be customised, used with Prefix to form the key in etcd |
+| ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised, used with Prefix to form the key in etcd                      |
+| Timeout          | 5 * time.Second                                             | five seconds timeout                                                                                                                                                                                                                      |
+| LoggerConfig     | NULL                                                        | Default Logger                                                                                                                                                                                                                            |
+| ConfigParser     | defaultConfigParser                                         | The default parser, which defaults to parsing json format data                                                                                                                                                                            |
 
 ### Governance Policy
 > The configPath and configPrefix in the following example use default values, the service name is `ServiceName` and the client name is `ClientName`.
 
-#### Rate Limit Category=limit
+#### Rate Limit 
+Category=limit
 > Currently, current limiting only supports the server side, so ClientServiceName is empty.
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/limiter/item_limiter.go#L33)
@@ -255,7 +253,9 @@ Note:
 - Not configured or value is 0 means not enabled.
 - connection_limit and qps_limit can be configured independently, e.g. connection_limit = 100, qps_limit = 0
 
-#### Retry Policy Category=retry
+#### Retry Policy 
+Category=retry
+
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
 
 | Variable                      | Introduction                                   |
@@ -308,7 +308,8 @@ Example：
 ```
 Note: retry.Container has built-in support for specifying the default configuration using the `*` wildcard (see the [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) method for details).
 
-#### RPC Timeout Category=rpc_timeout
+#### RPC Timeout 
+Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
 
@@ -330,7 +331,8 @@ Example：
 ```
 Note: The circuit breaker implementation of kitex does not currently support changing the global default configuration (see [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195) for details).
 
-#### Circuit Break: Category=circuit_break
+#### Circuit Break
+Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
 
@@ -340,7 +342,7 @@ Note: The circuit breaker implementation of kitex does not currently support cha
 
 Example：
 
-The echo method uses the following configuration (0.3, 100) and other methods use the global default configuration (0.5, 200)
+The echo method uses the following configuration (0.3, 100) and other methods use the global default configuration (0.5, 200).
 
 > configPath: /KitexConfig/ClientName/ServiceName/circuit_break
 
@@ -353,10 +355,6 @@ The echo method uses the following configuration (0.3, 100) and other methods us
   }
 }
 ```
-
-## More Info
-
-Refer to [example](https://github.com/kitex-contrib/config-etcd/tree/main/example) for more usage.
 
 ## Compatibility
 

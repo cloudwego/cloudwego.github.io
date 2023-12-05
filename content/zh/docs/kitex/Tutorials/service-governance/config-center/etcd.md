@@ -12,9 +12,9 @@ description: "使用 etcd 作为 Kitex 的服务治理配置中心"
 `go get github.com/kitex-contrib/config-etcd`
 
 ## Suite
-etcd 的配置中心适配器，kitex 通过 `WithSuite` 将 etcd 中的配置转换为 kitex 的治理特性配置
+etcd 的配置中心适配器，kitex 通过 `WithSuite` 将 etcd 中的配置转换为 kitex 的治理特性配置。
 
-以下是完整的使用样例
+以下是完整的使用样例:
 
 ### Server
 
@@ -122,21 +122,9 @@ func main() {
 
 ```
 
-## Options 结构体
-```go
-type Options struct {
-	Node             []string
-	Prefix           string
-	ServerPathFormat string
-	ClientPathFormat string
-	Timeout          time.Duration
-	LoggerConfig     *zap.Config
-	ConfigParser     ConfigParser
-}
-```
 ## NewClient
 
-创建 client 客户端
+创建 client 客户端。
 
 函数签名:
 
@@ -157,11 +145,11 @@ func main() {
 }
 ```
 
-## SetParser
+### SetParser
 
-设置反序列化 etcd 配置的自定义解析器，若不指定则为默认解析器
+设置反序列化 etcd 配置的自定义解析器，若不指定则为默认解析器。
 
-默认设置的解析器解析的是 json 格式的配置
+默认设置的解析器解析的是 json 格式的配置。
 
 函数签名:
 
@@ -198,34 +186,43 @@ func main() {
 
 ## Etcd 配置
 
-### CustomFunction
-
-允许用户自定义 etcd 的参数来自定义参数 Key.
-
+### Options 结构体
+```go
+type Options struct {
+	Node             []string
+	Prefix           string
+	ServerPathFormat string
+	ClientPathFormat string
+	Timeout          time.Duration
+	LoggerConfig     *zap.Config
+	ConfigParser     ConfigParser
+}
+```
+### Options 默认值
 ```go
 type Key struct {
     Prefix string
     Path   string
 }
 ```
+etcd 中的 key 由 prefix 和 path 组成，prefix 为前缀，path 为路径。
 
-### Options 默认值
-
-| 参数               | 变量默认值                                                       | 作用                                                                                                                     |
-|------------------|-------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| Node             | 127.0.0.1:2379                                              | Etcd 服务器节点                                                                                                             |
-| Prefix           | /KitexConfig                                                | Etcd 中的 prefix                                                                                                         |
-| ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ClientServiceName` `ServiceName` `Category` 三个元数据 |
-| ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据                     |
-| Timeout          | 5 * time.Second                                             | 五秒超时时间                                                                                                                 |
-| LoggerConfig     | NULL                                                        | 默认日志                                                                                                                   |
-| ConfigParser     | defaultConfigParser                                         | 解析 json 数据的解析器                                                                                                         |
+| 参数               | 变量默认值                                                       | 作用                                                                                                                                               |
+|------------------|-------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| Node             | 127.0.0.1:2379                                              | Etcd 服务器节点                                                                                                                                       |
+| Prefix           | /KitexConfig                                                | Etcd 中的 prefix                                                                                                                                   |
+| ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ClientServiceName` `ServiceName` `Category` 三个元数据，用于和 Prefix 组成 etcd 中的 key |
+| ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据，用于和 Prefix 组成 etcd 中的 key                     |
+| Timeout          | 5 * time.Second                                             | 五秒超时时间                                                                                                                                           |
+| LoggerConfig     | NULL                                                        | 默认日志                                                                                                                                             |
+| ConfigParser     | defaultConfigParser                                         | 默认解析器，默认为解析 json 格式的数据                                                                                                                           |
 
 
 ### 治理策略
-下面例子中的 configPath 以及 configPrefix 均使用默认值，服务名称为 ServiceName，客户端名称为 ClientName
+下面例子中的 configPath 以及 configPrefix 均使用默认值，服务名称为 ServiceName，客户端名称为 ClientName。
 
-#### 限流 Category=limit
+#### 限流 
+Category=limit
 > 限流目前只支持服务端，所以 ClientServiceName 为空。
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/limiter/item_limiter.go#L33)
@@ -247,11 +244,12 @@ type Key struct {
 ```
 注：
 
-- 限流配置的粒度是 Server 全局，不分 client、method
-- 「未配置」或「取值为 0」表示不开启
-- connection_limit 和 qps_limit 可以独立配置，例如 connection_limit = 100, qps_limit = 0
+- 限流配置的粒度是 Server 全局，不分 client、method。
+- 「未配置」或「取值为 0」表示不开启。
+- connection_limit 和 qps_limit 可以独立配置，例如 connection_limit = 100, qps_limit = 0。
 
-#### 重试 Category=retry
+#### 重试 
+Category=retry
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
 
@@ -303,9 +301,10 @@ type Key struct {
     }
 }
 ```
-注：retry.Container 内置支持用 * 通配符指定默认配置（详见 [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) 方法）
+注：retry.Container 内置支持用 * 通配符指定默认配置（详见 [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) 方法）。
 
-#### 超时 Category=rpc_timeout
+#### 超时 
+Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
 
@@ -325,9 +324,10 @@ type Key struct {
   }
 }
 ```
-注：kitex 的熔断实现目前不支持修改全局默认配置（详见 [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195)）
+注：kitex 的熔断实现目前不支持修改全局默认配置（详见 [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195)）。
 
-#### 熔断: Category=circuit_break
+#### 熔断
+Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
 
@@ -337,7 +337,7 @@ type Key struct {
 
 例子：
 
-echo 方法使用下面的配置（0.3、100），其他方法使用全局默认配置（0.5、200）
+echo 方法使用下面的配置（0.3、100），其他方法使用全局默认配置（0.5、200）。
 
 > configPath: /KitexConfig/ClientName/ServiceName/circuit_break
 
@@ -350,10 +350,6 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
   }
 }
 ```
-
-## 更多信息
-
-更多示例请参考 [example](https://github.com/kitex-contrib/config-etcd/tree/main/example)
 
 ## 兼容性
 因为 grpc 兼容的问题，Go 的版本必须 >= 1.19

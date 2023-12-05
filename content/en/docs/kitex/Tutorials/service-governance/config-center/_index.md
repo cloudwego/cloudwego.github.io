@@ -16,7 +16,7 @@ kitex-contrib provides an extension to the community's mainstream configuration 
 
 Microservice developers can use the configuration center to dynamically obtain service governance configurations, which take effect in near real-time
 
-Currently supported configuration centers are
+Currently supported configuration centers are:
 
 | config-center |                           depository                            |
 |:-------------:|:---------------------------------------------------------------:|
