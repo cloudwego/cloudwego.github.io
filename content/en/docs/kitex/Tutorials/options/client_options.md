@@ -47,6 +47,7 @@ func WithTransportProtocol(tp transport.Protocol) Option
 
 Set the transport protocol, configure the transport protocol on the message protocol. Thrift/KitexProtobuf can configure TTHeader, TTHeaderFramed, and Framed. In addition, Framed is not strictly a transmission protocol. In order to distinguish it for PurePayload, it is also configured as a transmission protocol. PurePayload means that there is no transmission protocol; if it is configured as GRPC, it means that the GRPC protocol is used. , the transmission protocol of GRPC is HTTP2, but for the convenience of users' understanding, it is directly used as the configuration of the transmission protocol. Note that configuring GRPC needs to use Protobuf to define Service. If GRPC is not configured, KitexProtobuf protocol is used by default.
 
+When WithTransportProtocol is not set, the default protocol is PurePayload
 
 ### WithShortConnection
 
