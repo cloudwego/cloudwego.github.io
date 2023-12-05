@@ -1,9 +1,9 @@
 ---
-title: "配置中心扩展"
-linkTitle: "配置中心扩展"
+title: "配置中心"
+linkTitle: "配置中心"
 date: 2023-11-29
 weight: 1
-keywords: ["配置中心扩展"]
+keywords: ["配置中心"]
 description: "kitex-contrib 提供对配置中心的扩展"
 
 ---
