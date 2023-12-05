@@ -207,15 +207,15 @@ type Key struct {
 ```
 etcd 中的 key 由 prefix 和 path 组成，prefix 为前缀，path 为路径。
 
-| 参数               | 变量默认值                                                       | 作用                                                                                                                                               |
-|------------------|-------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| Node             | 127.0.0.1:2379                                              | Etcd 服务器节点                                                                                                                                       |
-| Prefix           | /KitexConfig                                                | Etcd 中的 prefix                                                                                                                                   |
-| ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ClientServiceName` `ServiceName` `Category` 三个元数据，用于和 Prefix 组成 etcd 中的 key |
-| ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据，用于和 Prefix 组成 etcd 中的 key                     |
-| Timeout          | 5 * time.Second                                             | 五秒超时时间                                                                                                                                           |
-| LoggerConfig     | NULL                                                        | 默认日志                                                                                                                                             |
-| ConfigParser     | defaultConfigParser                                         | 默认解析器，默认为解析 json 格式的数据                                                                                                                           |
+| 参数               | 变量默认值                                                       | 作用                                                                                                                                                 |
+|------------------|-------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Node             | 127.0.0.1:2379                                              | Etcd 服务器节点                                                                                                                                         |
+| Prefix           | /KitexConfig                                                | Etcd 中的 prefix                                                                                                                                     |
+| ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ClientServiceName` `ServiceName` `Category` 三个元数据，用于和 Prefix 组成 etcd 中配置的 key |
+| ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据，用于和 Prefix 组成 etcd 中配置的 key                     |
+| Timeout          | 5 * time.Second                                             | 五秒超时时间                                                                                                                                             |
+| LoggerConfig     | NULL                                                        | 默认日志                                                                                                                                               |
+| ConfigParser     | defaultConfigParser                                         | 默认解析器，默认为解析 json 格式的数据                                                                                                                             |
 
 
 ### 治理策略

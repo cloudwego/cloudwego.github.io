@@ -36,5 +36,5 @@ type Suite interface {
 ```
 Both the server and the client use the WithSuite method to enable new suites.
 
-For more information about Suite, please see [Suite](../../framework-exten/suite.md)
+For more information about Suite, please see [Suite](../../framework-exten/suite)
 

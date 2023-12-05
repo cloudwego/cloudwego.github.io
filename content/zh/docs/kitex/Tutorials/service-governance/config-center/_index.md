@@ -36,4 +36,4 @@ type Suite interface {
 ```
 Server 端和 Client 端都是通过 WithSuite 这个方法来注入新的套件。
 
-更多关于 Suite 的介绍请见 [Suite](../../framework-exten/suite.md)
+更多关于 Suite 的介绍请见 [Suite](../../framework-exten/suite)
