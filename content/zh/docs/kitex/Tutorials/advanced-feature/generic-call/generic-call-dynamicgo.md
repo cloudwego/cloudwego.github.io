@@ -6,17 +6,17 @@ keywords: ["泛化调用接入 dynamicgo 指南"]
 description: ""
 ---
 
-# 背景
+## 背景
 
 [Dynamicgo](https://github.com/cloudwego/dynamicgo) 提供了高效的 thrift 数据处理。Kitex 通过集成 Dynamicgo 实现了更高性能的 JSON/HTTP 泛化调用。
 
 注意：当前**仅支持用于 JSON 泛化调用和 JSON 格式的 HTTP 泛化调用（数据格式：json）**。
 
-# 新旧方式的使用差异
+## 新旧方式的使用差异
 
 用法与原始 kitex 泛化调用基本相同，但有以下区别。
 
-## Descriptor
+### Descriptor
 
 - Descriptor provider
 
@@ -33,7 +33,7 @@ description: ""
   - `GetProviderOption` 是一个接口，其中包含一个 func `Option（）` 来获取 `ProviderOption`。ProviderOption 有一个 bool 字段 `DynamicGoEnable`，它指示是否启用了 Dynamicgo。
   - 上面提到的三个 idl parse 函数返回的 provider 实现了 `GetProviderOption`。基本上，当用户调用三个 idl parse 函数中的一个时，`DynamicGoExpected` 将为 true，但如果在函数内部获取 Dynamicgo 的 provider 失败，则为 false。
 
-## Call options
+### Call options
 
 ## Break Change
 
@@ -260,7 +260,7 @@ func main() {
 
 ```
 
-# 性能测试
+## 性能测试
 
 以下测试结果使用多个嵌套复杂结构作为性能测试的 payload，并发控制在 100，请求总数 2000000，服务器分配 4 核 `Intel（R）Xeon（R）Gold 5118CPU@2.30GHz`。Go 版本为 go1.17.11，cpu 架构为 linux/amd64。
 “original”是指传统的泛化调用，“dynamicgo”是指使用 dynamicgo 泛化调用，“fallback”是指不满足启用 dynamicgo 条件的泛化调用（=普通泛化调用）。
