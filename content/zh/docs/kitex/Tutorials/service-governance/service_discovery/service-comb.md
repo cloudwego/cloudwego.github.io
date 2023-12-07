@@ -14,7 +14,7 @@ go get github.com/kitex-contrib/registry-servicecomb
 
 ## 服务注册
 
-### 创建 Registy
+### 创建 Registry
 
 提供了两个创建 Registry 的函数
 
