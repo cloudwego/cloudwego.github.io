@@ -8,7 +8,7 @@ description: "This document covers the preparation of the development environmen
 
 ## Part 1. Install the CLI Tool
 
-Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more. To install Volo tool, you need to switch to `nightly` channel and run the following command:
+Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more. To install volo tool, you need to switch to `nightly` channel and run the following command:
 
 ```bash
 rustup default nightly
@@ -57,7 +57,7 @@ Protobuf IDL is a full-stack RPC solution for cross-language, the specific synta
 
 ### 2.2 Write IDL
 
-To create a gRPC project, we need to write a protobuf IDL at first.
+To create a gRPC project, we need to write a protobuf IDL first.
 
 In your working directory, execute the following command:
 
@@ -160,7 +160,7 @@ Then execute:
 cargo update && cargo build
 ```
 
-At this point, You will find `volo_gen.rs` file under [OUT_DIR Directory](https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts).
+At this point, you will find `volo_gen.rs` file under [OUT_DIR Directory](https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts).
 
 Then execute the following command to get our server running:
 

@@ -208,12 +208,42 @@ func main() {
 }
 ```
 
+### 反向代理 Websocket
+
+Websocket 反向代理，受 [fasthttp-reverse-proxy](https://github.com/yeqown/fasthttp-reverse-proxy) 启发。
+
+#### 示例
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/reverseproxy"
+)
+
+func main() {
+    h := server.Default()
+    h.GET("/backend", reverseproxy.NewWSReverseProxy("ws://example.com").ServeHTTP)
+    h.Spin()
+}
+```
+
+#### 配置
+
+| 配置             | 默认值                       | 描述           |
+|----------------|---------------------------|--------------|
+| `WithDirector` | `nil`                     | 自定义转发头       |
+| `WithDialer`   | `gorillaws.DefaultDialer` | 自定义 Dialer   |
+| `WithUpgrader` | `hzws.HertzUpgrader`      | 自定义 Upgrader |
+
 ### 更多示例
 
-| 用途      | 示例代码                                                                                      |
-|---------|-------------------------------------------------------------------------------------------|
-| 代理 tls  | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
-| 使用服务发现  | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
-| 配合中间件使用 | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+| 用途           | 示例代码                                                                                      |
+|--------------|-------------------------------------------------------------------------------------------|
+| 代理 tls       | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
+| 使用服务发现       | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
+| 配合中间件使用      | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+| 代理 websocket | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/websocket)      |
 
 更多使用方法可参考如下 [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy)。

@@ -17,13 +17,13 @@ description: "This document covers the preparation of the development environmen
 
 This chapter will get you started with Kitex using a simple executable example.
 
-### Install the compiler
+### Install the CLI tool
 
 First of all, let's install the compilers we will be working with.
 
 1. Make sure the `GOPATH` environment variable is properly defined (e.g. `export GOPATH=~/go`), then add `$GOPATH/bin` to the `PATH` environment variable (e.g. `export PATH=$GOPATH/bin:$PATH`). Make sure that `GOPATH` is accessible.
-2. Install Kitex: `go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`.
-3. Install thriftgo: `go install github.com/cloudwego/thriftgo@latest`.
+2. Install kitex: `go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`.
+3. Install thriftgo (for Thrift protocol): `go install github.com/cloudwego/thriftgo@latest`.
 
 Now you can run `kitex --version` and `thriftgo --version` and you should see some output like below if you have successfully set up the compilers.
 
@@ -35,7 +35,7 @@ $ thriftgo --version
 thriftgo x.x.x
 ```
 
-Tips: If you encounter any problems during the installation, it's probably because you haven't set up the golang development environment properly. In most cases you can search the error message to find a solution.
+Tips: If you encounter any problems during the installation, it's probably because you haven't set up the golang development environment properly. In most cases you can search for the error message to find a solution.
 
 ### Get the example
 
@@ -46,7 +46,7 @@ Tips: If you encounter any problems during the installation, it's probably becau
 
 #### Run with go
 
-1. change to the `hello` directory
+1. change to the `hello` directory. Hello is a simple example of Kitex using the Thrift protocol.
 
    `cd kitex-examples/hello`
 
@@ -80,7 +80,7 @@ Congratulations! You have successfully used Kitex to complete an RPC.
 
 ### Add a new method
 
-Open `hello.thrift`, you will see the following code:
+Within `cd kitex-examples/hello` folder, open `hello.thrift`, you will see the following code:
 
 ```thrift
 namespace go api
