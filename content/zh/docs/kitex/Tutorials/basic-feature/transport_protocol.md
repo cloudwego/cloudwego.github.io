@@ -51,7 +51,7 @@ opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
 cli := xxx.NewClient("service_name", opts)
 ```
 
-### gRPC
+#### gRPC
 client 指定 gRPC 协议：
 ```go
 var opts []client.Option
