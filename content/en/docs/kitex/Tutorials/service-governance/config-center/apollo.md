@@ -52,10 +52,8 @@ import (
 
 var _ api.Echo = &EchoImpl{}
 
-// EchoImpl implements the last service interface defined in the IDL.
 type EchoImpl struct{}
 
-// Echo implements the Echo interface.
 func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
 	klog.Info("echo called")
 	return &api.Response{Message: req.Message}, nil
@@ -231,7 +229,7 @@ The type of the namespace in kitex contrib/configure Apollo is properties, and t
 | ConfigParser    | defaultConfigParser                           | The default parser, which defaults to parsing json format data (only parsing JSON format is supported currently) |
 
 ### Governance Policy
-> The namespace in the following example uses fixed policy values, with default values for APPID and Cluster. The service name is ServiceName and the client name is ClientName
+> The namespace in the following example uses fixed policy values, with default values for AppID and Cluster. The service name is ServiceName and the client name is ClientName
 
 #### Rate Limit
 
@@ -249,7 +247,9 @@ Category=limit
 Example:
 
 > namespace: `limit`
+> 
 > key: `ServiceName`
+
 
 ```json
 {
@@ -278,6 +278,7 @@ Category=retry
 Example:
 
 > namespace: `retry`
+> 
 > key: `ClientName.ServiceName`
 
 ```json
@@ -331,6 +332,7 @@ Category=rpc_timeout
 Example:
 
 > namespace: `rpc_timeout`
+> 
 > key: `ClientName.ServiceName`
 
 ```json
@@ -361,6 +363,7 @@ Category=circuit_break
 Example:
 
 > namespace: `circuit_break`
+> 
 > key: `ClientName.ServiceName`
 
 ```json

@@ -12,7 +12,7 @@ description: "使用 apollo作为 Kitex 的服务治理配置中心"
 `go get github.com/kitex-contrib/config-apollo`
 
 ## Suite
-apollo的配置中心适配器，kitex 通过 `WithSuite` 将 apollo中的配置转换为 kitex 的治理特性配置。
+apollo 的配置中心适配器，kitex 通过 `WithSuite` 将 apollo 中的配置转换为 kitex 的治理特性配置。
 
 以下是完整的使用样例:
 
@@ -214,7 +214,7 @@ type ConfigParamConfig struct {
 	ServerServiceName string
 }
 ```
-kitex-contrib/config-apollo 中设计namespace的类型为properties，key的格式参考如下: ClientKeyFormat 或 ServerKeyFormat ，value固定为json格式
+kitex-contrib/config-apollo 中设计 namespace 的类型为 properties ，key 的格式参考如下： ClientKeyFormat 或 ServerKeyFormat ，value 固定为 json 格式
 
 | 参数 | 变量默认值 | 作用 |
 | :------------------------ | :--------------------------------: | --------------------------------- |
@@ -245,6 +245,7 @@ Category=limit
 例子：
 
 > namespace: `limit`
+> 
 > key: `ServiceName`
 
 ```json
@@ -273,6 +274,7 @@ Category=retry
 例子：
 
 > namespace: `retry`
+> 
 > key: `ClientName.ServiceName`
 
 ```json
@@ -325,6 +327,7 @@ Category=rpc_timeout
 例子：
 
 > namespace: `rpc_timeout`
+> 
 > key: `ClientName.ServiceName`
 
 ```json
@@ -353,6 +356,7 @@ Category=circuit_break
 例子：
 
 > namespace: `circuit_break`
+> 
 > key: `ClientName.ServiceName`
 
 ```json
