@@ -2,7 +2,7 @@
 title: "apollo"
 linkTitle: "apollo"
 date: 2023-12-12
-weight: 2
+weight: 3
 keywords: ["配置中心扩展","apollo"]
 description: "使用 apollo作为 Kitex 的服务治理配置中心"
 
@@ -369,6 +369,3 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
   }
 }
 ```
-
-## 兼容性
-因为 grpc 兼容的问题，Go 的版本必须 >= 1.19

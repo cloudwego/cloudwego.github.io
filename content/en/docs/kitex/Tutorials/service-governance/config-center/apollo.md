@@ -376,7 +376,3 @@ The echo method uses the following configuration (0.3, 100) and other methods us
   }
 }
 ```
-
-## Compatibility
-
-For grpc compatibility, the version of Go must >=1.19
