@@ -156,7 +156,7 @@ func main() {
 
 ### SetParser
 
-Set a custom parser for deserializing etcd configuration. If not specified, it will be the default parser.
+Set a custom parser for deserializing apollo configuration. If not specified, it will be the default parser.
 
 The default parser parses configuration in json format.(only parsing JSON format is supported currently)
 
@@ -197,7 +197,7 @@ func main() {
 ```
 
 
-## Etcd Configuration
+## Apollo Configuration
 
 ### Options Struct
 ```go
