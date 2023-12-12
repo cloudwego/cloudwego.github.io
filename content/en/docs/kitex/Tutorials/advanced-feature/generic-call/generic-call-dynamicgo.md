@@ -35,9 +35,9 @@ The usage is basically the same as the original kitex generic call, with the fol
 
   - Unable to set string for bool type
     In the original way of kitex, even if a bool type is specified as a string (ex. "true"), it can be encoded, but dynamicgo generates an error during encoding.
-  - Unable to convert string to int8/int16/int32/int64/float64 for i8/i16/i32/i64/double fields (**Fixed in the latest****kitex****version v0.7.1 / internal v1.13.1**)
+  - Unable to convert string to int8/int16/int32/int64/float64 for i8/i16/i32/i64/double fields (**Fixed in the latest kitex version v0.7.1 / internal v1.13.1**)
     In the original way of kitex, even when an int8/int16/int32/int64/float64 type is specified as a string, it can be converted to the corresponding type, but dynamicgo way does not convert and causes an error during encoding. If you need to use string for i8/i16/i32/i64/double fields, you can set `String2Int64` of the conv.Options `true`, but please note that an int64 value will be written as a string in decoding when `String2Int64=true`.
-  - Unable to set string for void type (json generic) (**Fixed in the latest****kitex****version v0.7.1 / internal v1.13.1**)
+  - Unable to set string for void type (json generic) (**Fixed in the latest kitex version v0.7.1 / internal v1.13.1**)
     This is regarding server-side generic call handler function which returns void.
     In the original kitex way, when encoding, void is written in the response whenever the message is any string, not just `descriptor.Void{}`, but encoding with dynamicgo just accepts only `descriptor.Void{}`.
     ```go
@@ -74,7 +74,7 @@ Note: Generic call using dynamicgo is only activated under the following conditi
 
 **If these conditions are not met, the original generic call functions will be called.**
 
-| **Fallback****condition** |                  **Encoding**                   |                                                                              **Decoding**                                                                              |
+| **Fallback condition** |                  **Encoding**                   |                                                                              **Decoding**                                                                              |
 |---------------------------|-------------------------------------------------|------------------------------------------------------------------------------------------------------------------
 
 
