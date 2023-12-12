@@ -248,10 +248,10 @@ Category=limit
 
 Example:
 
-```json
-namespace: `limit`
-key: `ServiceName`
+> namespace: `limit`
+> key: `ServiceName`
 
+```json
 {
   "connection_limit": 100,
   "qps_limit": 2000
