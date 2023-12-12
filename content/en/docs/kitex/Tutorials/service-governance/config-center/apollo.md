@@ -20,7 +20,7 @@ The following is a complete usage example:
 
 ```go
 type ApolloServerSuite struct {
-	apolloClient apollo.Client // config-apollo 中的 apollo client
+	apolloClient apollo.Client // apollo client in config-apollo
 	service      string // server-side service name
 	opts         utils.Options // customize func
 }
@@ -86,7 +86,7 @@ func main() {
 
 ```go
 type ApolloClientSuite struct {
-	apolloClient apollo.Client // config-apollo 中的 apollo client
+	apolloClient apollo.Client // apollo client in config-apollo
 	service      string // server-side service name
 	client       string // client-side service name
 	opts         utils.Options // customize func
