@@ -34,6 +34,29 @@ description: ""
   - 上面提到的三个 idl parse 函数返回的 provider 实现了 `GetProviderOption`。基本上，当用户调用三个 idl parse 函数中的一个时，`DynamicGoExpected` 将为 true，但如果在函数内部获取 Dynamicgo 的 provider 失败，则为 false。
 
 ### Call options
+  - Dynamicgo conv选项
+    Dynamicgo需要设置自己的转换选项：`conv.Options`。json/Http 泛化调用的默认conv.Options如下：
+```go
+DefaultJSONDynamicgoConvOpts = conv.Options{
+   WriteRequireField: true,
+   WriteDefaultField: true,
+}
+
+DefaultHTTPDynamicgoConvOpts = conv.Options{
+   EnableHttpMapping:     true,
+   EnableValueMapping:    true,
+   WriteRequireField:     true,
+   WriteDefaultField:     true,
+   OmitHttpMappingErrors: true,
+   NoBase64Binary:        true,
+   UseKitexHttpEncoding:  true,
+}
+```
+    如果您想使用自定义的conv.Options，可以通过下面的选项进行设置：
+    - WithCustomDynamicgoConvOpts(optsconv. Options）：自定义的json/超文本传输协议的conv选项
+  - 仅用于 HTTP 泛化调用的选项
+    在kitex原始超文本传输协议泛化调用（数据格式：json）中，resp body的类型为 map[string]interface{}，存储在HTTPResponse.Body中。然而，在带有Dynamicgo的超文本传输协议泛化调用（数据格式：json）中，resp body的类型将是json 字符串，它存储在HTTPResponse.RawBody中。
+    我们提供了一个函数UseRawBodyForHTTPResp(enablebool），以便您可以根据自己的偏好选择响应类型。**使用 rawbody 将大幅提升性能**，推荐使用。
 
 ## Break Change
 
@@ -67,10 +90,8 @@ description: ""
 
 | **开启条件** | 宿主机环境 | 选项 |
 | ------------ | ---------- | ---- |
-| **json**     |            |      |
-
-amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true- 客户端使用 泛化调用，或者其传输协议使用的是 TTHeader、Framed、TTHeaderFramed 中的一种 |
-| http         | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true - `UseRawBodyForHTTPResp(true）` **启用（可选）**                                      |
+| **json**     | amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true- 客户端使用 泛化调用，或者其传输协议使用的是 TTHeader、Framed、TTHeaderFramed 中的一种 |
+| http         | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true - `UseRawBodyForHTTPResp(true）` **启用（可选）** |
 
 ## JSON 泛化调用示例
 
