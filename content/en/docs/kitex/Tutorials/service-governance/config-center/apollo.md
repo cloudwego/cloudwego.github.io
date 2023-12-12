@@ -277,9 +277,10 @@ Category=retry
 
 Example:
 
+> namespace: `retry`
+> key: `ClientName.ServiceName`
+
 ```json
-namespace: `retry`
-key: `ClientName.ServiceName`
 {
     "*": {  
         "enable": true,
@@ -329,9 +330,10 @@ Category=rpc_timeout
 
 Example:
 
+> namespace: `rpc_timeout`
+> key: `ClientName.ServiceName`
+
 ```json
-namespace: `rpc_timeout`
-key: `ClientName.ServiceName`
 {
   "*": {
     "conn_timeout_ms": 100,
@@ -358,10 +360,11 @@ Category=circuit_break
 
 Example:
 
+> namespace: `circuit_break`
+> key: `ClientName.ServiceName`
+
 ```json
 The echo method uses the following configuration (0.3, 100) and other methods use the global default configuration (0.5, 200)
-namespace: `circuit_break`
-key: `ClientName.ServiceName`
 {
   "echo": {
     "enable": true,

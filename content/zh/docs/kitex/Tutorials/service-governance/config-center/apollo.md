@@ -243,9 +243,11 @@ Category=limit
 |qps_limit|每 100ms 内的最大请求数量| 
 
 例子：
+
+> namespace: `limit`
+> key: `ServiceName`
+
 ```json
-namespace: `limit`
-key: `ServiceName`
 {
   "connection_limit": 100, 
   "qps_limit": 2000        
@@ -269,9 +271,11 @@ Category=retry
 |failure_policy.backoff_policy| 可以设置的策略： `fixed` `none` `random` | 
 
 例子：
+
+> namespace: `retry`
+> key: `ClientName.ServiceName`
+
 ```json
-namespace: `retry`
-key: `ClientName.ServiceName`
 {
     "*": {  
         "enable": true,
@@ -319,9 +323,11 @@ Category=rpc_timeout
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
 
 例子：
+
+> namespace: `rpc_timeout`
+> key: `ClientName.ServiceName`
+
 ```json
-namespace: `rpc_timeout`
-key: `ClientName.ServiceName`
 {
   "*": {
     "conn_timeout_ms": 100, 
@@ -345,10 +351,12 @@ Category=circuit_break
 |----|----|
 |min_sample| 最小的统计样本数| 
 例子：
+
+> namespace: `circuit_break`
+> key: `ClientName.ServiceName`
+
 ```json
 echo 方法使用下面的配置（0.3、100），其他方法使用全局默认配置（0.5、200）
-namespace: `circuit_break`
-key: `ClientName.ServiceName`
 {
   "echo": {
     "enable": true,
