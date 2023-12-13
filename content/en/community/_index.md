@@ -6,20 +6,19 @@ menu:
 ---
 
 {{% blocks/lead color="primary" %}}
-<span class="h5 mb-0">
-  <h1>Welcome to the CloudWeGo Community</h1>
+<div class="h5 mb-0 m-4">
+  <div class="h1">Welcome to the CloudWeGo Community</div>
   <p>CloudWeGo is an open source project that anyone in the community can
     use, improve, and enjoy. We'd love for you to join us! Here's how to get involved.</p>
-</span>
+</div>
 
 {{% /blocks/lead %}}
 
+## Develop and Contribute
 
+First off, thank you for your interest in CloudWeGo. We are a very open and active community, where dedicated contributors of all levels are welcome to join to share their passion for open source, learn and upskill themselves.
+    You may participate in the community through GitHub, or simply by interacting with other members in CloudWeGo Slack channel:
 
-<div class="col-xs-5 col-sm-6 col-md-6 col-lg-6" style="margin-top: 3%">
-  <h2>Develop and Contribute</h2>
-  <p>First off, thank you for your interest in CloudWeGo. We are a very open and active community, where dedicated contributors of all levels are welcome to join to share their passion for open source, learn and upskill themselves. 
-    You may participate in the community through GitHub, or simply by interacting with other members in CloudWeGo Slack channel:</p>
   <ul>
     <li title="GitHub">
       <a
@@ -42,59 +41,61 @@ menu:
       Connect with us on Slack
     </li>
   </ul>
-  <p>
-    If you want to become a Contributor, please read the <a href="https://github.com/cloudwego/community/blob/main/CONTRIBUTING.md">Contribution Guidelines</a> and the <a href="https://github.com/cloudwego/community/blob/main/COMMUNITY_MEMBERSHIP.md">Community Membership Privileges and Guidelines</a>.
-  <div class="col-xs-5 col-sm-6 col-md-6 col-lg-6" style="margin-top: 3%">
-  <h2>Where to Start?</h2>
-  </p>If you're looking for a place to start for your first contribution, here's a few things to note. The CloudWeGo project is subdivided into subprojects:
-    <ul>
-      <li><p>Kitex (Kitex & Kitex ecosystem & kitex-contrib)
-      <li><p>Hertz (Hertz & Hertz ecosystem & hertz-contrib)
-      <li><p>Volo (Volo & Volo ecosystem & volo-rs & Motore & Pilota)
-      <li><p>Netpoll (Netpoll & Netpoll ecosystem)
-      <li><p>Monoio (Monoio & Monoio ecosystem)
-      <li><p>Serdes (Thriftgo & Frugal & Fastpb & Sonic & thrift-gen-validator)
-      <li><p>Shmipc (shmipc-spec & shmipc-go)
-      <li><p>Website & Docs (cloudwego.github.io & community)
+
+If you want to become a Contributor, please read the <a href="https://github.com/cloudwego/community/blob/main/CONTRIBUTING.md">Contribution Guidelines</a> and the <a href="https://github.com/cloudwego/community/blob/main/COMMUNITY_MEMBERSHIP.md">Community Membership Privileges and Guidelines</a>.
+
+## Where to Start?
+  
+  If you're looking for a place to start for your first contribution, here's a few things to note. The CloudWeGo project is subdivided into subprojects:
+
+- Kitex (Kitex & Kitex ecosystem & kitex-contrib)
+- Hertz (Hertz & Hertz ecosystem & hertz-contrib)
+- Volo (Volo & Volo ecosystem & volo-rs & Motore & Pilota)
+- Netpoll (Netpoll & Netpoll ecosystem)
+- Monoio (Monoio & Monoio ecosystem)
+- Serdes (Thriftgo & Frugal & Fastpb & Sonic & thrift-gen-validator)
+- Shmipc (shmipc-spec & shmipc-go)
+- Website & Docs (cloudwego.github.io)
+
 The community is structured with various roles to streamline day to day operations, and to recognize the efforts of longstanding contributors. Responsibilities for the various community roles fall under these subprojects (repos) as defined by the CloudWeGo team.
- <table board='4' class='table table-bordered table-striped'>
+
+ <table class='table table-bordered table-striped table-hover'>
       <thead>
       <tr>
-        <th align='left' style='width:40px;'>Role</th>
-        <th align='left' style='width:40px;'>Responsibilities</th>
-        <th align='left' style='width:40px;'>Requirements</th>
-        <th align='left' style='width:40px;'>Defined by</th>
+        <th class="text-left">Role</th>
+        <th class="text-left">Responsibilities</th>
+        <th class="text-left">Requirements</th>
+        <th class="text-left">Defined by</th>
       </tr>
+      </thead>
       <tr>
-        <td align='left'>Member</td>
+        <td class="text-left">Member</td>
         <td>Active contributor in the community.</td>
         <td>Sponsorship by two approvers or maintainers, and multiple code contributions to the project.</td>
         <td>GitHub org member.</td>
       </tr>
       <tr>
-        <td align='left'>Committer</td>
+        <td class="text-left">Committer</td>
         <td>Active code contributions and/or issue replies in the subproject.</td>
         <td>Sponsorhip by two approvers or maintainers and multiple code contributions to the project.</td>
         <td>GitHub subproject committer team.</td>
       </tr>
       <tr>
-        <td align='left'>Reviewer</td>
+        <td class="text-left">Reviewer</td>
         <td>Review contributions from other members, and give feedback and guidance.</td>
         <td>Continuous history of review and authorship in a subproject.</td>
         <td>GitHub subproject reviewer team.</td>
       </tr>
       <tr>
-        <td align='left'>Approver</td>
+        <td class="text-left">Approver</td>
         <td>Approve contributions received by the project.</td>
         <td>Highly experienced, active reviewer and contributor to a subproject.</td>
         <td>GitHub subproject approver team.</td>
       </tr>
       <tr>
-        <td align='left'>Maintainer</td>
+        <td class="text-left">Maintainer</td>
         <td>Set the direction and priorities for a subproject.</td>
         <td>Demonstrated sense of responsibility and excellent technical judgement for the subproject.</td>
         <td>GitHub subproject maintainer team.</td>
       </tr>
-      </thead>
-    </table>
-</div>
+</table>
