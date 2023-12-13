@@ -77,7 +77,7 @@ The community is structured with various roles to streamline day to day operatio
       <tr>
         <td class="text-left">Committer</td>
         <td>Active code contributions and/or issue replies in the subproject.</td>
-        <td>Sponsorhip by two approvers or maintainers and multiple code contributions to the project.</td>
+        <td>Sponsorship by two approvers or maintainers and multiple code contributions to the project.</td>
         <td>GitHub subproject committer team.</td>
       </tr>
       <tr>
