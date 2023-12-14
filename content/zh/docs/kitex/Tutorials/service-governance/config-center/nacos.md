@@ -2,7 +2,7 @@
 title: "Nacos"
 linkTitle: "Nacos"
 date: 2023-12-14
-weight: 100
+weight: 3
 keywords: ["配置中心扩展","Nacos"]
 description: "使用 Nacos 作为 Kitex 的服务治理配置中心"
 ---
