@@ -19,13 +19,13 @@ After completing the environment preparation, the next step will help you get st
 ## Install
 
 ```shell
-$ go install github.com/cloudwego/cwgo@latest
+go install github.com/cloudwego/cwgo@latest
 ```
 
 It's easiest to install with the go command, or you can choose to build and install from source yourself. To see where cwgo is installed, use:
 
 ```shell
-$ go list -f {{.Target}} github.com/cloudwego/cwgo
+go list -f {{.Target}} github.com/cloudwego/cwgo
 ```
 
 To use thrift or protobuf's IDL to generate code, you need to install the corresponding compiler: [thriftgo](https://github.com/cloudwego/thriftgo) or [protoc](https://github.com/protocolbuffers/protobuf/releases).
@@ -33,23 +33,23 @@ To use thrift or protobuf's IDL to generate code, you need to install the corres
 thriftgo install:
 
 ```shell
-$ GO111MODULE=on go install github.com/cloudwego/thriftgo@latest
+GO111MODULE=on go install github.com/cloudwego/thriftgo@latest
 ```
 
 protoc install
 
 ```shell
 # brew install
-$ brew install protobuf
+brew install protobuf
 ```
 
 ```shell
 # Official image installation, take macos as an example
-$ wget https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protoc-3.19.4-osx-x86_64.zip
-$ unzip protoc-3.19.4-osx-x86_64.zip
-$ cp bin/protoc /usr/local/bin/protoc
+wget https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protoc-3.19.4-osx-x86_64.zip
+unzip protoc-3.19.4-osx-x86_64.zip
+cp bin/protoc /usr/local/bin/protoc
 # Make sure include/google is placed under /usr/local/include
-$ cp -r include/google /usr/local/include/google
+cp -r include/google /usr/local/include/google
 ```
 
 First, we need to install the command-line code generation tools needed to use this example:
@@ -60,14 +60,14 @@ First, we need to install the command-line code generation tools needed to use t
 
 After the installation is successful, execute `cwgo --version` and `thriftgo --version` and you should be able to see the output of the specific version number (the version number is different, take x.x.x as an example):
 
-```shell
-$ cwgo --version
+```bash
+cwgo --version
 vx.x.x
 
-$ thriftgo --version
+thriftgo --version
 vx.x.x
 
-$ protoc --version
+protoc --version
 libprotoc x.x.x
 ```
 
@@ -76,11 +76,11 @@ libprotoc x.x.x
 1. If the code is placed under `$GOPATH/src`, you need to create an additional directory under `$GOPATH/src`, and then get the code after entering this directory:
 
    ```shell
-   $ mkdir -p $(go env GOPATH)/src/github.com/cloudwego
-   $ cd $(go env GOPATH)/src/github.com/cloudwego
+   mkdir -p $(go env GOPATH)/src/github.com/cloudwego
+   cd $(go env GOPATH)/src/github.com/cloudwego
    ```
 
-2. If you put the code outside GOPATH, you can get it directly
+2. If you put the code outside `GOPATH`, you can get it directly
 
 ## Precautions
 
@@ -95,14 +95,14 @@ Let's take thrift as an example
 1. First create a directory
 
    ```shell
-   $ mkdir -p $GOPATH/src/local/cwgo_test
-   $ cd $GOPATH/src/local/cwgo_test
+   mkdir -p $GOPATH/src/local/cwgo_test
+   cd $GOPATH/src/local/cwgo_test
    ```
 
 2. Create an idl directory
 
    ```shell
-   $ mkdir idl
+   mkdir idl
    ```
 
 3. Write the idl/hello.thrift file
@@ -129,7 +129,7 @@ Let's take thrift as an example
    static command line
 
    ```shell
-   $ cwgo server -service=a.b.c -type HTTP -idl=idl/hello.thrift
+   cwgo server -service=a.b.c -type HTTP -idl=idl/hello.thrift
    ```
 
    dynamic command line
@@ -139,14 +139,14 @@ Let's take thrift as an example
 5. Compile and run
 
    ```shell
-   $ go mod tidy && go mod verify
-   $ sh build.sh && sh output/bootstrap.sh
+   go mod tidy && go mod verify
+   sh build.sh && sh output/bootstrap.sh
    ```
 
 6. Initiate the call
 
    ```shell
-   $ curl http://127.0.0.1:8080/ping
+   curl http://127.0.0.1:8080/ping
    pong
    ```
 

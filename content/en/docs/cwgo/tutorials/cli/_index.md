@@ -69,7 +69,7 @@ For parameters passed to the tool, refer to [documentation](/docs/hertz/tutorial
 ### Command description
 
 ```shell
-$ cwgo -h
+cwgo -h
 NAME:
     cwgo - All in one tools for CloudWeGo
 
