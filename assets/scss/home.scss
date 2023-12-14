@@ -219,6 +219,16 @@
   color: #cfdbe7;
 }
 
+@media (max-width: 768px){
+  .home-overview-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  .home-overview-subtitle {
+    margin-top: 1rem;
+  }
+}
+
 @media (min-width: 768px) {
   .home-overview-title {
     margin-top: 8rem !important;
