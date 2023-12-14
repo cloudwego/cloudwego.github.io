@@ -19,13 +19,13 @@ cwgo 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优�
 ## 安装 cwgo 工具
 
 ```shell
-$ go install github.com/cloudwego/cwgo@latest
+go install github.com/cloudwego/cwgo@latest
 ```
 
 用 go 命令来安装是最简单的，你也可以选择自己从源码构建和安装。要查看 cwgo 的安装位置，可以用：
 
 ```shell
-$ go list -f {{.Target}} github.com/cloudwego/cwgo
+go list -f {{.Target}} github.com/cloudwego/cwgo
 ```
 
 要使用 thrift 或 protobuf 的 IDL 生成代码，需要安装相应的编译器：[thriftgo](https://github.com/cloudwego/thriftgo) 或 [protoc](https://github.com/protocolbuffers/protobuf/releases)。
@@ -33,23 +33,23 @@ $ go list -f {{.Target}} github.com/cloudwego/cwgo
 thriftgo 安装：
 
 ```shell
-$ GO111MODULE=on go install github.com/cloudwego/thriftgo@latest
+GO111MODULE=on go install github.com/cloudwego/thriftgo@latest
 ```
 
 protoc 安装
 
 ```shell
 # brew 安装
-$ brew install protobuf
+brew install protobuf
 ```
 
 ```shell
 # 官方镜像安装，以 macos 为例
-$ wget https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protoc-3.19.4-osx-x86_64.zip
-$ unzip protoc-3.19.4-osx-x86_64.zip
-$ cp bin/protoc /usr/local/bin/protoc
+wget https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protoc-3.19.4-osx-x86_64.zip
+unzip protoc-3.19.4-osx-x86_64.zip
+cp bin/protoc /usr/local/bin/protoc
 # 确保 include/google 放入 /usr/local/include下
-$ cp -r include/google /usr/local/include/google
+cp -r include/google /usr/local/include/google
 ```
 
 首先，我们需要安装使用本示例所需要的命令行代码生成工具：
@@ -61,13 +61,13 @@ $ cp -r include/google /usr/local/include/google
 安装成功后，执行 `cwgo --version` 和 `thriftgo --version` 应该能够看到具体版本号的输出（版本号有差异，以 x.x.x 示例）：
 
 ```shell
-$ cwgo --version
+cwgo --version
 vx.x.x
 
-$ thriftgo --version
+thriftgo --version
 vx.x.x
 
-$ protoc --version
+protoc --version
 libprotoc x.x.x
 ```
 
@@ -76,8 +76,8 @@ libprotoc x.x.x
 1. 若将代码放置于 `$GOPATH/src` 下，需在 `$GOPATH/src` 下创建额外目录，进入该目录后再获取代码：
 
    ```shell
-   $ mkdir -p $(go env GOPATH)/src/github.com/cloudwego
-   $ cd $(go env GOPATH)/src/github.com/cloudwego
+   mkdir -p $(go env GOPATH)/src/github.com/cloudwego
+   cd $(go env GOPATH)/src/github.com/cloudwego
    ```
 
 2. 若将代码放置于 GOPATH 之外，可直接获取
@@ -95,14 +95,14 @@ cwgo 的具体使用请参考[命令行工具](/zh/docs/cwgo/tutorials/cli)
 1. 首先创建一个目录
 
    ```shell
-   $ mkdir -p $GOPATH/src/local/cwgo_test
-   $ cd $GOPATH/src/local/cwgo_test
+   mkdir -p $GOPATH/src/local/cwgo_test
+   cd $GOPATH/src/local/cwgo_test
    ```
 
 2. 创建一个 idl 目录
 
    ```shell
-   $ mkdir idl
+   mkdir idl
    ```
 
 3. 编写 idl/hello.thrift 文件
@@ -129,7 +129,7 @@ cwgo 的具体使用请参考[命令行工具](/zh/docs/cwgo/tutorials/cli)
    静态命令行
 
    ```shell
-   $ cwgo server -service=a.b.c -type HTTP  -idl=idl/hello.thrift
+   cwgo server -service=a.b.c -type HTTP  -idl=idl/hello.thrift
    ```
 
    动态命令行
@@ -139,14 +139,14 @@ cwgo 的具体使用请参考[命令行工具](/zh/docs/cwgo/tutorials/cli)
 5. 编译运行
 
    ```shell
-   $ go mod tidy && go mod verify
-   $ sh build.sh && sh output/bootstrap.sh
+   go mod tidy && go mod verify
+   sh build.sh && sh output/bootstrap.sh
    ```
 
 6. 发起调用
 
    ```shell
-   $ curl http://127.0.0.1:8080/ping
+   curl http://127.0.0.1:8080/ping
    pong
    ```
 

@@ -12,7 +12,7 @@ The cwgo tool supports generating the calling code of HTTP Client or RPC Client 
 Use `cwgo client -h` to view the help command for generating client code.
 
 ```sh
-$ cwgo client -h
+cwgo client -h
 NAME:
     cwgo client - generate RPC or HTTP client
 
