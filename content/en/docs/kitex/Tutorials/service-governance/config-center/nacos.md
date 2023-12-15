@@ -3,32 +3,32 @@ title: "Nacos"
 linkTitle: "Nacos"
 date: 2023-12-14
 weight: 4
-keywords: ["配置中心扩展","Nacos"]
-description: "使用 Nacos 作为 Kitex 的服务治理配置中心"
+keywords: ["ConfigCenter Extension","Nacos"]
+description: "Use Nacos as Kitex’s service governance configuration center"
 ---
 
-## 安装
+### Install
 `go get github.com/kitex-contrib/config-nacos`
 
-## Suite
-Nacos 的配置中心适配器，Kitex 通过 Nacos 中的配置转换为 Kitex 的治理特性配置。
+### Suite
+The configuration center adapter of Nacos.
 
 
-### Server
+#### Server
 
 ```go
 type NacosServerSuite struct {
 	nacosClient nacos.Client
-	service     string
+	service     string  // server-side service name
 	opts        utils.Options
 }
 ```
 
-函数签名：
+Function Signature:
 
 `func NewSuite(service string, cli nacos.Client, opts ...utils.Option) *NacosServerSuite `
 
-示例代码：
+Sample:
 
 ```go
 package main
@@ -77,7 +77,7 @@ func main() {
 }
 ```
 
-### Client
+#### Client
 
 ```go
 type NacosClientSuite struct {
@@ -88,11 +88,11 @@ type NacosClientSuite struct {
 }
 ```
 
-函数签名：
+Function Signature:
 
 `func NewSuite(service, client string, cli nacos.Client, opts ...utils.Option) *NacosClientSuite `
 
-示例代码：
+Sample:
 
 ```go
 package main
@@ -150,11 +150,11 @@ func main() {
 }
 ```
 
-### SetParser
+#### SetParser
 
-设置反序列化 Nacos 配置的自定义解析器，默认支持 json 和 yaml 格式，有新的格式需要用户自己实现。
+Set a custom parser for deserializing configuration, support json yaml default. User could extend it by self.
 
-函数签名:
+Function Signature:
 
 `func SetParser(parser ConfigParser)`
 
@@ -165,9 +165,9 @@ type ConfigParser interface {
 }
 ```
 
-示例代码:
+Sample:
 
-设置解析 xml 类型的配置
+Extend parsing XML types.
 ```go
 package main
 
@@ -203,69 +203,67 @@ func main() {
 }
 ```
 
-### Nacos 配置
+### Nacos Configuration
 
-根据 Options 的参数初始化 client，建立链接之后 suite 会根据 `Group` 以及 `ServerDataIDFormat` 或者 `ClientDataIDFormat` 订阅对应的配置并动态更新自身策略，具体参数参考下面 `Options` 变量。 
+The client is initialized according to the parameters of `Options` and connects to the nacos server. After the connection is established, the suite subscribes the appropriate configuration based on `Group`, `ServerDataIDFormat` and `ClientDataIDFormat` to updates its own policy dynamically. See the `Options` variables below for specific parameters.
 
-配置的格式默认支持 `json` 和 `yaml`，可以使用函数 [SetParser](https://github.com/kitex-contrib/config-nacos/blob/eb006978517678dd75a81513142d3faed6a66f8d/nacos/nacos.go#L68) 进行自定义格式解析方式，并在 `NewSuite` 的时候使用 `CustomFunction` 函数修改订阅函数的格式。
+The configuration format supports `json` and `yaml`. You can use the [SetParser](https://github.com/kitex-contrib/config-nacos/blob/eb006978517678dd75a81513142d3faed6a66f8d/nacos/nacos.go#L68) function to customise the format parsing method, and the `CustomFunction` function to customise the format of the subscription function during `NewSuite`.
+####
 
 #### CustomFunction
 
-允许用户自定义 nacos 的参数。
+Provide the mechanism to custom the nacos parameter `vo.ConfigParam`. 
 
-#### Options 默认值
+#### Options Variable
 
-| 参数 | 变量默认值 | 作用 |
+| Variable Name | Default Value | Introduction |
 | ------------------------- | ---------------------------------- | --------------------------------- |
-| Address               | 127.0.0.1                          | nacos 服务器地址, 如果参数为空使用 serverAddr 环境变量值 |
-| Port               | 8848                               | nacos 服务器端口, 如果参数为空使用 serverPort 环境变量值 |
-| NamespaceID                 |                                    | nacos 中的 namespace Id, 如果参数为空使用 namespace 环境变量值 |
-| ClientDataIDFormat              | {{.ClientServiceName}}.{{.ServerServiceName}}.{{.Category}}  | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ClientServiceName` `ServiceName` `Category` 三个元数据          |
-| ServerDataIDFormat              | {{.ServerServiceName}}.{{.Category}}  | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据          |
-| Group               | DEFAULT_GROUP                      | 使用固定值，也可以动态渲染，用法同 DataIDFormat          |
+| Address               | 127.0.0.1                          | Nacos server address, may use the environment of `serverAddr` |
+| Port               | 8848                               | Nacos server port, may use the environment of `serverPort` |
+| NamespaceID                 |                                    | The namespaceID of Nacos, may use the environment of `namespace` |
+| ClientDataIDFormat              | {{.ClientServiceName}}.{{.ServerServiceName}}.{{.Category}}  | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ClientServiceName` `ServiceName` `Category` three metadata that can be customised          |
+| ServerDataIDFormat              | {{.ServerServiceName}}.{{.Category}}  | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised          |
+| Group               | DEFAULT_GROUP                      | Use fixed values or dynamic rendering. Usage is the same as configDataId.          |
 
-#### 治理策略
+#### Governance Policy
+> The configDataId and configGroup in the following example use default values, the service name is `ServiceName` and the client name is `ClientName`.
 
-下面例子中的 configDataId 以及 configGroup 均使用默认值，服务名称为 ServiceName，客户端名称为 ClientName
-
-##### 限流 
-Category=limit
-> 限流目前只支持服务端，所以 ClientServiceName 为空。
+##### Rate Limit Category=limit
+> Currently, current limiting only supports the server side, so ClientServiceName is empty.
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/limiter/item_limiter.go#L33)
 
-|字段|说明|
+|Variable|Introduction|
 |----|----|
-|connection_limit|最大并发数量| 
-|qps_limit|每 100ms 内的最大请求数量| 
+|connection_limit| Maximum concurrent connections | 
+|qps_limit| Maximum request number every 100ms | 
 
-例子：
+Example:
 
 > configDataID: ServiceName.limit
 
 ```json
 {
-  "connection_limit": 100, 
-  "qps_limit": 2000        
+  "connection_limit": 100,
+  "qps_limit": 2000
 }
 ```
-注：
 
-- 限流配置的粒度是 Server 全局，不分 client、method
-- 「未配置」或「取值为 0」表示不开启
-- connection_limit 和 qps_limit 可以独立配置，例如 connection_limit = 100, qps_limit = 0
+Note:
 
-##### 重试 
-Category=retry
+- The granularity of the current limit configuration is server global, regardless of client or method.
+- Not configured or value is 0 means not enabled.
+- connection_limit and qps_limit can be configured independently, e.g. connection_limit = 100, qps_limit = 0
 
+##### Retry Policy Category=retry
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
 
-|参数|说明|
+|Variable|Introduction|
 |----|----|
 |type| 0: failure_policy 1: backup_policy| 
-|failure_policy.backoff_policy| 可以设置的策略： `fixed` `none` `random` | 
+|failure_policy.backoff_policy| Can only be set one of `fixed` `none` `random` | 
 
-例子：
+Example：
 
 > configDataId: ClientName.ServiceName.retry
 
@@ -308,21 +306,20 @@ Category=retry
     }
 }
 ```
-注：retry.Container 内置支持用 * 通配符指定默认配置（详见 [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) 方法）
+Note: retry.Container has built-in support for specifying the default configuration using the `*` wildcard (see the [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) method for details).
 
-##### 超时 
-Category=rpc_timeout
+##### RPC Timeout Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
 
-例子：
+Example：
 
 > configDataId: ClientName.ServiceName.rpc_timeout
 
 ```json
 {
   "*": {
-    "conn_timeout_ms": 100, 
+    "conn_timeout_ms": 100,
     "rpc_timeout_ms": 3000
   },
   "echo": {
@@ -331,22 +328,21 @@ Category=rpc_timeout
   }
 }
 ```
-注：kitex 的熔断实现目前不支持修改全局默认配置（详见 [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195)）
+Note: The circuit breaker implementation of kitex does not currently support changing the global default configuration (see [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195) for details).
 
-##### 熔断: 
-Category=circuit_break
+##### Circuit Break: Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
 
-|参数|说明|
+|Variable|Introduction|
 |----|----|
-|min_sample| 最小的统计样本数| 
+|min_sample| Minimum statistical sample number| 
 
-例子：
+Example：
 
-echo 方法使用下面的配置（0.3、100），其他方法使用全局默认配置（0.5、200）
+The echo method uses the following configuration (0.3, 100) and other methods use the global default configuration (0.5, 200)
 
-> configDataId: `ClientName.ServiceName.circuit_break`
+> configDataId: `ClientName.ServiecName.circuit_break`
 
 ```json
 {
@@ -358,8 +354,12 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
 }
 ```
 
-## 兼容性
-该包使用 Nacos1.x 客户端，Nacos2.0 和 Nacos1.0 服务端完全兼容该版本. [详情](https://nacos.io/zh-cn/docs/v2/upgrading/2.0.0-compatibility.html)
+### Note
+Do not delete the config in nacos, otherwise the nacos sdk may produce a large warning log.
+
+
+## Compatibility
+This Package use Nacos1.x client. The Nacos2.0 and Nacos1.0 Server are fully compatible with it. [see](https://nacos.io/en-us/docs/v2/upgrading/2.0.0-compatibility.html)
 
 
 
