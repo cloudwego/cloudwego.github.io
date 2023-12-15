@@ -358,6 +358,9 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
 }
 ```
 
+### 备注
+在启动后不要删除 Nacos 上的配置信息，不然会产生大量的警告日志
+
 ## 兼容性
 该包使用 Nacos1.x 客户端，Nacos2.0 和 Nacos1.0 服务端完全兼容该版本. [详情](https://nacos.io/zh-cn/docs/v2/upgrading/2.0.0-compatibility.html)
 

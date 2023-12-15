@@ -208,7 +208,6 @@ func main() {
 The client is initialized according to the parameters of `Options` and connects to the nacos server. After the connection is established, the suite subscribes the appropriate configuration based on `Group`, `ServerDataIDFormat` and `ClientDataIDFormat` to updates its own policy dynamically. See the `Options` variables below for specific parameters.
 
 The configuration format supports `json` and `yaml`. You can use the [SetParser](https://github.com/kitex-contrib/config-nacos/blob/eb006978517678dd75a81513142d3faed6a66f8d/nacos/nacos.go#L68) function to customise the format parsing method, and the `CustomFunction` function to customise the format of the subscription function during `NewSuite`.
-####
 
 #### CustomFunction
 
@@ -228,7 +227,8 @@ Provide the mechanism to custom the nacos parameter `vo.ConfigParam`.
 #### Governance Policy
 > The configDataId and configGroup in the following example use default values, the service name is `ServiceName` and the client name is `ClientName`.
 
-##### Rate Limit Category=limit
+##### Rate Limit 
+Category=limit
 > Currently, current limiting only supports the server side, so ClientServiceName is empty.
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/limiter/item_limiter.go#L33)
@@ -255,7 +255,8 @@ Note:
 - Not configured or value is 0 means not enabled.
 - connection_limit and qps_limit can be configured independently, e.g. connection_limit = 100, qps_limit = 0
 
-##### Retry Policy Category=retry
+##### Retry Policy 
+Category=retry
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
 
 |Variable|Introduction|
@@ -308,7 +309,8 @@ Example：
 ```
 Note: retry.Container has built-in support for specifying the default configuration using the `*` wildcard (see the [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) method for details).
 
-##### RPC Timeout Category=rpc_timeout
+##### RPC Timeout 
+Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
 
@@ -330,7 +332,8 @@ Example：
 ```
 Note: The circuit breaker implementation of kitex does not currently support changing the global default configuration (see [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195) for details).
 
-##### Circuit Break: Category=circuit_break
+##### Circuit Break 
+Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
 
