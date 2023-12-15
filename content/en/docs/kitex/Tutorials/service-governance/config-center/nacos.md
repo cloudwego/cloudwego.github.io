@@ -1,6 +1,6 @@
 ---
-title: "Nacos"
-linkTitle: "Nacos"
+title: "nacos"
+linkTitle: "nacos"
 date: 2023-12-14
 weight: 4
 keywords: ["ConfigCenter Extension","Nacos"]
@@ -10,11 +10,11 @@ description: "Use Nacos as Kitex’s service governance configuration center"
 ### Install
 `go get github.com/kitex-contrib/config-nacos`
 
-### Suite
+## Suite
 The configuration center adapter of Nacos.
 
 
-#### Server
+### Server
 
 ```go
 type NacosServerSuite struct {
@@ -77,7 +77,7 @@ func main() {
 }
 ```
 
-#### Client
+### Client
 
 ```go
 type NacosClientSuite struct {
@@ -150,7 +150,7 @@ func main() {
 }
 ```
 
-#### SetParser
+### SetParser
 
 Set a custom parser for deserializing configuration, support json yaml default. User could extend it by self.
 
@@ -203,17 +203,17 @@ func main() {
 }
 ```
 
-### Nacos Configuration
+## Nacos Configuration
 
 The client is initialized according to the parameters of `Options` and connects to the nacos server. After the connection is established, the suite subscribes the appropriate configuration based on `Group`, `ServerDataIDFormat` and `ClientDataIDFormat` to updates its own policy dynamically. See the `Options` variables below for specific parameters.
 
 The configuration format supports `json` and `yaml`. You can use the [SetParser](https://github.com/kitex-contrib/config-nacos/blob/eb006978517678dd75a81513142d3faed6a66f8d/nacos/nacos.go#L68) function to customise the format parsing method, and the `CustomFunction` function to customise the format of the subscription function during `NewSuite`.
 
-#### CustomFunction
+### CustomFunction
 
 Provide the mechanism to custom the nacos parameter `vo.ConfigParam`. 
 
-#### Options Variable
+### Options Variable
 
 | Variable Name | Default Value | Introduction |
 | ------------------------- | ---------------------------------- | --------------------------------- |
@@ -224,10 +224,10 @@ Provide the mechanism to custom the nacos parameter `vo.ConfigParam`.
 | ServerDataIDFormat              | {{.ServerServiceName}}.{{.Category}}  | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised          |
 | Group               | DEFAULT_GROUP                      | Use fixed values or dynamic rendering. Usage is the same as configDataId.          |
 
-#### Governance Policy
+### Governance Policy
 > The configDataId and configGroup in the following example use default values, the service name is `ServiceName` and the client name is `ClientName`.
 
-##### Rate Limit 
+#### Rate Limit 
 Category=limit
 > Currently, current limiting only supports the server side, so ClientServiceName is empty.
 
@@ -255,7 +255,7 @@ Note:
 - Not configured or value is 0 means not enabled.
 - connection_limit and qps_limit can be configured independently, e.g. connection_limit = 100, qps_limit = 0
 
-##### Retry Policy 
+#### Retry Policy 
 Category=retry
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
 
@@ -309,7 +309,7 @@ Example：
 ```
 Note: retry.Container has built-in support for specifying the default configuration using the `*` wildcard (see the [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) method for details).
 
-##### RPC Timeout 
+#### RPC Timeout 
 Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
@@ -332,7 +332,7 @@ Example：
 ```
 Note: The circuit breaker implementation of kitex does not currently support changing the global default configuration (see [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195) for details).
 
-##### Circuit Break 
+#### Circuit Break 
 Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
@@ -357,7 +357,7 @@ The echo method uses the following configuration (0.3, 100) and other methods us
 }
 ```
 
-### Note
+## Note
 Do not delete the config in nacos, otherwise the nacos sdk may produce a large warning log.
 
 

@@ -1,6 +1,6 @@
 ---
-title: "Nacos"
-linkTitle: "Nacos"
+title: "nacos"
+linkTitle: "nacos"
 date: 2023-12-14
 weight: 4
 keywords: ["配置中心扩展","Nacos"]
@@ -203,17 +203,17 @@ func main() {
 }
 ```
 
-### Nacos 配置
+## Nacos 配置
 
 根据 Options 的参数初始化 client，建立链接之后 suite 会根据 `Group` 以及 `ServerDataIDFormat` 或者 `ClientDataIDFormat` 订阅对应的配置并动态更新自身策略，具体参数参考下面 `Options` 变量。 
 
 配置的格式默认支持 `json` 和 `yaml`，可以使用函数 [SetParser](https://github.com/kitex-contrib/config-nacos/blob/eb006978517678dd75a81513142d3faed6a66f8d/nacos/nacos.go#L68) 进行自定义格式解析方式，并在 `NewSuite` 的时候使用 `CustomFunction` 函数修改订阅函数的格式。
 
-#### CustomFunction
+### CustomFunction
 
 允许用户自定义 nacos 的参数。
 
-#### Options 默认值
+### Options 默认值
 
 | 参数 | 变量默认值 | 作用 |
 | ------------------------- | ---------------------------------- | --------------------------------- |
@@ -224,11 +224,11 @@ func main() {
 | ServerDataIDFormat              | {{.ServerServiceName}}.{{.Category}}  | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据          |
 | Group               | DEFAULT_GROUP                      | 使用固定值，也可以动态渲染，用法同 DataIDFormat          |
 
-#### 治理策略
+### 治理策略
 
 下面例子中的 configDataId 以及 configGroup 均使用默认值，服务名称为 ServiceName，客户端名称为 ClientName
 
-##### 限流 
+#### 限流 
 Category=limit
 > 限流目前只支持服务端，所以 ClientServiceName 为空。
 
@@ -255,7 +255,7 @@ Category=limit
 - 「未配置」或「取值为 0」表示不开启
 - connection_limit 和 qps_limit 可以独立配置，例如 connection_limit = 100, qps_limit = 0
 
-##### 重试 
+#### 重试 
 Category=retry
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
@@ -310,7 +310,7 @@ Category=retry
 ```
 注：retry.Container 内置支持用 * 通配符指定默认配置（详见 [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) 方法）
 
-##### 超时 
+#### 超时 
 Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
@@ -333,7 +333,7 @@ Category=rpc_timeout
 ```
 注：kitex 的熔断实现目前不支持修改全局默认配置（详见 [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195)）
 
-##### 熔断: 
+#### 熔断: 
 Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
@@ -358,7 +358,7 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
 }
 ```
 
-### 备注
+## 注意
 在启动后不要删除 Nacos 上的配置信息，不然会产生大量的警告日志
 
 ## 兼容性
