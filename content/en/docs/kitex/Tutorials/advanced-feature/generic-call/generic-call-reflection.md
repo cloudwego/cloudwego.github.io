@@ -8,7 +8,7 @@ description: ""
 
 ## What is  Thrift Reflection ?
 
-In short, **similar to****pb reflec****, it does not rely on static code to add, delete, modify, and write Thrift data**.
+In short, **similar to [pb reflec ](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect), it does not rely on static code to add, delete, modify, and write Thrift data**.
 
 Reflection uses specific generics to describe any data at runtime. Compared with static struct, it has the characteristics of **flexible addition, deletion, and modification, and does not depend on static code**. Currently github.com/cloudwego/dynamicgo has implemented a set of reflection APIs  for the thrift binary protocol, which can be roughly divided into Thrift Value/Node and Thrift DOM  according to usage scenarios.
 
@@ -18,7 +18,7 @@ Used for the **addition, deletion, modification, and lookup of a small number of
 
 ## Thrift DOM
 
-The **document object tree model**is used to **describe****the full****deserialization  of Thrift data**. Since the Thrift protocol itself has self-description ability, we can deserialize it into a specific tree structure for more complex **container traversal , field bit shifting**and other operations. Specific business scenarios include **DSL mapping, data packet merging,**etc. in BFF services. Dynamicgo provides [thrift/generic. PathNode ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode)encapsulation, which can handle thrift data of arbitrary complexity without binding dynamic type descriptions.
+The **document object tree model**is used to **describe the full deserialization  of Thrift data**. Since the Thrift protocol itself has self-description ability, we can deserialize it into a specific tree structure for more complex **container traversal , field bit shifting**and other operations. Specific business scenarios include **DSL mapping, data packet merging,**etc. in BFF services. Dynamicgo provides [thrift/generic. PathNode ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode)encapsulation, which can handle thrift data of arbitrary complexity without binding dynamic type descriptions.
 
 ## Why use Thrift generics instead of Kitex Map/JSON generalization calls ?
 
@@ -64,10 +64,9 @@ func (g *ExampleValueServiceImpl) GenericCall(ctx context.Context, method string
     // wrap response as thrift REPLY message
     return dt.WrapBinaryBody(resp, methodName, dt.REPLY, 0, seqID)
 }
-
 ```
 
-1. Because the use of Thrift Value here requires specific binding corresponding to the dynamic type description of the IDL , it can be loaded in the initialization stage (Note: Dynamic updates are not considered here , if necessary, you can implement an atomic update global variable)
+2. Because the use of Thrift Value here requires specific binding corresponding to the dynamic type description of the IDL , it can be loaded in the initialization stage (Note: Dynamic updates are not considered here , if necessary, you can implement an atomic update global variable)
 
 ```go
 var (
@@ -83,15 +82,15 @@ func initDescriptor() {
     if err != nil {
         panic(err)
     }
-    ExampleReqDesc = **sdesc.Functions()["ExampleMethod"].Request().Struct().FieldById(1).Type()**
-    ExampleRespDesc = **sdesc.Functions()["ExampleMethod"].Response().Struct().FieldById(0).Type()**
-    StrDesc = **ExampleReqDesc.Struct().FieldById(1).Type()**
-    BaseLogidPath = **[]dg.Path{dg.NewPathFieldName("Base"), dg.NewPathFieldName("LogID")}**
+    ExampleReqDesc = sdesc.Functions()["ExampleMethod"].Request().Struct().FieldById(1).Type()
+    ExampleRespDesc = sdesc.Functions()["ExampleMethod"].Response().Struct().FieldById(0).Type()
+    StrDesc = ExampleReqDesc.Struct().FieldById(1).Type()
+    BaseLogidPath = []dg.Path{dg.NewPathFieldName("Base"), dg.NewPathFieldName("LogID")}
 }
-
 ```
 
-1. Pass the request body to the business handler for processing logic. The specific operation is based on the encapsulation API of dynamicgo/thrift. Value. There are two ways to pass the path (assuming A is the Struct field name and B is the Map key):
+3. Pass the request body to the business handler for processing logic. The specific operation is based on the encapsulation API of dynamicgo/thrift. Value. There are two ways to pass the path (assuming A is the Struct field name and B is the Map key):
+
    1. One-time pass: Value. GetByPath ([] Path {NewPathFieldName (A), NewPathStrKey (B) })
    2. Chain call: Value. FieldByName (A).GetByStr (B)
 
@@ -99,7 +98,7 @@ func initDescriptor() {
  // biz logic
 func ExampleValueServiceHandler(request []byte) (resp []byte, err error) {
     // wrap body as Value
-    req := **dg.NewValue(ExampleReqDesc, request)**
+    req := dg.NewValue(ExampleReqDesc, request)
     if err != nil {
         return nil, err
     }
@@ -107,16 +106,16 @@ func ExampleValueServiceHandler(request []byte) (resp []byte, err error) {
     required_field := ""
     logid := ""
     // if B == true then get logid and required_field
-    if b, err := **req.FieldByName("B").Bool();** err == nil && b {
-        if e := **req.GetByPath(BaseLogidPath...);** e.Error() != ""{
+    if b, err := req.FieldByName("B").Bool(); err == nil && b {
+        if e := req.GetByPath(BaseLogidPath...); e.Error() != ""{
             return nil, e
         } else {
             logid, _ = e.String()
         }
-        if a := **req.FieldByName("TestMap").GetByStr("a");** a.Error() != "" {
+        if a := req.FieldByName("TestMap").GetByStr("a"); a.Error() != "" {
             return nil, a
         } else {
-            required_field, _ = **a.FieldByName("Bar").String()**
+            required_field, _ = a.FieldByName("Bar").String()
         }
     }
 
@@ -124,45 +123,43 @@ func ExampleValueServiceHandler(request []byte) (resp []byte, err error) {
     return MakeExampleRespBinary(RespMsg, required_field, logid)
 }
 
-
 ```
 
-1. After processing the request, construct a response based on dynamicgo/thrift. PathNode for return
+4. After processing the request, construct a response based on dynamicgo/thrift. PathNode for return
 
 ```go
 
 // MakeExampleRespBinary make a Thrift-Binary-Encoding response using ExampleResp structured DOM
 // Except msg, required_field and logid, which are reset everytime
 func MakeExampleRespBinary(msg string, require_field string, logid string) ([]byte, error) {
-    dom := **dg.PathNode{**
-**Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),**
-**Next: []dg.PathNode{**
-**{**
-**Path: dg.NewPathFieldId(1),**
-**Node: dg.NewNodeString(msg),**
-**},**
-**{**
-**Path: dg.NewPathFieldId(2),**
-**Node: dg.NewNodeString(require_field),**
-**},**
-**{**
-**Path: dg.NewPathFieldId(255),**
-**Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),**
-**Next: []dg.PathNode{**
-**{**
-**Path: dg.NewPathFieldId(1),**
-**Node: dg.NewNodeString(logid),**
-**},**
-**},**
-**},**
-**},**
-**}**
+    dom := dg.PathNode{
+        Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+        Next: []dg.PathNode{
+            {
+                Path: dg.NewPathFieldId(1),
+                Node: dg.NewNodeString(msg),
+            },
+            {
+                Path: dg.NewPathFieldId(2),
+                Node: dg.NewNodeString(require_field),
+            },
+            {
+                Path: dg.NewPathFieldId(255),
+                Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathFieldId(1),
+                        Node: dg.NewNodeString(logid),
+                    },
+                },
+            },
+        },
+    }
     return dom.Marshal(DynamicgoOptions)
 }
-
 ```
 
-1. Finally, register and start the binary generalization server
+5. Finally, register and start the binary generalization server
 
 ```go
 func initServer() {
@@ -178,7 +175,6 @@ func initServer() {
     }()
     time.Sleep(500 * time.Millisecond)
 }
-
 ```
 
 ## Client （Thrift Node + DOM）
@@ -193,10 +189,9 @@ func initClient() {
     genericCli, _ := genericclient.NewClient("destServiceName", g, client.WithHostPorts("127.0.0.1:9009"))
     cli = genericCli
 }
-
 ```
 
-1. Construct business request based on dynamicgo/generic. PathNode
+2. Construct business request based on dynamicgo/generic. PathNode
 
 ```go
 // MakeExampleReqBinary make a Thrift-Binary-Encoding request using ExampleReq structured DOM
@@ -293,10 +288,9 @@ func MakeExampleReqBinary(B bool, A string, logid string) ([]byte, error) {
     }
     return dom.Marshal(DynamicgoOptions)
 }
-
 ```
 
-1. Encapsulates thrift  binary message, initiates binary generalization call
+3. Encapsulates thrift  binary message, initiates binary generalization call
 
 ```go
 func TestThriftReflect(t *testing.T) {
@@ -321,10 +315,9 @@ func TestThriftReflect(t *testing.T) {
     // biz logic...
     ExampleClientHandler(t, body, log_id)
 }
-
 ```
 
-1. ExampleClientHandler is specific business logic, here according to business needs first response body package dynamicgo/generic. Node **or**PathNode ( DOM ), and based on its API for business logic processing
+4. ExampleClientHandler is specific business logic, here according to business needs first response body package dynamicgo/generic. Node **or**PathNode ( DOM ), and based on its API for business logic processing
 
 ```go
 // biz logic...
@@ -333,14 +326,14 @@ func ExampleClientHandler_Node(response []byte, log_id string) error {
     resp := dg.NewNode(dt.STRUCT, response)
 
     // check node values by Node APIs
-    msg, err := **resp.Field(1).String()**
+    msg, err := resp.Field(1).String()
     if err != nil {
         return err
     }
     if msg != RespMsg {
         return errors.New("msg does not match")
     }
-    require_field, err := **resp.Field(2).String()**
+    require_field, err := resp.Field(2).String()
     if err != nil {
         return err
     }
@@ -363,7 +356,7 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
     }
     // spew.Dump(root) // -- only root.Next is set 
     // check node values by PathNode APIs
-    require_field2, err := **root.Field(2, DynamicgoOptions).Node.String()**
+    require_field2, err := root.Field(2, DynamicgoOptions).Node.String()
     if err != nil {
         return err
     }
@@ -378,7 +371,7 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
     }
     // spew.Dump(root) // -- every PathNode.Next will be set if it is a nesting-typed (LIST/SET/MAP/STRUCT)
     // check node values by PathNode APIs
-    logid, err := **root.Field(255, DynamicgoOptions).Field(1, DynamicgoOptions).Node.String()**
+    logid, err := root.Field(255, DynamicgoOptions).Field(1, DynamicgoOptions).Node.String()
     if logid != log_id {
         return errors.New("logid not match")
     }
@@ -388,10 +381,9 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
     clientRespPool.Put(root)
     return nil
 }
-
 ```
 
-Note that **memory pooling****is used for DOM access**, which can greatly improve Thrift 's deserialization performance.
+Note that **memory pooling is used for DOM access**, which can greatly improve Thrift 's deserialization performance.
 
 ## Performance testing
 
@@ -410,8 +402,11 @@ Test code
 Testing environment
 
 - goos: darwin
+
   goarch: amd64
+
   pkg: github.com/cloudwego/kitex/pkg/generic/thrift_reflect
+
   cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
 
 Test results
@@ -422,7 +417,6 @@ Test results
 BenchmarkThriftMapExample-16                    9633        109521 ns/op        7622 B/op        138 allocs/op
 BenchmarkThriftReflectExample_Node-16          14732         74397 ns/op        4416 B/op         76 allocs/op
 BenchmarkThriftReflectExample_DOM-16           14666         84119 ns/op        4435 B/op         76 allocs/op
-
 ```
 
 - Medium data (1766B)
@@ -431,7 +425,6 @@ BenchmarkThriftReflectExample_DOM-16           14666         84119 ns/op        
 BenchmarkThriftMapExample-16                    3484        310349 ns/op      179561 B/op       2250 allocs/op
 BenchmarkThriftReflectExample_Node-16          10813        108230 ns/op       45291 B/op        478 allocs/op
 BenchmarkThriftReflectExample_DOM-16           10000        115363 ns/op       45412 B/op        478 allocs/op
-
 ```
 
 - Big data (150 KB )
@@ -440,7 +433,6 @@ BenchmarkThriftReflectExample_DOM-16           10000        115363 ns/op       4
 BenchmarkThriftMapExample-16                      57      18063936 ns/op    17491551 B/op     220247 allocs/op
 BenchmarkThriftReflectExample_Node-16            322       3671377 ns/op     4332477 B/op      50029 allocs/op
 BenchmarkThriftReflectExample_DOM-16             321       3719926 ns/op     4333837 B/op      50032 allocs/op
-
 ```
 
 It can be seen that as the data level continues to increase, the performance advantage of Thrift reflection over map generalization is increasing (up to more than 3 times).
@@ -457,7 +449,6 @@ desc := svc.Functions()[METHODNAME].Request().Struct().FieldById(1).Type() // ex
 
 var dom = new(PathNode)
 err := DescriptorToPathNode(desc, dom, &Options{})
-
 ```
 
 Then traverse the DOM according to the business logic to modify specific fields
@@ -469,7 +460,6 @@ for i, v := range dom.Next {
     }
     ....
 }
-
 ```
 
 ### Quickly Construct a Node /Value
@@ -488,7 +478,6 @@ func GetNewRequest(idXX int, nameXX string) []byte {
     data, err := n.Marshal(opts)
     return data
 }
-
 ```
 
 ## Attention
