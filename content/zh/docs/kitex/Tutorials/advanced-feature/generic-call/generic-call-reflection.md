@@ -8,23 +8,23 @@ description: ""
 
 ## 什么是 Thrift 反射？
 
-一句话总结，**类似于** [pb reflec](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect)，**不依赖静态代码对****Thrift****数据进行增删改查写**。
+一句话总结，**类似于** [pb reflec](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect)，**不依赖静态代码对 Thrift 数据进行增删改查写**。
 
 反射即采用特定的泛型来描述运行时的任意数据，相比于静态的 struct 具有 **增删查改灵活、不依赖于静态代码** 的特点。当前 github.com/cloudwego/dynamicgo 实现了一套 thrift binary 协议的反射 API，按使用场景大致分为 Thrift Value/Node 和 Thrift DOM 两种。
 
 ## Thrift Value/Node
 
-用于 rpc 数据包中**较****少量****字段的增删改查**。对于给定的路径（field id/field name/map key/list index），基于编码带有的数据类型**跳过字节流中不必要的数据节点**，**定位到所需数据在字节流的起止区间**进行处理。具体使用场景包括 **敏感字段擦除、数据包裁剪 、协议转换**等。dynamicgo 提供了 [thrift/generic.Value](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-value) 和 [thrift/generic.Node](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-node) 两种封装：前者可以支持基于 FieldName 进行查找，但是需要绑定动态类型描述 TypeDescriptor；后者不支持基于 FieldName（但支持 FieldID）进行查找，因此也不需要动态类型描述。
+用于 rpc 数据包中**较少量字段的增删改查**。对于给定的路径（field id/field name/map key/list index），基于编码带有的数据类型**跳过字节流中不必要的数据节点**，**定位到所需数据在字节流的起止区间**进行处理。具体使用场景包括 **敏感字段擦除、数据包裁剪 、协议转换**等。dynamicgo 提供了 [thrift/generic.Value](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-value) 和 [thrift/generic.Node](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-node) 两种封装：前者可以支持基于 FieldName 进行查找，但是需要绑定动态类型描述 TypeDescriptor；后者不支持基于 FieldName（但支持 FieldID）进行查找，因此也不需要动态类型描述。
 
 ## Thrift DOM
 
-通过 **文档对象树模型**来**描述****全量****反****序列化****的****Thrift****数据**。由于 Thrift 协议本身具有自描述能力，我们可以将其反序列化到一种特定的树型结构中，来进行更为复杂的**容器****遍历****、字段位移**等操作。具体业务场景包括 BFF 服务中的 **DSL****映射、数据包合并**等。dynamicgo 提供了 [thrift/generic.PathNode](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode) 的封装，可以不需要绑定动态类型描述来处理任意复杂度的 thrift 数据。
+通过 **文档对象树模型**来**描述全量反序列化的 Thrift 数据**。由于 Thrift 协议本身具有自描述能力，我们可以将其反序列化到一种特定的树型结构中，来进行更为复杂的**容器遍历、字段位移**等操作。具体业务场景包括 BFF 服务中的 **DSL 映射、数据包合并**等。dynamicgo 提供了 [thrift/generic.PathNode](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode) 的封装，可以不需要绑定动态类型描述来处理任意复杂度的 thrift 数据。
 
 ## 为什么要用 Thrift 泛型 替代 Kitex Map/JSON 泛化调用？
 
 一句话总结：**性能更好**。
 
-Thrift 泛型需求一般来源于 **rpc****泛化****调用、http<>rpc 协议转换** 等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 [https://github.com/cloudwego/dynamicgo/blob/main/introduction.md](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md)。
+Thrift 泛型需求一般来源于 **rpc 泛化调用、http<>rpc 协议转换**等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 [https://github.com/cloudwego/dynamicgo/blob/main/introduction.md](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md)。
 
 具体对比结果见下文【测试数据】部分。
 
@@ -64,10 +64,9 @@ func (g *ExampleValueServiceImpl) GenericCall(ctx context.Context, method string
     // wrap response as thrift REPLY message
     return dt.WrapBinaryBody(resp, methodName, dt.REPLY, 0, seqID)
 }
-
 ```
 
-1. 由于这里使用 Thrift Value 需要具体绑定对应 IDL 的动态类型描述，可以在初始化阶段进行加载（注：这里不考虑动态更新，如果需要可以自行实现一个原子更新全局变量）
+2. 由于这里使用 Thrift Value 需要具体绑定对应 IDL 的动态类型描述，可以在初始化阶段进行加载（注：这里不考虑动态更新，如果需要可以自行实现一个原子更新全局变量）
 
 ```go
 var (
@@ -83,15 +82,15 @@ func initDescriptor() {
     if err != nil {
         panic(err)
     }
-    ExampleReqDesc = **sdesc.Functions()["ExampleMethod"].Request().Struct().FieldById(1).Type()**
-    ExampleRespDesc = **sdesc.Functions()["ExampleMethod"].Response().Struct().FieldById(0).Type()**
-    StrDesc = **ExampleReqDesc.Struct().FieldById(1).Type()**
-    BaseLogidPath = **[]dg.Path{dg.NewPathFieldName("Base"), dg.NewPathFieldName("LogID")}**
+    ExampleReqDesc = sdesc.Functions()["ExampleMethod"].Request().Struct().FieldById(1).Type()
+    ExampleRespDesc = sdesc.Functions()["ExampleMethod"].Response().Struct().FieldById(0).Type()
+    StrDesc = ExampleReqDesc.Struct().FieldById(1).Type()
+    BaseLogidPath = []dg.Path{dg.NewPathFieldName("Base"), dg.NewPathFieldName("LogID")}
 }
-
 ```
 
-1. 将 request body 传递给业务 handler 进行处理逻辑，具体操作基于 dynamicgo/thrift.Value 的封装 API 进行。路径传递有两种方式（假设 A 为 Struct 字段名，B 为 Map key）：
+3. 将 request body 传递给业务 handler 进行处理逻辑，具体操作基于 dynamicgo/thrift.Value 的封装 API 进行。路径传递有两种方式（假设 A 为 Struct 字段名，B 为 Map key）：
+
    1. 一次性传入：Value.GetByPath([]Path{NewPathFieldName(A), NewPathStrKey(B)})
    2. 链式调用：Value.FieldByName(A).GetByStr(B)
 
@@ -99,7 +98,7 @@ func initDescriptor() {
  // biz logic
 func ExampleValueServiceHandler(request []byte) (resp []byte, err error) {
     // wrap body as Value
-    req := **dg.NewValue(ExampleReqDesc, request)**
+    req := dg.NewValue(ExampleReqDesc, request)
     if err != nil {
         return nil, err
     }
@@ -107,16 +106,16 @@ func ExampleValueServiceHandler(request []byte) (resp []byte, err error) {
     required_field := ""
     logid := ""
     // if B == true then get logid and required_field
-    if b, err := **req.FieldByName("B").Bool();** err == nil && b {
-        if e := **req.GetByPath(****BaseLogidPath****...);** e.Error() != ""{
+    if b, err := req.FieldByName("B").Bool(); err == nil && b {
+        if e := req.GetByPath(BaseLogidPath...); e.Error() != ""{
             return nil, e
         } else {
             logid, _ = e.String()
         }
-        if a := **req.FieldByName("TestMap").GetByStr("a");** a.Error() != "" {
+        if a := req.FieldByName("TestMap").GetByStr("a"); a.Error() != "" {
             return nil, a
         } else {
-            required_field, _ = **a.FieldByName("Bar").String()**
+            required_field, _ = a.FieldByName("Bar").String()
         }
     }
 
@@ -124,45 +123,43 @@ func ExampleValueServiceHandler(request []byte) (resp []byte, err error) {
     return MakeExampleRespBinary(RespMsg, required_field, logid)
 }
 
-
 ```
 
-1. 处理完 request 之后，基于 dynamicgo/thrift.PathNode 进行构造 response 进行返回
+4. 处理完 request 之后，基于 dynamicgo/thrift.PathNode 进行构造 response 进行返回
 
 ```go
 
 // MakeExampleRespBinary make a Thrift-Binary-Encoding response using ExampleResp structured DOM
 // Except msg, required_field and logid, which are reset everytime
 func MakeExampleRespBinary(msg string, require_field string, logid string) ([]byte, error) {
-    dom := **dg.PathNode{**
-**Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),**
-**Next: []dg.PathNode{**
-**{**
-**Path: dg.NewPathFieldId(1),**
-**Node: dg.NewNodeString(msg),**
-**},**
-**{**
-**Path: dg.NewPathFieldId(2),**
-**Node: dg.NewNodeString(require_field),**
-**},**
-**{**
-**Path: dg.NewPathFieldId(255),**
-**Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),**
-**Next: []dg.PathNode{**
-**{**
-**Path: dg.NewPathFieldId(1),**
-**Node: dg.NewNodeString(logid),**
-**},**
-**},**
-**},**
-**},**
-**}**
+    dom := dg.PathNode{
+        Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+        Next: []dg.PathNode{
+            {
+                Path: dg.NewPathFieldId(1),
+                Node: dg.NewNodeString(msg),
+            },
+            {
+                Path: dg.NewPathFieldId(2),
+                Node: dg.NewNodeString(require_field),
+            },
+            {
+                Path: dg.NewPathFieldId(255),
+                Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathFieldId(1),
+                        Node: dg.NewNodeString(logid),
+                    },
+                },
+            },
+        },
+    }
     return dom.Marshal(DynamicgoOptions)
 }
-
 ```
 
-1. 最后，注册并启动二进制泛化 server
+5. 最后，注册并启动二进制泛化 server
 
 ```go
 func initServer() {
@@ -178,7 +175,6 @@ func initServer() {
     }()
     time.Sleep(500 * time.Millisecond)
 }
-
 ```
 
 ## Client （Thrift Node + DOM）
@@ -193,10 +189,9 @@ func initClient() {
     genericCli, _ := genericclient.NewClient("destServiceName", g, client.WithHostPorts("127.0.0.1:9009"))
     cli = genericCli
 }
-
 ```
 
-1. 构造业务请求，基于 dynamicgo/generic.PathNode 进行
+2. 构造业务请求，基于 dynamicgo/generic.PathNode 进行
 
 ```go
 // MakeExampleReqBinary make a Thrift-Binary-Encoding request using ExampleReq structured DOM
@@ -293,10 +288,9 @@ func MakeExampleReqBinary(B bool, A string, logid string) ([]byte, error) {
     }
     return dom.Marshal(DynamicgoOptions)
 }
-
 ```
 
-1. 封装 thrift binary message，发起二进制泛化调用
+3. 封装 thrift binary message，发起二进制泛化调用
 
 ```go
 func TestThriftReflect(t *testing.T) {
@@ -321,10 +315,9 @@ func TestThriftReflect(t *testing.T) {
     // biz logic...
     ExampleClientHandler(t, body, log_id)
 }
-
 ```
 
-1. ExampleClientHandler 为具体业务逻辑，这里可根据业务需要先将 response body 封装成 dynamicgo/generic.Node **或** PathNode (DOM），并基于其 API 进行业务逻辑处理
+4. ExampleClientHandler 为具体业务逻辑，这里可根据业务需要先将 response body 封装成 dynamicgo/generic.Node **或** PathNode (DOM），并基于其 API 进行业务逻辑处理
 
 ```go
 // biz logic...
@@ -333,14 +326,14 @@ func ExampleClientHandler_Node(response []byte, log_id string) error {
     resp := dg.NewNode(dt.STRUCT, response)
 
     // check node values by Node APIs
-    msg, err := **resp.Field(1).String()**
+    msg, err := resp.Field(1).String()
     if err != nil {
         return err
     }
     if msg != RespMsg {
         return errors.New("msg does not match")
     }
-    require_field, err := **resp.Field(2).String()**
+    require_field, err := resp.Field(2).String()
     if err != nil {
         return err
     }
@@ -363,7 +356,7 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
     }
     // spew.Dump(root) // -- only root.Next is set 
     // check node values by PathNode APIs
-    require_field2, err := **root.Field(2, DynamicgoOptions).Node.String()**
+    require_field2, err := root.Field(2, DynamicgoOptions).Node.String()
     if err != nil {
         return err
     }
@@ -378,7 +371,7 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
     }
     // spew.Dump(root) // -- every PathNode.Next will be set if it is a nesting-typed (LIST/SET/MAP/STRUCT)
     // check node values by PathNode APIs
-    logid, err := **root.Field(255, DynamicgoOptions).Field(1, DynamicgoOptions).Node.String()**
+    logid, err := root.Field(255, DynamicgoOptions).Field(1, DynamicgoOptions).Node.String()
     if logid != log_id {
         return errors.New("logid not match")
     }
@@ -388,10 +381,9 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
     clientRespPool.Put(root)
     return nil
 }
-
 ```
 
-注意，这里使用了**内存池化****来进行****DOM****的取用**，可大幅提升 Thrift 反序列化性能。
+注意，这里使用了**内存池化来进行 DOM 的取用**，可大幅提升 Thrift 反序列化性能。
 
 ## 性能测试
 
@@ -410,8 +402,11 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
 测试环境
 
 - goos: darwin
+
   goarch: amd64
+
   pkg: github.com/cloudwego/kitex/pkg/generic/thrift_reflect
+
   cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
 
 测试结果
@@ -422,7 +417,6 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
 BenchmarkThriftMapExample-16                    9633        109521 ns/op        7622 B/op        138 allocs/op
 BenchmarkThriftReflectExample_Node-16          14732         74397 ns/op        4416 B/op         76 allocs/op
 BenchmarkThriftReflectExample_DOM-16           14666         84119 ns/op        4435 B/op         76 allocs/op
-
 ```
 
 - 中数据（1766B）
@@ -431,7 +425,6 @@ BenchmarkThriftReflectExample_DOM-16           14666         84119 ns/op        
 BenchmarkThriftMapExample-16                    3484        310349 ns/op      179561 B/op       2250 allocs/op
 BenchmarkThriftReflectExample_Node-16          10813        108230 ns/op       45291 B/op        478 allocs/op
 BenchmarkThriftReflectExample_DOM-16           10000        115363 ns/op       45412 B/op        478 allocs/op
-
 ```
 
 - 大数据（150KB）
@@ -440,7 +433,6 @@ BenchmarkThriftReflectExample_DOM-16           10000        115363 ns/op       4
 BenchmarkThriftMapExample-16                      57      18063936 ns/op    17491551 B/op     220247 allocs/op
 BenchmarkThriftReflectExample_Node-16            322       3671377 ns/op     4332477 B/op      50029 allocs/op
 BenchmarkThriftReflectExample_DOM-16             321       3719926 ns/op     4333837 B/op      50032 allocs/op
-
 ```
 
 可以看到，随着数据量级不断增加，Thrift 反射相比 map 泛化的性能优势越来越大（可达 3 倍以上）
@@ -457,7 +449,6 @@ desc := svc.Functions()[METHODNAME].Request().Struct().FieldById(1).Type() // ex
 
 var dom = new(PathNode)
 err := DescriptorToPathNode(desc, dom, &Options{})
-
 ```
 
 然后根据业务逻辑遍历 DOM 去修改特定字段
@@ -469,7 +460,6 @@ for i, v := range dom.Next {
     }
     ....
 }
-
 ```
 
 ### 根据 样本请求 快速构造 Node/Value
@@ -488,7 +478,6 @@ func GetNewRequest(idXX int, nameXX string) []byte {
     data, err := n.Marshal(opts)
     return data
 }
-
 ```
 
 ## 注意
