@@ -131,8 +131,8 @@ func ExampleValueServiceHandler(request []byte) (resp []byte, err error) {
 
 ```go
 
-// MakeExampleRespBinary make a Thrift-Binary-Encoding response using ExampleResp structed DOM
-// Except msg, requre_field and logid, which are reset everytime
+// MakeExampleRespBinary make a Thrift-Binary-Encoding response using ExampleResp structured DOM
+// Except msg, required_field and logid, which are reset everytime
 func MakeExampleRespBinary(msg string, require_field string, logid string) ([]byte, error) {
     dom := **dg.PathNode{**
 **Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),**
@@ -199,7 +199,7 @@ func initClient() {
 1. 构造业务请求，基于 dynamicgo/generic.PathNode 进行
 
 ```go
-// MakeExampleReqBinary make a Thrift-Binary-Encoding request using ExampleReq structed DOM
+// MakeExampleReqBinary make a Thrift-Binary-Encoding request using ExampleReq structured DOM
 // Except B, A and logid, which are reset everytime
 func MakeExampleReqBinary(B bool, A string, logid string) ([]byte, error) {
     dom := dg.PathNode{
@@ -464,7 +464,7 @@ err := DescriptorToPathNode(desc, dom, &Options{})
 
 ```go
 for i, v := range dom.Next {
-    if v.Path.Type() == PathTypeFielName && v.Path.Str() == "XXXX" {
+    if v.Path.Type() == PathTypeFieldName && v.Path.Str() == "XXXX" {
         dom.Next[i] = NewNodeString("YYYY")
     }
     ....
