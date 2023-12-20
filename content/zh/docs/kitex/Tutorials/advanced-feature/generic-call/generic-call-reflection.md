@@ -24,7 +24,7 @@ description: ""
 
 一句话总结：**性能更好**。
 
-Thrift 泛型需求一般来源于 **rpc 泛化调用、http<>rpc 协议转换**等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 [https://github.com/cloudwego/dynamicgo/blob/main/introduction.md](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md)。
+Thrift 泛型需求一般来源于** rpc 泛化调用、http<>rpc 协议转换**等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 [https://github.com/cloudwego/dynamicgo/blob/main/introduction.md](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md)。
 
 具体对比结果见下文【测试数据】部分。
 
@@ -484,3 +484,4 @@ func GetNewRequest(idXX int, nameXX string) []byte {
 
 1. 当前 dynamicgo 仅支持 **thrift-binary** 编码方式
 2. 当前 二进制泛化 仅支持 **thrift-framed** 传输协议
+
