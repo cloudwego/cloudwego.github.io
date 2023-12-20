@@ -2,8 +2,8 @@
 title: "泛化调用接入 dynamicgo 指南"
 date: 2023-12-17
 weight: 1
-keywords: ["泛化调用接入 dynamicgo 指南"]
-description: ""
+keywords: ["generic-call","dynamicgo"]
+description: "泛化调用接入 dynamicgo 指南"
 ---
 
 ## 背景
@@ -93,10 +93,10 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
 
 **如果不满足这些条件，将 fallback 到原来的泛化调用实现。**
 
-| **开启条件** | 宿主机环境                  | 选项                                                                                                                                |
-| ------------ | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| **json**     | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true- 客户端使用 泛化调用，或者其传输协议使用的是 TTHeader、Framed、TTHeaderFramed 中的一种 |
-| http         | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true - `UseRawBodyForHTTPResp(true）` **启用（可选）**                                       |
+| **开启条件** | 宿主机环境                  | 选项                                                                                                                                    |
+| ------------ | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **json**     | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true<br>- 客户端使用 泛化调用，或者其传输协议使用的是 TTHeader、Framed、TTHeaderFramed 中的一种 |
+| http         | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true <br>- `UseRawBodyForHTTPResp(true）` **启用（可选）**                                       |
 
 ## JSON 泛化调用示例
 
@@ -322,3 +322,4 @@ Source code: [https://github.com/cloudwego/kitex-benchmark/pull/59](https://gith
 |                          | 10K           | original    | 8002.70   | 97.59ms  | 149.83ms  | 149.53             | 1524.45            | 0%                                               |
 |                          |               | dynamicgo   | 26857.57  | 9.47ms   | 21.94ms   | 394.42             | 1138.70            | +236%                                            |
 |                          |               | fallback    | 8019.39   | 97.11ms  | 149.50ms  | 148.03             | 1527.77            | +0.2%                                            |
+
