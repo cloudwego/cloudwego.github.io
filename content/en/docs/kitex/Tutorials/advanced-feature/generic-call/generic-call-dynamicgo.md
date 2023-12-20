@@ -2,10 +2,9 @@
 title: "User guide to generic call with dynamicgo"
 date: 2023-12-17
 weight: 1
-keywords: ["User guide to generic call with dynamicgo"]
-description: ""
+keywords: ["generic-call", "dynamicgo"]
+description: "User guide to generic call with dynamicgo"
 ---
-
 ## Background
 
 Dynamicgo provides fast json⇆thrift conversion. Kitex has achieved higher performance generic calls by integrating dynamicgo.
@@ -113,10 +112,10 @@ Note: Generic call using dynamicgo is only activated under the following conditi
 
 **If these conditions are not met, the original generic call functions will be called.**
 
-| <u>Fallback</u>**condition** | **Encoding**             | **Decoding** |
-| ---------------------------- | ------------------------ | ------------ |
-| **json**                     | CPU architecture: !amd64 |              |
-| **http**                     | CPU architecture: !amd64 |              |
+| <u>Fallback</u> **condition** | **Encoding**                                    | **Decoding**                                                                                                                                                               |
+| ----------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **json**                      | CPU architecture: !amd64 \|\| go version < go1.16 | - `DynamicGoEnabled` of `ProviderOption` is false<br>- Only happens on the server side. The client doesn't use json generic call and the transport protocol is PurePayload |
+| **http**                      | CPU architecture: !amd64 \|\| go version < go1.16 | `DynamicGoEnabled` of `ProviderOption` is false \|\|<br>`UseRawBodyForHTTPResp(enable bool)` is **not** enabled                                                              |
 
 ## Json generic call example
 
@@ -359,3 +358,4 @@ Source code: [https://github.com/cloudwego/kitex-benchmark/pull/59](https://gith
 |                          | 10K           | original    | 8002.70   | 97.59ms  | 149.83ms  | 149.53             | 1524.45            | 0%                                               |
 |                          |               | dynamicgo   | 26857.57  | 9.47ms   | 21.94ms   | 394.42             | 1138.70            | +236%                                            |
 |                          |               | fallback    | 8019.39   | 97.11ms  | 149.50ms  | 148.03             | 1527.77            | +0.2%                                            |
+
