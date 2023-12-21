@@ -71,7 +71,7 @@ this to implement identity verification and authorization mechanisms for the rep
 3. Find `Tokens`
    ![GitHub Token](/img/docs/cwgo_platform_token_github_personal_token.png)
 
-4. 点击 Generate new token(classic)
+4. Click Generate new token(classic)
 
    ![GitHub Add Token](/img/docs/cwgo_platform_token_github_personal_addtoken.png)
 
