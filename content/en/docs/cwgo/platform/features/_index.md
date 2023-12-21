@@ -1,6 +1,6 @@
 ---
-title: "features"
-linkTitle: "features"
+title: "Features"
+linkTitle: "Features"
 weight: 2
 description: >
 ---

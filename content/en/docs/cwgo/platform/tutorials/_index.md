@@ -117,7 +117,7 @@ logger:
 | `host` | listening ip addres |       | ip address     | 0.0.0.0          |         |
 | `port` | listening port      |       | 0-65535        | 8089             |         |
 
-### Agent 服务配置
+### Agent Config
 
 | Config      | Description                        | Notes                                                        | Option(format) | Default(effects) | Example |
 | ----------- | ---------------------------------- | ------------------------------------------------------------ | -------------- | ---------------- | ------- |
