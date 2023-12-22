@@ -254,6 +254,7 @@ Note:
 - The granularity of the current limit configuration is server global, regardless of client or method.
 - Not configured or value is 0 means not enabled.
 - connection_limit and qps_limit can be configured independently, e.g. connection_limit = 100, qps_limit = 0
+- Multiple different rate limiting strategies for multiple services can be written within a single JSON file. Simply use filewatch to monitor the same file and pass in different keys. As shown in the example, the key is `ServiceName`
 
 #### Retry Policy
 Category=retry
@@ -266,6 +267,9 @@ Category=retry
 |failure_policy.backoff_policy| Can only be set one of `fixed` `none` `random` |
 
 Example：
+
+> key is ClientName/ServiceName
+
 ```json
 {
     "ClientName/ServiceName": {
@@ -309,6 +313,9 @@ Category=rpc_timeout
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
 
 Example：
+
+> key is ClientName/ServiceName
+
 ```json
 {
     "ClientName/ServiceName": {
@@ -338,8 +345,10 @@ Category=circuit_break
 The echo method uses the following configuration (0.3, 100) and other methods use the global default configuration (0.5, 200)
 
 Example：
-```json
 
+> key is ClientName/ServiceName
+
+```json
 {
     "ClientName/ServiceName": {
         "circuitbreaker": {

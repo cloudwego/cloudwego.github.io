@@ -2,7 +2,7 @@
 title: "file"
 linkTitle: "file"
 date: 2023-12-18
-weight: 2
+weight: 5
 keywords: ["配置中心扩展","file"]
 description: "使用 本地文件 作为 Kitex 的服务治理配置中心"
 
@@ -251,6 +251,7 @@ Category=limit
 - 限流配置的粒度是 Server 全局，不分 client、method
 - 「未配置」或「取值为 0」表示不开启
 - connection_limit 和 qps_limit 可以独立配置，例如 connection_limit = 100, qps_limit = 0
+- 可以在一个 json 内编写多个服务的不同限流策略，只需要 filewatch 监控同一个文件，然后传入不同的 key 即可，如样例所示，key 即为`ServiceName`
 
 #### 重试
 Category=retry
@@ -263,6 +264,9 @@ Category=retry
 |failure_policy.backoff_policy| 可以设置的策略： `fixed` `none` `random` |
 
 样例：
+
+> key 为 ClientName/ServiceName
+
 ```json
 {
     "ClientName/ServiceName": {
@@ -306,6 +310,9 @@ Category=rpc_timeout
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
 
 样例：
+
+> key 为 ClientName/ServiceName
+
 ```json
 {
     "ClientName/ServiceName": {
@@ -334,6 +341,9 @@ Category=circuit_break
 
 样例：
 echo 方法使用下面的配置（0.3、100），其他方法使用全局默认配置（0.5、200）
+
+> key 为 ClientName/ServiceName
+
 ```json
 {
     "ClientName/ServiceName": {
