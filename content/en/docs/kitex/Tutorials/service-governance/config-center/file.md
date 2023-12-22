@@ -2,7 +2,7 @@
 title: "file"
 linkTitle: "file"
 date: 2023-12-18
-weight: 2
+weight: 5
 keywords: ["ConfigCenter Extension","file"]
 description: "Use local files as Kitex's service governance configuration center"
 
