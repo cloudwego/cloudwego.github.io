@@ -111,11 +111,11 @@ logger:
 
 ### Api Service Config
 
-| Config | Description         | Notes | Option(format) | Default(effects) | Example |
-| ------ | ------------------- | ----- | -------------- | ---------------- | ------- |
-| `api`  |                     |       |                |                  |         |
-| `host` | listening ip addres |       | ip address     | 0.0.0.0          |         |
-| `port` | listening port      |       | 0-65535        | 8089             |         |
+| Config | Description          | Notes | Option(format) | Default(effects) | Example |
+| ------ |----------------------| ----- | -------------- | ---------------- | ------- |
+| `api`  |                      |       |                |                  |         |
+| `host` | listening ip address |       | ip address     | 0.0.0.0          |         |
+| `port` | listening port       |       | 0-65535        | 8089             |         |
 
 ### Agent Config
 
