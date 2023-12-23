@@ -23,6 +23,7 @@ Currently supported configuration centers are:
 |     nacos     |  [config-nacos](https://github.com/kitex-contrib/config-nacos)  |
 |     etcd      |   [config-etcd](https://github.com/kitex-contrib/config-etcd)   |
 |    apollo     | [config-apollo](https://github.com/kitex-contrib/config-apollo) |
+|    file       | [config-file](https://github.com/kitex-contrib/config-file)     |
 
 ## Suite
 
