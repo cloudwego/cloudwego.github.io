@@ -2,7 +2,7 @@
 title: "zookeeper"
 linkTitle: "zookeeper"
 date: 2023-12-18
-weight: 5
+weight: 6
 keywords: ["ConfigCenter Extension","ZooKeeper"]
 description: "Use ZooKeeper as Kitex’s service governance configuration center"
 
@@ -127,8 +127,8 @@ func main() {
 
 	cl := configLog{}
 
-	serviceName := "ServiceName" // 你的服务端名称
-	clientName := "ClientName"   // 你的客户端名称
+	serviceName := "ServiceName" // your server-side service name
+	clientName := "ClientName"   // your client-side service name
 	client, err := echo.NewClient(
 		serviceName,
 		client.WithHostPorts("0.0.0.0:8888"),
@@ -171,28 +171,29 @@ Set a custom parser for deserializing zookeeper configuration. If not specified,
 The default parser parses configuration in json format.
 
 Function Signature:
+
 `func (c *client) SetParser(parser ConfigParser)`
 
 ```go
 type ConfigParser interface {
-	Decode(kind ConfigType, data string, config interface{}) error
+	Decode(data string, config interface{}) error
 }
 ```
 
 Sample code:
 
-Set the configuration for parsing json types.
+Set the configuration for parsing yaml types.
 
 ```go
 package main
 
 import (
-	"github.com/bytedance/sonic"
 	"github.com/kitex-contrib/config-zookeeper/zookeeper"
+	"gopkg.in/yaml.v3"
 )
 
 func (p *parser) Decode(data string, config interface{}) error {
-	return sonic.Unmarshal([]byte(data), config)
+	return yaml.Unmarshal([]byte(data), config)
 }
 
 type parser struct{}
@@ -204,6 +205,7 @@ func main() {
 	}
 	zookeeperClient.SetParser(&parser{})
 }
+
 ```
 
 ## ZooKeeper Configuration
@@ -232,7 +234,7 @@ type ConfigParam struct {
 
 The final path in kitex-contrib/config-zookeeper is a combination of Prefix and Path in ConfigParam: `param.Prefix + "/" + param.Path`
 
-| 参数             | 变量默认值                                                  | 作用                                                         |
+| Variable Name    | Default Value                                               | Introduction                                                 |
 | ---------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
 | Servers          | 127.0.0.1:2181                                              | Zookeeper server nodes                                       |
 | Prefix           | /KitexConfig                                                | The prefix of Zookeeper                                      |
@@ -387,5 +389,3 @@ The echo method uses the following configuration (0.3, 100) and other methods us
   }
 }
 ```
-
-### 

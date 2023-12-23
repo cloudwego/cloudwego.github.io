@@ -2,7 +2,7 @@
 title: "zookeeper"
 linkTitle: "zookeeper"
 date: 2023-12-18
-weight: 5
+weight: 6
 keywords: ["配置中心扩展","ZooKeeper"]
 description: "使用 ZooKeeper 作为 Kitex 的服务治理配置中心"
 
@@ -177,24 +177,24 @@ func main() {
 
 ```go
 type ConfigParser interface {
-	Decode(kind ConfigType, data string, config interface{}) error
+	Decode(data string, config interface{}) error
 }
 ```
 
 示例代码:
 
-设置解析 json 类型的配置
+设置解析 yaml 类型的配置
 
 ```go
 package main
 
 import (
-	"github.com/bytedance/sonic"
 	"github.com/kitex-contrib/config-zookeeper/zookeeper"
+	"gopkg.in/yaml.v3"
 )
 
 func (p *parser) Decode(data string, config interface{}) error {
-	return sonic.Unmarshal([]byte(data), config)
+	return yaml.Unmarshal([]byte(data), config)
 }
 
 type parser struct{}
@@ -233,7 +233,7 @@ type ConfigParam struct {
 }
 ```
 
-kitex-contrib/config-zookeeper 中的最终path由ConfigParam中的Prefix和Path拼接而成：`param.Prefix + "/" + param.Path`
+kitex-contrib/config-zookeeper 中的最终 path 由 ConfigParam 中的 Prefix 和 Path 拼接而成：`param.Prefix + "/" + param.Path`
 
 | 参数             | 变量默认值                                                  | 作用                                                         |
 | ---------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |

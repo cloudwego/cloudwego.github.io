@@ -24,6 +24,7 @@ kitex-contrib 提供了对于社区主流配置中心的拓展，实现了动态
 |   etcd    |  [config-etcd](https://github.com/kitex-contrib/config-etcd)     |
 |   apollo  |  [config-apollo](https://github.com/kitex-contrib/config-apollo) |
 |   file    |  [config-file](https://github.com/kitex-contrib/config-file)     |
+| zookeeper |  [config-zookeepr](https://github.com/kitex-contrib/config-zookeeper) |
 
 ## Suite
 
