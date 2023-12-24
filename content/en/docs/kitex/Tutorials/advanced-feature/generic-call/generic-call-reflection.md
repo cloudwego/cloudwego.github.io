@@ -18,7 +18,7 @@ Used for the **addition, deletion, modification, and lookup of a small number of
 
 ## Thrift DOM
 
-The **document object tree model** is used to **describe the full deserialization  of Thrift data** . Since the Thrift protocol itself has self-description ability, we can deserialize it into a specific tree structure for more complex **container traversal , field bit shifting** and other operations. Specific business scenarios include **DSL mapping, data packet merging,** etc. in BFF services. Dynamicgo provides [thrift/generic. PathNode ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode)encapsulation, which can handle thrift data of arbitrary complexity without binding dynamic type descriptions.
+The **document object tree model** is used to **describe the full deserialization  of Thrift data** . Since the Thrift protocol itself has self-description ability, we can deserialize it into a specific tree structure for more complex **container traversal , field bit shifting** and other operations. Specific business scenarios include **DSL mapping, data packet merging**, etc. in BFF services. Dynamicgo provides [thrift/generic. PathNode ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode)encapsulation, which can handle thrift data of arbitrary complexity without binding dynamic type descriptions.
 
 ## Why use Thrift generics instead of Kitex Map/JSON generalization calls ?
 
@@ -441,7 +441,7 @@ It can be seen that as the data level continues to increase, the performance adv
 
 ### Quickly construct DOM from IDL
 
-You can use [generic.DescriptorToPathNode ](https://github.com/cloudwego/dynamicgo/tree/main/thrift/generic#func-descriptortopathnode)to quickly construct the struct DOM ( **zero value)**
+You can use [generic.DescriptorToPathNode ](https://github.com/cloudwego/dynamicgo/tree/main/thrift/generic#func-descriptortopathnode)to quickly construct the struct DOM ( **zero value**)
 
 ```go
 svc, err := thrift.NewDescritorFromPath(context.Background(), IDLPATH)
@@ -484,4 +484,3 @@ func GetNewRequest(idXX int, nameXX string) []byte {
 
 1. Currently dynamicgo only supports **thrift-binary**  encoding mode
 2. Currently, binary generalization only supports the **thrift-framed** transport protocol
-
