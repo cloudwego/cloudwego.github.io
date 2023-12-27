@@ -1,12 +1,12 @@
 ---
-title: "Use Thrift reflection(dynamicgo) to improve generic-call performance"
+title: "Use Thrift reflection to improve generic-call performance"
 date: 2023-12-17
 weight: 3
 keywords: ["dynamic", "thrift", "generic-call"]
-description: "Use Thrift reflection(dynamicgo) to improve generic-call performance"
+description: "Use Thrift reflection to improve generic-call performance"
 ---
 
-## What is Thrift Reflection ?
+## What is  Thrift Reflection ?
 
 In short, **similar to [pb reflec ](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect), it does not rely on static code to add, delete, modify, and write Thrift data** .
 
@@ -32,9 +32,10 @@ For specific comparison results, please refer to the section "Test Data" below.
 
 The following will demonstrate how to generalize calls based on **kitex-binary generalization + dynamicgo** . Note unfamiliar kitex-binary generalization colleagues can refer to [generic-call documents ](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic)first.
 
-See the complete code example: [https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
+See the complete example:
 
-IDL：[https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
+- [code](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
+- [IDL](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
 
 ## Server （Thrift Value + DOM）
 
@@ -91,8 +92,8 @@ func initDescriptor() {
 
 3. Pass the request body to the business handler for processing logic. The specific operation is based on the encapsulation API of dynamicgo/thrift. Value. There are two ways to pass the path (assuming A is the Struct field name and B is the Map key):
 
-   1. One-time pass: Value. GetByPath ([] Path {NewPathFieldName (A), NewPathStrKey (B) })
-   2. Chain call: Value. FieldByName (A).GetByStr (B)
+   1. One-time pass: `Value.GetByPath([]Path{NewPathFieldName(A), NewPathStrKey(B)})`
+   2. Chain call: `Value.FieldByName(A).GetByStr(B)`
 
 ```go
  // biz logic
@@ -387,31 +388,19 @@ Note that **memory pooling is used for DOM access** , which can greatly improve 
 
 ## Performance testing
 
-Test data [https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
+- Test [data](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
+- Test code
 
-Test code
+  - Thrift [reflect](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
+  - [Map](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/map_test.go)
+- Testing environment
 
-- Thrift reflect
+  - goos: darwin
+  - goarch: amd64
+  - cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+- Test results
 
-[https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
-
-- Map
-
-[https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/map_test.go](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/map_test.go)
-
-Testing environment
-
-- goos: darwin
-
-  goarch: amd64
-
-  pkg: github.com/cloudwego/kitex/pkg/generic/thrift_reflect
-
-  cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
-
-Test results
-
-- Small Data (266B)
+Small Data (266B)
 
 ```go
 BenchmarkThriftMapExample-16                    9633        109521 ns/op        7622 B/op        138 allocs/op
@@ -419,7 +408,7 @@ BenchmarkThriftReflectExample_Node-16          14732         74397 ns/op        
 BenchmarkThriftReflectExample_DOM-16           14666         84119 ns/op        4435 B/op         76 allocs/op
 ```
 
-- Medium data (1766B)
+Medium data (1766B)
 
 ```go
 BenchmarkThriftMapExample-16                    3484        310349 ns/op      179561 B/op       2250 allocs/op
@@ -427,7 +416,7 @@ BenchmarkThriftReflectExample_Node-16          10813        108230 ns/op       4
 BenchmarkThriftReflectExample_DOM-16           10000        115363 ns/op       45412 B/op        478 allocs/op
 ```
 
-- Big data (150 KB )
+Big data (150 KB )
 
 ```go
 BenchmarkThriftMapExample-16                      57      18063936 ns/op    17491551 B/op     220247 allocs/op
@@ -462,7 +451,7 @@ for i, v := range dom.Next {
 }
 ```
 
-### Quickly Construct a Node /Value
+### Quickly Construct a Node /Value From Sample
 
 Assuming that the business can obtain the thrift message binary data of a normal request to the downstream service in some way, it can be used as a global constant (or timed asynchronous update), and each time [NewNode ( ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#func-newnode)) + [Set ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#func-node-setbypath)() updates a specific business field to achieve rapid construction of Node
 
