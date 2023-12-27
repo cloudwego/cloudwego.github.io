@@ -285,7 +285,7 @@ Kitex 提供了可动态配置的服务治理能力，包括客户端的超时�
 
 在能力升级方面，
 - [Kitex][Kitex] 通过 [DynamicGo][DynamicGo] 优化了泛化调用的性能，高性能 [Frugal][Frugal] 编解码器也已经稳定，可用于生产环境了；
-- 过去一年新增了 fallback 方便业务实现自定义降级策略，并通过 unkown fields 和 session 传递机制来解决长链路的改造问题；
+- 过去一年新增了 fallback 方便业务实现自定义降级策略，并通过 unknown fields 和 session 传递机制来解决长链路的改造问题；
 - 我们还通过文档优化、demo 项目、问题排查效率改造 和 增强命令行工具等方式提升了 Kitex 的易用性；
 
 在社区合作方面，
