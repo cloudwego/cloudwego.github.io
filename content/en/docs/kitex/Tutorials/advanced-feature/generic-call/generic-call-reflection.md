@@ -8,9 +8,9 @@ description: "Use Thrift reflection to improve generic-call performance"
 
 ## What is  Thrift Reflection ?
 
-In short, **similar to [pb reflec ](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect), it does not rely on static code to add, delete, modify, and write Thrift data** .
+In short, **similar to [pb reflect](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect), it does not rely on static code to add, delete, modify, and write Thrift data** .
 
-Reflection uses specific generics to describe any data at runtime. Compared with static struct, it has the characteristics of **flexible addition, deletion, and modification, and does not depend on static code** . Currently (dynamicgo)[https://github.com/cloudwego/dynamicgo] has implemented a set of reflection APIs  for the thrift binary protocol, which can be roughly divided into Thrift Value/Node and Thrift DOM  according to usage scenarios.
+Reflection uses specific generics to describe any data at runtime. Compared with static struct, it has the characteristics of **flexible addition, deletion, and modification, and does not depend on static code** . Currently [dynamicgo](https://github.com/cloudwego/dynamicgo) has implemented a set of reflection APIs  for the thrift binary protocol, which can be roughly divided into Thrift Value/Node and Thrift DOM  according to usage scenarios.
 
 ## Thrift Value/Node
 
