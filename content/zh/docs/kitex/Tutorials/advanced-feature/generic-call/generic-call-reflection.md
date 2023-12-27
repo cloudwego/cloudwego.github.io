@@ -24,13 +24,13 @@ description: "使用 Thrift 反射(dynamicgo)提升泛化调用性能"
 
 一句话总结：**性能更好**。
 
-Thrift 泛型需求一般来源于 **rpc 泛化调用、http<>rpc 协议转换**等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 [https://github.com/cloudwego/dynamicgo/blob/main/introduction.md](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md)。
+Thrift 泛型需求一般来源于 **rpc 泛化调用、http<>rpc 协议转换**等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 [introduction.md](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md)。
 
 具体对比结果见下文【测试数据】部分。
 
 ## 使用示例
 
-下面将演示如何基于 **kitex-二进制泛化 +dynamicgo** 进行泛化调用。注不熟悉的 kitex-二进制泛化同学可以先参阅 [https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic)。
+下面将演示如何基于 **kitex-二进制泛化 +dynamicgo** 进行泛化调用。注不熟悉的 kitex-二进制泛化同学可以先参阅[泛化调用文档](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic)。
 
 完整代码示例见：[https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
 
@@ -437,11 +437,11 @@ BenchmarkThriftReflectExample_DOM-16             321       3719926 ns/op     433
 
 可以看到，随着数据量级不断增加，Thrift 反射相比 map 泛化的性能优势越来越大（可达 3 倍以上）
 
-## Tips:
+## Tips
 
 ### 根据 IDL 快速构造 DOM
 
-可以使用 [generic.DescriptorToPathNode ](https://github.com/cloudwego/dynamicgo/tree/main/thrift/generic#func-descriptortopathnode)进行快速构造 struct DOM（**零值）**
+可以使用 [generic.DescriptorToPathNode](https://github.com/cloudwego/dynamicgo/tree/main/thrift/generic#func-descriptortopathnode)进行快速构造 struct DOM（**零值）**
 
 ```go
 svc, err := thrift.NewDescritorFromPath(context.Background(), IDLPATH)
@@ -484,4 +484,5 @@ func GetNewRequest(idXX int, nameXX string) []byte {
 
 1. 当前 dynamicgo 仅支持 **thrift-binary** 编码方式
 2. 当前 二进制泛化 仅支持 **thrift-framed** 传输协议
+
 
