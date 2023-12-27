@@ -3,22 +3,23 @@ title: "User guide to generic call with dynamicgo"
 date: 2023-12-17
 weight: 2
 keywords: ["generic-call", "dynamicgo"]
-description: "User guide to generic call with dynamicgo"
+description: "User guide to generic call with dynamicgo; high-performance generic-call"
 ---
+
 ## Background
 
 Dynamicgo provides fast json⇆thrift conversion. Kitex has achieved higher performance generic calls by integrating dynamicgo.
 
-Generic calls using dynamicgo are **supported only for json generic calls and http generic calls (data format: json)**.
+Generic calls using dynamicgo are **supported only for json generic calls and http generic calls (data format: json**).
 
 ## Usage differences between old and new way
 
-The usage is basically the same as the original kitex generic call, with the following differences.
+The usage is basically the same as the original Kitex generic call, with the following differences.
 
 ### Descriptor provider
 
 - Thrift idl provider
-  In the kitex original way, we have some functions (ex. `NewThriftFileProvider`) to parse idl and return `DescriptorProvider`, which includes a channel of `ServiceDescriptor`.
+  In the Kitex original way, we have some functions (ex. `NewThriftFileProvider`) to parse idl and return `DescriptorProvider`, which includes a channel of `ServiceDescriptor`.
   In the new way, we provide 3 functions to parse idl and return `DescriptorProvider` including dynamicgo's `ServiceDescriptor`.
   - `NewThriftFileProviderWithDynamicGo(path string, includeDirs ...string)`: create thriftFileProvider which implements DescriptorProvider with dynamicgo from given path and include dirs
   - `NewThriftContentProviderWithDynamicGo(main string, includes map[string]string)`: create ThriftContentProvider which implements DescriptorProvider with dynamicgo from content
@@ -56,7 +57,7 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
 &emsp;&emsp;- `WithCustomDynamicgoConvOpts(opts conv.Options)`: customized dynamicgo conv options for json/http generic call
 
 - Option only for http generic call
-  In kitex original http generic call (data format: json), the type of resp body is map[string]interface{}, which is stored in `HTTPResponse.Body`. However, in the http generic call (data format: json) with dynamicgo, **the type of resp body will be json byte slice,** which is stored in `HTTPResponse.RawBody`.
+  In Kitex original http generic call (data format: json), the type of resp body is map[string]interface{}, which is stored in `HTTPResponse.Body`. However, in the http generic call (data format: json) with dynamicgo, **the type of resp body will be json byte slice**, which is stored in `HTTPResponse.RawBody`.
   We provide a function `UseRawBodyForHTTPResp(enable bool)` so that you can choose according to your preference of response type.
 
 ## Break changes
@@ -73,12 +74,12 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
 - Type conversion
 
   - Unable to set string for bool type
-    In the original way of kitex, even if a bool type is specified as a string (ex. "true"), it can be encoded, but dynamicgo generates an error during encoding.
-  - Unable to convert string to int8/int16/int32/int64/float64 for i8/i16/i32/i64/double fields (**Fixed in the latest kitex version v0.7.1 / internal v1.13.1**)
-    In the original way of kitex, even when an int8/int16/int32/int64/float64 type is specified as a string, it can be converted to the corresponding type, but dynamicgo way does not convert and causes an error during encoding. If you need to use string for i8/i16/i32/i64/double fields, you can set `String2Int64` of the conv.Options `true`, but please note that an int64 value will be written as a string in decoding when `String2Int64=true`.
-  - Unable to set string for void type (json generic) (**Fixed in the latest kitex version v0.7.1 / internal v1.13.1**)
+    In the original way of Kitex, even if a bool type is specified as a string (ex. "true"), it can be encoded, but dynamicgo generates an error during encoding.
+  - Unable to convert string to int8/int16/int32/int64/float64 for i8/i16/i32/i64/double fields (**Fixed in the latest Kitex version v0.7.1 / internal v1.13.1**)
+    In the original way of Kitex, even when an int8/int16/int32/int64/float64 type is specified as a string, it can be converted to the corresponding type, but dynamicgo way does not convert and causes an error during encoding. If you need to use string for i8/i16/i32/i64/double fields, you can set `String2Int64` of the conv.Options `true`, but please note that an int64 value will be written as a string in decoding when `String2Int64=true`.
+  - Unable to set string for void type (json generic) (**Fixed in the latest Kitex version v0.7.1 / internal v1.13.1**)
     This is regarding server-side generic call handler function which returns void.
-    In the original kitex way, when encoding, void is written in the response whenever the message is any string, not just `descriptor.Void{}`, but encoding with dynamicgo just accepts only `descriptor.Void{}`.
+    In the original Kitex way, when encoding, void is written in the response whenever the message is any string, not just `descriptor.Void{}`, but encoding with dynamicgo just accepts only `descriptor.Void{}`.
 
 ```go
 // GenericCall ...
@@ -88,7 +89,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
    return resp, nil
 }
 
-[original kitex way]
+[original Kitex way]
 resp can be descriptor.Void{} or any string (like "Void")
 [dynamicgo way]
 resp can be only descriptor.Void{}
@@ -110,7 +111,7 @@ Note: Generic call using dynamicgo is only activated under the following conditi
     - `DynamicGoEnabled` of `ProviderOption` is true
     - `UseRawBodyForHTTPResp(enable bool)` is enabled
 
-**If these conditions are not met, the original generic call functions will be called.**
+**If these conditions are not met, the original generic call functions will be called**.
 
 | <u>Fallback</u> **condition** | **Encoding**                                    | **Decoding**                                                                                                                                                               |
 | ----------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -118,6 +119,8 @@ Note: Generic call using dynamicgo is only activated under the following conditi
 | **http**                      | CPU architecture: !amd64 \|\| go version < go1.16 | `DynamicGoEnabled` of `ProviderOption` is false \|\|<br>`UseRawBodyForHTTPResp(enable bool)` is **not** enabled                                                              |
 
 ## Json generic call example
+
+[code](https://github.com/cloudwego/Kitex/blob/develop/pkg/generic/json_test/generic_test.go#L80)
 
 ### Client usage
 
@@ -129,14 +132,14 @@ Type: JSON string
 
 Type: JSON string
 
-<u>You do not need to modify your kitex json generic call code if you use the default dynamicog option.</u>
+<u>You do not need to modify your Kitex json generic call code if you use the default dynamicog option.</u>
 
 ```go
 package main
 
 import (
-    "github.com/cloudwego/kitex/pkg/generic"
-     bgeneric "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/Kitex/pkg/generic"
+     bgeneric "github.com/cloudwego/Kitex/client/genericclient"
 )
 
 func main() {
@@ -176,14 +179,14 @@ Type: JSON string
 
 Type: JSON string
 
-<u>You do not need to modify your kitex json generic call code if you use the default dynamicog option.</u>
+<u>You do not need to modify your Kitex json generic call code if you use the default dynamicog option.</u>
 
 ```go
 package main
 
 import (
-    "github.com/cloudwego/kitex/pkg/generic"
-    bgeneric "github.com/cloudwego/kitex/server/genericserver"
+    "github.com/cloudwego/Kitex/pkg/generic"
+    bgeneric "github.com/cloudwego/Kitex/server/genericserver"
 )
 
 func main() {
@@ -226,9 +229,11 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 ## HTTP generic call (data format: json) example
 
+[code](https://github.com/cloudwego/Kitex/blob/develop/pkg/generic/http_test/generic_test.go#L96)
+
 ### Client usage
 
-**HTTP generic call only supports client side.**
+**HTTP generic call only supports client side**.
 
 - Request
 
@@ -241,7 +246,7 @@ Type: *generic.HTTPResponse
 `YOUR_IDL.thrift`
 
 ```go
-namespace go kitex.example.server
+namespace go Kitex.example.server
 
 struct BinaryWrapper {
     1: binary msg (api.body = "msg")
@@ -259,8 +264,8 @@ service ExampleService {
 package main
 
 import (
-    bgeneric "github.com/cloudwego/kitex/client/genericclient"
-    "github.com/cloudwego/kitex/pkg/generic"
+    bgeneric "github.com/cloudwego/Kitex/client/genericclient"
+    "github.com/cloudwego/Kitex/pkg/generic"
 )
 
 func main() {
@@ -336,9 +341,9 @@ The following test results use multiple nested complex structures as payloads fo
 
 As for 'Version', 'original' means the conventional generic call, 'dynamicgo' refers to a generic call with dynamicgo, and 'fallback' refers to a generic call that doesn't meet the conditions to enable dynamicgo (= normal generic call).
 
-Source code: [https://github.com/cloudwego/kitex-benchmark/pull/59](https://github.com/cloudwego/kitex-benchmark/pull/59)
+[Source code](https://github.com/cloudwego/Kitex-benchmark/pull/59)
 
-| **Type of generic call** | **Data size** | **Version** | **TPS**   | **TP99** | **TP999** | **Server CPU AVG** | **Client CPU AVG** | **Throughput differences (compare to original)** |
+| **Type of generic call** | **Data size** | **Version** | **TPS**   | **TP99** | **TP999** | **Server CPU AVG** | **Client CPU AVG** | **Throughput differences (compare to original**) |
 | ------------------------ | ------------- | ----------- | --------- | -------- | --------- | ------------------ | ------------------ | ------------------------------------------------ |
 | **json generic**         | 1K            | original    | 14305.05  | 25.86ms  | 61.17ms   | 393.06             | 517.37             | 0%                                               |
 |                          |               | dynamicgo   | 26282.09  | 12.27ms  | 48.45ms   | 394.00             | 521.83             | +84%                                             |
@@ -358,4 +363,5 @@ Source code: [https://github.com/cloudwego/kitex-benchmark/pull/59](https://gith
 |                          | 10K           | original    | 8002.70   | 97.59ms  | 149.83ms  | 149.53             | 1524.45            | 0%                                               |
 |                          |               | dynamicgo   | 26857.57  | 9.47ms   | 21.94ms   | 394.42             | 1138.70            | +236%                                            |
 |                          |               | fallback    | 8019.39   | 97.11ms  | 149.50ms  | 148.03             | 1527.77            | +0.2%                                            |
+
 
