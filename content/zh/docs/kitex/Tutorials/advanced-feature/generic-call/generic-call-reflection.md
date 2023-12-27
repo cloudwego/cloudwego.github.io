@@ -1,9 +1,9 @@
 ---
 title: "使用 Thrift 反射(dynamicgo)提升泛化调用性能"
 date: 2023-12-17
-weight: 1
-keywords: ["使用 Thrift 反射(dynamicgo)提升泛化调用性能"]
-description: ""
+weight: 3
+keywords: ["反射", "泛化调用"]
+description: "使用 Thrift 反射(dynamicgo)提升泛化调用性能"
 ---
 
 ## 什么是 Thrift 反射？
@@ -24,7 +24,7 @@ description: ""
 
 一句话总结：**性能更好**。
 
-Thrift 泛型需求一般来源于** rpc 泛化调用、http<>rpc 协议转换**等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 [https://github.com/cloudwego/dynamicgo/blob/main/introduction.md](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md)。
+Thrift 泛型需求一般来源于 **rpc 泛化调用、http<>rpc 协议转换**等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 [https://github.com/cloudwego/dynamicgo/blob/main/introduction.md](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md)。
 
 具体对比结果见下文【测试数据】部分。
 
