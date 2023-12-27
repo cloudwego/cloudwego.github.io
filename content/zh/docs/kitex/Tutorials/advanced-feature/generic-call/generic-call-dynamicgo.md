@@ -3,7 +3,7 @@ title: "泛化调用接入 dynamicgo 指南"
 date: 2023-12-17
 weight: 2
 keywords: ["generic-call","dynamicgo"]
-description: "泛化调用接入 dynamicgo 指南"
+description: "泛化调用接入 dynamicgo 指南；高性能泛化调用实现"
 ---
 
 ## 背景
@@ -14,15 +14,15 @@ description: "泛化调用接入 dynamicgo 指南"
 
 ## 新旧方式的使用差异
 
-用法与原始 kitex 泛化调用基本相同，但有以下区别。
+用法与原始 Kitex 泛化调用基本相同，但有以下区别。
 
 ### Descriptor
 
 - Descriptor provider
 
   - Thrift idl provider
-    在 kitex 的原始方式中，我们有一些函数（例如 `NewThriftFileProvider`）来解析 idl 并返回 `DescriptorProvider`，其中包括 `ServiceDescriptor` 的通道。
-    在新的方式中，由于 dynamicgo 使用的 `Descriptor` 与 `kitex/generic` 不同，我们提供了 3 个新函数来解析 idl 并返回 dynamicgo 的 `ServiceDescriptor`。
+    在 Kitex 的原始方式中，我们有一些函数（例如 `NewThriftFileProvider`）来解析 idl 并返回 `DescriptorProvider`，其中包括 `ServiceDescriptor` 的通道。
+    在新的方式中，由于 dynamicgo 使用的 `Descriptor` 与 `Kitex/generic` 不同，我们提供了 3 个新函数来解析 idl 并返回 dynamicgo 的 `ServiceDescriptor`。
     - `NewThriftFileProviderWithDynamicGo(path string, includeDirs ...string)`：创建 thriftFileProvider，它从给定的路径实现 DescriptorProvider 并包含目录
     - `NewThriftContentProviderWithDynamicGo(main string, includes map[string]string)`：创建 ThriftContentProvider 它实现了 DescriptorProvider 与动态从内容
       - 您可以 IDL 与旧方法相同的方法 `UpdateIDL`
@@ -60,7 +60,7 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
 &emsp;&emsp;- `WithCustomDynamicgoConvOpts(optsconv. Options）`：自定义的 json/超文本传输协议的 conv 选项
 
 - 仅用于 HTTP 泛化调用的选项
-  在 kitex 原始超文本传输协议泛化调用（数据格式：json）中，resp body 的类型为 `map[string]interface{}`，存储在 `HTTPResponse.Body` 中。然而，在带有 Dynamicgo 的超文本传输协议泛化调用（数据格式：json）中，**resp body 的类型将是 json 字符串，它存储在** `HTTPResponse.RawBody` **中**。
+  在 Kitex 原始超文本传输协议泛化调用（数据格式：json）中，resp body 的类型为 `map[string]interface{}`，存储在 `HTTPResponse.Body` 中。然而，在带有 Dynamicgo 的超文本传输协议泛化调用（数据格式：json）中，**resp body 的类型将是 json 字符串，它存储在** `HTTPResponse.RawBody` **中**。
   我们提供了一个函数 `UseRawBodyForHTTPResp(enablebool）`，以便您可以根据自己的偏好选择响应类型。使用 rawbody 将大幅提升性能，推荐使用。
 
 ## Break Change
@@ -75,7 +75,7 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
     HTTP 的泛化调用不支持 thrift 异常字段处理。
 - 类型转换
 
-  - Bool <> string：在 kitex 的原始方式中，即使 IDL 声明为 bool 类型的字段值为字符串（例如"true"），它也可以被编码，但是 Dynamicgo 在编码过程中会产生错误。
+  - Bool <> string：在 Kitex 的原始方式中，即使 IDL 声明为 bool 类型的字段值为字符串（例如"true"），它也可以被编码，但是 Dynamicgo 在编码过程中会产生错误。
 
 ## Fallback
 
@@ -100,7 +100,7 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
 
 ## JSON 泛化调用示例
 
-[https://github.com/cloudwego/kitex/blob/develop/pkg/generic/json_test/generic_test.go#L80](https://github.com/cloudwego/kitex/blob/develop/pkg/generic/json_test/generic_test.go#L80)
+[完整代码](https://github.com/cloudwego/Kitex/blob/develop/pkg/generic/json_test/generic_test.go#L80)
 
 ### 客户端使用
 
@@ -112,14 +112,14 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
 
 类型：JSON 字符串
 
-<u>如果使用默认的 Dynamicog 选项，则不需要修改 kitex JSON 泛化调用代码。</u>
+<u>如果使用默认的 Dynamicog 选项，则不需要修改 Kitex JSON 泛化调用代码。</u>
 
 ```go
 package main
 
 import (
-    "github.com/cloudwego/kitex/pkg/generic"
-     bgeneric "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/Kitex/pkg/generic"
+     bgeneric "github.com/cloudwego/Kitex/client/genericclient"
 )
 
 func main() {
@@ -159,14 +159,14 @@ func main() {
 
 类型：JSON 字符串
 
-<u>如果使用默认的 Dynamicog 选项，则不需要修改 kitex JSON 泛化调用代码。</u>
+<u>如果使用默认的 Dynamicog 选项，则不需要修改 Kitex JSON 泛化调用代码。</u>
 
 ```go
 package main
 
 import (
-    "github.com/cloudwego/kitex/pkg/generic"
-    bgeneric "github.com/cloudwego/kitex/server/genericserver"
+    "github.com/cloudwego/Kitex/pkg/generic"
+    bgeneric "github.com/cloudwego/Kitex/server/genericserver"
 )
 
 func main() {
@@ -209,7 +209,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 ## HTTP 通用调用（数据格式：json）示例
 
-[https://github.com/cloudwego/kitex/blob/develop/pkg/generic/http_test/generic_test.go#L96](https://github.com/cloudwego/kitex/blob/develop/pkg/generic/http_test/generic_test.go#L96)
+[完整代码](https://github.com/cloudwego/Kitex/blob/develop/pkg/generic/http_test/generic_test.go#L96)
 
 ### 客户端使用
 
@@ -227,8 +227,8 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 package main
 
 import (
-    bgeneric "github.com/cloudwego/kitex/client/genericclient"
-    "github.com/cloudwego/kitex/pkg/generic"
+    bgeneric "github.com/cloudwego/Kitex/client/genericclient"
+    "github.com/cloudwego/Kitex/pkg/generic"
 )
 
 func main() {
@@ -300,9 +300,9 @@ func main() {
 
 “original”是指传统的泛化调用，“dynamicgo”是指使用 dynamicgo 泛化调用，“fallback”是指不满足启用 dynamicgo 条件的泛化调用（=普通泛化调用）。
 
-Source code: [https://github.com/cloudwego/kitex-benchmark/pull/59](https://github.com/cloudwego/kitex-benchmark/pull/59)
+[Source code](https://github.com/cloudwego/Kitex-benchmark/pull/59)
 
-| **Type of generic call** | **Data size** | **Version** | **TPS**   | **TP99** | **TP999** | **Server CPU AVG** | **Client CPU AVG** | **Throughput differences (compare to original)** |
+| **Type of generic call** | **Data size** | **Version** | **TPS**   | **TP99** | **TP999** | **Server CPU AVG** | **Client CPU AVG** | **Throughput differences (compare to original**) |
 | ------------------------ | ------------- | ----------- | --------- | -------- | --------- | ------------------ | ------------------ | ------------------------------------------------ |
 | **json generic**         | 1K            | original    | 14305.05  | 25.86ms  | 61.17ms   | 393.06             | 517.37             | 0%                                               |
 |                          |               | dynamicgo   | 26282.09  | 12.27ms  | 48.45ms   | 394.00             | 521.83             | +84%                                             |
@@ -322,4 +322,5 @@ Source code: [https://github.com/cloudwego/kitex-benchmark/pull/59](https://gith
 |                          | 10K           | original    | 8002.70   | 97.59ms  | 149.83ms  | 149.53             | 1524.45            | 0%                                               |
 |                          |               | dynamicgo   | 26857.57  | 9.47ms   | 21.94ms   | 394.42             | 1138.70            | +236%                                            |
 |                          |               | fallback    | 8019.39   | 97.11ms  | 149.50ms  | 148.03             | 1527.77            | +0.2%                                            |
+
 
