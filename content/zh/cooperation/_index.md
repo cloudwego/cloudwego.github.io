@@ -8,10 +8,6 @@ menu:
 
 {{< blocks/cover title="谁在使用CloudWeGo" image_anchor="bottom" height="min" >}}
 
-<p>
-CloudWeGo 项目介绍小蓝书 &nbsp&nbsp
-<a id="file_download_bluebook" href="https://github.com/cloudwego/community/raw/main/CloudWeGo_BlueBook_Project_Introduction.pdf"><i class="fas fa-download"></i></a>
-</p>
 <p class="lead mt-5">CloudWeGo 用户实践案例分享</p>
 
 {{< /blocks/cover >}}
@@ -24,9 +20,8 @@ CloudWeGo 项目介绍小蓝书 &nbsp&nbsp
 <div class="row">
 <div class="col-12 col-lg-12">
 <p class="my-3">
-CloudWeGo 是一套由字节跳动开源的、可快速构建企业级云原生架构的中间件集合，专注于微服务通信与治理，具备高性能、高扩展性、高可靠的特点，满足不同业务在不同场景的诉求。
-此外，CloudWeGo 也重视与云原生生态的集成，支持对接主流注册中心、Prometheus 监控以及 OpenTelemetry & OpenTracing 链路追踪等。
-目前 CloudWeGo 已经在诸多企业和相关业务落地，涉及到电商、证券、游戏、企业软件、基础架构等诸多领域，详见下面案例介绍。
+CloudWeGo 关注真实企业用户落地，构建企业用户支持体系和维护体系，持续支持新用户落地，支持现有企业用户需求。截止日前，CloudWeGo 落地企业用户超过了 30 家，主要涵盖电商、游戏、金融、AI四大行业，
+既有巨型独角兽公司，也有初创公司，行业类型和公司规模均具备多样性。行业共同关注的重点是：微服务架构 和 降本增效。
 </p>
 
 {{< cardpane >}}
@@ -65,12 +60,3 @@ CloudWeGo 是一套由字节跳动开源的、可快速构建企业级云原生�
 </div>
 </div>
 </div>
-
-<script>
-  document.getElementById("file_download_bluebook").addEventListener("click", function(){
-    gtag('event', 'file_download_bluebook', {
-      "event_name": "file_download_bluebook",
-    });
-
-  })
-</script>
