@@ -1,7 +1,7 @@
 ---
 title: "User guide to generic call with dynamicgo"
 date: 2023-12-17
-weight: 1
+weight: 2
 keywords: ["generic-call", "dynamicgo"]
 description: "User guide to generic call with dynamicgo"
 ---
