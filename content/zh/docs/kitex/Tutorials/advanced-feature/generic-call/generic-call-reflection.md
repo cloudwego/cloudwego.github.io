@@ -1,9 +1,9 @@
 ---
-title: "使用 Thrift 反射(dynamicgo)提升泛化调用性能"
+title: "使用 Thrift 反射提升泛化调用性能"
 date: 2023-12-17
 weight: 3
 keywords: ["反射", "泛化调用"]
-description: "使用 Thrift 反射(dynamicgo)提升泛化调用性能"
+description: "使用 Thrift 反射提升泛化调用性能"
 ---
 
 ## 什么是 Thrift 反射？
@@ -32,9 +32,10 @@ Thrift 泛型需求一般来源于 **rpc 泛化调用、http<>rpc 协议转换**
 
 下面将演示如何基于 **kitex-二进制泛化 +dynamicgo** 进行泛化调用。注不熟悉的 kitex-二进制泛化同学可以先参阅[泛化调用文档](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic)。
 
-完整代码示例见：[https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
+完整示例：
 
-IDL：[https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
+- [代码](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
+- [IDL](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
 
 ## Server （Thrift Value + DOM）
 
@@ -91,8 +92,8 @@ func initDescriptor() {
 
 3. 将 request body 传递给业务 handler 进行处理逻辑，具体操作基于 dynamicgo/thrift.Value 的封装 API 进行。路径传递有两种方式（假设 A 为 Struct 字段名，B 为 Map key）：
 
-   1. 一次性传入：Value.GetByPath([]Path{NewPathFieldName(A), NewPathStrKey(B)})
-   2. 链式调用：Value.FieldByName(A).GetByStr(B)
+   1. 一次性传入：`Value.GetByPath([]Path{NewPathFieldName(A), NewPathStrKey(B)})`
+   2. 链式调用：`Value.FieldByName(A).GetByStr(B)`
 
 ```go
  // biz logic
@@ -387,31 +388,19 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
 
 ## 性能测试
 
-测试数据 [https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
+- [数据](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
+- 代码
 
-测试代码
+  - [Thrift reflect](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
+  - [Map](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/map_test.go)
+- 环境
 
-- Thrift reflect
+  - goos: darwin
+  - goarch: amd64
+  - cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+- 测试结果
 
-[https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
-
-- Map
-
-[https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/map_test.go](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/map_test.go)
-
-测试环境
-
-- goos: darwin
-
-  goarch: amd64
-
-  pkg: github.com/cloudwego/kitex/pkg/generic/thrift_reflect
-
-  cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
-
-测试结果
-
-- 小数据 (266B)
+小数据 (266B)
 
 ```go
 BenchmarkThriftMapExample-16                    9633        109521 ns/op        7622 B/op        138 allocs/op
@@ -419,7 +408,7 @@ BenchmarkThriftReflectExample_Node-16          14732         74397 ns/op        
 BenchmarkThriftReflectExample_DOM-16           14666         84119 ns/op        4435 B/op         76 allocs/op
 ```
 
-- 中数据（1766B）
+中数据（1766B）
 
 ```go
 BenchmarkThriftMapExample-16                    3484        310349 ns/op      179561 B/op       2250 allocs/op
@@ -427,7 +416,7 @@ BenchmarkThriftReflectExample_Node-16          10813        108230 ns/op       4
 BenchmarkThriftReflectExample_DOM-16           10000        115363 ns/op       45412 B/op        478 allocs/op
 ```
 
-- 大数据（150KB）
+大数据（150KB）
 
 ```go
 BenchmarkThriftMapExample-16                      57      18063936 ns/op    17491551 B/op     220247 allocs/op
@@ -437,11 +426,11 @@ BenchmarkThriftReflectExample_DOM-16             321       3719926 ns/op     433
 
 可以看到，随着数据量级不断增加，Thrift 反射相比 map 泛化的性能优势越来越大（可达 3 倍以上）
 
-## Tips
+## Tips:
 
 ### 根据 IDL 快速构造 DOM
 
-可以使用 [generic.DescriptorToPathNode](https://github.com/cloudwego/dynamicgo/tree/main/thrift/generic#func-descriptortopathnode)进行快速构造 struct DOM（**零值）**
+可以使用 [generic.DescriptorToPathNode ](https://github.com/cloudwego/dynamicgo/tree/main/thrift/generic#func-descriptortopathnode)进行快速构造 struct DOM（**零值）**
 
 ```go
 svc, err := thrift.NewDescritorFromPath(context.Background(), IDLPATH)
@@ -484,5 +473,6 @@ func GetNewRequest(idXX int, nameXX string) []byte {
 
 1. 当前 dynamicgo 仅支持 **thrift-binary** 编码方式
 2. 当前 二进制泛化 仅支持 **thrift-framed** 传输协议
+
 
 
