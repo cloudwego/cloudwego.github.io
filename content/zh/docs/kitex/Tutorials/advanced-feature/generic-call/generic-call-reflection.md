@@ -10,7 +10,7 @@ description: "使用 Thrift 反射提升泛化调用性能"
 
 一句话总结，**类似于** [pb reflec](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect)，**不依赖静态代码对 Thrift 数据进行增删改查写**。
 
-反射即采用特定的泛型来描述运行时的任意数据，相比于静态的 struct 具有 **增删查改灵活、不依赖于静态代码** 的特点。当前 github.com/cloudwego/dynamicgo 实现了一套 thrift binary 协议的反射 API，按使用场景大致分为 Thrift Value/Node 和 Thrift DOM 两种。
+反射即采用特定的泛型来描述运行时的任意数据，相比于静态的 struct 具有 **增删查改灵活、不依赖于静态代码** 的特点。当前 [dynamicgo](github.com/cloudwego/dynamicgo) 实现了一套 thrift binary 协议的反射 API，按使用场景大致分为 Thrift Value/Node 和 Thrift DOM 两种。
 
 ## Thrift Value/Node
 
