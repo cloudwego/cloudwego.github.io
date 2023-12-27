@@ -19,10 +19,12 @@ kitex-contrib 提供了对于社区主流配置中心的拓展，实现了动态
 目前支持的配置中心有:
 
 |  配置中心  |                               仓库                                |
-|:------:|:---------------------------------------------------------------:|
-| nacos  |  [config-nacos](https://github.com/kitex-contrib/config-nacos)  |
-|  etcd  |   [config-etcd](https://github.com/kitex-contrib/config-etcd)   |
-| apollo | [config-apollo](https://github.com/kitex-contrib/config-apollo) |
+|:---------:|:----------------------------------------------------------------:|
+|   nacos   |  [config-nacos](https://github.com/kitex-contrib/config-nacos)   |
+|   etcd    |  [config-etcd](https://github.com/kitex-contrib/config-etcd)     |
+|   apollo  |  [config-apollo](https://github.com/kitex-contrib/config-apollo) |
+|   file    |  [config-file](https://github.com/kitex-contrib/config-file)     |
+| zookeeper |  [config-zookeepr](https://github.com/kitex-contrib/config-zookeeper) |
 
 ## Suite
 

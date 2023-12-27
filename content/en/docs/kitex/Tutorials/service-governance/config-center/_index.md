@@ -18,11 +18,13 @@ Microservice developers can use the configuration center to dynamically obtain s
 
 Currently supported configuration centers are:
 
-| config-center |                           depository                            |
-|:-------------:|:---------------------------------------------------------------:|
-|     nacos     |  [config-nacos](https://github.com/kitex-contrib/config-nacos)  |
-|     etcd      |   [config-etcd](https://github.com/kitex-contrib/config-etcd)   |
+| config-center |                          depository                          |
+| :-----------: | :----------------------------------------------------------: |
+|     nacos     | [config-nacos](https://github.com/kitex-contrib/config-nacos) |
+|     etcd      | [config-etcd](https://github.com/kitex-contrib/config-etcd)  |
 |    apollo     | [config-apollo](https://github.com/kitex-contrib/config-apollo) |
+|     file      | [config-file](https://github.com/kitex-contrib/config-file)  |
+|   zookeeper   | [config-zookeepr](https://github.com/kitex-contrib/config-zookeeper) |
 
 ## Suite
 
