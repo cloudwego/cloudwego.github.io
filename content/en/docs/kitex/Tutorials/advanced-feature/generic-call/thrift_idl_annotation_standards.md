@@ -2,7 +2,7 @@
 title: "IDL Definition Specification for Mapping between Thrift and HTTP"
 date: 2022-05-21
 author: wangjingpei
-weight: 1
+weight: 3
 description: >
 ---
 

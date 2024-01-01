@@ -1,7 +1,7 @@
 ---
 title: "Basic Usage"
 date: 2023-12-27
-weight: 4
+weight: 2
 keywords: ["Generic Call", "HTTP", "Thrift"]
 description: "Generic Call basic usage"
 

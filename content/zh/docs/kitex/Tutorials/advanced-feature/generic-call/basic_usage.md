@@ -1,7 +1,7 @@
 ---
 title: "基本使用"
 date: 2023-12-27
-weight: 4
+weight: 2
 keywords: ["generic-call", "HTTP", "Thrift"]
 description: "泛化调用基本使用"
 
