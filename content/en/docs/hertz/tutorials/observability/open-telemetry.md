@@ -64,6 +64,16 @@ func main() {
 
 [Code](https://github.com/hertz-contrib/obs-opentelemetry/tree/main/tracing)
 
+#### Tracing Options
+
+| 函数名                          | 描述                                                                                                |
+|------------------------------|---------------------------------------------------------------------------------------------------|
+| WithTextMapPropagator        | Configures `propagation.TextMapPropagator`                                                        |
+| WithCustomResponseHandler    | Configures Custom `ResponseHandler`                                                               |
+| WithClientHttpRouteFormatter | Configure the custom formatting function for the 'http_route' dimension of the client-side metric |
+| WithServerHttpRouteFormatter | Configure the custom formatting function for the 'http_route' dimension of the server-side metric |
+
+
 ### Metric
 
 Metric contains a wide variety of methods and implementations.
@@ -143,7 +153,7 @@ func main() {
 
 [Code](https://github.com/hertz-contrib/obs-opentelemetry/tree/main/provider)
 
-## Options
+#### Provider Options
 
 | Function                  | Description                                                              |
 |---------------------------|--------------------------------------------------------------------------|
@@ -154,10 +164,14 @@ func main() {
 | WithResource              | Configure resources (`resource.Resource`)                                |
 | WithEnableTracing         | Enable `tracing`                                                         |
 | WithEnableMetrics         | Enable `metrics`                                                         |
-| WithTextMapPropagator     | Configure `propagation.TextMapPropagator`                               |
+| WithTextMapPropagator     | Configure `propagation.TextMapPropagator`                                |
 | WithResourceDetector      | Configure `resource.Detector`                                            |
 | WithHeaders               | Configure the gRPC request header for exporting telemetry data           |
 | WithInsecure              | Configure whether to use secure authentication for exported gRPC clients |
+| WithEnableCompression     | Configure whether to enable gzip transport compression                   |
+| WithSampler               | Configure Trace sampler                                                  |
+| WithSdkTracerProvider     | Configure `sdktrace.TracerProvider`                                      |
+| WithMeterProvider         | Configure `metric.MeterProvider`                                         |
 
 ## Full Examples
 
