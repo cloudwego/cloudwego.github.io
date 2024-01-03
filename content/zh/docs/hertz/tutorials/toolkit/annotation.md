@@ -74,7 +74,7 @@ Protobuf:
 ```protobuf
 message Demo {
     string Demo = 1[(api.query) = "demo", (api.path) = "demo"];
-    string GoTag = 2[(api.go_tag) = "goTag:"tag""];
+    string GoTag = 2[(api.go_tag) = "goTag:\"tag\""];
     string Vd = 3[(api.vd) = "$!='your string'"];
 }
 ```
