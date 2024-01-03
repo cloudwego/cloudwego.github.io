@@ -233,14 +233,14 @@ func main() {
     h.Use(exampleMiddleware())
 }
 
-func exampleMiddleware() app.handlerFunc {
+func exampleMiddleware() app.HandlerFunc {
     return func(ctx context.Context, c *app.RequestContext) {
         // 在 Next 中的函数执行之前打印日志
         hlog.Info("print before...")
         // 使用 Next 使得路由匹配的函数执行
         c.Next(ctx)
         // 在 Next 中的函数执行之后打印日志
-        hlog.Ingo("print after...")
+        hlog.Info("print after...")
     }
 }
 ```

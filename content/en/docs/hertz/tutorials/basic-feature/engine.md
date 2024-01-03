@@ -18,7 +18,7 @@ type Hertz struct {
 
 `Route.Engine` is an important component of `server.Hertz`, and the definition of `Engine` is located in [Engine](https://github.com/cloudwego/hertz/blob/main/pkg/route/engine.go).
 
-## Client Config
+## Config
 
 |  **Option**   | **Default**  |  **Description**  |
 |  :----  | :----  | :---- |
@@ -234,14 +234,14 @@ func main() {
     h.Use(exampleMiddleware())
 }
 
-func exampleMiddleware() app.handlerFunc {
+func exampleMiddleware() app.HandlerFunc {
     return func(ctx context.Context, c *app.RequestContext) {
         // Print logs before executing functions in Next.
         hlog.Info("print before...")
         // Use Next to execute the matching function in route.
         c.Next(ctx)
         // Print logs after executing functions in Next.
-        hlog.Ingo("print after...")
+        hlog.Info("print after...")
     }
 }
 ```
