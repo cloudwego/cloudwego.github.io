@@ -1,7 +1,7 @@
 ---
 title: "泛化调用接入 dynamicgo 指南"
 date: 2023-12-17
-weight: 2
+weight: 4
 keywords: ["generic-call","dynamicgo"]
 description: "泛化调用接入 dynamicgo 指南；高性能泛化调用实现"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "使用 Thrift 反射提升泛化调用性能"
 date: 2023-12-17
-weight: 3
+weight: 5
 keywords: ["反射", "泛化调用"]
 description: "使用 Thrift 反射提升泛化调用性能"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Use Thrift reflection to improve generic-call performance"
 date: 2023-12-17
-weight: 3
+weight: 5
 keywords: ["dynamic", "thrift", "generic-call"]
 description: "Use Thrift reflection to improve generic-call performance"
 ---
