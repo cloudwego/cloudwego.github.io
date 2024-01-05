@@ -241,7 +241,7 @@ func WithProxy(p proxy.ReverseProxy) Option
 func WithRegistryInfo(info *registry.Info) Option
 ```
 
-自定义服务上报的注册信息，用法详见[服务发现](/zh/docs/kitex/tutorials/service-governance/discovery/)。
+自定义服务上报的注册信息，用法详见[服务发现](/zh/docs/kitex/tutorials/service-governance/service_discovery/)。
 
 
 
@@ -303,7 +303,7 @@ func WithReusePort(reuse bool) Option
 func WithRegistry(r registry.Registry) Option
 ```
 
-指定一个 Registry 进行服务发现的注册上报，用法详见[服务发现](/zh/docs/kitex/tutorials/service-governance/discovery/)。
+指定一个 Registry 进行服务发现的注册上报，用法详见[服务发现](/zh/docs/kitex/tutorials/service-governance/service_discovery/)。
 
 
 
