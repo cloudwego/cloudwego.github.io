@@ -471,7 +471,7 @@ Add an additional Tracer. [More](/docs/kitex/tutorials/observability/tracing/)
 func WithResolver(r discovery.Resolver) Option
 ```
 
-Specifie a resolver to do service discovery. [More](/docs/kitex/tutorials/service-governance/discovery/)
+Specifie a resolver to do service discovery. [More](/docs/kitex/tutorials/service-governance/service_discovery/)
 
 
 

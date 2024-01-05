@@ -10,7 +10,7 @@ description: "使用 Thrift 反射提升泛化调用性能"
 
 一句话总结，**类似于** [pb reflec](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect)，**不依赖静态代码对 Thrift 数据进行增删改查写**。
 
-反射即采用特定的泛型来描述运行时的任意数据，相比于静态的 struct 具有 **增删查改灵活、不依赖于静态代码** 的特点。当前 [dynamicgo](github.com/cloudwego/dynamicgo) 实现了一套 thrift binary 协议的反射 API，按使用场景大致分为 Thrift Value/Node 和 Thrift DOM 两种。
+反射即采用特定的泛型来描述运行时的任意数据，相比于静态的 struct 具有 **增删查改灵活、不依赖于静态代码** 的特点。当前 [dynamicgo](https://github.com/cloudwego/dynamicgo) 实现了一套 thrift binary 协议的反射 API，按使用场景大致分为 Thrift Value/Node 和 Thrift DOM 两种。
 
 ## Thrift Value/Node
 
@@ -61,7 +61,7 @@ func (g *ExampleValueServiceImpl) GenericCall(ctx context.Context, method string
     if err != nil {
         return nil, err
     }
-    
+
     // wrap response as thrift REPLY message
     return dt.WrapBinaryBody(resp, methodName, dt.REPLY, 0, seqID)
 }
@@ -355,7 +355,7 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
     if err != nil {
         return err
     }
-    // spew.Dump(root) // -- only root.Next is set 
+    // spew.Dump(root) // -- only root.Next is set
     // check node values by PathNode APIs
     require_field2, err := root.Field(2, DynamicgoOptions).Node.String()
     if err != nil {
@@ -364,7 +364,7 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
     if require_field2 != ReqMsg {
         return errors.New("require_field2 does not match")
     }
-    
+
     // load **all layers** children
     err = root.Load(true, DynamicgoOptions)
     if err != nil {
@@ -393,11 +393,13 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
 
   - [Thrift reflect](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
   - [Map](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/map_test.go)
+
 - 环境
 
   - goos: darwin
   - goarch: amd64
   - cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+
 - 测试结果
 
 小数据 (266B)
@@ -473,6 +475,3 @@ func GetNewRequest(idXX int, nameXX string) []byte {
 
 1. 当前 dynamicgo 仅支持 **thrift-binary** 编码方式
 2. 当前 二进制泛化 仅支持 **thrift-framed** 传输协议
-
-
-
