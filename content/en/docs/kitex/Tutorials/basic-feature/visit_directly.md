@@ -1,7 +1,7 @@
 ---
 title: "Visit Directly"
 date: 2021-08-31
-weight: 4
+weight: 2
 keywords: ["Kitex", "URL", "DNS"]
 description: Kitex can opt for direct access without service discovery when the downstream address is clear.
 ---

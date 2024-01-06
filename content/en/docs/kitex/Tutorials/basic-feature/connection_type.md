@@ -1,7 +1,7 @@
 ---
 title: "Connection Type"
 date: 2023-10-16
-weight: 5
+weight: 3
 keywords: ["Kitex", "Short Connection", "Long Connection", "Connection Multiplexing"]
 description: "Kitex supports short connections, long connection pool, connection multiplexing and connection pool status monitoring."
 ---
