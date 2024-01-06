@@ -1,7 +1,7 @@
 ---
 title: "业务异常"
 date: 2022-11-04
-weight: 6
+weight: 4
 keywords: ["Kitex", "自定义异常"]
 description: "Kitex 自 v0.4.3 版本提供了业务自定义异常功能，本文涵盖了相关接口定义、用户使用和框架实现介绍。"
 ---

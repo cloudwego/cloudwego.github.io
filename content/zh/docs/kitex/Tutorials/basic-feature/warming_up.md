@@ -1,7 +1,7 @@
 ---
 title: "预热"
 linkTitle: "预热"
-weight: 7
+weight: 5
 description: 通过客户端预热，可以避免首次请求时产生较大的延迟。
 ---
 
