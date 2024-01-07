@@ -18,11 +18,11 @@ Note that the default logger uses the `log.Logger` from the standard library as 
 
 You can use `klog.SetLogger` to replace the default logger.
 
-[obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) provide logger implementation base on [logrus](https://github.com/sirupsen/logrus) and [zap](https://github.com/uber-go/zap)
+[obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) provide logger implementation base on [logrus](https://github.com/sirupsen/logrus), [zap](https://github.com/uber-go/zap) and slog.
 
-### Logrus
+### usage example:
 
-set logger impl
+Taking logrus as an example, set logger to logrus:
 
 ```go
 import (
@@ -36,7 +36,7 @@ func init()  {
 }
 ```
 
-log with context
+log with context:
 
 ```go
 // Echo implements the Echo interface.
@@ -46,7 +46,7 @@ func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Respon
 }
 ```
 
-view log
+view log:
 
 ```context
 {"level":"debug","msg":"echo called: my request","span_id":"056e0cf9a8b2cec3","time":"2022-03-09T02:47:28+08:00","trace_flags":"01","trace_id":"33bdd3c81c9eb6cbc0fbb59c57ce088b"}

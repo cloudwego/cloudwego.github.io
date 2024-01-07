@@ -139,13 +139,13 @@ func main()  {
 
 | 名称                    | 指标数据模型    | 单位          | 单位(UCUM) | 描述           |
 |-----------------------|-----------|-------------|----------|--------------|
-| `rpc.server.duration` | Histogram | millseconds | `ms`     | 测量请求RPC的持续时间 |
+| `rpc.server.duration` | Histogram | milliseconds | `ms`     | 测量请求RPC的持续时间 |
 
 ##### Kitex Client
 
 | 名称                    | 指标数据模型    | 单位          | 单位(UCUM) | 描述           |
 |-----------------------|-----------|-------------|----------|--------------|
-| `rpc.server.duration` | Histogram | millseconds | `ms`     | 测量请求RPC的持续时间 |
+| `rpc.server.duration` | Histogram | milliseconds | `ms`     | 测量请求RPC的持续时间 |
 
 ##### Runtime Metrics
 
