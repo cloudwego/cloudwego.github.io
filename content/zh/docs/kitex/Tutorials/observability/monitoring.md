@@ -2,7 +2,7 @@
 title: "监控"
 date: 2021-08-26
 weight: 4
-keywords: ["Kitex", "监控", "Tracer"]
+keywords: ["Kitex", "监控", "Tracer", "Metric"]
 description: Kitex 框架内置了监控能力，但是本身不带任何监控打点，通过接口的方式进行扩展。
 ---
 
@@ -16,7 +16,13 @@ type Tracer interface {
 }
 ```
 
-[kitex-contrib](https://github.com/kitex-contrib) 中提供了 prometheus 的监控扩展，使用方式：
+Kitex-contrib 中也提供了两种监控拓展 [monitor-prometheus](https://github.com/kitex-contrib/monitor-prometheus/tree/main) 与 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) ，它们分别集成了 Prometheus 与 OpenTelemetry 的监控拓展，前者更贴合 Prometheus 生态，使用也比较简单方便，而后者使用起来更灵活。
+
+## Prometheus
+
+拓展库 [monitor-prometheus](https://github.com/kitex-contrib/monitor-prometheus/tree/main) 中提供了 Prometheus 的监控扩展。
+
+#### 使用方式
 
 Client
 
@@ -52,3 +58,112 @@ func main() {
 ...
 }
 ```
+
+#### Metrics
+
+##### Kitex Client
+
+| 名称                        | 单位 | Tags                                 | 描述                                    |
+|---------------------------|----|--------------------------------------|---------------------------------------|
+| `kitex_client_throughput` | -  | type, caller, callee, method, status | Client 端处理的请求总数                       |
+| `kitex_client_latency_us` | us | type, caller, callee, method, status | Client 端请求处理耗时（收到应答时间 - 发起请求时间，单位 us） |
+
+##### Kitex Server
+
+| 名称                        | 单位 | Tags                                 | 描述                                     |
+|---------------------------|----|--------------------------------------|----------------------------------------|
+| `kitex_server_throughput` | -  | type, caller, callee, method, status | Server 端处理的请求总数                        |
+| `kitex_server_latency_us` | us | type, caller, callee, method, status | Server 端请求处理耗时（处理完请求时间 - 收到请求时间，单位 us） |
+
+基于以上的 metrics 可以实现更多复杂的数据监控，使用示例看参考 [Useful Examples](https://github.com/kitex-contrib/monitor-prometheus/?tab=readme-ov-file#useful-examples) 。
+
+## OpenTelemetry
+
+拓展库 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) 中提供了 OpenTelemetry 的监控拓展。
+
+#### 使用方式
+
+##### Client
+
+```go
+import (
+    "github.com/kitex-contrib/obs-opentelemetry/provider"
+    "github.com/kitex-contrib/obs-opentelemetry/tracing"
+)
+
+func main(){
+    serviceName := "echo-client"
+    p := provider.NewOpenTelemetryProvider(
+        provider.WithServiceName(serviceName),
+        provider.WithExportEndpoint("localhost:4317"),
+        provider.WithInsecure(),
+    )
+    defer p.Shutdown(context.Background())
+    cli, _ := echo.NewClient(
+        "echo",
+        client.WithSuite(tracing.NewClientSuite()),
+        // Please keep the same as provider.WithServiceName
+        client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+    )
+}
+```
+
+##### Server
+
+```go
+import (
+    "github.com/kitex-contrib/obs-opentelemetry/provider"
+    "github.com/kitex-contrib/obs-opentelemetry/tracing"
+)
+
+func main()  {
+    serviceName := "echo"
+    p := provider.NewOpenTelemetryProvider(
+        provider.WithServiceName(serviceName),
+        provider.WithExportEndpoint("localhost:4317"),
+        provider.WithInsecure(),
+    )
+    defer p.Shutdown(context.Background())
+    svr := echo.NewServer(
+        new(EchoImpl),
+        server.WithSuite(tracing.NewServerSuite()),
+        // Please keep the same as provider.WithServiceName
+        server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+    )
+}
+```
+
+#### Metrics
+
+##### Kitex Server
+
+| 名称                    | 指标数据模型    | 单位          | 单位(UCUM) | 描述           |
+|-----------------------|-----------|-------------|----------|--------------|
+| `rpc.server.duration` | Histogram | millseconds | `ms`     | 测量请求RPC的持续时间 |
+
+##### Kitex Client
+
+| 名称                    | 指标数据模型    | 单位          | 单位(UCUM) | 描述           |
+|-----------------------|-----------|-------------|----------|--------------|
+| `rpc.server.duration` | Histogram | millseconds | `ms`     | 测量请求RPC的持续时间 |
+
+##### Runtime Metrics
+
+| 名称                                   | 指标数据模型 | 单位       | 单位(UCUM) | 描述                                |
+| -------------------------------------- | ------------ | ---------- | ---------- |-----------------------------------|
+| `process.runtime.go.cgo.calls`         | Sum          | -          | -          | 当前进程调用的cgo数量                      |
+| `process.runtime.go.gc.count`          | Sum          | -          | -          | 已完成的 gc 周期的数量                     |
+| `process.runtime.go.gc.pause_ns`       | Histogram    | nanosecond | `ns`       | 在GC stop-the-world 中暂停的纳秒数量       |
+| `process.runtime.go.gc.pause_total_ns` | Histogram    | nanosecond | `ns`       | 自程序启动以来，GC stop-the-world 的累计微秒计数 |
+| `process.runtime.go.goroutines`        | Gauge        | -          | -          | 协程数量                              |
+| `process.runtime.go.lookups`           | Sum          | -          | -          | 运行时执行的指针查询的数量                     |
+| `process.runtime.go.mem.heap_alloc`    | Gauge        | bytes      | `bytes`    | 分配的堆对象的字节数                        |
+| `process.runtime.go.mem.heap_idle`     | Gauge        | bytes      | `bytes`    | 空闲（未使用）的堆内存                       |
+| `process.runtime.go.mem.heap_inuse`    | Gauge        | bytes      | `bytes`    | 已使用的堆内存                           |
+| `process.runtime.go.mem.heap_objects`  | Gauge        | -          | -          | 已分配的堆对象数量                         |
+| `process.runtime.go.mem.live_objects`  | Gauge        | -          | -          | 存活对象数量(Mallocs - Frees)           |
+| `process.runtime.go.mem.heap_released` | Gauge        | bytes      | `bytes`    | 已交还给操作系统的堆内存                      |
+| `process.runtime.go.mem.heap_sys`      | Gauge        | bytes      | `bytes`    | 从操作系统获得的堆内存                       |
+| `runtime.uptime`                       | Sum          | ms         | `ms`       | 自应用程序被初始化以来的毫秒数                   |
+
+通过 `rpc.server.duration` 可以计算更多的服务指标，如 R.E.D (Rate, Errors, Duration)，具体示例可参考[此处](https://github.com/kitex-contrib/obs-opentelemetry/blob/main/README_CN.md#%E7%8E%B0%E5%B7%B2%E6%94%AF%E6%8C%81%E7%9A%84-mertrics)。
