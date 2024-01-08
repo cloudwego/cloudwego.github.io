@@ -6,6 +6,8 @@ keywords: ["Kitex", "监控", "Tracer", "Metric"]
 description: Kitex 框架内置了监控能力，但是本身不带任何监控打点，通过接口的方式进行扩展。
 ---
 
+## 自定义监控
+
 框架提供了 `Tracer` 接口，用户可以根据需求实现该接口，并通过 `WithTracer` Option 来注入监控的具体实现。
 
 ```go
@@ -16,9 +18,33 @@ type Tracer interface {
 }
 ```
 
-Kitex-contrib 中也提供了两种监控拓展 [monitor-prometheus](https://github.com/kitex-contrib/monitor-prometheus/tree/main) 与 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) ，它们分别集成了 Prometheus 与 OpenTelemetry 的监控拓展，前者更贴合 Prometheus 生态，使用也比较简单方便，而后者使用起来更灵活。
+实现自定义监控示例（监控处理次数的简单实现）：
 
-## Prometheus
+```go
+type myTracer struct {}
+
+// Start record the beginning of server handling request from client.
+func (*myTracer) Start(ctx context.Context) context.Context {
+	return ctx
+}
+
+// Finish record the ending of server handling request from client.
+func (*myTracer) Finish(ctx context.Context) {
+	countIncr()
+}
+
+func countIncr() {
+    // 处理次数 + 1
+    // ...
+}
+```
+
+
+## 拓展库使用
+
+[kitex-contrib](https://github.com/kitex-contrib) 中也提供了两种监控拓展 [monitor-prometheus](https://github.com/kitex-contrib/monitor-prometheus/tree/main) 与 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) ，它们分别集成了 Prometheus 与 OpenTelemetry 的监控拓展，前者更贴合 Prometheus 生态，使用也比较简单方便，而后者使用起来更灵活。
+
+### Prometheus
 
 拓展库 [monitor-prometheus](https://github.com/kitex-contrib/monitor-prometheus/tree/main) 中提供了 Prometheus 的监控扩展。
 
@@ -61,93 +87,45 @@ func main() {
 
 #### Metrics
 
-##### Kitex Client
+Client
 
 | 名称                        | 单位 | Tags                                 | 描述                                    |
 |---------------------------|----|--------------------------------------|---------------------------------------|
 | `kitex_client_throughput` | -  | type, caller, callee, method, status | Client 端处理的请求总数                       |
 | `kitex_client_latency_us` | us | type, caller, callee, method, status | Client 端请求处理耗时（收到应答时间 - 发起请求时间，单位 us） |
 
-##### Kitex Server
+Server
 
 | 名称                        | 单位 | Tags                                 | 描述                                     |
 |---------------------------|----|--------------------------------------|----------------------------------------|
 | `kitex_server_throughput` | -  | type, caller, callee, method, status | Server 端处理的请求总数                        |
 | `kitex_server_latency_us` | us | type, caller, callee, method, status | Server 端请求处理耗时（处理完请求时间 - 收到请求时间，单位 us） |
 
-基于以上的 metrics 可以实现更多复杂的数据监控，使用示例看参考 [Useful Examples](https://github.com/kitex-contrib/monitor-prometheus/?tab=readme-ov-file#useful-examples) 。
+基于以上 metrics 可以实现更多复杂的数据监控，使用示例看参考 [Useful Examples](https://github.com/kitex-contrib/monitor-prometheus/?tab=readme-ov-file#useful-examples) 。
 
-## OpenTelemetry
+### OpenTelemetry
 
-拓展库 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) 中提供了 OpenTelemetry 的监控拓展。
+拓展库 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) 中提供了 opentelemetry 的监控拓展。
 
 #### 使用方式
 
-##### Client
-
-```go
-import (
-    "github.com/kitex-contrib/obs-opentelemetry/provider"
-    "github.com/kitex-contrib/obs-opentelemetry/tracing"
-)
-
-func main(){
-    serviceName := "echo-client"
-    p := provider.NewOpenTelemetryProvider(
-        provider.WithServiceName(serviceName),
-        provider.WithExportEndpoint("localhost:4317"),
-        provider.WithInsecure(),
-    )
-    defer p.Shutdown(context.Background())
-    cli, _ := echo.NewClient(
-        "echo",
-        client.WithSuite(tracing.NewClientSuite()),
-        // Please keep the same as provider.WithServiceName
-        client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
-    )
-}
-```
-
-##### Server
-
-```go
-import (
-    "github.com/kitex-contrib/obs-opentelemetry/provider"
-    "github.com/kitex-contrib/obs-opentelemetry/tracing"
-)
-
-func main()  {
-    serviceName := "echo"
-    p := provider.NewOpenTelemetryProvider(
-        provider.WithServiceName(serviceName),
-        provider.WithExportEndpoint("localhost:4317"),
-        provider.WithInsecure(),
-    )
-    defer p.Shutdown(context.Background())
-    svr := echo.NewServer(
-        new(EchoImpl),
-        server.WithSuite(tracing.NewServerSuite()),
-        // Please keep the same as provider.WithServiceName
-        server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
-    )
-}
-```
+有关 obs-opentelemetry 的使用方式请查看 [tracing](../tracing#opentelemetry) 章节。
 
 #### Metrics
 
-##### Kitex Server
+Server
 
 | 名称                    | 指标数据模型    | 单位          | 单位(UCUM) | 描述           |
 |-----------------------|-----------|-------------|----------|--------------|
 | `rpc.server.duration` | Histogram | milliseconds | `ms`     | 测量请求RPC的持续时间 |
 
-##### Kitex Client
+Client
 
 | 名称                    | 指标数据模型    | 单位          | 单位(UCUM) | 描述           |
 |-----------------------|-----------|-------------|----------|--------------|
 | `rpc.server.duration` | Histogram | milliseconds | `ms`     | 测量请求RPC的持续时间 |
 
-##### Runtime Metrics
+Runtime Metrics
 
 | 名称                                   | 指标数据模型 | 单位       | 单位(UCUM) | 描述                                |
 | -------------------------------------- | ------------ | ---------- | ---------- |-----------------------------------|
