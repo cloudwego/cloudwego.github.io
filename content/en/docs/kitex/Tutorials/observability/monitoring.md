@@ -105,6 +105,10 @@ Server
 
 More complex data monitoring can be implemented based on the above metrics. Examples can be found in the [Useful Examples](https://github.com/kitex-contrib/monitor-prometheus/?tab=readme-ov-file#useful-examples) section.
 
+#### Runtime Metrics
+
+This repository relies on [prometheus/client_golang](https://github.com/prometheus/client_golang) and supports its built-in [runtime metrics](https://golang.bg/src/runtime/metrics/description.go). For more details, please refer to [WithGoCollectorRuntimeMetrics](https://pkg.go.dev/github.com/prometheus/client_golang@v1.18.0/prometheus/collectors#WithGoCollectorRuntimeMetrics).
+
 ### OpenTelemetry
 
 The extension repository [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) provides OpenTelemetry monitoring extension.
@@ -127,7 +131,11 @@ Client
 |-----------------------------|-------------------|-------------|------------|-------------------------------------------|
 | `rpc.server.duration`       | Histogram         | milliseconds| `ms`       | measures duration of outbound RPC     |
 
-Runtime Metrics
+Additional service metrics can be calculated using `rpc.server.duration`, such as R.E.D (Rate, Errors, Duration). Examples can be found [here](https://github.com/kitex-contrib/obs-opentelemetry/blob/main/README.md#supported-metrics).
+
+#### Runtime Metrics
+
+Based on [opentelemetry-go](https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/runtime), it supports the following runtime metrics:
 
 | Name                                   | Instrument | Unit       | Unit (UCUM)) | Description                                                                   |
 |----------------------------------------|------------|------------|--------------|-------------------------------------------------------------------------------|
@@ -145,5 +153,3 @@ Runtime Metrics
 | `process.runtime.go.mem.heap_released` | Gauge      | bytes      | `bytes`      | Bytes of idle spans whose physical memory has been returned to the OS.        |
 | `process.runtime.go.mem.heap_sys`      | Gauge      | bytes      | `bytes`      | Bytes of idle spans whose physical memory has been returned to the OS.        |
 | `runtime.uptime`                       | Sum        | ms         | `ms`         | Milliseconds since application was initialized.                               |
-
-Additional service metrics can be calculated using `rpc.server.duration`, such as R.E.D (Rate, Errors, Duration). Examples can be found [here](https://github.com/kitex-contrib/obs-opentelemetry/blob/main/README.md#supported-metrics).

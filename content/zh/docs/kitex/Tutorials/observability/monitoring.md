@@ -103,6 +103,10 @@ Server
 
 基于以上 metrics 可以实现更多复杂的数据监控，使用示例看参考 [Useful Examples](https://github.com/kitex-contrib/monitor-prometheus/?tab=readme-ov-file#useful-examples) 。
 
+#### Runtime Metrics
+
+该库依赖于 [prometheus/client_golang](https://github.com/prometheus/client_golang)，支持其自带的 [runtime metrics](https://golang.bg/src/runtime/metrics/description.go)，详细内容请参考 [WithGoCollectorRuntimeMetrics](https://pkg.go.dev/github.com/prometheus/client_golang@v1.18.0/prometheus/collectors#WithGoCollectorRuntimeMetrics)
+
 ### OpenTelemetry
 
 拓展库 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) 中提供了 opentelemetry 的监控拓展。
@@ -125,7 +129,11 @@ Client
 |-----------------------|-----------|-------------|----------|--------------|
 | `rpc.server.duration` | Histogram | milliseconds | `ms`     | 测量请求RPC的持续时间 |
 
-Runtime Metrics
+通过 `rpc.server.duration` 可以计算更多的服务指标，如 R.E.D (Rate, Errors, Duration)，具体示例可参考[此处](https://github.com/kitex-contrib/obs-opentelemetry/blob/main/README_CN.md#%E7%8E%B0%E5%B7%B2%E6%94%AF%E6%8C%81%E7%9A%84-mertrics)。
+
+#### Runtime Metrics
+
+基于 [opentelemetry-go](https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/runtime)，支持以下 runtime metrics：
 
 | 名称                                   | 指标数据模型 | 单位       | 单位(UCUM) | 描述                                |
 | -------------------------------------- | ------------ | ---------- | ---------- |-----------------------------------|
@@ -143,5 +151,3 @@ Runtime Metrics
 | `process.runtime.go.mem.heap_released` | Gauge        | bytes      | `bytes`    | 已交还给操作系统的堆内存                      |
 | `process.runtime.go.mem.heap_sys`      | Gauge        | bytes      | `bytes`    | 从操作系统获得的堆内存                       |
 | `runtime.uptime`                       | Sum          | ms         | `ms`       | 自应用程序被初始化以来的毫秒数                   |
-
-通过 `rpc.server.duration` 可以计算更多的服务指标，如 R.E.D (Rate, Errors, Duration)，具体示例可参考[此处](https://github.com/kitex-contrib/obs-opentelemetry/blob/main/README_CN.md#%E7%8E%B0%E5%B7%B2%E6%94%AF%E6%8C%81%E7%9A%84-mertrics)。
