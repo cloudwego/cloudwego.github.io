@@ -4,7 +4,6 @@ date: 2023-03-14
 weight: 10
 keywords: ["HTTP", "访问日志"]
 description: "访问日志可以收集所有 HTTP 请求的详细信息，包括时间、端口、请求方法等。Hertz 也提供了 access log 的实现。"
-
 ---
 
 访问日志可以收集所有 HTTP 请求的详细信息，包括时间、端口、请求方法等。Hertz 也提供了 access log 的 [实现](https://github.com/hertz-contrib/logger)，这里的实现参考了 [fiber](https://github.com/gofiber/fiber/tree/master/middleware/logger)。
@@ -52,7 +51,7 @@ func main() {
 函数签名：
 
 ```go
-func WithFormat(s string) Option 
+func WithFormat(s string) Option
 ```
 
 示例代码：
@@ -89,7 +88,7 @@ func main() {
 函数签名：
 
 ```go
-func WithTimeFormat(s string) Option 
+func WithTimeFormat(s string) Option
 ```
 
 示例代码：
@@ -168,7 +167,7 @@ func main() {
 函数签名：
 
 ```go
-func WithAccessLogFunc(f func(ctx context.Context, format string, v ...interface{})) Option 
+func WithAccessLogFunc(f func(ctx context.Context, format string, v ...interface{})) Option
 ```
 
 示例代码：
@@ -178,7 +177,7 @@ package main
 
 import (
 	"context"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -207,7 +206,7 @@ func main() {
 函数签名：
 
 ```go
-func WithTimeZoneLocation(loc *time.Location) Option 
+func WithTimeZoneLocation(loc *time.Location) Option
 ```
 
 示例代码：
@@ -217,7 +216,7 @@ package main
 
 import (
 	"context"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -244,6 +243,49 @@ func main() {
 }
 ```
 
+### WithLogConditionFunc
+
+使用 `WithLogConditionFunc` 可以根据条件来决定是否打印日志。
+
+函数签名：
+
+```go
+func WithLogConditionFunc(f logConditionFunc) Option
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/hertz-contrib/logger/accesslog"
+)
+
+func main() {
+	h := server.Default(
+		server.WithHostPorts(":8080"),
+	)
+
+	h.Use(accesslog.New(
+		accesslog.WithLogConditionFunc(func(ctx context.Context, c *app.RequestContext) bool {
+			if c.FullPath() == "/ping" {
+				return false
+			}
+			return true
+		}),
+	))
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		c.JSON(200, utils.H{"msg": "pong"})
+	})
+	h.Spin()
+}
+```
+
 ## 日志格式
 
 ### 默认日志格式
@@ -260,30 +302,30 @@ func main() {
 
 ### 支持的标签
 
-| 标签    | 介绍          |
-| ------------------|-------------------------------|
-| pid               | 进程 ID                       |
-| time              | 时间                          |
-| referer           | 当前请求的来源页面 [地址](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Referer)      |
-| protocol          | 协议类型                      |
-| port              | 端口                          |
-| ip                | Host 中的 ip 地址             |
-| ips               | Header 中的 [X-Forwarded-For](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Forwarded-For)   |
-| host              | HTTP 中的 Host                |
-| method            | 请求方法                      |
-| path              | 请求路径                      |
-| url               | 请求 url                      |
-| ua                | User-Agent 的缩写             |
-| latency           | 处理消息的延迟                |
-| status            | HTTP 返回的状态码             |
-| resBody           | 返回内容                      |
-| reqHeaders        | 请求的 Header 内容            |
-| resHeaders        | 返回的 Header 内容            |
-| queryParams       | 请求的 query 参数             |
-| body              | 请求的消息体内容              |
-| bytesSent         | 返回的消息体长度              |
-| bytesReceived     | 请求的消息体长度              |
-| route             | 请求路由的路径                |
+| 标签          | 介绍                                                                                                     |
+| ------------- | -------------------------------------------------------------------------------------------------------- |
+| pid           | 进程 ID                                                                                                  |
+| time          | 时间                                                                                                     |
+| referer       | 当前请求的来源页面 [地址](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Referer)             |
+| protocol      | 协议类型                                                                                                 |
+| port          | 端口                                                                                                     |
+| ip            | Host 中的 ip 地址                                                                                        |
+| ips           | Header 中的 [X-Forwarded-For](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Forwarded-For) |
+| host          | HTTP 中的 Host                                                                                           |
+| method        | 请求方法                                                                                                 |
+| path          | 请求路径                                                                                                 |
+| url           | 请求 url                                                                                                 |
+| ua            | User-Agent 的缩写                                                                                        |
+| latency       | 处理消息的延迟                                                                                           |
+| status        | HTTP 返回的状态码                                                                                        |
+| resBody       | 返回内容                                                                                                 |
+| reqHeaders    | 请求的 Header 内容                                                                                       |
+| resHeaders    | 返回的 Header 内容                                                                                       |
+| queryParams   | 请求的 query 参数                                                                                        |
+| body          | 请求的消息体内容                                                                                         |
+| bytesSent     | 返回的消息体长度                                                                                         |
+| bytesReceived | 请求的消息体长度                                                                                         |
+| route         | 请求路由的路径                                                                                           |
 
 ### 标签扩展
 

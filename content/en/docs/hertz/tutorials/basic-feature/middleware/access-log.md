@@ -4,7 +4,6 @@ date: 2023-03-14
 weight: 10
 keywords: ["HTTP", "access log"]
 description: "This middleware is used to hertz that logs HTTP request/response details."
-
 ---
 
 This middleware is used to [hertz](https://github.com/cloudwego/hertz) that logs HTTP request/response details and inspired by [logger](https://github.com/gofiber/fiber/tree/master/middleware/logger).
@@ -52,7 +51,7 @@ The `accesslog` provides `WithFormat` to help users set the format of the log, d
 Function signatures:
 
 ```go
-func WithFormat(s string) Option 
+func WithFormat(s string) Option
 ```
 
 Sample Code:
@@ -89,7 +88,7 @@ The `accesslog` provides `WithTimeFormat` to help users set the format of the `t
 Function signatures:
 
 ```go
-func WithTimeFormat(s string) Option 
+func WithTimeFormat(s string) Option
 ```
 
 Sample Code:
@@ -168,7 +167,7 @@ The `accesslog` provides `WithAccessLogFunc` to help users set the log printing 
 Function signatures:
 
 ```go
-func WithAccessLogFunc(f func(ctx context.Context, format string, v ...interface{})) Option 
+func WithAccessLogFunc(f func(ctx context.Context, format string, v ...interface{})) Option
 ```
 
 Sample Code:
@@ -178,7 +177,7 @@ package main
 
 import (
 	"context"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -207,7 +206,7 @@ The `accesslog` provides `WithTimeZoneLocation` to help users set the log printi
 Function signatures:
 
 ```go
-func WithTimeZoneLocation(loc *time.Location) Option 
+func WithTimeZoneLocation(loc *time.Location) Option
 ```
 
 Sample Code:
@@ -217,7 +216,7 @@ package main
 
 import (
 	"context"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -244,6 +243,49 @@ func main() {
 }
 ```
 
+### WithLogConditionFunc
+
+The `accesslog` provides `WithLogConditionFunc` to allow user decide whether to print logs based on conditions.
+
+Function signatures:
+
+```go
+func WithLogConditionFunc(f logConditionFunc) Option
+```
+
+Sample Code:
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/hertz-contrib/logger/accesslog"
+)
+
+func main() {
+	h := server.Default(
+		server.WithHostPorts(":8080"),
+	)
+
+	h.Use(accesslog.New(
+		accesslog.WithLogConditionFunc(func(ctx context.Context, c *app.RequestContext) bool {
+			if c.FullPath() == "/ping" {
+				return false
+			}
+			return true
+		}),
+	))
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		c.JSON(200, utils.H{"msg": "pong"})
+	})
+	h.Spin()
+}
+```
+
 ## Log Format
 
 ### Default Log Format
@@ -260,30 +302,30 @@ example:
 
 ### Supported tags
 
-| tag    | Introduction          |
-| ------------------|-------------------------------|
-| pid               | pid                       |
-| time              | time                          |
-| referer           | the [referer](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer) HTTP request header contains the absolute or partial address from which a resource has been requested      |
-| protocol          | protocol                     |
-| port              | port                          |
-| ip                | the ip info in Host             |
-| ips               | [X-Forwarded-For](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Forwarded-For)   |
-| host              | host                |
-| method            | method                      |
-| path              | path                      |
-| url               | url                      |
-| ua                | User-Agent             |
-| latency           | latency                |
-| status            | the status code of response             |
-| resBody           | response body                      |
-| reqHeaders        | request headers            |
-| resHeaders        | response headers            |
-| queryParams       | request parameters             |
-| body              | request body              |
-| bytesSent         | the length of response body              |
-| bytesReceived     | the length of request body              |
-| route             | the path of route                |
+| tag           | Introduction                                                                                                                                                                           |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| pid           | pid                                                                                                                                                                                    |
+| time          | time                                                                                                                                                                                   |
+| referer       | the [referer](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer) HTTP request header contains the absolute or partial address from which a resource has been requested |
+| protocol      | protocol                                                                                                                                                                               |
+| port          | port                                                                                                                                                                                   |
+| ip            | the ip info in Host                                                                                                                                                                    |
+| ips           | [X-Forwarded-For](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Forwarded-For)                                                                                           |
+| host          | host                                                                                                                                                                                   |
+| method        | method                                                                                                                                                                                 |
+| path          | path                                                                                                                                                                                   |
+| url           | url                                                                                                                                                                                    |
+| ua            | User-Agent                                                                                                                                                                             |
+| latency       | latency                                                                                                                                                                                |
+| status        | the status code of response                                                                                                                                                            |
+| resBody       | response body                                                                                                                                                                          |
+| reqHeaders    | request headers                                                                                                                                                                        |
+| resHeaders    | response headers                                                                                                                                                                       |
+| queryParams   | request parameters                                                                                                                                                                     |
+| body          | request body                                                                                                                                                                           |
+| bytesSent     | the length of response body                                                                                                                                                            |
+| bytesReceived | the length of request body                                                                                                                                                             |
+| route         | the path of route                                                                                                                                                                      |
 
 ### Custom Tag
 
