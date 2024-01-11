@@ -398,7 +398,7 @@ Function signature:
 
 ### SetBody
 
-get request body for sse client
+set request body for sse client
 
 Function signature:
 
