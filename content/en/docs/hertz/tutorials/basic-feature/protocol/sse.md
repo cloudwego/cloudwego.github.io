@@ -396,6 +396,14 @@ Function signature:
 
 `func (c *Client) SetEncodingBase64(encodingBase64 bool)`
 
+### SetBody
+
+set request body for sse client
+
+Function signature:
+
+`func (c *Client) SetBody(body []byte)`
+
 ### GetURL
 
 get request url for sse client 
@@ -435,3 +443,11 @@ get LastEventID for sse client
 Function signature:
 
 `func (c *Client) GetLastEventID() []byte`
+
+### GetBody
+
+get request body for sse client
+
+Function signature:
+
+`func (c *Client) GetBody() []byte`

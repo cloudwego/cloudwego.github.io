@@ -395,6 +395,13 @@ func main() {
 
 `func (c *Client) SetEncodingBase64(encodingBase64 bool)`
 
+### SetBody
+
+设置 sse client 请求的 Body
+
+函数签名:
+
+`func (c *Client) SetBody(body []byte)`
 
 ### GetURL
 
@@ -435,3 +442,11 @@ func main() {
 函数签名:
 
 `func (c *Client) GetLastEventID() []byte`
+
+### GetBody
+
+获取 sse client 请求的 Body
+
+函数签名:
+
+`func (c *Client) GetBody() []byte`
