@@ -8,7 +8,7 @@ description: "Learn how to set up, manage, and optimize Golang microservices eff
 author:  <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>, <a href="https://github.com/GuangmingLuo" target="_blank">Guangming Luo</a>
 ---
 
-![Image](/img/blog/Mastering_Golang_Microservices_A_Practical_Guide_Embrace_High_Performance_with_Kitex_and_Hertz/1.png)
+![Image](/img/blog/Mastering_Golang_Microservices_A_Practical_Guide_Embrace_High_Performance_with_Kitex_and_Hertz/1.jpeg)
 
 ## I. Introduction
 
@@ -46,7 +46,7 @@ Next, install Kitex (`go install github.com/cloudwego/kitex/tool/cmd/kitex@lates
 
 Now, if you run `kitex --version`, `thriftgo --version`, and `hz --version`, you should see output indicating the versions of each CLI tool:
 
-```
+```bash
 $ kitex --version
 vx.x.x
 $ thriftgo --version
@@ -89,7 +89,7 @@ Congratulations! You now have successfully used Kitex to complete an RPC.
 To create a sample project with Hertz, start by creating the `hertz_demo` folder in the current directory and navigate to that directory. Then, create the `main.go` file and add the following code:
 package main
 
-```
+```go
 import (
     "context"
 
