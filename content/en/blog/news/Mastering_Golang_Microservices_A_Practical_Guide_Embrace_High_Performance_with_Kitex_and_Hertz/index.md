@@ -1,5 +1,5 @@
 ---
-date: 2024-1-10
+date: 2024-01-10
 title: "Mastering Golang Microservices - A Practical Guide: Embrace High-Performance with Kitex and Hertz"
 projects: ["CloudWeGo"]
 linkTitle: "Mastering Golang Microservices - A Practical Guide: Embrace High-Performance with Kitex and Hertz"
@@ -113,12 +113,17 @@ Next, generate the `go.mod` file (`go mod init hertz_demo`), then tidy & get dep
 
 To run the sample code, simply type `go run hertz_demo`. If the server is launched successfully, you will see the following message:
 
-```2022/05/17 21:47:09.626332 engine.go:567: [Debug] HERTZ: Method=GET    absolutePath=/ping   -- handlerName=main.main.func1 (num=2 handlers)2022/05/17 21:47:09.629874 transport.go:84: [Info] HERTZ: HTTP server listening on address=[::]:8888```
+```bash
+2022/05/17 21:47:09.626332 engine.go:567: [Debug] HERTZ: Method=GET    absolutePath=/ping   -- handlerName=main.main.func1 (num=2 handlers)
+2022/05/17 21:47:09.629874 transport.go:84: [Info] HERTZ: HTTP server listening on address=[::]:8888
+```
 
 
 You can test the interface by typing `curl http://127.0.0.1:8888/ping`. If everything is working correctly, you should see the following output:
 
-```{"message":"pong"}```
+```bash
+{"message":"pong"}
+```
 
 
 ##### Using CLI tool hz
@@ -126,7 +131,7 @@ You can test the interface by typing `curl http://127.0.0.1:8888/ping`. If every
 You can also use the Hertz CLI tool to generate a sample project outside of the `GOPATH`. Procedures include creating an IDL file named `hello.thrift`, generating the sample code, obtaining the dependencies, and subsequently running the sample code.
 Assuming you are working on a folder outside of `GOPATH`, create an IDL file called `hello.thrift`:
 
-```
+```thrift
 namespace go hello.world
 
 service HelloService {
@@ -158,7 +163,8 @@ To get detailed error messages, all detailed errors are defined by `DetailedErro
 
 For example:
 
-```import "errors"
+```go
+import "errors"
 import "github.com/cloudwego/kitex/client"
 import "github.com/cloudwego/kitex/pkg/kerrors"
 _, err := echo.NewClient("echo", client.WithResolver(nil))
@@ -177,7 +183,7 @@ Panic that occurs in the goroutine created by the business code using the go key
 
 While checking for recovered panic in your middlewares, you can use `ri.Stats().Panicked()`:
 
-```
+```go
 // After calling next(...) in your middleware:
 ri := rpcinfo.GetRPCInfo(ctx)
 if stats := ri.Stats(); stats != nil {
@@ -252,7 +258,7 @@ For more details and solutions on these and other error codes, please refer to t
 
 Hertz also provides a standard `context.Content` and a request context as input arguments in the function in the `HandleFunc` Design. The handler/middleware function signature is:
 
-```
+```go
 type HandlerFunc func(c context.Context, ctx *app.RequestContext)
 ```
 
