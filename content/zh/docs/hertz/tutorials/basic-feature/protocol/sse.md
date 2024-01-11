@@ -445,7 +445,7 @@ func main() {
 
 ### GetBody
 
-获取 sse client 请求的  Body
+获取 sse client 请求的 Body
 
 函数签名:
 
