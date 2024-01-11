@@ -167,7 +167,7 @@ struct NumericDemo {
 
 ```Thrift
 struct StringDemo {
-    1: string Uninitialized (vt.const = "烫烫烫")
+    1: string Uninitialized (vt.const = "test")
     2: string Name (vt.min_size = "6", vt.max_size = "12")
     3: string SomeStuffs (vt.pattern = "[0-9A-Za-z]+")
     4: string DebugInfo (vt.prefix = "[Debug]")
