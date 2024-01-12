@@ -20,7 +20,7 @@ Etcd 拓展在服务注册部分中提供了 option 配置。
 
 #### WithTLSOpt
 
-Etcd 扩展提供了 `WithTLSOpt` 用于帮助用户配置 Etcd 中的`TLS`选项。
+Etcd 扩展提供了 `WithTLSOpt` 用于帮助用户配置 Etcd 中的 `TLS` 选项。
 
 函数签名：
 
@@ -53,7 +53,7 @@ func main() {
 
 #### WithAuthOpt
 
-Etcd 扩展提供了`WithAuthOpt`用于帮助用户配置 Etcd 中的`Username`和`Password`选项。
+Etcd 扩展提供了 `WithAuthOpt` 用于帮助用户配置 Etcd 中的 `Username` 和 `Password` 选项。
 
 函数签名：
 
@@ -164,7 +164,7 @@ func main() {
 
 ##### WithRetryDelay
 
-`WithRetryDelay`用于设置断开连接后重试的延迟时间。
+`WithRetryDelay` 用于设置断开连接后重试的延迟时间。
 
 函数签名：
 
@@ -234,7 +234,7 @@ Etcd 拓展在服务发现部分中提供了 option 配置。
 
 #### WithTLSOpt
 
-Etcd 扩展提供了 `WithTLSOpt` 用于帮助用户配置 Etcd 中的`TLS`选项。
+Etcd 扩展提供了 `WithTLSOpt` 用于帮助用户配置 Etcd 中的 `TLS` 选项。
 
 函数签名：
 
@@ -263,7 +263,7 @@ func main() {
 
 #### WithAuthOpt
 
-Etcd 扩展提供了`WithAuthOpt`用于帮助用户配置 Etcd 中的`Username`和`Password`选项。
+Etcd 扩展提供了 `WithAuthOpt` 用于帮助用户配置 Etcd 中的 `Username` 和 `Password` 选项。
 
 函数签名：
 

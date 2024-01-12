@@ -225,9 +225,27 @@ func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domai
 
 ```go
 h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
+    ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true, false)
     cookie := ctx.Response.Header.Get("Set-Cookie") 
     // cookie == "user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=Lax"
+})
+```
+
+#### 分区 Cookie (实验性功能)
+
+Chrome 从 2024 年第一季度开始，禁用了 1% 的用户的第三方 Cookie，拦截 SameSite 属性为 None 的第三方 Cookie。
+通过引入分区 Cookie（也称为 [CHIPS](https://developers.google.com/privacy-sandbox/3pcd/chips)），允许在跨站请求中携带第三方 Cookie。
+
+自版本 0.8.0 起，Hertz 实验性地支持了分区 Cookie。该实现遵循当前的 [RFC 草案](((https://www.ietf.org/archive/id/draft-cutler-httpbis-partitioned-cookies-01.html#name-partitioned-cookies-with-th))
+开发，并可能随着草案的迭代而调整。
+
+示例:
+
+```go
+h.GET("/partitioned", func(c context.Context, ctx *app.RequestContext) {
+    ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteNoneMode, true, true, true)
+    cookie := c.Response.Header.Get("Set-Cookie")
+    fmt.Println(cookie) // user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned"
 })
 ```
 

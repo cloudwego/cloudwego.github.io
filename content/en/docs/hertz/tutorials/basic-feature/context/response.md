@@ -218,16 +218,36 @@ Set Cookie.
 Function Signature:
 
 ```go
-func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool)
+func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly, partitioned bool)
 ```
 
 Example Code:
 
 ```go
 h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
-    ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
+    ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true, false)
     cookie := ctx.Response.Header.Get("Set-Cookie") 
     // cookie == "user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=Lax"
+})
+```
+
+#### Partitioned Cookies (Experimental Feature)
+
+Starting January 2024, Chrome restricts third-party cookies by default for 1% of users, blocking SameSite=None
+attribute cookies. Partitioned cookies (also known as [CHIPS]((https://developers.google.com/privacy-sandbox/3pcd/chips)))
+are introduced as a privacy-preserving alternative for third-party cookies in cross-site requests.
+
+Support for partitioned cookies is available as an experimental feature since version 0.8.0, following the current
+[RFC draft]((https://www.ietf.org/archive/id/draft-cutler-httpbis-partitioned-cookies-01.html#name-partitioned-cookies-with-th))
+and subject to future changes.
+
+Example Code:
+
+```go
+h.GET("/partitioned", func(c context.Context, ctx *app.RequestContext) {
+    ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteNoneMode, true, true, true)
+    cookie := c.Response.Header.Get("Set-Cookie")
+    fmt.Println(cookie) // user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned"
 })
 ```
 

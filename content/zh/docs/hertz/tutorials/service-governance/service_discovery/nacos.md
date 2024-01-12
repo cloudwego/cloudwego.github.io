@@ -131,7 +131,7 @@ func main() {
 
 ### NewNacosRegistry
 
-`NewNacosRegistry`使用 nacos 创建一个可配置客户端的服务注册中心，需要传入自行配置的客户端。可自定义服务注册中心配置。
+`NewNacosRegistry` 使用 nacos 创建一个可配置客户端的服务注册中心，需要传入自行配置的客户端。可自定义服务注册中心配置。
 
 函数签名：
 
