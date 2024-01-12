@@ -6,10 +6,26 @@ keywords: ["Service Discovery", "nacos"]
 description: "Service Registration and Discovery nacos Extensions provided by Kitex."
 ---
 
+## Caution
+
+- The nacos/v2 version of hertz does not currently support creating multiple port examples in the same group multiple times.
+- Service registration and discovery in nacos/v2 is compatible with previous versions.
+- CustomLogger type in constant.ClientConfig has been removed in nacos-sdk-go v2.
+- nacos/v2 only supports nacos 2.X version.
+
 ## Install
+
+- nacos-sdk-go v1 version
 
 ```go
 go get github.com/kitex-contrib/registry-nacos
+```
+
+- nacos-sdk-go v2 version
+
+```go
+go get github.com/kitex-contrib/registry-nacos/v2
+
 ```
 
 ## Service Registry
