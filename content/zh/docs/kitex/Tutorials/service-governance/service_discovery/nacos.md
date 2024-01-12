@@ -5,13 +5,7 @@ weight: 5
 keywords: ["服务注册与发现", "nacos"]
 description: "Kitex 提供的服务注册与发现 nacos 拓展。"
 ---
-## 注意
-
-- nacos/v2 版本中 hertz 目前不支持多次在同分组下创建多端口示例
-- nacos/v2 的服务注册与发现和先前的版本兼容
-- nacos-sdk-go v2 版本中 constant.ClientConfig 中 CustomLogger 类型被移除
-- nacos/v2 只支持 nacos 2.X 版本
-- 
+  
 ## 安装
 
 - nacos-sdk-go v1 版本
@@ -379,6 +373,12 @@ func main() {
 	}
 }
 ```
+## 注意
+
+- nacos/v2 版本中 kitx 目前不支持多次在同分组下创建多端口示例
+- nacos/v2 的服务注册与发现和先前的版本兼容
+- nacos-sdk-go v2 版本中 constant.ClientConfig 中 CustomLogger 类型被移除
+- nacos/v2 只支持 nacos 2.X 版本
 
 ## 配置
 
