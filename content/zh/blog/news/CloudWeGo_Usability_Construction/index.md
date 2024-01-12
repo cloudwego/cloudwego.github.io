@@ -30,7 +30,7 @@ CloudWeGo 下的项目主要有三个特点：**高性能**、**高扩展性**�
 2. **Response Writer 劫持**：接下来，再给大家介绍一下 Response Writer 劫持能力。在介绍 Writer 劫持前，先说一下 Hertz 读写报文的流程(图中数字部分)，Hertz 会先在连接中读数据&解析，然后会根据请求内容进行路由匹配、业务逻辑处理、创建响应数据等，并在这些工作结束后，由框架将数据发送给对端。这么做可完全简化用户操作，不过在一些场景下却存在问题，首先是用户无法控制响应真正 flush 到对端的时机，因此在一些增量生成数据、实时性要求高的场景，用户限制较多。
    ![image](/img/blog/CloudWeGo_Usability_Construction/response_writer.png)
 
-    因此，我们开发了 Response writter 劫持能力，在原来写响应流程的基础之上，支持用户在业务 handler/中间件中劫持 Response Writer，提前将响应数据发回到对端，实现更加灵活的写请求方式。 我们已经基于 Response Writer 的能力实现了 handler flush、SSE、流式 Gzip 等能力，更多能力也期待大家贡献。
+    因此，我们开发了 Response Writer 劫持能力，在原来写响应流程的基础之上，支持用户在业务 handler/中间件中劫持 Response Writer，提前将响应数据发回到对端，实现更加灵活的写请求方式。 我们已经基于 Response Writer 的能力实现了 handler flush、SSE、流式 Gzip 等能力，更多能力也期待大家贡献。
 
 3. 参数绑定重构：介绍完 Writer 劫持后，再来给大家介绍一个重要的 Feature - 参数绑定。重构之前 Hertz 的参数绑定依赖了第三方的实现，这会存在以下问题：
    - 依赖第三方实现，用户的需求需要诉诸于开发者
