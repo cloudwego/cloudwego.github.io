@@ -395,7 +395,6 @@ func main() {
 - nacos-sdk-go v2 版本中 constant.ClientConfig 中 CustomLogger 类型被移除
 - nacos/v2 只支持 nacos 2.X 版本
 
-
 ## 配置
 
 可自定义 Nacos 客户端以及服务端的配置，参考 [nacos-sdk-go](https://github.com/nacos-group/nacos-sdk-go) 配置。

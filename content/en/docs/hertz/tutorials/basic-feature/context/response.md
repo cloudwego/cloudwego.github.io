@@ -234,7 +234,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 #### Partitioned Cookies (Experimental Feature)
 
 Starting January 2024, Chrome restricts third-party cookies by default for 1% of users, blocking SameSite=None
-attribute cookies. Partitioned cookies (also known as [CHIPS]((https://developers.google.com/privacy-sandbox/3pcd/chips)))
+attribute cookies. Partitioned cookies (also known as [CHIPS](https://developers.google.com/privacy-sandbox/3pcd/chips))
 are introduced as a privacy-preserving alternative for third-party cookies in cross-site requests.
 
 Support for partitioned cookies is available as an experimental feature since version 0.8.0, following the current
@@ -244,11 +244,39 @@ and subject to future changes.
 Example Code:
 
 ```go
-h.GET("/partitioned", func(c context.Context, ctx *app.RequestContext) {
-    ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteNoneMode, true, true, true)
-    cookie := c.Response.Header.Get("Set-Cookie")
-    fmt.Println(cookie) // user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned"
-})
+func SetPartitionedCookie(ctx *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
+   if path == "" {
+      path = "/"
+   }
+   cookie := protocol.AcquireCookie()
+   defer protocol.ReleaseCookie(cookie)
+   // It is recommended to use the __Host prefix when setting partitioned cookies 
+   // to make them bound to the hostname (and not the registrable domain).
+   cookie.SetKey(name)
+   cookie.SetValue(url.QueryEscape(value))
+   cookie.SetMaxAge(maxAge)
+   // if name has __Host prefix, Path must be set to "/”.
+   cookie.SetPath(path)
+   cookie.SetDomain(domain)
+   // Partitioned cookies must be set with Secure.
+   cookie.SetSecure(secure)
+   cookie.SetHTTPOnly(httpOnly)
+   cookie.SetSameSite(sameSite)
+   cookie.SetPartitioned(true)
+   // Set-Cookie: user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned
+   ctx.Response.Header.SetCookie(cookie)
+}
+
+func main() {
+   h := server.Default()
+
+   h.GET("/partitioned", func(ctx context.Context, c *app.RequestContext) {
+      SetPartitionedCookie(c, "user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteNoneMode, true, true)
+      c.JSON(consts.StatusOK, utils.H{"partitioned": "yes"})
+   })
+
+   h.Spin()
+}
 ```
 
 ### AbortWithStatus
