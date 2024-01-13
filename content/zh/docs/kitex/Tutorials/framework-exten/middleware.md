@@ -112,7 +112,8 @@ func ExampleMiddleware(next endpoint.Endpoint) endpoint.Endpoint {
 以上方案仅为示例，**慎用于生产**：因为日志输出所有 req/resp 会有性能问题。无视 response 体大小，输出大量日志是一个非常消耗性能的操作，一个特别大的 response 可以是秒级的耗时。
 
 ### 注意事项
-如果自定义 middleware 中用到了 RPCInfo，注意 RPCInfo 在 rpc 结束之后会被回收。如果在 middleware 中开启 goroutine 操作 RPCInfo 有可能会出现问题，请避免这类操作。
+1. 如果自定义 middleware 中用到了 RPCInfo，注意 RPCInfo 在 rpc 结束之后会被回收。如果在 middleware 中开启 goroutine 操作 RPCInfo 有可能会出现问题，请避免这类操作。
+2. Middleware 为链式调用，若在任一 middleware 中使用 `result.SetSuccess()` 或其他方式修改了 response，上游 middleware 会接收到修改后的 response。
 
 ### gRPC 中间件
 众所周知，kitex 除了 thrift，还支持了 protobuf 和 gRPC 的编解码协议，其中 protobuf 是指只用 protobuf 来定义 payload 格式，并且其 service 定义里的方法只有 unary 方法的情况；一旦引入了 streaming 方法，那么 kitex 会使用 gRPC 协议来做编解码和通信。
@@ -128,7 +129,7 @@ type wrappedStream struct {
 }
 
 func (w *wrappedStream) RecvMsg(m interface{}) error {
-	    err := w.Stream.RecvMsg(m)
+  			err := w.Stream.RecvMsg(m)
         log.Printf("Receive a message: %T(%v)", m, m)
         return err
 }
