@@ -73,7 +73,7 @@ The above can be seen in [server.go](https://github.com/cloudwego/kitex/blob/dev
 We can use the following example to see how to use Middleware.
 #### Request/Reponse
 
-If we need to print out the request content before the request, and then print out the response content after the request, we can write the following middleware:
+If we need to print out the request content before the request, and then print out the response content after the request, we can write the following middleware (see the gRPC middleware below for the stream call):
 
 ```go
 /*
