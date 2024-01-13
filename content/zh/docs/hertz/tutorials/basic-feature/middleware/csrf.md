@@ -56,11 +56,11 @@ func main() {
 | 配置项          | 默认值                                                                        | 介绍                                                                                        |
 | --------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | `Secret`        | `csrfSecret`                                                                  | 用于生成令牌（必要配置）                                                                    |
-| `IgnoreMethods` | "GET", "HEAD", "OPTIONS", "TRACE"                                             | 被忽略的方法将将视为无需 `csrf`保护                                                         |
+| `IgnoreMethods` | "GET", "HEAD", "OPTIONS", "TRACE"                                             | 被忽略的方法将将视为无需 `csrf` 保护                                                         |
 | `Next`          | `nil`                                                                         | `Next` 定义了一个函数，当返回真时，跳过这个 `csrf` 中间件。                                 |
 | `KeyLookup`     | `header：X-CSRF-TOKEN`                                                        | `KeyLookup` 是一个"<source>：<key>"形式的字符串，用于创建一个从请求中提取令牌的 Extractor。 |
-| `ErrorFunc`     | `func(ctx context.Context, c *app.RequestContext) { panic(c.Errors.Last()) }` | 当 `app.HandlerFunc`返回一个错误时，`ErrorFunc` 被执行                                      |
-| `Extractor`     | 基于 KeyLookup 创建                                                           | `Extractor`返回`csrf token`。如果设置了这个，它将被用来代替基于`KeyLookup`的 `Extractor`。  |
+| `ErrorFunc`     | `func(ctx context.Context, c *app.RequestContext) { panic(c.Errors.Last()) }` | 当 `app.HandlerFunc` 返回一个错误时，`ErrorFunc` 被执行                                      |
+| `Extractor`     | 基于 KeyLookup 创建                                                           | `Extractor` 返回`csrf token`。如果设置了这个，它将被用来代替基于 `KeyLookup` 的 `Extractor`。  |
 
 ### WithSecret
 
@@ -266,7 +266,7 @@ func main() {
 
 ### WithNext
 
-`csrf` 中间件提供了 `WithNext` 方便用户自定义设置，以在特定条件下跳过 `csrf`中间件。
+`csrf` 中间件提供了 `WithNext` 方便用户自定义设置，以在特定条件下跳过 `csrf` 中间件。
 
 函数签名：
 
@@ -317,7 +317,7 @@ func main() {
 
 ### WithExtractor
 
-`csrf` 中间件提供了 `WithExtractor`,供用户通过自定义的方法从请求中获取`csrf-token`。
+`csrf` 中间件提供了 `WithExtractor`,供用户通过自定义的方法从请求中获取 `csrf-token`。
 
 函数签名：
 

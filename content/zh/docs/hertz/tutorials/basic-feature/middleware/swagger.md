@@ -94,7 +94,7 @@ func PingHandler(c context.Context, ctx *app.RequestContext) {
 }
 ```
 
-2. 使用 `swag init` 命令来生成文档，生成的文档将被存储在`docs/`目录下。
+2. 使用 `swag init` 命令来生成文档，生成的文档将被存储在 `docs/` 目录下。
 
 3. 将生成的 docs 包导入当前项目中:
 

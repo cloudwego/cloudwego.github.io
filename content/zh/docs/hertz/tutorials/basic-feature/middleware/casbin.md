@@ -183,7 +183,7 @@ func (m *Middleware) exampleMiddlwareMethod(expression string, opts ...Option) a
 
 - **expression**
 
-    表达式含有一个或多个变量，变量之间用空格分隔，表达式的具体格式与`Logic`（见后文`选项说明`）相关，
+    表达式含有一个或多个变量，变量之间用空格分隔，表达式的具体格式与 `Logic`（见后文 `选项说明`）相关，
 
     表达式的计算最终值为 **True** or **False**，**True** 则代表通过鉴权中间件，**False** 则代表没有通过鉴权中间件，
 
@@ -225,7 +225,7 @@ r = sub, xxx, xxx
 r = sub, obj, act
 ```
 
-使用了默认的 `PermissionParser`时，**expression** 中的变量格式应该是：`"book:read"`。
+使用了默认的 `PermissionParser` 时，**expression** 中的变量格式应该是：`"book:read"`。
 
 如：
 
@@ -234,7 +234,7 @@ r = sub, obj, act
 r = sub, dom, obj, act
 ```
 
-使用了默认的 `PermissionParser`时，**expression** 中的变量格式应该是：`"book1.com:book:read"`。
+使用了默认的 `PermissionParser` 时，**expression** 中的变量格式应该是：`"book1.com:book:read"`。
 
 函数签名如下：
 
@@ -277,7 +277,7 @@ func main(){
 
 寻找访问实体（Subject）及通过方法中提供的参数 `expression`（表达式中变量说明见下）判断访问实体所属的角色是否满足 expression 中的角色集合的关系。
 
-`expression`中的变量为 [RBAC](https://casbin.org/docs/rbac) 中的 **rule** 集合
+`expression` 中的变量为 [RBAC](https://casbin.org/docs/rbac) 中的 **rule** 集合
 
 函数签名如下：
 

@@ -73,7 +73,6 @@ func main() {
 | WithClientHttpRouteFormatter | Configure the custom formatting function for the 'http_route' dimension of the client-side metric |
 | WithServerHttpRouteFormatter | Configure the custom formatting function for the 'http_route' dimension of the server-side metric |
 
-
 ### Metric
 
 Metric contains a wide variety of methods and implementations.

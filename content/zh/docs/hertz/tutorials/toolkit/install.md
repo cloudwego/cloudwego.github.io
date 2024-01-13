@@ -10,7 +10,7 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具。目前�
 
 ## 安装
 
-1. 确保 `GOPATH` 环境变量已经被正确的定义（例如 `export GOPATH=~/go`）并且将`$GOPATH/bin`添加到 `PATH` 环境变量之中（例如 `export PATH=$GOPATH/bin:$PATH`）；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录
+1. 确保 `GOPATH` 环境变量已经被正确的定义（例如 `export GOPATH=~/go`）并且将 `$GOPATH/bin` 添加到 `PATH` 环境变量之中（例如 `export PATH=$GOPATH/bin:$PATH`）；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录
 2. 安装 hz：
 
     ```bash
