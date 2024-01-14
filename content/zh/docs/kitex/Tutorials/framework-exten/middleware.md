@@ -74,7 +74,7 @@ Context 中间件的引入是为了提供一种能够全局或者动态注入 Cl
 我们可以通过以下这个例子来看一下如何使用中间件。 
 
 #### 获取 Request/Reponse
-假如我们现在需要在请求前打印出 request 内容，再请求后打印出 response 内容，可以编写如下的 MW（stream 调用参见下文 gRPC 中间件）：
+假如我们现在需要在请求前打印出 request 内容，再请求后打印出 response 内容，可以编写如下的 MW（包含 streaming 调用的服务参见下文 gRPC 中间件）：
 ```go
 /*
 type Request struct {
