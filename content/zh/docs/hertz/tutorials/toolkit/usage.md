@@ -60,7 +60,7 @@ description: "hz 的基本使用。"
    curl 127.0.0.1:8888/ping
    ```
 
-   如果返回`{"message":"pong"}`，说明接口调通。
+   如果返回 `{"message":"pong"}`，说明接口调通。
 
 ### 注意事项
 

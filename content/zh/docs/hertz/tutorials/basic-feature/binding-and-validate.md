@@ -82,7 +82,7 @@ func main() {
 path > form > query > cookie > header > json > raw_body
 ```
 
-> 注：如果请求的 content-type 为 `application/json`，使用 `BindAndValidate`, `Bind`方法会在参数绑定前做一次 json unmarshal 处理。
+> 注：如果请求的 content-type 为 `application/json`，使用 `BindAndValidate`, `Bind` 方法会在参数绑定前做一次 json unmarshal 处理。
 
 ### 必传参数
 
@@ -100,7 +100,7 @@ type TagRequiredReq struct {
 
 ## 常用配置
 >
-> hertz 在 v0.7.0 版本对`参数绑定`和`校验`进行了重构，重构后配置的行为发生变更，下面将分别介绍<br>
+> hertz 在 v0.7.0 版本对 `参数绑定`和`校验` 进行了重构，重构后配置的行为发生变更，下面将分别介绍<br>
 > 如果还想使用之前的绑定器，目前已把其实现放到了 [hertz-contrib/binding](https://github.com/hertz-contrib/binding) 下，可通过自定义 binder 引入
 >
 ### 自定义 binder
