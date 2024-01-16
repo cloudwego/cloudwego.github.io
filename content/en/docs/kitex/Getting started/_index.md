@@ -8,7 +8,7 @@ description: "This document covers the preparation of the development environmen
 
 ## Prerequisites
 
-1. If you don't have the golang development environment set up, please follow [Install Go](https://golang.org/doc/install) to install go.
+1. If you don't have the golang development environment set up, please follow [Install Go](https://go.dev/doc/install) to install go.
 2. We strongly recommend that you use the latest version of golang. And compatibility is guaranteed within three latest minor release versions (currently >= **v1.16**).
 3. Make sure that `GO111MODULE` is set to `on`.
 4. If you want to use Kitex in Windows, please make sure the version of kitex >= v0.5.2
