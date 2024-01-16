@@ -9,7 +9,7 @@ cwgo is a CloudWeGo All in one code generation tool that integrates the advantag
 
 ## Prepare Golang development environment
 
-1. If you have not set up a Golang development environment before, you can refer to [Golang Installation](https://golang.org/doc/install)
+1. If you have not set up a Golang development environment before, you can refer to [Golang Installation](https://go.dev/doc/install)
 1. It is recommended to use the latest version of Golang, we guarantee the compatibility of the latest two official versions (now >= **v1.18**).
 1. Make sure to enable go mod support (when Golang >= 1.15, it is enabled by default)
 1. cwgo does not support Windows for the time being. If the local development environment is Windows, it is recommended to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install)

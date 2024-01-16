@@ -165,6 +165,6 @@ RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定�
 ## 参考资料
 
 - http://man7.org/linux/man-pages/man7/epoll.7.html
-- https://golang.org/src/runtime/proc.go
+- https://go.dev/src/runtime/proc.go
 - https://github.com/panjf2000/gnet
 - https://github.com/tidwall/evio
