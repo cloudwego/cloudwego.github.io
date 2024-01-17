@@ -22,6 +22,8 @@ The Redis extension provides option configuration in the service registry sectio
 
 The Redis extension provides the `WithExpireTime` to set the expiration time (in seconds) for the key storing service information. The default is 60 seconds.
 
+**NOTE: Expiration time must be greater than refresh interval.**
+
 Function signature:
 
 ```go
@@ -50,6 +52,8 @@ func main() {
 #### WithRefreshInterval
 
 The Redis extension provides the `WithRefreshInterval` to set the expiration time refresh interval (in seconds) for the key storing service information. The default is 30 seconds.
+
+**NOTE: Refresh interval must be less than expiration time.**
 
 Function signature:
 

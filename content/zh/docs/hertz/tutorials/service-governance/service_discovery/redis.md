@@ -22,6 +22,8 @@ Redis 拓展在服务注册部分中提供了 option 配置。
 
 Redis 扩展提供了 `WithExpireTime` 配置存储服务信息的 Key 的过期时间（秒为单位）。默认为 60 秒。
 
+**注意：过期时间必须大于刷新间隔。**
+
 函数签名：
 
 ```go
@@ -50,6 +52,8 @@ func main() {
 #### WithRefreshInterval
 
 Redis 扩展提供了 `WithRefreshInterval` 配置存储服务信息的 Key 的过期时间刷新间隔（秒为单位）。默认为 30 秒。
+
+**注意：刷新间隔必须小于过期时间。**
 
 函数签名：
 
