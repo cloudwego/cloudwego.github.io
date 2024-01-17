@@ -8,7 +8,7 @@ description: "Preparation of Hertz development environment, quick start, and bas
 
 ## Set Up Golang Development Environment
 
-1. If you haven't set up your Golang environment yet, you can refer to [Golang Install](https://golang.org/doc/install).
+1. If you haven't set up your Golang environment yet, you can refer to [Golang Install](https://go.dev/doc/install).
 2. We recommend that you use the latest version of Golang, or make sure it's >= v1.16. You can choose to use the earlier versions, but the compatibility and stability are not guaranteed.
 3. Make sure the go mod support is enabled (for Golang versions >= v1.15, it is enabled by default).
 

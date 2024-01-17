@@ -9,7 +9,7 @@ cwgo 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优�
 
 ## 准备 Golang 开发环境
 
-1. 如果您之前未搭建 Golang 开发环境， 可以参考 [Golang 安装](https://golang.org/doc/install)
+1. 如果您之前未搭建 Golang 开发环境， 可以参考 [Golang 安装](https://go.dev/doc/install)
 1. 推荐使用最新版本的 Golang，我们保证最新两个正式版本的兼容性(现在 >= **v1.18**)。
 1. 确保打开 go mod 支持 (Golang >= 1.15 时，默认开启)
 1. cwgo 暂时没有针对 Windows 做支持，如果本地开发环境是 Windows 建议使用 [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install)

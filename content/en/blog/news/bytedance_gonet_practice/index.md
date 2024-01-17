@@ -144,6 +144,6 @@ We hope the above sharing can be helpful to the community. At the same time, we 
 ## Reference
 
 - http://man7.org/linux/man-pages/man7/epoll.7.html
-- https://golang.org/src/runtime/proc.go
+- https://go.dev/src/runtime/proc.go
 - https://github.com/panjf2000/gnet
 - https://github.com/tidwall/evio
