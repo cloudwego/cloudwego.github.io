@@ -18,6 +18,64 @@ go get github.com/hertz-contrib/registry/redis
 
 Redis 拓展在服务注册部分中提供了 option 配置。
 
+#### WithExpireTime
+
+Redis 扩展提供了 `WithExpireTime` 配置存储服务信息的 Key 的过期时间（秒为单位）。默认为 60 秒。
+
+函数签名：
+
+```go
+func WithExpireTime(time int) Option
+```
+
+示例代码：
+
+```go
+func main() {
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithExpireTime(10))
+    // ...
+    h := server.Default(
+    server.WithHostPorts(addr),
+    server.WithRegistry(r, &registry.Info{
+        ServiceName: "hertz.test.demo",
+        Addr:        utils.NewNetAddr("tcp", addr),
+        Weight:      10,
+        Tags:        nil,
+    }),
+    )
+    // ...
+}
+```
+
+#### WithRefreshInterval
+
+Redis 扩展提供了 `WithRefreshInterval` 配置存储服务信息的 Key 的过期时间刷新间隔（秒为单位）。默认为 30 秒。
+
+函数签名：
+
+```go
+func WithRefreshInterval(interval int) Option 
+```
+
+示例代码：
+
+```go
+func main() {
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithRereshInterval(5))
+    // ...
+    h := server.Default(
+    server.WithHostPorts(addr),
+    server.WithRegistry(r, &registry.Info{
+        ServiceName: "hertz.test.demo",
+        Addr:        utils.NewNetAddr("tcp", addr),
+        Weight:      10,
+        Tags:        nil,
+    }),
+    )
+    // ...
+}
+```
+
 #### WithPassword
 
 Redis 扩展提供了 `WithPassword` 配置 redis 的密码，此密码必须匹配服务器配置选项中指定的密码。默认为空。
