@@ -4,7 +4,7 @@ title: "Harnessing the Power of Rust for Cloud Development with Volo"
 projects: ["CloudWeGo"]
 linkTitle: "Harnessing the Power of Rust for Cloud Development with Volo"
 keywords: ["CloudWeGo", "middleware", "Volo", "rust", "microservice framework", "ByteDance Open Source", "ByteDance", "open source", "cloud native", "open source", "kubernetes", "gRPC", "microservices", "rpc", "thrift"]
-description: "Volo is a Rust Framework for cloud development. This guide provides insights into leveraging Volo with its speed and efficiency in your projects."
+description: "Volo is a Rust framework for cloud development. This guide provides insights into leveraging Volo with its speed and efficiency in your projects."
 author:  <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>, <a href="https://github.com/GuangmingLuo" target="_blank">Guangming Luo</a>
 ---
 
