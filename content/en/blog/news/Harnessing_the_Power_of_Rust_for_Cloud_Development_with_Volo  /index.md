@@ -8,7 +8,7 @@ description: "Volo is a Rust Framework for cloud development. This guide provide
 author:  <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>, <a href="https://github.com/GuangmingLuo" target="_blank">Guangming Luo</a>
 ---
 
-![Image](/img/blog/Harnessing_the_Power_of_Rust_for_Cloud_Development_with_Volo/1.JPEG)
+![Image](/img/blog/Harnessing_the_Power_of_Rust_for_Cloud_Development_with_Volo/1.jpeg)
 
 # Harnessing the Power of Rust for Cloud Development with Volo 
 
