@@ -10,8 +10,6 @@ author:  <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>,
 
 ![Image](/img/blog/Harnessing_the_Power_of_Rust_for_Cloud_Development_with_Volo/1.jpeg) 
 
-# Harnessing the Power of Rust for Cloud Development with Volo 
-
 ## I. Introduction
 
 Every tool in the [CloudWeGo](https://www.cloudwego.io) open-source ecosystem has been developed with the aim of simplifying and revolutionizing how developers navigate the cloud environment. An essential part of this ecosystem is [Volo](https://www.cloudwego.io/docs/volo/), a Rust RPC framework designed to provide a seamless and efficient communication infrastructure. 
