@@ -1,13 +1,55 @@
 ---
-title: "IDL"
-linkTitle: "IDL"
-weight: 3
+title: "前置知识"
+linkTitle: "前置"
+weight: 1
 date: 2024-01-18
-keywords: ["Kitex", "Golang", "Go", "前置知识", "基础教程", "IDL"]
-description: "IDL 相关知识"
+keywords: ["Kitex", "Golang", "Go", "前置知识"]
+description: "Kitex 开发前置知识"
+
 ---
 
-## 概述
+## RPC
+
+**RPC** (Remote Procedure Call) ，即远程过程调用。通俗来讲，就是调用远端服务的某个方法，并获取到对应的响应。RPC 本质上定义了一种通信的流程，而具体的实现技术没有约束，核心需要解决的问题为**序列化**与**网络通信**。如可以通过 `gob/json/pb/thrift` 来序列化和反序列化消息内容，通过 `socket/http` 来进行网络通信。只要客户端与服务端在这两方面达成共识，能够做到消息正确的解析接口即可。
+
+一般来说，RPC 框架包括了代码生成、序列化、网络通讯等，主流的微服务框架也会提供服务治理相关的能力，比如服务发现、负载均衡、熔断等等。
+
+### RPC 调用的流程
+
+一次 rpc 调用包括以下基本流程，分为客户端和服务端两个部分：
+
+1. （客户端）构造请求参数，发起调用
+2. （客户端）通过服务发现、负载均衡等得到服务端实例地址，并建立连接
+3. （客户端）请求参数序列化成二进制数据
+4. （客户端）通过网络将数据发送给服务端
+
+---
+
+5. （服务端）服务端接收数据
+6. （服务端）反序列化出请求参数
+7. （服务端）handler 处理请求并返回响应结果
+8. （服务端）将响应结果序列化成二进制数据
+9. （服务端）通过网络将数据返回给客户端
+
+---
+
+10. （客户端）接收数据
+11. （客户端）反序列化出结果
+12. （客户端）得到调用的结果
+
+其中步骤 2 中包含的流程称为「**服务治理**」，通常包括并不限于服务发现、负载均衡、ACL、熔断、限流等等功能。这些功能是由其他组件提供的，并不是 Thrift  框架所具有的功能。
+
+### RPC 服务开发流程
+
+例如基于 Thrift 的 RPC 服务开发，通常包括如下过程：
+
+1. 编写 IDL，定义服务 (Service) 接口。
+2. 使用 thrift（或者等价的生成代码工具，如 kitex 等）生成客户端、服务端的支持代码。
+3. 服务端开发者编写 handler ，即请求的处理逻辑。
+4. 服务端开发者运行服务监听端口，处理请求。
+5. 客户端开发者编写客户端程序，经过服务发现连接上服务端程序，发起请求并接收响应。
+
+## IDL
 
 **IDL** 全称是 Interface Definition Language，接口定义语言。
 
@@ -19,9 +61,9 @@ Kitex 默认支持 `thrift` 和 `proto3` 两种 IDL。本文简单介绍 Thrift 
 
 > 注意：Thrift 是一款 RPC 框架，其使用的 IDL 以 .thrift 为后缀，故常常也使用 thrift 来表示 IDL，请根据上下文判断语意。
 
-## 基础语法
+### 基础语法
 
-### 基本类型
+#### 基本类型
 
 Thrift IDL 有以下几种基本类型：
 
@@ -36,12 +78,12 @@ Thrift IDL 有以下几种基本类型：
 
 **注意**：Thrift IDL 没有无符号整数类型。 因为许多编程语言中没有原生的无符号整数类型。
 
-### 特殊类型
+#### 特殊类型
 
 - binary: 表示无编码要求的 byte 二进制数组。因此是字节数组情况下（比如 json/pb 序列化后数据在 thrift rpc 间传输）请使用 binary 类型，不要使用 string 类型；
   - Golang 的实现 string/binary 都使用 string 类型进行存储，string 底层只是字节数组不保证是 UTF-8 编码的，可能与其他语言的行为不一致。
 
-### 容器
+#### 容器
 
 Thrift 提供的容器是强类型容器，映射到大多数编程语言中常用的容器类型。具体包括以下三种容器：
 
@@ -49,7 +91,7 @@ Thrift 提供的容器是强类型容器，映射到大多数编程语言中常�
 - **set< t1 >**: 元素类型为 t1 的无序表，不允许元素重复。
 - **map<t1,t2>**: 键类型为 t1，值类型为 t2 的 map。
 
-### 类型定义
+#### 类型定义
 
 Thrift 支持类似 C/C++ 的类型定义
 
@@ -61,7 +103,7 @@ typedef Tweet ReTweet
 
 **注意：typedef** 定义的末尾没有分号
 
-### 枚举类型
+#### 枚举类型
 
 Thrift 提供了枚举类型
 
@@ -78,7 +120,7 @@ enum TweetType {
 }
 ```
 
-### 注释
+#### 注释
 
 Thrift 支持 c风格的多行注释 和 c++/Java 风格的单行注释
 
@@ -91,7 +133,7 @@ Thrift 支持 c风格的多行注释 和 c++/Java 风格的单行注释
 // C++/Java style single-line comments work just as well.
 ```
 
-### 命名空间
+#### 命名空间
 
 Thrift 的命名空间与 C++ 的 namespace 和 java 的 package 类似，提供了一种组织（隔离）代码的方式，也可避免类型定义内名字冲突的问题。
 
@@ -105,7 +147,7 @@ namespace java com.example.project
 namespace go com.example.project
 ```
 
-### Include
+#### Include
 
 为了方便管理、维护 IDL，常常需要将 Thrift IDL 定义拆分到不同的文件。Thrift 允许文件 include 其它的 thrift 文件，用户可利用文件名作为前缀对具体定义进行访问。
 
@@ -117,7 +159,7 @@ struct TweetSearchResult {
 }
 ```
 
-### 常量
+#### 常量
 
 Thrift 内定义常量的方式如下：
 
@@ -130,7 +172,7 @@ const map<string,string> MAP_CONST = {
 }
 ```
 
-### Struct 及 Requiredness 说明
+#### Struct 及 Requiredness 说明
 
 Struct 由不同的 fields 构成，其中每个 **field** 有唯一的整型 **id**，类型 **type**，名字 **name** 和 一个可选择设置的默认值 **default value**。
 
@@ -164,11 +206,11 @@ struct Tweet {
 1. Thrift 不支持嵌套定义 Struct
 2. **如果 struct 已经在使用了，请不要更改各个 field 的 id 和 type**
 
-### Exception
+#### Exception
 
 Exception 与 struct 类似，但它被用来集成 目标编程语言 中的异常处理机制。Exception 内定义的所有 field 的名字都是唯一的。
 
-### Service
+#### Service
 
 Thrift 内的 service 定义在语义上和 oop 内的接口是相同的。代码生成工具会根据 service 的定义生成 client 和 service 端的接口实现。
 
@@ -192,7 +234,7 @@ service Twitter {
 }
 ```
 
-## IDL 示例
+### IDL 示例
 
 以下为简单的 thrift idl 示例，包含 common.thrift 和 service.thrift 两个文件。
 
@@ -248,7 +290,14 @@ service TestService {
 }
 ```
 
-## 参考
+### Kitex Thrift IDL 规范
+
+为满足服务调用的规范，Kitex 对 IDL 的定义提出了一些必须遵守的要求：
+
+- 方法只能拥有一个参数，并且这个参数类型必须是自定义的 Struct 类型，参数类型名字使用驼峰命名法，通常为：`XXXRequest`
+- 方法的返回值类型必须是自定义的 Struct 类型，不可以为 void，使用驼峰命名法，通常为：`XXXResponse`
+
+### 参考
 
 [Apache Thrift - Thrift Type system](https://thrift.apache.org/docs/types)
 
