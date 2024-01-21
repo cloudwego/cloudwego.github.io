@@ -66,8 +66,10 @@ const (
 	serviceName = "ServiceName"
 )
 
+// EchoImpl实现IDL中定义的最后一个服务接口
 type EchoImpl struct{}
 
+// Echo实现Echo接口
 func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
 	klog.Info("echo called")
 	return &api.Response{Message: req.Message}, nil
