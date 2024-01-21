@@ -35,7 +35,7 @@ type FileConfigServerSuite struct {
 
 Function Signature:
 
-`func NewSuite(key string, watcher filewatcher.FileWatcher) *FileConfigServerSuite`
+`func NewSuite(key string, watcher filewatcher.FileWatcher, opts *utils.Options) *FileConfigServerSuite`
 
 Sample code(or visit [here](https://github.com/kitex-contrib/config-file/blob/main/example/server/main.go)):
 
@@ -44,6 +44,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 
 	"github.com/cloudwego/kitex-examples/kitex_gen/api"
@@ -52,7 +53,9 @@ import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	kitexserver "github.com/cloudwego/kitex/server"
 	"github.com/kitex-contrib/config-file/filewatcher"
+	"github.com/kitex-contrib/config-file/parser"
 	fileserver "github.com/kitex-contrib/config-file/server"
+	"github.com/kitex-contrib/config-file/utils"
 )
 
 var _ api.Echo = &EchoImpl{}
@@ -72,24 +75,40 @@ func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Respon
 	return &api.Response{Message: req.Message}, nil
 }
 
+// customed by user
+type MyParser struct{}
+
+// one example for custom parser
+// if the type of server config is json or yaml,just using default parser
+func (p *MyParser) Decode(kind parser.ConfigType, data []byte, config interface{}) error {
+	return json.Unmarshal(data, config)
+}
+
 func main() {
 	klog.SetLevel(klog.LevelDebug)
 
-	// Create a filewatcher object.
+	// create a file watcher object
 	fw, err := filewatcher.NewFileWatcher(filepath)
 	if err != nil {
 		panic(err)
 	}
-	// Start monitoring file changes.
+	// start watching file changes
 	if err = fw.StartWatching(); err != nil {
 		panic(err)
 	}
 	defer fw.StopWatching()
 
+	// customed by user
+	params := &parser.ConfigParam{}
+	opts := &utils.Options{
+		CustomParser: &MyParser{},
+		CustomParams: params,
+	}
+
 	svr := echo.NewServer(
 		new(EchoImpl),
-		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
-		server.WithSuite(fileserver.NewSuite(key, fw)), // Add watcher
+		kitexserver.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+		kitexserver.WithSuite(fileserver.NewSuite(key, fw, opts)), // add watcher
 	)
 	if err := svr.Run(); err != nil {
 		log.Println("server stopped with error:", err)
@@ -108,7 +127,7 @@ type FileConfigClientSuite struct {
 ```
 Function Signature:
 
-`func NewSuite(service, key string, watcher filewatcher.FileWatcher) *FileConfigClientSuite`
+`func NewSuite(service, key string, watcher filewatcher.FileWatcher, opts *utils.Options) *FileConfigClientSuite`
 
 Sample code(or visit [here](https://github.com/kitex-contrib/config-file/blob/main/example/client/main.go)):
 
@@ -117,6 +136,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"os"
 	"os/signal"
@@ -128,24 +148,35 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	fileclient "github.com/kitex-contrib/config-file/client"
 	"github.com/kitex-contrib/config-file/filewatcher"
+	"github.com/kitex-contrib/config-file/parser"
+	"github.com/kitex-contrib/config-file/utils"
 )
 
 const (
 	filepath    = "kitex_client.json"
 	key         = "ClientName/ServiceName"
 	serviceName = "ServiceName"
-	clientName  = "ClientName"
+	clientName  = "echo"
 )
+
+// customed by user
+type MyParser struct{}
+
+// one example for custom parser
+// if the type of client config is json or yaml,just using default parser
+func (p *MyParser) Decode(kind parser.ConfigType, data []byte, config interface{}) error {
+	return json.Unmarshal(data, config)
+}
 
 func main() {
 	klog.SetLevel(klog.LevelDebug)
 
-	// Create a file watcher object.
+	// create a file watcher object
 	fw, err := filewatcher.NewFileWatcher(filepath)
 	if err != nil {
 		panic(err)
 	}
-	// Start monitoring file changes.
+	// start watching file changes
 	if err = fw.StartWatching(); err != nil {
 		panic(err)
 	}
@@ -158,10 +189,17 @@ func main() {
 		os.Exit(1)
 	}()
 
+	// customed by user
+	params := &parser.ConfigParam{}
+	opts := &utils.Options{
+		CustomParser: &MyParser{},
+		CustomParams: params,
+	}
+
 	client, err := echo.NewClient(
 		serviceName,
 		kitexclient.WithHostPorts("0.0.0.0:8888"),
-		kitexclient.WithSuite(fileclient.NewSuite(serviceName, key, fw)),
+		kitexclient.WithSuite(fileclient.NewSuite(serviceName, key, fw, opts)),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -178,6 +216,7 @@ func main() {
 		time.Sleep(time.Second * 10)
 	}
 }
+
 ```
 
 ## NewFileWatcher
@@ -218,6 +257,18 @@ func main() {
 ```
 
 In the server-side (Server), due to the characteristics of KitexServer, we only need to define `defer fw.StopWatching()`
+
+### ConfigParser Implement
+Set a custom parser for deserializing file configuration. It supports json and yaml formats by default. There are new formats that need to be implemented by the user.
+
+```go
+// ConfigParser the parser for config file.
+type ConfigParser interface {
+	Decode(kind ConfigType, data []byte, config interface{}) error
+}
+```
+
+See sample code [example](https://github.com/kitex-contrib/config-file/tree/main/example)
 
 ## Configuration
 
