@@ -35,7 +35,7 @@ type FileConfigServerSuite struct {
 
 函数签名:
 
-`func NewSuite(key string, watcher filewatcher.FileWatcher) *FileConfigServerSuite`
+`func NewSuite(key string, watcher filewatcher.FileWatcher, opts *utils.Options) *FileConfigServerSuite`
 
 示例代码(或访问[此处](https://github.com/kitex-contrib/config-file/blob/main/example/server/main.go)):
 
@@ -44,6 +44,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 
 	"github.com/cloudwego/kitex-examples/kitex_gen/api"
@@ -52,7 +53,9 @@ import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	kitexserver "github.com/cloudwego/kitex/server"
 	"github.com/kitex-contrib/config-file/filewatcher"
+	"github.com/kitex-contrib/config-file/parser"
 	fileserver "github.com/kitex-contrib/config-file/server"
+	"github.com/kitex-contrib/config-file/utils"
 )
 
 var _ api.Echo = &EchoImpl{}
@@ -70,6 +73,15 @@ func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Respon
 	return &api.Response{Message: req.Message}, nil
 }
 
+// 由用户定制
+type MyParser struct{}
+
+// 自定义解析器的一个示例
+// 如果服务器配置的类型是 json 或 yaml，则仅需使用默认解析器
+func (p *MyParser) Decode(kind parser.ConfigType, data []byte, config interface{}) error {
+	return json.Unmarshal(data, config)
+}
+
 func main() {
 	klog.SetLevel(klog.LevelDebug)
 
@@ -84,10 +96,17 @@ func main() {
 	}
 	defer fw.StopWatching()
 
+	// 由用户定制
+	params := &parser.ConfigParam{}
+	opts := &utils.Options{
+		CustomParser: &MyParser{},
+		CustomParams: params,
+	}
+
 	svr := echo.NewServer(
 		new(EchoImpl),
-		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
-		server.WithSuite(fileserver.NewSuite(key, fw)), // 添加监听
+		kitexserver.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+		kitexserver.WithSuite(fileserver.NewSuite(key, fw, opts)), // 添加监听
 	)
 	if err := svr.Run(); err != nil {
 		log.Println("server stopped with error:", err)
@@ -106,7 +125,7 @@ type FileConfigClientSuite struct {
 ```
 函数签名:
 
-`func NewSuite(service, key string, watcher filewatcher.FileWatcher) *FileConfigClientSuite`
+`func NewSuite(service, key string, watcher filewatcher.FileWatcher, opts *utils.Options) *FileConfigClientSuite`
 
 示例代码(或访问[此处](https://github.com/kitex-contrib/config-file/blob/main/example/client/main.go)):
 
@@ -115,6 +134,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"os"
 	"os/signal"
@@ -126,14 +146,25 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	fileclient "github.com/kitex-contrib/config-file/client"
 	"github.com/kitex-contrib/config-file/filewatcher"
+	"github.com/kitex-contrib/config-file/parser"
+	"github.com/kitex-contrib/config-file/utils"
 )
 
 const (
 	filepath    = "kitex_client.json"
 	key         = "ClientName/ServiceName"
 	serviceName = "ServiceName"
-	clientName  = "ClientName"
+	clientName  = "echo"
 )
+
+// 由用户定制
+type MyParser struct{}
+
+// 自定义解析器的一个示例
+// 如果客户端配置的类型是 json 或 yaml，则仅使用默认解析器
+func (p *MyParser) Decode(kind parser.ConfigType, data []byte, config interface{}) error {
+	return json.Unmarshal(data, config)
+}
 
 func main() {
 	klog.SetLevel(klog.LevelDebug)
@@ -156,10 +187,17 @@ func main() {
 		os.Exit(1)
 	}()
 
+	// 由用户定制
+	params := &parser.ConfigParam{}
+	opts := &utils.Options{
+		CustomParser: &MyParser{},
+		CustomParams: params,
+	}
+
 	client, err := echo.NewClient(
 		serviceName,
 		kitexclient.WithHostPorts("0.0.0.0:8888"),
-		kitexclient.WithSuite(fileclient.NewSuite(serviceName, key, fw)),
+		kitexclient.WithSuite(fileclient.NewSuite(serviceName, key, fw, opts)),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -216,6 +254,18 @@ func main() {
 ```
 
 在服务端（Server）中，由于 KitexServer 的特性，我们只需要定义`defer fw.StopWatching()`即可
+
+### 实现自定义ConfigParser
+设置反序列化 file 配置的自定义解析器，默认支持 json 和 yaml 格式，有新的格式需要用户自己实现。
+
+```go
+// ConfigParser the parser for config file.
+type ConfigParser interface {
+	Decode(kind ConfigType, data []byte, config interface{}) error
+}
+```
+
+示例代码见 [example](https://github.com/kitex-contrib/config-file/tree/main/example)
 
 ## 配置
 ### 治理策略
