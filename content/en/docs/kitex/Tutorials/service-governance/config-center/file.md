@@ -258,7 +258,7 @@ func main() {
 
 In the server-side (Server), due to the characteristics of KitexServer, we only need to define `defer fw.StopWatching()`
 
-### ConfigParser Implement
+### Implement Custom ConfigParser
 Set a custom parser for deserializing file configuration. It supports json and yaml formats by default. There are new formats that need to be implemented by the user.
 
 ```go
