@@ -1,10 +1,10 @@
 ---
-title: "快速上手"
-linkTitle: "快速上手"
+title: "基础示例"
+linkTitle: "基础示例"
 weight: 3
 date: 2024-01-18
-keywords: ["Kitex", "Golang", "Go", "快速上手"]
-description: "Kitex 快速上手"
+keywords: ["Kitex", "Golang", "Go", "基础示例"]
+description: "Kitex 基础示例"
 
 ---
 

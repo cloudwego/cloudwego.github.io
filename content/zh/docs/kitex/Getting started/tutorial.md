@@ -1,10 +1,10 @@
 ---
-title: "基础教程"
-linkTitle: "基础教程"
+title: "进阶教程"
+linkTitle: "进阶教程"
 weight: 4
 date: 2024-01-18
-keywords: ["Kitex", "Golang", "Go", "基础教程"]
-description: "Kitex 基础教程"
+keywords: ["Kitex", "Golang", "Go", "进阶教程"]
+description: "Kitex 进阶教程"
 ---
 
 开始此章节前，确保你已经了解**前置知识**并完成了**环境准备**。
@@ -209,7 +209,7 @@ go mod edit -replace=github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 
 若想要升级 kitex 版本，执行 `go get -v github.com/cloudwego/kitex@latest` 即可：
 
-## 运行商品服务
+## 编写商品服务逻辑
 
 我们需要编写的服务端逻辑都在 `handler.go` 这个文件中，目前我们有两个服务，对应了两个 `handler.go`，他们的结构都是类似的，我们先看看商品服务的服务端逻辑 `rpc/item/handler.go`
 
@@ -258,9 +258,57 @@ func (s *ItemServiceImpl) GetItem(ctx context.Context, req *item.GetItemReq) (re
 }
 ```
 
-至此，我们便可以开始运行商品服务了，kitex 也为我们生成了编译脚本，即 `build.sh`，直接执行 `sh build.sh` 即可。
+除了 `handler.go` 外，我们还需关心 `main.go` 文件，我可以看看 `main.go` 中做了什么事情：
 
-编译成功后，会生成 `output` 目录：
+```go
+package main
+
+import (
+    item "example_shop/kitex_gen/example/shop/item/itemservice"
+    "log"
+)
+
+func main() {
+    svr := item.NewServer(new(ItemServiceImpl))
+
+    err := svr.Run()
+
+    if err != nil {
+       log.Println(err.Error())
+    }
+}
+```
+
+`main.go` 中的代码很简单，即使用 kitex 生成的代码创建一个 `server` 服务端，并调用其 `Run` 方法开始运行。通常使用 `main.go` 进行一些项目初始化，如加载配置等。
+
+## 运行商品服务
+
+至此，我们便可以开始运行商品服务了，kitex 也为我们生成了编译脚本，即 `build.sh`：
+
+```shell
+#!/usr/bin/env bash
+RUN_NAME="example.shop.item"
+
+mkdir -p output/bin
+cp script/* output/
+chmod +x output/bootstrap.sh
+
+if [ "$IS_SYSTEM_TEST_ENV" != "1" ]; then
+    go build -o output/bin/${RUN_NAME}
+else
+    go test -c -covermode=set -o output/bin/${RUN_NAME} -coverpkg=./...
+fi
+```
+
+在 `build.sh` 主要做了以下事情：
+
+1. 定义了一个变量 `RUN_NAME`，用于指定生成的可执行文件的名称，值为我们在 IDL 中指定的 `namespace`。本例中为 `example.shop.item`
+2. 创建 `output` 目录，此后的编译出的二进制文件放在 `output/bin` 下。同时将 `script` 目录下的项目启动脚本复制进去
+3. 根据环境变量 `IS_SYSTEM_TEST_ENV` 的值判断生成普通可执行文件或测试可执行文件。值为 1 则代表使用 `go test -c` 生成测试文件，否则正常使用 `go build` 命令编译。
+
+直接执行 `sh build.sh` 即可编译项目。
+
+编译成功后，生成 `output` 目录：
 
 ```
 output
@@ -276,6 +324,8 @@ output
 ```
 2024/01/19 22:12:18.758245 server.go:83: [Info] KITEX: server listen at addr=[::]:8888
 ```
+
+在上面的日志输出中，`addr=[::]:8888` 代表我们的服务运行在本地的 8888 端口，此参数可以在创建 `server` 时传入 `option` 配置来修改，更多服务端配置见 [Server Option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/server_options/)。
 
 ## 运行 API 服务
 
@@ -312,7 +362,7 @@ if err != nil {
 }
 ```
 
-上述代码中，`item.NewClient` 用于创建 `client`，其第一个参数为调用的 *服务名*，第二个参数为 *options*，用于传入可选参数， 此处的 `client.WithHostPorts` 用于指定服务端的地址，我们可以在运行商品服务时发现其监听在本地的 8888 端口，所以我们指定 8888 端口。更多参数可参考[基本特性](https://www.cloudwego.cn/zh/docs/kitex/tutorials/basic-feature)一节。
+上述代码中，`item.NewClient` 用于创建 `client`，其第一个参数为调用的 *服务名*，第二个参数为 *options*，用于传入可选参数， 此处的 `client.WithHostPorts` 用于指定服务端的地址，我们可以在运行商品服务时发现其监听在本地的 8888 端口，所以我们指定 8888 端口。更多参数可参考 [Client Option](https://www.cloudwego.cn/zh/docs/kitex/tutorials/options/client_options/) 一节。
 
 ### 调用服务
 
