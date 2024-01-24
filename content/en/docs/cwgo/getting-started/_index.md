@@ -126,15 +126,9 @@ Let's take thrift as an example
 
 4. Generate project layout
 
-   static command line
-
    ```shell
    cwgo server -service=a.b.c -type HTTP -idl=idl/hello.thrift
    ```
-
-   dynamic command line
-
-   ![Dynamic command line](/img/docs/cwgo_dynamic.gif)
 
 5. Compile and run
 
