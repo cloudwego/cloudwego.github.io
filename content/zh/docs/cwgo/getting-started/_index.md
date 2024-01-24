@@ -126,15 +126,9 @@ cwgo 的具体使用请参考[命令行工具](/zh/docs/cwgo/tutorials/cli)
 
 4. 生成项目 layout
 
-   静态命令行
-
    ```shell
    cwgo server -service=a.b.c -type HTTP  -idl=idl/hello.thrift
    ```
-
-   动态命令行
-
-   ![动态命令行](/img/docs/cwgo_dynamic.gif)
 
 5. 编译运行
 

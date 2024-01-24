@@ -27,7 +27,7 @@ Therefore, the precautions of corresponding tools also need to be followed, such
 
 ## Using
 
-cwgo supports two generation methods of interactive command line and static command line. And **weakened the concept of new and update**, just input the previous command directly when updating.
+cwgo supports static command line. And **weakened the concept of new and update**, just input the previous command directly when updating.
 
 ## Interactive command line
 
@@ -77,7 +77,6 @@ USAGE:
     cwgo [global options] command [command options] [arguments...]
 
 COMMANDS:
-    init interactive command line
     server generates RPC or HTTP Server
     client generates RPC or HTTP Client
     model generate DB Model
