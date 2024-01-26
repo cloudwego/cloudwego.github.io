@@ -54,7 +54,7 @@ if err != nil {
 }
 ```
 
-`generic.NewThriftFileProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。
+`generic.NewThriftFileProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
 ### 基于内存解析 IDL
 
@@ -91,7 +91,7 @@ if err != nil {
 }
 ```
 
-`generic.NewThriftContentProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。
+`generic.NewThriftContentProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
 #### 支持绝对路径的 include path 寻址
 
@@ -128,7 +128,7 @@ if err != nil {
 }
 ```
 
-`generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` 在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。
+`generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` 在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
 ## 基本使用
 
@@ -182,7 +182,7 @@ Kitex 提供 Option 参数用于在创建 Generic 时自定义配置，包括以
 
 函数签名：`func WithCustomDynamicGoConvOpts(opts *conv.Options) Option`
 
-说明：启用 `dynamicgo` 时自定义 `conv.Option` 配置，详情见 [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv)
+说明：启用 `dynamicgo` 时自定义 `conv.Option` 配置，配置详情见 [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv)。接入 dynamicgo 详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
 ##### UseRawBodyForHTTPResp
 
