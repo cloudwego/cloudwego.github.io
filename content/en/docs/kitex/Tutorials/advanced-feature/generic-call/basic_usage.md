@@ -136,13 +136,13 @@ In Kitex, the `generic.Generic` interface represents a generic call, with differ
 
 ##### NewClient
 
-Functino signature: `func NewClient(destService string, g generic.Generic, opts ...client.Option) (Client, error)`
+Function signature: `func NewClient(destService string, g generic.Generic, opts ...client.Option) (Client, error)`
 
 Description: This function takes the target service name, a Generic object, and optional Option parameters, returning a generic call client. For details on Option parameters, see [Client Option](https://www.cloudwego.io/docs/kitex/tutorials/options/client_options/)
 
 ##### NewClientWithServiceInfo
 
-Functino signature: `func NewClientWithServiceInfo(destService string, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...client.Option) (Client, error)`
+Function signature: `func NewClientWithServiceInfo(destService string, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...client.Option) (Client, error)`
 
 Description: This function requires the target service name, a Generic object, custom service information, and optional Option parameters to return a generic call client. For details on Option parameters, see [Client Option](https://www.cloudwego.io/docs/kitex/tutorials/options/client_options/)
 
