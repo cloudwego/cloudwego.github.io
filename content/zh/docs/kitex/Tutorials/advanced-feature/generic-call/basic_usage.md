@@ -132,63 +132,7 @@ if err != nil {
 
 ## 基本使用
 
-### 创建 Generic
-
-Ktiex 中使用 `generic.Generic` 接口表示泛化调用，不同泛化调用类型有不同实现。
-
-#### 二进制泛化调用
-
-##### BinaryThriftGeneric
-
-函数签名：`func BinaryThriftGeneric() Generic`
-
-说明：返回二进制泛化调用对象。
-
-#### HTTP 泛化调用
-
-##### HTTPThriftGeneric
-
-函数签名：`func HTTPThriftGeneric(p DescriptorProvider, opts ...Option) (Generic, error)`
-
-说明：传入 IDL Provider 与可选 Option 参数，返回 HTTP 泛化调用对象，Option 参数详见下文。
-
-#### JSON 泛化调用
-
-##### JSONThriftGeneric
-
-函数签名：`func JSONThriftGeneric(p DescriptorProvider, opts ...Option) (Generic, error)`
-
-说明：传入 IDL Provider 与可选 Option 参数，返回 JSON 泛化调用对象，Option 参数详见下文。
-
-##### MapThriftGenericForJSON
-
-函数签名：`func MapThriftGenericForJSON(p DescriptorProvider) (Generic, error)`
-
-说明：传入 IDL Provider，返回 JSON 泛化调用对象，底层使用 Map 泛化调用实现。
-
-#### Map 泛化调用
-
-##### MapThriftGeneric
-
-函数签名：`func MapThriftGeneric(p DescriptorProvider) (Generic, error)`
-
-说明：传入 IDL Provider，返回 Map 泛化调用对象
-
-#### Option
-
-Kitex 提供 Option 参数用于在创建 Generic 时自定义配置，包括以下参数
-
-##### WithCustomDynamicGoConvOpts
-
-函数签名：`func WithCustomDynamicGoConvOpts(opts *conv.Options) Option`
-
-说明：启用 `dynamicgo` 时自定义 `conv.Option` 配置，配置详情见 [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv)。接入 dynamicgo 详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
-
-##### UseRawBodyForHTTPResp
-
-函数签名：`func UseRawBodyForHTTPResp(enable bool) Option`
-
-说明：在 HTTP 映射泛化调用中，设置是否将响应结果设置为 `HTTPResponse.RawBody`。 如果禁用此功能，则响应结果将仅存储到 `HTTPResponse.Body` 中
+Ktiex 中使用 `generic.Generic` 接口表示泛化调用，不同泛化调用类型有不同实现。在创建客户端或服务端时都需要传入 `Generic` 实例。
 
 ### 客户端泛化调用
 
@@ -236,13 +180,101 @@ type Service interface {
 
 说明：传入泛化调用服务实例，Generic 对象，自定义服务信息与可选 Option 参数，返回 Kitex 服务端。
 
+### 泛化调用数据类型
+
+#### Generic
+
+```go
+type Generic interface {
+    Closer
+    // PayloadCodec return codec implement
+    PayloadCodec() remote.PayloadCodec
+    // PayloadCodecType return the type of codec
+    PayloadCodecType() serviceinfo.PayloadCodec
+    // RawThriftBinaryGeneric must be framed
+    Framed() bool
+    // GetMethod to get method name if need
+    GetMethod(req interface{}, method string) (*Method, error)
+}
+```
+
+`Generic` 核心方法为编解码实现，不同 `Generic` 实现通过使用不同的编解码来区分。不同编解码器均在 `thriftCodec` 基础上扩展其实现。
+
+#### 二进制泛化调用
+
+应用场景：如中台服务，可以通过二进制流转发将收到的原始 Thrift 协议包发给目标服务。
+
+提供以下方法创建二进制泛化调用 `Generic` 实例。
+
+##### BinaryThriftGeneric
+
+函数签名：`func BinaryThriftGeneric() Generic`
+
+说明：返回二进制泛化调用对象。
+
+#### HTTP 泛化调用
+
+应用场景：如 API 网关，可以将 HTTP 请求解析后通过 RPC 请求后台服务。
+
+提供以下方法创建 HTTP 泛化调用 `Generic` 实例。
+
+##### HTTPThriftGeneric
+
+函数签名：`func HTTPThriftGeneric(p DescriptorProvider, opts ...Option) (Generic, error)`
+
+说明：传入 IDL Provider 与可选 Option 参数，返回 HTTP 泛化调用对象，Option 参数详见下文。
+
+#### JSON 泛化调用
+
+应用场景：如接口测试平台，解析用户构造的 JSON 数据后发送请求到 RPC 服务并获取响应结果。
+
+提供以下方法创建 JSON 泛化调用 `Generic` 实例。
+
+##### JSONThriftGeneric
+
+函数签名：`func JSONThriftGeneric(p DescriptorProvider, opts ...Option) (Generic, error)`
+
+说明：传入 IDL Provider 与可选 Option 参数，返回 JSON 泛化调用对象，Option 参数详见下文。
+
+##### MapThriftGenericForJSON
+
+函数签名：`func MapThriftGenericForJSON(p DescriptorProvider) (Generic, error)`
+
+说明：传入 IDL Provider，返回 JSON 泛化调用对象，底层使用 Map 泛化调用实现。
+
+#### Map 泛化调用
+
+应用场景：动态调整参数场景、快速原型开发阶段验证部分功能。
+
+提供以下方法创建 Map 泛化调用 `Generic` 实例。
+
+##### MapThriftGeneric
+
+函数签名：`func MapThriftGeneric(p DescriptorProvider) (Generic, error)`
+
+说明：传入 IDL Provider，返回 Map 泛化调用对象
+
+#### Option
+
+Kitex 提供 Option 参数用于在创建 Generic 时自定义配置，包括以下参数
+
+##### WithCustomDynamicGoConvOpts
+
+函数签名：`func WithCustomDynamicGoConvOpts(opts *conv.Options) Option`
+
+说明：启用 `dynamicgo` 时自定义 `conv.Option` 配置，配置详情见 [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv)。接入 dynamicgo 详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
+
+##### UseRawBodyForHTTPResp
+
+函数签名：`func UseRawBodyForHTTPResp(enable bool) Option`
+
+说明：在 HTTP 映射泛化调用中，设置是否将响应结果设置为 `HTTPResponse.RawBody`。 如果禁用此功能，则响应结果将仅存储到 `HTTPResponse.Body` 中
+
 ### 使用示例
 
 #### 二进制泛化调用
 
 ##### 客户端
-
-应用场景：比如中台服务，可以通过二进制流转发将收到的原始 Thrift 协议包发给目标服务。
 
 使用客户端二进制泛化调用需要将请求参数使用 [Thrift 编码格式](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)进行编码。
 
