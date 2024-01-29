@@ -14,7 +14,7 @@ Kitex supports xDS API via the extension of [kitex-contrib/xds](https://github.c
 ## Feature
 
 * Service Discovery
-* Traffic Route: only support `exact` match for `header` and `method`
+* Traffic Route: only support `exact` match for `method` and support `exact` `prefix` `regex` match for `header`.
     * [HTTP route configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/http/http_routing#arch-overview-http-routing): configure via [VirtualService](https://istio.io/latest/docs/reference/config/networking/virtual-service/).
     * [ThriftProxy](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/thrift_proxy/v3/thrift_proxy.proto): configure via patching [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/).
 * Timeout:
@@ -70,13 +70,16 @@ client.WithXDSSuite(xds.ClientSuite{
 
 ```
 <service-name>.<namespace>.svc.cluster.local:<service-port>
+<service-name>.<namespace>.svc:<service-port>
+<service-name>.<namespace>:<service-port>
+<service-name>:<service-port> // access the <service-name> in same namespace.
 ```
 
 #### Traffic route based on Tag Match
 
 We can define traffic route configuration via [VirtualService](https://istio.io/latest/docs/reference/config/networking/virtual-service/) in Istio.
 
-The following example indicates that when the tag contains `{"stage":"canary"}` in the header, the request will be routed to the `v1` subcluster of `kitex-server`.
+The following example indicates that when the tag meets one of the conditions, such as `stage` exact match `canary` or `userid` prefix match `2100` or `env` regex match `[dev|sit]` in the header, the request will be routed to the `v1` subcluster of `kitex-server`.
 
 ```
 apiVersion: networking.istio.io/v1alpha3
@@ -92,6 +95,12 @@ spec:
       - headers:
           stage:
             exact: "canary"
+      - headers:
+          userid:
+            prefix: "2100"
+      - headers:
+          env:
+            regex: "[dev|sit]"
     route:
     - destination:
         host: kitex-server
