@@ -1,10 +1,10 @@
 ---
-date: 2024-01-18
+date: 2024-01-29
 title: "Enhancing Performance in Microservice Architecture with Kitex"
 projects: ["CloudWeGo"]
 linkTitle: "Enhancing Performance in Microservice Architecture with Kitex"
 keywords: ["CloudWeGo", "middleware", "Go", "Golang", "Kitex", "microservice framework", "ByteDance Open Source", "ByteDance", "open source", "cloud native", "open source", "kubernetes", "gRPC", "microservices", "rpc", "thrift"]
-description: "Volo is a Rust Framework for cloud development. This guide provides insights into leveraging Volo with its speed and efficiency in your projects."
+description: "This post explores the creation and optimization of ByteDance's Remote Procedure Call (RPC) framework, Kitex, to address challenges within microservice architecture. Highlighting innovative performance optimization techniques, controlled Garbage Collection and concurrency adjustment, this insightful read offers hands-on strategies and future plans for evolving high-performance microservice systems."
 author:  <a href="https://github.com/joway" target="_blank">Zhuowei Wang</a>, <a href="https://github.com/felix021" target="_blank">Felix Feng</a>, <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a> 
 ---
 
@@ -15,7 +15,7 @@ author:  <a href="https://github.com/joway" target="_blank">Zhuowei Wang</a>, <a
 
 The team at ByteDance initiated the creation of the Remote Procedure Call (RPC) framework, Kitex, alongside several related fundamental libraries in 2019. This endeavor originated from confronting functionality and performance challenges within our extensive microservice architecture. We also wanted to combine the knowledge and insights gathered from previous frameworks. This development project was officially released for open-source contribution on GitHub in 2021. 
 
-From 2019 to 2023, our internal microservices have seen substantial growth. During this period, the Kitex framework has undergone numerous cycles of optimization and testing to enhance its performance and efficiency. In this article, we share performance optimization techniques that we've systematically implemented over the past few years. 
+From 2019 to 2023, our internal microservices have seen substantial growth. During this period, [the Kitex framework](https://www.cloudwego.io/docs/kitex/overview/) has undergone numerous cycles of optimization and testing to enhance its performance and efficiency. In this article, we share performance optimization techniques that we've systematically implemented over the past few years. 
 
 ## The Evolution and Status Quo of Kitex
 ### Understanding the Need for an RPC Framework
