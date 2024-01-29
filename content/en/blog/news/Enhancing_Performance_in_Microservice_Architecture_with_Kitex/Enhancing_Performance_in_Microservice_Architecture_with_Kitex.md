@@ -63,8 +63,8 @@ To overcome the issues inherent in the monolithic architecture, the IT community
 
 ```Go
 func BuySomething(userId int, itemId int) {
-user := client.GetUser(userId) // RPC call
-sth := client.GetItem(itemId) // RPC call
+    user := client.GetUser(userId) // RPC call
+    sth := client.GetItem(itemId) // RPC call
 }
 ```
 
@@ -79,11 +79,11 @@ Before the introduction of RPC, the sole overhead in the following code is merel
 
 ```Go
 func client() (response) {
-response = server(request) // function call
+    response = server(request) // function call
 }
 
 func server(request) (response) {
-response.Message = request.Message
+    response.Message = request.Message
 }
 ```
 
@@ -340,7 +340,7 @@ To tackle this, we utilized our communication protocol and retained **UDS** as t
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/20.jpeg)
 
-For a detailed technical understanding of shmipc, you can refer to our previously published article: [_ByteDance Open Source Shmipc: High Performance IPC Based on Shared Memory_](https://www.cloudwego.io/blog/2023/04/04/introducing-shmipc-a-high-performance-inter-process-communication-library/).
+For a detailed technical understanding of shmipc, you can refer to our previously published article: [Introducing Shmipc: A High Performance Inter-process Communication Library](https://www.cloudwego.io/blog/2023/04/04/introducing-shmipc-a-high-performance-inter-process-communication-library/).
 
 ## Performance Test:
 
@@ -493,7 +493,7 @@ If a downstream process utilizes the entirety of the time slice allocated within
 
 ## The Final Frontier: Kernel
 
-The only area currently open for further optimization is the Kernel.
+Currently the only area we haven't explored for optimization is the Kernel.
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/31.jpeg)
 
@@ -536,3 +536,11 @@ When it comes to existing components, we plan to continue our efforts to enhance
 **Pod Affinity:**
 
 * Expanding from same-machine to same-rack granularity, effectively reducing network latency and improving performance.
+
+In this post, we explored optimizing microservices performance using Kitex, the RPC framework developed by ByteDance. We discussed various techniques, from encoding and decoding enhancements, JIT compilation, network library optimization, and communication layer upgrades, to automated GC optimization, concurrent processing strategies, and microservices online tuning practices. 
+
+Kitex has demonstrated its ability to outperform other frameworks in testing comparisons, showcasing its strength in handling complex microservice architectures. 
+
+We also briefly looked towards future optimizations, including kernel-level improvements, restructuring the TCP protocols, and further refinement of existing components. With continuous learning and improvements, we are driven to unlock the vast potential in microservice performance optimization, taking us one step closer to the realm of real-time computing. 
+
+For any questions or discussions, you're welcome to join our community on [GitHub](https://github.com/cloudwego) or [Slack](https://join.slack.com/t/cloudwego/shared_invite/zt-tmcbzewn-UjXMF3ZQsPhl7W3tEDZboA).
