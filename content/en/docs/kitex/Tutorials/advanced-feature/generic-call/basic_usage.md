@@ -9,13 +9,16 @@ description: "Generic Call basic usage"
 
 ## Supported Scenarios
 
-1. Binary Generic Call: for traffic transit scenario
-2. HTTP Mapping Generic Call: for API Gateway scenario
-3. Map Mapping Generic Call
-4. JSON Mapping Generic Call 
-5. Generic Call Mapping JSON to Protobufs
+- Thrift  
+    1. Binary Generic Call: for traffic transit scenario
+    2. HTTP Mapping Generic Call: for API Gateway scenario
+    3. Map Mapping Generic Call
+    4. JSON Mapping Generic Call 
+- Protobufs
+    1. JSON Mapping Generic Call
 
-## Example of Usage
+## Example of Thrift Usage
+
 
 ### 1. Binary Generic
 
@@ -714,7 +717,9 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 ```
 
-### 5. Generic Call Mapping JSON to Protobufs  
+## Example of Protobufs Usage
+
+### 1. JSON Mapping Generic Call 
 
 Users can construct JSON string requests or responses according to their specifications, and Kitex will handle the translation of JSON to and from their respective Protocol Buffers messages.
 
@@ -802,7 +807,7 @@ const serverHostPort = "127.0.0.1:9999"
 func main() {
 	var err error
 
-	path := "./idl/api.proto"
+	path := "./YOUR_IDL_PATH"
 
 	// initialise DynamicGo proto.ServiceDescriptor
 	dOpts := dproto.Options{}
@@ -876,7 +881,7 @@ func main() {
 	var opts []server.Option
 	opts = append(opts, WithServiceAddr(serverHostPort))
 
-	path := "../client/idl/api.proto"
+	path := "./YOUR_IDL_PATH"
 
 	dOpts := dproto.Options{}
 	p, err := generic.NewPbFileProviderWithDynamicGo(path, context.Background(), dOpts)
