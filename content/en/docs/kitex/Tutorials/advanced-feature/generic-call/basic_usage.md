@@ -36,6 +36,8 @@ Currently, Kitex offers two implementations of the IDL Provider. Users can choos
 
 ### Parsing IDL from Local Files
 
+#### Thrift
+
 There are two methods provided for parsing IDL from local files. Both methods are similar and require passing the IDL path and the paths of other IDLs referenced within it.
 
 ```go
@@ -52,9 +54,22 @@ if err != nil {
 
 The `generic.NewThriftFileProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
+#### Pb
+
+A method is provided to parse local `proto` files, which requires passing the IDL path, `context.Context`, and optional `option` parameters. For detailed information about the parameters, please refer to [dynamicgo proto idl](https://github.com/cloudwego/dynamicgo/blob/main/proto/idl.go).
+
+```go
+p, err := NewPbFileProviderWithDynamicGo("./YOUR_IDL_PATH", context.Background())
+if err != nil {
+    panic(err)
+}
+```
+
 ### Parsing IDL from Memory
 
 You can also directly parse the IDL content. Other IDLs referenced within the IDL need to be constructed into a map and passed in. The key should be the path of the referenced IDL, and the value should be the IDL content.
+
+#### Thrift
 
 A simple example (to minimize display, the path construction is not a real IDL):
 
@@ -89,7 +104,38 @@ if err != nil {
 
 The `generic.NewThriftContentProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
+#### Pb
+
+A simple example (to minimize display, the path construction is not a real IDL):
+
+```go
+content := `
+syntax = "proto3";
+package kitex.test.server;
+option go_package = "test";
+
+import "x.proto"
+
+service Echo{}
+`
+
+path := "a/b/main.proto"
+includes := map[string]string{
+		path: content,
+		"x.proto": `syntax = "proto3";
+					package kitex.test.server;
+					option go_package = "test";
+					`,
+}
+p, err := NewPbContentProvider(content, includes)
+if err != nil {
+	panic(err)
+}
+```
+
 #### Support for Absolute Path in include path Addressing
+
+Currently, only Thrift supports this functionality.
 
 For ease of constructing the IDL Map, you can also use absolute paths as keys with `generic.NewThriftContentWithAbsIncludePathProvider` or `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo`.
 
