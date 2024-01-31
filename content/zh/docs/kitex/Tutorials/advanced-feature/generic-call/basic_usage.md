@@ -9,15 +9,24 @@ description: "泛化调用基本使用"
 
 ## 支持场景
 
-Kitex 支持以下四个场景的泛化调用：
+Kitex 支持以下场景的泛化调用：
 
-- 二进制泛化调用
+1. Thrift：
 
-- HTTP 映射泛化调用
+   - 二进制泛化调用
 
-- Map 映射泛化调用
 
-- JSON 映射泛化调用
+   - HTTP 映射泛化调用
+
+
+   - Map 映射泛化调用
+
+
+   - JSON 映射泛化调用
+
+2. Protobuf
+
+   1. JSON 映射泛化调用
 
 ## IDL Provider
 
@@ -40,6 +49,8 @@ type DescriptorProvider interface {
 
 ### 基于本地文件解析 IDL
 
+#### Thrift
+
 提供了两个方法用于基于本地文件解析 IDL，使用方法相同，需要传入 IDL 路径以及 IDL 中引用的其他 IDL 路径。
 
 ```go
@@ -56,9 +67,22 @@ if err != nil {
 
 `generic.NewThriftFileProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
+#### Pb
+
+提供了一个方法解析本地 `proto` 文件，需要传入 IDL 路径，`context.Context` 以及可选 `option` 参数，参数详情见 [dynamicgo proto idl](https://github.com/cloudwego/dynamicgo/blob/main/proto/idl.go)
+
+```go
+p, err := NewPbFileProviderWithDynamicGo("./YOUR_IDL_PATH", context.Background())
+if err != nil {
+    panic(err)
+}
+```
+
 ### 基于内存解析 IDL
 
 也可以直接传入 IDL 内容进行解析，IDL 中引用的其他 IDL 需要构造 map 传入，Key 为所引用 IDL 的 Path，Value 为 IDL 内容。
+
+#### Thrift
 
 简单示例（为最小化展示 Path 构造，并非真实的 IDL）：
 
@@ -93,7 +117,38 @@ if err != nil {
 
 `generic.NewThriftContentProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
+#### Pb
+
+简单示例（为最小化展示 Path 构造，并非真实的 IDL）：
+
+```go
+content := `
+syntax = "proto3";
+package kitex.test.server;
+option go_package = "test";
+
+import "x.proto"
+
+service Echo{}
+`
+
+path := "a/b/main.proto"
+includes := map[string]string{
+		path: content,
+		"x.proto": `syntax = "proto3";
+					package kitex.test.server;
+					option go_package = "test";
+					`,
+}
+p, err := NewPbContentProvider(content, includes)
+if err != nil {
+	panic(err)
+}
+```
+
 #### 支持绝对路径的 include path 寻址
+
+目前仅 Thrift 支持此功能。
 
 若为方便构造 IDL Map，也可以通过 `generic.NewThriftContentWithAbsIncludePathProvider`  或 `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` 使用绝对路径作为 Key。
 
@@ -130,29 +185,27 @@ if err != nil {
 
 `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` 在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
-## 基本使用
-
 Ktiex 中使用 `generic.Generic` 接口表示泛化调用，不同泛化调用类型有不同实现。在创建客户端或服务端时都需要传入 `Generic` 实例。
 
-### 客户端泛化调用
+## 客户端泛化调用
 
-#### 创建客户端
+### 创建客户端
 
-##### NewClient
+#### NewClient
 
 函数签名：`func NewClient(destService string, g generic.Generic, opts ...client.Option) (Client, error)`
 
 说明：传入目标服务名，Generic 对象与可选 Option 参数，返回泛化调用客户端。Option 参数详见 [Client Option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/client_options/)
 
-##### NewClientWithServiceInfo
+#### NewClientWithServiceInfo
 
 函数签名：`func NewClientWithServiceInfo(destService string, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...client.Option) (Client, error)`
 
 说明：传入目标服务名，Generic 对象，自定义服务信息与可选 Option 参数，返回泛化调用客户端。Option 参数详见 [Client Option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/client_options/)。
 
-### 服务端泛化调用
+## 服务端泛化调用
 
-#### 泛化调用服务对象
+### 泛化调用服务对象
 
 Kitex 中定义了 `generic.Service` 接口表示泛化调用服务。
 
@@ -166,23 +219,23 @@ type Service interface {
 
 只要实现 `GenericCall` 方法即可当作泛化调用服务实例用于创建泛化调用服务端。
 
-#### 创建服务端
+### 创建服务端
 
-##### NewServer
+#### NewServer
 
 函数签名：`func NewServer(handler generic.Service, g generic.Generic, opts ...server.Option) server.Server`
 
 说明：传入泛化调用服务实例，Generic 对象与可选 Option 参数，返回 Kitex 服务端。
 
-##### NewServerWithServiceInfo
+#### NewServerWithServiceInfo
 
 函数签名：`func NewServerWithServiceInfo(handler generic.Service, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...server.Option) server.Server`
 
 说明：传入泛化调用服务实例，Generic 对象，自定义服务信息与可选 Option 参数，返回 Kitex 服务端。
 
-### 泛化调用数据类型
+## 泛化调用数据类型
 
-#### Generic
+### Generic
 
 ```go
 type Generic interface {
@@ -200,81 +253,87 @@ type Generic interface {
 
 `Generic` 核心方法为编解码实现，不同 `Generic` 实现通过使用不同的编解码来区分。不同编解码器均在 `thriftCodec` 基础上扩展其实现。
 
-#### 二进制泛化调用
+### 二进制泛化调用
 
 应用场景：如中台服务，可以通过二进制流转发将收到的原始 Thrift 协议包发给目标服务。
 
 提供以下方法创建二进制泛化调用 `Generic` 实例。
 
-##### BinaryThriftGeneric
+#### BinaryThriftGeneric
 
 函数签名：`func BinaryThriftGeneric() Generic`
 
 说明：返回二进制泛化调用对象。
 
-#### HTTP 泛化调用
+### HTTP 泛化调用
 
 应用场景：如 API 网关，可以将 HTTP 请求解析后通过 RPC 请求后台服务。
 
 提供以下方法创建 HTTP 泛化调用 `Generic` 实例。
 
-##### HTTPThriftGeneric
+#### HTTPThriftGeneric
 
 函数签名：`func HTTPThriftGeneric(p DescriptorProvider, opts ...Option) (Generic, error)`
 
 说明：传入 IDL Provider 与可选 Option 参数，返回 HTTP 泛化调用对象，Option 参数详见下文。
 
-#### JSON 泛化调用
+### JSON 泛化调用
 
 应用场景：如接口测试平台，解析用户构造的 JSON 数据后发送请求到 RPC 服务并获取响应结果。
 
 提供以下方法创建 JSON 泛化调用 `Generic` 实例。
 
-##### JSONThriftGeneric
+#### JSONThriftGeneric
 
 函数签名：`func JSONThriftGeneric(p DescriptorProvider, opts ...Option) (Generic, error)`
 
-说明：传入 IDL Provider 与可选 Option 参数，返回 JSON 泛化调用对象，Option 参数详见下文。
+说明：传入 IDL Provider 与可选 Option 参数，返回 Thrift JSON 泛化调用对象，Option 参数详见下文。
 
-##### MapThriftGenericForJSON
+#### MapThriftGenericForJSON
 
 函数签名：`func MapThriftGenericForJSON(p DescriptorProvider) (Generic, error)`
 
-说明：传入 IDL Provider，返回 JSON 泛化调用对象，底层使用 Map 泛化调用实现。
+说明：传入 IDL Provider，返回 Thrift JSON 泛化调用对象，底层使用 Map 泛化调用实现。
 
-#### Map 泛化调用
+#### JSONPbGeneric
+
+函数签名：`func JSONPbGeneric(p PbDescriptorProviderDynamicGo, opts ...Option) (Generic, error)`
+
+说明：传入 IDL Provider 与可选 Option 参数，返回 Pb JSON 泛化调用对象，Option 参数详见下文。
+
+### Map 泛化调用
 
 应用场景：动态调整参数场景、快速原型开发阶段验证部分功能。
 
 提供以下方法创建 Map 泛化调用 `Generic` 实例。
 
-##### MapThriftGeneric
+#### MapThriftGeneric
 
 函数签名：`func MapThriftGeneric(p DescriptorProvider) (Generic, error)`
 
 说明：传入 IDL Provider，返回 Map 泛化调用对象
 
-#### Option
+### Option
 
 Kitex 提供 Option 参数用于在创建 Generic 时自定义配置，包括以下参数
 
-##### WithCustomDynamicGoConvOpts
+#### WithCustomDynamicGoConvOpts
 
 函数签名：`func WithCustomDynamicGoConvOpts(opts *conv.Options) Option`
 
 说明：启用 `dynamicgo` 时自定义 `conv.Option` 配置，配置详情见 [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv)。接入 dynamicgo 详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
-##### UseRawBodyForHTTPResp
+#### UseRawBodyForHTTPResp
 
 函数签名：`func UseRawBodyForHTTPResp(enable bool) Option`
 
 说明：在 HTTP 映射泛化调用中，设置是否将响应结果设置为 `HTTPResponse.RawBody`。 如果禁用此功能，则响应结果将仅存储到 `HTTPResponse.Body` 中
 
-### 使用示例
+## 使用示例
 
-#### 二进制泛化调用
+### 二进制泛化调用
 
-##### 客户端
+#### 客户端
 
 使用客户端二进制泛化调用需要将请求参数使用 [Thrift 编码格式](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)进行编码。
 
@@ -303,7 +362,7 @@ func main(){
 }
 ```
 
-##### 服务端
+#### 服务端
 
 二进制泛化调用的客户端和服务端**并不是配套**使用的，客户端只要传入**正确的 Trift 二进制编码格式**的参数，可以请求普通 Thrift 接口服务。
 
@@ -342,11 +401,11 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-#### HTTP 映射泛化调用
+### HTTP 映射泛化调用
 
 HTTP 泛化调用即根据 HTTP Request 构造 Thrift 接口参数后发起泛化调用，目前只针对客户端，要求 Thrift IDL 遵从接口映射规范，具体规范见 [Thrift-HTTP 映射的 IDL 规范](https://www.cloudwego.cn/zh/docs/kitex/tutorials/advanced-feature/generic-call/thrift_idl_annotation_standards/)。
 
-##### IDL 示例
+#### IDL 示例
 
 ```thrift
 namespace go http
@@ -390,7 +449,7 @@ service BizService {
 }
 ```
 
-##### 泛化调用示例
+#### 泛化调用示例
 
 ```go
 package main
@@ -452,7 +511,7 @@ func main() {
 }
 ```
 
-##### 注解扩展
+#### 注解扩展
 
 比如增加一个 `xxx.source='not_body_struct'` 注解，表示某个字段本身没有对 HTTP 请求字段的映射，需要遍历其子字段从 HTTP 请求中获取对应的值。
 
@@ -507,7 +566,7 @@ func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descripto
 }
 ```
 
-#### Map 映射泛化调用
+### Map 映射泛化调用
 
 Map 映射泛化调用是指用户可以直接按照规范构造 Map 参数，Kitex 会对应完成 Thrift 编解码。
 
@@ -515,7 +574,7 @@ Kitex 会根据给出的 IDL 严格校验用户构造的字段名和类型，字
 
 对于Response会校验 Field ID 和类型，并根据 IDL 的 Field Name 生成相应的 Map Key。
 
-##### 类型映射
+#### 类型映射
 
 Golang 与 Thrift IDL 类型映射如下：
 
@@ -589,7 +648,7 @@ req := map[string]interface{}{
         }
 ```
 
-##### 示例 IDL
+#### 示例 IDL
 
 `base.thrift`：
 
@@ -640,7 +699,7 @@ service ExampleService {
 }
 ```
 
-##### 客户端
+#### 客户端
 
 ```go
 package main
@@ -675,7 +734,7 @@ func main() {
 }
 ```
 
-##### 服务端
+#### 服务端
 
 ```go
 package main
@@ -719,11 +778,13 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-#### JSON 映射泛化调用
+### JSON 映射泛化调用
 
-JSON 映射泛化调用是指用户可以直接按照规范构造 JSON String 请求参数或返回，Kitex 会对应完成 Thrift 编解码。
+JSON 映射泛化调用是指用户可以直接按照规范构造 JSON String 请求参数或返回，Kitex 会完成对应协议编解码。
 
-Kitex 与 MAP 泛化调用严格校验用户构造的字段名和类型不同，JSON 泛化调用会根据给出的 IDL 对用户的请求参数进行转化，无需用户指定明确的类型，如 int32 或 int64。
+#### Thrift
+
+JSON 与 MAP 泛化调用严格校验用户构造的字段名和类型不同，JSON 泛化调用会根据给出的 IDL 对用户的请求参数进行转化，无需用户指定明确的类型，如 int32 或 int64。
 
 对于 Response 会校验 Field ID 和类型，并根据 IDL 的 Field Name 生成相应的 JSON Field。
 
@@ -918,5 +979,159 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
         m := request.(string)
         fmt.Printf("Recv: %v\n", m)
         return  "{\"Msg\": \"world\"}", nil
+}
+```
+
+#### Pb
+
+##### 类型映射
+
+Golang 与 Proto IDL 类型映射如下：
+
+| **Protocol Buffers 类型** | **Golang 类型** |
+| ------------------------- | --------------- |
+| float                     | float32         |
+| double                    | float64         |
+| int32                     | int32           |
+| int64                     | int64           |
+| uint32                    | uint32          |
+| uint64                    | uint64          |
+| sint32                    | int32           |
+| sint64                    | int64           |
+| fixed32                   | uint32          |
+| fixed64                   | uint64          |
+| sfixed32                  | int32           |
+| sfixed64                  | uint64          |
+| bool                      | bool            |
+| string                    | string          |
+| bytes                     | byte[]          |
+
+此外还支持 JSON 中的 lists 与 dictionaries，将其映射为 protobuf 中的 `repeated V` 与 `map<K,V>` 。不支持 protobuf 中的特殊类型，如 `Enum`，`oneof`。
+
+##### 示例 IDL
+
+```proto
+syntax = "proto3";
+package api;
+// The greeting service definition.
+option go_package = "api";
+
+message Request {
+  string message = 1;
+}
+
+message Response {
+  string message = 1;
+}
+
+service Echo {
+  rpc EchoPB (Request) returns (Response) {}
+}
+```
+
+##### 客户端
+
+```go
+package main
+
+import (
+	"context"
+	dproto "github.com/cloudwego/dynamicgo/proto"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/client/genericclient"
+	"github.com/cloudwego/kitex/pkg/generic"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/transport"
+)
+
+const serverHostPort = "127.0.0.1:9999"
+
+func main() {
+	var err error
+
+	path := "./YOUR_IDL_PATH"
+
+	// 创建 Pb IDL Provider
+	dOpts := dproto.Options{}
+	p, err := generic.NewPbFileProviderWithDynamicGo(path, context.Background(), dOpts)
+	if err != nil {
+		panic(err)
+	}
+
+	// 创建 Generic 客户端
+	g, err := generic.JSONPbGeneric(p)
+	if err != nil {
+		panic(err)
+	}
+
+	var opts []client.Option
+	opts = append(opts, client.WithHostPorts(serverHostPort))
+	opts = append(opts, client.WithTransportProtocol(transport.TTHeader))
+
+	cli, err := genericclient.NewClient("server_name_for_discovery", g, opts...)
+	if err != nil {
+		panic(err)
+	}
+
+	jReq := `{"message": "hello"}`
+
+	ctx := context.Background()
+
+  // JRsp 类型为 JSON string
+	jRsp, err := cli.GenericCall(ctx, "EchoPB", jReq)
+	klog.CtxInfof(ctx, "genericJsonCall: jRsp(%T) = %s, err = %v", jRsp, jRsp, err)
+}
+```
+
+##### 服务端
+
+```go
+package main
+
+import (
+	"context"
+	dproto "github.com/cloudwego/dynamicgo/proto"
+	"github.com/cloudwego/kitex/pkg/generic"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/server"
+	"github.com/cloudwego/kitex/server/genericserver"
+	"net"
+)
+
+const serverHostPort = "127.0.0.1:9999"
+
+func WithServiceAddr(hostPort string) server.Option {
+	addr, _ := net.ResolveTCPAddr("tcp", hostPort)
+	return server.WithServiceAddr(addr)
+}
+
+type GenericEchoImpl struct{}
+
+func (g *GenericEchoImpl) GenericCall(ctx context.Context, method string, request interface{}) (response interface{}, err error) {
+	buf := request.(string)
+	return buf, nil
+}
+
+func main() {
+	var opts []server.Option
+	opts = append(opts, WithServiceAddr(serverHostPort))
+
+	path := "./YOUR_IDL_PATH"
+
+	dOpts := dproto.Options{}
+	p, err := generic.NewPbFileProviderWithDynamicGo(path, context.Background(), dOpts)
+
+	if err != nil {
+		panic(err)
+	}
+	g, err := generic.JSONPbGeneric(p)
+
+	opts = append(opts, WithServiceAddr(serverHostPort))
+
+	svr := genericserver.NewServer(new(GenericEchoImpl), g, opts...)
+
+	if err := svr.Run(); err != nil {
+		klog.Infof(err.Error())
+	}
 }
 ```

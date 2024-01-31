@@ -126,29 +126,27 @@ if err != nil {
 
 The `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
-## Basic Usage
-
 In Kitex, the `generic.Generic` interface represents a generic call, with different implementations for different types of generic calls. A `Generic` instance is required when creating both clients and servers.
 
-### Client-Side Generic Call
+## Client-Side Generic Call
 
-#### Create Client
+### Create Client
 
-##### NewClient
+#### NewClient
 
 Function signature: `func NewClient(destService string, g generic.Generic, opts ...client.Option) (Client, error)`
 
 Description: This function takes the target service name, a Generic object, and optional Option parameters, returning a generic call client. For details on Option parameters, see [Client Option](https://www.cloudwego.io/docs/kitex/tutorials/options/client_options/)
 
-##### NewClientWithServiceInfo
+#### NewClientWithServiceInfo
 
 Function signature: `func NewClientWithServiceInfo(destService string, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...client.Option) (Client, error)`
 
 Description: This function requires the target service name, a Generic object, custom service information, and optional Option parameters to return a generic call client. For details on Option parameters, see [Client Option](https://www.cloudwego.io/docs/kitex/tutorials/options/client_options/)
 
-### Server-Side Generic Call
+## Server-Side Generic Call
 
-#### Generic Call Service Object
+### Generic Call Service Object
 
 In Kitex, the `generic.Service` interface represents a generic call service.
 
@@ -162,23 +160,23 @@ type Service interface {
 
 As long as the `GenericCall` method is implemented, it can be used as a generic call service instance for creating a generic call server.
 
-#### Create Server
+### Create Server
 
-##### NewServer
+#### NewServer
 
 Function signature: `func NewServer(handler generic.Service, g generic.Generic, opts ...server.Option) server.Server`
 
 Description: This function requires a generic call service instance, a Generic object, and optional Option parameters to return a Kitex server. For details on Option parameters, see [Server Option](https://www.cloudwego.io/docs/kitex/tutorials/options/server_options/)
 
-##### NewServerWithServiceInfo
+#### NewServerWithServiceInfo
 
 Function signature: `func NewServerWithServiceInfo(handler generic.Service, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...server.Option) server.Server`
 
 Description: This function takes a generic call service instance, a Generic object, custom service information, and optional Option parameters to return a Kitex server. For details on Option parameters, see [Server Option](https://www.cloudwego.io/docs/kitex/tutorials/options/server_options/)
 
-### Generic Call Data Types
+## Generic Call Data Types
 
-#### Generic
+### Generic
 
 ```go
 type Generic interface {
@@ -196,81 +194,87 @@ type Generic interface {
 
 The core method of `Generic` is the codec implementation. Different `Generic` implementations distinguish themselves through various codec implementations. Different codecs are expanded based on the implementation of `thriftCodec`.
 
-#### Binary Generic
+### Binary Generic
 
 Use case: For scenarios like middle-end services, where it is possible to forward the received original Thrift protocol packets as binary streams to the target service.
 
 The following method is provided to create a binary generic call `Generic` instance.
 
-##### BinaryThriftGeneric
+#### BinaryThriftGeneric
 
 Function signature: `func BinaryThriftGeneric() Generic`
 
 Description: Returns a binary generic call object.
 
-#### HTTP Generic Call
+### HTTP Generic Call
 
 Use case: For scenarios like API gateways, where HTTP requests can be parsed and then forwarded as RPC requests to backend services.
 
 The following method is provided to create an HTTP generic call `Generic` instance.
 
-##### HTTPThriftGeneric
+#### HTTPThriftGeneric
 
 Function signature: `func HTTPThriftGeneric(p DescriptorProvider, opts ...Option) (Generic, error)`
 
 Description: Takes an IDL Provider and optional Option parameters to return an HTTP generic call object. Details of Option parameters are provided later in the text.
 
-#### JSON Generic Call
+### JSON Generic Call
 
 Use case: For scenarios like interface testing platforms, where users' constructed JSON data is parsed and sent as requests to RPC services to obtain response results.
 
 The following method is provided to create a JSON generic call `Generic` instance.
 
-##### JSONThriftGeneric
+#### JSONThriftGeneric
 
 Function signature: `func JSONThriftGeneric(p DescriptorProvider, opts ...Option) (Generic, error)`
 
-Description: Takes an IDL Provider and optional Option parameters to return an JSON generic call object. Details of Option parameters are provided later in the text.
+Description: Takes an IDL Provider and optional Option parameters to return an Thrift JSON generic call object. Details of Option parameters are provided later in the text.
 
-##### MapThriftGenericForJSON
+#### MapThriftGenericForJSON
 
 Function signature: `func MapThriftGenericForJSON(p DescriptorProvider) (Generic, error)`
 
-Description: Takes an IDL Provider to return a JSON generic call object, which internally uses Map generic calls for implementation.
+Description: Takes an IDL Provider to return a Thrift JSON generic call object, which internally uses Map generic calls for implementation.
 
-#### Map Generic Call
+#### JSONPbGeneric
+
+Function signature: `func JSONPbGeneric(p PbDescriptorProviderDynamicGo, opts ...Option) (Generic, error)`
+
+Description: Takes an IDL Provider and optional Option parametersand optional Option parameters to return a Pb JSON generic call object. Details of Option parameters are provided later in the text.
+
+### Map Generic Call
 
 Use case: Scenarios involving dynamic parameter adjustment and verifying certain functionalities during rapid prototyping stages.
 
 The following method is provided to create a Map generic call `Generic` instance.
 
-##### MapThriftGeneric
+#### MapThriftGeneric
 
 Function signature: `func MapThriftGeneric(p DescriptorProvider) (Generic, error)`
 
 Description: Takes an IDL Provider to return a Map generic call object.
 
-#### Option
+### Option
 
 Kitex offers Option parameters for customizing configurations when creating a Generic, including the following:
 
-##### WithCustomDynamicGoConvOpts
+#### WithCustomDynamicGoConvOpts
 
 Function signature:`func WithCustomDynamicGoConvOpts(opts *conv.Options) Option`
 
 Description: Customizes `conv.Option` configurations when using `dynamicgo`. Configuration details can be found at [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv). For details on integrating dynamicgo, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
-##### UseRawBodyForHTTPResp
+#### UseRawBodyForHTTPResp
 
 Function signature: `func UseRawBodyForHTTPResp(enable bool) Option`
 
 Description: In HTTP mapping generic calls, this sets whether to use `HTTPResponse.RawBody` as the response result. If this feature is disabled, the response result will only be stored in `HTTPResponse.Body`
 
-### Usage Example
+## Usage Example
 
-#### Binary Generic Call
+### Binary Generic Call
 
-##### Client
+#### Client
 
 For client-side binary generic calls, request parameters need to be encoded using the [Thrift encoding format](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message).
 
@@ -299,7 +303,7 @@ func main(){
 }
 ```
 
-##### Server
+#### Server
 
 The client and server for binary generic calls in Kitex **are not necessarily paired**. As long as the client provides parameters in the **correct Thrift binary encoding format**, it can request normal Thrift interface services.
 
@@ -338,11 +342,11 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-#### HTTP Generic Call
+### HTTP Generic Call
 
 HTTP generic calls involve constructing Thrift interface parameters based on an HTTP Request and initiating a generic call. Currently, this is only applicable to the client side. The Thrift IDL must follow the interface mapping specifications, detailed in [Thrift-HTTP Mapping's IDL Standards](https://www.cloudwego.cn/docs/kitex/tutorials/advanced-feature/generic-call/thrift_idl_annotation_standards/).
 
-##### IDL Example
+#### IDL Example
 
 ```thrift
 namespace go http
@@ -386,7 +390,7 @@ service BizService {
 }
 ```
 
-##### Generic Call Example
+#### Generic Call Example
 
 ```go
 package main
@@ -448,7 +452,7 @@ func main() {
 }
 ```
 
-##### Annotation Extension
+#### Annotation Extension
 
 For example, adding an annotation `xxx.source='not_body_struct'` indicates that a certain field itself does not map to any HTTP request field and requires iterating over its subfields to obtain corresponding values from the HTTP request.
 
@@ -502,7 +506,7 @@ func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descripto
 }
 ```
 
-#### Map Generic Call
+### Map Generic Call
 
 Map mapping generic calls refer to the ability of users to construct Map parameters according to specifications, and Kitex will handle the Thrift encoding/decoding accordingly.
 
@@ -510,7 +514,7 @@ Kitex strictly validates the field names and types constructed by the user based
 
 For Responses, the Field ID and type will be validated, and the corresponding Map Key will be generated based on the IDL's Field Name.
 
-##### Type Mapping
+#### Type Mapping
 
 Golang and Thrift IDL Type Mapping is as follows:
 
@@ -584,7 +588,7 @@ req := map[string]interface{}{
         }
 ```
 
-##### Example IDL
+#### Example IDL
 
 `base.thrift`:
 
@@ -635,7 +639,7 @@ service ExampleService {
 }
 ```
 
-##### Client
+#### Client
 
 ```go
 package main
@@ -670,7 +674,7 @@ func main() {
 }
 ```
 
-##### Server
+#### Server
 
 ```go
 package main
@@ -714,9 +718,11 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-#### JSON Generic Call
+### JSON Generic Call
 
-JSON mapping generic calls refer to the ability of users to construct JSON String request parameters or returns directly according to specifications, and Kitex will handle the Thrift encoding/decoding accordingly.
+JSON mapping generic calls refer to the ability of users to construct JSON String request parameters or returns directly according to specifications, and Kitex will handle encoding/decoding accordingly.
+
+#### Thrift
 
 Unlike the strict validation of field names and types in Map generic calls, JSON generic calls in Kitex transform user request parameters based on the given IDL, eliminating the need for users to specify explicit types, such as int32 or int64.
 
@@ -915,3 +921,159 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
         return  "{\"Msg\": \"world\"}", nil
 }
 ```
+
+#### Pb
+
+##### Type Mapping
+
+The Mapping between Golang and Protocol Buffers:
+
+| **Protocol Buffers Type** | **Golang Type** |
+| ------------------------- | --------------- |
+| float                     | float32         |
+| double                    | float64         |
+| int32                     | int32           |
+| int64                     | int64           |
+| uint32                    | uint32          |
+| uint64                    | uint64          |
+| sint32                    | int32           |
+| sint64                    | int64           |
+| fixed32                   | uint32          |
+| fixed64                   | uint64          |
+| sfixed32                  | int32           |
+| sfixed64                  | uint64          |
+| bool                      | bool            |
+| string                    | string          |
+| bytes                     | byte[]          |
+
+Also supports lists and dictionaries in json, mapping them to repeated V and map<K,V> in protobufs. Does not support Protobuf special fields, such as Enum, Oneof, etc.;
+
+##### Example IDl
+
+```proto
+syntax = "proto3";
+package api;
+// The greeting service definition.
+option go_package = "api";
+
+message Request {
+  string message = 1;
+}
+
+message Response {
+  string message = 1;
+}
+
+service Echo {
+  rpc EchoPB (Request) returns (Response) {}
+}
+```
+
+##### Client
+
+```go
+package main
+
+import (
+	"context"
+	dproto "github.com/cloudwego/dynamicgo/proto"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/client/genericclient"
+	"github.com/cloudwego/kitex/pkg/generic"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/transport"
+)
+
+const serverHostPort = "127.0.0.1:9999"
+
+func main() {
+	var err error
+
+	path := "./YOUR_IDL_PATH"
+
+	// initialise DynamicGo proto.ServiceDescriptor
+	dOpts := dproto.Options{}
+	p, err := generic.NewPbFileProviderWithDynamicGo(path, context.Background(), dOpts)
+	if err != nil {
+		panic(err)
+	}
+
+	// create generic client
+	g, err := generic.JSONPbGeneric(p)
+	if err != nil {
+		panic(err)
+	}
+
+	var opts []client.Option
+	opts = append(opts, client.WithHostPorts(serverHostPort))
+	opts = append(opts, client.WithTransportProtocol(transport.TTHeader))
+
+	cli, err := genericclient.NewClient("server_name_for_discovery", g, opts...)
+	if err != nil {
+		panic(err)
+	}
+
+	jReq := `{"message": "hello"}`
+
+	ctx := context.Background()
+
+  // jRsp's type is JSON string
+	jRsp, err := cli.GenericCall(ctx, "EchoPB", jReq)
+	klog.CtxInfof(ctx, "genericJsonCall: jRsp(%T) = %s, err = %v", jRsp, jRsp, err)
+}
+
+```
+
+##### Server
+
+```go
+package main
+
+import (
+	"context"
+	dproto "github.com/cloudwego/dynamicgo/proto"
+	"github.com/cloudwego/kitex/pkg/generic"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/server"
+	"github.com/cloudwego/kitex/server/genericserver"
+	"net"
+)
+
+const serverHostPort = "127.0.0.1:9999"
+
+func WithServiceAddr(hostPort string) server.Option {
+	addr, _ := net.ResolveTCPAddr("tcp", hostPort)
+	return server.WithServiceAddr(addr)
+}
+
+type GenericEchoImpl struct{}
+
+func (g *GenericEchoImpl) GenericCall(ctx context.Context, method string, request interface{}) (response interface{}, err error) {
+	buf := request.(string)
+	return buf, nil
+}
+
+func main() {
+	var opts []server.Option
+	opts = append(opts, WithServiceAddr(serverHostPort))
+
+	path := "./YOUR_IDL_PATH"
+
+	dOpts := dproto.Options{}
+	p, err := generic.NewPbFileProviderWithDynamicGo(path, context.Background(), dOpts)
+
+	if err != nil {
+		panic(err)
+	}
+	g, err := generic.JSONPbGeneric(p)
+
+	opts = append(opts, WithServiceAddr(serverHostPort))
+
+	svr := genericserver.NewServer(new(GenericEchoImpl), g, opts...)
+
+	if err := svr.Run(); err != nil {
+		klog.Infof(err.Error())
+	}
+}
+```
+
