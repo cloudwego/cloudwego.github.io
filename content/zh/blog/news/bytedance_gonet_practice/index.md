@@ -1,6 +1,7 @@
 ---
-date: 2021-10-09
+date: 2020-05-24
 title: "字节跳动在 Go 网络库上的实践"
+projects: ["Netpoll"]
 linkTitle: "字节跳动在 Go 网络库上的实践"
 keywords: ["Netpoll", "Go", "epoll", "网络库", "连接多路复用", "ZeroCopy"]
 description: "本文将简单介绍字节跳动自研网络库 Netpoll 的设计及实践；以及我们实际遇到的问题和解决思路，希望能为大家提供一些参考。"
@@ -12,13 +13,16 @@ author: <a href="https://github.com/Hchenn" target="_blank">Hchen</a>, <a href="
 > “字节跳动基础架构实践”系列文章是由字节跳动基础架构部门各技术团队及专家倾力打造的技术干货内容，和大家分享团队在基础架构发展和演进过程中的实践经验与教训，与各位技术同学一起交流成长。
 
 ## 前言
+
 RPC 框架作为研发体系中重要的一环，承载了几乎所有的服务流量。随着公司内 Go 语言使用越来越广，业务对框架的要求越来越高，而 Go 原生 net 网络库却无法提供足够的性能和控制力，如无法感知连接状态、连接数量多导致利用率低、无法控制协程数量等。
 为了能够获取对于网络层的完全控制权，同时先于业务做一些探索并最终赋能业务，框架组推出了全新的基于 epoll 的自研网络库 —— Netpoll，并基于其之上开发了字节内新一代 Golang 框架 Kitex。
 
 由于 epoll 原理已有较多文章描述，本文将仅简单介绍 Netpoll 的设计；随后，我们会尝试梳理一下我们基于 Netpoll 所做的一些实践；最后，我们将分享一个我们遇到的问题，以及我们解决的思路。同时，欢迎对于 Go 语言以及框架感兴趣的同学加入我们！
 
 ## 新型网络库设计
+
 ### Reactor - 事件监听和调度核心
+
 Netpoll 核心是 Reactor 事件监听调度器，主要功能为使用 epoll 监听连接的文件描述符（fd），通过回调机制触发连接上的 读、写、关闭 三种事件。
 
 ![image](/img/blog/bytedance_gonet_practice_img/reactor.png)
@@ -35,12 +39,15 @@ Netpoll 将 Reactor 以 1:N 的形式组合成主从模式。
 ![image](/img/blog/bytedance_gonet_practice_img/server_reactor.png)
 
 ### Client - 共享 Reactor 能力
+
 client 端和 server 端共享 SubReactor，Netpoll 同样实现了 dialer，提供创建连接的能力。client 端使用上和 net.Conn 相似，Netpoll 提供了 write -> wait read callback 的底层支持。
 
 ![image](/img/blog/bytedance_gonet_practice_img/client_reactor.png)
 
 ## Nocopy Buffer
+
 ### 为什么需要 Nocopy Buffer ?
+
 在上述提及的 Reactor 和 I/O Task 设计中，epoll 的触发方式会影响 I/O 和 buffer 的设计，大体来说分为两种方式：
 
 - **采用水平触发(LT)**，则需要同步的在事件触发后主动完成 I/O，并向上层代码直接提供 buffer。
@@ -54,6 +61,7 @@ client 端和 server 端共享 SubReactor，Netpoll 同样实现了 dialer，提
 另一方面，常见的 bytes、bufio、ringbuffer 等 buffer 库，均存在 growth 需要 copy 原数组数据，以及只能扩容无法缩容，占用大量内存等问题。因此我们希望引入一种新的 Buffer 形式，一举解决上述两方面的问题。
 
 ### Nocopy Buffer 设计和优势
+
 Nocopy Buffer 基于链表数组实现，如下图所示，我们将 []byte 数组抽象为 block，并以链表拼接的形式将 block 组合为 Nocopy Buffer，同时引入了引用计数、nocopy API 和对象池。
 
 ![image](/img/blog/bytedance_gonet_practice_img/buffer.png)
@@ -61,17 +69,18 @@ Nocopy Buffer 基于链表数组实现，如下图所示，我们将 []byte 数�
 Nocopy Buffer 相比常见的 bytes、bufio、ringbuffer 等有以下优势：
 
 1. 读写并行无锁，支持 nocopy 地流式读写
-    * 读写分别操作头尾指针，相互不干扰。
+   - 读写分别操作头尾指针，相互不干扰。
 2. 高效扩缩容
-    * 扩容阶段，直接在尾指针后添加新的 block 即可，无需 copy 原数组。
-    * 缩容阶段，头指针会直接释放使用完毕的 block 节点，完成缩容。每个 block 都有独立的引用计数，当释放的 block 不再有引用时，主动回收 block 节点。
+   - 扩容阶段，直接在尾指针后添加新的 block 即可，无需 copy 原数组。
+   - 缩容阶段，头指针会直接释放使用完毕的 block 节点，完成缩容。每个 block 都有独立的引用计数，当释放的 block 不再有引用时，主动回收 block 节点。
 3. 灵活切片和拼接 buffer (链表特性)
-    * 支持任意读取分段(nocopy)，上层代码可以 nocopy 地并行处理数据流分段，无需关心生命周期，通过引用计数 GC。
-    * 支持任意拼接(nocopy)，写 buffer 支持通过 block 拼接到尾指针后的形式，无需 copy，保证数据只写一次。
+   - 支持任意读取分段(nocopy)，上层代码可以 nocopy 地并行处理数据流分段，无需关心生命周期，通过引用计数 GC。
+   - 支持任意拼接(nocopy)，写 buffer 支持通过 block 拼接到尾指针后的形式，无需 copy，保证数据只写一次。
 4. Nocopy Buffer 池化，减少 GC
-    * 将每个 []byte 数组视为 block 节点，构建对象池维护空闲 block，由此复用 block，减少内存占用和 GC。基于该 Nocopy Buffer，我们实现了 Nocopy Thrift，使得编解码过程内存零分配零拷贝。
+   - 将每个 []byte 数组视为 block 节点，构建对象池维护空闲 block，由此复用 block，减少内存占用和 GC。基于该 Nocopy Buffer，我们实现了 Nocopy Thrift，使得编解码过程内存零分配零拷贝。
 
 ## 连接多路复用
+
 RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定一个连接，那么当上下游规模很大的情况下，网络中存在的连接数以 MxN 的速度扩张，带来巨大的调度压力和计算开销，给服务治理造成困难。
 因此，我们希望引入一种 "在单一长连接上并行处理调用" 的形式，来减少网络中的连接数，这种方案即称为 "连接多路复用"。
 
@@ -86,19 +95,22 @@ RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定�
 连接多路复用方案包含以下核心要素：
 
 1. 虚拟连接
-    * 实质上是 Nocopy Buffer，目的是替换真正的连接，规避内存 copy。
-    * 上层的业务逻辑/编解码 均在虚拟连接上完成，上层逻辑可以异步独立并行执行。
+
+   - 实质上是 Nocopy Buffer，目的是替换真正的连接，规避内存 copy。
+   - 上层的业务逻辑/编解码 均在虚拟连接上完成，上层逻辑可以异步独立并行执行。
 
 2. Shared map
-    * 引入分片锁来减少锁力度。
-    * 在调用端使用 sequence id 来标记请求，并使用分片锁存储 id 对应的回调。
-    * 在接收响应数据后，根据 sequence id 来找到对应回调并执行。
+
+   - 引入分片锁来减少锁力度。
+   - 在调用端使用 sequence id 来标记请求，并使用分片锁存储 id 对应的回调。
+   - 在接收响应数据后，根据 sequence id 来找到对应回调并执行。
 
 3. 协议分包和编码
-    * 如何识别完整的请求响应数据包是连接多路复用方案可行的关键，因此需要引入协议。
-    * 这里采用 thrift header protocol 协议，通过消息头判断数据包完整性，通过 sequence id 标记请求和响应的对应关系。
+   - 如何识别完整的请求响应数据包是连接多路复用方案可行的关键，因此需要引入协议。
+   - 这里采用 thrift header protocol 协议，通过消息头判断数据包完整性，通过 sequence id 标记请求和响应的对应关系。
 
 ## ZeroCopy
+
 这里所说的 ZeroCopy，指的是 Linux 所提供的 ZeroCopy 的能力。上一章中我们说了业务层的零拷贝，而众所周知，当我们调用 sendmsg 系统调用发包的时候，
 实际上仍然是会产生一次数据的拷贝的，并且在大包场景下这个拷贝的消耗非常明显。以 100M 为例，perf 可以看到如下结果：
 
@@ -123,12 +135,16 @@ RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定�
 从 cpu 占用数值上看，大包场景下 ZeroCopy 能够比非 ZeroCopy 节省一半的 cpu。
 
 ## Go 调度导致的延迟问题分享
+
+> PS: 该问题在新版本的 Netpoll 中已经修复，修复方法是通过 EpollWait Timeout 为 0 并且通过主动让出执行权，在 Goroutine 调度上做优化从而改善延迟。
+
 在我们实践过程中，发现我们新写的 Netpoll 虽然在 avg 延迟上表现胜于 Go 原生的 net 库，但是在 p99 和 max 延迟上要普遍略高于 Go 原生的 net 库，
 并且尖刺也会更加明显，如下图（Go 1.13，蓝色为 Netpoll + 多路复用，绿色为 Netpoll + 长连接，黄色为 net 库 + 长连接）：
 
 ![image](/img/blog/bytedance_gonet_practice_img/delay.png)
 
 我们尝试了很多种办法去优化，但是收效甚微。最终，我们定位出这个延迟并非是由于 Netpoll 本身的开销导致的，而是由于 go 的调度导致的，比如说：
+
 1. 由于在 Netpoll 中，SubReactor 本身也是一个 goroutine，受调度影响，不能保证 EpollWait 回调之后马上执行，所以这一块会有延迟；
 2. 同时，由于用来处理 I/O 事件的 SubReactor 和用来处理连接监听的 MainReactor 本身也是 goroutine，所以实际上很难保证在多核情况之下，这些 Reactor 能并行执行；
    甚至在最极端情况之下，可能这些 Reactor 会挂在同一个 P 下，最终变成了串行执行，无法充分利用多核优势；
@@ -143,10 +159,12 @@ RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定�
 2. 与字节跳动内核组合作，支持同时批量读/写多个连接，解决串行问题。另外，经过我们的测试，Go 1.14 能够使得延迟略有降低同时更加平稳，但是所能达到的极限 QPS 更低。希望我们的思路能够给业界同样遇到此问题的同学提供一些参考。
 
 ## 后记
+
 希望以上的分享能够对社区有所帮助。同时，我们也在加速建设 Netpoll 以及基于 Netpoll 的新框架 Kitex。欢迎各位感兴趣的同学加入我们，共同建设 Go 语言生态！
 
 ## 参考资料
-* http://man7.org/linux/man-pages/man7/epoll.7.html
-* https://golang.org/src/runtime/proc.go
-* https://github.com/panjf2000/gnet
-* https://github.com/tidwall/evio
+
+- http://man7.org/linux/man-pages/man7/epoll.7.html
+- https://go.dev/src/runtime/proc.go
+- https://github.com/panjf2000/gnet
+- https://github.com/tidwall/evio

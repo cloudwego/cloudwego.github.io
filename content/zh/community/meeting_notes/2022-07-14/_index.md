@@ -11,7 +11,7 @@ description: >
 **参会人** ：GuangmingLuo, Cheng Guozhu, simon0-o, welkeyever, YangruiEmma, liu-song, Ivnszn, CoderPoet, li-jin-gou, joway, bodhisatan,
 Fan Guangyu, Jacob953, Wang Yafeng, gova, Huang Xiaolong, Zhang Guiyuan, chenzBin, yccpt, jayantxie, baiyutang, skyenought, yiyun, rogerogers, Zhou Xinyi, baize, LhdDream, Li Congyan, Liu Jia
 
-**会前必读** ：http://www.cloudwego.io/；https://github.com/cloudwego
+**会前必读** ：[官网](/)；https://github.com/cloudwego
 
 ### 议程 1 ：新人自我介绍
 

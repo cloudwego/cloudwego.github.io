@@ -10,7 +10,7 @@ description: >
 
 **参会人** ：cloudwegoIce, ag9920, YangruiEmma, CoderPoet, li-jin-gou, Ivnszn, liuq19, FGYFFFF, ppzqh, I2ncE, Code:Z, HeyJavaBean, jayantxie, Yang Hong, baiyutang, skyenought, rogerogers, cyyolo, Bai Yang, chens, Millione
 
-**会前必读** ：http://www.cloudwego.io/ ; https://github.com/cloudwego
+**会前必读** ：[官网](/) ; https://github.com/cloudwego
 
 ### 议程 1：CloudWeGo-Volo  0.2.0  新发版介绍 @Millione
 

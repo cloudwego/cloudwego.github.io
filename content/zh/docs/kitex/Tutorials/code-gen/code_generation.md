@@ -13,7 +13,7 @@ description: >
 
 ## 安装
 
-> 目前 Kitex 命令行工具暂不支持 Windows 环境，预计在 v0.5.1 支持
+> Windows 环境，需要 Kitex 命令行工具版本 >= v0.5.2
 
 Kitex 代码生成依赖于 thriftgo 和 protoc，需要先安装相应的编译器：[thriftgo](https://github.com/cloudwego/thriftgo) 或 [protoc](https://github.com/protocolbuffers/protobuf/releases)。
 
@@ -97,7 +97,7 @@ kitex -service mydemoservice demo.thrift
 生成结果如下：
 
 ```
-├── build.sh			// 快速构建服务的脚步
+├── build.sh			// 快速构建服务的脚本
 ├── handler.go		    // 为 server 生成 handler 脚手架
 ├── kitex_info.yaml  	// 记录元信息，用于与 cwgo 工具的集成
 ├── main.go		 	 // 快速启动 server 的主函数
@@ -208,7 +208,7 @@ kitex -module xx -I xxx.git@branch abc/xxx.thrift
 
 #### `-combine-service`
 
-对于 thrift IDL，kitex 在生成服务端代码脚手架时，只会针对最后一个 service 生成相关的定义。如果你的 IDL 里定义了多个 service 定义并且希望在一个服务里同时提供这些 service 定义的能力时，可以使用 `-combine-service` 选项，详见 [Combine Service](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/combine_service/).
+对于 thrift IDL，kitex 在生成服务端代码脚手架时，只会针对最后一个 service 生成相关的定义。如果你的 IDL 里定义了多个 service 定义并且希望在一个服务里同时提供这些 service 定义的能力时，可以使用 `-combine-service` 选项，详见 [Combine Service](/zh/docs/kitex/tutorials/code-gen/combine_service/).
 
 该选项会生成一个合并了目标 IDL 文件中所有 service 方法的 `CombineService`，并将其用作 main 包里使用的 service 定义。注意这个模式下，被合并的 service 之间不能有冲突的方法名。
 

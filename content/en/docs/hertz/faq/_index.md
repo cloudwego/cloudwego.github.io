@@ -2,7 +2,8 @@
 title: "FAQ"
 linkTitle: "FAQ"
 weight: 4
-description: >
+keywords: ["Memory Usage", "Common Error Code", "Context Guide", "Numeric Precision Problem"]
+description: "Hertz FAQ."
 ---
 
 ## High Memory Usage

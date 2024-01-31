@@ -45,11 +45,9 @@ pub trait Discover: Send + Sync + 'static {
     type Key: Hash + PartialEq + Eq + Send + Sync + Clone + 'static;
     /// `Error` is the discovery error.
     type Error: std::error::Error + Send + Sync;
-    /// `DiscFut` is a Future object which returns a discovery result.
-    type DiscFut<'future>: Future<Output = Result<Vec<Arc<Instance>>, Self::Error>> + Send + 'future;
 
     /// `discover` allows to request an endpoint and return a discover future.
-    fn discover(&self, endpoint: &Endpoint) -> Self::DiscFut<'_>;
+    async fn discover(&self, endpoint: &Endpoint) -> Result<Vec<Arc<Instance>>, Self::Error>;
     /// `key` should return a key suitable for cache.
     fn key(&self, endpoint: &Endpoint) -> Self::Key;
     /// `watch` should return a [`async_broadcast::Receiver`] which can be used to subscribe
@@ -68,10 +66,9 @@ pub struct StaticDiscover {
 impl Discover for StaticDiscover {
     type Key = ();
     type Error = Infallible;
-    type DiscFut<'a> = impl Future<Output = Result<Vec<Arc<Instance>>, Self::Error>> + 'a;
 
-    fn discover(&self, _: &Endpoint) -> Self::DiscFut<'_> {
-        async { Ok(self.instances.clone()) }
+    async fn discover(&self, _: &Endpoint) -> Result<Vec<Arc<Instance>>, Self::Error> {
+        async { Ok(self.instances.clone()) }.await
     }
 
     fn key(&self, _: &Endpoint) -> Self::Key {}
@@ -94,22 +91,14 @@ where
 {
     /// `InstanceIter` is an iterator of [`crate::discovery::Instance`].
     type InstanceIter: Iterator<Item = Address> + Send;
-    /// `GetFut` is the return type of `get_picker`.
-    type GetFut<'future>: Future<Output = Result<Self::InstanceIter, LoadBalanceError>>
-        + Send
-        + 'future
-    where
-        Self: 'future;
 
     /// `get_picker` allows to get an instance iterator of a specified endpoint from self or
     /// service discovery.
-    fn get_picker<'future>(
-        &'future self,
-        endpoint: &'future Endpoint,
-        discover: &'future D,
-    ) -> Self::GetFut<'future>
-    where
-        Self: 'future;
+    async fn get_picker(
+        &self,
+        endpoint: &Endpoint,
+        discover: &D,
+    ) -> Result<Self::InstanceIter, LoadBalanceError>;
     /// `rebalance` is the callback method be used in service discovering subscription.
     fn rebalance(&self, changes: Change<D::Key>);
 }
@@ -146,34 +135,25 @@ where
     D: Discover,
 {
     type InstanceIter = InstancePicker;
-    type GetFut<'future> =
-        impl Future<Output = Result<Self::InstanceIter, LoadBalanceError>> + Send + 'future
-        where
-            Self: 'future;
 
-    fn get_picker<'future>(
-        &'future self,
-        endpoint: &'future Endpoint,
-        discover: &'future D,
-    ) -> Self::GetFut<'future>
-    where
-        Self: 'future, 
-    {
-        async {
-            let key = discover.key(endpoint);
-            let list = match self.router.entry(key) {
-                Entry::Occupied(e) => e.get().clone(),
-                Entry::Vacant(e) => {
-                    let instances =
-                        Arc::new(discover.discover(endpoint).await?);
-                    e.insert(instances).value().clone()
-                }
-            };
-            Ok(InstancePicker {
-                instances: list.to_vec(),
-                index: 0
-            })
-        }
+    async fn get_picker(
+        &self,
+        endpoint: &Endpoint,
+        discover: &D,
+    ) -> Result<Self::InstanceIter, LoadBalanceError> {
+        let key = discover.key(endpoint);
+        let list = match self.router.entry(key) {
+            Entry::Occupied(e) => e.get().clone(),
+            Entry::Vacant(e) => {
+                let instances =
+                    Arc::new(discover.discover(endpoint).await?);
+                e.insert(instances).value().clone()
+            }
+        };
+        Ok(InstancePicker {
+            instances: list.to_vec(),
+            index: 0
+        })
     }
 
     fn rebalance(&self, changes: Change<D::Key>) {

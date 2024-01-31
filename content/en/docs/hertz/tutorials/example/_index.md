@@ -2,7 +2,8 @@
 title: "Example code"
 linkTitle: "Example code"
 weight: 1
-description: >
+keywords: ["Hertz", "hertz-examples", "Bizdemo", "Server", "Client", "Hz"]
+description: "Hertz provides a series of code examples designed to help users get start with Hertz and be familiar with its features."
 
 ---
 
@@ -22,6 +23,13 @@ Hertz provides a series of code examples designed to help users get start with H
 ### hertz_session
 - [hertz_session](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_session) ：Example of using distributed session and csrf in hertz server
 
+### tiktok_demo
+
+- [tiktok_demo](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/tiktok_demo) ：A simple hertz server that provides user, video, interactive, and social backend services for tiktok app
+
+### hz_kitex_demo
+
+- [hz_kitex_demo](https://github.com/cloudwego/hertz-examples/tree/main/hz_kitex_demo) ：Example of using hertz and kitex together
 
 ## Server
 
@@ -29,10 +37,15 @@ Hertz provides a series of code examples designed to help users get start with H
 - [hello](https://github.com/cloudwego/hertz-examples/tree/main/hello) ：Example of launching a hertz "hello world" application
 
 ### Config
-- [config](https://github.com/cloudwego/hertz-examples/tree/main/config) ：Example of configuring hertz  server
+- [config](https://github.com/cloudwego/hertz-examples/tree/main/config) ：Example of configuring hertz server
 
 ### Protocol
-- [Protocol](https://github.com/cloudwego/hertz-examples/tree/main/protocol) ：Example of hertz using protocols such as HTTP1, TLS, etc
+- [HTTP1](https://github.com/cloudwego/hertz-examples/tree/main/protocol/http1) : Example of hertz using HTTP1 protocol
+- [TLS](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) : Example of hertz using TLS protocol
+- [HTTP2](https://github.com/hertz-contrib/http2/tree/main/examples) : Example of hertz using HTTP2 protocol
+- [HTTP3](https://github.com/hertz-contrib/http3/tree/main/examples/quic-go) : Example of hertz using HTTP3 protocol
+- [Websocket](https://github.com/hertz-contrib/websocket/tree/main/examples) : Example of hertz using Websocket protocol
+- [SSE](https://github.com/hertz-contrib/sse/tree/main/examples) : Example of hertz using SSE protocol
 
 ### Route
 - [Route](https://github.com/cloudwego/hertz-examples/tree/main/route) ：Examples of registering routes, using route groups, and parameter routes
@@ -44,6 +57,21 @@ Hertz provides a series of code examples designed to help users get start with H
 - [pprof](https://github.com/cloudwego/hertz-examples/tree/main/middleware/pprof) ：Example of using pprof middleware
 - [requestid](https://github.com/cloudwego/hertz-examples/tree/main/middleware/requestid) ：Example of using RequestID middleware
 - [gzip](https://github.com/cloudwego/hertz-examples/tree/main/middleware/gzip) ：Example of using gzip middleware in hertz server
+- [csrf](https://github.com/cloudwego/hertz-examples/tree/main/middleware/csrf) ：Example of using csrf middleware in hertz server
+- [loadbalance](https://github.com/cloudwego/hertz-examples/tree/main/middleware/loadbalance/round_robin) ：Example of using loadbalance middleware in hertz server
+- [Recovery](/zh/docs/hertz/tutorials/basic-feature/middleware/recovery/) ：Example of using Recovery middleware
+- [jwt](https://github.com/hertz-contrib/jwt/tree/main/example/basic) ：Example of using jwt middleware
+- [i18n](https://github.com/hertz-contrib/i18n/tree/main/example) ：Example of using i18n middleware
+- [session](https://github.com/hertz-contrib/sessions/tree/main/_example) ：Example of using session middleware
+- [KeyAuth](https://github.com/hertz-contrib/keyauth/tree/main/example) ：Example of using KeyAuth middleware
+- [Swagger](https://github.com/swaggo/gin-swagger/tree/master/example) ：Example of using Swagger middleware
+- [access log](https://github.com/hertz-contrib/logger/tree/main/accesslog/example) ：Example of using access log middleware
+- [Secure](https://github.com/hertz-contrib/secure/tree/main/example/custom) ：Example of using Secure middleware
+- [Sentry](https://github.com/hertz-contrib/hertzsentry) ：Example of using Sentry middleware
+- [Casbin](https://github.com/hertz-contrib/casbin/tree/main/example) ：Example of using Casbin middleware
+- [ETag](https://github.com/hertz-contrib/etag/tree/main/example) ：Example of using ETag middleware
+- [Cache](https://github.com/hertz-contrib/cache/tree/main/example) ：Example of using Cache middleware
+- [Paseto](https://github.com/hertz-contrib/paseto/tree/main/example) ：Example of using Paseto middleware
 
 ### Parameter binding and validation
 - [binding](https://github.com/cloudwego/hertz-examples/tree/main/binding) ：Example of parameter binding and validation
@@ -83,14 +111,24 @@ Hertz provides a series of code examples designed to help users get start with H
   as template engine.
 
 ### Sentinel
-- [sentinel:](https://github.com/cloudwego/hertz-examples/tree/main/sentinel) ：Example of using sentinel-golang in hertz
+- [sentinel](https://github.com/cloudwego/hertz-examples/tree/main/sentinel) ：Example of using sentinel-golang in hertz
 
 ### Reverse proxy
 - [reverseproxy](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy) ：Example of using reverse proxy in hertz server
 
 ### Hlog
-- [hlog:](https://github.com/cloudwego/hertz-examples/tree/main/hlog) ：Example of using hlog and its log extension
+- [standard](https://github.com/cloudwego/hertz-examples/tree/main/hlog/standard) ：Example of using Hertz's default implementation for logging
+- [custom](https://github.com/cloudwego/hertz-examples/tree/main/hlog/custom) ：Example of log extension
+- [zap](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zap) ：Example of docking with zap and lumberjack in hertz server
+- [logrus](https://github.com/cloudwego/hertz-examples/tree/main/hlog/logrus) ：Example of docking with logrus and lumberjack in hertz server
+- [zerolog](https://github.com/cloudwego/hertz-examples/tree/main/hlog/zerolog) ：Example of docking with zerolog and lumberjack in hertz server
+- [slog](https://github.com/cloudwego/hertz-examples/tree/main/hlog/slog) ：Example of docking with slog and lumberjack in hertz server
 
+### Opentelemetry
+- [opentelemetry](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry) ：Example of using obs opentelemetry for docking with opentelemetry
+
+### HTTP Trailer
+- [trailer](https://github.com/cloudwego/hertz-examples/tree/main/trailer) ：Example of using HTTP Trailer 
 
 ## Client
 
@@ -118,6 +156,8 @@ Hertz provides a series of code examples designed to help users get start with H
 ### Forward proxy
 - [forward_proxy](https://github.com/cloudwego/hertz-examples/tree/main/client/forward_proxy) ：Example of configuring a forward proxy using the hertz client
 
+### HTTP Trailer
+- [trailer](https://github.com/cloudwego/hertz-examples/tree/main/trailer) ：Example of using HTTP Trailer
 
 ## Hz
 

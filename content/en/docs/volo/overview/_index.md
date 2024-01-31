@@ -2,7 +2,8 @@
 title: "Overview"
 linkTitle: "Overview"
 weight: 1
-description: >
+keywords: ["RPC", "Rust", "Volo", "AFIT", "RPITIT"]
+description: "The architecture design, framework features, and related ecology of Volo."
 
 ---
 
@@ -10,7 +11,7 @@ description: >
 
 Volo is a **high-performance** and **strong-extensibility** Rust RPC framework that helps developers build microservices.
 
-Volo uses [Motore](https://github.com/cloudwego/motore) as its middleware abstraction, which is powered by GAT.
+Volo uses [Motore](https://github.com/cloudwego/motore) as its middleware abstraction, which is powered by AFIT and RPITIT.
 
 ## Architecture
 
@@ -18,11 +19,11 @@ Volo uses [Motore](https://github.com/cloudwego/motore) as its middleware abstra
 
 ## Features
 
-### Powered by GAT
+### Powered by AFIT and RPITIT
 
-Volo uses Motore as its middleware abstraction, which is powered by GAT.
+Volo uses Motore as its middleware abstraction, which is powered by AFIT and RPITIT.
 
-Through GAT, we can avoid many unnecessary Box memory allocations, improve ease of use,
+Through AFIT and RPITIT, we can avoid many unnecessary Box memory allocations, improve ease of use,
 and provide users with a more friendly programming interface and a more ergonomic programming paradigm.
 
 ### High Performance
@@ -39,7 +40,7 @@ From the flame graph of our online business, thanks to Rust's static distributio
 
 Rust is known for ~~being hard to learn and hard to use~~, and we want to make it as easy as possible for users to use the Volo framework and write microservices in the Rust language, providing the most ergonomic and intuitive coding experience possible. Therefore, we make ease of use one of our most important goals.
 
-For example, we provide the volo command line tool for bootstraping projects and managing idl files; at the same time, we split thrift and gRPC into two independent(but share some components) frameworks to provide programming paradigms that best conform to different protocol semantics and interface.
+For example, we provide the volo command line tool for bootstrapping projects and managing idl files; at the same time, we split thrift and gRPC into two independent(but share some components) frameworks to provide programming paradigms that best conform to different protocol semantics and interface.
 
 We also provide the `#[service]` macro (which can be understood as the async_trait that does not require `Box`) to enable users to write `service` middleware using async rust without psychological burden.
 
@@ -55,5 +56,5 @@ We have also created an organization [Volo-rs](http://github.com/volo-rs), any c
 
 1. [Volo-rs](http://github.com/volo-rs)：The volo ecosystem which contains a lot of useful components.
 2. [Pilota](https://github.com/cloudwego/pilota)：A thrift and protobuf implementation in pure rust with high performance and extensibility.
-3. [Motore](https://github.com/cloudwego/motore)：Middleware abstraction layer powered by GAT.
+3. [Motore](https://github.com/cloudwego/motore)：Middleware abstraction layer powered by AFIT and RPITIT.
 4. [Metainfo](https://github.com/cloudwego/metainfo)：Transmissing metainfo across components.

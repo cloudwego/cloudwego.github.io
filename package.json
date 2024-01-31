@@ -4,7 +4,12 @@
   "description": "Hugo theme for technical documentation.",
   "main": "none.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "hugo server -D",
+    "postinstall": "simple-git-hooks",
+    "format": "node scripts/format/index.mjs"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npm run format"
   },
   "repository": {
     "type": "git",
@@ -18,7 +23,12 @@
   "homepage": "https://github.com/cloudwego/cloudwego.github.io#readme",
   "devDependencies": {
     "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.14",
-    "postcss-cli": "^10.1.0"
+    "postcss": "^8.4.27",
+    "postcss-cli": "^10.1.0",
+    "autocorrect-node": "^2.8.2",
+    "chalk": "^5.3.0",
+    "jsonc-parser": "^3.2.0",
+    "markdownlint": "^0.29.0",
+    "simple-git-hooks": "^2.9.0"
   }
 }

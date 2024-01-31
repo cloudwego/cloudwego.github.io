@@ -2,7 +2,8 @@
 title: "HTTP2"
 date:  2022-12-15
 weight: 2
-description: >
+keywords: ["HTTP/2", "HTTP", "h2", "h2c"]
+description: "Hertz supports both h2 and h2c. It uses net/http2 implementation for reference."
 
 
 ---
@@ -11,7 +12,7 @@ HTTP/2 is a replacement for how HTTP is expressed “on the wire.” It is not a
 
 The focus of the protocol is on performance; specifically, end-user perceived latency, network and server resource usage. One major goal is to allow the use of a single connection from browsers to a Web site.
 
-Hertz supports both h2 and h2c.  It uses [net/http2](https://github.com/golang/net/tree/master/http2)  implementation for reference.
+Hertz supports both h2 and h2c. It uses [net/http2](https://github.com/golang/net/tree/master/http2) implementation for reference.
 
 ## Example
 
@@ -166,7 +167,7 @@ func main() {
 	h.POST("/", func(c context.Context, ctx *app.RequestContext) {
 		var j map[string]string
 		_ = json.Unmarshal(ctx.Request.Body(), &j)
-		fmt.Printf("server çreceived request: %+v\n", j)
+		fmt.Printf("server received request: %+v\n", j)
 		r := map[string]string{
 			"msg": "hello world",
 		}
@@ -183,8 +184,6 @@ func main() {
 
 ```
 
-
-
 ## Config
 
 ### Server
@@ -193,8 +192,6 @@ func main() {
 |:-------------------|:------------|--------------------------------------------------------------------------------------------------|
 | `ReadTimeout`      | `0`         | The timeout for reading available resources from the server after the connection is established, |
 | `DisableKeepAlive` | `false`     | Whether to disable `Keep-Alive` mode                                                             |
-
-
 
 Sample Code:
 
@@ -294,9 +291,7 @@ func main() {
 }
 ```
 
-
-
-####  WithReadTimeout
+#### WithReadTimeout
 
 Used to set `ReadTimeout`, the default value is `0`.
 
@@ -316,8 +311,6 @@ Function Signature:
 func WithDisableKeepAlive(disableKeepAlive bool) Option
 ```
 
-
-
 ### Client
 
 | **Option**                   | **Default**                             | **Description**                                                                                                      |
@@ -325,15 +318,15 @@ func WithDisableKeepAlive(disableKeepAlive bool) Option
 | `MaxHeaderListSize`          | `0`, means use the default limit (10MB) | Refers to `SETTINGS_MAX_HEADER_LIST_SIZE` in the HTTP2 specification.                                                |
 | `AllowHTTP`                  | `false`                                 | Set whether to allow HTTP,the h2c switch                                                                             |
 | `ReadIdleTimeout`            | `0`,which means no health check         | If the connection does not receive any frames during this interval, a health check is performed using `ping` frames. |
-| `PingTimeout`                | `15s`                                   | A timeout period after which the connection will be closed if no response to `Ping ` is received.                    |
+| `PingTimeout`                | `15s`                                   | A timeout period after which the connection will be closed if no response to `Ping` is received.                    |
 | `WriteByteTimeout`           | `0`                                     | If no data is written during this time interval, the connection will be closed.                                      |
-| `StrictMaxConcurrentStreams` | `false`                                 | Controls whether the server's `SETTINGS_MAX_CONCURRENT_STREAMS `should be respected globally.                        |
+| `StrictMaxConcurrentStreams` | `false`                                 | Controls whether the server's `SETTINGS_MAX_CONCURRENT_STREAMS`should be respected globally.                        |
 | `DialTimeout`                | `1s`                                    | imeout for establishing new connections to hosts.                                                                    |
 | `MaxIdleConnDuration`        | `0`                                     | Idle keep-alive connections are closed after this duration.                                                          |
 | `DisableKeepAlive`           | `false`                                 | Connection will close after each request when set this to true.                                                      |
 | `Dialer`                     | `netpoll.NewDialer()`                   | Default Dialer is used if not set.                                                                                   |
 | `TLSConfig`                  | `nil`                                   | Whether to use TLS (aka SSL or HTTPS) for host connections.                                                          |
-| `RetryConfig `               | `nil`                                   | All configurations related to retry                                                                                  |
+| `RetryConfig`               | `nil`                                   | All configurations related to retry                                                                                  |
 
 Sample:
 
@@ -455,9 +448,6 @@ func main() {
 }
 ```
 
-
-
-
 #### WithMaxHeaderListSize
 
 Used to set `SETTINGS_MAX_HEADER_LIST_SIZE`.
@@ -470,8 +460,6 @@ Function Signature:
 func WithMaxHeaderListSize(maxHeaderListSize uint32) ClientOption
 ```
 
-
-
 #### WithReadIdleTimeout
 
 Used to set the read timeout interval, after which a health check will be performed using `ping` frames.
@@ -480,15 +468,11 @@ Note that a `ping` response will be treated as a receive frame, so if there is n
 
 The default value of `0` means that no health check will be performed.
 
-
-
 Function Signature:
 
 ```go
 func WithReadIdleTimeout(readIdleTimeout time.Duration) ClientOption
 ```
-
-
 
 #### WithWriteByteTimeout
 
@@ -500,8 +484,6 @@ Function Signature:
 func WithWriteByteTimeout(writeByteTimeout time.Duration) ClientOption
 ```
 
-
-
 #### WithStrictMaxConcurrentStreams
 
 Used to set whether the server's `SETTINGS_MAX_CONCURRENT_STREAMS` should be used globally.
@@ -512,17 +494,15 @@ Function Signature:
 func WithStrictMaxConcurrentStreams(strictMaxConcurrentStreams bool) ClientOption
 ```
 
-
 #### WithPingTimeout
 
-Set the timeout for `Ping` responses, after which the connection will be closed if no response is received to `Ping `.The default is `15s`.
+Set the timeout for `Ping` responses, after which the connection will be closed if no response is received to `Ping`.The default is `15s`.
 
 Function Signature:
 
 ```go
 func WithPingTimeout(pt time.Duration) ClientOption 
 ```
-
 
 #### WithAllowHTTP
 
@@ -534,7 +514,7 @@ Function Signature:
 func WithAllowHTTP(allow bool) ClientOption 
 ```
 
-####  WithDialer
+#### WithDialer
 
 Support custom dialer, default is `netpoll.NewDialer()`.
 
@@ -621,8 +601,4 @@ Function Signature:
 func WithClientDisableKeepAlive(disable bool) ClientOption
 ```
 
-
-
-
 For more usage examples, see [hertz-contrib/http2](https://github.com/hertz-contrib/http2).
-

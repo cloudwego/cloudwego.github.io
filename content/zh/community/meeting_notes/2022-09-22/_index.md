@@ -10,7 +10,7 @@ description: >
 
 **参会人** ：GuangmingLuo, simon0-o, liu-song, YangruiEmma, CoderPoet, li-jin-gou, wangbei98, FlyDangerFox, Authority, derek3, FGYFFFF, ppzqh, Code:Z, LemonFish, justlorain, HeyJavaBean, Yang Hong, baiyutang, rogerogers, skyenought, baize, Millione, chens
 
-**会前必读** ：http://www.cloudwego.io/；https://github.com/cloudwego
+**会前必读** ：[官网](/)；https://github.com/cloudwego
 
 ### 议程 1 ：新人自我介绍
 
@@ -38,7 +38,7 @@ description: >
 ### 议程 3：Hertz 新手任务介绍与 Cookbook 专项任务介绍 @li-jin-gou
 
 1. 单测任务：github.com/cloudwego/hertz/issues/257
-   相关文档：[Hertz Cookbook](bytedance.feishu.cn/docx/doxcn7SedWQ69Hw9RcoJmaKIdoe)
+   相关文档：[Hertz Cookbook](https://bytedance.feishu.cn/docx/doxcn7SedWQ69Hw9RcoJmaKIdoe)
 
 2. 目前还有 10 个单侧任务任务待领取，后续也会继续放出扩展类或文档类的 first good issue，欢迎大家积极认领。
 3. Cookbook 背景：当前文档建设过于简陋，易用性方面有待加强，需要持续优化，方便新手使用。Cookbook 分为官方文档和代码示例两部分，目前代码示例待完善。具体官方文档待建设部分及其完善标准可点击上方链接查看，后续欢迎大家积极认领文档任务，官网和文档贡献也是非常核心的社区贡献，优秀的 Contributor 也可以申请成为官网 & 文档的 Committer。

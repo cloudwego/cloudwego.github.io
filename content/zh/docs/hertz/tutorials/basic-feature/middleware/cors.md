@@ -2,14 +2,15 @@
 title: "跨源资源共享"
 date: 2022-05-21
 weight: 1
-description: >
+keywords: ["跨源资源共享"]
+description: "hertz 提供 cors 跨域中间件的实现。"
 
 ---
 
 跨源资源共享（CORS）机制允许服务器标识除了它自己的其它 origin，使得浏览器可以访问加载这些资源；
 该机制也用来检查服务器是否允许浏览器发送真实的请求，通过浏览器发送"预检"请求实现，在预检请求头部中有 HTTP 方法和真实请求会用到的头。
 
-hertz 提供 cors 跨域中间件的[实现](https://github.com/hertz-contrib/cors) ，这里的实现参考了 gin 的 [cors](https://github.com/gin-contrib/cors)。
+hertz 提供 cors 跨域中间件的 [实现](https://github.com/hertz-contrib/cors) ，这里的实现参考了 gin 的 [cors](https://github.com/gin-contrib/cors)。
 
 ## 安装
 
@@ -18,7 +19,6 @@ go get github.com/hertz-contrib/cors
 ```
 
 ## 示例代码
-
 
 ```go
 package main
@@ -85,11 +85,11 @@ Hertz 通过使用 cors 中间件，为客户端提供了跨源资源访问的�
 
 该参数设置为 `true` 之后，将允许来自任意 origin 的客户端跨源访问服务端资源。
 
-`AllowAllOrigins` 配置为 true 时， `AllowOriginFunc` 以及 `AllowOrigins` 配置不可以使用，否则将发生冲突。
+`AllowAllOrigins` 配置为 true 时，`AllowOriginFunc` 以及 `AllowOrigins` 配置不可以使用，否则将发生冲突。
 
 ### AllowOrigins
 
-描述了可以跨源访问的 origin 列表，如果列表中的任何 origin 携带通配符 `*` （每个 origin 内只允许使用一个通配符 `*`），则允许任何满足匹配逻辑的 origin 访问。
+描述了可以跨源访问的 origin 列表，如果列表中的任何 origin 携带通配符 `*`（每个 origin 内只允许使用一个通配符 `*`），则允许任何满足匹配逻辑的 origin 访问。
 
 与 `AllowAllOrigins` 配置**冲突**，同时只能配置一项。
 
@@ -97,7 +97,7 @@ Hertz 通过使用 cors 中间件，为客户端提供了跨源资源访问的�
 
 若需要使用携带通配符的 origin，则 `AllowWildcard` 参数需同时设置为 `true`。
 
-示例代码1：
+示例代码 1：
 
 ```go
 package main
@@ -116,7 +116,7 @@ func main() {
 }
 ```
 
-示例代码2：
+示例代码 2：
 
 ```go
 package main

@@ -2,11 +2,12 @@
 title: "Cache"
 date: 2023-02-25
 weight: 15
-description: >
+keywords: ["HTTP 响应", "缓存"]
+description: "Hertz 提供了对 cache 的适配，支持 multi-backend。"
 
 ---
 
-cache 是一个用于缓存 HTTP 响应的中间件，开启后有助于提高服务器的并发访问能力。Hertz 也提供了对 cache 的[适配](https://github.com/hertz-contrib/cache)，支持 multi-backend，参考了 [gin-cache](https://github.com/chenyahui/gin-cache) 的实现。
+cache 是一个用于缓存 HTTP 响应的中间件，开启后有助于提高服务器的并发访问能力。Hertz 也提供了对 cache 的 [适配](https://github.com/hertz-contrib/cache)，支持 multi-backend，参考了 [gin-cache](https://github.com/chenyahui/gin-cache) 的实现。
 
 ## 安装
 
@@ -154,19 +155,53 @@ func main() {
 }
 ```
 
+### NewCacheByRequestURIWithIgnoreQueryOrder
+
+创建使用 URI 作为 key 并忽略查询参数顺序的缓存中间件
+
+函数签名
+
+```go
+func NewCacheByRequestURIWithIgnoreQueryOrder(defaultCacheStore persist.CacheStore, defaultExpire time.Duration, opts ...Option) app.HandlerFunc
+```
+
+示例代码：
+
+```go
+func main() {
+    h := server.New()
+
+    memoryStore := persist.NewMemoryStore(1 * time.Minute)
+
+    h.Use(cache.NewCacheByRequestURIWithIgnoreQueryOrder(
+        memoryStore,
+        2*time.Second,
+        cache.WithCacheStrategyByRequest(func(ctx context.Context, c *app.RequestContext) (bool, cache.Strategy) {
+            return true, cache.Strategy{
+                CacheKey: c.Request.URI().String(),
+            }
+        }),
+    ))
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        c.String(http.StatusOK, "hello world")
+    })
+
+    h.Spin()
+}
+```
+
 ## 配置
 
-| 配置                          | 默认值 | 介绍                                                      |
-| ----------------------------- | ------ | --------------------------------------------------------- |
-| WithCacheStrategyByRequest    | nil    | 用于设置自定义的缓存策略                                  |
-| WithOnHitCache                | nil    | 用于设置缓存命中的回调函数                                |
-| WithOnMissCache               | nil    | 用于设置缓存未命中的回调函数                              |
-| WithBeforeReplyWithCache      | nil    | 用于设置返回缓存响应前的回调函数                          |
-| WithOnShareSingleFlight       | nil    | 用于设置请求共享 SingleFlight 结果时的回调函数            |
-| WithSingleFlightForgetTimeout | 0      | 用于设置 SingleFlight 的超时时间                          |
-| WithIgnoreQueryOrder          | false  | 用于设置当使用 URI 为缓存的 Key 时，忽略 query 参数的顺序 |
-| WithPrefixKey                 | ""     | 用于设置缓存响应 Key 的前缀                               |
-| WithoutHeader                 | false  | 用于设置是否需要缓存响应头                                |
+| 配置                          | 默认值 | 介绍                                           |
+| ----------------------------- | ------ | ---------------------------------------------- |
+| WithOnHitCache                | nil    | 用于设置缓存命中的回调函数                     |
+| WithOnMissCache               | nil    | 用于设置缓存未命中的回调函数                   |
+| WithBeforeReplyWithCache      | nil    | 用于设置返回缓存响应前的回调函数               |
+| WithOnShareSingleFlight       | nil    | 用于设置请求共享 SingleFlight 结果时的回调函数 |
+| WithSingleFlightForgetTimeout | 0      | 设置 SingleFlight 的超时时间，以控制并发操作的行为，确保请求在一定时间内被处理或者超时被取消 |
+| WithPrefixKey                 | ""     | 用于设置缓存响应 Key 的前缀                    |
+| WithoutHeader                 | false  | 用于设置是否需要缓存响应头                     |
+| WithCacheStrategyByRequest    | nil    | 用于设置自定义的缓存策略 |
 
 ### WithCacheStrategyByRequest
 
@@ -321,43 +356,6 @@ func main() {
         c.String(http.StatusOK, "hello world")
     })
 
-    h.Spin()
-}
-```
-
-### WithIgnoreQueryOrder
-
-通过使用 `WithIgnoreQueryOrder` 设置当使用 `NewCacheByRequestURI` 方法创建缓存中间件时，忽略 URI 的 query 参数顺序（为 true 触发参数排序）。
-
-函数签名：
-
-```go
-func WithIgnoreQueryOrder(b bool) Option
-```
-
-示例代码：
-
-```go
-func main() {
-    h := server.New()
-
-    memoryStore := persist.NewMemoryStore(1 * time.Minute)
-
-    h.Use(cache.NewCacheByRequestPath(
-        memoryStore,
-        60*time.Second,
-        cache.WithIgnoreQueryOrder(true),
-        cache.WithOnHitCache(func(c context.Context, ctx *app.RequestContext) {
-            hlog.Infof("hit cache IgnoreQueryOrder")
-        }),
-        cache.WithOnMissCache(func(c context.Context, ctx *app.RequestContext) {
-            hlog.Infof("miss cache IgnoreQueryOrder")
-        }),
-    ))
-    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
-        c.String(http.StatusOK, "hello world")
-    })
-    
     h.Spin()
 }
 ```

@@ -2,12 +2,13 @@
 title: "Request ID"
 date: 2022-10-01
 weight: 9
-description: >
+keywords: ["Request ID", "X-Request-ID"]
+description: "Hertz 提供了可以对 `X-Request-ID` 进行操作的 Request ID 中间件。"
 
 ---
 
 `X-Request-ID` 在 HTTP Headers 中是一种非标准响应字段，通常用于关联客户端和服务器之间的 HTTP 请求。
-Hertz 也提供了可以对 `X-Request-ID` 进行操作的 [Request ID 中间件](https://github.com/hertz-contrib/requestid)，参考了 gin 的[实现](https://github.com/gin-contrib/requestid)。
+Hertz 也提供了可以对 `X-Request-ID` 进行操作的 [Request ID 中间件](https://github.com/hertz-contrib/requestid)，参考了 gin 的 [实现](https://github.com/gin-contrib/requestid)。
 
 ## 安装
 
@@ -124,7 +125,6 @@ func main() {
 函数签名：
 
 ```go
-// HeaderStrKey 类型是 string 的别名
 func WithCustomHeaderStrKey(s HeaderStrKey) Option
 ```
 
@@ -169,7 +169,6 @@ func main() {
 函数签名：
 
 ```go
-// Generator 类型是 func(ctx context.Context, c *app.RequestContext) string 的别名
 func WithGenerator(g Generator) Option
 ```
 
@@ -213,7 +212,6 @@ func main() {
 函数签名：
 
 ```go
-// Handler 类型是 func(ctx context.Context, c *app.RequestContext, requestID string) 的别名
 func WithHandler(handler Handler) Option
 ```
 

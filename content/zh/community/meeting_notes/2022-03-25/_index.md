@@ -10,7 +10,7 @@ description: >
 
 **参会人员：** YangruiEmma, liu-song, baiyutang, yccpt, AshleeT, Authorixy, Dianjun Suo, bodhisatan, CoderPoet, Quan Hu, li-jin-gou, JZK-Keven, EastHorse, GuangmingLuo, Xiwen Li, joway, jasondeng1997, HeyJavaBean.
 
-**会前必读：** http://www.cloudwego.io/;
+**会前必读：** [官网](/)；
               https://github.com/cloudwego
 
 ## 议程 1 ：新成员自我介绍

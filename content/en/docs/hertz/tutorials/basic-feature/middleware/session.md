@@ -2,7 +2,8 @@
 title: "Session Extension"
 date: 2022-10-07
 weight: 6
-description: >
+keywords: ["Session"]
+description: "Hertz provides an implementation of Session."
 
 ---
 

@@ -2,14 +2,18 @@
 title: "服务注册与发现扩展"
 date: 2022-08-14
 weight: 3
-description: >
+keywords: ["服务注册与发现扩展", "服务注册扩展", "服务发现扩展", "负载均衡扩展"]
+description: "Hertz 提供的服务注册与发现扩展。"
 ---
 
 ## 服务注册扩展
+
 Hertz 支持自定义注册模块，使用者可自行扩展集成其他注册中心，该扩展定义在 pkg/app/server/registry 下。
 
-### 接口定义与Info定义
+### 接口定义与 Info 定义
+
 - 接口定义
+
 ```go
 // Registry is extension interface of service registry.
 type Registry interface {
@@ -17,7 +21,9 @@ type Registry interface {
 	Deregister(info *Info) error
 }
 ```
-- Info定义
+
+- Info 定义
+
 ```go
 // Info is used for registry.
 // The fields are just suggested, which is used depends on design.
@@ -30,7 +36,7 @@ type Info struct {
 }
 ```
 
-### 集成到Hertz
+### 集成到 Hertz
 
 - 通过 `server.WithRegistry` 指定自己的注册模块和自定义的注册信息。
 
@@ -48,6 +54,7 @@ type Info struct {
 ## 服务发现扩展
 
 ### 接口定义
+
 Hertz 支持自定义发现模块，使用者可自行扩展集成其他注册中心，该扩展定义在 pkg/app/client/discovery 下。
 
 ```go
@@ -75,11 +82,11 @@ type Result struct {
 
 `Resolver` 接口定义如下:
 
-- `Resolve`：作为 `Resolver` 的核心方法， 从 target key 中获取我们需要的服务发现结果 `Result`。
+- `Resolve`：作为 `Resolver` 的核心方法，从 target key 中获取我们需要的服务发现结果 `Result`。
 - `Target`：从 Hertz 提供的对端 TargetInfo 中解析出 `Resolve` 需要使用的唯一 target, 同时这个 target 将作为缓存的唯一 key。
-- `Name`：用于指定 Resolver 的唯一名称， 同时 Hertz 会用它来缓存和复用 Resolver。
+- `Name`：用于指定 Resolver 的唯一名称，同时 Hertz 会用它来缓存和复用 Resolver。
 
-### 集成到Hertz
+### 集成到 Hertz
 
 通过使用 Hertz 提供的 Discovery 中间件，指定自定义的服务发现扩展。
 
@@ -93,13 +100,15 @@ type Result struct {
 ```
 
 ### 注意事项
-- 我们通过复用 Resolver 的方式来提高性能， 要求 Resolver 的方法实现需要是并发安全的。
+
+- 我们通过复用 Resolver 的方式来提高性能，要求 Resolver 的方法实现需要是并发安全的。
 
 ## 负载均衡扩展
 
-Hertz 默认提供了 WeightedRandom 负载均衡实现,同时也支持自定义负载均衡实现，该扩展定义在 pkg/app/client/loadbalance 下
+Hertz 默认提供了 WeightedRandom 负载均衡实现，同时也支持自定义负载均衡实现，该扩展定义在 pkg/app/client/loadbalance 下
 
 ### 接口定义
+
 ```go
     // Loadbalancer picks instance for the given service discovery result.
     type Loadbalancer interface {
@@ -118,7 +127,7 @@ Hertz 默认提供了 WeightedRandom 负载均衡实现,同时也支持自定义
 
 ```
 
-### 集成到Hertz
+### 集成到 Hertz
 
 通过使用 Hertz 提供的 Discovery 中间件，指定自定义的服务发现扩展的同时也可以使用 `sd.WithLoadBalanceOptions` 指定自定义负载均衡扩展。
 

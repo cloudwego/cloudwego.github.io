@@ -2,7 +2,8 @@
 title: "CSRF"
 date: 2022-12-6
 weight: 12
-description: >
+keywords: ["CSRF", "cross-site request forgery attacks"]
+description: "Hertz provides CSRF middleware to help you prevent cross-site request forgery attacks."
 
 ---
 
@@ -154,14 +155,17 @@ func main() {
 ```
 
 ### WithErrorFunc
+
 The `csrf` middleware provides `WithErrorFunc` to facilitate user-defined error handling logic.
 
 Function Signature:
+
 ```go
 func WithErrorFunc(f app.HandlerFunc) Option
 ```
 
 Default:
+
 ```go
 func(ctx context.Context, c *app.RequestContext) { panic(c.Errors.Last()) }
 ```
@@ -266,6 +270,7 @@ func main() {
 The `csrf` middleware provides `WithNext` to facilitate user-defined settings to skip the `csrf` middleware under certain conditions.
 
 Function Signature:
+
 ```go
 func WithNext(f CsrfNextHandler) Option
 ```

@@ -10,11 +10,11 @@ description: "Kitex 常见问题解答。"
 ## Kitex 框架
 
 **Q1: 支持 Windows 吗？**
-* Kitex 在 v0.4.0 版本已支持在 Windows 环境下编译运行了。但代码生成工具暂未支持 Windows 环境。
+* 是的。Kitex 在 v0.4.0 版本已支持在 Windows 环境下编译运行了。代码生成工具在 v0.5.2 也支持了 Windows 环境。
 
 **Q2: 是否支持 HTTP？**
-* 目前 Kitex 没有支持 HTTP 请求，如果是 API 网关场景，针对 Thrift 提供了 [HTTP 映射的泛化调用](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic_call/)，Kitex 会将 HTTP 请求做 Thrift 编码发给服务端。
-* HTTP 可以使用 CloudWeGo 开源的 HTTP 框架 [Hertz](https://www.cloudwego.io/zh/docs/hertz/)。
+* 目前 Kitex 没有支持 HTTP 请求，如果是 API 网关场景，针对 Thrift 提供了 [HTTP 映射的泛化调用](/zh/docs/kitex/tutorials/advanced-feature/generic-call/)，Kitex 会将 HTTP 请求做 Thrift 编码发给服务端。
+* HTTP 可以使用 CloudWeGo 开源的 HTTP 框架 [Hertz](/zh/docs/hertz/)。
 
 **Q3: 如何配置开启连接多路复用？**
 * 如果使用 Thrift 或 Kitex Protobuf ，开启连接多路复用：服务端配置 WithMuxTransport()，调用端配置 WithMuxConnection(1)。
@@ -28,7 +28,7 @@ description: "Kitex 常见问题解答。"
 * gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 框架互通。
 
 **Q6: 出现 Thrift 接口编译问题，如 not enough arguments in call to iprot.ReadStructBegin**
-* Kitex 依赖 Thrift v0.13，因为Apache Thrift v0.14 接口有 breaking change，无法直接升级。出现该问题是拉到了新版本的 Thrift，升级版本时建议不使用 -u 参数，可以执行命令固定版本 go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
+* Kitex 依赖 Thrift v0.13，因为Apache Thrift v0.14 接口有 breaking change，无法直接升级。出现该问题是拉到了新版本的 Thrift，升级版本时建议不使用 -u 参数，可以执行命令固定版本 `go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0`
 
 ## Kitex 代码生成工具
 

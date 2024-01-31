@@ -2,11 +2,20 @@
 
 # CloudWeGo
 
-The [cloudwego.io](https://www.cloudwego.io/) site is built with [Hugo](https://gohugo.io/) and hosted on [Github Pages](https://pages.github.com/).
+The CloudWeGo site is currently built with [Hugo](https://gohugo.io/).
+
+For CN users, please visit : [cloudwego.cn](https://www.cloudwego.cn/zh) ; 
+For Non-CN users, please visit: [cloudwego.io](https://www.cloudwego.io/) 
 
 ## Prerequisites
 
 The following are basic prerequisites for developing this project:
+
+- The npm command is installed locally. Get npm packages and other prerequisites:
+
+  ```shell
+  npm install
+  ```
 
 - Install a recent release of the Hugo "extended" version. If you install from
   the [Hugo release page](https://github.com/gohugoio/hugo/releases), make sure
@@ -30,3 +39,9 @@ See also the list of [contributors](https://github.com/cloudwego/cloudwego.githu
 This project is licensed under the Apache License 2.0 - see the [LICENSE.md](https://github.com/cloudwego/cloudwego.github.io/blob/master/LICENSE) file for details
 
 This project is overridden from [docsy](http://github.com/google/docsy), and we're not tracking changes to the docsy base file.
+
+## Credits
+
+The [cloudwego.io](https://www.cloudwego.io/)  website is deployed on [Vercel](https://vercel.com/?utm_source=CloudWeGo&utm_campaign=oss).
+
+![Vercel](https://images.ctfassets.net/e5382hct74si/78Olo8EZRdUlcDUFQvnzG7/fa4cdb6dc04c40fceac194134788a0e2/1618983297-powered-by-vercel.svg)

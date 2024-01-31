@@ -2,7 +2,8 @@
 title: "Swagger"
 date: 2022-10-06
 weight: 8
-description: >
+keywords: ["Swagger", "RESTful API"]
+description: "Hertz middleware to automatically generate RESTful API documentation with Swagger 2.0."
 
 ---
 
@@ -35,10 +36,11 @@ at `~/root/go-project-name/docs`.
 ```sh
 swag init
 ```
+
 swag init with options(All options can be viewed via `swag init -h`).
 
 ```bash
-swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagger"
+swag init --parseDependency --parseInternal --parseDepth 5 --instanceName "swagger"
 ```
 
 | Options         | Default   | Description                                                                                                                                                                      |
@@ -54,6 +56,7 @@ swag init --parseDependency --parseInternal --parseDepth 5 --instancename "swagg
 go get github.com/hertz-contrib/swagger
 go get github.com/swaggo/files
 ```
+
 Import following in your code:
 
 ```go
@@ -190,7 +193,6 @@ func main() {
 }
 
 ```
-
 
 | Option                   | Type   | Default    | Description                                                  |
 | ------------------------ | ------ | ---------- | ------------------------------------------------------------ |

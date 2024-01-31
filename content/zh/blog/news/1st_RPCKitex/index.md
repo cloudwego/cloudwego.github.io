@@ -1,6 +1,7 @@
 ---
 date: 2022-09-20
 title: "高性能 RPC 框架 CloudWeGo-Kitex 内外统一的开源实践"
+projects: ["Kitex"]
 linkTitle: "高性能 RPC 框架 CloudWeGo-Kitex 内外统一的开源实践"
 keywords: ["Kitex", "CloudWeGo", "RPC", "开源", "Kite", "Golang", "Thrift", "Protobuf", "gRPC", "xDS"]
 description: "本文介绍了高性能 RPC 框架 CloudWeGo-Kitex 的起源与发展历史，以及开源一年以来的功能特性变更、社区共建生态成果、企业落地实践等方面。"
@@ -18,9 +19,9 @@ author: <a href="https://github.com/YangruiEmma" target="_blank">YangruiEmma</a>
 同时这也是 [Kitex][Kitex] 与目前已经开源的、支持 gRPC 协议的其他 Golang 框架的主要差异。如果用户想使用 gRPC 又对性能有很高的要求，那么 [Kitex][Kitex] 框架将会是一个很不错的选择。
 
 继 [Kitex][Kitex] 开源后，今年 CloudWeGo 又陆续开源了 Golang HTTP 框架 [Hertz](https://github.com/cloudwego/hertz)，Rust RPC 框架 [Volo](https://github.com/cloudwego/volo)，同时围绕这些微服务框架和微服务的一些通用能力，
-我们还开源了一些高性能的基础库。关于更多 CloudWeGo 开源的子项目，可以进入 CloudWeGo [官网](https://www.cloudwego.io/zh/)详细了解。
+我们还开源了一些高性能的基础库。关于更多 CloudWeGo 开源的子项目，可以进入 CloudWeGo [官网](/zh/)详细了解。
 
-CloudWeGo 官网：https://www.cloudwego.io/
+[CloudWeGo 官网](/)
 
 ![image](/img/blog/1st_RPC_Kitex/1.png)
 
@@ -173,9 +174,10 @@ Thrift-gen-validator 是 Thriftgo 的一个工具插件，它可以根据 Thrift
 虽然我们内部主要支持 Thrift，但开源之后我们发现外部用户对于 Protobuf 或 gRPC 的关注会更多，所以参考 [Kitex][Kitex] FastThrift 的优化思路，重新实现了 Protobuf 的生成代码。
 在 v0.4.0 版本，如果用户使用 [Kitex][Kitex] 的工具生成 Protobuf 的代码，就会默认生成 [Fastpb][Fastpb] 的编解码代码，在发起 RPC 调用的时候，[Kitex][Kitex] 也会默认使用 [Fastpb][Fastpb]。
 
-下图是 [Fastpb][Fastpb] 与官方 Protobuf 序列化的性能对比，可以看到无论是编码还是解码，在效率和内存分配上，[Fastpb][Fastpb] 都远远优于官方 Protobuf 序列化库。
+下面列出的是 [Fastpb][Fastpb] 与官方 Protobuf 序列化的性能对比，可以看到无论是编码还是解码，在效率和内存分配上，[Fastpb][Fastpb] 都远远优于官方 Protobuf 序列化库。
 
-![image](/img/blog/1st_RPC_Kitex/12.png)
+- FastWrite: **(ns/op) ↓67.8% ，(B/op) ↓83.9%**
+- FastRead: **(ns/op) ↓41.5% ，(B/op) ↓4.5%**
 
 #### gRPC 性能优化
 

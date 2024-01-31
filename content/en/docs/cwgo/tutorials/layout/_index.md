@@ -3,16 +3,15 @@ title: "Layout"
 linkTitle: "Layout"
 weight: 2
 description: >
-
 ---
 
 The cwgo tool supports the generation of MVC Layout at present, and more templates will be expanded for users to use in the future.
 
-# Code Structure
+## Code Structure
 
-The MVC layout is automatically generated when the server code is generated using the cwgo tool. When using the demo in [Quick Start](https://www.cloudwego.io/docs/cwgo/getting-started/), the generated HTTP project directory is as follows
+The MVC layout is automatically generated when the server code is generated using the cwgo tool. When using the demo in [Quick Start](/docs/cwgo/getting-started/), the generated HTTP project directory is as follows
 
-```
+```console
 ├── biz // business logic directory
 │ ├── dal // data access layer
 │ │ ├── init.go
@@ -32,7 +31,7 @@ The MVC layout is automatically generated when the server code is generated usin
 │ │ │ └── middleware.go // Default middleware function, hz adds a middleware to each generated routing group by default; when updating, it will search for existing middleware in the current file and append new middleware at the end
 │ │ └── register.go // call to register the routing definition in each idl file; when a new idl is added, it will automatically insert its routing registration call when updating; do not move
 │ ├── service // service layer, where business logic is stored. When updating, the new method appends the file.
-│ │ ├── hello_method.go specific business logic
+│ │ ├── hello_method.go // specific business logic
 │ │ └── hello_method_test.go
 │ └── utils // tool directory
 │ └── resp.go
@@ -53,7 +52,7 @@ The MVC layout is automatically generated when the server code is generated usin
 
 The RPC project directory is as follows
 
-```
+```console
 ├── biz // business logic directory
 │ ├── dal // data access layer
 │ │ ├── init.go

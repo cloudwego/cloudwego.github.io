@@ -1,8 +1,9 @@
 ---
-title: "Session扩展"
+title: "Session 扩展"
 date: 2022-10-07
 weight: 6
-description: >
+keywords: ["Session"]
+description: "Hertz 提供了 Session 的实现。"
 
 ---
 
@@ -67,14 +68,14 @@ Hertz 通过使用中间件，可以对 Session 进行一系列的操作配置�
 
 | 方法       | 函数签名                                          | 介绍                                     |
 |----------|-----------------------------------------------|----------------------------------------|
-| ID       | `ID() string`                                 | 用于获取存储时生成的Session ID，它不应该作为用户信息的一部分去使用 |
-| Get      | `Get(key interface{}) interface{}`            | 用于根据给定的键值参数获取Session值                  |
-| Set      | `Set(key, val interface{})`                   | 用于设置与给定键值相关联的Session值                  |
-| Delete   | `Delete(key interface{})`                     | 用于根据给定的键值删除相关联的Session值                |
-| Clear    | `Clear()`                                     | 用于删除Session中存储的所有值                     |
-| AddFlash | `AddFlash(value interface{}, vars ...string)` | 用于向Session添加一条flash message            |
-| Flashes  | `Flashes(vars ...string) []interface{}`       | 用于获取Session中的flash message             |
-| Options  | `Options(Options)`                            | 用于设置Session的配置                         |
+| ID       | `ID() string`                                 | 用于获取存储时生成的 Session ID，它不应该作为用户信息的一部分去使用 |
+| Get      | `Get(key interface{}) interface{}`            | 用于根据给定的键值参数获取 Session 值                  |
+| Set      | `Set(key, val interface{})`                   | 用于设置与给定键值相关联的 Session 值                  |
+| Delete   | `Delete(key interface{})`                     | 用于根据给定的键值删除相关联的 Session 值                |
+| Clear    | `Clear()`                                     | 用于删除 Session 中存储的所有值                     |
+| AddFlash | `AddFlash(value interface{}, vars ...string)` | 用于向 Session 添加一条 flash message            |
+| Flashes  | `Flashes(vars ...string) []interface{}`       | 用于获取 Session 中的 flash message             |
+| Options  | `Options(Options)`                            | 用于设置 Session 的配置                         |
 | Save     | `Save() error`                                | 用于保存当前请求期间使用的所有会话                      |
 
 ### NewStore
@@ -322,6 +323,7 @@ func DefaultMany(c *app.RequestContext, name string) Session
 ```
 
 示例代码：
+
 ```go
 package main
 
@@ -428,4 +430,3 @@ Session 中间件对大多数复杂的逻辑进行了封装，用户只需要调
 ## 完整示例
 
 完整用法示例详见 [example](https://github.com/hertz-contrib/sessions/tree/main/_example) 以及 [hertz_session](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_session)
-

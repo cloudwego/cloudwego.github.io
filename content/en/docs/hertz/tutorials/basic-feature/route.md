@@ -2,7 +2,8 @@
 title: "Route"
 date: 2022-09-06
 weight: 2
-description: >
+keywords: ["Route", "Route Group", "Static Route", "Parametric Route", "Routing Priority", "NoRoute", "NoMethod"]
+description: "The routing function provided by Hertz."
 
 ---
 
@@ -23,8 +24,8 @@ Hertz provides methods like `GET`, `POST`, `PUT`, `DELETE`, `ANY` for registerin
 |  `Hertz.Any` | The method for registering all HTTP Methods                                                                                                                                                           |
 |  `Hertz.StaticFile/Static/StaticFS` | For registering static files                                                                                                                                                                          |
 
-
 Sample Code:
+
 ```go
 package main
 
@@ -76,8 +77,8 @@ func main(){
 
 Hertz provides the capability of `Group`, which are used to support route grouping functionality, and the middleware can also register with `Group`.
 
-
 Sample Code:
+
 ```go
 package main
 
@@ -115,6 +116,7 @@ Use middleware with route group
 The following example uses the `BasicAuth` middleware in a route group.
 
 Sample Code 1:
+
 ```go
 package main
 
@@ -141,6 +143,7 @@ func main() {
 ```
 
 Sample Code 2:
+
 ```go
 package main
 
@@ -164,7 +167,6 @@ func main() {
 }
 ```
 
-
 ## Route Types
 
 Hertz supports a variety of route types for complex functions, including static route, parametric route, and wildcard route.
@@ -172,9 +174,11 @@ Hertz supports a variety of route types for complex functions, including static 
 Priority of the route: `static route` > `parametric route` > `wildcard route`
 
 ### Static Route
+
 See above for specific examples.
 
 ### Parametric Route
+
 Hertz supports the use of named parameters such as `:name` to set routes, and named parameters match only a single path segment.
 
 If we set the route `/user/:name`, the match is as follows
@@ -189,6 +193,7 @@ If we set the route `/user/:name`, the match is as follows
 By using the `RequestContext.Param` method, we can get the parameters carried in the route.
 
 Sample Code:
+
 ```go
 package main
 
@@ -213,6 +218,7 @@ func main(){
 ```
 
 ### Wildcard Route
+
 Hertz supports routing with wildcard parameters such as `*filepath`, and the wildcard parameter will match all contents of the current path segment.
 
 If we set the route `/src/*filepath`, the match is as follows
@@ -226,6 +232,7 @@ If we set the route `/src/*filepath`, the match is as follows
 By using the `RequestContext.Param` method, we can get the parameters carried in the route.
 
 Sample Code:
+
 ```go
 package main
 
@@ -250,6 +257,7 @@ func main(){
 
 
 ```
+
 Refer to the [example](https://github.com/cloudwego/hertz-examples/tree/main/route) for more detailed examples.
 
 ## Note
@@ -261,6 +269,7 @@ When register route with anonymous function or decorator, if we use `RequestCont
 You need to use the `GETEX`, `POSTEX`, `PUTEX`, `DELETEEX`, `HEADEX`, `AnyEX`, `HandleEX` methods provided by Hertz and manually pass in the handler name to register the route. use `app.GetHandlerName` to get the handler name.
 
 Sample Code:
+
 ```go
 package main
 
@@ -279,7 +288,6 @@ func main() {
 	h.Spin()
 }
 ```
-
 
 ### Get route info
 
@@ -360,3 +368,24 @@ func main() {
 }
 
 ```
+
+### Redirect tail slash
+
+By default, Hertz automatically forwards requests based on the `/` at the end of the path. If the router only has `/foo/`, then the request for `/foo` will be automatically redirected to `/foo/`; if the router only has `/foo`, then `/foo/` will be redirected to `/foo`.
+
+The `307 Temporary Redirect` status code is triggered by any of the request methods other than `GET` and the `301 Moved Permanently` status code is triggered by the `GET` request.
+
+You can cancel it in the configuration as follows:
+
+````go
+package main
+
+import "github.com/cloudwego/hertz/pkg/app/server"
+
+func main() {
+    h := server.New(server.WithRedirectTrailingSlash(false))
+	...
+}
+````
+
+For more configuration-related information: [Configuration instruction](/docs/hertz/reference/config/)

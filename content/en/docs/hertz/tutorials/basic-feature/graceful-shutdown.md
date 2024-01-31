@@ -1,8 +1,9 @@
 ---
 title: "Graceful Shutdown"
 date: 2022-05-23
-weight: 8
-description: >
+weight: 11
+keywords: ["Graceful Shutdown"]
+description: "The graceful shutdown function provided by Hertz when stopping service."
 
 ---
 
@@ -26,10 +27,12 @@ h.Engine.OnShutdown = append(h.Engine.OnShutdown, shutDownFunc)
 ```
 
 `waitSignal` is default implementation for signal waiter,which is executed as follows:
+
 - SIGTERM triggers immediately close.
 - SIGHUP|SIGINT triggers graceful shutdown.
 
 If Default one is not met the requirement, `SetCustomSignalWaiter` set this function to customize.
+
 ```go
 package main
 
@@ -46,4 +49,5 @@ func main() {
 }
 
 ```
+
 Hertz will exit immediately if f returns an error,otherwise it will exit gracefully.

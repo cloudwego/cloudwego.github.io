@@ -1,6 +1,7 @@
 ---
 date: 2022-06-21
 title: "超大规模的企业级微服务 HTTP 框架 — Hertz 正式开源！"
+projects: ["Hertz"]
 linkTitle: "超大规模的企业级微服务 HTTP 框架 — Hertz 正式开源！"
 keywords: ["hertz", "微服务", "http", "go", "golang", "开源"]
 description: "本文介绍了字节跳动正式开源超大规模的企业级微服务 HTTP 框架 — Hertz。"

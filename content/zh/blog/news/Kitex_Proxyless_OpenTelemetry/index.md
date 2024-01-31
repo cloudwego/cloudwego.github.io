@@ -1,6 +1,7 @@
 ---
 date: 2022-11-08
 title: "Kitex Proxyless 之流量路由：配合 Istio 与 OpenTelemetry 实现全链路泳道"
+projects: ["Kitex"]
 linkTitle: "Kitex Proxyless 之流量路由：配合 Istio 与 OpenTelemetry 实现全链路泳道"
 keywords: ["CloudWeGo", "Proxyless", "流量路由", "全链路泳道", "Bookinfo"]
 description: "本文主要介绍了基于 Kitex Proxyless 实现流量路由，从而在 biz-demo 中使用 Kitex 和 Hertz 重写 bookinfo 项目，实现的目的是以实战的方式演示如何使用 xDS 实现全链路的流量泳道。"
@@ -17,7 +18,7 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 > 
 > * 详细设计见：
 >   [Proposal: Kitex support xDS Protocol · Issue #461 · cloudwego/kitex](https://github.com/cloudwego/kitex/issues/461)
-> * 具体使用方式见[官方文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/xds/)
+> * 具体使用方式见[官方文档](/zh/docs/kitex/tutorials/advanced-feature/xds/)
 
 **[Kitex][Kitex] Proxyless** 简单来说就是 [Kitex][Kitex] 服务能够不借助 envoy sidecar 直接与 istiod 交互，基于 xDS 协议动态获取控制面下发的服务治理规则，并转换为 [Kitex][Kitex] 对应规则来实现一些服务治理功能（例如本文的重点：**流量路由**）。
 

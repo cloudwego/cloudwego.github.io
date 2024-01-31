@@ -43,10 +43,8 @@ We developed the RPC framework [Kitex][Kitex] and HTTP framework [Hertz][Hertz] 
     - Linux, macOS (operating system)
 
 * **Future**
-    - [multisyscall][multisyscall] supports batch system calls
     - [io_uring][io_uring]
     - Shared Memory IPC
-    - Serial scheduling I/O, suitable for pure computing
     - TLS
     - UDP
 
@@ -65,8 +63,8 @@ More benchmarks reference [kitex-benchmark][kitex-benchmark] and [hertz-benchmar
 
 ## Reference
 
-* [Official Website](https://www.cloudwego.io)
-* [Getting Started](https://www.cloudwego.io/docs/netpoll/getting-started/)
+* [Official Website](/)
+* [Getting Started](/docs/netpoll/getting-started/)
 
 
 [Netpoll]: https://github.com/cloudwego/netpoll
@@ -87,8 +85,7 @@ More benchmarks reference [kitex-benchmark][kitex-benchmark] and [hertz-benchmar
 [Redis]: https://redis.io
 [HAProxy]: http://www.haproxy.org
 
-[LinkBuffer]: nocopy_linkbuffer.go
+[LinkBuffer]: https://github.com/cloudwego/netpoll/blob/develop/nocopy_linkbuffer.go
 [gopool]: https://github.com/bytedance/gopkg/tree/develop/util/gopool
 [mcache]: https://github.com/bytedance/gopkg/tree/develop/lang/mcache
-[multisyscall]: https://github.com/cloudwego/multisyscall
 [io_uring]: https://github.com/axboe/liburing

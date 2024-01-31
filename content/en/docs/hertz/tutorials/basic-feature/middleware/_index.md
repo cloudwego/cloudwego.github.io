@@ -1,8 +1,9 @@
 ---
 title: "Middleware Overview"
 date: 2022-05-23
-weight: 3
-description: >
+weight: 6
+keywords: ["Middleware", "Server-side middleware", "Client-side middleware", "routing level"]
+description: "Middleware Overview."
 
 ---
 
@@ -45,11 +46,6 @@ func MyMiddleware() app.HandlerFunc {
    }
 }
 ```
-
-The middleware will be executed in the order defined, If you want to terminate the middleware call quickly, you can use the following methods, noting that **the current middleware will still execute**.
-- `Abort()`：terminate subsequent calls
-- `AbortWithMsg(msg string, statusCode int)`：terminates subsequent calls and sets the body and status code for the Response
-- `AbortWithStatus(code int)`：terminates subsequent calls and sets the status code
 
 ### Server-level middleware
 
@@ -229,3 +225,20 @@ func main() {
 ```
 
 > Middleware may be executed more than once, such as redirect, etc., idempotency needs to be considered
+
+## Note
+
+### RequestContext related operations
+
+When implementing server-side middleware, the `RequestContext` related operation is usually used, as shown in  [RequestContext](/docs/hertz/tutorials/basic-feature/context/).
+
+### Handler related operations
+
+A server-side middleware is a handler, and the related operations of the handler can be found in [Handler](/docs/hertz/tutorials/basic-feature/context/request/#handler).
+
+### Quick termination of server middleware
+
+The server-side middleware will be executed in the order defined, if you want to terminate the middleware call quickly, you can use the following methods, noting that **the current middleware will still execute**.
+- `c.Abort()`：terminate subsequent calls
+- `c.AbortWithMsg(msg string, statusCode int)`：terminates subsequent calls and sets the body and status code for the Response
+- `c.AbortWithStatus(code int)`：terminates subsequent calls and sets the status code

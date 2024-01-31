@@ -10,11 +10,11 @@ description: "Kitex Frequently Asked Questions and corresponding Answers."
 ## Kitex Framework
 
 **Q1: Does Kitex support Windows？**
-* Kitex has already supported to compile and run in Windows since v0.4.0 version. But the code generation tool does not support the Windows environment yet.
+* Yes. Kitex has already supported to compile and run in Windows since v0.4.0 version. And code generation tool support the Windows environment since v0.5.2.
 
 **Q2: Does Kitex support HTTP？**
-* Kitex does not specifically provide HTTP request support. For API gateway scenario, Kitex provides a [HTTP mapping generic call](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic_call/#2-http-mapping-generic-call) regarding Thrift and sends the Thrift encoding of the HTTP request to the server.
-* For related support, please refer to another CloudWeGo HTTP framework [Hertz](https://www.cloudwego.io/zh/docs/hertz/).
+* Kitex does not specifically provide HTTP request support. For API gateway scenario, Kitex provides a [HTTP mapping generic call](/docs/kitex/tutorials/advanced-feature/generic-call/#2-http-mapping-generic-call) regarding Thrift and sends the Thrift encoding of the HTTP request to the server.
+* For related support, please refer to another CloudWeGo HTTP framework [Hertz](/zh/docs/hertz/).
 
 **Q3: How to configure multiplexing?**
 * If you are using Thrift or Kitex Protobuf, to configure multiplexing:
@@ -30,7 +30,7 @@ description: "Kitex Frequently Asked Questions and corresponding Answers."
 * gRPC provides support to gRPC message protocol and enables Kitex to interact with gRPC framework.
 
 **Q6: Issues regarding Thrift interface compiling, such as "not enough arguments in call to iprot.ReadStructBegin"**
-* Based on Thrift v0.13, Kitex cannot be upgraded directly, as there is a breaking change in the interface of Apache Thrift v0.14. The reason for such problems could be that a new version of Thrift is pulled during upgrades. The use of -u parameters is not recommended during upgrades, you can run the following command to fix the version: "go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0"
+* Based on Thrift v0.13, Kitex cannot be upgraded directly, as there is a breaking change in the interface of Apache Thrift v0.14. The reason for such problems could be that a new version of Thrift is pulled during upgrades. The use of -u parameters is not recommended during upgrades, you can run the following command to fix the version: `go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0`
 
 ## Kitex Code Generation Tool
 

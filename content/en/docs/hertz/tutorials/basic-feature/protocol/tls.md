@@ -1,8 +1,9 @@
 ---
 title: "TLS"
 date: 2022-11-06
-weight: 4
-description: >
+weight: 5
+keywords: ["TLS", "HTTP"]
+description: "Hertz supports TLS secure transmission, helping users achieve data confidentiality and integrity."
 
 ---
 
@@ -50,6 +51,7 @@ In `tls.Config`, in addition to the above basic parameters, the parameters that 
 |      ClientCAs       | When `ClientAuth` is enabled, used to verify the authenticity of the client certificate.                                                                                                          |
 
 The main process of server-side TLS:
+
 1. Load the root certificate to verify the authenticity of the client.
 2. Load the server certificate to send to the client to verify the authenticity of the server.
 3. Configure `tls.Config`.
@@ -143,6 +145,7 @@ In `tls.Config`, in addition to the above basic parameters, the parameters that 
 |      RootCAs       | The certificate used by the client to authenticate the server.                  |
 
 The main process of client-side TLS:
+
 1. Load the root certificate to verify the authenticity of the server.
 2. Load the client certificate for sending to the server to verify the authenticity of the client.
 3. Configure `tls.Config`.
@@ -363,6 +366,7 @@ For a complete usage example, see [example](https://github.com/hertz-contrib/aut
 ### Client raise error not support tls
 
 Hertz uses `netpoll` as the network library by default and currently `netpoll` does not support TLS. To use TLS you need to switch to the standard network library with the following code:
+
 ```go
 import (
     "github.com/cloudwego/hertz/pkg/app/client"

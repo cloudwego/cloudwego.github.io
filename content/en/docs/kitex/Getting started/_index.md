@@ -8,33 +8,34 @@ description: "This document covers the preparation of the development environmen
 
 ## Prerequisites
 
-1. If you don't have the golang development environment set up, please follow [Install Go](https://golang.org/doc/install) to install go.
+1. If you don't have the golang development environment set up, please follow [Install Go](https://go.dev/doc/install) to install go.
 2. We strongly recommend that you use the latest version of golang. And compatibility is guaranteed within three latest minor release versions (currently >= **v1.16**).
 3. Make sure that `GO111MODULE` is set to `on`.
-4. Currently Windows is not well supported by Kitex, if your development environment is Windows it is recommended to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install).
+4. If you want to use Kitex in Windows, please make sure the version of kitex >= v0.5.2
 
 ## Quick Start
 
 This chapter will get you started with Kitex using a simple executable example.
 
-### Install the compiler
+### Install the CLI tool
 
 First of all, let's install the compilers we will be working with.
 
 1. Make sure the `GOPATH` environment variable is properly defined (e.g. `export GOPATH=~/go`), then add `$GOPATH/bin` to the `PATH` environment variable (e.g. `export PATH=$GOPATH/bin:$PATH`). Make sure that `GOPATH` is accessible.
-2. Install Kitex: `go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`.
-3. Install thriftgo: `go install github.com/cloudwego/thriftgo@latest`.
+2. Install kitex: `go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`.
+3. Install thriftgo (for Thrift protocol): `go install github.com/cloudwego/thriftgo@latest`.
 
 Now you can run `kitex --version` and `thriftgo --version` and you should see some output like below if you have successfully set up the compilers.
 
- ```shell
+```shell
 $ kitex --version
 vx.x.x
 
 $ thriftgo --version
 thriftgo x.x.x
 ```
-Tips: If you encounter any problems during the installation, it's probably because you haven't set up the golang development environment properly. In most cases you can search the error message to find a solution.
+
+Tips: If you encounter any problems during the installation, it's probably because you haven't set up the golang development environment properly. In most cases you can search for the error message to find a solution.
 
 ### Get the example
 
@@ -45,7 +46,7 @@ Tips: If you encounter any problems during the installation, it's probably becau
 
 #### Run with go
 
-1. change to the `hello` directory
+1. change to the `hello` directory. Hello is a simple example of Kitex using the Thrift protocol.
 
    `cd kitex-examples/hello`
 
@@ -66,6 +67,7 @@ Tips: If you encounter any problems during the installation, it's probably becau
 2. build the example project
 
    `docker build -t kitex-examples .`
+
 3. run the server
 
    `docker run --network host kitex-examples ./hello-server`
@@ -78,7 +80,7 @@ Congratulations! You have successfully used Kitex to complete an RPC.
 
 ### Add a new method
 
-Open `hello.thrift`, you will see the following code:
+Within `cd kitex-examples/hello` folder, open `hello.thrift`, you will see the following code:
 
 ```thrift
 namespace go api
@@ -185,7 +187,6 @@ for {
 
 Let's add the `add` RPC:
 
-
 ```go
 for {
         req := &api.Request{Message: "my request"}
@@ -211,14 +212,14 @@ Shut down the server and the client we ran. Then:
 
 1. run server
 
-    `go run .`
+   `go run .`
 
 2. run the client
 
-    Open another terminal and `go run ./client`.
+   Open another terminal and `go run ./client`.
 
-    Now you can see the output of the `add` RPC.
-    
+   Now you can see the output of the `add` RPC.
+
 ## Tutorial
 
 ### About Kitex
@@ -239,11 +240,11 @@ proto3 grammar: [Language Guide(proto3)](https://developers.google.com/protocol-
 
 Let's create a directory to setup project.
 
-`$ mkdir example`
+`$ mkdir example-server`
 
 enter directory
 
-`$ cd example`
+`$ cd example-server`
 
 ### Kitex compiler
 
@@ -253,7 +254,7 @@ enter directory
 
 You can use following command to install and upgrade `kitex`:
 
-`$ go install github.com/cloudwego/kitex/tool/cmd/kitex@latest`
+`$ go install -v github.com/cloudwego/kitex/tool/cmd/kitex@latest`
 
 After that, you can just run it to check whether it's installed successfully.
 
@@ -264,7 +265,6 @@ If you see some outputs like below, congratulation!
 `$ kitex`
 
 `No IDL file found.`
-
 
 If you see something like `command not found`, you should add `$GOPATH/bin` to `$PATH`. For detail, see chapter **Prerequisites** .
 
@@ -298,11 +298,16 @@ service Echo {
 
 We can use `kitex` compiler to compile the IDL file to generate whole project.
 
-`$ kitex -module example -service example echo.thrift`
+`$ kitex -module example -service example-server echo.thrift`
 
-`-module` indicates go module name of project，`-service` indicates expected to generate a executable service named `example`, the last parameter is path to IDL file.
+Note:
+
+- `-module` indicates go module name of project; full package name suggested, e.g. `github.com/YourName/exampleserver`
+- `-service` indicates expected to generate a executable service named `example`
+- the last parameter is path to IDL file.
 
 Generated project layout:
+
 ```
 .
 |-- build.sh
@@ -325,8 +330,9 @@ Generated project layout:
 ### Get latest Kitex
 
 Kitex expect project to use go module as dependency manager. It cloud be easy to upgrade Kitex:
+
 ```
-$ go get github.com/cloudwego/kitex@latest
+$ go get -v github.com/cloudwego/kitex@latest
 $ go mod tidy
 ```
 
@@ -356,7 +362,7 @@ package main
 
 import (
 	"context"
-	"example/kitex_gen/api"
+	"example/kitex_gen/api" // replace `example` with the value of `-module`
 )
 
 // EchoImpl implements the last service interface defined in the IDL.
@@ -390,7 +396,7 @@ Compile:
 
 `$ sh build.sh`
 
-There should be a `output` directory After you execute above command, which includes compilation productions   .
+There should be a `output` directory After you execute above command, which includes compilation productions .
 
 Run:
 
@@ -402,37 +408,47 @@ Now, `Echo` service is running!
 
 Let's write a client to call `Echo` server.
 
-create a directory as client package:
+Create a directory as client package:
 
 `$ mkdir client`
 
-enter directory:
+Enter directory:
 
 `$ cd client`
 
-create a `main.go` file.
+Generate code for clients with kitex (if this directory is under the `example-server` in previous section, you can skip this step since code for clients are already generated for kitex server):
+
+`$ kitex -module example echo.thrift`
+
+Note:
+
+1. To generate code for clients, don't specify the param `-service`; the code will be under directory `kitex_gen`;
+2. Full package name is suggested for the param `-module`, e.g. `github.com/YourName/exampleclient`
+
+Then create a `main.go` file with the following code.
 
 #### Create Client
 
 Let's new a `client` to do RPC：
 
 ```go
-import "example/kitex_gen/api/echo"
+import "example/kitex_gen/api/echo" // replace `example` with the value of `-module`
 import "github.com/cloudwego/kitex/client"
 ...
-c, err := echo.NewClient("example", client.WithHostPorts("0.0.0.0:8888"))
+c, err := echo.NewClient("example-server", client.WithHostPorts("0.0.0.0:8888"))
 if err != nil {
 	log.Fatal(err)
 }
 ```
-`echo.NewClient` is used to new a `client`, the first parameter is *service name*, the second parameter is *options* which is used to pass options. `client.WithHostPorts` is used to specify server address, see chapter **Basic Feature** for details.
+
+`echo.NewClient` is used to new a `client`, the first parameter is _service name_, the second parameter is _options_ which is used to pass options. `client.WithHostPorts` is used to specify server address, see chapter **Basic Feature** for details.
 
 #### Do RPC
 
 Let's write call code:
 
 ```go
-import "example/kitex_gen/api"
+import "example/kitex_gen/api" // replace `example` with the value of `-module`
 ...
 req := &api.Request{Message: "my request"}
 resp, err := c.Echo(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
@@ -441,6 +457,7 @@ if err != nil {
 }
 log.Println(resp)
 ```
+
 We new a request `req`, then we use `c.Echo` to do a RPC call.
 
 The first parameter `context.Context`, is used to transfer information or to control some call behaviors. You will see detailed usage in behind chapters.\

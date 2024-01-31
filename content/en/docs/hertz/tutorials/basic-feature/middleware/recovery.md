@@ -2,7 +2,8 @@
 title: "Recovery"
 date: 2022-12-15
 weight: 2
-description: >
+keywords: ["Recovery", "panic recovery"]
+description: "The Recovery middleware is preset by the Hertz framework to provide the feature of Panic recovery for the Hertz framework."
 
 ---
 
@@ -92,4 +93,3 @@ func main() {
 	h.Spin()
 }
 ```
-

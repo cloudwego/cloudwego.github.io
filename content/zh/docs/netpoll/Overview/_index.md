@@ -37,10 +37,7 @@ goroutine，大幅增加调度开销。此外，[net.Conn][net.Conn] 没有提�
     - 支持 Linux，macOS（操作系统）
 
 * **即将开源**
-    - [multisyscall][multisyscall] 支持批量系统调用
-    - [io_uring][io_uring]
     - Shared Memory IPC
-    - 串行调度 I/O，适用于纯计算
     - 支持 TLS
     - 支持 UDP
 
@@ -57,8 +54,8 @@ goroutine，大幅增加调度开销。此外，[net.Conn][net.Conn] 没有提�
 
 ## 参考
 
-* [官方网站](https://www.cloudwego.io/zh/)
-* [使用文档](https://www.cloudwego.io/zh/docs/netpoll/getting-started/)
+* [官方网站](/zh/)
+* [使用文档](/zh/docs/netpoll/getting-started/)
 
 [Netpoll]: https://github.com/cloudwego/netpoll
 [net]: https://github.com/golang/go/tree/master/src/net
@@ -78,8 +75,7 @@ goroutine，大幅增加调度开销。此外，[net.Conn][net.Conn] 没有提�
 [Redis]: https://redis.io
 [HAProxy]: http://www.haproxy.org
 
-[LinkBuffer]: nocopy_linkbuffer.go
+[LinkBuffer]: https://github.com/cloudwego/netpoll/blob/develop/nocopy_linkbuffer.go
 [gopool]: https://github.com/bytedance/gopkg/tree/develop/util/gopool
 [mcache]: https://github.com/bytedance/gopkg/tree/develop/lang/mcache
-[multisyscall]: https://github.com/cloudwego/multisyscall
 [io_uring]: https://github.com/axboe/liburing

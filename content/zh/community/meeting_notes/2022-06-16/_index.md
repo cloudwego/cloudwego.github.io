@@ -10,7 +10,7 @@ description: >
 
 **参会人** ：YangruiEmma, joway, yccpt, CoderPoet, GuangmingLuo, simon0-o, yiyun, bodhisatan, Jacob953, cyyolo, HeyJavaBean, Skyenought, Quan Hu, ppzqh, ZhangHanAA, Suo Dianjun, Yin Xuran
 
-**会前必读** ：http://www.cloudwego.io/；https://github.com/cloudwego
+**会前必读** ：[官网](/)；https://github.com/cloudwego
 
 ### 议程 1 ：Hertz 项目介绍 @Yin Xuran
 
@@ -45,7 +45,7 @@ description: >
 
 ### 议程 3：CloudWeGo “全新”社区页面介绍 @Skyenought @yiyun
 
-1. 地址：https://www.cloudwego.io/zh/community/
+1. 地址：/zh/community/
 2. 参考 Google Kubernetes 社区实现，从社区获得相应的图片和文字描述，进行组合。目前上线了中文页面，后续根据社区要求进行改动，比如不定时更新的近期活动可以拆成模板，方便更新。
 
 ---

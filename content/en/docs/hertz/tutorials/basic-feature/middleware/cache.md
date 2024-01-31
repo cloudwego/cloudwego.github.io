@@ -2,7 +2,8 @@
 title: "Cache"
 date: 2023-02-25
 weight: 15
-description: >
+keywords: ["HTTP Response", "Cache"]
+description: "Hertz provides the adaptation of cache, supporting multi-backend."
 
 ---
 
@@ -154,19 +155,55 @@ func main() {
 }
 ```
 
+### NewCacheByRequestURIWithIgnoreQueryOrder
+
+Create caching middleware that uses URIs as keys and ignores the order of query parameters
+
+Function Signature:
+
+```go
+func NewCacheByRequestURIWithIgnoreQueryOrder(defaultCacheStore persist.CacheStore, defaultExpire time.Duration, opts ...Option) app.HandlerFunc
+```
+
+Sample Code:
+
+```go
+func main() {
+    h := server.New()
+
+    memoryStore := persist.NewMemoryStore(1 * time.Minute)
+
+    h.Use(cache.NewCacheByRequestURIWithIgnoreQueryOrder(
+        memoryStore,
+        2*time.Second,
+        cache.WithCacheStrategyByRequest(func(ctx context.Context, c *app.RequestContext) (bool, cache.Strategy) {
+            return true, cache.Strategy{
+                CacheKey: c.Request.URI().String(),
+            }
+        }),
+    ))
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        c.String(http.StatusOK, "hello world")
+    })
+
+    h.Spin()
+}
+```
+
 ## Configuration
 
+### Generic Configuration
+
 | Configuration                 | Default | Description                                                  |
-| ----------------------------- | ------- | ------------------------------------------------------------ |
-| WithCacheStrategyByRequest    | nil     | Used to set custom caching policies                          |
+| :---------------------------- | ------- | ------------------------------------------------------------ |
 | WithOnHitCache                | nil     | Used to set the callback function after a cache hits         |
 | WithOnMissCache               | nil     | Used to set the callback function for cache misses           |
 | WithBeforeReplyWithCache      | nil     | Used to set the callback function before returning the cached response |
 | WithOnShareSingleFlight       | nil     | Used to set the callback function when the result of a SingleFlight is shared by the request |
 | WithSingleFlightForgetTimeout | 0       | Used to set the timeout for SingleFlight                     |
-| WithIgnoreQueryOrder          | false   | Used to set the order in which query parameters are ignored when using a URI as the cached Key |
 | WithPrefixKey                 | ""      | Used to set the prefix of the cache response key             |
 | WithoutHeader                 | false   | Used to set whether response headers need to be cached       |
+| WithCacheStrategyByRequest | nil     | Used to set custom caching policies |
 
 ### WithCacheStrategyByRequest
 
@@ -321,43 +358,6 @@ func main() {
         c.String(http.StatusOK, "hello world")
     })
 
-    h.Spin()
-}
-```
-
-### WithIgnoreQueryOrder
-
-Set the query parameter order of the URI to be ignored when creating a cache middleware using the `NewCacheByRequestURI` method by using `WithIgnoreQueryOrder`.
-
-Function Signature:
-
-```go
-func WithIgnoreQueryOrder(b bool) Option
-```
-
-Sample Code:
-
-```go
-func main() {
-    h := server.New()
-
-    memoryStore := persist.NewMemoryStore(1 * time.Minute)
-
-    h.Use(cache.NewCacheByRequestPath(
-        memoryStore,
-        60*time.Second,
-        cache.WithIgnoreQueryOrder(true),
-        cache.WithOnHitCache(func(c context.Context, ctx *app.RequestContext) {
-            hlog.Infof("hit cache IgnoreQueryOrder")
-        }),
-        cache.WithOnMissCache(func(c context.Context, ctx *app.RequestContext) {
-            hlog.Infof("miss cache IgnoreQueryOrder")
-        }),
-    ))
-    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
-        c.String(http.StatusOK, "hello world")
-    })
-    
     h.Spin()
 }
 ```

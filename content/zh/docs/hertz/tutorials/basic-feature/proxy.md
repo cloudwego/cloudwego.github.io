@@ -1,8 +1,9 @@
 ---
 title: "正向代理和反向代理"
 date: 2022-09-08
-weight: 9
-description: >
+weight: 12
+keywords: ["正向代理", "反向代理"]
+description: "Hertz 提供的正向代理和反向代理能力。"
 
 ---
 
@@ -14,7 +15,7 @@ description: >
 
 ### 安装
 
-hertz内置了访问正向代理的功能
+hertz 内置了访问正向代理的功能
 
 ### 定义
 
@@ -116,7 +117,7 @@ type ReverseProxy struct {
     errorHandler func(*app.RequestContext, error)
 }
 
-// NewSingleHostReverseProxy 返回一个新的反向代理来路由请求到指定后端。如果后端路径是 ”/base“ 请求路径是 ”/dir” ，目标路径将会是 “/base/dir” 。
+// NewSingleHostReverseProxy 返回一个新的反向代理来路由请求到指定后端。如果后端路径是”/base“请求路径是”/dir” ，目标路径将会是“/base/dir” 。
 // NewSingleHostReverseProxy 不会重写 Host 请求头。
 // 要想覆盖 Host 请求头，可以选择自定义 director
 func NewSingleHostReverseProxy(target string, opts ...config.Option) (*reverseProxy, error)
@@ -131,10 +132,10 @@ func NewSingleHostReverseProxy(target string, opts ...config.Option) (*reversePr
 
 | 方法                  | 描述                                  |
 |---------------------|-------------------------------------|
-| `SetDirector`       | 用于指定 protocol.Request               | 
-| `SetClient`         | 用于指定转发的客户端                          | 
-| `SetModifyResponse` | 用于指定响应修改方法                          | 
-| `SetErrorHandler`   | 用于指定处理到达后台的错误或来自 modifyResponse 的错误 | 
+| `SetDirector`       | 用于指定 protocol.Request               |
+| `SetClient`         | 用于指定转发的客户端                          |
+| `SetModifyResponse` | 用于指定响应修改方法                          |
+| `SetErrorHandler`   | 用于指定处理到达后台的错误或来自 modifyResponse 的错误 |
 
 ### 示例
 
@@ -175,6 +176,7 @@ func main() {
 > Netpoll 不支持 TLS，Client 需要使用标准网络库.
 
 代理 HTTPS 需要在额外做一些配置.
+
 - `NewSingleHostReverseProxy` 方法中使用 `WithDialer` 传递 `standard.NewDialer()` 指定标准网络库。
 - 使用 `SetClient` 设置一个使用标准网络库的 Hertz Client。
 
@@ -206,12 +208,42 @@ func main() {
 }
 ```
 
+### 反向代理 Websocket
+
+Websocket 反向代理，受 [fasthttp-reverse-proxy](https://github.com/yeqown/fasthttp-reverse-proxy) 启发。
+
+#### 示例
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/reverseproxy"
+)
+
+func main() {
+    h := server.Default()
+    h.GET("/backend", reverseproxy.NewWSReverseProxy("ws://example.com").ServeHTTP)
+    h.Spin()
+}
+```
+
+#### 配置
+
+| 配置             | 默认值                       | 描述           |
+|----------------|---------------------------|--------------|
+| `WithDirector` | `nil`                     | 自定义转发头       |
+| `WithDialer`   | `gorillaws.DefaultDialer` | 自定义 Dialer   |
+| `WithUpgrader` | `hzws.HertzUpgrader`      | 自定义 Upgrader |
+
 ### 更多示例
 
-| 用途      | 示例代码                                                                                      |
-|---------|-------------------------------------------------------------------------------------------|
-| 代理 tls  | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
-| 使用服务发现  | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
-| 配合中间件使用 | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+| 用途           | 示例代码                                                                                      |
+|--------------|-------------------------------------------------------------------------------------------|
+| 代理 tls       | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
+| 使用服务发现       | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
+| 配合中间件使用      | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+| 代理 websocket | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/websocket)      |
 
 更多使用方法可参考如下 [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy)。

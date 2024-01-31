@@ -10,7 +10,7 @@ description: >
 
 **参会人** ：li-jin-gou, liu-song, GuangmingLuo, pkumza, ag9920, lsjbd, sinnera, welkeyever, YangruiEmma, CoderPoet, stephenzhang0713, joway, Quan Hu, zstone12, Yin Xuran, bodhisatan, Suo Dianjun, Fan Guangyu, Jacob953, Zhang Guiyuan, ppzqh, HeyJavaBean, simon0-o, jayantxie, daidai21, baiyutang, rogerogers, Zhou Xinyi, skyenought, yiyun, cyyolo, baize, Sunxy88
 
-**会前必读** ：http://www.cloudwego.io/；https://github.com/cloudwego
+**会前必读** ：[官网](/)；https://github.com/cloudwego
 
 ### 议程 1：Kitex & Hertz 对接 sentinel-go 方案和实现介绍 @GuangmingLuo @skyenought
 

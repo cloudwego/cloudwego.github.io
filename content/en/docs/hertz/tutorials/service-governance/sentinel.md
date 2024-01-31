@@ -1,13 +1,12 @@
 ---
 title: "Sentinel"
 date: 2022-09-29
-weight: 5
-description: >
+weight: 2
+keywords: ["Service Governance", "Sentinel"]
+description: "Hertz provides hertz-contrib/opensergo, to facilitate the integration of sentinel-golang."
 ---
 
-## Introduction
-
-Hertz provides [hertz-contrib/opensergo](https://github.com/hertz-contrib/opensergo), to facilitate the integration of sentinel-golang
+Hertz provides [hertz-contrib/opensergo](https://github.com/hertz-contrib/opensergo), to facilitate the integration of sentinel-golang.
 
 ## Installation
 
@@ -74,7 +73,6 @@ func main() {
 #### WithServerBlockFallback
 
 `WithServerBlockFallback` sets the fallback handler when requests are blocked for server side.
-
 
 Sample Code:
 
@@ -159,6 +157,7 @@ func main() {
 `WithClientBlockFallback` sets the fallback handler when requests are blocked for client side.
 
 Sample Code:
+
 ```go
 package main
 

@@ -2,7 +2,8 @@
 title: "Casbin"
 date: 2023-02-06
 weight: 13
-description: >
+keywords: ["Casbin", "access control"]
+description: "According to the user's use scenario, we provide Casbin Middleware that adapted to Hertz."
 ---
 
 [Casbin](https://casbin.org/) is a powerful and efficient open-source access control library that supports various [access control models](https://en.wikipedia.org/wiki/Access_control#Access_control_models) ( such as `ACL/RBAC/ABAC`) for enforcing authorization across the board.
@@ -418,7 +419,7 @@ func main(){
 
 `expression` will be parsed like C-like artithmetic/string expression。
 
-**Attention**: 
+**Attention**:
 
 when using `CUSTOM`, use `WithPermissionParser` Option is forbidden, it is suggested using `WithPermissionParserSeparator` Option instead.
 

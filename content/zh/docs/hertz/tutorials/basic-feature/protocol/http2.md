@@ -2,7 +2,8 @@
 title: "HTTP2"
 date: 2022-12-15
 weight: 2
-description: >
+keywords: ["HTTP/2", "HTTP", "h2", "h2c"]
+description: "Hertz 同时支持 h2 和 h2c。参考了 net/http2 的实现。"
 ---
 
 HTTP/2 是对 HTTP "在线" 表达方式的一种替代。它并不是对协议的彻底重写；HTTP 方法、状态码和语义都是一样的，而且应该可以使用与 HTTP/1.x 相同的 API（可能会有一些小的补充）来表示协议。
@@ -164,7 +165,7 @@ func main() {
 	h.POST("/", func(c context.Context, ctx *app.RequestContext) {
 		var j map[string]string
 		_ = json.Unmarshal(ctx.Request.Body(), &j)
-		fmt.Printf("server çreceived request: %+v\n", j)
+		fmt.Printf("server received request: %+v\n", j)
 		r := map[string]string{
 			"msg": "hello world",
 		}
@@ -188,7 +189,7 @@ func main() {
 | 配置               | 默认值  | 介绍                                         |
 | :----------------- | :------ | -------------------------------------------- |
 | `ReadTimeout`      | `0`     | 建立连接后，从服务器读取到可用资源的超时时间 |
-| `DisableKeepAlive` | `false` | 是否关闭 `Keep-Alive`模式                    |
+| `DisableKeepAlive` | `false` | 是否关闭 `Keep-Alive` 模式                    |
 
 示例代码：
 
@@ -312,18 +313,18 @@ func WithDisableKeepAlive(disableKeepAlive bool) Option
 
 | 配置                         | 默认值                        | 介绍                                                               |
 | ---------------------------- | ----------------------------- | ------------------------------------------------------------------ |
-| `MaxHeaderListSize`          | `0`，指使用默认的限制（10MB） | 指 http2 规范中的`SETTINGS_MAX_HEADER_LIST_SIZE`。                 |
+| `MaxHeaderListSize`          | `0`，指使用默认的限制（10MB） | 指 http2 规范中的 `SETTINGS_MAX_HEADER_LIST_SIZE`。                 |
 | `AllowHTTP`                  | `false`                       | 设置是否允许 http，h2c 模式的开关                                  |
-| `ReadIdleTimeout`            | `0`，即不进行健康检查         | 若连接在该段时间间隔内未接收到任何帧，将使用`ping`帧进行健康检查。 |
-| `PingTimeout`                | `15s`                         | 超时时间，如果未收到对 `Ping `的响应，连接将在该超时时间后关闭。   |
+| `ReadIdleTimeout`            | `0`，即不进行健康检查         | 若连接在该段时间间隔内未接收到任何帧，将使用 `ping` 帧进行健康检查。 |
+| `PingTimeout`                | `15s`                         | 超时时间，如果未收到对 `Ping` 的响应，连接将在该超时时间后关闭。   |
 | `WriteByteTimeout`           | `0`                           | 若在该段时间间隔内未写入任何数据，将关闭连接。                     |
-| `StrictMaxConcurrentStreams` | `false`                       | 设置服务器的`SETTINGS_MAX_CONCURRENT_STREAMS`是否应该被全局使用。  |
+| `StrictMaxConcurrentStreams` | `false`                       | 设置服务器的 `SETTINGS_MAX_CONCURRENT_STREAMS` 是否应该被全局使用。  |
 | `DialTimeout`                | `1s`                          | 与主机建立新连接的超时时间。                                       |
 | `MaxIdleConnDuration`        | `0`                           | 闲置的长连接在该段时间后关闭。                                     |
 | `DisableKeepAlive`           | `false`                       | 是否在每次请求后关闭连接。                                         |
 | `Dialer`                     | `netpoll.NewDialer()`         | 用于设置拨号器。                                                   |
-| `TLSConfig`                  | `nil`                         | `TLS`配置                                                          |
-| `RetryConfig `               | `nil`                         | 所有与重试有关的配置                                               |
+| `TLSConfig`                  | `nil`                         | `TLS` 配置                                                          |
+| `RetryConfig`               | `nil`                         | 所有与重试有关的配置                                               |
 
 示例代码：
 
@@ -449,7 +450,7 @@ func main() {
 
 用于设置 `SETTINGS_MAX_HEADER_LIST_SIZE`。
 
-与 HTTP2 规范不同，这里的`0`表示使用默认限制（目前是 10MB）。如果想表示无限，可以设置为一个尽可能大的值（`0xffffffff` 或 `1<<32-1`）。
+与 HTTP2 规范不同，这里的 `0` 表示使用默认限制（目前是 10MB）。如果想表示无限，可以设置为一个尽可能大的值（`0xffffffff` 或 `1<<32-1`）。
 
 函数签名：
 
@@ -459,9 +460,9 @@ func WithMaxHeaderListSize(maxHeaderListSize uint32) ClientOption
 
 #### WithReadIdleTimeout
 
-用于设置读取超时时间，超时后将使用`ping`帧进行健康检查。
+用于设置读取超时时间，超时后将使用 `ping` 帧进行健康检查。
 
-注意，一个`ping`响应将被视为一个接收帧，所以如果连接上没有其他流量，健康检查将在每一个读取超时时间间隔内进行。
+注意，一个 `ping` 响应将被视为一个接收帧，所以如果连接上没有其他流量，健康检查将在每一个读取超时时间间隔内进行。
 
 默认值为 `0` 表示不执行健康检查。
 
@@ -483,7 +484,7 @@ func WithWriteByteTimeout(writeByteTimeout time.Duration) ClientOption
 
 #### WithStrictMaxConcurrentStreams
 
-用来设置服务器的`SETTINGS_MAX_CONCURRENT_STREAMS`是否应该被全局使用。
+用来设置服务器的 `SETTINGS_MAX_CONCURRENT_STREAMS` 是否应该被全局使用。
 
 函数签名：
 
@@ -493,7 +494,7 @@ func WithStrictMaxConcurrentStreams(strictMaxConcurrentStreams bool) ClientOptio
 
 #### WithPingTimeout
 
-设置`ping`响应的超时时间，如果未收到对 `Ping `的响应，连接将在该超时时间后关闭。
+设置 `ping` 响应的超时时间，如果未收到对 `Ping` 的响应，连接将在该超时时间后关闭。
 
 默认为 `15s`
 
@@ -515,7 +516,7 @@ func WithAllowHTTP(allow bool) ClientOption
 
 #### WithDialer
 
-支持自定义拨号器，默认为`netpoll.NewDialer()`。
+支持自定义拨号器，默认为 `netpoll.NewDialer()`。
 
 函数签名：
 
@@ -552,7 +553,7 @@ func WithDialTimeout(timeout time.Duration) ClientOption
 
 #### WithTLSConfig
 
-用于自定义 `TLS`配置。
+用于自定义 `TLS` 配置。
 
 函数签名：
 
@@ -562,7 +563,7 @@ func WithTLSConfig(tlsConfig *tls.Config) ClientOption
 
 #### WithMaxIdleConnDuration
 
-用于设置长连接的最长闲置时间，超过该时间后连接关闭。默认为`0`。
+用于设置长连接的最长闲置时间，超过该时间后连接关闭。默认为 `0`。
 
 函数签名：
 
@@ -572,7 +573,7 @@ func WithMaxIdleConnDuration(d time.Duration) ClientOption
 
 #### WithMaxIdempotentCallAttempts
 
-设置` idempotent calls`的最大尝试次数。
+设置`idempotent calls`的最大尝试次数。
 
 函数签名：
 
@@ -592,7 +593,7 @@ func WithRetryConfig(opts ...retry.Option) ClientOption
 
 #### WithClientDisableKeepAlive
 
-用于设置是否在每次请求后关闭连接。默认为`false`。
+用于设置是否在每次请求后关闭连接。默认为 `false`。
 
 函数签名：
 

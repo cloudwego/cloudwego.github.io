@@ -2,7 +2,8 @@
 title: "Request ID"
 date: 2022-10-01
 weight: 9
-description: >
+keywords: ["Request ID", "X-Request-ID"]
+description: "Hertz provides Request ID middleware that can operate on `X-Request-ID`."
 
 ---
 
@@ -124,7 +125,6 @@ Note: If you want to set up the request id in the request header, you need to ke
 Function signatures:
 
 ```go
-// HeaderStrKey is an alias for string
 func WithCustomHeaderStrKey(s HeaderStrKey) Option
 ```
 
@@ -169,7 +169,6 @@ The `requestid` middleware provides `WithGenerator` for custom Request ID value 
 Function signatures:
 
 ```go
-// Generator is an alias for func(ctx context.Context, c *app.RequestContext) string
 func WithGenerator(g Generator) Option
 ```
 
@@ -213,7 +212,6 @@ The `requestid` middleware provides `WithHandler` for custom Request ID handlers
 Function signatures:
 
 ```go
-// Handler is an alias for func(ctx context.Context, c *app.RequestContext, requestID string)
 func WithHandler(handler Handler) Option
 ```
 

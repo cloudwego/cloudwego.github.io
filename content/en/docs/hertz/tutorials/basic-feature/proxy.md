@@ -1,8 +1,9 @@
 ---
 title: "Forward Proxy and Reverse Proxy"
 date: 2022-09-08
-weight: 9
-description: >
+weight: 12
+keywords: ["Forward proxy", "Reverse proxy"]
+description: "Hertz provides forward and reverse proxy capabilities."
 
 ---
 
@@ -184,6 +185,7 @@ func main() {
 > Netpoll does not support TLS, Client needs to use standard network library.
 
 Proxying HTTPS requires some additional configuration.
+
 - Use `WithDialer` in the `NewSingleHostReverseProxy` method to pass `standard.NewDialer()` to specify the standard network library.
 - Use `SetClient` to set up a Hertz Client using the standard networking library.
 
@@ -215,6 +217,35 @@ func main() {
 }
 ```
 
+### Websocket Reverse Proxy
+
+Websocket reverse proxy for Hertz, inspired by [fasthttp-reverse-proxy](https://github.com/yeqown/fasthttp-reverse-proxy)
+
+#### Example
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/reverseproxy"
+)
+
+func main() {
+    h := server.Default()
+    h.GET("/backend", reverseproxy.NewWSReverseProxy("ws://example.com").ServeHTTP)
+    h.Spin()
+}
+```
+
+#### Configuration
+
+| Configuration  | Default                   | Description                  |
+|----------------|---------------------------|------------------------------|
+| `WithDirector` | `nil`                     | customize the forward header |
+| `WithDialer`   | `gorillaws.DefaultDialer` | for dialer customization     |
+| `WithUpgrader` | `hzws.HertzUpgrader`      | for upgrader customization   |
+
 ### More Examples
 
 | Purpose                 | Sample Code                                                                               |
@@ -222,5 +253,6 @@ func main() {
 | Proxy tls               | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
 | Using service discovery | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
 | Use with middleware     | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |
+| Proxy websocket         | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/websocket)      |
 
 For more usages, please refer to the following [examples](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy).

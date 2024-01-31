@@ -1,6 +1,7 @@
 ---
 date: 2021-11-24
 title: "RPC 框架 Kitex 实践入门：性能测试指南"
+projects: ["Kitex"]
 linkTitle: "RPC 框架 Kitex 实践入门：性能测试指南"
 keywords: ["Kitex", "性能测试", "压测", "RPC"]
 description: "本文介绍了如何使用 Kitex 进行性能测试，以及如何分析测试结果，有助于用户更好地结合真实 RPC 场景对 Kitex 进行调优，使之更贴合业务需要、发挥最佳性能。"
@@ -56,7 +57,7 @@ author: <a href="https://github.com/joway" target="_blank">Joway</a>
 
 对于 RPC 框架来说，不考虑服务治理的话，计算开销主要都集中在序列化与反序列化中。
 
-[Kitex][Kitex] 对于 Protobuf 的序列化使用的是官方的 [Protobuf](https://github.com/golang/protobuf) 库，对于 Thrift 的序列化，则专门进行了性能优化，这方面的内容在[官网博客](https://www.cloudwego.io/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/#thrift-%E5%BA%8F%E5%88%97%E5%8C%96%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BC%98%E5%8C%96)中有介绍。
+[Kitex][Kitex] 对于 Protobuf 的序列化使用的是官方的 [Protobuf](https://github.com/golang/protobuf) 库，对于 Thrift 的序列化，则专门进行了性能优化，这方面的内容在[官网博客](/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/#thrift-%E5%BA%8F%E5%88%97%E5%8C%96%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BC%98%E5%8C%96)中有介绍。
 
 当前开源框架大多优先支持 Protobuf，而部分框架内置使用的 Protobuf 其实是做了许多性能优化的 [gogo/protobuf](https://github.com/gogo/protobuf) 版本，但由于 gogo/protobuf 当前有[失去维护的风险](https://github.com/gogo/protobuf/issues/691)，所以出于可维护性角度考虑，我们依然决定只使用官方的 Protobuf 库，当然后续我们也会计划对 Protobuf 进行优化。
 

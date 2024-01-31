@@ -2,7 +2,8 @@
 title: "KeyAuth"
 date: 2022-09-22
 weight: 7
-description: >
+keywords: ["KeyAuth", "token authentication"]
+description: "Hertz provides the keyauth extension to help users achieve `token` authentication."
 
 ---
 
@@ -90,6 +91,7 @@ func main() {
 The `keyauth` extension provides `WithValidator` to help users set custom validation logic for `token` validation, which returns `true` and `nil` by default.
 
 Function signatures:
+
 ```go
 type KeyAuthValidatorHandler func(context.Context, *app.RequestContext, string) (bool, error)
 ```
@@ -128,6 +130,7 @@ func main() {
 ```
 
 ### WithSuccessHandler
+
 The `keyauth` extension provides `WithSuccessHandler` to help users set up custom processing logic for verifying that the `token` has passed.
 
 Sample Code:
@@ -165,11 +168,13 @@ func main() {
 The `keyauth` extension provides `WithErrorHandler` to help users set up custom handling logic for verifying `token` failures.
 
 Function signatures:
+
 ```go
 type KeyAuthErrorHandler func(context.Context, *app.RequestContext, error)
 ```
 
 Default logic:
+
 ```go
 func errHandler(c context.Context, ctx *app.RequestContext, err error) {
 	if err == ErrMissingOrMalformedAPIKey {

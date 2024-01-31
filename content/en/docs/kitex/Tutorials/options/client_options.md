@@ -47,6 +47,7 @@ func WithTransportProtocol(tp transport.Protocol) Option
 
 Set the transport protocol, configure the transport protocol on the message protocol. Thrift/KitexProtobuf can configure TTHeader, TTHeaderFramed, and Framed. In addition, Framed is not strictly a transmission protocol. In order to distinguish it for PurePayload, it is also configured as a transmission protocol. PurePayload means that there is no transmission protocol; if it is configured as GRPC, it means that the GRPC protocol is used. , the transmission protocol of GRPC is HTTP2, but for the convenience of users' understanding, it is directly used as the configuration of the transmission protocol. Note that configuring GRPC needs to use Protobuf to define Service. If GRPC is not configured, KitexProtobuf protocol is used by default.
 
+When WithTransportProtocol is not set, the default protocol is PurePayload
 
 ### WithShortConnection
 
@@ -54,7 +55,7 @@ Set the transport protocol, configure the transport protocol on the message prot
 func WithShortConnection() Option
 ```
 
-Enable short connections. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/connection_type/)
+Enable short connections. [More](/docs/kitex/tutorials/basic-feature/connection_type/)
 
 
 
@@ -64,7 +65,7 @@ Enable short connections. [More](https://www.cloudwego.io/docs/kitex/tutorials/b
 func WithLongConnection(cfg connpool.IdleConfig) Option
 ```
 
-Enable long connections. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/connection_type/)
+Enable long connections. [More](/docs/kitex/tutorials/basic-feature/connection_type/)
 
 
 
@@ -74,7 +75,7 @@ Enable long connections. [More](https://www.cloudwego.io/docs/kitex/tutorials/ba
 func WithMuxConnection(connNum int) Option
 ```
 
-Enable mux connections. Server side also need to turn on this option, or it won't work. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/connection_type/)
+Enable mux connections. Server side also need to turn on this option, or it won't work. [More](/docs/kitex/tutorials/basic-feature/connection_type/)
 
 
 
@@ -84,7 +85,7 @@ Enable mux connections. Server side also need to turn on this option, or it won'
 func WithMiddleware(mw endpoint.Middleware) Option
 ```
 
-Add a middleware that executes after service level circuit breaker and timeout middleware.  [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/middleware/)
+Add a middleware that executes after service level circuit breaker and timeout middleware.  [More](/docs/kitex/tutorials/framework-exten/middleware/)
 
 
 
@@ -94,7 +95,7 @@ Add a middleware that executes after service level circuit breaker and timeout m
 func WithInstanceMW(mw endpoint.Middleware) Option
 ```
 
-Add a middleware that executes after service discovery and load balance. If instance level circuit breaker exists, then it will execute after that. (If proxy is used, it will not be called, such as mesh mode). [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/middleware/)
+Add a middleware that executes after service discovery and load balance. If instance level circuit breaker exists, then it will execute after that. (If proxy is used, it will not be called, such as mesh mode). [More](/docs/kitex/tutorials/framework-exten/middleware/)
 
 
 
@@ -132,7 +133,7 @@ cbs.UpdateServiceCBConfig(key, config)
 cbs.UpdateInstanceCBConfig(key, config)
 ```
 
-For more details, please visit [Circuit Breaker](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/circuitbreaker/).
+For more details, please visit [Circuit Breaker](/docs/kitex/tutorials/service-governance/circuitbreaker/).
 
 ### WithFailureRetry
 
@@ -140,7 +141,7 @@ For more details, please visit [Circuit Breaker](https://www.cloudwego.io/docs/k
 func WithFailureRetry(p *retry.FailurePolicy) Option
 ```
 
-Set timeout retry rules, you can configure the maximum number of retries, the maximum time spent accumulated, the threshold of the retry circuit fault rate, the DDL abort and backoff policy. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/retry/)
+Set timeout retry rules, you can configure the maximum number of retries, the maximum time spent accumulated, the threshold of the retry circuit fault rate, the DDL abort and backoff policy. [More](/docs/kitex/tutorials/service-governance/retry/)
 
 
 
@@ -150,7 +151,7 @@ Set timeout retry rules, you can configure the maximum number of retries, the ma
 func WithBackupRequest(p *retry.BackupPolicy) Option
 ```
 
-Set the policy for Backup Request, which can configure the number of requests, circuit breaker abort, and link abort. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/retry/)
+Set the policy for Backup Request, which can configure the number of requests, circuit breaker abort, and link abort. [More](/docs/kitex/tutorials/service-governance/retry/)
 
 
 
@@ -160,7 +161,7 @@ Set the policy for Backup Request, which can configure the number of requests, c
 func WithRPCTimeout(d time.Duration) Option
 ```
 
-Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/timeout/)
+Set RPC timeout. [More](/docs/kitex/tutorials/service-governance/timeout/)
 
 
 
@@ -170,7 +171,7 @@ Set RPC timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feat
 func WithConnectTimeout(d time.Duration) Option
 ```
 
-Set connect timeout. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/timeout/)
+Set connect timeout. [More](/docs/kitex/tutorials/service-governance/timeout/)
 
 
 
@@ -210,7 +211,7 @@ Add some meta information to the client, such as idc, cluster, etc., for scenari
 func WithStatsLevel(level stats.Level) Optiong
 ```
 
-Set the stats level for client. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/tracing/)
+Set the stats level for client. [More](/docs/kitex/tutorials/observability/tracing/)
 
 
 
@@ -306,7 +307,7 @@ WithGRPCTLSConfig sets the TLS config to the connection options for Kitex gRPC c
 func WithSuite(suite Suite) Option
 ```
 
-Set up a specific configuration, customize according to the scene, configure multiple options and middlewares combinations and encapsulations in the Suite. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/suite/)
+Set up a specific configuration, customize according to the scene, configure multiple options and middlewares combinations and encapsulations in the Suite. [More](/docs/kitex/tutorials/framework-exten/suite/)
 
 
 
@@ -418,7 +419,7 @@ Set the error handler function, which is executed after the server handler is ex
 func WithGeneric(g generic.Generic) Option
 ```
 
-Specifie the generalization call type, which needs to be used in conjunction with the generalization Client/Server. [More](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/)
+Specifie the generalization call type, which needs to be used in conjunction with the generalization Client/Server. [More](/docs/kitex/tutorials/advanced-feature/generic-call/)
 
 
 
@@ -428,7 +429,7 @@ Specifie the generalization call type, which needs to be used in conjunction wit
 func WithACLRules(rules ...acl.RejectFunc) Option
 ```
 
-Set ACL permission access control, which is executed before service discovery. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
+Set ACL permission access control, which is executed before service discovery. [More](/docs/kitex/tutorials/service-governance/access_control/)
 
 
 
@@ -438,7 +439,7 @@ Set ACL permission access control, which is executed before service discovery. [
 func WithConnReporterEnabled() Option
 ```
 
-Enable connection pool reporter. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/connection_type/)
+Enable connection pool reporter. [More](/docs/kitex/tutorials/basic-feature/connection_type/)
 
 
 
@@ -460,7 +461,7 @@ Specifie client use RPC over http.
 func WithTracer(c stats.Tracer) Option
 ```
 
-Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/tracing/)
+Add an additional Tracer. [More](/docs/kitex/tutorials/observability/tracing/)
 
 
 
@@ -470,7 +471,7 @@ Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/s
 func WithResolver(r discovery.Resolver) Option
 ```
 
-Specifie a resolver to do service discovery. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/discovery/)
+Specifie a resolver to do service discovery. [More](/docs/kitex/tutorials/service-governance/service_discovery/)
 
 
 
@@ -480,7 +481,7 @@ Specifie a resolver to do service discovery. [More](https://www.cloudwego.io/doc
 func WithHTTPResolver(r http.Resolver) Option
 ```
 
-Set HTTP resolver. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/visit_directly/)
+Set HTTP resolver. [More](/docs/kitex/tutorials/basic-feature/visit_directly/)
 
 
 
@@ -490,7 +491,7 @@ Set HTTP resolver. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-fe
 func WithLoadBalancer(lb loadbalance.Loadbalancer, opts ...*lbcache.Options) Option 
 ```
 
-Set load balancer. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/loadbalance/)
+Set load balancer. [More](/docs/kitex/tutorials/service-governance/loadbalance/)
 
 
 
@@ -500,7 +501,7 @@ Set load balancer. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-fe
 func WithBoundHandler(h remote.BoundHandler) Option
 ```
 
-Add a new IO Bound handler. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/trans_pipeline/)
+Add a new IO Bound handler. [More](/docs/kitex/tutorials/framework-exten/trans_pipeline/)
 
 
 
@@ -510,7 +511,7 @@ Add a new IO Bound handler. [More](https://www.cloudwego.io/docs/kitex/tutorials
 func WithCodec(c remote.Codec) Option
 ```
 
-Specifie a Codec for scenarios that require custom protocol. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/codec/)
+Specifie a Codec for scenarios that require custom protocol. [More](/docs/kitex/tutorials/framework-exten/codec/)
 
 
 
@@ -520,7 +521,7 @@ Specifie a Codec for scenarios that require custom protocol. [More](https://www.
 func WithPayloadCodec(c remote.PayloadCodec) Option
 ```
 
-Specifie a PayloadCodec. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/codec/)
+Specifie a PayloadCodec. [More](/docs/kitex/tutorials/framework-exten/codec/)
 
 
 
@@ -530,7 +531,7 @@ Specifie a PayloadCodec. [More](https://www.cloudwego.io/docs/kitex/tutorials/fr
 func WithMetaHandler(h remote.MetaHandler) Option
 ```
 
-Add a meta handler for customizing transparent information in conjunction with the transport protocol, such as service name, invocation method, machine room, cluster, env, tracerInfo. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/transmeta/)
+Add a meta handler for customizing transparent information in conjunction with the transport protocol, such as service name, invocation method, machine room, cluster, env, tracerInfo. [More](/docs/kitex/tutorials/framework-exten/transmeta/)
 
 
 
@@ -550,7 +551,7 @@ Add a meta handler at the first position.
 func WithTransHandlerFactory(f remote.ClientTransHandlerFactory) Option 
 ```
 
-Set transHandlerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/transport/)
+Set transHandlerFactory. [More](/docs/kitex/tutorials/framework-exten/transport/)
 
 
 
@@ -560,7 +561,7 @@ Set transHandlerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/fr
 func WithDiagnosisService(ds diagnosis.Service) Option
 ```
 
-Set diagnosis service. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/diagnosis/)
+Set diagnosis service. [More](/docs/kitex/tutorials/framework-exten/diagnosis/)
 
 
 

@@ -1,25 +1,24 @@
 ---
 title: "Connection Type"
-date: 2021-09-28
+date: 2023-10-16
 weight: 5
 keywords: ["Kitex", "Short Connection", "Long Connection", "Connection Multiplexing"]
 description: "Kitex supports short connections, long connection pool, connection multiplexing and connection pool status monitoring."
 ---
 
 Kitex provides **Short Connection**,  **Long Connection Pool** and **Connection Multiplexing** for different business scenarios. 
-Kitex uses Long Connection Pool by default after v0.0.2, but adjusting the Pool Config according to your need is suggested.
+Kitex uses **Long Connection Pool by default** after v0.0.2, but adjusting the Pool Config according to your need is suggested.
 
 ## Short Connection
 
-Every request needs to create a connection, the performance is bad, so it is not suggested normally.
-
-Enable Short Connection：
+Every request needs to create a connection. The performance is bad, so it is not suggested in most cases. However, short connections should be used in some scenarios. For example, if there are too many instances on the caller side, it will increase the burden on callee services. Please choose according to the situation.
+To enable short connection：
 
 ```go
 xxxCli := xxxservice.NewClient("destServiceName", client.WithShortConnection())
 ```
 
-## Long Connection Pool
+## Long Connection Pool (Default)
 
 Kitex enable Long Connection Pool after >= v0.0.2, default config params are as below：
 
@@ -51,14 +50,14 @@ Parameter description:
 Each downstream address corresponds to a connection pool, the connection pool is a ring composed of connections, and the size of the ring is `MaxIdlePerAddress`.
 
 When getting a connection of downstream address, proceed as follows:
-1. Try to fetch a connection from the ring, if fetching failed (no idle connections remained), then try to establish a new connection. In other words, the number of connections may exceed `MaxIdlePerAddress`
+1. Try to fetch a connection from the pool, if fetching failed (no idle connections remained), then try to establish a new connection. In other words, the number of connections may exceed `MaxIdlePerAddress`
 2. If fetching succeed, then check whether the idle time of the connection (since the last time it was placed in the connection pool) has exceeded MaxIdleTimeout. If yes, this connection will be closed and a new connection will be created.
 
 When the connection is ready to be returned after used, proceed as follows:
 
 1. Check whether the connection is normal, if not, close it directly
 2. Check whether the idle connection number exceeds  `MaxIdleGlobal`, and if yes, close it directly
-3. Check whether free space remained in the ring of the target connection pool, if yes, put it into the pool, otherwise close it directly
+3. Check whether free space remained in the pool of the target connection pool. If yes, put it into the pool, otherwise close it directly
 
 ### Parameter Setting Suggestion
 
@@ -68,12 +67,13 @@ The setting of parameters is suggested as follows:
   - For example, the cost of each request is 100ms, and the request spread to each downstream address is 100QPS, the value is suggested to set to 10, because each connection handles 10 requests per second, 100QPS requires 10 connections to handle
   - In the actual scenario, the fluctuation of traffic is also necessary to be considered. Pay attention, the connection within MaxIdleTimeout will be recycled if it is not used
   - Summary: this value be set too large or too small would lead to degenerating to the short connection
-- `MinIdlePerAddress`: Assuming that there are periodic requests and the period is greater than `MaxIdleTimeout`, setting this parameter can avoid creating a new connection every time.
-  - The parameter consideration is similar to `MaxIdlePerAddress` and can be set according to the average latency of requests and the throughput.
-  - For example, if `MinIdlePerAddress` is set to 5 and the response time of each request is 100ms. 50 requests can be processed per second (50QPS) without creating a new connection.
 - `MaxIdleGlobal`: should be larger than the total number of `downstream targets number * MaxIdlePerAddress`
   - Notice: this value is not very valuable, it is suggested to set it to a super large value. In subsequent versions, considers discarding this parameter and providing a new interface
+  - Since v0.7.2, no limit for `MaxIdleGlobal` if not set. 
 - `MaxIdleTimeout`: since the server will clean up inactive connections within 10min, the client also needs to clean up long-idle connections in time to avoid using invalid connections. This value cannot exceed 10min when the downstream is also a Kitex service
+- `MinIdlePerAddress` (Kitex >= v0.4.3): Assuming that there are periodic requests and the period is greater than `MaxIdleTimeout`, setting this parameter can avoid creating a new connection every time.
+  - The parameter consideration is similar to `MaxIdlePerAddress` and can be set according to the average latency of requests and the throughput.
+  - For example, if `MinIdlePerAddress` is set to 5 and the response time of each request is 100ms. 50 requests can be processed per second (50QPS) without creating a new connection.
 
 ## Connection Multiplexing
 

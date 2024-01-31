@@ -1,8 +1,9 @@
 ---
 title: "Adaptor"
 date: 2023-01-11
-weight: 12
-description: >
+weight: 16
+keywords: ["Adaptor", "http.Request", "http.ResponseWriter", "net/http"]
+description: "Hertz provides access and related methods to Go standard library `http.Request` and `http.ResponseWriter`."
 
 ---
 

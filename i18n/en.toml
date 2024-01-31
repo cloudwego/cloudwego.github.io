@@ -75,3 +75,8 @@ other = "Please tell us how we can improve"
 other = "Were you looking for:"
 [error_page_title]
 other = "404, Page not found"
+
+[taxo.projects]
+title = 'Out projects'
+[taxo.page.header]
+projects = 'Projects'

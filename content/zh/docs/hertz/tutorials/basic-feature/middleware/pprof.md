@@ -2,13 +2,13 @@
 title: "Pprof"
 date: 2022-09-24
 weight: 7
-description: >
+keywords: ["pprof", "性能分析"]
+description: "Hertz 提供了 pprof 扩展，帮助用户对 Hertz 项目进行性能分析。"
 
 ---
 
 
 Hertz 提供了 [pprof](https://github.com/hertz-contrib/pprof) 扩展，帮助用户对 Hertz 项目进行性能分析，[pprof](https://github.com/hertz-contrib/pprof) 扩展的实现参考了 [Gin](https://github.com/gin-contrib/pprof) 的实现。
-
 
 ## 安装
 
@@ -98,7 +98,8 @@ RouteRegister(rg *route.RouterGroup, prefixOptions ...string)
 ```
 
 本方式注册后的 `pprof` 前缀为路由组的前缀与自定义前缀拼接后的结果。
-* 用户不指定前缀，注册后的 `pprof` 的前缀为路由组的前缀与默认前缀 `/debug/pprof` 拼接后的结果，即为 `/xxx/debug/pprof` （`xxx` 为路由组前缀）；
+
+* 用户不指定前缀，注册后的 `pprof` 的前缀为路由组的前缀与默认前缀 `/debug/pprof` 拼接后的结果，即为 `/xxx/debug/pprof`（`xxx` 为路由组前缀）；
 * 用户指定前缀，注册后的 `pprof` 的前缀为路由组的的前缀与自定义前缀拼接后的结果，比如下文示例中注册后的 `pprof` 前缀为 `/admin/pprof`。
 
 示例代码:
@@ -157,7 +158,7 @@ go tool pprof http://localhost:8888/debug/pprof/heap
 go tool pprof http://localhost:8888/debug/pprof/profile
 ```
 
-> 默认采样时间为 30s ，可通过查询字符串来自定义采样时间：
+> 默认采样时间为 30s，可通过查询字符串来自定义采样时间：
 
 ```bash
 go tool pprof http://localhost:8888/debug/pprof/profile?seconds=10
@@ -174,7 +175,6 @@ go tool pprof http://localhost:8888/debug/pprof/block
 ```bash
 wget http://localhost:8888/debug/pprof/trace?seconds=5
 ```
-
 
 ### 通过 `go tool pprof` 查看火焰图
 

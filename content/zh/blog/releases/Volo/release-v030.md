@@ -1,6 +1,7 @@
 ---
 title: "Volo 0.3.0 版本发布"
-linkTitle: "Release 0.3.0"
+linkTitle: "Release v0.3.0"
+projects: ["Volo"]
 date: 2022-12-22
 description: >
 ---
@@ -129,7 +130,7 @@ struct Item {
 }
 ```
 
-除此之外，Pilota 还支持了其它的 Annotation，详情可以参考：https://www.cloudwego.io/zh/docs/pilota/guide/annotation/
+除此之外，Pilota 还支持了其它的 Annotation，详情可以参考：[Pilota 支持的注解](/zh/docs/pilota/guide/annotation/)
 
 ## 完整 Release Note
 

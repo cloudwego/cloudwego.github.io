@@ -6,7 +6,7 @@ keywords: ["Kitex", "Server", "Option"]
 description: Kitex Server Option instructions.
 ---
 
-# Usage
+## Usage
 
 Add some options when creating a server：
 
@@ -16,9 +16,9 @@ svr := api.NewServer(new(DemoImpl), server.WithXXX...)
 
 
 
-# Basic Options
+## Basic Options
 
-#### WithServerBasicInfo
+### WithServerBasicInfo
 
 ```go
 func WithServerBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
@@ -29,7 +29,7 @@ It is strongly recommended to configure this option, and those infos will be use
 
 
 
-#### WithServiceAddr
+### WithServiceAddr
 
 ```go
 func WithServiceAddr(addr net.Addr) Option
@@ -46,27 +46,27 @@ When local server has multiple IP addresses, you can also use this method to spe
 
 
 
-#### WithMuxTransport
+### WithMuxTransport
 
 ```go
 func WithMuxTransport() Option
 ```
 
-Enable Kitex multiplexing transport feature on the server side. Client side also need to turn on this option, or it won't work.  [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/connection_type/)
+Enable Kitex multiplexing transport feature on the server side. Client side also need to turn on this option, or it won't work.  [More](/docs/kitex/tutorials/basic-feature/connection_type/)
 
 
 
-#### WithMiddleware
+### WithMiddleware
 
 ```go
 func WithMiddleware(mw endpoint.Middleware) Option
 ```
 
-Add a middleware.  [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/middleware/)
+Add a middleware.  [More](/docs/kitex/tutorials/framework-exten/middleware/)
 
 
 
-#### WithMiddlewareBuilder
+### WithMiddlewareBuilder
 
 ```go
 func WithMiddlewareBuilder(mwb endpoint.MiddlewareBuilder, funcName ...string) Option
@@ -76,7 +76,7 @@ Add middleware depends on the context passed in by the framework that contains r
 
 
 
-#### WithLimit
+### WithLimit
 
 ```go
 func WithLimit(lim *limit.Option) Option
@@ -86,7 +86,7 @@ Set the throttling threshold, which allows you to set a limit on QPS and the num
 
 
 
-#### WithReadWriteTimeout
+### WithReadWriteTimeout
 
 ```go
 func WithReadWriteTimeout(d time.Duration) Option
@@ -98,7 +98,7 @@ Note: This feature may be changed or removed in subsequent releases.
 
 
 
-#### WithExitWaitTime
+### WithExitWaitTime
 
 ```go
 func WithExitWaitTime(timeout time.Duration) Option
@@ -108,7 +108,7 @@ Set the wait time for graceful shutdown of graceful shutdown on the server side.
 
 
 
-#### WithMaxConnIdleTime
+### WithMaxConnIdleTime
 
 ```go
 func WithMaxConnIdleTime(timeout time.Duration) Option 
@@ -118,13 +118,13 @@ Set the maximum amount of idle time allowed for the server-side connection to th
 
 
 
-#### WithStatsLevel
+### WithStatsLevel
 
 ```go
 func WithStatsLevel(level stats.Level) Option
 ```
 
-Set the stats level for the server. [More](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/tracing/)
+Set the stats level for the server. [More](/docs/kitex/tutorials/observability/tracing/)
 
 
 
@@ -219,19 +219,19 @@ WithGRPCMaxHeaderListSize returns a ServerOption that sets the max (uncompressed
 
 
 
-# Advanced Options
+## Advanced Options
 
-#### WithSuite
+### WithSuite
 
 ```go
 func WithSuite(suite Suite) Option
 ```
 
-Set up a specific configuration, customize according to the scene, configure multiple options and middlewares combinations and encapsulations in the Suite. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/suite/)
+Set up a specific configuration, customize according to the scene, configure multiple options and middlewares combinations and encapsulations in the Suite. [More](/docs/kitex/tutorials/framework-exten/suite/)
 
 
 
-#### WithProxy
+### WithProxy
 
 ```go
 func WithProxy(p proxy.ReverseProxy) Option
@@ -241,27 +241,27 @@ If the server has a proxy, such as Mesh Ingress, you can modify the listening ad
 
 
 
-#### WithRegistryInfo
+### WithRegistryInfo
 
 ```go
 func WithRegistryInfo(info *registry.Info) Option
 ```
 
-Customize the registration information reported by the service. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/discovery/)
+Customize the registration information reported by the service. [More](/docs/kitex/tutorials/service-governance/service_discovery/)
 
 
 
-#### WithGeneric
+### WithGeneric
 
 ```go
 func WithGeneric(g generic.Generic) Option
 ```
 
-Specify the generalization call type, which needs to be used in conjunction with the generalization Client/Server. [More](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/)
+Specify the generalization call type, which needs to be used in conjunction with the generalization Client/Server. [More](/docs/kitex/tutorials/advanced-feature/generic-call/)
 
 
 
-#### WithErrorHandler
+### WithErrorHandler
 
 ```go
 func WithErrorHandler(f func(error) error) Option
@@ -271,17 +271,17 @@ Set the error handler function, which is executed after the server handler is ex
 
 
 
-#### WithACLRules
+### WithACLRules
 
 ```go
 func WithACLRules(rules ...acl.RejectFunc) Option
 ```
 
-Set ACL permission access control, which is executed before service discovery. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
+Set ACL permission access control, which is executed before service discovery. [More](/docs/kitex/tutorials/service-governance/access_control/)
 
 
 
-#### WithExitSignal
+### WithExitSignal
 
 ```go
 func WithExitSignal(f func() <-chan error) Option 
@@ -291,7 +291,7 @@ Set the server exit signal. Kitex has a built-in implementation, if you need som
 
 
 
-#### WithReusePort
+### WithReusePort
 
 ```go
 func WithReusePort(reuse bool) Option
@@ -301,69 +301,69 @@ Set port reuse, that is, whether to enable the underlying TCP port multiplexing 
 
 
 
-# Extended Options
+## Extended Options
 
-#### WithRegistry
+### WithRegistry
 
 ```go
 func WithRegistry(r registry.Registry) Option
 ```
 
-Specify a Registry for service discovery registration reporting. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/discovery/)
+Specify a Registry for service discovery registration reporting. [More](/docs/kitex/tutorials/service-governance/service_discovery/)
 
 
 
-#### WithTracer
+### WithTracer
 
 ```go
 func WithTracer(c stats.Tracer) Option
 ```
 
-Add an additional Tracer. [More](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/tracing/)
+Add an additional Tracer. [More](/docs/kitex/tutorials/observability/tracing/)
 
 
 
-#### WithCodec
+### WithCodec
 
 ```go
 func WithCodec(c remote.Codec) Option
 ```
 
-Specify a Codec for scenarios that require custom protocol. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/codec/)
+Specify a Codec for scenarios that require custom protocol. [More](/docs/kitex/tutorials/framework-exten/codec/)
 
 
 
-#### WithPayloadCodec
+### WithPayloadCodec
 
 ```go
 func WithPayloadCodec(c remote.PayloadCodec) Option
 ```
 
-Specifie a PayloadCodec. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/codec/)
+Specifie a PayloadCodec. [More](/docs/kitex/tutorials/framework-exten/codec/)
 
 
 
-#### WithMetaHandler
+### WithMetaHandler
 
 ```go
 func WithMetaHandler(h remote.MetaHandler) Option
 ```
 
-Add a meta handler for customizing transparent information in conjunction with the transport protocol, such as service name, invocation method, machine room, cluster, env, tracerInfo. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/transmeta/)
+Add a meta handler for customizing transparent information in conjunction with the transport protocol, such as service name, invocation method, machine room, cluster, env, tracerInfo. [More](/docs/kitex/tutorials/framework-exten/transmeta/)
 
 
 
-#### WithBoundHandler
+### WithBoundHandler
 
 ```go
 func WithBoundHandler(h remote.BoundHandler) Option
 ```
 
-Set IO Bound handlers. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/trans_pipeline/)
+Set IO Bound handlers. [More](/docs/kitex/tutorials/framework-exten/trans_pipeline/)
 
 
 
-#### WithConcurrencyLimiter
+### WithConcurrencyLimiter
 
 ```go
 func WithConcurrencyLimiter(conLimit limiter.ConcurrencyLimiter) Option
@@ -373,7 +373,7 @@ Set the concurrency limit for server.
 
 
 
-#### WithQPSLimiter
+### WithQPSLimiter
 
 ```go
 func WithQPSLimiter(qpsLimit limiter.RateLimiter) Option
@@ -383,7 +383,7 @@ Set the QPS limit for server.
 
 
 
-#### WithLimitReporter
+### WithLimitReporter
 
 ```go
 func WithLimitReporter(r limiter.LimitReporter) Option
@@ -393,30 +393,30 @@ Set LimitReporter, and when QPS throttling or connection limiting occurs, you ca
 
 
 
-#### WithTransHandlerFactory
+### WithTransHandlerFactory
 
 ```go
 func WithTransHandlerFactory(f remote.ServerTransHandlerFactory) Option
 ```
 
-Set transHandlerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/transport/)
+Set transHandlerFactory. [More](/docs/kitex/tutorials/framework-exten/transport/)
 
 
 
-#### WithTransServerFactory
+### WithTransServerFactory
 
 ```go
 func WithTransServerFactory(f remote.TransServerFactory) Option
 ```
 
-Set transServerFactory. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/transport/)
+Set transServerFactory. [More](/docs/kitex/tutorials/framework-exten/transport/)
 
 
 
-#### WithDiagnosisService
+### WithDiagnosisService
 
 ```go
 func WithDiagnosisService(ds diagnosis.Service) Option
 ```
 
-Set diagnosis service. [More](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/diagnosis/)
+Set diagnosis service. [More](/docs/kitex/tutorials/framework-exten/diagnosis/)

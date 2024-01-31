@@ -45,7 +45,7 @@ service EchoService {
 }
 ```
 
-The layout of generated code might be:
+The layout of generated code:
 
 ```
 .
@@ -60,7 +60,7 @@ The layout of generated code might be:
         └── k-echo.go
 ```
 
-The handler code in server side might be:
+The handler code on server side:
 
 ```go
 package main
@@ -93,7 +93,7 @@ func main() {
 
 #### PingPong
 
-The code in client side might be:
+The code on client side:
 
 ```go
 package main
@@ -120,7 +120,7 @@ func main() {
 
 #### Oneway
 
-The code in client side might be:
+The code on client side:
 
 ```go
 package main
@@ -147,12 +147,12 @@ func main() {
 
 ## Protobuf
 
-Kitex supports two kind of protocols that carries Protobuf payload:
+Kitex supports two kinds of protocols that carry Protobuf payload:
 
 - Kitex Protobuf
     - Only supports the PingPong type of messages. If any streaming method is defined in the IDL, the protocol will switch to gRPC.
 - The gRPC Protocol
-    - The protocol that shipped with gRPC.
+    - Be able to interoperate with gRPC. Use the same definition as gRPC service, and supports Unary (PingPong) and Streaming calls.
 
 ### Example
 
@@ -182,7 +182,7 @@ service EchoService {
 }
 ```
 
-The generated code might be:
+The generated code:
 
 ```
 .
@@ -196,7 +196,7 @@ The generated code might be:
             └── server.go
 ```
 
-The handler code in server side:
+The handler code on server side:
 
 ```go
 package main

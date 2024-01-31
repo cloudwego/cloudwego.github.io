@@ -10,7 +10,7 @@ description: >
 
 **参会人** ：GuangmingLuo, PureWhiteWu, ag9920, lsjbd, simon0-o, liu-song, ylck, CoderPoet, li-jin-gou, pkumza, jasondeng1997, Li Zheming, debug-LiXiwen, joway, Jacob953, Code:Z, HeyJavaBean, jayantxie, baiyutang, rogerogers, warthecatalyst, skyenought, baize, yiyun, Millione, ruokeqx
 
-**会前必读** ：http://www.cloudwego.io/；https://github.com/cloudwego
+**会前必读** ：[官网](/)；https://github.com/cloudwego
 
 ### 议程 1：CloudWeGo - Rust 开源项目集介绍 @PureWhiteWu
 

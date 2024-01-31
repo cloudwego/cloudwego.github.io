@@ -2,10 +2,11 @@
 title: "Casbin"
 date: 2023-02-06
 weight: 13
-description: >
+keywords: ["Casbin", "权限管理", "访问控制"]
+description: "针对用户的使用场景，提供 Casbin 中间件，对 Hertz 进行了适配。"
 ---
 
-[Casbin](https://casbin.org/) 是⼀个强⼤的、⾼效的开源访问控制框架，其权限管理机制支持常用的多种[访问控制模型](https://en.wikipedia.org/wiki/Access_control#Access_control_models)，如 `ACL/RBAC/ABAC` 等。可以实现灵活的访问权限控制。
+[Casbin](https://casbin.org/) 是⼀个强⼤的、⾼效的开源访问控制框架，其权限管理机制支持常用的多种 [访问控制模型](https://en.wikipedia.org/wiki/Access_control#Access_control_models)，如 `ACL/RBAC/ABAC` 等。可以实现灵活的访问权限控制。
 
 针对用户的使用场景，提供 [Casbin 中间件](https://github.com/hertz-contrib/casbin)，对 Hertz 进行了适配。
 
@@ -182,7 +183,7 @@ func (m *Middleware) exampleMiddlwareMethod(expression string, opts ...Option) a
 
 - **expression**
 
-    表达式含有一个或多个变量，变量之间用空格分隔，表达式的具体格式与`Logic`（见后文`选项说明`）相关，
+    表达式含有一个或多个变量，变量之间用空格分隔，表达式的具体格式与 `Logic`（见后文 `选项说明`）相关，
 
     表达式的计算最终值为 **True** or **False**，**True** 则代表通过鉴权中间件，**False** 则代表没有通过鉴权中间件，
 
@@ -198,7 +199,7 @@ func (m *Middleware) exampleMiddlwareMethod(expression string, opts ...Option) a
 
     | 选项                            | 介绍                                                         | 默认值                                                       |
     | ------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-    | `WithLogic`                     | `Logic` 是在 `expression` 中的逻辑操作(**AND**/**OR**/**CUSTOM**) | `AND`                                                        |
+    | `WithLogic`                     | `Logic` 是在 `expression` 中的逻辑操作 (**AND**/**OR**/**CUSTOM**) | `AND`                                                        |
     | `WithPermissionParser`          | `PermissionParserFunc` 是用于解析 `expression` 中变量得出 `obj` 和 `act` 的函数 | `PermissionParserWithSeparator(":")`                         |
     | `WithPermissionParserSeparator` | `PermissionParserSeparator` 是用于设置 `expression` 中变量内部的分隔符 | `:`                                                          |
     | `WithUnauthorized`              | `Unauthorized` 用于定义未通过授权中间件时的响应体（找不到访问实体） | `func(ctx context.Context, c *app.RequestContext) {    c.AbortWithStatus(consts.StatusUnauthorized) }` |
@@ -206,7 +207,7 @@ func (m *Middleware) exampleMiddlwareMethod(expression string, opts ...Option) a
 
 #### RequiresPermissions
 
-寻找访问实体（Subject）及通过方法中提供的参数 **expression** （表达式中变量说明见下）判断访问实体所含有的权限是否满足expression中的权限集合的关系。
+寻找访问实体（Subject）及通过方法中提供的参数 **expression** （表达式中变量说明见下）判断访问实体所含有的权限是否满足 expression 中的权限集合的关系。
 
 **expression** 中的变量为 [Model](https://casbin.org/docs/syntax-for-models) 中
 
@@ -224,7 +225,7 @@ r = sub, xxx, xxx
 r = sub, obj, act
 ```
 
-使用了默认的 `PermissionParser `时，**expression** 中的变量格式应该是：`"book:read"`。
+使用了默认的 `PermissionParser` 时，**expression** 中的变量格式应该是：`"book:read"`。
 
 如：
 
@@ -233,7 +234,7 @@ r = sub, obj, act
 r = sub, dom, obj, act
 ```
 
-使用了默认的 `PermissionParser `时，**expression** 中的变量格式应该是：`"book1.com:book:read"`。
+使用了默认的 `PermissionParser` 时，**expression** 中的变量格式应该是：`"book1.com:book:read"`。
 
 函数签名如下：
 
@@ -274,9 +275,9 @@ func main(){
 
 #### RequiresRoles
 
-寻找访问实体（Subject）及通过方法中提供的参数 `expression` （表达式中变量说明见下）判断访问实体所属的角色是否满足expression中的角色集合的关系。
+寻找访问实体（Subject）及通过方法中提供的参数 `expression`（表达式中变量说明见下）判断访问实体所属的角色是否满足 expression 中的角色集合的关系。
 
-`expression`中的变量为 [RBAC](https://casbin.org/docs/rbac) 中的 **rule** 集合
+`expression` 中的变量为 [RBAC](https://casbin.org/docs/rbac) 中的 **rule** 集合
 
 函数签名如下：
 
@@ -328,7 +329,7 @@ func main(){
 
 #### WithLogic
 
-`Logic` 是在 `expression` 中的逻辑操作(`AND`/`OR`/`CUSTOM`) 。
+`Logic` 是在 `expression` 中的逻辑操作 (`AND`/`OR`/`CUSTOM`) 。
 
 函数签名：
 
@@ -418,7 +419,7 @@ func main(){
 
 **CUSTOM**
 
-`expression` 为类C表达式。
+`expression` 为类 C 表达式。
 
 **注意**：
 
@@ -538,6 +539,7 @@ func main(){
     ...
 }
 ```
+
 #### WithUnauthorized
 
 `Unauthorized` 用于定义未通过授权中间件时的响应体（找不到访问实体，即 `LookupHandler` 返回的结果为空）。
@@ -609,4 +611,3 @@ func main(){
     ...
 }
 ```
-

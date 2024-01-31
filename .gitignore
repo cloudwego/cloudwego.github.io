@@ -17,3 +17,6 @@ tech-doc-hugo
 
 # hugo
 .hugo_build.lock
+
+# lock file
+package-lock.json

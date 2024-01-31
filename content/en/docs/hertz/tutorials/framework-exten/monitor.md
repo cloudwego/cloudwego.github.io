@@ -3,7 +3,8 @@ title: "Monitoring Extension"
 linkTitle: "Monitoring Extension"
 date: 2022-06-22
 weight: 1
-description: >
+keywords: ["Monitoring Extension"]
+description: "Monitoring extension provided by Hertz."
 
 ---
 

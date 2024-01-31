@@ -1,6 +1,7 @@
 ---
 date: 2022-08-30
 title: "国内首个基于 Rust 语言的 RPC 框架 — Volo 正式开源！"
+projects: ["Volo"]
 linkTitle: "国内首个基于 Rust 语言的 RPC 框架 — Volo 正式开源！"
 keywords: ["rust", "rpc", "volo", "开源", "GAT"]
 description: "本文介绍了字节跳动正式开源 Rust RPC 框架 — Volo，并着重介绍了项目的起源，主要特性以及相关生态。"
@@ -46,7 +47,7 @@ Tower：https://github.com/tower-rs/tower
 
 ![image](/img/blog/opensource_volo/1.png)
 
-由于使用了 Rust 的 GAT 特性，因此我们可以解决返回异步 Future 带来的生命周期问题。同时，如果配合 `type_alias_impl_trait` 使用，效果更佳，比如实现 Timeout 可以使用如下方式：
+由于使用了 Rust 的 GAT 特性，因此我们可以解决返回异步 Future 带来的生命周期问题。同时，如果配合 `impl_trait_in_assoc_type` 使用，效果更佳，比如实现 Timeout 可以使用如下方式：
 
 ![image](/img/blog/opensource_volo/2.png)
 
@@ -96,13 +97,13 @@ Rust 以难学难用而闻名，我们希望尽可能降低用户使用 [Volo][V
 
 ### 参考资料
 
-* Volo 概览: https://github.com/cloudwego/volo
+* [Volo 概览](https://github.com/cloudwego/volo)
 
-* Volo Tutorial: https://www.cloudwego.io/zh/docs/volo/
+* [Volo Tutorial](/zh/docs/volo/)
 
-* Volo 文档: https://docs.rs/volo
+* [Volo 文档](https://docs.rs/volo)
 
-* Volo-rs 组织: https://github.com/volo-rs
+* [Volo-rs 组织](https://github.com/volo-rs)
 
 [Kitex]: https://github.com/cloudwego/kitex
 [Volo]: https://github.com/cloudwego/volo

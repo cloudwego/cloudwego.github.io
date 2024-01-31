@@ -1,8 +1,9 @@
 ---
 date: 2022-06-21
 title: "字节跳动开源 Go HTTP 框架 Hertz 设计实践"
+projects: ["Hertz"]
 linkTitle: "字节跳动开源 Go HTTP 框架 Hertz 设计实践"
-keywords: ['Go', 'HTTP', 'Hertz', '架构设计', "功能特性"]
+keywords: ["Go", "HTTP", "Hertz", "架构设计", "功能特性"]
 description: "本文介绍了字节跳动开源 Go HTTP 框架 Hertz 的项目起源、架构设计、功能特性以及性能表现。"
 author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 ---
@@ -60,14 +61,14 @@ author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 即 `/a/b`， `/:c/d` 这两个路由不能够同时注册；甚至有一些更特殊的需求，如 `/a/b`、`/:c/b` ，当匹配 `/a/b` 路由时，两个路由都能够匹配上。
 
 [Hertz][Hertz] 为满足这些需求重新构造了路由树，用户在注册路由时拥有很高的自由度：支持静态路由、参数路由的注册；支持按优先级匹配，如上述例子会优先匹配静态路由 `/a/b`；支持路由回溯，
-如注册 `/a/b`、`/:c/d`，当匹配 `/a/d` 时仍然能够匹配上；支持尾斜线重定向，如注册 `/a/b`，当匹配 `/a/b/` 时能够重定向到  `/a/b` 上。
-[Hertz][Hertz] 提供了丰富的路由能力来满足用户的需求，更多的功能可以参考 [Hertz 配置文档](https://www.cloudwego.io/zh/docs/hertz/reference/config/)。
+如注册 `/a/b`、`/:c/d`，当匹配 `/a/d` 时仍然能够匹配上；支持尾斜线重定向，如注册 `/a/b`，当匹配 `/a/b/` 时能够重定向到 `/a/b` 上。
+[Hertz][Hertz] 提供了丰富的路由能力来满足用户的需求，更多的功能可以参考 [Hertz 配置文档](/zh/docs/hertz/reference/config/)。
 
 ### 协议层
 
 协议层负责不同协议的实现和扩展。
 
-[Hertz][Hertz] 支持[协议的扩展](https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/advanced-exten/protocol/)，用户只需要实现下面的接口便可以按照自己的需求在引擎（Engine）上扩展协议，
+[Hertz][Hertz] 支持[协议的扩展](/zh/docs/hertz/tutorials/framework-exten/protocol/)，用户只需要实现下面的接口便可以按照自己的需求在引擎（Engine）上扩展协议，
 同时也支持通过 ALPN 协议协商的方式注册。[Hertz][Hertz] 首批只开源了 HTTP1 实现，未来会陆续开源 HTTP2、QUIC 等实现。
 协议层扩展提供的灵活性甚至可以超越 HTTP 协议的范畴，用户完全可以按需注册任意符合自身需求的协议层实现，并且加入到 [Hertz][Hertz] 的引擎中来，同时，也能够无缝享受到传输层带来的极致性能。
 
@@ -81,7 +82,7 @@ author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 为此 [Hertz][Hertz] 底层同时支持基于 Golang 标准网络库的实现适配，同时支持网络库的一键切换，用户可根据自己的需求选择合适的网络库进行替换。如果用户有更加高效的网络库或其他网络库需求，也完全可以根据需求自行扩展。
 
 **网络库的扩展**：
-https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/advanced-exten/network-lib/
+[网络库扩展](/zh/docs/hertz/tutorials/framework-exten/network-lib/)
 
 ### Hz 脚手架
 
@@ -122,15 +123,15 @@ Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，
 
 ### 流式处理
 
-[Hertz][Hertz] 提供 Server 和 Client 的流式处理能力。HTTP  的文件场景是十分常见的场景，除了 Server 侧的上传场景之外，Client 的下载场景也十分常见。
+[Hertz][Hertz] 提供 Server 和 Client 的流式处理能力。HTTP 的文件场景是十分常见的场景，除了 Server 侧的上传场景之外，Client 的下载场景也十分常见。
 为此，[Hertz][Hertz] 支持了 Server 和 Client 的流式处理。在内部网关场景中，从 Gin 迁移到 [Hertz][Hertz] 后，CPU 使用量随流量大小不同可节省 30%—60% 不等，服务压力越大，收益越大。
-[Hertz][Hertz] 开启流式功能的方式也很容易，只需要在 Server 上或 Client 上添加一个配置即可，可参考 CloudWeGo 官网 Hertz 文档的[流式处理](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/stream/)部分。
+[Hertz][Hertz] 开启流式功能的方式也很容易，只需要在 Server 上或 Client 上添加一个配置即可，可参考 CloudWeGo 官网 Hertz 文档的 [Server 流式处理](/zh/docs/hertz/tutorials/basic-feature/engine/#流式处理) 部分和 [Client 流式处理](/zh/docs/hertz/tutorials/basic-feature/client/#流式读响应内容) 部分。
 
 由于 [Netpoll][Netpoll] 采用 LT 的触发模式，由网络库主动将将数据从 TCP 缓冲区读到用户态，并存储到 buffer 中，否则 epoll 事件会持续触发。
 因此 Server 在超大请求的场景下，由于 [Netpoll][Netpoll] 持续将数据读到用户态内存中，可能会有 OOM 的风险。HTTP 文件上传场景就是一个典型的场景，但 HTTP 上传服务又是很常见的场景，
 因此我们支持标准网络库 go net，并针对 [Hertz][Hertz] 做了特殊优化，暴露出 Read() 接口，防止 OOM 发生。
 
-对于 Client，情况并不相同。流式场景下会将连接封装成 Reader 暴露给用户，而Client 有连接池管理，那这样连接就多了一种状态，何时关连接，何时复用连接成了一个问题。
+对于 Client，情况并不相同。流式场景下会将连接封装成 Reader 暴露给用户，而 Client 有连接池管理，那这样连接就多了一种状态，何时关连接，何时复用连接成了一个问题。
 由于框架侧并不知道该连接何时会用完，框架侧复用该连接不现实，会导致串包问题。由于 GC 会关闭连接，因此我们起初设想流式场景下的连接交由用户后，由 GC 负责关闭，这样也不会导致资源泄漏。
 但是在测试后发现，由于 GC 存在一定时间间隔，另外 TCP 中主动关闭连接的一方需要等待 2RTT，在高并发场景下会导致 fd 被打满的情况。
 最终我们提供了复用连接的接口，对于性能有场要求用户，在使用完连接后可以将连接重新放入连接池中复用。
@@ -138,7 +139,7 @@ Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，
 ## 05 性能表现
 
 [Hertz][Hertz] 使用字节跳动自研高性能网络库 [Netpoll][Netpoll]，在提高网络库效率方面有诸多实践，参考已发布文章 **字节跳动在 Go 网络库上的实践** 。
-除此之外，[Netpoll][Netpoll] 还针对 HTTP 场景进行优化，通过减少拷贝和系统调用次数提高吞吐以及降低时延。为了衡量 [Hertz][Hertz] 性能指标，我们选取了社区中有代表性的框架 Gin（net/http）和 Fasthttp 作为对比，如图3所示。
+除此之外，[Netpoll][Netpoll] 还针对 HTTP 场景进行优化，通过减少拷贝和系统调用次数提高吞吐以及降低时延。为了衡量 [Hertz][Hertz] 性能指标，我们选取了社区中有代表性的框架 Gin（net/http）和 Fasthttp 作为对比，如图 3 所示。
 可以看到，[Hertz][Hertz] 的极限吞吐、TP99 等指标均处于业界领先水平。未来，[Hertz][Hertz] 还将继续和 [Netpoll][Netpoll] 深度配合，探索 HTTP 框架性能的极限。
 
 ![image](/img/blog/Go_HTTP_Hertz/Fasthttp.png)
@@ -147,7 +148,7 @@ Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，
 图3  Hertz 和其他框架性能对比
 </p>
 
-## 06 一个Demo
+## 06 一个 Demo
 
 下面简单演示一下 [Hertz][Hertz] 是如何开发一个服务的。
 
@@ -159,7 +160,7 @@ Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，
 
 ![image](/img/blog/Go_HTTP_Hertz/Hz.png)
 
-3. 填充业务逻辑，比如我们返回  `hello，${Name}`，那我们在 `biz/handler/example/hello_service.go`  中添加以下代码即可。
+3. 填充业务逻辑，比如我们返回 `hello，${Name}`，那我们在 `biz/handler/example/hello_service.go` 中添加以下代码即可。
 
 ![image](/img/blog/Go_HTTP_Hertz/Hello_service.png)
 
@@ -175,13 +176,13 @@ Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，
 
 ## 07 后记
 
-希望以上的分享能够让大家对 [Hertz][Hertz] 有一个整体上的认识。同时，我们也在不断地迭代 [Hertz][Hertz]、完善CloudWeGo 整体生态。欢迎各位感兴趣的同学们加入我们，共同建设 CloudWeGo。
+希望以上的分享能够让大家对 [Hertz][Hertz] 有一个整体上的认识。同时，我们也在不断地迭代 [Hertz][Hertz]、完善 CloudWeGo 整体生态。欢迎各位感兴趣的同学们加入我们，共同建设 CloudWeGo。
 
 ## 08 参考资料
 
-**Hertz Doc**：https://www.cloudwego.io/zh/docs/hertz/
+[**Hertz Doc**](/zh/docs/hertz/)
 
-官网文章：[**字节跳动在 Go 网络库上的实践** ](https://www.cloudwego.io/zh/blog/2021/10/09/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)
+[**字节跳动在 Go 网络库上的实践** ](/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)
 
 [Hertz]: https://github.com/cloudwego/hertz
 [Kitex]: https://github.com/cloudwego/kitex

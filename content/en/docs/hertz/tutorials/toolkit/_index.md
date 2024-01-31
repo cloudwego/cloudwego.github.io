@@ -1,6 +1,7 @@
 ---
-title: "hz command line tool"
-weight: 5
-description: >
+title: "hz Code Generation"
+weight: 6
+keywords: ["hz Code Generation"]
+description: "The code generation tool hz provided by Hertz."
 
 ---

@@ -1,11 +1,10 @@
 ---
 title: "Sentinel"
 date: 2022-09-29
-weight: 5
-description: >
+weight: 2
+keywords: ["治理特性", "Sentinel"]
+description: "Hertz 提供了 hertz-contrib/opensergo, 以方便用户集成 sentinel-golang。"
 ---
-
-## 简介
 
 Hertz 提供了 [hertz-contrib/opensergo](https://github.com/hertz-contrib/opensergo), 以方便用户集成 sentinel-golang。
 
@@ -23,13 +22,13 @@ go get github.com/hertz-contrib/opensergo
 
 ### sentinel-golang
 
-关于 sentinel-golang 的基本配置, 详情参考[文档](https://sentinelguard.io/zh-cn/docs/golang/quick-start.html)
+关于 sentinel-golang 的基本配置，详情参考 [文档](https://sentinelguard.io/zh-cn/docs/golang/quick-start.html)
 
 ### 服务端
 
 #### SentinelServerMiddleware
 
-`SentinelServerMiddleware()` 返回 `app.HandlerFunc` 类型, 用于将 sentinel-golang 集成进入 hertz server
+`SentinelServerMiddleware()` 返回 `app.HandlerFunc` 类型，用于将 sentinel-golang 集成进入 hertz server
 
 默认资源名称为 {method}:{path}，如 "GET:/api/users/:id", 默认 block 时返回 429 状态码
 
@@ -106,7 +105,7 @@ func main() {
 
 #### SentinelClientMiddleware
 
-`SentinelClientMiddleware()` 返回一个 `client.Middleware` 类型, 用于将 sentinel-golang 集成进入 hertz client
+`SentinelClientMiddleware()` 返回一个 `client.Middleware` 类型，用于将 sentinel-golang 集成进入 hertz client
 
 默认的资源名格式为 {method}:{path}, 例如 "GET:/api/users", 默认 block 时返回 `blockError`
 
@@ -162,7 +161,7 @@ func main() {
 #### WithClientBlockFallback
 
 `WithClientBlockFallback` 为设置请求被阻断时的自定义回调函数，可以通过 `context.Context`, `protocol.Request`
-, `protocol.Response` 来进行错误日志打印等功能, 也可以通过自定义回调处理 `error` 来进行自定义错误处理。
+, `protocol.Response` 来进行错误日志打印等功能，也可以通过自定义回调处理 `error` 来进行自定义错误处理。
 
 示例代码：
 

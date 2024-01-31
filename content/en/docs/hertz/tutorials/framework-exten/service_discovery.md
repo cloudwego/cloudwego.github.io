@@ -2,14 +2,18 @@
 title: "Service Registration and Service Discovery Extensions"
 date: 2022-08-14
 weight: 3
-description: >
+keywords: ["Service Registration and Service Discovery Extensions", "Service Registration Extension", "Service Discovery Extension", "Load Balancing Extension"]
+description: "Service Registration and Service Discovery Extensions provided by Hertz."
 ---
 
 ## Service Registration Extension
+
 Hertz supports custom registration extensions, you can extend it to integrate other registries, which are defined under pkg/app/server/registry.
 
 ### Interface and Info Definition
+
 - Interface Definition
+
 ```go
 // Registry is extension interface of service registry.
 type Registry interface {
@@ -17,7 +21,9 @@ type Registry interface {
 	Deregister(info *Info) error
 }
 ```
+
 - Info Definition
+
 ```go
 // Info is used for registry.
 // The fields are just suggested, which is used depends on design.
@@ -48,6 +54,7 @@ type Info struct {
 ## Service Discovery Extension
 
 ### Interface Definition
+
 Hertz supports custom discovery extensions, you can extend it to integrate other registries, which are defined under pkg/app/server/discovery.
 
 ```go
@@ -93,6 +100,7 @@ Specify custom service discovery extensions by using the Discovery middleware pr
 ```
 
 ### Note
+
 - We improve performance by reusing Resolver in a way that requires the Resolver method implementation to be concurrency-safe.
 
 ## Load Balancing Extension
@@ -100,6 +108,7 @@ Specify custom service discovery extensions by using the Discovery middleware pr
 Hertz provides a WeightedRandom load balancing implementation by default, and also supports a custom load balancing implementation defined under pkg/app/client/loadbalance.
 
 ### Interface Definition
+
 ```go
     // Loadbalancer picks instance for the given service discovery result.
     type Loadbalancer interface {

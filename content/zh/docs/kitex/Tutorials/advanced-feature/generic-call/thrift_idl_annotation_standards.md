@@ -2,7 +2,7 @@
 title: "Thrift-HTTP 映射的 IDL 规范"
 date: 2022-05-21
 author: 王景佩
-weight: 1
+weight: 3
 description: >
 ---
 
@@ -107,7 +107,7 @@ struct BizResponse {
     // 一级key = 'rsp_items'
     3: optional i32 v_enum  (api.none = 'true') // 该注解value通常写true，其它情况与不写该注解等价
     4: optional list<RspItem> rsp_item_list  (api.body = 'rsp_item_list')
-    // 业务自己指定了HTTPCode,  如果没有指定, baseResp.StatuCode=0 -> HTTPCode=200,  其他 HTTPCode=500  
+    // 业务自己指定了HTTPCode,  如果没有指定, baseResp.StatusCode=0 -> HTTPCode=200,  其他 HTTPCode=500  
     5: optional i32 http_code  (api.http_code = 'true')    //对应 response HTTP Code
     6: optional list<i64> item_count (api.header = 'item_count') // 当设置header时以逗号相隔的列表
     7: optional string token (api.cookie = 'token') // 对应 response Cookie 字段
