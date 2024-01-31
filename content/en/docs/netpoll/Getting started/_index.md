@@ -54,8 +54,7 @@ etc.
 
 params:
 
-* `OnRequest` is an interface that users should implement by themselves to process business
-  logic. [Code Comment][netpoll.go] describes its behavior in detail.
+* `OnRequest` and `OnConnect` are interface that users should implement by themselves to process business logic. [Code Comment][eventloop.go] describes their behavior in detail.
 * `Option` is used to customize the configuration when creating `EventLoop`, and the following example shows its usage.
   For more details, please refer to [options][netpoll_options.go].
 
@@ -76,6 +75,7 @@ func main() {
 	eventLoop, _ := netpoll.NewEventLoop(
 		handle,
 		netpoll.WithOnPrepare(prepare),
+		netpoll.WithOnConnect(connect),
 		netpoll.WithReadTimeout(time.Second),
 	)
 	...
@@ -315,12 +315,12 @@ func main() {
 
 [Examples]: https://github.com/cloudwego/netpoll-examples
 
-[server-example]: https://github.com/cloudwego/netpoll-examples/blob/main/server.go
+[server-example]: https://github.com/cloudwego/netpoll-examples/blob/main/echo/server.go
 
-[client-example]: https://github.com/cloudwego/netpoll-examples/blob/main/client.go
-
-[netpoll.go]: https://github.com/cloudwego/netpoll/blob/main/netpoll.go
+[client-example]: https://github.com/cloudwego/netpoll-examples/blob/main/echo/client.go
 
 [netpoll_options.go]: https://github.com/cloudwego/netpoll/blob/main/netpoll_options.go
 
 [nocopy.go]: https://github.com/cloudwego/netpoll/blob/main/nocopy.go
+
+[eventloop.go]: https://github.com/cloudwego/netpoll/blob/main/eventloop.go
