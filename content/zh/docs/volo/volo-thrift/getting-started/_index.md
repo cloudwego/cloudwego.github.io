@@ -8,21 +8,26 @@ description: "Volo-Thrift 开发环境准备、快速上手与基础教程。"
 
 ## Part 1. 安装命令行工具
 
-Volo 提供了同名的命令行工具，用来初始化项目、管理 IDL 等。目前 Volo 工具需要使用 nightly rust 安装，我们可以通过以下命令来安装 Volo：
+Volo 提供了同名的命令行工具，用来初始化项目、管理 IDL 等。
 
 ```bash
 rustup default nightly
 ```
+
 ```bash
 cargo install volo-cli
 ```
 
+> 需要 rust 版本>= 1.75.0
+
 随后，我们输入：
+
 ```bash
 volo help
 ```
 
 就能看到类似以下输出啦：
+
 ```bash
 USAGE:
     volo [OPTIONS] <SUBCOMMAND>
@@ -42,6 +47,7 @@ SUBCOMMANDS:
 ## Part 2. 创建一个 Thrift Server
 
 Volo-Thrift 是一个 RPC 框架，既然是 RPC，底层就需要两大功能：
+
 1. Serialization 序列化
 2. Transport 传输
 
@@ -63,11 +69,12 @@ Thrift IDL 是一套跨语言的全栈式 RPC 解决方案，具体的语法可�
 ```bash
 mkdir volo-example && cd volo-example
 ```
+
 ```bash
-mkdir idl && vim idl/volo_example.thrift
+mkdir idl && touch idl/volo_example.thrift
 ```
 
-随后，我们输入以下内容：
+随后，使用您喜欢的文本编辑器输入以下内容：
 
 ```thrift
 namespace rs volo.example

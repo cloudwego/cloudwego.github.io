@@ -8,14 +8,13 @@ description: "This document covers the preparation of the development environmen
 
 ## Part 1. Install the CLI Tool
 
-Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more. To install volo tool, you need to switch to `nightly` channel and run the following command:
+Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more.
 
-```bash
-rustup default nightly
-```
 ```bash
 cargo install volo-cli
 ```
+
+> Make sure that the Rust version is >= 1.75.0
 
 Then run:
 
@@ -24,6 +23,7 @@ volo help
 ```
 
 You should see something like the following:
+
 ```bash
 USAGE:
     volo [OPTIONS] <SUBCOMMAND>
@@ -64,11 +64,12 @@ In your working directory, execute the following command:
 ```bash
 mkdir volo-example && cd volo-example
 ```
+
 ```bash
-mkdir idl && vim idl/volo_example.proto
+mkdir idl && touch idl/volo_example.proto
 ```
 
-Then, enter the following content:
+Subsequently, use your favorite text editor to enter the following content:
 
 ```protobuf
 syntax = "proto3";

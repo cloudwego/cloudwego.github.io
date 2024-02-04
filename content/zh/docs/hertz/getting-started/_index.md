@@ -8,7 +8,7 @@ description: "Hertz 开发环境准备、快速上手与代码生成工具 hz �
 
 ## 准备 Golang 开发环境
 
-1. 如果您之前未搭建 Golang 开发环境，可以参考 [Golang 安装](https://golang.org/doc/install)。
+1. 如果您之前未搭建 Golang 开发环境，可以参考 [Golang 安装](https://go.dev/doc/install)。
 2. 推荐使用最新版本的 Golang，或保证现有 Golang 版本 >= 1.16。小于 1.16 版本，可以自行尝试使用但不保障兼容性和稳定性。
 3. 确保打开 go mod 支持 (Golang >= 1.15 时，默认开启)。
 

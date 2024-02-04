@@ -27,42 +27,7 @@ Therefore, the precautions of corresponding tools also need to be followed, such
 
 ## Using
 
-cwgo supports two generation methods of interactive command line and static command line. And **weakened the concept of new and update**, just input the previous command directly when updating.
-
-## Interactive command line
-
-The interactive command line supports one call to generate all codes, such as Server, Client, and DB, which meets the needs of most users. Users only need to enter information according to the prompts.
-
-Syntax: `cwgo init`
-
-After executing `cwgo init`, it will first ask for the type of project that needs to be generated, and multiple choices are supported. As shown in the figure below, server and client are selected
-
-![generate_type](/img/docs/cwgo_generate_type.png)
-
-After pressing Enter, the server and client information will be asked in turn. Proceed as follows
-
-1. Select the service type, RPC or HTTP. single choice.
-
-1. Enter a service name. required.
-
-1. Enter the go module name. Required outside GOPATH, not required inside GOPATH.
-
-1. Enter the idl path. required.
-
-1. Whether to use the default configuration to generate the project
-
-   1. Default configuration: no service discovery component, no other parameters
-   1. Non-default configuration: select the service discovery component; enter the parameters passed to the generation tool
-
-The questions asked by the client are roughly the same as those asked by the server. The difference is that the number of generated clients will be asked first, and then the information of each client will be input in a loop.
-
-The information requested by db is:
-
-1. Select the database type. radio
-1. Enter the database DSN. required
-1. Choose whether to use the default configuration to generate the project. If you choose No, you will be asked to enter the parameters to pass to the build tool
-
-For parameters passed to the tool, refer to [documentation](/docs/hertz/tutorials/toolkit/command/) for hz and [documentation](/docs/kitex/tutorials/code-gen/code_generation/) for kitex.
+cwgo supports static command line. And **weakened the concept of new and update**, just input the previous command directly when updating.
 
 ## Static command line
 
@@ -77,7 +42,6 @@ USAGE:
     cwgo [global options] command [command options] [arguments...]
 
 COMMANDS:
-    init interactive command line
     server generates RPC or HTTP Server
     client generates RPC or HTTP Client
     model generate DB Model

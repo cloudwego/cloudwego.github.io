@@ -29,6 +29,8 @@ This example is based on thrift, and protoc is similar to it.
 >But for the client scenario, one annotation has been added,
 >api.base_domain: specifies the default request domain to access.
 
+**Warn**: When the `api.any` annotation is used, the client automatically generates client code for the `post` method to replace `any`.
+
 ```thrift
 namespace go toutiao.middleware.hertz_client
 

@@ -9,12 +9,16 @@ description: "Generic Call basic usage"
 
 ## Supported Scenarios
 
-1. Binary Generic Call: for traffic transit scenario
-2. HTTP Mapping Generic Call: for API Gateway scenario
-3. Map Mapping Generic Call
-4. JSON Mapping Generic Call
+- Thrift  
+    1. Binary Generic Call: for traffic transit scenario
+    2. HTTP Mapping Generic Call: for API Gateway scenario
+    3. Map Mapping Generic Call
+    4. JSON Mapping Generic Call 
+- Protobufs
+    1. JSON Mapping Generic Call
 
-## Example of Usage
+## Example of Thrift Usage
+
 
 ### 1. Binary Generic
 
@@ -711,6 +715,190 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
         return  "{\"Msg\": \"world\"}", nil
 }
 
+```
+
+## Example of Protobufs Usage
+
+### 1. JSON Mapping Generic Call 
+
+Users can construct JSON string requests or responses according to their specifications, and Kitex will handle the translation of JSON to and from their respective Protocol Buffers messages.
+
+#### Build JSON
+
+##### Type Mapping Table
+
+The Mapping between Golang and Protocol Buffers:
+
+| **Protocol Buffers Type**   | **Golang Type**     |
+| --------------------------- | ------------------- |
+| float                       | float32             |
+| double                      | float64             |
+| int32                       | int32               |
+| int64                       | int64               |
+| uint32                      | uint32              |
+| uint64                      | uint64              |
+| sint32                      | int32               |
+| sint64                      | int64               |
+| fixed32                     | uint32              |
+| fixed64                     | uint64              |
+| sfixed32                    | int32               |
+| sfixed64                    | uint64              |
+| bool                        | bool                |
+| string                      | string              |
+| bytes                       | byte[]              |  
+
+Also supports lists and dictionaries in json, mapping them to repeated V and map<K,V> in protobufs.
+Does not support Protobuf special fields, such as Enum, Oneof, etc.;  
+  
+##### Example  
+
+Take the following IDL as an example： 
+
+```proto
+syntax = "proto3";
+package api;
+// The greeting service definition.
+option go_package = "api";
+
+message Request {
+  string message = 1;
+}
+
+message Response {
+  string message = 1;
+}
+
+service Echo {
+  rpc EchoPB (Request) returns (Response) {}
+}
+```
+
+The request construction is as follows：
+
+```go
+req := `{"message": "hello"}`  
+```
+
+##### Client Usage
+
+- **Request**
+
+Type：JSON string
+
+- **Response**
+
+Type：JSON string
+
+```go
+package main
+
+import (
+	"context"
+	dproto "github.com/cloudwego/dynamicgo/proto"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/client/genericclient"
+	"github.com/cloudwego/kitex/pkg/generic"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/transport"
+)
+
+const serverHostPort = "127.0.0.1:9999"
+
+func main() {
+	var err error
+
+	path := "./YOUR_IDL_PATH"
+
+	// initialise DynamicGo proto.ServiceDescriptor
+	dOpts := dproto.Options{}
+	p, err := generic.NewPbFileProviderWithDynamicGo(path, context.Background(), dOpts)
+	if err != nil {
+		panic(err)
+	}
+
+	// create generic client
+	g, err := generic.JSONPbGeneric(p)
+	if err != nil {
+		panic(err)
+	}
+
+	var opts []client.Option
+	opts = append(opts, client.WithHostPorts(serverHostPort))
+	opts = append(opts, client.WithTransportProtocol(transport.TTHeader))
+
+	cli, err := genericclient.NewClient("server_name_for_discovery", g, opts...)
+	if err != nil {
+		panic(err)
+	}
+
+	jReq := `{"message": "hello"}`
+
+	ctx := context.Background()
+
+	jRsp, err := cli.GenericCall(ctx, "EchoPB", jReq)
+	klog.CtxInfof(ctx, "genericJsonCall: jRsp(%T) = %s, err = %v", jRsp, jRsp, err)
+}
+```
+
+##### Server Usage
+
+- **Request**
+
+Type：JSON string
+
+- **Response**
+
+Type：JSON string
+
+```go
+package main
+
+import (
+	"context"
+	dproto "github.com/cloudwego/dynamicgo/proto"
+	"github.com/cloudwego/kitex/pkg/generic"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/server"
+	"github.com/cloudwego/kitex/server/genericserver"
+	"net"
+)
+
+const serverHostPort = "127.0.0.1:9999"
+
+func WithServiceAddr(hostPort string) server.Option {
+	addr, _ := net.ResolveTCPAddr("tcp", hostPort)
+	return server.WithServiceAddr(addr)
+}
+
+type GenericEchoImpl struct{}
+
+func (g *GenericEchoImpl) GenericCall(ctx context.Context, method string, request interface{}) (response interface{}, err error) {
+	buf := request.(string)
+	return buf, nil
+}
+
+func main() {
+	var opts []server.Option
+	opts = append(opts, WithServiceAddr(serverHostPort))
+
+	path := "./YOUR_IDL_PATH"
+
+	dOpts := dproto.Options{}
+	p, err := generic.NewPbFileProviderWithDynamicGo(path, context.Background(), dOpts)
+
+	if err != nil {
+		panic(err)
+	}
+	g, err := generic.JSONPbGeneric(p)
+
+	opts = append(opts, WithServiceAddr(serverHostPort))
+
+	svr := genericserver.NewServer(new(GenericEchoImpl), g, opts...)
+
+	if err := svr.Run(); err != nil {
+		klog.Infof(err.Error())
+	}
+}
 ```
 
 ## IDLProvider
