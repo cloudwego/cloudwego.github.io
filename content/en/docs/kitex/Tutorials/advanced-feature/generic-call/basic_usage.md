@@ -174,7 +174,7 @@ The `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` integrates
 
 In Kitex, the `generic.Generic` interface represents a generic call, with different implementations for different types of generic calls. A `Generic` instance is required when creating both clients and servers.
 
-## Client-Side Interfacce
+## Client-Side Interface
 
 ### Create Client
 
