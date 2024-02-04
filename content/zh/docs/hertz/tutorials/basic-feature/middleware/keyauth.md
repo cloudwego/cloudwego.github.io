@@ -48,7 +48,7 @@ func main() {
 
 ### WithFilter
 
-`keyauth` 扩展提供了 `WithFilter` 用于帮助用户设置自定义过滤逻辑用于跳过 `keyauth`扩展，默认为 `nil`，不跳过。
+`keyauth` 扩展提供了 `WithFilter` 用于帮助用户设置自定义过滤逻辑用于跳过 `keyauth` 扩展，默认为 `nil`，不跳过。
 
 Filter 函数签名如下:
 

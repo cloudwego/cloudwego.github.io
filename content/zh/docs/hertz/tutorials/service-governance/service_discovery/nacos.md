@@ -140,7 +140,7 @@ func main() {
 
 ### NewNacosRegistry
 
-`NewNacosRegistry`使用 nacos 创建一个可配置客户端的服务注册中心，需要传入自行配置的客户端。可自定义服务注册中心配置。
+`NewNacosRegistry` 使用 nacos 创建一个可配置客户端的服务注册中心，需要传入自行配置的客户端。可自定义服务注册中心配置。
 
 函数签名：
 
@@ -394,7 +394,6 @@ func main() {
 - nacos/v2 的服务注册与发现和先前的版本兼容
 - nacos-sdk-go v2 版本中 constant.ClientConfig 中 CustomLogger 类型被移除
 - nacos/v2 只支持 nacos 2.X 版本
-
 
 ## 配置
 
