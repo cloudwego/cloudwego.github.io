@@ -67,7 +67,7 @@ if err != nil {
 
 `generic.NewThriftFileProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
-#### Pb
+#### Protobuf
 
 提供了一个方法解析本地 `proto` 文件，需要传入 IDL 路径，`context.Context` 以及可选 `option` 参数，参数详情见 [dynamicgo proto idl](https://github.com/cloudwego/dynamicgo/blob/main/proto/idl.go)
 
@@ -117,7 +117,7 @@ if err != nil {
 
 `generic.NewThriftContentProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
-#### Pb
+#### Protobuf
 
 简单示例（为最小化展示 Path 构造，并非真实的 IDL）：
 
@@ -187,7 +187,7 @@ if err != nil {
 
 Ktiex 中使用 `generic.Generic` 接口表示泛化调用，不同泛化调用类型有不同实现。在创建客户端或服务端时都需要传入 `Generic` 实例。
 
-## 客户端泛化调用
+## 客户端接口
 
 ### 创建客户端
 
@@ -203,7 +203,7 @@ Ktiex 中使用 `generic.Generic` 接口表示泛化调用，不同泛化调用�
 
 说明：传入目标服务名，Generic 对象，自定义服务信息与可选 Option 参数，返回泛化调用客户端。Option 参数详见 [Client Option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/client_options/)。
 
-## 服务端泛化调用
+## 服务端接口
 
 ### 泛化调用服务对象
 
@@ -277,6 +277,12 @@ type Generic interface {
 
 说明：传入 IDL Provider 与可选 Option 参数，返回 HTTP 泛化调用对象，Option 参数详见下文。
 
+#### HTTPPbThriftGeneric
+
+函数签名：`func HTTPPbThriftGeneric(p DescriptorProvider, pbp PbDescriptorProvider) (Generic, error)`
+
+说明：传入 Thrift IDL Provider 与 Protobuf IDL Provider，返回可解析 Body 数据类型为 Protobuf 的 HTTP 请求，调用 Thrift 服务的泛化调用对象。
+
 ### JSON 泛化调用
 
 应用场景：如接口测试平台，解析用户构造的 JSON 数据后发送请求到 RPC 服务并获取响应结果。
@@ -299,7 +305,7 @@ type Generic interface {
 
 函数签名：`func JSONPbGeneric(p PbDescriptorProviderDynamicGo, opts ...Option) (Generic, error)`
 
-说明：传入 IDL Provider 与可选 Option 参数，返回 Pb JSON 泛化调用对象，Option 参数详见下文。
+说明：传入 IDL Provider 与可选 Option 参数，返回 Protobuf JSON 泛化调用对象，Option 参数详见下文。
 
 ### Map 泛化调用
 
@@ -982,7 +988,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-#### Pb
+#### Protobuf
 
 ##### 类型映射
 

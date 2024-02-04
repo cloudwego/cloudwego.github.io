@@ -54,7 +54,7 @@ if err != nil {
 
 The `generic.NewThriftFileProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
-#### Pb
+#### Protobuf
 
 A method is provided to parse local `proto` files, which requires passing the IDL path, `context.Context`, and optional `option` parameters. For detailed information about the parameters, please refer to [dynamicgo proto idl](https://github.com/cloudwego/dynamicgo/blob/main/proto/idl.go).
 
@@ -104,7 +104,7 @@ if err != nil {
 
 The `generic.NewThriftContentProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
-#### Pb
+#### Protobuf
 
 A simple example (to minimize display, the path construction is not a real IDL):
 
@@ -174,7 +174,7 @@ The `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` integrates
 
 In Kitex, the `generic.Generic` interface represents a generic call, with different implementations for different types of generic calls. A `Generic` instance is required when creating both clients and servers.
 
-## Client-Side Generic Call
+## Client-Side Interfacce
 
 ### Create Client
 
@@ -190,7 +190,7 @@ Function signature: `func NewClientWithServiceInfo(destService string, g generic
 
 Description: This function requires the target service name, a Generic object, custom service information, and optional Option parameters to return a generic call client. For details on Option parameters, see [Client Option](https://www.cloudwego.io/docs/kitex/tutorials/options/client_options/)
 
-## Server-Side Generic Call
+## Server-Side Interface
 
 ### Generic Call Service Object
 
@@ -264,6 +264,12 @@ Function signature: `func HTTPThriftGeneric(p DescriptorProvider, opts ...Option
 
 Description: Takes an IDL Provider and optional Option parameters to return an HTTP generic call object. Details of Option parameters are provided later in the text.
 
+#### HTTPPbThriftGeneric
+
+Function signature: `func HTTPPbThriftGeneric(p DescriptorProvider, pbp PbDescriptorProvider) (Generic, error)`
+
+Description: Takes a Thrift IDL Provider and a Protobuf IDL Provider to return an HTTP generic call object capable of parsing body in Protobuf format.
+
 ### JSON Generic Call
 
 Use case: For scenarios like interface testing platforms, where users' constructed JSON data is parsed and sent as requests to RPC services to obtain response results.
@@ -286,7 +292,7 @@ Description: Takes an IDL Provider to return a Thrift JSON generic call object, 
 
 Function signature: `func JSONPbGeneric(p PbDescriptorProviderDynamicGo, opts ...Option) (Generic, error)`
 
-Description: Takes an IDL Provider and optional Option parametersand optional Option parameters to return a Pb JSON generic call object. Details of Option parameters are provided later in the text.
+Description: Takes an IDL Provider and optional Option parametersand optional Option parameters to return a Protobuf JSON generic call object. Details of Option parameters are provided later in the text.
 
 ### Map Generic Call
 
@@ -968,7 +974,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-#### Pb
+#### Protobuf
 
 ##### Type Mapping
 
