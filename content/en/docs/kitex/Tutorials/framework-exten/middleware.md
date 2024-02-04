@@ -137,7 +137,7 @@ type wrappedStream struct {
 }
 
 func (w *wrappedStream) RecvMsg(m interface{}) error {
-	    err := w.Stream.RecvMsg(m)
+        err := w.Stream.RecvMsg(m)
         log.Printf("Receive a message: %T(%v)", m, m)
         return err
 }
