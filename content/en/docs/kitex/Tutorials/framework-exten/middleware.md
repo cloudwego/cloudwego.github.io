@@ -12,6 +12,7 @@ Kitex, as a lightweight RPC framework, offers powerful extensibility and primari
 Middleware is a relatively low level of extension. Most of the Kitex-based extension and secondary development functions are based on middleware to achieve. Kitex's Middleware is defined in `pkg/endpoint/endpoint.go`, the most important of which are two types:
 
 1. `Endpoint` is a function that accepts ctx, req, resp and returns err. Please refer to the following "Example" code.
+
 2. Middleware (hereinafter referred to as MW) is also a function that receives and returns an Endpoint.
 ```go
 type Middleware func(Endpoint) Endpoint
@@ -37,12 +38,17 @@ Middlewares are used in a chained manner. By invoking the provided next function
 
 #### Call Sequence
 
-   1. XDS routing, service level circuit breaker, timeout
-   2. Middlewares set by `client.WithContextMiddlewares`
-   3. Middlewares set by `client.WithMiddleware`
-   4. ACLMiddleware, see [Customized Access Control](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
-   5. Service Discovery , Instance circuit breaker , Instance-Level Middleware/Service Discovery, Proxy Middleware
-   6. Error handler set by `client.WithErrorHandler`
+1. XDS routing, service level circuit breaker, timeout
+
+2. Middlewares set by `client.WithContextMiddlewares`
+
+3. Middlewares set by `client.WithMiddleware`
+
+4. ACLMiddleware, see [Customized Access Control](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
+
+5. Service Discovery , Instance circuit breaker , Instance-Level Middleware/Service Discovery, Proxy Middleware
+
+6. Error handler set by `client.WithErrorHandler`
 
 The above can be seen in [client.go](https://github.com/cloudwego/kitex/blob/develop/client/client.go)
 
@@ -64,9 +70,11 @@ Note: Context Middleware executes before middleware set by `client.WithMiddlewar
 
 #### Call Sequence
 
-  1. Middleware set by `server.WithMiddleware`
-  2. ACLMiddleware, see [Customized Access Control](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
-  3. Error handler set by `client.WithErrorHandler`
+1. Middleware set by `server.WithMiddleware`
+
+2. ACLMiddleware, see [Customized Access Control](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
+
+3. Error handler set by `client.WithErrorHandler`
 
 The above can be seen in [server.go](https://github.com/cloudwego/kitex/blob/develop/server/server.go)
 ### Example

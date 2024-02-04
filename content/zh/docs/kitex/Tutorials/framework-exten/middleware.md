@@ -14,6 +14,7 @@ middleware 是一种比较 low level 的扩展方式，大部分基于 Kitex 的
 Kitex 的中间件定义在 `pkg/endpoint/endpoint.go` 中，其中最主要的是两个类型：
 
 1. Endpoint 是一个函数，接受 ctx、req、resp ，返回 err，可参考下文「示例」代码；
+
 2. Middleware（下称 MW ）也是一个函数，接收同时返回一个 Endpoint。
 ```go
 type Middleware func(Endpoint) Endpoint
@@ -38,13 +39,17 @@ type Middleware func(Endpoint) Endpoint
 
 #### 调用顺序
 
-  1. xDS 路由、服务级别熔断、超时
+1. xDS 路由、服务级别熔断、超时
 
-      2. `client.WithContextMiddlewares` 设置的中间件
-      3. `client.WithMiddleware` 设置的中间件，按其在 Option 中的设置顺序执行
-      4. ACLMiddleware，参见[自定义访问控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/access_control/)
-      5. 服务发现、实例熔断、实例级 Middleware / 服务发现、代理 Middleware
-      6. `client.WithErrorHandler` 设置的中间件
+2. `client.WithContextMiddlewares` 设置的中间件
+
+3. `client.WithMiddleware` 设置的中间件，按其在 Option 中的设置顺序执行
+
+4. ACLMiddleware，参见[自定义访问控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/access_control/)
+
+5. 服务发现、实例熔断、实例级 Middleware / 服务发现、代理 Middleware
+
+6. `client.WithErrorHandler` 设置的中间件
 
 以上可以详见 [client.go](https://github.com/cloudwego/kitex/blob/develop/client/client.go)
 #### Context 中间件
@@ -65,9 +70,11 @@ Context 中间件的引入是为了提供一种能够全局或者动态注入 Cl
 
 #### 调用顺序
 
-  1. `server.WithMiddleware` 设置的中间件，按其在 Option 中的设置顺序执行
-  2. ACLMiddleware，参见[自定义访问控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/access_control/)
-  3. `server.WithErrorHandler` 设置的中间件
+1. `server.WithMiddleware` 设置的中间件，按其在 Option 中的设置顺序执行
+
+2. ACLMiddleware，参见[自定义访问控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/access_control/)
+
+3. `server.WithErrorHandler` 设置的中间件
 
 以上可以详见[server.go](https://github.com/cloudwego/kitex/blob/develop/server/server.go)
 
