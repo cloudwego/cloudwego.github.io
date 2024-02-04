@@ -64,9 +64,9 @@ Note: Context Middleware executes before middleware set by `client.WithMiddlewar
 
 #### Call Sequence
 
-      1. Middleware set by `server.WithMiddleware`
-      2. ACLMiddleware, see [Customized Access Control](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
-      3. Error handler set by `client.WithErrorHandler`
+  1. Middleware set by `server.WithMiddleware`
+  2. ACLMiddleware, see [Customized Access Control](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
+  3. Error handler set by `client.WithErrorHandler`
 
 The above can be seen in [server.go](https://github.com/cloudwego/kitex/blob/develop/server/server.go)
 ### Example
