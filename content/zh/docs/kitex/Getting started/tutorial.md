@@ -565,7 +565,237 @@ func (s *ItemServiceImpl) GetItem(ctx context.Context, req *item.GetItemReq) (re
 GetItemResp({Item:Item({Id:1024 Title:Kitex Description:Kitex is an excellent framework! Stock:1024}) BaseResp:BaseResp({Code: Msg:})})
 ```
 
-可以看到 `Stock: 1024`，代表我们的商品服务成功请求了库存服务并响应 API 服务，至此，我们的任务全部完成了。
+可以看到 `Stock: 1024`，代表我们的商品服务成功请求了库存服务并响应 API 服务。
+
+## 接入服务注册中心
+
+为了更贴近真实环境，接下来为我们的服务接入注册中心，在本例中选择了 etcd 作为注册中心，etcd 的安装与使用可参考 [etcd.io](https://etcd.io/)，接下来默认你已经安装并启动 etcd 服务实例。
+
+Kitex 作为一款微服务框架，也为我们提供了服务治理的能力。当然，在服务注册与发现的场景中也为 etcd 做了适配，可见 [etcd 注册中心使用文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/service_discovery/etcd/)。同时 Kitex 还提供了其他常见注册中心适配，文档可见[服务发现](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/service_discovery/)。
+
+首先，我们需要拉取依赖，在项目根目录下执行如下命令：
+
+```
+go get github.com/kitex-contrib/registry-etcd
+```
+
+### 服务注册
+
+在 Kitex 中，为服务注册中心抽象出了如下接口：
+
+```go
+type Registry interface {
+    Register(info *Info) error
+    Deregister(info *Info) error
+}
+```
+
+该接口包括注册服务和注销服务两个方法，两个方法都需要传入服务的信息。只要实现了该接口都可用作服务注册中心使用，所以你也可以自定义服务注册中心，详情可见[服务注册扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/registry/)。
+
+在 Kitex 中使用注册中心的流程比较简单，大致分为两步：
+
+1. 创建 Registry
+2. 在创建服务实例时通过 Option 参数指定 Registry 与服务基本信息
+
+使用 etcd 时，可以使用以下函数创建 Registry：
+
+```go
+func NewEtcdRegistry(endpoints []string, opts ...Option) (registry.Registry, error)
+
+func NewEtcdRegistryWithAuth(endpoints []string, username, password string) (registry.Registry, error)
+
+func NewEtcdRegistryWithRetry(endpoints []string, retryConfig *retry.Config, opts ...Option) (registry.Registry, error)
+```
+
+指定 Registry 与服务基本信息分别使用 `server.WithRegistry` 与 `server.WithServerBasicInfo` 作为 option 参数在创建服务实例时传入。
+
+本例中，库存服务和商品服务需要对外提供服务，故我们将这两个服务注册进注册中心。
+
+#### 注册库存服务
+
+在 `rpc/stock/main.go` 中补充以下逻辑：
+
+```go
+package main
+
+import (
+    "log"
+    "net"
+
+    stock "example_shop/kitex_gen/example/shop/stock/stockservice"
+
+    "github.com/cloudwego/kitex/pkg/rpcinfo"
+    "github.com/cloudwego/kitex/server"
+    etcd "github.com/kitex-contrib/registry-etcd"
+)
+
+func main() {
+  	// 使用时请传入真实 etcd 的服务地址，本例中为 127.0.0.1:2379
+    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"})
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    addr, _ := net.ResolveTCPAddr("tcp", "127.0.0.1:8890")
+    svr := stock.NewServer(new(StockServiceImpl),
+       server.WithServiceAddr(addr),
+       // 指定 Registry 与服务基本信息
+       server.WithRegistry(r),
+       server.WithServerBasicInfo(
+          &rpcinfo.EndpointBasicInfo{
+             ServiceName: "example.shop.stock",
+          },
+       ),
+    )
+
+    err = svr.Run()
+
+    if err != nil {
+       log.Println(err.Error())
+    }
+}
+```
+
+#### 注册商品服务
+
+在 `rpc/item/main.go` 中补充以下逻辑：
+
+```go
+package main
+
+import (
+    "log"
+    
+    item "example_shop/kitex_gen/example/shop/item/itemservice"
+
+    "github.com/cloudwego/kitex/pkg/rpcinfo"
+    "github.com/cloudwego/kitex/server"
+    etcd "github.com/kitex-contrib/registry-etcd"
+)
+
+func main() {
+  	// 使用时请传入真实 etcd 的服务地址，本例中为 127.0.0.1:2379
+    r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"})
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    svr := item.NewServer(new(ItemServiceImpl),
+       // 指定 Registry 与服务基本信息
+       server.WithRegistry(r),
+       server.WithServerBasicInfo(
+          &rpcinfo.EndpointBasicInfo{
+             ServiceName: "example.shop.item",
+          }),
+    )
+
+    err = svr.Run()
+
+    if err != nil {
+       log.Println(err.Error())
+    }
+}
+```
+
+#### 测试
+
+补充完成代码后我们分别启动这两个服务，两个服务的终端都会出现类似输出：
+
+```
+2024/02/04 18:25:22.958727 etcd_registry.go:274: [Info] start keepalive lease 694d8d736e961295 for etcd registry
+```
+
+我们再使用 etcdctl 确认是否注册成功，执行 `etcdctl get --prefix "kitex"` 会有如下输出：
+
+```
+kitex/registry-etcd/example.shop.item/192.168.196.240:8888
+{"network":"tcp","address":"192.168.196.240:8888","weight":10,"tags":null}
+kitex/registry-etcd/example.shop.stock/127.0.0.1:8890
+{"network":"tcp","address":"127.0.0.1:8890","weight":10,"tags":null}
+```
+
+如果都能正确输出，代表我们的服务注册成功。
+
+### 服务发现
+
+在 Kitex 中，为服务发现中心抽象出了如下接口：
+
+```go
+type Resolver interface {
+    Target(ctx context.Context, target rpcinfo.EndpointInfo) string
+    Resolve(ctx context.Context, key string) (Result, error)
+    Diff(key string, prev, next Result) (Change, bool)
+    Name() string
+}
+```
+
+只要实现了该接口都可用作服务发现中心使用，所以你也可以自定义服务发现中心，详情可见[服务发现扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/service_discovery/)。
+
+在 Kitex 中使用发现中心的流程比较简单，大致分为两步：
+
+1. 创建 Resolver
+2. 在创建服务调用客户端时通过 Option 参数指定 Resolver。
+
+使用 etcd 时，可以使用以下函数创建 Resolver：
+
+```go
+func NewEtcdResolver(endpoints []string, opts ...Option) (discovery.Resolver, error)
+
+func NewEtcdResolverWithAuth(endpoints []string, username, password string) (discovery.Resolver, error)
+```
+
+指定 Resolver 使用 `client.WithResolver()` 作为 option 参数在创建 client 时传入。
+
+本例中，商品服务和 API 服务需要调用其他服务，故我们为这两个服务使用服务发现中心。
+
+#### 商品服务接入
+
+在前面的代码中，我们将商品服务调用库存服务的逻辑放在了 `rpc/item/handler.go` 中，故我们在此文件的 `NewStockClient` 中添加逻辑：
+
+```go
+func NewStockClient(addr string) (stockservice.Client, error) {
+    // 使用时请传入真实 etcd 的服务地址，本例中为 127.0.0.1:2379
+    r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+    if err != nil {
+       log.Fatal(err)
+    }
+    return stockservice.NewClient("example.shop.stock", client.WithResolver(r)) // 指定 Resolver
+}
+```
+
+#### API 服务接入
+
+API 服务只有一个文件，我们在 `api/main.go`  的 `Handler` 中直接添加相关逻辑即可：
+
+```go
+func Handler(rw http.ResponseWriter, r *http.Request) {
+  	// 使用时请传入真实 etcd 的服务地址，本例中为 127.0.0.1:2379
+    resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:12379"})
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    c, err := itemservice.NewClient("example.shop.item", client.WithResolver(resolver)) // 指定 Resolver
+    if err != nil {
+       log.Fatal(err)
+    }
+    req := item.NewGetItemReq()
+    req.Id = 1024
+    resp, err := c.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
+    if err != nil {
+       log.Fatal(err)
+    }
+    rw.Write([]byte(resp.String()))
+}
+```
+
+#### 测试
+
+为商品服务添加代码后需要重新启动，然后再启动 API 服务，打开游览器访问 `localhost:8889/api/item`，看到如下信息，代表请求成功。
+
+```
+GetItemResp({Item:Item({Id:1024 Title:Kitex Description:Kitex is an excellent framework! Stock:1024}) BaseResp:BaseResp({Code: Msg:})})
+```
 
 ## 总结
 
@@ -574,5 +804,5 @@ GetItemResp({Item:Item({Id:1024 Title:Kitex Description:Kitex is an excellent fr
 - 服务端编写 IDL，使用 kitex 生成代码后填充服务业务逻辑即可运行
 - 客户端使用与服务端相同的 IDL，使用 kitex 生成代码后，创建客户端示例，构造请求参数后即可发起调用
 
-本例中，我们仅演示了 Kitex 最基本的使用方法，Kitex 还为我们提供了各种微服务治理特性，你可以在[指南](https://www.cloudwego.cn/zh/docs/kitex/tutorials/)中获取更多信息，或查看示例代码小节解锁更多高级用法。
+本例中，我们仅演示了 Kitex 的基本使用方法，Kitex 还为我们提供了各种微服务治理特性，你可以在[指南](https://www.cloudwego.cn/zh/docs/kitex/tutorials/)中获取更多信息，或查看示例代码小节解锁更多高级用法。
 
