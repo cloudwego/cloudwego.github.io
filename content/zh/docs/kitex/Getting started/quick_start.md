@@ -12,15 +12,6 @@ description: "Kitex 基础示例"
 
 ## 获取示例代码
 
-若想要将示例代码置于 `$GOPATH/src` 下，请在 `$GOPATH/src` 下创建 `github.com/cloudwego` 目录并进入，再获取示例代码：
-
-```shell
-mkdir -p $(go env GOPATH)/src/github.com/cloudwego
-cd $(go env GOPATH)/src/github.com/cloudwego
-```
-
-若置于 GOPATH 外，则直接获取示例代码。
-
 - 点击 [此处](https://github.com/cloudwego/kitex-examples/archive/refs/heads/main.zip) 直接下载示例代码仓库
 - 使用 `git` 克隆代码仓库：`git clone https://github.com/cloudwego/kitex-examples.git`
 
@@ -139,10 +130,7 @@ service Hello {
 运行如下命令后，`kitex` 工具根据 `hello.thrift` 内容自动更新代码文件。
 
 ```shell
-kitex -service a.b.c hello.thrift
-
-# 若当前目录不在 $GOPATH/src 下，需要加上 -module 参数，一般为 go.mod 下的名字
-kitex -module "your_module_name" -service a.b.c hello.thrift
+kitex -module "github.com/cloudwego/kitex-examples" -service a.b.c hello.thrift
 ```
 
 执行完上述命令后，`kitex` 工具将更新下述文件

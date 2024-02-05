@@ -205,6 +205,7 @@ struct Tweet {
 
 1. Thrift 不支持嵌套定义 Struct
 2. **如果 struct 已经在使用了，请不要更改各个 field 的 id 和 type**
+3. 如果没有特殊需求，**建议都使用 optional**。由于 Kitex 需要保留和 apache 官方 Go 实现兼容性，也保留了对于 required 和 default 修饰的字段处理逻辑的不合理之处。例如 Request(struct类型).User(struct类型).Name(string类型) 这样一个结构，如果 User 和 Name 都是 required，但 client 端没有给 User 赋值（即 request.User == nil), 在 client 端编码不会报错，但是会将 User 的 id 和 type(struct) 写入，在 server 端解码时会初始化 User（即 request.User != nil），但是在继续解码 User 时读不到 Name 字段，就会报错。
 
 #### Exception
 
