@@ -178,6 +178,8 @@ In Kitex, the `generic.Generic` interface represents a generic call, with differ
 
 ### Create Client
 
+The client-side interfaces are all under the `github.com/cloudwego/kitex/client/genericclient ` package.
+
 #### NewClient
 
 Function signature: `func NewClient(destService string, g generic.Generic, opts ...client.Option) (Client, error)`
@@ -207,6 +209,8 @@ type Service interface {
 As long as the `GenericCall` method is implemented, it can be used as a generic call service instance for creating a generic call server.
 
 ### Create Server
+
+The server-side interfaces are all under the `github.com/cloudwego/kitex/client/genericclient ` package.
 
 #### NewServer
 
@@ -322,7 +326,7 @@ Function signature: `func UseRawBodyForHTTPResp(enable bool) Option`
 
 Description: In HTTP mapping generic calls, this sets whether to use `HTTPResponse.RawBody` as the response result. If this feature is disabled, the response result will only be stored in `HTTPResponse.Body`
 
-## Usage Example
+## Thrift Usage Example
 
 ### Binary Generic Call
 
@@ -394,7 +398,7 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-### HTTP Generic Call
+### HTTP Mapping Generic Call
 
 HTTP generic calls involve constructing Thrift interface parameters based on an HTTP Request and initiating a generic call. Currently, this is only applicable to the client side. The Thrift IDL must follow the interface mapping specifications, detailed in [Thrift-HTTP Mapping's IDL Standards](https://www.cloudwego.cn/docs/kitex/tutorials/advanced-feature/generic-call/thrift_idl_annotation_standards/).
 
@@ -558,7 +562,7 @@ func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descripto
 }
 ```
 
-### Map Generic Call
+### Map Mapping Generic Call
 
 Map mapping generic calls refer to the ability of users to construct Map parameters according to specifications, and Kitex will handle the Thrift encoding/decoding accordingly.
 
@@ -770,17 +774,15 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-### JSON Generic Call
+### JSON Mapping Generic Call
 
 JSON mapping generic calls refer to the ability of users to construct JSON String request parameters or returns directly according to specifications, and Kitex will handle encoding/decoding accordingly.
-
-#### Thrift
 
 Unlike the strict validation of field names and types in Map generic calls, JSON generic calls in Kitex transform user request parameters based on the given IDL, eliminating the need for users to specify explicit types, such as int32 or int64.
 
 For Responses, the Field ID and type will be validated, and the corresponding JSON field will be generated based on the IDL's Field Name.
 
-##### Type Mapping
+#### Type Mapping
 
 The type mapping between Golang and Thrift IDL is as follows:
 
@@ -846,7 +848,7 @@ req := {
 }
 ```
 
-##### Example IDL
+#### Example IDL
 
 `base.thrift`:
 
@@ -897,7 +899,7 @@ service ExampleService {
 }
 ```
 
-##### Client
+#### Client
 
 ```go
 package main
@@ -931,7 +933,7 @@ func main() {
 }
 ```
 
-##### Server
+#### Server
 
 ```go
 package main
@@ -974,9 +976,13 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-#### Protobuf
+## Protobuf Usage Example
 
-##### Type Mapping
+### JSON Mapping Generic Call
+
+JSON mapping generic calls refer to the ability of users to construct JSON String request parameters or returns directly according to specifications, and Kitex will handle encoding/decoding accordingly.
+
+#### Type Mapping
 
 The Mapping between Golang and Protocol Buffers:
 
@@ -1000,7 +1006,7 @@ The Mapping between Golang and Protocol Buffers:
 
 Also supports lists and dictionaries in json, mapping them to repeated V and map<K,V> in protobufs. Does not support Protobuf special fields, such as Enum, Oneof, etc.;
 
-##### Example IDl
+#### Example IDl
 
 ```proto
 syntax = "proto3";
@@ -1021,7 +1027,7 @@ service Echo {
 }
 ```
 
-##### Client
+#### Client
 
 ```go
 package main
@@ -1076,7 +1082,7 @@ func main() {
 
 ```
 
-##### Server
+#### Server
 
 ```go
 package main
@@ -1128,4 +1134,3 @@ func main() {
 	}
 }
 ```
-

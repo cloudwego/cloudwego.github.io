@@ -191,6 +191,8 @@ Ktiex 中使用 `generic.Generic` 接口表示泛化调用，不同泛化调用�
 
 ### 创建客户端
 
+泛化调用客户端接口均位于 `github.com/cloudwego/client/genericclient` 包下。
+
 #### NewClient
 
 函数签名：`func NewClient(destService string, g generic.Generic, opts ...client.Option) (Client, error)`
@@ -220,6 +222,8 @@ type Service interface {
 只要实现 `GenericCall` 方法即可当作泛化调用服务实例用于创建泛化调用服务端。
 
 ### 创建服务端
+
+泛化调用服务端接口均位于 `github.com/cloudwego/server/genericserver` 包下。
 
 #### NewServer
 
@@ -335,7 +339,7 @@ Kitex 提供 Option 参数用于在创建 Generic 时自定义配置，包括以
 
 说明：在 HTTP 映射泛化调用中，设置是否将响应结果设置为 `HTTPResponse.RawBody`。 如果禁用此功能，则响应结果将仅存储到 `HTTPResponse.Body` 中
 
-## 使用示例
+## Thrift 使用示例
 
 ### 二进制泛化调用
 
@@ -788,13 +792,11 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 JSON 映射泛化调用是指用户可以直接按照规范构造 JSON String 请求参数或返回，Kitex 会完成对应协议编解码。
 
-#### Thrift
-
 JSON 与 MAP 泛化调用严格校验用户构造的字段名和类型不同，JSON 泛化调用会根据给出的 IDL 对用户的请求参数进行转化，无需用户指定明确的类型，如 int32 或 int64。
 
 对于 Response 会校验 Field ID 和类型，并根据 IDL 的 Field Name 生成相应的 JSON Field。
 
-##### 类型映射
+#### 类型映射
 
 Golang 与 Thrift IDL 类型映射如下：
 
@@ -860,7 +862,7 @@ req := {
 }
 ```
 
-##### 示例 IDL
+#### 示例 IDL
 
 `base.thrift`：
 
@@ -911,7 +913,7 @@ service ExampleService {
 }
 ```
 
-##### 客户端
+#### 客户端
 
 ```go
 package main
@@ -945,7 +947,7 @@ func main() {
 }
 ```
 
-##### 服务端
+#### 服务端
 
 ```go
 package main
@@ -988,9 +990,13 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-#### Protobuf
+## Protobuf 使用示例
 
-##### 类型映射
+### JSON 映射泛化调用
+
+JSON 映射泛化调用是指用户可以直接按照规范构造 JSON String 请求参数或返回，Kitex 会完成对应协议编解码。
+
+#### 类型映射
 
 Golang 与 Proto IDL 类型映射如下：
 
@@ -1014,7 +1020,7 @@ Golang 与 Proto IDL 类型映射如下：
 
 此外还支持 JSON 中的 lists 与 dictionaries，将其映射为 protobuf 中的 `repeated V` 与 `map<K,V>` 。不支持 protobuf 中的特殊类型，如 `Enum`，`oneof`。
 
-##### 示例 IDL
+#### 示例 IDL
 
 ```proto
 syntax = "proto3";
@@ -1035,7 +1041,7 @@ service Echo {
 }
 ```
 
-##### 客户端
+#### 客户端
 
 ```go
 package main
@@ -1089,7 +1095,7 @@ func main() {
 }
 ```
 
-##### 服务端
+#### 服务端
 
 ```go
 package main
