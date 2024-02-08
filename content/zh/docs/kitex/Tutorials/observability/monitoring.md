@@ -18,27 +18,7 @@ type Tracer interface {
 }
 ```
 
-实现自定义监控示例（监控处理次数的简单实现）：
-
-```go
-type myTracer struct {}
-
-// Start record the beginning of server handling request from client.
-func (*myTracer) Start(ctx context.Context) context.Context {
-	return ctx
-}
-
-// Finish record the ending of server handling request from client.
-func (*myTracer) Finish(ctx context.Context) {
-	countIncr()
-}
-
-func countIncr() {
-    // 处理次数 + 1
-    // ...
-}
-```
-
+详细文档请阅读 [监控拓展](../../framework-exten/monitoring/#监控信息拓展) 章节。
 
 ## 拓展库使用
 

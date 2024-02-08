@@ -18,27 +18,7 @@ type Tracer interface {
 }
 ```
 
-Implementation of a custom monitoring example (simple implementation of monitoring the counter):
-
-```go
-type myTracer struct {}
-
-// Start record the beginning of server handling request from client.
-func (*myTracer) Start(ctx context.Context) context.Context {
-	return ctx
-}
-
-// Finish record the ending of server handling request from client.
-func (*myTracer) Finish(ctx context.Context) {
-	counterIncr()
-}
-
-func counterIncr() {
-    // Increase the counter + 1
-    // ...
-}
-```
-
+For detailed documentation, refer to the [Monitoring Extension](../../framework-exten/monitoring/#tracing-extension) section.
 
 ## Expansion Repository use
 
