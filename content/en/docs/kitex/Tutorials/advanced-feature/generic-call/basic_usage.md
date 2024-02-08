@@ -10,10 +10,20 @@ description: "generic call's basic usage"
 
 Kitex supports generic calls in the following four scenarios:
 
-- Binary generic call
-- HTTP mapping generic call
-- Map mapping generic call
-- JSON mapping generic call
+1. Thrift:
+
+   - Binary generic call
+
+   - HTTP mapping generic call
+
+   - Map mapping generic call
+
+   - JSON mapping generic call
+
+2. Protobuf:
+
+   - JSON mapping generic call
+   - Protobuf -> Thrift generic call
 
 ## IDL Provider
 

@@ -12,21 +12,14 @@ description: "泛化调用基本使用"
 Kitex 支持以下场景的泛化调用：
 
 1. Thrift：
-
    - 二进制泛化调用
-
-
    - HTTP 映射泛化调用
-
-
    - Map 映射泛化调用
-
-
    - JSON 映射泛化调用
 
 2. Protobuf
-
-   1. JSON 映射泛化调用
+   - JSON 映射泛化调用
+   - Protobuf -> Thrift 泛化调用
 
 ## IDL Provider
 
@@ -1147,3 +1140,8 @@ func main() {
 	}
 }
 ```
+
+
+
+
+
