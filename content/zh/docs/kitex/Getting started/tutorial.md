@@ -11,6 +11,8 @@ description: "Kitex 进阶教程"
 
 本文中，我们将会模拟一个简单的电商场景，包括商品服务、库存服务与 API 服务，商品服用调用库存服务查询库存，API 服务调用商品服务查询商品信息，对前端或用户暴露 HTTP 接口供查询商品信息。
 
+> [完整代码](https://github.com/cloudwego/kitex-examples/tree/main/basic/example_shop)
+
 ## 创建项目目录
 
 创建一个目录用于存放后续代码，创建后进入该目录
@@ -492,7 +494,7 @@ func main() {
 }
 ```
 
-你可以在 [Option](https://www.cloudwego.cn/zh/docs/kitex/tutorials/options/) 中查看更多参数说明
+你可以在 [Option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/) 中查看更多参数说明
 
 接下来另启终端使用 `go run .` 运行库存服务，看到以下输出代表运行成功：
 
@@ -804,5 +806,5 @@ GetItemResp({Item:Item({Id:1024 Title:Kitex Description:Kitex is an excellent fr
 - 服务端编写 IDL，使用 kitex 生成代码后填充服务业务逻辑即可运行
 - 客户端使用与服务端相同的 IDL，使用 kitex 生成代码后，创建客户端示例，构造请求参数后即可发起调用
 
-本例中，我们仅演示了 Kitex 的基本使用方法，Kitex 还为我们提供了各种微服务治理特性，你可以在[指南](https://www.cloudwego.cn/zh/docs/kitex/tutorials/)中获取更多信息，或查看示例代码小节解锁更多高级用法。
+本例中，我们仅演示了 Kitex 的基本使用方法，Kitex 还为我们提供了各种微服务治理特性，你可以在[指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/)中获取更多信息，或查看示例代码小节解锁更多高级用法。
 
