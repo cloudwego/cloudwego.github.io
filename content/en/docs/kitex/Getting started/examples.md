@@ -4,7 +4,7 @@ linkTitle: "Code Examples"
 weight: 4
 date: 2024-01-18
 keywords: ["Kitex", "Golang", "Go", "Code Examples"]
-description: "Code Examples for useing Kitex"
+description: "Code Examples for using Kitex"
 
 ---
 
