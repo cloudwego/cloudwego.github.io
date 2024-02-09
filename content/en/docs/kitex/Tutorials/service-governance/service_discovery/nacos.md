@@ -1,5 +1,5 @@
 ---
-title: "nacos"
+title: "Nacos"
 date: 2023-11-30
 weight: 5
 keywords: ["Service Discovery", "nacos"]

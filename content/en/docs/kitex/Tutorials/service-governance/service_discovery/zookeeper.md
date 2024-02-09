@@ -1,5 +1,5 @@
 ---
-title: "zookeeper"
+title: "Zookeeper"
 date: 2023-11-30
 weight: 8
 keywords: ["Service Discovery", "zookeeper"]

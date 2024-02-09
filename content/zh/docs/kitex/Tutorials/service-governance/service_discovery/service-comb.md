@@ -1,5 +1,5 @@
 ---
-title: "service-comb"
+title: "ServiceComb"
 date: 2023-11-30
 weight: 7
 keywords: ["服务注册与发现", "service-comb"]
