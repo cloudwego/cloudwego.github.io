@@ -390,7 +390,7 @@ The third parameter is the `options` for this invocation. Kitex provides a mecha
 
 ### Exposing an HTTP interface
 
-You can use `net/http` or other frameworks to expose an HTTP interface. Here, we'll demonstrate a simple example using `net/http`.
+You can use `net/http` or other frameworks to expose an HTTP interface. Here, we'll demonstrate a simple example using `Hertz`. You can get usage for Hertz in [Hertz Doc](https://www.cloudwego.io/docs/hertz/) 
 
 Here's the complete code:
 
@@ -400,33 +400,46 @@ package main
 import (
 	"context"
 	"log"
-	"net/http"
 	"time"
 
 	"example_shop/kitex_gen/example/shop/item"
 	"example_shop/kitex_gen/example/shop/item/itemservice"
-	
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/callopt"
+	etcd "github.com/kitex-contrib/registry-etcd"
 )
 
 func main() {
-	http.HandleFunc("/api/item", Handler)
-	http.ListenAndServe("localhost:8889", nil)
+	hz := server.New(server.WithHostPorts("localhost:8889"))
+
+	hz.GET("/api/item", Handler)
+
+	if err := hz.Run(); err != nil {
+		log.Fatal(err)
+	}
 }
 
-func Handler(rw http.ResponseWriter, r *http.Request) {
-	c, err := itemservice.NewClient("example.shop.item", client.WithHostPorts("0.0.0.0:8888"))
+func Handler(ctx context.Context, c *app.RequestContext) {
+	resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cli, err := itemservice.NewClient("example.shop.item", client.WithHostPorts("0.0.0.0:8888"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	req := item.NewGetItemReq()
 	req.Id = 1024
-	resp, err := c.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
+	resp, err := cli.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
 	if err != nil {
 		log.Fatal(err)
 	}
-	rw.Write([]byte(resp.String()))
+
+	c.String(200, resp.String())
 }
 ```
 
@@ -768,24 +781,25 @@ func NewStockClient(addr string) (stockservice.Client, error) {
 The API service has only one file, so we can directly add the relevant logic in the `Handler` function in `api/main.go`:
 
 ```go
-func Handler(rw http.ResponseWriter, r *http.Request) {
-    // Please provide the actual address of the etcd service when using. In this example, it is 127.0.0.1:12379.
-    resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:12379"})
-    if err != nil {
-        log.Fatal(err)
-    }
+func Handler(ctx context.Context, c *app.RequestContext) {
+  // Please provide the actual address of the etcd service when using. In this example, it is 127.0.0.1:2379.
+	resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    c, err := itemservice.NewClient("example.shop.item", client.WithResolver(resolver)) // Specify the Resolver
-    if err != nil {
-        log.Fatal(err)
-    }
-    req := item.NewGetItemReq()
-    req.Id = 1024
-    resp, err := c.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
-    if err != nil {
-        log.Fatal(err)
-    }
-    rw.Write([]byte(resp.String()))
+	cli, err := itemservice.NewClient("example.shop.item", client.WithResolver(resolver)) // Specify the Resolver
+	if err != nil {
+		log.Fatal(err)
+	}
+	req := item.NewGetItemReq()
+	req.Id = 1024
+	resp, err := cli.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	c.String(200, resp.String())
 }
 ```
 

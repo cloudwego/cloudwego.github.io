@@ -390,7 +390,7 @@ if err != nil {
 
 ### 暴露 HTTP 接口
 
-你可以使用 `net/http` 或其他框架来对外提供 HTTP 接口，此处使用 `net/http` 做一个简单演示
+你可以使用 `net/http` 或其他框架来对外提供 HTTP 接口，此处使用 `Hertz` 做一个简单演示，有关 Hertz 用法参见 [Hertz 文档](https://www.cloudwego.io/zh/docs/hertz/)
 
 完整代码如下：
 
@@ -400,33 +400,46 @@ package main
 import (
 	"context"
 	"log"
-	"net/http"
 	"time"
 
 	"example_shop/kitex_gen/example/shop/item"
 	"example_shop/kitex_gen/example/shop/item/itemservice"
-	
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/callopt"
+	etcd "github.com/kitex-contrib/registry-etcd"
 )
 
 func main() {
-	http.HandleFunc("/api/item", Handler)
-	http.ListenAndServe("localhost:8889", nil)
+	hz := server.New(server.WithHostPorts("localhost:8889"))
+
+	hz.GET("/api/item", Handler)
+
+	if err := hz.Run(); err != nil {
+		log.Fatal(err)
+	}
 }
 
-func Handler(rw http.ResponseWriter, r *http.Request) {
-	c, err := itemservice.NewClient("example.shop.item", client.WithHostPorts("0.0.0.0:8888"))
+func Handler(ctx context.Context, c *app.RequestContext) {
+	resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cli, err := itemservice.NewClient("example.shop.item", client.WithHostPorts("0.0.0.0:8888"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	req := item.NewGetItemReq()
 	req.Id = 1024
-	resp, err := c.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
+	resp, err := cli.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
 	if err != nil {
 		log.Fatal(err)
 	}
-	rw.Write([]byte(resp.String()))
+
+	c.String(200, resp.String())
 }
 ```
 
@@ -770,24 +783,25 @@ func NewStockClient(addr string) (stockservice.Client, error) {
 API 服务只有一个文件，我们在 `api/main.go`  的 `Handler` 中直接添加相关逻辑即可：
 
 ```go
-func Handler(rw http.ResponseWriter, r *http.Request) {
-  	// 使用时请传入真实 etcd 的服务地址，本例中为 127.0.0.1:2379
-    resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:12379"})
-    if err != nil {
-       log.Fatal(err)
-    }
+func Handler(ctx context.Context, c *app.RequestContext) {
+  // 使用时请传入真实 etcd 的服务地址，本例中为 127.0.0.1:2379
+	resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    c, err := itemservice.NewClient("example.shop.item", client.WithResolver(resolver)) // 指定 Resolver
-    if err != nil {
-       log.Fatal(err)
-    }
-    req := item.NewGetItemReq()
-    req.Id = 1024
-    resp, err := c.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
-    if err != nil {
-       log.Fatal(err)
-    }
-    rw.Write([]byte(resp.String()))
+	cli, err := itemservice.NewClient("example.shop.item", client.WithResolver(resolver)) // 指定 Resolver
+	if err != nil {
+		log.Fatal(err)
+	}
+	req := item.NewGetItemReq()
+	req.Id = 1024
+	resp, err := cli.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	c.String(200, resp.String())
 }
 ```
 
