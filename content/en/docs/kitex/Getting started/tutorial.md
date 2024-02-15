@@ -409,10 +409,19 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/callopt"
-	etcd "github.com/kitex-contrib/registry-etcd"
+)
+
+var (
+	cli itemservice.Client
 )
 
 func main() {
+	c, err := itemservice.NewClient("example.shop.item", client.WithHostPorts("0.0.0.0:8888"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	cli = c
+
 	hz := server.New(server.WithHostPorts("localhost:8889"))
 
 	hz.GET("/api/item", Handler)
@@ -423,15 +432,6 @@ func main() {
 }
 
 func Handler(ctx context.Context, c *app.RequestContext) {
-	resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	cli, err := itemservice.NewClient("example.shop.item", client.WithHostPorts("0.0.0.0:8888"))
-	if err != nil {
-		log.Fatal(err)
-	}
 	req := item.NewGetItemReq()
 	req.Id = 1024
 	resp, err := cli.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
@@ -442,8 +442,6 @@ func Handler(ctx context.Context, c *app.RequestContext) {
 	c.String(200, resp.String())
 }
 ```
-
-Note: In this code, a new RPC client is created for each HTTP request, which incurs significant overhead. Therefore, this code is for demonstration purposes only and should not be used in a **production environment**.
 
 Next, open a new terminal, and execute the command `go run .` to start the API service, which listens on port 8889. You can make a request to `localhost:8889/api/item` to invoke the `GetItem` interface provided by the item service and get the response.
 
@@ -517,23 +515,25 @@ To run the stock service, open a new terminal and execute `go run .`. If you see
 
 ## Supplementing the Item Service
 
-Now that we have successfully run the stock service, let's supplement the item service to make a call to the stock service. Similar to the API service, all we need to do is create a client and make the call with the constructed parameters. In the `rpc/item/handler.go` file, let's add the following methods:
+Now that we have successfully run the stock service, let's supplement the item service to make a call to the stock service. Similar to the API service, all we need to do is create a client and make the call with the constructed parameters. To achieve client reuse, we supplement the field `stockservice. Client` in `itemserviceimpl`. In the `rpc/item/handler.go` file, let's add the following methods:
 
 ```go
 package main
 
 import (
     "context"
-    "example_shop/kitex_gen/example/shop/stock"
     "log"
 
     item "example_shop/kitex_gen/example/shop/item"
+  	"example_shop/kitex_gen/example/shop/stock"
     "example_shop/kitex_gen/example/shop/stock/stockservice"
 
     "github.com/cloudwego/kitex/client"
 )
 
-type ItemServiceImpl struct{}
+type ItemServiceImpl struct{
+  	stockCli stockservice.Client
+}
 
 func NewStockClient(addr string) (stockservice.Client, error) {
     return stockservice.NewClient("example.shop.stock", client.WithHostPorts(addr))
@@ -546,13 +546,9 @@ func (s *ItemServiceImpl) GetItem(ctx context.Context, req *item.GetItemReq) (re
     resp.Item.Title = "Kitex"
     resp.Item.Description = "Kitex is an excellent framework!"
 
-    stockCli, err := NewStockClient("0.0.0.0:8890")
-    if err != nil {
-        log.Fatal(err)
-    }
     stockReq := stock.NewGetItemStockReq()
     stockReq.ItemId = req.GetId()
-    stockResp, err := stockCli.GetItemStock(context.Background(), stockReq)
+    stockResp, err := s.stockCli.GetItemStock(context.Background(), stockReq)
     if err != nil {
         log.Println(err)
         stockResp.Stock = 0
@@ -560,6 +556,38 @@ func (s *ItemServiceImpl) GetItem(ctx context.Context, req *item.GetItemReq) (re
     resp.Item.Stock = stockResp.GetStock()
     return
 }
+```
+
+We need to initialize the client for the stock service before we can use it. We will perform the initialization in `rpc/item/main.go`.
+
+```go
+package main
+
+import (
+    "log"
+
+    item "example_shop/kitex_gen/example/shop/item/itemservice"
+
+    "github.com/cloudwego/kitex/pkg/rpcinfo"
+    "github.com/cloudwego/kitex/server"
+)
+
+func main() {
+    itemServiceImpl := new(ItemServiceImpl)
+    stockCli, err := NewStockClient("0.0.0.0:8890")
+    if err != nil {
+       log.Fatal(err)
+    }
+    itemServiceImpl.stockCli = stockCli
+
+    svr := item.NewServer(itemServiceImpl)
+
+    err = svr.Run()
+
+    if err != nil {
+       log.Println(err.Error())
+    }
+}  
 ```
 
 Since the stock service is running on port 8890, we specify that port when creating the client.
@@ -690,22 +718,29 @@ func main() {
     // Replace with the actual etcd service address, in this example it is 127.0.0.1:2379
     r, err := etcd.NewEtcdRegistry([]string{"127.0.0.1:2379"})
     if err != nil {
+       log.Fatal(err)
+    }
+  
+    itemServiceImpl := new(ItemServiceImpl)
+    stockCli, err := NewStockClient("0.0.0.0:8890")
+    if err != nil {
         log.Fatal(err)
     }
+    itemServiceImpl.stockCli = stockCli
 
-    svr := item.NewServer(new(ItemServiceImpl),
+    svr := item.NewServer(itemServiceImpl,
         // Specify the Registry and service basic information
-        server.WithRegistry(r),
-        server.WithServerBasicInfo(
-            &rpcinfo.EndpointBasicInfo{
-                ServiceName: "example.shop.item",
-            }),
+       server.WithRegistry(r),
+       server.WithServerBasicInfo(
+          &rpcinfo.EndpointBasicInfo{
+             ServiceName: "example.shop.item",
+          }),
     )
 
     err = svr.Run()
 
     if err != nil {
-        log.Println(err.Error())
+       log.Println(err.Error())
     }
 }
 ```
@@ -778,28 +813,29 @@ func NewStockClient(addr string) (stockservice.Client, error) {
 
 #### API Service Integration
 
-The API service has only one file, so we can directly add the relevant logic in the `Handler` function in `api/main.go`:
+The API service has only one file, so we can directly add the relevant logic in the `main` function in `api/main.go`:
 
 ```go
-func Handler(ctx context.Context, c *app.RequestContext) {
-  // Please provide the actual address of the etcd service when using. In this example, it is 127.0.0.1:2379.
+func main() {
+  	// Please provide the actual address of the etcd service when using. In this example, it is 127.0.0.1:2379.
 	resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	cli, err := itemservice.NewClient("example.shop.item", client.WithResolver(resolver)) // Specify the Resolver
+	c, err := itemservice.NewClient("example.shop.item", client.WithResolver(resolver)) // Specify the Resolver
 	if err != nil {
 		log.Fatal(err)
 	}
-	req := item.NewGetItemReq()
-	req.Id = 1024
-	resp, err := cli.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
-	if err != nil {
-		log.Fatal(err)
-	}
+ 	cli = c
+  
+  	hz := server.New(server.WithHostPorts("localhost:8889"))
 
-	c.String(200, resp.String())
+	hz.GET("/api/item", Handler)
+
+	if err := hz.Run(); err != nil {
+		log.Fatal(err)
+	}
 }
 ```
 

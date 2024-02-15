@@ -409,10 +409,19 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/callopt"
-	etcd "github.com/kitex-contrib/registry-etcd"
+)
+
+var (
+	cli itemservice.Client
 )
 
 func main() {
+	c, err := itemservice.NewClient("example.shop.item", client.WithHostPorts("0.0.0.0:8888"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	cli = c
+
 	hz := server.New(server.WithHostPorts("localhost:8889"))
 
 	hz.GET("/api/item", Handler)
@@ -423,15 +432,6 @@ func main() {
 }
 
 func Handler(ctx context.Context, c *app.RequestContext) {
-	resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	cli, err := itemservice.NewClient("example.shop.item", client.WithHostPorts("0.0.0.0:8888"))
-	if err != nil {
-		log.Fatal(err)
-	}
 	req := item.NewGetItemReq()
 	req.Id = 1024
 	resp, err := cli.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
@@ -442,8 +442,6 @@ func Handler(ctx context.Context, c *app.RequestContext) {
 	c.String(200, resp.String())
 }
 ```
-
-注意：此代码中每次 HTTP 请求都会创建一个 RPC 客户端，开销较大，故仅作演示，不可用于**生产环境**。
 
 接下来另启一个终端，执行 `go run .` 命令即可启动 API 服务，监听 8889 端口，请求 `localhost:8889/api/item` 即可发起 RPC 调用商品服务提供的 `GetItem` 接口，并获取到响应结果。
 
@@ -517,24 +515,26 @@ func main() {
 
 ## 补充商品服务
 
-我们已经成功运行了库存服务，接下来我们补充商品服务，实现对库存服务的调用，与 API 服务类似，我们只需要创建客户端后构造参数发起调用即可，在 `rpc/item/handler.go` 中我们补充以下方法：
+我们已经成功运行了库存服务，接下来我们补充商品服务，实现对库存服务的调用，与 API 服务类似，我们只需要创建客户端后构造参数发起调用即可，为了实现 client 的复用，我们在 `ItemServiceImpl` 中补充字段 `stockservice.Client` ，在 `rpc/item/handler.go` 中我们补充以下方法：
 
 ```go
 package main
 
 import (
     "context"
-    "example_shop/kitex_gen/example/shop/stock"
     "log"
 
     item "example_shop/kitex_gen/example/shop/item"
+	"example_shop/kitex_gen/example/shop/stock"
     "example_shop/kitex_gen/example/shop/stock/stockservice"
 
     "github.com/cloudwego/kitex/client"
 )
 
 // ItemServiceImpl implements the last service interface defined in the IDL.
-type ItemServiceImpl struct{}
+type ItemServiceImpl struct{
+  	stockCli stockservice.Client
+}
 
 func NewStockClient(addr string) (stockservice.Client, error) {
     return stockservice.NewClient("example.shop.stock", client.WithHostPorts(addr))
@@ -548,13 +548,9 @@ func (s *ItemServiceImpl) GetItem(ctx context.Context, req *item.GetItemReq) (re
     resp.Item.Title = "Kitex"
     resp.Item.Description = "Kitex is an excellent framework!"
 
-    stockCli, err := NewStockClient("0.0.0.0:8890")
-    if err != nil {
-       log.Fatal(err)
-    }
     stockReq := stock.NewGetItemStockReq()
     stockReq.ItemId = req.GetId()
-    stockResp, err := stockCli.GetItemStock(context.Background(), stockReq)
+    stockResp, err := s.stockCli.GetItemStock(context.Background(), stockReq)
     if err != nil {
        log.Println(err)
        stockResp.Stock = 0
@@ -562,6 +558,38 @@ func (s *ItemServiceImpl) GetItem(ctx context.Context, req *item.GetItemReq) (re
     resp.Item.Stock = stockResp.GetStock()
     return
 }
+```
+
+为 `ItemServiceImpl` 补充了库存服务的客户端，我们需要初始化后才能使用，我们在 `rpc/item/main.go` 中完成初始化操作：
+
+```go
+package main
+
+import (
+    "log"
+
+    item "example_shop/kitex_gen/example/shop/item/itemservice"
+
+    "github.com/cloudwego/kitex/pkg/rpcinfo"
+    "github.com/cloudwego/kitex/server"
+)
+
+func main() {
+    itemServiceImpl := new(ItemServiceImpl)
+    stockCli, err := NewStockClient("0.0.0.0:8890")
+    if err != nil {
+       log.Fatal(err)
+    }
+    itemServiceImpl.stockCli = stockCli
+
+    svr := item.NewServer(itemServiceImpl)
+
+    err = svr.Run()
+
+    if err != nil {
+       log.Println(err.Error())
+    }
+}  
 ```
 
 由于库存服务跑在 8890 端口，所以我们指定 8890 端口创建客户端。
@@ -694,8 +722,15 @@ func main() {
     if err != nil {
        log.Fatal(err)
     }
+  
+    itemServiceImpl := new(ItemServiceImpl)
+    stockCli, err := NewStockClient("0.0.0.0:8890")
+    if err != nil {
+        log.Fatal(err)
+    }
+    itemServiceImpl.stockCli = stockCli
 
-    svr := item.NewServer(new(ItemServiceImpl),
+    svr := item.NewServer(itemServiceImpl,
        // 指定 Registry 与服务基本信息
        server.WithRegistry(r),
        server.WithServerBasicInfo(
@@ -780,28 +815,29 @@ func NewStockClient(addr string) (stockservice.Client, error) {
 
 #### API 服务接入
 
-API 服务只有一个文件，我们在 `api/main.go`  的 `Handler` 中直接添加相关逻辑即可：
+API 服务只有一个文件，我们在 `api/main.go`  的 `main` 函数中直接添加相关逻辑即可：
 
 ```go
-func Handler(ctx context.Context, c *app.RequestContext) {
-  // 使用时请传入真实 etcd 的服务地址，本例中为 127.0.0.1:2379
+func main() {
+  	// 使用时请传入真实 etcd 的服务地址，本例中为 127.0.0.1:2379
 	resolver, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	cli, err := itemservice.NewClient("example.shop.item", client.WithResolver(resolver)) // 指定 Resolver
+	c, err := itemservice.NewClient("example.shop.item", client.WithResolver(resolver)) // 指定 Resolver
 	if err != nil {
 		log.Fatal(err)
 	}
-	req := item.NewGetItemReq()
-	req.Id = 1024
-	resp, err := cli.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
-	if err != nil {
-		log.Fatal(err)
-	}
+  	cli = c
+  
+    hz := server.New(server.WithHostPorts("localhost:8889"))
 
-	c.String(200, resp.String())
+	hz.GET("/api/item", Handler)
+
+	if err := hz.Run(); err != nil {
+		log.Fatal(err)
+	}
 }
 ```
 
