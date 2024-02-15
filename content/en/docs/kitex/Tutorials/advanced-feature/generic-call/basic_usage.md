@@ -6,25 +6,6 @@ keywords: ["generic-call", "HTTP", "Thrift"]
 description: "generic call's basic usage"
 ---
 
-## Supported Scenarios
-
-Kitex supports generic calls in the following four scenarios:
-
-1. Thrift:
-
-   - Binary generic call
-
-   - HTTP mapping generic call
-
-   - Map mapping generic call
-
-   - JSON mapping generic call
-
-2. Protobuf:
-
-   - JSON mapping generic call
-   - Protobuf -> Thrift generic call
-
 ## IDL Provider
 
 Although generic calls do not require code generation based on IDL (Interface Definition Language), it is usually necessary to provide an IDL. Then, based on the IDL, data structures like JSON or Map are used to construct the corresponding RPC (Remote Procedure Call) request structures. (**Except for binary generic calls**)
@@ -234,7 +215,24 @@ Function signature: `func NewServerWithServiceInfo(handler generic.Service, g ge
 
 Description: This function takes a generic call service instance, a Generic object, custom service information, and optional Option parameters to return a Kitex server. For details on Option parameters, see [Server Option](https://www.cloudwego.io/docs/kitex/tutorials/options/server_options/)
 
-## Generic Call Data Types
+## Generic Call Scenarios
+
+Kitex supports generic calls in the following four scenarios:
+
+1. Thrift:
+
+   - Binary generic call
+
+   - HTTP mapping generic call
+
+   - Map mapping generic call
+
+   - JSON mapping generic call
+
+2. Protobuf:
+
+   - JSON mapping generic call
+   - Protobuf -> Thrift generic call
 
 ### Generic
 

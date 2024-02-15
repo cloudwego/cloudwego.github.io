@@ -7,20 +7,6 @@ description: "泛化调用基本使用"
 
 ---
 
-## 支持场景
-
-Kitex 支持以下场景的泛化调用：
-
-1. Thrift：
-   - 二进制泛化调用
-   - HTTP 映射泛化调用
-   - Map 映射泛化调用
-   - JSON 映射泛化调用
-
-2. Protobuf
-   - JSON 映射泛化调用
-   - Protobuf -> Thrift 泛化调用
-
 ## IDL Provider
 
 泛化调用虽不需要基于 IDL 生成代码，但通常需要提供 IDL，再根据 IDL 由提供的如 JSON、Map 这类的数据结构来构建对应的 RPC 请求数据结构。（**二进制泛化调用除外**）
@@ -230,7 +216,19 @@ type Service interface {
 
 说明：传入泛化调用服务实例，Generic 对象，自定义服务信息与可选 Option 参数，返回 Kitex 服务端。
 
-## 泛化调用数据类型
+## 泛化调用场景
+
+Kitex 支持以下场景的泛化调用：
+
+1. Thrift：
+   - 二进制泛化调用
+   - HTTP 映射泛化调用
+   - Map 映射泛化调用
+   - JSON 映射泛化调用
+
+2. Protobuf
+   - JSON 映射泛化调用
+   - Protobuf -> Thrift 泛化调用
 
 ### Generic
 
