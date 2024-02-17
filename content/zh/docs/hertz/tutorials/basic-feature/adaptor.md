@@ -81,7 +81,7 @@ Hertz 的 pprof 中间件提供了 Go 标准库 `http.Handler` 和 `http.Handler
 | NewHertzHTTPHandlerFunc | `func NewHertzHTTPHandlerFunc(h http.HandlerFunc) app.HandlerFunc` | 用于将 Go 标准库 `http.HandlerFunc` 转换为 Hertz `app.HandlerFunc` |
 | NewHertzHTTPHandler     | `func NewHertzHTTPHandler(h http.Handler) app.HandlerFunc`         | 用于将 Go 标准库 `http.Handler` 转换为 Hertz `app.HandlerFunc`     |
 
-### tips:
+### 注意：
 - 当修改服务器处理程序中的 resp header 时，请使用 `write` 函数来写入 header，否则修改将不会生效。
 ```go
 func handler(resp http.ResponseWriter, req *http.Request) {
