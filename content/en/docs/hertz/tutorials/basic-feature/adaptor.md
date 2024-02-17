@@ -81,4 +81,17 @@ Hertz pprof middleware provides adaptation methods for the Go standard library `
 | NewHertzHTTPHandlerFunc | `func NewHertzHTTPHandlerFunc(h http.HandlerFunc) app.HandlerFunc` | Used to convert Go standard library `http.HandlerFunc` to Hertz `app.HandlerFunc` |
 | NewHertzHTTPHandler     | `func NewHertzHTTPHandler(h http.Handler) app.HandlerFunc`         | Used to convert Go standard library `http.Handler` to Hertz `app.HandlerFunc`     |
 
+### tips
+- When modifying the resp header in the server handler, please use `write` function to write the header. Otherwise, the modification will not take effect.
+
+```go
+func handler(resp http.ResponseWriter, req *http.Request) {
+    resp.Header().Add("Content-Encoding", "test")
+    _, err := resp.Write([]byte("Content-Encoding: test\n"))
+    if err != nil {
+        panic(err)
+    }
+}
+```
+
 Refer to [hertz-example](https://github.com/cloudwego/hertz-examples/tree/main/adaptor) and [pprof](https://github.com/hertz-contrib/pprof/tree/main/adaptor) for more information
