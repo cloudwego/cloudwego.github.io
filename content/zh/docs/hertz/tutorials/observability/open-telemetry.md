@@ -6,7 +6,6 @@ keywords: ["OpenTelemetry"]
 description: "Hertz 提供的 OpenTelemetry 能力。"
 ---
 
-
 [OpenTelemetry](https://opentelemetry.io/) 是 [CNCF](https://www.cncf.io/) 的一个开源可观测能力框架，是由一系列工具，API 和 SDK 组成的。可以使 IT 团队能够检测、生成、收集和导出远程监测数据以进行分析和了解软件性能和行为。
 
 hertz-contrib 中提供了 [obs-opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry) 扩展，
@@ -65,12 +64,13 @@ func main() {
 
 #### Tracing Options
 
-| 函数名                          | 描述                                 |
-|------------------------------|------------------------------------|
-| WithTextMapPropagator        | 设置 `propagation.TextMapPropagator` |
-| WithCustomResponseHandler    | 配置自定义的 `ResponseHandler`            |
-| WithClientHttpRouteFormatter | 配置客户端指标 `http_route` 维度自定义格式化取值函数  |
+| 函数名                       | 描述                                                   |
+| ---------------------------- | ------------------------------------------------------ |
+| WithTextMapPropagator        | 设置 `propagation.TextMapPropagator`                   |
+| WithCustomResponseHandler    | 配置自定义的 `ResponseHandler`                         |
+| WithClientHttpRouteFormatter | 配置客户端指标 `http_route` 维度自定义格式化取值函数   |
 | WithServerHttpRouteFormatter | 配置服务端端指标 `http_route` 维度自定义格式化取值函数 |
+| WithShouldIgnore             | 配置一个条件函数来确定是否应该忽略链路数据的生成       |
 
 ### Metric
 
@@ -151,23 +151,23 @@ func main() {
 
 #### Provider Options
 
-| 函数名                       | 描述                                 |
-|---------------------------|------------------------------------|
-| WithServiceName           | 配置 `service.name` 的资源属性            |
-| WithDeploymentEnvironment | 配置 `deployment.environment` 资源属性     |
-| WithServiceNamespace      | 配置了 `service.namespace` 资源属性         |
+| 函数名                    | 描述                                     |
+| ------------------------- | ---------------------------------------- |
+| WithServiceName           | 配置 `service.name` 的资源属性           |
+| WithDeploymentEnvironment | 配置 `deployment.environment` 资源属性   |
+| WithServiceNamespace      | 配置了 `service.namespace` 资源属性      |
 | WithResourceAttributes    | 配置资源属性                             |
-| WithResource              | 配置资源 (`resource.Resource`)         |
-| WithEnableTracing         | 是否启用 `tracing`                     |
-| WithEnableMetrics         | 是否启用 `metrics`                     |
-| WithTextMapPropagator     | 设置 `propagation.TextMapPropagator` |
-| WithResourceDetector      | 配置 `resource.Detector`             |
-| WithHeaders               | 配置导出 telemetry 数据的 gRPC 请求头        |
-| WithInsecure              | 配置是否对导出的 gRPC 客户端使用安全认证            |
-| WithEnableCompression     | 配置是否对导出数据的进行压缩                     |
-| WithSampler               | 配置 Trace 采样器                       |
-| WithSdkTracerProvider     | 配置自定义的 `sdktrace.TracerProvider`    |
-| WithMeterProvider         | 配置自定义的 `metric.MeterProvider`       |
+| WithResource              | 配置资源 (`resource.Resource`)           |
+| WithEnableTracing         | 是否启用 `tracing`                       |
+| WithEnableMetrics         | 是否启用 `metrics`                       |
+| WithTextMapPropagator     | 设置 `propagation.TextMapPropagator`     |
+| WithResourceDetector      | 配置 `resource.Detector`                 |
+| WithHeaders               | 配置导出 telemetry 数据的 gRPC 请求头    |
+| WithInsecure              | 配置是否对导出的 gRPC 客户端使用安全认证 |
+| WithEnableCompression     | 配置是否对导出数据的进行压缩             |
+| WithSampler               | 配置 Trace 采样器                        |
+| WithSdkTracerProvider     | 配置自定义的 `sdktrace.TracerProvider`   |
+| WithMeterProvider         | 配置自定义的 `metric.MeterProvider`      |
 
 ## 完整使用示例
 
