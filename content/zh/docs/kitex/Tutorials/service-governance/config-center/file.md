@@ -1,6 +1,5 @@
 ---
-title: "file"
-linkTitle: "file"
+title: "File"
 date: 2023-12-18
 weight: 5
 keywords: ["配置中心扩展","file"]
