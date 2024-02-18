@@ -37,7 +37,7 @@ description: "hz 使用 (thrift)。"
    {{% codetab %}}
 
    ```bash
-   # 不在`$GOPATH`下的项目通过工具提供的`-module`命令指定一个自定义 module 名称即可：
+   # 不在 `$GOPATH` 下的项目通过工具提供的 `-module` 命令指定一个自定义 module 名称即可：
    hz new -module example.com/m -idl idl/hello.thrift
 
    # 整理 & 拉取依赖
@@ -54,7 +54,7 @@ description: "hz 使用 (thrift)。"
    {{% codetab %}}
 
    ```bash
-   # 如果当前项目路径处于`$GOPATH`之下则执行以下代码块
+   # 如果当前项目路径处于 `$GOPATH` 之下则执行以下代码块
    hz new -idl idl/hello.thrift
 
    go mod init
@@ -115,7 +115,7 @@ description: "hz 使用 (thrift)。"
    curl --location --request GET 'http://127.0.0.1:8888/hello?name=hertz'
    ```
 
-   如果返回`{"RespBody":"hello,hertz"}`，说明接口调通。
+   如果返回 `{"RespBody":"hello,hertz"}`，说明接口调通。
 
 ### update: 更新一个已有的项目
 

@@ -1,5 +1,5 @@
 ---
-title: "eureka"
+title: "Eureka"
 date: 2023-11-30
 weight: 4
 keywords: ["服务注册与发现", "eureka"]

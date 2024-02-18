@@ -19,7 +19,6 @@ go get github.com/hertz-contrib/sse
 
 ## Example Code
 
-
 ### Server
 
 In the following example code, when accessing `/sse`, the server will push a timestamp to the client every second.
@@ -67,6 +66,7 @@ func main() {
 	h.Spin()
 }
 ```
+
 ### Client
 
 ```go
@@ -160,6 +160,7 @@ func main() {
     wg.Wait()
 }
 ```
+
 ## Server-Configuration
 
 ### NewStream
@@ -227,6 +228,7 @@ Function signature:
 ```go
 func GetLastEventID(c *app.RequestContext) string
 ```
+
 ## Client-Configuration
 
 ### NewClient
@@ -348,7 +350,7 @@ Function signature:
 
 ### SetURL
 
-Set the request url for sse client 
+Set the request url for sse client
 
 Function signature:
 
@@ -376,7 +378,7 @@ Set the request response custom processing of sse client
 
 Function signature:
 
-`func (c *Client) SetResponseCallback(responseCallback ResponseCallback) `
+`func (c *Client) SetResponseCallback(responseCallback ResponseCallback)`
 
 `type ResponseCallback func(ctx context.Context, req *protocol.Request, resp *protocol.Response) error`
 
@@ -396,9 +398,17 @@ Function signature:
 
 `func (c *Client) SetEncodingBase64(encodingBase64 bool)`
 
+### SetBody
+
+set request body for sse client
+
+Function signature:
+
+`func (c *Client) SetBody(body []byte)`
+
 ### GetURL
 
-get request url for sse client 
+get request url for sse client
 
 Function signature:
 
@@ -435,3 +445,11 @@ get LastEventID for sse client
 Function signature:
 
 `func (c *Client) GetLastEventID() []byte`
+
+### GetBody
+
+get request body for sse client
+
+Function signature:
+
+`func (c *Client) GetBody() []byte`

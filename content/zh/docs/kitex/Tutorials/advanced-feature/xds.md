@@ -14,7 +14,7 @@ Kitex 通过外部扩展 [kitex-contrib/xds](https://github.com/kitex-contrib/xd
 ## 已支持的功能
 
 * 服务发现
-* 服务路由：当前仅支持 `header` 与 `method` 的精确匹配。
+* 服务路由：当前支持`method` 的精确匹配和 `header` 的精确匹配、前缀匹配、正则匹配。
     * [HTTP route configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/http/http_routing#arch-overview-http-routing): 通过 [VirtualService](https://istio.io/latest/docs/reference/config/networking/virtual-service/) 进行配置
     * [ThriftProxy](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/thrift_proxy/v3/thrift_proxy.proto): 通过 [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/) 进行配置。
 * 超时:
@@ -71,13 +71,19 @@ client.WithXDSSuite(xds.ClientSuite{
 
 ```
 <service-name>.<namespace>.svc.cluster.local:<service-port>
+<service-name>.<namespace>.svc:<service-port>
+<service-name>.<namespace>:<service-port>
+<service-name>:<service-port> // 访问同命名空间的服务.
 ```
 
 #### 基于 tag 匹配的路由匹配
 
 我们可以通过 Istio 中的 [VirtualService](https://istio.io/latest/docs/reference/config/networking/virtual-service/) 来定义流量路由配置。
 
-下面的例子表示 header 内包含 `{"stage":"canary"}` 的 tag 时，则将请求路由到 `kitex-server` 的 `v1` 子集群。
+下面的例子表示 tag 满足以下条件时请求会被路由到 `kitex-server` 的 `v1` 子集群:
+- `stage` 精确匹配到 `canary` 
+- `userid` 前缀匹配到 `2100` 
+- `env` 正则匹配到 `[dev|sit]`
 
 ```
 apiVersion: networking.istio.io/v1alpha3
@@ -93,6 +99,12 @@ spec:
       - headers:
           stage:
             exact: "canary"
+      - headers:
+          userid:
+            prefix: "2100"
+      - headers:
+          env:
+            regex: "[dev|sit]"
     route:
     - destination:
         host: kitex-server

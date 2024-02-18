@@ -63,16 +63,14 @@ func main() {
 
 [代码地址](https://github.com/hertz-contrib/obs-opentelemetry/tree/main/tracing)
 
-
 #### Tracing Options
 
 | 函数名                          | 描述                                 |
 |------------------------------|------------------------------------|
 | WithTextMapPropagator        | 设置 `propagation.TextMapPropagator` |
-| WithCustomResponseHandler    | 配置自定义的`ResponseHandler`            |
+| WithCustomResponseHandler    | 配置自定义的 `ResponseHandler`            |
 | WithClientHttpRouteFormatter | 配置客户端指标 `http_route` 维度自定义格式化取值函数  |
 | WithServerHttpRouteFormatter | 配置服务端端指标 `http_route` 维度自定义格式化取值函数 |
-
 
 ### Metric
 
@@ -156,8 +154,8 @@ func main() {
 | 函数名                       | 描述                                 |
 |---------------------------|------------------------------------|
 | WithServiceName           | 配置 `service.name` 的资源属性            |
-| WithDeploymentEnvironment | 配置`deployment.environment`资源属性     |
-| WithServiceNamespace      | 配置了`service.namespace`资源属性         |
+| WithDeploymentEnvironment | 配置 `deployment.environment` 资源属性     |
+| WithServiceNamespace      | 配置了 `service.namespace` 资源属性         |
 | WithResourceAttributes    | 配置资源属性                             |
 | WithResource              | 配置资源 (`resource.Resource`)         |
 | WithEnableTracing         | 是否启用 `tracing`                     |
@@ -168,8 +166,8 @@ func main() {
 | WithInsecure              | 配置是否对导出的 gRPC 客户端使用安全认证            |
 | WithEnableCompression     | 配置是否对导出数据的进行压缩                     |
 | WithSampler               | 配置 Trace 采样器                       |
-| WithSdkTracerProvider     | 配置自定义的`sdktrace.TracerProvider`    |
-| WithMeterProvider         | 配置自定义的`metric.MeterProvider`       |
+| WithSdkTracerProvider     | 配置自定义的 `sdktrace.TracerProvider`    |
+| WithMeterProvider         | 配置自定义的 `metric.MeterProvider`       |
 
 ## 完整使用示例
 

@@ -27,44 +27,7 @@ cwgo
 
 ## 使用
 
-cwgo 支持交互式命令行和静态命令行两种生成方式。并且**弱化了 new 和 update** 的概念，更新时直接输入之前的指令即可。
-
-## 交互式命令行
-
-交互式命令行支持一次调用生成所有代码，如 Server、Client、DB，满足大部分用户的需求，用户只需要根据提示输入信息即可。
-
-语法：`cwgo init`
-
-执行 `cwgo init` 后，会首先询问需要生成的项目类型，支持多选，如下图所示，选择了 server 和 client
-
-![generate_type](/img/docs/cwgo_generate_type.png)
-
-敲回车后，会依次询问 server 和 client 的信息。步骤如下
-
-1. 选择服务类型，RPC 还是 HTTP。单选。
-
-1. 输入服务名称。必填。
-
-1. 输入 go module 名称。在 GOPATH 外为必填，在 GOPATH 内不需要填。
-
-1. 输入 idl 路径。必填。
-
-1. 是否使用默认配置去生成项目
-
-   1. 默认配置：无服务发现组件，无其他参数
-   1. 非默认配置：选择服务发现组件；输入传递给生成工具的参数
-
-client 询问的问题和 server 大致相同，区别是会首先询问生成的 client 的数量，之后循环输入每一个 client 的信息。
-
-db 询问的信息为：
-
-1. 选择数据库类型。单选
-1. 输入数据库 DSN。必填
-1. 选择是否使用默认配置去生成项目。如选择否，则会要求输入传递给生成工具的参数
-
-对于传递给工具的参数，hz 参考[文档](/zh/docs/hertz/tutorials/toolkit/command/)，kitex 参考[文档](/docs/kitex/tutorials/code-gen/code_generation/)。
-
-## 静态命令行
+cwgo 支持静态命令行生成方式。并且**弱化了 new 和 update** 的概念，更新时直接输入之前的指令即可。
 
 ### 命令说明
 
@@ -77,7 +40,6 @@ USAGE:
    cwgo [global options] command [command options] [arguments...]
 
 COMMANDS:
-   init      交互式命令行
    server    生成 RPC 或者 HTTP Server
    client    生成 RPC 或者 HTTP Client
    model     生成 DB Model

@@ -221,7 +221,7 @@ func main() {
 
 Websocket reverse proxy for Hertz, inspired by [fasthttp-reverse-proxy](https://github.com/yeqown/fasthttp-reverse-proxy)
 
-#### Example 
+#### Example
 
 ```go
 package main
@@ -237,6 +237,7 @@ func main() {
     h.Spin()
 }
 ```
+
 #### Configuration
 
 | Configuration  | Default                   | Description                  |

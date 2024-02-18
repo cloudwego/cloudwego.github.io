@@ -228,7 +228,7 @@ func main() {
 
 ### WithExtraKeys
 
-`ExtraKey` 是 `zap.config`结构体中用来存储额外键的字段，`WithExtraKeys` 对传入参数进行判断，如果没有被添加到 `zap.config` 中，则将传入的参数添加到`zap.config`
+`ExtraKey` 是 `zap.config` 结构体中用来存储额外键的字段，`WithExtraKeys` 对传入参数进行判断，如果没有被添加到 `zap.config` 中，则将传入的参数添加到 `zap.config`
 
 函数签名：
 

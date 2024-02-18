@@ -1,5 +1,5 @@
 ---
-title: "consul"
+title: "Consul"
 date: 2023-11-30
 weight: 3
 keywords: ["服务注册与发现", "consul"]

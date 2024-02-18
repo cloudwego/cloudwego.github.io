@@ -1,6 +1,5 @@
 ---
-title: "apollo"
-linkTitle: "apollo"
+title: "Apollo"
 date: 2023-12-12
 weight: 3
 keywords: ["ConfigCenter Extension","apollo"]

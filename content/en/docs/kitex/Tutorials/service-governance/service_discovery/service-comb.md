@@ -1,5 +1,5 @@
 ---
-title: "service-comb"
+title: "ServiceComb"
 date: 2023-11-30
 weight: 7
 keywords: ["Service Discovery", "service-comb"]

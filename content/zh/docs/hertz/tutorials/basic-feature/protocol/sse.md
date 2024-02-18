@@ -160,6 +160,7 @@ func main() {
   select {}
 }
 ```
+
 ## 服务端配置
 
 ### NewStream
@@ -229,7 +230,7 @@ func GetLastEventID(c *app.RequestContext) string
 
 ### NewClient
 
-传入 server 端 URL 完成对客户端的初始化，默认设置 `maxBufferSize` 为 1 << 16 ，`Method` 请求方法为 `GET`
+传入 server 端 URL 完成对客户端的初始化，默认设置 `maxBufferSize` 为 1 << 16，`Method` 请求方法为 `GET`
 
 可以设置 Client.Onconnect 和 Client.OnDisconnect 来进行连接和中断连接之后的自定义处理
 
@@ -375,7 +376,7 @@ func main() {
 
 函数签名:
 
-`func (c *Client) SetResponseCallback(responseCallback ResponseCallback) `
+`func (c *Client) SetResponseCallback(responseCallback ResponseCallback)`
 
 `type ResponseCallback func(ctx context.Context, req *protocol.Request, resp *protocol.Response) error`
 
@@ -395,6 +396,13 @@ func main() {
 
 `func (c *Client) SetEncodingBase64(encodingBase64 bool)`
 
+### SetBody
+
+设置 sse client 请求的 Body
+
+函数签名:
+
+`func (c *Client) SetBody(body []byte)`
 
 ### GetURL
 
@@ -435,3 +443,11 @@ func main() {
 函数签名:
 
 `func (c *Client) GetLastEventID() []byte`
+
+### GetBody
+
+获取 sse client 请求的 Body
+
+函数签名:
+
+`func (c *Client) GetBody() []byte`

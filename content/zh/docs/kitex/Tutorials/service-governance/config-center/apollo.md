@@ -1,6 +1,5 @@
 ---
-title: "apollo"
-linkTitle: "apollo"
+title: "Apollo"
 date: 2023-12-12
 weight: 3
 keywords: ["配置中心扩展","apollo"]

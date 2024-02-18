@@ -1,5 +1,5 @@
 ---
-title: "polaris"
+title: "Polaris"
 date: 2023-11-30
 weight: 6
 keywords: ["Service Discovery", "polaris"]
