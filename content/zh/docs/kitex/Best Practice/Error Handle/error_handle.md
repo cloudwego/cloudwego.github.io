@@ -115,7 +115,7 @@ if de.ErrorType() == kerrors.ErrInternalException {} // 返回 true
 
 | **错误码** | **名称**                    | **含义**       |
 | ---------- | --------------------------- | -------------- |
-| 0          | UnknownApllicationException | 未知错误       |
+| 0          | UnknownApplicationException | 未知错误       |
 | 1          | UnknownMethod               | 未知方法       |
 | 2          | InvalidMessageTypeException | 无效的消息类型 |
 | 3          | WrongMethodName             | 错误的方法名字 |

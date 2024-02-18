@@ -112,7 +112,7 @@ Regarding the error codes reported by the caller:
 
 | **Error Code** | **Name**                    | **Meaning**                      |
 | :------------- | :-------------------------- | :------------------------------- |
-| 0              | UnknownApllicationException | Unknown error                    |
+| 0              | UnknownApplicationException | Unknown error                    |
 | 1              | UnknownMethod               | Unknown method                   |
 | 2              | InvalidMessageTypeException | Invalid message type             |
 | 3              | WrongMethodName             | Incorrect method name            |
