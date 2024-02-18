@@ -18,6 +18,68 @@ go get github.com/hertz-contrib/registry/redis
 
 The Redis extension provides option configuration in the service registry section.
 
+#### WithExpireTime
+
+The Redis extension provides the `WithExpireTime` to set the expiration time (in seconds) for the key storing service information. The default is 60 seconds.
+
+**NOTE: Expiration time must be greater than refresh interval.**
+
+Function signature:
+
+```go
+func WithExpireTime(time int) Option
+```
+
+Sample code:
+
+```go
+func main() {
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithExpireTime(10))
+    // ...
+    h := server.Default(
+    server.WithHostPorts(addr),
+    server.WithRegistry(r, &registry.Info{
+        ServiceName: "hertz.test.demo",
+        Addr:        utils.NewNetAddr("tcp", addr),
+        Weight:      10,
+        Tags:        nil,
+    }),
+    )
+    // ...
+}
+```
+
+#### WithRefreshInterval
+
+The Redis extension provides the `WithRefreshInterval` to set the expiration time refresh interval (in seconds) for the key storing service information. The default is 30 seconds.
+
+**NOTE: Refresh interval must be less than expiration time.**
+
+Function signature:
+
+```go
+func WithRefreshInterval(interval int) Option 
+```
+
+Sample code:
+
+```go
+func main() {
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithRereshInterval(5))
+    // ...
+    h := server.Default(
+    server.WithHostPorts(addr),
+    server.WithRegistry(r, &registry.Info{
+        ServiceName: "hertz.test.demo",
+        Addr:        utils.NewNetAddr("tcp", addr),
+        Weight:      10,
+        Tags:        nil,
+    }),
+    )
+    // ...
+}
+```
+
 #### WithPassword
 
 The Redis extension provides `WithPassword` to configure the redis password, which must match the password specified in the server configuration options. Default to empty.

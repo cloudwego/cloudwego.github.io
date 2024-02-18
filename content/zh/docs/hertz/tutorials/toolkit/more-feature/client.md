@@ -29,6 +29,8 @@ hz client 生成的代码结构可以参考 [hz client](/zh/docs/hertz/tutorials
 >但是为针对 client 的场景，增加了一种注解，
 >api.base_domain：指定默认访问的请求 domain。
 
+**注意**: 当使用 `api.any` 注解时，client 会自动生成 `post` 方法的 client 代码用于替换 `any`。
+
 ```thrift
 namespace go toutiao.middleware.hertz_client
 

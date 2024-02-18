@@ -1,5 +1,5 @@
 ---
-title: "eureka"
+title: "Eureka"
 date: 2023-11-30
 weight: 4
 keywords: ["Service Discovery", "eureka"]

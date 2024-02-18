@@ -205,7 +205,7 @@ description: >
    curl --location --request GET 'http://127.0.0.1:8888/hello?name=hertz'
    ```
 
-   如果返回`{"RespBody":"hello,hertz"}`，说明接口调通。
+   如果返回 `{"RespBody":"hello,hertz"}`，说明接口调通。
 
 ### update: 更新一个已有的项目
 

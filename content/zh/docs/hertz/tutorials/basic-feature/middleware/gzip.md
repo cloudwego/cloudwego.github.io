@@ -133,7 +133,7 @@ func main() {
 
 > 以下配置对 `GzipStream` 同样适用。
 
-`Gzip`提供了四种压缩选项:`BestCompression`,`BestSpeed`,`DefaultCompression`,`NoCompression` 用于用户自定义压缩模式
+`Gzip` 提供了四种压缩选项:`BestCompression`,`BestSpeed`,`DefaultCompression`,`NoCompression` 用于用户自定义压缩模式
 
 | 选项               | 描述                 |
 | ------------------ | -------------------- |
@@ -183,7 +183,7 @@ func main() {
 
 ### WithExcludedExtensions
 
-`gzip` 提供 `WithExcludeExtensions` 用于帮助用户设置不需要 `gzip` 压缩的文件后缀，默认值为`.png`, `.gif`, `.jpeg`, `.jpg`
+`gzip` 提供 `WithExcludeExtensions` 用于帮助用户设置不需要 `gzip` 压缩的文件后缀，默认值为 `.png`, `.gif`, `.jpeg`, `.jpg`
 
 函数签名如下:
 
@@ -224,7 +224,7 @@ func main() {
 
 ### WithExcludedPaths
 
-`gzip` 提供了 `WithExcludedPaths`用于帮助用户设置其不需要进行 `gzip` 压缩的文件路径
+`gzip` 提供了 `WithExcludedPaths` 用于帮助用户设置其不需要进行 `gzip` 压缩的文件路径
 
 函数签名如下:
 
@@ -272,7 +272,7 @@ func main() {
 
 ### WithExcludedPathRegexes
 
-`gzip` 提供了`WithExcludedPathRegexes`用于帮助用户设置自定义的正则表达式来过滤掉不需要 `gzip` 压缩的文件
+`gzip` 提供了 `WithExcludedPathRegexes` 用于帮助用户设置自定义的正则表达式来过滤掉不需要 `gzip` 压缩的文件
 
 函数签名如下:
 

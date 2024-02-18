@@ -116,26 +116,19 @@ kitex -service mydemoservice demo.thrift
 kitex 生成的代码会依赖相应的 Go 语言代码库：
 
 - 对于 thrift IDL，是 `github.com/apache/thrift v0.13.0`
-- 对于 protobuf IDL，是 ` google.golang.org/protobuf v1.26.0`
+- 对于 protobuf IDL，是 `google.golang.org/protobuf`，具体版本取决于 Kitex 不同版本，用户无需特别指定
 
-要注意的一个地方是，`github.com/apache/thrift/lib/go/thrift` 的 `v0.14.0` 版本开始提供的 API 和之前的版本是**不兼容的**，如果在更新依赖的时候给 `go get` 命令增加了 `-u` 选项，会导致该库更新到不兼容的版本造成编译失败。通常会有这样的报错：
-如 not enough arguments in call to iprot.ReadStructBegin
+需要注意的是，`github.com/apache/thrift/lib/go/thrift v0.14.0` 版本开始提供的 API 和之前的版本是**不兼容的**，如果在更新依赖的时候给 `go get` 命令增加了 `-u` 选项，会导致该库更新到不兼容的版本造成编译失败。通常会有这样的报错：
 
+> not enough arguments in call to iprot.ReadStructBegin
 
-你可以通过额外执行一个命令来指定正确的版本：
+因此 Kitex 命令行工具（version >= v0.4.5）在生成代码时，会默认在 `go.mod` 里通过 replace 指定 v0.13.0。
 
-```shell
-go get github.com/apache/thrift@v0.13.0
-```
-
-或用 `replace` 指令强制固定该版本：
+如果因为某些原因被删除了，可通过如下 `replace` 指令重新强制固定该版本：
 
 ```shell
 go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 ```
-
-在 v0.4.5 后，工具会对 go mod 自动添加该约束
-
 
 ## 使用 protobuf IDL 的注意事项
 
