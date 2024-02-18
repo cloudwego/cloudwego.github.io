@@ -34,7 +34,7 @@ type FileConfigServerSuite struct {
 
 Function Signature:
 
-`func NewSuite(key string, watcher filewatcher.FileWatcher) *FileConfigServerSuite`
+`func NewSuite(key string, watcher filewatcher.FileWatcher, opts ...utils.Option) *FileConfigServerSuite`
 
 Sample code(or visit [here](https://github.com/kitex-contrib/config-file/blob/main/example/server/main.go)):
 
@@ -43,6 +43,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 
 	"github.com/cloudwego/kitex-examples/kitex_gen/api"
@@ -51,6 +52,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	kitexserver "github.com/cloudwego/kitex/server"
 	"github.com/kitex-contrib/config-file/filewatcher"
+	"github.com/kitex-contrib/config-file/parser"
 	fileserver "github.com/kitex-contrib/config-file/server"
 )
 
@@ -71,6 +73,15 @@ func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Respon
 	return &api.Response{Message: req.Message}, nil
 }
 
+// customed by user
+type MyParser struct{}
+
+// one example for custom parser
+// if the type of server config is json or yaml,just using default parser
+func (p *MyParser) Decode(kind parser.ConfigType, data []byte, config interface{}) error {
+	return json.Unmarshal(data, config)
+}
+
 func main() {
 	klog.SetLevel(klog.LevelDebug)
 
@@ -87,8 +98,8 @@ func main() {
 
 	svr := echo.NewServer(
 		new(EchoImpl),
-		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
-		server.WithSuite(fileserver.NewSuite(key, fw)), // Add watcher
+		kitexserver.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+		kitexserver.WithSuite(fileserver.NewSuite(key, fw)), // Add watcher
 	)
 	if err := svr.Run(); err != nil {
 		log.Println("server stopped with error:", err)
@@ -107,7 +118,7 @@ type FileConfigClientSuite struct {
 ```
 Function Signature:
 
-`func NewSuite(service, key string, watcher filewatcher.FileWatcher) *FileConfigClientSuite`
+`func NewSuite(service, key string, watcher filewatcher.FileWatcher,opts ...utils.Option)*FileConfigClientSuite`
 
 Sample code(or visit [here](https://github.com/kitex-contrib/config-file/blob/main/example/client/main.go)):
 
@@ -116,6 +127,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"os"
 	"os/signal"
@@ -127,6 +139,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	fileclient "github.com/kitex-contrib/config-file/client"
 	"github.com/kitex-contrib/config-file/filewatcher"
+	"github.com/kitex-contrib/config-file/parser"
 )
 
 const (
@@ -135,6 +148,15 @@ const (
 	serviceName = "ServiceName"
 	clientName  = "ClientName"
 )
+
+// customed by user
+type MyParser struct{}
+
+// one example for custom parser
+// if the type of client config is json or yaml,just using default parser
+func (p *MyParser) Decode(kind parser.ConfigType, data []byte, config interface{}) error {
+	return json.Unmarshal(data, config)
+}
 
 func main() {
 	klog.SetLevel(klog.LevelDebug)
@@ -219,6 +241,58 @@ func main() {
 In the server-side (Server), due to the characteristics of KitexServer, we only need to define `defer fw.StopWatching()`
 
 ## Configuration
+
+### Custom Parser
+
+Define a custom format parser and pass it in through `option` of `NewSuite`. The format supports `json` and `yaml` by default.
+
+Interface Definition:
+
+```go
+// ConfigParser the parser for config file.
+type ConfigParser interface {
+	Decode(kind ConfigType, data []byte, config interface{}) error
+}
+```
+
+Sample:
+
+Extend parsing YAML types.
+```go
+// customed by user
+type MyParser struct{}
+
+// one example for custom parser
+// if the type of client config is json or yaml,just using default parser
+func (p *MyParser) Decode(kind parser.ConfigType, data []byte, config interface{}) error {
+	return yaml.Unmarshal(data, config)
+}
+
+const YAML parser.ConfigType = "yaml"
+
+func withParser(o *utils.Options) {
+	o.Parser = &MyParser{}
+	o.Params = &parser.ConfigParam{
+		Type: YAML,
+	}
+}
+
+// passed in with `NewSuite`
+
+// server
+svr := echo.NewServer(
+		new(EchoImpl),
+		kitexserver.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+		kitexserver.WithSuite(fileserver.NewSuite(key, fw, withParser)), // add watcher
+	)
+
+// client
+client, err := echo.NewClient(
+		serviceName,
+		kitexclient.WithHostPorts("0.0.0.0:8888"),
+		kitexclient.WithSuite(fileclient.NewSuite(serviceName, key, fw, withParser)),
+	)
+```
 
 ### Governance Policy
 
