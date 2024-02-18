@@ -610,7 +610,25 @@ You can see that `Stock: 1024`, indicating that our item service successfully re
 
 ## Accessing the Service Registry
 
-To simulate a real environment, we will now integrate our service with a registry. In this example, we have chosen etcd as the registry. You can refer to the installation and usage of etcd at [etcd.io](https://etcd.io/). Assuming you have already installed and started the etcd service instance.
+To simulate a real environment, we will now integrate our service with a registry. In this example, we have chosen etcd as the registry. You can refer to the installation and usage of etcd at [etcd.io](https://etcd.io/) or the following `docker compose` file. Assuming you have already installed and started the etcd service instance.
+
+```yml
+version: '3'
+
+services:
+  etcd:
+    image: bitnami/etcd:3.5
+    container_name: etcd
+    ports:
+      - 2379:2379
+      - 2380:2380
+    volumes:
+      - ./etcd/data:/bitnami/etcd-data
+    environment:
+      - TZ=Asia/Shanghai
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+```
 
 Kitex, as a microservice framework, also provides service governance capabilities. In the context of service registration and discovery, Kitex has adapted to etcd. Please refer to the [etcd registry usage documentation](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/service_discovery/etcd/). Additionally, Kitex provides support for other common registrys, as documented in the [Service Discovery](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/service_discovery/) section.
 

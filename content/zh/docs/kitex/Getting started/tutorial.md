@@ -612,7 +612,25 @@ GetItemResp({Item:Item({Id:1024 Title:Kitex Description:Kitex is an excellent fr
 
 ## 接入服务注册中心
 
-为了更贴近真实环境，接下来为我们的服务接入注册中心，在本例中选择了 etcd 作为注册中心，etcd 的安装与使用可参考 [etcd.io](https://etcd.io/)，接下来默认你已经安装并启动 etcd 服务实例。
+为了更贴近真实环境，接下来为我们的服务接入注册中心，在本例中选择了 etcd 作为注册中心，etcd 的安装与使用可参考 [etcd.io](https://etcd.io/) 或使用下述 `docker compose` 文件，接下来默认你已经安装并启动 etcd 服务实例。
+
+```yml
+version: '3'
+
+services:
+  etcd:
+    image: bitnami/etcd:3.5
+    container_name: etcd
+    ports:
+      - 2379:2379
+      - 2380:2380
+    volumes:
+      - ./etcd/data:/bitnami/etcd-data
+    environment:
+      - TZ=Asia/Shanghai
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+```
 
 Kitex 作为一款微服务框架，也为我们提供了服务治理的能力。当然，在服务注册与发现的场景中也为 etcd 做了适配，可见 [etcd 注册中心使用文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/service_discovery/etcd/)。同时 Kitex 还提供了其他常见注册中心适配，文档可见[服务发现](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/service_discovery/)。
 
