@@ -1,7 +1,7 @@
 ---
 title: "优雅停机"
-date: 2024-02-07
-weight: 12
+date: 2024-02-18
+weight: 2
 keywords: ["优雅停机", "Kubernetes"]
 description: "以 K8s 部署平台为例，介绍如何基于 K8s 的原理以及 Kitex 的优雅停机功能，搭建一个具备优雅停机的服务架构"
 ---
@@ -198,7 +198,7 @@ spec:
 
 #### Server 无法在销毁前处理完所有请求
 
-这个问题本质上取决于几个个时间：
+这个问题本质上取决于几个时间：
 
 1. 上游服务发现结果更新时间 (client.DiscoverLatency)
 2. K8s 的 preStop 等待时间（k8s.PreStopTime）
