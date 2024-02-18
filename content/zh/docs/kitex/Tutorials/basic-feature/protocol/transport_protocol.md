@@ -1,7 +1,7 @@
 ---
 title: "传输协议"
 date: 2023-10-16
-weight: 2
+weight: 1
 keywords: ["Kitex", "TTHeader", "HTTP2"]
 description: Kitex 支持 TTHeader、HTTP2 传输协议。
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Transport Protocol"
 date: 2023-10-16
-weight: 3
+weight: 1
 keywords: ["Kitex", "TTHeader", "HTTP2"]
 description: Kitex supports transport protocols of TTHeader、HTTP2.
 ---
