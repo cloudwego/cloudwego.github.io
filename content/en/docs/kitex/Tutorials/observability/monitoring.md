@@ -6,6 +6,8 @@ keywords: ["Kitex", "Monitoring", "Tracer"]
 description: Kitex has monitoring capability built in, but does not have any monitoring features itself, and can be extended by the interface.
 ---
 
+## Custom monitoring management
+
 The framework provides a `Tracer` interface. Users can implement it and inject it by `WithTracer` Option.
 
 ```go
@@ -16,9 +18,19 @@ type Tracer interface {
 }
 ```
 
-The monitoring extension of prometheus is provided in [kitex-contrib](https://github.com/kitex-contrib/monitor-prometheus), usage example:
+For detailed documentation, refer to the [Monitoring Extension](../../framework-exten/monitoring/#tracing-extension) section.
 
-Client Side:
+## Expansion Repository use
+
+[kitex-contrib](https://github.com/kitex-contrib) also provides two monitoring extensions [monitor-prometheus](https://github.com/kitex-contrib/monitor-prometheus/tree/main) and [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main). They integrate Prometheus and OpenTelemetry monitoring extensions, respectively. The former is more aligned with the Prometheus ecosystem and is easier to use, while the latter provides more flexibility.
+
+### Prometheus
+
+The extension repository [monitor-prometheus](https://github.com/kitex-contrib/monitor-prometheus/tree/main) offers Prometheus monitoring extension.
+
+#### usage example:
+
+Client
 
 ```go
 import (
@@ -37,20 +49,87 @@ resp, _ := client.Send(ctx, req)
 ...
 ```
 
-Server Side:
+Server
 
 ```go
 import (
     "github.com/kitex-contrib/monitor-prometheus"
     kServer "github.com/cloudwego/kitex/server"
 )
-func main() {...
-    svr := xxxservice.NewServer(
-        &myServiceImpl{},
-        kServer.WithTracer(prometheus.NewServerTracer(":9092", "/kitexserver")))
-    svr.Run()
-    
-    ...
+
+func main() {
+...
+	svr := xxxservice.NewServer(
+	    &myServiceImpl{},
+	    kServer.WithTracer(prometheus.NewServerTracer(":9092", "/kitexserver")))
+	svr.Run()
+...
 }
 ```
 
+#### Metrics
+
+Client
+
+| Name                        | Unit | Tags                                 | Description                             |
+|-----------------------------|------|--------------------------------------|-----------------------------------------|
+| `kitex_client_throughput`   | -    | type, caller, callee, method, status | Total number of requests handled by the Client |
+| `kitex_client_latency_us`   | us   | type, caller, callee, method, status | Latency of request handling at the Client (Response received time - Request initiation time, in microseconds) |
+
+Server
+
+| Name                        | Unit | Tags                                 | Description                             |
+|-----------------------------|------|--------------------------------------|-----------------------------------------|
+| `kitex_server_throughput`   | -    | type, caller, callee, method, status | Total number of requests handled by the Server |
+| `kitex_server_latency_us`   | us   | type, caller, callee, method, status | Latency of request handling at the Server (Processing completion time - Request received time, in microseconds) |
+
+More complex data monitoring can be implemented based on the above metrics. Examples can be found in the [Useful Examples](https://github.com/kitex-contrib/monitor-prometheus/?tab=readme-ov-file#useful-examples) section.
+
+#### Runtime Metrics
+
+This repository relies on [prometheus/client_golang](https://github.com/prometheus/client_golang) and supports its built-in [runtime metrics](https://golang.bg/src/runtime/metrics/description.go). For more details, please refer to [WithGoCollectorRuntimeMetrics](https://pkg.go.dev/github.com/prometheus/client_golang@v1.18.0/prometheus/collectors#WithGoCollectorRuntimeMetrics).
+
+### OpenTelemetry
+
+The extension repository [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) provides OpenTelemetry monitoring extension.
+
+#### usage example:
+
+For information on how to use obs-opentelemetry, please refer to the [tracing](../tracing#opentelemetry) section.
+
+#### Metrics
+
+Server
+
+| Name                        | Metric Data Model | Unit        | Unit(UCUM) | Description                               |
+|-----------------------------|-------------------|-------------|------------|-------------------------------------------|
+| `rpc.server.duration`       | Histogram         | milliseconds| `ms`       | measures duration of inbound RPC     |
+
+Client
+
+| Name                        | Metric Data Model | Unit        | Unit(UCUM) | Description                               |
+|-----------------------------|-------------------|-------------|------------|-------------------------------------------|
+| `rpc.server.duration`       | Histogram         | milliseconds| `ms`       | measures duration of outbound RPC     |
+
+Additional service metrics can be calculated using `rpc.server.duration`, such as R.E.D (Rate, Errors, Duration). Examples can be found [here](https://github.com/kitex-contrib/obs-opentelemetry/blob/main/README.md#supported-metrics).
+
+#### Runtime Metrics
+
+Based on [opentelemetry-go](https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/runtime), it supports the following runtime metrics:
+
+| Name                                   | Instrument | Unit       | Unit (UCUM)) | Description                                                                   |
+|----------------------------------------|------------|------------|--------------|-------------------------------------------------------------------------------|
+| `process.runtime.go.cgo.calls`         | Sum        | -          | -            | Number of cgo calls made by the current process.                              |
+| `process.runtime.go.gc.count`          | Sum        | -          | -            | Number of completed garbage collection cycles.                                |
+| `process.runtime.go.gc.pause_ns`       | Histogram  | nanosecond | `ns`         | Amount of nanoseconds in GC stop-the-world pauses.                            |
+| `process.runtime.go.gc.pause_total_ns` | Histogram  | nanosecond | `ns`         | Cumulative nanoseconds in GC stop-the-world pauses since the program started. |
+| `process.runtime.go.goroutines`        | Gauge      | -          | -            | measures duration of outbound RPC.                                            | 
+| `process.runtime.go.lookups`           | Sum        | -          | -            | Number of pointer lookups performed by the runtime.                           |
+| `process.runtime.go.mem.heap_alloc`    | Gauge      | bytes      | `bytes`      | Bytes of allocated heap objects.                                              |
+| `process.runtime.go.mem.heap_idle`     | Gauge      | bytes      | `bytes`      | Bytes in idle (unused) spans.                                                 |
+| `process.runtime.go.mem.heap_inuse`    | Gauge      | bytes      | `bytes`      | Bytes in in-use spans.                                                        |
+| `process.runtime.go.mem.heap_objects`  | Gauge      | -          | -            | Number of allocated heap objects.                                             |
+| `process.runtime.go.mem.live_objects`  | Gauge      | -          | -            | Number of live objects is the number of cumulative Mallocs - Frees.           |
+| `process.runtime.go.mem.heap_released` | Gauge      | bytes      | `bytes`      | Bytes of idle spans whose physical memory has been returned to the OS.        |
+| `process.runtime.go.mem.heap_sys`      | Gauge      | bytes      | `bytes`      | Bytes of idle spans whose physical memory has been returned to the OS.        |
+| `runtime.uptime`                       | Sum        | ms         | `ms`         | Milliseconds since application was initialized.                               |

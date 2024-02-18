@@ -6,13 +6,17 @@ keywords: ["Kitex", "Tracing", "OpenTelemetry", "OpenTracing"]
 description: Kitex supports OpenTelemetry tracer, OpenTracing tracer and also customized tracer.
 ---
 
+## Background
+
+Kitex supports popular tracing standards like OpenTelemetry and OpenTracing, enabling developers to choose suitable tools for their monitoring ecosystem. Users can easily implement end-to-end request monitoring in a microservices architecture. Such monitoring is crucial for debugging, performance analysis, and troubleshooting.
+
 ## OpenTelemetry
 
-Kitex's OpenTelemetry extension provides support for `tracing`, `metrics` and `logging`.
+[obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) extension integrates with the OpenTelemetry standard for tracing.
 
-Example
+**Usage Example**
 
-client side:
+Client
 
 ```go
 import (
@@ -45,7 +49,7 @@ func main(){
 
 ```
 
-server side:
+Server
 
 ```go
 import (
@@ -77,18 +81,19 @@ func main()  {
 }
 ```
 
-For more information see [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry)
-
-
 ## OpenTracing
 
-client side, use OpenTracing `GlobalTracer` by default
+[tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing) extension integrates with the OpenTracing standard for tracing.
+
+**Usage Example**
+
+Client
 
 ```go
 import (
-    "github.com/cloudwego/kitex/client"
-    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-    internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+	internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
 )
 ...
 tracer := internal_opentracing.NewDefaultClientSuite()
@@ -98,13 +103,13 @@ if err != nil {
 }
 ```
 
-server side, use OpenTracing `GlobalTracer` by default
+Server
 
 ```go
 import (
-    "github.com/cloudwego/kitex/server"
-    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-    internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
+  "github.com/cloudwego/kitex/server"
+  "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+  internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
 )
 ...
 tracer := internal_opentracing.NewDefaultServerSuite()
@@ -116,20 +121,17 @@ if err := svr.Run(); err != nil {
 }
 ```
 
-For more information see [tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing)
+### Custom Opentracing Tracer and Operation Name
 
-
-### Customize opentracing tracer and operation name
-
-client side:
+To create a Suite using a custom Opentracing Tracer and Operation Name, you can use the `NewServerSuite` and `NewClientSuite` methods. Here's an example for the client side (similar for the server side):
 
 ```go
 import (
 	...
-	ko "github.com/kitex-contrib/opentracing"
 	"github.com/opentracing/opentracing-go"
 	"github.com/cloudwego/kitex/pkg/endpoint"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
+  internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
   ...
 )
 ...
@@ -139,41 +141,38 @@ operationNameFunc := func(ctx context.Context) string {
 	return endpoint.ServiceName() + "::" + endpoint.Method()
 }
 ...
-client, err := echo.NewClient("echo", ko.ClientOption(myTracer, operationNameFunc))
+client, err := echo.NewClient("echo", client.WithSuite(internal_opentracing.NewClientSuite(myTracer, operationNameFunc)))
 if err != nil {
 	log.Fatal(err)
 }
 ```
 
-server side:
+### Supported Components
+
+#### Redis
+
+[tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing) provides a Redis Hook for quick integration with Redis tracing. Here's how to use it:
 
 ```go
 import (
-	...
-	ko "github.com/kitex-contrib/opentracing"
-	"github.com/opentracing/opentracing-go"
-	"github.com/cloudwego/kitex/pkg/endpoint"
-	"github.com/cloudwego/kitex/pkg/rpcinfo"
-	...
+    ...
+    "github.com/go-redis/redis/v8"
+    internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
+    ...
 )
-...
-myTracer := opentracing.GlobalTracer()
-operationNameFunc := func(ctx context.Context) string {
-	endpoint := rpcinfo.GetRPCInfo(ctx).To()
-	return endpoint.ServiceName() + "::" + endpoint.Method()
-}
-...
-svr, err := echo.NewServer(ko.ClientOption(myTracer, operationNameFunc))
-if err := svr.Run(); err != nil {
-	log.Println("server stopped with error:", err)
-} else {
-	log.Println("server stopped")
+
+func main() {
+    ...
+    rdb := redis.NewClient(&redis.Options{...})
+  	// add the hook provided by tracer-opentracing to instrument Redis client
+    rdb.AddHook(internal_opentracing.NewTracingHook())
+    ...
 }
 ```
 
-## Customize tracer
+## Custom Tracer
 
-tracer interface:
+The framework provides a Tracer interface, which you can implement to create a custom tracer:
 
 ```go
 type Tracer interface {
@@ -182,52 +181,17 @@ type Tracer interface {
 }
 ```
 
-Example
+For detailed documentation, refer to the [Monitoring Extension](../../framework-exten/monitoring/#monitoring-information-expansion) section.
 
-client side:
+## Custom Tracking Events
 
-```go
-import "github.com/cloudwego/kitex/client"
-...
-type myTracer struct {}
+Kitex provides some default tracking events, such as RPC call start, RPC call end, etc. For more information about built-in tracking events, please refer to the [Instrumentation](../instrumentation) section. Additionally, you can manually add more tracking data to collect more detailed trace information. Tracking events are recorded by creating and ending spans, which can be done using the native API of the corresponding component.
 
-func (m *myTracer) Start(ctx context.Context) context.Context {
-	_, ctx = opentracing.StartSpanFromContextWithTracer(ctx, o.tracer, "RPC call")
-	return ctx
-}
-
-func (m *myTracer) Finish(ctx context.Context) {
-	span := opentracing.SpanFromContext(ctx)
-	span.Finish()
-}
-...
-client, err := echo.NewClient("echo", client.WithTracer(&myTracer{}))
-if err != nil {
-	log.Fatal(err)
-}
-```
-
-server side:
+For example, using OpenTelemetry:
 
 ```go
-import "github.com/cloudwego/kitex/server"
-...
-type myTracer struct {}
-
-func (m *myTracer) Start(ctx context.Context) context.Context {
-	_, ctx = opentracing.StartSpanFromContextWithTracer(ctx, o.tracer, "RPC handle")
-	return ctx
-}
-
-func (m *myTracer) Finish(ctx context.Context) {
-	span := opentracing.SpanFromContext(ctx)
-	span.Finish()
-}
-...
-svr, err := echo.NewServer(server.WithTracer(&myTracer{}))
-if err := svr.Run(); err != nil {
-	log.Println("server stopped with error:", err)
-} else {
-	log.Println("server stopped")
-}
+ctx, span := otel.Tracer("client").Start(ctx, "root")
+defer span.End()
 ```
+
+For more information, see [OpenTelemetry Creating Spans](https://opentelemetry.io/docs/languages/go/instrumentation/#creating-spans) and [OpenTracing Golang API](https://opentracing.io/guides/golang/).
