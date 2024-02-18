@@ -1,62 +1,377 @@
 ---
 title: "Basic Usage"
-date: 2023-12-27
+date: 2024-01-24
 weight: 2
-keywords: ["Generic Call", "HTTP", "Thrift"]
-description: "Generic Call basic usage"
-
+keywords: ["generic-call", "HTTP", "Thrift"]
+description: "generic call's basic usage"
 ---
 
-## Supported Scenarios
+## IDL Provider
 
-- Thrift  
-    1. Binary Generic Call: for traffic transit scenario
-    2. HTTP Mapping Generic Call: for API Gateway scenario
-    3. Map Mapping Generic Call
-    4. JSON Mapping Generic Call 
-- Protobufs
-    1. JSON Mapping Generic Call
+Although generic calls do not require code generation based on IDL (Interface Definition Language), it is usually necessary to provide an IDL. Then, based on the IDL, data structures like JSON or Map are used to construct the corresponding RPC (Remote Procedure Call) request structures. (**Except for binary generic calls**)
 
-## Example of Thrift Usage
+In Kitex, the interface for IDL Provider is defined as follows:
 
+```go
+// DescriptorProvider provide service descriptor
+type DescriptorProvider interface {
+    Closer
+    // Provide return a channel for provide service descriptors
+    Provide() <-chan *descriptor.ServiceDescriptor
+}
+```
 
-### 1. Binary Generic
+The usage of this interface is introduced in the later section "Basic Usage". Here, it is only necessary to understand **how to create** it.
 
-#### Client Usage
+Currently, Kitex offers two implementations of the IDL Provider. Users can choose to specify the IDL path or pass in the IDL content. Additionally, it is possible to extend the `generic.DescriptorProvider` interface according to your needs.
 
-Application scenario: mid-platform services can forward the received original Thrift protocol packets to the target miscoservice through Binary Forwarding.
+### Parsing IDL from Local Files
 
-- Client Initialization
+#### Thrift
 
-  ```go
-  import (
-     "github.com/cloudwego/kitex/client/genericclient"
-     "github.com/cloudwego/kitex/pkg/generic"
-  )
-  func NewGenericClient(destServiceName string) genericclient.Client {
-      genericCli := genericclient.NewClient(destServiceName, generic.BinaryThriftGeneric())
-      return genericCli
-  }
-  ```
+There are two methods provided for parsing IDL from local files. Both methods are similar and require passing the IDL path and the paths of other IDLs referenced within it.
 
-- Generic Call
+```go
+p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
+if err != nil {
+    panic(err)
+}
 
-  If you encode by yourself, you have to use Thrift serialization protocol [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message). Note that you shouldn't encode original function parameter, but the **XXXArgs** which wraps function parameters. You can refer to  [github.com/cloudwego/kitex/generic/generic_test.go](https://github.com/cloudwego/kitex/blob/develop/pkg/generic/generic_test.go).
+p, err := generic.NewThriftFileProviderWithDynamicGo("./YOUR_IDL_PATH")
+if err != nil {
+    panic(err)
+}
+```
 
-  Kitex provides a thrift codec package `github.com/cloudwego/kitex/pkg/utils.NewThriftMessageCodec`.
+The `generic.NewThriftFileProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
-  ```go
-  rc := utils.NewThriftMessageCodec()
-  buf, err := rc.Encode("Test", thrift.CALL, 100, args)
-  // generic call
-  resp, err := genericCli.GenericCall(ctx, "actualMethod", buf)
-  ```
+#### Protobuf
 
-#### Server Usage
+A method is provided to parse local `proto` files, which requires passing the IDL path, `context.Context`, and optional `option` parameters. For detailed information about the parameters, please refer to [dynamicgo proto idl](https://github.com/cloudwego/dynamicgo/blob/main/proto/idl.go).
 
-It is not necessary to use Client and Server of Binary Generic Call together. Binary Generic Client can access normal Thrift Server if the correct Thrift encoded binary is passed.
+```go
+p, err := NewPbFileProviderWithDynamicGo("./YOUR_IDL_PATH", context.Background())
+if err != nil {
+    panic(err)
+}
+```
 
-The server just supports request with a length header like Framed and TTheader, Bufferd Binary is not ok. So the client has to specify the transport protocol with an option, eg: client.WithTransportProtocol(transport.Framed).
+### Parsing IDL from Memory
+
+You can also directly parse the IDL content. Other IDLs referenced within the IDL need to be constructed into a map and passed in. The key should be the path of the referenced IDL, and the value should be the IDL content.
+
+#### Thrift
+
+A simple example (to minimize display, the path construction is not a real IDL):
+
+```go
+content := `
+namespace go kitex.test.server
+include "x.thrift"
+include "../y.thrift"
+
+service InboxService {}
+`
+path := "a/b/main.thrift"
+includes := map[string]string{
+   path:           content,
+   "x.thrift": "namespace go kitex.test.server",
+   "../y.thrift": `
+   namespace go kitex.test.server
+   include "z.thrift"
+   `,
+}
+
+p, err := generic.NewThriftContentProvider(content, includes)
+if err != nil {
+    panic(err)
+}
+
+p, err := generic.NewThriftContentProviderWithDynamicGo(content, includes)
+if err != nil {
+    panic(err)
+}
+```
+
+The `generic.NewThriftContentProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
+
+#### Protobuf
+
+A simple example (to minimize display, the path construction is not a real IDL):
+
+```go
+content := `
+syntax = "proto3";
+package kitex.test.server;
+option go_package = "test";
+
+import "x.proto"
+
+service Echo{}
+`
+
+path := "a/b/main.proto"
+includes := map[string]string{
+		path: content,
+		"x.proto": `syntax = "proto3";
+					package kitex.test.server;
+					option go_package = "test";
+					`,
+}
+p, err := NewPbContentProvider(content, includes)
+if err != nil {
+	panic(err)
+}
+```
+
+#### Support for Absolute Path in include path Addressing
+
+Currently, only Thrift supports this functionality.
+
+For ease of constructing the IDL Map, you can also use absolute paths as keys with `generic.NewThriftContentWithAbsIncludePathProvider` or `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo`.
+
+```go
+content := `
+namespace go kitex.test.server
+include "x.thrift"
+include "../y.thrift"
+
+service InboxService {}
+`
+
+path := "a/b/main.thrift"
+includes := map[string]string{
+   path:           content,
+   "a/b/x.thrift": "namespace go kitex.test.server",
+   "a/y.thrift": `
+   namespace go kitex.test.server
+   include "z.thrift"
+   `,
+   "a/z.thrift": "namespace go kitex.test.server",
+}
+
+p, err := generic.NewThriftContentWithAbsIncludePathProvider(content, includes)
+if err != nil {
+    panic(err)
+}
+
+p, err := generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo(content, includes)
+if err != nil {
+    panic(err)
+}
+```
+
+The `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
+
+In Kitex, the `generic.Generic` interface represents a generic call, with different implementations for different types of generic calls. A `Generic` instance is required when creating both clients and servers.
+
+## Client-Side Interface
+
+### Create Client
+
+The client-side interfaces are all under the `github.com/cloudwego/kitex/client/genericclient ` package.
+
+#### NewClient
+
+Function signature: `func NewClient(destService string, g generic.Generic, opts ...client.Option) (Client, error)`
+
+Description: This function takes the target service name, a Generic object, and optional Option parameters, returning a generic call client. For details on Option parameters, see [Client Option](https://www.cloudwego.io/docs/kitex/tutorials/options/client_options/)
+
+#### NewClientWithServiceInfo
+
+Function signature: `func NewClientWithServiceInfo(destService string, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...client.Option) (Client, error)`
+
+Description: This function requires the target service name, a Generic object, custom service information, and optional Option parameters to return a generic call client. For details on Option parameters, see [Client Option](https://www.cloudwego.io/docs/kitex/tutorials/options/client_options/)
+
+## Server-Side Interface
+
+### Generic Call Service Object
+
+In Kitex, the `generic.Service` interface represents a generic call service.
+
+```go
+// Service generic service interface
+type Service interface {
+    // GenericCall handle the generic call
+    GenericCall(ctx context.Context, method string, request interface{}) (response interface{}, err error)
+}
+```
+
+As long as the `GenericCall` method is implemented, it can be used as a generic call service instance for creating a generic call server.
+
+### Create Server
+
+The server-side interfaces are all under the `github.com/cloudwego/kitex/client/genericclient ` package.
+
+#### NewServer
+
+Function signature: `func NewServer(handler generic.Service, g generic.Generic, opts ...server.Option) server.Server`
+
+Description: This function requires a generic call service instance, a Generic object, and optional Option parameters to return a Kitex server. For details on Option parameters, see [Server Option](https://www.cloudwego.io/docs/kitex/tutorials/options/server_options/)
+
+#### NewServerWithServiceInfo
+
+Function signature: `func NewServerWithServiceInfo(handler generic.Service, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...server.Option) server.Server`
+
+Description: This function takes a generic call service instance, a Generic object, custom service information, and optional Option parameters to return a Kitex server. For details on Option parameters, see [Server Option](https://www.cloudwego.io/docs/kitex/tutorials/options/server_options/)
+
+## Generic Call Scenarios
+
+Kitex supports generic calls in the following four scenarios:
+
+1. Thrift:
+
+   - Binary generic call
+
+   - HTTP mapping generic call
+
+   - Map mapping generic call
+
+   - JSON mapping generic call
+
+2. Protobuf:
+
+   - JSON mapping generic call
+   - Protobuf -> Thrift generic call
+
+### Generic
+
+```go
+type Generic interface {
+    Closer
+    // PayloadCodec return codec implement
+    PayloadCodec() remote.PayloadCodec
+    // PayloadCodecType return the type of codec
+    PayloadCodecType() serviceinfo.PayloadCodec
+    // RawThriftBinaryGeneric must be framed
+    Framed() bool
+    // GetMethod to get method name if need
+    GetMethod(req interface{}, method string) (*Method, error)
+}
+```
+
+The core method of `Generic` is the codec implementation. Different `Generic` implementations distinguish themselves through various codec implementations. Different codecs are expanded based on the implementation of `thriftCodec`.
+
+### Binary Generic
+
+Use case: For scenarios like middle-end services, where it is possible to forward the received original Thrift protocol packets as binary streams to the target service.
+
+The following method is provided to create a binary generic call `Generic` instance.
+
+#### BinaryThriftGeneric
+
+Function signature: `func BinaryThriftGeneric() Generic`
+
+Description: Returns a binary generic call object.
+
+### HTTP Generic Call
+
+Use case: For scenarios like API gateways, where HTTP requests can be parsed and then forwarded as RPC requests to backend services.
+
+The following method is provided to create an HTTP generic call `Generic` instance.
+
+#### HTTPThriftGeneric
+
+Function signature: `func HTTPThriftGeneric(p DescriptorProvider, opts ...Option) (Generic, error)`
+
+Description: Takes an IDL Provider and optional Option parameters to return an HTTP generic call object. Details of Option parameters are provided later in the text.
+
+#### HTTPPbThriftGeneric
+
+Function signature: `func HTTPPbThriftGeneric(p DescriptorProvider, pbp PbDescriptorProvider) (Generic, error)`
+
+Description: Takes a Thrift IDL Provider and a Protobuf IDL Provider to return an HTTP generic call object capable of parsing body in Protobuf format.
+
+### JSON Generic Call
+
+Use case: For scenarios like interface testing platforms, where users' constructed JSON data is parsed and sent as requests to RPC services to obtain response results.
+
+The following method is provided to create a JSON generic call `Generic` instance.
+
+#### JSONThriftGeneric
+
+Function signature: `func JSONThriftGeneric(p DescriptorProvider, opts ...Option) (Generic, error)`
+
+Description: Takes an IDL Provider and optional Option parameters to return an Thrift JSON generic call object. Details of Option parameters are provided later in the text.
+
+#### MapThriftGenericForJSON
+
+Function signature: `func MapThriftGenericForJSON(p DescriptorProvider) (Generic, error)`
+
+Description: Takes an IDL Provider to return a Thrift JSON generic call object, which internally uses Map generic calls for implementation.
+
+#### JSONPbGeneric
+
+Function signature: `func JSONPbGeneric(p PbDescriptorProviderDynamicGo, opts ...Option) (Generic, error)`
+
+Description: Takes an IDL Provider and optional Option parametersand optional Option parameters to return a Protobuf JSON generic call object. Details of Option parameters are provided later in the text.
+
+### Map Generic Call
+
+Use case: Scenarios involving dynamic parameter adjustment and verifying certain functionalities during rapid prototyping stages.
+
+The following method is provided to create a Map generic call `Generic` instance.
+
+#### MapThriftGeneric
+
+Function signature: `func MapThriftGeneric(p DescriptorProvider) (Generic, error)`
+
+Description: Takes an IDL Provider to return a Map generic call object.
+
+### Option
+
+Kitex offers Option parameters for customizing configurations when creating a Generic, including the following:
+
+#### WithCustomDynamicGoConvOpts
+
+Function signature:`func WithCustomDynamicGoConvOpts(opts *conv.Options) Option`
+
+Description: Customizes `conv.Option` configurations when using `dynamicgo`. Configuration details can be found at [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv). For details on integrating dynamicgo, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
+
+#### UseRawBodyForHTTPResp
+
+Function signature: `func UseRawBodyForHTTPResp(enable bool) Option`
+
+Description: In HTTP mapping generic calls, this sets whether to use `HTTPResponse.RawBody` as the response result. If this feature is disabled, the response result will only be stored in `HTTPResponse.Body`
+
+## Thrift Usage Example
+
+### Binary Generic Call
+
+#### Client
+
+For client-side binary generic calls, request parameters need to be encoded using the [Thrift encoding format](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message).
+
+> **Note**: The binary encoding is not for the original Thrift request parameters, but for the method parameter's **XXXArgs**. Refer to [test cases](https://github.com/cloudwego/kitex/blob/develop/pkg/generic/generic_test.go) for examples.
+
+Kitex provides a Thrift encoding/decoding package `github.com/cloudwego/kitex/pkg/utils.NewThriftMessageCodec`。
+
+```go
+import (
+   "github.com/cloudwego/kitex/client/genericclient"
+   "github.com/cloudwego/kitex/pkg/generic"
+   "github.com/cloudwego/kitex/pkg/utils.NewThriftMessageCodec"
+)
+
+func NewGenericClient(destServiceName string) genericclient.Client {
+    genericCli := genericclient.NewClient(destServiceName, generic.BinaryThriftGeneric())
+    return genericCli
+}
+
+func main(){
+    rc := utils.NewThriftMessageCodec()
+		buf, err := rc.Encode("Test", thrift.CALL, 100, args)
+		// generic call
+  	genericCli := NewGenericClient("actualServiceName")
+		resp, err := genericCli.GenericCall(ctx, "actualMethod", buf)
+}
+```
+
+#### Server
+
+The client and server for binary generic calls in Kitex **are not necessarily paired**. As long as the client provides parameters in the **correct Thrift binary encoding format**, it can request normal Thrift interface services.
+
+The binary generic server only supports Framed or TTHeader requests, not Buffered Binary. The client needs to specify this through an Option, such as: `client.WithTransportProtocol(transport.Framed)`.
 
 ```go
 package main
@@ -91,11 +406,11 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 }
 ```
 
-### 2. HTTP Mapping Generic Call
+### HTTP Mapping Generic Call
 
-The HTTP Mapping Generic Call is only for the client, and requires Thrift IDL to comply with the interface mapping specification. See the specific specification [IDL Definition Specification for Mapping between Thrift and HTTP](/docs/kitex/tutorials/advanced-feature/generic-call/thrift_idl_annotation_standards/)
+HTTP generic calls involve constructing Thrift interface parameters based on an HTTP Request and initiating a generic call. Currently, this is only applicable to the client side. The Thrift IDL must follow the interface mapping specifications, detailed in [Thrift-HTTP Mapping's IDL Standards](https://www.cloudwego.cn/docs/kitex/tutorials/advanced-feature/generic-call/thrift_idl_annotation_standards/).
 
-#### IDL Definition Example
+#### IDL Example
 
 ```thrift
 namespace go http
@@ -139,17 +454,7 @@ service BizService {
 }
 ```
 
-
-
 #### Generic Call Example
-
-- **Request**
-
-Type: *generic.HTTPRequest
-
-- **Response**
-
-Type: *generic.HTTPResponse
 
 ```go
 package main
@@ -160,21 +465,23 @@ import (
 )
 
 func main() {
-    // Parse IDL with Local Files
-	// YOUR_IDL_PATH thrift file path, eg: ./idl/example.thrift
-    // includeDirs: specify include path
+		// Local file IDL parsing
+    // YOUR_IDL_PATH is the path to the Thrift file, for example, ./idl/example.thrift
+    // includeDirs: specifies include paths, defaulting to the current file's relative path for finding includes
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
+    // Construct an HTTP type generic call
     g, err := generic.HTTPThriftGeneric(p)
     if err != nil {
         panic(err)
     }
-    cli, err := genericclient.NewClient("destServiceName", g, opts...)
+    cli, err := genericclient.NewClient("destServiceName", g	)
     if err != nil {
         panic(err)
     }
+    // Construct a request (for testing purposes); in actual applications, you can directly use the original HTTP Request
     body := map[string]interface{}{
         "text": "text",
         "some": map[string]interface{}{
@@ -192,25 +499,28 @@ func main() {
     if err != nil {
         panic(err)
     }
-    url := "http://example.com/1/1?v_int64=1&req_items=item1,item2,itme3&cids=1,2,3&vids=1,2,3"
+    url := "http://example.com/life/client/1/1?v_int64=1&req_items=item1,item2,itme3&cids=1,2,3&vids=1,2,3"
     req, err := http.NewRequest(http.MethodGet, url, bytes.NewBuffer(data))
     if err != nil {
         panic(err)
     }
-    // Kitex generalization currently directly supports http.Request in the standard library.
-    // To use hertz, you need to make a request conversion httpReq, err := adapter.GetCompatRequest(hertzReqCtx)
+    // Kitex generic currently directly supports the standard library's http.Request; using hertz requires a request conversion
+    // httpReq, err := adaptor.GetCompatRequest(hertzReqCtx)
     req.Header.Set("token", "1")
-    customReq, err := generic.FromHTTPRequest(req)
+    customReq, err := generic.FromHTTPRequest(req) // Considering that businesses might use third-party HTTP requests, you can create your own conversion function
     // customReq *generic.HttpRequest
+    // Since the HTTP generic method is obtained from the HTTP request via BAM rules, it's okay to leave it empty
     resp, err := cli.GenericCall(ctx, "", customReq)
     realResp := resp.(*generic.HTTPResponse)
-    realResp.Write(w)
+    realResp.Write(w) // Write back to ResponseWriter, used for HTTP gateway
 }
 ```
 
 #### Annotation Extension
 
-For example, add a `xxx.source = 'not_body_struct'` annotation to indicate that a certain field itself does not have a mapping to the HTTP request fields, and you need to traverse its subfields to obtain the corresponding value from the HTTP request. The usage is as follows:
+For example, adding an annotation `xxx.source='not_body_struct'` indicates that a certain field itself does not map to any HTTP request field and requires iterating over its subfields to obtain corresponding values from the HTTP request.
+
+Usage is as follows:
 
 ```thrift
 struct Request {
@@ -224,14 +534,14 @@ struct CommonParam {
 }
 ```
 
-Extension way：
+The extension method is as follows:
 
 ```go
 func init() {
         descriptor.RegisterAnnotation(new(notBodyStruct))
 }
 
-// Implement descriptor.Annotation
+// Implementing descriptor.Annotation
 type notBodyStruct struct {
 }
 
@@ -239,7 +549,7 @@ func (a * notBodyStruct) Equal(key, value string) bool {
         return key == "xxx.source" && value == "not_body_struct"
 }
 
-// Support 4 types Handle: HttpMapping, FieldMapping, ValueMapping, Router
+// Handle currently supports four types: HttpMapping, FieldMapping, ValueMapping, Router
 func (a * notBodyStruct) Handle() interface{} {
         return newNotBodyStruct
 }
@@ -260,21 +570,17 @@ func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descripto
 }
 ```
 
-### 3. Map Mapping Generic Call
+### Map Mapping Generic Call
 
-Map Mapping Generic Call means that the user can directly construct Map request or response according to the specification, and Kitex will do Thrift codec accordingly.
+Map mapping generic calls refer to the ability of users to construct Map parameters according to specifications, and Kitex will handle the Thrift encoding/decoding accordingly.
 
-#### Build Map
+Kitex strictly validates the field names and types constructed by the user based on the given IDL. Field names are only supported as string types corresponding to Map Keys, and the mapping of field Value types can be seen in the type mapping table.
 
-Kitex will strictly verify the field name and type constructed according to the given IDL. The field name only supports string type corresponding to the Map Key. The type mapping of the field Value is shown in the Type Mapping Table below.
+For Responses, the Field ID and type will be validated, and the corresponding Map Key will be generated based on the IDL's Field Name.
 
-Returns the Field ID and type that will verify the Response and generate the corresponding Map Key based on the Field Name of the IDL.
+#### Type Mapping
 
-For response, the Field ID and Type will be verified, and return Map to user  corresponding to the IDL.
-
-##### Type Mapping Table
-
-The Mapping between Golang and Thrift:
+Golang and Thrift IDL Type Mapping is as follows:
 
 | **Golang Type**             | **Thrift IDL Type** |
 | --------------------------- | ------------------- |
@@ -290,8 +596,6 @@ The Mapping between Golang and Thrift:
 | map[interface{}]interface{} | map                 |
 | map[string]interface{}      | struct              |
 | int32                       | enum                |
-
-#### Example
 
 Take the following IDL as an example:
 
@@ -348,13 +652,12 @@ req := map[string]interface{}{
         }
 ```
 
-#### Generic Call Example
+#### Example IDL
 
-Example IDL:
-
-`base.thrift`
+`base.thrift`:
 
 ```thrift
+base.thrift
 namespace py base
 namespace go base
 namespace java com.xxx.thrift.base
@@ -380,9 +683,10 @@ struct BaseResp {
 }
 ```
 
-`example_service.thrift`
+`example_service.thrift`:
 
-```go
+```thrift
+example_service.thrift
 include "base.thrift"
 namespace go kitex.test.server
 
@@ -399,15 +703,7 @@ service ExampleService {
 }
 ```
 
-##### Client Usage
-
-- **Request**
-
-Type: map[string]interface{}
-
-- **Response**
-
-Type: map[string]interface{}
+#### Client
 
 ```go
 package main
@@ -418,37 +714,31 @@ import (
 )
 
 func main() {
-    // Parse IDL with Local Files
-    // YOUR_IDL_PATH thrift file path, eg:./idl/example.thrift
+    // Local file IDL parsing
+    // YOUR_IDL_PATH is the path to the Thrift file, for example, ./idl/example.thrift
+    // includeDirs: Specifies the include path, defaults to the current file's relative path for finding includes
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
+    // Constructing a map type generic call
     g, err := generic.MapThriftGeneric(p)
     if err != nil {
         panic(err)
     }
-    cli, err := genericclient.NewClient("destServiceName", g, opts...)
+    cli, err := genericclient.NewClient("destServiceName", g)
     if err != nil {
         panic(err)
     }
-    // 'ExampleMethod' method name must be passed as param
+    // 'ExampleMethod' the method name must be included in the IDL definition
+    // resp type is map[string]interface{}
     resp, err := cli.GenericCall(ctx, "ExampleMethod", map[string]interface{}{
         "Msg": "hello",
-    })
-    // resp is a map[string]interface{}
+    })   
 }
 ```
 
-##### Server Usage
-
-- **Request**
-
-Type: map[string]interface{}
-
-- **Response**
-
-Type: map[string]interface{}
+#### Server
 
 ```go
 package main
@@ -459,17 +749,18 @@ import (
 )
 
 func main() {
-    // Parse IDL with Local Files
-  	// YOUR_IDL_PATH thrift file path,eg: ./idl/example.thrift
+    // Local file IDL parsing
+    // YOUR_IDL_PATH is the path to the Thrift file, e.g., ./idl/example.thrift
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
+    // Constructing a generic call with map request and return types
     g, err := generic.MapThriftGeneric(p)
     if err != nil {
         panic(err)
     }
-    svc := genericserver.NewServer(new(GenericServiceImpl), g, opts...)
+    svc := genericserver.NewServer(new(GenericServiceImpl), g)
     if err != nil {
         panic(err)
     }
@@ -477,7 +768,6 @@ func main() {
     if err != nil {
         panic(err)
     }
-    // resp is a map[string]interface{}
 }
 
 type GenericServiceImpl struct {
@@ -490,26 +780,19 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
             "Msg": "world",
         }, nil
 }
-
 ```
 
-### 4. JSON Mapping Generic Call
+### JSON Mapping Generic Call
 
-JSON Mapping Generic Call means that the user can directly construct JSON string request or response according to the specification, and Kitex will do Thrift codec accordingly.
+JSON mapping generic calls refer to the ability of users to construct JSON String request parameters or returns directly according to specifications, and Kitex will handle encoding/decoding accordingly.
 
-#### Build JSON
+Unlike the strict validation of field names and types in Map generic calls, JSON generic calls in Kitex transform user request parameters based on the given IDL, eliminating the need for users to specify explicit types, such as int32 or int64.
 
-Kitex JSON Mapping Generic Call will convert the request parameters according to the given IDL, will not strictly verify the field name and type constructed.
+For Responses, the Field ID and type will be validated, and the corresponding JSON field will be generated based on the IDL's Field Name.
 
-The field name only supports string type corresponding to the JSON Field. The type mapping of the field Value is shown in the Type Mapping Table below.
+#### Type Mapping
 
-Returns the Field ID and type that will verify the Response and generate the corresponding JSON Field based on the Field Name of the IDL.
-
-For response, the Field ID and Type will be verified, and return JSON string to user  corresponding to the IDL.
-
-##### Type Mapping Table
-
-The Mapping between Golang and Thrift:
+The type mapping between Golang and Thrift IDL is as follows:
 
 | **Golang Type**             | **Thrift IDL Type** |
 | --------------------------- | ------------------- |
@@ -526,9 +809,7 @@ The Mapping between Golang and Thrift:
 | map[string]interface{}      | struct              |
 | int32                       | enum                |
 
-##### Example
-
-Take the following IDL as an example：
+Take the following IDL as an example:
 
 ```thrift
 enum ErrorCode {
@@ -557,7 +838,7 @@ struct EchoRequest {
 }
 ```
 
-The request construction is as follows：
+The request construction is as follows:
 
 ```go
 req := {
@@ -575,13 +856,12 @@ req := {
 }
 ```
 
-#### Generic Call Example
+#### Example IDL
 
-Example IDL ：
+`base.thrift`:
 
-`base.thrift`
-
-```thrift
+```
+base.thrift
 namespace py base
 namespace go base
 namespace java com.xxx.thrift.base
@@ -607,9 +887,10 @@ struct BaseResp {
 }
 ```
 
-`example_service.thrift`
+`example_service.thrift`：
 
-```go
+```
+example_service.thrift
 include "base.thrift"
 namespace go kitex.test.server
 
@@ -626,15 +907,7 @@ service ExampleService {
 }
 ```
 
-##### Client Usage
-
-- **Request**
-
-Type：JSON string
-
-- **Response**
-
-Type：JSON string
+#### Client
 
 ```go
 package main
@@ -645,35 +918,30 @@ import (
 )
 
 func main() {
-    // Parse IDL with Local Files
-    // YOUR_IDL_PATH thrift file path, eg:./idl/example.thrift
+    // Local file IDL parsing
+    // YOUR_IDL_PATH is the path to the Thrift file, for example, ./idl/example.thrift
+    // includeDirs: Specifies the include path, defaults to the current file's relative path for finding includes
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
+    // Constructing a JSON type generic call
     g, err := generic.JSONThriftGeneric(p)
     if err != nil {
         panic(err)
     }
-    cli, err := genericclient.NewClient("psm", g, opts...)
+    cli, err := genericclient.NewClient("destServiceName", g)
     if err != nil {
         panic(err)
     }
-    // 'ExampleMethod' method name must be passed as param
+    // 'ExampleMethod' the method name must be included in the IDL definition
+    // resp type is JSON string
     resp, err := cli.GenericCall(ctx, "ExampleMethod", "{\"Msg\": \"hello\"}")
-    // resp is a JSON string
+
 }
 ```
 
-##### Server Usage
-
-- **Request**
-
-Type：JSON string
-
-- **Response**
-
-Type：JSON string
+#### Server
 
 ```go
 package main
@@ -684,17 +952,18 @@ import (
 )
 
 func main() {
-    // Parse IDL with Local Files
-    // YOUR_IDL_PATH thrift file path,eg: ./idl/example.thrift
+    // Local file IDL parsing
+    // YOUR_IDL_PATH is the path to the Thrift file, e.g., ./idl/example.thrift
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
+    // Constructing a generic call with map request and return types
     g, err := generic.JSONThriftGeneric(p)
     if err != nil {
         panic(err)
     }
-    svc := genericserver.NewServer(new(GenericServiceImpl), g, opts...)
+    svc := genericserver.NewServer(new(GenericServiceImpl), g)
     if err != nil {
         panic(err)
     }
@@ -702,7 +971,6 @@ func main() {
     if err != nil {
         panic(err)
     }
-    // resp is a JSON string
 }
 
 type GenericServiceImpl struct {
@@ -714,45 +982,39 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
         fmt.Printf("Recv: %v\n", m)
         return  "{\"Msg\": \"world\"}", nil
 }
-
 ```
 
-## Example of Protobufs Usage
+## Protobuf Usage Example
 
-### 1. JSON Mapping Generic Call 
+### JSON Mapping Generic Call
 
-Users can construct JSON string requests or responses according to their specifications, and Kitex will handle the translation of JSON to and from their respective Protocol Buffers messages.
+JSON mapping generic calls refer to the ability of users to construct JSON String request parameters or returns directly according to specifications, and Kitex will handle encoding/decoding accordingly.
 
-#### Build JSON
-
-##### Type Mapping Table
+#### Type Mapping
 
 The Mapping between Golang and Protocol Buffers:
 
-| **Protocol Buffers Type**   | **Golang Type**     |
-| --------------------------- | ------------------- |
-| float                       | float32             |
-| double                      | float64             |
-| int32                       | int32               |
-| int64                       | int64               |
-| uint32                      | uint32              |
-| uint64                      | uint64              |
-| sint32                      | int32               |
-| sint64                      | int64               |
-| fixed32                     | uint32              |
-| fixed64                     | uint64              |
-| sfixed32                    | int32               |
-| sfixed64                    | uint64              |
-| bool                        | bool                |
-| string                      | string              |
-| bytes                       | byte[]              |  
+| **Protocol Buffers Type** | **Golang Type** |
+| ------------------------- | --------------- |
+| float                     | float32         |
+| double                    | float64         |
+| int32                     | int32           |
+| int64                     | int64           |
+| uint32                    | uint32          |
+| uint64                    | uint64          |
+| sint32                    | int32           |
+| sint64                    | int64           |
+| fixed32                   | uint32          |
+| fixed64                   | uint64          |
+| sfixed32                  | int32           |
+| sfixed64                  | uint64          |
+| bool                      | bool            |
+| string                    | string          |
+| bytes                     | byte[]          |
 
-Also supports lists and dictionaries in json, mapping them to repeated V and map<K,V> in protobufs.
-Does not support Protobuf special fields, such as Enum, Oneof, etc.;  
-  
-##### Example  
+Also supports lists and dictionaries in json, mapping them to repeated V and map<K,V> in protobufs. Does not support Protobuf special fields, such as Enum, Oneof, etc.;
 
-Take the following IDL as an example： 
+#### Example IDl
 
 ```proto
 syntax = "proto3";
@@ -773,21 +1035,7 @@ service Echo {
 }
 ```
 
-The request construction is as follows：
-
-```go
-req := `{"message": "hello"}`  
-```
-
-##### Client Usage
-
-- **Request**
-
-Type：JSON string
-
-- **Response**
-
-Type：JSON string
+#### Client
 
 ```go
 package main
@@ -835,20 +1083,14 @@ func main() {
 
 	ctx := context.Background()
 
+  // jRsp's type is JSON string
 	jRsp, err := cli.GenericCall(ctx, "EchoPB", jReq)
 	klog.CtxInfof(ctx, "genericJsonCall: jRsp(%T) = %s, err = %v", jRsp, jRsp, err)
 }
+
 ```
 
-##### Server Usage
-
-- **Request**
-
-Type：JSON string
-
-- **Response**
-
-Type：JSON string
+#### Server
 
 ```go
 package main
@@ -900,101 +1142,3 @@ func main() {
 	}
 }
 ```
-
-## IDLProvider
-
-Generic Call of HTTP/Map/JSON mapping does not require generated code, but requires IDL which need users to provide.
-
-At present, Kitex has two IDLProvider implementations. Users can choose to specify the IDL path or pass in IDL content. Of course, you can also expand the `generic.DescriptorProvider` according to your needs.
-
-### Parse IDL with Local Files
-
-```go
-p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
- if err != nil {
-     panic(err)
- }
-```
-
-### Parse IDL with Memory
-
-All IDLs need to be constructed into a Map, Key is Path, Value is IDL definition, and the usage is as follows:
-
-```go
-p, err := generic.NewThriftContentProvider("YOUR_MAIN_IDL_CONTENT", map[string]string{/*YOUR_INCLUDES_IDL_CONTENT*/})
-    if err != nil {
-        panic(err)
-    }
-
-// dynamic update
-err = p.UpdateIDL("YOUR_MAIN_IDL_CONTENT", map[string]string{/*YOUR_INCLUDES_IDL_CONTENT*/})
-if err != nil {
-    // handle err
-}
-```
-
-Simple example (not real IDL, just for minimizing display Path constructs):
-
-```go
-path := "a/b/main.thrift"
-content := `
-namespace go kitex.test.server
-include "x.thrift"
-include "../y.thrift"
-
-service InboxService {}
-`
-includes := map[string]string{
-   path:           content,
-   "x.thrift": "namespace go kitex.test.server",
-   "../y.thrift": `
-   namespace go kitex.test.server
-   include "z.thrift"
-   `,
-}
-
-p, err := NewThriftContentProvider(path, includes)
-```
-
-
-
-#### Absolute Path including path Addressing
-
-If you construct an IDL Map for convenience, you can also use an absolute path as a Key through  `NewThriftContentWithAbsIncludePathProvider` .
-
-```go
-p, err := generic.NewThriftContentWithAbsIncludePathProvider("YOUR_MAIN_IDL_PATH", "YOUR_MAIN_IDL_CONTENT", map[string]string{"ABS_INCLUDE_PATH": "CONTENT"})
-    if err != nil {
-        panic(err)
-    }
-
-// dynamic update
-err = p.UpdateIDL("YOUR_MAIN_IDL_PATH", "YOUR_MAIN_IDL_CONTENT", map[string]string{/*YOUR_INCLUDES_IDL_CONTENT*/})
-if err != nil {
-    // handle err
-}
-```
-
-Simple example (not real IDL, just for minimizing display Path constructs):
-
-```go
-path := "a/b/main.thrift"
-content := `
-namespace go kitex.test.server
-include "x.thrift"
-include "../y.thrift"
-
-service InboxService {}
-`
-includes := map[string]string{
-   path:           content,
-   "a/b/x.thrift": "namespace go kitex.test.server",
-   "a/y.thrift": `
-   namespace go kitex.test.server
-   include "z.thrift"
-   `,
-   "a/z.thrift": "namespace go kitex.test.server",
-}
-p, err := NewThriftContentWithAbsIncludePathProvider(path, includes)
-```
-
