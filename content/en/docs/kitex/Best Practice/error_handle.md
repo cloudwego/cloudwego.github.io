@@ -1,7 +1,7 @@
 ---
 title: "Error Handle Best Practice"
 linkTitle: "Error Handle Best Practice"
-weight: 1
+weight: 3
 date: 2024-02-18
 description: >
 
