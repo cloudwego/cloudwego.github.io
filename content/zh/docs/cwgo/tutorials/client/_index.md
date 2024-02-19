@@ -75,7 +75,7 @@ service HelloService {
 }
 ```
 
-## 命令
+### 命令
 
 ```sh
 cwgo client  --type RPC  --idl hello.thrift  --service hellotest
