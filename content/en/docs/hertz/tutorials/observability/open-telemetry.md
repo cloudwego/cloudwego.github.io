@@ -66,12 +66,13 @@ func main() {
 
 #### Tracing Options
 
-| 函数名                          | 描述                                                                                                |
-|------------------------------|---------------------------------------------------------------------------------------------------|
-| WithTextMapPropagator        | Configures `propagation.TextMapPropagator`                                                        |
-| WithCustomResponseHandler    | Configures Custom `ResponseHandler`                                                               |
-| WithClientHttpRouteFormatter | Configure the custom formatting function for the 'http_route' dimension of the client-side metric |
-| WithServerHttpRouteFormatter | Configure the custom formatting function for the 'http_route' dimension of the server-side metric |
+| 函数名                       | 描述                                                                                                |
+| ---------------------------- | --------------------------------------------------------------------------------------------------- |
+| WithTextMapPropagator        | Configures `propagation.TextMapPropagator`                                                          |
+| WithCustomResponseHandler    | Configures Custom `ResponseHandler`                                                                 |
+| WithClientHttpRouteFormatter | Configure the custom formatting function for the 'http_route' dimension of the client-side metric   |
+| WithServerHttpRouteFormatter | Configure the custom formatting function for the 'http_route' dimension of the server-side metric   |
+| WithShouldIgnore             | Configure a conditional function to determine whether the generation of link data should be ignored |
 
 ### Metric
 
@@ -155,7 +156,7 @@ func main() {
 #### Provider Options
 
 | Function                  | Description                                                              |
-|---------------------------|--------------------------------------------------------------------------|
+| ------------------------- | ------------------------------------------------------------------------ |
 | WithServiceName           | Configure the resource properties of `service.name`                      |
 | WithDeploymentEnvironment | Configure the resource properties of `deployment.environment`            |
 | WithServiceNamespace      | Configure the resource properties of `service.namespace`                 |
