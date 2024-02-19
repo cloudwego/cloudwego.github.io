@@ -13,7 +13,7 @@ While not all panic issues are caused by concurrency, this discussion will focus
 
 Let's assume we have the following code. The `Handle` function returns the `resp` directly when the `ctx` times out. However, there is a potential concurrency issue in this function. Even after the `Process` function has obtained the `Response` variable, it is still possible for it to be modified later, resulting in a concurrency problem.
 
-```
+```go
 func Handle(ctx context.Context) *Response {
    done := make(chan struct{})
    resp := &Response{Data: []byte("12345")} // default value
@@ -44,7 +44,7 @@ func Process(ctx context.Context) {
 
 The stack trace for the code above, when encountering a concurrency conflict, is as follows:
 
-```
+```go
 panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]
         panic: runtime error: slice bounds out of range [:5] with capacity 0
 

@@ -20,11 +20,11 @@ RPC异常是指 RPC 链路上产生的错误，如超时/无下游实例等，�
 
 ## 如何使用业务异常
 
-传递业务异常可基于 Kitex 在 1.12.2 版本提供的业务异常功能，参考 [Kitex 业务异常文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/)。
+传递业务异常可基于 Kitex 在 v0.6.1 版本提供的业务异常功能，参考 [Kitex 业务异常文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/)。
 
 ### 其他方式传递业务异常
 
-用户还可以通过在 IDL 里定义 exception，返回 thrift exception。可以通过断言的方式判断是否自定义 Exception，如 `e , ok:= err.(*xxx.YourException)`
+用户还可以通过在 IDL 里定义 exception，返回 thrift exception。可以通过断言的方式判断是否自定义 Exception，如 `e, ok := err.(*xxx.YourException)`
 
 ## Kitex 内部错误（RPC 异常）
 
@@ -86,7 +86,7 @@ import "github.com/cloudwego/kitex/pkg/kerrors"
 _, err := echo.NewClient("echo", client.WithResolver(nil)) // 返回 kerrors.ErrNoResolver
 ...
 var de *kerrors.DetailedError
-ok := errors.As(err, &ke) // 返回 true
+ok := errors.As(err, &de) // 返回 true
 if de.ErrorType() == kerrors.ErrInternalException {} // 返回 true
 ```
 
@@ -107,9 +107,9 @@ if de.ErrorType() == kerrors.ErrInternalException {} // 返回 true
 
 关于调用端上报的错误码
 
-￮    < v1.8.0：调用端上报错误码 119
+￮    < v0.2.0：调用端上报错误码 119
 
-￮    >= v1.8.0：上报下面对应的错误码
+￮    >= v0.2.0：上报下面对应的错误码
 
 （该变更是为了能统一服务端返回的错误码处理，的确存在服务端会透传一些错误码需要被客户端感知，统一为 119 存在不合理性）
 

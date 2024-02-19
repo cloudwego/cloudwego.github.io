@@ -19,7 +19,7 @@ A business exception is used to encapsulate any exception encountered during han
 
 ## How to Use Business Exceptions
 
-To pass business exceptions, you can utilize the business exception functionality provided by Kitex starting from version 1.12.2. Please refer to the Kitex Business Exception Documentation.
+To pass business exceptions, you can utilize the business exception functionality provided by Kitex starting from version v0.6.1. Please refer to the Kitex Business Exception Documentation.
 
 ### Other Ways to Pass Business Exceptions
 
@@ -105,8 +105,8 @@ This category corresponds to the `Application Exception` errors native to the Th
 
 Regarding the error codes reported by the caller:
 
-- < v1.8.0: The caller reports error code 119.
-- \>=v1.8.0: Report the corresponding error code below.
+- < v0.2.0: The caller reports error code 119.
+- \>=v0.2.0: Report the corresponding error code below.
 
 (This change was made to unify the handling of error codes returned by the server. It was indeed unreasonable to have some error codes passed through by the server that needed to be recognized by the client, and using 119 universally addressed this inconsistency.)
 
