@@ -31,9 +31,11 @@ type GRPCStatusIface interface {
 ````
 
 ## Instructions for use
+
 You can use the `NewBizStatusError` or `NewBizStatusErrorWithExtra` function in the server handler to construct a business exception and return it as err. After that, on the client side, convert err back to `BizStatusErrorIface` through the `FromBizStatusError` function to obtain the required exception information.
 
 ### Usage example
+
 Use TTHeader as transport protocol:
 
 ````go
@@ -81,6 +83,31 @@ if err != nil {
     }
 }
 ````
+
+### Middleware: Obtain/Return BizStatusError
+
+A BizStatusError is not considered an RPC error, therefore, by design, a middleware can not obtain/return a BizStatusError directly.
+
+Kitex will set the BizStatusError returned by method handler into RPCInfo, and return a nil error to upper level middlewares.
+
+Therefore, for a BizStatusError returned by method handler, calling `next(ctx, req, resp)` will always get a nil error.
+
+To obtain a BizStatusError in your middleware by:
+
+```go
+bizErr := rpcinfo.GetRPCInfo(ctx).Invocation().BizStatusErr()
+```
+
+And to return a BizStatusError in your middleware by:
+
+```go
+ri := rpcinfo.GetRPCInfo(ctx)
+if setter, ok := ri.Invocation().(rpcinfo.InvocationSetter); ok {
+   setter.SetBizStatusErr(bizErr)
+   return nil
+}
+```
+
 
 ## Framework implementation
 It relies on transport protocols to transparently transmit the error code and error information of business exceptions. Thrift and Kitex Protobuf rely on TTHeader, and Kitex gRPC relies on HTTP2.
