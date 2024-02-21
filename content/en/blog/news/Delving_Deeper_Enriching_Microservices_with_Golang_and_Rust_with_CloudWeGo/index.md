@@ -18,7 +18,7 @@ CloudWeGo, a high-performance extensible Golang and Rust RPC framework originall
 
 While [gRPC](https://grpc.io) and [Apache Thrift](https://thrift.apache.org) have served the microservice architecture well, [CloudWeGo](https://www.cloudwego.io)'s advanced features and performance metrics set it apart as a promising open source solution for the future.
 
-Built for the modern development landscape by embracing both [Golang](https://go.dev) and [Rust](https://www.rust-lang.org), CloudWeGo delivers advanced features and excellent performance metrics. As proof of its performance, benchmark tests have shown that [Kitex surpasses gRPC by 10 times](https://github.com/cloudwego/kitex-benchmark) in terms of QPS (Queries Per Second) and latency.
+Built for the modern development landscape by embracing both [Golang](https://go.dev) and [Rust](https://www.rust-lang.org), CloudWeGo delivers advanced features and excellent performance metrics. As proof of its performance, benchmark tests have shown that [Kitex surpasses gRPC by over 4 times in terms of QPS and latency, with a throughput increased by 51% - 70%](https://github.com/cloudwego/kitex-benchmark) in terms of QPS (Queries Per Second) and latency.
 
 This equips developers with a tool that doesn't just meet but decidedly surpasses the performance requirements of modern microservices. Let's delve into some specific use cases to understand CloudWeGo's potential.
 
