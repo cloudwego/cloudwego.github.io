@@ -1,8 +1,8 @@
 ---
 date: 2024-02-21
-title: "Delving Deeper: Enriching Microservices with Golang and Rust with CloudWeGo"
+title: "Delving Deeper: Enriching Microservices with Golang with CloudWeGo"
 projects: ["CloudWeGo"]
-linkTitle: "Delving Deeper: Enriching Microservices with Golang and Rust with CloudWeGo"
+linkTitle: "Delving Deeper: Enriching Microservices with Golang with CloudWeGo"
 keywords: ["CloudWeGo", "middleware", "Kitex", "Netpoll", "Golang", "Volo", "rust", "microservice framework", "ByteDance Open Source", "ByteDance", "open source", "cloud native", "open source", "gRPC", "microservices", "rpc", "thrift"]
 description: "Delve into CloudWeGo's Kitex through practical examples, where high performance and extensibility redefine microservice excellence."
 author:  <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>
