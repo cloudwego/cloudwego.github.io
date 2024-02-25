@@ -1,7 +1,7 @@
 ---
 title: "业务异常"
 date: 2022-11-04
-weight: 6
+weight: 5
 keywords: ["Kitex", "自定义异常"]
 description: "Kitex 自 v0.4.3 版本提供了业务自定义异常功能，本文涵盖了相关接口定义、用户使用和框架实现介绍。"
 ---
@@ -27,10 +27,13 @@ type GRPCStatusIface interface {
 ```
 
 ## 用户使用
+
 你可以在 server handler 使用 `NewBizStatusError` 或 `NewBizStatusErrorWithExtra` 函数构造业务异常并作为err返回。之后在 client 端通过 `FromBizStatusError` 函数将err转换回 `BizStatusErrorIface` 来获取需要的异常信息。
 
 ### 用法示例
+
 使用 TTHeader 作为传输协议：
+
 ```go
 // Server side
 func (*MyServiceHandler) TestError(ctx context.Context, req *myservice.Request) (r *myservice.Response, err error) {
@@ -75,6 +78,28 @@ if err != nil {
     }
 }
 ```
+
+### 在中间件中获取/返回 BizStatusError
+
+业务异常不属于 RPC 异常，因此中间件中不能直接读取或返回 BizStatusError。
+
+Kitex 会将 handler 返回的 BizStatusError 放入 rpcinfo，并返回 nil error 给上层。因此，对于 handler 返回的 BizStatusError，在中间件中，调用 `next(ctx, req, resp)` 得到的 error 是 nil。
+
+如果要在中间件中获取 BizStatusError，可以用如下方式：
+
+```go
+bizErr := rpcinfo.GetRPCInfo(ctx).Invocation().BizStatusErr()
+```
+
+如果要在中间件中返回 BizStatusError，可以用如下方式：
+```go
+ri := rpcinfo.GetRPCInfo(ctx)
+if setter, ok := ri.Invocation().(rpcinfo.InvocationSetter); ok {
+   setter.SetBizStatusErr(bizErr)
+   return nil
+}
+```
+
 
 ## 框架实现
 依赖传输协议透传自定义异常的错误码和错误信息，Thrift 和 Kitex Protobuf 依赖 TTHeader，Kitex gRPC 依赖 HTTP2。
