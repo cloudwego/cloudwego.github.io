@@ -5,7 +5,7 @@ weight: 1
 description: >
 ---
 
-cwgo 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优势，提高开发者提体验。
+cwgo 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优势，以提高开发者的体验。
 
 cwgo 工具可以方便生成工程化模版，其主要功能特点如下：
 
@@ -17,7 +17,7 @@ cwgo 工具可以方便生成工程化模版，其主要功能特点如下：
 
 - 支持生成 Server、Client 代码
 
-  cwgo 工具支持生成 Kitex、Hertz 的 Server 和 Client 代码，提供了对 Client 的封装。用户可以开箱即用的调用下游，免去封装 Client 的繁琐步骤
+  cwgo 工具支持生成 Kitex、Hertz 的 Server 和 Client 代码，提供了对 Client 的封装。用户可以开箱即用的调用下游，免去封装 Client 的繁琐步骤。
 
 - 支持生成数据库代码
 

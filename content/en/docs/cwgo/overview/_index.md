@@ -17,7 +17,7 @@ The cwgo tool can easily generate engineering templates, and its main features a
 
 - Support generating Server and Client code
 
-  The cwgo tool supports generating Server and Client codes of Kitex and Hertz, and provides an encapsulation of Client. Users can call downstream out of the box, eliminating the cumbersome steps of encapsulating the Client
+  The cwgo tool supports generating Server and Client codes of Kitex and Hertz, and provides an encapsulation of Client. Users can call downstream out of the box, eliminating the cumbersome steps of encapsulating the Client.
 
 - Support for generating database code
 

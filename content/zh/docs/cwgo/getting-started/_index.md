@@ -5,14 +5,13 @@ weight: 2
 description: >
 ---
 
-cwgo 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优势，提高开发者提体验。
+cwgo 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优势，以提高开发者的体验。
 
 ## 准备 Golang 开发环境
 
-1. 如果您之前未搭建 Golang 开发环境， 可以参考 [Golang 安装](https://go.dev/doc/install)
-1. 推荐使用最新版本的 Golang，我们保证最新两个正式版本的兼容性(现在 >= **v1.18**)。
-1. 确保打开 go mod 支持 (Golang >= 1.15 时，默认开启)
-1. cwgo 暂时没有针对 Windows 做支持，如果本地开发环境是 Windows 建议使用 [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install)
+1. 如果您之前未搭建 Golang 开发环境， 可以参考 [Golang 安装](https://go.dev/doc/install)。
+2. 推荐使用最新版本的 Golang(支持版本 >= **v1.18**)。
+3. 确保打开 go mod 支持 (Golang >= 1.15 时，默认开启)。
 
 在完成环境准备后，接下来将帮助你快速上手 cwgo。
 
@@ -52,13 +51,7 @@ cp bin/protoc /usr/local/bin/protoc
 cp -r include/google /usr/local/include/google
 ```
 
-首先，我们需要安装使用本示例所需要的命令行代码生成工具：
-
-1. 确保 `GOPATH` 环境变量已经被正确地定义（例如 `export GOPATH=~/go`）并且将`$GOPATH/bin`添加到 `PATH` 环境变量之中（例如 `export PATH=$GOPATH/bin:$PATH`）；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录
-2. 安装 cwgo：`go install github.com/cloudwego/cwgo@latest`
-3. 安装 thriftgo：`go install github.com/cloudwego/thriftgo@latest`
-
-安装成功后，执行 `cwgo --version` 和 `thriftgo --version` 应该能够看到具体版本号的输出（版本号有差异，以 x.x.x 示例）：
+安装成功后，执行 `cwgo --version` 、 `thriftgo --version` 和 `protoc --version` 应该能够看到具体版本号的输出（版本号有差异，以 x.x.x 示例）：
 
 ```shell
 cwgo --version
@@ -71,26 +64,15 @@ protoc --version
 libprotoc x.x.x
 ```
 
-### 确定代码放置位置
-
-1. 若将代码放置于 `$GOPATH/src` 下，需在 `$GOPATH/src` 下创建额外目录，进入该目录后再获取代码：
-
-   ```shell
-   mkdir -p $(go env GOPATH)/src/github.com/cloudwego
-   cd $(go env GOPATH)/src/github.com/cloudwego
-   ```
-
-2. 若将代码放置于 GOPATH 之外，可直接获取
-
 ## 注意事项
 
 cwgo 底层使用 [kitex](/zh/docs/kitex/tutorials/code-gen/code_generation/)、[hz](/zh/docs/hertz/tutorials/toolkit/)、[gen](https://gorm.io/gen/index.html) 工具，所以其相应的工具规范也需要遵守，如 [kitex 的注意事项](/zh/docs/kitex/tutorials/code-gen/code_generation/#%E4%BD%BF%E7%94%A8-protobuf-idl-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)和 [hz 的注意事项](/zh/docs/hertz/tutorials/toolkit/cautions/)。
 
 ## 使用
 
-cwgo 的具体使用请参考[命令行工具](/zh/docs/cwgo/tutorials/cli)
+cwgo 的具体使用请参考[命令行工具](/zh/docs/cwgo/tutorials/cli)。
 
-下面以 thrift 为例
+下面以 thrift 为例：
 
 1. 首先创建一个目录
 
@@ -144,4 +126,4 @@ cwgo 的具体使用请参考[命令行工具](/zh/docs/cwgo/tutorials/cli)
    pong
    ```
 
-恭喜你！至此你成功编写了一个 Cwgo 的服务端，并完成了一次调用！
+恭喜你！至此你成功编写了一个 Cwgo 的 HTTP 服务端，并完成了一次调用！
