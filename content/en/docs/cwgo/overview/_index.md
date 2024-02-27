@@ -23,6 +23,14 @@ The cwgo tool can easily generate engineering templates, and its main features a
 
   The cwgo tool supports generating database CURD code. Users no longer need to encapsulate the cumbersome CURD code by themselves, which improves the user's work efficiency.
 
+- Support for generating document database code
+
+  The cwgo tool supports generating document database CURD code based on IDL (Thrift/protobuf), and currently supports Mongodb. Users no longer need to encapsulate the cumbersome CURD code by themselves, which improves the user's work efficiency.
+
+- Support for generating command line automatic completion scripts
+
+  The cwgo tool supports generating command line completion scripts to improve the efficiency of user command line writing.
+
 - Support fallback to Kitex, Hz tools
 
   If you were a Kitex or Hz user before, you can still use the cwgo tool. The cwgo tool supports the fallback function and can be used as Kitex and Hz, truly realizing a tool to generate all.
