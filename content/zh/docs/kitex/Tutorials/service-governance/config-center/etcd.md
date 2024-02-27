@@ -1,6 +1,5 @@
 ---
-title: "etcd"
-linkTitle: "etcd"
+title: "Etcd"
 date: 2023-11-29
 weight: 2
 keywords: ["配置中心扩展","etcd"]

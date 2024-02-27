@@ -1,5 +1,5 @@
 ---
-title: "etcd"
+title: "Etcd"
 date: 2023-11-30
 weight: 2
 keywords: ["服务注册与发现", "etcd"]

@@ -6,13 +6,18 @@ keywords: ["Kitex", "链路追踪", "OpenTelemetry", "OpenTracing"]
 description: Kitex 提供了对 OpenTelemetry 和 OpenTracing 的支持，也支持用户自定义链路跟踪。
 ---
 
+## 背景
+
+Kitex 支持流行的链路追踪标准 OpenTelemetry 和 OpenTracing，允许开发者选择合适的工具来适应他们的监控生态，用户可以轻松地在微服务架构中实现请求的全链路监控。这样的监控对于调试、性能分析以及故障排查是至关重要的。
+
 ## OpenTelemetry
 
-Kitex 的 OpenTelemetry 扩展 提供了 `tracing`、`metrics`、`logging` 的支持。
+[obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) 扩展集成了 OpenTelemetry 标准的 Tracing。
 
-示例:
+**使用示例**
 
-client 侧
+Client
+
 ```go
 import (
     ...
@@ -44,7 +49,8 @@ func main(){
 
 ```
 
-server 侧
+Server
+
 ```go
 import (
     ...
@@ -74,17 +80,19 @@ func main()  {
     }
 }
 ```
-更多信息参考 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry)
-
 ## OpenTracing
 
-client 侧，默认使用 OpenTracing `GlobalTracer`
+[tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing) 拓展集成了 OpenTracing 标准的链路追踪。
+
+**使用示例**
+
+Client
 
 ```go
 import (
-    "github.com/cloudwego/kitex/client"
-    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-    internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+	internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
 )
 ...
 tracer := internal_opentracing.NewDefaultClientSuite()
@@ -94,13 +102,13 @@ if err != nil {
 }
 ```
 
-server 侧，默认使用 OpenTracing `GlobalTracer`
+Server
 
 ```go
 import (
-    "github.com/cloudwego/kitex/server"
-    "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-    internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
+  "github.com/cloudwego/kitex/server"
+  "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+  internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
 )
 ...
 tracer := internal_opentracing.NewDefaultServerSuite()
@@ -111,20 +119,19 @@ if err := svr.Run(); err != nil {
 	log.Println("server stopped")
 }
 ```
-更多信息参考 [tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing)
+### 自定义 Opentracing Tracer 和 Operation Name
 
+通过 `NewDefaultServerSuite` 和 `NewDefaultClientSuite` 会创建出默认使用 OpenTracing GlobalTracer 的 Suite。若需自定义 Opentracing Tracer 和 Operation Name，可选择使用 `NewServerSuite` 和 `NewClientSuite` 方法创建 Suite。
 
-### 自定义 opentracing tracer 和 operation name
-
-client 侧
+以 Client 端为例（Server 端类似）：
 
 ```go
 import (
 	...
-	ko "github.com/kitex-contrib/opentracing"
 	"github.com/opentracing/opentracing-go"
 	"github.com/cloudwego/kitex/pkg/endpoint"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
+  internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
   ...
 )
 ...
@@ -134,41 +141,38 @@ operationNameFunc := func(ctx context.Context) string {
 	return endpoint.ServiceName() + "::" + endpoint.Method()
 }
 ...
-client, err := echo.NewClient("echo", ko.ClientOption(myTracer, operationNameFunc))
+client, err := echo.NewClient("echo", client.WithSuite(internal_opentracing.NewClientSuite(myTracer, operationNameFunc)))
 if err != nil {
 	log.Fatal(err)
 }
 ```
 
-server 侧
+### 支持的组件
+
+#### Redis
+
+[tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing) 提供了 Redis Hook，可以快速集成 Redis 链路追踪。使用方式如下：
 
 ```go
 import (
-	...
-	ko "github.com/kitex-contrib/opentracing"
-	"github.com/opentracing/opentracing-go"
-	"github.com/cloudwego/kitex/pkg/endpoint"
-	"github.com/cloudwego/kitex/pkg/rpcinfo"
-	...
+    ...
+    "github.com/go-redis/redis/v8"
+    internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
+    ...
 )
-...
-myTracer := opentracing.GlobalTracer()
-operationNameFunc := func(ctx context.Context) string {
-	endpoint := rpcinfo.GetRPCInfo(ctx).To()
-	return endpoint.ServiceName() + "::" + endpoint.Method()
-}
-...
-svr, err := echo.NewServer(ko.ClientOption(myTracer, operationNameFunc))
-if err := svr.Run(); err != nil {
-	log.Println("server stopped with error:", err)
-} else {
-	log.Println("server stopped")
+
+func main() {
+    ...
+    rdb := redis.NewClient(&redis.Options{...})
+  	// add the hook provided by tracer-opentracing to instrument Redis client
+    rdb.AddHook(internal_opentracing.NewTracingHook())
+    ...
 }
 ```
 
-## 自定义 tracer
+## 自定义 Tracer
 
-tracer 的定义如下：
+框架提供了 Tracer 接口，可以实现该接口来自定义 Tracer ：
 
 ```go
 type Tracer interface {
@@ -177,52 +181,18 @@ type Tracer interface {
 }
 ```
 
-示例：
+详细文档请阅读 [监控拓展](../../framework-exten/monitoring/#链路追踪拓展) 章节。
 
-client 侧
+## 自定义跟踪事件
 
-```go
-import "github.com/cloudwego/kitex/client"
-...
-type myTracer struct {}
+Kitex 提供了一些默认的跟踪事件，例如 RPC 调用开始、RPC 调用结束等，有关内置的跟踪事件请参考 [埋点](../instrumentation) 章节。除此之外，也可以手动添加更多的追踪数据，以收集更详细的链路信息。跟踪事件通过创建和结束 span 来记录，可以使用对应组件的原生 API 来完成。
 
-func (m *myTracer) Start(ctx context.Context) context.Context {
-	_, ctx = opentracing.StartSpanFromContextWithTracer(ctx, o.tracer, "RPC call")
-	return ctx
-}
-
-func (m *myTracer) Finish(ctx context.Context) {
-	span := opentracing.SpanFromContext(ctx)
-	span.Finish()
-}
-...
-client, err := echo.NewClient("echo", client.WithTracer(&myTracer{}))
-if err != nil {
-	log.Fatal(err)
-}
-```
-
-server 侧
+以 OpenTelemetry 为例，可以这样使用：
 
 ```go
-import "github.com/cloudwego/kitex/server"
-...
-type myTracer struct {}
-
-func (m *myTracer) Start(ctx context.Context) context.Context {
-	_, ctx = opentracing.StartSpanFromContextWithTracer(ctx, o.tracer, "RPC handle")
-	return ctx
-}
-
-func (m *myTracer) Finish(ctx context.Context) {
-	span := opentracing.SpanFromContext(ctx)
-	span.Finish()
-}
-...
-svr, err := echo.NewServer(server.WithTracer(&myTracer{}))
-if err := svr.Run(); err != nil {
-	log.Println("server stopped with error:", err)
-} else {
-	log.Println("server stopped")
-}
+ctx, span := otel.Tracer("client").Start(ctx, "root")
+defer span.End()
 ```
+
+更多内容请参考：[OpenTelemetry Creating Spans](https://opentelemetry.io/docs/languages/go/instrumentation/#creating-spans)、[OpenTracing Golang API](https://opentracing.io/guides/golang/)。
+

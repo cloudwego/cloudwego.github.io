@@ -1,6 +1,5 @@
 ---
-title: "nacos"
-linkTitle: "nacos"
+title: "Nacos"
 date: 2023-12-14
 weight: 4
 keywords: ["配置中心扩展","Nacos"]

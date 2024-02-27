@@ -1,6 +1,5 @@
 ---
-title: "nacos"
-linkTitle: "nacos"
+title: "Nacos"
 date: 2023-12-14
 weight: 4
 keywords: ["ConfigCenter Extension","Nacos"]

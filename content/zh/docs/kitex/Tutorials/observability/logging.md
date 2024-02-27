@@ -20,12 +20,11 @@ klog 提供的实现可能会导致日志内容里文件名和行数不准确。
 
 可以用 `klog.SetLogger` 来替换掉默认的 logger 实现。
 
-[obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry)
-扩展下提供了基于 [logrus](https://github.com/sirupsen/logrus) 和 [zap](https://github.com/uber-go/zap) 的日志实现
+[obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) 扩展下提供了基于 [logrus](https://github.com/sirupsen/logrus)、[zap](https://github.com/uber-go/zap) 与 [slog](https://pkg.go.dev/log/slog) 的日志实现。
 
-### Logrus
+### 使用方式
 
-设置 logger 为 logrus：
+以 logrus 为例，设置 logger 为 logrus：
 
 ```go
 import (
@@ -39,7 +38,7 @@ func init()  {
 }
 ```
 
-将日志与 context 关联
+将日志与 context 关联：
 
 ```go
 // Echo implements the Echo interface.
@@ -49,10 +48,10 @@ func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Respon
 }
 ```
 
-日志输出
+日志输出：
 
 ```text
-{"level":"debug","msg":"echo called: my request","span_id":"056e0cf9a8b2cec3","time":"2022-03-09T02:47:28+08:00","trace_flags":"01","trace_id":"33bdd3c81c9eb6cbc0fbb59c57ce088b"}
+{"level":"debug","msg":"echo called: hello","time":"2024-01-09T14:50:43+08:00"}
 ```
 
 ## 重定向默认 logger 的输出

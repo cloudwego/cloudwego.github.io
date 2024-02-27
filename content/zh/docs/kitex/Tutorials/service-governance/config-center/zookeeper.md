@@ -1,6 +1,5 @@
 ---
-title: "zookeeper"
-linkTitle: "zookeeper"
+title: "Zookeeper"
 date: 2023-12-18
 weight: 6
 keywords: ["配置中心扩展","ZooKeeper"]

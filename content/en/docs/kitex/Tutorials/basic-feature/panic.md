@@ -1,7 +1,7 @@
 ---
 title: "Deal with panic"
 linkTitle: "Deal with panic"
-weight: 8
+weight: 7
 description: "This article introduces the way Kitex deals with panic"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "直连访问"
 date: 2021-08-26
-weight: 4
+weight: 3
 keywords: ["Kitex", "直连访问", "URL", "DNS"]
 description: 在明确要访问某个下游地址时，Kitex 可以选择直连访问的方式，不需要经过服务发现。
 ---

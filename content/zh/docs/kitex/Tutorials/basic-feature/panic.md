@@ -1,7 +1,7 @@
 ---
 title: "Panic 处理"
 linkTitle: "Panic 处理"
-weight: 8
+weight: 7
 description: "本文介绍 Kitex 对 panic 的处理说明。"
 ---
 

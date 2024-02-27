@@ -1,5 +1,5 @@
 ---
-title: "zookeeper"
+title: "Zookeeper"
 date: 2023-11-30
 weight: 8
 keywords: ["服务注册与发现", "zookeeper"]

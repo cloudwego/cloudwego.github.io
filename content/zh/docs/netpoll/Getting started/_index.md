@@ -52,7 +52,7 @@ func main() {
 
 参数说明:
 
-* `OnRequest` 是用户应该自己实现来处理业务逻辑的接口。 [注释][netpoll.go] 详细描述了它的行为。
+* `OnRequest` 和 `OnConnect` 是用户应该自己实现来处理业务逻辑的接口。 [注释][eventloop.go] 详细描述了它的行为。
 * `Option` 用于自定义 `EventLoop` 创建时的配置，下面的例子展示了它的用法。更多详情请参考 [options][netpoll_options.go] 。
 
 创建过程如下：
@@ -72,6 +72,7 @@ func main() {
 	eventLoop, _ = netpoll.NewEventLoop(
 		handle,
 		netpoll.WithOnPrepare(prepare),
+		netpoll.WithOnConnect(connect),
 		netpoll.WithReadTimeout(time.Second),
 	)
 	...
@@ -298,12 +299,12 @@ func main() {
 
 [Examples]: https://github.com/cloudwego/netpoll-examples
 
-[server-example]: https://github.com/cloudwego/netpoll-examples/blob/main/server.go
+[server-example]: https://github.com/cloudwego/netpoll-examples/blob/main/echo/server.go
 
-[client-example]: https://github.com/cloudwego/netpoll-examples/blob/main/client.go
-
-[netpoll.go]: https://github.com/cloudwego/netpoll/blob/main/netpoll.go
+[client-example]: https://github.com/cloudwego/netpoll-examples/blob/main/echo/client.go
 
 [netpoll_options.go]: https://github.com/cloudwego/netpoll/blob/main/netpoll_options.go
 
 [nocopy.go]: https://github.com/cloudwego/netpoll/blob/main/nocopy.go
+
+[eventloop.go]: https://github.com/cloudwego/netpoll/blob/main/eventloop.go

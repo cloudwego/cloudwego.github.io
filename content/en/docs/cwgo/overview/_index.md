@@ -11,11 +11,6 @@ The cwgo tool can easily generate engineering templates, and its main features a
 
 ## Features
 
-- User-friendly way of generating
-
-  The cwgo tool provides both interactive command line and static command line. The interactive command line can generate code at low cost, no need to care about passing parameters, and no need to execute multiple commands,
-  It is suitable for most users; users who need advanced functions can still use the regular static command line construction to generate commands.
-
 - Support for generating engineering templates
 
   The cwgo tool supports the generation of MVC project layout. Users only need to complete their own business code in the corresponding position according to the functions of different directories, focusing on business logic.
