@@ -57,7 +57,7 @@ struct Resp {
      1: string Resp;
 }
 service Hertz121 {
-     Resp QueryMethod(1: QueryReq request) (api. get="/query", api. handler_path="get");
+     Resp QueryMethod(1: QueryReq request) (api.get="/query", api. handler_path="get");
 }(
      api.base_domain="http://127.0.0.1:8888";
 )
