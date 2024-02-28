@@ -405,6 +405,29 @@ func main() {
 }
 ```
 
+## Instance Information
+
+The Etcd extension encapsulates the registration information of service instances. When using Kitex to communicate with other services, refer to this section for manual encapsulation.
+
+The Key for each instance is composed of a Prefix and service metadata, formatted as follows:
+
+```go
+kitex/registry-etcd/{serviceName}{addr}
+```
+
+The Value for an instance is a JSON string, which serializes an `instanceInfo` structure, defined as follows:
+
+```go
+type instanceInfo struct {
+	Network string            `json:"network"`
+	Address string            `json:"address"`
+	Weight  int               `json:"weight"`
+	Tags    map[string]string `json:"tags"`
+}
+```
+
+When parsing Kitex service instances in other services, you can search using the prefix `kitex/registry-etcd/{serviceName}` to find all instances of the specified service, and select instances based on the `instanceInfo` information.
+
 ## Configuration
 
 The configuration of Etcd client and server can be customized, refer to the configuration of [etcd-client](https://pkg.go.dev/go.etcd.io/etcd/client/v3).
