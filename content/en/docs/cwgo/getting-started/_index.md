@@ -120,7 +120,7 @@ Let's take thrift as an example
    }
 
    service HelloService {
-       HelloResp HelloMethod(1: HelloReq request) (api. get="/hello");
+       HelloResp HelloMethod(1: HelloReq request) (api.get="/hello");
    }
    ```
 
