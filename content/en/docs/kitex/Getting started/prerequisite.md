@@ -16,7 +16,7 @@ Kitex, as a Golang microservice RPC framework, requires the following environmen
 **Go** (also known as **Golang**) is a statically typed, compiled, concurrent programming language developed by Google.
 
 - Refer to [Golang Installation](https://go.dev/doc/install) for the environment setup of the Go language.
-- It is recommended to use the latest version of Golang. We ensure compatibility with the latest three official versions (currently >= **v1.18**).
+- It is recommended to use the latest version of Golang. We ensure compatibility with the latest three official versions (currently >= **v1.17**).
 - Make sure to enable go mod support (enabled by default in Golang >= 1.15).
 - For Windows environment, kitex version >= v0.5.2 is required.
 
