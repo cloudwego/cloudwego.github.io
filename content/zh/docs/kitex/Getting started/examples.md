@@ -18,8 +18,8 @@ description: "Kitex 使用示例代码"
 - [bizdemo/kitex_gorm_gen](https://github.com/cloudwego/kitex-examples/tree/main/bizdemo/kitex_gorm_gen) 使用 Kitex 和 gorm_gen 的示例
 - [bizdemo/kitex_zorm](https://github.com/cloudwego/kitex-examples/tree/main/bizdemo/kitex_zorm) 使用 Kitex 和 zorm 的示例
 - [bizdemo/kitex_zorm](https://github.com/cloudwego/kitex-examples/tree/main/bizdemo/kitex_zorm) 使用 Kitex 和 ent 的示例
-- [bizdemo/easy_note](https://github.com/cloudwego/kitex-examples/tree/main/bizdemo/easy_note) 使用 Kitex 作为 rpc 框架实现多中间键简易笔记服务的示例
-- [Bookinfo](https://github.com/cloudwego/biz-demo/tree/main/bookinfo) 使用 Kitex 作为 rpc 框架实现包含 istio 服务网格，Opentelemetry 监控等多功能书籍服务程序的示例
+- [bizdemo/easy_note](https://github.com/cloudwego/kitex-examples/tree/main/bizdemo/easy_note) 使用 Kitex 作为 rpc 框架实现多中间件简易笔记服务的示例
+- [Bookinfo](https://github.com/cloudwego/biz-demo/tree/main/bookinfo) 使用 Kitex 作为 rpc 框架实现包含 istio 服务网格，OpenTelemetry 监控等多功能书籍服务程序的示例
 - [Open Payment Platform](https://github.com/cloudwego/biz-demo/tree/main/open-payment-platform) 使用 Kitex 作为 rpc 框架演示了 Kitex 泛化调用的用法，构建了一体化支付平台
 - [Book Shop](https://github.com/cloudwego/biz-demo/tree/main/book-shop) 使用 Kitex 作为 rpc 框架实现包含 ElasticSearch 搜索引擎的电子商务系统的示例
 - [FreeCar](https://github.com/CyanAsterisk/FreeCar) 使用 Kitex 作为 rpc 框架实现云原生分时租车系统套件服务的示例
@@ -29,7 +29,7 @@ description: "Kitex 使用示例代码"
 - [basic](https://github.com/cloudwego/kitex-examples/tree/main/basic) Kitex 的基础示例
 - [async_call](https://github.com/cloudwego/kitex-examples/tree/main/async_call) 在 Kitex server 中使用异步调用的示例
 - [codec](https://github.com/cloudwego/kitex-examples/tree/main/codec) Kitex 服务端和客户端使用自定义编解码器的示例
-  - [codec-dubbo](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples/helloworld) Kitex 为了支持 Kitex <-> dubbo 互通 推出的 dubbo 协议编解码器的示例
+  - [codec-dubbo](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples/helloworld) Kitex 为了支持 Kitex <-> Dubbo 互通 推出的 Dubbo 协议编解码器的示例
 - [long_connection](https://github.com/cloudwego/kitex-examples/tree/main/longconnection) Kitex 服务端和客户端使用长连接的示例
 - [streaming](https://github.com/cloudwego/kitex-examples/tree/main/streaming) Kitex 服务端和客户端使用流式调用的示例
 - [business_exception](https://github.com/cloudwego/kitex-examples/tree/main/business_exception) Kitex 服务端和客户端使用业务异常的示例
@@ -59,7 +59,7 @@ description: "Kitex 使用示例代码"
 
 ## 可观测性
 
-- [opentelemetry](https://github.com/cloudwego/kitex-examples/tree/main/opentelemetry) Kitex 服务端和客户端使用 Opentelemetry 的示例
+- [opentelemetry](https://github.com/cloudwego/kitex-examples/tree/main/opentelemetry) Kitex 服务端和客户端使用 OpenTelemetry 的示例
 - [prometheus](https://github.com/cloudwego/kitex-examples/tree/main/prometheus) Kitex 服务端和客户端使用 prometheus 的示例
 - [tracer](https://github.com/cloudwego/kitex-examples/tree/main/tracer) Kitex 服务端和客户端使用 tracer 的示例
 - [klog](https://github.com/cloudwego/kitex-examples/tree/main/klog) Kitex 服务端使用 klog 日志的示例

@@ -19,7 +19,7 @@ You can go into the related examples for information on "how to run"
 - [bizdemo/kitex_zorm](https://github.com/cloudwego/kitex-examples/tree/main/bizdemo/kitex_zorm) Example of using Kitex and zorm
 - [bizdemo/kitex_zorm](https://github.com/cloudwego/kitex-examples/tree/main/bizdemo/kitex_zorm) Example of using Kitex and ent
 - [bizdemo/easy_note](https://github.com/cloudwego/kitex-examples/tree/main/bizdemo/easy_note) Example of using Kitex as a rpc framework to implement a simple note service with multiple middlewares
-- [Bookinfo](https://github.com/cloudwego/biz-demo/tree/main/bookinfo) Example of using Kitex as the rpc framework to implement multi-functional book service programs including istio, Opentelemetry, etc.
+- [Bookinfo](https://github.com/cloudwego/biz-demo/tree/main/bookinfo) Example of using Kitex as the rpc framework to implement multi-functional book service programs including istio, OpenTelemetry, etc.
 - [Open Payment Platform](https://github.com/cloudwego/biz-demo/tree/main/open-payment-platform) Example of using Kitex as the rpc framework to demonstrate the usage of Kitex generic call, and builds an integrated payment platform.
 - [Book Shop](https://github.com/cloudwego/biz-demo/tree/main/book-shop) Example of using Kitex as a rpc framework to implement an e-commerce system including an ElasticSearch search engine
 - [FreeCar](https://github.com/CyanAsterisk/FreeCar) Example of using Kitex as the rpc framework to implement cloud native time-sharing car rental system suite services
@@ -29,7 +29,7 @@ You can go into the related examples for information on "how to run"
 - [basic](https://github.com/cloudwego/kitex-examples/tree/main/basic) Basic example of Kitex
 - [async_call](https://github.com/cloudwego/kitex-examples/tree/main/async_call) Example of using asynchronous call in Kitex server
 - [codec](https://github.com/cloudwego/kitex-examples/tree/main/codec) Example of Kitex server and client using custom codecs
-  - [codec-dubbo](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples/helloworld) Example of dubbo protocol codec launched by Kitex to support Kitex <-> dubbo interoperability
+  - [codec-dubbo](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples/helloworld) Example of Dubbo protocol codec launched by Kitex to support Kitex <-> Dubbo interoperability
 - [long_connection](https://github.com/cloudwego/kitex-examples/tree/main/longconnection) Kitex example of using long connections between server and client
 - [streaming](https://github.com/cloudwego/kitex-examples/tree/main/streaming) Example of Kitex server and client using streams
 - [business_exception](https://github.com/cloudwego/kitex-examples/tree/main/business_exception) Example of Kitex server and client using business exceptions
@@ -59,7 +59,7 @@ You can go into the related examples for information on "how to run"
 
 ## Observability
 
-- [opentelemetry](https://github.com/cloudwego/kitex-examples/tree/main/opentelemetry) Example of Kitex server and client using Opentelemetry
+- [opentelemetry](https://github.com/cloudwego/kitex-examples/tree/main/opentelemetry) Example of Kitex server and client using OpenTelemetry
 - [prometheus](https://github.com/cloudwego/kitex-examples/tree/main/prometheus) Example of Kitex server and client using prometheus
 - [tracer](https://github.com/cloudwego/kitex-examples/tree/main/tracer) Example of using tracer on Kitex server and client
 - [klog](https://github.com/cloudwego/kitex-examples/tree/main/klog) Example of using klog logs on the Kitex server
