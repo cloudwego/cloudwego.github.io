@@ -5,11 +5,11 @@ weight: 2
 description: >
 ---
 
-cwgo 工具支持目前支持生成 MVC Layout，未来还会拓展更多的模板供用户使用。
+cwgo 工具目前支持生成 MVC Layout，未来还会拓展更多的模板供用户使用。
 
 ## 代码结构
 
-使用 cwgo 工具生成 server 代码时会自动生成 MVC layout。完成[快速上手](/zh/docs/cwgo/getting-started/)里面的步骤指引，会在本地生成一个 demo，其 HTTP 项目目录如下:
+使用 cwgo 工具生成 server 代码时会自动生成 MVC layout。完成[快速开始](/zh/docs/cwgo/getting-started/)里面的步骤指引，会在本地生成一个 demo，其 HTTP 项目目录如下:
 
 ```console
 ├── biz // 业务逻辑目录
@@ -39,7 +39,7 @@ cwgo 工具支持目前支持生成 MVC Layout，未来还会拓展更多的模�
 ├── conf // 存放不同环境下的配置文件
 │     └── ...
 ├── docker-compose.yaml
-├── go.mod // go.mod 文件，如不在命令行指定，则默认使用相对于GOPATH的相对路径作为 module 名
+├── go.mod // go.mod 文件，如不在命令行指定，则默认使用相对于 GOPATH 的相对路径作为 module 名
 ├── hertz_gen // IDL 内容相关的生成代码
 │   └── ...
 ├── idl
@@ -50,7 +50,7 @@ cwgo 工具支持目前支持生成 MVC Layout，未来还会拓展更多的模�
     └── bootstrap.sh
 ```
 
-RPC 项目目录如下
+RPC 项目目录如下：
 
 ```console
 ├── biz // 业务逻辑目录
@@ -67,7 +67,7 @@ RPC 项目目录如下
 ├── conf // 存放不同环境下的配置文件
 │     └── ...
 ├── docker-compose.yaml
-├── go.mod // go.mod 文件，如不在命令行指定，则默认使用相对于GOPATH的相对路径作为 module 名
+├── go.mod // go.mod 文件，如不在命令行指定，则默认使用相对于 GOPATH 的相对路径作为 module 名
 ├── handler.go // 业务逻辑入口，更新时会全量覆盖
 ├── idl
 │   └── hello.thrift
