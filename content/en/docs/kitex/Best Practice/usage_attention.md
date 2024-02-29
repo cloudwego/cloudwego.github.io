@@ -3,13 +3,14 @@ title: "Usage Attention"
 linkTitle: "Usage Attention"
 weight: 1
 date: 2024-02-18
+keywords: ["Kitex", "RPCInfo", "client", "Set", "Map"]
 description: >
 
 ---
 
 ## Do not use RPCInfo asynchronously
 
-By default, the lifecycle of Kitex's RPCInfo is from the start of the request until the response is returned (for performance reasons). Afterwards, it is put into a sync.Pool for reuse. In the server-side, if RPCInfo is asynchronously accessed and used within the business handler, it may read dirty data or encounter a null pointer and panic.
+By default, the lifecycle of Kitex's RPCInfo is from the start of the request until the response is returned (for performance reasons). Afterward, it is put into a `sync.Pool` for reuse. In the server-side, if RPCInfo is asynchronously accessed and used within the business handler, it may read dirty data or encounter a null pointer and panic.
 
 If there is indeed a scenario where asynchronous usage is required, there are two approaches:
 
@@ -29,9 +30,7 @@ If there is indeed a scenario where asynchronous usage is required, there are tw
   }(ctx2)
   ```
 
-- Set the environment variable `KITEX_DISABLE_RPCINFO_POOL=true` to disable RPCInfo recycling.
-
-  > Supported version: github.com/cloudwego/kitex v0.8.1
+- Set the environment variable `KITEX_DISABLE_RPCINFO_POOL=true` to disable RPCInfo recycling. (Supported version: v0.8.1)
 
 ## Do not create a new Kitex client for each request
 
@@ -73,9 +72,9 @@ If the set contains a large number of elements and the data structure is complex
 
 ### How to handle
 
-**Option 1: Update the KiteX tool and regenerate the code (supported in v1.3.1 or later)**
+**Option 1: Update the Kitex tool and regenerate the code**
 
-The thrift code generation tool, thriftgo, in KiteX generates a separate DeepEqual method for each struct to avoid using reflection.
+The thrift code generation tool, thriftgo, in Kitex generates a separate DeepEqual method for each struct to avoid using reflection.
 
 > Additionally, a [pull request](https://github.com/apache/thrift/pull/2307) has been submitted to the Thrift official repository to address this issue, and it has been merged.
 
