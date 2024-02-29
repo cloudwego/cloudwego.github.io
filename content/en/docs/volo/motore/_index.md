@@ -1,20 +1,19 @@
 ---
-title: "概览"
-linkTitle: "概览"
-weight: 1
-description: >
-
+title: 'Motore'
+linkTitle: 'Motore'
+weight: 6
+Description: Motore is an async middleware abstraction powered by AFIT and RPITIT.
 ---
 
-Motore 是一个使用了 AFIT 和 RPITIT 特性的中间件抽象层。
+Around Motore, we build modular and reusable components for building robust networking clients and servers.
 
-基于 Motore，我们编写了一些模块化并且可复用的，用来编写 client 和 server 的组件。
+Motore is greatly inspired by [`Tower`][Tower].
 
-Motore 深受[`Tower`][Tower] 启发。
+## Overview
 
-Motore 使用 AFIT 和 RPITIT 来减轻编写异步代码的精神负担，尤其是为了避免 `Box` 的开销而导致的负担，以减少使用者的焦虑。
+Motore uses AFIT and RPITIT to reduce the mental burden of writing asynchronous code, especially to avoid the overhead of `Box` to make people less anxious.
 
-Motore 最核心的抽象是 `Service` trait：
+The core abstraciton of Motore is the `Service` trait:
 
 ```rust
 pub trait Service<Cx, Request> {
@@ -27,9 +26,9 @@ pub trait Service<Cx, Request> {
     async fn call<'s, 'cx>(&'s mut self, cx: &'cx mut Cx, req: Request) -> Result<Self::Response, Self::Error>;
 }
 ```
-## 快速上手
+## Getting Started
 
-使用 AFIT，我们可以以非常简洁易读的方式编写异步代码：
+Using AFIT, we can write asynchronous code in a very concise and readable way.
 
 ```rust
 pub struct Timeout<S> {
@@ -58,7 +57,7 @@ where
 }
 ```
 
-我们还提供了`#[motore::service]`宏以使编写 `Service` 更加像编写原生异步 Rust：
+We also provided the `#[motore::service]` macro to make writing a `Service` more async-native:
 
 ```rust
 use motore::service;
