@@ -5,7 +5,7 @@ weight: 1
 description: >
 ---
 
-cwgo 是 CloudWeGo 提供的用于生成代码的一个命令行工具。目前 cwgo 支持 thrift 和 protobuf 的 IDL，支持生成 MVC Layout、Server、Client、DB 和 DOC 的代码，支持命令行自动补全。
+cwgo 是 CloudWeGo 提供的用于生成代码的一个命令行工具。目前 cwgo 支持 thrift 和 protobuf 的 IDL，支持生成 MVC Layout、Server、Client、DB(gorm/gen) 和 DOC(mongodb) 的代码，支持命令行自动补全。
 
 ## 依赖与运行模式
 
