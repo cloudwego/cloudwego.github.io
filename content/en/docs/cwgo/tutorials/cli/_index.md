@@ -45,7 +45,7 @@ USAGE:
 COMMANDS:
     server     generates RPC or HTTP Server
     client     generates RPC or HTTP Client
-    model      generate DB CURD code
+    model      generate CURD code for relational database
     doc        generate CURD code for document database
     completion generate command line auto completion script
     fallback   fallback to kitex or hz tools

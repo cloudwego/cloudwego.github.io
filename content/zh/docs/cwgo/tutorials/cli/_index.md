@@ -43,7 +43,7 @@ USAGE:
 COMMANDS:
    server     生成 RPC 或者 HTTP Server
    client     生成 RPC 或者 HTTP Client
-   model      生成 DB CURD 代码
+   model      生成关系型数据库的 CURD 代码
    doc        生成文档类数据库的 CURD 代码
    completion 生成命令行自动补全脚本
    fallback   回退到 kitex 或者 hz 工具
