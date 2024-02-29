@@ -479,7 +479,7 @@ func (s *StockServiceImpl) GetItemStock(ctx context.Context, req *stock.GetItemS
 }
 ```
 
- 由于之前的商品服务和 API 服务分别占用了 8888 和 8889 端口，在故我们在库存服务的 `main.go` 中修改监听的端口：
+ 由于之前的商品服务和 API 服务分别占用了 8888 和 8889 端口，故我们在库存服务的 `main.go` 中修改监听的端口：
 
 ```go
 package main
