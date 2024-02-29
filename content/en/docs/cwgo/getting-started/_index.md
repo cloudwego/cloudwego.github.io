@@ -9,10 +9,9 @@ cwgo is a CloudWeGo All in one code generation tool that integrates the advantag
 
 ## Prepare Golang development environment
 
-1. If you have not set up a Golang development environment before, you can refer to [Golang Installation](https://go.dev/doc/install)
-1. It is recommended to use the latest version of Golang, we guarantee the compatibility of the latest two official versions (now >= **v1.18**).
-1. Make sure to enable go mod support (when Golang >= 1.15, it is enabled by default)
-1. cwgo does not support Windows for the time being. If the local development environment is Windows, it is recommended to use [WSL2](https://docs.microsoft.com/zh-cn/windows/wsl/install)
+1. If you have not set up a Golang development environment before, you can refer to [Golang Installation](https://go.dev/doc/install).
+2. It is recommended to use the latest version of Golang(support version >= **v1.18**).
+3. Make sure to enable go mod support (when Golang >= 1.15, it is enabled by default).
 
 After completing the environment preparation, the next step will help you get started with cwgo quickly.
 
@@ -52,13 +51,7 @@ cp bin/protoc /usr/local/bin/protoc
 cp -r include/google /usr/local/include/google
 ```
 
-First, we need to install the command-line code generation tools needed to use this example:
-
-1. Make sure the `GOPATH` environment variable has been defined correctly (e.g. `export GOPATH=~/go`) and add `$GOPATH/bin` to the `PATH` environment variable (e.g. `export PATH=$GOPATH/ bin:$PATH`); do not set `GOPATH` to a directory that the current user does not have read and write permissions
-1. Install cwgo: `go install github.com/cloudwego/cwgo@latest`
-1. Install thriftgo: `go install github.com/cloudwego/thriftgo@latest`
-
-After the installation is successful, execute `cwgo --version` and `thriftgo --version` and you should be able to see the output of the specific version number (the version number is different, take x.x.x as an example):
+After the installation is successful, execute `cwgo --version`, `thriftgo --version`, `protoc --version` and you should be able to see the output of the specific version number (the version number is different, take x.x.x as an example):
 
 ```bash
 cwgo --version
@@ -71,26 +64,15 @@ protoc --version
 libprotoc x.x.x
 ```
 
-### Determine where to place the code
-
-1. If the code is placed under `$GOPATH/src`, you need to create an additional directory under `$GOPATH/src`, and then get the code after entering this directory:
-
-   ```shell
-   mkdir -p $(go env GOPATH)/src/github.com/cloudwego
-   cd $(go env GOPATH)/src/github.com/cloudwego
-   ```
-
-2. If you put the code outside `GOPATH`, you can get it directly
-
 ## Precautions
 
 The bottom layer of cwgo uses [kitex](/docs/kitex/tutorials/code-gen/code_generation/), [hz](/docs/hertz/tutorials/toolkit/), [gen](https://gorm.io/gen/index.html) tools, so the corresponding tool specifications also need to be followed, such as [kitex precautions](/docs/kitex/tutorials/code-gen/code_generation/#notes-for-using-protobuf-idls) and [Notes for hz](/docs/hertz/tutorials/toolkit/cautions/).
 
 ## Using
 
-For specific usage of cwgo, please refer to [Command Line Tool](/docs/cwgo/tutorials/cli)
+For specific usage of cwgo, please refer to [Command Line Tool](/docs/cwgo/tutorials/cli).
 
-Let's take thrift as an example
+Let's take thrift as an example:
 
 1. First create a directory
 
@@ -144,4 +126,4 @@ Let's take thrift as an example
    pong
    ```
 
-Congratulations! So far you have successfully written a Cwgo server and completed a call!
+Congratulations! So far you have successfully written a cwgo HTTP server and completed a call!
