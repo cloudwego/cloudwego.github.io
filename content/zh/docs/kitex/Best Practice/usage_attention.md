@@ -1,19 +1,20 @@
 ---
-title: "Kitex 使用注意事项"
-linkTitle: "Kitex 使用注意事项"
+title: "使用注意事项"
+linkTitle: "使用注意事项"
 weight: 1
 date: 2024-02-18
+keywords: ["Kitex", "RPCInfo", "client", "Set", "Map"]
 description: >
 
 ---
 
 ## 勿异步使用 RPCInfo
 
-Kitex 的 RPCInfo 的生命周期默认是从请求开始到请求返回（性能考虑），随后会被放到 sync.Pool 中复用，在 Server 端，如果在业务 Handler 中异步获取使用，可能会读到脏数据 / 空指针而 panic。
+Kitex 的 RPCInfo 的生命周期默认是从请求开始到请求返回（性能考虑），随后会被放到 `sync.Pool` 中复用，在 Server 端，如果在业务 Handler 中异步获取使用，可能会读到脏数据 / 空指针而 panic。
 
 如果的确存在异步使用的场景，有两种方式：
 
-- 用 Kitex 提供的 rpcinfo.FreezeRPCInfo 复制初始的 RPCInfo 再使用
+- 用 Kitex 提供的 `rpcinfo.FreezeRPCInfo` 复制初始的 RPCInfo 再使用
 
   ```go
   import (
@@ -29,9 +30,7 @@ Kitex 的 RPCInfo 的生命周期默认是从请求开始到请求返回（性�
   }(ctx2)
   ```
 
-- 配置环境变量 KITEX_DISABLE_RPCINFO_POOL=true，禁用 RPCInfo 回收
-
-  > 支持版本：github.com/cloudwego/kitex v0.8.1
+- 配置环境变量 `KITEX_DISABLE_RPCINFO_POOL=true`，禁用 RPCInfo 回收 (支持版本: v0.8.1)
 
 
 ## 勿**每个请求创建一个** kitex client
@@ -56,9 +55,9 @@ struct DataResponse {
 
 ### 原因
 
-Thrift 官方0.11.0开始在 go 生成代码中将 set 类型由 `map[T]bool` 改为 `[]T`，见 https://github.com/apache/thrift/pull/1156。
+Thrift 官方自 0.11.0 开始在 go 生成代码中将 set 类型由 `map[T]bool` 改为 `[]T`，见 [PR](https://github.com/apache/thrift/pull/1156)。
 
-由于 ` []T` 无法去重，避免发送重复元素，编码时对 slice 的元素进行校验，校验方式是 O(n^2) 遍历 + `reflect.DeepEqual`，代码如下：
+由于 `[]T` 无法去重，避免发送重复元素，编码时对 slice 的元素进行校验，校验方式是 O(n^2) 遍历 + `reflect.DeepEqual`，代码如下：
 
 ```go
 for i := 0; i < len(p.StringSet); i++ {
