@@ -1,9 +1,10 @@
 ---
-title: "Error Handle Best Practice"
-linkTitle: "Error Handle Best Practice"
+title: "Error Handle"
+linkTitle: "Error Handle"
 weight: 3
 date: 2024-02-18
-description: >
+keywords: ["RPC exception ", "Business exception", "Best Practice"]
+description: In addition to RPC exceptions provided by the framework by default, Kitex also provides business exceptions for users to set. This doc focuses on best practices for RPC exceptions and business exceptions.
 
 ---
 
@@ -19,7 +20,7 @@ A business exception is used to encapsulate any exception encountered during han
 
 ## How to Use Business Exceptions
 
-To pass business exceptions, you can utilize the business exception functionality provided by Kitex starting from version v0.6.1. Please refer to the Kitex Business Exception Documentation.
+To pass business exceptions, you can utilize the business exception functionality provided by Kitex starting from version v0.4.3. Please refer to the Kitex Business Exception Documentation.
 
 ### Other Ways to Pass Business Exceptions
 

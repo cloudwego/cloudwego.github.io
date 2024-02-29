@@ -1,8 +1,9 @@
 ---
 title: "Graceful Shoutdown"
+linkTitle: "Graceful Shoutdown"
 date: 2024-02-18
 weight: 2
-keywords: ["Graceful Shoutdown", "Kubernetes"]
+keywords: ["Graceful Shoutdown", "Kubernetes", "Best Practice"]
 description: "Using a K8s deployment platform as an example, let's explain how to build a service architecture with graceful shutdown capability based on the principles of Kubernetes and Kitex's graceful shutdown feature."
 ---
 

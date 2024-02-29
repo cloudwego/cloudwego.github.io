@@ -1,8 +1,9 @@
 ---
 title: "优雅停机"
+linkTitle: "优雅停机"
 date: 2024-02-18
 weight: 2
-keywords: ["优雅停机", "Kubernetes"]
+keywords: ["优雅停机", "Kubernetes", "最佳实践"]
 description: "以 K8s 部署平台为例，介绍如何基于 K8s 的原理以及 Kitex 的优雅停机功能，搭建一个具备优雅停机的服务架构"
 ---
 

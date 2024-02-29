@@ -1,9 +1,10 @@
 ---
-title: "错误处理最佳实践"
-linkTitle: "错误处理最佳实践"
+title: "错误处理"
+linkTitle: "错误处理"
 weight: 3
 date: 2024-02-18
-description: >
+keywords: ["RPC 异常", "业务异常", "最佳实践"]
+description: 除了框架默认提供的 RPC 异常，Kitex 还提供了业务异常供用户设置，本文主要介绍 RPC 异常与业务异常的最佳实践。
 
 ---
 
@@ -11,7 +12,7 @@ description: >
 
 ### RPC 异常
 
-RPC异常是指 RPC 链路上产生的错误，如超时/无下游实例等，这类异常会返回相应的 RPC 错误码 ，通常是由框架抛出。RPC 异常不应该包含业务 handler 内抛出的错误，因为这不属于 RPC 链路异常，而是业务本身的异常。因此，Kitex 还提供了业务异常供用户设置。
+RPC 异常是指 RPC 链路上产生的错误，如超时/无下游实例等，这类异常会返回相应的 RPC 错误码 ，通常是由框架抛出。RPC 异常不应该包含业务 handler 内抛出的错误，因为这不属于 RPC 链路异常，而是业务本身的异常。因此，Kitex 还提供了业务异常供用户设置。
 
 ### 业务异常
 
@@ -19,11 +20,11 @@ RPC异常是指 RPC 链路上产生的错误，如超时/无下游实例等，�
 
 ## 如何使用业务异常
 
-传递业务异常可基于 Kitex 在 v0.6.1 版本提供的业务异常功能，参考 [Kitex 业务异常文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/)。
+传递业务异常可基于 Kitex 自 v0.4.3 版本提供的业务异常功能，参考 [Kitex 业务异常文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/)。
 
 ### 其他方式传递业务异常
 
-用户还可以通过在 IDL 里定义 exception，返回 thrift exception。可以通过断言的方式判断是否自定义 Exception，如 `e, ok := err.(*xxx.YourException)`
+用户还可以通过在 IDL 里定义 Exception，返回 Thrift Exception。可以通过断言的方式判断是否自定义 Exception，如 `e, ok := err.(*xxx.YourException)`
 
 ## Kitex 内部错误（RPC 异常）
 
@@ -102,7 +103,7 @@ if de.ErrorType() == kerrors.ErrInternalException {} // 返回 true
 
 ### Thrift 错误码
 
-该类别对应 thrift 框架原生的 `Application Exception` 错误，该类错误会被 KiteX 框架包装成 `Remote or network error`。
+该类别对应 thrift 框架原生的 `Application Exception` 错误，该类错误会被 Kitex 框架包装成 `Remote or network error`。
 
 关于调用端上报的错误码
 
