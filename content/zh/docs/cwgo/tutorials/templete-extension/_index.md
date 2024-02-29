@@ -7,12 +7,34 @@ description: >
 
 cwgo 工具也支持传递自己的模板，模版语法为 go template 的语法。cwgo 也欢迎用户贡献自己的模板。由于 RPC 和 HTTP 概念不同，其对应的模版变量也有一些差异，详细请参考下文。
 
-cwgo 支持从本地或 git 中读取模板，git 支持 https 或 ssh 的形式。
-
 如需传递自定义模板，请给命令添加 `-template` 参数，如：
 
 ```sh
 cwgo server -type RPC -service {service name} -idl {idl path}  -template {tpl path}
+```
+
+## 模板读取
+
+cwgo 支持从本地或 git 中读取模板，git 支持 https 或 ssh 的形式。
+
+RPC Server、Client, HTTP Server、Client 均支持模板拓展，具体用法见下文。
+
+### 本地
+
+```sh
+cwgo server -type RPC -service {service name} -idl {idl path}  -template {local tpl path}
+```
+
+### git https
+
+```sh
+cwgo server -type RPC -service {service name} -idl {idl path}  -template https://github.com/***/cwgo_template.git
+```
+
+### git ssh
+
+```sh
+cwgo server -type RPC -service {service name} -idl {idl path}  -template git@github.com:***/cwgo_template.git
 ```
 
 ## RPC

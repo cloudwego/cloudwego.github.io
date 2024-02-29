@@ -7,12 +7,34 @@ description: >
 
 The cwgo tool also supports passing its own template, and the template syntax is the syntax of go template. cwgo also welcomes users to contribute their own templates. Due to the different concepts of RPC and HTTP, the corresponding template variables also have some differences, please refer to the following for details.
 
-cwgo supports reading templates from local or git, while git supports https or ssh formats.
-
 To pass a custom template, add the `-template` parameter to the command, such as:
 
 ```sh
 cwgo server -type RPC -service {service name} -idl {idl path} -template {tpl path}
+```
+
+## Template Reading
+
+cwgo supports reading templates from local or git, while git supports https or ssh formats.
+
+RPC Server、Client, HTTP Server、Client all support template extension, specific usage can be found in the following text.
+
+### Local
+
+```sh
+cwgo server -type RPC -service {service name} -idl {idl path}  -template {local tpl path}
+```
+
+### git https
+
+```sh
+cwgo server -type RPC -service {service name} -idl {idl path}  -template https://github.com/***/cwgo_template.git
+```
+
+### git ssh
+
+```sh
+cwgo server -type RPC -service {service name} -idl {idl path}  -template git@github.com:***/cwgo_template.git
 ```
 
 ## RPC
