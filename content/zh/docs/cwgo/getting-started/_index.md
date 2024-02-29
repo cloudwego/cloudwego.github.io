@@ -126,4 +126,4 @@ cwgo 的具体使用请参考[命令行工具](/zh/docs/cwgo/tutorials/cli)。
    pong
    ```
 
-恭喜你！至此你成功编写了一个 Cwgo 的 HTTP 服务端，并完成了一次调用！
+恭喜你！至此你成功编写了一个 cwgo 的 HTTP 服务端，并完成了一次调用！

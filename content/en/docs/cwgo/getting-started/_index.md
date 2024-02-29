@@ -126,4 +126,4 @@ Let's take thrift as an example:
    pong
    ```
 
-Congratulations! So far you have successfully written a Cwgo HTTP server and completed a call!
+Congratulations! So far you have successfully written a cwgo HTTP server and completed a call!

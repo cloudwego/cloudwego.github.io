@@ -5,9 +5,7 @@ weight: 1
 description: >
 ---
 
-cwgo is a CloudWeGo All in one code generation tool, which integrates the advantages of each component to improve the developer experience.
-
-The cwgo tool can easily generate engineering templates, and its main features are as follows:
+The cwgo tool supports development in MAC, Linux, and Windows environments, and its main features are as follows:
 
 ## Features
 
@@ -19,9 +17,9 @@ The cwgo tool can easily generate engineering templates, and its main features a
 
   The cwgo tool supports generating Server and Client codes of Kitex and Hertz, and provides an encapsulation of Client. Users can call downstream out of the box, eliminating the cumbersome steps of encapsulating the Client.
 
-- Support for generating database code
+- Support for generating relational database code
 
-  The cwgo tool supports generating database CURD code. Users no longer need to encapsulate the cumbersome CURD code by themselves, which improves the user's work efficiency.
+  The cwgo tool supports generating relational database CURD code. Users no longer need to encapsulate the cumbersome CURD code by themselves, which improves the user's work efficiency.
 
 - Support for generating document database code
 
@@ -34,6 +32,8 @@ The cwgo tool can easily generate engineering templates, and its main features a
 - Support fallback to Kitex, Hz tools
 
   If you were a Kitex or Hz user before, you can still use the cwgo tool. The cwgo tool supports the fallback function and can be used as Kitex and Hz, truly realizing a tool to generate all.
+
+**cwgo is a CloudWeGo All in one code generation tool, which integrates the advantages of each component to improve the developer experience.**
 
 ## Install
 
