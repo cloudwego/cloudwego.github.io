@@ -23,9 +23,9 @@ The usage is basically the same as the original Kitex generic call, with the fol
   In the new way, we provide 3 functions to parse idl and return `DescriptorProvider` including dynamicgo's `ServiceDescriptor`.
   - `NewThriftFileProviderWithDynamicGo(path string, includeDirs ...string)`: create thriftFileProvider which implements DescriptorProvider with dynamicgo from given path and include dirs
   - `NewThriftContentProviderWithDynamicGo(main string, includes map[string]string)`: create ThriftContentProvider which implements DescriptorProvider with dynamicgo from content
-    - You can  your IDL with the same method `UpdateIDL` as the old way
+    - You can your IDL with the same method `UpdateIDL` as the old way
   - `NewThriftContentWithAbsIncludePathProviderWithDynamicGo(mainIDLPath string, includes map[string]string)`: create ThriftContentWithAbsIncludePathProvider which implements DescriptorProvider (abs include path) with dynamicgo from content
-    - You can  your IDL with the same method `UpdateIDL` as the old way
+    - You can your IDL with the same method `UpdateIDL` as the old way
 - Provider option
   - `GetProviderOption` is an interface which contains a func `Option()` to get `ProviderOption`. ProviderOption has a bool field `DynamicGoEnabled`, which indicates whether dynamicgo is enabled or not.
   - The providers returned by the three idl parse functions mentioned above implement `GetProviderOption`. Basically, when the user calls one of the three idl parse functions, `DynamicGoExpected` will be true, but if getting dynamicgo's provider fails inside the function, it will be false.
@@ -71,6 +71,7 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
     - dynamicgo: `remote or network error[remote]:  {"code":400,"msg":"this is an exception"}`
   - HTTP generic call
     HTTP generic call with dynamicgo does not support thrift exception field handling (marked as a TODO).
+
 - Type conversion
 
   - Unable to set string for bool type
@@ -102,21 +103,22 @@ Note: Generic call using dynamicgo is only activated under the following conditi
 - Encoding:
 
   - CPU architecture: amd64 && go version >= go1.16
+
 - Decoding:
 
   - Json generic
     - `DynamicGoEnabled` of `ProviderOption` is true
-    - On the server side: the client uses json generic call, or the client does not use json generic call but the transport protocol is **neither** PurePayload (**nor** GRPC of course because this dynamicgo integration is applied only for thrift). For the transport protocols, please refer to [this doc](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/transport_protocol/).
+    - On the server side: the client uses json generic call, or the client does not use json generic call but the transport protocol is **neither** PurePayload (**nor** GRPC of course because this dynamicgo integration is applied only for thrift). For the transport protocols, please refer to [this doc](/docs/kitex/tutorials/basic-feature/protocol/transport_protocol/).
   - http generic call
     - `DynamicGoEnabled` of `ProviderOption` is true
     - `UseRawBodyForHTTPResp(enable bool)` is enabled
 
 **If these conditions are not met, the original generic call functions will be called**.
 
-| <u>Fallback</u> **condition** | **Encoding**                                    | **Decoding**                                                                                                                                                               |
-| ----------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <u>Fallback</u> **condition** | **Encoding**                                      | **Decoding**                                                                                                                                                               |
+| ----------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **json**                      | CPU architecture: !amd64 \|\| go version < go1.16 | - `DynamicGoEnabled` of `ProviderOption` is false<br>- Only happens on the server side. The client doesn't use json generic call and the transport protocol is PurePayload |
-| **http**                      | CPU architecture: !amd64 \|\| go version < go1.16 | `DynamicGoEnabled` of `ProviderOption` is false \|\|<br>`UseRawBodyForHTTPResp(enable bool)` is **not** enabled                                                              |
+| **http**                      | CPU architecture: !amd64 \|\| go version < go1.16 | `DynamicGoEnabled` of `ProviderOption` is false \|\|<br>`UseRawBodyForHTTPResp(enable bool)` is **not** enabled                                                            |
 
 ## Json generic call example
 
@@ -220,7 +222,7 @@ type GenericServiceImpl struct {
 }
 
 func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, request interface{}) (response interface{}, err error) {
-        // use jsoniter or other json parse sdk to assert request 
+        // use jsoniter or other json parse sdk to assert request
         m := request.(string)
         fmt.Printf("Recv: %v\n", m)
         return  "{\"Msg\": \"world\"}", nil
@@ -237,11 +239,11 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 - Request
 
-Type: *generic.HTTPRequest
+Type: \*generic.HTTPRequest
 
 - Response
 
-Type: *generic.HTTPResponse
+Type: \*generic.HTTPResponse
 
 `YOUR_IDL.thrift`
 
@@ -288,7 +290,7 @@ func main() {
     if err != nil {
         panic(err)
     }
- 
+
     url := "http://example.com/BinaryEcho"
 
     body := map[string]interface{}{
@@ -307,7 +309,7 @@ func main() {
     }
     customReq, err := generic.FromHTTPRequest(req) // Considering that the business may use third-party http request, you can construct your own conversion function
     // customReq *generic.HttpRequest
- 
+
     // Since the method for http generic is obtained from the http request via the bam rule, just fill in the blanks
     resp, err := cli.GenericCall(ctx, "", customReq)
     realResp := resp.(*generic.HttpResponse)
@@ -363,5 +365,3 @@ As for 'Version', 'original' means the conventional generic call, 'dynamicgo' re
 |                          | 10K           | original    | 8002.70   | 97.59ms  | 149.83ms  | 149.53             | 1524.45            | 0%                                               |
 |                          |               | dynamicgo   | 26857.57  | 9.47ms   | 21.94ms   | 394.42             | 1138.70            | +236%                                            |
 |                          |               | fallback    | 8019.39   | 97.11ms  | 149.50ms  | 148.03             | 1527.77            | +0.2%                                            |
-
-

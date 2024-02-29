@@ -80,6 +80,7 @@ func main()  {
     }
 }
 ```
+
 ## OpenTracing
 
 [tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing) 拓展集成了 OpenTracing 标准的链路追踪。
@@ -119,6 +120,7 @@ if err := svr.Run(); err != nil {
 	log.Println("server stopped")
 }
 ```
+
 ### 自定义 Opentracing Tracer 和 Operation Name
 
 通过 `NewDefaultServerSuite` 和 `NewDefaultClientSuite` 会创建出默认使用 OpenTracing GlobalTracer 的 Suite。若需自定义 Opentracing Tracer 和 Operation Name，可选择使用 `NewServerSuite` 和 `NewClientSuite` 方法创建 Suite。
@@ -181,11 +183,11 @@ type Tracer interface {
 }
 ```
 
-详细文档请阅读 [监控拓展](../../framework-exten/monitoring/#链路追踪拓展) 章节。
+详细文档请阅读 [监控拓展](/zh/docs/kitex/tutorials/framework-exten/monitoring/#链路追踪拓展) 章节。
 
 ## 自定义跟踪事件
 
-Kitex 提供了一些默认的跟踪事件，例如 RPC 调用开始、RPC 调用结束等，有关内置的跟踪事件请参考 [埋点](../instrumentation) 章节。除此之外，也可以手动添加更多的追踪数据，以收集更详细的链路信息。跟踪事件通过创建和结束 span 来记录，可以使用对应组件的原生 API 来完成。
+Kitex 提供了一些默认的跟踪事件，例如 RPC 调用开始、RPC 调用结束等，有关内置的跟踪事件请参考 [埋点](/zh/docs/kitex/tutorials/observability/instrumentation/) 章节。除此之外，也可以手动添加更多的追踪数据，以收集更详细的链路信息。跟踪事件通过创建和结束 span 来记录，可以使用对应组件的原生 API 来完成。
 
 以 OpenTelemetry 为例，可以这样使用：
 
@@ -195,4 +197,3 @@ defer span.End()
 ```
 
 更多内容请参考：[OpenTelemetry Creating Spans](https://opentelemetry.io/docs/languages/go/instrumentation/#creating-spans)、[OpenTracing Golang API](https://opentracing.io/guides/golang/)。
-
