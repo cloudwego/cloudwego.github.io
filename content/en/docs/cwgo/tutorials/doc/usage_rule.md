@@ -118,7 +118,7 @@ The `Find` operation includes two types: **single entity** and **multiple entiti
 
   `By` must be followed by specific fields and comparison conditions. If necessary, use `And` or `Or` to identify the And Or condition and connect each field and comparison condition. When using the `And` or `Or` connector, if it is necessary to indicate query priority, use `Lb` or `Rb` to identify sub connection conditions. For example: `ByLbLbUsernameEqualOrUsernameEqualRbAndAgeGreaterThanRb` == `By((UsernameEqualOrUsernameEqual)AndAgeGreaterThan)`
 
-- **Grammar Format**：`By{Fileld Name}{Query Condition}{And/Or}{Fileld Name}{Query Condition}`
+- **Grammar Format**：`By{Field Name}{Query Condition}{And/Or}{Field Name}{Query Condition}`
 
 - **Compare Condition**：
 
