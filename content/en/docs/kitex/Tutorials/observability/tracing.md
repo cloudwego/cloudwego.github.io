@@ -181,11 +181,11 @@ type Tracer interface {
 }
 ```
 
-For detailed documentation, refer to the [Monitoring Extension](../../framework-exten/monitoring/#monitoring-information-expansion) section.
+For detailed documentation, refer to the [Monitoring Extension](/docs/kitex/tutorials/framework-exten/monitoring/#monitoring-information-expansion) section.
 
 ## Custom Tracking Events
 
-Kitex provides some default tracking events, such as RPC call start, RPC call end, etc. For more information about built-in tracking events, please refer to the [Instrumentation](../instrumentation) section. Additionally, you can manually add more tracking data to collect more detailed trace information. Tracking events are recorded by creating and ending spans, which can be done using the native API of the corresponding component.
+Kitex provides some default tracking events, such as RPC call start, RPC call end, etc. For more information about built-in tracking events, please refer to the [Instrumentation](/docs/kitex/tutorials/observability/instrumentation/) section. Additionally, you can manually add more tracking data to collect more detailed trace information. Tracking events are recorded by creating and ending spans, which can be done using the native API of the corresponding component.
 
 For example, using OpenTelemetry:
 
