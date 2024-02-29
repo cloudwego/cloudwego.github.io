@@ -2,6 +2,7 @@
 title: 'Motore'
 linkTitle: 'Motore'
 weight: 6
+keywords: [ "Motore", "AFIT", "RPITIT"]
 Description: Motore is an async middleware abstraction powered by AFIT and RPITIT.
 ---
 
@@ -9,7 +10,7 @@ Around Motore, we build modular and reusable components for building robust netw
 
 Motore is greatly inspired by [`Tower`][Tower].
 
-## Overview
+### Overview
 
 Motore uses AFIT and RPITIT to reduce the mental burden of writing asynchronous code, especially to avoid the overhead of `Box` to make people less anxious.
 
@@ -26,7 +27,7 @@ pub trait Service<Cx, Request> {
     async fn call<'s, 'cx>(&'s mut self, cx: &'cx mut Cx, req: Request) -> Result<Self::Response, Self::Error>;
 }
 ```
-## Getting Started
+### Getting Started
 
 Using AFIT, we can write asynchronous code in a very concise and readable way.
 
