@@ -1,7 +1,7 @@
 ---
 title: "LoadBalancer"
 date: 2021-08-31
-weight: 2
+weight: 3
 keywords: ["Kitex", "LoadBalancer", "LoadBalance", "ConsistentHash"]
 description: "This doc covers LoadBalancer implementation principles and usage guidelines provided by Kitex."
 ---

@@ -1,7 +1,7 @@
 ---
 title: "熔断"
 date: 2023-10-24
-weight: 5
+weight: 6
 keywords: ["Kitex","熔断","熔断器"]
 description: "Kitex 熔断使用指南、原理介绍。"
 ---

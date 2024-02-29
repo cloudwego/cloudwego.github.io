@@ -1,7 +1,7 @@
 ---
 title: "Fallback"
 date: 2023-03-09
-weight: 6
+weight: 7
 keywords: ["Kitex", "Fallback"]
 description: Kitex Fallback Introduction and Usage Guide.
 ---

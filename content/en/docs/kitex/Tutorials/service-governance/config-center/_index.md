@@ -2,7 +2,7 @@
 title: "ConfigCenter"
 linkTitle: "ConfigCenter"
 date: 2023-11-29
-weight: 1
+weight: 2
 keywords: ["ConfigCenter"]
 description: "ConfigCenter Extension provided by kitex-contrib"
 

@@ -1,7 +1,7 @@
 ---
 title: "超时控制"
 date: 2023-09-19
-weight: 3
+weight: 4
 keywords: ["Kitex", "超时"]
 description: "Kitex 中共有几种「超时」：客户端连接超时(Connection Timeout)、客户端请求超时(RPC Timeout)、服务端读写超时(Read/Write Timeout)、服务端退出超时(Exit Wait Timeout)。"
 

@@ -1,7 +1,7 @@
 ---
 title: "Timeouts"
 date: 2021-08-31
-weight: 3
+weight: 4
 keywords: ["Kitex", "timeout"]
 description: "There are several types of Timeout in Kitex: Client connection timeout, Client RPC timeout, Server read/write timeout, and Server exit timeout."
 

@@ -1,7 +1,7 @@
 ---
 title: "负载均衡"
 date: 2021-08-26
-weight: 2
+weight: 3
 keywords: ["Kitex", "负载均衡", "WeightedRandom", "ConsistentHash"]
 description: "Kitex 提供的负载均衡器实现原理和使用指南。"
 ---

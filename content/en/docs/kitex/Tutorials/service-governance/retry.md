@@ -1,7 +1,7 @@
 ---
 title: "Retry"
 date: 2022-08-25
-weight: 4
+weight: 5
 keywords: ["Kitex", "Retry", "Backup Request"]
 description: Kitex Exception retry and Backup Request policy Introduction and Usage Guide.
 ---
