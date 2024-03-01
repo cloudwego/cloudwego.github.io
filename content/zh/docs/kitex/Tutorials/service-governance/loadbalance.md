@@ -12,6 +12,7 @@ Kitex 默认提供了以下几种 LoadBalancer：
 - InterleavedWeightedRoundRobin（kitex >= v0.7.0）
 - WeightedRandom
 - ConsistentHash
+- Tagging Based
 
 Kitex 默认使用的是 WeightedRoundRobin。
 
@@ -23,12 +24,24 @@ Kitex 默认使用的是 WeightedRoundRobin。
 
 如果所有的实例的权重都一样，会使用一个纯轮询的实现，来避免加权计算的一些额外开销。
 
+**使用方式：**
+
+```go
+cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewWeightedRoundRobinBalancer()))
+```
+
 ## InterleavedWeightedRoundRobin
 
 与 [WeightedRoundRobin](#weightedroundrobin) 相同， 该 LoadBalancer 使用的也是基于权重的轮询策略。
 
 区别在于 [WeightedRoundRobin](#weightedroundrobin) 的空间复杂度是将所有实例按权重选择一遍的最小正周期（所有实例权重的和除以所有实例权重的最大公约数），
 而该 LoadBalancer 的空间复杂度是下游实例数，在下游实例数权重总和非常大时更节省空间。
+
+**使用方式：**
+
+```go
+cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewInterleavedWeightedRoundRobinBalancer()))
+```
 
 ## WeightedRandom
 
@@ -37,6 +50,12 @@ Kitex 默认使用的是 WeightedRoundRobin。
 这个 LoadBalancer 会依据实例的权重进行加权随机，并保证每个实例分配到的负载和自己的权重成比例。
 
 如果所有的实例的权重都一样，会使用一个纯随机的实现，来避免加权计算的一些额外开销。
+
+**使用方式：**
+
+```go
+cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewWeightedRandomBalancer()))
+```
 
 ## ConsistentHash
 
@@ -48,7 +67,17 @@ Kitex 默认使用的是 WeightedRoundRobin。
 
 ### 使用
 
-如果要使用一致性哈希，可以在初始化 client 的时候传入 `client.WithLoadBalancer(loadbalance.NewConsistBalancer(loadbalance.NewConsistentHashOption(keyFunc)))`。
+创建 client 的时候初始化一致性哈希策略：
+
+```go
+cli, err := echo.NewClient(
+    "echo",
+    client.WithLoadBalancer(loadbalance.NewConsistBalancer(loadbalance.NewConsistentHashOption(func(ctx context.Context, request interface{}) string {
+		// 根据请求上下文信息设置 key
+        return "key"
+    }))),
+)
+```
 
 `ConsistentHashOption` 定义如下：
 
@@ -187,3 +216,31 @@ addr7: 15715
 可以看到基本是和 weight 的分布一致。在这里没有 addr0 是因为 weight 为 0 是不会被调度到的。
 
 综上，提高 VirtualFactor，可以使得负载更加均衡，但是也要注意会增加性能开销，需要找个平衡点。
+
+## Tagging Based
+
+拓展 [loadbalance-tagging](https://github.com/kitex-contrib/loadbalance-tagging) 提供了一个基于标签的负载均衡策略，允许根据客户端上的标签将集群划分为不同的子集。
+
+这适用于有状态服务或多租户服务的场景，使得可以对服务实例进行更细粒度的控制和路由。
+
+### 特性
+
+- 基于标签的子集划分: 便于特定请求定向到相应的服务实例；
+
+- 适用于多态服务: 支持有状态服务的特定需求，在多租户环境中实现请求路由；
+
+- 自定义标签函数: 允许通过自定义函数使用标签，以实现更复杂的负载均衡策略。
+
+### 使用
+
+```go
+cli, err := echo.NewClient("echo",
+    client.WithLoadBalancer(tagging.New(
+        "tag",
+        func(ctx context.Context, req interface{}) string {
+            return "value"
+        },
+		// 可以自行选择负载均衡策略，如果需要基于多标签，可以再次传入 tagging.new() 来使用新的 tag
+        loadbalance.NewWeightedRoundRobinBalancer(),
+    )))
+```
