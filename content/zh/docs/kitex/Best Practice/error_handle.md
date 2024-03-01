@@ -4,8 +4,7 @@ linkTitle: "错误处理"
 weight: 3
 date: 2024-02-18
 keywords: ["RPC 异常", "业务异常", "最佳实践"]
-description: 除了框架默认提供的 RPC 异常，Kitex 还提供了业务异常供用户设置，本文主要介绍 RPC 异常与业务异常的最佳实践。
-
+description: "除了框架默认提供的 RPC 异常，Kitex 还提供了业务异常供用户设置，本文主要介绍 RPC 异常与业务异常的最佳实践。"
 ---
 
 ## 概念说明

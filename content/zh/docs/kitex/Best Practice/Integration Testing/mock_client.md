@@ -3,8 +3,7 @@ title: "如何 Mock Client 调用"
 linkTitle: "如何 Mock Client 调用"
 weight: 1
 date: 2024-02-18
-description: >
-
+description: "介绍如何结合 go mock 来 mock 一个 client 作为桩对象。"
 ---
 
 ## 介绍
