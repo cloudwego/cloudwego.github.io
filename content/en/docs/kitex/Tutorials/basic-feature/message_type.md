@@ -57,6 +57,7 @@ The layout of generated code:
         │   ├── echoservice.go
         │   ├── invoker.go
         │   └── server.go
+        ├── k-consts.go
         └── k-echo.go
 ```
 
