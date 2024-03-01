@@ -8,7 +8,7 @@ description: >
 ## Simple Example
 
 Take `hz` tool generated project for example:
-> 生成步骤参考 [hz 使用(thrift)](/zh/docs/hertz/tutorials/toolkit/usage-thrift)
+> 生成步骤参考 [hz 使用(thrift)](/en/docs/hertz/tutorials/toolkit/usage-thrift)
 
 Project Structure:
 
