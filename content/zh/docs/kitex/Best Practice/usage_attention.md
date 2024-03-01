@@ -4,8 +4,7 @@ linkTitle: "使用注意事项"
 weight: 1
 date: 2024-02-18
 keywords: ["Kitex", "RPCInfo", "client", "Set", "Map"]
-description: >
-
+description: "介绍 Kitex RPCInfo、client 创建、大量数据传输场景下的注意事项。"
 ---
 
 ## 勿异步使用 RPCInfo
