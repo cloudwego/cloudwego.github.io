@@ -2,8 +2,8 @@
 title: "FAQ"
 linkTitle: "FAQ"
 weight: 8
-description: >
-
+keywords: ["Volo", "FAQ", "volo-cli", "poll_ready"]
+description: Answers to frequently asked questions.
 ---
 
 ### Why does the client-side middleware use Arc<Req>?

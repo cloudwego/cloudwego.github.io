@@ -2,12 +2,15 @@
 title: 'Motore'
 linkTitle: 'Motore'
 weight: 6
+keywords: [ "Motore", "AFIT", "RPITIT"]
 Description: Motore 是一个使用了 AFIT 和 RPITIT 特性的中间件抽象层。
 ---
 
 基于 Motore，我们编写了一些模块化并且可复用的，用来编写 client 和 server 的组件。
 
 Motore 深受[`Tower`][Tower] 启发。
+
+## 简介
 
 Motore 使用 AFIT 和 RPITIT 来减轻编写异步代码的精神负担，尤其是为了避免 `Box` 的开销而导致的负担，以减少使用者的焦虑。
 
@@ -24,6 +27,7 @@ pub trait Service<Cx, Request> {
     async fn call<'s, 'cx>(&'s mut self, cx: &'cx mut Cx, req: Request) -> Result<Self::Response, Self::Error>;
 }
 ```
+
 ## 快速上手
 
 使用 AFIT，我们可以以非常简洁易读的方式编写异步代码：

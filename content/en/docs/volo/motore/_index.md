@@ -2,6 +2,7 @@
 title: 'Motore'
 linkTitle: 'Motore'
 weight: 6
+keywords: [ "Motore", "AFIT", "RPITIT"]
 Description: Motore is an async middleware abstraction powered by AFIT and RPITIT.
 ---
 

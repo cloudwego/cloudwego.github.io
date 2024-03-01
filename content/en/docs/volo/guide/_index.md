@@ -2,6 +2,5 @@
 title: "Guide"
 linkTitle: "Guide"
 weight: 4
-description: >
-
+description: Project usage guide.
 ---
