@@ -48,6 +48,7 @@ COMMANDS:
     model      generate CURD code for relational database
     doc        generate CURD code for document database
     completion generate command line auto completion script
+    api-list   analyzing the relationship between Hertz project routing and routing registration code
     fallback   fallback to kitex or hz tools
 
 GLOBAL OPTIONS:
