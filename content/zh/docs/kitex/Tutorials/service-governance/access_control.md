@@ -1,7 +1,7 @@
 ---
 title: "自定义访问控制"
 date: 2021-08-26
-weight: 9
+weight: 10
 keywords: ["Kitex", "访问控制", "ACL"]
 description: Kitex 框架提供了一个简单的中间件构造器，可以支持用户自定义访问控制的逻辑，在特定条件下拒绝请求。
 ---

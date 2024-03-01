@@ -1,12 +1,12 @@
 ---
-title: "OpenSergo"
+title: "Traffic Governance"
 date: 2024-02-29
-weight: 10
-keywords: [ "Kitex", "Service Governance", "OpenSergo", "Sentinel" ]
+weight: 9
+keywords: [ "Kitex", "Service Governance", "Traffic Governance", "OpenSergo", "Sentinel" ]
 description: "Kitex supports the OpenSergo specification and includes a guide for integrating Sentinel."
 ---
 
-Kitex provides the [kitex-contrib/opensergo](https://github.com/kitex-contrib/opensergo) extension to support the OpenSergo service governance specification, making it easier for users to integrate unified service governance capabilities.
+Kitex provides the [kitex-contrib/opensergo](https://github.com/kitex-contrib/opensergo) extension to support the OpenSergo Service Governance specification and to support rapid integration of Sentinel.
 
 ## Installation
 

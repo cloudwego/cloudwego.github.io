@@ -1,7 +1,7 @@
 ---
 title: "Customized Access Control"
 date: 2021-08-31
-weight: 9
+weight: 10
 keywords: ["Kitex", "Access Control", "ACL"]
 description: Kitex provides a simple middleware builder that supports self-defined access control logic to reject requests under certain conditions.
 ---

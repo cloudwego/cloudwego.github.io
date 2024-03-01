@@ -1,12 +1,12 @@
 ---
-title: "OpenSergo"
+title: "流量治理"
 date: 2024-02-29
-weight: 10
-keywords: [ "Kitex", "治理特性", "OpenSergo", "Sentinel" ]
+weight: 9
+keywords: [ "Kitex", "治理特性", "流量治理", "OpenSergo", "Sentinel" ]
 description: "Kitex 支持 OpenSergo 规范，集成 Sentinel 使用指南。"
 ---
 
-Kitex 提供了 [kitex-contrib/opensergo](https://github.com/kitex-contrib/opensergo) 拓展来支持 OpenSergo 服务治理规范，方便用户更容易地集成统一的服务治理能力。
+Kitex 提供了 [kitex-contrib/opensergo](https://github.com/kitex-contrib/opensergo) 拓展来支持 OpenSergo 服务治理规范，并支持快速集成 Sentinel。
 
 ## 安装
 
