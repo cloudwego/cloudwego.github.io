@@ -57,6 +57,7 @@ service EchoService {
         │   ├── echoservice.go
         │   ├── invoker.go
         │   └── server.go
+        ├── k-consts.go
         └── k-echo.go
 ```
 
