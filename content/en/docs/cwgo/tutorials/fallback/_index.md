@@ -5,17 +5,17 @@ weight: 9
 description: >
 ---
 
-cwgo 工具支持回退功能，回退为 Kitex 或 Hz。
+The cwgo tool supports fallback function, which can be either Kitex or Hz.
 
-## 回退为 Kitex
+## Fallback to Kitex
 
 ```sh
 cwgo fallback kitex [global options] command [command options] [arguments...]
 ```
 
-### 示例
+### Example
 
-- 创建 hello.thrift
+- Create hello.thrift
 
 ```thrift
 // hello.thrift
@@ -34,23 +34,23 @@ service HelloService {
 }
 ```
 
-- 执行命令
+- Execute Command
 
 ```sh
 cwgo fallback kitex -module {your_module_name} hello.thrift
 ```
 
-Kitex 具体命令参考[文档](/zh/docs/kitex/tutorials/code-gen/code_generation/)
+Kitex specific command reference [document](/docs/kitex/tutorials/code-gen/code_generation/)
 
-## 回退为 Hz
+## Fallback to Hz
 
 ```sh
 cwgo fallback hz [global options] command [command options] [arguments...]
 ```
 
-### 示例
+### Example
 
-- 创建 hello.thrift
+- Create hello.thrift
 
 ```thrift
 // hello.thrift
@@ -72,10 +72,10 @@ service HelloService {
  )
 ```
 
-- 执行命令
+- Execute Command
 
 ```sh
 cwgo fallback hz new -module {your_module_name} -idl hello.thrift
 ```
 
-Hz 具体命令参考[文档](/zh/docs/hertz/tutorials/toolkit/command/)
+Hz specific command reference [document](/docs/hertz/tutorials/toolkit/command/)
