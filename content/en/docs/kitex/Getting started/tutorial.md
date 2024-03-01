@@ -95,7 +95,7 @@ struct GetItemStockResp {
     255: base.BaseResp BaseResp
 }
 
-service GetItemStock {
+service StockService {
     GetItemStockResp GetItemStock(1: GetItemStockReq req)
 }
 ```
