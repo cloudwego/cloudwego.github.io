@@ -3,8 +3,7 @@ title: "高效 Debug"
 linkTitle: "高效 Debug"
 weight: 2
 date: 2024-02-18
-description:  通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。
-
+description:  "通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。"
 ---
 
 ## 排查 Panic 原因
