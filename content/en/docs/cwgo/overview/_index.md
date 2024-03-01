@@ -29,6 +29,10 @@ The cwgo tool supports development in MAC, Linux, and Windows environments, and 
 
   The cwgo tool supports generating command line completion scripts to improve the efficiency of user command line writing.
 
+- Support analysis of the relationship between Hertz project routing and (routing registration) code
+
+  Cwgo supports analyzing Hertz project code to obtain the relationship between routing and (routing registration) code.
+
 - Support fallback to Kitex, Hz tools
 
   If you were a Kitex or Hz user before, you can still use the cwgo tool. The cwgo tool supports the fallback function and can be used as Kitex and Hz, truly realizing a tool to generate all.

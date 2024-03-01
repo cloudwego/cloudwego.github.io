@@ -46,6 +46,7 @@ COMMANDS:
    model      生成关系型数据库的 CURD 代码
    doc        生成文档类数据库的 CURD 代码
    completion 生成命令行自动补全脚本
+   api-list   分析 Hertz 项目路由和路由注册代码的关系
    fallback   回退到 kitex 或者 hz 工具
 
 GLOBAL OPTIONS:
