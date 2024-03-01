@@ -41,7 +41,7 @@ OPTIONS:
 - **file_path**: 路由代码所在文件的绝对路径
 - **start_line**: 路由注册函数代码的起始行
 - **end_line**: 路由注册函数代码的结束行
-- **method**": 路由注册方法
+- **method**: 路由注册方法
 - **route_path**: 路由路径
 
 ### 输出示例

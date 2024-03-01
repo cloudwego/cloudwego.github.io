@@ -41,7 +41,7 @@ The routes are output in json format, in a recursive search order (starting from
 - **file_path**: Absolute path to the file where the routing code resides
 - **start_line**: The Start line of the route registration function code
 - **end_line**: The end line of the route registration function code
-- **method**": Handler method
+- **method**: Handler method
 - **route_path**: route path
 
 ### Example
