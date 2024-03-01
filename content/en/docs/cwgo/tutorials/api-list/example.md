@@ -1,6 +1,6 @@
 ---
-title: "Usage"
-linkTitle: "Usage"
+title: "usage"
+linkTitle: "usage"
 weight: 2
 description: >
 ---

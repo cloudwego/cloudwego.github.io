@@ -1,6 +1,6 @@
 ---
-title: "Cautions"
-linkTitle: "Cautions"
+title: "cautions"
+linkTitle: "cautions"
 weight: 3
 description: >
 ---
