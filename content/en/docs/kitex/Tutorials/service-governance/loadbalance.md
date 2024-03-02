@@ -12,6 +12,7 @@ Kitex provides these LoadBalancers officially:
 - InterleavedWeightedRoundRobin (kitex >= v0.7.0)
 - WeightedRandom
 - ConsistentHash
+- Tagging Based
 
 Kitex uses WeightedRoundRobin by default.
 
@@ -23,12 +24,24 @@ This LoadBalancer will make all instances have the min inflight requests to redu
 
 If all instances have the same weights, it will use a pure round-robin implementation to avoid extra overhead of weighting calculations.
 
+**Usage:**
+
+```go
+cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewWeightedRoundRobinBalancer()))
+```
+
 ## InterleavedWeightedRoundRobin
 
 Same as [WeightedRoundRobin](#weightedroundrobin), this LoadBalancer also uses a round-robin strategy based on weights.
 
 The difference is that the space complexity of [WeightedRoundRobin](#weightedroundrobin) is the minimum positive cycle for selecting all instances by weight (the sum of all instance weights divided by the greatest common divisor of all instance weights),
 The space complexity of this LoadBalancer is the number of downstream instances, and it saves space when the sum of the weights of the downstream instances is very large.
+
+**Usage:**
+
+```go
+cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewInterleavedWeightedRoundRobinBalancer()))
+```
 
 ## WeightedRandom
 
@@ -38,6 +51,11 @@ This LoadBalancer will be weighted randomly according to the weight of the insta
 
 If all instances have the same weights, it uses a purely random implementation to avoid extra overhead of weighting calculations.
 
+**Usage:**
+
+```go
+cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewWeightedRandomBalancer()))
+```
 ## ConsistentHash
 
 ### Introduction
@@ -48,7 +66,17 @@ Consistent hashing is mainly suitable for scenarios with high dependence on cont
 
 ### Usage
 
-If you want to use a consistent hash, you can pass the parameter with `client.WithLoadBalancer(loadbalance.NewConsistBalancer(loadbalance.NewConsistentHashOption(keyFunc)))` when initializing the client.
+When creating the client, initialize the consistent hashing strategy:
+
+```go
+cli, err := echo.NewClient(
+    "echo",
+    client.WithLoadBalancer(loadbalance.NewConsistBalancer(loadbalance.NewConsistentHashOption(func(ctx context.Context, request interface{}) string {
+		// Set the key based on the request context information
+        return "key"
+    }))),
+)
+```
 
 `ConsistentHashOption` is defined as follows:
 
@@ -187,3 +215,31 @@ addr7: 15715
 You could see that it is basically consistent with the distribution of weight. There is no addr0 here because weight is 0 and will not be scheduled.
 
 In summary, increase VirtualFactor can make the load more balanced, but it will also increase the performance overhead, so you need to make trade-offs.
+
+## Tagging Based
+
+Expansion of [loadbalance-tagging](https://github.com/kitex-contrib/loadbalance-tagging) provides a tag-based load balancing strategy that allows the cluster to be divided into different subsets based on tags on the client side.
+
+This is suitable for stateful services or multi-tenant services scenarios, enabling finer-grained control and routing of service instances.
+
+### Features
+
+- Subset division based on tags: Facilitates directing specific requests to the corresponding service instances;
+
+- Suitable for polymorphic services: Supports the specific needs of stateful services, implementing request routing in a multi-tenant environment;
+
+- Customizable tag functions: Allows the use of tags through custom functions to achieve more complex load balancing strategies.
+
+### Usage
+
+```go
+cli, err := echo.NewClient("echo",
+    client.WithLoadBalancer(tagging.New(
+        "tag",
+        func(ctx context.Context, req interface{}) string {
+            return "value"
+        },
+		// You can choose the load balancing strategy on your own, if multi-tag based balancing is needed, tagging.new() can be used again with a new tag
+        loadbalance.NewWeightedRoundRobinBalancer(),
+    )))
+```

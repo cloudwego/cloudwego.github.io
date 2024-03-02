@@ -7,10 +7,13 @@ description: >
 
 在 Kitex 中，提供了两种 LoadBalancer：
 
-1. WeightedRandom
-2. ConsistentHash
+1. WeightedRoundRobin
+2. InterleavedWeightedRoundRobin（kitex >= v0.7.0）
+3. WeightedRandom
+4. ConsistentHash
+5. Tagging Based
 
-这两种 LoadBalancer 能覆盖绝大多数的应用场景，如果业务有一些 Corner Case 无法覆盖到，可以选择自己自定义 LoadBalancer。
+这些 LoadBalancer 能覆盖绝大多数的应用场景，如果业务有一些 Corner Case 无法覆盖到，可以选择自己自定义 LoadBalancer。
 
 ## 接口
 
