@@ -304,7 +304,7 @@ Description: Takes an IDL Provider to return a Thrift JSON generic call object, 
 
 Function signature: `func JSONPbGeneric(p PbDescriptorProviderDynamicGo, opts ...Option) (Generic, error)`
 
-Description: Takes an IDL Provider and optional Option parametersand optional Option parameters to return a Protobuf JSON generic call object. Details of Option parameters are provided later in the text.
+Description: Currently only applicable to the KitexProtobuf protocol. Takes an IDL Provider and optional Option parametersand optional Option parameters to return a Protobuf JSON generic call object. Details of Option parameters are provided later in the text.
 
 ### Map Generic Call
 
