@@ -54,9 +54,20 @@ Kitex 提供了两个主要的接口来实现可观测性，为别有：1. Logge
 - [monitor-prometheus](https://github.com/kitex-contrib/monitor-prometheus) ：基于 Prometheus 的监控扩展。
 - [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) ：基于 OpenTelemetry 的可观测性扩展，并提供基于 logrus、zap 与 slog 日志库的日志扩展。
 
-## 其它
+## 服务治理
+
+Kitex 提供了与服务治理相关的扩展功能，来提升服务的管理能力和质量，通过这些扩展，开发者可以实现更复杂的服务治理策略。
+
+服务治理相关的扩展仓库有：
 
 - [xds](https://github.com/kitex-contrib/xds) ：集成 xDS 模块，让 Kitex 服务以 Proxyless 的模式运行，被服务网格统一纳管。
 - [opensergo](https://github.com/kitex-contrib/opensergo) ：支持 OpenSergo 服务治理规范，可以快速集成 Sentinel 进行流量治理。
-- [codec-dubbo](https://github.com/kitex-contrib/codec-dubbo) ：Dubbo 编解码器，支持 Dubbo 协议编解码，可以与 Dubbo 框架互通。
 - [loadbalance-tagging](https://github.com/kitex-contrib/loadbalance-tagging) ：基于标签的负载均衡策略，适用于有状态服务或多租户服务的场景。
+
+## 协议
+
+Kitex 提供了编解码器接口 Codec 与 PayloadCodec，来支持框架在多协议方面的扩展，实现不同框架间的通信。
+
+目前 Kitex 已经与 [Dubbo](https://cn.dubbo.apache.org/zh-cn/) 框架进行对接：
+
+- [codec-dubbo](https://github.com/kitex-contrib/codec-dubbo) ：Dubbo 编解码器，支持 Dubbo 协议编解码，可以与 Dubbo 框架互通。

@@ -54,9 +54,20 @@ Repositories for observability extensions include:
 - [monitor-prometheus](https://github.com/kitex-contrib/monitor-prometheus): Monitoring extension based on Prometheus.
 - [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry): Observability expansion based on OpenTelemetry, and provides logging extensions based on logrus, zap, and slog log libraries.
 
-## Others
+## Service Governance
+
+Kitex provides extension functions related to service governance to enhance the management capabilities and quality of services. Through these extensions, developers can implement more complex service governance strategies.
+
+Repositories related to service governance extensions include:
 
 - [xds](https://github.com/kitex-contrib/xds): Integrates xDS modules, allowing Kitex services to run in a Proxyless mode and be uniformly managed by the service mesh.
 - [opensergo](https://github.com/kitex-contrib/opensergo): Supports the OpenSergo service governance standard, enabling quick integration with Sentinel for traffic governance.
-- [codec-dubbo](https://github.com/kitex-contrib/codec-dubbo): Dubbo codec, supporting encoding and decoding of Dubbo protocol, allowing interoperability with the Dubbo framework.
 - [loadbalance-tagging](https://github.com/kitex-contrib/loadbalance-tagging): Load balancing strategy based on tags, suitable for scenarios with stateful services or multi-tenant services.
+
+## Protocol
+
+Kitex provides the Codec and PayloadCodec interfaces to support the framework's extension in multiple protocols, facilitating communication between different frameworks.
+
+Currently, Kitex has docked with the [Dubbo](https://cn.dubbo.apache.org/zh-cn/) framework:
+
+- [codec-dubbo](https://github.com/kitex-contrib/codec-dubbo): Dubbo codec, supporting encoding and decoding of Dubbo protocol, allowing interoperability with the Dubbo framework.
