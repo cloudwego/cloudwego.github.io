@@ -1,7 +1,7 @@
 ---
 title: "Consul"
 date: 2024-03-02
-weight: 1
+weight: 6
 keywords: ["配置中心扩展", "consul"]
 description: "使用 consul 作为 Kitex 的服务治理配置中心"
 ---

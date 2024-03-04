@@ -1,7 +1,7 @@
 ---
 title: "Nacos"
 date: 2023-12-14
-weight: 4
+weight: 3
 keywords: ["ConfigCenter Extension","Nacos"]
 description: "Use Nacos as Kitex’s service governance configuration center"
 ---

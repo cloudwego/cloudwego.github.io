@@ -1,7 +1,7 @@
 ---
 title: "Consul"
 date: 2024-03-02
-weight: 1
+weight: 6
 keywords: ["ConfigCenter Extension", "consul"]
 description: "Using consul as Kitex's service governance configuration center"
 ---
