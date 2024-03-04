@@ -74,7 +74,7 @@ If [api-annotations](/docs/hertz/tutorials/toolkit/annotation/#supported-api-ann
 | json     | This tag is used to bind json parameters in the request body which content-type is `application/json`                                                                                                                                                                                                                   |
 | raw_body | This tag is used to bind the original body (bytes type) of the request, and parameters can be bound even if the bound field name is not specified. (Note: raw_body has the lowest binding priority. When multiple tags are specified, once other tags successfully bind parameters, the body content will not be bound) |
 | vd       | `vd` short for validator, [The grammar of validation parameter](https://github.com/bytedance/go-tagexpr/tree/master/validator)                                                                                                                                                                                          |
-| default  | Set default value
+| default  | Set default value |
 
 ### Parameter Validation
 
