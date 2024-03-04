@@ -300,7 +300,7 @@ type Generic interface {
 
 函数签名：`func JSONPbGeneric(p PbDescriptorProviderDynamicGo, opts ...Option) (Generic, error)`
 
-说明：传入 IDL Provider 与可选 Option 参数，返回 Protobuf JSON 泛化调用对象，Option 参数详见下文。
+说明：目前只针对 KitexProtobuf 协议。传入 IDL Provider 与可选 Option 参数，返回 Protobuf JSON 泛化调用对象，Option 参数详见下文。
 
 ### Map 泛化调用
 
