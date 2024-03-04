@@ -1,7 +1,7 @@
 ---
 title: "Extension of Diagnosis"
 date: 2021-08-26
-weight: 12
+weight: 11
 description: >
 ---
 

@@ -5,9 +5,6 @@ weight: 1
 description: >
 ---
 
-## 介绍
-Kitex 作为一个轻量级的 RPC 框架，提供了十分强大的扩展性，主要提供了两种扩展的方法：一种比较 low level 的是直接增加 middleware 中间件；还有一种比较 high level 的方法是增加 suite 套件。以下主要介绍 middleware 中间件的使用方式。
-
 ## Middleware
 
 middleware 是一种比较 low level 的扩展方式，大部分基于 Kitex 的扩展和二次开发的功能都是基于 middleware 来实现的。
