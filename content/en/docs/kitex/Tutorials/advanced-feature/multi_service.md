@@ -135,8 +135,8 @@ With this option, no error is returned when starting up the server even when you
 
 But when using this option, the following must be noted:
 
-When `server.WithRefuseTrafficWithoutServiceName` option is enabled, an error will occur if the server receives requests in the following cases 
-with a message "no service name while the server has WithRefuseTrafficWithoutServiceName option enabled":
+When `server.WithRefuseTrafficWithoutServiceName` option is enabled, an error will occur with a message "no service name while the server has WithRefuseTrafficWithoutServiceName option enabled" 
+if the server receives requests in the following cases:
 - Client uses the older kitex version (< v0.9.0), which does not support multi-service feature 
 - The transport protocol of a request is not TTHeader (kitex pb's transport protocol enables TTHeader by default)
 
