@@ -104,7 +104,7 @@ Client 端生成的目的主要是可以屏蔽掉初始化 Hertz client 、发�
 
 其次，我们提供了丰富的示例代码库。
 
-目前，我们提供了 [hertz-example](https://github.com/cloudwego/hertz-examples)、[kitex-example]((https://github.com/cloudwego/kitex-examples)) 代码库，这里包含了所有常用 Feature 的可执行的使用实例，并且定期更新、维护。
+目前，我们提供了 [hertz-example](https://github.com/cloudwego/hertz-examples)、[kitex-example](https://github.com/cloudwego/kitex-examples) 代码库，这里包含了所有常用 Feature 的可执行的使用实例，并且定期更新、维护。
 
 另外，为了使得业务更快地能使用 CloudWeGo 项目完成业务逻辑开发，我们提供了若干个真实场景的 demo，目前提供了如下的 demo，其中下面的几个业务代码都是使用了 Hertz 和 Kitex 进行开发或者重构，大家可以在此基础上拓展自己的业务逻辑，完成业务的快速上线。
 1. [Bookinfo](https://github.com/cloudwego/biz-demo/tree/main/bookinfo): 使用 Hertz+Kitex 重新实现 IstioBookinfo
