@@ -1,6 +1,6 @@
 ---
 title: "Multiple Services"
-date: 2024-11-09
+date: 2024-03-05
 weight: 10
 keywords: ["Kitex", "Multi Services", "gRPC", "Kitex thrift", "Kitex protobuf"]
 description: Kitex supports multiple service registration on a server.
