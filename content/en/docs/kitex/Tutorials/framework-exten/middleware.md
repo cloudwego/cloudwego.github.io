@@ -5,9 +5,6 @@ weight: 1
 description: >
 ---
 
-## Introduction
-Kitex, as a lightweight RPC framework, offers powerful extensibility and primarily provides two methods of extension: one is a relatively low-level approach that involves adding middleware directly, and the other is a higher-level approach that involves adding suites. The following mainly introduces the usage of middleware.
-
 ## Middleware
 Middleware is a relatively low level of extension. Most of the Kitex-based extension and secondary development functions are based on middleware to achieve. Kitex's Middleware is defined in `pkg/endpoint/endpoint.go`, the most important of which are two types:
 
