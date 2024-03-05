@@ -101,7 +101,7 @@ Response sameNamedMethod(1: Request req)
 
 In this case, **please note that you need to specify one service as a fallback service.**
 
-Fallback service is used to maintain compatibility when the client is using an old kitex version (< v0.9.0) 
+Fallback service is used to maintain compatibility when the client is using an old Kitex version (< v0.9.0) 
 or when `TTHeader` is not being used for transport protocol, 
 or the client does not set an optional meta handler `transmeta.ClientTTHeaderHandler()`.
 
@@ -137,8 +137,8 @@ But when using this option, the following must be noted:
 
 When `server.WithRefuseTrafficWithoutServiceName` option is enabled, an error will occur with a message "no service name while the server has WithRefuseTrafficWithoutServiceName option enabled" 
 if the server receives requests in the following cases:
-- Client uses the older kitex version (< v0.9.0), which does not support multi-service feature 
-- The transport protocol of a request is not TTHeader (kitex pb's transport protocol enables TTHeader by default)
+- Client uses the older Kitex version (< v0.9.0), which does not support multi-service feature 
+- The transport protocol of a request is not TTHeader (Kitex pb's transport protocol enables TTHeader by default)
 
 ### Combine Service
 Please note that if you register combine service (codes are generated using -combine-service flag),
