@@ -45,7 +45,7 @@ CloudWeGo provides a robust set of tools to work with, one of which is Volo. Her
 If you don’t have the Rust development environment set up, please follow [Install Rust](https://www.rust-lang.org/tools/install) to download Rustup and install Rust. Volo supports Linux, macOS, and Windows systems by default.
 
 #### Install the CLI tool
-Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more. To install Volo tool, you need to switch to nightly channel and run the following command: `rustup default nightly cargo install volo-cli`.
+Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more. To install Volo tool, run the following command: `cargo install volo-cli`.
 
 Then run: `volo help`
 
