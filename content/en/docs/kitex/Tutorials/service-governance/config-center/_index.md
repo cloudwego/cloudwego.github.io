@@ -25,7 +25,7 @@ Currently supported configuration centers are:
 |    apollo     |   [config-apollo](https://github.com/kitex-contrib/config-apollo)    |
 |     file      |     [config-file](https://github.com/kitex-contrib/config-file)      |
 |   zookeeper   | [config-zookeepr](https://github.com/kitex-contrib/config-zookeeper) |
-|    consul     |  [config-zookeepr](https://github.com/kitex-contrib/config-consul)   |
+|    consul     |   [config-consul](https://github.com/kitex-contrib/config-consul)    |
 
 ## Suite
 
