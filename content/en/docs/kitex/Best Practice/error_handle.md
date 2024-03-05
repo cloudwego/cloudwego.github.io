@@ -4,8 +4,7 @@ linkTitle: "Error Handle"
 weight: 3
 date: 2024-02-18
 keywords: ["RPC exception ", "Business exception", "Best Practice"]
-description: In addition to RPC exceptions provided by the framework by default, Kitex also provides business exceptions for users to set. This doc focuses on best practices for RPC exceptions and business exceptions.
-
+description: "In addition to RPC exceptions provided by the framework by default, Kitex also provides business exceptions for users to set. This doc focuses on best practices for RPC exceptions and business exceptions."
 ---
 
 ## Concept Explanation
