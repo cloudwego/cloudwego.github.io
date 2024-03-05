@@ -39,6 +39,12 @@ Kitex 中使用到的代码生成工具包括 IDL 编译器与 kitex tool。了�
 
 IDL 编译器能够解析 IDL 并生成对应的序列化和反序列化代码，Kitex 支持 Thrift 和 protobuf 这两种 IDL，这两种 IDL 的解析分别依赖于 thriftgo 与 protoc。
 
+首先，你可能需要设置一下国内代理：
+
+```bash
+go env -w GOPROXY=https://goproxy.cn
+```
+
 在快速开始章节中，我们使用到 Thrift IDL，故需要安装 thriftgo，执行以下命令即可：
 
 ```bash

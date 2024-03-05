@@ -91,7 +91,8 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具，可以�
 首先，我们需要安装使用本示例所需要的命令行工具 hz：
 
 1. 确保 `GOPATH` 环境变量已经被正确地定义（例如 `export GOPATH=~/go`）并且将 `$GOPATH/bin` 添加到 `PATH` 环境变量之中（例如 `export PATH=$GOPATH/bin:$PATH`）；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录。
-2. 安装 hz：`go install github.com/cloudwego/hertz/cmd/hz@latest`。
+2. 你可能需要设置一下国内代理：`go env -w GOPROXY=https://goproxy.cn`。
+3. 安装 hz：`go install github.com/cloudwego/hertz/cmd/hz@latest`。
 
 更多 hz 使用方法可参考: [hz](/zh/docs/hertz/tutorials/toolkit/)。
 
