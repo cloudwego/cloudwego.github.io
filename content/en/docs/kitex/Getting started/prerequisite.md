@@ -39,6 +39,12 @@ The code generation tools used in Kitex include the IDL compiler and the kitex t
 
 The IDL compiler can parse IDL and generate corresponding serialization and deserialization code. Kitex supports two types of IDL, Thrift and protobuf, which rely on thriftgo and protoc, respectively, for parsing.
 
+First you may need to set up a domestic proxy:
+
+```bash
+go env -w GOPROXY=https://goproxy.cn
+```
+
 In the Quick Start section, we use Thrift IDL, so we need to install thriftgo by executing the following command:
 
 ```bash
