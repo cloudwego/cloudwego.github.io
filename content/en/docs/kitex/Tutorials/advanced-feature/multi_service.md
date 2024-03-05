@@ -17,7 +17,6 @@ Please generate code for each service using Kitex command tool. For more details
 
 The results of code generation will be as follows:
 ```text
-ex.)
 kitex_gen
     |_ api
         |_ servicea
@@ -43,7 +42,7 @@ func RegisterService(svr server.Server, handler XXX, opts ...server.RegisterOpti
 }
 ```
 
-### Create the server and register your services
+### Create a server and register your services on the server
 Registering services on a server is a straightforward process.
 
 First, create a server. Then, by calling the `RegisterService` function in your generated code, a service can be registered.
@@ -103,8 +102,8 @@ Response sameNamedMethod(1: Request req)
 In this case, **please note that you need to specify one service as a fallback service.**
 
 Fallback service is used to maintain compatibility when the client is using an old kitex version (< v0.9.0) 
-or when `TTHeader` is not being used for transport protocol 
-or the client doesn't set optional meta handler `transmeta.ClientTTHeaderHandler()`.
+or when `TTHeader` is not being used for transport protocol, 
+or the client does not set an optional meta handler `transmeta.ClientTTHeaderHandler()`.
 
 If you don't specify any fallback service or if you specify multiple fallback services, an error will be returned on server startup.
 
@@ -136,12 +135,12 @@ With this option, no error is returned when starting up the server even when you
 
 But when using this option, the following must be noted:
 
-When `server.WithRefuseTrafficWithoutServiceName` option is enabled, an error will occur if the server receives requests for the following cases 
+When `server.WithRefuseTrafficWithoutServiceName` option is enabled, an error will occur if the server receives requests in the following cases 
 with a message "no service name while the server has WithRefuseTrafficWithoutServiceName option enabled":
 - Client uses the older kitex version (< v0.9.0), which does not support multi-service feature 
 - The transport protocol of a request is not TTHeader (kitex pb's transport protocol enables TTHeader by default)
 
 ### Combine Service
-Please note that if you register combine service (generated using -combine-service flag),
+Please note that if you register combine service (codes are generated using -combine-service flag),
 **only one service (= combine service) can be registered on a server**.
 Otherwise, you'll receive an error message saying "only one service can be registered when registering combined service".
