@@ -11,7 +11,7 @@ description: "Hertz 开发环境准备、快速上手与代码生成工具 hz �
 1. 如果您之前未搭建 Golang 开发环境，可以参考 [Golang 安装](https://go.dev/doc/install)。
 2. 推荐使用最新版本的 Golang，或保证现有 Golang 版本 >= 1.16。小于 1.16 版本，可以自行尝试使用但不保障兼容性和稳定性。
 3. 确保打开 go mod 支持 (Golang >= 1.15 时，默认开启)。
-4. 在安装成功后，你可能还需要设置一下国内代理：`go env -w GOPROXY=https://goproxy.cn`。
+4. 完成安装后，你可能需要设置一下国内代理：`go env -w GOPROXY=https://goproxy.cn`。
 
 > 目前，Hertz 支持 Linux、macOS、Windows 系统。
 
@@ -92,8 +92,7 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具，可以�
 首先，我们需要安装使用本示例所需要的命令行工具 hz：
 
 1. 确保 `GOPATH` 环境变量已经被正确地定义（例如 `export GOPATH=~/go`）并且将 `$GOPATH/bin` 添加到 `PATH` 环境变量之中（例如 `export PATH=$GOPATH/bin:$PATH`）；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录。
-2. 你可能需要设置一下国内代理：`go env -w GOPROXY=https://goproxy.cn`。
-3. 安装 hz：`go install github.com/cloudwego/hertz/cmd/hz@latest`。
+2. 安装 hz：`go install github.com/cloudwego/hertz/cmd/hz@latest`。
 
 更多 hz 使用方法可参考: [hz](/zh/docs/hertz/tutorials/toolkit/)。
 
