@@ -135,13 +135,12 @@ func main() {
 但在使用此选项时，必须注意以下事项：
 
 当`server.WithRefuseTrafficWithoutServiceName`选项启用时，如果 Server 在以下情况下收到请求，
-则会出现错误消息：“no service name while the server has WithRefuseTrafficWithoutServiceName option enabled
-(当服务器启用了`WithRefuseServiceWithoutServiceName`选项时，没有服务名称)”
+则会出现错误消息：“no service name while the server has WithRefuseTrafficWithoutServiceName option enabled”
 
-- 客户端使用较旧的 Kitex 版本(<v0.9.0)，不支持多业务功能
+- 客户端使用较旧的 Kitex 版本(<v0.9.0)，不支持多 Service 功能
 - 请求的传输协议不是 TTHeader ( Kitex pb 的传输协议默认启用 TTHeader )
 
 ### 组合 Service 
 请注意，如果您注册了组合 Service (代码是使用 -combine-service 标志生成的)，
 **一台 Server 上只能注册一个 Service (= 组合 Service )**。
-否则，您将收到一条错误消息，提示您 "only one service can be registered when registering combined service (在注册组合 Service 时只能注册一个 Service) " 。
+否则，您将收到一条错误消息，提示您 "only one service can be registered when registering combined service" 。
