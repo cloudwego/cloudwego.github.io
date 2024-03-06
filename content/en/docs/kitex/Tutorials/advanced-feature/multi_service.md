@@ -102,8 +102,8 @@ Response sameNamedMethod(1: Request req)
 In this case, **please note that you need to specify one service as a fallback service.**
 
 Fallback service is used to maintain compatibility when the client is using an old Kitex version (< v0.9.0) 
-or when `TTHeader` is not being used for transport protocol, 
-or the client does not set an optional meta handler `transmeta.ClientTTHeaderHandler()`.
+- or when `TTHeader` is not being used for transport protocol, 
+- or the client does not set an optional meta handler `transmeta.ClientTTHeaderHandler()`.
 
 If you don't specify any fallback service or if you specify multiple fallback services, an error will be returned on server startup.
 
