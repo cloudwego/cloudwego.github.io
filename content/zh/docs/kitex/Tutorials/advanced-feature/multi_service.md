@@ -1,20 +1,20 @@
 ---
-title: "多服务"
+title: "单 Server 多 Service"
 date: 2023-03-05
 weight: 10
-keywords: ["Kitex", "多服务", "单服务器多服务", "gRPC", "thrift", "protobuf"]
-description: Kitex 支持在一个服务器上注册多个服务。
+keywords: ["Kitex", "多 Service", "单 Server 多 Service", "gRPC", "thrift", "protobuf"]
+description: Kitex 支持在一个 Server 上注册多个 Service 。
 ---
 
 目前，该功能适用于：
-- gRPC传输协议
-- Kitex Thrift和Protobuf(non-streaming)
+- gRPC 传输协议
+- Kitex Thrift 和 Protobuf(non-streaming)
 
 
 ## 使用方法
 
 ### 准备工作
-请使用Kitex命令工具为每个服务生成代码。更多详情，请参考[代码生成工具](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/).
+请使用 Kitex 命令工具为每个 Service 生成代码。更多详情，请参考[代码生成工具](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/).
 
 代码生成的结果如下所示：
 
@@ -33,7 +33,7 @@ kitex_gen
             |_ serviceb.go
         |_ ...
 ```
-您可以在每个服务的`server.go`中看到`RegisterService`函数。
+您可以在每个 Service 的`server.go`中看到`RegisterService`函数。
 ```golang
 func RegisterService(svr server.Server, handler XXX, opts ...server.RegisterOption) error {
    if err := svr.RegisterService(serviceInfo(), handler, opts...); err != nil {
@@ -43,12 +43,12 @@ func RegisterService(svr server.Server, handler XXX, opts ...server.RegisterOpti
 }
 ```
 
-### 创建服务器并在服务器上注册您的服务
-在服务器上注册服务是一个简单的过程。
+### 创建 Server 并在 Server 上注册您的 Service 
+在 Server 上注册 Service 是一个简单的过程。
 
-首先，创建一台服务器。然后，通过在您生成的代码中调用`RegisterService`函数，即可注册服务。
+首先，创建一台 Server 。然后，通过在您生成的代码中调用`RegisterService`函数，即可注册 Service 。
 
-可以在同一台服务器上调用多个服务，根据需要注册任意多个服务。
+可以在同一台 Server 上调用多个 Service ，根据需要注册任意多个 Service 。
 
 ```golang
 package main
@@ -61,9 +61,9 @@ import (
 )   
 
 func main() {
-    // 通过调用server.NewServer创建服务器
+    // 通过调用 server.NewServer 创建 Server 
     svr := server.NewServer(your_server_option)
-    // 在服务器上注册多服务
+    // 在 Server 上注册多 Service
     err := servicea.RegisterService(svr, new(ServiceAImpl))
     err = serviceb.RegisterService(svr, new(ServiceBImpl))
     
@@ -76,8 +76,8 @@ func main() {
 }
 ```
 
-### 备用服务
-假设服务之间有相同的命名方法。
+### 备用 Service 
+假设 Service 之间有相同的命名方法。
 
 ```thrift
 // demo.thrift
@@ -98,25 +98,25 @@ Response sameNamedMethod(1: Request req)
 }
 ```
 
-在这种情况下，**请注意，您需要指定一个服务作为备用服务。**
+在这种情况下，**请注意，您需要指定一个 Service 作为备用 Service 。**
 
-当客户端使用旧的Kitex版本(<v0.9.0)时，备用服务用于维护兼容性
+当客户端使用旧的 Kitex 版本 ( < v0.9.0 ) 时，备用 Service 用于维护兼容性
 - 或者当`TTHeader`未用于传输协议时，
 - 或者客户端没有设置可选的元处理程序`Transmeta.ClientTTHeaderHandler()`。
 
-如果未指定任何回退服务或指定了多个回退服务，则在服务器启动时将返回错误。
+如果未指定任何回退 Service 或指定了多个回退 Service ，则在 Server 启动时将返回错误。
 
-请注意，您只能将一个服务指定为备用服务。
+请注意，您只能将一个 Service 指定为备用 Service 。
 
 生成代码(`server.go`)中的`RegisterService()`有一个可选参数：`server.RegisterOption`。
-如果传入`server.WithFallback Service`选项，则该服务将注册为回退服务。
+如果传入`server.WithFallback Service`选项，则该 Service 将注册为回退 Service 。
 
 ```golang
 func main() {
-    // 通过调用server.NewServer创建服务器
+    // 通过调用 server.NewServer 创建 Server 
     svr := server.NewServer(your_server_option)
-    // 在服务器上注册多服务
-    // servicea 将成为备用服务
+    // 在 Server 上注册多 Service 
+    // servicea 将成为备用 Service 
     servicea.RegisterService(svr, new(ServiceAImpl), server.WithFallbackService())
     serviceb.RegisterService(svr, new(ServiceBImpl))
     
@@ -128,15 +128,20 @@ func main() {
 }
 ```
 
-另一种避免服务器启动错误而不指定回退服务的方法是使用`server.WithRefuseTrafficWithoutServiceName`选项。
-使用此选项，即使您没有为名称冲突的方法指定回退服务，启动服务器时也不会返回错误。
-但在使用此选项时，必须注意以下事项：
-如果启用了`server.WithRefuseTrafficWithoutServiceName`选项，则会出现错误，并显示“当服务器启用了RefuseTrafficWithoutServiceName`选项时没有服务名”的消息
-如果服务器在以下情况下收到请求：
-- 客户端使用较旧的Kitex版本(<v0.9.0)，不支持多业务功能
-- 请求的传输协议不是TTHeader(Kitex pb的传输协议默认启用TTHeader)
+另一种避免 Server 启动错误而不指定回退 Service 的方法是使用`server.WithRefuseTrafficWithoutServiceName`选项。
 
-### 组合服务
-请注意，如果您注册了组合服务(代码是使用 -combine-service 标志生成的)，
-**一台服务器上只能注册一个服务(= 组合服务)**。
-否则，您将收到一条错误消息，提示您“在注册组合服务时只能注册一个服务”。
+使用此选项，即使您没有为名称冲突的方法指定回退 Service ，启动 Server 时也不会返回错误。
+
+但在使用此选项时，必须注意以下事项：
+
+当`server.WithRefuseTrafficWithoutServiceName`选项启用时，如果 Server 在以下情况下收到请求，
+则会出现错误消息：“no service name while the server has WithRefuseTrafficWithoutServiceName option enabled
+(当服务器启用了`WithRefuseServiceWithoutServiceName`选项时，没有服务名称)”
+
+- 客户端使用较旧的 Kitex 版本(<v0.9.0)，不支持多业务功能
+- 请求的传输协议不是 TTHeader ( Kitex pb 的传输协议默认启用 TTHeader )
+
+### 组合 Service 
+请注意，如果您注册了组合 Service (代码是使用 -combine-service 标志生成的)，
+**一台 Server 上只能注册一个 Service (= 组合 Service )**。
+否则，您将收到一条错误消息，提示您 "only one service can be registered when registering combined service (在注册组合 Service 时只能注册一个 Service) " 。
