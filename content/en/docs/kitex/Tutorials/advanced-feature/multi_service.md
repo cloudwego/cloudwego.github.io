@@ -139,6 +139,7 @@ When `server.WithRefuseTrafficWithoutServiceName` option is enabled, an error wi
 if the server receives requests in the following cases:
 - Client uses the older Kitex version (< v0.9.0), which does not support multi-service feature 
 - The transport protocol of a request is not TTHeader (Kitex pb's transport protocol enables TTHeader by default)
+- Client option `client.WithMetaHandler(transmeta.ClientTTHeaderHandler())` is not set
 
 ## FAQ
 ### 1. What's the difference between Multi-Service and Combine Service?
