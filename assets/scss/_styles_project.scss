@@ -13,6 +13,7 @@ assets/scss/_styles_project.scss
     z-index: 10;
     top: 4rem;
     img {
+      width: calc(100vw - 15px);
       margin-left: 0;
     }
   }
@@ -25,7 +26,7 @@ assets/scss/_styles_project.scss
     margin-bottom: initial;
   }
   img {
-    max-width: 100vw;
+    width: 100vw;
     margin-left: -15px;
   }
 }
