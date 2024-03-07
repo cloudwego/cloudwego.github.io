@@ -9,10 +9,12 @@ assets/scss/_styles_project.scss
 .o-banner {
   @include media-breakpoint-up(md) {
     width: 100%;
-    position: fixed;
-    margin-left: -15px;
+    position: relative;
     z-index: 10;
     top: 4rem;
+    img {
+      margin-left: 0;
+    }
   }
 
   background: $gray-100;
@@ -21,5 +23,9 @@ assets/scss/_styles_project.scss
   & p {
     padding: 0.5rem;
     margin-bottom: initial;
+  }
+  img {
+    max-width: 100vw;
+    margin-left: -15px;
   }
 }
