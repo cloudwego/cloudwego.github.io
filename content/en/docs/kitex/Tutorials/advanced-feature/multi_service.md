@@ -140,7 +140,23 @@ if the server receives requests in the following cases:
 - Client uses the older Kitex version (< v0.9.0), which does not support multi-service feature 
 - The transport protocol of a request is not TTHeader (Kitex pb's transport protocol enables TTHeader by default)
 
-### Combine Service
-Please note that if you register combine service (codes are generated using -combine-service flag),
-**only one service (= combine service) can be registered on a server**.
-Otherwise, you'll receive an error message saying "only one service can be registered when registering combined service".
+## FAQ
+### 1. What's the difference between Multi-Service and Combine Service?
+- Combine Service (A service formed by merging multiple services into one unified service by generating code with -combine-service flag)
+  - All the method names of your services must be unique.
+  - Only one service (= combine service) can be registered on a server. 
+    Otherwise, you'll receive an error message saying "only one service can be registered when registering combined service".
+
+- Multi-Service
+  - Method names can be the same between services. But there are some restrictions. Please choose one.
+    - You need to specify a fallback service for the conflicting method.
+    - Add `server.WithRefuseTrafficWithoutServiceName` option when creating a server, 
+      and make sure that client uses the kitex version >=v0.9.0, TTHeader protocol, 
+      and sets `client.WithMetaHandler(transmeta.ClientTTHeaderHandler())` client option.
+
+### 2. Why does the service registration fail?
+There are some possible reasons:
+- No fallback service is specified, despite having methods with the same name between services you register.
+  Please specify a fallback service.
+- You are attempting to register both the combine service and other services on the server.
+  Combine service can only be registered on a server by itself. If you want to register other services as well, you either need to merge those services into the combine service or register each service separately without using combine service.
