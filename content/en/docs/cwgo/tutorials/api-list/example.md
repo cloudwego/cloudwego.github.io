@@ -8,7 +8,7 @@ description: >
 ## Simple Example
 
 Take `hz` tool generated project for example:
-> generations please refer to [hz usage(thrift)](/en/docs/hertz/tutorials/toolkit/usage-thrift)
+> generations please refer to [hz usage(thrift)](/docs/hertz/tutorials/toolkit/usage-thrift)
 
 Project Structure:
 
