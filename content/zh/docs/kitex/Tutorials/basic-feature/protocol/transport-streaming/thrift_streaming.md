@@ -471,7 +471,7 @@ func clientMW(next endpoint.Endpoint) endpoint.Endpoint {
 
 ###### 识别 Streaming/Non-Streaming 请求
 
-Server middleware 应通过 request 参数的类型来判断是否 Streaming 请求：
+Server middleware 应通过 request 参数的类型来判断是否是 Streaming 请求：
 
 ```go
 func serverMW(next endpoint.Endpoint) endpoint.Endpoint {
