@@ -144,11 +144,13 @@ if the server receives requests in the following cases:
 ## FAQ
 ### 1. What's the difference between Multi-Service and Combine Service?
 - Combine Service (A service formed by merging multiple services into one unified service by generating code with -combine-service flag)
+  - Code for all services (both combineservice and each service being combined) are generated.
   - All the method names of your services must be unique.
   - Only one service (= combine service) can be registered on a server. 
     Otherwise, you'll receive an error message saying "only one service can be registered when registering combined service".
 
-- Multi-Service
+- Multi-Service **RECOMMENDED TO USE INSTEAD OF COMBINE SERVICE**
+  - Code for each service is generated.
   - Method names can be the same between services. But there are some restrictions. Please choose one.
     - You need to specify a fallback service for the conflicting method.
     - Add `server.WithRefuseTrafficWithoutServiceName` option when creating a server, 
