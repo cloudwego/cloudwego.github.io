@@ -130,7 +130,7 @@ struct Item {
 }
 ```
 
-除此之外，Pilota 还支持了其它的 Annotation，详情可以参考：[Pilota 支持的注解](/zh/docs/pilota/guide/annotation/)
+除此之外，Pilota 还支持了其它的 Annotation，详情可以参考：[Pilota 支持的注解](/zh/docs/volo/pilota/#pilota-支持的注解)
 
 ## 完整 Release Note
 
