@@ -626,7 +626,7 @@ func main() {
   - 如果业务希望提前结束，应当调用 `streaming.FinishStream(stream, err)` 来产生 RPCFinish 事件
 - 对于 Client Streaming API，Kitex Client 将在 CloseAndRecv() 方法返回前自动记录 RPCFinish 事件
 
-Kitex 用户可以通过添加自己的 Tracer，在 Finish() 方法里处理该事件，详见 [Kitex - 可观测性 - 链路追踪 - 自定义 Tracer](https://www.cloudwego.io/zh/docs/kitex/tutorials/observability/tracing/#%E8%87%AA%E5%AE%9A%E4%B9%89-tracer)
+Kitex 用户可以通过添加自己的 Tracer，在 Finish() 方法里处理该事件，详见 [Kitex - 可观测性 - 链路追踪 - 自定义 Tracer](/zh/docs/kitex/tutorials/observability/tracing/#%E8%87%AA%E5%AE%9A%E4%B9%89-tracer)
 
 #### 细粒度埋点：StreamSend 和 StreamRecv
 
