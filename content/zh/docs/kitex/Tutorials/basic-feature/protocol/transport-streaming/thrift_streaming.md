@@ -71,6 +71,7 @@ Kitex 通过 `streaming.mode` 注解判断方法的 Streaming 类型。
 2. **Kitex 支持 在同一个 Service 里同时定义 PingPong API（非Streaming）  和 Streaming API**
    
     1. Server 会自动探测协议、路由请求
+       
 3. 不建议使用 Unary over HTTP2（性能损失较大），建议使用 PingPong API（KitexThrift ）
 4. streaming.mode 只能出现最多一次（不支持指定多个值），否则 Kitex 会报错
 
