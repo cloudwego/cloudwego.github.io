@@ -16,7 +16,7 @@ Many business scenarios \(such as LLM's streaming response and large-scale data 
 
 Kitex's default mode of Thrift APIs.
 - Only support Ping-Pong request/response \(no Streaming\).
-- Thrift Payload may have prefixed [TTHeader](/zh/docs/kitex/reference/transport_protocol_ttheader/)、[Framed](https://github.com/apache/thrift/blob/0.13.0/doc/specs/thrift-rpc.md#framed-vs-unframed-transport)，or their combination \(TTHeader + Framed + Payload\).
+- Thrift Payload may have prefixed [TTHeader](/docs/kitex/reference/transport_protocol_ttheader/)、[Framed](https://github.com/apache/thrift/blob/0.13.0/doc/specs/thrift-rpc.md#framed-vs-unframed-transport)，or their combination \(TTHeader + Framed + Payload\).
 
 #### Unary API
 
@@ -57,14 +57,14 @@ go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
 #### Compose Thrift IDL
 
-Kitex determines the Streaming type of a method through the streaming.mode annotation.
+Kitex determines the Streaming type of a method through the `streaming.mode` annotation.
 
 | Value         | Meaning                 | Extra Note                                                                  |
 |---------------|-------------------------|-----------------------------------------------------------------------------|
 | bidirectional | Bidirectional streaming | The sending and receiving of Client/Server are independent                                       |
 | client        | Client Side Streaming   | The client sends multiple messages, the server returns one message                               |
 | server        | Server Side Streaming   | The client sends a message, the server returns multiple messages                                 |
-| unary         | Unary over Streaming    | Client sends a Message, the Server returns a Message (- Not recommended due to performance loss) |
+| unary         | Unary over Streaming    | Client sends a Message, the Server returns a Message (Not recommended due to performance loss) |
 | \(other\)       | Invalid, leading to an error |                                                                                             |
 
 NOTE：
@@ -72,7 +72,7 @@ NOTE：
 2. **Kitex supports both PingPong APIs (non-streaming) and Streaming APIs in the same Service**
     1. Kitex server will automatically detect the protocol and route requests
 3. Unary over HTTP2 is not recommended due to performance loss; just use PingPong APIs
-4. streaming.mode can appear at most once, otherwise kitex will report an error
+4. `streaming.mode` can appear at most once, otherwise kitex will report an error
 
 [Example IDL](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/api.thrift) \(The following examples are based on this IDL\):
 
@@ -111,7 +111,7 @@ The use of Kitex is just the same as before, for example:
 ```bash
 kitex -module $module -service demo-server api.thrift
 ```
-Note: For existing projects, you also need to regenerate the code and update the kitex version in your go.mod.
+Note: For existing projects, you also need to regenerate the code and update the kitex version in your `go.mod`.
 
 Then run:
 ```bash
@@ -155,19 +155,18 @@ NOTE：
 NOTE: 
 1. Kitex will send the trailer frame \(which means the stream is closed\) after the method handler returns; there's no need for biz code to call stream.Close() manually.
 2. Newly started goroutines should have panic-recover logic in business code
-3. io.EOF returned by Recv call indicates that the client has finished sending
+3. `io.EOF` returned by Recv call indicates that the client has finished sending
 
 Example code: [kitex-examples:thrift_streaming/handler.go#L34](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/handler.go#L34)
 
 ###### Stream Client
 
-注：
 Note:
 1. Newly started goroutines should have panic-recover logic in business code
 2. After the client finishes sending, it should promptly call stream.Close\(\) to inform the server.
-3. A non-nil error \(including io.EOF\) returned by Recv indicates that the server has finished sending \(or encountered an error\)
-    1. It's when Kitex records the RPCFinish event \(Tracer depends on this event\).
-    2. If the client and server have another termination method, streaming.FinishStream\(stream, err\) should be called manually to record the RPCFinish event.
+3. A non-nil error \(including `io.EOF`\) returned by `Recv` indicates that the server has finished sending \(or encountered an error\)
+    1. It's when Kitex records the `RPCFinish` event \(Tracer depends on this event\).
+    2. If the client and server have another termination method, `streaming.FinishStream(stream, err)` should be called manually to record the RPCFinish event.
 
 Example code: [kitex-examples:thrift_streaming/client/demo_client.go#L119](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/client/demo_client.go#L119)
 
@@ -175,15 +174,15 @@ Example code: [kitex-examples:thrift_streaming/client/demo_client.go#L119](https
 
 ###### Server Handler
 
-Note: Kitex will send the trailer frame \(which means the stream is closed\) after the method handler returns; there's no need for biz code to call stream.Close\(\) manually.。
+Note: Kitex will send the trailer frame \(which means the stream is closed\) after the method handler returns; there's no need for biz code to call `stream.Close()` manually.
 
 Example code: [kitex-examples:thrift_streaming/handler.go#L94](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/handler.go#L94)
 
 ###### Stream Client
 
-Note: A non-nil error \(including io.EOF\) returned by Recv indicates that the server has finished sending \(or encountered an error\)
-1. It's when Kitex records the RPCFinish event \(Tracer depends on this event\).
-2. If the client and server have another termination method, streaming.FinishStream\(stream, err\) should be called manually to record the RPCFinish event.
+Note: A non-nil error \(including `io.EOF`\) returned by `Recv` indicates that the server has finished sending \(or encountered an error\)
+1. It's when Kitex records the `RPCFinish` event \(Tracer depends on this event\).
+2. If the client and server have another termination method, `streaming.FinishStream(stream, err)` should be called manually to record the RPCFinish event.
 
 Example code: [kitex-examples:thrift_streaming/client/demo_client.go#L185](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/client/demo_client.go#L185)
 
@@ -191,7 +190,7 @@ Example code: [kitex-examples:thrift_streaming/client/demo_client.go#L185](https
 
 ###### Server Handler
 
-Note: io.EOF returned by Recv call indicates that the client has finished sending
+Note: `io.EOF` returned by Recv call indicates that the client has finished sending
 
 Example code: [kitex-examples:thrift_streaming/handler.go#L82](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/handler.go#L82)
 
@@ -207,12 +206,12 @@ Example code: [kitex-examples:thrift_streaming/client/demo_client.go#L162](https
 Kitex distinguishes between **Client** \(for KitexThrift PingPong API\) and **StreamClient** \(for Streaming API\) in design, and requires **StreamClient** to use another set of Options \(of different types\) to avoid users specifying unsupported Options for StreamClient.
 
 NOTE:
-- If a client/callopt Option does not have a corresponding streamclient/streamcall Option \(such as WithRPCTimeout\), it means that StreamClient does not support this capability.
+- If a client/callopt Option does not have a corresponding streamclient/streamcall Option \(such as `WithRPCTimeout`\), it means that StreamClient does not support this capability.
 - If you think StreamClient should support this capability, you can [submit an issue to Kitex](https://github.com/cloudwego/kitex/issues).
 
 ###### streamclient.Option
 
-- Specified in NewStreamClient
+- Specified in `NewStreamClient`
 - New Options:
   - `WithRecvMiddleware`、`WithRecvMiddlewareBuilder`: details in "Recv/Send Middleware"
   - `WithSendMiddleware`、`WithSendMiddlewareBuilder`: details in "Recv/Send Middleware"
@@ -229,7 +228,7 @@ var streamClient = testservice.MustNewStreamClient(
 
 ###### streamcall.Option
 - Specified when creating Stream.
-- The priority is higher than the streamclient.Option with the same name \(if exists\).
+- The priority is higher than the `streamclient.Option` with the same name \(if exists\).
 
 Example code：
 ```go
@@ -243,18 +242,18 @@ stream, err := streamClient.Echo(
 
 ##### Server Options
 
-Due to the Server's support for automatic detection protocols, it can support both Streaming API and KitexThrift API, so it's impractical to use different Option types like StreamClient.
+>Due to the Server's support for automatic detection protocols, it can support both Streaming API and KitexThrift API, so it's impractical to use different Option types like StreamClient.
 
-- Most [Server Option](/zh/docs/kitex/tutorials/options/server_options/) are applicable to Streaming APIs
+- Most [Server Option](/docs/kitex/tutorials/options/server_options/)\(s\) are applicable to Streaming APIs
   - **For uncertain options, validate before deploying to the production environment**
   - Options not applicable to Streaming APIs include:
-    - WithReadWriteTimeout
-    - WithBoundHandler
+    - `WithReadWriteTimeout`
+    - `WithBoundHandler`
     - ...
 - New options related to Recv/Send Middleware:
-  - WithRecvMiddleware、WithRecvMiddlewareBuilder
-  - WithSendMiddleware、WithSendMiddlewareBuilder
-  - WithCompatibleMiddlewareForUnary
+  - `WithRecvMiddleware`、`WithRecvMiddlewareBuilder`
+  - `WithSendMiddleware`、`WithSendMiddlewareBuilder`
+  - `WithCompatibleMiddlewareForUnary`
     - It's mainly for GRPC/Protobuf Streaming, to make the type of middleware parameters of Unary API requests the same as that of PingPong API requests.
     - It's specified by default for Thrift Streaming, but you're not recommended to use Unary API.
 
@@ -265,12 +264,12 @@ Due to the Server's support for automatic detection protocols, it can support bo
 ##### Connection Timeout
 
 It can be specified with the following options:
-- streamclient.WithConnectTimeout 
-- streamcall.WithConnectTimeout  \(higher priority\)
+- `streamclient.WithConnectTimeout`
+- `streamcall.WithConnectTimeout`  \(higher priority\)
 
 ##### RPC Timeout \(not supported\)
 There is no corresponding option.
-For the Streaming API, [Kitex's Timeout Middleware will do nothing but just call next](https://github.com/cloudwego/kitex/blob/v0.9.0/client/rpctimeout.go#L101).
+For the Streaming API, Kitex's Timeout Middleware will [do nothing but just call next](https://github.com/cloudwego/kitex/blob/v0.9.0/client/rpctimeout.go#L101).
 
 ##### Stream Timeout
 
@@ -294,8 +293,8 @@ stream, err := cli.Echo(ctx)
 ##### Recv/Send Timeout
 Kitex provides a helper function `streaming.CallWithTimeout`  for this.
 NOTE:
-1. Create a context with `cancel` BEFORE creating a Stream \(e.g. by WithCancel or WithTimeout\)
-2. Set the cancel func as the 2nd param for `streaming.CallWithTimeout`
+1. Create a context with `cancel` **BEFORE creating a Stream** \(e.g. by WithCancel or WithTimeout\)
+2. Set the `cancel` func as the 2nd param for `streaming.CallWithTimeout`
   1. Otherwise Send/Recv may block for a long timeout \(depending on the server side\) which may cause  goroutine leak.
 
 Example code:
@@ -386,7 +385,7 @@ NOTE:
 - Client middleware only covers the **process of  "creating a stream"**
   - After creating the stream and returning to business code, all client middlewares are already executed
 - The request parameter is always nil /(even for Server Streaming API requests/)
-- The response parameter is always of type *[streaming.Result](https://github.com/cloudwego/kitex/blob/v0.8.0/pkg/streaming/streaming.go#L67), containing the Stream finally returned to user code
+- The response parameter is always of type *[streaming.Result](https://github.com/cloudwego/kitex/blob/v0.8.0/pkg/streaming/streaming.go#L67), containing the `Stream` finally returned to user code
   - If there's a need, you can replace the Stream object with your own implementation using the [decorator pattern](https://zh.wikipedia.org/wiki/%E4%BF%AE%E9%A5%B0%E6%A8%A1%E5%BC%8F)
 - If the error returned is not nil, it means Kitex fails to create a stream
 - **Client Middleware can NOT obtain the message for Recv and Send calls.**
@@ -432,7 +431,7 @@ func clientMW(next endpoint.Endpoint) endpoint.Endpoint {
 ##### Server Middleware
 
 NOTE:
-- The next method of Server Middleware covers the entire processing process of the server handler
+- The `next` method of Server Middleware covers the entire processing process of the server handler
 - The request parameter is always of type *[streaming.Args](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/streaming/streaming.go#L70), containing the Stream finally returned to user code
   - If there's a need, you can replace the Stream object with your own implementation using the [decorator pattern](https://zh.wikipedia.org/wiki/%E4%BF%AE%E9%A5%B0%E6%A8%A1%E5%BC%8F)
 - The response parameter is always nil \(even for Client Streaming API requests\)
@@ -700,7 +699,7 @@ func main() {
 
 ### Metainfo
 
-Please refer to the "Kitex gRPC Metadata" section in [CloudWeGo - Kitex - Metainfo](/zh/docs/kitex/tutorials/advanced-feature/metainfo/#kitex-grpc-metadata).
+Please refer to the "Kitex gRPC Metadata" section in [CloudWeGo - Kitex - Metainfo](/docs/kitex/tutorials/advanced-feature/metainfo/#kitex-grpc-metadata).
 
 NOTE
 - metainfo
@@ -779,7 +778,7 @@ bizErr := rpcinfo.GetRPCInfo(stream.Context()).Invocation().BizStatusErr()
 ### Is Multi-Service supported \(One server, multi services\) ?
 
 Yes.
-Please refer to the CloudWeGo documentation: [Kitex - Single Server Multi Service](/zh/docs/kitex/tutorials/advanced-feature/multi_service/).
+Please refer to the CloudWeGo documentation: [Kitex - Single Server Multi Service](/docs/kitex/tutorials/advanced-feature/multi_service/).
 
 ### Is "Streaming over HTTP2" interoperable with other grpc implementations ?
 
