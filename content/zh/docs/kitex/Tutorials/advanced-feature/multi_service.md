@@ -143,8 +143,8 @@ func main() {
 
 ## 常见问题解答
 ### 1.多 Service 和 Combine Service有什么区别？
-- Combine Service (通过生成带有 -combine-service 标志的代码，将多个 Service 组合成一个统一的 Service 形成的 Service )
-  - 所有 Service ( Combine Service 和被 combine 的每个 Service )的代码都已生成。
+- Combine Service (通过生成带有 -combine-service 标志的代码，将多个 Service 合并成一个统一的 Service 形成的 Service )
+  - 所有 Service ( Combine Service 和被合并的每个 Service )的代码都已生成。
   - Service 的所有方法名称必须是唯一的。
   - 一个 Server 上只能注册一个 Service ( = combine service )。
   否则，您将收到一条错误消息，提示您“在注册 Combine Service 时只能注册一个 Service ”。
@@ -160,4 +160,4 @@ func main() {
   - 未指定回退 Service ，尽管您注册的 Service 之间具有相同名称的方法。
   请指定回退 Service 。
   - 您正在尝试在 Server 上注册 Combine Service 和其他 Service 。
-  Combine Service 只能在 Server 上单独注册。如果您还想注册其他 Service ，则需要将这些 Service 组合到 Combine Service 中，或者在不使用 Combine Service 的情况下单独注册每个 Service 。
+  Combine Service 只能在 Server 上单独注册。如果您还想注册其他 Service ，则需要将这些 Service 合并到 Combine Service 中，或者在不使用 Combine Service 的情况下单独注册每个 Service 。
