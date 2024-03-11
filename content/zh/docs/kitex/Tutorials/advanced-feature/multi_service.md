@@ -13,8 +13,15 @@ description: Kitex 支持在一个 Server 上注册多个 Service 。
 
 ## 使用方法
 
-### 准备工作
-请使用 Kitex 命令工具为每个 Service 生成代码。更多详情，请参考[代码生成工具](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/).
+### 客户端用户
+如果您是客户端用户并且正在使用单 Server 多 Service功能，请按照以下说明操作：
+1. 将客户端升级到 kitex 版本 >= v0.9.0
+2. 将 TTHeader 作为传输协议使用 `client.WithTransportProtocol(transport.TTHeader)`
+3. 在客户端添加以下选项：`client.WithMetaHandler(transmeta.ClientTTHeaderHandler())`
+
+### 服务端用户
+#### 准备工作
+请使用 Kitex 命令工具为每个 Service 生成代码。更多详情，请参考[代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/).
 
 代码生成的结果如下所示：
 
@@ -43,7 +50,7 @@ func RegisterService(svr server.Server, handler XXX, opts ...server.RegisterOpti
 }
 ```
 
-### 创建 Server 并在 Server 上注册您的 Service 
+#### 创建 Server 并在 Server 上注册您的 Service 
 在 Server 上注册 Service 是一个简单的过程。
 
 首先，创建一台 Server 。然后，通过在您生成的代码中调用`RegisterService`函数，即可注册 Service 。
@@ -76,7 +83,7 @@ func main() {
 }
 ```
 
-### 备用 Service 
+#### 备用 Service 
 假设 Service 之间有相同的命名方法。
 
 ```thrift

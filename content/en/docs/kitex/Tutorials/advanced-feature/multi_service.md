@@ -12,8 +12,15 @@ Currently, the feature is available for:
 
 ## Usage
 
-### Preparation
-Please generate code for each service using Kitex command tool. For more details, please refer to [Code Generation Tool](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/).
+### Client Side Users
+If you are client-side users and using the multi-service feature, please follow the instructions below:
+1. Upgrade the client to the kitex version >= v0.9.0
+2. Use TTHeader as the transport protocol `client.WithTransportProtocol(transport.TTHeader)`
+3. Add the following option on the client side: `client.WithMetaHandler(transmeta.ClientTTHeaderHandler())`
+
+### Server Side Users
+#### Preparation
+Please generate code for each service using Kitex command tool. For more details, please refer to [Code Generation Tool](/docs/kitex/tutorials/code-gen/code_generation/).
 
 The results of code generation will be as follows:
 ```text
@@ -42,7 +49,7 @@ func RegisterService(svr server.Server, handler XXX, opts ...server.RegisterOpti
 }
 ```
 
-### Create a server and register your services on the server
+#### Create a server and register your services on the server
 Registering services on a server is a straightforward process.
 
 First, create a server. Then, by calling the `RegisterService` function in your generated code, a service can be registered.
@@ -75,7 +82,7 @@ func main() {
 }
 ```
 
-### Fallback service
+#### Fallback service
 Suppose there is the same named method between services.
 
 ```thrift
