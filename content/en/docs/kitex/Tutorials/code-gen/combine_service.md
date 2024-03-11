@@ -1,11 +1,13 @@
 ---
-title: "Combine Service"
+title: "Combine Service [DEPRECATED]"
 date: 2022-06-02
 weight: 2
 description: >
 ---
 
 > **This feature only works when using Thrift**
+
+**This feature is deprecated. Please try [Multiple Services feature](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/).**
 
 ## Usage Scenarios
 
