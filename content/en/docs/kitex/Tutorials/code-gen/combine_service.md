@@ -7,9 +7,9 @@ description: >
 
 > **This feature only works when using Thrift**
 
-**Combine Service is deprecated. Please try [Multiple Services feature](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/).**
+**Combine Service is deprecated. Please try [Multiple Services feature](/docs/kitex/tutorials/advanced-feature/multi_service/).**
 
-**Clients can utilize Combine Service only when the server is using Combine Service. Therefore, if the client is unaware whether the server side has registered Combine Service or not, issues like "unknown service" errors may arise. [Multiple Services feature](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/) does not depend on whether the server is using Combine Service.**
+**Clients can utilize Combine Service only when the server is using Combine Service. Therefore, if the client is unaware whether the server side has registered Combine Service or not, issues like "unknown service" errors may arise. [Multiple Services feature](/docs/kitex/tutorials/advanced-feature/multi_service/) does not depend on whether the server is using Combine Service.**
 
 ## Usage Scenarios
 
