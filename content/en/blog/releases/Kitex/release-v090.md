@@ -83,7 +83,7 @@ Kitex supports controlling the policies of Timeout, Retry, Circuit Breaker, Limi
 5. [[#1197](https://github.com/cloudwego/kitex/pull/1197)] optimize(kitexutil): add GetCallerIP util method in kitexutil to fetch Caller IP
 6. [[#1195](https://github.com/cloudwego/kitex/pull/1195)] optimize(error): more specific instruction when panic in server handler
 7. [[#1235](https://github.com/cloudwego/kitex/pull/1235)] optimize(tool): add IDLName field in PackageInfo for cwgo tool rendering
-8. [[#1238](https://github.com/cloudwego/kitex/pull/1238)] optmize(bizerr): support biz status error for streaming mode
+8. [[#1238](https://github.com/cloudwego/kitex/pull/1238)] optimize(bizerr): support biz status error for streaming mode
 
 ### Fix:
 1. [[#1236](https://github.com/cloudwego/kitex/pull/1236)] fix(hessian2): correct code-ref behavior when thrift file is not in project dir
