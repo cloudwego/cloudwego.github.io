@@ -722,7 +722,7 @@ Kitex users can add customized Tracers to deal with those events in the `Finish(
 
 #### Detailed Events: StreamSend & StreamRecv
 
-If at least one Tracer implements the interface [rpcinfo.StreamEventReporter](https://github.com/cloudwego/kitex/blob/v0.9.0-rc4/pkg/rpcinfo/tracer.go), Kitex will inject the coresponding Recv/Send middleware for to call the tracer's `ReportStreamEvent` after the execution of each Recv/Send call.
+If at least one Tracer implements the interface [rpcinfo.StreamEventReporter](https://github.com/cloudwego/kitex/blob/v0.9.0-rc4/pkg/rpcinfo/tracer.go), Kitex will inject the corresponding Recv/Send middleware for to call the tracer's `ReportStreamEvent` after the execution of each Recv/Send call.
 The message size of current Recv/Send can be obtained by (note: do not call it in another goroutine, otherwise you may get the size of some other call):
 - `ri.Stats().LastSendSize()`
 - `ri.Stats().LastRecvSize()`

@@ -499,7 +499,7 @@ Recv/Send 中间件提供了一种简便的方式，可以在消息的收发之�
 
 ###### StreamClient 
 
-注意：Client Recv 的是 API 的 reponse 类型。
+注意：Client Recv 的是 API 的 response 类型。
 
 ```go
 import (
