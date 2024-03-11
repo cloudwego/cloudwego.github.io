@@ -14,7 +14,7 @@ author: <a href="https://github.com/felix021" target="_blank">Felix021</a>
 
 ## 能力升级
 ### 性能
-在2021年9月，我们曾发布了一篇[字节跳动 Go RPC框架 Kitex 性能优化实践](https://www.cloudwego.io/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)，
+在2021年9月，我们曾发布了一篇[字节跳动 Go RPC框架 Kitex 性能优化实践](/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/)，
 这篇文章介绍了如何通过自研网络库 [Netpoll][Netpoll]、及自研的 Thrift 编解码器 fastCodec 来优化 [Kitex][Kitex] 的性能。
 
 自那时起，提升 Kitex 核心请求链路上的性能就非常困难了，实际上我们是要努力，在不断地添加新功能的同时，避免 Kitex 性能下降。

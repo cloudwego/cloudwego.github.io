@@ -60,7 +60,7 @@ CloudWeGo 下的项目主要有三个特点：**高性能**、**高扩展性**�
 
 ### Hz
 
-在开源的时候，Hertz 的脚手架工具 [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/) 已经提供基于 IDL 生成 server 的能力，也就是图中的 3、4、5 部分我们已经支持了，目前可以根据 IDL 的接口定义来自动生成路由注册、handler 代码等功能；
+在开源的时候，Hertz 的脚手架工具 [hz](/zh/docs/hertz/tutorials/toolkit/) 已经提供基于 IDL 生成 server 的能力，也就是图中的 3、4、5 部分我们已经支持了，目前可以根据 IDL 的接口定义来自动生成路由注册、handler 代码等功能；
 但是作为一个通信框架，我们也需要完成 client 端的生成工作，也就是图中的 1、2、6 过程，因此 hz 在开源后支持了生成 client 代码的能力。
 
 ![image](/img/blog/CloudWeGo_Usability_Construction/hz.png)

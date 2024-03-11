@@ -15,7 +15,7 @@ author:  <a href="https://github.com/joway" target="_blank">Zhuowei Wang</a>, <a
 
 The team at ByteDance initiated the creation of the Remote Procedure Call (RPC) framework, Kitex, alongside several related fundamental libraries in 2019. This endeavor originated from confronting functionality and performance challenges within our extensive microservice architecture. We also wanted to combine the knowledge and insights gathered from previous frameworks. This development project was officially released for open-source contribution on GitHub in 2021. 
 
-From 2019 to 2023, our internal microservices have seen substantial growth. During this period, [the Kitex framework](https://www.cloudwego.io/docs/kitex/overview/) has undergone numerous cycles of optimization and testing to enhance its performance and efficiency. In this article, we share performance optimization techniques that we've systematically implemented over the past few years. 
+From 2019 to 2023, our internal microservices have seen substantial growth. During this period, [the Kitex framework](/docs/kitex/overview/) has undergone numerous cycles of optimization and testing to enhance its performance and efficiency. In this article, we share performance optimization techniques that we've systematically implemented over the past few years. 
 
 ## The Evolution and Status Quo of Kitex
 ### Understanding the Need for an RPC Framework
@@ -340,7 +340,7 @@ To tackle this, we utilized our communication protocol and retained **UDS** as t
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/20.jpeg)
 
-For a detailed technical understanding of shmipc, you can refer to our previously published article: [Introducing Shmipc: A High Performance Inter-process Communication Library](https://www.cloudwego.io/blog/2023/04/04/introducing-shmipc-a-high-performance-inter-process-communication-library/).
+For a detailed technical understanding of shmipc, you can refer to our previously published article: [Introducing Shmipc: A High Performance Inter-process Communication Library](/blog/2023/04/04/introducing-shmipc-a-high-performance-inter-process-communication-library/).
 
 ## Performance Test:
 

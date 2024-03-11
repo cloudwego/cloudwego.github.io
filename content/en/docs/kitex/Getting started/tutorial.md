@@ -327,7 +327,7 @@ If everything runs successfully, the output will be similar to the following log
 2024/01/19 22:12:18.758245 server.go:83: [Info] KITEX: server listen at addr=[::]:8888
 ```
 
-In the above log output, `addr=[::]:8888` indicates that our service is running on port 8888 locally. You can modify this parameter by passing a `server` configuration option when creating the server. For more server configuration options, refer to the [Server Option](https://www.cloudwego.io/docs/kitex/tutorials/options/server_options/) documentation.
+In the above log output, `addr=[::]:8888` indicates that our service is running on port 8888 locally. You can modify this parameter by passing a `server` configuration option when creating the server. For more server configuration options, refer to the [Server Option](/docs/kitex/tutorials/options/server_options/) documentation.
 
 ## Running API Service
 
@@ -364,7 +364,7 @@ if err != nil {
 }
 ```
 
-In the above code, `itemservice.NewClient` is used to create the client. The first parameter is the *service name* to invoke, and the second parameter is the *options* to pass in, where `client.WithHostPorts` is used to specify the address of the server. We can see that the item service is listening on port 8888 locally when running, so we specify port 8888. For more parameters, you can refer to the [Client Option](https://www.cloudwego.io/docs/kitex/tutorials/options/client_options/) section.
+In the above code, `itemservice.NewClient` is used to create the client. The first parameter is the *service name* to invoke, and the second parameter is the *options* to pass in, where `client.WithHostPorts` is used to specify the address of the server. We can see that the item service is listening on port 8888 locally when running, so we specify port 8888. For more parameters, you can refer to the [Client Option](/docs/kitex/tutorials/options/client_options/) section.
 
 ### Invoking the service
 
@@ -386,11 +386,11 @@ The first parameter is `context.Context`, which is typically used to pass inform
 
 The second parameter is the request parameter for this invocation.
 
-The third parameter is the `options` for this invocation. Kitex provides a mechanism called `callopt`, which stands for call options. It is different from the options passed in when creating the client. The options passed here only take effect for this invocation. In this case, `callopt.WithRPCTimeout` is used to specify the timeout for this invocation (usually not necessary, it's just for demonstration purposes). Similarly, you can find more parameters in the [Basic Features](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature) section.
+The third parameter is the `options` for this invocation. Kitex provides a mechanism called `callopt`, which stands for call options. It is different from the options passed in when creating the client. The options passed here only take effect for this invocation. In this case, `callopt.WithRPCTimeout` is used to specify the timeout for this invocation (usually not necessary, it's just for demonstration purposes). Similarly, you can find more parameters in the [Basic Features](/docs/kitex/tutorials/basic-feature) section.
 
 ### Exposing an HTTP interface
 
-You can use `net/http` or other frameworks to expose an HTTP interface. Here, we'll demonstrate a simple example using `Hertz`. You can get usage for Hertz in [Hertz Doc](https://www.cloudwego.io/docs/hertz/) 
+You can use `net/http` or other frameworks to expose an HTTP interface. Here, we'll demonstrate a simple example using `Hertz`. You can get usage for Hertz in [Hertz Doc](/docs/hertz/) 
 
 Here's the complete code:
 
@@ -505,7 +505,7 @@ func main() {
 }
 ```
 
-You can find more parameter explanations in the [Option](https://www.cloudwego.io/docs/kitex/tutorials/options/) documentation.
+You can find more parameter explanations in the [Option](/docs/kitex/tutorials/options/) documentation.
 
 To run the stock service, open a new terminal and execute `go run .`. If you see the following output, it means the service is running successfully:
 
@@ -630,7 +630,7 @@ services:
       - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
 ```
 
-Kitex, as a microservice framework, also provides service governance capabilities. In the context of service registration and discovery, Kitex has adapted to etcd. Please refer to the [etcd registry usage documentation](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/service_discovery/etcd/). Additionally, Kitex provides support for other common registrys, as documented in the [Service Discovery](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/service_discovery/) section.
+Kitex, as a microservice framework, also provides service governance capabilities. In the context of service registration and discovery, Kitex has adapted to etcd. Please refer to the [etcd registry usage documentation](/docs/kitex/tutorials/service-governance/service_discovery/etcd/). Additionally, Kitex provides support for other common registrys, as documented in the [Service Discovery](/docs/kitex/tutorials/service-governance/service_discovery/) section.
 
 First, we need to fetch the dependencies. Run the following command in the project's root directory:
 
@@ -649,7 +649,7 @@ type Registry interface {
 }
 ```
 
-This interface includes two methods: `Register` for registering a service and `Deregister` for unregistering a service. Both methods require the service information as input. Any implementation of this interface can be used as a service registry. You can also customize your own service registry, as described in the [Service Registration Extension](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/registry/) documentation.
+This interface includes two methods: `Register` for registering a service and `Deregister` for unregistering a service. Both methods require the service information as input. Any implementation of this interface can be used as a service registry. You can also customize your own service registry, as described in the [Service Registration Extension](/docs/kitex/tutorials/framework-exten/registry/) documentation.
 
 The process of using the registry in Kitex is relatively simple and can be divided into two steps:
 
@@ -795,7 +795,7 @@ type Resolver interface {
 }
 ```
 
-Any implementation of this interface can be used as a service discovery center. Therefore, you can also customize your own service discovery center. For more details, please refer to the [Service Discovery Extension](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/service_discovery/) documentation.
+Any implementation of this interface can be used as a service discovery center. Therefore, you can also customize your own service discovery center. For more details, please refer to the [Service Discovery Extension](/docs/kitex/tutorials/framework-exten/service_discovery/) documentation.
 
 The process of using a discovery center in Kitex is relatively simple and can be divided into two steps:
 
@@ -872,5 +872,5 @@ In this section, we used Kitex to develop both the RPC server and client, and ac
 - On the server side, we wrote the IDL and generated the code using Kitex. After filling in the business logic, the server can be run.
 - On the client side, we used the same IDL as the server, generated the code using Kitex, created a client instance, and made the RPC call by constructing the request parameters.
 
-In this example, we only demonstrated the basic usage of Kitex. Kitex provides various microservice governance features. You can find more information in the [Guide](https://www.cloudwego.io/docs/kitex/tutorials/) or explore the example code to unlock more advanced usage.
+In this example, we only demonstrated the basic usage of Kitex. Kitex provides various microservice governance features. You can find more information in the [Guide](/docs/kitex/tutorials/) or explore the example code to unlock more advanced usage.
 

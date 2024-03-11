@@ -14,7 +14,7 @@ description: Kitex 支持在一个 Server 上注册多个 Service 。
 ## 使用方法
 
 ### 准备工作
-请使用 Kitex 命令工具为每个 Service 生成代码。更多详情，请参考[代码生成工具](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/).
+请使用 Kitex 命令工具为每个 Service 生成代码。更多详情，请参考[代码生成工具](/docs/kitex/tutorials/code-gen/code_generation/).
 
 代码生成的结果如下所示：
 

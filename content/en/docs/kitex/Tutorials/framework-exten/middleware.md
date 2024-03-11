@@ -41,7 +41,7 @@ Middlewares are used in a chained manner. By invoking the provided next function
 
 3. Middlewares set by `client.WithMiddleware`
 
-4. ACLMiddleware, see [Customized Access Control](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
+4. ACLMiddleware, see [Customized Access Control](/docs/kitex/tutorials/service-governance/access_control/)
 
 5. Service Discovery , Instance circuit breaker , Instance-Level Middleware/Service Discovery, Proxy Middleware
 
@@ -69,7 +69,7 @@ Note: Context Middleware executes before middleware set by `client.WithMiddlewar
 
 1. Middleware set by `server.WithMiddleware`
 
-2. ACLMiddleware, see [Customized Access Control](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
+2. ACLMiddleware, see [Customized Access Control](/docs/kitex/tutorials/service-governance/access_control/)
 
 3. Error handler set by `client.WithErrorHandler`
 
