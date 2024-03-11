@@ -15,15 +15,15 @@ Below are some important changes:
 ### Features
 **1. Thrift Streaming**
 
-The Thrift Streaming feature based on gRPC (HTTP2) has been officially released. Users can use Thrift to define their own Streaming requests. To maintain compatibility with IDL parsing, Kitex chooses to use annotation to define stream method. See [Thrift Streaming Usage](https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming/). This version also improves the monitoring and reporting of Streaming requests, which also applies to gRPC-Protobuf. Note that Thrift is mainly used for data serialization and does not use the Thrift message protocol.
+The Thrift Streaming feature based on gRPC (HTTP2) has been officially released. Users can use Thrift to define their own Streaming requests. To maintain compatibility with IDL parsing, Kitex chooses to use annotation to define stream method. See [Thrift Streaming Usage](/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming/). This version also improves the monitoring and reporting of Streaming requests, which also applies to gRPC-Protobuf. Note that Thrift is mainly used for data serialization and does not use the Thrift message protocol.
 
 Due to the complexity of the HTTP2 protocol, it has a certain impact on performance. We plan to release a self-developed Streaming protocol to improve performance in the future.
 
 **2. Full Thrift MultiService support**
 
-In the v0.8.0 version, Kitex supports gRPC multi-service to align gRPC, while Thrift previously provided [Combine Service](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/combine_service/) as 'Multi-Service' to ensure protocol compatibility. However, the use of this feature requires that the methods of different IDL services cannot be the same, and it is not real multi-Service.
+In the v0.8.0 version, Kitex supports gRPC multi-service to align gRPC, while Thrift previously provided [Combine Service](/docs/kitex/tutorials/code-gen/combine_service/) as 'Multi-Service' to ensure protocol compatibility. However, the use of this feature requires that the methods of different IDL services cannot be the same, and it is not real multi-Service.
 
-In this version, Kitex provides real multi-service functionality at the protocol level based on TTHeader, supporting the registration of multiple Thrift IDL Services in one server, while also being compatible with old CombineServices. See [Multi-Service](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/).
+In this version, Kitex provides real multi-service functionality at the protocol level based on TTHeader, supporting the registration of multiple Thrift IDL Services in one server, while also being compatible with old CombineServices. See [Multi-Service](/docs/kitex/tutorials/advanced-feature/multi_service/).
 
 Note: Thrift Multi-Service requires the use of the TTHeader transport protocol.
 
@@ -33,13 +33,13 @@ Supported the use of Frugal on ARM64 machines, temporarily supported by Fallback
 
 **4. Server level context timeout**
 
-Added server.WithEnableContextTimeout supports adding timeout to context at the server level. And in the new version, Kitex will default pass the client-side timeout in the TTHeader to server-side.  Usage please see [Timeout](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/timeout/).
+Added server.WithEnableContextTimeout supports adding timeout to context at the server level. And in the new version, Kitex will default pass the client-side timeout in the TTHeader to server-side.  Usage please see [Timeout](/docs/kitex/tutorials/service-governance/timeout/).
 
 Note: TTHeader transport protocol is required.
 
 **5. KitexProtobuf protocol supports JSON generic call**
 
-The new version also provides the JSON generic call for KitexProtobuf (TTHeader is required). Please see [JSONPbGeneric](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/basic_usage/#jsonpbgeneric).
+The new version also provides the JSON generic call for KitexProtobuf (TTHeader is required). Please see [JSONPbGeneric](/docs/kitex/tutorials/advanced-feature/generic-call/basic_usage/#jsonpbgeneric).
 
 Note: TTHeader transport protocol is required.。
 
@@ -59,7 +59,7 @@ Kitex v0.9.0 requires Go version must >= 1.17, no longer compatible with Go <= v
 
 **Main configuration centers have finish integrated**
 
-Kitex supports controlling the policies of Timeout, Retry, Circuit Breaker, Limiter through the remote configuration center. Thanks to the contributors of the CloudWeGo community, all the [main configuration centers](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/config-center/) have finish integrated. Usage please see [Config Center](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/config-center/).
+Kitex supports controlling the policies of Timeout, Retry, Circuit Breaker, Limiter through the remote configuration center. Thanks to the contributors of the CloudWeGo community, all the [main configuration centers](/docs/kitex/tutorials/service-governance/config-center/) have finish integrated. Usage please see [Config Center](/docs/kitex/tutorials/service-governance/config-center/).
 
 ## **Full Release Log**
 
