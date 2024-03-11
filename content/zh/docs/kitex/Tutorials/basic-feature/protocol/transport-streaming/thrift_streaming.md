@@ -171,6 +171,8 @@ stream, err := streamClient.Echo(ctx, streamcall.WithHostPorts("127.0.0.1:8888")
     1. 此时 Kitex 才会记录 RPCFinish 事件（Tracer 依赖该事件）
     2. 如 client 和 server 约定了其他结束方式，应主动调用 streaming.FinishStream(stream, err) 记录 RPCFinish 事件
 
+        1. 注：kitex v0.9.0 生成代码存在问题，需要用 kitex tool >= v0.9.1-rc1 重新生成
+
 示例代码：[kitex-examples:thrift_streaming/client/demo_client.go#L119](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/client/demo_client.go#L119)
 
 ##### Server Streaming API
@@ -186,6 +188,8 @@ stream, err := streamClient.Echo(ctx, streamcall.WithHostPorts("127.0.0.1:8888")
 注意：「Recv 返回 `io.EOF` 或其他 non-nil error」表示 server 已发送结束（或出错）
 1. 此时 Kitex 才会记录 RPCFinish 事件（Tracer 依赖该事件）
 2. 如 client 和 server 约定了其他结束方式，应主动调用 streaming.FinishStream(stream, err) 记录 RPCFinish 事件
+
+  1. 注：kitex v0.9.0 生成代码存在问题，需要用 kitex tool >= v0.9.1-rc1 重新生成问题，需要修复
 
 示例代码：[kitex-examples:thrift_streaming/client/demo_client.go#L185](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/client/demo_client.go#L185)
 
@@ -633,71 +637,18 @@ Server 端与 Client 端不同，进入 Middleware 时已经创建好了 Stream�
 - 该 `MetaHandler` 需要实现 `StreamingMetaHandler` 接口
 - 在该 handler 的 `OnReadStream` 里给 ctx 注入 `sync.Map`，返回新的 ctx
 
+Kitex（版本 >= v0.9.1-rc1） 提供了一个 customMetaHandler，以便在创建 stream 之前给 ctx 增加一个 key。你只需要在 server 初始化时指定如下 option：
+
 ```go
-package main
-
-import (
-    "context"
-
-    "demo/kitex_gen/echo/testservice"
-    "github.com/cloudwego/kitex/pkg/endpoint"
-    "github.com/cloudwego/kitex/pkg/klog"
-    "github.com/cloudwego/kitex/pkg/remote"
-    "github.com/cloudwego/kitex/pkg/streaming"
-    "github.com/cloudwego/kitex/pkg/utils/contextmap"
-    "github.com/cloudwego/kitex/server"
-)
-
-var _ remote.MetaHandler = &serverMetaHandler{}
-var _ remote.StreamingMetaHandler = &serverMetaHandler{}
-
-type serverMetaHandler struct{}
-
-func (s *serverMetaHandler) OnReadStream(ctx context.Context) (context.Context, error) {
-    // inject a sync.Map before creating a stream
-    return contextmap.WithContextMap(ctx), nil
-}
-
-func (s *serverMetaHandler) OnConnectStream(ctx context.Context) (context.Context, error) {
-    return ctx, nil // it's only used by the client side
-}
-
-func (s *serverMetaHandler) WriteMeta(ctx context.Context, msg remote.Message) (context.Context, error) {
-    return ctx, nil
-}
-
-func (s *serverMetaHandler) ReadMeta(ctx context.Context, msg remote.Message) (context.Context, error) {
-    return ctx, nil
-}
-
-func main() {
-    svr := testservice.NewServer(new(TestServiceImpl),
-       server.WithMetaHandler(&serverMetaHandler{}),
-       server.WithMiddleware(func(next endpoint.Endpoint) endpoint.Endpoint {
-          return func(ctx context.Context, req, resp interface{}) (err error) {
-             if m, ok := contextmap.GetContextMap(stream.Context()); ok {
-                 m.Store("hello", "world")
-             }
-             return next(ctx, req, resp)
-          }
-       }),
-       server.WithRecvMiddleware(func(next endpoint.RecvEndpoint) endpoint.RecvEndpoint {
-          return func(stream streaming.Stream, message interface{}) (err error) {
-             if m, ok := contextmap.GetContextMap(stream.Context()); ok {
-                if value, ok := m.Load("hello"); ok {
-                   klog.Infof("hello = %v", value)
-                }
-             }
-             return next(stream, message)
-          }
-       }),
-    )
-
-    if err := svr.Run(); err != nil {
-       klog.Infof(err.Error())
-    }
-}
+server.WithMetaHandler(remote.NewCustomMetaHandler(remote.WithOnReadStream(
+    func(ctx context.Context) (context.Context, error) {
+        return contextmap.WithContextMap(ctx), nil
+    },
+)))
 ```
+注：
+1. 完整示例代码可参考：[kitex-tests: TestCustomMetaHandler](https://github.com/cloudwego/kitex-tests/blob/main/thrift_streaming/thrift_test.go#L1090)
+2. 如果暂时不想升级到 rc 版，可参考 [customMetaHandler](https://github.com/cloudwego/kitex/blob/v0.9.1-rc1/pkg/remote/custom_meta_handler.go#L29) 实现一个 MetaHandler
 
 ### 元数据透传 | Metainfo
 
@@ -718,6 +669,7 @@ func main() {
 
 - 对于 Server/Bidirectional Streaming API，Kitex Client 将 `Recv()` 收到 non-nil error（`io.EOF` 或其他错误）作为流结束的标志，此时才会记录 RPCFinish 事件
   - 如果业务希望提前结束，应当调用 `streaming.FinishStream(stream, err)` 来产生 RPCFinish 事件
+    - 注：kitex v0.9.0 生成代码存在问题，需要用 kitex tool >= v0.9.1-rc1 重新生成
 - 对于 Client Streaming API，Kitex Client 将在 CloseAndRecv() 方法返回前自动记录 RPCFinish 事件
 
 Kitex 用户可以通过添加自己的 Tracer，在 Finish() 方法里处理该事件，详见 [Kitex - 可观测性 - 链路追踪 - 自定义 Tracer](/zh/docs/kitex/tutorials/observability/tracing/#%E8%87%AA%E5%AE%9A%E4%B9%89-tracer)
@@ -760,6 +712,7 @@ gRPC/HTTP2 的实现基于「本地缓冲区」，Send 和 Recv 操作是直接�
 
 - 对于 Server/Bidirectional Streaming API，Kitex Client 将 Recv() 收到 non-nil error（`io.EOF` 或其他错误）作为流结束的标志，此时才会记录 RPCFinish 事件
   - 如果业务希望提前结束，应当调用 streaming.FinishStream(stream, err) 来产生 RPCFinish 事件
+    - 注：kitex v0.9.0 生成代码存在问题，需要用 kitex tool >= v0.9.1-rc1 重新生成
 - 对于 Client Streaming API，Kitex Client 将在 CloseAndRecv() 方法返回前自动记录 RPCFinish 事件
 - StreamRecv/StreamSend 是在 Recv/Send 调用时实时触发的，不依赖 RPCFinish 事件
 
