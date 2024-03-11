@@ -9,7 +9,7 @@ description: >
 
 **Combine Service 已经被弃用了。请尝试使用 [单 Server 多 Service](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/multi_service/) 功能。**
 
-**只有当服务端使用 Combine Service 时，客户端才能利用 Combine Service。因此，如果客户端不知道服务端是否注册了 Combine Service，可能会出现“unknwon service”等问题。[单 Server 多 Service](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/multi_service/) 功能不依赖于服务端是否使用 Combine Service。**
+**只有当服务端使用 Combine Service 时，客户端才能利用 Combine Service。因此，如果客户端不知道服务端是否注册了 Combine Service，可能会出现“unknown service”等问题。[单 Server 多 Service](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/multi_service/) 功能不依赖于服务端是否使用 Combine Service。**
 
 ## 使用场景
 
