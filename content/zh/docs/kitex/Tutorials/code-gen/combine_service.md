@@ -1,11 +1,15 @@
 ---
-title: "Combine Service"
+title: "Combine Service [已弃用]"
 date: 2022-06-02
 weight: 2
 description: >
 ---
 
 > **本功能仅支持 Thrift 场景**
+
+**Combine Service 已经被弃用了。请尝试使用 [单 Server 多 Service](/zh/docs/kitex/tutorials/advanced-feature/multi_service/) 功能。**
+
+**只有当服务端使用 Combine Service 时，客户端才能利用 Combine Service。因此，如果客户端不知道服务端是否注册了 Combine Service，可能会出现“unknown service”等问题。[单 Server 多 Service](/zh/docs/kitex/tutorials/advanced-feature/multi_service/) 功能不依赖于服务端是否使用 Combine Service。**
 
 ## 使用场景
 
