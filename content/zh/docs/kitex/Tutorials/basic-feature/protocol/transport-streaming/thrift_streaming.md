@@ -487,6 +487,100 @@ func serverMW(next endpoint.Endpoint) endpoint.Endpoint {
     }
 }
 ```
+#### Recv/Send 中间件
+
+Recv/Send 中间件提供了一种简便的方式，可以在消息的收发之上应用 decorator 模式，增加自定义逻辑。
+
+![image](/img/docs/streaming/kitex_recvsend_middleware.png)
+
+##### Recv Middleware
+
+注意：在 Recv Middleware 中，需要**先调用 next，才能读到 message**。
+
+###### StreamClient 
+
+注意：Client Recv 的是 API 的 response 类型。
+
+```go
+import (
+    "github.com/cloudwego/kitex/client/streamclient"
+    "github.com/cloudwego/kitex/pkg/endpoint"
+    "github.com/cloudwego/kitex/pkg/klog"
+    "github.com/cloudwego/kitex/pkg/streaming"
+    "github.com/cloudwego/kitex/pkg/utils/kitexutil"
+)
+
+var streamClient = testservice.MustNewStreamClient(
+    "demo-server",
+    streamclient.WithRecvMiddleware(func(next endpoint.RecvEndpoint) endpoint.RecvEndpoint {
+       return func(stream streaming.Stream, resp interface{}) (err error) {
+          method, _ := kitexutil.GetMethod(stream.Context())
+          err = next(stream, resp)
+          klog.Infof("[%s] client recv middleware, err = %v, resp = %v", method, err, resp)
+          return err
+       }
+    }),
+)
+```
+###### Server
+
+注意：Server Recv 的是 API 的 request 类型。
+
+```go
+svr := test.NewServer(new(TestServiceImpl),
+    server.WithRecvMiddleware(func(next endpoint.RecvEndpoint) endpoint.RecvEndpoint {
+       return func(stream streaming.Stream, req interface{}) (err error) {
+          method, _ := kitexutil.GetMethod(stream.Context())
+          err = next(stream, req)
+          klog.Infof("[%s] server recv middleware: <= req = %v, err = %v", method, req, err)
+          return err
+       }
+    }),
+)
+```
+##### Send Middleware
+
+###### StreamClient
+
+注意：Client Send 的是 API 的 request 类型。
+
+```go
+import (
+    "github.com/cloudwego/kitex/client/streamclient"
+    "github.com/cloudwego/kitex/pkg/endpoint"
+    "github.com/cloudwego/kitex/pkg/klog"
+    "github.com/cloudwego/kitex/pkg/streaming"
+    "github.com/cloudwego/kitex/pkg/utils/kitexutil"
+)
+
+var streamClient = testservice.MustNewStreamClient(
+    "demo-server",
+    streamclient.WithSendMiddleware(func(next endpoint.SendEndpoint) endpoint.SendEndpoint {
+       return func(stream streaming.Stream, req interface{}) (err error) {
+          method, _ := kitexutil.GetMethod(stream.Context())
+          err = next(stream, req)
+          klog.Infof("[%s] client send middleware, err = %v, req = %v", method, err, req)
+          return err
+       }
+    }),
+)
+```
+###### Server
+
+注意：Server Send 的是 API 的 response 类型。
+
+```go
+svr := test.NewServer(new(TestServiceImpl),
+    server.WithSendMiddleware(func(next endpoint.SendEndpoint) endpoint.SendEndpoint {
+       return func(stream streaming.Stream, resp interface{}) (err error) {
+          method, _ := kitexutil.GetMethod(stream.Context())
+          err = next(stream, resp)
+          klog.Infof("[%s] server send middleware: => resp = %v, err = %v", method, resp, err)
+          return err
+       }
+    }),
+)
+```
 
 #### 在 Client/Server 和 Recv/Send 中间件之间交换数据
 
