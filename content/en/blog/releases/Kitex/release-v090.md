@@ -21,7 +21,7 @@ Due to the complexity of the HTTP2 protocol, it has a certain impact on performa
 
 **2. Full Thrift MultiService support**
 
-In the v0.8.0 version, Kitex supports gRPC multi-service to align gRPC, while Thrift previously provided CombineService  as 'Multi-Service' to ensure protocol compatibility. However, the use of this feature requires that the methods of different IDL services cannot be the same, and it is not real multi-Service.
+In the v0.8.0 version, Kitex supports gRPC multi-service to align gRPC, while Thrift previously provided [Combine Service](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/combine_service/) as 'Multi-Service' to ensure protocol compatibility. However, the use of this feature requires that the methods of different IDL services cannot be the same, and it is not real multi-Service.
 
 In this version, Kitex provides real multi-service functionality at the protocol level based on TTHeader, supporting the registration of multiple Thrift IDL Services in one server, while also being compatible with old CombineServices. See [Multi-Service](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/).
 
@@ -39,7 +39,7 @@ Note: TTHeader transport protocol is required.
 
 **5. KitexProtobuf protocol supports JSON generic call**
 
-The new version also provides the JSON generic call for KitexProtobuf (TTHeader is required). Please see [doc](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/basic_usage/#jsonpbgeneric).
+The new version also provides the JSON generic call for KitexProtobuf (TTHeader is required). Please see [JSONPbGeneric](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/basic_usage/#jsonpbgeneric).
 
 Note: TTHeader transport protocol is required.。
 

@@ -21,7 +21,7 @@ v0.9.0 针对 Thrift 提供了两个重要的功能：Thrift Streaming 和 Multi
 
 **2. 完整的 Thrift MultiService 支持**
 
-在 v0.8.0 版本中，Kitex 对 gRPC 对齐了多 Service 的能力，而 Thrift 多 Service 之前为保证协议的兼容性提供了 CombineService 支持，但该功能的使用要求不同 IDL Service 的方法不能相同，并不是真正的多 Service。本次版本中 Kitex 基于 TTHeader 提供了协议层面真正的多 Service 功能，支持在一个 Server 里注册多个 Thrift IDL Service，同时兼容旧的 CombineService。使用方式见 [Multi-Service](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/multi_service/)。
+在 v0.8.0 版本中，Kitex 对 gRPC 对齐了多 Service 的能力，而 Thrift 多 Service 之前为保证协议的兼容性提供了 [Combine Service](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/combine_service/) 支持，但该功能的使用要求不同 IDL Service 的方法不能相同，并不是真正的多 Service。本次版本中 Kitex 基于 TTHeader 提供了协议层面真正的多 Service 功能，支持在一个 Server 里注册多个 Thrift IDL Service，同时兼容旧的 CombineService。使用方式见 [Multi-Service](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/multi_service/)。
 
 注：Thrift Multi-Service 需使用 TTHeader 传输协议。
 
@@ -37,7 +37,7 @@ v0.9.0 针对 Thrift 提供了两个重要的功能：Thrift Streaming 和 Multi
 
 **5. KitexProtobuf 协议支持 JSON 泛化调用**
 
-与 Thrift 的 JSON 泛化调用使用方式一样，新版本对 KitexProtobuf 也做了同样的支持。见 [doc](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/basic_usage/#jsonpbgeneric)。
+与 Thrift 的 JSON 泛化调用使用方式一样，新版本对 KitexProtobuf 也做了同样的支持。见 [JSONPbGeneric](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/basic_usage/#jsonpbgeneric)。
 
 注：需使用 TTHeader 传输协议。
 
