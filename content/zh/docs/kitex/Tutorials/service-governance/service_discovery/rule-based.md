@@ -20,7 +20,7 @@ Kitex 拓展 [resolver-rule-based](https://github.com/kitex-contrib/resolver-rul
 
 ## 用法
 
-1. 实现你自己的解析器。参考这个文档关于解析器的定义： [服务发现扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/service_discovery/)
+1. 实现你自己的解析器。参考这个文档关于解析器的定义： [服务发现扩展](/zh/docs/kitex/tutorials/framework-exten/service_discovery/)
 
 2. 定义过滤规则。
 

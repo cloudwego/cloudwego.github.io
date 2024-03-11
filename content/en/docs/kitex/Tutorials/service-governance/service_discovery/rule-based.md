@@ -20,7 +20,7 @@ This resolver needs an implemented Resolver, which is able to resolve instances 
 
 ## Usage
 
-1. Implement your own Resolver. Refer to this doc about the definition of Resolver: [Service Discovery Extension](https://www.cloudwego.io/docs/kitex/tutorials/framework-exten/service_discovery/)
+1. Implement your own Resolver. Refer to this doc about the definition of Resolver: [Service Discovery Extension](/docs/kitex/tutorials/framework-exten/service_discovery/)
 
 2. Define filter rules.
 

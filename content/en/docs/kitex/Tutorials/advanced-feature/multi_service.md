@@ -13,7 +13,7 @@ Currently, the feature is available for:
 ## Usage
 
 ### Preparation
-Please generate code for each service using Kitex command tool. For more details, please refer to [Code Generation Tool](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/).
+Please generate code for each service using Kitex command tool. For more details, please refer to [Code Generation Tool](/docs/kitex/tutorials/code-gen/code_generation/).
 
 The results of code generation will be as follows:
 ```text

@@ -30,7 +30,7 @@ Thrift 泛型需求一般来源于 **rpc 泛化调用、http<>rpc 协议转换**
 
 ## 使用示例
 
-下面将演示如何基于 **kitex-二进制泛化 +dynamicgo** 进行泛化调用。注不熟悉的 kitex-二进制泛化同学可以先参阅[泛化调用文档](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic)。
+下面将演示如何基于 **kitex-二进制泛化 +dynamicgo** 进行泛化调用。注不熟悉的 kitex-二进制泛化同学可以先参阅[泛化调用文档](/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic)。
 
 完整示例：
 

@@ -53,4 +53,4 @@ go func(ctx context.Context) {
 
 ## 元信息透传
 
-详见 [元信息透传](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/metainfo/)。
+详见 [元信息透传](/zh/docs/kitex/tutorials/advanced-feature/metainfo/)。

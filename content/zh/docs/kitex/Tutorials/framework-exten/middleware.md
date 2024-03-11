@@ -42,7 +42,7 @@ type Middleware func(Endpoint) Endpoint
 
 3. `client.WithMiddleware` 设置的中间件，按其在 Option 中的设置顺序执行
 
-4. ACLMiddleware，参见[自定义访问控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/access_control/)
+4. ACLMiddleware，参见[自定义访问控制](/zh/docs/kitex/tutorials/service-governance/access_control/)
 
 5. 服务发现、实例熔断、实例级 Middleware / 服务发现、代理 Middleware
 
@@ -69,7 +69,7 @@ Context 中间件的引入是为了提供一种能够全局或者动态注入 Cl
 
 1. `server.WithMiddleware` 设置的中间件，按其在 Option 中的设置顺序执行
 
-2. ACLMiddleware，参见[自定义访问控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/access_control/)
+2. ACLMiddleware，参见[自定义访问控制](/zh/docs/kitex/tutorials/service-governance/access_control/)
 
 3. `server.WithErrorHandler` 设置的中间件
 

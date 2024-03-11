@@ -33,7 +33,7 @@ go version go1.19.12 darwin/arm64
 
 Before installing the code generation tools, ensure that the `GOPATH` environment variable is correctly defined (e.g., `export GOPATH=~/go`) and that `$GOPATH/bin` is added to the `PATH` environment variable (e.g., `export PATH=$GOPATH/bin:$PATH`). Do not set `GOPATH` to a directory where the current user does not have read/write permissions.
 
-The code generation tools used in Kitex include the IDL compiler and the kitex tool. To learn more about code generation tools, refer to [Code Generation](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/).
+The code generation tools used in Kitex include the IDL compiler and the kitex tool. To learn more about code generation tools, refer to [Code Generation](/docs/kitex/tutorials/code-gen/).
 
 ### IDL Compiler
 

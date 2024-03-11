@@ -38,7 +38,7 @@ go env -w GOPROXY=https://goproxy.cn
 
 在安装代码生成工具前，确保 `GOPATH` 环境变量已经被正确地定义（例如 `export GOPATH=~/go`）并且将`$GOPATH/bin`添加到 `PATH` 环境变量之中（例如 `export PATH=$GOPATH/bin:$PATH`）；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录。
 
-Kitex 中使用到的代码生成工具包括 IDL 编译器与 kitex tool。了解更多有关代码生成工具的内容，参见[代码生成](https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/)
+Kitex 中使用到的代码生成工具包括 IDL 编译器与 kitex tool。了解更多有关代码生成工具的内容，参见[代码生成](/zh/docs/kitex/tutorials/code-gen/)
 
 ### IDL 编译器
 

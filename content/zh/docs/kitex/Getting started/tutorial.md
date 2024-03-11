@@ -327,7 +327,7 @@ output
 2024/01/19 22:12:18.758245 server.go:83: [Info] KITEX: server listen at addr=[::]:8888
 ```
 
-在上面的日志输出中，`addr=[::]:8888` 代表我们的服务运行在本地的 8888 端口，此参数可以在创建 `server` 时传入 `option` 配置来修改，更多服务端配置见 [Server Option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/server_options/)。
+在上面的日志输出中，`addr=[::]:8888` 代表我们的服务运行在本地的 8888 端口，此参数可以在创建 `server` 时传入 `option` 配置来修改，更多服务端配置见 [Server Option](/zh/docs/kitex/tutorials/options/server_options/)。
 
 ## 运行 API 服务
 
@@ -386,11 +386,11 @@ if err != nil {
 
 其第二个参数为本次调用的请求参数。
 
-其第三个参数为本次调用的 `options` ，Kitex 提供了一种 `callopt` 机制，顾名思义——调用参数 ，有别于创建 client 时传入的参数，这里传入的参数仅对此次生效。 此处的 `callopt.WithRPCTimeout` 用于指定此次调用的超时（通常不需要指定，此处仅作演示之用）同样的，你可以在[基本特性](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature)一节中找到更多的参数。
+其第三个参数为本次调用的 `options` ，Kitex 提供了一种 `callopt` 机制，顾名思义——调用参数 ，有别于创建 client 时传入的参数，这里传入的参数仅对此次生效。 此处的 `callopt.WithRPCTimeout` 用于指定此次调用的超时（通常不需要指定，此处仅作演示之用）同样的，你可以在[基本特性](/zh/docs/kitex/tutorials/basic-feature)一节中找到更多的参数。
 
 ### 暴露 HTTP 接口
 
-你可以使用 `net/http` 或其他框架来对外提供 HTTP 接口，此处使用 `Hertz` 做一个简单演示，有关 Hertz 用法参见 [Hertz 文档](https://www.cloudwego.io/zh/docs/hertz/)
+你可以使用 `net/http` 或其他框架来对外提供 HTTP 接口，此处使用 `Hertz` 做一个简单演示，有关 Hertz 用法参见 [Hertz 文档](/zh/docs/hertz/)
 
 完整代码如下：
 
@@ -505,7 +505,7 @@ func main() {
 }
 ```
 
-你可以在 [Option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/) 中查看更多参数说明
+你可以在 [Option](/zh/docs/kitex/tutorials/options/) 中查看更多参数说明
 
 接下来另启终端使用 `go run .` 运行库存服务，看到以下输出代表运行成功：
 
@@ -632,7 +632,7 @@ services:
       - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
 ```
 
-Kitex 作为一款微服务框架，也为我们提供了服务治理的能力。当然，在服务注册与发现的场景中也为 etcd 做了适配，可见 [etcd 注册中心使用文档](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/service_discovery/etcd/)。同时 Kitex 还提供了其他常见注册中心适配，文档可见[服务发现](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/service_discovery/)。
+Kitex 作为一款微服务框架，也为我们提供了服务治理的能力。当然，在服务注册与发现的场景中也为 etcd 做了适配，可见 [etcd 注册中心使用文档](/zh/docs/kitex/tutorials/service-governance/service_discovery/etcd/)。同时 Kitex 还提供了其他常见注册中心适配，文档可见[服务发现](/zh/docs/kitex/tutorials/service-governance/service_discovery/)。
 
 首先，我们需要拉取依赖，在项目根目录下执行如下命令：
 
@@ -651,7 +651,7 @@ type Registry interface {
 }
 ```
 
-该接口包括注册服务和注销服务两个方法，两个方法都需要传入服务的信息。只要实现了该接口都可用作服务注册中心使用，所以你也可以自定义服务注册中心，详情可见[服务注册扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/registry/)。
+该接口包括注册服务和注销服务两个方法，两个方法都需要传入服务的信息。只要实现了该接口都可用作服务注册中心使用，所以你也可以自定义服务注册中心，详情可见[服务注册扩展](/zh/docs/kitex/tutorials/framework-exten/registry/)。
 
 在 Kitex 中使用注册中心的流程比较简单，大致分为两步：
 
@@ -797,7 +797,7 @@ type Resolver interface {
 }
 ```
 
-只要实现了该接口都可用作服务发现中心使用，所以你也可以自定义服务发现中心，详情可见[服务发现扩展](https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/service_discovery/)。
+只要实现了该接口都可用作服务发现中心使用，所以你也可以自定义服务发现中心，详情可见[服务发现扩展](/zh/docs/kitex/tutorials/framework-exten/service_discovery/)。
 
 在 Kitex 中使用发现中心的流程比较简单，大致分为两步：
 
@@ -874,4 +874,4 @@ GetItemResp({Item:Item({Id:1024 Title:Kitex Description:Kitex is an excellent fr
 - 服务端编写 IDL，使用 kitex 生成代码后填充服务业务逻辑即可运行
 - 客户端使用与服务端相同的 IDL，使用 kitex 生成代码后，创建客户端示例，构造请求参数后即可发起调用
 
-本例中，我们仅演示了 Kitex 的基本使用方法，Kitex 还为我们提供了各种微服务治理特性，你可以在[指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/)中获取更多信息，或查看示例代码小节解锁更多高级用法。
+本例中，我们仅演示了 Kitex 的基本使用方法，Kitex 还为我们提供了各种微服务治理特性，你可以在[指南](/zh/docs/kitex/tutorials/)中获取更多信息，或查看示例代码小节解锁更多高级用法。

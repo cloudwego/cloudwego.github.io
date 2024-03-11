@@ -252,7 +252,7 @@ The following error codes are commonly reported by the framework:
 - 417 (The server returns false after executing the custom `ContinueHandler`)
 - 500 (Throwing the panic in middleware or in `handlerFunc`)
 
-For more details and solutions on these and other error codes, please refer to the [Kitex User Guide](https://www.cloudwego.io/docs/kitex/getting-started/).
+For more details and solutions on these and other error codes, please refer to the [Kitex User Guide](/docs/kitex/getting-started/).
 
 ### Context Guide
 
@@ -276,38 +276,38 @@ Monitoring your application is critical. Both Kitex and Hertz provide a Tracer i
 
 ### Kitex
 #### Configuration and options
-For more details, please check [server option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/server_options/), [client option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/client_options/), and [call option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/call_options/).
+For more details, please check [server option](/zh/docs/kitex/tutorials/options/server_options/), [client option](/zh/docs/kitex/tutorials/options/client_options/), and [call option](/zh/docs/kitex/tutorials/options/call_options/).
 
 ##### Observability
 ###### Instrumentation Control
-Kitex supports flexible enabling of basic and fine-grained Instrumentation. This includes a stats level, client tracing stats level control, server tracing stats level control, and more. For more details, please refer to the [Kitex User Guide](https://www.cloudwego.io/docs/kitex/tutorials/observability/).
+Kitex supports flexible enabling of basic and fine-grained Instrumentation. This includes a stats level, client tracing stats level control, server tracing stats level control, and more. For more details, please refer to the [Kitex User Guide](/docs/kitex/tutorials/observability/).
 
 ##### Logging
-Kitex supports default logger implementation, injection of custom loggers, and redirection of default logger output. For more details, instructions, and examples, please refer to the [Kitex User Guide](https://www.cloudwego.io/docs/kitex/tutorials/observability/).
+Kitex supports default logger implementation, injection of custom loggers, and redirection of default logger output. For more details, instructions, and examples, please refer to the [Kitex User Guide](/docs/kitex/tutorials/observability/).
 
 ##### Tracing
-Kitex’s OpenTelemetry extension provides support for tracing. For more details, instructions, and examples, please refer to the [Kitex User Guide](https://www.cloudwego.io/docs/kitex/tutorials/observability/).
+Kitex’s OpenTelemetry extension provides support for tracing. For more details, instructions, and examples, please refer to the [Kitex User Guide](/docs/kitex/tutorials/observability/).
 
 ##### Monitoring
-The framework doesn’t provide any monitoring, but it provides a Tracer interface. This interface can be implemented by yourself and be injected via WithTracer Option. For more details, instructions, and examples, please refer to the [Kitex User Guide](https://www.cloudwego.io/docs/kitex/tutorials/observability/).
+The framework doesn’t provide any monitoring, but it provides a Tracer interface. This interface can be implemented by yourself and be injected via WithTracer Option. For more details, instructions, and examples, please refer to the [Kitex User Guide](/docs/kitex/tutorials/observability/).
 
 ### Hertz
 #### Configuration and options
-For more details, please check the [configuration instructions](https://www.cloudwego.io/docs/hertz/reference/config/).
+For more details, please check the [configuration instructions](/docs/hertz/reference/config/).
 
 ##### Observability
 ###### Instrumentation
-Hertz supports flexible enabling of basic and fine-grained Instrumentation. This includes a stats level, stats level control, and more. For more details, please refer to the [Hertz User Guide](https://www.cloudwego.io/docs/hertz/tutorials/observability/).
+Hertz supports flexible enabling of basic and fine-grained Instrumentation. This includes a stats level, stats level control, and more. For more details, please refer to the [Hertz User Guide](/docs/hertz/tutorials/observability/).
 
 ##### Log
-Hertz provides a default way to print logs in the standard output. It also provides several global functions, such as `hlog.Info`, `hlog.Errorf`, `hlog.CtxTracef`, and more, which are implemented in `pkg/common/hlog`, to call the corresponding methods of the default logger. For more details, instructions, and examples, please refer to the [Hertz User Guide](https://www.cloudwego.io/docs/hertz/tutorials/observability/).
+Hertz provides a default way to print logs in the standard output. It also provides several global functions, such as `hlog.Info`, `hlog.Errorf`, `hlog.CtxTracef`, and more, which are implemented in `pkg/common/hlog`, to call the corresponding methods of the default logger. For more details, instructions, and examples, please refer to the [Hertz User Guide](/docs/hertz/tutorials/observability/).
 
 ##### Tracing
 In microservices, link tracing is a very important capability, which plays an important role in quickly locating problems, analyzing business bottlenecks, and restoring the link status of a request.
-Hertz provides the capability of link tracking and also supports user-defined link tracking. For more details, instructions, and examples, please refer to the [Hertz User Guide](https://www.cloudwego.io/docs/hertz/tutorials/observability/).
+Hertz provides the capability of link tracking and also supports user-defined link tracking. For more details, instructions, and examples, please refer to the [Hertz User Guide](/docs/hertz/tutorials/observability/).
 
 ##### Monitoring
-The framework doesn’t provide any monitoring, but it provides a Tracer interface. This interface can be implemented by yourself and be injected via WithTracer Option. For more details, instructions, and examples, please refer to the [Hertz User Guide](https://www.cloudwego.io/docs/hertz/tutorials/observability/).
+The framework doesn’t provide any monitoring, but it provides a Tracer interface. This interface can be implemented by yourself and be injected via WithTracer Option. For more details, instructions, and examples, please refer to the [Hertz User Guide](/docs/hertz/tutorials/observability/).
 
 ## VI. Best Practices for Developing with CloudWeGo
 For a real-world application of Kitex and Hertz, you can explore projects like [Bookinfo](https://github.com/cloudwego/biz-demo/tree/main/bookinfo), [Easy Note](https://github.com/cloudwego/biz-demo/tree/main/easy_note), and [Book Shop](https://github.com/cloudwego/biz-demo/tree/main/book-shop). Each of these scenarios demonstrate different business scenarios and use-cases for various CloudWeGo subprojects. 
