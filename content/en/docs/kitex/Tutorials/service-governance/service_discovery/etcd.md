@@ -47,7 +47,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    // /docs/tutorials/framework-exten/registry/#integrate-into-kitex
+    // https://www.cloudwego.io/docs/tutorials/framework-exten/registry/#integrate-into-kitex
     server, err := echo.NewServer(new(EchoImpl), server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "echo"}), server.WithRegistry(r))
     if err != nil {
         log.Fatal(err)
