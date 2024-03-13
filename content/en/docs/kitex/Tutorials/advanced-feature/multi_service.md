@@ -22,8 +22,11 @@ Currently, the feature is available for:
 If you are client-side users and using the multi-service feature, please follow the instructions below:
 
 1. Upgrade the client to the Kitex version >= v0.9.0
+
+Note: 2 and 3 below are only for Kitex thrift & protobuf (non-streaming) users.
+
 2. Use TTHeader as the transport protocol `client.WithTransportProtocol(transport.TTHeader)`
-3. Add the following option on the client side: `client.WithMetaHandler(transmeta.ClientTTHeaderHandler())`
+3. Add the following option on the client side: `client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`
 
 ### Server Side Users
 
@@ -124,10 +127,11 @@ service ServiceB {
 
 In this case, **please note that you need to specify one service as a fallback service.**
 
-Fallback service is used to maintain compatibility when the client is using an old Kitex version (< v0.9.0)
+Fallback service is used to maintain compatibility when the client is using an old Kitex version (< v0.9.0).
 
-- or when `TTHeader` is not being used for transport protocol
-- or the client does not set an optional meta handler `transmeta.ClientTTHeaderHandler()`
+For Kitex thrift & protobuf (non-streaming), the cases below also need a fallback service to keep compatibility.
+- When `TTHeader` is not being used for transport protocol
+- The client does not set an optional meta handler `transmeta.ClientTTHeaderHandler`
 
 **If you don't specify any fallback service or if you specify multiple fallback services, an error will be returned on server startup.**
 
@@ -162,8 +166,11 @@ But when using this option, the following must be noted:
 When `server.WithRefuseTrafficWithoutServiceName` option is enabled, an error will occur with a message “no service name while the server has WithRefuseTrafficWithoutServiceName option enabled” if the server receives requests in the following cases:
 
 1. Client uses the older Kitex version (< v0.9.0), which does not support multi-service feature
+
+Note: 2 and 3 below are only for Kitex thrift & protobuf (non-streaming) users.
+
 2. The transport protocol of a request is not TTHeader (Kitex pb’s transport protocol enables TTHeader by default)
-3. Client option `client.WithMetaHandler(transmeta.ClientTTHeaderHandler())` is not set
+3. Client option `client.WithMetaHandler(transmeta.ClientTTHeaderHandler)` is not set
 
 #### How to not fallback to a fallback service (= not rely on method name to find a service)
 
@@ -172,9 +179,12 @@ In some cases, even though a fallback service is specified for methods with the 
 In such cases, please ensure the following on the client side:
 
 1. Upgrade the client to Kitex version that supports thrift & pb multi-service (>= v0.9.0)
+
+Note: 2 and 3 below are only for Kitex thrift & protobuf (non-streaming) users.
+
 2. Use TTHeader as the transport protocol
 3. Add the following option on the client side:
-   `client.WithMetaHandler(transmeta.ClientTTHeaderHandler())`
+   `client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`
 
 ## Obtain ServiceName and MethodName
 
@@ -208,13 +218,13 @@ You can distinguish each service/method with the usage shown before in middlewar
 
 The recommended way to determine whether a request has an underlying protocol for Streaming would be to check the type of the request/response arguments:
 
-|                                     | **Client Middleware**                                                                                        | **Server Middleware**                                                                                                                                                                                          |
-|-------------------------------------|--------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Bidirectional**<br/>**(gRPC)**    | - request: `interface{}` = nil <br/>- response: *streaming.Result                                            | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                                                 |
-| **Client Streaming**<br/>**(gRPC)** | - request: interface{} = nil <br/>- response: *streaming.Result                                              | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                                                 |
-| **Server Streaming**<br/>**(gRPC)** | - request: `interface{}` = nil <br/>- response: *streaming.Result                                            | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                                                 |
-| **Unary (gRPC)**                    | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *streaming.Args<br/>- response: `interface{}` = nil<br/>Note: the option provided in v1.15.0 (to be released soon): `server.WithCompatibleMiddlewareForUnary()` makes it the same with PingPong API |
-| **PingPong API (KitexPB)**          | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result                                                                                                   |
+|                                     | **Client Middleware**                                                                                        | **Server Middleware**                                                                                                                                                                      |
+|-------------------------------------|--------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Bidirectional**<br/>**(gRPC)**    | - request: `interface{}` = nil <br/>- response: *streaming.Result                                            | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
+| **Client Streaming**<br/>**(gRPC)** | - request: interface{} = nil <br/>- response: *streaming.Result                                              | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
+| **Server Streaming**<br/>**(gRPC)** | - request: `interface{}` = nil <br/>- response: *streaming.Result                                            | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
+| **Unary (gRPC)**                    | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *streaming.Args<br/>- response: `interface{}` = nil<br/>Note: the option provided since v0.9.0: `server.WithCompatibleMiddlewareForUnary()` makes it the same with PingPong API |
+| **PingPong API (KitexPB)**          | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result                                                                               |
 
 **NOTE:**
 Kitex server supports auto-detection on incoming requests, and for GRPC/Protobuf Unary methods, it accepts both GRPC requests and KitexProtobuf(TTHeader + Pure Protobuf Payload) requests, so **it may not be accurate to rely solely on the method name from RPCInfo**.
@@ -269,7 +279,8 @@ func serverMWForIdentifyStreamingRequests(next endpoint.Endpoint) endpoint.Endpo
   - Code for each service is generated.
   - Method names can be the same between services. But there are some restrictions. Please choose one.
     - You need to specify a fallback service for the conflicting method.
-    - Add `server.WithRefuseTrafficWithoutServiceName` option when creating a server, and make sure that client uses Kitex version >=v0.9.0, TTHeader protocol, and sets `client.WithMetaHandler(transmeta.ClientTTHeaderHandler())` client option.
+    - Add `server.WithRefuseTrafficWithoutServiceName` option when creating a server, and make sure that client uses Kitex version >=v0.9.0.
+      Also, for Kitex thrift & protobuf (non-streaming) users, client needs to use TTHeader protocol and sets `client.WithMetaHandler(transmeta.ClientTTHeaderHandler)` client option.
 
 ## Why does the service registration fail?
 
