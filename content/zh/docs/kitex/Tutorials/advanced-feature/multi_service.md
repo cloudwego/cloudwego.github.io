@@ -31,7 +31,7 @@ description: Kitex 支持在一个 Server 上注册多个 Service 。
 #### 准备工作
 请使用 Kitex 命令工具 ( >= v0.9.0 ) 为每个 Service 生成代码。更多详情，请参考[代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)。
 
-（注：对于使用 gRPC 多服务功能的用户，从 v0.8.0 版本开始，服务注册方面的使用方法略有变化，请升级您的 Kitex 命令工具至 v0.9.0+。更多详情，请参阅“[创建 Server 并在 Server 上注册您的 Service](./multi_service/#创建-server-并在-server-上注册您的-service)”部分。）
+（注：对于使用 gRPC 多服务功能的用户，从 v0.8.0 版本开始，服务注册方面的使用方法略有变化，请升级您的 Kitex 命令工具至 v0.9.0+。更多详情，请参阅“[创建 Server 并在 Server 上注册您的 Service](/zh/docs/kitex/tutorials/advanced-feature/multi_service/#创建-server-并在-server-上注册您的-service)”部分。）
 
 代码生成的结果如下所示：
 
