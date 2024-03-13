@@ -6,7 +6,7 @@ keywords: ["Kitex", "多 Service", "单 Server 多 Service", "gRPC", "thrift", "
 description: Kitex 支持在一个 Server 上注册多个 Service 。
 ---
 ## 介绍
-从 Kitex v0.8.0 开始，支持在单个服务器上注册多个服务。
+从 Kitex v0.8.0 开始，支持在单个 Server 上注册多个 Service 。
 
 目前，该功能适用于：
 - gRPC 传输协议，包括基于 HTTP2 的 Thrift Streaming (也基于 gRPC ) (>= v0.8.0)
@@ -25,9 +25,9 @@ description: Kitex 支持在一个 Server 上注册多个 Service 。
 
 ### 服务器端用户
 #### 准备工作
-请使用 Kitex 命令工具 (>= v0.9.0) 为每个 Service 生成代码。更多详情，请参考[代码生成工具](/docs/kitex/tutorials/code-gen/code_generation/).
+请使用 Kitex 命令工具 (>= v0.9.0) 为每个 Service 生成代码。更多详情，请参考[代码生成工具](/docs/kitex/tutorials/code-gen/code_generation/)。
 
-（注：对于使用 gRPC 多服务功能的用户，从 v0.8.0 版本开始，服务注册方面的使用方法略有变化，请升级您的 Kitex 命令工具至 v0.9.0+ 。更多详情，请参阅“创建 Server 并在 Server 上注册您的 Service”部分。）
+（注：对于使用 gRPC 多服务功能的用户，从 v0.8.0 版本开始，服务注册方面的使用方法略有变化，请升级您的 Kitex 命令工具至 v0.9.0+。更多详情，请参阅“创建 Server 并在 Server 上注册您的 Service”部分。）
 
 代码生成的结果如下所示：
 
@@ -182,7 +182,7 @@ method, ok := kitexutil.GetMethod(ctx)
 
 ## 中间件
 
-一般来说和以前一样，只是在调用`NewServer`时添加选项:
+一般来说和以前一样，只是在调用`NewServer`时需要添加选项:
 
 ```go
 options = append(options, server.WithMiddleware(yourMiddleware))
