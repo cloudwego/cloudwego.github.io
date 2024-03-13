@@ -1,7 +1,7 @@
 ---
 title: "Apollo"
 date: 2023-12-12
-weight: 3
+weight: 2
 keywords: ["配置中心扩展","apollo"]
 description: "使用 apollo作为 Kitex 的服务治理配置中心"
 

@@ -1,7 +1,7 @@
 ---
 title: "Zookeeper"
 date: 2023-12-18
-weight: 6
+weight: 5
 keywords: ["ConfigCenter Extension","ZooKeeper"]
 description: "Use ZooKeeper as Kitex’s service governance configuration center"
 

@@ -1,7 +1,7 @@
 ---
 title: "Apollo"
 date: 2023-12-12
-weight: 3
+weight: 2
 keywords: ["ConfigCenter Extension","apollo"]
 description: "Use apollo as Kitex’s service governance configuration center"
 

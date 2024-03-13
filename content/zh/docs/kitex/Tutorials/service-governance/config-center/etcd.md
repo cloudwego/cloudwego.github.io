@@ -1,7 +1,7 @@
 ---
 title: "Etcd"
 date: 2023-11-29
-weight: 2
+weight: 1
 keywords: ["配置中心扩展","etcd"]
 description: "使用 etcd 作为 Kitex 的服务治理配置中心"
 

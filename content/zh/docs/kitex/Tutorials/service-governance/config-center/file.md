@@ -1,7 +1,7 @@
 ---
 title: "File"
 date: 2023-12-18
-weight: 5
+weight: 4
 keywords: ["配置中心扩展","file"]
 description: "使用 本地文件 作为 Kitex 的服务治理配置中心"
 
