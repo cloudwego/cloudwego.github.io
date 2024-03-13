@@ -151,20 +151,76 @@ rpctimeout.SetBusinessTimeoutThreshold(10 * time.Millisecond)
 1. Server 在收到退出信号时的等待时间；
 2. 如果超过该等待时间，Server 将会强制结束所有在处理的请求（客户端会收到错误）。
 
+##### EnableContextTimeout
+
+> github.com/cloudwego/kitex >= v0.9.0
+
+(针对非 Streaming API）如果从请求的 TTHeader 中读到了 timeout，则写入 server 请求的 ctx 。
+
+具体用法请参考后文示例代码。
+
+说明：
+- Streaming API：已默认开启（通过另外的实现）
+  - 含 GRPC/Protobuf 和 Thrift Streaming
+  - client 的 `ctx.Deadline()` 会通过 `grpc_timeout` header 发送给 server，写入 server 的 ctx
+- 非 Streaming API：默认未开启
+  - 在 client 端需启用 TTHeader Transport 和 ClientTTHeaderMetaHandler，并通过 client/callopt `WithRPCTimeout` option 指定 RPC 超时时间
+  - 在 server 端需启用此 Option 及 ServerTTHeaderMetaHandler，才能从请求的 TTHeader 中读取到 RPCTimeout
+    - 如果业务代码有需要，可用 `rpcinfo.GetRPCInfo(ctx).Config().RPCTimeout()` 获得这个值
+
+
 #### 配置方式
 
 ##### 代码配置 - Server Option
+
+###### WithReadWriteTimeout
 
 在初始化 Server 时指定：
 ```go
 import "github.com/cloudwego/kitex/server"
 
-svr := xxx.NewServer(handler,
+svr := yourservice.NewServer(handler,
     server.WithReadWriteTimeout(5 * time.Second),
+)
+```
+
+###### WithExitWaitTime
+
+在初始化 Server 时指定：
+```go
+import "github.com/cloudwego/kitex/server"
+
+svr := yourservice.NewServer(handler,
     server.WithExitWaitTime(5 * time.Second),
 )
 ```
-注：两个配置项可以按需独立配置。
+
+###### WithEnableContextTimeout
+
+该 Option 需配合 TTHeader 使用，详见下方示例代码。
+
+Client
+- 指定 Transport Protocol 为 TTHeader
+- 启用 [transmeta.ClientTTHeaderHandler](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/transmeta/ttheader.go#L45)
+- 通过 client.WithRPCTimeout （或者在请求时使用 callopt.WithRPCTimeout）指定超时
+```go
+cli := yourservice.MustNewClient(
+    serverName, 
+    client.WithTransportProtocol(transport.TTHeader),
+    client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
+    client.WithRPCTimeout(time.Second),
+)
+```
+
+Server
+- 指定该 Option
+- 启用 [transmeta.ServerTTHeaderHandler](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/transmeta/ttheader.go#L46)
+```
+svr := yourservice.NewServer(handler,
+    server.WithMetaHandler(transmeta.ServerTTHeaderHandler),
+    server.WithEnableContextTimeout(true),
+)
+```
 
 ## Q&A
 
