@@ -190,8 +190,7 @@ options = append(options, server.WithMiddleware(yourMiddleware))
 svr := server.NewServer(options...)
 
 ```
-
-You can distinguish each service/method with the usage shown before in middleware.
+You can distinguish each request by the service/method with the usage shown before.
 
 ### Distinguish Streaming/Non-Streaming Methods
 
