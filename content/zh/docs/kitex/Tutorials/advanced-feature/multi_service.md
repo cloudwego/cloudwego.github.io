@@ -164,14 +164,12 @@ func main() {
 
 ```go
 idlService, ok := kitexutil.GetIDLServiceName(ctx)
-
 ```
 
 - 方法名称
 
 ```go
 method, ok := kitexutil.GetMethod(ctx)
-
 ```
 
 ## 中间件
@@ -181,7 +179,6 @@ method, ok := kitexutil.GetMethod(ctx)
 ```go
 options = append(options, server.WithMiddleware(yourMiddleware))
 svr := server.NewServer(options...)
-
 ```
 您可以使用前述方法来获得每个请求的 service/method，以便区分处理。
 
@@ -216,7 +213,6 @@ func clientMWForIdentifyStreamingRequests(next endpoint.Endpoint) endpoint.Endpo
         }
     }
 }
-
 ```
 
 #### 服务端中间件示例 
@@ -235,7 +231,6 @@ func serverMWForIdentifyStreamingRequests(next endpoint.Endpoint) endpoint.Endpo
         }
     }
 }
-
 ```
 
 ## 常见问题解答
