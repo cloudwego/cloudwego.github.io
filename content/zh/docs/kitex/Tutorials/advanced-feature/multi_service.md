@@ -22,7 +22,7 @@ description: Kitex 支持在一个 Server 上注册多个 Service 。
 如果要用 Kitex Client 请求 MultiService Server，请按照以下说明操作：
 
 1. 将客户端升级到 Kitex 版本 >= v0.9.0
-2. 针对 Kitex thrift 和 protobuf（non-streaming）的API:
+2. 对于 Kitex thrift 和 protobuf（non-streaming）的API:
    1. 使用 TTHeader 作为传输协议`client.WithTransportProtocol(transport.TTHeader)`
    2. 在客户端添加以下选项：`client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`
 
@@ -117,7 +117,7 @@ Response sameNamedMethod(1: Request req)
 
 在这种情况下，**请注意，您需要指定一个 Service 作为备用 Service（Fallback Service）。**
 
-当客户端的设置没有满足[客户端使用方法](/zh/docs/kitex/tutorials/advanced-feature/multi_service/#客户端)一节中的任何条件时，Fallback Service 用于保持兼容性
+当客户端的设置没有满足[客户端使用方法](/zh/docs/kitex/tutorials/advanced-feature/multi_service/#客户端)一节中的任何条件时，则通过 Fallback Service 以保持兼容性
 
 **如果未指定任何 Fallback Service 或指定了多个 Fallback Service ，则在 Server 启动时将返回错误。**
 
