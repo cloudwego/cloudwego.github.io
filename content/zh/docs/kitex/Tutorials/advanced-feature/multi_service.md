@@ -27,7 +27,7 @@ description: Kitex 支持在一个 Server 上注册多个 Service 。
    2. 在客户端添加以下选项：`client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`
 
 ### 服务器端
-
+ 
 #### 准备工作
 请使用 Kitex 命令工具 ( >= v0.9.0 ) 为每个 Service 生成代码。更多详情，请参考[代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)。
 
