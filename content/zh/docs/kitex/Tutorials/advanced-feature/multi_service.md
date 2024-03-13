@@ -12,8 +12,8 @@ description: Kitex 支持在一个 Server 上注册多个 Service 。
 
 目前，该功能适用于：
 
-- gRPC 传输协议，包括[基于 HTTP2 的Thrift Streaming](/zh/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming/) (也基于 gRPC) (>= v0.8.0)
-- Kitex Thrift 和 Protobuf (non-streaming) (>= v0.9.0)
+- gRPC 传输协议，包括[基于 HTTP2 的Thrift Streaming](/zh/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming/) (也基于 gRPC) ( >= v0.8.0 )
+- Kitex Thrift 和 Protobuf (non-streaming) ( >= v0.9.0 )
 
 ## 使用方法
 
@@ -28,7 +28,7 @@ description: Kitex 支持在一个 Server 上注册多个 Service 。
 ### 服务器端
 
 #### 准备工作
-请使用 Kitex 命令工具 (>= v0.9.0) 为每个 Service 生成代码。更多详情，请参考[代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)。
+请使用 Kitex 命令工具 ( >= v0.9.0 ) 为每个 Service 生成代码。更多详情，请参考[代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)。
 
 （注：对于使用 gRPC 多服务功能的用户，从 v0.8.0 版本开始，服务注册方面的使用方法略有变化，请升级您的 Kitex 命令工具至 v0.9.0+。更多详情，请参阅“创建 Server 并在 Server 上注册您的 Service”部分。）
 
@@ -154,7 +154,7 @@ func main() {
 则会出现错误消息：
 > no service name while the server has WithRefuseTrafficWithoutServiceName option enabled
 
-1. 客户端使用较旧的 Kitex 版本(<v0.9.0)，不支持多 Service 功能
+1. 客户端使用较旧的 Kitex 版本( < v0.9.0 )，不支持多 Service 功能
 2. 请求的传输协议不是 TTHeader ( Kitex pb 的传输协议默认启用 TTHeader )
 3. 未设置客户端选项`client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`
 
@@ -163,7 +163,7 @@ func main() {
 
 在这种情况下，请在客户端确保以下事项：
 
-1. 将客户端升级到支持thrift & pb multi-service的Kitex版本（>= v0.9.0）
+1. 将客户端升级到支持thrift 和 pb multi-service的Kitex版本（ >= v0.9.0 ）
 2. 使用 TTHeader 作为传输协议
 3. 在客户端添加以下选项:`client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`
 
