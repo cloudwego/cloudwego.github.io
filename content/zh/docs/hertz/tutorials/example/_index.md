@@ -64,7 +64,7 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 - [i18n](https://github.com/hertz-contrib/i18n/tree/main/example) ：使用 i18n 中间件的示例
 - [session](https://github.com/hertz-contrib/sessions/tree/main/_example) ：使用 session 中间件的示例
 - [KeyAuth](https://github.com/hertz-contrib/keyauth/tree/main/example) ：使用 KeyAuth 中间件的示例
-- [Swagger](https://github.com/swaggo/gin-swagger/tree/master/example) ：使用 Swagger 中间件的示例
+- [Swagger](https://github.com/hertz-contrib/swagger/tree/main/example/basic) ：使用 Swagger 中间件的示例
 - [access log](https://github.com/hertz-contrib/logger/tree/main/accesslog/example) ：使用 access log 中间件的示例
 - [Secure](https://github.com/hertz-contrib/secure/tree/main/example/custom) ：使用 Secure 中间件的示例
 - [Sentry](https://github.com/hertz-contrib/hertzsentry) ：使用 Sentry 中间件的示例
