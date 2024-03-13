@@ -5,25 +5,28 @@ weight: 10
 keywords: ["Kitex", "多 Service", "单 Server 多 Service", "gRPC", "thrift", "protobuf"]
 description: Kitex 支持在一个 Server 上注册多个 Service 。
 ---
+
 ## 介绍
+
 从 Kitex v0.8.0 开始，支持在单个 Server 上注册多个 Service 。
 
 目前，该功能适用于：
-- gRPC 传输协议，包括基于 HTTP2 的 Thrift Streaming (也基于 gRPC ) (>= v0.8.0)
-- Kitex Thrift 和 Protobuf (non-streaming) (>= v0.9.0)
 
+- gRPC 传输协议，包括[基于 HTTP2 的Thrift Streaming](/zh/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming/) (也基于 gRPC) (>= v0.8.0)
+- Kitex Thrift 和 Protobuf (non-streaming) (>= v0.9.0)
 
 ## 使用方法
 
-### 客户端用户
+### 客户端
 
-如果您是客户端用户并使用多业务功能，请按照以下说明操作：
+如果要用 Kitex Client 请求 MultiService Server，请按照以下说明操作：
 
 1. 将客户端升级到 Kitex 版本 >= v0.9.0
 2. 使用 TTHeader 作为传输协议`client.WithTransportProtocol(transport.TTHeader)`
-3. 在客户端添加以下选项：`client.WithMetaHandler(transmeta.ClientTTHeaderHandler())`
+3. 在客户端添加以下选项：`client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`
 
-### 服务器端用户
+### 服务器端
+
 #### 准备工作
 请使用 Kitex 命令工具 (>= v0.9.0) 为每个 Service 生成代码。更多详情，请参考[代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)。
 
@@ -113,16 +116,16 @@ Response sameNamedMethod(1: Request req)
 
 在这种情况下，**请注意，您需要指定一个 Service 作为备用 Service（Fallback Service）。**
 
-当客户端使用旧的 Kitex 版本 ( < v0.9.0 ) 时，备用 Service 用于维护兼容性
+当客户端使用旧的 Kitex 版本 ( < v0.9.0 ) 时，Fallback Service 用于保持兼容性
 - 或者当`TTHeader`未用于传输协议时，
-- 或者客户端没有设置可选的元处理程序`Transmeta.ClientTTHeaderHandler()`。
+- 或者客户端没有设置可选的元处理程序`transmeta.ClientTTHeaderHandler`。
 
-**如果未指定任何备用 Service 或指定了多个备用 Service ，则在 Server 启动时将返回错误。**
+**如果未指定任何 Fallback Service 或指定了多个 Fallback Service ，则在 Server 启动时将返回错误。**
 
-请注意，您只能将一个 Service 指定为备用 Service 。
+请注意，您只能将一个 Service 指定为 Fallback Service 。
 
 生成代码(`server.go`)中的`RegisterService()`有一个可选参数：`server.RegisterOption`。
-如果传入`server.WithFallback Service`选项，则该 Service 将注册为备用 Service 。
+如果传入`server.WithFallback Service`选项，则该 Service 将注册为 Fallback Service 。
 
 ```golang
 func main() {
@@ -141,28 +144,28 @@ func main() {
 }
 ```
 
-另一种避免 Server 启动错误而不指定备用 Service 的方法是使用`server.WithRefuseTrafficWithoutServiceName`选项。
+另一种避免 Server 启动错误而不指定 Fallback Service 的方法是使用`server.WithRefuseTrafficWithoutServiceName`选项。
 
-使用此选项，即使您没有为名称冲突的方法指定备用 Service ，启动 Server 时也不会返回错误。
+使用此选项，即使您没有为名称冲突的方法指定 Fallback Service ，启动 Server 时也不会返回错误。
 
 但在使用此选项时，必须注意以下事项：
 
 当`server.WithRefuseTrafficWithoutServiceName`选项启用时，如果 Server 在以下情况下收到请求，
-则会出现错误消息：“no service name while the server has WithRefuseTrafficWithoutServiceName option enabled”
+则会出现错误消息：
+> no service name while the server has WithRefuseTrafficWithoutServiceName option enabled
 
 1. 客户端使用较旧的 Kitex 版本(<v0.9.0)，不支持多 Service 功能
 2. 请求的传输协议不是 TTHeader ( Kitex pb 的传输协议默认启用 TTHeader )
-3. 未设置客户端选项`client.WithMetaHandler(transmeta.ClientTTHeaderHandler())`
+3. 未设置客户端选项`client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`
 
-### 如何不回退到备用 Service（= 不依赖方法名称来查找服务）
-在某些情况下，即使为服务之间具有相同名称的方法指定了备用Service，客户端的请求也可能旨在调用与备用Service不同的服务。
+### 如何不回退到备用 Service（不依赖方法名称来查找服务）
+在某些情况下，虽然为服务之间具有相同名称的方法指定了 Fallback Service，但是客户端的请求可能期望调用与 Fallback Service 不同的服务。
 
 在这种情况下，请在客户端确保以下事项：
 
 1. 将客户端升级到支持thrift & pb multi-service的Kitex版本（>= v0.9.0）
 2. 使用 TTHeader 作为传输协议
-3. 在客户端添加以下选项:`client.WithMetaHandler(transmeta.ClientTTHeaderHandler())`
-
+3. 在客户端添加以下选项:`client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`
 
 ## 获取ServiceName和MethodName 
 
@@ -189,9 +192,10 @@ options = append(options, server.WithMiddleware(yourMiddleware))
 svr := server.NewServer(options...)
 
 ```
-您可以通过之前在中间件中显示的用法来区分每个服务/方法。
+您可以使用前述方法来获得每个请求的 service/method，以便区分处理。
 
 ### 区分流式/非流式方法 
+
 确定请求是否具有流式处理底层协议的推荐方法是检查请求/响应参数的类型：
 
 |                                     | **客户端中间件**                                                                                        | **服务端中间件**                                                                                                                                                                                          |
@@ -199,11 +203,11 @@ svr := server.NewServer(options...)
 | **Bidirectional**<br/>**(gRPC)**    | - request: `interface{}` = nil <br/>- response: *streaming.Result                                            | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                                                 |
 | **Client Streaming**<br/>**(gRPC)** | - request: interface{} = nil <br/>- response: *streaming.Result                                              | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                                                 |
 | **Server Streaming**<br/>**(gRPC)** | - request: `interface{}` = nil <br/>- response: *streaming.Result                                            | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                                                 |
-| **Unary (gRPC)**                    | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *streaming.Args<br/>- response: `interface{}` = nil<br/>Note: the option provided in v1.15.0 (to be released soon): `server.WithCompatibleMiddlewareForUnary()` makes it the same with PingPong API |
+| **Unary (gRPC)**                    | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *streaming.Args<br/>- response: `interface{}` = nil<br/>该选项自 v0.9.0 起可用：`server.WithCompatibleMiddlewareForUnary()` 使其与 PingPong API 相同 |
 | **PingPong API (KitexPB)**          | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result                                                                                                   |
 
 **注意:**
-Kitex 服务器支持对传入请求的自动检测，对于 gRPC/Protobuf Unary 方法，它同时接受 gRPC 请求和 KitexProtobuf(TTHeader + Pure Protobuf Payload) 请求, 因此 **仅依靠 RPCInfo 中的方法名称可能并不准确**。
+Kitex 服务器支持对传入请求的协议探测，对于 gRPC/Protobuf Unary 方法，它同时接受 gRPC 请求和 KitexProtobuf(TTHeader + Pure Protobuf Payload) 请求, 因此 **仅依靠 RPCInfo 中的方法名称可能并不准确**。
 
 #### 客户端中间件示例 
 
@@ -243,9 +247,10 @@ func serverMWForIdentifyStreamingRequests(next endpoint.Endpoint) endpoint.Endpo
 
 ```
 
-
 ## 常见问题解答
+
 ### 1.单 Server 多 Service 和 Combine Service 有什么区别？
+
 - Combine Service（通过生成带有 `-combine-service` 标志的代码，将多个 Service 合并成一个统一的 Service 形成的 Service）
   - 所有 Service（Combine Service 和被合并的每个 Service）的代码都会生成。
   - Service 的所有方法名称必须是唯一的。
@@ -256,8 +261,10 @@ func serverMWForIdentifyStreamingRequests(next endpoint.Endpoint) endpoint.Endpo
   - Service 之间的方法名称可以相同，但也有一些限制。请选一个解决方案：
     - 您需要为冲突的方法指定备用 Service（Fallback Service） 。
     - 创建 Server 时增加`server.WithRefuseTrafficWithoutServiceName`选项。
-    并确保客户端使用的是 Kitex（版本 >= v0.9.0）， 且使用 TTHeader 协议，并设置`client.WithMetaHandler(transmeta.ClientTTHeaderHandler())`客户端选项。
+    并确保客户端使用的是 Kitex（版本 >= v0.9.0）， 且使用 TTHeader 协议，并设置`client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`客户端选项。
+    - 
 ### 2. Service 注册失败的原因？
+
   可能的原因如下：
   - 当您注册的 Service 之间具有相同名称的方法时，未指定备用 Service。请指定备用 Service 。
   - 您正在尝试在 Server 上同时注册 Combine Service 和其他 Service 。
