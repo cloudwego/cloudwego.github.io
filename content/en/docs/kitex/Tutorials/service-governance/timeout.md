@@ -152,20 +152,78 @@ NOTE：
 1. After receiving an exit signal, the server will wait for an ExitWaitTime before exit;
 2. If the waiting time is exceeded, the server will forcibly terminate all requests being processed (the client will receive an error).
 
+##### EnableContextTimeout
+
+> github.com/cloudwego/kitex >= v0.9.0
+
+(For non-streaming API) If timeout is available in the request's TTHeader, set it into server request ctx.
+
+For detailed usage, please refer to the example code below.
+
+NOTE:
+- For Streaming API requests: enabled by default via another way
+  - Including GRPC/Protobuf and Thrift Streaming
+  - Client's `ctx.Deadline()` is sent via header `grpc-timeout` to server which will be added to the server request's ctx
+- For Non-streaming API requests: disabled by default
+  - Client should enable TTHeader Transport and ClientTTHeaderMetaHandler, and specify RPC Timeout via client/callopt `WithRPCTimeout` option
+  - Server should enable this Option and ServerTTHeaderMetaHandler to read the RPCTimeout from requests' TTHeader
+    - If there's a need in your business code to get this value, call `rpcinfo.GetRPCInfo(ctx).Config().RPCTimeout()`
+
 #### Configuration method
 
 ##### By code - Server Option
 
+###### WithReadWriteTimeout
+
 Specified when initializing a server:
+
 ```go
 import "github.com/cloudwego/kitex/server"
 
 svr := xxx.NewServer(handler,
     server.WithReadWriteTimeout(5 * time.Second),
+)
+```
+
+###### WithExitWaitTime
+
+Specified when initializing a server:
+
+```go
+import "github.com/cloudwego/kitex/server"
+
+svr := yourservice.NewServer(handler,
     server.WithExitWaitTime(5 * time.Second),
 )
 ```
-Note: The two configuration items can be specified independently as needed.
+
+###### WithEnableContextTimeout
+
+This Option should be used with TTHeader; please refer to the example code below.
+
+Client
+- Specify TTHeader as Transport Protocol
+- Enable [transmeta.ClientTTHeaderHandler](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/transmeta/ttheader.go#L45)
+- Specify an RPC timeout by client.WithRPCTimeout (or by callopt.WithRPCTimeout when sending a request)
+```go
+cli := yourservice.MustNewClient(
+    serverName, 
+    client.WithTransportProtocol(transport.TTHeader),
+    client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
+    client.WithRPCTimeout(time.Second),
+)
+```
+
+Server
+- Specify this option
+- Enable [transmeta.ServerTTHeaderHandler](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/transmeta/ttheader.go#L46)
+```
+svr := yourservice.NewServer(handler,
+    server.WithMetaHandler(transmeta.ServerTTHeaderHandler),
+    server.WithEnableContextTimeout(true),
+)
+```
+
 
 ## FAQ
 
