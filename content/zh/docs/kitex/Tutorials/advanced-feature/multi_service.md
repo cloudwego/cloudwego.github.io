@@ -5,10 +5,11 @@ weight: 10
 keywords: ["Kitex", "多 Service", "单 Server 多 Service", "gRPC", "thrift", "protobuf"]
 description: Kitex 支持在一个 Server 上注册多个 Service 。
 ---
-
+## 介绍
+从Kitex v0.8.0开始，支持在单个服务器上注册多个服务。
 目前，该功能适用于：
-- gRPC 传输协议
-- Kitex Thrift 和 Protobuf(non-streaming)
+- gRPC 传输协议，包括基于HTTP2的Thrift Streaming(也基于 gRPC)(>= v0.8.0)
+- Kitex Thrift 和 Protobuf(non-streaming)(>= v0.9.0)
 
 
 ## 使用方法
