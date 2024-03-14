@@ -569,9 +569,6 @@ import (
     "log"
 
     item "example_shop/kitex_gen/example/shop/item/itemservice"
-
-    "github.com/cloudwego/kitex/pkg/rpcinfo"
-    "github.com/cloudwego/kitex/server"
 )
 
 func main() {
