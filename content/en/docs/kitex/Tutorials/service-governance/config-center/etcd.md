@@ -1,7 +1,7 @@
 ---
 title: "Etcd"
 date: 2023-11-29
-weight: 2
+weight: 1
 keywords: ["ConfigCenter Extension","etcd"]
 description: "Use etcd as Kitex’s service governance configuration center"
 

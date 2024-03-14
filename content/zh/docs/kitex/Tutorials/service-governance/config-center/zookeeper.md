@@ -1,7 +1,7 @@
 ---
 title: "Zookeeper"
 date: 2023-12-18
-weight: 6
+weight: 5
 keywords: ["配置中心扩展","ZooKeeper"]
 description: "使用 ZooKeeper 作为 Kitex 的服务治理配置中心"
 

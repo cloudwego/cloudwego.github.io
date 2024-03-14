@@ -43,7 +43,7 @@ if err != nil {
 }
 ```
 
-The `generic.NewThriftFileProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
+The `generic.NewThriftFileProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
 #### Protobuf
 
@@ -93,7 +93,7 @@ if err != nil {
 }
 ```
 
-The `generic.NewThriftContentProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
+The `generic.NewThriftContentProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
 #### Protobuf
 
@@ -161,7 +161,7 @@ if err != nil {
 }
 ```
 
-The `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
+The `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` integrates [dynamicgo](https://github.com/cloudwego/dynamicgo) for improved performance when processing RPC data. For more details, see the [dynamicgo integration guide](/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
 In Kitex, the `generic.Generic` interface represents a generic call, with different implementations for different types of generic calls. A `Generic` instance is required when creating both clients and servers.
 
@@ -175,13 +175,13 @@ The client-side interfaces are all under the `github.com/cloudwego/kitex/client/
 
 Function signature: `func NewClient(destService string, g generic.Generic, opts ...client.Option) (Client, error)`
 
-Description: This function takes the target service name, a Generic object, and optional Option parameters, returning a generic call client. For details on Option parameters, see [Client Option](https://www.cloudwego.io/docs/kitex/tutorials/options/client_options/)
+Description: This function takes the target service name, a Generic object, and optional Option parameters, returning a generic call client. For details on Option parameters, see [Client Option](/docs/kitex/tutorials/options/client_options/)
 
 #### NewClientWithServiceInfo
 
 Function signature: `func NewClientWithServiceInfo(destService string, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...client.Option) (Client, error)`
 
-Description: This function requires the target service name, a Generic object, custom service information, and optional Option parameters to return a generic call client. For details on Option parameters, see [Client Option](https://www.cloudwego.io/docs/kitex/tutorials/options/client_options/)
+Description: This function requires the target service name, a Generic object, custom service information, and optional Option parameters to return a generic call client. For details on Option parameters, see [Client Option](/docs/kitex/tutorials/options/client_options/)
 
 ## Server-Side Interface
 
@@ -207,13 +207,13 @@ The server-side interfaces are all under the `github.com/cloudwego/kitex/client/
 
 Function signature: `func NewServer(handler generic.Service, g generic.Generic, opts ...server.Option) server.Server`
 
-Description: This function requires a generic call service instance, a Generic object, and optional Option parameters to return a Kitex server. For details on Option parameters, see [Server Option](https://www.cloudwego.io/docs/kitex/tutorials/options/server_options/)
+Description: This function requires a generic call service instance, a Generic object, and optional Option parameters to return a Kitex server. For details on Option parameters, see [Server Option](/docs/kitex/tutorials/options/server_options/)
 
 #### NewServerWithServiceInfo
 
 Function signature: `func NewServerWithServiceInfo(handler generic.Service, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...server.Option) server.Server`
 
-Description: This function takes a generic call service instance, a Generic object, custom service information, and optional Option parameters to return a Kitex server. For details on Option parameters, see [Server Option](https://www.cloudwego.io/docs/kitex/tutorials/options/server_options/)
+Description: This function takes a generic call service instance, a Generic object, custom service information, and optional Option parameters to return a Kitex server. For details on Option parameters, see [Server Option](/docs/kitex/tutorials/options/server_options/)
 
 ## Generic Call Scenarios
 
@@ -304,7 +304,7 @@ Description: Takes an IDL Provider to return a Thrift JSON generic call object, 
 
 Function signature: `func JSONPbGeneric(p PbDescriptorProviderDynamicGo, opts ...Option) (Generic, error)`
 
-Description: Takes an IDL Provider and optional Option parametersand optional Option parameters to return a Protobuf JSON generic call object. Details of Option parameters are provided later in the text.
+Description: Currently only applicable to the KitexProtobuf protocol. Takes an IDL Provider and optional Option parametersand optional Option parameters to return a Protobuf JSON generic call object. Details of Option parameters are provided later in the text.
 
 ### Map Generic Call
 
@@ -326,7 +326,7 @@ Kitex offers Option parameters for customizing configurations when creating a Ge
 
 Function signature:`func WithCustomDynamicGoConvOpts(opts *conv.Options) Option`
 
-Description: Customizes `conv.Option` configurations when using `dynamicgo`. Configuration details can be found at [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv). For details on integrating dynamicgo, see the [dynamicgo integration guide](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
+Description: Customizes `conv.Option` configurations when using `dynamicgo`. Configuration details can be found at [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv). For details on integrating dynamicgo, see the [dynamicgo integration guide](/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
 
 #### UseRawBodyForHTTPResp
 

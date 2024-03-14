@@ -64,7 +64,7 @@ Hertz provides a series of code examples designed to help users get start with H
 - [i18n](https://github.com/hertz-contrib/i18n/tree/main/example) ：Example of using i18n middleware
 - [session](https://github.com/hertz-contrib/sessions/tree/main/_example) ：Example of using session middleware
 - [KeyAuth](https://github.com/hertz-contrib/keyauth/tree/main/example) ：Example of using KeyAuth middleware
-- [Swagger](https://github.com/swaggo/gin-swagger/tree/master/example) ：Example of using Swagger middleware
+- [Swagger](https://github.com/hertz-contrib/swagger/tree/main/example/basic) ：Example of using Swagger middleware
 - [access log](https://github.com/hertz-contrib/logger/tree/main/accesslog/example) ：Example of using access log middleware
 - [Secure](https://github.com/hertz-contrib/secure/tree/main/example/custom) ：Example of using Secure middleware
 - [Sentry](https://github.com/hertz-contrib/hertzsentry) ：Example of using Sentry middleware

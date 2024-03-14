@@ -30,7 +30,7 @@ For specific comparison results, please refer to the section "Test Data" below.
 
 ## Usage example
 
-The following will demonstrate how to generalize calls based on **kitex-binary generalization + dynamicgo** . Note unfamiliar kitex-binary generalization colleagues can refer to [generic-call documents ](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic)first.
+The following will demonstrate how to generalize calls based on **kitex-binary generalization + dynamicgo** . Note unfamiliar kitex-binary generalization colleagues can refer to [generic-call documents ](/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic)first.
 
 See the complete example:
 

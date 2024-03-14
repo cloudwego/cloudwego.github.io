@@ -11,10 +11,6 @@ description: "Volo-Thrift 开发环境准备、快速上手与基础教程。"
 Volo 提供了同名的命令行工具，用来初始化项目、管理 IDL 等。
 
 ```bash
-rustup default nightly
-```
-
-```bash
 cargo install volo-cli
 ```
 

@@ -60,7 +60,7 @@ CloudWeGo 下的项目主要有三个特点：**高性能**、**高扩展性**�
 
 ### Hz
 
-在开源的时候，Hertz 的脚手架工具 [hz](https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/) 已经提供基于 IDL 生成 server 的能力，也就是图中的 3、4、5 部分我们已经支持了，目前可以根据 IDL 的接口定义来自动生成路由注册、handler 代码等功能；
+在开源的时候，Hertz 的脚手架工具 [hz](/zh/docs/hertz/tutorials/toolkit/) 已经提供基于 IDL 生成 server 的能力，也就是图中的 3、4、5 部分我们已经支持了，目前可以根据 IDL 的接口定义来自动生成路由注册、handler 代码等功能；
 但是作为一个通信框架，我们也需要完成 client 端的生成工作，也就是图中的 1、2、6 过程，因此 hz 在开源后支持了生成 client 代码的能力。
 
 ![image](/img/blog/CloudWeGo_Usability_Construction/hz.png)
@@ -104,7 +104,7 @@ Client 端生成的目的主要是可以屏蔽掉初始化 Hertz client 、发�
 
 其次，我们提供了丰富的示例代码库。
 
-目前，我们提供了 [hertz-example](https://github.com/cloudwego/hertz-examples)、[kitex-example]((https://github.com/cloudwego/kitex-examples)) 代码库，这里包含了所有常用 Feature 的可执行的使用实例，并且定期更新、维护。
+目前，我们提供了 [hertz-example](https://github.com/cloudwego/hertz-examples)、[kitex-example](https://github.com/cloudwego/kitex-examples) 代码库，这里包含了所有常用 Feature 的可执行的使用实例，并且定期更新、维护。
 
 另外，为了使得业务更快地能使用 CloudWeGo 项目完成业务逻辑开发，我们提供了若干个真实场景的 demo，目前提供了如下的 demo，其中下面的几个业务代码都是使用了 Hertz 和 Kitex 进行开发或者重构，大家可以在此基础上拓展自己的业务逻辑，完成业务的快速上线。
 1. [Bookinfo](https://github.com/cloudwego/biz-demo/tree/main/bookinfo): 使用 Hertz+Kitex 重新实现 IstioBookinfo

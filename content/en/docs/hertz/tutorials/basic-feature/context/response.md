@@ -238,7 +238,7 @@ attribute cookies. Partitioned cookies (also known as [CHIPS](https://developers
 are introduced as a privacy-preserving alternative for third-party cookies in cross-site requests.
 
 Support for partitioned cookies is available as an experimental feature since version 0.8.0, following the current
-[RFC draft]((https://www.ietf.org/archive/id/draft-cutler-httpbis-partitioned-cookies-01.html#name-partitioned-cookies-with-th))
+[RFC draft](https://www.ietf.org/archive/id/draft-cutler-httpbis-partitioned-cookies-01.html#name-partitioned-cookies-with-th)
 and subject to future changes.
 
 Example Code:

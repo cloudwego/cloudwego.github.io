@@ -66,4 +66,6 @@ We provide the [hertz-benchmark](https://github.com/cloudwego/hertz-benchmark) p
 - [Example](https://github.com/cloudwego/hertz-examples): A repository to host examples for Hertz.
 
 ## Blogs
+- [Getting Started with Hertz: Performance Testing Guide](/blog/2023/02/24/getting-started-with-hertz-performance-testing-guide/)
+- [Hertz, an Ultra Large Scale Enterprise-Level Microservice HTTP Framework, is Now Officially Open Source!](/blog/2022/06/21/hertz-an-ultra-large-scale-enterprise-level-microservice-http-framework-is-now-officially-open-source/)
 - [ByteDance Practice on Go Network Library](/blog/2020/05/24/bytedance-practices-on-go-network-library/)

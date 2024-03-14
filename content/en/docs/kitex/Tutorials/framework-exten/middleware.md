@@ -5,9 +5,6 @@ weight: 1
 description: >
 ---
 
-## Introduction
-Kitex, as a lightweight RPC framework, offers powerful extensibility and primarily provides two methods of extension: one is a relatively low-level approach that involves adding middleware directly, and the other is a higher-level approach that involves adding suites. The following mainly introduces the usage of middleware.
-
 ## Middleware
 Middleware is a relatively low level of extension. Most of the Kitex-based extension and secondary development functions are based on middleware to achieve. Kitex's Middleware is defined in `pkg/endpoint/endpoint.go`, the most important of which are two types:
 
@@ -44,7 +41,7 @@ Middlewares are used in a chained manner. By invoking the provided next function
 
 3. Middlewares set by `client.WithMiddleware`
 
-4. ACLMiddleware, see [Customized Access Control](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
+4. ACLMiddleware, see [Customized Access Control](/docs/kitex/tutorials/service-governance/access_control/)
 
 5. Service Discovery , Instance circuit breaker , Instance-Level Middleware/Service Discovery, Proxy Middleware
 
@@ -72,7 +69,7 @@ Note: Context Middleware executes before middleware set by `client.WithMiddlewar
 
 1. Middleware set by `server.WithMiddleware`
 
-2. ACLMiddleware, see [Customized Access Control](https://www.cloudwego.io/docs/kitex/tutorials/service-governance/access_control/)
+2. ACLMiddleware, see [Customized Access Control](/docs/kitex/tutorials/service-governance/access_control/)
 
 3. Error handler set by `client.WithErrorHandler`
 

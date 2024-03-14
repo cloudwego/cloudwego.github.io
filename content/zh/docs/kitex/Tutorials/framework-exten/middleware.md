@@ -5,9 +5,6 @@ weight: 1
 description: >
 ---
 
-## 介绍
-Kitex 作为一个轻量级的 RPC 框架，提供了十分强大的扩展性，主要提供了两种扩展的方法：一种比较 low level 的是直接增加 middleware 中间件；还有一种比较 high level 的方法是增加 suite 套件。以下主要介绍 middleware 中间件的使用方式。
-
 ## Middleware
 
 middleware 是一种比较 low level 的扩展方式，大部分基于 Kitex 的扩展和二次开发的功能都是基于 middleware 来实现的。
@@ -45,7 +42,7 @@ type Middleware func(Endpoint) Endpoint
 
 3. `client.WithMiddleware` 设置的中间件，按其在 Option 中的设置顺序执行
 
-4. ACLMiddleware，参见[自定义访问控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/access_control/)
+4. ACLMiddleware，参见[自定义访问控制](/zh/docs/kitex/tutorials/service-governance/access_control/)
 
 5. 服务发现、实例熔断、实例级 Middleware / 服务发现、代理 Middleware
 
@@ -72,7 +69,7 @@ Context 中间件的引入是为了提供一种能够全局或者动态注入 Cl
 
 1. `server.WithMiddleware` 设置的中间件，按其在 Option 中的设置顺序执行
 
-2. ACLMiddleware，参见[自定义访问控制](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/access_control/)
+2. ACLMiddleware，参见[自定义访问控制](/zh/docs/kitex/tutorials/service-governance/access_control/)
 
 3. `server.WithErrorHandler` 设置的中间件
 

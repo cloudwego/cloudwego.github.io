@@ -44,7 +44,7 @@ if err != nil {
 }
 ```
 
-`generic.NewThriftFileProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
+`generic.NewThriftFileProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
 #### Protobuf
 
@@ -94,7 +94,7 @@ if err != nil {
 }
 ```
 
-`generic.NewThriftContentProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
+`generic.NewThriftContentProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
 #### Protobuf
 
@@ -162,7 +162,7 @@ if err != nil {
 }
 ```
 
-`generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` 在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
+`generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` 在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
 Ktiex 中使用 `generic.Generic` 接口表示泛化调用，不同泛化调用类型有不同实现。在创建客户端或服务端时都需要传入 `Generic` 实例。
 
@@ -176,13 +176,13 @@ Ktiex 中使用 `generic.Generic` 接口表示泛化调用，不同泛化调用�
 
 函数签名：`func NewClient(destService string, g generic.Generic, opts ...client.Option) (Client, error)`
 
-说明：传入目标服务名，Generic 对象与可选 Option 参数，返回泛化调用客户端。Option 参数详见 [Client Option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/client_options/)
+说明：传入目标服务名，Generic 对象与可选 Option 参数，返回泛化调用客户端。Option 参数详见 [Client Option](/zh/docs/kitex/tutorials/options/client_options/)
 
 #### NewClientWithServiceInfo
 
 函数签名：`func NewClientWithServiceInfo(destService string, g generic.Generic, svcInfo *serviceinfo.ServiceInfo, opts ...client.Option) (Client, error)`
 
-说明：传入目标服务名，Generic 对象，自定义服务信息与可选 Option 参数，返回泛化调用客户端。Option 参数详见 [Client Option](https://www.cloudwego.io/zh/docs/kitex/tutorials/options/client_options/)。
+说明：传入目标服务名，Generic 对象，自定义服务信息与可选 Option 参数，返回泛化调用客户端。Option 参数详见 [Client Option](/zh/docs/kitex/tutorials/options/client_options/)。
 
 ## 服务端接口
 
@@ -300,7 +300,7 @@ type Generic interface {
 
 函数签名：`func JSONPbGeneric(p PbDescriptorProviderDynamicGo, opts ...Option) (Generic, error)`
 
-说明：传入 IDL Provider 与可选 Option 参数，返回 Protobuf JSON 泛化调用对象，Option 参数详见下文。
+说明：目前只针对 KitexProtobuf 协议。传入 IDL Provider 与可选 Option 参数，返回 Protobuf JSON 泛化调用对象，Option 参数详见下文。
 
 ### Map 泛化调用
 
@@ -322,7 +322,7 @@ Kitex 提供 Option 参数用于在创建 Generic 时自定义配置，包括以
 
 函数签名：`func WithCustomDynamicGoConvOpts(opts *conv.Options) Option`
 
-说明：启用 `dynamicgo` 时自定义 `conv.Option` 配置，配置详情见 [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv)。接入 dynamicgo 详情见[接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
+说明：启用 `dynamicgo` 时自定义 `conv.Option` 配置，配置详情见 [dynamicgo conv](https://github.com/cloudwego/dynamicgo/tree/main/conv)。接入 dynamicgo 详情见[接入 dynamicgo 指南](/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
 #### UseRawBodyForHTTPResp
 

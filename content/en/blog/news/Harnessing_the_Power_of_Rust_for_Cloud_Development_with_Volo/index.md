@@ -12,7 +12,7 @@ author:  <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>,
 
 ## I. Introduction
 
-Every tool in the [CloudWeGo](https://www.cloudwego.io) open-source ecosystem has been developed with the aim of simplifying and revolutionizing how developers navigate the cloud environment. An essential part of this ecosystem is [Volo](https://www.cloudwego.io/docs/volo/), a Rust RPC framework designed to provide a seamless and efficient communication infrastructure. 
+Every tool in the [CloudWeGo](https://www.cloudwego.io) open-source ecosystem has been developed with the aim of simplifying and revolutionizing how developers navigate the cloud environment. An essential part of this ecosystem is [Volo](/docs/volo/), a Rust RPC framework designed to provide a seamless and efficient communication infrastructure. 
 
 This guide aims to provide in-depth insights into leveraging Volo in your projects. Built with [Rust](https://www.rust-lang.org), Volo brings unique features and advantages into the mix.
 
@@ -45,7 +45,7 @@ CloudWeGo provides a robust set of tools to work with, one of which is Volo. Her
 If you don’t have the Rust development environment set up, please follow [Install Rust](https://www.rust-lang.org/tools/install) to download Rustup and install Rust. Volo supports Linux, macOS, and Windows systems by default.
 
 #### Install the CLI tool
-Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more. To install Volo tool, you need to switch to nightly channel and run the following command: `rustup default nightly cargo install volo-cli`.
+Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more. To install Volo tool, run the following command: `cargo install volo-cli`.
 
 Then run: `volo help`
 
@@ -264,7 +264,7 @@ This separation is because Rust's compilation operates on a crate-by-crate basis
 
 **- How compatible is it with Kitex?**
 
-Volo is fully compatible with [Kitex](https://www.cloudwego.io/blog/2024/01/10/mastering-golang-microservices-a-practical-guide-embrace-high-performance-with-kitex-and-hertz/), including functionalities like metadata transmission.
+Volo is fully compatible with [Kitex](/blog/2024/01/10/mastering-golang-microservices-a-practical-guide-embrace-high-performance-with-kitex-and-hertz/), including functionalities like metadata transmission.
 
 ## VI. Conclusion
 

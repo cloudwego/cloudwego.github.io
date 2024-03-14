@@ -10,7 +10,7 @@ description: "This document covers the preparation of the development environmen
 
 ## Overview
 
-The Quick Start section is primarily aimed at developers who are new to Kitex. This section does not cover complex service governance topics but aims to provide users with a basic understanding and quick usage of Kitex's RPC functionality. You can find more information in the [Tutorials](https://www.cloudwego.io/docs/kitex/tutorials/).
+The Quick Start section is primarily aimed at developers who are new to Kitex. This section does not cover complex service governance topics but aims to provide users with a basic understanding and quick usage of Kitex's RPC functionality. You can find more information in the [Tutorials](/docs/kitex/tutorials/).
 
 If you are a beginner, it is recommended to follow the order of **Prerequisites** -> **Basic Examples** -> **Advanced Tutorials** to complete the Quick Start section. If you already have some development experience, you can directly read the **Advanced Tutorials** and start your Kitex journey after completing all the sections.
 

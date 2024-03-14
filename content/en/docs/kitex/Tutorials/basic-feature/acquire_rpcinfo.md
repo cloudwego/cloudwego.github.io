@@ -52,4 +52,4 @@ go func(ctx context.Context) {
 
 ## Meta Info Transparent Transmission
 
-Please see [Meta Info Transparent Transmission](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/metainfo/).
+Please see [Meta Info Transparent Transmission](/docs/kitex/tutorials/advanced-feature/metainfo/).
