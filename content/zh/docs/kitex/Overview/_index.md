@@ -24,7 +24,8 @@ Kitex[kaɪt'eks] 字节跳动内部的 Golang 微服务 RPC 框架，具有**高
 
 - **多消息协议**
 
-  RPC 消息协议默认支持 **Thrift**、**Kitex Protobuf**、**gRPC**。Thrift 支持 Buffered 和 Framed 二进制协议；Kitex Protobuf 是 Kitex 自定义的 Protobuf 消息协议，协议格式类似 Thrift；gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 互通。除此之外，使用者也可以扩展自己的消息协议。
+  RPC 消息协议默认支持 **Thrift**、**Kitex Protobuf**、**gRPC**。Thrift 支持 Buffered 和 Framed 二进制协议，与支持原生 Thrift 协议的多语言框架都能互通；
+  Kitex Protobuf 是 Kitex 自定义的 Protobuf 消息协议，协议格式类似 Thrift；gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 互通。除此之外，使用者也可以扩展自己的消息协议，目前社区也提供了 Dubbo 协议的支持，可以与 Dubbo 互通。
 
 - **多传输协议**
 
