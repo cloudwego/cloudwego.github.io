@@ -11,6 +11,7 @@ Kitex provides these LoadBalancers officially:
 - WeightedRoundRobin
 - InterleavedWeightedRoundRobin (kitex >= v0.7.0)
 - WeightedRandom
+- Alias Method（kitex >= v0.9.0）
 - ConsistentHash
 - Tagging Based
 
@@ -56,6 +57,17 @@ If all instances have the same weights, it uses a purely random implementation t
 ```go
 cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewWeightedRandomBalancer()))
 ```
+
+## Alias Method
+
+LoadBalancer that uses the Alias Method, specifically implementing Vose's Alias Method from [Darts, Dice, and Coins](https://www.keithschwarz.com/darts-dice-coins/).
+
+Generates an alias table in O(n) time, then selects an instance in O(1) time, achieving higher selection efficiency than [WeightedRandom](#weightedrandom).
+
+```go
+cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewWeightedRandomWithAliasMethodBalancer()))
+```
+
 ## ConsistentHash
 
 ### Introduction

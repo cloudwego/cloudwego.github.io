@@ -11,6 +11,7 @@ Kitex 默认提供了以下几种 LoadBalancer：
 - WeightedRoundRobin
 - InterleavedWeightedRoundRobin（kitex >= v0.7.0）
 - WeightedRandom
+- Alias Method（kitex >= v0.9.0）
 - ConsistentHash
 - Tagging Based
 
@@ -56,6 +57,17 @@ cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewInterl
 ```go
 cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewWeightedRandomBalancer()))
 ```
+
+## Alias Method
+
+使用别名方法的 LoadBalancer ，具体来说实现的是 [Darts, Dice, and Coins](https://www.keithschwarz.com/darts-dice-coins/) 中的 Vose's Alias Method
+
+使用 O(n) 时间生成别名表，之后在 O(1) 时间内选取实例，选取效率比 [WeightedRandom](#weightedrandom) 更高
+
+```go
+cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewWeightedRandomWithAliasMethodBalancer()))
+```
+
 
 ## ConsistentHash
 
