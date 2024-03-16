@@ -373,14 +373,15 @@ Next, let's write the code to make the invocation:
 ```go
 import "example_shop/kitex_gen/example/shop/item"
 ...
-req := &api.Request{Message: "my request"}
-resp, err := c.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
+req := item.NewGetItemReq()
+req.Id = 1024
+resp, err := cli.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
 if err != nil {
   log.Fatal(err)
 }
 ```
 
-In the above code, we first create a request `req`, and then make the invocation using `c.GetItem`.
+In the above code, we first create a request `req`, and then make the invocation using `cli.GetItem`.
 
 The first parameter is `context.Context`, which is typically used to pass information or control some behaviors of the invocation. You can find how to use it in the following sections.
 
@@ -816,7 +817,7 @@ In this example, the item service and the API service need to call other service
 In the previous code, we placed the logic for the item service to call the stock service in `rpc/item/handler.go`. Therefore, we will add the logic in the `NewStockClient` function in this file:
 
 ```go
-func NewStockClient(addr string) (stockservice.Client, error) {
+func NewStockClient() (stockservice.Client, error) {
     // Please provide the actual address of the etcd service when using. In this example, it is 127.0.0.1:2379.
     r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
     if err != nil {
