@@ -381,7 +381,7 @@ if err != nil {
 }
 ```
 
-In the above code, we first create a request `req`, and then make the invocation using `cli.GetItem`.
+In the above code, we first create a request `req`, and then make the invocation using `cli.GetItem`. [Click here](https://github.com/cloudwego/kitex-examples/blob/ac2581cb444e88e1008b62b4eb40a9ff72373bf2/basic/example_shop/api/main.go#L56) for code detail.
 
 The first parameter is `context.Context`, which is typically used to pass information or control some behaviors of the invocation. You can find how to use it in the following sections.
 
