@@ -104,7 +104,7 @@ package main
 import (
     "context"
     "fmt"
-    
+
     "xx/echo"
     "xx/echo/echoservice"
     
@@ -309,11 +309,11 @@ package main
 
 import (
     "context"
-	"time"
-
+    "time"
+    
     "xx/echo"
     "xx/echo/echoservice"
-
+    
     "github.com/cloudwego/kitex/client"
 }
 
@@ -344,12 +344,12 @@ package main
 
 import (
     "context"
-	"log"
-	"time"
-
+    "log"
+    "time"
+    
     "xx/echo"
     "xx/echo/echoservice"
-
+    
     "github.com/cloudwego/kitex/client"
 }
 
@@ -383,12 +383,12 @@ package main
 
 import (
     "context"
-	"log"
-	"time"
-
+    "log"
+    "time"
+    
     "xx/echo"
     "xx/echo/echoservice"
-
+    
     "github.com/cloudwego/kitex/client"
 }
 
