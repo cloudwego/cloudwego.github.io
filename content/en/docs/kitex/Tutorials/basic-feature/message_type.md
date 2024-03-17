@@ -67,10 +67,10 @@ The handler code on server side:
 package main
 
 import (
+    "context"
+
     "xx/echo"
     "xx/echo/echoservice"
-
-    "context"
 )
 
 type handler struct {}
@@ -102,11 +102,11 @@ The code on client side:
 package main
 
 import (
-    "xx/echo"
-    "xx/echo/echoservice"
-
     "context"
     "fmt"
+
+    "xx/echo"
+    "xx/echo/echoservice"
 	
 	"github.com/cloudwego/kitex/client"
 )
@@ -136,12 +136,12 @@ The code on client side:
 package main
 
 import (
+    "context"
+
     "xx/echo"
     "xx/echo/echoservice"
     
     "github.com/cloudwego/kitex/client"
-
-	"context"
 )
 
 func main() {
@@ -308,13 +308,13 @@ ClientSideStreaming:
 package main
 
 import (
+    "context"
+	"time"
+
     "xx/echo"
     "xx/echo/echoservice"
 
     "github.com/cloudwego/kitex/client"
-
-	"context"
-	"time"
 }
 
 func main() {
@@ -343,14 +343,14 @@ ServerSideStreaming:
 package main
 
 import (
+    "context"
+	"log"
+	"time"
+
     "xx/echo"
     "xx/echo/echoservice"
 
     "github.com/cloudwego/kitex/client"
-
-	"context"
-	"log"
-	"time"
 }
 
 func main() {
@@ -382,14 +382,14 @@ BidiSideStreaming:
 package main
 
 import (
+    "context"
+	"log"
+	"time"
+
     "xx/echo"
     "xx/echo/echoservice"
 
     "github.com/cloudwego/kitex/client"
-	
-	"context"
-	"log"
-	"time"
 }
 
 func main() {
