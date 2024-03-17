@@ -104,11 +104,11 @@ package main
 import (
     "context"
     "fmt"
-
+    
     "xx/echo"
     "xx/echo/echoservice"
-	
-	"github.com/cloudwego/kitex/client"
+    
+    "github.com/cloudwego/kitex/client"
 )
 
 func main() {
@@ -217,10 +217,10 @@ Server 侧代码 :
 package main
 
 import (
-	"log"
-	"time"
+    "log"
+    "time"
     "context"
-
+    
     "xx/echo"
     "xx/echo/echoservice"
 }
@@ -291,12 +291,12 @@ func (handler) BidiSideStreaming(stream echo.EchoService_BidiSideStreamingServer
 
 func main() {
     svr := echo.NewServer(handler{})
-
-	err := svr.Run()
-
-	if err != nil {
-		log.Println(err.Error())
-	}
+    
+    err := svr.Run()
+    
+    if err != nil {
+        log.Println(err.Error())
+    }
 }
 ```
 
