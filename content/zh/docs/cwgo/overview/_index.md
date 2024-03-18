@@ -17,6 +17,8 @@ cwgo 工具支持在 MAC 、Linux 和 Windows 环境下开发，可以方便生�
 
   cwgo 工具支持生成 Kitex、Hertz 的 Server 和 Client 代码，提供了对 Client 的封装。用户可以开箱即用的调用下游，免去封装 Client 的繁琐步骤。
 
+  cwgo Server 支持在一个端口同时启用 HTTP 服务和 RPC 服务，详见[hex用法示例](https://github.com/cloudwego/hertz-examples/tree/main/hex)。
+
 - 支持生成关系型数据库代码
 
   cwgo 工具支持生成关系型数据库 CURD 代码。用户无需再自行封装繁琐的 CURD 代码，提高用户的工作效率。
