@@ -67,6 +67,8 @@ Server 的处理代码形如 :
 package main
 
 import (
+    "context"
+
     "xx/echo"
     "xx/echo/echoservice"
 )
@@ -75,7 +77,7 @@ type handler struct {}
 
 func (handler) Echo(ctx context.Context, req *echo.Request) (r *echo.Response, err error) {
     //...
-    return &echo.Response{ Msg: "world" }
+    return &echo.Response{ Msg: "world" }, err
 }
 
 func (handler) VisitOneway(ctx context.Context, req *echo.Request) (err error) {
@@ -84,11 +86,11 @@ func (handler) VisitOneway(ctx context.Context, req *echo.Request) (err error) {
 }
 
 func main() {
-    svr, err := echoservice.NewServer(handler{})
+    svr := echo.NewServer(handler{})
+	err := svr.Run()
     if err != nil {
         panic(err)
     }
-    svr.Run()
 }
 ```
 
@@ -100,21 +102,28 @@ Client 侧代码 :
 package main
 
 import (
+    "context"
+    "fmt"
+
     "xx/echo"
     "xx/echo/echoservice"
+    
+    "github.com/cloudwego/kitex/client"
 )
 
 func main() {
-    cli, err := echoservice.NewClient("destServiceName")
+    cli, err := echoservice.NewClient("destServiceName", client.WithHostPorts("0.0.0.0:8888"))
     if err != nil {
         panic(err)
     }
     req := echo.NewRequest()
     req.Msg = "hello"
-    resp, err := cli.Echo(req)
+    resp, err := cli.Echo(context.Background(), req)
     if err != nil {
         panic(err)
     }
+    
+    fmt.Println(resp.Msg)
     // resp.Msg == "world"
 }
 ```
@@ -127,18 +136,22 @@ Client 侧代码 :
 package main
 
 import (
+    "context"
+
     "xx/echo"
     "xx/echo/echoservice"
+    
+    "github.com/cloudwego/kitex/client"
 )
 
 func main() {
-    cli, err := echoservice.NewClient("destServiceName")
+    cli, err := echoservice.NewClient("destServiceName", client.WithHostPorts("0.0.0.0:8888"))
     if err != nil {
         panic(err)
     }
     req := echo.NewRequest()
     req.Msg = "hello"
-    err = cli.VisitOneway(req)
+    err = cli.VisitOneway(context.Background(), req)
     if err != nil {
         panic(err)
     }
@@ -190,6 +203,7 @@ service EchoService {
 └── kitex_gen
     └── echo
         ├── echo.pb.go
+        ├── echo.pb.fast.go
         └── echoservice
             ├── client.go
             ├── echoservice.go
@@ -203,8 +217,10 @@ Server 侧代码 :
 package main
 
 import (
-    "sync"
-
+    "log"
+    "time"
+    "context"
+    
     "xx/echo"
     "xx/echo/echoservice"
 }
@@ -217,6 +233,7 @@ func (handler) ClientSideStreaming(stream echo.EchoService_ClientSideStreamingSe
         if err != nil {
             return err
         }
+        log.Println("received:" , req.GetMsg())
     }
 }
 
@@ -231,37 +248,55 @@ func (handler) ServerSideStreaming(req *echo.Request, stream echo.EchoService_Se
 }
 
 func (handler) BidiSideStreaming(stream echo.EchoService_BidiSideStreamingServer) (err error) {
-    var once sync.Once
-    go func() {
-        for {
-            req, err2 := stream.Recv()
-            log.Println("received:", req.GetMsg())
-            if err2 != nil {
-                once.Do(func() {
-                    err = err2
-                })
-                break
-            }
-        }
-    }()
-    for {
-        resp := &echo.Response{Msg: "world"}
-        if err2 := stream.Send(resp); err2 != nil {
-            once.Do(func() {
-                err = err2
-            })
-            return
-        }
-    }
-    return
+	ctx, cancel := context.WithCancel(context.Background())
+	errChan := make(chan error, 1)
+
+	go func() {
+		for {
+			select {
+			case <- ctx.Done():
+				return
+			default:
+				req,err := stream.Recv()
+				if err != nil {
+					errChan <- err
+					cancel()
+					return
+				}
+				log.Println("received:", req.GetMsg())
+			}
+		}
+	}()
+	go func() {
+		for {
+			select {
+			case <- ctx.Done():
+				return
+			default:
+				resp := &echo.Response{Msg: "world"}
+				if err := stream.Send(resp); err != nil {
+					errChan <- err
+					cancel()
+					return
+				}
+			}
+			time.Sleep(time.Second)
+		}
+	}()
+	
+	err = <-errChan
+	cancel()
+	return err
 }
 
 func main() {
-    svr, err := echoservice.NewServer(handler{})
+    svr := echo.NewServer(handler{})
+    
+    err := svr.Run()
+    
     if err != nil {
-        panic(err)
+        log.Println(err.Error())
     }
-    svr.Run()
 }
 ```
 
@@ -273,12 +308,17 @@ ClientSideStreaming:
 package main
 
 import (
+    "context"
+    "time"
+    
     "xx/echo"
     "xx/echo/echoservice"
+    
+    "github.com/cloudwego/kitex/client"
 }
 
 func main() {
-    cli, err := echoservice.NewClient("destServiceName")
+    cli, err := echoservice.NewClient("destServiceName", client.WithHostPorts("0.0.0.0:8888"))
     if err != nil {
         panic(err)
     }
@@ -291,6 +331,7 @@ func main() {
         if err := cliStream.Send(req); err != nil {
             panic(err)
         }
+        time.Sleep(time.Second)
     }
 
 }
@@ -302,12 +343,18 @@ ServerSideStreaming:
 package main
 
 import (
+    "context"
+    "log"
+    "time"
+    
     "xx/echo"
     "xx/echo/echoservice"
+    
+    "github.com/cloudwego/kitex/client"
 }
 
 func main() {
-    cli, err := echoservice.NewClient("destServiceName")
+    cli, err := echoseervice.NewClient("destServiceName", client.WithHostPorts("0.0.0.0:8888"))
     if err != nil {
         panic(err)
     }
@@ -318,9 +365,11 @@ func main() {
     }
     for {
         resp, err := svrStream.Recv()
+        log.Println("response:",resp.GetMsg())
         if err != nil {
             panic(err)
         }
+        time.Sleep(time.Second)
         // resp.Msg == "world"
     }
 
@@ -333,16 +382,21 @@ BidiSideStreaming:
 package main
 
 import (
+    "context"
+    "log"
+    "time"
+    
     "xx/echo"
     "xx/echo/echoservice"
+    
+    "github.com/cloudwego/kitex/client"
 }
 
 func main() {
-    cli, err := echoservice.NewClient("destServiceName")
+    cli, err := echoservice.NewClient("destServiceName", client.WithHostPorts("0.0.0.0:8888"))
     if err != nil {
         panic(err)
     }
-    req := &echo.Request{Msg: "hello"}
     bidiStream, err := cli.BidiSideStreaming(context.Background())
     if err != nil {
         panic(err)
@@ -354,6 +408,7 @@ func main() {
             if err != nil {
                 panic(err)
             }
+            time.Sleep(time.Second)
         }
     }()
     for {
@@ -361,6 +416,7 @@ func main() {
         if err != nil {
             panic(err)
         }
+        log.Println(resp.GetMsg())
         // resp.Msg == "world"
     }
 }
