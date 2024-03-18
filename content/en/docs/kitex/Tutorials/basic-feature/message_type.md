@@ -263,7 +263,7 @@ func (handler) BidiSideStreaming(stream echo.EchoService_BidiSideStreamingServer
 					cancel()
 					return
 				}
-				log.Println("recived:", req.GetMsg())
+				log.Println("received:", req.GetMsg())
 			}
 		}
 	}()
