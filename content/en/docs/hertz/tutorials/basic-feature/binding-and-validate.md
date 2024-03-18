@@ -90,6 +90,15 @@ type InfoRequest struct {
 
 When generating code through IDL, corresponding annotations need to be added, please refer to [field-annotation](/docs/hertz/tutorials/toolkit/annotation/#field-annotation).
 
+Here are common usage examples:
+
+- length validation for string and list `len($)>0`
+- regex pattern match for string `regexp('^\\w*$')"`
+- value validation for numertic field `$>0`
+- validation for pointer field `num==nil || num>0`
+- validation for enum types `type=="hello" || type == "world"`
+- custom error message `msg:'C must be false when S.A>0'"`
+
 ### Parameter binding precedence
 
 ```text
