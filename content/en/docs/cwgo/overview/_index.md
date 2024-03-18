@@ -17,6 +17,8 @@ The cwgo tool supports development in MAC, Linux, and Windows environments, and 
 
   The cwgo tool supports generating Server and Client codes of Kitex and Hertz, and provides an encapsulation of Client. Users can call downstream out of the box, eliminating the cumbersome steps of encapsulating the Client.
 
+  cwgo Server supports enabling both HTTP and RPC services on the same port. Please refer to [hex usage](https://github.com/cloudwego/hertz-examples/tree/main/hex).
+
 - Support for generating relational database code
 
   The cwgo tool supports generating relational database CURD code. Users no longer need to encapsulate the cumbersome CURD code by themselves, which improves the user's work efficiency.
