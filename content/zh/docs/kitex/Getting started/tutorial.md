@@ -381,7 +381,7 @@ if err != nil {
 }
 ```
 
-上述代码中，我们首先创建了一个请求 `req` , 然后通过 `cli.GetItem` 发起了调用。[点击此处](https://github.com/cloudwego/kitex-examples/blob/ac2581cb444e88e1008b62b4eb40a9ff72373bf2/basic/example_shop/api/main.go#L56)查看详细代码。
+上述代码中，我们首先创建了一个请求 `req` , 然后通过 `cli.GetItem` 发起了调用。[点击此处](https://github.com/cloudwego/kitex-examples/blob/v0.3.0/basic/example_shop/api/main.go#L56)查看详细代码。
 
 其第一个参数为 `context.Context`，通过通常用其传递信息或者控制本次调用的一些行为，你可以在后续章节中找到如何使用它。
 
