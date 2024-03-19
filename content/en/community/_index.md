@@ -34,9 +34,9 @@ First off, thank you for your interest in CloudWeGo. We are a very open and acti
       <a
         target="_blank"
         rel="noopener"
-        href="https://join.slack.com/t/cloudwego/shared_invite/zt-tmcbzewn-UjXMF3ZQsPhl7W3tEDZboA"
+        href="https://discord.gg/UX7MPbh7"
       >
-        <i class="fab fa-slack"></i> Slack:
+        <i class="fab fa-discord"></i> Slack:
       </a>
       Connect with us on Slack
     </li>
