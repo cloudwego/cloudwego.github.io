@@ -17,7 +17,7 @@ menu:
 ## Develop and Contribute
 
 First off, thank you for your interest in CloudWeGo. We are a very open and active community, where dedicated contributors of all levels are welcome to join to share their passion for open source, learn and upskill themselves.
-    You may participate in the community through GitHub, or simply by interacting with other members in CloudWeGo Slack channel:
+You may participate in the community through GitHub, or simply by interacting with other members in CloudWeGo Discord server:
 
   <ul>
     <li title="GitHub">
@@ -36,9 +36,9 @@ First off, thank you for your interest in CloudWeGo. We are a very open and acti
         rel="noopener"
         href="https://discord.gg/UX7MPbh7"
       >
-        <i class="fab fa-discord"></i> Slack:
+        <i class="fab fa-discord"></i> Discord:
       </a>
-      Connect with us on Slack
+      Connect with us.
     </li>
   </ul>
 
@@ -53,11 +53,11 @@ If you want to become a Contributor, please read the <a href="https://github.com
 - Volo (Volo & Volo ecosystem & volo-rs & Motore & Pilota)
 - Netpoll (Netpoll & Netpoll ecosystem)
 - Monoio (Monoio & Monoio ecosystem)
-- Serdes (Thriftgo & Frugal & Fastpb & Sonic & thrift-gen-validator)
+- Serdes (Thriftgo & Frugal & Fastpb & Sonic ecosystem & thrift-gen-validator)
 - Shmipc (shmipc-spec & shmipc-go)
 - Website & Docs (cloudwego.github.io)
 
-The community is structured with various roles to streamline day to day operations, and to recognize the efforts of longstanding contributors. Responsibilities for the various community roles fall under these subprojects (repos) as defined by the CloudWeGo team.
+The community is structured with various roles to streamline day-to-day operations, and to recognize the efforts of longstanding contributors. Responsibilities for the various community roles fall under these subprojects (repos) as defined by the CloudWeGo team.
 
  <table class='table table-bordered table-striped table-hover'>
       <thead>
