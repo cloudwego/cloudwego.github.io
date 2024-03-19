@@ -10,6 +10,8 @@ description: 本文介绍如何在 Thrift IDL 里定义并使用 Streaming API�
 
 许多业务场景（例如 LLM 的流式响应、大量数据传输）需要 Streaming API：先在 client、server instance 之间建立一个 Stream，然后基于该 Stream 进行消息的单向或双向收发。
 
+> 该特性是 Kitex v0.9.0 引入的，但有一些 tracing 相关问题是 v0.9.1 修复的，因此推荐使用新版，正文以新版为准、以简化内容。
+
 ### 名词解释
 
 #### PingPong API (KitexThrift)
@@ -47,7 +49,7 @@ Client/Server 的收、发均为独立的流，可根据业务需求，按任意
 
 #### 环境准备
 
-安装支持 Thrift Streaming 的 Kitex (不低于 v0.9.0) 和 Thriftgo （不低于 v0.3.6）：
+安装支持 Thrift Streaming 的 Kitex (不低于 v0.9.1) 和 Thriftgo （不低于 v0.3.6）：
 
 ```bash
 go install github.com/cloudwego/thriftgo@latest
@@ -171,8 +173,6 @@ stream, err := streamClient.Echo(ctx, streamcall.WithHostPorts("127.0.0.1:8888")
     1. 此时 Kitex 才会记录 RPCFinish 事件（Tracer 依赖该事件）
     2. 如 client 和 server 约定了其他结束方式，应主动调用 streaming.FinishStream(stream, err) 记录 RPCFinish 事件
 
-        1. 注：kitex v0.9.0 生成代码存在问题，需要用 kitex tool >= v0.9.1-rc1 重新生成
-
 示例代码：[kitex-examples:thrift_streaming/client/demo_client.go#L119](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/client/demo_client.go#L119)
 
 ##### Server Streaming API
@@ -188,8 +188,6 @@ stream, err := streamClient.Echo(ctx, streamcall.WithHostPorts("127.0.0.1:8888")
 注意：「Recv 返回 `io.EOF` 或其他 non-nil error」表示 server 已发送结束（或出错）
 1. 此时 Kitex 才会记录 RPCFinish 事件（Tracer 依赖该事件）
 2. 如 client 和 server 约定了其他结束方式，应主动调用 streaming.FinishStream(stream, err) 记录 RPCFinish 事件
-
-  1. 注：kitex v0.9.0 生成代码存在问题，需要用 kitex tool >= v0.9.1-rc1 重新生成问题，需要修复
 
 示例代码：[kitex-examples:thrift_streaming/client/demo_client.go#L185](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/client/demo_client.go#L185)
 
@@ -280,7 +278,7 @@ stream, err := streamClient.Echo(
 
 ##### 请求超时（不支持）
 没有对应的 Option。
-对于 Streaming API，[Kitex 的 Timeout 中间件会直接调用 next](https://github.com/cloudwego/kitex/blob/v0.9.0/client/rpctimeout.go#L101)。
+对于 Streaming API，[Kitex 的 Timeout 中间件会直接调用 next](https://github.com/cloudwego/kitex/blob/v0.9.1/client/rpctimeout.go#L101)。
 
 ##### Stream 超时
 可通过 `context.WithTimeout` 或 `context.WithDeadline` 创建带有 Deadline 的 context，并在创建 Stream 时指定该 context，用于控制 Stream 的整体执行时间：
@@ -302,11 +300,16 @@ stream, err := cli.Echo(ctx)
 
 ##### Recv/Send 超时
 可使用 Kitex 提供的 `streaming.CallWithTimeout` 方法。
+
+###### Client
+
 注意：
 1. 需要 **在创建 Stream 之前** 给 ctx 注入 cancel（用 WithCancel 或 WithTimeout 都可以，取决于需求）
 2. 将 cancel 方法作为 `streaming.CallWithTimeout` 的第二个参数
    
     1. 否则 Send/Recv 可能会长时间阻塞等待（取决于 server 端），导致 goroutine 泄漏
+
+3. Client 端的 `stream.Close()` 的语义是 `CloseSend`，告诉 server 不再会有新消息（server recv 返回 `io.EOF`），并不会结束接收消息，因此不能用于 cancel 方法。
 
 示例代码：
 ```go
@@ -331,6 +334,24 @@ var resp *test.Response
 err = streaming.CallWithTimeout(time.Second, cancel, func() (err error) {
     resp, err = stream.Recv()
     return err
+})
+```
+
+###### Server
+
+Server 端可以使用 `stream.Close()` 作为 cancel 方法。
+
+示例代码：
+
+```go
+var cancel context.CancelFunc = func() {
+    stream.Close() // the cancel func in streamContext will be called internally
+}
+
+var req *test.EchoRequest
+err = streaming.CallWithTimeout(time.Second, cancel, func() (errRecv error) {
+    req, errRecv = stream.Recv()
+    return errRecv
 })
 ```
 
@@ -442,7 +463,7 @@ func clientMW(next endpoint.Endpoint) endpoint.Endpoint {
 
 说明：
 - Server 中间件的 next 方法里涵盖了整个 server handler 的处理过程
-- request 总是 *[streaming.Args](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/streaming/streaming.go#L70) 类型，该类型包含的 Stream 最终会返回给业务代码
+- request 总是 *[streaming.Args](https://github.com/cloudwego/kitex/blob/v0.9.1/pkg/streaming/streaming.go#L70) 类型，该类型包含的 Stream 最终会返回给业务代码
   - 如有需要，可替换该 Stream，加入自定义逻辑（基于 [decorator 模式](https://zh.wikipedia.org/wiki/%E4%BF%AE%E9%A5%B0%E6%A8%A1%E5%BC%8F)）
 - response 总是 nil（包括 Client Streaming API）
 - 如获取到的 err != nil，说明内层 Server 中间件或 handler 返回了 error
@@ -591,8 +612,8 @@ svr := test.NewServer(new(TestServiceImpl),
 我们可以通过给用于创建 Stream 的 ctx 注入 key，实现在 middleware 之间共享数据的能力。
 
 Kitex 提供了一组简单的工具方法，通过给 ctx 注入一个 sync.Map ，以便在各 middleware 之间交换数据：
-- [contextmap.WithContextMap(ctx)](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/utils/contextmap/contextmap.go#L32C6-L32C20)
-- [contextmap.GetContextMap(ctx)](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/utils/contextmap/contextmap.go#L37)
+- [contextmap.WithContextMap(ctx)](https://github.com/cloudwego/kitex/blob/v0.9.1/pkg/utils/contextmap/contextmap.go#L32C6-L32C20)
+- [contextmap.GetContextMap(ctx)](https://github.com/cloudwego/kitex/blob/v0.9.1/pkg/utils/contextmap/contextmap.go#L37)
 
 注意：因为 Kitex 内部经常需要从 ctx 读取信息（例如 RPCInfo），**每注入一个 key 就增加读取链表的深度，会有一点性能损失**，因此 Kitex 默认不注入该 key
 
@@ -637,7 +658,7 @@ Server 端与 Client 端不同，进入 Middleware 时已经创建好了 Stream�
 - 该 `MetaHandler` 需要实现 `StreamingMetaHandler` 接口
 - 在该 handler 的 `OnReadStream` 里给 ctx 注入 `sync.Map`，返回新的 ctx
 
-Kitex（版本 >= v0.9.1-rc1） 提供了一个 customMetaHandler，以便在创建 stream 之前给 ctx 增加一个 key。你只需要在 server 初始化时指定如下 option：
+Kitex 提供了一个 customMetaHandler，以便在创建 stream 之前给 ctx 增加一个 key。你只需要在 server 初始化时指定如下 option：
 
 ```go
 server.WithMetaHandler(remote.NewCustomMetaHandler(remote.WithOnReadStream(
@@ -669,14 +690,13 @@ server.WithMetaHandler(remote.NewCustomMetaHandler(remote.WithOnReadStream(
 
 - 对于 Server/Bidirectional Streaming API，Kitex Client 将 `Recv()` 收到 non-nil error（`io.EOF` 或其他错误）作为流结束的标志，此时才会记录 RPCFinish 事件
   - 如果业务希望提前结束，应当调用 `streaming.FinishStream(stream, err)` 来产生 RPCFinish 事件
-    - 注：kitex v0.9.0 生成代码存在问题，需要用 kitex tool >= v0.9.1-rc1 重新生成
 - 对于 Client Streaming API，Kitex Client 将在 CloseAndRecv() 方法返回前自动记录 RPCFinish 事件
 
 Kitex 用户可以通过添加自己的 Tracer，在 Finish() 方法里处理该事件，详见 [Kitex - 可观测性 - 链路追踪 - 自定义 Tracer](/zh/docs/kitex/tutorials/observability/tracing/#%E8%87%AA%E5%AE%9A%E4%B9%89-tracer)
 
 #### 细粒度埋点：StreamSend 和 StreamRecv
 
-如果自定义 Tracer 实现了 [rpcinfo.StreamEventReporter](https://github.com/cloudwego/kitex/blob/v0.9.0-rc4/pkg/rpcinfo/tracer.go) 接口，Kitex 会注入 Recv、Send 中间件，在每次 Recv、Send 执行完后调用 tracer 的 ReportStreamEvent 方法；
+如果自定义 Tracer 实现了 [rpcinfo.StreamEventReporter](https://github.com/cloudwego/kitex/blob/v0.9.1/pkg/rpcinfo/tracer.go#L31) 接口，Kitex 会注入 Recv、Send 中间件，在每次 Recv、Send 执行完后调用 tracer 的 ReportStreamEvent 方法；
 在该方法里，可以获取到本次 Recv、Send 的消息大小：（注意不要另起 goroutine，否则可能读取到的不是本次调用）
 - ri.Stats().LastSendSize()
 - ri.Stats().LastRecvSize()
@@ -712,7 +732,6 @@ gRPC/HTTP2 的实现基于「本地缓冲区」，Send 和 Recv 操作是直接�
 
 - 对于 Server/Bidirectional Streaming API，Kitex Client 将 Recv() 收到 non-nil error（`io.EOF` 或其他错误）作为流结束的标志，此时才会记录 RPCFinish 事件
   - 如果业务希望提前结束，应当调用 streaming.FinishStream(stream, err) 来产生 RPCFinish 事件
-    - 注：kitex v0.9.0 生成代码存在问题，需要用 kitex tool >= v0.9.1-rc1 重新生成
 - 对于 Client Streaming API，Kitex Client 将在 CloseAndRecv() 方法返回前自动记录 RPCFinish 事件
 - StreamRecv/StreamSend 是在 Recv/Send 调用时实时触发的，不依赖 RPCFinish 事件
 
@@ -741,3 +760,28 @@ bizErr := rpcinfo.GetRPCInfo(stream.Context()).Invocation().BizStatusErr()
 不过如果该 gRPC library 支持二进制泛化调用，可以结合 thrift 编解码器，发送thrift payload 实现互通。
 
 注意: Kitex client 发送的 "content-type" header 值为 "application/grpc+thrift"
+
+### Server Streaming API：client 端如何提前结束 Stream？
+
+通过在发起请求前给 client 的 ctx 注入一个 cancel 方法，可以在需要的时候提前结束请求：
+
+```go
+ctx, cancel := context.WithCancel(origCtx) // or WithTimeout/WithDeadline, as needed
+defer cancel()
+
+st, err := streamClient.someServerStreamingAPI(ctx, req)
+
+// your business code
+// normally you should call st.Recv() until it returns a non-nil error (e.g. io.EOF)
+
+// end the receiving stream prematurely
+if someCondition {
+    cancel()
+    streaming.FinishStream(st, err) // necessary for generating the RPCFinish event here
+}
+```
+
+补充说明：
+- Server Streaming API，client 在发起请求、收到 stream 对象前，就已经关闭了 send stream（[在生成代码里调用的 close](https://github.com/cloudwego/kitex-examples/blob/v0.3.1/thrift_streaming/kitex_gen/echo/testservice/testservice.go#L336)），因此 client 不能再发送新的消息告知 server，只能用 cancel 的方式提前关闭链接，这样才能让 server 端感知到
+- 由于没有用 `st.Recv()` 收到 non-nil error，因此需要手动调用 `streaming.FinishStream(st, err)` 来产生该 stream 对应的 `RPCFinish` 事件
+- 对于 Bidirectional Streaming，这种方式也适用，但最好手动调用 `st.Close()` 或向 server 发送先前约定好的消息。无论哪种情况，都不要忘记调用 `streaming.FinishStream`
