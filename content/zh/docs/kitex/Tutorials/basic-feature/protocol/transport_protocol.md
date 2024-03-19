@@ -47,7 +47,7 @@ var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.TTHeader))
 opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
 
-cli := xxx.NewClient("service_name", opts)
+cli := xxx.NewClient("service_name", opts...)
 ```
 
 4. 指定 TTHeaderFramed：TTHeader | Framed (Bit OR)
@@ -56,7 +56,7 @@ cli := xxx.NewClient("service_name", opts)
 var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.TTHeaderFramed))
 opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
-cli := xxx.NewClient("service_name", opts)
+cli := xxx.NewClient("service_name", opts...)
 ```
 
 #### gRPC
@@ -67,7 +67,7 @@ client 指定 gRPC 协议：
 var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.GRPC))
 opts = append(opts, client.WithMetaHandler(transmeta.ClientHTTP2Handler))
-cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.GRPC))
+cli := xxx.NewClient("service_name", opts...)
 ```
 
 注意: 如果 IDL 中没有 Streaming API，则需要此选项来启用 gRPC 协议，否则 kitex 将仅发送 protobuf binary（而不是 gRPC）。
