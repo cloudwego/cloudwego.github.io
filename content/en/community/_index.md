@@ -30,7 +30,7 @@ You may participate in the community through GitHub, or simply by interacting wi
       </a>
       Development takes place here!
     </li>
-    <li title="Slack">
+    <li title="Discord">
       <a
         target="_blank"
         rel="noopener"
