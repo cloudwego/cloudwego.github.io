@@ -373,14 +373,15 @@ if err != nil {
 ```go
 import "example_shop/kitex_gen/example/shop/item"
 ...
-req := &api.Request{Message: "my request"}
-resp, err := c.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
+req := item.NewGetItemReq()
+req.Id = 1024
+resp, err := cli.GetItem(context.Background(), req, callopt.WithRPCTimeout(3*time.Second))
 if err != nil {
   log.Fatal(err)
 }
 ```
 
-上述代码中，我们首先创建了一个请求 `req` , 然后通过 `c.GetItem` 发起了调用。
+上述代码中，我们首先创建了一个请求 `req` , 然后通过 `cli.GetItem` 发起了调用。[点击此处](https://github.com/cloudwego/kitex-examples/blob/v0.3.0/basic/example_shop/api/main.go#L56)查看详细代码。
 
 其第一个参数为 `context.Context`，通过通常用其传递信息或者控制本次调用的一些行为，你可以在后续章节中找到如何使用它。
 
@@ -818,7 +819,7 @@ func NewEtcdResolverWithAuth(endpoints []string, username, password string) (dis
 在前面的代码中，我们将商品服务调用库存服务的逻辑放在了 `rpc/item/handler.go` 中，故我们在此文件的 `NewStockClient` 中添加逻辑：
 
 ```go
-func NewStockClient(addr string) (stockservice.Client, error) {
+func NewStockClient() (stockservice.Client, error) {
     // 使用时请传入真实 etcd 的服务地址，本例中为 127.0.0.1:2379
     r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
     if err != nil {
