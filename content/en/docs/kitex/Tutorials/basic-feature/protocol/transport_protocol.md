@@ -48,7 +48,7 @@ var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.TTHeader))
 opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
 
-cli := xxx.NewClient("service_name", opts)
+cli := xxx.NewClient("service_name", opts...)
 ```
 
 4. configure TTHeaderFramed: TTHeader | Framed (Bit OR)
@@ -57,7 +57,7 @@ cli := xxx.NewClient("service_name", opts)
 var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.TTHeaderFramed))
 opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
-cli := xxx.NewClient("service_name", opts)
+cli := xxx.NewClient("service_name", opts...)
 ```
 
 #### gRPC
@@ -68,7 +68,7 @@ client configures gRPC protocol：
 var opts []client.Option
 opts = append(opts, client.WithTransportProtocol(transport.GRPC))
 opts = append(opts, client.WithMetaHandler(transmeta.ClientHTTP2Handler))
-cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.GRPC))
+cli := xxx.NewClient("service_name", opts...)
 ```
 
 NOTE: if there's no streaming API in the IDL, this option is needed for enabling gRPC protocol, otherwise kitex will only send protobuf binary (not gRPC).
