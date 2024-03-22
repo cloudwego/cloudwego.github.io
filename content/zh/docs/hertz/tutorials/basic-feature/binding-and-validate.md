@@ -76,6 +76,29 @@ func main() {
 | vd       | 参数校验，[校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator)                                                                                                   |
 | default  | 设置默认值                                                                                                                                                                        |
 
+### 参数校验
+
+具体校验语法可参考[校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator)。
+
+不通过 IDL 生成代码时直接在对应结构体字段打 tag，示例：
+
+```go
+type InfoRequest struct {
+		Name         string   `vd:"$!='your string'"`
+}
+```
+
+通过 IDL 生成代码时需添加相应的注解，可参考[Field 注解](/zh/docs/hertz/tutorials/toolkit/annotation/#field-注解)。
+
+下面给出常见用法：
+
+- string 和 list 的长度验证 `len($)>0`
+- 字符串正则匹配 `regexp('^\\w*$')"`
+- 验证数字字段的的值 `$>0`
+- 验证指针字段 `num==nil || num>0`
+- 验证枚举类型 `type=="hello" || type == "world"`
+- 自定义错误信息 `msg:'C must be false when S.A>0'"`
+
 ### 参数绑定优先级
 
 ```text
