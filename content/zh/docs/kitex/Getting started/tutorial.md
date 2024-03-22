@@ -260,7 +260,7 @@ func (s *ItemServiceImpl) GetItem(ctx context.Context, req *item.GetItemReq) (re
 }
 ```
 
-除了 `handler.go` 外，我们还需关心 `main.go` 文件，我可以看看 `main.go` 中做了什么事情：
+除了 `handler.go` 外，我们还需关心 `main.go` 文件，可以看看 `main.go` 中做了什么事情：
 
 ```go
 package main
