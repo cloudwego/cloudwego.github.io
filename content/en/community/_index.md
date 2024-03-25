@@ -34,7 +34,7 @@ You may participate in the community through GitHub, or simply by interacting wi
       <a
         target="_blank"
         rel="noopener"
-        href="https://discord.gg/UX7MPbh7"
+        href="https://discord.gg/jceZSE7DsW"
       >
         <i class="fab fa-discord"></i> Discord:
       </a>

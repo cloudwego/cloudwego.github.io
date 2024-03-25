@@ -543,4 +543,4 @@ Kitex has demonstrated its ability to outperform other frameworks in testing com
 
 We also briefly looked towards future optimizations, including kernel-level improvements, restructuring the TCP protocols, and further refinement of existing components. With continuous learning and improvements, we are driven to unlock the vast potential in microservice performance optimization, taking us one step closer to the realm of real-time computing. 
 
-For any questions or discussions, you're welcome to join our community on [GitHub](https://github.com/cloudwego) or [Discord](https://discord.gg/UX7MPbh7).
+For any questions or discussions, you're welcome to join our community on [GitHub](https://github.com/cloudwego) or [Discord](https://discord.gg/jceZSE7DsW).
