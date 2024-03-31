@@ -364,7 +364,7 @@ func (ctx *RequestContext) GetHeader(key string) []byte
 
 添加或设置键为 key 的 Header。
 
-> 注意：Add 通常用于为同一个 Key 设置多个 Header，若要为同一个 Key 设置单个 Header 请使用 [Set](#set)。当作用于 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent 这些 Header 时，使用多个 Add 会覆盖掉旧值。
+> 注意：Add 通常用于为同一个 Key 设置多个 Header，若要为同一个 Key 设置单个 Header 请使用 [Set](#set)。当作用于 Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent 这些 Header 时，使用多个 Set 会覆盖掉旧值。
 
 函数签名：
 
