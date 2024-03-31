@@ -364,7 +364,7 @@ func (ctx *RequestContext) GetHeader(key string) []byte
 
 Add or set the header with the key as key.
 
-> Note: Add is usually used to set multiple headers for the same key. To set a single header for the same key, use [Set](#set). When used as a header for Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent, etc., using multiple Add will overwrite the old values.
+> Note: Add is usually used to set multiple headers for the same key. To set a single header for the same key, use [Set](#set). When used as a header for Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent, etc., using multiple Set will overwrite the old values.
 
 Function Signature:
 
