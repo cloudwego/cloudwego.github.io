@@ -14,7 +14,7 @@ entries:
   {entry_name}: # entry_name = "default" by default
     filename: {filename} # filename = "volo_gen.rs" by default
     protocol: thrift | protobuf
-    repos: # exsit if non-local
+    repos: # exist if non-local
         {repo}: # repo = extract the name from url by default
           url: {git} # url = repo git url
           ref: {ref} # ref = "HEAD" by default
