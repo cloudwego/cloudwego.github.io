@@ -1,4 +1,10 @@
-# volo.yml 配置文件格式
+---
+title: "volo.yml 配置文件格式"
+linkTitle: "volo.yml 配置文件格式"
+weight: 5
+description: >
+
+---
 
 ## 功能
 

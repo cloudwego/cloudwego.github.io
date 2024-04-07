@@ -1,4 +1,10 @@
-# volo.yml Configuration File Format
+---
+title: "volo.yml Configuration File Format"
+linkTitle: "volo.yml Configuration File Format"
+weight: 5
+description: >
+
+---
 
 ## Features
 
