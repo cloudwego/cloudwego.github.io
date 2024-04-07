@@ -224,7 +224,7 @@ entries:
            -V, --version                  Print version
          ```
 
-   3. Repo update
+   3. repo update
 
       1. ```bash
          $ volo repo update --help
