@@ -28,10 +28,11 @@ entries:
     services:
     - idl:
         source: git | local
+        repo: {repo} # required for git source
         path: {path} # git path must be relative to the repo root dir
         includes: {includes list} # required for protobuf
       codegen_option:
-        touch: [] # 
+        touch: [] #
         keep_unknown_fields: false # A->B->C, B could use this to transfer the unknown fields which is needed by A and C.
         config: {custom config}
     touch_all: false
