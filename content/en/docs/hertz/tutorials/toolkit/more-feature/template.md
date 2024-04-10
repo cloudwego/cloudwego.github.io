@@ -610,7 +610,7 @@ type FilePathRenderInfo struct {
 	GoModule       string // go module 
 	ServiceName    string // service name, changed as services are traversed 
 	MethodName     string // method name, changed as methods are traversed 
-	HandlerGenPath string // "api.gen_path" value
+	HandlerGenPath string // "api.handler_path" value
 }
 ```
 
