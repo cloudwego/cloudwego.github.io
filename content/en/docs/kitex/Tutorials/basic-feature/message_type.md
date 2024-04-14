@@ -290,7 +290,7 @@ func (handler) BidiSideStreaming(stream echo.EchoService_BidiSideStreamingServer
 }
 
 func main() {
-    svr := echo.NewServer(handler{})
+    svr := echoservice.NewServer(new(handler))
 
 	err := svr.Run()
 
