@@ -365,7 +365,7 @@ func main(){
 
 #### 服务端
 
-二进制泛化调用的客户端和服务端**并不是配套**使用的，客户端只要传入**正确的 Trift 二进制编码格式**的参数，可以请求普通 Thrift 接口服务。
+二进制泛化调用的客户端和服务端**并不是配套**使用的，客户端只要传入**正确的 Thrift 二进制编码格式**的参数，可以请求普通 Thrift 接口服务。
 
 二进制泛化 Server 只支持 Framed 或 TTHeader 请求，不支持 Bufferd Binary，需要 Client 通过 Option 指定，如：`client.WithTransportProtocol(transport.Framed)`。
 
@@ -382,7 +382,7 @@ func main() {
     svr := genericserver.NewServer(&GenericServiceImpl{}, g)
     err := svr.Run()
     if err != nil {
-            panic(err)
+        panic(err)
     }
 }
 
