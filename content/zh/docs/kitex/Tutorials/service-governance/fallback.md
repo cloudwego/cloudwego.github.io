@@ -33,6 +33,10 @@ Fallback 后可能直接返回成功的 Resp，对用户而言是一次成功请
 ### 2.1 Client 维度配置
 
 ```Go
+import (
+    "github.com/cloudwego/kitex/client"
+)
+
 var opts []client.Option
 opts = append(opts, client.WithFallback(yourFallbackPolicy))
 
@@ -42,6 +46,10 @@ xxxCli := xxxservice.NewClient("target_service", opts...)
 ### 2.2 Call 维度配置
 
 ```Go
+import (
+    "github.com/cloudwego/kitex/client/callopt"
+)
+
 xxxCli.XXXMethod(ctx, req, callopt.WithFallback(yourFallbackPolicy))
 ```
 
