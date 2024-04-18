@@ -33,6 +33,10 @@ Due to the involvement of business logic, Fallback is only supported through cod
 ### 2.1 Client-level configuration
 
 ```Go
+import (
+    "github.com/cloudwego/kitex/client"
+)
+
 var opts []client.Option
 opts = append(opts, client.WithFallback(yourFallbackPolicy))
 
@@ -42,6 +46,10 @@ xxxCli := xxxservice.NewClient("target_service", opts...)
 ### Call-level configuration
 
 ```Go
+import (
+    "github.com/cloudwego/kitex/client/callopt"
+)
+
 xxxCli.XXXMethod(ctx, req, callopt.WithFallback(yourFallbackPolicy))
 ```
 
