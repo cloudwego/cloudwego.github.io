@@ -18,7 +18,7 @@ description: "发生 Panic 时如何快速排查"
 
 下图是一个典型的 panic 错误栈，我们在图中描述了四项主要信息的位置。 
 
-![image](/img/blog/Kitex_self_check/image.png)
+![image](/img/blog/Kitex_self_check/panic_stack.png)
 
 以下具体描述如何依次查看四项主要信息
 
@@ -72,7 +72,7 @@ fatal error: xxx...
 
 知道了错误原因之后，接下来就要定位错误的代码位置。首先我们学习如何看错误栈，从哪里开始看。
 
-![image](/img/blog/Kitex_self_check/image.png)
+![image](/img/blog/Kitex_self_check/panic_stack.png)
 
 仍然附开始这张图来说明，**panic** **错误栈，以如下字样为开始**。如果没有该字样，说明 panic 没有被 recover，直接从头开始看即可。
 
@@ -86,7 +86,7 @@ fatal error: xxx...
 
 找到了错误栈的起始位置后，紧跟着的下一行，就是 panic 报错的具体方法。
 
-![image](/img/blog/Kitex_self_check/image.png)
+![image](/img/blog/Kitex_self_check/panic_stack.png)
 
 仍以开始图来说明，报错方法为
 
@@ -232,7 +232,7 @@ func (s *EchoServerImpl) Echo(ctx context.Context, req  *echo.Request) (*echo.Re
 
       ![image](/img/blog/Kitex_self_check/io_err_handler.png)
 
-   4. 我们继续看栈，发现 `IOErroHandlerMW` 的调用者，对应的 `0x0`, `0x0` 同样对应 `request`，因此可以断定，请求参数 `request` 传入的是 nil。
+   4. 我们继续看栈，发现 `IOErrorHandlerMW` 的调用者，对应的 `0x0`, `0x0` 同样对应 `request`，因此可以断定，请求参数 `request` 传入的是 nil。
 
 ### 检查代码排查空指针
 

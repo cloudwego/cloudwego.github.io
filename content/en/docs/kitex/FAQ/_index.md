@@ -7,9 +7,12 @@ keywords: ["Kitex", "HTTP", "Windows", "Thrift", "Q&A"]
 description: "Kitex Frequently Asked Questions and corresponding Answers."
 ---
 
+> **If your needs cannot be met, please submit an issue on the [Kitex GitHub repository](https://github.com/cloudwego/kitex), and the community maintainers will promptly follow up and address it.**
+
 ## Kitex Framework
 
 **Q1: Does Kitex support Windows？**
+
 * Yes. Kitex has already supported to compile and run in Windows since v0.4.0 version. And code generation tool support the Windows environment since v0.5.2.
 
 **Q2: Does Kitex support HTTP？**
@@ -52,3 +55,87 @@ description: "Kitex Frequently Asked Questions and corresponding Answers."
 **Q6: Is it possible for the '-type' argument of the code generator to be determined automatically by IDL filename extension?**
 * Kitex already supports automatic file suffix determination in v0.4.0, there's no need to add the -type parameter.
 
+## CPU Utilization Soaring
+
+### Hotspot Issue with error.Is\As
+
+According to the CPU profile, there is a hotspot issue with `errors.Is` or `errors.As`, and the CPU usage even reaches its maximum.
+
+![](/img/blog/Kitex_self_check/error_is_as.png)
+
+**Cause**: The custom error type has implemented the `Unwrap` method, but the implementation is incorrect. It returns the error object itself, causing an infinite loop. Here is an example:
+
+```go
+func (e *XError) Unwrap() error {
+   if e == nil {
+      return nil
+   }
+   return e.InnerError // Actually returns itself
+}
+
+func (e *XError) NewXError(outMsg *XError) *XError {
+   err := &XError{
+      OutCode:    outMsg.OutCode,
+      OutMsg:     outMsg.OutMsg,
+      InnerError: innerErr(outMsg.Msg),
+   }
+   err.InnerError = err // Points to itself here
+   return err
+}
+```
+
+**Solution**: The `Unwrap` method should return the wrapped error instead of itself. If there is no wrapped error, it should return `nil`. Avoid circular references.
+
+## Timeout Errors
+
+### Context Deadline Earlier Than Timeout
+
+**Cause**: The Kitex client handles request timeouts based on the `context` provided by `context.WithTimeout(ctx, timeout)`. If the `ctx` passed from the business logic already has a `deadline` set and it is earlier than the RPC timeout, the `ctx deadline` from the business logic will be used.
+
+**Solution**: Do not set `deadline` for the `ctx` used by Kitex.
+
+**Troubleshooting**:
+
+- Use the `context.Done()` method: Before the RPC request, output the following information about the `ctx`. If `ctx.Done() != nil`, it indicates that `WithTimeout` or `WithDeadline` has been set.
+
+```go
+deadline, _ := ctx.Deadline()
+klog.Infof("before rpc call, ctxDone=%t, deadline=%v", ctx.Done() != nil, deadline)
+```
+
+- Identify the places in the code where `WithTimeout`, `WithDeadline`, or equivalent operations are called. Sometimes you may not directly set the `timeout`. It is common to pass the `ctx` used by another framework to the `kitex client`, and that `ctx` has already been modified with the mentioned operations. Regardless of who made the modification, trace back the assignment of `ctx` starting from the code segment where the call to `Client` is made, and you will find the point of tampering. You can use `dlv` (the Go debugger) or the debugging mode of your IDE to help trace the call chain.
+
+### Context Canceled by Business
+
+**Cause**: If the business code calls the `cancel` function returned by `WithTimeout`, `WithDeadline`, or `WithCancel` before the actual timeout deadline set by the Kitex client, Kitex will append additional information stating `context canceled by business`.
+
+**Troubleshooting**: Refer to the troubleshooting method for "Context Deadline Earlier Than Timeout".
+
+**Note**: If multiple goroutines share the same `ctx` (typical when starting a new goroutine and passing the `ctx` to it), calling the `cancel` method of that `ctx` will affect all goroutines.
+
+## Invalid Payload Error
+
+This error indicates a protocol mismatch between the client and server. Below are some common scenarios for reference.
+
+To quickly determine whether the issue lies with the client or server, you can consider the following:
+
+- If the error occurs only on the client side, it suggests that the server's response does not meet the expected format.
+  - For example, if the client requested an HTTP server and received a response starting with "HTTP/1.1".
+- If the error occurs only on the server side, it suggests that the server received a request that does not meet the expected format.
+  - For example, if the server received a request starting with "GET " or "POST" from an HTTP client.
+
+| Message                                             | Description                                                  |
+| :-------------------------------------------------- | :----------------------------------------------------------- |
+| **first4Bytes=0x48545450, second4Bytes=0x2f312e31** | These 8 bytes correspond to the ASCII characters "HTTP/1.1," indicating a typical HTTP server response. This indicates that the Kitex client requested an HTTP server. |
+| **first4Bytes=0x47455420**                          | These 4 bytes correspond to the ASCII characters "GET," indicating a typical HTTP GET request. This indicates that the Kitex server received an HTTP request. Please avoid directly using an HTTP client to request Kitex server. |
+| **first4Bytes=0x504f5354**                          | These 4 bytes correspond to the ASCII characters "POST," indicating a typical HTTP POST request. This indicates that the Kitex server received an HTTP request. Please avoid directly using an HTTP client to request Kitex server. |
+| **first4Bytes=0x16030100**                          | This is a TLS protocol message, and Kitex does not natively support the TLS protocol. |
+| **first4Bytes=0x50524920, second4Bytes=0x2a204854** | This is an HTTP2 [PRI](https://httpwg.org/specs/rfc7540.html#ConnectionHeader) request, indicating that the service received an HTTP2 request. Please check the corresponding client. |
+
+**Q1: How to identify the source of the request?**
+
+- It is recommended to identify the request source based on the client's IP address.
+
+**Q2: Why doesn't the error message include the method name of the request?**
+
+- The error message doesn't include the method name because the request does not contain a valid RPC payload. Kitex cannot parse it, so it doesn't know which method was requested (the protocol of the message is incorrect, indicating that it is likely not requesting a specific RPC method).
