@@ -37,6 +37,9 @@ type Info struct {
 
   // extend other infos with Tags.
   Tags map[string]string
+
+  // SkipListenAddr is used to prevent the listen addr from overriding the Addr
+  SkipListenAddr bool
 }
 ```
 
@@ -70,4 +73,15 @@ type Info struct {
 
   ```go
   svr := xxxservice.NewServer(handler, server.WithRegistry(yourRegistry), server.WithRegistryInfo(yourRegistryInfo))
+  ```
+- 自定义的 Registry 获取 Client 可访问的实际地址
+
+  当 Client 端无法访问 Server 端的 Listen Address，而需要使用公共的 IP 地址访问 Server 端时，可以通过指定 RegistryInfo 中的 `Addr` 和 `SkipListenAddr` 进行设置
+   ```go
+  info := registry.Info{
+       Addr: YourServerAddress,
+       SkipListenAddr: true,
+       ...
+  }
+  svr := xxxservice.NewServer(handler, server.WithRegistry(yourRegistry), server.WithRegistryInfo(info))
   ```

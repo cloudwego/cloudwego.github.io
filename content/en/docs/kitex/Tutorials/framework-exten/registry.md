@@ -73,4 +73,14 @@ Specify your own registration module and customized registration information thr
   svr := xxxservice.NewServer(handler, server.WithRegistry(yourRegistry), server.WithRegistryInfo(yourRegistryInfo))
   ```
 
+- Allow custom registry to get the actual address for registering
 
+  When the Client cannot access the Listen Address of the Server and needs to use a public IP address to access the Server, it can be set by specifying `Addr` and `SkipListenAddr` in RegistryInfo.
+  ```go
+  info := registry.Info{
+       Addr: YourServerAddress,
+       SkipListenAddr: true,
+       ...
+  }
+  svr := xxxservice.NewServer(handler, server.WithRegistry(yourRegistry), server.WithRegistryInfo(info))
+  ```
