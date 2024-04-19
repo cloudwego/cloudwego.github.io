@@ -139,6 +139,6 @@ Reason for the issue:
 1. For performance reasons, Sonic reuses the underlying memory of the input `string` for unmarshaled `string` objects. If the service is used to parse large JSON and cache the parsed objects or if there are multiple goroutines holding onto the parsed objects, it may result in the original input `string` object's memory not being released for a long time. Please refer to [Sonic](https://github.com/bytedance/sonic) for more details.
 2. Memory allocation in the `Request` is done in the netpoll function stack, so it may appear that the objects created by netpoll are leaking memory. In reality, it is unrelated to netpoll.
 
-However, the **root cause** is still that there is a place in the business code that persistently holds the object after Sonic unmarshaling. This only amplifies the impact of the leak, and the solution mentioned above only reduces the impact of the leak.
+However, the **root cause** is still that there is a place in the business code that persistently holds the object after Sonic unmarshalling. This only amplifies the impact of the leak, and the solution mentioned above only reduces the impact of the leak.
 
 If there is still a memory leak after applying this solution, it is necessary to carefully review the business code to identify where the objects are being persistently held.
