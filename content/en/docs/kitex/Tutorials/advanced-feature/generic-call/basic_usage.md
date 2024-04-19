@@ -386,7 +386,7 @@ func main() {
     svr := genericserver.NewServer(&GenericServiceImpl{}, g)
     err := svr.Run()
     if err != nil {
-            panic(err)
+        panic(err)
     }
 }
 
