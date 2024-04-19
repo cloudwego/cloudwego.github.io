@@ -78,7 +78,7 @@ type Info struct {
 
   当 Client 端无法访问 Server 端的 Listen Address，而需要使用公共的 IP 地址访问 Server 端时，可以通过指定 RegistryInfo 中的 `Addr` 和 `SkipListenAddr` 进行设置
    ```go
-  info := registry.Info{
+  info := &registry.Info{
        Addr: YourServerAddress,
        SkipListenAddr: true,
        ...
