@@ -37,6 +37,7 @@ OPTIONS:
    --signable                         Specify detect integer field\'s unsigned type, adjust generated data type (default: false)
    --type_tag                         Specify generate field with gorm column type tag (default: false)
    --index_tag                        Specify generate field with gorm index tag (default: false)
+   --sql_dir value                    Specify a sql file or directory
    --help, -h                         show help (default: false)
 ```
 
@@ -57,6 +58,7 @@ OPTIONS:
    --nullable                         指定生成字段是否为指针当字段为 nullable，默认为 false
    --signable                         指定字段是否检测整型列 unsigned 类型来调整生成相应的数据类型，默认为 false
    --type_tag                         指定字段是否生成 gorm 的 type tag，默认为 false
+   --sql_dir value                    指定一个sql文件或者目录               
    --index_tag                        指定字段是否生成 gorm 的 index tag，默认为 false
 ```
 

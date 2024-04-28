@@ -37,6 +37,7 @@ OPTIONS:
     --signable Specify detect integer field\'s unsigned type, adjust generated data type (default: false)
     --type_tag Specify generate field with gorm column type tag (default: false)
     --index_tag Specify generate field with gorm index tag (default: false)
+    --sql_dir value Specify a sql file or directory
     --help, -h show help (default: false)
 ```
 
@@ -57,6 +58,7 @@ OPTIONS:
     --nullable specifies whether the generated field is a pointer when the field is nullable, the default is false
     --signable specifies detect integer field\'s unsigned type, adjust generated data type, the default is false
     --type_tag specifies whether to generate gorm's type tag for the specified field, the default is false
+    --sql_dir value Specify a sql file or directory
     --index_tag specifies whether to generate gorm's index tag for the specified field, the default is false
 ```
 
