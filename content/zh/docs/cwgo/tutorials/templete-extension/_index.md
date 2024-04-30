@@ -15,7 +15,7 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template {tpl pa
 
 ## 模板读取
 
-cwgo 支持从本地或 git 中读取模板，git 支持 https 或 ssh 的形式。
+cwgo 支持从本地或 git 中读取模板。其中 git 支持 https 或 ssh 的形式，`-template` 指定模板路径，`-branch` 指定模板分支(默认为主分支)。
 
 RPC Server、Client, HTTP Server、Client 均支持模板拓展，具体用法见下文。
 
@@ -28,13 +28,13 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template {local 
 ### git https
 
 ```sh
-cwgo server -type RPC -service {service name} -idl {idl path}  -template https://github.com/***/cwgo_template.git
+cwgo server -type RPC -service {service name} -idl {idl path}  -template https://github.com/***/cwgo_template.git -branch {branch path}
 ```
 
 ### git ssh
 
 ```sh
-cwgo server -type RPC -service {service name} -idl {idl path}  -template git@github.com:***/cwgo_template.git
+cwgo server -type RPC -service {service name} -idl {idl path}  -template git@github.com:***/cwgo_template.git -branch {branch path}
 ```
 
 ## RPC
