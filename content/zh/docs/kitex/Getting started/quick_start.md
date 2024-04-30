@@ -57,15 +57,21 @@ description: "Kitex 基础示例"
 
    ```shell
    docker build -t kitex-examples .
+   ```
+
+3. 运行服务端代码：
+
+   ```shell
+   docker run --network host kitex-examples ./hello-server
    
    // 输出类似日志代表运行成功
    2024/01/18 12:47:34.712415 server.go:83: [Info] KITEX: server listen at addr=[::]:8888
    ```
 
-3. 运行客户端代码：
+4. 运行客户端代码：
 
    ```shell
-   docker run --network host kitex-examples ./hello-server
+   docker run --network host kitex-examples ./hello-client
    
    // 每隔一秒输出类似日志代表运行成功
    2024/01/18 12:48:20 Response({Message:my request})

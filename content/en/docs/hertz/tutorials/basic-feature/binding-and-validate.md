@@ -201,7 +201,7 @@ func (m *mockBinder) BindProtobuf(request *protocol.Request, i interface{}) erro
 
 Currently expanded binders:
 
-* bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (binding library used before refactoring)
+- bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (binding library used before refactoring)
 
 ### Custom validator
 >
@@ -246,7 +246,7 @@ func (m *mockValidator) ValidateTag() string {
 
 Currently expanded validators:
 
-* go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
+- go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
 
 ### Customize the error of binding and validation
 
@@ -614,10 +614,10 @@ Reason: `string` and `int` conversion is not supported by default
 
 Solution：
 
-* We are recommended to use the `string` tag of the standard package json. For example：
+- We are recommended to use the `string` tag of the standard package json. For example：
 
   ```go
   A int `json:"A, string"`
   ```
 
-* Configure other json libraries that support this operation.
+- Configure other json libraries that support this operation.
