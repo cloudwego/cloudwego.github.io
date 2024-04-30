@@ -55,6 +55,11 @@ CloudWeGo 关注真实企业用户落地，构建企业用户支持体系和维�
 <a href='{{< relref "interface_testing" >}}'>了解更多</a>
 {{< /card >}}
 
+{{< card header="方正证券-金融科技云原生微服务建设实践" img="/img/usedby/foundersc.jpeg">}}
+2023 年年初方正证券启动了微服务体系建设，主要涉及到微服务治理，可观测性能力，接口管理等相关工作内容。其中 Web 和 RPC 应用框架分别采用的 CloudWeGo 的 Hertz 和 Kitex。<br/><br/>
+<a href='{{< relref "foundersc" >}}'>了解更多</a>
+{{< /card >}}
+
 {{< /cardpane >}}
 
 </div>
