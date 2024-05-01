@@ -3,8 +3,8 @@ title: "Custom Struct Tags"
 linkTitle: "Custom Struct Tags"
 weight: 9
 date: 2024-04-18
-description: >
-
+keywords: ["Kitex", "Code Gen", "Custom Tag"]
+description: > 
 ---
 
 ## Introduction

@@ -129,7 +129,7 @@ Typical profile:
 
 Typical triggering scenarios:
 
-1. There is a large `string` object in the `Request/Response`, such as the common `abtest` parameter (the content of type `string` is JSON).
+1. There is a large `string` object in the `Request/Response`
 2. Using Sonic to unmarshal this `string` object.
 
 Solution: Enable the `CopyString` option in Sonic.

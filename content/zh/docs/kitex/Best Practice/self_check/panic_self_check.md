@@ -102,9 +102,9 @@ panic 错误栈描述格式一般是 每2行 代表一个调用层次，第1行�
 
 ```go
 main.(*EchoServerImpl).Echo(0x11b54b0, 0xcb2000, 0xc0000987e0, 0xc000283d40, 0x11b54b0, 0xc0003aca28, 0xcaef01)
-        /home/tiger/go/src/code.byted.org/kite/performancetest/handler.go:18 +0x6d
-code.byted.org/kite/performancetest/kitex_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0, 0xadc1c0, 0x11b54b0, 0xb7dd80, 0xc000286520, 0xb7dec0, 0xc000286528, 0xc0000986f0, 0xae9c60)
-  /home/tiger/go/src/code.byted.org/kite/performancetest/kitex_gen/echo/echoserver/echoserver.go:37 +0xa4
+        /home/tiger/go/src/github.com/cloudwego/kitex/performancetest/handler.go:18 +0x6d
+github.com/cloudwego/kitex/performancetest/kitex_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0, 0xadc1c0, 0x11b54b0, 0xb7dd80, 0xc000286520, 0xb7dec0, 0xc000286528, 0xc0000986f0, 0xae9c60)
+  /home/tiger/go/src/github.com/cloudwego/kitex/performancetest/kitex_gen/echo/echoserver/echoserver.go:37 +0xa4
 ```
 
 1. 第 1 行表明：调用方法为 `*EchoServerImpl.Echo`
@@ -183,8 +183,8 @@ func (s *EchoServerImpl) Echo(ctx context.Context, req  *echo.Request) (*echo.Re
    ```go
    KITE: panic in processor: runtime error: invalid memory address or nil pointer dereference
    goroutine 498022546 [running]:
-   .../code.byted.org/kite/kite.(*RpcServer).processRequests.func1(0xc000424550)
-   /.../code.byted.org/kite/kite/kite_server.go:227 +0xc8
+   .../github.com/cloudwego/kitex/kite.(*RpcServer).processRequests.func1(0xc000424550)
+   /.../github.com/cloudwego/kitex/kite/kite_server.go:227 +0xc8
    panic(0x2b97ca0, 0x5b05400)
    /usr/local/go/src/runtime/panic.go:522 +0x1b5
    .../thrift_gen/.../log.(*Device).writeField1(0x0, 0x36ce900, 0xc008478e00, 0x0, 0x0)
@@ -201,26 +201,26 @@ func (s *EchoServerImpl) Echo(ctx context.Context, req  *echo.Request) (*echo.Re
    ```go
    KITE: processing request error=KE.UNREGISTERED/0 - ?/0: KITC: panic, runtime error: invalid memory address or nil pointer dereference
    goroutine 271 [running]:
-   .../code.byted.org/kite/kitc.RPCTimeoutMW.func1.1.1(0x2dad3a0, 0xc0009c3260, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0)
-   /.../code.byted.org/kite/kitc/middlewares.go:314 +0xcc
+   .../github.com/cloudwego/kitex/kitc.RPCTimeoutMW.func1.1.1(0x2dad3a0, 0xc0009c3260, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0)
+   /.../github.com/cloudwego/kitex/kitc/middlewares.go:314 +0xcc
    panic(0x274e520, 0x4568230)
    /usr/local/go/src/runtime/panic.go:522 +0x1b5
-   .../code.byted.org/kite/kitc.IOErrorHandlerMW.func1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
-   /.../code.byted.org/kite/kitc/middlewares.go:260 +0x13e
-   .../code.byted.org/kite/kitc.NewPoolMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x1, 0xc0007fe5ed, 0x4, 0xc0007fe640)
-   /.../code.byted.org/kite/kitc/middlewares.go:430 +0x41a
-   .../code.byted.org/kite/kitc.NewInstanceBreakerMW.func3.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000087a40, 0xc0000bb350, 0x27, 0xc00049d950)
-   /.../code.byted.org/kite/kitc/middlewares.go:522 +0x168
-   .../code.byted.org/kite/kitc.NewLoadbalanceMW.func2.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x2, 0x29b9e8e, 0x7, 0x0)
-   /.../code.byted.org/kite/kitc/middlewares.go:707 +0x389
-   .../code.byted.org/kite/kitc.NewServiceDiscoverMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000978024, 0x2, 0xc0009de750, 0xc0009ee758)
-   /.../code.byted.org/kite/kitc/discoverer.go:237 +0x1a7
-   .../code.byted.org/kite/kitc.NewIDCSelectorMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0)
-   /.../code.byted.org/kite/kitc/middlewares.go:218 +0xfe
-   .../code.byted.org/kite/kitc.RPCTimeoutMW.func1.1(0x2dad3a0, 0xc0009c3260, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0, 0xc0005352b0, 0xc000535530, 0xc000535540)
-   /.../code.byted.org/kite/kitc/middlewares.go:324 +0xb1
-   created by .../code.byted.org/kite/kitc.RPCTimeoutMW.func1
-   /.../code.byted.org/kite/kitc/middlewares.go:309 +0x1d9
+   .../github.com/cloudwego/kitex/kitc.IOErrorHandlerMW.func1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+   /.../github.com/cloudwego/kitex/kitc/middlewares.go:260 +0x13e
+   .../github.com/cloudwego/kitex/kitc.NewPoolMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x1, 0xc0007fe5ed, 0x4, 0xc0007fe640)
+   /.../github.com/cloudwego/kitex/kitc/middlewares.go:430 +0x41a
+   .../github.com/cloudwego/kitex/kitc.NewInstanceBreakerMW.func3.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000087a40, 0xc0000bb350, 0x27, 0xc00049d950)
+   /.../github.com/cloudwego/kitex/kitc/middlewares.go:522 +0x168
+   .../github.com/cloudwego/kitex/kitc.NewLoadbalanceMW.func2.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x2, 0x29b9e8e, 0x7, 0x0)
+   /.../github.com/cloudwego/kitex/kitc/middlewares.go:707 +0x389
+   .../github.com/cloudwego/kitex/kitc.NewServiceDiscoverMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000978024, 0x2, 0xc0009de750, 0xc0009ee758)
+   /.../github.com/cloudwego/kitex/kitc/discoverer.go:237 +0x1a7
+   .../github.com/cloudwego/kitex/kitc.NewIDCSelectorMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0)
+   /.../github.com/cloudwego/kitex/kitc/middlewares.go:218 +0xfe
+   .../github.com/cloudwego/kitex/kitc.RPCTimeoutMW.func1.1(0x2dad3a0, 0xc0009c3260, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0, 0xc0005352b0, 0xc000535530, 0xc000535540)
+   /.../github.com/cloudwego/kitex/kitc/middlewares.go:324 +0xb1
+   created by .../github.com/cloudwego/kitex/kitc.RPCTimeoutMW.func1
+   /.../github.com/cloudwego/kitex/kitc/middlewares.go:309 +0x1d9
    , remote=10.14.55.44:62592
    ```
 
@@ -247,14 +247,14 @@ KITEX: processing request error, remote=10.76.40.175:52880, err=panic: [happened
 goroutine 114 [running]:
 runtime/debug.Stack(0xbc3655, 0x1c, 0xc0003d3560)
         /usr/local/go/src/runtime/debug/stack.go:24 +0x9d
-code.byted.org/kite/kitex/server.(*server).invokeHandleEndpoint.func1.1(0xc0003d38f8, 0xcb4340, 0xc000284af0, 0xcb2000, 0xc0000987e0)
-        /home/tiger/go/pkg/mod/code.byted.org/kite/kitex@v1.1.10/server/server.go:196 +0x141
+github.com/cloudwego/kitex/kitex/server.(*server).invokeHandleEndpoint.func1.1(0xc0003d38f8, 0xcb4340, 0xc000284af0, 0xcb2000, 0xc0000987e0)
+        /home/tiger/go/pkg/mod/github.com/cloudwego/kitex/kitex@v1.1.10/server/server.go:196 +0x141
 panic(0xaec120, 0x1172dd0)
         /usr/local/go/src/runtime/panic.go:969 +0x166
 main.(*EchoServerImpl).Echo(0x11b54b0, 0xcb2000, 0xc0000987e0, 0xc000283d40, 0x11b54b0, 0xc0003aca28, 0xcaef01)
-        /home/tiger/go/src/code.byted.org/kite/performancetest/handler.go:18 +0x6d
-code.byted.org/kite/performancetest/kitex_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0, 0xadc1c0, 0x11b54b0, 0xb7dd80, 0xc000286520, 0xb7dec0, 0xc000286528, 0xc0000986f0, 0xae9c60)
-        /home/tiger/go/src/code.byted.org/kite/performancetest/kitex_gen/echo/echoserver/echoserver.go:37 +0xa4
+        /home/tiger/go/src/github.com/cloudwego/kitex/performancetest/handler.go:18 +0x6d
+github.com/cloudwego/kitex/performancetest/kitex_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0, 0xadc1c0, 0x11b54b0, 0xb7dd80, 0xc000286520, 0xb7dec0, 0xc000286528, 0xc0000986f0, 0xae9c60)
+        /home/tiger/go/src/github.com/cloudwego/kitex/performancetest/kitex_gen/echo/echoserver/echoserver.go:37 +0xa4
 ```
 
 如上 panic 栈没有找到 `0x0`，因此我们直接看 `handler.go:18` 相关代码

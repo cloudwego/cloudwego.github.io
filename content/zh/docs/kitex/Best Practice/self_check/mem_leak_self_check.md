@@ -129,7 +129,7 @@ cache.Store(resp.Id, resp.Msg[:1])
 
 典型触发场景：
 
-1. `Request/Response` 中有一个大 `string` 对象，比如常见的 `abtest` 参数(`string` 类型内容为 JSON)
+1. `Request/Response` 中有一个大 `string` 对象
 2. 使用 Sonic unmarshal 这个 `string` 对象
 
 解决方案：开启 Sonic 的 `CopyString` 选项。
