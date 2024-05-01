@@ -4,7 +4,7 @@ linkTitle: "自定义结构体 Tags"
 weight: 9
 date: 2024-04-18
 keywords: ["kitex", "代码生成", "自定义 Tag"]
-description: >
+description: > 自定义生成代码中结构体的 Tags
 ---
 
 ## 介绍
