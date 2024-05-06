@@ -78,7 +78,7 @@ func main() {
 
 ### 参数校验
 
-具体校验语法可参考 [校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator)。
+具体校验语法可参考[校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator)。
 
 不通过 IDL 生成代码时直接在对应结构体字段打 tag，示例：
 
@@ -88,7 +88,7 @@ type InfoRequest struct {
 }
 ```
 
-通过 IDL 生成代码时需添加相应的注解，可参考 [Field 注解](/zh/docs/hertz/tutorials/toolkit/annotation/#field-注解)。
+通过 IDL 生成代码时需添加相应的注解，可参考[Field 注解](/zh/docs/hertz/tutorials/toolkit/annotation/#field-注解)。
 
 下面给出常见用法：
 
@@ -201,7 +201,7 @@ func (m *mockBinder) BindProtobuf(request *protocol.Request, i interface{}) erro
 
 目前已拓展的绑定器：
 
-- bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (重构前使用的绑定库)
+* bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (重构前使用的绑定库)
 
 ### 自定义 validator
 >
@@ -246,7 +246,7 @@ func (m *mockValidator) ValidateTag() string {
 
 目前已拓展的校验器：
 
-- go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
+* go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
 
 ### 自定义 bind 和 validate 的 Error
 
@@ -587,10 +587,10 @@ h.POST("/upload", func(ctx context.Context, c *app.RequestContext) {
 
 解决方法：
 
-- 建议使用标准包 json 的 `string` tag, 例如：
+* 建议使用标准包 json 的 `string` tag, 例如：
 
   ```go
   A int `json:"A, string"`
   ```
 
-- 配置其他支持这种行为的 json 库
+* 配置其他支持这种行为的 json 库
