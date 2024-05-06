@@ -57,15 +57,21 @@ Before starting this section, make sure you have the required **Pre-knowledge** 
 
    ```bash
    docker build -t kitex-examples .
+   ```
+
+3. Run the server code:
+
+   ```bash
+   docker run --network host kitex-examples ./hello-server
    
    // Output similar logs indicating successful execution
    2024/01/18 12:47:34.712415 server.go:83: [Info] KITEX: server listen at addr=[::]:8888
    ```
 
-3. Run the client code:
+4. Run the client code:
 
    ```bash
-   docker run --network host kitex-examples ./hello-server
+   docker run --network host kitex-examples ./hello-client
    
    // Output similar logs every second indicating successful execution
    2024/01/18 12:48:20 Response({Message:my request})
