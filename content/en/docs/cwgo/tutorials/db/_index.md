@@ -37,7 +37,7 @@ OPTIONS:
     --signable Specify detect integer field\'s unsigned type, adjust generated data type (default: false)
     --type_tag Specify generate field with gorm column type tag (default: false)
     --index_tag Specify generate field with gorm index tag (default: false)
-    --sql_dir value Specify a sql file or directory
+    --sql_dir value Specify a sql file or directory(Note: The 'dsn' parameter is invalid when using this parameter)
     --help, -h show help (default: false)
 ```
 
