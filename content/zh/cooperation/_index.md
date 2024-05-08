@@ -60,6 +60,11 @@ CloudWeGo 关注真实企业用户落地，构建企业用户支持体系和维�
 <a href='{{< relref "foundersc" >}}'>了解更多</a>
 {{< /card >}}
 
+{{< card header="Kitex Thrift Streaming 在字节跳动 Prompt 平台的实践" img="/img/usedby/bytedance.png">}}
+字节跳动 Prompt 平台借助 Kitex 的 Thrift streaming 能力，成功实现了流式接口的落地，从而为用户提供了流畅、高效的打字机效果大模型结果输出体验。<br/><br/>
+<a href='{{< relref "flow" >}}'>了解更多</a>
+{{< /card >}}
+
 {{< /cardpane >}}
 
 </div>
