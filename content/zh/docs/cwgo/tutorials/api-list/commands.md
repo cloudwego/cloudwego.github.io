@@ -48,18 +48,19 @@ OPTIONS:
 
 ```json
 [
-    {
-        "file_path":"/Users/bytedance/Projects/Personal/Golang/hz-example-thrift/biz/router/hello/example/hello.go",
-        "start_line":20,
-        "end_line":20,
-        "method":"GET",
-        "route_path":"/hello"
-    },
-    {
-        "file_path":"/Users/bytedance/Projects/Personal/Golang/hz-example-thrift/router.go",
-        "start_line":12,
-        "end_line":12,
-        "method":"GET",
-        "route_path":"/ping"}
+  {
+    "file_path": "/Users/bytedance/Projects/Personal/Golang/hz-example-thrift/biz/router/hello/example/hello.go",
+    "start_line": 20,
+    "end_line": 20,
+    "method": "GET",
+    "route_path": "/hello"
+  },
+  {
+    "file_path": "/Users/bytedance/Projects/Personal/Golang/hz-example-thrift/router.go",
+    "start_line": 12,
+    "end_line": 12,
+    "method": "GET",
+    "route_path": "/ping"
+  }
 ]
 ```

@@ -4,7 +4,6 @@ linkTitle: "Release v0.0.2"
 projects: ["Kitex"]
 date: 2021-07-30
 description: >
-  
 ---
 
 ## 优化：
@@ -16,7 +15,6 @@ description: >
 
 - 修复了一个 lbcache 中 nil-pointer 的错误。
 - 修复了一个 retry 重试（Backup Request）中的 data race 问题。
-
 
 ## 工具:
 

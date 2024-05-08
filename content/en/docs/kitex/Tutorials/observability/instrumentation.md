@@ -7,17 +7,20 @@ description: Kitex supports flexible enabling of basic and fine-grained Instrume
 ---
 
 Stats Level:
+
 1. LevelDisabled, disable all events
-2. LevelBase, enable basic events 
+2. LevelBase, enable basic events
 3. LevelDetailed, enable basic events and detailed events.
 
 ## Stats Level
 
 Default Stats Level:
+
 1. No tracer is available, LevelDisabled by default
 2. At least one tracer is available, LevelDetailed by default
 
 Client tracing stats level control:
+
 ```go
 import "github.com/cloudwego/kitex/client"
 import "github.com/cloudwego/kitex/pkg/stats"
@@ -30,6 +33,7 @@ if err != nil {
 ```
 
 Server tracing stats level control:
+
 ```go
 import "github.com/cloudwego/kitex/server"
 import "github.com/cloudwego/kitex/pkg/stats"

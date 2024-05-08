@@ -69,7 +69,7 @@ Rust 以难学难用而闻名，我们希望尽可能降低用户使用 [Volo][V
 
 比如，服务发现、负载均衡等服务治理功能，都可以以 Service 形式进行实现，而不需要独立实现 Trait。
 
-相关的扩展，我们会放在 github.com/volo-rs 组织下，也欢迎大家贡献自己的扩展到  volo-rs。
+相关的扩展，我们会放在 github.com/volo-rs 组织下，也欢迎大家贡献自己的扩展到 volo-rs。
 
 ## 03 生态系统
 
@@ -97,13 +97,13 @@ Rust 以难学难用而闻名，我们希望尽可能降低用户使用 [Volo][V
 
 ### 参考资料
 
-* [Volo 概览](https://github.com/cloudwego/volo)
+- [Volo 概览](https://github.com/cloudwego/volo)
 
-* [Volo Tutorial](/zh/docs/volo/)
+- [Volo Tutorial](/zh/docs/volo/)
 
-* [Volo 文档](https://docs.rs/volo)
+- [Volo 文档](https://docs.rs/volo)
 
-* [Volo-rs 组织](https://github.com/volo-rs)
+- [Volo-rs 组织](https://github.com/volo-rs)
 
 [Kitex]: https://github.com/cloudwego/kitex
 [Volo]: https://github.com/cloudwego/volo

@@ -5,7 +5,6 @@ weight: 2
 date: 2024-01-18
 keywords: ["Kitex", "Golang", "Go", "Getting Started", "Guidelines"]
 description: "This document covers the preparation of the development environment, quick start and basic tutorials of Kitex."
-
 ---
 
 ## Overview

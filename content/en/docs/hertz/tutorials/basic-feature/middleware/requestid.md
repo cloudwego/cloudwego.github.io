@@ -4,7 +4,6 @@ date: 2022-10-01
 weight: 9
 keywords: ["Request ID", "X-Request-ID"]
 description: "Hertz provides Request ID middleware that can operate on `X-Request-ID`."
-
 ---
 
 `X-Request-ID` is a common non-standard response fields in HTTP Headers, used to correlate HTTP requests between a client and server.
@@ -70,7 +69,7 @@ Hertz is able to add an identifier to the response using the `X-Request-ID` head
 The Request ID middleware provides the default configuration, you can also customize the following configuration using `WithGenerator`, `WithCustomHeaderStrKey`, `WithHandler` functions according to different scenarios.
 
 | configuration          | Description                                                                                |
-|------------------------|--------------------------------------------------------------------------------------------|
+| ---------------------- | ------------------------------------------------------------------------------------------ |
 | WithGenerator          | Define a function that generates a Request ID. By default, a UUID identifier is generated. |
 | WithCustomHeaderStrKey | Define the key value of the Request ID. By default, the key value is `X-Request-ID`.       |
 | WithHandler            | Define the handler function of the Request ID.                                             |

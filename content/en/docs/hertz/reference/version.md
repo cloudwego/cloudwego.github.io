@@ -4,7 +4,6 @@ linkTitle: "Version Descriptions"
 weight: 2
 keywords: ["Version Description"]
 description: "Hertz version description."
-
 ---
 
 Hertz complies with the [Semantic Version 2.0.0](https://semver.org/lang/zh-CN/) release version.

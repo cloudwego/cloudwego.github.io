@@ -6,7 +6,7 @@ keywords: ["Kitex", "Fallback", "降级"]
 description: Kitex 自定义 Fallback 使用指南。
 ---
 
-> **支持版本：>= v0.5.0  （go.mod依赖 [github/cloudwego/kitex](https://github.com/cloudwego/kitex))**
+> **支持版本：>= v0.5.0 （go.mod依赖 [github/cloudwego/kitex](https://github.com/cloudwego/kitex))**
 >
 > Protobuf 生成代码版本：>=v0.5.0（版本见生成代码文件头部与版本注释）
 >
@@ -127,7 +127,7 @@ fallback.NewFallbackPolicy(fallback.UnwrapHelper(func(ctx context.Context, req, 
 
 2. **只对 Error（包括业务 Error） 进行 Fallback**
 
-    非 Error 不会执行 Fallback
+   非 Error 不会执行 Fallback
 
 ```Go
 // 1: XXXArgs/XXXResult as params
@@ -146,7 +146,7 @@ fallback.ErrorFallback(fallback.UnwrapHelper(func(ctx context.Context, req, resp
 
 3. **只对超时和熔断 Error 进行 Fallback**
 
-    非 超时 和 熔断 Error 不会执行 Fallback
+   非 超时 和 熔断 Error 不会执行 Fallback
 
 ```Go
 // 1: XXXArgs/XXXResult as params
@@ -169,12 +169,11 @@ fallback.TimeoutAndCBFallback(fallback.UnwrapHelper(func(ctx context.Context, re
 
 **注意**：如果原结果本来就不是 RPC 失败（业务 Error），但如果在 Fallback 里返回了 error，即使 设置了 EnableReportAsFallback，框架也不会以 Fallback 结果上报。
 
-| **原结果**                         | **是否使用 EnableReportAsFallback()** | **上报结果**                                                        |
-|---------------------------------|----------------------------------|-----------------------------------------------------------------|
-| RPC 失败                          | 是                                | fallback 结果                                                     |
-| RPC 失败                          | 否                                | is_error=1 <br/>(rpcinfo.GetRPCInfo(ctx).Stats().Error() is not nil) |
-| 业务错误 （Biz Err 或 BaseResp 非成功状态） | 是/否                        | is_error=0 <br/>(rpcinfo.GetRPCInfo(ctx).Stats().Error() is nil)                                                      |
-
+| **原结果**                                  | **是否使用 EnableReportAsFallback()** | **上报结果**                                                         |
+| ------------------------------------------- | ------------------------------------- | -------------------------------------------------------------------- |
+| RPC 失败                                    | 是                                    | fallback 结果                                                        |
+| RPC 失败                                    | 否                                    | is_error=1 <br/>(rpcinfo.GetRPCInfo(ctx).Stats().Error() is not nil) |
+| 业务错误 （Biz Err 或 BaseResp 非成功状态） | 是/否                                 | is_error=0 <br/>(rpcinfo.GetRPCInfo(ctx).Stats().Error() is nil)     |
 
 ### 2.4 配置示例
 

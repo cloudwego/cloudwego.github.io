@@ -14,10 +14,10 @@ NAME:
    cwgo server - generate RPC or HTTP server
 
                  Examples:
-                   # Generate RPC server code 
+                   # Generate RPC server code
                    cwgo server --type RPC --idl  {{path/to/IDL_file.thrift}} --service {{svc_name}}
 
-                   # Generate HTTP server code 
+                   # Generate HTTP server code
                    cwgo server --type HTTP --idl  {{path/to/IDL_file.thrift}} --service {{svc_name}}
 
 

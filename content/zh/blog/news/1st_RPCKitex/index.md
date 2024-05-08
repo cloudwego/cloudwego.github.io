@@ -3,7 +3,19 @@ date: 2022-09-20
 title: "高性能 RPC 框架 CloudWeGo-Kitex 内外统一的开源实践"
 projects: ["Kitex"]
 linkTitle: "高性能 RPC 框架 CloudWeGo-Kitex 内外统一的开源实践"
-keywords: ["Kitex", "CloudWeGo", "RPC", "开源", "Kite", "Golang", "Thrift", "Protobuf", "gRPC", "xDS"]
+keywords:
+  [
+    "Kitex",
+    "CloudWeGo",
+    "RPC",
+    "开源",
+    "Kite",
+    "Golang",
+    "Thrift",
+    "Protobuf",
+    "gRPC",
+    "xDS",
+  ]
 description: "本文介绍了高性能 RPC 框架 CloudWeGo-Kitex 的起源与发展历史，以及开源一年以来的功能特性变更、社区共建生态成果、企业落地实践等方面。"
 author: <a href="https://github.com/YangruiEmma" target="_blank">YangruiEmma</a>
 ---
@@ -46,7 +58,7 @@ author: <a href="https://github.com/YangruiEmma" target="_blank">YangruiEmma</a>
 大家或许还有疑问，完整的微服务体系离不开基础的云生态，无论在公有云、私有云，都需要搭建额外的服务以很好地支持微服务的治理，比如治理平台、注册中心、配置中心、监控、链路跟踪、服务网格等，而且还存在一些定制的规范。
 字节跳动自然也有完善的内部服务支持微服务体系，但这些服务短期还无法开源，那 CloudWeGo 如何内外维护一套代码，统一迭代呢？
 
-关于这个问题，我们看一下 [Kitex][Kitex] 的模块划分。[Kitex][Kitex] 的模块分为三个部分：中间是 [Kitex][Kitex] 主干部分  **Kitex Core** ，它定义了框架的层次结构、接口核心逻辑的实现以及接口的默认实现；
+关于这个问题，我们看一下 [Kitex][Kitex] 的模块划分。[Kitex][Kitex] 的模块分为三个部分：中间是 [Kitex][Kitex] 主干部分 **Kitex Core** ，它定义了框架的层次结构、接口核心逻辑的实现以及接口的默认实现；
 左边的 **Kitex Tool** 则是与生成代码相关的实现，我们的生成代码工具就是编译这个包得到的，其中包括 IDL 的解析、校验、代码生成、插件支持等。
 不过为了便于用户使用同时提供更友好的扩展，主要能力也做了拆分作为基础库独立开源，如 Thriftgo、Thrift-validator 插件、Fastpb；
 右边的 **Kitex Byted** 是对字节内部基础能力集成的扩展实现，我们在开始就将内部的能力作为扩展收敛到一个 package 下。
@@ -81,20 +93,20 @@ bytedance/gopkg: https://github.com/bytedance/gopkg
 
 在介绍 [Kitex][Kitex] 开源一年变更前，先分享一下框架的衡量指标，这是大家在选择一个框架时要考虑的。
 
-* **扩展性**
+- **扩展性**
 
 如果一个框架与内部能力强耦合，就无法移植到其他平台，或框架的支持场景单一也无法进行扩展，这样的框架很难得到外部的使用。
 
-* **易用性**
+- **易用性**
 
 框架的易用性体现在两个方面。第一是面向**业务开发者** ，如果一个框架在使用过程中需要让用户关注很多框架的细节，那么对研发效率要求很高的团队可能无法接受。
 第二是面向**框架的二次开发者** ，他们需要对框架做一些定制支持，如果框架提供的扩展能力过于宽泛，扩展成本很高，或者可扩展的能力不够多，那么这个框架也是存在局限性的。
 
-* **功能的丰富度**
+- **功能的丰富度**
 
 虽然基于扩展性可以对框架进行定制，但不是所有开发者都有足够的精力做定制开发，如果框架本身对各种扩展能力提供了不同选择的支持，对于开发者来说只需要根据自己的基础设施进行组合就能在自己的环境中运行。
 
-* **高性能**
+- **高性能**
 
 前面三点是初期选择框架需要重点关注的指标，但随着服务规模和资源消耗变大，性能就成了不容忽视的问题。从长期的角度来说，选择框架的时候一定要关注性能，否则后续只能面临框架替换的问题，或者被迫对这个框架做定制维护。
 
@@ -160,7 +172,7 @@ Thrift-gen-validator 是 Thriftgo 的一个工具插件，它可以根据 Thrift
 #### Thrift 高性能编解码
 
 **[Frugal][Frugal] 是一个无需生成编解码代码、基于 JIT 的高性能动态 Thrift 编解码器。** 虽然我们针对官方 Thrift 编解码已经做了优化，支持了 FastThrift，这个在我们开源前发布的优化实践里也有介绍，
-但我们希望能有进一步的性能提升，参考我们开源的高性能 JSON 库 Sonic 的设计，实现了 Thrift JIT 编解码器。下图中的表格是 [Frugal][Frugal] 结合 [Kitex][Kitex]  与 FastThrift 的性能对比。
+但我们希望能有进一步的性能提升，参考我们开源的高性能 JSON 库 Sonic 的设计，实现了 Thrift JIT 编解码器。下图中的表格是 [Frugal][Frugal] 结合 [Kitex][Kitex] 与 FastThrift 的性能对比。
 
 ![image](/img/blog/1st_RPC_Kitex/11.png)
 
@@ -243,16 +255,16 @@ Kitex v0.4.0: https://mp.weixin.qq.com/s/ezifbQkHcZQP6MygmJABYA
 
 本次分享主要介绍了以下内容：
 
-* [Kitex][Kitex] 如何保持内外统一地从内部应用较广的框架转为开源框架；
-* 开源一年以来发布了哪些重要的功能特性，做了哪些性能优化；
-* 借助社区的力量现在 [Kitex][Kitex] 的周边生态如何、企业落地情况以及如何使用 [Kitex][Kitex] 优雅地集成内部能力。
+- [Kitex][Kitex] 如何保持内外统一地从内部应用较广的框架转为开源框架；
+- 开源一年以来发布了哪些重要的功能特性，做了哪些性能优化；
+- 借助社区的力量现在 [Kitex][Kitex] 的周边生态如何、企业落地情况以及如何使用 [Kitex][Kitex] 优雅地集成内部能力。
 
 ### 展望
 
-* 与社区同学共建，持续丰富社区生态；
-* 结合工程实践，为微服务开发者提供更多便利；
-* 完善好 BDThrift 生态，持续优化 Protobuf/gRPC；
-* 更多特性支持或开源，ShmIPC、QUIC、Protobuf 泛化…
+- 与社区同学共建，持续丰富社区生态；
+- 结合工程实践，为微服务开发者提供更多便利；
+- 完善好 BDThrift 生态，持续优化 Protobuf/gRPC；
+- 更多特性支持或开源，ShmIPC、QUIC、Protobuf 泛化…
 
 [Kitex]: https://github.com/cloudwego/kitex
 [Frugal]: https://github.com/cloudwego/frugal

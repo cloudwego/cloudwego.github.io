@@ -51,8 +51,8 @@ description: "Kitex TTheader 协议设计。"
 4. `SEQUENCE NUMBER` 字段 32bits，表示数据包的 seqId，可用于多路复用，最好确保单个连接内递增
 5. `HEADER SIZE` 字段 16bits，等于头部长度字节数 /4，头部长度计算从第 14 个字节开始计算，一直到 `PAYLOAD` 前（备注：header 的最大长度为 64K）
 6. `PROTOCOL ID` 字段 uint8 编码，取值有：
-    - ProtocolIDBinary = 0
-    - ProtocolIDCompact  = 2
+   - ProtocolIDBinary = 0
+   - ProtocolIDCompact = 2
 7. `NUM TRANSFORMS` 字段 uint8 编码，表示 `TRANSFORM` 个数
 8. `TRANSFORM ID` 字段 uint8 编码，具体取值参考下文
 9. `INFO ID` 字段 uint8 编码，具体取值参考下文
@@ -66,7 +66,7 @@ Header 部分长度 bytes 数必须是 4 的倍数，不足部分用 `0x00` 填�
 
 表示压缩方式，为预留字段，暂不支持，取值有：
 
-- ZLIB_TRANSFORM = 0x01，对应的 data 为空，表示用 `zlib`  压缩数据；
+- ZLIB_TRANSFORM = 0x01，对应的 data 为空，表示用 `zlib` 压缩数据；
 - SNAPPY_TRANSFORM = 0x03，对应的 data 为空，表示用 `snappy` 压缩数据；
 
 ## Info IDs

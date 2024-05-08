@@ -4,7 +4,6 @@ date: 2022-12-15
 weight: 2
 keywords: ["Recovery", "panic recovery"]
 description: "The Recovery middleware is preset by the Hertz framework to provide the feature of Panic recovery for the Hertz framework."
-
 ---
 
 The Recovery middleware is preset by the Hertz framework. The `server.Default()` will register Recovery middleware by default to provide the feature of Panic recovery for the Hertz framework.
@@ -16,7 +15,7 @@ h := server.New()
 h.Use(recovery.Recovery())
 ```
 
-The Recovery middleware will recover any panics in the Hertz framework. When a panic occurs, the Recover middleware will print out the panic time, content and stack information by default, then  set the status code as 500 through `*app.RequestContext'`.
+The Recovery middleware will recover any panics in the Hertz framework. When a panic occurs, the Recover middleware will print out the panic time, content and stack information by default, then set the status code as 500 through `*app.RequestContext'`.
 
 ## Import
 

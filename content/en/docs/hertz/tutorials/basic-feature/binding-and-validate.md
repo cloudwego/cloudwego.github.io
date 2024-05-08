@@ -2,7 +2,8 @@
 title: "Binding and validate"
 date: 2022-06-21
 weight: 8
-keywords: ["Binding and validate", "go-tagexpr", "tag", "Parameter binding precedence"]
+keywords:
+  ["Binding and validate", "go-tagexpr", "tag", "Parameter binding precedence"]
 description: "The parameter binding and validation related functions and usage supported by Hertz."
 ---
 
@@ -40,11 +41,11 @@ func main() {
 ```
 
 ### APIs
->
+
 > hertz version >= v0.7.0
 
 | API                   | Description                                                                                                                                                                                            |
-|:----------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| :-------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ctx.BindAndValidate   | Use the following go-tag for parameter binding, and do a parameter validation after successful binding (if there is a validation tag)                                                                  |
 | ctx.Bind              | Same as `BindAndValidate` but without parameter validation                                                                                                                                             |
 | ctx.BindQuery         | Bind all Query parameters, which is equivalent to declaring a `query` tag for each field, for scenarios where no tag is written                                                                        |
@@ -65,7 +66,7 @@ When generating code without IDL, if no tags are added to the field, it will tra
 If [api-annotations](/docs/hertz/tutorials/toolkit/annotation/#supported-api-annotations) are not added when generating code through IDL, the fields will default to adding `form`, `JSON`, and `query` tags. Adding [api-annotations](/docs/hertz/tutorials/toolkit/annotation/#supported-api-annotations) will add the corresponding required tags for the fields.
 
 | go tag   | description                                                                                                                                                                                                                                                                                                             |
-|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | path     | This tag is used to bind parameters on url like `:param` or `*param`. For example: if we defined route is: `/v:version/example`, you can specify the path parameter as the route parameter: `path:"version"`. In this case if url is http://127.0.0.1:8888/v1/ , you can bind the path parameter "1".                   |
 | form     | This tag is used to bind the key-value of the form in request body which content-type is `multipart/form-data` or `application/x-www-form-urlencoded`                                                                                                                                                                   |
 | query    | This tag is used to bind query parameter in request                                                                                                                                                                                                                                                                     |
@@ -74,7 +75,7 @@ If [api-annotations](/docs/hertz/tutorials/toolkit/annotation/#supported-api-ann
 | json     | This tag is used to bind json parameters in the request body which content-type is `application/json`                                                                                                                                                                                                                   |
 | raw_body | This tag is used to bind the original body (bytes type) of the request, and parameters can be bound even if the bound field name is not specified. (Note: raw_body has the lowest binding priority. When multiple tags are specified, once other tags successfully bind parameters, the body content will not be bound) |
 | vd       | `vd` short for validator, [The grammar of validation parameter](https://github.com/bytedance/go-tagexpr/tree/master/validator)                                                                                                                                                                                          |
-| default  | Set default value |
+| default  | Set default value                                                                                                                                                                                                                                                                                                       |
 
 ### Parameter Validation
 
@@ -112,7 +113,7 @@ path > form > query > cookie > header > json > raw_body
 You can specify a parameter as required with keyword `required` in tag. Both `Bind` and `BindAndValidate` returns error when a required parameter is missing.
 When multiple tags contain the`required` keyword, parameter with be bound in order of precedence defined above. If none of the tags bind, an error will be returned.
 
-``` go  
+```go
 type TagRequiredReq struct {
 	// when field hertz is missing in JSON, a required error will be return: binding: expr_path=hertz, cause=missing required parameter
 	Hertz string `json:"hertz,required"`
@@ -122,12 +123,12 @@ type TagRequiredReq struct {
 ```
 
 ## Common config
->
+
 > hertz has refactored `parameter binding` and `checksum` in version v0.7.0, which changes the behaviour of the configurations, as described below<br> respectively.
 > If you still want to use the previous binder, it is now implemented under [hertz-contrib/binding](https://github.com/hertz-contrib/binding) and can be introduced via a custom binder.
 
 ### Customise binder
->
+
 > hertz version >= v0.7.0 support
 
 You need to implement the Binder interface and inject it into the hertz engine in a configurable way.
@@ -201,10 +202,10 @@ func (m *mockBinder) BindProtobuf(request *protocol.Request, i interface{}) erro
 
 Currently expanded binders:
 
-* bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (binding library used before refactoring)
+- bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (binding library used before refactoring)
 
 ### Custom validator
->
+
 > Supported by hertz version >= v0.7.0.
 
 You need to implement the Validator interface and inject it into the hertz engine in a configurable way.
@@ -246,13 +247,14 @@ func (m *mockValidator) ValidateTag() string {
 
 Currently expanded validators:
 
-* go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
+- go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
 
 ### Customize the error of binding and validation
 
 When an error occurs in the binding parameter and the parameter validation fails, user can customize the Error（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_error)）For example：
 The user can customise the content of the Error in case of binding parameter errors and parameter validation failures, using the following method:<br>
 **hertz version >= v0.7.0**
+
 > Custom bind errors are not supported at this time.
 
 Custom validate error:
@@ -285,7 +287,7 @@ func main() {
             FailField: "[validateFailField]: " + failField,
             Msg:       "[validateErrMsg]: " + msg,
         }
-        
+
         return &err
         })
     h := server.New(server.WithValidateConfig(validateConfig))
@@ -331,7 +333,7 @@ func init() {
             FailField: "[bindFailField]: " + failField,
             Msg:       "[bindErrMsg]: " + msg,
         }
-    
+
         return &err
     }
 
@@ -401,7 +403,7 @@ type TestBind struct {
 
 func main() {
     bindConfig := &binding.BindConfig{}
-    // After v0.7.0 refactoring, on the basis of the original increase in the request content and routing parameters, 
+    // After v0.7.0 refactoring, on the basis of the original increase in the request content and routing parameters,
     // which can be more flexible for the user to customise the type of parsing
     // Note: Only after a tag is successfully matched will the custom logic go through.
     bindConfig.MustRegTypeUnmarshal(reflect.TypeOf(Nested{}), func(req *protocol.Request, params param.Params, text string) (reflect.Value, error) {
@@ -416,7 +418,7 @@ func main() {
         return reflect.ValueOf(val), nil
     })
     h := server.New(server.WithBindConfig(bindConfig))
-    
+
     ...
     h.Spin()
 }
@@ -570,10 +572,10 @@ import "github.com/cloudwego/hertz/pkg/app/server/binding"
 func init() {
     // Use the standard library as a JSON deserialisation tool
     binding.UseStdJSONUnmarshaler()
-    
+
     // Use GJSON as the JSON deserialisation tool.
     binding.UseGJSONUnmarshaler()
-    
+
     // Use third-party JSON libraries as JSON deserialisers.
     binding.UseThirdPartyJSONUnmarshaler()
 }
@@ -614,10 +616,10 @@ Reason: `string` and `int` conversion is not supported by default
 
 Solution：
 
-* We are recommended to use the `string` tag of the standard package json. For example：
+- We are recommended to use the `string` tag of the standard package json. For example：
 
   ```go
   A int `json:"A, string"`
   ```
 
-* Configure other json libraries that support this operation.
+- Configure other json libraries that support this operation.

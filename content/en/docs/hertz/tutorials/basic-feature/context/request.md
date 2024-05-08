@@ -2,24 +2,36 @@
 title: "Request"
 date: 2023-07-11
 weight: 1
-keywords: ["RequestContext", "URI", "Header", "Body", "File Operation", "Metadata Store", "Handler", "Request", "Binding and validate", "ClientIP", "Concurrent Security"]
+keywords:
+  [
+    "RequestContext",
+    "URI",
+    "Header",
+    "Body",
+    "File Operation",
+    "Metadata Store",
+    "Handler",
+    "Request",
+    "Binding and validate",
+    "ClientIP",
+    "Concurrent Security",
+  ]
 description: "The functions related to the request in RequestContext."
 ---
-
 
 ## URI
 
 ```go
-func (ctx *RequestContext) Host() []byte 
-func (ctx *RequestContext) FullPath() string 
+func (ctx *RequestContext) Host() []byte
+func (ctx *RequestContext) FullPath() string
 func (ctx *RequestContext) SetFullPath(p string)
-func (ctx *RequestContext) Path() []byte 
+func (ctx *RequestContext) Path() []byte
 func (ctx *RequestContext) Param(key string) string
 func (ctx *RequestContext) Query(key string) string
 func (ctx *RequestContext) DefaultQuery(key, defaultValue string) string
-func (ctx *RequestContext) GetQuery(key string) (string, bool) 
+func (ctx *RequestContext) GetQuery(key string) (string, bool)
 func (ctx *RequestContext) QueryArgs() *protocol.Args
-func (ctx *RequestContext) URI() *protocol.URI 
+func (ctx *RequestContext) URI() *protocol.URI
 ```
 
 ### Host
@@ -29,7 +41,7 @@ Obtain the requested host address.
 Function Signature:
 
 ```go
-func (ctx *RequestContext) Host() []byte 
+func (ctx *RequestContext) Host() []byte
 ```
 
 Example Code:
@@ -48,7 +60,7 @@ Get the complete path of the matched route, and return an empty string for the u
 Function Signature:
 
 ```go
-func (ctx *RequestContext) FullPath() string 
+func (ctx *RequestContext) FullPath() string
 ```
 
 Example Code:
@@ -102,7 +114,7 @@ Obtain the path of the request.
 Function Signature:
 
 ```go
-func (ctx *RequestContext) Path() []byte 
+func (ctx *RequestContext) Path() []byte
 ```
 
 Example Code:
@@ -121,7 +133,7 @@ Obtain the value of routing parameters.
 Function Signature:
 
 ```go
-func (ctx *RequestContext) Param(key string) string 
+func (ctx *RequestContext) Param(key string) string
 ```
 
 Example Code:
@@ -210,25 +222,25 @@ func (ctx *RequestContext) QueryArgs() *protocol.Args
 
 The Args object provides the following methods to obtain/set `Query String` parameters.
 
-|Function Signature | Description |
-|:--|:--|
-|`func (a *Args) Set(key, value string)`  |Set the value of Args object key |
-|`func (a *Args) Reset()` |Reset Args Object |
-|`func (a *Args) CopyTo(dst *Args)` |Copy Args object to dst |
-|`func (a *Args) Del(key string)` |Delete the key value pair of Args object key |
-|`func (a *Args) DelBytes(key []byte)`|Delete key value pairs of Args object byte array type key |
-|`func (a *Args) Has(key string) bool` |Obtain whether the Args object has a key value pair for the key |
-|`func (a *Args) String() string` |Convert Args object to Query String of string type |
-|`func (a *Args) QueryString() []byte` |Convert Args object to a Query String of byte array type |
-|`func (a *Args) ParseBytes(b []byte)` |Parsing byte arrays and storing key value pairs in Args object |
-|`func (a *Args) Peek(key string) []byte` |Obtain the value of Args object key |
-|`func (a *Args) PeekExists(key string) (string, bool)` |Obtain the value of Args object key and its existence |
-|`func (a *Args) PeekAll(key string) [][]byte` | Obtain all values of Args object key |
-|`func (a *Args) Len() int`|Obtain the number of Args object key-value pairs |
-|`func (a *Args) AppendBytes(dst []byte) []byte` |Append Args object Query String to dst and return |
-|`func (a *Args) VisitAll(f func(key, value []byte))` |Visit all key value pairs of Args object |
-|`func (a *Args) WriteTo(w io.Writer) (int64, error)`|Write Args object Query String to io.Writer |
-|`func (a *Args) Add(key, value string)` |Add Args object key as key value |
+| Function Signature                                     | Description                                                     |
+| :----------------------------------------------------- | :-------------------------------------------------------------- |
+| `func (a *Args) Set(key, value string)`                | Set the value of Args object key                                |
+| `func (a *Args) Reset()`                               | Reset Args Object                                               |
+| `func (a *Args) CopyTo(dst *Args)`                     | Copy Args object to dst                                         |
+| `func (a *Args) Del(key string)`                       | Delete the key value pair of Args object key                    |
+| `func (a *Args) DelBytes(key []byte)`                  | Delete key value pairs of Args object byte array type key       |
+| `func (a *Args) Has(key string) bool`                  | Obtain whether the Args object has a key value pair for the key |
+| `func (a *Args) String() string`                       | Convert Args object to Query String of string type              |
+| `func (a *Args) QueryString() []byte`                  | Convert Args object to a Query String of byte array type        |
+| `func (a *Args) ParseBytes(b []byte)`                  | Parsing byte arrays and storing key value pairs in Args object  |
+| `func (a *Args) Peek(key string) []byte`               | Obtain the value of Args object key                             |
+| `func (a *Args) PeekExists(key string) (string, bool)` | Obtain the value of Args object key and its existence           |
+| `func (a *Args) PeekAll(key string) [][]byte`          | Obtain all values of Args object key                            |
+| `func (a *Args) Len() int`                             | Obtain the number of Args object key-value pairs                |
+| `func (a *Args) AppendBytes(dst []byte) []byte`        | Append Args object Query String to dst and return               |
+| `func (a *Args) VisitAll(f func(key, value []byte))`   | Visit all key value pairs of Args object                        |
+| `func (a *Args) WriteTo(w io.Writer) (int64, error)`   | Write Args object Query String to io.Writer                     |
+| `func (a *Args) Add(key, value string)`                | Add Args object key as key value                                |
 
 Example Code:
 
@@ -261,7 +273,7 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
     // n == 31 err == nil
 	s := req.BodyBuffer().String()
     // s == "name=bar&age=&pets=dog&pets=cat"
-	
+
     // change args
     var newArgs protocol.Args
     args.CopyTo(&newArgs)
@@ -295,48 +307,48 @@ Return the requested `URI` object.
 Function Signature:
 
 ```go
-func (ctx *RequestContext) URI() *protocol.URI 
+func (ctx *RequestContext) URI() *protocol.URI
 ```
 
 ### URI Object
 
 The URI object provides the following methods to obtain/set URI.
 
-|Function Signature | Description |
-|:--|:--|
-| `func (u *URI) CopyTo(dst *URI)`|Copy a copy of the URI object to dst |
-| `func (u *URI) QueryArgs() *Args`|Get [Args](#args) |
-| `func (u *URI) Hash() []byte`|Obtain Hash value, such as <http://example.com/user?baz=123#qwe> Hash is **qwe** |
-| `func (u *URI) SetHash(hash string)`|Set Hash |
-| `func (u *URI) SetHashBytes(hash []byte)`|Set Hash of type `[]byte` |
-| `func (u *URI) Username() []byte`|Get Username |
-| `func (u *URI) SetUsername(username string)`|Set Username |
-| `func (u *URI) SetUsernameBytes(username []byte)`|Set Username of type `[]byte` |
-| `func (u *URI) Password() []byte`|Get Password |
-| `func (u *URI) SetPassword(password string)`|Set Password |
-| `func (u *URI) SetPasswordBytes(password []byte)`|Set Password of type `[]byte` |
-| `func (u *URI) QueryString() []byte`|Get `Query String`, such as <http://example.com/user?baz=123> `Query String` is **baz=123**|
-| `func (u *URI) SetQueryString(queryString string)`|Set `Query String`, note that after this method, use `RequestHeader.SetRequestURI` may overwrite the originally intended value|
-| `func (u *URI) SetQueryStringBytes(queryString []byte)`|Set `Query String` of type `[]byte`, note that after this method, use `RequestHeader.SetRequestURI` may overwrite the originally intended value|
-| `func (u *URI) Path() []byte`| Get Path, such as <http://example.com/user/he%20rtz> Path is **/user/he rtz** |
-| `func (u *URI) PathOriginal() []byte`|Get Unescaped Path, such as <http://example.com/user/he%20rtz> Path is **/user/he%20rtz**|
-| `func (u *URI) SetPath(path string)`|Set Path|
-| `func (u *URI) SetPathBytes(path []byte)`|Set Path of type `[]byte`|
-| `func (u *URI) String() string`|Obtain the complete URI, such as <http://example.com/user?baz=123> complete URI is <http://example.com/user?baz=123> |
-| `func (u *URI) FullURI() []byte`|Obtain the complete URI of type `[]byte` |
-| `func (u *URI) Scheme() []byte`|Obtain protocol, such as http |
-| `func (u *URI) SetScheme(scheme string)`|Set protocol |
-| `func (u *URI) SetSchemeBytes(scheme []byte)`|Set protocol of type `[]byte` |
-| `func (u *URI) Host() []byte`|Set Host, such as <http://example.com/user> Host is **example.com**|
-| `func (u *URI) SetHost(host string)`|Set Host|
-| `func (u *URI) SetHostBytes(host []byte)`|Set Host of type `[]byte` |
-| `func (u *URI) LastPathSegment() []byte`|Obtain the last part of Path, for example, the last part of Path **/foo/bar/baz.html** is **baz.html**|
-| `func (u *URI) Update(newURI string)`|Update URI|
-| `func (u *URI) UpdateBytes(newURI []byte)`|Update URI of type `[]byte`|
-| `func (u *URI) Parse(host, uri []byte)`|Initialize URI|
-| `func (u *URI) AppendBytes(dst []byte) []byte`|Assign the complete URI to dst and return dst|
-| `func (u *URI) RequestURI() []byte`|Get RequestURI, such as <http://example.com/user?baz=123> RequestURI is **/user?baz=123**|
-| `func (u *URI) Reset()`|Reset URI|
+| Function Signature                                      | Description                                                                                                                                     |
+| :------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `func (u *URI) CopyTo(dst *URI)`                        | Copy a copy of the URI object to dst                                                                                                            |
+| `func (u *URI) QueryArgs() *Args`                       | Get [Args](#args)                                                                                                                               |
+| `func (u *URI) Hash() []byte`                           | Obtain Hash value, such as <http://example.com/user?baz=123#qwe> Hash is **qwe**                                                                |
+| `func (u *URI) SetHash(hash string)`                    | Set Hash                                                                                                                                        |
+| `func (u *URI) SetHashBytes(hash []byte)`               | Set Hash of type `[]byte`                                                                                                                       |
+| `func (u *URI) Username() []byte`                       | Get Username                                                                                                                                    |
+| `func (u *URI) SetUsername(username string)`            | Set Username                                                                                                                                    |
+| `func (u *URI) SetUsernameBytes(username []byte)`       | Set Username of type `[]byte`                                                                                                                   |
+| `func (u *URI) Password() []byte`                       | Get Password                                                                                                                                    |
+| `func (u *URI) SetPassword(password string)`            | Set Password                                                                                                                                    |
+| `func (u *URI) SetPasswordBytes(password []byte)`       | Set Password of type `[]byte`                                                                                                                   |
+| `func (u *URI) QueryString() []byte`                    | Get `Query String`, such as <http://example.com/user?baz=123> `Query String` is **baz=123**                                                     |
+| `func (u *URI) SetQueryString(queryString string)`      | Set `Query String`, note that after this method, use `RequestHeader.SetRequestURI` may overwrite the originally intended value                  |
+| `func (u *URI) SetQueryStringBytes(queryString []byte)` | Set `Query String` of type `[]byte`, note that after this method, use `RequestHeader.SetRequestURI` may overwrite the originally intended value |
+| `func (u *URI) Path() []byte`                           | Get Path, such as <http://example.com/user/he%20rtz> Path is **/user/he rtz**                                                                   |
+| `func (u *URI) PathOriginal() []byte`                   | Get Unescaped Path, such as <http://example.com/user/he%20rtz> Path is **/user/he%20rtz**                                                       |
+| `func (u *URI) SetPath(path string)`                    | Set Path                                                                                                                                        |
+| `func (u *URI) SetPathBytes(path []byte)`               | Set Path of type `[]byte`                                                                                                                       |
+| `func (u *URI) String() string`                         | Obtain the complete URI, such as <http://example.com/user?baz=123> complete URI is <http://example.com/user?baz=123>                            |
+| `func (u *URI) FullURI() []byte`                        | Obtain the complete URI of type `[]byte`                                                                                                        |
+| `func (u *URI) Scheme() []byte`                         | Obtain protocol, such as http                                                                                                                   |
+| `func (u *URI) SetScheme(scheme string)`                | Set protocol                                                                                                                                    |
+| `func (u *URI) SetSchemeBytes(scheme []byte)`           | Set protocol of type `[]byte`                                                                                                                   |
+| `func (u *URI) Host() []byte`                           | Set Host, such as <http://example.com/user> Host is **example.com**                                                                             |
+| `func (u *URI) SetHost(host string)`                    | Set Host                                                                                                                                        |
+| `func (u *URI) SetHostBytes(host []byte)`               | Set Host of type `[]byte`                                                                                                                       |
+| `func (u *URI) LastPathSegment() []byte`                | Obtain the last part of Path, for example, the last part of Path **/foo/bar/baz.html** is **baz.html**                                          |
+| `func (u *URI) Update(newURI string)`                   | Update URI                                                                                                                                      |
+| `func (u *URI) UpdateBytes(newURI []byte)`              | Update URI of type `[]byte`                                                                                                                     |
+| `func (u *URI) Parse(host, uri []byte)`                 | Initialize URI                                                                                                                                  |
+| `func (u *URI) AppendBytes(dst []byte) []byte`          | Assign the complete URI to dst and return dst                                                                                                   |
+| `func (u *URI) RequestURI() []byte`                     | Get RequestURI, such as <http://example.com/user?baz=123> RequestURI is **/user?baz=123**                                                       |
+| `func (u *URI) Reset()`                                 | Reset URI                                                                                                                                       |
 
 ## Header
 
@@ -349,12 +361,12 @@ func (h *RequestHeader) String() string
 func (h *RequestHeader) VisitAll(f func(key, value []byte))
 
 // RequestContext
-func (ctx *RequestContext) IsGet() bool 
+func (ctx *RequestContext) IsGet() bool
 func (ctx *RequestContext) IsHead() bool
 func (ctx *RequestContext) IsPost() bool
 func (ctx *RequestContext) Method() []byte
 func (ctx *RequestContext) ContentType() []byte
-func (ctx *RequestContext) IfModifiedSince(lastModified time.Time) bool 
+func (ctx *RequestContext) IfModifiedSince(lastModified time.Time) bool
 func (ctx *RequestContext) Cookie(key string) []byte
 func (ctx *RequestContext) UserAgent() []byte
 func (ctx *RequestContext) GetHeader(key string) []byte
@@ -379,12 +391,12 @@ hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
 	ctx.Request.Header.Add("hertz1", "value1")
 	ctx.Request.Header.Add("hertz1", "value2")
 	ctx.Request.Header.SetContentTypeBytes([]byte("application/x-www-form-urlencoded"))
-	contentType1 := ctx.Request.Header.ContentType() 
+	contentType1 := ctx.Request.Header.ContentType()
     // contentType1 == []byte("application/x-www-form-urlencoded")
 	ctx.Request.Header.Add("Content-Type", "application/json; charset=utf-8")
-	hertz1 := ctx.Request.Header.GetAll("hertz1") 
+	hertz1 := ctx.Request.Header.GetAll("hertz1")
     // hertz1 == []string{"value1", "value2"}
-	contentType2 := ctx.Request.Header.ContentType() 
+	contentType2 := ctx.Request.Header.ContentType()
     // contentType2 == []byte("application/json; charset=utf-8")
 	})
 ```
@@ -408,12 +420,12 @@ hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
 	ctx.Request.Header.Set("hertz1", "value1")
 	ctx.Request.Header.Set("hertz1", "value2")
 	ctx.Request.Header.SetContentTypeBytes([]byte("application/x-www-form-urlencoded"))
-	contentType1 := ctx.Request.Header.ContentType() 
+	contentType1 := ctx.Request.Header.ContentType()
     // contentType1 == []byte("application/x-www-form-urlencoded")
 	ctx.Request.Header.Set("Content-Type", "application/json; charset=utf-8")
-	hertz1 := ctx.Request.Header.GetAll("hertz1")    
+	hertz1 := ctx.Request.Header.GetAll("hertz1")
     // hertz1 == []string{"value2"}
-	contentType2 := ctx.Request.Header.ContentType() 
+	contentType2 := ctx.Request.Header.ContentType()
     // contentType2 == []byte("application/json; charset=utf-8")
 	})
 ```
@@ -630,99 +642,99 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 
 Use `RequestContext.Request.Header` to obtain the RequestHeader object, which provides the following methods to obtain/set the request header.
 
-|Function Signature | Description |
-|:--|:--|
-| `func (h *RequestHeader) Method() []byte`|Get Method |
-| `func (h *RequestHeader) SetMethod(method string)`|Set Method|
-| `func (h *RequestHeader) SetMethodBytes(method []byte)`|Set Method of type `[]byte`  |
-| `func (h *RequestHeader) IsGet() bool`|Determine if Method is GET|
-| `func (h *RequestHeader) IsHead() bool`|Determine if Method is HEAD|
-| `func (h *RequestHeader) IsPost() bool`|Determine if Method is POST|
-| `func (h *RequestHeader) IsPut() bool`|Determine if Method is PUT|
-| `func (h *RequestHeader) IsDelete() bool`|Determine if Method is DELETE|
-| `func (h *RequestHeader) IsConnect() bool`|Determine if Method is CONNECT|
-| `func (h *RequestHeader) IsOptions() bool`|Determine if Method is OPTIONS|
-| `func (h *RequestHeader) IsTrace() bool`|Determine if Method is TRACE|
-| `func (h *RequestHeader) IgnoreBody() bool`|Determine whether to ignore Body (Method GET/HEAD ignores Body)|
-| `func (h *RequestHeader) RequestURI() []byte`|Get RequestURI|
-| `func (h *RequestHeader) SetRequestURI(requestURI string)`|Set RequestURI|
-| `func (h *RequestHeader) SetRequestURIBytes(requestURI []byte)`|Set RequestURI of type `[]byte` |
-| `func (h *RequestHeader) SetProtocol(p string)`|Set protocol type, such as HTTP/1.0|
-| `func (h *RequestHeader) GetProtocol() string`|Get protocol type, such as HTTP/1.1|
-| `func (h *RequestHeader) IsHTTP11() bool`|Determine if it is HTTP/1.1|
-| `func (h *RequestHeader) SetNoHTTP11(b bool)`|Setting is not HTTP/1.1|
-| `func (h *RequestHeader) Host() []byte`|Get Host|
-| `func (h *RequestHeader) SetHost(host string)`|Set Host|
-| `func (h *RequestHeader) SetHostBytes(host []byte)`|Set Host of type `[]byte`|
-| `func (h *RequestHeader) ContentLength() int`|Get Content-Length|
-| `func (h *RequestHeader) ContentLengthBytes() []byte`|Get Content-Length of type `[]byte`|
-| `func (h *RequestHeader) SetContentLength(contentLength int)`|Set Content-Length|
-| `func (h *RequestHeader) SetContentLengthBytes(contentLength []byte)`|Set Content-Length of type `[]byte`|
-| `func (h *RequestHeader) InitContentLengthWithValue(contentLength int)`|Initialize Content-Length|
-| `func (h *RequestHeader) ContentType() []byte`|Get Content-Type|
-| `func (h *RequestHeader) SetContentTypeBytes(contentType []byte)`|Set Content-Type|
-| `func (h *RequestHeader) SetNoDefaultContentType(b bool)`|Control the default sending behavior when Content Type is not specified, false sends the default Content Type value, true does not send Content Type|
-| `func (h *RequestHeader) UserAgent() []byte`|Get User-Agent|
-| `func (h *RequestHeader) SetUserAgentBytes(userAgent []byte)`|Set User-Agent|
-| `func (h *RequestHeader) ConnectionClose() bool`|Determine if it contains Connection: close|
-| `func (h *RequestHeader) SetConnectionClose(close bool)`|Set connectionClose |
-| `func (h *RequestHeader) ResetConnectionClose()`|Reset connectionClose to false and delete Connection Header|
-| `func (h *RequestHeader) SetByteRange(startPos, endPos int)`|Set Range (Range: bytes=startPos-endPos)|
-| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`| Set the boundary for Content-Type=multipart/form data |
-| `func (h *RequestHeader) MultipartFormBoundary() []byte`|Get the value of boundary |
-| `func (h *RequestHeader) Trailer() *Trailer`|Get Trailer|
-| `func (h *RequestHeader) Cookie(key string) []byte`|Obtain the value of Cookie key as key |
-| `func (h *RequestHeader) SetCookie(key, value string)`|Set Cookie Key Values |
-| `func (h *RequestHeader) DelCookie(key string)`|Delete the cookie whose key is key|
-| `func (h *RequestHeader) DelAllCookies()`|Delete all Cookies |
-| `func (h *RequestHeader) FullCookie() []byte`|Get all Cookies|
-| `func (h *RequestHeader) Cookies() []*Cookie`|Get all Cookie objects |
-| `func (h *RequestHeader) VisitAllCookie(f func(key, value []byte))`| Traverse the key values of all cookies and execute the f function |
-| `func (h *RequestHeader) Peek(key string) []byte`|Obtain the value of key for type `[]byte` |
-| `func (h *RequestHeader) Get(key string) string`|Obtain the value of key as key |
-| `func (h *RequestHeader) PeekArgBytes(key []byte) []byte`|Obtain the value of key as key |
-| `func (h *RequestHeader) PeekAll(key string) [][]byte`|Obtain all values of key for type `[]byte` (used to obtain multiple values with the same key)|
-| `func (h *RequestHeader) GetAll(key string) []string`|Obtain all values with key as key |
-| `func (h *RequestHeader) PeekIfModifiedSinceBytes() []byte`|Get If-Modified-Since|
-| `func (h *RequestHeader) PeekContentEncoding() []byte`|Get Content-Encoding|
-| `func (h *RequestHeader) PeekRange() []byte`|Get Range|
-| `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool`|Determine whether Accept-Encoding exists and whether Accept-Encoding includes acceptEncoding|
-| `func (h *RequestHeader) RawHeaders() []byte`|Get original Header |
-| `func (h *RequestHeader) SetRawHeaders(r []byte)`  | Set original Header |
-| `func (h *RequestHeader) Add(key, value string)`| Set the header key value to set multiple headers for the same key, but the key will overwrite the following headers: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent|
-| `func (h *RequestHeader) InitBufValue(size int)`|Initialize buffer size |
-| `func (h *RequestHeader) GetBufValue() []byte`|Get the value of the buffer |
-| `func (h *RequestHeader) SetCanonical(key, value []byte)`|Set the Header key value, assuming that the key is in canonical form |
-| `func (h *RequestHeader) Set(key, value string)`|Set the header key value to set a single header for the same key |
-| `func (h *RequestHeader) SetBytesKV(key, value []byte)`|Set the header key value of type `[]byte` to set a single header for the same key |
-| `func (h *RequestHeader) DelBytes(key []byte)`|Delete key value pairs with key in the header |
-| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`|Add Header key value (different from `Add`, the key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, or User-Agent)|
-| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`|Set Header key value (different from `Set`, The key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, or User-Agent)|
-| `func (h *RequestHeader) AppendBytes(dst []byte) []byte`|Attach the complete header to the dst and return |
-| `func (h *RequestHeader) Header() []byte`|Obtain the complete header of type `[]byte` |
-| `func (h *RequestHeader) String() string`|Obtain the complete header |
-| `func (h *RequestHeader) CopyTo(dst *RequestHeader)`|Obtain a copy of RequestHeader |
-| `func (h *RequestHeader) VisitAll(f func(key, value []byte))`|Traverse the key values of all headers and execute the f function |
-| `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`|Traverse the key values of all headers and execute the f function, except for Content-Type, Content-Length, Cookie, Host, User-Agent|
-| `func (h *RequestHeader) Len() int`|Return the number of key value pairs in the header |
-| `func (h *RequestHeader) DisableNormalizing()`|Disable the normalization of header name (capitalize the first letter and the first letter after the Em dash)|
-| `func (h *RequestHeader) IsDisableNormalizing() bool`|Whether to disable standardized for header name, default not disabled |
-| `func (h *RequestHeader) ResetSkipNormalize()`|Reset Headers except for disableNormalizing status |
-| `func (h *RequestHeader) Reset()`|Reset Headers |
+| Function Signature                                                           | Description                                                                                                                                                                                                             |
+| :--------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `func (h *RequestHeader) Method() []byte`                                    | Get Method                                                                                                                                                                                                              |
+| `func (h *RequestHeader) SetMethod(method string)`                           | Set Method                                                                                                                                                                                                              |
+| `func (h *RequestHeader) SetMethodBytes(method []byte)`                      | Set Method of type `[]byte`                                                                                                                                                                                             |
+| `func (h *RequestHeader) IsGet() bool`                                       | Determine if Method is GET                                                                                                                                                                                              |
+| `func (h *RequestHeader) IsHead() bool`                                      | Determine if Method is HEAD                                                                                                                                                                                             |
+| `func (h *RequestHeader) IsPost() bool`                                      | Determine if Method is POST                                                                                                                                                                                             |
+| `func (h *RequestHeader) IsPut() bool`                                       | Determine if Method is PUT                                                                                                                                                                                              |
+| `func (h *RequestHeader) IsDelete() bool`                                    | Determine if Method is DELETE                                                                                                                                                                                           |
+| `func (h *RequestHeader) IsConnect() bool`                                   | Determine if Method is CONNECT                                                                                                                                                                                          |
+| `func (h *RequestHeader) IsOptions() bool`                                   | Determine if Method is OPTIONS                                                                                                                                                                                          |
+| `func (h *RequestHeader) IsTrace() bool`                                     | Determine if Method is TRACE                                                                                                                                                                                            |
+| `func (h *RequestHeader) IgnoreBody() bool`                                  | Determine whether to ignore Body (Method GET/HEAD ignores Body)                                                                                                                                                         |
+| `func (h *RequestHeader) RequestURI() []byte`                                | Get RequestURI                                                                                                                                                                                                          |
+| `func (h *RequestHeader) SetRequestURI(requestURI string)`                   | Set RequestURI                                                                                                                                                                                                          |
+| `func (h *RequestHeader) SetRequestURIBytes(requestURI []byte)`              | Set RequestURI of type `[]byte`                                                                                                                                                                                         |
+| `func (h *RequestHeader) SetProtocol(p string)`                              | Set protocol type, such as HTTP/1.0                                                                                                                                                                                     |
+| `func (h *RequestHeader) GetProtocol() string`                               | Get protocol type, such as HTTP/1.1                                                                                                                                                                                     |
+| `func (h *RequestHeader) IsHTTP11() bool`                                    | Determine if it is HTTP/1.1                                                                                                                                                                                             |
+| `func (h *RequestHeader) SetNoHTTP11(b bool)`                                | Setting is not HTTP/1.1                                                                                                                                                                                                 |
+| `func (h *RequestHeader) Host() []byte`                                      | Get Host                                                                                                                                                                                                                |
+| `func (h *RequestHeader) SetHost(host string)`                               | Set Host                                                                                                                                                                                                                |
+| `func (h *RequestHeader) SetHostBytes(host []byte)`                          | Set Host of type `[]byte`                                                                                                                                                                                               |
+| `func (h *RequestHeader) ContentLength() int`                                | Get Content-Length                                                                                                                                                                                                      |
+| `func (h *RequestHeader) ContentLengthBytes() []byte`                        | Get Content-Length of type `[]byte`                                                                                                                                                                                     |
+| `func (h *RequestHeader) SetContentLength(contentLength int)`                | Set Content-Length                                                                                                                                                                                                      |
+| `func (h *RequestHeader) SetContentLengthBytes(contentLength []byte)`        | Set Content-Length of type `[]byte`                                                                                                                                                                                     |
+| `func (h *RequestHeader) InitContentLengthWithValue(contentLength int)`      | Initialize Content-Length                                                                                                                                                                                               |
+| `func (h *RequestHeader) ContentType() []byte`                               | Get Content-Type                                                                                                                                                                                                        |
+| `func (h *RequestHeader) SetContentTypeBytes(contentType []byte)`            | Set Content-Type                                                                                                                                                                                                        |
+| `func (h *RequestHeader) SetNoDefaultContentType(b bool)`                    | Control the default sending behavior when Content Type is not specified, false sends the default Content Type value, true does not send Content Type                                                                    |
+| `func (h *RequestHeader) UserAgent() []byte`                                 | Get User-Agent                                                                                                                                                                                                          |
+| `func (h *RequestHeader) SetUserAgentBytes(userAgent []byte)`                | Set User-Agent                                                                                                                                                                                                          |
+| `func (h *RequestHeader) ConnectionClose() bool`                             | Determine if it contains Connection: close                                                                                                                                                                              |
+| `func (h *RequestHeader) SetConnectionClose(close bool)`                     | Set connectionClose                                                                                                                                                                                                     |
+| `func (h *RequestHeader) ResetConnectionClose()`                             | Reset connectionClose to false and delete Connection Header                                                                                                                                                             |
+| `func (h *RequestHeader) SetByteRange(startPos, endPos int)`                 | Set Range (Range: bytes=startPos-endPos)                                                                                                                                                                                |
+| `func (h *RequestHeader) SetMultipartFormBoundary(boundary string)`          | Set the boundary for Content-Type=multipart/form data                                                                                                                                                                   |
+| `func (h *RequestHeader) MultipartFormBoundary() []byte`                     | Get the value of boundary                                                                                                                                                                                               |
+| `func (h *RequestHeader) Trailer() *Trailer`                                 | Get Trailer                                                                                                                                                                                                             |
+| `func (h *RequestHeader) Cookie(key string) []byte`                          | Obtain the value of Cookie key as key                                                                                                                                                                                   |
+| `func (h *RequestHeader) SetCookie(key, value string)`                       | Set Cookie Key Values                                                                                                                                                                                                   |
+| `func (h *RequestHeader) DelCookie(key string)`                              | Delete the cookie whose key is key                                                                                                                                                                                      |
+| `func (h *RequestHeader) DelAllCookies()`                                    | Delete all Cookies                                                                                                                                                                                                      |
+| `func (h *RequestHeader) FullCookie() []byte`                                | Get all Cookies                                                                                                                                                                                                         |
+| `func (h *RequestHeader) Cookies() []*Cookie`                                | Get all Cookie objects                                                                                                                                                                                                  |
+| `func (h *RequestHeader) VisitAllCookie(f func(key, value []byte))`          | Traverse the key values of all cookies and execute the f function                                                                                                                                                       |
+| `func (h *RequestHeader) Peek(key string) []byte`                            | Obtain the value of key for type `[]byte`                                                                                                                                                                               |
+| `func (h *RequestHeader) Get(key string) string`                             | Obtain the value of key as key                                                                                                                                                                                          |
+| `func (h *RequestHeader) PeekArgBytes(key []byte) []byte`                    | Obtain the value of key as key                                                                                                                                                                                          |
+| `func (h *RequestHeader) PeekAll(key string) [][]byte`                       | Obtain all values of key for type `[]byte` (used to obtain multiple values with the same key)                                                                                                                           |
+| `func (h *RequestHeader) GetAll(key string) []string`                        | Obtain all values with key as key                                                                                                                                                                                       |
+| `func (h *RequestHeader) PeekIfModifiedSinceBytes() []byte`                  | Get If-Modified-Since                                                                                                                                                                                                   |
+| `func (h *RequestHeader) PeekContentEncoding() []byte`                       | Get Content-Encoding                                                                                                                                                                                                    |
+| `func (h *RequestHeader) PeekRange() []byte`                                 | Get Range                                                                                                                                                                                                               |
+| `func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool` | Determine whether Accept-Encoding exists and whether Accept-Encoding includes acceptEncoding                                                                                                                            |
+| `func (h *RequestHeader) RawHeaders() []byte`                                | Get original Header                                                                                                                                                                                                     |
+| `func (h *RequestHeader) SetRawHeaders(r []byte)`                            | Set original Header                                                                                                                                                                                                     |
+| `func (h *RequestHeader) Add(key, value string)`                             | Set the header key value to set multiple headers for the same key, but the key will overwrite the following headers: Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, User-Agent              |
+| `func (h *RequestHeader) InitBufValue(size int)`                             | Initialize buffer size                                                                                                                                                                                                  |
+| `func (h *RequestHeader) GetBufValue() []byte`                               | Get the value of the buffer                                                                                                                                                                                             |
+| `func (h *RequestHeader) SetCanonical(key, value []byte)`                    | Set the Header key value, assuming that the key is in canonical form                                                                                                                                                    |
+| `func (h *RequestHeader) Set(key, value string)`                             | Set the header key value to set a single header for the same key                                                                                                                                                        |
+| `func (h *RequestHeader) SetBytesKV(key, value []byte)`                      | Set the header key value of type `[]byte` to set a single header for the same key                                                                                                                                       |
+| `func (h *RequestHeader) DelBytes(key []byte)`                               | Delete key value pairs with key in the header                                                                                                                                                                           |
+| `func (h *RequestHeader) AddArgBytes(key, value []byte, noValue bool)`       | Add Header key value (different from `Add`, the key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, or User-Agent) |
+| `func (h *RequestHeader) SetArgBytes(key, value []byte, noValue bool)`       | Set Header key value (different from `Set`, The key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Connection, Cookie, Transfer-Encoding, Host, or User-Agent) |
+| `func (h *RequestHeader) AppendBytes(dst []byte) []byte`                     | Attach the complete header to the dst and return                                                                                                                                                                        |
+| `func (h *RequestHeader) Header() []byte`                                    | Obtain the complete header of type `[]byte`                                                                                                                                                                             |
+| `func (h *RequestHeader) String() string`                                    | Obtain the complete header                                                                                                                                                                                              |
+| `func (h *RequestHeader) CopyTo(dst *RequestHeader)`                         | Obtain a copy of RequestHeader                                                                                                                                                                                          |
+| `func (h *RequestHeader) VisitAll(f func(key, value []byte))`                | Traverse the key values of all headers and execute the f function                                                                                                                                                       |
+| `func (h *RequestHeader) VisitAllCustomHeader(f func(key, value []byte))`    | Traverse the key values of all headers and execute the f function, except for Content-Type, Content-Length, Cookie, Host, User-Agent                                                                                    |
+| `func (h *RequestHeader) Len() int`                                          | Return the number of key value pairs in the header                                                                                                                                                                      |
+| `func (h *RequestHeader) DisableNormalizing()`                               | Disable the normalization of header name (capitalize the first letter and the first letter after the Em dash)                                                                                                           |
+| `func (h *RequestHeader) IsDisableNormalizing() bool`                        | Whether to disable standardized for header name, default not disabled                                                                                                                                                   |
+| `func (h *RequestHeader) ResetSkipNormalize()`                               | Reset Headers except for disableNormalizing status                                                                                                                                                                      |
+| `func (h *RequestHeader) Reset()`                                            | Reset Headers                                                                                                                                                                                                           |
 
 ## Body
 
 ```go
 func (ctx *RequestContext) GetRawData() []byte
-func (ctx *RequestContext) Body() ([]byte, error) 
+func (ctx *RequestContext) Body() ([]byte, error)
 func (ctx *RequestContext) RequestBodyStream() io.Reader
 func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 func (ctx *RequestContext) PostForm(key string) string
-func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string 
-func (ctx *RequestContext) GetPostForm(key string) (string, bool) 
+func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string
+func (ctx *RequestContext) GetPostForm(key string) (string, bool)
 func (ctx *RequestContext) PostArgs() *protocol.Args
-func (ctx *RequestContext) FormValue(key string) []byte 
-func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc)  
+func (ctx *RequestContext) FormValue(key string) []byte
+func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc)
 ```
 
 ### Body
@@ -732,7 +744,7 @@ Obtain the requested body data and return an error if an error occurs.
 Function Signature:
 
 ```go
-func (ctx *RequestContext) Body() ([]byte, error) 
+func (ctx *RequestContext) Body() ([]byte, error)
 ```
 
 Example Code:
@@ -785,7 +797,7 @@ Example Code:
 
 ```go
 // POST http://example.com/user
-// Content-Type: multipart/form-data; 
+// Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="name"
 // tom
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
@@ -810,7 +822,7 @@ Example Code:
 
 ```go
 // POST http://example.com/user
-// Content-Type: multipart/form-data; 
+// Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="name"
 // tom
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
@@ -827,14 +839,14 @@ Retrieve `multipart.Form.Value` by name and return the first value of the given 
 Function Signature:
 
 ```go
-func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string 
+func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string
 ```
 
 Example Code:
 
 ```go
 // POST http://example.com/user
-// Content-Type: multipart/form-data; 
+// Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="name"
 // tom
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
@@ -884,7 +896,7 @@ Obtain the values of keys in the following order.
 Function Signature:
 
 ```go
-func (ctx *RequestContext) FormValue(key string) []byte 
+func (ctx *RequestContext) FormValue(key string) []byte
 ```
 
 Example Code:
@@ -899,7 +911,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 })
 
 // POST http://example.com/user
-// Content-Type: multipart/form-data; 
+// Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="name"
 // tom
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
@@ -914,14 +926,14 @@ If the default method provided by the [FormValue](#formvalue) function to obtain
 Function Signature:
 
 ```go
-func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc) 
+func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc)
 ```
 
 Example Code:
 
 ```go
 // POST http://example.com/user?name=tom
-// Content-Type: multipart/form-data; 
+// Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="age"
 // 10
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
@@ -946,8 +958,8 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 
 ```go
 func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
-func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
-func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
+func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error)
+func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error
 ```
 
 ### MultipartForm
@@ -966,7 +978,7 @@ Example Code:
 
 ```go
 // POST http://example.com/user
-// Content-Type: multipart/form-data; 
+// Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
 h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
     form, err := ctx.MultipartForm()
@@ -981,14 +993,14 @@ Retrieve `multipart.Form.File` by name and return the first `multipart.FileHeade
 Function Signature:
 
 ```go
-func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error) 
+func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error)
 ```
 
 Example Code:
 
 ```go
 // POST http://example.com/user
-// Content-Type: multipart/form-data; 
+// Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
 h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
     avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
@@ -1002,14 +1014,14 @@ Save the multipart file to disk.
 Function Signature:
 
 ```go
-func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error 
+func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst string) error
 ```
 
 Example Code:
 
 ```go
 // POST http://example.com/user
-// Content-Type: multipart/form-data; 
+// Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
 h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
     avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
@@ -1022,29 +1034,29 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 
 > Note: RequestContext will be reclaimed after the request ends, and the metadata will be set to nil. To use asynchronously, please use the [Copy](#copy) method.
 
-|Function Signature | Description |
-|:--|:--|
-| `func (ctx *RequestContext) Set(key string, value interface{})`|Store key value pairs in requestContext |
-| `func (ctx *RequestContext) Value(key interface{}) interface{}`|Gets the value of the requestContext key as key |
-| `func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)`|Obtain the value of the requestContext key as key and whether the key exists |
-| `func (ctx *RequestContext) MustGet(key string) interface{}`|Obtain the value of the requestContext key as key. If it does not exist, a panic will occur|
-| `func (ctx *RequestContext) GetString(key string) (s string)`|Obtain the value of the requestContext key as key and convert it to type `string` |
-| `func (ctx *RequestContext) GetBool(key string) (b bool)`|Obtain the value of the requestContext key as key and convert it to type `bool` |
-| `func (ctx *RequestContext) GetInt(key string) (i int)`|Obtain the value of the requestContext key as key and convert it to type `int` |
-| `func (ctx *RequestContext) GetInt32(key string) (i32 int32)`|Obtain the value of the requestContext key as key and convert it to type `int32` |
-| `func (ctx *RequestContext) GetInt64(key string) (i64 int64)`|Obtain the value of the requestContext key as key and convert it to type `int64` |
-| `func (ctx *RequestContext) GetUint(key string) (ui uint)`|Obtain the value of the requestContext key as key and convert it to type `uint` |
-| `func (ctx *RequestContext) GetUint32(key string) (ui32 uint32)`|Obtain the value of the requestContext key as key and convert it to type `uint32` |
-| `func (ctx *RequestContext) GetUint64(key string) (ui64 uint64)`|Obtain the value of the requestContext key as key and convert it to type `uint64` |
-| `func (ctx *RequestContext) GetFloat32(key string) (f32 float32)`|Obtain the value of the requestContext key as key and convert it to type `float32` |
-| `func (ctx *RequestContext) GetFloat64(key string) (f64 float64)`|Obtain the value of the requestContext key as key and convert it to type `float64` |
-| `func (ctx *RequestContext) GetTime(key string) (t time.Time)`|Obtain the value of the requestContext key as key and convert it to type `time.Time` |
-| `func (ctx *RequestContext) GetDuration(key string) (d time.Duration)`|Obtain the value of the requestContext key as key and convert it to type `time.Duration` |
-| `func (ctx *RequestContext) GetStringSlice(key string) (ss []string)`|Obtain the value of the requestContext key as key and convert it to type `[]string` |
-| `func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{})`|Obtain the value of the requestContext key as key and convert it to type `map[string]interface{}` |
-| `func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string)`|Obtain the value of the requestContext key as key and convert it to type `map[string]string` |
-| `func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string)`|Obtain the value of the requestContext key as key and convert it to type `map[string][]string` |
-| `func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))`|Call fn for each key value pair in the context |
+| Function Signature                                                                          | Description                                                                                       |
+| :------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------ |
+| `func (ctx *RequestContext) Set(key string, value interface{})`                             | Store key value pairs in requestContext                                                           |
+| `func (ctx *RequestContext) Value(key interface{}) interface{}`                             | Gets the value of the requestContext key as key                                                   |
+| `func (ctx *RequestContext) Get(key string) (value interface{}, exists bool)`               | Obtain the value of the requestContext key as key and whether the key exists                      |
+| `func (ctx *RequestContext) MustGet(key string) interface{}`                                | Obtain the value of the requestContext key as key. If it does not exist, a panic will occur       |
+| `func (ctx *RequestContext) GetString(key string) (s string)`                               | Obtain the value of the requestContext key as key and convert it to type `string`                 |
+| `func (ctx *RequestContext) GetBool(key string) (b bool)`                                   | Obtain the value of the requestContext key as key and convert it to type `bool`                   |
+| `func (ctx *RequestContext) GetInt(key string) (i int)`                                     | Obtain the value of the requestContext key as key and convert it to type `int`                    |
+| `func (ctx *RequestContext) GetInt32(key string) (i32 int32)`                               | Obtain the value of the requestContext key as key and convert it to type `int32`                  |
+| `func (ctx *RequestContext) GetInt64(key string) (i64 int64)`                               | Obtain the value of the requestContext key as key and convert it to type `int64`                  |
+| `func (ctx *RequestContext) GetUint(key string) (ui uint)`                                  | Obtain the value of the requestContext key as key and convert it to type `uint`                   |
+| `func (ctx *RequestContext) GetUint32(key string) (ui32 uint32)`                            | Obtain the value of the requestContext key as key and convert it to type `uint32`                 |
+| `func (ctx *RequestContext) GetUint64(key string) (ui64 uint64)`                            | Obtain the value of the requestContext key as key and convert it to type `uint64`                 |
+| `func (ctx *RequestContext) GetFloat32(key string) (f32 float32)`                           | Obtain the value of the requestContext key as key and convert it to type `float32`                |
+| `func (ctx *RequestContext) GetFloat64(key string) (f64 float64)`                           | Obtain the value of the requestContext key as key and convert it to type `float64`                |
+| `func (ctx *RequestContext) GetTime(key string) (t time.Time)`                              | Obtain the value of the requestContext key as key and convert it to type `time.Time`              |
+| `func (ctx *RequestContext) GetDuration(key string) (d time.Duration)`                      | Obtain the value of the requestContext key as key and convert it to type `time.Duration`          |
+| `func (ctx *RequestContext) GetStringSlice(key string) (ss []string)`                       | Obtain the value of the requestContext key as key and convert it to type `[]string`               |
+| `func (ctx *RequestContext) GetStringMap(key string) (sm map[string]interface{})`           | Obtain the value of the requestContext key as key and convert it to type `map[string]interface{}` |
+| `func (ctx *RequestContext) GetStringMapString(key string) (sms map[string]string)`         | Obtain the value of the requestContext key as key and convert it to type `map[string]string`      |
+| `func (ctx *RequestContext) GetStringMapStringSlice(key string) (smss map[string][]string)` | Obtain the value of the requestContext key as key and convert it to type `map[string][]string`    |
+| `func (ctx *RequestContext) ForEachKey(fn func(k string, v interface{}))`                   | Call fn for each key value pair in the context                                                    |
 
 Example Code:
 
@@ -1123,13 +1135,13 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 ## Handler
 
 ```go
-func (ctx *RequestContext) Next(c context.Context) 
-func (ctx *RequestContext) Handlers() HandlersChain 
-func (ctx *RequestContext) Handler() HandlerFunc 
-func (ctx *RequestContext) SetHandlers(hc HandlersChain) 
-func (ctx *RequestContext) HandlerName() string 
-func (ctx *RequestContext) GetIndex() int8 
-func (ctx *RequestContext) Abort() 
+func (ctx *RequestContext) Next(c context.Context)
+func (ctx *RequestContext) Handlers() HandlersChain
+func (ctx *RequestContext) Handler() HandlerFunc
+func (ctx *RequestContext) SetHandlers(hc HandlersChain)
+func (ctx *RequestContext) HandlerName() string
+func (ctx *RequestContext) GetIndex() int8
+func (ctx *RequestContext) Abort()
 func (ctx *RequestContext) IsAborted() bool
 ```
 
@@ -1317,16 +1329,16 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 (For more information, please refer to [binding-and-validate](/docs/hertz/tutorials/basic-feature/binding-and-validate))
 
 ```go
-func (ctx *RequestContext) Bind(obj interface{}) error 
-func (ctx *RequestContext) Validate(obj interface{}) error 
+func (ctx *RequestContext) Bind(obj interface{}) error
+func (ctx *RequestContext) Validate(obj interface{}) error
 func (ctx *RequestContext) BindAndValidate(obj interface{}) error
 ```
 
 ## Get ClientIP
 
 ```go
-func (ctx *RequestContext) ClientIP() string 
-func (ctx *RequestContext) SetClientIPFunc(f ClientIP) 
+func (ctx *RequestContext) ClientIP() string
+func (ctx *RequestContext) SetClientIPFunc(f ClientIP)
 ```
 
 ### ClientIP
@@ -1338,7 +1350,7 @@ The default behavior of this function: If there is an ip in the `X-Forwarded-For
 Function Signature:
 
 ```go
-func (ctx *RequestContext) ClientIP() string 
+func (ctx *RequestContext) ClientIP() string
 ```
 
 Example Code:
@@ -1362,7 +1374,7 @@ Users can implement custom functions themselves or by setting `app.ClientIPOptio
 Function Signature:
 
 ```go
-func (ctx *RequestContext) SetClientIPFunc(f ClientIP) 
+func (ctx *RequestContext) SetClientIPFunc(f ClientIP)
 ```
 
 Example Code:
@@ -1403,7 +1415,7 @@ Copy a copy of RequestContext to provide secure access to the coroutine.
 Function Signature:
 
 ```go
-func (ctx *RequestContext) Copy() *RequestContext 
+func (ctx *RequestContext) Copy() *RequestContext
 ```
 
 Example Code:

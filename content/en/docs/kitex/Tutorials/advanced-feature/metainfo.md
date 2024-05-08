@@ -12,7 +12,7 @@ As an RPC framework, Kitex services communicate with each other through protocol
 
 However, in the production environment, we somehow may need to send special information to a remote server and that information is temporary or has an unstable format which can not be explicitly defined in the IDL. Such a situation requests the framework to be capable of sending meta information.
 
-**NOTE** *MUST use the underlying transport protocol that supports passthrough of meta information，such as TTHeader, gRPC, HTTP*。
+**NOTE** _MUST use the underlying transport protocol that supports passthrough of meta information，such as TTHeader, gRPC, HTTP_。
 
 To decouple with the underlying transport protocols, and interoperate with other frameworks, Kitex does not provide APIs to read or write meta information directly. Instead, it uses a stand-alone library [metainfo][metainfo] to support meta information transmitting.
 
@@ -111,19 +111,20 @@ func (MyServiceImpl) SomeMethod(ctx context.Context, req *SomeRequest) (res *Som
 }
 ```
 
-
 [metainfo]: https://pkg.go.dev/github.com/bytedance/gopkg/cloud/metainfo
 
 ## Kitex gRPC metadata
 
-Kitex gRPC scenarios can also use metainfo. But note that the key of the CGI gateway style interface in the format of uppercase + '_' needs to be satisfied.
+Kitex gRPC scenarios can also use metainfo. But note that the key of the CGI gateway style interface in the format of uppercase + '\_' needs to be satisfied.
 
 In addition to metainfo usage, it is also compatible with the original metadata transmission method. But the two cannot be mixed.
 
 Similar to native gRPC, the forward pass is implemented through metadata. Reverse transmission is sent back through Header or Trailer, the specific usage is as follows:
 
 ### Forward
+
 Client send settings:
+
 ```golang
   ctx := metadata. AppendToOutgoingContext(ctx, "k1", "v1", "k1", "v2", "k2", "v3")
   // unary scene
@@ -131,7 +132,9 @@ Client send settings:
   // stream scene
   stream, err := client. CallStream(ctx)
 ```
+
 Server receives:
+
 ```golang
   // unary scene
   md, ok := metadata. FromIncomingContext(ctx)
@@ -139,19 +142,22 @@ Server receives:
   md, ok := metadata.FromIncomingContext(stream.Context())
 ```
 
-
-
 ### Backward
+
 #### Unary
+
 In the unary scenario, the server sends meta information to the client as follows:
 
 Server settings:
+
 ```golang
   nphttp2. SendHeader(ctx, metadata. Pairs("k1", "v1"))
   nphttp2. SetHeader(ctx, metadata. Pairs("k1", "v1"))
   nphttp2. SetTrailer(ctx, metadata. Pairs("k2", "v2"))
 ```
+
 Client receives:
+
 ```golang
   // set in advance
   var header, trailer metadata.MD
@@ -163,14 +169,19 @@ Client receives:
   log.Println("header is ", header)
   log.Println("trailer is ", trailer)
 ```
+
 #### Streaming
+
 In the Streaming scenario, the server sends meta information to the client as follows:
 Server sends:
+
 ```golang
   stream.SetHeader(metadata. Pairs("k1", "v1"))
   stream.SetTrailer(metadata. Pairs("k2","v2"))
 ```
+
 Client receives:
+
 ```golang
   // After stream call
   md, _ := stream.Header()

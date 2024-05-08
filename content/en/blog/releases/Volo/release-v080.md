@@ -1,6 +1,6 @@
 ---
-title: 'Volo Release 0.8.0'
-linkTitle: 'Release v0.8.0'
+title: "Volo Release 0.8.0"
+linkTitle: "Release v0.8.0"
 projects: ["Volo"]
 date: 2023-10-23
 description: >
@@ -90,6 +90,7 @@ Compared to the previous definition, the type Future associated type is removed,
 
 1. Update Rust compiler to the latest nightly (rustup update) and all dependencies (volo, pilota, motore) to the latest version
 2. Run cargo check to see where the errors are, such as "type Future is not a member", "associated type Future not found", etc. We will use the following `Service` as an example:
+
 ```rust
 impl<Cx, Req, S> Service<Cx, Req> for LogService<S>
 where
@@ -117,10 +118,12 @@ where
     }
 }
 ```
+
 3. Remove the line with `type Future`
 4. Swap the lifetimes in `fn call<'cx, 's>` and remove the `where` statement below
 5. Add `async` before `fn call`, then change `Self::Future<'cx>` to `Result<Self::Response, Self::Error>`, and remove the `async move` in the function body
 6. The final modified `Service` is as follows:
+
 ```rust
 impl<Cx, Req, S> Service<Cx, Req> for LogService<S>
 where

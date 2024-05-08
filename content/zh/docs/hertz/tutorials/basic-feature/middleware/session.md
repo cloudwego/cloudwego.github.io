@@ -4,7 +4,6 @@ date: 2022-10-07
 weight: 6
 keywords: ["Session"]
 description: "Hertz 提供了 Session 的实现。"
-
 ---
 
 Session 是服务器为了保存用户状态而创建的一种特殊的对象。
@@ -66,17 +65,17 @@ Hertz 通过使用中间件，可以对 Session 进行一系列的操作配置�
 
 **注意：** Session 接口对 [gorilla-session](https://github.com/gorilla/sessions) 的方法进行了简单封装。
 
-| 方法       | 函数签名                                          | 介绍                                     |
-|----------|-----------------------------------------------|----------------------------------------|
+| 方法     | 函数签名                                      | 介绍                                                                |
+| -------- | --------------------------------------------- | ------------------------------------------------------------------- |
 | ID       | `ID() string`                                 | 用于获取存储时生成的 Session ID，它不应该作为用户信息的一部分去使用 |
-| Get      | `Get(key interface{}) interface{}`            | 用于根据给定的键值参数获取 Session 值                  |
-| Set      | `Set(key, val interface{})`                   | 用于设置与给定键值相关联的 Session 值                  |
-| Delete   | `Delete(key interface{})`                     | 用于根据给定的键值删除相关联的 Session 值                |
-| Clear    | `Clear()`                                     | 用于删除 Session 中存储的所有值                     |
-| AddFlash | `AddFlash(value interface{}, vars ...string)` | 用于向 Session 添加一条 flash message            |
-| Flashes  | `Flashes(vars ...string) []interface{}`       | 用于获取 Session 中的 flash message             |
-| Options  | `Options(Options)`                            | 用于设置 Session 的配置                         |
-| Save     | `Save() error`                                | 用于保存当前请求期间使用的所有会话                      |
+| Get      | `Get(key interface{}) interface{}`            | 用于根据给定的键值参数获取 Session 值                               |
+| Set      | `Set(key, val interface{})`                   | 用于设置与给定键值相关联的 Session 值                               |
+| Delete   | `Delete(key interface{})`                     | 用于根据给定的键值删除相关联的 Session 值                           |
+| Clear    | `Clear()`                                     | 用于删除 Session 中存储的所有值                                     |
+| AddFlash | `AddFlash(value interface{}, vars ...string)` | 用于向 Session 添加一条 flash message                               |
+| Flashes  | `Flashes(vars ...string) []interface{}`       | 用于获取 Session 中的 flash message                                 |
+| Options  | `Options(Options)`                            | 用于设置 Session 的配置                                             |
+| Save     | `Save() error`                                | 用于保存当前请求期间使用的所有会话                                  |
 
 ### NewStore
 

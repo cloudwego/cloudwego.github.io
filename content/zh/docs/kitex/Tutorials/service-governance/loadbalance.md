@@ -68,7 +68,6 @@ cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewWeight
 cli, err := echo.NewClient("echo", client.WithLoadBalancer(loadbalance.NewWeightedRandomWithAliasMethodBalancer()))
 ```
 
-
 ## ConsistentHash
 
 ### 简介
@@ -145,12 +144,12 @@ BenchmarkNewConsistPicker_NoCache/10000ins-16                 4     251160920 ns
 
 build 和 请求 信息都会被缓存，所以一次正常请求（不需要 build）的时延和节点多少无关，如下：
 
-````
-BenchmarkNewConsistPicker/10ins-16             12557137            81.1 ns/op         0 B/op          0 allocs/op 
-BenchmarkNewConsistPicker/100ins-16            13704381            82.3 ns/op         0 B/op          0 allocs/op 
-BenchmarkNewConsistPicker/1000ins-16           14418103            81.3 ns/op         0 B/op          0 allocs/op 
+```
+BenchmarkNewConsistPicker/10ins-16             12557137            81.1 ns/op         0 B/op          0 allocs/op
+BenchmarkNewConsistPicker/100ins-16            13704381            82.3 ns/op         0 B/op          0 allocs/op
+BenchmarkNewConsistPicker/1000ins-16           14418103            81.3 ns/op         0 B/op          0 allocs/op
 BenchmarkNewConsistPicker/10000ins-16          13942186            81.0 ns/op         0 B/op          0 allocs/op
-````
+```
 
 ### 注意事项
 

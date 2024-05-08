@@ -1,6 +1,6 @@
 ---
-title: 'Volo 0.5.4 版本发布'
-linkTitle: 'Release v0.5.4'
+title: "Volo 0.5.4 版本发布"
+linkTitle: "Release v0.5.4"
 projects: ["Volo"]
 date: 2023-08-28
 description: >
@@ -16,9 +16,9 @@ Volo 0.5.4 版本中，除了常规 bugfix 之外，还有一些新的 feature �
 
 ### Solution
 
-1. 在解码 read 步骤时，对于未识别的字段递归进行skip得到长度后，将对应长度的一段 bytes 直接存入生成的 _unknown_fields 结构中，省去具体类型的反序列化开销（在 volo 实现中这一块默认是 zerocopy 的实现）。如果是提前把已知字段读完，会直接把剩余 bytes 全存起来，从而不再需要递归解析长度，性能更优。
+1. 在解码 read 步骤时，对于未识别的字段递归进行skip得到长度后，将对应长度的一段 bytes 直接存入生成的 \_unknown_fields 结构中，省去具体类型的反序列化开销（在 volo 实现中这一块默认是 zerocopy 的实现）。如果是提前把已知字段读完，会直接把剩余 bytes 全存起来，从而不再需要递归解析长度，性能更优。
 
-2. 在编码 write 步骤时，直接将 _unknown_fields 整块 bytes 写入，省去序列化的开销（在 volo 实现中这一块是 zerocopy 的实现）。
+2. 在编码 write 步骤时，直接将 \_unknown_fields 整块 bytes 写入，省去序列化的开销（在 volo 实现中这一块是 zerocopy 的实现）。
 
 ```thrift
 struct Test {
@@ -49,7 +49,7 @@ pub Enum Hello {
 
 ### How To
 
-在 volo.yml 中对要生成 _unknown_fields 的 thrift 文件进行配置。
+在 volo.yml 中对要生成 \_unknown_fields 的 thrift 文件进行配置。
 
 ```yaml
 entries:
@@ -70,7 +70,7 @@ entries:
 
 ### Solution
 
-1. Thrift Binary Protocol  Scalar Types 是定长编码，比如 i32 编码 4 Bytes ，那么 map/list/set 和定长类型组成的这些复合类型（Compound Types）就可以特殊处理，比如 list<i32>，按之前的 Skip 算法是 O(n) 操作循环 Skip，可以提前计算总长度直接跳过，算法复杂度变成了 O(1)；
+1. Thrift Binary Protocol Scalar Types 是定长编码，比如 i32 编码 4 Bytes ，那么 map/list/set 和定长类型组成的这些复合类型（Compound Types）就可以特殊处理，比如 list<i32>，按之前的 Skip 算法是 O(n) 操作循环 Skip，可以提前计算总长度直接跳过，算法复杂度变成了 O(1)；
 
 2. 使用循环替换递归；
 
@@ -99,7 +99,7 @@ Found 10 outliers among 100 measurements (10.00%)
   5 (5.00%) high severe
 ```
 
-##  Hot Restart
+## Hot Restart
 
 ### Motivation
 
@@ -121,11 +121,11 @@ Found 10 outliers among 100 measurements (10.00%)
 
 1.  要使用热重启，需要初始化热重启机制。
 
-2. 该进程首先尝试连接到 parent_sock。如果连接失败，则说明该进程是原来的父进程。这种情况下，进程应该绑定 parent_sock 和 parent_handle，等待子进程发送消息。
+2.  该进程首先尝试连接到 parent_sock。如果连接失败，则说明该进程是原来的父进程。这种情况下，进程应该绑定 parent_sock 和 parent_handle，等待子进程发送消息。
 
-3. 如果子进程成功连接到 parent_sock，它将使用 dup_parent_listener_sock 复制文件描述符。
+3.  如果子进程成功连接到 parent_sock，它将使用 dup_parent_listener_sock 复制文件描述符。
 
-4. 一旦所有监听器套接字都被复制，子进程就会向父进程发送终止父进程请求，父进程收到请求后启动终止信号（kill sigterm）并走gracefully exit流程完全退出进程。
+4.  一旦所有监听器套接字都被复制，子进程就会向父进程发送终止父进程请求，父进程收到请求后启动终止信号（kill sigterm）并走gracefully exit流程完全退出进程。
 
 ### How To
 
@@ -156,9 +156,9 @@ async fn main() {
 
 2. initialize 方法两个参数：
 
-   1. sock_dir_path: 存储 hot_restart  使用的UDS监听地址父目录，一般由托管进程分配地址，注意隔离性（尤其是物理机等非隔离环境下运行使用）；
+   1. sock_dir_path: 存储 hot_restart 使用的UDS监听地址父目录，一般由托管进程分配地址，注意隔离性（尤其是物理机等非隔离环境下运行使用）；
 
-   2. server_listener_num:  总共server监听数量，指启动的基于volo的server listener数量，一般服务只有一个server，比如Volo-Thrift Server，设置1即可；
+   2. server_listener_num: 总共server监听数量，指启动的基于volo的server listener数量，一般服务只有一个server，比如Volo-Thrift Server，设置1即可；
 
 ## 完整 Release Note
 

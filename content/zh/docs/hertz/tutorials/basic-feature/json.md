@@ -26,7 +26,7 @@ Hertz 默认集成并使用 [Sonic](https://github.com/bytedance/sonic) 用于�
 Hertz 支持条件编译来控制实际使用的 json 库，你可以通过 `-tags stdjson` 来选择使用标准库。
 
 ```go
-go build -tags stdjson 
+go build -tags stdjson
 ```
 
 ## Sonic 相关问题

@@ -4,7 +4,6 @@ date: 2022-09-22
 weight: 7
 keywords: ["KeyAuth", "token authentication"]
 description: "Hertz provides the keyauth extension to help users achieve `token` authentication."
-
 ---
 
 Hertz provides the [keyauth](https://github.com/hertz-contrib/keyauth) extension to help users achieve `token` authentication. The implementation of the [keyauth](https://github.com/hertz-contrib/keyauth) extension references the [Fiber](https://github.com/gofiber/fiber) and [Echo](https://github.com/labstack/echo) implementation.

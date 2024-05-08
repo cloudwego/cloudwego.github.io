@@ -141,7 +141,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithOutput(out io.Writer) Opt 
+func WithOutput(out io.Writer) Opt
 ```
 
 Sample code:
@@ -168,7 +168,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithLevel(level hlog.Level) Opt 
+func WithLevel(level hlog.Level) Opt
 ```
 
 Sample code:
@@ -195,7 +195,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithField(name string, value interface{}) Opt 
+func WithField(name string, value interface{}) Opt
 ```
 
 Sample code:
@@ -235,7 +235,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithFields(fields map[string]interface{}) Opt 
+func WithFields(fields map[string]interface{}) Opt
 ```
 
 Sample code:
@@ -264,7 +264,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithTimestamp() Opt 
+func WithTimestamp() Opt
 ```
 
 Sample code:
@@ -289,7 +289,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithFormattedTimestamp(format string) Opt 
+func WithFormattedTimestamp(format string) Opt
 ```
 
 Sample code:
@@ -315,7 +315,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithCaller() Opt 
+func WithCaller() Opt
 ```
 
 Sample code:
@@ -366,7 +366,7 @@ After calling the `CallerWithSkipFrameCount` method, a new Context structure is 
 Function Signature:
 
 ```go
-func WithCallerSkipFrameCount(skipFrameCount int) Opt 
+func WithCallerSkipFrameCount(skipFrameCount int) Opt
 ```
 
 Sample code:
@@ -390,7 +390,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithHook(hook zerolog.Hook) Opt 
+func WithHook(hook zerolog.Hook) Opt
 ```
 
 Sample code:

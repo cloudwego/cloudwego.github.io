@@ -4,7 +4,6 @@ date: 2022-11-06
 weight: 5
 keywords: ["TLS", "HTTP"]
 description: "Hertz supports TLS secure transmission, helping users achieve data confidentiality and integrity."
-
 ---
 
 Hertz supports TLS secure transmission, helping users achieve data confidentiality and integrity.
@@ -14,7 +13,7 @@ Hertz supports TLS secure transmission, helping users achieve data confidentiali
 In `tls.Config`, the parameters that the server and client both can use are as follows:
 
 |       Parameter       | Introduce                                                                                                                                       |
-|:---------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------|
+| :-------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------- |
 |     Certificates      | Used to add certificates, multiple certificates can be configured. <br/> Both ends automatically select the first certificate for verification. |
 | VerifyPeerCertificate | Used to verify the peer certificate. <br/>Called after certificate verification on either side.                                                 |
 |   VerifyConnection    | After both certificates are verified, TLS connection verification is performed.                                                                 |
@@ -43,7 +42,7 @@ func WithTLS(cfg *tls.Config) config.Option {
 In `tls.Config`, in addition to the above basic parameters, the parameters that can be configured by the server are as follows:
 
 |      Parameter       | Introduce                                                                                                                                                                                         |
-|:--------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| :------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 |    GetCertificate    | Returns a certificate based on client SNI information or when the certificate set is empty.                                                                                                       |
 | GetClientCertificate | It is used to return the client certificate when the server requires to verify the client certificate.                                                                                            |
 |  GetConfigForClient  | When the server receives ClientHello from the client, it returns the configuration information. <br/>If non-empty configuration information is returned, it will be used for this TLS connection. |
@@ -139,7 +138,7 @@ For a complete usage example, see [example](https://github.com/cloudwego/hertz-e
 In `tls.Config`, in addition to the above basic parameters, the parameters that can be configured by the client are as follows:
 
 |     Parameter      | Introduce                                                                       |
-|:------------------:|:--------------------------------------------------------------------------------|
+| :----------------: | :------------------------------------------------------------------------------ |
 |     ServerName     | Validate the hostname against the returned certificate information.             |
 | InsecureSkipVerify | It is used for whether the client enables server-side certificate verification. |
 |      RootCAs       | The certificate used by the client to authenticate the server.                  |
@@ -207,8 +206,7 @@ func main() {
 }
 ```
 
-> Note：Currently, Hertz TLS server is not supported Netpoll network library temporarily. <br />
-> `c, err := client.NewClient(client.WithTLSConfig(cfg), client.WithDialer(netpoll.NewDialer())` support is still on the way.
+> Note：Currently, Hertz TLS server is not supported Netpoll network library temporarily. <br /> > `c, err := client.NewClient(client.WithTLSConfig(cfg), client.WithDialer(netpoll.NewDialer())` support is still on the way.
 
 For a complete usage example, see [example](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) .
 
@@ -379,8 +377,8 @@ func main() {
 		InsecureSkipVerify: true,
 	}
 	c, err := client.NewClient(
-		client.WithTLSConfig(clientCfg), 
-		client.WithDialer(standard.NewDialer()), 
+		client.WithTLSConfig(clientCfg),
+		client.WithDialer(standard.NewDialer()),
 	)
 }
 ```

@@ -19,6 +19,7 @@ Kitex supports the user-defined QPS limiter and connections limiter, and provide
 ## Use default rate limiter
 
 ### code example
+
 ```go
 import "github.com/cloudwego/kitex/pkg/limit"
 

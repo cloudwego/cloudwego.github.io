@@ -27,14 +27,14 @@ description: >
 官网：/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/
 
 2. 背景：这是在 Kitex v0.4.3 提供的功能。我们内部对于用户自定义的异常和 RPC 异常做了区分，因此希望把这个功能提供给外部用户使用，能够将 RPC 错误和业务的错误区分开。在出现故障或排查问题的时候，可以方便找到是链路侧的故障还是业务侧的故障。因此我们对 Kitex 异常处理重新做了实现。
-3. 我们内置 `BizStatusErrorIface` 提供用户实现自定义异常接口，框架同时提供默认实现，用户只需要在 `ServiceHandler` 里返回 Error，就可以在 Kitex 处理的时候把它编码到 TTheader 或 grpc  trailer 中。封装完成后通过 Server 传递到 Client 端，Kitex 在解码的时候会对 TTheader 或 trailer 里面字段做特殊处理，把它转成业务 Error，再返回给 Client。这种方式在中间件处理或治理采集时直接跳过了用户自定义异常的处理。因此我们通过在业务 handler 里面直接返回 `BizStatusErrorIface` 不会触发熔断和链路异常等情况，它仅用于用户之间业务 Error 的传递。
-4. TTheader 用法说明：https://github.com/cloudwego/kitex/pull/613/files 因为对外我们没有默认封装使用的 MetaHandler 和协议，自定义异常又借助于 TTheader 或 grpc  Handler 的实现，所以 TTheader 协议的用户需要在 Server 里面初始化的时候，手动地初始化 TTheader 的 MetaHandler。在 Client 初始化的时候，同样指定 TTheader 协议，然后加载 TTheader 的 MetaHandler，这样才可以解析对应的字段。在 Server 使用的时候如果遇到业务异常，可以直接在 Handler 里面返回 Error。它主要包含的信息有：`StatusCode` 业务的状态码；`StatusMessage` 业务侧信息。Client 侧提供了对 Error 的识别，收到 Error 后，可以通过 `kerrors.FromBizStatusError` 把它转换成业务异常。收到业务异常后，我们就可以对不同的状态码做特殊的处理。
-5. grpc 的用法与之类似，grpc在  `StatusError` 里面提供了 Details 功能，所以我们在业务异常里面同样也提供了这个功能。用法可以参考代码示例：https://github.com/cloudwego/kitex/blob/develop/pkg/kerrors/bizerrors.go#L73。
+3. 我们内置 `BizStatusErrorIface` 提供用户实现自定义异常接口，框架同时提供默认实现，用户只需要在 `ServiceHandler` 里返回 Error，就可以在 Kitex 处理的时候把它编码到 TTheader 或 grpc trailer 中。封装完成后通过 Server 传递到 Client 端，Kitex 在解码的时候会对 TTheader 或 trailer 里面字段做特殊处理，把它转成业务 Error，再返回给 Client。这种方式在中间件处理或治理采集时直接跳过了用户自定义异常的处理。因此我们通过在业务 handler 里面直接返回 `BizStatusErrorIface` 不会触发熔断和链路异常等情况，它仅用于用户之间业务 Error 的传递。
+4. TTheader 用法说明：https://github.com/cloudwego/kitex/pull/613/files 因为对外我们没有默认封装使用的 MetaHandler 和协议，自定义异常又借助于 TTheader 或 grpc Handler 的实现，所以 TTheader 协议的用户需要在 Server 里面初始化的时候，手动地初始化 TTheader 的 MetaHandler。在 Client 初始化的时候，同样指定 TTheader 协议，然后加载 TTheader 的 MetaHandler，这样才可以解析对应的字段。在 Server 使用的时候如果遇到业务异常，可以直接在 Handler 里面返回 Error。它主要包含的信息有：`StatusCode` 业务的状态码；`StatusMessage` 业务侧信息。Client 侧提供了对 Error 的识别，收到 Error 后，可以通过 `kerrors.FromBizStatusError` 把它转换成业务异常。收到业务异常后，我们就可以对不同的状态码做特殊的处理。
+5. grpc 的用法与之类似，grpc在 `StatusError` 里面提供了 Details 功能，所以我们在业务异常里面同样也提供了这个功能。用法可以参考代码示例：https://github.com/cloudwego/kitex/blob/develop/pkg/kerrors/bizerrors.go#L73。
 6. 补充：这个功能对于 Thrift 更建议的用法是 IDL 里面定义一个 Exception，这样用户可以很明确地构造它定义的 Exception。我们做这个支持不可能耦合于 Thrift 协议，PB 的 IDL 是没有这个能力的，因此提供了这样比较通用的方式。@YangruiEmma
 
 ---
 
-### 议程三：Hertz  Lark 扩展库介绍 @li-jin-gou
+### 议程三：Hertz Lark 扩展库介绍 @li-jin-gou
 
 1. 项目地址：https://github.com/hertz-contrib/lark-hertz
 
@@ -44,4 +44,3 @@ Go SDK 说明文档：https://github.com/larksuite/oapi-sdk-go/blob/v3_main/READ
 
 2. 背景：飞书开放平台有一个 Go SDK 说明文档，最初里面卡片和消息的回调配置介绍只有 Gin 框架的。有同学反馈找不到 Hertz 如何集成的说明，实际 Hertz 有这部分的能力，但是一直是内部的代码没有开源出来。之前用户通过这个平台点到 Go SDK 说明文档，并不能很方便地能找到对于 Hertz 的支持。所以和 Lark 负责 Go SDK 的同学说明情况后，和他们一起把 Lark 集成 Hertz 的能力开源出来。这个仓库目前放在了 Hertz 扩展库里面。如果大家感兴趣可以体验一下，在处理事件消息回调的情况下使用这个扩展会比较方便。
 3. 使用场景：处理卡片和消息事件行为的回调。基于 oapi-sdk-go 做了一层封装，方便用户使用框架接入 SDK。关注 Hertz 的同学也更方便找到相关的内容。
-

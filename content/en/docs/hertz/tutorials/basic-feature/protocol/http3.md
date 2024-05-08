@@ -4,7 +4,6 @@ date: 2023-07-29
 weight: 3
 keywords: ["QUIC", "HTTP", "HTTP3"]
 description: "Hertz-HTTP3 implementation based quic-go."
-
 ---
 
 QUIC protocol is a transport layer network protocol that provides security equivalent to TLS/SSL, while also having lower connection and transmission latency. `QUIC` is currently mainly used in the `HTTP` protocol, which is known as `HTTP/3` and is the third official version of the `HTTP` protocol.
@@ -19,7 +18,7 @@ For the interface design scheme provided by Hertz to support Hertz HTTP3 in the 
 go get github.com/hertz-contrib/http3
 ```
 
->Note: The go version must be greater than or equal to 1.19.
+> Note: The go version must be greater than or equal to 1.19.
 
 ## Network Layer and Protocol Layer Registration
 
@@ -40,19 +39,19 @@ h.AddProtocol(suite.HTTP3, factory.NewServerFactory(&http3.Option{}))
 
 ### Server
 
-| **Option**               |  **Description**                                         |
-| :----------------- | -------------------------------------------- |
-| WithTransport      | Set the network layer implementation |
-| WithAltTransport |  Set the alternative network layer implementation. The AltTransporter will be used for parallel listening - both in `TCP` and `QUIC` |
-| WithALPN | Set whether to enable `ALPN` |
-| WithTLS | Set `TLS` Config |
-| WithHostPorts | Set the host and port for starting the service |
+| **Option**       | **Description**                                                                                                                     |
+| :--------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| WithTransport    | Set the network layer implementation                                                                                                |
+| WithAltTransport | Set the alternative network layer implementation. The AltTransporter will be used for parallel listening - both in `TCP` and `QUIC` |
+| WithALPN         | Set whether to enable `ALPN`                                                                                                        |
+| WithTLS          | Set `TLS` Config                                                                                                                    |
+| WithHostPorts    | Set the host and port for starting the service                                                                                      |
 
 ## Sample Code
 
 ### Server
 
->Note: The `QUIC` protocol relies on the `TLS` protocol, so `TLS` configuration needs to be provided.
+> Note: The `QUIC` protocol relies on the `TLS` protocol, so `TLS` configuration needs to be provided.
 
 ```go
 package main

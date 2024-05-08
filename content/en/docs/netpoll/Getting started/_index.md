@@ -6,7 +6,7 @@ description: >
 ---
 
 > This tutorial gets you started with [Netpoll][Netpoll] through some simple [examples][Examples], includes how to
-use [Server](#1-use-server), [Client](#2-use-dialer) and [nocopy APIs](#3-use-nocopy-api).
+> use [Server](#1-use-server), [Client](#2-use-dialer) and [nocopy APIs](#3-use-nocopy-api).
 
 ## 1. Use Server
 
@@ -54,8 +54,8 @@ etc.
 
 params:
 
-* `OnRequest` and `OnConnect` are interface that users should implement by themselves to process business logic. [Code Comment][eventloop.go] describes their behavior in detail.
-* `Option` is used to customize the configuration when creating `EventLoop`, and the following example shows its usage.
+- `OnRequest` and `OnConnect` are interface that users should implement by themselves to process business logic. [Code Comment][eventloop.go] describes their behavior in detail.
+- `Option` is used to customize the configuration when creating `EventLoop`, and the following example shows its usage.
   For more details, please refer to [options][netpoll_options.go].
 
 The creation process is as follows:
@@ -308,19 +308,11 @@ func main() {
 ```
 
 [Netpoll]: https://github.com/cloudwego/netpoll
-
 [net]: https://github.com/golang/go/tree/master/src/net
-
 [gopool]: https://github.com/bytedance/gopkg/tree/develop/util/gopool
-
 [Examples]: https://github.com/cloudwego/netpoll-examples
-
 [server-example]: https://github.com/cloudwego/netpoll-examples/blob/main/echo/server.go
-
 [client-example]: https://github.com/cloudwego/netpoll-examples/blob/main/echo/client.go
-
 [netpoll_options.go]: https://github.com/cloudwego/netpoll/blob/main/netpoll_options.go
-
 [nocopy.go]: https://github.com/cloudwego/netpoll/blob/main/nocopy.go
-
 [eventloop.go]: https://github.com/cloudwego/netpoll/blob/main/eventloop.go

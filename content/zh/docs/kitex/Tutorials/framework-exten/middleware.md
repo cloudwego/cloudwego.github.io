@@ -13,6 +13,7 @@ Kitex 的中间件定义在 `pkg/endpoint/endpoint.go` 中，其中最主要的�
 1. Endpoint 是一个函数，接受 ctx、req、resp ，返回 err，可参考下文「示例」代码；
 
 2. Middleware（下称 MW ）也是一个函数，接收同时返回一个 Endpoint。
+
 ```go
 type Middleware func(Endpoint) Endpoint
 ```
@@ -22,6 +23,7 @@ type Middleware func(Endpoint) Endpoint
 中间件是串连使用的，通过调用传入的 next，可以得到后一个中间件返回的 response（如果有）和 err，据此作出相应处理后，向前一个中间件返回 err（**务必将 err 向上返回** ）或者设置 response。
 
 ### 客户端中间件
+
 #### 使用方法
 
 1. `client.WithMiddleware` 在当前 client 中添加一个中间件，在 Service 熔断和超时中间件之后执行。
@@ -49,6 +51,7 @@ type Middleware func(Endpoint) Endpoint
 6. `client.WithErrorHandler` 设置的中间件
 
 以上可以详见 [client.go](https://github.com/cloudwego/kitex/blob/develop/client/client.go)
+
 #### Context 中间件
 
 Context 中间件本质上也是一种客户端中间件，但是区别是，其由 ctx 来控制是否注入以及注入哪些中间件。
@@ -57,6 +60,7 @@ Context 中间件的引入是为了提供一种能够全局或者动态注入 Cl
 注意：Context 中间件会在 `client.WithMiddleware` 设置的中间件之前执行。
 
 ### 服务端中间件
+
 #### 使用方法
 
 1. `server.WithMiddleware` 在当前 server 中添加一个中间件。
@@ -76,10 +80,13 @@ Context 中间件的引入是为了提供一种能够全局或者动态注入 Cl
 以上可以详见[server.go](https://github.com/cloudwego/kitex/blob/develop/server/server.go)
 
 ### 示例
-我们可以通过以下这个例子来看一下如何使用中间件。 
+
+我们可以通过以下这个例子来看一下如何使用中间件。
 
 #### 获取 Request/Reponse
+
 假如我们现在需要在请求前打印出 request 内容，再请求后打印出 response 内容，可以编写如下的 MW（包含 streaming 调用的服务参见下文 gRPC 中间件）：
+
 ```go
 /*
 type Request struct {
@@ -117,10 +124,12 @@ func ExampleMiddleware(next endpoint.Endpoint) endpoint.Endpoint {
 以上方案仅为示例，**慎用于生产**：因为日志输出所有 req/resp 会有性能问题。无视 response 体大小，输出大量日志是一个非常消耗性能的操作，一个特别大的 response 可以是秒级的耗时。
 
 ### 注意事项
+
 1. 如果自定义 middleware 中用到了 RPCInfo，注意 RPCInfo 在 rpc 结束之后会被回收。如果在 middleware 中开启 goroutine 操作 RPCInfo 有可能会出现问题，请避免这类操作。
 2. Middleware 为链式调用，若在任一 middleware 中使用 `result.SetSuccess()` 或其他方式修改了 response，上游 middleware 会接收到修改后的 response。
 
 ### gRPC 中间件
+
 众所周知，kitex 除了 thrift，还支持了 protobuf 和 gRPC 的编解码协议，其中 protobuf 是指只用 protobuf 来定义 payload 格式，并且其 service 定义里的方法只有 unary 方法的情况；一旦引入了 streaming 方法，那么 kitex 会使用 gRPC 协议来做编解码和通信。
 
 使用 protobuf（仅 unary）的服务，其中间件的编写与上文一致，因为两者的设计是完全一样的。
@@ -128,6 +137,7 @@ func ExampleMiddleware(next endpoint.Endpoint) endpoint.Endpoint {
 如果使用了 streaming 方法，那么中间件的编写则是完全不同的。因此，这里单独将 gRPC streaming 的中间件的用法说明列为一个单元。
 
 对于 streaming 方法，由于存在 client stream、server stream、bidirectional stream 等形式，并且 message 的收发（Recv & Send）都是有业务逻辑控制的，所以中间件并不能 cover 到 message 本身。因此，假设要在 Message 收发环节实现请求/响应的日志打印，需要对 Kitex 的 `streaming.Stream` 做如下封装：
+
 ```go
 type wrappedStream struct {
         streaming.Stream
@@ -149,7 +159,9 @@ func newWrappedStream(s streaming.Stream) streaming.Stream {
 }
 
 ```
+
 然后，在中间件内在特定调用时机插入封装后的 `streaming.Stream` 对象。
+
 ```go
 import "github.com/cloudwego/kitex/pkg/streaming"
 
@@ -180,17 +192,20 @@ func DemoGRPCMiddleware(next endpoint.Endpoint) endpoint.Endpoint {
 
 在 Kitex middleware 内获取的 request/response 参数类型在 gRPC 不同场景下的说明：
 
-| 场景                                | Request 类型              | Response 类型               |
-|-----------------------------------|-------------------------|---------------------------|
- | Kitex-gRPC Server Unary/Streaming | *streaming.Args         | nil                       |
- | Kitex-gRPC Client Unary           | *xxxservice.XXXMethodArgs | *xxxservice.XXXMethodResult | 
- | Kitex-gRPC Client Streaming       | nil                     | *streaming.Result         |
+| 场景                              | Request 类型               | Response 类型                |
+| --------------------------------- | -------------------------- | ---------------------------- |
+| Kitex-gRPC Server Unary/Streaming | \*streaming.Args           | nil                          |
+| Kitex-gRPC Client Unary           | \*xxxservice.XXXMethodArgs | \*xxxservice.XXXMethodResult |
+| Kitex-gRPC Client Streaming       | nil                        | \*streaming.Result           |
 
 ## 总结
+
 Middleware 是一种比较低层次的扩展的实现，一般用于注入包含特定功能的简单代码。而在复杂场景下，一个 middleware 封装通常无法满足业务需求，这时候需要更完善的套件组装多个 middleware/options 来实现一个完整的中间层，用户可基于 suite 来进行开发，参考[扩展套件Suite](/zh/docs/kitex/tutorials/framework-exten/suite/)
 
 ## FAQ
-### 如何在 middleware 里 recover  handler 排除的 panic
+
+### 如何在 middleware 里 recover handler 排除的 panic
+
 问题：
 想在 middleware 里 recover 自己业务的 handler 抛出的 panic，发现 panic 已经被框架 recover 了。
 
@@ -267,6 +282,7 @@ func (p *${XMethod}Result) GetSuccess() *${XResponse} {
 
 以上生成代码可以在 kitex_gen 中看到。
 所以，用户有三种方案获取到真实的 req 和 resp：
+
 1. 如果你能确定调用的具体是哪个方法，用的 req 的类型，可以直接通过类型断言拿到具体的 Args 类型，然后通过 GetReq 方法就能拿到真正的 req；
 2. 对于 thrift 生成代码，通过断言 `GetFirstArgument` 或者 `GetResult`，获取到 `interface{}`，然后进行类型断言成真实的 req 或者 resp（注意：由于返回的 `interface{}` 包含类型，`interface{}` 判断 nil 无法拦截 req/resp 本身为空指针的情况，需判断断言后的 req/resp 是否为空指针）；
 3. 通过反射方法获取真实的请求/响应体，参考代码：
@@ -281,5 +297,5 @@ var ExampleMW endpoint.Middleware = func(next endpoint.Endpoint) endpoint.Endpoi
         log.Infof(ctx, "response: %T", respV.Interface())
         return err
     }
-} 
+}
 ```

@@ -57,9 +57,9 @@ OPTIONS:
    --model_pkg value                  指定 model 的包名
    --nullable                         指定生成字段是否为指针当字段为 nullable，默认为 false
    --signable                         指定字段是否检测整型列 unsigned 类型来调整生成相应的数据类型，默认为 false
-   --type_tag                         指定字段是否生成 gorm 的 type tag，默认为 false         
+   --type_tag                         指定字段是否生成 gorm 的 type tag，默认为 false
    --index_tag                        指定字段是否生成 gorm 的 index tag，默认为 false
-   --sql_dir value                    指定一个sql文件或者目录(注意：当使用此参数时，--dsn参数失效)      
+   --sql_dir value                    指定一个sql文件或者目录(注意：当使用此参数时，--dsn参数失效)
 ```
 
 ## 用法示例

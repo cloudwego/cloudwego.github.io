@@ -2,7 +2,18 @@
 title: "服务注册与发现"
 date: 2023-04-22
 weight: 1
-keywords: ["服务注册与发现", "nacos", "consul", "etcd", "eureka", "polaris", "servicecomb", "zookeeper", "redis"]
+keywords:
+  [
+    "服务注册与发现",
+    "nacos",
+    "consul",
+    "etcd",
+    "eureka",
+    "polaris",
+    "servicecomb",
+    "zookeeper",
+    "redis",
+  ]
 description: "Hertz 提供的服务注册与发现拓展。"
 ---
 
@@ -23,12 +34,12 @@ description: "Hertz 提供的服务注册与发现拓展。"
 
 使用服务发现时会提供一些可选配置给用户。
 
-| 配置                   | 描述                                       |
-| ---------------------- | ------------------------------------------ |
+| 配置                   | 描述                                                     |
+| ---------------------- | -------------------------------------------------------- |
 | WithSD                 | 配合服务发现使用，传递 `true` 时，本次请求使用服务发现。 |
-| WithTag                | 配合服务发现使用，设置 Tag 信息。             |
-| WithCustomizedAddrs    | 自定义目标实例地址。                       |
-| WithLoadBalanceOptions | 配置负载均衡选项。                         |
+| WithTag                | 配合服务发现使用，设置 Tag 信息。                        |
+| WithCustomizedAddrs    | 自定义目标实例地址。                                     |
+| WithLoadBalanceOptions | 配置负载均衡选项。                                       |
 
 ### WithSD
 
@@ -80,7 +91,7 @@ cli.Use(sd.Discovery(r, sd.WithCustomizedAddrs("127.0.0.1:8088")))
 
 ### WithLoadBalanceOptions
 
-`WithLoadBalanceOptions`为客户端配置负载均衡实现和负载均衡参数。可以通过传递`loadbalance.Options`配置负载均衡参数，或者通过传递`loadbalance.DefaultOpts`使用默认负载均衡参数。若不使用此配置项，则客户端默认使用 WeightedRandom  负载均衡实现并且使用默认负载均衡参数。
+`WithLoadBalanceOptions`为客户端配置负载均衡实现和负载均衡参数。可以通过传递`loadbalance.Options`配置负载均衡参数，或者通过传递`loadbalance.DefaultOpts`使用默认负载均衡参数。若不使用此配置项，则客户端默认使用 WeightedRandom 负载均衡实现并且使用默认负载均衡参数。
 
 可以设置的负载均衡参数：
 
@@ -92,7 +103,7 @@ cli.Use(sd.Discovery(r, sd.WithCustomizedAddrs("127.0.0.1:8088")))
 函数签名：
 
 ```go
-func WithLoadBalanceOptions(lb loadbalance.Loadbalancer, options loadbalance.Options) ServiceDiscoveryOption 
+func WithLoadBalanceOptions(lb loadbalance.Loadbalancer, options loadbalance.Options) ServiceDiscoveryOption
 ```
 
 示例代码：
@@ -103,4 +114,5 @@ cli.Use(sd.Discovery(r, sd.WithLoadBalanceOptions(loadbalance.NewWeightedBalance
 	ExpireInterval:  15 * time.Second,
 })))
 ```
+
 自定义负载均衡扩展详见[负载均衡扩展](/zh/docs/hertz/tutorials/framework-exten/service_discovery/#负载均衡扩展)。

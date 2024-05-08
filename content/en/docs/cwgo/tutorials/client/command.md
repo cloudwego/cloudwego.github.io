@@ -14,10 +14,10 @@ NAME:
    cwgo client - generate RPC or HTTP client
 
                  Examples:
-                   # Generate RPC client code 
+                   # Generate RPC client code
                    cwgo client --type RPC --idl  {{path/to/IDL_file.thrift}} --service {{svc_name}}
-                   
-                   # Generate HTTP client code 
+
+                   # Generate HTTP client code
                    cwgo client --type HTTP --idl  {{path/to/IDL_file.thrift}} --service {{svc_name}}
 
 

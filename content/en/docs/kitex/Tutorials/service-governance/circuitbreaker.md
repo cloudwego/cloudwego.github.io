@@ -2,7 +2,7 @@
 title: "Circuit Breaker"
 date: 2023-10-24
 weight: 5
-keywords: ["Kitex - EN","Circuit Breaker"]
+keywords: ["Kitex - EN", "Circuit Breaker"]
 description: "This doc covers Kitex Circuit Breaker use guide and principle introduction."
 ---
 
@@ -31,17 +31,17 @@ func GenServiceCBKeyFunc(ri rpcinfo.RPCInfo) string {
 }
 
 func main() {
-        // build a new CBSuite with 
+        // build a new CBSuite with
         cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
 
         var opts []client.Option
-        
+
         // add to the client options
         opts = append(opts, client.WithCircuitBreaker(cbs))
-        
-        // init client 
+
+        // init client
         cli, err := echoservice.NewClient(targetService, opts...)
-        
+
         // update circuit breaker config for a certain key (should be consistent with GenServiceCBKeyFunc)
         // this can be called at any time, and will take effect for following requests
         cbs.UpdateServiceCBConfig("fromServiceName/toServiceName/method", circuitbreak.CBConfig{
@@ -65,11 +65,13 @@ Kitex provides a set of CBSuite that encapsulates both service-level breaker and
 
   - Statistics by service granularity, enabled via WithMiddleware.
   - The specific service granularity depends on the Circuit Breaker Key, which is the key for breaker statistics. When initializing the CBSuite, you need to pass it in **GenServiceCBKeyFunc**. The default key is `circuitbreak.RPCInfo2Key`, and the format of RPCInfo2Key is `fromServiceName/toServiceName/method`.
+
 - Instance-Level Breaker
 
   - Statistics by instance granularity, enabled via WithInstanceMW.
   - Instance-Level Breaker is used to solve the single-instance exception problem. If it’s triggered, the framework will automatically retry the request.
   - Note that the premise of retry is that you need to enable breaker with **WithInstanceMW**, which will be executed after load balancing.
+
 - Threshold and **Threshold Change**
 
 The default breaker threshold is `ErrRate: 0.5, MinSample: 200`, which means it’s triggered by an error rate of 50% and requires the amount of requests > 200.
@@ -86,7 +88,7 @@ To solve this problem, you can set up some dynamic switches that manually shut d
 
 A better approach, however, is to use Circuit Breaker.
 
-Here is a more detailed document [Circuit Breaker Pattern](https://docs.microsoft.com/en-us/previous-versions/msp-n-p/dn589784(v=pandp.10)?redirectedfrom=MSDN).
+Here is a more detailed document [Circuit Breaker Pattern](<https://docs.microsoft.com/en-us/previous-versions/msp-n-p/dn589784(v=pandp.10)?redirectedfrom=MSDN>).
 
 One of the famous circuit breakers is hystrix, and here is its [design](https://github.com/Netflix/Hystrix/wiki).
 
@@ -175,6 +177,7 @@ As an example:
   - (1) detects that bucket 0 has expired and discards it;
   - (2) creates a new bucket 10, corresponding to [10S, 11S);
   - (3) puts that Succ into bucket 10.
+
 - At 10.2S, you execute Successes() to query the number of successes in the window, then you get the actual statistics for [1S, 10.2S), not [0.2S, 10.2S).
 
 Such jitter cannot be avoided if you use time-window-bucket statistics. A compromise approach is to increase the number of buckets, which can reduce the impact of jitter.

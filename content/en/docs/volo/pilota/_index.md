@@ -1,8 +1,8 @@
 ---
-title: 'Pilota'
-linkTitle: 'Pilota'
+title: "Pilota"
+linkTitle: "Pilota"
 weight: 7
-keywords: [ "Pilota", "Thrift", "Protobuf", "Plugin"]
+keywords: ["Pilota", "Thrift", "Protobuf", "Plugin"]
 Description: Pilota is a Thrift and Protobuf implementation in pure rust with high performance and extensibility.
 ---
 

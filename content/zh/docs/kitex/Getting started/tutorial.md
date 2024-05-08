@@ -315,7 +315,7 @@ fi
 ```
 output
 ├── bin // 存放二进制可执行文件
-│   └── example.shop.item 
+│   └── example.shop.item
 └── bootstrap.sh // 运行文件的脚本
 ```
 
@@ -364,7 +364,7 @@ if err != nil {
 }
 ```
 
-上述代码中，`item.NewClient` 用于创建 `client`，其第一个参数为调用的 *服务名*，第二个参数为 *options*，用于传入可选参数， 此处的 `client.WithHostPorts` 用于指定服务端的地址，我们可以在运行商品服务时发现其监听在本地的 8888 端口，所以我们指定 8888 端口。更多参数可参考 [Client Option](https://www.cloudwego.cn/zh/docs/kitex/tutorials/options/client_options/) 一节。
+上述代码中，`item.NewClient` 用于创建 `client`，其第一个参数为调用的 _服务名_，第二个参数为 _options_，用于传入可选参数， 此处的 `client.WithHostPorts` 用于指定服务端的地址，我们可以在运行商品服务时发现其监听在本地的 8888 端口，所以我们指定 8888 端口。更多参数可参考 [Client Option](https://www.cloudwego.cn/zh/docs/kitex/tutorials/options/client_options/) 一节。
 
 ### 调用服务
 
@@ -465,7 +465,7 @@ package main
 
 import (
     "context"
-  
+
     stock "example_shop/kitex_gen/example/shop/stock"
 )
 
@@ -480,7 +480,7 @@ func (s *StockServiceImpl) GetItemStock(ctx context.Context, req *stock.GetItemS
 }
 ```
 
- 由于之前的商品服务和 API 服务分别占用了 8888 和 8889 端口，故我们在库存服务的 `main.go` 中修改监听的端口：
+由于之前的商品服务和 API 服务分别占用了 8888 和 8889 端口，故我们在库存服务的 `main.go` 中修改监听的端口：
 
 ```go
 package main
@@ -587,7 +587,7 @@ func main() {
     if err != nil {
        log.Println(err.Error())
     }
-}  
+}
 ```
 
 由于库存服务跑在 8890 端口，所以我们指定 8890 端口创建客户端。
@@ -613,7 +613,7 @@ GetItemResp({Item:Item({Id:1024 Title:Kitex Description:Kitex is an excellent fr
 为了更贴近真实环境，接下来为我们的服务接入注册中心，在本例中选择了 etcd 作为注册中心，etcd 的安装与使用可参考 [etcd.io](https://etcd.io/) 或使用下述 `docker compose` 文件，接下来默认你已经安装并启动 etcd 服务实例。
 
 ```yml
-version: '3'
+version: "3"
 
 services:
   etcd:
@@ -724,7 +724,7 @@ package main
 
 import (
     "log"
-    
+
     item "example_shop/kitex_gen/example/shop/item/itemservice"
 
     "github.com/cloudwego/kitex/pkg/rpcinfo"
@@ -738,7 +738,7 @@ func main() {
     if err != nil {
        log.Fatal(err)
     }
-  
+
     itemServiceImpl := new(ItemServiceImpl)
     stockCli, err := NewStockClient("0.0.0.0:8890")
     if err != nil {
@@ -831,7 +831,7 @@ func NewStockClient() (stockservice.Client, error) {
 
 #### API 服务接入
 
-API 服务只有一个文件，我们在 `api/main.go`  的 `main` 函数中直接添加相关逻辑即可：
+API 服务只有一个文件，我们在 `api/main.go` 的 `main` 函数中直接添加相关逻辑即可：
 
 ```go
 func main() {
@@ -846,7 +846,7 @@ func main() {
 		log.Fatal(err)
 	}
   	cli = c
-  
+
     hz := server.New(server.WithHostPorts("localhost:8889"))
 
 	hz.GET("/api/item", Handler)

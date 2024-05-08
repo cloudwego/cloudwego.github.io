@@ -58,12 +58,11 @@ send_events:
 
 Benchmark 表明，在有事件触发的情况下，msec=0 比 msec=-1 调用要快 18% 左右，因此在频繁事件触发场景下，使用 msec=0 调用明显是更优的。
 
-|Benchmark|time/op|bytes/op|
-|:----|:----|:----|
-|BenchmarkEpollWait, msec=0|270 ns/op|0 B/op|
-|BenchmarkEpollWait, msec=-1|328 ns/op|0 B/op|
-|EpollWait Delta|-17.68%|~|
-
+| Benchmark                   | time/op   | bytes/op |
+| :-------------------------- | :-------- | :------- |
+| BenchmarkEpollWait, msec=0  | 270 ns/op | 0 B/op   |
+| BenchmarkEpollWait, msec=-1 | 328 ns/op | 0 B/op   |
+| EpollWait Delta             | -17.68%   | ~        |
 
 而在无事件触发的场景下，使用 msec=0 显然会造成无限轮询，空耗大量资源。
 
@@ -215,17 +214,17 @@ func StringToSliceByte(s string) []byte {
 
 - 基本类型
 
-   - 如果容器元素为基本类型（bool, byte, i16, i32, i64, double）的话，由于基本类型大小固定，在序列化时是可以提前计算出总的大小，并且一次性分配足够的 buffer，O(n) 的 malloc 操作次数可以降到 O(1)，从而大量减少了 malloc 的次数，同理在反序列化时可以减少 next 的操作次数。
+  - 如果容器元素为基本类型（bool, byte, i16, i32, i64, double）的话，由于基本类型大小固定，在序列化时是可以提前计算出总的大小，并且一次性分配足够的 buffer，O(n) 的 malloc 操作次数可以降到 O(1)，从而大量减少了 malloc 的次数，同理在反序列化时可以减少 next 的操作次数。
 
 - struct 字段重排
 
-   - 上面的优化只能针对容器元素类型为基本类型的有效，那么对于元素类型为 struct 的是否也能优化呢？答案是肯定的。
+  - 上面的优化只能针对容器元素类型为基本类型的有效，那么对于元素类型为 struct 的是否也能优化呢？答案是肯定的。
 
-   - 沿用上面的思路，假如 struct 中如果存在基本类型的 field，也可以预先计算出这些 field 的大小，在序列化时为这些 field 提前分配 buffer，写的时候也把这些 field 顺序统一放到前面写，这样也能在一定程度上减少 malloc 的次数。
+  - 沿用上面的思路，假如 struct 中如果存在基本类型的 field，也可以预先计算出这些 field 的大小，在序列化时为这些 field 提前分配 buffer，写的时候也把这些 field 顺序统一放到前面写，这样也能在一定程度上减少 malloc 的次数。
 
 - 一次性计算
 
-   - 上面提到的是基本类型的优化，如果在序列化时，先遍历一遍 request 所有 field，便可以计算得到整个 request 的大小，提前分配好 buffer，在序列化和反序列时直接操作 buffer，这样对于非基本类型也能有优化效果。
+  - 上面提到的是基本类型的优化，如果在序列化时，先遍历一遍 request 所有 field，便可以计算得到整个 request 的大小，提前分配好 buffer，在序列化和反序列时直接操作 buffer，这样对于非基本类型也能有优化效果。
 
 - 定义新的 codec 接口：
 
@@ -356,11 +355,10 @@ go test -gcflags='-m=2 -l=4' -v -test.run TestNewCodec 2>&1 | grep "function too
 
 从上面的输出结果可以看出，加强内联程度确实减少了一些"function too complex"，看下 benchmark 结果：
 
-|Benchmark|time/op|bytes/op|allocs/op|
-|:----|:----|:----|:----|
-|BenchmarkOldMarshal-4|309 µs ± 2%|218KB|11|
-|BenchmarkNewMarshal-4|310 µs ± 3%|218KB|11|
-
+| Benchmark             | time/op     | bytes/op | allocs/op |
+| :-------------------- | :---------- | :------- | :-------- |
+| BenchmarkOldMarshal-4 | 309 µs ± 2% | 218KB    | 11        |
+| BenchmarkNewMarshal-4 | 310 µs ± 3% | 218KB    | 11        |
 
 上面开启最高程度的内联强度，确实消除了不少因为“function too complex”带来无法内联的函数，但是压测结果显示收益不太明显。
 
@@ -374,27 +372,27 @@ go test -gcflags='-m=2 -l=4' -v -test.run TestNewCodec 2>&1 | grep "function too
 
 data size: 20KB
 
-|Benchmark|time/op|bytes/op|allocs/op|
-|:----|:----|:----|:----|
-|BenchmarkOldMarshal-4|138 µs ± 3%|25.4KB|19|
-|BenchmarkNewMarshal-4|29 µs ± 3%|26.4KB|11|
-|Marshal Delta|-78.97%|3.87%|-42.11%|
-|BenchmarkOldUnmarshal-4|199 µs ± 3%|4720|1360|
-|BenchmarkNewUnmarshal-4|94µs ± 5%|4700|1280|
-|Unmarshal Delta|-52.93%|-0.24%|-5.38%|
+| Benchmark               | time/op     | bytes/op | allocs/op |
+| :---------------------- | :---------- | :------- | :-------- |
+| BenchmarkOldMarshal-4   | 138 µs ± 3% | 25.4KB   | 19        |
+| BenchmarkNewMarshal-4   | 29 µs ± 3%  | 26.4KB   | 11        |
+| Marshal Delta           | -78.97%     | 3.87%    | -42.11%   |
+| BenchmarkOldUnmarshal-4 | 199 µs ± 3% | 4720     | 1360      |
+| BenchmarkNewUnmarshal-4 | 94µs ± 5%   | 4700     | 1280      |
+| Unmarshal Delta         | -52.93%     | -0.24%   | -5.38%    |
 
 **大包**
 
 data size: 6MB
 
-|Benchmark|time/op|bytes/op|allocs/op|
-|:----|:----|:----|:----|
-|BenchmarkOldMarshal-4|58.7ms ± 5%|6.96MB|3350|
-|BenchmarkNewMarshal-4|13.3ms ± 3%|6.84MB|10|
-|Marshal Delta|-77.30%|-1.71%|-99.64%|
-|BenchmarkOldUnmarshal-4|56.6ms ± 3%|17.4MB|391000|
-|BenchmarkNewUnmarshal-4|26.8ms ± 5%|17.5MB|390000|
-|Unmarshal Delta|-52.54%|0.09%|-0.37%|
+| Benchmark               | time/op     | bytes/op | allocs/op |
+| :---------------------- | :---------- | :------- | :-------- |
+| BenchmarkOldMarshal-4   | 58.7ms ± 5% | 6.96MB   | 3350      |
+| BenchmarkNewMarshal-4   | 13.3ms ± 3% | 6.84MB   | 10        |
+| Marshal Delta           | -77.30%     | -1.71%   | -99.64%   |
+| BenchmarkOldUnmarshal-4 | 56.6ms ± 3% | 17.4MB   | 391000    |
+| BenchmarkNewUnmarshal-4 | 26.8ms ± 5% | 17.5MB   | 390000    |
+| Unmarshal Delta         | -52.54%     | 0.09%    | -0.37%    |
 
 ## 无拷贝序列化
 
@@ -419,8 +417,8 @@ Cap'n Proto 本质上是开辟一个 bytes slice 作为 buffer ，所有对数�
 
 - 在数据交换格式中，通过 pointer（数据存储位置的 offset）机制，使得数据可以存储在连续内存的任意位置，进而使得结构体中的数据可以以任意顺序读写
 
-	- 对于结构体的固定大小字段，通过重新排列，使得这些字段存储在一块连续内存中
-	- 对于结构体的不定大小字段（如 list），则通过一个固定大小的 pointer 来表示，pointer 中存储了包括数据位置在内的一些信息
+  - 对于结构体的固定大小字段，通过重新排列，使得这些字段存储在一块连续内存中
+  - 对于结构体的不定大小字段（如 list），则通过一个固定大小的 pointer 来表示，pointer 中存储了包括数据位置在内的一些信息
 
 首先 Cap'n Proto 没有 Go 语言结构体作为中间载体，得以减少一次拷贝，然后 Cap'n Proto 是在一段连续内存上进行操作，编码数据的读写可以一次完成，因为这两个原因，使得 Cap' Proto 的性能表现优秀。
 
@@ -438,11 +436,11 @@ struct Ano {
 }
 ```
 
-|Benchmark|Iter|time/op|bytes/op|alloc/op|
-|:----|:----|:----|:----|:----|
-|BenchmarkThriftReadWrite|172|6855840 ns/op|3154209 B/op|545 allocs/op|
-|BenchmarkCapnpReadWrite|1500|844924 ns/op|2085713 B/op|9 allocs/op|
-|ReadWrite Delta|/|-87.68%|-33.88%|-98.35%|
+| Benchmark                | Iter | time/op       | bytes/op     | alloc/op      |
+| :----------------------- | :--- | :------------ | :----------- | :------------ |
+| BenchmarkThriftReadWrite | 172  | 6855840 ns/op | 3154209 B/op | 545 allocs/op |
+| BenchmarkCapnpReadWrite  | 1500 | 844924 ns/op  | 2085713 B/op | 9 allocs/op   |
+| ReadWrite Delta          | /    | -87.68%       | -33.88%      | -98.35%       |
 
 （反序列化）+读出数据，视包大小，Cap'n Proto 性能大约是 Thrift 的 8-9 倍。写入数据+（序列化），视包大小，Cap'n Proto 性能大约是 Thrift 的 2-8 倍。整体性能 Cap' Proto 性能大约是 Thrift 的 4-8 倍。
 
@@ -464,10 +462,10 @@ Cap'n Proto 作为无拷贝序列化的标杆，那么我们就看看 Cap'n Prot
 - Cap'n Proto 是在一段连续内存上进行操作，编码数据的读写可以一次完成。Cap'n Proto 得以在连续内存上操作的原因：有 pointer 机制，数据可以存储在任意位置，允许字段可以以任意顺序写入而不影响解码。
   但是一方面，在连续内存上容易因为误操作，导致在 resize 的时候留下 hole，另一方面，Thrift 没有类似于 pointer 的机制，故而对数据布局有着更严格的要求。这里有两个思路：
 
-	- 坚持在连续内存上进行操作，并对用户使用提出严格要求：1. resize 操作必须重新构建数据结构 2. 当存在结构体嵌套时，对字段写入顺序有着严格要求（可以想象为把一个存在嵌套的结构体从外往里展开，写入时需要按展开顺序写入），
-      且因为 Binary 等 TLV 编码的关系，在每个嵌套开始写入时，需要用户主动声明（如 StartWriteFieldX）。
-	- 不完全在连续内存上操作，局部内存连续，可变字段则单独分配一块内存，既然内存不是完全连续的，自然也无法做到一次写操作便完成输出。为了尽可能接近一次写完数据的性能，我们采取了一种链式 buffer 的方案，
-      一方面当可变字段 resize 时只需替换链式 buffer 的一个节点，无需像 Cap'n Proto 一样重新构建结构体，另一方面在需要输出时无需像 Thrift 一样需要感知实际的结构，只要把整个链路上的 buffer 写入即可。
+  - 坚持在连续内存上进行操作，并对用户使用提出严格要求：1. resize 操作必须重新构建数据结构 2. 当存在结构体嵌套时，对字段写入顺序有着严格要求（可以想象为把一个存在嵌套的结构体从外往里展开，写入时需要按展开顺序写入），
+    且因为 Binary 等 TLV 编码的关系，在每个嵌套开始写入时，需要用户主动声明（如 StartWriteFieldX）。
+  - 不完全在连续内存上操作，局部内存连续，可变字段则单独分配一块内存，既然内存不是完全连续的，自然也无法做到一次写操作便完成输出。为了尽可能接近一次写完数据的性能，我们采取了一种链式 buffer 的方案，
+    一方面当可变字段 resize 时只需替换链式 buffer 的一个节点，无需像 Cap'n Proto 一样重新构建结构体，另一方面在需要输出时无需像 Thrift 一样需要感知实际的结构，只要把整个链路上的 buffer 写入即可。
 
 先总结下目前确定的两个点：1. 不使用 Go 语言结构体作为中间载体，通过接口直接操作底层内存，在 Get/Set 时完成编解码 2. 通过链式 buffer 存储数据
 
@@ -475,29 +473,28 @@ Cap'n Proto 作为无拷贝序列化的标杆，那么我们就看看 Cap'n Prot
 
 - 不使用 Go 语言结构体后带来的用户体验劣化
 
-	- 解决方案：改善 Get/Set 接口的使用体验，尽可能做到和 Go 语言结构体同等的易用
+  - 解决方案：改善 Get/Set 接口的使用体验，尽可能做到和 Go 语言结构体同等的易用
 
 - Cap'n Proto 的 Binary Format 是针对无拷贝序列化场景专门设计的，虽然每次 Get 时都会进行一次解码，但是解码代价非常小。而 Thrift 的协议（以 Binary 为例），没有类似于 pointer 的机制，
   当存在多个不定大小字段或者存在嵌套时，必须顺序解析而无法直接通过计算偏移拿到字段数据所在的位置，而每次 Get 都进行顺序解析的代价过于高昂。
 
-	- 解决方案：我们在表示结构体的时候，除了记录结构体的 buffer 节点，还加了一个索引，里面记录了每个不定大小字段开始的 buffer 节点的指针。
-      下面是目前的无拷贝序列化方案与 FastRead/Write，在 4 核下的极限性能对比测试：
+  - 解决方案：我们在表示结构体的时候，除了记录结构体的 buffer 节点，还加了一个索引，里面记录了每个不定大小字段开始的 buffer 节点的指针。
+    下面是目前的无拷贝序列化方案与 FastRead/Write，在 4 核下的极限性能对比测试：
 
-|包大小|类型|QPS|TP90|TP99|TP999|CPU|
-|:----|:----|:----|:----|:----|:----|:----|
-|1KB|无序列化|70,700|1 ms|3 ms|6 ms|/|
-| |FastWrite/FastRead|82,490|1 ms|2 ms|4 ms|/|
-|2KB|无序列化|65,000|1 ms|4 ms|9 ms|/|
-| |FastWrite/FastRead|72,000|1 ms|2 ms|8 ms|/|
-|4KB|无序列化|56,400|2 ms|5 ms|10 ms|380%|
-| |FastWrite/FastRead|52,700|2 ms|4 ms|10 ms|380%|
-|32KB|无序列化|27,400|/|/|/|/|
-| |FastWrite/FastRead|19,500|/|/|/|/|
-|1MB|无序列化|986|53 ms|56 ms|59 ms|260%|
-| |FastWrite/FastRead|942|55 ms|59 ms|62 ms|290%|
-|10MB|无序列化|82|630 ms|640 ms|645 ms|240%|
-| |FastWrite/FastRead|82|630 ms|640 ms|640 ms|270%|
-
+| 包大小 | 类型               | QPS    | TP90   | TP99   | TP999  | CPU  |
+| :----- | :----------------- | :----- | :----- | :----- | :----- | :--- |
+| 1KB    | 无序列化           | 70,700 | 1 ms   | 3 ms   | 6 ms   | /    |
+|        | FastWrite/FastRead | 82,490 | 1 ms   | 2 ms   | 4 ms   | /    |
+| 2KB    | 无序列化           | 65,000 | 1 ms   | 4 ms   | 9 ms   | /    |
+|        | FastWrite/FastRead | 72,000 | 1 ms   | 2 ms   | 8 ms   | /    |
+| 4KB    | 无序列化           | 56,400 | 2 ms   | 5 ms   | 10 ms  | 380% |
+|        | FastWrite/FastRead | 52,700 | 2 ms   | 4 ms   | 10 ms  | 380% |
+| 32KB   | 无序列化           | 27,400 | /      | /      | /      | /    |
+|        | FastWrite/FastRead | 19,500 | /      | /      | /      | /    |
+| 1MB    | 无序列化           | 986    | 53 ms  | 56 ms  | 59 ms  | 260% |
+|        | FastWrite/FastRead | 942    | 55 ms  | 59 ms  | 62 ms  | 290% |
+| 10MB   | 无序列化           | 82     | 630 ms | 640 ms | 645 ms | 240% |
+|        | FastWrite/FastRead | 82     | 630 ms | 640 ms | 640 ms | 270% |
 
 测试结果概述：
 

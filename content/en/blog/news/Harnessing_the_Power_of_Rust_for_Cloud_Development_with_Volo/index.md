@@ -3,16 +3,33 @@ date: 2024-01-18
 title: "Harnessing the Power of Rust for Cloud Development with Volo"
 projects: ["CloudWeGo"]
 linkTitle: "Harnessing the Power of Rust for Cloud Development with Volo"
-keywords: ["CloudWeGo", "middleware", "Volo", "rust", "microservice framework", "ByteDance Open Source", "ByteDance", "open source", "cloud native", "open source", "kubernetes", "gRPC", "microservices", "rpc", "thrift"]
+keywords:
+  [
+    "CloudWeGo",
+    "middleware",
+    "Volo",
+    "rust",
+    "microservice framework",
+    "ByteDance Open Source",
+    "ByteDance",
+    "open source",
+    "cloud native",
+    "open source",
+    "kubernetes",
+    "gRPC",
+    "microservices",
+    "rpc",
+    "thrift",
+  ]
 description: "Volo is a Rust framework for cloud development. This guide provides insights into leveraging Volo with its speed and efficiency in your projects."
-author:  <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>, <a href="https://github.com/GuangmingLuo" target="_blank">Guangming Luo</a>
+author: <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>, <a href="https://github.com/GuangmingLuo" target="_blank">Guangming Luo</a>
 ---
 
-![Image](/img/blog/Harnessing_the_Power_of_Rust_for_Cloud_Development_with_Volo/1.jpeg) 
+![Image](/img/blog/Harnessing_the_Power_of_Rust_for_Cloud_Development_with_Volo/1.jpeg)
 
 ## I. Introduction
 
-Every tool in the [CloudWeGo](https://www.cloudwego.io) open-source ecosystem has been developed with the aim of simplifying and revolutionizing how developers navigate the cloud environment. An essential part of this ecosystem is [Volo](/docs/volo/), a Rust RPC framework designed to provide a seamless and efficient communication infrastructure. 
+Every tool in the [CloudWeGo](https://www.cloudwego.io) open-source ecosystem has been developed with the aim of simplifying and revolutionizing how developers navigate the cloud environment. An essential part of this ecosystem is [Volo](/docs/volo/), a Rust RPC framework designed to provide a seamless and efficient communication infrastructure.
 
 This guide aims to provide in-depth insights into leveraging Volo in your projects. Built with [Rust](https://www.rust-lang.org), Volo brings unique features and advantages into the mix.
 
@@ -20,7 +37,7 @@ This guide aims to provide in-depth insights into leveraging Volo in your projec
 
 As a part of the CloudWeGo family, Volo can make a significant impact in real-world applications. Its high-speed processing capabilities, when combined with the safety and concurrency advantages of Rust, can provide an efficient backbone to high-performance web services and applications.
 
-The beauty of Rust, which Volo encapsulates, is its ability to push beyond the performance boundaries typically associated with languages such as Go. While Go is highly efficient, it does reach a performance ceiling that may not lend itself to deep optimization. However, once a finely optimized Go service is rewritten in Rust, the benefits spring into view. 
+The beauty of Rust, which Volo encapsulates, is its ability to push beyond the performance boundaries typically associated with languages such as Go. While Go is highly efficient, it does reach a performance ceiling that may not lend itself to deep optimization. However, once a finely optimized Go service is rewritten in Rust, the benefits spring into view.
 
 Here, CPU gains generally rise above 30%, some even reaching over 50%. In some cases, a fourfold increase in CPU gains is observed. Memory gains are even more pronounced, regularly topping 50% and in some cases reaching as high as 90%.
 
@@ -30,7 +47,7 @@ Consider the infrastructure of an online marketplace's back-end. Volo can facili
 
 Another use case could be in the gaming industry, where Volo can help manage player data, game state, and real-time multiplayer interactions with low-latency and high reliability.
 
-Rust and Go are not adversaries but rather allies that complement each other, leveraging their respective strengths to compensate for any weaknesses. For applications where ultimate performance, low latency, memory bottlenecks, and stability are of paramount importance, even if it comes at the cost of some iteration speed loss, Rust is the go-to choice. 
+Rust and Go are not adversaries but rather allies that complement each other, leveraging their respective strengths to compensate for any weaknesses. For applications where ultimate performance, low latency, memory bottlenecks, and stability are of paramount importance, even if it comes at the cost of some iteration speed loss, Rust is the go-to choice.
 
 These applications can fully benefit from Rust's, and by extension Volo's, unrivaled performance optimization and security. However, when performance sensitivity takes a backseat to high I/O operations, and when rapid development and iteration receives priority over stability, Go becomes the preferred choice.
 
@@ -41,10 +58,13 @@ Rust's vast applicability doesn't stop at server-side business and architectural
 CloudWeGo provides a robust set of tools to work with, one of which is Volo. Here's how you can kickstart your journey with Volo within the CloudWeGo ecosystem.
 
 ### Volo
+
 #### Prerequisites
+
 If you don’t have the Rust development environment set up, please follow [Install Rust](https://www.rust-lang.org/tools/install) to download Rustup and install Rust. Volo supports Linux, macOS, and Windows systems by default.
 
 #### Install the CLI tool
+
 Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more. To install Volo tool, run the following command: `cargo install volo-cli`.
 
 Then run: `volo help`
@@ -63,7 +83,6 @@ SUBCOMMANDS: help    Print this message or the help of the given subcommand(s)
     idl     manage your idl
 ```
 
-    
 ## IV. Creating A Sample Project With CloudWeGo
 
 When starting a new project with Volo, the following steps can guide you through the development of basic components.
@@ -106,6 +125,7 @@ service ItemService {
 Init the server project
 volo init volo-example idl/volo_example.thrift
 ```
+
 **Note:** Here we use the `init` command, followed by the name of our project, which means we need to generate template code. At the end, you need to specify an IDL used by the server.
 
 At this point, our entire directory structure looks like this:
@@ -126,6 +146,7 @@ At this point, our entire directory structure looks like this:
     │   └── lib.rs
     └── volo.yml
 ```
+
 **2. Add logic code**
 
 Open `src/lib.rs` and add the method implementation to the impl block:
@@ -149,11 +170,13 @@ impl volo_gen::volo::example::ItemService for S {
 ```
 cargo update && cargo build
 ```
+
 At this point, you will find `volo_gen.rs` file under `OUT_DIR Directory`. Then execute the following command to get our server running:
 
 ```
 cargo run --bin server
 ```
+
 We now have our server running!
 
 ### gRPC project
@@ -166,6 +189,7 @@ To create a gRPC project, we need to write a protobuf IDL first. In your working
 mkdir volo-example && cd volo-example
 mkdir idl && vim idl/volo_example.proto
 ```
+
 Then, enter the following content:
 
 ```
@@ -192,11 +216,13 @@ service ItemService {
     rpc GetItem(GetItemRequest) returns (GetItemResponse);
 }
 ```
+
 **2. Init the server project**
 
 ```
 volo init --includes=idl volo-example idl/volo_example.proto
 ```
+
 **Note:** Here we use the `init` command, followed by the name of our project, which means we need to generate template code. At the end, you need to specify an IDL used by the server.
 
 At this point, our entire directory structure looks like this:
@@ -247,8 +273,8 @@ At this point, you will find `volo_gen.rs` file under `OUT_DIR Directory`. Then 
 ```
 cargo run --bin server
 ```
-If you followed the above steps, you'll now have your server running!
 
+If you followed the above steps, you'll now have your server running!
 
 ## V. Troubleshooting Tips & FAQ
 

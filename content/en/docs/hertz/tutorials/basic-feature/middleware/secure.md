@@ -32,7 +32,7 @@ package main
 
 import (
     "context"
-    
+
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/hertz-contrib/secure"
@@ -60,7 +60,7 @@ Most of the Secure configuration items are designed to simplify the user's confi
 Secure provides the `New()` function for integrating Secure into Hertz, which is configured by default as follows
 
 | Configuration             | Description                                                                                                                                                                                                                                                                    | Default Value                                             |
-|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
 | WithSSLRedirect           | If `WithSSLRedirect` is set to true, only https requests will be allowed                                                                                                                                                                                                       | true                                                      |
 | WithIsDevelopment         | If `WithIsDevelopment` is set to true, the entire security policy of the middleware application will be completely disabled                                                                                                                                                    | false                                                     |
 | WithSTSSecond             | `WithSTSSecond` is used to set the number of seconds for the max-age of Strict-Transport-Security                                                                                                                                                                              | 315360000                                                 |
@@ -158,7 +158,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
     "github.com/cloudwego/hertz/pkg/common/utils"
-    
+
     "github.com/hertz-contrib/secure"
 )
 

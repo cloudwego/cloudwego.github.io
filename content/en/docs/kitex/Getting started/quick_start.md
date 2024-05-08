@@ -5,7 +5,6 @@ weight: 3
 date: 2024-01-18
 keywords: ["Kitex", "Golang", "Go", "Basic Example"]
 description: "Basic example for Kitex"
-
 ---
 
 Before starting this section, make sure you have the required **Pre-knowledge** and have completed the **Environment Preparation**.
@@ -29,7 +28,7 @@ Before starting this section, make sure you have the required **Pre-knowledge** 
 
    ```bash
    go run .
-   
+
    // Output similar logs indicating successful execution
    2024/01/18 20:35:08.857352 server.go:83: [Info] KITEX: server listen at addr=[::]:8888
    ```
@@ -38,7 +37,7 @@ Before starting this section, make sure you have the required **Pre-knowledge** 
 
    ```bash
    go run ./client
-   
+
    // Output similar logs every second indicating successful execution
    2024/01/18 20:39:59 Response({Message:my request})
    2024/01/18 20:40:00 Response({Message:my request})
@@ -63,7 +62,7 @@ Before starting this section, make sure you have the required **Pre-knowledge** 
 
    ```bash
    docker run --network host kitex-examples ./hello-server
-   
+
    // Output similar logs indicating successful execution
    2024/01/18 12:47:34.712415 server.go:83: [Info] KITEX: server listen at addr=[::]:8888
    ```
@@ -72,7 +71,7 @@ Before starting this section, make sure you have the required **Pre-knowledge** 
 
    ```bash
    docker run --network host kitex-examples ./hello-client
-   
+
    // Output similar logs every second indicating successful execution
    2024/01/18 12:48:20 Response({Message:my request})
    2024/01/18 12:48:21 Response({Message:my request})

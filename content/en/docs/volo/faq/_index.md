@@ -11,8 +11,8 @@ description: Answers to frequently asked questions.
 If you've paid close attention, you'd notice that in the generated code on the client-side, we wrap the user-provided `Req` into `Arc<Req>` before actually executing the volo_thrift client's `call` method.
 However, on the server-side, we directly use `Req`.
 
-The reason for this design is that the client-side requires more complex service governance logic compared to the server-side. 
-Especially, some service governance logic conflicts with Rust's ownership model. For instance, if a connection fails, we might need to retry on a different node or even implement more complex timeout-retry logic. 
+The reason for this design is that the client-side requires more complex service governance logic compared to the server-side.
+Especially, some service governance logic conflicts with Rust's ownership model. For instance, if a connection fails, we might need to retry on a different node or even implement more complex timeout-retry logic.
 If we were to directly use `Req`, once we execute the inner service's `call` for the first time, the ownership would have already been moved, preventing us from implementing retry logic.
 
 Additionally, using `Arc` helps us avoid problems caused by concurrent access under middleware (such as scenarios involving mirror/diff), without going into excessive detail here.
@@ -31,7 +31,7 @@ Volo is fully compatible with Kitex, including functionalities like metadata tra
 
 ### Where did poll_ready (backpressure) go?
 
-In Tower's Service, there is a method called `poll_ready`, used to ensure downstream Services have sufficient processing capacity before making requests and to provide backpressure when processing capacity is insufficient. 
+In Tower's Service, there is a method called `poll_ready`, used to ensure downstream Services have sufficient processing capacity before making requests and to provide backpressure when processing capacity is insufficient.
 This is a very ingenious design, and Tower elaborates on the reasons for this design in the article [inventing-the-service-trait](https://tokio.rs/blog/2021-05-14-inventing-the-service-trait).
 
 However, based on our real development experience, we have summarized the following insights:

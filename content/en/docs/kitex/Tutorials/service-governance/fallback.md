@@ -6,7 +6,7 @@ keywords: ["Kitex", "Fallback"]
 description: Kitex Fallback Introduction and Usage Guide.
 ---
 
-> **Support Version: >= v0.5.0  （go.mod dependencies: [github/cloudwego/kitex](https://github.com/cloudwego/kitex))**
+> **Support Version: >= v0.5.0 （go.mod dependencies: [github/cloudwego/kitex](https://github.com/cloudwego/kitex))**
 >
 > Protobuf Generated code version: >=v0.5.0（The version can be found in the header of the generated code file and in the version comments.）
 >
@@ -14,8 +14,8 @@ description: Kitex Fallback Introduction and Usage Guide.
 
 ## 1.Kitex Fallback Functional Description
 
-
 After an RPC request fails, businesses usually take some fallback measures to ensure a valid response (such as constructing a default response when encountering timeouts or circuit breakers). Kitex's Fallback supports handling all exceptional requests. Additionally, as business exceptions maybe return through Resp (BaseResp), Fallback also supports handling Resp.
+
 ### 1.1 Result types that support Fallback
 
 1. **RPC** **Error**: RPC request exceptions such as timeout, circuit breaker, rate limiting, and protocol errors at the RPC level.
@@ -65,8 +65,7 @@ Kitex provides two ways to define Fallback Func:
 
 The latter is more intuitive and user-friendly, but it is not compatible with APIs that have multiple request parameters. Therefore, the framework defaults to using the former method.
 
-
-**Use XXXArgs/XXXResult as req/resp parameters**  
+**Use XXXArgs/XXXResult as req/resp parameters**
 
 Note: You must replace the original return value using result.SetSuccess(yourFallbackResult).
 
@@ -88,7 +87,7 @@ client.WithFallback(
 )
 ```
 
-**Use actual RPC Req/Resp as parameters** 
+**Use actual RPC Req/Resp as parameters**
 
 By using the **fallback.UnwrapHelper** provided by Kitex, you can define a Fallback Func with the signature of RealReqRespFunc, whose parameter types are consistent with Handler's req and resp.
 
@@ -114,9 +113,9 @@ client.WithFallback(
 
 #### 2.3.2 Construct your Fallback Policy
 
-The default constructor method for creating a Fallback Policy is NewFallbackPolicy, the framework will trigger fallback execution for both errors and responses to make it easier for businesses to use.Also,the framework  provides encapsulation for users who want to execute fallbacks  for errors or timeouts/circuit breakers.
+The default constructor method for creating a Fallback Policy is NewFallbackPolicy, the framework will trigger fallback execution for both errors and responses to make it easier for businesses to use.Also,the framework provides encapsulation for users who want to execute fallbacks for errors or timeouts/circuit breakers.
 
-1. **Execute fallback based on judgment of both errors and responses**  
+1. **Execute fallback based on judgment of both errors and responses**
 
 ```Go
 // Method 1: XXXArgs/XXXResult as params
@@ -139,7 +138,7 @@ fallback.NewFallbackPolicy(
 )
 ```
 
-2. **Execute fallback only on Errors (including business errors)** 
+2. **Execute fallback only on Errors (including business errors)**
 
    The Fallback will not be executed for non-Errors.
 
@@ -164,7 +163,7 @@ fallback.ErrorFallback(
 )
 ```
 
-3. **Execute fallback only on timeout and circuit-breaker errors**  
+3. **Execute fallback only on timeout and circuit-breaker errors**
 
    The Fallback will not be executed for non-timeout and circuit-breaker error.
 
@@ -190,11 +189,10 @@ The framework defaults to reporting monitoring data based on the original RPC re
 **Note**: If the original result was not an RPC failure (business error), but if an error is returned in the Fallback, even if EnableReportAsFallback is set, the framework will not report the Fallback result.
 
 | **Original Result**                                      | **Whether to use EnableReportAsFallback()** | **Reported Result**                                                  |
-|----------------------------------------------------------|---------------------------------------------|----------------------------------------------------------------------|
+| -------------------------------------------------------- | ------------------------------------------- | -------------------------------------------------------------------- |
 | RPC Fail                                                 | YES                                         | fallback result                                                      |
 | RPC Fail                                                 | NO                                          | is_error=1 <br/>(rpcinfo.GetRPCInfo(ctx).Stats().Error() is not nil) |
 | Business Error(Biz Err or BaseResp Non-successful state) | YES/NO                                      | is_error=0 <br/>(rpcinfo.GetRPCInfo(ctx).Stats().Error() is nil)     |
-
 
 ### 2.4 Configuration example
 
@@ -237,5 +235,4 @@ xxxCli.XXXMethod(ctx, req, callopt.WithFallback(yourFallbackPolicy))
 ### 3.2 Usage of Kitex Protobuf / Kitex gRPC
 
 - Fallback is supported for Kitex Protobuf and Kitex gRPC unary requests, but requires generated code version >=v0.5.0 (The version can be found in the header of the generated code file and in the version comments.)
-- Kitex gRPC streaming requests do not support fallback. 
-  
+- Kitex gRPC streaming requests do not support fallback.

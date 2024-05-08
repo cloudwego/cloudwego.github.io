@@ -12,7 +12,7 @@ Hertz 提供了 [CSRF](https://github.com/hertz-contrib/csrf) 中间件，可帮
 
 ## 安装
 
-``` shell
+```shell
 go get github.com/hertz-contrib/csrf
 ```
 
@@ -53,14 +53,14 @@ func main() {
 
 ## 配置
 
-| 配置项          | 默认值                                                                        | 介绍                                                                                        |
-| --------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `Secret`        | `csrfSecret`                                                                  | 用于生成令牌（必要配置）                                                                    |
-| `IgnoreMethods` | "GET", "HEAD", "OPTIONS", "TRACE"                                             | 被忽略的方法将将视为无需 `csrf` 保护                                                         |
-| `Next`          | `nil`                                                                         | `Next` 定义了一个函数，当返回真时，跳过这个 `csrf` 中间件。                                 |
-| `KeyLookup`     | `header：X-CSRF-TOKEN`                                                        | `KeyLookup` 是一个"<source>：<key>"形式的字符串，用于创建一个从请求中提取令牌的 Extractor。 |
-| `ErrorFunc`     | `func(ctx context.Context, c *app.RequestContext) { panic(c.Errors.Last()) }` | 当 `app.HandlerFunc` 返回一个错误时，`ErrorFunc` 被执行                                      |
-| `Extractor`     | 基于 KeyLookup 创建                                                           | `Extractor` 返回`csrf token`。如果设置了这个，它将被用来代替基于 `KeyLookup` 的 `Extractor`。  |
+| 配置项          | 默认值                                                                        | 介绍                                                                                          |
+| --------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `Secret`        | `csrfSecret`                                                                  | 用于生成令牌（必要配置）                                                                      |
+| `IgnoreMethods` | "GET", "HEAD", "OPTIONS", "TRACE"                                             | 被忽略的方法将将视为无需 `csrf` 保护                                                          |
+| `Next`          | `nil`                                                                         | `Next` 定义了一个函数，当返回真时，跳过这个 `csrf` 中间件。                                   |
+| `KeyLookup`     | `header：X-CSRF-TOKEN`                                                        | `KeyLookup` 是一个"<source>：<key>"形式的字符串，用于创建一个从请求中提取令牌的 Extractor。   |
+| `ErrorFunc`     | `func(ctx context.Context, c *app.RequestContext) { panic(c.Errors.Last()) }` | 当 `app.HandlerFunc` 返回一个错误时，`ErrorFunc` 被执行                                       |
+| `Extractor`     | 基于 KeyLookup 创建                                                           | `Extractor` 返回`csrf token`。如果设置了这个，它将被用来代替基于 `KeyLookup` 的 `Extractor`。 |
 
 ### WithSecret
 
@@ -115,7 +115,7 @@ func main() {
 函数签名：
 
 ```go
-func WithIgnoredMethods(methods []string) Option 
+func WithIgnoredMethods(methods []string) Option
 ```
 
 默认值：`{"GET", "HEAD", "OPTIONS", "TRACE"}`
@@ -283,7 +283,7 @@ package main
 
 import (
 	"context"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/csrf"
@@ -347,7 +347,7 @@ package main
 import (
 	"context"
 	"errors"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/csrf"

@@ -45,7 +45,7 @@ OPTIONS:
 
 ## Specification
 
-```console
+````console
     --dsn value specify database DSN
     --db_type value specifies the database type (mysql or sqlserver or sqlite or postgres) (default mysql)
     --out_dir value specifies the output directory path, the default is biz/dao/query
@@ -64,4 +64,4 @@ OPTIONS:
 
 ```sh
 cwgo model --db_type mysql --dsn "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local"
-```
+````

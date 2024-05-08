@@ -143,7 +143,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithCoreLevel(lvl zap.AtomicLevel) Option 
+func WithCoreLevel(lvl zap.AtomicLevel) Option
 ```
 
 Sample code:
@@ -206,7 +206,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithZapOptions(opts ...zap.Option) Option 
+func WithZapOptions(opts ...zap.Option) Option
 ```
 
 Sample code:
@@ -323,7 +323,7 @@ func main() {
 			return
 		}
 	}
-	
+
 	logger := hertzzap.NewLogger()
 	// Provides compression and deletion
 	lumberjackLogger := &lumberjack.Logger{

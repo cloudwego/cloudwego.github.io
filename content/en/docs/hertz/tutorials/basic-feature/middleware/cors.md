@@ -4,7 +4,6 @@ date: 2022-05-21
 weight: 1
 keywords: ["CORS"]
 description: "Hertz provides implementation of CORS middleware."
-
 ---
 
 The CORS (Cross-Origin Resource Sharing) mechanism allows a server to identify any origin other than its own so that browsers can access and load those resources.
@@ -68,7 +67,7 @@ Hertz allows clients to access resources across origins through the use of cors 
 Only part of the optional parameters are configured in the above **Example**, the full list of parameters for `Config` is as follows:
 
 | Parameter              | Introduction                                                                                                                                                                                       |
-| ---------------------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | AllowAllOrigins        | The property used to allow clients from any origin to access server-side resources, the default value is `false`                                                                                   |
 | AllowOrigins           | The property used to set the list of origins a cross-domain request can be executed from, the default value is `[]`                                                                                |
 | AllowOriginFunc        | The property used to set a custom function to validate the origin, if this option is set, the content of `AllowOrigins` is ignored                                                                 |
@@ -77,10 +76,10 @@ Only part of the optional parameters are configured in the above **Example**, th
 | AllowCredentials       | The property indicates whether the request can include user credentials like cookies, HTTP authentication, or client-side SSL certificates, the default value is `false`                           |
 | ExposeHeaders          | The property used to indicate which headers are safe to expose to the API of a CORS API specification, the default value is `[]`                                                                   |
 | MaxAge                 | The property used to set how long (in seconds) the results of a preflight request can be cached                                                                                                    |
-| AllowWildcard          | The property used to allow to add of origins like `http://some-domain/*`, `https://api.*`, or `http://some.*.subdomain.com`, the default value is `false`                                                |
+| AllowWildcard          | The property used to allow to add of origins like `http://some-domain/*`, `https://api.*`, or `http://some.*.subdomain.com`, the default value is `false`                                          |
 | AllowBrowserExtensions | The property used to allow usage of popular browser extensions schemas, the default value is `false`                                                                                               |
 | AllowWebSockets        | The property used to allow usage of WebSocket protocol, the default value is `false`                                                                                                               |
-| AllowFiles             | The property used to allow usage of `file://` schema (dangerous!) use it only when you 100% sure it's needed, the default value is `false`                                                           |
+| AllowFiles             | The property used to allow usage of `file://` schema (dangerous!) use it only when you 100% sure it's needed, the default value is `false`                                                         |
 
 ### AllowAllOrigins
 

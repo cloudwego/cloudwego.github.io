@@ -10,11 +10,11 @@ description: Kitex supports message types of PingPong、Oneway、Streaming.
 
 The table below is message types, codecs and transports supported by Kitex.
 
-|Message Types|Codec| Transport|
-|--------|-------|--------|
-|PingPong|Thrift / Protobuf| [TTHeader](../../../reference/transport_protocol_ttheader) / HTTP2(gRPC) |
-|Oneway|Thrift| [TTHeader](../../../reference/transport_protocol_ttheader)|
-|Streaming|Protobuf| HTTP2(gRPC)|
+| Message Types | Codec             | Transport                                                                |
+| ------------- | ----------------- | ------------------------------------------------------------------------ |
+| PingPong      | Thrift / Protobuf | [TTHeader](../../../reference/transport_protocol_ttheader) / HTTP2(gRPC) |
+| Oneway        | Thrift            | [TTHeader](../../../reference/transport_protocol_ttheader)               |
+| Streaming     | Protobuf          | HTTP2(gRPC)                                                              |
 
 - PingPong: the client always waits for a response after sending a request
 - Oneway: the client does not expect any response after sending a request
@@ -107,7 +107,7 @@ import (
 
     "xx/echo"
     "xx/echo/echoservice"
-	
+
 	"github.com/cloudwego/kitex/client"
 )
 
@@ -140,7 +140,7 @@ import (
 
     "xx/echo"
     "xx/echo/echoservice"
-    
+
     "github.com/cloudwego/kitex/client"
 )
 
@@ -164,9 +164,9 @@ func main() {
 Kitex supports two kinds of protocols that carry Protobuf payload:
 
 - Kitex Protobuf
-    - Only supports the PingPong type of messages. If any streaming method is defined in the IDL, the protocol will switch to gRPC.
+  - Only supports the PingPong type of messages. If any streaming method is defined in the IDL, the protocol will switch to gRPC.
 - The gRPC Protocol
-    - Be able to interoperate with gRPC. Use the same definition as gRPC service, and supports Unary (PingPong) and Streaming calls.
+  - Be able to interoperate with gRPC. Use the same definition as gRPC service, and supports Unary (PingPong) and Streaming calls.
 
 ### Example
 
@@ -283,7 +283,7 @@ func (handler) BidiSideStreaming(stream echo.EchoService_BidiSideStreamingServer
 			time.Sleep(time.Second)
 		}
 	}()
-	
+
 	err = <-errChan
 	cancel()
 	return err

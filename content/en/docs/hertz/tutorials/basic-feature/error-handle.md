@@ -4,7 +4,6 @@ date: 2023-04-18
 weight: 10
 keywords: ["Error Handle", "Custom Error"]
 description: "The error handling function provided by Hertz."
-
 ---
 
 ## Error
@@ -19,14 +18,14 @@ type Error struct {
 }
 ```
 
- `Err` is standard error, `Type` is the type of error, `Meta` is the metadata.
+`Err` is standard error, `Type` is the type of error, `Meta` is the metadata.
 
 ### Error Type
 
 In order to handle errors more efficiently, Hertz has predefined the following error types:
 
 ```go
-// Error in binding process 
+// Error in binding process
 ErrorTypeBind ErrorType = 1 << iota
 // Error in rendering process
 ErrorTypeRender
@@ -78,14 +77,14 @@ func NewPrivatef(format string, v ...interface{}) *Error {
 
 ### Relevant functions
 
-| signature                        | description                                                 |
-| -------------------------------- | ----------------------------------------------------------- |
-| SetType(flags ErrorType) *Error  | set the `ErrorType` to the given `flags`                    |
-| Error() string                   | implement the `error` interface                             |
-| Unwrap() error                   | throw an error                                              |
-| SetMeta(data interface{}) *Error | set the `Meta` to the given `data`                          |
-| IsType(flags ErrorType) bool     | determine whether the `ErrorType` matches the given `flags` |
-| JSON() interface{}               | convert the error to a `json` object                        |
+| signature                         | description                                                 |
+| --------------------------------- | ----------------------------------------------------------- |
+| SetType(flags ErrorType) \*Error  | set the `ErrorType` to the given `flags`                    |
+| Error() string                    | implement the `error` interface                             |
+| Unwrap() error                    | throw an error                                              |
+| SetMeta(data interface{}) \*Error | set the `Meta` to the given `data`                          |
+| IsType(flags ErrorType) bool      | determine whether the `ErrorType` matches the given `flags` |
+| JSON() interface{}                | convert the error to a `json` object                        |
 
 ## ErrorChain
 
@@ -93,13 +92,13 @@ In addition to the conventions for error definition, the framework also provides
 
 ### Relevant functions
 
-| signature                        | description                                                  |
-| -------------------------------- | ------------------------------------------------------------ |
-| String() string                  | return a human-readable text for displaying all errors       |
-| Errors() []string                | convert the `ErrorChain` to an array of standard errors      |
+| signature                        | description                                                        |
+| -------------------------------- | ------------------------------------------------------------------ |
+| String() string                  | return a human-readable text for displaying all errors             |
+| Errors() []string                | convert the `ErrorChain` to an array of standard errors            |
 | ByType(typ ErrorType) ErrorChain | return the corresponding sub-`ErrorChain` for the given error type |
-| Last() *Error                    | return the last error                                        |
-| JSON() interface{}               | convert all errors to a `json` object                        |
+| Last() \*Error                   | return the last error                                              |
+| JSON() interface{}               | convert all errors to a `json` object                              |
 
 ### How To Use
 

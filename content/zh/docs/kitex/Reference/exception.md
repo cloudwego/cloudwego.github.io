@@ -79,7 +79,7 @@ Kitex 框架定义在 `github.com/cloudwego/kitex/pkg/kerrors` 下
 
 `ErrRetry`, 重试时发生错误，具体错误见报错信息。
 
-### THRIFT 错误码 
+### THRIFT 错误码
 
 该类别对应 Thrift 框架原生的 Application Exception 错误，通常，这些错误会被 Kitex 框架包装成 `remote or network error` 。
 
@@ -151,5 +151,6 @@ if de.ErrorType() == kerrors.ErrInternalException {} // 返回 true
 ```
 
 `DetailedError` 提供了下述方法用于获取更详细的信息：
+
 1. `ErrorType() error` ，用于获取基本错误类型
 2. `Stack() string` ，用于获取堆栈信息（目前仅 `ErrPanic` 会带上）

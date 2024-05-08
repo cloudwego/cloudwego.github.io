@@ -203,11 +203,11 @@ func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 
 **默认配置**
 
-| 配置名                                                | 默认值           | 描述                                           |
-| ----------------------------------------------------- | ---------------- | ---------------------------------------------- |
-| `WithMaxAttemptTimes(maxAttemptTimes uint) Option`    | 5                | 用于设置最大尝试次数，如果为 0，则表示无限尝试 |
-| `WithObserveDelay(observeDelay time.Duration) Option` | 30 * time.Second | 用于设置正常连接条件下检查服务状态的延迟时间   |
-| `WithRetryDelay(t time.Duration) Option`              | 10 * time.Second | 用于设置断开连接后重试的延迟时间               |
+| 配置名                                                | 默认值            | 描述                                           |
+| ----------------------------------------------------- | ----------------- | ---------------------------------------------- |
+| `WithMaxAttemptTimes(maxAttemptTimes uint) Option`    | 5                 | 用于设置最大尝试次数，如果为 0，则表示无限尝试 |
+| `WithObserveDelay(observeDelay time.Duration) Option` | 30 \* time.Second | 用于设置正常连接条件下检查服务状态的延迟时间   |
+| `WithRetryDelay(t time.Duration) Option`              | 10 \* time.Second | 用于设置断开连接后重试的延迟时间               |
 
 ## 服务发现
 
@@ -272,7 +272,7 @@ import (
 	etcd "github.com/kitex-contrib/registry-etcd"
 )
 
-func main() { 
+func main() {
 	// creates a etcd based resolver with given username and password
 	r, err := etcd.NewEtcdResolverWithAuth([]string{"127.0.0.1:2379"}, "username", "password")
 	if err != nil {
@@ -431,4 +431,3 @@ type instanceInfo struct {
 ## 完整示例
 
 完整用法示例详见 [example](https://github.com/kitex-contrib/registry-etcd/tree/main/example) 。
-

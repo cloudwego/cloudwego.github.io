@@ -6,6 +6,7 @@ menu:
 ---
 
 {{% blocks/lead color="primary" %}}
+
 <div class="h5 mb-0 m-4">
   <div class="h1">Welcome to the CloudWeGo Community</div>
   <p>CloudWeGo is an open source project that anyone in the community can
@@ -45,8 +46,8 @@ You may participate in the community through GitHub, or simply by interacting wi
 If you want to become a Contributor, please read the <a href="https://github.com/cloudwego/community/blob/main/CONTRIBUTING.md">Contribution Guidelines</a> and the <a href="https://github.com/cloudwego/community/blob/main/COMMUNITY_MEMBERSHIP.md">Community Membership Privileges and Guidelines</a>.
 
 ## Where to Start?
-  
-  If you're looking for a place to start for your first contribution, here's a few things to note. The CloudWeGo project is subdivided into subprojects:
+
+If you're looking for a place to start for your first contribution, here's a few things to note. The CloudWeGo project is subdivided into subprojects:
 
 - Kitex (Kitex & Kitex ecosystem & kitex-contrib)
 - Hertz (Hertz & Hertz ecosystem & hertz-contrib)

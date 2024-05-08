@@ -5,15 +5,13 @@ weight: 3
 description: >
 ---
 
-
-
 ## 概述
 
 Validator 是用于支持结构体校验能力的 thriftgo 插件。
 
-在 IDL 中通过注解来描述约束，插件会根据注解给对应的 struct 生成  `IsValid() error ` 方法，生成在 xxx-validator.go 文件。
+在 IDL 中通过注解来描述约束，插件会根据注解给对应的 struct 生成 `IsValid() error ` 方法，生成在 xxx-validator.go 文件。
 
-注解采用  `vt.{ConstraintType} = "Value"`  这种形式描述。
+注解采用 `vt.{ConstraintType} = "Value"` 这种形式描述。
 
 适用范围：struct/union 中的每个 field 。
 
@@ -50,10 +48,10 @@ $ go install github.com/cloudwego/thrift-gen-validator@latest
 
 执行完 `go install` 之后，会将编译后的 `thrift-gen-validator` 二进制文件安装到 `$GOPATH/bin` 下。
 
-可以执行下面的命令，验证是否安装成功。 
+可以执行下面的命令，验证是否安装成功。
 
 ```shell
-$ cd $(go env GOPATH)/bin                     
+$ cd $(go env GOPATH)/bin
 $ ls
 go1.20.1             goimports            hz                   thrift-gen-validator
 godotenv             golangci-lint        kitex                thriftgo
@@ -70,7 +68,7 @@ Usage of thrift-gen-validator:
 
 ## 使用
 
-以[快速开始](/zh/docs/kitex/getting-started/)里的 Kitex Hello 项目为例，进入示例仓库的  `hello`  目录，在  `hello.thrift`  中添加注解，例如我们对  `Request`  结构体的  `message`  字段进行约束，约束长度不超过8且要以 "kitex-" 前缀开头：
+以[快速开始](/zh/docs/kitex/getting-started/)里的 Kitex Hello 项目为例，进入示例仓库的 `hello` 目录，在 `hello.thrift` 中添加注解，例如我们对 `Request` 结构体的 `message` 字段进行约束，约束长度不超过8且要以 "kitex-" 前缀开头：
 
 ```
 struct Request {
@@ -78,7 +76,7 @@ struct Request {
 }
 ```
 
-在生成 Kitex 代码时，加上  `--thrift-plugin validator`  参数，即可生成 validator 文件。
+在生成 Kitex 代码时，加上 `--thrift-plugin validator` 参数，即可生成 validator 文件。
 
 ```
 kitex --thrift-plugin validator -service a.b.c hello.thrift
@@ -100,7 +98,7 @@ kitex --thrift-plugin validator -service a.b.c hello.thrift
         └── k-hello.go
 ```
 
-其中对于  `Request`  结构体，新生成了 `IsValid()`  方法：
+其中对于 `Request` 结构体，新生成了 `IsValid()` 方法：
 
 ```
 func (p *Request) IsValid() error {
@@ -115,7 +113,7 @@ func (p *Request) IsValid() error {
 }
 ```
 
-在后续的使用中，调用  `IsValid()`  方法对结构体进行校验即可：
+在后续的使用中，调用 `IsValid()` 方法对结构体进行校验即可：
 
 ```
 
@@ -133,7 +131,7 @@ func (p *Request) IsValid() error {
 
 ## 支持的校验能力
 
-校验顺序以定义顺序为准， 'in'  和 'not_in' 这类可以定义多次的，以第一次出现的顺序为准。
+校验顺序以定义顺序为准， 'in' 和 'not_in' 这类可以定义多次的，以第一次出现的顺序为准。
 
 ### 数字类型
 

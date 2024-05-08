@@ -2,15 +2,16 @@
 title: "Etcd"
 date: 2023-11-29
 weight: 1
-keywords: ["ConfigCenter Extension","etcd"]
+keywords: ["ConfigCenter Extension", "etcd"]
 description: "Use etcd as Kitex’s service governance configuration center"
-
 ---
+
 ## Install
 
 `go get github.com/kitex-contrib/config-etcd`
 
 ## Suite
+
 The configuration center adapter of etcd, kitex uses `WithSuite` to convert the configuration in etcd into the governance feature configuration of kitex.
 
 The following is a complete usage example:
@@ -167,6 +168,7 @@ type ConfigParser interface {
 Sample code:
 
 Set the configuration for parsing yaml types.
+
 ```go
 package main
 
@@ -187,10 +189,10 @@ func main() {
 }
 ```
 
-
 ## Etcd Configuration
 
 ### Options Struct
+
 ```go
 type Options struct {
 	Node             []string
@@ -202,38 +204,44 @@ type Options struct {
 	ConfigParser     ConfigParser
 }
 ```
+
 ### Options Variable
+
 ```go
 type Key struct {
     Prefix string
     Path   string
 }
 ```
+
 The key in etcd consists of prefix and path, where prefix is the prefix and path is the path.
 
 | Variable Name    | Default Value                                               | Introduction                                                                                                                                                                                                                              |
-|------------------|-------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Node             | 127.0.0.1:2379                                              | Etcd server nodes                                                                                                                                                                                                                         |
 | Prefix           | /KitexConfig                                                | The prefix of Etcd                                                                                                                                                                                                                        |
 | ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ClientServiceName` `ServiceName` `Category` three metadata that can be customised, used with Prefix to form the key in etcd |
 | ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised, used with Prefix to form the key in etcd                      |
-| Timeout          | 5 * time.Second                                             | five seconds timeout                                                                                                                                                                                                                      |
+| Timeout          | 5 \* time.Second                                            | five seconds timeout                                                                                                                                                                                                                      |
 | LoggerConfig     | NULL                                                        | Default Logger                                                                                                                                                                                                                            |
 | ConfigParser     | defaultConfigParser                                         | The default parser, which defaults to parsing json format data                                                                                                                                                                            |
 
 ### Governance Policy
+
 > The configPath and configPrefix in the following example use default values, the service name is `ServiceName` and the client name is `ClientName`.
 
-#### Rate Limit 
+#### Rate Limit
+
 Category=limit
+
 > Currently, current limiting only supports the server side, so ClientServiceName is empty.
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/limiter/item_limiter.go#L33)
 
 | Variable         | Introduction                       |
-|------------------|------------------------------------|
-| connection_limit | Maximum concurrent connections     | 
-| qps_limit        | Maximum request number every 100ms | 
+| ---------------- | ---------------------------------- |
+| connection_limit | Maximum concurrent connections     |
+| qps_limit        | Maximum request number every 100ms |
 
 Example:
 
@@ -252,15 +260,16 @@ Note:
 - Not configured or value is 0 means not enabled.
 - connection_limit and qps_limit can be configured independently, e.g. connection_limit = 100, qps_limit = 0
 
-#### Retry Policy 
+#### Retry Policy
+
 Category=retry
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
 
 | Variable                      | Introduction                                   |
-|-------------------------------|------------------------------------------------|
-| type                          | 0: failure_policy 1: backup_policy             | 
-| failure_policy.backoff_policy | Can only be set one of `fixed` `none` `random` | 
+| ----------------------------- | ---------------------------------------------- |
+| type                          | 0: failure_policy 1: backup_policy             |
+| failure_policy.backoff_policy | Can only be set one of `fixed` `none` `random` |
 
 Example：
 
@@ -268,46 +277,48 @@ Example：
 
 ```json
 {
-    "*": {  
-        "enable": true,
-        "type": 0,                 
-        "failure_policy": {
-            "stop_policy": {
-                "max_retry_times": 3,
-                "max_duration_ms": 2000,
-                "cb_policy": {
-                    "error_rate": 0.3
-                }
-            },
-            "backoff_policy": {
-                "backoff_type": "fixed", 
-                "cfg_items": {
-                    "fix_ms": 50
-                }
-            },
-            "retry_same_node": false
+  "*": {
+    "enable": true,
+    "type": 0,
+    "failure_policy": {
+      "stop_policy": {
+        "max_retry_times": 3,
+        "max_duration_ms": 2000,
+        "cb_policy": {
+          "error_rate": 0.3
         }
-    },
-    "echo": { 
-        "enable": true,
-        "type": 1,                 
-        "backup_policy": {
-            "retry_delay_ms": 100,
-            "retry_same_node": false,
-            "stop_policy": {
-                "max_retry_times": 2,
-                "max_duration_ms": 300,
-                "cb_policy": {
-                    "error_rate": 0.2
-                }
-            }
+      },
+      "backoff_policy": {
+        "backoff_type": "fixed",
+        "cfg_items": {
+          "fix_ms": 50
         }
+      },
+      "retry_same_node": false
     }
+  },
+  "echo": {
+    "enable": true,
+    "type": 1,
+    "backup_policy": {
+      "retry_delay_ms": 100,
+      "retry_same_node": false,
+      "stop_policy": {
+        "max_retry_times": 2,
+        "max_duration_ms": 300,
+        "cb_policy": {
+          "error_rate": 0.2
+        }
+      }
+    }
+  }
 }
 ```
+
 Note: retry.Container has built-in support for specifying the default configuration using the `*` wildcard (see the [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) method for details).
 
-#### RPC Timeout 
+#### RPC Timeout
+
 Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
@@ -328,16 +339,18 @@ Example：
   }
 }
 ```
+
 Note: The circuit breaker implementation of kitex does not currently support changing the global default configuration (see [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195) for details).
 
 #### Circuit Break
+
 Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
 
 | Variable   | Introduction                      |
-|------------|-----------------------------------|
-| min_sample | Minimum statistical sample number | 
+| ---------- | --------------------------------- |
+| min_sample | Minimum statistical sample number |
 
 Example：
 
@@ -349,8 +362,8 @@ The echo method uses the following configuration (0.3, 100) and other methods us
 {
   "echo": {
     "enable": true,
-    "err_rate": 0.3, 
-    "min_sample": 100 
+    "err_rate": 0.3,
+    "min_sample": 100
   }
 }
 ```

@@ -4,7 +4,6 @@ date: 2022-05-23
 weight: 11
 keywords: ["优雅退出"]
 description: "Hertz 停止服务时提供的优雅退出功能。"
-
 ---
 
 Hertz 支持优雅退出，优雅退出过程如下：

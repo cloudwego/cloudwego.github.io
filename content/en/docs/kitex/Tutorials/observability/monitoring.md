@@ -71,17 +71,17 @@ func main() {
 
 Client
 
-| Name                        | Unit | Tags                                 | Description                             |
-|-----------------------------|------|--------------------------------------|-----------------------------------------|
-| `kitex_client_throughput`   | -    | type, caller, callee, method, status | Total number of requests handled by the Client |
-| `kitex_client_latency_us`   | us   | type, caller, callee, method, status | Latency of request handling at the Client (Response received time - Request initiation time, in microseconds) |
+| Name                      | Unit | Tags                                 | Description                                                                                                   |
+| ------------------------- | ---- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `kitex_client_throughput` | -    | type, caller, callee, method, status | Total number of requests handled by the Client                                                                |
+| `kitex_client_latency_us` | us   | type, caller, callee, method, status | Latency of request handling at the Client (Response received time - Request initiation time, in microseconds) |
 
 Server
 
-| Name                        | Unit | Tags                                 | Description                             |
-|-----------------------------|------|--------------------------------------|-----------------------------------------|
-| `kitex_server_throughput`   | -    | type, caller, callee, method, status | Total number of requests handled by the Server |
-| `kitex_server_latency_us`   | us   | type, caller, callee, method, status | Latency of request handling at the Server (Processing completion time - Request received time, in microseconds) |
+| Name                      | Unit | Tags                                 | Description                                                                                                     |
+| ------------------------- | ---- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `kitex_server_throughput` | -    | type, caller, callee, method, status | Total number of requests handled by the Server                                                                  |
+| `kitex_server_latency_us` | us   | type, caller, callee, method, status | Latency of request handling at the Server (Processing completion time - Request received time, in microseconds) |
 
 More complex data monitoring can be implemented based on the above metrics. Examples can be found in the [Useful Examples](https://github.com/kitex-contrib/monitor-prometheus/?tab=readme-ov-file#useful-examples) section.
 
@@ -101,15 +101,15 @@ For information on how to use obs-opentelemetry, please refer to the [tracing](.
 
 Server
 
-| Name                        | Metric Data Model | Unit        | Unit(UCUM) | Description                               |
-|-----------------------------|-------------------|-------------|------------|-------------------------------------------|
-| `rpc.server.duration`       | Histogram         | milliseconds| `ms`       | measures duration of inbound RPC     |
+| Name                  | Metric Data Model | Unit         | Unit(UCUM) | Description                      |
+| --------------------- | ----------------- | ------------ | ---------- | -------------------------------- |
+| `rpc.server.duration` | Histogram         | milliseconds | `ms`       | measures duration of inbound RPC |
 
 Client
 
-| Name                        | Metric Data Model | Unit        | Unit(UCUM) | Description                               |
-|-----------------------------|-------------------|-------------|------------|-------------------------------------------|
-| `rpc.server.duration`       | Histogram         | milliseconds| `ms`       | measures duration of outbound RPC     |
+| Name                  | Metric Data Model | Unit         | Unit(UCUM) | Description                       |
+| --------------------- | ----------------- | ------------ | ---------- | --------------------------------- |
+| `rpc.server.duration` | Histogram         | milliseconds | `ms`       | measures duration of outbound RPC |
 
 Additional service metrics can be calculated using `rpc.server.duration`, such as R.E.D (Rate, Errors, Duration). Examples can be found [here](https://github.com/kitex-contrib/obs-opentelemetry/blob/main/README.md#supported-metrics).
 
@@ -118,12 +118,12 @@ Additional service metrics can be calculated using `rpc.server.duration`, such a
 Based on [opentelemetry-go](https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/runtime), it supports the following runtime metrics:
 
 | Name                                   | Instrument | Unit       | Unit (UCUM)) | Description                                                                   |
-|----------------------------------------|------------|------------|--------------|-------------------------------------------------------------------------------|
+| -------------------------------------- | ---------- | ---------- | ------------ | ----------------------------------------------------------------------------- |
 | `process.runtime.go.cgo.calls`         | Sum        | -          | -            | Number of cgo calls made by the current process.                              |
 | `process.runtime.go.gc.count`          | Sum        | -          | -            | Number of completed garbage collection cycles.                                |
 | `process.runtime.go.gc.pause_ns`       | Histogram  | nanosecond | `ns`         | Amount of nanoseconds in GC stop-the-world pauses.                            |
 | `process.runtime.go.gc.pause_total_ns` | Histogram  | nanosecond | `ns`         | Cumulative nanoseconds in GC stop-the-world pauses since the program started. |
-| `process.runtime.go.goroutines`        | Gauge      | -          | -            | measures duration of outbound RPC.                                            | 
+| `process.runtime.go.goroutines`        | Gauge      | -          | -            | measures duration of outbound RPC.                                            |
 | `process.runtime.go.lookups`           | Sum        | -          | -            | Number of pointer lookups performed by the runtime.                           |
 | `process.runtime.go.mem.heap_alloc`    | Gauge      | bytes      | `bytes`      | Bytes of allocated heap objects.                                              |
 | `process.runtime.go.mem.heap_idle`     | Gauge      | bytes      | `bytes`      | Bytes in idle (unused) spans.                                                 |
