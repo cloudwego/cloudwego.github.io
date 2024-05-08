@@ -15,10 +15,10 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 ### **Kitex Proxyless**
 
 > [Kitex][Kitex] 是字节开源的 Golang RPC 框架，已经原生支持了 xDS 标准协议，支持以 Proxyless 的方式被 ServiceMesh 统一纳管。
-> 
-> * 详细设计见：
+>
+> - 详细设计见：
 >   [Proposal: Kitex support xDS Protocol · Issue #461 · cloudwego/kitex](https://github.com/cloudwego/kitex/issues/461)
-> * 具体使用方式见[官方文档](/zh/docs/kitex/tutorials/advanced-feature/xds/)
+> - 具体使用方式见[官方文档](/zh/docs/kitex/tutorials/advanced-feature/xds/)
 
 **[Kitex][Kitex] Proxyless** 简单来说就是 [Kitex][Kitex] 服务能够不借助 envoy sidecar 直接与 istiod 交互，基于 xDS 协议动态获取控制面下发的服务治理规则，并转换为 [Kitex][Kitex] 对应规则来实现一些服务治理功能（例如本文的重点：**流量路由**）。
 
@@ -43,15 +43,16 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 3. 感知 RDS 变化，根据 **`VirtualHost`** 和 **`ServiceName`** 来匹配（支持前缀、后缀、精确、通配），获取目标服务的路由配置。
 4. 遍历处理匹配到的 RDS 中的路由规则，路由规则主要分为两部分（参考：[路由规范定义](https://github.com/envoyproxy/envoy/blob/v1.13.1/api/envoy/api/v2/route/route_components.proto#L349)）：
 
-* **Match** （支持前缀、后缀、精确、通配等），目前版本我们支持以下两种即可：
-  
-  * Path（必须项）：从 `rpcinfo` 提取 `Method` 进行匹配；
-  * HeaderMatcher（可选项）：从 metainfo 中提取对应元数据 KeyValue，并进行匹配。
-* **Route：**
-  
-  * **Cluster** ：标准 Cluster。
-  * **WeightedClusters（权重路由）** ：MW 内根据权重来选择 cluster。
-  * 将选择到的 Cluster 写入 `EndpointInfo.Tag`，用于之后的服务发现。
+- **Match** （支持前缀、后缀、精确、通配等），目前版本我们支持以下两种即可：
+
+  - Path（必须项）：从 `rpcinfo` 提取 `Method` 进行匹配；
+  - HeaderMatcher（可选项）：从 metainfo 中提取对应元数据 KeyValue，并进行匹配。
+
+- **Route：**
+
+  - **Cluster** ：标准 Cluster。
+  - **WeightedClusters（权重路由）** ：MW 内根据权重来选择 cluster。
+  - 将选择到的 Cluster 写入 `EndpointInfo.Tag`，用于之后的服务发现。
 
 可以看到，流量路由其实是一个根据一定规则选择对应 SubCluster 的流程。
 
@@ -82,8 +83,8 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 通常我们会在网关层进行流量染色，通常会根据原始请求中的元数据，来进行一定规则（条件、比例）转换成对应的染色标识。
 
-* **按条件染色**：当请求元数据满足一定条件之后，就给当前请求打上染色标识，如：请求头中 `uid = 100`、cookie 匹配等等。
-* **按比例染色**：按照一定比例，给请求打上染色标识。
+- **按条件染色**：当请求元数据满足一定条件之后，就给当前请求打上染色标识，如：请求头中 `uid = 100`、cookie 匹配等等。
+- **按比例染色**：按照一定比例，给请求打上染色标识。
 
 有了一套统一的流量染色机制之后，我们配置路由规则的时候，就不需要关心具体的业务属性标识了，只需要根据**染色标识**来配置即可。
 
@@ -104,27 +105,27 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 ## 03 案例介绍：Bookinfo
 
 > 该案例是使用 [Hertz](https://github.com/cloudwego/hertz)、[Kitex][Kitex] 重写经典的 [Istio Bookinfo](https://istio.io/latest/zh/docs/examples/bookinfo/) 项目：
-> 
-> * 使用 istiod 来作为 **xDS server**，作为 CRD 配置和下发的入口；
-> * 使用 wire 来实现**依赖注入**；
-> * 使用 opentelemetry 来实现**全链路追踪**；
-> * 使用 [Kitex-xds](https://github.com/kitex-contrib/xds) 和 opentelemetry baggage 来实现 **proxyless** 模式下的全链路泳道;
-> * 使用 arco-design 和 react 实现一个 **[Bookinfo](https://github.com/cloudwego/biz-demo/blob/main/bookinfo/README_CN.md) UI**。
+>
+> - 使用 istiod 来作为 **xDS server**，作为 CRD 配置和下发的入口；
+> - 使用 wire 来实现**依赖注入**；
+> - 使用 opentelemetry 来实现**全链路追踪**；
+> - 使用 [Kitex-xds](https://github.com/kitex-contrib/xds) 和 opentelemetry baggage 来实现 **proxyless** 模式下的全链路泳道;
+> - 使用 arco-design 和 react 实现一个 **[Bookinfo](https://github.com/cloudwego/biz-demo/blob/main/bookinfo/README_CN.md) UI**。
 
 ### 架构
 
 整体架构与 [Bookinfo](https://github.com/cloudwego/biz-demo/blob/main/bookinfo/README_CN.md) 保持一致，分为四个单独的微服务：
 
-* `productpage.` 这个微服务会调 `details` 和 `reviews` 两个微服务；
-* `details.` 这个微服务中包含了书籍的信息；
-* `reviews.` 这个微服务中包含了书籍相关的评论。它还会调用 `ratings` 微服务；
-* `ratings.` 这个微服务中包含了由书籍评价组成的评级信息。
+- `productpage.` 这个微服务会调 `details` 和 `reviews` 两个微服务；
+- `details.` 这个微服务中包含了书籍的信息；
+- `reviews.` 这个微服务中包含了书籍相关的评论。它还会调用 `ratings` 微服务；
+- `ratings.` 这个微服务中包含了由书籍评价组成的评级信息。
 
 `reviews` 微服务有 3 个版本：
 
-* v1 版本会调用 `ratings` 服务，并使用 1 颗 ⭐️ 显示评分；
-* v2 版本会调用 `ratings` 服务，并使用 5 颗 ⭐️⭐️⭐️⭐️⭐️⭐️ 显示评分；
-* v3 版本不会调用 `ratings` 服务。
+- v1 版本会调用 `ratings` 服务，并使用 1 颗 ⭐️ 显示评分；
+- v2 版本会调用 `ratings` 服务，并使用 5 颗 ⭐️⭐️⭐️⭐️⭐️⭐️ 显示评分；
+- v3 版本不会调用 `ratings` 服务。
 
 ![image](/img/blog/Kitex_Proxyless/5.png)
 
@@ -132,8 +133,8 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 整体区分成 2 个泳道：
 
-* **基准泳道**：未被染色的流量会被路由到基准泳道中。
-* **分支泳道**：被染色的流量会被路由到 reviews-v2 ->ratings-v2 的分支泳道中。
+- **基准泳道**：未被染色的流量会被路由到基准泳道中。
+- **分支泳道**：被染色的流量会被路由到 reviews-v2 ->ratings-v2 的分支泳道中。
 
 ![image](/img/blog/Kitex_Proxyless/6.png)
 
@@ -155,9 +156,9 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 2. 基于 **DestinationRule** 为服务设置一系列的 subsets：
 
-> * Productpage: v1
-> * Reviews: v1、v2、v3
-> * Ratings: v1、v2
+> - Productpage: v1
+> - Reviews: v1、v2、v3
+> - Ratings: v1、v2
 
 ![image](/img/blog/Kitex_Proxyless/9.png)
 
@@ -187,7 +188,7 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 ## 04 总结与展望
 
-至此我们已经基于 **[Kitex][Kitex] Proxyless** 与 **OpenTelemetry**  实现了一个完整的全链路泳道，并且无需借助 Envoy sidecar，就能基于 Isito 标准治理规则 Spec，来为 Kitex 设置对应的路由规则了。
+至此我们已经基于 **[Kitex][Kitex] Proxyless** 与 **OpenTelemetry** 实现了一个完整的全链路泳道，并且无需借助 Envoy sidecar，就能基于 Isito 标准治理规则 Spec，来为 Kitex 设置对应的路由规则了。
 
 当然，除了满足**流量路由**能力之外，**[Kitex][Kitex] Proxyless** 也在持续迭代优化，满足更多数据面治理能力需求。Proxyless 作为一种 ServiceMesh 数据面探索和实践，除了能够丰富网格数据面部署形态之外，也希望可以不断打磨 **[Kitex][Kitex]**，增强其在开源生态兼容方面的能力，打造一个开放包容的微服务生态体系。
 
@@ -195,12 +196,12 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 下面是该案例涉及的项目清单：
 
-* biz-demo: https://github.com/cloudwego/biz-demo
-* kitex: https://github.com/cloudwego/kitex
-* hertz: https://github.com/cloudwego/hertz
-* kitex-xds: https://github.com/kitex-contrib/xds
-* kitex-opentelemetry: https://github.com/kitex-contrib/obs-opentelemetry
-* hertz-opentelemetry: https://github.com/hertz-contrib/obs-opentelemetry
+- biz-demo: https://github.com/cloudwego/biz-demo
+- kitex: https://github.com/cloudwego/kitex
+- hertz: https://github.com/cloudwego/hertz
+- kitex-xds: https://github.com/kitex-contrib/xds
+- kitex-opentelemetry: https://github.com/kitex-contrib/obs-opentelemetry
+- hertz-opentelemetry: https://github.com/hertz-contrib/obs-opentelemetry
 
 该完整案例已提交在 [biz-demo][biz-demo] 仓库中，感兴趣的同学可以前往查阅。[biz-demo][biz-demo] 会包含一些基于 [CloudWeGo](https://github.com/cloudwego) 技术栈且具备一定业务场景的完整 Demo，初衷是能够为企业用户在生产中使用提供有价值的参考，非常欢迎更多同学能够参与到 [CloudWeGo](https://github.com/cloudwego) 相关场景与案例的贡献中来，一起来做一些有意思的尝试。
 

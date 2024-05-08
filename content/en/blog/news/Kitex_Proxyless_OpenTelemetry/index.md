@@ -9,23 +9,23 @@ The purpose is to demonstrate how to use xDS to realize traffic lane in a practi
 author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>, <a href="https://github.com/GuangmingLuo" target="_blank">Guangming Luo</a>
 ---
 
-> Preface: Kitex Proxyless enables the Kitex service to interact directly with istiod without envoy sidecar. It dynamically obtains service governance rules 
-> delivered by the control plane based on the xDS protocol and converts them to Kitex rules to implement some service governance functions, such as traffic routing. 
-> Based on Kitex Proxyless, Kitex can be managed by Service Mesh without sidecar. Besides, the governance rule Spec, governance control plane, governance delivery protocol, 
+> Preface: Kitex Proxyless enables the Kitex service to interact directly with istiod without envoy sidecar. It dynamically obtains service governance rules
+> delivered by the control plane based on the xDS protocol and converts them to Kitex rules to implement some service governance functions, such as traffic routing.
+> Based on Kitex Proxyless, Kitex can be managed by Service Mesh without sidecar. Besides, the governance rule Spec, governance control plane, governance delivery protocol,
 > and heterogeneous data governance capability can be unified under multiple deployment modes. By rewriting the bookinfo project using Kitex and Hertz, it demonstrates how to implement a traffic lane using xDS protocol.
 
 ## 01 Introduction
 
 ### **Kitex Proxyless**
 
-[Kitex][Kitex] is a Golang RPC framework open-sourced by ByteDance that already natively supports the xDS standard protocol and can be managed by Service Mesh in Proxyless way. 
-Refer to this doc for detailed design: [Proposal: Kitex support xDS Protocol](https://github.com/cloudwego/kitex/issues/461). 
+[Kitex][Kitex] is a Golang RPC framework open-sourced by ByteDance that already natively supports the xDS standard protocol and can be managed by Service Mesh in Proxyless way.
+Refer to this doc for detailed design: [Proposal: Kitex support xDS Protocol](https://github.com/cloudwego/kitex/issues/461).
 Official doc is also available here at [Kitex/Tutorials/Advanced Feature/xDS Support](/docs/kitex/tutorials/advanced-feature/xds/)
 
-Kitex Proxyless Simply means that Kitex services can interact directly with istiod without envoy sidecar and dynamically obtain service governance rules delivered by the control plane based on the xDS protocol. 
+Kitex Proxyless Simply means that Kitex services can interact directly with istiod without envoy sidecar and dynamically obtain service governance rules delivered by the control plane based on the xDS protocol.
 And those rules will be translated into Kitex corresponding rules to implement some service governance functions (such as traffic routing which is the focus of this blog).
 
-Based on Kitex Proxyless, Kitex application can be managed by Service Mesh in a unified manner without sidecar, and thus the governance rule Spec, governance control plane, 
+Based on Kitex Proxyless, Kitex application can be managed by Service Mesh in a unified manner without sidecar, and thus the governance rule Spec, governance control plane,
 governance delivery protocol, and heterogeneous data governance capability can be unified under multiple deployment modes.
 
 ![image](/img/blog/Kitex_Proxyless/unify_architecture.svg)
@@ -46,13 +46,14 @@ Specific procedure:
 1. Aware of LDS changes and extract the Filter Chain and inline RDS in the LDS of the target service.
 1. Aware of RDS changes and obtain the route configuration of the target service based on VirtualHost and ServiceName matching. (Prefix, suffix, exact, and wildcard are supported)
 1. The routing rules in the matched RDS are traversed and processed. The routing rules are divided into two parts (refer to the routing specification definition) :
+
 - Match:
-    - Path(required): Extract Method from rpcinfo for matching;
-    - HeaderMatcher(optional): Extract the corresponding metadata KeyValue from the metainfo and match it.
+  - Path(required): Extract Method from rpcinfo for matching;
+  - HeaderMatcher(optional): Extract the corresponding metadata KeyValue from the metainfo and match it.
 - Route：
-    - Cluster ：Standard Cluster.
-    - WeightedClusters(Weight routing) : cluster is selected according to weight within MW.
-    - Write the selected Cluster to the EndpointInfo.Tag for later service discovery.
+  - Cluster ：Standard Cluster.
+  - WeightedClusters(Weight routing) : cluster is selected according to weight within MW.
+  - Write the selected Cluster to the EndpointInfo.Tag for later service discovery.
 
 As you can see, traffic routing is a process of selecting the corresponding SubCluster according to certain rules.
 
@@ -60,32 +61,32 @@ As you can see, traffic routing is a process of selecting the corresponding SubC
 
 Based on traffic routing capability, we can extend many usage scenarios, such as: A/B testing, canary release, blue-green release, etc., and the focus of this paper: Traffic Lane.
 
-The traffic lane can be understood as splitting a group of service instances in a certain way (such as deployment environment), and based on the routing capability and global metadata, 
+The traffic lane can be understood as splitting a group of service instances in a certain way (such as deployment environment), and based on the routing capability and global metadata,
 so that traffic can flow in the specified service instance lanes in accordance with the exact rules (logically similar to lanes in a swimming pool). Traffic lane can be used for full-path grey release.
 
-In Istio we typically group instances with DestinationRule subset, splitting a service into multiple subsets (e.g. Based on attributes such as version and region) 
+In Istio we typically group instances with DestinationRule subset, splitting a service into multiple subsets (e.g. Based on attributes such as version and region)
 and then work with VirtualService to define the corresponding routing rules and route the traffic to the corresponding subset. In this way, the single-hop routing capability in the lane is realized.
 
-However, traffic routing capability alone is not enough to realize traffic lane. We need a good mechanism to accurately identify the traffic 
+However, traffic routing capability alone is not enough to realize traffic lane. We need a good mechanism to accurately identify the traffic
 and configure routing rules for each hop traffic based on this feature when a request spans multiple services.
 
-As shown in the following figure: Suppose we want to implement a user request that is accurately route to the v1 version of service-b. 
+As shown in the following figure: Suppose we want to implement a user request that is accurately route to the v1 version of service-b.
 The first thought might be to put a `uid = 100` in the request header and configure the corresponding VirtualService to match the `uid = 100` in the header.
 
 ![image](/img/blog/Kitex_Proxyless/3.png)
 
 But it has several obvious drawbacks for this approach:
 
-1. **Not common enough**: If a specific business attribute (such as uid) is used as a traffic route matching rule, the business attribute must be manually transmitted through the full path. 
+1. **Not common enough**: If a specific business attribute (such as uid) is used as a traffic route matching rule, the business attribute must be manually transmitted through the full path.
    This is highly intrusive to business and requires business cooperation. In addition, when we want to use other business attributes, all services on the full path need to change to adapt. Therefore, it is a very unusual practice.
-1. Routing rules are prone to frequent changes, resulting in **rule overcrowding**. Routing rules are identified by specific business attributes (for example: uid) is used as a traffic route matching rule. 
+1. Routing rules are prone to frequent changes, resulting in **rule overcrowding**. Routing rules are identified by specific business attributes (for example: uid) is used as a traffic route matching rule.
    If you want to change a business attribute or set a routing rule for other users, you need to modify the original routing rule or repeatedly define multiple routing rules for different business attributes, which easily causes route rule overcrowding and is difficult to maintain.
 
 Therefore, in order to achieve uniform traffic routing across the full path, we also need to use a more general traffic dyeing and the capability to transmit the dye identifier through the full path.
 
 ### Traffic Dyeing
 
-Traffic dyeing refers to marking the request traffic with a special identifier and carrying this identifier in the full request path. 
+Traffic dyeing refers to marking the request traffic with a special identifier and carrying this identifier in the full request path.
 The so-called traffic lane means that all services in the path sets traffic routing rules based on the uniform gray traffic dyeing identifier so that the traffic can be accurately controlled in different lanes.
 
 Usually, traffic dyeing is done at the gateway layer, and the metadata in the original request is converted into corresponding dye identifiers according to certain rules (conditions and proportions).
@@ -93,7 +94,7 @@ Usually, traffic dyeing is done at the gateway layer, and the metadata in the or
 - **Dyeing by conditions**: when the request metadata meets certain conditions (such as `uid = 100` in the request header and cookie matching), the current request is marked with a dye identifier.
 - **Dyeing by proportions**: the request is marked with a dye identifier in proportion.
 
-With a unified traffic dyeing mechanism, we do not need to care about specific business attribute identifiers when configuring routing rules. We only need to configure routes based on the dye identifiers. 
+With a unified traffic dyeing mechanism, we do not need to care about specific business attribute identifiers when configuring routing rules. We only need to configure routes based on the dye identifiers.
 The specific service attributes are abstracted into conditional dyeing rules to be more universal. Even if the business attributes change, the routing rules do not need to change frequently.
 
 #### Dye Identifier Transmitting
@@ -115,7 +116,7 @@ The demo is a rewriting of the [Istio Bookinfo](https://istio.io/latest/zh/docs/
 - Use **istiod** as the xDS server and the entry for CRD configuration and delivery.
 - Use **wire** to implement dependency injection;
 - Use **opentelemetry** to implement full path tracing;
-- Use [Kitex-xds](https://github.com/kitex-contrib/xds)  and **opentelemetry baggage** to implement a traffic lane in proxyless mode;
+- Use [Kitex-xds](https://github.com/kitex-contrib/xds) and **opentelemetry baggage** to implement a traffic lane in proxyless mode;
 - Implement a [Bookinfo](https://github.com/cloudwego/biz-demo/blob/main/bookinfo/README_CN.md) UI using **arco-design** and **react**.
 
 ### Business Architecture
@@ -170,7 +171,7 @@ Take service `reviews` as an example. You only need to label the corresponding p
 
 ### Traffic Routing Rules
 
-The gateway has already dyed the request header with `uid=100` and automatically loaded `env=dev` baggage, 
+The gateway has already dyed the request header with `uid=100` and automatically loaded `env=dev` baggage,
 so we only need to match the route according to the header. Here is an example of the route rule configuration:
 
 ![image](/img/blog/Kitex_Proxyless/10.png)
@@ -195,11 +196,11 @@ Click the refresh button again, you can find that the request hits the branch la
 
 ## 04 Summary and Outlook
 
-So far, we have implemented a complete full-path traffic lane based on Kitex Proxyless and OpenTelemetry. 
+So far, we have implemented a complete full-path traffic lane based on Kitex Proxyless and OpenTelemetry.
 And we can set corresponding routing rules for Kitex based on Istio standard governance rule Spec without Envoy sidecar.
 
-In addition to traffic routing capabilities, Kitex Proxyless is also continuously iterating and optimizing to meet more requirements for data plane governance capabilities. 
-As an exploration and practice of Service Mesh data plane, Proxyless not only can enrich the deployment form of data plane, but also hopes to continuously polish [Kitex][Kitex], 
+In addition to traffic routing capabilities, Kitex Proxyless is also continuously iterating and optimizing to meet more requirements for data plane governance capabilities.
+As an exploration and practice of Service Mesh data plane, Proxyless not only can enrich the deployment form of data plane, but also hopes to continuously polish [Kitex][Kitex],
 enhance its ability in open source ecological compatibility, and create a more open and inclusive microservice ecosystem.
 
 ## 05 Relevant Project
@@ -213,7 +214,7 @@ Here is a list of the projects involved in the demo:
 - kitex-opentelemetry: https://github.com/kitex-contrib/obs-opentelemetry
 - hertz-opentelemetry: https://github.com/hertz-contrib/obs-opentelemetry
 
-This demo has been submitted in the biz-demo repository, and will be optimised continuously. biz-demo will include some complete demos based on CloudWeGo technology stack with certain business scenarios. 
+This demo has been submitted in the biz-demo repository, and will be optimised continuously. biz-demo will include some complete demos based on CloudWeGo technology stack with certain business scenarios.
 The original intention is to provide valuable references for enterprise users to use CloudWeGo in production. Contributors are always welcomed to participate in the contribution of CloudWeGo biz-demo. Let's try something fun together.
 
 [Kitex]: https://github.com/cloudwego/kitex

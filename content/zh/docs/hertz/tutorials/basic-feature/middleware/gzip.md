@@ -1,11 +1,9 @@
 ---
-
 title: "Gzip 压缩"
 date: 2022-10-19
 weight: 4
 keywords: ["Gzip", "压缩"]
 description: "Hertz 提供了 Gzip 的实现。"
-
 ---
 
 在 HTTP 中，GNUzip(Gzip) 压缩编码是一种用来优化 Web 应用程序性能的方式，并且 Hertz 也提供了 Gzip 的 [实现](https://github.com/hertz-contrib/gzip) 。

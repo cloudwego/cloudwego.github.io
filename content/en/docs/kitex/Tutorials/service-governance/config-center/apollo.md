@@ -2,15 +2,16 @@
 title: "Apollo"
 date: 2023-12-12
 weight: 2
-keywords: ["ConfigCenter Extension","apollo"]
+keywords: ["ConfigCenter Extension", "apollo"]
 description: "Use apollo as Kitex’s service governance configuration center"
-
 ---
+
 ## Install
 
 `go get github.com/kitex-contrib/config-apollo`
 
 ## Suite
+
 The configuration center adapter of apollo, kitex uses `WithSuite` to convert the configuration in apollo into the governance feature configuration of kitex.
 
 The following is a complete usage example:
@@ -134,7 +135,7 @@ Create client.
 
 Function Signature:
 
-``func NewClient(opts Options, optsfunc ...OptionFunc) (Client, error)``
+`func NewClient(opts Options, optsfunc ...OptionFunc) (Client, error)`
 
 Sample code:
 
@@ -170,6 +171,7 @@ type ConfigParser interface {
 Sample code:
 
 Set the configuration for parsing json types.
+
 ```go
 package main
 
@@ -193,10 +195,10 @@ func main() {
 }
 ```
 
-
 ## Apollo Configuration
 
 ### Options Struct
+
 ```go
 type Options struct {
 	ConfigServerURL string
@@ -208,7 +210,9 @@ type Options struct {
 	ConfigParser    ConfigParser
 }
 ```
+
 ### Options Variable
+
 ```go
 type ConfigParamConfig struct {
 	Category          string
@@ -216,18 +220,20 @@ type ConfigParamConfig struct {
 	ServerServiceName string
 }
 ```
+
 The type of the namespace in kitex contrib/configure Apollo is properties, and the format reference for the key is as follows: ClientKeyFormat or ServerKeyFormat, with 'value' fixed in JSON format
 
-| 参数            | 变量默认值                                    | 作用                                                         |
-| --------------- | --------------------------------------------- | ------------------------------------------------------------ |
-| ConfigServerURL | 127.0.0.1:8080                                | apollo config service address                                |
-| AppID           | KitexApp                                      | appid of apollo (Uniqueness constraint / Length limit of 32 characters) |
+| 参数            | 变量默认值                                    | 作用                                                                                                                                                                                                     |
+| --------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ConfigServerURL | 127.0.0.1:8080                                | apollo config service address                                                                                                                                                                            |
+| AppID           | KitexApp                                      | appid of apollo (Uniqueness constraint / Length limit of 32 characters)                                                                                                                                  |
 | ClientKeyFormat | {{.ClientServiceName}}.{{.ServerServiceName}} | Using the go [template](https://pkg.go.dev/text/template) syntax to render and generate the corresponding ID, using two metadata: `ClientServiceName` and `ServiceName` (Length limit of 128 characters) |
-| ServerKeyFormat | {{.ServerServiceName}}                        | Using the go [template](https://pkg.go.dev/text/template) Syntax rendering generates corresponding IDs, using 'ServiceName' as a single metadata (Length limit of 128 characters) |
-| Cluster         | default                                       | Using default values, users can assign values as needed (Length limit of 32 characters) |
-| ConfigParser    | defaultConfigParser                           | The default parser, which defaults to parsing json format data (only parsing JSON format is supported currently) |
+| ServerKeyFormat | {{.ServerServiceName}}                        | Using the go [template](https://pkg.go.dev/text/template) Syntax rendering generates corresponding IDs, using 'ServiceName' as a single metadata (Length limit of 128 characters)                        |
+| Cluster         | default                                       | Using default values, users can assign values as needed (Length limit of 32 characters)                                                                                                                  |
+| ConfigParser    | defaultConfigParser                           | The default parser, which defaults to parsing json format data (only parsing JSON format is supported currently)                                                                                         |
 
 ### Governance Policy
+
 > The namespace in the following example uses fixed policy values, with default values for AppID and Cluster. The service name is ServiceName and the client name is ClientName
 
 #### Rate Limit
@@ -246,9 +252,8 @@ Category=limit
 Example:
 
 > namespace: `limit`
-> 
+>
 > key: `ServiceName`
-
 
 ```json
 {
@@ -277,46 +282,46 @@ Category=retry
 Example:
 
 > namespace: `retry`
-> 
+>
 > key: `ClientName.ServiceName`
 
 ```json
 {
-    "*": {  
-        "enable": true,
-        "type": 0,                 
-        "failure_policy": {
-            "stop_policy": {
-                "max_retry_times": 3,
-                "max_duration_ms": 2000,
-                "cb_policy": {
-                    "error_rate": 0.3
-                }
-            },
-            "backoff_policy": {
-                "backoff_type": "fixed", 
-                "cfg_items": {
-                    "fix_ms": 50
-                }
-            },
-            "retry_same_node": false
+  "*": {
+    "enable": true,
+    "type": 0,
+    "failure_policy": {
+      "stop_policy": {
+        "max_retry_times": 3,
+        "max_duration_ms": 2000,
+        "cb_policy": {
+          "error_rate": 0.3
         }
-    },
-    "echo": { 
-        "enable": true,
-        "type": 1,                 
-        "backup_policy": {
-            "retry_delay_ms": 100,
-            "retry_same_node": false,
-            "stop_policy": {
-                "max_retry_times": 2,
-                "max_duration_ms": 300,
-                "cb_policy": {
-                    "error_rate": 0.2
-                }
-            }
+      },
+      "backoff_policy": {
+        "backoff_type": "fixed",
+        "cfg_items": {
+          "fix_ms": 50
         }
+      },
+      "retry_same_node": false
     }
+  },
+  "echo": {
+    "enable": true,
+    "type": 1,
+    "backup_policy": {
+      "retry_delay_ms": 100,
+      "retry_same_node": false,
+      "stop_policy": {
+        "max_retry_times": 2,
+        "max_duration_ms": 300,
+        "cb_policy": {
+          "error_rate": 0.2
+        }
+      }
+    }
+  }
 }
 ```
 
@@ -331,7 +336,7 @@ Category=rpc_timeout
 Example:
 
 > namespace: `rpc_timeout`
-> 
+>
 > key: `ClientName.ServiceName`
 
 ```json
@@ -362,7 +367,7 @@ Category=circuit_break
 Example:
 
 > namespace: `circuit_break`
-> 
+>
 > key: `ClientName.ServiceName`
 
 ```json
@@ -370,8 +375,8 @@ The echo method uses the following configuration (0.3, 100) and other methods us
 {
   "echo": {
     "enable": true,
-    "err_rate": 0.3, 
-    "min_sample": 100 
+    "err_rate": 0.3,
+    "min_sample": 100
   }
 }
 ```

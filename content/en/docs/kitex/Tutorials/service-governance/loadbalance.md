@@ -21,7 +21,7 @@ Kitex uses WeightedRoundRobin by default.
 
 WeightedRoundRobin uses a round-robin strategy based on weights, which is also Kitex's default strategy.
 
-This LoadBalancer will make all instances have the min inflight requests to reduce the overload of instance. 
+This LoadBalancer will make all instances have the min inflight requests to reduce the overload of instance.
 
 If all instances have the same weights, it will use a pure round-robin implementation to avoid extra overhead of weighting calculations.
 
@@ -145,9 +145,9 @@ Therefore, when there are 10,000 instances, each instance weight is 10, and the 
 Both build and request information are cached, so the latency of a normal request (no build is required) has nothing to do with the number of nodes:
 
 ```
-BenchmarkNewConsistPicker/10ins-16             12557137            81.1 ns/op         0 B/op          0 allocs/op 
-BenchmarkNewConsistPicker/100ins-16            13704381            82.3 ns/op         0 B/op          0 allocs/op 
-BenchmarkNewConsistPicker/1000ins-16           14418103            81.3 ns/op         0 B/op          0 allocs/op 
+BenchmarkNewConsistPicker/10ins-16             12557137            81.1 ns/op         0 B/op          0 allocs/op
+BenchmarkNewConsistPicker/100ins-16            13704381            82.3 ns/op         0 B/op          0 allocs/op
+BenchmarkNewConsistPicker/1000ins-16           14418103            81.3 ns/op         0 B/op          0 allocs/op
 BenchmarkNewConsistPicker/10000ins-16          13942186            81.0 ns/op         0 B/op          0 allocs/op
 ```
 

@@ -9,8 +9,8 @@ description: >
 
 > biz/doc/dao/{struct name}：存放 mongodb curd 代码，生成位置可通过 --dao_dir 修改
 >
-> - {struct name}_repo.go 函数接口文件
-> - {struct name}_repo_mongo.go 接口实现及具体 curd 代码
+> - {struct name}\_repo.go 函数接口文件
+> - {struct name}\_repo_mongo.go 接口实现及具体 curd 代码
 >
 > biz/doc/model：thriftgo 或 protoc 生成的代码，Mongodb 集合对应的 go struct 位于此处，生成位置可通过 --model_dir 修改
 

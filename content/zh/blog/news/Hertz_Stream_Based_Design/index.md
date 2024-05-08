@@ -3,7 +3,7 @@ date: 2023-08-02
 title: "Hertz 支持 QUIC & HTTP/3"
 projects: ["Hertz"]
 linkTitle: "Hertz 支持 QUIC & HTTP/3"
-keywords: ['Go', 'Hertz', 'QUIC', 'HTTP/3', '接口设计']
+keywords: ["Go", "Hertz", "QUIC", "HTTP/3", "接口设计"]
 description: "本文介绍了 Hertz 为支持 QUIC & HTTP/3 在网络传输层和协议层提供的接口设计方案。"
 author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 ---
@@ -58,30 +58,30 @@ type Conn interface {
 type Reader interface {
     // Peek returns the next n bytes without advancing the reader.
     Peek(n int) ([]byte, error)
-    
+
     // Skip discards the next n bytes.
     Skip(n int) error
-    
+
     // Release the memory space occupied by all read slices. This method needs to be     executed actively to
     // recycle the memory after confirming that the previously read data is no longer in     use.
     // After invoking Release, the slices obtained by the method such as Peek will
     // become an invalid address and cannot be used anymore.
     Release() error
-    
+
     // Len returns the total length of the readable data in the reader.
     Len() int
-    
+
     // ReadByte is used to read one byte with advancing the read pointer.
     ReadByte() (byte, error)
-    
+
     // ReadBinary is used to read next n byte with copy, and the read pointer will be     advanced.
     ReadBinary(n int) (p []byte, err error)
     }
-    
+
     type Writer interface {
     // Malloc will provide a n bytes buffer to send data.
     Malloc(n int) (buf []byte, err error)
-    
+
     // WriteBinary will use the user buffer to flush.
     // NOTE: Before flush successfully, the buffer b should be valid.
     WriteBinary(b []byte) (n int, err error)
@@ -116,20 +116,20 @@ TCP 的网络/协议层抽象当中来。
 
 ##### 方案 A
 
-基于上述分层思想，一个和网络传输层 Serve 相对应的 QUIC 抽象其实就出具雏形了，命名为 OnStream，语义和 Serve 基本一致*
+基于上述分层思想，一个和网络传输层 Serve 相对应的 QUIC 抽象其实就出具雏形了，命名为 OnStream，语义和 Serve 基本一致\*
 ：当流完成准备。具体需要提供的实现就是上层协议（这里是 HTTP/3）。
 
 ```go
 type ServeStream func(ctx context.Context, stream Stream) error
 ```
 
-*注：ServeStream 语义和 Serve 一致具体指 HTTP/1 的 Serve 对应的其实就是“下一个请求的数据已经准备好”；通过实现该接口就可以完成协议处理。
+\*注：ServeStream 语义和 Serve 一致具体指 HTTP/1 的 Serve 对应的其实就是“下一个请求的数据已经准备好”；通过实现该接口就可以完成协议处理。
 如果进一步深入，其实和当前 Hertz HTTP/2 的实现其实并不完全对应，究其原因在于：
 
 1. HTTP/2
-的流实现在协议层上，本质上其实只是对引入的更小传输单元帧（Frame）的逻辑承载；
+   的流实现在协议层上，本质上其实只是对引入的更小传输单元帧（Frame）的逻辑承载；
 2. 理想形态应该是将 HTTP/2
-的实现进行拆分：流（Stream）准备逻辑下层到网络传输层 & 基于流（Stream）的协议处理逻辑保留在协议层。
+   的实现进行拆分：流（Stream）准备逻辑下层到网络传输层 & 基于流（Stream）的协议处理逻辑保留在协议层。
 
 ###### 详细设计
 
@@ -227,13 +227,13 @@ type Stream interface {
 type ReceiveStream interface {
     StreamID() int64
     io.Reader
-    
+
     // CancelRead aborts receiving on this stream.
     // It will ask the peer to stop transmitting stream data.
     // Read will unblock immediately, and future Read calls will fail.
     // When called multiple times or after reading the io.EOF it is a no-op.
     CancelRead(err ApplicationError)
-    
+
     // SetReadDeadline sets the deadline for future Read calls and
     // any currently-blocked Read call.
     // A zero value for t means Read will not time out.
@@ -260,7 +260,7 @@ type SendStream interface {
     // It must not be called concurrently with Write.
     // It must not be called after calling CancelWrite.
     io.Closer
-    
+
     // The Context is canceled as soon as the write-side of the stream is closed.
     // This happens when Close() or CancelWrite() is called, or when the peer
     // cancels the read-side of their stream.
@@ -356,7 +356,7 @@ type Core interface {// IsRunning Check whether engine is running or not
 1. HTTP/1.1
 2. HTTP/2
 
-排除掉 Netpoll 不支持 TLS 这一点来看，其实网络传输层和协议层是能够自由组合，总共 4（2*2）种不同的搭配。
+排除掉 Netpoll 不支持 TLS 这一点来看，其实网络传输层和协议层是能够自由组合，总共 4（2\*2）种不同的搭配。
 但新引入的 StreamConn（网络传输层） 、StreamServer（协议层）其实和上述实现完全平行，如果网络传输层采用 StreamConn 这套抽象接口，协议层也就只能是对接实现了 StreamServer 的 Server 了（目前的 HTTP/1.1、HTTP/2 都不是，不过 HTTP/2 是条流写回对存在改造/重写适配上 StreamConn & StreamServer 的可能性的）。
 
 ## 实现

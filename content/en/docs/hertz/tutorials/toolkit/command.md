@@ -1,10 +1,11 @@
 ---
-title: 'hz commands'
+title: "hz commands"
 date: 2023-02-21
 weight: 7
 keywords: ["hz commands", "New", "Update", "Model", "Client"]
 description: "hz commands."
 ---
+
 ## Command line parameter description
 
 #### Global
@@ -38,7 +39,7 @@ GLOBAL OPTIONS:
 <!---->
 
 - update: Updating an existing Hertz project
-  
+
 <!---->
 
 - model: Generate only model code
@@ -58,7 +59,7 @@ USAGE:
    hz new [command options] [arguments...]
 
 OPTIONS:
-   --idl value [ --idl value ]                                            Specify the IDL file path. (.thrift or .proto)  
+   --idl value [ --idl value ]                                            Specify the IDL file path. (.thrift or .proto)
    --service value                                                        Specify the service name.
    --module value, --mod value                                            Specify the Go module name.
    --out_dir value                                                        Specify the project path.
@@ -71,9 +72,9 @@ OPTIONS:
    --thriftgo value, -t value [ --thriftgo value, -t value ]              Specify arguments for the thriftgo. ({flag}={value})
    --protoc value, -p value [ --protoc value, -p value ]                  Specify arguments for the protoc. ({flag}={value})
    --option_package value, -P value [ --option_package value, -P value ]  Specify the package path. ({include_path}={import_path})
-   --no_recurse                                                           Generate master model only. (default: false)    
+   --no_recurse                                                           Generate master model only. (default: false)
    --force, -f                                                            Force new a project, which will overwrite the generated files (default: false)
-   --enable_extends                                                       Parse 'extends' for thrift IDL (default: false) 
+   --enable_extends                                                       Parse 'extends' for thrift IDL (default: false)
    --json_enumstr                                                         Use string instead of num for json enums when idl is thrift. (default: false)
    --unset_omitempty                                                      Remove 'omitempty' tag for generated struct. (default: false)
    --pb_camel_json_tag                                                    Convert Name style for json tag to camel(Only works protobuf). (default: false)
@@ -221,7 +222,7 @@ OPTIONS:
    --model_dir value                                                      Specify the model relative path (based on "out_dir").
    --client_dir value                                                     Specify the client path. If not specified, IDL generated path is used for 'client' command; no client code is generated for 'new' command
    --use value                                                            Specify the model package to import for handler.
-   --proto_path value, -I value [ --proto_path value, -I value ]          Add an IDL search path for includes. (Valid only if idl is protobuf)       
+   --proto_path value, -I value [ --proto_path value, -I value ]          Add an IDL search path for includes. (Valid only if idl is protobuf)
    --thriftgo value, -t value [ --thriftgo value, -t value ]              Specify arguments for the thriftgo. ({flag}={value})
    --protoc value, -p value [ --protoc value, -p value ]                  Specify arguments for the protoc. ({flag}={value})
    --option_package value, -P value [ --option_package value, -P value ]  Specify the package path. ({include_path}={import_path})
@@ -235,7 +236,7 @@ OPTIONS:
    --exclude_file value, -E value [ --exclude_file value, -E value ]      Specify the files that do not need to be updated.
    --customize_package value                                              Specify the path for package template.
    --handler_by_method                                                    Generate a separate handler file for each method. (default: false)
-   --protoc-plugins value [ --protoc-plugins value ]                      Specify plugins for the protoc. ({plugin_name}:{options}:{out_dir})        
+   --protoc-plugins value [ --protoc-plugins value ]                      Specify plugins for the protoc. ({plugin_name}:{options}:{out_dir})
    --thrift-plugins value [ --thrift-plugins value ]                      Specify plugins for the thriftgo. ({plugin_name}:{options})
    --help, -h                                                             show help (default: false)
 ```
@@ -260,7 +261,7 @@ OPTIONS:
 
 <!---->
 
-- client_dir: Specify the path for generating client-side code. If not specified, it will not be generated; Currently, a global client is generated for each service. To generate more comprehensive client-side code, please use [hz client](/docs/hertz/tutorials/toolkit/more-feature/client/) command.   Note: If updating the same set of idls, the value of client_dir needs to be the same as when using new, otherwise redundant code will be generated and the user needs to delete it themselves.
+- client_dir: Specify the path for generating client-side code. If not specified, it will not be generated; Currently, a global client is generated for each service. To generate more comprehensive client-side code, please use [hz client](/docs/hertz/tutorials/toolkit/more-feature/client/) command. Note: If updating the same set of idls, the value of client_dir needs to be the same as when using new, otherwise redundant code will be generated and the user needs to delete it themselves.
 
 <!---->
 
@@ -353,7 +354,7 @@ OPTIONS:
    --thriftgo value, -t value [ --thriftgo value, -t value ]          Specify arguments for the thriftgo. ({flag}={value})
    --protoc value, -p value [ --protoc value, -p value ]              Specify arguments for the protoc. ({flag}={value})
    --no_recurse                                                       Generate master model only. (default: false)
-   --json_enumstr                                                     Use string instead of num for json enums when idl is thrift. (default: false)  
+   --json_enumstr                                                     Use string instead of num for json enums when idl is thrift. (default: false)
    --unset_omitempty                                                  Remove 'omitempty' tag for generated struct. (default: false)
    --pb_camel_json_tag                                                Convert Name style for json tag to camel(Only works protobuf). (default: false)
    --snake_tag                                                        Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
@@ -445,7 +446,7 @@ OPTIONS:
    --protoc value, -p value [ --protoc value, -p value ]              Specify arguments for the protoc. ({flag}={value})
    --no_recurse                                                       Generate master model only. (default: false)
    --enable_extends                                                   Parse 'extends' for thrift IDL (default: false)
-   --json_enumstr                                                     Use string instead of num for json enums when idl is thrift. (default: false)  
+   --json_enumstr                                                     Use string instead of num for json enums when idl is thrift. (default: false)
    --unset_omitempty                                                  Remove 'omitempty' tag for generated struct. (default: false)
    --pb_camel_json_tag                                                Convert Name style for json tag to camel(Only works protobuf). (default: false)
    --snake_tag                                                        Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)

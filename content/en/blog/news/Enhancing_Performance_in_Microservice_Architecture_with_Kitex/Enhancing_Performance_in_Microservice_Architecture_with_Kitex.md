@@ -3,24 +3,44 @@ date: 2024-01-29
 title: "Enhancing Performance in Microservice Architecture with Kitex"
 projects: ["CloudWeGo"]
 linkTitle: "Enhancing Performance in Microservice Architecture with Kitex"
-keywords: ["CloudWeGo", "middleware", "Go", "Golang", "Kitex", "microservice framework", "ByteDance Open Source", "ByteDance", "open source", "cloud native", "open source", "kubernetes", "gRPC", "microservices", "rpc", "thrift"]
+keywords:
+  [
+    "CloudWeGo",
+    "middleware",
+    "Go",
+    "Golang",
+    "Kitex",
+    "microservice framework",
+    "ByteDance Open Source",
+    "ByteDance",
+    "open source",
+    "cloud native",
+    "open source",
+    "kubernetes",
+    "gRPC",
+    "microservices",
+    "rpc",
+    "thrift",
+  ]
 description: "This post explores the creation and optimization of ByteDance's Remote Procedure Call (RPC) framework, Kitex, to address challenges within microservice architecture. Highlighting innovative performance optimization techniques, controlled Garbage Collection and concurrency adjustment, this insightful read offers hands-on strategies and future plans for evolving high-performance microservice systems."
-author:  <a href="https://github.com/joway" target="_blank">Zhuowei Wang</a>, <a href="https://github.com/felix021" target="_blank">Felix Feng</a>, <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a> 
+author: <a href="https://github.com/joway" target="_blank">Zhuowei Wang</a>, <a href="https://github.com/felix021" target="_blank">Felix Feng</a>, <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>
 ---
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/1.jpeg)
 
 # Kitex: Enhancing Performance in Microservice Architecture
+
 ## Introduction
 
-The team at ByteDance initiated the creation of the Remote Procedure Call (RPC) framework, Kitex, alongside several related fundamental libraries in 2019. This endeavor originated from confronting functionality and performance challenges within our extensive microservice architecture. We also wanted to combine the knowledge and insights gathered from previous frameworks. This development project was officially released for open-source contribution on GitHub in 2021. 
+The team at ByteDance initiated the creation of the Remote Procedure Call (RPC) framework, Kitex, alongside several related fundamental libraries in 2019. This endeavor originated from confronting functionality and performance challenges within our extensive microservice architecture. We also wanted to combine the knowledge and insights gathered from previous frameworks. This development project was officially released for open-source contribution on GitHub in 2021.
 
-From 2019 to 2023, our internal microservices have seen substantial growth. During this period, [the Kitex framework](/docs/kitex/overview/) has undergone numerous cycles of optimization and testing to enhance its performance and efficiency. In this article, we share performance optimization techniques that we've systematically implemented over the past few years. 
+From 2019 to 2023, our internal microservices have seen substantial growth. During this period, [the Kitex framework](/docs/kitex/overview/) has undergone numerous cycles of optimization and testing to enhance its performance and efficiency. In this article, we share performance optimization techniques that we've systematically implemented over the past few years.
 
 ## The Evolution and Status Quo of Kitex
+
 ### Understanding the Need for an RPC Framework
 
-Although the Remote Procedure Call (RPC) framework has a long history, its wide-scale use as a crucial component aligns with the advent of microservice architecture. Therefore, it's vital to revisit its historical developments and comprehend why an RPC framework is necessary. 
+Although the Remote Procedure Call (RPC) framework has a long history, its wide-scale use as a crucial component aligns with the advent of microservice architecture. Therefore, it's vital to revisit its historical developments and comprehend why an RPC framework is necessary.
 
 #### Background: Monolithic Architecture Era
 
@@ -46,12 +66,12 @@ func GetItem(itemId) {
     return db.items.GetItem(itemId)
 }
 ```
+
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/2.jpeg)
 
-This style of coding is straightforward, especially once built on top of a well-structured design pattern, can make it straightforward to refactor and write unit tests. Many IT systems still operate using this architecture. 
+This style of coding is straightforward, especially once built on top of a well-structured design pattern, can make it straightforward to refactor and write unit tests. Many IT systems still operate using this architecture.
 
 However, as online businesses rapidly developed, we encountered the following limitations in some of the larger internet projects:
-
 
 1. There's a limit to computational power: the maximum computing power of a single request is less than or equal to the total computational power of a single server divided by the number of requests processed simultaneously.
 
@@ -76,7 +96,6 @@ RPCs (Remote Procedure Call) allows business systems to call remote services as 
 
 Before the introduction of RPC, the sole overhead in the following code is merely a function call, an operation at the nanosecond level, not accounting for inline optimization.
 
-
 ```Go
 func client() (response) {
     response = server(request) // function call
@@ -87,7 +106,7 @@ func server(request) (response) {
 }
 ```
 
-Upon transitioning to an RPC call, the overhead directly elevates to the millisecond level, a latency difference of 10^6, which highlights the high cost of RPC and indicates considerable room for optimization. 
+Upon transitioning to an RPC call, the overhead directly elevates to the millisecond level, a latency difference of 10^6, which highlights the high cost of RPC and indicates considerable room for optimization.
 
 ```
 func client() (response) {
@@ -97,7 +116,8 @@ func client() (response) {
 func server(request) (response) {
     response.Message = request.Message
 }
-``` 
+```
+
 The complete process of an RPC call is outlined below, and we will elaborate on our performance optimization practices for each step in the sections to follow.
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/4.jpeg)
@@ -148,7 +168,7 @@ Memory reuse is a significant challenge, which often leads to the overhead of ga
 
 ### Code Generation Optimization: Introducing FastThrift & FastPB
 
-We've introduced encoding and decoding capabilities to Kitex by generating a large volume of code for both Thrift and Protobuf protocols. Since generated code can optimize preset runtime information, we can avoid additional operations during runtime and achieve several benefits. 
+We've introduced encoding and decoding capabilities to Kitex by generating a large volume of code for both Thrift and Protobuf protocols. Since generated code can optimize preset runtime information, we can avoid additional operations during runtime and achieve several benefits.
 
 **Memory Reuse and Size Pre-calculation**
 
@@ -161,13 +181,13 @@ type User struct {
    Id   int32
    Name string
 }
- 
+
 func (x *User) Size() (n int) {
    n += x.sizeField1()
    n += x.sizeField2()
    return n
 }
- 
+
 // Framework Process
 size := msg.Size()
 data = Malloc(size) // allocate memory
@@ -220,18 +240,19 @@ The feedback encouraged us to consider if the previously generated code could be
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/10.jpeg)
 
-### Advantages of JIT 
+### Advantages of JIT
 
 1. Registers utilization and deeper inlining: this improves the efficiency of function calls.
 
 2. Core computational functions use fully optimized assembly code, which leads to improved performance.
 
 ### Optimization Results of JIT
+
 As a result of JIT optimization, we improved the optimization result from 3.58% to an impressive 0.78%.
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/11.jpeg)
 
-### Comparing Frugal and Apache Thrift 
+### Comparing Frugal and Apache Thrift
 
 This section presents a performance comparison of Frugal and Apache Thrift in the context of encoding and decoding.
 
@@ -242,6 +263,7 @@ This section presents a performance comparison of Frugal and Apache Thrift in th
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/13.jpeg)
 
 ### Native Go Net Challenges in RPC Scenarios
+
 Native Go Net in RPC situations presents the following challenges:
 
 1. Each connection corresponds to one coroutine - when there are numerous upstream and downstream instances, the sheer number of Goroutines can significantly influence performance. This is particularly detrimental for businesses with intensive instances.
@@ -250,7 +272,7 @@ Native Go Net in RPC situations presents the following challenges:
 
 3. When a struct undergoes NoCopy serialization, the output typically takes the form of a two-dimensional byte array. However, Go's `Write([]byte)` interface falls short as it does not support handling non-continuous memory data.
 
-4. Despite being highly compatible, it's provided by Go Runtime and not conducive or suitable for adding new features. 
+4. Despite being highly compatible, it's provided by Go Runtime and not conducive or suitable for adding new features.
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/14.jpeg)
 
@@ -295,7 +317,7 @@ Here are the main areas we focused on for optimization:
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/17.jpeg)
 
-After introducing Service Mesh, the business process primarily communicates with another sidecar process on the same machine, which brings in an additional layer of delay. 
+After introducing Service Mesh, the business process primarily communicates with another sidecar process on the same machine, which brings in an additional layer of delay.
 
 Traditional Service Mesh solutions commonly hijack iptables to facilitate traffic forwarding to the sidecar process. This could lead to substantial performance loss at all levels. Kitex has carried out several performance optimization attempts at the communication layer and has finally developed a systematic solution.
 
@@ -334,7 +356,7 @@ Our performance test indicates the following:
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/19.jpeg)
 
-In pursuit of enhancing the efficiency of inter-process communication, we developed a communication mode based on shared memory. Shared memory communication throws in the complexity of managing the synchronization of various communication states across different processes. 
+In pursuit of enhancing the efficiency of inter-process communication, we developed a communication mode based on shared memory. Shared memory communication throws in the complexity of managing the synchronization of various communication states across different processes.
 
 To tackle this, we utilized our communication protocol and retained **UDS** as the event notification channel (IO Queue) and shared memory as the data transmission channel (Buffer).
 
@@ -348,7 +370,7 @@ For a detailed technical understanding of shmipc, you can refer to our previousl
 
 # From Cross-Machine to Intra-Machine Communication: A Pod Affinity Solution
 
-Having previously optimized intra-machine communication, we found that it's limited to the data plane communication between the service process and the Service Mesh. 
+Having previously optimized intra-machine communication, we found that it's limited to the data plane communication between the service process and the Service Mesh.
 
 The peer service is possibly not hosted on the same machine. So, the question arises, how can we optimize cross-machine communication? One innovative approach we're considering is converting cross-machine issues into intra-machine issues.
 
@@ -366,7 +388,7 @@ Achieving this in large-scale microservice communication calls for the cooperati
 
 # Microservice Online Tuning Practices
 
-Apart from performance optimization at the framework level, the business logic itself is a significant contributor to the performance bottleneck. To combat this, we have accumulated several practical experiences and strategies. 
+Apart from performance optimization at the framework level, the business logic itself is a significant contributor to the performance bottleneck. To combat this, we have accumulated several practical experiences and strategies.
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/24.jpeg)
 
@@ -426,9 +448,9 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
-  - resources:
-      limits:
-        cpu: "4"
+    - resources:
+        limits:
+          cpu: "4"
 ```
 
 The rapid advancement of container technology has largely affected the development of microservices. Currently, the majority of microservices, including numerous databases across the industry, operate within container environments. For the purpose of this discussion, we'll only touch upon mainstream containers based on cgroup technology.
@@ -451,6 +473,7 @@ processor        : 2
 processor        : 3
 // ...
 ```
+
 However, these are merely illusions concocted by the container to ease your mental load off programming. The underlying reason for creating such an illusion is to ensure traditional Linux Debug tools function seamlessly within the container environment.
 
 Contrarily, container technology based on cgroups imposes limits only on **CPU time**, not on the number of CPUs. Suppose you log into the machine to verify the CPU number each thread of the process is using. In that case, you might be taken aback to discover that the sum exceeds the CPU limit set for the container:
@@ -463,13 +486,13 @@ When a container requests 4 CPU units, it means it can run for an equivalent of 
 
 Knowing the upper bound for physical parallel computing in a program is considerably high, we can leverage this insight to increase or decrease the number of working threads (GOMAXPROCS) or adjust the degree of concurrency within the program.
 
-Let's consider a calling scenario where the business sends requests to the same upstream with four concurrent processes. Each request upstream requires 50ms of processing time. Based on this, the downstream sets the timeout time to **100ms**. 
+Let's consider a calling scenario where the business sends requests to the same upstream with four concurrent processes. Each request upstream requires 50ms of processing time. Based on this, the downstream sets the timeout time to **100ms**.
 
 Though this seems reasonable, if, at that time, the upstream had only two CPUs available to handle requests (which also have to manage other work or perform Garbage Collection activities), the third RPC request would likely time out.
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/29.jpeg)
 
-However, simply reducing concurrency isn't always the solution and it doesn't benefit all cases. 
+However, simply reducing concurrency isn't always the solution and it doesn't benefit all cases.
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/30.jpeg)
 
@@ -477,17 +500,17 @@ If upstream's computational resources are abundantly available, increasing concu
 
 ## Balancing Resource Utilization – Reserving Computational Capacity for Other Processes
 
-If there are multiple processes within the container, it's essential to reserve resources for these operations. This consideration is particularly crucial in scenarios like the deployment of a Service Mesh data plane, where the same container operates as a sidecar. 
+If there are multiple processes within the container, it's essential to reserve resources for these operations. This consideration is particularly crucial in scenarios like the deployment of a Service Mesh data plane, where the same container operates as a sidecar.
 
 If a downstream process utilizes the entirety of the time slice allocated within a computation cycle, it's highly probable that it'll face resource throttling when it's the upstream process's turn, which could subsequently affect the service’s latency.
 
 ## Optimizing Service Concurrency Degree
 
-* **Adjust the Number of Work Threads**: For instance, the `GOMAXPROCS` directive in Go allows us to modify the number of working threads.
+- **Adjust the Number of Work Threads**: For instance, the `GOMAXPROCS` directive in Go allows us to modify the number of working threads.
 
-* **Alter the Concurrency of Requests in the Code**: It's essential for businesses to iteratively test and evaluate the trade-off between the latency gains from increasing concurrency and the stability loss at peak levels to determine an optimal concurrency value.
+- **Alter the Concurrency of Requests in the Code**: It's essential for businesses to iteratively test and evaluate the trade-off between the latency gains from increasing concurrency and the stability loss at peak levels to determine an optimal concurrency value.
 
-* **Use Batch Interfaces**: If the business scenario allows, replacing the current interface with a batch interface could be a more effective strategy.
+- **Use Batch Interfaces**: If the business scenario allows, replacing the current interface with a batch interface could be a more effective strategy.
 
 # Looking into the Future of Optimization
 
@@ -497,21 +520,21 @@ Currently the only area we haven't explored for optimization is the Kernel.
 
 ![Image](/img/blog/Enhancing_Performance_in_Microservice_Architecture_with_Kitex/31.jpeg)
 
-In online business environments, we often observe that the communication overhead of RPC accounts for more than 20% of the total overhead for services heavy on I/O operations, even after optimizing RPC to the level of intra-machine communication. 
+In online business environments, we often observe that the communication overhead of RPC accounts for more than 20% of the total overhead for services heavy on I/O operations, even after optimizing RPC to the level of intra-machine communication.
 
 At this point, we've optimized inter-process communication to its extremes. If we are to seek further improvements, we need to break through the existing constraints in Linux inter-process communication fundamentally.
 
 We've already made some preliminary strides in this area. We will continue to share updates on this topic in future articles, so stay tuned.
 
-## Reassessing the TCP Protocol 
+## Reassessing the TCP Protocol
 
 In the context of internal data center communication, the TCP protocol displays some limitations:
 
-* Given the superior internal network quality and an incredibly low packet loss rate, many designs within TCP appear redundant.
+- Given the superior internal network quality and an incredibly low packet loss rate, many designs within TCP appear redundant.
 
-* In situations of large-scale point-to-point communication, TCP long connections may inadvertently degrade into short connections.
+- In situations of large-scale point-to-point communication, TCP long connections may inadvertently degrade into short connections.
 
-* While the application layer uses "messages" as a unit, TCP data streams don't offer clear message boundaries, which could complicate synchronization and message handling.
+- While the application layer uses "messages" as a unit, TCP data streams don't offer clear message boundaries, which could complicate synchronization and message handling.
 
 This has led us to question whether we need to develop a proprietary data center protocol, better suited to handle RPC communication.
 
@@ -521,26 +544,25 @@ When it comes to existing components, we plan to continue our efforts to enhance
 
 **Frugal, the Thrift JIT Encoder/Decoder:**
 
-* Introducing support for the ARM architecture.
+- Introducing support for the ARM architecture.
 
-* Optimizing the backend with Static Single Assignment (SSA).
-  
-* Accelerating performance with Single Instruction, Multiple Data (SIMD) operations.
+- Optimizing the backend with Static Single Assignment (SSA).
+- Accelerating performance with Single Instruction, Multiple Data (SIMD) operations.
 
 **Netpoll Network Library:**
 
-* Refactoring interfaces to ensure seamless integration with existing libraries in the Go ecosystem.
+- Refactoring interfaces to ensure seamless integration with existing libraries in the Go ecosystem.
 
-* Implementing support for Shared Memory Communications over RDMA (SMC-R).
+- Implementing support for Shared Memory Communications over RDMA (SMC-R).
 
 **Pod Affinity:**
 
-* Expanding from same-machine to same-rack granularity, effectively reducing network latency and improving performance.
+- Expanding from same-machine to same-rack granularity, effectively reducing network latency and improving performance.
 
-In this post, we explored optimizing microservices performance using Kitex, the RPC framework developed by ByteDance. We discussed various techniques, from encoding and decoding enhancements, JIT compilation, network library optimization, and communication layer upgrades, to automated GC optimization, concurrent processing strategies, and microservices online tuning practices. 
+In this post, we explored optimizing microservices performance using Kitex, the RPC framework developed by ByteDance. We discussed various techniques, from encoding and decoding enhancements, JIT compilation, network library optimization, and communication layer upgrades, to automated GC optimization, concurrent processing strategies, and microservices online tuning practices.
 
-Kitex has demonstrated its ability to outperform other frameworks in testing comparisons, showcasing its strength in handling complex microservice architectures. 
+Kitex has demonstrated its ability to outperform other frameworks in testing comparisons, showcasing its strength in handling complex microservice architectures.
 
-We also briefly looked towards future optimizations, including kernel-level improvements, restructuring the TCP protocols, and further refinement of existing components. With continuous learning and improvements, we are driven to unlock the vast potential in microservice performance optimization, taking us one step closer to the realm of real-time computing. 
+We also briefly looked towards future optimizations, including kernel-level improvements, restructuring the TCP protocols, and further refinement of existing components. With continuous learning and improvements, we are driven to unlock the vast potential in microservice performance optimization, taking us one step closer to the realm of real-time computing.
 
 For any questions or discussions, you're welcome to join our community on [GitHub](https://github.com/cloudwego) or [Discord](https://discord.gg/jceZSE7DsW).

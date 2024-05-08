@@ -345,4 +345,3 @@ func main() {
 ## 完整示例
 
 完整用法示例详见 [example](https://github.com/kitex-contrib/registry-servicecomb/tree/main/example)。
-

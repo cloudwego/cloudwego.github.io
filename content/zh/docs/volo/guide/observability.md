@@ -3,7 +3,6 @@ title: "自定义日志/监控打点/trace"
 linkTitle: "日志/监控打点/trace"
 weight: 3
 description: >
-
 ---
 
 对于 RPC 框架来说，日志、监控和 trace 是很重要的组成部分，云原生环境下可观测性基本依赖这三件套。

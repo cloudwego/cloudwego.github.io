@@ -2,9 +2,14 @@
 title: "Network Library Extensions"
 linkTitle: "Network Library Extensions"
 weight: 4
-keywords: ["Network Library Extensions", "network.Conn", "network.StreamConn", "network.Dialer"]
+keywords:
+  [
+    "Network Library Extensions",
+    "network.Conn",
+    "network.StreamConn",
+    "network.Dialer",
+  ]
 description: "Network Library Extensions provided by Hertz."
-
 ---
 
 Hertz provides the ability to extend the network library. If users need to replace with other network libraries, they can implement the corresponding interfaces according to their needs. Server needs to implement the `network.Conn` or the `network.StreamConn` interface, Client needs to implement the `network.Dialer` interface.
@@ -124,13 +129,13 @@ type Stream interface {
 type ReceiveStream interface {
     StreamID() int64
     io.Reader
-    
+
     // CancelRead aborts receiving on this stream.
     // It will ask the peer to stop transmitting stream data.
     // Read will unblock immediately, and future Read calls will fail.
     // When called multiple times or after reading the io.EOF it is a no-op.
     CancelRead(err ApplicationError)
-    
+
     // SetReadDeadline sets the deadline for future Read calls and
     // any currently-blocked Read call.
     // A zero value for t means Read will not time out.
@@ -157,7 +162,7 @@ type SendStream interface {
     // It must not be called concurrently with Write.
     // It must not be called after calling CancelWrite.
     io.Closer
-    
+
     // The Context is canceled as soon as the write-side of the stream is closed.
     // This happens when Close() or CancelWrite() is called, or when the peer
     // cancels the read-side of their stream.

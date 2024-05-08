@@ -2,7 +2,7 @@
 title: "Protobuf"
 date: 2024-01-06
 weight: 2
-keywords: [ "Kitex", "序列化", "Protobuf" ]
+keywords: ["Kitex", "序列化", "Protobuf"]
 description: Kitex 使用 Protobuf 协议序列化。
 ---
 

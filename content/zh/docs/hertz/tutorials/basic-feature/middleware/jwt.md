@@ -4,7 +4,6 @@ date: 2022-06-09
 weight: 3
 keywords: ["JWT 认证", "JSON Web Token", "JWT"]
 description: "Hertz 提供了 jwt 的实现。"
-
 ---
 
 JSON Web Token（JWT）是一个轻量级的认证规范，这个规范允许我们使用 JWT 在用户和服务器之间传递安全可靠的信息。其本质是一个 token，是一种紧凑的 URL 安全方法，用于在网络通信的双方之间传递。
@@ -154,38 +153,38 @@ Hertz 通过使用中间件，为路由请求提供了 `jwt` 的校验功能。�
 
 上述**示例代码**中，只传入了**两项必要的**自定义的配置。关于 `HertzJWTMiddleware` 的更多常用配置如下：
 
-| 参数                            | 介绍                                                                                     |
-|:------------------------------|:---------------------------------------------------------------------------------------|
-| `Realm`                       | 用于设置所属领域名称，默认为 `hertz jwt`                                                             |
-| `SigningAlgorithm`            | 用于设置签名算法，可以是 HS256、HS384、HS512、RS256、RS384 或者 RS512 等，默认为 `HS256`                       |
-| `Key`                         | 用于设置签名密钥（必要配置）                                                                         |
-| `KeyFunc`                     | 用于设置获取签名密钥的回调函数，设置后 token 解析时将从 `KeyFunc` 获取 `jwt` 签名密钥                                |
-| `Timeout`                     | 用于设置 token 过期时间，默认为一小时                                                                 |
+| 参数                          | 介绍                                                                                                                    |
+| :---------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| `Realm`                       | 用于设置所属领域名称，默认为 `hertz jwt`                                                                                |
+| `SigningAlgorithm`            | 用于设置签名算法，可以是 HS256、HS384、HS512、RS256、RS384 或者 RS512 等，默认为 `HS256`                                |
+| `Key`                         | 用于设置签名密钥（必要配置）                                                                                            |
+| `KeyFunc`                     | 用于设置获取签名密钥的回调函数，设置后 token 解析时将从 `KeyFunc` 获取 `jwt` 签名密钥                                   |
+| `Timeout`                     | 用于设置 token 过期时间，默认为一小时                                                                                   |
 | `MaxRefresh`                  | 用于设置最大 token 刷新时间，允许客户端在 `TokenTime` + `MaxRefresh` 内刷新 token 的有效时间，追加一个 `Timeout` 的时长 |
-| `Authenticator`               | 用于设置登录时认证用户信息的函数（必要配置）                                                                 |
-| `Authorizator`                | 用于设置授权已认证的用户路由访问权限的函数                                                                  |
-| `PayloadFunc`                 | 用于设置登陆成功后为向 token 中添加自定义负载信息的函数                                                        |
-| `Unauthorized`                | 用于设置 jwt 验证流程失败的响应函数                                                                   |
-| `LoginResponse`               | 用于设置登录的响应函数                                                                            |
-| `LogoutResponse`              | 用于设置登出的响应函数                                                                            |
-| `RefreshResponse`             | 用于设置 token 有效时长刷新后的响应函数                                                                |
-| `IdentityHandler`             | 用于设置获取身份信息的函数，默认与 `IdentityKey` 配合使用                                                   |
-| `IdentityKey`                 | 用于设置检索身份的键，默认为 `identity`                                                              |
-| `TokenLookup`                 | 用于设置 token 的获取源，可以选择 `header`、`query`、`cookie`、`param`、`form`，默认为 `header:Authorization`  |
-| `TokenHeadName`               | 用于设置从 header 中获取 token 时的前缀，默认为 `Bearer`                                               |
-| `WithoutDefaultTokenHeadName` | 用于设置 `TokenHeadName` 为空，默认为 `false`                                                    |
-| `TimeFunc`                    | 用于设置获取当前时间的函数，默认为 `time.Now()`                                                         |
-| `HTTPStatusMessageFunc`       | 用于设置 jwt 校验流程发生错误时响应所包含的错误信息                                                           |
+| `Authenticator`               | 用于设置登录时认证用户信息的函数（必要配置）                                                                            |
+| `Authorizator`                | 用于设置授权已认证的用户路由访问权限的函数                                                                              |
+| `PayloadFunc`                 | 用于设置登陆成功后为向 token 中添加自定义负载信息的函数                                                                 |
+| `Unauthorized`                | 用于设置 jwt 验证流程失败的响应函数                                                                                     |
+| `LoginResponse`               | 用于设置登录的响应函数                                                                                                  |
+| `LogoutResponse`              | 用于设置登出的响应函数                                                                                                  |
+| `RefreshResponse`             | 用于设置 token 有效时长刷新后的响应函数                                                                                 |
+| `IdentityHandler`             | 用于设置获取身份信息的函数，默认与 `IdentityKey` 配合使用                                                               |
+| `IdentityKey`                 | 用于设置检索身份的键，默认为 `identity`                                                                                 |
+| `TokenLookup`                 | 用于设置 token 的获取源，可以选择 `header`、`query`、`cookie`、`param`、`form`，默认为 `header:Authorization`           |
+| `TokenHeadName`               | 用于设置从 header 中获取 token 时的前缀，默认为 `Bearer`                                                                |
+| `WithoutDefaultTokenHeadName` | 用于设置 `TokenHeadName` 为空，默认为 `false`                                                                           |
+| `TimeFunc`                    | 用于设置获取当前时间的函数，默认为 `time.Now()`                                                                         |
+| `HTTPStatusMessageFunc`       | 用于设置 jwt 校验流程发生错误时响应所包含的错误信息                                                                     |
 | `SendCookie`                  | 用于设置 token 将同时以 cookie 的形式返回，下列 cookie 相关配置生效的前提是该值为 `true`，默认为 `false`                |
-| `CookieMaxAge`                | 用于设置 cookie 的有效期，默认为 `Timeout` 定义的一小时                                                  |
-| `SecureCookie`                | 用于设置允许不通过 HTTPS 传递 cookie 信息，默认为 `false`                                               |
-| `CookieHTTPOnly`              | 用于设置允许客户端访问 cookie 以进行开发，默认为 `false`                                                   |
-| `CookieDomain`                | 用于设置 cookie 所属的域，默认为空                                                                  |
-| `SendAuthorization`           | 用于设置为所有请求的响应头添加授权的 token 信息，默认为 `false`                                                |
-| `DisabledAbort`               | 用于设置在 jwt 验证流程出错时，禁止请求上下文调用 `abort()`，默认为 `false`                                      |
-| `CookieName`                  | 用于设置 cookie 的 name 值                                                                   |
-| `CookieSameSite`              | 用于设置使用 `protocol.CookieSameSite` 声明的参数设置 cookie 的 SameSite 属性值                         |
- | `ParseOptions`                | 用于设置使用 `jwt.ParserOption` 声明的函数选项式参数配置 `jwt.Parser` 的属性值                               |
+| `CookieMaxAge`                | 用于设置 cookie 的有效期，默认为 `Timeout` 定义的一小时                                                                 |
+| `SecureCookie`                | 用于设置允许不通过 HTTPS 传递 cookie 信息，默认为 `false`                                                               |
+| `CookieHTTPOnly`              | 用于设置允许客户端访问 cookie 以进行开发，默认为 `false`                                                                |
+| `CookieDomain`                | 用于设置 cookie 所属的域，默认为空                                                                                      |
+| `SendAuthorization`           | 用于设置为所有请求的响应头添加授权的 token 信息，默认为 `false`                                                         |
+| `DisabledAbort`               | 用于设置在 jwt 验证流程出错时，禁止请求上下文调用 `abort()`，默认为 `false`                                             |
+| `CookieName`                  | 用于设置 cookie 的 name 值                                                                                              |
+| `CookieSameSite`              | 用于设置使用 `protocol.CookieSameSite` 声明的参数设置 cookie 的 SameSite 属性值                                         |
+| `ParseOptions`                | 用于设置使用 `jwt.ParserOption` 声明的函数选项式参数配置 `jwt.Parser` 的属性值                                          |
 
 ### Key
 

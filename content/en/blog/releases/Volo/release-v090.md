@@ -1,6 +1,6 @@
 ---
-title: 'Volo Release 0.9.0'
-linkTitle: 'Release v0.9.0'
+title: "Volo Release 0.9.0"
+linkTitle: "Release v0.9.0"
 projects: ["Volo"]
 date: 2024-01-04
 description: >
@@ -29,7 +29,6 @@ max_frame_size in the volo-thrift client is not actually used due to interface c
 ### Upgrade hyper to version 1.0
 
 hyper removed hyper::Body in version 1.0 and introduced hyper::body::Incoming as the requested Body type. In volo-grpc, we have followed up on this change, and we expect that the vast majority of users who have not written their own layers will not be interested. If there are users who use the complete Service generics, just change `Service<ServerContext, Request<hyper::Body>>` to `Service<ServerContext, Request<hyper::body::Incoming>>`.
-
 
 ## Complete Release Note
 

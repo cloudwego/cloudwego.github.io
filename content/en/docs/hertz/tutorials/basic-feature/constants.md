@@ -2,7 +2,15 @@
 title: "Constants"
 date: 2023-05-24
 weight: 17
-keywords: ["Constants", "HTTP method", "HTTP MIME type", "HTTP status code", "HTTP Header", "HTTP protocol version"]
+keywords:
+  [
+    "Constants",
+    "HTTP method",
+    "HTTP MIME type",
+    "HTTP status code",
+    "HTTP Header",
+    "HTTP protocol version",
+  ]
 description: "Constants defined in Hertz for user use."
 ---
 
@@ -28,7 +36,7 @@ const (
 ### HTTP MIME type
 
 ```go
-const (	
+const (
 	// MIME text
 	MIMETextPlain             = "text/plain"
 	MIMETextPlainUTF8         = "text/plain; charset=utf-8"

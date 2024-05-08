@@ -31,9 +31,9 @@ kitex 的关于错误的定义在以下包目录中：
 
 `kitex/pkg/kerrors`：
 
-￮    kitex 核心所依赖的错误定义，支持 `errors.Is` 和 `errors.Unwrap`
+￮ kitex 核心所依赖的错误定义，支持 `errors.Is` 和 `errors.Unwrap`
 
-￮    kitex 定义的 `basic error types` 可以用 `WithCause` 来添加详细原因。
+￮ kitex 定义的 `basic error types` 可以用 `WithCause` 来添加详细原因。
 
 ### 判断是否 Kitex 内部错误
 
@@ -106,9 +106,9 @@ if de.ErrorType() == kerrors.ErrInternalException {} // 返回 true
 
 关于调用端上报的错误码
 
-￮    < v0.2.0：调用端上报错误码 119
+￮ < v0.2.0：调用端上报错误码 119
 
-￮    >= v0.2.0：上报下面对应的错误码
+￮ >= v0.2.0：上报下面对应的错误码
 
 （该变更是为了能统一服务端返回的错误码处理，的确存在服务端会透传一些错误码需要被客户端感知，统一为 119 存在不合理性）
 

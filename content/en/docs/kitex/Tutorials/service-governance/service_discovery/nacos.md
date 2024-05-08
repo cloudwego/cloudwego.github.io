@@ -58,15 +58,15 @@ import (
 )
 
 func main() {
-    // ... 
+    // ...
     r, err := registry.NewDefaultNacosRegistry()
     if err != nil {
         panic(err)
     }
     svr := echo.NewServer(
-        new(EchoImpl), 
+        new(EchoImpl),
         server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "echo"}),
-        server.WithRegistry(r), 
+        server.WithRegistry(r),
 	)
     if err := svr.Run(); err != nil {
         log.Println("server stopped with error:", err)
@@ -104,7 +104,7 @@ func main() {
     sc := []constant.ServerConfig{
         *constant.NewServerConfig("127.0.0.1", 8848),
     }
-    
+
     cc := constant.ClientConfig{
         NamespaceId:         "public",
         TimeoutMs:           5000,
@@ -115,7 +115,7 @@ func main() {
         Username:            "your-name",
         Password:            "your-password",
     }
-    
+
     cli, err := clients.NewNamingClient(
         vo.NacosClientParam{
             ClientConfig:  &cc,
@@ -125,8 +125,8 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
-    svr := echo.NewServer(new(EchoImpl), 
+
+    svr := echo.NewServer(new(EchoImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "echo"}),
 		server.WithRegistry(registry.NewNacosRegistry(cli)),
     )
@@ -160,7 +160,7 @@ Nacos extension provides `WithGroup` to help users configure the cluster in naco
 Function signature:
 
 ```go
-func WithGroup(group string) Option 
+func WithGroup(group string) Option
 ```
 
 ## Service Discovery
@@ -199,10 +199,10 @@ import (
 )
 
 func main() {
-    // ... 
+    // ...
     r, err := resolver.NewDefaultNacosResolver()
 	if err != nil {
-	    panic(err)	
+	    panic(err)
     }
     client, err := echo.NewClient("echo", client.WithResolver(r))
     if err != nil {
@@ -235,7 +235,7 @@ import (
     // ...
 )
 func main() {
-    // ... 
+    // ...
     sc := []constant.ServerConfig{
 	    *constant.NewServerConfig("127.0.0.1", 8848),
 	}
@@ -249,7 +249,7 @@ func main() {
         Username:            "your-name",
         Password:            "your-password",
     }
-    
+
     cli, err := clients.NewNamingClient(
         vo.NacosClientParam{
             ClientConfig:  &cc,
@@ -257,7 +257,7 @@ func main() {
         },
     )
     if err != nil {
-	    panic(err)	
+	    panic(err)
     }
     client, err := echo.NewClient("echo", client.WithResolver(resolver.NewNacosResolver(cli))
     if err != nil {
@@ -288,7 +288,7 @@ Nacos extension provides `WithGroup` to help users configure the cluster in naco
 Function signature:
 
 ```go
-func WithGroup(group string) Option 
+func WithGroup(group string) Option
 ```
 
 ## How To Use
@@ -374,6 +374,7 @@ func main() {
 	}
 }
 ```
+
 ## Caution
 
 - The nacos/v2 version of kitex does not currently support creating multiple port examples in the same group multiple times.

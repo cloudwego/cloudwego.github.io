@@ -5,7 +5,6 @@ weight: 1
 date: 2024-01-18
 keywords: ["Kitex", "Golang", "Go", "Pre-knowledge"]
 description: "Pre-knowledge for using Kitex"
-
 ---
 
 ## RPC
@@ -23,7 +22,7 @@ An RPC invocation involves the following basic steps, divided into the client an
 3. (Client) Serialize the request parameters into binary data.
 4. (Client) Send the data to the server over the network.
 
-------
+---
 
 1. (Server) The server receives the data.
 2. (Server) Deserialize the request parameters.
@@ -31,7 +30,7 @@ An RPC invocation involves the following basic steps, divided into the client an
 4. (Server) Serialize the response into binary data.
 5. (Server) Send the data back to the client over the network.
 
-------
+---
 
 1. (Client) Receive the data.
 2. (Client) Deserialize the response.
@@ -97,7 +96,7 @@ Thrift provides strongly-typed containers that map to commonly used container ty
 Thrift supports type definitions similar to C/C++:
 
 ```thrift
-typedef i32 MyInteger 
+typedef i32 MyInteger
 
 typedef Tweet ReTweet
 ```
@@ -113,7 +112,7 @@ Thrift provides enumeration types:
 - Nested enums are not supported.
 
 ```thrift
-enum TweetType { 
+enum TweetType {
     TWEET, // 0
     RETWEET = 2, // 2
     DM = 0xa, // 10
@@ -189,14 +188,14 @@ A struct in Thrift is composed of different fields, where each field has a uniqu
 
 ```thrift
 struct Location {
-    1: required double latitude; 
-    2: required double longitude; 
+    1: required double latitude;
+    2: required double longitude;
 }
 
-struct Tweet { 
+struct Tweet {
     1: required i32 userId;
     2: required string userName;
-    3: required string text; 
+    3: required string text;
     4: optional Location loc; // Struct can contain other structs
     16: optional string language = "english" // Default value can be set
 }
@@ -221,17 +220,17 @@ In Thrift, a service definition is semantically equivalent to an interface in OO
 > oneway itself does not guarantee reliability and has some special handling risks, so it is not recommended to use it.
 
 ```thrift
-service Twitter { 
-    // A method definition looks like C code. It has a return type, arguments, 
-    // and optionally a list of exceptions that it may throw. Note that argument 
-    // lists and exception list are specified using the exact same syntax as 
+service Twitter {
+    // A method definition looks like C code. It has a return type, arguments,
+    // and optionally a list of exceptions that it may throw. Note that argument
+    // lists and exception list are specified using the exact same syntax as
     // field lists in structs.
 
-    void ping(); // 1 
-    bool postTweet(1:Tweet tweet); // 2 
+    void ping(); // 1
+    bool postTweet(1:Tweet tweet); // 2
     TweetSearchResult searchTweets(1:string query); // 3
-    
-    // The 'oneway' modifier indicates that the client only makes a request and does not wait for any response at all. Oneway methods MUST be void. 
+
+    // The 'oneway' modifier indicates that the client only makes a request and does not wait for any response at all. Oneway methods MUST be void.
     oneway void zip() // 4
 }
 ```
@@ -304,4 +303,3 @@ To comply with the specifications for service invocations, Kitex imposes certain
 [Apache Thrift - Thrift Type System](https://thrift.apache.org/docs/types)
 
 [Thrift: The Missing Guide](https://diwakergupta.github.io/thrift-missing-guide/)
-

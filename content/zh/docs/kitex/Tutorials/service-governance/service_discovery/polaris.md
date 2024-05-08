@@ -31,7 +31,7 @@ func NewPolarisRegistry(so ServerOptions, configFile ...string) (Registry, error
 ```go
 import (
 	// ...
-  
+
 	"github.com/cloudwego/kitex-examples/hello/kitex_gen/api"
 	"github.com/cloudwego/kitex-examples/hello/kitex_gen/api/hello"
 	"github.com/cloudwego/kitex/pkg/registry"
@@ -87,7 +87,7 @@ func NewPolarisResolver(o ClientOptions, configFile ...string) (Resolver, error)
 ```go
 import (
 	// ...
-  
+
 	"github.com/cloudwego/kitex-examples/hello/kitex_gen/api"
 	"github.com/cloudwego/kitex-examples/hello/kitex_gen/api/hello"
 	"github.com/cloudwego/kitex/client"

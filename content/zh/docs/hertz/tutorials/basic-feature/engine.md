@@ -5,13 +5,12 @@ weight: 1
 description: >
 ---
 
-
 `server.Hertz` 是 `Hertz` 的核心类型，它由 `route.Engine` 以及 `signalWaiter` 组成，`Hertz` 服务器的启动、路由注册、中间件注册以及退出等重要方法均包含在 `server.Hertz` 中。以下是 `server.Hertz` 的定义：
 
 ```go
 type Hertz struct {
-    *route.Engine 
-    // 用于接收信号以实现优雅退出 
+    *route.Engine
+    // 用于接收信号以实现优雅退出
     signalWaiter func (err chan error) error
 }
 ```
@@ -20,48 +19,48 @@ type Hertz struct {
 
 ## 配置
 
-|  配置项   | 默认值  | 说明   |
-|  :----  | :----  | :---- |
-| WithTransport  | network.NewTransporter | 更换底层 transport |
-| WithHostPorts  | `:8888` | 指定监听的地址和端口 |
-| WithKeepAliveTimeout | 1min | tcp 长连接保活时间，一般情况下不用修改，更应该关注 idleTimeout |
-| WithReadTimeout | 3min | 底层读取数据超时时间 |
-| WithIdleTimeout | 3min | 长连接请求链接空闲超时时间 |
-| WithMaxRequestBodySize | 4 * 1024 * 1024 | 配置最大的请求体大小 |
-| WithRedirectTrailingSlash | true | 自动根据末尾的 / 转发，例如：如果 router 只有 /foo/，那么 /foo 会重定向到 /foo/ ；如果只有 /foo，那么 /foo/ 会重定向到 /foo |
-| WithRemoveExtraSlash | false | RemoveExtraSlash 当有额外的 / 时也可以当作参数。如：user/:name，如果开启该选项 user//xiaoming 也可匹配上参数 |
-| WithUnescapePathValues | true | 如果开启，请求路径会被自动转义（eg. '%2F' -> '/'）。如果 UseRawPath 为 false（默认情况），则 UnescapePathValues 实际上为 true，因为 .URI().Path() 将被使用，它已经是转义后的。设置该参数为 false，需要配合 WithUseRawPath(true) |
-| WithUseRawPath | false | 如果开启，会使用原始 path 进行路由匹配 |
-| WithHandleMethodNotAllowed | false | 如果开启，当当前路径不能被匹配上时，server 会去检查其他方法是否注册了当前路径的路由，如果存在则会响应"Method Not Allowed"，并返回状态码 405; 如果没有，则会用 NotFound 的 handler 进行处理 |
-| WithDisablePreParseMultipartForm | false | 如果开启，则不会预处理 multipart form。可以通过 ctx.Request.Body() 获取到 body 后由用户处理 |
-| WithStreamBody | false | 如果开启，则会使用流式处理 body |
-| WithNetwork | "tcp" | 设置网络协议，可选：tcp，udp，unix（unix domain socket），默认为 tcp |
-| WithExitWaitTime | 5s | 设置优雅退出时间。Server 会停止建立新的连接，并对关闭后的每一个请求设置 Connection: Close 的 header，当到达设定的时间关闭 Server。当所有连接已经关闭时，Server 可以提前关闭 |
-| WithTLS | nil | 配置 server tls 能力，详情可见 [TLS](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/) |
-| WithListenConfig | nil | 设置监听器配置，可用于设置是否允许 reuse port 等 |
-| WithALPN | false | 是否开启 ALPN |
-| WithTracer | []interface{}{} | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭 |
-| WithTraceLevel | LevelDetailed | 设置 trace level |
-| WithWriteTimeout | 无限长 | 写入数据超时时间 |
-| WithRedirectFixedPath | false | 如果开启，当当前请求路径不能匹配上时，server 会尝试修复请求路径并重新进行匹配，如果成功匹配并且为 GET 请求则会返回状态码 301 进行重定向，其他请求方式返回 308 进行重定向 |
-| WithBasePath | `/` | 设置基本路径，前缀和后缀必须为 `/` |
-| WithMaxKeepBodySize | 4 * 1024 * 1024 | 设置回收时保留的请求体和响应体的最大大小。单位：字节 |
-| WithGetOnly | false | 如果开启则只接受 GET 请求 |
-| WithKeepAlive | true | 如果开启则使用 HTTP 长连接 |
-| WithAltTransport | network.NewTransporter | 设置备用 transport |
-| WithH2C | false | 设置是否开启 H2C |
-| WithReadBufferSize | 4 * 1024 | 设置读缓冲区大小，同时限制 HTTP header 大小 |
-| WithRegistry | registry.NoopRegistry, nil | 设置注册中心配置，服务注册信息 |
-| WithAutoReloadRender | false, 0 | 设置自动重载渲染配置 |
-| WithDisablePrintRoute | false | 设置是否禁用 debugPrintRoute |
-| WithOnAccept | nil | 设置在 netpoll 中当一个连接被接受但不能接收数据时的回调函数，在 go net 中在转换 TLS 连接之前被调用 |
-| WithOnConnect | nil | 设置 onConnect 函数。它可以接收来自 netpoll 连接的数据。在 go net 中，它将在转换 TLS 连接后被调用 |
-| WithDisableHeaderNamesNormalizing|false|设置是否禁用 Request 和 Response Header 名字的规范化 (首字母和破折号后第一个字母大写)|
+| 配置项                            | 默认值                     | 说明                                                                                                                                                                                                                            |
+| :-------------------------------- | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| WithTransport                     | network.NewTransporter     | 更换底层 transport                                                                                                                                                                                                              |
+| WithHostPorts                     | `:8888`                    | 指定监听的地址和端口                                                                                                                                                                                                            |
+| WithKeepAliveTimeout              | 1min                       | tcp 长连接保活时间，一般情况下不用修改，更应该关注 idleTimeout                                                                                                                                                                  |
+| WithReadTimeout                   | 3min                       | 底层读取数据超时时间                                                                                                                                                                                                            |
+| WithIdleTimeout                   | 3min                       | 长连接请求链接空闲超时时间                                                                                                                                                                                                      |
+| WithMaxRequestBodySize            | 4 _ 1024 _ 1024            | 配置最大的请求体大小                                                                                                                                                                                                            |
+| WithRedirectTrailingSlash         | true                       | 自动根据末尾的 / 转发，例如：如果 router 只有 /foo/，那么 /foo 会重定向到 /foo/ ；如果只有 /foo，那么 /foo/ 会重定向到 /foo                                                                                                     |
+| WithRemoveExtraSlash              | false                      | RemoveExtraSlash 当有额外的 / 时也可以当作参数。如：user/:name，如果开启该选项 user//xiaoming 也可匹配上参数                                                                                                                    |
+| WithUnescapePathValues            | true                       | 如果开启，请求路径会被自动转义（eg. '%2F' -> '/'）。如果 UseRawPath 为 false（默认情况），则 UnescapePathValues 实际上为 true，因为 .URI().Path() 将被使用，它已经是转义后的。设置该参数为 false，需要配合 WithUseRawPath(true) |
+| WithUseRawPath                    | false                      | 如果开启，会使用原始 path 进行路由匹配                                                                                                                                                                                          |
+| WithHandleMethodNotAllowed        | false                      | 如果开启，当当前路径不能被匹配上时，server 会去检查其他方法是否注册了当前路径的路由，如果存在则会响应"Method Not Allowed"，并返回状态码 405; 如果没有，则会用 NotFound 的 handler 进行处理                                      |
+| WithDisablePreParseMultipartForm  | false                      | 如果开启，则不会预处理 multipart form。可以通过 ctx.Request.Body() 获取到 body 后由用户处理                                                                                                                                     |
+| WithStreamBody                    | false                      | 如果开启，则会使用流式处理 body                                                                                                                                                                                                 |
+| WithNetwork                       | "tcp"                      | 设置网络协议，可选：tcp，udp，unix（unix domain socket），默认为 tcp                                                                                                                                                            |
+| WithExitWaitTime                  | 5s                         | 设置优雅退出时间。Server 会停止建立新的连接，并对关闭后的每一个请求设置 Connection: Close 的 header，当到达设定的时间关闭 Server。当所有连接已经关闭时，Server 可以提前关闭                                                     |
+| WithTLS                           | nil                        | 配置 server tls 能力，详情可见 [TLS](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/)                                                                                                                                      |
+| WithListenConfig                  | nil                        | 设置监听器配置，可用于设置是否允许 reuse port 等                                                                                                                                                                                |
+| WithALPN                          | false                      | 是否开启 ALPN                                                                                                                                                                                                                   |
+| WithTracer                        | []interface{}{}            | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭                                                                                                                                                                                |
+| WithTraceLevel                    | LevelDetailed              | 设置 trace level                                                                                                                                                                                                                |
+| WithWriteTimeout                  | 无限长                     | 写入数据超时时间                                                                                                                                                                                                                |
+| WithRedirectFixedPath             | false                      | 如果开启，当当前请求路径不能匹配上时，server 会尝试修复请求路径并重新进行匹配，如果成功匹配并且为 GET 请求则会返回状态码 301 进行重定向，其他请求方式返回 308 进行重定向                                                        |
+| WithBasePath                      | `/`                        | 设置基本路径，前缀和后缀必须为 `/`                                                                                                                                                                                              |
+| WithMaxKeepBodySize               | 4 _ 1024 _ 1024            | 设置回收时保留的请求体和响应体的最大大小。单位：字节                                                                                                                                                                            |
+| WithGetOnly                       | false                      | 如果开启则只接受 GET 请求                                                                                                                                                                                                       |
+| WithKeepAlive                     | true                       | 如果开启则使用 HTTP 长连接                                                                                                                                                                                                      |
+| WithAltTransport                  | network.NewTransporter     | 设置备用 transport                                                                                                                                                                                                              |
+| WithH2C                           | false                      | 设置是否开启 H2C                                                                                                                                                                                                                |
+| WithReadBufferSize                | 4 \* 1024                  | 设置读缓冲区大小，同时限制 HTTP header 大小                                                                                                                                                                                     |
+| WithRegistry                      | registry.NoopRegistry, nil | 设置注册中心配置，服务注册信息                                                                                                                                                                                                  |
+| WithAutoReloadRender              | false, 0                   | 设置自动重载渲染配置                                                                                                                                                                                                            |
+| WithDisablePrintRoute             | false                      | 设置是否禁用 debugPrintRoute                                                                                                                                                                                                    |
+| WithOnAccept                      | nil                        | 设置在 netpoll 中当一个连接被接受但不能接收数据时的回调函数，在 go net 中在转换 TLS 连接之前被调用                                                                                                                              |
+| WithOnConnect                     | nil                        | 设置 onConnect 函数。它可以接收来自 netpoll 连接的数据。在 go net 中，它将在转换 TLS 连接后被调用                                                                                                                               |
+| WithDisableHeaderNamesNormalizing | false                      | 设置是否禁用 Request 和 Response Header 名字的规范化 (首字母和破折号后第一个字母大写)                                                                                                                                           |
 
 Server Connection 数量限制:
 
-* 如果是使用标准网络库，无此限制
-* 如果是使用 netpoll，最大连接数为 10000
+- 如果是使用标准网络库，无此限制
+- 如果是使用 netpoll，最大连接数为 10000
   （这个是 netpoll 底层使用的 [gopool](https://github.com/bytedance/gopkg/blob/b9c1c36b51a6837cef4c2223e11522e3a647460c/util/gopool/gopool.go#L46)
   ）控制的，修改方式也很简单，调用 gopool 提供的函数即可：`gopool.SetCap(xxx)`(main.go 中调用一次即可)。
 
@@ -287,130 +286,130 @@ Hertz Server 支持流式写入响应。
 提供了两种方式：
 
 1. 用户在 handler 中通过 `ctx.SetBodyStream` 函数传入一个 `io.Reader`，然后按与示例代码（利用 channel 控制数据分块及读写顺序）类似的方式分块读写数据。**注意，数据需异步写入。**
-  
-    若用户事先知道传输数据的总长度，可以在 `ctx.SetBodyStream` 函数中传入该长度进行流式写，示例代码如 `/streamWrite1`。
 
-    若用户事先不知道传输数据的总长度，可以在 `ctx.SetBodyStream` 函数中传入 -1 以 `Transfer-Encoding: chunked` 的方式进行流式写，示例代码如 `/streamWrite2`。
+   若用户事先知道传输数据的总长度，可以在 `ctx.SetBodyStream` 函数中传入该长度进行流式写，示例代码如 `/streamWrite1`。
 
-    示例代码：
+   若用户事先不知道传输数据的总长度，可以在 `ctx.SetBodyStream` 函数中传入 -1 以 `Transfer-Encoding: chunked` 的方式进行流式写，示例代码如 `/streamWrite2`。
 
-    ```go
-    func main() {
-        h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
-    
-        h.GET("/streamWrite1", func(c context.Context, ctx *app.RequestContext) {
-            rw := newChunkReader()
-            line := []byte("line\r\n")
-            ctx.SetBodyStream(rw, 500*len(line))
-    
-            go func() {
-                for i := 1; i <= 500; i++ {
-                    // For each streaming_write, the upload_file prints
-                    rw.Write(line)
-                    fmt.Println(i)
-                    time.Sleep(10 * time.Millisecond)
-                }
-                rw.Close()
-            }()
-    
-            go func() {
-                <-ctx.Finished()
-                fmt.Println("request process end")
-            }()
-        })
-    
-        h.GET("/streamWrite2", func(c context.Context, ctx *app.RequestContext) {
-            rw := newChunkReader()
-            // Content-Length may be negative:
-            // -1 means Transfer-Encoding: chunked.
-            ctx.SetBodyStream(rw, -1)
-    
-            go func() {
-                for i := 1; i < 1000; i++ {
-                    // For each streaming_write, the upload_file prints
-                    rw.Write([]byte(fmt.Sprintf("===%d===\n", i)))
-                    fmt.Println(i)
-                    time.Sleep(100 * time.Millisecond)
-                }
-                rw.Close()
-            }()
-    
-            go func() {
-                <-ctx.Finished()
-                fmt.Println("request process end")
-            }()
-        })
-    
-        h.Spin()
-    }
-    
-    type ChunkReader struct {
-        rw  bytes.Buffer
-        w2r chan struct{}
-        r2w chan struct{}
-    }
-    
-    func newChunkReader() *ChunkReader {
-        var rw bytes.Buffer
-        w2r := make(chan struct{})
-        r2w := make(chan struct{})
-        cr := &ChunkReader{rw, w2r, r2w}
-        return cr
-    }
-    
-    var closeOnce = new(sync.Once)
-    
-    func (cr *ChunkReader) Read(p []byte) (n int, err error) {
-        for {
-            _, ok := <-cr.w2r
-            if !ok {
-                closeOnce.Do(func() {
-                    close(cr.r2w)
-                })
-                n, err = cr.rw.Read(p)
-                return
-            }
-    
-            n, err = cr.rw.Read(p)
-    
-            cr.r2w <- struct{}{}
-    
-            if n == 0 {
-                continue
-            }
-            return
-        }
-    }
-    
-    func (cr *ChunkReader) Write(p []byte) (n int, err error) {
-        n, err = cr.rw.Write(p)
-        cr.w2r <- struct{}{}
-        <-cr.r2w
-        return
-    }
-    
-    func (cr *ChunkReader) Close() {
-        close(cr.w2r)
-    }
-    
-    ```
+   示例代码：
 
-2. 用户可以在 handler 中使用  `pkg/protocol/http1/resp/writer` 下提供的 `NewChunkedBodyWriter` 方法劫持 response 的 writer，然后使用 `ctx.Write` 函数将分块数据写入 Body 并将分块数据使用 `ctx.Flush` 函数立即发送给客户端。
+   ```go
+   func main() {
+       h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
 
-    示例代码：
+       h.GET("/streamWrite1", func(c context.Context, ctx *app.RequestContext) {
+           rw := newChunkReader()
+           line := []byte("line\r\n")
+           ctx.SetBodyStream(rw, 500*len(line))
 
-    ```go
-    h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
-		// Hijack the writer of response
-		ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
-    
-		for i := 0; i < 10; i++ {
-			ctx.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
-			ctx.Flush()                                                                 // nolint: errcheck
-			time.Sleep(200 * time.Millisecond)
-		}
-	})
-    ```
+           go func() {
+               for i := 1; i <= 500; i++ {
+                   // For each streaming_write, the upload_file prints
+                   rw.Write(line)
+                   fmt.Println(i)
+                   time.Sleep(10 * time.Millisecond)
+               }
+               rw.Close()
+           }()
+
+           go func() {
+               <-ctx.Finished()
+               fmt.Println("request process end")
+           }()
+       })
+
+       h.GET("/streamWrite2", func(c context.Context, ctx *app.RequestContext) {
+           rw := newChunkReader()
+           // Content-Length may be negative:
+           // -1 means Transfer-Encoding: chunked.
+           ctx.SetBodyStream(rw, -1)
+
+           go func() {
+               for i := 1; i < 1000; i++ {
+                   // For each streaming_write, the upload_file prints
+                   rw.Write([]byte(fmt.Sprintf("===%d===\n", i)))
+                   fmt.Println(i)
+                   time.Sleep(100 * time.Millisecond)
+               }
+               rw.Close()
+           }()
+
+           go func() {
+               <-ctx.Finished()
+               fmt.Println("request process end")
+           }()
+       })
+
+       h.Spin()
+   }
+
+   type ChunkReader struct {
+       rw  bytes.Buffer
+       w2r chan struct{}
+       r2w chan struct{}
+   }
+
+   func newChunkReader() *ChunkReader {
+       var rw bytes.Buffer
+       w2r := make(chan struct{})
+       r2w := make(chan struct{})
+       cr := &ChunkReader{rw, w2r, r2w}
+       return cr
+   }
+
+   var closeOnce = new(sync.Once)
+
+   func (cr *ChunkReader) Read(p []byte) (n int, err error) {
+       for {
+           _, ok := <-cr.w2r
+           if !ok {
+               closeOnce.Do(func() {
+                   close(cr.r2w)
+               })
+               n, err = cr.rw.Read(p)
+               return
+           }
+
+           n, err = cr.rw.Read(p)
+
+           cr.r2w <- struct{}{}
+
+           if n == 0 {
+               continue
+           }
+           return
+       }
+   }
+
+   func (cr *ChunkReader) Write(p []byte) (n int, err error) {
+       n, err = cr.rw.Write(p)
+       cr.w2r <- struct{}{}
+       <-cr.r2w
+       return
+   }
+
+   func (cr *ChunkReader) Close() {
+       close(cr.w2r)
+   }
+
+   ```
+
+2. 用户可以在 handler 中使用 `pkg/protocol/http1/resp/writer` 下提供的 `NewChunkedBodyWriter` 方法劫持 response 的 writer，然后使用 `ctx.Write` 函数将分块数据写入 Body 并将分块数据使用 `ctx.Flush` 函数立即发送给客户端。
+
+   示例代码：
+
+   ```go
+   h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
+   	// Hijack the writer of response
+   	ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
+
+   	for i := 0; i < 10; i++ {
+   		ctx.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+   		ctx.Flush()                                                                 // nolint: errcheck
+   		time.Sleep(200 * time.Millisecond)
+   	}
+   })
+   ```
 
 **这两种方式的区别：第一种在执行完 handler 逻辑后再将数据按分块发送给客户端，第二种在 handler 逻辑中就可以将分块数据发送出去。**
 
@@ -454,7 +453,7 @@ Hertz 提供了全局的 Hook 注入能力，用于在服务触发启动后和�
 
 用于设置当程序发生 panic 时的处理函数，默认为 `nil`。
 
->注意：如果同时设置了 `PanicHandler` 和 `Recovery` 中间件，则 `Recovery` 中间件会覆盖 `PanicHandler` 的处理逻辑。
+> 注意：如果同时设置了 `PanicHandler` 和 `Recovery` 中间件，则 `Recovery` 中间件会覆盖 `PanicHandler` 的处理逻辑。
 
 示例代码:
 
@@ -568,7 +567,7 @@ tName := h.GetTransporterName()
 
 `SetTransporter` 用于设置网络库。
 
->注意：`SetTransporter` 只设置 Engine 的全局默认值，所以在初始化 Engine 时使用 `WithTransporter` 来设置网络库会覆盖掉 `SetTransporter` 的设置。
+> 注意：`SetTransporter` 只设置 Engine 的全局默认值，所以在初始化 Engine 时使用 `WithTransporter` 来设置网络库会覆盖掉 `SetTransporter` 的设置。
 
 函数签名:
 

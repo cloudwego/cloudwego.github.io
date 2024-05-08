@@ -3,7 +3,6 @@ title: "Overview"
 linkTitle: "Overview"
 weight: 1
 description: >
-
 ---
 
 ## Introduction
@@ -32,24 +31,26 @@ We developed the RPC framework [Kitex][Kitex] and HTTP framework [Hertz][Hertz] 
 
 ## Features
 
-* **Already**
-    - [LinkBuffer][LinkBuffer] provides nocopy API for streaming reading and writing
-    - [gopool][gopool] provides high-performance goroutine pool
-    - [mcache][mcache] provides efficient memory reuse
-    - `IsActive` supports checking whether the connection is alive
-    - `Dialer` supports building clients
-    - `EventLoop` supports building a server
-    - TCP, Unix Domain Socket
-    - Linux, macOS (operating system)
+- **Already**
 
-* **Future**
-    - [io_uring][io_uring]
-    - Shared Memory IPC
-    - TLS
-    - UDP
+  - [LinkBuffer][LinkBuffer] provides nocopy API for streaming reading and writing
+  - [gopool][gopool] provides high-performance goroutine pool
+  - [mcache][mcache] provides efficient memory reuse
+  - `IsActive` supports checking whether the connection is alive
+  - `Dialer` supports building clients
+  - `EventLoop` supports building a server
+  - TCP, Unix Domain Socket
+  - Linux, macOS (operating system)
 
-* **Unsupported**
-    - Windows (operating system)
+- **Future**
+
+  - [io_uring][io_uring]
+  - Shared Memory IPC
+  - TLS
+  - UDP
+
+- **Unsupported**
+  - Windows (operating system)
 
 ## Performance
 
@@ -63,9 +64,8 @@ More benchmarks reference [kitex-benchmark][kitex-benchmark] and [hertz-benchmar
 
 ## Reference
 
-* [Official Website](/)
-* [Getting Started](/docs/netpoll/getting-started/)
-
+- [Official Website](/)
+- [Getting Started](/docs/netpoll/getting-started/)
 
 [Netpoll]: https://github.com/cloudwego/netpoll
 [net]: https://github.com/golang/go/tree/master/src/net
@@ -76,15 +76,12 @@ More benchmarks reference [kitex-benchmark][kitex-benchmark] and [hertz-benchmar
 [Kitex]: https://github.com/cloudwego/kitex
 [Hertz]: https://github.com/cloudwego/hertz
 [netpoll-example]: https://github.com/cloudwego/netpoll-examples
-
 [netpoll-benchmark]: https://github.com/cloudwego/netpoll-benchmark
 [kitex-benchmark]: https://github.com/cloudwego/kitex-benchmark
 [hertz-benchmark]: https://github.com/cloudwego/hertz-benchmark
-
 [ByteDance]: https://www.bytedance.com
 [Redis]: https://redis.io
 [HAProxy]: http://www.haproxy.org
-
 [LinkBuffer]: https://github.com/cloudwego/netpoll/blob/develop/nocopy_linkbuffer.go
 [gopool]: https://github.com/bytedance/gopkg/tree/develop/util/gopool
 [mcache]: https://github.com/bytedance/gopkg/tree/develop/lang/mcache

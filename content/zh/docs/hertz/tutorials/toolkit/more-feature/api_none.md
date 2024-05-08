@@ -1,10 +1,11 @@
 ---
-title: 'api.none 注解说明'
+title: "api.none 注解说明"
 date: 2023-04-23
 weight: 5
 keywords: ["api.none", "thrift", "protobuf"]
 description: "hz 提供的 api.none 注解说明。"
 ---
+
 ## 介绍
 
 hz 生成的代码会自动为结构体添加 go tag，从而方便进行参数绑定。

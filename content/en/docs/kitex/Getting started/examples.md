@@ -5,7 +5,6 @@ weight: 5
 date: 2024-01-18
 keywords: ["Kitex", "Golang", "Go", "Examples"]
 description: "Code Examples for using Kitex"
-
 ---
 
 ## How to run
@@ -73,7 +72,7 @@ You can go into the related examples for information on "how to run"
 - [profiler](https://github.com/cloudwego/kitex-examples/tree/main/profiler) Example of Kitex server and client performance analysis using request cost metrics
 - [proxyless](https://github.com/cloudwego/kitex-examples/tree/main/proxyless) Example of letting Kitex services run in proxyless mode and be managed uniformly by the service mesh
 - [grpc_multi_service](https://github.com/cloudwego/kitex-examples/tree/main/grpc_multi_service) Example of Kitex server and client using grpc multiservice
-- [goroutine_local_storage](https://github.com/cloudwego/kitex-examples/tree/main/goroutine-local-storage) Example of Kitex server and client using goroutine_local_storage 
+- [goroutine_local_storage](https://github.com/cloudwego/kitex-examples/tree/main/goroutine-local-storage) Example of Kitex server and client using goroutine_local_storage
 
 ## Kitex generated code
 

@@ -4,7 +4,6 @@ linkTitle: "slog"
 weight: 5
 keywords: ["Logger Extension", "slog"]
 description: "Hertz interfaces with slog and lumberjack."
-
 ---
 
 ## Logger structure
@@ -107,7 +106,7 @@ func main() {
 
 `WithLevel` judges the incoming `*slog.LevelVar`. Only log levels higher than or equal to this will be recorded
 
->It is worth noting that if `WithLevel` is set together with `WithHandlerOptions`, the log level of WithLevel will override the log level in WithHandlerOptions
+> It is worth noting that if `WithLevel` is set together with `WithHandlerOptions`, the log level of WithLevel will override the log level in WithHandlerOptions
 
 Function Signature:
 
@@ -131,7 +130,7 @@ func main() {
     //Dynamically set the log level to Level Debug
     levelVar := slog.LevelVar{}
     levelVar.Set(slog.LevelDebug)
-    logger := hertzslog.NewLogger(hertzslog.WithLevel(&slog.LevelVar{})) 
+    logger := hertzslog.NewLogger(hertzslog.WithLevel(&slog.LevelVar{}))
 }
 
 ```
@@ -143,7 +142,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithHandlerOptions(opts *slog.HandlerOptions) Option 
+func WithHandlerOptions(opts *slog.HandlerOptions) Option
 ```
 
 Sample code:
@@ -205,7 +204,7 @@ func main() {
 			return
 		}
 	}
-	
+
 	logger := hertzslog.NewLogger()
 	// set filename to date
 	lumberjackLogger := &lumberjack.Logger{

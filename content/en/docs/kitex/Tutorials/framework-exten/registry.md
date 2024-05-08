@@ -8,6 +8,7 @@ description: >
 Kitex supports user-defined registration module. Users can extend and integrate other registration centers by themselves. This extension is defined under pkg/registry.
 
 ## Extension API and Definition of Info Struct
+
 - Extension API
 
 ```go
@@ -19,7 +20,8 @@ type Registry interface {
 ```
 
 - Definition of Info Struct
-Kitex defines some registration information. Users can also expand the registration information into tags as needed.
+  Kitex defines some registration information. Users can also expand the registration information into tags as needed.
+
 ```go
 // Info is used for registry.
 // The fields are just suggested, which is used depends on design.
@@ -41,6 +43,7 @@ type Info struct {
 ```
 
 ## Integrate into Kitex
+
 Specify your own registration module and customized registration information through `option`. Note that registration requires service information, which is also specified through option.
 
 - Specify Server Info
@@ -72,5 +75,3 @@ Specify your own registration module and customized registration information thr
   ```go
   svr := xxxservice.NewServer(handler, server.WithRegistry(yourRegistry), server.WithRegistryInfo(yourRegistryInfo))
   ```
-
-

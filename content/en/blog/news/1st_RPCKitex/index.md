@@ -3,7 +3,15 @@ date: 2022-09-30
 title: "Kitex: Unifying Open Source Practice for a High-Performance RPC Framework"
 projects: ["Kitex"]
 linkTitle: "Kitex: Unifying Open Source Practice for a High-Performance RPC Framework"
-keywords: ["CloudWeGo", "RPC framework", "Kitex", "microservice framework", "ByteDance Open Source", "open source"]
+keywords:
+  [
+    "CloudWeGo",
+    "RPC framework",
+    "Kitex",
+    "microservice framework",
+    "ByteDance Open Source",
+    "open source",
+  ]
 description: "This article provides an overview of CloudWeGo - Kitex, a high-performance RPC framework, including its origins, development history, and the progress made since its open-source release a year ago. It covers the evolution of functional features, contributions from the community to the ecosystem, and successful implementation practices by enterprises. It highlights the growth and improvements Kitex has undergone, showcasing its commitment to delivering a robust and efficient solution for RPC communication in various scenarios."
 author: <a href="https://github.com/cloudwego" target="_blank">CloudWeGo Team</a>
 ---

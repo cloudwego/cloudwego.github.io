@@ -30,7 +30,7 @@ package main
 import (
     "context"
     "log"
-    
+
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/hertz-contrib/casbin"
@@ -40,7 +40,7 @@ import (
 
 func main() {
     h := server.Default()
-    
+
     // 使用 session 存储用户信息.
     store := cookie.NewStore([]byte("secret"))
     h.Use(sessions.New("session", store))
@@ -48,11 +48,11 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    
+
     h.POST("/login", func(ctx context.Context, c *app.RequestContext) {
         // 校验用户名和密码.
         // ...
-    
+
         // 存储用户名 (casbin 访问实体)
         session := sessions.Default(c)
         session.Set("name", "alice")
@@ -62,15 +62,15 @@ func main() {
         }
         c.String(200, "you login successfully")
     })
-    
+
     h.GET("/book", auth.RequiresPermissions("book:read", casbin.WithLogic(casbin.AND)), func(ctx context.Context, c *app.RequestContext) {
         c.String(200, "you read the book successfully")
     })
-    
+
     h.POST("/book", auth.RequiresRoles("user", casbin.WithLogic(casbin.AND)), func(ctx context.Context, c *app.RequestContext) {
         c.String(200, "you posted a book successfully")
     })
-    
+
     h.Spin()
 }
 
@@ -158,7 +158,7 @@ func main() {
 	if err != nil{
 		log.Fatal(err)
 	}
-	
+
     casbinMiddleware, err := casbin.NewCasbinMiddlewareFromEnforcer(enforcer, exampleLookupHandler)
     if err != nil {
         log.Fatal(err)
@@ -183,27 +183,27 @@ func (m *Middleware) exampleMiddlwareMethod(expression string, opts ...Option) a
 
 - **expression**
 
-    表达式含有一个或多个变量，变量之间用空格分隔，表达式的具体格式与 `Logic`（见后文 `选项说明`）相关，
+  表达式含有一个或多个变量，变量之间用空格分隔，表达式的具体格式与 `Logic`（见后文 `选项说明`）相关，
 
-    表达式的计算最终值为 **True** or **False**，**True** 则代表通过鉴权中间件，**False** 则代表没有通过鉴权中间件，
+  表达式的计算最终值为 **True** or **False**，**True** 则代表通过鉴权中间件，**False** 则代表没有通过鉴权中间件，
 
-    如 `Logic` 为 **AND** or **OR**，则格式为：
+  如 `Logic` 为 **AND** or **OR**，则格式为：
 
-    `"var1 var2 var3 var4"`，比如 `"book:read book:write"`
+  `"var1 var2 var3 var4"`，比如 `"book:read book:write"`
 
-    如 `Logic` 为 **CUSTOM**，则格式为：
+  如 `Logic` 为 **CUSTOM**，则格式为：
 
-    `"var1 opr1 var2 opr2 var3"`，比如 `"book:read && book:write || book:all"`
+  `"var1 opr1 var2 opr2 var3"`，比如 `"book:read && book:write || book:all"`
 
 - **opts**
 
-    | 选项                            | 介绍                                                         | 默认值                                                       |
-    | ------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-    | `WithLogic`                     | `Logic` 是在 `expression` 中的逻辑操作 (**AND**/**OR**/**CUSTOM**) | `AND`                                                        |
-    | `WithPermissionParser`          | `PermissionParserFunc` 是用于解析 `expression` 中变量得出 `obj` 和 `act` 的函数 | `PermissionParserWithSeparator(":")`                         |
-    | `WithPermissionParserSeparator` | `PermissionParserSeparator` 是用于设置 `expression` 中变量内部的分隔符 | `:`                                                          |
-    | `WithUnauthorized`              | `Unauthorized` 用于定义未通过授权中间件时的响应体（找不到访问实体） | `func(ctx context.Context, c *app.RequestContext) {    c.AbortWithStatus(consts.StatusUnauthorized) }` |
-    | `WithForbidden`                 | `Forbidden` 用于定义访问到禁止访问资源的响应体（访问实体没有相应权限） | `func(ctx context.Context, c *app.RequestContext) {    c.AbortWithStatus(consts.StatusForbidden) }` |
+  | 选项                            | 介绍                                                                            | 默认值                                                                                                 |
+  | ------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+  | `WithLogic`                     | `Logic` 是在 `expression` 中的逻辑操作 (**AND**/**OR**/**CUSTOM**)              | `AND`                                                                                                  |
+  | `WithPermissionParser`          | `PermissionParserFunc` 是用于解析 `expression` 中变量得出 `obj` 和 `act` 的函数 | `PermissionParserWithSeparator(":")`                                                                   |
+  | `WithPermissionParserSeparator` | `PermissionParserSeparator` 是用于设置 `expression` 中变量内部的分隔符          | `:`                                                                                                    |
+  | `WithUnauthorized`              | `Unauthorized` 用于定义未通过授权中间件时的响应体（找不到访问实体）             | `func(ctx context.Context, c *app.RequestContext) {    c.AbortWithStatus(consts.StatusUnauthorized) }` |
+  | `WithForbidden`                 | `Forbidden` 用于定义访问到禁止访问资源的响应体（访问实体没有相应权限）          | `func(ctx context.Context, c *app.RequestContext) {    c.AbortWithStatus(consts.StatusForbidden) }`    |
 
 #### RequiresPermissions
 
@@ -250,19 +250,19 @@ func (m *Middleware) RequiresPermissions(expression string, opts ...Option) app.
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
     h.GET("/book",
 		m.RequiresPermissions("book:read"), // 通过
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book:read book:write"), // 不通过
 		func(ctx context.Context, c *app.RequestContext) {
@@ -293,26 +293,26 @@ func (m *Middleware) RequiresRoles(expression string, opts ...Option) app.Handle
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	h.POST("/book",
 		auth.RequiresRoles("user"), // 通过
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you posted a book successfully")
 		},
 	)
-    
+
     h.POST("/book",
 		auth.RequiresRoles("user reader"), // 通过
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you posted a book successfully")
 		},
 	)
-    
+
     h.POST("/book",
 		auth.RequiresRoles("user reader admin"), // 不通过
 		func(ctx context.Context, c *app.RequestContext) {
@@ -349,7 +349,7 @@ const (
 
 **AND**
 
- `expression` 中的所有变量进行逻辑与操作。
+`expression` 中的所有变量进行逻辑与操作。
 
 示例代码：
 
@@ -359,19 +359,19 @@ const (
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
     h.GET("/book",
 		m.RequiresPermissions("book:read", casbin.WithLogic(casbin.AND)), // 通过
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book:read book:write", casbin.WithLogic(casbin.AND)), // 不通过
 		func(ctx context.Context, c *app.RequestContext) {
@@ -394,19 +394,19 @@ func main(){
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
     h.GET("/book",
 		m.RequiresPermissions("book:read", casbin.WithLogic(casbin.OR)), // 通过
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book:read book:and", casbin.WithLogic(casbin.OR)), // 通过
 		func(ctx context.Context, c *app.RequestContext) {
@@ -433,33 +433,33 @@ func main(){
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
     h.GET("/book",
 		m.RequiresPermissions("book:read", casbin.WithLogic(casbin.CUSTOM)), // 通过
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book:read && book:write", casbin.WithLogic(casbin.CUSTOM)), // 不通过
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
     h.GET("/book",
 		m.RequiresPermissions("book:read || book:write", casbin.WithLogic(casbin.CUSTOM)), // 通过
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
     h.GET("/book",
 		m.RequiresPermissions("!book:read", casbin.WithLogic(casbin.CUSTOM)), // 不通过
 		func(ctx context.Context, c *app.RequestContext) {
@@ -486,12 +486,12 @@ func WithPermissionParser(pp PermissionParserFunc) Option
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book-read",
 			casbin.WithPermissionParser(func(str string) []string {
@@ -522,12 +522,12 @@ func WithPermissionParserSeparator(sep string) Option
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book-read",
 			casbin.WithPermissionParserSeparator("-"),
@@ -556,12 +556,12 @@ func WithUnauthorized(u app.HandlerFunc) Option
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	h.GET("/book",
           m.RequiresPermissions("book:read",
 			casbin.WithUnauthorized(func(c context.Context, ctx *app.RequestContext) {
@@ -592,12 +592,12 @@ func WithForbidden(f app.HandlerFunc) Option
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	h.GET("/book",
           m.RequiresPermissions("book:read",
 			casbin.WithForbidden(func(c context.Context, ctx *app.RequestContext) {

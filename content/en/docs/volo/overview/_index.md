@@ -4,7 +4,6 @@ linkTitle: "Overview"
 weight: 1
 keywords: ["RPC", "Rust", "Volo", "AFIT", "RPITIT"]
 description: "The architecture design, framework features, and related ecology of Volo."
-
 ---
 
 ## Volo

@@ -7,7 +7,9 @@ description: Kitex can opt for direct access without service discovery when the 
 ---
 
 ## Specify RPC Host and Port
+
 You can use `callopt.WithHostPort` to specify host and port, supports two parameters:
+
 - Normal IP address, in the form of `host:port`, support `IPv6`
 - Sock file address, communicating with UDS (Unix Domain Socket)
 

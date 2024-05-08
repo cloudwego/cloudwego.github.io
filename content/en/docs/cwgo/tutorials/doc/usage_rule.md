@@ -68,6 +68,7 @@ For specific rules, please refer to [usage rule](#usage-rule).
 ## Usage Rule
 
 The function name adopts a **camel shaped naming**, with the **first letter capitalized**, and the first word must be one of the following:
+
 - **Insert**
 - **Find**
 - **Update**
@@ -107,7 +108,7 @@ The `Find` operation includes two types: **single entity** and **multiple entiti
 - **Sorting and pagination operations**
 
 | Format                                 | Description                                                                                                                                                                                                                                                                                                                                               | Example                                                                               |
-|----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | **Orderby**{thrift field names 123...} | By default, it is for field ascending. If a field has a descending requirement, add Desc after the field (only applicable to a single field, if there is a requirement for multiple descending fields, Desc needs to be added after each field), for example, OrderbyName (ascending) AgeDesc (descending) **Entering parameters without passing values** | `FindUsernameOrderbyIdUsernameSkipLimitAll`(including two fields "Id" and "Username") |
 | **Skip**                               | Skip number of documents **Enter an integer as an input parameter**                                                                                                                                                                                                                                                                                       | `FindUsernameOrderbyIdUsernameSkipLimitAll`(Skip document)                            |
 | **Limit**                              | Limit the number of documents to be queried **Single entity operations are not supported, Enter an integer as an input parameter**                                                                                                                                                                                                                        | `FindUsernameOrderbyIdUsernameSkipLimitAll`(Limit the number of queried documents)    |
@@ -122,8 +123,8 @@ The `Find` operation includes two types: **single entity** and **multiple entiti
 
 - **Compare Condition**：
 
-| **关键词**              | **Description**                                   | **Input param value**   |
-  |:---------------------|:--------------------------------------------------|:------------------------|
+| **关键词**           | **Description**                                   | **Input param value**   |
+| :------------------- | :------------------------------------------------ | :---------------------- |
 | **Equal**            | Equal                                             | The value of this field |
 | **NotEqual**         | NotEqual                                          | The value of this field |
 | **LessThan**         | LessThan                                          | The value of this field |
@@ -221,7 +222,8 @@ For example: `CollectionUserCollectionInsertMany`, input param: `userCollection 
 
 ## Keywords
 
->When naming structure fields, do not include the following keywords:
+> When naming structure fields, do not include the following keywords:
+
 - **Insert**
 - **Find**
 - **Update**

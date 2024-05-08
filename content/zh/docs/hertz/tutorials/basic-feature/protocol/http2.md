@@ -189,7 +189,7 @@ func main() {
 | 配置               | 默认值  | 介绍                                         |
 | :----------------- | :------ | -------------------------------------------- |
 | `ReadTimeout`      | `0`     | 建立连接后，从服务器读取到可用资源的超时时间 |
-| `DisableKeepAlive` | `false` | 是否关闭 `Keep-Alive` 模式                    |
+| `DisableKeepAlive` | `false` | 是否关闭 `Keep-Alive` 模式                   |
 
 示例代码：
 
@@ -311,20 +311,20 @@ func WithDisableKeepAlive(disableKeepAlive bool) Option
 
 ### 客户端
 
-| 配置                         | 默认值                        | 介绍                                                               |
-| ---------------------------- | ----------------------------- | ------------------------------------------------------------------ |
-| `MaxHeaderListSize`          | `0`，指使用默认的限制（10MB） | 指 http2 规范中的 `SETTINGS_MAX_HEADER_LIST_SIZE`。                 |
-| `AllowHTTP`                  | `false`                       | 设置是否允许 http，h2c 模式的开关                                  |
+| 配置                         | 默认值                        | 介绍                                                                 |
+| ---------------------------- | ----------------------------- | -------------------------------------------------------------------- |
+| `MaxHeaderListSize`          | `0`，指使用默认的限制（10MB） | 指 http2 规范中的 `SETTINGS_MAX_HEADER_LIST_SIZE`。                  |
+| `AllowHTTP`                  | `false`                       | 设置是否允许 http，h2c 模式的开关                                    |
 | `ReadIdleTimeout`            | `0`，即不进行健康检查         | 若连接在该段时间间隔内未接收到任何帧，将使用 `ping` 帧进行健康检查。 |
-| `PingTimeout`                | `15s`                         | 超时时间，如果未收到对 `Ping` 的响应，连接将在该超时时间后关闭。   |
-| `WriteByteTimeout`           | `0`                           | 若在该段时间间隔内未写入任何数据，将关闭连接。                     |
+| `PingTimeout`                | `15s`                         | 超时时间，如果未收到对 `Ping` 的响应，连接将在该超时时间后关闭。     |
+| `WriteByteTimeout`           | `0`                           | 若在该段时间间隔内未写入任何数据，将关闭连接。                       |
 | `StrictMaxConcurrentStreams` | `false`                       | 设置服务器的 `SETTINGS_MAX_CONCURRENT_STREAMS` 是否应该被全局使用。  |
-| `DialTimeout`                | `1s`                          | 与主机建立新连接的超时时间。                                       |
-| `MaxIdleConnDuration`        | `0`                           | 闲置的长连接在该段时间后关闭。                                     |
-| `DisableKeepAlive`           | `false`                       | 是否在每次请求后关闭连接。                                         |
-| `Dialer`                     | `netpoll.NewDialer()`         | 用于设置拨号器。                                                   |
-| `TLSConfig`                  | `nil`                         | `TLS` 配置                                                          |
-| `RetryConfig`               | `nil`                         | 所有与重试有关的配置                                               |
+| `DialTimeout`                | `1s`                          | 与主机建立新连接的超时时间。                                         |
+| `MaxIdleConnDuration`        | `0`                           | 闲置的长连接在该段时间后关闭。                                       |
+| `DisableKeepAlive`           | `false`                       | 是否在每次请求后关闭连接。                                           |
+| `Dialer`                     | `netpoll.NewDialer()`         | 用于设置拨号器。                                                     |
+| `TLSConfig`                  | `nil`                         | `TLS` 配置                                                           |
+| `RetryConfig`                | `nil`                         | 所有与重试有关的配置                                                 |
 
 示例代码：
 
@@ -345,7 +345,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
-	
+
 	"github.com/hertz-contrib/http2/config"
 	"github.com/hertz-contrib/http2/factory"
 )

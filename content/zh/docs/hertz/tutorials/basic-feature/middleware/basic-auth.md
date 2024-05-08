@@ -4,7 +4,6 @@ date: 2022-10-13
 weight: 2
 keywords: ["HTTP", "基本认证"]
 description: "Hertz 提供了 basic auth 的实现。"
-
 ---
 
 在 HTTP 中，基本认证（Basic access authentication）是一种用来允许网页浏览器或其他客户端程序在请求时提供用户名和密码形式的身份凭证的一种登录验证方式。
@@ -56,11 +55,11 @@ Hertz 通过使用中间件可以实现让网页浏览器或其他客户端程�
 
 **注意：** `BasicAuth` 是对 `BasicAuthForRealm` 的封装并提供了默认配置项。
 
-| 参数       | 介绍                                                     |
-|----------|--------------------------------------------------------|
+| 参数     | 介绍                                                                         |
+| -------- | ---------------------------------------------------------------------------- |
 | accounts | `Accounts` 被定义为 `map[string]string` 类型，以键值对的形式存储用户名和密码 |
-| realm    | 安全域字符串，默认值为 `Authorization Required`                   |
-| userKey  | 认证通过后在上下文中设置的用户名所对应的键值，默认值为 `user`                     |
+| realm    | 安全域字符串，默认值为 `Authorization Required`                              |
+| userKey  | 认证通过后在上下文中设置的用户名所对应的键值，默认值为 `user`                |
 
 ### BasicAuth
 

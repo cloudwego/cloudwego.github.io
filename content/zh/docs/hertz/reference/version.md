@@ -4,7 +4,6 @@ linkTitle: "版本说明"
 weight: 2
 keywords: ["版本说明"]
 description: "Hertz 版本说明。"
-
 ---
 
 Hertz 遵从 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 发布版本。

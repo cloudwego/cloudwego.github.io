@@ -5,7 +5,6 @@ weight: 1
 date: 2024-01-18
 keywords: ["Kitex", "Golang", "Go", "前置知识"]
 description: "Kitex 开发前置知识"
-
 ---
 
 ## RPC
@@ -37,7 +36,7 @@ description: "Kitex 开发前置知识"
 11. （客户端）反序列化出结果
 12. （客户端）得到调用的结果
 
-其中步骤 2 中包含的流程称为「**服务治理**」，通常包括并不限于服务发现、负载均衡、ACL、熔断、限流等等功能。这些功能是由其他组件提供的，并不是 Thrift  框架所具有的功能。
+其中步骤 2 中包含的流程称为「**服务治理**」，通常包括并不限于服务发现、负载均衡、ACL、熔断、限流等等功能。这些功能是由其他组件提供的，并不是 Thrift 框架所具有的功能。
 
 ### RPC 服务开发流程
 
@@ -55,7 +54,7 @@ description: "Kitex 开发前置知识"
 
 如果我们要使用 RPC 进行调用，就需要知道对方的接口是什么，需要传什么参数，同时也需要知道返回值是什么样的，就好比两个人之间交流，需要保证在说的是同一个语言、同一件事。IDL 就是为了解决这样的问题，通过 IDL 来约定双方的协议，就像在写代码的时候需要调用某个函数，我们需要知道 `签名`一样。
 
-对于 RPC 框架，IDL 不仅作为接口描述语言，还会根据 IDL 文件生成指定语言的接口定义模块，这样极大简化了开发工作。服务提供方（服务端）需要做的变为 编写 IDL -> 使用代码生成工具生成代码 -> 实现接口；服务调用方（客户端）只需根据服务提供方（服务端）提供的 IDL 生成代码后进行调用。这当中还有服务发现、负载均衡等问题，但不属于 IDL 范畴，故不展开介绍。 
+对于 RPC 框架，IDL 不仅作为接口描述语言，还会根据 IDL 文件生成指定语言的接口定义模块，这样极大简化了开发工作。服务提供方（服务端）需要做的变为 编写 IDL -> 使用代码生成工具生成代码 -> 实现接口；服务调用方（客户端）只需根据服务提供方（服务端）提供的 IDL 生成代码后进行调用。这当中还有服务发现、负载均衡等问题，但不属于 IDL 范畴，故不展开介绍。
 
 Kitex 默认支持 `thrift` 和 `proto3` 两种 IDL。本文简单介绍 Thrift IDL 语法，proto3 语法可参考：[Language Guide(proto3)](https://developers.google.com/protocol-buffers/docs/proto3)
 
@@ -96,7 +95,7 @@ Thrift 提供的容器是强类型容器，映射到大多数编程语言中常�
 Thrift 支持类似 C/C++ 的类型定义
 
 ```Thrift
-typedef i32 MyInteger 
+typedef i32 MyInteger
 
 typedef Tweet ReTweet
 ```
@@ -112,11 +111,11 @@ Thrift 提供了枚举类型
 - 不支持嵌套的 enum
 
 ```Thrift
-enum TweetType { 
-    TWEET, // 
-    RETWEET = 2, // 
+enum TweetType {
+    TWEET, //
+    RETWEET = 2, //
     DM = 0xa,
-    REPLY 
+    REPLY
 }
 ```
 
@@ -126,7 +125,7 @@ Thrift 支持 c风格的多行注释 和 c++/Java 风格的单行注释
 
 ```Thrift
 /*
-* This is a multi-line comment. 
+* This is a multi-line comment.
 * Just like in C.
 */
 
@@ -154,7 +153,7 @@ namespace go com.example.project
 ```Thrift
 include "tweet.thrift" ...
 
-struct TweetSearchResult { 
+struct TweetSearchResult {
     1: list<tweet.Tweet> tweets;
 }
 ```
@@ -167,7 +166,7 @@ Thrift 内定义常量的方式如下：
 const i32 INT_CONST = 1234;
 
 const map<string,string> MAP_CONST = {
-    "hello": "world", 
+    "hello": "world",
     "goodnight": "moon"
 }
 ```
@@ -188,14 +187,14 @@ Struct 由不同的 fields 构成，其中每个 **field** 有唯一的整型 **
 
 ```Thrift
 struct Location {
-    1: required double latitude; 
-    2: required double longitude; 
+    1: required double latitude;
+    2: required double longitude;
 }
 
-struct Tweet { 
+struct Tweet {
     1: required i32 userId;
     2: required string userName;
-    3: required string text; 
+    3: required string text;
     4: optional Location loc; // Struct的定义内可以包含其他 Struct
     16: optional string language = "english" // 可设置默认值
 }
@@ -220,17 +219,17 @@ Thrift 内的 service 定义在语义上和 oop 内的接口是相同的。代�
 > oneway 本身不具有可靠性，且在处理上比较特殊会带来一些隐患，不建议使用
 
 ```Thrift
-service Twitter { 
-    // A method definition looks like C code. It has a return type, arguments, 
-    // and optionally a list of exceptions that it may throw. Note that argument 
-    // lists and exception list are specified using the exact same syntax as 
+service Twitter {
+    // A method definition looks like C code. It has a return type, arguments,
+    // and optionally a list of exceptions that it may throw. Note that argument
+    // lists and exception list are specified using the exact same syntax as
     // field lists in structs.
 
-    void ping(); // 1 
-    bool postTweet(1:Tweet tweet); // 2 
+    void ping(); // 1
+    bool postTweet(1:Tweet tweet); // 2
     TweetSearchResult searchTweets(1:string query); // 3
-    
-    // The 'oneway' modifier indicates that the client only makes a request and does not wait for any response at all. Oneway methods MUST be void. 
+
+    // The 'oneway' modifier indicates that the client only makes a request and does not wait for any response at all. Oneway methods MUST be void.
     oneway void zip() // 4
 }
 ```

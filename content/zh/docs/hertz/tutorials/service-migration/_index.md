@@ -3,7 +3,6 @@ title: "迁移到 Hertz"
 weight: 7
 keywords: ["迁移到 Hertz"]
 description: "Hertz 提供了其他框架( FastHTTP、Gin ) 迁移至 Hertz 的能力。"
-
 ---
 
 ## 迁移脚本

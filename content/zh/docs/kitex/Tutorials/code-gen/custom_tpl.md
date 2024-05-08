@@ -17,6 +17,7 @@ Kitex 支持了自定义模板功能，如果默认的模板不能够满足大�
 1.  Kitex 代码生成分成两部分，kitex_gen 和 mainPkg(剩下的 main.go、handler.go )等等，kitex_gen 无论采用何种生成都不会改变；mainPkg 和 custom layout 只能二选一，如果制定了 custom layout 就不会再生成 mainPkg。
 
 ## 使用场景
+
 当默认的脚手架模板不能够满足用户的需求，比如想要生成 MVC Layout、统一进行错误处理等。
 
 ## 使用方式
@@ -47,7 +48,6 @@ body: ... # 模板内容
 
 https://github.com/cloudwego/cwgo/tree/main/tpl/kitex
 
-
 ## 附录
 
 ### PackageInfo 结构体常用内容
@@ -62,7 +62,7 @@ type PackageInfo struct {
    NoFastAPI        bool
    Version          string
    RealServiceName  string
-   Imports          map[string]map[string]bool 
+   Imports          map[string]map[string]bool
    ExternalKitexGen string
    Features         []feature
    FrugalPretouch   bool
@@ -106,8 +106,8 @@ type MethodInfo struct {
 
 // Parameter .
 type Parameter struct {
-   Deps    []PkgInfo 
-   Name    string  
+   Deps    []PkgInfo
+   Name    string
    RawName string // StructB
    Type    string // *PkgA.StructB
 }

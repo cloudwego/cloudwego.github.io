@@ -2,7 +2,7 @@
 title: "熔断"
 date: 2023-10-24
 weight: 5
-keywords: ["Kitex","熔断","熔断器"]
+keywords: ["Kitex", "熔断", "熔断器"]
 description: "Kitex 熔断使用指南、原理介绍。"
 ---
 
@@ -29,17 +29,17 @@ func GenServiceCBKeyFunc(ri rpcinfo.RPCInfo) string {
 }
 
 func main() {
-        // build a new CBSuite with 
+        // build a new CBSuite with
         cbs := circuitbreak.NewCBSuite(GenServiceCBKeyFunc)
 
         var opts []client.Option
-        
+
         // add to the client options
         opts = append(opts, client.WithCircuitBreaker(cbs))
-        
-        // init client 
+
+        // init client
         cli, err := echoservice.NewClient(targetService, opts...)
-        
+
         // update circuit breaker config for a certain key (should be consistent with GenServiceCBKeyFunc)
         // this can be called at any time, and will take effect for following requests
         cbs.UpdateServiceCBConfig("fromServiceName/toServiceName/method", circuitbreak.CBConfig{
@@ -61,10 +61,12 @@ Kitex 大部分服务治理模块都是通过 middleware 集成，熔断也是�
 - 服务粒度熔断
 
   - 按照服务粒度进行熔断统计，通过 WithMiddleware 添加。服务粒度的具体划分取决于 Circuit Breaker Key，既熔断统计的 key，初始化 CBSuite 时需要传入 **GenServiceCBKeyFunc**，默认提供的是 circuitbreak.RPCInfo2Key ，该 key 的格式是 `fromServiceName/toServiceName/method`，即按照方法级别的异常做熔断统计。
+
 - 实例粒度熔断
 
   - 按照实例粒度进行熔断统计，主要用于解决单实例异常问题，如果触发了实例级别熔断，框架会自动重试。
   - 注意，框架自动重试的前提是需要通过 **WithInstanceMW** 添加，WithInstanceMW 添加的 middleware 会在负载均衡后执行。
+
 - 熔断阈值及**阈值变更**
 
   - 默认的熔断阈值是 `ErrRate: 0.5, MinSample: 200`，错误率达到 50% 触发熔断，同时要求统计量 >200。若要调整阈值，调用 CBSuite 的 `UpdateServiceCBConfig` 和 `UpdateInstanceCBConfig` 来更新 Key 的阈值。
@@ -85,7 +87,7 @@ Kitex 大部分服务治理模块都是通过 middleware 集成，熔断也是�
 
 ### 熔断策略
 
-**熔断器的思路很简单：根据****RPC****的成功失败情况，限制对下游的访问；**
+**熔断器的思路很简单：根据\*\***RPC\***\*的成功失败情况，限制对下游的访问；**
 
 通常熔断器分为三个时期： CLOSED、OPEN、HALFOPEN；
 
@@ -170,6 +172,7 @@ Options 中的 BucketTime 和 BucketNums，就分别对应了每个桶维护的�
   - (1) 检测到 0 号桶已经过期，将其丢弃；
   - (2) 创建新的 10 号桶，对应 [10S，11S)；
   - (3) 将该次 Succ 放入 10 号桶内；
+
 - 在 10.2S 时，你执行 Successes() 查询窗口内成功数，则你得到的实际统计值是 [1S，10.2S) 的数据，而不是 [0.2S，10.2S)；
 
 如果使用分桶计数的办法，这样的抖动是无法避免的，比较折中的一个办法是将桶的个数增多，可以降低抖动的影响；

@@ -4,7 +4,6 @@ date: 2022-10-01
 weight: 9
 keywords: ["Request ID", "X-Request-ID"]
 description: "Hertz 提供了可以对 `X-Request-ID` 进行操作的 Request ID 中间件。"
-
 ---
 
 `X-Request-ID` 在 HTTP Headers 中是一种非标准响应字段，通常用于关联客户端和服务器之间的 HTTP 请求。
@@ -69,11 +68,11 @@ func main() {
 Hertz 通过使用中间件，可以在响应头中添加一个键为 `X-Request-ID` 的标识符，如果在请求头中设置了 `X-Request-ID` 字段，则会在响应头中将 `X-Request-ID` 原样返回。
 Request ID 中间件提供了默认配置，用户也可以依据业务场景使用 `WithGenerator`，`WithCustomHeaderStrKey`，`WithHandler` 函数对以下配置项进行定制。
 
-| 配置                     | 介绍                                   |
-|------------------------|--------------------------------------|
-| WithGenerator          | 定义生成 Request ID 的函数，默认生成 UUID 标识符    |
-| WithCustomHeaderStrKey | 定义 Request ID 的键值，默认为 `X-Request-ID` |
-| WithHandler            | 定义 Request ID 的处理函数                  |
+| 配置                   | 介绍                                             |
+| ---------------------- | ------------------------------------------------ |
+| WithGenerator          | 定义生成 Request ID 的函数，默认生成 UUID 标识符 |
+| WithCustomHeaderStrKey | 定义 Request ID 的键值，默认为 `X-Request-ID`    |
+| WithHandler            | 定义 Request ID 的处理函数                       |
 
 ### 初始化 Request ID
 

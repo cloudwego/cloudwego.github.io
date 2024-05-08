@@ -37,16 +37,16 @@ Function `buildVirtualNodes` in Kitex consistency hash load balancer uses `virtu
 
 Fix the issue that the records that long connection pool reuses connections successfully didn't report.
 
-
 ### **Other**
 
 Upgrade netpoll library dependency to v0.4.0 and support for [configmanager] ( https://github.com/cloudwego/configmanager ) v0.2.0.
 
-----
+---
 
 ## **Full Release Log**
 
 ## Feature:
+
 - [[#923](https://github.com/cloudwego/kitex/pull/923)] feat(grpc): grpc client set header and trailer to context by default and provide api to get header from ctx
 - [[#891](https://github.com/cloudwego/kitex/pull/891)] feat: support to service-inline rpc client and server, which can transfer the rpc call as func call. The feature needs to be used with the generation tool
 - [[#946](https://github.com/cloudwego/kitex/pull/946)] feat: default server handler support executing Read function by trans pipeline
@@ -56,6 +56,7 @@ Upgrade netpoll library dependency to v0.4.0 and support for [configmanager] ( h
 - [[#897](https://github.com/cloudwego/kitex/pull/897)] feat: support loop_service in custom template
 
 ## Optimize:
+
 - [[#961](https://github.com/cloudwego/kitex/pull/961)] optimize(tool): optimize kitex tool tpl with -use param
 - [[#966](https://github.com/cloudwego/kitex/pull/966)] optimize(ttheader): add type check for headerFlags of TTheader
 - [[#919](https://github.com/cloudwego/kitex/pull/919)] optimize: replace go func with GoFunc to avoid panic
@@ -65,6 +66,7 @@ Upgrade netpoll library dependency to v0.4.0 and support for [configmanager] ( h
 - [[#941](https://github.com/cloudwego/kitex/pull/941)] optimize(callopt): optimize the debug info of callopt to reduce the possibility of slice grow
 
 ## Fix:
+
 - [[#963](https://github.com/cloudwego/kitex/pull/963)] fix(generic): generic-map writeInt8 fails on byte
 - [[#901](https://github.com/cloudwego/kitex/pull/901)] fix(mux): mux connection asynccallback dont create new goroutine and server wait all crrst packets received by client
 - [[#921](https://github.com/cloudwego/kitex/pull/921)] fix(loadbalance): fix consisthash byte[] length
@@ -72,14 +74,17 @@ Upgrade netpoll library dependency to v0.4.0 and support for [configmanager] ( h
 - [[#927](https://github.com/cloudwego/kitex/pull/927)] fix(connpool): long connection pool reports reuse success using reporter
 
 ## Refactor:
+
 - [[#958](https://github.com/cloudwego/kitex/pull/958)] refactor(errorHandler): refactor the definition of error handler to get more information to handle error
 - [[#943](https://github.com/cloudwego/kitex/pull/943)] refactor(client): refactor client.Call to improve readability
 - [[#560](https://github.com/cloudwego/kitex/pull/560)] refactor: refactor server detection trans handler to support custom registration
 
 ## Tests:
+
 - [[#900](https://github.com/cloudwego/kitex/pull/900)] test(generic): add thrift reflection (using dynamicgo) generic call example
 
 ## Chore:
+
 - [[#976](https://github.com/cloudwego/kitex/pull/976)] chore: upgrade netpoll to v0.4.0 and thriftgo to v0.2.11
 - [[#956](https://github.com/cloudwego/kitex/pull/956)] chore: update configmanager version to v0.2.0
 - [[#948](https://github.com/cloudwego/kitex/pull/948)] chore: format with goimports -local github.com/cloudwego/kitex

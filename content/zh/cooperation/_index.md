@@ -1,6 +1,6 @@
 ---
-title: '案例'
-linkTitle: '用户案例'
+title: "案例"
+linkTitle: "用户案例"
 menu:
   main:
     weight: 40

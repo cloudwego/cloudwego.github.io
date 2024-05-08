@@ -4,7 +4,6 @@ date: 2023-07-29
 weight: 3
 keywords: ["QUIC", "HTTP", "HTTP3"]
 description: "Hertz-HTTP3 基于 quic-go 实现。"
-
 ---
 
 QUIC 协议是一种传输层网络协议，提供与 TLS/SSL 相当的安全性，同时具有更低的连接和传输延迟。QUIC 目前主要应用于 HTTP 协议，HTTP-over-QUIC 协议即为 HTTP/3，是 HTTP 协议的第三个正式版本。
@@ -19,7 +18,7 @@ Hertz-HTTP3 基于 [quic-go](https://github.com/quic-go/quic-go) 实现，[实�
 go get github.com/hertz-contrib/http3
 ```
 
->注意：go 版本需大于等于 1.19。
+> 注意：go 版本需大于等于 1.19。
 
 ## 网络层与协议层注册
 
@@ -40,19 +39,19 @@ h.AddProtocol(suite.HTTP3, factory.NewServerFactory(&http3.Option{}))
 
 ### 服务端
 
-| 配置               |  说明                                         |
-| :----------------- | -------------------------------------------- |
-| WithTransport      | 设置 HTTP3 实现的网络库 `quic.NewTransporter` |
-| WithAltTransport | 设置备用网络库 `netpoll` 或 `go net`，适用于同时在 TCP 和 QUIC 监听的场景  |
-| WithALPN | 设置是否启用 ALPN |
-| WithTLS | 设置 TLS 配置 |
-| WithHostPorts | 设置开启服务的域名和端口号 |
+| 配置             | 说明                                                                      |
+| :--------------- | ------------------------------------------------------------------------- |
+| WithTransport    | 设置 HTTP3 实现的网络库 `quic.NewTransporter`                             |
+| WithAltTransport | 设置备用网络库 `netpoll` 或 `go net`，适用于同时在 TCP 和 QUIC 监听的场景 |
+| WithALPN         | 设置是否启用 ALPN                                                         |
+| WithTLS          | 设置 TLS 配置                                                             |
+| WithHostPorts    | 设置开启服务的域名和端口号                                                |
 
 ## 示例代码
 
 ### 服务端
 
->注意：QUIC 协议依赖于 TLS 协议，因此需要提供 TLS 配置。
+> 注意：QUIC 协议依赖于 TLS 协议，因此需要提供 TLS 配置。
 
 ```go
 package main

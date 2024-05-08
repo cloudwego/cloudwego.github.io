@@ -1,5 +1,5 @@
 ---
-title: 'hz 接入第三方生成代码插件'
+title: "hz 接入第三方生成代码插件"
 date: 2023-01-21
 weight: 3
 keywords: ["插件", "ThriftGo", "Protoc", "go_package"]
@@ -55,9 +55,7 @@ hz new --idl={YOUR-IDL.proto} --protoc-plugins={PLUGIN_NAME}:{OPTION1,OPTION2}:{
 这里以使用 hz 时集成 `protoc-gen-openapi` 插件用来生成 openapi 3.0 文档为例。
 
 - 安装:`go install github.com/google/gnostic/cmd/protoc-gen-openapi@latest`
-  
 - 定义 idl 的 go_package:"middleware/hertz/biz/model/psm"
-  
 - 使用：`hz new -I=idl --idl=idl/hello/hello.proto --protoc-plugins=openapi::./docs --mod=middleware/hertz`
 
 - 代码：[code](https://github.com/cloudwego/hertz-examples/tree/main/hz/plugin/proto)

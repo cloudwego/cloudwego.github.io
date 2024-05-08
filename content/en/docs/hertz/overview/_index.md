@@ -4,21 +4,23 @@ linkTitle: "Overview"
 weight: 1
 keywords: ["HTTP", "Hertz", "Architecture", "Features", "Performance"]
 description: "This doc covers architecture design, features and performance of Hertz."
-
 ---
 
 ## CloudWeGo-Hertz
+
 Hertz [həːts] is a high-performance, high-usability, extensible HTTP framework for Go. It's designed to make it easy for developers to build microservices.
 
-Inspired by other open source frameworks such as [fasthttp](https://github.com/valyala/fasthttp), [gin](https://github.com/gin-gonic/gin), and [echo](https://github.com/labstack/echo), 
+Inspired by other open source frameworks such as [fasthttp](https://github.com/valyala/fasthttp), [gin](https://github.com/gin-gonic/gin), and [echo](https://github.com/labstack/echo),
 combined with the unique challenges faced by ByteDance, Hertz has become production-ready and has powered ByteDance's internal services over the years.
 
 Today, as Go gains popularity in microservice development, Hertz is the right choice if you are looking for a customisable, high-performance framework to support a variety of use cases.
 
 ## Architecture
+
 ![HERTZ](/img/docs/hertz.png)
 
 ## Features
+
 ### High usability
 
 In modern software engineering, it is agreed that the delivery of high-quality code in a short period of time has become increasingly important in a highly competitive environment.
@@ -42,8 +44,8 @@ Please refer to https://github.com/cloudwego/hertz-benchmark for more details ab
 
 ### High extensibility
 
-Hertz uses a layered architecture to deliver a "batteries included" experience. Because of its layered design, the framework is highly extensible, while its core functionality remains robust. 
-Hertz comes with default implementations for many modules, but also allows users to extend them to suit their own needs. At present, only stable features have been released to the open source community. 
+Hertz uses a layered architecture to deliver a "batteries included" experience. Because of its layered design, the framework is highly extensible, while its core functionality remains robust.
+Hertz comes with default implementations for many modules, but also allows users to extend them to suit their own needs. At present, only stable features have been released to the open source community.
 For further planning, please refer to the [RoadMap](https://github.com/cloudwego/hertz/blob/main/ROADMAP.md).
 
 ### Multi-protocol support
@@ -61,11 +63,13 @@ Performance testing can only provide a relative reference. In production, there 
 We provide the [hertz-benchmark](https://github.com/cloudwego/hertz-benchmark) project to track and compare the performance of Hertz and other frameworks in different situations for reference.
 
 ## Related Projects
+
 - [Netpoll](https://github.com/cloudwego/netpoll): A high-performance network library. Hertz uses it by default.
 - [Hertz-Contrib](https://github.com/hertz-contrib): A collection of Hertz extensions.
 - [Example](https://github.com/cloudwego/hertz-examples): A repository to host examples for Hertz.
 
 ## Blogs
+
 - [Getting Started with Hertz: Performance Testing Guide](/blog/2023/02/24/getting-started-with-hertz-performance-testing-guide/)
 - [Hertz, an Ultra Large Scale Enterprise-Level Microservice HTTP Framework, is Now Officially Open Source!](/blog/2022/06/21/hertz-an-ultra-large-scale-enterprise-level-microservice-http-framework-is-now-officially-open-source/)
 - [ByteDance Practice on Go Network Library](/blog/2020/05/24/bytedance-practices-on-go-network-library/)

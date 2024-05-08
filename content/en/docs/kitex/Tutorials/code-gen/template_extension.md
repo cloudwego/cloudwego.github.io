@@ -32,36 +32,34 @@ Assume we have an extensions.yaml file:
 ```yaml
 ---
 dependencies:
-    example.com/my/pkg: pkg
+  example.com/my/pkg: pkg
 extend_client:
-    import_paths:
-        - example.com/my/pkg
-    extend_option:
-        options = append(options, client.WithSuite(pkg.MyClientSuite()))
-    extend_file: |-
-        func Hello() {
-          println("hello world")
-        }
+  import_paths:
+    - example.com/my/pkg
+  extend_option: options = append(options, client.WithSuite(pkg.MyClientSuite()))
+  extend_file: |-
+    func Hello() {
+      println("hello world")
+    }
 extend_server:
-    import_paths:
-        - example.com/my/pkg
-    extend_option:
-        options = append(options, server.WithSuite(pkg.MyServerSuite()))
-    extend_file: |-
-        func Hello() {
-          println("hello world")
-        }
+  import_paths:
+    - example.com/my/pkg
+  extend_option: options = append(options, server.WithSuite(pkg.MyServerSuite()))
+  extend_file: |-
+    func Hello() {
+      println("hello world")
+    }
 ```
 
 - **dependencies**: Defines a set of packages that may be used in the template and the names they should be aliased as.
 
 - **extend_client**: Customization for client.go
 
-    - **import_paths**: Declare the package list that the code injected into client.go needs to import. Those packages must be declared in the **dependencies**.
+  - **import_paths**: Declare the package list that the code injected into client.go needs to import. Those packages must be declared in the **dependencies**.
 
-    - **extend_option**: The code snippet will be injected into the `NewClient` function, where the default options are constructed. Thus, you can inject your own suite option.
+  - **extend_option**: The code snippet will be injected into the `NewClient` function, where the default options are constructed. Thus, you can inject your own suite option.
 
-    - **extend_file**: The code snippet will be directly appended to client.go. You can add extra functions or constants here.
+  - **extend_file**: The code snippet will be directly appended to client.go. You can add extra functions or constants here.
 
 - **extend_server** field works like the **extend_client** field.
 

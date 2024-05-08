@@ -4,7 +4,6 @@ date: 2022-11-25
 weight: 11
 keywords: ["Sentry", "real-time error monitoring"]
 description: "Hertz integrates with the Sentry-Go SDK by using the middleware hertzsentry. "
-
 ---
 
 Sentry is an open-source real-time error monitoring project that supports many platforms, including web front-end, server-side, mobile, and game-side. Hertz integrates with the [Sentry-Go](https://docs.sentry.io/platforms/go/) SDK by using the middleware [hertzsentry](https://github.com/hertz-contrib/hertzsentry). It provides several unified interfaces to help users get access to the sentry hub and report error messages.
@@ -27,7 +26,7 @@ package main
 import (
     "context"
     "log"
-    
+
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/getsentry/sentry-go"
@@ -58,7 +57,7 @@ func main()  {
     }
 
     // use sentry middleware and config with your requirements.
-    // attention! you should use sentry handler after recovery.Recovery() 
+    // attention! you should use sentry handler after recovery.Recovery()
     h.Use(hertzsentry.NewSentry(
         hertzsentry.WithSendRequest(true),
         hertzsentry.WithRePanic(true),
@@ -84,13 +83,13 @@ func main()  {
 
 Hertz integrates the functionality of Sentry-Go through the use of middleware. The `hertzsentry.options` structure defines the configuration information for hertzsentry and provides a default configuration that can be customized by the user according to the business scenario.
 
-| Parameter       | Introduction                                                 |
-| --------------- | ------------------------------------------------------------ |
-| rePanic         | Used to configure whether Sentry should panic again after recovery; set to true if the Recover middleware is used, the default is false. |
+| Parameter       | Introduction                                                                                                                                                                                                                                                                                                   |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| rePanic         | Used to configure whether Sentry should panic again after recovery; set to true if the Recover middleware is used, the default is false.                                                                                                                                                                       |
 | waitForDelivery | Used to configure whether the request should be blocked and the buffer emptied before continuing to process the response (**only asynchronous transfers really have an operation to empty the buffer**). If using Recover middleware, it is safe to skip this option or set it to false, the default is false. |
-| sendRequest     | Used to configure whether the current request headers should be added when capturing sentry events, the default is false. |
-| sendBody        | Used to configure whether to add the current request body information when capturing sentry events, the default is false. |
-| timeout         | Used to configure the timeout for sentry event delivery requests, the default is 2 seconds. |
+| sendRequest     | Used to configure whether the current request headers should be added when capturing sentry events, the default is false.                                                                                                                                                                                      |
+| sendBody        | Used to configure whether to add the current request body information when capturing sentry events, the default is false.                                                                                                                                                                                      |
+| timeout         | Used to configure the timeout for sentry event delivery requests, the default is 2 seconds.                                                                                                                                                                                                                    |
 
 ### Flush（Go-Sentry）
 

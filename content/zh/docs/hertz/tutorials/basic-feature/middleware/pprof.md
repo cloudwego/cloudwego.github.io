@@ -4,9 +4,7 @@ date: 2022-09-24
 weight: 7
 keywords: ["pprof", "性能分析"]
 description: "Hertz 提供了 pprof 扩展，帮助用户对 Hertz 项目进行性能分析。"
-
 ---
-
 
 Hertz 提供了 [pprof](https://github.com/hertz-contrib/pprof) 扩展，帮助用户对 Hertz 项目进行性能分析，[pprof](https://github.com/hertz-contrib/pprof) 扩展的实现参考了 [Gin](https://github.com/gin-contrib/pprof) 的实现。
 
@@ -99,8 +97,8 @@ RouteRegister(rg *route.RouterGroup, prefixOptions ...string)
 
 本方式注册后的 `pprof` 前缀为路由组的前缀与自定义前缀拼接后的结果。
 
-* 用户不指定前缀，注册后的 `pprof` 的前缀为路由组的前缀与默认前缀 `/debug/pprof` 拼接后的结果，即为 `/xxx/debug/pprof`（`xxx` 为路由组前缀）；
-* 用户指定前缀，注册后的 `pprof` 的前缀为路由组的的前缀与自定义前缀拼接后的结果，比如下文示例中注册后的 `pprof` 前缀为 `/admin/pprof`。
+- 用户不指定前缀，注册后的 `pprof` 的前缀为路由组的前缀与默认前缀 `/debug/pprof` 拼接后的结果，即为 `/xxx/debug/pprof`（`xxx` 为路由组前缀）；
+- 用户指定前缀，注册后的 `pprof` 的前缀为路由组的的前缀与自定义前缀拼接后的结果，比如下文示例中注册后的 `pprof` 前缀为 `/admin/pprof`。
 
 示例代码:
 
@@ -140,9 +138,9 @@ func main() {
 
 通过浏览器访问 `localhost:8888/debug/pprof`
 
-* Hertz 端口号默认为 8888
-* pprof 默认地址前缀为 `debug/pprof`
-* 端口号和访问路由与用户实际端口号和 `pprof` 前缀一致
+- Hertz 端口号默认为 8888
+- pprof 默认地址前缀为 `debug/pprof`
+- 端口号和访问路由与用户实际端口号和 `pprof` 前缀一致
 
 ### 通过 `go tool pprof` 查看
 

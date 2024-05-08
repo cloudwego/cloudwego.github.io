@@ -40,7 +40,7 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template git@git
 ## RPC
 
 1. 模板文件通过包含 yaml 文件的文件夹传递，该文件夹下的所有 yaml 文件都会被渲染，模版解析失败会直接退出。请注意是否存在未知的隐藏文件。
-   
+
    Yaml 文件定义如下：
 
    ```yaml
@@ -54,7 +54,7 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template git@git
    loop_method: true # 是否开启循环渲染
    body: template content # 模板内容
    ```
-   
+
 2. `extensions.yaml` 为特定文件，该文件的内容为[扩展 Service 代码](/zh/docs/kitex/tutorials/code-gen/template_extension/)的配置文件。请注意文件命名冲突问题。
 
 3. 模板使用的数据为 PackageInfo，认为这部分内包含所有的元数据，如 methodInfo 等，用户只需要传递模板文件即可，模板内的数据为 PackageInfo 数据。PackageInfo 内常用的内容见[附录](#附录)。

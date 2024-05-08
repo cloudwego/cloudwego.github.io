@@ -13,6 +13,7 @@ v0.9.0 针对 Thrift 提供了两个重要的功能：Thrift Streaming 和 Multi
 ## **重要变更介绍**
 
 ### 功能
+
 **1. Thrift Streaming**
 
 基于 gRPC(HTTP2) 的 Thrift Streaming 功能正式 Release，用户可以使用 Thrift IDL 定义自己的 Streaming 请求，为保持 IDL 解析的兼容性，Kitex 的 Streaming 方法的定义通过注解的方式，使用方式见 [Thrift Streaming Usage](/zh/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming/)。本版本也对 Streaming 请求的监控上报做了改进，同样适用于 gRPC-Protobuf。注意，Thrift 主要用于结构体序列化，并没有使用 Thrift 消息协议。
@@ -45,8 +46,6 @@ v0.9.0 针对 Thrift 提供了两个重要的功能：Thrift Streaming 和 Multi
 
 新增 Alias Method 的负载均衡方法，来减少权重随机负载均衡算法的时间复杂度。通过 `client.WithLoadBalancer(loadbalance.NewWeightedRandomWithAliasMethodBalancer())` 指定。
 
-
-
 ### 特别的变更
 
 v0.9.0 要求 Go 版本必须 >= 1.17，不再兼容 Go <= v1.16 (稳定性要求必须升级 golang.org/x/ 库引入的 Go 版本限制)
@@ -62,6 +61,7 @@ Kitex 对超时、重试、熔断、限流的策略支持通过远程配置中�
 ## **详细变更**
 
 ### Feature:
+
 1. [[#1208](https://github.com/cloudwego/kitex/pull/1208), [#1251](https://github.com/cloudwego/kitex/pull/1251), [#1230](https://github.com/cloudwego/kitex/pull/1230), [#1226](https://github.com/cloudwego/kitex/pull/1226)] feat: support thrift streaming (replacing the protobuf payload of GRPC/HTTP2 with thrift binary)
 2. [[#1217](https://github.com/cloudwego/kitex/pull/1217)] feat: support thrift and pb multi service
 3. [[#1268](https://github.com/cloudwego/kitex/pull/1268)] feat(thrift): support frugal fallback for arm
@@ -74,6 +74,7 @@ Kitex 对超时、重试、熔断、限流的策略支持通过远程配置中�
 10. [[#1211](https://github.com/cloudwego/kitex/pull/1211)] feat(hessian2): support nested struct for hessian2 customized Exception
 
 ### Optimize:
+
 1. [[#1222](https://github.com/cloudwego/kitex/pull/1222)] optimize(frugal): enable frugal by default when the generated code is using slim template
 2. [[#1209](https://github.com/cloudwego/kitex/pull/1209)] optimize: split encoder interface to customize meta and payload encoding implementation
 3. [[#1206](https://github.com/cloudwego/kitex/pull/1206)] optimize(tool): add IsDir judge in readTemplate and add template register func
@@ -84,6 +85,7 @@ Kitex 对超时、重试、熔断、限流的策略支持通过远程配置中�
 8. [[#1238](https://github.com/cloudwego/kitex/pull/1238)] optimize(bizerr): support biz status error for streaming mode
 
 ### Fix:
+
 1. [[#1236](https://github.com/cloudwego/kitex/pull/1236)] fix(hessian2): correct code-ref behavior when thrift file is not in project dir
 2. [[#1234](https://github.com/cloudwego/kitex/pull/1234)] fix(hessian2): still perform replacement on handler.go when -service is not specified for hessian2
 3. [[#1232](https://github.com/cloudwego/kitex/pull/1232)] fix(gRPC): append "h2" to next proto in gRPC tlsConfig to enable protocol negotiation in TLS
@@ -93,6 +95,7 @@ Kitex 对超时、重试、熔断、限流的策略支持通过远程配置中�
 7. [[#1194](https://github.com/cloudwego/kitex/pull/1194)] fix(retry): always set RespOp && preventive panic to avoid dead loop
 
 ### Chore & Tests
+
 1. [[#1273](https://github.com/cloudwego/kitex/pull/1273)] chore: upgrade netpoll to v0.6.0
 2. [[#1263](https://github.com/cloudwego/kitex/pull/1263)] chore: update sonic to v1.11.1
 3. [[#1255](https://github.com/cloudwego/kitex/pull/1255)] chore: upgrade netpoll to v0.6.0 pre-release version
@@ -102,6 +105,7 @@ Kitex 对超时、重试、熔断、限流的策略支持通过远程配置中�
 7. [[#1220](https://github.com/cloudwego/kitex/pull/1220)] test: correct the cachekey in the benchmark test of balancer
 8. [[#1196](https://github.com/cloudwego/kitex/pull/1196)] test: add just biz handler message error
 
-------
+---
+
 **Thanks a lot to those community contributors who submit some pull requests or share your ideas for this version:**
-@DMwangnima @jizhuozhi @NX-Official @jieqiboh @Lvnszn @Skyenought 
+@DMwangnima @jizhuozhi @NX-Official @jieqiboh @Lvnszn @Skyenought

@@ -64,7 +64,7 @@ svr := xxxserver.NewServer(server.WithProfilerMessageTagging(msgTagging))
 
 ### Write Processor functions
 
-Kitex will periodically run callback functions with statistical results. If we have a metric system, we can upload results in the processor function. 
+Kitex will periodically run callback functions with statistical results. If we have a metric system, we can upload results in the processor function.
 
 For example, if we want to log the results:
 

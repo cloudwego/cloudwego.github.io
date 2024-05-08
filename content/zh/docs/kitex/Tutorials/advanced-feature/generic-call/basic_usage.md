@@ -4,7 +4,6 @@ date: 2024-01-24
 weight: 2
 keywords: ["generic-call", "HTTP", "Thrift"]
 description: "泛化调用基本使用"
-
 ---
 
 ## IDL Provider
@@ -44,7 +43,7 @@ if err != nil {
 }
 ```
 
-`generic.NewThriftFileProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
+`generic.NewThriftFileProviderWithDynamicGo` 在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
 #### Protobuf
 
@@ -94,7 +93,7 @@ if err != nil {
 }
 ```
 
-`generic.NewThriftContentProviderWithDynamicGo`  在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
+`generic.NewThriftContentProviderWithDynamicGo` 在处理 RPC 数据时接入了 [dynamicgo](https://github.com/cloudwego/dynamicgo) 用于提高性能。详情见[接入 dynamicgo 指南](/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/)。
 
 #### Protobuf
 
@@ -129,7 +128,7 @@ if err != nil {
 
 目前仅 Thrift 支持此功能。
 
-若为方便构造 IDL Map，也可以通过 `generic.NewThriftContentWithAbsIncludePathProvider`  或 `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` 使用绝对路径作为 Key。
+若为方便构造 IDL Map，也可以通过 `generic.NewThriftContentWithAbsIncludePathProvider` 或 `generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo` 使用绝对路径作为 Key。
 
 ```go
 content := `
@@ -221,6 +220,7 @@ type Service interface {
 Kitex 支持以下场景的泛化调用：
 
 1. Thrift：
+
    - 二进制泛化调用
    - HTTP 映射泛化调用
    - Map 映射泛化调用
@@ -731,7 +731,7 @@ func main() {
   	// resp 类型为 map[string]interface{}
     resp, err := cli.GenericCall(ctx, "ExampleMethod", map[string]interface{}{
         "Msg": "hello",
-    })   
+    })
 }
 ```
 
@@ -1138,8 +1138,3 @@ func main() {
 	}
 }
 ```
-
-
-
-
-

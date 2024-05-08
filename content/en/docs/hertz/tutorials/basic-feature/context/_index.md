@@ -2,7 +2,14 @@
 title: "RequestContext"
 date: 2023-07-11
 weight: 5
-keywords: ["RequestContext", "HTTP", "Context Passing", "Metadata Storage", "concurrent security"]
+keywords:
+  [
+    "RequestContext",
+    "HTTP",
+    "Context Passing",
+    "Metadata Storage",
+    "concurrent security",
+  ]
 description: "Functions related to the request context."
 ---
 
@@ -19,7 +26,7 @@ type HandlerFunc func(c context.Context, ctx *RequestContext)
 ### Metadata Storage
 
 Both contexts have the ability to store values, and there is a simple basis for choosing which context to use: the lifecycle of the stored value and the chosen context should match.
- 
+
 `ctx` is mainly used to store request level variables, which are reclaimed upon completion of the request. It's characteristics are high query efficiency (with the underlying `map`), unsafe coroutines, and no implementation of the `context.Context` interface.
 
 `c` is passed as a context between middleware `/handler`. it is coroutine security. For all places that require the `context.Context` interface as input parameters, simply pass `c` directly.

@@ -3,10 +3,10 @@ title: "Custom Service Discovery and Load Balancing"
 linkTitle: "Custom Service Discovery and Load Balancing"
 weight: 2
 description: >
-
 ---
 
 ## Service Discovery
+
 The `Discover` trait offers the capability for custom service discovery, supporting both static and subscribable service discovery functionalities.
 
 **Trait** Definition

@@ -90,11 +90,11 @@ After the service is registered to `ETCD`, it will regularly check the status of
 
 **Default Config**
 
-| Config Name         | Default Value    | Description                                                  |
-| ------------------- | ---------------- | ------------------------------------------------------------ |
-| WithMaxAttemptTimes | 5                | Used to set the maximum number of attempts, if 0, it means infinite attempts |
-| WithObserveDelay    | 30 * time.Second | Used to set the delay time for checking service status under normal connection conditions |
-| WithRetryDelay      | 10 * time.Second | Used to set the retry delay time after disconnecting         |
+| Config Name         | Default Value     | Description                                                                               |
+| ------------------- | ----------------- | ----------------------------------------------------------------------------------------- |
+| WithMaxAttemptTimes | 5                 | Used to set the maximum number of attempts, if 0, it means infinite attempts              |
+| WithObserveDelay    | 30 \* time.Second | Used to set the delay time for checking service status under normal connection conditions |
+| WithRetryDelay      | 10 \* time.Second | Used to set the retry delay time after disconnecting                                      |
 
 ##### WithMaxAttemptTimes
 
@@ -103,7 +103,7 @@ After the service is registered to `ETCD`, it will regularly check the status of
 Function signature:
 
 ```go
-func WithMaxAttemptTimes(maxAttemptTimes uint) Option 
+func WithMaxAttemptTimes(maxAttemptTimes uint) Option
 ```
 
 Example:
@@ -164,12 +164,12 @@ func main() {
 
 ##### WithRetryDelay
 
-`WithRetryDelay`  sets the delay time of retry.
+`WithRetryDelay` sets the delay time of retry.
 
 Function signature:
 
 ```go
-func WithRetryDelay(t time.Duration) Option 
+func WithRetryDelay(t time.Duration) Option
 ```
 
 Example:

@@ -5,7 +5,6 @@ weight: 3
 date: 2024-01-18
 keywords: ["Kitex", "Golang", "Go", "基础示例"]
 description: "Kitex 基础示例"
-
 ---
 
 开始此章节前，确保你已经了解**前置知识**并完成了**环境准备**。
@@ -29,7 +28,7 @@ description: "Kitex 基础示例"
 
    ```shell
    go run .
-   
+
    // 输出类似日志代表运行成功
    2024/01/18 20:35:08.857352 server.go:83: [Info] KITEX: server listen at addr=[::]:8888
    ```
@@ -38,7 +37,7 @@ description: "Kitex 基础示例"
 
    ```shell
    go run ./client
-   
+
    // 每隔一秒输出类似日志代表运行成功
    2024/01/18 20:39:59 Response({Message:my request})
    2024/01/18 20:40:00 Response({Message:my request})
@@ -63,7 +62,7 @@ description: "Kitex 基础示例"
 
    ```shell
    docker run --network host kitex-examples ./hello-server
-   
+
    // 输出类似日志代表运行成功
    2024/01/18 12:47:34.712415 server.go:83: [Info] KITEX: server listen at addr=[::]:8888
    ```
@@ -72,7 +71,7 @@ description: "Kitex 基础示例"
 
    ```shell
    docker run --network host kitex-examples ./hello-client
-   
+
    // 每隔一秒输出类似日志代表运行成功
    2024/01/18 12:48:20 Response({Message:my request})
    2024/01/18 12:48:21 Response({Message:my request})
@@ -225,4 +224,3 @@ for {
 ```
 
 恭喜你，完成了快速上手的所有内容！
-

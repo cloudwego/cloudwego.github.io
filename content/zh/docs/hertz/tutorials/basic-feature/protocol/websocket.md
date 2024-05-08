@@ -1,11 +1,11 @@
 ---
 title: "Websocket"
-date:  2022-09-13
+date: 2022-09-13
 weight: 4
 keywords: ["WebSocket", "HTTP", "hijack", "TCP"]
 description: "Hertz 基于 hijack 的方式实现了对 WebSocket 的支持。"
-
 ---
+
 WebSocket 是一种可以在单个 TCP 连接上进行全双工通信，位于 OSI 模型的应用层。WebSocket 使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在 WebSocket API 中，浏览器和服务器只需要完成一次握手，两者之间就可以创建持久性的连接，并进行双向数据传输。
 
 Hertz 提供了 WebSocket 的支持，参考 [gorilla/websocket](http://github.com/gorilla/websocket) 库使用 `hijack` 的方式在 Hertz 进行了适配，用法和参数基本保持一致。
@@ -91,15 +91,15 @@ go run server.go
 
 这部分将围绕 `websocket.HertzUpgrader` 结构展开说明。
 
-| 参数                | 介绍                                                         |
-| ------------------- | ------------------------------------------------------------ |
-| `ReadBufferSize`    | 用于设置输入缓冲区的大小，单位为字节。如果缓冲区大小为零，那么就使用 HTTP 服务器分配的大小。输入缓冲区大小并不限制可以接收的信息的大小。 |
-| `WriteBufferSize`   | 用于设置输出缓冲区的大小，单位为字节。如果缓冲区大小为零，那么就使用 HTTP 服务器分配的大小。输出缓冲区大小并不限制可以发送的信息的大小。 |
-| `WriteBufferPool`   | 用于设置写操作的缓冲池。                                     |
+| 参数                | 介绍                                                                                                                                                                                                                         |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ReadBufferSize`    | 用于设置输入缓冲区的大小，单位为字节。如果缓冲区大小为零，那么就使用 HTTP 服务器分配的大小。输入缓冲区大小并不限制可以接收的信息的大小。                                                                                     |
+| `WriteBufferSize`   | 用于设置输出缓冲区的大小，单位为字节。如果缓冲区大小为零，那么就使用 HTTP 服务器分配的大小。输出缓冲区大小并不限制可以发送的信息的大小。                                                                                     |
+| `WriteBufferPool`   | 用于设置写操作的缓冲池。                                                                                                                                                                                                     |
 | `Subprotocols`      | 用于按优先顺序设置服务器支持的协议。如果这个字段不是 nil，那么 Upgrade 方法通过选择这个列表中与客户端请求的协议的第一个匹配来协商一个子协议。如果没有匹配，那么就不协商协议（Sec-Websocket-Protocol 头不包括在握手响应中）。 |
-| `Error`             | 用于设置生成 HTTP 错误响应的函数。                           |
-| `CheckOrigin`       | 用于设置针对请求的 Origin 头的校验函数，如果请求的 Origin 头是可接受的，CheckOrigin 返回 true。 |
-| `EnableCompression` | 用于设置服务器是否应该尝试协商每个消息的压缩（RFC 7692）。将此值设置为 true 并不能保证压缩会被支持。 |
+| `Error`             | 用于设置生成 HTTP 错误响应的函数。                                                                                                                                                                                           |
+| `CheckOrigin`       | 用于设置针对请求的 Origin 头的校验函数，如果请求的 Origin 头是可接受的，CheckOrigin 返回 true。                                                                                                                              |
+| `EnableCompression` | 用于设置服务器是否应该尝试协商每个消息的压缩（RFC 7692）。将此值设置为 true 并不能保证压缩会被支持。                                                                                                                         |
 
 ### WriteBufferPool
 
@@ -224,7 +224,7 @@ func echo(_ context.Context, c *app.RequestContext) {
 ```
 
 ## NoHijackConnPool
->
+
 > Hertz 连接劫持时所使用的 hijack conn 是池化管理的，因此被劫持的连接在 websocket 中使用的时候，不支持异步操作。
 
 劫持的连接仅能被关闭一次，第二次关闭会导致空指针异常。

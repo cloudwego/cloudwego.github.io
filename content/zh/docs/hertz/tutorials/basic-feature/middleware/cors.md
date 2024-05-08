@@ -4,7 +4,6 @@ date: 2022-05-21
 weight: 1
 keywords: ["跨源资源共享"]
 description: "hertz 提供 cors 跨域中间件的实现。"
-
 ---
 
 跨源资源共享（CORS）机制允许服务器标识除了它自己的其它 origin，使得浏览器可以访问加载这些资源；
@@ -66,20 +65,20 @@ Hertz 通过使用 cors 中间件，为客户端提供了跨源资源访问的�
 
 上述**示例代码**中只配置了部分可选参数，`Config` 的完整参数列表如下：
 
-| 参数                   | 介绍                                                             |
-| ---------------------- |----------------------------------------------------------------|
-| AllowAllOrigins        | 用于设置允许来自任意 origin 的客户端访问服务端资源，默认为 `false`                      |
-| AllowOrigins           | 用于设置允许跨源访问的 origin 列表，默认为 `[]`                                 |
-| AllowOriginFunc        | 用于设置校验客户端 origin 的函数，当启用这个配置时，`AllowOrigins` 的内容将被忽略 |
-| AllowMethods           | 用于设置允许客户端跨源访问所使用的 HTTP 方法列表（在接收到预检请求时生效）                       |
-| AllowHeaders           | 用于设置客户端发起**非简单**的跨源资源访问请求时，允许使用的头信息字段列表，默认为 `[]`（在接收到预检请求时生效）  |
-| AllowCredentials       | 用于设置允许客户端请求携带用户凭证，如：cookies，token，SSL 凭证，默认为 `false`           |
-| ExposeHeaders          | 用于设置允许暴露给客户端的响应头列表，默认为 `[]`                                    |
-| MaxAge                 | 用于设置预检请求的有效期（有效期内不会发起重复的预检请求）                                  |
-| AllowWildcard          | 用于设置允许含通配符的 origin 访问资源，默认为 `false`                            |
-| AllowBrowserExtensions | 用于设置允许使用流行的浏览器扩展模式，默认为 `false`                                 |
-| AllowWebSockets        | 用于设置允许使用 WebSocket 协议，默认为 `false`                              |
-| AllowFiles             | 用于设置允许使用 `file://` 协议（危险）除非你能确保 100% 的安全，才可以使用它，默认为 `false`    |
+| 参数                   | 介绍                                                                                                              |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| AllowAllOrigins        | 用于设置允许来自任意 origin 的客户端访问服务端资源，默认为 `false`                                                |
+| AllowOrigins           | 用于设置允许跨源访问的 origin 列表，默认为 `[]`                                                                   |
+| AllowOriginFunc        | 用于设置校验客户端 origin 的函数，当启用这个配置时，`AllowOrigins` 的内容将被忽略                                 |
+| AllowMethods           | 用于设置允许客户端跨源访问所使用的 HTTP 方法列表（在接收到预检请求时生效）                                        |
+| AllowHeaders           | 用于设置客户端发起**非简单**的跨源资源访问请求时，允许使用的头信息字段列表，默认为 `[]`（在接收到预检请求时生效） |
+| AllowCredentials       | 用于设置允许客户端请求携带用户凭证，如：cookies，token，SSL 凭证，默认为 `false`                                  |
+| ExposeHeaders          | 用于设置允许暴露给客户端的响应头列表，默认为 `[]`                                                                 |
+| MaxAge                 | 用于设置预检请求的有效期（有效期内不会发起重复的预检请求）                                                        |
+| AllowWildcard          | 用于设置允许含通配符的 origin 访问资源，默认为 `false`                                                            |
+| AllowBrowserExtensions | 用于设置允许使用流行的浏览器扩展模式，默认为 `false`                                                              |
+| AllowWebSockets        | 用于设置允许使用 WebSocket 协议，默认为 `false`                                                                   |
+| AllowFiles             | 用于设置允许使用 `file://` 协议（危险）除非你能确保 100% 的安全，才可以使用它，默认为 `false`                     |
 
 ### AllowAllOrigins
 

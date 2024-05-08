@@ -62,11 +62,10 @@
   color: #fff;
 }
 
-
 .home-quote {
   font-weight: 300;
   margin: 25px 0 25px 0;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   color: #fff;
   text-align: center;
 }
@@ -113,7 +112,6 @@
   border: 1px solid #fff;
   text-align: center;
 }
-
 
 .home-used-by-item img {
   max-width: 228px;
@@ -165,7 +163,6 @@
 }
 
 @media (min-width: 768px) {
-
   .td-block-padding,
   .td-default main section {
     padding-top: 3rem;

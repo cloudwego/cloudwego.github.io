@@ -12,7 +12,7 @@ description: >
 
 **会前必读** ：[官网](/) ; https://github.com/cloudwego
 
-### 议程 1：CloudWeGo-Volo  0.2.0  新发版介绍 @Millione
+### 议程 1：CloudWeGo-Volo 0.2.0 新发版介绍 @Millione
 
 1. 相关链接：[Volo v0.2.0 正式发布：新增支持 Windows](https://mp.weixin.qq.com/s?__biz=Mzg2MTc0Mjg2Mw==&mid=2247490708&idx=3&sn=ae6d24cc1fa426b44c1ec774e8e0cc41&chksm=ce132ef4f964a7e2b469e34278e0dc7100e06e2e3df874e219b195896545778e6f11aa763602#rd)
 2. **Volo 已经正式支持 Windows**。在 Volo 的共性方面，首先是关于错误处理，修复了对 Error 类型的约束，即在实现中间件时，对于 gRPC 以及 Thrift 返回的 Error 需要实现一个转换方法，就能转换到框架的 Error 类型中。这样有助于我们做整体的服务治理，还有一些错误判断之类的逻辑功能。
@@ -47,6 +47,4 @@ description: >
 
 1. Issue: https://github.com/cloudwego/community/issues/45
 2. CSG 三期是关于 8 月新开源的 Volo 框架以及 Volo 生态的一些项目，同时还有关注度非常高的 Monoio，都会在第三期里面进行相关的源码解读。第一期直播已经结束，可以关注 **CloudWeGo 公众号**回复 **“Volo"** 查看回放地址。
-3. 第三期的第二和第三场直播会和 Rustcc 社区合作，我们会也把自己的优质项目推到 Rust 基金会和 Rust 中文社区，和他们做比较深度的合作。后续也会有一些新的 Volo 生态和 Rust 生态的  Committer 和 Contributor 加入到我们的社区例会和社区组织中。欢迎大家持续关注。
-   
-
+3. 第三期的第二和第三场直播会和 Rustcc 社区合作，我们会也把自己的优质项目推到 Rust 基金会和 Rust 中文社区，和他们做比较深度的合作。后续也会有一些新的 Volo 生态和 Rust 生态的 Committer 和 Contributor 加入到我们的社区例会和社区组织中。欢迎大家持续关注。

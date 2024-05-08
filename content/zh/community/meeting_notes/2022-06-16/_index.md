@@ -18,18 +18,18 @@ description: >
 2. **项目背景：** Hertz 之前，字节跳动内部使用的 HTTP 框架是基于 Gin 进行了一层封装。存在的问题：Gin 出现 Bug 无法修复；难以迭代支持一些 Feature；随着业务发展性能不足逐渐显现，且难以改变。
 3. **Hertz 定位 ：**
 
-* 超大规模企业级实现，拥有极强的稳定性。
-* 微服务框架。完善 CloudWeGo 的生态矩阵，让 CloudWeGo 成为云原生最佳的解决方案之一，从而向客户推广。
-* 开箱即用的框架。包括比如搭积木的能力，用户可以按需组装模块；可能会生成一些 Client 代码，可以方便用户 Benchmark 或者帮助用户去调试，甚至生成一些生产上的代码。
-* “三高”的框架。高扩展性、高易用性和高性能。
+- 超大规模企业级实现，拥有极强的稳定性。
+- 微服务框架。完善 CloudWeGo 的生态矩阵，让 CloudWeGo 成为云原生最佳的解决方案之一，从而向客户推广。
+- 开箱即用的框架。包括比如搭积木的能力，用户可以按需组装模块；可能会生成一些 Client 代码，可以方便用户 Benchmark 或者帮助用户去调试，甚至生成一些生产上的代码。
+- “三高”的框架。高扩展性、高易用性和高性能。
 
 4. **内部使用情况：** 是内部最大的 HTTP 框架，在内部线上有 1w+ 的服务峰值，QPS 4000w+。某些典型服务迁移 Hertz 后，相比 Gin 框架，CPU 使用率降低 30%—60%。
 5. **Roadmap：**
 
-* 无缝接入微服务体系。支持 xDS API，从 Istio 动态获取服务配置。
-* 有更完善的生态。如 CORS、Trace、Metrics 、反向代理、Session 等。
-* 支持多协议。Hertz 目前只开源了 HTTP1 的部分，未来还会开源其他协议，如：HTTP2、Websocket、ALPN 等。
-* 更高的性能。结合用户需求，持续迭代。
+- 无缝接入微服务体系。支持 xDS API，从 Istio 动态获取服务配置。
+- 有更完善的生态。如 CORS、Trace、Metrics 、反向代理、Session 等。
+- 支持多协议。Hertz 目前只开源了 HTTP1 的部分，未来还会开源其他协议，如：HTTP2、Websocket、ALPN 等。
+- 更高的性能。结合用户需求，持续迭代。
 
 6. **6.21** 官宣后会开放新手任务，以及社区参与指南，欢迎大家参与 Hertz 社区贡献。
 
@@ -39,7 +39,7 @@ description: >
 
 1. 项目地址：https://github.com/hertz-contrib/swagger；https://github.com/hertz-contrib/jwt
 2. 贡献了 Hertz 的两个插件，Swagger 和 JWT。Fork 了 Gin 排名比较高的对应的仓库，然后对赫兹做适配，争取让开发者比较方便的从 Gin 切换到 Hertz。过程中需要看一些赫兹的接口源码，保证 Hertz 和 Gin 的表现相同。
-3. 对 Hertz 源码感兴趣的初学者可以从这里入手，建议社区也可以考虑把一些 Gin 里面常见的中间件以  First-good-issue 的形式开放。
+3. 对 Hertz 源码感兴趣的初学者可以从这里入手，建议社区也可以考虑把一些 Gin 里面常见的中间件以 First-good-issue 的形式开放。
 
 ---
 
@@ -78,4 +78,3 @@ description: >
 
 6 月 25 日，CloudWeGo & 稀土掘金 Meetup 活动直播，邀请到来自字节跳动、森马电商和华兴证券的资深开发者，向社区分享 CloudWeGo 的最新企业落地实践。
 活动链接：https://mp.weixin.qq.com/s/D93dk-9dw2pQocI4anBXfg
-

@@ -5,7 +5,6 @@ date: 2023-04-18
 weight: 1
 keywords: ["日志扩展"]
 description: "Hertz 提供对日志的扩展，接口定义在 `pkg/common/hlog` 中。"
-
 ---
 
 ## 接口定义
@@ -23,13 +22,12 @@ type FullLogger interface {
 }
 ```
 
->注意，由于默认 logger 底层使用标准库的 `log.Logger` 实现，其在日志里输出的调用位置依赖于设置的调用深度（call depth），因此封装 hlog 提供的实现可能会导致日志内容里文件名和行数不准确。
+> 注意，由于默认 logger 底层使用标准库的 `log.Logger` 实现，其在日志里输出的调用位置依赖于设置的调用深度（call depth），因此封装 hlog 提供的实现可能会导致日志内容里文件名和行数不准确。
 
 ## 注入自己的 logger 实现
 
 Hertz 提供 `SetLogger` 接口用于注入用户自定义的 logger 实现，也可以使用 `SetOutput` 接口重定向默认的 logger 输出，随后的中间件以及框架的其他部分可以使用 hlog 中的全局方法来输出日志。
 默认使用 hertz 默认实现的 logger。
-
 
 ## 已支持日志拓展
 

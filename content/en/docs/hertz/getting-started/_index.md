@@ -2,7 +2,8 @@
 title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 2
-keywords: ["Hertz", "Development Environment", "Quick Start", "Code Generation Tool"]
+keywords:
+  ["Hertz", "Development Environment", "Quick Start", "Code Generation Tool"]
 description: "Preparation of Hertz development environment, quick start, and basic use of code generation tool hz."
 ---
 
@@ -112,15 +113,19 @@ For more information on how to use hz, please refer to: [hz](/zh/docs/hertz/tuto
 
 1. Create the hertz_demo folder in the current directory and go to that directory.
 2. Generating code
+
 - Use `hz new` directly, if not currently in `GOPATH`, you need to add `-module` or `-mod` flag to specify a custom module name. See [here](/docs/hertz/tutorials/toolkit/usage/) for details.
+
   - Code generation by specifying an already defined idl file, e.g. `hz new -idl hello.thrift`.
+
     ```thrift
     namespace go hello.world
 
     service HelloService {
-        string Hello(1: string name); 
+        string Hello(1: string name);
     }
     ```
+
     After execution, a scaffolding of the Hertz project is created in the current directory, with a `ping` interface for testing.
 
 3. Tidy & get dependencies.
@@ -167,7 +172,7 @@ If you need to make further updates to the project, you should use the `hz updat
 namespace go hello.world
 
 service HelloService {
-    string Hello(1: string name); 
+    string Hello(1: string name);
     string Bye(1: string name);
 }
 ```

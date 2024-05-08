@@ -3,7 +3,6 @@ title: "Custom Logging / Monitoring / Tracing"
 linkTitle: "Logging / Monitoring / Tracing"
 weight: 3
 description: >
-
 ---
 
 For RPC frameworks, logging, monitoring, and tracing are crucial components. Observability in cloud-native environments fundamentally relies on these three aspects.

@@ -2,7 +2,13 @@
 title: "Service Registration and Service Discovery Extensions"
 date: 2022-08-14
 weight: 3
-keywords: ["Service Registration and Service Discovery Extensions", "Service Registration Extension", "Service Discovery Extension", "Load Balancing Extension"]
+keywords:
+  [
+    "Service Registration and Service Discovery Extensions",
+    "Service Registration Extension",
+    "Service Discovery Extension",
+    "Load Balancing Extension",
+  ]
 description: "Service Registration and Service Discovery Extensions provided by Hertz."
 ---
 

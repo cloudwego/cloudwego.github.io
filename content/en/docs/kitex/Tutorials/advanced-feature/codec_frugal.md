@@ -11,8 +11,9 @@ Github Project Page: https://github.com/cloudwego/frugal
 ## Usage
 
 Note:
+
 1. Frugal **can be used independently** on either server side or client side.
-    1. The transmitted data are always encoded according to the standard thrift protocol
+   1. The transmitted data are always encoded according to the standard thrift protocol
 2. If Frugal is enabled on the server side, make sure that Framed (or TTHeaderFramed) is enabled on the client side.
 3. If slim template is used, PayloadCodec must be specified to enable frugal.
 
@@ -27,6 +28,7 @@ The Kitex Command Line tool has built-in frugal integration.
 ###### **Frugal Tag: -thrift frugal_tag**
 
 Generate Go structs with frugal tags, for example:
+
 ```go
 type Request struct {
     Message string `thrift:"message,1" frugal:"1,default,string" json:"message"`
@@ -34,11 +36,13 @@ type Request struct {
 ```
 
 Note:
+
 1. Frugal relies on these tags. For example, set and list are both mapped to slice in golang, which can only be distinguished by frugal tag;
 2. Without frugal tags, kitex will automatically fallback to the default Go codec (provided not using slim template);
 3. If you don't want to generate frugal tags, use `-thrift frugal_tag=false`.
 
 Kitex >= v0.5.0 defaults to have this parameter specified; in older versions, you need to manually specify this parameter and execute the kitex command, for example:
+
 ```bash
 kitex -thrift frugal_tag -service service_name idl/api.thrift
 ```
@@ -50,6 +54,7 @@ Call `frugal.Pretouch` method in `init()` to preprocess (JIT compile) all reques
 Frugal defaults to calling the JIT Compiler before the first encoding/decoding on a specific type, which may cause the first request to take longer.
 
 Example:
+
 ```bash
 kitex -frugal-pretouch -service service_name idl/api.thrift
 ```
@@ -65,6 +70,7 @@ Here's the [example code](https://github.com/cloudwego/kitex-examples/blob/v0.2.
 Frugal uses JIT to generate codec code and does not rely on the generated Go codec.
 
 Example:
+
 ```bash
 kitex -thrift frugal_tag,template=slim -service service_name idl/api.thrift
 ```
@@ -76,21 +82,25 @@ Note: Enabling Slim will result in no fallback and reporting an error when fruga
 It is recommended to use the latest version of Kitex (>= v0.5.0) and thriftgo (>= v0.3.0).
 
 ###### **Conservative version**
+
 ```bash
 kitex -thrift frugal_tag -service service_name idl/api.thrift
 ```
 
 Explain:
+
 1. New Kitex versions (>=v0.5.0) will generate frugal tags by default.
 2. Do not use pretouch: commonly not all types are used in a project; you can try to enable it and observe whether it slows down the bootstrap of your service.
 3. Do not use slim templates: In scenarios where frugal is not supported, fallback is applicable with the generated Go codec.
 
 ###### **Radical version**
+
 ```bash
 kitex -thrift frugal_tag,template=slim -frugal-pretouch -service service_name idl/api.thrift
 ```
 
 Explain:
+
 1. Pretouch enabled: may cause the process to start slowly
 2. Slim template enabled: In scenarios that do not support frugal, fallback to the generated Go codec is not applicable, and an error will be reported.
 
@@ -99,6 +109,7 @@ Explain:
 ##### Notes
 
 **Please ensure** that the client has `Framed` (or `TTHeaderFramed`) enabled.
+
 - Enabling Framed ensures that the payload size is set in the header;
 - If the payload size is not available, currently Kitex Server can only fallback to the generated Go codec;
 - If it's using slim template, fallback is not available and an error will be reported: "decode failed, codec msg type not match".
@@ -110,11 +121,12 @@ Related options for server initialization.
 ###### **server.WithPayloadCodec**
 
 For enabling Frugal:
+
 ```go
 server.WithPayloadCodec(
     thrift.NewThriftCodecWithConfig(thrift.FrugalRead | thrift.FrugalWrite)
 )
-``` 
+```
 
 Note: If an error is reported (symbol not found), it indicates that the combination of the current kitex version + go version does not support frugal. For example, Go 1.21 + Kitex v0.7.1 (unsupported versions are blocked through conditional compile).
 
@@ -159,23 +171,28 @@ Related options for client initialization.
 ###### **client.WithPayloadCodec**
 
 For enabling Frugal:
+
 ```go
 client.WithPayloadCodec(
     thrift.NewThriftCodecWithConfig(thrift.FrugalRead | thrift.FrugalWrite)
 )
 ```
+
 Note: If an error is reported (no symbol found), it indicates that the combination of the current kitex version + go version does not support frugal, for example, Go 1.21 + Kitex v0.7.1 (unsupported versions are blocked through conditional compile).
 
 ###### **client.WithTransportProtocol**
 
 For enabling Framed: prepend a 4-byte (int32) length to indicate the size of thrift pure payload
+
 ```go
 client.WithTransportProtocol(transport.Framed)
 ```
+
 Note:
+
 1. If Framed is not set, there may be issues:
-    1. The server may not be able to decode with frugal without Payload Size (refer to: "Kitex Server -> Notes");
-    2. The server won't reply with a `Framed` payload, thus the Client may also not be able to decode with frugal (no Payload Size again);
+   1. The server may not be able to decode with frugal without Payload Size (refer to: "Kitex Server -> Notes");
+   2. The server won't reply with a `Framed` payload, thus the Client may also not be able to decode with frugal (no Payload Size again);
 2. If the target server does not support `Framed`, then don't use it; the client can encode without it, but if the response (from the server) is not Framed (i.e. with preprended payload size), the client may not be able to decode with Frugal (so in this case, do not use slim template);
 3. `TTHeaderFramed` is an alternative (it's the BIT-OR result of `TTHeader | Framed`).
 
@@ -216,6 +233,7 @@ In some scenarios (such as recording traffic), there's a need to call frugal dir
 Frugal's JIT compiler relies on Go structs with proper frugal tags.
 
 Note:
+
 - A method may have multiple request arguments, so `frugal.EncodeObject` requires a Go struct encapsulating all these parameters in order. For example, the Struct [EchoEchoArgs](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L469) generated by Kitex encapsulates the [Request](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L12).
 - Although the response has only one parameter, it should also be encapsulated in a struct. For example, [EchoEchoResult](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L641) encapsulates [Response](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L176).
 - For details, please refer to the [example code](https://github.com/cloudwego/kitex-examples/blob/v0.2.2/frugal/codec/frugal.go).
@@ -228,13 +246,15 @@ Note: kitex runs thriftgo to generate the structures.
 ##### Use thriftgo (>= v0.3.0)
 
 Install thriftgo ( >= v0.3.0):
+
 ```bash
 go install -v github.com/cloudwego/thriftgo@latest
 ```
 
 Generate Go Structs based on a Thrift IDL:
+
 ```bash
-thriftgo -r -o thrift -g go:frugal_tag,template=slim,package_prefix=github.com/example echo.thrift 
+thriftgo -r -o thrift -g go:frugal_tag,template=slim,package_prefix=github.com/example echo.thrift
 ```
 
 ##### Manually (Not Recommended)
@@ -242,15 +262,17 @@ thriftgo -r -o thrift -g go:frugal_tag,template=slim,package_prefix=github.com/e
 Please refer to the struct generated by thriftgo (e.g. [Request](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L12), [Response](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L176)).
 
 Note:
+
 1. Each field should have a frugal tag.
 2. For optional fields, default values should be set in the `InitDefault()`` method.
 3. Construct structs that encapsulate request/response arguments (e.g. [EchoEchoArgs](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L469), [EchoEchoResult](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L641))
 
-#### Encoding 
+#### Encoding
 
 If you only want to use thrift codec (for example, to replace JSON), you can directly call `frugal.EncodeObject(..)`.
 
 If you want to generate a Thrift Payload that conforms to the [Thrift Binary protocol encoding](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md) (which can be sent to the Thrift Server), the encoding result should include:
+
 1. Thrift Magic Number: int16, the fixed value 0x8001
 2. MessageType: int16, enumeration values, CALL = 1, REPLY = 2, Exception = 3, Oneway = 4
 3. MethodName: length (int32) + name ([]byte)
@@ -264,6 +286,7 @@ Note: `data` should be a struct that encapsulates all request/response parameter
 #### Decoding
 
 According to Thrift Binary protocol encoding, decode result should contain:
+
 1. MethodName
 2. MessageType
 3. Sequence ID
@@ -349,9 +372,10 @@ UnmarshalAllSize_Parallel/large-16      4.80k ± 0%      0.76k ± 0%    -84.10%
 Run kitex with `-thrift frugal_tag=false`.
 
 Note:
+
 1. If frugal tags are not generated, you can not use frugal codec
-    1. In Golang, Thrift's set and list are both mapped to slice, and can only be distinguished by frugal tags.
-    2. If Kitex detects that the request/response type does not contain a tag, it will NOT use frugal, and fallback to the standard Go codec.
+   1. In Golang, Thrift's set and list are both mapped to slice, and can only be distinguished by frugal tags.
+   2. If Kitex detects that the request/response type does not contain a tag, it will NOT use frugal, and fallback to the standard Go codec.
 2. If slim template is used, frugal tags must be generated.
 
 ### Kitex Client Reporting "encode failed: codec msg type not match with thriftCodec"
@@ -361,6 +385,7 @@ Error message reported by client:
 > failed with error: remote or network error[remote]: encode failed, codec msg type not match with thriftCodec
 
 Possible reasons:
+
 - Using the slim template **WITHOUT** specifying client.PayloadCodec;
 - Using the slim template **WITHOUT** generating frugal tags for Structs;
 
@@ -371,6 +396,7 @@ Error message reported by server (or in the client's log):
 > decode failed, codec msg type not match with thriftCodec
 
 Possible reasons:
+
 - Using the slim template **WITHOUT** specifying server.PayloadCodec;
 - Using the slim template **WITHOUT** generating frugal tags for Structs
 - The client is **NOT** sending Thrift payload with `Framed` or `TTHeaderFramed`
@@ -392,9 +418,10 @@ New versions have NOCOPY mode disabled by default, which can be fixed after upgr
 ### Error reported compiling Kitex projects: "undefined: thrift.FrugalRead"
 
 Possible reasons:
+
 1. Compiling with unsupported Go versions: please compile with go1.16 ~ go1.21;
 2. The Kitex version does not support the Go version used: please upgrade to the latest Kitex
-    1. For example: Kitex v0.7.1 have frugal disabled when compiling with go1.21 (go1.21 was not supported by frugal when releasing these versions). Upgrading to Kitex >= v0.7.2 will fix it.
+   1. For example: Kitex v0.7.1 have frugal disabled when compiling with go1.21 (go1.21 was not supported by frugal when releasing these versions). Upgrading to Kitex >= v0.7.2 will fix it.
 
 ### Optional fields are not filled with defaults with Slim template
 

@@ -2,14 +2,14 @@
 title: "File"
 date: 2023-12-18
 weight: 4
-keywords: ["配置中心扩展","file"]
+keywords: ["配置中心扩展", "file"]
 description: "使用 本地文件 作为 Kitex 的服务治理配置中心"
-
 ---
+
 ## 支持文件类型
 
-| json | yaml |
-| ---  | --- |
+| json     | yaml     |
+| -------- | -------- |
 | &#10004; | &#10004; |
 
 ## 安装
@@ -17,6 +17,7 @@ description: "使用 本地文件 作为 Kitex 的服务治理配置中心"
 `go get github.com/kitex-contrib/config-file`
 
 ## Suite
+
 本地文件 的配置中心适配器，kitex 通过 `WithSuite` 将 本地文件 中的配置转换为 kitex 的治理特性配置。
 
 使用方法可以分为两个步骤
@@ -108,12 +109,14 @@ func main() {
 ```
 
 ### Client
+
 ```go
 type FileConfigClientSuite struct {
 	watcher monitor.ConfigMonitor
 	service string
 }
 ```
+
 函数签名:
 
 `func NewSuite(service, key string, watcher filewatcher.FileWatcher,opts ...utils.Option)*FileConfigClientSuite`
@@ -256,6 +259,7 @@ type ConfigParser interface {
 示例代码:
 
 扩展解析 YAML 类型。
+
 ```go
 // 由用户自定义
 type MyParser struct{}
@@ -297,26 +301,28 @@ client, err := echo.NewClient(
 在后续样例中，我们设定服务名称为 `ServiceName`，客户端名称为 `ClientName`。
 
 #### 限流
+
 Category=limit
 
 > 限流目前只支持服务端，所以只需要设置服务端的 ServiceName。
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/limiter/item_limiter.go#L33)
 
-|字段|说明|
-|----|----|
-|connection_limit|最大并发数量|
-|qps_limit|每 100ms 内的最大请求数量|
+| 字段             | 说明                      |
+| ---------------- | ------------------------- |
+| connection_limit | 最大并发数量              |
+| qps_limit        | 每 100ms 内的最大请求数量 |
 
 样例:
+
 ```json
 {
-    "ServiceName": {
-        "limit": {
-            "connection_limit": 300,
-            "qps_limit": 200
-        }
+  "ServiceName": {
+    "limit": {
+      "connection_limit": 300,
+      "qps_limit": 200
     }
+  }
 }
 ```
 
@@ -328,14 +334,15 @@ Category=limit
 - 可以在一个 json 内编写多个服务的不同限流策略，只需要 filewatch 监控同一个文件，然后传入不同的 key 即可，如样例所示，key 即为`ServiceName`
 
 #### 重试
+
 Category=retry
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
 
-|参数|说明|
-|----|----|
-|type| 0: failure_policy 1: backup_policy|
-|failure_policy.backoff_policy| 可以设置的策略： `fixed` `none` `random` |
+| 参数                          | 说明                                     |
+| ----------------------------- | ---------------------------------------- |
+| type                          | 0: failure_policy 1: backup_policy       |
+| failure_policy.backoff_policy | 可以设置的策略： `fixed` `none` `random` |
 
 样例：
 
@@ -343,42 +350,44 @@ Category=retry
 
 ```json
 {
-    "ClientName/ServiceName": {
-        "retry": {
-            "*": {
-                "enable": true,
-                "type": 0,
-                "failure_policy": {
-                    "stop_policy": {
-                        "max_retry_times": 3,
-                        "max_duration_ms": 2000,
-                        "cb_policy": {
-                            "error_rate": 0.2
-                        }
-                    }
-                }
-            },
-            "Echo": {
-                "enable": true,
-                "type": 1,
-                "backup_policy": {
-                    "retry_delay_ms": 200,
-                    "stop_policy": {
-                        "max_retry_times": 2,
-                        "max_duration_ms": 1000,
-                        "cb_policy": {
-                            "error_rate": 0.3
-                        }
-                    }
-                }
+  "ClientName/ServiceName": {
+    "retry": {
+      "*": {
+        "enable": true,
+        "type": 0,
+        "failure_policy": {
+          "stop_policy": {
+            "max_retry_times": 3,
+            "max_duration_ms": 2000,
+            "cb_policy": {
+              "error_rate": 0.2
             }
+          }
         }
+      },
+      "Echo": {
+        "enable": true,
+        "type": 1,
+        "backup_policy": {
+          "retry_delay_ms": 200,
+          "stop_policy": {
+            "max_retry_times": 2,
+            "max_duration_ms": 1000,
+            "cb_policy": {
+              "error_rate": 0.3
+            }
+          }
+        }
+      }
     }
+  }
 }
 ```
-注：retry.Container 内置支持用 * 通配符指定默认配置（详见 [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) 方法）
+
+注：retry.Container 内置支持用 \* 通配符指定默认配置（详见 [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) 方法）
 
 #### 超时
+
 Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
@@ -389,29 +398,30 @@ Category=rpc_timeout
 
 ```json
 {
-    "ClientName/ServiceName": {
-        "timeout": {
-            "*": {
-                "conn_timeout_ms": 100,
-                "rpc_timeout_ms": 2000
-            },
-            "Pay": {
-                "conn_timeout_ms": 50,
-                "rpc_timeout_ms": 1000
-            }
-        },
+  "ClientName/ServiceName": {
+    "timeout": {
+      "*": {
+        "conn_timeout_ms": 100,
+        "rpc_timeout_ms": 2000
+      },
+      "Pay": {
+        "conn_timeout_ms": 50,
+        "rpc_timeout_ms": 1000
+      }
     }
+  }
 }
 ```
 
 #### 熔断
+
 Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
 
-|参数|说明|
-|----|----|
-|min_sample|最小的统计样本数|
+| 参数       | 说明             |
+| ---------- | ---------------- |
+| min_sample | 最小的统计样本数 |
 
 样例：
 echo 方法使用下面的配置（0.3、100），其他方法使用全局默认配置（0.5、200）
@@ -420,18 +430,20 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
 
 ```json
 {
-    "ClientName/ServiceName": {
-        "circuitbreaker": {
-            "Echo": {
-                "enable": true,
-                "err_rate": 0.3,
-                "min_sample": 100
-            }
-        },
+  "ClientName/ServiceName": {
+    "circuitbreaker": {
+      "Echo": {
+        "enable": true,
+        "err_rate": 0.3,
+        "min_sample": 100
+      }
     }
+  }
 }
 ```
+
 注：kitex 的熔断实现目前不支持修改全局默认配置（详见 [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195)）
+
 #### 更多信息
 
 更多示例请参考 [example](https://github.com/kitex-contrib/config-file/tree/main/example)
@@ -444,56 +456,57 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
 
 ```json
 {
-    "ClientName/ServiceName": {
-        "timeout": {
-            "*": {
-                "conn_timeout_ms": 100,
-                "rpc_timeout_ms": 2000
-            },
-            "Pay": {
-                "conn_timeout_ms": 50,
-                "rpc_timeout_ms": 1000
+  "ClientName/ServiceName": {
+    "timeout": {
+      "*": {
+        "conn_timeout_ms": 100,
+        "rpc_timeout_ms": 2000
+      },
+      "Pay": {
+        "conn_timeout_ms": 50,
+        "rpc_timeout_ms": 1000
+      }
+    },
+    "circuitbreaker": {
+      "Echo": {
+        "enable": true,
+        "err_rate": 0.3,
+        "min_sample": 100
+      }
+    },
+    "retry": {
+      "*": {
+        "enable": true,
+        "type": 0,
+        "failure_policy": {
+          "stop_policy": {
+            "max_retry_times": 3,
+            "max_duration_ms": 2000,
+            "cb_policy": {
+              "error_rate": 0.2
             }
-        },
-        "circuitbreaker": {
-            "Echo": {
-                "enable": true,
-                "err_rate": 0.3,
-                "min_sample": 100
-            }
-        },
-        "retry": {
-            "*": {
-                "enable": true,
-                "type": 0,
-                "failure_policy": {
-                    "stop_policy": {
-                        "max_retry_times": 3,
-                        "max_duration_ms": 2000,
-                        "cb_policy": {
-                            "error_rate": 0.2
-                        }
-                    }
-                }
-            },
-            "Echo": {
-                "enable": true,
-                "type": 1,
-                "backup_policy": {
-                    "retry_delay_ms": 200,
-                    "stop_policy": {
-                        "max_retry_times": 2,
-                        "max_duration_ms": 1000,
-                        "cb_policy": {
-                            "error_rate": 0.3
-                        }
-                    }
-                }
-            }
+          }
         }
+      },
+      "Echo": {
+        "enable": true,
+        "type": 1,
+        "backup_policy": {
+          "retry_delay_ms": 200,
+          "stop_policy": {
+            "max_retry_times": 2,
+            "max_duration_ms": 1000,
+            "cb_policy": {
+              "error_rate": 0.3
+            }
+          }
+        }
+      }
     }
+  }
 }
 ```
 
 ### 兼容性
+
 项目中使用了`sync/atomic`在 1.19 版本加入的新特性，因此Go 的版本必须 >= 1.19

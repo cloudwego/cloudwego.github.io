@@ -2,7 +2,7 @@
 title: "Binary"
 date: 2024-01-06
 weight: 1
-keywords: [ "Kitex", "Serialization", "Binary", "Thrift" ]
+keywords: ["Kitex", "Serialization", "Binary", "Thrift"]
 description: Kitex uses the Binary protocol for serialization.
 ---
 
