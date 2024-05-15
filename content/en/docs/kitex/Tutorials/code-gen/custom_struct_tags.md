@@ -4,7 +4,8 @@ linkTitle: "Custom Struct Tags"
 weight: 9
 date: 2024-04-18
 keywords: ["Kitex", "Code Gen", "Custom Tag"]
-description: > Custom Tags for structures in generated code
+description: Custom Tags for structures in generated code
+
 ---
 
 ## Introduction
