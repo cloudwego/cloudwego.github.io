@@ -177,8 +177,8 @@ Using the above knowledge, we can quickly determine if a specific pointer is `ni
    ```go
    KITE: panic in processor: runtime error: invalid memory address or nil pointer dereference
    goroutine 498022546 [running]:
-   .../xxx/kite.(*RpcServer).processRequests.func1(0xc000424550)
-   /.../xxx/kite/kite_server.go:227 +0xc8
+   .../xxx/kitex.(*RpcServer).processRequests.func1(0xc000424550)
+   /.../xxx/kitex/kite_server.go:227 +0xc8
    panic(0x2b97ca0, 0x5b05400)
    /usr/local/go/src/runtime/panic.go:522 +0x1b5
    .../thrift_gen/.../log.(*Device).writeField1(0x0, 0x36ce900, 0xc008478e00, 0x0, 0x0)
@@ -195,26 +195,26 @@ Using the above knowledge, we can quickly determine if a specific pointer is `ni
    ```go
    KITE: processing request error=KE.UNREGISTERED/0 - ?/0: KITC: panic, runtime error: invalid memory address or nil pointer dereference
    goroutine 271 [running]:
-   .../xxx/kitc.RPCTimeoutMW.func1.1.1(0x2dad3a0, 0xc0009c3260, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0)
-   /.../xxx/kitc/middlewares.go:314 +0xcc
+   .../xxx/kitex.RPCTimeoutMW.func1.1.1(0x2dad3a0, 0xc0009c3260, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0)
+   /.../xxx/kitex/middlewares.go:314 +0xcc
    panic(0x274e520, 0x4568230)
    /usr/local/go/src/runtime/panic.go:522 +0x1b5
-   .../xxx/kitc.IOErrorHandlerMW.func1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
-   /.../xxx/kitc/middlewares.go:260 +0x13e
-   .../xxx/kitc.NewPoolMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x1, 0xc0007fe5ed, 0x4, 0xc0007fe640)
-   /.../xxx/kitc/middlewares.go:430 +0x41a
-   .../xxx/kitc.NewInstanceBreakerMW.func3.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000087a40, 0xc0000bb350, 0x27, 0xc00049d950)
-   /.../xxx/kitc/middlewares.go:522 +0x168
-   .../xxx/kitc.NewLoadbalanceMW.func2.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x2, 0x29b9e8e, 0x7, 0x0)
-   /.../xxx/kitc/middlewares.go:707 +0x389
-   .../xxx/kitc.NewServiceDiscoverMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000978024, 0x2, 0xc0009de750, 0xc0009ee758)
-   /.../xxx/kitc/discoverer.go:237 +0x1a7
-   .../xxx/kitc.NewIDCSelectorMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0)
-   /.../xxx/kitc/middlewares.go:218 +0xfe
-   .../xxx/kitc.RPCTimeoutMW.func1.1(0x2dad3a0, 0xc0009c3260, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0, 0xc0005352b0, 0xc000535530, 0xc000535540)
-   /.../xxx/kitc/middlewares.go:324 +0xb1
-   created by .../xxx/kitc.RPCTimeoutMW.func1
-   /.../xxx/kitc/middlewares.go:309 +0x1d9
+   .../xxx/kitex.IOErrorHandlerMW.func1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0)
+   /.../xxx/kitex/middlewares.go:260 +0x13e
+   .../xxx/kitex.NewPoolMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x1, 0xc0007fe5ed, 0x4, 0xc0007fe640)
+   /.../xxx/kitex/middlewares.go:430 +0x41a
+   .../xxx/kitex.NewInstanceBreakerMW.func3.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000087a40, 0xc0000bb350, 0x27, 0xc00049d950)
+   /.../xxx/kitex/middlewares.go:522 +0x168
+   .../xxx/kitex.NewLoadbalanceMW.func2.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0x2, 0x29b9e8e, 0x7, 0x0)
+   /.../xxx/kitex/middlewares.go:707 +0x389
+   .../xxx/kitex.NewServiceDiscoverMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000978024, 0x2, 0xc0009de750, 0xc0009ee758)
+   /.../xxx/kitex/discoverer.go:237 +0x1a7
+   .../xxx/kitex.NewIDCSelectorMW.func1.1(0x2dad3a0, 0xc0009c3260, 0x0, 0x0, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0)
+   /.../xxx/kitex/middlewares.go:218 +0xfe
+   .../xxx/kitex.RPCTimeoutMW.func1.1(0x2dad3a0, 0xc0009c3260, 0xc000db81a0, 0x0, 0x0, 0xc0009c32c0, 0xc0005352b0, 0xc000535530, 0xc000535540)
+   /.../xxx/kitex/middlewares.go:324 +0xb1
+   created by .../xxx/kitex.RPCTimeoutMW.func1
+   /.../xxx/kitex/middlewares.go:309 +0x1d9
    , remote=10.14.55.44:62592
    ```
 
