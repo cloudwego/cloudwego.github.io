@@ -4,7 +4,6 @@ date: 2022-10-01
 weight: 13
 keywords: ["Retry", "Client"]
 description: "Hertz provides custom retry logic for users."
-
 ---
 
 Hertz provides users with customized retry logic, Let's take a look at how to use Client Retry. **Note: Hertz version >= v0.4.0**
@@ -30,17 +29,17 @@ func main() {
 }
 ```
 
-| Configuration Name  | Type                                                         | Description                                                  |
-| :------------------ | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| WithMaxAttemptTimes | uint                                                         | Set the maximum attempts times. Default：1 times (That is, only request once without retry) |
-| WithInitDelay       | time.Duration                                                | Set initial delay time. Default: 1ms                         |
-| WithMaxDelay        | time.Duration                                                | Set the maximum delay time. Default: 100ms                   |
-| WithMaxJitter       | time.Duration                                                | Set the maximum jitter time, which needs to be used in conjunction with `RandomDelayPolicy`, and will generate a random time not exceeding the maximum jitter time. Default: 20ms |
-| WithDelayPolicy     | type DelayPolicyFunc func(attempts uint, err error, retryConfig *Config) time.Duration | Set the delay policy, you can use any combination of the following four policies, `FixedDelayPolicy`,  `BackOffDelayPolicy`, `RandomDelayPolicy`, `DefaultDelayPolicy`  ( [See the next section **Delay Policy** for details](#delay-policy) ) . Default: DefaultDelayPolicy  (That is, the retry delay is 0) |
+| Configuration Name  | Type                                                                                    | Description                                                                                                                                                                                                                                                                                                |
+| :------------------ | :-------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WithMaxAttemptTimes | uint                                                                                    | Set the maximum attempts times. Default：1 times (That is, only request once without retry)                                                                                                                                                                                                                |
+| WithInitDelay       | time.Duration                                                                           | Set initial delay time. Default: 1ms                                                                                                                                                                                                                                                                       |
+| WithMaxDelay        | time.Duration                                                                           | Set the maximum delay time. Default: 100ms                                                                                                                                                                                                                                                                 |
+| WithMaxJitter       | time.Duration                                                                           | Set the maximum jitter time, which needs to be used in conjunction with `RandomDelayPolicy`, and will generate a random time not exceeding the maximum jitter time. Default: 20ms                                                                                                                          |
+| WithDelayPolicy     | type DelayPolicyFunc func(attempts uint, err error, retryConfig \*Config) time.Duration | Set the delay policy, you can use any combination of the following four policies, `FixedDelayPolicy`, `BackOffDelayPolicy`, `RandomDelayPolicy`, `DefaultDelayPolicy` ( [See the next section **Delay Policy** for details](#delay-policy) ) . Default: DefaultDelayPolicy (That is, the retry delay is 0) |
 
 ### Delay Policy
 
-`retry.WithDelayPolicy()`  usage
+`retry.WithDelayPolicy()` usage
 
 ```go
 cli, err := client.NewClient(
@@ -52,13 +51,13 @@ cli, err := client.NewClient(
 	)
 ```
 
-| Function Name      | Description                                                  |
-| :----------------- | :----------------------------------------------------------- |
+| Function Name      | Description                                                                                                                                                                                                                                                                  |
+| :----------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | CombineDelay       | It is used to combine any of the following four policies and sum the values calculated by the selected policy. When you only need one of the following four policies, you can choose to use `CombineDelay` or directly pass any policy into `WithDelayPolicy` as a parameter |
-| FixedDelayPolicy   | Set the fixed delay time and use the value set by `WithInitDelay` to generate an equivalent delay time |
-| BackOffDelayPolicy | Set the exponential delay time. Use the value set by `WithInitDelay`. The exponential delay time is generated according to the number of retries currently |
-| RandomDelayPolicy  | Set the random delay time. Use the value set by `WithMaxJitte`r to generate a random delay time that does not exceed this value |
-| DefaultDelayPolicy | Set the default delay time (That is, 0) . Generally, it is used alone and has no effect when combined with other policies |
+| FixedDelayPolicy   | Set the fixed delay time and use the value set by `WithInitDelay` to generate an equivalent delay time                                                                                                                                                                       |
+| BackOffDelayPolicy | Set the exponential delay time. Use the value set by `WithInitDelay`. The exponential delay time is generated according to the number of retries currently                                                                                                                   |
+| RandomDelayPolicy  | Set the random delay time. Use the value set by `WithMaxJitte`r to generate a random delay time that does not exceed this value                                                                                                                                              |
+| DefaultDelayPolicy | Set the default delay time (That is, 0) . Generally, it is used alone and has no effect when combined with other policies                                                                                                                                                    |
 
 ### Complete example
 
@@ -94,7 +93,7 @@ func main() {
 
 ## Retry condition configuration
 
-If you want to customize the conditions under which retries occur, you can use ` client SetRetryIfFunc() ` configuration. The parameter of this function is a function, and the signature is:
+If you want to customize the conditions under which retries occur, you can use `client SetRetryIfFunc()` configuration. The parameter of this function is a function, and the signature is:
 
 ```go
 func(req *protocol.Request, resp *protocol.Response, err error) bool
@@ -108,7 +107,7 @@ cli.SetRetryIfFunc(func(req *protocol.Request, resp *protocol.Response, err erro
 })
 ```
 
-Note that if you do not set `client SetRetryIfFunc()` . We will judge according to Hertz's default retry conditions, that is, whether the request meets the following `DefaultRetryIf()` function and whether the call is idempotent. ( Idempotent call: when `canIdempotentRetry` is [true](#table1) in [pkg/protocol/http1/client.go::Do()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L328 ) and [pkg/protocol/http1/client.go::doNonNilReqResp()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L411) )
+Note that if you do not set `client SetRetryIfFunc()` . We will judge according to Hertz's default retry conditions, that is, whether the request meets the following `DefaultRetryIf()` function and whether the call is idempotent. ( Idempotent call: when `canIdempotentRetry` is [true](#table1) in [pkg/protocol/http1/client.go::Do()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L328) and [pkg/protocol/http1/client.go::doNonNilReqResp()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L411) )
 
 ```Go
 // DefaultRetryIf Default retry condition, mainly used for idempotent requests.
@@ -145,13 +144,13 @@ func isIdempotent(req *protocol.Request, resp *protocol.Response, err error) boo
 }
 ```
 
-<a id="table1">Table - 1</a> When `canIdempotentRetry` in Hertz source code [doNonNilReqResp()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L411)  is true.
+<a id="table1">Table - 1</a> When `canIdempotentRetry` in Hertz source code [doNonNilReqResp()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L411) is true.
 
-| doNonNilReqResp() return true                                |
-| ------------------------------------------------------------ |
-| err = conn.SetWriteDeadline(currentTime.Add(c.WriteTimeout)) |
-| err = reqI.Write(req, zw)                                    |
-| err = reqI.ProxyWrite(req, zw)                               |
-| err = zw.Flush()                                             |
-| err = conn.SetReadTimeout(c.ReadTimeout)                     |
+| doNonNilReqResp() return true                                                                               |
+| ----------------------------------------------------------------------------------------------------------- |
+| err = conn.SetWriteDeadline(currentTime.Add(c.WriteTimeout))                                                |
+| err = reqI.Write(req, zw)                                                                                   |
+| err = reqI.ProxyWrite(req, zw)                                                                              |
+| err = zw.Flush()                                                                                            |
+| err = conn.SetReadTimeout(c.ReadTimeout)                                                                    |
 | ( err = respI.ReadHeaderAndLimitBody() \|\| err = respI.ReadBodyStream() ) && (err != errs.ErrBodyTooLarge) |

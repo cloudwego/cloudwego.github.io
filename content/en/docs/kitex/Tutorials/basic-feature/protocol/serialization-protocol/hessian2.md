@@ -2,7 +2,7 @@
 title: "Hessian2"
 date: 2024-01-06
 weight: 3
-keywords: [ "Kitex", "Serialization", "Hessian2" ]
+keywords: ["Kitex", "Serialization", "Hessian2"]
 description: Kitex uses the Hessian2 protocol for serialization.
 ---
 

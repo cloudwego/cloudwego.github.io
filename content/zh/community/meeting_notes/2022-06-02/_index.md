@@ -28,11 +28,11 @@ description: >
 ### 议程 3：Integrate Polaris Go SDK to Support Their Service Governance Ability 任务介绍 @jayantxie
 
 1. 地址：https://github.com/cloudwego/kitex/issues/421
-    已认领 Issue @debug-LiXiwen
-3. 继注册发现能力之后，再以 Polaris 为服务治理中心，集成服务治理能力。熔断部分会在 Kitex 中注入 Middleware，通过 Middleware 上报每次请求结果。上报时需要 Polaris 实例，所以需要转换一下，这个转换可以通过缓存用 Key 去做查找。
-4. 此 PR 已经支持外部限流器的实现。可以通过扩展接口传入外部实现的限流器，对接 Polaris 的限流功能。
-5. 关于动态路由和负载均衡，通过扩展 Kitex LoadBalancer 实现。在 Polaris LoadBalancer 里，通过服务发现的实例去构造 Kitex 的实例，在LoadBalancer 接口里把这个实例转换成 Polaris 的实例，再把它写到缓存里。每一次 Pick 时，从 Pick 里找到调用 Polaris 动态路由的 API 对应的子集，再从这些子集里调用负载均衡的 API ，拿到对应实例。这个实例需要转成 Kitex 的 Instance， 所以也需要通过 Key 做查找操作。扩展 Next Picker 只会在第一次选择时执行这个逻辑。
-6. 新建 Polaris 仓库，把原有 Registry-Polaris 仓库代码复制过去，后续只维持新仓库。
+   已认领 Issue @debug-LiXiwen
+2. 继注册发现能力之后，再以 Polaris 为服务治理中心，集成服务治理能力。熔断部分会在 Kitex 中注入 Middleware，通过 Middleware 上报每次请求结果。上报时需要 Polaris 实例，所以需要转换一下，这个转换可以通过缓存用 Key 去做查找。
+3. 此 PR 已经支持外部限流器的实现。可以通过扩展接口传入外部实现的限流器，对接 Polaris 的限流功能。
+4. 关于动态路由和负载均衡，通过扩展 Kitex LoadBalancer 实现。在 Polaris LoadBalancer 里，通过服务发现的实例去构造 Kitex 的实例，在LoadBalancer 接口里把这个实例转换成 Polaris 的实例，再把它写到缓存里。每一次 Pick 时，从 Pick 里找到调用 Polaris 动态路由的 API 对应的子集，再从这些子集里调用负载均衡的 API ，拿到对应实例。这个实例需要转成 Kitex 的 Instance， 所以也需要通过 Key 做查找操作。扩展 Next Picker 只会在第一次选择时执行这个逻辑。
+5. 新建 Polaris 仓库，把原有 Registry-Polaris 仓库代码复制过去，后续只维持新仓库。
 
 ---
 
@@ -54,4 +54,3 @@ description: >
 **Kitex** v0.3.2 已发布！
 
 [https://github.com/cloudwego/kitex/releases/tag/v0.3.2](https://github.com/cloudwego/kitex/releases/tag/v0.3.2)
-

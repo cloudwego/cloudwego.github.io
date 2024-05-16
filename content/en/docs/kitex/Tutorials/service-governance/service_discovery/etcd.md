@@ -116,7 +116,7 @@ Function signature:
 func NewEtcdRegistryWithRetry(endpoints []string, retryConfig *retry.Config, opts ...Option) (registry.Registry, error)
 ```
 
-Use `NewRetryConfig(opts ...Option) *Config`  to create `Retry` configuration, see `Option` for configuration details.
+Use `NewRetryConfig(opts ...Option) *Config` to create `Retry` configuration, see `Option` for configuration details.
 
 Example:
 
@@ -205,11 +205,11 @@ After the service is registered to ETCD, it will regularly check the status of t
 
 **Default Configuration**
 
-| Configuration                                         | Default Value    | description                                                  |
-| ----------------------------------------------------- | ---------------- | ------------------------------------------------------------ |
-| `WithMaxAttemptTimes(maxAttemptTimes uint) Option`    | 5                | Used to set the maximum number of attempts, if 0, it means infinite attempts |
-| `WithObserveDelay(observeDelay time.Duration) Option` | 30 * time.Second | Used to set the delay time for checking service status under normal connection conditions |
-| `WithRetryDelay(t time.Duration) Option`              | 10 * time.Second | Used to set the retry delay time after disconnecting         |
+| Configuration                                         | Default Value     | description                                                                               |
+| ----------------------------------------------------- | ----------------- | ----------------------------------------------------------------------------------------- |
+| `WithMaxAttemptTimes(maxAttemptTimes uint) Option`    | 5                 | Used to set the maximum number of attempts, if 0, it means infinite attempts              |
+| `WithObserveDelay(observeDelay time.Duration) Option` | 30 \* time.Second | Used to set the delay time for checking service status under normal connection conditions |
+| `WithRetryDelay(t time.Duration) Option`              | 10 \* time.Second | Used to set the retry delay time after disconnecting                                      |
 
 ## Service Discovery
 
@@ -274,7 +274,7 @@ import (
 	etcd "github.com/kitex-contrib/registry-etcd"
 )
 
-func main() { 
+func main() {
 	// creates a etcd based resolver with given username and password
 	r, err := etcd.NewEtcdResolverWithAuth([]string{"127.0.0.1:2379"}, "username", "password")
 	if err != nil {
@@ -435,4 +435,3 @@ The configuration of Etcd client and server can be customized, refer to the conf
 ## Complete Example
 
 For more, see [example](https://github.com/kitex-contrib/registry-etcd/tree/main/example) 。
-

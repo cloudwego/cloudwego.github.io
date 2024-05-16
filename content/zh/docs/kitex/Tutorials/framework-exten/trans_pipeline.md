@@ -36,6 +36,7 @@ type InboundHandler interface {
 - 服务端限流 Handler
 
   Kitex 支持连接级别和请求级别限流，限流是为了保障服务的可用性，当达到阈值应当及时限流，放到 Transport 层可以达到及时限流的目的，实现见 limiter_inbound.go。
+
   - 连接级别限流 OnActive(), OnInactive()
   - 请求级别限流 OnRead()
 
@@ -45,9 +46,9 @@ type InboundHandler interface {
 
   - 写入透传信息 Write()
   - 读取透传信息 OnMessage()
-  
+
   为更明确的为使用者元信息透传的扩展能力，Kitex 单独定义了信息透传的处理接口 MetaHandler，这里会执行 MetaHandler 进行透传信息的处理。
-  
+
   ```go
   // MetaHandler reads or writes metadata through certain protocol.
   type MetaHandler interface {

@@ -2,15 +2,16 @@
 title: "Zookeeper"
 date: 2023-12-18
 weight: 5
-keywords: ["ConfigCenter Extension","ZooKeeper"]
+keywords: ["ConfigCenter Extension", "ZooKeeper"]
 description: "Use ZooKeeper as Kitex’s service governance configuration center"
-
 ---
+
 ## Install
 
 `go get github.com/kitex-contrib/config-zookeeper`
 
 ## Suite
+
 The configuration center adapter of zookeeper, kitex uses `WithSuite` to convert the configuration in zookeeper into the governance feature configuration of kitex.
 
 The following is a complete usage example:
@@ -233,19 +234,19 @@ type ConfigParam struct {
 
 The final path in kitex-contrib/config-zookeeper is a combination of Prefix and Path in ConfigParam: `param.Prefix + "/" + param.Path`
 
-| Variable Name    | Default Value                                               | Introduction                                                 |
-| ---------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
-| Servers          | 127.0.0.1:2181                                              | Zookeeper server nodes                                       |
-| Prefix           | /KitexConfig                                                | The prefix of Zookeeper                                      |
+| Variable Name    | Default Value                                               | Introduction                                                                                                                                                                                    |
+| ---------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Servers          | 127.0.0.1:2181                                              | Zookeeper server nodes                                                                                                                                                                          |
+| Prefix           | /KitexConfig                                                | The prefix of Zookeeper                                                                                                                                                                         |
 | ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ClientServiceName` `ServiceName` `Category` three metadata that can be customised |
-| ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised |
-| ConfigParser     | defaultConfigParser                                         | The default is the parser that parses json                   |
+| ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised                      |
+| ConfigParser     | defaultConfigParser                                         | The default is the parser that parses json                                                                                                                                                      |
 
 ### Governance Policy
 
 > The configPath and configPrefix in the following example use default values, the service name is `ServiceName` and the client name is `ClientName`.
 
-#### Rate Limit 
+#### Rate Limit
 
 Category=limit
 
@@ -269,15 +270,13 @@ Example:
 }
 ```
 
-
-
 Note:
 
 - The granularity of the current limit configuration is server global, regardless of client or method.
 - Not configured or value is 0 means not enabled.
 - connection_limit and qps_limit can be configured independently, e.g. connection_limit = 100, qps_limit = 0
 
-#### Retry Policy 
+#### Retry Policy
 
 Category=retry
 
@@ -332,11 +331,9 @@ Example：
 }
 ```
 
-
-
 Note: retry.Container has built-in support for specifying the default configuration using the `*` wildcard (see the [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) method for details).
 
-#### RPC Timeout 
+#### RPC Timeout
 
 Category=rpc_timeout
 
@@ -358,8 +355,6 @@ Example：
   }
 }
 ```
-
-
 
 Note: The circuit breaker implementation of kitex does not currently support changing the global default configuration (see [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195) for details).
 

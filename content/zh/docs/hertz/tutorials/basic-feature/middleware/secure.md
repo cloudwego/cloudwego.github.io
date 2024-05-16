@@ -59,16 +59,16 @@ Secure 所提供的配置项是为了简化一些常见的 HTTP headers 的配�
 
 Secure 提供 `New()` 函数用于将 Secure 集成进入 Hertz。默认配置如下所示
 
-| 配置函数                      | 描述                                                                                                                             | 默认值                                             |
-|---------------------------|--------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
-| WithSSLRedirect           | `WithSSLRedirect` 设置为 true, 则将只允许 https 请求访问                                                                                   | true                                            |
-| WithIsDevelopment         | 如果 `WithIsDevelopment` 设置为 true, 则中间件应用的整个安全策略将被完全禁用                                                                           | false                                           |
-| WithSTSSecond             | `WithSTSSecond` 用于设置 Strict-Transport-Security 的 max-age 的秒数 (second)                                                           | 315360000                                       |
-| WithFrameDeny             | `WithFrameDeny` 用于设置 X-Frame-Options 中的值，为 true 则设置值为 DENY                                                                    | true                                            |
-| WithContentTypeNosniff    | 如果 `WithContentTypeNosniff` 设置为 true, </br> 则在 X-Content-Type-Options 中 添加 `nosniff` 值                                         | true                                            |
-| WithBrowserXssFilter      | 如果 `WithBrowserXssFilter` 设置为 true, </br> 则添加在 X-XSS-Protection 头中添加 `1; mode=block` 的值                                         | true                                            |
-| WithContentSecurityPolicy | `WithContentSecurityPolicy` </br> 用于配置 Content-Security-Policy 中的策略                                                            | "default-src 'self'"                            |
-| WithIENoOpen              | `WithIENoOpen` 用于防止 Internet Explorer 在网站的中执行下载任务，默认设置为 true, 即阻止下载                                                           | true                                            |
+| 配置函数                  | 描述                                                                                                                                                                                  | 默认值                                          |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| WithSSLRedirect           | `WithSSLRedirect` 设置为 true, 则将只允许 https 请求访问                                                                                                                              | true                                            |
+| WithIsDevelopment         | 如果 `WithIsDevelopment` 设置为 true, 则中间件应用的整个安全策略将被完全禁用                                                                                                          | false                                           |
+| WithSTSSecond             | `WithSTSSecond` 用于设置 Strict-Transport-Security 的 max-age 的秒数 (second)                                                                                                         | 315360000                                       |
+| WithFrameDeny             | `WithFrameDeny` 用于设置 X-Frame-Options 中的值，为 true 则设置值为 DENY                                                                                                              | true                                            |
+| WithContentTypeNosniff    | 如果 `WithContentTypeNosniff` 设置为 true, </br> 则在 X-Content-Type-Options 中 添加 `nosniff` 值                                                                                     | true                                            |
+| WithBrowserXssFilter      | 如果 `WithBrowserXssFilter` 设置为 true, </br> 则添加在 X-XSS-Protection 头中添加 `1; mode=block` 的值                                                                                | true                                            |
+| WithContentSecurityPolicy | `WithContentSecurityPolicy` </br> 用于配置 Content-Security-Policy 中的策略                                                                                                           | "default-src 'self'"                            |
+| WithIENoOpen              | `WithIENoOpen` 用于防止 Internet Explorer 在网站的中执行下载任务，默认设置为 true, 即阻止下载                                                                                         | true                                            |
 | WIthSSLProxyHeaders       | `WIthSSLProxyHeaders` 用于设置 **request headers map**。若请求是不安全的，就将请求头的信息和 **request headers map** 中的信息进行匹配。如果匹配到了相应的值，就把该请求视为安全的请求 | map[string]string{"X-Forwarded-Proto": "https"} |
 
 当然，除了这些默认的配置项，我们还有其他的配置项在后续介绍
@@ -154,7 +154,7 @@ package main
 import (
 	"context"
     "net/http"
-    
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
     "github.com/cloudwego/hertz/pkg/common/utils"

@@ -15,7 +15,7 @@ cwgo server -type RPC -service {service name} -idl {idl path} -template {tpl pat
 
 ## Template Reading
 
-cwgo supports reading templates from local or git, while git supports https or ssh formats.
+cwgo supports reading templates from local or git. git supports https or ssh formats, with `-template` specifying the template path and `-branch` specifying the template branch(default to the main branch).
 
 RPC Server、Client, HTTP Server、Client all support template extension, specific usage can be found in the following text.
 
@@ -28,13 +28,13 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template {local 
 ### git https
 
 ```sh
-cwgo server -type RPC -service {service name} -idl {idl path}  -template https://github.com/***/cwgo_template.git
+cwgo server -type RPC -service {service name} -idl {idl path}  -template https://github.com/***/cwgo_template.git -branch {branch path}
 ```
 
 ### git ssh
 
 ```sh
-cwgo server -type RPC -service {service name} -idl {idl path}  -template git@github.com:***/cwgo_template.git
+cwgo server -type RPC -service {service name} -idl {idl path}  -template git@github.com:***/cwgo_template.git -branch {branch path}
 ```
 
 ## RPC

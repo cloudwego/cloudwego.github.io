@@ -3,7 +3,16 @@ date: 2023-06-15
 title: "CloudWeGo: A leading practice for building enterprise cloud native middleware!"
 projects: ["CloudWeGo"]
 linkTitle: "CloudWeGo: A leading practice for building enterprise cloud native middleware!"
-keywords: ["CloudWeGo", "middleware", "Kitex", "microservice framework", "ByteDance Open Source", "open source", "cloud native"]
+keywords:
+  [
+    "CloudWeGo",
+    "middleware",
+    "Kitex",
+    "microservice framework",
+    "ByteDance Open Source",
+    "open source",
+    "cloud native",
+  ]
 description: "This article provides an overview of CloudWeGo"
 author: <a href="https://github.com/vinijaiswal" target="_blank">Vini Jaiswal</a>
 ---

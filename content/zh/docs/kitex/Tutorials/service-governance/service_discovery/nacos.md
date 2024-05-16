@@ -5,7 +5,7 @@ weight: 5
 keywords: ["服务注册与发现", "nacos"]
 description: "Kitex 提供的服务注册与发现 nacos 拓展。"
 ---
-  
+
 ## 安装
 
 - nacos-sdk-go v1 版本
@@ -57,15 +57,15 @@ import (
 )
 
 func main() {
-    // ... 
+    // ...
     r, err := registry.NewDefaultNacosRegistry()
     if err != nil {
         panic(err)
     }
     svr := echo.NewServer(
-        new(EchoImpl), 
+        new(EchoImpl),
         server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "echo"}),
-        server.WithRegistry(r), 
+        server.WithRegistry(r),
 	)
     if err := svr.Run(); err != nil {
         log.Println("server stopped with error:", err)
@@ -103,7 +103,7 @@ func main() {
     sc := []constant.ServerConfig{
         *constant.NewServerConfig("127.0.0.1", 8848),
     }
-    
+
     cc := constant.ClientConfig{
         NamespaceId:         "public",
         TimeoutMs:           5000,
@@ -114,7 +114,7 @@ func main() {
         Username:            "your-name",
         Password:            "your-password",
     }
-    
+
     cli, err := clients.NewNamingClient(
         vo.NacosClientParam{
             ClientConfig:  &cc,
@@ -124,8 +124,8 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
-    svr := echo.NewServer(new(EchoImpl), 
+
+    svr := echo.NewServer(new(EchoImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "echo"}),
 		server.WithRegistry(registry.NewNacosRegistry(cli)),
     )
@@ -159,7 +159,7 @@ Nacos 扩展提供了 `WithGroup` 用于帮助用户配置自定义的集群。�
 函数签名：
 
 ```go
-func WithGroup(group string) Option 
+func WithGroup(group string) Option
 ```
 
 ## 服务发现
@@ -198,10 +198,10 @@ import (
 )
 
 func main() {
-    // ... 
+    // ...
     r, err := resolver.NewDefaultNacosResolver()
 	if err != nil {
-	    panic(err)	
+	    panic(err)
     }
     client, err := echo.NewClient("echo", client.WithResolver(r))
     if err != nil {
@@ -234,7 +234,7 @@ import (
     // ...
 )
 func main() {
-    // ... 
+    // ...
     sc := []constant.ServerConfig{
 	    *constant.NewServerConfig("127.0.0.1", 8848),
 	}
@@ -248,7 +248,7 @@ func main() {
         Username:            "your-name",
         Password:            "your-password",
     }
-    
+
     cli, err := clients.NewNamingClient(
         vo.NacosClientParam{
             ClientConfig:  &cc,
@@ -256,7 +256,7 @@ func main() {
         },
     )
     if err != nil {
-	    panic(err)	
+	    panic(err)
     }
     client, err := echo.NewClient("echo", client.WithResolver(resolver.NewNacosResolver(cli))
     if err != nil {
@@ -287,7 +287,7 @@ Nacos 扩展提供了 `WithGroup` 用于帮助用户配置自定义的集群。�
 函数签名：
 
 ```go
-func WithGroup(group string) Option 
+func WithGroup(group string) Option
 ```
 
 ## 使用示例
@@ -373,6 +373,7 @@ func main() {
 	}
 }
 ```
+
 ## 注意
 
 - nacos/v2 版本中 kitex 目前不支持多次在同分组下创建多端口示例

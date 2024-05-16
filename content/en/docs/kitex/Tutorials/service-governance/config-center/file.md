@@ -2,14 +2,14 @@
 title: "File"
 date: 2023-12-18
 weight: 4
-keywords: ["ConfigCenter Extension","file"]
+keywords: ["ConfigCenter Extension", "file"]
 description: "Use local files as Kitex's service governance configuration center"
-
 ---
+
 ## Supported file type
 
-| json | yaml |
-| ---  | --- |
+| json     | yaml     |
+| -------- | -------- |
 | &#10004; | &#10004; |
 
 ## Install
@@ -17,6 +17,7 @@ description: "Use local files as Kitex's service governance configuration center
 `go get github.com/kitex-contrib/config-file`
 
 ## Suite
+
 Local file configuration center adapter, kitex converts the configuration in local files into governance feature configurations of kitex through `WithSuite`.
 
 The usage can be divided into two steps:
@@ -110,12 +111,14 @@ func main() {
 ```
 
 ### Client
+
 ```go
 type FileConfigClientSuite struct {
 	watcher monitor.ConfigMonitor
 	service string
 }
 ```
+
 Function Signature:
 
 `func NewSuite(service, key string, watcher filewatcher.FileWatcher,opts ...utils.Option)*FileConfigClientSuite`
@@ -258,6 +261,7 @@ type ConfigParser interface {
 Sample:
 
 Extend parsing YAML types.
+
 ```go
 // customed by user
 type MyParser struct{}
@@ -299,26 +303,28 @@ client, err := echo.NewClient(
 In subsequent examples, we set the service name to `ServiceName` and the client name to `ClientName`.
 
 #### Rate Limit
+
 Category=limit
 
 > Currently, current limiting only supports the server side, so ClientServiceName is empty.
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/limiter/item_limiter.go#L33)
 
-|Variable|Introduction|
-|----|----|
-|connection_limit| Maximum concurrent connections |
-|qps_limit| Maximum request number every 100ms |
+| Variable         | Introduction                       |
+| ---------------- | ---------------------------------- |
+| connection_limit | Maximum concurrent connections     |
+| qps_limit        | Maximum request number every 100ms |
 
 Example:
+
 ```json
 {
-    "ServiceName": {
-        "limit": {
-            "connection_limit": 300,
-            "qps_limit": 200
-        }
+  "ServiceName": {
+    "limit": {
+      "connection_limit": 300,
+      "qps_limit": 200
     }
+  }
 }
 ```
 
@@ -330,14 +336,15 @@ Note:
 - Multiple different rate limiting strategies for multiple services can be written within a single JSON file. Simply use filewatch to monitor the same file and pass in different keys. As shown in the example, the key is `ServiceName`
 
 #### Retry Policy
+
 Category=retry
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
 
-|Variable|Introduction|
-|----|----|
-|type| 0: failure_policy 1: backup_policy|
-|failure_policy.backoff_policy| Can only be set one of `fixed` `none` `random` |
+| Variable                      | Introduction                                   |
+| ----------------------------- | ---------------------------------------------- |
+| type                          | 0: failure_policy 1: backup_policy             |
+| failure_policy.backoff_policy | Can only be set one of `fixed` `none` `random` |
 
 Example：
 
@@ -345,42 +352,44 @@ Example：
 
 ```json
 {
-    "ClientName/ServiceName": {
-        "retry": {
-            "*": {
-                "enable": true,
-                "type": 0,
-                "failure_policy": {
-                    "stop_policy": {
-                        "max_retry_times": 3,
-                        "max_duration_ms": 2000,
-                        "cb_policy": {
-                            "error_rate": 0.2
-                        }
-                    }
-                }
-            },
-            "Echo": {
-                "enable": true,
-                "type": 1,
-                "backup_policy": {
-                    "retry_delay_ms": 200,
-                    "stop_policy": {
-                        "max_retry_times": 2,
-                        "max_duration_ms": 1000,
-                        "cb_policy": {
-                            "error_rate": 0.3
-                        }
-                    }
-                }
+  "ClientName/ServiceName": {
+    "retry": {
+      "*": {
+        "enable": true,
+        "type": 0,
+        "failure_policy": {
+          "stop_policy": {
+            "max_retry_times": 3,
+            "max_duration_ms": 2000,
+            "cb_policy": {
+              "error_rate": 0.2
             }
+          }
         }
+      },
+      "Echo": {
+        "enable": true,
+        "type": 1,
+        "backup_policy": {
+          "retry_delay_ms": 200,
+          "stop_policy": {
+            "max_retry_times": 2,
+            "max_duration_ms": 1000,
+            "cb_policy": {
+              "error_rate": 0.3
+            }
+          }
+        }
+      }
     }
+  }
 }
 ```
+
 Note: retry.Container has built-in support for specifying the default configuration using the `*` wildcard (see the [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) method for details).
 
 #### RPC Timeout
+
 Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
@@ -391,29 +400,30 @@ Example：
 
 ```json
 {
-    "ClientName/ServiceName": {
-        "timeout": {
-            "*": {
-                "conn_timeout_ms": 100,
-                "rpc_timeout_ms": 2000
-            },
-            "Pay": {
-                "conn_timeout_ms": 50,
-                "rpc_timeout_ms": 1000
-            }
-        },
+  "ClientName/ServiceName": {
+    "timeout": {
+      "*": {
+        "conn_timeout_ms": 100,
+        "rpc_timeout_ms": 2000
+      },
+      "Pay": {
+        "conn_timeout_ms": 50,
+        "rpc_timeout_ms": 1000
+      }
     }
+  }
 }
 ```
 
 #### Circuit Break
+
 Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
 
-|Variable|Introduction|
-|----|----|
-|min_sample| Minimum statistical sample number|
+| Variable   | Introduction                      |
+| ---------- | --------------------------------- |
+| min_sample | Minimum statistical sample number |
 
 The echo method uses the following configuration (0.3, 100) and other methods use the global default configuration (0.5, 200)
 
@@ -423,19 +433,20 @@ Example：
 
 ```json
 {
-    "ClientName/ServiceName": {
-        "circuitbreaker": {
-            "Echo": {
-                "enable": true,
-                "err_rate": 0.3,
-                "min_sample": 100
-            }
-        },
+  "ClientName/ServiceName": {
+    "circuitbreaker": {
+      "Echo": {
+        "enable": true,
+        "err_rate": 0.3,
+        "min_sample": 100
+      }
     }
+  }
 }
 ```
 
 Note: The circuit breaker implementation of kitex does not currently support changing the global default configuration (see [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195) for details).
+
 #### More Info
 
 Refer to [example](https://github.com/kitex-contrib/config-file/tree/main/example) for more usage.
@@ -448,54 +459,54 @@ For client configuration, you should write all their configurations in the same 
 
 ```json
 {
-    "ClientName/ServiceName": {
-        "timeout": {
-            "*": {
-                "conn_timeout_ms": 100,
-                "rpc_timeout_ms": 2000
-            },
-            "Pay": {
-                "conn_timeout_ms": 50,
-                "rpc_timeout_ms": 1000
+  "ClientName/ServiceName": {
+    "timeout": {
+      "*": {
+        "conn_timeout_ms": 100,
+        "rpc_timeout_ms": 2000
+      },
+      "Pay": {
+        "conn_timeout_ms": 50,
+        "rpc_timeout_ms": 1000
+      }
+    },
+    "circuitbreaker": {
+      "Echo": {
+        "enable": true,
+        "err_rate": 0.3,
+        "min_sample": 100
+      }
+    },
+    "retry": {
+      "*": {
+        "enable": true,
+        "type": 0,
+        "failure_policy": {
+          "stop_policy": {
+            "max_retry_times": 3,
+            "max_duration_ms": 2000,
+            "cb_policy": {
+              "error_rate": 0.2
             }
-        },
-        "circuitbreaker": {
-            "Echo": {
-                "enable": true,
-                "err_rate": 0.3,
-                "min_sample": 100
-            }
-        },
-        "retry": {
-            "*": {
-                "enable": true,
-                "type": 0,
-                "failure_policy": {
-                    "stop_policy": {
-                        "max_retry_times": 3,
-                        "max_duration_ms": 2000,
-                        "cb_policy": {
-                            "error_rate": 0.2
-                        }
-                    }
-                }
-            },
-            "Echo": {
-                "enable": true,
-                "type": 1,
-                "backup_policy": {
-                    "retry_delay_ms": 200,
-                    "stop_policy": {
-                        "max_retry_times": 2,
-                        "max_duration_ms": 1000,
-                        "cb_policy": {
-                            "error_rate": 0.3
-                        }
-                    }
-                }
-            }
+          }
         }
+      },
+      "Echo": {
+        "enable": true,
+        "type": 1,
+        "backup_policy": {
+          "retry_delay_ms": 200,
+          "stop_policy": {
+            "max_retry_times": 2,
+            "max_duration_ms": 1000,
+            "cb_policy": {
+              "error_rate": 0.3
+            }
+          }
+        }
+      }
     }
+  }
 }
 ```
 

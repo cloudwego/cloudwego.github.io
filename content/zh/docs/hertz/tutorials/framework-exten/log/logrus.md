@@ -78,7 +78,7 @@ func main() {
 函数签名：
 
 ```go
-func WithLogger(logger *logrus.Logger) Option 
+func WithLogger(logger *logrus.Logger) Option
 ```
 
 示例代码：
@@ -104,7 +104,7 @@ func main() {
 函数签名：
 
 ```go
-func WithHook(hook logrus.Hook) Option 
+func WithHook(hook logrus.Hook) Option
 ```
 
 示例代码：
@@ -172,7 +172,7 @@ func main() {
 			return
 		}
 	}
-	
+
 	logger := hertzlogrus.NewLogger()
     // 提供压缩和删除
 	lumberjackLogger := &lumberjack.Logger{

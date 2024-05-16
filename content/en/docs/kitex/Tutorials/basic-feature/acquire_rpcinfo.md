@@ -12,14 +12,14 @@ The default lifecycle of Kitex's RPCInfo is from the start of the request to the
 
 ### 1.1 Synchronous usage
 
-| **Information obtained**                     | **Kitex fetch method**                                                                                                                                                                                                |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Get Caller's Service                         | caller, ok :=  kitexutil.GetCaller(ctx)                                                                                                                                                                                  |
-| Get RPC Method                               | method, ok := kitexutil.GetMethod(ctx)                                                                                                                                                                                   |
-| Get Caller's address                         | cluster, ok := kitexutil.GetCallerAddr(ctx)                                                                                                                                                                              |
-| Get ServiceName defined in IDL               | svcName, ok := kitexutil.GetIDLServiceName(ctx)                                                                                                                                                                          |
-| Get caller's handler method                  | callerMethod, ok := kitexutil.GetCallerHandlerMethod(ctx)<br/>Only the caller is a Kitex server will have this method information by default, or you can set K_METHOD into context.Context then kitex will get it.            |
-| Get the transport protocol                    | tp, ok := kitexutil.GetTransportProtocol(ctx)                                                                                                                                                                            |
+| **Information obtained**                     | **Kitex fetch method**                                                                                                                                                                                                                          |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Get Caller's Service                         | caller, ok := kitexutil.GetCaller(ctx)                                                                                                                                                                                                          |
+| Get RPC Method                               | method, ok := kitexutil.GetMethod(ctx)                                                                                                                                                                                                          |
+| Get Caller's address                         | cluster, ok := kitexutil.GetCallerAddr(ctx)                                                                                                                                                                                                     |
+| Get ServiceName defined in IDL               | svcName, ok := kitexutil.GetIDLServiceName(ctx)                                                                                                                                                                                                 |
+| Get caller's handler method                  | callerMethod, ok := kitexutil.GetCallerHandlerMethod(ctx)<br/>Only the caller is a Kitex server will have this method information by default, or you can set K_METHOD into context.Context then kitex will get it.                              |
+| Get the transport protocol                   | tp, ok := kitexutil.GetTransportProtocol(ctx)                                                                                                                                                                                                   |
 | Get the remote address from the caller-side. | ctx = metainfo.WithBackwardValues(ctx) <br/> // set ctx first，then execute RPC call ... <br/>err, resp := cli.YourMethod(ctx, req)<br/>rip, ok := metainfo.GetBackwardValue(ctx, consts.RemoteAddr) <br/>Note: Not applicable to oneway method |
 
 ### 1.2 Asynchronous usage
@@ -35,11 +35,11 @@ import (
     "github.com/cloudwego/kitex/pkg/utils/kitexutil"
 )
 // this creates a read-only copy of `ri` and attaches it to the new context
-ctx2 := rpcinfo.FreezeRPCInfo(ctx) 
+ctx2 := rpcinfo.FreezeRPCInfo(ctx)
 go func(ctx context.Context) {
     // ...
     ri := rpcinfo.GetRPCInfo(ctx) // OK
-    
+
     // eg: get client psm
     // caller, ok := kitexutil.GetCaller(ctx)
     //...

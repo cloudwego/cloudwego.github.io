@@ -10,11 +10,11 @@ description: Kitex 支持 PingPong、Oneway、Streaming 消息类型。
 
 目前 Kitex 支持的消息类型、编解码协议和传输协议
 
-| 消息类型 | 编码协议 | 传输协议                                                  |
-|--------|-------|-------------------------------------------------------|
-|PingPong|Thrift / Protobuf| [TTHeader](../../../reference/transport_protocol_ttheader) / HTTP2(gRPC) |
-|Oneway|Thrift| [TTHeader](../../../reference/transport_protocol_ttheader)               |
-|Streaming|Protobuf| HTTP2(gRPC)                                           |
+| 消息类型  | 编码协议          | 传输协议                                                                 |
+| --------- | ----------------- | ------------------------------------------------------------------------ |
+| PingPong  | Thrift / Protobuf | [TTHeader](../../../reference/transport_protocol_ttheader) / HTTP2(gRPC) |
+| Oneway    | Thrift            | [TTHeader](../../../reference/transport_protocol_ttheader)               |
+| Streaming | Protobuf          | HTTP2(gRPC)                                                              |
 
 - PingPong：客户端发起一个请求后会等待一个响应才可以进行下一次请求
 - Oneway：客户端发起一个请求后不等待一个响应
@@ -107,7 +107,7 @@ import (
 
     "xx/echo"
     "xx/echo/echoservice"
-    
+
     "github.com/cloudwego/kitex/client"
 )
 
@@ -122,7 +122,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
+
     fmt.Println(resp.Msg)
     // resp.Msg == "world"
 }
@@ -140,7 +140,7 @@ import (
 
     "xx/echo"
     "xx/echo/echoservice"
-    
+
     "github.com/cloudwego/kitex/client"
 )
 
@@ -164,9 +164,9 @@ func main() {
 Kitex 支持两种承载 Protobuf 负载的协议：
 
 - Kitex Protobuf
-    - 只支持 PingPong，若 IDL 定义了 stream 方法，将默认使用 gRPC 协议
+  - 只支持 PingPong，若 IDL 定义了 stream 方法，将默认使用 gRPC 协议
 - gRPC 协议
-    - 可以与 gRPC 互通，与 gRPC service 定义相同，支持 Unary(PingPong)、 Streaming 调用
+  - 可以与 gRPC 互通，与 gRPC service 定义相同，支持 Unary(PingPong)、 Streaming 调用
 
 ### Example
 
@@ -220,7 +220,7 @@ import (
     "log"
     "time"
     "context"
-    
+
     "xx/echo"
     "xx/echo/echoservice"
 }
@@ -283,7 +283,7 @@ func (handler) BidiSideStreaming(stream echo.EchoService_BidiSideStreamingServer
 			time.Sleep(time.Second)
 		}
 	}()
-	
+
 	err = <-errChan
 	cancel()
 	return err
@@ -291,9 +291,9 @@ func (handler) BidiSideStreaming(stream echo.EchoService_BidiSideStreamingServer
 
 func main() {
     svr := echoservice.NewServer(new(handler))
-    
+
     err := svr.Run()
-    
+
     if err != nil {
         log.Println(err.Error())
     }
@@ -310,10 +310,10 @@ package main
 import (
     "context"
     "time"
-    
+
     "xx/echo"
     "xx/echo/echoservice"
-    
+
     "github.com/cloudwego/kitex/client"
 }
 
@@ -346,10 +346,10 @@ import (
     "context"
     "log"
     "time"
-    
+
     "xx/echo"
     "xx/echo/echoservice"
-    
+
     "github.com/cloudwego/kitex/client"
 }
 
@@ -385,10 +385,10 @@ import (
     "context"
     "log"
     "time"
-    
+
     "xx/echo"
     "xx/echo/echoservice"
-    
+
     "github.com/cloudwego/kitex/client"
 }
 

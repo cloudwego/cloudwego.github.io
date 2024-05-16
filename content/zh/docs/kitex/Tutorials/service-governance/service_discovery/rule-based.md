@@ -24,41 +24,42 @@ Kitex 拓展 [resolver-rule-based](https://github.com/kitex-contrib/resolver-rul
 
 2. 定义过滤规则。
 
-    ```go
-    // 定义一个过滤函数
-    // 例如，只获取具有标签 {"k":"v"} 的实例
-    filterFunc := func(ctx context.Context, instance []discovery.Instance) []discovery.Instance {
-         var res []discovery.Instance
-         for _, ins := range instance {
-             if v, ok := ins.Tag("k"); ok && v == "v" {
-                 res = append(res, ins)
-             }
-         }
-         return res
-    }
-    // 构造过滤规则
-    filterRule := &FilterRule{Name: "rule-name", Funcs: []FilterFunc{filterFunc}} 
-    ```
+   ```go
+   // 定义一个过滤函数
+   // 例如，只获取具有标签 {"k":"v"} 的实例
+   filterFunc := func(ctx context.Context, instance []discovery.Instance) []discovery.Instance {
+        var res []discovery.Instance
+        for _, ins := range instance {
+            if v, ok := ins.Tag("k"); ok && v == "v" {
+                res = append(res, ins)
+            }
+        }
+        return res
+   }
+   // 构造过滤规则
+   filterRule := &FilterRule{Name: "rule-name", Funcs: []FilterFunc{filterFunc}}
+   ```
+
    注意：FilterFuncs 将按顺序执行。
 
 3. 配置解析器
 
-    ```go
-    import (
-       ruleBasedResolver "github.com/kitex-contrib/resolver-rule-based"
-       "github.com/cloudwego/kitex/client"
-       "github.com/cloudwego/kitex/pkg/discovery"
-    )
-    
-    // 实现你的解析器
-    var newResolver discovery.Resolver
-    
-    // 使用 `newResolver` 和 `filterRule` 构造一个 RuleBasedResolver
-    tagResolver := ruleBasedResolver.NewRuleBasedResolver(resolver, filterRule)
-    
-    // 在构建 Kitex 客户端时添加此选项
-    opt := client.WithResolver(tagResolver) 
-    ```
+   ```go
+   import (
+      ruleBasedResolver "github.com/kitex-contrib/resolver-rule-based"
+      "github.com/cloudwego/kitex/client"
+      "github.com/cloudwego/kitex/pkg/discovery"
+   )
+
+   // 实现你的解析器
+   var newResolver discovery.Resolver
+
+   // 使用 `newResolver` 和 `filterRule` 构造一个 RuleBasedResolver
+   tagResolver := ruleBasedResolver.NewRuleBasedResolver(resolver, filterRule)
+
+   // 在构建 Kitex 客户端时添加此选项
+   opt := client.WithResolver(tagResolver)
+   ```
 
 ## 示例
 

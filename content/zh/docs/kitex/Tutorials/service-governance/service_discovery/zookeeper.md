@@ -171,4 +171,3 @@ func main() {
 ## 完整示例
 
 完整示例见 [discovery_test.go](https://github.com/kitex-contrib/registry-zookeeper/blob/main/discovery_test.go)。
-

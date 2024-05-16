@@ -3,7 +3,7 @@ title: "高效 Debug"
 linkTitle: "高效 Debug"
 weight: 2
 date: 2024-02-18
-description:  "通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。"
+description: "通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。"
 ---
 
 ## 排查 Panic 原因
@@ -66,9 +66,9 @@ created by testing.(*T).Run
 
 1. 找到 panic 原因
 
-​	首先我们需要知道导致我们 Panic 的真正原因是什么，可以在完整的 panic stack 最上面一行找到。
+​ 首先我们需要知道导致我们 Panic 的真正原因是什么，可以在完整的 panic stack 最上面一行找到。
 
-​	如这里就是 **`panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]`**。
+​ 如这里就是 **`panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]`**。
 
 2. 找到原始 panic 位置
 
@@ -94,7 +94,7 @@ created by testing.(*T).Run
    panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]
            panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]
            panic: runtime error: slice bounds out of range [:5] with capacity 0
-   
+
    goroutine 18 [running]:
    testing.tRunner.func1.2(0x113c7c0, 0xc00011c000)
            /usr/local/go/src/testing/testing.go:1144 +0x332
@@ -207,7 +207,7 @@ type Response struct {
 //go:noinline
 func RPCCall(req *Request) *Response {
    resp := &Response{Data: []byte("hello")}
-   if req.Id%100 == 0 { // Logic Bug 
+   if req.Id%100 == 0 { // Logic Bug
       go func() {
          resp.Data = []byte("world")
       }()
@@ -255,7 +255,7 @@ ulimit -c unlimited
 # 对于由公司统一控制的机器来说，一般这个目录会被指定到 /opt/tiger/cores 。
 cat /proc/sys/kernel/core_pattern
 
-# 指示 Go Runtime 处理 coredump 
+# 指示 Go Runtime 处理 coredump
 GOTRACEBACK=crash ./{bin_exec}
 ```
 
@@ -447,7 +447,7 @@ error(*main.MyError) nil
 
 通过阅读 Go 的源码和文档，我们可以知道在 Go 中，一个有具体类型但是值为 nil 的 interface 对象，并不是等于 nil 的。
 
-接下来的问题是，在什么情况下，会导致 err 有类型，但是值为 nil 呢？我们可以在代码中搜索所有可能声明 var err *MyError 的地方，找到如下位置：
+接下来的问题是，在什么情况下，会导致 err 有类型，但是值为 nil 呢？我们可以在代码中搜索所有可能声明 var err \*MyError 的地方，找到如下位置：
 
 ```go
 func Buy(id int) (*Item, error) {
@@ -486,13 +486,13 @@ Frame 12: /home/wangzhuowei/code/chore/main.go:41 (PC: 491101)
     39:                if item == nil && err != nil {
     40:                        if merr, ok := err.(*MyError); ok {
 =>  41:                                log.Printf("Buy[%d] get error: %v", id, merr.Error())
-    42:                        }    
+    42:                        }
 (dlv) print id
 57
 ```
 
 由于这里的 `Handler` 函数与上层调用函数唯一的联系只有参数 id ，所以我们只需要打印它的值即可。可以看到，在外层 frame 13 中，id 的值为 58，而内层 frame 12 中，它的值为 57，所以我们可以知道，在开始 Handler 调用的时候，id 值为 57 ，而发生 panic 的时候，id 值已经被修改为 58 了。而这是不符合我们预期的，因为这证明了在调用 Handler 函数前，很可能 id 也被修改了，从而使得内层 Buy 函数出现访问到了已经被访问并删除的对象。进而出现上面最终的错误。
- 当找到这个线索后，我们再根据线索去找会修改 id 值的代码段，便可以清晰地找到真正的问题所在了。即，在 50 行修改了此时正被其他 Goroutine 对象持有的 id 对象。
+当找到这个线索后，我们再根据线索去找会修改 id 值的代码段，便可以清晰地找到真正的问题所在了。即，在 50 行修改了此时正被其他 Goroutine 对象持有的 id 对象。
 
 ```go
 func main() {
@@ -582,6 +582,6 @@ func AddSSH(data *SSHData) {
 }
 ```
 
-该函数理论上，对于每一个 UserId，会在 Map 里存储 6 字节的对象。而由于 main 函数每秒会调用 `AddSSH` 1000 次，即每秒泄漏 6KB 的内存。即便如此，我们就算程序运行一小时，也无非泄漏 6 * 60 * 60 = 21600KB = 21MB 的数据，不至于一分钟内就泄漏了 60MB。
+该函数理论上，对于每一个 UserId，会在 Map 里存储 6 字节的对象。而由于 main 函数每秒会调用 `AddSSH` 1000 次，即每秒泄漏 6KB 的内存。即便如此，我们就算程序运行一小时，也无非泄漏 6 _ 60 _ 60 = 21600KB = 21MB 的数据，不至于一分钟内就泄漏了 60MB。
 
 但如果再进一步去细看 `append` 函数的细节，我们会发现它最终返回的那个切片对象，底层数组的引用，依然还是原始 `randBytes` 函数所创建的那个，而切片的部分引用，依然会导致原始对象不能够被完全释放。

@@ -4,7 +4,6 @@ date: 2022-05-23
 weight: 1
 keywords: ["日志", "logLevel"]
 description: "Hertz 提供的日志能力。"
-
 ---
 
 Hertz 提供打印日志的方式，默认打在标准输出。实现在 `pkg/common/hlog` 中，Hertz 同时也提供了若干全局函数，例如 `hlog.Info`、`hlog.Errorf`、`hlog.CtxTracef` 等，用于调用默认 logger 的相应方法。

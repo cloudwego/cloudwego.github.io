@@ -4,7 +4,6 @@ linkTitle: "zap"
 weight: 3
 keywords: ["日志扩展", "zap"]
 description: "Hertz 对接 zap 和 lumberjack。"
-
 ---
 
 ## Logger 结构体
@@ -144,7 +143,7 @@ func main() {
 函数名称：
 
 ```go
-func WithCoreLevel(lvl zap.AtomicLevel) Option 
+func WithCoreLevel(lvl zap.AtomicLevel) Option
 ```
 
 示例代码：
@@ -207,7 +206,7 @@ func main() {
 函数签名：
 
 ```go
-func WithZapOptions(opts ...zap.Option) Option 
+func WithZapOptions(opts ...zap.Option) Option
 ```
 
 示例代码：
@@ -321,7 +320,7 @@ func main() {
 			return
 		}
 	}
-	
+
 	logger := hertzzap.NewLogger()
 	// 提供压缩和删除
 	lumberjackLogger := &lumberjack.Logger{

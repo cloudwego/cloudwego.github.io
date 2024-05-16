@@ -8,6 +8,7 @@ description: >
 ## 简单示例
 
 以 `hz` 工具生成的项目为例:
+
 > 生成步骤参考 [hz 使用(thrift)](/zh/docs/hertz/tutorials/toolkit/usage-thrift)
 
 项目目录结构如下:
@@ -65,7 +66,6 @@ func Register(r *server.Hertz) {
 ```
 
 现在在项目根目录执行 `api-list` 命令
-
 
 `cwgo api-list` 或 `cwgo api-list --project_path .`
 

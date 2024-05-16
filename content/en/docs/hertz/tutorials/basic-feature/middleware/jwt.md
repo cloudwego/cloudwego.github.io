@@ -4,7 +4,6 @@ date: 2022-06-09
 weight: 3
 keywords: ["JWT authentication", "JSON Web Token", "JWT"]
 description: "Hertz provides an implementation of JWT."
-
 ---
 
 JSON Web Token (JWT) is a lightweight authentication specification that allows us to use JWT to deliver secure and reliable information between users and servers. Essentially a token, it is a compact security method for passing between two sides of network communication.
@@ -155,7 +154,7 @@ Hertz provides `jwt` checks for routed requests by using middleware. Custom conf
 In the **Example** above, only **two necessary** custom configurations are passed in. More common configurations for the `HertzJWTMiddleware` are as follows:
 
 | Parameter                     | Introduction                                                                                                                                                                                |
-| :---------------------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `Realm`                       | The property used to set the name of the realm, the default value is `hertz jwt`                                                                                                            |
 | `SigningAlgorithm`            | The property used to set the signature algorithm, which can be HS256, HS384, HS512, RS256, RS384, or RS512, etc. The default value is `HS256`                                               |
 | `Key`                         | The property used to set the signature key (required configuration)                                                                                                                         |

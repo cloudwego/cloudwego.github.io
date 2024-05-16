@@ -4,7 +4,6 @@ date: 2022-09-08
 weight: 12
 keywords: ["Forward proxy", "Reverse proxy"]
 description: "Hertz provides forward and reverse proxy capabilities."
-
 ---
 
 ## Forward proxy
@@ -133,14 +132,14 @@ func NewSingleHostReverseProxy(target string, opts ...config.Option) (*reversePr
 ```
 
 > - For `NewSingleHostReverseProxy` function, if no `config.ClientOption` is passed it will use the default global `client.Client` instance.
-When passing `config.ClientOption` it will initialize a local `client.Client` instance.
-Using `ReverseProxy.SetClient` if there is need for shared customized `client.Client` instance.
+>   When passing `config.ClientOption` it will initialize a local `client.Client` instance.
+>   Using `ReverseProxy.SetClient` if there is need for shared customized `client.Client` instance.
 > - The reverse proxy resets the header of the response, any such modifications before the request is made will be discarded.
 
 We provide the `SetXxx()` method for setting private properties
 
 | Method              | Description                               |
-|---------------------|-------------------------------------------|
+| ------------------- | ----------------------------------------- |
 | `SetDirector`       | use to customize protocol.Request         |
 | `SetClient`         | use to customize client                   |
 | `SetModifyResponse` | use to customize modify response function |
@@ -153,7 +152,7 @@ package main
 
 import (
     "context"
-    
+
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/cloudwego/hertz/pkg/common/utils"
@@ -172,7 +171,7 @@ func main() {
             "msg": "proxy success!!",
         })
     })
-    
+
     h.GET("/backend", proxy.ServeHTTP)
     h.Spin()
 }
@@ -241,7 +240,7 @@ func main() {
 #### Configuration
 
 | Configuration  | Default                   | Description                  |
-|----------------|---------------------------|------------------------------|
+| -------------- | ------------------------- | ---------------------------- |
 | `WithDirector` | `nil`                     | customize the forward header |
 | `WithDialer`   | `gorillaws.DefaultDialer` | for dialer customization     |
 | `WithUpgrader` | `hzws.HertzUpgrader`      | for upgrader customization   |
@@ -249,7 +248,7 @@ func main() {
 ### More Examples
 
 | Purpose                 | Sample Code                                                                               |
-|-------------------------|-------------------------------------------------------------------------------------------|
+| ----------------------- | ----------------------------------------------------------------------------------------- |
 | Proxy tls               | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/tls)            |
 | Using service discovery | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/discovery)      |
 | Use with middleware     | [code](https://github.com/cloudwego/hertz-examples/tree/main/reverseproxy/use_middleware) |

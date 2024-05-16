@@ -4,7 +4,6 @@ date: 2023-02-25
 weight: 15
 keywords: ["HTTP 响应", "缓存"]
 description: "Hertz 提供了对 cache 的适配，支持 multi-backend。"
-
 ---
 
 cache 是一个用于缓存 HTTP 响应的中间件，开启后有助于提高服务器的并发访问能力。Hertz 也提供了对 cache 的 [适配](https://github.com/hertz-contrib/cache)，支持 multi-backend，参考了 [gin-cache](https://github.com/chenyahui/gin-cache) 的实现。
@@ -192,16 +191,16 @@ func main() {
 
 ## 配置
 
-| 配置                          | 默认值 | 介绍                                           |
-| ----------------------------- | ------ | ---------------------------------------------- |
-| WithOnHitCache                | nil    | 用于设置缓存命中的回调函数                     |
-| WithOnMissCache               | nil    | 用于设置缓存未命中的回调函数                   |
-| WithBeforeReplyWithCache      | nil    | 用于设置返回缓存响应前的回调函数               |
-| WithOnShareSingleFlight       | nil    | 用于设置请求共享 SingleFlight 结果时的回调函数 |
+| 配置                          | 默认值 | 介绍                                                                                         |
+| ----------------------------- | ------ | -------------------------------------------------------------------------------------------- |
+| WithOnHitCache                | nil    | 用于设置缓存命中的回调函数                                                                   |
+| WithOnMissCache               | nil    | 用于设置缓存未命中的回调函数                                                                 |
+| WithBeforeReplyWithCache      | nil    | 用于设置返回缓存响应前的回调函数                                                             |
+| WithOnShareSingleFlight       | nil    | 用于设置请求共享 SingleFlight 结果时的回调函数                                               |
 | WithSingleFlightForgetTimeout | 0      | 设置 SingleFlight 的超时时间，以控制并发操作的行为，确保请求在一定时间内被处理或者超时被取消 |
-| WithPrefixKey                 | ""     | 用于设置缓存响应 Key 的前缀                    |
-| WithoutHeader                 | false  | 用于设置是否需要缓存响应头                     |
-| WithCacheStrategyByRequest    | nil    | 用于设置自定义的缓存策略 |
+| WithPrefixKey                 | ""     | 用于设置缓存响应 Key 的前缀                                                                  |
+| WithoutHeader                 | false  | 用于设置是否需要缓存响应头                                                                   |
+| WithCacheStrategyByRequest    | nil    | 用于设置自定义的缓存策略                                                                     |
 
 ### WithCacheStrategyByRequest
 
@@ -235,7 +234,7 @@ func main() {
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         c.String(http.StatusOK, "hello world")
     })
-    
+
     h.Spin()
 }
 ```
@@ -396,7 +395,7 @@ func main() {
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         c.String(http.StatusOK, "hello world")
     })
-    
+
     h.Spin()
 }
 ```
@@ -438,7 +437,7 @@ func main() {
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         c.String(http.StatusOK, "hello world")
     })
-    
+
     h.Spin()
 }
 ```

@@ -49,11 +49,11 @@ func main() {
 
 ## 配置
 
-| 配置           | 默认值   | 介绍                                       |
-|-------------|-------|------------------------------------------|
-| WithWeak    | false | 使用弱验证器                                   |
-| WithNext | nil   | 定义一个 Next 函数，当返回值为 `true` 时跳过 `etag` 中间件 |
-|WithGenerator   | nil   | 自定义 ETag 生成逻辑                            |
+| 配置          | 默认值 | 介绍                                                       |
+| ------------- | ------ | ---------------------------------------------------------- |
+| WithWeak      | false  | 使用弱验证器                                               |
+| WithNext      | nil    | 定义一个 Next 函数，当返回值为 `true` 时跳过 `etag` 中间件 |
+| WithGenerator | nil    | 自定义 ETag 生成逻辑                                       |
 
 ### WithWeak
 
@@ -96,7 +96,7 @@ func main() {
 函数签名：
 
 ```go
-func WithNext(next NextFunc) Option 
+func WithNext(next NextFunc) Option
 ```
 
 示例代码：

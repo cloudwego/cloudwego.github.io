@@ -10,7 +10,7 @@ description: >
 ## 解析的项目代码注意事项
 
 - `*server.Hertz`, `*route.Engine`, `*route.Group` 只能是 **局部变量**
-  
+
   即变量只能在该 **函数参数** 或 **函数内部** 中声明
 
 - 调用 `Group()` 及 **路由注册函数** 中传入的 **relativePath** 必须是 **字符串字面量**，不能是 **变量**

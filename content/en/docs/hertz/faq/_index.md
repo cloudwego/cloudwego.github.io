@@ -2,7 +2,13 @@
 title: "FAQ"
 linkTitle: "FAQ"
 weight: 4
-keywords: ["Memory Usage", "Common Error Code", "Context Guide", "Numeric Precision Problem"]
+keywords:
+  [
+    "Memory Usage",
+    "Common Error Code",
+    "Context Guide",
+    "Numeric Precision Problem",
+  ]
 description: "Hertz FAQ."
 ---
 
@@ -77,7 +83,7 @@ In addition, Hertz also provides the `ctx.Copy()` interface to make it easier fo
 
 ```javascript
 var s = '{"x":6855337641038665531}';
-var obj = JSON. parse(s);
+var obj = JSON.parse(s);
 alert(obj.x);
 
 // Output 6855337641038666000
@@ -125,7 +131,7 @@ package main
 import (
     "context"
     "encoding/json"
-    
+
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/cloudwego/hertz/pkg/common/utils"
@@ -138,7 +144,7 @@ type User struct {
 
 func main() {
     h := server.Default()
-    
+
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         var u User
         err := json.Unmarshal([]byte(`{"id":6855337641038665531}`), &u)
@@ -147,7 +153,7 @@ func main() {
         }
         c.JSON(consts.StatusOK, u)
     })
-    
+
     h.Spin()
 }
 ```

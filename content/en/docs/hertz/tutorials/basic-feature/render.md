@@ -1,10 +1,20 @@
 ---
-title: 'Render'
+title: "Render"
 date: 2023-06-01
 weight: 18
-keywords: ["Render", "JSON", "Data", "HTML", "Protobuf", "Text", "XML", "Customizing Rendering"]
+keywords:
+  [
+    "Render",
+    "JSON",
+    "Data",
+    "HTML",
+    "Protobuf",
+    "Text",
+    "XML",
+    "Customizing Rendering",
+  ]
 description: "The rendering capabilities provided by Hertz."
---- 
+---
 
 Hertz supports rendering of JSON, HTML, Protobuf, etc.
 
@@ -93,16 +103,16 @@ func main() {
 		msg.Company = "company"
 		msg.Location = "location"
 		msg.Number = 123
-        
+
         c.IndentedJSON(consts.StatusOK, msg)
-        /* 
+        /*
         will output  :    {
                               "Company": "company",
    						      "Location": "location",
     					      "Number": 123
-					      }                         
+					      }
     	*/
-        
+
     h.Spin()
 }
 ```
@@ -291,7 +301,7 @@ func main() {
 	h.GET("someText", func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "message", "hello,world")
 	})
-    
+
 	h.Spin()
 }
 ```

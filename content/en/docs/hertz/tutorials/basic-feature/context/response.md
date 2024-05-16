@@ -2,7 +2,16 @@
 title: "Response"
 date: 2023-07-10
 weight: 2
-keywords: ["RequestContext", "Render", "Header", "Body", "File operation", "Response", "Flush"]
+keywords:
+  [
+    "RequestContext",
+    "Render",
+    "Header",
+    "Body",
+    "File operation",
+    "Response",
+    "Flush",
+  ]
 description: "The functions related to the response in RequestContext."
 ---
 
@@ -20,7 +29,7 @@ func (ctx *RequestContext) Redirect(statusCode int, uri []byte)
 func (ctx *RequestContext) Header(key, value string)
 func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool)
 func (ctx *RequestContext) AbortWithStatus(code int)
-func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error 
+func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
 ```
 
 ### SetContentType
@@ -226,7 +235,7 @@ Example Code:
 ```go
 h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
     ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
-    cookie := ctx.Response.Header.Get("Set-Cookie") 
+    cookie := ctx.Response.Header.Get("Set-Cookie")
     // cookie == "user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=Lax"
 })
 ```
@@ -250,7 +259,7 @@ func SetPartitionedCookie(ctx *app.RequestContext, name, value string, maxAge in
    }
    cookie := protocol.AcquireCookie()
    defer protocol.ReleaseCookie(cookie)
-   // It is recommended to use the __Host prefix when setting partitioned cookies 
+   // It is recommended to use the __Host prefix when setting partitioned cookies
    // to make them bound to the hostname (and not the registrable domain).
    cookie.SetKey(name)
    cookie.SetValue(url.QueryEscape(value))
@@ -306,7 +315,7 @@ Set the Status Code and collect Errors, terminate subsequent handlers, and retur
 Function Signature:
 
 ```go
-func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error 
+func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
 ```
 
 Example Code:
@@ -325,66 +334,66 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 
 Use RequestContext.Response.Header to obtain the ResponseHeader object, this object provides the following methods to obtain/set the response header.
 
-|Function Signature | Description |
-|:--|:--|
-|`func (h *ResponseHeader) IsHTTP11() bool` |Determine if it is the `HTTP/1.1` protocol, and true indicates it is the `HTTP/1.1` protocol  |
-|`func (h *ResponseHeader) SetHeaderLength(length int)`  |Set the length of the response header |
-|`func (h *ResponseHeader) GetHeaderLength()` |Get the length of the response header |
-|`func (h *ResponseHeader) SetContentRange(startPos, endPos, contentLength int)` |Set `Content-Range: bytes startPos-endPos/contentLength` in the response header, such as `Content-Range: bytes 1-5/10` |
-|`func (h *ResponseHeader) NoDefaultContentType() bool` |Obtain the default sending behavior when no Content-Type is specified. False indicates sending the default Content-Type value, true indicates not sending, and the default Content-Type value is `text/plain; charset=utf-8` |
-|`func (h *ResponseHeader) SetNoDefaultContentType(b bool)` |Set the default sending behavior when no Content-Type is specified. False indicates sending the default Content-Type value, true indicates not sending, and the default Content-Type value is `text/plain; charset=utf-8` |
-|`func (h *ResponseHeader) SetContentType(contentType string)` |Set Content-Type |
-|`func (h *ResponseHeader) ContentType() []byte` |Obtain Content-Type |
-|`func (h *ResponseHeader) SetContentTypeBytes(contentType []byte)` |Set Content-Type |
-|`func (h *ResponseHeader) ContentLength() int` |Obtain Content-Length, which can be a negative value. -1 represents `Transfer-Encoding: chunked`, -2 represents `Transfer-Encoding: identity` |
-|`func (h *ResponseHeader) SetContentLength(contentLength int)` |Set Content-Length, which can be a negative value. -1 represents `Transfer-Encoding: chunked`, -2 represents `Transfer-Encoding: identity` |
-|`func (h *ResponseHeader) SetContentLengthBytes(contentLength []byte)` |Set Content-Length for type `[]byte`, which can be a negative value. -1 represents `Transfer-Encoding: chunked`, -2 represents `Transfer-Encoding: identity` |
-|`func (h *ResponseHeader) CopyTo(dst *ResponseHeader)` |Return a copy of the response header, which can be used when there is competitive access to the response header |
-|`func (h *ResponseHeader) GetHeaders() []argsKV` |Return all response headers in the form of key value pairs |
-|`func (h *ResponseHeader) VisitAll(f func(key, value []byte))` |Visit all the key values of all headers and execute the f function |
-|`func (h *ResponseHeader) Get(key string) string` |Obtain the value of key, concurrency security |
-|`func (h *ResponseHeader) GetAll(key string) []string` |Obtain all values of key with type `[]byte` (used to obtain multiple values with the same key),  concurrency safety |
-|`func (h *ResponseHeader) Peek(key string) []byte` |Obtain a key value of type `[]byte` as key, which is not secure for concurrency, and using `Get` when competing for access |
-|`func (h *ResponseHeader) PeekAll(key string) [][]byte` |Obtain all values of type `[]byte` key as key (used to obtain multiple values with the same key), which is not secure for concurrency, and uses `GetAll` when competing for access |
-|`func (h *ResponseHeader) Set(key, value string)` |Set the header key value to set a single header for the same key |
-|`func (h *ResponseHeader) SetBytesV(key string, value []byte)` |Set the header key value of type `[]byte` to set a single header for the same key |
-|`func (h *ResponseHeader) Add(key, value string)` |Set the header key value to set multiple headers for the same key, but the key will overwrite the following headers: Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent |
-| `func (h *ResponseHeader) AddArgBytes(key, value []byte, noValue bool)`|Add Header key value (different from `Add`, the key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Content-Encoding, Connection, Server, Set-Cookie, Transfer-Encoding)|
-| `func (h *ResponseHeader) SetArgBytes(key, value []byte, noValue bool)`|Set Header key value (different from `Set`, the key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Content-Encoding, Connection, Server, Set-Cookie, Transfer-Encoding)|
-|`func (h *ResponseHeader) Del(key string)` |Delete key value pairs with key in the header |
-|`func (h *ResponseHeader) DelBytes(key []byte)` |Delete key value pairs with key in the header |
-|`func (h *ResponseHeader) AppendBytes(dst []byte) []byte` |Attach the complete header to the dst and return |
-|`func (h *ResponseHeader) Header() []byte` |Obtain the complete header of type `[]byte` |
-|`func (h *ResponseHeader) PeekLocation() []byte` |Return the value with key `Location` in the header  |
-|`func (h *ResponseHeader) Cookie(cookie *Cookie) bool` |Fill cookie for the given cookie.Key, and return false if the cookie.Key is missing |
-|`func (h *RequestHeader) FullCookie() []byte` |Return the complete cookie as a byte array |
-|`func (h *ResponseHeader) SetCookie(cookie *Cookie)` |Set Cookie Key Values |
-|`func (h *ResponseHeader) VisitAllCookie(f func(key, value []byte))` |Visit all the key values of all cookies and execute the f function |
-|`func (h *ResponseHeader) DelAllCookies()` |Delete all cookies |
-|`func (h *ResponseHeader) DelCookie(key string)` |Delete cookie with key in the response header. To delete cookies from the client, use the `DelClientCookie` function |
-|`func (h *ResponseHeader) DelCookieBytes(key []byte)` |Delete cookie with key in the response header. To delete cookies from the client, use the `DelClientCookieBytes` function |
-|`func (h *ResponseHeader) DelClientCookie(key string)` |Remove the cookie from the client |
-|`func (h *ResponseHeader) DelClientCookieBytes(key []byte)` |Remove the cookie from the client |
-|`func (h *ResponseHeader) SetConnectionClose(close bool)`|Set the `Connection: close` flag in the response header |
-|`func (h *ResponseHeader) ConnectionClose() bool` |Determine if Connection: close is included |
-|`func (h *ResponseHeader) ContentEncoding() []byte` |Obtion Content-Encoding |
-|`func (h *ResponseHeader) SetContentEncoding(contentEncoding string)` |Set Content-Encoding |
-|`func (h *ResponseHeader) SetContentEncodingBytes(contentEncoding []byte)` |Set Content-Encoding |
-|`func (h *ResponseHeader) SetCanonical(key, value []byte)` |Set the Header key value, assuming that the key is in canonical form |
-|`func (h *ResponseHeader) Server() []byte` |Return the value with key `Server` in the header |
-|`func (h *ResponseHeader) SetServerBytes(server []byte)` |Set the key in the header to the value of Server |
-|`func (h *ResponseHeader) MustSkipContentLength() bool` |Determine if there is a response body (according to the HTTP/1.1 protocol, there is no response body when the response status codes are 1xx, 204, or 304) |
-|`func (h *ResponseHeader) StatusCode() int` |Obtion StatusCode |
-|`func (h *ResponseHeader) SetStatusCode(statusCode int)`|Set StatusCode |
-|`func (h *ResponseHeader) Len() int` |Return the number of headers |
-|`func (h *ResponseHeader) DisableNormalizing()` |Disable the normalization of header name (capitalize the first letter and the first letter after the Em dash) |
-|`func (h *ResponseHeader) IsDisableNormalizing() bool` |Whether to disable the normalization of header names, default not disabled |
-|`func (h *ResponseHeader) Trailer() *Trailer` |Get Trailer |
-|`func (h *ResponseHeader) SetProtocol(p string)` |Set protocol name |
-|`func (h *ResponseHeader) GetProtocol() string` |Get protocol name |
-|`func (h *ResponseHeader) Reset()`|Reset the response header |
-|`func (h *ResponseHeader) ResetSkipNormalize()` |Reset the response header, except for the `disableNormalizing` state |
-|`func (h *ResponseHeader) ResetConnectionClose()` |Reset the connectionClose flag to false and delete the Connection Header |
+| Function Signature                                                              | Description                                                                                                                                                                                                                      |
+| :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `func (h *ResponseHeader) IsHTTP11() bool`                                      | Determine if it is the `HTTP/1.1` protocol, and true indicates it is the `HTTP/1.1` protocol                                                                                                                                     |
+| `func (h *ResponseHeader) SetHeaderLength(length int)`                          | Set the length of the response header                                                                                                                                                                                            |
+| `func (h *ResponseHeader) GetHeaderLength()`                                    | Get the length of the response header                                                                                                                                                                                            |
+| `func (h *ResponseHeader) SetContentRange(startPos, endPos, contentLength int)` | Set `Content-Range: bytes startPos-endPos/contentLength` in the response header, such as `Content-Range: bytes 1-5/10`                                                                                                           |
+| `func (h *ResponseHeader) NoDefaultContentType() bool`                          | Obtain the default sending behavior when no Content-Type is specified. False indicates sending the default Content-Type value, true indicates not sending, and the default Content-Type value is `text/plain; charset=utf-8`     |
+| `func (h *ResponseHeader) SetNoDefaultContentType(b bool)`                      | Set the default sending behavior when no Content-Type is specified. False indicates sending the default Content-Type value, true indicates not sending, and the default Content-Type value is `text/plain; charset=utf-8`        |
+| `func (h *ResponseHeader) SetContentType(contentType string)`                   | Set Content-Type                                                                                                                                                                                                                 |
+| `func (h *ResponseHeader) ContentType() []byte`                                 | Obtain Content-Type                                                                                                                                                                                                              |
+| `func (h *ResponseHeader) SetContentTypeBytes(contentType []byte)`              | Set Content-Type                                                                                                                                                                                                                 |
+| `func (h *ResponseHeader) ContentLength() int`                                  | Obtain Content-Length, which can be a negative value. -1 represents `Transfer-Encoding: chunked`, -2 represents `Transfer-Encoding: identity`                                                                                    |
+| `func (h *ResponseHeader) SetContentLength(contentLength int)`                  | Set Content-Length, which can be a negative value. -1 represents `Transfer-Encoding: chunked`, -2 represents `Transfer-Encoding: identity`                                                                                       |
+| `func (h *ResponseHeader) SetContentLengthBytes(contentLength []byte)`          | Set Content-Length for type `[]byte`, which can be a negative value. -1 represents `Transfer-Encoding: chunked`, -2 represents `Transfer-Encoding: identity`                                                                     |
+| `func (h *ResponseHeader) CopyTo(dst *ResponseHeader)`                          | Return a copy of the response header, which can be used when there is competitive access to the response header                                                                                                                  |
+| `func (h *ResponseHeader) GetHeaders() []argsKV`                                | Return all response headers in the form of key value pairs                                                                                                                                                                       |
+| `func (h *ResponseHeader) VisitAll(f func(key, value []byte))`                  | Visit all the key values of all headers and execute the f function                                                                                                                                                               |
+| `func (h *ResponseHeader) Get(key string) string`                               | Obtain the value of key, concurrency security                                                                                                                                                                                    |
+| `func (h *ResponseHeader) GetAll(key string) []string`                          | Obtain all values of key with type `[]byte` (used to obtain multiple values with the same key), concurrency safety                                                                                                               |
+| `func (h *ResponseHeader) Peek(key string) []byte`                              | Obtain a key value of type `[]byte` as key, which is not secure for concurrency, and using `Get` when competing for access                                                                                                       |
+| `func (h *ResponseHeader) PeekAll(key string) [][]byte`                         | Obtain all values of type `[]byte` key as key (used to obtain multiple values with the same key), which is not secure for concurrency, and uses `GetAll` when competing for access                                               |
+| `func (h *ResponseHeader) Set(key, value string)`                               | Set the header key value to set a single header for the same key                                                                                                                                                                 |
+| `func (h *ResponseHeader) SetBytesV(key string, value []byte)`                  | Set the header key value of type `[]byte` to set a single header for the same key                                                                                                                                                |
+| `func (h *ResponseHeader) Add(key, value string)`                               | Set the header key value to set multiple headers for the same key, but the key will overwrite the following headers: Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent                       |
+| `func (h *ResponseHeader) AddArgBytes(key, value []byte, noValue bool)`         | Add Header key value (different from `Add`, the key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Content-Encoding, Connection, Server, Set-Cookie, Transfer-Encoding) |
+| `func (h *ResponseHeader) SetArgBytes(key, value []byte, noValue bool)`         | Set Header key value (different from `Set`, the key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Content-Encoding, Connection, Server, Set-Cookie, Transfer-Encoding) |
+| `func (h *ResponseHeader) Del(key string)`                                      | Delete key value pairs with key in the header                                                                                                                                                                                    |
+| `func (h *ResponseHeader) DelBytes(key []byte)`                                 | Delete key value pairs with key in the header                                                                                                                                                                                    |
+| `func (h *ResponseHeader) AppendBytes(dst []byte) []byte`                       | Attach the complete header to the dst and return                                                                                                                                                                                 |
+| `func (h *ResponseHeader) Header() []byte`                                      | Obtain the complete header of type `[]byte`                                                                                                                                                                                      |
+| `func (h *ResponseHeader) PeekLocation() []byte`                                | Return the value with key `Location` in the header                                                                                                                                                                               |
+| `func (h *ResponseHeader) Cookie(cookie *Cookie) bool`                          | Fill cookie for the given cookie.Key, and return false if the cookie.Key is missing                                                                                                                                              |
+| `func (h *RequestHeader) FullCookie() []byte`                                   | Return the complete cookie as a byte array                                                                                                                                                                                       |
+| `func (h *ResponseHeader) SetCookie(cookie *Cookie)`                            | Set Cookie Key Values                                                                                                                                                                                                            |
+| `func (h *ResponseHeader) VisitAllCookie(f func(key, value []byte))`            | Visit all the key values of all cookies and execute the f function                                                                                                                                                               |
+| `func (h *ResponseHeader) DelAllCookies()`                                      | Delete all cookies                                                                                                                                                                                                               |
+| `func (h *ResponseHeader) DelCookie(key string)`                                | Delete cookie with key in the response header. To delete cookies from the client, use the `DelClientCookie` function                                                                                                             |
+| `func (h *ResponseHeader) DelCookieBytes(key []byte)`                           | Delete cookie with key in the response header. To delete cookies from the client, use the `DelClientCookieBytes` function                                                                                                        |
+| `func (h *ResponseHeader) DelClientCookie(key string)`                          | Remove the cookie from the client                                                                                                                                                                                                |
+| `func (h *ResponseHeader) DelClientCookieBytes(key []byte)`                     | Remove the cookie from the client                                                                                                                                                                                                |
+| `func (h *ResponseHeader) SetConnectionClose(close bool)`                       | Set the `Connection: close` flag in the response header                                                                                                                                                                          |
+| `func (h *ResponseHeader) ConnectionClose() bool`                               | Determine if Connection: close is included                                                                                                                                                                                       |
+| `func (h *ResponseHeader) ContentEncoding() []byte`                             | Obtion Content-Encoding                                                                                                                                                                                                          |
+| `func (h *ResponseHeader) SetContentEncoding(contentEncoding string)`           | Set Content-Encoding                                                                                                                                                                                                             |
+| `func (h *ResponseHeader) SetContentEncodingBytes(contentEncoding []byte)`      | Set Content-Encoding                                                                                                                                                                                                             |
+| `func (h *ResponseHeader) SetCanonical(key, value []byte)`                      | Set the Header key value, assuming that the key is in canonical form                                                                                                                                                             |
+| `func (h *ResponseHeader) Server() []byte`                                      | Return the value with key `Server` in the header                                                                                                                                                                                 |
+| `func (h *ResponseHeader) SetServerBytes(server []byte)`                        | Set the key in the header to the value of Server                                                                                                                                                                                 |
+| `func (h *ResponseHeader) MustSkipContentLength() bool`                         | Determine if there is a response body (according to the HTTP/1.1 protocol, there is no response body when the response status codes are 1xx, 204, or 304)                                                                        |
+| `func (h *ResponseHeader) StatusCode() int`                                     | Obtion StatusCode                                                                                                                                                                                                                |
+| `func (h *ResponseHeader) SetStatusCode(statusCode int)`                        | Set StatusCode                                                                                                                                                                                                                   |
+| `func (h *ResponseHeader) Len() int`                                            | Return the number of headers                                                                                                                                                                                                     |
+| `func (h *ResponseHeader) DisableNormalizing()`                                 | Disable the normalization of header name (capitalize the first letter and the first letter after the Em dash)                                                                                                                    |
+| `func (h *ResponseHeader) IsDisableNormalizing() bool`                          | Whether to disable the normalization of header names, default not disabled                                                                                                                                                       |
+| `func (h *ResponseHeader) Trailer() *Trailer`                                   | Get Trailer                                                                                                                                                                                                                      |
+| `func (h *ResponseHeader) SetProtocol(p string)`                                | Set protocol name                                                                                                                                                                                                                |
+| `func (h *ResponseHeader) GetProtocol() string`                                 | Get protocol name                                                                                                                                                                                                                |
+| `func (h *ResponseHeader) Reset()`                                              | Reset the response header                                                                                                                                                                                                        |
+| `func (h *ResponseHeader) ResetSkipNormalize()`                                 | Reset the response header, except for the `disableNormalizing` state                                                                                                                                                             |
+| `func (h *ResponseHeader) ResetConnectionClose()`                               | Reset the connectionClose flag to false and delete the Connection Header                                                                                                                                                         |
 
 ## Render
 
@@ -612,8 +621,8 @@ h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
 ## Other Functions
 
 ```go
-func (ctx *RequestContext) Flush() error 
-func (ctx *RequestContext) GetResponse() (dst *protocol.Response) 
+func (ctx *RequestContext) Flush() error
+func (ctx *RequestContext) GetResponse() (dst *protocol.Response)
 ```
 
 ### Flush
@@ -623,7 +632,7 @@ Brush data into the hijacked Response Writer. (For more information, please refe
 Function Signature:
 
 ```go
-func (ctx *RequestContext) Flush() error 
+func (ctx *RequestContext) Flush() error
 ```
 
 ### GetResponse

@@ -4,7 +4,6 @@ linkTitle: "监控"
 weight: 4
 keywords: ["监控"]
 description: "Hertz 提供的监控能力。"
-
 ---
 
 框架自身不带任何监控打点，只是提供了 `Tracer` 接口，用户可以根据需求实现该接口，并通过 `WithTracer` Option 来注入。

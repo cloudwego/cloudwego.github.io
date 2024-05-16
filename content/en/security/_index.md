@@ -1,14 +1,12 @@
 ---
-title: 'Security'
-linkTitle: 'Security'
+title: "Security"
+linkTitle: "Security"
 isFolder: true
 menu:
   main:
     weight: 50
 ---
 
-
 This is the **security** section. It has two categories: vulnerability-reporting and safety-bulletin.
 
 Files in these directories will be listed in reverse chronological order.
-

@@ -15,7 +15,7 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template {tpl pa
 
 ## 模板读取
 
-cwgo 支持从本地或 git 中读取模板，git 支持 https 或 ssh 的形式。
+cwgo 支持从本地或 git 中读取模板。其中 git 支持 https 或 ssh 的形式，`-template` 指定模板路径，`-branch` 指定模板分支(默认为主分支)。
 
 RPC Server、Client, HTTP Server、Client 均支持模板拓展，具体用法见下文。
 
@@ -28,19 +28,19 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template {local 
 ### git https
 
 ```sh
-cwgo server -type RPC -service {service name} -idl {idl path}  -template https://github.com/***/cwgo_template.git
+cwgo server -type RPC -service {service name} -idl {idl path}  -template https://github.com/***/cwgo_template.git -branch {branch path}
 ```
 
 ### git ssh
 
 ```sh
-cwgo server -type RPC -service {service name} -idl {idl path}  -template git@github.com:***/cwgo_template.git
+cwgo server -type RPC -service {service name} -idl {idl path}  -template git@github.com:***/cwgo_template.git -branch {branch path}
 ```
 
 ## RPC
 
 1. 模板文件通过包含 yaml 文件的文件夹传递，该文件夹下的所有 yaml 文件都会被渲染，模版解析失败会直接退出。请注意是否存在未知的隐藏文件。
-   
+
    Yaml 文件定义如下：
 
    ```yaml
@@ -54,7 +54,7 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template git@git
    loop_method: true # 是否开启循环渲染
    body: template content # 模板内容
    ```
-   
+
 2. `extensions.yaml` 为特定文件，该文件的内容为[扩展 Service 代码](/zh/docs/kitex/tutorials/code-gen/template_extension/)的配置文件。请注意文件命名冲突问题。
 
 3. 模板使用的数据为 PackageInfo，认为这部分内包含所有的元数据，如 methodInfo 等，用户只需要传递模板文件即可，模板内的数据为 PackageInfo 数据。PackageInfo 内常用的内容见[附录](#附录)。

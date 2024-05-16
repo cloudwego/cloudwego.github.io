@@ -1,5 +1,5 @@
 ---
-title: 'hz access plugin'
+title: "hz access plugin"
 date: 2023-01-21
 weight: 3
 keywords: ["plugin", "ThriftGo", "Protoc", "go_package"]

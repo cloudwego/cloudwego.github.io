@@ -5,7 +5,6 @@ date: 2023-11-29
 weight: 2
 keywords: ["配置中心"]
 description: "kitex-contrib 提供对配置中心的扩展"
-
 ---
 
 ## Kitex 对接配置中心
@@ -18,8 +17,8 @@ kitex-contrib 提供了对于社区主流配置中心的拓展，实现了动态
 
 目前支持的配置中心有:
 
-|   配置中心    |                                  仓库                                  |
-|:---------:|:--------------------------------------------------------------------:|
+| 配置中心  |                                 仓库                                 |
+| :-------: | :------------------------------------------------------------------: |
 |   nacos   |    [config-nacos](https://github.com/kitex-contrib/config-nacos)     |
 |   etcd    |     [config-etcd](https://github.com/kitex-contrib/config-etcd)      |
 |  apollo   |   [config-apollo](https://github.com/kitex-contrib/config-apollo)    |
@@ -32,11 +31,13 @@ kitex-contrib 提供了对于社区主流配置中心的拓展，实现了动态
 在对接配置中心的过程中，使用了 Suite（套件）来进行第三方的拓展。
 
 Suite 的定义如下:
+
 ```go
 type Suite interface {
     Options() []Option
 }
 ```
+
 Server 端和 Client 端都是通过 WithSuite 这个方法来注入新的套件。
 
 更多关于 Suite 的介绍请见 [Suite](../../framework-exten/suite)

@@ -57,8 +57,7 @@ type PoolOption struct {
 
 ### Common Usage
 
-#### Perform Service Discovery when creating client 
-
+#### Perform Service Discovery when creating client
 
 ```go
 cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{

@@ -6,9 +6,11 @@ description: Netpoll Panic
 ---
 
 ## Overview
+
 Fixed Panic when "peer Close & local user Close" occurs simultaneously
 
 ## Severity Level
+
 Middle
 
 ## Description
@@ -23,16 +25,20 @@ When the program is idle, it is possible that `c.onclose` has completed the `clo
 That's when the `op.unused` in `p.detaches` is executed; This will incorrectly set the operator of a new connection to 0, causing all subsequent `op.do` to fail in an infinite loop.
 
 ## Solution
+
 `Poller` no longer executes `detach` asynchronously to ensure that it does not run concurrently with `C.onclose` and the changes are performance-neutral.
 
 ## Affected Components
+
 netpoll-v0.2.2
 
 kitex-v0.3.0
 
 ## CVE
+
 None
 
 ## References
+
 - https://github.com/cloudwego/netpoll/issues/149
 - https://github.com/cloudwego/netpoll/pull/142

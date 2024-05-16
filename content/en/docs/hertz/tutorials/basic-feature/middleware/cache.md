@@ -4,7 +4,6 @@ date: 2023-02-25
 weight: 15
 keywords: ["HTTP Response", "Cache"]
 description: "Hertz provides the adaptation of cache, supporting multi-backend."
-
 ---
 
 cache is a middleware for caching HTTP Responses, which helps to improve the concurrent access capacity of the Server. Hertz also provides the [adaptation](https://github.com/hertz-contrib/cache) of cache, supporting multi-backend, referring to [gin-cache](https://github.com/chenyahui/gin-cache).
@@ -194,16 +193,16 @@ func main() {
 
 ### Generic Configuration
 
-| Configuration                 | Default | Description                                                  |
-| :---------------------------- | ------- | ------------------------------------------------------------ |
-| WithOnHitCache                | nil     | Used to set the callback function after a cache hits         |
-| WithOnMissCache               | nil     | Used to set the callback function for cache misses           |
-| WithBeforeReplyWithCache      | nil     | Used to set the callback function before returning the cached response |
+| Configuration                 | Default | Description                                                                                  |
+| :---------------------------- | ------- | -------------------------------------------------------------------------------------------- |
+| WithOnHitCache                | nil     | Used to set the callback function after a cache hits                                         |
+| WithOnMissCache               | nil     | Used to set the callback function for cache misses                                           |
+| WithBeforeReplyWithCache      | nil     | Used to set the callback function before returning the cached response                       |
 | WithOnShareSingleFlight       | nil     | Used to set the callback function when the result of a SingleFlight is shared by the request |
-| WithSingleFlightForgetTimeout | 0       | Used to set the timeout for SingleFlight                     |
-| WithPrefixKey                 | ""      | Used to set the prefix of the cache response key             |
-| WithoutHeader                 | false   | Used to set whether response headers need to be cached       |
-| WithCacheStrategyByRequest | nil     | Used to set custom caching policies |
+| WithSingleFlightForgetTimeout | 0       | Used to set the timeout for SingleFlight                                                     |
+| WithPrefixKey                 | ""      | Used to set the prefix of the cache response key                                             |
+| WithoutHeader                 | false   | Used to set whether response headers need to be cached                                       |
+| WithCacheStrategyByRequest    | nil     | Used to set custom caching policies                                                          |
 
 ### WithCacheStrategyByRequest
 
@@ -237,7 +236,7 @@ func main() {
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         c.String(http.StatusOK, "hello world")
     })
-    
+
     h.Spin()
 }
 ```
@@ -398,7 +397,7 @@ func main() {
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         c.String(http.StatusOK, "hello world")
     })
-    
+
     h.Spin()
 }
 ```
@@ -440,7 +439,7 @@ func main() {
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         c.String(http.StatusOK, "hello world")
     })
-    
+
     h.Spin()
 }
 ```

@@ -13,8 +13,9 @@ Github 项目主页: https://github.com/cloudwego/frugal
 ### Kitex 集成
 
 说明：
+
 1. Server 端和 Client 端 **可以独立使用** frugal；
-    1. 传输的数据都是按标准 thrift 协议进行编码的；
+   1. 传输的数据都是按标准 thrift 协议进行编码的；
 2. 如 Server 端开启 Frugal，需确保 Client 端指定了 Framed 或 TTHeaderFramed 协议；
 3. 如使用 slim 模板，必须指定 PayloadCodec 为开启 frugal；
 
@@ -27,6 +28,7 @@ Kitex 命令行工具内建了集成 frugal 的能力。
 ###### **Frugal Tag: -thrift frugal_tag**
 
 生成带有 frugal tag 的 Go struct，例如：
+
 ```go
 type Request struct {
     Message string `thrift:"message,1" frugal:"1,default,string" json:"message"`
@@ -34,11 +36,13 @@ type Request struct {
 ```
 
 说明：
+
 1. frugal 强依赖该 tag，例如 set 和 list 在 golang 对应的类型都是 slice，需通过 tag 区分；
 2. 如无 frugal tag，kitex 会自动 fallback 到默认的 Go 编解码代码（前提是没使用 slim 模板）；
 3. 如果不希望生成 frugal tag，可使用 -thrift frugal_tag = false。
 
 Kitex >= v0.5.0 **默认**指定了该参数；旧版本需重手动指定该参数、执行 kitex 命令，例：
+
 ```bash
 kitex -thrift frugal_tag -service service_name idl/api.thrift
 ```
@@ -50,6 +54,7 @@ kitex -thrift frugal_tag -service service_name idl/api.thrift
 frugal 默认在首次编解码时调用 JIT Compiler，这会导致首次请求耗时较长。
 
 例：
+
 ```bash
 kitex -frugal-pretouch -service service_name idl/api.thrift
 ```
@@ -63,12 +68,12 @@ kitex -frugal-pretouch -service service_name idl/api.thrift
 frugal 用 JIT 生成编解码代码，不依赖生成的 Go 编解码代码。
 
 例：
+
 ```bash
 kitex -thrift frugal_tag,template=slim -service service_name idl/api.thrift
 ```
 
 注：开启 Slim 会导致在不支持 frugal 的情况下无法 fallback、只能报错（例如 arm 架构，或无法从请求头中获取 thrift payload 的长度）。
-
 
 ##### 示例用法
 
@@ -81,6 +86,7 @@ kitex -thrift frugal_tag -service service_name idl/api.thrift
 ```
 
 说明：
+
 1. 新版 Kitex （>=0.5.0）默认会生成 frugal tag；
 2. 不使用 pretouch：在单个项目里不一定所有类型都会被引用；可尝试打开后观察是否影响启动速度；
 3. 不使用 slim 模板：在不支持 frugal 的场景可以 fallback 到生成的 Thrift 编解码代码；
@@ -92,6 +98,7 @@ kitex -thrift frugal_tag,template=slim -frugal-pretouch -service service_name id
 ```
 
 说明：
+
 1. 开启 pretouch：可能会导致进程启动变慢
 2. 启用 slim 模板：在不支持 frugal 的场景无法 fallback 到生成的 Thrift 编解码代码，只能报错；
 
@@ -100,6 +107,7 @@ kitex -thrift frugal_tag,template=slim -frugal-pretouch -service service_name id
 ##### 注意事项
 
 **请确保** Client 端指定了 Framed 模式（或 TTHeaderFramed）
+
 - 使用 Framed 模式可以保证请求头包含 payload size
 - 如果无法获取到 Payload Size，目前 Kitex Server 只能 fallback 到 Go 编解码代码
 - 如开启 slim 模板，则无法 fallback，会报错 “decode failed, codec msg type not match”
@@ -117,6 +125,7 @@ server.WithPayloadCodec(
     thrift.NewThriftCodecWithConfig(thrift.FrugalRead | thrift.FrugalWrite)
 )
 ```
+
 注：如报错（找不到符号），说明当前 kitex 版本 + go 版本的组合不支持 frugal，例如 Go 1.21 + Kitex v0.7.1（Kitex 通过条件编译屏蔽不支持的版本）。
 
 ##### 示例代码
@@ -172,14 +181,16 @@ client.WithPayloadCodec(
 ###### **client.WithTransportProtocol**
 
 用于开启 Framed 模式，在 thrift pure payload 前增加 4 个字节（int32）用于告诉对端 payload size
+
 ```go
 client.WithTransportProtocol(transport.Framed)
 ```
 
 注：
+
 1. 如不指定 Framed，可能存在如下问题:
-    1. Server 端可能无法用 frugal 解码（因为读不到 Payload Size，详见 "Kitex Server -> 注意事项"）；
-    2. Server 端不会返回 Framed Payload，Client 可能无法用 frugal 解码（因为读不到 Payload Size）；
+   1. Server 端可能无法用 frugal 解码（因为读不到 Payload Size，详见 "Kitex Server -> 注意事项"）；
+   2. Server 端不会返回 Framed Payload，Client 可能无法用 frugal 解码（因为读不到 Payload Size）；
 2. 如果目标 Server 不支持 Framed，则不应指定。不影响 Client 侧使用 frugal 编码；但 Server 回包如不是 Framed，Client 可能无法用 frugal 解码（这种情况慎用 slim 模板）；
 3. 也可使用 TTHeaderFramed（即 `TTHeader | Framed` 位与结果）。
 
@@ -218,6 +229,7 @@ func main() {
 frugal 的 JIT 编译器依赖带 frugal tag 的 Go struct。
 
 **注意：**
+
 1. 由于一个方法的请求可能有多个参数，需要构造一个将这些参数按顺序封装起来的 struct，例如 Kitex 生成的结构体 [EchoEchoArgs](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L469) 封装了 [Request](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L12)；
 2. 请求的响应虽然只有一个参数，但也要封装成一个 struct，例如 [EchoEchoResult](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L641) 封装了 [Response](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L176)；
 3. 具体可参考[示例代码](https://github.com/cloudwego/kitex-examples/blob/v0.2.2/frugal/codec/frugal.go)。
@@ -231,11 +243,13 @@ frugal 的 JIT 编译器依赖带 frugal tag 的 Go struct。
 ##### 使用 thriftgo (>= v0.3.0)
 
 安装 thriftgo ( >= v0.3.0):
+
 ```bash
 go install -v github.com/cloudwego/thriftgo@latest
 ```
 
 基于 Thrift IDL 生成 Go struct:
+
 ```go
 thriftgo -r -o thrift -g go:frugal_tag,template=slim,package_prefix=github.com/example echo.thrift
 ```
@@ -245,6 +259,7 @@ thriftgo -r -o thrift -g go:frugal_tag,template=slim,package_prefix=github.com/e
 请参考 thriftgo 生成的 struct （例：[Request](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L12)、[Response](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L176)）。
 
 注意：
+
 1. 每个字段都应有 frugal tag；
 2. 对于 optional 字段，需在 `InitDefault()` 方法里写入默认值；
 3. 需要构造封装请求/响应参数的结构体（例：[EchoEchoArgs](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L469)、[EchoEchoResult](https://github.com/cloudwego/kitex-examples/blob/v0.2.1/kitex_gen/api/echo.go#L641)）
@@ -254,6 +269,7 @@ thriftgo -r -o thrift -g go:frugal_tag,template=slim,package_prefix=github.com/e
 如只想用 thrift 编码（例如替代 json），可直接调用 `frugal.EncodeObject(..)` 方法。
 
 如想生成符合 [Thrift Binary protocol encoding](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md) 的 Thrift Payload（可发送给 Thrift Server），编码结果应含：
+
 1. Thrift Magic Number：int16，固定值 0x8001
 2. MessageType：int16，枚举值 CALL=1, REPLY=2, Exception=3, Oneway=4
 3. MethodName：长度（int32） + 名称（[]byte）
@@ -267,6 +283,7 @@ thriftgo -r -o thrift -g go:frugal_tag,template=slim,package_prefix=github.com/e
 #### 解码
 
 根据 [Thrift Binary protocol encoding](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md)，解码结果应包括：
+
 1. MethodName
 2. MessageType
 3. Sequence ID
@@ -300,7 +317,6 @@ Kitex 解码时，需从 Header 中获取 Payload Size，以截取完整 Thrift 
 
 - 在 Mac M1/M2 上开发时，可暂用 Rosetta 兼容 frugal
 - slim 模板不生成 Go 编解码代码（仅 JIT 编解码），因此**无法 fallback** 到默认的编解码方案
-
 
 ## 性能测试数据
 
@@ -353,9 +369,10 @@ UnmarshalAllSize_Parallel/large-16      4.80k ± 0%      0.76k ± 0%    -84.10%
 执行 kitex 命令行工具时加上参数 `-thrift frugal_tag=false`。
 
 注意：
+
 1. 如果不生成 frugal_tag，会导致无法启用 frugal
-    1. Thrift 的 set 和 list 在 golang 生成的类型一样，编码无法区分，所以需要 tag；
-    2. kitex 检测到请求/响应类型不包含 tag，无法使用 frugal，则会 fallback 到标准的 thrift 编解码方式。
+   1. Thrift 的 set 和 list 在 golang 生成的类型一样，编码无法区分，所以需要 tag；
+   2. kitex 检测到请求/响应类型不包含 tag，无法使用 frugal，则会 fallback 到标准的 thrift 编解码方式。
 2. 如果开启 slim 模式，必须生成 frugal tag
 
 ### Kitex Client 报错 encode failed: codec msg type not match with thriftCodec
@@ -365,6 +382,7 @@ Client 端报错信息如下：
 > failed with error: remote or network error[remote]: encode failed, codec msg type not match with thriftCodec
 
 可能原因：
+
 - 使用了 slim 模板，但**没有**指定 client.PayloadCodec 开启 frugal 编解码器
 - 使用了 slim 模板，但**没有**生成带 frugal tag 的代码
 
@@ -375,6 +393,7 @@ Client 端报错信息如下：
 > decode failed, codec msg type not match with thriftCodec
 
 可能原因：
+
 - 使用了 slim 模板，但**没有**指定 server.PayloadCodec 开启 frugal 编解码器
 - 使用了 slim 模板，但**没有**生成带 frugal tag 的代码
 - Client 端**没有**指定 Transporting Protocol 为 Framed 或 TTHeaderFramed
@@ -396,9 +415,10 @@ frugal <= v0.1.3 解码 string 类型时，默认使用 NOCOPY 模式（直接�
 ### 编译 Kitex 项目时报错 undefined: thrift.FrugalRead
 
 可能原因：
+
 1. 使用了不支持的版本 go 编译：使用 go1.16 ~ go1.21 进行编译
 2. 使用了不支持当前 Go 版本的 Kitex 版本：请升级到最新版 Kitex
-    1. 例如：Kitex v0.7.1 在用 go1.21 编译时禁用了 frugal（发布该 Kitex 版本时 frugal 尚未支持 go1.21），需要升级到 Kitex >= v0.7.2
+   1. 例如：Kitex v0.7.1 在用 go1.21 编译时禁用了 frugal（发布该 Kitex 版本时 frugal 尚未支持 go1.21），需要升级到 Kitex >= v0.7.2
 
 ### slim 模板下，Optional 字段解码时未填充默认值
 
@@ -417,6 +437,7 @@ frugal <= v0.1.3 解码 string 类型时，默认使用 NOCOPY 模式（直接�
 ### frugal EncodeObject panic
 
 可能是旧版本的问题，建议升级到最新版（ >= v0.1.8）
+
 ```bash
 go get github.com/cloudwego/frugal@latest
 ```

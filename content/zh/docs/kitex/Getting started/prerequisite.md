@@ -28,6 +28,7 @@ $ go version
 // output
 go version go1.19.12 darwin/arm64
 ```
+
 安装成功后，你可能需要设置一下国内代理：
 
 ```bash

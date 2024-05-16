@@ -4,7 +4,6 @@ date: 2022-05-23
 weight: 1
 keywords: ["Log", "logLevel"]
 description: "Hertz provides logging capabilities."
-
 ---
 
 Hertz provides a default way to print logs in the standard output. It also provides several global functions, such as `hlog.Info`, `hlog.Errorf`, `hlog.CtxTracef`, etc., which are implemented in `pkg/common/hlog`, to call the corresponding methods of the default logger.

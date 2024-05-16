@@ -4,7 +4,6 @@ linkTitle: "Debug Efficiently"
 weight: 2
 date: 2024-02-18
 description: >
-
 ---
 
 ## Troubleshooting Panic Issues
@@ -93,7 +92,7 @@ created by testing.(*T).Run
    panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]
            panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]
            panic: runtime error: slice bounds out of range [:5] with capacity 0
-   
+
    goroutine 18 [running]:
    testing.tRunner.func1.2(0x113c7c0, 0xc00011c000)
            /usr/local/go/src/testing/testing.go:1144 +0x332
@@ -106,7 +105,7 @@ created by testing.(*T).Run
    panic(0x113c7c0, 0xc00011c1. The panic cause is a "slice bounds out of range" error with a capacity of 0.
    ```
 
-​	The order of the panic stack trace goes from top to bottom, with the outermost function calls at the bottom. We need to find 	the first place where panic() is called, so we need to look for the bottommost section of runtime/panic.go, and the line below 	it indicates the actual code line where the panic is triggered.
+​ The order of the panic stack trace goes from top to bottom, with the outermost function calls at the bottom. We need to find the first place where panic() is called, so we need to look for the bottommost section of runtime/panic.go, and the line below it indicates the actual code line where the panic is triggered.
 
 ### Tracing through Race Conditions
 
@@ -195,7 +194,7 @@ type Response struct {
 //go:noinline
 func RPCCall(req *Request) *Response {
    resp := &Response{Data: []byte("hello")}
-   if req.Id%100 == 0 { // Logic Bug 
+   if req.Id%100 == 0 { // Logic Bug
       go func() {
          resp.Data = []byte("world")
       }()
@@ -474,7 +473,7 @@ Frame 12: /home/wangzhuowei/code/chore/main.go:41 (PC: 491101)
     39:                if item == nil && err != nil {
     40:                        if merr, ok := err.(*MyError); ok {
 =>  41:                                log.Printf("Buy[%d] get error: %v", id, merr.Error())
-    42:                        }    
+    42:                        }
 (dlv) print id
 57
 ```

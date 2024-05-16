@@ -4,7 +4,6 @@ date: 2022-05-23
 weight: 15
 keywords: ["单测"]
 description: "Hertz 为用户提供的单元测试能力。"
-
 ---
 
 一个好的项目的构建离不开单元测试。为了帮助使用者构建出好的项目，hertz 当然也提供了单元测试的工具。
@@ -146,15 +145,15 @@ type ResponseRecorder struct {
 
 该对象提供的方法如下：
 
-|函数签名 | 说明 |
-|:--|:--|
-|`func NewRecorder() *ResponseRecorder`  |返回初始化后的 `ResponseRecorder` 对象 |
-|`func (rw *ResponseRecorder) Header() *protocol.ResponseHeader` |返回 `ResponseRecorder.header` |
-|`func (rw *ResponseRecorder) Write(buf []byte) (int, error)` |将 `[]byte` 类型的数据写入 `ResponseRecorder.Body` |
-|`func (rw *ResponseRecorder) WriteString(str string) (int, error)` |将 `string` 类型的数据写入 `ResponseRecorder.Body` |
-|`func (rw *ResponseRecorder) WriteHeader(code int)`|设置 `ResponseRecorder.Code` 以及 `ResponseRecorder.header.SetStatusCode(code)` |
-|`func (rw *ResponseRecorder) Flush()` |实现了 `http.Flusher`，将 `ResponseRecorder.Flushed` 设置为 true |
-|`func (rw *ResponseRecorder) Result() *protocol.Response` | 返回 handler 生成的响应信息，至少包含 StatusCode, Header, Body 以及可选的 Trailer，未来将支持返回更多的响应信息 |
+| 函数签名                                                           | 说明                                                                                                            |
+| :----------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| `func NewRecorder() *ResponseRecorder`                             | 返回初始化后的 `ResponseRecorder` 对象                                                                          |
+| `func (rw *ResponseRecorder) Header() *protocol.ResponseHeader`    | 返回 `ResponseRecorder.header`                                                                                  |
+| `func (rw *ResponseRecorder) Write(buf []byte) (int, error)`       | 将 `[]byte` 类型的数据写入 `ResponseRecorder.Body`                                                              |
+| `func (rw *ResponseRecorder) WriteString(str string) (int, error)` | 将 `string` 类型的数据写入 `ResponseRecorder.Body`                                                              |
+| `func (rw *ResponseRecorder) WriteHeader(code int)`                | 设置 `ResponseRecorder.Code` 以及 `ResponseRecorder.header.SetStatusCode(code)`                                 |
+| `func (rw *ResponseRecorder) Flush()`                              | 实现了 `http.Flusher`，将 `ResponseRecorder.Flushed` 设置为 true                                                |
+| `func (rw *ResponseRecorder) Result() *protocol.Response`          | 返回 handler 生成的响应信息，至少包含 StatusCode, Header, Body 以及可选的 Trailer，未来将支持返回更多的响应信息 |
 
 ## 与业务 handler 配合使用
 

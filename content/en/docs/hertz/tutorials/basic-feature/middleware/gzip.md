@@ -4,7 +4,6 @@ date: 2022-10-19
 weight: 4
 keywords: ["Gzip", "Compress"]
 description: "Hertz provides an implementation of Gzip."
-
 ---
 
 In HTTP, GNUzip(Gzip) compression coding is a way to optimize the performance of Web applications, and Hertz also provides an [implementation](https://github.com/hertz-contrib/gzip) of Gzip.

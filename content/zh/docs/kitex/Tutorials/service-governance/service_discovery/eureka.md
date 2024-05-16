@@ -41,7 +41,7 @@ func main() {
     ...
     r = euregistry.NewEurekaRegistry([]string{"http://127.0.0.1:8080/eureka"}, 15*time.Second)
 	svr := echo.NewServer(new(EchoImpl), server.WithRegistry(r),
-    server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "test"}), 
+    server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "test"}),
     )
     if err := svr.Run(); err != nil {
         log.Println("server stopped with error:", err)
@@ -79,7 +79,7 @@ import (
 func main() {
     ...
     r = resolver.NewEurekaResolver([]string{"http://127.0.0.1:8080/eureka"})
-    client, err := echo.NewClient("echo", 
+    client, err := echo.NewClient("echo",
         client.WithResolver(r),
     )
     if err != nil {
@@ -170,4 +170,3 @@ func main() {
 ## 完整示例
 
 完整用法示例详见 [example](https://github.com/kitex-contrib/registry-eureka/tree/main/example)。
-

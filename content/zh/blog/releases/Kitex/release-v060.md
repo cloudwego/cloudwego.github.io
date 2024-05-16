@@ -5,6 +5,7 @@ projects: ["Kitex"]
 date: 2023-06-14
 description: >
 ---
+
 ## 重要变更介绍
 
 ### 功能
@@ -40,11 +41,12 @@ client 默认将 header 设置到 ctx，外部方法可利用 `GetHeaderMetadata
 
 升级 netpoll 库依赖至 v0.4.0 ，同时支持 [configmanager](https://github.com/cloudwego/configmanager) v0.2.0 版本。
 
-----
+---
 
 ## 详细变更
 
 ## Feature:
+
 - [[#923](https://github.com/cloudwego/kitex/pull/923)] feat(grpc): grpc 客户端将 header 和 trailer 设置到 context 内，并提供接口从 context 获取 header
 - [[#891](https://github.com/cloudwego/kitex/pull/891)] feat: 支持 rpc client 和 server 的服务合并，它可以将远端 rpc 调用改成本地的函数级调用。这个特性需要生成工具支持
 - [[#946](https://github.com/cloudwego/kitex/pull/946)] feat: default server handler 支持通过trans pipeline执行Read函数
@@ -54,6 +56,7 @@ client 默认将 header 设置到 ctx，外部方法可利用 `GetHeaderMetadata
 - [[#897](https://github.com/cloudwego/kitex/pull/897)] feat: 自定义模板中支持 loop_service
 
 ## Optimize:
+
 - [[#961](https://github.com/cloudwego/kitex/pull/961)] optimize(tool): -use 参数支持自定义模板场景
 - [[#966](https://github.com/cloudwego/kitex/pull/966)] optimize(ttheader): ttheader 的 headerFlags 处理增加类型检查
 - [[#919](https://github.com/cloudwego/kitex/pull/919)] optimize: 使用 GoFunc 替代 go func 以避免 panic
@@ -63,6 +66,7 @@ client 默认将 header 设置到 ctx，外部方法可利用 `GetHeaderMetadata
 - [[#941](https://github.com/cloudwego/kitex/pull/941)] optimize(callopt): 优化 callopt 的 debug 信息，减少 slice 扩张的可能性
 
 ## Fix:
+
 - [[#963](https://github.com/cloudwego/kitex/pull/963)] fix(generic): 修复 map 泛化调用在 byte 类型字段 panic 的问题
 - [[#901](https://github.com/cloudwego/kitex/pull/901)] fix(mux): 多路复用连接的 asynccallback 不创建新 goroutine，并且 server 等待所有 crrst 包都被 client 接收后再关闭
 - [[#921](https://github.com/cloudwego/kitex/pull/921)] fix(loadbalance): 修复一致性 hash []byte 数组长度不够用的问题
@@ -70,14 +74,17 @@ client 默认将 header 设置到 ctx，外部方法可利用 `GetHeaderMetadata
 - [[#927](https://github.com/cloudwego/kitex/pull/927)] fix(connpool): 长连接池复用连接成功时进行上报
 
 ## Refactor:
+
 - [[#958](https://github.com/cloudwego/kitex/pull/958)] refactor(errorHandler): 重构 error handler 定义，可以获取更新信息处理 error
 - [[#943](https://github.com/cloudwego/kitex/pull/943)] refactor(client): 重构 client.Call 提升代码可读性
 - [[#560](https://github.com/cloudwego/kitex/pull/560)] refactor: 重构server detection trans handler以支持多种协议的探测
 
 ## Tests:
+
 - [[#900](https://github.com/cloudwego/kitex/pull/900)] test(generic): 添加使用 dynamicgo 的 thrift 反射泛化调用示例
 
 ## Chore:
+
 - [[#976](https://github.com/cloudwego/kitex/pull/976)] chore: 更新 netpoll 版本到 v0.4.0 并且更新 thriftgo 版本到 v0.2.11
 - [[#956](https://github.com/cloudwego/kitex/pull/956)] chore: 更新 configmanager 版本到 v0.2.0
 - [[#948](https://github.com/cloudwego/kitex/pull/948)] chore: 使用 goimports -local github.com/cloudwego/kitex 调整仓库格式

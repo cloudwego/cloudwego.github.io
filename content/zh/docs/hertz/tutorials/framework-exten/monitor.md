@@ -4,7 +4,6 @@ linkTitle: "监控扩展"
 weight: 1
 keywords: ["监控扩展"]
 description: "Hertz 提供的监控扩展。"
-
 ---
 
 用户如果需要更详细的打点，例如包大小，或者想要更换其他数据源，例如 influxDB，用户可以根据自己的需求实现 `Tracer` 接口，并通过 `WithTracer` Option 来注入。

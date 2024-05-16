@@ -23,8 +23,7 @@ description: >
 - 调整了 Protobuf unary 方法的生成代码，来同时支持 Kitex Protobuf 和 gRPC。
 - 升级了 thriftgo 版本来修复 golint。
 - 修复了生成代码中的错误。
-- 修复了流生成的代码缺少传输选项的错误。 
-
+- 修复了流生成的代码缺少传输选项的错误。
 
 ## 文档:
 
@@ -33,5 +32,6 @@ description: >
 - 添加了一些英文文档。
 
 ## 依赖变化:
+
 1. Thriftgo: v0.0.2-0.20210726073420-0145861fcd04 -> v0.1.2
 2. Netpoll: v0.0.2 -> v0.0.3
