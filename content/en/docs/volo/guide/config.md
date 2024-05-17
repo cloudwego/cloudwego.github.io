@@ -3,7 +3,6 @@ title: "volo.yml Configuration File Format"
 linkTitle: "volo.yml Configuration File Format"
 weight: 5
 description: >
-
 ---
 
 ## Features
@@ -107,16 +106,16 @@ entries:
    1. ```bash
       $ volo init --help
       init your thrift or grpc project
-      
+
       Usage: volo init [OPTIONS] <NAME> <IDL>
-      
+
       Arguments:
         <NAME>  The name of project
         <IDL>   Specify the path for idl.
                 If -g or --git is specified, then this should be the path in the specified git repo.
                 Example: 	-g not specified:	./idl/server.thrift
                 		-g specified:		/path/to/idl/server.thrift
-      
+
       Options:
             --repo <REPO>          Specify the git repo name for repo.
                                    Example: cloudwego_volo
@@ -132,20 +131,20 @@ entries:
         -V, --version              Print version
       ```
 
-   2.  Using the `volo init` command in the project root directory will automatically create server code templates and generate code.
+   2. Using the `volo init` command in the project root directory will automatically create server code templates and generate code.
 
 2. idl
 
    1. ```bash
       $ volo idl --help
       manage your idl
-      
+
       Usage: volo idl [OPTIONS] <COMMAND>
-      
+
       Commands:
         add
         help  Print this message or the help of the given subcommand(s)
-      
+
       Options:
         -v, --verbose...               Turn on the verbose mode.
         -n, --entry-name <ENTRY_NAME>  The entry name, defaults to 'default'. [default: default]
@@ -158,13 +157,13 @@ entries:
       1. ```bash
          $ volo idl add --help
          Usage: volo idl add [OPTIONS] <IDL>
-         
+
          Arguments:
            <IDL>  Specify the path for idl.
                   If -g or --git is specified, then this should be the path in the specified git repo.
                   Example: 	-g not specified:	./idl/client.thrift
                   		-g specified:		/path/to/idl/client.thrift
-         
+
          Options:
                --repo <REPO>              Specify the git repo name for repo.
                                           Example: cloudwego_volo
@@ -189,14 +188,14 @@ entries:
    1. ```bash
       $ volo repo --help
       manage your repo
-      
+
       Usage: volo repo [OPTIONS] <COMMAND>
-      
+
       Commands:
         update  update your repo by repo name, split by ','
         add
         help    Print this message or the help of the given subcommand(s)
-      
+
       Options:
         -v, --verbose...               Turn on the verbose mode.
         -n, --entry-name <ENTRY_NAME>  The entry name, defaults to 'default'. [default: default]
@@ -209,7 +208,7 @@ entries:
       1. ```bash
          $ volo repo add --help
          Usage: volo repo add [OPTIONS] --git <GIT>
-         
+
          Options:
                --repo <REPO>              Specify the git repo name for repo.
                                           Example: cloudwego_volo
@@ -229,12 +228,12 @@ entries:
       1. ```bash
          $ volo repo update --help
          update your repo by repo name, split by ','
-         
+
          Usage: volo repo update [OPTIONS] [REPOS]...
-         
+
          Arguments:
            [REPOS]...
-         
+
          Options:
            -v, --verbose...               Turn on the verbose mode.
            -n, --entry-name <ENTRY_NAME>  The entry name, defaults to 'default'. [default: default]

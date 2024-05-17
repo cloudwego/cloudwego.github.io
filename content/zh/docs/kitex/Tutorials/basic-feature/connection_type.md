@@ -46,6 +46,7 @@ xxxCli := xxxservice.NewClient("destServiceName", client.WithLongConnection(conn
 - `MinIdlePerAddress`(Kitex >= v0.4.3)
   - 表示对每个后端实例维护的最小空闲连接数，这部分连接即使空闲时间超过 `MaxIdleTimeout` 也不会被清理。
   - 当前版本的`MinIdlePerAddress`的值不能超过5。
+
 ### 实现
 
 长连接池的实现方案是每个 address 对应一个连接池，池的大小为 `MaxIdlePerAddress`。
@@ -67,16 +68,16 @@ xxxCli := xxxservice.NewClient("destServiceName", client.WithLongConnection(conn
 下面是参数设置的一些建议：
 
 - `MaxIdlePerAddress` 表示池化的连接数量，最小为 1，否则长连接会退化为短连接
-    - 具体的值与每个目标地址的吞吐量有关，近似的估算公式为：`MaxIdlePerAddress = qps_per_dest_host*avg_response_time_sec `
-    - 举例如下，假设每个请求的响应时间为 100ms，平摊到每个下游地址的请求为 100QPS，该值建议设置为10，因为每条连接每秒可以处理 10 个请求, 100QPS 则需要 10 个连接进行处理
-    - 在实际场景中，也需要考虑到流量的波动。需要特别注意的是，即 MaxIdleTimeout 内该连接没有被使用则会被回收
-    - 总而言之，该值设置过大或者过小，都会导致连接复用率低，长连接退化为短连接
+  - 具体的值与每个目标地址的吞吐量有关，近似的估算公式为：`MaxIdlePerAddress = qps_per_dest_host*avg_response_time_sec `
+  - 举例如下，假设每个请求的响应时间为 100ms，平摊到每个下游地址的请求为 100QPS，该值建议设置为10，因为每条连接每秒可以处理 10 个请求, 100QPS 则需要 10 个连接进行处理
+  - 在实际场景中，也需要考虑到流量的波动。需要特别注意的是，即 MaxIdleTimeout 内该连接没有被使用则会被回收
+  - 总而言之，该值设置过大或者过小，都会导致连接复用率低，长连接退化为短连接
 - `MinIdlePerAddress`
   - 假设有周期性请求的场景，且周期大于 MaxIdleTimeout，设置此参数可避免每次新建连接。
   - 与 MaxIdlePerAddress 类似，可根据请求的响应时间和 qps 进行设置。
   - 以最大值5个连接为例，假设每个请求的响应时间为100ms，在不新建连接的情况下可以处理 50QPS。
 - `MaxIdleGlobal` 表示总的空闲连接数应大于 `下游目标总数*MaxIdlePerAddress`，超出部分是为了限制未能从连接池中获取连接而主动新建连接的总数量
-    - 注意：该值存在的价值不大，建议设置为一个较大的值，在后续版本中考虑废弃该参数并提供新的接口
+  - 注意：该值存在的价值不大，建议设置为一个较大的值，在后续版本中考虑废弃该参数并提供新的接口
 - `MaxIdleTimeout` 表示连接空闲时间，由于 server 在 10min 内会清理不活跃的连接，因此 client 端也需要及时清理空闲较久的连接，避免使用无效的连接，该值在下游也为 Kitex 时不可超过 10min
 
 ## 连接多路复用
@@ -104,7 +105,6 @@ xxxCli := xxxservice.NewClient("destServiceName", client.WithLongConnection(conn
   ```go
   xxxCli := NewClient("destServiceName", client.WithMuxConnection(1))
   ```
-
 
 ## 状态监控
 

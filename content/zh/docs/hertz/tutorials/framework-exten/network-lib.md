@@ -4,7 +4,6 @@ linkTitle: "网络库扩展"
 weight: 4
 keywords: ["网络库扩展", "network.Conn", "network.StreamConn", "network.Dialer"]
 description: "Hertz 提供的网络库扩展。"
-
 ---
 
 Hertz 提供了网络库扩展的能力。用户如果需要更换其他的网络库，可以根据需求实现对应的接口。Server 需要实现 `network.Conn` 或 `network.StreamConn` 接口，Client 需要实现 `network.Dialer` 接口。
@@ -124,13 +123,13 @@ type Stream interface {
 type ReceiveStream interface {
     StreamID() int64
     io.Reader
-    
+
     // CancelRead aborts receiving on this stream.
     // It will ask the peer to stop transmitting stream data.
     // Read will unblock immediately, and future Read calls will fail.
     // When called multiple times or after reading the io.EOF it is a no-op.
     CancelRead(err ApplicationError)
-    
+
     // SetReadDeadline sets the deadline for future Read calls and
     // any currently-blocked Read call.
     // A zero value for t means Read will not time out.
@@ -157,7 +156,7 @@ type SendStream interface {
     // It must not be called concurrently with Write.
     // It must not be called after calling CancelWrite.
     io.Closer
-    
+
     // The Context is canceled as soon as the write-side of the stream is closed.
     // This happens when Close() or CancelWrite() is called, or when the peer
     // cancels the read-side of their stream.

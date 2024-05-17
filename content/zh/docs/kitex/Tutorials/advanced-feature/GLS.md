@@ -2,7 +2,7 @@
 title: "Goroutine-Local-Storage 功能使用"
 date: 2023-11-29
 weight: 11
-keywords: ["GLS","上下文"]
+keywords: ["GLS", "上下文"]
 description: "协程上下文隐式传递"
 ---
 
@@ -11,7 +11,7 @@ description: "协程上下文隐式传递"
 GLS 用于存储 goroutine 内的上下文信息，作用类似于 context。相比 context 有如下优势：
 
 1. **不需要显式传递**，在任意函数位置都可调用 CurSession() 获取上下文（如果有）
-2. **可以在父子****协程****间传递**（需要开启选项）
+2. **可以在父子\*\***协程\***\*间传递**（需要开启选项）
 
 框架目前主要使用 GLS 进行 context 备份，以避免用户误传 context 导致链路透传信息（如 logid、metainfo 等）丢失
 

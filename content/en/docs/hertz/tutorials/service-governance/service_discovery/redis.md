@@ -58,7 +58,7 @@ The Redis extension provides the `WithRefreshInterval` to set the expiration tim
 Function signature:
 
 ```go
-func WithRefreshInterval(interval int) Option 
+func WithRefreshInterval(interval int) Option
 ```
 
 Sample code:

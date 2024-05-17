@@ -19,6 +19,7 @@ description: "Kitex 默认限流和自定义限流使用指南。"
 ## 使用默认的限流器
 
 ### 代码示例
+
 ```go
 import "github.com/cloudwego/kitex/pkg/limit"
 

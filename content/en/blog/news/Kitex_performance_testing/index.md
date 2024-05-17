@@ -24,19 +24,19 @@ Users can also refer to the official stress test project -- [kitex-benchmark](ht
 Kitex was born in ByteDance's large-scale microservices architecture practice. The scenario it is aimed at is naturally a microservices scenario.
 Therefore, the following will first introduce the characteristics of microservices, so that developers can understand Kitex's design thinking in depth.
 
-* **RPC Communication Model**
+- **RPC Communication Model**
 
 The communication between microservices is usually based on PingPong model. So, in addition to the conventional throughput performance index, developers also need to consider the average latency of each RPC.
 
-* **Complex Call Chain**
+- **Complex Call Chain**
 
-An RPC call often requires multiple microservices to collaborate, and downstream services have their own dependencies,  so the entire call chain will be a complex network structure.
+An RPC call often requires multiple microservices to collaborate, and downstream services have their own dependencies, so the entire call chain will be a complex network structure.
 
 In this kind of complex call chains, the latency fluctuation of one intermediate node may be transmitted to the entire chain，resulting in an overall timeout.
 When there are many nodes on the chain, even if the fluctuation probability of each node is very low, the timeout probability that eventually converges on the chain will be magnified.
 Therefore, the latency fluctuation of a single service, notably P99, is also a key indicator that has a significant impact on online services.
 
-* **Size of Data Package**
+- **Size of Data Package**
 
 Although the size of transmitted data packages depends on the actual business scenario, the internal statistics of ByteDance found that most online requests are small packages (<2KB).
 So we focused on optimizing the performance in the small data package scenarios while taking the large package scenarios into account.
@@ -58,6 +58,7 @@ Thus, the test result will not have practical value for online services.
 ### Alignment of Connection Model
 
 Conventional RPCs have three major connection models:
+
 - **Short connection**: Each request creates a new connection and closes the connection immediately after the return is received.
 - **Persistent connection pool**: A single connection can process only one complete request & return at once.
 - **Connection multiplexing**: A single connection can process multiple requests & returns asynchronously at the same time.
@@ -100,10 +101,12 @@ The stress test source code can be found in [kitex-benchmark](https://github.com
 When Server is fully loaded, P99 Latency of Kitex in connection pool mode is the lowest of all frameworks. In multiplexing mode, Kitex also performs well in each indicator.
 
 **Configuration**
+
 - Client 16 CPUs，Server 4 CPUs
 - 1KB Request Package Size, Echo Scenario
 
 **Reference Data**
+
 - KITEX: Connection Pool Model (Default Setting)
 - KITEX-MUX: Connection Multiplexing
 - Connection Multiplexing for all other Frameworks

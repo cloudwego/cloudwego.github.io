@@ -3,7 +3,6 @@ title: "Specifying CallOpt During Invocation"
 linkTitle: "Specifying CallOpt During Invocation"
 weight: 1
 description: >
-
 ---
 
 To enhance the framework's flexibility and user-friendliness, Volo allows users on the client-side to use `CallOpt` to set certain request metadata for individual requests.
@@ -29,7 +28,6 @@ The `address` denotes the downstream address. If set, in principle, it eliminate
 Within the `config`, various request configurations can be set, such as RPC timeout duration.
 
 We can specify `CallOpt` during a request using the following method:
-
 
 ```rust
 lazy_static! {

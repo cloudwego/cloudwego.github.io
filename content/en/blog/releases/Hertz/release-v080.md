@@ -9,14 +9,18 @@ description: >
 In Hertz v0.8.0, in addition to the regular iterative optimization, we have also introduced an important feature.
 
 ## Partitioned cookies
+
 In Hertz v0.8.0, we support the partitioned cookies feature.
->https://github.com/cloudwego/hertz/pull/1041
+
+> https://github.com/cloudwego/hertz/pull/1041
 
 ### Background
+
 Third-party cookies provide the ability for cross-site tracking for the web, and their existence poses a huge threat to the privacy and security of web users. Chrome will disable third-party cookies for 1% of users starting from Quarter 1 of 2024, and gradually expand the disabling scope to 100% starting from the third quarter of 2024.
 Partitioned Cookies Cookies Having Independent Partitioned State (CHIPS) serve as an alternative to third-party cookies, providing the ability to carry third-party cookies on cross-site requests.
 
 #### Set Partitioned Cookies with the Set-Cookie Header
+
 ```
 Set-Cookie header:
 Set-Cookie: __Host-name=value; Secure; Path=/; SameSite=None; Partitioned;
@@ -25,9 +29,11 @@ Set-Cookie: __Host-name=value; Secure; Path=/; SameSite=None; Partitioned;
 ### How to
 
 #### Upgrade Hertz version
+
 Hertz added support for Partitioned Cookies in v0.8.0. You need to upgrade to > = v0.8.0 to use Partitioned Cookies.
 
 #### How to use Partitioned Cookies
+
 Currently, Hertz supports Partitioned Cookies, but does not yet support passing whether it is Partitioned through SetCookie. We will add this feature in the next minor version. Before that, you can refer to the following code example to use Partitioned Cookies.
 
 ```
@@ -82,5 +88,5 @@ curl -v http://localhost:8888/partitioned
 < Set-Cookie: user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned
 <
 * Connection #0 to host localhost left intact
-{"partitioned":"yes"}%     
+{"partitioned":"yes"}%
 ```

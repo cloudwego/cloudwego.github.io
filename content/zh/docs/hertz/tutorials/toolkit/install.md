@@ -1,5 +1,5 @@
 ---
-title: 'hz 安装'
+title: "hz 安装"
 date: 2023-02-21
 weight: 1
 keywords: ["hz 安装"]
@@ -13,15 +13,15 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具。目前�
 1. 确保 `GOPATH` 环境变量已经被正确的定义（例如 `export GOPATH=~/go`）并且将 `$GOPATH/bin` 添加到 `PATH` 环境变量之中（例如 `export PATH=$GOPATH/bin:$PATH`）；请勿将 `GOPATH` 设置为当前用户没有读写权限的目录
 2. 安装 hz：
 
-    ```bash
-    go install github.com/cloudwego/hertz/cmd/hz@latest
-    ```
+   ```bash
+   go install github.com/cloudwego/hertz/cmd/hz@latest
+   ```
 
 3. 验证是否安装成功 `hz -v`, 如果显示如下版本的信息，则说明安装成功
 
-    ```console
-    hz version v0.x.x
-    ```
+   ```console
+   hz version v0.x.x
+   ```
 
 **注意**，由于 hz 会为自身的二进制文件创建软链接，因此请确保 hz 的安装路径具有可写权限。
 

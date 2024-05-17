@@ -5,7 +5,6 @@ date: 2023-11-29
 weight: 2
 keywords: ["ConfigCenter"]
 description: "ConfigCenter Extension provided by kitex-contrib"
-
 ---
 
 ## Kitex provide configuration center
@@ -19,7 +18,7 @@ Microservice developers can use the configuration center to dynamically obtain s
 Currently supported configuration centers are:
 
 | config-center |                              depository                              |
-|:-------------:|:--------------------------------------------------------------------:|
+| :-----------: | :------------------------------------------------------------------: |
 |     nacos     |    [config-nacos](https://github.com/kitex-contrib/config-nacos)     |
 |     etcd      |     [config-etcd](https://github.com/kitex-contrib/config-etcd)      |
 |    apollo     |   [config-apollo](https://github.com/kitex-contrib/config-apollo)    |
@@ -32,12 +31,13 @@ Currently supported configuration centers are:
 In the process of connecting to the configuration center, Suite is used for third-party expansion.
 
 Suite is defined as follows:
+
 ```go
 type Suite interface {
     Options() []Option
 }
 ```
+
 Both the server and the client use the WithSuite method to enable new suites.
 
 For more information about Suite, please see [Suite](../../framework-exten/suite)
-

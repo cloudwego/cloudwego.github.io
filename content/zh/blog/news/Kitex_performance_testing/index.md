@@ -16,17 +16,17 @@ author: <a href="https://github.com/joway" target="_blank">Joway</a>
 
 [Kitex][Kitex] 诞生于字节跳动大规模微服务架构实践，面向的场景自然是微服务场景，因此下面会先介绍微服务的特点，方便开发者深入理解 [Kitex][Kitex] 在其中的设计思考。
 
-* RPC 通信模型
+- RPC 通信模型
 
   微服务间的通信通常以 PingPong 模型为主，所以除了常规的吞吐性能指标外，每次 RPC 的平均时延也是开发者需要考虑的点。
 
-* 复杂的调用链路
+- 复杂的调用链路
 
   一次 RPC 调用往往需要多个微服务协作完成，而下游服务又会有其自身依赖，所以整个调用链路会是一个复杂的网状结构。
   在这种复杂调用关系中，某个中间节点出现的延迟波动可能会传导到整个链路上，导致整体超时。当链路上的节点足够多时，即便每个节点的波动概率很低，最终汇聚到链路上的超时概率也会被放大。
   所以单一服务的延迟波动 —— 即 P99 延迟指标，也是一个会对线上服务产生重大影响的关键指标。
 
-* 包体积大小
+- 包体积大小
 
   虽然一个服务通信包的大小取决于实际业务场景，但在字节跳动的内部统计中，我们发现线上请求大多以小包（<2KB）为主，所以在兼顾大包场景的同时，也重点优化了小包场景下的性能。
 
@@ -43,9 +43,10 @@ author: <a href="https://github.com/joway" target="_blank">Joway</a>
 ### 对齐连接模型
 
 常规 RPC 的连接模型主要有三种：
-* **短连接**：每次请求都创建新连接，得到返回后立即关闭连接
-* **长连接池**：单个连接同时只能处理一次完整请求与返回
-* **连接多路复用**：单个连接可以同时异步处理多个请求与返回
+
+- **短连接**：每次请求都创建新连接，得到返回后立即关闭连接
+- **长连接池**：单个连接同时只能处理一次完整请求与返回
+- **连接多路复用**：单个连接可以同时异步处理多个请求与返回
 
 每类连接模型没有绝对好坏，取决于实际使用场景。连接多路复用虽然一般来说性能相对最好，但应用上必须依赖协议能够支持包序列号，且一些老框架服务可能也并不支持多路复用的方式调用。
 
@@ -75,14 +76,14 @@ author: <a href="https://github.com/joway" target="_blank">Joway</a>
 
 **配置：**
 
-* Client 16 CPUs，Server 4 CPUs
-* 1KB 请求大小，Echo 场景
+- Client 16 CPUs，Server 4 CPUs
+- 1KB 请求大小，Echo 场景
 
 **参考数据：**
 
-* KITEX：连接池模式（默认模式）
-* KITEX-MUX：多路复用模式
-* 其他框架均使用多路复用模式
+- KITEX：连接池模式（默认模式）
+- KITEX-MUX：多路复用模式
+- 其他框架均使用多路复用模式
 
 ![image](/img/blog/kitex_performance_testing/qps.png)
 ![image](/img/blog/kitex_performance_testing/tp99.png)
@@ -97,16 +98,16 @@ author: <a href="https://github.com/joway" target="_blank">Joway</a>
 
 ## 相关链接
 
-* Kitex: https://github.com/cloudwego/kitex
+- Kitex: https://github.com/cloudwego/kitex
 
-* Netpoll: https://github.com/cloudwego/netpoll
+- Netpoll: https://github.com/cloudwego/netpoll
 
-* kitex-benchmark: https://github.com/cloudwego/kitex-benchmark
+- kitex-benchmark: https://github.com/cloudwego/kitex-benchmark
 
-* netpoll-benchmark: https://github.com/cloudwego/netpoll-benchmark
+- netpoll-benchmark: https://github.com/cloudwego/netpoll-benchmark
 
-* 官方 Protobuf 库: https://github.com/golang/protobuf
+- 官方 Protobuf 库: https://github.com/golang/protobuf
 
-* Thriftgo: https://github.com/cloudwego/thriftgo
+- Thriftgo: https://github.com/cloudwego/thriftgo
 
 [Kitex]: https://github.com/cloudwego/kitex

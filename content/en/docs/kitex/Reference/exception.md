@@ -98,7 +98,7 @@ These error is thrift Application Exception, usually these error will be wrapped
 
 ### Check whether a Kitex error
 
-Use  `IsKitexError` in `kerrors` package
+Use `IsKitexError` in `kerrors` package
 
 ```go
 import "github.com/cloudwego/kitex/pkg/kerrors"
@@ -151,5 +151,6 @@ if de.ErrorType() == kerrors.ErrInternalException {} // return true
 ```
 
 `DetailedError` provide following functions to get detail message.
+
 1. `ErrorType() error`, used to get basic error type
 2. `Stack() string`, used to get stack (for now only works for `ErrPanic`)

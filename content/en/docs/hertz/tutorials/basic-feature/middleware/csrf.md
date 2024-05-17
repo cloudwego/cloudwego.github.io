@@ -4,7 +4,6 @@ date: 2022-12-6
 weight: 12
 keywords: ["CSRF", "cross-site request forgery attacks"]
 description: "Hertz provides CSRF middleware to help you prevent cross-site request forgery attacks."
-
 ---
 
 Cross-site request forgery (CSRF) is a method of attack that holds a user hostage to perform an unintended action on a currently logged-in Web application.
@@ -13,7 +12,7 @@ Hertz provides [CSRF](https://github.com/hertz-contrib/csrf) middleware to help 
 
 ## Install
 
-``` shell
+```shell
 go get github.com/hertz-contrib/csrf
 ```
 
@@ -179,7 +178,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/csrf"

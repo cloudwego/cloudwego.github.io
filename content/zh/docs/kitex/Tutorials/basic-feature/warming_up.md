@@ -59,7 +59,6 @@ type PoolOption struct {
 
 #### 创建 client 的时候执行服务发现
 
-
 ```go
 cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{
     ResolverOption: &warmup.ResolverOption{

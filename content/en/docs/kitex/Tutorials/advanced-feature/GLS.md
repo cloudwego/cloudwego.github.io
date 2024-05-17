@@ -2,7 +2,7 @@
 title: "GLS Feature Usage"
 date: 2023-11-29
 weight: 11
-keywords: ["GLS","context"]
+keywords: ["GLS", "context"]
 description: "Goroutine local storage for implicitly pass context"
 ---
 
@@ -37,7 +37,7 @@ func(prev, cur context.Context) (ctx context.Context, backup bool)
 - `Prev` parameter represents the context of the backup
 - `Cur` parameter represents the context obtained by the current client
 - `Ctx` return value represents the final context where the user completes processing
-- `Backup` return value indicates whether to continue localsession [built-in fallback backup ](https://github.com/cloudwego/localsession/blob/main/backup/metainfo.go#L54),  mainly metainfo Persistent KVS pass-through at present
+- `Backup` return value indicates whether to continue localsession [built-in fallback backup ](https://github.com/cloudwego/localsession/blob/main/backup/metainfo.go#L54), mainly metainfo Persistent KVS pass-through at present
 
 ```go
 var expectedKey interface{}

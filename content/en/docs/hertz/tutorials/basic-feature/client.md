@@ -2,11 +2,17 @@
 title: "Client"
 date: 2023-07-25
 weight: 3
-keywords: ["Client Config", "Send Request", "Request Timeout", "Streaming", "Middleware", "Service Discovery"]
+keywords:
+  [
+    "Client Config",
+    "Send Request",
+    "Request Timeout",
+    "Streaming",
+    "Middleware",
+    "Service Discovery",
+  ]
 description: "Hertz client related functions."
 ---
-
-
 
 ## Quick Start
 
@@ -16,7 +22,7 @@ package main
 import (
 	"context"
 	"fmt"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/client"
 	"github.com/cloudwego/hertz/pkg/app/server"
@@ -46,27 +52,27 @@ func main() {
 
 ## Client Config
 
-| **Option**                        | **Default**    | **Description** |
-|-----------------------------------| -------------- |-----------------|
-| WithDialTimeout                   | 1s             | dial timeout.   |
-| WithMaxConnsPerHost               | 512            | maximum number of connections per host which may be established. |
-| WithMaxIdleConnDuration           | 10s            | max idle connection duration, idle keep-alive connections are closed after this duration. |
-| WithMaxConnDuration               | 0s             | max connection duration, keep-alive connections are closed after this duration. |
-| WithMaxConnWaitTimeout            | 0s             | maximum duration for waiting for a free connection. |
-| WithKeepAlive                     | true           | determines whether use keep-alive connection, default use. |
-| WithClientReadTimeout             | 0s             | maximum duration for full response reading (including body). |
+| **Option**                        | **Default**    | **Description**                                                                                                                                         |
+| --------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WithDialTimeout                   | 1s             | dial timeout.                                                                                                                                           |
+| WithMaxConnsPerHost               | 512            | maximum number of connections per host which may be established.                                                                                        |
+| WithMaxIdleConnDuration           | 10s            | max idle connection duration, idle keep-alive connections are closed after this duration.                                                               |
+| WithMaxConnDuration               | 0s             | max connection duration, keep-alive connections are closed after this duration.                                                                         |
+| WithMaxConnWaitTimeout            | 0s             | maximum duration for waiting for a free connection.                                                                                                     |
+| WithKeepAlive                     | true           | determines whether use keep-alive connection, default use.                                                                                              |
+| WithClientReadTimeout             | 0s             | maximum duration for full response reading (including body).                                                                                            |
 | WithTLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/protocol/tls/). |
-| WithDialer                        | network.Dialer | specific dialer. |
-| WithResponseBodyStream            | false          | determine whether read body in stream or not, default not read in stream. |
-| WithDisableHeaderNamesNormalizing | false          | whether disable header names normalizing, default not disabled, for example, cONTENT-lenGTH -> Content-Length. |
-| WithName                          | ""             | set client name which used in User-Agent Header. |
-| WithNoDefaultUserAgentHeader      | false          | whether default no User-Agent header, default with User-Agent header. |
-| WithDisablePathNormalizing        | false          | whether disable path normalizing, default specification path, for example, http://localhost:8080/hello/../ hello -> http://localhost:8080/hello. |
-| WithRetryConfig                   | nil            | retry configuration, for specific configuration information, please refer to [retry](/docs/hertz/tutorials/basic-feature/retry/). |
-| WithWriteTimeout                  | 0s             | write timeout.  |
-| WithConnStateObserve              | nil, 5s        | set function to observe and record the connection status of HTTP client, as well as observe execution intervals. |
-| WithDialFunc                      | network.Dialer | set dialer function. |
-| WithHostClientConfigHook          | nil            | Set the hook function for re-configure the host client. |
+| WithDialer                        | network.Dialer | specific dialer.                                                                                                                                        |
+| WithResponseBodyStream            | false          | determine whether read body in stream or not, default not read in stream.                                                                               |
+| WithDisableHeaderNamesNormalizing | false          | whether disable header names normalizing, default not disabled, for example, cONTENT-lenGTH -> Content-Length.                                          |
+| WithName                          | ""             | set client name which used in User-Agent Header.                                                                                                        |
+| WithNoDefaultUserAgentHeader      | false          | whether default no User-Agent header, default with User-Agent header.                                                                                   |
+| WithDisablePathNormalizing        | false          | whether disable path normalizing, default specification path, for example, http://localhost:8080/hello/../ hello -> http://localhost:8080/hello.        |
+| WithRetryConfig                   | nil            | retry configuration, for specific configuration information, please refer to [retry](/docs/hertz/tutorials/basic-feature/retry/).                       |
+| WithWriteTimeout                  | 0s             | write timeout.                                                                                                                                          |
+| WithConnStateObserve              | nil, 5s        | set function to observe and record the connection status of HTTP client, as well as observe execution intervals.                                        |
+| WithDialFunc                      | network.Dialer | set dialer function.                                                                                                                                    |
+| WithHostClientConfigHook          | nil            | Set the hook function for re-configure the host client.                                                                                                 |
 
 Sample Code:
 
@@ -121,14 +127,14 @@ func main() {
 
 ## Client Request Config
 
-| **Option**                        | **Default**         | **Description**                                                    |
-| ----------------------------- | -------------- | ------------------------------------------------------- |
-| WithDialTimeout                   | 0s             | Dial timeout time, **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.                                           |
-| WithReadTimeout               | 0s              | The maximum duration of a complete read response (including body), **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.                            |
-| WithWriteTimeout           | 0s            | HTTP client write timeout, **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.  |
-| WithRequestTimeout               | 0s             | The timeout for a complete HTTP request. |
-| WithTag            | make(map[string]string)             | Set the tags field in the form of key-value, used in conjunction with service discovery, details can be found in [WithTag](/docs/hertz/tutorials/service-governance/service_discovery/#withtag).  |
-| WithSD                     | false          | Used in conjunction with service discovery, this request uses service discovery when true is passed, details can be found in [WithSD](/docs/hertz/tutorials/service-governance/service_discovery/#withsd).   |
+| **Option**         | **Default**             | **Description**                                                                                                                                                                                                       |
+| ------------------ | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WithDialTimeout    | 0s                      | Dial timeout time, **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.                                                 |
+| WithReadTimeout    | 0s                      | The maximum duration of a complete read response (including body), **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**. |
+| WithWriteTimeout   | 0s                      | HTTP client write timeout, **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.                                         |
+| WithRequestTimeout | 0s                      | The timeout for a complete HTTP request.                                                                                                                                                                              |
+| WithTag            | make(map[string]string) | Set the tags field in the form of key-value, used in conjunction with service discovery, details can be found in [WithTag](/docs/hertz/tutorials/service-governance/service_discovery/#withtag).                      |
+| WithSD             | false                   | Used in conjunction with service discovery, this request uses service discovery when true is passed, details can be found in [WithSD](/docs/hertz/tutorials/service-governance/service_discovery/#withsd).            |
 
 Sample Code:
 
@@ -172,7 +178,7 @@ If resp is nil, the response will be ignored. If all DefaultMaxConnsPerHost conn
 Function Signature:
 
 ```go
-func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error 
+func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error
 ```
 
 Sample Code:
@@ -605,7 +611,7 @@ func main() {
 	if err != nil {
 		return
 	}
-	
+
 	req, res := &protocol.Request{}, &protocol.Response{}
 	req.SetMethod(consts.MethodGet)
 	req.SetRequestURI("https://www.example.com")
@@ -743,7 +749,7 @@ The `UseAsLast` function adds the middleware to the end of the client middleware
 
 If the client middleware chain has already set the last middleware before, the `UseAsLast` function will return an `errorLastMiddlewareExist` error. Therefore, to ensure that the last middleware in the client middleware chain is empty, you can first use the [TakeOutLastMiddleware](#takeoutlastmiddleware) function to clear the last middleware in the client middleware chain.
 
->Note: The `UseAsLast` function sets the middleware in `c.lastMiddleware`, while the middleware chain set using the [Use](#use) function is stored in `c.mws`. The two functions are relatively independent. `c.lastMiddleware` is executed only at the end of the client middleware chain. Therefore, the `UseAsLast` function can be called before or after the [Use](#use) function.
+> Note: The `UseAsLast` function sets the middleware in `c.lastMiddleware`, while the middleware chain set using the [Use](#use) function is stored in `c.mws`. The two functions are relatively independent. `c.lastMiddleware` is executed only at the end of the client middleware chain. Therefore, the `UseAsLast` function can be called before or after the [Use](#use) function.
 
 Function Signature:
 

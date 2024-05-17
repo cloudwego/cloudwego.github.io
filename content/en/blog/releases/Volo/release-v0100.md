@@ -1,6 +1,6 @@
 ---
-title: 'Volo Release 0.10.0'
-linkTitle: 'Release v0.10.0'
+title: "Volo Release 0.10.0"
+linkTitle: "Release v0.10.0"
 projects: ["Volo"]
 date: 2024-04-08
 description: >
@@ -59,7 +59,6 @@ For middleware that is not aware of user errors, this change should not cause a 
 
 The error part of the client has changed from `ResponseError` to `ClientError`. Just follow the compiler error message prompts to match the new error variant.
 
-
 ### IDL Management File volo.yml Format Refactored
 
 The structure of the new yml configuration is clearer, easier to maintain, and mainly solves the issue that the old version could not support cross-repository referencing with git. The specific functions and configuration parameters can be seen [here](https://www.cloudwego.io/docs/volo/guide/config). In addition, for the volo-cli command-line tool, we have renamed the previous idl command to repo.
@@ -68,7 +67,6 @@ The structure of the new yml configuration is clearer, easier to maintain, and m
 
 Install the volo-cli v0.10.0 version and execute the volo migrate command in the volo.yml directory for automatic migration.
 
-
 ### Change in Default Generated Enum Type
 
 In the newly generated code, the default generated Enum type has been changed to a newtype wrapping i32, in order to better support forward compatibility of modifications in the enumeration values of the IDL enum field.
@@ -76,7 +74,6 @@ In the newly generated code, the default generated Enum type has been changed to
 #### Migration Guide
 
 Just modify the enumeration name in the enum field to the corresponding generated name, such as `Foo::Bar` -> `Foo::BAR`.
-
 
 ## Complete Release Note
 

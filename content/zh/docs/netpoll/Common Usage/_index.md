@@ -31,9 +31,9 @@ func init() {
 现在支持以下策略：
 
 1. Random
-    * 新连接将分配给随机选择的轮询器。
+   - 新连接将分配给随机选择的轮询器。
 2. RoundRobin
-    * 新连接将按顺序分配给轮询器。
+   - 新连接将按顺序分配给轮询器。
 
 Netpoll 默认使用 `RoundRobin`，用户可以通过以下方式更改：
 
@@ -130,8 +130,8 @@ func prepare(connection netpoll.Connection) (ctx context.Context) {
 Netpoll 现在支持两种类型的超时配置：
 
 1. 读超时（`ReadTimeout`）
-    * 为了保持与 `net.Conn` 相同的操作风格，`Connection.Reader` 也被设计为阻塞读取。 所以提供了读取超时（`ReadTimeout`）。
-    * 读超时（`ReadTimeout`）没有默认值（默认无限等待），可以通过 `Connection` 或 `EventLoop.Option` 进行配置，例如：
+   - 为了保持与 `net.Conn` 相同的操作风格，`Connection.Reader` 也被设计为阻塞读取。 所以提供了读取超时（`ReadTimeout`）。
+   - 读超时（`ReadTimeout`）没有默认值（默认无限等待），可以通过 `Connection` 或 `EventLoop.Option` 进行配置，例如：
 
 ```go
 package main
@@ -155,8 +155,8 @@ func main() {
 ```
 
 2. 空闲超时（`IdleTimeout`）
-    * 空闲超时（`IdleTimeout`）利用 `TCP KeepAlive` 机制来踢出死连接并减少维护开销。使用 Netpoll 时，一般不需要频繁创建和关闭连接，所以通常来说，空闲连接影响不大。当连接长时间处于非活动状态时，为了防止出现假死、对端挂起、异常断开等造成的死连接，在空闲超时（`IdleTimeout`）后，netpoll 会主动关闭连接。
-    * 空闲超时（`IdleTimeout`）的默认配置为 `10min`，可以通过 `Connection` API 或 `EventLoop.Option` 进行配置，例如：
+   - 空闲超时（`IdleTimeout`）利用 `TCP KeepAlive` 机制来踢出死连接并减少维护开销。使用 Netpoll 时，一般不需要频繁创建和关闭连接，所以通常来说，空闲连接影响不大。当连接长时间处于非活动状态时，为了防止出现假死、对端挂起、异常断开等造成的死连接，在空闲超时（`IdleTimeout`）后，netpoll 会主动关闭连接。
+   - 空闲超时（`IdleTimeout`）的默认配置为 `10min`，可以通过 `Connection` API 或 `EventLoop.Option` 进行配置，例如：
 
 ```go
 package main
@@ -236,4 +236,3 @@ func callback(connection netpoll.Connection) error {
 	return nil
 }
 ```
-

@@ -5,8 +5,6 @@ weight: 3
 description: >
 ---
 
-
-
 ## Overview
 
 Validator is a thrift plugin that supports struct validation.
@@ -40,9 +38,9 @@ struct Response {
 
 ## Installation
 
-Before using the Validator plugin, you should install it first. 
+Before using the Validator plugin, you should install it first.
 
-Otherwise, an error message will be displayed stating that the `thrift-gen-validator` executable file cannot be found (`exec: "thrift-gen-validator": executable file not found in $PATH`). 
+Otherwise, an error message will be displayed stating that the `thrift-gen-validator` executable file cannot be found (`exec: "thrift-gen-validator": executable file not found in $PATH`).
 
 If you have already installed Golang and Kitex command-line tools, please run the following command to install the `thrift-gen-validator` plugin:
 
@@ -50,12 +48,12 @@ If you have already installed Golang and Kitex command-line tools, please run th
 $ go install github.com/cloudwego/thrift-gen-validator@latest
 ```
 
-After executing `go install`, the compiled `thrift-gen-validator` binary file will be installed under `$GOPATH/bin`. 
+After executing `go install`, the compiled `thrift-gen-validator` binary file will be installed under `$GOPATH/bin`.
 
 You can run the following command to verify that the installation was successful.
 
 ```shell
-$ cd $(go env GOPATH)/bin                     
+$ cd $(go env GOPATH)/bin
 $ ls
 go1.20.1             goimports            hz                   thrift-gen-validator
 godotenv             golangci-lint        kitex                thriftgo
@@ -82,7 +80,7 @@ struct Request {
 }
 ```
 
-When generating kitex code, add  `--thrift-plugin validator` to generate the validator code.
+When generating kitex code, add `--thrift-plugin validator` to generate the validator code.
 
 ```
 kitex --thrift-plugin validator -service a.b.c hello.thrift
@@ -249,7 +247,7 @@ struct OuterRequest {
 
 The prefix '$' represents a reference to a variable, which can be used for **cross-field verification**:
 
-1. $x represents a variable named x, the variable name is \[a-zA-Z0-9_]\, and its scope rule is **current structure**.
+1. $x represents a variable named x, the variable name is \[a-zA-Z0-9\_]\, and its scope rule is **current structure**.
 2. $ represents the current field where the validator is located.
 
 ```Thrift

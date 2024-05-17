@@ -3,10 +3,10 @@ title: "自定义服务发现与负载均衡"
 linkTitle: "自定义服务发现与负载均衡"
 weight: 2
 description: >
-
 ---
 
 ## 服务发现
+
 `Discover` trait 提供了自定义服务发现的能力，其支持自定义静态或可订阅的服务发现能力。
 
 **Trait** 定义

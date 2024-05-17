@@ -734,7 +734,7 @@ func main() {
     // resp type is map[string]interface{}
     resp, err := cli.GenericCall(ctx, "ExampleMethod", map[string]interface{}{
         "Msg": "hello",
-    })   
+    })
 }
 ```
 

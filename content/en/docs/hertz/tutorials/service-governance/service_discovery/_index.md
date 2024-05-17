@@ -2,7 +2,18 @@
 title: "Service Registration and Discovery"
 date: 2023-04-22
 weight: 1
-keywords: ["Service Registration and Discovery", "nacos", "consul", "etcd", "eureka", "polaris", "servicecomb", "zookeeper", "redis"]
+keywords:
+  [
+    "Service Registration and Discovery",
+    "nacos",
+    "consul",
+    "etcd",
+    "eureka",
+    "polaris",
+    "servicecomb",
+    "zookeeper",
+    "redis",
+  ]
 description: "Service Registration and Discovery Extensions provided by Hertz."
 ---
 
@@ -23,12 +34,12 @@ As of now, the supported service discovery extensions are
 
 Some optional configurations are provided to users when using service discovery.
 
-| Configuration          | Description                                               |
-| ---------------------- | --------------------------------------------------------- |
+| Configuration          | Description                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------------ |
 | WithSD                 | Used in conjunction with service discovery, this request uses service discovery when `true` is passed. |
-| WithTag                | Used in conjunction with service discovery to set Tag information. |
-| WithCustomizedAddrs    | Customize the address of the target instance.             |
-| WithLoadBalanceOptions | Configure load balancing options.                         |
+| WithTag                | Used in conjunction with service discovery to set Tag information.                                     |
+| WithCustomizedAddrs    | Customize the address of the target instance.                                                          |
+| WithLoadBalanceOptions | Configure load balancing options.                                                                      |
 
 ### WithSD
 

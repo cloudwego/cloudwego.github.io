@@ -2,16 +2,17 @@
 title: "Nacos"
 date: 2023-12-14
 weight: 3
-keywords: ["ConfigCenter Extension","Nacos"]
+keywords: ["ConfigCenter Extension", "Nacos"]
 description: "Use Nacos as Kitex’s service governance configuration center"
 ---
 
 ### Install
+
 `go get github.com/kitex-contrib/config-nacos`
 
 ## Suite
-The configuration center adapter of Nacos.
 
+The configuration center adapter of Nacos.
 
 ### Server
 
@@ -167,6 +168,7 @@ type ConfigParser interface {
 Sample:
 
 Extend parsing XML types.
+
 ```go
 package main
 
@@ -210,32 +212,35 @@ The configuration format supports `json` and `yaml`. You can use the [SetParser]
 
 ### CustomFunction
 
-Provide the mechanism to custom the nacos parameter `vo.ConfigParam`. 
+Provide the mechanism to custom the nacos parameter `vo.ConfigParam`.
 
 ### Options Variable
 
-| Variable Name | Default Value | Introduction |
-| ------------------------- | ---------------------------------- | --------------------------------- |
-| Address               | 127.0.0.1                          | Nacos server address, may use the environment of `serverAddr` |
-| Port               | 8848                               | Nacos server port, may use the environment of `serverPort` |
-| NamespaceID                 |                                    | The namespaceID of Nacos, may use the environment of `namespace` |
-| ClientDataIDFormat              | {{.ClientServiceName}}.{{.ServerServiceName}}.{{.Category}}  | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ClientServiceName` `ServiceName` `Category` three metadata that can be customised          |
-| ServerDataIDFormat              | {{.ServerServiceName}}.{{.Category}}  | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised          |
-| Group               | DEFAULT_GROUP                      | Use fixed values or dynamic rendering. Usage is the same as configDataId.          |
+| Variable Name      | Default Value                                               | Introduction                                                                                                                                                                                    |
+| ------------------ | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Address            | 127.0.0.1                                                   | Nacos server address, may use the environment of `serverAddr`                                                                                                                                   |
+| Port               | 8848                                                        | Nacos server port, may use the environment of `serverPort`                                                                                                                                      |
+| NamespaceID        |                                                             | The namespaceID of Nacos, may use the environment of `namespace`                                                                                                                                |
+| ClientDataIDFormat | {{.ClientServiceName}}.{{.ServerServiceName}}.{{.Category}} | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ClientServiceName` `ServiceName` `Category` three metadata that can be customised |
+| ServerDataIDFormat | {{.ServerServiceName}}.{{.Category}}                        | Use go [template](https://pkg.go.dev/text/template) syntax rendering to generate the appropriate ID, and use `ServiceName` `Category` two metadatas that can be customised                      |
+| Group              | DEFAULT_GROUP                                               | Use fixed values or dynamic rendering. Usage is the same as configDataId.                                                                                                                       |
 
 ### Governance Policy
+
 > The configDataId and configGroup in the following example use default values, the service name is `ServiceName` and the client name is `ClientName`.
 
-#### Rate Limit 
+#### Rate Limit
+
 Category=limit
+
 > Currently, current limiting only supports the server side, so ClientServiceName is empty.
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/limiter/item_limiter.go#L33)
 
-|Variable|Introduction|
-|----|----|
-|connection_limit| Maximum concurrent connections | 
-|qps_limit| Maximum request number every 100ms | 
+| Variable         | Introduction                       |
+| ---------------- | ---------------------------------- |
+| connection_limit | Maximum concurrent connections     |
+| qps_limit        | Maximum request number every 100ms |
 
 Example:
 
@@ -254,14 +259,15 @@ Note:
 - Not configured or value is 0 means not enabled.
 - connection_limit and qps_limit can be configured independently, e.g. connection_limit = 100, qps_limit = 0
 
-#### Retry Policy 
+#### Retry Policy
+
 Category=retry
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
 
-|Variable|Introduction|
-|----|----|
-|type| 0: failure_policy 1: backup_policy| 
-|failure_policy.backoff_policy| Can only be set one of `fixed` `none` `random` | 
+| Variable                      | Introduction                                   |
+| ----------------------------- | ---------------------------------------------- |
+| type                          | 0: failure_policy 1: backup_policy             |
+| failure_policy.backoff_policy | Can only be set one of `fixed` `none` `random` |
 
 Example：
 
@@ -269,46 +275,48 @@ Example：
 
 ```json
 {
-    "*": {  
-        "enable": true,
-        "type": 0,                 
-        "failure_policy": {
-            "stop_policy": {
-                "max_retry_times": 3,
-                "max_duration_ms": 2000,
-                "cb_policy": {
-                    "error_rate": 0.3
-                }
-            },
-            "backoff_policy": {
-                "backoff_type": "fixed", 
-                "cfg_items": {
-                    "fix_ms": 50
-                }
-            },
-            "retry_same_node": false
+  "*": {
+    "enable": true,
+    "type": 0,
+    "failure_policy": {
+      "stop_policy": {
+        "max_retry_times": 3,
+        "max_duration_ms": 2000,
+        "cb_policy": {
+          "error_rate": 0.3
         }
-    },
-    "echo": { 
-        "enable": true,
-        "type": 1,                 
-        "backup_policy": {
-            "retry_delay_ms": 100,
-            "retry_same_node": false,
-            "stop_policy": {
-                "max_retry_times": 2,
-                "max_duration_ms": 300,
-                "cb_policy": {
-                    "error_rate": 0.2
-                }
-            }
+      },
+      "backoff_policy": {
+        "backoff_type": "fixed",
+        "cfg_items": {
+          "fix_ms": 50
         }
+      },
+      "retry_same_node": false
     }
+  },
+  "echo": {
+    "enable": true,
+    "type": 1,
+    "backup_policy": {
+      "retry_delay_ms": 100,
+      "retry_same_node": false,
+      "stop_policy": {
+        "max_retry_times": 2,
+        "max_duration_ms": 300,
+        "cb_policy": {
+          "error_rate": 0.2
+        }
+      }
+    }
+  }
 }
 ```
+
 Note: retry.Container has built-in support for specifying the default configuration using the `*` wildcard (see the [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) method for details).
 
-#### RPC Timeout 
+#### RPC Timeout
+
 Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
@@ -329,16 +337,18 @@ Example：
   }
 }
 ```
+
 Note: The circuit breaker implementation of kitex does not currently support changing the global default configuration (see [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195) for details).
 
-#### Circuit Break 
+#### Circuit Break
+
 Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
 
-|Variable|Introduction|
-|----|----|
-|min_sample| Minimum statistical sample number| 
+| Variable   | Introduction                      |
+| ---------- | --------------------------------- |
+| min_sample | Minimum statistical sample number |
 
 Example：
 
@@ -350,18 +360,16 @@ The echo method uses the following configuration (0.3, 100) and other methods us
 {
   "echo": {
     "enable": true,
-    "err_rate": 0.3, 
-    "min_sample": 100 
+    "err_rate": 0.3,
+    "min_sample": 100
   }
 }
 ```
 
 ## Note
+
 Do not delete the config in nacos, otherwise the nacos sdk may produce a large warning log.
 
-
 ## Compatibility
+
 This Package use Nacos1.x client. The Nacos2.0 and Nacos1.0 Server are fully compatible with it. [see](https://nacos.io/en-us/docs/v2/upgrading/2.0.0-compatibility.html)
-
-
-

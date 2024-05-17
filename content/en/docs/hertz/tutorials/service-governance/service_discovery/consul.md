@@ -20,7 +20,7 @@ Consul extension provides option configuration in the service registry section.
 
 #### WithCheck
 
-Consul extension provides `WithCheck` to help users configure the `AgentServiceCheck` option in Consul. `defaultCheck()` is called by default.  If not use, set `check.Timeout` to 5 seconds, `check.Internal` to 5 seconds, and `check.DeregisterCriticalServiceAfter` to 1 minute.
+Consul extension provides `WithCheck` to help users configure the `AgentServiceCheck` option in Consul. `defaultCheck()` is called by default. If not use, set `check.Timeout` to 5 seconds, `check.Internal` to 5 seconds, and `check.DeregisterCriticalServiceAfter` to 1 minute.
 
 Function signature:
 

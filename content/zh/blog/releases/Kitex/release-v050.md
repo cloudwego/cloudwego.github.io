@@ -5,22 +5,24 @@ projects: ["Kitex"]
 date: 2023-03-08
 description: >
 ---
+
 ## 重要变更介绍
 
 ### 功能
 
 **1. Fallback 功能: 支持 Client 侧的 Fallback 功能**
 
-  业务在 RPC 请求失败后通常会有一些降级措施保证有效返回（比如在请求超时、熔断后，构造默认返回），Kitex 的 Fallback 支持对所有异常请求进行处理。
-  同时，因为业务异常通常会通过 BaseResp 字段返回，所以也支持对 Resp 进行处理。详见 [Fallback](/zh/docs/kitex/tutorials/service-governance/fallback/)。
+业务在 RPC 请求失败后通常会有一些降级措施保证有效返回（比如在请求超时、熔断后，构造默认返回），Kitex 的 Fallback 支持对所有异常请求进行处理。
+同时，因为业务异常通常会通过 BaseResp 字段返回，所以也支持对 Resp 进行处理。详见 [Fallback](/zh/docs/kitex/tutorials/service-governance/fallback/)。
 
 **2. Kitex - gRPC：Client 增加 TLS 的配置**
 
-  通过 client.WithGRPCTLSConfig option 配置。
+通过 client.WithGRPCTLSConfig option 配置。
 
 **3. Kitex - 工具**
+
 - **支持自定义脚手架模板**，详见： [自定义脚手架模板](/zh/docs/kitex/tutorials/code-gen/custom_tpl/)
-- **支持指定生成代码的目录**，详见： [代码生成工具 -gen-path](/zh/docs/kitex/tutorials/code-gen/code_generation/#-gen-path) 
+- **支持指定生成代码的目录**，详见： [代码生成工具 -gen-path](/zh/docs/kitex/tutorials/code-gen/code_generation/#-gen-path)
 - **支持 protoc 插件选项**，详见： [代码生成工具 -protobuf-plugin](/zh/docs/kitex/tutorials/code-gen/code_generation/#-protobuf-plugin)
 
 ### 优化
@@ -38,7 +40,7 @@ description: >
 
 升级 frugal, pid 库依赖以支持 go 1.20。
 
-----
+---
 
 ## 详细变更
 
@@ -57,7 +59,7 @@ description: >
 ### Optimize
 
 - [[#750](https://github.com/cloudwego/kitex/pull/750)] optimize(generic): generic call write zero value for required and default fields to meet the specification of apache thrift and keep consistent with normal thrift encode of Kitex.
-- [[#739](https://github.com/cloudwego/kitex/pull/739)] optimize(generic): modify the url routing  to align with Hertz for HTTP generic call
+- [[#739](https://github.com/cloudwego/kitex/pull/739)] optimize(generic): modify the url routing to align with Hertz for HTTP generic call
 - [[#752](https://github.com/cloudwego/kitex/pull/752)] optimize(ttheader): attach part of ttheader binary into error when readKVInfo failed, which is useful for troubleshooting
 - [[#821](https://github.com/cloudwego/kitex/pull/821)] optimize(config): add DeepCopy() & Equals() to circuitbreaker.CBConfig and retry.Policy
 - [[#827](https://github.com/cloudwego/kitex/pull/827)] optimize: revise the remoteInfo of retry call, using the remoteInfo of the RPCCall that returns
@@ -97,4 +99,3 @@ description: >
 - [[#761](https://github.com/cloudwego/kitex/pull/761)] docs: update README.md @fuergaosi233
 - [[#817](https://github.com/cloudwego/kitex/pull/817), [#832](https://github.com/cloudwego/kitex/pull/832)] chore: upgrade dependency lib to adapt go 1.20
 - [[#772](https://github.com/cloudwego/kitex/pull/772)] chore: modify kitex gen code meta file name from kitex.yaml to kitex_info.yaml
-

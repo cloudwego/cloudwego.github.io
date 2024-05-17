@@ -2,7 +2,7 @@
 title: "Binary"
 date: 2024-01-06
 weight: 1
-keywords: [ "Kitex", "序列化", "Binary", "Thrift" ]
+keywords: ["Kitex", "序列化", "Binary", "Thrift"]
 description: Kitex 使用 Binary 协议序列化。
 ---
 

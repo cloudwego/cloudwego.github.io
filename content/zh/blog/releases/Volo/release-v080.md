@@ -1,6 +1,6 @@
 ---
-title: 'Volo 0.8.0 版本发布'
-linkTitle: 'Release v0.8.0'
+title: "Volo 0.8.0 版本发布"
+linkTitle: "Release v0.8.0"
 projects: ["Volo"]
 date: 2023-10-23
 description: >
@@ -90,6 +90,7 @@ pub trait Service<Cx, Request> {
 
 1. Rust 编译器更新到最新 nightly（rustup update）及所有依赖（volo、pilota、motore）升级到最新版
 2. cargo check 看看哪里报错，可能会遇到比如`type Future is not a member`、`associated type Future not found`等类似错误，我们以如下`Service`为例：
+
 ```rust
 impl<Cx, Req, S> Service<Cx, Req> for LogService<S>
 where
@@ -117,10 +118,12 @@ where
     }
 }
 ```
+
 3. 把`type Future`这行直接去掉
 4. 把`fn call<'cx, 's>`中的生命周期位置对调，并去掉下面的`where`语句
 5. 在`fn call`前面加个`async`，然后把`Self::Future<'cx>`这部分，改成`Result<Self::Response, Self::Error>`，并去掉函数体里面的`async move`
 6. 最终改完的`Service`如下：
+
 ```rust
 impl<Cx, Req, S> Service<Cx, Req> for LogService<S>
 where

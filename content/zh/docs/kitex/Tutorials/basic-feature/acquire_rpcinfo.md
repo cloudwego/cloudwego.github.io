@@ -14,14 +14,14 @@ Kitex 的 RPCInfo 的生命周期默认是从请求开始到请求返回（性�
 
 同步的使用方式是指用户没有在新起的 Goroutine 里获取 RPCInfo。
 
-| **获取的信息**                | **Kitex 获取方式**                                                                                                                                                                                |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 获取调用方的 Service          | caller, ok :=  kitexutil.GetCaller(ctx)                                                                                                                                                              |
-| 获取 RPC 方法名               | method, ok := kitexutil.GetMethod(ctx)                                                                                                                                                               |
-| 获取调用方的请求地址          | cluster, ok := kitexutil.GetCallerAddr(ctx)                                                                                                                                                          |
-| 获取 IDL 里定义的 ServiceName | svcName, ok := kitexutil.GetIDLServiceName(ctx)                                                                                                                                                      |
-| 获取调用方的 handler 接口名   | callerMethod, ok := kitexutil.GetCallerHandlerMethod(ctx) <br/>只有调用方也是 Kitex Server 才默认有这个信息，或者调用方主动将 K_METHOD 写入 context.Context 中，Kitex 会获取该信息传输给服务端。           |
-| 获取传输协议                  | tp, ok := kitexutil.GetTransportProtocol(ctx)                                                                                                                                                        |
+| **获取的信息**                | **Kitex 获取方式**                                                                                                                                                                                             |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 获取调用方的 Service          | caller, ok := kitexutil.GetCaller(ctx)                                                                                                                                                                         |
+| 获取 RPC 方法名               | method, ok := kitexutil.GetMethod(ctx)                                                                                                                                                                         |
+| 获取调用方的请求地址          | cluster, ok := kitexutil.GetCallerAddr(ctx)                                                                                                                                                                    |
+| 获取 IDL 里定义的 ServiceName | svcName, ok := kitexutil.GetIDLServiceName(ctx)                                                                                                                                                                |
+| 获取调用方的 handler 接口名   | callerMethod, ok := kitexutil.GetCallerHandlerMethod(ctx) <br/>只有调用方也是 Kitex Server 才默认有这个信息，或者调用方主动将 K_METHOD 写入 context.Context 中，Kitex 会获取该信息传输给服务端。               |
+| 获取传输协议                  | tp, ok := kitexutil.GetTransportProtocol(ctx)                                                                                                                                                                  |
 | 调用端获取请求的服务端的地址  | ctx = metainfo.WithBackwardValues(ctx)<br/>// 先设置 ctx，再执行 RPC 调用 ...err, resp := cli.YourMethod(ctx, req)rip, ok := metainfo.GetBackwardValue(ctx, consts.RemoteAddr) <br/>注意：不适用于 oneway 方法 |
 
 ### 1.2 异步使用方式
@@ -36,11 +36,11 @@ import (
     "github.com/cloudwego/kitex/pkg/utils/kitexutil"
 )
 // this creates a read-only copy of `ri` and attaches it to the new context
-ctx2 := rpcinfo.FreezeRPCInfo(ctx) 
+ctx2 := rpcinfo.FreezeRPCInfo(ctx)
 go func(ctx context.Context) {
     // ...
     ri := rpcinfo.GetRPCInfo(ctx) // OK
-    
+
     // eg: get client psm
     // caller, ok := kitexutil.GetCaller(ctx)
     //...

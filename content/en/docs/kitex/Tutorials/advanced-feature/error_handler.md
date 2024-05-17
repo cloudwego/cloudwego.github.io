@@ -21,7 +21,7 @@ server.WithErrorHandler(yourServerErrorHandler)
 
 This function is executed after the server-side handler and before the middleware is executed, and can be used to return custom error codes and messages to the client-side. Note that although this is supported, business-level custom error codes are still not recommended to be handled by ErrorHandler, because we want to distinguish RPC errors from business errors, which indicate a failed RPC request, such as timeout, circuit breaker, rate limiting, which is a failed request at the RPC level, but business errors are at the business logic level, which is actually a successful request at the RPC level. Kitex will develop a [custom exception specification](https://github.com/cloudwego/kitex/issues/511) to distinguish between business errors and RPC level errors.
 
-* ErrorHandler example：
+- ErrorHandler example：
 
   Kitex wraps the error returned by the server handler as kerrors.ErrBiz, if you want to get the original error you need to Unwrap it first.
 
@@ -30,7 +30,7 @@ This function is executed after the server-side handler and before the middlewar
 func ServerErrorHandler(ctx context.Context, err error) error {
     // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
     // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).From().Address()`
-    
+
     if errors.Is(err, kerrors.ErrBiz) {
         err = errors.Unwrap(err)
     }
@@ -64,13 +64,13 @@ client.WithErrorHandler(yourClientErrorHandler)
 
 The handler is executed after the remote call and before the middleware is executed. The framework has a default ClientErrorHandler, it will be used by default if no ClientErrorHandler is configured. The behavior of the default Handler is to return **ErrRemoteOrNetwork** when an error is received from the server-side or when an exception occurs at the transport layer on the client side. In addition, for Thrift and KitexProtobuf, the error msg contains a '[remote]' message to identify that it is an error on the other side; for gRPC, if the other side returns an error constructed by `status.Error`, use `status.FromError(err)` on the local side to get `*status.Status`, note that `Status` needs to be provided by Kitex, the package path is `github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status`.
 
-* ErrorHandler example：
+- ErrorHandler example：
 
 ```go
 func ClientErrorHandler(ctx context.Context, err error) error {
     // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
     // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).To().Address()`
-    
+
     // for thrift、KitexProtobuf
     if e, ok := err.(*remote.TransError); ok {
         // TypeID is error code
@@ -88,9 +88,9 @@ func ClientErrorHandler(ctx context.Context, err error) error {
 
 Because some of the error codes are built-in to the framework, users should avoid using the built-in error codes, currently built-in error codes:
 
-* Thrift、KitexProtobuf：0 - 10。
+- Thrift、KitexProtobuf：0 - 10。
 
-* gRPC：0 - 17。
+- gRPC：0 - 17。
 
 ## ErrorHandler Execution Mechanism
 

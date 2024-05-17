@@ -12,7 +12,7 @@ According to the user's use scenario, we provide [Casbin Middleware](https://git
 
 ## Install
 
-``` shell
+```shell
 go get github.com/hertz-contrib/casbin
 ```
 
@@ -30,7 +30,7 @@ package main
 import (
     "context"
     "log"
-    
+
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/hertz-contrib/casbin"
@@ -40,7 +40,7 @@ import (
 
 func main() {
     h := server.Default()
-    
+
     // using sessions to store user info.
     store := cookie.NewStore([]byte("secret"))
     h.Use(sessions.New("session", store))
@@ -48,11 +48,11 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    
+
     h.POST("/login", func(ctx context.Context, c *app.RequestContext) {
         // verify username and password.
         // ...
-    
+
         // store username (casbin subject) in session
         session := sessions.Default(c)
         session.Set("name", "alice")
@@ -62,15 +62,15 @@ func main() {
         }
         c.String(200, "you login successfully")
     })
-    
+
     h.GET("/book", auth.RequiresPermissions("book:read", casbin.WithLogic(casbin.AND)), func(ctx context.Context, c *app.RequestContext) {
         c.String(200, "you read the book successfully")
     })
-    
+
     h.POST("/book", auth.RequiresRoles("user", casbin.WithLogic(casbin.AND)), func(ctx context.Context, c *app.RequestContext) {
         c.String(200, "you posted a book successfully")
     })
-    
+
     h.Spin()
 }
 
@@ -131,7 +131,7 @@ func main() {
 
 #### NewCasbinMiddlewareFromEnforcer
 
-You need to provide [enforcer](https://casbin.org/docs/enforcers)  and `LookupHandler` (handler that get subject) to initialize middleware.
+You need to provide [enforcer](https://casbin.org/docs/enforcers) and `LookupHandler` (handler that get subject) to initialize middleware.
 
 The function signature is as follows:
 
@@ -158,7 +158,7 @@ func main() {
 	if err != nil{
 		log.Fatal(err)
 	}
-	
+
     casbinMiddleware, err := casbin.NewCasbinMiddlewareFromEnforcer(enforcer, exampleLookupHandler)
     if err != nil {
         log.Fatal(err)
@@ -183,29 +183,29 @@ parameters descriptions is as follows:
 
 - **expression**
 
-    expression has one or more params, each param is divided by space, the expression format is related to `Logic` (see option description),
+  expression has one or more params, each param is divided by space, the expression format is related to `Logic` (see option description),
 
-    the calculated final value of the expression is either **True** or **False**, **True** represents for has passed casbin middleware,
+  the calculated final value of the expression is either **True** or **False**, **True** represents for has passed casbin middleware,
 
-    **False** represents for has not passed casbin middleware.
+  **False** represents for has not passed casbin middleware.
 
-    If `Logic` is **AND** or **OR**, the format is:
+  If `Logic` is **AND** or **OR**, the format is:
 
-    `"var 1 var2 var3 var4"`, like `"book:read book:write"`
+  `"var 1 var2 var3 var4"`, like `"book:read book:write"`
 
-    If `Logic` is **CUSTOM**, the format is :
+  If `Logic` is **CUSTOM**, the format is :
 
-    `"var1 opr1 var2 opr2 var3"` like `"book:read && book:write || book:all"`
+  `"var1 opr1 var2 opr2 var3"` like `"book:read && book:write || book:all"`
 
 - **opts**
 
-    | Option                          | Description                                                  | Default                                                      |
-    | ------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-    | `WithLogic`                     | `Logic` is the logical operation (**AND**/**OR**/**CUSTOM**) used in permission checks that multiple permissions or roles are specified | `AND`                                                        |
-    | `WithPermissionParser`          | `PermissionParserFunc` is used for parsing the permission to extract object and action usually | `PermissionParserWithSeparator(":")`                         |
-    | `WithPermissionParserSeparator` | `PermissionParserSeparator` is used to set separator that divide permission to object and action usually | `:`                                                          |
-    | `WithUnauthorized`              | `Unauthorized` defined the response body for unauthorized responses | `func(ctx context.Context, c *app.RequestContext) {    c.AbortWithStatus(consts.StatusUnauthorized) }` |
-    | `WithForbidden`                 | `Forbidden` defines the response body for forbidden responses | `func(ctx context.Context, c *app.RequestContext) {    c.AbortWithStatus(consts.StatusForbidden) }` |
+  | Option                          | Description                                                                                                                             | Default                                                                                                |
+  | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+  | `WithLogic`                     | `Logic` is the logical operation (**AND**/**OR**/**CUSTOM**) used in permission checks that multiple permissions or roles are specified | `AND`                                                                                                  |
+  | `WithPermissionParser`          | `PermissionParserFunc` is used for parsing the permission to extract object and action usually                                          | `PermissionParserWithSeparator(":")`                                                                   |
+  | `WithPermissionParserSeparator` | `PermissionParserSeparator` is used to set separator that divide permission to object and action usually                                | `:`                                                                                                    |
+  | `WithUnauthorized`              | `Unauthorized` defined the response body for unauthorized responses                                                                     | `func(ctx context.Context, c *app.RequestContext) {    c.AbortWithStatus(consts.StatusUnauthorized) }` |
+  | `WithForbidden`                 | `Forbidden` defines the response body for forbidden responses                                                                           | `func(ctx context.Context, c *app.RequestContext) {    c.AbortWithStatus(consts.StatusForbidden) }`    |
 
 #### RequiresPermission
 
@@ -225,7 +225,7 @@ like:
 r = sub, dom, obj, act
 ```
 
-when use default `PermissionParser`,  **expression** format should be like `"book:read"`.
+when use default `PermissionParser`, **expression** format should be like `"book:read"`.
 
 like:
 
@@ -250,19 +250,19 @@ when user has `book:read` permission,
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
     h.GET("/book",
 		m.RequiresPermissions("book:read"), // passed
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book:read book:write"), // not passed
 		func(ctx context.Context, c *app.RequestContext) {
@@ -291,26 +291,26 @@ when user has role of **user** and **reader**,
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	h.POST("/book",
 		auth.RequiresRoles("user"), // passed
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you posted a book successfully")
 		},
 	)
-    
+
     h.POST("/book",
 		auth.RequiresRoles("user reader"), // passed
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you posted a book successfully")
 		},
 	)
-    
+
     h.POST("/book",
 		auth.RequiresRoles("user reader admin"), // not passed
 		func(ctx context.Context, c *app.RequestContext) {
@@ -347,7 +347,7 @@ const (
 
 **AND**
 
-all variables in `expression`  will perform **Logic AND** operation.
+all variables in `expression` will perform **Logic AND** operation.
 
 Sample code:
 
@@ -357,19 +357,19 @@ when user has `book:read` permission,
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
     h.GET("/book",
 		m.RequiresPermissions("book:read", casbin.WithLogic(casbin.AND)), // passed
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book:read book:write", casbin.WithLogic(casbin.AND)), // not passed
 		func(ctx context.Context, c *app.RequestContext) {
@@ -382,7 +382,7 @@ func main(){
 
 **OR**
 
-all variables in `expression`  will perform **Logical OR** operation.
+all variables in `expression` will perform **Logical OR** operation.
 
 Sample code:
 
@@ -392,19 +392,19 @@ when user has `book:read` permission,
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
     h.GET("/book",
 		m.RequiresPermissions("book:read", casbin.WithLogic(casbin.OR)), // passed
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book:read book:and", casbin.WithLogic(casbin.OR)), // not passed
 		func(ctx context.Context, c *app.RequestContext) {
@@ -431,33 +431,33 @@ when user has `book:read` permission,
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
     h.GET("/book",
 		m.RequiresPermissions("book:read", casbin.WithLogic(casbin.CUSTOM)), // passed
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book:read && book:write", casbin.WithLogic(casbin.CUSTOM)), // not passed
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
     h.GET("/book",
 		m.RequiresPermissions("book:read || book:write", casbin.WithLogic(casbin.CUSTOM)), // passed
 		func(ctx context.Context, c *app.RequestContext) {
 			c.String(200, "you read the book successfully")
 		},
 	)
-    
+
     h.GET("/book",
 		m.RequiresPermissions("!book:read", casbin.WithLogic(casbin.CUSTOM)), // not passed
 		func(ctx context.Context, c *app.RequestContext) {
@@ -484,12 +484,12 @@ Sample code:
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book-read",
 			casbin.WithPermissionParser(func(str string) []string {
@@ -520,12 +520,12 @@ Sample code:
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	h.GET("/book",
 		m.RequiresPermissions("book-read",
 			casbin.WithPermissionParserSeparator("-"),
@@ -554,12 +554,12 @@ Sample code:
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	h.GET("/book",
           m.RequiresPermissions("book:read",
 			casbin.WithUnauthorized(func(c context.Context, ctx *app.RequestContext) {
@@ -590,12 +590,12 @@ Sample code:
 func main(){
     ...
     h := server.Default()
-    
+
     m, err := casbin.NewCasbinMiddleware("example/config/model.conf", "example/config/policy.csv", subjectFromSession)
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	h.GET("/book",
           m.RequiresPermissions("book:read",
 			casbin.WithForbidden(func(c context.Context, ctx *app.RequestContext) {

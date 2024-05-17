@@ -4,7 +4,6 @@ date: 2022-05-23
 weight: 11
 keywords: ["Graceful Shutdown"]
 description: "The graceful shutdown function provided by Hertz when stopping service."
-
 ---
 
 Hertz supports graceful shutdown, which is executed as follows：

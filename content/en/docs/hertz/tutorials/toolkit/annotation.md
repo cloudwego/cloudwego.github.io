@@ -1,8 +1,9 @@
 ---
-title: 'hz annotation'
+title: "hz annotation"
 date: 2023-02-21
 weight: 6
-keywords: [ "hz annotation", "api annotation", "Field annotation", "Method annotation" ]
+keywords:
+  ["hz annotation", "api annotation", "Field annotation", "Method annotation"]
 description: "The IDL annotation provided by hz."
 ---
 
@@ -10,7 +11,7 @@ description: "The IDL annotation provided by hz."
 
 > Field annotation can be used
 >
-for [parameter binding and validation](/docs/hertz/tutorials/basic-feature/binding-and-validate/)
+> for [parameter binding and validation](/docs/hertz/tutorials/basic-feature/binding-and-validate/)
 >
 > Method annotation can be used to generate code that related to route registration
 
@@ -22,7 +23,7 @@ Field annotation tag description can be
 referenced [supported-tags](/docs/hertz/tutorials/basic-feature/binding-and-validate/#supported-tags).
 
 | _Field annotation_                       |                                                                                                                                 |
-|------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | annotation                               | description                                                                                                                     |
 | api.raw_body                             | generate "raw_body" tag                                                                                                         |
 | api.query                                | generate "query" tag                                                                                                            |
@@ -36,7 +37,7 @@ referenced [supported-tags](/docs/hertz/tutorials/basic-feature/binding-and-vali
 | api.none                                 | Generate "-" tag, please refer to [api.none annotation usage](/docs/hertz/tutorials/toolkit/more-feature/api_none/) for details |
 
 | _Method annotation_ |                                   |
-|---------------------|-----------------------------------|
+| ------------------- | --------------------------------- |
 | annotation          | description                       |
 | api.get             | define GET methods and routes     |
 | api.post            | define POST methods and routes    |
@@ -52,7 +53,7 @@ referenced [supported-tags](/docs/hertz/tutorials/basic-feature/binding-and-vali
 In addition to the annotations provided by [hz](#hz), one additional annotation has been added for client scenarios.
 
 | _Client annotation_ |                                           |
-|---------------------|-------------------------------------------|
+| ------------------- | ----------------------------------------- |
 | annotation          | description                               |
 | api.base_domain     | specify the default access request domain |
 

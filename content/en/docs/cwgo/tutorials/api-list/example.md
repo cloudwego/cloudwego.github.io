@@ -8,6 +8,7 @@ description: >
 ## Simple Example
 
 Take `hz` tool generated project for example:
+
 > generations please refer to [hz usage(thrift)](/docs/hertz/tutorials/toolkit/usage-thrift)
 
 Project Structure:
@@ -65,7 +66,6 @@ func Register(r *server.Hertz) {
 ```
 
 Now execute the `api-list` command in the project root directory
-
 
 `cwgo api-list` or `cwgo api-list --project_path .`
 

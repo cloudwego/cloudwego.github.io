@@ -5,7 +5,6 @@ date: 2022-06-21
 weight: 4
 keywords: ["Monitoring"]
 description: "Hertz provides monitoring capabilities."
-
 ---
 
 The framework doesn't provide any monitoring, but only provides a `Tracer` interface. This interface can be implemented by yourself and be injected via `WithTracer` Option.

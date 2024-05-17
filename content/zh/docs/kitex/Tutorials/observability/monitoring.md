@@ -69,17 +69,17 @@ func main() {
 
 Client
 
-| 名称                        | 单位 | Tags                                 | 描述                                    |
-|---------------------------|----|--------------------------------------|---------------------------------------|
-| `kitex_client_throughput` | -  | type, caller, callee, method, status | Client 端处理的请求总数                       |
-| `kitex_client_latency_us` | us | type, caller, callee, method, status | Client 端请求处理耗时（收到应答时间 - 发起请求时间，单位 us） |
+| 名称                      | 单位 | Tags                                 | 描述                                                          |
+| ------------------------- | ---- | ------------------------------------ | ------------------------------------------------------------- |
+| `kitex_client_throughput` | -    | type, caller, callee, method, status | Client 端处理的请求总数                                       |
+| `kitex_client_latency_us` | us   | type, caller, callee, method, status | Client 端请求处理耗时（收到应答时间 - 发起请求时间，单位 us） |
 
 Server
 
-| 名称                        | 单位 | Tags                                 | 描述                                     |
-|---------------------------|----|--------------------------------------|----------------------------------------|
-| `kitex_server_throughput` | -  | type, caller, callee, method, status | Server 端处理的请求总数                        |
-| `kitex_server_latency_us` | us | type, caller, callee, method, status | Server 端请求处理耗时（处理完请求时间 - 收到请求时间，单位 us） |
+| 名称                      | 单位 | Tags                                 | 描述                                                            |
+| ------------------------- | ---- | ------------------------------------ | --------------------------------------------------------------- |
+| `kitex_server_throughput` | -    | type, caller, callee, method, status | Server 端处理的请求总数                                         |
+| `kitex_server_latency_us` | us   | type, caller, callee, method, status | Server 端请求处理耗时（处理完请求时间 - 收到请求时间，单位 us） |
 
 基于以上 metrics 可以实现更多复杂的数据监控，使用示例看参考 [Useful Examples](https://github.com/kitex-contrib/monitor-prometheus/?tab=readme-ov-file#useful-examples) 。
 
@@ -99,15 +99,15 @@ Server
 
 Server
 
-| 名称                    | 指标数据模型    | 单位          | 单位(UCUM) | 描述           |
-|-----------------------|-----------|-------------|----------|--------------|
-| `rpc.server.duration` | Histogram | milliseconds | `ms`     | 测量请求RPC的持续时间 |
+| 名称                  | 指标数据模型 | 单位         | 单位(UCUM) | 描述                  |
+| --------------------- | ------------ | ------------ | ---------- | --------------------- |
+| `rpc.server.duration` | Histogram    | milliseconds | `ms`       | 测量请求RPC的持续时间 |
 
 Client
 
-| 名称                    | 指标数据模型    | 单位          | 单位(UCUM) | 描述           |
-|-----------------------|-----------|-------------|----------|--------------|
-| `rpc.server.duration` | Histogram | milliseconds | `ms`     | 测量请求RPC的持续时间 |
+| 名称                  | 指标数据模型 | 单位         | 单位(UCUM) | 描述                  |
+| --------------------- | ------------ | ------------ | ---------- | --------------------- |
+| `rpc.server.duration` | Histogram    | milliseconds | `ms`       | 测量请求RPC的持续时间 |
 
 通过 `rpc.server.duration` 可以计算更多的服务指标，如 R.E.D (Rate, Errors, Duration)，具体示例可参考[此处](https://github.com/kitex-contrib/obs-opentelemetry/blob/main/README_CN.md#%E7%8E%B0%E5%B7%B2%E6%94%AF%E6%8C%81%E7%9A%84-mertrics)。
 
@@ -115,19 +115,19 @@ Client
 
 基于 [opentelemetry-go](https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/runtime)，支持以下 runtime metrics：
 
-| 名称                                   | 指标数据模型 | 单位       | 单位(UCUM) | 描述                                |
-| -------------------------------------- | ------------ | ---------- | ---------- |-----------------------------------|
-| `process.runtime.go.cgo.calls`         | Sum          | -          | -          | 当前进程调用的cgo数量                      |
-| `process.runtime.go.gc.count`          | Sum          | -          | -          | 已完成的 gc 周期的数量                     |
-| `process.runtime.go.gc.pause_ns`       | Histogram    | nanosecond | `ns`       | 在GC stop-the-world 中暂停的纳秒数量       |
+| 名称                                   | 指标数据模型 | 单位       | 单位(UCUM) | 描述                                             |
+| -------------------------------------- | ------------ | ---------- | ---------- | ------------------------------------------------ |
+| `process.runtime.go.cgo.calls`         | Sum          | -          | -          | 当前进程调用的cgo数量                            |
+| `process.runtime.go.gc.count`          | Sum          | -          | -          | 已完成的 gc 周期的数量                           |
+| `process.runtime.go.gc.pause_ns`       | Histogram    | nanosecond | `ns`       | 在GC stop-the-world 中暂停的纳秒数量             |
 | `process.runtime.go.gc.pause_total_ns` | Histogram    | nanosecond | `ns`       | 自程序启动以来，GC stop-the-world 的累计微秒计数 |
-| `process.runtime.go.goroutines`        | Gauge        | -          | -          | 协程数量                              |
-| `process.runtime.go.lookups`           | Sum          | -          | -          | 运行时执行的指针查询的数量                     |
-| `process.runtime.go.mem.heap_alloc`    | Gauge        | bytes      | `bytes`    | 分配的堆对象的字节数                        |
-| `process.runtime.go.mem.heap_idle`     | Gauge        | bytes      | `bytes`    | 空闲（未使用）的堆内存                       |
-| `process.runtime.go.mem.heap_inuse`    | Gauge        | bytes      | `bytes`    | 已使用的堆内存                           |
-| `process.runtime.go.mem.heap_objects`  | Gauge        | -          | -          | 已分配的堆对象数量                         |
-| `process.runtime.go.mem.live_objects`  | Gauge        | -          | -          | 存活对象数量(Mallocs - Frees)           |
-| `process.runtime.go.mem.heap_released` | Gauge        | bytes      | `bytes`    | 已交还给操作系统的堆内存                      |
-| `process.runtime.go.mem.heap_sys`      | Gauge        | bytes      | `bytes`    | 从操作系统获得的堆内存                       |
+| `process.runtime.go.goroutines`        | Gauge        | -          | -          | 协程数量                                         |
+| `process.runtime.go.lookups`           | Sum          | -          | -          | 运行时执行的指针查询的数量                       |
+| `process.runtime.go.mem.heap_alloc`    | Gauge        | bytes      | `bytes`    | 分配的堆对象的字节数                             |
+| `process.runtime.go.mem.heap_idle`     | Gauge        | bytes      | `bytes`    | 空闲（未使用）的堆内存                           |
+| `process.runtime.go.mem.heap_inuse`    | Gauge        | bytes      | `bytes`    | 已使用的堆内存                                   |
+| `process.runtime.go.mem.heap_objects`  | Gauge        | -          | -          | 已分配的堆对象数量                               |
+| `process.runtime.go.mem.live_objects`  | Gauge        | -          | -          | 存活对象数量(Mallocs - Frees)                    |
+| `process.runtime.go.mem.heap_released` | Gauge        | bytes      | `bytes`    | 已交还给操作系统的堆内存                         |
+| `process.runtime.go.mem.heap_sys`      | Gauge        | bytes      | `bytes`    | 从操作系统获得的堆内存                           |
 | `runtime.uptime`                       | Sum          | ms         | `ms`       | 自应用程序被初始化以来的毫秒数                   |

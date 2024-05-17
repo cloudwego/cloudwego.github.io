@@ -3,7 +3,6 @@ title: "概览"
 linkTitle: "概览"
 weight: 1
 description: >
-
 ---
 
 ## 简介
@@ -26,23 +25,25 @@ goroutine，大幅增加调度开销。此外，[net.Conn][net.Conn] 没有提�
 
 ## 特性
 
-* **已经支持**
-    - [LinkBuffer][LinkBuffer] 提供可以流式读写的 nocopy API
-    - [gopool][gopool] 提供高性能的 goroutine 池
-    - [mcache][mcache] 提供高效的内存复用
-    - `IsActive` 支持检查连接是否存活
-    - `Dialer` 支持构建 client
-    - `EventLoop` 支持构建 server
-    - 支持 TCP，Unix Domain Socket
-    - 支持 Linux，macOS（操作系统）
+- **已经支持**
 
-* **即将开源**
-    - Shared Memory IPC
-    - 支持 TLS
-    - 支持 UDP
+  - [LinkBuffer][LinkBuffer] 提供可以流式读写的 nocopy API
+  - [gopool][gopool] 提供高性能的 goroutine 池
+  - [mcache][mcache] 提供高效的内存复用
+  - `IsActive` 支持检查连接是否存活
+  - `Dialer` 支持构建 client
+  - `EventLoop` 支持构建 server
+  - 支持 TCP，Unix Domain Socket
+  - 支持 Linux，macOS（操作系统）
 
-* **不被支持**
-    - Windows（操作系统）
+- **即将开源**
+
+  - Shared Memory IPC
+  - 支持 TLS
+  - 支持 UDP
+
+- **不被支持**
+  - Windows（操作系统）
 
 ## 性能
 
@@ -54,8 +55,8 @@ goroutine，大幅增加调度开销。此外，[net.Conn][net.Conn] 没有提�
 
 ## 参考
 
-* [官方网站](/zh/)
-* [使用文档](/zh/docs/netpoll/getting-started/)
+- [官方网站](/zh/)
+- [使用文档](/zh/docs/netpoll/getting-started/)
 
 [Netpoll]: https://github.com/cloudwego/netpoll
 [net]: https://github.com/golang/go/tree/master/src/net
@@ -66,15 +67,12 @@ goroutine，大幅增加调度开销。此外，[net.Conn][net.Conn] 没有提�
 [Kitex]: https://github.com/cloudwego/kitex
 [Hertz]: https://github.com/cloudwego/hertz
 [netpoll-example]: https://github.com/cloudwego/netpoll-examples
-
 [netpoll-benchmark]: https://github.com/cloudwego/netpoll-benchmark
 [kitex-benchmark]: https://github.com/cloudwego/kitex-benchmark
 [hertz-benchmark]: https://github.com/cloudwego/hertz-benchmark
-
 [ByteDance]: https://www.bytedance.com
 [Redis]: https://redis.io
 [HAProxy]: http://www.haproxy.org
-
 [LinkBuffer]: https://github.com/cloudwego/netpoll/blob/develop/nocopy_linkbuffer.go
 [gopool]: https://github.com/bytedance/gopkg/tree/develop/util/gopool
 [mcache]: https://github.com/bytedance/gopkg/tree/develop/lang/mcache

@@ -11,7 +11,7 @@ description: >
 **参会人员：** YangruiEmma, liu-song, baiyutang, yccpt, AshleeT, Authorixy, Dianjun Suo, bodhisatan, CoderPoet, Quan Hu, li-jin-gou, JZK-Keven, EastHorse, GuangmingLuo, Xiwen Li, joway, jasondeng1997, HeyJavaBean.
 
 **会前必读：** [官网](/)；
-              https://github.com/cloudwego
+https://github.com/cloudwego
 
 ## 议程 1 ：新成员自我介绍
 
@@ -28,11 +28,12 @@ description: >
    b. Kitex 单测任务的 PR 的描述前缀统一使用 Test，便于相关同学进行 review。
 
    c. 提交了 PR之后，可以将 PR 发送在群里，方便后续跟进。
+
 4. **提交 PR 时间要求：** 认领之后半个月内提交 PR，便于后续的意见修改和调试。
 
 ## 议程 3：源码分析落地
 
-1. **参考案例：** 具体可以参考  Go-zero 和 Kratos 开源社区。例如：对框架一些较好的设计进行解读，提供“扩展阅读”文档，目录可以涵盖“日志组件介绍”、“令牌桶限流”等文档内容。
+1. **参考案例：** 具体可以参考 Go-zero 和 Kratos 开源社区。例如：对框架一些较好的设计进行解读，提供“扩展阅读”文档，目录可以涵盖“日志组件介绍”、“令牌桶限流”等文档内容。
 2. **后续规划：**
 
    a. 草拟源码分析目录大纲：① 目录结构和内容可以参考 CloudWeGo 官网目录；② 源码分析目录文档完成后，可以发在群里或者在 Github 上提交 Issue ，方便大家讨论修改；③ 认领单测任务的同学可以关注一下源码分析活动，助于更好地了解模块的功能。
@@ -48,4 +49,3 @@ A：确实存在循坏依赖的情况。对于这种情况，可以使用 mock�
 ## 议程5：社区建议
 
 欢迎大家将参与社区建设期间遇到的任何问题和想法发在群里，同社区成员一起沟通。内容不限于 Kitex、Netpoll 代码库、CloudWeGo 官网、宣传渠道等。
-

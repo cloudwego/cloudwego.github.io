@@ -80,14 +80,14 @@ func main() {
 
 ## Options
 
-| Option         | Default                                                                                                  | Description                                                                                                                       |
-|----------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
-| Next           | [nil](https://github.com/hertz-contrib/paseto/blob/main/option.go#L88)                                   | Used to define a function to skip this middleware when returned true                                                              |
-| ErrorHandler   | [output log and response 401](https://github.com/hertz-contrib/paseto/blob/main/option.go#L89)           | Used to define a function which is executed when an error occurs                                                                  |
-| SuccessHandler | [save the claims to app.RequestContext](https://github.com/hertz-contrib/paseto/blob/main/option.go#L94) | Used to define a function which is executed    when the token is valid                                                            |
+| Option         | Default                                                                                                  | Description                                                                                                                          |
+| -------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Next           | [nil](https://github.com/hertz-contrib/paseto/blob/main/option.go#L88)                                   | Used to define a function to skip this middleware when returned true                                                                 |
+| ErrorHandler   | [output log and response 401](https://github.com/hertz-contrib/paseto/blob/main/option.go#L89)           | Used to define a function which is executed when an error occurs                                                                     |
+| SuccessHandler | [save the claims to app.RequestContext](https://github.com/hertz-contrib/paseto/blob/main/option.go#L94) | Used to define a function which is executed when the token is valid                                                                  |
 | KeyLookup      | [header:Authorization](https://github.com/hertz-contrib/paseto/blob/main/option.go#L97)                  | Used to define a string in the form of "<source>:<key>" that is used to create an Extractor that extracts the token from the request |
-| TokenPrefix    | ""                                                                                                       | Used to define a string that holds the prefix for the token lookup                                                                |
-| ParseFunc      | [parse V4 Public Token](https://github.com/hertz-contrib/paseto/blob/main/option.go#L98)                 | Used to parse and verify token                                                                                                    |
+| TokenPrefix    | ""                                                                                                       | Used to define a string that holds the prefix for the token lookup                                                                   |
+| ParseFunc      | [parse V4 Public Token](https://github.com/hertz-contrib/paseto/blob/main/option.go#L98)                 | Used to parse and verify token                                                                                                       |
 
 ### Next
 
@@ -234,12 +234,12 @@ func performRequest() {
 
 func main() {
    h := server.New(server.WithHostPorts(":8080"))
-   
+
    handler := func(ctx context.Context, c *app.RequestContext) {
       c.JSON(http.StatusUnauthorized, "invalid token")
       c.Abort()
    }
-   
+
    h.GET("/paseto/withsecret", func(c context.Context, ctx *app.RequestContext) {
       now := time.Now()
       genTokenFunc := paseto.DefaultGenTokenFunc()
@@ -622,11 +622,11 @@ func main() {
 
 ## Version comparison
 
-| Version | Local                                                        | Public                          |
-| ------- | ------------------------------------------------------------ | ------------------------------- |
-| v1      | Encrypted with `AES-256-CBC` and signed with HMAC-SHA-256    | Signed with `RSA-SHA-256`       |
-| v2      | Encrypted with `XSalsa20Poly1305` and signed with `HMAC-SHA-384` | Signed with `EdDSA`(`Ed25519`) |
-| v3      | Encrypted with `XChaCha20Poly1305` and signed with`HMAC-SHA-384` | Signed with `EdDSA`(`Ed25519`) |
+| Version | Local                                                                 | Public                         |
+| ------- | --------------------------------------------------------------------- | ------------------------------ |
+| v1      | Encrypted with `AES-256-CBC` and signed with HMAC-SHA-256             | Signed with `RSA-SHA-256`      |
+| v2      | Encrypted with `XSalsa20Poly1305` and signed with `HMAC-SHA-384`      | Signed with `EdDSA`(`Ed25519`) |
+| v3      | Encrypted with `XChaCha20Poly1305` and signed with`HMAC-SHA-384`      | Signed with `EdDSA`(`Ed25519`) |
 | v4      | Encrypted with `XChaCha20Poly1305` and signed with `HMAC-SHA-512-256` | Signed with `EdDSA`(`Ed448`)   |
 
 ## Full Example

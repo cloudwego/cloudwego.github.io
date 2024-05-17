@@ -4,9 +4,7 @@ date: 2022-09-24
 weight: 7
 keywords: ["pprof", "performance analysis"]
 description: "Hertz provides the pprof extension to help users perform performance analysis on Hertz projects. "
-
 ---
-
 
 Hertz provides the [pprof](https://github.com/hertz-contrib/pprof) extension to help users perform performance analysis on Hertz projects. The implementation of the [pprof](https://github.com/hertz-contrib/pprof) extension refers to the implementation of [Gin](https://github.com/gin-contrib/pprof).
 
@@ -97,8 +95,8 @@ RouteRegister(rg *route.RouterGroup, prefixOptions ...string)
 
 The `pprof` prefix registered in this way is the result of splicing the prefix of the routing group and the custom prefix.
 
-* If the user does not specify a prefix, the prefix of the registered `pprof` is the result of concatenating the prefix of the routing group and the default prefix `/debug/pprof`, that is, `/xxx/debug/pprof` (xxx is the prefix of the routing group);
-* If the user specifies a prefix, the prefix of the registered `pprof` is the result of concatenating the prefix of the routing group and the custom prefix. For example, in the following example, the registered `pprof` prefix is `/admin/pprof`.
+- If the user does not specify a prefix, the prefix of the registered `pprof` is the result of concatenating the prefix of the routing group and the default prefix `/debug/pprof`, that is, `/xxx/debug/pprof` (xxx is the prefix of the routing group);
+- If the user specifies a prefix, the prefix of the registered `pprof` is the result of concatenating the prefix of the routing group and the custom prefix. For example, in the following example, the registered `pprof` prefix is `/admin/pprof`.
 
 Sample code:
 
@@ -138,9 +136,9 @@ func main() {
 
 Access `localhost:8888/debug/pprof` via browser
 
-* Hertz port number defaults to 8888
-* pprof default address prefix is `debug/pprof`
-* The port number and access route are the same as the user's actual port number and `pprof` prefix
+- Hertz port number defaults to 8888
+- pprof default address prefix is `debug/pprof`
+- The port number and access route are the same as the user's actual port number and `pprof` prefix
 
 ### Via `go tool pprof`
 

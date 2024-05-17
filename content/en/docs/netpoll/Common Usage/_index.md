@@ -33,9 +33,9 @@ each poller.
 The following strategies are supported now:
 
 1. Random
-    * The new connection will be assigned to a randomly picked poller.
+   - The new connection will be assigned to a randomly picked poller.
 2. RoundRobin
-    * The new connection will be assigned to the poller in order.
+   - The new connection will be assigned to the poller in order.
 
 Netpoll uses `RoundRobin` by default, and users can change it in the following ways:
 
@@ -138,10 +138,10 @@ func prepare(connection netpoll.Connection) (ctx context.Context) {
 Netpoll now supports two timeout configurations:
 
 1. `Read Timeout`
-    * In order to maintain the same operating style as `net.Conn`, `Connection.Reader` is also designed to block
-      reading. So provide `Read Timeout`.
-    * `Read Timeout` has no default value(wait infinitely), it can be configured via `Connection` or `EventLoop.Option`,
-      for example:
+   - In order to maintain the same operating style as `net.Conn`, `Connection.Reader` is also designed to block
+     reading. So provide `Read Timeout`.
+   - `Read Timeout` has no default value(wait infinitely), it can be configured via `Connection` or `EventLoop.Option`,
+     for example:
 
 ```go
 package main
@@ -165,13 +165,13 @@ func main() {
 ```
 
 2. `Idle Timeout`
-    * `Idle Timeout` utilizes the `TCP KeepAlive` mechanism to kick out dead connections and reduce maintenance
-      overhead. When using Netpoll, there is generally no need to create and close connections frequently,
-      and idle connections have little effect. When the connection is inactive for a long time, in order to prevent dead
-      connection caused by suspended animation, hang of the opposite end, abnormal disconnection, etc., the connection
-      will be actively closed after the `Idle Timeout`.
-    * The default minimum value of `Idle Timeout` is `10min`, which can be configured through `Connection` API
-      or `EventLoop.Option`, for example:
+   - `Idle Timeout` utilizes the `TCP KeepAlive` mechanism to kick out dead connections and reduce maintenance
+     overhead. When using Netpoll, there is generally no need to create and close connections frequently,
+     and idle connections have little effect. When the connection is inactive for a long time, in order to prevent dead
+     connection caused by suspended animation, hang of the opposite end, abnormal disconnection, etc., the connection
+     will be actively closed after the `Idle Timeout`.
+   - The default minimum value of `Idle Timeout` is `10min`, which can be configured through `Connection` API
+     or `EventLoop.Option`, for example:
 
 ```go
 package main

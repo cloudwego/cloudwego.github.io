@@ -4,7 +4,6 @@ linkTitle: "slog"
 weight: 5
 keywords: ["日志扩展", "slog"]
 description: "Hertz 对接 slog 和 lumberjack。"
-
 ---
 
 ## Logger 结构体
@@ -107,7 +106,7 @@ func main() {
 
 `WithLevel` 对传入的 `*slog.LevelVar` 进行判断，高于或等于这个日志级别的才会被记录
 
->值得注意的是，如果 `WithLevel` 与 `WithHandlerOptions` 一起设置，WithLevel 的日志等级会覆盖掉 WithHandlerOptions 中的日志等级
+> 值得注意的是，如果 `WithLevel` 与 `WithHandlerOptions` 一起设置，WithLevel 的日志等级会覆盖掉 WithHandlerOptions 中的日志等级
 
 函数签名：
 
@@ -131,7 +130,7 @@ func main() {
     // 动态设置日志登记为 LevelDebug
     levelVar := slog.LevelVar{}
     levelVar.Set(slog.LevelDebug)
-    logger := hertzslog.NewLogger(hertzslog.WithLevel(&slog.LevelVar{})) 
+    logger := hertzslog.NewLogger(hertzslog.WithLevel(&slog.LevelVar{}))
 }
 
 ```
@@ -143,7 +142,7 @@ func main() {
 函数名称：
 
 ```go
-func WithHandlerOptions(opts *slog.HandlerOptions) Option 
+func WithHandlerOptions(opts *slog.HandlerOptions) Option
 ```
 
 示例代码：
@@ -205,7 +204,7 @@ func main() {
 			return
 		}
 	}
-	
+
 	logger := hertzslog.NewLogger()
 	// 提供压缩和删除
 	lumberjackLogger := &lumberjack.Logger{

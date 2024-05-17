@@ -2,7 +2,7 @@
 title: "Hessian2"
 date: 2024-01-06
 weight: 3
-keywords: [ "Kitex", "序列化", "Hessian2" ]
+keywords: ["Kitex", "序列化", "Hessian2"]
 description: Kitex 使用 Hessian2 协议序列化。
 ---
 
@@ -35,7 +35,6 @@ Hessian2 协议用于 Kitex 与 Dubbo 互通，该协议并非 Kitex 核心支�
     )),
   )
   ```
-
 
 #### 服务端
 

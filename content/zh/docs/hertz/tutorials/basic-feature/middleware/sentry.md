@@ -4,7 +4,6 @@ date: 2022-11-25
 weight: 11
 keywords: ["Sentry", "实时错误监控"]
 description: "Hertz 通过使用中间件 hertzsentry，整合了 Sentry-Go 的 SDK。"
-
 ---
 
 Sentry 是一个开源的实时错误监控项目，支持很多平台，包括 Web 前端、服务器端、移动端和游戏端等。Hertz 通过使用中间件 [hertzsentry](https://github.com/hertz-contrib/hertzsentry) ，整合了 [Sentry-Go](https://docs.sentry.io/platforms/go/) 的 SDK。提供了一些统一的接口，帮助用户获得 sentry hub 和报告错误信息。
@@ -58,7 +57,7 @@ func main()  {
     }
 
     // use sentry middleware and config with your requirements.
-    // attention! you should use sentry handler after recovery.Recovery() 
+    // attention! you should use sentry handler after recovery.Recovery()
     h.Use(hertzsentry.NewSentry(
         hertzsentry.WithSendRequest(true),
         hertzsentry.WithRePanic(true),
@@ -84,13 +83,13 @@ func main()  {
 
 Hertz 通过使用中间件，整合了 Sentry-Go 的功能。其中 `hertzsentry.options` 结构定义了 hertzsentry 的配置信息，并提供了默认配置，用户也可以依据业务场景进行定制。
 
-| 参数            | 介绍                                                         |
-| --------------- | ------------------------------------------------------------ |
-| rePanic         | 用于配置 Sentry 在恢复后是否要再次 panic。如果使用了 Recover 中间件，则设置为 true，默认为 false。 |
+| 参数            | 介绍                                                                                                                                                                                       |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| rePanic         | 用于配置 Sentry 在恢复后是否要再次 panic。如果使用了 Recover 中间件，则设置为 true，默认为 false。                                                                                         |
 | waitForDelivery | 用于配置是否要在继续处理响应之前阻止请求并清空缓存区（**只有异步传输时才真正意义上有清空缓存区的操作**）。如果使用 Recover 中间件，跳过这个选项或将其设置为 false 是安全的，默认为 false。 |
-| sendRequest     | 用于配置在捕获 sentry 事件时是否要添加当前的请求头信息，默认为 false。 |
-| sendBody        | 用于配置在捕获 sentry 事件时是否要添加当前的请求正文信息，默认为 false。 |
-| timeout         | 用于配置 sentry 事件传递请求的超时时长，默认为 2 秒。          |
+| sendRequest     | 用于配置在捕获 sentry 事件时是否要添加当前的请求头信息，默认为 false。                                                                                                                     |
+| sendBody        | 用于配置在捕获 sentry 事件时是否要添加当前的请求正文信息，默认为 false。                                                                                                                   |
+| timeout         | 用于配置 sentry 事件传递请求的超时时长，默认为 2 秒。                                                                                                                                      |
 
 ### Flush（Go-Sentry）
 

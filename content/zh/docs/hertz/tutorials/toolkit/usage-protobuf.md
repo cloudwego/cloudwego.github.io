@@ -4,7 +4,7 @@ date: 2023-02-21
 weight: 4
 keywords: ["hz 使用 (protobuf)", "protobuf", "new", "update"]
 description: >
-  "hz 使用 (protobuf)。"  
+  "hz 使用 (protobuf)。"
 ---
 
 ## 基于 protobuf IDL 创建项目
@@ -41,7 +41,7 @@ description: >
           optional string js_conv = 50109;
           optional string file_name = 50110;
           optional string none = 50111;
-    
+
           // 50131~50160 used to extend field option by hz
           optional string form_compatible = 50131;
           optional string js_conv_compatible = 50132;
@@ -49,7 +49,7 @@ description: >
           optional string none_compatible = 50134;
           // 50135 is reserved to vt_compatible
           // optional FieldRules vt_compatible = 50135;
-    
+
           optional string go_tag = 51001;
       }
 
@@ -71,7 +71,7 @@ description: >
           optional string param = 50307; // Whether client requests take public parameters
           optional string baseurl = 50308; // Baseurl used in ttnet routing
           optional string handler_path = 50309; // handler_path specifies the path to generate the method
-    
+
           // 50331~50360 used to extend method option by hz
           optional string handler_path_compatible = 50331; // handler_path specifies the path to generate the method
       }
@@ -91,7 +91,7 @@ description: >
 
       extend google.protobuf.MessageOptions {
           // optional FieldRules msg_vt = 50111;
-    
+
           optional string reserve = 50830;
           // 550831 is reserved to msg_vt_compatible
           // optional FieldRules msg_vt_compatible = 50831;

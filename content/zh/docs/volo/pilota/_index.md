@@ -1,8 +1,8 @@
 ---
-title: 'Pilota'
-linkTitle: 'Pilota'
+title: "Pilota"
+linkTitle: "Pilota"
 weight: 7
-keywords: [ "Pilota", "Thrift", "Protobuf", "Plugin"]
+keywords: ["Pilota", "Thrift", "Protobuf", "Plugin"]
 Description: Pilota 是一个使用纯 Rust 编写的 Thrift 和 Protobuf 实现，具有高性能和高扩展性。
 ---
 
@@ -53,6 +53,7 @@ service TestService {
 ```
 
 ## 如何编写 Plugin
+
 ### 为什么需要 Plugin
 
 为 Pilota 根据 IDL 生成的 `Struct` 等类型增加一些自定义的 meta 信息。

@@ -24,21 +24,22 @@ This resolver needs an implemented Resolver, which is able to resolve instances 
 
 2. Define filter rules.
 
-    ```go
-    // Define a filter function.
-    // For example, only get the instances with a tag of {"k":"v"}.
-    filterFunc := func(ctx context.Context, instance []discovery.Instance) []discovery.Instance {
-         var res []discovery.Instance
-         for _, ins := range instance {
-             if v, ok := ins.Tag("k"); ok && v == "v" {
-                 res = append(res, ins)
-             }
-         }
-         return res
-    }
-    // Construct the filterRule
-    filterRule := &FilterRule{Name: "rule-name", Funcs: []FilterFunc{filterFunc}} 
-    ```
+   ```go
+   // Define a filter function.
+   // For example, only get the instances with a tag of {"k":"v"}.
+   filterFunc := func(ctx context.Context, instance []discovery.Instance) []discovery.Instance {
+        var res []discovery.Instance
+        for _, ins := range instance {
+            if v, ok := ins.Tag("k"); ok && v == "v" {
+                res = append(res, ins)
+            }
+        }
+        return res
+   }
+   // Construct the filterRule
+   filterRule := &FilterRule{Name: "rule-name", Funcs: []FilterFunc{filterFunc}}
+   ```
+
    Notice: the FilterFuncs will be executed sequentially.
 
 3. Configure the resolver
@@ -49,16 +50,16 @@ This resolver needs an implemented Resolver, which is able to resolve instances 
        "github.com/cloudwego/kitex/client"
        "github.com/cloudwego/kitex/pkg/discovery"
     )
-    
+
     // implement your resolver
     var newResolver discovery.Resolver
-    
+
     // construct a RuleBasedResolver with the `newResolver` and `filterRule`
     tagResolver := ruleBasedResolver.NewRuleBasedResolver(resolver, filterRule)
-    
+
     // add this option when construct Kitex Client
-    opt := client.WithResolver(tagResolver) 
-    ```
+    opt := client.WithResolver(tagResolver)
+   ```
 
 ## Demo
 

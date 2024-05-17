@@ -2,11 +2,17 @@
 title: "常量"
 date: 2023-05-24
 weight: 17
-keywords: ["常量", "HTTP 请求方法", "HTTP 常用 MIME 类型", "HTTP 状态码", "HTTP 头信息", "HTTP 协议版本"]
+keywords:
+  [
+    "常量",
+    "HTTP 请求方法",
+    "HTTP 常用 MIME 类型",
+    "HTTP 状态码",
+    "HTTP 头信息",
+    "HTTP 协议版本",
+  ]
 description: "Hertz 中定义的供用户使用的常量。"
- 
 ---
-
 
 在 Hertz 中定义了一系列的常量以供用户使用，它们都位于 [github.com/cloudwego/hertz/pkg/protocol/consts](https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts) 。
 
@@ -30,7 +36,7 @@ const (
 ### HTTP 常用 MIME 类型
 
 ```go
-const (	
+const (
 	// MIME text
 	MIMETextPlain             = "text/plain"
 	MIMETextPlainUTF8         = "text/plain; charset=utf-8"

@@ -216,6 +216,7 @@ type ConfigParser interface {
 示例代码:
 
 设置解析 yaml 类型的配置
+
 ```go
 package main
 
@@ -258,21 +259,19 @@ type Options struct {
 
 ### Options 默认值
 
-
-| 参数             | 变量默认值                                                       | 作用                                                                                                                                                   |
-| ---------------- |-------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Addr             | 127.0.0.1:8500                                              | Consul 服务器地址                                                                                                                                         |
-| Prefix           | /KitexConfig                                                | Consul 的 Prefix                                                                                                                                      |
+| 参数             | 变量默认值                                                  | 作用                                                                                                                                                                             |
+| ---------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Addr             | 127.0.0.1:8500                                              | Consul 服务器地址                                                                                                                                                                |
+| Prefix           | /KitexConfig                                                | Consul 的 Prefix                                                                                                                                                                 |
 | ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据，用于和 Prefix 组成 consul 中配置的 key                     |
 | ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ClientServiceName` `ServiceName` `Category` 三个元数据，用于和 Prefix 组成 consul 中配置的 key |
-| DataCenter       | dc1                                                         | Consul 默认数据中心                                                                                                                                        |
-| Timeout          | 5 \* time.Second                                            | 5s 超时时间                                                                                                                                              |
-| NamespaceId      |                                                             | Consul 的 Namespace Id                                                                                                                                |
-| Token            |                                                             | Consul 服务的认证 Token                                                                                                                                   |
-| Partition        |                                                             | Consul 的 Partition                                                                                                                                   | 
-| LoggerConfig     | NULL                                                        | 默认日志                                                                                                                                                 |
-| ConfigParser     | defaultConfigParser                                         | 默认解析器，默认为解析 json 与 yaml 格式的数据                                                                                                                        |
-
+| DataCenter       | dc1                                                         | Consul 默认数据中心                                                                                                                                                              |
+| Timeout          | 5 \* time.Second                                            | 5s 超时时间                                                                                                                                                                      |
+| NamespaceId      |                                                             | Consul 的 Namespace Id                                                                                                                                                           |
+| Token            |                                                             | Consul 服务的认证 Token                                                                                                                                                          |
+| Partition        |                                                             | Consul 的 Partition                                                                                                                                                              |
+| LoggerConfig     | NULL                                                        | 默认日志                                                                                                                                                                         |
+| ConfigParser     | defaultConfigParser                                         | 默认解析器，默认为解析 json 与 yaml 格式的数据                                                                                                                                   |
 
 ### 治理策略
 

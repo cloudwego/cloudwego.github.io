@@ -4,7 +4,6 @@ date: 2022-11-06
 weight: 5
 keywords: ["TLS", "HTTP"]
 description: "Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。"
-
 ---
 
 Hertz 支持 TLS 安全传输，帮助用户实现了数据的保密性和完整性。
@@ -13,14 +12,14 @@ Hertz 支持 TLS 安全传输，帮助用户实现了数据的保密性和完整
 
 在 `tls.Config` 中，服务端和客户端都可使用的参数如下：
 
-|          参数名          | 介绍                                     |
-|:---------------------:|:---------------------------------------|
+|        参数名         | 介绍                                                                   |
+| :-------------------: | :--------------------------------------------------------------------- |
 |     Certificates      | 用于添加证书，可以配置多个证书。 <br/>两端自动选择第一个证书进行验证。 |
-| VerifyPeerCertificate | 用于验证对端证书。<br/>在任意一端证书验证后调用。            |
-|   VerifyConnection    | 在两端证书均验证后，进行 TLS 连接验证。                 |
-|      NextProtos       | 用于设置支持的应用层协议。                          |
-|     CipherSuites      | 用于协商加密策略，支持 TLS 1.0-1.2。              |
-|      MaxVersion       | 用于设置 TLS 支持的最大版本，目前是 1.3。              |
+| VerifyPeerCertificate | 用于验证对端证书。<br/>在任意一端证书验证后调用。                      |
+|   VerifyConnection    | 在两端证书均验证后，进行 TLS 连接验证。                                |
+|      NextProtos       | 用于设置支持的应用层协议。                                             |
+|     CipherSuites      | 用于协商加密策略，支持 TLS 1.0-1.2。                                   |
+|      MaxVersion       | 用于设置 TLS 支持的最大版本，目前是 1.3。                              |
 
 ## 服务端
 
@@ -42,13 +41,13 @@ func WithTLS(cfg *tls.Config) config.Option {
 
 在 `tls.Config` 中，除了上述基本参数，服务端可以配置的参数如下：
 
-|          参数名          | 介绍                                                                   |
-|:---------------------:|:---------------------------------------------------------------------|
-|    GetCertificate     | 基于客户端 SNI 信息或证书集为空时，返回证书。                                            |
- | GetClientCertificate  | 用于服务端要求验证客户端证书时，返回客户端证书。                                             |
- |  GetConfigForClient   | 当服务端从客户端接收了 ClientHello 后，返回配置信息。 <br/>如果返回的是非空的配置信息，将会被用于这次 TLS 连接。 |
- |      ClientAuth       | 用于客户端验证策略设置，默认为 `NoClientCert`。                                      |
- |       ClientCAs       | 当启用了 `ClientAuth`, 用于验证客户端证书的真实性。                                    |
+|        参数名        | 介绍                                                                                                             |
+| :------------------: | :--------------------------------------------------------------------------------------------------------------- |
+|    GetCertificate    | 基于客户端 SNI 信息或证书集为空时，返回证书。                                                                    |
+| GetClientCertificate | 用于服务端要求验证客户端证书时，返回客户端证书。                                                                 |
+|  GetConfigForClient  | 当服务端从客户端接收了 ClientHello 后，返回配置信息。 <br/>如果返回的是非空的配置信息，将会被用于这次 TLS 连接。 |
+|      ClientAuth      | 用于客户端验证策略设置，默认为 `NoClientCert`。                                                                  |
+|      ClientCAs       | 当启用了 `ClientAuth`, 用于验证客户端证书的真实性。                                                              |
 
 服务器端 TLS 主要流程：
 
@@ -138,11 +137,11 @@ func main() {
 
 在 `tls.Config` 中，除了上述基本参数，客户端可以配置的参数如下：
 
-|          参数名          | 介绍                 |
-|:---------------------:|:-------------------|
-|      ServerName       | 根据返回的证书信息验证主机名。    |
-|  InsecureSkipVerify   | 用于客户端是否开启服务端的证书验证。 |
-|        RootCAs        | 用于客户端验证服务端的证书。     |
+|       参数名       | 介绍                                 |
+| :----------------: | :----------------------------------- |
+|     ServerName     | 根据返回的证书信息验证主机名。       |
+| InsecureSkipVerify | 用于客户端是否开启服务端的证书验证。 |
+|      RootCAs       | 用于客户端验证服务端的证书。         |
 
 客户端 TLS 主要流程：
 
@@ -376,8 +375,8 @@ func main() {
 		InsecureSkipVerify: true,
 	}
 	c, err := client.NewClient(
-		client.WithTLSConfig(clientCfg), 
-		client.WithDialer(standard.NewDialer()), 
+		client.WithTLSConfig(clientCfg),
+		client.WithDialer(standard.NewDialer()),
 	)
 }
 ```

@@ -4,7 +4,6 @@ date: 2023-02-11
 weight: 14
 keywords: ["ETag"]
 description: "Hertz provides Etag middleware that can operate on `ETag`."
-
 ---
 
 The `ETag` (or entity tag) HTTP response header is an identifier for a specific version of a resource. It lets caches be more efficient and save bandwidth, as a web server does not need to resend a full response if the content was not changed. Additionally, etags help to prevent simultaneous updates of a resource from overwriting each other ("mid-air collisions").
@@ -50,11 +49,11 @@ func main() {
 
 ## Configuration
 
-| Configuration           | Default  | Description                                   |
-|------------|---|------------------------------------|
-| WithWeak   | false | Enable weak validator |
-| WithNext | nil | Defines a function to skip etag middleware when return is true |
-|WithGenerator | nil | Custom etag generation logic |
+| Configuration | Default | Description                                                    |
+| ------------- | ------- | -------------------------------------------------------------- |
+| WithWeak      | false   | Enable weak validator                                          |
+| WithNext      | nil     | Defines a function to skip etag middleware when return is true |
+| WithGenerator | nil     | Custom etag generation logic                                   |
 
 ### WithWeak
 
@@ -97,7 +96,7 @@ func main() {
 Function Signature:
 
 ```go
-func WithNext(next NextFunc) Option 
+func WithNext(next NextFunc) Option
 ```
 
 Sample Code:

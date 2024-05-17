@@ -190,19 +190,20 @@ options = append(options, server.WithMiddleware(yourMiddleware))
 svr := server.NewServer(options...)
 
 ```
+
 You can distinguish each request by the service/method with the usage shown before.
 
 ### Distinguish Streaming/Non-Streaming Methods
 
 The recommended way to determine whether a request has an underlying protocol for Streaming would be to check the type of the request/response arguments:
 
-|                                     | **Client Middleware**                                                                                        | **Server Middleware**                                                                                                                                                                      |
-|-------------------------------------|--------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Bidirectional**<br/>**(gRPC)**    | - request: `interface{}` = nil <br/>- response: *streaming.Result                                            | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
-| **Client Streaming**<br/>**(gRPC)** | - request: interface{} = nil <br/>- response: *streaming.Result                                              | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
-| **Server Streaming**<br/>**(gRPC)** | - request: `interface{}` = nil <br/>- response: *streaming.Result                                            | - request: *streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
-| **Unary (gRPC)**                    | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *streaming.Args<br/>- response: `interface{}` = nil<br/>Note: the option provided since v0.9.0: `server.WithCompatibleMiddlewareForUnary()` makes it the same with PingPong API |
-| **PingPong API (KitexPB)**          | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result                                                                               |
+|                                     | **Client Middleware**                                                                                        | **Server Middleware**                                                                                                                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Bidirectional**<br/>**(gRPC)**    | - request: `interface{}` = nil <br/>- response: \*streaming.Result                                           | - request: \*streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
+| **Client Streaming**<br/>**(gRPC)** | - request: interface{} = nil <br/>- response: \*streaming.Result                                             | - request: \*streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
+| **Server Streaming**<br/>**(gRPC)** | - request: `interface{}` = nil <br/>- response: \*streaming.Result                                           | - request: \*streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
+| **Unary (gRPC)**                    | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: \*streaming.Args<br/>- response: `interface{}` = nil<br/>Note: the option provided since v0.9.0: `server.WithCompatibleMiddlewareForUnary()` makes it the same with PingPong API |
+| **PingPong API (KitexPB)**          | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result                                                                                |
 
 **NOTE:**
 Kitex server supports auto-detection on incoming requests, and for GRPC/Protobuf Unary methods, it accepts both GRPC requests and KitexProtobuf(TTHeader + Pure Protobuf Payload) requests, so **it may not be accurate to rely solely on the method name from RPCInfo**.

@@ -40,12 +40,12 @@ import (
 )
 
 func main() {
-    
+
     r, err := consul.NewConsulRegister("127.0.0.1:8500")
     if err != nil {
         log.Fatal(err)
     }
-    
+
     server := hello.NewServer(new(HelloImpl), server.WithRegistry(r), server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
         ServiceName: "greet.server",
     }))

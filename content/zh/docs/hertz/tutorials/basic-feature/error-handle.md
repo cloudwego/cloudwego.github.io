@@ -5,7 +5,6 @@ date: 2022-05-23
 weight: 10
 keywords: ["错误处理", "自定义错误"]
 description: "Hertz 提供的错误处理功能。"
-
 ---
 
 ## 错误
@@ -80,14 +79,14 @@ func NewPrivatef(format string, v ...interface{}) *Error {
 
 ### 相关方法
 
-| 函数签名                         | 描述                                             |
-| -------------------------------- | ------------------------------------------------ |
-| SetType(flags ErrorType) *Error  | 将 `Error` 的 `ErrorType` 设置为给定的 `flags`   |
-| Error() string                   | 实现标准 `error` 接口                            |
-| Unwrap() error                   | 抛出错误                                         |
-| SetMeta(data interface{}) *Error | 设置元数据                                       |
-| IsType(flags ErrorType) bool     | 判断 `Error` 的 `ErrorType` 是否为给定的 `flags` |
-| JSON() interface{}               | 将错误转换为 `json` 对象                           |
+| 函数签名                          | 描述                                             |
+| --------------------------------- | ------------------------------------------------ |
+| SetType(flags ErrorType) \*Error  | 将 `Error` 的 `ErrorType` 设置为给定的 `flags`   |
+| Error() string                    | 实现标准 `error` 接口                            |
+| Unwrap() error                    | 抛出错误                                         |
+| SetMeta(data interface{}) \*Error | 设置元数据                                       |
+| IsType(flags ErrorType) bool      | 判断 `Error` 的 `ErrorType` 是否为给定的 `flags` |
+| JSON() interface{}                | 将错误转换为 `json` 对象                         |
 
 ## ErrorChain
 
@@ -100,8 +99,8 @@ func NewPrivatef(format string, v ...interface{}) *Error {
 | String() string                  | 返回一个可读性强的文本用于展示所有错误 |
 | Errors() []string                | 将错误链转换为标准错误数组             |
 | ByType(typ ErrorType) ErrorChain | 按给定的错误类型返回对应的子错误链     |
-| Last() *Error                    | 返回最后（最新）的一个错误             |
-| JSON() interface{}               | 将所有错误转换为 `json` 对象               |
+| Last() \*Error                   | 返回最后（最新）的一个错误             |
+| JSON() interface{}               | 将所有错误转换为 `json` 对象           |
 
 ### 如何使用
 
