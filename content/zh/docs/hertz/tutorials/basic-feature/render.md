@@ -1,8 +1,9 @@
 ---
-title: '渲染'
+title: "渲染"
 date: 2023-06-01
 weight: 18
-keywords: ["渲染", "JSON", "Data", "HTML", "Protobuf", "Text", "XML", "自定义渲染"]
+keywords:
+  ["渲染", "JSON", "Data", "HTML", "Protobuf", "Text", "XML", "自定义渲染"]
 description: "Hertz 提供的渲染能力。"
 ---
 
@@ -93,16 +94,16 @@ func main() {
 		msg.Company = "company"
 		msg.Location = "location"
 		msg.Number = 123
-        
+
         c.IndentedJSON(consts.StatusOK, msg)
-        /* 
+        /*
         will output  :    {
                               "Company": "company",
    						      "Location": "location",
     					      "Number": 123
-					      }                         
+					      }
     	*/
-        
+
     h.Spin()
 }
 ```
@@ -291,7 +292,7 @@ func main() {
 	h.GET("someText", func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "message", "hello,world")
 	})
-    
+
 	h.Spin()
 }
 ```

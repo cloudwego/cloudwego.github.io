@@ -2,9 +2,9 @@
 title: 往期活动
 weight: 40
 menu:
- main:
-   weight: 40
-   parent: "社区"
+  main:
+    weight: 40
+    parent: "社区"
 ---
 
 - [CloudWeGo 开源一周年技术沙龙](https://juejin.cn/live/1040934)

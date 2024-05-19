@@ -1,11 +1,11 @@
 ---
 title: "Websocket"
-date:  2022-09-13
+date: 2022-09-13
 weight: 4
 keywords: ["WebSocket", "HTTP", "hijack", "TCP"]
 description: "Hertz implements support for WebSocket based on hijack."
-
 ---
+
 WebSocket is a type of full-duplex communication that can be performed on a single TCP connection and is located at the application layer of the OSI model.
 WebSocket makes data exchange between client and server easier, allowing the server to actively push data to the client.
 In the WebSocket API, the browser and the server only need to complete a handshake that a persistent connection can be created between the two, and two-way data transmission can be performed.
@@ -94,15 +94,15 @@ The following is the optional configuration parameters for using Hertz WebSocket
 
 This section is organized around the `websocket.HertzUpgrader` structure.
 
-| Parameter           | Introduction                                                 |
-| ------------------- | ------------------------------------------------------------ |
-| `ReadBufferSize`    | Used to set the size of the read buffer in bytes. If the buffer size is zero, then the size allocated by the HTTP server is used. The read buffer size does not limit the size of the messages that can be received. |
-| `WriteBufferSize`   | Used to set the size of the write buffer in bytes. If the buffer size is zero, then the size allocated by the HTTP server is used. The write buffer size does not limit the size of the messages that can be sent. |
-| `WriteBufferPool`   | Used to set the buffer pool for write operations.            |
+| Parameter           | Introduction                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ReadBufferSize`    | Used to set the size of the read buffer in bytes. If the buffer size is zero, then the size allocated by the HTTP server is used. The read buffer size does not limit the size of the messages that can be received.                                                                                                                                                         |
+| `WriteBufferSize`   | Used to set the size of the write buffer in bytes. If the buffer size is zero, then the size allocated by the HTTP server is used. The write buffer size does not limit the size of the messages that can be sent.                                                                                                                                                           |
+| `WriteBufferPool`   | Used to set the buffer pool for write operations.                                                                                                                                                                                                                                                                                                                            |
 | `Subprotocols`      | Used to set the protocols supported by the server in order of preference. If this field is not nil, then the Upgrade method negotiates a sub-protocol by selecting the first match in this list to the protocol requested by the client. If there is no match, then no protocol is negotiated (the Sec-Websocket-Protocol header is not included in the handshake response). |
-| `Error`             | Used to set a function the generation of HTTP error responses. |
-| `CheckOrigin`       | Used to set a check function for Origin header for the request. If the Origin header of the request is acceptable, CheckOrigin returns true. |
-| `EnableCompression` | Used to set whether the server should attempt to negotiate compression for each message (RFC 7692). Setting this value to true does not guarantee that compression will be supported. |
+| `Error`             | Used to set a function the generation of HTTP error responses.                                                                                                                                                                                                                                                                                                               |
+| `CheckOrigin`       | Used to set a check function for Origin header for the request. If the Origin header of the request is acceptable, CheckOrigin returns true.                                                                                                                                                                                                                                 |
+| `EnableCompression` | Used to set whether the server should attempt to negotiate compression for each message (RFC 7692). Setting this value to true does not guarantee that compression will be supported.                                                                                                                                                                                        |
 
 ### WriteBufferPool
 

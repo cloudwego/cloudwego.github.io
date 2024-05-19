@@ -40,21 +40,21 @@ func main() {
 ```
 
 ### 全部 API
->
+
 > hertz version >= v0.7.0
 
-| API                   | 说明                                                                                                                                      |
-|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------|
-| ctx.BindAndValidate   | 利用下述的 go-tag 进行参数绑定，并在绑定成功后做一次参数校验 (如果有校验 tag 的话)                                                                                        |
-| ctx.Bind              | 同 `BindAndValidate` 但是不做参数校验                                                                                                            |
-| ctx.BindQuery         | 绑定所有 Query 参数，相当于给每一个 field 声明一个 `query` tag，适用于没写 tag 的场景                                                                              |
-| ctx.BindHeader        | 绑定所有 Header 参数，相当于给每一个 field 声明一个 `header` tag，适用于没写 tag 的场景                                                                            |
-| ctx.BindPath          | 绑定所有 Path 参数，相当于给每一个 field 声明一个 `path` tag，适用于没写 tag 的场景                                                                                |
-| ctx.BindForm          | 绑定所有 Form 参数，相当于给每一个 field 声明一个 `form` tag，需要 Content-Type 为：`application/x-www-form-urlencoded`/`multipart/form-data`,  适用于没写 tag 的场景 |
-| ctx.BindJSON          | 绑定 JSON Body，调用 `json.Unmarshal()` 进行反序列化，需要 Body 为 `application/json` 格式                                                               |
-| ctx.BindProtobuf      | 绑定 Protobuf Body，调用 `proto.Unmarshal()` 进行反序列化，需要 Body 为 `application/x-protobuf` 格式                                                    |
-| ctx.BindByContentType | 根据 Content-Type 来自动选择绑定的方法，其中 GET 请求会调用 `BindQuery`, 带有 Body 的请求会根据 Content-Type 自动选择                                                   |
-| ctx.Validate          | 进行参数校验，需要校验 tag 配合使用 (默认使用 vd tag 校验)                                                                                                    |
+| API                   | 说明                                                                                                                                                                 |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ctx.BindAndValidate   | 利用下述的 go-tag 进行参数绑定，并在绑定成功后做一次参数校验 (如果有校验 tag 的话)                                                                                   |
+| ctx.Bind              | 同 `BindAndValidate` 但是不做参数校验                                                                                                                                |
+| ctx.BindQuery         | 绑定所有 Query 参数，相当于给每一个 field 声明一个 `query` tag，适用于没写 tag 的场景                                                                                |
+| ctx.BindHeader        | 绑定所有 Header 参数，相当于给每一个 field 声明一个 `header` tag，适用于没写 tag 的场景                                                                              |
+| ctx.BindPath          | 绑定所有 Path 参数，相当于给每一个 field 声明一个 `path` tag，适用于没写 tag 的场景                                                                                  |
+| ctx.BindForm          | 绑定所有 Form 参数，相当于给每一个 field 声明一个 `form` tag，需要 Content-Type 为：`application/x-www-form-urlencoded`/`multipart/form-data`, 适用于没写 tag 的场景 |
+| ctx.BindJSON          | 绑定 JSON Body，调用 `json.Unmarshal()` 进行反序列化，需要 Body 为 `application/json` 格式                                                                           |
+| ctx.BindProtobuf      | 绑定 Protobuf Body，调用 `proto.Unmarshal()` 进行反序列化，需要 Body 为 `application/x-protobuf` 格式                                                                |
+| ctx.BindByContentType | 根据 Content-Type 来自动选择绑定的方法，其中 GET 请求会调用 `BindQuery`, 带有 Body 的请求会根据 Content-Type 自动选择                                                |
+| ctx.Validate          | 进行参数校验，需要校验 tag 配合使用 (默认使用 vd tag 校验)                                                                                                           |
 
 ## 支持的 tag 及参数绑定优先级
 
@@ -64,17 +64,17 @@ func main() {
 
 通过 IDL 生成代码时若不添加 [api 注解](/zh/docs/hertz/tutorials/toolkit/annotation/#支持的-api-注解) 则字段默认添加 `form`、`json`、`query` tag，添加 [api 注解](/zh/docs/hertz/tutorials/toolkit/annotation/#支持的-api-注解) 会为字段添加相应需求的 tag。
 
-| go tag   | 说明                                                                                                                                                                           |
-|:---------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| go tag   | 说明                                                                                                                                                                                                                                         |
+| :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | path     | 绑定 url 上的路径参数，相当于 hertz 路由 `:param` 或 `*param` 中拿到的参数。例如：如果定义的路由为：/v:version/example，可以把 path 的参数指定为路由参数：`path:"version"`，此时，url: http://127.0.0.1:8888/v1/example，可以绑定path参数"1" |
-| form     | 绑定请求的 body 内容。content-type -> `multipart/form-data` 或 `application/x-www-form-urlencoded`，绑定 form 的 key-value                                                                |
-| query    | 绑定请求的 query 参数                                                                                                                                                               |
-| cookie   | 绑定请求的 cookie 参数                                                                                                                                                              |
-| header   | 绑定请求的 header 参数                                                                                                                                                              |
-| json     | 绑定请求的 body 内容 content-type -> `application/json`，绑定 json 参数                                                                                                                  |
-| raw_body | 绑定请求的原始 body(bytes)，绑定的字段名不指定，也能绑定参数。（注：raw_body 绑定优先级最低，当指定多个 tag 时，一旦其他 tag 成功绑定参数，则不会绑定 body 内容。）                                                                         |
-| vd       | 参数校验，[校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator)                                                                                                   |
-| default  | 设置默认值                                                                                                                                                                        |
+| form     | 绑定请求的 body 内容。content-type -> `multipart/form-data` 或 `application/x-www-form-urlencoded`，绑定 form 的 key-value                                                                                                                   |
+| query    | 绑定请求的 query 参数                                                                                                                                                                                                                        |
+| cookie   | 绑定请求的 cookie 参数                                                                                                                                                                                                                       |
+| header   | 绑定请求的 header 参数                                                                                                                                                                                                                       |
+| json     | 绑定请求的 body 内容 content-type -> `application/json`，绑定 json 参数                                                                                                                                                                      |
+| raw_body | 绑定请求的原始 body(bytes)，绑定的字段名不指定，也能绑定参数。（注：raw_body 绑定优先级最低，当指定多个 tag 时，一旦其他 tag 成功绑定参数，则不会绑定 body 内容。）                                                                          |
+| vd       | 参数校验，[校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator)                                                                                                                                                          |
+| default  | 设置默认值                                                                                                                                                                                                                                   |
 
 ### 参数校验
 
@@ -112,7 +112,7 @@ path > form > query > cookie > header > json > raw_body
 通过在 tag 中添加 `required`，可以将参数标记为必传。当绑定失败时 `Bind` 和 `BindAndValidate` 将会返回错误。当多个 tag 包含 `required`
 时，将会按照优先级绑定。如果**所有** tag 都没有绑定上，则会返回错误。
 
-``` go  
+```go
 type TagRequiredReq struct {
 	// 当 JSON 中没有 hertz 字段时，会返回 required 错误
 	Hertz string `json:"hertz,required"`
@@ -122,12 +122,12 @@ type TagRequiredReq struct {
 ```
 
 ## 常用配置
->
+
 > hertz 在 v0.7.0 版本对 `参数绑定`和`校验` 进行了重构，重构后配置的行为发生变更，下面将分别介绍<br>
 > 如果还想使用之前的绑定器，目前已把其实现放到了 [hertz-contrib/binding](https://github.com/hertz-contrib/binding) 下，可通过自定义 binder 引入
->
+
 ### 自定义 binder
->
+
 > hertz version >= v0.7.0 支持
 
 需要实现 Binder 接口，并通过配置方式注入到 hertz engine
@@ -201,10 +201,10 @@ func (m *mockBinder) BindProtobuf(request *protocol.Request, i interface{}) erro
 
 目前已拓展的绑定器：
 
-* bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (重构前使用的绑定库)
+- bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (重构前使用的绑定库)
 
 ### 自定义 validator
->
+
 > hertz version >= v0.7.0 支持
 
 需要实现 Validator 接口，并通过配置方式注入到 hertz engine
@@ -246,12 +246,13 @@ func (m *mockValidator) ValidateTag() string {
 
 目前已拓展的校验器：
 
-* go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
+- go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
 
 ### 自定义 bind 和 validate 的 Error
 
 在绑定参数发生错误和参数校验失败的时候，用户可以自定义 Error 的内容，使用方法如下：<br>
 **hertz version >= v0.7.0**
+
 > 暂不支持自定义 bind error
 
 自定义 validate error:
@@ -283,7 +284,7 @@ func main() {
             FailField: "[validateFailField]: " + failField,
             Msg:       "[validateErrMsg]: " + msg,
         }
-        
+
         return &err
         })
     h := server.New(server.WithValidateConfig(validateConfig))
@@ -385,7 +386,7 @@ func main() {
         return reflect.ValueOf(val), nil
     })
     h := server.New(server.WithBindConfig(bindConfig))
-    
+
     ...
     h.Spin()
 }
@@ -548,7 +549,7 @@ func init() {
 ```
 
 ### 设置默认值
->
+
 > 重构前后使用方式都一样
 
 参数支持 `default` tag 进行默认值的配置，使用方法如下：
@@ -561,7 +562,7 @@ type UserInfoResponse struct {
 ```
 
 ### 绑定文件
->
+
 > 重构前后使用方式一样，IDL 场景不支持文件绑定
 > 文件类型需为：`multipart.FileHeader`
 
@@ -587,10 +588,10 @@ h.POST("/upload", func(ctx context.Context, c *app.RequestContext) {
 
 解决方法：
 
-* 建议使用标准包 json 的 `string` tag, 例如：
+- 建议使用标准包 json 的 `string` tag, 例如：
 
   ```go
   A int `json:"A, string"`
   ```
 
-* 配置其他支持这种行为的 json 库
+- 配置其他支持这种行为的 json 库

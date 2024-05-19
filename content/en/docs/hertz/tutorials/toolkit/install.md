@@ -1,10 +1,11 @@
 ---
-title: 'hz install'
+title: "hz install"
 date: 2023-02-21
 weight: 1
 keywords: ["hz install"]
 description: "hz install."
 ---
+
 hz is a tool provided by the Hertz framework for generating code. Currently, hz can generate scaffolding for Hertz projects based on thrift and protobuf's IDL.
 
 ## Install
@@ -12,15 +13,15 @@ hz is a tool provided by the Hertz framework for generating code. Currently, hz 
 1. Make sure the `GOPATH` environment variable has been defined correctly (eg `export GOPATH=~/go`) and add `$GOPATH/bin` to the PATH environment (eg `export PATH=$GOPATH/bin:$PATH`); do not set `GOPATH` to a directory that the current user does not have read/write access to.
 2. Install hz:
 
-    ```bash
-    go install github.com/cloudwego/hertz/cmd/hz@latest
-    ```
+   ```bash
+   go install github.com/cloudwego/hertz/cmd/hz@latest
+   ```
 
 3. Verify that the installation was successful `hz -v`, if the following version message is displayed, the installation was successful
 
-    ```console
-    hz version v0.x.x
-    ```
+   ```console
+   hz version v0.x.x
+   ```
 
 **Note**，Since hz creates soft links to its own binary, make sure that the installation path of hz has writable permissions.
 

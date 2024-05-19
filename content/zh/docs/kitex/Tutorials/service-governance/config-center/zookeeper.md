@@ -2,10 +2,10 @@
 title: "Zookeeper"
 date: 2023-12-18
 weight: 5
-keywords: ["配置中心扩展","ZooKeeper"]
+keywords: ["配置中心扩展", "ZooKeeper"]
 description: "使用 ZooKeeper 作为 Kitex 的服务治理配置中心"
-
 ---
+
 ## 安装
 
 `go get github.com/kitex-contrib/config-zookeeper`
@@ -234,13 +234,13 @@ type ConfigParam struct {
 
 kitex-contrib/config-zookeeper 中的最终 path 由 ConfigParam 中的 Prefix 和 Path 拼接而成：`param.Prefix + "/" + param.Path`
 
-| 参数             | 变量默认值                                                  | 作用                                                         |
-| ---------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
-| Servers          | 127.0.0.1:2181                                              | Zookeeper的服务器节点                                        |
-| Prefix           | /KitexConfig                                                | Zookeeper中的 prefix                                         |
+| 参数             | 变量默认值                                                  | 作用                                                                                                                                     |
+| ---------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Servers          | 127.0.0.1:2181                                              | Zookeeper的服务器节点                                                                                                                    |
+| Prefix           | /KitexConfig                                                | Zookeeper中的 prefix                                                                                                                     |
 | ClientPathFormat | {{.ClientServiceName}}/{{.ServerServiceName}}/{{.Category}} | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ClientServiceName` `ServiceName` `Category` 三个元数据 |
-| ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据 |
-| ConfigParser     | defaultConfigParser                                         | 解析 json 数据的解析器                                       |
+| ServerPathFormat | {{.ServerServiceName}}/{{.Category}}                        | 使用 go [template](https://pkg.go.dev/text/template) 语法渲染生成对应的 ID, 使用 `ServiceName` `Category` 两个元数据                     |
+| ConfigParser     | defaultConfigParser                                         | 解析 json 数据的解析器                                                                                                                   |
 
 ### 治理策略
 
@@ -270,8 +270,6 @@ Category=limit
 }
 ```
 
-
-
 注：
 
 - 限流配置的粒度是 Server 全局，不分 client、method
@@ -295,51 +293,49 @@ Category=retry
 
 ```json
 {
-    "*": {
-        "enable": true,
-        "type": 0,
-        "failure_policy": {
-            "stop_policy": {
-                "max_retry_times": 3,
-                "max_duration_ms": 2000,
-                "cb_policy": {
-                    "error_rate": 0.3
-                }
-            },
-            "backoff_policy": {
-                "backoff_type": "fixed",
-                "cfg_items": {
-                    "fix_ms": 50
-                }
-            },
-            "retry_same_node": false
+  "*": {
+    "enable": true,
+    "type": 0,
+    "failure_policy": {
+      "stop_policy": {
+        "max_retry_times": 3,
+        "max_duration_ms": 2000,
+        "cb_policy": {
+          "error_rate": 0.3
         }
-    },
-    "echo": {
-        "enable": true,
-        "type": 1,
-        "backup_policy": {
-            "retry_delay_ms": 100,
-            "retry_same_node": false,
-            "stop_policy": {
-                "max_retry_times": 2,
-                "max_duration_ms": 300,
-                "cb_policy": {
-                    "error_rate": 0.2
-                }
-            }
+      },
+      "backoff_policy": {
+        "backoff_type": "fixed",
+        "cfg_items": {
+          "fix_ms": 50
         }
+      },
+      "retry_same_node": false
     }
+  },
+  "echo": {
+    "enable": true,
+    "type": 1,
+    "backup_policy": {
+      "retry_delay_ms": 100,
+      "retry_same_node": false,
+      "stop_policy": {
+        "max_retry_times": 2,
+        "max_duration_ms": 300,
+        "cb_policy": {
+          "error_rate": 0.2
+        }
+      }
+    }
+  }
 }
 ```
 
-
-
-注：retry.Container 内置支持用 * 通配符指定默认配置（详见 [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) 方法）
+注：retry.Container 内置支持用 \* 通配符指定默认配置（详见 [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) 方法）
 
 #### 超时
 
- Category=rpc_timeout
+Category=rpc_timeout
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
 
@@ -360,13 +356,11 @@ Category=retry
 }
 ```
 
-
-
 注：kitex 的熔断实现目前不支持修改全局默认配置（详见 [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195)）
 
 #### 熔断
 
- Category=circuit_break
+Category=circuit_break
 
 [JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
 
@@ -389,4 +383,3 @@ echo 方法使用下面的配置（0.3, 100），其他方法使用全局默认�
   }
 }
 ```
-

@@ -1,6 +1,6 @@
 ---
 title: CloudWeGo 社区会议 2.25
-linkTitle:  CloudWeGo 社区会议 2.25
+linkTitle: CloudWeGo 社区会议 2.25
 date: 2022-02-25
 weight: 1
 description: >
@@ -11,12 +11,14 @@ description: >
 **参会人员：** Joway, YangruiEmma, liu-song, AshleeT, li-jin-gou, Hchenn, PureWhiteWu, GuangmingLuo, baiyutang, yccpt, horizonzy.
 
 **会前必读：** [官网](/)；
-              https://github.com/cloudwego
+https://github.com/cloudwego
 
 ## 议程 1 ：自我介绍+历史贡献介绍
+
 内容：参会人员轮流开展了自我介绍，包含个人基本情况、历史贡献、个人未来规划、相关建议。
 
 ## 议程 2 ：社区规划介绍和后续安排
+
 社区介绍（@罗广明 负责介绍）：
 
 1. 对CloudWeGo官网进行了简要介绍，并欢迎社区成员对官网内容进行提问，发表看法。
@@ -25,6 +27,7 @@ description: >
 4. 介绍 kitex 框架的扩展性，可支持很多能力的扩展，提出未来框架能和更多开源项目做一些对接。
 
 Action Items
+
 - 在官网 Community 部分，后期计划征得大家同意之后，公开各位Contributor 的信息，比如 GitHub 的一些 ID 头像。
 - 在渠道推广方面，后期会考虑与社区其他开源项目合作与对接，包括框架接入、宣传推广等方面。
 - 在 Kitex 框架对接方面，安排 Kitex 框架后期与更多的开源项目（有一定的用户量和知名度的开源项目）进行对接。

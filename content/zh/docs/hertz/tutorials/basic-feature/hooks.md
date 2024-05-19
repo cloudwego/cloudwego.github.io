@@ -4,7 +4,6 @@ date: 2022-10-16
 weight: 14
 keywords: ["Hooks", "StartHook", "ShutdownHook", "OnAccept", "OnConnect"]
 description: "Hertz 提供的钩子函数功能。"
-
 ---
 
 **钩子函数**（Hooks）是一个通用的概念，表示某事件触发时所伴随的操作。

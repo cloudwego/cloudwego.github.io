@@ -4,7 +4,6 @@ date: 2023-05-12
 weight: 6
 keywords: ["SSE", "HTTP", "Server-Sent Events"]
 description: "Hertz supports SSE, allowing the server to send events to the client through simple HTTP response."
-
 ---
 
 SSE is short for Server-Sent Events, which is a server push technology that allows the server to send events to clients through simple HTTP responses.
@@ -30,9 +29,9 @@ import (
 	"context"
 	"net/http"
 	"time"
-	
+
 	"github.com/hertz-contrib/sse"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -40,16 +39,16 @@ import (
 
 func main() {
 	h := server.Default()
-	
+
 	h.GET("/sse", func(ctx context.Context, c *app.RequestContext) {
 		lastEventID := sse.GetLastEventID(c)
-		
+
         // The client can inform the server of the last event received through Last-Event-ID.
         hlog.CtxInfof(ctx, "last event ID: %s", lastEventID)
-		
+
         // You must set status code and response headers before calling Render for first time.
         c.SetStatusCode(http.StatusOK)
-        
+
         s := sse.NewStream(c)
 		for t := range time.NewTicker(1 * time.Second).C {
 			event := &sse.Event{
@@ -62,7 +61,7 @@ func main() {
 			}
 		}
     })
-	
+
 	h.Spin()
 }
 ```
@@ -182,14 +181,14 @@ package main
 
 func main() {
     h := server.Default()
-    
+
     h.GET("/sse", func(ctx context.Context, c *app.RequestContext) {
         c.SetStatusCode(http.StatusOK)
         c.Response.Header.Set("X-Accel-Buffering", "no")
         s := sse.NewStream(c)
 		// ...
     })
-   
+
 }
 ```
 
@@ -201,22 +200,22 @@ Publish is used to send an event message to the client. The format of the event 
 type Event struct {
 	// Name of this event.
 	Event string
-	
+
 	// Data associated with this event.
 	Data []byte
-	
+
 	// ID number assigned by Server Sent Events protocol.
 	ID string
-	
+
 	// Retry duration time specified in milliseconds; if present then browser will attempt reconnect after that many milliseconds have elapsed since last message received from server.
-	Retry time.Duration 
+	Retry time.Duration
 }
 ```
 
 Function signature:
 
 ```go
-func (c *Stream) Publish(event *Event) error 
+func (c *Stream) Publish(event *Event) error
 ```
 
 ### GetLastEventID

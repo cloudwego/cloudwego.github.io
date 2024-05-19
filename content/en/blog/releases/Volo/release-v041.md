@@ -1,6 +1,6 @@
 ---
-title: 'Volo Release 0.4.1'
-linkTitle: 'Release v0.4.1'
+title: "Volo Release 0.4.1"
+linkTitle: "Release v0.4.1"
 projects: ["Volo"]
 date: 2023-03-20
 description: >

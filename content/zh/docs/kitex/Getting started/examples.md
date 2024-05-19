@@ -5,7 +5,6 @@ weight: 5
 date: 2024-01-18
 keywords: ["Kitex", "Golang", "Go", "示例代码"]
 description: "Kitex 使用示例代码"
-
 ---
 
 ## 如何运行

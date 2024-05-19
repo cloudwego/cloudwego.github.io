@@ -101,6 +101,7 @@ Istio 基于 Enovy 的 xDS 协议扩展了其控制平面，每个 Pod 中放入
 ![semir9](/img/users/semir/semir9.png)
 
 在 Istio 中怎么部署我们的客户端或者服务端呢？有以下两种方式：
+
 1. 为命名空间开启自动注入：`kubectl label namespace default istio-injection=enabled`。注入之后会产生两个重要的容器，第一个是 Istio-proxy，负责流量拦截和流量代理，比如做流量转发；第二个是 Server-douyin，是负责开发的应用容器。
    ![semir10](/img/users/semir/semir10.png)
 2. 把 Go 代码打包的镜像部署到集群中：
@@ -122,6 +123,7 @@ Istio 基于 Enovy 的 xDS 协议扩展了其控制平面，每个 Pod 中放入
 ### Kitex 产生性能优势的原因
 
 CloudWeGo 团队来森马做技术支持时讲到对自研网络库 Netpoll 做了一些性能优化，比如：
+
 - 连接利用率；
 - 调度延迟优化；
 - 优化 I/O 调用；

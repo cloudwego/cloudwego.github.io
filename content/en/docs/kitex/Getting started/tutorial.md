@@ -5,7 +5,6 @@ weight: 4
 date: 2024-01-18
 keywords: ["Kitex", "Golang", "Go", "Advanced Tutorial"]
 description: "Advanced Tutorial for Kitex"
-
 ---
 
 Before starting this section, make sure you have an understanding of the **Pre-knowledge** and have completed the **Environment Preparation**.
@@ -315,7 +314,7 @@ After successful compilation, the `output` directory will be generated:
 ```
 output
 ├── bin // Contains the binary executable file
-│   └── example.shop.item 
+│   └── example.shop.item
 └── bootstrap.sh // Script to run the file
 ```
 
@@ -364,7 +363,7 @@ if err != nil {
 }
 ```
 
-In the above code, `itemservice.NewClient` is used to create the client. The first parameter is the *service name* to invoke, and the second parameter is the *options* to pass in, where `client.WithHostPorts` is used to specify the address of the server. We can see that the item service is listening on port 8888 locally when running, so we specify port 8888. For more parameters, you can refer to the [Client Option](/docs/kitex/tutorials/options/client_options/) section.
+In the above code, `itemservice.NewClient` is used to create the client. The first parameter is the _service name_ to invoke, and the second parameter is the _options_ to pass in, where `client.WithHostPorts` is used to specify the address of the server. We can see that the item service is listening on port 8888 locally when running, so we specify port 8888. For more parameters, you can refer to the [Client Option](/docs/kitex/tutorials/options/client_options/) section.
 
 ### Invoking the service
 
@@ -391,7 +390,7 @@ The third parameter is the `options` for this invocation. Kitex provides a mecha
 
 ### Exposing an HTTP interface
 
-You can use `net/http` or other frameworks to expose an HTTP interface. Here, we'll demonstrate a simple example using `Hertz`. You can get usage for Hertz in [Hertz Doc](/docs/hertz/) 
+You can use `net/http` or other frameworks to expose an HTTP interface. Here, we'll demonstrate a simple example using `Hertz`. You can get usage for Hertz in [Hertz Doc](/docs/hertz/)
 
 Here's the complete code:
 
@@ -465,7 +464,7 @@ package main
 
 import (
     "context"
-  
+
     stock "example_shop/kitex_gen/example/shop/stock"
 )
 
@@ -585,7 +584,7 @@ func main() {
     if err != nil {
        log.Println(err.Error())
     }
-}  
+}
 ```
 
 Since the stock service is running on port 8890, we specify that port when creating the client.
@@ -611,7 +610,7 @@ You can see that `Stock: 1024`, indicating that our item service successfully re
 To simulate a real environment, we will now integrate our service with a registry. In this example, we have chosen etcd as the registry. You can refer to the installation and usage of etcd at [etcd.io](https://etcd.io/) or the following `docker compose` file. Assuming you have already installed and started the etcd service instance.
 
 ```yml
-version: '3'
+version: "3"
 
 services:
   etcd:
@@ -722,7 +721,7 @@ package main
 
 import (
     "log"
-    
+
     item "example_shop/kitex_gen/example/shop/item/itemservice"
 
     "github.com/cloudwego/kitex/pkg/rpcinfo"
@@ -736,7 +735,7 @@ func main() {
     if err != nil {
        log.Fatal(err)
     }
-  
+
     itemServiceImpl := new(ItemServiceImpl)
     stockCli, err := NewStockClient("0.0.0.0:8890")
     if err != nil {
@@ -844,7 +843,7 @@ func main() {
 		log.Fatal(err)
 	}
  	cli = c
-  
+
   	hz := server.New(server.WithHostPorts("localhost:8889"))
 
 	hz.GET("/api/item", Handler)
@@ -871,4 +870,3 @@ In this section, we used Kitex to develop both the RPC server and client, and ac
 - On the client side, we used the same IDL as the server, generated the code using Kitex, created a client instance, and made the RPC call by constructing the request parameters.
 
 In this example, we only demonstrated the basic usage of Kitex. Kitex provides various microservice governance features. You can find more information in the [Guide](/docs/kitex/tutorials/) or explore the example code to unlock more advanced usage.
-

@@ -2,27 +2,35 @@
 title: "路由"
 date: 2022-09-06
 weight: 2
-keywords: ["路由", "路由组", "静态路由", "参数路由", "路由优先级", "NoRoute", "NoMethod"]
+keywords:
+  [
+    "路由",
+    "路由组",
+    "静态路由",
+    "参数路由",
+    "路由优先级",
+    "NoRoute",
+    "NoMethod",
+  ]
 description: "Hertz 提供的路由功能。"
-
 ---
 
 ## 路由注册
 
 Hertz 提供了 `GET`、`POST`、`PUT`、`DELETE`、`ANY` 等方法用于注册路由。
 
-| 方法  | 介绍  |
-| ------------ | ------------ |
-|  `Hertz.GET`   |  用于注册 HTTP Method 为 GET 的方法    |
-|  `Hertz.POST` |  用于注册 HTTP Method 为 POST 的方法  |
-|  `Hertz.DELETE` |  用于注册 HTTP Method 为 DELETE 的方法  |
-|  `Hertz.PUT` |  用于注册 HTTP Method 为 PUT 的方法  |
-|  `Hertz.PATCH` |  用于注册 HTTP Method 为 PATCH 的方法  |
-|  `Hertz.HEAD` |  用于注册 HTTP Method 为 HEAD 的方法  |
-|  `Hertz.OPTIONS` |  用于注册 HTTP Method 为 OPTIONS 的方法  |
-|  `Hertz.Handle` |  这个方法支持用户手动传入 HTTP Method 用来注册方法，当用于注册普通的 HTTP Method 方法时和上述的方法作用是一致的，并且这个方法同时也支持用于注册自定义 HTTP Method 方法 |
-|  `Hertz.Any` |  用于注册所有 HTTP Method 方法    |
-|  `Hertz.StaticFile/Static/StaticFS` |  用于注册静态文件  |
+| 方法                               | 介绍                                                                                                                                                                  |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Hertz.GET`                        | 用于注册 HTTP Method 为 GET 的方法                                                                                                                                    |
+| `Hertz.POST`                       | 用于注册 HTTP Method 为 POST 的方法                                                                                                                                   |
+| `Hertz.DELETE`                     | 用于注册 HTTP Method 为 DELETE 的方法                                                                                                                                 |
+| `Hertz.PUT`                        | 用于注册 HTTP Method 为 PUT 的方法                                                                                                                                    |
+| `Hertz.PATCH`                      | 用于注册 HTTP Method 为 PATCH 的方法                                                                                                                                  |
+| `Hertz.HEAD`                       | 用于注册 HTTP Method 为 HEAD 的方法                                                                                                                                   |
+| `Hertz.OPTIONS`                    | 用于注册 HTTP Method 为 OPTIONS 的方法                                                                                                                                |
+| `Hertz.Handle`                     | 这个方法支持用户手动传入 HTTP Method 用来注册方法，当用于注册普通的 HTTP Method 方法时和上述的方法作用是一致的，并且这个方法同时也支持用于注册自定义 HTTP Method 方法 |
+| `Hertz.Any`                        | 用于注册所有 HTTP Method 方法                                                                                                                                         |
+| `Hertz.StaticFile/Static/StaticFS` | 用于注册静态文件                                                                                                                                                      |
 
 示例代码:
 
@@ -181,12 +189,12 @@ Hertz 支持使用 `:name` 这样的命名参数设置路由，并且命名参�
 
 如果我们设置 `/user/:name` 路由，匹配情况如下
 
-|  路径   | 是否匹配  |
-|  ----  | ----  |
-| /user/gordon  | 匹配 |
-| /user/you  | 匹配 |
-| /user/gordon/profile  | 不匹配 |
-|  /user/  | 不匹配 |
+| 路径                 | 是否匹配 |
+| -------------------- | -------- |
+| /user/gordon         | 匹配     |
+| /user/you            | 匹配     |
+| /user/gordon/profile | 不匹配   |
+| /user/               | 不匹配   |
 
 通过使用 `RequestContext.Param` 方法，我们可以获取路由中携带的参数。
 
@@ -221,11 +229,11 @@ Hertz 支持使用 `*path` 这样的通配参数设置路由，并且通配参�
 
 如果我们设置 `/src/*path` 路由，匹配情况如下
 
-|  路径   | 是否匹配  |
-|  ----  | ----  |
-| /src/  | 匹配 |
-| /src/somefile.go   | 匹配 |
-| /src/subdir/somefile.go  | 匹配 |
+| 路径                    | 是否匹配 |
+| ----------------------- | -------- |
+| /src/                   | 匹配     |
+| /src/somefile.go        | 匹配     |
+| /src/subdir/somefile.go | 匹配     |
 
 通过使用 `RequestContext.Param` 方法，我们可以获取路由中携带的参数。
 
@@ -372,11 +380,11 @@ func main() {
 
 Hertz 在默认情况下会根据请求 path 末尾的 `/` 自动进行转发。如果 router 中只有 /foo/，那么请求 /foo 会被自动重定向到 /foo/；如果 router 中只有 /foo，那么 /foo/ 会被重定向到 /foo。
 
-这样的请求除 `GET`  以外的请求方法都会触发 `307 Temporary Redirect` 状态码，而 `GET` 请求会触发 `301 Moved Permanently` 状态码。
+这样的请求除 `GET` 以外的请求方法都会触发 `307 Temporary Redirect` 状态码，而 `GET` 请求会触发 `301 Moved Permanently` 状态码。
 
 可以在配置中取消，如下：
 
-````go
+```go
 package main
 
 import "github.com/cloudwego/hertz/pkg/app/server"
@@ -385,6 +393,6 @@ func main() {
     h := server.New(server.WithRedirectTrailingSlash(false))
 	...
 }
-````
+```
 
 获取更多配置相关信息：[配置说明](/zh/docs/hertz/reference/config/)

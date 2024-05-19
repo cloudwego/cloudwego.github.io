@@ -10,7 +10,7 @@ description: RPC 基于协议进行通信，且 RPC 并没有统一的错误码�
 
 ## 建议使用方式
 
-ErrorHandler 通过 client/server 的 Option 配置，但通常一个微服务体系会有统一的异常处理规范，如果是企业用户建议通过  [Suite](../../framework-exten/suite) 封装定制 Option，服务开发者就不用具体关注异常处理的配置。
+ErrorHandler 通过 client/server 的 Option 配置，但通常一个微服务体系会有统一的异常处理规范，如果是企业用户建议通过 [Suite](../../framework-exten/suite) 封装定制 Option，服务开发者就不用具体关注异常处理的配置。
 
 ### 服务端配置
 
@@ -21,7 +21,7 @@ server.WithErrorHandler(yourServerErrorHandler)
 
 该函数会在服务端 handler 执行后，中间件执行前被执行，可以用于给调用端返回自定义的错误码和信息。注意，虽然对此提供了支持，但业务层面自定义的错误码依然不建议通过 ErrorHandler 处理，因为我们希望将 RPC 错误和业务的错误能够区分开，RPC 错误表示一次RPC 请求失败，比如超时、熔断、限流，从 RPC 层面是失败的请求，但业务错误属于业务逻辑层面，在 RPC 层面其实是请求成功。Kitex 会制定一个业务[自定义异常规范](https://github.com/cloudwego/kitex/issues/511)用于区分业务错误和 RPC 层面错误。
 
-* ErrorHandler 示例：
+- ErrorHandler 示例：
 
   Kitex 对 server handler 返回的 error 统一封装为 kerrors.ErrBiz，如果要获取原始的 error 需要先进行 Unwrap。
 
@@ -30,7 +30,7 @@ server.WithErrorHandler(yourServerErrorHandler)
 func ServerErrorHandler(ctx context.Context, err error) error {
     // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
     // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).From().Address()`
-    
+
     if errors.Is(err, kerrors.ErrBiz) {
         err = errors.Unwrap(err)
     }
@@ -62,15 +62,15 @@ func ServerErrorHandler(ctx context.Context, err error) error {
 client.WithErrorHandler(yourClientErrorHandler)
 ```
 
-该 handler 在远程调用结束，中间件执行前被执行。框架有默认的 ClientErrorHandler，如果未配置将使用默认的，默认 Handler 的行为是：接收到服务端的错误返回或者调用端在传输层出现了异常，统一返回 **ErrRemoteOrNetwork**。另外，对于 Thrift 和 KitexProtobuf，error msg 会包含 '[remote]' 信息用来标识这是对端的错误；对于 gRPC 如果对端通过 `status.Error` 构造的错误返回，本端使用 `status.FromError(err)` 可以获取 `*status.Status`，注意 `Status` 需使用 Kitex 提供的，包路径是  `github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status`。
+该 handler 在远程调用结束，中间件执行前被执行。框架有默认的 ClientErrorHandler，如果未配置将使用默认的，默认 Handler 的行为是：接收到服务端的错误返回或者调用端在传输层出现了异常，统一返回 **ErrRemoteOrNetwork**。另外，对于 Thrift 和 KitexProtobuf，error msg 会包含 '[remote]' 信息用来标识这是对端的错误；对于 gRPC 如果对端通过 `status.Error` 构造的错误返回，本端使用 `status.FromError(err)` 可以获取 `*status.Status`，注意 `Status` 需使用 Kitex 提供的，包路径是 `github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status`。
 
-* ErrorHandler 示例：
+- ErrorHandler 示例：
 
 ```go
 func ClientErrorHandler(ctx context.Context, err error) error {
     // if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
     // for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).To().Address()`
-    
+
     // for thrift、KitexProtobuf
 	if e, ok := err.(*remote.TransError); ok {
         // TypeID is error code
@@ -84,20 +84,16 @@ func ClientErrorHandler(ctx context.Context, err error) error {
 }
 ```
 
-
 ### 错误码定义范围
 
 因为部分错误码是框架内置的，所以使用者应当避开内置错误码，目前内置的错误码：
 
-* Thrift、KitexProtobuf：0 - 10。
+- Thrift、KitexProtobuf：0 - 10。
 
-* gRPC：0 - 17。
-
+- gRPC：0 - 17。
 
 ## ErrorHandler 执行机制
 
 ErrorHandler 在 Middleware 中被执行，无论是调用端还是服务端 ErrorHandler 都作为最里层的 Middleware 被执行，如图所示：
 
 ![middleware_errorhandler](/img/docs/middleware_errorhandler.png)
-
-

@@ -2,7 +2,7 @@
 title: "Protobuf"
 date: 2024-01-06
 weight: 2
-keywords: [ "Kitex", "Serialization", "Protobuf" ]
+keywords: ["Kitex", "Serialization", "Protobuf"]
 description: Kitex uses the Protobuf protocol for serialization.
 ---
 

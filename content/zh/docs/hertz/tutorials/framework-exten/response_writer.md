@@ -5,7 +5,6 @@ date: 2023-09-22
 weight: 6
 keywords: ["Response 的 Writer 扩展", "Response.HijackWriter"]
 description: "Hertz 提供的 Response 的 Writer 扩展。"
-
 ---
 
 按照 Hertz 的 [分层架构](/zh/docs/hertz/overview/) 设计，HTTP 响应实际的写操作是在应用层用户处理逻辑返回之后进行的。用户在这个限制下是不能够灵活按需控制写操作的行为的，这个限制在类似控制 chunk 分块编码写逻辑、[SSE](https://github.com/hertz-contrib/sse#hertz-sse) 的场景下尤为明显。

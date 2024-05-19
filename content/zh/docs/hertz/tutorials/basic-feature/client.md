@@ -2,7 +2,8 @@
 title: "客户端"
 date: 2023-07-25
 weight: 3
-keywords: ["Client 配置", "发送请求", "请求超时", "流式处理", "中间件", "服务发现"]
+keywords:
+  ["Client 配置", "发送请求", "请求超时", "流式处理", "中间件", "服务发现"]
 description: "Hertz 客户端相关功能。"
 ---
 
@@ -14,7 +15,7 @@ package main
 import (
 	"context"
 	"fmt"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/client"
 	"github.com/cloudwego/hertz/pkg/app/server"
@@ -44,27 +45,27 @@ func main() {
 
 ## Client 配置
 
-| 配置项                                | 默认值            | 描述 |
-|------------------------------------|----------------|----|
-| WithDialTimeout                    | 1s             | 拨号超时时间 |
-| WithMaxConnsPerHost                | 512            | 每个主机可能建立的最大连接数 |
-| WithMaxIdleConnDuration            | 10s            | 最大的空闲连接持续时间，空闲的连接在此持续时间后被关闭 |
-| WithMaxConnDuration                | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭 |
-| WithMaxConnWaitTimeout             | 0s             | 等待空闲连接的最大时间 |
-| WithKeepAlive                      | true           | 是否使用 keep-alive 连接，默认使用 |
-| WithClientReadTimeout              | 0s             | 完整读取响应（包括 body）的最大持续时间 |
-| WithTLSConfig                      | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/) |
-| WithDialer                         | network.Dialer | 设置指定的拨号器 |
-| WithResponseBodyStream             | false          | 是否在流中读取 body，默认不在流中读取 |
-| WithDisableHeaderNamesNormalizing  | false          | 是否禁用头名称规范化，默认不禁用，如 cONTENT-lenGTH -> Content-Length |
-| WithName                           | ""             | 设置用户代理头中使用的客户端名称 |
-| WithNoDefaultUserAgentHeader       | false          | 设置是否应该在请求中包含默认的 User-Agent 头，默认包含 User-Agent 头 |
-| WithDisablePathNormalizing         | false          | 是否禁用路径规范化，默认规范路径，如 http://localhost:8080/hello/../ hello -> http://localhost:8080/hello |
-| WithRetryConfig                    | nil            | HTTP 客户端的重试配置，重试配置详细说明请看 [重试](/zh/docs/hertz/tutorials/basic-feature/retry/) |
-| WithWriteTimeout                   | 0s             | HTTP 客户端的写入超时时间 |
-| WithConnStateObserve               | nil, 5s        | 设置观察和记录 HTTP 客户端的连接状态的函数以及观察执行间隔 |
-| WithDialFunc                       | network.Dialer | 设置 HTTP 客户端拨号器函数，会覆盖自定义拨号器 |
-| WithHostClientConfigHook           | nil            | 设置 hook 函数来重新配置 host client |
+| 配置项                            | 默认值         | 描述                                                                                                            |
+| --------------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------- |
+| WithDialTimeout                   | 1s             | 拨号超时时间                                                                                                    |
+| WithMaxConnsPerHost               | 512            | 每个主机可能建立的最大连接数                                                                                    |
+| WithMaxIdleConnDuration           | 10s            | 最大的空闲连接持续时间，空闲的连接在此持续时间后被关闭                                                          |
+| WithMaxConnDuration               | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭                                                         |
+| WithMaxConnWaitTimeout            | 0s             | 等待空闲连接的最大时间                                                                                          |
+| WithKeepAlive                     | true           | 是否使用 keep-alive 连接，默认使用                                                                              |
+| WithClientReadTimeout             | 0s             | 完整读取响应（包括 body）的最大持续时间                                                                         |
+| WithTLSConfig                     | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/) |
+| WithDialer                        | network.Dialer | 设置指定的拨号器                                                                                                |
+| WithResponseBodyStream            | false          | 是否在流中读取 body，默认不在流中读取                                                                           |
+| WithDisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化，默认不禁用，如 cONTENT-lenGTH -> Content-Length                                           |
+| WithName                          | ""             | 设置用户代理头中使用的客户端名称                                                                                |
+| WithNoDefaultUserAgentHeader      | false          | 设置是否应该在请求中包含默认的 User-Agent 头，默认包含 User-Agent 头                                            |
+| WithDisablePathNormalizing        | false          | 是否禁用路径规范化，默认规范路径，如 http://localhost:8080/hello/../ hello -> http://localhost:8080/hello       |
+| WithRetryConfig                   | nil            | HTTP 客户端的重试配置，重试配置详细说明请看 [重试](/zh/docs/hertz/tutorials/basic-feature/retry/)               |
+| WithWriteTimeout                  | 0s             | HTTP 客户端的写入超时时间                                                                                       |
+| WithConnStateObserve              | nil, 5s        | 设置观察和记录 HTTP 客户端的连接状态的函数以及观察执行间隔                                                      |
+| WithDialFunc                      | network.Dialer | 设置 HTTP 客户端拨号器函数，会覆盖自定义拨号器                                                                  |
+| WithHostClientConfigHook          | nil            | 设置 hook 函数来重新配置 host client                                                                            |
 
 示例代码：
 
@@ -119,14 +120,14 @@ func main() {
 
 ## Client Request 配置
 
-| 配置项                        | 默认值         | 描述                                                    |
-| ----------------------------- | -------------- | ------------------------------------------------------- |
-| WithDialTimeout                   | 0s             | 拨号超时时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                                            |
-| WithReadTimeout               | 0s              | 完整读取响应（包括 body）的最大持续时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                            |
-| WithWriteTimeout           | 0s            | HTTP 客户端的写入超时时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**  |
-| WithRequestTimeout               | 0s             | 完整的 HTTP 请求的超时时间 |
-| WithTag            | make(map[string]string)             | 以 key-value 形式设置 tags 字段，配合服务发现使用，详情见 [WithTag](/zh/docs/hertz/tutorials/service-governance/service_discovery/#withtag)                                 |
-| WithSD                     | false          | 配合服务发现使用，传递 true 时，本次请求使用服务发现，详情见 [WithSD](/zh/docs/hertz/tutorials/service-governance/service_discovery/#withsd)                                    |
+| 配置项             | 默认值                  | 描述                                                                                                                                         |
+| ------------------ | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| WithDialTimeout    | 0s                      | 拨号超时时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                                                             |
+| WithReadTimeout    | 0s                      | 完整读取响应（包括 body）的最大持续时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                                  |
+| WithWriteTimeout   | 0s                      | HTTP 客户端的写入超时时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                                                |
+| WithRequestTimeout | 0s                      | 完整的 HTTP 请求的超时时间                                                                                                                   |
+| WithTag            | make(map[string]string) | 以 key-value 形式设置 tags 字段，配合服务发现使用，详情见 [WithTag](/zh/docs/hertz/tutorials/service-governance/service_discovery/#withtag)  |
+| WithSD             | false                   | 配合服务发现使用，传递 true 时，本次请求使用服务发现，详情见 [WithSD](/zh/docs/hertz/tutorials/service-governance/service_discovery/#withsd) |
 
 示例代码：
 
@@ -170,7 +171,7 @@ Do 函数执行给定的 http 请求并填充给定的 http 响应。请求必�
 函数签名：
 
 ```go
-func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error 
+func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error
 ```
 
 示例代码：
@@ -602,7 +603,7 @@ func main() {
 	if err != nil {
 		return
 	}
-	
+
 	req, res := &protocol.Request{}, &protocol.Response{}
 	req.SetMethod(consts.MethodGet)
 	req.SetRequestURI("https://www.example.com")
@@ -740,7 +741,7 @@ func (c *Client) Use(mws ...Middleware)
 
 如果客户端中间件链在之前已经设置了最后一个中间件，`UseAsLast` 函数将会返回 `errorLastMiddlewareExist` 错误。因此，为确保客户端中间件链的最后一个中间件为空，可以先使用 [TakeOutLastMiddleware](#takeoutlastmiddleware) 函数清空客户端中间件链的最后一个中间件。
 
->注意：`UseAsLast` 函数将中间件设置在了 `c.lastMiddleware` 中，而使用 [Use](#use) 函数设置的中间件链存放在 `c.mws` 中，两者相对独立，只是在执行客户端中间件链的最后才执行 `c.lastMiddleware`，因此 `UseAsLast` 函数在 [Use](#use) 函数之前或之后调用皆可。
+> 注意：`UseAsLast` 函数将中间件设置在了 `c.lastMiddleware` 中，而使用 [Use](#use) 函数设置的中间件链存放在 `c.mws` 中，两者相对独立，只是在执行客户端中间件链的最后才执行 `c.lastMiddleware`，因此 `UseAsLast` 函数在 [Use](#use) 函数之前或之后调用皆可。
 
 函数签名：
 

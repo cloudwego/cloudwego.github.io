@@ -5,9 +5,11 @@ projects: ["Kitex"]
 date: 2023-08-14
 description: >
 ---
+
 ## **Introduction to Key Changes**
 
 ### Features
+
 **1. gRPC Compression Support**
 
 Implemented compression support for Kitex gRPC, allowing compression methods like gzip to reduce payload size.
@@ -17,6 +19,7 @@ Implemented compression support for Kitex gRPC, allowing compression methods lik
 Utilized the [local-session](https://github.com/cloudwego/localsession) component for context propagation in fallback requests, addressing the issue of broken microservice chains caused by missing ctx.
 
 ### Optimizations
+
 **1. Unserialized Unknown Fields**
 
 Implemented unserialization of unknown fields, resulting in a performance improvement of approximately 6x to 7x on FastCodec. See details in [#1017](https://github.com/cloudwego/kitex/pull/1017).
@@ -25,15 +28,16 @@ Implemented unserialization of unknown fields, resulting in a performance improv
 
 Integrated [dynamicgo](https://github.com/cloudwego/dynamicgo) into Kitex's generic module to enhance performance of JSON/HTTP generic invocations (+50% to 200%).
 
-### Others 
+### Others
 
 Upgraded Thriftgo library dependency to v0.3.0, adding support for Thriftgo reflection, enabling runtime access to IDL metadata.
 
-----
+---
 
 ## **Full Release Log**
 
 ### Feature:
+
 - [[#1053](https://github.com/cloudwego/kitex/pull/1053)] feat(retry): support to distinguish local retry request
 - [[#1058](https://github.com/cloudwego/kitex/pull/1058)] feat(retry): support delete retry policy dynamically
 - [[#1000](https://github.com/cloudwego/kitex/pull/1000)] feat(grpc): support grpc compress
@@ -44,6 +48,7 @@ Upgraded Thriftgo library dependency to v0.3.0, adding support for Thriftgo refl
 - [[#1019](https://github.com/cloudwego/kitex/pull/1019)] feat(lb): interleaved weighted round-robin load balancer
 
 ### Optimize:
+
 - [[#1064](https://github.com/cloudwego/kitex/pull/1064)] optimize: check header max size when ttheader encode
 - [[#1017](https://github.com/cloudwego/kitex/pull/1017)] optimize: implement unknown field function without serialization
 - [[#1036](https://github.com/cloudwego/kitex/pull/1036)] optimize(protobuf): ignore err when (un)marshal empty req/resp
@@ -53,6 +58,7 @@ Upgraded Thriftgo library dependency to v0.3.0, adding support for Thriftgo refl
 - [[#1020](https://github.com/cloudwego/kitex/pull/1020)] optimize: add nil check for MethodInfo which get from ServiceInfo in client.Call to ignore panic
 
 ### Fix:
+
 - [[#1073](https://github.com/cloudwego/kitex/pull/1073)] fix: fix failure retryer dump panic
 - [[#1067](https://github.com/cloudwego/kitex/pull/1067)] fix: slim template with deepcopy
 - [[#1055](https://github.com/cloudwego/kitex/pull/1055)] fix: ignore SIGHUP when run with nohup
@@ -67,6 +73,7 @@ Upgraded Thriftgo library dependency to v0.3.0, adding support for Thriftgo refl
 - [[#994](https://github.com/cloudwego/kitex/pull/994)] fix(tool): fix kitex tool git repo pulling logic
 
 ### Chore:
+
 - [[#1074](https://github.com/cloudwego/kitex/pull/1074)] chore: update thriftgo to v0.3.0
 - [[#1031](https://github.com/cloudwego/kitex/pull/1031)] chore: remove wechat group in readme
 - [[#1008](https://github.com/cloudwego/kitex/pull/1008)] chore: update dynamicgo to v0.1.1

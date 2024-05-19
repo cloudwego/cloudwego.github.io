@@ -1,5 +1,5 @@
 ---
-title: 'hz client 代码生成'
+title: "hz client 代码生成"
 date: 2023-02-20
 weight: 4
 keywords: ["hz client", "高级设置"]
@@ -24,10 +24,10 @@ hz client 生成的代码结构可以参考 [hz client](/zh/docs/hertz/tutorials
 
 ### 定义 IDL
 
->IDL 的定义和语义与目前的定义完全相同，所以基本不用修改原先的 IDL 即可生成 client 代码。
+> IDL 的定义和语义与目前的定义完全相同，所以基本不用修改原先的 IDL 即可生成 client 代码。
 
->但是为针对 client 的场景，增加了一种注解，
->api.base_domain：指定默认访问的请求 domain。
+> 但是为针对 client 的场景，增加了一种注解，
+> api.base_domain：指定默认访问的请求 domain。
 
 **注意**: 当使用 `api.any` 注解时，client 会自动生成 `post` 方法的 client 代码用于替换 `any`。
 
@@ -77,24 +77,23 @@ hz client --mod=a/b/c --idl=../idl/psm.thrift --model_dir=model --client_dir=her
 
 ### client 配置
 
->
 > 以 thrift IDL 生成的代码为例
 
- ```go
+```go
 func main() {
-	generatedClient, err := hello_service.NewHelloServiceClient("https://www.example.com"), 
+	generatedClient, err := hello_service.NewHelloServiceClient("https://www.example.com"),
 	hello_service.WithHertzClientOption() // 指定 client 配置
 }
 ```
 
 ### 请求级别的配置
->
+
 > 以 thrift IDL 生成的代码为例
 
 ```go
 func main() {
 	generatedClient, err := hello_service.NewHelloServiceClient(
-		"http://toutiao.hertz.testa", // 指定 psm 作为域名 
+		"http://toutiao.hertz.testa", // 指定 psm 作为域名
 		)
 	// 在发起调用的时候可指定请求级别的配置
     resp, rawResp, err := generatedClient.QueryMethod(
@@ -111,56 +110,56 @@ func main() {
 ```
 
 ### 设置 client 中间件
->
+
 > 以 thrift IDL 生成的代码为例
 
 ```go
 func main() {
 	generatedClient, err := hello_service.NewHelloServiceClient(
-		"http://toutiao.hertz.testa", // 指定 psm 作为域名 
-		hello_service.WithHertzClientMiddleware(), // 指定 client 的中间件 
+		"http://toutiao.hertz.testa", // 指定 psm 作为域名
+		hello_service.WithHertzClientMiddleware(), // 指定 client 的中间件
 		)
 }
 ```
 
 ### 设置全局 header
->
->以 thrift IDL 生成的代码为例
+
+> 以 thrift IDL 生成的代码为例
 
 有一些通用的 header 可能每次请求都需要携带，或者是一些不能定义到 IDL 中的 header，这时我们就可以通过 "WithHeader" 注入这些 header，使得每次发送请求都会携带这些 header。
 
 ```go
 func main() {
 	generatedClient, err := hello_service.NewHelloServiceClient(
-		"http://toutiao.hertz.testa", // 指定 psm 作为域名 
-		hello_service.WithHeader(), // 指定每次发送请求都需要携带的 header 
+		"http://toutiao.hertz.testa", // 指定 psm 作为域名
+		hello_service.WithHeader(), // 指定每次发送请求都需要携带的 header
 	)
 }
 ```
 
 ### 配置 TLS
->
+
 > 以 thrift IDL 生成的代码为例
 
 Hertz client 的 TLS 走的是标准网络库，因此在使用生成的一键调用时需要配置为标准网络库。
 
 ```go
 func main() {
-	generatedClient, err := hello_service.NewHelloServiceClient("https://www.example.com"), 
+	generatedClient, err := hello_service.NewHelloServiceClient("https://www.example.com"),
 	hello_service.WithHertzClientOption(
-		client.WithDialer(standard.NewDialer()), // 使用标准库 
-		client.WithTLSConfig(clientCfg), // TLS 配置 
+		client.WithDialer(standard.NewDialer()), // 使用标准库
+		client.WithTLSConfig(clientCfg), // TLS 配置
 	)
 }
 ```
 
 ### 自定义 hertz client
->
+
 > 以 thrift IDL 生成的代码为例
 
- ```go
+```go
 func main() {
-	generatedClient, err := hello_service.NewHelloServiceClient("https://www.example.com"), 
+	generatedClient, err := hello_service.NewHelloServiceClient("https://www.example.com"),
 	hello_service.WithHertzClient() // 指定自定义 hertz client
 }
 ```

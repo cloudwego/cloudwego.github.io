@@ -1,6 +1,6 @@
 ---
 title: CloudWeGo 社区会议 4.21
-linkTitle:  CloudWeGo 社区会议 4.21
+linkTitle: CloudWeGo 社区会议 4.21
 date: 2022-04-21
 weight: 5
 description: >
@@ -11,7 +11,7 @@ description: >
 **参会人员：** YangruiEmma, liu-song, baiyutang, yccpt, AshleeT, CoderPoet, Quan Hu, li-jin-gou, JZK-Keven, EastHorse, GuangmingLuo, HeyJavaBean, jayantxie, ppzqh, Shizheng Hou, andrewshan, simon0-o, yiyun, Wanqi Su, Zheming Li, Xianjie Yao, LoveScotty.
 
 **会前必读：** [官网](/)；
-              https://github.com/cloudwego
+https://github.com/cloudwego
 
 ## 议程 1 ：新成员自我介绍
 
@@ -28,7 +28,7 @@ description: >
 
    b. 提交 PR 前：完成本地 Coding 后，**运行**`gofumpt -l -extra -w .`，检测代码是否存在语法、 License等问题。Contributor 在本地 Fix 这些问题后，能够顺利通过 CI 流程检测，顺利进入 review 环节。
 
-   c. 提交 PR 时：若 PR 处于 Working In Progress 状态，大家在提交 PR 时可以选择 **Draft PR **，或者在 PR 描述中**加入 ****WIP**** 标识**，便于  Reviewer 优先处理完成状态的 PR。
+   c. 提交 PR 时：若 PR 处于 Working In Progress 状态，大家在提交 PR 时可以选择 **Draft PR **，或者在 PR 描述中**加入 \*\***WIP\***\* 标识**，便于 Reviewer 优先处理完成状态的 PR。
 
    d. 单测描述：需要在描述部分清晰、详细说明单测方法的**场景**，便于后续快速、准确地 Review 代码逻辑。
 
@@ -50,7 +50,7 @@ description: >
 
 ## 议程 4：Kitex 与阿里云 Nacos + Trace 对接工作进展介绍与讨论
 
-（@li-jin-gou  负责介绍）
+（@li-jin-gou 负责介绍）
 
 1. **背景介绍：** 我们希望将 [Demo(Easy-Note) ](https://github.com/cloudwego/kitex-examples/pull/27)部署到阿里云，主要的工作是验证 Kitex 接入阿里云的 ARMS 的链路追踪 和 MSE 的 Nacos 注册中心。
 
@@ -78,7 +78,7 @@ description: >
 
 **Q：我们是否也要把对接阿里云的相关基础设施统一放在一个 Suite 里面？**
 
-A：目前还没有对接服务治理，我们的规划是：第一阶段支持注册中心和可观测系统的接入。比如，对Nacos 注册中心这块做了一些无侵入式配置的扩展对接，然后我们通过 OpenTelemetry 去接入阿里云的可观测系统；第二阶段，我们准备通过 Middleware 或 Suite 的方式对接开放服务治理的能力。现阶段的工作主要是对 Kitex 的 [Nacos registry](https://github.com/kitex-contrib/registry-nacos) 展开了优化，然后结合  OpenTelemetry 这一扩展，去重构 Kitex Easy-Note  Demo。
+A：目前还没有对接服务治理，我们的规划是：第一阶段支持注册中心和可观测系统的接入。比如，对Nacos 注册中心这块做了一些无侵入式配置的扩展对接，然后我们通过 OpenTelemetry 去接入阿里云的可观测系统；第二阶段，我们准备通过 Middleware 或 Suite 的方式对接开放服务治理的能力。现阶段的工作主要是对 Kitex 的 [Nacos registry](https://github.com/kitex-contrib/registry-nacos) 展开了优化，然后结合 OpenTelemetry 这一扩展，去重构 Kitex Easy-Note Demo。
 
 **Q：单测每次 CI 都会出报告吗？上次想加到 awesome go ，但是他们对覆盖度有要求。**
 
@@ -87,4 +87,3 @@ A：可以点进 CI 的 Show all checks 查看测试报告，同时，在[单测
 ## 相关资讯
 
 截至 4 月 21 日，历时 5 个月，**CloudWeGo-Kitex** 完成了 3000 Stars 到 **4000 Stars** 的跨越，来到新的里程碑！
-

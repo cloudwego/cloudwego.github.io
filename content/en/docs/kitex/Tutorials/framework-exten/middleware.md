@@ -6,11 +6,13 @@ description: >
 ---
 
 ## Middleware
+
 Middleware is a relatively low level of extension. Most of the Kitex-based extension and secondary development functions are based on middleware to achieve. Kitex's Middleware is defined in `pkg/endpoint/endpoint.go`, the most important of which are two types:
 
 1. `Endpoint` is a function that accepts ctx, req, resp and returns err. Please refer to the following "Example" code.
 
 2. Middleware (hereinafter referred to as MW) is also a function that receives and returns an Endpoint.
+
 ```go
 type Middleware func(Endpoint) Endpoint
 ```
@@ -57,6 +59,7 @@ Middleware can be injected into ctx using `ctx = client.WithContextMiddlewares(c
 Note: Context Middleware executes before middleware set by `client.WithMiddleware()`.
 
 ### Server Middleware
+
 #### How To Use
 
 1. `server.WithMiddleware` adds Middleware to the current server.
@@ -74,8 +77,11 @@ Note: Context Middleware executes before middleware set by `client.WithMiddlewar
 3. Error handler set by `client.WithErrorHandler`
 
 The above can be seen in [server.go](https://github.com/cloudwego/kitex/blob/develop/server/server.go)
+
 ### Example
+
 We can use the following example to see how to use Middleware.
+
 #### Request/Reponse
 
 If we need to print out the request content before the request, and then print out the response content after the request, we can write the following middleware (For the service which include streaming call, see the gRPC middleware below):
@@ -113,13 +119,16 @@ func ExampleMiddleware(next endpoint.Endpoint) endpoint.Endpoint {
 	}
 }
 ```
+
 The provided example is for illustrative purposes, and it is indeed important to exercise caution when implementing such logging practices in a production environment. Logging every request and response indiscriminately can indeed have performance implications, especially when dealing with large response bodies.
 
 ### Precautions
+
 1. If RPCInfo is used in custom middleware, be aware that RPCInfo will be recycled after the rpc ends, so if you use goroutine operation RPCInfo in middleware, there will be issues . Please avoid such operations .
 2. Middleware is a chained call, if you use `result. SetSuccess()` or some other way to modify the response in any middleware, the upstream middlewares will receive the modified response.
 
 ### gRPC Middleware
+
 As we all know, in addition to Thrift, Kitex also supports the protobuf and gRPC encoding/decoding protocols. In the case of protobuf, it refers to using protobuf exclusively to define the payload format, and the service definition only includes unary methods. However, if streaming methods are introduced, Kitex will use the gRPC protocol for encoding/decoding and communication.
 
 For services using protobuf (unary only), the development of middleware remains consistent with the previous context, as the design of both is identical.
@@ -148,7 +157,9 @@ func newWrappedStream(s streaming.Stream) streaming.Stream {
         return &wrappedStream{s}
 }
 ```
+
 Then, within the middleware, insert the wrapped streaming.Stream object at specific invocation points.
+
 ```go
 import "github.com/cloudwego/kitex/pkg/streaming"
 
@@ -176,19 +187,23 @@ func DemoGRPCMiddleware(next endpoint.Endpoint) endpoint.Endpoint {
     }
 }
 ```
+
 Explanation of the request/response parameter types obtained within the Kitex middleware in different scenarios of gRPC:
 
-| Scenario                         | Request Type              | Response Type               |
-|----------------------------------|---------------------------|-----------------------------|
-| Kitex-gRPC Server Unary/Streaming | *streaming.Args           | nil                         |
-| Kitex-gRPC Client Unary          | *xxxservice.XXXMethodArgs | *xxxservice.XXXMethodResult | 
-| Kitex-gRPC Client Streaming      | nil                       | *streaming.Result           |
+| Scenario                          | Request Type               | Response Type                |
+| --------------------------------- | -------------------------- | ---------------------------- |
+| Kitex-gRPC Server Unary/Streaming | \*streaming.Args           | nil                          |
+| Kitex-gRPC Client Unary           | \*xxxservice.XXXMethodArgs | \*xxxservice.XXXMethodResult |
+| Kitex-gRPC Client Streaming       | nil                        | \*streaming.Result           |
 
 ## Summary
-Middleware is indeed a lower-level implementation of extensions, typically used to inject simple code containing specific functionalities. However, in complex scenarios, single middleware may not be sufficient to meet the business requirements. In such cases, a more comprehensive approach is needed, which involves assembling multiple middlewares or options into a complete middleware layer.  Users can develop this requirement based on suites, refer to [Suite Extend](/zh/docs/kitex/tutorials/framework-exten/suite/)
+
+Middleware is indeed a lower-level implementation of extensions, typically used to inject simple code containing specific functionalities. However, in complex scenarios, single middleware may not be sufficient to meet the business requirements. In such cases, a more comprehensive approach is needed, which involves assembling multiple middlewares or options into a complete middleware layer. Users can develop this requirement based on suites, refer to [Suite Extend](/zh/docs/kitex/tutorials/framework-exten/suite/)
 
 ## FAQ
+
 ### How to recover handler panic in middleware
+
 Question:
 A handler who wanted to recover their own business in middleware threw a panic and found that the panic had already been recovered by the framework.
 
@@ -206,6 +221,7 @@ func TestServerMiddleware(next endpoint.Endpoint) endpoint.Endpoint {
    }
 }
 ```
+
 ### How to get the real Request/Response in Middleware?
 
 Due to implementation needs, the req and resp passed in middlewares are not the req and resp passed by the real user, but an object wrapped by Kitex, specifically a structure similar to the following.
@@ -264,6 +280,7 @@ func (p *${XMethod}Result) GetSuccess() *${XResponse} {
 
 The above generated code can be seen in kitex_gen directory.
 Therefore, there are three solutions for the business side to obtain the real req and resp:
+
 1. If you can determine which method is being called and the type of req used, you can directly obtain the specific Args type through type assertion, and then obtain the real req through the GetReq method.
 2. For thrift generated code, by asserting `GetFirstArgument` or `GetResult` , obtain `interface{}`, and then do type assertion to the real req or resp (Note: Since the returned `interface{}` contains a type, judging `interface{}` nil cannot intercept the case where req/resp itself is a null pointer, so we need to judge whether the asserted req/resp is a null pointer again);
 3. Obtain the real request/response body through reflection method, refer to the code:
@@ -278,6 +295,5 @@ var ExampleMW endpoint.Middleware = func(next endpoint.Endpoint) endpoint.Endpoi
         log.Infof(ctx, "response: %T", respV.Interface())
         return err
     }
-} 
+}
 ```
-

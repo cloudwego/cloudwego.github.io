@@ -3,9 +3,28 @@ date: 2024-02-21
 title: "Delving Deeper: Enriching Microservices with Golang with CloudWeGo"
 projects: ["CloudWeGo"]
 linkTitle: "Delving Deeper: Enriching Microservices with Golang with CloudWeGo"
-keywords: ["CloudWeGo", "middleware", "Kitex", "Netpoll", "Golang", "Volo", "rust", "microservice framework", "ByteDance Open Source", "ByteDance", "open source", "cloud native", "open source", "gRPC", "microservices", "rpc", "thrift"]
+keywords:
+  [
+    "CloudWeGo",
+    "middleware",
+    "Kitex",
+    "Netpoll",
+    "Golang",
+    "Volo",
+    "rust",
+    "microservice framework",
+    "ByteDance Open Source",
+    "ByteDance",
+    "open source",
+    "cloud native",
+    "open source",
+    "gRPC",
+    "microservices",
+    "rpc",
+    "thrift",
+  ]
 description: "Delve into CloudWeGo's Kitex through practical examples, where high performance and extensibility redefine microservice excellence."
-author:  <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>
+author: <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>
 ---
 
 What if there existed an RPC framework that provided not only high performance and extensibility but also a robust suite of features and a thriving community support?
@@ -28,7 +47,7 @@ Consider the case of Bookinfo, a sample application provided by [Istio](https://
 
 This use case is illustrative of how traffic-heavy services can significantly benefit from CloudWeGo's performance promise. This integration also demonstrates how CloudWeGo stands above traditional Istio service mesh when it comes to traffic handling and performance.
 
-![Image](/img/blog/Delving_Deeper_Enriching_Microservices_with_Golang_and_Rust_with_CloudWeGo/2.jpeg) 
+![Image](/img/blog/Delving_Deeper_Enriching_Microservices_with_Golang_and_Rust_with_CloudWeGo/2.jpeg)
 
 With Kitex and [Hertz](/docs/hertz/) handling traffic redirection, the Bookinfo project can manage high traffic volumes efficiently, ensuring swift responses and a better user experience.
 
@@ -50,7 +69,7 @@ The above code snippet is a simplified example of how the Bookinfo project can b
 
 CloudWeGo's commitment to simplifying complex tasks shines in its application to the Easy Note project. It leverages CloudWeGo to implement a full-process traffic lane. The note-taking platform needs to be responsive and efficient, a need fulfilled by CloudWeGo's high-performance networking library, [Netpoll](/docs/netpoll/).
 
-![Image](/img/blog/Delving_Deeper_Enriching_Microservices_with_Golang_and_Rust_with_CloudWeGo/3.jpeg) 
+![Image](/img/blog/Delving_Deeper_Enriching_Microservices_with_Golang_and_Rust_with_CloudWeGo/3.jpeg)
 
 The integration of CloudWeGo has elevated the Easy Note application to compete effectively with other note-taking platforms, proving how simplicity can indeed lead to power.
 
@@ -80,7 +99,7 @@ The snippet above gives a glimpse of how CloudWeGo helps to enhance the efficien
 
 In the bustling e-commerce landscape, Book Shop stands as a testament to CloudWeGo's capacity for seamless integration. Integrating middleware like [Elasticsearch](https://www.elastic.co/elasticsearch) and [Redis](https://redis.io) into a Kitex project to build a solid e-commerce system that rivals more complex platforms.
 
-![Image](/img/blog/Delving_Deeper_Enriching_Microservices_with_Golang_and_Rust_with_CloudWeGo/4.jpeg) 
+![Image](/img/blog/Delving_Deeper_Enriching_Microservices_with_Golang_and_Rust_with_CloudWeGo/4.jpeg)
 
 CloudWeGo's ability to effectively integrate with popular technologies like Elasticsearch and Redis ensures that businesses need not compromise on choosing an open-source RPC framework.
 
@@ -112,7 +131,7 @@ The above snippet is a basic representation of how the Book Shop e-commerce syst
 
 The FreeCar project is an excellent illustration of how CloudWeGo can revamp the operations in a time-sharing car rental system, posing a strong alternative to existing ride-hailing applications.
 
-![Image](/img/blog/Delving_Deeper_Enriching_Microservices_with_Golang_and_Rust_with_CloudWeGo/5.jpeg) 
+![Image](/img/blog/Delving_Deeper_Enriching_Microservices_with_Golang_and_Rust_with_CloudWeGo/5.jpeg)
 
 This real-world implementation demonstrates how CloudWeGo's robust features can optimize operations, fostering efficiency and scalability in industries beyond tech.
 
@@ -151,6 +170,6 @@ As I venture further into the landscape of alternative RPC frameworks, and explo
 
 # Embracing the Future of Microservices
 
-With each use case, CloudWeGo's potential becomes increasingly clear. Developers can now build high-performing, extensible, and robust applications, harnessing the true essence of microservices - no matter if they prefer working with Golang or Rust. 
+With each use case, CloudWeGo's potential becomes increasingly clear. Developers can now build high-performing, extensible, and robust applications, harnessing the true essence of microservices - no matter if they prefer working with Golang or Rust.
 
 If you're considering a new tool for your microservice architecture, especially if you are interested in Rust, [give CloudWeGo a try](/docs/). The future of microservices awaits you.

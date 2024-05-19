@@ -37,6 +37,7 @@ OPTIONS:
     --signable Specify detect integer field\'s unsigned type, adjust generated data type (default: false)
     --type_tag Specify generate field with gorm column type tag (default: false)
     --index_tag Specify generate field with gorm index tag (default: false)
+    --sql_dir value Specify a sql file or directory(Note: The 'dsn' parameter is invalid when using this parameter)
     --help, -h show help (default: false)
 ```
 
@@ -44,7 +45,7 @@ OPTIONS:
 
 ## Specification
 
-```console
+````console
     --dsn value specify database DSN
     --db_type value specifies the database type (mysql or sqlserver or sqlite or postgres) (default mysql)
     --out_dir value specifies the output directory path, the default is biz/dao/query
@@ -58,10 +59,9 @@ OPTIONS:
     --signable specifies detect integer field\'s unsigned type, adjust generated data type, the default is false
     --type_tag specifies whether to generate gorm's type tag for the specified field, the default is false
     --index_tag specifies whether to generate gorm's index tag for the specified field, the default is false
-```
-
+    --sql_dir value Specify a sql file or directory(Note: The 'dsn' parameter is invalid when using this parameter)
 ## Example
 
 ```sh
 cwgo model --db_type mysql --dsn "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local"
-```
+````

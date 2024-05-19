@@ -8,7 +8,7 @@ description: >
 
 **会议主题** ：CloudWeGo 社区会议 8.11
 
-**参会人** ：li-jin-gou, GuangmingLuo, pkumza, ag9920, lsjbd, sinnera, welkeyever, YangruiEmma, CoderPoet, joway, zstone12, Yin Xuran, bodhisatan, Fan Guangyu, Zhang Guiyuan, ppzqh, HeyJavaBean, simon0-o,  baiyutang, rogerogers, skyenought, cloudwegoIce, cyyolo, baize, Hchenn, Ivnszn, LemonFish
+**参会人** ：li-jin-gou, GuangmingLuo, pkumza, ag9920, lsjbd, sinnera, welkeyever, YangruiEmma, CoderPoet, joway, zstone12, Yin Xuran, bodhisatan, Fan Guangyu, Zhang Guiyuan, ppzqh, HeyJavaBean, simon0-o, baiyutang, rogerogers, skyenought, cloudwegoIce, cyyolo, baize, Hchenn, Ivnszn, LemonFish
 
 **会前必读** ：[官网](/)；https://github.com/cloudwego
 
@@ -60,13 +60,13 @@ description: >
 1. 相关链接：https://mp.weixin.qq.com/s/x0Y7-gn9kwpoDQayS2bo3w
 2. 背景：2021 年 9 月 CloudWeGo 正式开源，今年 9 月是正式开源一周年。一年内，CloudWeGo收获了 9000+ star，新增许多开源项目，还有即将新开源一个 Rust RPC 框架。我们会在开源一周年 Meetup 上介绍一年以来的开源历程。
 3. 四个议题：
-   
+
    - 高性能 RPC 框架 Kitex 内外统一的开源实践
    - 大规模企业级 HTTP 框架设计和实践
    - 新一代基于 Rust 语言的高性能 RPC 框架
    - 开源社区的长期主义与新变化 - CloudWeGo 开源社区实践
+
 4. 地点及参与方式：
-   
+
    - 线上：直接报名参与，群里定时放出参与链接。
    - 线下：北京字节跳动的工区，可以联系 cloudwegoIce 或刘佳同学注册报名。
-

@@ -40,7 +40,7 @@ func MockHello(ctx context.Context, req *hello.MyReq, callOptions ...callopt.Opt
 
 // TestClient 测试 mock 函数
 func TestClient(t *testing.T) {
-    
+
    ctrl := gomock.NewController(t)
    defer ctrl.Finish()
 
@@ -49,7 +49,7 @@ func TestClient(t *testing.T) {
 
    // 添加 mock 函数
    client.EXPECT().Hello(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(MockHello).AnyTimes()
-   
+
    // 发起 mock call
    resp, err := client.Hello(context.Background(), &hello.MyReq{Name: "bd"})
    if err == nil {

@@ -12,10 +12,9 @@ description: 除了 IDl 定义的数据结构外，Kitex 支持额外的元信�
 
 然而在实际生产环境，我们偶尔会有特殊的信息需要传递给对端服务，而又不希望将这些可能是临时或者格式不确定的内容显式定义在 IDL 里面，这就需要框架能够支持一定的元信息传递能力。
 
-**注意** *必须使用支持元信息的透传的底层传输协议才可用，例如 TTheader、HTTP、gRPC*。
+**注意** _必须使用支持元信息的透传的底层传输协议才可用，例如 TTheader、HTTP、gRPC_。
 
 为了和底层的协议解耦，同时也为了支持与不同框架之间的互通，Kitex 并没有直接提供读写底层传输协议的元信息的 API，而是通过一个独立维护的基础库 [metainfo][metainfo] 来支持元信息的传递。
-
 
 ## 正向元信息传递
 
@@ -112,19 +111,20 @@ func (MyServiceImpl) SomeMethod(ctx context.Context, req *SomeRequest) (res *Som
 }
 ```
 
-
 [metainfo]: https://pkg.go.dev/github.com/bytedance/gopkg/cloud/metainfo
 
 ## Kitex gRPC metadata
 
-Kitex gRPC 场景也可以同样使用 metainfo。但注意，需要满足用大写 + '_' 格式的 CGI 网关风格接口的 key 。
+Kitex gRPC 场景也可以同样使用 metainfo。但注意，需要满足用大写 + '\_' 格式的 CGI 网关风格接口的 key 。
 
 除了 metainfo 用法，也兼容了原本的 metadata 传输方式。但二者不可混合使用。
 
 与原生 gRPC 类似，正向传递通过 metadata 实现。反向传递通过 Header 或者 Trailer 发回，具体用法如下：
 
 ### 正向传递
+
 Client 发送设置：
+
 ```golang
   ctx := metadata.AppendToOutgoingContext(ctx, "k1", "v1", "k1", "v2", "k2", "v3")
   // unary 场景
@@ -132,7 +132,9 @@ Client 发送设置：
   // stream 场景
   stream, err := client.CallStream(ctx)
 ```
+
 Server 接收：
+
 ```golang
   // unary 场景
   md, ok := metadata.FromIncomingContext(ctx)
@@ -140,19 +142,22 @@ Server 接收：
   md, ok := metadata.FromIncomingContext(stream.Context())
 ```
 
-
-
 ### 反向传递
+
 #### Unary
+
 Unary 场景中，Server 向 Client 发送元信息方式如下：
 
 Server 设置:
+
 ```golang
   nphttp2.SendHeader(ctx, metadata.Pairs("k1", "v1"))
   nphttp2.SetHeader(ctx, metadata.Pairs("k1", "v1"))
   nphttp2.SetTrailer(ctx, metadata.Pairs("k2", "v2"))
 ```
+
 Client 接收：
+
 ```golang
   // 提前设置
   var header, trailer metadata.MD
@@ -164,17 +169,21 @@ Client 接收：
   log.Println("header is ", header)
   log.Println("trailer is ", trailer)
 ```
+
 #### Streaming
+
 Streaming 场景中，Server 向 Client 发送元信息方式如下：
 Server 发送：
+
 ```golang
   stream.SetHeader(metadata.Pairs("k1", "v1"))
   stream.SetTrailer(metadata.Pairs("k2","v2"))
 ```
+
 Client 接收：
+
 ```golang
   // 发起 stream call 之后
   md, _ := stream.Header()
   md = stream.Trailer()
 ```
-

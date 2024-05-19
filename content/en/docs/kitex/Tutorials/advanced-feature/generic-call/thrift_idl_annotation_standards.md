@@ -6,9 +6,9 @@ weight: 3
 description: >
 ---
 
-| date | version | author | update content |
-| --- | ---- | ------ | ------------ |
-| 2022-05-22 | v1.0  | wangjingpei | first version of IDL Definition Specification for Mapping between Thrift and HTTP |
+| date       | version | author      | update content                                                                    |
+| ---------- | ------- | ----------- | --------------------------------------------------------------------------------- |
+| 2022-05-22 | v1.0    | wangjingpei | first version of IDL Definition Specification for Mapping between Thrift and HTTP |
 
 This specification is the IDL definition standard for mapping between Thrift and HTTP. It contains definition standards of service, endpoint, `request` and `response` parameters. Kitex partially implements the specification, and the parts of annotation description indicate if it is supported.
 
@@ -30,23 +30,23 @@ This specification is the IDL definition standard for mapping between Thrift and
 
 #### Restrict
 
-1. We should specify the name and type of associated HTTP API parameters, such as header, cookie and name   by annotations. If not specified, the GET method  corresponds to query parameters, while the POST method corresponds to body parameters automatically. The field name is used as parameter key
-2. If the HTTP request uses GET method, `api.body` annotation occurred in request definitions is  invalid. Only annotations such as `api.query`, `api.path` or `api.cookie` are supported
+1. We should specify the name and type of associated HTTP API parameters, such as header, cookie and name by annotations. If not specified, the GET method corresponds to query parameters, while the POST method corresponds to body parameters automatically. The field name is used as parameter key
+2. If the HTTP request uses GET method, `api.body` annotation occurred in request definitions is invalid. Only annotations such as `api.query`, `api.path` or `api.cookie` are supported
 3. If one HTTP request uses POST method and the serialization strategy is `form`, the request field type like `object` and `map` is not supported. But Kitex doesn't support form now, only `json` format.
 
 #### Annotation Description
 
-| annotation | description | field restrict | is KiteX supported |
-| --- | ---- | ------ | ----- |
-| `api.query` | ` api.query `corresponds url query parameter for HTTP request | Only basic types (except for `object`, `map` ） and `list` split by , are supported | ✅|
-| `api.path` | `api.query` corresponds url path parameter for HTTP request | Only basic types are supported | ✅|
-| `api.header` | `api.header` corresponds header parameter for HTTP request | Only basic type and list split by , are supported | ✅|
-| `api.cookie` | `api. cookie `corresponds cookie parameter for HTTP request | Only basic types are supported | ✅|
-|` api.body` | `api.body `corresponds body parameter for HTTP request<br>Both serialization type like  `json` and `form` in body are supported | `Json` is supported by default . The `api.serializer` annotation for `method` can sepify serialization `json or form` |  ✅, but only `json` format |
-| `api.raw_body` | `api.raw_body` corresponds raw body for HTTP request, we can get raw binary body | | ✅|
-| `api.vd` | Parameter valid, we can refer [HTTPs://github.com/bytedance/go-tagexpr/tree/master/validator](HTTPs://github.com/bytedance/go-tagexpr/tree/master/validator) for details | | ❌ |
-| `api.js_conv` | `api.js_conv` indicates the field should be string while the definition is in64, since int64 is not supported by typescript |The annotation value should be `true`, if else will be treated as invalid | ✅|
-| `api.raw_uri` | `api.raw_uri` is used for protocol exchange from HTTP to RPC, the RPC service can get the raw uri by the field | Only `string` type is supported | ❌ |
+| annotation     | description                                                                                                                                                              | field restrict                                                                                                        | is KiteX supported         |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| `api.query`    | `api.query`corresponds url query parameter for HTTP request                                                                                                              | Only basic types (except for `object`, `map` ） and `list` split by , are supported                                   | ✅                         |
+| `api.path`     | `api.query` corresponds url path parameter for HTTP request                                                                                                              | Only basic types are supported                                                                                        | ✅                         |
+| `api.header`   | `api.header` corresponds header parameter for HTTP request                                                                                                               | Only basic type and list split by , are supported                                                                     | ✅                         |
+| `api.cookie`   | `api. cookie `corresponds cookie parameter for HTTP request                                                                                                              | Only basic types are supported                                                                                        | ✅                         |
+| ` api.body`    | `api.body `corresponds body parameter for HTTP request<br>Both serialization type like `json` and `form` in body are supported                                           | `Json` is supported by default . The `api.serializer` annotation for `method` can sepify serialization `json or form` | ✅, but only `json` format |
+| `api.raw_body` | `api.raw_body` corresponds raw body for HTTP request, we can get raw binary body                                                                                         |                                                                                                                       | ✅                         |
+| `api.vd`       | Parameter valid, we can refer [HTTPs://github.com/bytedance/go-tagexpr/tree/master/validator](HTTPs://github.com/bytedance/go-tagexpr/tree/master/validator) for details |                                                                                                                       | ❌                         |
+| `api.js_conv`  | `api.js_conv` indicates the field should be string while the definition is in64, since int64 is not supported by typescript                                              | The annotation value should be `true`, if else will be treated as invalid                                             | ✅                         |
+| `api.raw_uri`  | `api.raw_uri` is used for protocol exchange from HTTP to RPC, the RPC service can get the raw uri by the field                                                           | Only `string` type is supported                                                                                       | ❌                         |
 
 #### Example
 
@@ -83,15 +83,15 @@ struct BizRequest {
 
 #### Annotation Description
 
-| annotation | description | field restrict | is KiteX supported |
-| --- | ---- | ------ | ----- |
-| `api.header` | `api.header` corresponds `header` parameter for HTTP response | Only basic types and `list` split by , are supported | ✅|
-| `api.http_code` | `api.http_code` corresponds HTTP code for HTTP response，such as 200, 500 and so on |The annotation value should be `true`, if else will be treated as invalid | ✅|
-| `api.body` | `api.body` corresponds `body` parameter for HTTP response | | ✅|
-| `api.none` | `api.body` indicates the field will be ignored for  HTTP `response` |The annotation value should be `true`, if else will be treated as invalid | ✅|
-| `api.js_conv` | `api.js_conv` indicates the field should be trans to `string` in response since it is int64 |The annotation value should be `true`, if else will be treated as invalid| ✅|
-| `api.raw_body` | `api.raw_body` indicates the field will be treated as raw body  for response | | ✅|
-| `api.cookie` | `api.cookie` indicates the field will be treated as cookie  for  HTTP response | | ✅|
+| annotation      | description                                                                                 | field restrict                                                            | is KiteX supported |
+| --------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------ |
+| `api.header`    | `api.header` corresponds `header` parameter for HTTP response                               | Only basic types and `list` split by , are supported                      | ✅                 |
+| `api.http_code` | `api.http_code` corresponds HTTP code for HTTP response，such as 200, 500 and so on         | The annotation value should be `true`, if else will be treated as invalid | ✅                 |
+| `api.body`      | `api.body` corresponds `body` parameter for HTTP response                                   |                                                                           | ✅                 |
+| `api.none`      | `api.body` indicates the field will be ignored for HTTP `response`                          | The annotation value should be `true`, if else will be treated as invalid | ✅                 |
+| `api.js_conv`   | `api.js_conv` indicates the field should be trans to `string` in response since it is int64 | The annotation value should be `true`, if else will be treated as invalid | ✅                 |
+| `api.raw_body`  | `api.raw_body` indicates the field will be treated as raw body for response                 |                                                                           | ✅                 |
+| `api.cookie`    | `api.cookie` indicates the field will be treated as cookie for HTTP response                |                                                                           | ✅                 |
 
 #### Example
 
@@ -120,18 +120,18 @@ struct BizResponse {
 #### Restrict
 
 - The serialization specified by the `api.serializer` is valid for GET request
-- Each URI corresponds one `method` in IDL by annotation, the  annotation must be written
+- Each URI corresponds one `method` in IDL by annotation, the annotation must be written
 
 #### Annotation Description
 
-| annotation | type | description | example | is KiteX supported |
-| --- | ---- | --- | --- | ------ |
-| `api.get` | `string` | `api.get` corresponds GET method, the value is the HTTP path, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.get = '/life/client/favorite/collect'` |  ✅|
-| `api.post` | `string` | `api.post` corresponds POST method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.post='/life/client/favorite/collect'` |  ✅|
-| `api.put` | `string` | `api.put` corresponds PUT method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.put='/life/client/favorite/collect'` | ✅|
-| `api.delete` | `string` | `api.delete` corresponds DELETE method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.delete='/life/client/favorite/collect'` | ✅|
-| `api.patch` | `string` | `api.delete` corresponds DELETE method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.patch='/life/client/favorite/collect'` | ✅|
-| `api.serializer` | `string` | Request serialization type of client request | Such as `form`, `json`, `thrift` or `pb` | ❌ |
+| annotation       | type     | description                                                                                                                                                                            | example                                      | is KiteX supported |
+| ---------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------ |
+| `api.get`        | `string` | `api.get` corresponds GET method, the value is the HTTP path, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail) | `api.get = '/life/client/favorite/collect'`  | ✅                 |
+| `api.post`       | `string` | `api.post` corresponds POST method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail)                           | `api.post='/life/client/favorite/collect'`   | ✅                 |
+| `api.put`        | `string` | `api.put` corresponds PUT method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail)                             | `api.put='/life/client/favorite/collect'`    | ✅                 |
+| `api.delete`     | `string` | `api.delete` corresponds DELETE method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail)                       | `api.delete='/life/client/favorite/collect'` | ✅                 |
+| `api.patch`      | `string` | `api.delete` corresponds DELETE method, the uri syntex is in accord with gin( we can refer [httprouter](https://github.com/julienschmidt/httprouter) for detail)                       | `api.patch='/life/client/favorite/collect'`  | ✅                 |
+| `api.serializer` | `string` | Request serialization type of client request                                                                                                                                           | Such as `form`, `json`, `thrift` or `pb`     | ❌                 |
 
 #### Example
 

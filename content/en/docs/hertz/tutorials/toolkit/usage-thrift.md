@@ -162,7 +162,7 @@ description: "hz usage(thrift)."
 
 1. When writing the update command, you only need to specify the IDL file that defines the `service`. hz will automatically generate all the dependencies for that file.
 
-3. As you can see
+2. As you can see
 
    Add new method under `biz/handler/hello/example/hello_service.go`<br>
    The file `new_service.go` and the corresponding "NewMethod" method have been added under `biz/handler/hello/example`.
@@ -191,13 +191,13 @@ description: "hz usage(thrift)."
    }
    ```
 
-4. Compile the project
+3. Compile the project
 
    ```bash
    go build
    ```
 
-5. Run the project and test it
+4. Run the project and test it
 
    Run the project:
 

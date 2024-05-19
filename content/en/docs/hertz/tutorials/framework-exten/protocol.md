@@ -2,7 +2,8 @@
 title: "Protocol extension"
 linkTitle: "Protocol extension"
 weight: 5
-keywords: ["Protocol extension", "protocol.Server", "protocol.StreamServer", "HTTP"]
+keywords:
+  ["Protocol extension", "protocol.Server", "protocol.StreamServer", "HTTP"]
 description: "Protocol extensions provided by Hertz."
 ---
 

@@ -37,24 +37,24 @@ OPTIONS:
 
 ## 详细参数
 
-- idl                       指定生成代码所需使用的主 idl 路径
+- idl 指定生成代码所需使用的主 idl 路径
 
-- module/-mod                指定 go mod 名称，非 GOPATH 下必须指定，GOPATH 下默认以相对于 GOPATH 的路径作为名字
+- module/-mod 指定 go mod 名称，非 GOPATH 下必须指定，GOPATH 下默认以相对于 GOPATH 的路径作为名字
 
-- out_dir                   指定代码输出目录, 默认为命令执行目录
+- out_dir 指定代码输出目录, 默认为命令执行目录
 
-- model_dir                 指定 thriftgo 或 protoc 生成的 model 代码目录, 默认为 biz/doc/model
+- model_dir 指定 thriftgo 或 protoc 生成的 model 代码目录, 默认为 biz/doc/model
 
-- dao_dir                   指定生成的 doc curd 代码目录, 默认为 biz/doc/dao
+- dao_dir 指定生成的 doc curd 代码目录, 默认为 biz/doc/dao
 
-- name                      指定生成代码的文档型数据库名称, 默认为 mongodb, 目前仅支持 mongodb
+- name 指定生成代码的文档型数据库名称, 默认为 mongodb, 目前仅支持 mongodb
 
-- proto_search_path/-I    指定 idl 搜索目录, idl type 为 proto 时使用
+- proto_search_path/-I 指定 idl 搜索目录, idl type 为 proto 时使用
 
-- thriftgo/-t             透传给 thriftgo 的参数
+- thriftgo/-t 透传给 thriftgo 的参数
 
-- protoc/-p               透传给 protoc 的参数
+- protoc/-p 透传给 protoc 的参数
 
-- verbose                   默认为 false, 指定为 true 后会输出更详细的日志内容
+- verbose 默认为 false, 指定为 true 后会输出更详细的日志内容
 
-- help/-h                 帮助命令
+- help/-h 帮助命令

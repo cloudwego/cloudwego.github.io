@@ -3,7 +3,13 @@ title: "JSON Marshal Library"
 linkTitle: "JSON Marshal Library"
 date: 2023-08-03
 weight: 19
-keywords: ["JSON Marshal", "Sonic", "Conditional Compilation", "Bringing Your Own JSON Marshal Library"]
+keywords:
+  [
+    "JSON Marshal",
+    "Sonic",
+    "Conditional Compilation",
+    "Bringing Your Own JSON Marshal Library",
+  ]
 description: "The JSON Marshal library and customization capabilities used by Hertz."
 ---
 
@@ -27,7 +33,7 @@ If Sonic does not meet your needs, you may provide your own implementation by ca
 Hertz supports conditional compilation to control the actual json library used, you can use `-tags stdjson` to choose to use the standard library.
 
 ```go
-go build -tags stdjson 
+go build -tags stdjson
 ```
 
 ## Sonic related issues

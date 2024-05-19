@@ -4,7 +4,6 @@ linkTitle: "FAQ"
 weight: 8
 keywords: ["Volo", "FAQ", "volo-cli", "poll_ready"]
 description: 常见问题回答汇总。
-
 ---
 
 ### 为什么 Client 端中间件使用 Arc<Req>？
@@ -33,6 +32,7 @@ Volo 与 Kitex 完全兼容，包括元信息传递等功能。
 这是一个非常精妙的设计，Tower 在 [inventing-the-service-trait](https://tokio.rs/blog/2021-05-14-inventing-the-service-trait) 这篇介绍文章中，也有详细介绍这么设计的原因。
 
 但是在我们真实的开发体验中，我们总结出了以下的经验：
+
 1. 绝大多数的 `poll_ready` 的实现都是直接 `self.inner.poll_ready(cx)`；剩下的 poll_ready 实现更干脆，直接 `Poll::Ready(Ok(()))`。
 2. `poll_ready` 一般不会真正跨服务去 check 负载（也就是说，不会真的发个请求问下游“大兄弟，你还能支棱起来不？”），所以一般也就是在本地的中间件（比如 Tower 的例子是速率限制中间件）里面根据某些特定条件判断一下。
 3. 基于上两条，几乎所有的 `poll_ready` 场景，我们都可以直接在 `call` 里面做达到一样的效果，因为实践中外层的 `service` 在返回 `Poll::Pending` 的时候就是空等，不如直接采用 `async-await` 的方式来编写代码，更符合人体工程学。

@@ -3,9 +3,27 @@ date: 2024-01-10
 title: "Mastering Golang Microservices - A Practical Guide: Embrace High-Performance with Kitex and Hertz"
 projects: ["CloudWeGo"]
 linkTitle: "Mastering Golang Microservices - A Practical Guide: Embrace High-Performance with Kitex and Hertz"
-keywords: ["CloudWeGo", "middleware", "Kitex", "microservice framework", "ByteDance Open Source", "ByteDance","open source", "cloud native", "open source", "kubernetes", "gRPC", "microservices", "rpc", "GO", "Golang", "thrift"]
+keywords:
+  [
+    "CloudWeGo",
+    "middleware",
+    "Kitex",
+    "microservice framework",
+    "ByteDance Open Source",
+    "ByteDance",
+    "open source",
+    "cloud native",
+    "open source",
+    "kubernetes",
+    "gRPC",
+    "microservices",
+    "rpc",
+    "GO",
+    "Golang",
+    "thrift",
+  ]
 description: "Learn how to set up, manage, and optimize Golang microservices efficiently with this guide. It offers practical insights into the usage of Kitex and Hertz, two beginner-friendly, high-performance components of the CloudWeGo project."
-author:  <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>, <a href="https://github.com/GuangmingLuo" target="_blank">Guangming Luo</a>
+author: <a href="https://github.com/yy2so" target="_blank">Yacine Si Tayeb</a>, <a href="https://github.com/GuangmingLuo" target="_blank">Guangming Luo</a>
 ---
 
 ![Image](/img/blog/Mastering_Golang_Microservices_A_Practical_Guide_Embrace_High_Performance_with_Kitex_and_Hertz/1.jpeg)
@@ -30,12 +48,14 @@ As key components of CloudWeGo, Kitex & Hertz, are crucial to getting started. E
 Installing the CLI tool requires confirmation that the `GOPATH` environment variable is correctly defined and accessible. This is followed by installing Kitex, Thriftgo, and Hertz. The correct setup can be verified by running their respective versions. If you encounter any problems, your troubleshooting should involve a check on the setup of the Golang development environment.
 
 ### Kitex & Hertz
+
 #### Prerequisites
-Before diving into CloudWeGo development with Kitex & Hertz, make sure you have set up the Golang development environment. Please follow the Install Go guide if you haven't already. 
 
-We highly recommend using the latest version of Golang, ensuring compatibility with three most recent minor release versions (currently >= v1.16). 
+Before diving into CloudWeGo development with Kitex & Hertz, make sure you have set up the Golang development environment. Please follow the Install Go guide if you haven't already.
 
-Additionally, make sure that `GO111MODULE` is set to `ON`. 
+We highly recommend using the latest version of Golang, ensuring compatibility with three most recent minor release versions (currently >= v1.16).
+
+Additionally, make sure that `GO111MODULE` is set to `ON`.
 
 ### Install the CLI tool
 
@@ -54,38 +74,46 @@ thriftgo x.x.x
 $ hz --version
 vx.x.x
 ```
+
 **Note:** If you encounter any issues during the installation, it's likely due to gaps in the setup of the Golang development environment. Usually, you can quickly find a solution by searching for the error message online.
 
 ## III. Creating A Sample Project
+
 ### Kitex
+
 #### Get the example
 
 1. You can simply click [here](https://github.com/cloudwego/kitex-examples/archive/refs/heads/main.zip) to download the example.
 2. Or you can clone the sample repository `git clone https://github.com/cloudwego/kitex-examples.git`.
 
 #### Run the example
+
 ##### Run with go
+
 1. Change to the `hello` directory. Hello is a simple example of Kitex using the Thrift protocol.
-`cd kitex-examples/hello`
+   `cd kitex-examples/hello`
 2. Run server
-`go run .`
+   `go run .`
 3. Run client
-open another terminal and `go run ./client.`
+   open another terminal and `go run ./client.`
 
 ##### Run with Docker
+
 1. Go to the examples directory
-`cd kitex-examples`
+   `cd kitex-examples`
 2. Build the example project
-`docker build -t kitex-examples`.
+   `docker build -t kitex-examples`.
 3. Run the server
-`docker run --network host kitex-examples ./hello-server`
+   `docker run --network host kitex-examples ./hello-server`
 4. Run the client
-Open another terminal and run `docker run --network host kitex-examples ./hello-client`
+   Open another terminal and run `docker run --network host kitex-examples ./hello-client`
 
 Congratulations! You now have successfully used Kitex to complete an RPC.
 
 ### Hertz
+
 ##### Quick Start
+
 To create a sample project with Hertz, start by creating the `hertz_demo` folder in the current directory and navigate to that directory. Then, create the `main.go` file and add the following code:
 package main
 
@@ -118,13 +146,11 @@ To run the sample code, simply type `go run hertz_demo`. If the server is launch
 2022/05/17 21:47:09.629874 transport.go:84: [Info] HERTZ: HTTP server listening on address=[::]:8888
 ```
 
-
 You can test the interface by typing `curl http://127.0.0.1:8888/ping`. If everything is working correctly, you should see the following output:
 
 ```bash
 {"message":"pong"}
 ```
-
 
 ##### Using CLI tool hz
 
@@ -135,7 +161,7 @@ Assuming you are working on a folder outside of `GOPATH`, create an IDL file cal
 namespace go hello.world
 
 service HelloService {
-    string Hello(1: string name); 
+    string Hello(1: string name);
 }
 ```
 
@@ -155,6 +181,7 @@ While dealing with Kitex errors, the `IsKitexError` method in the kerrors packag
 The Kitex framework automatically recovers all panics except those occurring within the goroutine created by the business code using the `go` keyword.
 
 ### Kitex
+
 #### Exception Instruction
 
 Check for Kitex errors using `kerrors.IsKitexError(kerrors.ErrInternalException)`. You can check for a specified error type using `errors.Is(err, kerrors.ErrNoResolver)`. Also, note that you can use `IsTimeoutError` in kerrors to check whether it's a timeout error.
@@ -194,6 +221,7 @@ if stats := ri.Stats(); stats != nil {
 ```
 
 #### FAQ & Answers
+
 **Q1: `Not enough arguments` problem when installing the code generation tool**
 
 Please try:
@@ -218,6 +246,7 @@ Kitex is based on Apache Thrift v0.13 and cannot be directly upgraded since ther
 We recommend against using `-u` parameters during upgrades. You can run the following command to fix the version: `go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0`
 
 ### Hertz
+
 #### Error Type & Error Chain
 
 To handle errors more effectively, Hertz has predefined several error types:
@@ -264,7 +293,7 @@ type HandlerFunc func(c context.Context, ctx *app.RequestContext)
 
 #### Metadata Storage
 
-Both contexts (c and ctx) have the ability to store values. The choice of which one to use depends on the life cycle of the stored value and the selected context should match. The `ctx` is primarily used to store request-level variables, which are recycled after the request ends. 
+Both contexts (c and ctx) have the ability to store values. The choice of which one to use depends on the life cycle of the stored value and the selected context should match. The `ctx` is primarily used to store request-level variables, which are recycled after the request ends.
 
 It is characterized by high query efficiency (the bottom is map), unsafe coroutines and doesn't implement the `context.Context` Interface. The `c` is passed as the context between middleware/handler. It has all the semantics of context.Content, is safe for coroutines, and all that requires the `context.Content` interface as input arguments can just pass `c` directly.
 
@@ -275,42 +304,57 @@ Monitoring your application is critical. Both Kitex and Hertz provide a Tracer i
 **Note:** As a framework, it runs with business services. Once the code of services is built, it can be deployed at virtual machines, bare metal machines, or Docker containers as it should be.
 
 ### Kitex
+
 #### Configuration and options
+
 For more details, please check [server option](/zh/docs/kitex/tutorials/options/server_options/), [client option](/zh/docs/kitex/tutorials/options/client_options/), and [call option](/zh/docs/kitex/tutorials/options/call_options/).
 
 ##### Observability
+
 ###### Instrumentation Control
+
 Kitex supports flexible enabling of basic and fine-grained Instrumentation. This includes a stats level, client tracing stats level control, server tracing stats level control, and more. For more details, please refer to the [Kitex User Guide](/docs/kitex/tutorials/observability/).
 
 ##### Logging
+
 Kitex supports default logger implementation, injection of custom loggers, and redirection of default logger output. For more details, instructions, and examples, please refer to the [Kitex User Guide](/docs/kitex/tutorials/observability/).
 
 ##### Tracing
+
 Kitex’s OpenTelemetry extension provides support for tracing. For more details, instructions, and examples, please refer to the [Kitex User Guide](/docs/kitex/tutorials/observability/).
 
 ##### Monitoring
+
 The framework doesn’t provide any monitoring, but it provides a Tracer interface. This interface can be implemented by yourself and be injected via WithTracer Option. For more details, instructions, and examples, please refer to the [Kitex User Guide](/docs/kitex/tutorials/observability/).
 
 ### Hertz
+
 #### Configuration and options
+
 For more details, please check the [configuration instructions](/docs/hertz/reference/config/).
 
 ##### Observability
+
 ###### Instrumentation
+
 Hertz supports flexible enabling of basic and fine-grained Instrumentation. This includes a stats level, stats level control, and more. For more details, please refer to the [Hertz User Guide](/docs/hertz/tutorials/observability/).
 
 ##### Log
+
 Hertz provides a default way to print logs in the standard output. It also provides several global functions, such as `hlog.Info`, `hlog.Errorf`, `hlog.CtxTracef`, and more, which are implemented in `pkg/common/hlog`, to call the corresponding methods of the default logger. For more details, instructions, and examples, please refer to the [Hertz User Guide](/docs/hertz/tutorials/observability/).
 
 ##### Tracing
+
 In microservices, link tracing is a very important capability, which plays an important role in quickly locating problems, analyzing business bottlenecks, and restoring the link status of a request.
 Hertz provides the capability of link tracking and also supports user-defined link tracking. For more details, instructions, and examples, please refer to the [Hertz User Guide](/docs/hertz/tutorials/observability/).
 
 ##### Monitoring
+
 The framework doesn’t provide any monitoring, but it provides a Tracer interface. This interface can be implemented by yourself and be injected via WithTracer Option. For more details, instructions, and examples, please refer to the [Hertz User Guide](/docs/hertz/tutorials/observability/).
 
 ## VI. Best Practices for Developing with CloudWeGo
-For a real-world application of Kitex and Hertz, you can explore projects like [Bookinfo](https://github.com/cloudwego/biz-demo/tree/main/bookinfo), [Easy Note](https://github.com/cloudwego/biz-demo/tree/main/easy_note), and [Book Shop](https://github.com/cloudwego/biz-demo/tree/main/book-shop). Each of these scenarios demonstrate different business scenarios and use-cases for various CloudWeGo subprojects. 
+
+For a real-world application of Kitex and Hertz, you can explore projects like [Bookinfo](https://github.com/cloudwego/biz-demo/tree/main/bookinfo), [Easy Note](https://github.com/cloudwego/biz-demo/tree/main/easy_note), and [Book Shop](https://github.com/cloudwego/biz-demo/tree/main/book-shop). Each of these scenarios demonstrate different business scenarios and use-cases for various CloudWeGo subprojects.
 
 Whether you're dealing with merchant or consumer management, notes maintenance, or integrating different middleware, these projects provide valuable insights into the powerful capabilities of Kitex and Hertz in different contexts.
 

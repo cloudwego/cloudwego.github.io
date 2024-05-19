@@ -3,7 +3,6 @@ title: "在调用时指定 CallOpt"
 linkTitle: "在调用时指定 CallOpt"
 weight: 1
 description: >
-
 ---
 
 为了增加框架的灵活性和易用性，Volo 允许用户在 Client 端使用 `CallOpt` 针对单个请求设置一些请求的元信息。

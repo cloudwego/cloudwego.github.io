@@ -13,25 +13,28 @@ Kitex supports xDS API via the extension of [kitex-contrib/xds](https://github.c
 
 ## Feature
 
-* Service Discovery
-* Traffic Route: only support `exact` match for `method` and support `exact` `prefix` `regex` match for `header`.
-    * [HTTP route configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/http/http_routing#arch-overview-http-routing): configure via [VirtualService](https://istio.io/latest/docs/reference/config/networking/virtual-service/).
-    * [ThriftProxy](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/thrift_proxy/v3/thrift_proxy.proto): configure via patching [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/).
-* Timeout:
-    * Configuration inside `HTTP route configuration`: configure via VirtualService.
+- Service Discovery
+- Traffic Route: only support `exact` match for `method` and support `exact` `prefix` `regex` match for `header`.
+  - [HTTP route configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/http/http_routing#arch-overview-http-routing): configure via [VirtualService](https://istio.io/latest/docs/reference/config/networking/virtual-service/).
+  - [ThriftProxy](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/thrift_proxy/v3/thrift_proxy.proto): configure via patching [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/).
+- Timeout:
+  - Configuration inside `HTTP route configuration`: configure via VirtualService.
 
 ## Usage
+
 There are two steps for enabling xDS for Kitex applications: 1. xDS module initialization and 2. Kitex Client/Server Option configuration.
 
 ### xDS module
+
 To enable xDS mode in Kitex, we should invoke `xds.Init()` to initialize the xds module, including the `xdsResourceManager` and `xdsClient`.
 
 #### Bootstrap
+
 The `xdsClient` is responsible for the interaction with the xDS Server (i.e. Istio). It needs some environment variables for initialization, which need to be set inside the `spec.containers.env` of the Kubernetes Manifest file in YAML format.
 
-* `POD_NAMESPACE`: the namespace of the current service.
-*  `POD_NAME`: the name of this pod.
-*  `INSTANCE_IP`: the ip of this pod.
+- `POD_NAMESPACE`: the namespace of the current service.
+- `POD_NAME`: the name of this pod.
+- `INSTANCE_IP`: the ip of this pod.
 
 Add the following part to the definition of your container that uses xDS-enabled Kitex client.
 
@@ -55,7 +58,7 @@ valueFrom:
 For now, we only provide the support on the client-side.
 To use a xds-enabled Kitex client, you should specify `destService` using the URL of your target service and add one option `WithXDSSuite`.
 
-* Construct a `xds.ClientSuite` that includes `RouteMiddleware` and `Resolver`, and then pass it into the `WithXDSSuite` option.
+- Construct a `xds.ClientSuite` that includes `RouteMiddleware` and `Resolver`, and then pass it into the `WithXDSSuite` option.
 
 ```
 // import "github.com/cloudwego/kitex/pkg/xds"
@@ -66,7 +69,7 @@ client.WithXDSSuite(xds.ClientSuite{
 }),
 ```
 
-* The URL of the target service should be in the format, which follows the format in [Kubernetes](https://kubernetes.io/):
+- The URL of the target service should be in the format, which follows the format in [Kubernetes](https://kubernetes.io/):
 
 ```
 <service-name>.<namespace>.svc.cluster.local:<service-port>
@@ -80,8 +83,9 @@ client.WithXDSSuite(xds.ClientSuite{
 We can define traffic route configuration via [VirtualService](https://istio.io/latest/docs/reference/config/networking/virtual-service/) in Istio.
 
 The following example indicates that when the tag meets one of the conditions in the header, the request will be routed to the `v1` subcluster of `kitex-server`.
+
 - `stage` exact match `canary`
-- `userid` prefix match `2100` 
+- `userid` prefix match `2100`
 - `env` regex match `[dev|sit]`
 
 ```
@@ -114,7 +118,8 @@ spec:
 
 To match the rule defined in VirtualService, we can use `client.WithTag(key, val string)` or `callopt.WithTag(key, val string)`to specify the tags, which will be used to match the rules.
 
-* Set key and value to be "stage" and "canary" to match the above rule defined in VirtualService.
+- Set key and value to be "stage" and "canary" to match the above rule defined in VirtualService.
+
 ```
 client.WithTag("stage", "canary")
 callopt.WithTag("stage", "canary")
@@ -126,7 +131,7 @@ Same as above, using [VirtualService](https://istio.io/latest/docs/reference/con
 
 The example below shows that requests with method equal to SayHello are routed to the `v1` subcluster of `kitex-server`. It should be noted that when defining rules, you need to include package name and service name, corresponding to `namespace` and `service` in thrift idl.
 
-* uri:  `/${PackageName}.${ServiceName}/${MethodName}`
+- uri: `/${PackageName}.${ServiceName}/${MethodName}`
 
 ```
 apiVersion: networking.istio.io/v1alpha3
@@ -150,8 +155,8 @@ spec:
     timeout: 0.5s
 ```
 
-
 ## Example
+
 The usage is as follows:
 
 ```
@@ -190,7 +195,9 @@ func main() {
 Detailed examples can be found here [kitex-proxyless-example](https://github.com/cloudwego/kitex-examples/tree/main/proxyless).
 
 ## Limitation
+
 ### mTLS
+
 mTLS is not supported for now. Please disable mTLS via configuring PeerAuthentication.
 
 ```
@@ -205,10 +212,11 @@ spec:
 ```
 
 ### Limited support for Service Governance
+
 Current version only support Service Discovery, Traffic route and Timeout Configuration via xDS on the client-side.
 
 Other features supported via xDS, including Load Balancing, Rate Limit and Retry etc., will be added in the future.
 
-
 ## Dependencies
+
 Kitex >= v0.4.0

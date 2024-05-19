@@ -4,7 +4,6 @@ date: 2022-10-16
 weight: 14
 keywords: ["Hooks", "StartHook", "ShutdownHook", "OnAccept", "OnConnect"]
 description: "The hooks function provided by Hertz."
-
 ---
 
 **Hook** is a generic concept that indicates the action that accompanies an event when it is triggered.
@@ -35,7 +34,7 @@ package main
 
 import (
     "context"
-    
+
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/cloudwego/hertz/pkg/common/hlog"
@@ -67,7 +66,7 @@ func main() {
 }
 ```
 
-Note:  After triggering startup, The logs of the three `StartHook` functions will be printed in the terminal **in order**.
+Note: After triggering startup, The logs of the three `StartHook` functions will be printed in the terminal **in order**.
 
 ```shell
 main.go:17: [Info] run the first start hook
@@ -141,7 +140,7 @@ package main
 import (
     "context"
     "time"
-    
+
     "github.com/cloudwego/hertz/pkg/app"
     "github.com/cloudwego/hertz/pkg/app/server"
     "github.com/cloudwego/hertz/pkg/common/hlog"

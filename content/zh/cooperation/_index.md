@@ -1,6 +1,6 @@
 ---
-title: '案例'
-linkTitle: '用户案例'
+title: "案例"
+linkTitle: "用户案例"
 menu:
   main:
     weight: 40
@@ -58,6 +58,11 @@ CloudWeGo 关注真实企业用户落地，构建企业用户支持体系和维�
 {{< card header="方正证券-金融科技云原生微服务建设实践" img="/img/usedby/foundersc.jpeg">}}
 2023 年年初方正证券启动了微服务体系建设，主要涉及到微服务治理，可观测性能力，接口管理等相关工作内容。其中 Web 和 RPC 应用框架分别采用的 CloudWeGo 的 Hertz 和 Kitex。<br/><br/>
 <a href='{{< relref "foundersc" >}}'>了解更多</a>
+{{< /card >}}
+
+{{< card header="Kitex Thrift Streaming 在字节跳动 Prompt 平台的实践" img="/img/usedby/bytedance.png">}}
+字节跳动 Prompt 平台借助 Kitex 的 Thrift streaming 能力，成功实现了流式接口的落地，从而为用户提供了流畅、高效的打字机效果大模型结果输出体验。<br/><br/>
+<a href='{{< relref "flow" >}}'>了解更多</a>
 {{< /card >}}
 
 {{< /cardpane >}}

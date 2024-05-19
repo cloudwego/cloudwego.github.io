@@ -4,7 +4,6 @@ date: 2022-10-01
 weight: 13
 keywords: ["重试", "Client"]
 description: "Hertz 为用户提供的自定义重试逻辑。"
-
 ---
 
 Hertz 为用户提供了自定义的重试逻辑，下面来看一下 Client 的 Retry 使用方法。**注意：Hertz 版本 >= v0.4.0**
@@ -30,13 +29,13 @@ func main() {
 }
 ```
 
-| 配置名称            | 类型                                                         | 介绍                                                         |
-| :------------------ | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| WithMaxAttemptTimes | uint                                                         | 用于设置最大尝试次数，默认 1 次（即只请求 1 次不重试）           |
-| WithInitDelay       | time.Duration                                                | 用于设置初始延迟时间，默认 1ms                               |
-| WithMaxDelay        | time.Duration                                                | 用于设置最大延迟时间，默认 100ms                              |
-| WithMaxJitter       | time.Duration                                                | 用于设置最大扰动时间，需要配合 RandomDelayPolicy 使用，会生成不超过最大扰动时间的随机时间，默认 20ms |
-| WithDelayPolicy     | type DelayPolicyFunc func(attempts uint, err error, retryConfig *Config) time.Duration | 用于设置延迟策略，可以使用以下四种的任意结合，FixedDelayPolicy,  BackOffDelayPolicy, RandomDelayPolicy, DefaultDelayPolicy（[详情见下一小节：**延迟策略**](#延迟策略)）默认使用 DefaultDelayPolicy（即重试延迟为 0） |
+| 配置名称            | 类型                                                                                    | 介绍                                                                                                                                                                                                                |
+| :------------------ | :-------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| WithMaxAttemptTimes | uint                                                                                    | 用于设置最大尝试次数，默认 1 次（即只请求 1 次不重试）                                                                                                                                                              |
+| WithInitDelay       | time.Duration                                                                           | 用于设置初始延迟时间，默认 1ms                                                                                                                                                                                      |
+| WithMaxDelay        | time.Duration                                                                           | 用于设置最大延迟时间，默认 100ms                                                                                                                                                                                    |
+| WithMaxJitter       | time.Duration                                                                           | 用于设置最大扰动时间，需要配合 RandomDelayPolicy 使用，会生成不超过最大扰动时间的随机时间，默认 20ms                                                                                                                |
+| WithDelayPolicy     | type DelayPolicyFunc func(attempts uint, err error, retryConfig \*Config) time.Duration | 用于设置延迟策略，可以使用以下四种的任意结合，FixedDelayPolicy, BackOffDelayPolicy, RandomDelayPolicy, DefaultDelayPolicy（[详情见下一小节：**延迟策略**](#延迟策略)）默认使用 DefaultDelayPolicy（即重试延迟为 0） |
 
 ### 延迟策略
 
@@ -52,13 +51,13 @@ cli, err := client.NewClient(
 	)
 ```
 
-| 函数名称           | 说明                                                         |
-| :----------------- | :----------------------------------------------------------- |
+| 函数名称           | 说明                                                                                                                                                                              |
+| :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | CombineDelay       | 用于将下面四种策略进行任意组合，将所选策略计算出的值进行加和。当你只需要下面四种策略中的一种时，你可以选择使用 CombineDelay 或选择直接将任意一种策略传入 WithDelayPolicy 作为参数 |
-| FixedDelayPolicy   | 用于设置固定延迟时间，使用 WithInitDelay 设置的值，来生成等值的延迟时间 |
-| BackOffDelayPolicy | 用于设置指数级延迟时间，使用 WithInitDelay 设置的值，根据当前是第几次重试，指数级生成延迟时间 |
-| RandomDelayPolicy  | 用于设置随机延迟时间，使用 WithMaxJitter 设置的值，生成不超过该值的随机延迟时间 |
-| DefaultDelayPolicy | 用于设置默认延迟时间，返回 0，一般单独使用，和其他策略结合没有效果 |
+| FixedDelayPolicy   | 用于设置固定延迟时间，使用 WithInitDelay 设置的值，来生成等值的延迟时间                                                                                                           |
+| BackOffDelayPolicy | 用于设置指数级延迟时间，使用 WithInitDelay 设置的值，根据当前是第几次重试，指数级生成延迟时间                                                                                     |
+| RandomDelayPolicy  | 用于设置随机延迟时间，使用 WithMaxJitter 设置的值，生成不超过该值的随机延迟时间                                                                                                   |
+| DefaultDelayPolicy | 用于设置默认延迟时间，返回 0，一般单独使用，和其他策略结合没有效果                                                                                                                |
 
 ### 完整示例
 
@@ -108,7 +107,7 @@ cli.SetRetryIfFunc(func(req *protocol.Request, resp *protocol.Response, err erro
 })
 ```
 
-需要注意的是，如果你没有设置 `client.SetRetryIfFunc()`。我们将会按照 Hertz 默认的重试发生条件进行判断，即判断请求是否满足下面的 `DefaultRetryIf()` 函数并且判断该调用是否是幂等调用（幂等调用：即 [pkg/protocol/http1/client.go::Do()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L328 ) 和 [pkg/protocol/http1/client.go::doNonNilReqResp()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L411) 中 `canIdempotentRetry` 为 true 的 [情况](#table1)）
+需要注意的是，如果你没有设置 `client.SetRetryIfFunc()`。我们将会按照 Hertz 默认的重试发生条件进行判断，即判断请求是否满足下面的 `DefaultRetryIf()` 函数并且判断该调用是否是幂等调用（幂等调用：即 [pkg/protocol/http1/client.go::Do()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L328) 和 [pkg/protocol/http1/client.go::doNonNilReqResp()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L411) 中 `canIdempotentRetry` 为 true 的 [情况](#table1)）
 
 ```Go
 // DefaultRetryIf Default retry condition, mainly used for idempotent requests.
@@ -147,11 +146,11 @@ func isIdempotent(req *protocol.Request, resp *protocol.Response, err error) boo
 
 <a id="table1">Table - 1</a> Hertz 源码 [doNonNilReqResp()](https://github.com/cloudwego/hertz/blob/develop/pkg/protocol/http1/client.go#L411) 中 `canIdempotentRetry` 为 true 的情况
 
-| doNonNilReqResp() 返回 true 的情况                           |
-| ------------------------------------------------------------ |
-| err = conn.SetWriteDeadline(currentTime.Add(c.WriteTimeout)) |
-| err = reqI.Write(req, zw)                                    |
-| err = reqI.ProxyWrite(req, zw)                               |
-| err = zw.Flush()                                             |
-| err = conn.SetReadTimeout(c.ReadTimeout)                     |
+| doNonNilReqResp() 返回 true 的情况                                                                          |
+| ----------------------------------------------------------------------------------------------------------- |
+| err = conn.SetWriteDeadline(currentTime.Add(c.WriteTimeout))                                                |
+| err = reqI.Write(req, zw)                                                                                   |
+| err = reqI.ProxyWrite(req, zw)                                                                              |
+| err = zw.Flush()                                                                                            |
+| err = conn.SetReadTimeout(c.ReadTimeout)                                                                    |
 | ( err = respI.ReadHeaderAndLimitBody() \|\| err = respI.ReadBodyStream() ) && (err != errs.ErrBodyTooLarge) |

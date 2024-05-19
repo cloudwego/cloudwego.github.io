@@ -4,7 +4,6 @@ date: 2021-08-31
 weight: 3
 keywords: ["Kitex", "timeout"]
 description: "There are several types of Timeout in Kitex: Client connection timeout, Client RPC timeout, Server read/write timeout, and Server exit timeout."
-
 ---
 
 ## How to Use
@@ -16,6 +15,7 @@ description: "There are several types of Timeout in Kitex: Client connection tim
 ##### Connection Timeout (default=50ms)
 
 Note:
+
 1. This is the maximum waiting time for establishing a new connection;
 2. It can be set to any value (no upper limit); if not set, the default value is 50ms;
 3. If you frequently encounter "dial timeout", try increasing the value and using the long connection pool (see client.WithLongConnection).
@@ -23,6 +23,7 @@ Note:
 ##### RPC Timeout (default=0, no limit)
 
 Note:
+
 1. This is the maximum time limit for one RPC call; If timeout occurs, `kerrors.ErrRPCTimeout` is returned;
 2. Any value can be specified (no upper limit); if not specified, the default value is 0, meaning no timeout limit;
 3. No retry will be sent by default in case of timeout.
@@ -32,6 +33,7 @@ Note:
 ##### By code - Client Option (per-client config)
 
 Specified when initializing client:
+
 ```go
 import "github.com/cloudwego/kitex/client"
 
@@ -39,18 +41,21 @@ cli, err := xxx.NewClient(targetService,
     client.WithConnectTimeout(100 * time.Millisecond),
     client.WithRPCTimeout(2 * time.Second))
 ```
+
 Note: The two configuration items can be specified independently as needed.
 
 ##### By code - Call Option（per-request config; priority over client option）
 
 Specified when sending the request:
+
 ```go
 import "github.com/cloudwego/kitex/client/callopt"
 
-rsp, err := cli.YourMethod(ctx, req, 
+rsp, err := cli.YourMethod(ctx, req,
     callopt.WithConnectTimeout(100 * time.Millisecond))
     callopt.WithRPCTimeout(2 * time.Second))
 ```
+
 Note: The two configuration items can be specified independently as needed.
 
 ##### Dynamic Config - TimeoutProvider (priority lower than the options above)
@@ -58,6 +63,7 @@ Note: The two configuration items can be specified independently as needed.
 Applicable to scenarios that require dynamic configuration. Before each request, the Client will call the `TimeoutProvider`` specified to obtain RPCTimeout and ConnectionTimeout.
 
 Specify a user-defined `rpcinfo.TimeoutProvider` when initializing the client:
+
 ```go
 import (
     "github.com/cloudwego/kitex/client"
@@ -78,6 +84,7 @@ cli, err := xxx.NewClient(targetService, opt)
 ##### Configuration Center Extension
 
 Available extension(s):
+
 - [config-nacos](https://github.com/kitex-contrib/config-nacos): Use Nacos as the configuration center, support timeout, retry, circuitbreak, and server side limiter.
 
 #### Error for Timeout
@@ -85,6 +92,7 @@ Available extension(s):
 ##### Request Timeout (kerrors.ErrRPCTimeout)
 
 When a request times out, the `error` received by the Client will be:
+
 ```go
 &kerrors.DetailedError {
     basic: kerrors.ErrRPCTimeout,
@@ -107,6 +115,7 @@ By default, reasons of ErrRPCTimeout may be:
 In some scenarios, it's necessary to distinguish these reasons, such as issuing multiple requests at the same time expecting only one request to be successful, and cancelling other requests. However, other requests cancelled are not regarded as RPC or business error, and should be filtered to avoid unwanted alarms.
 
 Considering compatibility, this configuration is disabled by default and needs to be set by code:
+
 ```go
 import "github.com/cloudwego/kitex/pkg/rpctimeout"
 
@@ -129,6 +138,7 @@ For example, Kitex sets a 1s timeout:
 - If the timeout is between 950ms and 1s, it's currently conservatively determined to be the timer set by Kitex because it can not be accurately judged.
 
 The threshold (50ms) can be modified under Kitex >= 0.7.1 by:
+
 ```go
 rpctimeout.SetBusinessTimeoutThreshold(10 * time.Millisecond)
 ```
@@ -140,6 +150,7 @@ rpctimeout.SetBusinessTimeoutThreshold(10 * time.Millisecond)
 ##### ReadWriteTimeout (default=5s)
 
 NOTE:
+
 1. This is the maximum waiting time that can be tolerated for reading and writing data on the connection, mainly to prevent abnormal connections from blocking the goroutine.
 2. This is not the Handler execution timeout;
 3. It only takes effect on the server side and it won't be a problem in most cases.
@@ -149,6 +160,7 @@ For example, on the client side, request is sent in multiple segments. If the in
 ##### ExitWaitTime（default=5s）
 
 NOTE：
+
 1. After receiving an exit signal, the server will wait for an ExitWaitTime before exit;
 2. If the waiting time is exceeded, the server will forcibly terminate all requests being processed (the client will receive an error).
 
@@ -161,6 +173,7 @@ NOTE：
 For detailed usage, please refer to the example code below.
 
 NOTE:
+
 - For Streaming API requests: enabled by default via another way
   - Including GRPC/Protobuf and Thrift Streaming
   - Client's `ctx.Deadline()` is sent via header `grpc-timeout` to server which will be added to the server request's ctx
@@ -202,12 +215,14 @@ svr := yourservice.NewServer(handler,
 This Option should be used with TTHeader; please refer to the example code below.
 
 Client
+
 - Specify TTHeader as Transport Protocol
 - Enable [transmeta.ClientTTHeaderHandler](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/transmeta/ttheader.go#L45)
 - Specify an RPC timeout by client.WithRPCTimeout (or by callopt.WithRPCTimeout when sending a request)
+
 ```go
 cli := yourservice.MustNewClient(
-    serverName, 
+    serverName,
     client.WithTransportProtocol(transport.TTHeader),
     client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
     client.WithRPCTimeout(time.Second),
@@ -215,15 +230,16 @@ cli := yourservice.MustNewClient(
 ```
 
 Server
+
 - Specify this option
 - Enable [transmeta.ServerTTHeaderHandler](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/transmeta/ttheader.go#L46)
+
 ```
 svr := yourservice.NewServer(handler,
     server.WithMetaHandler(transmeta.ServerTTHeaderHandler),
     server.WithEnableContextTimeout(true),
 )
 ```
-
 
 ## FAQ
 

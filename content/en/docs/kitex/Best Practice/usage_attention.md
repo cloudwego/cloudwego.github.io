@@ -20,11 +20,11 @@ If there is indeed a scenario where asynchronous usage is required, there are tw
       "github.com/cloudwego/kitex/pkg/rpcinfo"
   )
   // this creates a read-only copy of `ri` and attaches it to the new context
-  ctx2 := rpcinfo.FreezeRPCInfo(ctx) 
+  ctx2 := rpcinfo.FreezeRPCInfo(ctx)
   go func(ctx context.Context) {
       // ...
       ri := rpcinfo.GetRPCInfo(ctx) // OK
-      
+
       //...
   }(ctx2)
   ```
@@ -33,7 +33,7 @@ If there is indeed a scenario where asynchronous usage is required, there are tw
 
 ## Do not create a new Kitex client for each request
 
-The Kitex client object manages resources related to remote configuration, service discovery cache, connection pool, and other Service-related resources. It creates several goroutines to perform various asynchronous update tasks. 
+The Kitex client object manages resources related to remote configuration, service discovery cache, connection pool, and other Service-related resources. It creates several goroutines to perform various asynchronous update tasks.
 If Kitex clients are frequently created, it will cause a sudden increase in CPU usage, frequent timeouts in RPC calls, service discovery, and remote configuration retrieval, as well as a large increase in the number of goroutines.
 
 **Correct usage**: Create a Kitex client for each downstream service being accessed, and cache it. Then, whenever you need to make a request to the downstream service, use the corresponding method of the cached Kitex client. The same client can be used concurrently and safely.

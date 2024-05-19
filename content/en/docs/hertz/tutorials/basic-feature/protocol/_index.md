@@ -4,7 +4,6 @@ date: 2022-05-23
 weight: 7
 keywords: ["TLS", "ALPN", "Websocket", "HTTP2", "HTTP3", "SSE"]
 description: "Hertz supported protocols."
-
 ---
 
 ## TLS
@@ -24,7 +23,7 @@ Hertz implements support for WebSocket based on `hijack`.
 
 Hertz references [net/http2](https://github.com/golang/net/tree/master/http2) to implement support for HTTP2, while also supporting both h2 and h2c.
 
-## HTTP3 
+## HTTP3
 
 Hertz reference [quic-go](https://github.com/quic-go/quic-go) to implement support for HTTP3.
 

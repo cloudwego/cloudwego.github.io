@@ -4,7 +4,6 @@ date: 2023-05-12
 weight: 6
 keywords: ["SSE", "HTTP", "Server-Sent Events"]
 description: "Hertz 支持 SSE，允许服务器端通过简单的 HTTP 响应向客户端发送事件。"
-
 ---
 
 SSE 是 Server-Sent Events 的缩写，是一种服务器推送技术，它允许服务器端通过简单的 HTTP 响应向客户端发送事件。
@@ -30,9 +29,9 @@ import (
 	"context"
 	"net/http"
 	"time"
-	
+
 	"github.com/hertz-contrib/sse"
-	
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -40,12 +39,12 @@ import (
 
 func main() {
 	h := server.Default()
-	
+
 	h.GET("/sse", func(ctx context.Context, c *app.RequestContext) {
 		// 客户端可以通过 Last-Event-ID 告知服务器收到的最后一个事件
 		lastEventID := sse.GetLastEventID(c)
 		hlog.CtxInfof(ctx, "last event ID: %s", lastEventID)
-		
+
 		// 在第一次渲染调用之前必须先行设置状态代码和响应头文件
 		c.SetStatusCode(http.StatusOK)
 		s := sse.NewStream(c)
@@ -60,7 +59,7 @@ func main() {
 			}
 		}
 	})
-	
+
 	h.Spin()
 }
 ```
@@ -82,9 +81,9 @@ import (
 var wg sync.WaitGroup
 
 func main() {
-  wg.Add(2)	
+  wg.Add(2)
   go func() {
-    // 传入 server 端 URL 初始化客户端  	  
+    // 传入 server 端 URL 初始化客户端
     c := sse.NewClient("http://127.0.0.1:8888/sse")
 
     // 连接到服务端的时候触发
@@ -121,7 +120,7 @@ func main() {
   }()
 
   go func() {
-    // 传入 server 端 URL 初始化客户端  
+    // 传入 server 端 URL 初始化客户端
     c := sse.NewClient("http://127.0.0.1:8888/sse")
 
     // 连接到服务端的时候触发
@@ -182,14 +181,14 @@ package main
 
 func main() {
     h := server.Default()
-    
+
     h.GET("/sse", func(ctx context.Context, c *app.RequestContext) {
         c.SetStatusCode(http.StatusOK)
         c.Response.Header.Set("X-Accel-Buffering", "no")
         s := sse.NewStream(c)
 		// ...
     })
-   
+
 }
 ```
 
@@ -213,7 +212,7 @@ type Event struct {
 函数签名:
 
 ```go
-func (c *Stream) Publish(event *Event) error 
+func (c *Stream) Publish(event *Event) error
 ```
 
 ### GetLastEventID

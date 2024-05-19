@@ -10,10 +10,10 @@ description: >
 
 ### **Feature**
 
-**1. Fallback:  Support fallback for client-side**
+**1. Fallback: Support fallback for client-side**
 
-When the RPC requests fail, users usually have some degradation measures to ensure the effective response (for example, construct the default response after the request timeout or circuit breaker). 
-Kitex's Fallback supports the processing of all error requests. At the same time, because business errors are usually returned through the Resp (BaseResp field), Kitex also supports the processing of Resp. 
+When the RPC requests fail, users usually have some degradation measures to ensure the effective response (for example, construct the default response after the request timeout or circuit breaker).
+Kitex's Fallback supports the processing of all error requests. At the same time, because business errors are usually returned through the Resp (BaseResp field), Kitex also supports the processing of Resp.
 Refer to [Fallback](/docs/kitex/tutorials/service-governance/fallback/).
 
 **2. Kitex - gRPC: Client add TLS option configuration**
@@ -23,9 +23,8 @@ Setup via client.WithGRPCTLSConfig option.
 **3. Kitex - Tool**
 
 - **Support customized scaffold templates**, refer to [Custom Scaffold Template](/docs/kitex/tutorials/code-gen/custom_tpl/)
-- **Support specifying the directory for generating code**, refer to  [Code Generation Tool -gen-path](/docs/kitex/tutorials/code-gen/code_generation/#-gen-path)
+- **Support specifying the directory for generating code**, refer to [Code Generation Tool -gen-path](/docs/kitex/tutorials/code-gen/code_generation/#-gen-path)
 - **Support using protoc plugin**, refer to [Code Generation Tool -protobuf-plugin](/docs/kitex/tutorials/code-gen/code_generation/#-protobuf-plugin)
-
 
 ### **Optimization**
 
@@ -61,7 +60,7 @@ Upgrade the frugal and pid dependency lib to support go 1.20.
 ### Optimize
 
 - [[#750](https://github.com/cloudwego/kitex/pull/750)] optimize(generic): generic call write zero value for required and default fields to meet the specification of apache thrift and keep consistent with normal thrift encode of Kitex.
-- [[#739](https://github.com/cloudwego/kitex/pull/739)] optimize(generic): modify the url routing  to align with Hertz for HTTP generic call
+- [[#739](https://github.com/cloudwego/kitex/pull/739)] optimize(generic): modify the url routing to align with Hertz for HTTP generic call
 - [[#752](https://github.com/cloudwego/kitex/pull/752)] optimize(ttheader): attach part of ttheader binary into error when readKVInfo failed, which is useful for troubleshooting
 - [[#821](https://github.com/cloudwego/kitex/pull/821)] optimize(config): add DeepCopy() & Equals() to circuitbreaker.CBConfig and retry.Policy
 - [[#827](https://github.com/cloudwego/kitex/pull/827)] optimize: revise the remoteInfo of retry call, using the remoteInfo of the RPCCall that returns
@@ -101,4 +100,3 @@ Upgrade the frugal and pid dependency lib to support go 1.20.
 - [[#761](https://github.com/cloudwego/kitex/pull/761)] docs: update README.md @fuergaosi233
 - [[#817](https://github.com/cloudwego/kitex/pull/817), [#832](https://github.com/cloudwego/kitex/pull/832)] chore: upgrade dependency lib to adapt go 1.20
 - [[#772](https://github.com/cloudwego/kitex/pull/772)] chore: modify kitex gen code meta file name from kitex.yaml to kitex_info.yaml
-

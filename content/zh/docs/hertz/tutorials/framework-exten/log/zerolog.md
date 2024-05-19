@@ -4,7 +4,6 @@ linkTitle: "zerolog"
 weight: 4
 keywords: ["日志扩展", "zerolog"]
 description: "Hertz 对接 zerolog 和 lumberjack。"
-
 ---
 
 ## Logger 结构体
@@ -142,7 +141,7 @@ func main() {
 函数签名：
 
 ```go
-func WithOutput(out io.Writer) Opt 
+func WithOutput(out io.Writer) Opt
 ```
 
 示例代码：
@@ -169,7 +168,7 @@ func main() {
 函数签名：
 
 ```go
-func WithLevel(level hlog.Level) Opt 
+func WithLevel(level hlog.Level) Opt
 ```
 
 示例代码：
@@ -196,7 +195,7 @@ func main() {
 函数签名：
 
 ```go
-func WithField(name string, value interface{}) Opt 
+func WithField(name string, value interface{}) Opt
 ```
 
 示例代码：
@@ -236,7 +235,7 @@ func main() {
 函数签名：
 
 ```go
-func WithFields(fields map[string]interface{}) Opt 
+func WithFields(fields map[string]interface{}) Opt
 ```
 
 示例代码：
@@ -265,7 +264,7 @@ func main() {
 函数签名：
 
 ```go
-func WithTimestamp() Opt 
+func WithTimestamp() Opt
 ```
 
 示例代码：
@@ -290,7 +289,7 @@ func main() {
 函数签名：
 
 ```go
-func WithFormattedTimestamp(format string) Opt 
+func WithFormattedTimestamp(format string) Opt
 ```
 
 示例代码：
@@ -316,7 +315,7 @@ func main() {
 函数签名：
 
 ```go
-func WithCaller() Opt 
+func WithCaller() Opt
 ```
 
 示例代码：
@@ -366,7 +365,7 @@ func main() {
 函数签名：
 
 ```go
-func WithCallerSkipFrameCount(skipFrameCount int) Opt 
+func WithCallerSkipFrameCount(skipFrameCount int) Opt
 ```
 
 示例代码：
@@ -390,7 +389,7 @@ func main() {
 函数签名：
 
 ```go
-func WithHook(hook zerolog.Hook) Opt 
+func WithHook(hook zerolog.Hook) Opt
 ```
 
 示例代码：

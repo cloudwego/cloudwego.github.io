@@ -7,7 +7,7 @@ description: >
 
 ## Simple Example
 
-### Create video.thrift 
+### Create video.thrift
 
 ```thrift
 namespace go video
@@ -99,5 +99,3 @@ cwgo doc --idl user.thrift --module {your module name}
 ### Generate Code
 
 The directory structure for generating code refers to [layout](/docs/cwgo/tutorials/doc/layout/).
-
-

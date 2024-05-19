@@ -58,7 +58,7 @@ Redis 扩展提供了 `WithRefreshInterval` 配置存储服务信息的 Key 的�
 函数签名：
 
 ```go
-func WithRefreshInterval(interval int) Option 
+func WithRefreshInterval(interval int) Option
 ```
 
 示例代码：

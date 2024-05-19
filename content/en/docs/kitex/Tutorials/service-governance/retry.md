@@ -28,25 +28,25 @@ Only one of the `Exception Retry` and `Backup Request` policies can be configure
 
 The default is for timeout retry only, and it can be configured to support specific exception or Resp retry.
 
-Configuration Item|Default value|Description|Limit
-----|----|----|----
-`MaxRetryTimes`|2|The first request is not included. If it is configured as 0, it means to stop retrying.|Value: [0-5]
-`MaxDurationMS`|0|Including the time-consuming of the first failed request and the retry request. If the limit is reached, the subsequent retry will be stopped. 0 means unlimited. Note: if configured, the configuration item must be greater than the request timeout.
-`EERThreshold`|10%|If the method-level request error rate exceeds the threshold, retry stops.|Value: (0-30%]
-`ChainStop`|-|`Chain Stop` is enabled by default. If the upstream request is a retry request, it will not be retried.|>= v0.0.5 as the default policy.
-`DDLStop`|false|If the timeout period of overall request chain is reached, the retry request won't be sent with this policy. Notice, Kitex doesn't provide build-in implementation, use `retry.RegisterDDLStop(ddlStopFunc)` to register is needed.
-`BackOff`|None|Retry waiting strategy, `NoneBackOff` by default. Optional: `FixedBackOff`, `RandomBackOff`.
-`RetrySameNode`|false|By default, Kitex selects another node to retry. If you want to retry on the same node, set this parameter to true.
+| Configuration Item | Default value | Description                                                                                                                                                                                                                                             | Limit                            |
+| ------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `MaxRetryTimes`    | 2             | The first request is not included. If it is configured as 0, it means to stop retrying.                                                                                                                                                                 | Value: [0-5]                     |
+| `MaxDurationMS`    | 0             | Including the time-consuming of the first failed request and the retry request. If the limit is reached, the subsequent retry will be stopped. 0 means unlimited. Note: if configured, the configuration item must be greater than the request timeout. |
+| `EERThreshold`     | 10%           | If the method-level request error rate exceeds the threshold, retry stops.                                                                                                                                                                              | Value: (0-30%]                   |
+| `ChainStop`        | -             | `Chain Stop` is enabled by default. If the upstream request is a retry request, it will not be retried.                                                                                                                                                 | >= v0.0.5 as the default policy. |
+| `DDLStop`          | false         | If the timeout period of overall request chain is reached, the retry request won't be sent with this policy. Notice, Kitex doesn't provide build-in implementation, use `retry.RegisterDDLStop(ddlStopFunc)` to register is needed.                     |
+| `BackOff`          | None          | Retry waiting strategy, `NoneBackOff` by default. Optional: `FixedBackOff`, `RandomBackOff`.                                                                                                                                                            |
+| `RetrySameNode`    | false         | By default, Kitex selects another node to retry. If you want to retry on the same node, set this parameter to true.                                                                                                                                     |
 
 - `Backup Request`
 
-Configuration Item|Default value|Description|Limit
-----|----|----|----
-`RetryDelayMS`|-|Duration of waiting for initiating a Backup Requset when the first request is not returned. This parameter must be set manually. It is suggested to set as TP99.
-`MaxRetryTimes`|1|The first request is not included. If it is configured as 0, it means to stop retrying.|Value: [0-2]
-`EERThreshold`|10%|If the method-level request error rate exceeds the threshold, retry stops.|Value: (0-30%]
-`ChainStop`|false|`Chain Stop` is enabled by default. If the upstream request is a retry request, it will not be retried after timeout.|>= v0.0.5 as the default policy.
-`RetrySameNode`|false|By default, Kitex selects another node to retry. If you want to retry on the same node, set this parameter to true.
+| Configuration Item | Default value | Description                                                                                                                                                      | Limit                            |
+| ------------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `RetryDelayMS`     | -             | Duration of waiting for initiating a Backup Requset when the first request is not returned. This parameter must be set manually. It is suggested to set as TP99. |
+| `MaxRetryTimes`    | 1             | The first request is not included. If it is configured as 0, it means to stop retrying.                                                                          | Value: [0-2]                     |
+| `EERThreshold`     | 10%           | If the method-level request error rate exceeds the threshold, retry stops.                                                                                       | Value: (0-30%]                   |
+| `ChainStop`        | false         | `Chain Stop` is enabled by default. If the upstream request is a retry request, it will not be retried after timeout.                                            | >= v0.0.5 as the default policy. |
+| `RetrySameNode`    | false         | By default, Kitex selects another node to retry. If you want to retry on the same node, set this parameter to true.                                              |
 
 ## How to use
 
@@ -124,13 +124,13 @@ type ShouldResultRetry struct {
 
 - Specific Exception/Resp Implementation e.g.
 
-    - Resp:
+  - Resp:
 
-      Resp of Thrift and KitexProtobuf protocol correspond to *XXXResult in the generated code, not the real business Resp. To get the real Resp, you need to assert `interface{ GetResult() interface{} }`.
+    Resp of Thrift and KitexProtobuf protocol correspond to \*XXXResult in the generated code, not the real business Resp. To get the real Resp, you need to assert `interface{ GetResult() interface{} }`.
 
-    - Error:
+  - Error:
 
-      The error returned by the peer, kitex will be uniformly encapsulated as `kerrors.ErrRemoteOrNetwork`. For Thrift and KitexProtobuf, the following examples can get the Error Msg returned by the peer. For gRPC, if the peer returns an error constructed by `status.Error`, and the local can use `status.FromError(err)` to get `*status.Status`. Pay attention to `Status` needs to be provided by Kitex, and the package path is `github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status`.
+    The error returned by the peer, kitex will be uniformly encapsulated as `kerrors.ErrRemoteOrNetwork`. For Thrift and KitexProtobuf, the following examples can get the Error Msg returned by the peer. For gRPC, if the peer returns an error constructed by `status.Error`, and the local can use `status.FromError(err)` to get `*status.Status`. Pay attention to `Status` needs to be provided by Kitex, and the package path is `github.com/cloudwego/kitex/pkg/remote/trans/nphttp2/status`.
 
 ```go
 // retry with specify Resp for one method
@@ -162,7 +162,7 @@ opts = append(opts, client.WithSpecifiedResultRetry(yourResultRetry))
 In particular, for Thrift's Exception, although the rpc call layer returns an error, the internal processing of the framework is actually regarded as a one-time cost RPC request (because there is an actual return). If you want to judge it, you need to pay attention to two points:
 
 1. Judge by resp instead of error.
-2. If the method retry is successful, namely, `GetSuccess() != nil`,  you need to reset Exception to nil. Because the retry uses the XXXResult, and the Resp and Exception correspond to the two fields of XXXResult. Exception has been set for the first, and the second successfully set to Resp. However, the framework layer will not reset Exception, and the user needs to reset it by himself.
+2. If the method retry is successful, namely, `GetSuccess() != nil`, you need to reset Exception to nil. Because the retry uses the XXXResult, and the Resp and Exception correspond to the two fields of XXXResult. Exception has been set for the first, and the second successfully set to Resp. However, the framework layer will not reset Exception, and the user needs to reset it by himself.
 
 e.g.
 
@@ -179,8 +179,6 @@ respRetry := func(resp interface{}, ri rpcinfo.RPCInfo) bool {
     return false
 }
 ```
-
-
 
 #### Backup Request Configuration
 
@@ -332,7 +330,7 @@ retryReqCount, exist := metainfo.GetPersistentValue(ctx,retry.TransitKey)
 
 For example, `retryReqCount = 2`, which means the second retry request (excluding the first request), then the business degradation strategy can be adopted(non-retry requests do not have this information).
 
->Question: `Chain Stop` is enabled by default, is it necessary for services to identify retry requests?
+> Question: `Chain Stop` is enabled by default, is it necessary for services to identify retry requests?
 
->Answer：`Chain Stop` means that the retry request on the chain will not be retried. Assuming that there is a request chain `A->B->C`, `A` sends a retry request to `B`, while during `B->C`, if a timeout occurs or `Backup` is configured, `B` will not send a retry request to `C`. If the service can identify the retry request, it can directly decide whether to continue the request to `C`.
-In short, `Chain Stop` avoids retry amplification caused by `B` sending a retry request to `C`. The service's own control can completely avoid requests from `B` to `C`.
+> Answer：`Chain Stop` means that the retry request on the chain will not be retried. Assuming that there is a request chain `A->B->C`, `A` sends a retry request to `B`, while during `B->C`, if a timeout occurs or `Backup` is configured, `B` will not send a retry request to `C`. If the service can identify the retry request, it can directly decide whether to continue the request to `C`.
+> In short, `Chain Stop` avoids retry amplification caused by `B` sending a retry request to `C`. The service's own control can completely avoid requests from `B` to `C`.

@@ -14,8 +14,6 @@ Add some options when creating a client：
 client, err := echo.NewClient("targetService", client.WithXXXX...)
 ```
 
-
-
 ## Basic Options
 
 ### WithClientBasicInfo
@@ -27,8 +25,6 @@ func WithClientBasicInfo(ebi *rpcinfo.EndpointBasicInfo) Option
 Set the service infos for client, including ServiceName and customized Tags, customized Tag such as Cluster, IDC, Env, and it is no need to set Method field of EndpointBasicInfo.
 It is strongly recommended to configure this option.
 
-
-
 ### WithHostPorts
 
 ```go
@@ -36,8 +32,6 @@ func WithHostPorts(hostports ...string) Option
 ```
 
 Manually specifie one or more targets overrides the results discovered by the service and directly connects to the access.
-
-
 
 ### WithTransportProtocol
 
@@ -57,8 +51,6 @@ func WithShortConnection() Option
 
 Enable short connections. [More](/docs/kitex/tutorials/basic-feature/connection_type/)
 
-
-
 ### WithLongConnection
 
 ```go
@@ -66,8 +58,6 @@ func WithLongConnection(cfg connpool.IdleConfig) Option
 ```
 
 Enable long connections. [More](/docs/kitex/tutorials/basic-feature/connection_type/)
-
-
 
 ### WithMuxConnection
 
@@ -77,17 +67,13 @@ func WithMuxConnection(connNum int) Option
 
 Enable mux connections. Server side also need to turn on this option, or it won't work. [More](/docs/kitex/tutorials/basic-feature/connection_type/)
 
-
-
 ### WithMiddleware
 
 ```go
 func WithMiddleware(mw endpoint.Middleware) Option
 ```
 
-Add a middleware that executes after service level circuit breaker and timeout middleware.  [More](/docs/kitex/tutorials/framework-exten/middleware/)
-
-
+Add a middleware that executes after service level circuit breaker and timeout middleware. [More](/docs/kitex/tutorials/framework-exten/middleware/)
 
 ### WithInstanceMW
 
@@ -97,8 +83,6 @@ func WithInstanceMW(mw endpoint.Middleware) Option
 
 Add a middleware that executes after service discovery and load balance. If instance level circuit breaker exists, then it will execute after that. (If proxy is used, it will not be called, such as mesh mode). [More](/docs/kitex/tutorials/framework-exten/middleware/)
 
-
-
 ### WithMiddlewareBuilder
 
 ```go
@@ -106,8 +90,6 @@ func WithMiddlewareBuilder(mwb endpoint.MiddlewareBuilder) Option
 ```
 
 Add middleware depends on the context passed in by the framework that contains runtime configuration information (the context of non-RPC calls), so that the middleware can take advantage of the framework's information when initializing.
-
-
 
 ### WithCircuitBreaker
 
@@ -143,8 +125,6 @@ func WithFailureRetry(p *retry.FailurePolicy) Option
 
 Set timeout retry rules, you can configure the maximum number of retries, the maximum time spent accumulated, the threshold of the retry circuit fault rate, the DDL abort and backoff policy. [More](/docs/kitex/tutorials/service-governance/retry/)
 
-
-
 ### WithBackupRequest
 
 ```go
@@ -152,8 +132,6 @@ func WithBackupRequest(p *retry.BackupPolicy) Option
 ```
 
 Set the policy for Backup Request, which can configure the number of requests, circuit breaker abort, and link abort. [More](/docs/kitex/tutorials/service-governance/retry/)
-
-
 
 ### WithRPCTimeout
 
@@ -163,8 +141,6 @@ func WithRPCTimeout(d time.Duration) Option
 
 Set RPC timeout. [More](/docs/kitex/tutorials/service-governance/timeout/)
 
-
-
 ### WithConnectTimeout
 
 ```go
@@ -172,8 +148,6 @@ func WithConnectTimeout(d time.Duration) Option
 ```
 
 Set connect timeout. [More](/docs/kitex/tutorials/service-governance/timeout/)
-
-
 
 ### WithTimeoutProvider
 
@@ -183,8 +157,6 @@ func WithTimeoutProvider(p rpcinfo.TimeoutProvider) Option
 
 Add a TimeoutProvider to set the RPC timeout, connection timeout, etc. policies as a whole. If You use Both `WithRPCTimeout` or `WithConnectTimeout`, the settings here will be overridden.
 
-
-
 ### WithDestService
 
 ```go
@@ -193,17 +165,13 @@ func WithDestService(svr string) Option
 
 Specify the service name of the target side of the call.
 
-
-
 ### WithTag
 
 ```go
-func WithTag(key, val string) Option 
+func WithTag(key, val string) Option
 ```
 
 Add some meta information to the client, such as idc, cluster, etc., for scenarios such as auxiliary service discovery.
-
-
 
 ### WithStatsLevel
 
@@ -212,8 +180,6 @@ func WithStatsLevel(level stats.Level) Optiong
 ```
 
 Set the stats level for client. [More](/docs/kitex/tutorials/observability/tracing/)
-
-
 
 ### gRPC Options
 
@@ -227,8 +193,6 @@ func WithGRPCConnPoolSize(s uint32) Option
 
 WithGRPCConnPoolSize sets the value for the client connection pool size. In general, you should not adjust the size of the connection pool, otherwise it may cause performance degradation. You should adjust the size according to the actual situation.
 
-
-
 #### WithGRPCWriteBufferSize
 
 ```go
@@ -238,8 +202,6 @@ func WithGRPCWriteBufferSize(s uint32) Option
 WithGRPCWriteBufferSize determines how much data can be batched before doing a write on the wire. The corresponding memory allocation for this buffer will be twice the size to keep syscalls low. The default value for this buffer is 32KB. Zero will disable the write buffer such that each write will be on underlying connection.
 Note: A Send call may not directly translate to a write. It corresponds to the WriteBufferSize ServerOption of gRPC.
 
-
-
 #### WithGRPCReadBufferSize
 
 ```go
@@ -247,8 +209,6 @@ func WithGRPCReadBufferSize(s uint32) Option
 ```
 
 WithGRPCReadBufferSize lets you set the size of read buffer, this determines how much data can be read at most for one read syscall. The default value for this buffer is 32KB. Zero will disable read buffer for a connection so data framer can access the underlying conn directly. It corresponds to the ReadBufferSize ServerOption of gRPC.
-
-
 
 #### WithGRPCInitialWindowSize
 
@@ -258,8 +218,6 @@ func WithGRPCInitialWindowSize(s uint32) Option
 
 WithGRPCInitialWindowSize returns a Option that sets window size for stream. The lower bound for window size is 64K and any value smaller than that will be ignored. It corresponds to the InitialWindowSize ServerOption of gRPC.
 
-
-
 #### WithGRPCInitialConnWindowSize
 
 ```go
@@ -267,8 +225,6 @@ func WithGRPCInitialConnWindowSize(s uint32) Option
 ```
 
 WithGRPCInitialConnWindowSize returns an Option that sets window size for a connection. The lower bound for window size is 64K and any value smaller than that will be ignored. It corresponds to the InitialConnWindowSize ServerOption of gRPC.
-
-
 
 #### WithGRPCMaxHeaderListSize
 
@@ -278,8 +234,6 @@ func WithGRPCMaxHeaderListSize(s uint32) Option
 
 WithGRPCMaxHeaderListSize returns a ServerOption that sets the max (uncompressed) size of header list that the server is prepared to accept. It corresponds to the MaxHeaderListSize ServerOption of gRPC.
 
-
-
 #### WithGRPCKeepaliveParams
 
 ```go
@@ -288,16 +242,13 @@ func WithGRPCKeepaliveParams(kp grpc.ClientKeepalive) Option
 
 WithGRPCKeepaliveParams returns a DialOption that specifies keepalive parameters for the client transport. It corresponds to the WithKeepaliveParams DialOption of gRPC.
 
-
-
 #### WithGRPCTLSConfig
+
 ```go
 func WithGRPCTLSConfig(tlsConfig *tls.Config) Option
 ```
 
 WithGRPCTLSConfig sets the TLS config to the connection options for Kitex gRPC client.
-
-
 
 ## Advanced Options
 
@@ -309,8 +260,6 @@ func WithSuite(suite Suite) Option
 
 Set up a specific configuration, customize according to the scene, configure multiple options and middlewares combinations and encapsulations in the Suite. [More](/docs/kitex/tutorials/framework-exten/suite/)
 
-
-
 ### WithProxy
 
 ```go
@@ -318,8 +267,6 @@ func WithProxy(p proxy.ForwardProxy) Option
 ```
 
 For proxy scenarios (such as Mesh Egress), do some configuration processing, return proxy address, configure proxy. After ForwardProxy, the framework does not perform service discovery, circuit breakers, and InstanceMWs.
-
-
 
 ### WithRetryContainer
 
@@ -344,7 +291,7 @@ If you have already configured the circuit breaker, it is recommended to reuse t
 
 - NewRetryContainer
   - Specifies the default RetryContainer for the retry policy, which has a built-in circuit breaker.
-- NewRetryContainerWithCBStat 
+- NewRetryContainerWithCBStat
 
 To customize the built-in circuit breaker ServiceCBKeyFunc settings, you can use the NewRetryContainerWithCBStat method:
 
@@ -353,12 +300,10 @@ To customize the built-in circuit breaker ServiceCBKeyFunc settings, you can use
    retry.NewRetryContainerWithCBStat(cbs.ServiceControl(), cbs.ServicePanel())
 ```
 
-
-
 ### WithWarmingUp
 
 ```go
-func WithWarmingUp(wuo *warmup.ClientOption) Option 
+func WithWarmingUp(wuo *warmup.ClientOption) Option
 ```
 
 Set warming up option. Kitex supports client warm-up, which allows you to pre-initialize the relevant components of service discovery and connection pooling when creating the client, avoiding large delays on the first request.
@@ -391,8 +336,6 @@ cli, err := myservice.NewClient(psm, client.WithWarmingUp(&warmup.ClientOption{
 }))
 ```
 
-
-
 ### WithCloseCallbacks
 
 ```go
@@ -400,8 +343,6 @@ func WithCloseCallbacks(callback func() error) Option
 ```
 
 Set close callback function.
-
-
 
 ### WithErrorHandler
 
@@ -411,8 +352,6 @@ func WithErrorHandler(f func(error) error) Option
 
 Set the error handler function, which is executed after the server handler is executed and before the middleware executes.
 
-
-
 ### WithGeneric
 
 ```go
@@ -420,8 +359,6 @@ func WithGeneric(g generic.Generic) Option
 ```
 
 Specifie the generalization call type, which needs to be used in conjunction with the generalization Client/Server. [More](/docs/kitex/tutorials/advanced-feature/generic-call/)
-
-
 
 ### WithACLRules
 
@@ -431,8 +368,6 @@ func WithACLRules(rules ...acl.RejectFunc) Option
 
 Set ACL permission access control, which is executed before service discovery. [More](/docs/kitex/tutorials/service-governance/access_control/)
 
-
-
 ### WithConnReporterEnabled
 
 ```go
@@ -441,17 +376,13 @@ func WithConnReporterEnabled() Option
 
 Enable connection pool reporter. [More](/docs/kitex/tutorials/basic-feature/connection_type/)
 
-
-
 ### WithHTTPConnection
 
 ```go
-func WithHTTPConnection() Option 
+func WithHTTPConnection() Option
 ```
 
 Specifie client use RPC over http.
-
-
 
 ## Extended Options
 
@@ -463,8 +394,6 @@ func WithTracer(c stats.Tracer) Option
 
 Add an additional Tracer. [More](/docs/kitex/tutorials/observability/tracing/)
 
-
-
 ### WithResolver
 
 ```go
@@ -472,8 +401,6 @@ func WithResolver(r discovery.Resolver) Option
 ```
 
 Specifie a resolver to do service discovery. [More](/docs/kitex/tutorials/service-governance/service_discovery/)
-
-
 
 ### WithHTTPResolver
 
@@ -483,27 +410,21 @@ func WithHTTPResolver(r http.Resolver) Option
 
 Set HTTP resolver. [More](/docs/kitex/tutorials/basic-feature/visit_directly/)
 
-
-
 ### WithLoadBalancer
 
 ```go
-func WithLoadBalancer(lb loadbalance.Loadbalancer, opts ...*lbcache.Options) Option 
+func WithLoadBalancer(lb loadbalance.Loadbalancer, opts ...*lbcache.Options) Option
 ```
 
 Set load balancer. [More](/docs/kitex/tutorials/service-governance/loadbalance/)
 
-
-
-###  WithBoundHandler
+### WithBoundHandler
 
 ```go
 func WithBoundHandler(h remote.BoundHandler) Option
 ```
 
 Add a new IO Bound handler. [More](/docs/kitex/tutorials/framework-exten/trans_pipeline/)
-
-
 
 ### WithCodec
 
@@ -513,8 +434,6 @@ func WithCodec(c remote.Codec) Option
 
 Specifie a Codec for scenarios that require custom protocol. [More](/docs/kitex/tutorials/framework-exten/codec/)
 
-
-
 ### WithPayloadCodec
 
 ```go
@@ -522,8 +441,6 @@ func WithPayloadCodec(c remote.PayloadCodec) Option
 ```
 
 Specifie a PayloadCodec. [More](/docs/kitex/tutorials/framework-exten/codec/)
-
-
 
 ### WithMetaHandler
 
@@ -533,8 +450,6 @@ func WithMetaHandler(h remote.MetaHandler) Option
 
 Add a meta handler for customizing transparent information in conjunction with the transport protocol, such as service name, invocation method, machine room, cluster, env, tracerInfo. [More](/docs/kitex/tutorials/framework-exten/transmeta/)
 
-
-
 ### WithFirstMetaHandler
 
 ```go
@@ -543,17 +458,13 @@ func WithFirstMetaHandler(h remote.MetaHandler) Option
 
 Add a meta handler at the first position.
 
-
-
 ### WithTransHandlerFactory
 
 ```go
-func WithTransHandlerFactory(f remote.ClientTransHandlerFactory) Option 
+func WithTransHandlerFactory(f remote.ClientTransHandlerFactory) Option
 ```
 
 Set transHandlerFactory. [More](/docs/kitex/tutorials/framework-exten/transport/)
-
-
 
 ### WithDiagnosisService
 
@@ -563,8 +474,6 @@ func WithDiagnosisService(ds diagnosis.Service) Option
 
 Set diagnosis service. [More](/docs/kitex/tutorials/framework-exten/diagnosis/)
 
-
-
 ### WithDialer
 
 ```go
@@ -572,8 +481,6 @@ func WithDialer(d remote.Dialer) Option
 ```
 
 Set dialer.
-
-
 
 ### WithConnPool
 

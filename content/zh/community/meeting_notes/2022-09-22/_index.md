@@ -23,11 +23,11 @@ description: >
 
 1. 地址：
 
-* bookinfo（附演示 demo）
+- bookinfo（附演示 demo）
   https://github.com/cloudwego/biz-demo/pull/2
-* xDS
+- xDS
   https://github.com/kitex-contrib/xds/pull/5/files
-* 项目的工程架构
+- 项目的工程架构
   github.com/CoderPoet/biz-demo/blob/feature%2Fbookinfo-proxyless-otel-demo/bookinfo/README_CN.md
 
 2. 背景：在 biz-demo 中使用 kitex 和 hertz 重写 bookinfo 项目。实现的目的是为了以实战的方式演示如何使用 xDS 实现全链路的流量泳道。这个项目是复刻社区的 bookinfo 的部署模式，分为 Productpage、Reviews、Details 以及 Ratings，使用 kitex 和 hertz 完全重写。Productpage 是用 Hertz Server 写的，并且内嵌了 Kitex Client。 Kitex Client 集成了 xDS 的模块，主要负责与控制面的 Istiod 做交互，Istiod 可以动态地根据 xDS 下发路由规则。具体路由规则以及工程架构可点击上方链接查看。
@@ -50,6 +50,5 @@ description: >
 1. 文档：[Hertz-pprof](https://r3478qhcm9.feishu.cn/docx/doxcnnD5J1EGhKfgp5QDNF0J34b?from=from_copylink)
 2. 背景：
 
-* pprof 是一个可以对 Go 程序的 CPU 内存以及 Goroutine 运行时进行动态信息采样的工具包，采样后以数据的方式展示，从而帮助开发人员进行快速地定位问题。常见的 HTTP 框架以及 gRPC 框架都会有相应的 pprof 扩展。这个扩展的底层实现依赖于 Go 语言内部 runtime/pprof 包，进一步的在 net/http/pprof 包里面对上述的 Go 语言包进行封装，对外提供 HTTP 的服务。
-* 在本项目中，为了在 Hertz 中引入  pprof 的能力，需要对 HTTP 包里面的 pprof 进一步封装。因为 HTTP 包里面 pprof 对外提供的是 http.Handler 以及 http.HandlerFunc，但是 Hertz 并不感知 HTTP 包里面的 http.Handler 以及 http.HandlerFunc，因此需要对其进行转换。具体实现过程请查看上方链接中的文档。
-
+- pprof 是一个可以对 Go 程序的 CPU 内存以及 Goroutine 运行时进行动态信息采样的工具包，采样后以数据的方式展示，从而帮助开发人员进行快速地定位问题。常见的 HTTP 框架以及 gRPC 框架都会有相应的 pprof 扩展。这个扩展的底层实现依赖于 Go 语言内部 runtime/pprof 包，进一步的在 net/http/pprof 包里面对上述的 Go 语言包进行封装，对外提供 HTTP 的服务。
+- 在本项目中，为了在 Hertz 中引入 pprof 的能力，需要对 HTTP 包里面的 pprof 进一步封装。因为 HTTP 包里面 pprof 对外提供的是 http.Handler 以及 http.HandlerFunc，但是 Hertz 并不感知 HTTP 包里面的 http.Handler 以及 http.HandlerFunc，因此需要对其进行转换。具体实现过程请查看上方链接中的文档。

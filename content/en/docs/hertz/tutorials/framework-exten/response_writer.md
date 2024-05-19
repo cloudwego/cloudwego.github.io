@@ -3,9 +3,8 @@ title: "Response Writer Extension"
 linkTitle: "Response Writer Extension"
 date: 2023-09-22
 weight: 6
-keywords: [ "Response Writer Extension", "Response.HijackWriter" ]
+keywords: ["Response Writer Extension", "Response.HijackWriter"]
 description: "Response Writer Extension provided by Hertz."
-
 ---
 
 According to Hertz's [layered architecture](/zh/docs/hertz/overview/), the actual write
@@ -52,8 +51,8 @@ ctx.Response.HijackWriter(**yourResponseWriter**)
 ## Supported Response Writer Extension
 
 - `ChunkedBodyWriter`: Hertz provides `NewChunkedBodyWriter` to create a response writer which allow users to flush chunk immediately during
-the handler process, it is defined under `pkg/protocol/http1/resp/writer`, and you can implement your own response
-writer.
+  the handler process, it is defined under `pkg/protocol/http1/resp/writer`, and you can implement your own response
+  writer.
 
 ### ChunkedBodyWriter
 

@@ -20,17 +20,16 @@ Kitex 的 RPCInfo 的生命周期默认是从请求开始到请求返回（性�
       "github.com/cloudwego/kitex/pkg/rpcinfo"
   )
   // this creates a read-only copy of `ri` and attaches it to the new context
-  ctx2 := rpcinfo.FreezeRPCInfo(ctx) 
+  ctx2 := rpcinfo.FreezeRPCInfo(ctx)
   go func(ctx context.Context) {
       // ...
       ri := rpcinfo.GetRPCInfo(ctx) // OK
-      
+
       //...
   }(ctx2)
   ```
 
 - 配置环境变量 `KITEX_DISABLE_RPCINFO_POOL=true`，禁用 RPCInfo 回收 (支持版本: v0.8.1)
-
 
 ## 勿**每个请求创建一个** kitex client
 

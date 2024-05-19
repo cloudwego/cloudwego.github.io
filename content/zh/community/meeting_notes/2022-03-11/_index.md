@@ -11,7 +11,7 @@ description: >
 **参会人员：** CoderPoet, liu-song, GuangmingLuo, Zheming Li, YangruiEmma, li-jin-gou, simon0-o, Dianjun Suo, jasondeng1997, lvnszn, baiyutang, Duslia, joway, Xuewu Jiang, AshleeT, yccpt.
 
 **会前必读：** [官网](/)；
-              https://github.com/cloudwego
+https://github.com/cloudwego
 
 ## 议程 1 ：新人自我介绍
 
@@ -20,7 +20,7 @@ description: >
 ## 议程 2 ：CloudWeGo 仓库介绍
 
 1. 对 CloudWeGo 主仓库进行了简要介绍，欢迎社区成员对仓库进行补充加强。例如：欢迎大家在 Kitex_examples 仓库提交一些 Business demo，例如电商、医疗等不同行业场景下的典型案例 。
-2.  Community 仓库：首先，Community 仓库刚成立不久，主要用于归档社区相关的材料，包括双周会的会议纪要（meeting_notes）和周报（weekly_report）。其次，也欢迎大家成为该仓库的正式成员，后续的活动可以第一时间通知到大家，便于大家参与到核心功能的讨论与开发。
+2. Community 仓库：首先，Community 仓库刚成立不久，主要用于归档社区相关的材料，包括双周会的会议纪要（meeting_notes）和周报（weekly_report）。其次，也欢迎大家成为该仓库的正式成员，后续的活动可以第一时间通知到大家，便于大家参与到核心功能的讨论与开发。
 3. Kitex-contrib 仓库：该仓库包含了各种扩展的对接实现，比如对接 Prometheus，对接Opentracing 等。其中，OpenTelemetry 对接项目正处于提交 PR 的状态，欢迎大家参与到项目的共建和 review。
 
 ## 议程 3：社区后续工作介绍
@@ -34,22 +34,26 @@ description: >
 **事项介绍**
 
 1. 性能优化
-  - Kitex-gRPC Streaming 性能提升。
-  - Protobuf 编解码性能优化，初步完成，完善边界 case 。
-  - Frugal - 无生成代码的高性能动态 Thrift编解码库。
+
+- Kitex-gRPC Streaming 性能提升。
+- Protobuf 编解码性能优化，初步完成，完善边界 case 。
+- Frugal - 无生成代码的高性能动态 Thrift编解码库。
 
 2. 新特性支持
-  - Thrift 泛化调用 新增对 Protobuf 的支持用于网关
-  - Protobuf <-> Thrift 高性能的协议转换
-  - 重试:支持用户自定义异常重试
-  - Proxyless 支持:完成服务发现/路由对 xds 接口扩展
+
+- Thrift 泛化调用 新增对 Protobuf 的支持用于网关
+- Protobuf <-> Thrift 高性能的协议转换
+- 重试:支持用户自定义异常重试
+- Proxyless 支持:完成服务发现/路由对 xds 接口扩展
 
 3. 功能优化:
-  - 重写连接池逻辑，支持更加优雅的空闲连接清理
-  - 增加字段 Size 校验
+
+- 重写连接池逻辑，支持更加优雅的空闲连接清理
+- 增加字段 Size 校验
 
 4. 外部需求
-  - 连接预热、连接多路复用通知上游退出
+
+- 连接预热、连接多路复用通知上游退出
 
 **Action Items**
 
@@ -57,25 +61,23 @@ description: >
 
 **补充单元测试原则**
 
- 1. 补充的单测必须是有意义的，验证某个逻辑的正确性，或者异常表现是否符合预期。
+1.  补充的单测必须是有意义的，验证某个逻辑的正确性，或者异常表现是否符合预期。
 
- 2. 杜绝为了覆盖率而补全单测，宁可不加。
+2.  杜绝为了覆盖率而补全单测，宁可不加。
 
- 3. 每个单测必须要有断言。
+3.  每个单测必须要有断言。
 
- 4. 可以添加 mock 辅助单测。
+4.  可以添加 mock 辅助单测。
 
- 5. 建议单测通过注释明确验证的逻辑。
+5.  建议单测通过注释明确验证的逻辑。
 
- 6. 不要在单测代码里用 printf 等手段打日志人肉去检验。
-
+6.  不要在单测代码里用 printf 等手段打日志人肉去检验。
 
 ## 议程 5：Q&A
 
 **Q：Kitex 啥时候支持 Thrift Streaming？**
 
 A：Kitex 支持 Thrift streaming 我们刚开始是计划要做的，但是之后了解到目前没有应用场景，没有用户提出需要用到 Thrift Streaming， 因此，这个计划我们就搁置了。如果没有收到真实的业务场景需求，我们暂时不去安排这个功能支持。
-
 
 **Q：Proxyless 支持这块是一个 doing 状态吗？**
 

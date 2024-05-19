@@ -4,7 +4,6 @@ linkTitle: " How To Mock A Kitex Client"
 weight: 1
 date: 2024-02-18
 description: >
-
 ---
 
 ## Introduction
@@ -41,7 +40,7 @@ func MockHello(ctx context.Context, req *hello.MyReq, callOptions ...callopt.Opt
 
 // Test the mock function for the client
 func TestClient(t *testing.T) {
-    
+
    ctrl := gomock.NewController(t)
    defer ctrl.Finish()
 
@@ -50,7 +49,7 @@ func TestClient(t *testing.T) {
 
    // Add the mock function
    client.EXPECT().Hello(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(MockHello).AnyTimes()
-   
+
    // Make a mock call
    resp, err := client.Hello(context.Background(), &hello.MyReq{Name: "bd"})
    if err == nil {

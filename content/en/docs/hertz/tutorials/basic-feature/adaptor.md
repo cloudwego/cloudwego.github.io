@@ -4,7 +4,6 @@ date: 2023-01-11
 weight: 16
 keywords: ["Adaptor", "http.Request", "http.ResponseWriter", "net/http"]
 description: "Hertz provides access and related methods to Go standard library `http.Request` and `http.ResponseWriter`."
-
 ---
 
 Hertz provides access and related methods to Go standard library `http.Request` and `http.ResponseWriter`, it is easy for users to integrate `net/http` to develop application.
@@ -61,14 +60,14 @@ func main() {
 ## http.Request
 
 | Function           | Function Signature                                                    | Description                                                                                                                                                                    |
-|--------------------|-----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | GetCompatRequest   | `func GetCompatRequest(req *protocol.Request) (*http.Request, error)` | Build and fetch Go standard library `http.Request` from Hertz `protocol.Request`                                                                                               |
 | CopyToHertzRequest | `func CopyToHertzRequest(req *http.Request, hreq *protocol.Request)`  | Copy the `URI`, `Host`, `Method`, `Protocol`, `Header` of Go standard library `http.Request` to Hertz `protocol.Request`, The `Body` field will be adapted by sharing `Reader` |
 
 ## http.ResponseWriter
 
 | Function / Struct       | Function Signature                                                          | Description                                                                                                                          |
-|-------------------------|-----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| ----------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | GetCompatResponseWriter | `func GetCompatResponseWriter(resp *protocol.Response) http.ResponseWriter` | Build and fetch Go standard library `http.ResponseWriter` from Hertz `protocol.Response`                                             |
 | compatResponse          | /                                                                           | `compatResponse` implements the `http.ResponseWriter` interface and has adaptations to `Header`, `Write` and `WriteHeader` functions |
 
@@ -77,7 +76,7 @@ func main() {
 Hertz pprof middleware provides adaptation methods for the Go standard library `http.Handler` and `http.HandlerFunc`, it is easy for users to adapt to Hertz `app.HandlerFunc` for development.
 
 | Function                | Function Signature                                                 | Description                                                                       |
-|-------------------------|--------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| ----------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
 | NewHertzHTTPHandlerFunc | `func NewHertzHTTPHandlerFunc(h http.HandlerFunc) app.HandlerFunc` | Used to convert Go standard library `http.HandlerFunc` to Hertz `app.HandlerFunc` |
 | NewHertzHTTPHandler     | `func NewHertzHTTPHandler(h http.Handler) app.HandlerFunc`         | Used to convert Go standard library `http.Handler` to Hertz `app.HandlerFunc`     |
 

@@ -5,11 +5,9 @@ weight: 1
 description: >
 ---
 
-> 本篇文档及示例所使用的 Kitex 代码生成工具版本为 v0.5.0 
+> 本篇文档及示例所使用的 Kitex 代码生成工具版本为 v0.5.0
 
 **kitex** 是 Kitex 框架提供的用于生成代码的一个命令行工具。目前，kitex 支持 thrift 和 protobuf 的 IDL，并支持生成一个服务端项目的骨架。
-
-
 
 ## 安装
 
@@ -25,7 +23,7 @@ go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
 你也可以自己下载 Kitex 源码后，进入 `tool/cmd/kitex` 目录执行 `go install` 进行安装
 
-完成后，可以通过执行  `kitex -version`  查看工具版本，或者  `kitex -help` 查看使用帮助。
+完成后，可以通过执行 `kitex -version` 查看工具版本，或者 `kitex -help` 查看使用帮助。
 
 ## 生成代码
 
@@ -91,7 +89,7 @@ kitex_gen/
 上文的案例代码并不能直接运行，需要自己完成 NewClient 和 NewServer 的构建。kitex 命令行工具提供了 `-service` 参数能直接生成带有脚手架的代码，执行如下命令：
 
 ```shell
-kitex -service mydemoservice demo.thrift 
+kitex -service mydemoservice demo.thrift
 ```
 
 生成结果如下：
@@ -104,12 +102,11 @@ kitex -service mydemoservice demo.thrift
 └── script			 // 构建服务相关脚本
 │    └── bootstrap.sh
 ├── kitex_gen
-     └── ....	 
+     └── ....
     
 ```
 
 在 `handler.go` 的接口中填充业务代码后，执行 `main.go` 的主函数即可快速启动 Kitex Server。
-
 
 ## 库依赖
 
@@ -144,12 +141,11 @@ option go_package = "hello.world"; // or hello/world
 
 如果你给 `go_package` 赋值一个完整的导入路径（import path），那么该路径必须匹配到当前模块的 kitex_gen 才会生成代码。即：
 
-* `go_package="${当前模块的 import path}/kitex_gen/hello/world";`：OK，kitex 会为该 IDL 生成代码；
-* `go_package="${当前模块的 import path}/hello/world";`：kitex 不会为该 IDL 生成代码；
-* `go_package="any.other.domain/some/module/kitex_gen/hello/world";`：kitex 不会为该 IDL 生成代码；
+- `go_package="${当前模块的 import path}/kitex_gen/hello/world";`：OK，kitex 会为该 IDL 生成代码；
+- `go_package="${当前模块的 import path}/hello/world";`：kitex 不会为该 IDL 生成代码；
+- `go_package="any.other.domain/some/module/kitex_gen/hello/world";`：kitex 不会为该 IDL 生成代码；
 
 你可以通过命令行参数 `--protobuf Msome.proto=your.package.name/kitex_gen/wherever/you/like` 来覆盖某个 proto 文件的 `go_package` 值。具体用法说明可以参考 Protocol Buffers 的[官方文档](https://developers.google.com/protocol-buffers/docs/reference/go-generated#package)。
-
 
 ## 选项
 
@@ -167,9 +163,9 @@ option go_package = "hello.world"; // or hello/world
 2. 如果当前目录不在 `$GOPATH/src` 下，那么必须指定该参数。
 3. 如果指定了 `-module` 参数，那么 kitex 会从当前目录开始往上层搜索 go.mod 文件
 
-    - 如果不存在 go.mod 文件，那么 kitex 会调用 `go mod init` 生成 go.mod；
-    - 如果存在 go.mod 文件，那么 kitex 会检查 `-module` 的参数和 go.mod 里的模块名字是否一致，如果不一致则会报错退出；
-    - 最后，go.mod 的位置及其模块名字会决定生成代码里的 import path。
+   - 如果不存在 go.mod 文件，那么 kitex 会调用 `go mod init` 生成 go.mod；
+   - 如果存在 go.mod 文件，那么 kitex 会检查 `-module` 的参数和 go.mod 里的模块名字是否一致，如果不一致则会报错退出；
+   - 最后，go.mod 的位置及其模块名字会决定生成代码里的 import path。
 
 #### `-I path`
 
@@ -178,18 +174,17 @@ option go_package = "hello.world"; // or hello/world
 path 输入也可以支持 git 拉取，当前缀为 git@，http://，https:// 时，会拉取远程 git 仓库到本地，并将其列入搜索路径。使用方式如下：
 
 ```shell
-kitex -module xx -I xxx.git abc/xxx.thrift 
+kitex -module xx -I xxx.git abc/xxx.thrift
 ```
 
 或使用 `@xxx` 指定分支拉取：
 
 ```shell
-kitex -module xx -I xxx.git@branch abc/xxx.thrift 
+kitex -module xx -I xxx.git@branch abc/xxx.thrift
 
 ```
 
 执行时会先拉取 git 仓库，存放于 ~/.kitex/cache/xxx/xxx/xxx@branch 目录下，然后再在此目录下搜索 abc/xxx.thrift 并生成代码
-
 
 #### `-v` 或 `-verbose`
 
@@ -205,7 +200,6 @@ kitex -module xx -I xxx.git@branch abc/xxx.thrift
 
 该选项会生成一个合并了目标 IDL 文件中所有 service 方法的 `CombineService`，并将其用作 main 包里使用的 service 定义。注意这个模式下，被合并的 service 之间不能有冲突的方法名。
 
-
 #### `-protobuf value`
 
 传递给 protoc 的参数。会拼接在 `-go_out` 的参数后面。可用的值参考 `protoc` 的帮助文档。
@@ -213,7 +207,6 @@ kitex -module xx -I xxx.git@branch abc/xxx.thrift
 #### `-thrift value`
 
 传递给 thriftgo 的参数。会拼接在 `-g go:` 的参数后面。可用的值参考 `thriftgo` 的帮助文档。kitex 默认传递了 `naming_style=golint,ignore_initialisms,gen_setter,gen_deep_equal`，可以被覆盖。
-
 
 #### `-record`
 
@@ -251,7 +244,6 @@ kitex -module xxx xxxd.thrift
 
 想重新生成代码，执行 kitex-all.sh 即可。若想手动调整，打开脚本文件直接编辑命令即可
 
-
 #### `-gen-path`
 
 > 目前只在 thrift 场景生效，protobuf 侧待后续完善实现。
@@ -274,20 +266,19 @@ kitex -protobuf-plugin {plugin_name:options:out_dir} idl/myservice.proto
 - options: 表示传递给插件的选项；通常会传递一些类似 "go module" 等信息
 - out_dir: 表示插件生成代码的路径；如无特殊需求，一般指定为 "." 即可
 
-以上 3 个选项可映射为如下的 protoc 命令，可被 kitex 自动拼接&执行: 
+以上 3 个选项可映射为如下的 protoc 命令，可被 kitex 自动拼接&执行:
 
 ```shell
 protoc
     --{$plugin_name}_out={$out_dir}
-    --{$plugin_name}_opt={$options}        
+    --{$plugin_name}_opt={$options}
     idl/myservice.proto
-```    
+```
 
 例如希望使用 [protoc-gen-validator](https://github.com/cloudwego/protoc-gen-validator) 插件，可以执行如下命令：
 
 ```shell
-kitex 
+kitex
     -protobuf-plugin=validator:module=toutiao/middleware/kitex,recurse=true:.
     idl/myservice.proto
 ```
- 

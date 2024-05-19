@@ -5,6 +5,7 @@ projects: ["Kitex"]
 date: 2023-08-14
 description: >
 ---
+
 ## 重要变更介绍
 
 ### 功能
@@ -31,12 +32,12 @@ description: >
 
 升级 Thriftgo 库依赖至 v0.3.0 ，支持了 Thriftgo 反射功能，可以在运行时获取 IDL 元信息
 
-
-----
+---
 
 ## 详细变更
 
 ### Feature:
+
 - [[#1053](https://github.com/cloudwego/kitex/pull/1053)] feat(retry): support to distinguish local retry request
 - [[#1058](https://github.com/cloudwego/kitex/pull/1058)] feat(retry): support delete retry policy dynamically
 - [[#1000](https://github.com/cloudwego/kitex/pull/1000)] feat(grpc): support grpc compress
@@ -47,6 +48,7 @@ description: >
 - [[#1019](https://github.com/cloudwego/kitex/pull/1019)] feat(lb): interleaved weighted round-robin load balancer
 
 ### Optimize:
+
 - [[#1064](https://github.com/cloudwego/kitex/pull/1064)] optimize: check header max size when ttheader encode
 - [[#1017](https://github.com/cloudwego/kitex/pull/1017)] optimize: implement unknown field function without serialization
 - [[#1036](https://github.com/cloudwego/kitex/pull/1036)] optimize(protobuf): ignore err when (un)marshal empty req/resp
@@ -56,6 +58,7 @@ description: >
 - [[#1020](https://github.com/cloudwego/kitex/pull/1020)] optimize: add nil check for MethodInfo which get from ServiceInfo in client.Call to ignore panic
 
 ### Fix:
+
 - [[#1073](https://github.com/cloudwego/kitex/pull/1073)] fix: fix failure retryer dump panic
 - [[#1067](https://github.com/cloudwego/kitex/pull/1067)] fix: slim template with deepcopy
 - [[#1055](https://github.com/cloudwego/kitex/pull/1055)] fix: ignore SIGHUP when run with nohup
@@ -70,6 +73,7 @@ description: >
 - [[#994](https://github.com/cloudwego/kitex/pull/994)] fix(tool): fix kitex tool git repo pulling logic
 
 ### Chore:
+
 - [[#1074](https://github.com/cloudwego/kitex/pull/1074)] chore: update thriftgo to v0.3.0
 - [[#1031](https://github.com/cloudwego/kitex/pull/1031)] chore: remove wechat group in readme
 - [[#1008](https://github.com/cloudwego/kitex/pull/1008)] chore: update dynamicgo to v0.1.1

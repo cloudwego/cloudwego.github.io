@@ -1,6 +1,6 @@
 ---
-title: 'Volo 0.10.0 版本发布'
-linkTitle: 'Release v0.10.0'
+title: "Volo 0.10.0 版本发布"
+linkTitle: "Release v0.10.0"
 projects: ["Volo"]
 date: 2024-04-08
 description: >
@@ -59,7 +59,6 @@ let x = xxx().map_err(|e|anyhow::anyhow!(e))?;
 
 client 部分的错误从原来的 `ResponseError` 改为了 `ClientError`，按编译器报错提示匹配新的错误 variant 即可。
 
-
 ### IDL 管理文件 volo.yml 格式重构
 
 新版 yml 配置的结构更加清晰，且更易于维护，并主要解决了旧版中无法支持 git 跨仓库引用的问题，具体的功能和配置参数见 [config](https://www.cloudwego.io/zh/docs/volo/guide/config)。另外，对于 volo-cli 命令行工具，我们将之前的 idl 命令名字修改为了 repo。
@@ -68,7 +67,6 @@ client 部分的错误从原来的 `ResponseError` 改为了 `ClientError`，按
 
 安装 volo-cli 0.10.0 版本，并在 volo.yml 目录下执行 volo migrate 命令即可自动迁移。
 
-
 ### 默认生成的 Enum 类型修改
 
 在新版生成代码中，默认生成的 Enum 类型修改为了 i32 wrapper 的 newtype 类型，以便于更好的向前兼容 IDL enum 字段中枚举值的修改。
@@ -76,7 +74,6 @@ client 部分的错误从原来的 `ResponseError` 改为了 `ClientError`，按
 #### 迁移指南
 
 将 enum 字段中枚举值名字修改为对应生成的名字即可，如 `Foo::Bar` -> `Foo::BAR`。
-
 
 ## 完整 Release Note
 

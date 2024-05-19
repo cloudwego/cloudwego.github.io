@@ -7,7 +7,7 @@ description: >
 
 ## 简单示例
 
-### 创建 video.thrift 
+### 创建 video.thrift
 
 ```thrift
 namespace go video
@@ -99,5 +99,3 @@ cwgo doc --idl user.thrift --module {your module name}
 ### 生成代码
 
 生成代码的目录结构参考[生成代码的结构](/zh/docs/cwgo/tutorials/doc/layout/)。
-
-

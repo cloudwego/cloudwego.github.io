@@ -4,7 +4,6 @@ date: 2022-10-06
 weight: 8
 keywords: ["Swagger", "RESTful API"]
 description: "用 Swagger 2.0 来自动生成 RESTful API 文档的 Hertz 中间件。"
-
 ---
 
 这是一个用 Swagger 2.0 来自动生成 RESTful API 文档的 Hertz 中间件。
@@ -42,11 +41,11 @@ swag init
 swag init --parseDependency --parseInternal --parseDepth 5 --instanceName "swagger"
 ```
 
-| 选项      | 默认值       | 描述                                                                  |
-| --------------- |-----------|---------------------------------------------------------------------|
-| parseInternal   | false     | 解析内部依赖包。                                                            |
-| parseDependency | false     | 解析外部依赖包。                                                            |
-| parseDepth      | 100       | 解析依赖包深度，如果你知道解析结构的深度，推荐使用这个参数，swag 命令的执行时间会显著减少。                     |
+| 选项            | 默认值    | 描述                                                                                                           |
+| --------------- | --------- | -------------------------------------------------------------------------------------------------------------- |
+| parseInternal   | false     | 解析内部依赖包。                                                                                               |
+| parseDependency | false     | 解析外部依赖包。                                                                                               |
+| parseDepth      | 100       | 解析依赖包深度，如果你知道解析结构的深度，推荐使用这个参数，swag 命令的执行时间会显著减少。                    |
 | instanceName    | "swagger" | swagger 文档的实例名称。如果要在一个 Hertz 路由上部署多个不同的 swagger 实例，请确保每个实例有一个唯一的名字。 |
 
 4. 通过运行以下命令在工程中下载 [hertz-swagger](https://github.com/hertz-contrib/swagger) :
@@ -195,13 +194,13 @@ func main() {
 
 ```
 
-| 选项                     | 类型   | 默认值     | 描述                                                         |
-| ------------------------ | ------ | ---------- | ------------------------------------------------------------ |
-| URL                      | string | "doc.json" | 指向 API 定义的 URL                                          |
+| 选项                     | 类型   | 默认值     | 描述                                                                                                       |
+| ------------------------ | ------ | ---------- | ---------------------------------------------------------------------------------------------------------- |
+| URL                      | string | "doc.json" | 指向 API 定义的 URL                                                                                        |
 | DocExpansion             | string | "list"     | 控制操作和标签的默认扩展设置。它可以是 `list`（只展开标签）、`full`（展开标签和操作）或 `none`（不展开）。 |
-| DeepLinking              | bool   | true       | 如果设置为 `true`，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。 |
-| DefaultModelsExpandDepth | int    | 1          | 模型的默认扩展深度（设置为 -1 完全隐藏模型）。                 |
-| PersistAuthorization     | bool   | false      | 如果设置为 `true`，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。 |
-| Oauth2DefaultClientID    | string | ""         | 如果设置了这个字段，它将用于预填 OAuth2 授权对话框的 *client_id* 字段。 |
+| DeepLinking              | bool   | true       | 如果设置为 `true`，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。                              |
+| DefaultModelsExpandDepth | int    | 1          | 模型的默认扩展深度（设置为 -1 完全隐藏模型）。                                                             |
+| PersistAuthorization     | bool   | false      | 如果设置为 `true`，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。                                   |
+| Oauth2DefaultClientID    | string | ""         | 如果设置了这个字段，它将用于预填 OAuth2 授权对话框的 _client_id_ 字段。                                    |
 
 [Swag]: https://github.com/swaggo/swag

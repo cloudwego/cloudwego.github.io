@@ -90,11 +90,11 @@ func main() {
 
 **默认配置**
 
-| 配置名              | 默认值           | 描述                                          |
-| ------------------- | ---------------- | --------------------------------------------- |
-| WithMaxAttemptTimes | 5                | 用于设置最大尝试次数，如果为 0，则表示无限尝试 |
-| WithObserveDelay    | 30 * time.Second | 用于设置正常连接条件下检查服务状态的延迟时间  |
-| WithRetryDelay      | 10 * time.Second | 用于设置断开连接后重试的延迟时间              |
+| 配置名              | 默认值            | 描述                                           |
+| ------------------- | ----------------- | ---------------------------------------------- |
+| WithMaxAttemptTimes | 5                 | 用于设置最大尝试次数，如果为 0，则表示无限尝试 |
+| WithObserveDelay    | 30 \* time.Second | 用于设置正常连接条件下检查服务状态的延迟时间   |
+| WithRetryDelay      | 10 \* time.Second | 用于设置断开连接后重试的延迟时间               |
 
 ##### WithMaxAttemptTimes
 
@@ -103,7 +103,7 @@ func main() {
 函数签名：
 
 ```go
-func WithMaxAttemptTimes(maxAttemptTimes uint) Option 
+func WithMaxAttemptTimes(maxAttemptTimes uint) Option
 ```
 
 示例代码：
@@ -169,7 +169,7 @@ func main() {
 函数签名：
 
 ```go
-func WithRetryDelay(t time.Duration) Option 
+func WithRetryDelay(t time.Duration) Option
 ```
 
 示例代码：

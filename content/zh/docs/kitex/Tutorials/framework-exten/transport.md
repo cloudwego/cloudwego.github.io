@@ -41,7 +41,7 @@ type ServerTransHandlerFactory interface {
 }
 ```
 
-TransServer 是服务端的启动接口，ServerTransHandler  和 ClientTransHandler 分别是服务端和调用端对消息的处理接口，ByteBuffer 是读写接口。相同的 IO 模型下 TransHandler 的逻辑通常是一致的，Kitex 对同步 IO 提供了默认实现的 TransHandler，针对不一样的地方抽象出了 Extension 接口，所以在同步 IO 的场景下不需要实现完整的 TransHandler 接口，只需实现 Extension 即可。
+TransServer 是服务端的启动接口，ServerTransHandler 和 ClientTransHandler 分别是服务端和调用端对消息的处理接口，ByteBuffer 是读写接口。相同的 IO 模型下 TransHandler 的逻辑通常是一致的，Kitex 对同步 IO 提供了默认实现的 TransHandler，针对不一样的地方抽象出了 Extension 接口，所以在同步 IO 的场景下不需要实现完整的 TransHandler 接口，只需实现 Extension 即可。
 
 ### Netpoll 的扩展
 
@@ -53,7 +53,7 @@ TransServer 是服务端的启动接口，ServerTransHandler  和 ClientTransHan
 
 - 服务端
 
-  option: `WithTransServerFactory`,  `WithTransHandlerFactory`
+  option: `WithTransServerFactory`, `WithTransHandlerFactory`
 
   ```go
   var opts []server.Option

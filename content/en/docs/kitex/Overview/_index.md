@@ -10,8 +10,8 @@ description: "This doc covers architecture design, features and performance of K
 
 Kitex [kaɪt'eks] is a **high-performance** and **strong-extensibility** Golang RPC framework that helps developers build microservices. If the performance and extensibility are the main concerns when you develop microservices, Kitex can be a good choice.
 
-
 ### Architecture
+
 ![image](/img/docs/kitex.png)
 
 ### Basic Features
@@ -48,7 +48,7 @@ Kitex has built-in code generation tools that support generating **Thrift**, **P
 
 We compared the performance of Kitex with some popular RPC frameworks ([test code](https://github.com/cloudwego/kitex-benchmark)), such as [gRPC](https://github.com/grpc/grpc) and [RPCX](https://github.com/smallnest/rpcx), both using Protobuf protocol. The test results show that [Kitex](https://github.com/cloudwego/kitex) performs better.
 
-*Note: The performance benchmarks obtained from the experiment are for reference only, because there are many factors that can affect the actual performance in application scenarios.*
+_Note: The performance benchmarks obtained from the experiment are for reference only, because there are many factors that can affect the actual performance in application scenarios._
 
 ### Test environment
 
@@ -61,16 +61,16 @@ We compared the performance of Kitex with some popular RPC frameworks ([test cod
 
 Change the concurrency with a fixed packet size 1KB.
 
-| QPS                                                  |                         TP99                          |                         TP999                          |
-| :--------------------------------------------------- | :---------------------------------------------------: | :----------------------------------------------------: |
+| QPS                                                |                        TP99                         |                        TP999                         |
+| :------------------------------------------------- | :-------------------------------------------------: | :--------------------------------------------------: |
 | ![image](/img/docs/performance_concurrent_qps.png) | ![image](/img/docs/performance_concurrent_tp99.png) | ![image](/img/docs/performance_concurrent_tp999.png) |
 
 ### Throughput performance
 
 Change packet size with a fixed concurrency of 100.
 
-| QPS                                                |                        TP99                         |                        TP999                         |
-| :------------------------------------------------- | :-------------------------------------------------: | :--------------------------------------------------: |
+| QPS                                              |                       TP99                        |                       TP999                        |
+| :----------------------------------------------- | :-----------------------------------------------: | :------------------------------------------------: |
 | ![image](/img/docs/performance_bodysize_qps.png) | ![image](/img/docs/performance_bodysize_tp99.png) | ![image](/img/docs/performance_bodysize_tp999.png) |
 
 ## Related Projects

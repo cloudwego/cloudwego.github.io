@@ -2,7 +2,7 @@
 title: "泛化调用接入 dynamicgo 指南"
 date: 2023-12-17
 weight: 4
-keywords: ["generic-call","dynamicgo"]
+keywords: ["generic-call", "dynamicgo"]
 description: "泛化调用接入 dynamicgo 指南；高性能泛化调用实现"
 ---
 
@@ -28,6 +28,7 @@ description: "泛化调用接入 dynamicgo 指南；高性能泛化调用实现"
       - 您可以 IDL 与旧方法相同的方法 `UpdateIDL`
     - `NewThriftContentWithAbsIncludePathProviderWithDynamicGo(mainIDLPath字符串，包括map[string]string）`：创建 ThriftContentWithAbsIncludePathProvider 实现 DescriptorProvider（absinclude path）和从 content
       - 您可以与旧方法相同的方法更新 IDL
+
 - Provider option
 
   - `GetProviderOption` 是一个接口，其中包含一个 func `Option（）` 来获取 `ProviderOption`。ProviderOption 有一个 bool 字段 `DynamicGoEnable`，它指示是否启用了 Dynamicgo。
@@ -73,6 +74,7 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
     - 使用 Dynamicgo：`remote or network error[remote]:  {"code":400,"msg":"this is an exception"}`
   - HTTP generic call （TODO）
     HTTP 的泛化调用不支持 thrift 异常字段处理。
+
 - 类型转换
 
   - Bool <> string：在 Kitex 的原始方式中，即使 IDL 声明为 bool 类型的字段值为字符串（例如"true"），它也可以被编码，但是 Dynamicgo 在编码过程中会产生错误。
@@ -86,6 +88,7 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
 
   - `ProviderOption.DynamicGoEnable` 值为 true
   - 在服务器端：客户端使用 json 泛化调用，或者客户端不使用 json 泛化调用但传输协议**不是** PurePayload。
+
 - HTTP 泛化
 
   - `ProviderOption.DynamicGoEnable` 值为 true
@@ -93,10 +96,10 @@ DefaultHTTPDynamicgoConvOpts = conv.Options{
 
 **如果不满足这些条件，将 fallback 到原来的泛化调用实现。**
 
-| **开启条件** | 宿主机环境                  | 选项                                                                                                                                    |
-| ------------ | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **开启条件** | 宿主机环境                  | 选项                                                                                                                                       |
+| ------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | **json**     | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true<br>- 客户端使用 泛化调用，或者其传输协议使用的是 TTHeader、Framed、TTHeaderFramed 中的一种 |
-| http         | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true <br>- `UseRawBodyForHTTPResp(true）` **启用（可选）**                                       |
+| http         | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true <br>- `UseRawBodyForHTTPResp(true）` **启用（可选）**                                      |
 
 ## JSON 泛化调用示例
 
@@ -200,7 +203,7 @@ type GenericServiceImpl struct {
 }
 
 func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, request interface{}) (response interface{}, err error) {
-        // use jsoniter or other json parse sdk to assert request 
+        // use jsoniter or other json parse sdk to assert request
         m := request.(string)
         fmt.Printf("Recv: %v\n", m)
         return  "{\"Msg\": \"world\"}", nil
@@ -217,11 +220,11 @@ func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, req
 
 - 请求
 
-类型：*generic.HTTPRequest
+类型：\*generic.HTTPRequest
 
 - 回应
 
-类型：*generic.HTTPResponse
+类型：\*generic.HTTPResponse
 
 ```go
 package main
@@ -251,7 +254,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
+
     // Construct the request, or get it from ginex
     body := map[string]interface{}{
                 "text": "text",
@@ -279,11 +282,11 @@ func main() {
     customReq, err := generic.FromHTTPRequest(req) // Considering that the business may use third-party http request, you can construct your own conversion function
     // customReq *generic.HttpRequest
     // Since the method for http generic is obtained from the http request via the bam rule, just fill in the blanks
-    
+
     resp, err := cli.GenericCall(ctx, "", customReq)
     realResp := resp.(*generic.HttpResponse)
     realResp.Write(w) // Write back to ResponseWriter for http gateway
-    
+
      // The body will be stored in RawBody of HTTPResponse as []byte type.
     // Without using dynamicgo, the body will be stored in Body of HTTPResponse as map[string]interface{} type.
     node, err := sonic.Get(gr.RawBody, "msg")
@@ -322,5 +325,3 @@ func main() {
 |                          | 10K           | original    | 8002.70   | 97.59ms  | 149.83ms  | 149.53             | 1524.45            | 0%                                               |
 |                          |               | dynamicgo   | 26857.57  | 9.47ms   | 21.94ms   | 394.42             | 1138.70            | +236%                                            |
 |                          |               | fallback    | 8019.39   | 97.11ms  | 149.50ms  | 148.03             | 1527.77            | +0.2%                                            |
-
-

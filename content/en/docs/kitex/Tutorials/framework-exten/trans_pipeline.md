@@ -7,7 +7,7 @@ description: >
 
 ![remote_module](/img/docs/remote_module.png)
 
-Transport Pipeline refers to Netty ChannelPipeline and provides `Inbound` and `Outbound` interfaces to support message or I/O event extensions. `TLS`,  `Traffic Limit`, `Transparent Transmission Processing` can be extended based on `In/OutboundHandler`. As shown in the figure below, each BoundHandler is executed in series.
+Transport Pipeline refers to Netty ChannelPipeline and provides `Inbound` and `Outbound` interfaces to support message or I/O event extensions. `TLS`, `Traffic Limit`, `Transparent Transmission Processing` can be extended based on `In/OutboundHandler`. As shown in the figure below, each BoundHandler is executed in series.
 
 ![trans_pipeline](/img/docs/trans_pipeline.png)
 
@@ -45,19 +45,17 @@ type InboundHandler interface {
   Meta information transparent transmission is to transmit some RPC additional information to the downstream based on the transport protocol, and read the upstream transparent transmission information carried by transport protocol. The implementation is in transmeta_bound.go.
 
   - Write metainfo implements Write()
-  - Read metainfo  implements OnMessage()
-  
+  - Read metainfo implements OnMessage()
+
   In order to make it more convenient to extend Metadata Transparent Transmission for users, Kitex defines the separately extension API `MetaHandler`.
-  
-   ```go
-   // MetaHandler reads or writes metadata through certain protocol.
-   type MetaHandler interface {
-   	WriteMeta(ctx context.Context, msg Message) (context.Context, error)
-   	ReadMeta(ctx context.Context, msg Message) (context.Context, error)
-   }
-   ```
-  
-  
+
+  ```go
+  // MetaHandler reads or writes metadata through certain protocol.
+  type MetaHandler interface {
+  	WriteMeta(ctx context.Context, msg Message) (context.Context, error)
+  	ReadMeta(ctx context.Context, msg Message) (context.Context, error)
+  }
+  ```
 
 ## Customized BoundHandler Usage
 
@@ -76,6 +74,3 @@ type InboundHandler interface {
   ```go
   cli, err := xxxservice.NewClient(targetService, client.WithBoundHandler(yourBoundHandler))
   ```
-
-  
-

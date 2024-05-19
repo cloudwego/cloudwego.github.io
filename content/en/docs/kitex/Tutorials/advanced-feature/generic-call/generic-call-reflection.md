@@ -6,11 +6,11 @@ keywords: ["dynamic", "thrift", "generic-call"]
 description: "Use Thrift reflection to improve generic-call performance"
 ---
 
-## What is  Thrift Reflection ?
+## What is Thrift Reflection ?
 
 In short, **similar to [pb reflect](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect), it does not rely on static code to add, delete, modify, and write Thrift data** .
 
-Reflection uses specific generics to describe any data at runtime. Compared with static struct, it has the characteristics of **flexible addition, deletion, and modification, and does not depend on static code** . Currently [dynamicgo](https://github.com/cloudwego/dynamicgo) has implemented a set of reflection APIs  for the thrift binary protocol, which can be roughly divided into Thrift Value/Node and Thrift DOM  according to usage scenarios.
+Reflection uses specific generics to describe any data at runtime. Compared with static struct, it has the characteristics of **flexible addition, deletion, and modification, and does not depend on static code** . Currently [dynamicgo](https://github.com/cloudwego/dynamicgo) has implemented a set of reflection APIs for the thrift binary protocol, which can be roughly divided into Thrift Value/Node and Thrift DOM according to usage scenarios.
 
 ## Thrift Value/Node
 
@@ -18,13 +18,13 @@ Used for the **addition, deletion, modification, and lookup of a small number of
 
 ## Thrift DOM
 
-The **document object tree model** is used to **describe the full deserialization  of Thrift data** . Since the Thrift protocol itself has self-description ability, we can deserialize it into a specific tree structure for more complex **container traversal , field bit shifting** and other operations. Specific business scenarios include **DSL mapping, data packet merging**, etc. in BFF services. Dynamicgo provides [thrift/generic. PathNode ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode)encapsulation, which can handle thrift data of arbitrary complexity without binding dynamic type descriptions.
+The **document object tree model** is used to **describe the full deserialization of Thrift data** . Since the Thrift protocol itself has self-description ability, we can deserialize it into a specific tree structure for more complex **container traversal , field bit shifting** and other operations. Specific business scenarios include **DSL mapping, data packet merging**, etc. in BFF services. Dynamicgo provides [thrift/generic. PathNode ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode)encapsulation, which can handle thrift data of arbitrary complexity without binding dynamic type descriptions.
 
 ## Why use Thrift generics instead of Kitex Map/JSON generalization calls ?
 
 In short: **better performance** .
 
-Thrift generic requirements generally come from  **rpc  generalization calls, http < > rpc protocol conversion** and other centralized API gateways\ BFF scenarios, often with high performance requirements. However, Kitex Map/JSON generalization calls are implemented in the current map + interface mode, which inevitably brings a large number of fragmented heap memory allocation , and its performance is far worse than that of kitex rpc services in normal code generation mode. In contrast, both the efficient skip algorithm of Thrift Value and the carefully designed memory structure of Thrift DOM can effectively avoid a large number of runtime memory allocation and intermediate codec conversion. See [introduction](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md) for detailed design and implementation.
+Thrift generic requirements generally come from **rpc generalization calls, http < > rpc protocol conversion** and other centralized API gateways\ BFF scenarios, often with high performance requirements. However, Kitex Map/JSON generalization calls are implemented in the current map + interface mode, which inevitably brings a large number of fragmented heap memory allocation , and its performance is far worse than that of kitex rpc services in normal code generation mode. In contrast, both the efficient skip algorithm of Thrift Value and the carefully designed memory structure of Thrift DOM can effectively avoid a large number of runtime memory allocation and intermediate codec conversion. See [introduction](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md) for detailed design and implementation.
 
 For specific comparison results, please refer to the section "Test Data" below.
 
@@ -61,7 +61,7 @@ func (g *ExampleValueServiceImpl) GenericCall(ctx context.Context, method string
     if err != nil {
         return nil, err
     }
-    
+
     // wrap response as thrift REPLY message
     return dt.WrapBinaryBody(resp, methodName, dt.REPLY, 0, seqID)
 }
@@ -291,7 +291,7 @@ func MakeExampleReqBinary(B bool, A string, logid string) ([]byte, error) {
 }
 ```
 
-3. Encapsulates thrift  binary message, initiates binary generalization call
+3. Encapsulates thrift binary message, initiates binary generalization call
 
 ```go
 func TestThriftReflect(t *testing.T) {
@@ -355,7 +355,7 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
     if err != nil {
         return err
     }
-    // spew.Dump(root) // -- only root.Next is set 
+    // spew.Dump(root) // -- only root.Next is set
     // check node values by PathNode APIs
     require_field2, err := root.Field(2, DynamicgoOptions).Node.String()
     if err != nil {
@@ -364,7 +364,7 @@ func ExampleClientHandler_DOM(response []byte, log_id string) error {
     if require_field2 != ReqMsg {
         return errors.New("require_field2 does not match")
     }
-    
+
     // load **all layers** children
     err = root.Load(true, DynamicgoOptions)
     if err != nil {
@@ -393,11 +393,13 @@ Note that **memory pooling is used for DOM access** , which can greatly improve 
 
   - Thrift [reflect](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
   - [Map](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/map_test.go)
+
 - Testing environment
 
   - goos: darwin
   - goarch: amd64
   - cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+
 - Test results
 
 Small Data (266B)
@@ -471,6 +473,5 @@ func GetNewRequest(idXX int, nameXX string) []byte {
 
 ## Attention
 
-1. Currently dynamicgo only supports **thrift-binary**  encoding mode
+1. Currently dynamicgo only supports **thrift-binary** encoding mode
 2. Currently, binary generalization only supports the **thrift-framed** transport protocol
-

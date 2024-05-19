@@ -9,6 +9,7 @@ description: >
 
 Suite（套件）是一种对于扩展的高级抽象，可以理解为是对于 Option 和 Middleware 的组合和封装。
 在扩展过程中，我们需要要记得两点原则：
+
 1. Suite 套件只允许在初始化 Server、Client 的时候设置，不允许动态修改。
 2. suite 套件是按设置的顺序来执行的，client 是先设置先执行，而 server 则相反。
 

@@ -1,6 +1,6 @@
 ---
-title: 'Volo 0.9.0 版本发布'
-linkTitle: 'Release v0.9.0'
+title: "Volo 0.9.0 版本发布"
+linkTitle: "Release v0.9.0"
 projects: ["Volo"]
 date: 2024-01-04
 description: >
@@ -29,7 +29,6 @@ volo-thrift client 中的 max_frame_size 由于迭代中接口变更，并没有
 ### hyper 升级到 1.0 版本
 
 hyper 在 1.0 版本中移除了 hyper::Body，并引入了 hyper::body::Incoming 用作请求的 Body 类型。在 volo-grpc 中，我们跟进了这一改动，预计对绝大多数没有自己写 layer 的用户无感。如果有使用到完整 Service 泛型的用户，将 `Service<ServerContext, Request<hyper::Body>>` 修改为 `Service<ServerContext, Request<hyper::body::Incoming>>` 即可。
-
 
 ## 完整 Release Note
 

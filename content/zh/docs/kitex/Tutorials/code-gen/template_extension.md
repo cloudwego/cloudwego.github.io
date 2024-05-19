@@ -34,23 +34,21 @@ extensions.yaml 文件提供的内容将会被应用到所有 service 定义对�
 dependencies:
   example.com/my/pkg: pkg
 extend_client:
-    import_paths:
-      - example.com/my/pkg
-    extend_option: 
-      options = append(options, client.WithSuite(pkg.MyClientSuite()))
-    extend_file: |-
-        func Hello() {
-          println("hello world")
-        }
+  import_paths:
+    - example.com/my/pkg
+  extend_option: options = append(options, client.WithSuite(pkg.MyClientSuite()))
+  extend_file: |-
+    func Hello() {
+      println("hello world")
+    }
 extend_server:
-    import_paths:
-      - example.com/my/pkg
-    extend_option: 
-      options = append(options, server.WithSuite(pkg.MyServerSuite()))
-    extend_file: |-
-        func Hello() {
-          println("hello world")
-        }
+  import_paths:
+    - example.com/my/pkg
+  extend_option: options = append(options, server.WithSuite(pkg.MyServerSuite()))
+  extend_file: |-
+    func Hello() {
+      println("hello world")
+    }
 ```
 
 - **dependencies**：字段定义了在模板里可能会被使用到的包的列表，以及它们被引用的名字。

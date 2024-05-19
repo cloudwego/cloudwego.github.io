@@ -48,6 +48,7 @@ Instructions:
 > For details, see: https://github.com/cloudwego/hertz-examples/tree/main/hz_client
 
 1. Define the IDL
+
 ```go
 namespace go toutiao.middleware.hzClient
 struct QueryReq {
@@ -62,16 +63,19 @@ service Hertz121 {
      api.base_domain="http://127.0.0.1:8888";
 )
 ```
+
 2. Generate code
 
 Based on the above IDL, the server and client codes can be generated separately:
 
 Server:
+
 ```go
 hz new --idl=psm.thrift --handler_by_method -t=template=slim
 ```
 
 Client:
+
 ```go
 hz client --idl=psm.thrift --model_dir=hertz_gen -t=template=slim --client_dir=hz_client
 ```
@@ -81,5 +85,6 @@ hz client --idl=psm.thrift --model_dir=hertz_gen -t=template=slim --client_dir=h
 ## Full Release Note
 
 The complete Release Note can refer to:
-* Hertz: https://github.com/cloudwego/hertz/releases/tag/v0.5.0
-* Hz(scaffolding): https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.5.0
+
+- Hertz: https://github.com/cloudwego/hertz/releases/tag/v0.5.0
+- Hz(scaffolding): https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.5.0

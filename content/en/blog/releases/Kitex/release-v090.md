@@ -13,6 +13,7 @@ Below are some important changes:
 ## **Introduction to Key Changes**
 
 ### Features
+
 **1. Thrift Streaming**
 
 The Thrift Streaming feature based on gRPC (HTTP2) has been officially released. Users can use Thrift to define their own Streaming requests. To maintain compatibility with IDL parsing, Kitex chooses to use annotation to define stream method. See [Thrift Streaming Usage](/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming/). This version also improves the monitoring and reporting of Streaming requests, which also applies to gRPC-Protobuf. Note that Thrift is mainly used for data serialization and does not use the Thrift message protocol.
@@ -33,7 +34,7 @@ Supported the use of Frugal on ARM64 machines, temporarily supported by Fallback
 
 **4. Server level context timeout**
 
-Added server.WithEnableContextTimeout supports adding timeout to context at the server level. And in the new version, Kitex will default pass the client-side timeout in the TTHeader to server-side.  Usage please see [Timeout](/docs/kitex/tutorials/service-governance/timeout/).
+Added server.WithEnableContextTimeout supports adding timeout to context at the server level. And in the new version, Kitex will default pass the client-side timeout in the TTHeader to server-side. Usage please see [Timeout](/docs/kitex/tutorials/service-governance/timeout/).
 
 Note: TTHeader transport protocol is required.
 
@@ -46,8 +47,6 @@ Note: TTHeader transport protocol is required.。
 **6. Adding a new LoadBalance policy**
 
 Adding a new LoadBalance method of Alias Method to reduce the time complexity of random weight LoadBalance algorithm. Specified by `client.WithLoadBalancer(loadbalance.NewWeightedRandomWithAliasMethodBalancer())`.
-
-
 
 ### Special Change
 
@@ -64,6 +63,7 @@ Kitex supports controlling the policies of Timeout, Retry, Circuit Breaker, Limi
 ## **Full Release Log**
 
 ### Feature:
+
 1. [[#1208](https://github.com/cloudwego/kitex/pull/1208), [#1251](https://github.com/cloudwego/kitex/pull/1251), [#1230](https://github.com/cloudwego/kitex/pull/1230), [#1226](https://github.com/cloudwego/kitex/pull/1226)] feat: support thrift streaming (replacing the protobuf payload of GRPC/HTTP2 with thrift binary)
 2. [[#1217](https://github.com/cloudwego/kitex/pull/1217)] feat: support thrift and pb multi service
 3. [[#1268](https://github.com/cloudwego/kitex/pull/1268)] feat(thrift): support frugal fallback for arm
@@ -76,6 +76,7 @@ Kitex supports controlling the policies of Timeout, Retry, Circuit Breaker, Limi
 10. [[#1211](https://github.com/cloudwego/kitex/pull/1211)] feat(hessian2): support nested struct for hessian2 customized Exception
 
 ### Optimize:
+
 1. [[#1222](https://github.com/cloudwego/kitex/pull/1222)] optimize(frugal): enable frugal by default when the generated code is using slim template
 2. [[#1209](https://github.com/cloudwego/kitex/pull/1209)] optimize: split encoder interface to customize meta and payload encoding implementation
 3. [[#1206](https://github.com/cloudwego/kitex/pull/1206)] optimize(tool): add IsDir judge in readTemplate and add template register func
@@ -86,6 +87,7 @@ Kitex supports controlling the policies of Timeout, Retry, Circuit Breaker, Limi
 8. [[#1238](https://github.com/cloudwego/kitex/pull/1238)] optimize(bizerr): support biz status error for streaming mode
 
 ### Fix:
+
 1. [[#1236](https://github.com/cloudwego/kitex/pull/1236)] fix(hessian2): correct code-ref behavior when thrift file is not in project dir
 2. [[#1234](https://github.com/cloudwego/kitex/pull/1234)] fix(hessian2): still perform replacement on handler.go when -service is not specified for hessian2
 3. [[#1232](https://github.com/cloudwego/kitex/pull/1232)] fix(gRPC): append "h2" to next proto in gRPC tlsConfig to enable protocol negotiation in TLS
@@ -95,6 +97,7 @@ Kitex supports controlling the policies of Timeout, Retry, Circuit Breaker, Limi
 7. [[#1194](https://github.com/cloudwego/kitex/pull/1194)] fix(retry): always set RespOp && preventive panic to avoid dead loop
 
 ### Chore & Tests
+
 1. [[#1273](https://github.com/cloudwego/kitex/pull/1273)] chore: upgrade netpoll to v0.6.0
 2. [[#1263](https://github.com/cloudwego/kitex/pull/1263)] chore: update sonic to v1.11.1
 3. [[#1255](https://github.com/cloudwego/kitex/pull/1255)] chore: upgrade netpoll to v0.6.0 pre-release version
@@ -104,6 +107,7 @@ Kitex supports controlling the policies of Timeout, Retry, Circuit Breaker, Limi
 7. [[#1220](https://github.com/cloudwego/kitex/pull/1220)] test: correct the cachekey in the benchmark test of balancer
 8. [[#1196](https://github.com/cloudwego/kitex/pull/1196)] test: add just biz handler message error
 
-------
+---
+
 **Thanks a lot to those community contributors who submit some pull requests or share your ideas for this version:**
-@DMwangnima @jizhuozhi @NX-Official @jieqiboh @Lvnszn @Skyenought 
+@DMwangnima @jizhuozhi @NX-Official @jieqiboh @Lvnszn @Skyenought
