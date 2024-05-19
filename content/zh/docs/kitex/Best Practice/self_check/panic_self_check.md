@@ -58,7 +58,7 @@ fatal error: xxx...
 
 6. **panic: [happened in biz handler] ......**
 
-   错误原因：以` [happened in biz handler]` 打头的描述是 Kitex 框架主动捕获的 `panic`，但是 `panic` 是由于业务代码造成的，因此**一定是业务代码问题**，具体的错误原因应该看 `[happened in biz handler]` 后面的部分。
+   错误原因：以` [happened in biz handler]` 打头的描述是 x 框架主动捕获的 `panic`，但是 `panic` 是由于业务代码造成的，因此**一定是业务代码问题**，具体的错误原因应该看 `[happened in biz handler]` 后面的部分。
 
    举例说明：比如下面这个错误意思是，想把 `interface{}` 参数当作 `string` 来使用，但是 `interface{}` 参数本身是个 nil。
 
@@ -72,7 +72,7 @@ fatal error: xxx...
 
 知道了错误原因之后，接下来就要定位错误的代码位置。首先我们学习如何看错误栈，从哪里开始看。
 
-![image](/img/blog/Kitex_self_check/panic_stack.png)
+![image](/img/blog/x_self_check/panic_stack.png)
 
 仍然附开始这张图来说明，**panic** **错误栈，以如下字样为开始**。如果没有该字样，说明 panic 没有被 recover，直接从头开始看即可。
 
@@ -86,7 +86,7 @@ fatal error: xxx...
 
 找到了错误栈的起始位置后，紧跟着的下一行，就是 panic 报错的具体方法。
 
-![image](/img/blog/Kitex_self_check/panic_stack.png)
+![image](/img/blog/x_self_check/panic_stack.png)
 
 仍以开始图来说明，报错方法为
 
@@ -103,8 +103,8 @@ panic 错误栈描述格式一般是 每2行 代表一个调用层次，第1行�
 ```go
 main.(*EchoServerImpl).Echo(0x11b54b0, 0xcb2000, 0xc0000987e0, 0xc000283d40, 0x11b54b0, 0xc0003aca28, 0xcaef01)
         /home/tiger/go/src/xxx/performancetest/handler.go:18 +0x6d
-xxx/performancetest/kitex_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0, 0xadc1c0, 0x11b54b0, 0xb7dd80, 0xc000286520, 0xb7dec0, 0xc000286528, 0xc0000986f0, 0xae9c60)
-  /home/tiger/go/src/xxx/performancetest/kitex_gen/echo/echoserver/echoserver.go:37 +0xa4
+xxx/performancetest/x_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0, 0xadc1c0, 0x11b54b0, 0xb7dd80, 0xc000286520, 0xb7dec0, 0xc000286528, 0xc0000986f0, 0xae9c60)
+  /home/tiger/go/src/xxx/performancetest/x_gen/echo/echoserver/echoserver.go:37 +0xa4
 ```
 
 1. 第 1 行表明：调用方法为 `*EchoServerImpl.Echo`
@@ -117,7 +117,7 @@ xxx/performancetest/kitex_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0
 
 那么仍以开始图为例，我们知道了报错在 /.../handler.go:18，错误原因是代码空指针，那么直接看代码，如下图所示：
 
-![image](/img/blog/Kitex_self_check/echo_server.png)
+![image](/img/blog/x_self_check/echo_server.png)
 
 显然，第 18 行这里，`a.Message` 中很有可能 `a == nil`，因为 `params` 取值没有空值校验。至此我们找到问题，并可以通过修改代码来 fix bug。
 
@@ -181,10 +181,10 @@ func (s *EchoServerImpl) Echo(ctx context.Context, req  *echo.Request) (*echo.Re
    因为这里是生成代码，**可以得出结论**，生成代码 `*Log` 结构体的第 5 个字段 `*Device` 没有赋值，造成空指针。具体在哪里没有赋值，基于栈向下找就可以，这里不再赘述。
 
    ```go
-   KITE: panic in processor: runtime error: invalid memory address or nil pointer dereference
+   : panic in processor: runtime error: invalid memory address or nil pointer dereference
    goroutine 498022546 [running]:
-   .../xxx/kitex.(*RpcServer).processRequests.func1(0xc000424550)
-   /.../xxx/kitex/kite_server.go:227 +0xc8
+   .../xxx/x.(*RpcServer).processRequests.func1(0xc000424550)
+   /.../xxx/x/kitex_server.go:227 +0xc8
    panic(0x2b97ca0, 0x5b05400)
    /usr/local/go/src/runtime/panic.go:522 +0x1b5
    .../thrift_gen/.../log.(*Device).writeField1(0x0, 0x36ce900, 0xc008478e00, 0x0, 0x0)
