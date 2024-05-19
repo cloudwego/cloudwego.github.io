@@ -56,7 +56,7 @@ Common error causes include the following:
 
 6. **panic: [happened in biz handler] ......**
 
-   Error Cause: Descriptions starting with `[happened in biz handler]` indicate panics captured by the Kitex framework, but the panic is caused by business logic. Therefore, it is definitely a problem with the business code. The specific error cause should be examined after the `[happened in biz handler]` part.
+   Error Cause: Descriptions starting with `[happened in biz handler]` indicate panics captured by the x framework, but the panic is caused by business logic. Therefore, it is definitely a problem with the business code. The specific error cause should be examined after the `[happened in biz handler]` part.
 
    For example, the following error indicates an attempt to use an `interface{}` parameter as a `string`, but the `interface{}` parameter itself is `nil`:
 
@@ -70,7 +70,7 @@ Common error causes include the following:
 
 Once you have identified the cause of the panic, the next step is to locate the position in the code where the error occurred. To do this, you need to understand how to read the error stack and where to start.
 
-![image](/img/blog/Kitex_self_check/panic_stack.png)
+![image](/img/blog/x_self_check/panic_stack.png)
 
 The error stack typically begins with the following line, which indicates that a panic has occurred and has been recovered:
 
@@ -84,7 +84,7 @@ If this line is not present, it means that the panic was not recovered and you s
 
 After identifying the starting position of the error stack, the next line will indicate the specific method that triggered the panic.
 
-![image](/img/blog/Kitex_self_check/panic_stack.png)
+![image](/img/blog/x_self_check/panic_stack.png)
 
 Referring to the example diagram, the line would look like this:
 
@@ -101,8 +101,8 @@ The panic error stack typically follows a pattern where every two lines represen
 ```go
 main.(*EchoServerImpl).Echo(0x11b54b0, 0xcb2000, 0xc0000987e0, 0xc000283d40, 0x11b54b0, 0xc0003aca28, 0xcaef01)
         /home/tiger/go/src/xxx/performancetest/handler.go:18 +0x6d
-xxx/performancetest/kitex_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0, 0xadc1c0, 0x11b54b0, 0xb7dd80, 0xc000286520, 0xb7dec0, 0xc000286528, 0xc0000986f0, 0xae9c60)
-  /home/tiger/go/src/xxx/performancetest/kitex_gen/echo/echoserver/echoserver.go:37 +0xa4
+xxx/performancetest/x_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0, 0xadc1c0, 0x11b54b0, 0xb7dd80, 0xc000286520, 0xb7dec0, 0xc000286528, 0xc0000986f0, 0xae9c60)
+  /home/tiger/go/src/xxx/performancetest/x_gen/echo/echoserver/echoserver.go:37 +0xa4
 ```
 
 1. The first line indicates that the method being called is `*EchoServerImpl.Echo`.
@@ -113,7 +113,7 @@ xxx/performancetest/kitex_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0
 
 Once you have the specific file location of the error, you can locate the corresponding code and investigate the issue based on the cause of the panic.
 
-![image](/img/blog/Kitex_self_check/echo_server.png)
+![image](/img/blog/x_self_check/echo_server.png)
 
 In the example diagram, we have determined that the error occurred at line 18 in `handler.go`, and the cause of the error is a nil pointer in the `a.Message` expression. This indicates that `a` might be `nil` because there is no nil check on `params`. By modifying the code accordingly, we can fix the bug.
 
@@ -175,10 +175,10 @@ Using the above knowledge, we can quickly determine if a specific pointer is `ni
    Since this is generated code, we can **conclude** that the fifth field `*Device` of the generated `*Log` structure is not assigned a value, resulting in a nil pointer. To determine where exactly the assignment is missing, we can trace the stack downwards. Further details are not discussed here.
 
    ```go
-   KITE: panic in processor: runtime error: invalid memory address or nil pointer dereference
+   : panic in processor: runtime error: invalid memory address or nil pointer dereference
    goroutine 498022546 [running]:
-   .../xxx/kitex.(*RpcServer).processRequests.func1(0xc000424550)
-   /.../xxx/kitex/kite_server.go:227 +0xc8
+   .../xxx/x.(*RpcServer).processRequests.func1(0xc000424550)
+   /.../xxx/x/kitex_server.go:227 +0xc8
    panic(0x2b97ca0, 0x5b05400)
    /usr/local/go/src/runtime/panic.go:522 +0x1b5
    .../thrift_gen/.../log.(*Device).writeField1(0x0, 0x36ce900, 0xc008478e00, 0x0, 0x0)
