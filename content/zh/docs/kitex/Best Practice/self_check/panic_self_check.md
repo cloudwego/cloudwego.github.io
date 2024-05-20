@@ -72,7 +72,7 @@ fatal error: xxx...
 
 知道了错误原因之后，接下来就要定位错误的代码位置。首先我们学习如何看错误栈，从哪里开始看。
 
-![image](/img/blog/x_self_check/panic_stack.png)
+![image](/img/blog/Kitex_self_check/panic_stack.png)
 
 仍然附开始这张图来说明，**panic** **错误栈，以如下字样为开始**。如果没有该字样，说明 panic 没有被 recover，直接从头开始看即可。
 
@@ -86,7 +86,7 @@ fatal error: xxx...
 
 找到了错误栈的起始位置后，紧跟着的下一行，就是 panic 报错的具体方法。
 
-![image](/img/blog/x_self_check/panic_stack.png)
+![image](/img/blog/Kitex_self_check/panic_stack.png)
 
 仍以开始图来说明，报错方法为
 
@@ -117,7 +117,7 @@ xxx/performancetest/x_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0, 0x
 
 那么仍以开始图为例，我们知道了报错在 /.../handler.go:18，错误原因是代码空指针，那么直接看代码，如下图所示：
 
-![image](/img/blog/x_self_check/echo_server.png)
+![image](/img/blog/Kitex_self_check/echo_server.png)
 
 显然，第 18 行这里，`a.Message` 中很有可能 `a == nil`，因为 `params` 取值没有空值校验。至此我们找到问题，并可以通过修改代码来 fix bug。
 
