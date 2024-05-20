@@ -70,7 +70,7 @@ Common error causes include the following:
 
 Once you have identified the cause of the panic, the next step is to locate the position in the code where the error occurred. To do this, you need to understand how to read the error stack and where to start.
 
-![image](/img/blog/x_self_check/panic_stack.png)
+![image](/img/blog/Kitex_self_check/panic_stack.png)
 
 The error stack typically begins with the following line, which indicates that a panic has occurred and has been recovered:
 
@@ -84,7 +84,7 @@ If this line is not present, it means that the panic was not recovered and you s
 
 After identifying the starting position of the error stack, the next line will indicate the specific method that triggered the panic.
 
-![image](/img/blog/x_self_check/panic_stack.png)
+![image](/img/blog/Kitex_self_check/panic_stack.png)
 
 Referring to the example diagram, the line would look like this:
 
@@ -113,7 +113,7 @@ xxx/performancetest/x_gen/echo/echoserver.echoHandler(0xcb2000, 0xc0000987e0, 0x
 
 Once you have the specific file location of the error, you can locate the corresponding code and investigate the issue based on the cause of the panic.
 
-![image](/img/blog/x_self_check/echo_server.png)
+![image](/img/blog/Kitex_self_check/echo_server.png)
 
 In the example diagram, we have determined that the error occurred at line 18 in `handler.go`, and the cause of the error is a nil pointer in the `a.Message` expression. This indicates that `a` might be `nil` because there is no nil check on `params`. By modifying the code accordingly, we can fix the bug.
 
