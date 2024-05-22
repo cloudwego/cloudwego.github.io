@@ -88,6 +88,14 @@ func main() {
         val, ok := metainfo.RecvBackwardValue(ctx, "something-from-server") // 获取服务端传回的元数据
         println(val, ok)
     }
+
+    // 获取服务端传回的所有元数据
+		m := metainfo.RecvAllBackwardValues(ctx) // m: map[string]string
+    if m != nil {
+				for key, value := range m {
+					log.Printf("key: %s, value: %s", key, value)
+				}
+		}
     ...
 }
 ```
