@@ -1,7 +1,7 @@
 ---
 title: "Option"
 linkTitle: "Option"
-weight: 8
+weight: 7
 date: 2022-06-20
 description: >
 ---

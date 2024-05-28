@@ -1,5 +1,5 @@
 ---
-title: "CLI工具kitexcall"
+title: "kitexcall"
 date: 2024-05-27
 weight: 1
 description: >
