@@ -1,5 +1,5 @@
 ---
-title: "kitexcall: 发送 JSON 格式 RPC 请求的 CLI 工具"
+title: "kitexcall: the CLI tool for sending RPC call in JSON format"
 date: 2024-05-27
 weight: 1
 description: >
