@@ -7,7 +7,7 @@ description: >
 
 **kitexcall**(https://github.com/kitex-contrib/kitexcall) 是一个命令行工具（CLI），用于使用 Kitex 发送 JSON 通用请求。它支持Thrift和Protobuf格式的IDL及多种客户端选项，并兼容多种传输协议，未来还将支持GRPC。
 
-## **Features**
+## **功能特点**
 
 - **支持 Thrift/Protobuf**：支持 Thrift/Protobuf 格式的 IDL。
 - **支持多种传输协议**：支持 Buffered、TTHeader、Framed、TTHeaderFramed 传输协议，未来也计划支持 GRPC（Protobuf 及 Thrift Streaming）
@@ -17,13 +17,13 @@ description: >
 - **支持接收业务自定义异常**：接收业务自定义的异常错误码、错误信息及附加信息。
 - **支持多种输出格式**：默认情况下输出人类友好的可读格式，计划支持可解析的格式，以便与其他自动化工具更好地集成。
 
-## **Installation**
+## **安装**
 
 ```bash
 go install github.com/kitex-contrib/kitexcall@latest
 ```
 
-## **Usage**
+## **使用说明**
 
 ### 基本用法
 
