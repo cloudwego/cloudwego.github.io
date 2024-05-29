@@ -88,6 +88,14 @@ func main() {
         val, ok := metainfo.RecvBackwardValue(ctx, "something-from-server") // receive the meta information from server side
         println(val, ok)
     }
+
+    // receive all the meta information from server side
+    m := metainfo.RecvAllBackwardValues(ctx) // m: map[string]string
+    if m != nil {
+        for key, value := range m {
+            log.Printf("key: %s, value: %s", key, value)
+        }
+    }
     ...
 }
 ```
