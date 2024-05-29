@@ -90,12 +90,12 @@ func main() {
     }
 
     // 获取服务端传回的所有元数据
-	m := metainfo.RecvAllBackwardValues(ctx) // m: map[string]string
+    m := metainfo.RecvAllBackwardValues(ctx) // m: map[string]string
     if m != nil {
-		for key, value := range m {
-			log.Printf("key: %s, value: %s", key, value)
-		}
-	}
+        for key, value := range m {
+            log.Printf("key: %s, value: %s", key, value)
+        }
+    }
     ...
 }
 ```
