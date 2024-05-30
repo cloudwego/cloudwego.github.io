@@ -26,7 +26,7 @@ description: "泛化调用接入 dynamicgo 指南；高性能泛化调用实现"
     - `NewThriftFileProviderWithDynamicGo(path string, includeDirs ...string)`：创建 thriftFileProvider，它从给定的路径实现 DescriptorProvider 并包含目录
     - `NewThriftContentProviderWithDynamicGo(main string, includes map[string]string)`：创建 ThriftContentProvider 它实现了 DescriptorProvider 与动态从内容
       - 您可以 IDL 与旧方法相同的方法 `UpdateIDL`
-    - `NewThriftContentWithAbsIncludePathProviderWithDynamicGo(mainIDLPath字符串，包括map[string]string）`：创建 ThriftContentWithAbsIncludePathProvider 实现 DescriptorProvider（absinclude path）和从 content
+    - `NewThriftContentWithAbsIncludePathProviderWithDynamicGo(mainIDLPath string，includes map[string]string）`：创建 ThriftContentWithAbsIncludePathProvider 实现 DescriptorProvider（absinclude path）和从 content
       - 您可以与旧方法相同的方法更新 IDL
 
 - Provider option
