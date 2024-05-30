@@ -40,7 +40,7 @@ type Info struct {
 	// extend other infos with Tags.
 	Tags map[string]string
     
-    // SkipListenAddr is used to prevent the listen addr from overriding the Addr
+    // SkipListenAddr is used to prevent the listen addr from overriding the Addr(available from Kitex v0.10.0)
     SkipListenAddr bool
 }
 ```
@@ -79,7 +79,7 @@ Specify your own registration module and customized registration information thr
   svr := xxxservice.NewServer(handler, server.WithRegistry(yourRegistry), server.WithRegistryInfo(yourRegistryInfo))
   ```
 
-- Allow custom registry to get the actual address for registering
+- Allow custom registry to get the actual address for registering(available from Kitex v0.10.0)
 
   When the Client cannot access the Listen Address of the Server and needs to use a public IP address to access the Server, it can be set by specifying `Addr` and `SkipListenAddr` in RegistryInfo.
   ```go
