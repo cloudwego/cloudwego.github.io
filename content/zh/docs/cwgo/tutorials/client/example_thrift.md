@@ -33,7 +33,7 @@ service HelloService {
 > Note: 项目位于非 GOPATH 下必须指定 gomod，GOPATH 下默认以相对于 GOPATH 的路径作为名字，可不指定 gomod。
 
 ```sh
-cwgo client  --type RPC  --idl hello.thrift  --service hellotest --module {{your_module_name}}
+cwgo client  --type RPC  --idl hello.thrift  --server_name hellotest --module {{your_module_name}}
 ```
 
 ### 生成代码
@@ -91,7 +91,7 @@ service HelloService {
 > Note: 项目位于非 GOPATH 下必须指定 gomod，GOPATH 下默认以相对于 GOPATH 的路径作为名字，可不指定 gomod。
 
 ```sh
-cwgo client  --type HTTP  --idl hello.thrift  --service hellotest --module {{your_module_name}}
+cwgo client  --type HTTP  --idl hello.thrift  --server_name hellotest --module {{your_module_name}}
 ```
 
 ### 生成代码

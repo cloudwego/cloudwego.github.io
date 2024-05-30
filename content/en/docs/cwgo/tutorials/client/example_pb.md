@@ -35,7 +35,7 @@ service HelloService {
 > Note: 项目位于非 GOPATH 下必须指定 gomod，GOPATH 下默认以相对于 GOPATH 的路径作为名字，可不指定 gomod。
 
 ```sh
-cwgo client  --type RPC  --idl hello.proto  --service hellotest --module {{your_module_name}} -I .
+cwgo client  --type RPC  --idl hello.proto  --server_name hellotest --module {{your_module_name}} -I .
 ```
 
 ### Generate Code
@@ -161,7 +161,7 @@ service HelloService {
 > Note: If the project is located outside of GOPATH, gomod must be specified. GOPATH defaults to a path relative to GOPATH as the name, and gomod may not be specified.
 
 ```sh
-cwgo client  --type HTTP  --idl hello.proto  --service hellotest --module {{your_module_name}}
+cwgo client  --type HTTP  --idl hello.proto  --server_name hellotest --module {{your_module_name}}
 ```
 
 ### Generate Code

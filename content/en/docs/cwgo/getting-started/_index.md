@@ -109,7 +109,7 @@ Let's take thrift as an example:
 4. Generate project layout
 
    ```shell
-   cwgo server -service=a.b.c -type HTTP -idl=idl/hello.thrift
+   cwgo server --server_name a.b.c --type HTTP  --idl idl/hello.thrift -module {{your_module_name}}
    ```
 
 5. Compile and run

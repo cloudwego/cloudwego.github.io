@@ -25,7 +25,8 @@ USAGE:
    cwgo client [command options] [arguments...]
 
 OPTIONS:
-   --service value                                                              Specify the service name.
+   --service value                                                              Specify the server name.(Not recommended)
+   --server_name value                                                          Specify the server name.
    --type value                                                                 Specify the generate type. (RPC or HTTP) (default: "RPC")
    --module value, --mod value                                                  Specify the Go module name to generate go.mod.
    --idl value                                                                  Specify the IDL file path. (.thrift or .proto)
@@ -38,9 +39,12 @@ OPTIONS:
    --help, -h                                                                   show help (default: false)
 ```
 
-## 详细参数
+## 注意
+- service 不建议使用，将在v0.2.0下架
 
-- service：指定服务名称，用于服务注册与发现等功能
+## 详细参数
+- service:指定服务名称，用于服务注册、服务发现等功能(不建议使用)
+- server_name:服务名称，用于服务注册、服务发现等功能
 - type：指定生成类型，支持参数 RPC、HTTP，默认为 RPC
 - module/mod：指定 go mod 名称，非 GOPATH 下必须指定，GOPATH 下默认以相对于 GOPATH 的路径作为名字
 - idl：指定主 IDL 文件路径
