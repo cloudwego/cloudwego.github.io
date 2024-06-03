@@ -367,6 +367,26 @@ The echo method uses the following configuration (0.3, 100) and other methods us
   }
 }
 ```
+##### Degradation: Category=degradation
+
+[JSON Schema](https://github.com/kitex-contrib/config-etcd/blob/7fe0870c28ebbaea2c4ab9266040f7cde4582a90/pkg/degradation/item_degradation.go#L34)
+
+| Variable   | Introduction                       |
+|------------|------------------------------------|
+| enable     | Whether to enable degradation      |
+| percentage | The percentage of dropped requests | 
+
+Example：
+
+> configPath: /KitexConfig/ClientName/ServiceName/degradation
+
+```json
+{
+  "enable": true,
+  "percentage": 30
+}
+```
+Note: Degradation is not enabled by default.
 
 ## Compatibility
 
