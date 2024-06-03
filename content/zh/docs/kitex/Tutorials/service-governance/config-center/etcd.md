@@ -365,7 +365,7 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
   }
 }
 ```
-##### 降级: Category=degradation
+#### 降级: Category=degradation
 
 [JSON Schema](https://github.com/kitex-contrib/config-etcd/blob/main/pkg/degradation/item_degradation.go#L34)
 
