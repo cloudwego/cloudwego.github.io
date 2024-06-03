@@ -109,7 +109,7 @@ cwgo 的具体使用请参考[命令行工具](/zh/docs/cwgo/tutorials/cli)。
 4. 生成项目 layout
 
    ```shell
-   cwgo server -service=a.b.c -type HTTP  -idl=idl/hello.thrift
+   cwgo server --server_name a.b.c --type HTTP  --idl idl/hello.thrift -module {{your_module_name}}
    ```
 
 5. 编译运行

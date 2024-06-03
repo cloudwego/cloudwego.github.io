@@ -35,7 +35,7 @@ service HelloService {
 > Note: If the project is located outside of GOPATH, gomod must be specified. GOPATH defaults to a path relative to GOPATH as the name, and gomod may not be specified.
 
 ```sh
-cwgo server  --type RPC  --idl hello.proto  --service hellotest --module {{your_module_name}} -I .
+cwgo server  --type RPC  --idl hello.proto  --server_name hellotest --module {{your_module_name}} -I .
 ```
 
 ### Generate Code
@@ -161,7 +161,7 @@ service HelloService {
 > Note: If the project is located outside of GOPATH, gomod must be specified. GOPATH defaults to a path relative to GOPATH as the name, and gomod may not be specified.
 
 ```sh
-cwgo server  --type HTTP  --idl hello.proto  --service hellotest --module {{your_module_name}}
+cwgo server  --type HTTP  --idl hello.proto  --server_name hellotest --module {{your_module_name}}
 ```
 
 ### Generate Code
