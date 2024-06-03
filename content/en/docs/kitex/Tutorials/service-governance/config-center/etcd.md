@@ -367,7 +367,7 @@ The echo method uses the following configuration (0.3, 100) and other methods us
   }
 }
 ```
-##### Degradation: Category=degradation
+#### Degradation
 
 [JSON Schema](https://github.com/kitex-contrib/config-etcd/blob/main/pkg/degradation/item_degradation.go#L34)
 
