@@ -365,6 +365,26 @@ echo 方法使用下面的配置（0.3、100），其他方法使用全局默认
   }
 }
 ```
+#### 降级
+
+[JSON Schema](https://github.com/kitex-contrib/config-etcd/blob/main/pkg/degradation/item_degradation.go#L34)
+
+| 参数         | 说明       |
+|------------|----------|
+| enable     | 是否开启降级策略 |
+| percentage | 丢弃请求的比例  | 
+
+例子：
+
+> configPath: /KitexConfig/ClientName/ServiceName/degradation
+
+```json
+{
+  "enable": true,
+  "percentage": 30
+}
+```
+注：默认不开启降级（enable为false）
 
 ## 兼容性
 
