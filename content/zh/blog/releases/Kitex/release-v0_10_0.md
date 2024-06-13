@@ -9,19 +9,20 @@ description: >
 ## **重要变更介绍**
 
 ### 性能优化
+新版本探索了更多性能优化的方向和非常规的一些优化手段。
 1. 长连接池: 100 并发 qps 提升 4%, p99 降低 18%
 2. 多路复用: 100 并发 qps 提升 7%, p99 降低 24%
 3. gRPC: 100 并发 qps优化 8%，p99优化 10%
    
 ### 代码产物精简优化
 1. **移除非序列化代码（默认）**：原 kitex_gen Thrift 产物代码为保持与 Apache 的一致性，会生成 Processor 代码，但 Kitex 并不需要这些代码。为解决大家的产物痛点问题，此版本默认去除这部分代码，生成速度提升约10%。
-2. **移除 Apache Codec 代码（配置移除）**：Kitex 有自定义的 FastCodec 代码，旧版本仅在 Buffered 包需要使用 Apache Codec。Kitex 新版本实现 SkipDecoder，在开启后就可以完全不依赖 Apache Codec，进而移除代码，产物体积可减少约50%。使用方式见
+2. **移除 Apache Codec 代码（配置移除）**：Kitex 有自定义的 FastCodec 代码，旧版本仅在 Buffered 包需要使用 Apache Codec。Kitex 新版本实现 SkipDecoder，在开启后就可以完全不依赖 Apache Codec，进而移除代码，产物体积可减少约50%。使用方式见 xxx
 
 ### 新特性
 1. **Thrift 按需序列化**：支持定义 FieldMask 实现数据按需序列化（字段裁剪、合并，RPC性能优化等），详见 [Thrift FieldMask RFC](https://github.com/cloudwego/thriftgo/tree/main/fieldmask)
 
 ### 功能优化
-1. **熔断**：支持自定义熔断的错误类型，配置见 自定义错误判断 (GetErrorTypeFunc)
+1. **熔断**：支持自定义熔断的错误类型
 2. **异常重试**：代码配置的自定义结果重试增加 ctx 参数，方便用户结合 ctx 信息判断是否重试
 3. **移除一致性哈希中的缓存**：解决hash key分散导致的延迟变高、内存上涨的问题。移除缓存后，面对 Key 特别分散甚至接近随机分布的场景，可以有效降低内存占用与管理缓存的消耗。
 
