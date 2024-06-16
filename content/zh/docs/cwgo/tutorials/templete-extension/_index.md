@@ -4,6 +4,35 @@ linkTitle: "模板拓展"
 weight: 1
 description: >
 ---
+## standard_v2
+cwgo工具内置了一个模板，该模板主要改动如下:
+
+### Api调用返回对应的响应码。
+
+```
+func CreateApp（）{
+...
+err = c.BindAndValidate(&req)
+if err !=nil{
+utils.SendErrResponse(ctx, c, consts.StatusBadRequest, err)
+return
+}
+...
+}
+```
+
+### server分包生成
+现在`biz/service`会和`biz/handler`一样处理，按包生成。
+![img](/img/docs/cwgo_templete-extension_standard-v2.png)
+
+
+### 如何使用
+```sh
+ cwgo server  --type http  --idl idl/hello.thrift  --server_name hellotest --module cwgo_test  --template standard_v2
+```
+指定模板为`standard_v2`
+
+
 
 cwgo 工具也支持传递自己的模板，模版语法为 go template 的语法。cwgo 也欢迎用户贡献自己的模板。由于 RPC 和 HTTP 概念不同，其对应的模版变量也有一些差异，详细请参考下文。
 
