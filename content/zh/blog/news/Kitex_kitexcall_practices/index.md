@@ -5,7 +5,7 @@ projects: ["Kitex"]
 linkTitle: "kitexcall：用 JSON 发起 RPC 请求的命令行神器"
 keywords: ["Kitex", "CloudWeGo", "云原生", "开源", "Golang", "kitexcall", "RPC", "命令行"]
 description: "本文介绍了通过kitexcall 命令行工具实现给 Kitex 服务发送 RPC 请求及其原理"
-author: <a href="https://github.com/Zzhiter" target="_blank">DMwangnima</a>
+author: <a href="https://github.com/Zzhiter" target="_blank">张哲</a>
 ---
 
 ## 背景
@@ -23,7 +23,7 @@ Kitex 是字节跳动基础架构服务框架团队推出的 Go 微服务 RPC �
 
 ## kitexcall 介绍
 
-### 详情可以参考：https://github.com/kitex-contrib/kitexcall
+> 详情可以参考：https://github.com/kitex-contrib/kitexcall
 
 为了简化开发者的工作，社区推出了 kitexcall 这个命令行工具，基于 Kitex 提供的 JSON 泛化调用，极大地简化了 Kitex 客户端的编写过程。开发者只需通过简单的命令行操作，就可以轻松发起 Kitex 请求，而不再需要编写繁琐的代码。
 
@@ -130,4 +130,3 @@ kitexcall 作为一个社区驱动的项目，致力于简化开发者使用 Kit
 
 ### 项目地址
 GitHub：https://github.com/cloudwego
-官网：www.cloudwego.io
