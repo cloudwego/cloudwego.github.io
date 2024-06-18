@@ -2,7 +2,7 @@
 title: "Protoc Validator"
 linkTitle: "Protoc Validator"
 weight: 9
-date: 2024-04-18
+date: 2024-06-18
 keywords: ["kitex", "code generation", "validator", "protoc"]
 description: A protoc plugin for generating Go struct validation functions.
 

@@ -2,7 +2,7 @@
 title: "Protoc Validator"
 linkTitle: "Protoc Validator"
 weight: 9
-date: 2024-04-18
+date: 2024-06-18
 keywords: ["kitex", "代码生成", "validator", "protoc"]
 description: 生成 Go 结构体校验函数的 protoc 插件。
 
