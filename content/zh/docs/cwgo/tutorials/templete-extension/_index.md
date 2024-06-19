@@ -4,36 +4,6 @@ linkTitle: "模板拓展"
 weight: 1
 description: >
 ---
-## standard_v2
-cwgo工具内置了一个模板，该模板主要改动如下:
-
-### Api调用返回对应的响应码。
-
-```
-func CreateApp（）{
-...
-err = c.BindAndValidate(&req)
-if err !=nil{
-utils.SendErrResponse(ctx, c, consts.StatusBadRequest, err)
-return
-}
-...
-}
-```
-
-### server分包生成
-现在`biz/service`会和`biz/handler`一样处理，按包生成。
-![img](/img/docs/cwgo_templete-extension_standard-v2.png)
-
-
-### 如何使用
-```sh
- cwgo server  --type http  --idl idl/hello.thrift  --server_name hellotest --module cwgo_test  --template standard_v2
-```
-指定模板为`standard_v2`
-
-
-
 cwgo 工具也支持传递自己的模板，模版语法为 go template 的语法。cwgo 也欢迎用户贡献自己的模板。由于 RPC 和 HTTP 概念不同，其对应的模版变量也有一些差异，详细请参考下文。
 
 如需传递自定义模板，请给命令添加 `-template` 参数，如：
@@ -99,6 +69,33 @@ cwgo server -type RPC -service {service name} -idl {idl path}  -template git@git
 1. 模版文件通过 yaml 文件夹传递，但是与 RPC 的 layout 不同的是 HTTP 的 layout 是基于 hertz 的自定义模版实现的，这里我们需要指定的 yaml 文件名需要固定为 `layout.yaml` 与 `package.yaml` ，对于自定义模版的使用可以参考 [Hz 自定义模版使用文档](/zh/docs/hertz/tutorials/toolkit/more-feature/template/)。
 
 最佳实践的 http 示例 tpl 可参考[这里](https://github.com/cloudwego/cwgo/tree/main/tpl/hertz/standard)。
+
+## standard_v2
+cwgo 工具内置了一个模板，该模板主要改动如下:
+
+### Api 调用返回对应的响应码。
+
+```
+func CreateApp（）{
+...
+err = c.BindAndValidate(&req)
+if err !=nil{
+utils.SendErrResponse(ctx, c, consts.StatusBadRequest, err)
+return
+}
+...
+}
+```
+
+### server 分包生成
+现在 `biz/service` 会和 `biz/handler` 一样处理，按包生成。
+![img](/img/docs/cwgo_templete-extension_standard-v2.png)
+
+### 如何使用
+```sh
+ cwgo server  --type http  --idl idl/hello.thrift  --server_name hellotest --module cwgo_test  --template standard_v2
+```
+指定模板为 `standard_v2`
 
 ## 附录
 
