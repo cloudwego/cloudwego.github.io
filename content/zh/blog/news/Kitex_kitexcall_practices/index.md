@@ -4,7 +4,7 @@ title: "kitexcall：用 JSON 发起 RPC 请求的命令行神器"
 projects: ["Kitex"]
 linkTitle: "kitexcall：用 JSON 发起 RPC 请求的命令行神器"
 keywords: ["Kitex", "CloudWeGo", "云原生", "开源", "Golang", "kitexcall", "RPC", "命令行"]
-description: "本文介绍了通过kitexcall 命令行工具实现给 Kitex 服务发送 RPC 请求及其原理"
+description: "本文介绍了通过 kitexcall 命令行工具实现给 Kitex 服务发送 RPC 请求及其原理"
 author: <a href="https://github.com/Zzhiter" target="_blank">张哲</a>
 ---
 
@@ -30,7 +30,7 @@ Kitex 是字节跳动基础架构服务框架团队推出的 Go 微服务 RPC �
 kitexcall 目前已发布 v0.1.1 版本，具备以下功能特点：
 - 支持 Thrift/Protobuf：可以处理 Thrift 和 Protobuf 格式的 IDL。
 - 支持多种传输协议：包括 Buffered、TTHeader、Framed、TTHeaderFramed，未来还将支持 gRPC。
-- 灵活的客户端选项：支持指定常用的客户端选项，如 client.WithHostPorts。
+- 灵活的客户端选项：支持指定常用的客户端选项，如 `client.WithHostPorts`。
 - 多种数据输入方式：请求数据可以从命令行参数或本地文件读取。
 - 元信息传递：支持单跳透传和持续透传的元信息，并接收服务器返回的反向透传元信息。
 - 业务异常处理：接收并处理业务自定义的异常错误码和信息。
@@ -43,7 +43,7 @@ kitexcall 目前已发布 v0.1.1 版本，具备以下功能特点：
 go install github.com/kitex-contrib/kitexcall@latest
 ```
 
-以 github.com/cloudwego/kitex-examples 的 Echo 服务为例，将其 IDL 文件保存为 echo.thrift。
+以  [kitex-examples](https://github.com/cloudwego/kitex-examples) 的 Echo 服务为例，将其 IDL 文件保存为 echo.thrift。
 
 ```go
 namespace go api
@@ -126,7 +126,7 @@ kitexcall 作为一个社区驱动的项目，致力于简化开发者使用 Kit
 
 4. 支持可解析的输出格式（如 JSON），以便与其他自动化工具集成（例如 CI/CD、IDE 插件等场景）。
 
-欢迎对 Kitex 和 kitexcall 感兴趣的开发者加入社区，共同贡献代码和创意。我们相信，在大家的共同努力下，kitexcall 将成为 Kitex 开发者手中的一把利器，让微服务开发变得更加高效和便捷。访问 github.com/kitex-contrib/kitexcall 了解更多信息，并加入我们吧！
+欢迎对 Kitex 和 kitexcall 感兴趣的开发者加入社区，共同贡献代码和创意。我们相信，在大家的共同努力下，kitexcall 将成为 Kitex 开发者手中的一把利器，让微服务开发变得更加高效和便捷。访问 [kitexcall](https://github.com/kitex-contrib/kitexcall) 了解更多信息，并加入我们吧！
 
 ### 项目地址
 GitHub：https://github.com/cloudwego
