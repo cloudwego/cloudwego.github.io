@@ -1,7 +1,7 @@
 ---
 title: "SkipDecoder"
 date: 2024-06-20
-weight: 8
+weight: 10
 keywords: ["SkipDecoder", "精简产物"]
 description: "开启 SkipDecoder ，突破 Frugal 与 FastCodec 的协议限制，精简代码产物"
 ---

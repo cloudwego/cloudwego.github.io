@@ -1,7 +1,7 @@
 ---
 title: "SkipDecoder"
 date: 2024-06-20
-weight: 8
+weight: 10
 keywords: ["SkipDecoder", "Simplify Generated Code"]
 description: "Enable SkipDecoder to break the protocol limitations of Frugal and FastCodec, and simplify the generated code"
 ---
