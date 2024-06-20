@@ -6,7 +6,7 @@ on:
       - main
 jobs:
   deploy:
-    runs-on: [self-hosted, domestic]
+    runs-on: [self-hosted, domestic, X64]
     steps:
       - uses: actions/checkout@v4
         with:
