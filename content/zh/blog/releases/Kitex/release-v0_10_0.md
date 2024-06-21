@@ -72,7 +72,7 @@ description: >
 ### Chore:
 1. [[#1385](https://github.com/cloudwego/kitex/pull/1385)] chore: update dynamicgo to v0.2.8
 2. [[#1383](https://github.com/cloudwego/kitex/pull/1383)] chore: upgrade netpoll to v0.6.1
-3. [[#1376](https://github.com/cloudwego/kitex/pull/1376)] chore: integration test use go 1.20 to solve the compatibility issue of offical gRPC in kitex-tests repo
+3. [[#1376](https://github.com/cloudwego/kitex/pull/1376)] chore: integration test use go 1.20 to solve the compatibility issue of official gRPC in kitex-tests repo
 4. [[#1355](https://github.com/cloudwego/kitex/pull/1355)] chore: upgrade netpoll to v0.6.1 pre-release version
 5. [[#1338](https://github.com/cloudwego/kitex/pull/1338)] chore: correct the comment of FreezeRPCInfo
 6. [[#1347](https://github.com/cloudwego/kitex/pull/1347)] chore: use runtimex to replace choleraehyq/pid
