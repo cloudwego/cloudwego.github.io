@@ -8,7 +8,7 @@ description: "Enable SkipDecoder to break the protocol limitations of Frugal and
 
 ## Background
 
-For Thrift serialisation protocols, the current Thrift Framed transport (e.g. TTHeader, TTHeaderFramed) uses FastCodec or Frugal for better performance, but for the sake of compatibility with the small number of services that use the Thrift Buffered transport, Kitex Kitex still generates Apache Thrift Codec code that conforms to the official interface requirements. (See [Framed and Buffered protocols](https://github.com/apache/thrift/blob/master/doc/specs/thrift-rpc.md#framed-vs-unframed-transport) for details).
+For Thrift serialisation protocols, the current Thrift Framed transport (e.g. TTHeader, TTHeaderFramed) uses FastCodec or Frugal for better performance, but for the sake of compatibility with the small number of services that use the Thrift Buffered transport, Kitex still generates Apache Thrift Codec code that conforms to the official interface requirements. (See [Framed and Buffered protocols](https://github.com/apache/thrift/blob/master/doc/specs/thrift-rpc.md#framed-vs-unframed-transport) for details).
 
 This part of the code is huge, averaging close to forty per cent, but there are very few scenarios where it can be used. Removing this part of the code will improve the IDE's loading and compilation speed.
 
