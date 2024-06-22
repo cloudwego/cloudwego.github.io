@@ -8,8 +8,8 @@ env:
   GH_TOKEN: ${{ github.token }}
   COMMENT: ${{ github.event.comment.body }}
   PR_NUM: ${{ github.event.issue.number }}
-  USER_EMAIL: 79236453+cloudwego@users.noreply.github.com
-  USER_NAME: cloudwegobot
+  USER_EMAIL: 90381261+alice-yyds@users.noreply.github.com
+  USER_NAME: alice-yyds
 
 jobs:
   pr-action:
