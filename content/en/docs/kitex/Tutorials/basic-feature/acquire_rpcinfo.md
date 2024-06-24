@@ -10,6 +10,8 @@ description: ""
 
 The default lifecycle of Kitex's RPCInfo is from the start of the request to the return of the request (performance considerations), and then it will be placed in sync.Pool to reuse. On the Server side, if it is asynchronously obtained and used in the business Handler, it may lead to read dirty data, nil panic.
 
+**Note:** Some information needs to rely on the transport protocol (TTHeader or HTTP2) and corresponding MetaHandler. Please refer to [here](/docs/kitex/tutorials/basic-feature/protocol/transport_protocol/#thrift).
+
 ### 1.1 Synchronous usage
 
 | **Information obtained**                     | **Kitex fetch method**                                                                                                                                                                                                                          |
