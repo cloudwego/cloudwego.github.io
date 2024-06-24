@@ -15,7 +15,7 @@ description: >
    
 ### Code Generation Simplification and Optimization
 1. **Remove non-serialization code (By default)**: the original kitex_gen Thrift code includes Processor code to maintain consistency with Apache Thrift. However, Kitex does not need these codes. To solve users' code generation painpoint, this version Kitex removes this part of the code, increasing the generation speed by about 10%.
-2. **Remove Apache Codec code (Remove if configured)**：Kitex has custom FastCodec code, and the original Apache Codec is only required when using Buffered protocol. The new version of Kitex implements SkipDecoder. If enabled, the serialization will be completely independent of Apache Codec, reducing the generated code size by about 50%. Refer to this doc for usage [SkipDecoder](/en/docs/kitex/Tutorials/code-gen/skip_decoder.md)
+2. **Remove Apache Codec code (Remove if configured)**：Kitex has custom FastCodec code, and the original Apache Codec is only required when using Buffered protocol. The new version of Kitex implements SkipDecoder. If enabled, the serialization will be completely independent of Apache Codec, reducing the generated code size by about 50%. Refer to this doc for usage [SkipDecoder](/docs/kitex/tutorials/code-gen/skip_decoder)
 
 ### New Feature
 1. **Thrift Serialize Data Ondemands**：Support defining FieldMask to achieve on-demand serialization of data (field clipping, merging, RPC Performance optimization, etc.), see details [Thrift FieldMask RFC](https://github.com/cloudwego/thriftgo/tree/main/fieldmask)
