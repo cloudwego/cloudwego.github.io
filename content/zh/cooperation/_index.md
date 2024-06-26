@@ -65,6 +65,11 @@ CloudWeGo 关注真实企业用户落地，构建企业用户支持体系和维�
 <a href='{{< relref "flow" >}}'>了解更多</a>
 {{< /card >}}
 
+{{< card header="Construct 公司 从 0 到 1 基于 Kitex + Istio 的微服务系统建设" img="/img/usedby/construct.png">}}
+本文以 Construct 公司为例，探讨其如何利用 CloudWeGo 框架和 Istio 服务网格，从零开始构建起一个高效、稳定的微服务系统。<br/><br/>
+<a href='{{< relref "construct" >}}'>了解更多</a>
+{{< /card >}}
+
 {{< /cardpane >}}
 
 </div>
