@@ -201,7 +201,7 @@ func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 
 #### WithEtcdConfigAndPrefix
 
-Etcd extension provides `WithEtcdConfigAndPrefix` to help users configure prefix.
+Etcd extension provides `WithEtcdConfigAndPrefix` to help users configure the service registration key prefix
 
 Function signature:
 
@@ -340,7 +340,7 @@ func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 
 #### WithEtcdConfigAndPrefix
 
-Etcd extension provides `WithEtcdConfigAndPrefix` to help users configure prefix.
+Etcd extension provides `WithEtcdConfigAndPrefix` to help users configure the service registration key prefix
 
 Function signature:
 

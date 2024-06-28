@@ -198,7 +198,7 @@ func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 ```
 #### WithEtcdConfigAndPrefix
 
-Etcd 扩展提供了 `WithEtcdConfigAndPrefix` 来帮助用户配置前缀。
+Etcd 扩展提供了 `WithEtcdConfigAndPrefix` 来帮助用户配置服务注册键前缀。
 
 函数签名:
 
@@ -334,7 +334,7 @@ func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 
 #### WithEtcdConfigAndPrefix
 
-Etcd 扩展提供了 `WithEtcdConfigAndPrefix` 来帮助用户配置前缀。
+Etcd 扩展提供了 `WithEtcdConfigAndPrefix` 来帮助用户配置服务注册键的前缀。
 
 函数签名:
 
