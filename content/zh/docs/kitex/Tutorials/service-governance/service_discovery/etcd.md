@@ -196,7 +196,15 @@ Etcd 扩展提供了 `WithTimeoutOpt` 用于帮助用户配置连接超时时间
 ```go
 func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 ```
+#### WithEtcdConfigAndPrefix
 
+Etcd 扩展提供了 `WithEtcdConfigAndPrefix` 来帮助用户配置服务注册键前缀。
+
+函数签名:
+
+```go
+func WithEtcdConfigAndPrefix(prefix string) Option
+```
 #### Retry
 
 在服务注册到 etcd 之后，它会定期检查服务的状态。如果发现任何异常状态，它将尝试重新注册服务。observeDelay 是正常情况下检查服务状态的延迟时间，而 retryDelay 是断开连接后尝试注册服务的延迟时间。
@@ -324,6 +332,16 @@ Etcd 扩展提供了`WithTimeoutOpt`用于帮助用户配置连接超时时间�
 func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 ```
 
+#### WithEtcdConfigAndPrefix
+
+Etcd 扩展提供了 `WithEtcdConfigAndPrefix` 来帮助用户配置服务注册键的前缀。
+
+函数签名:
+
+```go
+func WithEtcdConfigAndPrefix(prefix string) Option
+```
+
 ## 使用示例
 
 ### 服务端
@@ -408,8 +426,9 @@ Etcd 拓展对服务实例的注册信息进行了封装，使用 Kitex 与其�
 每个实例的 Key 由 Prefix 与服务元信息组成，格式如下：
 
 ```go
-kitex/registry-etcd/{serviceName}{addr}
+{Prefix}/{serviceName}{addr}
 ```
+默认Prefix为`kitex/registry-etcd`
 
 实例的 Value 为一个 JSON 字符串，其序列化了一个 `instanceInfo` 结构体，定义如下：
 
@@ -422,7 +441,7 @@ type instanceInfo struct {
 }
 ```
 
-在其它服务中解析 Kitex 服务实例时，可以使用 `kitex/registry-etcd/{serviceName}` 前缀进行查找，获取到指定服务的全部实例，并根据 `instanceInfo` 信息来选择实例。
+在其它服务中解析 Kitex 服务实例时，可以使用 `{Prefix}/{serviceName}` 前缀进行查找，获取到指定服务的全部实例，并根据 `instanceInfo` 信息来选择实例。
 
 ## 配置
 
