@@ -78,7 +78,7 @@ func main() {
 
 ### 参数校验
 
-具体校验语法可参考[校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator)。
+具体校验语法可参考 [校验语法](https://github.com/bytedance/go-tagexpr/tree/master/validator)。
 
 不通过 IDL 生成代码时直接在对应结构体字段打 tag，示例：
 
@@ -88,7 +88,7 @@ type InfoRequest struct {
 }
 ```
 
-通过 IDL 生成代码时需添加相应的注解，可参考[Field 注解](/zh/docs/hertz/tutorials/toolkit/annotation/#field-注解)。
+通过 IDL 生成代码时需添加相应的注解，可参考 [Field 注解](/zh/docs/hertz/tutorials/toolkit/annotation/#field-注解)。
 
 下面给出常见用法：
 

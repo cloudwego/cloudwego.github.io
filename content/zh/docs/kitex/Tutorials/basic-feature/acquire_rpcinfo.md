@@ -10,6 +10,8 @@ description: ""
 
 Kitex 的 RPCInfo 的生命周期默认是从请求开始到请求返回（性能考虑），随后会被放到 sync.Pool 中复用。在 Server 端，如果在业务 Handler 中异步获取使用，可能会读到脏数据 / 空指针而 panic。
 
+**注意：** 部分信息需要依赖传输协议（TTHeader 或 HTTP2）和对应的 Metahandler，如果是 Thrift 配置方式见 [这里](/zh/docs/kitex/tutorials/basic-feature/protocol/transport_protocol/#thrift)。
+
 ### 1.1 同步使用方式
 
 同步的使用方式是指用户没有在新起的 Goroutine 里获取 RPCInfo。

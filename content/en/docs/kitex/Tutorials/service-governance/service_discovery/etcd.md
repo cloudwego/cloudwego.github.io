@@ -199,6 +199,16 @@ Function signature:
 func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 ```
 
+#### WithEtcdConfigAndPrefix
+
+Etcd extension provides `WithEtcdConfigAndPrefix` to help users configure the service registration key prefix
+
+Function signature:
+
+```go
+func WithEtcdConfigAndPrefix(prefix string) Option
+```
+
 #### Retry
 
 After the service is registered to ETCD, it will regularly check the status of the service. If any abnormal status is found, it will try to register the service again. `ObserveDelay` is the delay time for checking the service status under normal conditions, and `RetryDelay` is the delay time for attempting to register the service after disconnecting.
@@ -328,6 +338,17 @@ Function signature:
 func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 ```
 
+#### WithEtcdConfigAndPrefix
+
+Etcd extension provides `WithEtcdConfigAndPrefix` to help users configure the service registration key prefix
+
+Function signature:
+
+```go
+func WithEtcdConfigAndPrefix(prefix string) Option
+```
+
+
 ## How To Use
 
 ### Server
@@ -412,8 +433,9 @@ The Etcd extension encapsulates the registration information of service instance
 The Key for each instance is composed of a Prefix and service metadata, formatted as follows:
 
 ```go
-kitex/registry-etcd/{serviceName}{addr}
+{Prefix}/{serviceName}{addr}
 ```
+The default prefix is `kitex/registry-etcd`
 
 The Value for an instance is a JSON string, which serializes an `instanceInfo` structure, defined as follows:
 
@@ -426,7 +448,7 @@ type instanceInfo struct {
 }
 ```
 
-When parsing Kitex service instances in other services, you can search using the prefix `kitex/registry-etcd/{serviceName}` to find all instances of the specified service, and select instances based on the `instanceInfo` information.
+When parsing Kitex service instances in other services, you can search using the prefix `{Prefix}/{serviceName}` to find all instances of the specified service, and select instances based on the `instanceInfo` information.
 
 ## Configuration
 
