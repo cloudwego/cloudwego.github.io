@@ -10,7 +10,7 @@ description: 生成 Go 结构体校验函数的 protoc 插件。
 
 ## 概述
 
-`protoc-gen-validator` 是一个可以生成 Go 结构体校验函数的 protoc 插件。
+`protoc-gen-validator` 是一个可以生成 Go 结构体校验函数的 protoc 插件，与 Thrift 版本 Validator 用法与功能一致。 
 开发者可以引用 `protoc-gen-validator` 拓展的注解文件，并使用这些注解对 `protobuf` 的 `message` 和 `field` 的约束进行声明。 最后，`protoc-gen-validator` 会为对应的 `message` 生成 `Validate() error` 方法。
 例:
 

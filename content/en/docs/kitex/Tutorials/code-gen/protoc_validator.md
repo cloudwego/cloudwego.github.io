@@ -10,7 +10,7 @@ description: A protoc plugin for generating Go struct validation functions.
 
 ## Overview
 
-`protoc-gen-validator` is a protoc plugin that generates validation functions for Go structs. Developers can reference the annotation file extended by `protoc-gen-validator` and use these annotations to declare constraints on `protobuf` `message` and `field`. Finally, `protoc-gen-validator` will generate a `Validate() error` method for the corresponding `message`.
+`protoc-gen-validator` is a protoc plugin that generates validation functions for Go structs, consistent in usage and functionality with the Thrift version of Validator. Developers can reference the annotation file extended by `protoc-gen-validator` and use these annotations to declare constraints on `protobuf` `message` and `field`. Finally, `protoc-gen-validator` will generate a `Validate() error` method for the corresponding `message`.
 
 Example:
 
