@@ -196,14 +196,14 @@ Etcd 扩展提供了 `WithTimeoutOpt` 用于帮助用户配置连接超时时间
 ```go
 func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 ```
-#### WithEtcdConfigAndPrefix
+#### WithEtcdServicePrefix
 
-Etcd 扩展提供了 `WithEtcdConfigAndPrefix` 来帮助用户配置服务注册键前缀。
+Etcd 扩展提供了 `WithEtcdServicePrefix` 来帮助用户配置服务注册键前缀。
 
 函数签名:
 
 ```go
-func WithEtcdConfigAndPrefix(prefix string) Option
+func WithEtcdServicePrefix(prefix string) Option
 ```
 #### Retry
 
@@ -332,14 +332,14 @@ Etcd 扩展提供了`WithTimeoutOpt`用于帮助用户配置连接超时时间�
 func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 ```
 
-#### WithEtcdConfigAndPrefix
+#### WithEtcdServicePrefix
 
-Etcd 扩展提供了 `WithEtcdConfigAndPrefix` 来帮助用户配置服务注册键的前缀。
+Etcd 扩展提供了 `WithEtcdServicePrefix` 来帮助用户配置服务注册键的前缀。
 
 函数签名:
 
 ```go
-func WithEtcdConfigAndPrefix(prefix string) Option
+func WithEtcdServicePrefix(prefix string) Option
 ```
 
 ## 使用示例
