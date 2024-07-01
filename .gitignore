@@ -20,3 +20,5 @@ tech-doc-hugo
 
 # lock file
 package-lock.json
+
+tmp/
