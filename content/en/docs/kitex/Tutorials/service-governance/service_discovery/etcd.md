@@ -199,14 +199,14 @@ Function signature:
 func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 ```
 
-#### WithEtcdServicePrefix
+#### WithEtcdConfigAndPrefix
 
-Etcd extension provides `WithEtcdServicePrefix` to help users configure the service registration key prefix
+Etcd extension provides `WithEtcdConfigAndPrefix` to help users configure the service registration key prefix
 
 Function signature:
 
 ```go
-func WithEtcdServicePrefix(prefix string) Option
+func WithEtcdConfigAndPrefix(prefix string) Option
 ```
 
 #### Retry
@@ -338,14 +338,14 @@ Function signature:
 func WithDialTimeoutOpt(dialTimeout time.Duration) Option
 ```
 
-#### WithEtcdServicePrefix
+#### WithEtcdConfigAndPrefix
 
-Etcd extension provides `WithEtcdServicePrefix` to help users configure the service registration key prefix
+Etcd extension provides `WithEtcdConfigAndPrefix` to help users configure the service registration key prefix
 
 Function signature:
 
 ```go
-func WithEtcdServicePrefix(prefix string) Option
+func WithEtcdConfigAndPrefix(prefix string) Option
 ```
 
 
