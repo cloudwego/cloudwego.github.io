@@ -45,7 +45,7 @@ CloudWeGo 关注真实企业用户落地，构建企业用户支持体系和维�
 <a href='{{< relref "tanwan" >}}'>了解更多</a>
 {{< /card >}}
 
-{{< card header="Kitex 在数美科技可用性治理的落地实践践" img="/img/usedby/ishumei.png">}}
+{{< card header="Kitex 在数美科技可用性治理的落地实践" img="/img/usedby/ishumei.png">}}
 数美科技对外主要提供 SaaS 服务，内部是一个典型的机器学习系统，面临可用性挑战，在落地 Kitex 框架后，可用性和稳定性均得到了极大的提升。<br/><br/>
 <a href='{{< relref "shumei" >}}'>了解更多</a>
 {{< /card >}}
