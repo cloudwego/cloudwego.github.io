@@ -43,6 +43,32 @@ Feishu's admin console underwent a platform-level transformation, offering a uni
 This realization led to the fulfillment of Feishu's vision for the admin console as a unified digital management platform for enterprises.
 <a href='{{< relref "feishu" >}}'>Learn more</a>
 {{< /card >}}
+
+{{< card header="CloudWeGo's Application in Tanwan Game SDK Interface" img="/img/usedby/tanwan.png">}}
+As a gaming company, the previous PHP-based architecture encountered significant performance and stability bottlenecks. 
+After transitioning to Go and implementing CloudWeGo, performance, stability, business flexibility, 
+and development efficiency have all been significantly improved, achieving cost reduction and efficiency enhancement.<br/><br/>
+<a href='{{< relref "tanwan" >}}'>Learn more</a>
+{{< /card >}}
+
+{{< card header="Kitex's Application in Shumei Technology's Usability Governance" img="/img/usedby/ishumei.png">}}
+Shumei Technology primarily provides SaaS services externally and operates as a typical machine learning system internally, facing usability challenges. 
+After implementing the Kitex framework, both usability and stability have been greatly improved.<br/><br/>
+<a href='{{< relref "shumei" >}}'>Learn more</a>
+{{< /card >}}
+
+{{< card header="Founder Securities - Financial Technology Cloud-native Microservices Implementation" img="/img/usedby/foundersc.jpeg">}}
+At the beginning of 2023, Founder Securities initiated the construction of a microservice system, involving microservice governance, observability capabilities, and interface management. 
+The Web and RPC application frameworks adopted CloudWeGo's Hertz and Kitex, respectively.<br/><br/>
+<a href='{{< relref "foundersc" >}}'>Learn more</a>
+{{< /card >}}
+
+{{< card header="Construct's Microservice System Construction from 0 to 1 Based on Kitex + Istio" img="/img/usedby/construct.png">}}
+This article demonstrates Construct Company as an example to explore how they utilized the CloudWeGo framework 
+and Istio service mesh to build an efficient and stable microservice system from scratch.<br/><br/>
+<a href='{{< relref "construct" >}}'>Learn more</a>
+{{< /card >}}
+
 {{< /cardpane >}}
 
 </div>
