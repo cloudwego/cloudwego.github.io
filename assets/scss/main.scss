@@ -38,6 +38,10 @@
     @import url($web-font-path);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 footer {
     min-height: 150px;
 
