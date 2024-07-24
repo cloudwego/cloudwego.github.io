@@ -69,9 +69,10 @@ func main() {
 	h.GET("/pureJson", func(ctx context.Context, c *app.RequestContext) {
 		c.PureJSON(consts.StatusOK, utils.H{
 			"html": "<p> Hello World </p>",
+		})
 	})
 
-    h.Spin()
+	h.Spin()
 }
 ```
 
@@ -86,7 +87,7 @@ func main() {
 	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
 
 	h.GET("/indentedJSON", func(ctx context.Context, c *app.RequestContext) {
-        var msg struct {
+		var msg struct {
 			Company  string
 			Location string
 			Number   int
@@ -95,16 +96,18 @@ func main() {
 		msg.Location = "location"
 		msg.Number = 123
 
-        c.IndentedJSON(consts.StatusOK, msg)
-        /*
-        will output  :    {
-                              "Company": "company",
-   						      "Location": "location",
-    					      "Number": 123
-					      }
-    	*/
+		c.IndentedJSON(consts.StatusOK, msg)
+		/*
+			        will output  :    {
+			                              "Company": "company",
+			   						      "Location": "location",
+			    					      "Number": 123
+								      }
+		*/
 
-    h.Spin()
+	})
+
+	h.Spin()
 }
 ```
 
