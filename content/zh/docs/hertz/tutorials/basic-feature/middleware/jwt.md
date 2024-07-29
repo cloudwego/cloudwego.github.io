@@ -40,8 +40,8 @@ type login struct {
 var identityKey = "id"
 
 func PingHandler(ctx context.Context, c *app.RequestContext) {
-    user, _ := ctx.Get(identityKey)
-    ctx.JSON(200, utils.H{
+    user, _ := c.Get(identityKey)
+    c.JSON(200, utils.H{
         "message": fmt.Sprintf("username:%v", user.(*User).UserName),
     })
 }

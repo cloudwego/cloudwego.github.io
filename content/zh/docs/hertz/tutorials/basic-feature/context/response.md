@@ -39,7 +39,7 @@ func (ctx *RequestContext) SetContentType(contentType string)
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.Write([]byte(`{"foo":"bar"}`))
-    ctx.SetContentType("application/json; charset=utf-8")
+    c.SetContentType("application/json; charset=utf-8")
     // Content-Type: application/json; charset=utf-8
 })
 ```
@@ -59,7 +59,7 @@ func (ctx *RequestContext) SetContentTypeBytes(contentType []byte)
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.Write([]byte(`{"foo":"bar"}`))
-    ctx.SetContentType([]byte("application/json; charset=utf-8"))
+    c.SetContentType([]byte("application/json; charset=utf-8"))
     // Content-Type: application/json; charset=utf-8
 })
 ```
@@ -207,8 +207,8 @@ func (ctx *RequestContext) Header(key, value string)
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.Header("My-Name", "tom")
-    ctx.Header("My-Name", "")
-    ctx.Header("My-Name-Not-Exists", "yes")
+    c.Header("My-Name", "")
+    c.Header("My-Name-Not-Exists", "yes")
 })
 ```
 
@@ -227,7 +227,7 @@ func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domai
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
-    cookie := ctx.Response.Header.Get("Set-Cookie")
+    cookie := c.Response.Header.Get("Set-Cookie")
     // cookie == "user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=Lax"
 })
 ```

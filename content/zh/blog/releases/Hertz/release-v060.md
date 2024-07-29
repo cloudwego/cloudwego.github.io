@@ -19,7 +19,7 @@ Hertz 0.6.0 版本中，除了常规迭代优化之外，我们还带来了多�
 ```go
 // server 端
 func handler(ctx context.Context, c *app.RequestContext){
-    ctx.Response.Header.Trailer().Set("Hertz", "Good")
+    c.Response.Header.Trailer().Set("Hertz", "Good")
 }
 
 // client 端
@@ -31,7 +31,7 @@ req.Header.Trailer().Set("Hertz", "Good")
 ```go
 // server 端
 func handler(ctx context.Context, c *app.RequestContext){
-    ctx.Request.Header.Trailer().Get("Hertz")
+    c.Request.Header.Trailer().Get("Hertz")
 }
 
 // client 端
@@ -73,11 +73,11 @@ resp.Header.Trailer().Get("Hertz")
 ```go
 h.GET("/flush/chunk", func(ctx context.Context, c *app.RequestContext) {
         // Hijack the writer of response
-        ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
+        c.Response.HijackWriter(resp.NewChunkedBodyWriter(&c.Response, c.GetWriter()))
 
         for i := 0; i < 10; i++ {
-                ctx.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
-                ctx.Flush()                                                                 // nolint: errcheck
+                c.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+                c.Flush()                                                                 // nolint: errcheck
                 time.Sleep(200 * time.Millisecond)
         }
 })

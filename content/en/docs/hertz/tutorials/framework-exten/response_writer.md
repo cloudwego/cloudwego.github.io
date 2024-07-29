@@ -42,9 +42,9 @@ provides another way for response writing process.
 Example:
 
 ```go
-    h.GET("/hijack", func (ctx context.Context, c *app.RequestContext) {
-// Hijack the writer of response
-ctx.Response.HijackWriter(**yourResponseWriter**)
+h.GET("/hijack", func (ctx context.Context, c *app.RequestContext) {
+    // Hijack the writer of response
+    c.Response.HijackWriter(**yourResponseWriter**)
 })
 ```
 
@@ -59,15 +59,15 @@ ctx.Response.HijackWriter(**yourResponseWriter**)
 Example:
 
 ```go
-    h.GET("/flush/chunk", func (ctx context.Context, c *app.RequestContext) {
-// Hijack the writer of response
-ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
-
-for i := 0; i < 10; i++ {
-ctx.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
-ctx.Flush() // nolint: errcheck
-time.Sleep(200 * time.Millisecond)
-}
+h.GET("/flush/chunk", func (ctx context.Context, c *app.RequestContext) {
+    // Hijack the writer of response
+    c.Response.HijackWriter(resp.NewChunkedBodyWriter(&c.Response, c.GetWriter()))
+    
+    for i := 0; i < 10; i++ {
+    c.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+    c.Flush() // nolint: errcheck
+    time.Sleep(200 * time.Millisecond)
+    }
 })
 ```
 

@@ -56,7 +56,7 @@ type HandlerFunc = func(ctx context.Context, c *app.RequestContext)
 ```Go
 // fasthttp + fasthttp router example
 func Hello(ctx *fasthttp.RequestCtx) {
-        fmt.Fprintf(ctx, "Hello, %s!\n", ctx.UserValue("name"))
+    fmt.Fprintf(ctx, "Hello, %s!\n", ctx.UserValue("name"))
 }
 
 func main() {
@@ -140,7 +140,7 @@ func Hello(ctx context.Context, c *app.RequestContext) {
         fmt.Fprintf(ctx, "Hello, World\n")
 
         // Then, Set a Header
-        ctx.Header("Hertz", "test")
+        c.Header("Hertz", "test")
 }
 ```
 

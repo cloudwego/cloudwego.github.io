@@ -163,8 +163,8 @@ func(ctx *app.RequestContext, status int, reason error)
 ```go
 var upgrader = websocket.HertzUpgrader{
     Error: func(ctx *app.RequestContext, status int, reason error) {
-        ctx.Response.Header.Set("Sec-Websocket-Version", "13")
-        ctx.AbortWithMsg(reason.Error(), status)
+        c.Response.Header.Set("Sec-Websocket-Version", "13")
+        c.AbortWithMsg(reason.Error(), status)
     },
 }
 ```
@@ -183,7 +183,7 @@ func(ctx *app.RequestContext) bool
 
 ```go
 func fastHTTPCheckSameOrigin(ctx *app.RequestContext) bool {
-    origin := ctx.Request.Header.Peek("Origin")
+    origin := c.Request.Header.Peek("Origin")
     if len(origin) == 0 {
         return true
     }
@@ -191,7 +191,7 @@ func fastHTTPCheckSameOrigin(ctx *app.RequestContext) bool {
     if err != nil {
         return false
     }
-    return equalASCIIFold(u.Host, b2s(ctx.Host()))
+    return equalASCIIFold(u.Host, b2s(c.Host()))
 }
 ```
 

@@ -65,11 +65,11 @@ func main() {
       if err != nil {
          hlog.Error("generate token failed")
       }
-      ctx.String(http.StatusOK, token)
+      c.String(http.StatusOK, token)
    })
 
    h.POST("/paseto", paseto.New(), func(ctx context.Context, c *app.RequestContext) {
-      ctx.String(http.StatusOK, "token is valid")
+      c.String(http.StatusOK, "token is valid")
    })
 
    go performRequest()

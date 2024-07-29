@@ -43,7 +43,7 @@ func performRequest() {
 func main() {
 	h := server.New(server.WithHostPorts(":8080"))
 	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, "hello hertz")
+		c.JSON(consts.StatusOK, "hello hertz")
 	})
 	go performRequest()
 	h.Spin()
