@@ -53,7 +53,7 @@ func performRequest() {
 
 func main() {
    h := server.New(server.WithHostPorts(":8080"))
-   h.GET("/paseto", func(c context.Context, ctx *app.RequestContext) {
+   h.GET("/paseto", func(ctx context.Context, c *app.RequestContext) {
       now := time.Now()
       genTokenFunc := paseto.DefaultGenTokenFunc()
       token, err := genTokenFunc(&paseto.StandardClaims{
@@ -68,7 +68,7 @@ func main() {
       ctx.String(http.StatusOK, token)
    })
 
-   h.POST("/paseto", paseto.New(), func(c context.Context, ctx *app.RequestContext) {
+   h.POST("/paseto", paseto.New(), func(ctx context.Context, c *app.RequestContext) {
       ctx.String(http.StatusOK, "token is valid")
    })
 
@@ -148,7 +148,7 @@ func main() {
 	next := func(ctx context.Context, c *app.RequestContext) bool {
 		return string(c.GetHeader("skip")) == "yes"
 	}
-	h.GET("/paseto", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/paseto", func(ctx context.Context, c *app.RequestContext) {
 		now := time.Now()
 		genTokenFunc := paseto.DefaultGenTokenFunc()
 		token, err := genTokenFunc(&paseto.StandardClaims{
@@ -163,7 +163,7 @@ func main() {
 		ctx.String(consts.StatusOK, token)
 	})
 
-	h.POST("/paseto", paseto.New(paseto.WithNext(next)), func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/paseto", paseto.New(paseto.WithNext(next)), func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK, "token is valid")
 	})
 
@@ -240,7 +240,7 @@ func main() {
       c.Abort()
    }
 
-   h.GET("/paseto/withsecret", func(c context.Context, ctx *app.RequestContext) {
+   h.GET("/paseto/withsecret", func(ctx context.Context, c *app.RequestContext) {
       now := time.Now()
       genTokenFunc := paseto.DefaultGenTokenFunc()
       token, err := genTokenFunc(&paseto.StandardClaims{
@@ -257,7 +257,7 @@ func main() {
       ctx.String(consts.StatusOK, token)
    })
 
-   h.GET("/paseto/witherrorfunc", func(c context.Context, ctx *app.RequestContext) {
+   h.GET("/paseto/witherrorfunc", func(ctx context.Context, c *app.RequestContext) {
       now := time.Now()
       genTokenFunc := paseto.DefaultGenTokenFunc()
       token, err := genTokenFunc(&paseto.StandardClaims{
@@ -272,7 +272,7 @@ func main() {
       ctx.String(consts.StatusOK, token)
    })
 
-   h.POST("/paseto", paseto.New(paseto.WithErrorFunc(handler)), func(c context.Context, ctx *app.RequestContext) {
+   h.POST("/paseto", paseto.New(paseto.WithErrorFunc(handler)), func(ctx context.Context, c *app.RequestContext) {
       ctx.String(consts.StatusOK, "token is valid")
    })
 
@@ -349,7 +349,7 @@ func main() {
 			c.Abort()
 		}
 	}
-	h.GET("/paseto/withsecret", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/paseto/withsecret", func(ctx context.Context, c *app.RequestContext) {
 		now := time.Now()
 		genTokenFunc := paseto.DefaultGenTokenFunc()
 		token, err := genTokenFunc(&paseto.StandardClaims{
@@ -366,7 +366,7 @@ func main() {
 		ctx.String(consts.StatusOK, token)
 	})
 
-	h.GET("/paseto/withnosecret", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/paseto/withnosecret", func(ctx context.Context, c *app.RequestContext) {
 		now := time.Now()
 		genTokenFunc := paseto.DefaultGenTokenFunc()
 		token, err := genTokenFunc(&paseto.StandardClaims{
@@ -381,7 +381,7 @@ func main() {
 		ctx.String(consts.StatusOK, token)
 	})
 
-	h.POST("/paseto", paseto.New(paseto.WithSuccessHandler(handler)), func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/paseto", paseto.New(paseto.WithSuccessHandler(handler)), func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK, "token is valid")
 	})
 
@@ -439,7 +439,7 @@ func performRequest() {
 
 func main() {
 	h := server.New(server.WithHostPorts(":8080"))
-	h.GET("/paseto", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/paseto", func(ctx context.Context, c *app.RequestContext) {
 		now := time.Now()
 		genTokenFunc := paseto.DefaultGenTokenFunc()
 		token, err := genTokenFunc(&paseto.StandardClaims{
@@ -454,7 +454,7 @@ func main() {
 		ctx.String(consts.StatusOK, token)
 	})
 
-	h.POST("/paseto", paseto.New(paseto.WithKeyLookUp("form:Authorization")), func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/paseto", paseto.New(paseto.WithKeyLookUp("form:Authorization")), func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK, "token is valid")
 	})
 
@@ -499,7 +499,7 @@ func performRequest() {
 
 func main() {
     h := server.New(server.WithHostPorts(":8080"))
-    h.GET("/paseto", func(c context.Context, ctx *app.RequestContext) {
+    h.GET("/paseto", func(ctx context.Context, c *app.RequestContext) {
         now := time.Now()
         genTokenFunc := paseto.DefaultGenTokenFunc()
         token, err := genTokenFunc(&paseto.StandardClaims{
@@ -514,7 +514,7 @@ func main() {
         ctx.String(consts.StatusOK, token)
     })
 
-    h.POST("/paseto", paseto.New(paseto.WithTokenPrefix("Bearer ")), func(c context.Context, ctx *app.RequestContext) {
+    h.POST("/paseto", paseto.New(paseto.WithTokenPrefix("Bearer ")), func(ctx context.Context, c *app.RequestContext) {
         ctx.String(consts.StatusOK, "token is valid")
     })
 
@@ -584,7 +584,7 @@ func performRequest() {
 func main() {
     h := server.New(server.WithHostPorts(":8080"))
 
-    h.GET("/paseto/correct-issuer", func(c context.Context, ctx *app.RequestContext) {
+    h.GET("/paseto/correct-issuer", func(ctx context.Context, c *app.RequestContext) {
         now := time.Now()
         token, err := paseto.DefaultGenTokenFunc()(&paseto.StandardClaims{
             Issuer:    "CloudWeGo-issuer",
@@ -597,7 +597,7 @@ func main() {
         }
         ctx.String(consts.StatusOK, token)
     })
-    h.GET("/paseto/wrong-issuer", func(c context.Context, ctx *app.RequestContext) {
+    h.GET("/paseto/wrong-issuer", func(ctx context.Context, c *app.RequestContext) {
         now := time.Now()
         token, err := paseto.DefaultGenTokenFunc()(&paseto.StandardClaims{
             Issuer:    "CloudWeRun-issuer",
@@ -612,7 +612,7 @@ func main() {
     })
 
     parseFunc, _ := paseto.NewV4PublicParseFunc(paseto.DefaultPublicKey, []byte(paseto.DefaultImplicit), paseto.WithIssuer("CloudWeGo-issuer"))
-    h.POST("/paseto", paseto.New(paseto.WithParseFunc(parseFunc)), func(c context.Context, ctx *app.RequestContext) {
+    h.POST("/paseto", paseto.New(paseto.WithParseFunc(parseFunc)), func(ctx context.Context, c *app.RequestContext) {
         ctx.String(consts.StatusOK, "token is valid")
     })
     go performRequest()

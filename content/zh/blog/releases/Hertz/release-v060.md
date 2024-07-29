@@ -18,7 +18,7 @@ Hertz 0.6.0 版本中，除了常规迭代优化之外，我们还带来了多�
 
 ```go
 // server 端
-func handler(c context.Context, ctx *app.RequestContext){
+func handler(ctx context.Context, c *app.RequestContext){
     ctx.Response.Header.Trailer().Set("Hertz", "Good")
 }
 
@@ -30,7 +30,7 @@ req.Header.Trailer().Set("Hertz", "Good")
 
 ```go
 // server 端
-func handler(c context.Context, ctx *app.RequestContext){
+func handler(ctx context.Context, c *app.RequestContext){
     ctx.Request.Header.Trailer().Get("Hertz")
 }
 
@@ -71,7 +71,7 @@ resp.Header.Trailer().Get("Hertz")
 如上，Hertz 提供了一个默认的`ExtWriter`实现满足用户在 handler/中间件中的主动 flush 需求，使用方式也非常简单：
 
 ```go
-h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/flush/chunk", func(ctx context.Context, c *app.RequestContext) {
         // Hijack the writer of response
         ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
 

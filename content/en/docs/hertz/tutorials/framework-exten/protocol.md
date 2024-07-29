@@ -37,7 +37,7 @@ type Core interface {
    // Business logic entrance
    // After pre-read works, protocol server may call this method
    // to introduce the middlewares and handlers
-   ServeHTTP(c context.Context, ctx *app.RequestContext)
+   ServeHTTP(ctx context.Context, c *app.RequestContext)
    // GetTracer for tracing requirement
    GetTracer() tracer.Controller
 }
@@ -67,7 +67,7 @@ type Core interface {
    // Business logic entrance
    // After pre-read works, protocol server may call this method
    // to introduce the middlewares and handlers
-   ServeHTTP(c context.Context, ctx *app.RequestContext)
+   ServeHTTP(ctx context.Context, c *app.RequestContext)
    // GetTracer for tracing requirement
    GetTracer() tracer.Controller
 }
@@ -119,7 +119,7 @@ type Core interface {
    // Business logic entrance
    // After pre-read works, protocol server may call this method
    // to introduce the middlewares and handlers
-   ServeHTTP(c context.Context, ctx *app.RequestContext)
+   ServeHTTP(ctx context.Context, c *app.RequestContext)
    // GetTracer for tracing requirement
    GetTracer() tracer.Controller
 }
@@ -214,7 +214,7 @@ func (s *serverFactory) New(core suite.Core) (server protocol.Server, err error)
 
 func main() {
    h := server.New()
-   h.GET("/test", func(c context.Context, ctx *app.RequestContext) {
+   h.GET("/test", func(ctx context.Context, c *app.RequestContext) {
       hlog.Info("in handler")
    })
    h.AddProtocol("http/1.1", &serverFactory{})

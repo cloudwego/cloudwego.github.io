@@ -36,7 +36,7 @@ Hertz has also added commonly used APIs to ctx, such as using `ctx.Body` to obta
 type RequestHandler = func(ctx *fasthttp.RequestCtx)
 
 // the corresponding Hertz request handler
-type HandlerFunc = func(c context.Context, ctx *app.RequestContext)
+type HandlerFunc = func(ctx context.Context, c *app.RequestContext)
 ```
 
 ### UserValue
@@ -69,7 +69,7 @@ func main() {
 
 ```Go
 // the corresponding hertz example
-func Hello(c context.Context, ctx *app.RequestContext) {
+func Hello(ctx context.Context, c *app.RequestContext) {
         fmt.Fprintf(ctx, "Hello, %s!\n", ctx.Param("name"))
 }
 
@@ -120,7 +120,7 @@ func main() {
 type RequestHandler = func(ctx *gin.Context)
 
 // the corresponding Hertz request handler
-type HandlerFunc = func(c context.Context, ctx *app.RequestContext)
+type HandlerFunc = func(ctx context.Context, c *app.RequestContext)
 ```
 
 ### Parameter Binding
@@ -135,7 +135,7 @@ type HandlerFunc = func(c context.Context, ctx *app.RequestContext)
 
 ```Go
 // The example is valid on Hertz
-func Hello(c context.Context, ctx *app.RequestContext) {
+func Hello(ctx context.Context, c *app.RequestContext) {
         // First, Set a body
         fmt.Fprintf(ctx, "Hello, World\n")
 

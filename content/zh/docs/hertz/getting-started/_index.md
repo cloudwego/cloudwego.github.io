@@ -38,7 +38,7 @@ description: "Hertz 开发环境准备、快速上手与代码生成工具 hz �
    func main() {
        h := server.Default()
 
-       h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+       h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
                ctx.JSON(consts.StatusOK, utils.H{"message": "pong"})
        })
 

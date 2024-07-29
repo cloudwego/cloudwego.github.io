@@ -65,7 +65,7 @@ func main() {
 	h.Use(adaptor.SentinelServerMiddleware(
 		// customize resource extractor if required
 		// method_path by default
-		adaptor.WithServerResourceExtractor(func(c context.Context, ctx *app.RequestContext) string {
+		adaptor.WithServerResourceExtractor(func(ctx context.Context, c *app.RequestContext) string {
 			return "server_test"
 		}),
 	))
@@ -90,7 +90,7 @@ func main() {
 	h.Use(adaptor.SentinelServerMiddleware(
 		// customize block fallback if required
 		// abort with status 429 by default
-		adaptor.WithServerBlockFallback(func(c context.Context, ctx *app.RequestContext) {
+		adaptor.WithServerBlockFallback(func(ctx context.Context, c *app.RequestContext) {
 			ctx.AbortWithStatusJSON(400, utils.H{
 				"err":  "too many request; the quota used up",
 				"code": 10222,

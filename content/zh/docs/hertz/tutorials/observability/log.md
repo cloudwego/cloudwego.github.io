@@ -14,7 +14,7 @@ hertz 中可以直接调用 `pkg/common/hlog` 包下的方法打日志，该方�
 
 ```go
 func AccessLog() app.HandlerFunc {
-	return func(c context.Context, ctx *app.RequestContext) {
+	return func(ctx context.Context, c *app.RequestContext) {
 		start := time.Now()
 		ctx.Next(c)
 		end := time.Now()

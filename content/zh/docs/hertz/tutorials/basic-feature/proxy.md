@@ -157,7 +157,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    h.GET("/proxy/backend", func(cc context.Context, c *app.RequestContext) {
+    h.GET("/proxy/backend", func(ctx context.Context, c *app.RequestContext) {
         c.JSON(200, utils.H{
             "msg": "proxy success!!",
         })

@@ -298,7 +298,7 @@ Two methods are provided:
    func main() {
        h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
 
-       h.GET("/streamWrite1", func(c context.Context, ctx *app.RequestContext) {
+       h.GET("/streamWrite1", func(ctx context.Context, c *app.RequestContext) {
            rw := newChunkReader()
            line := []byte("line\r\n")
            ctx.SetBodyStream(rw, 500*len(line))
@@ -319,7 +319,7 @@ Two methods are provided:
            }()
        })
 
-       h.GET("/streamWrite2", func(c context.Context, ctx *app.RequestContext) {
+       h.GET("/streamWrite2", func(ctx context.Context, c *app.RequestContext) {
            rw := newChunkReader()
            // Content-Length may be negative:
            // -1 means Transfer-Encoding: chunked.
@@ -400,7 +400,7 @@ Two methods are provided:
    Example Code:
 
    ```go
-   h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
+   h.GET("/flush/chunk", func(ctx context.Context, c *app.RequestContext) {
    	// Hijack the writer of response
    	ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
 
@@ -462,12 +462,12 @@ Example Code:
 func main() {
     h := server.New()
     // When in Panic, the function in PanicHandler will be triggered, returning a 500 status code and carrying error information
-    h.PanicHandler = func(c context.Context, ctx *app.RequestContext) {
+    h.PanicHandler = func(ctx context.Context, c *app.RequestContext) {
         ctx.JSON(500, utils.H{
             "message": "panic",
         })
     }
-    h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         panic("panic")
     })
     h.Spin()
@@ -515,13 +515,13 @@ Example Code:
 
 ```go
 func getHandler() app.HandlerFunc {
-	return func(c context.Context, ctx *app.RequestContext) {
+	return func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK, "get handler")
 	}
 }
 
 func postHandler() app.HandlerFunc {
-	return func(c context.Context, ctx *app.RequestContext) {
+	return func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK, "post handler")
 	}
 }

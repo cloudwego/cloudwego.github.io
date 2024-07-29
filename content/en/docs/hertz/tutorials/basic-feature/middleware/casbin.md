@@ -562,7 +562,7 @@ func main(){
 
 	h.GET("/book",
           m.RequiresPermissions("book:read",
-			casbin.WithUnauthorized(func(c context.Context, ctx *app.RequestContext) {
+			casbin.WithUnauthorized(func(ctx context.Context, c *app.RequestContext) {
 				ctx.AbortWithStatus(consts.StatusUnauthorized)
 			}),
 		),
@@ -598,7 +598,7 @@ func main(){
 
 	h.GET("/book",
           m.RequiresPermissions("book:read",
-			casbin.WithForbidden(func(c context.Context, ctx *app.RequestContext) {
+			casbin.WithForbidden(func(ctx context.Context, c *app.RequestContext) {
 				ctx.AbortWithStatus(consts.StatusForbidden)
 			}),
 		),

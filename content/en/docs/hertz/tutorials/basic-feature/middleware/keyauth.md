@@ -35,7 +35,7 @@ func main() {
 		keyauth.WithContextKey("token"),
 		keyauth.WithKeyLookUp("query:token", ""),
 	))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		value, _ := ctx.Get("token")
 		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
@@ -52,7 +52,7 @@ The `keyauth` extension provides `WithFilter` to help users set custom filtering
 Function signatures:
 
 ```go
-type KeyAuthFilterHandler func(c context.Context, ctx *app.RequestContext) bool
+type KeyAuthFilterHandler func(ctx context.Context, c *app.RequestContext) bool
 ```
 
 Sample Code:
@@ -73,11 +73,11 @@ import (
 func main() {
 	h := server.Default()
 	h.Use(keyauth.New(
-		keyauth.WithFilter(func(c context.Context, ctx *app.RequestContext) bool {
+		keyauth.WithFilter(func(ctx context.Context, c *app.RequestContext) bool {
 			return string(ctx.GetHeader("admin")) == "test"
 		}),
 	))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		value, _ := ctx.Get("token")
 		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
@@ -120,7 +120,7 @@ func main() {
 			return false, nil
 		}),
 	))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		value, _ := ctx.Get("token")
 		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
@@ -150,11 +150,11 @@ import (
 func main() {
 	h := server.Default()
 	h.Use(keyauth.New(
-		keyauth.WithSuccessHandler(func(c context.Context, ctx *app.RequestContext) {
+		keyauth.WithSuccessHandler(func(ctx context.Context, c *app.RequestContext) {
 			ctx.Next(c)
 		}),
 	))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		value, _ := ctx.Get("token")
 		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
@@ -175,7 +175,7 @@ type KeyAuthErrorHandler func(context.Context, *app.RequestContext, error)
 Default logic:
 
 ```go
-func errHandler(c context.Context, ctx *app.RequestContext, err error) {
+func errHandler(ctx context.Context, c *app.RequestContext, err error) {
 	if err == ErrMissingOrMalformedAPIKey {
 		ctx.AbortWithMsg(err.Error(), http.StatusBadRequest)
 		return
@@ -212,7 +212,7 @@ func main() {
 	h.Use(keyauth.New(
 		keyauth.WithKeyLookUp("header:token", "Bearer"),
 		))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		value, _ := ctx.Get("token")
 		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
@@ -244,7 +244,7 @@ func main() {
 	h.Use(keyauth.New(
 		keyauth.WithContextKey("token"),
 	))
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		value, _ := ctx.Get("token")
 		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
