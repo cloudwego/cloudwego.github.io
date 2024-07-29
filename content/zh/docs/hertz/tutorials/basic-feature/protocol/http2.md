@@ -92,7 +92,7 @@ func main() {
 		config.WithDisableKeepAlive(false)))
 	cfg.NextProtos = append(cfg.NextProtos, "h2")
 
-	h.POST("/", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/", func(ctx context.Context, c *app.RequestContext) {
 		var j map[string]string
 		_ = json.Unmarshal(ctx.Request.Body(), &j)
 		fmt.Printf("[server]: received request: %+v\n", j)
@@ -162,7 +162,7 @@ func main() {
 	// register http2 server factory
 	h.AddProtocol("h2", factory.NewServerFactory())
 
-	h.POST("/", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/", func(ctx context.Context, c *app.RequestContext) {
 		var j map[string]string
 		_ = json.Unmarshal(ctx.Request.Body(), &j)
 		fmt.Printf("server received request: %+v\n", j)
@@ -269,7 +269,7 @@ func main() {
 		config.WithDisableKeepAlive(false)))
 	cfg.NextProtos = append(cfg.NextProtos, "h2")
 
-	h.POST("/", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/", func(ctx context.Context, c *app.RequestContext) {
 		var j map[string]string
 		_ = json.Unmarshal(ctx.Request.Body(), &j)
 		fmt.Printf("[server]: received request: %+v\n", j)
@@ -426,7 +426,7 @@ func main() {
 		config.WithDisableKeepAlive(false)))
 	cfg.NextProtos = append(cfg.NextProtos, "h2")
 
-	h.POST("/", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/", func(ctx context.Context, c *app.RequestContext) {
 		var j map[string]string
 		_ = json.Unmarshal(ctx.Request.Body(), &j)
 		fmt.Printf("[server]: received request: %+v\n", j)

@@ -37,7 +37,7 @@ func (ctx *RequestContext) SetContentType(contentType string)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.Write([]byte(`{"foo":"bar"}`))
     ctx.SetContentType("application/json; charset=utf-8")
     // Content-Type: application/json; charset=utf-8
@@ -57,7 +57,7 @@ func (ctx *RequestContext) SetContentTypeBytes(contentType []byte)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.Write([]byte(`{"foo":"bar"}`))
     ctx.SetContentType([]byte("application/json; charset=utf-8"))
     // Content-Type: application/json; charset=utf-8
@@ -77,7 +77,7 @@ func (ctx *RequestContext) SetConnectionClose()
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.SetConnectionClose()
 })
 ```
@@ -95,7 +95,7 @@ func (ctx *RequestContext) SetStatusCode(statusCode int)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.SetStatusCode(consts.StatusOK)
     // Status Code: 200
 })
@@ -114,7 +114,7 @@ func (ctx *RequestContext) Status(code int)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.Status(consts.StatusOK)
     // Status Code: 200
 })
@@ -133,7 +133,7 @@ func (ctx *RequestContext) NotFound()
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.NotFound()
     // Status Code: 404
 })
@@ -152,7 +152,7 @@ func (ctx *RequestContext) NotModified()
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.NotModified()
     // Status Code: 304
 })
@@ -173,21 +173,21 @@ func (ctx *RequestContext) Redirect(statusCode int, uri []byte)
 ```go
 // internal redirection
 // GET http://www.example.com:8888/user
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.Redirect(consts.StatusFound, []byte("/pet"))
 })
 // GET http://www.example.com:8888/pet
-h.GET("/pet", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/pet", func(ctx context.Context, c *app.RequestContext) {
     ctx.String(consts.StatusOK, "cat")
 })
 
 // external redirection
 // GET http://www.example.com:8888/user
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.Redirect(consts.StatusFound, []byte("http://www.example1.com:8888/pet"))
 })
 // GET http://www.example1.com:8888/pet
-h.GET("/pet", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/pet", func(ctx context.Context, c *app.RequestContext) {
     ctx.String(consts.StatusOK, "cat")
 })
 ```
@@ -205,7 +205,7 @@ func (ctx *RequestContext) Header(key, value string)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.Header("My-Name", "tom")
     ctx.Header("My-Name", "")
     ctx.Header("My-Name-Not-Exists", "yes")
@@ -225,7 +225,7 @@ func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domai
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
     cookie := ctx.Response.Header.Get("Set-Cookie")
     // cookie == "user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=Lax"
@@ -292,9 +292,9 @@ func (ctx *RequestContext) AbortWithStatus(code int)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.AbortWithStatus(consts.StatusOK)
-}, func(c context.Context, ctx *app.RequestContext) {
+}, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
 })
 ```
@@ -312,11 +312,11 @@ func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.AbortWithError(consts.StatusOK, errors.New("hertz error"))
 	err := ctx.Errors.String()
 	// err == "Error #01: hertz error"
-}, func(c context.Context, ctx *app.RequestContext) {
+}, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
 })
 ```
@@ -428,13 +428,13 @@ func (ctx *RequestContext) SetBodyStream(bodyStream io.Reader, bodySize int)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     data := "hello world"
     r := strings.NewReader(data)
     ctx.SetBodyStream(r, -1) // Body: "hello world"
 })
 
-h.GET("/user1", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user1", func(ctx context.Context, c *app.RequestContext) {
     data := "hello world"
     r1 := strings.NewReader(data)
     ctx.SetBodyStream(r1, 5) // Body: "hello"
@@ -454,7 +454,7 @@ func (ctx *RequestContext) SetBodyString(body string)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.SetBodyString("hello world") // Body: "hello world"
 })
 ```
@@ -472,7 +472,7 @@ func (ctx *RequestContext) Write(p []byte) (int, error)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.Write([]byte("hello"))
     ctx.Write([]byte(" "))
     ctx.Write([]byte("world"))
@@ -493,7 +493,7 @@ func (ctx *RequestContext) WriteString(s string) (int, error)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     size, _ := ctx.WriteString("hello world")// Body: "hello world", size == 11
 })
 ```
@@ -511,9 +511,9 @@ func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.AbortWithMsg("abort", consts.StatusOK)
-}, func(c context.Context, ctx *app.RequestContext) {
+}, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
 })
 ```
@@ -531,12 +531,12 @@ func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
 示例:
 
 ```go
- h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+ h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
   ctx.AbortWithStatusJSON(consts.StatusOK, utils.H{
    "foo":  "bar",
    "html": "<b>",
   })
- }, func(c context.Context, ctx *app.RequestContext) {
+ }, func(ctx context.Context, c *app.RequestContext) {
   // will not execute
  })
 ```
@@ -562,7 +562,7 @@ func (ctx *RequestContext) File(filepath string)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.File("./main.go")
 })
 ```
@@ -580,7 +580,7 @@ func (ctx *RequestContext) FileAttachment(filepath, filename string)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.FileAttachment("./main.go")
 })
 ```
@@ -598,7 +598,7 @@ func (ctx *RequestContext) FileFromFS(filepath string, fs *FS)
 示例:
 
 ```go
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.FileFromFS("./main.go", &app.FS{
         Root:               ".",
         IndexNames:         nil,

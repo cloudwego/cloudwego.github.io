@@ -55,7 +55,7 @@ Recovery 中间件提供了默认的 panic 处理函数 `defaultRecoveryHandler(
 同时你也可以通过 `WithRecoveryHandler()` 函数来自定义出现 panic 后的处理函数，函数签名如下：
 
 ```go
-func WithRecoveryHandler(f func(c context.Context, ctx *app.RequestContext, err interface{}, stack []byte))
+func WithRecoveryHandler(f func(ctx context.Context, c *app.RequestContext, err interface{}, stack []byte))
 ```
 
 如果你在发生 panic 之后希望能够获取客户端信息，示例代码如下：
@@ -76,7 +76,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
-func MyRecoveryHandler(c context.Context, ctx *app.RequestContext, err interface{}, stack []byte) {
+func MyRecoveryHandler(ctx context.Context, c *app.RequestContext, err interface{}, stack []byte) {
 	hlog.SystemLogger().CtxErrorf(c, "[Recovery] err=%v\nstack=%s", err, stack)
 	hlog.SystemLogger().Infof("Client: %s", ctx.Request.Header.UserAgent())
 	ctx.AbortWithStatus(consts.StatusInternalServerError)

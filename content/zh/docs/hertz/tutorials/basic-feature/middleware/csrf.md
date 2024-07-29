@@ -38,11 +38,11 @@ func main() {
 	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New())
 
-	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, csrf.GetToken(ctx))
 	})
 
-	h.POST("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, "CSRF token is valid")
 	})
 
@@ -96,10 +96,10 @@ func main() {
 	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithSecret("your_secret")))
 
-	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, csrf.GetToken(ctx))
 	})
-	h.POST("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, "CSRF token is valid")
 	})
 
@@ -142,11 +142,11 @@ func main() {
     h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithIgnoredMethods([]string{"GET", "HEAD", "TRACE"})))
 
-	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, csrf.GetToken(ctx))
 	})
 
-	h.OPTIONS("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.OPTIONS("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, "success")
 	})
 	h.Spin()
@@ -187,7 +187,7 @@ import (
 
 )
 
-func myErrFunc(c context.Context, ctx *app.RequestContext) {
+func myErrFunc(ctx context.Context, c *app.RequestContext) {
     if ctx.Errors.Last() == nil {
         err := fmt.Errorf("myErrFunc called when no error occurs")
         ctx.String(400, err.Error())
@@ -203,10 +203,10 @@ func main() {
 	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithErrorFunc(myErrFunc)))
 
-	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, csrf.GetToken(ctx))
 	})
-	h.POST("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, "CSRF token is valid")
 	})
 
@@ -252,10 +252,10 @@ func main() {
 	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithKeyLookUp("form:csrf")))
 
-	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, csrf.GetToken(ctx))
 	})
-	h.POST("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, "CSRF token is valid")
 	})
 
@@ -308,7 +308,7 @@ func main() {
 	//  skip csrf middleware when request method is post
 	h.Use(csrf.New(csrf.WithNext(isPostMethod)))
 
-	h.POST("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, "success even no csrf-token in header")
 	})
 	h.Spin()
@@ -355,7 +355,7 @@ import (
 	"github.com/hertz-contrib/sessions/cookie"
 )
 
-func myExtractor(c context.Context, ctx *app.RequestContext) (string, error) {
+func myExtractor(ctx context.Context, c *app.RequestContext) (string, error) {
 	token := ctx.FormValue("csrf-token")
 	if token == nil {
 		return "", errors.New("missing token in form-data")
@@ -370,10 +370,10 @@ func main() {
 	h.Use(sessions.New("csrf-session", store))
 	h.Use(csrf.New(csrf.WithExtractor(myExtractor)))
 
-	h.GET("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, csrf.GetToken(ctx))
 	})
-	h.POST("/protected", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(200, "CSRF token is valid")
 	})
 

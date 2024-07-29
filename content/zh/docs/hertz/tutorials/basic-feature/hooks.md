@@ -58,7 +58,7 @@ func main() {
         return nil
     })
 
-    h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+    h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
         ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
     })
 
@@ -116,7 +116,7 @@ func main() {
         hlog.Info("run the third shutdown hook")
     })
 
-    h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+    h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
         ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
     })
 
@@ -158,7 +158,7 @@ func main() {
 		time.Sleep(time.Second * 5)
 	})
 
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
 	})
 
@@ -205,7 +205,7 @@ func main() {
             return context.Background()
         }),
         server.WithHostPorts("localhost:9230"))
-    h.GET("", func(c context.Context, ctx *app.RequestContext) {
+    h.GET("", func(ctx context.Context, c *app.RequestContext) {
         hlog.Info("pong")
         ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
     })

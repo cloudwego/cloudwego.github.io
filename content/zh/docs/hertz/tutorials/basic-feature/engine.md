@@ -297,7 +297,7 @@ Hertz Server 支持流式写入响应。
    func main() {
        h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
 
-       h.GET("/streamWrite1", func(c context.Context, ctx *app.RequestContext) {
+       h.GET("/streamWrite1", func(ctx context.Context, c *app.RequestContext) {
            rw := newChunkReader()
            line := []byte("line\r\n")
            ctx.SetBodyStream(rw, 500*len(line))
@@ -318,7 +318,7 @@ Hertz Server 支持流式写入响应。
            }()
        })
 
-       h.GET("/streamWrite2", func(c context.Context, ctx *app.RequestContext) {
+       h.GET("/streamWrite2", func(ctx context.Context, c *app.RequestContext) {
            rw := newChunkReader()
            // Content-Length may be negative:
            // -1 means Transfer-Encoding: chunked.
@@ -399,7 +399,7 @@ Hertz Server 支持流式写入响应。
    示例代码：
 
    ```go
-   h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
+   h.GET("/flush/chunk", func(ctx context.Context, c *app.RequestContext) {
    	// Hijack the writer of response
    	ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
 
@@ -461,12 +461,12 @@ Hertz 提供了全局的 Hook 注入能力，用于在服务触发启动后和�
 func main() {
     h := server.New()
     // 在 panic 时，会触发 PanicHandler 中的函数，返回 500 状态码并携带错误信息
-    h.PanicHandler = func(c context.Context, ctx *app.RequestContext) {
+    h.PanicHandler = func(ctx context.Context, c *app.RequestContext) {
         ctx.JSON(500, utils.H{
             "message": "panic",
         })
     }
-    h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         panic("panic")
     })
     h.Spin()
@@ -514,13 +514,13 @@ func (engine *Engine) Routes() (routes RoutesInfo)
 
 ```go
 func getHandler() app.HandlerFunc {
-	return func(c context.Context, ctx *app.RequestContext) {
+	return func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK, "get handler")
 	}
 }
 
 func postHandler() app.HandlerFunc {
-	return func(c context.Context, ctx *app.RequestContext) {
+	return func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK, "post handler")
 	}
 }
