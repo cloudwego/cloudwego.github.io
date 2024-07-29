@@ -263,8 +263,7 @@ func SetPartitionedCookie(ctx *app.RequestContext, name, value string, maxAge in
    cookie.SetSameSite(sameSite)
    cookie.SetPartitioned(true)
     // Set-Cookie: user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned
-
-ctx.Response.Header.SetCookie(cookie)
+    ctx.Response.Header.SetCookie(cookie)
 }
 
 func main() {
@@ -314,7 +313,7 @@ func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.AbortWithError(consts.StatusOK, errors.New("hertz error"))
-	err := ctx.Errors.String()
+	err := c.Errors.String()
 	// err == "Error #01: hertz error"
 }, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
@@ -431,13 +430,13 @@ func (ctx *RequestContext) SetBodyStream(bodyStream io.Reader, bodySize int)
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     data := "hello world"
     r := strings.NewReader(data)
-    ctx.SetBodyStream(r, -1) // Body: "hello world"
+    c.SetBodyStream(r, -1) // Body: "hello world"
 })
 
 h.GET("/user1", func(ctx context.Context, c *app.RequestContext) {
     data := "hello world"
     r1 := strings.NewReader(data)
-    ctx.SetBodyStream(r1, 5) // Body: "hello"
+    c.SetBodyStream(r1, 5) // Body: "hello"
 })
 ```
 
@@ -474,8 +473,8 @@ func (ctx *RequestContext) Write(p []byte) (int, error)
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.Write([]byte("hello"))
-    ctx.Write([]byte(" "))
-    ctx.Write([]byte("world"))
+    c.Write([]byte(" "))
+    c.Write([]byte("world"))
     // Body: "hello world"
 })
 ```
@@ -494,7 +493,7 @@ func (ctx *RequestContext) WriteString(s string) (int, error)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    size, _ := ctx.WriteString("hello world")// Body: "hello world", size == 11
+    size, _ := c.WriteString("hello world")// Body: "hello world", size == 11
 })
 ```
 
@@ -532,7 +531,7 @@ func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
 
 ```go
  h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-  ctx.AbortWithStatusJSON(consts.StatusOK, utils.H{
+  c.AbortWithStatusJSON(consts.StatusOK, utils.H{
    "foo":  "bar",
    "html": "<b>",
   })
