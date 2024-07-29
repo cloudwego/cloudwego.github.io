@@ -16,7 +16,7 @@ hertz 中可以直接调用 `pkg/common/hlog` 包下的方法打日志，该方�
 func AccessLog() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
 		start := time.Now()
-		ctx.Next(c)
+		c.Next(ctx)
 		end := time.Now()
 		latency := end.Sub(start).Microseconds
 		hlog.CtxTracef(c, "status=%d cost=%d method=%s full_path=%s client_ip=%s host=%s",

@@ -21,18 +21,18 @@ func main() {
 
         // BindAndValidate
         var req Test
-        err := ctx.BindAndValidate(&req)
+        err := c.BindAndValidate(&req)
 
         ...
 
 	    // Bind
         req = Test{}
-        err = ctx.Bind(&req)
+        err = c.Bind(&req)
 
         ...
 
         // Validate, need to use "vd" tag
-        err = ctx.Validate(&req)
+        err = c.Validate(&req)
 
         ...
     })

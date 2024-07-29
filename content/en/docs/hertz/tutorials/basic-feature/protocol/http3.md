@@ -87,7 +87,7 @@ func run() {
 
 	h.GET("/demo/tile", func(ctx context.Context, c *app.RequestContext) {
 		// Small 40x40 png
-		ctx.Write([]byte{
+		c.Write([]byte{
 			0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d,
 			0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0x28,
 			0x01, 0x03, 0x00, 0x00, 0x00, 0xb6, 0x30, 0x2a, 0x2e, 0x00, 0x00, 0x00,
@@ -99,11 +99,11 @@ func run() {
 	})
 
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+		c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
 	})
 
 	h.GET("/struct", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, &Test{
+		c.JSON(consts.StatusOK, &Test{
 			A: "aaa",
 			B: "bbb",
 		})
@@ -112,7 +112,7 @@ func run() {
 	v1 := h.Group("/v1")
 	{
 		v1.GET("/hello/:name", func(ctx context.Context, c *app.RequestContext) {
-			fmt.Fprintf(ctx, "Hi %s, this is the response from Hertz.\n", ctx.Param("name"))
+			fmt.Fprintf(ctx, "Hi %s, this is the response from Hertz.\n", c.Param("name"))
 		})
 	}
 

@@ -38,7 +38,7 @@ func (ctx *RequestContext) SetContentType(contentType string)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Write([]byte(`{"foo":"bar"}`))
+    c.Write([]byte(`{"foo":"bar"}`))
     ctx.SetContentType("application/json; charset=utf-8")
     // Content-Type: application/json; charset=utf-8
 })
@@ -58,7 +58,7 @@ func (ctx *RequestContext) SetContentTypeBytes(contentType []byte)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Write([]byte(`{"foo":"bar"}`))
+    c.Write([]byte(`{"foo":"bar"}`))
     ctx.SetContentType([]byte("application/json; charset=utf-8"))
     // Content-Type: application/json; charset=utf-8
 })
@@ -78,7 +78,7 @@ func (ctx *RequestContext) SetConnectionClose()
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.SetConnectionClose()
+    c.SetConnectionClose()
 })
 ```
 
@@ -96,7 +96,7 @@ func (ctx *RequestContext) SetStatusCode(statusCode int)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.SetStatusCode(consts.StatusOK)
+    c.SetStatusCode(consts.StatusOK)
     // Status Code: 200
 })
 ```
@@ -115,7 +115,7 @@ func (ctx *RequestContext) Status(code int)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Status(consts.StatusOK)
+    c.Status(consts.StatusOK)
     // Status Code: 200
 })
 ```
@@ -134,7 +134,7 @@ func (ctx *RequestContext) NotFound()
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.NotFound()
+    c.NotFound()
     // Status Code: 404
 })
 ```
@@ -153,7 +153,7 @@ func (ctx *RequestContext) NotModified()
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.NotModified()
+    c.NotModified()
     // Status Code: 304
 })
 ```
@@ -174,21 +174,21 @@ func (ctx *RequestContext) Redirect(statusCode int, uri []byte)
 // internal redirection
 // GET http://www.example.com:8888/user
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Redirect(consts.StatusFound, []byte("/pet"))
+    c.Redirect(consts.StatusFound, []byte("/pet"))
 })
 // GET http://www.example.com:8888/pet
 h.GET("/pet", func(ctx context.Context, c *app.RequestContext) {
-    ctx.String(consts.StatusOK, "cat")
+    c.String(consts.StatusOK, "cat")
 })
 
 // external redirection
 // GET http://www.example.com:8888/user
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Redirect(consts.StatusFound, []byte("http://www.example1.com:8888/pet"))
+    c.Redirect(consts.StatusFound, []byte("http://www.example1.com:8888/pet"))
 })
 // GET http://www.example1.com:8888/pet
 h.GET("/pet", func(ctx context.Context, c *app.RequestContext) {
-    ctx.String(consts.StatusOK, "cat")
+    c.String(consts.StatusOK, "cat")
 })
 ```
 
@@ -206,7 +206,7 @@ func (ctx *RequestContext) Header(key, value string)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Header("My-Name", "tom")
+    c.Header("My-Name", "tom")
     ctx.Header("My-Name", "")
     ctx.Header("My-Name-Not-Exists", "yes")
 })
@@ -226,7 +226,7 @@ func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domai
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
+    c.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
     cookie := ctx.Response.Header.Get("Set-Cookie")
     // cookie == "user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=Lax"
 })
@@ -293,7 +293,7 @@ func (ctx *RequestContext) AbortWithStatus(code int)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.AbortWithStatus(consts.StatusOK)
+    c.AbortWithStatus(consts.StatusOK)
 }, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
 })
@@ -313,7 +313,7 @@ func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.AbortWithError(consts.StatusOK, errors.New("hertz error"))
+    c.AbortWithError(consts.StatusOK, errors.New("hertz error"))
 	err := ctx.Errors.String()
 	// err == "Error #01: hertz error"
 }, func(ctx context.Context, c *app.RequestContext) {
@@ -455,7 +455,7 @@ func (ctx *RequestContext) SetBodyString(body string)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.SetBodyString("hello world") // Body: "hello world"
+    c.SetBodyString("hello world") // Body: "hello world"
 })
 ```
 
@@ -473,7 +473,7 @@ func (ctx *RequestContext) Write(p []byte) (int, error)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Write([]byte("hello"))
+    c.Write([]byte("hello"))
     ctx.Write([]byte(" "))
     ctx.Write([]byte("world"))
     // Body: "hello world"
@@ -512,7 +512,7 @@ func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.AbortWithMsg("abort", consts.StatusOK)
+    c.AbortWithMsg("abort", consts.StatusOK)
 }, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
 })
@@ -563,7 +563,7 @@ func (ctx *RequestContext) File(filepath string)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.File("./main.go")
+    c.File("./main.go")
 })
 ```
 
@@ -581,7 +581,7 @@ func (ctx *RequestContext) FileAttachment(filepath, filename string)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.FileAttachment("./main.go")
+    c.FileAttachment("./main.go")
 })
 ```
 
@@ -599,7 +599,7 @@ func (ctx *RequestContext) FileFromFS(filepath string, fs *FS)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.FileFromFS("./main.go", &app.FS{
+    c.FileFromFS("./main.go", &app.FS{
         Root:               ".",
         IndexNames:         nil,
         GenerateIndexPages: false,

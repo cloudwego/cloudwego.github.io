@@ -78,8 +78,8 @@ import (
 
 func MyRecoveryHandler(ctx context.Context, c *app.RequestContext, err interface{}, stack []byte) {
 	hlog.SystemLogger().CtxErrorf(c, "[Recovery] err=%v\nstack=%s", err, stack)
-	hlog.SystemLogger().Infof("Client: %s", ctx.Request.Header.UserAgent())
-	ctx.AbortWithStatus(consts.StatusInternalServerError)
+	hlog.SystemLogger().Infof("Client: %s", c.Request.Header.UserAgent())
+	c.AbortWithStatus(consts.StatusInternalServerError)
 }
 
 func main() {

@@ -100,7 +100,7 @@ func (ctx *RequestContext) SetFullPath(p string)
 
 ```go
 h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
-    ctx.SetFullPath("/v1/user/:name")
+    c.SetFullPath("/v1/user/:name")
     fpath := ctx.FullPath() // fpath == "/v1/user/:name"
 })
 ```
@@ -1159,10 +1159,10 @@ func (ctx *RequestContext) Next(c context.Context)
 
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Next(c)
+    c.Next(ctx)
     v := ctx.GetString("version") // v == "v1"
 }, func(ctx context.Context, c *app.RequestContext) {
-    ctx.Set("version", "v1")
+    c.Set("version", "v1")
 })
 ```
 
@@ -1226,13 +1226,13 @@ func (ctx *RequestContext) SetHandlers(hc HandlersChain)
 
 ```go
 handler1 := func(ctx context.Context, c *app.RequestContext) {
-    ctx.Set("current", "handler1")
+    c.Set("current", "handler1")
 }
 
 handler := func(ctx context.Context, c *app.RequestContext) {
     hc := app.HandlersChain{ctx.Handlers()[0], handler1} // append handler1 into handlers chain
     ctx.SetHandlers(hc)
-    ctx.Next(c)
+    c.Next(ctx)
     current := ctx.GetString("current") // current == "handler1"
     ctx.String(consts.StatusOK, current)
 }
@@ -1297,7 +1297,7 @@ func (ctx *RequestContext) Abort()
 
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Abort()
+    c.Abort()
 }, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
 })
@@ -1317,7 +1317,7 @@ func (ctx *RequestContext) IsAborted() bool
 
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Abort()
+    c.Abort()
     isAborted := ctx.IsAborted() // isAborted == true
 }, func(ctx context.Context, c *app.RequestContext) {
     // will not execute

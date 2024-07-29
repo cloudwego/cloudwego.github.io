@@ -144,7 +144,7 @@ func main() {
 	// or use `Use` method
 	//v1.Use(basic_auth.BasicAuth(map[string]string{"test": "test"}))
 	v1.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK,"ping")
+		c.String(consts.StatusOK,"ping")
 	})
 	h.Spin()
 }
@@ -169,7 +169,7 @@ func main() {
 	// use `Use` method
 	v1.Use(basic_auth.BasicAuth(map[string]string{"test": "test"}))
 	v1.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK,"ping")
+		c.String(consts.StatusOK,"ping")
 	})
 	h.Spin()
 }
@@ -291,7 +291,7 @@ import (
 func main() {
 	h := server.Default()
 	h.AnyEX("/ping", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK, app.GetHandlerName(ctx.Handler()))
+		c.String(consts.StatusOK, app.GetHandlerName(c.Handler()))
 	}, "ping_handler")
 	h.Spin()
 }
@@ -333,7 +333,7 @@ import (
 func main() {
 	h := server.Default()
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+		c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
 	})
 	routeInfo := h.Routes()
 	hlog.Info(routeInfo)
@@ -361,15 +361,15 @@ import (
 func main() {
 	h := server.Default(server.WithHandleMethodNotAllowed(true))
 	h.POST("/ping", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+		c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
 	})
 	// set NoRoute handler
 	h.NoRoute(func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK, "no route")
+		c.String(consts.StatusOK, "no route")
 	})
 	// set NoMethod handler
 	h.NoMethod(func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK, "no method")
+		c.String(consts.StatusOK, "no method")
 	})
 
 	h.Spin()

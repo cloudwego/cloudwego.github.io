@@ -151,7 +151,7 @@ func main() {
 	h := server.Default()
 	h.Use(keyauth.New(
 		keyauth.WithSuccessHandler(func(ctx context.Context, c *app.RequestContext) {
-			ctx.Next(c)
+			c.Next(ctx)
 		}),
 	))
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {

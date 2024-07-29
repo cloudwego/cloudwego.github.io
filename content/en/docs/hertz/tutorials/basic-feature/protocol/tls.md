@@ -253,7 +253,7 @@ func main() {
 
 	// Ping handler
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(200, map[string]interface{}{
+		c.JSON(200, map[string]interface{}{
 			"ping": "pong",
 		})
 	})
@@ -304,7 +304,7 @@ func main() {
 
 	// Ping handler
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(200, map[string]interface{}{
+		c.JSON(200, map[string]interface{}{
 			"ping": "pong",
 		})
 	})
@@ -348,7 +348,7 @@ func main() {
 
 	// Ping handler
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(200, map[string]interface{}{
+		c.JSON(200, map[string]interface{}{
 			"ping": "pong",
 		})
 	})

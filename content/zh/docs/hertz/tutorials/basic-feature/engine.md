@@ -462,7 +462,7 @@ func main() {
     h := server.New()
     // 在 panic 时，会触发 PanicHandler 中的函数，返回 500 状态码并携带错误信息
     h.PanicHandler = func(ctx context.Context, c *app.RequestContext) {
-        ctx.JSON(500, utils.H{
+        c.JSON(500, utils.H{
             "message": "panic",
         })
     }
