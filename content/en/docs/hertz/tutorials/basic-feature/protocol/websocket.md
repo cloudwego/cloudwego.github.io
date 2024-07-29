@@ -158,14 +158,14 @@ If Error is nil, then use the API provided by Hertz to generate the HTTP error r
 Function signatures:
 
 ```go
-func(ctx *app.RequestContext, status int, reason error)
+func(c *app.RequestContext, status int, reason error)
 ```
 
 Sample Code:
 
 ```go
 var upgrader = websocket.HertzUpgrader{
-    Error: func(ctx *app.RequestContext, status int, reason error) {
+    Error: func(c *app.RequestContext, status int, reason error) {
         c.Response.Header.Set("Sec-Websocket-Version", "13")
         c.AbortWithMsg(reason.Error(), status)
     },
@@ -182,14 +182,14 @@ prevent cross-site request forgery.
 Function signatures:
 
 ```go
-func(ctx *app.RequestContext) bool
+func(c *app.RequestContext) bool
 ```
 
 Default Implementation:
 
 ```go
-func fastHTTPCheckSameOrigin(ctx *app.RequestContext) bool {
-    origin := ctx.Request.Header.Peek("Origin")
+func fastHTTPCheckSameOrigin(c *app.RequestContext) bool {
+    origin := c.Request.Header.Peek("Origin")
     if len(origin) == 0 {
         return true
     }
@@ -197,7 +197,7 @@ func fastHTTPCheckSameOrigin(ctx *app.RequestContext) bool {
     if err != nil {
         return false
     }
-    return equalASCIIFold(u.Host, b2s(ctx.Host()))
+    return equalASCIIFold(u.Host, b2s(c.Host()))
 }
 ```
 

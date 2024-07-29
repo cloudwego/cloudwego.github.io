@@ -37,7 +37,7 @@ Hertz 在 v0.8.0 添加了对 Partitioned Cookies 的支持，你需要升级到
 目前 Hertz 支持 Partitioned Cookies，但还不支持通过 SetCookie 传入是否为 Partitioned，我们将在下个小版本增加此功能。在此之前，你可以参考下面的代码示例来使用 Partitioned Cookies。
 
 ```
-func SetPartitionedCookie(ctx *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
+func SetPartitionedCookie(c *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
    if path == "" {
       path = "/"
    }
@@ -54,7 +54,7 @@ func SetPartitionedCookie(ctx *app.RequestContext, name, value string, maxAge in
    cookie.SetHTTPOnly(httpOnly)
    cookie.SetSameSite(sameSite)
    cookie.SetPartitioned(true)
-   ctx.Response.Header.SetCookie(cookie)
+   c.Response.Header.SetCookie(cookie)
 }
 
 func main() {

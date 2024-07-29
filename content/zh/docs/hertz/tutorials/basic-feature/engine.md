@@ -313,7 +313,7 @@ Hertz Server 支持流式写入响应。
            }()
 
            go func() {
-               <-ctx.Finished()
+               <-c..Finished()
                fmt.Println("request process end")
            }()
        })
@@ -322,7 +322,7 @@ Hertz Server 支持流式写入响应。
            rw := newChunkReader()
            // Content-Length may be negative:
            // -1 means Transfer-Encoding: chunked.
-           ctx.SetBodyStream(rw, -1)
+           c.SetBodyStream(rw, -1)
 
            go func() {
                for i := 1; i < 1000; i++ {
@@ -335,7 +335,7 @@ Hertz Server 支持流式写入响应。
            }()
 
            go func() {
-               <-ctx.Finished()
+               <-c..Finished()
                fmt.Println("request process end")
            }()
        })

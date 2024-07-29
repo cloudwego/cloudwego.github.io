@@ -1384,7 +1384,7 @@ Example Code:
 // X-Forwarded-For: 30.30.30.30
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     // method 1
-    customClientIPFunc := func(ctx *app.RequestContext) string {
+    customClientIPFunc := func(c *app.RequestContext) string {
 			return "127.0.0.1"
 	}
 	c.SetClientIPFunc(customClientIPFunc)

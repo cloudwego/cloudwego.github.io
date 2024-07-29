@@ -179,19 +179,19 @@ type myServer struct {
    suite.Core
 }
 
-func (m myServer) Serve(c context.Context, conn network.Conn) error {
+func (m myServer) Serve(ctx context.Context, conn network.Conn) error {
    firstThreeBytes, _ := conn.Peek(3)
    if !bytes.Equal(firstThreeBytes, []byte("GET")) {
       return errors.NewPublic("not a GET method")
    }
-   ctx := m.GetCtxPool().Get().(*app.RequestContext)
+   c := m.GetCtxPool().Get().(*app.RequestContext)
    defer func() {
-      m.GetCtxPool().Put(ctx)
+      m.GetCtxPool().Put(c)
       conn.Skip(conn.Len())
       conn.Flush()
    }()
-   ctx.Request.SetMethod("GET")
-   ctx.Request.SetRequestURI("/test")
+   c.Request.SetMethod("GET")
+   c.Request.SetRequestURI("/test")
    m.ServeHTTP(c, ctx)
    conn.WriteBinary([]byte("HTTP/1.1 200 OK\n" +
       "Server: hertz\n" +

@@ -291,8 +291,8 @@ import (
 	"github.com/hertz-contrib/sessions/cookie"
 )
 
-func isPostMethod(_ context.Context, ctx *app.RequestContext) bool {
-	if string(ctx.Method()) == "POST" {
+func isPostMethod(_ context.Context, c *app.RequestContext) bool {
+	if string(c.Method()) == "POST" {
 		return true
 	} else {
 		return false

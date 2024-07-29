@@ -243,7 +243,7 @@ Chrome 从 2024 年第一季度开始，禁用了 1% 的用户的第三方 Cooki
 示例:
 
 ```go
-func SetPartitionedCookie(ctx *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
+func SetPartitionedCookie(c *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
    if path == "" {
       path = "/"
    }
@@ -263,7 +263,7 @@ func SetPartitionedCookie(ctx *app.RequestContext, name, value string, maxAge in
    cookie.SetSameSite(sameSite)
    cookie.SetPartitioned(true)
     // Set-Cookie: user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned
-    ctx.Response.Header.SetCookie(cookie)
+    c.Response.Header.SetCookie(cookie)
 }
 
 func main() {

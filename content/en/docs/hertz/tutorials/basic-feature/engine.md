@@ -314,7 +314,7 @@ Two methods are provided:
            }()
 
            go func() {
-               <-ctx.Finished()
+               <-c..Finished()
                fmt.Println("request process end")
            }()
        })
@@ -336,7 +336,7 @@ Two methods are provided:
            }()
 
            go func() {
-               <-ctx.Finished()
+               <-c..Finished()
                fmt.Println("request process end")
            }()
        })
