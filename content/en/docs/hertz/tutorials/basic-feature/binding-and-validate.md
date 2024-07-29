@@ -45,17 +45,17 @@ func main() {
 > hertz version >= v0.7.0
 
 | API                   | Description                                                                                                                                                                                            |
-| :-------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| c.BindAndValidate   | Use the following go-tag for parameter binding, and do a parameter validation after successful binding (if there is a validation tag)                                                                  |
-| c.Bind              | Same as `BindAndValidate` but without parameter validation                                                                                                                                             |
-| c.BindQuery         | Bind all Query parameters, which is equivalent to declaring a `query` tag for each field, for scenarios where no tag is written                                                                        |
-| c.BindHeader        | Bind all Header parameters, which is equivalent to declaring a `header` tag for each field, for scenarios where no tag is written                                                                      |
-| c.BindPath          | Bind all Path parameters, which is equivalent to declaring a `path` tag for each field, for scenarios where no tag is written                                                                          |
-| c.BindForm          | Bind all Form parameters, equivalent to declaring a `form` tag for each field, requires Content-Type: `application/x-www-form-urlencoded`/`multipart/form-data`, for scenarios where no tag is written |
-| c.BindJSON          | Bind JSON Body, call `json.Unmarshal()` for deserialization, need Body to be in `application/json` format                                                                                              |
-| c.BindProtobuf      | Bind Protobuf Body, call `proto.Unmarshal()` for deserialization, requires Body to be in `application/x-protobuf` format                                                                               |
-| c.BindByContentType | The binding method is automatically selected based on the Content-Type, where GET requests call `BindQuery`, and requests with Body are automatically selected based on the Content-Type.              |
-| c.Validate          | Parameter checksums, which require a checksum tag to be used (vd tag checksums are used by default)                                                                                                    |
+|:----------------------| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ctx.BindAndValidate   | Use the following go-tag for parameter binding, and do a parameter validation after successful binding (if there is a validation tag)                                                                  |
+| ctx.Bind              | Same as `BindAndValidate` but without parameter validation                                                                                                                                             |
+| ctx.BindQuery         | Bind all Query parameters, which is equivalent to declaring a `query` tag for each field, for scenarios where no tag is written                                                                        |
+| ctx.BindHeader        | Bind all Header parameters, which is equivalent to declaring a `header` tag for each field, for scenarios where no tag is written                                                                      |
+| ctx.BindPath          | Bind all Path parameters, which is equivalent to declaring a `path` tag for each field, for scenarios where no tag is written                                                                          |
+| ctx.BindForm          | Bind all Form parameters, equivalent to declaring a `form` tag for each field, requires Content-Type: `application/x-www-form-urlencoded`/`multipart/form-data`, for scenarios where no tag is written |
+| ctx.BindJSON          | Bind JSON Body, call `json.Unmarshal()` for deserialization, need Body to be in `application/json` format                                                                                              |
+| ctx.BindProtobuf      | Bind Protobuf Body, call `proto.Unmarshal()` for deserialization, requires Body to be in `application/x-protobuf` format                                                                               |
+| ctx.BindByContentType | The binding method is automatically selected based on the Content-Type, where GET requests call `BindQuery`, and requests with Body are automatically selected based on the Content-Type.              |
+| ctx.Validate          | Parameter checksums, which require a checksum tag to be used (vd tag checksums are used by default)                                                                                                    |
 
 ## Supported tags and Parameter binding precedence
 

@@ -142,8 +142,7 @@ Example Code:
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    c.NotFound()
-    // Status Code: 404
+    c.NotFound() // Status Code: 404
 })
 ```
 

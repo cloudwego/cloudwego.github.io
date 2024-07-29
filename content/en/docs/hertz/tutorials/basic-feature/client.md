@@ -185,7 +185,7 @@ Sample Code:
 
 ```go
 func main() {
-	// hertz server:http://localhost:8080/ping c.String(consts.StatusOK, "pong")
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -216,9 +216,9 @@ Sample Code:
 ```go
 func main() {
 	// hertz server
-	// http://localhost:8080/redirect c.Redirect(consts.StatusMovedPermanently, []byte("/redirect2"))
-	// http://localhost:8080/redirect2 c.Redirect(consts.StatusMovedPermanently, []byte("/redirect3"))
-	// http://localhost:8080/redirect3 c.String(consts.StatusOK, "pong")
+	// http://localhost:8080/redirect ctx.Redirect(consts.StatusMovedPermanently, []byte("/redirect2"))
+	// http://localhost:8080/redirect2 ctx.Redirect(consts.StatusMovedPermanently, []byte("/redirect3"))
+	// http://localhost:8080/redirect3 ctx.String(consts.StatusOK, "pong")
 
 	c, err := client.NewClient()
 	if err != nil {
@@ -255,7 +255,7 @@ Sample Code:
 
 ```go
 func main() {
-	// hertz server:http://localhost:8080/ping c.String(consts.StatusOK, "pong")
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -284,7 +284,7 @@ Sample Code:
 
 ```go
 func main() {
-	// hertz server:http://localhost:8080/hello c.String(consts.StatusOK, "hello %s", c.PostForm("name"))
+	// hertz server:http://localhost:8080/hello ctx.String(consts.StatusOK, "hello %s", ctx.PostForm("name"))
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -358,7 +358,7 @@ Sample Code:
 
 ```go
 func main() {
-	// hertz server:http://localhost:8080/ping c.String(consts.StatusOK, "pong") biz handler time: 1.5s
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong") biz handler time: 1.5s
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -396,7 +396,7 @@ Sample Code:
 
 ```go
 func main() {
-	// hertz server:http://localhost:8080/ping c.String(consts.StatusOK, "pong") biz handler time: 1.5s
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong") biz handler time: 1.5s
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -749,7 +749,7 @@ The `UseAsLast` function adds the middleware to the end of the client middleware
 
 If the client middleware chain has already set the last middleware before, the `UseAsLast` function will return an `errorLastMiddlewareExist` error. Therefore, to ensure that the last middleware in the client middleware chain is empty, you can first use the [TakeOutLastMiddleware](#takeoutlastmiddleware) function to clear the last middleware in the client middleware chain.
 
-> Note: The `UseAsLast` function sets the middleware in `c.lastMiddleware`, while the middleware chain set using the [Use](#use) function is stored in `c.mws`. The two functions are relatively independent. `c.lastMiddleware` is executed only at the end of the client middleware chain. Therefore, the `UseAsLast` function can be called before or after the [Use](#use) function.
+> Note: The `UseAsLast` function sets the middleware in `ctx.lastMiddleware`, while the middleware chain set using the [Use](#use) function is stored in `ctx.mws`. The two functions are relatively independent. `ctx.lastMiddleware` is executed only at the end of the client middleware chain. Therefore, the `UseAsLast` function can be called before or after the [Use](#use) function.
 
 Function Signature:
 
