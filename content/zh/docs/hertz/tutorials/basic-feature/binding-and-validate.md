@@ -45,16 +45,16 @@ func main() {
 
 | API                   | 说明                                                                                                                                                                 |
 | :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ctx.BindAndValidate   | 利用下述的 go-tag 进行参数绑定，并在绑定成功后做一次参数校验 (如果有校验 tag 的话)                                                                                   |
-| ctx.Bind              | 同 `BindAndValidate` 但是不做参数校验                                                                                                                                |
-| ctx.BindQuery         | 绑定所有 Query 参数，相当于给每一个 field 声明一个 `query` tag，适用于没写 tag 的场景                                                                                |
-| ctx.BindHeader        | 绑定所有 Header 参数，相当于给每一个 field 声明一个 `header` tag，适用于没写 tag 的场景                                                                              |
-| ctx.BindPath          | 绑定所有 Path 参数，相当于给每一个 field 声明一个 `path` tag，适用于没写 tag 的场景                                                                                  |
-| ctx.BindForm          | 绑定所有 Form 参数，相当于给每一个 field 声明一个 `form` tag，需要 Content-Type 为：`application/x-www-form-urlencoded`/`multipart/form-data`, 适用于没写 tag 的场景 |
-| ctx.BindJSON          | 绑定 JSON Body，调用 `json.Unmarshal()` 进行反序列化，需要 Body 为 `application/json` 格式                                                                           |
-| ctx.BindProtobuf      | 绑定 Protobuf Body，调用 `proto.Unmarshal()` 进行反序列化，需要 Body 为 `application/x-protobuf` 格式                                                                |
-| ctx.BindByContentType | 根据 Content-Type 来自动选择绑定的方法，其中 GET 请求会调用 `BindQuery`, 带有 Body 的请求会根据 Content-Type 自动选择                                                |
-| ctx.Validate          | 进行参数校验，需要校验 tag 配合使用 (默认使用 vd tag 校验)                                                                                                           |
+| c.BindAndValidate   | 利用下述的 go-tag 进行参数绑定，并在绑定成功后做一次参数校验 (如果有校验 tag 的话)                                                                                   |
+| c.Bind              | 同 `BindAndValidate` 但是不做参数校验                                                                                                                                |
+| c.BindQuery         | 绑定所有 Query 参数，相当于给每一个 field 声明一个 `query` tag，适用于没写 tag 的场景                                                                                |
+| c.BindHeader        | 绑定所有 Header 参数，相当于给每一个 field 声明一个 `header` tag，适用于没写 tag 的场景                                                                              |
+| c.BindPath          | 绑定所有 Path 参数，相当于给每一个 field 声明一个 `path` tag，适用于没写 tag 的场景                                                                                  |
+| c.BindForm          | 绑定所有 Form 参数，相当于给每一个 field 声明一个 `form` tag，需要 Content-Type 为：`application/x-www-form-urlencoded`/`multipart/form-data`, 适用于没写 tag 的场景 |
+| c.BindJSON          | 绑定 JSON Body，调用 `json.Unmarshal()` 进行反序列化，需要 Body 为 `application/json` 格式                                                                           |
+| c.BindProtobuf      | 绑定 Protobuf Body，调用 `proto.Unmarshal()` 进行反序列化，需要 Body 为 `application/x-protobuf` 格式                                                                |
+| c.BindByContentType | 根据 Content-Type 来自动选择绑定的方法，其中 GET 请求会调用 `BindQuery`, 带有 Body 的请求会根据 Content-Type 自动选择                                                |
+| c.Validate          | 进行参数校验，需要校验 tag 配合使用 (默认使用 vd tag 校验)                                                                                                           |
 
 ## 支持的 tag 及参数绑定优先级
 
