@@ -69,7 +69,7 @@ Now assume you have implemented a simple api as following:
 
 ```go
 func PingHandler(ctx context.Context, c *app.RequestContext) {
-    ctx.JSON(200, map[string]string{
+    c.JSON(200, map[string]string{
         "ping": "pong",
     })
 }
@@ -88,7 +88,7 @@ So how to use hertz-swagger on api above? Just follow the following guide.
 // @Produce application/json
 // @Router /ping [get]
 func PingHandler(ctx context.Context, c *app.RequestContext) {
-    ctx.JSON(200, map[string]string{
+    c.JSON(200, map[string]string{
         "ping": "pong",
     })
 }
@@ -128,7 +128,7 @@ import (
 // @Produce application/json
 // @Router /ping [get]
 func PingHandler(ctx context.Context, c *app.RequestContext) {
-	ctx.JSON(200, map[string]string{
+	c.JSON(200, map[string]string{
 		"ping": "pong",
 	})
 }

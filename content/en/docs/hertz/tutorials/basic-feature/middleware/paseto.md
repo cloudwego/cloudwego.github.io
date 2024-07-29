@@ -65,11 +65,11 @@ func main() {
       if err != nil {
          hlog.Error("generate token failed")
       }
-      ctx.String(http.StatusOK, token)
+      c.String(http.StatusOK, token)
    })
 
    h.POST("/paseto", paseto.New(), func(ctx context.Context, c *app.RequestContext) {
-      ctx.String(http.StatusOK, "token is valid")
+      c.String(http.StatusOK, "token is valid")
    })
 
    go performRequest()
@@ -160,7 +160,7 @@ func main() {
 		if err != nil {
 			hlog.Error("generate token failed")
 		}
-		ctx.String(consts.StatusOK, token)
+		c.String(consts.StatusOK, token)
 	})
 
 	h.POST("/paseto", paseto.New(paseto.WithNext(next)), func(ctx context.Context, c *app.RequestContext) {
@@ -515,7 +515,7 @@ func main() {
     })
 
     h.POST("/paseto", paseto.New(paseto.WithTokenPrefix("Bearer ")), func(ctx context.Context, c *app.RequestContext) {
-        ctx.String(consts.StatusOK, "token is valid")
+        c.String(consts.StatusOK, "token is valid")
     })
 
     go performRequest()
@@ -613,7 +613,7 @@ func main() {
 
     parseFunc, _ := paseto.NewV4PublicParseFunc(paseto.DefaultPublicKey, []byte(paseto.DefaultImplicit), paseto.WithIssuer("CloudWeGo-issuer"))
     h.POST("/paseto", paseto.New(paseto.WithParseFunc(parseFunc)), func(ctx context.Context, c *app.RequestContext) {
-        ctx.String(consts.StatusOK, "token is valid")
+        c.String(consts.StatusOK, "token is valid")
     })
     go performRequest()
     h.Spin()

@@ -515,7 +515,7 @@ func main() {
     })
 
     h.POST("/paseto", paseto.New(paseto.WithTokenPrefix("Bearer ")), func(ctx context.Context, c *app.RequestContext) {
-        ctx.String(consts.StatusOK, "token is valid")
+        c.String(consts.StatusOK, "token is valid")
     })
 
     go performRequest()
@@ -613,7 +613,7 @@ func main() {
 
     parseFunc, _ := paseto.NewV4PublicParseFunc(paseto.DefaultPublicKey, []byte(paseto.DefaultImplicit), paseto.WithIssuer("CloudWeGo-issuer"))
     h.POST("/paseto", paseto.New(paseto.WithParseFunc(parseFunc)), func(ctx context.Context, c *app.RequestContext) {
-        ctx.String(consts.StatusOK, "token is valid")
+        c.String(consts.StatusOK, "token is valid")
     })
     go performRequest()
     h.Spin()

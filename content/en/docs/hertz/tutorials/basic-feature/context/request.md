@@ -49,7 +49,7 @@ Example Code:
 ```go
 // GET http://example.com
 h.GET("/", func(ctx context.Context, c *app.RequestContext) {
-    host := ctx.Host() // host == []byte("example.com")
+    host := c.Host() // host == []byte("example.com")
 })
 ```
 
@@ -70,17 +70,17 @@ h := server.Default(server.WithHandleMethodNotAllowed(true))
 
 // GET http://example.com/user/bar
 h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
-    fpath := ctx.FullPath() // fpath == "/user/:name"
+    fpath := c.FullPath() // fpath == "/user/:name"
 })
 
 // GET http://example.com/bar
 h.NoRoute(func(ctx context.Context, c *app.RequestContext) {
-    fpath := ctx.FullPath() // fpath == ""
+    fpath := c.FullPath() // fpath == ""
 })
 
 // POST http://example.com/user/bar
 h.NoMethod(func(ctx context.Context, c *app.RequestContext) {
-    fpath := ctx.FullPath() // fpath == ""
+    fpath := c.FullPath() // fpath == ""
 })
 ```
 
@@ -100,8 +100,8 @@ Example Code:
 
 ```go
 h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
-    ctx.SetFullPath("/v1/user/:name")
-    fpath := ctx.FullPath() // fpath == "/v1/user/:name"
+    c.SetFullPath("/v1/user/:name")
+    fpath := c.FullPath() // fpath == "/v1/user/:name"
 })
 ```
 
@@ -122,7 +122,7 @@ Example Code:
 ```go
 // GET http://example.com/user/bar
 h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
-    path := ctx.Path() // path == []byte("/user/bar")
+    path := c.Path() // path == []byte("/user/bar")
 })
 ```
 
@@ -141,8 +141,8 @@ Example Code:
 ```go
 // GET http://example.com/user/bar
 h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
-    name := ctx.Param("name") // name == "bar"
-    id := ctx.Param("id") // id == ""
+    name := c.Param("name") // name == "bar"
+    id := c.Param("id") // id == ""
 })
 ```
 
@@ -161,7 +161,7 @@ Example Code:
 ```go
 // GET http://example.com/user?name=bar
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    name := ctx.Query("name") // name == "bar"
+    name := c.Query("name") // name == "bar"
     id := ctx.Query("id") // id == ""
 })
 ```
@@ -1159,10 +1159,10 @@ Example Code:
 
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Next(c)
+    c.Next(ctx)
     v := ctx.GetString("version") // v == "v1"
 }, func(ctx context.Context, c *app.RequestContext) {
-    ctx.Set("version", "v1")
+    c.Set("version", "v1")
 })
 ```
 
@@ -1226,13 +1226,13 @@ Example Code:
 
 ```go
 handler1 := func(ctx context.Context, c *app.RequestContext) {
-    ctx.Set("current", "handler1")
+    c.Set("current", "handler1")
 }
 
 handler := func(ctx context.Context, c *app.RequestContext) {
     hc := app.HandlersChain{ctx.Handlers()[0], handler1} // append handler1 into handlers chain
     ctx.SetHandlers(hc)
-    ctx.Next(c)
+    c.Next(ctx)
     current := ctx.GetString("current") // current == "handler1"
     ctx.String(consts.StatusOK, current)
 }
@@ -1297,7 +1297,7 @@ Example Code:
 
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Abort()
+    c.Abort()
 }, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
 })
@@ -1317,7 +1317,7 @@ Example Code:
 
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx.Abort()
+    c.Abort()
     isAborted := ctx.IsAborted() // isAborted == true
 }, func(ctx context.Context, c *app.RequestContext) {
     // will not execute

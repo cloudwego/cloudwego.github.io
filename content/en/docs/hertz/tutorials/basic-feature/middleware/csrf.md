@@ -39,11 +39,11 @@ func main() {
 	h.Use(csrf.New())
 
 	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, csrf.GetToken(ctx))
+		c.String(200, csrf.GetToken(ctx))
 	})
 
 	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, "CSRF token is valid")
+		c.String(200, "CSRF token is valid")
 	})
 
 	h.Spin()
@@ -97,10 +97,10 @@ func main() {
 	h.Use(csrf.New(csrf.WithSecret("your_secret")))
 
 	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, csrf.GetToken(ctx))
+		c.String(200, csrf.GetToken(ctx))
 	})
 	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, "CSRF token is valid")
+		c.String(200, "CSRF token is valid")
 	})
 
 	h.Spin()
@@ -143,11 +143,11 @@ func main() {
 	h.Use(csrf.New(csrf.WithIgnoredMethods([]string{"GET", "HEAD", "TRACE"})))
 
 	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, csrf.GetToken(ctx))
+		c.String(200, csrf.GetToken(ctx))
 	})
 
 	h.OPTIONS("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, "success")
+		c.String(200, "success")
 	})
 	h.Spin()
 }
@@ -188,10 +188,10 @@ import (
 )
 
 func myErrFunc(ctx context.Context, c *app.RequestContext) {
-    if ctx.Errors.Last() == nil {
+    if c.Errors.Last() == nil {
         err := fmt.Errorf("myErrFunc called when no error occurs")
-        ctx.String(400, err.Error())
-        ctx.Abort()
+        c.String(400, err.Error())
+        c.Abort()
     }
 	ctx.AbortWithMsg(ctx.Errors.Last().Error(), http.StatusBadRequest)
 }

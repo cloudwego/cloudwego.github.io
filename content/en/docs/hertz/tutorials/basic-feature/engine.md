@@ -301,7 +301,7 @@ Two methods are provided:
        h.GET("/streamWrite1", func(ctx context.Context, c *app.RequestContext) {
            rw := newChunkReader()
            line := []byte("line\r\n")
-           ctx.SetBodyStream(rw, 500*len(line))
+           c.SetBodyStream(rw, 500*len(line))
 
            go func() {
                for i := 1; i <= 500; i++ {
@@ -323,7 +323,7 @@ Two methods are provided:
            rw := newChunkReader()
            // Content-Length may be negative:
            // -1 means Transfer-Encoding: chunked.
-           ctx.SetBodyStream(rw, -1)
+           c.SetBodyStream(rw, -1)
 
            go func() {
                for i := 1; i < 1000; i++ {
@@ -402,11 +402,11 @@ Two methods are provided:
    ```go
    h.GET("/flush/chunk", func(ctx context.Context, c *app.RequestContext) {
    	// Hijack the writer of response
-   	ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
+   	c.Response.HijackWriter(resp.NewChunkedBodyWriter(&c.Response, c.GetWriter()))
 
    	for i := 0; i < 10; i++ {
-   		ctx.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
-   		ctx.Flush()                                                                 // nolint: errcheck
+   		c.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+   		c.Flush()                                                                 // nolint: errcheck
    		time.Sleep(200 * time.Millisecond)
    	}
    })
@@ -463,7 +463,7 @@ func main() {
     h := server.New()
     // When in Panic, the function in PanicHandler will be triggered, returning a 500 status code and carrying error information
     h.PanicHandler = func(ctx context.Context, c *app.RequestContext) {
-        ctx.JSON(500, utils.H{
+        c.JSON(500, utils.H{
             "message": "panic",
         })
     }

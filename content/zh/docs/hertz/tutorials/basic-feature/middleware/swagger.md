@@ -68,7 +68,7 @@ import "github.com/swaggo/files" // swagger embed files
 
 ```go
 func PingHandler(ctx context.Context, c *app.RequestContext) {
-    ctx.JSON(200, map[string]string{
+    c.JSON(200, map[string]string{
         "ping": "pong",
     })
 }
@@ -87,7 +87,7 @@ func PingHandler(ctx context.Context, c *app.RequestContext) {
 // @Produce application/json
 // @Router /ping [get]
 func PingHandler(ctx context.Context, c *app.RequestContext) {
-    ctx.JSON(200, map[string]string{
+    c.JSON(200, map[string]string{
         "ping": "pong",
     })
 }

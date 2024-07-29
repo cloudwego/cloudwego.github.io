@@ -166,8 +166,8 @@ Sample Code:
 ```go
 var upgrader = websocket.HertzUpgrader{
     Error: func(ctx *app.RequestContext, status int, reason error) {
-        ctx.Response.Header.Set("Sec-Websocket-Version", "13")
-        ctx.AbortWithMsg(reason.Error(), status)
+        c.Response.Header.Set("Sec-Websocket-Version", "13")
+        c.AbortWithMsg(reason.Error(), status)
     },
 }
 ```

@@ -195,12 +195,12 @@ import (
 func main() {
     //...
     r.Use(func(ctx context.Context, c *app.RequestContext) {
-        if ctx.Query("country") == "cn" {
+        if c.Query("country") == "cn" {
             proxy.ServeHTTP(c, ctx)
-            ctx.Response.Header.Set("key", "value")
-            ctx.Abort()
+            c.Response.Header.Set("key", "value")
+            c.Abort()
         } else {
-            ctx.Next(c)
+            c.Next(ctx)
         }
     })
     //...

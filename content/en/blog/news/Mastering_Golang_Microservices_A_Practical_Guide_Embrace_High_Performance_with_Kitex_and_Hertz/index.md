@@ -130,7 +130,7 @@ func main() {
     h := server.Default()
 
     h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-        ctx.JSON(consts.StatusOK, app.H{"message": "pong"})
+        c.JSON(consts.StatusOK, app.H{"message": "pong"})
     })
 
     h.Spin()
