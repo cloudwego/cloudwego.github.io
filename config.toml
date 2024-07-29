@@ -70,6 +70,12 @@ languageName = "中文"
 # Weight used for sorting.
 weight = 1
 
+[[languages.zh.menus.main]]
+name = "新手视频"
+url = "https://space.bilibili.com/3494360534485730/channel/collectiondetail?sid=2632484"
+weight = 60
+parent = "社区"
+
 [languages.zh.params]
 description = "A leading practice for building enterprise cloud native middleware!"
 
