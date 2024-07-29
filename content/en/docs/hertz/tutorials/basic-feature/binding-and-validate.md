@@ -13,7 +13,7 @@ description: "The parameter binding and validation related functions and usage s
 func main() {
 	r := server.New()
 
-    r.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+    r.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         // Parameter binding needs to be used with a specific go tag
 		type Test struct {
             A string `query:"a" vd:"$!='Hertz'"`

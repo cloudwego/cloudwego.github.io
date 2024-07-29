@@ -141,7 +141,7 @@ func main() {
 	// use middleware
 	v1 := h.Group("/v1", basic_auth.BasicAuth(map[string]string{"test": "test"}))
 
-	v1.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	v1.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK,"ping")
 	})
 	h.Spin()
@@ -166,7 +166,7 @@ func main() {
 	v1 := h.Group("/v1")
 	// use `Use` method
 	v1.Use(basic_auth.BasicAuth(map[string]string{"test": "test"}))
-	v1.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	v1.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK,"ping")
 	})
 	h.Spin()
@@ -288,7 +288,7 @@ import (
 
 func main() {
 	h := server.Default()
-	h.AnyEX("/ping", func(c context.Context, ctx *app.RequestContext) {
+	h.AnyEX("/ping", func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK, app.GetHandlerName(ctx.Handler()))
 	}, "ping_handler")
 	h.Spin()
@@ -330,7 +330,7 @@ import (
 
 func main() {
 	h := server.Default()
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
 	})
 	routeInfo := h.Routes()
@@ -359,15 +359,15 @@ import (
 
 func main() {
 	h := server.Default(server.WithHandleMethodNotAllowed(true))
-	h.POST("/ping", func(c context.Context, ctx *app.RequestContext) {
+	h.POST("/ping", func(ctx context.Context, c *app.RequestContext) {
 		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
 	})
 	// set NoRoute handler
-	h.NoRoute(func(c context.Context, ctx *app.RequestContext) {
+	h.NoRoute(func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK, "no route")
 	})
 	// set NoMethod handler
-	h.NoMethod(func(c context.Context, ctx *app.RequestContext) {
+	h.NoMethod(func(ctx context.Context, c *app.RequestContext) {
 		ctx.String(consts.StatusOK, "no method")
 	})
 

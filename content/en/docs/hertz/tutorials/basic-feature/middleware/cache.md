@@ -383,7 +383,7 @@ func main() {
         memoryStore,
         60*time.Second,
         cache.WithPrefixKey("prefix-"),
-        cache.WithOnHitCache(func(c context.Context, ctx *app.RequestContext) {
+        cache.WithOnHitCache(func(ctx context.Context, c *app.RequestContext) {
             resp := &cache.ResponseCache{}
             memoryStore.Get(c, "prefix-test", &resp)
             hlog.Info("data = " + string(resp.Data))
@@ -429,7 +429,7 @@ func main() {
                 CacheKey: "test-key",
             }
         }),
-        cache.WithOnHitCache(func(c context.Context, ctx *app.RequestContext) {
+        cache.WithOnHitCache(func(ctx context.Context, c *app.RequestContext) {
             resp := &cache.ResponseCache{}
             memoryStore.Get(c, "test-key", &resp)
             hlog.Info("header = " + string(resp.Header.Get("head")))

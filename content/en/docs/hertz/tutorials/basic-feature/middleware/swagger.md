@@ -68,7 +68,7 @@ import "github.com/swaggo/files" // swagger embed files
 Now assume you have implemented a simple api as following:
 
 ```go
-func PingHandler(c context.Context, ctx *app.RequestContext) {
+func PingHandler(ctx context.Context, c *app.RequestContext) {
     ctx.JSON(200, map[string]string{
         "ping": "pong",
     })
@@ -87,7 +87,7 @@ So how to use hertz-swagger on api above? Just follow the following guide.
 // @Accept application/json
 // @Produce application/json
 // @Router /ping [get]
-func PingHandler(c context.Context, ctx *app.RequestContext) {
+func PingHandler(ctx context.Context, c *app.RequestContext) {
     ctx.JSON(200, map[string]string{
         "ping": "pong",
     })
@@ -127,7 +127,7 @@ import (
 // @Accept application/json
 // @Produce application/json
 // @Router /ping [get]
-func PingHandler(c context.Context, ctx *app.RequestContext) {
+func PingHandler(ctx context.Context, c *app.RequestContext) {
 	ctx.JSON(200, map[string]string{
 		"ping": "pong",
 	})

@@ -338,7 +338,7 @@ type Core interface {// IsRunning Check whether engine is running or not
     GetCtxPool() *sync.Pool// Business logic entrance
     // After pre-read works, protocol server may call this method
     // to introduce the middlewares and handlers
-    ServeHTTP(c context.Context, ctx *app.RequestContext)// GetTracer for tracing requirement
+    ServeHTTP(ctx context.Context, c *app.RequestContext)// GetTracer for tracing requirement
     GetTracer() tracer.Controller
 }
 ```

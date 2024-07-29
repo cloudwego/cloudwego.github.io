@@ -18,7 +18,7 @@ In Hertz v0.6.0, we support encoding and parsing of HTTP Trailer.
 
 ```go
 // server
-func handler(c context.Context, ctx *app.RequestContext){
+func handler(ctx context.Context, c *app.RequestContext){
     ctx.Response.Header.Trailer().Set("Hertz", "Good")
 }
 
@@ -30,7 +30,7 @@ req.Header.Trailer().Set("Hertz", "Good")
 
 ```go
 // server
-func handler(c context.Context, ctx *app.RequestContext){
+func handler(ctx context.Context, c *app.RequestContext){
     ctx.Request.Header.Trailer().Get("Hertz")
 }
 
@@ -71,7 +71,7 @@ Based on this, we extend a Writer that provides the ability to flush request hea
 As above, Hertz provides a default `ExtWriter` implementation to meet the user's active flush needs in the handler/middleware, and it is very simple to use.
 
 ```go
-h.GET("/flush/chunk", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/flush/chunk", func(ctx context.Context, c *app.RequestContext) {
         // Hijack the writer of response
         ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
 

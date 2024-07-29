@@ -42,7 +42,7 @@ provides another way for response writing process.
 Example:
 
 ```go
-    h.GET("/hijack", func (c context.Context, ctx *app.RequestContext) {
+    h.GET("/hijack", func (ctx context.Context, c *app.RequestContext) {
 // Hijack the writer of response
 ctx.Response.HijackWriter(**yourResponseWriter**)
 })
@@ -59,7 +59,7 @@ ctx.Response.HijackWriter(**yourResponseWriter**)
 Example:
 
 ```go
-    h.GET("/flush/chunk", func (c context.Context, ctx *app.RequestContext) {
+    h.GET("/flush/chunk", func (ctx context.Context, c *app.RequestContext) {
 // Hijack the writer of response
 ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
 

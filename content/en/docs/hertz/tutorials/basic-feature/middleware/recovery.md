@@ -55,7 +55,7 @@ The Recovery middleware provides a default panic recovery handler`defaultRecover
 You can also use the `WithRecoveryHandler()` function to customize the handler function when the panic occurs. The function signature is as follows:
 
 ```go
-func WithRecoveryHandler(f func(c context.Context, ctx *app.RequestContext, err interface{}, stack []byte))
+func WithRecoveryHandler(f func(ctx context.Context, c *app.RequestContext, err interface{}, stack []byte))
 ```
 
 For example, if you attempt to obtain client agent, you can customize your handler function as follows:
@@ -76,7 +76,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
-func MyRecoveryHandler(c context.Context, ctx *app.RequestContext, err interface{}, stack []byte) {
+func MyRecoveryHandler(ctx context.Context, c *app.RequestContext, err interface{}, stack []byte) {
 	hlog.SystemLogger().CtxErrorf(c, "[Recovery] err=%v\nstack=%s", err, stack)
 	hlog.SystemLogger().Infof("Client: %s", ctx.Request.Header.UserAgent())
 	ctx.AbortWithStatus(consts.StatusInternalServerError)

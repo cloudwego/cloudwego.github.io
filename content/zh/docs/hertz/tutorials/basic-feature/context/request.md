@@ -48,7 +48,7 @@ func (ctx *RequestContext) Host() []byte
 
 ```go
 // GET http://example.com
-h.GET("/", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/", func(ctx context.Context, c *app.RequestContext) {
     host := ctx.Host() // host == []byte("example.com")
 })
 ```
@@ -69,17 +69,17 @@ func (ctx *RequestContext) FullPath() string
 h := server.Default(server.WithHandleMethodNotAllowed(true))
 
 // GET http://example.com/user/bar
-h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
     fpath := ctx.FullPath() // fpath == "/user/:name"
 })
 
 // GET http://example.com/bar
-h.NoRoute(func(c context.Context, ctx *app.RequestContext) {
+h.NoRoute(func(ctx context.Context, c *app.RequestContext) {
     fpath := ctx.FullPath() // fpath == ""
 })
 
 // POST http://example.com/user/bar
-h.NoMethod(func(c context.Context, ctx *app.RequestContext) {
+h.NoMethod(func(ctx context.Context, c *app.RequestContext) {
     fpath := ctx.FullPath() // fpath == ""
 })
 ```
@@ -99,7 +99,7 @@ func (ctx *RequestContext) SetFullPath(p string)
 示例:
 
 ```go
-h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
     ctx.SetFullPath("/v1/user/:name")
     fpath := ctx.FullPath() // fpath == "/v1/user/:name"
 })
@@ -121,7 +121,7 @@ func (ctx *RequestContext) Path() []byte
 
 ```go
 // GET http://example.com/user/bar
-h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
     path := ctx.Path() // path == []byte("/user/bar")
 })
 ```
@@ -140,7 +140,7 @@ func (ctx *RequestContext) Param(key string) string
 
 ```go
 // GET http://example.com/user/bar
-h.GET("/user/:name", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
     name := ctx.Param("name") // name == "bar"
     id := ctx.Param("id") // id == ""
 })
@@ -160,7 +160,7 @@ func (ctx *RequestContext) Query(key string) string
 
 ```go
 // GET http://example.com/user?name=bar
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     name := ctx.Query("name") // name == "bar"
     id := ctx.Query("id") // id == ""
 })
@@ -180,7 +180,7 @@ func (ctx *RequestContext) DefaultQuery(key, defaultValue string) string
 
 ```go
 // GET http://example.com/user?name=bar&&age=
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     name := ctx.DefaultQuery("name", "tom") // name == "bar"
     id := ctx.DefaultQuery("id", "123") // id == "123"
     age := ctx.DefaultQuery("age", "45") // age == ""
@@ -201,7 +201,7 @@ func (ctx *RequestContext) GetQuery(key string) (string, bool)
 
 ```go
 // GET http://example.com/user?name=bar&&age=
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     name, hasName := ctx.GetQuery("name") // name == "bar", hasName == true
     id, hasId := ctx.GetQuery("id") // id == "", hasId == false
     age, hasAge := ctx.GetQuery("age") // age == "", hasAge == true
@@ -246,7 +246,7 @@ Args 对象提供了以下方法获取/设置 Query String 参数。
 
 ```go
 // GET http://example.com/user?name=bar&&age=&&pets=dog&&pets=cat
-h.GET("/user", func(c context.Context, ctx *app.RequestContext) {
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     args := ctx.QueryArgs()
 
     // get information from args
@@ -387,7 +387,7 @@ func (h *RequestHeader) Add(key, value string)
 示例：
 
 ```go
-hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
+hertz.GET("/example", func(ctx context.Context, c *app.RequestContext) {
 	ctx.Request.Header.Add("hertz1", "value1")
 	ctx.Request.Header.Add("hertz1", "value2")
 	ctx.Request.Header.SetContentTypeBytes([]byte("application/x-www-form-urlencoded"))
@@ -416,7 +416,7 @@ func (h *RequestHeader) Set(key, value string)
 示例：
 
 ```go
-hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
+hertz.GET("/example", func(ctx context.Context, c *app.RequestContext) {
 	ctx.Request.Header.Set("hertz1", "value1")
 	ctx.Request.Header.Set("hertz1", "value2")
 	ctx.Request.Header.SetContentTypeBytes([]byte("application/x-www-form-urlencoded"))
@@ -443,7 +443,7 @@ func (h *RequestHeader) Header() []byte
 示例：
 
 ```go
-hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
+hertz.GET("/example", func(ctx context.Context, c *app.RequestContext) {
 		ctx.Request.Header.Set("hertz1", "value1")
 		header := ctx.Request.Header.Header()
 		// header == []byte("GET /example HTTP/1.1
@@ -470,7 +470,7 @@ func (h *RequestHeader) String() string
 示例：
 
 ```go
-hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
+hertz.GET("/example", func(ctx context.Context, c *app.RequestContext) {
 		ctx.Request.Header.Set("hertz1", "value1")
 		header := ctx.Request.Header.String()
 		// header == "GET /example HTTP/1.1
@@ -497,7 +497,7 @@ func (h *RequestHeader) VisitAll(f func(key, value []byte))
 示例：
 
 ```go
-hertz.GET("/example", func(c context.Context, ctx *app.RequestContext) {
+hertz.GET("/example", func(ctx context.Context, c *app.RequestContext) {
 	ctx.Request.Header.Add("Hertz1", "value1")
 	ctx.Request.Header.Add("Hertz1", "value2")
 
@@ -525,7 +525,7 @@ func (ctx *RequestContext) Method() []byte
 
 ```go
 // POST http://example.com/user
-h.Any("/user", func(c context.Context, ctx *app.RequestContext) {
+h.Any("/user", func(ctx context.Context, c *app.RequestContext) {
     method := ctx.Method() // method == []byte("POST")
 })
 ```
@@ -545,7 +545,7 @@ func (ctx *RequestContext) ContentType() []byte
 ```go
 // POST http://example.com/user
 // Content-Type: application/json
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
     contentType := ctx.ContentType() // contentType == []byte("application/json")
 })
 ```
@@ -567,7 +567,7 @@ func (ctx *RequestContext) IfModifiedSince(lastModified time.Time) bool
 ```go
 // POST http://example.com/user
 // If-Modified-Since: Wed, 21 Oct 2023 07:28:00 GMT
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
     t2022, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2022 07:28:00 GMT")
     ifModifiedSince := ctx.IfModifiedSince(t2022) // ifModifiedSince == false
 
@@ -591,7 +591,7 @@ func (ctx *RequestContext) Cookie(key string) []byte
 ```go
 // POST http://example.com/user
 // Cookie: foo_cookie=choco; bar_cookie=strawberry
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
     fCookie := ctx.Cookie("foo_cookie")     // fCookie == []byte("choco")
     bCookie := ctx.Cookie("bar_cookie")     // bCookie == []byte("strawberry")
     noneCookie := ctx.Cookie("none_cookie") // noneCookie == nil
@@ -613,7 +613,7 @@ func (ctx *RequestContext) UserAgent() []byte
 ```go
 // POST http://example.com/user
 // User-Agent: Chrome/51.0.2704.103 Safari/537.36
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
     ua := ctx.UserAgent() // ua == []byte("Chrome/51.0.2704.103 Safari/537.36")
 })
 ```
@@ -633,7 +633,7 @@ func (ctx *RequestContext) GetHeader(key string) []byte
 ```go
 // POST http://example.com/user
 // Say-Hello: hello
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
     customHeader := ctx.GetHeader("Say-Hello") // customHeader == []byte("hello")
 })
 ```
@@ -753,7 +753,7 @@ func (ctx *RequestContext) Body() ([]byte, error)
 // POST http://example.com/pet
 // Content-Type: application/json
 // {"pet":"cat"}
-h.Post("/pet", func(c context.Context, ctx *app.RequestContext) {
+h.Post("/pet", func(ctx context.Context, c *app.RequestContext) {
     data, err := ctx.Body() // data == []byte("{\"pet\":\"cat\"}") , err == nil
 })
 ```
@@ -775,7 +775,7 @@ func (ctx *RequestContext) RequestBodyStream() io.Reader
 // Content-Type: text/plain
 // abcdefg
 h := server.Default(server.WithStreamBody(true))
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
     sr := ctx.RequestBodyStream()
     data, _ := io.ReadAll(sr) // data == []byte("abcdefg")
 })
@@ -800,7 +800,7 @@ func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="name"
 // tom
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     form, err := ctx.MultipartForm()
     name := form.Value["name"][0] // name == "tom"
 })
@@ -825,7 +825,7 @@ func (ctx *RequestContext) PostForm(key string) string
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="name"
 // tom
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     name := ctx.PostForm("name") // name == "tom"
 })
 ```
@@ -849,7 +849,7 @@ func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="name"
 // tom
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     name := ctx.PostForm("name", "jack") // name == "tom"
     age := ctx.PostForm("age", "10") // age == "10"
 })
@@ -871,7 +871,7 @@ func (ctx *RequestContext) PostArgs() *protocol.Args
 // POST http://example.com/user
 // Content-Type: application/x-www-form-urlencoded
 // name=tom&pet=cat&pet=dog
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     args := ctx.PostArgs()
     name := args.Peek("name") // name == "tom"
 
@@ -905,7 +905,7 @@ func (ctx *RequestContext) FormValue(key string) []byte
 // POST http://example.com/user?name=tom
 // Content-Type: application/x-www-form-urlencoded
 // age=10
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     name := ctx.FormValue("name") // name == []byte("tom"), get by QueryArgs
     age := ctx.FormValue("age") // age == []byte("10"), get by PostArgs
 })
@@ -914,7 +914,7 @@ h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="name"
 // tom
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     name := ctx.FormValue("name") // name == []byte("tom"), get by MultipartForm
 })
 ```
@@ -936,7 +936,7 @@ func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc)
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="age"
 // 10
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     // only return multipart form value
     ctx.SetFormValueFunc(func(rc *app.RequestContext, s string) []byte {
         mf, err := rc.MultipartForm()
@@ -980,7 +980,7 @@ func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 // POST http://example.com/user
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     form, err := ctx.MultipartForm()
     avatarFile := form.File["avatar"][0] // avatarFile.Filename == "abc.jpg"
 })
@@ -1002,7 +1002,7 @@ func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error)
 // POST http://example.com/user
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
     avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
 })
 ```
@@ -1023,7 +1023,7 @@ func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst stri
 // POST http://example.com/user
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
-h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
+h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
     avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
     // save file
     ctx.SaveUploadedFile(avatarFile, avatarFile.Filename) // save file "abc.jpg"
@@ -1061,7 +1061,7 @@ h.Post("/user", func(c context.Context, ctx *app.RequestContext) {
 示例：
 
 ```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
 		ctx.Set("version1", "v1")
 		v := ctx.Value("version1") // v == interface{}(string) "v1"
 
@@ -1158,10 +1158,10 @@ func (ctx *RequestContext) Next(c context.Context)
 示例:
 
 ```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.Next(c)
     v := ctx.GetString("version") // v == "v1"
-}, func(c context.Context, ctx *app.RequestContext) {
+}, func(ctx context.Context, c *app.RequestContext) {
     ctx.Set("version", "v1")
 })
 ```
@@ -1179,10 +1179,10 @@ func (ctx *RequestContext) Handlers() HandlersChain
 示例:
 
 ```go
-middleware1 := func(c context.Context, ctx *app.RequestContext) {
+middleware1 := func(ctx context.Context, c *app.RequestContext) {
 }
 
-handler1 := func(c context.Context, ctx *app.RequestContext) {
+handler1 := func(ctx context.Context, c *app.RequestContext) {
     handlers := ctx.Handlers() // []Handler{middleware1, handler1}
 }
 
@@ -1202,11 +1202,11 @@ func (ctx *RequestContext) Handler() HandlerFunc
 示例:
 
 ```go
-middleware1 := func(c context.Context, ctx *app.RequestContext) {
+middleware1 := func(ctx context.Context, c *app.RequestContext) {
     lastHandler := ctx.Handler() // lastHandler == handler1
 }
 
-handler1 := func(c context.Context, ctx *app.RequestContext) {
+handler1 := func(ctx context.Context, c *app.RequestContext) {
 }
 
 h.POST("/user", middleware1, handler1)
@@ -1225,11 +1225,11 @@ func (ctx *RequestContext) SetHandlers(hc HandlersChain)
 示例:
 
 ```go
-handler1 := func(c context.Context, ctx *app.RequestContext) {
+handler1 := func(ctx context.Context, c *app.RequestContext) {
     ctx.Set("current", "handler1")
 }
 
-handler := func(c context.Context, ctx *app.RequestContext) {
+handler := func(ctx context.Context, c *app.RequestContext) {
     hc := app.HandlersChain{ctx.Handlers()[0], handler1} // append handler1 into handlers chain
     ctx.SetHandlers(hc)
     ctx.Next(c)
@@ -1257,7 +1257,7 @@ package main
 
 func main() {
     h := server.New()
-    h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+    h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
         hn := ctx.HandlerName() // hn == "main.main.func1"
     })
 }
@@ -1276,9 +1276,9 @@ func (ctx *RequestContext) GetIndex() int8
 示例:
 
 ```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     index := ctx.GetIndex() // index == 0
-}, func(c context.Context, ctx *app.RequestContext) {
+}, func(ctx context.Context, c *app.RequestContext) {
     index := ctx.GetIndex() // index == 1
 })
 ```
@@ -1296,9 +1296,9 @@ func (ctx *RequestContext) Abort()
 示例:
 
 ```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.Abort()
-}, func(c context.Context, ctx *app.RequestContext) {
+}, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
 })
 ```
@@ -1316,10 +1316,10 @@ func (ctx *RequestContext) IsAborted() bool
 示例:
 
 ```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx.Abort()
     isAborted := ctx.IsAborted() // isAborted == true
-}, func(c context.Context, ctx *app.RequestContext) {
+}, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
 })
 ```
@@ -1358,7 +1358,7 @@ func (ctx *RequestContext) ClientIP() string
 ```go
 // X-Forwarded-For: 20.20.20.20, 30.30.30.30
 // X-Real-IP: 10.10.10.10
-h.Use(func(c context.Context, ctx *app.RequestContext) {
+h.Use(func(ctx context.Context, c *app.RequestContext) {
     ip := ctx.ClientIP() // 20.20.20.20
 })
 ```
@@ -1382,7 +1382,7 @@ func (ctx *RequestContext) SetClientIPFunc(f ClientIP)
 ```go
 // POST http://example.com/user
 // X-Forwarded-For: 30.30.30.30
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     // method 1
     customClientIPFunc := func(ctx *app.RequestContext) string {
 			return "127.0.0.1"
@@ -1421,7 +1421,7 @@ func (ctx *RequestContext) Copy() *RequestContext
 示例:
 
 ```go
-h.POST("/user", func(c context.Context, ctx *app.RequestContext) {
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     ctx1 := ctx.Copy()
     go func(context *app.RequestContext) {
         // safely

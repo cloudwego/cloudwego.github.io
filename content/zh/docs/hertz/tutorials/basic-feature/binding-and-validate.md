@@ -12,7 +12,7 @@ description: "Hertz 支持的参数绑定与校验相关功能及用法。"
 func main() {
 	r := server.New()
 
-    r.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+    r.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         // 参数绑定需要配合特定的 go tag 使用
 		type Test struct {
             A string `query:"a" vd:"$!='Hertz'"`

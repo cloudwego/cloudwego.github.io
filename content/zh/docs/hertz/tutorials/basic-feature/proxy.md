@@ -157,7 +157,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    h.GET("/proxy/backend", func(cc context.Context, c *app.RequestContext) {
+    h.GET("/proxy/backend", func(ctx context.Context, c *app.RequestContext) {
         c.JSON(200, utils.H{
             "msg": "proxy success!!",
         })
@@ -194,7 +194,7 @@ import (
 
 func main() {
     //...
-    r.Use(func(c context.Context, ctx *app.RequestContext) {
+    r.Use(func(ctx context.Context, c *app.RequestContext) {
         if ctx.Query("country") == "cn" {
             proxy.ServeHTTP(c, ctx)
             ctx.Response.Header.Set("key", "value")

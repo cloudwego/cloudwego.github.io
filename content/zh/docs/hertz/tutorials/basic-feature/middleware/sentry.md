@@ -63,7 +63,7 @@ func main()  {
         hertzsentry.WithRePanic(true),
     ))
 
-    h.GET("/hello", func(c context.Context, ctx *app.RequestContext) {
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         // use GetHubFromContext to get the hub
         if hub := hertzsentry.GetHubFromContext(ctx); hub != nil {
             hub.WithScope(func(scope *sentry.Scope) {
