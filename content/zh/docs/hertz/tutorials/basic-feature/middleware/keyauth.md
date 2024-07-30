@@ -36,8 +36,8 @@ func main() {
 		keyauth.WithKeyLookUp("query:token", ""),
 	))
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		value, _ := ctx.Get("token")
-		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
+		value, _ := c.Get("token")
+		c.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
 	h.Spin()
 }
@@ -74,12 +74,12 @@ func main() {
 	h := server.Default()
 	h.Use(keyauth.New(
 		keyauth.WithFilter(func(ctx context.Context, c *app.RequestContext) bool {
-			return string(ctx.GetHeader("admin")) == "test"
+			return string(c.GetHeader("admin")) == "test"
 		}),
 	))
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		value, _ := ctx.Get("token")
-		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
+		value, _ := c.Get("token")
+		c.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
 	h.Spin()
 }
@@ -121,8 +121,8 @@ func main() {
 		}),
 	))
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		value, _ := ctx.Get("token")
-		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
+		value, _ := c.Get("token")
+		c.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
 	h.Spin()
 }
@@ -155,8 +155,8 @@ func main() {
 		}),
 	))
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		value, _ := ctx.Get("token")
-		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
+		value, _ := c.Get("token")
+		c.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
 	h.Spin()
 }
@@ -177,10 +177,10 @@ type KeyAuthErrorHandler func(context.Context, *app.RequestContext, error)
 ```go
 func errHandler(ctx context.Context, c *app.RequestContext, err error) {
 	if err == ErrMissingOrMalformedAPIKey {
-		ctx.AbortWithMsg(err.Error(), http.StatusBadRequest)
+		c.AbortWithMsg(err.Error(), http.StatusBadRequest)
 		return
 	}
-	ctx.AbortWithMsg(err.Error(), http.StatusUnauthorized)
+	c.AbortWithMsg(err.Error(), http.StatusUnauthorized)
 }
 ```
 
@@ -213,8 +213,8 @@ func main() {
 		keyauth.WithKeyLookUp("header:token", "Bearer"),
 		))
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		value, _ := ctx.Get("token")
-		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
+		value, _ := c.Get("token")
+		c.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
 	h.Spin()
 }
@@ -245,8 +245,8 @@ func main() {
 		keyauth.WithContextKey("token"),
 	))
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		value, _ := ctx.Get("token")
-		ctx.JSON(consts.StatusOK, utils.H{"ping": value})
+		value, _ := c.Get("token")
+		c.JSON(consts.StatusOK, utils.H{"ping": value})
 	})
 	h.Spin()
 }

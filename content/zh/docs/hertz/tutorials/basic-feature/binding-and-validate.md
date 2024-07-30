@@ -20,18 +20,18 @@ func main() {
 
         // BindAndValidate
         var req Test
-        err := ctx.BindAndValidate(&req)
+        err := c.BindAndValidate(&req)
 
         ...
 
 	    // Bind 只做参数绑定
         req = Test{}
-        err = ctx.Bind(&req)
+        err = c.Bind(&req)
 
         ...
 
         // Validate，需要使用 "vd" tag
-        err = ctx.Validate(&req)
+        err = c.Validate(&req)
 
         ...
     })
@@ -44,7 +44,7 @@ func main() {
 > hertz version >= v0.7.0
 
 | API                   | 说明                                                                                                                                                                 |
-| :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:----------------------| :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ctx.BindAndValidate   | 利用下述的 go-tag 进行参数绑定，并在绑定成功后做一次参数校验 (如果有校验 tag 的话)                                                                                   |
 | ctx.Bind              | 同 `BindAndValidate` 但是不做参数校验                                                                                                                                |
 | ctx.BindQuery         | 绑定所有 Query 参数，相当于给每一个 field 声明一个 `query` tag，适用于没写 tag 的场景                                                                                |

@@ -247,6 +247,6 @@ A server-side middleware is a handler, and the related operations of the handler
 
 The server-side middleware will be executed in the order defined, if you want to terminate the middleware call quickly, you can use the following methods, noting that **the current middleware will still execute**.
 
-- `c.Abort()`：terminate subsequent calls
-- `c.AbortWithMsg(msg string, statusCode int)`：terminates subsequent calls and sets the body and status code for the Response
-- `c.AbortWithStatus(code int)`：terminates subsequent calls and sets the status code
+- `ctx.Abort()`：terminate subsequent calls
+- `ctx.AbortWithMsg(msg string, statusCode int)`：terminates subsequent calls and sets the body and status code for the Response
+- `ctx.AbortWithStatus(code int)`：terminates subsequent calls and sets the status code

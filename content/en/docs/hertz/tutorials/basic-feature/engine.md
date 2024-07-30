@@ -32,7 +32,7 @@ type Hertz struct {
 | WithUnescapePathValues            | true                       | If true, the request path will be escaped automatically (eg. '%2F' -> '/'). If UseRawPath is false (the default), UnescapePathValues is true, because URI().Path() will be used and it is already escaped. To set WithUnescapePathValues to false, you need to set WithUseRawPath to true                       |
 | WithUseRawPath                    | false                      | If true, the original path will be used to match the route                                                                                                                                                                                                                                                      |
 | WithHandleMethodNotAllowed        | false                      | If true when the current path cannot match any method, the server will check whether other methods are registered with the route of the current path, and if exist other methods, it will respond "Method Not Allowed" and return the status code 405; if not, it will use the handler of NotFound to handle it |
-| WithDisablePreParseMultipartForm  | false                      | If true, the multipart form will not be preprocessed. The body can be obtained via ctx.Request.Body() and then can be processed by user                                                                                                                                                                         |
+| WithDisablePreParseMultipartForm  | false                      | If true, the multipart form will not be preprocessed. The body can be obtained via c.Request.Body() and then can be processed by user                                                                                                                                                                         |
 | WithStreamBody                    | false                      | If true, the body will be handled by stream processing                                                                                                                                                                                                                                                          |
 | WithNetwork                       | "tcp"                      | Set the network protocol, optional: tcp，udp，unix(unix domain socket)                                                                                                                                                                                                                                          |
 | WithExitWaitTime                  | 5s                         | Set the graceful exit time. the Server will stop connection establishment for new requests and set the Connection: Close header for each request after closing. When the set time is reached, Server will to be closed. the Server can be closed early when all connections have been closed                    |
@@ -314,7 +314,7 @@ Two methods are provided:
            }()
 
            go func() {
-               <-ctx.Finished()
+               <-c..Finished()
                fmt.Println("request process end")
            }()
        })
@@ -336,7 +336,7 @@ Two methods are provided:
            }()
 
            go func() {
-               <-ctx.Finished()
+               <-c..Finished()
                fmt.Println("request process end")
            }()
        })
@@ -516,13 +516,13 @@ Example Code:
 ```go
 func getHandler() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK, "get handler")
+		c.String(consts.StatusOK, "get handler")
 	}
 }
 
 func postHandler() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK, "post handler")
+		c.String(consts.StatusOK, "post handler")
 	}
 }
 

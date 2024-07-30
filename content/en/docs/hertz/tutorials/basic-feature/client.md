@@ -43,7 +43,7 @@ func performRequest() {
 func main() {
 	h := server.New(server.WithHostPorts(":8080"))
 	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, "hello hertz")
+		c.JSON(consts.StatusOK, "hello hertz")
 	})
 	go performRequest()
 	h.Spin()
@@ -749,7 +749,7 @@ The `UseAsLast` function adds the middleware to the end of the client middleware
 
 If the client middleware chain has already set the last middleware before, the `UseAsLast` function will return an `errorLastMiddlewareExist` error. Therefore, to ensure that the last middleware in the client middleware chain is empty, you can first use the [TakeOutLastMiddleware](#takeoutlastmiddleware) function to clear the last middleware in the client middleware chain.
 
-> Note: The `UseAsLast` function sets the middleware in `c.lastMiddleware`, while the middleware chain set using the [Use](#use) function is stored in `c.mws`. The two functions are relatively independent. `c.lastMiddleware` is executed only at the end of the client middleware chain. Therefore, the `UseAsLast` function can be called before or after the [Use](#use) function.
+> Note: The `UseAsLast` function sets the middleware in `ctx.lastMiddleware`, while the middleware chain set using the [Use](#use) function is stored in `ctx.mws`. The two functions are relatively independent. `ctx.lastMiddleware` is executed only at the end of the client middleware chain. Therefore, the `UseAsLast` function can be called before or after the [Use](#use) function.
 
 Function Signature:
 

@@ -49,7 +49,7 @@ func (ctx *RequestContext) Host() []byte
 ```go
 // GET http://example.com
 h.GET("/", func(ctx context.Context, c *app.RequestContext) {
-    host := ctx.Host() // host == []byte("example.com")
+    host := c.Host() // host == []byte("example.com")
 })
 ```
 
@@ -70,17 +70,17 @@ h := server.Default(server.WithHandleMethodNotAllowed(true))
 
 // GET http://example.com/user/bar
 h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
-    fpath := ctx.FullPath() // fpath == "/user/:name"
+    fpath := c.FullPath() // fpath == "/user/:name"
 })
 
 // GET http://example.com/bar
 h.NoRoute(func(ctx context.Context, c *app.RequestContext) {
-    fpath := ctx.FullPath() // fpath == ""
+    fpath := c.FullPath() // fpath == ""
 })
 
 // POST http://example.com/user/bar
 h.NoMethod(func(ctx context.Context, c *app.RequestContext) {
-    fpath := ctx.FullPath() // fpath == ""
+    fpath := c.FullPath() // fpath == ""
 })
 ```
 
@@ -101,7 +101,7 @@ func (ctx *RequestContext) SetFullPath(p string)
 ```go
 h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
     c.SetFullPath("/v1/user/:name")
-    fpath := ctx.FullPath() // fpath == "/v1/user/:name"
+    fpath := c.FullPath() // fpath == "/v1/user/:name"
 })
 ```
 
@@ -122,7 +122,7 @@ func (ctx *RequestContext) Path() []byte
 ```go
 // GET http://example.com/user/bar
 h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
-    path := ctx.Path() // path == []byte("/user/bar")
+    path := c.Path() // path == []byte("/user/bar")
 })
 ```
 
@@ -141,8 +141,8 @@ func (ctx *RequestContext) Param(key string) string
 ```go
 // GET http://example.com/user/bar
 h.GET("/user/:name", func(ctx context.Context, c *app.RequestContext) {
-    name := ctx.Param("name") // name == "bar"
-    id := ctx.Param("id") // id == ""
+    name := c.Param("name") // name == "bar"
+    id := c.Param("id") // id == ""
 })
 ```
 
@@ -161,8 +161,8 @@ func (ctx *RequestContext) Query(key string) string
 ```go
 // GET http://example.com/user?name=bar
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    name := ctx.Query("name") // name == "bar"
-    id := ctx.Query("id") // id == ""
+    name := c.Query("name") // name == "bar"
+    id := c.Query("id") // id == ""
 })
 ```
 
@@ -181,9 +181,9 @@ func (ctx *RequestContext) DefaultQuery(key, defaultValue string) string
 ```go
 // GET http://example.com/user?name=bar&&age=
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    name := ctx.DefaultQuery("name", "tom") // name == "bar"
-    id := ctx.DefaultQuery("id", "123") // id == "123"
-    age := ctx.DefaultQuery("age", "45") // age == ""
+    name := c.DefaultQuery("name", "tom") // name == "bar"
+    id := c.DefaultQuery("id", "123") // id == "123"
+    age := c.DefaultQuery("age", "45") // age == ""
 })
 ```
 
@@ -202,9 +202,9 @@ func (ctx *RequestContext) GetQuery(key string) (string, bool)
 ```go
 // GET http://example.com/user?name=bar&&age=
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    name, hasName := ctx.GetQuery("name") // name == "bar", hasName == true
-    id, hasId := ctx.GetQuery("id") // id == "", hasId == false
-    age, hasAge := ctx.GetQuery("age") // age == "", hasAge == true
+    name, hasName := c.GetQuery("name") // name == "bar", hasName == true
+    id, hasId := c.GetQuery("id") // id == "", hasId == false
+    age, hasAge := c.GetQuery("age") // age == "", hasAge == true
 })
 ```
 
@@ -247,7 +247,7 @@ Args 对象提供了以下方法获取/设置 Query String 参数。
 ```go
 // GET http://example.com/user?name=bar&&age=&&pets=dog&&pets=cat
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    args := ctx.QueryArgs()
+    args := c.QueryArgs()
 
     // get information from args
     s := args.String()                    // s == "name=bar&age=&pets=dog&pets=cat"
@@ -388,15 +388,15 @@ func (h *RequestHeader) Add(key, value string)
 
 ```go
 hertz.GET("/example", func(ctx context.Context, c *app.RequestContext) {
-	ctx.Request.Header.Add("hertz1", "value1")
-	ctx.Request.Header.Add("hertz1", "value2")
-	ctx.Request.Header.SetContentTypeBytes([]byte("application/x-www-form-urlencoded"))
-	contentType1 := ctx.Request.Header.ContentType()
+	c.Request.Header.Add("hertz1", "value1")
+	c.Request.Header.Add("hertz1", "value2")
+	c.Request.Header.SetContentTypeBytes([]byte("application/x-www-form-urlencoded"))
+	contentType1 := c.Request.Header.ContentType()
     // contentType1 == []byte("application/x-www-form-urlencoded")
-	ctx.Request.Header.Add("Content-Type", "application/json; charset=utf-8")
-	hertz1 := ctx.Request.Header.GetAll("hertz1")
+	c.Request.Header.Add("Content-Type", "application/json; charset=utf-8")
+	hertz1 := c.Request.Header.GetAll("hertz1")
     // hertz1 == []string{"value1", "value2"}
-	contentType2 := ctx.Request.Header.ContentType()
+	contentType2 := c.Request.Header.ContentType()
     // contentType2 == []byte("application/json; charset=utf-8")
 	})
 ```
@@ -417,15 +417,15 @@ func (h *RequestHeader) Set(key, value string)
 
 ```go
 hertz.GET("/example", func(ctx context.Context, c *app.RequestContext) {
-	ctx.Request.Header.Set("hertz1", "value1")
-	ctx.Request.Header.Set("hertz1", "value2")
-	ctx.Request.Header.SetContentTypeBytes([]byte("application/x-www-form-urlencoded"))
-	contentType1 := ctx.Request.Header.ContentType()
+	c.Request.Header.Set("hertz1", "value1")
+	c.Request.Header.Set("hertz1", "value2")
+	c.Request.Header.SetContentTypeBytes([]byte("application/x-www-form-urlencoded"))
+	contentType1 := c.Request.Header.ContentType()
     // contentType1 == []byte("application/x-www-form-urlencoded")
-	ctx.Request.Header.Set("Content-Type", "application/json; charset=utf-8")
-	hertz1 := ctx.Request.Header.GetAll("hertz1")
+	c.Request.Header.Set("Content-Type", "application/json; charset=utf-8")
+	hertz1 := c.Request.Header.GetAll("hertz1")
     // hertz1 == []string{"value2"}
-	contentType2 := ctx.Request.Header.ContentType()
+	contentType2 := c.Request.Header.ContentType()
     // contentType2 == []byte("application/json; charset=utf-8")
 	})
 ```
@@ -444,8 +444,8 @@ func (h *RequestHeader) Header() []byte
 
 ```go
 hertz.GET("/example", func(ctx context.Context, c *app.RequestContext) {
-		ctx.Request.Header.Set("hertz1", "value1")
-		header := ctx.Request.Header.Header()
+		c.Request.Header.Set("hertz1", "value1")
+		header := c.Request.Header.Header()
 		// header == []byte("GET /example HTTP/1.1
 		//User-Agent: PostmanRuntime-ApipostRuntime/1.1.0
 		//Host: localhost:8888
@@ -471,8 +471,8 @@ func (h *RequestHeader) String() string
 
 ```go
 hertz.GET("/example", func(ctx context.Context, c *app.RequestContext) {
-		ctx.Request.Header.Set("hertz1", "value1")
-		header := ctx.Request.Header.String()
+		c.Request.Header.Set("hertz1", "value1")
+		header := c.Request.Header.String()
 		// header == "GET /example HTTP/1.1
 		//User-Agent: PostmanRuntime-ApipostRuntime/1.1.0
 		//Host: localhost:8888
@@ -498,11 +498,11 @@ func (h *RequestHeader) VisitAll(f func(key, value []byte))
 
 ```go
 hertz.GET("/example", func(ctx context.Context, c *app.RequestContext) {
-	ctx.Request.Header.Add("Hertz1", "value1")
-	ctx.Request.Header.Add("Hertz1", "value2")
+	c.Request.Header.Add("Hertz1", "value1")
+	c.Request.Header.Add("Hertz1", "value2")
 
 	var hertzString []string
-	ctx.Request.Header.VisitAll(func(key, value []byte) {
+	c.Request.Header.VisitAll(func(key, value []byte) {
 		if string(key) == "Hertz1" {
 			hertzString = append(hertzString, string(value))
 		}
@@ -526,7 +526,7 @@ func (ctx *RequestContext) Method() []byte
 ```go
 // POST http://example.com/user
 h.Any("/user", func(ctx context.Context, c *app.RequestContext) {
-    method := ctx.Method() // method == []byte("POST")
+    method := c.Method() // method == []byte("POST")
 })
 ```
 
@@ -546,7 +546,7 @@ func (ctx *RequestContext) ContentType() []byte
 // POST http://example.com/user
 // Content-Type: application/json
 h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
-    contentType := ctx.ContentType() // contentType == []byte("application/json")
+    contentType := c.ContentType() // contentType == []byte("application/json")
 })
 ```
 
@@ -569,10 +569,10 @@ func (ctx *RequestContext) IfModifiedSince(lastModified time.Time) bool
 // If-Modified-Since: Wed, 21 Oct 2023 07:28:00 GMT
 h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
     t2022, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2022 07:28:00 GMT")
-    ifModifiedSince := ctx.IfModifiedSince(t2022) // ifModifiedSince == false
+    ifModifiedSince := c.IfModifiedSince(t2022) // ifModifiedSince == false
 
     t2024, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2024 07:28:00 GMT")
-    ifModifiedSince = ctx.IfModifiedSince(t2024) // ifModifiedSince == true
+    ifModifiedSince = c.IfModifiedSince(t2024) // ifModifiedSince == true
 })
 ```
 
@@ -592,9 +592,9 @@ func (ctx *RequestContext) Cookie(key string) []byte
 // POST http://example.com/user
 // Cookie: foo_cookie=choco; bar_cookie=strawberry
 h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
-    fCookie := ctx.Cookie("foo_cookie")     // fCookie == []byte("choco")
-    bCookie := ctx.Cookie("bar_cookie")     // bCookie == []byte("strawberry")
-    noneCookie := ctx.Cookie("none_cookie") // noneCookie == nil
+    fCookie := c.Cookie("foo_cookie")     // fCookie == []byte("choco")
+    bCookie := c.Cookie("bar_cookie")     // bCookie == []byte("strawberry")
+    noneCookie := c.Cookie("none_cookie") // noneCookie == nil
 })
 ```
 
@@ -614,7 +614,7 @@ func (ctx *RequestContext) UserAgent() []byte
 // POST http://example.com/user
 // User-Agent: Chrome/51.0.2704.103 Safari/537.36
 h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
-    ua := ctx.UserAgent() // ua == []byte("Chrome/51.0.2704.103 Safari/537.36")
+    ua := c.UserAgent() // ua == []byte("Chrome/51.0.2704.103 Safari/537.36")
 })
 ```
 
@@ -634,7 +634,7 @@ func (ctx *RequestContext) GetHeader(key string) []byte
 // POST http://example.com/user
 // Say-Hello: hello
 h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
-    customHeader := ctx.GetHeader("Say-Hello") // customHeader == []byte("hello")
+    customHeader := c.GetHeader("Say-Hello") // customHeader == []byte("hello")
 })
 ```
 
@@ -754,7 +754,7 @@ func (ctx *RequestContext) Body() ([]byte, error)
 // Content-Type: application/json
 // {"pet":"cat"}
 h.Post("/pet", func(ctx context.Context, c *app.RequestContext) {
-    data, err := ctx.Body() // data == []byte("{\"pet\":\"cat\"}") , err == nil
+    data, err := c.Body() // data == []byte("{\"pet\":\"cat\"}") , err == nil
 })
 ```
 
@@ -776,7 +776,7 @@ func (ctx *RequestContext) RequestBodyStream() io.Reader
 // abcdefg
 h := server.Default(server.WithStreamBody(true))
 h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
-    sr := ctx.RequestBodyStream()
+    sr := c.RequestBodyStream()
     data, _ := io.ReadAll(sr) // data == []byte("abcdefg")
 })
 ```
@@ -801,7 +801,7 @@ func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 // Content-Disposition: form-data; name="name"
 // tom
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    form, err := ctx.MultipartForm()
+    form, err := c.MultipartForm()
     name := form.Value["name"][0] // name == "tom"
 })
 ```
@@ -826,7 +826,7 @@ func (ctx *RequestContext) PostForm(key string) string
 // Content-Disposition: form-data; name="name"
 // tom
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    name := ctx.PostForm("name") // name == "tom"
+    name := c.PostForm("name") // name == "tom"
 })
 ```
 
@@ -850,8 +850,8 @@ func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string
 // Content-Disposition: form-data; name="name"
 // tom
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    name := ctx.PostForm("name", "jack") // name == "tom"
-    age := ctx.PostForm("age", "10") // age == "10"
+    name := c.PostForm("name", "jack") // name == "tom"
+    age := c.PostForm("age", "10") // age == "10"
 })
 ```
 
@@ -872,7 +872,7 @@ func (ctx *RequestContext) PostArgs() *protocol.Args
 // Content-Type: application/x-www-form-urlencoded
 // name=tom&pet=cat&pet=dog
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    args := ctx.PostArgs()
+    args := c.PostArgs()
     name := args.Peek("name") // name == "tom"
 
     var pets []string
@@ -906,8 +906,8 @@ func (ctx *RequestContext) FormValue(key string) []byte
 // Content-Type: application/x-www-form-urlencoded
 // age=10
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    name := ctx.FormValue("name") // name == []byte("tom"), get by QueryArgs
-    age := ctx.FormValue("age") // age == []byte("10"), get by PostArgs
+    name := c.FormValue("name") // name == []byte("tom"), get by QueryArgs
+    age := c.FormValue("age") // age == []byte("10"), get by PostArgs
 })
 
 // POST http://example.com/user
@@ -915,7 +915,7 @@ h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
 // Content-Disposition: form-data; name="name"
 // tom
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    name := ctx.FormValue("name") // name == []byte("tom"), get by MultipartForm
+    name := c.FormValue("name") // name == []byte("tom"), get by MultipartForm
 })
 ```
 
@@ -938,7 +938,7 @@ func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc)
 // 10
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     // only return multipart form value
-    ctx.SetFormValueFunc(func(rc *app.RequestContext, s string) []byte {
+    c.SetFormValueFunc(func(rc *app.RequestContext, s string) []byte {
         mf, err := rc.MultipartForm()
         if err == nil && mf.Value != nil {
             vv := mf.Value[s]
@@ -949,8 +949,8 @@ h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
         return nil
     })
 
-    name := ctx.FormValue("name") // name == nil
-    age := ctx.FormValue("age")   // age == []byte("10")
+    name := c.FormValue("name") // name == nil
+    age := c.FormValue("age")   // age == []byte("10")
 })
 ```
 
@@ -981,7 +981,7 @@ func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    form, err := ctx.MultipartForm()
+    form, err := c.MultipartForm()
     avatarFile := form.File["avatar"][0] // avatarFile.Filename == "abc.jpg"
 })
 ```
@@ -1003,7 +1003,7 @@ func (ctx *RequestContext) FormFile(name string) (*multipart.FileHeader, error)
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
 h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
-    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
+    avatarFile, err := c.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
 })
 ```
 
@@ -1024,9 +1024,9 @@ func (ctx *RequestContext) SaveUploadedFile(file *multipart.FileHeader, dst stri
 // Content-Type: multipart/form-data;
 // Content-Disposition: form-data; name="avatar"; filename="abc.jpg"
 h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
-    avatarFile, err := ctx.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
+    avatarFile, err := c.FormFile("avatar") // avatarFile.Filename == "abc.jpg", err == nil
     // save file
-    ctx.SaveUploadedFile(avatarFile, avatarFile.Filename) // save file "abc.jpg"
+    c.SaveUploadedFile(avatarFile, avatarFile.Filename) // save file "abc.jpg"
 })
 ```
 
@@ -1062,70 +1062,70 @@ h.Post("/user", func(ctx context.Context, c *app.RequestContext) {
 
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-		ctx.Set("version1", "v1")
-		v := ctx.Value("version1") // v == interface{}(string) "v1"
+		c.Set("version1", "v1")
+		v := c.Value("version1") // v == interface{}(string) "v1"
 
-		ctx.Set("version2", "v2")
-		v, exists := ctx.Get("version2") // v == interface{}(string) "v2", exists == true
-		v, exists = ctx.Get("pet")       // v == interface{} nil, exists == false
+		c.Set("version2", "v2")
+		v, exists := c.Get("version2") // v == interface{}(string) "v2", exists == true
+		v, exists = c.Get("pet")       // v == interface{} nil, exists == false
 
-		ctx.Set("version3", "v3")
-		v := ctx.MustGet("version3") // v == interface{}(string) "v3"
+		c.Set("version3", "v3")
+		v := c.MustGet("version3") // v == interface{}(string) "v3"
 
-		ctx.Set("version4", "v4")
-		vString := ctx.GetString("version4") // vString == "v4"
+		c.Set("version4", "v4")
+		vString := c.GetString("version4") // vString == "v4"
 
-		ctx.Set("isAdmin", true)
-		vBool := ctx.GetBool("isAdmin") // vBool == true
+		c.Set("isAdmin", true)
+		vBool := c.GetBool("isAdmin") // vBool == true
 
-		ctx.Set("age1", 20)
-		vInt := ctx.GetInt("age1") // vInt == 20
+		c.Set("age1", 20)
+		vInt := c.GetInt("age1") // vInt == 20
 
-		ctx.Set("age2", int32(20))
-		vInt32 := ctx.GetInt32("age2") // vInt32 == 20
+		c.Set("age2", int32(20))
+		vInt32 := c.GetInt32("age2") // vInt32 == 20
 
-		ctx.Set("age3", int64(20))
-		vInt64 := ctx.GetInt64("age3") // vInt64 == 20
+		c.Set("age3", int64(20))
+		vInt64 := c.GetInt64("age3") // vInt64 == 20
 
-		ctx.Set("age4", uint(20))
-		vUInt := ctx.GetUint("age4") // vUInt == 20
+		c.Set("age4", uint(20))
+		vUInt := c.GetUint("age4") // vUInt == 20
 
-		ctx.Set("age5", uint32(20))
-		vUInt32 := ctx.GetUint32("age5") // vUInt32 == 20
+		c.Set("age5", uint32(20))
+		vUInt32 := c.GetUint32("age5") // vUInt32 == 20
 
-		ctx.Set("age6", uint64(20))
-		vUInt64 := ctx.GetUint64("age6") // vUInt64 == 20
+		c.Set("age6", uint64(20))
+		vUInt64 := c.GetUint64("age6") // vUInt64 == 20
 
-		ctx.Set("age7", float32(20.1))
-		vFloat32 := ctx.GetFloat32("age7") // vFloat32 == 20.1
+		c.Set("age7", float32(20.1))
+		vFloat32 := c.GetFloat32("age7") // vFloat32 == 20.1
 
-		ctx.Set("age8", 20.1)
-		vFloat64 := ctx.GetFloat64("age8") // vFloat64 == 20.1
+		c.Set("age8", 20.1)
+		vFloat64 := c.GetFloat64("age8") // vFloat64 == 20.1
 
 		t2022, _ := time.Parse(time.RFC1123, "Wed, 21 Oct 2022 07:28:00 GMT")
-		ctx.Set("birthday", t2022)
-		vTime := ctx.GetTime("birthday") // vTime == t2022
+		c.Set("birthday", t2022)
+		vTime := c.GetTime("birthday") // vTime == t2022
 
-		ctx.Set("duration", time.Minute)
-		vDuration := ctx.GetDuration("duration") // vDuration == time.Minute
+		c.Set("duration", time.Minute)
+		vDuration := c.GetDuration("duration") // vDuration == time.Minute
 
-		ctx.Set("pet", []string{"cat", "dog"})
-		vStringSlice := ctx.GetStringSlice("pet") // vStringSlice == []string{"cat", "dog"}
+		c.Set("pet", []string{"cat", "dog"})
+		vStringSlice := c.GetStringSlice("pet") // vStringSlice == []string{"cat", "dog"}
 
-		ctx.Set("info1", map[string]interface{}{"name": "tom"})
-		vStringMap := ctx.GetStringMap("info1") // vStringMap == map[string]interface{}{"name": "tom"}
+		c.Set("info1", map[string]interface{}{"name": "tom"})
+		vStringMap := c.GetStringMap("info1") // vStringMap == map[string]interface{}{"name": "tom"}
 
-		ctx.Set("info2", map[string]string{"name": "tom"})
-		vStringMapString := ctx.GetStringMapString("info2")
+		c.Set("info2", map[string]string{"name": "tom"})
+		vStringMapString := c.GetStringMapString("info2")
 		// vStringMapString == map[string]string{}{"name": "tom"}
 
-		ctx.Set("smss", map[string][]string{"pets": {"cat", "dog"}})
-		vStringMapStringSlice := ctx.GetStringMapStringSlice("smss")
+		c.Set("smss", map[string][]string{"pets": {"cat", "dog"}})
+		vStringMapStringSlice := c.GetStringMapStringSlice("smss")
 		// vStringMapStringSlice == map[string][]string{"pets": {"cat", "dog"}}
 
-		ctx.Set("duration", time.Minute)
-		ctx.Set("version", "v1")
-		ctx.ForEachKey(func(k string, v interface{}) {
+		c.Set("duration", time.Minute)
+		c.Set("version", "v1")
+		c.ForEachKey(func(k string, v interface{}) {
 			// 1. k == "duration", v == interface{}(time.Duration) time.Minute
 			// 2. k == "version", v == interface{}(string) "v1"
 		})
@@ -1160,7 +1160,7 @@ func (ctx *RequestContext) Next(c context.Context)
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     c.Next(ctx)
-    v := ctx.GetString("version") // v == "v1"
+    v := c.GetString("version") // v == "v1"
 }, func(ctx context.Context, c *app.RequestContext) {
     c.Set("version", "v1")
 })
@@ -1183,7 +1183,7 @@ middleware1 := func(ctx context.Context, c *app.RequestContext) {
 }
 
 handler1 := func(ctx context.Context, c *app.RequestContext) {
-    handlers := ctx.Handlers() // []Handler{middleware1, handler1}
+    handlers := c.Handlers() // []Handler{middleware1, handler1}
 }
 
 h.POST("/user", middleware1, handler1)
@@ -1203,7 +1203,7 @@ func (ctx *RequestContext) Handler() HandlerFunc
 
 ```go
 middleware1 := func(ctx context.Context, c *app.RequestContext) {
-    lastHandler := ctx.Handler() // lastHandler == handler1
+    lastHandler := c.Handler() // lastHandler == handler1
 }
 
 handler1 := func(ctx context.Context, c *app.RequestContext) {
@@ -1230,11 +1230,11 @@ handler1 := func(ctx context.Context, c *app.RequestContext) {
 }
 
 handler := func(ctx context.Context, c *app.RequestContext) {
-    hc := app.HandlersChain{ctx.Handlers()[0], handler1} // append handler1 into handlers chain
-    ctx.SetHandlers(hc)
+    hc := app.HandlersChain{c.Handlers()[0], handler1} // append handler1 into handlers chain
+    c.SetHandlers(hc)
     c.Next(ctx)
-    current := ctx.GetString("current") // current == "handler1"
-    ctx.String(consts.StatusOK, current)
+    current := c.GetString("current") // current == "handler1"
+    c.String(consts.StatusOK, current)
 }
 
 h.POST("/user", handler)
@@ -1258,7 +1258,7 @@ package main
 func main() {
     h := server.New()
     h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-        hn := ctx.HandlerName() // hn == "main.main.func1"
+        hn := c.HandlerName() // hn == "main.main.func1"
     })
 }
 ```
@@ -1277,9 +1277,9 @@ func (ctx *RequestContext) GetIndex() int8
 
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    index := ctx.GetIndex() // index == 0
+    index := c.GetIndex() // index == 0
 }, func(ctx context.Context, c *app.RequestContext) {
-    index := ctx.GetIndex() // index == 1
+    index := c.GetIndex() // index == 1
 })
 ```
 
@@ -1318,7 +1318,7 @@ func (ctx *RequestContext) IsAborted() bool
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     c.Abort()
-    isAborted := ctx.IsAborted() // isAborted == true
+    isAborted := c.IsAborted() // isAborted == true
 }, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
 })
@@ -1359,7 +1359,7 @@ func (ctx *RequestContext) ClientIP() string
 // X-Forwarded-For: 20.20.20.20, 30.30.30.30
 // X-Real-IP: 10.10.10.10
 h.Use(func(ctx context.Context, c *app.RequestContext) {
-    ip := ctx.ClientIP() // 20.20.20.20
+    ip := c.ClientIP() // 20.20.20.20
 })
 ```
 
@@ -1384,11 +1384,11 @@ func (ctx *RequestContext) SetClientIPFunc(f ClientIP)
 // X-Forwarded-For: 30.30.30.30
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     // method 1
-    customClientIPFunc := func(ctx *app.RequestContext) string {
+    customClientIPFunc := func(c *app.RequestContext) string {
 			return "127.0.0.1"
 	}
-	ctx.SetClientIPFunc(customClientIPFunc)
-	ip := ctx.ClientIP() // ip == "127.0.0.1"
+	c.SetClientIPFunc(customClientIPFunc)
+	ip := c.ClientIP() // ip == "127.0.0.1"
 
     // method 2
     _, cidr, _ := net.ParseCIDR("127.0.0.1/32")
@@ -1396,9 +1396,9 @@ h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
 		RemoteIPHeaders: []string{"X-Forwarded-For", "X-Real-IP"},
 		TrustedCIDRs:    []*net.IPNet{cidr},
 	}
-	ctx.SetClientIPFunc(app.ClientIPWithOption(opts))
+	c.SetClientIPFunc(app.ClientIPWithOption(opts))
 
-	ip = ctx.ClientIP() // ip == "30.30.30.30"
+	ip = c.ClientIP() // ip == "30.30.30.30"
 })
 ```
 
@@ -1422,7 +1422,7 @@ func (ctx *RequestContext) Copy() *RequestContext
 
 ```go
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    ctx1 := ctx.Copy()
+    ctx1 := c.Copy()
     go func(context *app.RequestContext) {
         // safely
     }(ctx1)

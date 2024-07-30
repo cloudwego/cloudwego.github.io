@@ -142,8 +142,7 @@ Example Code:
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    c.NotFound()
-    // Status Code: 404
+    c.NotFound() // Status Code: 404
 })
 ```
 
@@ -253,7 +252,7 @@ and subject to future changes.
 Example Code:
 
 ```go
-func SetPartitionedCookie(ctx *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
+func SetPartitionedCookie(c *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
    if path == "" {
       path = "/"
    }

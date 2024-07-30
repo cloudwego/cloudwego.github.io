@@ -37,7 +37,7 @@ Hertz 在 `app.RequestContext` 中提供了 `Response.HijackWriter` 方法让用
 ```go
 	h.GET("/hijack", func(ctx context.Context, c *app.RequestContext) {
 		// Hijack the writer of Response
-		ctx.Response.HijackWriter(**yourResponseWriter**)
+		c.Response.HijackWriter(**yourResponseWriter**)
 	})
 ```
 
@@ -52,11 +52,11 @@ Hertz 在 `app.RequestContext` 中提供了 `Response.HijackWriter` 方法让用
 ```go
 	h.GET("/flush/chunk", func(ctx context.Context, c *app.RequestContext) {
 		// Hijack the writer of Response
-		ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
+		c.Response.HijackWriter(resp.NewChunkedBodyWriter(&c.Response, c.GetWriter()))
 
 		for i := 0; i < 10; i++ {
-			ctx.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
-			ctx.Flush()                                                                 // nolint: errcheck
+			c.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+			c.Flush()                                                                 // nolint: errcheck
 			time.Sleep(200 * time.Millisecond)
 		}
 	})

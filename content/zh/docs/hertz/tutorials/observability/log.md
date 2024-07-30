@@ -20,8 +20,8 @@ func AccessLog() app.HandlerFunc {
 		end := time.Now()
 		latency := end.Sub(start).Microseconds
 		hlog.CtxTracef(c, "status=%d cost=%d method=%s full_path=%s client_ip=%s host=%s",
-			ctx.Response.StatusCode(), latency,
-			ctx.Request.Header.Method(), ctx.Request.URI().PathOriginal(), ctx.ClientIP(), ctx.Request.Host())
+			c.Response.StatusCode(), latency,
+			c.Request.Header.Method(), c.Request.URI().PathOriginal(), c.ClientIP(), c.Request.Host())
 	}
 }
 ```

@@ -155,16 +155,16 @@ WebSocket 只是定义了一种交换任意消息的机制。这些消息是什�
 函数签名：
 
 ```go
-func(ctx *app.RequestContext, status int, reason error)
+func(c *app.RequestContext, status int, reason error)
 ```
 
 示例代码：
 
 ```go
 var upgrader = websocket.HertzUpgrader{
-    Error: func(ctx *app.RequestContext, status int, reason error) {
-        ctx.Response.Header.Set("Sec-Websocket-Version", "13")
-        ctx.AbortWithMsg(reason.Error(), status)
+    Error: func(c *app.RequestContext, status int, reason error) {
+        c.Response.Header.Set("Sec-Websocket-Version", "13")
+        c.AbortWithMsg(reason.Error(), status)
     },
 }
 ```
@@ -176,14 +176,14 @@ var upgrader = websocket.HertzUpgrader{
 函数签名：
 
 ```go
-func(ctx *app.RequestContext) bool
+func(c *app.RequestContext) bool
 ```
 
 默认实现：
 
 ```go
-func fastHTTPCheckSameOrigin(ctx *app.RequestContext) bool {
-    origin := ctx.Request.Header.Peek("Origin")
+func fastHTTPCheckSameOrigin(c *app.RequestContext) bool {
+    origin := c.Request.Header.Peek("Origin")
     if len(origin) == 0 {
         return true
     }
@@ -191,7 +191,7 @@ func fastHTTPCheckSameOrigin(ctx *app.RequestContext) bool {
     if err != nil {
         return false
     }
-    return equalASCIIFold(u.Host, b2s(ctx.Host()))
+    return equalASCIIFold(u.Host, b2s(c.Host()))
 }
 ```
 

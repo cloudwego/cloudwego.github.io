@@ -39,7 +39,7 @@ func main() {
     ···
     h := server.Default(server.WithTracer(prometheus.NewServerTracer(":9091", "/hertz")))
     h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-      ctx.JSON(200, utils.H{"ping": "pong"})
+      c.JSON(200, utils.H{"ping": "pong"})
     })
     h.Spin()
     ···

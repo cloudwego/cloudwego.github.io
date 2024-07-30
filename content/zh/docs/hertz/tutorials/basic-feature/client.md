@@ -36,7 +36,7 @@ func performRequest() {
 func main() {
 	h := server.New(server.WithHostPorts(":8080"))
 	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, "hello hertz")
+		c.JSON(consts.StatusOK, "hello hertz")
 	})
 	go performRequest()
 	h.Spin()
@@ -277,7 +277,7 @@ func (c *Client) Post(ctx context.Context, dst []byte, url string, postArgs *pro
 
 ```go
 func main() {
-	// hertz server:http://localhost:8080/hello ctx.String(consts.StatusOK, "hello %s", ctx.PostForm("name"))
+	// hertz server:http://localhost:8080/hello ctx.String(consts.StatusOK, "hello %s", c.PostForm("name"))
 	c, err := client.NewClient()
 	if err != nil {
 		return
@@ -741,7 +741,7 @@ func (c *Client) Use(mws ...Middleware)
 
 如果客户端中间件链在之前已经设置了最后一个中间件，`UseAsLast` 函数将会返回 `errorLastMiddlewareExist` 错误。因此，为确保客户端中间件链的最后一个中间件为空，可以先使用 [TakeOutLastMiddleware](#takeoutlastmiddleware) 函数清空客户端中间件链的最后一个中间件。
 
-> 注意：`UseAsLast` 函数将中间件设置在了 `c.lastMiddleware` 中，而使用 [Use](#use) 函数设置的中间件链存放在 `c.mws` 中，两者相对独立，只是在执行客户端中间件链的最后才执行 `c.lastMiddleware`，因此 `UseAsLast` 函数在 [Use](#use) 函数之前或之后调用皆可。
+> 注意：`UseAsLast` 函数将中间件设置在了 `ctx.lastMiddleware` 中，而使用 [Use](#use) 函数设置的中间件链存放在 `ctx.mws` 中，两者相对独立，只是在执行客户端中间件链的最后才执行 `ctx.lastMiddleware`，因此 `UseAsLast` 函数在 [Use](#use) 函数之前或之后调用皆可。
 
 函数签名：
 

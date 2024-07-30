@@ -39,7 +39,7 @@ func (ctx *RequestContext) SetContentType(contentType string)
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.Write([]byte(`{"foo":"bar"}`))
-    ctx.SetContentType("application/json; charset=utf-8")
+    c.SetContentType("application/json; charset=utf-8")
     // Content-Type: application/json; charset=utf-8
 })
 ```
@@ -59,7 +59,7 @@ func (ctx *RequestContext) SetContentTypeBytes(contentType []byte)
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.Write([]byte(`{"foo":"bar"}`))
-    ctx.SetContentType([]byte("application/json; charset=utf-8"))
+    c.SetContentType([]byte("application/json; charset=utf-8"))
     // Content-Type: application/json; charset=utf-8
 })
 ```
@@ -207,8 +207,8 @@ func (ctx *RequestContext) Header(key, value string)
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.Header("My-Name", "tom")
-    ctx.Header("My-Name", "")
-    ctx.Header("My-Name-Not-Exists", "yes")
+    c.Header("My-Name", "")
+    c.Header("My-Name-Not-Exists", "yes")
 })
 ```
 
@@ -227,7 +227,7 @@ func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domai
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
-    cookie := ctx.Response.Header.Get("Set-Cookie")
+    cookie := c.Response.Header.Get("Set-Cookie")
     // cookie == "user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=Lax"
 })
 ```
@@ -243,7 +243,7 @@ Chrome 从 2024 年第一季度开始，禁用了 1% 的用户的第三方 Cooki
 示例:
 
 ```go
-func SetPartitionedCookie(ctx *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
+func SetPartitionedCookie(c *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
    if path == "" {
       path = "/"
    }
@@ -263,8 +263,7 @@ func SetPartitionedCookie(ctx *app.RequestContext, name, value string, maxAge in
    cookie.SetSameSite(sameSite)
    cookie.SetPartitioned(true)
     // Set-Cookie: user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned
-
-ctx.Response.Header.SetCookie(cookie)
+    c.Response.Header.SetCookie(cookie)
 }
 
 func main() {
@@ -314,7 +313,7 @@ func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.AbortWithError(consts.StatusOK, errors.New("hertz error"))
-	err := ctx.Errors.String()
+	err := c.Errors.String()
 	// err == "Error #01: hertz error"
 }, func(ctx context.Context, c *app.RequestContext) {
     // will not execute
@@ -431,13 +430,13 @@ func (ctx *RequestContext) SetBodyStream(bodyStream io.Reader, bodySize int)
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     data := "hello world"
     r := strings.NewReader(data)
-    ctx.SetBodyStream(r, -1) // Body: "hello world"
+    c.SetBodyStream(r, -1) // Body: "hello world"
 })
 
 h.GET("/user1", func(ctx context.Context, c *app.RequestContext) {
     data := "hello world"
     r1 := strings.NewReader(data)
-    ctx.SetBodyStream(r1, 5) // Body: "hello"
+    c.SetBodyStream(r1, 5) // Body: "hello"
 })
 ```
 
@@ -474,8 +473,8 @@ func (ctx *RequestContext) Write(p []byte) (int, error)
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
     c.Write([]byte("hello"))
-    ctx.Write([]byte(" "))
-    ctx.Write([]byte("world"))
+    c.Write([]byte(" "))
+    c.Write([]byte("world"))
     // Body: "hello world"
 })
 ```
@@ -494,7 +493,7 @@ func (ctx *RequestContext) WriteString(s string) (int, error)
 
 ```go
 h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-    size, _ := ctx.WriteString("hello world")// Body: "hello world", size == 11
+    size, _ := c.WriteString("hello world")// Body: "hello world", size == 11
 })
 ```
 
@@ -532,7 +531,7 @@ func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
 
 ```go
  h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
-  ctx.AbortWithStatusJSON(consts.StatusOK, utils.H{
+  c.AbortWithStatusJSON(consts.StatusOK, utils.H{
    "foo":  "bar",
    "html": "<b>",
   })

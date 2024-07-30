@@ -39,7 +39,7 @@ After completing the environment preparation, you can quickly start the Hertz Se
        h := server.Default()
 
        h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-               ctx.JSON(consts.StatusOK, utils.H{"message": "pong"})
+               c.JSON(consts.StatusOK, utils.H{"message": "pong"})
        })
 
        h.Spin()

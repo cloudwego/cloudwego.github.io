@@ -159,7 +159,7 @@ func main() {
 	})
 
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+		c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
 	})
 
 	h.Spin()
@@ -207,7 +207,7 @@ func main() {
         server.WithHostPorts("localhost:9230"))
     h.GET("", func(ctx context.Context, c *app.RequestContext) {
         hlog.Info("pong")
-        ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
+        c.JSON(consts.StatusOK, utils.H{"ping": "pong"})
     })
 
     h.Spin()

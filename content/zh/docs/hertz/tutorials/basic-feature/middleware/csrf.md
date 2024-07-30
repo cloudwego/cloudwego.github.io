@@ -39,11 +39,11 @@ func main() {
 	h.Use(csrf.New())
 
 	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, csrf.GetToken(ctx))
+		c.String(200, csrf.GetToken(ctx))
 	})
 
 	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, "CSRF token is valid")
+		c.String(200, "CSRF token is valid")
 	})
 
 	h.Spin()
@@ -97,10 +97,10 @@ func main() {
 	h.Use(csrf.New(csrf.WithSecret("your_secret")))
 
 	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, csrf.GetToken(ctx))
+		c.String(200, csrf.GetToken(ctx))
 	})
 	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, "CSRF token is valid")
+		c.String(200, "CSRF token is valid")
 	})
 
 	h.Spin()
@@ -143,11 +143,11 @@ func main() {
 	h.Use(csrf.New(csrf.WithIgnoredMethods([]string{"GET", "HEAD", "TRACE"})))
 
 	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, csrf.GetToken(ctx))
+		c.String(200, csrf.GetToken(ctx))
 	})
 
 	h.OPTIONS("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, "success")
+		c.String(200, "success")
 	})
 	h.Spin()
 }
@@ -188,12 +188,12 @@ import (
 )
 
 func myErrFunc(ctx context.Context, c *app.RequestContext) {
-    if ctx.Errors.Last() == nil {
+    if c.Errors.Last() == nil {
         err := fmt.Errorf("myErrFunc called when no error occurs")
-        ctx.String(400, err.Error())
-        ctx.Abort()
+        c.String(400, err.Error())
+        c.Abort()
     }
-	ctx.AbortWithMsg(ctx.Errors.Last().Error(), http.StatusBadRequest)
+	c.AbortWithMsg(c.Errors.Last().Error(), http.StatusBadRequest)
 }
 
 func main() {
@@ -204,10 +204,10 @@ func main() {
 	h.Use(csrf.New(csrf.WithErrorFunc(myErrFunc)))
 
 	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, csrf.GetToken(ctx))
+		c.String(200, csrf.GetToken(ctx))
 	})
 	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, "CSRF token is valid")
+		c.String(200, "CSRF token is valid")
 	})
 
 	h.Spin()
@@ -253,10 +253,10 @@ func main() {
 	h.Use(csrf.New(csrf.WithKeyLookUp("form:csrf")))
 
 	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, csrf.GetToken(ctx))
+		c.String(200, csrf.GetToken(ctx))
 	})
 	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, "CSRF token is valid")
+		c.String(200, "CSRF token is valid")
 	})
 
 	h.Spin()
@@ -291,8 +291,8 @@ import (
 	"github.com/hertz-contrib/sessions/cookie"
 )
 
-func isPostMethod(_ context.Context, ctx *app.RequestContext) bool {
-	if string(ctx.Method()) == "POST" {
+func isPostMethod(_ context.Context, c *app.RequestContext) bool {
+	if string(c.Method()) == "POST" {
 		return true
 	} else {
 		return false
@@ -309,7 +309,7 @@ func main() {
 	h.Use(csrf.New(csrf.WithNext(isPostMethod)))
 
 	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, "success even no csrf-token in header")
+		c.String(200, "success even no csrf-token in header")
 	})
 	h.Spin()
 }
@@ -356,7 +356,7 @@ import (
 )
 
 func myExtractor(ctx context.Context, c *app.RequestContext) (string, error) {
-	token := ctx.FormValue("csrf-token")
+	token := c.FormValue("csrf-token")
 	if token == nil {
 		return "", errors.New("missing token in form-data")
 	}
@@ -371,10 +371,10 @@ func main() {
 	h.Use(csrf.New(csrf.WithExtractor(myExtractor)))
 
 	h.GET("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, csrf.GetToken(ctx))
+		c.String(200, csrf.GetToken(ctx))
 	})
 	h.POST("/protected", func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(200, "CSRF token is valid")
+		c.String(200, "CSRF token is valid")
 	})
 
 	h.Spin()

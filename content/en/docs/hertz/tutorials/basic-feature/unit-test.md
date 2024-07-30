@@ -43,15 +43,15 @@ func TestCreateUtRequestContext(t *testing.T) {
 	path := "/hey/dy"
 	headerKey := "Connection"
 	headerValue := "close"
-	ctx := ut.CreateUtRequestContext(method, path, &ut.Body{Body: bytes.NewBufferString(body), Len: len(body)},
+	c := ut.CreateUtRequestContext(method, path, &ut.Body{Body: bytes.NewBufferString(body), Len: len(body)},
 		ut.Header{Key: headerKey, Value: headerValue})
 
-	assert.DeepEqual(t, method, string(ctx.Method()))
-	assert.DeepEqual(t, path, string(ctx.Path()))
-	body1, err := ctx.Body()
+	assert.DeepEqual(t, method, string(c.Method()))
+	assert.DeepEqual(t, path, string(c.Path()))
+	body1, err := c.Body()
 	assert.DeepEqual(t, nil, err)
 	assert.DeepEqual(t, body, string(body1))
-	assert.DeepEqual(t, headerValue, string(ctx.GetHeader(headerKey)))
+	assert.DeepEqual(t, headerValue, string(c.GetHeader(headerKey)))
 }
 ```
 

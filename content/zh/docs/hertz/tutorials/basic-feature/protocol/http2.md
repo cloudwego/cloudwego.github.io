@@ -94,7 +94,7 @@ func main() {
 
 	h.POST("/", func(ctx context.Context, c *app.RequestContext) {
 		var j map[string]string
-		_ = json.Unmarshal(ctx.Request.Body(), &j)
+		_ = json.Unmarshal(c.Request.Body(), &j)
 		fmt.Printf("[server]: received request: %+v\n", j)
 
 		r := map[string]string{
@@ -103,7 +103,7 @@ func main() {
 		for k, v := range j {
 			r[k] = v
 		}
-		ctx.JSON(http.StatusOK, r)
+		c.JSON(http.StatusOK, r)
 	})
 
 	go runClient()
@@ -164,7 +164,7 @@ func main() {
 
 	h.POST("/", func(ctx context.Context, c *app.RequestContext) {
 		var j map[string]string
-		_ = json.Unmarshal(ctx.Request.Body(), &j)
+		_ = json.Unmarshal(c.Request.Body(), &j)
 		fmt.Printf("server received request: %+v\n", j)
 		r := map[string]string{
 			"msg": "hello world",
@@ -172,7 +172,7 @@ func main() {
 		for k, v := range j {
 			r[k] = v
 		}
-		ctx.JSON(http.StatusOK, r)
+		c.JSON(http.StatusOK, r)
 	})
 
 	go runClient()
@@ -271,7 +271,7 @@ func main() {
 
 	h.POST("/", func(ctx context.Context, c *app.RequestContext) {
 		var j map[string]string
-		_ = json.Unmarshal(ctx.Request.Body(), &j)
+		_ = json.Unmarshal(c.Request.Body(), &j)
 		fmt.Printf("[server]: received request: %+v\n", j)
 
 		r := map[string]string{
@@ -280,7 +280,7 @@ func main() {
 		for k, v := range j {
 			r[k] = v
 		}
-		ctx.JSON(http.StatusOK, r)
+		c.JSON(http.StatusOK, r)
 	})
 
 	go runClient()
@@ -428,7 +428,7 @@ func main() {
 
 	h.POST("/", func(ctx context.Context, c *app.RequestContext) {
 		var j map[string]string
-		_ = json.Unmarshal(ctx.Request.Body(), &j)
+		_ = json.Unmarshal(c.Request.Body(), &j)
 		fmt.Printf("[server]: received request: %+v\n", j)
 
 		r := map[string]string{
@@ -437,7 +437,7 @@ func main() {
 		for k, v := range j {
 			r[k] = v
 		}
-		ctx.JSON(http.StatusOK, r)
+		c.JSON(http.StatusOK, r)
 	})
 
 	go runClient()

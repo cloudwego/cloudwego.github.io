@@ -45,7 +45,7 @@ func main() {
 > hertz version >= v0.7.0
 
 | API                   | Description                                                                                                                                                                                            |
-| :-------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:----------------------| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ctx.BindAndValidate   | Use the following go-tag for parameter binding, and do a parameter validation after successful binding (if there is a validation tag)                                                                  |
 | ctx.Bind              | Same as `BindAndValidate` but without parameter validation                                                                                                                                             |
 | ctx.BindQuery         | Bind all Query parameters, which is equivalent to declaring a `query` tag for each field, for scenarios where no tag is written                                                                        |

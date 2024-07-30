@@ -240,6 +240,6 @@ func main() {
 
 服务端中间件会按定义的先后顺序依次执行，如果想快速终止中间件调用，可以使用以下方法，注意**当前中间件仍将执行**。
 
-- `c.Abort()`：终止后续调用
-- `c.AbortWithMsg(msg string, statusCode int)`：终止后续调用，并设置 response 中 body 和状态码
-- `c.AbortWithStatus(code int)`：终止后续调用，并设置状态码
+- `ctx.Abort()`：终止后续调用
+- `ctx.AbortWithMsg(msg string, statusCode int)`：终止后续调用，并设置 response 中 body 和状态码
+- `ctx.AbortWithStatus(code int)`：终止后续调用，并设置状态码

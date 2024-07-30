@@ -300,7 +300,7 @@ Hertz Server 支持流式写入响应。
        h.GET("/streamWrite1", func(ctx context.Context, c *app.RequestContext) {
            rw := newChunkReader()
            line := []byte("line\r\n")
-           ctx.SetBodyStream(rw, 500*len(line))
+           c.SetBodyStream(rw, 500*len(line))
 
            go func() {
                for i := 1; i <= 500; i++ {
@@ -313,7 +313,7 @@ Hertz Server 支持流式写入响应。
            }()
 
            go func() {
-               <-ctx.Finished()
+               <-c..Finished()
                fmt.Println("request process end")
            }()
        })
@@ -322,7 +322,7 @@ Hertz Server 支持流式写入响应。
            rw := newChunkReader()
            // Content-Length may be negative:
            // -1 means Transfer-Encoding: chunked.
-           ctx.SetBodyStream(rw, -1)
+           c.SetBodyStream(rw, -1)
 
            go func() {
                for i := 1; i < 1000; i++ {
@@ -335,7 +335,7 @@ Hertz Server 支持流式写入响应。
            }()
 
            go func() {
-               <-ctx.Finished()
+               <-c..Finished()
                fmt.Println("request process end")
            }()
        })
@@ -401,11 +401,11 @@ Hertz Server 支持流式写入响应。
    ```go
    h.GET("/flush/chunk", func(ctx context.Context, c *app.RequestContext) {
    	// Hijack the writer of response
-   	ctx.Response.HijackWriter(resp.NewChunkedBodyWriter(&ctx.Response, ctx.GetWriter()))
+   	c.Response.HijackWriter(resp.NewChunkedBodyWriter(&c.Response, c.GetWriter()))
 
    	for i := 0; i < 10; i++ {
-   		ctx.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
-   		ctx.Flush()                                                                 // nolint: errcheck
+   		c.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+   		c.Flush()                                                                 // nolint: errcheck
    		time.Sleep(200 * time.Millisecond)
    	}
    })
@@ -515,13 +515,13 @@ func (engine *Engine) Routes() (routes RoutesInfo)
 ```go
 func getHandler() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK, "get handler")
+		c.String(consts.StatusOK, "get handler")
 	}
 }
 
 func postHandler() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK, "post handler")
+		c.String(consts.StatusOK, "post handler")
 	}
 }
 

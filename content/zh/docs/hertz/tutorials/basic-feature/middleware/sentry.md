@@ -72,7 +72,7 @@ func main()  {
                 hub.CaptureMessage("Just for debug")
             })
         }
-        ctx.SetStatusCode(0)
+        c.SetStatusCode(0)
     })
 
     h.Spin()

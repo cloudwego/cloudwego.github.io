@@ -65,11 +65,11 @@ func main() {
       if err != nil {
          hlog.Error("generate token failed")
       }
-      ctx.String(http.StatusOK, token)
+      c.String(http.StatusOK, token)
    })
 
    h.POST("/paseto", paseto.New(), func(ctx context.Context, c *app.RequestContext) {
-      ctx.String(http.StatusOK, "token is valid")
+      c.String(http.StatusOK, "token is valid")
    })
 
    go performRequest()
@@ -160,11 +160,11 @@ func main() {
 		if err != nil {
 			hlog.Error("generate token failed")
 		}
-		ctx.String(consts.StatusOK, token)
+		c.String(consts.StatusOK, token)
 	})
 
 	h.POST("/paseto", paseto.New(paseto.WithNext(next)), func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK, "token is valid")
+		c.String(consts.StatusOK, "token is valid")
 	})
 
 	go performRequest()
@@ -254,7 +254,7 @@ func main() {
       if err != nil {
          hlog.Error("generate token failed")
       }
-      ctx.String(consts.StatusOK, token)
+      c.String(consts.StatusOK, token)
    })
 
    h.GET("/paseto/witherrorfunc", func(ctx context.Context, c *app.RequestContext) {
@@ -269,11 +269,11 @@ func main() {
       if err != nil {
          hlog.Error("generate token failed")
       }
-      ctx.String(consts.StatusOK, token)
+      c.String(consts.StatusOK, token)
    })
 
    h.POST("/paseto", paseto.New(paseto.WithErrorFunc(handler)), func(ctx context.Context, c *app.RequestContext) {
-      ctx.String(consts.StatusOK, "token is valid")
+      c.String(consts.StatusOK, "token is valid")
    })
 
    go performRequest()
@@ -363,7 +363,7 @@ func main() {
 		if err != nil {
 			hlog.Error("generate token failed")
 		}
-		ctx.String(consts.StatusOK, token)
+		c.String(consts.StatusOK, token)
 	})
 
 	h.GET("/paseto/withnosecret", func(ctx context.Context, c *app.RequestContext) {
@@ -378,11 +378,11 @@ func main() {
 		if err != nil {
 			hlog.Error("generate token failed")
 		}
-		ctx.String(consts.StatusOK, token)
+		c.String(consts.StatusOK, token)
 	})
 
 	h.POST("/paseto", paseto.New(paseto.WithSuccessHandler(handler)), func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK, "token is valid")
+		c.String(consts.StatusOK, "token is valid")
 	})
 
 	go performRequest()
@@ -451,11 +451,11 @@ func main() {
 		if err != nil {
 			hlog.Error("generate token failed")
 		}
-		ctx.String(consts.StatusOK, token)
+		c.String(consts.StatusOK, token)
 	})
 
 	h.POST("/paseto", paseto.New(paseto.WithKeyLookUp("form:Authorization")), func(ctx context.Context, c *app.RequestContext) {
-		ctx.String(consts.StatusOK, "token is valid")
+		c.String(consts.StatusOK, "token is valid")
 	})
 
 	go performRequest()
@@ -511,7 +511,7 @@ func main() {
         if err != nil {
             hlog.Error("generate token failed")
         }
-        ctx.String(consts.StatusOK, token)
+        c.String(consts.StatusOK, token)
     })
 
     h.POST("/paseto", paseto.New(paseto.WithTokenPrefix("Bearer ")), func(ctx context.Context, c *app.RequestContext) {
@@ -595,7 +595,7 @@ func main() {
         if err != nil {
             hlog.Error("generate token failed")
         }
-        ctx.String(consts.StatusOK, token)
+        c.String(consts.StatusOK, token)
     })
     h.GET("/paseto/wrong-issuer", func(ctx context.Context, c *app.RequestContext) {
         now := time.Now()
@@ -608,7 +608,7 @@ func main() {
         if err != nil {
             hlog.Error("generate token failed")
         }
-        ctx.String(consts.StatusOK, token)
+        c.String(consts.StatusOK, token)
     })
 
     parseFunc, _ := paseto.NewV4PublicParseFunc(paseto.DefaultPublicKey, []byte(paseto.DefaultImplicit), paseto.WithIssuer("CloudWeGo-issuer"))
