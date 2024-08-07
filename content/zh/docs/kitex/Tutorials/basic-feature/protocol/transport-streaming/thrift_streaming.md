@@ -151,7 +151,7 @@ var streamClient = testservice.MustNewStreamClient(
     streamclient.WithHostPorts("127.0.0.1:8888"),   // streamclient.Option...
 )
 
-stream, err := streamClient.Echo(ctx, streamcall.WithHostPorts("127.0.0.1:8888"))
+stream, err := streamClient.Echo(ctx)
 
 // business logic
 ```
