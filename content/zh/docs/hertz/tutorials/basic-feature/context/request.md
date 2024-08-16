@@ -730,6 +730,7 @@ func (ctx *RequestContext) Body() ([]byte, error)
 func (ctx *RequestContext) RequestBodyStream() io.Reader
 func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 func (ctx *RequestContext) PostForm(key string) string
+func (ctx *RequestContext) PostFormArray(key string) []string
 func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string
 func (ctx *RequestContext) GetPostForm(key string) (string, bool)
 func (ctx *RequestContext) PostArgs() *protocol.Args
@@ -827,6 +828,30 @@ func (ctx *RequestContext) PostForm(key string) string
 // tom
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     name := c.PostForm("name") // name == "tom"
+})
+```
+
+### PostFormArray
+
+按名称检索 `multipart.Form.Value`，返回给定 name 的所有值。
+
+> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的 content-type 中获取 value 值，且不支持获取文件值。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) PostFormArray(key string) []string
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data;
+// Content-Disposition: form-data; name="pet"; value="cat"
+// Content-Disposition: form-data; name="pet"; value="dog"
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
+    pets := c.PostFormArray("pet") // pets == []string{"cat", "dog"}
 })
 ```
 
