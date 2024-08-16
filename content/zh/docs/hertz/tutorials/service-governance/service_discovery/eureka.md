@@ -9,7 +9,7 @@ description: "Hertz 提供的服务注册与发现 eureka 拓展。"
 ## 安装
 
 ```go
-go get github.com/hertz-contrib/registry
+go get github.com/hertz-contrib/registry/eureka
 ```
 
 ## 服务注册

@@ -9,7 +9,7 @@ description: "Service Registration and Discovery eureka Extensions provided by H
 ## Install
 
 ```go
-go get github.com/hertz-contrib/registry
+go get github.com/hertz-contrib/registry/eureka
 ```
 
 ## Service Registry
