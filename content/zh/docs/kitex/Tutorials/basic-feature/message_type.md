@@ -8,13 +8,13 @@ description: Kitex 支持 PingPong、Oneway、Streaming 消息类型。
 
 ## 协议支持
 
-目前 Kitex 支持的消息类型、编解码协议和传输协议
+目前 Kitex 支持的消息类型、序列化协议和传输协议：
 
-| 消息类型  | 编码协议          | 传输协议                                                                 |
-| --------- | ----------------- | ------------------------------------------------------------------------ |
+| 消息类型  | 序列化               | 传输协议                                                                 |
+| --------- |-------------------| ------------------------------------------------------------------------ |
 | PingPong  | Thrift / Protobuf | [TTHeader](../../../reference/transport_protocol_ttheader) / HTTP2(gRPC) |
 | Oneway    | Thrift            | [TTHeader](../../../reference/transport_protocol_ttheader)               |
-| Streaming | Protobuf          | HTTP2(gRPC)                                                              |
+| Streaming | Thrift / Protobuf          | HTTP2(gRPC)                                                              |
 
 - PingPong：客户端发起一个请求后会等待一个响应才可以进行下一次请求
 - Oneway：客户端发起一个请求后不等待一个响应
@@ -22,7 +22,8 @@ description: Kitex 支持 PingPong、Oneway、Streaming 消息类型。
 
 ## Thrift
 
-目前 Thrift 支持 PingPong 和 Oneway。Kitex 计划支持 Thrift Streaming。
+Kitex 支持基于 Thrift 协议的 PingPong、Oneway 消息类型；同时支持 Thrift Streaming over HTTP2。
+PingPong、Oneway 的接口定义见下面的 Example，Thrift Streaming 使用见 [Thrift Streaming](/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming)
 
 ### Example
 

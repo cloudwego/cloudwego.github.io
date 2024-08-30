@@ -8,13 +8,13 @@ description: Kitex supports message types of PingPong、Oneway、Streaming.
 
 ## Protocols
 
-The table below is message types, codecs and transports supported by Kitex.
+The table below is message types, serializations and transport protocols supported by Kitex:
 
-| Message Types | Codec             | Transport                                                                |
-| ------------- | ----------------- | ------------------------------------------------------------------------ |
+| Message Types | Serialization     | Transport Protocol                                                       |
+| ------------- |-------------------|--------------------------------------------------------------------------|
 | PingPong      | Thrift / Protobuf | [TTHeader](../../../reference/transport_protocol_ttheader) / HTTP2(gRPC) |
 | Oneway        | Thrift            | [TTHeader](../../../reference/transport_protocol_ttheader)               |
-| Streaming     | Protobuf          | HTTP2(gRPC)                                                              |
+| Streaming     | Thrift / Protobuf | HTTP2(gRPC)                                                              |
 
 - PingPong: the client always waits for a response after sending a request
 - Oneway: the client does not expect any response after sending a request
@@ -22,7 +22,8 @@ The table below is message types, codecs and transports supported by Kitex.
 
 ## Thrift
 
-When the codec is thrift, Kitex supports PingPong and Oneway. The streaming on thrift is under development.
+Kitex supports PingPong and Oneway message types based on Thrift protocol; Simultaneously supporting Thrift Streaming over HTTP2. 
+The interface definitions for PingPong and Oneway are shown in the following example, and the usage of Thrift Streaming please see [Thrift Streaming](/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming)
 
 ### Example
 
