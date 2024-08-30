@@ -22,7 +22,8 @@ The table below is message types, serializations and transport protocols support
 
 ## Thrift
 
-Kitex supports PingPong and Oneway message types based on Thrift protocol; Simultaneously supporting Thrift Streaming over HTTP2. 
+Kitex supports **PingPong** and **Oneway** message types based on Thrift protocol; Simultaneously supporting **Thrift Streaming** over HTTP2. 
+
 The interface definitions for PingPong and Oneway are shown in the following example, and the usage of Thrift Streaming please see [Thrift Streaming](/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming)
 
 ### Example
