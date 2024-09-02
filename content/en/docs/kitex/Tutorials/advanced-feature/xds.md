@@ -1,6 +1,6 @@
 ---
 title: "xDS Support"
-date: 2024-08-31
+date: 2022-08-26
 weight: 8
 keywords: ["Kitex", "xDS", "Proxyless", "Istio"]
 description: Kitex supports the xDS protocol and runs in Proxyless mode, managed by the service mesh in unify.

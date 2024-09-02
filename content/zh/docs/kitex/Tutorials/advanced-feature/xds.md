@@ -1,6 +1,6 @@
 ---
 title: "xDS 支持"
-date: 2024-08-31
+date: 2022-08-26
 weight: 8
 keywords: ["Kitex", "xDS", "Proxyless", "Istio"]
 description: Kitex 支持 xDS 协议进而以 Proxyless 模式运行，被服务网格统一纳管。
