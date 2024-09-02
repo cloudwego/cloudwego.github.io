@@ -1,7 +1,7 @@
 ---
 title: "快速开始"
 linkTitle: "快速开始"
-weight: 1
+weight: 2
 keywords: ["Volo", "Http", "快速开始", "安装"]
 description: "volo-http 快速上手与基础教程。"
 ---
