@@ -13,43 +13,44 @@ description: "volo-http 快速上手与基础教程。"
 3. 如果您未安装过 **volo-cli**，请参考[快速开始](https://www.cloudwego.io/zh/docs/volo/volo-li/getting-started/)
 
 ## 创建一个 Server
+
 > 以下示例 `volo-cli` 版本为 **0.10.3**, `volo-http` 版本为 **0.2.14**
 
 1. 使用 **volo-cli** 创建 http 项目脚手架
 
-```bash
-mkdir -p volo-http-example
-cd volo-http-example
-volo http init volo-http-example
-```
+   ```bash
+   mkdir -p volo-http-example
+   cd volo-http-example
+   volo http init volo-http-example
+   ```
 
-脚手架创建完成后的目录结构如下:
+   脚手架创建完成后的目录结构如下:
 
-```bash
-$ tree
-.
-├── Cargo.toml
-└── src
-    ├── bin
-    │   └── server.rs
-    └── lib.rs
-```
+   ```bash
+   $ tree
+   .
+   ├── Cargo.toml
+   └── src
+       ├── bin
+       │   └── server.rs
+       └── lib.rs
+   ```
 
-`src/lib.rs` 文件内容如下:
+   `src/lib.rs` 文件内容如下:
 
-```rust
-use volo_http::server::route::{get, Router};
+   ```rust
+   use volo_http::server::route::{get, Router};
 
-async fn index_handler() -> &'static str {
-    "It Works!\n"
-}
+   async fn index_handler() -> &'static str {
+       "It Works!\n"
+   }
 
-pub fn example_router() -> Router {
-    Router::new().route("/", get(index_handler))
-}
-```
+   pub fn example_router() -> Router {
+        Router::new().route("/", get(index_handler))
+   }
+   ```
 
-可以看出，当 server 启动后，使用 `GET` 方法请求 `/` 路径期望得到 `It Works!` 的响应
+   可以看出，当 server 启动后，使用 `GET` 方法请求 `/` 路径期望得到 `It Works!` 的响应
 
 2. 运行 `cargo run` 启动服务端，在终端看到 `Listening on [::]:8080` 后, 表示 Server 就成功跑起来了。
    
