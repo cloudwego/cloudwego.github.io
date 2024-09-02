@@ -18,13 +18,19 @@ TODO:
 
 ## 框架特点
 
-- 高易用性
+- **使用 AFIT 和 RPITIT 特性**
+
+  Volo 使用 Motore 作为其中间件抽象层, Motore 基于 AFIT 和 RPITIT 设计。
+
+  通过 RPITIT，我们可以避免很多不必要的 Box 内存分配，以及提升易用性，给用户提供更友好的编程接口和更符合人体工程学的编程范式。
 
 - 高性能
   
   关于详细的性能数据，可参考 [volo-benchmark](https://github.com/cloudwego/volo-benchmark/grpc)
 
 - 高扩展性
+  
+  TODO: 
     
 ## 相关项目
 
