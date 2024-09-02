@@ -185,6 +185,7 @@ async fn main() {
 - `((&'static str, &'static str), ServerResponse)`
 - `([(&'static str, &'static str); 3], ServerResponse)`
 
-但是这两个类型写起来比较麻烦, 所以可以偷懒使用 `impl IntoResponse` 的方式实现, 只要保证返回值类型实现了 `IntoResponse` 即可
+但是这两个类型写起来比较麻烦, 所以可以直接使用 `impl IntoResponse` 的方式实现, 只要保证返回值类型实现了 `IntoResponse` 即可
+
 需要注意的是，即使返回值类型直接写了 `impl IntoResponse`, 但也需要保证函数中的返回值是同一个类型, 
-因为使用这种方式也需要一个特定类型的返回值, 只是我们将这个工作交给编译器来推导。
+因为使用这种方式也需要一个特定类型的返回值, 只是我们将这个工作交给编译器来推导了。
