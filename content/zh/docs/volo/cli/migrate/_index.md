@@ -1,7 +1,7 @@
 ---
 title: "旧版本迁移"
 linkTitle: "旧版本迁移"
-weight: 1
+weight: 4
 keywords: ["Volo", "cli", "版本迁移"]
 description: "Volo-Cli 旧版本迁移"
 ---
