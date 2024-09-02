@@ -21,8 +21,9 @@ TODO:
 - 高易用性
 
 - 高性能
-  a
+  
   关于详细的性能数据，可参考 [volo-benchmark](https://github.com/cloudwego/volo-benchmark/grpc)
+
 - 高扩展性
     
 ## 相关项目
