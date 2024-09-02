@@ -1,6 +1,6 @@
 ---
 title: "xDS Support"
-date: 2022-08-26
+date: 2024-08-31
 weight: 8
 keywords: ["Kitex", "xDS", "Proxyless", "Istio"]
 description: Kitex supports the xDS protocol and runs in Proxyless mode, managed by the service mesh in unify.
@@ -19,6 +19,12 @@ Kitex supports xDS API via the extension of [kitex-contrib/xds](https://github.c
   - [ThriftProxy](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/thrift_proxy/v3/thrift_proxy.proto): configure via patching [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/).
 - Timeout:
   - Configuration inside `HTTP route configuration`: configure via VirtualService.
+- Retry:
+  - Configuration inside [RetryPolicy](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/route/v3/route_components.proto#envoy-v3-api-msg-config-route-v3-retrypolicy), configure via [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/).
+- Rate Limit:
+  - Configuration inside [LocalRateLimitFilter](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/local_rate_limit_filter), configure via [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/) .
+- Circuit Breaker:
+  - Configuration inside [OutlierDetection](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/outlier_detection.proto), configure via [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/).
 
 ## Usage
 
@@ -35,6 +41,7 @@ The `xdsClient` is responsible for the interaction with the xDS Server (i.e. Ist
 - `POD_NAMESPACE`: the namespace of the current service.
 - `POD_NAME`: the name of this pod.
 - `INSTANCE_IP`: the ip of this pod.
+- `KITEX_XDS_METAS`: the metadata of this connection to Istiod, which is used to identify the pod.
 
 Add the following part to the definition of your container that uses xDS-enabled Kitex client.
 
@@ -51,22 +58,17 @@ valueFrom:
 valueFrom:
   fieldRef:
     fieldPath: status.podIP
+- name: KITEX_XDS_METAS
+  value: '{"CLUSTER_ID":"Kubernetes","DNS_AUTO_ALLOCATE":"true","DNS_CAPTURE":"true","INSTANCE_IPS":"$(INSTANCE_IP)","ISTIO_VERSION":"1.13.5","NAMESPACE":"$(POD_NAMESPACE)"}'
 ```
 
 ### Client-side
 
-For now, we only provide the support on the client-side.
-To use a xds-enabled Kitex client, you should specify `destService` using the URL of your target service and add one option `WithXDSSuite`.
-
-- Construct a `xds.ClientSuite` that includes `RouteMiddleware` and `Resolver`, and then pass it into the `WithXDSSuite` option.
+To use a xds-enabled Kitex client, you should specify `destService` using the URL of your target service and add one option `xds.NewClientSuite()`.
 
 ```
 // import "github.com/cloudwego/kitex/pkg/xds"
-
-client.WithXDSSuite(xds.ClientSuite{
-	RouterMiddleware: xdssuite.NewXDSRouterMiddleware(),
-	Resolver:         xdssuite.NewXDSResolver(),
-}),
+xds.NewClientSuite()
 ```
 
 - The URL of the target service should be in the format, which follows the format in [Kubernetes](https://kubernetes.io/):
@@ -77,6 +79,10 @@ client.WithXDSSuite(xds.ClientSuite{
 <service-name>.<namespace>:<service-port>
 <service-name>:<service-port> // access the <service-name> in same namespace.
 ```
+
+### Server-side
+
+The server-side add the option with `xds.NewLimiter()` to enable limit traffic policy.
 
 #### Traffic route based on Tag Match
 
@@ -155,9 +161,125 @@ spec:
     timeout: 0.5s
 ```
 
+#### Circuit Breaker
+Kitex supports the circuit breaker on service and instance dimension, default is for instance, you can use `xdssuite.WithServiceCircuitBreak(true)` to switch the circuit breaker.
+
+The following example shows how to configure the circuit breaker on the client side. The configuration is as follows:
+- `spec.configPatches[0].match.cluster.service`: the service name of the target service, should obey the specification of the FQDN.
+- `failure_percentage_threshold`: the threshold of the failure rate, when the failure rate exceeds this value, the circuit breaker will be triggered.
+- `failure_percentage_request_volume`: the number of requests that need to be collected to calculate the failure rate.
+```
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: circuitbreak-client
+  namespace: default
+spec:
+  configPatches:
+  - applyTo: CLUSTER
+    match:
+      context: SIDECAR_OUTBOUND
+      cluster:
+        service: hello.default.svc.cluster.local
+    patch:
+      operation: MERGE
+      value:
+        outlier_detection:
+          failure_percentage_threshold: 10
+          failure_percentage_request_volume: 100
+  workloadSelector:
+    labels:
+      # the label of the client pod.
+      app.kubernetes.io/name: kitex-client
+```
+
+#### Retry
+We can define retry policy configuration via [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/).
+
+The following example shows how to configure the retry policy on the client side. The configuration is as follows:
+- `spec.configPatches[0].match.routeConfiguration.name`: the service name of the target service, should obey the specification of the FQDN.
+- `retryPolicy.numRetries`: the number of retries.
+- `retryPolicy.perTryTimeout`: the timeout of each retry.
+- `retryPolicy.retryBackOff.baseInterval`: the base interval of the retry.
+- `retryPolicy.retryBackOff.maxInterval`: the maximum interval of the retry.
+- `retryPolicy.retriableHeaders`: as the differents between xDS and kitex configuration, use the `kitexRetryErrorRate` and `kitexRetryMethods` to indicates the `errorRate` and `retryMethods` to match the specific methods that need to implement the retry strategy. Use commas to separate several methods. It is recommended to configure the retry strategy only for idempotent methods.
+```
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: retry-policy
+  namespace: default
+spec:
+  configPatches:
+  - applyTo: HTTP_ROUTE
+    match:
+      context: SIDECAR_OUTBOUND
+      routeConfiguration:
+        name: hello.default.svc.cluster.local:21001
+        vhost: 
+          name: hello.default.svc.cluster.local:21001
+    patch:
+      operation: MERGE
+      value:
+        route:
+          retryPolicy:
+            numRetries: 3
+            perTryTimeout: 100ms
+            retryBackOff:
+              baseInterval: 100ms
+              maxInterval: 100ms
+            retriableHeaders:
+              - name: "kitexRetryErrorRate"
+                stringMatch:
+                  exact: "0.29"
+              - name: "kitexRetryMethods"
+                stringMatch:
+                  exact: "Echo,Greet"
+  workloadSelector:
+    labels:
+      # the label of the service pod.
+      app.kubernetes.io/name: kitex-client
+```
+
+#### Limit
+We can define rate limit configuration via [EnvoyFilter](https://istio.io/latest/docs/reference/config/networking/envoy-filter/).
+
+The following example shows how to configure the limit policy on the server side. The configuration is as follows:
+- `tokens_per_fill`: the qps limit, as the kitex will fill tokens into the bucket every 100ms, so the uint tokens is tokens_per_fill / 10, should set the number which is multiples of 10. 
+```
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: ratelimit-client
+  namespace: default
+spec:
+  configPatches:
+    - applyTo: HTTP_FILTER
+      match:
+        context: SIDECAR_INBOUND
+        listener:
+          filterChain:
+            filter:
+              name: "envoy.filters.network.http_connection_manager"
+      patch:
+        operation: INSERT_BEFORE
+        value:
+          name: envoy.filters.http.local_ratelimit
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
+            stat_prefix: http_local_rate_limiter
+            token_bucket:
+              # the qps limit
+              tokens_per_fill: 100
+  workloadSelector:
+    labels:
+      # the label of the server pod.
+      app.kubernetes.io/name: kitex-server
+```
+
 ## Example
 
-The usage is as follows:
+The usage of client is as follows:
 
 ```
 import (
@@ -178,10 +300,7 @@ func main() {
 	// initialize the client
 	cli, err := greetservice.NewClient(
 		destService,
-		client.WithXDSSuite(xds2.ClientSuite{
-			RouterMiddleware: xdssuite.NewXDSRouterMiddleware(),
-			Resolver:         xdssuite.NewXDSResolver(),
-		}),
+		xds2.NewClientSuite(),
 	)
 
 	req := &proxyless.HelloRequest{Message: "Hello!"}
@@ -189,6 +308,37 @@ func main() {
 		ctx,
 		req,
 	)
+}
+```
+The usage of server is as follows:
+```
+package main
+
+import (
+        "log"
+        "net"
+
+        "github.com/cloudwego/kitex/pkg/klog"
+        "github.com/cloudwego/kitex/server"
+        xdsmanager "github.com/kitex-contrib/xds"
+        "github.com/kitex-contrib/xds/xdssuite"
+        echo "github.com/whalecold/kitex-demo/helloworld/kitex_gen/hello/echoservice"
+)
+
+func main() {
+        if err := xdsmanager.Init(); err != nil {
+                klog.Fatal(err)
+        }
+        addr, _ := net.ResolveTCPAddr("tcp", ":6789")
+        svr := echo.NewServer(new(GreetServiceImplProto),
+                server.WithServiceAddr(addr),
+                xdssuite.NewLimiter(),
+        )
+
+        err := svr.Run()
+        if err != nil {
+                log.Println(err.Error())
+        }
 }
 ```
 
@@ -211,12 +361,8 @@ spec:
     mode: DISABLE
 ```
 
-### Limited support for Service Governance
-
-Current version only support Service Discovery, Traffic route and Timeout Configuration via xDS on the client-side.
-
-Other features supported via xDS, including Load Balancing, Rate Limit and Retry etc., will be added in the future.
+### The Loadbalancer dynamic configuration is not supported for now.
 
 ## Dependencies
 
-Kitex >= v0.4.0
+Kitex >= v0.10.3
