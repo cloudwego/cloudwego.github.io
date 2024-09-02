@@ -202,7 +202,7 @@ The following example shows how to configure the retry policy on the client side
 - `retryPolicy.perTryTimeout`: the timeout of each retry.
 - `retryPolicy.retryBackOff.baseInterval`: the base interval of the retry.
 - `retryPolicy.retryBackOff.maxInterval`: the maximum interval of the retry.
-- `retryPolicy.retriableHeaders`: as the difference between xDS and kitex configuration, use the `kitexRetryErrorRate` and `kitexRetryMethods` to indicates the `errorRate` and `retryMethods` to match the specific methods that need to implement the retry strategy. Use commas to separate several methods. It is recommended to configure the retry strategy only for idempotent methods.
+- `retryPolicy.retriableHeaders`: as the differences between xDS and Kitex configuration, use the `kitexRetryErrorRate` and `kitexRetryMethods` to specify the `errorRate` and `retryMethods` to match the specific methods that required to implement the retry strategy, use commas to separate multiple methods. It is recommended that the retry strategy is only configured for idempotent methods.
 ```
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
