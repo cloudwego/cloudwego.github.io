@@ -165,7 +165,7 @@ spec:
   Kitex 支持服务级别和实例级别的熔断，xDS 模块默认使用实例级别熔断，如果要切换到服务级别使用 `xdssuite.WithServiceCircuitBreak(true)`方法进行切换。
 
 下面的例子表示对 default 命名空间下, 带有 `app.kubernetes.io/name: kitex-client` 标签的 pod 中访问 hello 的 client 生效的熔断配置，现在只支持针对服务、客户端的配置，不支持以方法的维度进行熔断，参数介绍：
-- `spec.configPatches[0].match.cluster.service`：表示访问的服务，需要遵循 Kuberntes 的 FQDN 格式。
+- `spec.configPatches[0].match.cluster.service`：表示访问的服务，需要遵循 Kubernetes 的 FQDN 格式。
 - `failure_percentage_threshold`：触发熔断阈值，当错误率达到该值时进行熔断。
 - `failure_percentage_request_volume`：触发熔断的最小请求量，当总请求量小于该值时不会触发熔断。
 ```
