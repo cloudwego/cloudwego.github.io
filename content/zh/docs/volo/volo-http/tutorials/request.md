@@ -87,24 +87,24 @@ pub fn user_login_router() -> Router {
 ## 默认实现了 `extractor` 的类型
 
 **FromContext**
-- Address
-- Uri
-- Method
-- Option<T>
-- Result<T, T::Rejection>
-- Query<T>
-- WebSocketUpgrade
+- `Address`
+- `Uri`
+- `Method`
+- `Option<T>`
+- `Result<T, T::Rejection>`
+- `Query<T>`
+- `WebSocketUpgrade`
 
 **FromRequest**
-- Option<T>
-- Result<T, T::Rejection>
-- ServerRequest<B>
-- Vec<u8>
-- Bytes
-- String
-- FastStr
-- MaybeInvalid<T>
-- Form<T>
+- `Option<T>`
+- `Result<T, T::Rejection>`
+- `ServerRequest<B>`
+- `Vec<u8>`
+- `Bytes`
+- `String`
+- `FastStr`
+- `MaybeInvalid<T>`
+- `Form<T>`
 
 ## 为自己的类型实现 extractor
 
@@ -121,7 +121,7 @@ use volo_http::{
     server::extract::FromContext,
 };
 
-const TT_LOGID_KEY: &str = "x-tt-logid";
+const LOGID_KEY: &str = "x-logid";
 
 pub enum LogID {
     ID(String),
@@ -135,7 +135,7 @@ impl FromContext for LogID {
         _: &mut ServerContext,
         parts: &mut Parts,
     ) -> Result<Self, Self::Rejection> {
-        let id = match parts.headers.get(TT_LOGID_KEY) {
+        let id = match parts.headers.get(LOGID_KEY) {
             Some(log_id) => LogID::ID(log_id.to_str().unwrap().to_owned()),
             None => LogID::None,
         };

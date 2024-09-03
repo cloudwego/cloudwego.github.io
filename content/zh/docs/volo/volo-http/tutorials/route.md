@@ -74,19 +74,19 @@ async fn main() {
 
 ## 路由方法
 
-使用如 `use volo_http::server::route::{get}` 导入路由为 **GET** 的方法
+使用如 `use volo_http::server::route::get` 导入路由为 **GET** 的方法
 
 目前支持的路由方法有:
 
-- options
-- get
-- post
-- put
-- delete
-- head
-- trace
-- connect
-- trace
+- `options`
+- `get`
+- `post`
+- `put`
+- `delete`
+- `head`
+- `trace`
+- `connect`
+- `trace`
 
 ## 路由类型
 
@@ -112,13 +112,13 @@ async fn index_router() -> Router {
 
 volo 支持使用 `{id}` 这样的命名参数设置路由, 并且命名参数只匹配单个路径段
 
-如果设置 `/user/:id` 路由，则匹配情况如下:
+如果设置 `/user/{id}` 路由，则匹配情况如下:
 
-| **路径**            | **是否匹配** | **参数值** |
-|:------------------|:--------:|:-------:|
-| /user/100         |    匹配    |   100   |
-| /user/101/profile |   不匹配    |    -    |
-| /user/            |   不匹配    |    -    |
+| **路径**              | **是否匹配** | **参数值** |
+|:--------------------|:--------:|:-------:|
+| `/user/100`         |    匹配    |   100   |
+| `/user/101/profile` |   不匹配    |    -    |
+| `/user/`            |   不匹配    |    -    |
 
 当然 volo 也是支持多个命名参数的
 
@@ -146,13 +146,13 @@ volo 支持使用 `*path` 这样的通配参数设置路由，并且通配参数
 
 通配参数需放在路由的末尾。
 
-如果我们设置 `/src/*path` 路由，匹配情况如下：
+如果我们设置 `/src/{*path}` 路由，匹配情况如下：
 
-| ｜ **路径**                | **是否匹配** |      **参数值**       |
-|:------------------------|:--------:|:------------------:|
-| /src/                   |   不匹配    |         -          |
-| /src/somefile.rs        |    匹配    |    somefile.rs     | 
-| /src/subdir/somefile.rs |    匹配    | subdir/somefile.rs |
+| **路径**                    | **是否匹配** |      **参数值**       |
+|:--------------------------|:--------:|:------------------:|
+| `/src/`                   |   不匹配    |         -          |
+| `/src/somefile.rs`        |    匹配    |    somefile.rs     | 
+| `/src/subdir/somefile.rs` |    匹配    | subdir/somefile.rs |
 
 **代码示例**:
 
@@ -237,7 +237,7 @@ async fn router() -> Router {
 
 ## fallback
 
-volo 提供了 **fallback** 功能用于处理请求 url 或 method 匹配不上的情况
+volo 提供了 **fallback** 功能用于处理请求 url 或 method 不匹配的情况
 
 ### url
 
@@ -251,7 +251,7 @@ async fn index_handler() -> &'static str {
 }
 
 async fn fallback_handler() -> &'static str {
-    "method not matched"
+    "404 Not Found"
 }
 async fn router() -> Router {
     Router::new()

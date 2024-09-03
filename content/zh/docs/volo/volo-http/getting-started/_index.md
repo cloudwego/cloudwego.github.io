@@ -9,7 +9,7 @@ description: "volo-http 快速上手与基础教程。"
 ## 准备开发环境
 
 1. 如果您之前未搭建过 Rust 开发环境，可以参考[Install Rust](https://www.rust-lang.org/tools/install)
-2. 推荐使用最新版本的 Rust，或保证 Rustc >= 1.70
+2. 推荐使用最新版本的 Rust，或保证 Rustc >= 1.80.0
 3. 如果您未安装过 **volo-cli**，请参考[快速开始](https://www.cloudwego.io/zh/docs/volo/volo-li/getting-started/)
 
 ## 创建一个 Server
@@ -82,14 +82,14 @@ description: "volo-http 快速上手与基础教程。"
 
 接下来，你可能需要选择合适的组件，组装在一起，和你的系统进行对接。
 
-Volo 维护的相关生态会集中在：https://github.com/volo-rs 中，我们正在努力打造我们的生态，也非常欢迎大家一起参与～
+Volo 维护的相关生态会集中在：<https://github.com/volo-rs> 中，我们正在努力打造我们的生态，也非常欢迎大家一起参与～
 
-如果有比较急缺的组件，也欢迎在官方仓库：https://github.com/cloudwego/volo 的 issue 中提出，我们也会优先支持社区最急缺的组件。
+如果有比较急缺的组件，也欢迎在官方仓库：<https://github.com/cloudwego/volo> 的 issue 中提出，我们也会优先支持社区最急缺的组件。
 
 同时，欢迎加入我们的飞书用户群，交流 Volo 的使用心得～
 
-<div  align="center">
-<img src="/img/docs/feishu_group_volo.png" width = "400"  alt="Volo_feishu" />
+<div align="center">
+<img src="/img/docs/feishu_group_volo.png" width = "400" alt="Volo_feishu" />
 </div>
 <br/><br/>
 

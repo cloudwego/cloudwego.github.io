@@ -55,7 +55,7 @@ async fn main() {
 - `from_fn` 接收 **Request** 并返回 **Response**, 在其函数中可以调用内层服务, 也可以直接返回 **Response**
 - `map_response` 作用于 **Response**, 接收 **Response** 并返回处理过的 **Response**
 
-### from_fn
+### `from_fn`
 
 `from_fn` 使用的函数可以通过 `extractor` 提取特定类型的参数,
 
@@ -169,9 +169,9 @@ pub async fn append_headers(resp: ServerResponse) -> impl IntoResponse {
 #[volo::main]
 async fn main() {
   let app = Router::new()
-          /* ...... */
-          .layer(middleware::map_response(append_header))
-          .layer(middleware::map_response(append_headers));
+      /* ...... */
+      .layer(middleware::map_response(append_header))
+      .layer(middleware::map_response(append_headers));
 
   let addr = "[::]:8080".parse::<SocketAddr>().unwrap();
   let addr = Address::from(addr);
