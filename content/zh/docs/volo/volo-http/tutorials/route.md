@@ -197,7 +197,8 @@ async fn param_router() -> Router {
 
 ### 路由参数取值
 
-- **PathParamsMap**
+- `PathParamsMap`
+
   提供一个路由参数的 `AHashmap`
 
   ```rust
@@ -209,7 +210,8 @@ async fn param_router() -> Router {
   }
   ```
 
-- **PathParams**
+- `PathParams`
+  
   用户可使用模型匹配特性自定义路由参数取值
 
   ```rust
