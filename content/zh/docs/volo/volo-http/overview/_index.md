@@ -11,10 +11,6 @@ description: "Volo-HTTP 架构设计、框架特点、框架性能。"
 Volo-HTTP 是 Rust 语言的 HTTP 微服务框架, 使用了基于 AFIT 和 RPITIT 实现的 [Motore](https://github.com/cloudwego/motore) 作为中间件抽象层，并结合字节跳动内部的需求，
 使其具有高易用性、高性能、高扩展性的特点，使用 Volo-HTTP，可以快速开发一个基于 HTTP 协议的微服务。
 
-###  架构设计
-
-![Volo-HTTP](/img/docs/volo-http-architecture.svg)
-
 ###  框架特点
 
 #### 高性能
