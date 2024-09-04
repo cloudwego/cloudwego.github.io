@@ -10,11 +10,11 @@ description: "Volo-HTTP 快速上手与基础教程。"
 
 1. 如果您之前未搭建过 Rust 开发环境，可以参考[Install Rust](https://www.rust-lang.org/tools/install)
 2. 推荐使用最新版本的 Rust，或保证 Rustc >= 1.80.0
-3. 如果您未安装过 volo-cli，请参考[快速开始](https://www.cloudwego.io/zh/docs/volo/volo-li/getting-started/)
+3. 如果您未安装过 `volo-cli`，请参考[快速开始](https://www.cloudwego.io/zh/docs/volo/volo-li/getting-started/)
 
 ## 创建一个 Server
 
-> 以下示例 volo-cli 版本为 **0.10.3**, volo-http 版本为 **0.2.14**
+> 以下示例 `volo-cli` 版本为 **0.10.3**, volo-http 版本为 **0.2.14**
 
 1. 使用 **volo-cli** 创建 http 项目脚手架
 

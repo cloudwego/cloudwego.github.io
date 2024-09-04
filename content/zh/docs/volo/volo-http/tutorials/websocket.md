@@ -51,8 +51,7 @@ async fn ws_router() -> Router {
 
 可以通过 `Config` 结构体来配置 **WebSocket** 的选项，例如传输配置和协议支持。
 
-
-**传输设置**
+### 传输设置
 
 具体配置请参考 `tokio_tungstenite::tungstenite::protocol::WebSocketConfig`
 
@@ -66,7 +65,7 @@ let config = WebSocketConfig::new().set_transport(WebSocketTransConfig {
 });
 ```
 
-**设置支持的协议**
+### 设置支持的协议
 
 ```rust
 use volo_http::server::utils::WebSocketConfig; 

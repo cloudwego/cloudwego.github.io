@@ -10,7 +10,7 @@ volo 框架提供了同名的命令行工具，提供以下功能:
 
 1. 服务端骨架生成
 
-   支持通过 thrift 和 protobuf 的 IDL 生成 http 或 rpc 服务端项目的骨架
+   支持通过 Thrift, Protobuf 的 IDL 生成 HTTP 或 RPC 服务端项目的骨架
 
 2. 桩代码管理
 
@@ -18,7 +18,7 @@ volo 框架提供了同名的命令行工具，提供以下功能:
 
 ## Part 1. 安装命令行工具
 
-volo 框架提供了同名的命令行工具，提供以下功能服务端项目骨架生成，桩代码生成管理等
+Volo 框架提供了同名的命令行工具，提供以下功能服务端项目骨架生成，桩代码生成管理等
 
 ```bash
 cargo install volo-cli
@@ -34,7 +34,7 @@ volo help
 
 就能看到类似以下输出啦：
 
-```bash
+```plain
 Usage: volo [OPTIONS] <COMMAND>
 
 Commands:
@@ -90,7 +90,7 @@ service ItemService {
 
 这时候，我们整个目录的结构如下：
 
-```bash
+```plain
 .
 ├── Cargo.toml
 ├── idl

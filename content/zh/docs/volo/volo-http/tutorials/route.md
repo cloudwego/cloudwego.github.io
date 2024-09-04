@@ -19,8 +19,7 @@ description: "Volo-HTTP 提供的路由功能"
 
 路由的 handler 可以使用 `get`, `post` 等函数创建。
 
-> 在 `volo_http::route` 包中可导入对应函数，
-> 如 `get` 则通过 `volo_http::route::get` 导入
+在 `volo_http::route` 包中可导入对应函数， 如 `get` 则通过 `volo_http::route::get` 导入
 
 首先, 我们需要一个简单的 handler:
 
@@ -35,9 +34,7 @@ async fn foo_handler() -> &'static str {
 可以通过以下的方式，在创建一个 `Router` 后使用 `route` 方法创建:
 
 ```rust
-use volo_http::server::{
-    route::{get, Router},
-};
+use volo_http::server::route::{get, Router};
 
 pub fn test_router() -> Router {
     Router::new().route("/foo", get(foo_handler))
@@ -47,9 +44,7 @@ pub fn test_router() -> Router {
 可以对 `get` 得到的 `MethodRouter` 进行链式调用，为其设置其他 method 的 handler:
 
 ```rust
-use volo_http::server::{
-    route::{get, post, Router},
-};
+use volo_http::server::route::{get, Router};
 
 pub fn test_router() -> Router {
     Router::new()
@@ -60,9 +55,7 @@ pub fn test_router() -> Router {
 也可以通过对 `Router` 的链式调用来创建更多的路由规则:
 
 ```rust
-use volo_http::server::{
-    route::{get, post, Router},
-};
+use volo_http::server::route::{get, Router};
 
 pub fn test_router() -> Router {
     Router::new()
@@ -166,7 +159,7 @@ async fn param_router() -> Router {
 
 Volo-HTTP 支持使用 `*path` 这样的通配参数设置路由, 并且通配参数回匹配所有内容。
 
-> 注意: 通配参数需放在路由的末尾。
+**注意: 通配参数需放在路由的末尾。**
 
 如果我们设置 `/src/{*path}` 路由，匹配情况如下：
 

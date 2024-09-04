@@ -19,7 +19,7 @@ use volo_http::{
     http::StatusCode
 };
 
-// 默认返回 'StatusCode::OK`
+// 默认返回 `StatusCode::OK`
 async fn ping() {}
 
 // ref: [RFC2324](https://datatracker.ietf.org/doc/html/rfc2324)
@@ -119,10 +119,11 @@ pub fn response_router() -> Router {
 }
 ```
 
-- 使用 `Result<&'static str, StatusCode>` 作为返回值类型，  
-  可以在返回 Ok 时使用 str 的内容作为 `Response`，
-  在返回 Err 时使用 `StatusCode` 作为 `Response` 的状态码，并返回一个空的实现。
-- 而使用 `(StatusCode, String)` 可以将该 `String` 作为 `Response` 的 Body，并将 `Response` 的状态码设为 `StatusCode` 的值。
+使用 `Result<&'static str, StatusCode>` 作为返回值类型，  
+可以在返回 Ok 时使用 str 的内容作为 `Response`，
+在返回 Err 时使用 `StatusCode` 作为 `Response` 的状态码，并返回一个空的实现。
+
+而使用 `(StatusCode, String)` 可以将该 `String` 作为 `Response` 的 Body，并将 `Response` 的状态码设为 `StatusCode` 的值。
 
 ## 为自己的类型实现 IntoResponse
 

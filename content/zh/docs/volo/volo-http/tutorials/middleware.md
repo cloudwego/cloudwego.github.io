@@ -132,7 +132,7 @@ pub async fn random_reject(
 
 这种形式可以用于鉴权等场景, 如果请求不允许被访问该服务, 可以直接返回一个特定的 Response, 而无需执行后续的 Service。
 
-### map_response
+### `map_response`
 
 `map_response` 作用于 Response, 接收 Response 并返回处理过的 Response
 
