@@ -1,5 +1,5 @@
 ---
-title: “Static-FS”
+title: Static-FS
 date: 2024-09-02
 weight: 5
 keywords:

@@ -163,4 +163,4 @@ pub fn logid_router() -> Router {
 One thing to note is that when implementing a handler, the types `Uri`, `Method`, `Address`, etc. are extracted via `FromContext`.
 Types such as Body are not consumed, and can be listed in any of the handler's parameters.
 However, since Body can only be consumed once, types such as `String`, `Bytes`, `From`, `Json`, etc. extracted by `FromRequest`
-** So it can only be placed in the last parameter of the handler **.
+**So it can only be placed in the last parameter of the handler**.
