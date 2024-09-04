@@ -64,11 +64,11 @@ valueFrom:
 
 ### Client-side
 
-To use a xds-enabled Kitex client, you should specify `destService` using the URL of your target service and add one option `xds.NewClientSuite()`.
+To use a xds-enabled Kitex client, you should specify `destService` using the URL of your target service and add one option `xdssuite.NewClientSuite()`.
 
 ```
-// import "github.com/cloudwego/kitex/pkg/xds"
-xds.NewClientSuite()
+// "github.com/kitex-contrib/xds/xdssuite"
+xdssuite.NewClientSuite()
 ```
 
 - The URL of the target service should be in the format, which follows the format in [Kubernetes](https://kubernetes.io/):
@@ -82,7 +82,7 @@ xds.NewClientSuite()
 
 ### Server-side
 
-The server-side add the option with `xds.NewLimiter()` to enable limit traffic policy.
+The server-side add the option with `xdssuite.NewLimiter()` to enable limit traffic policy.
 
 #### Traffic route based on Tag Match
 
