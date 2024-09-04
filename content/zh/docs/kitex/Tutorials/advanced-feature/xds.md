@@ -65,13 +65,13 @@ valueFrom:
 ### Kitex 
 
 目前，我们在 Kitex 客户端提供了服务发现、服务路由、超时、重试以及熔断的功能，Kitex 服务端提供了限流的功能。
-想要使用支持 xds 的 Kitex 客户端，请在构造 Kitex Client 时将 `destService` 指定为目标服务的 URL，并添加一个选项 `xdssuite.NewClientSuite`，该函数中包含用于服务路由的`RouteMiddleware`中间件和用于服务发现的 `Resolver` 以及各种治理策略的插件。
+想要使用支持 xds 的 Kitex 客户端，请在构造 Kitex Client 时将 `destService` 指定为目标服务的 URL，并添加一个选项 `xdssuite.NewClientOption`，该函数中包含用于服务路由的`RouteMiddleware`中间件和用于服务发现的 `Resolver` 以及各种治理策略的插件。
 
 ```
 //  "github.com/kitex-contrib/xds/xdssuite"
 
 
-xdssuite.NewClientSuite()
+xdssuite.NewClientOption()
 ```
 
 - 目标服务的 URL 格式应遵循 [Kubernetes](https://kubernetes.io/) 中的格式：
@@ -342,7 +342,7 @@ func main() {
 	// initialize the client
 	cli, err := greetservice.NewClient(
 		destService,
-		xdssuite.NewClientSuite(),
+		xdssuite.NewClientOption(),
 	)
 
 	req := &proxyless.HelloRequest{Message: "Hello!"}

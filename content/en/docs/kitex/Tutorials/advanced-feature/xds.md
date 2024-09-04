@@ -64,11 +64,11 @@ valueFrom:
 
 ### Client-side
 
-To use a xds-enabled Kitex client, you should specify `destService` using the URL of your target service and add one option `xdssuite.NewClientSuite()`.
+To use a xds-enabled Kitex client, you should specify `destService` using the URL of your target service and add one option `xdssuite.NewClientOption()`.
 
 ```
 // "github.com/kitex-contrib/xds/xdssuite"
-xdssuite.NewClientSuite()
+xdssuite.NewClientOption()
 ```
 
 - The URL of the target service should be in the format, which follows the format in [Kubernetes](https://kubernetes.io/):
@@ -299,7 +299,7 @@ func main() {
 	// initialize the client
 	cli, err := greetservice.NewClient(
 		destService,
-		xdssuite.NewClientSuite(),
+		xdssuite.NewClientOption(),
 	)
 
 	req := &proxyless.HelloRequest{Message: "Hello!"}
