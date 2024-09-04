@@ -14,7 +14,7 @@ description: "volo-http 路由请求参数提取"
 
 ## 路由参数的提取
 
-volo 的 handler 可以接受多个 `extractor` 作为参数, 例如:
+`Volo=HTTP` 的 handler 可以接受多个 `extractor` 作为参数, 例如:
 
 ```rust
 use volo_http::{
@@ -30,9 +30,9 @@ async fn post_something(data: String) -> string {
 }
 ```
 
-除此之外，handler 可以使用 json, form, query 等可以被反序列化的对象作为参数
+除此之外，handler 可以使用 `json`, `form`, `query` 等可以被反序列化的对象作为参数
 
-这里使用了 Rust 模式匹配的特性来接收参数:
+这里使用了 Rust **模式匹配**的特性来接收参数:
 
 ```rust
 use volo_http::{
@@ -81,8 +81,9 @@ pub fn user_login_router() -> Router {
 
 可以作为 handler 参数的类型都实现了 `FromContext` 或 `FromRequest`, 这种类型我们通常称为 `extractor`。
 
-其中，`FromContext` 不会消费请求的 body，即 POST 等方法传入的数据，
-而 `FromRequest` 会消费请求的 body，所以 handler 的参数中最多只能有一个实现了 `FromRequest` 的类型。
+其中，`FromContext` **不会消费请求的 body**，即 **POST** 等方法传入的数据，
+
+而 `FromRequest` **会消费请求的 body**，所以 handler 的参数中最多只能有一个实现了 `FromRequest` 的类型。
 
 ## 默认实现了 `extractor` 的类型
 
@@ -145,7 +146,7 @@ impl FromContext for LogID {
 }
 ```
 
-实现了 LogID 这个类型后，就可以将其作为 extractor，直接使用 handler 接收了:
+实现了 LogID 这个类型后，就可以将其作为 `extractor`，直接使用 handler 接收了:
 
 ```rust
 async fn show_logid(id: LogID) -> String {
@@ -162,5 +163,5 @@ pub fn logid_router() -> Router {
 
 需要注意的一点是，在实现一个 handler 时，对于 `Uri`, `Method`, `Address` 等这一类通过 `FromContext` 提取，
 不会消费 Body 等类型可以在 handler 的参数中任意排列，
-但由于 Body 只能被消费一次，所以通过 `FromRequest` 提取的如 String, Bytes, From, Json 等类型，
-只能放在 handler 最后一个参数的位置。
+但由于 Body 只能被消费一次，所以通过 `FromRequest` 提取的如 `String`, `Bytes`, `From`, `Json` 等类型，
+**只能放在 handler 最后一个参数的位置**。

@@ -9,7 +9,7 @@ keywords:
 description: "volo-http Static-FS"
 ---
 
-`volo-http` 提供了 ServeDir 函数用于注册静态文件
+`volo-http` 提供了 `ServeDir` 函数用于注册静态文件
 
 ```rust
 use volo_http::server::{

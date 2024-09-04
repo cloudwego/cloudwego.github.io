@@ -9,11 +9,11 @@ keywords:
 description: "volo-http WebSocket"
 ---
 
-`volo-http` 支持 WebSocket 协议
+`Volo-HTTP` 支持 WebSocket 协议
 
 ## 编写 handler
 
-由于 `volo-http` 内置的 `WebSocket` 类型实现了 `FromContext`, 所以我们可以直接在 handler 里面添加 **WebSocket extractor**
+由于 `Volo-HTTP` 内置的 `WebSocket` 类型实现了 `FromContext`, 所以我们可以直接在 handler 里面添加 **WebSocket extractor**
 
 下面是一个简单的 WebSocket handler 示例，它会回显收到的文本消息：
 
@@ -49,7 +49,7 @@ async fn ws_router() -> Router {
 
 ## WebSocket 设置
 
-可以通过 Config 结构体来配置 WebSocket 的选项，例如传输配置和协议支持。
+可以通过 `Config` 结构体来配置 **WebSocket** 的选项，例如传输配置和协议支持。
 
 
 **传输设置**
@@ -76,7 +76,7 @@ let config = WebSocketConfig::new().set_protocols(["graphql-ws", "graphql-transp
 
 ## 错误处理
 
-在处理 WebSocket 连接时，可能会遇到各种错误，例如连接升级失败。可以通过提供自定义的错误处理回调来处理这些错误。
+在处理 **WebSocket** 连接时，可能会遇到各种错误，例如连接升级失败。可以通过**提供自定义的错误处理回调**来处理这些错误。
 
 ```rust
 use std::collections::HashMap;
