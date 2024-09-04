@@ -5,7 +5,7 @@ weight: 2
 keywords:
         [
           "Route",
-          "Router group",
+          "Route group",
           "Static route",
           "parameter route",
           "route priority",
@@ -217,7 +217,7 @@ async fn param_router() -> Router {
   }
   ```
 
-## 路由组
+## Route Group
 
 Volo-HTTP provides the ability to route `nests`, which are used to support **route grouping**.
 
