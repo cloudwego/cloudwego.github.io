@@ -284,7 +284,6 @@ The usage of client is as follows:
 ```
 import (
 	"github.com/cloudwego/kitex/client"
-	xds2 "github.com/cloudwego/kitex/pkg/xds"
 	"github.com/kitex-contrib/xds"
 	"github.com/kitex-contrib/xds/xdssuite"
 	"github.com/cloudwego/kitex-proxyless-test/service/codec/thrift/kitex_gen/proxyless/greetservice"
@@ -300,7 +299,7 @@ func main() {
 	// initialize the client
 	cli, err := greetservice.NewClient(
 		destService,
-		xds2.NewClientSuite(),
+		xdssuite.NewClientSuite(),
 	)
 
 	req := &proxyless.HelloRequest{Message: "Hello!"}

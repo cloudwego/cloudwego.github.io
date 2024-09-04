@@ -341,7 +341,7 @@ func main() {
 	// initialize the client
 	cli, err := greetservice.NewClient(
 		destService,
-		xds2.NewClientSuite(),
+		xdssuite.NewClientSuite(),
 	)
 
 	req := &proxyless.HelloRequest{Message: "Hello!"}
