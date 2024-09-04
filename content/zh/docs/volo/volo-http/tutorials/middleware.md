@@ -136,47 +136,49 @@ pub async fn random_reject(
 
 `map_response` 作用于 Response, 接收 Response 并返回处理过的 Response
 
-这种方式可以用于追加一些跨域相关的 Headers, 比如 `Access-Control-Allow-Methods` 等
+这种方式可以对 Response 进行一些通用逻辑的处理，比如追加跨域相关的 headers 或者设置 Cookies 等
 
-由于我们为以下类型实现了 `IntoResponse` 这个 trait, 所以可以通过 `map_response` 实现如下的功能:
+由于我们为以下类型实现了 `IntoResponse` 这个 trait:
 - `((HeaderName, HeaderValue), Response)`
 - `([(HeaderName, HeaderValue); N], Response`)
+
+可以在 `map_response` 中借助以下形式方便地实现为 Response 追加 headers 等功能:
 
 ```rust
 use std::net::SocketAddr;
 use volo::net::Address;
 use volo_http::{
-  response::ServerResponse,
-  server::{middleware, IntoResponse, Router},
-  Server,
+    response::ServerResponse,
+    server::{middleware, IntoResponse, Router},
+    Server,
 };
 
 pub async fn append_header(resp: ServerResponse) -> impl IntoResponse {
-  (("Header", "Value"), resp)
+    (("Header", "Value"), resp)
 }
 
 pub async fn append_headers(resp: ServerResponse) -> impl IntoResponse {
-  (
-    [
-      ("Header1", "Value1"),
-      ("Header2", "Value2"),
-      ("Header3", "Value3"),
-    ],
-    resp,
-  )
+    (
+        [
+            ("Header1", "Value1"),
+            ("Header2", "Value2"),
+            ("Header3", "Value3"),
+        ],
+        resp,
+    )
 }
 
 #[volo::main]
 async fn main() {
-  let app = Router::new()
-      /* ...... */
-      .layer(middleware::map_response(append_header))
-      .layer(middleware::map_response(append_headers));
+    let app = Router::new()
+        /* ...... */
+        .layer(middleware::map_response(append_header))
+        .layer(middleware::map_response(append_headers));
 
-  let addr = "[::]:8080".parse::<SocketAddr>().unwrap();
-  let addr = Address::from(addr);
+    let addr = "[::]:8080".parse::<SocketAddr>().unwrap();
+    let addr = Address::from(addr);
 
-  Server::new(app).byted().run(addr).await.unwrap();
+    Server::new(app).run(addr).await.unwrap();
 }
 ```
 
