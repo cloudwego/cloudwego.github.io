@@ -1,15 +1,15 @@
 ---
-title: "Static-FS"
+title: “Static-FS”
 date: 2024-09-02
 weight: 5
 keywords:
   [
-    "文件传输"
+    "File Transfer"
   ]
-description: "Volo-HTTP Static-FS"
+description: “Volo-HTTP Static-FS”
 ---
 
-Volo-HTTP 提供了 `ServeDir` 函数用于注册静态文件
+Volo-HTTP provides the `ServeDir` function for registering static files.
 
 ```rust
 use volo_http::server::{
@@ -24,6 +24,6 @@ async fn file_router() -> Router {
 }
 ```
 
-其中 `ServeDir::new` 的参数可指定路径进行传输
+where the `ServeDir::new` parameter specifies the path to be transmitted
 
-`"."` 表示传输当前命令执行路径的所有文件
+`”.” ` means transferring all files in the current command execution path.

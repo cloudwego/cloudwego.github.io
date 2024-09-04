@@ -1,20 +1,20 @@
 ---
-title: "路由请求"
+title: "Request"
 date: 2024-09-02
 weight: 3
 keywords:
   [
-    "路由",
-    "路由请求",
-    "参数",
+    "Route",
+    "Request",
+    "Parameter",
     "WebSocket"
   ]
-description: "Volo-HTTP 路由请求参数提取"
+description: "Volo-HTTP Request parameters extraction"
 ---
 
-## 路由参数的提取
+## Extraction of routing parameters
 
-Volo-HTTP 的 handler 可以接受多个 extractor 作为参数, 例如:
+Volo-HTTP's handler can take multiple extractors as arguments, e.g..
 
 ```rust
 use volo_http::Address;
@@ -28,9 +28,9 @@ async fn post_something(data: String) -> string {
 }
 ```
 
-除此之外，handler 可以使用 `json`, `form`, `query` 等可以被反序列化的对象作为参数
+In addition to this, handlers can take deserializable objects such as `json`, `form`, `query`, etc. as arguments.
 
-这里使用了 Rust **模式匹配**的特性来接收参数:
+The Rust **pattern matching** feature is used here to receive parameters: `json`, `form`, `query`, and so on.
 
 ```rust
 use volo_http::{
@@ -75,15 +75,16 @@ pub fn user_login_router() -> Router {
 }
 ```
 
-## 什么是 `extractor`?
+## What is `extractor`?
 
-可以作为 handler 参数的类型都实现了 `FromContext` 或 `FromRequest`, 这种类型我们通常称为 `extractor`。
+The types that can be used as handler arguments implement `FromContext` or `FromRequest`, which are often referred to as `extractor`.
 
-其中，`FromContext` **不会消费请求的 body**，即 **POST** 等方法传入的数据，
+Where `FromContext` **doesn't consume the body** of the request, i.e. the data passed in by methods such as **POST**,
+and `FromRequest` **doesn't consume the body** of the request.
 
-而 `FromRequest` **会消费请求的 body**，所以 handler 的参数中最多只能有一个实现了 `FromRequest` 的类型。
+Whereas `FromRequest` ** consumes the body** of the request, so the handler can only have at most one parameter of a type that implements `FromRequest`.
 
-## 默认实现了 `extractor` 的类型
+## Types that implement `extractor` by default
 
 **FromContext**
 - `Address`
@@ -105,11 +106,11 @@ pub fn user_login_router() -> Router {
 - `MaybeInvalid<T>`
 - `Form<T>`
 
-## 为自己的类型实现 extractor
+## Implementing extractors for your own types
 
-我们可以将自己的类型作为 handler 的参数直接接收，这需要为自己的类型实现 `FromContext` 或 `FromRequest`。
+We can receive our own types directly as arguments to a handler, which requires implementing `FromContext` or `FromRequest` for our own types.
 
-例如，我们可能会从请求的 header 中获取 LogID，这种情况下可以定义一个类型，然后为其实现 `FromContext`:
+For example, we might get the LogID from the header of a request, in which case we can define a type and implement `FromContext` for it:
 
 ```rust
 use std::convert::Infallible;
@@ -144,7 +145,7 @@ impl FromContext for LogID {
 }
 ```
 
-实现了 LogID 这个类型后，就可以将其作为 extractor，直接使用 handler 接收了:
+Once you have implemented the LogID type, you can use it as an extractor and receive it directly using a handler:
 
 ```rust
 async fn show_logid(id: LogID) -> String {
@@ -159,7 +160,7 @@ pub fn logid_router() -> Router {
 }
 ```
 
-需要注意的一点是，在实现一个 handler 时，对于 `Uri`, `Method`, `Address` 等这一类通过 `FromContext` 提取，
-不会消费 Body 等类型可以在 handler 的参数中任意排列，
-但由于 Body 只能被消费一次，所以通过 `FromRequest` 提取的如 `String`, `Bytes`, `From`, `Json` 等类型，
-**只能放在 handler 最后一个参数的位置**。
+One thing to note is that when implementing a handler, the types `Uri`, `Method`, `Address`, etc. are extracted via `FromContext`.
+Types such as Body are not consumed, and can be listed in any of the handler's parameters.
+However, since Body can only be consumed once, types such as `String`, `Bytes`, `From`, `Json`, etc. extracted by `FromRequest`
+** So it can only be placed in the last parameter of the handler **.

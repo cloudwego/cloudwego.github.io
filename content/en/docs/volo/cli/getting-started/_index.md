@@ -1,36 +1,36 @@
 ---
-title: "快速开始"
-linkTitle: "快速开始"
+title: "Getting Started"
+linkTitle: "Getting Started"
 weight: 2
-keywords: ["Volo", "cli", "快速开始", "安装"]
-description: "Volo-Cli 开发环境准备、快速上手与基础教程。"
+keywords: ["Volo", "cli", "Tutorial", "Install"]
+description: "This document covers the preparation of the development environment, quick start and basic tutorials of Volo-HTTP."
 ---
 
-volo 框架提供了同名的命令行工具，提供以下功能:
+Volo provides CLI tools of the same name, and it provide functions as follows:
 
-1. 服务端骨架生成
+1. Server-side scaffold generation
 
-   支持通过 Thrift, Protobuf 的 IDL 生成 HTTP 或 RPC 服务端项目的骨架
+   support generate HTTP or RPC server-side scaffold by IDL like Thrift, Protobuf
 
-2. 桩代码管理
+2. Stub management
 
-3. 旧版本迁移
+3. Old version migration
 
-## Part 1. 安装命令行工具
+## Part 1. Install Cli tool
 
 ```bash
 cargo install volo-cli
 ```
 
-> 需要 rust 版本 >= 1.80.0
+> Need rustc version >= 1.80.0
 
-随后，我们输入：
+Then, we type:
 
 ```bash
 volo help
 ```
 
-就能看到类似以下输出啦：
+and we can see the output as follows:
 
 ```plain
 Usage: volo [OPTIONS] <COMMAND>
@@ -50,11 +50,12 @@ Options:
   -V, --version                  Print version
 ```
 
-## Part 2. 生成 rpc 代码
+## Part 2. Generate rpc code
 
-为了创建一个 RPC 项目, 我们需要先编写一个 IDL, 这里以 Thrift 为例
+To create a RPC project, we need to write an IDL first. Let's take Thrift for example.
 
-在项目目录下新建一个 Thrift IDL
+
+Create a new Thrift IDL in the project directory:
 
 `vim idl/rpc_example.thrift`
 
@@ -82,11 +83,11 @@ service ItemService {
 }
 ```
 
-执行以下命令：
+Execute the following command:
 
 `volo init volo-rpc-example idl/rpc_example.thrift`
 
-这时候，我们整个目录的结构如下：
+At this point, our entire catalog is structured as follows:
 
 ```plain
 .
@@ -106,13 +107,13 @@ service ItemService {
 └── volo.yml
 ```
 
-## Part 2. 生成 http 代码
+## Part 2. Generate http code
 
-执行以下命令:
+Execute the following command:
 
 `volo http init volo-http-example`
 
-这时候, 我们整个目录的结构如下:
+At this point, our entire catalog is structured as follows:
 
 ```bash
 $ tree

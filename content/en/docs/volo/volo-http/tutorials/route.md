@@ -1,25 +1,25 @@
 ---
-title: "路由"
+title: "Route"
 date: 2024-09-02
 weight: 2
 keywords:
-  [
-    "路由",
-    "路由组",
-    "静态路由",
-    "参数路由",
-    "路由优先级",
-  ]
-description: "Volo-HTTP 提供的路由功能"
+        [
+          "Route",
+          "Router group",
+          "Static route",
+          "parameter route",
+          "route priority",
+        ]
+description: "Volo-HTTP route function"
 ---
 
-## 路由注册
+## Route Registration
 
-路由的 handler 可以使用 `get`, `post` 等函数创建。
+Route handlers can be created using `get`, `post` and other functions.
 
-在 `volo_http::route` 包中可导入对应函数， 如 `get` 则通过 `volo_http::route::get` 导入
+The corresponding functions can be imported in the `volo_http::route` package, e.g. `get` via `volo_http::route::get`.
 
-首先, 我们需要一个简单的 handler:
+First, we need a simple handler: `volo_http::route::get`.
 
 ```rust
 async fn foo_handler() -> &'static str {
@@ -27,9 +27,10 @@ async fn foo_handler() -> &'static str {
 }
 ```
 
-每条路由都需要对应一个相对路径 (path) 和一个方法 (method) 。这里我们以路由到 `"/foo"` 路径的 GET 方法为例,
+Each route requires a relative path and a method. 
+Let's take the GET method for routing to the `“/foo”` path as an example, 
 
-可以通过以下的方式，在创建一个 `Router` 后使用 `route` 方法创建:
+which can be created by using the `route` method after creating a `Router` in the following way.
 
 ```rust
 use volo_http::server::route::{get, Router};
@@ -39,7 +40,7 @@ pub fn test_router() -> Router {
 }
 ```
 
-可以对 `get` 得到的 `MethodRouter` 进行链式调用，为其设置其他 method 的 handler:
+You can chain calls to `MethodRouter` from `get` to set handlers for other methods.
 
 ```rust
 use volo_http::server::route::{get, Router};
@@ -50,7 +51,7 @@ pub fn test_router() -> Router {
 }
 ```
 
-也可以通过对 `Router` 的链式调用来创建更多的路由规则:
+Routing rules can also be created by chaining calls to `Router`:
 
 ```rust
 use volo_http::server::route::{get, Router};
@@ -62,7 +63,7 @@ pub fn test_router() -> Router {
 }
 ```
 
-创建完成后, 可以将该路由 `merge` 到主路由中:
+Once created, the route can be `merged` into the main route:
 
 ```rust
 use std::net::SocketAddr;
@@ -84,11 +85,11 @@ async fn main() {
 }
 ```
 
-## 路由方法
+## Routing methods
 
-使用如 `use volo_http::server::route::get` 导入路由为 GET 的方法
+Use a method such as `use volo_http::server::route::get` to import a route as a GET.
 
-目前支持的路由方法有:
+Currently supported routing methods are:
 
 - `options`
 - `get`
@@ -100,13 +101,13 @@ async fn main() {
 - `connect`
 - `trace`
 
-## 路由类型
+## Route Types
 
-`Volo-HTTP` 支持丰富的路由类型用于实现复杂的路由匹配功能，包括**静态路由**、**动态路由** (命名参数、通配参数) 。
+`Volo-HTTP` supports rich route types for complex route matching, including **static routes**, **dynamic routes** (named parameter, wildcard).
 
-路由的优先级: `静态路由` > `命名参数路由` > `通配参数路由`
+Priority of routes: `static routes` > `named parameter routes` > `wildcard routes`.
 
-### 静态路由
+### Static route
 
 ```rust
 use volo_http::server::route::{get, Router};
@@ -120,21 +121,21 @@ async fn index_router() -> Router {
 }
 ```
 
-### 命名参数路由
+### named parameter route
 
-Volo-HTTP 支持使用 `{id}` 这样的命名参数设置路由, 并且命名参数只匹配单个路径段
+Volo-HTTP supports routing with named parameters like `{id}`, and the named parameters only match a single path segment.
 
-如果设置 `/user/{id}` 路由，则匹配情况如下:
+If you set up a `/user/{id}` route, the match will be as follows.
 
-| **路径**              | **是否匹配** | **参数值** |
-|:--------------------|:--------:|:-------:|
-| `/user/100`         |    匹配    |   100   |
-| `/user/101/profile` |   不匹配    |    -    |
-| `/user/`            |   不匹配    |    -    |
+| **Route**           | **Matched** | **Param Value** |
+|:--------------------|:-----------:|:---------------:|
+| `/user/100`         |     Yes     |       100       |
+| `/user/101/profile` |     No      |        -        |
+| `/user/`            |     No      |        -        |
 
-当然 Volo-HTTP 也是支持多个命名参数的，如 `/{platform}/user/{id}`
+Volo-HTTP also supports multiple named parameters, e.g. `/{platform}/user/{id}`.
 
-**代码示例**:
+**Example**:
 
 ```rust
 use volo::FastStr;
@@ -144,7 +145,8 @@ use volo_http::server::{
 };
 
 async fn param_handler(map: PathParamsMap) -> FastStr {
-    // 注意: 生产环境下不推荐使用 `unwarp` 方法, 这里仅供作为教程使用
+    // Note: The `unwarp` method is not recommended for production environments.
+    // It is used here for tutorial purposes only.
     map.get("id").unwarp().clone()
 }
 
@@ -153,21 +155,21 @@ async fn param_router() -> Router {
 }
 ```
 
-### 通配参数路由
+### Wildcard Route
 
-Volo-HTTP 支持使用 `*path` 这样的通配参数设置路由, 并且通配参数回匹配所有内容。
+Volo-HTTP supports the use of `*path` as a wildcard parameter for routes, and the wildcard parameter matches everything.
 
-**注意: 通配参数需放在路由的末尾。**
+**Note: The wildcard parameter must be placed at the end of the route. **Note: Wildcards should be placed at the end of the route.
 
-如果我们设置 `/src/{*path}` 路由，匹配情况如下：
+If we set up a `/src/{*path}` route, it will match as follows:
 
-| **路径**                    | **是否匹配** |      **参数值**       |
-|:--------------------------|:--------:|:------------------:|
-| `/src/`                   |   不匹配    |         -          |
-| `/src/somefile.rs`        |    匹配    |    somefile.rs     | 
-| `/src/subdir/somefile.rs` |    匹配    | subdir/somefile.rs |
+| **Route**                 | **Matched** |  **Param Value**   |
+|:--------------------------|:-----------:|:------------------:|
+| `/src/`                   |     Yes     |         -          |
+| `/src/somefile.rs`        |     No      |    somefile.rs     | 
+| `/src/subdir/somefile.rs` |     No      | subdir/somefile.rs |
 
-**代码示例**:
+**Example**:
 
 ```rust
 use volo::FastStr;
@@ -177,7 +179,8 @@ use volo_http::server::{
 };
 
 async fn param_handler(map: PathParamsMap) -> FastStr {
-    // 注意: 生产环境下不推荐使用 `unwarp` 方法, 这里仅供作为教程使用
+    // Note: The `unwarp` method is not recommended for production environments.
+    // It is used here for tutorial purposes only.
     map.get("path").unwarp().clone()
 }
 
@@ -186,24 +189,25 @@ async fn param_router() -> Router {
 }
 ```
 
-### 路由参数取值
+### Routing parameter values extraction
 
 - `PathParamsMap`
 
-  提供一个路由参数的 `AHashmap`
+  Provide a routing parameter `AHashmap`
 
   ```rust
   use volo_http::param::PathParamsMap;
 
   async fn param_handler(map: PathParamsMap) -> FastStr {
-      // 注意: 生产环境下不推荐使用 `unwarp` 方法, 这里仅供作为教程使用
+      // Note: The `unwarp` method is not recommended for production environments.
+      // It is used here for tutorial purposes only.
       map.get("id").unwarp().clone()
   }
   ```
 
 - `PathParams`
-  
-  用户可使用模式匹配特性自定义路由参数取值
+
+  User-definable routing parameter values using pattern matching features
 
   ```rust
   use volo_http::param::PathParams;
@@ -215,7 +219,7 @@ async fn param_router() -> Router {
 
 ## 路由组
 
-Volo-HTTP 提供了路由 `nest` 的能力, 用于支持**路由分组**的功能。
+Volo-HTTP provides the ability to route `nests`, which are used to support **route grouping**.
 
 ```rust
 impl<B, E> Router<B, E> {
@@ -229,7 +233,7 @@ impl<B, E> Router<B, E> {
 }
 ```
 
-我们可使用给定的 url 前缀路径来作为给定路由的路由前缀, 然后并合并到当前的路由中
+We can use the given url prefix path as the route prefix for a given route, and then merge it into the current route
 
 ```rust
 use volo_http::server::{
@@ -265,7 +269,7 @@ async fn router() -> Router {
     Router::new()
         .nest("/user/{uid}", user_router())
         .nest("/post", post_router())
-    // 这里的路由路径如下:
+    // The routing paths here are as follows.
     // /user/{uid}/name
     // /user/{uid}/post/{tid}
     // /post/name
@@ -275,13 +279,13 @@ async fn router() -> Router {
 
 ## fallback
 
-Volo-HTTP 提供了 fallback 功能用于处理请求 url 或 method 不匹配的情况
+Volo-HTTP provides a fallback function to handle request url or method mismatches.
 
 ### url
 
-> 注意：全局只能设置一个 **router fallback**，否则会在调用 `merge` 方法时产生 **panic**
+> Note: Only one **router fallback** can be set globally, otherwise it will generate a **panic** when the `merge` method is called.
 
-**代码示例**:
+**Example**:
 
 ```rust
 async fn index_handler() -> &'static str {
@@ -317,10 +321,10 @@ async fn router() -> Router {
 }
 ```
 
-## 使用 `Service` 作为路由
+## Using `Service` as a route
 
-路由可以使用传统的 `Service` 实现, 上文中提到的使用 handler 的方式也会转化为 `Service` 来运行,
-但需要通过 `get_service` 来为 GET 方法创建路由:
+Routes can be implemented using a traditional `Service`, and the handler approach mentioned above will also work as a `Service`, 
+but you need to create a route for the GET method via `get_service`:
 
 ```rust
 use std::convert::Infallible;
@@ -362,7 +366,7 @@ pub fn json_test_router() -> Router {
 }
 ```
 
-对于这种比较简单的 `Service`，也可以不定义结构体，通过 `service_fn` 直接使用函数实现：
+For this simpler `Service`, it is also possible to implement it directly using a function via `service_fn` without defining a structure:
 
 ```rust
 use std::convert::Infallible;
@@ -403,4 +407,4 @@ pub fn json_test_router() -> Router {
 }
 ```
 
-最终运行的效果预期与 `json_get` 和 `json_post` 一致
+The final run is expected to be consistent with `json_get` and `json_post`.

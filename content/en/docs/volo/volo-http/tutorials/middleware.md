@@ -1,19 +1,19 @@
 ---
-title: "中间件"
+title: "Middleware"
 date: 2024-09-02
 weight: 5
 keywords:
   [
-    "中间件",
+    "Middleware",
   ]
-description: "Volo-HTTP 中间件"
+description: "Volo-HTTP middleware"
 ---
 
-## 使用中间件
+## Using Middleware
 
-在 Volo-HTTP 中, 中间件一般是作为 `Layer` 实现的, Volo-HTTP 中也有一些内置的中间件,
+In Volo-HTTP, middleware is usually implemented as a `Layer`, but there are some built-in middleware in Volo-HTTP, too.
 
-比如我们使用内置的 `TimeoutLayer`: 
+For example, we use the built-in `TimeoutLayer`.
 
 ```rust
 use std::net::SocketAddr;
@@ -47,21 +47,21 @@ async fn main() {
 }
 ```
 
-## 编写一个中间件
+## Writing a middleware
 
-在 Volo-HTTP 中, 也提供了一些便于实现中间件的功能, 如 `from_fn` 和 `map_response`。
+In Volo-HTTP, there are also functions provided that facilitate middleware implementation, such as `from_fn` and `map_response`.
 
-两者都可以接收一个函数来作为中间件，不过区别是，
-- `from_fn` 接收 Request 并返回 Response, 在其函数中可以调用内层服务, 也可以直接返回 Response
-- `map_response` 作用于 Response, 接收 Response 并返回处理过的 Response
+Both can receive a function to be used as middleware, but the difference is that the
+- `from_fn` receives a Request and returns a Response, in which it can either call an inner service or return a Response directly.
+- `map_response` acts on Response, receives Response and returns the processed Response.
 
 ### `from_fn`
 
-`from_fn` 使用的函数可以通过 extractor 提取特定类型的参数,
+Functions used by `from_fn` can extract parameters of a specific type via extractor.
 
-但最后一定要附加 `cx`, `req` 和 `next` 这三个参数，并通过 `next.run(cx, req).await` 来调用内层的服务。
+But in the end, the `cx`, `req` and `next` parameters must be appended and the inner service is invoked via `next.run(cx, req).await`.
 
-这里我们以 `from_fn` 为例，实现一个用于**记录单个请求耗时的中间件**:
+Here we take `from_fn` as an example of a middleware implementation for **logging the time spent on a single request**:
 
 ```rust
 use std::net::SocketAddr;
@@ -113,7 +113,7 @@ async fn main() {
 
 ```
 
-或者也可以对特定请求提前返回, 比如我们实现一个~~缺德~~的中间件，有 50% 的几率会拒绝当前的请求:
+Or you can return early for a specific request, e.g. if we implement a ~~deficient~~ middleware that has a 50% chance of rejecting the current request.
 
 ```rust
 // You should add `rand = "0.8"` in `Cargo.toml` for using `rand::random`
@@ -130,19 +130,20 @@ pub async fn random_reject(
 }
 ```
 
-这种形式可以用于鉴权等场景, 如果请求不允许被访问该服务, 可以直接返回一个特定的 Response, 而无需执行后续的 Service。
+This form can be used in scenarios such as authentication, if the request is not allowed to be accessed by the service,
+you can directly return a specific Response, without the need to execute the subsequent Service.
 
 ### `map_response`
 
-`map_response` 作用于 Response, 接收 Response 并返回处理过的 Response
+`map_response` works on Response, receives Response and returns the processed Response.
 
-这种方式可以对 Response 进行一些通用逻辑的处理，比如追加跨域相关的 headers 或者设置 Cookies 等
+This way you can do some general logic with the Response, such as appending cross-domain headers or setting cookies.
 
-由于我们为以下类型实现了 `IntoResponse` 这个 trait:
+Since we implement the `IntoResponse` trait for the following types.
 - `((HeaderName, HeaderValue), Response)`
 - `([(HeaderName, HeaderValue); N], Response`)
 
-可以在 `map_response` 中借助以下形式方便地实现为 Response 追加 headers 等功能:
+we can be easily accomplished in `map_response` to appending headers to a Response, etc. with the following code:
 
 ```rust
 use std::net::SocketAddr;
@@ -182,12 +183,13 @@ async fn main() {
 }
 ```
 
-注意到 `append_header(s)` 的返回值类型是 `impl IntoResponse`
-其实这两个函数的返回值类型分别是：
+We can notice that the return value type of `append_header(s)` is `impl IntoResponse`.
+but actually, the return value types for each of these two functions are:
 - `((&'static str, &'static str), ServerResponse)`
 - `([(&'static str, &'static str); 3], ServerResponse)`
 
-但是这两个类型写起来比较麻烦, 所以可以直接使用 `impl IntoResponse` 的方式实现, 只要保证返回值类型实现了 `IntoResponse` 即可
+But these two types are more troublesome to write, so you can directly use the `impl IntoResponse` way to achieve,
+as long as the return value type to ensure that the implementation of the `IntoResponse` that can be
 
-需要注意的是，即使返回值类型直接写了 `impl IntoResponse`, 但也需要保证函数中的返回值是同一个类型, 
-因为使用这种方式也需要一个特定类型的返回值, 只是我们将这个工作交给编译器来推导了。
+Note that even if the return value type is `impl IntoResponse`, you still need to make sure that the return value in the function is of the same type.
+Because using this approach also requires a type-specific return value, we just leave it up to the compiler to derive it.
