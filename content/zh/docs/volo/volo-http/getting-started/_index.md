@@ -3,18 +3,18 @@ title: "快速开始"
 linkTitle: "快速开始"
 weight: 2
 keywords: ["Volo", "Http", "快速开始", "安装"]
-description: "volo-http 快速上手与基础教程。"
+description: "Volo-HTTP 快速上手与基础教程。"
 ---
 
 ## 准备开发环境
 
 1. 如果您之前未搭建过 Rust 开发环境，可以参考[Install Rust](https://www.rust-lang.org/tools/install)
 2. 推荐使用最新版本的 Rust，或保证 Rustc >= 1.80.0
-3. 如果您未安装过 **volo-cli**，请参考[快速开始](https://www.cloudwego.io/zh/docs/volo/volo-li/getting-started/)
+3. 如果您未安装过 volo-cli，请参考[快速开始](https://www.cloudwego.io/zh/docs/volo/volo-li/getting-started/)
 
 ## 创建一个 Server
 
-> 以下示例 `volo-cli` 版本为 **0.10.3**, `volo-http` 版本为 **0.2.14**
+> 以下示例 volo-cli 版本为 **0.10.3**, volo-http 版本为 **0.2.14**
 
 1. 使用 **volo-cli** 创建 http 项目脚手架
 
@@ -78,7 +78,7 @@ description: "volo-http 快速上手与基础教程。"
 
 ## What's Next?
 
-恭喜你，阅读到了这里！ 至此，我们已经基本学会了 Volo 的大部分使用了，可以使用 Volo 来开启我们愉快的 Rust 之旅啦～
+恭喜你，阅读到了这里！ 至此，我们已经基本学会了 Volo-HTTP 的使用了，可以使用 Volo-HTTP 来开启我们愉快的 Rust 之旅啦～
 
 接下来，你可能需要选择合适的组件，组装在一起，和你的系统进行对接。
 
@@ -89,7 +89,7 @@ Volo 维护的相关生态会集中在：<https://github.com/volo-rs> 中，我�
 同时，欢迎加入我们的飞书用户群，交流 Volo 的使用心得～
 
 <div align="center">
-<img src="/img/docs/feishu_group_volo.png" width = "400" alt="Volo_feishu" />
+<img src="/img/docs/feishu_group_volo.png" width="400" alt="Volo_feishu" />
 </div>
 <br/><br/>
 

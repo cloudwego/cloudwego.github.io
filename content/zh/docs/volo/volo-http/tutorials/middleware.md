@@ -6,12 +6,12 @@ keywords:
   [
     "中间件",
   ]
-description: "volo-http 中间件"
+description: "Volo-HTTP 中间件"
 ---
 
 ## 使用中间件
 
-在 `volo-http` 中, 中间件一般是作为 `Layer` 实现的, `volo-http` 中也有一些内置的中间件,
+在 Volo-HTTP 中, 中间件一般是作为 `Layer` 实现的, Volo-HTTP 中也有一些内置的中间件,
 
 比如我们使用内置的 `TimeoutLayer`: 
 
@@ -49,11 +49,11 @@ async fn main() {
 
 ## 编写一个中间件
 
-在 `volo-http` 中, 也提供了一些便于实现中间件的功能, 如 `from_fn` 和 `map_response`。
+在 Volo-HTTP 中, 也提供了一些便于实现中间件的功能, 如 `from_fn` 和 `map_response`。
 
 两者都可以接收一个函数来作为中间件，不过区别是，
-- `from_fn` 接收 **Request** 并返回 **Response**, 在其函数中可以调用内层服务, 也可以直接返回 **Response**
-- `map_response` 作用于 **Response**, 接收 **Response** 并返回处理过的 **Response**
+- `from_fn` 接收 Request 并返回 Response, 在其函数中可以调用内层服务, 也可以直接返回 Response
+- `map_response` 作用于 Response, 接收 Response 并返回处理过的 Response
 
 ### `from_fn`
 
@@ -130,15 +130,15 @@ pub async fn random_reject(
 }
 ```
 
-这种形式可以用于鉴权等场景, 如果请求不允许被访问该服务, 可以直接返回一个特定的 **Response**, 而无需执行后续的 **Service**。
+这种形式可以用于鉴权等场景, 如果请求不允许被访问该服务, 可以直接返回一个特定的 Response, 而无需执行后续的 Service。
 
 ### map_response
 
-`map_response` 作用于 **Response**, 接收 **Response** 并返回处理过的 **Response**
+`map_response` 作用于 Response, 接收 Response 并返回处理过的 Response
 
-这种方式可以用于追加一些跨域相关的 **Headers**, 比如 `Access-Control-Allow-Methods` 等
+这种方式可以用于追加一些跨域相关的 Headers, 比如 `Access-Control-Allow-Methods` 等
 
-由于我们为以下类型实现了 `IntoResponse` 这个 **trait**, 所以可以通过 `map_response` 实现如下的功能:
+由于我们为以下类型实现了 `IntoResponse` 这个 trait, 所以可以通过 `map_response` 实现如下的功能:
 - `((HeaderName, HeaderValue), Response)`
 - `([(HeaderName, HeaderValue); N], Response`)
 

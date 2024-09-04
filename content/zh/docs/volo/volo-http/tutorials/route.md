@@ -12,17 +12,17 @@ keywords:
     "NoRoute",
     "NoMethod",
   ]
-description: "volo-http 提供的路由功能。"
+description: "Volo-HTTP 提供的路由功能"
 ---
 
 ## 路由注册
 
-路由的 **handler** 可以使用 `get`, `post` 等函数创建。
+路由的 handler 可以使用 `get`, `post` 等函数创建。
 
 > 在 `volo_http::route` 包中可导入对应函数，
 > 如 `get` 则通过 `volo_http::route::get` 导入
 
-首先, 我们需要一个简单的 **handler**:
+首先, 我们需要一个简单的 handler:
 
 ```rust
 async fn foo_handler() -> &'static str {
@@ -30,7 +30,7 @@ async fn foo_handler() -> &'static str {
 }
 ```
 
-每条路由都需要对应一个相对路径 (path) 和一个方法 (method) 。这里我们以路由到 `"/foo"` 路径的 **GET** 方法为例,
+每条路由都需要对应一个相对路径 (path) 和一个方法 (method) 。这里我们以路由到 `"/foo"` 路径的 GET 方法为例,
 
 可以通过以下的方式，在创建一个 `Router` 后使用 `route` 方法创建:
 
@@ -44,7 +44,7 @@ pub fn test_router() -> Router {
 }
 ```
 
-可以对 `get` 得到的 `MethodRouter` 进行链式调用，为其设置其他 **method** 的 **handler**:
+可以对 `get` 得到的 `MethodRouter` 进行链式调用，为其设置其他 method 的 handler:
 
 ```rust
 use volo_http::server::{
@@ -71,7 +71,7 @@ pub fn test_router() -> Router {
 }
 ```
 
-创建完成后, 可以将该路由 **merge** 到主路由中:
+创建完成后, 可以将该路由 `merge` 到主路由中:
 
 ```rust
 use std::net::SocketAddr;
@@ -95,7 +95,7 @@ async fn main() {
 
 ## 路由方法
 
-使用如 `use volo_http::server::route::get` 导入路由为 **GET** 的方法
+使用如 `use volo_http::server::route::get` 导入路由为 GET 的方法
 
 目前支持的路由方法有:
 
@@ -111,7 +111,7 @@ async fn main() {
 
 ## 路由类型
 
-`Volo-HTTP` 支持丰富的路由类型用于实现复杂的路由匹配功能，包括**静态路由**、**动态路由**(命名参数、通配参数)。
+`Volo-HTTP` 支持丰富的路由类型用于实现复杂的路由匹配功能，包括**静态路由**、**动态路由** (命名参数、通配参数) 。
 
 路由的优先级: `静态路由` > `命名参数路由` > `通配参数路由`
 
@@ -131,7 +131,7 @@ async fn index_router() -> Router {
 
 ### 命名参数路由
 
-`Volo-HTTP` 支持使用 `{id}` 这样的命名参数设置路由, 并且命名参数只匹配单个路径段
+Volo-HTTP 支持使用 `{id}` 这样的命名参数设置路由, 并且命名参数只匹配单个路径段
 
 如果设置 `/user/{id}` 路由，则匹配情况如下:
 
@@ -141,7 +141,7 @@ async fn index_router() -> Router {
 | `/user/101/profile` |   不匹配    |    -    |
 | `/user/`            |   不匹配    |    -    |
 
-当然 `Volo-HTTP` 也是支持多个命名参数的，如 `/{platform}/user/{id}`
+当然 Volo-HTTP 也是支持多个命名参数的，如 `/{platform}/user/{id}`
 
 **代码示例**:
 
@@ -164,9 +164,9 @@ async fn param_router() -> Router {
 
 ### 通配参数路由
 
-volo 支持使用 `*path` 这样的通配参数设置路由, 并且通配参数回匹配所有内容。
+Volo-HTTP 支持使用 `*path` 这样的通配参数设置路由, 并且通配参数回匹配所有内容。
 
-通配参数需放在路由的末尾。
+> 注意: 通配参数需放在路由的末尾。
 
 如果我们设置 `/src/{*path}` 路由，匹配情况如下：
 
@@ -222,7 +222,7 @@ async fn param_router() -> Router {
 
 ## 路由组
 
-volo 提供了路由 `nest` 的能力, 用于支持路由分组的功能。
+volo 提供了路由 `nest` 的能力, 用于支持**路由分组**的功能。
 
 ```rust
 impl<B, E> Router<B, E> {
@@ -282,7 +282,7 @@ async fn router() -> Router {
 
 ## fallback
 
-`Volo-HTTP` 提供了 **fallback** 功能用于处理请求 **url** 或 **method** 不匹配的情况
+Volo-HTTP 提供了 fallback 功能用于处理请求 url 或 method 不匹配的情况
 
 ### url
 
@@ -295,9 +295,10 @@ async fn index_handler() -> &'static str {
     "Hello, World"
 }
 
-async fn fallback_handler() -> &'static str {
-    "404 Not Found"
+async fn fallback_handler() -> (http::StatusCode, &'static str) {
+  (http::StatusCode::NOT_FOUND, "404 Not Found")
 }
+
 async fn router() -> Router {
     Router::new()
         .route("/", get(index_handler))
@@ -312,9 +313,11 @@ async fn index_handler() -> &'static str {
     "Hello, World"
 }
 
-async fn fallback_handler() -> &'static str {
-    "method not matched"
+async fn fallback_handler() -> (http::StatusCode, &'static str) {
+  (http::StatusCode::METHOD_NOT_ALLOWED, "method not matched")
+    
 }
+
 async fn router() -> Router {
     Router::new()
         .route("/", get(index_handler).fallback(fallback_handler))
@@ -323,8 +326,8 @@ async fn router() -> Router {
 
 ## 使用 `Service` 作为路由
 
-路由可以使用传统的 `Service` 实现, 上文中提到的使用 **handler** 的方式也会转化为 **Service** 来运行,
-但需要通过 `get_service` 来为 **GET** 方法创建路由:
+路由可以使用传统的 `Service` 实现, 上文中提到的使用 handler 的方式也会转化为 `Service` 来运行,
+但需要通过 `get_service` 来为 GET 方法创建路由:
 
 ```rust
 use std::convert::Infallible;

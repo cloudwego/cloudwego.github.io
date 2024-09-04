@@ -8,5 +8,5 @@ keywords:
     "代码示例",
     "基本特性",
   ]
-description: "volo 开发指南，包括代码示例、基本特性。"
+description: "Volo-HTTP 开发指南，包括代码示例、基本特性。"
 ---

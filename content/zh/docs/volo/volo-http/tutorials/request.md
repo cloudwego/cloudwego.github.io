@@ -9,12 +9,12 @@ keywords:
     "参数",
     "WebSocket"
   ]
-description: "volo-http 路由请求参数提取"
+description: "Volo-HTTP 路由请求参数提取"
 ---
 
 ## 路由参数的提取
 
-`Volo=HTTP` 的 handler 可以接受多个 `extractor` 作为参数, 例如:
+Volo-HTTP 的 handler 可以接受多个 extractor 作为参数, 例如:
 
 ```rust
 use volo_http::{

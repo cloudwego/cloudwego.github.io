@@ -7,7 +7,7 @@ keywords:
     "路由",
     "响应",
   ]
-description: "volo-http 路由响应"
+description: "Volo-HTTP 路由响应"
 ---
 
 ## 路由响应
@@ -123,18 +123,6 @@ pub fn response_router() -> Router {
   可以在返回 Ok 时使用 str 的内容作为 `Response`，
   在返回 Err 时使用 `StatusCode` 作为 `Response` 的状态码，并返回一个空的实现。
 - 而使用 `(StatusCode, String)` 可以将该 `String` 作为 `Response` 的 Body，并将 `Response` 的状态码设为 `StatusCode` 的值。
-
-## 默认实现了 `IntoResponse` 的类型
-
-- `Infallible`
-- `Result<R, E>`
-- `(StatusCode, T)`
-- `StatusCode`
-- `Response<B>`
-- `(H, R)`
-- `Form<T>`
-- `Json<T>`
-- `FileResponse`
 
 ## 为自己的类型实现 IntoResponse
 
