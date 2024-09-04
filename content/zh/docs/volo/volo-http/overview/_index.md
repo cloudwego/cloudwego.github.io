@@ -53,7 +53,7 @@ description: "Volo 架构设计、框架特点、框架性能。"
     
 ## 相关项目
 
-- [`motore`](https://github.com/cloudwego/motore): 
+- [`motore`](https://github.com/cloudwego/motore)
 
 ## 相关文章
 
