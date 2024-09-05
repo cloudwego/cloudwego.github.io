@@ -22,7 +22,7 @@ Volo provides CLI tools of the same name, and it provide functions as follows:
 cargo install volo-cli
 ```
 
-> Need rustc version >= 1.80.0
+Need rustc version >= 1.80.0
 
 Then, we type:
 

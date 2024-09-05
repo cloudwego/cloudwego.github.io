@@ -105,7 +105,7 @@ Currently supported routing methods are:
 
 `Volo-HTTP` supports rich route types for complex route matching, including **static routes**, **dynamic routes** (named parameter, wildcard).
 
-Priority of routes: `static routes` > `named parameter routes` > `wildcard routes`.
+Priority of routes: static routes > named parameter routes > wildcard routes.
 
 ### Static route
 
