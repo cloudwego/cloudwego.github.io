@@ -47,7 +47,7 @@ async fn main() {
 }
 ```
 
-## Writing a middleware
+## Writing a Middleware
 
 In Volo-HTTP, there are also functions provided that facilitate middleware implementation, such as `from_fn` and `map_response`.
 

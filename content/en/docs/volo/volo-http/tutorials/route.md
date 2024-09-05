@@ -103,7 +103,7 @@ Currently supported routing methods are:
 
 ## Route Types
 
-`Volo-HTTP` supports rich route types for complex route matching, including **static routes**, **dynamic routes** (named parameter, wildcard).
+`Volo-HTTP` supports rich route types for complex route matching, including static routes, dynamic routes (named parameter, wildcard).
 
 Priority of routes: static routes > named parameter routes > wildcard routes.
 
@@ -121,7 +121,7 @@ async fn index_router() -> Router {
 }
 ```
 
-### named parameter route
+### Named Parameter Route
 
 Volo-HTTP supports routing with named parameters like `{id}`, and the named parameters only match a single path segment.
 
@@ -277,7 +277,7 @@ async fn router() -> Router {
 }
 ```
 
-## fallback
+## Fallback
 
 Volo-HTTP provides a fallback function to handle request url or method mismatches.
 
@@ -321,7 +321,7 @@ async fn router() -> Router {
 }
 ```
 
-## Using `Service` as a route
+## Using `Service` as a Route
 
 Routes can be implemented using a traditional `Service`, and the handler approach mentioned above will also work as a `Service`, 
 but you need to create a route for the GET method via `get_service`:

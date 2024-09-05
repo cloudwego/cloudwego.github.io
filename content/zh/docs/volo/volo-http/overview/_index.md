@@ -28,7 +28,7 @@ Volo-HTTP 是 Rust 语言的 HTTP 微服务框架, 使用了基于 AFIT 和 RPIT
 
   Volo-HTTP 已经为绝大部分内置类型实现了以上 trait，因此用户只需专注 handler 内部的业务逻辑编写即可。
 
-  我们还提供了基于 **layer** 模型下的中间件机制，用户可调用 `route` 的 `layer` 方法轻松使用中间件。
+  我们还提供了基于 layer 模型下的中间件机制，用户可调用 `route` 的 `layer` 方法轻松使用中间件。
 
 
 #### 扩展性强

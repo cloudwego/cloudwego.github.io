@@ -27,7 +27,7 @@ async fn who_are_you() -> StatusCode {
 }
 ```
 
-## handler response Tips
+## Handler Response Tips
 
 handler In addition to customizable parameters, the return value type can also be customized, such as:
 
@@ -41,7 +41,7 @@ All three of these functions are legitimate handlers, since all of these return 
 
 In the framework, types such as `Form`, `Json`, etc. also implement `IntoResponse` by default and can add a Content-Type to the response.
 
-### Use Json for response
+### Use Json for Response
 
 ```rust
 use volo_http::{
@@ -124,7 +124,7 @@ When returning Err, use `StatusCode` as the status code for `Response` and retur
 
 With `(StatusCode, String)` you can use the `String` as the Body of the `Response` and set the status code of the `Response` to the value of `StatusCode`.
 
-## Implementing IntoResponse for your own types
+## Implementing IntoResponse for Your Own Types
 
 For custom types, you can implement `IntoResponse` as the return value of the handler, here is an example.
 

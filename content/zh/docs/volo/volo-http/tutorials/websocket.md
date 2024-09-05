@@ -13,7 +13,7 @@ Volo-HTTP 支持 WebSocket 协议
 
 ## 编写 handler
 
-由于 Volo-HTTP 内置的 `WebSocket` 类型实现了 `FromContext`, 所以我们可以直接在 handler 里面添加 **WebSocket extractor**
+由于 Volo-HTTP 内置的 `WebSocket` 类型实现了 `FromContext`, 所以我们可以直接在 handler 里面添加 WebSocket extractor
 
 下面是一个简单的 WebSocket handler 示例，它会回显收到的文本消息：
 
@@ -49,7 +49,7 @@ async fn ws_router() -> Router {
 
 ## WebSocket 设置
 
-可以通过 `Config` 结构体来配置 **WebSocket** 的选项，例如传输配置和协议支持。
+可以通过 `Config` 结构体来配置 WebSocket 的选项，例如传输配置和协议支持。
 
 ### 传输设置
 

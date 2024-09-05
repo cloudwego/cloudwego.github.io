@@ -12,7 +12,7 @@ keywords:
 description: "Volo-HTTP Request parameters extraction"
 ---
 
-## Extraction of routing parameters
+## Extraction of Routing Parameters
 
 Volo-HTTP's handler can take multiple extractors as arguments, e.g.,
 
@@ -83,7 +83,7 @@ Where `FromContext` doesn't consume the body of the request, i.e. the data passe
 
 Whereas `FromRequest` consumes the body of the request, so the handler can only have at most one parameter of a type that implements `FromRequest`.
 
-## Types that implement `extractor` by default
+## Types that Implement `extractor` By Default
 
 **FromContext**
 - `Address`
@@ -105,7 +105,7 @@ Whereas `FromRequest` consumes the body of the request, so the handler can only 
 - `MaybeInvalid<T>`
 - `Form<T>`
 
-## Implementing extractors for your own types
+## Implementing Extractors for Your Own Types
 
 We can receive our own types directly as arguments to a handler, which requires implementing `FromContext` or `FromRequest` for our own types.
 

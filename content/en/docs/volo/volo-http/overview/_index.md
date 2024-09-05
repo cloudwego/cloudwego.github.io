@@ -27,12 +27,12 @@ reduce the overhead of each place as much as possible, and improve the performan
 
   For example, we provide the volo command line tool for bootstrapping HTTP projects.
 
-  You can add any type that implements the **Extractor trait** to the request parameters in the handler to use it as needed, 
+  You can add any type that implements the Extractor trait to the request parameters in the handler to use it as needed, 
   and you can also return any type that implements `IntoResponse` as a handler.
 
   Volo-HTTP already implements these traits for most of the built-in types, so you can just focus on writing the business logic inside the handler.
 
-  We also provide a middleware mechanism based on the **layer** model, so you can easily use the middleware by calling the `layer` method of `route`.
+  We also provide a middleware mechanism based on the layer model, so you can easily use the middleware by calling the `layer` method of `route`.
 
 #### Strong Scalability
 
@@ -49,11 +49,11 @@ reduce the overhead of each place as much as possible, and improve the performan
 
   We have also created an organization [volo-rs](https://github.com/volo-rs), any contributions are welcome.
     
-## Related projects
+## Related Projects
 
 - [`motore`](https://github.com/cloudwego/motore)
 
-## Related articles
+## Related Articles
 
 - [China's First Rust-based RPC Framework - Volo is Officially Open Source!](https://www.cloudwego.io/blog/2022/08/30/chinas-first-rust-based-rpc-framework-volo-is-officially-open-source/)
 - [Introducing Monoio: a high-performance Rust Runtime based on io-uring](https://www.cloudwego.io/blog/2023/04/17/introducing-monoio-a-high-performance-rust-runtime-based-on-io-uring/)
