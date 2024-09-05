@@ -731,8 +731,11 @@ func (ctx *RequestContext) RequestBodyStream() io.Reader
 func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 func (ctx *RequestContext) PostForm(key string) string
 func (ctx *RequestContext) PostFormArray(key string) []string
+func (ctx *RequestContext) PostFormMap(key string) map[string][]string
 func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string
 func (ctx *RequestContext) GetPostForm(key string) (string, bool)
+func (ctx *RequestContext) GetPostFormArray(key string) ([]string, bool)
+func (ctx *RequestContext) GetPostFormMap(key string) (map[string][]string, bool)
 func (ctx *RequestContext) PostArgs() *protocol.Args
 func (ctx *RequestContext) FormValue(key string) []byte
 func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc)
@@ -852,6 +855,30 @@ func (ctx *RequestContext) PostFormArray(key string) []string
 // Content-Disposition: form-data; name="pet"; value="dog"
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     pets := c.PostFormArray("pet") // pets == []string{"cat", "dog"}
+})
+```
+
+### PostFormMap
+
+按名称检索 `multipart.Form.Value`，返回所有值的 map。
+
+> 注意：该函数支持从 application/x-www-form-urlencoded 和 multipart/form-data 这两种类型的 content-type 中获取 value 值，且不支持获取文件值。
+
+函数签名:
+
+```go
+func (ctx *RequestContext) PostFormMap(key string) map[string][]string
+```
+
+示例:
+
+```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data;
+// Content-Disposition: form-data; name="attr[k1]"; value="v1"
+// Content-Disposition: form-data; name="attr[k2]"; value="v2"
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
+    attrs := c.PostFormMap("attr") // attrs == map[string][]string{"k1": {"v1"}, "k2": {"v2"}}
 })
 ```
 

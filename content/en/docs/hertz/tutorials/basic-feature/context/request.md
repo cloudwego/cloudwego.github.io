@@ -731,8 +731,11 @@ func (ctx *RequestContext) RequestBodyStream() io.Reader
 func (ctx *RequestContext) MultipartForm() (*multipart.Form, error)
 func (ctx *RequestContext) PostForm(key string) string
 func (ctx *RequestContext) PostFormArray(key string) []string
+func (ctx *RequestContext) PostFormMap(key string) map[string][]string
 func (ctx *RequestContext) DefaultPostForm(key, defaultValue string) string
 func (ctx *RequestContext) GetPostForm(key string) (string, bool)
+func (ctx *RequestContext) GetPostFormArray(key string) ([]string, bool)
+func (ctx *RequestContext) GetPostFormMap(key string) map[string][]string
 func (ctx *RequestContext) PostArgs() *protocol.Args
 func (ctx *RequestContext) FormValue(key string) []byte
 func (ctx *RequestContext) SetFormValueFunc(f FormValueFunc)
@@ -852,6 +855,30 @@ Example Code:
 // Content-Disposition: form-data; name="pet"; value="dog"
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
     pets := c.PostFormArray("pet") // pets == []string{"cat", "dog"}
+})
+```
+
+### PostFormMap
+
+Retrieve `multipart.Form.Value` by name and return a map of all values of the given name.
+
+> Note: This function supports obtaining values from content-type of application/x-www form urlencoded and multipart/form data, and does not support obtaining file values.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) PostFormMap(key string) map[string][]string
+```
+
+Example Code:
+
+```go
+// POST http://example.com/user
+// Content-Type: multipart/form-data;
+// Content-Disposition: form-data; name="attr[k1]"; value="v1"
+// Content-Disposition: form-data; name="attr[k2]"; value="v2"
+h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
+    attrs := c.PostFormMap("attr") // attrs == map[string][]string{"k1": {"v1"}, "k2": {"v2"}}
 })
 ```
 
