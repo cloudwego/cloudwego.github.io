@@ -25,7 +25,7 @@ reduce the overhead of each place as much as possible, and improve the performan
   providing the most ergonomic and intuitive coding experience possible. 
   Therefore, we make ease of use one of our most important goals.
 
-  For example, we provide the volo command line tool for bootstraping HTTP projects.
+  For example, we provide the volo command line tool for bootstrapping HTTP projects.
 
   You can add any type that implements the **Extractor trait** to the request parameters in the handler to use it as needed, 
   and you can also return any type that implements `IntoResponse` as a handler.
