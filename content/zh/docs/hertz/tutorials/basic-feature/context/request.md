@@ -878,7 +878,7 @@ func (ctx *RequestContext) PostFormMap(key string) map[string][]string
 // Content-Disposition: form-data; name="attr[k1]"; value="v1"
 // Content-Disposition: form-data; name="attr[k2]"; value="v2"
 h.POST("/user", func(ctx context.Context, c *app.RequestContext) {
-    attrs := c.PostFormMap("attr") // attrs == map[string][]string{"k1": {"v1"}, "k2": {"v2"}}
+    attrs := c.PostFormMap("attr") // attrs == map[string][]string{"k1": "v1", "k2": "v2"}
 })
 ```
 
