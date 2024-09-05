@@ -30,7 +30,7 @@ async fn post_something(data: String) -> string {
 
 除此之外，handler 可以使用 `json`, `form`, `query` 等可以被反序列化的对象作为参数
 
-这里使用了 Rust **模式匹配**的特性来接收参数:
+这里使用了 Rust 模式匹配的特性来接收参数:
 
 ```rust
 use volo_http::{
@@ -79,9 +79,9 @@ pub fn user_login_router() -> Router {
 
 可以作为 handler 参数的类型都实现了 `FromContext` 或 `FromRequest`, 这种类型我们通常称为 `extractor`。
 
-其中，`FromContext` **不会消费请求的 body**，即 **POST** 等方法传入的数据，
+其中，`FromContext` 不会消费请求的 body，即 POST 等方法传入的数据，
 
-而 `FromRequest` **会消费请求的 body**，所以 handler 的参数中最多只能有一个实现了 `FromRequest` 的类型。
+而 `FromRequest` 会消费请求的 body，所以 handler 的参数中最多只能有一个实现了 `FromRequest` 的类型。
 
 ## 默认实现了 `extractor` 的类型
 

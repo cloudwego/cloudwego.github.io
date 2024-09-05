@@ -14,7 +14,7 @@ description: "Volo-HTTP Request parameters extraction"
 
 ## Extraction of routing parameters
 
-Volo-HTTP's handler can take multiple extractors as arguments, e.g..
+Volo-HTTP's handler can take multiple extractors as arguments, e.g.,
 
 ```rust
 use volo_http::Address;
@@ -30,7 +30,7 @@ async fn post_something(data: String) -> string {
 
 In addition to this, handlers can take deserializable objects such as `json`, `form`, `query`, etc. as arguments.
 
-The Rust **pattern matching** feature is used here to receive parameters: `json`, `form`, `query`, and so on.
+The Rust pattern matching feature is used here to receive parameters: `json`, `form`, `query`, and so on.
 
 ```rust
 use volo_http::{
@@ -79,10 +79,9 @@ pub fn user_login_router() -> Router {
 
 The types that can be used as handler arguments implement `FromContext` or `FromRequest`, which are often referred to as `extractor`.
 
-Where `FromContext` **doesn't consume the body** of the request, i.e. the data passed in by methods such as **POST**,
-and `FromRequest` **doesn't consume the body** of the request.
+Where `FromContext` doesn't consume the body of the request, i.e. the data passed in by methods such as POST,
 
-Whereas `FromRequest` ** consumes the body** of the request, so the handler can only have at most one parameter of a type that implements `FromRequest`.
+Whereas `FromRequest` consumes the body of the request, so the handler can only have at most one parameter of a type that implements `FromRequest`.
 
 ## Types that implement `extractor` by default
 

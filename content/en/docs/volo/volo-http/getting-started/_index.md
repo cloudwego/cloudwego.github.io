@@ -88,7 +88,7 @@ If there is a dire lack of components, you are welcomed to raise an issue in: ht
 
 In the meantime, welcome to join our Lark user group and share your experience with us about Volo.
 
-<div  align="center">
+<div align="center">
 <img src="/img/docs/feishu_group_volo.png" width="400" alt="Volo_feishu" />
 </div>
 <br/><br/>

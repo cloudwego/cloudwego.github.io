@@ -13,12 +13,12 @@ It is characterized by high ease of use, high performance and strong scalability
 
 ### Features
 
-#### High performance
+#### High Performance
 
 Rust is known for its high performance and safety. We always **take high performance as our goal** in the design and implementation process, 
 reduce the overhead of each place as much as possible, and improve the performance of each implementation.
 
-#### Easy to use
+#### Easy to Use
 
   Rust is known for being hard to learn and hard to use, 
   and we want to make it as easy as possible for users to use the Volo framework and write microservices in the Rust language, 
@@ -34,7 +34,7 @@ reduce the overhead of each place as much as possible, and improve the performan
 
   We also provide a middleware mechanism based on the **layer** model, so you can easily use the middleware by calling the `layer` method of `route`.
 
-#### Strong scalability
+#### Strong Scalability
 
   Volo-HTTP uses `Motore` as its middleware abstraction, which is powered by AFIT and RPITIT.
 

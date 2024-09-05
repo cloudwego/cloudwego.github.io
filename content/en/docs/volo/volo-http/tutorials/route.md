@@ -17,7 +17,7 @@ description: "Volo-HTTP route function"
 
 Route handlers can be created using `get`, `post` and other functions.
 
-The corresponding functions can be imported in the `volo_http::route` package, e.g. `get` via `volo_http::route::get`.
+The corresponding functions can be imported in the `volo_http::route` package, e.g, `get` via `volo_http::route::get`.
 
 First, we need a simple handler: `volo_http::route::get`.
 

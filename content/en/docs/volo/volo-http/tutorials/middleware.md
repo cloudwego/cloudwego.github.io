@@ -61,7 +61,7 @@ Functions used by `from_fn` can extract parameters of a specific type via extrac
 
 But in the end, the `cx`, `req` and `next` parameters must be appended and the inner service is invoked via `next.run(cx, req).await`.
 
-Here we take `from_fn` as an example of a middleware implementation for **logging the time spent on a single request**:
+Here we take `from_fn` as an example of a middleware implementation for logging the time spent on a single request:
 
 ```rust
 use std::net::SocketAddr;
@@ -143,7 +143,7 @@ Since we implement the `IntoResponse` trait for the following types.
 - `((HeaderName, HeaderValue), Response)`
 - `([(HeaderName, HeaderValue); N], Response`)
 
-we can be easily accomplished in `map_response` to appending headers to a Response, etc. with the following code:
+We can be easily accomplished in `map_response` to appending headers to a Response, etc. with the following code:
 
 ```rust
 use std::net::SocketAddr;

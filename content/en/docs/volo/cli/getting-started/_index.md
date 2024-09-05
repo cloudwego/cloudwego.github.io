@@ -50,7 +50,7 @@ Options:
   -V, --version                  Print version
 ```
 
-## Part 2. Generate rpc code
+## Part 2. Generate RPC code
 
 To create a RPC project, we need to write an IDL first. Let's take Thrift for example.
 
@@ -107,7 +107,7 @@ At this point, our entire catalog is structured as follows:
 └── volo.yml
 ```
 
-## Part 2. Generate http code
+## Part 2. Generate HTTP code
 
 Execute the following command:
 

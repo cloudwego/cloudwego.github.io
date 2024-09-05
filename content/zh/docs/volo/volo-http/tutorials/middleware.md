@@ -61,7 +61,7 @@ async fn main() {
 
 但最后一定要附加 `cx`, `req` 和 `next` 这三个参数，并通过 `next.run(cx, req).await` 来调用内层的服务。
 
-这里我们以 `from_fn` 为例，实现一个用于**记录单个请求耗时的中间件**:
+这里我们以 `from_fn` 为例，实现一个用于记录单个请求耗时的中间件:
 
 ```rust
 use std::net::SocketAddr;
