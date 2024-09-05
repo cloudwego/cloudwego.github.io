@@ -70,6 +70,7 @@ func main() {
 `JSON` replaces special html characters with their unicode entities, if you want to encode these characters literally,you can use `PureJSON`.
 
 Example Code:
+
 ```go
 func main() {
 	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
