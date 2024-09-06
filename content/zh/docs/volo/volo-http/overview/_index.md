@@ -45,7 +45,10 @@ Volo-HTTP 是 Rust 语言的 HTTP 微服务框架, 使用了基于 AFIT 和 RPIT
     
 ## 相关项目
 
-- [`motore`](https://github.com/cloudwego/motore)
+- [Volo-rs](http://github.com/volo-rs)：Volo 生态下的组件集合
+- [Pilota](https://github.com/cloudwego/pilota)：使用纯血 rust 实现的 Thrift 和 Protobuf 高性能序列化组件
+- [Motore](https://github.com/cloudwego/motore)：基于 AFIT 和 RPITIT 特性实现的中间件抽象层
+- [Metainfo](https://github.com/cloudwego/metainfo)：组件间的元数据透传
 
 ## 相关文章
 
