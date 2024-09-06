@@ -45,7 +45,7 @@ The `xdsClient` is responsible for the interaction with the xDS Server (i.e. Ist
 
 Add the following part to the definition of your container that uses xDS-enabled Kitex client.
 
-```
+```yaml
 - name: POD_NAMESPACE
 valueFrom:
   fieldRef:
@@ -66,7 +66,7 @@ valueFrom:
 
 To use a xds-enabled Kitex client, you should specify `destService` using the URL of your target service and add one option `xdssuite.NewClientOption()`.
 
-```
+```go
 // "github.com/kitex-contrib/xds/xdssuite"
 xdssuite.NewClientOption()
 ```
@@ -94,7 +94,7 @@ The following example indicates that when the tag meets one of the conditions in
 - `userid` prefix match `2100`
 - `env` regex match `[dev|sit]`
 
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -126,7 +126,7 @@ To match the rule defined in VirtualService, we can use `client.WithTag(key, val
 
 - Set key and value to be "stage" and "canary" to match the above rule defined in VirtualService.
 
-```
+```go
 client.WithTag("stage", "canary")
 callopt.WithTag("stage", "canary")
 ```
@@ -139,7 +139,7 @@ The example below shows that requests with method equal to SayHello are routed t
 
 - uri: `/${PackageName}.${ServiceName}/${MethodName}`
 
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -168,7 +168,7 @@ The following example shows how to configure the circuit breaker on the client s
 - `spec.configPatches[0].match.cluster.service`: the service name of the target service, should obey the specification of the FQDN.
 - `failure_percentage_threshold`: the threshold of the failure rate, when the failure rate exceeds this value, the circuit breaker will be triggered.
 - `failure_percentage_request_volume`: the number of requests that need to be collected to calculate the failure rate.
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
@@ -203,7 +203,7 @@ The following example shows how to configure the retry policy on the client side
 - `retryPolicy.retryBackOff.baseInterval`: the base interval of the retry.
 - `retryPolicy.retryBackOff.maxInterval`: the maximum interval of the retry.
 - `retryPolicy.retriableHeaders`: as the differences between xDS and Kitex configuration, use the `kitexRetryErrorRate` and `kitexRetryMethods` to specify the `errorRate` and `retryMethods` to match the specific methods that required to implement the retry strategy, use commas to separate multiple methods. It is recommended that the retry strategy is only configured for idempotent methods.
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
@@ -246,7 +246,7 @@ We can define rate limit configuration via [EnvoyFilter](https://istio.io/latest
 
 The following example shows how to configure the limit policy on the server side. The configuration is as follows:
 - `tokens_per_fill`: the qps limit, as the kitex will fill tokens into the bucket every 100ms, so the uint tokens is tokens_per_fill / 10, should set the number which is multiples of 10. 
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
@@ -281,7 +281,7 @@ spec:
 
 The usage of client is as follows:
 
-```
+```go
 import (
 	"github.com/cloudwego/kitex/client"
 	"github.com/kitex-contrib/xds"
@@ -310,7 +310,7 @@ func main() {
 }
 ```
 The usage of server is as follows:
-```
+```go
 package main
 
 import (
@@ -349,7 +349,7 @@ Detailed examples can be found here [kitex-proxyless-example](https://github.com
 
 mTLS is not supported for now. Please disable mTLS via configuring PeerAuthentication.
 
-```
+```yaml
 apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
@@ -360,8 +360,10 @@ spec:
     mode: DISABLE
 ```
 
-### The Loadbalancer dynamic configuration is not supported for now.
+### The limited traffic policy 
+The Loadbalancer dynamic configuration is not supported for now.
 
 ## Dependencies
 
-Kitex >= v0.10.3
+- server discovery, route, timeout supported in Kitex >= v0.4.0 [xDS](https://github.com/kitex-contrib/xds) >= 0.2.0 
+- limit, retry, circuitbreak supported in Kitex >= v0.4.0 [xDS](https://github.com/kitex-contrib/xds) >= 0.4.1 

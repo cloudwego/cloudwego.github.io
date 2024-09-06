@@ -45,7 +45,7 @@ Kitex 通过外部扩展 [kitex-contrib/xds](https://github.com/kitex-contrib/xd
 
 在需要使用 xDS 功能的容器配置中加入以下定义即可：
 
-```
+```yaml
 - name: POD_NAMESPACE
 valueFrom:
   fieldRef:
@@ -67,7 +67,7 @@ valueFrom:
 目前，我们在 Kitex 客户端提供了服务发现、服务路由、超时、重试以及熔断的功能，Kitex 服务端提供了限流的功能。
 想要使用支持 xds 的 Kitex 客户端，请在构造 Kitex Client 时将 `destService` 指定为目标服务的 URL，并添加一个选项 `xdssuite.NewClientOption`，该函数中包含用于服务路由的`RouteMiddleware`中间件和用于服务发现的 `Resolver` 以及各种治理策略的插件。
 
-```
+```go
 //  "github.com/kitex-contrib/xds/xdssuite"
 
 
@@ -95,7 +95,7 @@ xdssuite.NewClientOption()
 - `userid` 前缀匹配到 `2100`
 - `env` 正则匹配到 `[dev|sit]`
 
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -127,7 +127,7 @@ spec:
 
 - 比如：将 key 和 value 设置为“stage”和“canary”，以匹配 VirtualService 中定义的上述规则。
 
-```
+```go
 client.WithTag("stage", "canary")
 callopt.WithTag("stage", "canary")
 ```
@@ -140,7 +140,7 @@ callopt.WithTag("stage", "canary")
 
 - uri: `/${PackageName}.${ServiceName}/${MethodName}`
 
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -169,7 +169,7 @@ spec:
 - `spec.configPatches[0].match.cluster.service`：表示访问的服务，需要遵循 Kubernetes 的 FQDN 格式。
 - `failure_percentage_threshold`：触发熔断阈值，当错误率达到该值时进行熔断。
 - `failure_percentage_request_volume`：触发熔断的最小请求量，当总请求量小于该值时不会触发熔断。
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
@@ -200,7 +200,7 @@ Kitex 重试的规则比较复杂，参考：https://www.cloudwego.io/zh/docs/ki
 - max_duration_ms: 最大超时时间，如果请求耗时超过这个时间不会进行重试，以免整体耗时过大
 - error_rate：错误率，如果错误率超过该值，不再进行重试，在错误率过大的情况下进行重试没有实际意义，而且还会扩大 QPS，对服务器造成更大的压力。取值范围为(0, 0.3]，如果不在该有效范围内使用默认值 0.1。
 - backoff_policy: 重试间隔策略，支持类型为 fixed、random、none，cfg_items 根据实际类型配置 fix_ms、min_ms、max_ms等内容。
-```
+```yaml
 {
     "enable": true,
     "failure_policy": {
@@ -222,7 +222,7 @@ Kitex 重试的规则比较复杂，参考：https://www.cloudwego.io/zh/docs/ki
 }
 ```
 Istio 的 VirtualService 支持配置重试规则，但是该规则配置相对比较简单，只支持重试次数以及重试超时时间，不建议生产使用，内容如下：
-```
+```yaml
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
@@ -247,7 +247,7 @@ Envoy 自身 xDS 配置相对比较丰富，可以和 Kitex 的配置较好的�
 - workloadSelector：针对生效的 pod 客户端，如果不填会对该命名空间下的客户端生效。
 - routeConfiguration：name 对应需要生效的服务名称，需要遵循 FQDN 规则，如果不填则对所有的服务生效。
 
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
@@ -288,7 +288,7 @@ spec:
 #### 限流
 限流需要使用 Envoyfilter 来配置，xDS 配置参考: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/local_rate_limit_filter，Kitex 限流器参考 https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/limiting。其中 tokens_per_fill 字段表示每秒最大的请求数量，超出的请求将会被拒绝。Kitex 的 QPS 限流算法采用了令牌桶算法，每隔 100ms 往令牌桶添加 tokens_per_fill/10 的数量，所以建议该值的配置为 10 的整数。
 
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
@@ -323,7 +323,7 @@ spec:
 
 完整的客户端用法如下:
 
-```
+```go
 import (
 	"github.com/cloudwego/kitex/client"
 	xds2 "github.com/cloudwego/kitex/pkg/xds"
@@ -353,7 +353,7 @@ func main() {
 }
 ```
 完整的服务端用法如下:
-```
+```go
 package main
 
 import (
@@ -392,7 +392,7 @@ func main() {
 
 目前不支持 mTLS。 请通过配置 PeerAuthentication 以禁用 mTLS。
 
-```
+```yaml
 apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
@@ -403,9 +403,12 @@ spec:
     mode: DISABLE
 ```
 
-### 暂时还不支持负载均衡配置动态下发
+### 有限的治理能力 
+暂时还不支持负载均衡配置动态下发
 
 
 ## 依赖
 
-Kitex >= v0.10.3
+- 如只需使用服务发现、流量路由、超时，Kitex >= v0.4.0, [xDS](https://github.com/kitex-contrib/xds) >= 0.2.0
+
+- 如需使用完整能力，包括熔断、限流、重试，Kitex >= v0.10.3, [xDS](https://github.com/kitex-contrib/xds) >= 0.4.1
