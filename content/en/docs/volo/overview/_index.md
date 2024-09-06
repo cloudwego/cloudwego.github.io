@@ -55,5 +55,4 @@ We have also created an organization [Volo-rs](http://github.com/volo-rs), any c
 
 1. [Volo-rs](http://github.com/volo-rs)：The volo ecosystem which contains a lot of useful components.
 2. [Pilota](https://github.com/cloudwego/pilota)：A thrift and protobuf implementation in pure rust with high performance and extensibility.
-3. [Motore](https://github.com/cloudwego/motore)：Middleware abstraction layer powered by AFIT and RPITIT.
 4. [Metainfo](https://github.com/cloudwego/metainfo)：Transmissing metainfo across components.

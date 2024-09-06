@@ -51,4 +51,3 @@ Volo-HTTP 是 Rust 语言的 HTTP 微服务框架, 使用了基于 AFIT 和 RPIT
 
 - [选择 Go 还是 Rust？CloudWeGo-Volo 基于 Rust 语言的探索实践](https://www.cloudwego.io/zh/blog/2022/09/06/%E9%80%89%E6%8B%A9-go-%E8%BF%98%E6%98%AF-rustcloudwego-volo-%E5%9F%BA%E4%BA%8E-rust-%E8%AF%AD%E8%A8%80%E7%9A%84%E6%8E%A2%E7%B4%A2%E5%AE%9E%E8%B7%B5/)
 - [国内首个基于 Rust 语言的 RPC 框架 — Volo 正式开源！](https://www.cloudwego.io/zh/blog/2022/08/30/%E5%9B%BD%E5%86%85%E9%A6%96%E4%B8%AA%E5%9F%BA%E4%BA%8E-rust-%E8%AF%AD%E8%A8%80%E7%9A%84-rpc-%E6%A1%86%E6%9E%B6-volo-%E6%AD%A3%E5%BC%8F%E5%BC%80%E6%BA%90/)
-- [字节开源 Monoio ：基于 io-uring 的高性能 Rust Runtime](https://www.cloudwego.io/zh/blog/2023/04/17/%E5%AD%97%E8%8A%82%E5%BC%80%E6%BA%90-monoio-%E5%9F%BA%E4%BA%8E-io-uring-%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD-rust-runtime/)
