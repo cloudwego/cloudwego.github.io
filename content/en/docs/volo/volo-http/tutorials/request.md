@@ -85,7 +85,7 @@ Whereas `FromRequest` consumes the body of the request, so the handler can only 
 
 ## Types that Implement `extractor` By Default
 
-**FromContext**
+**`FromContext`**
 - `Address`
 - `Uri`
 - `Method`
@@ -94,7 +94,7 @@ Whereas `FromRequest` consumes the body of the request, so the handler can only 
 - `Query<T>`
 - `WebSocketUpgrade`
 
-**FromRequest**
+**`FromRequest`**
 - `Option<T>`
 - `Result<T, T::Rejection>`
 - `ServerRequest<B>`

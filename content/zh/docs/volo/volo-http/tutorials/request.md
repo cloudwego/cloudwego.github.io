@@ -85,7 +85,7 @@ pub fn user_login_router() -> Router {
 
 ## 默认实现了 `extractor` 的类型
 
-**FromContext**
+**`FromContext`**
 - `Address`
 - `Uri`
 - `Method`
@@ -94,7 +94,7 @@ pub fn user_login_router() -> Router {
 - `Query<T>`
 - `WebSocketUpgrade`
 
-**FromRequest**
+**`FromRequest`**
 - `Option<T>`
 - `Result<T, T::Rejection>`
 - `ServerRequest<B>`
