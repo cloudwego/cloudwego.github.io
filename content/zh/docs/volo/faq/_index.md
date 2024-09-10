@@ -1,7 +1,7 @@
 ---
 title: "FAQ"
 linkTitle: "FAQ"
-weight: 8
+weight: 9
 keywords: ["Volo", "FAQ", "volo-cli", "poll_ready"]
 description: 常见问题回答汇总。
 ---

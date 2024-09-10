@@ -6,41 +6,7 @@ keywords: ["Volo", "Thrift", "快速开始", "安装"]
 description: "Volo-Thrift 开发环境准备、快速上手与基础教程。"
 ---
 
-## Part 1. 安装命令行工具
-
-Volo 提供了同名的命令行工具，用来初始化项目、管理 IDL 等。
-
-```bash
-cargo install volo-cli
-```
-
-> 需要 rust 版本>= 1.75.0
-
-随后，我们输入：
-
-```bash
-volo help
-```
-
-就能看到类似以下输出啦：
-
-```bash
-USAGE:
-    volo [OPTIONS] <SUBCOMMAND>
-
-OPTIONS:
-    -h, --help       Print help information
-    -n, --entry-name <ENTRY_NAME>    The entry name, defaults to 'default'. [default: default]
-    -v, --verbose    Turn on the verbose mode.
-    -V, --version    Print version information
-
-SUBCOMMANDS:
-    help    Print this message or the help of the given subcommand(s)
-    idl     manage your idl
-    init    init your project
-```
-
-## Part 2. 创建一个 Thrift Server
+## Part 1. 创建一个 Thrift Server
 
 Volo-Thrift 是一个 RPC 框架，既然是 RPC，底层就需要两大功能：
 
@@ -49,14 +15,14 @@ Volo-Thrift 是一个 RPC 框架，既然是 RPC，底层就需要两大功能�
 
 IDL 全称是 `Interface Definition Language`，接口定义语言。
 
-### 2.1 Why IDL
+### 1.1 Why IDL
 
 如果我们要进行 RPC，就需要知道对方的接口是什么，需要传什么参数，同时也需要知道返回值是什么样的，就好比两个人之间交流，需要保证在说的是同一个语言、同一件事。
 这时候，就需要通过 IDL 来约定双方的协议，就像在写代码的时候需要调用某个函数，我们需要知道函数签名一样。
 
 Thrift IDL 是一套跨语言的全栈式 RPC 解决方案，具体的语法可以看参考 [thrift-missing-guide](https://diwakergupta.github.io/thrift-missing-guide/) 或官方 [Thrift interface description language](http://thrift.apache.org/docs/idl)。
 
-### 2.2 编写 IDL
+### 1.2 编写 IDL
 
 为了创建一个 Thrift 项目，我们需要先编写一个 Thrift IDL。
 
@@ -172,7 +138,7 @@ cargo run --bin server
 
 至此，我们已经能把我们的 server 跑起来啦！
 
-## Part 3. 编写 Client 端
+## Part 2. 编写 Client 端
 
 上一节中，我们编写完成了 server 端，现在让我们来编写我们的 client 端并调用我们的 server 端。
 
@@ -257,7 +223,7 @@ cargo run --bin client
 
 大功告成！
 
-## Part 4. 添加一个中间件
+## Part 3. 添加一个中间件
 
 接下来，让我们来看下如何给 Volo 添加一个中间件。
 
@@ -325,7 +291,7 @@ volo_gen::volo::example::ItemServiceServer::new(S)
 
 这时候，在 info 日志级别下，我们会打印出请求的耗时；在 debug 日志级别下，我们还会打出请求和响应的详细数据。
 
-## Part 5. What's Next?
+## Part 4. What's Next?
 
 恭喜你，阅读到了这里！ 至此，我们已经基本学会了 Volo 的大部分使用了，可以使用 Volo 来开启我们愉快的 Rust 之旅啦～
 
