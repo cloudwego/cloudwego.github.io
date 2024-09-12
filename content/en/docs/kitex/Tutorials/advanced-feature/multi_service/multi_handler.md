@@ -1,17 +1,17 @@
 ---
-title: "Generating Multiple Handlers For Multiple Services"
+title: "Generating Multiple Handlers for Multiple Services"
 date: 2024-09-12
 weight: 3
 keywords: ["Kitex", "Multiple Services", "Code Generation", "Multiple Handlers"]
-description: "Kitex supports generating handlers for each service in Multiple Services scenario and unifying registration."
+description: "Kitex supports generating handlers for each service in multiple services scenario and unifying registration."
 ---
 
 > Support Version: Kitex Tool >= v0.11.0
 ## Function Description
 
-Starting from v0.8.0, Kitex supports defining multiple Services in one idl (both thrift and protobuf are supported). For details, please refer to [Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/multi_service). However, in the generated code, the handler.go corresponding to multiple Services will be overwritten, and only the Handler corresponding to the last Service in the idl will be retained.
+Starting from v0.8.0, Kitex supports defining multiple services in one idl (both thrift and protobuf are supported). For details, please refer to [Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/multi_service). However, in the generated code, the handler.go corresponding to multiple services will be overwritten, and only the handler corresponding to the last service in the idl will be retained.
 
-Since v0.11.0, Kitex Tool supports generating Handlers for each Service and registering them uniformly to the Server.
+Since v0.11.0, Kitex Tool supports generating handlers for each service and registering them uniformly to the server.
 
 ## Usage Approach
 
@@ -65,9 +65,9 @@ kitex_info.yaml
 main.go
 ```
 
-Among them, handler_A.go, handler_B.go, and handler_C.go respectively host the Handlers of Service A, Service B, and Service C.
+Among them, handler_A.go, handler_B.go, and handler_C.go respectively host the handlers of service A, service B, and service C.
 
-In main.go, multiple Handlers are automatically registered:
+In main.go, multiple handlers are automatically registered:
 
 ```go
 package main
