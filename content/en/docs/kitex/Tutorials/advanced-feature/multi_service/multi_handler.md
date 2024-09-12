@@ -9,7 +9,7 @@ description: "Kitex supports generating handlers for each service in Multiple Se
 > Support Version: Kitex Tool >= v0.11.0
 ## Function Description
 
-Starting from v0.8.0, Kitex supports defining multiple Services in one idl (both thrift and protobuf are supported). For details, please refer to [Multiple Services](/en/docs/kitex/tutorials/advanced-feature/multi_service/multi_service). However, in the generated code, the handler.go corresponding to multiple Services will be overwritten, and only the Handler corresponding to the last Service in the idl will be retained.
+Starting from v0.8.0, Kitex supports defining multiple Services in one idl (both thrift and protobuf are supported). For details, please refer to [Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/multi_service). However, in the generated code, the handler.go corresponding to multiple Services will be overwritten, and only the Handler corresponding to the last Service in the idl will be retained.
 
 Since v0.11.0, Kitex Tool supports generating Handlers for each Service and registering them uniformly to the Server.
 

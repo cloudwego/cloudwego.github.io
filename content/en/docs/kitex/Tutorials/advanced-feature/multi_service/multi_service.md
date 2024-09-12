@@ -30,7 +30,7 @@ If you are client-side users and using the multi-service feature, please follow 
 
 #### Preparation
 
-> Kitex Tool ( >= v0.11.0 ) supports generating and registering Handler for each Service, please refer to [Generating Multiple Handlers For Multiple Services](/en/docs/kitex/tutorials/advanced-feature/multi_service/multi_handler/).
+> Kitex Tool ( >= v0.11.0 ) supports generating and registering Handler for each Service, please refer to [Generating Multiple Handlers For Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/multi_handler/).
 
 Please generate code for each service using kitex command tool (>= v0.9.0). For more details, please refer to [Code Generation Tool](/docs/kitex/tutorials/code-gen/code_generation/).
 
