@@ -1,7 +1,7 @@
 ---
 title: "单 Server 多 Service"
 date: 2023-03-05
-weight: 10
+weight: 2
 keywords:
   ["Kitex", "多 Service", "单 Server 多 Service", "gRPC", "thrift", "protobuf"]
 description: Kitex 支持在一个 Server 上注册多个 Service 。
@@ -30,6 +30,8 @@ description: Kitex 支持在一个 Server 上注册多个 Service 。
 ### 服务器端
 
 #### 准备工作
+
+> Kitex 命令工具 ( >= v0.11.0 ) 支持为每个 Service 生成 Handler 文件并统一注册，详情请参考[多 Service 多 Handler 生成](/zh/docs/kitex/tutorials/advanced-feature/multi_service/multi_handler/)
 
 请使用 Kitex 命令工具 ( >= v0.9.0 ) 为每个 Service 生成代码。更多详情，请参考[代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)。
 

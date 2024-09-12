@@ -1,7 +1,7 @@
 ---
 title: "Multiple Services"
 date: 2024-03-05
-weight: 10
+weight: 2
 keywords: ["Kitex", "Multi Services", "gRPC", "thrift", "protobuf"]
 description: Kitex supports multiple service registration on a server.
 ---
@@ -29,6 +29,8 @@ If you are client-side users and using the multi-service feature, please follow 
 ### Server Side Users
 
 #### Preparation
+
+> Kitex Tool ( >= v0.11.0 ) supports generating and registering handler for each service, please refer to [Generating Multiple Handlers for Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/multi_handler/).
 
 Please generate code for each service using kitex command tool (>= v0.9.0). For more details, please refer to [Code Generation Tool](/docs/kitex/tutorials/code-gen/code_generation/).
 
