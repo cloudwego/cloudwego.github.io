@@ -6,6 +6,8 @@ date: 2024-09-12
 description: >
 ---
 
+> Highly recommend upgrading Kitex version to v0.11.3 or higher, because there's some bugfix on v0.11.0.
+
 ## **Introduction to Key Changes**
 
 ### New Feature
