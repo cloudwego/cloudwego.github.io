@@ -10,7 +10,7 @@ description: "Kitex 支持在多 Service 场景为每个 Service 生成 Handler 
 
 ## 功能说明
 
-Kitex 从 v0.8.0 开始支持在一个 idl (同时支持 thrift 和 protobuf) 中定义多个 service，详情请参考[单 Server 多 Service](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/)。但是生成代码中多个 service 对应的 handler.go 会被覆盖，只保留 idl 中最后一个 service 对应的 handler。
+Kitex 从 v0.8.0 开始支持在一个 idl (同时支持 thrift 和 protobuf) 中定义多个 service，详情请参考[单 Server 多 Service](/zh/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/)。但是生成代码中多个 service 对应的 handler.go 会被覆盖，只保留 idl 中最后一个 service 对应的 handler。
 
 从 v0.11.0 开始，Kitex Tool 支持为每个 service 生成 handler 并统一注册到 server。
 

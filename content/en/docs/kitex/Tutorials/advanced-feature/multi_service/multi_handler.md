@@ -10,7 +10,7 @@ description: "Kitex supports generating handlers for each service in multiple se
 
 ## Function Description
 
-Starting from v0.8.0, Kitex supports defining multiple services in one idl (both thrift and protobuf are supported). For details, please refer to [Multiple Services](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/). However, in the generated code, the handler.go corresponding to multiple services will be overwritten, and only the handler corresponding to the last service in the idl will be retained.
+Starting from v0.8.0, Kitex supports defining multiple services in one idl (both thrift and protobuf are supported). For details, please refer to [Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/). However, in the generated code, the handler.go corresponding to multiple services will be overwritten, and only the handler corresponding to the last service in the idl will be retained.
 
 Since v0.11.0, Kitex Tool supports generating handlers for each service and registering them uniformly to the server.
 
