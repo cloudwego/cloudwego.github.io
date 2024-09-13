@@ -48,7 +48,7 @@ service C {
 
 The code generation structure is:
 
-```thrift
+```bash
 kitex_gen/
 script/
 build.sh
@@ -60,7 +60,7 @@ kitex_info.yaml
 main.go
 ```
 
-Among them, handler_A.go, handler_B.go, and handler_C.go respectively host the handlers of Service A, Service B, and Service C.
+Among them, handler_A.go, handler_B.go, and handler_C.go respectively host the handlers of service A, service B, and service C.
 
 In main.go, multiple handlers are automatically registered:
 
@@ -68,9 +68,9 @@ In main.go, multiple handlers are automatically registered:
 package main
 
 import (
-    serviceA "demo/kitex_gen/multiple/services/log/a"
-    serviceB "demo/kitex_gen/multiple/services/log/b"
-    serviceC "demo/kitex_gen/multiple/services/log/c"
+    serviceA "demo/kitex_gen/multiple/services/test/a"
+    serviceB "demo/kitex_gen/multiple/services/test/b"
+    serviceC "demo/kitex_gen/multiple/services/test/c"
     server "github.com/cloudwego/kitex/server"
     "log"
 )
