@@ -7,23 +7,18 @@ description: "Kitex 支持在多 Service 场景为每个 Service 生成 Handler 
 ---
 
 > 支持版本：Kitex Tool >= v0.11.0
+
 ## 功能说明
 
-Kitex 从 v0.8.0 开始支持在一个 idl (同时支持 thrift 和 protobuf) 中定义多个 Service，详情请参考[单 Server 多 Service](/zh/docs/kitex/tutorials/advanced-feature/multi_service/multi_service)。但是生成代码中多个 Service 对应的 handler.go 会被覆盖，只保留 idl 中最后一个 Service 对应的 Handler。
+Kitex 从 v0.8.0 开始支持在一个 idl (同时支持 thrift 和 protobuf) 中定义多个 service，详情请参考[单 Server 多 Service](/zh/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/)。但是生成代码中多个 service 对应的 handler.go 会被覆盖，只保留 idl 中最后一个 service 对应的 handler。
 
-从 v0.11.0 开始，Kitex Tool 支持为每个 Service 生成 Handler 并统一注册到 Server。
+从 v0.11.0 开始，Kitex Tool 支持为每个 service 生成 handler 并统一注册到 server。
 
-## 使用
+## 使用说明
 
-### 安装
+- 需指定 -tpl multiple_services
 
-安装版本 >= v0.11.0 的 Kitex Tool：
-
-```
-go install github.com/cloudwego/kitex/tool/cmd/kitex@v0.11.0
-```
-
-### 指定 -tpl multiple_services
+Kitex tool 版本要求 >= v0.11.0
 
 ```bash
 kitex -tpl multiple_services -service your_service path/to/idl
@@ -31,7 +26,7 @@ kitex -tpl multiple_services -service your_service path/to/idl
 
 ## 生成结果
 
-### thrift idl
+### 3.1 thrift idl
 
 以下方 thrift idl 为例：
 
@@ -65,9 +60,9 @@ kitex_info.yaml
 main.go
 ```
 
-其中 handler_A.go，handler_B.go，handler_C.go 分别承载 Service A，Service B 以及 Service C 的 Handler。
+其中 handler_A.go，handler_B.go，handler_C.go 分别承载 Service A，Service B 以及 Service C 的 handler。
 
-在 main.go 中，自动注册多 Handler：
+在 main.go 中，自动注册多 handler：
 
 ```go
 package main
@@ -100,7 +95,7 @@ func main() {
 }
 ```
 
-### pb idl
+### 3.2 pb idl
 
 以下方 pb idl 为例：
 
@@ -146,4 +141,4 @@ service C {
 }
 ```
 
-生成代码结构、 main.go 内容与 thrift idl 一致。
+生成代码结构和 main.go 内容与 thrift idl 一致。

@@ -7,31 +7,26 @@ description: "Kitex supports generating handlers for each service in multiple se
 ---
 
 > Support Version: Kitex Tool >= v0.11.0
+
 ## Function Description
 
-Starting from v0.8.0, Kitex supports defining multiple services in one idl (both thrift and protobuf are supported). For details, please refer to [Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/multi_service). However, in the generated code, the handler.go corresponding to multiple services will be overwritten, and only the handler corresponding to the last service in the idl will be retained.
+Starting from v0.8.0, Kitex supports defining multiple services in one idl (both thrift and protobuf are supported). For details, please refer to [Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/). However, in the generated code, the handler.go corresponding to multiple services will be overwritten, and only the handler corresponding to the last service in the idl will be retained.
 
 Since v0.11.0, Kitex Tool supports generating handlers for each service and registering them uniformly to the server.
 
 ## Usage Approach
 
-### Install
+- configure `-tpl multiple_services`
 
-Install Kitex Tool with version >= v0.11.0:
-
-```
-go install github.com/cloudwego/kitex/tool/cmd/kitex@v0.11.0
-```
-
-### configure -tpl multiple_services
+Kitex Tool >= v0.11.0
 
 ```bash
 kitex -tpl multiple_services -service your_service path/to/idl
 ```
 
-## Generation Result
+## 3. Generation Result
 
-### thrift idl
+### 3.1 thrift idl
 
 Take the following thrift idl as an example:
 
@@ -100,7 +95,7 @@ func main() {
 }
 ```
 
-### pb idl
+### 3.2 pb idl
 
 Take the following pb idl as an example:
 
@@ -146,4 +141,4 @@ service C {
 }
 ```
 
-The code generation structure and the content of main.go are consistent with thrift idl. 
+The code generation structure and the content of main.go are consistent with thrift idl.
