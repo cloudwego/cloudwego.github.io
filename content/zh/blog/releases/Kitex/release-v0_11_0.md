@@ -16,10 +16,10 @@ description: >
 
 ### 功能优化
 1. **Frugal ARM 性能优化**：Frugal 支持了基于反射的高性能编解码，升级到 Frugal v0.2.0 即可
-2. **Kitex Tool 代码生成提速**：提供了 -rapid 参数，可以无需安装 Thriftgo ，且速度略有提高。下个版本之后将作为默认行为。
+2. **Kitex Tool 代码生成提速**：提供了 `-rapid` 参数，可以无需安装 Thriftgo ，且速度略有提高。下个版本之后将作为默认行为。
 
 ### 其他
-1. 支持版本 Go 1.18~1.23，最低支持变为 Go 1.18，如果你的 Go 版本过低，编译时会有提示：note: module requires Go 1.18
+1. 支持版本 Go 1.18~1.23，最低支持变为 Go 1.18，如果你的 Go 版本过低，编译时会有提示：`note: module requires Go 1.18`
 2. 逐步移除对 Apache Thrift 的依赖，将对 Thrift 编解码相关的逻辑逐步收敛到 github.com/cloudwego/gopkg/thrift 库中
 
 

@@ -16,10 +16,10 @@ description: >
 
 ### Feature optimization
 1. **Frugal ARM Optimization**: Frugal v0.2.0 now supports a new implement by reflection
-2. **Kitex Tool Improvement**: Kitex Tool provide a new param '-rapid' to integrates Thriftgo and there's a slightly improved speed.
+2. **Kitex Tool Improvement**: Kitex Tool provide a new param `-rapid` to integrates Thriftgo and there's a slightly improved speed.
 
 ### Others
-1. Support Go 1.18~1.23. Minimum support for Golang 1.18，if your golang version is lower than 1.18, you'll see 'note: module requires Go 1.18' when you compile.
+1. Support Go 1.18~1.23. Minimum support for Golang 1.18，if your golang version is lower than 1.18, you'll see `note: module requires Go 1.18` when you compile.
 2. Remove Apache Thrift，and refactor all related interface into github.com/cloudwego/gopkg/thrift.
 
 ## **Full Release Log**
