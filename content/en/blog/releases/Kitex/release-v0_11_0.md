@@ -12,7 +12,7 @@ description: >
 
 ### New Feature
 1. **Mixed Retry**: Supports enabling both "Failure Retry" and "Backup Request" strategies simultaneously, which can reduce tail requests while increasing the success rate of retries, for more detail: [Retry](https://www.cloudwego.io/en/docs/kitex/tutorials/service-governance/retry/)
-2. **Custom Payload Validation**: To avoid inconsistencies in data transmission caused by hardware failures or data tampering, Kitex provides validation functionality for payload messages and supports custom extensions.
+2. **Custom Payload Validation**: To avoid inconsistencies in data transmission caused by hardware failures or data tampering, Kitex provides validation functionality for payload messages and supports custom extensions. For usage: [Payload Validator](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/payload_validator/).
 
 ### Feature optimization
 1. **Frugal ARM Optimization**: Frugal v0.2.0 now supports a new implement by reflection
