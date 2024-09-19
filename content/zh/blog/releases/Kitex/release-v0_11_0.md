@@ -12,7 +12,7 @@ description: >
 
 ### 新特性
 1. **重试：新增混合重试功能**：支持同时开启「失败重试」+「Backup Request」两种策略，能够在降低长尾请求的同时提高请求的重试成功率，详见 [请求重试](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/retry/)
-2. **自定义 Payload 校验**：为避免硬件故障或数据篡改导致收发的数据不一致，Kitex 提供了对 Payload 报文的校验功能，并支持自定义扩展
+2. **自定义 Payload 校验**：为避免硬件故障或数据篡改导致收发的数据不一致，Kitex 提供了对 Payload 报文的校验功能，并支持自定义扩展，使用方式参见: [payload 校验](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/payload_validator/)
 
 ### 功能优化
 1. **Frugal ARM 性能优化**：Frugal 支持了基于反射的高性能编解码，升级到 Frugal v0.2.0 即可
