@@ -56,6 +56,16 @@ ThriftPath `$.Foo` 表示 Example.Foo 的字符串值，`$.Self.Bar` 表示第�
 - 除 `key` 中之外，ThriftPath 任何位置都不能含有空白（\n\r\b\t）字符
 
 这是详细的语法：
+<!--StartFragment--><byte-sheet-html-origin data-id="1700208276535" data-version="4" data-is-embed="true" data-grid-line-hidden="false" data-copy-type="col">
+ThriftPath | Description
+-- | --
+$ | 根对象，每个路径都必须以它开头。
+.`fieldname` | 获取结构体中的 fieldname 子字段。例如，$. Fielda.ChildrenB。如果 fieldname 是路径终点且改字段为复杂类型（map/list/struct），则表示获取该字段下的所有子字段。
+[`index`,`index`...] | 获取 List 中的特定 index 的元素。索引必须是整数。例如：$. FieldList[1,3,4]。注意：可以编写超出实际列表大小的索引，但是实际无用。
+{"`key`","`key`"...} | 获取字符串类型键的映射中的特定 key 的值。例如：$. StrMap{""abcd""，""1234""} 
+{`id`,`id`...} | 获取整数类型键的映射中具有特定 id 的子字段。例如，$.IntMap{1,2}
+\* | 获取所有字段/元素，即：$. StrMap{*} 表示获取映射 Root.StrMap 所有元素；$.List[*] 表示或者 List 中的所有元素。
+</byte-sheet-html-origin><!--EndFragment-->
 
 #### **类型描述符**
 
