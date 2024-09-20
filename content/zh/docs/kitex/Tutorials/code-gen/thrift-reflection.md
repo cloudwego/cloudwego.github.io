@@ -138,7 +138,7 @@ func main() {
 
 这些 Descriptor 也是用 Thrift IDL 定义的：[https://github.com/cloudwego/thriftgo/blob/main/descriptor.thrift](https://github.com/cloudwego/thriftgo/blob/main/descriptor.thrift)
 
-除了在代码生成里提供 Golang 结构体找到 Descriptor 的方法以外，thrift_reflection 包内也提供了按照 Golang 类型或者名称查找 Descritptor 的方式：
+除了在代码生成里提供 Golang 结构体找到 Descriptor 的方法以外，thrift_reflection 包内也提供了按照 Golang 类型或者名称查找 Descriptor 的方式：
 
 ```go
 func main() {
