@@ -112,7 +112,7 @@ kitex -module xx -thrift trim_idl xxxx.thrift
 
 工具在执行时，会解析 IDL 然后只保留所有 Method 直接或间接用到的结构体，以最快的速度生成最简洁的产物，并同时输出一个裁切效果的报告：
 
-![image](/img/blog/Kitex_codegen_practices/wanring.png)
+![image](/img/blog/Kitex_codegen_practices/wanring.jpg)
 
 
 #### 进阶
