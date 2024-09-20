@@ -17,6 +17,9 @@ description: >
 ### Feature optimization
 1. **Frugal ARM Optimization**: Frugal v0.2.0 now supports a new implement by reflection
 2. **Kitex Tool Improvement**: Kitex Tool provide a new param `-rapid` to integrates Thriftgo and there's a slightly improved speed.
+3. **Generating Multiple Handlers for Multiple Services**：Since this version, Kitex tool provide each service with independent handler file and register them into server，for more details: [Generating Multiple Handlers for Multiple Services](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/multi_handler/)
+4. **Generic Streaming for JSON [on trial]**：JSON generic streaming has now support streaming (client only)，currently we're doing some optimization, you can have a try by following this doc: [Generic Streaming](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming/)
+
 
 ### Others
 1. Support Go 1.18~1.23. Minimum support for Golang 1.18，if your golang version is lower than 1.18, you'll see `note: module requires Go 1.18` when you compile.
