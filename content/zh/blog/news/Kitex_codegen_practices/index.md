@@ -78,12 +78,11 @@ kitex_gen/
 这种情况下，随着业务迭代，IDL 的内容新增和相互引用不断增加（大家没事都不会去删 IDL，所以只会越来越大），所以生成 kitex_gen 之后，不管有的没的，产物体积可能会非常大
 
 体积太大了，会导致：
-生成耗时也很长，影响研发效率
-Goland 加载索引要很久，或者根本无法加载，没自动补全了，代码都不知道怎么写了
-Git 提交的时候内容巨大，Git 仓库也越来越大了
-（当 Git 仓库超过 500MB 后，甚至可能 go get 都拉不下来了：https://github.com/golang/go/issues/29210）
-编译很慢、甚至编译时符号表过大直接编译失败
-（参考这个 Issue ：https://github.com/golang/go/issues/17378）
+1. 生成耗时也很长，影响研发效率
+2. Goland 加载索引要很久，或者根本无法加载，没自动补全了，代码都不知道怎么写了
+3. Git 提交的时候内容巨大，Git 仓库也越来越大了，当 Git 仓库超过 500MB 后，[甚至可能 go get 都拉不下来了](https://github.com/golang/go/issues/29210)
+4. 编译很慢、甚至编译时符号表过大[直接编译失败](https://github.com/golang/go/issues/17378)
+
 所以这种时候，不得不提到产物优化治理了（顺便能让生成速度更快）
 
 ## 优化手段
@@ -113,7 +112,7 @@ kitex -module xx -thrift trim_idl xxxx.thrift
 
 工具在执行时，会解析 IDL 然后只保留所有 Method 直接或间接用到的结构体，以最快的速度生成最简洁的产物，并同时输出一个裁切效果的报告：
 
-![image](/img/blog/Kitex_codegen_practices/warning.png)
+![image](/img/blog/Kitex_codegen_practices/wanring.png)
 
 
 进阶
