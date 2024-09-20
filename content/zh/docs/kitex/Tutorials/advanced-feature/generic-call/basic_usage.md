@@ -505,7 +505,7 @@ func main() {
     req.Header.Set("token", "1")
     customReq, err := generic.FromHTTPRequest(req) // 考虑到业务有可能使用第三方 http request，可以自行构造转换函数
     // customReq *generic.HttpRequest
-    // 由于 http 泛化的 method 是通过[Thrift-HTTP 映射的 IDL 规范](https://www.cloudwego.cn/zh/docs/kitex/tutorials/advanced-feature/generic-call/thrift_idl_annotation_standards/)规则从 http request 中获取的，所以填空就行
+    // 由于 http 泛化的 method 是通过[Thrift-HTTP 映射的 IDL 规范]从 http request 中获取的，所以填空就行
     resp, err := cli.GenericCall(ctx, "", customReq)
     realResp := resp.(*generic.HTTPResponse)
     realResp.Write(w) // 写回 ResponseWriter，用于 http 网关
