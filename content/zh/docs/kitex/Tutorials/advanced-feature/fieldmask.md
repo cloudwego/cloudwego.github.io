@@ -99,7 +99,7 @@ var fieldmaskCache sync.Map
 
 // initialize request and response fieldmasks and cache them
 func init() {
-    // construct a fieldmask with TypeDescriptor and thrift pathes
+    // construct a fieldmask with TypeDescriptor and thrift paths
     respMask, err := fieldmask.NewFieldMask(
         (*fieldmask0.BizResponse)(nil).GetTypeDescriptor(), 
         "$.A")
@@ -199,7 +199,7 @@ func TestClient() {
     req.A = "A"
     req.B = "B"
         
-    // try get reponse's fieldmask
+    // try get response's fieldmask
     respMask, ok := fmCache.Load("BizResponse")
     if ok {
             // serialize the respMask
