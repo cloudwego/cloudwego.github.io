@@ -11,14 +11,14 @@ description: >
 ## **重要变更介绍**
 
 ### 新特性
-1. **重试：新增混合重试功能**：支持同时开启「失败重试」+「Backup Request」两种策略，能够在降低长尾请求的同时提高请求的重试成功率，详见 [请求重试](https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/retry/)
-2. **自定义 Payload 校验**：为避免硬件故障或数据篡改导致收发的数据不一致，Kitex 提供了对 Payload 报文的校验功能，并支持自定义扩展，使用方式参见: [payload 校验](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/payload_validator/)
+1. **重试：新增混合重试功能**：支持同时开启「失败重试」+「Backup Request」两种策略，能够在降低长尾请求的同时提高请求的重试成功率，详见 [请求重试](/zh/docs/kitex/tutorials/service-governance/retry/)
+2. **自定义 Payload 校验**：为避免硬件故障或数据篡改导致收发的数据不一致，Kitex 提供了对 Payload 报文的校验功能，并支持自定义扩展，使用方式参见: [payload 校验](/zh/docs/kitex/tutorials/advanced-feature/payload_validator/)
 
 ### 功能优化
 1. **Frugal ARM 性能优化**：Frugal 支持了基于反射的高性能编解码，升级到 Frugal v0.2.0 即可
 2. **Kitex Tool 代码生成提速**：提供了 `-rapid` 参数，可以无需安装 Thriftgo ，且速度略有提高。下个版本之后将作为默认行为。
-3. **多 Service 多 Handler 生成**：从该版本开始，Kitex Tool 支持为每个 service 生成 handler 并统一注册到 server，详见 [多 Service 多 Handler 生成](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/multi_service/multi_handler/)
-4. **Streaming JSON 泛化[试用阶段]**：JSON 泛化调用支持了 streaming 流式接口（仅限 client），目前正在持续优化中，并未正式发布，有兴趣可以试用，详见 [Generic Streaming](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming/)
+3. **多 Service 多 Handler 生成**：从该版本开始，Kitex Tool 支持为每个 service 生成 handler 并统一注册到 server，详见 [多 Service 多 Handler 生成](/zh/docs/kitex/tutorials/advanced-feature/multi_service/multi_handler/)
+4. **Streaming JSON 泛化[试用阶段]**：JSON 泛化调用支持了 streaming 流式接口（仅限 client），目前正在持续优化中，并未正式发布，有兴趣可以试用，详见 [Generic Streaming](/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming/)
 
 ### 其他
 1. 支持版本 Go 1.18~1.23，最低支持变为 Go 1.18，如果你的 Go 版本过低，编译时会有提示：`note: module requires Go 1.18`
