@@ -8,9 +8,9 @@ description: ""
 
 ## **What is thrift FieldMask**?
 
-![](static/img/docsstatic/img/docs/kitex/Tutorials/advanced-feature/IQptbzlBdoFcPcxGbCwlSqpmgcb.png)
-
 FieldMask is inspired by <u>[Protobuf](https://protobuf.dev/reference/protobuf/google.protobuf/#field-mask)</u> and used to indicate the data that users care about, and filter out useless data, during a RPC call, in order to reduce network package size and accelerate serializing/deserializing process. This technology has been widely used among Protobuf <u>[services](https://netflixtechblog.com/practical-api-design-at-netflix-part-1-using-protobuf-fieldmask-35cfdc606518)</u>.
+
+![fieldmask](static/img/docs/kitex/Tutorials/advanced-feature/fieldmask.png)
 
 ## **How to construct a FieldMask**?
 
