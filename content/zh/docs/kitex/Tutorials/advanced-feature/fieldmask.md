@@ -8,6 +8,8 @@ description: ""
 
 ## 什么是 Thrift FieldMask？
 
+![](static/img/docsstatic/img/docs/kitex/Tutorials/advanced-feature/U6zybX2jEoNAVnxEMnil3JT7g4d.png)
+
 FieldMask 是受到 <u>[Protobuf](https://protobuf.dev/reference/protobuf/google.protobuf/#field-mask) </u>的启发，用于在 RPC 调用时**指示用户关心的数据并过滤掉无用的数据**的一种手段。该技术不但可以在 RPC 服务中实现**特定字段的屏蔽**，同时还可以**减少消息传输开销**以提升服务性能，目前已广泛应用于 Protobuf<u>[服务](https://netflixtechblog.com/practical-api-design-at-netflix-part-1-using-protobuf-fieldmask-35cfdc606518)</u>中。
 
 对于 thrift RPC 服务来说，有如下潜在使用场景：
@@ -56,15 +58,6 @@ ThriftPath `$.Foo` 表示 Example.Foo 的字符串值，`$.Self.Bar` 表示第�
 - 除 `key` 中之外，ThriftPath 任何位置都不能含有空白（\n\r\b\t）字符
 
 这是详细的语法：
-
-ThriftPath | Description
--- | --
-$ | 根对象，每个路径都必须以它开头。
-.`fieldname` | 获取结构体中的 fieldname 子字段。例如，$. Fielda.ChildrenB。如果 fieldname 是路径终点且改字段为复杂类型（map/list/struct），则表示获取该字段下的所有子字段。
-[`index`,`index`...] | 获取 List 中的特定 index 的元素。索引必须是整数。例如：$. FieldList[1,3,4]。注意：可以编写超出实际列表大小的索引，但是实际无用。
-{"`key`","`key`"...} | 获取字符串类型键的映射中的特定 key 的值。例如：$. StrMap{""abcd""，""1234""} 
-{`id`,`id`...} | 获取整数类型键的映射中具有特定 id 的子字段。例如，$.IntMap{1,2}
-\* | 获取所有字段/元素，即：$. StrMap{*} 表示获取映射 Root.StrMap 所有元素；$.List[*] 表示或者 List 中的所有元素。
 
 #### **类型描述符**
 
