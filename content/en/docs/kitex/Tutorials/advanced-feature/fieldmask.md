@@ -1,7 +1,7 @@
 ---
 title: "Serialize Data Ondemands"
 date: 2024-09-29
-weight: 1
+weight: 9
 keywords: ["Serialize Data Ondemands"]
 description: ""
 ---
@@ -46,6 +46,16 @@ Here are basic hypothesis:
 
 Here is detailed syntax:
 
+- ThriftPath | Description
+- -- | --
+- $	| the root object,every path must start with it.
+- .fieldname | get the child field of a struct corepsonding to fieldname. For example, $.FieldA.ChildrenB
+- [index,index...] | get any number of elements in an List/Set corepsonding to indices. Indices must be integer.For example: $.FieldList[1,3,4] .Notice: a index beyond actual list size can written but is useless.
+- {"key","key"...} | get any number of values corepsonding to key in a string-typed-key map. For example: $.StrMap{"abcd","1234"}
+- {id,id...} | get the child field with specific id in a integer-typed-key map. For example, $.IntMap{1,2}
+- * | get ALL fields/elements, that is: $.StrMap{*}.FieldX menas gets all the elements' FieldX in a map Root.StrMap; $.List[*].FieldX means get all the elements' FieldX in a list Root.List.
+- 
+
 #### **Agreement Of Implementation**
 
 - **A empty mask means "PASS ALL**" (all fields are "PASS")
@@ -77,7 +87,7 @@ See [main_test.go](https://github.com/cloudwego/kitex-tests/blob/feat/fieldmask_
 $ kitex -thrift with_field_mask -thrift with_reflection ${your_idl}
 ```
 
-2. Create a fieldmask in the initializing phase of your application (recommanded), or just in the bizhandler before you return a response
+2. Create a fieldmask in the initializing phase of your application (recommended), or just in the bizhandler before you return a response
 
 ```go
 import (
@@ -89,7 +99,7 @@ var fieldmaskCache sync.Mapfunc
 
 // initialize request and response fieldmasks and cache them
 func init() {
-    // construct a fieldmask with TypeDescriptor and thrift pathes
+    // construct a fieldmask with TypeDescriptor and thrift paths
     respMask, err := fieldmask.NewFieldMask((*fieldmask0.BizResponse)(nil).GetTypeDescriptor(), 
     "$.A")
     if err != nil {
@@ -106,7 +116,7 @@ func init() {
 }
 ```
 
-3. Now you can set fieldmask with generated API `Set_FieldMask()` on your requres or response object. Then the kitex itself will notice the fieldmask and using it during request/response's serialization, in either client-side or server-side.
+3. Now you can set fieldmask with generated API `Set_FieldMask()` on your request or response object. Then the kitex itself will notice the fieldmask and using it during request/response's serialization, in either client-side or server-side.
 
 - server-side
 
@@ -166,7 +176,7 @@ if req.B == "" { // req.B in mask
 
 Generally, you can add one binary field to your request definition to carry a fieldmask, and explicitly serialize/deserialize the fieldmask you are using into/from this field. We provide two encapsulated API for serialization/deserialization:
 
-- <u>[thriftgo/fieldmask.Marshal()/Unmarshal()](https://github.com/cloudwego/thriftgo/blob/9e8d1cafba62a37789c431270a816ad35a6c46e0/fieldmask/serdes.go)</u>: Package functions, serialize/deserialize fieldmask into/from binary bytes. We recommand you to use this API rather than the last one, because it is **much faster** due to using cache -- Unless your application is lack of memory.
+- <u>[thriftgo/fieldmask.Marshal()/Unmarshal()](https://github.com/cloudwego/thriftgo/blob/9e8d1cafba62a37789c431270a816ad35a6c46e0/fieldmask/serdes.go)</u>: Package functions, serialize/deserialize fieldmask into/from binary bytes. We recommend you to use this API rather than the last one, because it is **much faster** due to using cache -- Unless your application is lack of memory.
 - <u>[FieldMask.MarshalJSON()/UnmarshalJSON()](https://github.com/cloudwego/thriftgo/blob/9e8d1cafba62a37789c431270a816ad35a6c46e0/fieldmask/serdes.go)</u>: Object methods, serialize/deserialize fieldmask into/from JSON bytes (not recommended)
 
 For example, we can pass the response's fieldmask as **a** **binary-typed field of request** like:
@@ -185,7 +195,7 @@ func TestClient() {
     req.A = "A"
     req.B = "B"
         
-    // try get reponse's fieldmask
+    // try get response's fieldmask
     respMask, ok := fmCache.Load("BizResponse")
     if ok {
             // serialize the respMask
