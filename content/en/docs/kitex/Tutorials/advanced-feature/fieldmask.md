@@ -46,15 +46,15 @@ Here are basic hypothesis:
 
 Here is detailed syntax:
 
-- ThriftPath | Description
-- -- | --
-- $	| the root object,every path must start with it.
-- .fieldname | get the child field of a struct corepsonding to fieldname. For example, $.FieldA.ChildrenB
-- [index,index...] | get any number of elements in an List/Set corepsonding to indices. Indices must be integer.For example: $.FieldList[1,3,4] .Notice: a index beyond actual list size can written but is useless.
-- {"key","key"...} | get any number of values corepsonding to key in a string-typed-key map. For example: $.StrMap{"abcd","1234"}
-- {id,id...} | get the child field with specific id in a integer-typed-key map. For example, $.IntMap{1,2}
-- * | get ALL fields/elements, that is: $.StrMap{*}.FieldX means gets all the elements' FieldX in a map Root.StrMap; $.List[*].FieldX means get all the elements' FieldX in a list Root.List.
-- 
+ThriftPath | Description
+-- | --
+$ | the root object,every path must start with it.
+.fieldname | get the child field of a struct corepsonding to fieldname. For example, $.FieldA.ChildrenB
+[index,index...] | get any number of elements in an List/Set corepsonding to indices. Indices must be integer.For example: $.FieldList[1,3,4] .Notice: a index beyond actual list size can written but is useless.
+{"key","key"...} | get any number of values corepsonding to key in a string-typed-key map. For example: $.StrMap{"abcd","1234"}
+{id,id...} | get the child field with specific id in a integer-typed-key map. For example, $.IntMap{1,2}
+* | get ALL fields/elements, that is: $.StrMap{*}.FieldX means gets all the elements' FieldX in a map Root.StrMap; $.List[*].FieldX means get all the elements' FieldX in a list Root.List.
+
 
 #### **Agreement Of Implementation**
 
