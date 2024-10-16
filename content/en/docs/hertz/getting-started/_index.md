@@ -122,7 +122,7 @@ For more information on how to use hz, please refer to: [hz](/zh/docs/hertz/tuto
     namespace go hello.world
 
     service HelloService {
-        string Hello(1: string name);
+        string Hello(1: string name) (api.get="/hello");
     }
     ```
 
@@ -172,8 +172,8 @@ If you need to make further updates to the project, you should use the `hz updat
 namespace go hello.world
 
 service HelloService {
-    string Hello(1: string name);
-    string Bye(1: string name);
+    string Hello(1: string name) (api.get="/hello");
+    string Bye(1: string name) (api.get="/bye");
 }
 ```
 
