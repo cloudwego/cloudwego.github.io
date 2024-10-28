@@ -10,7 +10,7 @@ description: "This document covers the preparation of the development environmen
 
 1. If you have not set up a Rust development environment before, you can refer to [Install Rust](https://www.rust-lang.org/tools/install).
 2. It is recommended that you use the latest version of Rust, or ensure that Rustc >= 1.80.0.
-3. If you have not installed `volo-cli`, please refer to [Quick Start](https://www.cloudwego.io/zh/docs/volo/volo-li/getting-started/).
+3. If you have not installed `volo-cli`, please refer to [Quick Start](https://www.cloudwego.io/zh/docs/volo/cli/getting-started/).
 
 ## Create Server
 
@@ -53,7 +53,7 @@ description: "This document covers the preparation of the development environmen
    As we can see, when the server is started, requesting the `/` path using the `GET` method expects an `It Works!` response
 
 2. Run `cargo run` to start the server, after you see `Listening on [::]:8080` in the terminal, it means the Server is running successfully.
-   
+
    We can use `curl` to verify
 
    ```bash
@@ -75,7 +75,7 @@ description: "This document covers the preparation of the development environmen
    It Works!
    * Connection #0 to host localhost left intact
    ```
-   
+
 ## What's Next?
 
 Congratulations, you've read this far! At this point, we've basically learned how to use Volo, and we're ready to use Volo to kick off our Rust journey
