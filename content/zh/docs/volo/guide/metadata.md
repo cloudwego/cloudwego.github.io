@@ -52,7 +52,12 @@ impl volo_gen::volo::example::ItemService for S {
                 mi.get_all_persistents(),
                 mi.get_all_upstreams()
             );
-            mi.set_backward_transient("test_backward", "test_backward_value");
+            // 获取某个值，需要注意的是，自metainfo:0.7.11后元信息统一风格(RPC采用全大写+下划线"_"作分隔符)，
+            // 上游的元信息会自动将小写转换为大写，"-"转换为"_"，如"TEST_transient-key"会被转换为"TEST_TRANSIENT_KEY"
+            println!("TEST_PERSISTENT_KEY: {:?}", mi.get_persistent("TEST_PERSISTENT_KEY"));
+            println!("TEST_TRANSIENT_KEY: {:?}", mi.get_upstream("TEST_TRANSIENT_KEY"));
+
+            mi.set_backward_transient("TEST_BACKWARD", "test_backward_value");
         });
         Ok(Default::default())
     }
@@ -81,8 +86,8 @@ lazy_static! {
 #[volo::main]
 async fn main() {
     let mut mi = MetaInfo::new();
-    mi.set_persistent("test_persistent_key", "test_persistent");
-    mi.set_transient("test_transient_key", "test_transient");
+    mi.set_persistent("TEST_PERSISTENT_KEY", "test_persistent");
+    mi.set_transient("TEST_TRANSIENT_KEY", "test_transient");
 
     METAINFO
         .scope(RefCell::new(mi), async move {
