@@ -282,7 +282,7 @@ async fn router() -> Router {
 Volo-HTTP provides a fallback function to handle request url or method mismatches, **default fallback** will return status code `404 Not Found`.
 
 **Note**:
-- Only one of the two `Routers` in the `merge` method can have a **router fallback**, otherwise a **panic** will be generated when calling the `merge` method;
+- Since there is no way to determine which **router fallback** to override in a route in a call to the `merge` method, only one **router fallback** can be set, or else a **panic** will be generated in the call to the `merge` method;
 
 - The `nest` method is called without overriding the `fallback`.
 
