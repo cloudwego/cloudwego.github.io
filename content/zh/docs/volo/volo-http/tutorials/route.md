@@ -275,11 +275,14 @@ async fn router() -> Router {
 
 ## fallback
 
-Volo-HTTP 提供了 fallback 功能用于处理请求 url 或 method 不匹配的情况
+Volo-HTTP 提供了 fallback 功能用于处理请求 url 或 method 不匹配的情况，**默认 fallback** 会返回状态码 `404 Not Found`。
+
+**注意**：
+- 调用 `merge` 方法中的路由中由于不能确定覆盖哪一个 **router fallback**, 因此只能设置一个 **router fallback**，否则会在调用 `merge` 方法时产生 **panic**；
+
+- 调用 `nest` 方法时不会对 `fallback` 进行覆盖。
 
 ### url
-
-> 注意：全局只能设置一个 **router fallback**，否则会在调用 `merge` 方法时产生 **panic**
 
 **代码示例**:
 
