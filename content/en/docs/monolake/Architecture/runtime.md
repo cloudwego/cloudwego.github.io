@@ -20,15 +20,16 @@ One of the defining characteristics of Monoio is its thread-per-core architectur
 When working with asynchronous I/O in Rust, understanding the underlying mechanisms of different runtimes is crucial. Two prominent approaches are the io-uring-based runtimes(Monolake) and the traditional event notification based runtimes (Tokio, async-std) which use mechanisms like kequeue and epoll. The fundamental difference between these two models lies in how they manage resource ownership and I/O operations.
 
 io_uring operates on a submission-based model, where the ownership of resources (such as buffers) is transferred to the kernel upon submission of an I/O request. This model allows for high performance and reduced context switching, as the kernel can process the requests asynchronously. When an I/O operation is completed, the ownership of the buffers is returned to the caller. This ownership transfer leads to several implications:
-1. Ownership Semantics: In io-uring, since the kernel takes ownership of the buffers during the operation, it allows for more efficient memory management. The caller does not need to manage the lifecycle of the buffers while the operation is in progress.
 
-2. Concurrency Model: The submission-based model allows for a more straightforward handling of concurrency, as multiple I/O operations can be submitted without waiting for each to complete. This can lead to improved throughput, especially in I/O-bound applications.
+1. **Ownership Semantics**: In io-uring, since the kernel takes ownership of the buffers during the operation, it allows for more efficient memory management. The caller does not need to manage the lifecycle of the buffers while the operation is in progress.
+
+2. **Concurrency Model**: The submission-based model allows for a more straightforward handling of concurrency, as multiple I/O operations can be submitted without waiting for each to complete. This can lead to improved throughput, especially in I/O-bound applications.
 
 In contrast, Tokio employs systems like kequeue and epoll. In this model, the application maintains ownership of the buffers throughout the lifetime of the I/O operation. Instead of transferring ownership, Tokio merely borrows the buffers, which has several implications:
 
-1. Buffer Management: Since Tokio borrows buffers, the application is responsible for managing their lifecycle. This can introduce complexity, especially when dealing with concurrent I/O operations, as developers must ensure that buffers are not inadvertently reused while still in use.
+1. **Buffer Management**: Since Tokio borrows buffers, the application is responsible for managing their lifecycle. This can introduce complexity, especially when dealing with concurrent I/O operations, as developers must ensure that buffers are not inadvertently reused while still in use.
 
-2. Polling Mechanism: The polling model in Tokio requires the application to actively wait for events, which can result in increased context switches and potentially less efficient use of system resources compared to the submission-based model of io-uring.
+2. **Polling Mechanism**: The polling model in Tokio requires the application to actively wait for events, which can result in increased context switches and potentially less efficient use of system resources compared to the submission-based model of io-uring.
 
 ## Async IO Trait divergence
 

@@ -2,7 +2,6 @@
 title: "Config Guide"
 linkTitle: "Config Guide"
 weight: 5
-date: 2023-07-3
 description: "Comphrensive guide to configuring monolake proxy"
 ---
 

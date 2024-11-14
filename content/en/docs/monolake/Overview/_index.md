@@ -3,7 +3,6 @@ title: "Overview"
 linkTitle: "Overview"
 weight: 1
 keywords: ["Proxy", "Rust", "io-uring"]
-description: "This doc provides an overview of Monolake, a high-performance network service framework."
 ---
 
 ## Monolake
@@ -27,25 +26,19 @@ By focusing on cutting-edge Rust and io_uring, Monolake aims to provide develope
 
 ## Performance
 
-HAR TODO: Move performance section from benchmarks to here 
-
-### Test environment
+#### Request Per Second (RPS) vs. Body Size 
+| RPS                                                |                        TP99                         |
+| :------------------------------------------------- | :-------------------------------------------------: |
+| ![image](/img/docs/https_req_per_sec_vs_body_size.png) | ![image](/img/docs/https_tp99_latency_vs_body_size.png) |
+|                                                                                                                     |
+| ![image](/img/docs/http_req_per_sec_vs_body_size.png) | ![image](/img/docs/http_tp99_latency_vs_body_size.png) |
 
 ### Concurrency performance
-
-HAR TODO: Update with latest benchmarks
-
-| QPS                                                |                        TP99                         |                        TP999                         |
-| :------------------------------------------------- | :-------------------------------------------------: | :--------------------------------------------------: |
-| ![image](/img/docs/performance_concurrent_qps.png) | ![image](/img/docs/performance_concurrent_tp99.png) | ![image](/img/docs/performance_concurrent_tp999.png) |
-
-### Throughput performance
-
-Change packet size with a fixed concurrency of 100.
-
-| QPS                                              |                       TP99                        |                       TP999                        |
-| :----------------------------------------------- | :-----------------------------------------------: | :------------------------------------------------: |
-| ![image](/img/docs/performance_bodysize_qps.png) | ![image](/img/docs/performance_bodysize_tp99.png) | ![image](/img/docs/performance_bodysize_tp999.png) |
+| RPS                                                |                        TP99                         |
+| :------------------------------------------------- | :-------------------------------------------------: |
+| ![image](/img/docs/https_req_per_sec_vs_worker_threads.png) | ![image](/img/docs/https_tp99_latency_vs_worker_threads.png) |
+|                                                                                                                     |
+| ![image](/img/docs/http_req_per_sec_vs_worker_threads.png) | ![image](/img/docs/http_tp99_latency_vs_worker_threads.png) |
 
 ## Related Projects
 
@@ -57,15 +50,11 @@ Change packet size with a fixed concurrency of 100.
 
 | Crate | Description |
 |-------|-------------|
-| [monoio-transports](https://github.com/monoio-rs/monoio-transports) | A foundational crate that provides high-performance, modular networking capabilities, including connectors and utilities for efficient network communications |
-| [service-async](https://github.com/ihciah/service-async) | A foundational crate that introduces a refined Service trait with efficient borrowing and zero-cost abstractions, as well as utilities for service composition and state management |
-| [certain-map](https://github.com/ihciah/certain-map) | A foundational crate that provides a typed map data structure, ensuring the existence of specific items at compile-time, useful for managing data dependencies between services |
-| [monoio-thrift](https://github.com/monoio-rs/monoio-thrift) | Monoio native, io_uring compatible thrift implementation |
-| [monoio-http](https://github.com/monoio-rs/monoio-http) | Monoio native, io_uring compatible HTTP/1.1 and HTTP/2 implementation |
-| [monoio-nativetls](https://github.com/monoio-rs/monoio-tls) | The native-tls implementation compatible with monoio |
-| [monoio-rustls](https://github.com/monoio-rs/monoio-tls) | The rustls implementation compatible with monoio |
+| [monoio-transports](https://crates.io/crates/monoio-transports) | A foundational crate that provides high-performance, modular networking capabilities, including connectors and utilities for efficient network communications |
+| [service-async](https://crates.io/crates/service-async) | A foundational crate that introduces a refined Service trait with efficient borrowing and zero-cost abstractions, as well as utilities for service composition and state management |
+| [certain-map](https://crates.io/crates/certain-map) | A foundational crate that provides a typed map data structure, ensuring the existence of specific items at compile-time, useful for managing data dependencies between services |
+| [monoio-thrift](https://crates.io/crates/monoio-thrift) | Monoio native, io_uring compatible thrift implementation |
+| [monoio-http](https://crates.io/crates/monoio-http) | Monoio native, io_uring compatible HTTP/1.1 and HTTP/2 implementation |
+| [monoio-nativetls](https://crates.io/crates/monoio-native-tls) | The native-tls implementation compatible with monoio |
+| [monoio-rustls](https://crates.io/crates/monoio-rustls) | The rustls implementation compatible with monoio |
 
-## Blogs
-
-- [Monolake: How ByteDance Developed Its Own Rust Proxy to Save Hundreds of Thousands of CPU Cores](TODO)
-- [Monolake open source summit](TODO)

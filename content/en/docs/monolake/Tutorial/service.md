@@ -4,8 +4,6 @@ linkTitle: "Creating Service and Factory"
 weight: 2
 ---
 
-## Prerequisites
-For a better 
 ## Defining the Service and Factory
 The `RoutingHandlerFactory` is responsible for creating and updating the `RoutingHandler` service instances. This factory implements the AsyncMakeService trait, allowing it to be used in a FactoryStack for service composition.
 
@@ -57,7 +55,7 @@ In this implementation, the RoutingHandlerFactory takes two parameters:
 
 The AsyncMakeService implementation for the RoutingHandlerFactory defines how to create a new RoutingHandler instance. It first creates a Router from the configured RouteConfig instances, and then creates the RoutingHandler by calling the make_via_ref method in the inner service factory.
 
-Note that in this case, we don't rely on any state from the previous RoutingHandler instance, as the routing configuration is fully defined by the RouteConfig instances. If the inner service factory had some stateful resources (like a connection pool) that needed to be preserved, we could clone those resources when creating the new RoutingHandler.
+Note that in this case, we don't rely on any state from the previous RoutingHandler instance, as the routing configuration is fully defined by the RouteConfig instances. If the inner service factory had some stateful resources (like a connection pool) that needed to be preserved, we could clone those resources when creating the new RoutingHandler. For a more detailed example involving resource transfer, see [UpstreamHandler](https://github.com/cloudwego/monolake/blob/fd2cbe1a8708c379d6355b3cc979540ec49fdb4f/monolake-services/src/http/handlers/upstream.rs#L338), which involves transfer of a HTTP connection pool from the previous UpstreamHandler instance.
 
 To integrate the `RoutingHandler` into a service stack, we can use the layer function provided by the `RoutingHandler` type:
 

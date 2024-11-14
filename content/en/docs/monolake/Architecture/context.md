@@ -2,10 +2,9 @@
 title: "Context Management"
 linkTitle: "Context"
 weight: 4
-description: "Deep dive into Monolake's io_uring-based runtime and performance characteristics compared to traditional event-based runtimes"
 ---
 
-# Context Management with `certain_map`
+# `certain_map`
 
 In a service-oriented architecture, managing the context data that flows between different services is a critical aspect of the system design. The [`certain_map`](https://docs.rs/certain-map/latest/certain_map/) crate provides a powerful way to define and work with typed context data, ensuring the existence of required information at compile-time.
 

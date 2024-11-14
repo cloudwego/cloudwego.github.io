@@ -1,7 +1,6 @@
 ---
 title: "FAQ"
 linkTitle: "FAQ"
-date: 2023-07-03
 weight: 7
 keywords: ["Monolake", "HTTP", "Proxy", "Q&A"]
 description: "Monolake Frequently Asked Questions and Answers."

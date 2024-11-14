@@ -7,7 +7,13 @@ description: "Overview of Monolake's service architecture, factory patterns, and
 
 ## Services
 
-{{< figure src="/img/docs/monolake_service.jpeg" width="1000" height="600" caption="Service Architecture" >}}
+<style>
+.figure-caption {
+    text-align: center;
+}
+</style>
+
+{{< figure src="/img/docs/monolake_service.jpeg" width="1000" height="600" caption="Service Architecture" class="figure-caption" >}}
 
 The Service pattern is a fundamental abstraction in network programming, popularized by the Tower library in the Rust ecosystem. At its core, a Service represents an asynchronous function that processes requests and returns responses. This pattern is particularly powerful for building networking applications as it enables:
 

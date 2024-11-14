@@ -9,7 +9,7 @@ description: "This doc covers how to manage configuration and context"
 
 When building a service-oriented application using the `monolake-services` crate, you'll need to define the necessary configuration fields in your main `ServerConfig` struct. These fields will be used by the service factories to construct the services that make up your application.
 
-The specific fields you'll need to add will depend on the services you're using. For example, if you're implementing a routing HTTP service, you'll need to add a routes field to hold the routing configuration.
+The specific fields you'll need to add will depend on the services you're using. For example, if you're implementing a routing HTTP service, you'll probably want to add a routes field to hold the routing configuration.
 
 To configure the routing service, you'll need to add the routes field to your `ServerConfig` struct. This field will hold the RouteConfig structures that define the routing rules.
 ```rust
@@ -51,9 +51,7 @@ certain_map::certain_map! {
 }
 ```
 
-In this example, the Context struct has a single field: peer_addr of type PeerAddr. The #[empty(EmptyContext)] and #[full(FullContext)] attributes define the type aliases for the empty and full versions of the context, respectively.
-
-It's important to note that the fields in the Context struct should correspond to the data that the `RoutingHandler` service expects to be available. In this case, the RoutingHandler requires the peer_addr information to be set in the context.
+In this example, the Context struct has a single field: peer_addr of type `PeerAddr`. It's important to note that the fields in the Context struct should correspond to the data that the `RoutingHandler` service expects to be available. In this case, the RoutingHandler requires the peer_addr information to be set in the context.
 
 By defining the Context using the certain_map crate, you can ensure that the necessary data is available at compile-time, preventing runtime errors and simplifying the implementation of your services.
 

@@ -2,7 +2,6 @@
 title: "Putting it all together"
 linkTitle: "Putting it all together"
 weight: 3
-description: "This doc covers how to manage configuration and context"
 ---
 
 ## Putting it all together
