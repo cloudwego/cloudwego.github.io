@@ -73,8 +73,8 @@ Header 部分长度 bytes 数必须是 4 的倍数，不足部分用 `0x00` 填�
 
 用于传递一些 kv 对信息，取值有：
 
-- INFO_KEYVALUE = 0x01，对应的 data 为 key/value 对，key 和 value 各自都是由 uint16 的长度加上 no-trailing-null 的字符串组成，一般用于传递一些常见的 meta 信息，例如 tracingId；
-- INFO_INTKEYVALUE = 0x10，对应的 data 为 key/value 对，key 为 uint16，value 由 uint16 的长度加上 no-trailing-null 的字符串组成，一般用于传递一些内部定制的 meta 信息，其中作为 request 有些 key 是必填的：
+- INFO_KEYVALUE = 0x01，对应的 data 为 key/value 对的列表, 首先是列表大小(uint16)，之后是每个key value对, key 和 value 各自都是由 uint16 的长度加上 no-trailing-null 的字符串组成，一般用于传递一些常见的 meta 信息，例如 tracingId；
+- INFO_INTKEYVALUE = 0x10，对应的 data 为 key/value 对的列表, 首先是列表大小(uint16)，之后是每个key value对，key 为 uint16，value 由 uint16 的长度加上 no-trailing-null 的字符串组成，一般用于传递一些内部定制的 meta 信息，其中作为 request 有些 key 是必填的：
   - TRANSPORT_TYPE = 1（取值：framed/unframed）
   - LOG_ID = 2
   - FROM_SERVICE = 3
