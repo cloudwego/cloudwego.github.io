@@ -16,7 +16,7 @@ Alternatively, you might use a `HashMap` to manage the context data, but this ap
 
 ## How `certain_map` Helps
 
-The `certain_map` crate solves this problem by providing a typed map that ensures the existence of specific items at compile-time. When you define a `Context` struct using `certain_map`, the compiler will enforce that certain fields are present, preventing runtime errors and simplifying the implementation of your services.
+The `certain_map` crate solves this problem by providing a a typed-map-like struct that ensures the existence of specific items at compile-time. When you define a `Context` struct using `certain_map`, the compiler will enforce that certain fields are present, preventing runtime errors and simplifying the implementation of your services.
 
 Here's an example of how you might set up the context for your project:
 
