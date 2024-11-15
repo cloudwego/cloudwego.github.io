@@ -17,6 +17,7 @@ The Monolake framework has been used to build various high-performance proxies a
 
 - Application Gateways: For protocol conversion, such as HTTP to Thrift
 - Security Gateways: Providing pseudonymization for gRPC and Thrift RPCs
+- Service ingress controller: Serves as ingress controller for FaaS services
 
 ## Monolake Proxy
 
