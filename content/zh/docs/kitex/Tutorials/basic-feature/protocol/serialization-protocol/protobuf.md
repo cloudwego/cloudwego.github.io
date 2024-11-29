@@ -29,7 +29,7 @@ kitex -I idl/ idl/${proto_name}.proto
 #### 服务端
 
 ```sh
-kitex -service ${service_name} ${idl_name}.proto
+kitex -service ${service_name} -I idl/ idl/${proto_name}.proto
 ```
 
 ### 使用 gRPC 作为传输协议
