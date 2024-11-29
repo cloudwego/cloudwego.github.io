@@ -23,13 +23,13 @@ Specify the IDL type as Protobuf when generating code (Kitex will prioritize usi
 #### Client
 
 ```sh
-kitex -I idl/ idl/${proto_name}.proto
+kitex -I idl/ idl/${idl_name}.proto
 ```
 
 #### Server
 
 ```sh
-kitex -service ${service_name} ${idl_name}.proto
+kitex -service ${service_name} -I idl/ idl/${idl_name}.proto
 ```
 
 ### Using gRPC as the Transport Protocol
