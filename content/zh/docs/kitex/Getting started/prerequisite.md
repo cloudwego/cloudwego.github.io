@@ -41,7 +41,7 @@ go env -w GOPROXY=https://goproxy.cn
 
 Kitex 中使用到的代码生成工具包括 IDL 编译器与 kitex tool。了解更多有关代码生成工具的内容，参见[代码生成](/zh/docs/kitex/tutorials/code-gen/)
 
-### IDL 编译器
+### IDL 编译器 (Thrift 可跳过)
 
 IDL 编译器能够解析 IDL 并生成对应的序列化和反序列化代码，Kitex 支持 Thrift 和 protobuf 这两种 IDL，这两种 IDL 的解析分别依赖于 thriftgo 与 protoc。
 
