@@ -8,11 +8,7 @@ description: ""
 
 ## Introduction
 
-JSON generic call for streaming interfaces is now supported (client-side only).
-
-**However, due to the ongoing restructuring of the streaming interface to improve the user experience and to avoid making any breaking changes after release, the feature's official release is temporarily on hold. If you have a need for this feature, you can refer to the following to try it out. Please note that once it is officially released, a small adjustment may be required on your end**.
-
-Please try the feature with kitex test branch test/grpc_json_streaming_generic by `go get github.com/cloudwego/kitex@test/grpc_json_streaming_generic`.
+**JSON generic call for streaming interfaces is now supported (client-side only) from Kitex v0.12.0**.
 
 ## Usage
 
@@ -54,6 +50,10 @@ The four methods included in the example IDL correspond to four scenarios:
 First of all, please initialize the streaming client. Here is an example of streaming client initialization.
 
 ```go
+import (
+    dproto "github.com/cloudwego/dynamicgo/proto"
+)
+
 dOpts := dproto.Options{} // you can specify parsing options as you want
 p, err := generic.NewPbFileProviderWithDynamicGo(your_idl, ctx, dOpts)
 // create json pb generic
@@ -102,7 +102,7 @@ The four methods included in the example IDL correspond to four scenarios:
 Here is an example of streaming client initialization.
 
 ```go
-p, err := generic.generic.NewThriftFileProvider(your_idl_path)
+p, err := generic.NewThriftFileProvider(your_idl_path)
 /*
 // if you use dynamicgo
 p, err := generic.NewThriftFileProviderWithDynamicGo(idl)
@@ -224,4 +224,30 @@ Example:
 ```go
 resp, err := cli.GenericCall(ctx, "UnaryEcho", `{"message": "unary request"}`)
 strResp, ok := resp.(string) // response is json string
+```
+
+## FAQ
+
+### Recv() got err: rpc error: code = 12 desc = Method not found!
+
+This error occurs when calling with Kitex **protobuf** generic streaming when the downstream is **gRPC-python** (gRPC libraries for other languages may also have this problem).
+
+The root cause is that Kitex does not parse the package in the protobuf idl, so the package part of `:path` in the gPRC request is missing, and gRPC-python can't find the corresponding method.
+
+e.g.
+
+- normal client
+
+`:path` - /search.gpt_engine.GPTStreamService/GPTGeneration
+
+- protobuf generic client
+
+`:path` - /GPTStreamService/GPTGeneration
+
+#### Solution
+
+Use the following branch to solve it and wait for the official release of Kitex v1.18.1 to fix this issue.
+
+```shell
+go get -u github.com/cloudwego/kitex@v0.12.1-0.20241220085925-b5894d2f9e0c
 ```
