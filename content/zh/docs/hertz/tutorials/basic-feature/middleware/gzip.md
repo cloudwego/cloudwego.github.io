@@ -316,4 +316,4 @@ func main() {
 
 ```
 
-更多用法示例详见 [gzip](https://github.com/cloudwego/hertz-examples/tree/main/gzip)
+更多用法示例详见 [gzip](https://github.com/cloudwego/hertz-examples/tree/main/middleware/gzip)
