@@ -315,4 +315,4 @@ func main() {
 }
 ```
 
-Refer to the [gzip](https://github.com/cloudwego/hertz-examples/tree/main/gzip) for more usage examples
+Refer to the [gzip](https://github.com/cloudwego/hertz-examples/tree/main/middleware/gzip) for more usage examples
