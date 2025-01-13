@@ -1,41 +1,41 @@
 ---
-title: "基础流编程"
-date: 2025-01-10
+title: "StreamX Basic Programming"
+date: 2025-01-13
 weight: 1
-keywords: ["基础流编程"]
+keywords: ["Stream Basic Programming"]
 description: ""
 ---
 
-## 选择协议
+## Select Protocol
 
-当前支持：
+Current support:
 
 - **TTHeader Streaming**
 
-  - 传输协议：TTHeader
-  - IDL 定义语言 与 序列化协议：Thrift
-- **gRPC Streaming**:~~~~  (计划实现)
+  - Transport protocol: TTHeader
+  - IDL Definition Language and Serialization Protocol: Thrift
+- **gRPC Streaming** : ~~~~(planned implementation)
 
-  - ~~传输协议：gRPC~~
-  - ~~IDL 定义语言 与 序列化协议：Protobuf 编码~~
+  - ~~Transport protocol: gRPC~~
+  - ~~IDL Definition Language and Serialization Protocol: Protobuf Encoding~~
 
-此处选定的协议只影响从 IDL 生成代码，无论哪种协议，以下用法均一致。
+The protocol selected here only affects code generated from IDL. Regardless of the protocol, the following usage is consistent.
 
-## 使用方法
+## Usage
 
-### 生成代码
+### Generate code
 
-#### 定义 IDL
+#### Define IDL
 
 ##### Thrift
 
-文件 `echo.thrift`:
+File `echo.thrift `:
 
 ```go
 namespace go echo
 
 service TestService {
-    Response PingPong(1: Request req) // PingPong 非流式接口
+    Response PingPong(1: Request req) // PingPong normal method
     
     Response Echo (1: Request req) (streaming.mode="bidirectional"),
     Response EchoClient (1: Request req) (streaming.mode="client"),
@@ -43,20 +43,19 @@ service TestService {
 }
 ```
 
-#### 生成代码
+#### Generate code
 
-为保持与旧流式生成代码的兼容，命令行需加上 `-streamx` flag。
+To maintain compatibility with legacy stream-generated code, Command Line needs to add `the -streamx ` flag.
 
 ```
 kitex -streamx -module <go module> -service P.S.M echo.thrift
 ```
 
-##### 初始化
+##### Initialization
 
-#### 创建 Client
+#### Create Client
 
 ```go
-// 生成代码目录，streamserver 为 IDL 定义的 service name
 import ".../kitex_gen/echo/testservice"
 import "github.com/cloudwego/kitex/client/streamxclient"
 
@@ -67,7 +66,7 @@ cli, err := testservice.NewClient(
 )
 ```
 
-#### 创建 Server
+#### Create Server
 
 ```go
 import ".../kitex_gen/echo/streamserver"
@@ -82,9 +81,9 @@ svr := streamserver.NewServer(
 
 ### Client Streaming
 
-#### 使用场景
+#### Usage scenarios
 
-Client 需要发送多份数据给 Server 端，Server 端可以发送一条消息给 Client:
+The client needs to send multiple copies of data to the server, and the server can send a message to the client.
 
 ```go
 ------------------- [Client Streaming] -------------------
@@ -100,9 +99,9 @@ client.CloseAndRecv(res) === EOF ==>       server.Recv(EOF)
                          <== res ===       server.SendAndClose(res)
 ```
 
-#### Client 用法
+#### Client Usage
 
-- [**必须**]: client 必须调用 CloseAndRecv() 或者 (CloseSend + Recv)方法，告知 Server 不再有新数据发送。
+- [**Must**] : The client must call the CloseAndRecv () or (CloseSend + Recv) method to inform the server that there is no new data to send.
 
 ```go
 ctx, cs, err := cli.ClientStream(ctx)
@@ -112,9 +111,9 @@ for i := 0; i < 3; i++ {
 res, err = cs.CloseAndRecv(ctx)
 ```
 
-#### Server 用法
+#### Server usage
 
-- [**必须**]: server 必须在 handler 结束时返回一个 Response，告知 Client 最终结果。
+- [**Must**] : The server must return a Response at the end of the handler, informing the client of the final result.
 
 ```go
 
@@ -136,11 +135,11 @@ func (si *serviceImpl) ClientStream(
 
 ### Server Streaming
 
-#### 使用场景
+#### Usage scenarios
 
-典型场景：ChatGPT 类型业务
+Typical scenario: ChatGPT type business
 
-Client 发送一个请求给 Server，Server 发送多个返回给 Client:
+Client sends a request to Server, Server sends multiple returns to Client.
 
 ```go
 ------------------- [Server Streaming] -------------------
@@ -152,9 +151,9 @@ client.Recv(res)   <== res ===   server.Send(req)
 client.Recv(EOF)   <== EOF ===   server handler return
 ```
 
-#### Client 用法
+#### Client Usage
 
-- [**必须**]: client 必须判断 io.EOF 错误，并结束循环
+- [**Must**] : The client must check the io. EOF error and end the loop
 
 ```go
 ctx, ss, err := cli.ServerStream(ctx, req)
@@ -166,7 +165,7 @@ for {
 }
 ```
 
-#### Server 用法
+#### Server usage
 
 ```go
 func (si *serviceImpl) ServerStream(ctx context.Context, req *Request, stream streamx.ServerStreamingServer[Response]) error {
@@ -182,9 +181,9 @@ func (si *serviceImpl) ServerStream(ctx context.Context, req *Request, stream st
 
 ### Bidirectional Streaming
 
-#### 使用场景
+#### Usage scenarios
 
-Client 与 Server 可能需要或者未来有可能需要发送多条消息：
+Clients and servers may need to or may need to send multiple messages in the future.
 
 ```go
 ----------- [Bidirectional Streaming] -----------
@@ -202,10 +201,10 @@ client.Recv(res)   <== res ===   server.Send(req)
 client.Recv(EOF)   <== EOF ===   server handler return
 ```
 
-#### Client 用法
+#### Client Usage
 
-- [**必须**]: client 必须在发送结束后调用 CloseSend
-- [**必须**]: client 必须在 Recv 时，判断 io.EOF 并结束循环
+- [**Must**] : client must call CloseSend after sending
+- [**Must**] : client must judge io. EOF and end the loop when Recv
 
 ```go
 ctx, bs, err := cli.BidiStream(ctx)
@@ -230,9 +229,9 @@ go func() {
 wg.Wait()
 ```
 
-#### Server 用法
+#### Server usage
 
-- [**必须**]: server 必须在 Recv 时，判断 io.EOF 并结束循环
+- [**Must**] : The server must determine io. EOF and end the loop when Recv
 
 ```go
 func (si *serviceImpl) BidiStream(ctx context.Context, stream streamx.BidiStreamingServer[Request, Response]) error {

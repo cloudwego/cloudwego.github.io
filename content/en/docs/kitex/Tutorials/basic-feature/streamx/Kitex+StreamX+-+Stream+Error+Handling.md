@@ -1,7 +1,7 @@
 ---
-title: "Stream Error Handling"
+title: "StreamX Error Handling"
 date: 2025-01-13
-weight: 1
+weight: 4
 keywords: ["Stream Error Handling"]
 description: ""
 ---

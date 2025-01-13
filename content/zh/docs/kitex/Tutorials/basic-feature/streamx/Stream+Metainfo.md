@@ -1,7 +1,7 @@
 ---
-title: "流元消息透传最佳实践"
+title: "StreamX 流元消息透传最佳实践"
 date: 2025-01-10
-weight: 1
+weight: 3
 keywords: ["流元消息透传最佳实践"]
 description: ""
 ---

@@ -1,7 +1,7 @@
 ---
-title: "Stream FAQ"
+title: "StreamX FAQ"
 date: 2025-01-13
-weight: 1
+weight: 5
 keywords: ["Stream FAQ"]
 description: ""
 ---

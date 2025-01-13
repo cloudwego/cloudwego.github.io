@@ -1,7 +1,7 @@
 ---
-title: "Stream Middleware"
+title: "StreamX Middleware"
 date: 2025-01-13
-weight: 1
+weight: 2
 keywords: ["Stream Middleware"]
 description: ""
 ---
