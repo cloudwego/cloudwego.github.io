@@ -1,7 +1,7 @@
 ---
-title: "流中间件最佳实践"
+title: "StreamX 流中间件最佳实践"
 date: 2025-01-10
-weight: 1
+weight: 2
 keywords: ["流中间件最佳实践"]
 description: ""
 ---
