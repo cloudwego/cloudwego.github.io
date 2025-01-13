@@ -26,7 +26,7 @@ Future version plans: Kitex will remove Apache products by default. User guide: 
 
 ### Breaking Change - No Impact for 99.9% of Users
 Kitex ensures compatibility with the standard usage patterns for users. However, certain users who depend on definitions within the Kitex repository may be affected by adjustments in this version.
-1. Remove Apache Thrift Dependency : Kitex replaced Apache thrift.TProtocol interface with github.com/cloudwego/gopkg/protocol/thrift.NewBufferReader|NewBufferWriter. If you still need to rely on Apache Thrift Codec, please directly use Apache's TBinaryProtocol.
+1. Remove Apache Thrift Dependency : Kitex replaced Apache thrift.TProtocol interface with `github.com/cloudwego/gopkg/protocol/thrift.NewBufferReader|NewBufferWriter`. If you still need to rely on Apache Thrift Codec, please directly use Apache's TBinaryProtocol.
 2. Generic removed an API `generic.ServiceInfo`. This API was replaced by `generic.ServiceInfoWithGeneric`. Please use it instead.
    ```go
     import "github.com/cloudwego/kitex/pkg/generic"
