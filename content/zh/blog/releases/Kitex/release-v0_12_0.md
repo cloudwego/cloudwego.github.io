@@ -6,45 +6,41 @@ date: 2025-01-03
 description: >
 ---
 
-## **Introduction to Key Changes**
+## **重要变更介绍**
 
-### Simplified Product Recommendation - Remove Apache Thrift Dependency
-We strongly recommend removing Apache Codec to resolve the compilation issues caused by Apache's incompatible changes and to **reduce the product size by 50%**. 
-Please replace it with Kitex's own Thrift codec: FastCodec or Frugal, which does not rely on Apache Thrift Codec.
-Future version plans: Kitex will remove Apache products by default. User guide: [Kitex Remove Apache Thrift User Guide](/docs/kitex/best-practice/remove_apache_codec)
+### 精简产物建议 - 去 Apache Thrift
+强烈建议去 Apache Codec，解决 Apache 不兼容变更带来的编译体验问题，并能**减少 50% 产物体积**。
+请使用 Kitex 的 Thrift Codec：FastCodec 或 Frugal，不会依赖 Apache Thrift  Codec。
+后续版本计划：Kitex 会默认去除 Apache 产物，用户指南见 [Kitex 去 Apache Thrift 用户手册](/zh/docs/kitex/best-practice/remove_apache_codec/)
 
 ### New Features
-1. **Thrift Streaming over TTHeader - Custom Streaming Protocol**: Supported streaming calls based on the TTHeader protocol, optimizing stability issues caused by the high complexity of the gRPC streaming protocol. 
-   Provided a new streaming interface, StreamX, to solve various user experience issues with the original streaming interface and provide best practices for streaming interfaces.
-   For more details: [StreamX User Documentation and Best Practices](/docs/kitex/tutorials/basic-feature/streamx/)
-2. **Graceful Shutdown for gRPC Streaming**: Added support for a graceful shutdown feature to address upstream errors caused by service upgrades or updates. For more details: [gRPC Streaming Graceful Shutdown](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
-3. **JSON Generic Call Supports gRPC Streaming**: JSON generic calls now support gRPC Streaming interfaces (client-side only). This is the official release after trial in v0.10.0. For usage: [User Guide to Generic Call for Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
+1. **1. Thrift Streaming over TTHeader - 自定义流式协议**: 支持了基于 TTheader 协议的流式调用，优化因 gRPC streaming 协议复杂度过高而引入的稳定性问题；提供了新的流式接口 StreamX，解决原流式接口各类使用体验问题，并提供流式接口的最佳实践；
+   用户文档：[StreamX 用户文档与最佳实践](/zh/docs/kitex/tutorials/basic-feature/streamx/)
+2. **gRPC Streaming 支持优雅退出**: 支持了优雅退出功能，用于解决因为服务升级/更新而导致的上游报错问题. 开启方式详见：[gRPC Streaming 优雅退出](/zh/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
+3. **JSON 泛化调用支持 gRPC Streaming ：**: JSON 泛化调用支持 gRPC Streaming 流式接口（仅限 client），经过 v0.10.0 试用，正式发布. 用户文档：[User Guide to Generic Call for Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
 
-### Experience Optimization
-1. **gRPC Streaming Log Optimization**:
-    - For streaming concatenation scenarios, if the downstream error is due to an exit of the upstream Stream exiting, the error will include the suffix "[triggered by {serviceName}]" will be included in the error, which is convenient for locating the problem.
-    - Errors returned by Send such as `the stream is done` now reflect the actual error that caused the stream to close.
-2. **Code Generation Tool Kitex Tool**: 
-    - **Optimization of Generation Speed and Tool Installation**: Now Thriftgo is built into Kitex, significantly improving generation speed, especially for scenarios with particularly large IDL files. There is no need to install or upgrade Thriftgo anymore.
-    - **Minimizing Product Size**: To minimize product size, Frugal can be used. For gray scale adoption, it supports specifying certain structs to use Frugal serialization.
-      For more details, refer to [Code Generation Tool](/docs/kitex/tutorials/code-gen/code_generation/) for instructions on -frugal-struct and -gen-frugal parameters.
+### 体验优化
+1. **gRPC Streaming 日志优化**:
+    - 对于流式串联场景，若下游 Stream 出错是由于上游 Stream 退出，将会在错误中包含"[triggered by {serviceName}]"后缀，方便定位问题。
+    - Send 返回的 the stream is done 错误将变成导致流被关闭的真正错误。
+2. **代码生成工具 Kitex Tool**:
+    - **生成速度和工具安装优化**：无需再安装或升级 Thriftgo ，内置到 Kitex，在 IDL 特别庞大的场景，生成速度有较大提升。
+    - **最小化产物体积**：产物体积最小化可以使用 Frugal，如果希望灰度开启，支持指定结构体使用 Frugal 序列化。详见 [代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)关于 -frugal-struct、-gen-frugal 参数的说明
 
-### Breaking Change - No Impact for 99% of Users
-Kitex **ensures compatibility with the standard usage patterns for users**. However, certain users who depend on definitions within the Kitex repository may be affected by adjustments in this version.
-- Removing `thrift.NewBinaryProtocol`
-  `thrift.NewBinaryProtocol` is Kitex's implementation of the Apache thrift.TProtocol interface. Because the trans part directly uses Kitex's ByteBuffer, the performance is better than Apache thrift.TBinaryProtocol. 
-  The Deprecation comment has been added to it in v0.11.0.
-  **Removing Reason**: To remove the Apache Thrift dependency, the implementation needs to be removed.
-  **User Modification Method**: This implementation was originally used with Apache Codec. If you still need to rely on Apache Codec, please directly use Apache's TBinaryProtocol. 
-  If you think that it has an impact on performance, you can fork the old version of Kitex, refer to github/cloudwego/kitex v0.10.0
+### 不兼容变更-对99%用户无影响
+Kitex 会**保证内部用户正常使用方式的兼容性**。但个别用户可能对 Kitex 仓库的定义有依赖，Kitex 本次版本调整对这部分用户有影响。
+- - 删除 `thrift.NewBinaryProtocol`
+  `thrift.NewBinaryProtocol`是 Kitex 对 Apache thrift.TProtocol 接口的实现，因为 trans 部分直接使用 Kitex 的 ByteBuffer，相比 apache thrift.TBinaryProtocol 性能更好。在 v0.11.0 已经加了弃用注释。
+  **删除原因**: 因为要去除 Apache Thrift 依赖，所以需要删除该实现。
+  **用户修改说明**: 该实现本就是配套 Apache Codec 使用，如果你还需要依赖 Apache Codec，请直接使用 Apache 的TBinaryProtocol。如果觉得对性能有影响，可以把 Kitex 旧版本实现 fork 下来，参考 github/cloudwego/kitex v0.10.0。
   ```go
     import "github.com/apache/thrift/lib/go/thrift"
     tProt := thrift.NewTBinaryProtocol(thrift.NewTMemoryBufferLen(1024), true, true)
   ```
-- Removing `generic.ServiceInfo`
-  Generic removed an API `generic.ServiceInfo`.
-  **Removing Reason**: To prepare for future multi-service registration on a generic server, the generic implementation has been refactored (v0.11.0), and this API is no longer used.
-  **User Modification Method**: This API was replaced by `generic.ServiceInfoWithGeneric`. Please use it instead.
+- 删除 `generic.ServiceInfo`
+  泛化部分删除 API `generic.ServiceInfo`.
+  **删除原因**: 因为多 Service 的支持需要对泛化部分定义做重构。
+  **用户修改说明**: 新 API 用`generic.ServiceInfoWithGeneric`替代。
   ```go
    import "github.com/cloudwego/kitex/pkg/generic"
 
@@ -124,7 +120,7 @@ Kitex **ensures compatibility with the standard usage patterns for users**. Howe
 
 ### Chore:
 [[#1593](https://github.com/cloudwego/kitex/pull/1593)][[#1560](https://github.com/cloudwego/kitex/pull/1560)][[#1561](https://github.com/cloudwego/kitex/pull/1561)][[#1559](https://github.com/cloudwego/kitex/pull/1559)] chore(test): fix data race issue, unstable issue and long time running issue of some test cases
-   
+
 [[#1634](https://github.com/cloudwego/kitex/pull/1634)][[#1632](https://github.com/cloudwego/kitex/pull/1632)][[#1573](https://github.com/cloudwego/kitex/pull/1573)] chore(dep): upgrade frugal, localsession and other cloudwego dependency versions
 
 [[#1616](https://github.com/cloudwego/kitex/pull/1616)] chore(generic): remove deprecated apis/interfaces/variables
