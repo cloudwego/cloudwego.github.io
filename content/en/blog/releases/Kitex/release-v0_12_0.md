@@ -16,7 +16,7 @@ Future version plans: Kitex will remove Apache products by default. User guide: 
 ### New Features
 1. **Thrift Streaming over TTHeader - Custom Streaming Protocol**: Supported streaming calls based on the TTHeader protocol, optimizing stability issues caused by the high complexity of the gRPC streaming protocol. 
    Provided a new streaming interface, StreamX, to solve various user experience issues with the original streaming interface and provide best practices for streaming interfaces.
-   For more details: [Streamx](/docs/kitex/tutorials/basic-feature/streamx/)
+   For more details: [StreamX](/docs/kitex/tutorials/basic-feature/streamx/)
 2. **Graceful Shutdown for gRPC Streaming**: Added support for a graceful shutdown feature to address upstream errors caused by service upgrades or updates. For more details: [gRPC Streaming Graceful Shutdown](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
 3. **JSON Generic Call Supports gRPC Streaming**: JSON generic calls now support gRPC Streaming interfaces (client-side only). This is the official release after trial in v0.10.0. For usage: [User Guide to Generic Call for Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
 
