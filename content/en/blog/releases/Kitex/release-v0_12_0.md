@@ -22,8 +22,8 @@ Future version plans: Kitex will remove Apache products by default. User guide: 
 
 ### Experience Optimization
 1. **gRPC Streaming Log Optimization**:
-    - For stream concatenation scenarios, if the downstream error is due to an exit of the upstream, the suffix "[triggered by {serviceName}]" will be included in the error to make it easier to locate the problem.
-    - Errors returned by Send such as "the stream is done" now reflect the actual error that caused the stream to close.
+    - For streaming concatenation scenarios, if the downstream error is due to an exit of the upstream Stream exiting, the error will include the suffix "[triggered by {serviceName}]" will be included in the error, which is convenient for locating the problem.
+    - Errors returned by Send such as `the stream is done` now reflect the actual error that caused the stream to close.
 2. **Code Generation Tool Kitex Tool**: 
     - **Optimization of Generation Speed and Tool Installation**: Now Thriftgo is built into Kitex, significantly improving generation speed, especially for scenarios with particularly large IDL files. There is no need to install or upgrade Thriftgo anymore.
     - **Minimizing Product Size**: To minimize product size, Frugal can be used. For gray scale adoption, it supports specifying certain structs to use Frugal serialization.
