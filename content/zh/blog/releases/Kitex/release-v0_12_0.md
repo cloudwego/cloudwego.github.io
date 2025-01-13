@@ -10,7 +10,9 @@ description: >
 
 ### 精简产物建议 - 去 Apache Thrift
 强烈建议去 Apache Codec，解决 Apache 不兼容变更带来的编译体验问题，并能**减少 50% 产物体积**。
+
 请使用 Kitex 的 Thrift Codec：FastCodec 或 Frugal，不会依赖 Apache Thrift  Codec。
+
 后续版本计划：Kitex 会默认去除 Apache 产物，用户指南见 [Kitex 去 Apache Thrift 用户手册](/zh/docs/kitex/best-practice/remove_apache_codec/)
 
 ### New Features
