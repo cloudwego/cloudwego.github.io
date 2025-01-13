@@ -244,11 +244,32 @@ kitex -module xxx xxxd.thrift
 
 想重新生成代码，执行 kitex-all.sh 即可。若想手动调整，打开脚本文件直接编辑命令即可
 
-#### `-gen-path`
+#### `-gen-frugal`
 
-> 目前只在 thrift 场景生效，protobuf 侧待后续完善实现。
+适用场景：灰度接入 Frugal 验证稳定性，指定部分结构体，将其 FastCodec 桥接为通过 Frugal 编解码
 
-默认场景，kitex 会将代码生成在 kitex_gen 目录下，可以通过 -gen-path 进行调整
+用法：在 IDL 里为结构体添加 (go.codec='frugal') 的 annotation，例如
+
+```thrift
+struct FrugalStruct{
+    1: required string st
+    2: required bool bl
+}(go.codec='frugal')
+```
+
+生成代码时添加 -gen-frugal 参数，这些结构体的 FastCodec 函数实现就会变为 Frugal 实现
+
+#### `-frugal_struct`
+
+适用场景：灰度接入 Frugal 验证稳定性，指定部分结构体，将其 FastCodec 桥接为通过 Frugal 编解码
+
+用法：上文的「-gen-frugal」需配合修改 IDL 内容才能指定结构体。本参数提供了直接生成时指定结构体的配置方式。使用 -frugal_struct $structName 来在生成时指定结构体，可以多次追加该参数来指定多个结构体名字，例如：
+
+```shell
+kitex -frugal_struct FrualStruct -frugal-struct MyStruct xxx.thrift
+```
+
+当使用 -frugal_struct 指定时，优先级更高，就不再为 -gen-frugal 的注解场景生成 frugal 编解码了
 
 #### `-protobuf-plugin`
 
