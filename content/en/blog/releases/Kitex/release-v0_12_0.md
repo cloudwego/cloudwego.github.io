@@ -21,7 +21,9 @@ Future version plans: Kitex will remove Apache products by default. User guide: 
 3. **JSON Generic Call Supports gRPC Streaming**: JSON generic calls now support gRPC Streaming interfaces (client-side only). For usage: [Generic Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
 
 ### Feature Optimization
-1. **gRPC Streaming Optimization of Error Returns and Log Prompts**: Errors returned by Send such as "the stream is done" now reflects the actual error that caused the stream to close.
+1. **gRPC Streaming Optimization of Error Returns and Log Prompts**:
+    - For stream concatenation scenarios, if the downstream error is due to an exit of the upstream, the suffix "[triggered by {serviceName}]" will be included in the error to make it easier to locate the problem.
+    - Errors returned by Send such as "the stream is done" now reflects the actual error that caused the stream to close.
 2. **Code Generation Tool Kitex Tool**: 
     - **Optimization of Generation Speed and Tool Installation**: Now Thriftgo is built into Kitex, significantly improving generation speed, especially for scenarios with particularly large IDL files. There is no need to install or upgrade Thriftgo anymore.
     - **Minimizing Product Size**: To minimize product size, Frugal can be used. For gray scale adoption, it supports specifying certain structs to use Frugal serialization.
