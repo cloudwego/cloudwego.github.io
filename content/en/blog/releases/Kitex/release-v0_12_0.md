@@ -2,7 +2,7 @@
 title: "Kitex Release v0.12.0"
 linkTitle: "Release v0.12.0"
 projects: ["Kitex"]
-date: 2025-01-13
+date: 2025-01-03
 description: >
 ---
 
@@ -14,9 +14,8 @@ Please replace it with Kitex's own Thrift codec: FastCodec, which does not rely 
 Future version plans: Kitex will remove Apache products by default. User guide: [Kitex Remove Apache Thrift User Guide](/docs/kitex/best-practice/remove_apache_codec)
 
 ### New Features
-1. **Thrift Streaming over TTHeader - Custom Streaming Protocol**: Supported streaming calls based on the TTHeader protocol, optimizing stability and performance issues caused by the high complexity of the gRPC streaming protocol. For more details: [Streamx](/docs/kitex/tutorials/basic-feature/streamx/) 
-2. **Graceful Shutdown for gRPC Streaming**: Added support for a graceful shutdown feature to address code 13 issues caused by service upgrades or updates. For more details: [gRPC Streaming Graceful Shutdown](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
-3. **JSON Generic Call Supports gRPC Streaming**: JSON generic calls now support gRPC Streaming interfaces (client-side only). For usage: [Generic Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
+1. **Thrift Streaming over TTHeader - Custom Streaming Protocol**: Supported streaming calls based on the TTHeader protocol, optimizing stability issues caused by the high complexity of the gRPC streaming protocol. For more details: [gRPC Streaming Graceful Shutdown](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
+2. **JSON Generic Call Supports gRPC Streaming**: JSON generic calls now support gRPC Streaming interfaces (client-side only). For usage: [Generic Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
 
 ### Feature Optimization
 1. **gRPC Streaming Optimization of Error Returns and Log Prompts**: Errors returned by Send such as "the stream is done" now reflects the actual error that caused the stream to close.
