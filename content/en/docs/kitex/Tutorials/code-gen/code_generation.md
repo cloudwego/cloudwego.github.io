@@ -257,6 +257,33 @@ To regenerate the code, execute kitex-all.sh. If you want to manually adjust, si
 
 Default scenario, kitex will generate code in kitex\_ Under the gen directory, adjustments can be made through - gen path
 
+#### `-gen-frugal`
+
+Use case: Gray-scale access to verify the stability of Frugal, specify certain structures, and bridge them via FastCodec to be encoded and decoded through Frugal.
+
+Add (go.codec='frugal') annotation to struct in IDL, such as:
+
+```thrift
+struct FrugalStruct{
+    1: required string st
+    2: required bool bl
+}(go.codec='frugal')
+```
+
+When generating code, adding the "-gen-frugal" parameter will transform the FastCodec function implementations of these structures into Frugal implementations.
+
+#### `-frugal_struct`
+
+Use case: Gray-scale access to verify the stability of Frugal, specify certain structures, and bridge them via FastCodec to be encoded and decoded through Frugal.
+
+Usage: The "-gen-frugal" mentioned above needs to be combined with modifications to the IDL content in order to specify the structure. This parameter provides a way to configure specifying structures directly during generation. Use "-frugal_struct $structName" to specify the structure during generation. You can append this parameter multiple times to specify multiple structure names, for example:
+
+```shell
+kitex -frugal_struct FrualStruct -frugal-struct MyStruct xxx.thrift
+```
+
+When specified using "-frugal_struct", the priority is higher, and Frugal encoding and decoding will no longer be generated for the annotated scenarios of "-gen-frugal".
+
 #### `-protobuf-plugin`
 
 Plugins that support extending protocs can be integrated into a rich protoc plugin ecosystem, providing convenience for expanding code generation
