@@ -10,12 +10,15 @@ description: >
 
 ### Simplified Product Recommendation - Remove Apache Thrift Dependency
 We strongly recommend removing Apache Codec to resolve the compilation issues caused by Apache's incompatible changes and to **reduce the product size by 50%**. 
-Please replace it with Kitex's own Thrift codec: FastCodec, which does not rely on Apache Thrift Codec.
+Please replace it with Kitex's own Thrift codec: FastCodec or Frugal, which does not rely on Apache Thrift Codec.
 Future version plans: Kitex will remove Apache products by default. User guide: [Kitex Remove Apache Thrift User Guide](/docs/kitex/best-practice/remove_apache_codec)
 
 ### New Features
-1. **Thrift Streaming over TTHeader - Custom Streaming Protocol**: Supported streaming calls based on the TTHeader protocol, optimizing stability issues caused by the high complexity of the gRPC streaming protocol. For more details: [gRPC Streaming Graceful Shutdown](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
-2. **JSON Generic Call Supports gRPC Streaming**: JSON generic calls now support gRPC Streaming interfaces (client-side only). For usage: [Generic Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
+1. **Thrift Streaming over TTHeader - Custom Streaming Protocol**: Supported streaming calls based on the TTHeader protocol, optimizing stability issues caused by the high complexity of the gRPC streaming protocol. 
+   Provided a new streaming interface, StreamX, to solve various user experience issues with the original streaming interface and provide best practices for streaming interfaces.
+   For more details: [Streamx](/docs/kitex/tutorials/basic-feature/streamx/)
+2. **Graceful Shutdown for gRPC Streaming**: Added support for a graceful shutdown feature to address upstream errors caused by service upgrades or updates. For more details: [gRPC Streaming Graceful Shutdown](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
+3. **JSON Generic Call Supports gRPC Streaming**: JSON generic calls now support gRPC Streaming interfaces (client-side only). For usage: [Generic Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
 
 ### Feature Optimization
 1. **gRPC Streaming Optimization of Error Returns and Log Prompts**: Errors returned by Send such as "the stream is done" now reflects the actual error that caused the stream to close.
