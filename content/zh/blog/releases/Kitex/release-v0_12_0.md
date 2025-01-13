@@ -16,8 +16,8 @@ description: >
 ### New Features
 1. **1. Thrift Streaming over TTHeader - 自定义流式协议**: 支持了基于 TTheader 协议的流式调用，优化因 gRPC streaming 协议复杂度过高而引入的稳定性问题；提供了新的流式接口 StreamX，解决原流式接口各类使用体验问题，并提供流式接口的最佳实践；
    用户文档：[StreamX 用户文档与最佳实践](/zh/docs/kitex/tutorials/basic-feature/streamx/)
-2. **gRPC Streaming 支持优雅退出**: 支持了优雅退出功能，用于解决因为服务升级/更新而导致的上游报错问题. 开启方式详见：[gRPC Streaming 优雅退出](/zh/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
-3. **JSON 泛化调用支持 gRPC Streaming ：**: JSON 泛化调用支持 gRPC Streaming 流式接口（仅限 client），经过 v0.10.0 试用，正式发布. 用户文档：[User Guide to Generic Call for Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
+2. **gRPC Streaming 支持优雅退出**: 支持了优雅退出功能，用于解决因为服务升级/更新而导致的上游报错问题。用户文档：[gRPC Streaming 优雅退出](/zh/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
+3. **JSON 泛化调用支持 gRPC Streaming ：**: JSON 泛化调用支持 gRPC Streaming 流式接口（仅限 client），经过 v0.10.0 试用，正式发布。用户文档：[User Guide to Generic Call for Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
 
 ### 体验优化
 1. **gRPC Streaming 日志优化**:
@@ -38,7 +38,7 @@ Kitex 会**保证内部用户正常使用方式的兼容性**。但个别用户�
     tProt := thrift.NewTBinaryProtocol(thrift.NewTMemoryBufferLen(1024), true, true)
   ```
 - 删除 `generic.ServiceInfo`
-  泛化部分删除 API `generic.ServiceInfo`.
+  泛化部分删除 `generic.ServiceInfo` API。
   **删除原因**: 因为多 Service 的支持需要对泛化部分定义做重构。
   **用户修改说明**: 新 API 用`generic.ServiceInfoWithGeneric`替代。
   ```go
