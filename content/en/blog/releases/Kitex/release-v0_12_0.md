@@ -2,7 +2,7 @@
 title: "Kitex Release v0.12.0"
 linkTitle: "Release v0.12.0"
 projects: ["Kitex"]
-date: 2024-12-12
+date: 2024-1-13
 description: >
 ---
 
