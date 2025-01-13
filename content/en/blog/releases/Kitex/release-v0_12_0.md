@@ -18,7 +18,7 @@ Future version plans: Kitex will remove Apache products by default. User guide: 
    Provided a new streaming interface, StreamX, to solve various user experience issues with the original streaming interface and provide best practices for streaming interfaces.
    For more details: [Streamx](/docs/kitex/tutorials/basic-feature/streamx/)
 2. **Graceful Shutdown for gRPC Streaming**: Added support for a graceful shutdown feature to address upstream errors caused by service upgrades or updates. For more details: [gRPC Streaming Graceful Shutdown](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
-3. **JSON Generic Call Supports gRPC Streaming**: JSON generic calls now support gRPC Streaming interfaces (client-side only). For usage: [Generic Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
+3. **JSON Generic Call Supports gRPC Streaming**: JSON generic calls now support gRPC Streaming interfaces (client-side only). This is the official release after trial in v0.10.0. For usage: [User Guide to Generic Call for Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
 
 ### Feature Optimization
 1. **gRPC Streaming Optimization of Error Returns and Log Prompts**:
@@ -30,17 +30,29 @@ Future version plans: Kitex will remove Apache products by default. User guide: 
 
 ### Breaking Change - No Impact for 99% of Users
 Kitex ensures compatibility with the standard usage patterns for users. However, certain users who depend on definitions within the Kitex repository may be affected by adjustments in this version.
-1. Remove Apache Thrift Dependency : Kitex replaced Apache thrift.TProtocol interface with `github.com/cloudwego/gopkg/protocol/thrift.NewBufferReader|NewBufferWriter`. If you still need to rely on Apache Thrift Codec, please directly use Apache's TBinaryProtocol.
-2. Generic removed an API `generic.ServiceInfo`. This API was replaced by `generic.ServiceInfoWithGeneric`. Please use it instead.
-   ```go
-    import "github.com/cloudwego/kitex/pkg/generic"
+- Removing `thrift.NewBinaryProtocol`
+  `thrift.NewBinaryProtocol` is Kitex's implementation of the Apache thrift.TProtocol interface. Because the trans part directly uses Kitex's ByteBuffer, the performance is better than Apache thrift.TBinaryProtocol. 
+  The Deprecation comment has been added to it in v0.11.0.
+  **Removing Reason**: To remove the Apache Thrift dependency, the implementation needs to be removed.
+  **User Modification Method**: This implementation was originally used with Apache Codec. If you still need to rely on Apache Codec, please directly use Apache's TBinaryProtocol. 
+  If you think that it has an impact on performance, you can fork the old version of Kitex, refer to github/cloudwego/kitex v0.10.0
+  ```go
+    import "github.com/apache/thrift/lib/go/thrift"
+    tProt := thrift.NewTBinaryProtocol(thrift.NewTMemoryBufferLen(1024), true, true)
+  ```
+- Removing `generic.ServiceInfo`
+  Generic removed an API `generic.ServiceInfo`.
+  **Removing Reason**: To prepare for future multi-service registration on a generic server, the generic implementation has been refactored (v0.11.0), and this API is no longer used.
+  **User Modification Method**: This API was replaced by `generic.ServiceInfoWithGeneric`. Please use it instead.
+  ```go
+   import "github.com/cloudwego/kitex/pkg/generic"
 
-    // removed
-    func ServiceInfo(pcType serviceinfo.PayloadCodec) *serviceinfo.ServiceInfo
-    
-    // please use this instead
-    func ServiceInfoWithGeneric(g Generic) *serviceinfo.ServiceInfo
-   ```
+   // removed
+   func ServiceInfo(pcType serviceinfo.PayloadCodec) *serviceinfo.ServiceInfo
+
+   // please use this instead
+   func ServiceInfoWithGeneric(g Generic) *serviceinfo.ServiceInfo
+  ```
 
 ## **Full Release Log**
 
