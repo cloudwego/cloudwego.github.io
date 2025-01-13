@@ -20,7 +20,7 @@ description: >
    
    支持了基于 TTheader 协议的流式调用，优化因 gRPC streaming 协议复杂度过高而引入的稳定性问题；
    
-   提供了新的流式接口 StreamX，解决原流式接口各类使用体验问题，并提供流式接口的最佳实践；
+   提供了新的流式接口 StreamX，解决原流式接口各类使用体验问题，并提供流式接口的最佳实践。
    
    用户文档：[StreamX 用户文档与最佳实践](/zh/docs/kitex/tutorials/basic-feature/streamx/)
    
@@ -39,7 +39,7 @@ description: >
 ### 体验优化
 1. **gRPC Streaming 日志优化**
 
-   对于流式串联场景，若下游 Stream 出错是由于上游 Stream 退出，将会在错误中包含"[triggered by {serviceName}]"后缀，方便定位问题。
+   对于流式串联场景，若下游 Stream 出错是由于上游 Stream 退出，将会在错误中包含"[triggered by {serviceName}]"后缀，方便定位问题；
 
    Send 返回的 the stream is done 错误将变成导致流被关闭的真正错误。
       
@@ -47,7 +47,7 @@ description: >
 
    **生成速度和工具安装优化**：无需再安装或升级 Thriftgo ，内置到 Kitex，在 IDL 特别庞大的场景，生成速度有较大提升。
    
-   **最小化产物体积**：产物体积最小化可以使用 Frugal，如果希望灰度开启，支持指定结构体使用 Frugal 序列化。详见 [代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)关于 -frugal-struct、-gen-frugal 参数的说明
+   **最小化产物体积**：产物体积最小化可以使用 Frugal，如果希望灰度开启，支持指定结构体使用 Frugal 序列化。详见 [代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)关于 -frugal-struct、-gen-frugal 参数的说明。
 
 ### 不兼容变更-对99%用户无影响
 Kitex 会**保证内部用户正常使用方式的兼容性**。但个别用户可能对 Kitex 仓库的定义有依赖，Kitex 本次版本调整对这部分用户有影响。
@@ -68,7 +68,7 @@ Kitex 会**保证内部用户正常使用方式的兼容性**。但个别用户�
   
   **删除原因**: 因为多 Service 的支持需要对泛化部分定义做重构。
   
-  **用户修改说明**: 新 API 用`generic.ServiceInfoWithGeneric`替代。
+  **用户修改说明**: 新 API 用 `generic.ServiceInfoWithGeneric` 替代。
   ```go
    import "github.com/cloudwego/kitex/pkg/generic"
 
