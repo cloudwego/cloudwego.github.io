@@ -43,7 +43,7 @@ description: >
 
    Send 返回的 the stream is done 错误将变成导致流被关闭的真正错误。
       
-3. **代码生成工具 Kitex Tool**
+2. **代码生成工具 Kitex Tool**
 
    **生成速度和工具安装优化**：无需再安装或升级 Thriftgo ，内置到 Kitex，在 IDL 特别庞大的场景，生成速度有较大提升。
    
