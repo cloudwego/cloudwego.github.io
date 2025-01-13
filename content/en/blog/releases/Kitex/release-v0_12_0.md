@@ -27,6 +27,7 @@ Future version plans: Kitex will remove Apache products by default. User guide: 
 2. **Code Generation Tool Kitex Tool**: 
     - **Optimization of Generation Speed and Tool Installation**: Now Thriftgo is built into Kitex, significantly improving generation speed, especially for scenarios with particularly large IDL files. There is no need to install or upgrade Thriftgo anymore.
     - **Minimizing Product Size**: To minimize product size, Frugal can be used. For gray scale adoption, it supports specifying certain structs to use Frugal serialization.
+      For more details, refer to [Code Generation Tool](https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/) for instructions on -frugal-struct and -gen-frugal parameters.
 
 ### Breaking Change - No Impact for 99% of Users
 Kitex ensures compatibility with the standard usage patterns for users. However, certain users who depend on definitions within the Kitex repository may be affected by adjustments in this version.
