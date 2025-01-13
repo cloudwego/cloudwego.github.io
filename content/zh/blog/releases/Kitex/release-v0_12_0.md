@@ -31,6 +31,7 @@ description: >
 1. **gRPC Streaming 日志优化**:
     - 对于流式串联场景，若下游 Stream 出错是由于上游 Stream 退出，将会在错误中包含"[triggered by {serviceName}]"后缀，方便定位问题。
     - Send 返回的 the stream is done 错误将变成导致流被关闭的真正错误。
+      
 2. **代码生成工具 Kitex Tool**:
     - **生成速度和工具安装优化**：无需再安装或升级 Thriftgo ，内置到 Kitex，在 IDL 特别庞大的场景，生成速度有较大提升。
     - **最小化产物体积**：产物体积最小化可以使用 Frugal，如果希望灰度开启，支持指定结构体使用 Frugal 序列化。详见 [代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)关于 -frugal-struct、-gen-frugal 参数的说明
