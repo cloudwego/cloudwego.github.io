@@ -1,9 +1,9 @@
 ---
-title: "Thrift Streaming"
+title: "Thrift Streaming over gRPC"
 date: 2024-03-09
-weight: 2
-keywords: ["Kitex", "Streaming", "Thrift"]
-description: This article describes how to define and use the Streaming API in Thrift IDL.
+weight: 3
+keywords: ["Kitex", "Streaming", "Thrift", "gRPC"]
+description: This article describes how to define and use the Streaming API in Thrift IDL over gRPC.
 ---
 
 ## Introduction

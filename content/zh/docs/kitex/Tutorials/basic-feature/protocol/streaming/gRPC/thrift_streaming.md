@@ -1,8 +1,8 @@
 ---
-title: "Thrift Streaming"
+title: "Thrift Streaming over gRPC"
 date: 2024-03-06
-weight: 2
-keywords: ["Kitex", "Streaming", "Thrift"]
+weight: 3
+keywords: ["Kitex", "Streaming", "Thrift", "gRPC"]
 description: 本文介绍如何在 Thrift IDL 里定义并使用 Streaming API。
 ---
 

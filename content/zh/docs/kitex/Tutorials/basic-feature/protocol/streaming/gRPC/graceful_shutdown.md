@@ -1,7 +1,7 @@
 ---
 title: "gRPC Streaming 优雅退出"
 date: 2025-01-10
-weight: 3
+weight: 4
 keywords: ["优雅退出"]
 description: "本文介绍如何使用 gRPC Streaming 优雅突出"
 ---
