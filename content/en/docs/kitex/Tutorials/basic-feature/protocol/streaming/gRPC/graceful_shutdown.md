@@ -1,9 +1,9 @@
 ---
 title: "gRPC Streaming Graceful Shutdown"
 date: 2025-01-13
-weight: 1
+weight: 4
 keywords: ["gRPC Streaming Graceful Shutdown"]
-description: ""
+description: "This article describes how to use Graceful Shutdown over gRPC"
 ---
 
 ## Background
