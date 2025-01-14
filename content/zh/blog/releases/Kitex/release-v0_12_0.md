@@ -50,7 +50,7 @@ description: >
    **最小化产物体积**：产物体积最小化可以使用 Frugal，如果希望灰度开启，支持指定结构体使用 Frugal 序列化。详见 [代码生成工具](/zh/docs/kitex/tutorials/code-gen/code_generation/)关于 -frugal-struct、-gen-frugal 参数的说明。
 
 ### 不兼容变更-对99%用户无影响
-Kitex 会**保证内部用户正常使用方式的兼容性**。但个别用户可能对 Kitex 仓库的定义有依赖，Kitex 本次版本调整对这部分用户有影响。
+Kitex 会尽量保证常规使用方式的兼容性，个别用户可能对 Kitex 仓库的定义有依赖，Kitex 本次版本调整对这部分用户有影响。
 - **删除 `thrift.NewBinaryProtocol`**
   
   `thrift.NewBinaryProtocol`是 Kitex 对 Apache thrift.TProtocol 接口的实现，因为 trans 部分直接使用 Kitex 的 ByteBuffer，相比 apache thrift.TBinaryProtocol 性能更好。在 v0.11.0 已经加了弃用注释。
