@@ -51,9 +51,8 @@ Future version plans: Kitex will remove Apache products by default. User guide: 
       For more details, refer to [Code Generation Tool](/docs/kitex/tutorials/code-gen/code_generation/) for instructions on -frugal-struct and -gen-frugal parameters.
 
 ### Breaking Change - No Impact for 99% of Users
-Kitex **ensures compatibility with the standard usage patterns for users**. However, certain users who depend on definitions within the Kitex repository may be affected by adjustments in this version.
-- **Removing `thrift.NewBinaryProtocol`**
-  
+Kitex will strive to ensure compatibility with normal usage methods. Some users may have dependencies on certain code definitions of Kitex, and this version adjustment of Kitex will have an impact on these users.
+- Removing `thrift.NewBinaryProtocol`
   `thrift.NewBinaryProtocol` is Kitex's implementation of the Apache thrift.TProtocol interface. Because the trans part directly uses Kitex's ByteBuffer, the performance is better than Apache thrift.TBinaryProtocol. 
   The Deprecation comment has been added to it in v0.11.0.
   
