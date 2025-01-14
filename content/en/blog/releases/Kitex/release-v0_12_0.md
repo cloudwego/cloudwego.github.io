@@ -10,31 +10,44 @@ description: >
 
 ### Simplified Product Recommendation - Remove Apache Thrift Dependency
 We strongly recommend removing Apache Codec to resolve the compilation issues caused by Apache's incompatible changes and to **reduce the product size by 50%**. 
+
 Please replace it with Kitex's own Thrift codec: FastCodec or Frugal, which does not rely on Apache Thrift Codec.
+
 Future version plans: Kitex will remove Apache products by default. User guide: [Kitex Remove Apache Thrift User Guide](/docs/kitex/best-practice/remove_apache_codec)
 
 ### New Features
 1. **Thrift Streaming over TTHeader - Custom Streaming Protocol**
-   Supported streaming calls based on the TTHeader protocol, optimizing stability issues caused by the high complexity of the gRPC streaming protocol. 
+   
+   Supported streaming calls based on the TTHeader protocol, optimizing stability issues caused by the high complexity of the gRPC streaming protocol.
+   
    Provided a new streaming interface, StreamX, to solve various user experience issues with the original streaming interface and provide best practices for streaming interfaces.
+   
    For more details: [StreamX User Documentation and Best Practices](/docs/kitex/tutorials/basic-feature/streamx/)
    
 2. **Graceful Shutdown for gRPC Streaming**
+   
    Added support for a graceful shutdown feature to address upstream errors caused by service upgrades or updates.
+   
    For usage: [gRPC Streaming Graceful Shutdown](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
    
-3. **JSON Generic Call Supports gRPC Streaming**:
+3. **JSON Generic Call Supports gRPC Streaming**
+   
    JSON generic calls now support gRPC Streaming interfaces (client-side only). This is the official release after trial in v0.10.0.
+   
    For usage: [User Guide to Generic Call for Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
 
 ### Experience Optimization
 1. **gRPC Streaming Log Optimization**
-    - For streaming concatenation scenarios, if the downstream error is due to an exit of the upstream Stream exiting, the error will include the suffix "[triggered by {serviceName}]" will be included in the error, which is convenient for locating the problem.
-    - Errors returned by Send such as `the stream is done` now reflect the actual error that caused the stream to close.
+   
+   For streaming concatenation scenarios, if the downstream error is due to an exit of the upstream Stream exiting, the error will include the suffix "[triggered by {serviceName}]" will be included in the error, which is convenient for locating the problem.
+   
+   Errors returned by Send such as `the stream is done` now reflect the actual error that caused the stream to close.
       
 2. **Code Generation Tool Kitex Tool**
-    - **Optimization of Generation Speed and Tool Installation**: Now Thriftgo is built into Kitex, significantly improving generation speed, especially for scenarios with particularly large IDL files. There is no need to install or upgrade Thriftgo anymore.
-    - **Minimizing Product Size**: To minimize product size, Frugal can be used. For gray scale adoption, it supports specifying certain structs to use Frugal serialization.
+   
+   **Optimization of Generation Speed and Tool Installation**: Now Thriftgo is built into Kitex, significantly improving generation speed, especially for scenarios with particularly large IDL files. There is no need to install or upgrade Thriftgo anymore.
+   
+   **Minimizing Product Size**: To minimize product size, Frugal can be used. For gray scale adoption, it supports specifying certain structs to use Frugal serialization.
       For more details, refer to [Code Generation Tool](/docs/kitex/tutorials/code-gen/code_generation/) for instructions on -frugal-struct and -gen-frugal parameters.
 
 ### Breaking Change - No Impact for 99% of Users
@@ -42,16 +55,21 @@ Kitex will strive to ensure compatibility with normal usage methods. Some users 
 - Removing `thrift.NewBinaryProtocol`
   `thrift.NewBinaryProtocol` is Kitex's implementation of the Apache thrift.TProtocol interface. Because the trans part directly uses Kitex's ByteBuffer, the performance is better than Apache thrift.TBinaryProtocol. 
   The Deprecation comment has been added to it in v0.11.0.
+  
   **Removing Reason**: To remove the Apache Thrift dependency, the implementation needs to be removed.
+  
   **User Modification Method**: This implementation was originally used with Apache Codec. If you still need to rely on Apache Codec, please directly use Apache's TBinaryProtocol. 
   If you think that it has an impact on performance, you can fork the old version of Kitex, refer to github/cloudwego/kitex v0.10.0
   ```go
     import "github.com/apache/thrift/lib/go/thrift"
     tProt := thrift.NewTBinaryProtocol(thrift.NewTMemoryBufferLen(1024), true, true)
   ```
-- Removing `generic.ServiceInfo`
+- **Removing `generic.ServiceInfo`**
+  
   Generic removed an API `generic.ServiceInfo`.
+  
   **Removing Reason**: To prepare for future multi-service registration on a generic server, the generic implementation has been refactored (v0.11.0), and this API is no longer used.
+  
   **User Modification Method**: This API was replaced by `generic.ServiceInfoWithGeneric`. Please use it instead.
   ```go
    import "github.com/cloudwego/kitex/pkg/generic"
