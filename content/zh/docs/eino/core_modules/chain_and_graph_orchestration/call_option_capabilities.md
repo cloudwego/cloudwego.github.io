@@ -296,14 +296,22 @@ out, err = r.Invoke(ctx, in, WithChatModelOption(
     )
 ```
 
-## CallOption 产品形态
+## 编排中的 CallOption
 
-每个节点的 CallOption 最终都会映射到 Graph 编排产物的 CallOption 入参上。  因此说 CallOption 是对 Graph 编译产物进行调用时，直接传递数据给特定的一组节点(Component、Implementation、Node)的渠道
+CallOption 可以按需分配给 Graph 中不同的节点。
 
 ![](/img/eino/graph_runnable_after_compile.png)
 
-需要明确几个点：
+```go
+// 所有节点都生效的 call option
+compiledGraph.Invoke(ctx, input, WithCallbacks(handler))
 
-- 每个节点的 CallOption 是否需要再 Graph 的 UI 上直观体现
-- Graph 部署后，产生的服务接口，需要有能指定 CallOption 的入参。
-  - 这个 CallOption 是否需要由 Graph 编排者再次加工后暴露，还是直接裸暴露其中每个节点的 CallOption
+// 只对特定类型节点生效的 call option
+compiledGraph.Invoke(ctx, input, WithChatModelOption(WithTemperature(0.5))
+
+// 只对特定节点生效的 call option
+compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
+
+// 只对特定内部嵌套图或其中节点生效的 Call option
+compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNodeWithPath(NewNodePath("1", "2"))
+```
