@@ -27,15 +27,15 @@ weight: 0
 // 抽象所在代码位置
 eino/components/model
 ├── interface.go
-├── **option.go** // Component 抽象粒度的 CallOption 入参
+├── option.go // Component 抽象粒度的 CallOption 入参
 
 // 抽象实现所在代码位置
 eino-ext/components/model
 ├── maas
-│   ├── **call_option.go**
+│   ├── call_option.go
 │   └── Implementation.go
 ├── openai
-│   ├── **call_option.go** // Component 的一种实现的 CallOption 入参
+│   ├── call_option.go // Component 的一种实现的 CallOption 入参
 │   ├── Implementation.go
 ```
 
@@ -285,12 +285,12 @@ r, err := g.Compile()
 // 同一个 WithXXX() 会对同一种 Component 的不同实例同时生效
 // 必要情况下可通过指定 NodeKey，仅针对一个 Node 生效 WithXXX() 方法
 out, err = r.Invoke(ctx, in, WithChatModelOption(
-                **openai.**WithAKSK("ak", "sk"),
-                **openai**.WithURL("url"),             
+                openai.WithAKSK("ak", "sk"),
+                openai.WithURL("url"),             
             ),
             // 这组 CallOption 仅针对 openAIModel 这个节点生效
             WithChatModelOption(
-                **model.**WithModel("gpt-3.5-turto"), 
+                model.WithModel("gpt-3.5-turto"), 
                 openai.WithAPIKey("xxxx"),          
             ).DesignateNode("openAIModel"),
     )
