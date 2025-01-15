@@ -10,7 +10,8 @@ weight: 1
 本指南将帮助你快速上手使用 Eino 框架中的 ChatModel 构建一个简单的 LLM 应用。我们将通过实现一个"程序员鼓励师"的例子，来展示如何使用 ChatModel。
 
 > 💡
-> 本文中示例的代码片段详见：[flow/eino-examples/quickstart/chat/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat/main.go)
+
+本文中示例的代码片段详见：[flow/eino-examples/quickstart/chat/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat/main.go)
 
 ## **ChatModel 简介**
 
@@ -23,7 +24,6 @@ ChatModel 是 Eino 框架中对对话大模型的抽象，它提供了统一的�
 在 Eino 中，对话是通过 `schema.Message` 来表示的，这是 Eino 对一个对话消息的抽象定义。每个 Message 包含以下重要字段：
 
 - `Role`: 消息的角色，可以是：
-
   - `system`: 系统指令，用于设定模型的行为和角色
   - `user`: 用户的输入
   - `assistant`: 模型的回复

@@ -29,12 +29,10 @@ type Parser interface {
 
 - 功能：从 Reader 中解析文档内容
 - 参数：
-
   - ctx：上下文对象
   - reader：提供原始内容的 Reader
   - opts：解析选项
 - 返回值：
-
   - `[]*schema.Document`：解析后的文档列表
   - error：解析过程中的错误
 

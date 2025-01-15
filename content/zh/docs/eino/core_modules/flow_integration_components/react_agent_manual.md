@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: React Agent 使用手册'
@@ -12,7 +12,8 @@ weight: 0
 Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/)的智能体框架，用户可以用来快速灵活地构建并调用 React Agent.
 
 > 💡
-> 代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)
+
+代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)
 
 ## 节点拓扑&数据流图
 
@@ -236,6 +237,44 @@ func main() {
         MaxStep: 20,
     }
 }
+```
+
+### StreamToolCallChecker
+
+指定检测模型流式输出中是否包含工具调用的函数。
+
+不同的模型在流式模式下输出工具调用的方式可能不同:某些模型(如 OpenAI)会直接输出工具调用；某些模型(如 Claude)会先输出文本,然后再输出工具调用
+
+```
+_// StreamToolCallChecker 是一个用于检测模型流式输出中是否包含工具调用的函数。_
+
+_//_
+
+_// 不同的模型在流式模式下输出工具调用的方式不同:_
+
+_// - 某些模型(如 OpenAI)会直接输出工具调用_
+
+_// - 其他模型(如 Claude)会先输出文本,然后再输出工具调用_
+
+_//_
+
+_// 该处理器允许自定义逻辑来检查流中的工具调用。返回值:_
+
+_// - true: 输出包含工具调用,agent 应继续处理_
+
+_// - false: 没有工具调用,agent 应停止处理_
+
+_//_
+
+_// 注意:_
+
+_// 1. 此配置仅在使用 agent 的流式模式时有效_
+
+_// 2. 处理器必须在返回前关闭 modelOutput 流_
+
+_//_
+
+_// 可选配置。默认情况下,它会检查第一个数据块是否包含工具调用。_
 ```
 
 ## 调用

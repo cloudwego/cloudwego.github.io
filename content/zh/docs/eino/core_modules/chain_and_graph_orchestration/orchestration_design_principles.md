@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: 编排的设计理念'
@@ -20,8 +20,7 @@ eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是
 在 golang 中，要实现这个假设，有两个基本方案：
 
 1. 把不同节点的输入输出都变成一种更泛化的类型，例如 `any` 、`map[string]any` 等。
-
-   1. 老版本的 eino 就是采用泛化成 any 的方案，但对应的代价是: 开发者在写代码时，需要显式转换成具体类型才能使用。这会极大增加开发者的心智负担，因此最终放弃此方案。
+   1. 采用泛化成 any 的方案，但对应的代价是: 开发者在写代码时，需要显式转换成具体类型才能使用。这会极大增加开发者的心智负担，因此最终放弃此方案。
    2. langchain 的方案可以看做是全程传递 `map[string]any`，各个逻辑节点根据自己的需要，用对应的 key 去取对应的 value。在 langchaingo 的实现中，即是按照这种方式实现，但同样，golang 中的 any 要被使用依然要使用 `类型断言` 才可使用。这种方案在开发者使用时依然有很大的心智负担。
 2. 每一个节点的输入输出类型保持开发者的预期，在 Compile 阶段保证上下游的类型是一致的。
 
@@ -49,17 +48,13 @@ eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是
 
 ① 上下游类型相同: 例如上游输出 *schema.Message 下游输入也是 *schema.Message
 
-② 下游接收接口，上游实现了该接口: 例如上游结构体实现了 Format() 接口，下游接收的是一个 interface{ Format() }
+② 下游接收接口，上游实现了该接口: 例如上游结构体实现了 Format() 接口，下游接收的是一个 interface{ Format() }。特殊情况是下游是 any（空接口），上游一定实现了 any，因此一定可以连接。
 
-③ 下游接受方为 any: 空接口，可以认为任何上游都可以转成一个 any 传给下游
+③  上游是  interface，下游是具体类型:  当下游具体类型 implements 上游的 interface 类型时，有可能可以，有可能不行，在 compile 时无法确定，只有在运行时，等上游的具体类型确定了，才能最终确定。时，详细描述可见: [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 
-④ 上游是 any，下游是具体类型:  当上游可被转换成下游类型时，详细描述可见: [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+图中黄色的部分，则是 eino 提供的另一个类型转换的机制，即: 若下游接收的类型是 `map[string]any`，但是上游输出的类型并不是 map[string]any，可以使用 `graph.AddXXXNode(node_key, xxx, compose.WithOutputKey("outkey")` 的方式将上游输出的类型转化为 map[string]any，其中 map 的 key 是 option 中指定的 OutputKey。 一般在多条边汇聚到某一个节点时，这种机制使用起来较为方便。
 
-图中黄色的部分，则是 eino 提供的另一个类型转换的机制，即: 若下游接收的类型是 `map[string]any`，可以使用 `graph.AddXXXNode(node_key, xxx, compose.WithOutputKey("outkey")` 的方式指定给下游输入的一个 key。
-
-同理，若上游是 `map[string]any` ，则可以使用 `graph.AddXXXNode(node_key, xxx, compose.WithInputKey("inkey")` 来获取上游输出的其中一个 key 的 value。
-
-一般在多条边汇聚到某一个节点时，这种机制使用起来较为方便。
+同理，若上游是 `map[string]any` ，但是下游输入的类型并不是 map[string]any，则可以使用 `graph.AddXXXNode(node_key, xxx, compose.WithInputKey("inkey")` 来获取上游输出的其中一个 key 的 value，作为下游的输入。
 
 #### branch
 
@@ -125,7 +120,7 @@ graph 中的多 edge 形成的结构其中一种就是这个，这里的基本�
 
 在 parallel 中的每个节点，由于其上游节点是同一个，因此他们都要和上游节点的输出类型对齐，比如图中上游节点输出了 `*schema.Message` ，则每个节点都要能接收这个类型。接收的方式和 graph 中的一致，通常可以用 `相同类型` 、`接口定义` 、`any`、`input key option` 的方式。
 
-parallel 节点的输出一定是一个 `map[string]any`，其中的 key 则是在 `parallel.AddXXX(output_key, xxx, opts...)` 时指定的 output_key。
+parallel 节点的输出一定是一个 `map[string]any`，其中的 key 则是在 `parallel.AddXXX(output_key, xxx, opts...)` 时指定的 output_key，value 是节点内部的实际输出。
 
 一个 parallel 的构建例子如下：
 
@@ -162,7 +157,17 @@ func TestParallel() {
 
 #### branch
 
-chain 的 branch 和 graph 中的 branch 类似，branch 中的所有节点都要和上游节点的类型对齐，此处不再赘述。
+chain 的 branch 和 graph 中的 branch 类似，branch 中的所有节点都要和上游节点的类型对齐，此处不再赘述。chain branch 的特殊之处是，branch 的所有可能的分支节点，都会连到 chain 中的同一个节点，或者都会连到 END。
+
+### Workflow 中的类型对齐
+
+Workflow 的类型对齐的维度，由整体的 Input & Output 改成了字段级别。具体可分为：
+
+- 上游输出的整体，类型对齐到下游的某个具体字段。
+- 上游输出的某个具体字段，类型对齐到下游的整体。
+- 上游输出的某个具体字段，类型对齐到下游输入的某个具体字段。
+
+原理和规则与整体的类型对齐相同。
 
 ### invoke 和 stream 下的类型对齐方式
 
@@ -213,18 +218,20 @@ func TestInvokeAndStream() {
 }
 ```
 
-在 stream 模式下，`合并帧` 是一个非常常见的操作，例如在和大模型的交互中，可以把已经接收到的所有帧合并，得到一个完整的输出。
+在 stream 模式下，`合并帧` 是一个非常常见的操作，例如在和大模型的交互中，可以把已经接收到的所有帧拼接起来（Concatenate），得到一个完整的输出。
 
-另外，在框架中，当一个仅提供了 Stream 接口的节点，被编排后使用 Invoke 调用，框架则会把 Stream 降级为 Invoke，此时的操作是 底层调用开发者提供的 Stream 接口，获取完整的帧后，把所有帧合并，得到的结果再流转到下一节点。 这个过程中，也是使用的 `合并帧` 。
+另外，在框架中，当一个仅提供了 Stream 接口的节点，被编排后使用 Invoke 调用，框架则会把 Stream 降级为 Invoke，此时的操作是 底层调用开发者提供的 Stream 接口，获取完整的帧后，把所有帧合并，得到的结果再流转到下一节点。 这个过程中，也是使用的 `拼接``帧` 。
 
-框架内已经内置支持了如下类型的合并:
+拼接时，会先把 `*StreamReader[T] ` 中的所有元素取出来转成 `[]T`。框架内已经内置支持了如下类型的拼接:
 
 - `*schema.Message`:  详情见 `schema.ConcatMessages()`
 - `string`: 实现逻辑等同于 `+=`
 - `[]*schema.Message`: 详情见 `compose.concatMessageArray()`
 - `Map`: 把相同 key 的 val 进行合并，合并逻辑同上，若存在无法合并的类型，则失败 (ps: 不是覆盖)
+- `Struct` 或 `Struct 指针`：先转成 `[]map[string]any` 的，再以 map 的逻辑合并。要求 struct 中不能有 unexported field。
+- 其他 slice：只有当 slice 中只有一个元素是非零值时，才能合并。
 
-对于自定义类型，则需要开发者自行实现 concat 方法，并使用 `compose.RegisterStreamChunkConcatFunc()` 注册到全局的合并函数中。
+对其他场景，或者当用户想用定制逻辑覆盖掉上面的默认行为时，开发者可自行实现 concat 方法，并使用 `compose.RegisterStreamChunkConcatFunc()` 注册到全局的拼接函数中。
 
 示例如下：
 
@@ -234,7 +241,7 @@ type tStreamConcatItemForTest struct {
     s string
 }
 
-// 实现一个合并的方法
+// 实现一个拼接的方法
 func concatTStreamForTest(items []*tStreamConcatItemForTest) (*tStreamConcatItemForTest, error) {
     var s string
     for _, item := range items {
@@ -245,7 +252,7 @@ func concatTStreamForTest(items []*tStreamConcatItemForTest) (*tStreamConcatItem
 }
 
 func init() {
-    // 注册到全局的合并方法中
+    // 注册到全局的拼接方法中
     compose.RegisterStreamChunkConcatFunc(concatTStreamForTest)
 }
 ```
@@ -254,7 +261,7 @@ func init() {
 
 eino 的 Graph 类型对齐检查，会在 `err = graph.AddEdge("node1", "node2")` 时检查两个节点类型是否匹配，也就能在 `构建 graph 的过程`，或 `Compile 的过程` 发现类型不匹配的错误，这适用于 [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles) 中所列举的 ① ② ③ 条规则。
 
-当上游节点的输出为 `any` 时，若下游节点为确定的类型 (结构体、接口等等)，则上游有可能可以转成下游类型 (类型断言)，但只能在 `运行过程` 才能清楚能否转换成功，该场景的类型检查移到了运行过程中。
+当上游节点的输出为 `interface` 时，若下游节点类型实现了该 `interface`，则上游有可能可以转成下游类型 (类型断言)，但只能在 `运行过程` 才能清楚能否转换成功，该场景的类型检查移到了运行过程中。
 
 其结构可见下图：
 
@@ -271,3 +278,112 @@ eino 在编排中的是以大模型应用为核心场景的编排系统，因此
 当然，除了上述标准的组件外，还有很多场景我们需要实现一些自定义的代码逻辑，在 eino 中，这就是 `Lambda` 组件。这是一个很泛化的组件，可以基于这个基础组件实现几乎所有的需求，实际上，在 eino 内部，上述的组件也都是使用 lambda 来实现的。
 
 > 更多信息可以参考： [Eino: Components 抽象&实现](/zh/docs/eino/core_modules/components)
+
+## 带有明确倾向性的设计选择
+
+### 扇入与合并
+
+**扇入**：多个上游的数据汇入到下游，一起作为下游的输入。需要明确定义多个上游的输出，如何**合并（Merge）**起来。Eino 的选择是，首先要求多个上游输出的**实际类型**必须相同。其次：
+
+- 在非流式场景下，上游输出的实际类型必须为 Map，且相互间 key 不可重复。合并后成为一个 Map，包含所有上游的所有键值对。
+- 在流式场景下，将类型相同的多个上游 StreamReader 合并为一个 StreamReader。实际 Recv 时效果为随机选取。
+
+在 Workflow 中，也可能存在扇入，只是不一定是多个上游的整体输出做合并，而是多个上游各自的某个字段。将这些字段值取出后，实际 Merge 时依然遵循相同的规则：类型相同，非流式只能 Map，流式合并 Stream。
+
+### 流式处理
+
+Eino 认为，组件应当只需要实现业务场景中真实的流式范式，比如 ChatModel 不需要实现 Collect。因此，在编排场景中，Eino 自动帮助所有的节点**补全缺失的流式范式**。
+
+以 Invoke 方式运行 Graph，内部各节点均以 Invoke 范式运行，以 Stream, Collect 或 Transform 方式运行 Graph，内部各节点均以 Transform 范式运行。
+
+**自动拼接(Concatenate)**：Stream chunk 拼接为完整内容的场景，优先使用用户注册的自定义拼接函数，其次执行框架提供的默认行为，包括 Message, Message 数组，String，Map 和 Struct 及 Struct 指针。
+
+**自动流化(Box)**：需要将非流式的 T 变成 StreamReader[T] 的场景，框架自动执行。
+
+**自动合并(Merge)**：见上文“扇入与合并”环节。
+
+**自动复制(Copy)**：在需要做流的复制的场景自动进行流的复制，包括一个流扇出到多个下游节点，一个流进入一个或多个 callback handler。
+
+最后，Eino 要求所有编排元素能够感知和处理流。包括 branch，state handler，callback handler，passthrough，lambda 等。
+
+关于 Eino 对流的处理能力，详见 [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)。
+
+### 全局状态
+
+**State**：在 NewGraph 时以 option 方式传入一个 local state 结构体的 Gen Function。这个请求维度的全局状态在一次请求的各环节可读写使用。
+
+以尽可能保证 State 的并发安全为目标，Eino 提供了 `StatePreHandler` 和  `StatePostHandler`，功能定位是：
+
+- StatePreHandler：在每个节点执行前，并发安全的读写 State，以及按需修改节点的 Input。
+- StatePostHandler：在每个节点执行后，并发安全的读写 State，以及按需修改节点的 Output。
+
+StateHandler 局限于节点外部，只能通过对 Input 或 Output 的修改影响外界。为了能够影响节点内部的执行，Eino 提供了 `GetState[T](ctx)` 函数。这个函数不保证 State 的并发安全，因此建议**只读**。
+
+### 回调注入
+
+Eino 编排框架认为，进入编排的组件，可能内部埋入了 Callback 切面，也可以没有。这个信息由组件是否实现了 `Checker` 接口，以及接口中 `IsCallbacksEnabled` 方法的返回值来判断。
+
+- 当 `IsCallbacksEnabled` 返回 true 时，Eino 编排框架使用组件实现内部的 Callback 切面。
+- 否则，自动在组件实现外部包上 Callback 切面，（只能）上报 input 和 output。
+
+无论哪种，都会自动推断出 RunInfo。
+
+同时，对 Graph 整体，也一定会注入 Callback 切面，RunInfo 为 Graph 自身。
+
+关于 Eino 的 Callback 能力完整说明，见 [Eino: Callback 用户手册](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)。
+
+### Option 分配
+
+Eino 支持各种维度的 Call Option 分配方式：
+
+- 默认全局，即分配到所有节点，包括嵌套的内部图。
+- 可添加某个组件类型的 Option，这时默认分配到该类型的所有节点，比如 AddChatModelOption。定义了独有 Option 类型的 Lambda，也可以这样把 Option 指定到自身。
+- 可指定任意个具体的节点，使用 `DesignateNode(key ...string)`.
+- 可指定任意深度的嵌套图，或者其中的任意个具体的节点，使用 `DesignateNodeWithPath(path ...*NodePath)`.
+
+关于 Eino 的 Call Option 能力完整说明，见 [Eino: CallOption 能力与规范](/zh/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)。
+
+### 图嵌套
+
+图编排产物 `Runnable` 与 Lambda 的接口形式非常相似。因此编译好的图可以简单的封装为 Lambda，并以 Lambda 节点的形式嵌套进其他图中。
+
+另一种方式，在编译前，Graph，Chain，Workflow 等都可以直接通过 AddGraph 的方式嵌套进其他图中。两个方式的差异是：
+
+- Lambda 的方式，在 trace 上会多一级 Lambda 节点。其他 Callback handler 视角看也会多一层。
+- Lambda 的方式，需要通过 Lambda 的 Option 来承接 CallOption，无法通过 DesignateNodeWithPath。
+- Lambda 的方式，内部图需事先编译。直接 AddGraph，则内部图随上级图一起编译。
+
+## 内部机制
+
+### 执行时序
+
+以一个添加了 StatePreHandler、StatePostHandler、InputKey、OutputKey，且内部没有实现 Callback 切面的 InvokableLambda（输入为 string，输出为 int）为例，在图中的流式执行完整时序如下：
+
+![](/img/eino/graph_node_run_wrapper.png)
+
+在 workflow 的场景中，字段映射发生在两个位置：
+
+- 在节点执行后的 StatePostHandler 以及“流复制”步骤后，每个下游需要的字段会分别抽取出来。
+- 在节点执行前的“合并”步骤之后、StatePreHandler 之前，会将抽取出来的上游字段值转换为当前节点的输入。
+
+### 运行引擎
+
+`NodeTriggerMode == AnyPredecessor` 时，图以 pregel 引擎执行，对应的拓扑结构是有向有环图。特点是：
+
+- 当前执行中的一个或多个节点，所有的后序节点，作为一个 SuperStep，整体一起执行。这时，这些新的节点，会成为“当前”节点。
+- 支持 Branch，支持图中有环，但是可能需要人为添加 passthrough 节点，来确保 SuperStep 中的节点符合预期，如下图：
+
+![](/img/eino/graph_steps_in_graph2.png)
+
+上图中 Node 4 和 Node 5 按规则被放在一起执行，大概率不符合预期。需要改成：
+
+![](/img/eino/graph_steps_in_graph.png)
+
+`NodeTriggerMode == AllPredecessor` 时，图以 dag 引擎执行，对应的拓扑结构是有向无环图。特点是：
+
+- 每个节点有确定的前序节点，当所有前序节点都完成后，本节点才具备运行条件。
+- 可以选择 eager 模式，此时没有 SuperStep 概念，每个节点完成后，都立即判断有哪些后序节点可运行，并第一时间运行。
+- 不支持 Branch，不支持图中有环，因为会打破“每个节点有确定的前序节点”这一假定。
+- 不需要手动对齐 SuperStep。
+
+总结起来，pregel 模式灵活强大但有额外的心智负担，dag 模式清晰简单但场景受限。在 Eino 框架中，Chain 是 pregel 模式，Workflow 是 dag 模式，Graph 则都支持，可由用户从 pregel 和 dag 中选择。

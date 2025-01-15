@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: Components 组件'
@@ -26,43 +26,41 @@ weight: 1
 
 1. 模板化处理和大模型交互参数的组件抽象： `ChatTemplate`
 
-   > 详见 [Eino: ChatTemplate 使用说明](/zh/docs/eino/core_modules/components/chat_template_guide)
-   >
+> 详见 [Eino: ChatTemplate 使用说明](/zh/docs/eino/core_modules/components/chat_template_guide)
+
 2. 直接和大模型交互的组件抽象： `ChatModel`
 
-   > 详见 [Eino: ChatModel 使用说明](/zh/docs/eino/core_modules/components/chat_model_guide)
-   >
+> 详见 [Eino: ChatModel 使用说明](/zh/docs/eino/core_modules/components/chat_model_guide)
 
 **文本语义处理类组件：**
 
 1. 获取和处理文本文档的组件抽象： `Document.Loader` 、`Document.Transformer`
 
-   > 详见 [Eino: Document Loader 使用说明](/zh/docs/eino/core_modules/components/document_loader_guide)、[Eino: Document Transformer 使用说明](/zh/docs/eino/core_modules/components/document_transformer_guide)
-   >
+> 详见 [Eino: Document Loader 使用说明](/zh/docs/eino/core_modules/components/document_loader_guide)、[Eino: Document Transformer 使用说明](/zh/docs/eino/core_modules/components/document_transformer_guide)
+
 2. 文本文档语义化处理的组件抽象： `Embedding`
 
-   > 详见 [Eino: Embedding 使用说明](/zh/docs/eino/core_modules/components/embedding_guide)
-   >
+> 详见 [Eino: Embedding 使用说明](/zh/docs/eino/core_modules/components/embedding_guide)
+
 3. Embedding 之后将数据索引进行存储的组件抽象： `Indexer`
 
-   > 详见 [Eino: Indexer & Retriever 使用说明](/zh/docs/eino/core_modules/components/indexer_and_retriever_guide)
-   >
+> 详见 [Eino: Indexer & Retriever 使用说明](/zh/docs/eino/core_modules/components/indexer_and_retriever_guide)
+
 4. 将语义相关文本文档进行索引和召回的组件抽象： `Retriever`
 
-   > 详见 [Eino: Indexer & Retriever 使用说明](/zh/docs/eino/core_modules/components/indexer_and_retriever_guide)
-   >
+> 详见 [Eino: Indexer & Retriever 使用说明](/zh/docs/eino/core_modules/components/indexer_and_retriever_guide)
 
 **决策执行类组件**：
 
 1. 大模型能够做决策并调用工具的组件抽象：`ToolsNode`
-   > 详见 [Eino: Tool & ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tool_and_tools_node_guide)
-   >
+
+> 详见 [Eino: Tool & ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tool_and_tools_node_guide)
 
 **自定义组件：**
 
 1. 用户自定义代码逻辑的组件抽象：`Lambda`
-   > 详见 [Eino: Lambda 使用说明](/zh/docs/eino/core_modules/components/lambda_guide)
-   >
+
+> 详见 [Eino: Lambda 使用说明](/zh/docs/eino/core_modules/components/lambda_guide)
 
 组件是大模型应用能力的提供者，是大模型应用构建过程中的砖和瓦，组件抽象的优劣决定了大模型应用开发的复杂度，Eino 的组件抽象秉持着以下设计原则：
 

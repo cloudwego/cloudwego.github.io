@@ -16,7 +16,6 @@ Eino 切面(Eino Callback)是 Eino 框架对开发提供的扩展 Eino 框架，
 - 切面位置：即能在哪些点位添加切面逻辑
 - 切面注入：可通过哪些方式，注入对应的切面逻辑
 - 切面角色
-
   - 切面机制：由 Eino 框架提供了，扩展 Eino 自身功能的机制
   - 切面扩展者：基于 Eino 的扩展能力，设计和提供各种各样的独立于 Graph 执行的扩展能力
     - 例如：Fornax Trace、Fornax 指标 等
@@ -28,13 +27,11 @@ Eino 切面(Eino Callback)是 Eino 框架对开发提供的扩展 Eino 框架，
 ![](/img/eino/callback_in_graph.png)
 
 - 组件切面(Component Callback)：组件自带的切面
-
   - 实现在组件内部的切面执行点位，而不是在加入到 Node 时，由 Node 在组件之外添加的切面点位
   - 组件切面既可应用于 **Graph 编排场景**，也可应用于**组件的独立使用**场景
   - 组件切面、节点切面一般二选一。
     - 当组件声明自己提供组件切面时，节点切面会被自动关闭。
 - 节点切面(Node Callback)：组件加入到节点时，由 Node 在组件之外添加的切面点位
-
   - 由于是在组件之外，只能见到组件的 input/output，无法感知组件运行时的内部状态
   - 仅可应用于 **Graph 编排场景**，在组件独立使用时，无法生效
 - 图切面(Graph Callback)：把整张图视为一个整体，在图的前后添加的切面点位
@@ -58,11 +55,9 @@ Eino 切面(Eino Callback)是 Eino 框架对开发提供的扩展 Eino 框架，
 ### 全局注入(进程粒度)
 
 - 生效位置： **所有图**的所有节点或组件的 Callback 均生效 + 所有图的 Graph Callback 生效
-
   - 针对节点、组件哪一个生效的问题，取决于组件是否声明自己实现了 Component Callback。若声明，则仅 Component Callback 生效；若未声明，则 Node Callback 生效
 - 生效时机： Graph 编译产物的**任意一次执行**
 - 注入方式：
-
   - 通过 callbacks.InitCallbackHandlers() 注入。一个进程中，仅最后一次调用生效。建议放在 main 入口函数中进行初始化
 
 ```go
@@ -94,7 +89,6 @@ func (l *loggerCallbacks) OnEnd(ctx context.Context, info *callbacks.RunInfo, ou
 - 生效的切面位置： **本地调用涉及图及其嵌套子图**的 Graph Callback 和 Node Callback
 - 生效时机： Graph 编译产物的本次调用
 - 注入时机：
-
   - 调用 Graph 编译产物 Runnable 方法时，例如调用 Invoke()、Stream()方法，通过 Graph Call Option 传入。
   - GraphCallOption：compose.WithCallbacks(handler)
 
@@ -319,6 +313,8 @@ var callbackHandler1 = &callbacks.HandlerBuilder{
 ### WARN:Callback 流切记要 Close
 
 以存在 ChatModel 这种具有真流输出的节点为例，当存在 Callback 切面时，ChatModel 的输出流：
+- 既要被下游节点作为输入来消费，又要被 Callback 切面来消费
+- 一个流中的一个帧(Chunk)，只能被一个消费方消费到，即流不是广播模型
 
 所以此时需要将流进行复制，其复制关系如下：
 
@@ -329,6 +325,7 @@ var callbackHandler1 = &callbacks.HandlerBuilder{
 ## 组件切面上报
 
 当用户定制实现一个组件时，可能因为需要 定制切面上报点位、定制切面上报内容等原因，导致不使用 Node Callback，而是选择定制实现 Component Callback。
+- Node Callback 仅能上报组件抽象的输入输出信息，无法获取更多的组件内部信息。
 
 组件切面定制上报逻辑的示例，以 ChatModel 为例:
 

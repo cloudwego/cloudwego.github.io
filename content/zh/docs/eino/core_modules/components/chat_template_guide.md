@@ -29,12 +29,10 @@ type ChatTemplate interface {
 
 - 功能：将变量值填充到消息模板中
 - 参数：
-
   - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
   - vs：变量值映射，用于填充模板中的占位符
   - opts：可选参数，用于配置格式化行为
 - 返回值：
-
   - `[]*schema.Message`：格式化后的消息列表
   - error：格式化过程中的错误信息
 

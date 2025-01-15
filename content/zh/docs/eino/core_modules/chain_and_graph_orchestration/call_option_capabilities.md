@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: CallOption 能力与规范'
@@ -8,6 +8,9 @@ weight: 0
 ---
 
 **CallOption**: 对 Graph 编译产物进行调用时，直接传递数据给特定的一组节点(Component、Implementation、Node)的渠道
+- 和 节点 Config 的区别： 节点 Config 是实例粒度的配置，也就是从实例创建到实例消除，Config 中的值一旦确定就不需要改变了
+- CallOption：是请求粒度的配置，不同的请求，其中的值是不一样的。更像是节点入参，但是这个入参是直接由 Graph 的入口直接传入，而不是上游节点传入。
+- 举例：LarkDocLoader 中，需要提供请求粒度的  RefreshToken，这个 RefreshToken 每个用户每次使用后，都需要更换
 
 ## 组件 CallOption 形态
 
@@ -156,6 +159,7 @@ func GetImplSpecificOptions[T any](base *T, opts ...Option) *T {
 ### OpenAI 实现
 
 > 组件的实现均类似 OpenAI 的实现
+>
 > 注：此处为样例，eino-ext/components/model 中暂时没有此场景
 
 ```go
@@ -302,5 +306,4 @@ out, err = r.Invoke(ctx, in, WithChatModelOption(
 
 - 每个节点的 CallOption 是否需要再 Graph 的 UI 上直观体现
 - Graph 部署后，产生的服务接口，需要有能指定 CallOption 的入参。
-
   - 这个 CallOption 是否需要由 Graph 编排者再次加工后暴露，还是直接裸暴露其中每个节点的 CallOption

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: Callback 用户手册'
@@ -8,9 +8,12 @@ weight: 0
 ---
 
 > 💡
-> TL;DR
-> 长文，用意是“明确的、无歧义的、充分的”说明 Eino Callback 设计、实现和使用方式的各方面，可用作解决某个具体问题的工具参考，也可以作为入门后想要更进一步了解细节的一个途径。
-> 快速入门请移步 ：[Eino: 公共切面 - Callbacks](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callbacks_common_aspects)
+
+TL;DR
+
+长文，用意是“明确的、无歧义的、充分的”说明 Eino Callback 设计、实现和使用方式的各方面，可用作解决某个具体问题的工具参考，也可以作为入门后想要更进一步了解细节的一个途径。
+
+快速入门请移步 ：[Eino: 公共切面 - Callbacks](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callbacks_common_aspects)
 
 # 解决的问题
 
@@ -85,20 +88,17 @@ type RunInfo struct {
 ```
 
 - Name：有业务含义的名称，需用户指定，不指定就是空字符串。对不同的触发实体：
-
   - Component：在 Graph 中时，用 Node Name。在 Graph 外单独的使用时，用户手动设置。详见“注入 RunInfo” 和 “单独使用 Component”
   - Graph Node：用 Node Name `func WithNodeName(n string) GraphAddNodeOpt`
   - Graph 自身：
     - 顶层图用 Graph Name `func WithGraphName(graphName string) GraphCompileOption`
     - 内部嵌套图，会用加入到上级图时添加的 Node Name
 - Type：组件具体实现来规定：
-
   - 有接口的 Component：如果实现了 Typer 接口，用 GetType() 方法的结果。否则用反射获取 Struct/Func 名。
   - Lambda：如果用 `func WithLambdaType(t string) LambdaOpt` 指定了 Type，用这个，否则是空字符串。
   - Graph Node：用内部 Component/Lambda/Graph 的值。
   - Graph 自身：空字符串。
 - Component:
-
   - 有接口的 Component：是啥接口，就是啥
   - Lambda：固定值 Lambda
   - Graph Node: 用内部的 Component/Lambda/Graph 的值。
