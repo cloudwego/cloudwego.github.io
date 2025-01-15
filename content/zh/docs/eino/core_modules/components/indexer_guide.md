@@ -27,12 +27,10 @@ type Indexer interface {
 
 - 功能：存储文档并建立索引
 - 参数：
-
   - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
   - docs：待存储的文档列表
   - opts：存储选项，用于配置存储行为
 - 返回值：
-
   - ids：存储成功的文档 ID 列表
   - error：存储过程中的错误信息
 

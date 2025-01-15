@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: ChatModel 使用说明'
@@ -32,12 +32,10 @@ type ChatModel interface {
 
 - 功能：生成完整的模型响应
 - 参数：
-
   - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
   - input：输入消息列表
   - opts：可选参数，用于配置模型行为
 - 返回值：
-
   - `*schema.Message`：模型生成的响应消息
   - error：生成过程中的错误信息
 
@@ -53,10 +51,8 @@ type ChatModel interface {
 
 - 功能：为模型绑定可用的工具
 - 参数：
-
   - tools：工具信息列表
 - 返回值：
-
   - error：绑定过程中的错误信息
 
 ### **Message 结构体 **

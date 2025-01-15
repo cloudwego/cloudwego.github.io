@@ -1,13 +1,13 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: Chain & Graph 编排功能'
 weight: 2
 ---
 
-在大模型应用中，`Components` 组件 是提供 『原子能力』的最小单元，比如：
+在大模型应用中，`Components` 组件是提供 『原子能力』的最小单元，比如：
 
 - `ChatModel` 提供了大模型的对话能力
 - `Embedding` 提供了基于语义的文本向量化能力
@@ -39,20 +39,15 @@ Eino 对「编排」有着这样的洞察：
 具体来说，实现了如下特性：
 
 - 一切以 “组件” 为核心，规范了业务功能的封装方式，让**职责划分变得清晰**，让**复用**变成自然而然
-
   - 详细信息参考：[Eino: Components 组件](/zh/docs/eino/core_modules/components)
 - 业务逻辑复杂度封装到组件内部，编排层拥有更全局的视角，让**逻辑层次变得非常清晰**
 - 提供了切面能力，callback 机制支持了基于节点的**统一治理能力**
-
   - 详细信息参考：[Eino: 公共切面 - Callbacks](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callbacks_common_aspects)
 - 提供了 call option 的机制，**扩展性**是快速迭代中的系统最基本的诉求
-
   - 详细信息参考：[Eino: CallOption 能力与规范](/zh/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
 - 提供了 “类型对齐” 的开发方式的强化，降低开发者心智负担，把 golang 的**类型安全**特性发挥出来
-
   - 详细信息参考：[Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 - 提供了 “**流的自动转换**” 能力，让 “流” 在「编排系统的复杂性来源榜」中除名
-
   - 详细信息参考：[Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
 Graph 本身是强大且语义完备的，可以用这项底层几乎绘制出所有的 “数据流动网络”，比如 “分支”、“并行”、“循环”。

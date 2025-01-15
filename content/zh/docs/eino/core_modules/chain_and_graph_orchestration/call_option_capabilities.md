@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: CallOption 能力与规范'
@@ -8,6 +8,9 @@ weight: 0
 ---
 
 **CallOption**: 对 Graph 编译产物进行调用时，直接传递数据给特定的一组节点(Component、Implementation、Node)的渠道
+- 和 节点 Config 的区别： 节点 Config 是实例粒度的配置，也就是从实例创建到实例消除，Config 中的值一旦确定就不需要改变了
+- CallOption：是请求粒度的配置，不同的请求，其中的值是不一样的。更像是节点入参，但是这个入参是直接由 Graph 的入口直接传入，而不是上游节点传入。
+- 举例：LarkDocLoader 中，需要提供请求粒度的  RefreshToken，这个 RefreshToken 每个用户每次使用后，都需要更换
 
 ## 组件 CallOption 形态
 
@@ -24,15 +27,15 @@ weight: 0
 // 抽象所在代码位置
 eino/components/model
 ├── interface.go
-├── **option.go** // Component 抽象粒度的 CallOption 入参
+├── option.go // Component 抽象粒度的 CallOption 入参
 
 // 抽象实现所在代码位置
 eino-ext/components/model
 ├── maas
-│   ├── **call_option.go**
+│   ├── call_option.go
 │   └── Implementation.go
 ├── openai
-│   ├── **call_option.go** // Component 的一种实现的 CallOption 入参
+│   ├── call_option.go // Component 的一种实现的 CallOption 入参
 │   ├── Implementation.go
 ```
 
@@ -156,6 +159,7 @@ func GetImplSpecificOptions[T any](base *T, opts ...Option) *T {
 ### OpenAI 实现
 
 > 组件的实现均类似 OpenAI 的实现
+>
 > 注：此处为样例，eino-ext/components/model 中暂时没有此场景
 
 ```go
@@ -281,26 +285,33 @@ r, err := g.Compile()
 // 同一个 WithXXX() 会对同一种 Component 的不同实例同时生效
 // 必要情况下可通过指定 NodeKey，仅针对一个 Node 生效 WithXXX() 方法
 out, err = r.Invoke(ctx, in, WithChatModelOption(
-                **openai.**WithAKSK("ak", "sk"),
-                **openai**.WithURL("url"),             
+                openai.WithAKSK("ak", "sk"),
+                openai.WithURL("url"),             
             ),
             // 这组 CallOption 仅针对 openAIModel 这个节点生效
             WithChatModelOption(
-                **model.**WithModel("gpt-3.5-turto"), 
+                model.WithModel("gpt-3.5-turto"), 
                 openai.WithAPIKey("xxxx"),          
             ).DesignateNode("openAIModel"),
     )
 ```
 
-## CallOption 产品形态
+## 编排中的 CallOption
 
-每个节点的 CallOption 最终都会映射到 Graph 编排产物的 CallOption 入参上。  因此说 CallOption 是对 Graph 编译产物进行调用时，直接传递数据给特定的一组节点(Component、Implementation、Node)的渠道
+CallOption 可以按需分配给 Graph 中不同的节点。
 
 ![](/img/eino/graph_runnable_after_compile.png)
 
-需要明确几个点：
+```go
+// 所有节点都生效的 call option
+compiledGraph.Invoke(ctx, input, WithCallbacks(handler))
 
-- 每个节点的 CallOption 是否需要再 Graph 的 UI 上直观体现
-- Graph 部署后，产生的服务接口，需要有能指定 CallOption 的入参。
+// 只对特定类型节点生效的 call option
+compiledGraph.Invoke(ctx, input, WithChatModelOption(WithTemperature(0.5))
 
-  - 这个 CallOption 是否需要由 Graph 编排者再次加工后暴露，还是直接裸暴露其中每个节点的 CallOption
+// 只对特定节点生效的 call option
+compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
+
+// 只对特定内部嵌套图或其中节点生效的 Call option
+compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNodeWithPath(NewNodePath("1", "2"))
+```

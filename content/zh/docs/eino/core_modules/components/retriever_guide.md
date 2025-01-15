@@ -29,12 +29,10 @@ type Retriever interface {
 
 - 功能：根据查询检索相关文档
 - 参数：
-
   - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
   - query：查询字符串
   - opts：检索选项，用于配置检索行为
 - 返回值：
-
   - `[]*schema.Document`：检索到的文档列表
   - error：检索过程中的错误信息
 

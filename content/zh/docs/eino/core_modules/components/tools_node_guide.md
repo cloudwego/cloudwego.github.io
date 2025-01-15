@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: ToolsNode 使用说明'
@@ -45,10 +45,8 @@ type StreamableTool interface {
 
 - 功能：获取工具的描述信息
 - 参数：
-
   - ctx：上下文对象
 - 返回值：
-
   - `*schema.ToolInfo`：工具的描述信息
   - error：获取信息过程中的错误
 
@@ -56,12 +54,10 @@ type StreamableTool interface {
 
 - 功能：同步执行工具
 - 参数：
-
   - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
   - `argumentsInJSON`：JSON 格式的参数字符串
   - opts：工具执行的选项
 - 返回值：
-
   - string：执行结果
   - error：执行过程中的错误
 
@@ -69,12 +65,10 @@ type StreamableTool interface {
 
 - 功能：以流式方式执行工具
 - 参数：
-
   - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
   - `argumentsInJSON`：JSON 格式的参数字符串
   - opts：工具执行的选项
 - 返回值：
-
   - `*schema.StreamReader[string]`：流式执行结果
   - error：执行过程中的错误
 
@@ -178,9 +172,16 @@ handler := &tool.CallbackHandler{
     },
     OnEndWithStreamOutput: func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[*tool.CallbackOutput]) context.Context {
         fmt.Println("工具开始流式输出")
-        for chunk := range output.Chan() {
-            fmt.Printf("收到流式输出: %s\n", chunk.Response)
-        }
+        go func() {
+            defer output.Close()
+            
+            for chunk, err := range output.Recv() {
+                if errors.Is(err, io.EOF) {
+                    return
+                }
+                fmt.Printf("收到流式输出: %s\n", chunk.Response)
+            }
+        }()
         return ctx
     },
 }

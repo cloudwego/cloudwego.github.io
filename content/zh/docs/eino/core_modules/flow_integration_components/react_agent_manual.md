@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: React Agent 使用手册'
@@ -238,6 +238,38 @@ func main() {
 }
 ```
 
+### StreamToolCallChecker
+
+不同的模型在流式模式下输出工具调用的方式可能不同: 某些模型(如 OpenAI) 会直接输出工具调用；某些模型 (如 Claude) 会先输出文本，然后再输出工具调用。因此需要使用不同的方法来判断，这个字段用来指定判断模型流式输出中是否包含工具调用的函数。
+
+可选填写，未填写时使用首包是否包含工具调用判断。
+
+```go
+func main() {
+    agent, err := react.NewAgent(ctx, react.AgentConfig{
+        Model: toolableChatModel,
+        ToolsConfig: tools,
+        StreamToolCallChecker: func(___ context.Context, _sr_ *schema.StreamReader[*schema.Message]) (bool, error) {
+            defer sr.Close()
+
+            msg, err := sr.Recv()
+            if err != nil {
+                return false, err
+            }
+
+            if len(msg.ToolCalls) == 0 {
+                return false, nil
+            }
+
+            return true, nil
+        }
+    }
+}
+```
+
+> 💡
+> 部分模型流式输出工具调用时会先输出一段文本（比如 Claude），这会导致默认 StreamToolCallChecker 错误判断没有工具调用而直接返回，使用这类模型时必须自行实现正确的 StreamToolCallChecker。
+
 ## 调用
 
 ### Generate
@@ -407,6 +439,10 @@ func main() {
 1. clone eino-examples repo，并 cd 到根目录
 2. 提供一个 `OPENAI_API_KEY`: `export OPENAI_API_KEY=xxxxxxx`
 3. 运行 demo: `go run flow/agent/react/react.go`
+
+### 运行过程
+
+![](/img/eino/agent_cli_demo.gif)
 
 ### 运行过程解释
 

@@ -1,15 +1,15 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: Chain/Graph 编排介绍'
 weight: 1
 ---
 
-# Graph 编排
+## Graph 编排
 
-## Graph
+### Graph
 
 ```go
 import (
@@ -67,7 +67,7 @@ func main() {
 }
 ```
 
-## ToolCallAgent
+### ToolCallAgent
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/openai@latest
@@ -295,7 +295,7 @@ func (l *loggerCallbacks) OnEndWithStreamOutput(ctx context.Context, info *callb
 }
 ```
 
-## State Graph
+### State Graph
 
 ```go
 package main
@@ -509,7 +509,7 @@ _                _sw.Send(chunk, err)
 }
 ```
 
-# Chain
+## Chain
 
 > Chain 可以视为是 Graph 的简化封装
 

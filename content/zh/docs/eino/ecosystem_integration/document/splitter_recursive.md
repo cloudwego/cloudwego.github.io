@@ -43,7 +43,6 @@ splitter, err := recursive.NewSplitter(ctx, &recursive.Config{
 - `Separators`：分隔符列表，按优先级顺序使用
 - `LenFunc`：自定义文本长度计算函数，默认使用 `len()`
 - `KeepType`：分隔符保留策略，可选值：
-
   - `KeepTypeNone`：不保留分隔符
   - `KeepTypeStart`：在片段开始处保留分隔符
   - `KeepTypeEnd`：在片段结尾处保留分隔符

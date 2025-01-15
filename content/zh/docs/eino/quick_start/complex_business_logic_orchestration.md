@@ -50,10 +50,8 @@ resp, err := chatModel.Generate(ctx, messages)
 
 - 用清晰的结构定义处理流程，代码更**清晰易读**
 - 轻松添加调试日志，查看每个节点的输入输出
-
   - 可参考 [Eino: 公共切面 - Callbacks](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callbacks_common_aspects) 和 [Eino IDE 插件使用指南](/zh/docs/eino/core_modules/application_development_toolchain/ide_plugin_guide)
 - 添加通用的切面能力，比如 tracing、metrics 等
-
   - 更多详细信息可以参考： [Eino: 公共切面 - Callbacks](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callbacks_common_aspects)
 - **复用**已有的处理流程，在此基础上扩展新功能 (把流程拆分成可复用的组件)
 

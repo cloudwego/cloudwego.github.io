@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: Eino 流式编程要点
@@ -10,7 +10,7 @@ weight: 0
 > 💡
 > 建议先看：[Eino: 基础概念介绍](/zh/docs/eino/overview) [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 
-# 编排流式概述
+## 编排流式概述
 
 ![](/img/eino/eino_component_runnable.png)
 
@@ -19,22 +19,21 @@ weight: 0
 - 组件/Lambda 中包含哪几种 Lambda 算子： 从 Invoke、Stream、Collect、Transform 中任选
 - 编排拓扑图中，上下游节点的输入、输出是否同为流或同为非流。
 - 如果上下游节点的流类型无法匹配。 需要借助 流化、合包 两个操作
-
   - 流化(Streaming)：将 T 流化成单 Chunk 的 Stream[T]
   - 合包(Concat)：将 Stream[T] 合并成一个完整的 T。Stream[T] 中的每一“帧”是这个完整 T 的一部分。
 
-# Eino 流式编程的内涵
+## Eino 流式编程的内涵
 
 - 有的组件，天然支持分“帧”来输出，每次输出一个完整出参的一部分，即“流式”输出。流式输出完成后，需要下游把这些“帧”拼接（concat）成完整的出参。典型的例子，是 LLM。
 - 有的组件，天然支持分“帧”来输入，接收到不完整的入参时，就能开始有意义的业务处理，甚至完成业务处理的过程。比如 react agent 中用来判断是调 tool 还是结束运行的 branch 里面，拿到 LLM 的流式输出，从第一个帧里面就可以通过判断 message 是否包含 tool call 来做出决策。
 - 因此，一个组件，从入参角度看，有“非流式”入参和“流式”入参两种，从出参角度看，有“非流式”出参和“流式”出参两种。
 - 组合起来，有四种可能的流式编程范式
 
-# 单个组件角度的流式
+## 单个组件角度的流式
 
 Eino 是个 "component first" 的框架，组件可以独立使用。定组件接口的时候，需要考虑流式编程的问题吗？简单的答案是不需要。复杂的答案是“以业务真实场景为准”。
 
-## 组件自身的业务范式
+### 组件自身的业务范式
 
 一个典型的组件，比如 Chat Model，Retriever 等，根据实际的业务语义定接口就行，如果实际上支持某种流式的范式，就实现那一种流式范式，如果实际上某种流式范式没有真正的业务场景，那就不需要实现。比如
 
@@ -56,7 +55,7 @@ type Retriever interface {
 }
 ```
 
-## 组件具体支持的范式
+### 组件具体支持的范式
 
 <table>
 <tr>
@@ -83,9 +82,9 @@ Eino 官方组件中，除了 Chat Model 和 Tool 额外支持 stream 外，其�
 
 Collect 和 Transform 两种流式范式，目前只在编排场景有用到。
 
-# 多个组件编排角度的流式
+## 多个组件编排角度的流式
 
-## 组件在编排中的流式范式
+### 组件在编排中的流式范式
 
 一个组件，单独使用时，入参和出参的流式范式是框定的，不可能超出组件定义的接口范围。
 
@@ -135,7 +134,7 @@ ReactAgent 有两个接口，Generate 和 Stream，分别实现了 Invoke 和 St
 
 总结起来，就是：**在编排中，当一个组件的上游输出是 T，但是组件只提供了 StreamReader[T] 作为输入的业务接口时，框架会自动将 T 装箱成 StreamReader[T] 的单帧流，再输入给这个组件。**
 
-## 编排辅助元素的流式范式
+### 编排辅助元素的流式范式
 
 上面提到的 Branch，并不是一个可单独使用的组件，而是只在编排场景中才有意义的“编排辅助元素”，类似的仅编排场景有意义的“组件”，还有一些，详见下图：
 
@@ -156,9 +155,9 @@ ReactAgent 有两个接口，Generate 和 Stream，分别实现了 Invoke 和 St
 
 另外还有一种只有编排场景才有意义的“组件”，就是把编排产物作为一个整体来看待，比如编排后的 Chain，Graph。这些整体的编排产物，既可以作为“组件”来单独调用，也可以作为节点加入到更上级的编排产物中。
 
-# 编排整体角度的流式
+## 编排整体角度的流式
 
-## 编排产物的“业务”范式
+### 编排产物的“业务”范式
 
 既然整体的编排产物，可以被看做一个“组件”，那从组件的视角可以提出问题：编排产物这个“组件”，有没有像 Chat Model 等组件那样的，符合“业务场景”的接口范式？答案是既“有”也“没有”。
 
@@ -175,26 +174,31 @@ type Runnable[I**, **O any] interface {
 
 - “有”：具体而言，某一个具体的 Graph、Chain，一定是承载了具体的业务逻辑的，因此也就一定有适合那个特定业务场景的流式范式。比如类似 React Agent 的 Graph，匹配的业务场景是 Invoke 和 Stream，因此这个 Graph 在调用时，符合逻辑的调用方式是 Invoke 和 Stream。虽然编排产物本身接口 Runnable[I, O] 中有 Collect 和 Transform 的方法，但是正常的业务场景不需要使用。
 
-## 编排产物内部各组件在运行时的范式
+### 编排产物内部各组件在运行时的范式
 
 从另一个角度看，既然编排产物整体可以被看做“组件”，那“组件”必然有自己的内部实现，比如 ChatModel 的内部实现逻辑，可能是把入参的 []Message 转化成各个模型的 API request，之后调用模型的 API，获取 response 后再转化成出参的 Message。那么类比的话，Graph 这个“组件”的内部实现是什么？是数据在 Graph 内部各个组件间以用户指定的流转方向和流式范式来流转。其中，“流转方向”不在当前讨论范围内，而各组件运行时的流式范式，则由 Graph 整体的触发方式决定，具体来说：
 
 - 如果用户通过 Invoke 来调用 Graph，则 Graph 内部所有组件都以 Invoke 范式来调用。如果某个组件，没有实现 Invoke 范式，则 Eino 框架自动根据组件实现了的流式范式，封装出 Invoke 调用范式，优先顺位如下：
-
   - 若组件实现了 Stream，则通过 Stream 封装 Invoke，即自动 concat 输出流。
-    ![](/img/eino/invoke_outside_stream_inside.png)
-  - 否则，若组件实现了 Collect，则通过 Collect 封装 Invoke，即非流式入参转单帧流。
-    ![](/img/eino/invoke_outside_collect_inside.png)
-  - 如果都没实现，则必须实现 Transform，通过 Transform 封装 Invoke，即入参转单帧流，出参 concat。
-    ![](/img/eino/invoke_outside_transform_inside.png)
-- 如果用户通过 Stream/Collect/Transform 来调用 Graph，则 Graph 内部所有组件都以 Transform 范式来调用。如果某个组件，没有实现 Transform 范式，则 Eino 框架自动根据组件实现了的流式范式，封装出 Transform 调用范式，优先顺位如下：
 
+![](/img/eino/invoke_outside_stream_inside.png)
+- 否则，若组件实现了 Collect，则通过 Collect 封装 Invoke，即非流式入参转单帧流。
+
+![](/img/eino/invoke_outside_collect_inside.png)
+- 如果都没实现，则必须实现 Transform，通过 Transform 封装 Invoke，即入参转单帧流，出参 concat。
+
+![](/img/eino/invoke_outside_transform_inside.png)
+
+- 如果用户通过 Stream/Collect/Transform 来调用 Graph，则 Graph 内部所有组件都以 Transform 范式来调用。如果某个组件，没有实现 Transform 范式，则 Eino 框架自动根据组件实现了的流式范式，封装出 Transform 调用范式，优先顺位如下：
   - 若组件实现了 Stream，则通过 Stream 封装 Transform，即自动 concat 输入流。
-    ![](/img/eino/transform_inside_stream_inside.png)
-  - 否则，若组件实现了 Collect，则通过 Collect 封装 Transform，即非流式出参转单帧流。
-    ![](/img/eino/transform_outside_stream_inside.png)
-  - 如果都没实现，则必须实现 Invoke，通过 Invoke 封装 Transform，即入参流 concat，出参转单帧流
-    ![](/img/eino/transform_outside_invoke_inside.png)
+
+![](/img/eino/transform_inside_stream_inside.png)
+- 否则，若组件实现了 Collect，则通过 Collect 封装 Transform，即非流式出参转单帧流。
+
+![](/img/eino/transform_outside_stream_inside.png)
+- 如果都没实现，则必须实现 Invoke，通过 Invoke 封装 Transform，即入参流 concat，出参转单帧流
+
+![](/img/eino/transform_outside_invoke_inside.png)
 
 结合上面穷举的各种案例，Eino 框架对 T 和 Stream[T] 的自动转换，可以总结为：
 
@@ -204,11 +208,9 @@ type Runnable[I**, **O any] interface {
 看了上面的实现原理，可能会有疑问，为什么对 graph 的 Invoke，会要求所有内部组件都以 Invoke 调用？以及为什么对 graph 的 Stream/Collect/Transform，会要求所有内部组件都以 Transform 调用？毕竟，可以举出一些反例：
 
 - A, B 两个组件编排为一个 Chain，以 Invoke 调用。其中 A 的业务接口实现了 Stream，B 的业务接口实现了 Collect。这时 graph 内部组件的调用范式有两个选择：
-
   - A 以 stream 调用，B 以 collect 调用，整体的 Chain 依然是 Invoke 语义，同时保留了真流式的内部语义。即 A 的输出流不需要做 Concat，可以实时的输入到 B 中。
   - 目前 Eino 的实现，A、B 都以 Invoke 调用，需要把 A 的输出流 Concat，并把 B 的输入做成假流式。失去了真流式的内部语义。
 - A，B 两个组件编排为一个 Chain，以 Collect 调用。其中 A 实现了 Transform 和 Collect，B 实现了 Invoke。两个选择：
-
   - A 以 Collect 调用，B 以 Invoke 调用：整体还是 Collect 的语义，不需要框架做任何的自动转化和装箱操作。
   - 目前 Eino 的实现，A、B 都以 Transform 调用，由于 A 的业务接口里实现了 Transform，因此 A 的输出和 B 的输入都可能是真流式，而 B 的业务接口里只实现了 Invoke，根据上面的分析，B 的入参会需要由真流式 concat 成非流式。这时就需要用户额外提供 B 的入参的 cancat 函数，这本可以避免。
 
@@ -218,11 +220,3 @@ type Runnable[I**, **O any] interface {
 
 - **整体以 Invoke 调用，内部各组件均以 Invoke 调用，不存在任何流式的过程。**
 - **整体以 Stream/Collect/Transform 调用，内部各组件均以 Transform 调用，当出现 Stream[T] -> T 的 concat 过程时，可能需要额外提供 T 的 concat function。**
-
-## 真流变假流
-
-Q. 用 stream 调用 state graph，为什么 chat model 输出了一个“假流”？
-
-## 是流，不是批
-
-Q. 我的 lambda 输出了一个 stream，能否在图里面遍历流中元素，循环执行后续节点？

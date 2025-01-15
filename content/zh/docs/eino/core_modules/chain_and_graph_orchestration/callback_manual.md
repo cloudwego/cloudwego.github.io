@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-15"
 lastmod: ""
 tags: []
 title: 'Eino: Callback 用户手册'
@@ -9,10 +9,12 @@ weight: 0
 
 > 💡
 > TL;DR
+>
 > 长文，用意是“明确的、无歧义的、充分的”说明 Eino Callback 设计、实现和使用方式的各方面，可用作解决某个具体问题的工具参考，也可以作为入门后想要更进一步了解细节的一个途径。
+>
 > 快速入门请移步 ：[Eino: 公共切面 - Callbacks](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callbacks_common_aspects)
 
-# 解决的问题
+## 解决的问题
 
 Component（包括 Lambda）、Graph 编排共同解决“把业务逻辑定义出来”的问题。而 logging, tracing, metrics, 上屏展示等横切面性质的功能，需要有机制把功能注入到 Component（包括 Lambda）、Graph 中。
 
@@ -20,15 +22,15 @@ Component（包括 Lambda）、Graph 编排共同解决“把业务逻辑定义�
 
 Callbacks 支持“**横切面功能注入**”和“**中间状态透出**”，具体是：用户提供、注册“function”（Callback Handler），Component 和 Graph 在固定的“时机”（或者说切面、位点）回调这些 function，给出对应的信息。
 
-# 核心概念
+## 核心概念
 
 核心概念串起来，就是：Eino 中的 Component 和 Graph 等**实体**，在固定的**时机** (Callback Timing)，回调用户提供的 **function** (Callback Handler)，并把**自己是谁** (RunInfo)，以及**当时发生了什么** (Callback Input & Output) 传出去。
 
-## 触发实体
+### 触发实体
 
 Component（包括官方定义的组件类型和 Lambda），Graph Node（以及 Chain Node），Graph 自身（以及 Chain）。这三类实体，都有横切面功能注入、中间状态透出的需求，因此都会触发 callback。具体见下面的“[触发方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)”一节。
 
-## 触发时机
+### 触发时机
 
 ```go
 // CallbackTiming enumerates all the timing of callback aspects.
@@ -45,7 +47,7 @@ const (
 
 不同的触发实体，在不同场景下，是触发 OnStart 还是 OnStartWithStreamInput  (OnEnd/OnEndWithStreamOutput 同理），具体的规则，详见下面的“[触发方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)”一节。
 
-## Callback Handler
+### Callback Handler
 
 ```go
 type Handler interface {
@@ -71,7 +73,7 @@ type Handler interface {
 
 不同 Handler 之间，触发顺序**没有**保证。
 
-## RunInfo
+### RunInfo
 
 描述了触发 Callback 的实体自身的元信息。
 
@@ -85,26 +87,23 @@ type RunInfo struct {
 ```
 
 - Name：有业务含义的名称，需用户指定，不指定就是空字符串。对不同的触发实体：
-
   - Component：在 Graph 中时，用 Node Name。在 Graph 外单独的使用时，用户手动设置。详见“注入 RunInfo” 和 “单独使用 Component”
   - Graph Node：用 Node Name `func WithNodeName(n string) GraphAddNodeOpt`
   - Graph 自身：
     - 顶层图用 Graph Name `func WithGraphName(graphName string) GraphCompileOption`
     - 内部嵌套图，会用加入到上级图时添加的 Node Name
 - Type：组件具体实现来规定：
-
   - 有接口的 Component：如果实现了 Typer 接口，用 GetType() 方法的结果。否则用反射获取 Struct/Func 名。
   - Lambda：如果用 `func WithLambdaType(t string) LambdaOpt` 指定了 Type，用这个，否则是空字符串。
   - Graph Node：用内部 Component/Lambda/Graph 的值。
   - Graph 自身：空字符串。
 - Component:
-
   - 有接口的 Component：是啥接口，就是啥
   - Lambda：固定值 Lambda
   - Graph Node: 用内部的 Component/Lambda/Graph 的值。
   - Graph 自身：固定值 Graph / Chain. （之前曾有 StateGraph / StateChain ，现已整合到 Graph / Chain 中）
 
-## Callback Input & Output
+### Callback Input & Output
 
 本质是任意类型，因为不同的 Component 的输入输出、内部状态完全不同。
 
@@ -149,17 +148,17 @@ type CallbackOutput struct {
 
 Graph 自身触发 Callback 时，输入输出就是 Graph 整体的输入和输出。
 
-# 注入 Handler
+## 注入 Handler
 
 Handler 需要注入到 Context 中才能被触发。
 
-## 全局注入 Handler
+### 全局注入 Handler
 
 通过 `callbacks.InitCallbackHandlers` 注入全局的 Handler。注入后，所有的触发回调行为，都会自动触发这些全局的 Handler。典型的场景是 tracing，logging 等全局一致、业务场景无关的功能。
 
 不是并发安全的。建议在服务初始化时注入一次。
 
-## 向 Graph 中注入 Handler
+### 向 Graph 中注入 Handler
 
 通过 `compose.WithCallbacks` 在 graph 运行时注入 Handler，这些 Handler 会在 graph 的本次运行整体上生效，包括 Graph 内各 Node 和 Graph 自身（以及各内嵌的 graph）。
 
@@ -167,25 +166,25 @@ Handler 需要注入到 Context 中才能被触发。
 
 通过 `compose.WithCallbacks(...).DesignateNodeForPath(...)` 向内部嵌套的 Graph 的某个 Node 注入 Handler。
 
-## 在 Graph 外注入 Handler
+### 在 Graph 外注入 Handler
 
 不想使用 Graph，但却想使用 Callback，则：
 
 通过 `InitCallbacks(ctx context.Context, info *RunInfo, handlers ...Handler)` 获取一个新的 Context 并注入 Handlers 以及 RunInfo。
 
-## Handler 继承
+### Handler 继承
 
 与子 Context 继承父 Context 中的所有 Values 相同，子 Context 也会继承父 Context 中的所有 Handlers。举个例子，Graph 运行时传入的 Context 中如果已经有了 Handler，则这些 Handlers 都会被整个 Graph 的这次运行继承和生效。
 
-# 注入 RunInfo
+## 注入 RunInfo
 
 RunInfo 也需要注入到 Context 中，才会在触发回调时给到 Handler。
 
-## Graph 托管 RunInfo
+### Graph 托管 RunInfo
 
 Graph 会为内部所有的 Node 自动注入 RunInfo。机制是每个 Node 的运行，都是一个新的子 Context，Graph 向这个新的 Context 中注入对应 Node 的 RunInfo。
 
-## 在 Graph 外注入 RunInfo
+### 在 Graph 外注入 RunInfo
 
 不想使用 Graph，但却想使用 Callback，则：
 
@@ -193,9 +192,9 @@ Graph 会为内部所有的 Node 自动注入 RunInfo。机制是每个 Node 的
 
 通过 `ReuseHandlers(ctx context.Context, info *RunInfo)` 来获取一个新的 Context，复用之前 Context 中的 Handler，并设置新的 RunInfo。
 
-# 触发方式
+## 触发方式
 
-## 组件实现内部触发(Component Callback)
+### 组件实现内部触发(Component Callback)
 
 在组件实现的代码中，调用 callbacks 包中的 `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), OnEndWithStreamInput()`。以 Ark 的 ChatModel 实现为例，在 Generate 方法中：
 
@@ -287,7 +286,7 @@ type Checker interface {
 
 如果一个组件实现，没有实现 Checker 接口，或者 IsCallbacksEnabled 返回  false，可以认为该组件内部没有触发回调，需要 Graph Node 来负责注入和触发（在 Graph 内使用时）。
 
-## Graph Node 触发(Node Callback)
+### Graph Node 触发(Node Callback)
 
 当一个 Component 被编排入 Graph 时，成为一个 Node。这时，如果 Component 自身会触发 callback，Node 就复用 Component 的 callback 处理。否则，Node 会在 Component 外面埋上 callback handler 触发点位。这些点位与 Component 自身的流式范式对应。比如一个 ChatModelNode，会在 Generate 方法外面埋上 OnStart/OnEnd/OnError，同时会在 Stream 方法外面埋上 OnStart/OnEndWithStreamOutput/OnError。
 
@@ -297,13 +296,13 @@ type Checker interface {
 
 关于 Eino 流式编程的详细介绍，参见 [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
-## Graph 自身触发(Graph Callback)
+### Graph 自身触发(Graph Callback)
 
 Graph 在自身的开始、结束、err 的时机触发 Callback Handler。如果 Graph 以 Invoke 形式调用，触发 OnStart/OnEnd/OnError。如果以 Stream/Collect/Transform 形式调用，触发 OnStartWithStreamInput/OnEndWithStreamOutput/OnError。这是因为 **Graph 内部会始终以 Invoke 或 Transform 执行**。参见 [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
 值得注意的是：graph 也是 component 的一种，因此 graph callback 也是 component callback 的一种特殊形式。根据 Node Callback 的定义，当 Node 内部的 component 实现了对触发时机的感知和处理时，Node 会直接复用 Component 的实现，不会再实现 Node Callback。这意味着当一个 graph 通过 AddGraphNode 的方式加入到另外一个 Graph 中作为一个 Node 时，这个 Node 会复用内部 graph 的 graph callback。
 
-# 解析 Callback Input & Output
+## 解析 Callback Input & Output
 
 从上文得知，Callback Input & Output 的底层是 Any，只是不同组件类型在具体触发回调时，可能会传入自己特定的类型。并且 Callback Handler 的接口定义中，各方法的入参也是 Any 类型的 Callback Input & Output。
 
@@ -344,11 +343,11 @@ func ConvCallbackOutput(src callbacks.CallbackOutput) *CallbackOutput {
 
 如果 Handler 里面需要增加 switch case 来判断 RunInfo.Component，并且对每一个 case，需要调对应的转换函数把 Any 转成具体类型，确实有些复杂。为了减少写胶水代码的重复劳动，我们提供了两种实现 Handler 的便捷工具函数。
 
-# Handler 实现方式
+## Handler 实现方式
 
 除了直接实现 Handler 接口外，Eino 提供了两种 Handler 的便捷实现工具。
 
-## HandlerHelper
+### HandlerHelper
 
 如果用户的  Handler 只关注特定类型的组件，比如 ReactAgent 的场景，只关注 ChatModel 和 Tool，建议使用 HandlerHelper 来快速创建具体类型的 Callback Handler：
 
@@ -384,7 +383,7 @@ handler := NewHandlerHelper().Lambda(callbacks.Handler).Graph(callbacks.Handler)
 
 这时，NewHandlerHelper().Lambda() 需要传入 callbacks.Handler 可以用下面的 HandlerBuilder 来实现。
 
-## HandlerBuilder
+### HandlerBuilder
 
 如果用户的 Handler 需要关注多个组件类型，但却只需要关注部分的触发时机，可以使用 HandlerBuilder：
 
@@ -392,31 +391,31 @@ handler := NewHandlerHelper().Lambda(callbacks.Handler).Graph(callbacks.Handler)
 handler := NewHandlerBuilder().OnStartFn(fn)...Build()
 ```
 
-# 最佳实践
+## 最佳实践
 
-## 在 Graph 中使用
+### 在 Graph 中使用
 
 - 积极使用 Global Handlers，注册始终生效的 Handlers。
 - 通过 WithHandlers option 在运行时注入 Handler，通过 DesignateNode 或 DesignateNodeByPath 指定生效的 Node / 嵌套的内部 Graph / 内部 Graph 的 Node。
 
-## 在 Graph 外使用
+### 在 Graph 外使用
 
 依然可以积极使用 Global Handlers。但需要在调用 InitCallbacks 后 global handlers 才会生效。InitCallbacks 的入参中不需要传入 Global Handlers，会自动注入。
 
 需要注意的是，如果在 Graph 外使用的 Component，内部并没有实现
 
-### 单个 Component
+#### 单个 Component
 
 使用 InitCallbacks 注入 RunInfo 和 Handlers。RunInfo 的各字段需自行设置。
 
-### 多个 component 并列
+#### 多个 component 并列
 
 在每个并列的 component 执行前，分别调用 InitCallbacks 注入各自的 RunInfo 和 Handlers。注意：
 
 - 多次调用 InitCallbacks，传入的 Context 应当相同，因为各组件是并列关系
 - 每次调用 InitCallbacks，返回的 Context，应当传入对应的 Component 内，但不应当传入其他的 Component 内。
 
-### 多个 component 嵌套
+#### 多个 component 嵌套
 
 在顶层 Component 执行前，调用 InitCallbacks 注入 RunInfo 和 Handlers，并把返回的 Context 传入顶层 Component 内。
 
@@ -425,7 +424,7 @@ handler := NewHandlerBuilder().OnStartFn(fn)...Build()
 - 如果 Handlers 与顶层 Component 相同，调用 ReuseHandlers，注入新的 RunInfo，并把返回的 Context 传入内部 Component 中。
 - 如果 Handlers 与顶层 Component 不同，调用 InitCallbacks，注入新的 RunInfo 和新的（全量）Handlers，并把返回的 Context 传入内部 Component 中。
 
-## Handler 内读写 input & output
+### Handler 内读写 input & output
 
 Handler 内不建议修改 input / output。原因是：
 
@@ -438,7 +437,7 @@ Handler 内不建议修改 input / output。原因是：
 
 总结起来：**无论是组件内部还是 Handler 内部，都不建议直接修改输入的业务信息。**
 
-## Handler 间传递信息
+### Handler 间传递信息
 
 同一个 Handler 的不同时机之间，可通过 ctx 传递信息，如 OnStart 中通过 context.WithValue 返回一个新的 context，在 OnEnd 中从 context 中再取出这个 value。
 
