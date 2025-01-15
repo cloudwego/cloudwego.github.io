@@ -10,8 +10,7 @@ weight: 4
 ## **使用 Chain 优雅地组织代码**
 
 > 💡
-
-本文中示例的代码片段详见：[eino-examples/quickstart/legalchain](https://github.com/cloudwego/eino-examples/blob/main/quickstart/legalchain/main.go)
+> 本文中示例的代码片段详见：[eino-examples/quickstart/legalchain](https://github.com/cloudwego/eino-examples/blob/main/quickstart/legalchain/main.go)
 
 ## **什么是 Chain？**
 

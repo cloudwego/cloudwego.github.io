@@ -17,8 +17,7 @@ weight: 6
 # Eino  是什么
 
 > 💡
-
-Go AI 集成组件的研发框架。
+> Go AI 集成组件的研发框架。
 
 Eino 旨在提供 Golang 语言的 AI 应用开发框架。 Eino 参考了开源社区中诸多优秀的 AI 应用开发框架，例如 LangChain、LangGraph、LlamaIndex 等，提供了更符合 Golang 编程习惯的 AI 应用开发框架。
 

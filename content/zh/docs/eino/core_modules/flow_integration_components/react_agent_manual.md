@@ -12,8 +12,7 @@ weight: 0
 Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/)的智能体框架，用户可以用来快速灵活地构建并调用 React Agent.
 
 > 💡
-
-代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)
+> 代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)
 
 ## 节点拓扑&数据流图
 
@@ -243,7 +242,7 @@ func main() {
 
 指定检测模型流式输出中是否包含工具调用的函数。
 
-不同的模型在流式模式下输出工具调用的方式可能不同:某些模型(如 OpenAI)会直接输出工具调用；某些模型(如 Claude)会先输出文本,然后再输出工具调用
+不同的模型在流式模式下输出工具调用的方式可能不同:某些模型(如 OpenAI)会直接输出工具调用；某些模型(如 Claude)会先输出文本,然后再输出工具调用。因此需要使用不同的方法来判断
 
 ```
 _// StreamToolCallChecker 是一个用于检测模型流式输出中是否包含工具调用的函数。_

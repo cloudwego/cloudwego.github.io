@@ -12,8 +12,7 @@ weight: 2
 Agent（智能代理）是一个能够感知环境并采取行动以实现特定目标的系统。在 AI 应用中，Agent 通过结合大语言模型的理解能力和预定义工具的执行能力，可以自主地完成复杂的任务。是未来 AI 应用到生活生产中主要的形态。
 
 > 💡
-
-本文中示例的代码片段详见：[eino-examples/quickstart/todoagent](https://github.com/cloudwego/eino-examples/blob/master/quickstart/todoagent/main.go)
+> 本文中示例的代码片段详见：[eino-examples/quickstart/todoagent](https://github.com/cloudwego/eino-examples/blob/master/quickstart/todoagent/main.go)
 
 ## **Agent 的核心组成**
 
