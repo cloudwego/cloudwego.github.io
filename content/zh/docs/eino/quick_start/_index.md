@@ -46,6 +46,4 @@ Eino 中，提供了以组件为第一编排对象，同时提供具有极强扩
 ## 下一步探索
 
 - 理解 Eino 的核心模块和概念： [Eino: 核心模块](/zh/docs/eino/core_modules)，这是你自如玩转使用 Eino 做应用开发的关键信息。
-- 我们准备了大量的 “如何做到？”： [Eino: 如何做到?](/zh/docs/eino/usage_guide/how_to_guide)，你可以快速浏览一下用 Eino 做大模型应用开发时，有哪些「能力」可用？也可以在你遇到希望解决的场景时，参考我们对这个场景的理解和解决方案。
-- 我们构建了数个“开箱即用的应用示例 !”： [Eino: 开箱即用示例大全](/zh/docs/eino/usage_guide/examples_collection)。我们的理念是: 拿来即用，充分参考，先玩起来！
 - Eino 保持开放生态的姿态，提供了大量生态集成组件：[Eino: 生态集成](/zh/docs/eino/ecosystem_integration)，你可以使用这些组件快速构建自己的业务应用。
