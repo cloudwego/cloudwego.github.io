@@ -7,7 +7,7 @@ title: 'Eino: 概述'
 weight: 1
 ---
 
-# 简介
+## 简介
 
 **Eino['aino]** (近似音: i know，希望应用程序达到 "i know" 的愿景) 旨在提供基于 Golang 语言的终极大模型应用开发框架。 它从开源社区中的诸多优秀 LLM 应用开发框架，如 LangChain 和 LlamaIndex 等获取灵感，同时借鉴前沿研究成果与实际应用，提供了一个强调简洁性、可扩展性、可靠性与有效性，且更符合 Go 语言编程惯例的 LLM 应用开发框架。
 
@@ -28,7 +28,7 @@ Eino 可在 AI 应用开发周期中的不同阶段，规范、简化和提效�
 
 完整 API Reference：[https://pkg.go.dev/github.com/cloudwego/eino](https://pkg.go.dev/github.com/cloudwego/eino)
 
-# 快速上手
+## 快速上手
 
 直接使用组件：
 
@@ -225,9 +225,9 @@ compiledGraph.Invoke(ctx, input, WithChatModelOption(WithTemperature(0.5))
 compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
 ```
 
-# 关键特性
+## 关键特性
 
-## 丰富的组件(Component)
+### 丰富的组件(Component)
 
 - 将常见的构建模块抽象为**组件**，每个组件抽象都有多个可开箱即用的**组件实现**。
   - 诸如聊天模型（ChatModel）、工具（Tool）、提示模板（PromptTemplate）、检索器（Retriever）、文档加载器（Document Loader）、Lambda 等组件抽象。
@@ -237,7 +237,7 @@ compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
   - ReAct 智能体（React Agent）、多查询检索器（MultiQueryRetriever）、主机多智能体（Host MultiAgent）等。它们由多个组件和复杂的业务逻辑构成。
   - 从外部看，它们的实现细节依然透明。例如在任何接受 Retriever 的地方，都可以使用 MultiQueryRetriever。
 
-## 强大的编排 (Graph/Chain/Workflow)
+### 强大的编排 (Graph/Chain/Workflow)
 
 - 数据从 Retriever / Document Loader / ChatTemplate 流向 ChatModel，接着流向 Tool ，并被解析为最终答案。这种通过多个组件的有向、可控的数据流，可以通过**图编排**来实现。
 - 组件实例是图的**节点（Node）**，而**边（Edge）**则是数据流通道。
@@ -245,7 +245,7 @@ compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
   - **类型检查、流处理、并发管理、切面注入和选项分配**都由框架处理。
   - 在运行时进行**分支（Branch）**执行、读写全局**状态（State）**，或者使用工作流进行字段级别的数据映射。
 
-## 完善的流处理(Streaming)
+### 完善的流处理(Streaming)
 
 - 流式处理（Stream Processing）很重要，因为 ChatModel 在生成消息时会实时输出消息块。
 - 对于只接受非流式输入的下游节点（如 ToolsNode），Eino 会自动将流 **拼接（Concatenate）** 起来。
@@ -254,14 +254,14 @@ compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
 - 当流分散到不同的下游节点或传递给回调处理器时，Eino 会自动 **复制（Copy）** 这些流。
 - 最重要的是，当将一个组件添加到图中时，Eino 会自动补充缺失的流处理能力：你可以提供一个仅可 Invoke 的函数，Eino 会创建其他三种范式。
 
-## 高扩展性的切面(Callbacks)
+### 高扩展性的切面(Callbacks)
 
 - 切面用于处理诸如日志记录、追踪、指标统计等横切面关注点，同时也用于暴露组件实现的内部细节。
 - 支持五种切面：**OnStart、OnEnd、OnError、OnStartWithStreamInput、OnEndWithStreamOutput**。
 - 开发者可以轻松创建自定义回调处理程序，在图运行期间通过 Option 添加它们，这些处理程序会在图运行时被调用。
 - 图还能将切面注入到那些自身不支持回调的组件实现中。
 
-# Eino 框架结构
+## Eino 框架结构
 
 Eino 框架整体由两部分构成：
 
@@ -295,7 +295,7 @@ Eino Core 中的六大概念：
   - 添加到 Node 中的组件实例，其输入、输出既有可能是 流、也有可能是 非流。 Compose 编排可以将这些不同形式的输入输出进行衔接，传递数据流并执行节点。 这个能力可称为流式编排能力
   - 例如，ChatModel 的输出、ASR 的输入输出 都是流式的
 
-## Component
+### Component
 
 具体每种 Component 的职责，可具体看对应的接口定义
 
@@ -340,7 +340,7 @@ eino/components // 组件根目录
 ├── types.go
 ```
 
-## Runnable
+### Runnable
 
 ```go
 type Runnable[I, O any] interface {
@@ -378,7 +378,7 @@ type Runnable[I, O any] interface {
 
 ![](/img/eino/invoke_stream_transform_collect.png)
 
-## Stream 流
+### Stream 流
 
 Notice：Stream 流在 **生产**、**消费**、**复制**、**合并**、**转换**等场景下，处理逻辑均较为复杂。 实现时稍有考虑不周的地方，便可能导致 生产/消费者互相等待而夯死、Goroutine 泄露或溢出、内存泄露或溢出、CPU 负载高 等问题。 为了减少稳定性问题的产生，Eino 强要求使用 Eino 提供的 Stream 流，因此将 Stream 实现成了 Struct、而非定义成接口。
 
@@ -401,11 +401,11 @@ Notice：Stream 流在 **生产**、**消费**、**复制**、**合并**、**转
 
 Stream 流 的 API 设计，源码链接：[eino/schema/stream.go](https://github.com/cloudwego/eino/blob/main/schema/stream.go)
 
-## Compose 编排
+### Compose 编排
 
-### Graph
+#### Graph
 
-#### 点(Node)
+##### 点(Node)
 
 - 把一个 Component 实例加入到 Graph 中，便形成一个 Node 节点
 - Component 即可被独立使用，又可被 Graph 编排
@@ -452,11 +452,11 @@ func (g *graph) AddRetrieverNode(key string, node retriever.Retriever, opts ...G
 }
 ```
 
-#### 线(Edge)
+##### 线(Edge)
 
 Eino 提供了多种添加线的方式
 
-##### Add**Edge**
+###### Add**Edge**
 
 ```go
 // AddEdge adds an edge to the graph, edge means a data flow from startNode to endNode.
@@ -475,7 +475,7 @@ func (g *graph) AddEdge(startNode, endNode string) (err error) {}
 
 ![](/img/eino/edge_of_parallel.png)
 
-##### **AddBranch**
+###### **AddBranch**
 
 ```go
 // AddBranch adds a branch to the graph.
@@ -495,14 +495,14 @@ func (g *graph) AddBranch(startNode string, branch *GraphBranch) (err error) {}
 
 ![](/img/eino/run_way_branch_in_graph.png)
 
-##### **Parallel**
+###### **Parallel**
 
 - 将多个 Node 平行并联， 形成多个节点并发执行的节点
 - 无 AddParallel 方法，通过 AddEdge 构建并联的多条拓扑路径，以次形成 **Parallel **
 
 ![](/img/eino/input_keys_output_keys_in_parallel.png)
 
-#### 面(Graph)
+##### 面(Graph)
 
 - 通过 NewGraph 创建 graph 实例，并通过 graph.AddXXXNode、graph.AddEdge、graph.AddBranch 绘制点和线，最终形成一张可编译执行的图
 
@@ -525,11 +525,11 @@ sg := NewGraph[string, string](WithGenLocalState(genFn))
 chain := NewChain[map[string]any, string]()
 ```
 
-### Chain
+#### Chain
 
 > Chain - 简化的 Graph，将不同类型的 Node 按照先后顺序，进行连接，形成从头到尾的数据流传递和顺序执行。
 
-#### **AppendXXX**
+##### **AppendXXX**
 
 > XXX 可是 ChatMode、Prompt、Indexer、Retriever、Graph 等多种组件类型
 >
@@ -539,7 +539,7 @@ chain := NewChain[map[string]any, string]()
 
 ![](/img/eino/graph_nodes.png)
 
-#### **AppendParallel**
+##### **AppendParallel**
 
 > 添加一个节点，这个节点具有多个并发执行的多个子节点
 
@@ -561,7 +561,7 @@ chain.AppendParallel(parallel)
 
 ![](/img/eino/chain_append_parallel.png)
 
-#### **AppendBranch**
+##### **AppendBranch**
 
 > 添加一个节点，这个节点通过 condition 计算方法，从多个子节点中，选择一个执行
 
@@ -587,11 +587,11 @@ chain.AppendBranch(cb)
 
 ![](/img/eino/chain_append_branch.png)
 
-### Workflow
+#### Workflow
 
 允许字段级别做上下游数据映射的有向无环图。
 
-## 切面(Callbacks)
+### 切面(Callbacks)
 
 Component（包括 Lambda）、Graph 编排共同解决“把业务逻辑定义出来”的问题。而 logging, tracing, metrics, 上屏展示等横切面性质的功能，需要有机制把功能注入到 Component（包括 Lambda）、Graph 中。
 

@@ -25,7 +25,7 @@ Eino 已成为字节跳动内部大模型应用的首选全代码开发框架，
 
 未来，我们将以 Eino 开源库为核心代码仓库，坚持**内外用一套代码**，与社区共建最优秀的大模型应用开发框架。
 
-# 快速认识 Eino
+## 快速认识 Eino
 
 Eino 是覆盖 devops 全流程的大模型应用开发框架，从最佳实践样例的 Eino Examples，到各环节的工具链，都是 Eino 的领域：
 
@@ -109,7 +109,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 - 横切面注入，如果某个组件（比如一个 tool）没有实现 callbacks 注入，则 Eino 自动注入。
 - Option 分配，编译出的 Runnable 可以灵活接收并把 option 分配给指定的节点。
 
-# Eino 的独特优势
+## Eino 的独特优势
 
 基于大语言模型的软件应用正处于快速发展阶段，新技术、新思路、新实践不断涌现，我们作为应用开发者，一方面需要高效、可靠的把业界共识的最佳实践应用起来，另一方面需要不断学习和提升认知，从而能够整体理解这个新领域的可能性。因此，一个优秀的大模型应用开发框架，既需要**封装领域内“不变”的通用核心要素**，又需要基于最新进展**敏捷的横向和纵向扩展**。
 
@@ -119,7 +119,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 
 最后，生产级的框架需要面对真实、复杂的业务场景，因此，除了直观易用的 API 设计之外，提供有针对性设计的开发**工具**可以有效的帮助开发者理解和应对复杂性、加速开发过程。
 
-## 内核稳定
+### 内核稳定
 
 我们认为，存在一个常见的组件列表，共同构成了大模型应用的常见组成部分。每类组件作为一个 interface，有完善、稳定的定义：具体的输入输出类型，明确的运行时 option，以及明确的流处理范式。
 
@@ -131,7 +131,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 
 ![](/img/eino/eino_features_and_design.png)
 
-## 敏捷扩展
+### 敏捷扩展
 
 每类组件都可以横向扩展出不同的实现，比如 ChatModel 组件可以有 OpenAI、Gemini、Claude 等不同的实现等。这些具体的实现，在实现组件 interface 从而可作为组件参与编排的基础上，可以实现和持续扩展自身的特殊功能。
 
@@ -145,7 +145,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 
 ![](/img/eino/eino_modules_types.png)
 
-## 高可靠易维护
+### 高可靠易维护
 
 基于 Golang 写 Eino 代码时，开发者可以充分利用 Golang 的强类型特性，为所有的组件、Lambda、编排产物等声明具体类型。这像是为代码绘制了一幅精确的地图，开发者可以沿着清晰的路径进行维护和扩展，即使在项目规模不断扩大、功能持续迭代的情况下，依然能够保有较高的可维护性。
 
@@ -157,23 +157,23 @@ Eino 框架结构图：
 
 ![](/img/eino/eino_projects_and_structure.png)
 
-## 实践驱动
+### 实践驱动
 
 Eino 框架的设计开发过程，扎根于 “满足真实需求” 与 “实践驱动设计” 这两大基石之上。功能的演进过程与字节跳动各业务线的接入过程紧密结合，始终倾听开发者的声音，并通过实际使用效果来检验设计的合理性。比如我们收到来自抖音的“希望能够以字段为粒度在图中映射和传递数据”的需求，以此为基础设计了 Workflow；倾听来自豆包的使用痛点，增强作为模型输入输出类型的 Message 结构体。在未来的开源生态共建过程中，我们会继续坚持上述原则，满足更广大的用户和开发者的真实需求，并在更大的范围内认真实践和精进。
 
 ![](/img/eino/eino_practice_cognition_loop.png)
 
-## 工具生态
+### 工具生态
 
 链路追踪、调试、可视化，是编排引擎的三个重要辅助工具。Eino 内置了 tracing callback，并与 Langfuse 平台做了集成。同时提供了 IDE 插件，可以在写代码的过程中随时可视化查看编排出的 graph，并进行调试运行，甚至可以通过 UI 拖拽的方式快速构建 graph 并导出为 Eino 代码。
 
-# 快速上手
+## 快速上手
 
 针对 Eino 的学习和使用，我们提供了完善的 Eino 用户手册，帮助大家快速理解 Eino 中的概念，掌握基于 Eino 开发设计 AI 应用的技能，赶快通过「[Eino: 快速开始](https://www.cloudwego.io/zh/docs/eino/quick_start/)」尝试使用吧~。
 
 如有任何问题，可通过下方的飞书群或者 [Eino Issues](https://github.com/cloudwego/eino/issues) 和我们沟通、反馈~
 
-# 相关链接
+## 相关链接
 
 项目地址：[https://github.com/cloudwego/eino](https://github.com/cloudwego/eino)，[https://github.com/cloudwego/eino-ext](https://github.com/cloudwego/eino-ext)
 

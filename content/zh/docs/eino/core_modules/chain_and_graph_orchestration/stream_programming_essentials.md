@@ -10,7 +10,7 @@ weight: 0
 > 💡
 > 建议先看：[Eino: 基础概念介绍](/zh/docs/eino/overview) [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 
-# 编排流式概述
+## 编排流式概述
 
 ![](/img/eino/eino_component_runnable.png)
 
@@ -22,18 +22,18 @@ weight: 0
   - 流化(Streaming)：将 T 流化成单 Chunk 的 Stream[T]
   - 合包(Concat)：将 Stream[T] 合并成一个完整的 T。Stream[T] 中的每一“帧”是这个完整 T 的一部分。
 
-# Eino 流式编程的内涵
+## Eino 流式编程的内涵
 
 - 有的组件，天然支持分“帧”来输出，每次输出一个完整出参的一部分，即“流式”输出。流式输出完成后，需要下游把这些“帧”拼接（concat）成完整的出参。典型的例子，是 LLM。
 - 有的组件，天然支持分“帧”来输入，接收到不完整的入参时，就能开始有意义的业务处理，甚至完成业务处理的过程。比如 react agent 中用来判断是调 tool 还是结束运行的 branch 里面，拿到 LLM 的流式输出，从第一个帧里面就可以通过判断 message 是否包含 tool call 来做出决策。
 - 因此，一个组件，从入参角度看，有“非流式”入参和“流式”入参两种，从出参角度看，有“非流式”出参和“流式”出参两种。
 - 组合起来，有四种可能的流式编程范式
 
-# 单个组件角度的流式
+## 单个组件角度的流式
 
 Eino 是个 "component first" 的框架，组件可以独立使用。定组件接口的时候，需要考虑流式编程的问题吗？简单的答案是不需要。复杂的答案是“以业务真实场景为准”。
 
-## 组件自身的业务范式
+### 组件自身的业务范式
 
 一个典型的组件，比如 Chat Model，Retriever 等，根据实际的业务语义定接口就行，如果实际上支持某种流式的范式，就实现那一种流式范式，如果实际上某种流式范式没有真正的业务场景，那就不需要实现。比如
 
@@ -55,7 +55,7 @@ type Retriever interface {
 }
 ```
 
-## 组件具体支持的范式
+### 组件具体支持的范式
 
 <table>
 <tr>
@@ -82,9 +82,9 @@ Eino 官方组件中，除了 Chat Model 和 Tool 额外支持 stream 外，其�
 
 Collect 和 Transform 两种流式范式，目前只在编排场景有用到。
 
-# 多个组件编排角度的流式
+## 多个组件编排角度的流式
 
-## 组件在编排中的流式范式
+### 组件在编排中的流式范式
 
 一个组件，单独使用时，入参和出参的流式范式是框定的，不可能超出组件定义的接口范围。
 
@@ -101,7 +101,7 @@ Collect 和 Transform 两种流式范式，目前只在编排场景有用到。
 上面的 Concat message stream 是 Eino 框架自动提供的能力，即使不是 message，是任意的 T，只要满足特定的条件，Eino 框架都会自动去做这个 StreamReader[T] 到 T 的转化，这个条件是：**在编排中，当一个组件的上游输出是 StreamReader[T]，但是组件只提供了 T 作为输入的业务接口时，框架会自动将 StreamReader[T] concat 成 T，再输入给这个组件。**
 
 > 💡
-> 框架自动将 StreamReader[T] concat 成 T 的过程，可能需要用户提供一个 Concat function。详见 [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles) 中关于“合并帧”的章节。
+> 框架自动将 StreamReader[T] concat 成 T 的过程，可能需要用户提供一个 Concat function。详见 [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles#share-FaVnd9E2foy4fAxtbTqcsgq3n5f) 中关于“合并帧”的章节。
 
 另一方面，考虑一个相反的例子。还是 React Agent，这次是一个更完整的编排示意图：
 
@@ -134,7 +134,7 @@ ReactAgent 有两个接口，Generate 和 Stream，分别实现了 Invoke 和 St
 
 总结起来，就是：**在编排中，当一个组件的上游输出是 T，但是组件只提供了 StreamReader[T] 作为输入的业务接口时，框架会自动将 T 装箱成 StreamReader[T] 的单帧流，再输入给这个组件。**
 
-## 编排辅助元素的流式范式
+### 编排辅助元素的流式范式
 
 上面提到的 Branch，并不是一个可单独使用的组件，而是只在编排场景中才有意义的“编排辅助元素”，类似的仅编排场景有意义的“组件”，还有一些，详见下图：
 
@@ -155,9 +155,9 @@ ReactAgent 有两个接口，Generate 和 Stream，分别实现了 Invoke 和 St
 
 另外还有一种只有编排场景才有意义的“组件”，就是把编排产物作为一个整体来看待，比如编排后的 Chain，Graph。这些整体的编排产物，既可以作为“组件”来单独调用，也可以作为节点加入到更上级的编排产物中。
 
-# 编排整体角度的流式
+## 编排整体角度的流式
 
-## 编排产物的“业务”范式
+### 编排产物的“业务”范式
 
 既然整体的编排产物，可以被看做一个“组件”，那从组件的视角可以提出问题：编排产物这个“组件”，有没有像 Chat Model 等组件那样的，符合“业务场景”的接口范式？答案是既“有”也“没有”。
 
@@ -174,7 +174,7 @@ type Runnable[I**, **O any] interface {
 
 - “有”：具体而言，某一个具体的 Graph、Chain，一定是承载了具体的业务逻辑的，因此也就一定有适合那个特定业务场景的流式范式。比如类似 React Agent 的 Graph，匹配的业务场景是 Invoke 和 Stream，因此这个 Graph 在调用时，符合逻辑的调用方式是 Invoke 和 Stream。虽然编排产物本身接口 Runnable[I, O] 中有 Collect 和 Transform 的方法，但是正常的业务场景不需要使用。
 
-## 编排产物内部各组件在运行时的范式
+### 编排产物内部各组件在运行时的范式
 
 从另一个角度看，既然编排产物整体可以被看做“组件”，那“组件”必然有自己的内部实现，比如 ChatModel 的内部实现逻辑，可能是把入参的 []Message 转化成各个模型的 API request，之后调用模型的 API，获取 response 后再转化成出参的 Message。那么类比的话，Graph 这个“组件”的内部实现是什么？是数据在 Graph 内部各个组件间以用户指定的流转方向和流式范式来流转。其中，“流转方向”不在当前讨论范围内，而各组件运行时的流式范式，则由 Graph 整体的触发方式决定，具体来说：
 
