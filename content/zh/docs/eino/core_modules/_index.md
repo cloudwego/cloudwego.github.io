@@ -20,7 +20,3 @@ Eino 抽象出来的大模型应用中常用的组件，例如 `ChatModel`、`Em
 - **Flow 集成工具 (agents)**: [Eino: Flow 集成组件](/zh/docs/eino/core_modules/flow_integration_components)
 
 Eino 把最常用的大模型应用模式封装成简单、易用的工具，让通用场景的大模型应用开发极致简化，目前提供了 `React Agent` 和 `Host Multi Agent`。
-
-- **EinoDev 开发辅助工具**：[EinoDev: 应用开发工具链](/zh/docs/eino/core_modules/application_development_toolchain)
-
-Eino 致力于让全码开发大模型应用变得非常简单，EinoDev 则为 Eino 编排提供了 `可视化`、`交互式` 的开发调试方案，所见即所得，让开发者的精力从 `调试地狱` 中释放出来，专注于场景逻辑。
