@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-16"
 lastmod: ""
 tags: []
 title: 'Eino: React Agent 使用手册'
@@ -9,7 +9,7 @@ weight: 0
 
 # 简介
 
-Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/)的智能体框架，用户可以用来快速灵活地构建并调用 React Agent.
+Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/) 的智能体框架，用户可以用来快速灵活地构建并调用 React Agent.
 
 > 💡
 > 代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)
