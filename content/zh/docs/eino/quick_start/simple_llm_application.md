@@ -207,5 +207,4 @@ func main() {
 
 - 快速开始
   - [Agent-让大模型拥有双手](/zh/docs/eino/quick_start/agent_llm_with_tools)
-  - [和幻觉说再见-RAG 召回再回答](/zh/docs/eino/quick_start/rag_retrieval_qa)
   - [复杂业务逻辑的利器-编排](/zh/docs/eino/quick_start/complex_business_logic_orchestration)

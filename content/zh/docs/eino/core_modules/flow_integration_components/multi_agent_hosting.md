@@ -13,20 +13,20 @@ Host Multi-Agent 是一个 Host 做意图识别后，跳转到某个专家 agent
 
 Host：
 
-```go
-func newHost(ctx context.Context) (*host.Host, error) {
-    chatModel, err := bytedgpt.NewChatModel(ctx, &bytedgpt.ChatModelConfig{
-       BaseURL: "https://search.bytedance.net/gpt/openapi/online/multimodal/crawl",
-       Model:   "gpt-4o-2024-05-13",
+```Go
+func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host, error) {
+    chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+       BaseURL: baseURL,
+       Model:   modelName,
        ByAzure: true,
-       APIKey:  os.Getenv("OPENAI_API_KEY"),
+       APIKey:  apiKey,
     })
     if err != nil {
        return nil, err
     }
 
     return &host.Host{
-       ChatModel: chatModel,
+       ChatModel:    chatModel,
        SystemPrompt: "You can read and write journal on behalf of the user. When user asks a question, always answer with journal content.",
     }, nil
 }
