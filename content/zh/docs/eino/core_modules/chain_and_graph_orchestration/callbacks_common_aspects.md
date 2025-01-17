@@ -18,9 +18,9 @@ Eino 切面(Eino Callback)是 Eino 框架对开发提供的扩展 Eino 框架，
 - 切面角色
   - 切面机制：由 Eino 框架提供了，扩展 Eino 自身功能的机制
   - 切面扩展者：基于 Eino 的扩展能力，设计和提供各种各样的独立于 Graph 执行的扩展能力
-    - 例如：Fornax Trace、Fornax 指标 等
+    - 例如：Langfuse Trace 等
   - 切面使用者：真正使用切面扩展能力的终端业务
-    - 例如：针对业务编排的 Graph 图，添加 Fornax Trace、Fornax 指标 两种切面能力。方便对编排产物的执行进行观测
+    - 例如：针对业务编排的 Graph 图，添加 Langfuse Trace 切面能力。方便对编排产物的执行进行观测
 
 ### 切面位置
 
