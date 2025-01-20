@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-01-22"
 lastmod: ""
 tags: []
 title: 'Eino: Document Transformer 使用说明'
@@ -19,6 +19,8 @@ Document Transformer 是一个用于文档转换和处理的组件。它的主�
 ## **组件定义**
 
 ### **接口定义**
+
+> 代码位置：eino/components/document/interface.go
 
 ```go
 type Transformer interface {
@@ -69,19 +71,30 @@ Transformer 组件使用 TransformerOption 来定义可选参数，目前没有�
 
 ### **单独使用**
 
-```go
-// 初始化 transformer (以 markdown 为例)
-transformer, err := markdown.NewHeaderSplitter(ctx, &markdown.HeaderSplitterConfig{
-    // 配置参数
-})
-if err != nil {
-    return err
-}
+> 代码位置：eino-ext/components/document/transformer/splitter/markdown/examples/headersplitter
 
+```go
+import (
+    "github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino-ext/components/document/transformer/splitter/markdown"
+)
+
+// 初始化 transformer (以 markdown 为例)
+transformer, _ := markdown.NewHeaderSplitter(ctx, &markdown.HeaderConfig{
+    // 配置参数
+    Headers: map[string]string{
+       "##": "",
+    },
+})
+
+markdownDoc := &schema.Document{
+    Content: "## Title 1\nHello Word\n## Title 2\nWord Hello",
+}
 // 转换文档
-transformedDocs, err := transformer.Transform(ctx, docs)
-if err != nil {
-    return err
+transformedDocs, _ := transformer.Transform(ctx, []*schema.Document{markdownDoc})
+
+for idx, doc := range transformedDocs {
+    log.Printf("doc segment %v: %v", idx, doc.Content)
 }
 ```
 
@@ -92,13 +105,6 @@ if err != nil {
 chain := compose.NewChain[[]*schema.Document, []*schema.Document]()
 chain.AppendDocumentTransformer(transformer)
 
-// 编译并运行
-runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
-result, err := runnable.Invoke(ctx, input)
-
 // 在 Graph 中使用
 graph := compose.NewGraph[[]*schema.Document, []*schema.Document]()
 graph.AddDocumentTransformerNode("transformer_node", transformer)
@@ -108,30 +114,48 @@ graph.AddDocumentTransformerNode("transformer_node", transformer)
 
 ### **Callback 使用示例**
 
+> 代码位置：eino-ext/components/document/transformer/splitter/markdown/examples/headersplitter
+
 ```go
+import (
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/components/document"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+    callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
+
+    "github.com/cloudwego/eino-ext/components/document/transformer/splitter/markdown"
+)
+
 // 创建 callback handler
-handler := &document.TransformerCallbackHandler{
+handler := &callbacksHelper.TransformerCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *document.TransformerCallbackInput) context.Context {
-        fmt.Printf("开始转换文档，输入文档数量: %d\n", len(input.Input))
-        return ctx
+       log.Printf("input access, len: %v, content: %s\n", len(input.Input), input.Input[0].Content)
+       return ctx
     },
     OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *document.TransformerCallbackOutput) context.Context {
-        fmt.Printf("文档转换完成，输出文档数量: %d\n", len(output.Output))
-        return ctx
+       log.Printf("output finished, len: %v\n", len(output.Output))
+       return ctx
     },
+    // OnError
 }
 
 // 使用 callback handler
-helper := template.NewHandlerHelper().
+helper := callbacksHelper.NewHandlerHelper().
     Transformer(handler).
     Handler()
 
+chain := compose.NewChain[[]*schema.Document, []*schema.Document]()
+chain.AppendDocumentTransformer(transformer)
+
 // 在运行时使用
-runnable, err := chain.Compile()
-if err != nil {
-    return err
+run, _ := chain.Compile(ctx)
+
+outDocs, _ := run.Invoke(ctx, []*schema.Document{markdownDoc}, compose.WithCallbacks(helper))
+
+for idx, doc := range outDocs {
+    log.Printf("doc segment %v: %v", idx, doc.Content)
 }
-result, err := runnable.Invoke(ctx, input, compose.WithCallbacks(helper))
 ```
 
 ## **已有实现**

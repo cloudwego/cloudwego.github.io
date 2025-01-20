@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2025-01-22"
 lastmod: ""
 tags: []
 title: 'Eino: Document Loader 使用说明'
@@ -17,6 +17,8 @@ Document Loader 是一个用于加载文档的组件。它的主要作用是从�
 ## **组件定义**
 
 ### **接口定义**
+
+> 代码位置：eino/components/document/parser/interface.go
 
 ```go
 type Loader interface {
@@ -79,22 +81,27 @@ Loader 组件使用 `LoaderOption` 来定义加载选项。Loader 目前没有�
 
 ### **单独使用**
 
+> 代码位置：eino-ext/components/document/loader/file/examples/fileloader
+
 ```go
+import (
+    "github.com/cloudwego/eino/components/document"
+    "github.com/cloudwego/eino-ext/components/document/loader/file"
+)
+
 // 初始化 loader (以file loader为例)
-loader, err := file.NewLoader(ctx, &file.LoaderConfig{
+loader, _ := file.NewFileLoader(ctx, &file.FileLoaderConfig{
     // 配置参数
+    UseNameAsID: true,
 })
-if err != nil {
-    return err
-}
 
 // 加载文档
-docs, err := loader.Load(ctx, document.Source{
-    URI: "https://example.com/doc.pdf",
+filePath := "../../testdata/test.md"
+docs, _ := loader.Load(ctx, document.Source{
+    URI: filePath,
 })
-if err != nil {
-    return err
-}
+
+log.Printf("doc content: %v", docs[0].Content)
 ```
 
 ### **在编排中使用**
@@ -105,11 +112,9 @@ chain := compose.NewChain[string, []*schema.Document]()
 chain.AppendLoader(loader)
 
 // 编译并运行
-runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
-result, err := runnable.Invoke(ctx, input)
+runnable, _ := chain.Compile()
+
+result, _ := runnable.Invoke(ctx, input)
 
 // 在 Graph 中使用
 graph := compose.NewGraph[string, []*schema.Document]()
@@ -120,31 +125,47 @@ graph.AddLoaderNode("loader_node", loader)
 
 ### **Callback 使用示例**
 
+> 代码位置：eino-ext/components/document/loader/file/examples/fileloader
+
 ```go
+import (
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/components/document"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+    callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
+
+    "github.com/cloudwego/eino-ext/components/document/loader/file"
+)
+
 // 创建 callback handler
-handler := &document.LoaderCallbackHandler{
+handler := &callbacksHelper.LoaderCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *document.LoaderCallbackInput) context.Context {
-        fmt.Printf("开始加载文档: %s\n", input.Source.URI)
-        return ctx
+       log.Printf("start loading docs...: %s\n", input.Source.URI)
+       return ctx
     },
     OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *document.LoaderCallbackOutput) context.Context {
-        fmt.Printf("文档加载完成，共加载 %d 个文档\n", len(output.Docs))
-        return ctx
+       log.Printf("complete loading docs，total loaded docs: %d\n", len(output.Docs))
+       return ctx
     },
     // OnError
 }
 
 // 使用 callback handler
-helper := template.NewHandlerHelper().
+helper := callbacksHelper.NewHandlerHelper().
     Loader(handler).
     Handler()
 
+chain := compose.NewChain[document.Source, []*schema.Document]()
+chain.AppendLoader(loader)
 // 在运行时使用
-runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
-result, err := runnable.Invoke(ctx, input, compose.WithCallbacks(helper))
+run, _ := chain.Compile(ctx)
+
+outDocs, _ := run.Invoke(ctx, document.Source{
+    URI: filePath,
+}, compose.WithCallbacks(helper))
+
+log.Printf("doc content: %v", outDocs[0].Content)
 ```
 
 ## **已有实现**
@@ -186,6 +207,8 @@ func WithRetryCount(count int) document.LoaderOption {
 
 Loader 实现需要在适当的时机触发回调：
 
+> 代码位置：eino/components/document/callback_extra_loader.go
+
 ```go
 // 这是由loader组件定义的回调输入输出, 在实现时需要满足参数的含义
 type LoaderCallbackInput struct {
@@ -203,56 +226,72 @@ type LoaderCallbackOutput struct {
 ### **完整实现示例**
 
 ```go
-type MyLoader struct {
-    timeout time.Duration
-    retryCount int
-}
+import (
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/components/document"
+    "github.com/cloudwego/eino/schema"
+)
 
-func NewMyLoader(config *MyLoaderConfig) (*MyLoader, error) {
-    return &MyLoader{
-        timeout: config.DefaultTimeout,
-        retryCount: config.DefaultRetryCount,
+func NewCustomLoader(config *Config) (*CustomLoader, error) {
+    return &CustomLoader{
+       timeout:    config.DefaultTimeout,
+       retryCount: config.DefaultRetryCount,
     }, nil
 }
 
-func (l *MyLoader) Load(ctx context.Context, src document.Source, opts ...document.LoaderOption) ([]*schema.Document, error) {
+type CustomLoader struct {
+    timeout    time.Duration
+    retryCount int
+}
+
+type Config struct {
+    DefaultTimeout    time.Duration
+    DefaultRetryCount int
+}
+
+func (l *CustomLoader) Load(ctx context.Context, src document.Source, opts ...document.LoaderOption) ([]*schema.Document, error) {
     // 1. 处理 option
-    options := &MyLoaderOptions{
-        Timeout: l.timeout,
-        RetryCount: l.retryCount,
+    options := &customLoaderOptions{
+       Timeout:    l.timeout,
+       RetryCount: l.retryCount,
     }
     options = document.GetLoaderImplSpecificOptions(options, opts...)
-    
-    // 2. 获取 callback manager
-    cm := callbacks.ManagerFromContext(ctx)
-    
+    var err error
+
+    // 2. 处理错误，并进行错误回调方法
+    defer func() {
+       if err != nil {
+          callbacks.OnError(ctx, err)
+       }
+    }()
+
     // 3. 开始加载前的回调
-    ctx = cm.OnStart(ctx, info, &document.LoaderCallbackInput{
-        Source: src,
+    ctx = callbacks.OnStart(ctx, &document.LoaderCallbackInput{
+       Source: src,
     })
-    
+
     // 4. 执行加载逻辑
     docs, err := l.doLoad(ctx, src, options)
-    
-    // 5. 处理错误和完成回调
+
     if err != nil {
-        ctx = cm.OnError(ctx, info, err)
-        return nil, err
+       return nil, err
     }
-    
-    ctx = cm.OnEnd(ctx, info, &document.LoaderCallbackOutput{
-        Source: src,
-        Docs: docs,
+
+    ctx = callbacks.OnEnd(ctx, &document.LoaderCallbackOutput{
+       Source: src,
+       Docs:   docs,
     })
-    
+
     return docs, nil
 }
 
-func (l *MyLoader) doLoad(ctx context.Context, src document.Source, opts *MyLoaderOptions) ([]*schema.Document, error) {
+func (l *CustomLoader) doLoad(ctx context.Context, src document.Source, opts *customLoaderOptions) ([]*schema.Document, error) {
     // 实现文档加载逻辑
     // 1. 加载文档内容
     // 2. 构造 Document 对象，注意可在 MetaData 中保存文档来源等重要信息
-    return docs, nil
+    return []*schema.Document{{
+       Content: "Hello World",
+    }}, nil
 }
 ```
 

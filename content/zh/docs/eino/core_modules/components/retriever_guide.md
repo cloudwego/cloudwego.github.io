@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-01-22"
 lastmod: ""
 tags: []
 title: 'Eino: Retriever 使用说明'
@@ -18,6 +18,8 @@ Retriever 组件是一个用于从各种数据源检索文档的组件。它的�
 ## **组件定义**
 
 ### **接口定义**
+
+> 代码位置：eino/components/retriever/interface.go
 
 ```go
 type Retriever interface {
@@ -101,26 +103,67 @@ WithDSLInfo(dsl map[string]any) Option
 
 ### **单独使用**
 
+> 代码位置：eino-ext/components/retriever/volc_vikingdb/examples/builtin_embedding
+
 ```go
-// 初始化 retriever (以 vikingdb 为例)
-retriever, err := vikingdb.NewRetriever(ctx, &vikingdb.RetrieverConfig{
-    // 配置参数
-})
-if err != nil {
-    return err
-}
+import (
+    "github.com/cloudwego/eino/components/retriever"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
 
-// 基本检索
-docs, err := retriever.Retrieve(ctx, "查询内容")
-if err != nil {
-    return err
-}
-
-// 使用 Option 进行检索
-docs, err = retriever.Retrieve(ctx, "查询内容",
-    retriever.WithTopK(5),
-    retriever.WithScoreThreshold(0.7),
+    "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
 )
+
+collectionName := "eino_test"
+indexName := "test_index_1"
+
+/*
+ * 下面示例中提前构建了一个名为 eino_test 的数据集 (collection)，并在此数据集上构建了一个名为 test_index_1 的 hnsw-hybrid 索引 (index)
+ * 数据集字段配置为:
+ * 字段名称       字段类型         向量维度
+ * ID            string
+ * vector         vector       1024
+ * sparse_vector    sparse_vector
+ * content        string
+ * extra_field_1    string
+ *
+ * component 使用时注意:
+ * 1. ID / vector / sparse_vector / content 的字段名称与类型与上方配置一致
+ * 2. vector 向量维度需要与 ModelName 对应的模型所输出的向量维度一致
+ * 3. 部分模型不输出稀疏向量，此时 UseSparse 需要设置为 false，collection 可以不设置 sparse_vector 字段
+ */
+
+cfg := &volc_vikingdb.RetrieverConfig{
+    // https://api-vikingdb.volces.com （华北）
+    // https://api-vikingdb.mlp.cn-shanghai.volces.com（华东）
+    // https://api-vikingdb.mlp.ap-mya.byteplus.com（海外-柔佛）
+    Host:              "api-vikingdb.volces.com",
+    Region:            "cn-beijing",
+    AK:                ak,
+    SK:                sk,
+    Scheme:            "https",
+    ConnectionTimeout: 0,
+    Collection:        collectionName,
+    Index:             indexName,
+    EmbeddingConfig: volc_vikingdb.EmbeddingConfig{
+       UseBuiltin:  true,
+       ModelName:   "bge-m3",
+       UseSparse:   true,
+       DenseWeight: 0.4,
+    },
+    Partition:      "", // 对应索引中的【子索引划分字段】, 未设置时至空即可
+    TopK:           of(10),
+    ScoreThreshold: of(0.1),
+    FilterDSL:      nil, // 对应索引中的【标量过滤字段】，未设置时至空即可，表达式详见 https://www.volcengine.com/docs/84313/1254609
+}
+
+volcRetriever, _ := volc_vikingdb.NewRetriever(ctx, cfg)
+
+
+query := "tourist attraction"
+docs, _ := volcRetriever.Retrieve(ctx, query)
+
+log.Printf("vikingDB retrieve success, query=%v, docs=%v", query, docs)
 ```
 
 ### **在编排中使用**
@@ -129,13 +172,6 @@ docs, err = retriever.Retrieve(ctx, "查询内容",
 // 在 Chain 中使用
 chain := compose.NewChain[string, []*schema.Document]()
 chain.AppendRetriever(retriever)
-
-// 编译并运行
-runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
-result, err := runnable.Invoke(ctx, "查询内容")
 
 // 在 Graph 中使用
 graph := compose.NewGraph[string, []*schema.Document]()
@@ -146,30 +182,45 @@ graph.AddRetrieverNode("retriever_node", retriever)
 
 ### **Callback 使用示例**
 
+> 代码位置：eino-ext/components/retriever/volc_vikingdb/examples/builtin_embedding
+
 ```go
+import (
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/components/retriever"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+    callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
+    "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
+)
+
 // 创建 callback handler
-handler := &retriever.CallbackHandler{
+handler := &callbacksHelper.RetrieverCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *retriever.CallbackInput) context.Context {
-        fmt.Printf("开始检索，查询内容: %s，TopK: %d\n", input.Query, input.TopK)
-        return ctx
+       log.Printf("input access, content: %s\n", input.Query)
+       return ctx
     },
     OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *retriever.CallbackOutput) context.Context {
-        fmt.Printf("检索完成，找到文档数量: %d\n", len(output.Docs))
-        return ctx
+       log.Printf("output finished, len: %v\n", len(output.Docs))
+       return ctx
     },
+    // OnError
 }
 
 // 使用 callback handler
-helper := template.NewHandlerHelper().
+helper := callbacksHelper.NewHandlerHelper().
     Retriever(handler).
     Handler()
 
+chain := compose.NewChain[string, []*schema.Document]()
+chain.AppendRetriever(volcRetriever)
+
 // 在运行时使用
-runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
-result, err := runnable.Invoke(ctx, "查询内容", compose.WithCallbacks(helper))
+run, _ := chain.Compile(ctx)
+
+outDocs, _ := run.Invoke(ctx, query, compose.WithCallbacks(helper))
+
+log.Printf("vikingDB retrieve success, query=%v, docs=%v", query, outDocs)
 ```
 
 ## **已有实现**

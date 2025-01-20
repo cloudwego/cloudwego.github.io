@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: 核心模块'
@@ -19,4 +19,4 @@ Eino 抽象出来的大模型应用中常用的组件，例如 `ChatModel`、`Em
 
 - **Flow 集成工具 (agents)**: [Eino: Flow 集成组件](/zh/docs/eino/core_modules/flow_integration_components)
 
-Eino 把最常用的大模型应用模式封装成简单、易用的工具，让通用场景的大模型应用开发极致简化，目前提供了 `React Agent` 和 `Host Multi Agent`。
+Eino 把最常用的大模型应用模式封装成简单、易用的工具，让通用场景的大模型应用开发极致简化，目前提供了 `ReAct Agent` 和 `Host Multi Agent`。

@@ -8,7 +8,7 @@ menu:
         parent: 文档
         weight: 6
 tags: []
-title: Eino
+title: Eino 用户手册
 weight: 6
 ---
 

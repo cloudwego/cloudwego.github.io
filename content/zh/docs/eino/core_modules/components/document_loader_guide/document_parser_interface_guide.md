@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-01-22"
 lastmod: ""
 tags: []
 title: 'Eino: Document Parser 接口使用说明'
@@ -149,34 +149,40 @@ Parser 主要在 Document Loader 中使用，用于解析加载的文档内容�
 
 ### **文件加载器**
 
+> 代码位置：eino-ext/components/document/loader/file/examples/fileloader
+
 ```go
+import (
+    "github.com/cloudwego/eino/components/document"
+    "github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino-ext/components/document/loader/file"
+)
+
 // 使用 FileLoader 加载本地文件
 ctx := context.Background()
 
-// 创建文件加载器，使用文本解析器
+log.Printf("===== call File Loader directly =====")
+// 初始化 loader (以file loader为例)
 loader, err := file.NewFileLoader(ctx, &file.FileLoaderConfig{
-    UseNameAsID: true,  // 使用文件名作为文档ID
-    Parser: parser.TextParser{},  // 使用文本解析器
+    // 配置参数
+    UseNameAsID: true,
 })
 if err != nil {
-    return err
+    log.Fatalf("file.NewFileLoader failed, err=%v", err)
 }
 
-// 加载文件
+// 加载文档
+filePath := "../../testdata/test.md"
 docs, err := loader.Load(ctx, document.Source{
-    URI: "./document.txt",
+    URI: filePath,
 })
 if err != nil {
-    return err
+    log.Fatalf("loader.Load failed, err=%v", err)
 }
 
-// 处理加载的文档
-for _, doc := range docs {
-    fmt.Printf("Document ID: %s\n", doc.ID)  // 输出: Document ID: document.txt
-    fmt.Printf("Content: %s\n", doc.Content)
-    fmt.Printf("Extension: %s\n", doc.MetaData[file.MetaKeyExtension])  // 输出: Extension: .txt
-    fmt.Printf("Source: %s\n", doc.MetaData[file.MetaKeySource])  // 输出: Source: ./document.txt
-}
+log.Printf("doc content: %v", docs[0].Content)
+log.Printf("Extension: %s\n", docs[0].MetaData[file._MetaKeyExtension_]) // 输出: Extension: .txt
+log.Printf("Source: %s\n", docs[0].MetaData[file._MetaKeySource_])       // 输出: Source: ./document.txt
 ```
 
 ## **自定义解析器实现**
@@ -186,55 +192,72 @@ for _, doc := range docs {
 自定义解析器可以定义自己的 option：
 
 ```go
-// 定义选项结构体
-type MyParserOptions struct {
+// options
+// 定制实现自主定义的 option 结构体
+type options struct {
     Encoding string
-    MaxSize int64
+    MaxSize  int64
 }
 
-// 定义选项函数
+// WithEncoding
+// 定制实现自主定义的 Option 方法
 func WithEncoding(encoding string) parser.Option {
-    return parser.WrapImplSpecificOptFn(func(o *MyParserOptions) {
-        o.Encoding = encoding
+    return parser.WrapImplSpecificOptFn(func(o *options) {
+       o.Encoding = encoding
     })
 }
 
 func WithMaxSize(size int64) parser.Option {
-    return parser.WrapImplSpecificOptFn(func(o *MyParserOptions) {
-        o.MaxSize = size
+    return parser.WrapImplSpecificOptFn(func(o *options) {
+       o.MaxSize = size
     })
 }
 ```
 
 ### **完整实现示例**
 
+> 代码位置：eino-examples/components/document/parser/customparser/custom_parser.go
+
 ```go
-type MyParser struct {
-    defaultEncoding string
-    defaultMaxSize int64
+import (
+    "github.com/cloudwego/eino/components/document/parser"
+    "github.com/cloudwego/eino/schema"
+)
+
+type Config struct {
+    DefaultEncoding string
+    DefaultMaxSize  int64
 }
 
-func NewMyParser(config *MyParserConfig) (*MyParser, error) {
-    return &MyParser{
-        defaultEncoding: config.DefaultEncoding,
-        defaultMaxSize: config.DefaultMaxSize,
+type CustomParser struct {
+    defaultEncoding string
+    defaultMaxSize  int64
+}
+
+func NewCustomParser(config *Config) (*CustomParser, error) {
+    return &CustomParser{
+       defaultEncoding: config.DefaultEncoding,
+       defaultMaxSize:  config.DefaultMaxSize,
     }, nil
 }
 
-func (p *MyParser) Parse(ctx context.Context, reader io.Reader, opts ...parser.Option) ([]*schema.Document, error) {
+func (p *CustomParser) Parse(ctx context.Context, reader io.Reader, opts ...parser.Option) ([]*schema.Document, error) {
     // 1. 处理通用选项
     commonOpts := parser.GetCommonOptions(&parser.Options{}, opts...)
-    
+    _ = commonOpts
+
     // 2. 处理特定选项
-    myOpts := &MyParserOptions{
-        Encoding: p.defaultEncoding,
-        MaxSize: p.defaultMaxSize,
+    myOpts := &options{
+       Encoding: p.defaultEncoding,
+       MaxSize:  p.defaultMaxSize,
     }
     myOpts = parser.GetImplSpecificOptions(myOpts, opts...)
-    
+    _ = myOpts
     // 3. 实现解析逻辑
-    
-    return docs, nil
+
+    return []*schema.Document{{
+       Content: "Hello World",
+    }}, nil
 }
 ```
 

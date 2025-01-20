@@ -3,7 +3,7 @@ Description: ""
 date: "2025-01-20"
 lastmod: ""
 tags: []
-title: Eino IDE 插件安装指南
+title: EinoDev 插件安装指南
 weight: 1
 ---
 

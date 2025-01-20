@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-22"
 lastmod: ""
 tags: []
 title: 'Eino: ToolsNode 使用说明'
@@ -95,11 +95,47 @@ Tool 组件使用 ToolOption 来定义可选参数， ToolsNode 没有抽象公�
 
 ## **使用方式**
 
-ToolsNode 无法单独使用，仅能用于编排之中，一般在其之前是 ChatModel 组件。
+```go
+import (
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+)
+
+// 创建工具节点
+toolsNode := compose.NewToolsNode([]tool.Tool{
+    searchTool,    // 搜索工具
+    weatherTool,   // 天气查询工具
+    calculatorTool, // 计算器工具
+})
+
+// Mock LLM 输出作为输入
+input := &schema.Message{
+    Role: schema.Assistant,
+    ToolCalls: []schema.ToolCall{
+       {
+          Function: schema.FunctionCall{
+             Name:      "weather",
+             Arguments: `{"city": "深圳", "date": "tomorrow"}`,
+          },
+       },
+    },
+}
+
+toolMessages, err := toolsNode.Invoke(ctx, input)
+```
+
+ToolsNode 通常不会被单独使用，一般用于编排之中接在 ChatModel 之后。
 
 ### **在编排中使用**
 
 ```go
+import (
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+)
+
 // 创建工具节点
 toolsNode := compose.NewToolsNode([]tool.Tool{
     searchTool,    // 搜索工具
@@ -110,25 +146,6 @@ toolsNode := compose.NewToolsNode([]tool.Tool{
 // 在 Chain 中使用
 chain := compose.NewChain[*schema.Message, []*schema.Message]()
 chain.AppendToolsNode(toolsNode)
-
-// 编译并运行
-runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
-
-// 输入消息包含工具调用信息
-input := &schema.Message{
-    Content: "查询深圳明天的天气",
-    ToolCalls: []*schema.ToolCall{
-        {
-            Name: "weather",
-            Arguments: `{"city": "深圳", "date": "tomorrow"}`,
-        },
-    },
-}
-
-result, err := runnable.Invoke(ctx, input)
 
 // graph 中
 graph := compose.NewGraph[*schema.Message, []*schema.Message]()
@@ -161,35 +178,46 @@ func WithTimeout(timeout time.Duration) tool.Option {
 
 ```go
 // 创建 callback handler
-handler := &tool.CallbackHandler{
+handler := &callbackHelper.ToolCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *tool.CallbackInput) context.Context {
-        fmt.Printf("开始执行工具，参数: %s\n", input.ArgumentsInJSON)
-        return ctx
+       fmt.Printf("开始执行工具，参数: %s\n", input.ArgumentsInJSON)
+       return ctx
     },
     OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *tool.CallbackOutput) context.Context {
-        fmt.Printf("工具执行完成，结果: %s\n", output.Response)
-        return ctx
+       fmt.Printf("工具执行完成，结果: %s\n", output.Response)
+       return ctx
     },
     OnEndWithStreamOutput: func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[*tool.CallbackOutput]) context.Context {
-        fmt.Println("工具开始流式输出")
-        go func() {
-            defer output.Close()
-            
-            for chunk, err := range output.Recv() {
-                if errors.Is(err, io.EOF) {
-                    return
-                }
-                fmt.Printf("收到流式输出: %s\n", chunk.Response)
-            }
-        }()
-        return ctx
+       fmt.Println("工具开始流式输出")
+       go func() {
+          defer output.Close()
+
+          for {
+             chunk, err := output.Recv()
+             if errors.Is(err, io.EOF) {
+                return
+             }
+             if err != nil {
+                return
+             }
+             fmt.Printf("收到流式输出: %s\n", chunk.Response)
+          }
+       }()
+       return ctx
     },
 }
 
 // 使用 callback handler
-helper := template.NewHandlerHelper().
+helper := callbackHelper.NewHandlerHelper().
     Tool(handler).
     Handler()
+ 
+/*** compose a chain
+* chain := NewChain
+* chain.appendxxx().
+*       appendxxx().
+*       ...
+*/
 
 // 在运行时使用
 runnable, err := chain.Compile()
