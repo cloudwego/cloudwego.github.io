@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Loader - web url
@@ -26,11 +26,17 @@ URL 文档加载器具有以下特点：
 URL 文档加载器通过 `NewLoader` 函数进行初始化，主要配置参数如下：
 
 ```go
-loader, err := NewLoader(ctx, &LoaderConfig{
-    Parser:         parser,           // 可选：自定义解析器，默认使用 HTML 解析器
-    Client:         httpClient,       // 可选：自定义 HTTP 客户端
-    RequestBuilder: requestBuilder,   // 可选：自定义请求构建器
-})
+import (
+  "github.com/cloudwego/eino-ext/components/document/loader/url"
+)
+
+func main() {
+    loader, err := url.NewLoader(ctx, &url.LoaderConfig{
+        Parser:         parser,           // 可选：自定义解析器，默认使用 HTML 解析器
+        Client:         httpClient,       // 可选：自定义 HTTP 客户端
+        RequestBuilder: requestBuilder,   // 可选：自定义请求构建器
+    })
+}
 ```
 
 配置参数说明：
@@ -65,7 +71,7 @@ package main
 import (
     "context"
     
-    urlloader "github.com/cloudwego/eino-ext/components/document/loader/url"
+    "github.com/cloudwego/eino-ext/components/document/loader/url"
     "github.com/cloudwego/eino/components/document"
 )
 
@@ -73,7 +79,7 @@ func main() {
     ctx := context.Background()
     
     // 使用默认配置初始化加载器
-    loader, err := urlloader.NewLoader(ctx, nil)
+    loader, err := url.NewLoader(ctx, nil)
     if err != nil {
         panic(err)
     }
@@ -103,7 +109,7 @@ import (
     "net/http"
     "time"
     
-    urlloader "github.com/cloudwego/eino-ext/components/document/loader/url"
+    "github.com/cloudwego/eino-ext/components/document/loader/url"
     "github.com/cloudwego/eino/components/document"
 )
 
@@ -127,7 +133,7 @@ func main() {
     }
     
     // 初始化加载器
-    loader, err := urlloader.NewLoader(ctx, &urlloader.LoaderConfig{
+    loader, err := url.NewLoader(ctx, &url.LoaderConfig{
         Client:         client,
         RequestBuilder: requestBuilder,
     })

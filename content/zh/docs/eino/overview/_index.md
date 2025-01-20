@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-16"
+date: "2025-01-17"
 lastmod: ""
 tags: []
 title: 'Eino: 概述'
@@ -23,8 +23,6 @@ Eino 可在 AI 应用开发周期中的不同阶段，规范、简化和提效�
 - Debugging: 可对图编排的应用，进行可视化的开发调试
 - Deployment: 提供丰富的对 AI 应用的评测能力
 - Maintenance: 提供丰富的切面对 AI 应用进行观测、监控
-
-![](/img/eino/eino_project_structure_and_modules.png)
 
 完整 API Reference：[https://pkg.go.dev/github.com/cloudwego/eino](https://pkg.go.dev/github.com/cloudwego/eino)
 
@@ -82,6 +80,8 @@ runnable.Stream(ctx, []*Message{UserMessage("help me plan my weekend")})
 ```
 
 现在，我们来创建一个 Workflow，它能在字段级别灵活映射输入与输出：
+
+![](/img/eino/RHn3wNtSGhGAoyb5iF1cKZqDnKf.png)
 
 ```go
 wf := NewWorkflow[[]*Message, *Message]()
@@ -299,7 +299,7 @@ Eino Core 中的六大概念：
 
 具体每种 Component 的职责，可具体看对应的接口定义
 
-> 下文是示例性说明，不完整，以[代码仓库](https://github.com/cloudwego/eino-ext/tree/main/components)为准
+> 下文是示例性说明，不完整，以[代码仓库](https://github.com/cloudwego/eino-ext/tree/main/components)代码仓库为准
 
 ```
 eino/components // 组件根目录
@@ -399,7 +399,7 @@ Notice：Stream 流在 **生产**、**消费**、**复制**、**合并**、**转
   - `StreamReader` 类似于 io.Pipe 中的 PipeReader，只是多了一个 `Copy(n int) []*StreamReader[T]` 方法
 - **WARN**：在任何地方见到 `*StreamReader[T]` 或 `*StreamWriter[T]` 都不要忘记 Close()，否则可能导致流无法正常释放。一般流的生产和消费都是单独 Goroutine，从而导致 Goroutine 的泄露。
 
-Stream 流 的 API 设计，源码链接：[eino/schema/stream.go](https://github.com/cloudwego/eino/blob/main/schema/stream.go)
+Stream 流 的 API 设计，源码链接：[eino/schema/stream.go](https://github.com/cloudwego/eino/blob/main/schema/stream.go)eino/schema/stream.go
 
 ### Compose 编排
 
@@ -498,7 +498,7 @@ func (g *graph) AddBranch(startNode string, branch *GraphBranch) (err error) {}
 ###### **Parallel**
 
 - 将多个 Node 平行并联， 形成多个节点并发执行的节点
-- 无 AddParallel 方法，通过 AddEdge 构建并联的多条拓扑路径，以次形成 **Parallel **
+- 无 AddParallel 方法，通过 AddEdge 构建并联的多条拓扑路径，以此形成 **Parallel **
 
 ![](/img/eino/input_keys_output_keys_in_parallel.png)
 

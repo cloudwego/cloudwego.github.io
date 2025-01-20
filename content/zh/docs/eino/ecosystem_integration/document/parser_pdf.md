@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Parser - pdf
@@ -36,9 +36,15 @@ PDF 解析器具有以下特点：
 PDF 解析器通过 `NewPDFParser` 函数进行初始化，主要配置参数如下：
 
 ```go
-parser, err := NewPDFParser(ctx, &Config{
-    ToPages: true,  // 是否按页面分割文档
-})
+import (
+  "github.com/cloudwego/eino-ext/components/document/parser/pdf"
+)
+
+func main() {
+    parser, err := pdf.NewPDFParser(ctx, &pdf.Config{
+        ToPages: true,  // 是否按页面分割文档
+    })
+}
 ```
 
 配置参数说明：
@@ -69,7 +75,7 @@ import (
     "context"
     "os"
     
-    pdfparser "github.com/cloudwego/eino-ext/components/document/parser/pdf"
+    "github.com/cloudwego/eino-ext/components/document/parser/pdf"
     "github.com/cloudwego/eino/components/document/parser"
 )
 
@@ -77,7 +83,7 @@ func main() {
     ctx := context.Background()
     
     // 初始化解析器
-    p, err := pdfparser.NewPDFParser(ctx, &pdfparser.Config{
+    p, err := pdf.NewPDFParser(ctx, &pdf.Config{
         ToPages: false, // 不按页面分割
     })
     if err != nil {

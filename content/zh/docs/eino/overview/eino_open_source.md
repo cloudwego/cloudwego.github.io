@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 大语言模型应用开发框架 —— Eino 正式开源！
@@ -51,8 +51,8 @@ Eino 的编排能力，是上述通用问题的充分解决方案。
 
 上述基于 ChatModel 进行自主决策和选路的 ReAct Agent，便是基于 Eino 的 组件 和 Graph 编排 来实现， 代码清晰简洁，可与流程图清晰对应。
 
-- 代码实现详见：[flow/agent/react](https://github.com/cloudwego/eino/blob/main/flow/agent/react/react.go) 的实现
-- ReAct Agent 用户手册详见：[react_agent_manual](https://www.cloudwego.io/zh/docs/eino/core_modules/flow_integration_components/react_agent_manual/)
+- 代码实现详见：[flow/agent/react](https://github.com/cloudwego/eino/blob/main/flow/agent/react/react.go)flow/agent/react 的实现
+- ReAct Agent 用户手册详见：[react_agent_manual](https://www.cloudwego.io/zh/docs/eino/core_modules/flow_integration_components/react_agent_manual/)react_agent_manual
 
 在 Eino 中，这是几十行代码的图编排：
 
@@ -169,15 +169,15 @@ Eino 框架的设计开发过程，扎根于 “满足真实需求” 与 “实
 
 ## 快速上手
 
-针对 Eino 的学习和使用，我们提供了完善的 Eino 用户手册，帮助大家快速理解 Eino 中的概念，掌握基于 Eino 开发设计 AI 应用的技能，赶快通过「[Eino: 快速开始](https://www.cloudwego.io/zh/docs/eino/quick_start/)」尝试使用吧~。
+针对 Eino 的学习和使用，我们提供了完善的 Eino 用户手册，帮助大家快速理解 Eino 中的概念，掌握基于 Eino 开发设计 AI 应用的技能，赶快通过「[Eino: 快速开始](https://www.cloudwego.io/zh/docs/eino/quick_start/) Eino: 快速开始」尝试使用吧~。
 
-如有任何问题，可通过下方的飞书群或者 [Eino Issues](https://github.com/cloudwego/eino/issues) 和我们沟通、反馈~
+如有任何问题，可通过下方的飞书群或者 [Eino Issues](https://github.com/cloudwego/eino/issues)Eino Issues 和我们沟通、反馈~
 
 ## 相关链接
 
 项目地址：[https://github.com/cloudwego/eino](https://github.com/cloudwego/eino)，[https://github.com/cloudwego/eino-ext](https://github.com/cloudwego/eino-ext)
 
-项目官网：<u>[https://www.cloudwego.io](https://www.cloudwego.io)</u>
+项目官网：__[https://www.cloudwego.io](https://www.cloudwego.io)__
 
 扫描二维码加入飞书社群：
 ![](/img/eino/eino_lark_qr_code.png)

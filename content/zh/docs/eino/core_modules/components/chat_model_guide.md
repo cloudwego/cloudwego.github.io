@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: ChatModel 使用说明'
@@ -56,8 +56,6 @@ type ChatModel interface {
   - error：绑定过程中的错误信息
 
 ### **Message 结构体 **
-
-> ### **[TODO, 放到专门的结构体说明文档中]**
 
 ```go
 type Message struct {

@@ -11,7 +11,7 @@ weight: 2
 
 Eino 提供了多种面向 AI 应用开发场景的组件抽象，同时也提供了多种实现，因此用 Eino 快速上手开发一个应用是**非常简单**的。本目录中将提供几个最常见的用 AI 搭建的应用实例，以帮助你快速地上手使用 Eino。
 
-这几个小应用仅用于快速上手，对于其中的单项能力的更详细介绍及示例，可以参考 [组件介绍](/zh/docs/eino/core_modules/components)、[编排介绍](/zh/docs/eino/core_modules/chain_and_graph_orchestration/chain_graph_introduction) 等专题文档。
+这几个小应用仅用于快速上手，对于其中的单项能力的更详细介绍及示例，可以参考 [组件介绍](/zh/docs/eino/core_modules/components)组件介绍、[编排介绍](/zh/docs/eino/core_modules/chain_and_graph_orchestration/chain_graph_introduction)编排介绍 等专题文档。
 
 ## 快速开始示例
 

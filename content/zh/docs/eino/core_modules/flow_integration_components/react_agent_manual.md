@@ -9,10 +9,10 @@ weight: 0
 
 # 简介
 
-Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/) 的智能体框架，用户可以用来快速灵活地构建并调用 React Agent.
+Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/) React 逻辑 的智能体框架，用户可以用来快速灵活地构建并调用 React Agent.
 
 > 💡
-> 代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)
+> 代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)实现代码目录
 
 ## 节点拓扑&数据流图
 
@@ -432,7 +432,7 @@ func main() {
 
 简介：这是一个拥有两个 tool (query_restaurants 和 query_dishes ) 的 `美食推荐官`
 
-地址：[eino-examples/flow/agent/react](https://github.com/cloudwego/eino-examples/tree/main/flow/agent/react)
+地址：[eino-examples/flow/agent/react](https://github.com/cloudwego/eino-examples/tree/main/flow/agent/react)eino-examples/flow/agent/react
 
 使用方式:
 

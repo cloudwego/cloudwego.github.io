@@ -99,4 +99,4 @@ func main() {
 
 - [Eino: Embedding 使用说明](/zh/docs/eino/core_modules/components/embedding_guide)
 - [Embedding - OpenAI](/zh/docs/eino/ecosystem_integration/embedding/embedding_openai)
-- [火山引擎 Ark 服务](https://www.volcengine.com/product/ark)
+- [火山引擎 Ark 服务](https://www.volcengine.com/product/ark)火山引擎 Ark 服务

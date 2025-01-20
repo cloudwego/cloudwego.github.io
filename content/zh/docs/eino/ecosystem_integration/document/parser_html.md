@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Parser - html
@@ -29,7 +29,11 @@ HTML 解析器具有以下特点：
 HTML 解析器通过 `NewParser` 函数进行初始化，主要配置参数如下：
 
 ```go
-parser, err := NewParser(ctx, &Config{
+import (
+  "github.com/cloudwego/eino-ext/components/document/parser/html"
+)
+
+parser, err := html.NewParser(ctx, &html.Config{
     Selector: &selector, // 可选：内容选择器，默认为 body
 })
 ```
@@ -61,7 +65,7 @@ import (
     "context"
     "strings"
     
-    htmlparser "github.com/cloudwego/eino-ext/components/document/parser/html"
+    "github.com/cloudwego/eino-ext/components/document/parser/html"
     "github.com/cloudwego/eino/components/document/parser"
 )
 
@@ -69,7 +73,7 @@ func main() {
     ctx := context.Background()
     
     // 初始化解析器
-    p, err := htmlparser.NewParser(ctx, nil) // 使用默认配置
+    p, err := html.NewParser(ctx, nil) // 使用默认配置
     if err != nil {
         panic(err)
     }
@@ -105,9 +109,9 @@ func main() {
     // 使用解析结果
     doc := docs[0]
     println("内容:", doc.Content)
-    println("标题:", doc.MetaData[htmlparser.MetaKeyTitle])
-    println("描述:", doc.MetaData[htmlparser.MetaKeyDesc])
-    println("语言:", doc.MetaData[htmlparser.MetaKeyLang])
+    println("标题:", doc.MetaData[html.MetaKeyTitle])
+    println("描述:", doc.MetaData[html.MetaKeyDesc])
+    println("语言:", doc.MetaData[html.MetaKeyLang])
 }
 ```
 
@@ -119,7 +123,7 @@ package main
 import (
     "context"
     
-    htmlparser "github.com/cloudwego/eino-ext/components/document/parser/html"
+    "github.com/cloudwego/eino-ext/components/document/parser/html"
 )
 
 func main() {
@@ -127,7 +131,7 @@ func main() {
     
     // 指定只提取 id 为 content 的元素内容
     selector := "#content"
-    p, err := htmlparser.NewParser(ctx, &htmlparser.Config{
+    p, err := html.NewParser(ctx, &html.Config{
         Selector: &selector,
     })
     if err != nil {

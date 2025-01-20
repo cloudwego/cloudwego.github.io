@@ -210,4 +210,4 @@ func main() {
 - [[🚧]Eino: ChatModel 使用说明](/zh/docs/eino/core_modules/components/chat_model_guide)
 - [[🚧]ChatModel - OpenAI](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
 - [[🚧]Eino: ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)
-- [Ollama 模型库](https://ollama.ai/library)
+- [Ollama 模型库](https://ollama.ai/library) Ollama 模型库

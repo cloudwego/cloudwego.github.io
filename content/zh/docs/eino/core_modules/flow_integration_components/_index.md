@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Flow 集成组件'
@@ -15,5 +15,3 @@ weight: 3
 - Multi Agent: [Eino Tutorial: Host Multi-Agent ](/zh/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
 
 > 另外一些常用的模式例如 `retriever agent`、`chat agent`、`summary agent`、`DB agent` 等等，如果你有这类需求，希望 Eino 提供对他们的封装，请联系并和我们交流
-
-# 子目录

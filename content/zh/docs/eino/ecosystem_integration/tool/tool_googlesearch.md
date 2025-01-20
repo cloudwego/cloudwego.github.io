@@ -111,5 +111,5 @@ func main() {
 ## **相关文档**
 
 - [Eino: ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)
-- [Google Custom Search API 文档](https://developers.google.com/custom-search/v1/overview)
+- [Google Custom Search API 文档](https://developers.google.com/custom-search/v1/overview) Google Custom Search API 文档
 - [Tool - DuckDuckGoSearch](/zh/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search)

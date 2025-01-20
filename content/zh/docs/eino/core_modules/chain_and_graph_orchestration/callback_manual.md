@@ -28,7 +28,7 @@ Callbacks 支持“**横切面功能注入**”和“**中间状态透出**”�
 
 ### 触发实体
 
-Component（包括官方定义的组件类型和 Lambda），Graph Node（以及 Chain Node），Graph 自身（以及 Chain）。这三类实体，都有横切面功能注入、中间状态透出的需求，因此都会触发 callback。具体见下面的“[触发方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)”一节。
+Component（包括官方定义的组件类型和 Lambda），Graph Node（以及 Chain Node），Graph 自身（以及 Chain）。这三类实体，都有横切面功能注入、中间状态透出的需求，因此都会触发 callback。具体见下面的“[触发方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)触发方式”一节。
 
 ### 触发时机
 
@@ -45,7 +45,7 @@ const (
 )
 ```
 
-不同的触发实体，在不同场景下，是触发 OnStart 还是 OnStartWithStreamInput  (OnEnd/OnEndWithStreamOutput 同理），具体的规则，详见下面的“[触发方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)”一节。
+不同的触发实体，在不同场景下，是触发 OnStart 还是 OnStartWithStreamInput  (OnEnd/OnEndWithStreamOutput 同理），具体的规则，详见下面的“[触发方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)触发方式”一节。
 
 ### Callback Handler
 
@@ -69,7 +69,7 @@ type Handler interface {
 
 并都会返回新的 Context：用于**同一个 Handler 的不同触发时机之间**传递信息。
 
-如果一个 Handler，不想关注所有的 5 个触发时机，只想关注一部分，比如只关注 OnStart，建议使用 `NewHandlerBuilder().OnStartFn(...).Build()`。如果不想关注所有的组件类型，只想关注特定组件，比如 ChatModel，建议使用 `NewHandlerHelper().ChatModel(...).Handler()`，可以只接收 ChatModel 的回调并拿到一个具体类型的 CallbackInput/CallbackOutput。具体见“[Handler 实现方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)”一节。
+如果一个 Handler，不想关注所有的 5 个触发时机，只想关注一部分，比如只关注 OnStart，建议使用 `NewHandlerBuilder().OnStartFn(...).Build()`。如果不想关注所有的组件类型，只想关注特定组件，比如 ChatModel，建议使用 `NewHandlerHelper().ChatModel(...).Handler()`，可以只接收 ChatModel 的回调并拿到一个具体类型的 CallbackInput/CallbackOutput。具体见“[Handler 实现方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) Handler 实现方式”一节。
 
 不同 Handler 之间，触发顺序**没有**保证。
 

@@ -100,5 +100,5 @@ func main() {
 
 - [Eino: Embedding 使用说明](/zh/docs/eino/core_modules/components/embedding_guide)
 - [Embedding - ARK](/zh/docs/eino/ecosystem_integration/embedding/embedding_ark)
-- [OpenAI Embedding API 文档](https://platform.openai.com/docs/guides/embeddings)
-- [Azure OpenAI Service 文档](https://learn.microsoft.com/azure/cognitive-services/openai/)
+- [OpenAI Embedding API 文档](https://platform.openai.com/docs/guides/embeddings) OpenAI Embedding API 文档
+- [Azure OpenAI Service 文档](https://learn.microsoft.com/azure/cognitive-services/openai/) Azure OpenAI Service 文档

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Loader - local file
@@ -27,10 +27,16 @@ local file 文件加载器是 Document Loader 接口的一个实现，用于从�
 本地文件加载器通过 `NewFileLoader` 函数进行初始化，主要配置参数如下：
 
 ```go
-loader, err := NewFileLoader(ctx, &FileLoaderConfig{
-    UseNameAsID: true,                // 是否使用文件名作为文档ID
-    Parser:      &parser.TextParser{}, // 可选：指定自定义解析器
-})
+import (
+    "github.com/cloudwego/eino/components/document/loader/file"
+)
+
+func main() {
+    loader, err := file.NewFileLoader(ctx, &FileLoaderConfig{
+        UseNameAsID: true,                // 是否使用文件名作为文档ID
+        Parser:      &parser.TextParser{}, // 可选：指定自定义解析器
+    })
+}
 ```
 
 配置参数说明：
@@ -70,7 +76,7 @@ package main
 import (
     "context"
     
-    fileloader "github.com/cloudwego/eino-ext/components/document/loader/file"
+    file "github.com/cloudwego/eino-ext/components/document/loader/file"
     "github.com/cloudwego/eino/components/document"
 )
 
@@ -78,7 +84,7 @@ func main() {
     ctx := context.Background()
     
     // 初始化加载器
-    loader, err := fileloader.NewFileLoader(ctx, &fileloader.FileLoaderConfig{
+    loader, err := file.NewFileLoader(ctx, &file.FileLoaderConfig{
         UseNameAsID: true,
     })
     if err != nil {
@@ -97,9 +103,9 @@ func main() {
     for _, doc := range docs {
         println(doc.Content)
         // 访问元数据
-        fileName := doc.MetaData[fileloader.MetaKeyFileName]
-        extension := doc.MetaData[fileloader.MetaKeyExtension]
-        source := doc.MetaData[fileloader.MetaKeySource]
+        fileName := doc.MetaData[file.MetaKeyFileName]
+        extension := doc.MetaData[file.MetaKeyExtension]
+        source := doc.MetaData[file.MetaKeySource]
     }
 }
 ```

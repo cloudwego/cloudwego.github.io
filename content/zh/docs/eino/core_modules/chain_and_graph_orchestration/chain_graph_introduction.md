@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Chain/Graph 编排介绍'
@@ -17,8 +17,8 @@ import (
 )
 
 const (
-    _nodeOfModel  _= "model"
-    _nodeOfPrompt _= "prompt"
+    nodeOfModel  = "model"
+    nodeOfPrompt = "prompt"
 )
 
 func main() {
@@ -29,28 +29,28 @@ func main() {
         schema.HumanMessage("what's the weather in {location}?"),
     )
     
-    err := g.AddChatTemplateNode(_nodeOfPrompt_, pt)
+    err := g.AddChatTemplateNode(nodeOfPrompt, pt)
     assert.NoError(t, err)
     
     cm := &chatModel{
         msgs: []*schema.Message{
            {
-              Role:    schema._AI_,
+              Role:    schema.AI,
               Content: "the weather is good",
            },
         },
     }
     
-    err = g.AddChatModelNode(_nodeOfModel_, cm, WithNodeName("MockChatModel"))
+    err = g.AddChatModelNode(nodeOfModel, cm, WithNodeName("MockChatModel"))
     assert.NoError(t, err)
     
-    err = g.AddEdge(_START_, _nodeOfPrompt_)
+    err = g.AddEdge(START, nodeOfPrompt)
     assert.NoError(t, err)
     
-    err = g.AddEdge(_nodeOfPrompt_, _nodeOfModel_)
+    err = g.AddEdge(nodeOfPrompt, nodeOfModel)
     assert.NoError(t, err)
     
-    err = g.AddEdge(_nodeOfModel_, _END_)
+    err = g.AddEdge(nodeOfModel, END)
     assert.NoError(t, err)
     
     r, err := g.Compile(WithMaxRunSteps(10))
@@ -99,16 +99,16 @@ func main() {
     callbacks.InitCallbackHandlers([]callbacks.Handler{&loggerCallbacks{}})
 
     const (
-       _messageHistories _= "message_histories"
-       _messageUserQuery _= "user_query"
+       messageHistories = "message_histories"
+       messageUserQuery = "user_query"
     )
 
     // 1. create an instance of ChatTemplate as 1st Graph Node
     systemTpl := `你是一名房产经纪人，结合用户的薪酬和工作，使用 user_info API，为其提供相关的房产信息。邮箱是必须的`
-    chatTpl := prompt.FromMessages(schema._FString_,
+    chatTpl := prompt.FromMessages(schema.FString,
        schema.SystemMessage(systemTpl),
-       schema.MessagesPlaceholder(_messageHistories_, true),
-       schema.MessagesPlaceholder(_messageUserQuery_, false),
+       schema.MessagesPlaceholder(messageHistories, true),
+       schema.MessagesPlaceholder(messageUserQuery, false),
     )
 
     baseURL := "https://search.bytedance.net/gpt/openapi/online/multimodal/crawl"
@@ -177,9 +177,9 @@ func main() {
     }
 
     const (
-       _nodeKeyOfTemplate  _= "template"
-       _nodeKeyOfChatModel _= "chat_model"
-       _nodeKeyOfTools     _= "tools"
+       nodeKeyOfTemplate  = "template"
+       nodeKeyOfChatModel = "chat_model"
+       nodeKeyOfTools     = "tools"
     )
 
     // 6. create an instance of Graph
@@ -188,48 +188,48 @@ func main() {
     g := compose.NewGraph[map[string]any, []*schema.Message]()
 
     // 7. add ChatTemplate into graph
-    err = g.AddChatTemplateNode(_nodeKeyOfTemplate_, chatTpl)
+    err = g.AddChatTemplateNode(nodeKeyOfTemplate, chatTpl)
     if err != nil {
        logs.Errorf("AddChatTemplateNode failed, err=%v", err)
        return
     }
 
     // 8. add ChatModel into graph
-    err = g.AddChatModelNode(_nodeKeyOfChatModel_, chatModel)
+    err = g.AddChatModelNode(nodeKeyOfChatModel, chatModel)
     if err != nil {
        logs.Errorf("AddChatModelNode failed, err=%v", err)
        return
     }
 
     // 9. add ToolsNode into graph
-    err = g.AddToolsNode(_nodeKeyOfTools_, toolsNode)
+    err = g.AddToolsNode(nodeKeyOfTools, toolsNode)
     if err != nil {
        logs.Errorf("AddToolsNode failed, err=%v", err)
        return
     }
 
     // 10. add connection between nodes
-    err = g.AddEdge(compose._START_, _nodeKeyOfTemplate_)
+    err = g.AddEdge(compose.START, nodeKeyOfTemplate)
     if err != nil {
-       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", compose._START_, _nodeKeyOfTemplate_, err)
+       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", compose.START, nodeKeyOfTemplate, err)
        return
     }
 
-    err = g.AddEdge(_nodeKeyOfTemplate_, _nodeKeyOfChatModel_)
+    err = g.AddEdge(nodeKeyOfTemplate, nodeKeyOfChatModel)
     if err != nil {
-       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", _nodeKeyOfTemplate_, _nodeKeyOfChatModel_, err)
+       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", nodeKeyOfTemplate, nodeKeyOfChatModel, err)
        return
     }
 
-    err = g.AddEdge(_nodeKeyOfChatModel_, _nodeKeyOfTools_)
+    err = g.AddEdge(nodeKeyOfChatModel, nodeKeyOfTools)
     if err != nil {
-       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", _nodeKeyOfChatModel_, _nodeKeyOfTools_, err)
+       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", nodeKeyOfChatModel, nodeKeyOfTools, err)
        return
     }
 
-    err = g.AddEdge(_nodeKeyOfTools_, compose._END_)
+    err = g.AddEdge(nodeKeyOfTools, compose.END)
     if err != nil {
-       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", _nodeKeyOfTools_, compose._END_, err)
+       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", nodeKeyOfTools, compose.END, err)
        return
     }
 
@@ -241,8 +241,8 @@ func main() {
     }
 
     out, err := r.Invoke(ctx, map[string]any{
-       _messageHistories_: []*schema.Message{},
-       _messageUserQuery_: []*schema.Message{
+       messageHistories: []*schema.Message{},
+       messageUserQuery: []*schema.Message{
           schema.UserMessage("我叫 zhangsan, 邮箱是 zhangsan@bytedance.com, 帮我推荐一处房产"),
        },
     })
@@ -316,9 +316,9 @@ func main() {
     ctx := context.Background()
 
     const (
-       _nodeOfL1 _= "invokable"
-       _nodeOfL2 _= "streamable"
-       _nodeOfL3 _= "transformable"
+       nodeOfL1 = "invokable"
+       nodeOfL2 = "streamable"
+       nodeOfL3 = "transformable"
     )
 
     type testState struct {
@@ -345,7 +345,7 @@ func main() {
        return out, nil
     }
 
-    err := sg.AddLambdaNode(_nodeOfL1_, l1,
+    err := sg.AddLambdaNode(nodeOfL1, l1,
        compose.WithStatePreHandler(l1StateToInput), compose.WithStatePostHandler(l1StateToOutput))
     if err != nil {
        log.Printf("sg.AddLambdaNode failed, err=%v", err)
@@ -372,7 +372,7 @@ func main() {
        return out, nil
     }
 
-    err = sg.AddLambdaNode(_nodeOfL2_, l2, compose.WithStatePostHandler(l2StateToOutput))
+    err = sg.AddLambdaNode(nodeOfL2, l2, compose.WithStatePostHandler(l2StateToOutput))
     if err != nil {
        log.Printf("sg.AddLambdaNode failed, err=%v", err)
        return
@@ -395,8 +395,8 @@ func main() {
                 if err == io.EOF {
                    break
                 }
-                // _TODO: how to trace this kind of error in the goroutine of processing sw_
-_                _sw.Send(chunk, err)
+                // TODO: how to trace this kind of error in the goroutine of processing sw
+                sw.Send(chunk, err)
                 break
              }
 
@@ -418,31 +418,31 @@ _                _sw.Send(chunk, err)
        return out, nil
     }
 
-    err = sg.AddLambdaNode(_nodeOfL3_, l3, compose.WithStatePostHandler(l3StateToOutput))
+    err = sg.AddLambdaNode(nodeOfL3, l3, compose.WithStatePostHandler(l3StateToOutput))
     if err != nil {
        log.Printf("sg.AddLambdaNode failed, err=%v", err)
        return
     }
 
-    err = sg.AddEdge(compose._START_, _nodeOfL1_)
+    err = sg.AddEdge(compose.START, nodeOfL1)
     if err != nil {
        log.Printf("sg.AddEdge failed, err=%v", err)
        return
     }
 
-    err = sg.AddEdge(_nodeOfL1_, _nodeOfL2_)
+    err = sg.AddEdge(nodeOfL1, nodeOfL2)
     if err != nil {
        log.Printf("sg.AddEdge failed, err=%v", err)
        return
     }
 
-    err = sg.AddEdge(_nodeOfL2_, _nodeOfL3_)
+    err = sg.AddEdge(nodeOfL2, nodeOfL3)
     if err != nil {
        log.Printf("sg.AddEdge failed, err=%v", err)
        return
     }
 
-    err = sg.AddEdge(_nodeOfL3_, compose._END_)
+    err = sg.AddEdge(nodeOfL3, compose.END)
     if err != nil {
        log.Printf("sg.AddEdge failed, err=%v", err)
        return
@@ -541,9 +541,9 @@ func init() {
 func main() {
     ctx := context.Background()
     // 分支节点
-    const _randLimit _= 2
+    const randLimit = 2
     branchCond := func(ctx context.Context, input map[string]any) (string, error) { // nolint: byted_all_nil_return
-       if rand.Intn(_randLimit_) == 1 {
+       if rand.Intn(randLimit) == 1 {
           return "b1", nil
        }
 
@@ -595,7 +595,7 @@ func main() {
 
     rolePlayerChain := compose.NewChain[map[string]any, *schema.Message]()
     rolePlayerChain.
-       AppendChatTemplate(prompt.FromMessages(schema._FString_, schema.SystemMessage(`You are a {role}.`), schema.UserMessage(`{input}`))).
+       AppendChatTemplate(prompt.FromMessages(schema.FString, schema.SystemMessage(`You are a {role}.`), schema.UserMessage(`{input}`))).
        AppendChatModel(cm)
 
     // =========== 构建 chain ===========

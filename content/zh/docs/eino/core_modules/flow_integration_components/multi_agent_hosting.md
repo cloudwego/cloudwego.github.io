@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-17"
 lastmod: ""
 tags: []
 title: 'Eino Tutorial: Host Multi-Agent '
@@ -11,9 +11,11 @@ Host Multi-Agent 是一个 Host 做意图识别后，跳转到某个专家 agent
 
 以一个简单的“日记助手”做例子：可以写日记、读日记、根据日记回答问题。
 
+完整样例参见：[https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal](https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal)
+
 Host：
 
-```Go
+```go
 func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host, error) {
     chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
        BaseURL: baseURL,

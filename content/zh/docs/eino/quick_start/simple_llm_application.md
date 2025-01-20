@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-16"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 实现一个最简 LLM 应用
@@ -10,7 +10,7 @@ weight: 1
 本指南将帮助你快速上手使用 Eino 框架中的 ChatModel 构建一个简单的 LLM 应用。我们将通过实现一个"程序员鼓励师"的例子，来展示如何使用 ChatModel。
 
 > 💡
-> 本文中示例的代码片段详见：[flow/eino-examples/quickstart/chat/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat/main.go)
+> 本文中示例的代码片段详见：[flow/eino-examples/quickstart/chat/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat/main.go)flow/eino-examples/quickstart/chat/main.go
 
 ## **ChatModel 简介**
 
@@ -37,24 +37,28 @@ ChatModel 是 Eino 框架中对对话大模型的抽象，它提供了统一的�
 
 Eino 提供了强大的模板化功能来构建要输入给大模型的消息。你可以使用占位符来插入变量和模板消息：
 
-1. 变量占位符：在消息中插入变量，支持三种格式：
+1. 模版渲染，支持三种模版格式：变量占位符：在消息中插入变量，支持三种格式：
 
-   - FString: `{variable}`
-   - Jinja2: `{{variable}}`
-   - GoTemplate: `{{``.variable}}`
-2. 消息占位符：用于插入一组消息（如对话历史）
+   - _FString：Python 风格的简单字符串格式化（例如："你好，{name}！"）_FString: {variable}
+   - _Jinja2：支持丰富表达式的 Jinja2 风格模板__（例如："你好，{{name}}！"）_Jinja2: {{variable}}
+   - _GoTemplate：Go 语言内置的 text/template 格式__（例如："你好，{{.name}}！"）_GoTemplate: {{.variable}}
+2. 消息占位符：支持用于插入一组消息（如对话历史）
 
 ```go
-// optional=false 表示必需的消息列表，找不到对应变量会报错
+// optional=false 表示必需的消息列表，在模版输入中找不到对应变量会报错
 schema.MessagesPlaceholder("chat_history", false)
 ```
 
 > 更详细的组件介绍可参考： [Eino: ChatTemplate 使用说明](/zh/docs/eino/core_modules/components/chat_template_guide)
 
-下面是完整的模板创建代码：
+下面是完整的 FString 格式 + 消息占位符的对话模板创建及使用代码：
 
 ```go
 import (
+    "context"
+    "fmt"
+    "log"
+    
     "github.com/cloudwego/eino/components/prompt"
     "github.com/cloudwego/eino/schema"
 )
@@ -88,6 +92,9 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
+    
+    **fmt**.Printf("formatted message: %v", messages)
+    // formatted message: [system: 你是一个程序员鼓励师。你需要用积极、温暖且专业的语气回答问题。你的目标是帮助程序员保持积极乐观的心态，提供技术建议的同时也要关注他们的心理健康。 user: 你好 assistant: 嘿！我是你的程序员鼓励师！记住，每个优秀的程序员都是从 Debug 中成长起来的。有什么我可以帮你的吗？ user: 我觉得自己写的代码太烂了 assistant: 每个程序员都经历过这个阶段！重要的是你在不断学习和进步。让我们一起看看代码，我相信通过重构和优化，它会变得更好。记住，Rome wasn't built in a day，代码质量是通过持续改进来提升的。 user: 问题: 我的代码一直报错，感觉好沮丧，该怎么办？]
 }
 ```
 
@@ -108,6 +115,9 @@ ChatModel 是 Eino 框架中最核心的组件之一，它提供了与各种大�
 
 ```go
 import (
+    "context"
+    "fmt"
+    
     "github.com/cloudwego/eino-ext/components/model/openai"
 )
 
@@ -116,10 +126,6 @@ func main() {
     chatModel, err := openai.NewChatModel(context.Background(), &openai.ChatModelConfig{
         Model: "gpt-4o",           // 使用的模型版本
         APIKey: "<your-api-key>",   // OpenAI API 密钥
-        
-        // 可选的 Azure OpenAI 配置
-        ByAzure: true,           // 是否使用 Azure OpenAI
-        BaseURL: "<your-base-url>",
     })
     if err != nil {
         log.Fatal(err)
@@ -207,4 +213,3 @@ func main() {
 
 - 快速开始
   - [Agent-让大模型拥有双手](/zh/docs/eino/quick_start/agent_llm_with_tools)
-  - [复杂业务逻辑的利器-编排](/zh/docs/eino/quick_start/complex_business_logic_orchestration)

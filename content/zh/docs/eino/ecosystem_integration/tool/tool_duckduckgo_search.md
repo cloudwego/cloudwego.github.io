@@ -106,4 +106,4 @@ func main() {
 
 - [Eino: ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)
 - [Tool - Googlesearch](/zh/docs/eino/ecosystem_integration/tool/tool_googlesearch)
-- [DuckDuckGo 帮助文档](https://duckduckgo.com/duckduckgo-help-pages/settings/params/)
+- [DuckDuckGo 帮助文档](https://duckduckgo.com/duckduckgo-help-pages/settings/params/) DuckDuckGo 帮助文档
