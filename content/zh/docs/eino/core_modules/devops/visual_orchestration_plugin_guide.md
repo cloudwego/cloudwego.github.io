@@ -50,7 +50,7 @@ weight: 2
 <img src="/img/eino/eino_orchestration_add_nodes_page.png" />
 </td>
 <td>
-<img src="/img/eino/G6oabw0FNoFTeSxoAxWcrhNJnVd.png" />
+<img src="/img/eino/eino_dev_chat_model_config2.png" />
 </td>
 </tr></tbody></table>
 
@@ -64,7 +64,7 @@ weight: 2
 <img src="/img/eino/eino_orchestration_add_nodes_3_page.png" />
 </td>
 <td>
-<img src="/img/eino/FQHfbUjLJofszaxeEtncYa47nnf.png" />
+<img src="/img/eino/eino_dev_chat_model_config.png" />
 </td>
 </tr></tbody></table>
 
@@ -100,7 +100,7 @@ weight: 2
 <img src="/img/eino/eino_orchestration_add_nodes_2_page.png" />
 </td>
 <td>
-<img src="/img/eino/TntYbJKbMofcs3xlU7icemXsnbe.png" />
+<img src="/img/eino/eino_orchestration_node_config_2_page.png" />
 </td>
 <td>
 <img src="/img/eino/eino_orchestration_add_edges_page.png" />

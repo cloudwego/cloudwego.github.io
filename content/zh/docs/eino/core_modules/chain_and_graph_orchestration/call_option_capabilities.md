@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: CallOption 能力与规范'
@@ -10,7 +10,7 @@ weight: 0
 **CallOption**: 对 Graph 编译产物进行调用时，直接传递数据给特定的一组节点(Component、Implementation、Node)的渠道
 - 和 节点 Config 的区别： 节点 Config 是实例粒度的配置，也就是从实例创建到实例消除，Config 中的值一旦确定就不需要改变了
 - CallOption：是请求粒度的配置，不同的请求，其中的值是不一样的。更像是节点入参，但是这个入参是直接由 Graph 的入口直接传入，而不是上游节点传入。
-- 举例：LarkDocLoader 中，需要提供请求粒度的  RefreshToken，这个 RefreshToken 每个用户每次使用后，都需要更换
+- 举例：给一个 ChatModel 节点传入 Temperature 配置；给一个 Lambda 节点传入自定义 option。
 
 ## 组件 CallOption 形态
 
@@ -31,12 +31,12 @@ eino/components/model
 
 // 抽象实现所在代码位置
 eino-ext/components/model
-├── maas
-│   ├── call_option.go
-│   └── Implementation.go
-├── openai
+├── claude
+│   ├── option.go // Component 的一种实现的 CallOption 入参
+│   └── chatmodel.go
+├── ollama
 │   ├── call_option.go // Component 的一种实现的 CallOption 入参
-│   ├── Implementation.go
+│   ├── chatmodel.go
 ```
 
 ### Model 抽象
@@ -60,11 +60,18 @@ type ChatModel interface {
 }
 
 // 此结构体是【组件抽象CallOption】的统一定义。 组件的实现可根据自己的需要取用【组件抽象CallOption】的信息
+// Options is the common options for the model.
 type Options struct {
-    Temperature float32
-    MaxTokens   int
-    Model       string
-    TopP        float32   
+    // Temperature is the temperature for the model, which controls the randomness of the model.
+    Temperature *float32
+    // MaxTokens is the max number of tokens, if reached the max tokens, the model will stop generating, and mostly return an finish reason of "length".
+    MaxTokens *int
+    // Model is the model name.
+    Model *string
+    // TopP is the top p for the model, which controls the diversity of the model.
+    TopP *float32
+    // Stop is the stop words for the model, which controls the stopping condition of the model.
+    Stop []string
 }
 
 // Option is the call option for ChatModel component.
@@ -78,34 +85,47 @@ type Option struct {
     implSpecificOptFn any
 }
 
+// WithTemperature is the option to set the temperature for the model.
 func WithTemperature(temperature float32) Option {
     return Option{
        apply: func(opts *Options) {
-          opts.Temperature = temperature
+          opts.Temperature = &temperature
        },
     }
 }
 
+// WithMaxTokens is the option to set the max tokens for the model.
 func WithMaxTokens(maxTokens int) Option {
     return Option{
        apply: func(opts *Options) {
-          opts.MaxTokens = maxTokens
+          opts.MaxTokens = &maxTokens
        },
     }
 }
 
+// WithModel is the option to set the model name.
 func WithModel(name string) Option {
     return Option{
        apply: func(opts *Options) {
-          opts.Model = name
+          opts.Model = &name
        },
     }
 }
 
+// WithTopP is the option to set the top p for the model.
 func WithTopP(topP float32) Option {
     return Option{
        apply: func(opts *Options) {
-          opts.TopP = topP
+          opts.TopP = &topP
+       },
+    }
+}
+
+// WithStop is the option to set the stop words for the model.
+func WithStop(stop []string) Option {
+    return Option{
+       apply: func(opts *Options) {
+          opts.Stop = stop
        },
     }
 }
@@ -156,110 +176,55 @@ func GetImplSpecificOptions[T any](base *T, opts ...Option) *T {
 }
 ```
 
-### OpenAI 实现
+### Claude 实现
 
-> 组件的实现均类似 OpenAI 的实现
->
-> 注：此处为样例，eino-ext/components/model 中暂时没有此场景
+[https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/option.go](https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/option.go)
 
 ```go
-package openai
+package claude
 
 import (
     "github.com/cloudwego/eino/components/model"
 )
 
-// openAIOptions 实现粒度的 CallOption 配置
-type requestOptions struct {
-    APIKey          string
-    Stop            []string
-    PresencePenalty float32
+type options struct {
+    TopK *int32
 }
 
-// openai 下的 WithXX() 方法，只能对 openai 这一种实现生效
-func WithAPIKey(apiKey string) model.Option {
-    return model.WrapImplSpecificOptFn[requestOptions](func(o *requestOptions) {
-       o.APIKey = apiKey
-    })
-}
-
-func WithStop(stop []string) model.Option {
-    return model.WrapImplSpecificOptFn[requestOptions](func(o *requestOptions) {
-       o.Stop = stop
-    })
-}
-
-func WithPresencePenalty(presencePenalty float32) model.Option {
-    return model.WrapImplSpecificOptFn[requestOptions](func(o *requestOptions) {
-       o.PresencePenalty = presencePenalty
+func WithTopK(k int32) model.Option {
+    return model.WrapImplSpecificOptFn(func(o *options) {
+       o.TopK = &k
     })
 }
 ```
 
-model/openai/Implementation.go
+[https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/claude.go](https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/claude.go)
 
 ```go
-type ChatModel struct {}
+func (c *claude) genMessageNewParams(input []*schema.Message, opts ...model.Option) (anthropic.MessageNewParams, error) {
+    if len(input) == 0 {
+       return anthropic.MessageNewParams{}, fmt.Errorf("input is empty")
+    }
 
-func (cm *ChatModel) Generate(ctx context.Context, in []*schema.Message, opts ...model.Option) (
-    
-    cmOpts := model.GetCommonOptions(&model.Options{
-        Model:       "gpt-3.5-turbo",
-        MaxTokens:   1024,
-        Temperature: 0.7,
+    commonOptions := model.GetCommonOptions(&model.Options{
+       Model:       &c.model,
+       Temperature: c.temperature,
+       MaxTokens:   &c.maxTokens,
+       TopP:        c.topP,
+       Stop:        c.stopSequences,
     }, opts...)
+    claudeOptions := model.GetImplSpecificOptions(&options{TopK: c.topK}, opts...)
     
-    implOpts := model.GetImplSpecificOptions[requestOptions](&requestOptions{
-        Stop:            nil,
-        PresencePenalty: 1,
-    }, opts...)
-    
-    // 在这里开发 OpenAI 的 Model 逻辑
-    _ = cmOpts
-    _ = implOpts
-}
-
-func (cm *ChatModel) Stream(ctx context.Context, in []*schema.Message,
-    opts ...model.Option) (outStream *schema.StreamReader[*schema.Message], err error) {
-    // 同 Generate 接口
+    // omit mulple lines...
+    return nil, nil 
 }
 ```
 
-### Graph 编译产物
+## 编排中的 CallOption
 
-> Graph 的编译产物是 Runnable[I, O]
+[https://github.com/cloudwego/eino/blob/main/compose/runnable.go](https://github.com/cloudwego/eino/blob/main/compose/runnable.go)
 
-option.go
-
-```go
-type Option struct {
-    options     []any
-    nodeHandler []callbacks.Handler
-    keys        []string
-
-    graphHandler []callbacks.Handler
-    graphOption  []GraphRunOption
-}
-
-// 可指定 NodeKey 定点生效 CallOption
-func (o Option) DesignateNode(key ...string) Option {
-    o.keys = append(o.keys, key...)
-    return o
-}
-
-func WithChatModelOption(opts ...model.Option) Option {
-    o := make([]any, 0, len(opts))
-    for i := range opts {
-       o = append(o, opts[i])
-    }
-    return Option{
-       options: o,
-       keys:    make([]string, 0),
-    }
-}
-```
-
-runnable.go
+Graph 编译产物是 Runnable
 
 ```go
 type Runnable[I, O any] interface {
@@ -270,35 +235,57 @@ type Runnable[I, O any] interface {
 }
 ```
 
-Graph 调用
+Runnable 各方法均接收 compose.Option 列表。
+
+[https://github.com/cloudwego/eino/blob/main/compose/graph_call_options.go](https://github.com/cloudwego/eino/blob/main/compose/graph_call_options.go)
+
+包括 graph run 整体的配置，各类组件的配置，特定 Lambda 的配置等。
 
 ```go
-g := NewGraph[map[string]any, *schema.Message]()
+// Option is a functional option type for calling a graph.
+type Option struct {
+    options []any
+    handler []callbacks.Handler
 
-_nodeOfModel := &openai.ChatModel{}_
+    paths []*NodePath
 
-err = g.AddChatModelNode("openAIModel", _nodeOfModel_)
+    maxRunSteps int
+}
 
-r, err := g.Compile()
+// DesignateNode set the key of the node which will the option be applied to.
+// notice: only effective at the top graph.
+// e.g.
+//
+//  embeddingOption := compose.WithEmbeddingOption(embedding.WithModel("text-embedding-3-small"))
+//  runnable.Invoke(ctx, "input", embeddingOption.DesignateNode("my_embedding_node"))
+func (o Option) DesignateNode(key ...string) Option {
+    nKeys := make([]*NodePath, len(key))
+    for i, k := range key {
+       nKeys[i] = NewNodePath(k)
+    }
+    return o.DesignateNodeWithPath(nKeys...)
+}
 
-// 默认情况下，WithXXX() 的 Option 方法是按照 Component 的类型进行分发的
-// 同一个 WithXXX() 会对同一种 Component 的不同实例同时生效
-// 必要情况下可通过指定 NodeKey，仅针对一个 Node 生效 WithXXX() 方法
-out, err = r.Invoke(ctx, in, WithChatModelOption(
-                openai.WithAKSK("ak", "sk"),
-                openai.WithURL("url"),             
-            ),
-            // 这组 CallOption 仅针对 openAIModel 这个节点生效
-            WithChatModelOption(
-                model.WithModel("gpt-3.5-turto"), 
-                openai.WithAPIKey("xxxx"),          
-            ).DesignateNode("openAIModel"),
-    )
+// DesignateNodeWithPath sets the path of the node(s) to which the option will be applied to.
+// You can make the option take effect in the subgraph by specifying the key of the subgraph.
+// e.g.
+// DesignateNodeWithPath({"sub graph node key", "node key within sub graph"})
+func (o Option) DesignateNodeWithPath(path ...*NodePath) Option {
+    o.paths = append(o.paths, path...)
+    return o
+}
+
+// WithEmbeddingOption is a functional option type for embedding component.
+// e.g.
+//
+//  embeddingOption := compose.WithEmbeddingOption(embedding.WithModel("text-embedding-3-small"))
+//  runnable.Invoke(ctx, "input", embeddingOption)
+func WithEmbeddingOption(opts ...embedding.Option) Option {
+    return withComponentOption(opts...)
+}
 ```
 
-## 编排中的 CallOption
-
-CallOption 可以按需分配给 Graph 中不同的节点。
+compose.Option 可以按需分配给 Graph 中不同的节点。
 
 ![](/img/eino/graph_runnable_after_compile.png)
 

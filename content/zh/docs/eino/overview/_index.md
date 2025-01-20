@@ -81,7 +81,7 @@ runnable.Stream(ctx, []*Message{UserMessage("help me plan my weekend")})
 
 现在，我们来创建一个 Workflow，它能在字段级别灵活映射输入与输出：
 
-![](/img/eino/RHn3wNtSGhGAoyb5iF1cKZqDnKf.png)
+![](/img/eino/graph_node_type1.png)
 
 ```go
 wf := NewWorkflow[[]*Message, *Message]()
@@ -299,7 +299,7 @@ Eino Core 中的六大概念：
 
 具体每种 Component 的职责，可具体看对应的接口定义
 
-> 下文是示例性说明，不完整，以[代码仓库](https://github.com/cloudwego/eino-ext/tree/main/components)代码仓库为准
+> 下文是示例性说明，不完整，以[代码仓库](https://github.com/cloudwego/eino-ext/tree/main/components)为准
 
 ```
 eino/components // 组件根目录
@@ -399,7 +399,7 @@ Notice：Stream 流在 **生产**、**消费**、**复制**、**合并**、**转
   - `StreamReader` 类似于 io.Pipe 中的 PipeReader，只是多了一个 `Copy(n int) []*StreamReader[T]` 方法
 - **WARN**：在任何地方见到 `*StreamReader[T]` 或 `*StreamWriter[T]` 都不要忘记 Close()，否则可能导致流无法正常释放。一般流的生产和消费都是单独 Goroutine，从而导致 Goroutine 的泄露。
 
-Stream 流 的 API 设计，源码链接：[eino/schema/stream.go](https://github.com/cloudwego/eino/blob/main/schema/stream.go)eino/schema/stream.go
+Stream 流 的 API 设计，源码链接：[eino/schema/stream.go](https://github.com/cloudwego/eino/blob/main/schema/stream.go)
 
 ### Compose 编排
 

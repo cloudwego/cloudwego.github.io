@@ -10,7 +10,7 @@ weight: 1
 本指南将帮助你快速上手使用 Eino 框架中的 ChatModel 构建一个简单的 LLM 应用。我们将通过实现一个"程序员鼓励师"的例子，来展示如何使用 ChatModel。
 
 > 💡
-> 本文中示例的代码片段详见：[flow/eino-examples/quickstart/chat/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat/main.go)flow/eino-examples/quickstart/chat/main.go
+> 本文中示例的代码片段详见：[flow/eino-examples/quickstart/chat](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat)
 
 ## **ChatModel 简介**
 
@@ -33,7 +33,7 @@ ChatModel 是 Eino 框架中对对话大模型的抽象，它提供了统一的�
 
 让我们通过实现一个程序员鼓励师来学习如何使用 ChatModel。这个助手不仅能提供技术建议，还能在程序员感到难过时给予心理支持。
 
-### **1. 创建对话模板**
+### 创建对话模板并生成消息
 
 Eino 提供了强大的模板化功能来构建要输入给大模型的消息：
 
@@ -54,58 +54,43 @@ schema.MessagesPlaceholder("chat_history", false)
 下面是完整的 FString 格式 + 消息占位符的对话模板创建及使用代码：
 
 ```go
+// eino-examples/quickstart/chat/template.go
+
 import (
     "context"
-    "fmt"
-    "log"
 
     "github.com/cloudwego/eino/components/prompt"
     "github.com/cloudwego/eino/schema"
 )
 
-func createTemplate() _prompt_._ChatTemplate _{
-    // 创建模板，使用 FString 格式
-    return _prompt_.FromMessages(_schema_._FString_,
-       // 系统消息模板
-       _schema_.SystemMessage("你是一个{role}。你需要用{style}的语气回答问题。你的目标是帮助程序员保持积极乐观的心态，提供技术建议的同时也要关注他们的心理健康。"),
+// 创建模板，使用 FString 格式
+template := prompt.FromMessages(schema.FString,
+   // 系统消息模板
+   schema.SystemMessage("你是一个{role}。你需要用{style}的语气回答问题。你的目标是帮助程序员保持积极乐观的心态，提供技术建议的同时也要关注他们的心理健康。"),
 
-       // 插入需要的对话历史（新对话的话这里不填）
-       _schema_.MessagesPlaceholder("chat_history", true),
+   // 插入需要的对话历史（新对话的话这里不填）
+   schema.MessagesPlaceholder("chat_history", true),
 
-       // 用户消息模板
-       _schema_.UserMessage("问题: {question}"),
-    )
-}
+   // 用户消息模板
+   schema.UserMessage("问题: {question}"),
+)
 
-func createMessagesFromTemplate() ([]*_schema_._Message_, error) {
-    template := createTemplate()
-
-    // 使用模板生成消息
-    return template.Format(_context_.Background(), map[string]any{
-       "role":     "程序员鼓励师",
-       "style":    "积极、温暖且专业",
-       "question": "我的代码一直报错，感觉好沮丧，该怎么办？",
-       // 对话历史（这个例子里模拟两轮对话历史）
-       "chat_history": []*_schema_._Message_{
-          _schema_.UserMessage("你好"),
-          _schema_.AssistantMessage("嘿！我是你的程序员鼓励师！记住，每个优秀的程序员都是从 Debug 中成长起来的。有什么我可以帮你的吗？", nil),
-          _schema_.UserMessage("我觉得自己写的代码太烂了"),
-          _schema_.AssistantMessage("每个程序员都经历过这个阶段！重要的是你在不断学习和进步。让我们一起看看代码，我相信通过重构和优化，它会变得更好。记住，Rome wasn't built in a day，代码质量是通过持续改进来提升的。", nil),
-       },
-    })
-}
-
-func main() {
-    messages, err := createMessagesFromTemplate()
-    if err != nil {
-       _log_.Fatal(err)
-    }
-    _fmt_.Printf("formatted message: %v", messages)
-    // formatted message: [system: 你是一个程序员鼓励师。你需要用积极、温暖且专业的语气回答问题。你的目标是帮助程序员保持积极乐观的心态，提供技术建议的同时也要关注他们的心理健康。 user: 你好 assistant: 嘿！我是你的程序员鼓励师！记住，每个优秀的程序员都是从 Debug 中成长起来的。有什么我可以帮你的吗？ user: 我觉得自己写的代码太烂了 assistant: 每个程序员都经历过这个阶段！重要的是你在不断学习和进步。让我们一起看看代码，我相信通过重构和优化，它会变得更好。记住，Rome wasn't built in a day，代码质量是通过持续改进来提升的。 user: 问题: 我的代码一直报错，感觉好沮丧，该怎么办？]
-}
+// 使用模板生成消息
+messages, err := template.Format(context.Background(), map[string]any{
+   "role":     "程序员鼓励师",
+   "style":    "积极、温暖且专业",
+   "question": "我的代码一直报错，感觉好沮丧，该怎么办？",
+   // 对话历史（这个例子里模拟两轮对话历史）
+   "chat_history": []*schema.Message{
+      schema.UserMessage("你好"),
+      schema.AssistantMessage("嘿！我是你的程序员鼓励师！记住，每个优秀的程序员都是从 Debug 中成长起来的。有什么我可以帮你的吗？", nil),
+      schema.UserMessage("我觉得自己写的代码太烂了"),
+      schema.AssistantMessage("每个程序员都经历过这个阶段！重要的是你在不断学习和进步。让我们一起看看代码，我相信通过重构和优化，它会变得更好。记住，Rome wasn't built in a day，代码质量是通过持续改进来提升的。", nil),
+   },
+})
 ```
 
-### **2. 创建并使用 ChatModel**
+### 创建 ChatModel
 
 ChatModel 是 Eino 框架中最核心的组件之一，它提供了与各种大语言模型交互的统一接口。Eino 目前支持以下大语言模型的实现：
 
@@ -118,148 +103,99 @@ ChatModel 是 Eino 框架中最核心的组件之一，它提供了与各种大�
 
 下面我们以 OpenAI 和 Ollama 为例，展示如何创建和使用 ChatModel：
 
-#### **使用 OpenAI (和下方 ollama 2 选 1)**
+#### **OpenAI (和下方 ollama 2 选 1)**
 
 ```go
+// eino-examples/quickstart/chat/openai.go
+
 import (
-    "context"
-    "fmt"
-    
+    "os"
+
     "github.com/cloudwego/eino-ext/components/model/openai"
 )
 
-func main() {
-    messages, err := createMessagesFromTemplate()
-    if err != nil {
-       _log_.Fatal(err)
-    }
-    // 创建 OpenAI ChatModel, 假设使用 openai 官方服务。
-    chatModel, err := _openai_.NewChatModel(_context_.Background(), &_openai_._ChatModelConfig_{
-       Model:  "gpt-4o",         // 使用的模型版本
-       APIKey: "<your-api-key>", // OpenAI API 密钥
-    })
-    if err != nil {
-       _log_.Fatal(err)
-    }
-
-    // 使用 Generate 获取完整回复
-    response, err := chatModel.Generate(_context_.Background(), messages)
-    if err != nil {
-       _log_.Fatal(err)
-    }
-
-    _fmt_.Println(response.Content) 
-    // 输出模型回复
-    //完全理解你的感受，调试代码有时候会让人倍感挫折。然而，这也是学习和成长的绝佳机会。首先，深呼吸，给自己一点时间放松一下。然后，我们可以循序渐进地解决问题：
-    //
-    //1. **阅读错误信息**：它通常会给出很有用的线索，告诉你出错的文件、行数以及可能的原因。
-    //
-    //2. **检查最近的更改**：有时候最近的修改可能导致了错误。
-    //
-    //3. **分而治之**：把问题分解成小部分，逐步检查代码，看看哪里可能出了错。
-    //
-    //4. **利用调试器**：调试器是程序员的好朋友，可以让你一步一步运行代码观察变量的变化。
-    //
-    //5. **寻求帮助**：别忘了，编程社区是非常乐于助人的，你总能在像Stack Overflow这样的论坛上找到有人遇到过类似的问题。
-    //
-    //最后，不要对自己太苛刻，每次解决一个错误，你都在成为更强的程序员。你一定可以克服这个困难的！加油！🌟
-}
+chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+   Model:  "gpt-4o",                         // 使用的模型版本
+   APIKey: os.Getenv("OPENAI_API_KEY"),      // OpenAI API 密钥
+})
 ```
 
 > OpenAI  ChatModel 的详细信息可以参考：[ChatModel - OpenAI](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
 
-#### **使用 Ollama(和上方 openai 2 选 1)**
+#### **Ollama(和上方 openai 2 选 1)**
 
 Ollama 支持在本地运行开源模型，适合对数据隐私有要求或需要离线使用的场景。
 
 ```go
+// eino-examples/quickstart/chat/ollama.go
+
 import (
-    "context"
-    "fmt"
-    
     "github.com/cloudwego/eino-ext/components/model/ollama"
 )
 
-func main() {
-    messages, err := createMessagesFromTemplate()
-    if err != nil {
-       _log_.Fatal(err)
-    }
-    // 创建 Ollama ChatModel
-    chatModel, err := ollama.NewChatModel(context.Background(), &ollama.ChatModelConfig{
-        BaseURL: "http://localhost:11434", // Ollama 服务地址
-        Model: "llama2",                   // 模型名称
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-    
-    // 使用 Generate 获取完整回复
-    response, err := chatModel.Generate(context.Background(), messages)
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Println(response.Content)  // 输出模型回复
-}
+
+chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
+    BaseURL: "http://localhost:11434", // Ollama 服务地址
+    Model:   "llama2",                 // 模型名称
+})
 ```
 
 > OpenAI 相关信息，可以参考：[ChatModel - Ollama](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
 
 无论使用哪种实现，ChatModel 都提供了一致的接口，这意味着你可以轻松地在不同的模型之间切换，而无需修改大量代码。
 
-### **3. 处理流式响应**
+### 运行 ChatModel
 
-在实际应用中，有很多场景需要使用流式响应，主要的场景例如「提升用户体验」：像 ChatGPT 一样逐字输出，让用户能够更早看到响应开始。
-
-对于需要流式输出的场景，可以使用 ChatModel 的 Stream 方法：
+经过前两步得到 ChatModel 的输入 messages 和初始化完成后的 ChatModel 实例后，可以开始尝试运行 ChatModel 了。Eino ChatModel 提供了两种运行模式：输出完整消息(generate)和输出消息流(stream)：
 
 ```go
+// eino-examples/quickstart/chat/generate.go
+
+/*** create messages
+* messages, err := xxx
+*/
+
+/*** create chat model
+* chatModel, err := xxx
+*/ 
+
+result, err := chatModel.Generate(ctx, messages)
+streamResult, err := chatModel.Stream(ctx, messages)
+```
+
+在实际应用中，有很多场景需要使用流式响应，主要的场景例如「提升用户体验」：stream 运行模式让 ChatModel 提供类似打字机的输出效果，使用户更早得到模型响应。
+
+Eino 中对流式输出的处理方式如下：
+
+```go
+// eino-examples/quickstart/chat/stream.go
+
 import (
-    "context"
-    "fmt"
     "io"
     "log"
 
-    "github.com/cloudwego/eino-ext/components/model/openai"
+    "github.com/cloudwego/eino/schema"
 )
 
-func main() {
-    messages, err := createMessagesFromTemplate()
-    if err != nil {
-       _log_.Fatal(err)
-    }
-    // 创建 OpenAI ChatModel, 假设使用 openai 官方服务。
-    chatModel, err := _openai_.NewChatModel(_context_.Background(), &_openai_._ChatModelConfig_{
-       Model:  "gpt-4o",         // 使用的模型版本
-       APIKey: "<your-api-key>", // OpenAI API 密钥
-    })
-    if err != nil {
-       _log_.Fatal(err)
-    }
+func reportStream(sr *schema.StreamReader[*schema.Message]) {
+    defer sr.Close()
 
-
-    // 使用 Stream 获取流式响应
-    stream, err := chatModel.Stream(context.Background(), messages)
-    if err != nil {
-        log.Fatal(err)
-    }
-    
-    // 处理流式响应
+    i := 0
     for {
-        chunk, err := stream.Recv()
-        if err == io.EOF {
-            // stream结束
-            break
-        }
-        if err != nil {
-            log.Fatal(err)
-        }
-        
-        // 处理响应片段
-        fmt.Print(chunk.Content)
+       message, err := sr.Recv()
+       if err == io.EOF { // 流式输出结束
+          return
+       }
+       if err != nil {
+          log.Fatalf("recv failed: %v", err)
+       }
+       log.Printf("message[%d]: %+v\n", i, message)
+       i++
     }
 }
 ```
+
+完整实现参见：[flow/eino-examples/quickstart/chat/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat/main.go)
 
 ## **总结**
 

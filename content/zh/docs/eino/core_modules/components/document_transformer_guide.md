@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Document Transformer 使用说明'
@@ -38,8 +38,6 @@ type Transformer interface {
   - error：转换过程中的错误信息
 
 ### **Document 结构体**
-
-【TODO】 可把所有的公共结构体放到一个特定的地方
 
 ```go
 type Document struct {

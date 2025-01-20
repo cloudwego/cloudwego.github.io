@@ -27,7 +27,7 @@ weight: 1
 </td>
 <td>
 1. <strong>通过Marketplace，搜索Eino Dev 插件并按照</strong>
-<img src="/img/eino/S0yAbpcV8oauOpxgGKlcn6lVn6g.png" />
+<img src="/img/eino/eino_install_page_2_page.png" />
 
 </td>
 </tr></tbody></table>
@@ -39,22 +39,25 @@ weight: 1
 
 ## 功能简介
 
+### **EinoDev Graph 编排**
+
 <table><tbody><tr>
 <td>
-
-<strong>EinoDev Graph 调试</strong>
-<img src="/img/eino/eino_debug_run_page.png" />
-
-<img src="/img/eino/eino_debug_test_run_of_mock_data_page.png" />
-
+<img src="/img/eino/eino_orchestration_index_page.png" />
 </td>
 <td>
-
-<strong>EinoDev Graph 编排</strong>
-<img src="/img/eino/eino_orchestration_index_page.png" />
-
 <img src="/img/eino/eino_orchestration_show_nodes_2_page.png" />
+</td>
+</tr></tbody></table>
 
+### **EinoDev Graph 调试**
+
+<table><tbody><tr>
+<td>
+<img src="/img/eino/eino_debug_run_page.png" />
+</td>
+<td>
+<img src="/img/eino/eino_debug_test_run_of_mock_data_page.png" />
 </td>
 </tr></tbody></table>
 

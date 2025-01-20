@@ -9,10 +9,10 @@ weight: 0
 
 # 简介
 
-Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/) React 逻辑 的智能体框架，用户可以用来快速灵活地构建并调用 React Agent.
+Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/) 的智能体框架，用户可以用来快速灵活地构建并调用 React Agent.
 
 > 💡
-> 代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)实现代码目录
+> 代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)
 
 Example 代码路径：[https://github.com/cloudwego/eino-examples/blob/main/flow/agent/react/react.go](https://github.com/cloudwego/eino-examples/blob/main/flow/agent/react/react.go)
 
@@ -26,7 +26,7 @@ react agent 底层使用 `compose.Graph` 作为编排方案，一般来说有 2 
 
 ## 初始化
 
-提供了 ReactAgent 初始化函数，必填参数为 Model 和 ToolsConfig，选填参数为 MessageModifier 和 MaxStep.
+提供了 ReactAgent 初始化函数，必填参数为 Model 和 ToolsConfig，选填参数为 MessageModifier, MaxStep, ToolReturnDirectly 和 StreamToolCallChecker.
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/openai@latest
@@ -436,7 +436,7 @@ func main() {
 
 简介：这是一个拥有两个 tool (query_restaurants 和 query_dishes ) 的 `美食推荐官`
 
-地址：[eino-examples/flow/agent/react](https://github.com/cloudwego/eino-examples/tree/main/flow/agent/react)eino-examples/flow/agent/react
+地址：[eino-examples/flow/agent/react](https://github.com/cloudwego/eino-examples/tree/main/flow/agent/react)
 
 使用方式:
 

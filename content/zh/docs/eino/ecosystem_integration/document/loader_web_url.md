@@ -32,9 +32,9 @@ import (
 
 func main() {
     loader, err := url.NewLoader(ctx, &url.LoaderConfig{
-        Parser:         parser,           // 可选：自定义解析器，默认使用 HTML 解析器
-        Client:         httpClient,       // 可选：自定义 HTTP 客户端
-        RequestBuilder: requestBuilder,   // 可选：自定义请求构建器
+        Parser:         parser,
+        Client:         httpClient,
+        RequestBuilder: requestBuilder,
     })
 }
 ```

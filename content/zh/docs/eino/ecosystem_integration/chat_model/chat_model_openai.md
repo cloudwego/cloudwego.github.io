@@ -22,6 +22,8 @@ OpenAI 模型是 ChatModel 接口的一个实现，用于与 OpenAI 的 GPT 系�
 OpenAI 模型通过 `NewChatModel` 函数进行初始化，主要配置参数如下：
 
 ```go
+import "github.com/cloudwego/eino-ext/components/model/openai"
+
 func main() {
     model, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
         // Azure OpenAI Service 配置（可选）

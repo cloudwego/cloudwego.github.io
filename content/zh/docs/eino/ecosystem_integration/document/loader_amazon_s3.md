@@ -83,8 +83,7 @@ import (
 
 func main() {
     ctx := context.Background()
-    
-    // 初始化加��器
+
     loader, err := s3.NewS3Loader(ctx, &s3.LoaderConfig{
         Region:           aws.String("us-east-1"),
         AWSAccessKey:     aws.String("your-access-key"),

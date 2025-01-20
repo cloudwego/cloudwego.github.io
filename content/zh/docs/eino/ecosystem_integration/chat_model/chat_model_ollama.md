@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: ChatModel - Ollama
@@ -18,7 +18,9 @@ Ollama 模型是 ChatModel 接口的一个实现，用于与 Ollama 本地大语
 Ollama 模型通过 `NewChatModel` 函数进行初始化，主要配置参数如下：
 
 ```go
-model, err := NewChatModel(ctx, &ChatModelConfig{
+import "github.com/cloudwego/eino-ext/components/model/ollama"
+
+model, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
     // 基础配置
     BaseURL:  "http://localhost:11434", // Ollama 服务地址
     Timeout:  30 * time.Second,         // 请求超时时间
@@ -210,4 +212,4 @@ func main() {
 - [[🚧]Eino: ChatModel 使用说明](/zh/docs/eino/core_modules/components/chat_model_guide)
 - [[🚧]ChatModel - OpenAI](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
 - [[🚧]Eino: ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)
-- [Ollama 模型库](https://ollama.ai/library) Ollama 模型库
+- [Ollama 模型库](https://ollama.ai/library)

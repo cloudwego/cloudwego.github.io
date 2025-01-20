@@ -66,7 +66,7 @@ type Options struct {
 
 最基础的文本解析器，将输入内容直接作为文档内容：
 
-> 代码位置：eino-ext/components/document/parser/textparser
+> 代码位置：eino-examples/components/document/parser/textparser
 
 ```go
 import "github.com/cloudwego/eino/components/document/parser"
@@ -81,31 +81,61 @@ logs.Infof("text content: %v", docs[0].Content)
 
 基于文件扩展名的解析器，可以根据文件扩展名自动选择合适的解析器：
 
-```go
-// 创建扩展解析器
-parser, err := NewExtParser(ctx, &ExtParserConfig{
-    // 注册特定扩展名的解析器
-    Parsers: map[string]Parser{
-        ".html": html.NewParser(&html.ParserConfig{
-            Selector: ".body"
-        }),
-        ".pdf": pdf.NewParser(&pdf.ParserConfig{}),
-    },
-    // 设置默认解析器，用于处理未知格式
-    FallbackParser: TextParser{},
-})
-if err != nil {
-    return err
-}
+> 代码位置：eino-examples/components/document/parser/extparser
 
-// 使用解析器
-file, _ := os.Open("./document.html")
-docs, err := parser.Parse(ctx, file, 
-    WithURI("./document.html"), // 必须提供 URI 以便选��正确的解析器
-    WithExtraMeta(map[string]any{
-        "source": "local",
-    }),
+```go
+package main
+
+import (
+    "context"
+    "os"
+
+    "github.com/cloudwego/eino-ext/components/document/parser/html"
+    "github.com/cloudwego/eino-ext/components/document/parser/pdf"
+    "github.com/cloudwego/eino/components/document/parser"
+
+    "github.com/cloudwego/eino-examples/internal/gptr"
+    "github.com/cloudwego/eino-examples/internal/logs"
 )
+
+func main() {
+    ctx := context.Background()
+
+    textParser := parser.TextParser{}
+
+    htmlParser, _ := html.NewParser(ctx, &html.Config{
+       Selector: gptr.Of("body"),
+    })
+
+    pdfParser, _ := pdf.NewPDFParser(ctx, &pdf.Config{})
+
+    // 创建扩展解析器
+    extParser, _ := parser.NewExtParser(ctx, &parser.ExtParserConfig{
+       // 注册特定扩展名的解析器
+       Parsers: map[string]parser.Parser{
+          ".html": htmlParser,
+          ".pdf":  pdfParser,
+       },
+       // 设置默认解析器，用于处理未知格式
+       FallbackParser: textParser,
+    })
+
+    // 使用解析器
+    filePath := "./testdata/test.html"
+    file, _ := os.Open(filePath)
+    
+    docs, _ := extParser.Parse(ctx, file,
+       // 必须提供 URI ExtParser 选择正确的解析器进行解析
+       parser.WithURI(filePath),
+       parser.WithExtraMeta(map[string]any{
+          "source": "local",
+       }),
+    )
+
+    for idx, doc := range docs {
+       logs.Infof("doc_%v content: %v", idx, doc.Content)
+    }
+}
 ```
 
 ### 其他实现

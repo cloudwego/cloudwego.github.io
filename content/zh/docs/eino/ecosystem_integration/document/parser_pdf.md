@@ -101,7 +101,7 @@ func main() {
     docs, err := p.Parse(ctx, file, 
         parser.WithURI("document.pdf"),
         parser.WithExtraMeta(map[string]any{
-            "source": "local",
+            "source": "./document.pdf",
         }),
     )
     if err != nil {

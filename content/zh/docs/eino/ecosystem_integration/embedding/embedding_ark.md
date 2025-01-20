@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Embedding - ARK
@@ -18,7 +18,9 @@ Ark Embedding 是 Eino Embedding 接口的一个实现，用于将文本转换�
 Ark 向量嵌入器通过 `NewEmbedder` 函数进行初始化，主要配置参数如下：
 
 ```go
-embedder, err := NewEmbedder(ctx, &EmbeddingConfig{
+import "github.com/cloudwego/eino-ext/components/embedding/ark"
+
+embedder, err := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{
     // 认证配置（二选一）
     APIKey: "your-api-key",  // 使用 API Key 认证
     // 或使用 AK/SK 认证
@@ -99,4 +101,4 @@ func main() {
 
 - [Eino: Embedding 使用说明](/zh/docs/eino/core_modules/components/embedding_guide)
 - [Embedding - OpenAI](/zh/docs/eino/ecosystem_integration/embedding/embedding_openai)
-- [火山引擎 Ark 服务](https://www.volcengine.com/product/ark)火山引擎 Ark 服务
+- [火山引擎 Ark 服务](https://www.volcengine.com/product/ark)

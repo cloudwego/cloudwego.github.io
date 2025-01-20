@@ -234,4 +234,4 @@ func main() {
 - [[🚧]Eino: ChatModel 使用说明](/zh/docs/eino/core_modules/components/chat_model_guide)
 - [[🚧]ChatModel - OpenAI](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
 - [[🚧]ChatModel - Ollama](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
-- [火山引擎官网](https://www.volcengine.com/product/doubao)火山引擎官网
+- [火山引擎官网](https://www.volcengine.com/product/doubao)

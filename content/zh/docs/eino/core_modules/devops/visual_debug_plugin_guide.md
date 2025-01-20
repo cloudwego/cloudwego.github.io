@@ -58,7 +58,7 @@ go mod tidy
 <td>
 
 2.点击配置调试地址
-<img src="/img/eino/Wy7abH4QZoJzLQxAlLscmnnDnHh.png" />
+<img src="/img/eino/eino_debug_config_3_page.png" />
 
 </td>
 </tr></tbody></table>
@@ -67,13 +67,13 @@ go mod tidy
 <td>
 
 3.填入 127.0.0.1:52538
-<img src="/img/eino/SHvXbcIRko3tA0xUgFQcMH6Vned.png" />
+<img src="/img/eino/eino_debug_config_2_page.png" />
 
 </td>
 <td>
 
 4.点击确认进入调试界面，选择要调试的 Graph
-<img src="/img/eino/NAQIbC4yxoKcsRx3tmkc9ZjEnAg.png" />
+<img src="/img/eino/eino_orchestration_index_2_page.png" />
 
 </td>
 </tr></tbody></table>
@@ -120,7 +120,7 @@ go mod tidy
 ## 编排拓扑可视化
 
 支持 Graph 和 Chain 编排拓扑可视化。
-![](/img/eino/R8EYbfenDoeMnfxGjJ9cZ6Hjnff.png)
+![](/img/eino/eino_debug_list_nodes_page.png)
 
 ## 从任意节点开始调试
 
@@ -245,7 +245,7 @@ func main() {
 > - 远程服务器调试：需要你保证端口可访问。
 
 IP 和 Port 配置完成后，点击确认，调试插件会自动连接到目标调试服务器。如果成功连接，连接状态指示器会变成绿色。
-![](/img/eino/XnWRblIfroE1f2xENJ0cafzknKe.png)
+![](/img/eino/eino_debug_ip_port_show_page.png)
 
 ## 选择目标调试编排产物
 
