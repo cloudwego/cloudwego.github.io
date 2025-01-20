@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Agent-让大模型拥有双手
@@ -119,8 +119,8 @@ import (
 )
 
 func main() {
-// 创建 duckduckgo Search 工具
-searchTool, err := duckduckgo.NewTool(ctx, &duckduckgo.Config{})
+    // 创建 duckduckgo Search 工具
+    searchTool, err := duckduckgo.NewTool(ctx, &duckduckgo.Config{})
     if err != nil {
         log.Fatal(err)
     }
@@ -150,10 +150,10 @@ func main() {
 func main() {
     // 初始化 tools
     todoTools := []tool.BaseTool{
-        getAddTodoTool(),                                // 使用 NewTool 方式
+        getAddTodoTool(),                               // 使用 NewTool 方式
         updateTool,                                     // 使用 InferTool 方式
-        &ListTodoTool{},
-        searchTool,                                 // 使用结构体实现方式, 此处未实现底层逻辑
+        &ListTodoTool{},                                // 使用结构体实现方式, 此处未实现底层逻辑
+        searchTool,                                 
     }
 
     // 创建并配置 ChatModel
@@ -205,10 +205,10 @@ func main() {
     }
 
     // 运行示例
-    resp, err := agent.Invoke(context.Background(), []*schema.Message{
+    resp, err := agent.Invoke(ctx, []*schema.Message{
         {
-            Role:    schema.User,
-            Content: "添加一个学习 Eino 的 TODO，同时搜索一下 cloudwego/eino 的仓库地址",
+           Role:    schema.User,
+           Content: "添加一个学习 Eino 的 TODO，同时搜索一下 cloudwego/eino 的仓库地址",
         },
     })
     if err != nil {
@@ -250,4 +250,3 @@ Agent 是 AI 技术发展的重要方向。它不仅能够理解用户意图，�
 
 - 快速开始
   - [实现一个最简 LLM 应用-ChatModel](/zh/docs/eino/quick_start/simple_llm_application)
-  - [复杂业务逻辑的利器-编排](/zh/docs/eino/quick_start/complex_business_logic_orchestration)

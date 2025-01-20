@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Indexer 使用说明'
@@ -142,7 +142,7 @@ result, err := runnable.Invoke(ctx, docs, compose.WithCallbacks(helper))
 
 ## **已有实现**
 
-1. Volc VikingDB Indexer: 基于火山引擎 VikingDB 实现的向量数据库索引器 [Indexer - VikingDB](/zh/docs/eino/ecosystem_integration/indexer_volc_vikingdb)
+1. Volc VikingDB Indexer: 基于火山引擎 VikingDB 实现的向量数据库索引器 [Indexer - VikingDB](/zh/docs/eino/ecosystem_integration/indexer/indexer_volc_vikingdb)
 
 ## **自行实现参考**
 

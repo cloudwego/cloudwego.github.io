@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: 编排的设计理念'
@@ -127,7 +127,6 @@ parallel 节点的输出一定是一个 `map[string]any`，其中的 key 则是�
 ```go
 func TestParallel() {
     chain := compose.NewChain[map[string]any, map[string]*schema.Message]()
-    templateNode := &fakeTemplateNode{} // input: map[string]any, output: []*schema.Message
     
     parallel := compose.NewParallel()
     model01 := &fakeChatModel{} // input: []*schema.Message, output: *schema.Message
@@ -171,58 +170,72 @@ Workflow 的类型对齐的维度，由整体的 Input & Output 改成了字段�
 
 ### invoke 和 stream 下的类型对齐方式
 
-在 eino 中，编排的结果是 graph 或 chain，若要运行，则需要使用 `Compile()` 来生成一个 `Runnable` 接口。
+在 Eino 中，编排的结果是 graph 或 chain，若要运行，则需要使用 `Compile()` 来生成一个 `Runnable` 接口。
 
-Runnable 的一个重要作用就是提供了 `invoke`、`stream`、`collect`、`transform` 几种调用方式的降级兼容。
+Runnable 的一个重要作用就是提供了 `I``nvoke`、`S``tream`、`C``ollect`、`T``ransform` 四种调用方式。
 
 > 上述几种调用方式的介绍以及详细的 Runnable 介绍可以查看: [Eino: 基础概念介绍](/zh/docs/eino/overview)
 
-以我们最常见的 invoke 和 stream 模式为例，其接口签名如下：
+假设我们有一个 `Graph[[]*schema.Message, []*schema.Message]`，里面有一个 ChatModel 节点，一个 Lambda 节点，Compile 之后是一个 `Runnable[[]*schema.Message, []*schema.Message]`。
 
 ```go
-type Runnable[I, O any] interface {
-    Invoke(ctx context.Context, input I, opts ...Option) (output O, err error)
-    Stream(ctx context.Context, input I, opts ...Option) (output *schema.StreamReader[O], err error)
-}
-```
+package main
 
-以 chat model 的场景为例，Runnable 加上 I,O 类型后签名如下：
+import (
+    "context"
+    "io"
+    "testing"
 
-```go
-type Runnable interface {
-    Invoke(ctx context.Context, input []*schema.Message, opts ...Option) (output *schema.Message, err error)
-    Stream(ctx context.Context, input []*schema.Message, opts ...Option) (output *schema.StreamReader[*schema.Message], err error)
-}
-```
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+    "github.com/stretchr/testify/assert"
+)
 
-在 Invoke 模式下，返回的 output 的类型为 `*schema.Message`； 在 Stream 模式下，其返回的 output 类型必须为 `*schema.StreamReader[*schema.Message]`。也就是 stream 的每一帧的类型和 invoke 的结果类型是相同的。
+func TestTypeMatch(t *testing.T) {
+    ctx := context.Background()
 
-一般来说，Stream 得到的每一帧合并起来应当和 invoke 的结果相同，在上面这个场景中，也即要求：
+    g1 := compose.NewGraph[[]*schema.Message, string]()
+    _ = g1.AddChatModelNode("model", &mockChatModel{})
+    _ = g1.AddLambdaNode("lambda", compose.InvokableLambda(func(_ context.Context, msg *schema.Message) (string, error) {
+       return msg.Content, nil
+    }))
+    _ = g1.AddEdge(compose.START, "model")
+    _ = g1.AddEdge("model", "lambda")
+    _ = g1.AddEdge("lambda", compose.END)
 
-```go
-func TestInvokeAndStream() {
-    var r Runnable[[]*schema.Message, *schema.Message]
-    
-    reader, err := r.Stream(...)
-    allFrames := make([]*schema.Message, 0)
+    runner, err := g1.Compile(ctx)
+    assert.NoError(t, err)
+
+    c, err := runner.Invoke(ctx, []*schema.Message{
+       schema.UserMessage("what's the weather in beijing?"),
+    })
+    assert.NoError(t, err)
+    assert.Equal(t, "the weather is good", c)
+
+    s, err := runner.Stream(ctx, []*schema.Message{
+       schema.UserMessage("what's the weather in beijing?"),
+    })
+    assert.NoError(t, err)
+
+    var fullStr string
     for {
-        frame, err := reader.Recev()
-        ...
-        allFrames = append(allFrames, frame)
-        ...
+       chunk, err := s.Recv()
+       if err != nil {
+          if err == io.EOF {
+             break
+          }
+          panic(err)
+       }
+
+       fullStr += chunk
     }
-    
-    invokeRes, err := r.Invoke(...)
-    
-    // allFrames 合并后需要和 invokeRes 相同
+    assert.Equal(t, c, fullStr)
 }
 ```
 
-在 stream 模式下，`合并帧` 是一个非常常见的操作，例如在和大模型的交互中，可以把已经接收到的所有帧拼接起来（Concatenate），得到一个完整的输出。
+当我们以 Stream 方式调用上面编译好的 Runnable 时，model 节点会输出 `*schema.StreamReader[*Message]`，但是 lambda 节点是 InvokableLambda，只接收非流式的 `*schema.Message` 作为输入。这也符合类型对齐规则，因为 Eino 框架会自动把流式的 Message 拼接成完整的 Message。
 
-另外，在框架中，当一个仅提供了 Stream 接口的节点，被编排后使用 Invoke 调用，框架则会把 Stream 降级为 Invoke，此时的操作是 底层调用开发者提供的 Stream 接口，获取完整的帧后，把所有帧合并，得到的结果再流转到下一节点。 这个过程中，也是使用的 `拼接``帧` 。
-
-拼接时，会先把 `*StreamReader[T] ` 中的所有元素取出来转成 `[]T`。框架内已经内置支持了如下类型的拼接:
+在 stream 模式下，`拼接``帧` 是一个非常常见的操作，拼接时，会先把 `*StreamReader[T] ` 中的所有元素取出来转成 `[]T`，再尝试把 `[]T` 拼接成一个完整的 `T`。框架内已经内置支持了如下类型的拼接:
 
 - `*schema.Message`:  详情见 `schema.ConcatMessages()`
 - `string`: 实现逻辑等同于 `+=`
@@ -251,7 +264,7 @@ func concatTStreamForTest(items []*tStreamConcatItemForTest) (*tStreamConcatItem
     return &tStreamConcatItemForTest{s: s}, nil
 }
 
-func init() {
+func Init() {
     // 注册到全局的拼接方法中
     compose.RegisterStreamChunkConcatFunc(concatTStreamForTest)
 }
@@ -268,16 +281,6 @@ eino 的 Graph 类型对齐检查，会在 `err = graph.AddEdge("node1", "node2"
 ![](/img/eino/input_type_output_type_in_edge.png)
 
 这种场景适用于开发者能自行处理好上下游类型对齐的情况，可根据不同类型选择下游执行节点。
-
-## 大模型场景的编排
-
-eino 在编排中的是以大模型应用为核心场景的编排系统，因此在 eino 的编排设计中，是直接把 `component` 作为了编排的直接主体，封装了在大模型应用中最常用的组件，详细的 API 查看： [Eino: 基础概念介绍](/zh/docs/eino/overview)
-
-大多数情况下，业务的实现应当把自己的组件实现为上述组件中的一种，或者直接使用 eino-ext 中已经封装好的组件。
-
-当然，除了上述标准的组件外，还有很多场景我们需要实现一些自定义的代码逻辑，在 eino 中，这就是 `Lambda` 组件。这是一个很泛化的组件，可以基于这个基础组件实现几乎所有的需求，实际上，在 eino 内部，上述的组件也都是使用 lambda 来实现的。
-
-> 更多信息可以参考： [Eino: Components 抽象&实现](/zh/docs/eino/core_modules/components)
 
 ## 带有明确倾向性的设计选择
 

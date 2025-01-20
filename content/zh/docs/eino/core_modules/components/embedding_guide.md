@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Embedding 使用说明'
@@ -60,7 +60,7 @@ WithModel(model string) Option
 
 ```go
 // 初始化 embedder (以 openai 为例)
-embedder, err := openai.NewEmbedder(ctx, &openai.EmbedderConfig{
+embedder, err := openai.NewEmbedding(ctx, &openai.Config{
     // 配置参数
 })
 if err != nil {

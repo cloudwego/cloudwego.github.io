@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Tool - Googlesearch
@@ -18,7 +18,9 @@ Google 搜索工具是 Eino InvokableTool 接口的一个实现，用于通过 G
 Google 搜索工具通过 `NewGoogleSearchTool` 函数进行初始化，主要配置参数如下：
 
 ```go
-tool, err := NewGoogleSearchTool(ctx, &Config{
+import "github.com/cloudwego/eino-ext/components/tool/googlesearch"
+
+tool, err := googlesearch.NewTool(ctx, &googlesearch.Config{
     APIKey:         "your-api-key",        // Google API 密钥
     SearchEngineID: "your-engine-id",      // 搜索引擎 ID
     BaseURL:        "custom-base-url",     // 可选：自定义 API 基础 URL, default: https://customsearch.googleapis.com
@@ -58,7 +60,7 @@ func main() {
     ctx := context.Background()
     
     // 初始化搜索工具
-    searchTool, err := googlesearch.NewGoogleSearchTool(ctx, &googlesearch.Config{
+    searchTool, err := googlesearch.NewTool(ctx, &googlesearch.Config{
         APIKey:         "your-api-key",
         SearchEngineID: "your-engine-id",
         Lang:           "zh-CN",

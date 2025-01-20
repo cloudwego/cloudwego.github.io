@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-16"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: 概述'
@@ -23,8 +23,6 @@ Eino 可在 AI 应用开发周期中的不同阶段，规范、简化和提效�
 - Debugging: 可对图编排的应用，进行可视化的开发调试
 - Deployment: 提供丰富的对 AI 应用的评测能力
 - Maintenance: 提供丰富的切面对 AI 应用进行观测、监控
-
-![](/img/eino/eino_project_structure_and_modules.png)
 
 完整 API Reference：[https://pkg.go.dev/github.com/cloudwego/eino](https://pkg.go.dev/github.com/cloudwego/eino)
 
@@ -82,6 +80,8 @@ runnable.Stream(ctx, []*Message{UserMessage("help me plan my weekend")})
 ```
 
 现在，我们来创建一个 Workflow，它能在字段级别灵活映射输入与输出：
+
+![](/img/eino/graph_node_type1.png)
 
 ```go
 wf := NewWorkflow[[]*Message, *Message]()
@@ -439,10 +439,9 @@ func (g *graph) AddLambdaNode(key string, node *Lambda, opts ...GraphAddNodeOpt)
     return g.addNode(key, toLambdaNode(key, node, opts...))
 }
 
-// AddGraphNode add one kind of Graph[I, O]、Chain[I, O]、StateChain[I, O, S] as a node.
+// AddGraphNode add one kind of Graph[I, O]、Chain[I, O] as a node.
 // for Graph[I, O], comes from NewGraph[I, O]()
 // for Chain[I, O], comes from NewChain[I, O]()
-// for StateGraph[I, O, S], comes from NewStateGraph[I, O, S]()
 func (g *graph) AddGraphNode(key string, node AnyGraph, opts ...GraphAddNodeOpt) error {
     return g.addNode(key, toAnyGraphNode(key, node, opts...))
 }
@@ -498,7 +497,7 @@ func (g *graph) AddBranch(startNode string, branch *GraphBranch) (err error) {}
 ###### **Parallel**
 
 - 将多个 Node 平行并联， 形成多个节点并发执行的节点
-- 无 AddParallel 方法，通过 AddEdge 构建并联的多条拓扑路径，以次形成 **Parallel **
+- 无 AddParallel 方法，通过 AddEdge 构建并联的多条拓扑路径，以此形成 **Parallel **
 
 ![](/img/eino/input_keys_output_keys_in_parallel.png)
 
@@ -553,7 +552,7 @@ parallel := NewParallel()
 parallel.AddChatModel("output_key01", chat01)
 parallel.AddChatModel("output_key01", chat02)
 
-chain := NewChain[any,any]()
+chain := NewChain[[]*schema.Message,*schema.Message]()
 chain.AppendParallel(parallel)
 ```
 
@@ -572,14 +571,17 @@ chain.AppendParallel(parallel)
 // that wraps the provided cond to handle type assertions and error checking.
 // eg.
 
-condition := func(ctx context.Context, in string, opts ...any) (endNode string, err error) {
+condition := func(ctx context.Context, in string) (endNode string, err error) {
     // logic to determine the next node
-    return "some_next_node_key", nil
+    if len(in) == 0 {
+        return "node_1", nil
+    }
+    return "node_2", nil 
 }
 
 cb := NewChainBranch[string](condition)
-cb.AddPassthrough("next_node_key_01", xxx) // node in branch, represent one path of branch
-cb.AddPassthrough("next_node_key_02", xxx) // node in branch
+cb.AddLambda("node_1", lambda1) // node in branch, represent one path of branch
+cb.AddLambda("node_2", lambda2) // node in branch
 
 chain := NewChain[string, string]()
 chain.AppendBranch(cb)

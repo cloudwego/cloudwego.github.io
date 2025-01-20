@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Embedding - OpenAI
@@ -22,7 +22,9 @@ OpenAI 向量嵌入器是 Eino Embedding 接口的一个实现，用于将文本
 OpenAI 向量嵌入器通过 `NewEmbedder` 函数进行初始化，主要配置参数如下：
 
 ```go
-embedder, err := NewEmbedder(ctx, &EmbeddingConfig{
+import "github.com/cloudwego/eino-ext/components/embedding/openai"
+
+embedder, err := openai.NewEmbedder(ctx, &openai.EmbeddingConfig{
     // OpenAI API 配置
     APIKey:  "your-api-key",
     Model:   "text-embedding-ada-002",
@@ -32,8 +34,7 @@ embedder, err := NewEmbedder(ctx, &EmbeddingConfig{
     ByAzure:    true,
     BaseURL:    "https://your-resource.openai.azure.com",
     APIVersion: "2023-05-15",
-    
-    // 可选：高级配置
+
     EncodingFormat: &format,    // 编码格式
     Dimensions:     &dimension, // 向量维度
     User:          &user,      // 用户标识

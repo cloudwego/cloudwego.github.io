@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Retriever - volc VikingDB
@@ -18,9 +18,11 @@ weight: 0
 火山引擎 VikingDB 检索器通过 `NewRetriever` 函数进行初始化，主要配置参数如下：
 
 ```go
-retriever, err := NewRetriever(ctx, &RetrieverConfig{
+import    "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
+
+retriever, err := volc_vikingdb.NewRetriever(ctx, &volc_vikingdb.RetrieverConfig{
     // 服务配置
-    Host:              "api.volcengineapi.com", // 服务地址
+    Host:              "api-vikingdb.volces.com", // 服务地址
     Region:            "cn-beijing",            // 区域
     AK:                "your-ak",               // 访问密钥 ID
     SK:                "your-sk",               // 访问密钥密码
@@ -32,7 +34,7 @@ retriever, err := NewRetriever(ctx, &RetrieverConfig{
     Index:      "index-name",      // 索引名称
     
     // 向量化配置
-    EmbeddingConfig: EmbeddingConfig{
+    EmbeddingConfig: volc_vikingdb.EmbeddingConfig{
         UseBuiltin:   true,        // 是否使用内置向量化
         ModelName:    "model-name",// 模型名称
         UseSparse:    true,        // 是否使用稀疏向量
@@ -80,7 +82,7 @@ func main() {
     
     // 初始化检索器
     r, err := volc_vikingdb.NewRetriever(ctx, &volc_vikingdb.RetrieverConfig{
-        Host:       "api.volcengineapi.com",
+        Host:       "api-vikingdb.volces.com",
         Region:     "cn-beijing",
         AK:         "your-ak",
         SK:         "your-sk",
@@ -136,7 +138,7 @@ func main() {
     
     // 初始化检索器
     r, err := volc_vikingdb.NewRetriever(ctx, &volc_vikingdb.RetrieverConfig{
-        Host:       "api.volcengineapi.com",
+        Host:       "api-vikingdb.volces.com",
         Region:     "cn-beijing",
         AK:         "your-ak",
         SK:         "your-sk",

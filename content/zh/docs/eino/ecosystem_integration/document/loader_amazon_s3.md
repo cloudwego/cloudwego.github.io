@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Loader - amazon s3
@@ -22,13 +22,19 @@ Amazon Simple Storage Service (Amazon S3) 是一种对象存储服务，提供�
 S3 文档加载器通过 `NewS3Loader` 函数进行初始化，主要配置参数如下：
 
 ```go
-loader, err := NewS3Loader(ctx, &LoaderConfig{
-    Region:           aws.String("us-east-1"),        // AWS 区域
-    AWSAccessKey:     aws.String("your-access-key"),  // AWS 访问密钥ID
-    AWSSecretKey:     aws.String("your-secret-key"),  // AWS 访问密钥
-    UseObjectKeyAsID: true,                           // 是否使用对象键作为文档ID
-    Parser:           &parser.TextParser{},           // 文档解析器，默认为 TextParser
-})
+import (
+  "github.com/cloudwego/eino-ext/components/document/loader/s3"
+)
+
+func main() {
+    loader, err := s3.NewS3Loader(ctx, &s3.LoaderConfig{
+        Region:           aws.String("us-east-1"),        // AWS 区域
+        AWSAccessKey:     aws.String("your-access-key"),  // AWS 访问密钥ID
+        AWSSecretKey:     aws.String("your-secret-key"),  // AWS 访问密钥
+        UseObjectKeyAsID: true,                           // 是否使用对象键作为文档ID
+        Parser:           &parser.TextParser{},           // 文档解析器，默认为 TextParser
+    })
+}
 ```
 
 配置参数说明：
@@ -71,15 +77,14 @@ import (
     "context"
     
     "github.com/aws/aws-sdk-go-v2/aws"
-    s3loader "github.com/cloudwego/eino-ext/components/document/loader/s3"
+    "github.com/cloudwego/eino-ext/components/document/loader/s3"
     "github.com/cloudwego/eino/components/document"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // 初始化加��器
-    loader, err := s3loader.NewS3Loader(ctx, &s3loader.LoaderConfig{
+
+    loader, err := s3.NewS3Loader(ctx, &s3.LoaderConfig{
         Region:           aws.String("us-east-1"),
         AWSAccessKey:     aws.String("your-access-key"),
         AWSSecretKey:     aws.String("your-secret-key"),

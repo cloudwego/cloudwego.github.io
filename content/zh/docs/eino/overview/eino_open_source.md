@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 大语言模型应用开发框架 —— Eino 正式开源！
@@ -177,7 +177,7 @@ Eino 框架的设计开发过程，扎根于 “满足真实需求” 与 “实
 
 项目地址：[https://github.com/cloudwego/eino](https://github.com/cloudwego/eino)，[https://github.com/cloudwego/eino-ext](https://github.com/cloudwego/eino-ext)
 
-项目官网：<u>[https://www.cloudwego.io](https://www.cloudwego.io)</u>
+项目官网：__[https://www.cloudwego.io](https://www.cloudwego.io)__
 
 扫描二维码加入飞书社群：
 ![](/img/eino/eino_lark_qr_code.png)

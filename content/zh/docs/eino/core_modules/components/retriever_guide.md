@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Retriever 使用说明'
@@ -174,7 +174,7 @@ result, err := runnable.Invoke(ctx, "查询内容", compose.WithCallbacks(helper
 
 ## **已有实现**
 
-- Volc VikingDB Retriever: 基于火山引擎 VikingDB 的检索实现 [Retriever - VikingDB](/zh/docs/eino/ecosystem_integration/retriever_volc_vikingdb)
+- Volc VikingDB Retriever: 基于火山引擎 VikingDB 的检索实现 [Retriever - VikingDB](/zh/docs/eino/ecosystem_integration/retriever/retriever_volc_vikingdb)
 
 ## **自行实现参考**
 

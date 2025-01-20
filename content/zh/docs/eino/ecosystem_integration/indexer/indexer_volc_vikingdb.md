@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Indexer - volc VikingDB
@@ -25,8 +25,10 @@ weight: 0
 火山引擎 VikingDB 索引器通过 `NewIndexer` 函数进行初始化，主要配置参数如下：
 
 ```go
-indexer, err := NewIndexer(ctx, &IndexerConfig{
-    Host:              "api.volcengineapi.com", // 服务地址
+import "github.com/cloudwego/eino-ext/components/indexer/volc_vikingdb"
+
+indexer, err := volc_vikingdb.NewIndexer(ctx, &volc_vikingdb.IndexerConfig{
+    Host:              "api-vikingdb.volces.com", // 服务地址
     Region:            "cn-beijing",            // 区域
     AK:                "your-ak",               // Access Key
     SK:                "your-sk",               // Secret Key
@@ -35,7 +37,7 @@ indexer, err := NewIndexer(ctx, &IndexerConfig{
     
     Collection: "your-collection",              // 集合名称
     
-    EmbeddingConfig: EmbeddingConfig{
+    EmbeddingConfig: volc_vikingdb.EmbeddingConfig{
         UseBuiltin: true,                       // 是否使用内置向量化
         ModelName:  "text2vec-base",           // 模型名称
         UseSparse:  true,                       // 是否使用稀疏向量
@@ -65,7 +67,7 @@ func main() {
     
     // 初始化索引器
     idx, err := volcvikingdb.NewIndexer(ctx, &volcvikingdb.IndexerConfig{
-        Host:     "api.volcengineapi.com",
+        Host:     "api-vikingdb.volces.com",
         Region:   "cn-beijing",
         AK:       "your-ak",
         SK:       "your-sk",
@@ -130,7 +132,7 @@ func main() {
     
     // 初始化索引器
     idx, err := volcvikingdb.NewIndexer(ctx, &volcvikingdb.IndexerConfig{
-        Host:     "api.volcengineapi.com",
+        Host:     "api-vikingdb.volces.com",
         Region:   "cn-beijing",
         AK:       "your-ak",
         SK:       "your-sk",

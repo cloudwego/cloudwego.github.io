@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Tool - DuckDuckGoSearch
@@ -18,7 +18,9 @@ DuckDuckGo 搜索工具是 Tool InvokableTool 接口的一个实现，用于通�
 DuckDuckGo 搜索工具通过 `NewTool` 函数进行初始化，主要配置参数如下：
 
 ```go
-tool, err := NewTool(ctx, &Config{
+import "github.com/cloudwego/eino-ext/components/tool/duckduckgo"
+
+tool, err := duckduckgo.NewTool(ctx, &duckduckgo.Config{
     ToolName:    "duckduckgo_search",     // 工具名称
     ToolDesc:    "search web for information by duckduckgo", // 工具描述
     Region:      ddgsearch.RegionWT,      // 搜索地区

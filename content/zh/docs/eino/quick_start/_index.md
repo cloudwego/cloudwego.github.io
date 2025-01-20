@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: 快速开始'
@@ -32,16 +32,6 @@ AI 的应用中，最基础的场景就是 prompt + chat model 的场景，这�
 在这个示例中，我们将使用 react agent 来构建一个可以和现实世界交互的智能体。
 
 - [Agent-让大模型拥有双手](/zh/docs/eino/quick_start/agent_llm_with_tools)
-
-### 示例：用编排构建复杂自定义应用
-
-人工智能(AI) 的一项历史使命，就是把人从一些重复性的劳动中解放出来，而几乎任何一项劳动都是由多个流程和工序组合而成的，用 AI 完成这些相互串联的工作，这就是 “工作流”。由各种 AI 组件组合、编排而成的工作流，才是真正生产场景中的应用形态。
-
-Eino 中，提供了以组件为第一编排对象，同时提供具有极强扩展能力的 Lambda 节点作为编排对象，能够实现快速上手和定制扩展的双优势。Eino 的编排还有一些其他特点： 编排过程中最重要的话题 “数据流” 在 Eino 中被强化，callbacks 提供了观测和调试的基础能力，call option 为运行时的扩展性提供了无限可能...
-
-这个示例中，我们将实现一个应用了编排能力的示例，结合 callbacks 和 call option 来实现观测和请求粒度的扩展能力。
-
-- [复杂业务逻辑的利器-编排](/zh/docs/eino/quick_start/complex_business_logic_orchestration)
 
 ## 下一步探索
 

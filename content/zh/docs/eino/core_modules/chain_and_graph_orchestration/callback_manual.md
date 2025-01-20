@@ -1,18 +1,11 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Callback 用户手册'
 weight: 0
 ---
-
-> 💡
-> TL;DR
->
-> 长文，用意是“明确的、无歧义的、充分的”说明 Eino Callback 设计、实现和使用方式的各方面，可用作解决某个具体问题的工具参考，也可以作为入门后想要更进一步了解细节的一个途径。
->
-> 快速入门请移步 ：[Eino: 公共切面 - Callbacks](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callbacks_common_aspects)
 
 ## 解决的问题
 
@@ -121,8 +114,6 @@ type CallbackInput struct {
     Messages []*schema.Message
     // Tools is the tools to be used in the model.
     Tools []*schema.ToolInfo
-    // ToolChoice is the tool choice, which controls the tool to be used in the model.
-    ToolChoice any // string / *schema.ToolInfo
     // Config is the config for the model.
     Config *Config
     // Extra is the extra information for the callback.
@@ -193,6 +184,8 @@ Graph 会为内部所有的 Node 自动注入 RunInfo。机制是每个 Node 的
 通过 `ReuseHandlers(ctx context.Context, info *RunInfo)` 来获取一个新的 Context，复用之前 Context 中的 Handler，并设置新的 RunInfo。
 
 ## 触发方式
+
+![](/img/eino/graph_node_callback_run_place.png)
 
 ### 组件实现内部触发(Component Callback)
 
@@ -444,3 +437,15 @@ Handler 内不建议修改 input / output。原因是：
 不同 Handler 之间，没有执行顺序的保证，因此不建议通过上面的机制在不同 Handler 间传递信息。本质上是无法保证某一个 Handler 返回的 context，一定会进入下一个 Handler 的函数执行中。
 
 如果需要在不同 Handler 之间传递信息，建议的方式是在最外层的 context（如 graph 执行时传入的 context）中，设置一个全局的、请求维度的变量作为公共信息的存取空间，在各个 Handler 中按需读取和更新这个公共变量。在有 stream 的情况下，可能需要格外注意和保证这个公共变量的并发安全。
+
+### 流切记要 Close
+
+以存在 ChatModel 这种具有真流输出的节点为例，当存在 Callback 切面时，ChatModel 的输出流：
+- 既要被下游节点作为输入来消费，又要被 Callback 切面来消费
+- 一个流中的一个帧(Chunk)，只能被一个消费方消费到，即流不是广播模型
+
+所以此时需要将流进行复制，其复制关系如下：
+
+![](/img/eino/graph_stream_chunk_copy.png)
+
+- 如果其中一个 Callback n 没有 Close 对应的流，可能导致原始 Stream 无法 Close 和释放资源。

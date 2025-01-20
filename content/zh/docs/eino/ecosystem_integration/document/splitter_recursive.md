@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Splitter - recursive
@@ -134,8 +134,6 @@ splitter, err := recursive.NewSplitter(ctx, &recursive.Config{
         "\n\n",     // 空行（段落分隔）
         "\n",       // 换行
         "。",       // 句号
-        "；",       // 分号
-        "，",       // 逗号
     },
 })
 ```
