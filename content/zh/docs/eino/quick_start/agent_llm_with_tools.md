@@ -150,10 +150,10 @@ func main() {
 func main() {
     // 初始化 tools
     todoTools := []tool.BaseTool{
-        getAddTodoTool(),                                // 使用 NewTool 方式
+        getAddTodoTool(),                               // 使用 NewTool 方式
         updateTool,                                     // 使用 InferTool 方式
         &ListTodoTool{},                                // 使用结构体实现方式, 此处未实现底层逻辑
-        searchTool,                                 // 使用结构体实现方式, 此处未实现底层逻辑
+        searchTool,                                 
     }
 
     // 创建并配置 ChatModel

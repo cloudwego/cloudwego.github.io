@@ -15,14 +15,14 @@ weight: 1
 
 ## 简介
 
-![](/img/eino/Cqmmw3iCGhMsfsbot1DcxNNbnfd.png)
+![](/img/eino/eino_dev_ability_introduction_page.png)
 
 ## 安装插件
 
 <table><tbody><tr>
 <td>
 1. 进入<strong>GoLand</strong>，点击<strong>设置，选择Plugin 插件</strong>
-<img src="/img/eino/ODUgbnVNrozhbcxS8fqcCIHYn1A.png" />
+<img src="/img/eino/eino_install_page.png" />
 
 </td>
 <td>
@@ -35,7 +35,7 @@ weight: 1
 > 💡
 > **插件安装完毕可以在 IDE 右侧插件列表中 EinoDev 调试插件图标啦，接下来就可以体验插件提供的调试与编排能力啦**
 
-![](/img/eino/FKjdbSKaGoXhTnxBIvuc9n6unHd.png)
+![](/img/eino/eino_dev_enter_page.png)
 
 ## 功能简介
 
@@ -43,17 +43,17 @@ weight: 1
 <td>
 
 <strong>EinoDev Graph 调试</strong>
-<img src="/img/eino/F0fzbd6AJotBncxRfbocMOconyg.png" />
+<img src="/img/eino/eino_debug_run_page.png" />
 
-<img src="/img/eino/Y0zRbjdHIoCkvLxMPeycBYIFnCg.png" />
+<img src="/img/eino/eino_debug_test_run_of_mock_data_page.png" />
 
 </td>
 <td>
 
 <strong>EinoDev Graph 编排</strong>
-<img src="/img/eino/AmFfbwQzUoxQlQxNw9JcbMdynZD.png" />
+<img src="/img/eino/eino_orchestration_index_page.png" />
 
-<img src="/img/eino/Nn8ZbuI79oZmHmxQSLecGWmsn62.png" />
+<img src="/img/eino/eino_orchestration_show_nodes_2_page.png" />
 
 </td>
 </tr></tbody></table>

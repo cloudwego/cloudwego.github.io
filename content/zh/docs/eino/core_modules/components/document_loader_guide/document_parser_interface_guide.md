@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Document Parser 接口使用说明'
@@ -19,7 +19,14 @@ Document Parser 是一个用于解析文档内容的工具包。它不是一个�
 
 ### **Parser 接口**
 
+> 代码位置：eino/components/document/parser/interface.go
+
 ```go
+import (
+    "github.com/cloudwego/eino/schema"
+)
+
+// Parser is a document parser, can be used to parse a document from a reader.
 type Parser interface {
     Parse(ctx context.Context, reader io.Reader, opts ...Option) ([]*schema.Document, error)
 }
@@ -59,13 +66,15 @@ type Options struct {
 
 最基础的文本解析器，将输入内容直接作为文档内容：
 
+> 代码位置：eino-ext/components/document/parser/textparser
+
 ```go
-// 使用示例
-docs, err := TextParser{}.Parse(ctx, strings.NewReader("hello world"))
-if err != nil {
-    return err
-}
-fmt.Println(docs[0].Content) // 输出: hello world
+import "github.com/cloudwego/eino/components/document/parser"
+
+textParser := parser.TextParser{}
+docs, _ := textParser.Parse(ctx, strings.NewReader("hello world"))
+
+logs.Infof("text content: %v", docs[0].Content)
 ```
 
 ### **ExtParser**
@@ -78,14 +87,9 @@ parser, err := NewExtParser(ctx, &ExtParserConfig{
     // 注册特定扩展名的解析器
     Parsers: map[string]Parser{
         ".html": html.NewParser(&html.ParserConfig{
-            // HTML 解析器的配置
-            RemoveScript: true,  // 移除脚本标签
-            RemoveStyle: true,   // 移除样式标签
+            Selector: ".body"
         }),
-        ".pdf": pdf.NewParser(&pdf.ParserConfig{
-            // PDF 解析器的配置
-            ExtractImages: false,  // 不提取图片
-        }),
+        ".pdf": pdf.NewParser(&pdf.ParserConfig{}),
     },
     // 设置默认解析器，用于处理未知格式
     FallbackParser: TextParser{},

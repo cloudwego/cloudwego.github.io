@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-17"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: 概述'
@@ -439,10 +439,9 @@ func (g *graph) AddLambdaNode(key string, node *Lambda, opts ...GraphAddNodeOpt)
     return g.addNode(key, toLambdaNode(key, node, opts...))
 }
 
-// AddGraphNode add one kind of Graph[I, O]、Chain[I, O]、StateChain[I, O, S] as a node.
+// AddGraphNode add one kind of Graph[I, O]、Chain[I, O] as a node.
 // for Graph[I, O], comes from NewGraph[I, O]()
 // for Chain[I, O], comes from NewChain[I, O]()
-// for StateGraph[I, O, S], comes from NewStateGraph[I, O, S]()
 func (g *graph) AddGraphNode(key string, node AnyGraph, opts ...GraphAddNodeOpt) error {
     return g.addNode(key, toAnyGraphNode(key, node, opts...))
 }
@@ -553,7 +552,7 @@ parallel := NewParallel()
 parallel.AddChatModel("output_key01", chat01)
 parallel.AddChatModel("output_key01", chat02)
 
-chain := NewChain[any,any]()
+chain := NewChain[[]*schema.Message,*schema.Message]()
 chain.AppendParallel(parallel)
 ```
 
@@ -572,14 +571,17 @@ chain.AppendParallel(parallel)
 // that wraps the provided cond to handle type assertions and error checking.
 // eg.
 
-condition := func(ctx context.Context, in string, opts ...any) (endNode string, err error) {
+condition := func(ctx context.Context, in string) (endNode string, err error) {
     // logic to determine the next node
-    return "some_next_node_key", nil
+    if len(in) == 0 {
+        return "node_1", nil
+    }
+    return "node_2", nil 
 }
 
 cb := NewChainBranch[string](condition)
-cb.AddPassthrough("next_node_key_01", xxx) // node in branch, represent one path of branch
-cb.AddPassthrough("next_node_key_02", xxx) // node in branch
+cb.AddLambda("node_1", lambda1) // node in branch, represent one path of branch
+cb.AddLambda("node_2", lambda2) // node in branch
 
 chain := NewChain[string, string]()
 chain.AppendBranch(cb)

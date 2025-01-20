@@ -44,7 +44,7 @@ go mod tidy
 ## 运行 Demo
 
 进入 `eino-examples/devops/debug/main.go`，运行 `main.go`。因为插件会同时在本地启动一个 HTTP 服务用于连接用户服务进程，所以会弹出接入网络警告，点击允许。
-![](/img/eino/OvNcbzeONoNocVxWRWec4UTQn7e.png)
+![](/img/eino/eino_debug_enter_config_page.png)
 
 ## 配置调试地址
 
@@ -52,7 +52,7 @@ go mod tidy
 <td>
 
 1.点击左侧或正中间调试功能进入调试配置
-<img src="/img/eino/Cqm7bOc5aoeIAdx0Su4cTx64nnB.png" />
+<img src="/img/eino/eino_debug_enter_page.png" />
 
 </td>
 <td>
@@ -84,13 +84,13 @@ go mod tidy
 <td>
 
 1.点击<pre>Test Run</pre>从 start 节点开始执行
-<img src="/img/eino/LHU1b6ULtoWRvyxkSSscwr74nBf.png" />
+<img src="/img/eino/eino_debug_enter_test_run_2_page.png" />
 
 </td>
 <td>
 
 2.输入<pre>"hello eino"</pre>，点击确认
-<img src="/img/eino/JfEhbOQnzoLQH9xiOB6cPDGCnLf.png" />
+<img src="/img/eino/eino_debug_run_input_mock_data_page.png" />
 
 </td>
 </tr></tbody></table>
@@ -99,13 +99,13 @@ go mod tidy
 <td>
 
 3.在调试区域展示有各个节点的输入和输出
-<img src="/img/eino/YwZ7bNIvNo0Ab5x5BQWcLrsCnPf.png" />
+<img src="/img/eino/eino_debug_test_run_detail_page.png" />
 
 </td>
 <td>
 
 4.点击 Input 和 Output 切换查看节点信息
-<img src="/img/eino/B0dkbbObjoiyLixnTEvcECzBn0e.png" />
+<img src="/img/eino/eino_debug_index_page.png" />
 
 </td>
 </tr></tbody></table>
@@ -115,7 +115,7 @@ go mod tidy
 ## 本地或远程调试
 
 目标调试编排产物无论是在本地电脑还是在远程服务器，都可以通过配置 IP:Port ，主动连接到目标调试对象所在的服务器。
-![](/img/eino/Ha4KbcNlZoPJUMxEQYxcWx51nPd.png)
+![](/img/eino/eino_debug_run_config_page.png)
 
 ## 编排拓扑可视化
 
@@ -124,12 +124,12 @@ go mod tidy
 
 ## 从任意节点开始调试
 
-![](/img/eino/UovrbOrhfooaPcxJVgvcZj8dnQe.png)
+![](/img/eino/eino_debug_test_run_of_one_node_page.png)
 
 ## 查看节点执行结果
 
 每个节点执行结果都会按执行顺序展示在调试区域，包括：输入、输出、执行耗时
-![](/img/eino/MTC2bA1zRovMwCxZBKzcjzmnnpf.png)
+![](/img/eino/eino_debug_run_detail_v2_page.png)
 
 # 从零开始调试
 
@@ -250,23 +250,23 @@ IP 和 Port 配置完成后，点击确认，调试插件会自动连接到目�
 ## 选择目标调试编排产物
 
 确保你目标调试的编排产物至少执行过一次 `Compile()`。因为调试设计是面向编排产物实例，所以如果多次执行 `Compile()`，会在调试服务中注册多个编排产物，继而在选择列表中看到多个可调试目标。
-![](/img/eino/R0KVbWPXLoeOSmxuM8jcQ8CanDh.png)
+![](/img/eino/eino_debug_list_graph_and_show_page.png)
 
 ## 开始调试
 
 调试支持从任意节点开始调试，包括 start 节点和其他中间节点。
 
 1. 从 START 节点开始调试：直接点击 Test Run，然后输入 mock 的 input（如果 input 是复杂结构的话，会自动对 input 的结构进行推断）然后点击确定，开始执行你的 graph，每个 node 的结果会在下方显示。
-   ![](/img/eino/FwW3b8NUkoahCkxqPi5cvHjInje.png)
-   ![](/img/eino/JKFZbjqtVosHlnxViabc2botnkd.png)
+   ![](/img/eino/eino_debug_enter_test_run_page.png)
+   ![](/img/eino/eino_debug_run_input_mock_data_2_page.png)
 2. 从任意的可操作节点开始调试：比如，从第二个 node 开始执行。
-   ![](/img/eino/LSsxbZVKmoXs02xu2m4cDP2jndf.png)
-   ![](/img/eino/FSsLbpTKzoYgthxzPyccaEyanse.png)
+   ![](/img/eino/eino_debug_test_run_from_node_page.png)
+   ![](/img/eino/eino_debug_run_of_mock_input_of_page.png)
 
 ## 查看执行结果
 
 从 START 节点开始调试，点击 Test Run 后，在插件下方查看调试结果。
-![](/img/eino/Tg2fbTtxzohB5exwH4ScewuRnQh.png)
+![](/img/eino/eino_debug_test_run_result_page.png)
 
 从任意的可操作节点进行调试，在插件下方查看调试结果。
-![](/img/eino/GKWabv4eQofx2hx9m7HcUkNUn2e.png)
+![](/img/eino/eino_debug_run_detail_page.png)

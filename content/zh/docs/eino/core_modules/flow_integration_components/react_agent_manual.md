@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-16"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: React Agent 使用手册'
@@ -14,11 +14,15 @@ Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/) React 
 > 💡
 > 代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)实现代码目录
 
+Example 代码路径：[https://github.com/cloudwego/eino-examples/blob/main/flow/agent/react/react.go](https://github.com/cloudwego/eino-examples/blob/main/flow/agent/react/react.go)
+
 ## 节点拓扑&数据流图
 
-react agent 底层使用 `compose.StateGraph` 作为编排方案，仅有 2 个节点: ChatModel、Tools，中间运行过程中的所有历史消息都会放入 state 中，在将所有历史消息传递给 ChatModel 之前，会 copy 消息交由 MessageModifier 进行处理，处理的结果再传递给 ChatModel。直到 ChatModel 返回的消息中不再有 tool call，则返回最终消息。
+react agent 底层使用 `compose.Graph` 作为编排方案，一般来说有 2 个节点: ChatModel、Tools，中间运行过程中的所有历史消息都会放入 state 中，在将所有历史消息传递给 ChatModel 之前，会 copy 消息交由 MessageModifier 进行处理，处理的结果再传递给 ChatModel。直到 ChatModel 返回的消息中不再有 tool call，则返回最终消息。
 
 ![](/img/eino/react_agent_graph.png)
+
+当 Tools 列表中至少有一个 Tool 配置了 ReturnDirectly 时，ReAct Agent 结构会更复杂：在 ToolsNode 之后会增加一个 Branch，判断是否调用了一个 ReturnDirectly 的 Tool，如果是，直接 END，否则照旧进入 ChatModel。
 
 ## 初始化
 
@@ -73,7 +77,7 @@ type ChatModel interface {
 }
 ```
 
-目前，eino 提供了 openai 和 ark 的实现，只要底层模型支持 tool call 即可。
+目前，eino 提供了 openai, ark 等实现，只要底层模型支持 tool call 即可。
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/openai@latest

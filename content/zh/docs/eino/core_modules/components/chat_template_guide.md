@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: ChatTemplate 使用说明'
@@ -40,20 +40,19 @@ type ChatTemplate interface {
 
 Prompt 组件内置支持三种模板化方式：
 
-1. String 格式 (schema.FString)
+1. FString 格式 (schema.FString)
 
    - 使用 `{variable}` 语法进行变量替换
    - 简单直观，适合基础文本替换场景
    - 示例：`"你是一个{role}，请帮我{task}。"`
-2. Template 格式 (schema.FTemplate)
+2. GoTemplate 格式 (schema.GoTemplate)
 
    - 使用 Go 标准库的 text/template 语法
    - 支持条件判断、循环等复杂逻辑
    - 示例：`"{{if .expert}}作为专家{{end}}请{{.action}}"`
-3. Jinja2 格式 (schema.FJinja2)
+3. Jinja2 格式 (schema.Jinja2)
 
    - 使用 Jinja2 模板语法
-   - 支持丰富的过滤器和控制结构
    - 示例：`"{% if level == 'expert' %}以专家的角度{% endif %}分析{{topic}}"`
 
 ### **公共 Option**

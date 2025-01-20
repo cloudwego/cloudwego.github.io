@@ -16,7 +16,7 @@ weight: 2
 
 ### 插件功能介绍
 
-![](/img/eino/P1Y5bQG0Po6kGEx2JNRc8c8Lnlh.png)
+![](/img/eino/eino_orchestration_describtion_page.png)
 
 ## 编排组件介绍
 
@@ -27,13 +27,13 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/Um1NbdXQVo8JrTxU3VOcBlnonOf.png" />
+<img src="/img/eino/eino_orchestration_add_graph_2_page.png" />
 </td>
 <td>
-<img src="/img/eino/Jt19bWHr5oIZg0x0thLcJRTRnRc.png" />
+<img src="/img/eino/eino_orchestration_add_graph_config_deatil_page.png" />
 </td>
 <td>
-<img src="/img/eino/Dw2sb9xwXoHNgbxmOmecyX1Anof.png" />
+<img src="/img/eino/eino_orchestration_add_graph_page.png" />
 </td>
 </tr></tbody></table>
 
@@ -44,13 +44,13 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/MatXbGz9zo2QjPxMUL3csOJ8nzg.png" />
+<img src="/img/eino/eino_orchestration_show_nodes_page.png" />
 </td>
 <td>
-<img src="/img/eino/Hqlvb9PRao5irfxkBWocQAGJnSe.png" />
+<img src="/img/eino/eino_orchestration_add_nodes_page.png" />
 </td>
 <td>
-<img src="/img/eino/SG6tb6PI0o2t9Yx9mBycYx4HnVf.png" />
+<img src="/img/eino/G6oabw0FNoFTeSxoAxWcrhNJnVd.png" />
 </td>
 </tr></tbody></table>
 
@@ -61,10 +61,10 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/RlDWblfPXoTPoMxm9brcBV35n0n.png" />
+<img src="/img/eino/eino_orchestration_add_nodes_3_page.png" />
 </td>
 <td>
-<img src="/img/eino/CX4Pb4E6souBC1xBNwucR9HInYb.png" />
+<img src="/img/eino/FQHfbUjLJofszaxeEtncYa47nnf.png" />
 </td>
 </tr></tbody></table>
 
@@ -75,10 +75,10 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/BEsRbqI39oKAiaxM1r2cORUjndc.png" />
+<img src="/img/eino/eino_orchestration_add_slot_page.png" />
 </td>
 <td>
-<img src="/img/eino/SOnyb4oinoKnE7xJTgqc4fy7n9f.png" />
+<img src="/img/eino/eino_orchestration_node_add_slots__page.png" />
 </td>
 </tr></tbody></table>
 
@@ -87,7 +87,7 @@ weight: 2
 ### 初始化插件
 
 点击进入 Eino Dev 插件，会展示如下界面，可点击图中圈选框进入编排。
-![](/img/eino/LbntbO2kroPGKExqpG6cIAuTn1f.png)
+![](/img/eino/eino_orchestration_enter_page.png)
 
 ### 创建并编排 Graph
 
@@ -97,13 +97,13 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/JuLfbpcido9Ws0xy5H6c4TpAnBb.png" />
+<img src="/img/eino/eino_orchestration_add_nodes_2_page.png" />
 </td>
 <td>
-<img src="/img/eino/WxOLb5hbYohJpVxiF7ocotIun3f.png" />
+<img src="/img/eino/TntYbJKbMofcs3xlU7icemXsnbe.png" />
 </td>
 <td>
-<img src="/img/eino/PfSnbx0lkorHiGxTvRscfne4nc6.png" />
+<img src="/img/eino/eino_orchestration_add_edges_page.png" />
 </td>
 </tr></tbody></table>
 
@@ -111,10 +111,10 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/V1ZSbrkKTog19jxRC29cGTHSnlt.png" />
+<img src="/img/eino/eino_orchestration_gencode_config_page.png" />
 </td>
 <td>
-<img src="/img/eino/SOyYbGxDCoiLisxdiagcv1mCnnf.png" />
+<img src="/img/eino/eino_orchestration_gencode_page.png" />
 </td>
 </tr></tbody></table>
 
@@ -122,10 +122,10 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/ZB5UbYmijo2IG8x0ylPcm11enAf.png" />
+<img src="/img/eino/eino_orchestration_subgraph_show_page.png" />
 </td>
 <td>
-<img src="/img/eino/MQefb99lJoFVCuxo346cNnOMnoc.png" />
+<img src="/img/eino/eino_orchestration_sub_graph_pos_page.png" />
 </td>
 </tr></tbody></table>
 

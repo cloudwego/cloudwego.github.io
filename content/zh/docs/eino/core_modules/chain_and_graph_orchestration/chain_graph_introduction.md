@@ -7,13 +7,24 @@ title: 'Eino: Chain/Graph 编排介绍'
 weight: 1
 ---
 
+> 本文所有代码样例都在：[https://github.com/cloudwego/eino-examples/tree/main/compose](https://github.com/cloudwego/eino-examples/tree/main/compose)
+
 ## Graph 编排
 
 ### Graph
 
 ```go
+package main
+
 import (
+    "context"
+    "fmt"
+    "io"
+
+    "github.com/cloudwego/eino/components/model"
+    "github.com/cloudwego/eino/components/prompt"
     "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
 )
 
 const (
@@ -24,46 +35,65 @@ const (
 func main() {
     ctx := context.Background()
     g := compose.NewGraph[map[string]any, *schema.Message]()
-    
+
     pt := prompt.FromMessages(
-        schema.HumanMessage("what's the weather in {location}?"),
+       schema.FString,
+       schema.UserMessage("what's the weather in {location}?"),
     )
-    
-    err := g.AddChatTemplateNode(nodeOfPrompt, pt)
-    assert.NoError(t, err)
-    
-    cm := &chatModel{
-        msgs: []*schema.Message{
-           {
-              Role:    schema.AI,
-              Content: "the weather is good",
-           },
-        },
+
+    _ = g.AddChatTemplateNode(nodeOfPrompt, pt)
+    _ = g.AddChatModelNode(nodeOfModel, &mockChatModel{}, compose.WithNodeName("ChatModel"))
+    _ = g.AddEdge(compose.START, nodeOfPrompt)
+    _ = g.AddEdge(nodeOfPrompt, nodeOfModel)
+    _ = g.AddEdge(nodeOfModel, compose.END)
+
+    r, err := g.Compile(ctx, compose.WithMaxRunSteps(10))
+    if err != nil {
+       panic(err)
     }
-    
-    err = g.AddChatModelNode(nodeOfModel, cm, WithNodeName("MockChatModel"))
-    assert.NoError(t, err)
-    
-    err = g.AddEdge(START, nodeOfPrompt)
-    assert.NoError(t, err)
-    
-    err = g.AddEdge(nodeOfPrompt, nodeOfModel)
-    assert.NoError(t, err)
-    
-    err = g.AddEdge(nodeOfModel, END)
-    assert.NoError(t, err)
-    
-    r, err := g.Compile(WithMaxRunSteps(10))
-    assert.NoError(t, err)
-    
+
     in := map[string]any{"location": "beijing"}
     ret, err := r.Invoke(ctx, in)
-    assert.NoError(t, err)
-    t.Logf("invoke result: %v", ret)
-    
+    fmt.Println("invoke result: ", ret)
+
     // stream
     s, err := r.Stream(ctx, in)
-    assert.NoError(t, err)
+    if err != nil {
+       panic(err)
+    }
+
+    defer s.Close()
+    for {
+       chunk, err := s.Recv()
+       if err != nil {
+          if err == io.EOF {
+             break
+          }
+          panic(err)
+       }
+
+       fmt.Println("stream chunk: ", chunk)
+    }
+}
+
+type mockChatModel struct{}
+
+func (m *mockChatModel) Generate(ctx context.Context, input []*schema.Message, opts ...model.Option) (*schema.Message, error) {
+    return schema.AssistantMessage("the weather is good", nil), nil
+}
+
+func (m *mockChatModel) Stream(ctx context.Context, input []*schema.Message, opts ...model.Option) (*schema.StreamReader[*schema.Message], error) {
+    sr, sw := schema.Pipe[*schema.Message](0)
+    go func() {
+       defer sw.Close()
+       sw.Send(schema.AssistantMessage("the weather is", nil), nil)
+       sw.Send(schema.AssistantMessage("good", nil), nil)
+    }()
+    return sr, nil
+}
+
+func (m *mockChatModel) BindTools(tools []*schema.ToolInfo) error {
+    panic("implement me")
 }
 ```
 
@@ -88,37 +118,35 @@ import (
     "github.com/cloudwego/eino/components/tool/utils"
     "github.com/cloudwego/eino/compose"
     "github.com/cloudwego/eino/schema"
+
+    "github.com/cloudwego/eino-examples/internal/gptr"
+    "github.com/cloudwego/eino-examples/internal/logs"
 )
 
 func main() {
 
-    accessKey := os.Getenv("OPENAI_API_KEY")
+    openAIBaseURL := os.Getenv("OPENAI_BASE_URL")
+    openAIAPIKey := os.Getenv("OPENAI_API_KEY")
+    modelName := os.Getenv("MODEL_NAME")
 
     ctx := context.Background()
-    
-    callbacks.InitCallbackHandlers([]callbacks.Handler{&loggerCallbacks{}})
 
-    const (
-       messageHistories = "message_histories"
-       messageUserQuery = "user_query"
-    )
+    callbacks.InitCallbackHandlers([]callbacks.Handler{&loggerCallbacks{}})
 
     // 1. create an instance of ChatTemplate as 1st Graph Node
     systemTpl := `你是一名房产经纪人，结合用户的薪酬和工作，使用 user_info API，为其提供相关的房产信息。邮箱是必须的`
     chatTpl := prompt.FromMessages(schema.FString,
        schema.SystemMessage(systemTpl),
-       schema.MessagesPlaceholder(messageHistories, true),
-       schema.MessagesPlaceholder(messageUserQuery, false),
+       schema.MessagesPlaceholder("message_histories", true),
+       schema.UserMessage("{user_query}"),
     )
 
-    baseURL := "https://search.bytedance.net/gpt/openapi/online/multimodal/crawl"
-
     modelConf := &openai.ChatModelConfig{
-       BaseURL:     baseURL,
-       APIKey:      accessKey,
+       BaseURL:     openAIBaseURL,
+       APIKey:      openAIAPIKey,
        ByAzure:     true,
-       Model:       "gpt-4o-2024-05-13",
-       Temperature: 0.7,
+       Model:       modelName,
+       Temperature: gptr.Of(float32(0.7)),
        APIVersion:  "2024-06-01",
     }
 
@@ -134,7 +162,7 @@ func main() {
        &schema.ToolInfo{
           Name: "user_info",
           Desc: "根据用户的姓名和邮箱，查询用户的公司、职位、薪酬信息",
-          Params: map[string]*schema.ParameterInfo{
+          ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
              "name": {
                 Type: "string",
                 Desc: "用户的姓名",
@@ -143,7 +171,7 @@ func main() {
                 Type: "string",
                 Desc: "用户的邮箱",
              },
-          },
+          }),
        },
        func(ctx context.Context, input *userInfoRequest) (output *userInfoResponse, err error) {
           return &userInfoResponse{
@@ -160,6 +188,7 @@ func main() {
        logs.Errorf("Get ToolInfo failed, err=%v", err)
        return
     }
+
     // 4. bind ToolInfo to ChatModel. ToolInfo will remain in effect until the next BindTools.
     err = chatModel.BindForcedTools([]*schema.ToolInfo{info})
     if err != nil {
@@ -188,50 +217,22 @@ func main() {
     g := compose.NewGraph[map[string]any, []*schema.Message]()
 
     // 7. add ChatTemplate into graph
-    err = g.AddChatTemplateNode(nodeKeyOfTemplate, chatTpl)
-    if err != nil {
-       logs.Errorf("AddChatTemplateNode failed, err=%v", err)
-       return
-    }
+    _ = g.AddChatTemplateNode(nodeKeyOfTemplate, chatTpl)
 
     // 8. add ChatModel into graph
-    err = g.AddChatModelNode(nodeKeyOfChatModel, chatModel)
-    if err != nil {
-       logs.Errorf("AddChatModelNode failed, err=%v", err)
-       return
-    }
+    _ = g.AddChatModelNode(nodeKeyOfChatModel, chatModel)
 
     // 9. add ToolsNode into graph
-    err = g.AddToolsNode(nodeKeyOfTools, toolsNode)
-    if err != nil {
-       logs.Errorf("AddToolsNode failed, err=%v", err)
-       return
-    }
+    _ = g.AddToolsNode(nodeKeyOfTools, toolsNode)
 
     // 10. add connection between nodes
-    err = g.AddEdge(compose.START, nodeKeyOfTemplate)
-    if err != nil {
-       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", compose.START, nodeKeyOfTemplate, err)
-       return
-    }
+    _ = g.AddEdge(compose.START, nodeKeyOfTemplate)
 
-    err = g.AddEdge(nodeKeyOfTemplate, nodeKeyOfChatModel)
-    if err != nil {
-       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", nodeKeyOfTemplate, nodeKeyOfChatModel, err)
-       return
-    }
+    _ = g.AddEdge(nodeKeyOfTemplate, nodeKeyOfChatModel)
 
-    err = g.AddEdge(nodeKeyOfChatModel, nodeKeyOfTools)
-    if err != nil {
-       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", nodeKeyOfChatModel, nodeKeyOfTools, err)
-       return
-    }
+    _ = g.AddEdge(nodeKeyOfChatModel, nodeKeyOfTools)
 
-    err = g.AddEdge(nodeKeyOfTools, compose.END)
-    if err != nil {
-       logs.Errorf("AddEdge failed,start=%v, end=%v, err=%v", nodeKeyOfTools, compose.END, err)
-       return
-    }
+    _ = g.AddEdge(nodeKeyOfTools, compose.END)
 
     // 9. compile Graph[I, O] to Runnable[I, O]
     r, err := g.Compile(ctx)
@@ -241,10 +242,8 @@ func main() {
     }
 
     out, err := r.Invoke(ctx, map[string]any{
-       messageHistories: []*schema.Message{},
-       messageUserQuery: []*schema.Message{
-          schema.UserMessage("我叫 zhangsan, 邮箱是 zhangsan@bytedance.com, 帮我推荐一处房产"),
-       },
+       "message_histories": []*schema.Message{},
+       "user_query":        "我叫 zhangsan, 邮箱是 zhangsan@bytedance.com, 帮我推荐一处房产",
     })
     if err != nil {
        logs.Errorf("Invoke failed, err=%v", err)
@@ -304,12 +303,15 @@ import (
     "context"
     "errors"
     "io"
-    "log"
+    "runtime/debug"
     "strings"
     "unicode/utf8"
 
     "github.com/cloudwego/eino/compose"
     "github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/utils/safe"
+
+    "github.com/cloudwego/eino-examples/internal/logs"
 )
 
 func main() {
@@ -345,18 +347,15 @@ func main() {
        return out, nil
     }
 
-    err := sg.AddLambdaNode(nodeOfL1, l1,
+    _ = sg.AddLambdaNode(nodeOfL1, l1,
        compose.WithStatePreHandler(l1StateToInput), compose.WithStatePostHandler(l1StateToOutput))
-    if err != nil {
-       log.Printf("sg.AddLambdaNode failed, err=%v", err)
-       return
-    }
 
     l2 := compose.StreamableLambda(func(ctx context.Context, input string) (output *schema.StreamReader[string], err error) {
        outStr := "StreamableLambda: " + input
 
        sr, sw := schema.Pipe[string](utf8.RuneCountInString(outStr))
 
+       // nolint: byted_goroutine_recover
        go func() {
           for _, field := range strings.Fields(outStr) {
              sw.Send(field+" ", nil)
@@ -372,11 +371,7 @@ func main() {
        return out, nil
     }
 
-    err = sg.AddLambdaNode(nodeOfL2, l2, compose.WithStatePostHandler(l2StateToOutput))
-    if err != nil {
-       log.Printf("sg.AddLambdaNode failed, err=%v", err)
-       return
-    }
+    _ = sg.AddLambdaNode(nodeOfL2, l2, compose.WithStatePostHandler(l2StateToOutput))
 
     l3 := compose.TransformableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (
        output *schema.StreamReader[string], err error) {
@@ -385,6 +380,16 @@ func main() {
        sr, sw := schema.Pipe[string](20)
 
        go func() {
+
+          defer func() {
+             panicErr := recover()
+             if panicErr != nil {
+                err := safe.NewPanicErr(panicErr, debug.Stack())
+                logs.Errorf("panic occurs: %v\n", err)
+             }
+
+          }()
+
           for _, field := range strings.Fields(prefix) {
              sw.Send(field+" ", nil)
           }
@@ -411,59 +416,39 @@ func main() {
 
     l3StateToOutput := func(ctx context.Context, out string, state *testState) (string, error) {
        state.ms = append(state.ms, out)
-       log.Printf("state result: ")
+       logs.Infof("state result: ")
        for idx, m := range state.ms {
-          log.Printf("    %vth: %v", idx, m)
+          logs.Infof("    %vth: %v", idx, m)
        }
        return out, nil
     }
 
-    err = sg.AddLambdaNode(nodeOfL3, l3, compose.WithStatePostHandler(l3StateToOutput))
-    if err != nil {
-       log.Printf("sg.AddLambdaNode failed, err=%v", err)
-       return
-    }
+    _ = sg.AddLambdaNode(nodeOfL3, l3, compose.WithStatePostHandler(l3StateToOutput))
 
-    err = sg.AddEdge(compose.START, nodeOfL1)
-    if err != nil {
-       log.Printf("sg.AddEdge failed, err=%v", err)
-       return
-    }
+    _ = sg.AddEdge(compose.START, nodeOfL1)
 
-    err = sg.AddEdge(nodeOfL1, nodeOfL2)
-    if err != nil {
-       log.Printf("sg.AddEdge failed, err=%v", err)
-       return
-    }
+    _ = sg.AddEdge(nodeOfL1, nodeOfL2)
 
-    err = sg.AddEdge(nodeOfL2, nodeOfL3)
-    if err != nil {
-       log.Printf("sg.AddEdge failed, err=%v", err)
-       return
-    }
+    _ = sg.AddEdge(nodeOfL2, nodeOfL3)
 
-    err = sg.AddEdge(nodeOfL3, compose.END)
-    if err != nil {
-       log.Printf("sg.AddEdge failed, err=%v", err)
-       return
-    }
+    _ = sg.AddEdge(nodeOfL3, compose.END)
 
     run, err := sg.Compile(ctx)
     if err != nil {
-       log.Printf("sg.Compile failed, err=%v", err)
+       logs.Errorf("sg.Compile failed, err=%v", err)
        return
     }
 
     out, err := run.Invoke(ctx, "how are you")
     if err != nil {
-       log.Printf("run.Invoke failed, err=%v", err)
+       logs.Errorf("run.Invoke failed, err=%v", err)
        return
     }
-    log.Printf("invoke result: %v", out)
+    logs.Infof("invoke result: %v", out)
 
     stream, err := run.Stream(ctx, "how are you")
     if err != nil {
-       log.Printf("run.Stream failed, err=%v", err)
+       logs.Errorf("run.Stream failed, err=%v", err)
        return
     }
 
@@ -474,11 +459,11 @@ func main() {
           if errors.Is(err, io.EOF) {
              break
           }
-          log.Printf("stream.Recv() failed, err=%v", err)
+          logs.Infof("stream.Recv() failed, err=%v", err)
           break
        }
 
-       log.Printf(chunk)
+       logs.Tokenf("%v", chunk)
     }
     stream.Close()
 
@@ -488,10 +473,10 @@ func main() {
 
     stream, err = run.Transform(ctx, sr)
     if err != nil {
-       log.Printf("run.Transform failed, err=%v", err)
+       logs.Infof("run.Transform failed, err=%v", err)
        return
     }
-    
+
     for {
 
        chunk, err := stream.Recv()
@@ -499,11 +484,11 @@ func main() {
           if errors.Is(err, io.EOF) {
              break
           }
-          log.Printf("stream.Recv() failed, err=%v", err)
+          logs.Infof("stream.Recv() failed, err=%v", err)
           break
        }
 
-       log.Printf(chunk)
+       logs.Infof("%v", chunk)
     }
     stream.Close()
 }
@@ -527,20 +512,18 @@ import (
     "github.com/cloudwego/eino/components/prompt"
     "github.com/cloudwego/eino/compose"
     "github.com/cloudwego/eino/schema"
+
+    "github.com/cloudwego/eino-examples/internal/gptr"
+    "github.com/cloudwego/eino-examples/internal/logs"
 )
 
-func init() {
-    apiKey := os.Getenv("OPENAI_API_KEY")
-    baseURL := os.Getenv("OPENAI_BASE_URL") // using azure
-
-    if apiKey == "" || baseURL != "" {
-       return
-    }
-}
-
 func main() {
+    openAPIBaseURL := os.Getenv("OPENAI_BASE_URL")
+    openAPIAK := os.Getenv("OPENAI_API_KEY")
+    modelName := os.Getenv("MODEL_NAME")
+
     ctx := context.Background()
-    // 分支节点
+    // build branch func
     const randLimit = 2
     branchCond := func(ctx context.Context, input map[string]any) (string, error) { // nolint: byted_all_nil_return
        if rand.Intn(randLimit) == 1 {
@@ -551,7 +534,7 @@ func main() {
     }
 
     b1 := compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (map[string]any, error) {
-       fmt.Println("hello in branch lambda 01")
+       logs.Infof("hello in branch lambda 01")
        if kvs == nil {
           return nil, fmt.Errorf("nil map")
        }
@@ -561,7 +544,7 @@ func main() {
     })
 
     b2 := compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (map[string]any, error) {
-       fmt.Println("hello in branch lambda 02")
+       logs.Infof("hello in branch lambda 02")
        if kvs == nil {
           return nil, fmt.Errorf("nil map")
        }
@@ -570,7 +553,7 @@ func main() {
        return kvs, nil
     })
 
-    // 并发节点
+    // build parallel node
     parallel := compose.NewParallel()
     parallel.
        AddLambda("role", compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (string, error) {
@@ -586,8 +569,17 @@ func main() {
           return "你的叫声是怎样的？", nil
        }))
 
-    // 顺序节点
-    cm, err := openai.NewChatModel(context.Background(), nil)
+    modelConf := &openai.ChatModelConfig{
+       BaseURL:     openAPIBaseURL,
+       APIKey:      openAPIAK,
+       ByAzure:     true,
+       Model:       modelName,
+       Temperature: gptr.Of(float32(0.7)),
+       APIVersion:  "2024-06-01",
+    }
+
+    // create chat model node
+    cm, err := openai.NewChatModel(context.Background(), modelConf)
     if err != nil {
        log.Panic(err)
        return
@@ -598,22 +590,22 @@ func main() {
        AppendChatTemplate(prompt.FromMessages(schema.FString, schema.SystemMessage(`You are a {role}.`), schema.UserMessage(`{input}`))).
        AppendChatModel(cm)
 
-    // =========== 构建 chain ===========
+    // =========== build chain ===========
     chain := compose.NewChain[map[string]any, string]()
     chain.
        AppendLambda(compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (map[string]any, error) {
           // do some logic to prepare kv as input val for next node
           // just pass through
-          fmt.Println("in view lambda: ", kvs)
+          logs.Infof("in view lambda: %v", kvs)
           return kvs, nil
        })).
        AppendBranch(compose.NewChainBranch(branchCond).AddLambda("b1", b1).AddLambda("b2", b2)). // nolint: byted_use_receiver_without_nilcheck
+       AppendPassthrough().
        AppendParallel(parallel).
        AppendGraph(rolePlayerChain).
        AppendLambda(compose.InvokableLambda(func(ctx context.Context, m *schema.Message) (string, error) {
           // do some logic to check the output or something
-          fmt.Println("in view of messages: ", m.Content)
-
+          logs.Infof("in view of messages: %v", m.Content)
           return m.Content, nil
        }))
 
@@ -630,7 +622,6 @@ func main() {
        return
     }
 
-    fmt.Println("output is : ", output)
-
+    logs.Infof("output is : %v", output)
 }
 ```

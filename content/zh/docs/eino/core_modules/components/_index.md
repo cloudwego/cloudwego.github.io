@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Components 组件'
@@ -44,17 +44,17 @@ weight: 1
 
 3. Embedding 之后将数据索引进行存储的组件抽象： `Indexer`
 
-> 详见 [Eino: Indexer & Retriever 使用说明](/zh/docs/eino/core_modules/components/indexer_and_retriever_guide)
+> 详见 [Eino: Indexer 使用说明](/zh/docs/eino/core_modules/components/indexer_guide)
 
 4. 将语义相关文本文档进行索引和召回的组件抽象： `Retriever`
 
-> 详见 [Eino: Indexer & Retriever 使用说明](/zh/docs/eino/core_modules/components/indexer_and_retriever_guide)
+> 详见 [Eino: Retriever 使用说明](/zh/docs/eino/core_modules/components/retriever_guide)
 
 **决策执行类组件**：
 
 1. 大模型能够做决策并调用工具的组件抽象：`ToolsNode`
 
-> 详见 [Eino: Tool & ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tool_and_tools_node_guide)
+> 详见 [Eino: ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)
 
 **自定义组件：**
 
