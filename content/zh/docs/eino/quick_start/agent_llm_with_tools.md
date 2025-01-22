@@ -39,7 +39,22 @@ Tool 是 Agent 的执行器，提供了具体的功能实现。每个 Tool 都�
 这种方式适合简单的工具实现，通过定义工具信息和处理函数来创建 Tool：
 
 ```go
+import (
+    "context"
+
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/components/tool/utils"
+    "github.com/cloudwego/eino/schema"
+)
+
+// 处理函数
+func AddTodoFunc(_ context.Context, params *TodoAddParams) (string, error) {
+    // Mock处理逻辑
+    return `{"msg": "add todo success"}`, nil
+}
+
 func getAddTodoTool() tool.InvokableTool {
+    // 工具信息
     info := &schema.ToolInfo{
         Name: "add_todo",
         Desc: "Add a todo item",
@@ -60,6 +75,7 @@ func getAddTodoTool() tool.InvokableTool {
         }),
     }
 
+    // 使用NewTool创建工具
     return utils.NewTool(info, AddTodoFunc)
 }
 ```
@@ -71,6 +87,13 @@ func getAddTodoTool() tool.InvokableTool {
 这种方式更加简洁，通过结构体的 tag 来定义参数信息，就能实现参数结构体和描述信息同源，无需维护两份信息：
 
 ```go
+import (
+    "context"
+
+    "github.com/cloudwego/eino/components/tool/utils"
+)
+
+// 参数结构体
 type TodoUpdateParams struct {
     ID        string  `json:"id" jsonschema:"description=id of the todo"`
     Content   *string `json:"content,omitempty" jsonschema:"description=content of the todo"`
@@ -79,8 +102,17 @@ type TodoUpdateParams struct {
     Done      *bool   `json:"done,omitempty" jsonschema:"description=done status"`
 }
 
+// 处理函数
+func UpdateTodoFunc(_ context.Context, params *TodoUpdateParams) (string, error) {
+    // Mock处理逻辑
+    return `{"msg": "update todo success"}`, nil
+}
+
 // 使用 InferTool 创建工具
-updateTool, err := utils.InferTool("update_todo", "Update a todo item, eg: content,deadline...", UpdateTodoFunc)
+updateTool, err := utils.InferTool(
+    "update_todo", // tool name 
+    "Update a todo item, eg: content,deadline...", // tool description
+    UpdateTodoFunc)
 ```
 
 ### **方式三：实现 Tool 接口**
@@ -88,6 +120,13 @@ updateTool, err := utils.InferTool("update_todo", "Update a todo item, eg: conte
 对于需要更多自定义逻辑的场景，可以通过实现 Tool 接口来创建：
 
 ```go
+import (
+    "context"
+
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/schema"
+)
+
 type ListTodoTool struct {}
 
 func (lt *ListTodoTool) Info(ctx context.Context) (*schema.ToolInfo, error) {
@@ -105,7 +144,8 @@ func (lt *ListTodoTool) Info(ctx context.Context) (*schema.ToolInfo, error) {
 }
 
 func (lt *ListTodoTool) InvokableRun(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
-    // 具体的调用逻辑
+    // Mock调用逻辑
+    return `{"todos": [{"id": "1", "content": "在2024年12月10日之前完成Eino项目演示文稿的准备工作", "started_at": 1717401600, "deadline": 1717488000, "done": false}]}`, nil
 }
 ```
 
@@ -118,13 +158,9 @@ import (
     "github.com/bytedance/eino-ext/components/tool/duckduckgo"
 )
 
-func main() {
-    // 创建 duckduckgo Search 工具
-    searchTool, err := duckduckgo.NewTool(ctx, &duckduckgo.Config{})
-    if err != nil {
-        log.Fatal(err)
-    }
-}
+
+// 创建 duckduckgo Search 工具
+searchTool, err := duckduckgo.NewTool(ctx, &duckduckgo.Config{})
 ```
 
 使用 eino-ext 提供的工具不仅能避免重复开发的工作量，还能确保工具的稳定性和可靠性。这些工具都经过充分测试和持续维护，可以直接集成到项目中使用。
@@ -136,38 +172,52 @@ func main() {
 要创建一个 ToolsNode，你需要提供一个工具列表配置：
 
 ```go
-func main() {
-    conf := &compose.ToolsNodeConfig{
-        Tools: []tool.BaseTool{tool1, tool2},  // 工具可以是 InvokableTool 或 StreamableTool
-    }
-    toolsNode, err := compose.NewToolNode(ctx, conf)    
+import (
+    "context"
+
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/compose"
+)
+
+conf := &compose.ToolsNodeConfig{
+    Tools: []tool.BaseTool{tool1, tool2},  // 工具可以是 InvokableTool 或 StreamableTool
 }
+toolsNode, err := compose.NewToolNode(context.Background(), conf)
 ```
 
 下面是一个完整的 Agent 示例，它使用 OpenAI 的 ChatModel 并结合了上述的 Todo 工具:
 
 ```go
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/cloudwego/eino-ext/components/model/openai"
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+)
+
 func main() {
     // 初始化 tools
     todoTools := []tool.BaseTool{
-        getAddTodoTool(),                               // 使用 NewTool 方式
-        updateTool,                                     // 使用 InferTool 方式
-        &ListTodoTool{},                                // 使用结构体实现方式, 此处未实现底层逻辑
-        searchTool,                                 
+        getAddTodoTool(),                               // NewTool 构建
+        updateTool,                                     // InferTool 构建
+        &ListTodoTool{},                                // 实现Tool接口
+        searchTool,                                     // 官方封装的工具
     }
 
     // 创建并配置 ChatModel
-    temp := float32(0.7)
     chatModel, err := openai.NewChatModel(context.Background(), &openai.ChatModelConfig{
         Model:       "gpt-4",
         APIKey:      os.Getenv("OPENAI_API_KEY"),
-        Temperature: &temp,
     })
     if err != nil {
         log.Fatal(err)
     }
-
-    // 获取工具信息, 用于绑定到 ChatModel
+    // 获取工具信息并绑定到 ChatModel
     toolInfos := make([]*schema.ToolInfo, 0, len(todoTools))
     for _, tool := range todoTools {
         info, err := tool.Info(ctx)
@@ -176,8 +226,6 @@ func main() {
         }
         toolInfos = append(toolInfos, info)
     }
-
-    // 将 tools 绑定到 ChatModel
     err = chatModel.BindTools(toolInfos)
     if err != nil {
         log.Fatal(err)
@@ -222,7 +270,7 @@ func main() {
 }
 ```
 
-这个示例有一个假设，也就是 ChatModel 一定会做出 tool 调用的决策。实际上这个例子是 tool calling agent 的一个简化版本。更完整的 toolcalling agent 可以参考： [Tool Calling Agent](/zh/docs/eino/usage_guide/examples_collection/todo_manager_implementation)
+这个示例有一个假设，也就是 ChatModel 一定会做出 tool 调用的决策。
 
 ## **使用其他方式构建 Agent**
 

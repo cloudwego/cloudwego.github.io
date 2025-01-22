@@ -1,13 +1,13 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-01-22"
 lastmod: ""
 tags: []
 title: EinoDev 可视化编排插件功能指南
 weight: 2
 ---
 
-# 简介
+## 简介
 
 > 💡
 > Goland 提供的 Eino 可视化编排插件, 在 GoLand 中可以通过组件拖拽实现 Graph 的编排生成代码，并支持导入导出
@@ -20,7 +20,7 @@ weight: 2
 
 ## 编排组件介绍
 
-## 图 （ Graph ）
+### 图 （ Graph ）
 
 - 与 Eino 中的 Graph 概念一致，指最终由插件侧生成的 Graph，可在以下界面添加 Graph。
 - 点击添加插件，则弹出创建对话框，根据字段说明补充配置信息，即可生成一个 Graph 编排对象。
@@ -97,21 +97,24 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/eino_orchestration_add_nodes_2_page.png" />
+<img src="/img/eino/eino_dev_add_graph.png" />
 </td>
 <td>
-<img src="/img/eino/eino_orchestration_node_config_2_page.png" />
+<img src="/img/eino/eino_dev_add_chatmodel.png" />
+</td>
+<td>
+<img src="/img/eino/eino_orchestration_add_nodes_2_page.png" />
 </td>
 <td>
 <img src="/img/eino/eino_orchestration_add_edges_page.png" />
 </td>
 </tr></tbody></table>
 
-- 点击 “Generate as code” 并填写指定路径，将编排的 Graph 生成代码并保存到指定路径。
+- 点击 “Generate as code” 并选择合适文件夹，将编排的 Graph 生成代码并保存到指定路径。
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/eino_orchestration_gencode_config_page.png" />
+<img src="/img/eino/eino_orchestration_generate_code.png" />
 </td>
 <td>
 <img src="/img/eino/eino_orchestration_gencode_page.png" />

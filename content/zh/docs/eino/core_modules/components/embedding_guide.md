@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-01-22"
 lastmod: ""
 tags: []
 title: 'Eino: Embedding 使用说明'
@@ -58,36 +58,29 @@ WithModel(model string) Option
 
 ### **单独使用**
 
-```go
-// 初始化 embedder (以 openai 为例)
-embedder, err := openai.NewEmbedding(ctx, &openai.Config{
-    // 配置参数
-})
-if err != nil {
-    return err
-}
+> 代码位置：eino-ext/components/embedding/openai/examples/embedding
 
-// 生成向量
-texts := []string{"这是第一段文本", "这是第二段文本"}
-vectors, err := embedder.EmbedStrings(ctx, texts)
-if err != nil {
-    return err
-}
+```go
+import "github.com/cloudwego/eino-ext/components/embedding/openai"
+
+embedder, _ := openai.NewEmbedder(ctx, &openai.EmbeddingConfig{
+    APIKey:     accessKey,
+    Model:      "text-embedding-3-large",
+    Dimensions: &defaultDim,
+    Timeout:    0,
+})
+
+vectorIDs, _ := embedder.EmbedStrings(ctx, []string{"hello", "how are you"})
 ```
 
 ### **在编排中使用**
+
+> 代码位置：eino-ext/components/embedding/openai/examples/embedding
 
 ```go
 // 在 Chain 中使用
 chain := compose.NewChain[[]string, [][]float64]()
 chain.AppendEmbedding(embedder)
-
-// 编译并运行
-runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
-result, err := runnable.Invoke(ctx, texts)
 
 // 在 Graph 中使用
 graph := compose.NewGraph[[]string, [][]float64]()
@@ -107,39 +100,45 @@ vectors, err := embedder.EmbedStrings(ctx, texts,
 
 ### **Callback 使用示例**
 
+> 代码位置：eino-ext/components/embedding/openai/examples/embedding
+
 ```go
-// 创建 callback handler
-handler := &embedding.CallbackHandler{
-    OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *embedding.CallbackInput) context.Context {
-        fmt.Printf("开始生成向量，文本数量: %d\n", len(input.Texts))
-        return ctx
+import (
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/components/embedding"
+    "github.com/cloudwego/eino/compose"
+    callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
+    "github.com/cloudwego/eino-ext/components/embedding/openai"
+)
+
+handler := &callbacksHelper.EmbeddingCallbackHandler{
+    OnStart: func(ctx context.Context, runInfo *callbacks.RunInfo, input *embedding.CallbackInput) context.Context {
+       log.Printf("input access, len: %v, content: %s\n", len(input.Texts), input.Texts)
+       return ctx
     },
-    OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *embedding.CallbackOutput) context.Context {
-        fmt.Printf("向量生成完成，向量数量: %d\n", len(output.Embeddings))
-        if output.TokenUsage != nil {
-            fmt.Printf("Token 使用情况: %+v\n", output.TokenUsage)
-        }
-        return ctx
+    OnEnd: func(ctx context.Context, runInfo *callbacks.RunInfo, output *embedding.CallbackOutput) context.Context {
+       log.Printf("output finished, len: %v\n", len(output.Embeddings))
+       return ctx
     },
 }
 
-// 使用 callback handler
-helper := template.NewHandlerHelper().
-    Embedding(handler).
-    Handler()
+callbackHandler := callbacksHelper.NewHandlerHelper().Embedding(handler).Handler()
 
-// 在运行时使用
-runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
-result, err := runnable.Invoke(ctx, texts, compose.WithCallbacks(helper))
+chain := compose.NewChain[[]string, [][]float64]()
+chain.AppendEmbedding(embedder)
+
+// 编译并运行
+runnable, _ := chain.Compile(ctx)
+vectors, _ = runnable.Invoke(ctx, []string{"hello", "how are you"},
+    compose.WithCallbacks(callbackHandler))
+
+log.Printf("vectors in chain: %v", vectors)
 ```
 
 ## **已有实现**
 
-1. OpenAI Embedder: 使用 OpenAI 的文本嵌入模型生成向量 [Embedding - OpenAI](/zh/docs/eino/ecosystem_integration/embedding/embedding_openai)
-2. ARK Embedder: 使用 ARK 平台的模型生成向量 [Embedding - ARK](/zh/docs/eino/ecosystem_integration/embedding/embedding_ark)
+1. OpenAI Embedding: 使用 OpenAI 的文本嵌入模型生成向量 [Embedding - OpenAI](/zh/docs/eino/ecosystem_integration/embedding/embedding_openai)
+2. ARK Embedding: 使用 ARK 平台的模型生成向量 [Embedding - ARK](/zh/docs/eino/ecosystem_integration/embedding/embedding_ark)
 
 ## **自行实现参考**
 

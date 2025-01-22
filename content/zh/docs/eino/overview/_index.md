@@ -34,7 +34,7 @@ Eino 可在 AI 应用开发周期中的不同阶段，规范、简化和提效�
 model, _ := openai.NewChatModel(ctx, config) // create an invokable LLM instance
 message, _ := model.Generate(ctx, []*Message{
     SystemMessage("you are a helpful assistant."),
-    UserMessage("what does the future AI App look like?")}
+    UserMessage("what does the future AI App look like?")})
 ```
 
 当然，你可以这样用，Eino 提供了许多开箱即用的有用组件。但通过使用编排功能，你能实现更多，原因有三：
@@ -86,13 +86,11 @@ runnable.Stream(ctx, []*Message{UserMessage("help me plan my weekend")})
 ```go
 wf := NewWorkflow[[]*Message, *Message]()
 wf.AddChatModelNode("model", model).AddInput(NewMapping(START))
-wf.AddLambdaNode("l1", lambda1).AddInput(NewMapping("model").From("Content").To("Input"))
-wf.AddLambdaNode("l2", lambda2).AddInput(NewMapping("model").From("Role").To("Role"))
-wf.AddLambdaNode("l3", lambda3).AddInput(
-    NewMapping("l1").From("Output").To("Query"),
-    NewMapping("l2").From("Output").To("MetaData"),
-)
-wf.AddEnd([]*Mapping{NewMapping("node_l3")}
+wf.AddLambdaNode("l1", lambda1).AddInput("model", MapFields("Content", "Input"))
+wf.AddLambdaNode("l2", lambda2).AddInput("model", MapFields("Role", "Role"))
+wf.AddLambdaNode("l3", lambda3).AddInput("l1", MapFields("Output", "Query")).
+    AddInput("l2", MapFields("Output", "MetaData"))
+wf.AddEnd("node_l3")
 runnable, _ := wf.Compile(ctx)
 runnable.Invoke(ctx, []*Message{UserMessage("kick start this workflow!")})
 ```

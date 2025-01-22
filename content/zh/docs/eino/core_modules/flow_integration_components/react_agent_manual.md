@@ -92,7 +92,7 @@ import (
 
 func openaiExample() {
     chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-        BaseURL: "https://search.bytedance.net/gpt/openapi/online/multimodal/crawl",
+        BaseURL: os.Getenv("OPENAI_BASE_URL"),
         Key:     os.Getenv("OPENAI_ACCESS_KEY"),
         ByAzure: true,
         Model:   "{{model name which support tool call}}",
@@ -119,7 +119,7 @@ func arkExample() {
 
 ### ToolsConfig
 
-toolsConfig 类型为 `compose.ToolsNodeConfig`, 在 eino 中，若要构建一个 Tool 节点，则需要提供 Tool 的信息，以及调用 Tool 的接口，tool 的接口定义如下:
+toolsConfig 类型为 `compose.ToolsNodeConfig`, 在 eino 中，若要构建一个 Tool 节点，则需要提供 Tool 的信息，以及调用 Tool 的 function。tool 的接口定义如下:
 
 ```go
 type InvokableRun func(ctx context.Context, arguments string, opts ...Option) (content string, err error)
@@ -145,45 +145,33 @@ type StreamableTool interface {
 用户可以根据 tool 的接口定义自行实现所需的 tool，同时框架也提供了更简便的构建 tool 的方法：
 
 ```go
-import (
-    "context"
+userInfoTool := utils.NewTool(
+    &schema.ToolInfo{
+       Name: "user_info",
+       Desc: "根据用户的姓名和邮箱，查询用户的公司、职位、薪酬信息",
+       ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
+          "name": {
+             Type: "string",
+             Desc: "用户的姓名",
+          },
+          "email": {
+             Type: "string",
+             Desc: "用户的邮箱",
+          },
+       }),
+    },
+    func(ctx context.Context, input *userInfoRequest) (output *userInfoResponse, err error) {
+       return &userInfoResponse{
+          Name:     input.Name,
+          Email:    input.Email,
+          Company:  "Cool Company LLC.",
+          Position: "CEO",
+          Salary:   "9999",
+       }, nil
+    })
     
-    "github.com/cloudwego/eino/components/tool/utils"
-    "github.com/cloudwego/eino/compose"
-    "github.com/cloudwego/eino/schema"
-)
-
-func main() {
-    // 提供 tool 的信息
-    toolInfo := &schema.ToolInfo{
-        Name: "xxx",
-        Desc: "description for tool, it's important for chatmodel choice which tool to use",
-        Params: map[string]*schema.ParameterInfo{
-            "param01": {
-                Type: "string",
-                Desc: "xxxx", // import for chatmodel generate params
-            },
-            "param01": {
-                Type: "string",
-                Desc: "xxxx",
-            },
-        },
-    }
-    
-    // 提供 tool 的调用方法
-    // 需满足 type InvokeFunc[T, D any] func(ctx context.Context, input T) (output D, err error)
-    toolInvokeFunc := func(ctx context.Context, in string) (out string, err error)
-    
-    // 构建 tool
-    invokeTool := utils.NewTool(toolInfo, toolInvokeFunc)
-    
-    // stream tool 同理
-    // utils.NewStreamTool
-    
-    toolConfig := &compose.ToolsNodeConfig{
-        InvokableTools:  []tool.InvokableTool{invokeTool},
-    }
-
+toolConfig := &compose.ToolsNodeConfig{
+    InvokableTools:  []tool.InvokableTool{invokeTool},
 }
 ```
 
@@ -207,15 +195,15 @@ import (
 func main() {
     persona := `你是一个 golang 开发专家.`
     
-    agent, err := react.NewAgent(ctx, react.AgentConfig{
+    agent, err := react.NewAgent(ctx, &react.AgentConfig{
         Model: toolableChatModel,
         ToolsConfig: tools,
         
         // MessageModifier
         MessageModifier: react.NewPersonaModifier(persona),
-    }
+    })
     
-    agent.Generate(ctx, []*schema.Message{{Role: schame.Human, Content: "写一个 hello world 的代码"}}
+    agent.Generate(ctx, []*schema.Message{schema.UserMessage("写一个 hello world 的代码")})
     // 实际到 ChatModel 的 input 为
     // []*schema.Message{
     //    {Role: schema.System, Content: "你是一个 golang 开发专家."},
@@ -226,7 +214,7 @@ func main() {
 
 ### MaxStep
 
-指定 Agent 最大运行步长，每次从一个节点转移到下一个节点为一步，默认值为 12。
+指定 Agent 最大运行步长，每次从一个节点转移到下一个节点为一步，默认值为 node 个数 + 2。
 
 由于 Agent 中一次循环为 ChatModel + Tools，即为 2 步，因此默认值 12 最多可运行 6 个循环。但由于最后一步必须为 ChatModel 返回 (因为 ChatModel 结束后判断无须运行 tool 才能返回最终结果)，因此最多运行 5 次 tool。
 
@@ -234,12 +222,28 @@ func main() {
 
 ```go
 func main() {
-    agent, err := react.NewAgent(ctx, react.AgentConfig{
+    agent, err := react.NewAgent(ctx, &react.AgentConfig{
         Model: toolableChatModel,
         ToolsConfig: tools,
         MaxStep: 20,
     }
 }
+```
+
+### ToolReturnDirectly
+
+如果希望当 ChatModel 选择了特定的 Tool 并执行后，Agent 直接把 Tool 的 Response ToolMessage 返回去，则可以在 ToolReturnDirectly 中配置这个 Tool。
+
+```go
+a, err = NewAgent(ctx, &AgentConfig{
+    Model: cm,
+    ToolsConfig: compose.ToolsNodeConfig{
+       Tools: []tool.BaseTool{fakeTool, fakeStreamTool},
+    },
+
+    MaxStep:            40,
+    ToolReturnDirectly: map[string]struct{}{fakeToolName: {}}, // one of the two tools is return directly
+})
 ```
 
 ### StreamToolCallChecker
@@ -249,185 +253,111 @@ func main() {
 可选填写，未填写时使用首包是否包含工具调用判断。
 
 ```go
-func main() {
-    agent, err := react.NewAgent(ctx, react.AgentConfig{
-        Model: toolableChatModel,
-        ToolsConfig: tools,
-        StreamToolCallChecker: func(___ context.Context, _sr_ *schema.StreamReader[*schema.Message]) (bool, error) {
-            defer sr.Close()
+agent, err := react.NewAgent(ctx, &react.AgentConfig{
+    Model: toolableChatModel,
+    ToolsConfig: tools,
+    StreamToolCallChecker: func(___ context.Context, _sr_ *schema.StreamReader[*schema.Message]) (bool, error) {
+        defer sr.Close()
 
-            msg, err := sr.Recv()
-            if err != nil {
-                return false, err
-            }
-
-            if len(msg.ToolCalls) == 0 {
-                return false, nil
-            }
-
-            return true, nil
+        msg, err := sr.Recv()
+        if err != nil {
+            return false, err
         }
+
+        if len(msg.ToolCalls) == 0 {
+            return false, nil
+        }
+
+        return true, nil
     }
 }
 ```
 
-> 💡
-> 部分模型流式输出工具调用时会先输出一段文本（比如 Claude），这会导致默认 StreamToolCallChecker 错误判断没有工具调用而直接返回，使用这类模型时必须自行实现正确的 StreamToolCallChecker。
+部分模型流式输出工具调用时会先输出一段文本（比如 Claude），这会导致默认 StreamToolCallChecker 错误判断没有工具调用而直接返回，使用这类模型时必须自行实现正确的 StreamToolCallChecker。
 
 ## 调用
 
 ### Generate
 
 ```go
-import (
-    "context"
+agent, _ := react.NewAgent(...)
 
-    "github.com/cloudwego/eino/flow/agent/react"
-    "github.com/cloudwego/eino/schema"
-)
-
-func main() {
-    agent, err := react.NewAgent(...)
-
-    var outMessage *schema.Message
-    outMessage, err = agent.Generate(ctx, []*schema.Message{
-        {
-            Role:    schema.Human,
-            Content: "写一个 golang 的 hello world 程序",
-        },
-    })
-}
+var outMessage *schema.Message
+outMessage, err = agent.Generate(ctx, []*schema.Message{
+    schema.UserMessage("写一个 golang 的 hello world 程序"),
+})
 ```
 
 ### Stream
 
 ```go
-import (
-    "context"
-    "fmt"
-    
-    "github.com/cloudwego/eino/flow/agent/react"
-    "github.com/cloudwego/eino/schema"
-)
+agent, _ := react.NewAgent(...)
 
-func main() {
-    agent, err := react.NewAgent(...)
+var msgReader *schema.StreamReader[*schema.Message]
+msgReader, err = agent.Stream(ctx, []*schema.Message{
+    schema.UserMessage("写一个 golang 的 hello world 程序"),
+})
 
-    var msgReader *schema.StreamReader[*schema.Message]
-    msgReader, err = agent.Stream(ctx, []*schema.Message{
-        {
-            Role:    schema.Human,
-            Content: "写一个 golang 的 hello world 程序",
-        },
-    })
-    
-    for {
-        // msg type is *schema.Message
-        msg, err := msgReader.Recv()
-        if err != nil {
-            if errors.Is(err, io.EOF) {
-                // finish
-                break
-            }
-            // error
-            log.Printf("failed to recv: %v\n", err)
-            return
+for {
+    // msg type is *schema.Message
+    msg, err := msgReader.Recv()
+    if err != nil {
+        if errors.Is(err, io.EOF) {
+            // finish
+            break
         }
-
-        fmt.Print(msg.Content)
+        // error
+        log.Printf("failed to recv: %v\n", err)
+        return
     }
+
+    fmt.Print(msg.Content)
 }
 ```
 
 ### WithCallbacks
 
-Callback 是在 Agent 运行时特定时机执行的回调，传递了一些运行时信息，定义为：
+Callback 是在 Agent 运行时特定时机执行的回调，由于 Agent 这个 Graph 里面只有 ChatModel 和 ToolsNode，因此 Agent 的 Callback 就是 ChatModel 和 Tool 的 Callback。react 包中提供了一个 helper function 来帮助用户快速构建针对这两个组件类型的 Callback Handler。
 
 ```go
-type AgentCallback interface {
-    OnChatModelStart(ctx context.Context, input *model.CallbackInput)
-    OnChatModelEnd(ctx context.Context, output *model.CallbackOutput)
-    OnChatModelEndStream(ctx context.Context, output *schema.StreamReader[*model.CallbackOutput])
-
-    OnToolStart(ctx context.Context, input string)
-    OnToolEnd(ctx context.Context, output string)
-    OnToolEndStream(ctx context.Context, output *schema.StreamReader[string])
-
-    OnError(ctx context.Context, err error)
-}
-```
-
-框架提供了空的 BaseCallback 来辅助用户实现接口：
-
-```go
-import "github.com/cloudwego/eino/flow/agent/react"
-
-// type BaseCallback struct{}
-// func (cb *BaseCallback) OnChatModelStart(ctx context.Context, input *model.CallbackInput) {}
-// func (cb *BaseCallback) OnChatModelEnd(ctx context.Context, output *model.CallbackOutput) {}
-// func (cb *BaseCallback) OnChatModelEndStream(ctx context.Context, output *schema.StreamReader[*model.CallbackOutput]) {}
-
-// func (cb *BaseCallback) OnToolStart(ctx context.Context, input string)                            {}
-// func (cb *BaseCallback) OnToolEnd(ctx context.Context, output string)                             {}
-// func (cb *BaseCallback) OnToolEndStream(ctx context.Context, output *schema.StreamReader[string]) {}
-
-// func (cb *BaseCallback) OnError(ctx context.Context, err error) {}
-
-type MyCallback struct{
-    *react.BaseCallback
-}
-
-// 重载需要的方法……
-func (m *MyCallback) OnChatModelEnd(ctx context.Context, output *model.CallbackOutput) {
-  // some logic
-}
-
-func main() {
-    agent, err := react.NewAgent(...)
-    if err != nil {...}
-
-    agent.Generate(ctx, []*schema.Message{...}, react.WithCallbacks(&MyCallback{})
+// BuildAgentCallback builds a callback handler for agent.
+// e.g.
+//
+//  callback := BuildAgentCallback(modelHandler, toolHandler)
+//  agent, err := react.NewAgent(ctx, &AgentConfig{})
+//  agent.Generate(ctx, input, agent.WithComposeOptions(compose.WithCallbacks(callback)))
+func BuildAgentCallback(modelHandler *template.ModelCallbackHandler, toolHandler *template.ToolCallbackHandler) callbacks.Handler {
+    return template.NewHandlerHelper().ChatModel(modelHandler).Tool(toolHandler).Handler()
 }
 ```
 
 ## Agent In Graph/Chain
 
-目前 agent 不是一级的 component 编排到 graph 中，可作为 Lambda 编排 Agent:
+Agent 可作为 Lambda 嵌入到其他的 Graph 中:
 
 ```go
-import (
-    "context"
+agent, _ := NewAgent(ctx, &AgentConfig{
+    Model: cm,
+    ToolsConfig: compose.ToolsNodeConfig{
+       Tools: []tool.BaseTool{fakeTool, &fakeStreamToolGreetForTest{}},
+    },
 
-    "github.com/cloudwego/eino/components/model"
-    "github.com/cloudwego/eino/components/model/openai"
-    "github.com/cloudwego/eino/components/tool"
-    "github.com/cloudwego/eino/compose"
-    "github.com/cloudwego/eino/flow/agent/react"
-    "github.com/cloudwego/eino/schema"
-)
+    MaxStep: 40,
+})
 
-func main() {
-    // 创建一个 chain
-    chain := compose.NewChain[[]*schema.Message, string]()
-    
-    // 创建 agent
-    agent, err := react.NewAgent(...)
-    
-    // 把 agent 变成一个 Lambda
-    agentLambda, err := compose.AnyLambda(agent.Generate, agent.Stream, nil, nil)
-    
-    // 把 agentLambda 加入到 chain 的第一个节点
-    chain.AppendLambda(agentLambda)
-    
-    // other
-    chain.AppendLambda(...).AppendXXX(...)
-    runnable, err := chain.Compile()
-    
-    // 调用时可传入 LambdaOption，用于传递 agent 的 calloption，例如 callback
-    res, err := r.Invoke(ctx, []*schema.Message{{Role: schema.Human, Content: "hello"}},
-            compose.WithLambdaOption(agent.WithCallbacks(&MyCallback{})))
-    
-}
+chain := compose.NewChain[[]*schema.Message, string]()
+agentLambda, _ := compose.AnyLambda(agent.Generate, agent.Stream, nil, nil)
+
+chain.
+    AppendLambda(agentLambda).
+    AppendLambda(compose.InvokableLambda(func(ctx context.Context, input *schema.Message) (string, error) {
+       t.Log("got agent response: ", input.Content)
+       return input.Content, nil
+    }))
+r, _ := chain.Compile(ctx)
+
+res, _ := r.Invoke(ctx, []*schema.Message{{Role: schema.User, Content: "hello"}},
+    compose.WithCallbacks(callbackForTest))
 ```
 
 ## Demo
