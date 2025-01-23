@@ -174,7 +174,7 @@ Workflow 的类型对齐的维度，由整体的 Input & Output 改成了字段�
 
 在 Eino 中，编排的结果是 graph 或 chain，若要运行，则需要使用 `Compile()` 来生成一个 `Runnable` 接口。
 
-Runnable 的一个重要作用就是提供了 `I``nvoke`、`S``tream`、`C``ollect`、`T``ransform` 四种调用方式。
+Runnable 的一个重要作用就是提供了 「Invoke」、「Stream」、「Collect」、「Transform」 四种调用方式。
 
 > 上述几种调用方式的介绍以及详细的 Runnable 介绍可以查看: [Eino: 基础概念介绍](/zh/docs/eino/overview)
 
