@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-21"
+date: "2025-01-23"
 lastmod: ""
 tags: []
 title: EinoDev 可视化调试插件功能指南
@@ -83,13 +83,13 @@ go mod tidy
 <table><tbody><tr>
 <td>
 
-1.点击<pre>Test Run</pre>从 start 节点开始执行
+1.点击「Test Run」从 start 节点开始执行
 <a href="/img/eino/eino_debug_enter_test_run_2_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_test_run_2_page.png" /></a>
 
 </td>
 <td>
 
-2.输入<pre>"hello eino"</pre>，点击确认
+2.输入 "hello eino"，点击确认
 <a href="/img/eino/eino_debug_run_input_mock_data_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_page.png" /></a>
 
 </td>
@@ -204,7 +204,7 @@ RegisterSimpleGraph(ctx)
 
 在本地电脑或者远程环境中运行你的进程，并保证主进程不会退出。
 
-在 _github.com/cloudwego/eino-examples/devops/debug/main.go__ _中，`main()` 代码如下
+在 github.com/cloudwego/eino-examples/devops/debug/main.go 中，`main()` 代码如下
 
 ```go
 func main() {
@@ -236,7 +236,7 @@ func main() {
 - **IP**：用户进程所在服务器的 IP 地址。
   - 用户进程运行在本地电脑，则填写 `127.0.0.1`；
   - 用户进程运行在远程服务器上，则填写远程服务器的 IP 地址，兼容 IPv4 和 IPv6 。
-- **Port**：调试服务监听的端口，默认是 `52538`，可通过 WithDevServerPort 这一 option 方法进行修改
+- **Port**：调试服务监听的端口，默认是 `52538`，可通过 「WithDevServerPort」 这一 option 方法进行修改
 
 > 💡
 > 注意事项
@@ -256,7 +256,7 @@ IP 和 Port 配置完成后，点击确认，调试插件会自动连接到目�
 
 调试支持从任意节点开始调试，包括 start 节点和其他中间节点。
 
-1. 从 START 节点开始调试：直接点击 Test Run，然后输入 mock 的 input（如果 input 是复杂结构的话，会自动对 input 的结构进行推断）然后点击确定，开始执行你的 graph，每个 node 的结果会在下方显示。
+1. 从 START 节点开始调试：直接点击 「Test Run」，然后输入 mock 的 input（如果 input 是复杂结构的话，会自动对 input 的结构进行推断）然后点击确定，开始执行你的 graph，每个 node 的结果会在下方显示。
    <a href="/img/eino/eino_debug_run_code_2.png" target="_blank"><img src="/img/eino/eino_debug_run_code_2.png" /></a>
 
 <a href="/img/eino/eino_debug_run_input_mock_data_2_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_2_page.png" /></a>
