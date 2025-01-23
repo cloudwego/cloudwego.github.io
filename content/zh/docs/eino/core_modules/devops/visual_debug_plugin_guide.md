@@ -292,55 +292,53 @@ IP 和 Port 配置完成后，点击确认，调试插件会自动连接到目�
 
 1. 假设你已经有编排代码如下，其中，graph 的输入定义为 `any`，`node_1` 的输入定义为 `*NodeInfo`;
 
-```go
-type NodeInfo struct {
-    Message string
-}
+   ```go
+   type NodeInfo struct {
+       Message string
+   }
 
-func RegisterGraphOfInterfaceType(ctx context.Context) {
-    // Define a graph that input parameter is any.
-    g := compose.NewGraph[any, string]()
+   func RegisterGraphOfInterfaceType(ctx context.Context) {
+       // Define a graph that input parameter is any.
+       g := compose.NewGraph[any, string]()
 
-    _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input *NodeInfo) (output string, err error) {
-       if input == nil {
-          return "", nil
+       _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input *NodeInfo) (output string, err error) {
+          if input == nil {
+             return "", nil
+          }
+          return input.Message + " process by node_1,", nil
+       }))
+
+       _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+          return input + " process by node_2,", nil
+       }))
+
+       _ = g.AddLambdaNode("node_3", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+          return input + " process by node_3,", nil
+       }))
+
+       _ = g.AddEdge(compose._START_, "node_1")
+
+       _ = g.AddEdge("node_1", "node_2")
+
+       _ = g.AddEdge("node_2", "node_3")
+
+       _ = g.AddEdge("node_3", compose._END_)
+
+       r, err := g.Compile(ctx)
+       if err != nil {
+          logs.Errorf("compile graph failed, err=%v", err)
+          return
        }
-       return input.Message + " process by node_1,", nil
-    }))
+   }
+   ```
+2. 调试前，通过 `AppendType` 方法在 `Init()` 时注册自定义的 `*NodeInfo` 类型：
 
-    _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
-       return input + " process by node_2,", nil
-    }))
-
-    _ = g.AddLambdaNode("node_3", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
-       return input + " process by node_3,", nil
-    }))
-
-    _ = g.AddEdge(compose._START_, "node_1")
-
-    _ = g.AddEdge("node_1", "node_2")
-
-    _ = g.AddEdge("node_2", "node_3")
-
-    _ = g.AddEdge("node_3", compose._END_)
-
-    r, err := g.Compile(ctx)
-    if err != nil {
-       logs.Errorf("compile graph failed, err=%v", err)
-       return
-    }
-}
-```
-
-1. 调试前，通过 `AppendType` 方法在 `Init()` 时注册自定义的 `*NodeInfo` 类型：
-
-```go
-err := devops.Init(ctx, devops.AppendType(&graph.NodeInfo{}))
-```
-
-1. 调试过程中，在 Test Run 的 Json 输入框中，对于 interface 类型的字段，默认会呈现为 `{}`。可以通过在 `{}` 中键入一个空格，来查看所有内置的以及自定义注册的数据类型，并选择该 interface 的具体实现类型。
+   ```go
+   err := devops.Init(ctx, devops.AppendType(&graph.NodeInfo{}))
+   ```
+3. 调试过程中，在 Test Run 的 Json 输入框中，对于 interface 类型的字段，默认会呈现为 `{}`。可以通过在 `{}` 中键入一个空格，来查看所有内置的以及自定义注册的数据类型，并选择该 interface 的具体实现类型。
    <a href="/img/eino/eino_debug_run_code.png" target="_blank"><img src="/img/eino/eino_debug_run_code.png" /></a>
-2. 在 `_value` 字段中补全调试节点输入。
+4. 在 `_value` 字段中补全调试节点输入。
    <a href="/img/eino/eino_debug_run_code_3.png" target="_blank"><img src="/img/eino/eino_debug_run_code_3.png" /></a>
-3. 点击确认，查看调试结果。
+5. 点击确认，查看调试结果。
    <a href="/img/eino/eino_debug_panel_2.png" target="_blank"><img src="/img/eino/eino_debug_panel_2.png" /></a>
