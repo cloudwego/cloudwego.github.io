@@ -20,7 +20,7 @@ Example 代码路径：[https://github.com/cloudwego/eino-examples/blob/main/flo
 
 react agent 底层使用 `compose.Graph` 作为编排方案，一般来说有 2 个节点: ChatModel、Tools，中间运行过程中的所有历史消息都会放入 state 中，在将所有历史消息传递给 ChatModel 之前，会 copy 消息交由 MessageModifier 进行处理，处理的结果再传递给 ChatModel。直到 ChatModel 返回的消息中不再有 tool call，则返回最终消息。
 
-![](/img/eino/react_agent_graph.png)
+<a href="/img/eino/react_agent_graph.png" target="_blank"><img src="/img/eino/react_agent_graph.png" /></a>
 
 当 Tools 列表中至少有一个 Tool 配置了 ReturnDirectly 时，ReAct Agent 结构会更复杂：在 ToolsNode 之后会增加一个 Branch，判断是否调用了一个 ReturnDirectly 的 Tool，如果是，直接 END，否则照旧进入 ChatModel。
 
@@ -376,7 +376,7 @@ res, _ := r.Invoke(ctx, []*schema.Message{{Role: schema.User, Content: "hello"}}
 
 ### 运行过程
 
-![](/img/eino/agent_cli_demo.gif)
+<a href="/img/eino/agent_cli_demo.gif" target="_blank"><img src="/img/eino/agent_cli_demo.gif" /></a>
 
 ### 运行过程解释
 

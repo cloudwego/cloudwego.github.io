@@ -16,8 +16,7 @@ weight: 2
 
 ### 插件功能介绍
 
-![](/img/eino/eino_orchestration_describtion_page.png)
-
+<a href="/img/eino/eino_orchestration_describtion_page.png" target="_blank"><img src="/img/eino/eino_orchestration_describtion_page.png" /></a>
 ## 编排组件介绍
 
 ### 图 （ Graph ）
@@ -27,13 +26,13 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/eino_orchestration_add_graph_2_page.png" />
+<a href="/img/eino/eino_orchestration_add_graph_2_page.png" target="_blank"><img src="/img/eino/eino_orchestration_add_graph_2_page.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_orchestration_add_graph_config_deatil_page.png" />
+<a href="/img/eino/eino_orchestration_add_graph_config_deatil_page.png" target="_blank"><img src="/img/eino/eino_orchestration_add_graph_config_deatil_page.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_orchestration_add_graph_page.png" />
+<a href="/img/eino/eino_orchestration_add_graph_page.png" target="_blank"><img src="/img/eino/eino_orchestration_add_graph_page.png" /></a>
 </td>
 </tr></tbody></table>
 
@@ -44,13 +43,13 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/eino_orchestration_show_nodes_page.png" />
+<a href="/img/eino/eino_orchestration_show_nodes_page.png" target="_blank"><img src="/img/eino/eino_orchestration_show_nodes_page.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_orchestration_add_nodes_page.png" />
+<a href="/img/eino/eino_orchestration_add_nodes_page.png" target="_blank"><img src="/img/eino/eino_orchestration_add_nodes_page.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_dev_chat_model_config2.png" />
+<a href="/img/eino/eino_dev_chat_model_config2.png" target="_blank"><img src="/img/eino/eino_dev_chat_model_config2.png" /></a>
 </td>
 </tr></tbody></table>
 
@@ -61,10 +60,10 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/eino_orchestration_add_nodes_3_page.png" />
+<a href="/img/eino/eino_orchestration_add_nodes_3_page.png" target="_blank"><img src="/img/eino/eino_orchestration_add_nodes_3_page.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_dev_chat_model_config.png" />
+<a href="/img/eino/eino_dev_chat_model_config.png" target="_blank"><img src="/img/eino/eino_dev_chat_model_config.png" /></a>
 </td>
 </tr></tbody></table>
 
@@ -75,10 +74,10 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/eino_orchestration_add_slot_page.png" />
+<a href="/img/eino/eino_orchestration_add_slot_page.png" target="_blank"><img src="/img/eino/eino_orchestration_add_slot_page.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_orchestration_node_add_slots__page.png" />
+<a href="/img/eino/eino_orchestration_node_add_slots__page.png" target="_blank"><img src="/img/eino/eino_orchestration_node_add_slots__page.png" /></a>
 </td>
 </tr></tbody></table>
 
@@ -87,7 +86,7 @@ weight: 2
 ### 初始化插件
 
 点击进入 Eino Dev 插件，会展示如下界面，可点击图中圈选框进入编排。
-![](/img/eino/eino_orchestration_enter_page.png)
+<a href="/img/eino/eino_orchestration_enter_page.png" target="_blank"><img src="/img/eino/eino_orchestration_enter_page.png" /></a>
 
 ### 创建并编排 Graph
 
@@ -97,16 +96,16 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/eino_dev_add_graph.png" />
+<a href="/img/eino/eino_dev_add_graph.png" target="_blank"><img src="/img/eino/eino_dev_add_graph.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_dev_add_chatmodel.png" />
+<a href="/img/eino/eino_dev_add_chatmodel.png" target="_blank"><img src="/img/eino/eino_dev_add_chatmodel.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_orchestration_add_nodes_2_page.png" />
+<a href="/img/eino/eino_orchestration_add_nodes_2_page.png" target="_blank"><img src="/img/eino/eino_orchestration_add_nodes_2_page.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_orchestration_add_edges_page.png" />
+<a href="/img/eino/eino_orchestration_add_edges_page.png" target="_blank"><img src="/img/eino/eino_orchestration_add_edges_page.png" /></a>
 </td>
 </tr></tbody></table>
 
@@ -114,10 +113,10 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/eino_orchestration_generate_code.png" />
+<a href="/img/eino/eino_orchestration_generate_code.png" target="_blank"><img src="/img/eino/eino_orchestration_generate_code.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_orchestration_gencode_page.png" />
+<a href="/img/eino/eino_orchestration_gencode_page.png" target="_blank"><img src="/img/eino/eino_orchestration_gencode_page.png" /></a>
 </td>
 </tr></tbody></table>
 
@@ -125,10 +124,10 @@ weight: 2
 
 <table><tbody><tr>
 <td>
-<img src="/img/eino/eino_orchestration_subgraph_show_page.png" />
+<a href="/img/eino/eino_orchestration_subgraph_show_page.png" target="_blank"><img src="/img/eino/eino_orchestration_subgraph_show_page.png" /></a>
 </td>
 <td>
-<img src="/img/eino/eino_orchestration_sub_graph_pos_page.png" />
+<a href="/img/eino/eino_orchestration_sub_graph_pos_page.png" target="_blank"><img src="/img/eino/eino_orchestration_sub_graph_pos_page.png" /></a>
 </td>
 </tr></tbody></table>
 

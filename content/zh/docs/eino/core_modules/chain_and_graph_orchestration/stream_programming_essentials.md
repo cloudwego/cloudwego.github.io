@@ -12,7 +12,7 @@ weight: 0
 
 ## 编排流式概述
 
-![](/img/eino/eino_component_runnable.png)
+<a href="/img/eino/eino_component_runnable.png" target="_blank"><img src="/img/eino/eino_component_runnable.png" /></a>
 
 编排流式的 Graph 时，需要考虑的几个关键要素：
 
@@ -93,11 +93,11 @@ Collect 和 Transform 两种流式范式，目前只在编排场景有用到。
 
 但是，一个组件，一旦处在多个组件组合使用的“编排”场景中，它的入参和出参就没那么固定了，而是取决于这个组件在编排场景中的“上游输出”和“下游输入”。比如 React Agent 的典型编排示意图：
 
-![](/img/eino/chatmodel_to_tool.png)
+<a href="/img/eino/chatmodel_to_tool.png" target="_blank"><img src="/img/eino/chatmodel_to_tool.png" /></a>
 
 上图中，如果 Tool 是个 StreamableTool，也就是输出是 StreamReader[Message]，则 Tool -> ChatModel 就可能是流式的输出。但是 Chat Model 并没有接收流式输入的业务场景，也没有对应的接口。这时 Eino 框架会自动帮助 ChatModel 补足接收流式输入的能力：
 
-![](/img/eino/chatmodel_tool_loop.png)
+<a href="/img/eino/chatmodel_tool_loop.png" target="_blank"><img src="/img/eino/chatmodel_tool_loop.png" /></a>
 
 上面的 Concat message stream 是 Eino 框架自动提供的能力，即使不是 message，是任意的 T，只要满足特定的条件，Eino 框架都会自动去做这个 StreamReader[T] 到 T 的转化，这个条件是：**在编排中，当一个组件的上游输出是 StreamReader[T]，但是组件只提供了 T 作为输入的业务接口时，框架会自动将 StreamReader[T] concat 成 T，再输入给这个组件。**
 
@@ -106,7 +106,7 @@ Collect 和 Transform 两种流式范式，目前只在编排场景有用到。
 
 另一方面，考虑一个相反的例子。还是 React Agent，这次是一个更完整的编排示意图：
 
-![](/img/eino/tool_model_react.png)
+<a href="/img/eino/tool_model_react.png" target="_blank"><img src="/img/eino/tool_model_react.png" /></a>
 
 在上图中，branch 接收 chat model 输出的 message，并根据 message 中是否包含 tool call，来选择直接结束 agent 本次运行并将 message 输出，还是调用 Tool 并将调用结果再次给 Chat Model 循环处理。由于这个 Branch 可以通过 message stream 的首个帧就完成逻辑判断，因此我们给这个 Branch 定义的是 Collect 接口，即流式输入，非流式输出：
 
@@ -182,24 +182,23 @@ type Runnable[I**, **O any] interface {
 - 如果用户通过 Invoke 来调用 Graph，则 Graph 内部所有组件都以 Invoke 范式来调用。如果某个组件，没有实现 Invoke 范式，则 Eino 框架自动根据组件实现了的流式范式，封装出 Invoke 调用范式，优先顺位如下：
   - 若组件实现了 Stream，则通过 Stream 封装 Invoke，即自动 concat 输出流。
 
-![](/img/eino/invoke_outside_stream_inside.png)
-- 否则，若组件实现了 Collect，则通过 Collect 封装 Invoke，即非流式入参转单帧流。
+<a href="/img/eino/invoke_outside_stream_inside.png" target="_blank"><img src="/img/eino/invoke_outside_stream_inside.png" /></a>
+	- 否则，若组件实现了 Collect，则通过 Collect 封装 Invoke，即非流式入参转单帧流。
 
-![](/img/eino/invoke_outside_collect_inside.png)
-- 如果都没实现，则必须实现 Transform，通过 Transform 封装 Invoke，即入参转单帧流，出参 concat。
+<a href="/img/eino/invoke_outside_collect_inside.png" target="_blank"><img src="/img/eino/invoke_outside_collect_inside.png" /></a>
+	- 如果都没实现，则必须实现 Transform，通过 Transform 封装 Invoke，即入参转单帧流，出参 concat。
 
-![](/img/eino/invoke_outside_transform_inside.png)
-
+<a href="/img/eino/invoke_outside_transform_inside.png" target="_blank"><img src="/img/eino/invoke_outside_transform_inside.png" /></a>
 - 如果用户通过 Stream/Collect/Transform 来调用 Graph，则 Graph 内部所有组件都以 Transform 范式来调用。如果某个组件，没有实现 Transform 范式，则 Eino 框架自动根据组件实现了的流式范式，封装出 Transform 调用范式，优先顺位如下：
-  - 若组件实现了 Stream，则通过 Stream 封装 Transform，即自动 concat 输入流。
+	- 若组件实现了 Stream，则通过 Stream 封装 Transform，即自动 concat 输入流。
 
-![](/img/eino/transform_inside_stream_inside.png)
-- 否则，若组件实现了 Collect，则通过 Collect 封装 Transform，即非流式出参转单帧流。
+<a href="/img/eino/transform_inside_stream_inside.png" target="_blank"><img src="/img/eino/transform_inside_stream_inside.png" /></a>
+	- 否则，若组件实现了 Collect，则通过 Collect 封装 Transform，即非流式出参转单帧流。
 
-![](/img/eino/transform_outside_stream_inside.png)
-- 如果都没实现，则必须实现 Invoke，通过 Invoke 封装 Transform，即入参流 concat，出参转单帧流
+<a href="/img/eino/transform_outside_stream_inside.png" target="_blank"><img src="/img/eino/transform_outside_stream_inside.png" /></a>
+	- 如果都没实现，则必须实现 Invoke，通过 Invoke 封装 Transform，即入参流 concat，出参转单帧流
 
-![](/img/eino/transform_outside_invoke_inside.png)
+<a href="/img/eino/transform_outside_invoke_inside.png" target="_blank"><img src="/img/eino/transform_outside_invoke_inside.png" /></a>
 
 结合上面穷举的各种案例，Eino 框架对 T 和 Stream[T] 的自动转换，可以总结为：
 
