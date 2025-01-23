@@ -186,6 +186,7 @@ Graph 会为内部所有的 Node 自动注入 RunInfo。机制是每个 Node 的
 ## 触发方式
 
 <a href="/img/eino/graph_node_callback_run_place.png" target="_blank"><img src="/img/eino/graph_node_callback_run_place.png" /></a>
+
 ### 组件实现内部触发(Component Callback)
 
 在组件实现的代码中，调用 callbacks 包中的 `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), OnEndWithStreamInput()`。以 Ark 的 ChatModel 实现为例，在 Generate 方法中：
@@ -446,4 +447,5 @@ Handler 内不建议修改 input / output。原因是：
 所以此时需要将流进行复制，其复制关系如下：
 
 <a href="/img/eino/graph_stream_chunk_copy.png" target="_blank"><img src="/img/eino/graph_stream_chunk_copy.png" /></a>
+
 - 如果其中一个 Callback n 没有 Close 对应的流，可能导致原始 Stream 无法 Close 和释放资源。

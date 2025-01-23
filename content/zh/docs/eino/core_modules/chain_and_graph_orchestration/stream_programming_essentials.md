@@ -183,20 +183,33 @@ type Runnable[I**, **O any] interface {
   - 若组件实现了 Stream，则通过 Stream 封装 Invoke，即自动 concat 输出流。
 
 <a href="/img/eino/invoke_outside_stream_inside.png" target="_blank"><img src="/img/eino/invoke_outside_stream_inside.png" /></a>
-	- 否则，若组件实现了 Collect，则通过 Collect 封装 Invoke，即非流式入参转单帧流。
+
+```
+- 否则，若组件实现了 Collect，则通过 Collect 封装 Invoke，即非流式入参转单帧流。
+```
 
 <a href="/img/eino/invoke_outside_collect_inside.png" target="_blank"><img src="/img/eino/invoke_outside_collect_inside.png" /></a>
-	- 如果都没实现，则必须实现 Transform，通过 Transform 封装 Invoke，即入参转单帧流，出参 concat。
+
+```
+- 如果都没实现，则必须实现 Transform，通过 Transform 封装 Invoke，即入参转单帧流，出参 concat。
+```
 
 <a href="/img/eino/invoke_outside_transform_inside.png" target="_blank"><img src="/img/eino/invoke_outside_transform_inside.png" /></a>
+
 - 如果用户通过 Stream/Collect/Transform 来调用 Graph，则 Graph 内部所有组件都以 Transform 范式来调用。如果某个组件，没有实现 Transform 范式，则 Eino 框架自动根据组件实现了的流式范式，封装出 Transform 调用范式，优先顺位如下：
-	- 若组件实现了 Stream，则通过 Stream 封装 Transform，即自动 concat 输入流。
+  - 若组件实现了 Stream，则通过 Stream 封装 Transform，即自动 concat 输入流。
 
 <a href="/img/eino/transform_inside_stream_inside.png" target="_blank"><img src="/img/eino/transform_inside_stream_inside.png" /></a>
-	- 否则，若组件实现了 Collect，则通过 Collect 封装 Transform，即非流式出参转单帧流。
+
+```
+- 否则，若组件实现了 Collect，则通过 Collect 封装 Transform，即非流式出参转单帧流。
+```
 
 <a href="/img/eino/transform_outside_stream_inside.png" target="_blank"><img src="/img/eino/transform_outside_stream_inside.png" /></a>
-	- 如果都没实现，则必须实现 Invoke，通过 Invoke 封装 Transform，即入参流 concat，出参转单帧流
+
+```
+- 如果都没实现，则必须实现 Invoke，通过 Invoke 封装 Transform，即入参流 concat，出参转单帧流
+```
 
 <a href="/img/eino/transform_outside_invoke_inside.png" target="_blank"><img src="/img/eino/transform_outside_invoke_inside.png" /></a>
 

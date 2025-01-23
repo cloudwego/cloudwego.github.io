@@ -130,6 +130,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 上述设计和功能共同构成了 Eino 的稳定内核：
 
 <a href="/img/eino/eino_features_and_design.png" target="_blank"><img src="/img/eino/eino_features_and_design.png" /></a>
+
 ### 敏捷扩展
 
 每类组件都可以横向扩展出不同的实现，比如 ChatModel 组件可以有 OpenAI、Gemini、Claude 等不同的实现等。这些具体的实现，在实现组件 interface 从而可作为组件参与编排的基础上，可以实现和持续扩展自身的特殊功能。
@@ -143,6 +144,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 综上所述，Eino 框架具备充分的可扩展性：
 
 <a href="/img/eino/eino_modules_types.png" target="_blank"><img src="/img/eino/eino_modules_types.png" /></a>
+
 ### 高可靠易维护
 
 基于 Golang 写 Eino 代码时，开发者可以充分利用 Golang 的强类型特性，为所有的组件、Lambda、编排产物等声明具体类型。这像是为代码绘制了一幅精确的地图，开发者可以沿着清晰的路径进行维护和扩展，即使在项目规模不断扩大、功能持续迭代的情况下，依然能够保有较高的可维护性。
@@ -154,11 +156,13 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 Eino 框架结构图：
 
 <a href="/img/eino/eino_projects_and_structure.png" target="_blank"><img src="/img/eino/eino_projects_and_structure.png" /></a>
+
 ### 实践驱动
 
 Eino 框架的设计开发过程，扎根于 “满足真实需求” 与 “实践驱动设计” 这两大基石之上。功能的演进过程与字节跳动各业务线的接入过程紧密结合，始终倾听开发者的声音，并通过实际使用效果来检验设计的合理性。比如我们收到来自抖音的“希望能够以字段为粒度在图中映射和传递数据”的需求，以此为基础设计了 Workflow；倾听来自豆包的使用痛点，增强作为模型输入输出类型的 Message 结构体。在未来的开源生态共建过程中，我们会继续坚持上述原则，满足更广大的用户和开发者的真实需求，并在更大的范围内认真实践和精进。
 
 <a href="/img/eino/eino_practice_cognition_loop.png" target="_blank"><img src="/img/eino/eino_practice_cognition_loop.png" /></a>
+
 ### 工具生态
 
 链路追踪、调试、可视化，是编排引擎的三个重要辅助工具。Eino 内置了 tracing callback，并与 Langfuse 平台做了集成。同时提供了 IDE 插件，可以在写代码的过程中随时可视化查看编排出的 graph，并进行调试运行，甚至可以通过 UI 拖拽的方式快速构建 graph 并导出为 Eino 代码。

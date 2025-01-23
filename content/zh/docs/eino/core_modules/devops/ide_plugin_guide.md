@@ -16,6 +16,7 @@ weight: 1
 ## 简介
 
 <a href="/img/eino/eino_dev_ability_introduction_page.png" target="_blank"><img src="/img/eino/eino_dev_ability_introduction_page.png" /></a>
+
 ## 安装插件
 
 <table><tbody><tr>
@@ -35,6 +36,7 @@ weight: 1
 > **插件安装完毕可以在 IDE 右侧插件列表中 EinoDev 调试插件图标啦，接下来就可以体验插件提供的调试与编排能力啦**
 
 <a href="/img/eino/eino_dev_enter_page.png" target="_blank"><img src="/img/eino/eino_dev_enter_page.png" /></a>
+
 ## 功能简介
 
 ### **EinoDev Graph 编排**
@@ -42,9 +44,11 @@ weight: 1
 <table><tbody><tr>
 <td>
 <a href="/img/eino/eino_orchestration_index_page.png" target="_blank"><img src="/img/eino/eino_orchestration_index_page.png" /></a>
+
 </td>
 <td>
 <a href="/img/eino/eino_orchestration_show_nodes_2_page.png" target="_blank"><img src="/img/eino/eino_orchestration_show_nodes_2_page.png" /></a>
+
 </td>
 </tr></tbody></table>
 
@@ -53,8 +57,10 @@ weight: 1
 <table><tbody><tr>
 <td>
 <a href="/img/eino/eino_debug_run_page.png" target="_blank"><img src="/img/eino/eino_debug_run_page.png" /></a>
+
 </td>
 <td>
 <a href="/img/eino/eino_debug_test_run_of_mock_data_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_of_mock_data_page.png" /></a>
+
 </td>
 </tr></tbody></table>

@@ -375,6 +375,7 @@ type Runnable[I, O any] interface {
 - 编程产物中具有的真正的流式能力是什么，取决于如下的编排范式
 
 <a href="/img/eino/invoke_stream_transform_collect.png" target="_blank"><img src="/img/eino/invoke_stream_transform_collect.png" /></a>
+
 ### Stream 流
 
 Notice：Stream 流在 **生产**、**消费**、**复制**、**合并**、**转换**等场景下，处理逻辑均较为复杂。 实现时稍有考虑不周的地方，便可能导致 生产/消费者互相等待而夯死、Goroutine 泄露或溢出、内存泄露或溢出、CPU 负载高 等问题。 为了减少稳定性问题的产生，Eino 强要求使用 Eino 提供的 Stream 流，因此将 Stream 实现成了 Struct、而非定义成接口。
@@ -470,6 +471,7 @@ func (g *graph) AddEdge(startNode, endNode string) (err error) {}
 - 在两个节点间添加一条有向的数据传输链路，以控制数据的流动方向和节点的执行顺序
 
 <a href="/img/eino/edge_of_parallel.png" target="_blank"><img src="/img/eino/edge_of_parallel.png" /></a>
+
 ###### **AddBranch**
 
 ```go
@@ -489,12 +491,14 @@ func (g *graph) AddBranch(startNode string, branch *GraphBranch) (err error) {}
 - 根据传入的自定义选择函数，运行时根据经运算条件从多个 Node 中选出命中 Node 执行
 
 <a href="/img/eino/run_way_branch_in_graph.png" target="_blank"><img src="/img/eino/run_way_branch_in_graph.png" /></a>
+
 ###### **Parallel**
 
 - 将多个 Node 平行并联， 形成多个节点并发执行的节点
 - 无 AddParallel 方法，通过 AddEdge 构建并联的多条拓扑路径，以此形成 **Parallel **
 
 <a href="/img/eino/input_keys_output_keys_in_parallel.png" target="_blank"><img src="/img/eino/input_keys_output_keys_in_parallel.png" /></a>
+
 ##### 面(Graph)
 
 - 通过 NewGraph 创建 graph 实例，并通过 graph.AddXXXNode、graph.AddEdge、graph.AddBranch 绘制点和线，最终形成一张可编译执行的图
@@ -531,6 +535,7 @@ chain := NewChain[map[string]any, string]()
 - 将多个 Node 按照传入顺序首尾串联，串联的 Node 依次进行数据传递和执行
 
 <a href="/img/eino/graph_nodes.png" target="_blank"><img src="/img/eino/graph_nodes.png" /></a>
+
 ##### **AppendParallel**
 
 > 添加一个节点，这个节点具有多个并发执行的多个子节点
@@ -552,6 +557,7 @@ chain.AppendParallel(parallel)
 - 创建一个 Parallel，容纳并发执行的多个子节点
 
 <a href="/img/eino/chain_append_parallel.png" target="_blank"><img src="/img/eino/chain_append_parallel.png" /></a>
+
 ##### **AppendBranch**
 
 > 添加一个节点，这个节点通过 condition 计算方法，从多个子节点中，选择一个执行
@@ -580,6 +586,7 @@ chain.AppendBranch(cb)
 ```
 
 <a href="/img/eino/chain_append_branch.png" target="_blank"><img src="/img/eino/chain_append_branch.png" /></a>
+
 #### Workflow
 
 允许字段级别做上下游数据映射的有向无环图。
