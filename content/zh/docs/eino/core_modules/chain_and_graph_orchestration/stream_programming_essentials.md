@@ -41,9 +41,9 @@ Eino 是个 "component first" 的框架，组件可以独立使用。定组件�
 
 ```go
 type ChatModel interface {
-    Generate(ctx context.Context**, **input []*schema.Message**, **opts ...Option) (*schema.Message**, **error)
-    Stream(ctx context.Context**, **input []*schema.Message**, **opts ...Option) (
-       *schema.StreamReader[*schema.Message]**, **error)
+    Generate(ctx context.Context, input []*schema.Message, opts ...Option) (*schema.Message, error)
+    Stream(ctx context.Context, input []*schema.Message, opts ...Option) (
+       *schema.StreamReader[*schema.Message], error)
     // other methods omitted...
 }
 ```
@@ -52,7 +52,7 @@ type ChatModel interface {
 
 ```go
 type Retriever interface {
-    Retrieve(ctx context.Context**, **query string**, **opts ...Option) ([]*schema.Document**, **error)
+    Retrieve(ctx context.Context, query string, opts ...Option) ([]*schema.Document, error)
 }
 ```
 
@@ -165,11 +165,11 @@ ReactAgent 有两个接口，Generate 和 Stream，分别实现了 Invoke 和 St
 - “没有”：整体而言，Graph，Chain 等编排产物，自身是没有业务属性的，只为抽象的编排服务的，因此也就没有符合业务场景的接口范式。同时，编排需要支持各种范式的业务场景。所以，Eino 中代表编排产物的 Runnable[I, O] 接口，不做选择也无法选择，提供了所有流式范式的方法：
 
 ```go
-type Runnable[I**, **O any] interface {
-    Invoke(ctx context.Context**, **input I**, **opts ...Option) (output O**, **err error)
-    Stream(ctx context.Context**, **input I**, **opts ...Option) (output *schema.StreamReader[O]**, **err error)
-    Collect(ctx context.Context**, **input *schema.StreamReader[I]**, **opts ...Option) (output O**, **err error)
-    Transform(ctx context.Context**, **input *schema.StreamReader[I]**, **opts ...Option) (output *schema.StreamReader[O]**, **err error)
+type Runnable[I, O any] interface {
+    Invoke(ctx context.Context, input I, opts ...Option) (output O, err error)
+    Stream(ctx context.Context, input I, opts ...Option) (output *schema.StreamReader[O], err error)
+    Collect(ctx context.Context, input *schema.StreamReader[I], opts ...Option) (output O, err error)
+    Transform(ctx context.Context, input *schema.StreamReader[I], opts ...Option) (output *schema.StreamReader[O], err error)
 }
 ```
 
