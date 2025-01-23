@@ -111,18 +111,18 @@ Collect 和 Transform 两种流式范式，目前只在编排场景有用到。
 在上图中，branch 接收 chat model 输出的 message，并根据 message 中是否包含 tool call，来选择直接结束 agent 本次运行并将 message 输出，还是调用 Tool 并将调用结果再次给 Chat Model 循环处理。由于这个 Branch 可以通过 message stream 的首个帧就完成逻辑判断，因此我们给这个 Branch 定义的是 Collect 接口，即流式输入，非流式输出：
 
 ```go
-compose.NewStreamGraphBranch(func(ctx context.Context**, **sr *schema.StreamReader[*schema.Message]) (endNode string**, **err error) {
-    msg**, **err := sr.Recv()
+compose.NewStreamGraphBranch(func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (endNode string, err error) {
+    msg, err := sr.Recv()
     if err != nil {
-       return ""**, **err
+       return "", err
     }
     defer sr.Close()
 
-    if len(msg.ToolCalls) == **0 **{
-       return compose._END_**, **nil
+    if len(msg.ToolCalls) == 0 {
+       return compose._END_, nil
     }
 
-    return nodeKeyTools**, **nil
+    return nodeKeyTools, nil
 }
 ```
 
