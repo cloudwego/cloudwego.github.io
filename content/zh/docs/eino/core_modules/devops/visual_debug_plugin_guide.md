@@ -256,13 +256,13 @@ IP 和 Port 配置完成后，点击确认，调试插件会自动连接到目�
 
 调试支持从任意节点开始调试，包括 start 节点和其他中间节点。
 
-1. 从 START 节点开始调试：直接点击 「Test Run」，然后输入 mock 的 input（如果 input 是复杂结构的话，会自动对 input 的结构进行推断）然后点击确定，开始执行你的 graph，每个 node 的结果会在下方显示。
-   <a href="/img/eino/eino_debug_run_code_2.png" target="_blank"><img src="/img/eino/eino_debug_run_code_2.png" /></a>
+- 从 START 节点开始调试：直接点击 「Test Run」，然后输入 mock 的 input（如果 input 是复杂结构的话，会自动对 input 的结构进行推断）然后点击确定，开始执行你的 graph，每个 node 的结果会在下方显示。
+  <a href="/img/eino/eino_debug_run_code_2.png" target="_blank"><img src="/img/eino/eino_debug_run_code_2.png" /></a>
 
 <a href="/img/eino/eino_debug_run_input_mock_data_2_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_2_page.png" /></a>
 
-1. 从任意的可操作节点开始调试：比如，从第二个节点开始执行。
-   <a href="/img/eino/eino_debug_button_run_code.png" target="_blank"><img src="/img/eino/eino_debug_button_run_code.png" /></a>
+- 从任意的可操作节点开始调试：比如，从第二个节点开始执行。
+  <a href="/img/eino/eino_debug_button_run_code.png" target="_blank"><img src="/img/eino/eino_debug_button_run_code.png" /></a>
 
 <a href="/img/eino/eino_debug_run_of_mock_input_of_page.png" target="_blank"><img src="/img/eino/eino_debug_run_of_mock_input_of_page.png" /></a>
 
