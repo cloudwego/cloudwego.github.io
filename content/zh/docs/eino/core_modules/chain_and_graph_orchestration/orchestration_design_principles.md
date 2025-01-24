@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-01-23"
 lastmod: ""
 tags: []
 title: 'Eino: 编排的设计理念'
@@ -28,7 +28,7 @@ eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是
 
 就如下图：
 
-![](/img/eino/edge_type_validate.png)
+<a href="/img/eino/edge_type_validate.png" target="_blank"><img src="/img/eino/edge_type_validate.png" /></a>
 
 对于一个编排而言，只有下游能识别和处理上游的输出，这个编排才能正常运行。 这个基本假设在 eino 中被清晰地表达了出来，让开发者在用 eino 做编排时，能够有十足的信心清楚编排的逻辑是如何运行和流转的，而不是从一系列的 any 中去猜测传过来的值是否正确。
 
@@ -42,7 +42,7 @@ eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是
 
 > 这是一个模拟 ① 直接和大模型对话 ② 使用 RAG 模式 的场景，最后结果可用于对比两种模式的效果
 
-![](/img/eino/input_output_type_validate.png)
+<a href="/img/eino/input_output_type_validate.png" target="_blank"><img src="/img/eino/input_output_type_validate.png" /></a>
 
 图中绿色的部分，就是普通的 Edge 连接，其要求上游的输出必须能 `assign` 给下游，可以接收的类型有：
 
@@ -64,6 +64,8 @@ eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是
 
 > 这是一个模拟 react agent 的运行逻辑
 
+<a href="/img/eino/branch_to_draw_loop.png" target="_blank"><img src="/img/eino/branch_to_draw_loop.png" /></a>
+
 可以看到，一个 branch 本身拥有一个 `condition`, 这个 function 的输入必须和上游类型对齐。同时，一个 branch 后所接的各个节点，也必须和 condition 一样，要能接收上游的输出。
 
 ### chain 中的类型对齐
@@ -72,7 +74,7 @@ eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是
 
 从抽象角度看，chain 就是一个 `链条`，如下所示：
 
-![](/img/eino/what_is_chain.png)
+<a href="/img/eino/what_is_chain.png" target="_blank"><img src="/img/eino/what_is_chain.png" /></a>
 
 逻辑节点的类型可以分为 3 类：
 
@@ -106,7 +108,7 @@ func TestChain() {
 
 上面的逻辑用图来表示如下：
 
-![](/img/eino/nodes_type_validate.png)
+<a href="/img/eino/nodes_type_validate.png" target="_blank"><img src="/img/eino/nodes_type_validate.png" /></a>
 
 若上下游的类型没有对齐，chain 会在 chain.Compile() 时返回错误。而 graph 会在 graph.AddXXXNode() 时就报错。
 
@@ -114,7 +116,7 @@ func TestChain() {
 
 parallel 在 chain 中是一类特殊的节点，从 chain 的角度看 parallel 和其他的节点没啥区别。在 parallel 内部，其基本拓扑结构如下：
 
-![](/img/eino/same_type_of_parallel.png)
+<a href="/img/eino/same_type_of_parallel.png" target="_blank"><img src="/img/eino/same_type_of_parallel.png" /></a>
 
 graph 中的多 edge 形成的结构其中一种就是这个，这里的基本假设是： 一个 parallel 的每一条边上有且仅有一个节点。当然，这一个节点也可以是 graph。但注意，目前框架没有直接提供在 parallel 中嵌套 branch 或 parallel 的能力。
 
@@ -150,7 +152,7 @@ func TestParallel() {
 
 > 图中是模拟同一个提问，由不同的大模型去回答，结果可用于对比效果
 
-![](/img/eino/graph_as_chain_node.png)
+<a href="/img/eino/graph_as_chain_node.png" target="_blank"><img src="/img/eino/graph_as_chain_node.png" /></a>
 
 > 需要注意的是，这个结构只是逻辑上的视角，由于 chain 本身也是用 graph 实现的，parallel 在底层 graph 中会平铺到图中。
 
@@ -172,7 +174,7 @@ Workflow 的类型对齐的维度，由整体的 Input & Output 改成了字段�
 
 在 Eino 中，编排的结果是 graph 或 chain，若要运行，则需要使用 `Compile()` 来生成一个 `Runnable` 接口。
 
-Runnable 的一个重要作用就是提供了 `I``nvoke`、`S``tream`、`C``ollect`、`T``ransform` 四种调用方式。
+Runnable 的一个重要作用就是提供了 「Invoke」、「Stream」、「Collect」、「Transform」 四种调用方式。
 
 > 上述几种调用方式的介绍以及详细的 Runnable 介绍可以查看: [Eino: 基础概念介绍](/zh/docs/eino/overview)
 
@@ -235,7 +237,7 @@ func TestTypeMatch(t *testing.T) {
 
 当我们以 Stream 方式调用上面编译好的 Runnable 时，model 节点会输出 `*schema.StreamReader[*Message]`，但是 lambda 节点是 InvokableLambda，只接收非流式的 `*schema.Message` 作为输入。这也符合类型对齐规则，因为 Eino 框架会自动把流式的 Message 拼接成完整的 Message。
 
-在 stream 模式下，`拼接``帧` 是一个非常常见的操作，拼接时，会先把 `*StreamReader[T] ` 中的所有元素取出来转成 `[]T`，再尝试把 `[]T` 拼接成一个完整的 `T`。框架内已经内置支持了如下类型的拼接:
+在 stream 模式下，拼接帧 是一个非常常见的操作，拼接时，会先把 `*StreamReader[T] ` 中的所有元素取出来转成 `[]T`，再尝试把 `[]T` 拼接成一个完整的 `T`。框架内已经内置支持了如下类型的拼接:
 
 - `*schema.Message`:  详情见 `schema.ConcatMessages()`
 - `string`: 实现逻辑等同于 `+=`
@@ -278,7 +280,7 @@ eino 的 Graph 类型对齐检查，会在 `err = graph.AddEdge("node1", "node2"
 
 其结构可见下图：
 
-![](/img/eino/input_type_output_type_in_edge.png)
+<a href="/img/eino/input_type_output_type_in_edge.png" target="_blank"><img src="/img/eino/input_type_output_type_in_edge.png" /></a>
 
 这种场景适用于开发者能自行处理好上下游类型对齐的情况，可根据不同类型选择下游执行节点。
 
@@ -362,7 +364,7 @@ Eino 支持各种维度的 Call Option 分配方式：
 
 以一个添加了 StatePreHandler、StatePostHandler、InputKey、OutputKey，且内部没有实现 Callback 切面的 InvokableLambda（输入为 string，输出为 int）为例，在图中的流式执行完整时序如下：
 
-![](/img/eino/graph_node_run_wrapper.png)
+<a href="/img/eino/graph_node_run_wrapper.png" target="_blank"><img src="/img/eino/graph_node_run_wrapper.png" /></a>
 
 在 workflow 的场景中，字段映射发生在两个位置：
 
@@ -376,11 +378,11 @@ Eino 支持各种维度的 Call Option 分配方式：
 - 当前执行中的一个或多个节点，所有的后序节点，作为一个 SuperStep，整体一起执行。这时，这些新的节点，会成为“当前”节点。
 - 支持 Branch，支持图中有环，但是可能需要人为添加 passthrough 节点，来确保 SuperStep 中的节点符合预期，如下图：
 
-![](/img/eino/graph_steps_in_graph2.png)
+<a href="/img/eino/graph_steps_in_graph2.png" target="_blank"><img src="/img/eino/graph_steps_in_graph2.png" /></a>
 
 上图中 Node 4 和 Node 5 按规则被放在一起执行，大概率不符合预期。需要改成：
 
-![](/img/eino/graph_steps_in_graph.png)
+<a href="/img/eino/graph_steps_in_graph.png" target="_blank"><img src="/img/eino/graph_steps_in_graph.png" /></a>
 
 `NodeTriggerMode == AllPredecessor` 时，图以 dag 引擎执行，对应的拓扑结构是有向无环图。特点是：
 

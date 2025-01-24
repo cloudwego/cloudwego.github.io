@@ -287,7 +287,7 @@ func WithEmbeddingOption(opts ...embedding.Option) Option {
 
 compose.Option 可以按需分配给 Graph 中不同的节点。
 
-![](/img/eino/graph_runnable_after_compile.png)
+<a href="/img/eino/graph_runnable_after_compile.png" target="_blank"><img src="/img/eino/graph_runnable_after_compile.png" /></a>
 
 ```go
 // 所有节点都生效的 call option

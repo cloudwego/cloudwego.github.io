@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-21"
+date: "2025-01-23"
 lastmod: ""
 tags: []
 title: EinoDev 可视化调试插件功能指南
@@ -44,7 +44,7 @@ go mod tidy
 ### 运行 Demo
 
 进入 `eino-examples/devops/debug/main.go`，运行 `main.go`。因为插件会同时在本地启动一个 HTTP 服务用于连接用户服务进程，所以会弹出接入网络警告，点击允许。
-![](/img/eino/eino_debug_enter_config_page.png)
+<a href="/img/eino/eino_debug_enter_config_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_config_page.png" /></a>
 
 ### 配置调试地址
 
@@ -52,13 +52,13 @@ go mod tidy
 <td>
 
 1.点击左侧或正中间调试功能进入调试配置
-<img src="/img/eino/eino_debug_enter_page.png" />
+<a href="/img/eino/eino_debug_enter_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_page.png" /></a>
 
 </td>
 <td>
 
 2.点击配置调试地址
-<img src="/img/eino/eino_debug_config_3_page.png" />
+<a href="/img/eino/eino_debug_config_3_page.png" target="_blank"><img src="/img/eino/eino_debug_config_3_page.png" /></a>
 
 </td>
 </tr></tbody></table>
@@ -67,13 +67,13 @@ go mod tidy
 <td>
 
 3.填入 127.0.0.1:52538
-<img src="/img/eino/eino_debug_config_2_page.png" />
+<a href="/img/eino/eino_debug_config_2_page.png" target="_blank"><img src="/img/eino/eino_debug_config_2_page.png" /></a>
 
 </td>
 <td>
 
 4.点击确认进入调试界面，选择要调试的 Graph
-<img src="/img/eino/eino_orchestration_index_2_page.png" />
+<a href="/img/eino/eino_orchestration_index_2_page.png" target="_blank"><img src="/img/eino/eino_orchestration_index_2_page.png" /></a>
 
 </td>
 </tr></tbody></table>
@@ -83,14 +83,14 @@ go mod tidy
 <table><tbody><tr>
 <td>
 
-1.点击<pre>Test Run</pre>从 start 节点开始执行
-<img src="/img/eino/eino_debug_enter_test_run_2_page.png" />
+1.点击「Test Run」从 start 节点开始执行
+<a href="/img/eino/eino_debug_enter_test_run_2_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_test_run_2_page.png" /></a>
 
 </td>
 <td>
 
-2.输入<pre>"hello eino"</pre>，点击确认
-<img src="/img/eino/eino_debug_run_input_mock_data_page.png" />
+2.输入 "hello eino"，点击确认
+<a href="/img/eino/eino_debug_run_input_mock_data_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_page.png" /></a>
 
 </td>
 </tr></tbody></table>
@@ -99,13 +99,13 @@ go mod tidy
 <td>
 
 3.在调试区域展示有各个节点的输入和输出
-<img src="/img/eino/eino_debug_test_run_detail_page.png" />
+<a href="/img/eino/eino_debug_test_run_detail_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_detail_page.png" /></a>
 
 </td>
 <td>
 
 4.点击 Input 和 Output 切换查看节点信息
-<img src="/img/eino/eino_debug_index_page.png" />
+<a href="/img/eino/eino_debug_index_page.png" target="_blank"><img src="/img/eino/eino_debug_index_page.png" /></a>
 
 </td>
 </tr></tbody></table>
@@ -115,21 +115,21 @@ go mod tidy
 ### 本地或远程调试
 
 目标调试编排产物无论是在本地电脑还是在远程服务器，都可以通过配置 IP:Port ，主动连接到目标调试对象所在的服务器。
-![](/img/eino/eino_debug_run_config_page.png)
+<a href="/img/eino/eino_debug_run_config_page.png" target="_blank"><img src="/img/eino/eino_debug_run_config_page.png" /></a>
 
 ### 编排拓扑可视化
 
 支持 Graph 和 Chain 编排拓扑可视化。
-![](/img/eino/eino_debug_list_nodes_page.png)
+<a href="/img/eino/eino_debug_list_nodes_page.png" target="_blank"><img src="/img/eino/eino_debug_list_nodes_page.png" /></a>
 
 ### 从任意节点开始调试
 
-![](/img/eino/eino_debug_test_run_of_one_node_page.png)
+<a href="/img/eino/eino_debug_test_run_of_one_node_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_of_one_node_page.png" /></a>
 
 ### 查看节点执行结果
 
 每个节点执行结果都会按执行顺序展示在调试区域，包括：输入、输出、执行耗时
-![](/img/eino/eino_debug_run_detail_v2_page.png)
+<a href="/img/eino/eino_debug_run_detail_v2_page.png" target="_blank"><img src="/img/eino/eino_debug_run_detail_v2_page.png" /></a>
 
 ## 从零开始调试
 
@@ -204,7 +204,7 @@ RegisterSimpleGraph(ctx)
 
 在本地电脑或者远程环境中运行你的进程，并保证主进程不会退出。
 
-在 _github.com/cloudwego/eino-examples/devops/debug/main.go__ _中，`main()` 代码如下
+在 github.com/cloudwego/eino-examples/devops/debug/main.go 中，`main()` 代码如下
 
 ```go
 func main() {
@@ -236,7 +236,7 @@ func main() {
 - **IP**：用户进程所在服务器的 IP 地址。
   - 用户进程运行在本地电脑，则填写 `127.0.0.1`；
   - 用户进程运行在远程服务器上，则填写远程服务器的 IP 地址，兼容 IPv4 和 IPv6 。
-- **Port**：调试服务监听的端口，默认是 `52538`，可通过 WithDevServerPort 这一 option 方法进行修改
+- **Port**：调试服务监听的端口，默认是 `52538`，可通过 「WithDevServerPort」 这一 option 方法进行修改
 
 > 💡
 > 注意事项
@@ -245,31 +245,34 @@ func main() {
 > - 远程服务器调试：需要你保证端口可访问。
 
 IP 和 Port 配置完成后，点击确认，调试插件会自动连接到目标调试服务器。如果成功连接，连接状态指示器会变成绿色。
-![](/img/eino/eino_debug_ip_port_show_page.png)
+<a href="/img/eino/eino_debug_ip_port_show_page.png" target="_blank"><img src="/img/eino/eino_debug_ip_port_show_page.png" /></a>
 
 ### 选择目标调试编排产物
 
 确保你目标调试的编排产物至少执行过一次 `Compile()`。因为调试设计是面向编排产物实例，所以如果多次执行 `Compile()`，会在调试服务中注册多个编排产物，继而在选择列表中看到多个可调试目标。
-![](/img/eino/eino_debug_panel_3.png)
+<a href="/img/eino/eino_debug_panel_3.png" target="_blank"><img src="/img/eino/eino_debug_panel_3.png" /></a>
 
 ### 开始调试
 
 调试支持从任意节点开始调试，包括 start 节点和其他中间节点。
 
-1. 从 START 节点开始调试：直接点击 Test Run，然后输入 mock 的 input（如果 input 是复杂结构的话，会自动对 input 的结构进行推断）然后点击确定，开始执行你的 graph，每个 node 的结果会在下方显示。
-   ![](/img/eino/eino_debug_run_code_2.png)
-   ![](/img/eino/eino_debug_run_input_mock_data_2_page.png)
-2. 从任意的可操作节点开始调试：比如，从第二个节点开始执行。
-   ![](/img/eino/eino_debug_button_run_code.png)
-   ![](/img/eino/eino_debug_run_of_mock_input_of_page.png)
+- 从 START 节点开始调试：直接点击 「Test Run」，然后输入 mock 的 input（如果 input 是复杂结构的话，会自动对 input 的结构进行推断）然后点击确定，开始执行你的 graph，每个 node 的结果会在下方显示。
+  <a href="/img/eino/eino_debug_run_code_2.png" target="_blank"><img src="/img/eino/eino_debug_run_code_2.png" /></a>
+
+<a href="/img/eino/eino_debug_run_input_mock_data_2_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_2_page.png" /></a>
+
+- 从任意的可操作节点开始调试：比如，从第二个节点开始执行。
+  <a href="/img/eino/eino_debug_button_run_code.png" target="_blank"><img src="/img/eino/eino_debug_button_run_code.png" /></a>
+
+<a href="/img/eino/eino_debug_run_of_mock_input_of_page.png" target="_blank"><img src="/img/eino/eino_debug_run_of_mock_input_of_page.png" /></a>
 
 ### 查看执行结果
 
 从 START 节点开始调试，点击 Test Run 后，在插件下方查看调试结果。
-![](/img/eino/eino_debug_test_run_result_page.png)
+<a href="/img/eino/eino_debug_test_run_result_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_result_page.png" /></a>
 
 从任意的可操作节点进行调试，在插件下方查看调试结果。
-![](/img/eino/eino_debug_results.png)
+<a href="/img/eino/eino_debug_results.png" target="_blank"><img src="/img/eino/eino_debug_results.png" /></a>
 
 ## 高阶功能
 
@@ -289,55 +292,53 @@ IP 和 Port 配置完成后，点击确认，调试插件会自动连接到目�
 
 1. 假设你已经有编排代码如下，其中，graph 的输入定义为 `any`，`node_1` 的输入定义为 `*NodeInfo`;
 
-```go
-type NodeInfo struct {
-    Message string
-}
+   ```go
+   type NodeInfo struct {
+       Message string
+   }
 
-func RegisterGraphOfInterfaceType(ctx context.Context) {
-    // Define a graph that input parameter is any.
-    g := compose.NewGraph[any, string]()
+   func RegisterGraphOfInterfaceType(ctx context.Context) {
+       // Define a graph that input parameter is any.
+       g := compose.NewGraph[any, string]()
 
-    _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input *NodeInfo) (output string, err error) {
-       if input == nil {
-          return "", nil
+       _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input *NodeInfo) (output string, err error) {
+          if input == nil {
+             return "", nil
+          }
+          return input.Message + " process by node_1,", nil
+       }))
+
+       _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+          return input + " process by node_2,", nil
+       }))
+
+       _ = g.AddLambdaNode("node_3", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+          return input + " process by node_3,", nil
+       }))
+
+       _ = g.AddEdge(compose._START_, "node_1")
+
+       _ = g.AddEdge("node_1", "node_2")
+
+       _ = g.AddEdge("node_2", "node_3")
+
+       _ = g.AddEdge("node_3", compose._END_)
+
+       r, err := g.Compile(ctx)
+       if err != nil {
+          logs.Errorf("compile graph failed, err=%v", err)
+          return
        }
-       return input.Message + " process by node_1,", nil
-    }))
+   }
+   ```
+2. 调试前，通过 `AppendType` 方法在 `Init()` 时注册自定义的 `*NodeInfo` 类型：
 
-    _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
-       return input + " process by node_2,", nil
-    }))
-
-    _ = g.AddLambdaNode("node_3", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
-       return input + " process by node_3,", nil
-    }))
-
-    _ = g.AddEdge(compose._START_, "node_1")
-
-    _ = g.AddEdge("node_1", "node_2")
-
-    _ = g.AddEdge("node_2", "node_3")
-
-    _ = g.AddEdge("node_3", compose._END_)
-
-    r, err := g.Compile(ctx)
-    if err != nil {
-       logs.Errorf("compile graph failed, err=%v", err)
-       return
-    }
-}
-```
-
-1. 调试前，通过 `AppendType` 方法在 `Init()` 时注册自定义的 `*NodeInfo` 类型：
-
-```go
-err := devops.Init(ctx, devops.AppendType(&graph.NodeInfo{}))
-```
-
-1. 调试过程中，在 Test Run 的 Json 输入框中，对于 interface 类型的字段，默认会呈现为 `{}`。可以通过在 `{}` 中键入一个空格，来查看所有内置的以及自定义注册的数据类型，并选择该 interface 的具体实现类型。
-   ![](/img/eino/eino_debug_run_code.png)
-2. 在 `_value` 字段中补全调试节点输入。
-   ![](/img/eino/eino_debug_run_code_3.png)
-3. 点击确认，查看调试结果。
-   ![](/img/eino/eino_debug_panel_2.png)
+   ```go
+   err := devops.Init(ctx, devops.AppendType(&graph.NodeInfo{}))
+   ```
+3. 调试过程中，在 Test Run 的 Json 输入框中，对于 interface 类型的字段，默认会呈现为 `{}`。可以通过在 `{}` 中键入一个空格，来查看所有内置的以及自定义注册的数据类型，并选择该 interface 的具体实现类型。
+   <a href="/img/eino/eino_debug_run_code.png" target="_blank"><img src="/img/eino/eino_debug_run_code.png" /></a>
+4. 在 `_value` 字段中补全调试节点输入。
+   <a href="/img/eino/eino_debug_run_code_3.png" target="_blank"><img src="/img/eino/eino_debug_run_code_3.png" /></a>
+5. 点击确认，查看调试结果。
+   <a href="/img/eino/eino_debug_panel_2.png" target="_blank"><img src="/img/eino/eino_debug_panel_2.png" /></a>

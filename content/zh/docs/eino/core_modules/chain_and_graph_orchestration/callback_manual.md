@@ -185,7 +185,7 @@ Graph 会为内部所有的 Node 自动注入 RunInfo。机制是每个 Node 的
 
 ## 触发方式
 
-![](/img/eino/graph_node_callback_run_place.png)
+<a href="/img/eino/graph_node_callback_run_place.png" target="_blank"><img src="/img/eino/graph_node_callback_run_place.png" /></a>
 
 ### 组件实现内部触发(Component Callback)
 
@@ -446,6 +446,6 @@ Handler 内不建议修改 input / output。原因是：
 
 所以此时需要将流进行复制，其复制关系如下：
 
-![](/img/eino/graph_stream_chunk_copy.png)
+<a href="/img/eino/graph_stream_chunk_copy.png" target="_blank"><img src="/img/eino/graph_stream_chunk_copy.png" /></a>
 
 - 如果其中一个 Callback n 没有 Close 对应的流，可能导致原始 Stream 无法 Close 和释放资源。

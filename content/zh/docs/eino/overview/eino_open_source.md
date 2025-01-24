@@ -47,7 +47,7 @@ message, _ := model.Generate(ctx, []*Message{
 Eino 的编排能力，是上述通用问题的充分解决方案。
 
 以 ReAct Agent 为例：一个 ChatModel（大模型），“绑定”了 Tool（工具），接收输入的 Message，由 ChatModel 自主判断是否调用 Tool 或输出最终结果。Tool 执行结果会再次成为给到 ChatModel 的 Message，并作为下一轮自主判断的上下文。
-![](/img/eino/eino_graph_nodes_of_react_agent.png)
+<a href="/img/eino/eino_graph_nodes_of_react_agent.png" target="_blank"><img src="/img/eino/eino_graph_nodes_of_react_agent.png" /></a>
 
 上述基于 ChatModel 进行自主决策和选路的 ReAct Agent，便是基于 Eino 的 组件 和 Graph 编排 来实现， 代码清晰简洁，可与流程图清晰对应。
 
@@ -129,7 +129,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 
 上述设计和功能共同构成了 Eino 的稳定内核：
 
-![](/img/eino/eino_features_and_design.png)
+<a href="/img/eino/eino_features_and_design.png" target="_blank"><img src="/img/eino/eino_features_and_design.png" /></a>
 
 ### 敏捷扩展
 
@@ -143,7 +143,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 
 综上所述，Eino 框架具备充分的可扩展性：
 
-![](/img/eino/eino_modules_types.png)
+<a href="/img/eino/eino_modules_types.png" target="_blank"><img src="/img/eino/eino_modules_types.png" /></a>
 
 ### 高可靠易维护
 
@@ -155,13 +155,13 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 
 Eino 框架结构图：
 
-![](/img/eino/eino_projects_and_structure.png)
+<a href="/img/eino/eino_projects_and_structure.png" target="_blank"><img src="/img/eino/eino_projects_and_structure.png" /></a>
 
 ### 实践驱动
 
 Eino 框架的设计开发过程，扎根于 “满足真实需求” 与 “实践驱动设计” 这两大基石之上。功能的演进过程与字节跳动各业务线的接入过程紧密结合，始终倾听开发者的声音，并通过实际使用效果来检验设计的合理性。比如我们收到来自抖音的“希望能够以字段为粒度在图中映射和传递数据”的需求，以此为基础设计了 Workflow；倾听来自豆包的使用痛点，增强作为模型输入输出类型的 Message 结构体。在未来的开源生态共建过程中，我们会继续坚持上述原则，满足更广大的用户和开发者的真实需求，并在更大的范围内认真实践和精进。
 
-![](/img/eino/eino_practice_cognition_loop.png)
+<a href="/img/eino/eino_practice_cognition_loop.png" target="_blank"><img src="/img/eino/eino_practice_cognition_loop.png" /></a>
 
 ### 工具生态
 
@@ -180,4 +180,4 @@ Eino 框架的设计开发过程，扎根于 “满足真实需求” 与 “实
 项目官网：__[https://www.cloudwego.io](https://www.cloudwego.io)__
 
 扫描二维码加入飞书社群：
-![](/img/eino/eino_lark_qr_code.png)
+<a href="/img/eino/eino_lark_qr_code.png" target="_blank"><img src="/img/eino/eino_lark_qr_code.png" /></a>

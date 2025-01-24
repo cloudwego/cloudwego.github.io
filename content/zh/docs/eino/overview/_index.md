@@ -81,7 +81,7 @@ runnable.Stream(ctx, []*Message{UserMessage("help me plan my weekend")})
 
 现在，我们来创建一个 Workflow，它能在字段级别灵活映射输入与输出：
 
-![](/img/eino/graph_node_type1.png)
+<a href="/img/eino/graph_node_type1.png" target="_blank"><img src="/img/eino/graph_node_type1.png" /></a>
 
 ```go
 wf := NewWorkflow[[]*Message, *Message]()
@@ -374,7 +374,7 @@ type Runnable[I, O any] interface {
 
 - 编程产物中具有的真正的流式能力是什么，取决于如下的编排范式
 
-![](/img/eino/invoke_stream_transform_collect.png)
+<a href="/img/eino/invoke_stream_transform_collect.png" target="_blank"><img src="/img/eino/invoke_stream_transform_collect.png" /></a>
 
 ### Stream 流
 
@@ -470,7 +470,7 @@ func (g *graph) AddEdge(startNode, endNode string) (err error) {}
 
 - 在两个节点间添加一条有向的数据传输链路，以控制数据的流动方向和节点的执行顺序
 
-![](/img/eino/edge_of_parallel.png)
+<a href="/img/eino/edge_of_parallel.png" target="_blank"><img src="/img/eino/edge_of_parallel.png" /></a>
 
 ###### **AddBranch**
 
@@ -490,14 +490,14 @@ func (g *graph) AddBranch(startNode string, branch *GraphBranch) (err error) {}
 
 - 根据传入的自定义选择函数，运行时根据经运算条件从多个 Node 中选出命中 Node 执行
 
-![](/img/eino/run_way_branch_in_graph.png)
+<a href="/img/eino/run_way_branch_in_graph.png" target="_blank"><img src="/img/eino/run_way_branch_in_graph.png" /></a>
 
 ###### **Parallel**
 
 - 将多个 Node 平行并联， 形成多个节点并发执行的节点
 - 无 AddParallel 方法，通过 AddEdge 构建并联的多条拓扑路径，以此形成 **Parallel **
 
-![](/img/eino/input_keys_output_keys_in_parallel.png)
+<a href="/img/eino/input_keys_output_keys_in_parallel.png" target="_blank"><img src="/img/eino/input_keys_output_keys_in_parallel.png" /></a>
 
 ##### 面(Graph)
 
@@ -534,7 +534,7 @@ chain := NewChain[map[string]any, string]()
 
 - 将多个 Node 按照传入顺序首尾串联，串联的 Node 依次进行数据传递和执行
 
-![](/img/eino/graph_nodes.png)
+<a href="/img/eino/graph_nodes.png" target="_blank"><img src="/img/eino/graph_nodes.png" /></a>
 
 ##### **AppendParallel**
 
@@ -556,7 +556,7 @@ chain.AppendParallel(parallel)
 
 - 创建一个 Parallel，容纳并发执行的多个子节点
 
-![](/img/eino/chain_append_parallel.png)
+<a href="/img/eino/chain_append_parallel.png" target="_blank"><img src="/img/eino/chain_append_parallel.png" /></a>
 
 ##### **AppendBranch**
 
@@ -585,7 +585,7 @@ chain := NewChain[string, string]()
 chain.AppendBranch(cb)
 ```
 
-![](/img/eino/chain_append_branch.png)
+<a href="/img/eino/chain_append_branch.png" target="_blank"><img src="/img/eino/chain_append_branch.png" /></a>
 
 #### Workflow
 
