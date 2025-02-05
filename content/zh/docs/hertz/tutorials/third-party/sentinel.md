@@ -1,7 +1,7 @@
 ---
 title: "Sentinel"
 date: 2022-09-29
-weight: 6
+weight: 7
 keywords: ["治理特性", "Sentinel"]
 description: "Hertz 提供了 hertz-contrib/opensergo, 以方便用户集成 sentinel-golang。"
 ---
