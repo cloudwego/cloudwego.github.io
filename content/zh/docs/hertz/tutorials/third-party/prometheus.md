@@ -1,9 +1,9 @@
 ---
-title: "监控"
-linkTitle: "监控"
+title: "Prometheus"
+linkTitle: "Prometheus"
 weight: 5
-keywords: ["监控"]
-description: "Hertz 提供的监控相关第三方扩展。"
+keywords: ["Prometheus"]
+description: "Hertz 提供的 Prometheus 扩展。"
 ---
 
 [monitor-prometheus](https://github.com/hertz-contrib/monitor-prometheus) 中提供了默认的 prometheus 的监控扩展，能够实现:
