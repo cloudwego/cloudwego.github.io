@@ -1,7 +1,7 @@
 ---
 title: "OpenTelemetry"
 date: 2022-09-01
-weight: 5
+weight: 3
 keywords: ["OpenTelemetry"]
 description: "Hertz 提供的 OpenTelemetry 能力。"
 ---

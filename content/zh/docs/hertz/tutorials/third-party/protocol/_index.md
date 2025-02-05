@@ -1,19 +1,10 @@
 ---
 title: "协议"
 date: 2022-05-23
-weight: 7
+weight: 1
 keywords: ["TLS", "ALPN", "Websocket", "HTTP2", "HTTP3", "SSE"]
-description: "Hertz 支持的协议。"
+description: "Hertz 支持的协议扩展。"
 ---
-
-## TLS
-
-Hertz Server & Client 目前只有 标准网络库 支持 TLS，[Netpoll](https://github.com/cloudwego/netpoll) 网络库的支持还在路上。
-使用参考： [示例](/zh/docs/hertz/tutorials/example/#协议)
-
-## ALPN
-
-开启 TLS 之后，可以通过开关控制 ALPN 是否开启（依赖当前是否通过 Protocol Suite 注册了所需要的所有协议 Servers）。
 
 ## Websocket
 

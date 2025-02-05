@@ -1,14 +1,14 @@
 ---
 title: "TLS"
 date: 2022-11-06
-weight: 5
+weight: 7
 keywords: ["TLS", "HTTP"]
 description: "Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。"
 ---
 
 Hertz 支持 TLS 安全传输，帮助用户实现了数据的保密性和完整性。
 
-> 如果有 TLS 的需求，请使用 go net 网络库。netpoll 正在实现对 TLS 的支持。
+> 如果有 TLS 的需求，请使用 go net 网络库。Netpoll 尚未实现对 TLS 的支持。
 
 在 `tls.Config` 中，服务端和客户端都可使用的参数如下：
 

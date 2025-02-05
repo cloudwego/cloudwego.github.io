@@ -1,22 +1,12 @@
 ---
 title: "监控"
 linkTitle: "监控"
-weight: 4
+weight: 5
 keywords: ["监控"]
-description: "Hertz 提供的监控能力。"
+description: "Hertz 提供的监控相关第三方扩展。"
 ---
 
-框架自身不带任何监控打点，只是提供了 `Tracer` 接口，用户可以根据需求实现该接口，并通过 `WithTracer` Option 来注入。
-
-```go
-// Tracer is executed at the start and finish of an HTTP.
-type Tracer interface {
-    Start(ctx context.Context, c *app.RequestContext) context.Context
-    Finish(ctx context.Context, c *app.RequestContext)
-}
-```
-
-[hertz-contrib](https://github.com/hertz-contrib/monitor-prometheus) 中提供了默认的 prometheus 的监控扩展，能够实现:
+[monitor-prometheus](https://github.com/hertz-contrib/monitor-prometheus) 中提供了默认的 prometheus 的监控扩展，能够实现:
 
 - 请求量监控
 - 时延监控
@@ -47,5 +37,3 @@ func main() {
 ```
 
 目前 Client 暂没有暴露 Tracer 接口，但是提供了 [中间件](/zh/docs/hertz/tutorials/basic-feature/middleware/) 能力，可以通过中间件实现监控能力。
-
-仓库 https://github.com/hertz-contrib/monitor-prometheus
