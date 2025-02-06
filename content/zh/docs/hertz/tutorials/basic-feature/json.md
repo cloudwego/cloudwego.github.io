@@ -11,9 +11,9 @@ Hertz 默认集成并使用 [Sonic](https://github.com/bytedance/sonic) 用于�
 
 开启 Sonic 需要满足以下条件：
 
-- Go 1.16 以上
+- Go 1.17 以上
 - Linux / darwin OS / Windows
-- Amd64 CPU with AVX instruction set
+- Amd64 or Arm64 CPU
 
 当上述条件不能满足时，Sonic 会自动 fallback 到 golang 的 encoding/json 库。
 
