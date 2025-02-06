@@ -42,12 +42,3 @@ type HTTPStats interface {
 ```
 
 Hertz 支持灵活启用基本埋点和细粒度埋点，具体请参考 [埋点](../instrumentation)
-
-hertz-contrib 中提供了 [opentracing](https://opentracing.io/) 和 [opentelemetry](https://opentelemetry.io/) 的扩展方式，也在 hertz-examples 中提供了 [opentracing example](https://github.com/cloudwego/hertz-examples/tree/main/tracer) 以及 [opentelemetry example](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry)
-
-相关仓库：
-
-- [hertz opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry/)
-- [hertz opentracing](https://github.com/hertz-contrib/tracer)
-
-> OpenTracing 已经被弃用，具体原因可以查看 [Deprecating OpenTracing](https://github.com/opentracing/specification/issues/163)，如果没有特殊的理由，推荐使用 [Opentelemetry](../open-telemetry)

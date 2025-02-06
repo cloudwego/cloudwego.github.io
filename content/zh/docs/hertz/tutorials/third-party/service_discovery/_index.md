@@ -1,7 +1,7 @@
 ---
 title: "服务注册与发现"
 date: 2023-04-22
-weight: 1
+weight: 3
 keywords:
   [
     "服务注册与发现",
