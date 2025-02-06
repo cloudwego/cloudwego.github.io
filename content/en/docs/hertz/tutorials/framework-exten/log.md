@@ -1,7 +1,7 @@
 ---
 title: "Logger Extension"
 linkTitle: "Logger Extension"
-weight: 1
+weight: 2
 date: 2022-06-22
 keywords: ["Logger Extension"]
 description: "Hertz provides logger extension, and the interface is defined in `pkg/common/hlog`."

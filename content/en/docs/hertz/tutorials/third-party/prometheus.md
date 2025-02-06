@@ -1,24 +1,13 @@
 ---
-title: "Monitoring"
-linkTitle: "Monitoring"
+title: "Prometheus"
+linkTitle: "Prometheus"
 date: 2022-06-21
-weight: 4
-keywords: ["Monitoring"]
-description: "Hertz provides monitoring capabilities."
+weight: 5
+keywords: ["Prometheus"]
+description: "Prometheus extension provided by Hertz."
 ---
 
-The framework doesn't provide any monitoring, but only provides a `Tracer` interface. This interface can be implemented by yourself and be injected via `WithTracer` Option.
-
-```go
-// Tracer is executed at the start and finish of an HTTP.
-type Tracer interface {
-    Start(ctx context.Context, c *app.RequestContext) context.Context
-    Finish(ctx context.Context, c *app.RequestContext)
-}
-```
-
-[hertz-contrib](https://github.com/hertz-contrib/monitor-prometheus) provides a default prometheus monitoring extension，which can be used to do:
-
+The default prometheus monitoring extension is available in [monitor-prometheus](https://github.com/hertz-contrib/monitor-prometheus), providing:
 - Server throughput monitoring
 - Request latency monitoring
 

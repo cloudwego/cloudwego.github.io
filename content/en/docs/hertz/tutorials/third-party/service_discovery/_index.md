@@ -1,7 +1,7 @@
 ---
 title: "Service Registration and Discovery"
 date: 2023-04-22
-weight: 1
+weight: 3
 keywords:
   [
     "Service Registration and Discovery",
