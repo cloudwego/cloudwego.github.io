@@ -1,7 +1,7 @@
 ---
 title: "按需序列化使用指南"
 date: 2024-09-20
-weight: 1
+weight: 9
 keywords: ["按需序列化使用指南"]
 description: ""
 ---
@@ -9,6 +9,8 @@ description: ""
 ## 什么是 Thrift FieldMask？
 
 FieldMask 是受到 <u>[Protobuf](https://protobuf.dev/reference/protobuf/google.protobuf/#field-mask) </u>的启发，用于在 RPC 调用时**指示用户关心的数据并过滤掉无用的数据**的一种手段。该技术不但可以在 RPC 服务中实现**特定字段的屏蔽**，同时还可以**减少消息传输开销**以提升服务性能，目前已广泛应用于 Protobuf<u>[服务](https://netflixtechblog.com/practical-api-design-at-netflix-part-1-using-protobuf-fieldmask-35cfdc606518)</u>中。
+
+![fieldmask](/img/docs/kitex/Tutorials/advanced-feature/fieldmask.png)
 
 对于 thrift RPC 服务来说，有如下潜在使用场景：
 
