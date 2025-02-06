@@ -1,12 +1,10 @@
 ---
 title: "Sentinel"
 date: 2022-09-29
-weight: 2
+weight: 7
 keywords: ["Service Governance", "Sentinel"]
 description: "Hertz provides hertz-contrib/opensergo, to facilitate the integration of sentinel-golang."
 ---
-
-Hertz provides [hertz-contrib/opensergo](https://github.com/hertz-contrib/opensergo), to facilitate the integration of sentinel-golang.
 
 ## Installation
 
