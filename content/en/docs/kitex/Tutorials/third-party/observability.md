@@ -138,7 +138,7 @@ Based on [opentelemetry-go](https://pkg.go.dev/go.opentelemetry.io/contrib/instr
 
 Kitex supports popular tracing standards like OpenTelemetry and OpenTracing, enabling developers to choose suitable tools for their monitoring ecosystem. Users can easily implement end-to-end request monitoring in a microservices architecture. Such monitoring is crucial for debugging, performance analysis, and troubleshooting.
 
-## OpenTelemetry
+### OpenTelemetry
 
 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) extension integrates with the OpenTelemetry standard for tracing.
 
@@ -206,94 +206,5 @@ func main()  {
     if err := svr.Run(); err != nil {
         klog.Fatalf("server stopped with error:", err)
     }
-}
-```
-
-## OpenTracing
-
-[tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing) extension integrates with the OpenTracing standard for tracing.
-
-**Usage Example**
-
-Client
-
-```go
-import (
-	"github.com/cloudwego/kitex/client"
-	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-	internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
-)
-...
-tracer := internal_opentracing.NewDefaultClientSuite()
-client, err := echo.NewClient("echo", client.WithSuite(tracer))
-if err != nil {
-	log.Fatal(err)
-}
-```
-
-Server
-
-```go
-import (
-  "github.com/cloudwego/kitex/server"
-  "github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
-  internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
-)
-...
-tracer := internal_opentracing.NewDefaultServerSuite()
-svr, err := echo.NewServer(new(EchoImpl), server.WithSuite(tracer))
-if err := svr.Run(); err != nil {
-	log.Println("server stopped with error:", err)
-} else {
-	log.Println("server stopped")
-}
-```
-
-### Custom Opentracing Tracer and Operation Name
-
-To create a Suite using a custom Opentracing Tracer and Operation Name, you can use the `NewServerSuite` and `NewClientSuite` methods. Here's an example for the client side (similar for the server side):
-
-```go
-import (
-	...
-	"github.com/opentracing/opentracing-go"
-	"github.com/cloudwego/kitex/pkg/endpoint"
-	"github.com/cloudwego/kitex/pkg/rpcinfo"
-  internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
-  ...
-)
-...
-myTracer := opentracing.GlobalTracer()
-operationNameFunc := func(ctx context.Context) string {
-	endpoint := rpcinfo.GetRPCInfo(ctx).To()
-	return endpoint.ServiceName() + "::" + endpoint.Method()
-}
-...
-client, err := echo.NewClient("echo", client.WithSuite(internal_opentracing.NewClientSuite(myTracer, operationNameFunc)))
-if err != nil {
-	log.Fatal(err)
-}
-```
-
-### Supported Components
-
-#### Redis
-
-[tracer-opentracing](https://github.com/kitex-contrib/tracer-opentracing) provides a Redis Hook for quick integration with Redis tracing. Here's how to use it:
-
-```go
-import (
-    ...
-    "github.com/go-redis/redis/v8"
-    internal_opentracing "github.com/kitex-contrib/tracer-opentracing"
-    ...
-)
-
-func main() {
-    ...
-    rdb := redis.NewClient(&redis.Options{...})
-  	// add the hook provided by tracer-opentracing to instrument Redis client
-    rdb.AddHook(internal_opentracing.NewTracingHook())
-    ...
 }
 ```

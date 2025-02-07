@@ -3,12 +3,12 @@ title: "可观测性"
 date: 2021-08-26
 weight: 3
 keywords: ["Kitex", "可观测性", "Trace", "Metric"]
-description: Kitex 框架内置了监控能力，通过接口的方式进行扩展，支持 OpenTelemetry 和 Prometheus。
+description: Kitex 框架内置了监控能力，可以通过接口的方式进行扩展，支持 OpenTelemetry 和 Prometheus。
 ---
 
 ## 接口扩展
 
-框架提供了 `Tracer` 接口，用户可以根据需求实现该接口，并通过 `WithTracer` Option 来注入监控的具体实现。
+框架提供了 `Tracer` 接口，用户可以根据需求实现该接口，并通过 `WithTracer` Option 来注入监控与链路追踪的具体实现。
 
 ```go
 // Tracer is executed at the start and finish of an RPC.
@@ -136,7 +136,7 @@ Client
 
 Kitex 支持流行的链路追踪标准 OpenTelemetry，允许开发者选择合适的工具来适应他们的监控生态，用户可以轻松地在微服务架构中实现请求的全链路监控。这样的监控对于调试、性能分析以及故障排查是至关重要的。
 
-## OpenTelemetry
+### OpenTelemetry
 
 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) 扩展集成了 OpenTelemetry 标准的 Tracing。
 
