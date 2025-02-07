@@ -133,8 +133,8 @@ func main() {
 | WithReadTimeout    | 0s                      | The maximum duration of a complete read response (including body), **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**. |
 | WithWriteTimeout   | 0s                      | HTTP client write timeout, **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.                                         |
 | WithRequestTimeout | 0s                      | The timeout for a complete HTTP request.                                                                                                                                                                              |
-| WithTag            | make(map[string]string) | Set the tags field in the form of key-value, used in conjunction with service discovery, details can be found in [WithTag](/docs/hertz/tutorials/service-governance/service_discovery/#withtag).                      |
-| WithSD             | false                   | Used in conjunction with service discovery, this request uses service discovery when true is passed, details can be found in [WithSD](/docs/hertz/tutorials/service-governance/service_discovery/#withsd).            |
+| WithTag            | make(map[string]string) | Set the tags field in the form of key-value, used in conjunction with service discovery, details can be found in [WithTag](/docs/hertz/tutorials/third-party/service_discovery/#withtag).                      |
+| WithSD             | false                   | Used in conjunction with service discovery, this request uses service discovery when true is passed, details can be found in [WithSD](/docs/hertz/tutorials/third-party/service_discovery/#withsd).            |
 
 Sample Code:
 

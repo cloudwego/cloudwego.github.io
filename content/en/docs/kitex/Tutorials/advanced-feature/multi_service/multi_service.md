@@ -12,7 +12,7 @@ Since Kitex v0.8.0, multiple service registrations on a single server are suppor
 
 Currently, the feature is available for:
 
-- gRPC transport protocol, including [Thrift Streaming over HTTP2](/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming/) (which is also based on gRPC) (>= v0.8.0)
+- gRPC transport protocol, including [Thrift Streaming over HTTP2](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/thrift_streaming/) (which is also based on gRPC) (>= v0.8.0)
 - Kitex thrift & protobuf (non-streaming) (>= v0.9.0)
 
 ## Usage
