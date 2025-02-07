@@ -16,7 +16,7 @@ Below are some important changes:
 
 **1. Thrift Streaming**
 
-The Thrift Streaming feature based on gRPC (HTTP2) has been officially released. Users can use Thrift to define their own Streaming requests. To maintain compatibility with IDL parsing, Kitex chooses to use annotation to define stream method. See [Thrift Streaming Usage](/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming/). This version also improves the monitoring and reporting of Streaming requests, which also applies to gRPC-Protobuf. Note that Thrift is mainly used for data serialization and does not use the Thrift message protocol.
+The Thrift Streaming feature based on gRPC (HTTP2) has been officially released. Users can use Thrift to define their own Streaming requests. To maintain compatibility with IDL parsing, Kitex chooses to use annotation to define stream method. See [Thrift Streaming Usage](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/thrift_streaming/). This version also improves the monitoring and reporting of Streaming requests, which also applies to gRPC-Protobuf. Note that Thrift is mainly used for data serialization and does not use the Thrift message protocol.
 
 Due to the complexity of the HTTP2 protocol, it has a certain impact on performance. We plan to release a self-developed Streaming protocol to improve performance in the future.
 
