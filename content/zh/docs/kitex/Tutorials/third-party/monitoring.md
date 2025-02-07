@@ -1,7 +1,7 @@
 ---
 title: "监控"
 date: 2021-08-26
-weight: 4
+weight: 3
 keywords: ["Kitex", "监控", "Tracer", "Metric"]
 description: Kitex 框架内置了监控能力，但是本身不带任何监控打点，通过接口的方式进行扩展。
 ---
