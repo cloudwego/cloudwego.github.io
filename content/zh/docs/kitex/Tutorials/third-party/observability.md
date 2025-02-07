@@ -1,14 +1,14 @@
 ---
-title: "监控"
+title: "可观测性"
 date: 2021-08-26
-weight: 4
-keywords: ["Kitex", "监控", "Tracer", "Metric"]
-description: Kitex 框架内置了监控能力，但是本身不带任何监控打点，通过接口的方式进行扩展。
+weight: 3
+keywords: ["Kitex", "可观测性", "Trace", "Metric"]
+description: Kitex 框架内置了监控能力，可以通过接口的方式进行扩展，支持 OpenTelemetry 和 Prometheus。
 ---
 
-## 自定义监控
+## 接口扩展
 
-框架提供了 `Tracer` 接口，用户可以根据需求实现该接口，并通过 `WithTracer` Option 来注入监控的具体实现。
+框架提供了 `Tracer` 接口，用户可以根据需求实现该接口，并通过 `WithTracer` Option 来注入监控与链路追踪的具体实现。
 
 ```go
 // Tracer is executed at the start and finish of an RPC.
@@ -20,7 +20,7 @@ type Tracer interface {
 
 详细文档请阅读 [监控拓展](../../framework-exten/monitoring/#监控信息拓展) 章节。
 
-## 拓展库使用
+## 监控
 
 [kitex-contrib](https://github.com/kitex-contrib) 中也提供了两种监控拓展 [monitor-prometheus](https://github.com/kitex-contrib/monitor-prometheus/tree/main) 与 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) ，它们分别集成了 Prometheus 与 OpenTelemetry 的监控拓展，前者更贴合 Prometheus 生态，使用也比较简单方便，而后者使用起来更灵活。
 
@@ -131,3 +131,78 @@ Client
 | `process.runtime.go.mem.heap_released` | Gauge        | bytes      | `bytes`    | 已交还给操作系统的堆内存                         |
 | `process.runtime.go.mem.heap_sys`      | Gauge        | bytes      | `bytes`    | 从操作系统获得的堆内存                           |
 | `runtime.uptime`                       | Sum          | ms         | `ms`       | 自应用程序被初始化以来的毫秒数                   |
+
+## 链路追踪
+
+Kitex 支持流行的链路追踪标准 OpenTelemetry，允许开发者选择合适的工具来适应他们的监控生态，用户可以轻松地在微服务架构中实现请求的全链路监控。这样的监控对于调试、性能分析以及故障排查是至关重要的。
+
+### OpenTelemetry
+
+[obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry) 扩展集成了 OpenTelemetry 标准的 Tracing。
+
+**使用示例**
+
+Client
+
+```go
+import (
+    ...
+    "github.com/kitex-contrib/obs-opentelemetry/provider"
+    "github.com/kitex-contrib/obs-opentelemetry/tracing"
+)
+
+func main(){
+    serviceName := "echo-client"
+
+    p := provider.NewOpenTelemetryProvider(
+        provider.WithServiceName(serviceName),
+        provider.WithExportEndpoint("localhost:4317"),
+        provider.WithInsecure(),
+    )
+    defer p.Shutdown(context.Background())
+
+    c, err := echo.NewClient(
+        "echo",
+        client.WithSuite(tracing.NewClientSuite()),
+        // Please keep the same as provider.WithServiceName
+        client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+    )
+    if err != nil {
+        klog.Fatal(err)
+    }
+
+}
+
+```
+
+Server
+
+```go
+import (
+    ...
+    "github.com/kitex-contrib/obs-opentelemetry/provider"
+    "github.com/kitex-contrib/obs-opentelemetry/tracing"
+)
+
+
+func main()  {
+    serviceName := "echo"
+
+    p := provider.NewOpenTelemetryProvider(
+        provider.WithServiceName(serviceName),
+        provider.WithExportEndpoint("localhost:4317"),
+        provider.WithInsecure(),
+    )
+    defer p.Shutdown(context.Background())
+
+    svr := echo.NewServer(
+        new(EchoImpl),
+        server.WithSuite(tracing.NewServerSuite()),
+        // Please keep the same as provider.WithServiceName
+        server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+    )
+    if err := svr.Run(); err != nil {
+        klog.Fatalf("server stopped with error:", err)
+    }
+}
+```
