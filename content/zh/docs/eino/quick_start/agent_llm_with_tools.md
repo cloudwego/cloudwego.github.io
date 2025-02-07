@@ -155,7 +155,7 @@ func (lt *ListTodoTool) InvokableRun(ctx context.Context, argumentsInJSON string
 
 ```go
 import (
-    "github.com/bytedance/eino-ext/components/tool/duckduckgo"
+    "github.com/cloudwego/eino-ext/components/tool/duckduckgo"
 )
 
 
