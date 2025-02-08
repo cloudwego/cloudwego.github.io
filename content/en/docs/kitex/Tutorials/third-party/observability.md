@@ -95,7 +95,7 @@ The extension repository [obs-opentelemetry](https://github.com/kitex-contrib/ob
 
 #### usage example:
 
-For information on how to use obs-opentelemetry, please refer to the [tracing](../tracing#opentelemetry) section.
+For information on how to use obs-opentelemetry, please refer to the [tracing](#opentelemetry) section.
 
 #### Metrics
 

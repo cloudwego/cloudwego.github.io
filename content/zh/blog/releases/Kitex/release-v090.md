@@ -56,7 +56,7 @@ v0.9.0 要求 Go 版本必须 >= 1.17，不再兼容 Go <= v1.16 (稳定性要�
 
 **主流的配置中心对接均完成 Release**
 
-Kitex 对超时、重试、熔断、限流的策略支持通过远程配置中心来控制，感谢社区的贡献者们，目前[主流的配置中心](/zh/docs/kitex/tutorials/service-governance/config-center/)均已完成扩展对接并 Release，详见 [配置中心](/zh/docs/kitex/tutorials/service-governance/config-center/)。
+Kitex 对超时、重试、熔断、限流的策略支持通过远程配置中心来控制，感谢社区的贡献者们，目前[主流的配置中心](/zh/docs/kitex/tutorials/third-party/config-center/)均已完成扩展对接并 Release，详见 [配置中心](/zh/docs/kitex/tutorials/third-party/config-center/)。
 
 ## **详细变更**
 

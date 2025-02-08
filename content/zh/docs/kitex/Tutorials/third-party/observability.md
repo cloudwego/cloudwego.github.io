@@ -93,7 +93,7 @@ Server
 
 #### 使用方式
 
-有关 obs-opentelemetry 的使用方式请查看 [tracing](../tracing#opentelemetry) 章节。
+有关 obs-opentelemetry 的使用方式请查看 [tracing](#opentelemetry) 章节。
 
 #### Metrics
 

@@ -627,7 +627,7 @@ services:
       - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
 ```
 
-Kitex, as a microservice framework, also provides service governance capabilities. In the context of service registration and discovery, Kitex has adapted to etcd. Please refer to the [etcd registry usage documentation](/docs/kitex/tutorials/service-governance/service_discovery/etcd/). Additionally, Kitex provides support for other common registrys, as documented in the [Service Discovery](/docs/kitex/tutorials/service-governance/service_discovery/) section.
+Kitex, as a microservice framework, also provides service governance capabilities. In the context of service registration and discovery, Kitex has adapted to etcd. Please refer to the [etcd registry usage documentation](/docs/kitex/tutorials/third-party/service_discovery/etcd/). Additionally, Kitex provides support for other common registrys, as documented in the [Service Discovery](/docs/kitex/tutorials/third-party/service_discovery/) section.
 
 First, we need to fetch the dependencies. Run the following command in the project's root directory:
 

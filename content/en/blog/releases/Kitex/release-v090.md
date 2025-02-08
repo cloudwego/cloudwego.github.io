@@ -58,7 +58,7 @@ Kitex v0.9.0 requires Go version must >= 1.17, no longer compatible with Go <= v
 
 **Main configuration centers have finish integrated**
 
-Kitex supports controlling the policies of Timeout, Retry, Circuit Breaker, Limiter through the remote configuration center. Thanks to the contributors of the CloudWeGo community, all the [main configuration centers](/docs/kitex/tutorials/service-governance/config-center/) have finish integrated. Usage please see [Config Center](/docs/kitex/tutorials/service-governance/config-center/).
+Kitex supports controlling the policies of Timeout, Retry, Circuit Breaker, Limiter through the remote configuration center. Thanks to the contributors of the CloudWeGo community, all the [main configuration centers](/docs/kitex/tutorials/third-party/config-center/) have finish integrated. Usage please see [Config Center](/docs/kitex/tutorials/third-party/config-center/).
 
 ## **Full Release Log**
 

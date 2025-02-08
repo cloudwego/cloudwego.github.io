@@ -630,7 +630,7 @@ services:
       - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
 ```
 
-Kitex 作为一款微服务框架，也为我们提供了服务治理的能力。当然，在服务注册与发现的场景中也为 etcd 做了适配，可见 [etcd 注册中心使用文档](/zh/docs/kitex/tutorials/service-governance/service_discovery/etcd/)。同时 Kitex 还提供了其他常见注册中心适配，文档可见[服务发现](/zh/docs/kitex/tutorials/service-governance/service_discovery/)。
+Kitex 作为一款微服务框架，也为我们提供了服务治理的能力。当然，在服务注册与发现的场景中也为 etcd 做了适配，可见 [etcd 注册中心使用文档](/zh/docs/kitex/tutorials/third-party/service_discovery/etcd/)。同时 Kitex 还提供了其他常见注册中心适配，文档可见[服务发现](/zh/docs/kitex/tutorials/third-party/service_discovery/)。
 
 首先，我们需要拉取依赖，在项目根目录下执行如下命令：
 
