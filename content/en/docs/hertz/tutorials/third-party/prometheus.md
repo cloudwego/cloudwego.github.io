@@ -8,6 +8,7 @@ description: "Prometheus extension provided by Hertz."
 ---
 
 The default prometheus monitoring extension is available in [monitor-prometheus](https://github.com/hertz-contrib/monitor-prometheus), providing:
+
 - Server throughput monitoring
 - Request latency monitoring
 

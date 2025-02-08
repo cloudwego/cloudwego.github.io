@@ -107,4 +107,3 @@ LevelFatal
 ```go
 hlog.SetSilentMode(true)
 ```
-
