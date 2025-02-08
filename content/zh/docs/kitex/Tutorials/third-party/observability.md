@@ -91,10 +91,6 @@ Server
 
 拓展库 [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) 中提供了 opentelemetry 的监控拓展。
 
-#### 使用方式
-
-有关 obs-opentelemetry 的使用方式请查看 [tracing](../tracing#opentelemetry) 章节。
-
 #### Metrics
 
 Server

@@ -400,7 +400,7 @@ func WithTracer(c stats.Tracer) Option
 func WithResolver(r discovery.Resolver) Option
 ```
 
-指定一个 Resolver 进行服务发现，用法详见[服务发现](/zh/docs/kitex/tutorials/service-governance/service_discovery/)。
+指定一个 Resolver 进行服务发现，用法详见[服务发现](/zh/docs/kitex/tutorials/third-party/service_discovery/)。
 
 ### HTTP 解析器 - WithHTTPResolver
 

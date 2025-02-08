@@ -61,7 +61,7 @@ func main() {
 | WithMaxConnWaitTimeout            | 0s             | maximum duration for waiting for a free connection.                                                                                                     |
 | WithKeepAlive                     | true           | determines whether use keep-alive connection, default use.                                                                                              |
 | WithClientReadTimeout             | 0s             | maximum duration for full response reading (including body).                                                                                            |
-| WithTLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/protocol/tls/). |
+| WithTLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/tls/). |
 | WithDialer                        | network.Dialer | specific dialer.                                                                                                                                        |
 | WithResponseBodyStream            | false          | determine whether read body in stream or not, default not read in stream.                                                                               |
 | WithDisableHeaderNamesNormalizing | false          | whether disable header names normalizing, default not disabled, for example, cONTENT-lenGTH -> Content-Length.                                          |
@@ -595,7 +595,7 @@ The relevant content of the service discovery center that Hertz has currently ac
 
 The network library `netpoll` used by Hertz client by default does not support TLS. If you want to configure TLS to access https addresses, you should use the Standard library.
 
-For TLS related configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/protocol/tls/).
+For TLS related configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/tls/).
 
 Sample Code:
 
