@@ -93,10 +93,6 @@ This repository relies on [prometheus/client_golang](https://github.com/promethe
 
 The extension repository [obs-opentelemetry](https://github.com/kitex-contrib/obs-opentelemetry/tree/main) provides OpenTelemetry monitoring extension.
 
-#### usage example:
-
-For information on how to use obs-opentelemetry, please refer to the [tracing](#opentelemetry) section.
-
 #### Metrics
 
 Server
