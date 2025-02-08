@@ -11,13 +11,14 @@ weight: 9
 
 Lambda 是 Eino 中最基础的组件类型，它允许用户在工作流中嵌入自定义的函数逻辑。Lambda 组件底层是由 4 种运行函数组成，对应 4 种交互模式: Invoke、Stream、Collect、Transform。
 
-用户构建 Lmabda 时可仅实现其中一种，框架会根据一定的规则进行转换，详细介绍可见: [Eino: 概述](/zh/docs/eino/overview)
+用户构建 Lmabda 时可实现其中的一种或多种，框架会根据一定的规则进行转换，详细介绍可见: [Eino: 概述](/zh/docs/eino/overview) (见 Runnable 小节)
 
 ## **组件定义及实现**
 
 Lambda 组件的核心是 `Lambda` 结构体，它包装了用户提供的 lambda 函数，用户可通过构建方法创建一个 Lambda 组件：
 
 ```go
+// 定义见: https://github.com/cloudwego/eino/blob/main/compose/types_lambda.go
 type Lambda struct {
     executor *composableRunnable
 }
@@ -48,7 +49,7 @@ type Transform[I, O, TOption any] func(ctx context.Context, input *schema.Stream
 
 #### **不带自定义 option**
 
-1. InvokableLambda - 创建一个普通的函数调用 Lambda：
+- InvokableLambda
 
 ```go
 // input 和 output 类型为自定义的任何类型
@@ -57,7 +58,7 @@ lambda := compose.InvokableLambda(func(ctx context.Context, input string) (outpu
 })
 ```
 
-1. StreamableLambda - 创建一个流式函数 Lambda：
+- StreamableLambda
 
 ```go
 // input 和 output 类型为自定义的任何类型
@@ -66,7 +67,7 @@ lambda := compose.StreamableLambda(func(ctx context.Context, input string) (outp
 })
 ```
 
-1. CollectableLambda - 创建一个收集函数 Lambda：
+- CollectableLambda
 
 ```go
 // input 和 output 类型为自定义的任何类型
@@ -75,7 +76,7 @@ lambda := compose.CollectableLambda(func(ctx context.Context, input *schema.Stre
 })
 ```
 
-1. TransformableLambda - 创建一个转换函数 Lambda：
+- TransformableLambda
 
 ```go
 // input 和 output 类型为自定义的任何类型
@@ -92,7 +93,7 @@ lambda := compose.TransformableLambda(func(ctx context.Context, input *schema.St
 type Options struct {
     Filed1 string
 }
-type MyOption func(Options)
+type MyOption func(*Options)
 
 lambda := compose.InvokableLambdaWithOption(
     func(ctx context.Context, input string, opts ...MyOption) (output string, err error) {
@@ -110,19 +111,19 @@ AnyLambda 允许同时实现多种交互模式的 Lambda 函数类型：
 // input 和 output 类型为自定义的任何类型
 lambda, err := compose.AnyLambda(
     // Invoke 函数
-    func(ctx context.Context, input string, opts ...any) (output string, err error) {
+    func(ctx context.Context, input string, opts ...MyOption) (output string, err error) {
         // some logic
     },
     // Stream 函数
-    func(ctx context.Context, input string, opts ...any) (output *schema.StreamReader[string], err error) {
+    func(ctx context.Context, input string, opts ...MyOption) (output *schema.StreamReader[string], err error) {
         // some logic
     },
     // Collect 函数
-    func(ctx context.Context, input *schema.StreamReader[string], opts ...any) (output string, err error) {
+    func(ctx context.Context, input *schema.StreamReader[string], opts ...MyOption) (output string, err error) {
         // some logic
     },
     // Transform 函数
-    func(ctx context.Context, input *schema.StreamReader[string], opts ...any) (output *schema.StreamReader[string], err error) {
+    func(ctx context.Context, input *schema.StreamReader[string], opts ...MyOption) (output *schema.StreamReader[string], err error) {
         // some logic
     },
 )
@@ -155,11 +156,11 @@ chain.AppendLambda(compose.InvokableLambda(func(ctx context.Context, input strin
 }))
 ```
 
-### **两个内置的 Lambda 节点**
+### **两个内置的 Lambda**
 
 #### **ToList**
 
-ToList 是一个内置的 Lambda，用于将单个输入转换为列表：
+ToList 是一个内置的 Lambda，用于将单个输入元素转换为包含该元素的切片（数组）：
 
 ```go
 // 创建一个 ToList Lambda
@@ -167,13 +168,13 @@ lambda := compose.ToList[*schema.Message]()
 
 // 在 Chain 中使用
 chain := compose.NewChain[[]*schema.Message, []*schema.Message]()
-chain.AddChatModel(chatModel)  // chatModel 返回 *schema.Message
-chain.AddLambda(lambda)        // 将 *schema.Message 转换为 []*schema.Message
+chain.AppendChatModel(chatModel)  // chatModel 返回 *schema.Message
+chain.AppendLambda(lambda)        // 将 *schema.Message 转换为 []*schema.Message
 ```
 
 #### **MessageParser**
 
-MessageParser 是一个内置的 Lambda，用于将消息解析为指定的结构体：
+MessageParser 是一个内置的 Lambda，用于将 JSON 消息（通常由 llm 生成）解析为指定的结构体：
 
 ```go
 // 定义解析目标结构体
@@ -182,20 +183,21 @@ type MyStruct struct {
 }
 
 // 创建解析器
-parser := schema.NewMessageJSONParser[MyStruct](&schema.MessageJSONParseConfig{
+parser := schema.NewMessageJSONParser[*MyStruct](&schema.MessageJSONParseConfig{
     ParseFrom: schema.MessageParseFromContent,
+    ParseKeyPath: "", // 如果仅需要 parse 子字段，可用 ".key.sub.grandsub"
 })
 
 // 创建解析 Lambda
 parserLambda := compose.MessageParser(parser)
 
 // 在 Chain 中使用
-chain := compose.NewChain[*schema.Message, MyStruct]()
+chain := compose.NewChain[*schema.Message, *MyStruct]()
 chain.AppendLambda(parserLambda)
 
 // 使用示例
-result, err := chain.Compile(context.Background())
-parsed, err := result.Invoke(context.Background(), &schema.Message{
+runner, err := chain.Compile(context.Background())
+parsed, err := runner.Invoke(context.Background(), &schema.Message{
     Content: `{"id": 1}`,
 })
 // parsed.ID == 1
