@@ -185,7 +185,7 @@ type MyStruct struct {
 // 创建解析器
 parser := schema.NewMessageJSONParser[*MyStruct](&schema.MessageJSONParseConfig{
     ParseFrom: schema.MessageParseFromContent,
-    ParseKeyPath: "", // 如果仅需要 parse 子字段，可用 ".key.sub.grandsub"
+    ParseKeyPath: "", // 如果仅需要 parse 子字段，可用 "key.sub.grandsub"
 })
 
 // 创建解析 Lambda
