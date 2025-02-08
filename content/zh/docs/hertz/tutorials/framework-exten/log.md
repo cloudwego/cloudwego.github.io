@@ -10,7 +10,7 @@ description: "Hertz 提供对日志的扩展，接口定义在 `pkg/common/hlog`
 ## 接口定义
 
 Hertz 在 `pkg/common/hlog` 里定义了 `Logger`、`CtxLogger`、`FormatLogger` 几个接口实现不同的打日志方式，并定义了一个 `Control` 接口实现 logger 的控制。
-用户注入自己的 logger 实现时需要实现上面的所有接口( FullLogger )。Hertz 提供了一个 `FullLogger` 默认实现。
+用户注入自己的 logger 实现时需要实现上面的所有接口 ( FullLogger )。Hertz 提供了一个 `FullLogger` 默认实现。
 
 ```go
 // FullLogger is the combination of Logger, FormatLogger, CtxLogger and Control.
