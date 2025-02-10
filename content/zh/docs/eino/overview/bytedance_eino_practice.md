@@ -227,8 +227,9 @@ Eino 智能助手：根据用户请求，从知识库检索必要的信息并按
 
 本文主要呈现一个 Demo 样例，用户可根据自己的场景，更换自己的知识库和工具，以搭建自己所需的智能助手。
 
-先来一起看看**基于 Eino ****搭建起来的** Agent 助手能实现什么效果
-[einoagent_show.mp4](data/cloudwego/static/img/eino/einoagent_show.mp4)
+先来一起看看「基于 Eino 搭建」起来的 Agent 助手能实现什么效果
+
+<video src="data/cloudwego/static/img/eino/einoagent_show.mp4" controls></video>
 
 我们分两步来构建这个 Eino 智能助手：
 
@@ -424,33 +425,32 @@ go run main.go
 
 #### 可视化开发
 
-![einoagent.mp4](data/cloudwego/static/img/eino/einoagent.mp4)
-
+<video src="data/cloudwego/static/img/eino/einoagent.mp4" controls></video>
 1. 打开 EinoDev 插件，进入到 Eino Workflow 页面，新建一张画布
-   - Graph Name: EinoAgent
-   - Node Trigger Mode: 任意前驱节点结束后出发
-   - Input Type Name: *UserMessage
-   - Input Package Path: ""
-   - Output Type Name: *schema.Message
-   - Output Import Path: github.com/cloudwego/eino/schema
-   - 其他置空
+	- Graph Name: EinoAgent
+	- Node Trigger Mode: 任意前驱节点结束后出发
+	- Input Type Name: *UserMessage
+	- Input Package Path: ""
+	- Output Type Name: *schema.Message
+	- Output Import Path: github.com/cloudwego/eino/schema
+	- 其他置空
 2. 按照上文「**Eino 智能体**」中的流程说明，从 Eino Workflow 中选择需要使用的组件库，本文需要用到如下组件：
-   - lambda: 将开发者任意的函数 func(ctx context.Context, input I) (output O, err error)，转换成可被编排的节点，在 EinoAgent 中，有两个转换场景
-     - 将 *UserMessage 消息转换成 ChatTemplate 节点的 map[string]any
-     - 将 *UserMessage 转换成 RedisRetriever 的输入 query
-   - retriever/redis
-     - 根据用户 Query 从 Redis Vector Database 根据语义相关性，召回和 Query 相关的上下文，以 schema.Document List 的形式返回。
-   - prompt/chatTemplate
-     - 通过字符串字面量构建 Prompt 模板，支持 文本替换符 和 消息替换符，将输入的任意 map[string]any，转换成可直接输入给模型的 Message List。
-   - flow/agent/react
-     - 基于开发者提供的 ChatModel 和 可调用的工具集，针对用户的问题，自动决策下一步的 Action，直至能够产生最终的回答。
-   - model/ark
-     - Ark 平台提供的能够进行对话文本补全的大模型，例如豆包模型。作为 ReAct Agent 的依赖注入。
-   - 可调用的工具列表
-     - 互联网搜索工具(DuckDuckGo)、EinoTool、GitClone、任务管理(TaskManager)、 OpenURL
+	- lambda: 将开发者任意的函数 func(ctx context.Context, input I) (output O, err error)，转换成可被编排的节点，在 EinoAgent 中，有两个转换场景
+		- 将 *UserMessage 消息转换成 ChatTemplate 节点的 map[string]any
+		- 将 *UserMessage 转换成 RedisRetriever 的输入 query
+	- retriever/redis
+		- 根据用户 Query 从 Redis Vector Database 根据语义相关性，召回和 Query 相关的上下文，以 schema.Document List 的形式返回。
+	- prompt/chatTemplate
+		- 通过字符串字面量构建Prompt模板，支持 文本替换符 和 消息替换符，将输入的任意 map[string]any，转换成可直接输入给模型的 Message List。
+	- flow/agent/react
+		- 基于开发者提供的 ChatModel 和 可调用的工具集，针对用户的问题，自动决策下一步的 Action，直至能够产生最终的回答。 
+	- model/ark
+		- Ark 平台提供的能够进行对话文本补全的大模型，例如豆包模型。作为 ReAct Agent 的依赖注入。
+	- 可调用的工具列表
+		- 互联网搜索工具(DuckDuckGo)、EinoTool、GitClone、任务管理(TaskManager)、 OpenURL
 3. 将选中的组件按照预期的拓扑结构进行编排，完成编排后，点击“生成代码”到指定目录。
-   - 本示例中，「**Eino 智能体**」的代码生成到：eino/einoagent
-   - 本示例可直接复制 eino/eino_agent.json 中的 Graph Schema，来快速构建示例中的图
+	- 本示例中，「**Eino 智能体**」的代码生成到：eino/einoagent 
+	- 本示例可直接复制 eino/eino_agent.json 中的 Graph Schema，来快速构建示例中的图
 
 <table><tbody><tr>
 <td>
