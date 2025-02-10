@@ -233,11 +233,11 @@ Eino 智能助手：根据用户请求，从知识库检索必要的信息并按
 
 <table>
 <tr><td>工具集<br/></td><td>是否必须<br/></td><td>功能与作用<br/></td><td>资源列表<br/></td></tr>
-<tr><td>Eino 框架<br/></td><td>必须<br/></td><td>- 全码开发 AI 应用的框架<br/>- 提供 AI 相关的各种原子组件和编排能力<br/></td><td>- https://github.com/cloudwego/eino<br/>- https://github.com/cloudwego/eino-ext<br/>- [「](https://www.cloudwego.io/zh/docs/eino/)[Eino 用户手册](https://www.cloudwego.io/zh/docs/eino/)[」](https://www.cloudwego.io/zh/docs/eino/)<br/></td></tr>
-<tr><td>EinoDev 插件<br/>(Goland)<br/></td><td>非必须<br/></td><td>- 可视化拖拽编排 AI 应用，并生成全码<br/>- 可视化对编排的 AI 应用进行调试<br/>- EinoDev 暂只有 Goland 版，后续会提供 VSCode 版<br/></td><td>- [「Eino Dev 插件安装」](https://www.cloudwego.io/zh/docs/eino/core_modules/devops/ide_plugin_guide/)<br/>- [「EinoDev 可视化编排插件功能指南」](https://www.cloudwego.io/zh/docs/eino/core_modules/devops/visual_orchestration_plugin_guide/)<br/><br/></td></tr>
-<tr><td> 火山云豆包模型/向量化<br/></td><td>必须<br/></td><td>- 豆包模型：ArkChatModel，提供在线的对话文本推理能力<br/>- 向量化：将文本进行向量化计算，用于对 Eino 知识库构建向量索引<br/><br/></td><td>[「火山引擎豆包模型」](https://console.volcengine.com/ark)：<br/>- 需要实名认证后购买使用，每人有 50万免费Tokens额度<br/><a href="/img/eino/eino_practice_ark_create_model.png" target="_blank"><img src="/img/eino/eino_practice_ark_create_model.png" /></a><br/></td></tr>
-<tr><td>Docker<br/></td><td>非必须<br/></td><td>- 通过 Docker 提供 RedisSearch 组件<br/>- 也可自主进行手动部署<br/></td><td>- [Docker ](https://docs.docker.com/get-started/)<br/></td></tr>
-<tr><td>Eino 智能助手代码示例<br/></td><td>必须<br/></td><td>- 本文的完整示例代码<br/></td><td>- https://github.com/cloudwego/eino-examples/tree/main/quickstart/eino_assistant<br/></td></tr>
+<tr><td>Eino 框架<br/></td><td>必须<br/></td><td><ul>全码开发 AI 应用的框架</ul><br/><ul>提供 AI 相关的各种原子组件和编排能力</ul><br/></td><td><ul>https://github.com/cloudwego/eino</ul><br/><ul>https://github.com/cloudwego/eino-ext</ul><br/><ul><a href="https://www.cloudwego.io/zh/docs/eino/">「</a><a href="https://www.cloudwego.io/zh/docs/eino/">Eino 用户手册</a><a href="https://www.cloudwego.io/zh/docs/eino/">」</a></ul><br/></td></tr>
+<tr><td>EinoDev 插件<br/>(Goland)<br/></td><td>非必须<br/></td><td><ul>可视化拖拽编排 AI 应用，并生成全码</ul><br/><ul>可视化对编排的 AI 应用进行调试</ul><br/><ul>EinoDev 暂只有 Goland 版，后续会提供 VSCode 版</ul><br/></td><td><ul><a href="https://www.cloudwego.io/zh/docs/eino/core_modules/devops/ide_plugin_guide/">「Eino Dev 插件安装」</a></ul><br/><ul><a href="https://www.cloudwego.io/zh/docs/eino/core_modules/devops/visual_orchestration_plugin_guide/">「EinoDev 可视化编排插件功能指南」</a></ul><br/><br/></td></tr>
+<tr><td> 火山云豆包模型/向量化<br/></td><td>必须<br/></td><td><ul>豆包模型：ArkChatModel，提供在线的对话文本推理能力</ul><br/><ul>向量化：将文本进行向量化计算，用于对 Eino 知识库构建向量索引</ul><br/><br/></td><td><a href="https://console.volcengine.com/ark">「火山引擎豆包模型」</a>：<br/><ul>需要实名认证后购买使用，每人有 50万免费Tokens额度</ul><br/><a href="/img/eino/eino_practice_ark_create_model.png" target="_blank"><img src="/img/eino/eino_practice_ark_create_model.png" /></a><br/></td></tr>
+<tr><td>Docker<br/></td><td>非必须<br/></td><td><ul>通过 Docker 提供 RedisSearch 组件</ul><br/><ul>也可自主进行手动部署</ul><br/></td><td><ul><a href="https://docs.docker.com/get-started/">Docker </a></ul><br/></td></tr>
+<tr><td>Eino 智能助手代码示例<br/></td><td>必须<br/></td><td><ul>本文的完整示例代码</ul><br/></td><td><ul>https://github.com/cloudwego/eino-examples/tree/main/quickstart/eino_assistant</ul><br/></td></tr>
 </table>
 
 ### 索引知识库
