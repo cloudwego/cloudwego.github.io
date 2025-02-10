@@ -18,26 +18,16 @@ weight: 0
 Eino 应用的基本构成元素是功能各异的组件，就像足球队由不同位置角色的队员组成：
 
 <table>
-<tr>
-<td>组件名<br/></td><td>组件功能<br/></td></tr>
-<tr>
-<td>ChatModel<br/></td><td>与大模型交互，输入 Message 上下文，得到模型的输出 Message<br/></td></tr>
-<tr>
-<td>Tool<br/></td><td>与世界交互，根据模型的输出，执行对应的动作<br/></td></tr>
-<tr>
-<td>Retriever<br/></td><td>获取相关的上下文，让模型的输出基于高质量的事实<br/></td></tr>
-<tr>
-<td>ChatTemplate<br/></td><td>接收外界输入，转化成预设格式的 prompt 交给模型<br/></td></tr>
-<tr>
-<td>Document Loader<br/></td><td>加载指定的文本<br/></td></tr>
-<tr>
-<td>Document Transformer<br/></td><td>按照特定规则转化指定的文本<br/></td></tr>
-<tr>
-<td>Indexer<br/></td><td>存储文件并建立索引，供后续 Retriever 使用<br/></td></tr>
-<tr>
-<td>Embedding<br/></td><td>Retriever 和 Indexer 的共同依赖，文本转向量，捕获文本语义<br/></td></tr>
-<tr>
-<td>Lambda<br/></td><td>用户定制 function<br/></td></tr>
+<tr><td>组件名<br/></td><td>组件功能<br/></td></tr>
+<tr><td>ChatModel<br/></td><td>与大模型交互，输入 Message 上下文，得到模型的输出 Message<br/></td></tr>
+<tr><td>Tool<br/></td><td>与世界交互，根据模型的输出，执行对应的动作<br/></td></tr>
+<tr><td>Retriever<br/></td><td>获取相关的上下文，让模型的输出基于高质量的事实<br/></td></tr>
+<tr><td>ChatTemplate<br/></td><td>接收外界输入，转化成预设格式的 prompt 交给模型<br/></td></tr>
+<tr><td>Document Loader<br/></td><td>加载指定的文本<br/></td></tr>
+<tr><td>Document Transformer<br/></td><td>按照特定规则转化指定的文本<br/></td></tr>
+<tr><td>Indexer<br/></td><td>存储文件并建立索引，供后续 Retriever 使用<br/></td></tr>
+<tr><td>Embedding<br/></td><td>Retriever 和 Indexer 的共同依赖，文本转向量，捕获文本语义<br/></td></tr>
+<tr><td>Lambda<br/></td><td>用户定制 function<br/></td></tr>
 </table>
 
 这些组件抽象代表了固定的输入输出类型、Option 类型和方法签名：
@@ -54,26 +44,16 @@ type ChatModel interface {
 真正的运行，需要的是具体的组件**实现**：
 
 <table>
-<tr>
-<td>组件名<br/></td><td>官方组件实现<br/></td></tr>
-<tr>
-<td>ChatModel<br/></td><td>OpenAI, Claude, Gemini, Ark, Ollama...<br/></td></tr>
-<tr>
-<td>Tool<br/></td><td>Google Search, Duck Duck Go...<br/></td></tr>
-<tr>
-<td>Retriever<br/></td><td>Elastic Search, Volc VikingDB...<br/></td></tr>
-<tr>
-<td>ChatTemplate<br/></td><td>DefaultChatTemplate...<br/></td></tr>
-<tr>
-<td>Document Loader<br/></td><td>WebURL, Amazon S3, File...<br/></td></tr>
-<tr>
-<td>Document Transformer<br/></td><td>HTMLSplitter, ScoreReranker...<br/></td></tr>
-<tr>
-<td>Indexer<br/></td><td>Elastic Search, Volc VikingDB...<br/></td></tr>
-<tr>
-<td>Embedding<br/></td><td>OpenAI, Ark...<br/></td></tr>
-<tr>
-<td>Lambda<br/></td><td>JSONMessageParser...<br/></td></tr>
+<tr><td>组件名<br/></td><td>官方组件实现<br/></td></tr>
+<tr><td>ChatModel<br/></td><td>OpenAI, Claude, Gemini, Ark, Ollama...<br/></td></tr>
+<tr><td>Tool<br/></td><td>Google Search, Duck Duck Go...<br/></td></tr>
+<tr><td>Retriever<br/></td><td>Elastic Search, Volc VikingDB...<br/></td></tr>
+<tr><td>ChatTemplate<br/></td><td>DefaultChatTemplate...<br/></td></tr>
+<tr><td>Document Loader<br/></td><td>WebURL, Amazon S3, File...<br/></td></tr>
+<tr><td>Document Transformer<br/></td><td>HTMLSplitter, ScoreReranker...<br/></td></tr>
+<tr><td>Indexer<br/></td><td>Elastic Search, Volc VikingDB...<br/></td></tr>
+<tr><td>Embedding<br/></td><td>OpenAI, Ark...<br/></td></tr>
+<tr><td>Lambda<br/></td><td>JSONMessageParser...<br/></td></tr>
 </table>
 
 Eino 的开发过程中，首先要做的是决定“我需要使用哪个组件抽象”，再决定“我需要使用哪个具体组件实现”。就像足球队先决定“我要上 1 个前锋”，再挑选“谁来担任这个前锋”。
@@ -87,12 +67,9 @@ Eino 的开发过程中，首先要做的是决定“我需要使用哪个组件
 足球队的战术千变万化，但却有迹可循，有的注重控球，有的简单直接。对 Eino 而言，针对不同的业务形态，也有更合适的编排方式：
 
 <table>
-<tr>
-<td>编排方式<br/></td><td>特点和场景<br/></td></tr>
-<tr>
-<td>Chain<br/></td><td>链式有向图，始终向前，简单。适合数据单向流动，没有复杂分支的场景。<br/></td></tr>
-<tr>
-<td>Graph<br/></td><td>有向图，有最大的灵活性；或有向无环图，不支持分支，但有清晰的祖先关系。<br/></td></tr>
+<tr><td>编排方式<br/></td><td>特点和场景<br/></td></tr>
+<tr><td>Chain<br/></td><td>链式有向图，始终向前，简单。适合数据单向流动，没有复杂分支的场景。<br/></td></tr>
+<tr><td>Graph<br/></td><td>有向图，有最大的灵活性；或有向无环图，不支持分支，但有清晰的祖先关系。<br/></td></tr>
 </table>
 
 Chain，如简单的 ChatTemplate + ChatModel 的 Chain：
@@ -255,18 +232,12 @@ Eino 智能助手：根据用户请求，从知识库检索必要的信息并按
 在从零开始构建「Eino 智能助手」这个实践场景中，需要下列工具：
 
 <table>
-<tr>
-<td>工具集<br/></td><td>是否必须<br/></td><td>功能与作用<br/></td><td>资源列表<br/></td></tr>
-<tr>
-<td>Eino 框架<br/></td><td>必须<br/></td><td>- 全码开发 AI 应用的框架<br/>- 提供 AI 相关的各种原子组件和编排能力<br/></td><td>- https://github.com/cloudwego/eino<br/>- https://github.com/cloudwego/eino-ext<br/>- 「Eino 用户手册」：https://www.cloudwego.io/zh/docs/eino/<br/></td></tr>
-<tr>
-<td>EinoDev 插件<br/>(Goland)<br/></td><td>非必须<br/></td><td>- 可视化拖拽编排 AI 应用，并生成全码<br/>- 可视化对编排的 AI 应用进行调试<br/>- EinoDev 暂只有 Goland 版，后续会提供 VSCode 版<br/></td><td>- 「Eino Dev 插件安装」：	- https://www.cloudwego.io/zh/docs/eino/core_modules/devops/ide_plugin_guide/<br/>- 「EinoDev 可视化编排插件功能指南」	- https://www.cloudwego.io/zh/docs/eino/core_modules/devops/visual_orchestration_plugin_guide/<br/><br/></td></tr>
-<tr>
-<td> 火山云豆包模型/向量化<br/></td><td>必须<br/></td><td>- 豆包模型：ArkChatModel，提供在线的对话文本推理能力<br/>- 向量化：将文本进行向量化计算，用于对 Eino 知识库构建向量索引<br/><br/></td><td>「火山引擎豆包模型」：<br/>- https://console.volcengine.com/ark<br/>- 需要实名认证后购买使用，每人有 50万免费Tokens额度<br/><a href="/img/eino/eino_practice_ark_create_model.png" target="_blank"><img src="/img/eino/eino_practice_ark_create_model.png" /></a><br/></td></tr>
-<tr>
-<td>Docker<br/></td><td>非必须<br/></td><td>- 通过 Docker 提供 RedisSearch 组件<br/>- 也可自主进行手动部署<br/></td><td>- Docker 	- https://docs.docker.com/get-started/<br/></td></tr>
-<tr>
-<td>Eino 智能助手代码示例<br/></td><td>必须<br/></td><td>- 本文的完整示例代码<br/></td><td>- https://github.com/cloudwego/eino-examples/tree/main/quickstart/eino_assistant<br/></td></tr>
+<tr><td>工具集<br/></td><td>是否必须<br/></td><td>功能与作用<br/></td><td>资源列表<br/></td></tr>
+<tr><td>Eino 框架<br/></td><td>必须<br/></td><td>- 全码开发 AI 应用的框架<br/>- 提供 AI 相关的各种原子组件和编排能力<br/></td><td>- https://github.com/cloudwego/eino<br/>- https://github.com/cloudwego/eino-ext<br/>- [「](https://www.cloudwego.io/zh/docs/eino/)[Eino 用户手册](https://www.cloudwego.io/zh/docs/eino/)[」](https://www.cloudwego.io/zh/docs/eino/)<br/></td></tr>
+<tr><td>EinoDev 插件<br/>(Goland)<br/></td><td>非必须<br/></td><td>- 可视化拖拽编排 AI 应用，并生成全码<br/>- 可视化对编排的 AI 应用进行调试<br/>- EinoDev 暂只有 Goland 版，后续会提供 VSCode 版<br/></td><td>- [「Eino Dev 插件安装」](https://www.cloudwego.io/zh/docs/eino/core_modules/devops/ide_plugin_guide/)<br/>- [「EinoDev 可视化编排插件功能指南」](https://www.cloudwego.io/zh/docs/eino/core_modules/devops/visual_orchestration_plugin_guide/)<br/><br/></td></tr>
+<tr><td> 火山云豆包模型/向量化<br/></td><td>必须<br/></td><td>- 豆包模型：ArkChatModel，提供在线的对话文本推理能力<br/>- 向量化：将文本进行向量化计算，用于对 Eino 知识库构建向量索引<br/><br/></td><td>[「火山引擎豆包模型」](https://console.volcengine.com/ark)：<br/>- 需要实名认证后购买使用，每人有 50万免费Tokens额度<br/><a href="/img/eino/eino_practice_ark_create_model.png" target="_blank"><img src="/img/eino/eino_practice_ark_create_model.png" /></a><br/></td></tr>
+<tr><td>Docker<br/></td><td>非必须<br/></td><td>- 通过 Docker 提供 RedisSearch 组件<br/>- 也可自主进行手动部署<br/></td><td>- [Docker ](https://docs.docker.com/get-started/)<br/></td></tr>
+<tr><td>Eino 智能助手代码示例<br/></td><td>必须<br/></td><td>- 本文的完整示例代码<br/></td><td>- https://github.com/cloudwego/eino-examples/tree/main/quickstart/eino_assistant<br/></td></tr>
 </table>
 
 ### 索引知识库
@@ -321,7 +292,7 @@ docker-compose up -d
 
 > 「Eino 可视化开发」是为了降低 Eino AI 应用开发的学习曲线，提升开发效率。对于熟悉 Eino 的开发者，也可选择跳过「Eino 可视化开发」阶段，直接基于 Eino 的 API 进行全码开发。
 
-1. 安装 EinoDev 插件，并打开 Eino Workflow 功能
+1. [安装 EinoDev 插件](/zh/docs/eino/core_modules/devops/ide_plugin_guide)，并打开 Eino Workflow 功能
 
    - Graph name: KnowledgeIndexing
    - Node trigger mode: Triggered after all predecessor nodes are executed
@@ -345,31 +316,29 @@ docker-compose up -d
    - 「**索引知识库**」的代码生成到：eino_assistant/eino/knowledgeindexing
    - 本示例可直接复制 eino/knowledge_indexing.json 中的 Graph Schema，来快速构建示例中的图
 
-<table><tbody><tr>
-<td>
-<a href="/img/eino/eino_practice_indexing_graph.png" target="_blank"><img src="/img/eino/eino_practice_indexing_graph.png" /></a>
+       <table><tbody><tr>
+       <td>
+       <a href="/img/eino/eino_practice_indexing_graph.png" target="_blank"><img src="/img/eino/eino_practice_indexing_graph.png" /></a>
 
-</td>
-<td>
-<a href="/img/eino/eino_practice_indexing_show_codes.png" target="_blank"><img src="/img/eino/eino_practice_indexing_show_codes.png" /></a>
+       </td>
+       <td>
+       <a href="/img/eino/eino_practice_indexing_show_codes.png" target="_blank"><img src="/img/eino/eino_practice_indexing_show_codes.png" /></a>
 
-</td>
-</tr></tbody></table>
+       </td>
+       </tr></tbody></table>
+4. 按需完善各个组件的构造函数，在构造函数中补充创建组件实例时，需要的配置内容
 
-1. 按需完善各个组件的构造函数，在构造函数中补充创建组件实例时，需要的配置内容
+    <table><tbody><tr>
+    <td>
+    <a href="/img/eino/eino_practice_indexing_config.png" target="_blank"><img src="/img/eino/eino_practice_indexing_config.png" /></a>
 
-<table><tbody><tr>
-<td>
-<a href="/img/eino/eino_practice_indexing_config.png" target="_blank"><img src="/img/eino/eino_practice_indexing_config.png" /></a>
+    </td>
+    <td>
+    <a href="/img/eino/eino_practice_indexing_index_config.png" target="_blank"><img src="/img/eino/eino_practice_indexing_index_config.png" /></a>
 
-</td>
-<td>
-<a href="/img/eino/eino_practice_indexing_index_config.png" target="_blank"><img src="/img/eino/eino_practice_indexing_index_config.png" /></a>
-
-</td>
-</tr></tbody></table>
-
-1. 补充好组件的配置内容后，即可调用 BuildKnowledgeIndexing 方法，在业务场景使用
+    </td>
+    </tr></tbody></table>
+5. 补充好组件的配置内容后，即可调用 BuildKnowledgeIndexing 方法，在业务场景使用
 
 #### 完善代码
 
@@ -452,6 +421,7 @@ go run main.go
 	- 本示例中，「**Eino 智能体**」的代码生成到：eino/einoagent 
 	- 本示例可直接复制 eino/eino_agent.json 中的 Graph Schema，来快速构建示例中的图
 
+```
 <table><tbody><tr>
 <td>
 <a href="/img/eino/eino_practice_graph.png" target="_blank"><img src="/img/eino/eino_practice_graph.png" /></a>
@@ -462,6 +432,7 @@ go run main.go
 
 </td>
 </tr></tbody></table>
+```
 
 4. 按需完善各个组件的构造函数，在构造函数中补充创建组件实例时，需要的配置内容
 
