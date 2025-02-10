@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-02-10"
 lastmod: ""
 tags: []
 title: 'Eino: Callback 用户手册'
@@ -185,7 +185,7 @@ Graph 会为内部所有的 Node 自动注入 RunInfo。机制是每个 Node 的
 
 ## 触发方式
 
-<a href="/img/eino/graph_node_callback_run_place.png" target="_blank"><img src="/img/eino/graph_node_callback_run_place.png" /></a>
+<a href="/img/eino/graph_node_callback_run_place.png" target="_blank"><img src="/img/eino/graph_node_callback_run_place.png" width="100%" /></a>
 
 ### 组件实现内部触发(Component Callback)
 
@@ -393,29 +393,26 @@ handler := NewHandlerBuilder().OnStartFn(fn)...Build()
 
 ### 在 Graph 外使用
 
-依然可以积极使用 Global Handlers。但需要在调用 InitCallbacks 后 global handlers 才会生效。InitCallbacks 的入参中不需要传入 Global Handlers，会自动注入。
+使用 InitCallbacks 注入 RunInfo 和 Handlers。RunInfo 的各字段需自行设置。Global Handlers 会自动注入。
 
-需要注意的是，如果在 Graph 外使用的 Component，内部并没有实现
+```
+ctx = callbacks.InitCallbacks(ctx, runInfo, handlers...)
+componentA.Invoke(ctx, input)
+```
 
-#### 单个 Component
+如果一个 componentA 内部调用了其他的 componentB (比如 ToolsNode 内部调用 Tool），需要在 componentB 执行前替换 RunInfo：
 
-使用 InitCallbacks 注入 RunInfo 和 Handlers。RunInfo 的各字段需自行设置。
-
-#### 多个 component 并列
-
-在每个并列的 component 执行前，分别调用 InitCallbacks 注入各自的 RunInfo 和 Handlers。注意：
-
-- 多次调用 InitCallbacks，传入的 Context 应当相同，因为各组件是并列关系
-- 每次调用 InitCallbacks，返回的 Context，应当传入对应的 Component 内，但不应当传入其他的 Component 内。
-
-#### 多个 component 嵌套
-
-在顶层 Component 执行前，调用 InitCallbacks 注入 RunInfo 和 Handlers，并把返回的 Context 传入顶层 Component 内。
-
-在内部 Component 执行前，分情况讨论：
-
-- 如果 Handlers 与顶层 Component 相同，调用 ReuseHandlers，注入新的 RunInfo，并把返回的 Context 传入内部 Component 中。
-- 如果 Handlers 与顶层 Component 不同，调用 InitCallbacks，注入新的 RunInfo 和新的（全量）Handlers，并把返回的 Context 传入内部 Component 中。
+```
+func ComponentARun(ctx, inputA) {
+    // 复用 ctx 中已有的 Handlers（包括 Global Handlers），只替换 RunInfo
+    ctx = callbacks.ReuseHandlers(ctx, newRunInfo)
+    componentB.Invoke(ctx, inputB)
+    
+    // RunInfo 和 Handlers 都替换
+    ctx = callbacks.InitCallbacks(ctx, newRunInfo, newHandlers...)
+    componentB.Invoke(ctx, inputB)
+}
+```
 
 ### Handler 内读写 input & output
 
@@ -441,11 +438,12 @@ Handler 内不建议修改 input / output。原因是：
 ### 流切记要 Close
 
 以存在 ChatModel 这种具有真流输出的节点为例，当存在 Callback 切面时，ChatModel 的输出流：
+
 - 既要被下游节点作为输入来消费，又要被 Callback 切面来消费
 - 一个流中的一个帧(Chunk)，只能被一个消费方消费到，即流不是广播模型
 
 所以此时需要将流进行复制，其复制关系如下：
 
-<a href="/img/eino/graph_stream_chunk_copy.png" target="_blank"><img src="/img/eino/graph_stream_chunk_copy.png" /></a>
+<a href="/img/eino/graph_stream_chunk_copy.png" target="_blank"><img src="/img/eino/graph_stream_chunk_copy.png" width="100%" /></a>
 
 - 如果其中一个 Callback n 没有 Close 对应的流，可能导致原始 Stream 无法 Close 和释放资源。

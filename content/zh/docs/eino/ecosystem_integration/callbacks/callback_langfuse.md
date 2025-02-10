@@ -36,4 +36,5 @@ func main() {
 ```
 
 可以在 Langfuse project 中查看 trace：
-<a href="/img/eino/eino_callback_langfuse_usage.gif" target="_blank"><img src="/img/eino/eino_callback_langfuse_usage.gif" /></a>
+
+<a href="/img/eino/eino_callback_langfuse_usage.gif" target="_blank"><img src="/img/eino/eino_callback_langfuse_usage.gif" width="100%" /></a>

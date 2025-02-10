@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-23"
+date: "2025-02-10"
 lastmod: ""
 tags: []
 title: Eino 流式编程要点
@@ -12,7 +12,7 @@ weight: 0
 
 ## 编排流式概述
 
-<a href="/img/eino/eino_component_runnable.png" target="_blank"><img src="/img/eino/eino_component_runnable.png" /></a>
+<a href="/img/eino/eino_component_runnable.png" target="_blank"><img src="/img/eino/eino_component_runnable.png" width="100%" /></a>
 
 编排流式的 Graph 时，需要考虑的几个关键要素：
 
@@ -28,6 +28,14 @@ weight: 0
 - 有的组件，天然支持分“帧”来输入，接收到不完整的入参时，就能开始有意义的业务处理，甚至完成业务处理的过程。比如 react agent 中用来判断是调 tool 还是结束运行的 branch 里面，拿到 LLM 的流式输出，从第一个帧里面就可以通过判断 message 是否包含 tool call 来做出决策。
 - 因此，一个组件，从入参角度看，有“非流式”入参和“流式”入参两种，从出参角度看，有“非流式”出参和“流式”出参两种。
 - 组合起来，有四种可能的流式编程范式
+
+<table>
+<tr><td>函数名</td><td>模式说明</td><td>交互模式名称</td><td>Lambda 构造方法</td><td>说明</td></tr>
+<tr><td>Invoke</td><td>输入非流式、输出非流式</td><td>Ping-Pong 模式</td><td>compose.InvokableLambda()</td><td></td></tr>
+<tr><td>Stream</td><td>输入非流式、输出流式</td><td>Server-Streaming 模式</td><td>compose.StreamableLambda()</td><td></td></tr>
+<tr><td>Collect</td><td>输入流式、输出非流式</td><td>Client-Streaming</td><td>compose.CollectableLambda()</td><td></td></tr>
+<tr><td>Transform</td><td>输入流式、输出流式</td><td>Bidirectional-Streaming</td><td>compose.TransformableLambda()</td><td></td></tr>
+</table>
 
 ## 单个组件角度的流式
 
@@ -59,24 +67,15 @@ type Retriever interface {
 ### 组件具体支持的范式
 
 <table>
-<tr>
-<td>组件名称<br/></td><td>是否实现 Invoke<br/></td><td>是否实现 Stream<br/></td><td>是否实现 Collect<br/></td><td>是否实现 Transform<br/></td></tr>
-<tr>
-<td>Chat model<br/></td><td>yes<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td></tr>
-<tr>
-<td>Chat template<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td><td>no<br/></td></tr>
-<tr>
-<td>Retriever<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td><td>no<br/></td></tr>
-<tr>
-<td>Indexer<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td><td>no<br/></td></tr>
-<tr>
-<td>Embedder<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td><td>no<br/></td></tr>
-<tr>
-<td>Document Loader<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td><td>no<br/></td></tr>
-<tr>
-<td>Document Transformer<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td><td>no<br/></td></tr>
-<tr>
-<td>Tool<br/></td><td>yes<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td></tr>
+<tr><td>组件名称</td><td>是否实现 Invoke</td><td>是否实现 Stream</td><td>是否实现 Collect</td><td>是否实现 Transform</td></tr>
+<tr><td>Chat model</td><td>yes</td><td>yes</td><td>no</td><td>no</td></tr>
+<tr><td>Chat template</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>Retriever</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>Indexer</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>Embedder</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>Document Loader</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>Document Transformer</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>Tool</td><td>yes</td><td>yes</td><td>no</td><td>no</td></tr>
 </table>
 
 Eino 官方组件中，除了 Chat Model 和 Tool 额外支持 stream 外，其他所有组件都只支持 invoke。组件具体介绍参见：[[更新中]Eino: Components 抽象&实现](/zh/docs/eino/core_modules/components)
@@ -93,11 +92,11 @@ Collect 和 Transform 两种流式范式，目前只在编排场景有用到。
 
 但是，一个组件，一旦处在多个组件组合使用的“编排”场景中，它的入参和出参就没那么固定了，而是取决于这个组件在编排场景中的“上游输出”和“下游输入”。比如 React Agent 的典型编排示意图：
 
-<a href="/img/eino/chatmodel_to_tool.png" target="_blank"><img src="/img/eino/chatmodel_to_tool.png" /></a>
+<a href="/img/eino/chatmodel_to_tool.png" target="_blank"><img src="/img/eino/chatmodel_to_tool.png" width="100%" /></a>
 
 上图中，如果 Tool 是个 StreamableTool，也就是输出是 StreamReader[Message]，则 Tool -> ChatModel 就可能是流式的输出。但是 Chat Model 并没有接收流式输入的业务场景，也没有对应的接口。这时 Eino 框架会自动帮助 ChatModel 补足接收流式输入的能力：
 
-<a href="/img/eino/chatmodel_tool_loop.png" target="_blank"><img src="/img/eino/chatmodel_tool_loop.png" /></a>
+<a href="/img/eino/chatmodel_tool_loop.png" target="_blank"><img src="/img/eino/chatmodel_tool_loop.png" width="100%" /></a>
 
 上面的 Concat message stream 是 Eino 框架自动提供的能力，即使不是 message，是任意的 T，只要满足特定的条件，Eino 框架都会自动去做这个 StreamReader[T] 到 T 的转化，这个条件是：**在编排中，当一个组件的上游输出是 StreamReader[T]，但是组件只提供了 T 作为输入的业务接口时，框架会自动将 StreamReader[T] concat 成 T，再输入给这个组件。**
 
@@ -106,7 +105,7 @@ Collect 和 Transform 两种流式范式，目前只在编排场景有用到。
 
 另一方面，考虑一个相反的例子。还是 React Agent，这次是一个更完整的编排示意图：
 
-<a href="/img/eino/tool_model_react.png" target="_blank"><img src="/img/eino/tool_model_react.png" /></a>
+<a href="/img/eino/tool_model_react.png" target="_blank"><img src="/img/eino/tool_model_react.png" width="100%" /></a>
 
 在上图中，branch 接收 chat model 输出的 message，并根据 message 中是否包含 tool call，来选择直接结束 agent 本次运行并将 message 输出，还是调用 Tool 并将调用结果再次给 Chat Model 循环处理。由于这个 Branch 可以通过 message stream 的首个帧就完成逻辑判断，因此我们给这个 Branch 定义的是 Collect 接口，即流式输入，非流式输出：
 
@@ -140,18 +139,12 @@ ReactAgent 有两个接口，Generate 和 Stream，分别实现了 Invoke 和 St
 上面提到的 Branch，并不是一个可单独使用的组件，而是只在编排场景中才有意义的“编排辅助元素”，类似的仅编排场景有意义的“组件”，还有一些，详见下图：
 
 <table>
-<tr>
-<td>组件名称<br/></td><td>使用场景<br/></td><td>是否实现 Invoke<br/></td><td>是否实现 Stream<br/></td><td>是否实现 Collect<br/></td><td>是否实现 Transform<br/></td></tr>
-<tr>
-<td>Branch<br/></td><td>根据上游输出，在一组下游 Node 中动态选择一个<br/>- 只能在接收到完整入参后才能判断的，实现 Invoke<br/>- 可以在接收部分帧后做判断的，实现 Collect<br/>- 两者只能实现一个<br/></td><td>yes<br/></td><td>no<br/></td><td>yes<br/></td><td>no<br/></td></tr>
-<tr>
-<td>StatePreHandler<br/></td><td>Graph中，进入 Node 前修改 State 或/与 Input。可支持流式。<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td><td>yes<br/></td></tr>
-<tr>
-<td>StatePostHandler<br/></td><td>Graph中，Node 完成后修改 State 或/与 Output。可支持流式<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td><td>yes<br/></td></tr>
-<tr>
-<td>Passthrough<br/></td><td>在并行情况下，为了打平每个并行分支的 Node 个数，可以给 Node 个数少的分支加 Passthrough 节点。Passthrough 节点的输入输出相同，跟随上游节点的输出或跟随下游节点的输入（预期应当相同）。<br/></td><td>yes<br/></td><td>no<br/></td><td>no<br/></td><td>yes<br/></td></tr>
-<tr>
-<td>Lambda<br/></td><td>封装官方组件未定义的业务逻辑。业务逻辑是哪种范式，就选择对应的那种流式范式来实现。<br/></td><td>yes<br/></td><td>yes<br/></td><td>yes<br/></td><td>yes<br/></td></tr>
+<tr><td>组件名称</td><td>使用场景</td><td>是否实现 Invoke</td><td>是否实现 Stream</td><td>是否实现 Collect</td><td>是否实现 Transform</td></tr>
+<tr><td>Branch</td><td>根据上游输出，在一组下游 Node 中动态选择一个<li>只能在接收到完整入参后才能判断的，实现 Invoke</li><li>可以在接收部分帧后做判断的，实现 Collect</li><li>两者只能实现一个</li></td><td>yes</td><td>no</td><td>yes</td><td>no</td></tr>
+<tr><td>StatePreHandler</td><td>Graph中，进入 Node 前修改 State 或/与 Input。可支持流式。</td><td>yes</td><td>no</td><td>no</td><td>yes</td></tr>
+<tr><td>StatePostHandler</td><td>Graph中，Node 完成后修改 State 或/与 Output。可支持流式</td><td>yes</td><td>no</td><td>no</td><td>yes</td></tr>
+<tr><td>Passthrough</td><td>在并行情况下，为了打平每个并行分支的 Node 个数，可以给 Node 个数少的分支加 Passthrough 节点。Passthrough 节点的输入输出相同，跟随上游节点的输出或跟随下游节点的输入（预期应当相同）。</td><td>yes</td><td>no</td><td>no</td><td>yes</td></tr>
+<tr><td>Lambda</td><td>封装官方组件未定义的业务逻辑。业务逻辑是哪种范式，就选择对应的那种流式范式来实现。</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
 </table>
 
 另外还有一种只有编排场景才有意义的“组件”，就是把编排产物作为一个整体来看待，比如编排后的 Chain，Graph。这些整体的编排产物，既可以作为“组件”来单独调用，也可以作为节点加入到更上级的编排产物中。
@@ -183,29 +176,29 @@ type Runnable[I, O any] interface {
 
 - 若组件实现了 Stream，则通过 Stream 封装 Invoke，即自动 concat 输出流。
 
-<a href="/img/eino/invoke_outside_stream_inside.png" target="_blank"><img src="/img/eino/invoke_outside_stream_inside.png" /></a>
+<a href="/img/eino/invoke_outside_stream_inside.png" target="_blank"><img src="/img/eino/invoke_outside_stream_inside.png" width="100%" /></a>
 
 - 否则，若组件实现了 Collect，则通过 Collect 封装 Invoke，即非流式入参转单帧流。
 
-<a href="/img/eino/invoke_outside_collect_inside.png" target="_blank"><img src="/img/eino/invoke_outside_collect_inside.png" /></a>
+<a href="/img/eino/invoke_outside_collect_inside.png" target="_blank"><img src="/img/eino/invoke_outside_collect_inside.png" width="100%" /></a>
 
 - 如果都没实现，则必须实现 Transform，通过 Transform 封装 Invoke，即入参转单帧流，出参 concat。
 
-<a href="/img/eino/invoke_outside_transform_inside.png" target="_blank"><img src="/img/eino/invoke_outside_transform_inside.png" /></a>
+<a href="/img/eino/invoke_outside_transform_inside.png" target="_blank"><img src="/img/eino/invoke_outside_transform_inside.png" width="100%" /></a>
 
 如果用户通过 **Stream/Collect/Transform** 来调用 Graph，则 Graph 内部所有组件都以 Transform 范式来调用。如果某个组件，没有实现 Transform 范式，则 Eino 框架自动根据组件实现了的流式范式，封装出 Transform 调用范式，优先顺位如下：
 
 - 若组件实现了 Stream，则通过 Stream 封装 Transform，即自动 concat 输入流。
 
-<a href="/img/eino/transform_inside_stream_inside.png" target="_blank"><img src="/img/eino/transform_inside_stream_inside.png" /></a>
+<a href="/img/eino/transform_inside_stream_inside.png" target="_blank"><img src="/img/eino/transform_inside_stream_inside.png" width="100%" /></a>
 
 - 否则，若组件实现了 Collect，则通过 Collect 封装 Transform，即非流式出参转单帧流。
 
-<a href="/img/eino/transform_outside_stream_inside.png" target="_blank"><img src="/img/eino/transform_outside_stream_inside.png" /></a>
+<a href="/img/eino/transform_outside_stream_inside.png" target="_blank"><img src="/img/eino/transform_outside_stream_inside.png" width="100%" /></a>
 
 - 如果都没实现，则必须实现 Invoke，通过 Invoke 封装 Transform，即入参流 concat，出参转单帧流
 
-<a href="/img/eino/transform_outside_invoke_inside.png" target="_blank"><img src="/img/eino/transform_outside_invoke_inside.png" /></a>
+<a href="/img/eino/transform_outside_invoke_inside.png" target="_blank"><img src="/img/eino/transform_outside_invoke_inside.png" width="100%" /></a>
 
 结合上面穷举的各种案例，Eino 框架对 T 和 Stream[T] 的自动转换，可以总结为：
 
