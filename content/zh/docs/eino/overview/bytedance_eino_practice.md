@@ -74,7 +74,7 @@ Eino 的开发过程中，首先要做的是决定“我需要使用哪个组件
 
 Chain，如简单的 ChatTemplate + ChatModel 的 Chain：
 
-<a href="/img/eino/simple_template_and_chatmodel.png" target="_blank"><img src="/img/eino/simple_template_and_chatmodel.png" /></a>
+<a href="/img/eino/simple_template_and_chatmodel.png" target="_blank"><img src="/img/eino/simple_template_and_chatmodel.png" width="100%" /></a>
 
 ```go
 chain, _ := NewChain[map[string]any, *Message]().
@@ -86,7 +86,7 @@ chain.Invoke(ctx, map[string]any{"query": "what's your name?"})
 
 Graph，如最多执行一次 ToolCall 的 Agent：
 
-<a href="/img/eino/eino_practice_graph_tool_call.png" target="_blank"><img src="/img/eino/eino_practice_graph_tool_call.png" /></a>
+<a href="/img/eino/eino_practice_graph_tool_call.png" target="_blank"><img src="/img/eino/eino_practice_graph_tool_call.png" width="100%" /></a>
 
 ```go
 graph := NewGraph[map[string]any, *schema.Message]()
@@ -206,7 +206,7 @@ Eino 智能助手：根据用户请求，从知识库检索必要的信息并按
 
 先来一起看看「基于 Eino 搭建」起来的 Agent 助手能实现什么效果
 
-<video src="/img/eino/einoagent_show.mp4" controls></video>
+<video src="/img/eino/einoagent_show.mp4" controls width="0%"></video>
 
 我们分两步来构建这个 Eino 智能助手：
 
@@ -219,13 +219,13 @@ Eino 智能助手：根据用户请求，从知识库检索必要的信息并按
 
 将 Markdown 格式的 Eino 用户手册，以合适的策略进行拆分和向量化，存入到 RedisSearch 的 VectorStore 中，作为 Eino 知识库。
 
-<a href="/img/eino/eino_practice_index_flow.png" target="_blank"><img src="/img/eino/eino_practice_index_flow.png" /></a>
+<a href="/img/eino/eino_practice_index_flow.png" target="_blank"><img src="/img/eino/eino_practice_index_flow.png" width="100%" /></a>
 
 #### **Eino 智能体(Eino Agent)**
 
 根据用户请求，从 Eino 知识库召回信息，采用 ChatTemplate 构建消息，请求 React Agent，视需求循环调用对应工具，直至完成处理用户的请求。
 
-<a href="/img/eino/eino_practice_agent_graph.png" target="_blank"><img src="/img/eino/eino_practice_agent_graph.png" /></a>
+<a href="/img/eino/eino_practice_agent_graph.png" target="_blank"><img src="/img/eino/eino_practice_agent_graph.png" width="100%" /></a>
 
 ### 所需工具
 
@@ -235,7 +235,7 @@ Eino 智能助手：根据用户请求，从知识库检索必要的信息并按
 <tr><td>工具集<br/></td><td>是否必须<br/></td><td>功能与作用<br/></td><td>资源列表<br/></td></tr>
 <tr><td>Eino 框架<br/></td><td>必须<br/></td><td><ul>全码开发 AI 应用的框架</ul><br/><ul>提供 AI 相关的各种原子组件和编排能力</ul><br/></td><td><ul>https://github.com/cloudwego/eino</ul><br/><ul>https://github.com/cloudwego/eino-ext</ul><br/><ul><a href="https://www.cloudwego.io/zh/docs/eino/">「</a><a href="https://www.cloudwego.io/zh/docs/eino/">Eino 用户手册</a><a href="https://www.cloudwego.io/zh/docs/eino/">」</a></ul><br/></td></tr>
 <tr><td>EinoDev 插件<br/>(Goland)<br/></td><td>非必须<br/></td><td><ul>可视化拖拽编排 AI 应用，并生成全码</ul><br/><ul>可视化对编排的 AI 应用进行调试</ul><br/><ul>EinoDev 暂只有 Goland 版，后续会提供 VSCode 版</ul><br/></td><td><ul><a href="https://www.cloudwego.io/zh/docs/eino/core_modules/devops/ide_plugin_guide/">「Eino Dev 插件安装」</a></ul><br/><ul><a href="https://www.cloudwego.io/zh/docs/eino/core_modules/devops/visual_orchestration_plugin_guide/">「EinoDev 可视化编排插件功能指南」</a></ul><br/><br/></td></tr>
-<tr><td> 火山云豆包模型/向量化<br/></td><td>必须<br/></td><td><ul>豆包模型：ArkChatModel，提供在线的对话文本推理能力</ul><br/><ul>向量化：将文本进行向量化计算，用于对 Eino 知识库构建向量索引</ul><br/><br/></td><td><a href="https://console.volcengine.com/ark">「火山引擎豆包模型」</a>：<br/><ul>需要实名认证后购买使用，每人有 50万免费Tokens额度</ul><br/><a href="/img/eino/eino_practice_ark_create_model.png" target="_blank"><img src="/img/eino/eino_practice_ark_create_model.png" /></a><br/></td></tr>
+<tr><td> 火山云豆包模型/向量化<br/></td><td>必须<br/></td><td><ul>豆包模型：ArkChatModel，提供在线的对话文本推理能力</ul><br/><ul>向量化：将文本进行向量化计算，用于对 Eino 知识库构建向量索引</ul><br/><br/></td><td><a href="https://console.volcengine.com/ark">「火山引擎豆包模型」</a>：<br/><ul>需要实名认证后购买使用，每人有 50万免费Tokens额度</ul><br/><a href="/img/eino/eino_practice_ark_create_model.png" target="_blank"><img src="/img/eino/eino_practice_ark_create_model.png" width="100%" /></a><br/></td></tr>
 <tr><td>Docker<br/></td><td>非必须<br/></td><td><ul>通过 Docker 提供 RedisSearch 组件</ul><br/><ul>也可自主进行手动部署</ul><br/></td><td><ul><a href="https://docs.docker.com/get-started/">Docker </a></ul><br/></td></tr>
 <tr><td>Eino 智能助手代码示例<br/></td><td>必须<br/></td><td><ul>本文的完整示例代码</ul><br/></td><td><ul>https://github.com/cloudwego/eino-examples/tree/main/quickstart/eino_assistant</ul><br/></td></tr>
 </table>
@@ -264,7 +264,7 @@ Eino 智能助手：根据用户请求，从知识库检索必要的信息并按
 
 - 创建 doubao-embedding-large 作为知识库构建时的向量化模型，以及创建  doubao-pro-4k 资源作为 agent 对话时的模型。
 - 「火山引擎在线推理」：[https://console.volcengine.com/ark](https://console.volcengine.com/ark)
-  <a href="/img/eino/model_create.gif" target="_blank"><img src="/img/eino/model_create.gif" /></a>
+  <a href="/img/eino/model_create.gif" target="_blank"><img src="/img/eino/model_create.gif" width="100%" /></a>
 
 #### 启动 Redis Stack
 
@@ -282,7 +282,7 @@ cd xxx/eino-examples/quickstart/eino_assistant
 docker-compose up -d
 ```
 
-<a href="/img/eino/redis_start_up.gif" target="_blank"><img src="/img/eino/redis_start_up.gif" /></a>
+<a href="/img/eino/redis_start_up.gif" target="_blank"><img src="/img/eino/redis_start_up.gif" width="100%" /></a>
 
 - 完成启动后，打开本地的 8001 可进入 redis stack 的 web 界面
 
@@ -300,7 +300,7 @@ docker-compose up -d
    - Import path of input type: github.com/cloudwego/eino/components/document
    - Output type: []string
    - 其他置空
-     <a href="/img/eino/eino_practice_debug_panel.png" target="_blank"><img src="/img/eino/eino_practice_debug_panel.png" /></a>
+     <a href="/img/eino/eino_practice_debug_panel.png" target="_blank"><img src="/img/eino/eino_practice_debug_panel.png" width="100%" /></a>
 2. 按照上文「**索引知识库**」中的流程说明，从 Eino Workflow 中选择需要使用的组件库，本文需要用到如下组件：
 
    - document/loader/file
@@ -318,11 +318,11 @@ docker-compose up -d
 
        <table><tbody><tr>
        <td>
-       <a href="/img/eino/eino_practice_indexing_graph.png" target="_blank"><img src="/img/eino/eino_practice_indexing_graph.png" /></a>
+       <a href="/img/eino/eino_practice_indexing_graph.png" target="_blank"><img src="/img/eino/eino_practice_indexing_graph.png" width="100%" /></a>
 
        </td>
        <td>
-       <a href="/img/eino/eino_practice_indexing_show_codes.png" target="_blank"><img src="/img/eino/eino_practice_indexing_show_codes.png" /></a>
+       <a href="/img/eino/eino_practice_indexing_show_codes.png" target="_blank"><img src="/img/eino/eino_practice_indexing_show_codes.png" width="100%" /></a>
 
        </td>
        </tr></tbody></table>
@@ -330,11 +330,11 @@ docker-compose up -d
 
     <table><tbody><tr>
     <td>
-    <a href="/img/eino/eino_practice_indexing_config.png" target="_blank"><img src="/img/eino/eino_practice_indexing_config.png" /></a>
+    <a href="/img/eino/eino_practice_indexing_config.png" target="_blank"><img src="/img/eino/eino_practice_indexing_config.png" width="100%" /></a>
 
     </td>
     <td>
-    <a href="/img/eino/eino_practice_indexing_index_config.png" target="_blank"><img src="/img/eino/eino_practice_indexing_index_config.png" /></a>
+    <a href="/img/eino/eino_practice_indexing_index_config.png" target="_blank"><img src="/img/eino/eino_practice_indexing_index_config.png" width="100%" /></a>
 
     </td>
     </tr></tbody></table>
@@ -349,7 +349,7 @@ docker-compose up -d
 
 > 详细代码可查看：cmd/knowledgeindexing/main.go
 
-<a href="/img/eino/eino_practice_indexing_new_runner.png" target="_blank"><img src="/img/eino/eino_practice_indexing_new_runner.png" /></a>
+<a href="/img/eino/eino_practice_indexing_new_runner.png" target="_blank"><img src="/img/eino/eino_practice_indexing_new_runner.png" width="100%" /></a>
 
 #### 运行
 
@@ -368,13 +368,13 @@ cd cmd/knowledgeindexing
 go run main.go
 ```
 
-<a href="/img/eino/knowledgeindexing.gif" target="_blank"><img src="/img/eino/knowledgeindexing.gif" /></a>
+<a href="/img/eino/knowledgeindexing.gif" target="_blank"><img src="/img/eino/knowledgeindexing.gif" width="100%" /></a>
 
 1. 执行运行成功后，即完成 Eino 知识库的构建，可在 Redis Web UI 中看到向量化之后的内容
 
 > 在浏览器打开链接： [http://127.0.0.1:8001](http://127.0.0.1:8001)
 
-<a href="/img/eino/redis_keys.jpeg" target="_blank"><img src="/img/eino/redis_keys.jpeg" /></a>
+<a href="/img/eino/redis_keys.jpeg" target="_blank"><img src="/img/eino/redis_keys.jpeg" width="100%" /></a>
 
 ### Eino 智能体
 
@@ -394,7 +394,7 @@ go run main.go
 
 #### 可视化开发
 
-<video src="/img/eino/einoagent.mp4" controls></video>
+<video src="/img/eino/einoagent.mp4" controls width="0%"></video>
 1. 打开 EinoDev 插件，进入到 Eino Workflow 页面，新建一张画布
 	- Graph Name: EinoAgent
 	- Node Trigger Mode: 任意前驱节点结束后出发
@@ -424,11 +424,11 @@ go run main.go
 ```
 <table><tbody><tr>
 <td>
-<a href="/img/eino/eino_practice_graph.png" target="_blank"><img src="/img/eino/eino_practice_graph.png" /></a>
+<a href="/img/eino/eino_practice_graph.png" target="_blank"><img src="/img/eino/eino_practice_graph.png" width="100%" /></a>
 
 </td>
 <td>
-<a href="/img/eino/eino_practice_agent_graph_codes.png" target="_blank"><img src="/img/eino/eino_practice_agent_graph_codes.png" /></a>
+<a href="/img/eino/eino_practice_agent_graph_codes.png" target="_blank"><img src="/img/eino/eino_practice_agent_graph_codes.png" width="100%" /></a>
 
 </td>
 </tr></tbody></table>
@@ -438,11 +438,11 @@ go run main.go
 
 <table><tbody><tr>
 <td>
-<a href="/img/eino/eino_practice_agent_lambda.png" target="_blank"><img src="/img/eino/eino_practice_agent_lambda.png" /></a>
+<a href="/img/eino/eino_practice_agent_lambda.png" target="_blank"><img src="/img/eino/eino_practice_agent_lambda.png" width="100%" /></a>
 
 </td>
 <td>
-<a href="/img/eino/eino_practice_agent_model_config.png" target="_blank"><img src="/img/eino/eino_practice_agent_model_config.png" /></a>
+<a href="/img/eino/eino_practice_agent_model_config.png" target="_blank"><img src="/img/eino/eino_practice_agent_model_config.png" width="100%" /></a>
 
 </td>
 </tr></tbody></table>
@@ -454,7 +454,7 @@ go run main.go
 在「Eino 智能体」的场景下，BuildEinoAgent 构建的 Graph 实例可做到：根据用户请求和对话历史，从 Eino 知识库中召回上下文， 然后结合可调用的工具列表，将 ChatModel 循环决策下一步是调用工具或输出最终结果。
 
 下图即是对生成的 BuildEinoAgent 函数的应用，将 Eino Agent 封装成 HTTP 服务接口：
-<a href="/img/eino/eino_practice_agent_runner.png" target="_blank"><img src="/img/eino/eino_practice_agent_runner.png" /></a>
+<a href="/img/eino/eino_practice_agent_runner.png" target="_blank"><img src="/img/eino/eino_practice_agent_runner.png" width="100%" /></a>
 
 #### 运行
 
@@ -470,7 +470,7 @@ source .env
 go run cmd/einoagent/*.go
 ```
 
-<a href="/img/eino/eino_agent.gif" target="_blank"><img src="/img/eino/eino_agent.gif" /></a>
+<a href="/img/eino/eino_agent.gif" target="_blank"><img src="/img/eino/eino_agent.gif" width="100%" /></a>
 
 1. 启动后可访问如下链接，打开 Eino Agent Web
 
@@ -479,7 +479,7 @@ go run cmd/einoagent/*.go
 #### 观测(可选)
 
 如果在运行时，在 .env 文件中指定了 LANGFUSE_PUBLIC_KEY 和 LANGFUSE_SECRET_KEY，便可在 Langfuse 平台中，登录对应的账号，查看请求的 Trace 详情。
-<a href="/img/eino/langfuse_callback.gif" target="_blank"><img src="/img/eino/langfuse_callback.gif" /></a>
+<a href="/img/eino/langfuse_callback.gif" target="_blank"><img src="/img/eino/langfuse_callback.gif" width="100%" /></a>
 
 ## 相关链接
 
@@ -490,4 +490,4 @@ Eino 用户手册：[https://www.cloudwego.io/zh/docs/eino/](https://www.cloudwe
 项目官网：__[https://www.cloudwego.io](https://www.cloudwego.io)__
 
 扫描二维码加入飞书社群：
-<a href="/img/eino/eino_lark_qr_code_practice.png" target="_blank"><img src="/img/eino/eino_lark_qr_code_practice.png" /></a>
+<a href="/img/eino/eino_lark_qr_code_practice.png" target="_blank"><img src="/img/eino/eino_lark_qr_code_practice.png" width="100%" /></a>
