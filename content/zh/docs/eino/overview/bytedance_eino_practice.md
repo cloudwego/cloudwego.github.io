@@ -229,7 +229,7 @@ Eino 智能助手：根据用户请求，从知识库检索必要的信息并按
 
 先来一起看看「基于 Eino 搭建」起来的 Agent 助手能实现什么效果
 
-<video src="data/cloudwego/static/img/eino/einoagent_show.mp4" controls></video>
+<video src="/img/eino/einoagent_show.mp4" controls></video>
 
 我们分两步来构建这个 Eino 智能助手：
 
@@ -425,7 +425,7 @@ go run main.go
 
 #### 可视化开发
 
-<video src="data/cloudwego/static/img/eino/einoagent.mp4" controls></video>
+<video src="/img/eino/einoagent.mp4" controls></video>
 1. 打开 EinoDev 插件，进入到 Eino Workflow 页面，新建一张画布
 	- Graph Name: EinoAgent
 	- Node Trigger Mode: 任意前驱节点结束后出发
