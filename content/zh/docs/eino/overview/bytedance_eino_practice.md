@@ -228,7 +228,7 @@ Eino 智能助手：根据用户请求，从知识库检索必要的信息并按
 本文主要呈现一个 Demo 样例，用户可根据自己的场景，更换自己的知识库和工具，以搭建自己所需的智能助手。
 
 先来一起看看**基于 Eino ****搭建起来的** Agent 助手能实现什么效果
-![einoagent_show.mp4](data/cloudwego/static/img/eino/einoagent_show.mp4)
+[einoagent_show.mp4](data/cloudwego/static/img/eino/einoagent_show.mp4)
 
 我们分两步来构建这个 Eino 智能助手：
 
