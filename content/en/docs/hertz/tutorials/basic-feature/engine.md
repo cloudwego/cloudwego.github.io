@@ -251,7 +251,7 @@ Hertz supports server streaming processing, including streaming read and streami
 
 > Note: Due to the different triggering modes between netpoll and go net, netpoll streaming is "pseudo" (due to LT triggering, data will be read into the buffer of the network library by the network library). In scenarios with large packets (such as uploading files), there may be memory issues, and it is recommended to use go net.
 
-### Streaming Write
+### Streaming Read
 
 Hertz Server supports streaming read request content.
 
@@ -280,7 +280,7 @@ func handler(ctx context.Context, c *app.RequestContext) {
 }
 ```
 
-### Streaming Read
+### Streaming Write
 
 Hertz Server supports streaming write responses.
 
