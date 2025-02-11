@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-08"
+date: "2025-02-10"
 lastmod: ""
 tags: []
 title: 'Eino: Lambda 使用说明'
@@ -36,11 +36,11 @@ type Collect[I, O, TOption any] func(ctx context.Context, input *schema.StreamRe
 type Transform[I, O, TOption any] func(ctx context.Context, input *schema.StreamReader[I], opts ...TOption) (output *schema.StreamReader[O], err error)
 ```
 
-## **使用方式**
+## 使用方式
 
 > 示例中的代码参考： [https://github.com/cloudwego/eino-examples/blob/main/components/lambda](https://github.com/cloudwego/eino-examples/blob/main/components/lambda)
 
-### **构建方法**
+### 构建方法
 
 从 Eino 的组件接口的统一规范来看，一个组件的可调用方法需要有 3 个入参 和 2 个出参： func (ctx, input, ...option) (output, error), 但在使用 Lambda 的场景中，常希望通过提供一个简单的函数实现来添加一个 Lambda 节点，因此构建方法分成 3 种：
 
@@ -105,7 +105,7 @@ lambda := compose.InvokableLambdaWithOption(
 )
 ```
 
-#### **AnyLambda**
+#### AnyLambda
 
 AnyLambda 允许同时实现多种交互模式的 Lambda 函数类型：
 
@@ -139,7 +139,7 @@ lambda, err := compose.AnyLambda(
 
 ### **编排中使用**
 
-#### **Graph 中使用**
+#### Graph 中使用
 
 在 Graph 中可以通过 AddLambdaNode 添加 Lambda 节点：
 
@@ -153,7 +153,7 @@ graph.AddLambdaNode(
 )
 ```
 
-#### **Chain 中使用**
+#### Chain 中使用
 
 在 Chain 中可以通过 AppendLambda 添加 Lambda 节点：
 
@@ -164,9 +164,9 @@ chain.AppendLambda(compose.InvokableLambda(func(ctx context.Context, input strin
 }))
 ```
 
-### **两个内置的 Lambda**
+### 两个内置的 Lambda
 
-#### **ToList**
+#### ToList
 
 ToList 是一个内置的 Lambda，用于将单个输入元素转换为包含该元素的切片（数组）：
 
@@ -180,7 +180,7 @@ chain.AppendChatModel(chatModel)  // chatModel 返回 *schema.Message
 chain.AppendLambda(lambda)        // 将 *schema.Message 转换为 []*schema.Message
 ```
 
-#### **MessageParser**
+#### MessageParser
 
 MessageParser 是一个内置的 Lambda，用于将 JSON 消息（通常由 LLM 生成）解析为指定的结构体：
 

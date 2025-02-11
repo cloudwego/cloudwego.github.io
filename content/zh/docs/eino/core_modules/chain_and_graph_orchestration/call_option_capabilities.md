@@ -8,9 +8,10 @@ weight: 0
 ---
 
 **CallOption**: 对 Graph 编译产物进行调用时，直接传递数据给特定的一组节点(Component、Implementation、Node)的渠道
+
 - 和 节点 Config 的区别： 节点 Config 是实例粒度的配置，也就是从实例创建到实例消除，Config 中的值一旦确定就不需要改变了
 - CallOption：是请求粒度的配置，不同的请求，其中的值是不一样的。更像是节点入参，但是这个入参是直接由 Graph 的入口直接传入，而不是上游节点传入。
-- 举例：给一个 ChatModel 节点传入 Temperature 配置；给一个 Lambda 节点传入自定义 option。
+  - 举例：给一个 ChatModel 节点传入 Temperature 配置；给一个 Lambda 节点传入自定义 option。
 
 ## 组件 CallOption 形态
 
@@ -287,7 +288,7 @@ func WithEmbeddingOption(opts ...embedding.Option) Option {
 
 compose.Option 可以按需分配给 Graph 中不同的节点。
 
-<a href="/img/eino/graph_runnable_after_compile.png" target="_blank"><img src="/img/eino/graph_runnable_after_compile.png" /></a>
+<a href="/img/eino/graph_runnable_after_compile.png" target="_blank"><img src="/img/eino/graph_runnable_after_compile.png" width="100%" /></a>
 
 ```go
 // 所有节点都生效的 call option

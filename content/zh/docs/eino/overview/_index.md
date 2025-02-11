@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-02-10"
 lastmod: ""
 tags: []
 title: 'Eino: 概述'
@@ -12,6 +12,7 @@ weight: 1
 **Eino['aino]** (近似音: i know，希望应用程序达到 "i know" 的愿景) 旨在提供基于 Golang 语言的终极大模型应用开发框架。 它从开源社区中的诸多优秀 LLM 应用开发框架，如 LangChain 和 LlamaIndex 等获取灵感，同时借鉴前沿研究成果与实际应用，提供了一个强调简洁性、可扩展性、可靠性与有效性，且更符合 Go 语言编程惯例的 LLM 应用开发框架。
 
 Eino 提供的价值如下：
+
 - 精心整理的一系列 **组件（component）** 抽象与实现，可轻松复用与组合，用于构建 LLM 应用。
 - 强大的 **编排（orchestration）** 框架，为用户承担繁重的类型检查、流式处理、并发管理、切面注入、选项赋值等工作。
 - 一套精心设计、注重简洁明了的 **API**。
@@ -19,10 +20,13 @@ Eino 提供的价值如下：
 - 一套实用 **工具（DevOps tools）**，涵盖从可视化开发与调试到在线追踪与评估的整个开发生命周期。
 
 Eino 可在 AI 应用开发周期中的不同阶段，规范、简化和提效：
+
 - Development: 开箱即用的 AI 相关组件；常见的 Flow 范式；对并发、异步、流式友好的图编排；完善的流处理能力等。这些均可对 AI 应用的开发提供很大助力。
 - Debugging: 可对图编排的应用，进行可视化的开发调试
 - Deployment: 提供丰富的对 AI 应用的评测能力
 - Maintenance: 提供丰富的切面对 AI 应用进行观测、监控
+
+<a href="/img/eino/eino_project_structure_and_modules.png" target="_blank"><img src="/img/eino/eino_project_structure_and_modules.png" width="100%" /></a>
 
 完整 API Reference：[https://pkg.go.dev/github.com/cloudwego/eino](https://pkg.go.dev/github.com/cloudwego/eino)
 
@@ -46,17 +50,15 @@ message, _ := model.Generate(ctx, []*Message{
 Eino 提供了三组用于编排的 API：
 
 <table>
-<tr>
-<td>API<br/></td><td>特性和使用场景<br/></td></tr>
-<tr>
-<td>Chain<br/></td><td>简单的链式有向图，只能向前推进。<br/></td></tr>
-<tr>
-<td>Graph<br/></td><td>有向有环或无环图。功能强大且灵活。<br/></td></tr>
-<tr>
-<td>Workflow<br/></td><td>有向无环图，支持在结构体字段级别进行数据映射。<br/></td></tr>
+<tr><td>API</td><td>特性和使用场景</td></tr>
+<tr><td>Chain</td><td>简单的链式有向图，只能向前推进。</td></tr>
+<tr><td>Graph</td><td>有向有环或无环图。功能强大且灵活。</td></tr>
+<tr><td>Workflow</td><td>有向无环图，支持在结构体字段级别进行数据映射。</td></tr>
 </table>
 
 我们来创建一个简单的 chain: 一个模版（ChatTemplate）接一个大模型（ChatModel）。
+
+<a href="/img/eino/chain_simple_llm.png" target="_blank"><img src="/img/eino/chain_simple_llm.png" width="100%" /></a>
 
 ```go
 chain, _ := NewChain[map[string]any, *Message]().
@@ -66,22 +68,34 @@ chain, _ := NewChain[map[string]any, *Message]().
 chain.Invoke(ctx, map[string]any{"query": "what's your name?"})
 ```
 
-现在，我们来创建一个 Graph，先用一个 ChatModel 生成 Tool 调用指令，接着用一个 ToolsNode 执行这些 Tool，然后将 Tool 的响应反馈给 ChatModel。
+现在，我们来创建一个 Graph，一个 ChatModel，要么直接输出结果，要么最多调一次 Tool。
+
+<a href="/img/eino/eino_take_first_toolcall_output.png" target="_blank"><img src="/img/eino/eino_take_first_toolcall_output.png" width="100%" /></a>
 
 ```go
-graph := NewGraph[[]*Message, *Message]()
-graph.AddChatModelNode("node_model", model)
-graph.AddToolsNode("node_tools", toolsNode)
-graph.AddEdge(START, "node_model")
-graph.AddEdge("node_tools", "node_model")
-graph.AddBranch("node_model", branch)
-runnable, _ := graph.Compile(ctx)
-runnable.Stream(ctx, []*Message{UserMessage("help me plan my weekend")})
+graph := NewGraph[map[string]any, *schema.Message]()
+
+_ = graph.AddChatTemplateNode("node_template", chatTpl)
+_ = graph.AddChatModelNode("node_model", chatModel)
+_ = graph.AddToolsNode("node_tools", toolsNode)
+_ = graph.AddLambdaNode("node_converter", takeOne)
+
+_ = graph.AddEdge(START, "node_template")
+_ = graph.AddEdge("node_template", "node_model")
+_ = graph.AddBranch("node_model", branch)
+_ = graph.AddEdge("node_tools", "node_converter")
+_ = graph.AddEdge("node_converter", END)
+
+compiledGraph, err := graph.Compile(ctx)
+if err != nil {
+    return err
+}
+out, err := compiledGraph.Invoke(ctx, map[string]any{"query":"Beijing's weather this weekend"})
 ```
 
 现在，我们来创建一个 Workflow，它能在字段级别灵活映射输入与输出：
 
-<a href="/img/eino/graph_node_type1.png" target="_blank"><img src="/img/eino/graph_node_type1.png" /></a>
+<a href="/img/eino/graph_node_type1.png" target="_blank"><img src="/img/eino/graph_node_type1.png" width="100%" /></a>
 
 ```go
 wf := NewWorkflow[[]*Message, *Message]()
@@ -252,6 +266,14 @@ compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
 - 当流分散到不同的下游节点或传递给回调处理器时，Eino 会自动 **复制（Copy）** 这些流。
 - 最重要的是，当将一个组件添加到图中时，Eino 会自动补充缺失的流处理能力：你可以提供一个仅可 Invoke 的函数，Eino 会创建其他三种范式。
 
+<table>
+<tr><td>函数名</td><td>模式说明</td><td>交互模式名称</td><td>Lambda 构造方法</td><td>说明</td></tr>
+<tr><td>Invoke</td><td>输入非流式、输出非流式</td><td>Ping-Pong 模式</td><td>compose.InvokableLambda()</td><td></td></tr>
+<tr><td>Stream</td><td>输入非流式、输出流式</td><td>Server-Streaming 模式</td><td>compose.StreamableLambda()</td><td></td></tr>
+<tr><td>Collect</td><td>输入流式、输出非流式</td><td>Client-Streaming</td><td>compose.CollectableLambda()</td><td></td></tr>
+<tr><td>Transform</td><td>输入流式、输出流式</td><td>Bidirectional-Streaming</td><td>compose.TransformableLambda()</td><td></td></tr>
+</table>
+
 ### 高扩展性的切面(Callbacks)
 
 - 切面用于处理诸如日志记录、追踪、指标统计等横切面关注点，同时也用于暴露组件实现的内部细节。
@@ -260,6 +282,8 @@ compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
 - 图还能将切面注入到那些自身不支持回调的组件实现中。
 
 ## Eino 框架结构
+
+<a href="/img/eino/eino_structure.png" target="_blank"><img src="/img/eino/eino_structure.png" width="100%" /></a>
 
 Eino 框架整体由两部分构成：
 
@@ -360,21 +384,16 @@ type Runnable[I, O any] interface {
 - 基于上述两种转换关系，Eino 便可根据用户提供的具有任意 N(N<=4) 种交互模式的接口，封装转换成一个完整的 Runnable[I, O]
 
 <table>
-<tr>
-<td>源\目标<br/></td><td>Invoke[I, O any]()<br/></td><td>Stream[I, O any]()<br/></td><td>Collect[I, O any]()<br/></td><td>Transform[I, O any]()<br/></td></tr>
-<tr>
-<td>Invoke[I, O any]()<br/></td><td>-<br/></td><td>- Invoke输入直接透传<br/>- Invoke响应转成单帧流<br/></td><td>- Invoke输入转成单帧流<br/>- Invoke响应直接透传<br/></td><td>- Invoke输入转成单帧流<br/>- Invoke响应转成单帧流<br/></td></tr>
-<tr>
-<td>Stream[I, O any]()<br/></td><td>- Stream输入直接透传<br/>- Stream输出Concat后透传<br/></td><td>-<br/></td><td>- Stream输入转成单帧流<br/>- Stream输出Concat后透传<br/></td><td>- Stream输入转成单帧流<br/>- Stream输出直接透传<br/></td></tr>
-<tr>
-<td>Collect[I, O any]()<br/></td><td>- Collect输入Concat后透传<br/>- Collect输出直接透传<br/></td><td>- Collect输入Concat后透传<br/>- Collect输出转成单帧流<br/></td><td>-<br/></td><td>- Collect输入直接透传<br/>- Collect输出转成单帧流<br/><br/></td></tr>
-<tr>
-<td>Transform[I, O any]()<br/></td><td>- Transform输入Concat后透传<br/>- Transform输出Concat后透传<br/></td><td>- Transform输入Concat后透传<br/>- Transform输出直接透传<br/></td><td>- Transform输入直接透传<br/>- Transform输出Concat后透传<br/></td><td>-<br/></td></tr>
+<tr><td>源\目标</td><td>Invoke[I, O any]()</td><td>Stream[I, O any]()</td><td>Collect[I, O any]()</td><td>Transform[I, O any]()</td></tr>
+<tr><td>Invoke[I, O any]()</td><td>-</td><td><li>Invoke输入直接透传</li><li>Invoke响应转成单帧流</li></td><td><li>Invoke输入转成单帧流</li><li>Invoke响应直接透传</li></td><td><li>Invoke输入转成单帧流</li><li>Invoke响应转成单帧流</li></td></tr>
+<tr><td>Stream[I, O any]()</td><td><li>Stream输入直接透传</li><li>Stream输出Concat后透传</li></td><td>-</td><td><li>Stream输入转成单帧流</li><li>Stream输出Concat后透传</li></td><td><li>Stream输入转成单帧流</li><li>Stream输出直接透传</li></td></tr>
+<tr><td>Collect[I, O any]()</td><td><li>Collect输入Concat后透传</li><li>Collect输出直接透传</li></td><td><li>Collect输入Concat后透传</li><li>Collect输出转成单帧流</li></td><td>-</td><td><li>Collect输入直接透传</li><li>Collect输出转成单帧流</li></td></tr>
+<tr><td>Transform[I, O any]()</td><td><li>Transform输入Concat后透传</li><li>Transform输出Concat后透传</li></td><td><li>Transform输入Concat后透传</li><li>Transform输出直接透传</li></td><td><li>Transform输入直接透传</li><li>Transform输出Concat后透传</li></td><td>-</td></tr>
 </table>
 
 - 编程产物中具有的真正的流式能力是什么，取决于如下的编排范式
 
-<a href="/img/eino/invoke_stream_transform_collect.png" target="_blank"><img src="/img/eino/invoke_stream_transform_collect.png" /></a>
+<a href="/img/eino/invoke_stream_transform_collect.png" target="_blank"><img src="/img/eino/invoke_stream_transform_collect.png" width="100%" /></a>
 
 ### Stream 流
 
@@ -398,6 +417,61 @@ Notice：Stream 流在 **生产**、**消费**、**复制**、**合并**、**转
 - **WARN**：在任何地方见到 `*StreamReader[T]` 或 `*StreamWriter[T]` 都不要忘记 Close()，否则可能导致流无法正常释放。一般流的生产和消费都是单独 Goroutine，从而导致 Goroutine 的泄露。
 
 Stream 流 的 API 设计，源码链接：[eino/schema/stream.go](https://github.com/cloudwego/eino/blob/main/schema/stream.go)
+
+```go
+// Pipe creates a new stream with the given capacity that represented with StreamWriter and StreamReader.
+// The capacity is the maximum number of items that can be buffered in the stream.
+// e.g.
+//
+//  sr, sw := schema.Pipe[string](3)
+//  go func() { // send data
+//     defer sw.Close()
+//     for i := 0; i < 10; i++ {
+//        sw.send(i, nil)
+//     }
+//  }
+//
+//  defer sr.Close()
+//  for chunk, err := sr.Recv() {
+//     if errors.Is(err, io.EOF) {
+//        break
+//     }
+//     fmt.Println(chunk)
+//  }
+func Pipe[T any](cap int) (*StreamReader[T], *StreamWriter[T]) {
+    stm := newStream[T](cap)
+    return stm.asReader(), &StreamWriter[T]{stm: stm}
+}
+
+// StreamWriter the sender of a stream.
+type StreamWriter[T any] struct {
+    stm *stream[T]
+}
+
+func (sw *StreamWriter[T]) Send(chunk T, err error) (closed bool) {
+    return sw.stm.send(chunk, err)
+}
+
+// Close notify the receiver that the stream sender has finished.
+// The stream receiver will get an error of io.EOF from StreamReader.Recv().
+func (sw *StreamWriter[T]) Close() {
+    sw.stm.closeSend()
+}
+
+// StreamReader the receiver of a stream.
+type StreamReader[T any] struct {}
+
+func (sr *StreamReader[T]) Recv() (T, error) {}
+
+// Close notify the sender that the stream receiver has finished.
+// AKA: CloseRecv.
+func (sr *StreamReader[T]) Close() {}
+
+// Copy creates a slice of new StreamReader.
+// The number of copies, indicated by the parameter n, should be a non-zero positive integer.
+// The original StreamReader will become unusable after Copy.
+func (sr *StreamReader[T]) Copy(n int) []*StreamReader[T] {}
+```
 
 ### Compose 编排
 
@@ -470,7 +544,7 @@ func (g *graph) AddEdge(startNode, endNode string) (err error) {}
 
 - 在两个节点间添加一条有向的数据传输链路，以控制数据的流动方向和节点的执行顺序
 
-<a href="/img/eino/edge_of_parallel.png" target="_blank"><img src="/img/eino/edge_of_parallel.png" /></a>
+<a href="/img/eino/edge_of_parallel.png" target="_blank"><img src="/img/eino/edge_of_parallel.png" width="100%" /></a>
 
 ###### **AddBranch**
 
@@ -490,14 +564,14 @@ func (g *graph) AddBranch(startNode string, branch *GraphBranch) (err error) {}
 
 - 根据传入的自定义选择函数，运行时根据经运算条件从多个 Node 中选出命中 Node 执行
 
-<a href="/img/eino/run_way_branch_in_graph.png" target="_blank"><img src="/img/eino/run_way_branch_in_graph.png" /></a>
+<a href="/img/eino/run_way_branch_in_graph.png" target="_blank"><img src="/img/eino/run_way_branch_in_graph.png" width="100%" /></a>
 
 ###### **Parallel**
 
 - 将多个 Node 平行并联， 形成多个节点并发执行的节点
 - 无 AddParallel 方法，通过 AddEdge 构建并联的多条拓扑路径，以此形成 **Parallel **
 
-<a href="/img/eino/input_keys_output_keys_in_parallel.png" target="_blank"><img src="/img/eino/input_keys_output_keys_in_parallel.png" /></a>
+<a href="/img/eino/input_keys_output_keys_in_parallel.png" target="_blank"><img src="/img/eino/input_keys_output_keys_in_parallel.png" width="100%" /></a>
 
 ##### 面(Graph)
 
@@ -534,7 +608,7 @@ chain := NewChain[map[string]any, string]()
 
 - 将多个 Node 按照传入顺序首尾串联，串联的 Node 依次进行数据传递和执行
 
-<a href="/img/eino/graph_nodes.png" target="_blank"><img src="/img/eino/graph_nodes.png" /></a>
+<a href="/img/eino/graph_nodes.png" target="_blank"><img src="/img/eino/graph_nodes.png" width="100%" /></a>
 
 ##### **AppendParallel**
 
@@ -556,7 +630,7 @@ chain.AppendParallel(parallel)
 
 - 创建一个 Parallel，容纳并发执行的多个子节点
 
-<a href="/img/eino/chain_append_parallel.png" target="_blank"><img src="/img/eino/chain_append_parallel.png" /></a>
+<a href="/img/eino/chain_append_parallel.png" target="_blank"><img src="/img/eino/chain_append_parallel.png" width="100%" /></a>
 
 ##### **AppendBranch**
 
@@ -585,7 +659,7 @@ chain := NewChain[string, string]()
 chain.AppendBranch(cb)
 ```
 
-<a href="/img/eino/chain_append_branch.png" target="_blank"><img src="/img/eino/chain_append_branch.png" /></a>
+<a href="/img/eino/chain_append_branch.png" target="_blank"><img src="/img/eino/chain_append_branch.png" width="100%" /></a>
 
 #### Workflow
 

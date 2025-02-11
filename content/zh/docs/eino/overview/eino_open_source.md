@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-02-10"
 lastmod: ""
 tags: []
 title: 大语言模型应用开发框架 —— Eino 正式开源！
@@ -29,6 +29,8 @@ Eino 已成为字节跳动内部大模型应用的首选全代码开发框架，
 
 Eino 是覆盖 devops 全流程的大模型应用开发框架，从最佳实践样例的 Eino Examples，到各环节的工具链，都是 Eino 的领域：
 
+<a href="/img/eino/eino_project_structure_and_modules.png" target="_blank"><img src="/img/eino/eino_project_structure_and_modules.png" width="100%" /></a>
+
 那么 Eino 具体能做什么？首先，Eino 由一个个大模型领域的“**组件**”组成，比如最核心的是与大模型交互的 Chat Model：
 
 ```go
@@ -47,7 +49,8 @@ message, _ := model.Generate(ctx, []*Message{
 Eino 的编排能力，是上述通用问题的充分解决方案。
 
 以 ReAct Agent 为例：一个 ChatModel（大模型），“绑定”了 Tool（工具），接收输入的 Message，由 ChatModel 自主判断是否调用 Tool 或输出最终结果。Tool 执行结果会再次成为给到 ChatModel 的 Message，并作为下一轮自主判断的上下文。
-<a href="/img/eino/eino_graph_nodes_of_react_agent.png" target="_blank"><img src="/img/eino/eino_graph_nodes_of_react_agent.png" /></a>
+
+<a href="/img/eino/eino_graph_nodes_of_react_agent.png" target="_blank"><img src="/img/eino/eino_graph_nodes_of_react_agent.png" width="100%" /></a>
 
 上述基于 ChatModel 进行自主决策和选路的 ReAct Agent，便是基于 Eino 的 组件 和 Graph 编排 来实现， 代码清晰简洁，可与流程图清晰对应。
 
@@ -129,7 +132,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 
 上述设计和功能共同构成了 Eino 的稳定内核：
 
-<a href="/img/eino/eino_features_and_design.png" target="_blank"><img src="/img/eino/eino_features_and_design.png" /></a>
+<a href="/img/eino/eino_features_and_design.png" target="_blank"><img src="/img/eino/eino_features_and_design.png" width="100%" /></a>
 
 ### 敏捷扩展
 
@@ -143,7 +146,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 
 综上所述，Eino 框架具备充分的可扩展性：
 
-<a href="/img/eino/eino_modules_types.png" target="_blank"><img src="/img/eino/eino_modules_types.png" /></a>
+<a href="/img/eino/eino_modules_types.png" target="_blank"><img src="/img/eino/eino_modules_types.png" width="100%" /></a>
 
 ### 高可靠易维护
 
@@ -155,13 +158,13 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 
 Eino 框架结构图：
 
-<a href="/img/eino/eino_projects_and_structure.png" target="_blank"><img src="/img/eino/eino_projects_and_structure.png" /></a>
+<a href="/img/eino/eino_projects_and_structure.png" target="_blank"><img src="/img/eino/eino_projects_and_structure.png" width="100%" /></a>
 
 ### 实践驱动
 
 Eino 框架的设计开发过程，扎根于 “满足真实需求” 与 “实践驱动设计” 这两大基石之上。功能的演进过程与字节跳动各业务线的接入过程紧密结合，始终倾听开发者的声音，并通过实际使用效果来检验设计的合理性。比如我们收到来自抖音的“希望能够以字段为粒度在图中映射和传递数据”的需求，以此为基础设计了 Workflow；倾听来自豆包的使用痛点，增强作为模型输入输出类型的 Message 结构体。在未来的开源生态共建过程中，我们会继续坚持上述原则，满足更广大的用户和开发者的真实需求，并在更大的范围内认真实践和精进。
 
-<a href="/img/eino/eino_practice_cognition_loop.png" target="_blank"><img src="/img/eino/eino_practice_cognition_loop.png" /></a>
+<a href="/img/eino/eino_practice_cognition_loop.png" target="_blank"><img src="/img/eino/eino_practice_cognition_loop.png" width="100%" /></a>
 
 ### 工具生态
 
@@ -180,4 +183,5 @@ Eino 框架的设计开发过程，扎根于 “满足真实需求” 与 “实
 项目官网：__[https://www.cloudwego.io](https://www.cloudwego.io)__
 
 扫描二维码加入飞书社群：
-<a href="/img/eino/eino_lark_qr_code.png" target="_blank"><img src="/img/eino/eino_lark_qr_code.png" /></a>
+
+<a href="/img/eino/eino_lark_qr_code.png" target="_blank"><img src="/img/eino/eino_lark_qr_code.png" width="100%" /></a>

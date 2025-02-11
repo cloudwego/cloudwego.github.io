@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-15"
+date: "2025-02-10"
 lastmod: ""
 tags: []
 title: 'Eino: Chain & Graph 编排功能'
@@ -42,7 +42,7 @@ Eino 对「编排」有着这样的洞察：
   - 详细信息参考：[Eino: Components 组件](/zh/docs/eino/core_modules/components)
 - 业务逻辑复杂度封装到组件内部，编排层拥有更全局的视角，让**逻辑层次变得非常清晰**
 - 提供了切面能力，callback 机制支持了基于节点的**统一治理能力**
-  - 详细信息参考：[Eino: 公共切面 - Callbacks](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callbacks_common_aspects)
+  - 详细信息参考：[Eino: Callback 用户手册](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
 - 提供了 call option 的机制，**扩展性**是快速迭代中的系统最基本的诉求
   - 详细信息参考：[Eino: CallOption 能力与规范](/zh/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
 - 提供了 “类型对齐” 的开发方式的强化，降低开发者心智负担，把 golang 的**类型安全**特性发挥出来
