@@ -204,3 +204,11 @@ func main()  {
     }
 }
 ```
+
+## More
+### Compile-time instrumentation
+If you don't want to use open-telemetry through sdk, you can also use open-telemetry's official recommended compile-time instrumentation, which allows users to automatically use open-telemetry without modifying the source code, related links:
+1. [open-telemetry official project link](https://github.com/open-telemetry/opentelemetry-go-compile-instrumentation)
+2. [open-telemetry official technical blog](https://opentelemetry.io/blog/2025/go-compile-time-instrumentation)
+3. [alibaba compile-time instrumentation](https://github.com/alibaba/opentelemetry-go-auto-instrumentation)
+4. [datadog compile-time instrumentation implementation](https://github.com/datadog/orchestrion)
