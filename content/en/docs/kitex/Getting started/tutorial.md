@@ -180,7 +180,7 @@ After generating the code, the project structure will look as follows:
     │   └── script
     │       └── bootstrap.sh
     └── stock
-        ├── build.sh 	 // Script for building the project (generally not to be changed)
+        ├── build.sh   // Script for building the project (generally not to be changed)
         ├── handler.go // Server-side business logic resides here (this is the file we need to modify and write)
         ├── kitex_info.yaml
         ├── main.go    // Server startup function, typically used for resource initialization (can be modified)
