@@ -120,7 +120,7 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具，可以�
   namespace go hello.world
 
   service HelloService {
-      string Hello(1: string name);
+      string Hello(1: string name) (api.get="/hello");
   }
   ```
 
@@ -170,8 +170,8 @@ curl http://127.0.0.1:8888/ping
 namespace go hello.world
 
 service HelloService {
-    string Hello(1: string name);
-    string Bye(1: string name);
+    string Hello(1: string name) (api.get="/hello");
+    string Bye(1: string name) (api.get="/bye");
 }
 ```
 

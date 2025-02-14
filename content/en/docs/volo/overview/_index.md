@@ -53,7 +53,11 @@ We have also created an organization [Volo-rs](http://github.com/volo-rs), any c
 
 ## Related Projects
 
-1. [Volo-rs](http://github.com/volo-rs)：The volo ecosystem which contains a lot of useful components.
-2. [Pilota](https://github.com/cloudwego/pilota)：A thrift and protobuf implementation in pure rust with high performance and extensibility.
-3. [Motore](https://github.com/cloudwego/motore)：Middleware abstraction layer powered by AFIT and RPITIT.
-4. [Metainfo](https://github.com/cloudwego/metainfo)：Transmissing metainfo across components.
+- [Volo-rs](http://github.com/volo-rs)：The volo ecosystem which contains a lot of useful components.
+- [Pilota](https://github.com/cloudwego/pilota)：A thrift and protobuf implementation in pure rust with high performance and extensibility.
+- [Motore](https://github.com/cloudwego/motore)：Middleware abstraction layer powered by AFIT and RPITIT.
+- [Metainfo](https://github.com/cloudwego/metainfo)：Transmissing metainfo across components.
+
+## Related Articles
+
+- [China's First Rust-based RPC Framework - Volo is Officially Open Source!](https://www.cloudwego.io/blog/2022/08/30/chinas-first-rust-based-rpc-framework-volo-is-officially-open-source/)

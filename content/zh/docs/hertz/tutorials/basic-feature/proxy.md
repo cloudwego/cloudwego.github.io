@@ -196,7 +196,7 @@ func main() {
     //...
     r.Use(func(ctx context.Context, c *app.RequestContext) {
         if c.Query("country") == "cn" {
-            proxy.ServeHTTP(c, ctx)
+            proxy.ServeHTTP(ctx, c)
             c.Response.Header.Set("key", "value")
             c.Abort()
         } else {

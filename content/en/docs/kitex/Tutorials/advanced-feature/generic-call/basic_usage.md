@@ -509,7 +509,7 @@ func main() {
     req.Header.Set("token", "1")
     customReq, err := generic.FromHTTPRequest(req) // Considering that businesses might use third-party HTTP requests, you can create your own conversion function
     // customReq *generic.HttpRequest
-    // Since the HTTP generic method is obtained from the HTTP request via BAM rules, it's okay to leave it empty
+    // Since the HTTP generic method is obtained from the HTTP request via [Thrift-HTTP Mapping's IDL Standards], it's okay to leave it empty
     resp, err := cli.GenericCall(ctx, "", customReq)
     realResp := resp.(*generic.HTTPResponse)
     realResp.Write(w) // Write back to ResponseWriter, used for HTTP gateway

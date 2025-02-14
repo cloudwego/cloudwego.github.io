@@ -1,7 +1,7 @@
 ---
 title: "Basic Auth"
 date: 2022-10-13
-weight: 2
+weight: 1
 keywords: ["HTTP", "Basic Auth"]
 description: "Hertz provides an implementation of Basic Auth."
 ---

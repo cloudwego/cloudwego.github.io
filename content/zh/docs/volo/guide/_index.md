@@ -1,6 +1,6 @@
 ---
 title: "Guide"
 linkTitle: "Guide"
-weight: 4
+weight: 6
 description: 项目使用指南。
 ---

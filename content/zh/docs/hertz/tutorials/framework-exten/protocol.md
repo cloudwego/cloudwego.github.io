@@ -192,7 +192,7 @@ func (m myServer) Serve(ctx context.Context, conn network.Conn) error {
    }()
    c.Request.SetMethod("GET")
    c.Request.SetRequestURI("/test")
-   m.ServeHTTP(c, ctx)
+   m.ServeHTTP(ctx, c)
    conn.WriteBinary([]byte("HTTP/1.1 200 OK\n" +
       "Server: hertz\n" +
       "Date: Sun, 29 May 2022 10:49:33 GMT\n" +

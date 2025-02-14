@@ -19,7 +19,7 @@ func AccessLog() app.HandlerFunc {
 		c.Next(ctx)
 		end := time.Now()
 		latency := end.Sub(start).Microseconds
-		hlog.CtxTracef(c, "status=%d cost=%d method=%s full_path=%s client_ip=%s host=%s",
+		hlog.CtxTracef(ctx, "status=%d cost=%d method=%s full_path=%s client_ip=%s host=%s",
 			c.Response.StatusCode(), latency,
 			c.Request.Header.Method(), c.Request.URI().PathOriginal(), c.ClientIP(), c.Request.Host())
 	}
@@ -99,71 +99,6 @@ LevelError
 LevelFatal
 ```
 
-## hlog prints the log and specifies the field of the log
-
-Taking zerolog as an example, such a function is implemented in zerolog:
-
-```go
-package main
-
-import (
-    "bytes"
-    "github.com/cloudwego/hertz/pkg/common/json"
-    hertzZerolog "github.com/hertz-contrib/logger/zerolog"
-)
-
-func main() {
-    b := &bytes.Buffer{}
-    l := hertzZerolog.New(hertzZerolog.WithField("service", "logging"))
-    l.SetOutput(b)
-
-    l.Info("foobar")
-
-    type Log struct {
-        Level   string `json:"level"`
-        Service string `json:"service"`
-        Message string `json:"message"`
-    }
-
-    log := &Log{}
-
-    err := json.Unmarshal(b.Bytes(), log)//log.service=="logging"
-}
-```
-
-However, such functions are not directly implemented in zap and logrus, and the original option needs to be added manually
-
-Take zap as an example:
-
-```go
-package main
-
-import (
-	"bytes"
-	"github.com/cloudwego/hertz/pkg/common/json"
-	hertzzap "github.com/hertz-contrib/logger/zap"
-	"go.uber.org/zap"
-)
-
-func main() {
-	b := &bytes.Buffer{}
-	l := hertzzap.NewLogger(hertzzap.WithZapOptions(zap.Fields(zap.String("service", "logging"))))
-	l.SetOutput(b)
-
-	l.Info("foobar")
-
-	type Log struct {
-		Level   string `json:"level"`
-		Service string `json:"service"`
-		Message string `json:"message"`
-	}
-
-	log := &Log{}
-
-	err := json.Unmarshal(b.Bytes(), log) //log.service=="logging"
-}
-```
-
 ## Mute engine error log
 
 In production environment, it may encounter errors like "error when reading request headers", which are often caused by the non-standard behavior of the client side. For the server, besides locating the specific client through its IP address and informing it to make improvements (if possible), there is not much that can be done. Therefore, Hertz provides a configuration that can be added during initialization to disable these logs.
@@ -171,13 +106,3 @@ In production environment, it may encounter errors like "error when reading requ
 ```go
 hlog.SetSilentMode(true)
 ```
-
-## Set trace
-
-The logger under hertz-contrib/logger does not have a direct trace function.
-
-You can refer to the logging section of the [Trace](/docs/hertz/tutorials/observability/open-telemetry/#logging) documentation.
-
-## Log Extension
-
-Currently, hlog supports the extended use of zap, logrus and zerolog. For details on log extension, [see](/docs/hertz/tutorials/framework-exten/log/).

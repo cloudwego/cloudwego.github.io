@@ -18,9 +18,9 @@ Sonic is an ultra-high performance golang json library, also see Sonic [README](
 
 The following are requirements to enable Sonic:
 
-- Go 1.16 or above
+- Go 1.17 or above
 - Linux / darwin OS / Windows
-- Amd64 CPU with AVX instruction set
+- Amd64 or Arm64 CPU
 
 Sonic automatically fallback to golang's `encoding/json` library when the above requirements have not been satisfied.
 

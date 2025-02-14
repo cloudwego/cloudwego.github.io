@@ -36,7 +36,7 @@ type Hertz struct {
 | WithStreamBody                    | false                      | If true, the body will be handled by stream processing                                                                                                                                                                                                                                                          |
 | WithNetwork                       | "tcp"                      | Set the network protocol, optional: tcp，udp，unix(unix domain socket)                                                                                                                                                                                                                                          |
 | WithExitWaitTime                  | 5s                         | Set the graceful exit time. the Server will stop connection establishment for new requests and set the Connection: Close header for each request after closing. When the set time is reached, Server will to be closed. the Server can be closed early when all connections have been closed                    |
-| WithTLS                           | nil                        | Configuring server tls capabilities, For detailed information, please refer to [TLS](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/)                                                                                                                                                                      |
+| WithTLS                           | nil                        | Configuring server tls capabilities, For detailed information, please refer to [TLS](/zh/docs/hertz/tutorials/basic-feature/tls/)                                                                                                                                                                      |
 | WithListenConfig                  | nil                        | Set the listener configuration. Can be used to set whether to allow reuse ports, etc.                                                                                                                                                                                                                           |
 | WithALPN                          | false                      | Whether to enable ALPN                                                                                                                                                                                                                                                                                          |
 | WithTracer                        | []interface{}{}            | Inject tracer implementation, if not inject Tracer, default: close.                                                                                                                                                                                                                                             |
@@ -133,7 +133,7 @@ The `Spin` function is used to run the Hertz server and can exit the service upo
 
 This function supports graceful shutdown of services. For detailed information on graceful shutdown, please refer to [graceful-shutdown](/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
 
-When using the function of [service_discovery](/docs/hertz/tutorials/service-governance/service_discovery/), `Spin` will register the service into the registry when it is started, and use `signalWaiter` to monitor service exceptions.
+When using the function of [service_discovery](/docs/hertz/tutorials/third-party/service_discovery/), `Spin` will register the service into the registry when it is started, and use `signalWaiter` to monitor service exceptions.
 
 Function Signature:
 
@@ -251,7 +251,7 @@ Hertz supports server streaming processing, including streaming read and streami
 
 > Note: Due to the different triggering modes between netpoll and go net, netpoll streaming is "pseudo" (due to LT triggering, data will be read into the buffer of the network library by the network library). In scenarios with large packets (such as uploading files), there may be memory issues, and it is recommended to use go net.
 
-### Streaming Write
+### Streaming Read
 
 Hertz Server supports streaming read request content.
 
@@ -280,7 +280,7 @@ func handler(ctx context.Context, c *app.RequestContext) {
 }
 ```
 
-### Streaming Read
+### Streaming Write
 
 Hertz Server supports streaming write responses.
 

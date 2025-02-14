@@ -6,47 +6,13 @@ keywords: ["Volo", "gRPC", "Tutorial", "Install"]
 description: "This document covers the preparation of the development environment, quick start and basic tutorials of Volo-gRPC."
 ---
 
-## Part 1. Install the CLI Tool
-
-Volo provides CLI tools of the same name for initializing projects, managing IDLs, and more.
-
-```bash
-cargo install volo-cli
-```
-
-> Make sure that the Rust version is >= 1.75.0
-
-Then run:
-
-```bash
-volo help
-```
-
-You should see something like the following:
-
-```bash
-USAGE:
-    volo [OPTIONS] <SUBCOMMAND>
-
-OPTIONS:
-    -h, --help       Print help information
-    -n, --entry-name <ENTRY_NAME>    The entry name, defaults to 'default'. [default: default]
-    -v, --verbose    Turn on the verbose mode.
-    -V, --version    Print version information
-
-SUBCOMMANDS:
-    help    Print this message or the help of the given subcommand(s)
-    idl     manage your idl
-    init    init your project
-```
-
-## Part 2. Create a gRPC Server
+## Part 1. Create a gRPC Server
 
 Volo-gRPC is an RPC framework so that the bottom layer requires two major functions: Serialization and Transport.
 
 IDL is short for `Interface Definition Language`.
 
-### 2.1 Why IDL
+### 1.1 Why IDL
 
 If we want to do RPC, we need to know what interface is for the server, what parameters to pass, and what the return value is,
 just like two people talking to each other, we need to make sure we are speaking the same language and doing the same thing.
@@ -55,7 +21,7 @@ At this time, we need to use IDL to specify the protocol for both sides, just li
 
 Protobuf IDL is a full-stack RPC solution for cross-language, the specific syntax can be seen in [protocol-buffers/docs/proto3](https://developers.google.com/protocol-buffers/docs/proto3).
 
-### 2.2 Write IDL
+### 1.2 Write IDL
 
 To create a gRPC project, we need to write a protobuf IDL first.
 
@@ -171,7 +137,7 @@ cargo run --bin server
 
 At this point, we have our server running!
 
-## Part 3. Create a Client
+## Part 2. Create a Client
 
 In the previous section, we wrote a server, now let's write a client and call the server.
 
@@ -255,7 +221,7 @@ Finally, we go back to the current directory and execute the following command, 
 cargo run --bin client
 ```
 
-## Part 4. Add a Middleware
+## Part 3. Add a Middleware
 
 Next, let's look at how to add middleware to Volo.
 
@@ -320,7 +286,7 @@ Server::new()
 
 At this point, it prints out how long the request took at the INFO log level.
 
-## Part 5. What's Next?
+## Part 4. What's Next?
 
 Congratulations, you've read this far! At this point, we've basically learned how to use Volo, and we're ready to use Volo to kick off our Rust journey
 
@@ -333,7 +299,7 @@ If there is a dire lack of components, you are welcomed to raise an issue in: ht
 In the meantime, welcome to join our Lark user group and share your experience with us about Volo.
 
 <div  align="center">
-<img src="/img/docs/feishu_group_volo.png" width = "400"  alt="Volo_feishu" />
+<img src="/img/docs/feishu_group_volo.png" width="400" alt="Volo_feishu" />
 </div>
 <br/><br/>
 

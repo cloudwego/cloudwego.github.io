@@ -23,7 +23,7 @@ type DescriptorProvider interface {
 
 该接口的使用在后文**基本使用**中介绍，此处仅需了解**如何创建**即可。
 
-目前 Kitex 提供了两种 IDL Provider 实现，使用者可以选择指定 IDL 路径，也可以选择传入 IDL 内容。当然也可以根据需求自行扩展 `generci.DescriptorProvider` 接口。
+目前 Kitex 提供了两种 IDL Provider 实现，使用者可以选择指定 IDL 路径，也可以选择传入 IDL 内容。当然也可以根据需求自行扩展 `generic.DescriptorProvider` 接口。
 
 ### 基于本地文件解析 IDL
 
@@ -505,7 +505,7 @@ func main() {
     req.Header.Set("token", "1")
     customReq, err := generic.FromHTTPRequest(req) // 考虑到业务有可能使用第三方 http request，可以自行构造转换函数
     // customReq *generic.HttpRequest
-    // 由于 http 泛化的 method 是通过 bam 规则从 http request 中获取的，所以填空就行
+    // 由于 http 泛化的 method 是通过[Thrift-HTTP 映射的 IDL 规范]从 http request 中获取的，所以填空就行
     resp, err := cli.GenericCall(ctx, "", customReq)
     realResp := resp.(*generic.HTTPResponse)
     realResp.Write(w) // 写回 ResponseWriter，用于 http 网关

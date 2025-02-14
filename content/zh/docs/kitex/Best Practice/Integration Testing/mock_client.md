@@ -26,8 +26,15 @@ Kitex mock 方式如下：
 
 找到 kitex_gen 目录下的 client，里面有对应的 client 接口，用 go mock 生成 mock client
 
+mac环境下：
+
 ```bash
 mockgen -source=kitex_gen/xxxx/xxxservice/client.go -destination=xxx/client_mock.go -package=xxx
+```
+
+windows环境下：
+```bash
+mockgen -source kitex_gen/xxxx/xxxservice/client.go -destination xxx/client_mock.go -package xxx
 ```
 
 该命令会生成 client_mock.go，在测试中使用即可：

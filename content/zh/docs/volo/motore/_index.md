@@ -1,7 +1,7 @@
 ---
 title: "Motore"
 linkTitle: "Motore"
-weight: 6
+weight: 7
 keywords: ["Motore", "AFIT", "RPITIT"]
 Description: Motore 是一个使用了 AFIT 和 RPITIT 特性的中间件抽象层。
 ---

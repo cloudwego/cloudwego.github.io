@@ -54,7 +54,7 @@ func main() {
 | WithMaxConnWaitTimeout            | 0s             | 等待空闲连接的最大时间                                                                                          |
 | WithKeepAlive                     | true           | 是否使用 keep-alive 连接，默认使用                                                                              |
 | WithClientReadTimeout             | 0s             | 完整读取响应（包括 body）的最大持续时间                                                                         |
-| WithTLSConfig                     | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/) |
+| WithTLSConfig                     | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls](/zh/docs/hertz/tutorials/basic-feature/tls/) |
 | WithDialer                        | network.Dialer | 设置指定的拨号器                                                                                                |
 | WithResponseBodyStream            | false          | 是否在流中读取 body，默认不在流中读取                                                                           |
 | WithDisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化，默认不禁用，如 cONTENT-lenGTH -> Content-Length                                           |
@@ -126,8 +126,8 @@ func main() {
 | WithReadTimeout    | 0s                      | 完整读取响应（包括 body）的最大持续时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                                  |
 | WithWriteTimeout   | 0s                      | HTTP 客户端的写入超时时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                                                |
 | WithRequestTimeout | 0s                      | 完整的 HTTP 请求的超时时间                                                                                                                   |
-| WithTag            | make(map[string]string) | 以 key-value 形式设置 tags 字段，配合服务发现使用，详情见 [WithTag](/zh/docs/hertz/tutorials/service-governance/service_discovery/#withtag)  |
-| WithSD             | false                   | 配合服务发现使用，传递 true 时，本次请求使用服务发现，详情见 [WithSD](/zh/docs/hertz/tutorials/service-governance/service_discovery/#withsd) |
+| WithTag            | make(map[string]string) | 以 key-value 形式设置 tags 字段，配合服务发现使用，详情见 [WithTag](/zh/docs/hertz/tutorials/third-party/service_discovery/#withtag)  |
+| WithSD             | false                   | 配合服务发现使用，传递 true 时，本次请求使用服务发现，详情见 [WithSD](/zh/docs/hertz/tutorials/third-party/service_discovery/#withsd) |
 
 示例代码：
 
@@ -581,13 +581,13 @@ Hertz 客户端支持通过服务发现寻找目标服务器。
 
 Hertz 支持自定义服务发现模块，更多内容可参考 [服务发现拓展](/zh/docs/hertz/tutorials/framework-exten/service_discovery/#服务发现扩展)。
 
-Hertz 目前已接入的服务发现中心相关内容可参考 [服务注册与发现](/zh/docs/hertz/tutorials/service-governance/service_discovery/)。
+Hertz 目前已接入的服务发现中心相关内容可参考 [服务注册与发现](/zh/docs/hertz/tutorials/third-party/service_discovery/)。
 
 ## TLS
 
 Hertz 客户端默认使用的网络库 netpoll 不支持 TLS，如果要配置 TLS 访问 https 地址，应该使用标准库。
 
-TLS 相关的配置信息可参考 [tls](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/)。
+TLS 相关的配置信息可参考 [tls](/zh/docs/hertz/tutorials/basic-feature/tls/)。
 
 示例代码：
 

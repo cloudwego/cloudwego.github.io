@@ -7,6 +7,7 @@ keywords: ["Monitoring Extension"]
 description: "Monitoring extension provided by Hertz."
 ---
 
+The framework itself does not have any monitoring points, but provides a `Tracer` interface.
 If you want to get more detailed monitoring data, e.g. message packet size, or want to adopt other data source, e.g. InfluxDB, you can implement the `Trace` interface according to your requirements and inject it by `WithTracer` Option.
 
 ```go

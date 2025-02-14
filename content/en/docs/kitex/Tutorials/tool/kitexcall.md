@@ -112,6 +112,7 @@ Output:
 - `-help` or `-h`: Outputs the usage instructions.
 - `-type` or `-t`: Specifies the IDL type: thrift or protobuf. It supports inference based on the IDL file type. The default is thrift..
 - `-idl-path` or `-p`: Specifies the path to the IDL file.
+- `-include-path`: Add a search path for the IDL. Multiple paths can be added and will be searched in the order they are added.
 - `-method` or `-m`: Required, specifies the method name in the format IDLServiceName/MethodName or just MethodName. When the server side has MultiService mode enabled, IDLServiceName must be specified, and the transport protocol must be TTHeader or TTHeaderFramed.
 - `-file` or `-f`: Specifies the input file path, which must be in JSON format.
 - `-data` or `-d`: Specifies the data to be sent, in JSON string format.
@@ -121,6 +122,7 @@ Output:
 - `-meta`: Specifies one-way metadata passed to the server. Multiple can be specified, in the format key=value.
 - `-meta-persistent`: Specifies persistent metadata passed to the server. Multiple can be specified, in the format key=value.
 - `-meta-backward`: Enables receiving backward metadata (Backward) returned by the server.
+- `-q`: Only output JSON response, no other information.
 - `-verbose` or `-v`: Enables verbose mode for more detailed output information.
 
 ### Detailed Description

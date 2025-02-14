@@ -61,7 +61,7 @@ func main() {
 | WithMaxConnWaitTimeout            | 0s             | maximum duration for waiting for a free connection.                                                                                                     |
 | WithKeepAlive                     | true           | determines whether use keep-alive connection, default use.                                                                                              |
 | WithClientReadTimeout             | 0s             | maximum duration for full response reading (including body).                                                                                            |
-| WithTLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/protocol/tls/). |
+| WithTLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/tls/). |
 | WithDialer                        | network.Dialer | specific dialer.                                                                                                                                        |
 | WithResponseBodyStream            | false          | determine whether read body in stream or not, default not read in stream.                                                                               |
 | WithDisableHeaderNamesNormalizing | false          | whether disable header names normalizing, default not disabled, for example, cONTENT-lenGTH -> Content-Length.                                          |
@@ -133,8 +133,8 @@ func main() {
 | WithReadTimeout    | 0s                      | The maximum duration of a complete read response (including body), **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**. |
 | WithWriteTimeout   | 0s                      | HTTP client write timeout, **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.                                         |
 | WithRequestTimeout | 0s                      | The timeout for a complete HTTP request.                                                                                                                                                                              |
-| WithTag            | make(map[string]string) | Set the tags field in the form of key-value, used in conjunction with service discovery, details can be found in [WithTag](/docs/hertz/tutorials/service-governance/service_discovery/#withtag).                      |
-| WithSD             | false                   | Used in conjunction with service discovery, this request uses service discovery when true is passed, details can be found in [WithSD](/docs/hertz/tutorials/service-governance/service_discovery/#withsd).            |
+| WithTag            | make(map[string]string) | Set the tags field in the form of key-value, used in conjunction with service discovery, details can be found in [WithTag](/docs/hertz/tutorials/third-party/service_discovery/#withtag).                      |
+| WithSD             | false                   | Used in conjunction with service discovery, this request uses service discovery when true is passed, details can be found in [WithSD](/docs/hertz/tutorials/third-party/service_discovery/#withsd).            |
 
 Sample Code:
 
@@ -595,7 +595,7 @@ The relevant content of the service discovery center that Hertz has currently ac
 
 The network library `netpoll` used by Hertz client by default does not support TLS. If you want to configure TLS to access https addresses, you should use the Standard library.
 
-For TLS related configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/protocol/tls/).
+For TLS related configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/tls/).
 
 Sample Code:
 
