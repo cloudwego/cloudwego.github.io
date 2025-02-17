@@ -2,7 +2,6 @@
 
 baseURL = "https://www.cloudwego.io"
 title = "CloudWeGo"
-googleAnalytics = "G-QYWRQRLPRM"
 
 enableRobotsTXT = true
 
@@ -14,6 +13,12 @@ defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
 # Useful when translating.
 enableMissingTranslationPlaceholders = true
+
+[services]
+  [services.disqus]
+    shortname = ''
+  [services.googleAnalytics]
+    id = "G-QYWRQRLPRM"
 
 #disableKinds = ["taxonomy", "taxonomyTerm"]
 [taxonomies]

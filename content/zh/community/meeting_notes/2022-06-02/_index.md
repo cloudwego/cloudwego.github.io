@@ -1,7 +1,7 @@
 ---
 title: CloudWeGo 社区会议 6.2
 linkTitle: CloudWeGo 社区会议 6.2
-date: 2022-6-2
+date: 2022-06-02
 weight: 7
 description: >
 ---

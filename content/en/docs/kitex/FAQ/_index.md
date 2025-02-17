@@ -1,7 +1,7 @@
 ---
 title: "FAQ"
 linkTitle: "FAQ"
-date: 2021-10-9
+date: 2021-10-09
 weight: 5
 keywords: ["Kitex", "HTTP", "Windows", "Thrift", "Q&A"]
 description: "Kitex Frequently Asked Questions and corresponding Answers."

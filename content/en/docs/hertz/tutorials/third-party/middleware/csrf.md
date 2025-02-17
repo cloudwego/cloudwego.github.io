@@ -1,6 +1,6 @@
 ---
 title: "CSRF"
-date: 2022-12-6
+date: 2022-12-06
 weight: 12
 keywords: ["CSRF", "cross-site request forgery attacks"]
 description: "Hertz provides CSRF middleware to help you prevent cross-site request forgery attacks."
