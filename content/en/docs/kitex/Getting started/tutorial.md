@@ -175,7 +175,7 @@ After generating the code, the project structure will look as follows:
     ├── item
     │   ├── build.sh   // Script for building the project (generally not to be changed)
     │   ├── handler.go // Server-side business logic resides here (this is the file we need to modify and write)
-    │   ├── kitex_info.yaml`
+    │   ├── kitex_info.yaml
     │   ├── main.go
     │   └── script
     │       └── bootstrap.sh
