@@ -1,6 +1,6 @@
 ---
 Description: Eino 是基于 Golang 的 AI 应用开发框架
-date: "2025-02-10"
+date: "2025-02-19"
 lastmod: ""
 linktitle: Eino
 menu:

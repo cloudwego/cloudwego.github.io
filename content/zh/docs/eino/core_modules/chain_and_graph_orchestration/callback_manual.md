@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-10"
+date: "2025-02-19"
 lastmod: ""
 tags: []
 title: 'Eino: Callback 用户手册'
@@ -416,16 +416,13 @@ func ComponentARun(ctx, inputA) {
 
 ### Handler 内读写 input & output
 
-Handler 内不建议修改 input / output。原因是：
+Input & output 在 graph 中流转时，是直接变量赋值。如下图所示，NodeA.Output, NodeB.Input, NodeC.Input, 以及各个 Handler 中拿到的 input & output，如果是结构体指针或 Map 等引用类型，则都是同一份数据。因此，无论在 Node 内还是 Handler 内，都不建议修改 Input & Output，会产生并发问题：即使同步情况下，Node B 和 Node C 有并发，导致内部的 handler1 和 handler2 有并发。存在异步处理逻辑时，并发的可能场景更多。
 
-- callbacks 类似单向的信息传递通道，component -> Handler。
-- 对 input / output 的修改，如果多个 handler 同时（异步）进行，有并发问题；如果先 copy 再修改，则失去了修改的意义，因为修改内容 component 内不可见。
+<a href="/img/eino/eino_callback_start_end_place.png" target="_blank"><img src="/img/eino/eino_callback_start_end_place.png" width="60%" /></a>
 
-在 Handler 内不能写 input / output 的前提下，一般情况下，在 Handler 内读 input / output 是并发安全的。一个特殊情况是上下游节点之间以 StreamReader 形式传递数据时，可能上游的 OnEndWithStreamOutput 还在异步处理流，下游的节点内部已经开始处理业务，这是 Handler 的异步处理与节点内部处理是并发的。这带来一个额外的要求：**组件实现内部，也不建议直接修改输入流中的数据，如果有修改后继续向下游输出的需求，需要先 copy，修改 copy 后的数据，再向下传递。**
+在流传递的场景，所有下游节点和 handler 中的输入流，都是 StreamReader.Copy(n) 得到的流，可相互独立的读取流。但是，流中的每个 chunk，是直接变量赋值，如果 chunk 是结构体指针或 Map 等引用类型，各个 Copy 后的流读到的是同一份数据。因此，在 Node 和 Handler 内，同样不建议修改流的 chunk，有并发问题。
 
-在满足这两个条件后，读就变成并发安全的了，因此 Handler 可以直接同步或异步读取 input / output 内的内容。
-
-总结起来：**无论是组件内部还是 Handler 内部，都不建议直接修改输入的业务信息。**
+<a href="/img/eino/eino_callback_stream_place.png" target="_blank"><img src="/img/eino/eino_callback_stream_place.png" width="100%" /></a>
 
 ### Handler 间传递信息
 
@@ -433,7 +430,7 @@ Handler 内不建议修改 input / output。原因是：
 
 不同 Handler 之间，没有执行顺序的保证，因此不建议通过上面的机制在不同 Handler 间传递信息。本质上是无法保证某一个 Handler 返回的 context，一定会进入下一个 Handler 的函数执行中。
 
-如果需要在不同 Handler 之间传递信息，建议的方式是在最外层的 context（如 graph 执行时传入的 context）中，设置一个全局的、请求维度的变量作为公共信息的存取空间，在各个 Handler 中按需读取和更新这个公共变量。在有 stream 的情况下，可能需要格外注意和保证这个公共变量的并发安全。
+如果需要在不同 Handler 之间传递信息，建议的方式是在最外层的 context（如 graph 执行时传入的 context）中，设置一个全局的、请求维度的变量作为公共信息的存取空间，在各个 Handler 中按需读取和更新这个公共变量。用户需要自行保证这个公共变量的并发安全。
 
 ### 流切记要 Close
 

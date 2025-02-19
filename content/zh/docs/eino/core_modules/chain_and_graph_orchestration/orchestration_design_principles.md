@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-23"
+date: "2025-02-19"
 lastmod: ""
 tags: []
 title: 'Eino: 编排的设计理念'
@@ -286,14 +286,20 @@ eino 的 Graph 类型对齐检查，会在 `err = graph.AddEdge("node1", "node2"
 
 ## 带有明确倾向性的设计选择
 
+### 外部变量只读原则
+
+Eino 的 Graph 中的数据在 Node、Branch、Handler 间流转时，一律是变量赋值，不是 Copy。当 Input 是引用类型，如 Struct 指针、map、slice 时，在 Node、Branch、Handler 内部对 Input 的修改，会对外部有副作用，可能导致并发问题。因此，Eino 遵循外部变量只读原则：Node、Branch、Handler 内部不对 Input 做修改，如需修改，先自行 Copy。
+
+这个原则对 StreamReader 中的 Chunk 同样生效。
+
 ### 扇入与合并
 
-**扇入**：多个上游的数据汇入到下游，一起作为下游的输入。需要明确定义多个上游的输出，如何**合并（Merge）**起来。Eino 的选择是，首先要求多个上游输出的**实际类型**必须相同。其次：
+**扇入**：多个上游的数据汇入到下游，一起作为下游的输入。需要明确定义多个上游的输出，如何**合并（Merge）**起来。Eino 的选择是，首先要求多个上游输出的**实际类型**必须相同且为 Map，且相互间 key 不可重复。其次：
 
-- 在非流式场景下，上游输出的实际类型必须为 Map，且相互间 key 不可重复。合并后成为一个 Map，包含所有上游的所有键值对。
-- 在流式场景下，将类型相同的多个上游 StreamReader 合并为一个 StreamReader。实际 Recv 时效果为随机选取。
+- 在非流式场景下，合并后成为一个 Map，包含所有上游的所有键值对。
+- 在流式场景下，将类型相同的多个上游 StreamReader 合并为一个 StreamReader。实际 Recv 时从效果为从多个上游 StreamReader 中公平读取。
 
-在 Workflow 中，也可能存在扇入，只是不一定是多个上游的整体输出做合并，而是多个上游各自的某个字段。将这些字段值取出后，实际 Merge 时依然遵循相同的规则：类型相同，非流式只能 Map，流式合并 Stream。
+Workflow 可以做到多个上游的输出字段映射到下游节点的不同字段。Eino 内部会将上游输出的 Struct 转换为 Map，因此 Merge 依然符合上面的规则。
 
 ### 流式处理
 
@@ -315,14 +321,20 @@ Eino 认为，组件应当只需要实现业务场景中真实的流式范式，
 
 ### 全局状态
 
-**State**：在 NewGraph 时以 option 方式传入一个 local state 结构体的 Gen Function。这个请求维度的全局状态在一次请求的各环节可读写使用。
+**State**：在 NewGraph 时通过 `compose.WithGenLocalState` 传入 State 的创建方法。这个请求维度的全局状态在一次请求的各环节可读写使用。
 
-以尽可能保证 State 的并发安全为目标，Eino 提供了 `StatePreHandler` 和  `StatePostHandler`，功能定位是：
+Eino 推荐用 `StatePreHandler` 和  `StatePostHandler`，功能定位是：
 
-- StatePreHandler：在每个节点执行前，并发安全的读写 State，以及按需修改节点的 Input。
-- StatePostHandler：在每个节点执行后，并发安全的读写 State，以及按需修改节点的 Output。
+- StatePreHandler：在每个节点执行前读写 State，以及按需替换节点的 Input。
+- StatePostHandler：在每个节点执行后读写 State，以及按需替换节点的 Output。
 
-StateHandler 局限于节点外部，只能通过对 Input 或 Output 的修改影响外界。为了能够影响节点内部的执行，Eino 提供了 `GetState[T](ctx)` 函数。这个函数不保证 State 的并发安全，因此建议**只读**。
+针对流式场景，使用对应的 `StreamStatePreHandler` 和 `StreamStatePostHandler`。
+
+这些 state handlers 位于节点外部，通过对 Input 或 Output 的修改影响节点，从而保证了节点的“状态无关”特性。
+
+如果需要在节点内部读写 State，Eino 提供了 `ProcessState[S any](ctx context.Context`**, **`handler func(context.Context`**, **`S) error) error` 函数。
+
+Eino 框架会在所有读写 State 的位置加锁。
 
 ### 回调注入
 
@@ -387,7 +399,6 @@ Eino 支持各种维度的 Call Option 分配方式：
 `NodeTriggerMode == AllPredecessor` 时，图以 dag 引擎执行，对应的拓扑结构是有向无环图。特点是：
 
 - 每个节点有确定的前序节点，当所有前序节点都完成后，本节点才具备运行条件。
-- 可以选择 eager 模式，此时没有 SuperStep 概念，每个节点完成后，都立即判断有哪些后序节点可运行，并第一时间运行。
 - 不支持 Branch，不支持图中有环，因为会打破“每个节点有确定的前序节点”这一假定。
 - 不需要手动对齐 SuperStep。
 

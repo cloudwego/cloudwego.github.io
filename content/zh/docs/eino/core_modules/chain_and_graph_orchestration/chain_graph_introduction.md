@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-02-19"
 lastmod: ""
 tags: []
 title: 'Eino: Chain/Graph 编排介绍'
@@ -294,7 +294,55 @@ func (l *loggerCallbacks) OnEndWithStreamOutput(ctx context.Context, info *callb
 }
 ```
 
-### State Graph
+### Graph with state
+
+Graph 可以有 graph 自身的“全局”状态，在创建 Graph 时传入 WithGenLocalState Option 开启此功能：
+
+```go
+// compose/generic_graph.go
+
+// type GenLocalState[S any] func(ctx **context**._Context_) (state S)
+
+func WithGenLocalState[S any](gls _GenLocalState_[S]) _NewGraphOption _{
+    // --snip--
+}
+```
+
+Add node 时添加 Pre/Post Handler 来处理 State：
+
+```go
+// compose/graph_add_node_options.go
+
+// type StatePreHandler[I, S any] func(ctx **context**._Context_, in I, state S) (I, error)
+// type StatePostHandler[O, S any] func(ctx **context**._Context_, out O, state S) (O, error)
+
+func WithStatePreHandler[I, S any](pre _StatePreHandler_[I, S]) _GraphAddNodeOpt _{
+    // --snip--
+}
+
+func WithStatePostHandler[O, S any](post _StatePostHandler_[O, S]) _GraphAddNodeOpt _{
+    // --snip--
+}
+```
+
+在 Node 内部，用 `ProcessState`，传入一个读写 State 的 函数：
+
+```go
+// flow/agent/react/react.go
+
+var msg *schema.Message
+err = compose.ProcessState[*state](ctx**, **func(_ context.Context**, **state *state) error {
+    for i := range msgs {
+       if msgs[i] != nil && msgs[i].ToolCallID == state.ReturnDirectlyToolCallID {
+          msg = msgs[i]
+          return nil
+       }
+    }
+    return nil
+})
+```
+
+完整使用例子：
 
 ```go
 package main

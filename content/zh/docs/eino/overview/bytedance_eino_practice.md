@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-10"
+date: "2025-02-19"
 lastmod: ""
 tags: []
 title: 字节跳动大模型应用 Go 开发框架 —— Eino 实践

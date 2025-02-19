@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-02-19"
 lastmod: ""
 tags: []
 title: Tool - DuckDuckGoSearch
@@ -49,39 +49,66 @@ package main
 
 import (
     "context"
-    
+    "encoding/json"
+    "fmt"
+    "log"
+
     "github.com/cloudwego/eino-ext/components/tool/duckduckgo"
     "github.com/cloudwego/eino-ext/components/tool/duckduckgo/ddgsearch"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // 初始化搜索工具
-    searchTool, err := duckduckgo.NewTool(ctx, &duckduckgo.Config{
-        Region:     ddgsearch.RegionWT,
-        MaxResults: 10,
-        SafeSearch: ddgsearch.SafeSearchOff,
-        TimeRange:  ddgsearch.TimeRangeAll,
-    })
+
+    // Create configuration
+    config := &duckduckgo.Config{
+       MaxResults: 3, // Limit to return 3 results
+       Region:     ddgsearch._RegionCN_,
+       DDGConfig: &ddgsearch.Config{
+          Timeout:    10,
+          Cache:      true,
+          MaxRetries: 5,
+       },
+    }
+
+    // Create search client
+    tool, err := duckduckgo.NewTool(ctx, config)
     if err != nil {
-        panic(err)
+       log.Fatal("Failed to create tool:", err)
     }
-    
-    // 准备搜索请求
-    request := &SearchRequest{
-        Query: "Golang concurrent programming",
-        Page:  1,
+
+    // Create search request
+    searchReq := &duckduckgo.SearchRequest{
+       Query: "Golang programming development",
+       Page:  1,
     }
-    
-    // 执行搜索
-    result, err := searchTool.Search(ctx, request)
+
+    jsonReq, err := json.Marshal(searchReq)
     if err != nil {
-        panic(err)
+       log.Fatal("Failed to marshal search request:", err)
     }
-    
-    // 处理搜索结果
-    println(result) // JSON 格式的搜索结果
+
+    // Execute search
+    resp, err := tool.InvokableRun(ctx, string(jsonReq))
+    if err != nil {
+       log.Fatal("Search failed:", err)
+    }
+
+    var searchResp duckduckgo.SearchResponse
+    if err := json.Unmarshal([]byte(resp), &searchResp); err != nil {
+       log.Fatal("Failed to unmarshal search response:", err)
+    }
+
+    // Print results
+    fmt.Println("Search Results:")
+    fmt.Println("==============")
+    for i, result := range searchResp.Results {
+       fmt.Printf("\n%d. Title: %s\n", i+1, result.Title)
+       fmt.Printf("   Link: %s\n", result.Link)
+       fmt.Printf("   Description: %s\n", result.Description)
+    }
+    fmt.Println("")
+    fmt.Println("==============")
 }
 ```
 
