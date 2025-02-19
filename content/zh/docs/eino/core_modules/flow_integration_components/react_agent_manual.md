@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-10"
+date: "2025-02-19"
 lastmod: ""
 tags: []
 title: 'Eino: React Agent 使用手册'
@@ -393,7 +393,7 @@ res, _ := r.Invoke(ctx, []*schema.Message{{Role: schema.User, Content: "hello"}}
 - 进入 `Tools` 节点，调用 查询餐厅 的 tool，并且得到结果，结果返回了 2 家海淀区的餐厅信息:
 
 ```json
-[{"id":"1001","name":"跳不动的E世界5F餐厅","place":"中关村E世界 5F, 左转进入","desc":"","score":3},{"id":"1002","name":"跳动的E世界地下餐厅","place":"中关村E世界-1F","desc":"","score":5}]
+[{"id":"1001","name":"老地方餐厅","place":"北京老胡同 5F, 左转进入","desc":"","score":3},{"id":"1002","name":"人间味道餐厅","place":"北京大世界商城-1F","desc":"","score":5}]
 ```
 
 - 得到 tool 的结果后，此时对话的 history 中包含了 tool 的结果，再次运行 `ChatModel`，大模型判断出需要再次调用另一个 ToolCall，用来查询餐厅有哪些菜品，注意，由于有两家餐厅，因此大模型返回了 2 个 ToolCall，如下：

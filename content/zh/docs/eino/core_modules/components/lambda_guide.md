@@ -54,7 +54,7 @@ type Transform[I, O, TOption any] func(ctx context.Context, input *schema.Stream
 - InvokableLambda
 
 ```go
-// input 和 output 为自定义的任意类型
+// input 和 output 类型为自定义的任何类型
 lambda := compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
     // some logic
 })

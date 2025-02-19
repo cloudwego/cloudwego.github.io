@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-02-19"
 lastmod: ""
 tags: []
 title: 'Eino: Chain/Graph 编排介绍'
@@ -295,6 +295,39 @@ func (l *loggerCallbacks) OnEndWithStreamOutput(ctx context.Context, info *callb
 ```
 
 ### State Graph
+
+StateGraph 额外支持了在节点间传递 State 的功能，在创建 Graph 时传入 WithGenLocalState Option 开启此功能：
+
+```go
+// compose/generic_graph.go
+
+// type GenLocalState[S any] func(ctx **context**._Context_) (state S)
+
+func WithGenLocalState[S any](gls _GenLocalState_[S]) _NewGraphOption _{
+    // --snip--
+}
+```
+
+Add node 时添加 Pre/Post Handler 来处理 State：
+
+```go
+// compose/graph_add_node_options.go
+
+// type StatePreHandler[I, S any] func(ctx **context**._Context_, in I, state S) (I, error)
+// type StatePostHandler[O, S any] func(ctx **context**._Context_, out O, state S) (O, error)
+
+func WithStatePreHandler[I, S any](pre _StatePreHandler_[I, S]) _GraphAddNodeOpt _{
+    // --snip--
+}
+
+func WithStatePostHandler[O, S any](post _StatePostHandler_[O, S]) _GraphAddNodeOpt _{
+    // --snip--
+}
+```
+
+TODO： GetState 使用说明，等 eager 模式确定后加入
+
+完整使用例子：
 
 ```go
 package main

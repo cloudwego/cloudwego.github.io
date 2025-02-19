@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-02-19"
 lastmod: ""
 tags: []
 title: 实现一个最简 LLM 应用
@@ -10,7 +10,7 @@ weight: 1
 本指南将帮助你快速上手使用 Eino 框架中的 ChatModel 构建一个简单的 LLM 应用。我们将通过实现一个"程序员鼓励师"的例子，来展示如何使用 ChatModel。
 
 > 💡
-> 本文中示例的代码片段详见：[flow/eino-examples/quickstart/chat](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat)
+> 本文中示例的代码片段详见：[eino-examples/quickstart/chat](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat)
 
 ## **ChatModel 简介**
 
@@ -195,7 +195,7 @@ func reportStream(sr *schema.StreamReader[*schema.Message]) {
 }
 ```
 
-完整实现参见：[flow/eino-examples/quickstart/chat/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat/main.go)
+完整实现参见：[eino-examples/quickstart/chat/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chat/main.go)
 
 ## **总结**
 

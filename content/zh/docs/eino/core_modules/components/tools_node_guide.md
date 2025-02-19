@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-22"
+date: "2025-02-19"
 lastmod: ""
 tags: []
 title: 'Eino: ToolsNode 使用说明'
@@ -149,7 +149,7 @@ chain.AppendToolsNode(toolsNode)
 
 // graph 中
 graph := compose.NewGraph[*schema.Message, []*schema.Message]()
-chain.AddToolsNode(toolsNode)
+graph.AddToolsNode(toolsNode)
 ```
 
 ## **Option 机制**
