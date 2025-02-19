@@ -418,7 +418,7 @@ func ComponentARun(ctx, inputA) {
 
 Input & output 在 graph 中流转时，是直接变量赋值。如下图所示，NodeA.Output, NodeB.Input, NodeC.Input, 以及各个 Handler 中拿到的 input & output，如果是结构体指针或 Map 等引用类型，则都是同一份数据。因此，无论在 Node 内还是 Handler 内，都不建议修改 Input & Output，会产生并发问题：即使同步情况下，Node B 和 Node C 有并发，导致内部的 handler1 和 handler2 有并发。存在异步处理逻辑时，并发的可能场景更多。
 
-<a href="/img/eino/eino_callback_start_end_place.png" target="_blank"><img src="/img/eino/eino_callback_start_end_place.png" width="100%" /></a>
+<a href="/img/eino/eino_callback_start_end_place.png" target="_blank"><img src="/img/eino/eino_callback_start_end_place.png" width="60%" /></a>
 
 在流传递的场景，所有下游节点和 handler 中的输入流，都是 StreamReader.Copy(n) 得到的流，可相互独立的读取流。但是，流中的每个 chunk，是直接变量赋值，如果 chunk 是结构体指针或 Map 等引用类型，各个 Copy 后的流读到的是同一份数据。因此，在 Node 和 Handler 内，同样不建议修改流的 chunk，有并发问题。
 
