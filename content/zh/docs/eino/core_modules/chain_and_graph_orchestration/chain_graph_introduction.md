@@ -294,9 +294,9 @@ func (l *loggerCallbacks) OnEndWithStreamOutput(ctx context.Context, info *callb
 }
 ```
 
-### State Graph
+### Graph with state
 
-StateGraph 额外支持了在节点间传递 State 的功能，在创建 Graph 时传入 WithGenLocalState Option 开启此功能：
+Graph 可以有 graph 自身的“全局”状态，在创建 Graph 时传入 WithGenLocalState Option 开启此功能：
 
 ```go
 // compose/generic_graph.go
@@ -325,7 +325,22 @@ func WithStatePostHandler[O, S any](post _StatePostHandler_[O, S]) _GraphAddNode
 }
 ```
 
-TODO： GetState 使用说明，等 eager 模式确定后加入
+在 Node 内部，用 `ProcessState`，传入一个读写 State 的 函数：
+
+```go
+// flow/agent/react/react.go
+
+var msg *schema.Message
+err = compose.ProcessState[*state](ctx**, **func(_ context.Context**, **state *state) error {
+    for i := range msgs {
+       if msgs[i] != nil && msgs[i].ToolCallID == state.ReturnDirectlyToolCallID {
+          msg = msgs[i]
+          return nil
+       }
+    }
+    return nil
+})
+```
 
 完整使用例子：
 
