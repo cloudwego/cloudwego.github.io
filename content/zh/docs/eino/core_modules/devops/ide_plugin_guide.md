@@ -17,6 +17,22 @@ weight: 1
 
 <a href="/img/eino/eino_dev_ability_introduction_page.png" target="_blank"><img src="/img/eino/eino_dev_ability_introduction_page.png" width="100%" /></a>
 
+## 插件安装版本依赖
+
+<table>
+<tr><td><strong>Plugin Version</strong></td><td><strong>Goland IDE Version</strong></td><td><strong>Eino-Ext/devops</strong> <strong> Version</strong></td></tr>
+<tr><td>1.0.7      </td><td>2023.2+</td><td>0.1.0</td></tr>
+<tr><td>1.0.6      </td><td>2023.2+</td><td>0.1.0</td></tr>
+<tr><td>1.0.5     </td><td>2023.2+</td><td>0.1.0</td></tr>
+<tr><td>1.0.4</td><td>2023.2+</td><td>0.1.0</td></tr>
+</table>
+
+**Plugin Version**：插件版本信息
+
+**Goland IDE Version**： goland ide 可支持的最小版本
+
+**Eino-Ext/devops  Version**： [eino-ext/devops](https://github.com/cloudwego/eino-ext/tree/main/devops) 调试模块对应的合适版本
+
 ## 安装插件
 
 <table><tbody><tr>
