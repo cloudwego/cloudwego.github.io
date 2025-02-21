@@ -3,7 +3,7 @@ Description: ""
 date: "2025-02-21"
 lastmod: ""
 tags: []
-title: 'Eino: Callback Mannual'
+title: 'Eino: Callback Manual'
 weight: 0
 ---
 
@@ -62,7 +62,7 @@ A Handler is a struct that implements the 5 methods above (corresponding to the 
 
 Each method also returns a new context: used for **passing information between different trigger timings** of the same Handler.
 
-If a Handler does not want to focus on all 5 trigger timings but only a subset, for example, just OnStart, it is recommended to use `NewHandlerBuilder().OnStartFn(...).Build()`. If it only wants to focus on specific components, such as ChatModel, it is recommended to use `NewHandlerHelper().ChatModel(...).Handler()`, which receives callbacks from only ChatModel and obtains a specific type of CallbackInput/CallbackOutput. See the section on “[Handler Implementation Methods](https://bytedance.larkoffice.com/wiki/MuDQwqoaFiP2bPkwIGYcURpfnQe#share-Qy8IdRhMooyYd6xXxKscc5CCnnb)” for details.
+If a Handler does not want to focus on all 5 trigger timings but only a subset, for example, just OnStart, it is recommended to use `NewHandlerBuilder().OnStartFn(...).Build()`. If it only wants to focus on specific components, such as ChatModel, it is recommended to use `NewHandlerHelper().ChatModel(...).Handler()`, which receives callbacks from only ChatModel and obtains a specific type of CallbackInput/CallbackOutput. See the section on “[Handler Implementation Methods](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)” for details.
 
 The order of triggering between different Handlers is **not** guaranteed.
 

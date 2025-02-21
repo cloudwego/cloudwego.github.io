@@ -8,7 +8,7 @@ menu:
         parent: Documentation
         weight: 6
 tags: []
-title: 'Eino: User Mannual'
+title: 'Eino: User Manual'
 weight: 6
 ---
 

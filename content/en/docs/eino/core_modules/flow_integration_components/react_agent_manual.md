@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-02-21"
 lastmod: ""
 tags: []
-title: 'Eino: React Agent Mannual'
+title: 'Eino: React Agent Manual'
 weight: 0
 ---
 

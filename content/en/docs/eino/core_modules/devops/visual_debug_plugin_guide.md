@@ -102,7 +102,7 @@ Supports Graph and Chain orchestration topology visualization.
 
 <a href="/img/eino/eino_debug_list_nodes_page.png" target="_blank"><img src="/img/eino/eino_debug_list_nodes_page.png" width="100%" /></a>
 
-### **Debugg From Any Node**
+### **Debug From Any Node**
 
 <a href="/img/eino/eino_debug_test_run_of_one_node_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_of_one_node_page.png" width="100%" /></a>
 
