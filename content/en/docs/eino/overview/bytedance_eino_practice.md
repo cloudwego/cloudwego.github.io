@@ -466,7 +466,15 @@ The following diagram is an application of the generated BuildEinoAgent function
 
 #### **Observation (optional)**
 
-If you specify LANGFUSE_PUBLIC_KEY and LANGFUSE_SECRET_KEY in the .env file during runtime, you can log in to the corresponding account on the Langfuse platform to view the trace details of the requests.
+##### APMPlus
+
+If you specify `APMPLUS_APP_KEY` in the .env file during runtime，you can log in to the corresponding account on the [Volcengine APMPlus](https://console.volcengine.com/apmplus-server") platformto view the trace and metrics details of the requests.
+
+<a href="/img/eino/apmplus_callback.gif" target="_blank"><img src="/img/eino/apmplus_callback.gif" width="100%" /></a>
+
+##### Langfuse
+
+If you specify `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY` in the .env file during runtime, you can log in to the corresponding account on the Langfuse platform to view the trace details of the requests.
 
 <a href="/img/eino/langfuse_callback.gif" target="_blank"><img src="/img/eino/langfuse_callback.gif" width="100%" /></a>
 

@@ -463,7 +463,15 @@ docker-compose up -d
 
 #### 观测(可选)
 
-如果在运行时，在 .env 文件中指定了 LANGFUSE_PUBLIC_KEY 和 LANGFUSE_SECRET_KEY，便可在 Langfuse 平台中，登录对应的账号，查看请求的 Trace 详情。
+##### APMPlus
+
+如果在运行时，在 .env 文件中指定了 `APMPLUS_APP_KEY`，便可在 [火山引擎APMPlus](https://console.volcengine.com/apmplus-server") 平台中，登录对应的账号，查看 Trace 以及 Metrics 详情。
+
+<a href="/img/eino/apmplus_callback.gif" target="_blank"><img src="/img/eino/apmplus_callback.gif" width="100%" /></a>
+
+##### Langfuse
+
+如果在运行时，在 .env 文件中指定了 `LANGFUSE_PUBLIC_KEY` 和 `LANGFUSE_SECRET_KEY`，便可在 Langfuse 平台中，登录对应的账号，查看请求的 Trace 详情。
 
 <a href="/img/eino/langfuse_callback.gif" target="_blank"><img src="/img/eino/langfuse_callback.gif" width="100%" /></a>
 

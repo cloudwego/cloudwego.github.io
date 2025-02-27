@@ -168,7 +168,7 @@ The design and development process of the Eino framework is rooted in two corner
 
 ### Tool Ecosystem
 
-Link tracing, debugging, and visualization are three important auxiliary tools for orchestration engines. Eino has built-in tracing callbacks and integrates with the Langfuse platform. It also provides IDE plugins that allow real-time visualization of orchestrated graphs while coding, debugging execution, and even quickly building graphs through UI drag-and-drop, which can be exported as Eino code.
+Link tracing, debugging, and visualization are three important auxiliary tools for orchestration engines. Eino has built-in tracing callbacks and integrates with the APMPlus and Langfuse platform. It also provides IDE plugins that allow real-time visualization of orchestrated graphs while coding, debugging execution, and even quickly building graphs through UI drag-and-drop, which can be exported as Eino code.
 
 ## Quick Start
 
