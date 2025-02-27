@@ -1,6 +1,6 @@
 <script
   async
-  src="https://www.googletagmanager.com/gtag/js?id={{ .Site.GoogleAnalytics }}"
+  src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Config.Services.GoogleAnalytics.ID }}"
 ></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -9,5 +9,5 @@
   }
   gtag('js', new Date());
 
-  gtag('config', '{{ .Site.GoogleAnalytics }}');
+  gtag('config', '{{ .Site.Config.Services.GoogleAnalytics.ID }}');
 </script>

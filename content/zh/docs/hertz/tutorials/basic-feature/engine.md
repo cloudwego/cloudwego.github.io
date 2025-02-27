@@ -36,7 +36,7 @@ type Hertz struct {
 | WithStreamBody                    | false                      | 如果开启，则会使用流式处理 body                                                                                                                                                                                                 |
 | WithNetwork                       | "tcp"                      | 设置网络协议，可选：tcp，udp，unix（unix domain socket），默认为 tcp                                                                                                                                                            |
 | WithExitWaitTime                  | 5s                         | 设置优雅退出时间。Server 会停止建立新的连接，并对关闭后的每一个请求设置 Connection: Close 的 header，当到达设定的时间关闭 Server。当所有连接已经关闭时，Server 可以提前关闭                                                     |
-| WithTLS                           | nil                        | 配置 server tls 能力，详情可见 [TLS](/zh/docs/hertz/tutorials/basic-feature/protocol/tls/)                                                                                                                                      |
+| WithTLS                           | nil                        | 配置 server tls 能力，详情可见 [TLS](/zh/docs/hertz/tutorials/basic-feature/tls/)                                                                                                                                      |
 | WithListenConfig                  | nil                        | 设置监听器配置，可用于设置是否允许 reuse port 等                                                                                                                                                                                |
 | WithALPN                          | false                      | 是否开启 ALPN                                                                                                                                                                                                                   |
 | WithTracer                        | []interface{}{}            | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭                                                                                                                                                                                |
@@ -132,7 +132,7 @@ func (h *Hertz) SetCustomSignalWaiter(f func(err chan error) error)
 
 该函数支持服务的优雅退出，优雅退出的详细内容请看 [优雅退出](/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)。
 
-在使用 [服务注册发现](/zh/docs/hertz/tutorials/service-governance/service_discovery/) 的功能时，`Spin` 会在服务启动时将服务注册进入注册中心，并使用 `signalWaiter` 监测服务异常。
+在使用 [服务注册发现](/zh/docs/hertz/tutorials/third-party/service_discovery/) 的功能时，`Spin` 会在服务启动时将服务注册进入注册中心，并使用 `signalWaiter` 监测服务异常。
 
 函数签名：
 

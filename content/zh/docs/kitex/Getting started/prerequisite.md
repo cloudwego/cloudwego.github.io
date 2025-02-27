@@ -16,7 +16,7 @@ Kitex 作为一款 Golang 微服务 RPC 框架，需要准备的环境包括**�
 **Go**（又称**Golang**）是 Google 开发的一种静态强类型、编译型、并发型，并具有垃圾回收功能的编程语言。
 
 - Go 语言的环境准备参考 [Golang 安装](https://go.dev/doc/install)
-- 推荐使用最新版本的 Golang，我们保证最新三个正式版本的兼容性(现在 >= **v1.17**)。
+- 推荐使用最新版本的 Golang，我们保证最新三个正式版本的兼容性(现在 >= **v1.18**)。
 - 确保打开 go mod 支持 (Golang >= 1.15时，默认开启)
 - 在 Windows 环境使用，需要 kitex 版本 >= v0.5.2
 
@@ -41,24 +41,13 @@ go env -w GOPROXY=https://goproxy.cn
 
 Kitex 中使用到的代码生成工具包括 IDL 编译器与 kitex tool。了解更多有关代码生成工具的内容，参见[代码生成](/zh/docs/kitex/tutorials/code-gen/)
 
-### IDL 编译器
+### IDL 编译器 (Thrift 可跳过)
 
 IDL 编译器能够解析 IDL 并生成对应的序列化和反序列化代码，Kitex 支持 Thrift 和 protobuf 这两种 IDL，这两种 IDL 的解析分别依赖于 thriftgo 与 protoc。
 
-在快速开始章节中，我们使用到 Thrift IDL，故需要安装 thriftgo，执行以下命令即可：
+- thrift 依赖的 thriftgo 在 安装 kitex 工具的时候会安装（最新版本会去掉对 thriftgo 的依赖），**无需手动安装**
+- protobuf 编译器安装可见 [protoc](https://github.com/protocolbuffers/protobuf/releases)。
 
-```bash
-go install github.com/cloudwego/thriftgo@latest
-```
-
-protobuf 编译器安装可见 [protoc](https://github.com/protocolbuffers/protobuf/releases)。
-
-安装成功后，执行 `thriftgo --version` 可以看到具体版本号的输出（版本号有差异，以 x.x.x 示例）：
-
-```bash
-$ thriftgo --version
-thriftgo x.x.x
-```
 
 ### kitex tool
 

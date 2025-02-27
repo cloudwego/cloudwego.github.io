@@ -1,7 +1,7 @@
 ---
 title: CloudWeGo 社区会议 11.3
 linkTitle: CloudWeGo 社区会议 11.3
-date: 2022-11-3
+date: 2022-11-03
 weight: 16
 description: >
 ---

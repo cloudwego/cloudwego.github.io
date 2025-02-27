@@ -23,13 +23,13 @@ Kitex 为 Protobuf 封装了更高效的传输协议，并提供了一种自定�
 #### 客户端
 
 ```sh
-kitex -type protobuf -I idl/ idl/${proto_name}.proto
+kitex -I idl/ idl/${idl_name}.proto
 ```
 
 #### 服务端
 
 ```sh
-kitex -type thrift -service ${service_name} ${idl_name}.thrift
+kitex -service ${service_name} -I idl/ idl/${idl_name}.proto
 ```
 
 ### 使用 gRPC 作为传输协议

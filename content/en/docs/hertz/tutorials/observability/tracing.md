@@ -42,12 +42,3 @@ type HTTPStats interface {
 ```
 
 Hertz supports flexible enabling of basic and fine-grained instrumentation. For more details, please refer to [Instrumentation](../instrumentation).
-
-The hertz-contrib provides the extension methods for [opentracing](https://opentracing.io/) and [opentelemetry](https://opentelemetry.io), and the hertz-examples also provide the [opentracing example](https://github.com/cloudwego/hertz-examples/tree/main/tracer) and [opentelemetry example](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry).
-
-Related repositories:
-
-- [hertz opentelemetry](https://github.com/hertz-contrib/obs-opentelemetry/)
-- [hertz opentracing](https://github.com/hertz-contrib/tracer)
-
-> OpenTracing has been deprecated. For specific reasons, please refer to [Deprecating OpenTracing](https://github.com/opentracing/specification/issues/163). Unless there are specific reasons, it is recommended to use [Opentelemetry](../open-telemetry).

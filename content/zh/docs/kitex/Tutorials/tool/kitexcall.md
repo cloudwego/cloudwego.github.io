@@ -114,6 +114,7 @@ kitexcall -idl-path echo.thrift -m echo -d '{"message": "hello"}' -e 127.0.0.1:9
 - `-help` 或 `-h`：输出使用说明。
 - `-type` 或 `-t`：指定 IDL 类型：`thrift` 或 `protobuf`，支持通过 IDL 文件类型推测，默认是 `thrift`。
 - `-idl-path` 或 `-p`：指定 IDL 文件的路径。
+- `-include-path`：添加一个 IDL 里 include 的其他文件的搜索路径。支持添加多个，会按照添加的路径顺序搜索。
 - `-method` 或 `-m`：必选，指定方法名，格式为 `IDLServiceName/MethodName` 或仅为 `MethodName`。当 server 端开启了 MultiService 模式时，必须指定 `IDLServiceName`，同时指定传输协议为 TTHeader 或 TTHeaderFramed 。
 - `-file` 或 `-f`：指定输入文件路径，必须是 JSON 格式。
 - `-data` 或 `-d`：指定要发送的数据，格式为 JSON 字符串。
@@ -123,6 +124,7 @@ kitexcall -idl-path echo.thrift -m echo -d '{"message": "hello"}' -e 127.0.0.1:9
 - `-meta`：指定传递给 server 的单跳透传元信息。可以指定多个，格式为 key=value。
 - `-meta-persistent`：指定传递给 server 的持续透传元信息。可以指定多个，格式为 key=value。
 - `-meta-backward`：启用从服务器接收反向透传元信息。
+- `-q`: 只输出Json响应，不输出其他提示信息。
 - `-verbose` 或 `-v`：启用详细模式。
 
 ### 详细描述

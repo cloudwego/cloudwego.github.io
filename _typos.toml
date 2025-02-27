@@ -7,3 +7,4 @@ extend-exclude = ["*.json", "*.js", "static/*", "layouts/*", "assets/*", "i18n/*
 datas = "datas"
 mmaped = "mmaped"
 exten = "exten"
+invokable = "invokable"

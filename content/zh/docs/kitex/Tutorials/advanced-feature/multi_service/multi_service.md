@@ -13,7 +13,7 @@ description: Kitex 支持在一个 Server 上注册多个 Service 。
 
 目前，该功能适用于：
 
-- gRPC 传输协议，包括[基于 HTTP2 的Thrift Streaming](/zh/docs/kitex/tutorials/basic-feature/protocol/transport-streaming/thrift_streaming/) (也基于 gRPC) ( >= v0.8.0 )
+- gRPC 传输协议，包括[基于 HTTP2 的Thrift Streaming](/zh/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/thrift_streaming/) (也基于 gRPC) ( >= v0.8.0 )
 - Kitex Thrift 和 Protobuf (non-streaming) ( >= v0.9.0 )
 
 ## 使用方法

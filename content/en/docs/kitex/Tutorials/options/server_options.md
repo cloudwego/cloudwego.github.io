@@ -199,7 +199,7 @@ If the server has a proxy, such as Mesh Ingress, you can modify the listening ad
 func WithRegistryInfo(info *registry.Info) Option
 ```
 
-Customize the registration information reported by the service. [More](/docs/kitex/tutorials/service-governance/service_discovery/)
+Customize the registration information reported by the service. [More](/docs/kitex/tutorials/third-party/service_discovery/)
 
 ### WithGeneric
 
@@ -249,7 +249,7 @@ Set port reuse, that is, whether to enable the underlying TCP port multiplexing 
 func WithRegistry(r registry.Registry) Option
 ```
 
-Specify a Registry for service discovery registration reporting. [More](/docs/kitex/tutorials/service-governance/service_discovery/)
+Specify a Registry for service discovery registration reporting. [More](/docs/kitex/tutorials/third-party/service_discovery/)
 
 ### WithTracer
 
