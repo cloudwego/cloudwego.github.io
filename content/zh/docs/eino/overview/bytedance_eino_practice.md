@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-19"
+date: "2025-02-28"
 lastmod: ""
 tags: []
 title: 字节跳动大模型应用 Go 开发框架 —— Eino 实践
@@ -206,7 +206,7 @@ Eino 智能助手：根据用户请求，从知识库检索必要的信息并按
 
 先来一起看看「基于 Eino 搭建」起来的 Agent 助手能实现什么效果
 
-<video src="/img/eino/einoagent_show.mp4" controls width="100%"></video>
+<iframe height="400px" width="100%" src="https://player.bilibili.com/player.html?autoplay=0&bvid=BV1VZNRenEDs&t=0.4" ></iframe>
 
 我们分两步来构建这个 Eino 智能助手：
 
@@ -387,12 +387,12 @@ docker-compose up -d
 
 #### 可视化开发
 
-<video src="/img/eino/einoagent.mp4" controls width="100%"></video>
+<iframe height="400px" width="100%" src="https://player.bilibili.com/player.html?autoplay=0&bvid=BV15ZNRenEUf&t=1.2" ></iframe>
 
 1. 打开 EinoDev 插件，进入到 Eino Workflow 页面，新建一张画布
 
    - Graph Name: EinoAgent
-   - Node Trigger Mode: 任意前驱节点结束后出发
+   - Node Trigger Mode: 任意前驱节点结束后触发
    - Input Type Name: *UserMessage
    - Input Package Path: ""
    - Output Type Name: *schema.Message
@@ -463,7 +463,15 @@ docker-compose up -d
 
 #### 观测(可选)
 
-如果在运行时，在 .env 文件中指定了 LANGFUSE_PUBLIC_KEY 和 LANGFUSE_SECRET_KEY，便可在 Langfuse 平台中，登录对应的账号，查看请求的 Trace 详情。
+##### APMPlus
+
+如果在运行时，在 .env 文件中指定了 `APMPLUS_APP_KEY`，便可在 [火山引擎 APMPlus](https://console.volcengine.com/apmplus-server%22) 平台中，登录对应的账号，查看 Trace 以及 Metrics 详情。
+
+<a href="/img/eino/OyVRbGvfSoO4VGxBMZrcBhUonxf.png" target="_blank"><img src="/img/eino/OyVRbGvfSoO4VGxBMZrcBhUonxf.png" width="100%" /></a>
+
+##### Langfuse
+
+如果在运行时，在 .env 文件中指定了 `LANGFUSE_PUBLIC_KEY` 和 `LANGFUSE_SECRET_KEY`，便可在 Langfuse 平台中，登录对应的账号，查看请求的 Trace 详情。
 
 <a href="/img/eino/langfuse_callback.gif" target="_blank"><img src="/img/eino/langfuse_callback.gif" width="100%" /></a>
 
