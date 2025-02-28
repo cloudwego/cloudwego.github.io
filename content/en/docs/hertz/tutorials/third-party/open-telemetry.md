@@ -176,3 +176,9 @@ func main() {
 ## Full Examples
 
 For a full usage: [example](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry)
+
+## More
+### Compile-time instrumentation
+If you don't want to use open-telemetry through sdk, you can also use open-telemetry's official recommended compile-time instrumentation, which allows users to automatically use open-telemetry without modifying the source code, related links:
+1. [open-telemetry official project link](https://github.com/open-telemetry/opentelemetry-go-compile-instrumentation)
+2. [open-telemetry official technical blog](https://opentelemetry.io/blog/2025/go-compile-time-instrumentation)
