@@ -36,7 +36,7 @@ weight: 1
 
 **Eino-Ext/devops  Version**： [eino-ext/devops](https://github.com/cloudwego/eino-ext/tree/main/devops) 调试模块对应的合适版本
 
-## 外部安装
+## 安装
 
 ### GoLand
 
@@ -53,47 +53,8 @@ weight: 1
 
 <a href="/img/eino/ShsgbSyfZoUtvBxglCYc0dOKnbb.png" target="_blank"><img src="/img/eino/ShsgbSyfZoUtvBxglCYc0dOKnbb.png" width="100%" /></a>
 
-### GoLand
-
-<table><tbody><tr>
-<td>1. 进入 <strong>GoLand</strong>，配置插件源
-   1. 进入<strong>GoLand</strong>，点击<strong>设置</strong>
-
-```
-  <a href="/img/eino/eino_debug_ide_settings_button.png" target="_blank"><img src="/img/eino/eino_debug_ide_settings_button.png" width="100%" /></a>
-```
-
-2. 进入<strong>插件</strong>，选择<strong>管理插件仓库</strong>
-
-   <a href="/img/eino/eino_debug_ide_manage_plguin_button.png" target="_blank"><img src="/img/eino/eino_debug_ide_manage_plguin_button.png" width="100%" /></a>
-3. 点击「+」，填入<strong>[https://fornax.bytedance.net/api/fe-plugin/jet-brains.xml](https://fornax.bytedance.net/api/fe-plugin/jet-brains.xml)</strong>，点击确定
-
-   <a href="/img/eino/CizUbCRP4oMhmGxHXbdcDKdPnZc.png" target="_blank"><img src="/img/eino/CizUbCRP4oMhmGxHXbdcDKdPnZc.png" width="100%" /></a>
-
-</td><td>1. 在 <strong>Marketplace </strong>中搜索<strong> Eino Dev</strong> 插件并安装
-<a href="/img/eino/Jfz7bnL3SoPKPZxkO1Rci0hQnis.png" target="_blank"><img src="/img/eino/Jfz7bnL3SoPKPZxkO1Rci0hQnis.png" width="100%" /></a>
-
-</td></tr></tbody></table>
-
-### VS Code
-
-> 二选一
-
-<table><tbody><tr>
-<td>
-<strong>｜</strong>方法一
-前置：已安装「Byte Gallery」插件。搜索「Eino Dev」并安装。
-<a href="/img/eino/EfnOb1BnBoitoix6KjWcLkpQnbg.png" target="_blank"><img src="/img/eino/EfnOb1BnBoitoix6KjWcLkpQnbg.png" width="100%" /></a>
-</td><td>
-<strong>｜</strong>方法二
-访问：<a href="https://ide.byted.org/extensions/extension/byted-flow-devops/flow-devops-vscode-eino">内网插件市场 - Eino Dev</a>，点击「INSTALL」
-<a href="/img/eino/HHsNb3tdnorMeVxXEK3c686tnpz.png" target="_blank"><img src="/img/eino/HHsNb3tdnorMeVxXEK3c686tnpz.png" width="100%" /></a>
-</td></tr></tbody></table>
-
-# 功能简介
-
 > 💡
-> **插件安装完毕**** ✅，接下来就可以体验插件提供的调试与编排能力了 ～**
+> **插件安装完毕** ✅，**接下来就可以体验插件提供的调试与编排能力了** ～
 
 <table><tbody><tr>
 <td><li>Goland</li>
