@@ -41,17 +41,19 @@ weight: 1
 ### GoLand
 
 <table><tbody><tr>
-<td>1. 进入 <strong>GoLand</strong>，点击<strong>设置</strong>，选择<strong> </strong><strong>Plugin</strong><strong>s</strong>
+<td><li>进入 <strong>GoLand</strong>，点击<strong>设置</strong>，选择<strong> </strong><strong>Plugin</strong><strong>s</strong></li>
 <a href="/img/eino/eino_install_page.png" target="_blank"><img src="/img/eino/eino_install_page.png" width="100%" /></a>
-</td><td>1. 在 <strong>Marketplace</strong><strong> </strong>中搜索<strong> </strong><strong>Eino</strong><strong> Dev</strong> 插件并安装
+</td><td><li>在 <strong>Marketplace</strong><strong> </strong>中搜索<strong> </strong><strong>Eino</strong><strong> Dev</strong> 插件并安装</li>
 <a href="/img/eino/eino_install_page_2_page.png" target="_blank"><img src="/img/eino/eino_install_page_2_page.png" width="100%" /></a>
 </td></tr></tbody></table>
 
 ### VS Code
 
-在 VS Code 中点击「Extension 图标」，进入插件市场，搜索 Eino Dev，安装即可
+- 在 VS Code 中点击「Extension 图标」，进入插件市场，搜索 Eino Dev，安装即可
 
 <a href="/img/eino/ShsgbSyfZoUtvBxglCYc0dOKnbb.png" target="_blank"><img src="/img/eino/ShsgbSyfZoUtvBxglCYc0dOKnbb.png" width="100%" /></a>
+
+# 功能简介
 
 > 💡
 > **插件安装完毕** ✅，**接下来就可以体验插件提供的调试与编排能力了** ～
