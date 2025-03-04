@@ -81,6 +81,18 @@ url = "https://space.bilibili.com/3494360534485730/channel/collectiondetail?sid=
 weight = 60
 parent = "社区"
 
+  [[languages.zh.menu.main]]
+      name = "[new]企业级解决方案"
+      identifier = "business_solution"
+      weight = 45
+
+  [[languages.zh.menu.main]]
+      name = "可观测解决方案"
+      url = "https://www.volcengine.com/docs/6431/1469323"
+      weight = 10
+      parent = "business_solution"
+      params = { target = "_blank", rel = "noopener noreferrer" }
+
 [languages.zh.params]
 description = "A leading practice for building enterprise cloud native middleware!"
 

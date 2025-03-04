@@ -174,7 +174,10 @@ func main() {
 完整的使用示例详见 [example](https://github.com/cloudwego/hertz-examples/tree/main/opentelemetry)
 
 ## 更多
+
 ### 编译时注入
-如果您不想通过sdk的方式接入open-telemetry，您还可以使用open-telemetry官方推荐的编译时注入方案，该方案可以使得用户在不修改源代码的前提下自动接入open-telemetry，相关链接：
-1. [open-telemetry官方项目链接](https://github.com/open-telemetry/opentelemetry-go-compile-instrumentation)
-2. [open-telemetry官方技术博客](https://opentelemetry.io/blog/2025/go-compile-time-instrumentation)
+
+如果您不想通过 sdk 的方式接入 open-telemetry，您还可以使用 open-telemetry 官方推荐的编译时注入方案，该方案可以使得用户在不修改源代码的前提下自动接入 open-telemetry，相关链接：
+
+1. [open-telemetry 官方项目链接](https://github.com/open-telemetry/opentelemetry-go-compile-instrumentation)
+2. [open-telemetry 官方技术博客](https://opentelemetry.io/blog/2025/go-compile-time-instrumentation)
