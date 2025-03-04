@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-03-04"
 lastmod: ""
 tags: []
 title: Bytedance LLM Application Go Development Framework-Eino Practice
@@ -204,7 +204,7 @@ This article primarily presents a demo sample; users can replace their knowledge
 
 First, let's see what kind of effects can be achieved with an Agent assistant built on Eino.
 
-<video src="/img/eino/einoagent_show.mp4" controls width="100%"></video>
+<iframe height="400px" width="100%" src="https://player.bilibili.com/player.html?autoplay=0&bvid=BV1VZNRenEDs&t=0" ></iframe>
 
 We will construct this Eino Smart Assistant in two steps:
 
@@ -385,10 +385,8 @@ Continue using the Redis Stack started in the "Index Knowledge Base" section
 
 #### Visual Development
 
-<video src="/img/eino/einoagent.mp4" controls width="100%"></video>
-
+<iframe height="400px" width="100%" src="https://player.bilibili.com/player.html?autoplay=0&bvid=BV15ZNRenEUf&t=0" ></iframe>
 1. Open the EinoDev plugin, navigate to the Eino Workflow page, and create a new canvas.
-
    - Graph Name: EinoAgent
    - Node Trigger Mode: Trigger after any predecessor node finishes
    - Input Type Name: *UserMessage
@@ -397,22 +395,20 @@ Continue using the Redis Stack started in the "Index Knowledge Base" section
    - Output Import Path: github.com/cloudwego/eino/schema
    - Leave other fields blank
 2. According to the process description in the previous section "**Eino Agent**", select the component library needed from Eino Workflow. The following components are used in this document:
-
    - lambda: Converts any developer function func(ctx context.Context, input I) (output O, err error), into an orchestrable node. In EinoAgent, there are two conversion scenarios:
-     - Converts *UserMessage messages into a map[string]any node for ChatTemplate
-     - Converts *UserMessage into the input query for RedisRetriever
+      - Converts *UserMessage messages into a map[string]any node for ChatTemplate
+      - Converts *UserMessage into the input query for RedisRetriever
    - retriever/redis
-     - Retrieves and returns context related to the user Query based on semantic relevance from the Redis Vector Database, in the form of schema.Document List.
+      - Retrieves and returns context related to the user Query based on semantic relevance from the Redis Vector Database, in the form of schema.Document List.
    - prompt/chatTemplate
-     - Constructs a Prompt template using string literals, supporting text and message placeholders, and converts any map[string]any input into a Message List that can be directly input into the model.
+      - Constructs a Prompt template using string literals, supporting text and message placeholders, and converts any map[string]any input into a Message List that can be directly input into the model.
    - flow/agent/react
-     - Based on the ChatModel provided by the developer and callable toolsets, automatically decides the next Action in response to user queries until a final answer can be generated.
+      - Based on the ChatModel provided by the developer and callable toolsets, automatically decides the next Action in response to user queries until a final answer can be generated.
    - model/ark
-     - The Ark platform provides LLMs capable of completing conversational texts, such as the Doubao model. This acts as a dependency injection for the ReAct Agent.
+      - The Ark platform provides LLMs capable of completing conversational texts, such as the Doubao model. This acts as a dependency injection for the ReAct Agent.
    - Callable tool list
-     - Internet search tool (DuckDuckGo), EinoTool, GitClone, TaskManager, OpenURL
+      - Internet search tool (DuckDuckGo), EinoTool, GitClone, TaskManager, OpenURL
 3. Arrange the selected components according to the desired topology. After arranging, click "Generate Code" to the specified directory.
-
    - In this example, the code for the "**Eino Agent**" is generated to: eino/einoagent
    - This example can quickly be constructed by copying the Graph Schema from eino/eino_agent.json
       <table><tbody><tr>
@@ -421,6 +417,7 @@ Continue using the Redis Stack started in the "Index Knowledge Base" section
       </td><td>
             <a href="/img/eino/eino_practice_agent_graph_codes.png" target="_blank"><img src="/img/eino/eino_practice_agent_graph_codes.png" width="100%" /></a>
       </td></tr></tbody></table>
+
 4. Complete the construction functions for each component as needed, adding the required configuration content when creating component instances in the construction functions.
 
    <table><tbody><tr>
@@ -466,7 +463,15 @@ The following diagram is an application of the generated BuildEinoAgent function
 
 #### **Observation (optional)**
 
-If you specify LANGFUSE_PUBLIC_KEY and LANGFUSE_SECRET_KEY in the .env file during runtime, you can log in to the corresponding account on the Langfuse platform to view the trace details of the requests.
+##### APMPlus
+
+If you specify `APMPLUS_APP_KEY` in the .env file during runtime，you can log in to the corresponding account on the [Volcengine APMPlus](https://console.volcengine.com/apmplus-server%22) platform to view the trace and metric details of the requests.
+
+<a href="/img/eino/callback_apmplus.gif" target="_blank"><img src="/img/eino/callback_apmplus.gif" width="100%" /></a>
+
+##### Langfuse
+
+If you specify `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY` in the .env file during runtime, you can log in to the corresponding account on the Langfuse platform to view the trace details of the requests.
 
 <a href="/img/eino/langfuse_callback.gif" target="_blank"><img src="/img/eino/langfuse_callback.gif" width="100%" /></a>
 
