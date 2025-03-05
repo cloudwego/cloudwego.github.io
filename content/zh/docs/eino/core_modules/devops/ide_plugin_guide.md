@@ -11,7 +11,7 @@ weight: 1
 
 > [Eino: 概述](/zh/docs/eino/overview)
 
-**Eino 是 Go AI 集成组件的研发框架，**提供常用的 AI **组件**以及集成组件**编排**能力。为了更好的辅助开发者使用 Eino，我们提供了「Eino Dev」插件，助力 AI 应用高效开发**  🚀。**
+**Eino 是 Go AI 集成组件的研发框架**，提供常用的 **AI 组件**以及集成组件**编排能力**。为了更好的辅助开发者使用 Eino，我们提供了「**Eino Dev**」插件，助力 AI 应用高效开发  🚀。
 
 <a href="/img/eino/eino_dev_ability_introduction_page.png" target="_blank"><img src="/img/eino/eino_dev_ability_introduction_page.png" width="100%" /></a>
 
