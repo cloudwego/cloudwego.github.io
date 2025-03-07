@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-04"
+date: "2025-03-07"
 lastmod: ""
 tags: []
 title: EinoDev IDE Plugin Introduction
@@ -52,7 +52,7 @@ weight: 1
 
 - In VS Code, click on the "Extensions icon" to enter the extension marketplace. Search for EinoDev and install it.
 
-   <a href="/img/eino/RFRLbVa7vocLNwxXXxQcxwtQnnh.png" target="_blank"><img src="/img/eino/RFRLbVa7vocLNwxXXxQcxwtQnnh.png" width="100%" /></a>
+   <a href="/img/eino/H7vbbB8Igoi380x8TCXcDCWznFg.png" target="_blank"><img src="/img/eino/H7vbbB8Igoi380x8TCXcDCWznFg.png" width="100%" /></a>
 
 > 💡
 > **After the plugin installation is completed, you can find the EinoDev debug plugin icon in the plugin list on the right side of the IDE. Now, you can experience the debugging and orchestration capabilities provided by the plugin.**
