@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-03-12"
 lastmod: ""
 tags: []
-title: 'Eino: Ecosystem'
+title: 'Eino: Component Integration'
 weight: 0
 ---
 
