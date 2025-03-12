@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-19"
+date: "2025-03-12"
 lastmod: ""
 tags: []
 title: 'Eino: Callback 用户手册'
@@ -189,7 +189,7 @@ Graph 会为内部所有的 Node 自动注入 RunInfo。机制是每个 Node 的
 
 ### 组件实现内部触发(Component Callback)
 
-在组件实现的代码中，调用 callbacks 包中的 `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), OnEndWithStreamInput()`。以 Ark 的 ChatModel 实现为例，在 Generate 方法中：
+在组件实现的代码中，调用 callbacks 包中的 `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), OnEndWithStreamOutput()`。以 Ark 的 ChatModel 实现为例，在 Generate 方法中：
 
 ```go
 func (cm *ChatModel) Generate(ctx context.Context, in []*schema.Message, opts ...fmodel.Option) (
