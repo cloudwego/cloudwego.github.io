@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-03-12"
 lastmod: ""
 tags: []
 title: 'Eino: ChatTemplate 使用说明'
@@ -18,6 +18,8 @@ Prompt 组件是一个用于处理和格式化提示模板的组件。它的主�
 ## **组件定义**
 
 ### **接口定义**
+
+> 代码位置：eino/components/prompt/interface.go
 
 ```go
 type ChatTemplate interface {
@@ -66,6 +68,11 @@ ChatTemplate 一般用于 ChatModel 之前做上下文准备的。
 ### **单独使用**
 
 ```go
+import (
+    "github.com/cloudwego/eino/components/prompt"
+    "github.com/cloudwego/eino/schema"
+)
+
 // 创建模板
 template := prompt.FromMessages(schema.FString,
     &schema.Message{
@@ -94,6 +101,12 @@ if err != nil {
 ### **在编排中使用**
 
 ```go
+import (
+    "github.com/cloudwego/eino/components/prompt"
+    "github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/compose"
+)
+
 // 在 Chain 中使用
 chain := compose.NewChain[map[string]any, []*schema.Message]()
 chain.AppendChatTemplate(template)
@@ -115,8 +128,17 @@ graph.AddChatTemplateNode("template_node", template)
 ### **Callback 使用示例**
 
 ```go
+import (
+    "context"
+
+    callbackHelper "github.com/cloudwego/eino/utils/callbacks"
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/components/prompt"
+)
+
 // 创建 callback handler
-handler := &prompt.CallbackHandler{
+handler := &callbackHelper.PromptCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *prompt.CallbackInput) context.Context {
         fmt.Printf("开始格式化模板，变量: %v\n", input.Variables)
         return ctx
@@ -128,7 +150,7 @@ handler := &prompt.CallbackHandler{
 }
 
 // 使用 callback handler
-helper := template.NewHandlerHelper().
+helper := callbackHelper.NewHandlerHelper().
     Prompt(handler).
     Handler()
 
@@ -147,6 +169,10 @@ result, err := runnable.Invoke(ctx, variables, compose.WithCallbacks(helper))
 若有需要，组件实现者可实现自定义 prompt option：
 
 ```go
+import (
+    "github.com/cloudwego/eino/components/prompt"
+)
+
 // 定义 Option 结构体
 type MyPromptOptions struct {
     StrictMode bool
@@ -170,6 +196,8 @@ func WithDefaultValues(values map[string]string) prompt.Option {
 ### **Callback 处理**
 
 Prompt 实现需要在适当的时机触发回调，以下结构是组件定义好的：
+
+> 代码位置：eino/components/prompt/callback_extra.go
 
 ```go
 // 定义回调输入输出

@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-01-20"
 lastmod: ""
 tags: []
-title: Tool
+title: ChatTemplate
 weight: 0
 ---
 

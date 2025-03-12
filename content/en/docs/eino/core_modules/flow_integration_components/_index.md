@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-03-12"
 lastmod: ""
 tags: []
-title: 'Eino: Flow integration components'
+title: 'Eino: Flow integration'
 weight: 0
 ---
 

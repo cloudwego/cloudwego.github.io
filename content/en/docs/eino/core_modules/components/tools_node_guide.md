@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-03-12"
 lastmod: ""
 tags: []
 title: 'Eino: ToolsNode guide'
@@ -21,6 +21,8 @@ The ToolsNode component is a module designed to extend the capabilities of a mod
 ### **Interface Definition**
 
 The Tool component provides three levels of interfaces:
+
+> Code Location: eino/compose/tool/interface.go
 
 ```go
 // Basic tool interface, provides tool information
@@ -73,6 +75,8 @@ type StreamableTool interface {
   - error: Errors encountered during the execution process
 
 ### **ToolInfo Struct**
+
+> Code Location：eino/schema/tool.go
 
 ```go
 type ToolInfo struct {
@@ -157,6 +161,8 @@ chain.AddToolsNode(toolsNode)
 Custom Tools can implement specific Options according to their needs:
 
 ```go
+import "github.com/cloudwego/eino/components/tool"
+
 // Define Option struct
 type MyToolOptions struct {
     Timeout time.Duration
@@ -166,7 +172,7 @@ type MyToolOptions struct {
 
 // Define Option function
 func WithTimeout(timeout time.Duration) tool.Option {
-    return tool.WrapToolImplSpecificOptFn(func(o *MyToolOptions) {
+    return tool.WrapImplSpecificOptFn(func(o *MyToolOptions) {
         o.Timeout = timeout
     })
 }
@@ -177,6 +183,15 @@ func WithTimeout(timeout time.Duration) tool.Option {
 ### **Callback Usage Example**
 
 ```go
+import (
+    "context"
+
+    callbackHelper "github.com/cloudwego/eino/utils/callbacks"
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/components/tool"
+)
+
 // Create callback handler
 handler := &callbackHelper.ToolCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *tool.CallbackInput) context.Context {

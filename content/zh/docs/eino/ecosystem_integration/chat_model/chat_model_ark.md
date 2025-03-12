@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-07"
+date: "2025-03-04"
 lastmod: ""
 tags: []
 title: ChatModel - ARK
@@ -41,15 +41,10 @@ model, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
     Stop:             []string{},  // 停止词
     FrequencyPenalty: &fp,        // 频率惩罚
     PresencePenalty:  &pp,        // 存在惩罚
-    RepetitionPenalty: &rp,       // 重复惩罚
-    N:                &n,         // 生成数量
     
     // 高级参数
-    ResponseFormat:    &format,    // 响应格式
     LogitBias:        map[string]int{}, // Token 偏置
-    LogProbs:         &logProbs,  // 是否返回概率
-    TopLogProbs:      &topLp,     // Top K 概率数量
-    User:             &user,      // 用户标识
+    CustomHeader:     map[string]string{}, // http custom header
 })
 ```
 
