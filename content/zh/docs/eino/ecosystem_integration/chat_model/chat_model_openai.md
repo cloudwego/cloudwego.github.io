@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-22"
+date: "2025-03-04"
 lastmod: ""
 tags: []
 title: ChatModel - OpenAI
