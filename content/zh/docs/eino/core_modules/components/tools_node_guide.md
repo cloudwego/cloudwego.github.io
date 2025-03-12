@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-19"
+date: "2025-03-12"
 lastmod: ""
 tags: []
 title: 'Eino: ToolsNode 使用说明'
@@ -21,6 +21,8 @@ ToolsNode 组件是一个用于扩展模型能力的组件，它允许模型调�
 ### **接口定义**
 
 Tool 组件提供了三个层次的接口：
+
+> 代码位置：eino/compose/tool/interface.go
 
 ```go
 // 基础工具接口，提供工具信息
@@ -73,6 +75,8 @@ type StreamableTool interface {
   - error：执行过程中的错误
 
 ### **ToolInfo 结构体**
+
+> 代码位置：eino/schema/tool.go
 
 ```go
 type ToolInfo struct {
@@ -157,6 +161,8 @@ graph.AddToolsNode(toolsNode)
 自定义 Tool 可根据自己需要实现特定的 Option：
 
 ```go
+import "github.com/cloudwego/eino/components/tool"
+
 // 定义 Option 结构体
 type MyToolOptions struct {
     Timeout time.Duration
@@ -166,7 +172,7 @@ type MyToolOptions struct {
 
 // 定义 Option 函数
 func WithTimeout(timeout time.Duration) tool.Option {
-    return tool.WrapToolImplSpecificOptFn(func(o *MyToolOptions) {
+    return tool.WrapImplSpecificOptFn(func(o *MyToolOptions) {
         o.Timeout = timeout
     })
 }
@@ -177,6 +183,15 @@ func WithTimeout(timeout time.Duration) tool.Option {
 ### **Callback 使用示例**
 
 ```go
+import (
+    "context"
+
+    callbackHelper "github.com/cloudwego/eino/utils/callbacks"
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/components/tool"
+)
+
 // 创建 callback handler
 handler := &callbackHelper.ToolCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *tool.CallbackInput) context.Context {

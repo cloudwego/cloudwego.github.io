@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-19"
+date: "2025-03-04"
 lastmod: ""
 tags: []
 title: 'Eino: React Agent 使用手册'
@@ -13,8 +13,6 @@ Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/) 的智
 
 > 💡
 > 代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)
-
-Example 代码路径：[https://github.com/cloudwego/eino-examples/blob/main/flow/agent/react/react.go](https://github.com/cloudwego/eino-examples/blob/main/flow/agent/react/react.go)
 
 ## 节点拓扑&数据流图
 
@@ -250,30 +248,31 @@ a, err = NewAgent(ctx, &AgentConfig{
 
 不同的模型在流式模式下输出工具调用的方式可能不同: 某些模型(如 OpenAI) 会直接输出工具调用；某些模型 (如 Claude) 会先输出文本，然后再输出工具调用。因此需要使用不同的方法来判断，这个字段用来指定判断模型流式输出中是否包含工具调用的函数。
 
-可选填写，未填写时使用首包是否包含工具调用判断。
+可选填写，未填写时使用首包是否包含工具调用判断：
 
 ```go
-agent, err := react.NewAgent(ctx, &react.AgentConfig{
-    Model: toolableChatModel,
-    ToolsConfig: tools,
-    StreamToolCallChecker: func(___ context.Context, _sr_ *schema.StreamReader[*schema.Message]) (bool, error) {
-        defer sr.Close()
+func firstChunkStreamToolCallChecker(___ context.Context, _sr_ *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
 
-        msg, err := sr.Recv()
-        if err != nil {
-            return false, err
-        }
-
-        if len(msg.ToolCalls) == 0 {
-            return false, nil
-        }
-
-        return true, nil
+    msg, err := sr.Recv()
+    if err != nil {
+        return false, err
     }
+
+    if len(msg.ToolCalls) == 0 {
+        return false, nil
+    }
+
+    return true, nil
 }
 ```
 
 部分模型流式输出工具调用时会先输出一段文本（比如 Claude），这会导致默认 StreamToolCallChecker 错误判断没有工具调用而直接返回，使用这类模型时必须自行实现正确的 StreamToolCallChecker。
+
+> 💡
+> 对于流式输出工具调用时会先输出一段文本的模型，可以尝试添加 prompt 来约束模型在工具调用时不额外输出文本，从而解决这一问题，例如：“如果需要调用 tool，直接输出 tool，不要输出文本”。
+>
+> 不同模型受 prompt 影响可能不同，实际使用时需要自行调整 prompt 并验证效果。
 
 ## 调用
 

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-03-12"
 lastmod: ""
 tags: []
 title: 'Eino: ChatTemplate guide'
@@ -18,6 +18,8 @@ The Prompt component is a tool for processing and formatting prompt templates. I
 ## **Component Definition**
 
 ### **Interface Definition**
+
+> Code Location：eino/components/prompt/interface.go
 
 ```go
 type ChatTemplate interface {
@@ -63,6 +65,11 @@ ChatTemplate is generally used for context preparation before ChatModel.
 ### **Standalone Usage**
 
 ```go
+import (
+    "github.com/cloudwego/eino/components/prompt"
+    "github.com/cloudwego/eino/schema"
+)
+
 // Create template
 template := prompt.FromMessages(schema.FString,
   &schema.Message{
@@ -91,6 +98,12 @@ if err != nil {
 ### **Usage in Orchestration**
 
 ```go
+import (
+    "github.com/cloudwego/eino/components/prompt"
+    "github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/compose"
+)
+
 // Use in Chain
 chain := compose.NewChain[map[string]any, []*schema.Message]()
 chain.AppendChatTemplate(template)
@@ -112,8 +125,17 @@ graph.AddChatTemplateNode("template_node", template)
 ### **Callback Usage Example**
 
 ```go
+import (
+    "context"
+
+    callbackHelper "github.com/cloudwego/eino/utils/callbacks"
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/components/prompt"
+)
+
 // Create callback handler
-handler := &prompt.CallbackHandler{
+handler := &callbackHelper.PromptCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *prompt.CallbackInput) context.Context {
         fmt.Printf("Starting template formatting, variables: %v\n", input.Variables)
         return ctx
@@ -144,6 +166,10 @@ result, err := runnable.Invoke(ctx, variables, compose.WithCallbacks(helper))
 If necessary, component implementers can create custom prompt options:
 
 ```go
+import (
+    "github.com/cloudwego/eino/components/prompt"
+)
+
 // Define Option struct
 type MyPromptOptions struct {
     StrictMode bool
@@ -167,6 +193,8 @@ func WithDefaultValues(values map[string]string) prompt.Option {
 ### **Callback Handling**
 
 Prompt implementation needs to trigger callbacks at the appropriate times. The following structure is predefined by the component:
+
+> Code Location: eino/components/prompt/callback_extra.go
 
 ```go
 // Define callback input and output

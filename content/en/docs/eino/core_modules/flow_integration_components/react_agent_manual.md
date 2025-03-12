@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-03-12"
 lastmod: ""
 tags: []
 title: 'Eino: React Agent Manual'
@@ -274,6 +274,11 @@ agent, err := react.NewAgent(ctx, &react.AgentConfig{
 ```
 
 Some models output a piece of text first when they output tool calls in streaming mode (such as Claude), which may cause the default StreamToolCallChecker to mistakenly determine that there is no tool call and directly return. When using such models, you must implement the correct StreamToolCallChecker yourself.
+
+> 💡
+> For models that output a piece of text before outputing tool calls in streaming mode, you can try adding prompts to constrain the model from generating extra text during the tool call, thus addressing this issue. For example, "If you decide to call the tool, simply output the tool, do not output text."
+>
+> Different models may be affected differently by prompts, so adjustments to the prompt and validation of the effect are necessary when actually using them.
 
 ## **Invocation**
 
