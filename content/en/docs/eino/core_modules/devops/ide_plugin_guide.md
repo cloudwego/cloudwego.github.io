@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-07"
+date: "2025-03-13"
 lastmod: ""
 tags: []
 title: EinoDev IDE Plugin Introduction
@@ -63,7 +63,7 @@ Find the 「 <strong>EinoDev </strong>」 icon in the right sidebar and click it
 <a href="/img/eino/ZRadbTP8jojvgxxjpJ4czaVnnfh.png" target="_blank"><img src="/img/eino/ZRadbTP8jojvgxxjpJ4czaVnnfh.png" width="100%" /></a>
 </td><td><li>VS Code</li>
 Find 「<strong>EinoDev</strong>」 at the bottom and click it.：
-<a href="/img/eino/EHQrblgpjoeFfBx1XFdc4aWXnlf.png" target="_blank"><img src="/img/eino/EHQrblgpjoeFfBx1XFdc4aWXnlf.png" width="100%" /></a>
+<a href="/img/eino/OiF9b24QNocuMLxSrZ2c9PkAnzf.png" target="_blank"><img src="/img/eino/OiF9b24QNocuMLxSrZ2c9PkAnzf.png" width="100%" /></a>
 </td></tr></tbody></table>
 
 ## Function Introduction
