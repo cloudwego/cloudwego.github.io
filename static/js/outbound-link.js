@@ -33,16 +33,16 @@ function getDomainWithoutSubdomains(urlString) {
   }
 }
 
-function outboundLinkInBlank(clipboard) {
+function outboundLinkInBlank() {
   document.querySelectorAll("a").forEach(function (link) {
     const href = link.getAttribute("href");
     if (href && href.startsWith("http")) {
       try {
         const url = new URL(href);
         const host = url.host;
-        const allowedHosts = ["cloudwego.io", "cloudwego.cn"];
+        const selfDomains = ["cloudwego.io", "cloudwego.cn"];
         const domain = getDomainWithoutSubdomains(host);
-        if (!allowedHosts.includes(domain)) {
+        if (!selfDomains.includes(domain)) {
           link.setAttribute("target", "_blank");
         }
       } catch (e) {
