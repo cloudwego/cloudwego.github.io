@@ -53,7 +53,7 @@ weight: 1
 
 <a href="/img/eino/JKDUbMAnDoZa4TxUXafcCXO4nqg.png" target="_blank"><img src="/img/eino/JKDUbMAnDoZa4TxUXafcCXO4nqg.png" width="100%" /></a>
 
-### 功能简介
+## 功能简介
 
 > 💡
 > **插件安装完毕** ✅，**接下来就可以体验插件提供的调试与编排能力了** ～
