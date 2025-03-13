@@ -53,7 +53,7 @@ weight: 1
 
 <a href="/img/eino/JKDUbMAnDoZa4TxUXafcCXO4nqg.png" target="_blank"><img src="/img/eino/JKDUbMAnDoZa4TxUXafcCXO4nqg.png" width="100%" /></a>
 
-## 功能简介
+### 功能简介
 
 > 💡
 > **插件安装完毕** ✅，**接下来就可以体验插件提供的调试与编排能力了** ～
@@ -64,7 +64,7 @@ weight: 1
 <a href="/img/eino/WuuYbKYoHo6slixKBLbcPSf6n8f.png" target="_blank"><img src="/img/eino/WuuYbKYoHo6slixKBLbcPSf6n8f.png" width="100%" /></a>
 </td><td><li>VS Code</li>
 在底部找到「<strong>Eino Dev</strong>」并点击：
-<a href="/img/eino/SQjwbk0Z2opzhrxxO1RcMp9rnBe.png" target="_blank"><img src="/img/eino/SQjwbk0Z2opzhrxxO1RcMp9rnBe.png" width="100%" /></a>
+<a href="/img/eino/SFfAbLJPiosHNMxx7zfcFD2mn1g.png" target="_blank"><img src="/img/eino/SFfAbLJPiosHNMxx7zfcFD2mn1g.png" width="100%" /></a>
 </td></tr></tbody></table>
 
 ### Graph 编排
