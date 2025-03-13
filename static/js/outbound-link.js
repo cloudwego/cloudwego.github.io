@@ -34,13 +34,13 @@ function getDomainWithoutSubdomains(urlString) {
 }
 
 function outboundLinkInBlank() {
+  const selfDomains = ["cloudwego.io", "cloudwego.cn"];
   document.querySelectorAll("a").forEach(function (link) {
     const href = link.getAttribute("href");
     if (href && href.startsWith("http")) {
       try {
         const url = new URL(href);
         const host = url.host;
-        const selfDomains = ["cloudwego.io", "cloudwego.cn"];
         const domain = getDomainWithoutSubdomains(host);
         if (!selfDomains.includes(domain)) {
           link.setAttribute("target", "_blank");
