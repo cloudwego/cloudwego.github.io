@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-03-12"
 lastmod: ""
 tags: []
 title: 'Eino: Callback Manual'
@@ -189,7 +189,7 @@ Use `ReuseHandlers(ctx context.Context, info *RunInfo)` to get a new Context, re
 
 ### **Component Callback**
 
-In the implementation code of the component, call `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), OnEndWithStreamInput()` from the callbacks package. Taking Ark's ChatModel implementation as an example, in the Generate method:
+In the implementation code of the component, call `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), OnEndWithStreamOutput()`  from the callbacks package. Taking Ark's ChatModel implementation as an example, in the Generate method:
 
 ```go
 func (cm *ChatModel) Generate(ctx context.Context, in []*schema.Message, opts ...fmodel.Option) (
