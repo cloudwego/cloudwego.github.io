@@ -9,7 +9,7 @@ weight: 0
 
 ## **Basic Introduction**
 
-Google Search Tool is an implementation of the Eino InvokableTool interface, used for web search through the Google Custom Search API. This component implements the [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide).
+Google Search Tool is an implementation of the Eino InvokableTool interface, used for web search through the Google Custom Search API. This component implements the [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide).
 
 ## **Usage**
 
@@ -112,6 +112,6 @@ func main() {
 
 ## **Related Documents**
 
-- [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide)
+- [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
 - [Google Custom Search API Documentation](https://developers.google.com/custom-search/v1/overview)
-- [Tool - DuckDuckGoSearch](/en/docs/eino/ecosystem/tool/tool_duckduckgo_search)
+- [Tool - DuckDuckGoSearch](/docs/eino/ecosystem/tool/tool_duckduckgo_search)

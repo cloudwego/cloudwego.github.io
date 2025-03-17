@@ -8,7 +8,7 @@ weight: 0
 ---
 
 > 💡
-> It is recommended to read: [Eino: Overview](/en/docs/eino/overview) [Eino: The design concept of orchestration](/en/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+> It is recommended to read: [Eino: Overview](/docs/eino/overview) [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 
 ## **Overview of Streaming Orchestration**
 
@@ -78,7 +78,7 @@ type Retriever interface {
 <tr><td>Tool</td><td>yes</td><td>yes</td><td>no</td><td>no</td></tr>
 </table>
 
-In the official Eino components, except for the Chat Model and Tool that additionally support the stream, all other components only support Invoke. For specific component introductions, refer to: [Eino: Components](/en/docs/eino/core_modules/components)
+In the official Eino components, except for the Chat Model and Tool that additionally support the stream, all other components only support Invoke. For specific component introductions, refer to: [Eino: Components](/docs/eino/core_modules/components)
 
 The streaming paradigms Collect and Transform are currently only used in orchestration scenarios.
 
@@ -101,7 +101,7 @@ In the diagram above, if the Tool is a StreamableTool, i.e., the output is Strea
 The Concat message stream above is a capability automatically provided by the Eino framework. Even if it's not a message and is arbitrary T, as long as certain conditions are met, the Eino framework will automatically convert StreamReader[T] to T. These conditions are: **In orchestration, when the upstream output of a component is StreamReader[T], but the component only provides T as the input business interface, the framework will automatically concatenate StreamReader[T] into T before inputting it to this component.**
 
 > 💡
-> The process of concatenating StreamReader[T] into T by the framework may require the user to provide a Concat function. Refer to the chapter on "**Fan-In and Merging**" in [Eino: The design concept of orchestration](/en/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles).
+> The process of concatenating StreamReader[T] into T by the framework may require the user to provide a Concat function. Refer to the chapter on "**Fan-In and Merging**" in [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles).
 
 On the other hand, consider an opposite example. Again, let's look at a more complete orchestration diagram of the React Agent:
 

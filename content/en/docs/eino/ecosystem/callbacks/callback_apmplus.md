@@ -7,7 +7,7 @@ title: Callback - APMPlus
 weight: 0
 ---
 
-Eino encapsulates APMPlus's trace and metrics capabilities based on [Eino: Callback Manual](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) capabilities (see [Document](https://www.volcengine.com/docs/6431/69092) 和 [Console](https://console.volcengine.com/apmplus-server)).
+Eino encapsulates APMPlus's trace and metrics capabilities based on [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) capabilities (see [Document](https://www.volcengine.com/docs/6431/69092) 和 [Console](https://console.volcengine.com/apmplus-server)).
 
 An example usage is as follows:
 

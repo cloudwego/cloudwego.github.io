@@ -9,7 +9,7 @@ weight: 0
 
 ## **Basic Introduction**
 
-The OpenAI model is an implementation of the ChatModel interface, used for interacting with OpenAI's GPT series models. This component implements the [Eino: ChatModel guide](/en/docs/eino/core_modules/components/chat_model_guide), primarily for the following scenarios:
+The OpenAI model is an implementation of the ChatModel interface, used for interacting with OpenAI's GPT series models. This component implements the [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide), primarily for the following scenarios:
 
 - Need to use OpenAI's GPT series models
 - Need to use Azure OpenAI Service
@@ -132,7 +132,7 @@ func main() {
 }
 ```
 
-> For tool-related information, refer to [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide)
+> For tool-related information, refer to [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
 
 ### **Complete Usage Example**
 
@@ -231,7 +231,7 @@ func main() {
 
 ## **Related Documents**
 
-- [Eino: ChatModel guide](/en/docs/eino/core_modules/components/chat_model_guide)
-- [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide)
-- [ChatModel - ARK](/en/docs/eino/ecosystem/chat_model/chat_model_ark)
-- [ChatModel - Ollama](/en/docs/eino/ecosystem/chat_model/chat_model_ollama)
+- [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide)
+- [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
+- [ChatModel - ARK](/docs/eino/ecosystem/chat_model/chat_model_ark)
+- [ChatModel - Ollama](/docs/eino/ecosystem/chat_model/chat_model_ollama)

@@ -9,7 +9,7 @@ weight: 0
 
 ## **Introduction**
 
-The local file loader is an implementation of the Document Loader interface used for loading document content from the local file system. This component implements the [Eino: Document Loader guide](/en/docs/eino/core_modules/components/document_loader_guide).
+The local file loader is an implementation of the Document Loader interface used for loading document content from the local file system. This component implements the [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide).
 
 ### **Features**
 
@@ -112,5 +112,5 @@ func main() {
 
 ## **Related Documentation**
 
-- [Eino: Document Loader guide](/en/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Document Parser guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)

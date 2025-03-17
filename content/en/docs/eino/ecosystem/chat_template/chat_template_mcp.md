@@ -11,13 +11,13 @@ weight: 0
 
 Model Context Protocol(MCP) is a standardized open protocol for model access introduced by Anthropic. Eino provides adapters, which can directly access resources on existing MCP Servers.
 
-This section introduces the adapter of MCPPrompt, which implements the [Eino ChatTemplate interface](/en/docs/eino/core_modules/components/chat_template_guide).
+This section introduces the adapter of MCPPrompt, which implements the [Eino ChatTemplate interface](/docs/eino/core_modules/components/chat_template_guide).
 
 <a href="/img/eino/ZiP5b3fivouCBbxCggYcWHqanRv.png" target="_blank"><img src="/img/eino/ZiP5b3fivouCBbxCggYcWHqanRv.png" width="100%" /></a>
 
 Other adapters：
 
-[Tool - MCP](/en/docs/eino/ecosystem/tool/tool_mcp)
+[Tool - MCP](/docs/eino/ecosystem/tool/tool_mcp)
 
 ## HowToUse
 

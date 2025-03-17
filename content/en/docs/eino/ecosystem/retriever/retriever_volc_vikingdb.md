@@ -9,7 +9,7 @@ weight: 0
 
 ## **Basic Introduction**
 
-The Volcano Engine VikingDB Retriever is an implementation of the Retriever interface. The Volcano Engine VikingDB is a vector database service provided by Volcano Engine, offering high-performance vector retrieval capabilities. This component interacts with the service through the Volcano Engine VikingDB Go SDK. The component implements the [Eino: Retriever guide](/en/docs/eino/core_modules/components/retriever_guide)
+The Volcano Engine VikingDB Retriever is an implementation of the Retriever interface. The Volcano Engine VikingDB is a vector database service provided by Volcano Engine, offering high-performance vector retrieval capabilities. This component interacts with the service through the Volcano Engine VikingDB Go SDK. The component implements the [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)
 
 ## **Usage**
 
@@ -168,5 +168,5 @@ func main() {
 
 ## **Related Documents**
 
-- [Eino: Retriever guide](/en/docs/eino/core_modules/components/retriever_guide)
+- [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)
 - [Volcano Engine VikingDB Documentation](https://www.volcengine.com/docs/84313)

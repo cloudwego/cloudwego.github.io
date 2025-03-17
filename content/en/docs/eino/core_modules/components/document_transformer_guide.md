@@ -160,9 +160,9 @@ for idx, doc := range outDocs {
 
 ## **Existing Implementations**
 
-1. Markdown Header Splitter: Document splitting based on Markdown headers [Splitter - markdown](/en/docs/eino/ecosystem/document/splitter_markdown)
-2. Text Splitter: Document splitting based on text length or delimiters [Splitter - semantic](/en/docs/eino/ecosystem/document/splitter_semantic)
-3. Document Filter: Filtering document content based on rules [Splitter - recursive](/en/docs/eino/ecosystem/document/splitter_recursive)
+1. Markdown Header Splitter: Document splitting based on Markdown headers [Splitter - markdown](/docs/eino/ecosystem/document/splitter_markdown)
+2. Text Splitter: Document splitting based on text length or delimiters [Splitter - semantic](/docs/eino/ecosystem/document/splitter_semantic)
+3. Document Filter: Filtering document content based on rules [Splitter - recursive](/docs/eino/ecosystem/document/splitter_recursive)
 
 ## **Reference Implementation**
 
@@ -276,7 +276,7 @@ func (t *MyTransformer) doTransform(ctx context.Context, src []*schema.Document,
 
 ## **Other Reference Documents**
 
-- [Eino: Document Loader guide](/en/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Embedding guide](/en/docs/eino/core_modules/components/embedding_guide)
-- [Eino: Indexer guide](/en/docs/eino/core_modules/components/indexer_guide)
-- [Eino: Retriever guide](/en/docs/eino/core_modules/components/retriever_guide)
+- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide)
+- [Eino: Indexer guide](/docs/eino/core_modules/components/indexer_guide)
+- [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)

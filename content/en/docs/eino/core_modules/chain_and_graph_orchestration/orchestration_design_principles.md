@@ -50,7 +50,7 @@ The green part in the figure represents the ordinary edge connection, which requ
 
 ② The downstream accepts an interface, and the upstream implements that interface: For example, the upstream structure implements the Format() interface, and the downstream accepts an interface{ Format() }. A special situation is when the downstream is any (empty interface), the upstream definitely implements any, so they can certainly connect.
 
-③ The upstream is an interface, and the downstream is a specific type: When the downstream specific type implements the upstream's interface type, it may or may not work, which cannot be determined at compile time, only at runtime when the explicit type of upstream is determined. For detailed description, see: [Eino: The design concept of orchestration](/en/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+③ The upstream is an interface, and the downstream is a specific type: When the downstream specific type implements the upstream's interface type, it may or may not work, which cannot be determined at compile time, only at runtime when the explicit type of upstream is determined. For detailed description, see: [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 
 The yellow part in the figure represents another type conversion mechanism provided by eino, that is: if downstream receives a type `map[string]any`, but the upstream output type is not map[string]any, you can use `graph.AddXXXNode(node_key, xxx, compose.WithOutputKey("outkey")` to convert the upstream output type to map[string]any, where the key of the map is the OutputKey specified in the option. This mechanism is generally convenient to use when multiple edges converge to a single node.
 
@@ -174,7 +174,7 @@ In Eino, the result of orchestration is either a graph or a chain. To execute it
 
 One important function of Runnable is to provide four calling methods: "Invoke", "Stream", "Collect", and "Transform".
 
-> You can check the introduction of the above calling methods and detailed runnable introduction in: [Eino: Overview](/en/docs/eino/overview)
+> You can check the introduction of the above calling methods and detailed runnable introduction in: [Eino: Overview](/docs/eino/overview)
 
 Suppose we have a `Graph[[]*schema.Message, []*schema.Message]`, which contains a ChatModel node and a Lambda node. After compiling, it becomes a `Runnable[[]*schema.Message, []*schema.Message]`.
 
@@ -272,7 +272,7 @@ func Init() {
 
 ### **Runtime Type Alignment Check Scenarios**
 
-Eino's Graph type alignment check will verify if the types of the two nodes match during `err = graph.AddEdge("node1", "node2")`. This allows for type mismatch errors to be identified either during the `graph construction process` or the `Compile process`, adhering to rules ①②③ as listed in [Eino: The design concept of orchestration](/en/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles).
+Eino's Graph type alignment check will verify if the types of the two nodes match during `err = graph.AddEdge("node1", "node2")`. This allows for type mismatch errors to be identified either during the `graph construction process` or the `Compile process`, adhering to rules ①②③ as listed in [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles).
 
 When the upstream node's output is an `interface`, and the downstream node type implements that `interface`, it is likely that upstream can be converted to downstream type (type assertion). However, whether the conversion succeeds can only be determined during the `runtime process`, so type checks in this scenario are deferred to runtime.
 
@@ -315,7 +315,7 @@ When running a Graph via Invoke, all internal nodes operate in Invoke mode. When
 
 Finally, Eino requires all orchestration elements to be aware of and capable of handling streams. This includes branches, state handlers, callback handlers, passthroughs, lambdas, etc.
 
-For more details on Eino's streaming capabilities, refer to [Eino Points of Streaming Orchestration](/en/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+For more details on Eino's streaming capabilities, refer to [Eino Points of Streaming Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
 
 ### **Global State**
 
@@ -345,7 +345,7 @@ In either case, RunInfo will be automatically inferred.
 
 Additionally, for the Graph as a whole, Callback aspects will always be injected, with RunInfo being the Graph itself.
 
-For a complete explanation of Eino's Callback capabilities, see [Eino: Callback Manual](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
+For a complete explanation of Eino's Callback capabilities, see [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
 
 ### **Option Allocation**
 
@@ -356,7 +356,7 @@ Eino supports various dimensions of Call Option allocation methods:
 - Any specific nodes can be designated using `DesignateNode(key ...string)`.
 - Any depth of nested graphs, or any specific nodes within them, can be designated using `DesignateNodeWithPath(path ...*NodePath)`.
 
-For a complete explanation of Eino's Call Option capabilities, see [Eino: CallOption capabilities and specification](/en/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities).
+For a complete explanation of Eino's Call Option capabilities, see [Eino: CallOption capabilities and specification](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities).
 
 ### **Graph Nesting**
 

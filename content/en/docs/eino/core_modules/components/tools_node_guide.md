@@ -244,5 +244,5 @@ result, err := runnable.Invoke(ctx, input, compose.WithCallbacks(helper))
 
 ## **Existing Implementations**
 
-1. Google Search Tool: Tool implementation based on Google search [Tool - Googlesearch](/en/docs/eino/ecosystem/tool/tool_googlesearch)
-2. duckduckgo search tool: Tool implementation based on duckduckgo search [Tool - DuckDuckGoSearch](/en/docs/eino/ecosystem/tool/tool_duckduckgo_search)
+1. Google Search Tool: Tool implementation based on Google search [Tool - Googlesearch](/docs/eino/ecosystem/tool/tool_googlesearch)
+2. duckduckgo search tool: Tool implementation based on duckduckgo search [Tool - DuckDuckGoSearch](/docs/eino/ecosystem/tool/tool_duckduckgo_search)

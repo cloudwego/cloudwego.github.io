@@ -22,13 +22,13 @@ In Eino, to implement an Agent, you mainly need two core components: ChatModel a
 
 ChatModel is the brain of the Agent, processing the user's natural language input through powerful language understanding capabilities. When a user makes a request, ChatModel deeply understands the user's intent, analyzes the task requirements, and decides whether specific tools need to be called to complete the task. When tools need to be used, it can accurately choose the appropriate tools and generate the correct parameters. Moreover, ChatModel can convert the results of tool execution into natural language responses that are easy for users to understand, achieving smooth human-computer interaction.
 
-> For more detailed information on ChatModel, refer to: [Eino: ChatModel guide](/en/docs/eino/core_modules/components/chat_model_guide)
+> For more detailed information on ChatModel, refer to: [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide)
 
 ### **Tool**
 
 Tool is the executor of the Agent, providing specific functionality implementations. Each Tool has clear functional definitions and parameter specifications, enabling ChatModel to call them accurately. Tools can achieve various functions, encapsulating everything from simple data operations to complex external service calls.
 
-> For more detailed information on Tool and ToolsNode, refer to: [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide)
+> For more detailed information on Tool and ToolsNode, refer to: [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
 
 ## **Implementation of Tools**
 
@@ -278,13 +278,13 @@ In addition to the aforementioned Chain/Graph-based agents, Eino also provides e
 
 ReAct (Reasoning + Acting) Agent combines reasoning and action capabilities through a think-act-observe loop to solve complex problems. It can conduct deep reasoning while performing tasks and adjust strategies based on observations, making it particularly suitable for complex scenarios requiring multi-step reasoning.
 
-> For more details on react agent, see: [Eino: React Agent Manual](/en/docs/eino/core_modules/flow_integration_components/react_agent_manual)
+> For more details on react agent, see: [Eino: React Agent Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
 
 ### **Multi Agent**
 
 A Multi Agent system consists of multiple agents working in cooperation, each with its own specific responsibilities and expertise. Through interaction and collaboration among agents, it can handle more complex tasks and achieve division of labor and cooperation. This approach is particularly suitable for scenarios that require the integration of knowledge from multiple specialized fields.
 
-> For more details on multi agent, see: [Eino Tutorial: Host Multi-Agent ](/en/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
+> For more details on multi agent, see: [Eino Tutorial: Host Multi-Agent ](/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
 
 ## **Conclusion**
 
@@ -295,4 +295,4 @@ Agents are an important direction in the development of AI technology. They can 
 ## **Related Reading**
 
 - Quick Start
-  - [Implement an easy LLM application](/en/docs/eino/quick_start/simple_llm_application)
+  - [Implement an easy LLM application](/docs/eino/quick_start/simple_llm_application)

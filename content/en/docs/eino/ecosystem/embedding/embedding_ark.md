@@ -9,7 +9,7 @@ weight: 0
 
 ## **Introduction**
 
-Ark Embedding is an implementation of the Eino Embedding interface used to convert text into vector representations. Volcengine Ark is a platform that provides machine learning model inference services, including text vectorization services. This component implements the [Eino: Embedding guide](/en/docs/eino/core_modules/components/embedding_guide).
+Ark Embedding is an implementation of the Eino Embedding interface used to convert text into vector representations. Volcengine Ark is a platform that provides machine learning model inference services, including text vectorization services. This component implements the [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide).
 
 ## **Usage**
 
@@ -99,6 +99,6 @@ func main() {
 
 ## **Related Documentation**
 
-- [Eino: Embedding guide](/en/docs/eino/core_modules/components/embedding_guide)
-- [Embedding - OpenAI](/en/docs/eino/ecosystem/embedding/embedding_openai)
+- [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide)
+- [Embedding - OpenAI](/docs/eino/ecosystem/embedding/embedding_openai)
 - [Volcengine Ark Services](https://www.volcengine.com/product/ark)

@@ -14,7 +14,7 @@ In LLM applications, `Components` are the smallest units that provide "atomic ca
 - `Retriever` provides relevant content retrieval capabilities
 - `ToolsNode` provides the capability to execute external tools
 
-> For detailed information on components, refer to: [Eino: Components](/en/docs/eino/core_modules/components)
+> For detailed information on components, refer to: [Eino: Components](/docs/eino/core_modules/components)
 
 An LLM application, in addition to needing these atomic capabilities, also needs to **combine and sequence** these atomic capabilities based on contextual business logic. This is called **Orchestration**.
 
@@ -39,16 +39,16 @@ Therefore, Eino provides a solution for "orchestration based on the Graph model 
 Specifically, the following features are implemented:
 
 - Everything is centered around "components," standardizing the encapsulation of business functionalities, making **division of responsibilities clear** and **reuse** natural.
-  - For more details, refer to: [Eino: Components](/en/docs/eino/core_modules/components)
+  - For more details, refer to: [Eino: Components](/docs/eino/core_modules/components)
 - The complexity of business logic is encapsulated within the components, giving the orchestration layer a more global perspective, making **logic layers very clear**.
 - Provides aspect capabilities and a callback mechanism that supports node-based **unified governance capabilities**.
-  - For more details, refer to: [Eino: Callback Manual](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
+  - For more details, refer to: [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
 - Provides a call option mechanism, **extensibility** is the most fundamental requirement of the system in rapid iterations.
-  - For more details, refer to: [Eino: CallOption capabilities and specification](/en/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
+  - For more details, refer to: [Eino: CallOption capabilities and specification](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
 - Provides an enhanced "type alignment" development method, reducing the mental burden on developers and leveraging Golang's **type safety** features.
-  - For more details, refer to: [Eino: The design concept of orchestration](/en/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+  - For more details, refer to: [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 - Provides an **"automated stream conversion"** capability, removing "stream" from the "source of complexity ranking" in the orchestration system.
-  - For more details, refer to: [Eino Points of Streaming Orchestration](/en/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
+  - For more details, refer to: [Eino Points of Streaming Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
 Graph itself is powerful and semantically complete, capable of rendering almost any "data flow network," such as "branching," "parallel," and "loop."
 

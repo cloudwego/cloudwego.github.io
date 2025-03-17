@@ -21,7 +21,7 @@ The core concepts interconnected within Eino include entities such as Components
 
 ### **Trigger Entities**
 
-Component (including types defined officially and Lambda), Graph Node (as well as Chain Node), and the Graph itself (including Chain). These three types of entities require cross-cutting functionality injection and intermediate state exposure, thus they all trigger callbacks. See the section on “[Trigger Methods](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)” below for details.
+Component (including types defined officially and Lambda), Graph Node (as well as Chain Node), and the Graph itself (including Chain). These three types of entities require cross-cutting functionality injection and intermediate state exposure, thus they all trigger callbacks. See the section on “[Trigger Methods](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)” below for details.
 
 ### **Trigger Timings**
 
@@ -38,7 +38,7 @@ const (
 )
 ```
 
-Different trigger entities, in various scenarios, determine whether to trigger OnStart or OnStartWithStreamInput (similarly, OnEnd/OnEndWithStreamOutput). Specific rules are detailed in the section on “[Trigger Methods](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)” below.
+Different trigger entities, in various scenarios, determine whether to trigger OnStart or OnStartWithStreamInput (similarly, OnEnd/OnEndWithStreamOutput). Specific rules are detailed in the section on “[Trigger Methods](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)” below.
 
 ### **Callback Handler**
 
@@ -62,7 +62,7 @@ A Handler is a struct that implements the 5 methods above (corresponding to the 
 
 Each method also returns a new context: used for **passing information between different trigger timings** of the same Handler.
 
-If a Handler does not want to focus on all 5 trigger timings but only a subset, for example, just OnStart, it is recommended to use `NewHandlerBuilder().OnStartFn(...).Build()`. If it only wants to focus on specific components, such as ChatModel, it is recommended to use `NewHandlerHelper().ChatModel(...).Handler()`, which receives callbacks from only ChatModel and obtains a specific type of CallbackInput/CallbackOutput. See the section on “[Handler Implementation Methods](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)” for details.
+If a Handler does not want to focus on all 5 trigger timings but only a subset, for example, just OnStart, it is recommended to use `NewHandlerBuilder().OnStartFn(...).Build()`. If it only wants to focus on specific components, such as ChatModel, it is recommended to use `NewHandlerHelper().ChatModel(...).Handler()`, which receives callbacks from only ChatModel and obtains a specific type of CallbackInput/CallbackOutput. See the section on “[Handler Implementation Methods](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)” for details.
 
 The order of triggering between different Handlers is **not** guaranteed.
 
@@ -287,11 +287,11 @@ When the Graph is running, each component will operate in either Invoke or Trans
 
 **Which specific trigger points a Graph Node executes (OnStart or OnStartWithStreamInput) depends on the component's business streaming paradigm and the Graph running mode.**
 
-For a detailed introduction to Eino's streaming programming, refer to [Eino Points of Streaming Orchestration](/en/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+For a detailed introduction to Eino's streaming programming, refer to [Eino Points of Streaming Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
 
 ### **Graph Self Trigger (Graph Callback)**
 
-The Graph triggers the Callback Handler at its own start, end, and error moments. If the Graph is called in Invoke form, it triggers OnStart/OnEnd/OnError. If called in Stream/Collect/Transform form, it triggers OnStartWithStreamInput/OnEndWithStreamOutput/OnError. This is because **the Graph will always execute internally in Invoke or Transform**. See [Eino Points of Streaming Orchestration](/en/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
+The Graph triggers the Callback Handler at its own start, end, and error moments. If the Graph is called in Invoke form, it triggers OnStart/OnEnd/OnError. If called in Stream/Collect/Transform form, it triggers OnStartWithStreamInput/OnEndWithStreamOutput/OnError. This is because **the Graph will always execute internally in Invoke or Transform**. See [Eino Points of Streaming Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
 It is worth noting that a graph is also a kind of component, so a graph callback is also a special form of component callback. According to the definition of Node Callback, when the component inside the Node implements the perception and processing of the trigger moments, the Node will directly reuse the Component's implementation and will not implement the Node Callback again. This means when a graph is added to another Graph as a Node through the AddGraphNode method, this Node will reuse the internal graph's graph callback.
 

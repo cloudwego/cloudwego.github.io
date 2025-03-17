@@ -223,7 +223,7 @@ log.Printf("vikingDB retrieve success, query=%v, docs=%v", query, outDocs)
 
 ## **Existing Implementations**
 
-- Volc VikingDB Retriever: Retrieval implementation based on Volcano Engine VikingDB [Retriever - volc VikingDB](/en/docs/eino/ecosystem/retriever/retriever_volc_vikingdb)
+- Volc VikingDB Retriever: Retrieval implementation based on Volcano Engine VikingDB [Retriever - volc VikingDB](/docs/eino/ecosystem/retriever/retriever_volc_vikingdb)
 
 ## **Reference for Custom Implementation**
 

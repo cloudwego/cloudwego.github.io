@@ -9,7 +9,7 @@ weight: 0
 
 ## **Introduction**
 
-The S3 Document Loader is an implementation of the Document Loader interface, used to load document content from AWS S3 buckets. This component implements the [Eino: Document Loader guide](/en/docs/eino/core_modules/components/document_loader_guide).
+The S3 Document Loader is an implementation of the Document Loader interface, used to load document content from AWS S3 buckets. This component implements the [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide).
 
 ### **Introduction to AWS S3 Service**
 
@@ -111,5 +111,5 @@ func main() {
 
 ## **Related Documentation**
 
-- [Eino: Document Loader guide](/en/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Document Parser guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)

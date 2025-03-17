@@ -208,7 +208,7 @@ The Eino framework consists of several parts:
 - [Eino Devops](https://github.com/cloudwego/eino-ext/tree/main/devops): Visual development, visual debugging, etc.
 - [EinoExamples](https://github.com/cloudwego/eino-examples): It is a code repository containing sample applications and best practices.
 
-For details, see: [The structure of the Eino Framework](/en/docs/eino/overview/eino_framework_structure)
+For details, see: [The structure of the Eino Framework](/docs/eino/overview/eino_framework_structure)
 
 ## Detailed Documentation
 
