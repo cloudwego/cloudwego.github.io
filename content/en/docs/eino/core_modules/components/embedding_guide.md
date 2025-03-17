@@ -137,8 +137,8 @@ log.Printf("vectors in chain: %v", vectors)
 
 ## **Existing Implementations**
 
-1. OpenAI Embedding: Generate vectors using OpenAI's text embedding model [Embedding - OpenAI](/en/docs/eino/ecosystem/embedding/embedding_openai)
-2. ARK Embedding: Generate vectors using the ARK platform's model [Embedding - ARK](/en/docs/eino/ecosystem/embedding/embedding_ark)
+1. OpenAI Embedding: Generate vectors using OpenAI's text embedding model [Embedding - OpenAI](/docs/eino/ecosystem/embedding/embedding_openai)
+2. ARK Embedding: Generate vectors using the ARK platform's model [Embedding - ARK](/docs/eino/ecosystem/embedding/embedding_ark)
 
 ## **Custom Implementation Reference**
 
@@ -268,6 +268,6 @@ func (e *MyEmbedder) doEmbed(ctx context.Context, texts []string, opts *MyEmbedd
 
 ## **Other Reference Documents**
 
-- [Eino: Document Loader guide](/en/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Indexer guide](/en/docs/eino/core_modules/components/indexer_guide)
-- [Eino: Retriever guide](/en/docs/eino/core_modules/components/retriever_guide)
+- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Indexer guide](/docs/eino/core_modules/components/indexer_guide)
+- [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)

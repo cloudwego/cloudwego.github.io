@@ -9,7 +9,7 @@ weight: 0
 
 ## **Introduction**
 
-The Markdown Splitter is an implementation of the Document Transformer interface, used to split a Markdown document based on the document's header hierarchy. This component implements the [Eino: Document Transformer guide](/en/docs/eino/core_modules/components/document_transformer_guide).
+The Markdown Splitter is an implementation of the Document Transformer interface, used to split a Markdown document based on the document's header hierarchy. This component implements the [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide).
 
 ### **Working Principle**
 
@@ -124,8 +124,8 @@ This is the content of Chapter 2.
 
 ## **Related Documents**
 
-- [Eino: Document Parser guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
-- [Eino: Document Loader guide](/en/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Document Transformer guide](/en/docs/eino/core_modules/components/document_transformer_guide)
-- [Splitter - recursive](/en/docs/eino/ecosystem/document/splitter_recursive)
-- [Splitter - semantic](/en/docs/eino/ecosystem/document/splitter_semantic)
+- [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide)
+- [Splitter - recursive](/docs/eino/ecosystem/document/splitter_recursive)
+- [Splitter - semantic](/docs/eino/ecosystem/document/splitter_semantic)

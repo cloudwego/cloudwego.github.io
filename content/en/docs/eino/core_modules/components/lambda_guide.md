@@ -11,7 +11,7 @@ weight: 0
 
 Lambda is the most fundamental component type in Eino, allowing users to embed custom function logic in the workflow. The underlying Lambda component consists of 4 types of running functions, corresponding to 4 interaction modes: Invoke, Stream, Collect, and Transform.
 
-When users build Lambda, they can only implement one of them or more, and the framework will perform conversion according to certain rules. For detailed introduction, please refer to: [Eino: Overview](/en/docs/eino/overview) (see at Runnable)
+When users build Lambda, they can only implement one of them or more, and the framework will perform conversion according to certain rules. For detailed introduction, please refer to: [Eino: Overview](/docs/eino/overview) (see at Runnable)
 
 ## **Component Definition and Implementation**
 

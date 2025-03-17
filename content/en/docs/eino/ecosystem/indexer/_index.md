@@ -7,4 +7,4 @@ title: Indexer
 weight: 0
 ---
 
-To index and store text, the Indexer typically uses [Embedding](/en/docs/eino/ecosystem/embedding) for semantic indexing, and can also perform word segmentation indexing, etc., for recall and use in the [Retriever](/en/docs/eino/ecosystem/retriever).
+To index and store text, the Indexer typically uses [Embedding](/docs/eino/ecosystem/embedding) for semantic indexing, and can also perform word segmentation indexing, etc., for recall and use in the [Retriever](/docs/eino/ecosystem/retriever).

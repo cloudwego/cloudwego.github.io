@@ -9,7 +9,7 @@ weight: 0
 
 ## **Introduction**
 
-The semantic segmenter is an implementation of the Document Transformer interface, used to segment long documents into smaller fragments based on semantic similarity. This component is implemented according to the [Eino: Document Transformer guide](/en/docs/eino/core_modules/components/document_transformer_guide).
+The semantic segmenter is an implementation of the Document Transformer interface, used to segment long documents into smaller fragments based on semantic similarity. This component is implemented according to the [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide).
 
 ### **Working Principle**
 
@@ -142,8 +142,8 @@ splitter, err := semantic.NewSplitter(ctx, &semantic.Config{
 
 ## **Related Documents**
 
-- [Eino: Document Parser guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
-- [Eino: Document Loader guide](/en/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Document Transformer guide](/en/docs/eino/core_modules/components/document_transformer_guide)
-- [Splitter - semantic](/en/docs/eino/ecosystem/document/splitter_semantic)
-- [Splitter - markdown](/en/docs/eino/ecosystem/document/splitter_markdown)
+- [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide)
+- [Splitter - semantic](/docs/eino/ecosystem/document/splitter_semantic)
+- [Splitter - markdown](/docs/eino/ecosystem/document/splitter_markdown)

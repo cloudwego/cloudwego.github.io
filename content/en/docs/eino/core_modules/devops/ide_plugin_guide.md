@@ -9,7 +9,7 @@ weight: 1
 
 ## **Background**
 
-> [Eino: Overview](/en/docs/eino/overview)
+> [Eino: Overview](/docs/eino/overview)
 >
 > **🚀  Eino is a Go AI component development framework that provides commonly used AI application components and integration component orchestration capabilities. To better assist developers in using Eino, we offer a GoLand Eino IDE plugin to help you develop efficiently  🚀**
 

@@ -11,8 +11,8 @@ LLM applications have **common scenarios and patterns**. By abstracting these sc
 
 Currently, Eino has integrated two commonly used Agent patterns, `react agent` and `host multi agent`, as well as MultiQueryRetriever, ParentIndexer, and others.
 
-- React Agent: [Eino: React Agent Manual](/en/docs/eino/core_modules/flow_integration_components/react_agent_manual)
-- Multi Agent: [Eino Tutorial: Host Multi-Agent ](/en/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
+- React Agent: [Eino: React Agent Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
+- Multi Agent: [Eino Tutorial: Host Multi-Agent ](/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
 
 ## Orchestrate Flows
 

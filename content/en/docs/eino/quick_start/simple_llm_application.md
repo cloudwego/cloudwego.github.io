@@ -16,7 +16,7 @@ This guide will help you get started quickly with building a simple LLM applicat
 
 ChatModel is an abstraction of the conversational large model within the Eino framework. It provides a unified interface to interact with different large model services (such as OpenAI, Ollama, etc.).
 
-> For a more detailed introduction to the component, refer to: [Eino: ChatModel guide](/en/docs/eino/core_modules/components/chat_model_guide)
+> For a more detailed introduction to the component, refer to: [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide)
 
 ## **Structure and Usage of Messages**
 
@@ -48,7 +48,7 @@ Eino provides powerful templating functions to construct messages to be input in
 schema.MessagesPlaceholder("chat_history", false)
 ```
 
-> For a more detailed component introduction, refer to: [Eino: ChatTemplate guide](/en/docs/eino/core_modules/components/chat_template_guide)
+> For a more detailed component introduction, refer to: [Eino: ChatTemplate guide](/docs/eino/core_modules/components/chat_template_guide)
 
 Below is the complete code for creating and using a dialogue template with FString format + message placeholder:
 
@@ -98,7 +98,7 @@ ChatModel is one of the core components in the Eino framework, providing a unifi
 - Ark: Model services on the Volcano Engine (e.g., ByteDance's Doubao LLM)
 - More models are being supported
 
-> For supported models, refer to: [Eino: Ecosystem](/en/docs/eino/ecosystem)
+> For supported models, refer to: [Eino: Ecosystem](/docs/eino/ecosystem)
 
 Below, we demonstrate how to create and use ChatModel with OpenAI and Ollama as examples:
 
@@ -119,7 +119,7 @@ chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
 })
 ```
 
-> For detailed information on OpenAI ChatModel, refer to: [ChatModel - OpenAI](/en/docs/eino/ecosystem/chat_model/chat_model_openai)
+> For detailed information on OpenAI ChatModel, refer to: [ChatModel - OpenAI](/docs/eino/ecosystem/chat_model/chat_model_openai)
 
 #### **Ollama (select either this or OpenAI above)**
 
@@ -138,7 +138,7 @@ chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
 })
 ```
 
-> For information on OpenAI, refer to: [ChatModel - Ollama](/en/docs/eino/ecosystem/chat_model/chat_model_ollama)
+> For information on OpenAI, refer to: [ChatModel - Ollama](/docs/eino/ecosystem/chat_model/chat_model_ollama)
 
 Regardless of the implementation used, ChatModel provides a consistent interface, allowing you to easily switch between different models without modifying a large amount of code.
 
@@ -202,4 +202,4 @@ This example demonstrates how to use the Eino framework to build an LLM applicat
 ## **Related Reading**
 
 - Quick Start
-  - [Agent-Enable LLM to have hands](/en/docs/eino/quick_start/agent_llm_with_tools)
+  - [Agent-Enable LLM to have hands](/docs/eino/quick_start/agent_llm_with_tools)

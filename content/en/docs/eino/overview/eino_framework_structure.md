@@ -383,4 +383,4 @@ Callbacks support both '**cross-cutting functionality injection'** and '**interm
 
 **Entities** in Eino, such as Components and Graph, at fixed **timings** (Callback Timing), call back user-provided **functions** (Callback Handlers), and pass information about **who they are** (RunInfo) and **what happened** (Callback Input & Output).
 
-For details, see: [Eino: Callback Manual](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
+For details, see: [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)

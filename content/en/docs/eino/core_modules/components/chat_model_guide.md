@@ -275,9 +275,9 @@ result, err := runnable.Invoke(ctx, messages, compose.WithCallbacks(helper))
 
 ## **Existing Implementations**
 
-1. OpenAI ChatModel: Use OpenAI's GPT series models [ChatModel - OpenAI](/en/docs/eino/ecosystem/chat_model/chat_model_openai)
-2. Ollama ChatModel: Use Ollama local models [ChatModel - Ollama](/en/docs/eino/ecosystem/chat_model/chat_model_ollama)
-3. ARK ChatModel: Use ARK platform's model service [ChatModel - ARK](/en/docs/eino/ecosystem/chat_model/chat_model_ark)
+1. OpenAI ChatModel: Use OpenAI's GPT series models [ChatModel - OpenAI](/docs/eino/ecosystem/chat_model/chat_model_openai)
+2. Ollama ChatModel: Use Ollama local models [ChatModel - Ollama](/docs/eino/ecosystem/chat_model/chat_model_ollama)
+3. ARK ChatModel: Use ARK platform's model service [ChatModel - ARK](/docs/eino/ecosystem/chat_model/chat_model_ark)
 
 ## **Self-Implementation Reference**
 

@@ -11,13 +11,13 @@ weight: 0
 
 Model Context Protocol(MCP) is a standardized open protocol for model access introduced by Anthropic. Eino provides adapters, which can directly access resources on existing MCP Servers.
 
-This section introduces the adapter of MCPTool, which implements the [Eino Tool](/en/docs/eino/core_modules/components/tools_node_guide).
+This section introduces the adapter of MCPTool, which implements the [Eino Tool](/docs/eino/core_modules/components/tools_node_guide).
 
 <a href="/img/eino/HotzbOFL6oZFQWxWP10caT9Wnuc.png" target="_blank"><img src="/img/eino/HotzbOFL6oZFQWxWP10caT9Wnuc.png" width="100%" /></a>
 
 Other adapters：
 
-[ChatTemplate - MCP](/en/docs/eino/ecosystem/chat_template/chat_template_mcp)
+[ChatTemplate - MCP](/docs/eino/ecosystem/chat_template/chat_template_mcp)
 
 ## HowToUse
 
@@ -73,7 +73,7 @@ for i, mcpTool := range mcpTools {
 }
 ```
 
-It can also be used in any Eino Agent, taking the  [ReAct Agent](/en/docs/eino/core_modules/flow_integration_components/react_agent_manual) as an example:
+It can also be used in any Eino Agent, taking the  [ReAct Agent](/docs/eino/core_modules/flow_integration_components/react_agent_manual) as an example:
 
 ```
 import (

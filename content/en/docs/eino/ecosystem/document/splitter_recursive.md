@@ -9,7 +9,7 @@ weight: 0
 
 ## **Basic Introduction**
 
-The Recursive Splitter is an implementation of the Document Transformer interface, used to recursively split long documents into smaller segments according to a specified size. This component implements the [Eino: Document Transformer guide](/en/docs/eino/core_modules/components/document_transformer_guide).
+The Recursive Splitter is an implementation of the Document Transformer interface, used to recursively split long documents into smaller segments according to a specified size. This component implements the [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide).
 
 ### **Working Principle**
 
@@ -140,8 +140,8 @@ splitter, err := recursive.NewSplitter(ctx, &recursive.Config{
 
 ## **Related Documents**
 
-- [Eino: Document Parser guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
-- [Eino: Document Loader guide](/en/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Document Transformer guide](/en/docs/eino/core_modules/components/document_transformer_guide)
-- [Splitter - semantic](/en/docs/eino/ecosystem/document/splitter_semantic)
-- [Splitter - markdown](/en/docs/eino/ecosystem/document/splitter_markdown)
+- [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide)
+- [Splitter - semantic](/docs/eino/ecosystem/document/splitter_semantic)
+- [Splitter - markdown](/docs/eino/ecosystem/document/splitter_markdown)

@@ -9,7 +9,7 @@ weight: 0
 
 ## **Basic Introduction**
 
-The DuckDuckGo Search Tool is an implementation of the Tool InvokableTool interface for conducting web searches through the DuckDuckGo search engine. DuckDuckGo is a privacy-focused search engine that does not track users' search behavior and can be used directly without the need for API key authentication. This component implements the [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide).
+The DuckDuckGo Search Tool is an implementation of the Tool InvokableTool interface for conducting web searches through the DuckDuckGo search engine. DuckDuckGo is a privacy-focused search engine that does not track users' search behavior and can be used directly without the need for API key authentication. This component implements the [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide).
 
 ## **Usage**
 
@@ -133,6 +133,6 @@ func main() {
 
 ## **Related Documentation**
 
-- [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide)
-- [Tool - Googlesearch](/en/docs/eino/ecosystem/tool/tool_googlesearch)
+- [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
+- [Tool - Googlesearch](/docs/eino/ecosystem/tool/tool_googlesearch)
 - [DuckDuckGo Help Pages](https://duckduckgo.com/duckduckgo-help-pages/settings/params/)

@@ -9,7 +9,7 @@ weight: 0
 
 ## **Basic Introduction**
 
-Ark is an implementation of the ChatModel interface, used for interacting with the Volcano Engine Ark Runtime service. Ark Runtime is a LLM runtime service provided by Volcano Engine, offering a wide range of model options and complete API functionalities. This component interacts with the service through the Ark Runtime Go SDK, allowing the invocation of models deployed on the Volcano Engine, such as the Doubao LLM and the Shadow Moon LLM. This component implements the [Eino: ChatModel guide](/en/docs/eino/core_modules/components/chat_model_guide).
+Ark is an implementation of the ChatModel interface, used for interacting with the Volcano Engine Ark Runtime service. Ark Runtime is a LLM runtime service provided by Volcano Engine, offering a wide range of model options and complete API functionalities. This component interacts with the service through the Ark Runtime Go SDK, allowing the invocation of models deployed on the Volcano Engine, such as the Doubao LLM and the Shadow Moon LLM. This component implements the [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide).
 
 ## **Usage**
 
@@ -123,7 +123,7 @@ tools := []*schema.ToolInfo{
 err := model.BindTools(tools)
 ```
 
-> For information related to tools, please refer to [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide)
+> For information related to tools, please refer to [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
 
 ### **Complete Usage Example**
 
@@ -229,8 +229,8 @@ func main() {
 
 ## **Related Documentation**
 
-- [Eino: ChatModel guide](/en/docs/eino/core_modules/components/chat_model_guide)
-- [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide)
-- [ChatModel - OpenAI](/en/docs/eino/ecosystem/chat_model/chat_model_openai)
-- [ChatModel - Ollama](/en/docs/eino/ecosystem/chat_model/chat_model_ollama)
+- [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide)
+- [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
+- [ChatModel - OpenAI](/docs/eino/ecosystem/chat_model/chat_model_openai)
+- [ChatModel - Ollama](/docs/eino/ecosystem/chat_model/chat_model_ollama)
 - [Volcano Engine Official Website](https://www.volcengine.com/product/doubao)

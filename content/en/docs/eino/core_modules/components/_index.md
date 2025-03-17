@@ -26,41 +26,41 @@ The relationship between component abstraction and these models corresponds as f
 
 1. The component abstraction for templated processing and LLM interaction parameters: `ChatTemplate`
 
-> See [Eino: ChatTemplate guide](/en/docs/eino/core_modules/components/chat_template_guide)
+> See [Eino: ChatTemplate guide](/docs/eino/core_modules/components/chat_template_guide)
 
 1. The component abstraction for direct interaction with LLMs: `ChatModel`
 
-> See [Eino: ChatModel guide](/en/docs/eino/core_modules/components/chat_model_guide)
+> See [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide)
 
 **Text Semantic Processing Components:**
 
 1. The component abstraction for obtaining and processing text documents: `Document.Loader`, `Document.Transformer`
 
-> See [Eino: Document Loader guide](/en/docs/eino/core_modules/components/document_loader_guide), [Eino: Document Transformer guide](/en/docs/eino/core_modules/components/document_transformer_guide)
+> See [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide), [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide)
 
 1. The component abstraction for semantic processing of text documents: `Embedding`
 
-> See [Eino: Embedding guide](/en/docs/eino/core_modules/components/embedding_guide)
+> See [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide)
 
 1. The component abstraction for storing the indexed data after embedding: `Indexer`
 
-> See [Eino: Indexer guide](/en/docs/eino/core_modules/components/indexer_guide)
+> See [Eino: Indexer guide](/docs/eino/core_modules/components/indexer_guide)
 
 1. Component abstraction for indexing and retrieving semantically related text documents: `Retriever`
 
-> See [Eino: Retriever guide](/en/docs/eino/core_modules/components/retriever_guide)
+> See [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)
 
 **Decision Execution Components**:
 
 1. Component abstraction allowing the LLM to make decisions and call tools: `ToolsNode`
 
-> See [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide)
+> See [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
 
 **Custom Components**:
 
 1. Component abstraction for user-defined code logic: `Lambda`
 
-> See [Eino: Lambda guide](/en/docs/eino/core_modules/components/lambda_guide)
+> See [Eino: Lambda guide](/docs/eino/core_modules/components/lambda_guide)
 
 Components are the providers of LLM application capabilities and serve as the building blocks in the construction of LLM applications. The quality of component abstraction determines the complexity of developing LLM applications. Eino's component abstractions adhere to the following design principles:
 

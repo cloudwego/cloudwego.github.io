@@ -367,4 +367,4 @@ res, _ := r.Invoke(ctx, []*schema.Message{{Role: schema.User, Content: "hello"}}
 
 ## **Related Reading**
 
-- [Eino Tutorial: Host Multi-Agent ](/en/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
+- [Eino Tutorial: Host Multi-Agent ](/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)

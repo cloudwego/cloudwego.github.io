@@ -9,7 +9,7 @@ weight: 0
 
 ## **Basic Introduction**
 
-The Ollama model is an implementation of the ChatModel interface, designed for interacting with the Ollama local LLM service. Ollama is an open-source local LLM runtime framework that supports various open-source models (such as Llama, Mistral, etc.), providing simple API interfaces and comprehensive performance monitoring. This component implements the [Eino: ChatModel Usage Instructions]([Eino: ChatModel guide](/en/docs/eino/core_modules/components/chat_model_guide))
+The Ollama model is an implementation of the ChatModel interface, designed for interacting with the Ollama local LLM service. Ollama is an open-source local LLM runtime framework that supports various open-source models (such as Llama, Mistral, etc.), providing simple API interfaces and comprehensive performance monitoring. This component implements the [Eino: ChatModel Usage Instructions]([Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide))
 
 ## **Usage**
 
@@ -209,8 +209,8 @@ func main() {
 
 ## **Related Documents**
 
-- [Eino: ChatModel guide](/en/docs/eino/core_modules/components/chat_model_guide)
-- [Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide)
-- [ChatModel - OpenAI](/en/docs/eino/ecosystem/chat_model/chat_model_openai)
-- [ChatModel - ARK](/en/docs/eino/ecosystem/chat_model/chat_model_ark)
+- [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide)
+- [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
+- [ChatModel - OpenAI](/docs/eino/ecosystem/chat_model/chat_model_openai)
+- [ChatModel - ARK](/docs/eino/ecosystem/chat_model/chat_model_ark)
 - [Ollama Model Library](https://ollama.ai/library)

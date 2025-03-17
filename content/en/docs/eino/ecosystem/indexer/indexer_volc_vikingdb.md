@@ -9,7 +9,7 @@ weight: 0
 
 ## **Basic Introduction**
 
-Volcano Engine VikingDB Vector Indexer is an implementation of the Indexer interface, used to store document content into Volcano Engine's VikingDB vector database. This component implements the instructions detailed in [Eino: Indexer guide](/en/docs/eino/core_modules/components/indexer_guide).
+Volcano Engine VikingDB Vector Indexer is an implementation of the Indexer interface, used to store document content into Volcano Engine's VikingDB vector database. This component implements the instructions detailed in [Eino: Indexer guide](/docs/eino/core_modules/components/indexer_guide).
 
 ### **Volcano Engine VikingDB Service Introduction**
 
@@ -174,6 +174,6 @@ func main() {
 
 ## **Related Documents**
 
-- [Eino: Indexer guide](/en/docs/eino/core_modules/components/indexer_guide)
-- [Eino: Retriever guide](/en/docs/eino/core_modules/components/retriever_guide)
+- [Eino: Indexer guide](/docs/eino/core_modules/components/indexer_guide)
+- [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)
 - [Volcano Engine VikingDB User Guide](https://www.volcengine.com/docs/84313/1254617)
