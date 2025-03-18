@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-04"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: 'Eino: 编排的设计理念'
@@ -176,7 +176,7 @@ StatePreHandler: 输入类型需要对齐对应节点的非流式输入类型。
 
 ```go
 // input 类型为 []*schema.Message，对齐 ChatModel 的非流式输入类型
-preHandler := func(ctx context.Context**, **input []*schema.Message**, **state *state) ([]*schema.Message**, **error) {
+preHandler := func(ctx context.Context, input []*schema.Message, state *state) ([]*schema.Message, error) {
     // your handler logic
 }
 
@@ -187,7 +187,7 @@ StatePostHandler: 输入类型需要对齐对应节点的非流式输出类型�
 
 ```go
 // input 类型为 *schema.Message，对齐 ChatModel 的非流式输出类型
-postHandler := func(ctx context.Context**, **input *schema.Message**, **state *state) (*schema.Message**, **error) {
+postHandler := func(ctx context.Context, input *schema.Message, state *state) (*schema.Message, error) {
     // your handler logic
 }
 
@@ -198,7 +198,7 @@ StreamStatePreHandler: 输入类型需要对齐对应节点的流式输入类型
 
 ```go
 // input 类型为 *schema.StreamReader[[]*schema.Message]，对齐 ChatModel 的流式输入类型
-preHandler := func(ctx context.Context**, **input *schema.StreamReader[[]*schema.Message]**, **state *state) (*schema.StreamReader[[]*schema.Message]**, **error) {
+preHandler := func(ctx context.Context, input *schema.StreamReader[[]*schema.Message], state *state) (*schema.StreamReader[[]*schema.Message], error) {
     // your handler logic
 }
 
@@ -209,7 +209,7 @@ StreamStatePostHandler: 输入类型需要对齐对应节点的流式输出类�
 
 ```go
 // input 类型为 *schema.StreamReader[*schema.Message]，对齐 ChatModel 的流式输出类型
-postHandler := func(ctx context.Context**, **input *schema.StreamReader[*schema.Message]**, **state *state) (*schema.StreamReader[*schema.Message]**, **error) {
+postHandler := func(ctx context.Context, input *schema.StreamReader[*schema.Message], state *state) (*schema.StreamReader[*schema.Message], error) {
     // your handler logic
 }
 
@@ -350,10 +350,10 @@ Eino 的 Graph 中的数据在 Node、Branch、Handler 间流转时，一律是�
 ```go
 // 这个节点的输出，会从 string 改成 map[string]any，
 // 且 map 中只有一个元素，key 是 your_output_key，value 是实际的的节点输出的 string
-graph.AddLambdaNode("your_node_key"**, **compose.InvokableLambda(func(ctx context.Context**, **input []*schema.Message) (str string**, err **error) {
+graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
     // your logic
     return
-})**, **compose.WithOutputKey("your_output_key"))
+}), compose.WithOutputKey("your_output_key"))
 ```
 
 Workflow 可以做到多个上游的输出字段映射到下游节点的不同字段。Eino 内部会将上游输出的 Struct 转换为 Map，因此 Merge 依然符合上面的规则。

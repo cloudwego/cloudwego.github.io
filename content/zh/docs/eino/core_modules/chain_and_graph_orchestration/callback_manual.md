@@ -145,7 +145,7 @@ Handler 需要注入到 Context 中才能被触发。
 
 ### 全局注入 Handler
 
-通过 `callbacks.``AppendGlobalHandlers` 注入全局的 Handler。注入后，所有的触发回调行为，都会自动触发这些全局的 Handler。典型的场景是 tracing，logging 等全局一致、业务场景无关的功能。
+通过 `callbacks.AppendGlobalHandlers` 注入全局的 Handler。注入后，所有的触发回调行为，都会自动触发这些全局的 Handler。典型的场景是 tracing，logging 等全局一致、业务场景无关的功能。
 
 不是并发安全的。建议在服务初始化时注入一次。
 
