@@ -344,10 +344,10 @@ When adding a node (AddNode), you can add the WithOutputKey option to convert th
 ```go
 // The output of this node will be changed from string to map[string]any. 
 // And there is only one element in the map. The key is your_output_key, and the value is the actual string output by the node. 
-graph.AddLambdaNode("your_node_key"**, **compose.InvokableLambda(func(ctx context.Context**, **input []*schema.Message) (str string**, err **error) {
+graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
     // your logic
     return
-})**, **compose.WithOutputKey("your_output_key"))
+}), compose.WithOutputKey("your_output_key"))
 ```
 
 Workflow can map the output fields of multiple predecessor nodes to different input fields of the successor node. Eino converts the Struct output from each predecessor to a Map before any merge process, still conforming to the above rules.
