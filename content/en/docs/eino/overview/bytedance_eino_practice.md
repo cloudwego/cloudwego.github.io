@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-04"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: Bytedance LLM Application Go Development Framework-Eino Practice

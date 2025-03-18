@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-19"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: 'Eino: 编排的设计理念'
@@ -170,6 +170,52 @@ Workflow 的类型对齐的维度，由整体的 Input & Output 改成了字段�
 
 原理和规则与整体的类型对齐相同。
 
+### StateHandler 的类型对齐
+
+StatePreHandler: 输入类型需要对齐对应节点的非流式输入类型。
+
+```go
+// input 类型为 []*schema.Message，对齐 ChatModel 的非流式输入类型
+preHandler := func(ctx context.Context, input []*schema.Message, state *state) ([]*schema.Message, error) {
+    // your handler logic
+}
+
+AddChatModelNode("xxx", model, WithStatePreHandler(preHandler))
+```
+
+StatePostHandler: 输入类型需要对齐对应节点的非流式输出类型。
+
+```go
+// input 类型为 *schema.Message，对齐 ChatModel 的非流式输出类型
+postHandler := func(ctx context.Context, input *schema.Message, state *state) (*schema.Message, error) {
+    // your handler logic
+}
+
+AddChatModelNode("xxx", model, WithStatePostHandler(postHandler))
+```
+
+StreamStatePreHandler: 输入类型需要对齐对应节点的流式输入类型。
+
+```go
+// input 类型为 *schema.StreamReader[[]*schema.Message]，对齐 ChatModel 的流式输入类型
+preHandler := func(ctx context.Context, input *schema.StreamReader[[]*schema.Message], state *state) (*schema.StreamReader[[]*schema.Message], error) {
+    // your handler logic
+}
+
+AddChatModelNode("xxx", model, WithStreamStatePreHandler(preHandler))
+```
+
+StreamStatePostHandler: 输入类型需要对齐对应节点的流式输出类型。
+
+```go
+// input 类型为 *schema.StreamReader[*schema.Message]，对齐 ChatModel 的流式输出类型
+postHandler := func(ctx context.Context, input *schema.StreamReader[*schema.Message], state *state) (*schema.StreamReader[*schema.Message], error) {
+    // your handler logic
+}
+
+AddChatModelNode("xxx", model, WithStreamStatePostHandler(postHandler))
+```
+
 ### invoke 和 stream 下的类型对齐方式
 
 在 Eino 中，编排的结果是 graph 或 chain，若要运行，则需要使用 `Compile()` 来生成一个 `Runnable` 接口。
@@ -297,7 +343,18 @@ Eino 的 Graph 中的数据在 Node、Branch、Handler 间流转时，一律是�
 **扇入**：多个上游的数据汇入到下游，一起作为下游的输入。需要明确定义多个上游的输出，如何**合并（Merge）**起来。Eino 的选择是，首先要求多个上游输出的**实际类型**必须相同且为 Map，且相互间 key 不可重复。其次：
 
 - 在非流式场景下，合并后成为一个 Map，包含所有上游的所有键值对。
-- 在流式场景下，将类型相同的多个上游 StreamReader 合并为一个 StreamReader。实际 Recv 时从效果为从多个上游 StreamReader 中公平读取。
+- 在流式场景下，将类型相同的多个上游 StreamReader 合并为一个 StreamReader。实际 Recv 时效果为从多个上游 StreamReader 中公平读取。
+
+在 AddNode 时，可以通过添加 WithOutputKey 这个 Option 来把节点的输出转成 Map：
+
+```go
+// 这个节点的输出，会从 string 改成 map[string]any，
+// 且 map 中只有一个元素，key 是 your_output_key，value 是实际的的节点输出的 string
+graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
+    // your logic
+    return
+}), compose.WithOutputKey("your_output_key"))
+```
 
 Workflow 可以做到多个上游的输出字段映射到下游节点的不同字段。Eino 内部会将上游输出的 Struct 转换为 Map，因此 Merge 依然符合上面的规则。
 
@@ -325,10 +382,10 @@ Eino 认为，组件应当只需要实现业务场景中真实的流式范式，
 
 Eino 推荐用 `StatePreHandler` 和  `StatePostHandler`，功能定位是：
 
-- StatePreHandler：在每个节点执行前读写 State，以及按需替换节点的 Input。
-- StatePostHandler：在每个节点执行后读写 State，以及按需替换节点的 Output。
+- StatePreHandler：在每个节点执行前读写 State，以及按需替换节点的 Input。输入需对齐节点的非流式输入类型。
+- StatePostHandler：在每个节点执行后读写 State，以及按需替换节点的 Output。输入需对齐节点的非流式输出类型。
 
-针对流式场景，使用对应的 `StreamStatePreHandler` 和 `StreamStatePostHandler`。
+针对流式场景，使用对应的 `StreamStatePreHandler` 和 `StreamStatePostHandler`，输入需分别对齐节点的流式输入和流式输出类型。
 
 这些 state handlers 位于节点外部，通过对 Input 或 Output 的修改影响节点，从而保证了节点的“状态无关”特性。
 
@@ -399,7 +456,8 @@ Eino 支持各种维度的 Call Option 分配方式：
 `NodeTriggerMode == AllPredecessor` 时，图以 dag 引擎执行，对应的拓扑结构是有向无环图。特点是：
 
 - 每个节点有确定的前序节点，当所有前序节点都完成后，本节点才具备运行条件。
-- 不支持 Branch，不支持图中有环，因为会打破“每个节点有确定的前序节点”这一假定。
+- 不支持图中有环，因为会打破“每个节点有确定的前序节点”这一假定。
+- 支持 Branch。在运行时，将 Branch 未选中的节点记为已跳过，不影响 AllPredecessor 的语义。
 - 不需要手动对齐 SuperStep。
 
 总结起来，pregel 模式灵活强大但有额外的心智负担，dag 模式清晰简单但场景受限。在 Eino 框架中，Chain 是 pregel 模式，Workflow 是 dag 模式，Graph 则都支持，可由用户从 pregel 和 dag 中选择。

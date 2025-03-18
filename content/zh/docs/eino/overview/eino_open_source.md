@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-10"
+date: "2025-03-04"
 lastmod: ""
 tags: []
 title: 大语言模型应用开发框架 —— Eino 正式开源！
@@ -168,7 +168,7 @@ Eino 框架的设计开发过程，扎根于 “满足真实需求” 与 “实
 
 ### 工具生态
 
-链路追踪、调试、可视化，是编排引擎的三个重要辅助工具。Eino 内置了 tracing callback，并与 Langfuse 平台做了集成。同时提供了 IDE 插件，可以在写代码的过程中随时可视化查看编排出的 graph，并进行调试运行，甚至可以通过 UI 拖拽的方式快速构建 graph 并导出为 Eino 代码。
+链路追踪、调试、可视化，是编排引擎的三个重要辅助工具。Eino 内置了 tracing callback，并与 APMPlus 和 Langfuse 平台做了集成。同时提供了 IDE 插件，可以在写代码的过程中随时可视化查看编排出的 graph，并进行调试运行，甚至可以通过 UI 拖拽的方式快速构建 graph 并导出为 Eino 代码。
 
 ## 快速上手
 

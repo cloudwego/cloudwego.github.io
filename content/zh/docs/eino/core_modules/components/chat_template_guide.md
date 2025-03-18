@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: 'Eino: ChatTemplate 使用说明'
@@ -122,6 +122,21 @@ result, err := runnable.Invoke(ctx, variables)
 graph := compose.NewGraph[map[string]any, []*schema.Message]()
 graph.AddChatTemplateNode("template_node", template)
 ```
+
+### 从前驱节点的输出中获取数据
+
+在 AddNode 时，可以通过添加 WithOutputKey 这个 Option 来把节点的输出转成 Map：
+
+```go
+// 这个节点的输出，会从 string 改成 map[string]any，
+// 且 map 中只有一个元素，key 是 your_output_key，value 是实际的的节点输出的 string
+graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
+    // your logic
+    return
+}), compose.WithOutputKey("your_output_key"))
+```
+
+把前驱节点的输出转成 map[string]any 并设置好 key 后，在后置的 ChatTemplate 节点中使用该 key 对应的 value。
 
 ## **Option 和 Callback 使用**
 
