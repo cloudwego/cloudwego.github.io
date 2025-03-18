@@ -7,7 +7,7 @@ title: Callback - Langfuse
 weight: 0
 ---
 
-Eino encapsulates langfuse's trace capabilities based on [Eino: Callback Mannual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) capabilities (see [https://langfuse.com/docs/get-started](https://langfuse.com/docs/get-started)).
+Eino encapsulates langfuse's trace capabilities based on [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) capabilities (see [https://langfuse.com/docs/get-started](https://langfuse.com/docs/get-started)).
 
 An example usage is as follows:
 

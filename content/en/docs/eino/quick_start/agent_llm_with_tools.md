@@ -278,7 +278,7 @@ In addition to the aforementioned Chain/Graph-based agents, Eino also provides e
 
 ReAct (Reasoning + Acting) Agent combines reasoning and action capabilities through a think-act-observe loop to solve complex problems. It can conduct deep reasoning while performing tasks and adjust strategies based on observations, making it particularly suitable for complex scenarios requiring multi-step reasoning.
 
-> For more details on react agent, see: [Eino: React Agent Mannual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
+> For more details on react agent, see: [Eino: React Agent Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
 
 ### **Multi Agent**
 
