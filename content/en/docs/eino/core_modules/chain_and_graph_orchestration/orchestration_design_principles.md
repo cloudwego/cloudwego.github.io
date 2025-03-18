@@ -398,7 +398,7 @@ In either case, RunInfo will be automatically inferred.
 
 Additionally, for the Graph as a whole, Callback aspects will always be injected, with RunInfo being the Graph itself.
 
-For a complete explanation of Eino's Callback capabilities, see [Eino: Callback Mannual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
+For a complete explanation of Eino's Callback capabilities, see [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
 
 ### **Option Allocation**
 
