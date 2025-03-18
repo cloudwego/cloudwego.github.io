@@ -24,7 +24,7 @@ func main() {
         SecretKey: "sk-xxx",
     })
     
-    **callbacks**.AppendGlobalHandlers(cbh) // 设置langfuse为全局callback
+    callbacks.AppendGlobalHandlers(cbh) // 设置langfuse为全局callback
     
     g := NewGraph[string,string]()
     /*
