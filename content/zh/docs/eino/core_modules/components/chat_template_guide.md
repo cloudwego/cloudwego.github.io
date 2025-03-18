@@ -130,10 +130,10 @@ graph.AddChatTemplateNode("template_node", template)
 ```go
 // 这个节点的输出，会从 string 改成 map[string]any，
 // 且 map 中只有一个元素，key 是 your_output_key，value 是实际的的节点输出的 string
-graph.AddLambdaNode("your_node_key"**, **compose.InvokableLambda(func(ctx context.Context**, **input []*schema.Message) (str string**, err **error) {
+graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
     // your logic
     return
-})**, **compose.WithOutputKey("your_output_key"))
+}), compose.WithOutputKey("your_output_key"))
 ```
 
 把前驱节点的输出转成 map[string]any 并设置好 key 后，在后置的 ChatTemplate 节点中使用该 key 对应的 value。
