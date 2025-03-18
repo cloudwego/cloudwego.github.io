@@ -42,7 +42,7 @@ Specifically, the following features are implemented:
   - For more details, refer to: [Eino: Components](/docs/eino/core_modules/components)
 - The complexity of business logic is encapsulated within the components, giving the orchestration layer a more global perspective, making **logic layers very clear**.
 - Provides aspect capabilities and a callback mechanism that supports node-based **unified governance capabilities**.
-  - For more details, refer to: [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
+  - For more details, refer to: [Eino: Callback Mannual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
 - Provides a call option mechanism, **extensibility** is the most fundamental requirement of the system in rapid iterations.
   - For more details, refer to: [Eino: CallOption capabilities and specification](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
 - Provides an enhanced "type alignment" development method, reducing the mental burden on developers and leveraging Golang's **type safety** features.

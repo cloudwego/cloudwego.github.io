@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-19"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: 'Eino: Lambda 使用说明'
@@ -11,14 +11,15 @@ weight: 9
 
 Lambda 是 Eino 中最基础的组件类型，它允许用户在工作流中嵌入自定义的函数逻辑。Lambda 组件底层是由输入输出是否流所形成的 4 种运行函数组成，对应 4 种交互模式: Invoke、Stream、Collect、Transform。
 
-用户构建 Lambda 时可实现其中的一种或多种，框架会根据一定的规则进行转换，详细介绍可见: [Eino: 概述](/zh/docs/eino/overview) (见 Runnable 小节)
+用户构建 Lmabda 时可实现其中的一种或多种，框架会根据一定的规则进行转换，详细介绍可见: [Eino: 概述](/zh/docs/eino/overview) (见 Runnable 小节)
 
 ## **组件定义及实现**
 
 Lambda 组件的核心是 `Lambda` 结构体，它包装了用户提供的 Lambda 函数，用户可通过构建方法创建一个 Lambda 组件：
 
+> 代码位置：eino/compose/types_lambda.go
+
 ```go
-// 定义见: https://github.com/cloudwego/eino/blob/main/compose/types_lambda.go
 type Lambda struct {
     executor *composableRunnable
 }
@@ -93,7 +94,7 @@ lambda := compose.TransformableLambda(func(ctx context.Context, input *schema.St
 
 ```go
 type Options struct {
-    Filed1 string
+    Field1 string
 }
 type MyOption func(*Options)
 
@@ -111,7 +112,7 @@ AnyLambda 允许同时实现多种交互模式的 Lambda 函数类型：
 
 ```go
 type Options struct {
-    Filed1 string
+    Field1 string
 }
 
 type MyOption func(*Options)

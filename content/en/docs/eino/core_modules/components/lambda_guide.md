@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: 'Eino: Lambda guide'
@@ -91,7 +91,7 @@ Each interaction method corresponds to a construction method. The following take
 
 ```go
 type Options struct {
-    Filed1 string
+    Field1 string
 }
 type MyOption func(*Options)
 
@@ -108,6 +108,12 @@ lambda := compose.InvokableLambdaWithOption(
 AnyLambda allows for the implementation of multiple types of Lambda functions with different interaction patterns simultaneously.
 
 ```go
+type Options struct {
+    Field1 string
+}
+
+type MyOption func(*Options)
+
 // The types of 'input' and 'output' are any custom types. 
 lambda, err := compose.AnyLambda(
     // Invoke Function

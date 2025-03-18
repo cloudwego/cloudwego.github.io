@@ -1,13 +1,13 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: Callback - Langfuse
 weight: 0
 ---
 
-Eino encapsulates langfuse's trace capabilities based on [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) capabilities (see [https://langfuse.com/docs/get-started](https://langfuse.com/docs/get-started)).
+Eino encapsulates langfuse's trace capabilities based on [Eino: Callback Mannual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) capabilities (see [https://langfuse.com/docs/get-started](https://langfuse.com/docs/get-started)).
 
 An example usage is as follows:
 
@@ -26,7 +26,7 @@ func main() {
         SecretKey: "sk-xxx",
     })
     
-    **callbacks**.InitCallbackHandlers([]**callbacks**._Handler_{cbh}) // Set langfuse as a global callback
+    callbacks.AppendGlobalHandlers(cbh) // Set langfuse as a global callback
     
     g := NewGraph[string,string]()
     /*

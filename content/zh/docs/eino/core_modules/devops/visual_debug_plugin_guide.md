@@ -1,16 +1,16 @@
 ---
 Description: ""
-date: "2025-01-23"
+date: "2025-03-04"
 lastmod: ""
 tags: []
-title: EinoDev 可视化调试插件功能指南
+title: Eino Dev 可视化调试插件功能指南
 weight: 3
 ---
 
 ## 简介
 
 > 💡
-> 对使用 Eino 框架编写的编排产物（Graph，Chain）进行可视化调试，包括：
+> 使用该插件可以对使用 Eino 框架编写的编排产物（Graph，Chain）进行可视化调试，包括：
 >
 > 1. 编排产物可视化渲染；
 > 2. 从可操作的任意节点开始，mock 输入进行调试。
@@ -92,7 +92,7 @@ go mod tidy
 
 ### 本地或远程调试
 
-目标调试编排产物无论是在本地电脑还是在远程服务器，都可以通过配置 IP:Port ，主动连接到目标调试对象所在的服务器。
+目标调试编排产物无论是运行在本地电脑还是在远程服务器，都可以通过配置 IP:Port ，主动连接到目标调试对象所在的服务器。
 
 <a href="/img/eino/eino_debug_run_config_page.png" target="_blank"><img src="/img/eino/eino_debug_run_config_page.png" width="100%" /></a>
 
@@ -164,7 +164,7 @@ go mod tidy
 > 注意事项
 >
 > 1. 确保目标调试的编排产物至少执行过一次 `Compile()`。
-> 2. `devops.Init()` 的执行必须要在 Graph/Chain 调用 `Compile()` 之前。
+> 2. `devops.Init()` 的执行必须要在调用 `Compile()` 之前。
 > 3. 用户需要保证 `devops.Init()` 执行后主进程不能退出。
 
 如在 `main()` 函数中增加调试服务启动代码
