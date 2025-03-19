@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-03-20"
 lastmod: ""
 tags: []
 title: 'Eino: React Agent Manual'
@@ -193,14 +193,17 @@ import (
 )
 
 func main() {
-    persona := `You are an expert golang developer.`
-    
     agent, err := react.NewAgent(ctx, &react.AgentConfig{
         Model: toolableChatModel,
         ToolsConfig: tools,
         
-        // MessageModifier
-        MessageModifier: react.NewPersonaModifier(persona),
+        MessageModifier: func(ctx context.Context, input []*schema.Message) []*schema.Message {
+            res := make([]*schema.Message, 0, len(input)+1)
+
+            res = append(res, schema.SystemMessage("You are an expert golang developer."))
+            res = append(res, input...)
+            return res
+        },
     })
     
     agent.Generate(ctx, []*schema.Message{schema.UserMessage("Write a hello world code")})

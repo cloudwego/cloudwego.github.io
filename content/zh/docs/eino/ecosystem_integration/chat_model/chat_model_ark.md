@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-04"
+date: "2025-03-19"
 lastmod: ""
 tags: []
 title: ChatModel - ARK
@@ -18,6 +18,8 @@ Ark 是 ChatModel 接口的一个实现，用于与火山引擎 Ark Runtime 服�
 Ark 模型通过 `NewChatModel` 函数进行初始化，主要配置参数如下：
 
 ```go
+import "github.com/cloudwego/eino-ext/components/model/ark"
+
 model, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
     // 服务配置
     BaseURL:    "https://ark.cn-beijing.volces.com/api/v3", // 服务地址
@@ -71,9 +73,6 @@ func main() {
     messages := []*schema.Message{
         // 系统消息
         schema.SystemMessage("你是一个助手"),
-        
-        // 文本消息
-        schema.UserMessage("你好"),
         
         // 多模态消息（包含图片）
         {
@@ -132,45 +131,46 @@ package main
 import (
     "context"
     "time"
-    
+
     "github.com/cloudwego/eino-ext/components/model/ark"
     "github.com/cloudwego/eino/schema"
 )
 
 func main() {
     ctx := context.Background()
-    
+
+    timeout := 30 * time.Second
     // 初始化模型
     model, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-        APIKey:  "your-api-key",
-        Region:  "cn-beijing",
-        Model:   "endpoint-id",
-        Timeout: ptrOf(30 * time.Second),
+       APIKey:  "your-api-key",
+       Region:  "cn-beijing",
+       Model:   "endpoint-id",
+       Timeout: &timeout,
     })
     if err != nil {
-        panic(err)
+       panic(err)
     }
-    
+
     // 准备消息
     messages := []*schema.Message{
-        schema.SystemMessage("你是一个助手"),
-        schema.UserMessage("介绍一下火山引擎"),
+       schema.SystemMessage("你是一个助手"),
+       schema.UserMessage("介绍一下火山引擎"),
     }
-    
+
     // 生成回复
     response, err := model.Generate(ctx, messages)
     if err != nil {
-        panic(err)
+       panic(err)
     }
-    
+
     // 处理回复
     println(response.Content)
-    
+
     // 获取 Token 使用情况
     if usage := response.ResponseMeta.Usage; usage != nil {
-        println("提示 Tokens:", usage.PromptTokens)
-        println("生成 Tokens:", usage.CompletionTokens)
-        println("总 Tokens:", usage.TotalTokens)
+       println("提示 Tokens:", usage.PromptTokens)
+       println("生成 Tokens:", usage.CompletionTokens)
+       println("总 Tokens:", usage.TotalTokens)
     }
 }
 ```

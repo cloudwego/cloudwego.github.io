@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-19"
+date: "2025-03-20"
 lastmod: ""
 tags: []
 title: Tool - Googlesearch
@@ -52,6 +52,8 @@ package main
 import (
     "context"
     "encoding/json"
+    "fmt"
+    "log"
     "os"
 
     "github.com/cloudwego/eino-ext/components/tool/googlesearch"
@@ -64,7 +66,7 @@ func main() {
     googleSearchEngineID := os.Getenv("GOOGLE_SEARCH_ENGINE_ID")
 
     if googleAPIKey == "" || googleSearchEngineID == "" {
-        panic("[GOOGLE_API_KEY] and [GOOGLE_SEARCH_ENGINE_ID] must set")
+        log.Fatal("[GOOGLE_API_KEY] and [GOOGLE_SEARCH_ENGINE_ID] must set")
     }
 
     // create tool
@@ -75,7 +77,7 @@ func main() {
         Num:            5,
     })
     if err != nil {
-        panic(err)
+        log.Fatal(err)
     }
 
     // prepare params
@@ -87,17 +89,45 @@ func main() {
 
     args, err := json.Marshal(req)
     if err != nil {
-        panic(err)
+        log.Fatal(err)
     }
 
     // do search
-    result, err := searchTool.InvokableRun(ctx, string(args))
+    resp, err := searchTool.InvokableRun(ctx, string(args))
     if err != nil {
-        panic(err)
+        log.Fatal(err)
     }
 
-    // res
-    println(result) // in JSON
+    var searchResp googlesearch.SearchResult
+    if err := json.Unmarshal([]byte(resp), &searchResp); err != nil {
+        log.Fatal(err)
+    }
+
+    // Print results
+    fmt.Println("Search Results:")
+    fmt.Println("==============")
+    for i, result := range searchResp.Items {
+        fmt.Printf("\n%d. Title: %s\n", i+1, result.Title)
+        fmt.Printf("   Link: %s\n", result.Link)
+        fmt.Printf("   Desc: %s\n", result.Desc)
+    }
+    fmt.Println("")
+    fmt.Println("==============")
+
+    // seems like:
+    // Search Results:
+    // ==============
+    // 1. Title: My Concurrent Programming book is finally PUBLISHED!!! : r/golang
+    //    Link: https://www.reddit.com/r/golang/comments/18b86aa/my_concurrent_programming_book_is_finally/
+    //    Desc: Posted by u/channelselectcase - 398 votes and 46 comments
+    // 2. Title: Concurrency — An Introduction to Programming in Go | Go Resources
+    //    Link: https://www.golang-book.com/books/intro/10
+    //    Desc:
+    // 3. Title: The Comprehensive Guide to Concurrency in Golang | by Brandon ...
+    //    Link: https://bwoff.medium.com/the-comprehensive-guide-to-concurrency-in-golang-aaa99f8bccf6
+    //    Desc: Update (November 20, 2023) — This article has undergone a comprehensive revision for enhanced clarity and conciseness. I’ve streamlined the…
+
+    // ==============
 }
 ```
 
