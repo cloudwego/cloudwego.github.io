@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-03-19"
 lastmod: ""
 tags: []
 title: Tool - Googlesearch
@@ -51,40 +51,53 @@ package main
 
 import (
     "context"
-    
+    "encoding/json"
+    "os"
+
     "github.com/cloudwego/eino-ext/components/tool/googlesearch"
-    "github.com/cloudwego/eino/components/tool"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize the search tool
+
+    googleAPIKey := os.Getenv("GOOGLE_API_KEY")
+    googleSearchEngineID := os.Getenv("GOOGLE_SEARCH_ENGINE_ID")
+
+    if googleAPIKey == "" || googleSearchEngineID == "" {
+        panic("[GOOGLE_API_KEY] and [GOOGLE_SEARCH_ENGINE_ID] must set")
+    }
+
+    // create tool
     searchTool, err := googlesearch.NewTool(ctx, &googlesearch.Config{
-        APIKey:         "your-api-key",
-        SearchEngineID: "your-engine-id",
+        APIKey:         googleAPIKey,
+        SearchEngineID: googleSearchEngineID,
         Lang:           "zh-CN",
-        Num:           5,
+        Num:            5,
     })
     if err != nil {
         panic(err)
     }
-    
-    // Prepare search request
+
+    // prepare params
     request := map[string]any{
         "query": "Golang concurrent programming",
         "num":   3,
         "lang":  "en",
     }
-    
-    // Execute search
-    result, err := searchTool.Invoke(ctx, request)
+
+    args, err := json.Marshal(request)
     if err != nil {
         panic(err)
     }
-    
-    // Process search results
-    println(result) // JSON format search results
+
+    // do search
+    result, err := searchTool.InvokableRun(ctx, string(args))
+    if err != nil {
+        panic(err)
+    }
+
+    // res
+    println(result) // in JSON
 }
 ```
 
