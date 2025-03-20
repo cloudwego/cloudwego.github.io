@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-03-19"
 lastmod: ""
 tags: []
 title: ChatModel - OpenAI
@@ -24,36 +24,31 @@ The OpenAI model is initialized via the `NewChatModel` function. The main config
 ```go
 import "github.com/cloudwego/eino-ext/components/model/openai"
 
-func main() {
-    model, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-        // Azure OpenAI Service configuration (optional)
-        ByAzure:    false,           // Whether to use Azure OpenAI
-        BaseURL:    "your-url",      // Azure API base URL
-        APIVersion: "2023-05-15",    // Azure API version
-        
-        // Basic configuration
-        APIKey:  "your-key",         // API key
-        Timeout: 30 * time.Second,   // Timeout duration
-        
-        // Model parameters
-        Model:            "gpt-4",   // Model name
-        MaxTokens:        &maxTokens,// Maximum generation length
-        Temperature:      &temp,     // Temperature
-        TopP:             &topP,     // Top-P sampling
-        N:                &n,        // Number of outputs
-        Stop:             []string{},// Stop words
-        PresencePenalty:  &pp,      // Presence penalty
-        FrequencyPenalty: &fp,      // Frequency penalty
-        
-        // Advanced parameters
-        ResponseFormat:   &format,   // Response format
-        Seed:            &seed,      // Random seed
-        LogitBias:       map[string]int{}, // Token bias
-        LogProbs:        &logProbs,  // Whether to return probabilities
-        TopLogProbs:     &topLp,    // Number of Top K probabilities
-        User:            &user,      // User identifier
-    })
-}
+model, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+    // Azure OpenAI Service configuration (optional)
+    ByAzure:    false,           // Whether to use Azure OpenAI
+    BaseURL:    "your-url",      // Azure API base URL
+    APIVersion: "2023-05-15",    // Azure API version
+
+    // Basic configuration
+    APIKey:  "your-key",         // API key
+    Timeout: 30 * time.Second,   // Timeout duration
+
+    // Model parameters
+    Model:            "gpt-4",   // Model name
+    MaxTokens:        &maxTokens,// Maximum generation length
+    Temperature:      &temp,     // Temperature
+    TopP:             &topP,     // Top-P sampling
+    Stop:             []string{},// Stop words
+    PresencePenalty:  &pp,      // Presence penalty
+    FrequencyPenalty: &fp,      // Frequency penalty
+
+    // Advanced parameters
+    ResponseFormat:   &format,   // Response format
+    Seed:            &seed,      // Random seed
+    LogitBias:       map[string]int{}, // Token bias
+    User:            &user,      // User identifier
+})
 ```
 
 > - For detailed parameter meanings, refer to: [https://platform.openai.com/docs/api-reference/chat/create](https://platform.openai.com/docs/api-reference/chat/create)
@@ -64,24 +59,21 @@ func main() {
 Dialogue generation supports both regular mode and streaming mode:
 
 ```go
-func main() {
-    // invoke mode
-    response, err := model.Generate(ctx, messages)
+// invoke mode
+response, err := model.Generate(ctx, messages)
     
-    // streaming mode
-    stream, err := model.Stream(ctx, messages)
-}
+// streaming mode
+stream, err := model.Stream(ctx, messages)
 ```
 
 Example of message format:
 
 ```go
+import "github.com/cloudwego/eino/schema"
+
 messages := []*schema.Message{
     // System message
     schema.SystemMessage("You are an assistant"),
-    
-    // Text message
-    schema.UserMessage("Hello"),
     
     // Multi-modal message (containing an image)
     {
@@ -108,28 +100,28 @@ messages := []*schema.Message{
 Supports binding tools and forced tool invocation:
 
 ```go
-func main() {
-    // Define tools
-    tools := []*schema.ToolInfo{
-        {
-            Name: "search",
-            Desc: "Search information",
-            ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
-                "query": {
-                    Type:     schema.String,
-                    Desc:     "Search keywords",
-                    Required: true,
-                },
-            }),
-        },
-    }
-    
-    // Bind optional tools
-    err := model.BindTools(tools)
-    
-    // Bind forced tools
-    err := model.BindForcedTools(tools)
+import "github.com/cloudwego/eino/schema"
+
+// Define tools
+tools := []*schema.ToolInfo{
+    {
+       Name: "search",
+       Desc: "Search information",
+       ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
+          "query": {
+             Type:     schema.String,
+             Desc:     "Search keywords",
+             Required: true,
+          },
+       }),
+    },
 }
+
+// Bind optional tools
+err := model.BindTools(tools)
+
+// Bind forced tools
+err := model.BindForcedTools(tools)
 ```
 
 > For tool-related information, refer to [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)

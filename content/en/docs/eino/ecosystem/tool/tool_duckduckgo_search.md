@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-03-19"
 lastmod: ""
 tags: []
 title: Tool - DuckDuckGoSearch
@@ -52,6 +52,7 @@ import (
     "encoding/json"
     "fmt"
     "log"
+    "time"
 
     "github.com/cloudwego/eino-ext/components/tool/duckduckgo"
     "github.com/cloudwego/eino-ext/components/tool/duckduckgo/ddgsearch"
@@ -62,50 +63,50 @@ func main() {
 
     // Create configuration
     config := &duckduckgo.Config{
-       MaxResults: **3, **// Limit to return 3 results
-       Region:     ddgsearch._RegionCN_**,**
-**       **DDGConfig: &ddgsearch.Config{
-          Timeout:    **10,**
-**          **Cache:      true**,**
-**          **MaxRetries: **5,**
-**       **}**,**
-**    **}
+        MaxResults: 3, // Limit to return 3 results
+        Region:     ddgsearch.RegionCN,
+        DDGConfig: &ddgsearch.Config{
+            Timeout:    10 * time.Second,
+            Cache:      true,
+            MaxRetries: 5,
+        },
+    }
 
     // Create search client
-    tool**, **err := duckduckgo.NewTool(ctx**, **config)
+    tool, err := duckduckgo.NewTool(ctx, config)
     if err != nil {
-       log.Fatal("Failed to create tool:"**, **err)
+        log.Fatalf("NewTool of duckduckgo failed, err=%v", err)
     }
 
     // Create search request
     searchReq := &duckduckgo.SearchRequest{
-       Query: "Golang programming development"**,**
-**       **Page:  **1,**
-**    **}
+        Query: "Golang programming development",
+        Page:  1,
+    }
 
-    jsonReq**, **err := json.Marshal(searchReq)
+    jsonReq, err := json.Marshal(searchReq)
     if err != nil {
-       log.Fatal("Failed to marshal search request:"**, **err)
+        log.Fatalf("Marshal of search request failed, err=%v", err)
     }
 
     // Execute search
-    resp**, **err := tool.InvokableRun(ctx**, **string(jsonReq))
+    resp, err := tool.InvokableRun(ctx, string(jsonReq))
     if err != nil {
-       log.Fatal("Search failed:"**, **err)
+        log.Fatalf("Search of duckduckgo failed, err=%v", err)
     }
 
     var searchResp duckduckgo.SearchResponse
-    if err := json.Unmarshal([]byte(resp)**, **&searchResp)**; **err != nil {
-       log.Fatal("Failed to unmarshal search response:"**, **err)
+    if err := json.Unmarshal([]byte(resp), &searchResp); err != nil {
+        log.Fatalf("Unmarshal of search response failed, err=%v", err)
     }
 
     // Print results
     fmt.Println("Search Results:")
     fmt.Println("==============")
-    for i**, **result := range searchResp.Results {
-       fmt.Printf("\n%d. Title: %s\n"**, **i+**1, **result.Title)
-       fmt.Printf("   Link: %s\n"**, **result.Link)
-       fmt.Printf("   Description: %s\n"**, **result.Description)
+    for i, result := range searchResp.Results {
+        fmt.Printf("\n%d. Title: %s\n", i+1, result.Title)
+        fmt.Printf("   Link: %s\n", result.Link)
+        fmt.Printf("   Description: %s\n", result.Description)
     }
     fmt.Println("")
     fmt.Println("==============")

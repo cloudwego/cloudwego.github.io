@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-03-19"
 lastmod: ""
 tags: []
 title: ChatModel - ARK
@@ -18,6 +18,8 @@ Ark is an implementation of the ChatModel interface, used for interacting with t
 The Ark model is initialized through the `NewChatModel` function with the following key configuration parameters:
 
 ```go
+import "github.com/cloudwego/eino-ext/components/model/ark"
+
 model, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
     // Service Configuration
     BaseURL:    "https://ark.cn-beijing.volces.com/api/v3", // Service Address
@@ -77,9 +79,6 @@ func main() {
         // System Message
         schema.SystemMessage("You are an assistant"),
         
-        // Text Message
-        schema.UserMessage("Hello"),
-        
         // Multimodal Message (including images)
         {
             Role: schema.User,
@@ -99,7 +98,9 @@ func main() {
         },
     }
 }
-```### **Tool Invocation**
+```
+
+### **Tool Invocation**
 
 Supported tools binding:
 
@@ -143,12 +144,13 @@ import (
 func main() {
     ctx := context.Background()
     
+    timeout := 30 * time.Second
     // Initialize model
     model, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
         APIKey:  "your-api-key",
         Region:  "cn-beijing",
         Model:   "endpoint-id",
-        Timeout: ptrOf(30 * time.Second),
+        Timeout: &timeout,
     })
     if err != nil {
         panic(err)

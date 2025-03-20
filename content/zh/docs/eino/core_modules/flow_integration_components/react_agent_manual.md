@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-04"
+date: "2025-03-20"
 lastmod: ""
 tags: []
 title: 'Eino: React Agent 使用手册'
@@ -175,14 +175,14 @@ toolConfig := &compose.ToolsNodeConfig{
 
 ### MessageModifier
 
-MessageModifier 会在每次把所有历史消息传递给 ChatModel 之前执行，其定义为：
+MessageModifier 会在每次把所有历史消息传递给 ChatModel 之前执行，定义为：
 
 ```go
 // modify the input messages before the model is called.
 type MessageModifier func(ctx context.Context, input []*schema.Message) []*schema.Message
 ```
 
-框架提供了一个简便的 PersonaModifier，用于在消息列表的最头部增加一个代表 agent 个性的 system message，使用如下:
+在 Agent 中配置 MessageModifier 可以修改传入模型的 messages：
 
 ```go
 import (
@@ -191,21 +191,24 @@ import (
 )
 
 func main() {
-    persona := `你是一个 golang 开发专家.`
-    
     agent, err := react.NewAgent(ctx, &react.AgentConfig{
         Model: toolableChatModel,
         ToolsConfig: tools,
         
-        // MessageModifier
-        MessageModifier: react.NewPersonaModifier(persona),
+        MessageModifier: func(ctx context.Context, input []*schema.Message) []*schema.Message {
+            res := make([]*schema.Message, 0, len(input)+1)
+    
+            res = append(res, schema.SystemMessage("你是一个 golang 开发专家."))
+            res = append(res, input...)
+            return res
+        },
     })
     
     agent.Generate(ctx, []*schema.Message{schema.UserMessage("写一个 hello world 的代码")})
-    // 实际到 ChatModel 的 input 为
+    // 模型得到的实际输入为：
     // []*schema.Message{
-    //    {Role: schema.System, Content: "你是一个 golang 开发专家."},
-    //    {Role: schema.Human, Content: "写一个 hello world 的代码"}
+    //    {Role: schema.System, Content: "You are an expert golang developer."},
+    //    {Role: schema.Human, Content: "Write a hello world code"}
     //}
 }
 ```

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-03-20"
 lastmod: ""
 tags: []
 title: Tool - Googlesearch
@@ -51,40 +51,83 @@ package main
 
 import (
     "context"
-    
+    "encoding/json"
+    "fmt"
+    "log"
+    "os"
+
     "github.com/cloudwego/eino-ext/components/tool/googlesearch"
-    "github.com/cloudwego/eino/components/tool"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize the search tool
+
+    googleAPIKey := os.Getenv("GOOGLE_API_KEY")
+    googleSearchEngineID := os.Getenv("GOOGLE_SEARCH_ENGINE_ID")
+
+    if googleAPIKey == "" || googleSearchEngineID == "" {
+        log.Fatal("[GOOGLE_API_KEY] and [GOOGLE_SEARCH_ENGINE_ID] must set")
+    }
+
+    // create tool
     searchTool, err := googlesearch.NewTool(ctx, &googlesearch.Config{
-        APIKey:         "your-api-key",
-        SearchEngineID: "your-engine-id",
+        APIKey:         googleAPIKey,
+        SearchEngineID: googleSearchEngineID,
         Lang:           "zh-CN",
-        Num:           5,
+        Num:            5,
     })
     if err != nil {
-        panic(err)
+        log.Fatal(err)
     }
-    
-    // Prepare search request
-    request := map[string]any{
-        "query": "Golang concurrent programming",
-        "num":   3,
-        "lang":  "en",
+
+    // prepare params
+    req := googlesearch.SearchRequest{
+        Query: "Golang concurrent programming",
+        Num:   3,
+        Lang:  "en",
     }
-    
-    // Execute search
-    result, err := searchTool.Invoke(ctx, request)
+
+    args, err := json.Marshal(req)
     if err != nil {
-        panic(err)
+        log.Fatal(err)
     }
-    
-    // Process search results
-    println(result) // JSON format search results
+
+    // do search
+    resp, err := searchTool.InvokableRun(ctx, string(args))
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    var searchResp googlesearch.SearchResult
+    if err := json.Unmarshal([]byte(resp), &searchResp); err != nil {
+        log.Fatal(err)
+    }
+
+    // Print results
+    fmt.Println("Search Results:")
+    fmt.Println("==============")
+    for i, result := range searchResp.Items {
+        fmt.Printf("\n%d. Title: %s\n", i+1, result.Title)
+        fmt.Printf("   Link: %s\n", result.Link)
+        fmt.Printf("   Desc: %s\n", result.Desc)
+    }
+    fmt.Println("")
+    fmt.Println("==============")
+
+    // seems like:
+    // Search Results:
+    // ==============
+    // 1. Title: My Concurrent Programming book is finally PUBLISHED!!! : r/golang
+    //    Link: https://www.reddit.com/r/golang/comments/18b86aa/my_concurrent_programming_book_is_finally/
+    //    Desc: Posted by u/channelselectcase - 398 votes and 46 comments
+    // 2. Title: Concurrency — An Introduction to Programming in Go | Go Resources
+    //    Link: https://www.golang-book.com/books/intro/10
+    //    Desc:
+    // 3. Title: The Comprehensive Guide to Concurrency in Golang | by Brandon ...
+    //    Link: https://bwoff.medium.com/the-comprehensive-guide-to-concurrency-in-golang-aaa99f8bccf6
+    //    Desc: Update (November 20, 2023) — This article has undergone a comprehensive revision for enhanced clarity and conciseness. I’ve streamlined the…
+
+    // ==============
 }
 ```
 
