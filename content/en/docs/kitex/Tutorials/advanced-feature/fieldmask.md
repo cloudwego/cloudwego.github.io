@@ -28,7 +28,8 @@ A path string represents an arbitrary endpoint of a thrift object. It is used fo
 ```go
 struct Example {
     1: string Foo,
-    2: i64 Bar3: Example Self
+    2: i64 Bar,
+    3: Example Self
 }
 ```
 

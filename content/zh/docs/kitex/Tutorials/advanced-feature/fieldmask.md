@@ -41,7 +41,8 @@ $ kitex -thrift with_field_mask -thrift with_reflection ${your_idl}
 ```go
 struct Example {
     1: string Foo,
-    2: i64 Bar: Example Self
+    2: i64 Bar,
+    3: Example Self
 }
 ```
 
