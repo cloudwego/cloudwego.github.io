@@ -41,3 +41,26 @@
     font-weight: bold;
   }
 }
+
+@media screen and (max-width: 992px) {
+  .about-flex-box {
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    .about-flex-left {
+      flex-shrink: 0;
+      width: 100%;
+      padding: 0;
+      text-align: right;
+    }
+    .about-flex-right {
+      flex-shrink: 0;
+      width: 100%;
+      padding: 0;
+      text-align: left;
+    }
+    .about-img {
+      width: 100%;
+    }
+  }
+}
