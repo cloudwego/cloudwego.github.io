@@ -251,26 +251,35 @@ a, err = NewAgent(ctx, &AgentConfig{
 
 不同的模型在流式模式下输出工具调用的方式可能不同: 某些模型(如 OpenAI) 会直接输出工具调用；某些模型 (如 Claude) 会先输出文本，然后再输出工具调用。因此需要使用不同的方法来判断，这个字段用来指定判断模型流式输出中是否包含工具调用的函数。
 
-可选填写，未填写时使用首包是否包含工具调用判断：
+可选填写，未填写时使用“非空包”是否包含工具调用判断：
 
 ```go
-func firstChunkStreamToolCallChecker(___ context.Context, _sr_ *schema.StreamReader[*schema.Message]) (bool, error) {
+func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
     defer sr.Close()
 
-    msg, err := sr.Recv()
-    if err != nil {
-        return false, err
-    }
+    for {
+       msg, err := sr.Recv()
+       if err == io.EOF {
+          return false, nil
+       }
+       if err != nil {
+          return false, err
+       }
 
-    if len(msg.ToolCalls) == 0 {
-        return false, nil
-    }
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
 
-    return true, nil
+       if len(msg.Content) == 0 { // skip empty chunks at the front
+          continue
+       }
+
+       return false, nil
+    }
 }
 ```
 
-部分模型流式输出工具调用时会先输出一段文本（比如 Claude），这会导致默认 StreamToolCallChecker 错误判断没有工具调用而直接返回，使用这类模型时必须自行实现正确的 StreamToolCallChecker。
+部分模型流式输出工具调用时会先输出一段文本（比如Claude，以及部分豆包模型），这会导致默认 StreamToolCallChecker 错误判断没有工具调用而直接返回，使用这类模型时可自行实现正确的StreamToolCallChecker，极端情况下可能需要判断所有包是否包含 ToolCall，从而导致“流式判断”的效果丢失。解决这一问题的建议是：
 
 > 💡
 > 对于流式输出工具调用时会先输出一段文本的模型，可以尝试添加 prompt 来约束模型在工具调用时不额外输出文本，从而解决这一问题，例如：“如果需要调用 tool，直接输出 tool，不要输出文本”。
