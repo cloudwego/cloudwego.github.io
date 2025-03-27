@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: Callback - Langfuse
@@ -24,7 +24,7 @@ func main() {
         SecretKey: "sk-xxx",
     })
     
-    **callbacks**.InitCallbackHandlers([]**callbacks**._Handler_{cbh}) // 设置langfuse为全局callback
+    callbacks.AppendGlobalHandlers(cbh) // 设置langfuse为全局callback
     
     g := NewGraph[string,string]()
     /*

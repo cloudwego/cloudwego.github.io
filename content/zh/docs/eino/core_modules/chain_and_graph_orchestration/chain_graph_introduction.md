@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-19"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: 'Eino: Chain/Graph 编排介绍'
@@ -131,7 +131,7 @@ func main() {
 
     ctx := context.Background()
 
-    callbacks.InitCallbackHandlers([]callbacks.Handler{&loggerCallbacks{}})
+    callbacks.AppendGlobalHandlers(&loggerCallbacks{})
 
     // 1. create an instance of ChatTemplate as 1st Graph Node
     systemTpl := `你是一名房产经纪人，结合用户的薪酬和工作，使用 user_info API，为其提供相关的房产信息。邮箱是必须的`
@@ -396,7 +396,7 @@ func main() {
     }
 
     _ = sg.AddLambdaNode(nodeOfL1, l1,
-       compose.WithStatePreHandler(l1StateToInput), compose.WithStatePostHandler(l1StateToOutput))
+       compose.WithStatePreHandler(l1StateToInput),   compose.WithStatePostHandler(l1StateToOutput))
 
     l2 := compose.StreamableLambda(func(ctx context.Context, input string) (output *schema.StreamReader[string], err error) {
        outStr := "StreamableLambda: " + input
