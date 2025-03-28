@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-19"
+date: "2025-03-28"
 lastmod: ""
 tags: []
 title: 'Eino: Chain/Graph 编排介绍'
@@ -131,7 +131,7 @@ func main() {
 
     ctx := context.Background()
 
-    callbacks.InitCallbackHandlers([]callbacks.Handler{&loggerCallbacks{}})
+    callbacks.AppendGlobalHandlers(&loggerCallbacks{})
 
     // 1. create an instance of ChatTemplate as 1st Graph Node
     systemTpl := `你是一名房产经纪人，结合用户的薪酬和工作，使用 user_info API，为其提供相关的房产信息。邮箱是必须的`
@@ -301,9 +301,9 @@ Graph 可以有 graph 自身的“全局”状态，在创建 Graph 时传入 Wi
 ```go
 // compose/generic_graph.go
 
-// type GenLocalState[S any] func(ctx **context**._Context_) (state S)
+// type GenLocalState[S any] func(ctx context.Context) (state S)
 
-func WithGenLocalState[S any](gls _GenLocalState_[S]) _NewGraphOption _{
+func WithGenLocalState[S any](gls GenLocalState[S]) NewGraphOption {
     // --snip--
 }
 ```
@@ -313,14 +313,14 @@ Add node 时添加 Pre/Post Handler 来处理 State：
 ```go
 // compose/graph_add_node_options.go
 
-// type StatePreHandler[I, S any] func(ctx **context**._Context_, in I, state S) (I, error)
-// type StatePostHandler[O, S any] func(ctx **context**._Context_, out O, state S) (O, error)
+// type StatePreHandler[I, S any] func(ctx context.Context, in I, state S) (I, error)
+// type StatePostHandler[O, S any] func(ctx context.Context, out O, state S) (O, error)
 
-func WithStatePreHandler[I, S any](pre _StatePreHandler_[I, S]) _GraphAddNodeOpt _{
+func WithStatePreHandler[I, S any](pre StatePreHandler[I, S]) GraphAddNodeOpt {
     // --snip--
 }
 
-func WithStatePostHandler[O, S any](post _StatePostHandler_[O, S]) _GraphAddNodeOpt _{
+func WithStatePostHandler[O, S any](post StatePostHandler[O, S]) GraphAddNodeOpt {
     // --snip--
 }
 ```
@@ -331,7 +331,7 @@ func WithStatePostHandler[O, S any](post _StatePostHandler_[O, S]) _GraphAddNode
 // flow/agent/react/react.go
 
 var msg *schema.Message
-err = compose.ProcessState[*state](ctx**, **func(_ context.Context**, **state *state) error {
+err = compose.ProcessState[*state](ctx, func(_ context.Context, state *state) error {
     for i := range msgs {
        if msgs[i] != nil && msgs[i].ToolCallID == state.ReturnDirectlyToolCallID {
           msg = msgs[i]
@@ -396,7 +396,7 @@ func main() {
     }
 
     _ = sg.AddLambdaNode(nodeOfL1, l1,
-       compose.WithStatePreHandler(l1StateToInput), compose.WithStatePostHandler(l1StateToOutput))
+       compose.WithStatePreHandler(l1StateToInput),   compose.WithStatePostHandler(l1StateToOutput))
 
     l2 := compose.StreamableLambda(func(ctx context.Context, input string) (output *schema.StreamReader[string], err error) {
        outStr := "StreamableLambda: " + input
