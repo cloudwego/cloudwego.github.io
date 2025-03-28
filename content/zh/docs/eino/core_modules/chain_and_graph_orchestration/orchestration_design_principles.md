@@ -299,7 +299,7 @@ Eino 的 Graph 中的数据在 Node、Branch、Handler 间流转时，一律是�
 可合并的类型可以是：
 
 - Map 类型，且相互间 key 不重复。
-- 任意类型，且通过 `compose.RegisterFanInMergeFunc` 注册了合并函数。
+- 任意类型，且通过 `compose.RegisterValuesMergeFunc` 注册了合并函数。
 
 其次：
 
