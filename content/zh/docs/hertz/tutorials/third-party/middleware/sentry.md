@@ -65,7 +65,7 @@ func main()  {
 
     h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         // use GetHubFromContext to get the hub
-        if hub := hertzsentry.GetHubFromContext(ctx); hub != nil {
+        if hub := hertzsentry.GetHubFromContext(c); hub != nil {
             hub.WithScope(func(scope *sentry.Scope) {
                 scope.SetTag("hertz", "CloudWeGo Hertz")
                 scope.SetLevel(sentry.LevelDebug)
