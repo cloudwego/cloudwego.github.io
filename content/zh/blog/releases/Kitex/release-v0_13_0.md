@@ -16,13 +16,13 @@ description: >
     v0.13.0 对 StreamX 支持 gRPC 后，用户可迁移至 StreamX 新接口，Server 端可以同时兼容两个流式协议，无需担心接口迁移后的协议兼容性问题。
     特别地，StreamX 在适配 gRPC 时，发现依然有一些不便利的问题，为带来更好的接口使用体验，因此对 StreamX 接口做了二次调整。
     已经使用 v0.12.* StreamX 用户会带来影响，在这里表示抱歉。
-    详见 
+    详见 [StreamX 用户文档](/zh/docs/kitex/tutorials/basic-feature/streamx)
 2. Prutal - Protobuf 的无生成代码序列化库
-    Prutal 正式开源（https://github.com/cloudwego/prutal），对标 Thrift 的 Frugal 库，新版本 Kitex 默认集成 Prutal。特点：
+    Prutal 正式开源 (https://github.com/cloudwego/prutal)，对标 Thrift 的 Frugal 库，新版本 Kitex 默认集成 Prutal。特点：
     - 产物体积最小化，只需生成结构体
     - 使用与 Frugal 相似的反射优化，性能优于官方 Protobuf
     - 兼容官方 Protobuf 及衍生版本的生成代码
-    详见 Kitex - 集成 Prutal 说明
+    详细信息参考 [Prutal](/zh/docs/kitex/tutorials/code-gen/prutal)
 
 ### **功能/体验优化**
 1. TTHeader Streaming 支持配置接口级别 Recv 超时

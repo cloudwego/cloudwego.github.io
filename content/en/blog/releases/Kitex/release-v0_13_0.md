@@ -15,14 +15,14 @@ description: >
     v0.12.0 released the StreamX interface to optimise the streaming experience, and supported the custom streaming protocol TTHeader Streaming, but did not support gRPC. So stock users could not migrate.
     This version supports gRPC for StreamX, users can migrate to StreamX, and the Server side can be compatible with two streaming protocols at the same time. So there is no need to worry about protocol compatibility after interface migration.
     In particular, when adapting gRPC with StreamX, we found that there are still some inconvenient problems. In order to bring a better experience of using the interface, we have adjusted the StreamX interface for the second time, which will affect the users who have already been using StreamX. We apologise for that.
-    User documentation: Kitex StreamX - 基础流编程 | Stream Basic Programming
+    User documentation: [StreamX User Documentation](/en/docs/kitex/tutorials/basic-feature/streamx)
 2. Prutal - Protobuf's non-generated code serialisation library
     Prutal is officially open source (https://github.com/cloudwego/prutal), on par with Thrift's Frugal library, and the new version of Kitex integrates Prutal by default.
     Advantages:
     - Minimized Code Product Size: Generating Only Structures, No Runtime Code
     - Leveraging Reflection Optimization Similar to Frugal, Achieving Over 50% Speed Increase
     - Generating Code Compatible with Existing Protobuf and Derivative Versions
-    User documentation: Kitex 集成 Prutal 说明
+    User documentation: [Prutal](/en/docs/kitex/tutorials/code-gen/prutal)
 
 ### **Feature/Experience Optimization**
 1. **TTHeader Streaming**: Support interface-level Recv timeout control
