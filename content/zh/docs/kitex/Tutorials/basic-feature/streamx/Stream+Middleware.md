@@ -8,18 +8,43 @@ description: ""
 
 ## 中间件类型
 
-### Stream Recv/Send Middleware
+### Stream 中间件
+
+**触发时机**：每次创建流时
+
+#### 类型定义
+```go
+// client: github.com/cloudwego/kitex/pkg/endpoint/cep
+type StreamEndpoint func(ctx context.Context) (stream streaming.ClientStream, err error)
+type StreamMiddleware func(next StreamEndpoint) StreamEndpoint
+
+// server: github.com/cloudwego/kitex/pkg/endpoint/sep
+type StreamEndpoint func(ctx context.Context, stream streaming.ServerStream) (err error)
+type StreamMiddleware func(next StreamEndpoint) StreamEndpoint
+```
+
+**参数说明**：
+
+- ```stream``` 为单次 RPC 创建的流对象
+- Client middleware 内 ```next``` 函数执行后，stream 即完成创建
+- Server middleware 内 ```next``` 函数执行后，server handler 即完成处理
+
+### Stream Recv/Send 中间件
 
 **触发时机**：流收发消息时调用
 
 #### 类型定义
 
 ```go
-type StreamRecvEndpoint func(ctx context.Context, stream Stream, res any) (err error)
-type StreamSendEndpoint func(ctx context.Context, stream Stream, req any) (err error)
-
+// client: github.com/cloudwego/kitex/pkg/endpoint/cep
+type StreamRecvEndpoint func(ctx context.Context, stream streaming.ClientStream, message interface{}) (err error)
 type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
-type StreamSendMiddleware func(next StreamSendEndpoint) StreamSendEndpoint
+
+// server: github.com/cloudwego/kitex/pkg/endpoint/sep
+type StreamRecvEndpoint func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error)
+type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
+
+// 其余定义和 Send middlware 相同...
 ```
 
 **参数说明**：
@@ -33,61 +58,81 @@ type StreamSendMiddleware func(next StreamSendEndpoint) StreamSendEndpoint
 | StreamRecvMiddleware | - 数据未真正收，刚调用 stream.Recv() 函数<br><br>- res 参数为空         | - 数据已收到或遇到错误<br><br>- res 参数有真实值     |
 | StreamSendMiddleware | - 数据未真正发送，刚调用 stream.Send() 函数<br><br>- req 参数为真实请求 | - 数据发送完成或遇到错误<br><br>- req 参数为真实请求 |
 
-#### 使用范例
+### Unary 中间件
 
-**使用场景**：流收/发消息时，注入相关业务逻辑。
-
+对所有非流式接口，我们额外提供了 UnaryMiddleware 用于注入仅对所有 unary 方法生效的中间件，该中间件与 kitex 原生支持的 ```WithMiddleware``` 的方法签名完全一致，区别在于后者可以同时对 streaming 方法生效。
 ```go
-svr, err := xxx.NewServer(
-    //...
-    streamxserver.WithStreamRecvMiddleware(func(next streamx.StreamRecvEndpoint) streamx.StreamRecvEndpoint {
-        return func(ctx context.Context, stream streamx.Stream, res any) (err error) {
-            // ctx 依然含有用户透传的 token
-            token, ok := metainfo.GetPersistentValue(ctx, "user_token")
-            // 检查 token 是否有账户余额继续维持会话
-            if !hasBalance(token) {
-                return fmt.Errorf("user dont have enough balance: token=%s", token)
-            }
-            return next(ctx, stream, res)
-        }
-    }),
-)
+type UnaryEndpoint Endpoint
+type UnaryMiddleware func(next UnaryEndpoint) UnaryEndpoint
+
+// client.WithUnaryOptions(client.WithUnaryMiddleware(mw))
+// server.WithUnaryOptions(server.WithUnaryMiddleware(mw))
 ```
 
 ## 注入中间件
 
-#### 注入 Client Middleware
+### 注入 client 侧的中间件
 
 ```go
+import "github.com/cloudwego/client"
+
 cli, err := xxx.NewClient(
-    "a.b.c",
-    streamxclient.WithStreamRecvMiddleware(func(next streamx.StreamRecvEndpoint) streamx.StreamRecvEndpoint {
-        return func(ctx context.Context, stream streamx.Stream, res any) (err error) {
-           return next(ctx, stream, res)
-        }
-    }),
-    streamxclient.WithStreamSendMiddleware(func(next streamx.StreamSendEndpoint) streamx.StreamSendEndpoint {
-        return func(ctx context.Context, stream streamx.Stream, req any) (err error) {
-           return next(ctx, stream, req)
-        }
-    }),
+    "a.b.c", 
+    client.WithStreamOptions(
+        client.WithStreamMiddleware(func (next cep.StreamEndpoint) cep.StreamEndpoint {
+            return func (ctx context.Context) (stream streaming.ClientStream, err error) {
+                ri := rpcinfo.GetRPCInfo(stream.Context())
+                println("create stream, method: ", ri.Invocation().MethodName())
+                return next(ctx)
+            }
+        }), 
+        client.WithStreamSendMiddleware(func (next cep.StreamSendEndpoint) cep.StreamSendEndpoint {
+            return func (ctx context.Context, stream streaming.ClientStream, message interface{}) (err error) {
+                ri := rpcinfo.GetRPCInfo(stream.Context())
+                println("stream send message, method: ", ri.Invocation().MethodName())
+                return next(ctx, stream, message)
+            }
+        }), 
+        client.WithStreamRecvMiddleware(func (next cep.StreamRecvEndpoint) cep.StreamRecvEndpoint {
+            return func (ctx context.Context, stream streaming.ClientStream, message interface{}) (err error) {
+                ri := rpcinfo.GetRPCInfo(stream.Context())
+                println("stream recv message, method: ", ri.Invocation().MethodName())
+                return next(ctx, stream, message)
+            }
+        }), 
+    ), 
 )
 ```
 
-#### 注入 Server Middleware
+### 注入 server 侧的中间件
 
 ```go
-server, err := xxx.NewServer(
-    // ....
-    streamxserver.WithStreamRecvMiddleware(func(next streamx.StreamRecvEndpoint) streamx.StreamRecvEndpoint {
-        return func(ctx context.Context, stream streamx.Stream, res any) (err error) {
-           return next(ctx, stream, res)
-        }
-    }),
-    streamxserver.WithStreamSendMiddleware(func(next streamx.StreamSendEndpoint) streamx.StreamSendEndpoint {
-        return func(ctx context.Context, stream streamx.Stream, req any) (err error) {
-           return next(ctx, stream, req)
-        }
-    }),
+import "github.com/cloudwego/server"
+
+svr, err := xxx.NewServer(
+    //...
+    server.WithStreamOptions(
+        server.WithStreamMiddleware(func(next sep.StreamEndpoint) sep.StreamEndpoint {
+            return func(ctx context.Context, st streaming.ServerStream) (err error) {
+                ri := rpcinfo.GetRPCInfo(ctx)
+                println("create stream, method: ", ri.Invocation().MethodName())
+                return next(ctx, st)
+            }
+        }),
+        server.WithStreamRecvMiddleware(func(next sep.StreamRecvEndpoint) sep.StreamRecvEndpoint {
+            return func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error) {
+                ri := rpcinfo.GetRPCInfo(ctx)
+                println("stream recv message, method: ", ri.Invocation().MethodName())
+                return next(ctx, stream, message)
+            }
+        }), 
+        server.WithStreamSendMiddleware(func(next sep.StreamSendEndpoint) sep.StreamSendEndpoint {
+            return func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error) {
+                ri := rpcinfo.GetRPCInfo(ctx)
+                println("stream send message, method: ", ri.Invocation().MethodName())
+                return next(ctx, stream, message)
+            }
+        }), 
+    ),
 )
 ```

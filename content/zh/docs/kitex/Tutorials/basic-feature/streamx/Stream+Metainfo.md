@@ -18,14 +18,16 @@ description: ""
 ctx = metainfo.WithPersistentValue(ctx, "k1", "v1")
 ctx = metainfo.WithValue(ctx, "k2", "v2")
 
-s, err := streamClient.ClientStream(ctx)
+stream, err := cli.EchoClient(ctx)
 ```
+
+> 如果使用 gRPC streaming，请确保 key 是大写，使用 _ 而不是 -，否则将被丢弃。TTHeader streaming 不做此要求。
 
 ### Server 接收元消息
 
 ```go
-func (s *streamingService) ClientStream(ctx context.Context,
-    stream streamx.ClientStreamingServer[Request, Response]) (*Response, error) {
+func (s *streamingService) EchoClient(ctx context.Context,
+    stream echo.TestService_EchoClientServer) (err error) {
    
    v, ok := metainfo.GetPersistentValue(ctx, "k1")
    // v == "v1"
@@ -39,13 +41,15 @@ func (s *streamingService) ClientStream(ctx context.Context,
 反向透传引入了一个新的概念，Header 和 Trailer ，任何完整数据流必定包含 Header(头包) 和 Trailer(尾包)，使用这两个帧来反向透传信息。
 
 ```go
-func (s *streamingService) ClientStream(ctx context.Context,
-    stream streamx.ClientStreamingServer[Request, Response]) (*Response, error) {
+import "github.com/cloudwego/pkg/streaming"
+
+func (s *streamingService) EchoClient(ctx context.Context,
+    stream echo.TestService_EchoClientServer) (err error) {
     
     // SetTrailer set 的 trailer 会在 server handler 结束后发送
-    err := stream.SetTrailer(streamx.Trailer{"t1": "v1"})
+    err := stream.SetTrailer(streaming.Trailer{"t1": "v1"})
     // 立刻发送 Header
-    err = stream.SendHeader(streamx.Header{"h1": "v1"})
+    err = stream.SendHeader(streaming.Header{"h1": "v1"})
     if err != nil {
         return err
     }
@@ -57,12 +61,12 @@ func (s *streamingService) ClientStream(ctx context.Context,
 ### Client 接收反向透传的元消息
 
 ```go
-s, err := streamClient.ClientStream(ctx)
+stream, err := cli.EchoClient(ctx)
 
 // Header/Trailer 函数会一直阻塞到对端发送了 Header/Trailer 为止，或中间发生了错误
-hd, err := s.Header()
+hd, err := stream.Header()
 // hd["h1"] == "v1"
-tl, err := s.Trailer()
+tl, err := stream.Trailer()
 // tl["t1"] == "v1"
 ```
 

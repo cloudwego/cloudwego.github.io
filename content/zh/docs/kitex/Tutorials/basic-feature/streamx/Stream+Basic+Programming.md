@@ -14,10 +14,10 @@ description: ""
 
   - 传输协议：TTHeader
   - IDL 定义语言 与 序列化协议：Thrift
-- **gRPC Streaming**:~~~~  (计划实现)
+- **gRPC Streaming**
 
-  - ~~传输协议：gRPC~~
-  - ~~IDL 定义语言 与 序列化协议：Protobuf 编码~~
+  - 传输协议：gRPC
+  - IDL 定义语言 与 序列化协议：Thrift / Protobuf
 
 此处选定的协议只影响从 IDL 生成代码，无论哪种协议，以下用法均一致。
 
@@ -44,11 +44,15 @@ service TestService {
 ```
 
 #### 生成代码
+请确保 Kitex Tool 已经升级到 v0.13.0+:
+```
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+```
 
 为保持与旧流式生成代码的兼容，命令行需加上 `-streamx` flag。
 
 ```
-kitex -streamx -module <go module> -service P.S.M echo.thrift
+kitex -streamx -module <go module> -service service echo.thrift
 ```
 
 ##### 初始化
@@ -58,22 +62,22 @@ kitex -streamx -module <go module> -service P.S.M echo.thrift
 ```go
 // 生成代码目录，streamserver 为 IDL 定义的 service name
 import ".../kitex_gen/echo/testservice"
-import "github.com/cloudwego/kitex/client/streamxclient"
+import "github.com/cloudwego/kitex/client"
 
 cli, err := testservice.NewClient(
     "a.b.c",
-    streamxclient.WithStreamRecvMiddleware(...),
-    streamxclient.WithStreamSendMiddleware(...),
+    client.WithStreamRecvMiddleware(...),
+    client.WithStreamSendMiddleware(...),
 )
 ```
 
 #### 创建 Server
 
 ```go
-import ".../kitex_gen/echo/streamserver"
-import "github.com/cloudwego/kitex/server/streamxserver"
+import ".../kitex_gen/echo/testservice"
+import "github.com/cloudwego/kitex/server"
 
-svr := streamserver.NewServer(
+svr := testservice.NewServer(
     new(serviceImpl),
     streamxserver.WithStreamRecvMiddleware(...),
     streamxserver.WithStreamSendMiddleware(...),
@@ -105,11 +109,11 @@ client.CloseAndRecv(res) === EOF ==>       server.Recv(EOF)
 - [**必须**]: client 必须调用 CloseAndRecv() 或者 (CloseSend + Recv)方法，告知 Server 不再有新数据发送。
 
 ```go
-ctx, cs, err := cli.ClientStream(ctx)
+stream, err := cli.EchoClient(ctx)
 for i := 0; i < 3; i++ {
-    err = cs.Send(ctx, req)
+    err = cs.Send(stream.Context(), req)
 }
-res, err = cs.CloseAndRecv(ctx)
+res, err = cs.CloseAndRecv(stream.Context())
 ```
 
 #### Server 用法
@@ -118,14 +122,14 @@ res, err = cs.CloseAndRecv(ctx)
 
 ```go
 
-func (si *serviceImpl) ClientStream(
-    ctx context.Context, stream streamx.ClientStreamingServer[Request, Response]
-) (res *Response, err error) {
+func (si *serviceImpl) EchoClient(
+    ctx context.Context, stream echo.TestService_EchoClientServer
+) (err error) {
     for {
        req, err := stream.Recv(ctx)
        if err == io.EOF {
            res := new(Response)
-           return res, nil
+           return stream.SendAndClose(ctx, res)
        }
        if err != nil {
           return nil, err
@@ -157,9 +161,9 @@ client.Recv(EOF)   <== EOF ===   server handler return
 - [**必须**]: client 必须判断 io.EOF 错误，并结束循环
 
 ```go
-ctx, ss, err := cli.ServerStream(ctx, req)
+stream, err := cli.EchoServer(ctx, req)
 for {
-    res, err := ss.Recv(ctx)
+    res, err := stream.Recv(stream.Context())
     if errors.Is(err, io.EOF) {
        break
     }
@@ -169,7 +173,7 @@ for {
 #### Server 用法
 
 ```go
-func (si *serviceImpl) ServerStream(ctx context.Context, req *Request, stream streamx.ServerStreamingServer[Response]) error {
+func (si *serviceImpl) EchoServer(ctx context.Context, req *echo.Request, stream echo.TestService_EchoServerServer) error {
     for i := 0; i < 3; i++ {
        err := stream.Send(ctx, resp)
        if err != nil {
@@ -208,20 +212,20 @@ client.Recv(EOF)   <== EOF ===   server handler return
 - [**必须**]: client 必须在 Recv 时，判断 io.EOF 并结束循环
 
 ```go
-ctx, bs, err := cli.BidiStream(ctx)
+stream, err := cli.EchoBidi(ctx)
 var wg sync.WaitGroup
 wg.Add(2)
 go func() {
     defer wg.Done()
     for i := 0; i < round; i++ {
-       err := bs.Send(ctx, req)
+       err := stream.Send(stream.Context(), req)
     }
-    err = bs.CloseSend(ctx)
+    err = bs.CloseSend(stream.Context())
 }()
 go func() {
     defer wg.Done()
     for {
-       res, err := bs.Recv(ctx)
+       res, err := stream.Recv(stream.Context())
        if errors.Is(err, io.EOF) {
           break
        }
@@ -235,7 +239,7 @@ wg.Wait()
 - [**必须**]: server 必须在 Recv 时，判断 io.EOF 并结束循环
 
 ```go
-func (si *serviceImpl) BidiStream(ctx context.Context, stream streamx.BidiStreamingServer[Request, Response]) error {
+func (si *serviceImpl) EchoBidi(ctx context.Context, stream echo.TestService_EchoBidiServer) error {
     for {
        req, err := stream.Recv(ctx)
        if err == io.EOF {

@@ -18,14 +18,15 @@ The overall usage of message pass-through is similar to [Kitex - 元信息透传
 ctx = metainfo.WithPersistentValue(ctx, "k1", "v1")
 ctx = metainfo.WithValue(ctx, "k2", "v2")
 
-s, err := streamClient.ClientStream(ctx)
+stream, err := cli.EchoClient(ctx)
 ```
+> If using gRPC streaming, make sure the key is uppercase and use _ instead of - or it will be discarded. TTHeader streaming does not make this requirement.
 
 ### Server receives meta message
 
 ```go
-func (s *streamingService) ClientStream(ctx context.Context,
-    stream streamx.ClientStreamingServer[Request, Response]) (*Response, error) {
+func (s *streamingService) EchoClient(ctx context.Context,
+    stream echo.TestService_EchoClientServer) (err error) {
    
    v, ok := metainfo.GetPersistentValue(ctx, "k1")
    // v == "v1"
@@ -39,17 +40,19 @@ func (s *streamingService) ClientStream(ctx context.Context,
 Reverse pass-through introduces a new concept, Header and Trailer. Any complete data stream must include Header and Trailer. Use these two frames to reverse pass-through information.
 
 ```go
-func (s *streamingService) ClientStream(ctx context.Context,
-    stream streamx.ClientStreamingServer[Request, Response]) (*Response, error) {
+import "github.com/cloudwego/pkg/streaming"
+
+func (s *streamingService) EchoClient(ctx context.Context,
+    stream echo.TestService_EchoClientServer) (err error) {
     
-    // SetTrailer set 的 trailer 会在 server handler 结束后发送
-    err := stream.SetTrailer(streamx.Trailer{"t1": "v1"})
-    // 立刻发送 Header
-    err = stream.SendHeader(streamx.Header{"h1": "v1"})
+    // the trailer set by SetTrailer would be sent after server handler finishing
+    err := stream.SetTrailer(streaming.Trailer{"t1": "v1"})
+    // send Header directly
+    err = stream.SendHeader(streaming.Header{"h1": "v1"})
     if err != nil {
         return err
     }
-    // 发送正常数据
+    // send normal data
     err = stream.Send(req)
 }
 ```
@@ -57,12 +60,12 @@ func (s *streamingService) ClientStream(ctx context.Context,
 ### Client receives a reverse pass-through meta message
 
 ```go
-s, err := streamClient.ClientStream(ctx)
+stream, err := cli.EchoClient(ctx)
 
-// Header/Trailer 函数会一直阻塞到对端发送了 Header/Trailer 为止，或中间发生了错误
-hd, err := s.Header()
+// Header/Trailer calling would block constantly until the remote side has sent Header/Trailer, or there was an error in the intermediate process
+hd, err := stream.Header()
 // hd["h1"] == "v1"
-tl, err := s.Trailer()
+tl, err := stream.Trailer()
 // tl["t1"] == "v1"
 ```
 
