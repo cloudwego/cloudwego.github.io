@@ -72,5 +72,5 @@ description: >
 [[#1740](https://github.com/cloudwego/kitex/pull/1740)] chore(generic): deprecate NewThriftContentProvider
 [[#1741](https://github.com/cloudwego/kitex/pull/1741)] chore(streamx): remove redundant streamx package
 [[#1738](https://github.com/cloudwego/kitex/pull/1738)] ci: fix typos & crate-ci/typos
-[[#1737](https://github.com/cloudwego/kitex/pull/1737)] chore: update depedency and change go support to 1.19-1.24
+[[#1737](https://github.com/cloudwego/kitex/pull/1737)] chore: update dependency and change go support to 1.19-1.24
 [[#1720](https://github.com/cloudwego/kitex/pull/1720)] Revert "fix(ttstream): pingpong method refers to server interface defined in Kitex generation code when streamx is enabled and there are other streaming methods"
