@@ -465,7 +465,7 @@ docker-compose up -d
 
 ##### APMPlus
 
-如果在运行时，在 .env 文件中指定了 `APMPLUS_APP_KEY`，便可在 [火山引擎 APMPlus](https://console.volcengine.com/apmplus-server%22) 平台中，登录对应的账号，查看 Trace 以及 Metrics 详情。
+如果在运行时，在 .env 文件中指定了 `APMPLUS_APP_KEY`，便可在 [火山引擎 APMPlus](https://console.volcengine.com/apmplus-server) 平台中，登录对应的账号，查看 Trace 以及 Metrics 详情。
 
 <a href="/img/eino/apm_plus_callback.gif" target="_blank"><img src="/img/eino/apm_plus_callback.gif" width="100%" /></a>
 
