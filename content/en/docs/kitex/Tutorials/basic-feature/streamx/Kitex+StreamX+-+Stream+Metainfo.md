@@ -8,7 +8,7 @@ description: ""
 
 ## Preface
 
-The overall usage of message pass-through is similar to [Kitex - 元信息透传](https://bytedance.larkoffice.com/wiki/Y3ChwldJzihF4Vkb6Ekcie38no4), except that each stream can only **pass-through meta-information when created** , and sending messages cannot pass-through.
+The overall usage of message pass-through is similar to [Metainfo](/docs/kitex/tutorials/advanced-feature/metainfo/), except that each stream can only **pass-through meta-information when created** , and sending messages cannot pass-through.
 
 ## User guide
 
@@ -37,7 +37,9 @@ func (s *streamingService) EchoClient(ctx context.Context,
 
 ### Server reverse pass-through meta-message
 
-Reverse pass-through introduces a new concept, Header and Trailer. Any complete data stream must include Header and Trailer. Use these two frames to reverse pass-through information.
+Reverse pass-through introduces a new concept, Header and Trailer. Any complete data stream must include Header and Trailer.
+
+Use these two frames to reverse pass-through information.
 
 ```go
 import "github.com/cloudwego/pkg/streaming"
@@ -75,6 +77,6 @@ tl, err := stream.Trailer()
 
 Because the concept of flow is different from , under the flow, the Header can be sent independently, which means that my server can send the Header in the first second, send the Data after 10 seconds, and send the Trailer after 1 second.
 
-At the same time, the client can also choose whether to call `.Header () ` or `.Trailer () ` to block.
+At the same time, the client can also choose whether to call `.Header()` or `.Trailer ()` to block.
 
-Therefore, the semantics of traditional CTX cannot meet the reverse pass-through function of streams. Forward pass-through is still consistent with the original .
+Therefore, the semantics of traditional ctx cannot meet the reverse pass-through function of streams. Forward pass-through is still consistent with the original.

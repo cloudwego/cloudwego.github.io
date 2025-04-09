@@ -44,7 +44,7 @@ type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
 type StreamRecvEndpoint func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error)
 type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
 
-// 其余定义和 Send middlware 相同...
+// Send middleware 和 Recv middlware 定义类似...
 ```
 
 **参数说明**：
@@ -60,7 +60,7 @@ type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
 
 ### Unary 中间件
 
-对所有非流式接口，我们额外提供了 UnaryMiddleware 用于注入仅对所有 unary 方法生效的中间件，该中间件与 kitex 原生支持的 ```WithMiddleware``` 的方法签名完全一致，区别在于后者可以同时对 streaming 方法生效。
+对所有非流式接口，我们额外提供了 ```UnaryMiddleware``` 用于注入仅对所有 unary 方法生效的中间件，该中间件与 kitex 原生支持的 ```WithMiddleware``` 的方法签名完全一致，区别在于后者可以同时对 streaming 方法生效。
 ```go
 type UnaryEndpoint Endpoint
 type UnaryMiddleware func(next UnaryEndpoint) UnaryEndpoint

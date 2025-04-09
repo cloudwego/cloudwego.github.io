@@ -55,7 +55,7 @@ To maintain compatibility with legacy stream-generated code, Command Line needs 
 kitex -streamx -module <go module> -service service echo.thrift
 ```
 
-##### Initialization
+### Initialization
 
 #### Create Client
 

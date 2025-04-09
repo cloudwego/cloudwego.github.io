@@ -8,7 +8,7 @@ description: ""
 
 ## 前言
 
-消息透传总体用法与 [Kitex - 元信息透传](https://bytedance.larkoffice.com/wiki/Y3ChwldJzihF4Vkb6Ekcie38no4)相似，区别在于每一个 stream 只有在**创建时才能透传元信息**，发送消息无法透传。
+消息透传总体用法与 [Metainfo](/zh/docs/kitex/tutorials/advanced-feature/metainfo/) 相似，区别在于每一个 stream 只有在**创建时才能透传元信息**，发送消息无法透传。
 
 ## 使用指南
 

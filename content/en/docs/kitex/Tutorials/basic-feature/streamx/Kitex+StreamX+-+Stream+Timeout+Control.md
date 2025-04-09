@@ -1,5 +1,5 @@
 ---
-title: "StreamX timeout control"
+title: "StreamX Timeout Control"
 date: 2025-01-10
 weight: 5
 keywords: ["Stream Timeout Control Best Practices"]

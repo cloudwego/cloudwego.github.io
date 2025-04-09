@@ -60,7 +60,9 @@ type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
 
 ### Unary Middlware
 
-For all non-streaming interfaces, we additionally provide ```UnaryMiddleware``` for injecting middleware that only works on all unary methods, which is identical to the ```WithMiddleware``` natively supported by kitex, with the difference that the latter can also work on streaming methods.
+For all non-streaming interfaces, we additionally provide ```UnaryMiddleware``` for injecting middleware that only works on all unary methods.
+
+It is identical to the ```WithMiddleware``` natively supported by kitex, with the difference that the latter can also work on streaming methods.
 ```go
 type UnaryEndpoint Endpoint
 type UnaryMiddleware func(next UnaryEndpoint) UnaryEndpoint
