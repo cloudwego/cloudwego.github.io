@@ -465,7 +465,7 @@ The following diagram is an application of the generated BuildEinoAgent function
 
 ##### APMPlus
 
-If you specify `APMPLUS_APP_KEY` in the .env file during runtime，you can log in to the corresponding account on the [Volcengine APMPlus](https://console.volcengine.com/apmplus-server%22) platform to view the trace and metric details of the requests.
+If you specify `APMPLUS_APP_KEY` in the .env file during runtime，you can log in to the corresponding account on the [Volcengine APMPlus](https://console.volcengine.com/apmplus-server) platform to view the trace and metric details of the requests.
 
 <a href="/img/eino/callback_apmplus.gif" target="_blank"><img src="/img/eino/callback_apmplus.gif" width="100%" /></a>
 
