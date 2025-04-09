@@ -13,30 +13,45 @@ description: >
 ### **新特性**
 1. 新流式接口 StreamX 支持 gRPC，存量 Kitex gRPC 用户可迁移
     v0.12.0 发布了 StreamX 接口优化流式体验，支持了自定义流式协议 TTHeader Streaming，但未支持 gRPC，存量用户无法迁移。
+
     v0.13.0 对 StreamX 支持 gRPC 后，用户可迁移至 StreamX 新接口，Server 端可以同时兼容两个流式协议，无需担心接口迁移后的协议兼容性问题。
+
     特别地，StreamX 在适配 gRPC 时，发现依然有一些不便利的问题，为带来更好的接口使用体验，因此对 StreamX 接口做了二次调整。
+
     已经使用 v0.12.* StreamX 用户会带来影响，在这里表示抱歉。
-    详见 [StreamX 用户文档](/zh/docs/kitex/tutorials/basic-feature/streamx)
+
+    详见 [StreamX 用户文档](/docs/kitex/tutorials/basic-feature/streamx)
+
 2. Prutal - Protobuf 的无生成代码序列化库
     Prutal 正式开源 (https://github.com/cloudwego/prutal)，对标 Thrift 的 Frugal 库，新版本 Kitex 默认集成 Prutal。特点：
+
     - 产物体积最小化，只需生成结构体
+
     - 使用与 Frugal 相似的反射优化，性能优于官方 Protobuf
+
     - 兼容官方 Protobuf 及衍生版本的生成代码
-    详细信息参考 [Prutal](/zh/docs/kitex/tutorials/code-gen/prutal)
+
+    详细信息参考 [Prutal](/docs/kitex/tutorials/code-gen/prutal)
 
 ### **功能/体验优化**
 1. TTHeader Streaming 支持配置接口级别 Recv 超时
     本版本 TTHeader Streaming 在原有的 Kitex Client 级别基础上，额外支持接口级别的 Recv 超时配置，配置更为灵活。
+
     详见 Kitex - StreamX 超时控制
+
 2. Thrift 默认传输协议由 Buffered 改为 Framed
     可以利用 FastCodec 获得更高的编解码性能。
 
 ### **其他**
 1. 产物简化
     - 默认不生成 Set 数据结构的重复校验代码与各结构体的 DeepEqual 函数
+
      - 若只想恢复 DeepEqual，生成命令追加 -thrift gen_deep_equal=true
+
      - 若想恢复 Set 的重复校验，生成命令追加 -thrift validate_set=true, -thrift gen_deep_equal=true
+
     - 默认不生成 Apache Codec 相关代码
+
      - 若想恢复，生成命令追加 -thrift no_default_serdes=false
 2. Go 支持版本变化
     支持版本 Go 1.19~1.24，最低支持版本变为 Go 1.19，如果 Go 版本过低，编译时会有提示：note: module requires Go 1.19
