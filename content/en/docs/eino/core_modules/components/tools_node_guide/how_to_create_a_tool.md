@@ -65,14 +65,14 @@ For example, a parameter representing "User" can be expressed as:
 
 ```go
 map[string]*schema.ParameterInfo{
-    "name": *schema.ParameterInfo{
+    "name": &schema.ParameterInfo{
         Type: schema.String,
         Required: true,
     },
-    "age": *schema.ParameterInfo{
+    "age": &schema.ParameterInfo{
         Type: schema.Integer,
     },
-    "gender": *schema.ParameterInfo{
+    "gender": &schema.ParameterInfo{
         Type: schema.String,    
         Enum: []string{"male", "female"},
     },
@@ -119,7 +119,6 @@ type User struct {
 }
 
 func main() {
-    ctx := context.Background()
     params, err := utils.GoStruct2ParamsOneOf[User]()
 }
 ```
@@ -210,23 +209,23 @@ func AddUser(ctx context.Context, user *User) (*Result, error) {
 }
 
 func createTool() tool.InvokableTool {
-    addUserTool := utils.NewTool(*schema.ToolInfo{
+    addUserTool := utils.NewTool(&schema.ToolInfo{
         Name: "add_user",
         Desc: "add user",
-        ParamsOneOf: utils.NewParamsOneOfByParams(
+        ParamsOneOf: schema.NewParamsOneOfByParams(
             map[string]*schema.ParameterInfo{
-                "name": *schema.ParameterInfo{
+                "name": &schema.ParameterInfo{
                     Type: schema.String,
                     Required: true,
                 },
-                "age": *schema.ParameterInfo{
+                "age": &schema.ParameterInfo{
                     Type: schema.Integer,
                 },
-                "gender": *schema.ParameterInfo{
+                "gender": &schema.ParameterInfo{
                     Type: schema.String,    
                     Enum: []string{"male", "female"},
                 },
-            }
+            },
         ),
     }, AddUser)
     
@@ -289,6 +288,7 @@ Here is an example (adapted from[ cloudwego/eino/components/tool/utils/invokable
 ```go
 import (
     "fmt"
+    "context"
     "github.com/cloudwego/eino/components/tool"
     "github.com/cloudwego/eino/components/tool/utils"
     "github.com/cloudwego/eino/schema"
@@ -316,6 +316,7 @@ func updateUserInfoWithOption(_ context.Context, input *User, opts ...tool.Optio
 }
 
 func useInInvoke() {
+    ctx := context.Background()
     tl, _ := utils.InferOptionableTool("invoke_infer_optionable_tool", "full update user info", updateUserInfoWithOption)
 
     content, _ := tl.InvokableRun(ctx, `{"name": "bruce lee"}`, WithUserInfoOption("hello world"))
@@ -353,7 +354,8 @@ func getMCPTool(ctx context.Context) []tool.BaseTool {
         }
 
         initRequest := mcp.InitializeRequest{}
-        initRequest.Params.ProtocolVersion = mcp.LATEST_PROTOCOL_VERSIONinitRequest.Params.ClientInfo = mcp.Implementation{
+        initRequest.Params.ProtocolVersion = mcp.LATEST_PROTOCOL_VERSION
+        initRequest.Params.ClientInfo = mcp.Implementation{
                 Name:    "example-client",
                 Version: "1.0.0",
         }

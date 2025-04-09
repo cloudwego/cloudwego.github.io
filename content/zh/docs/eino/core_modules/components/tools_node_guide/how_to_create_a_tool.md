@@ -65,14 +65,14 @@ type ParameterInfo struct {
 
 ```go
 map[string]*schema.ParameterInfo{
-    "name": *schema.ParameterInfo{
+    "name": &schema.ParameterInfo{
         Type: schema.String,
         Required: true,
     },
-    "age": *schema.ParameterInfo{
+    "age": &schema.ParameterInfo{
         Type: schema.Integer,
     },
-    "gender": *schema.ParameterInfo{
+    "gender": &schema.ParameterInfo{
         Type: schema.String,    
         Enum: []string{"male", "female"},
     },
@@ -109,6 +109,7 @@ func GoStruct2ParamsOneOf[T any](opts ...Option) (*schema.ParamsOneOf, error)
 package main
 
 import (
+    "context"
     "github.com/cloudwego/eino/components/tool/utils"
 )
 
@@ -119,7 +120,6 @@ type User struct {
 }
 
 func main() {
-    ctx := context.Background()
     params, err := utils.GoStruct2ParamsOneOf[User]()
 }
 ```
@@ -130,7 +130,7 @@ func main() {
 
 由于 openapi 是一个很通用的标准，很多工具或平台都可以导出 openapi.json 文件，尤其是一些 http 的接口管理工具中。如果 tool 是对一些 openapi 的封装，则可以用到这种方式。
 
-使用示例可见 [eino-examles](https://github.com/cloudwego/eino-examples/blob/main/components/tool/openapi3/main.go#L33)。
+使用示例可见 [eino-examples](https://github.com/cloudwego/eino-examples/blob/main/components/tool/openapi3/main.go#L33)。
 
 ## 方式 1 - 直接实现接口
 
@@ -210,23 +210,23 @@ func AddUser(ctx context.Context, user *User) (*Result, error) {
 }
 
 func createTool() tool.InvokableTool {
-    addUserTool := utils.NewTool(*schema.ToolInfo{
+    addUserTool := utils.NewTool(&schema.ToolInfo{
         Name: "add_user",
         Desc: "add user",
-        ParamsOneOf: utils.NewParamsOneOfByParams(
+        ParamsOneOf: schema.NewParamsOneOfByParams(
             map[string]*schema.ParameterInfo{
-                "name": *schema.ParameterInfo{
+                "name": &schema.ParameterInfo{
                     Type: schema.String,
                     Required: true,
                 },
-                "age": *schema.ParameterInfo{
+                "age": &schema.ParameterInfo{
                     Type: schema.Integer,
                 },
-                "gender": *schema.ParameterInfo{
+                "gender": &schema.ParameterInfo{
                     Type: schema.String,    
                     Enum: []string{"male", "female"},
                 },
-            }
+            },
         ),
     }, AddUser)
     
@@ -289,6 +289,7 @@ func InferOptionableTool[T, D any](toolName, toolDesc string, i OptionableInvoke
 ```go
 import (
     "fmt"
+    "context"
     "github.com/cloudwego/eino/components/tool"
     "github.com/cloudwego/eino/components/tool/utils"
     "github.com/cloudwego/eino/schema"
@@ -316,6 +317,7 @@ func updateUserInfoWithOption(_ context.Context, input *User, opts ...tool.Optio
 }
 
 func useInInvoke() {
+    ctx := context.Background()
     tl, _ := utils.InferOptionableTool("invoke_infer_optionable_tool", "full update user info", updateUserInfoWithOption)
 
     content, _ := tl.InvokableRun(ctx, `{"name": "bruce lee"}`, WithUserInfoOption("hello world"))
@@ -338,6 +340,7 @@ MCP（Model Context Protocol）是一个开放的模型上下文协议，现在�
 import (
     "fmt"
     "log"
+    "context"
     "github.com/mark3labs/mcp-go/client"
     mcpp "github.com/cloudwego/eino-ext/components/tool/mcp"
 )
@@ -353,7 +356,8 @@ func getMCPTool(ctx context.Context) []tool.BaseTool {
         }
 
         initRequest := mcp.InitializeRequest{}
-        initRequest.Params.ProtocolVersion = mcp.LATEST_PROTOCOL_VERSIONinitRequest.Params.ClientInfo = mcp.Implementation{
+        initRequest.Params.ProtocolVersion = mcp.LATEST_PROTOCOL_VERSION
+        initRequest.Params.ClientInfo = mcp.Implementation{
                 Name:    "example-client",
                 Version: "1.0.0",
         }
