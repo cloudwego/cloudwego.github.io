@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-04-09"
 lastmod: ""
 tags: []
-title: 'Eino: ToolsNode 使用说明'
+title: 'Eino: ToolsNode&Tool 使用说明'
 weight: 0
 ---
 
@@ -246,3 +246,4 @@ result, err := runnable.Invoke(ctx, input, compose.WithCallbacks(helper))
 
 1. Google Search Tool: 基于 Google 搜索的工具实现 [Tool - Googlesearch](/zh/docs/eino/ecosystem_integration/tool/tool_googlesearch)
 2. duckduckgo search tool: 基于 duckduckgo 搜索的工具实现 [Tool - DuckDuckGoSearch](/zh/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search)
+3. MCP: 把 mcp server 作为 tool[Tool - MCP](/zh/docs/eino/ecosystem_integration/tool/tool_mcp)
