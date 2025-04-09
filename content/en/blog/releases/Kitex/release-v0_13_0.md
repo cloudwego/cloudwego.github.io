@@ -6,13 +6,13 @@ date: 2025-04-07
 description: >
 ---
 
-> We recommend upgrading directly to Kitex version v0.13.1, as we have fixed a potential Goroutine leak issue in the gRPC Client in v0.13.0.
+> We recommend upgrading directly to Kitex version v0.13.1, as we have fixed a potential Goroutine leak issue of the gRPC Client in v0.13.0.
 
 ## **Introduction to Key Changes**
 
 ### **New Features**
-1. New streaming interface StreamX supports gRPC, stock Kitex gRPC users can migrate
-    v0.12.0 released the StreamX interface to optimise the streaming experience, and supported the custom streaming protocol TTHeader Streaming, but did not support gRPC. So stock users could not migrate.
+1. New streaming interface StreamX supports gRPC, existing Kitex gRPC users can migrate
+    v0.12.0 released the StreamX interface to optimise the streaming experience, and supported the custom streaming protocol TTHeader Streaming, but did not support gRPC. So existing users could not migrate.
 
     This version supports gRPC for StreamX, users can migrate to StreamX, and the Server side can be compatible with two streaming protocols at the same time. So there is no need to worry about protocol compatibility after interface migration.
 
@@ -21,7 +21,7 @@ description: >
     User documentation: [StreamX User Documentation](/docs/kitex/tutorials/basic-feature/streamx)
 
 2. Prutal - Protobuf's non-generated code serialisation library
-    [Prutal](https://github.com/cloudwego/prutal) is officially open source, on par with Thrift's Frugal library, and the new version of Kitex integrates Prutal by default.
+    [Prutal](https://github.com/cloudwego/prutal) is officially open source, on par with Thrift's [Frugal](https://github.com/cloudwego/frugal), and the new version of Kitex integrates Prutal by default.
 
     Advantages:
 
@@ -37,27 +37,27 @@ description: >
 1. **TTHeader Streaming**: Support interface-level Recv timeout control
     In addition to the existing Client level, this release of TTHeader Streaming supports interface-level Recv timeout configuration, making configuration more flexible.
 
-    User documentation: Kitex - StreamX 超时控制
+    User documentation: [StreamX Timeout Control](/docs/kitex/tutorials/basic-feature/streamx/timeout-control)
 
 2. Default Thrift transport protocol changed from Buffered to Framed
     This change can leverage FastCodec for better performance.
 
 ### **Others**
 1. Code Product Simplification
-    - Kitex Tool would not generate the repeated verification code for Set data structure and the DeepEqual function for each structure by default.
+    - Kitex Tool would not generate the repeated verification code for Set data structure and the ```DeepEqual``` function for each structure by default.
 
-     - If you only want to restore DeepEqual, add -thrift gen_deep_equal=true to the generation command.
+     - If you only want to restore```DeepEqual```, add```-thrift gen_deep_equal=true```to the generation command.
 
-     - If you want to restore the repeated verification of Set, add -thrift validate_set=true, -thrift gen_deep_equal=true to the generation command.
+     - If you want to restore the repeated verification of Set, add```-thrift validate_set=true, -thrift gen_deep_equal=true```to the generation command.
 
     - Kitex Tool would not generate the Apache Codec related code by default.
 
-     - If you want to restore it, add -thrift no_default_serdes=false to the generation command.
+     - If you want to restore it, add```-thrift no_default_serdes=false```to the generation command.
 
 2. Go Supported Version Change
     Support version Go 1.19~1.24, the lowest supported version becomes Go 1.19.
 
-    if Go version is too low, there will be a prompt when compiling: note: module requires Go 1.19.
+    if Go version is too low, there will be a prompt when compiling:```note: module requires Go 1.19```.
 
 ## **Full Change**
 ### Feature

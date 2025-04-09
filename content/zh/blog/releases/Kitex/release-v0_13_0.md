@@ -20,10 +20,10 @@ description: >
 
     已经使用 v0.12.* StreamX 用户会带来影响，在这里表示抱歉。
 
-    详见 [StreamX 用户文档](/docs/kitex/tutorials/basic-feature/streamx)
+    详见 [StreamX 用户文档](/zh/docs/kitex/tutorials/basic-feature/streamx)
 
 2. Prutal - Protobuf 的无生成代码序列化库
-    Prutal 正式开源 (https://github.com/cloudwego/prutal)，对标 Thrift 的 Frugal 库，新版本 Kitex 默认集成 Prutal。特点：
+    [Prutal](https://github.com/cloudwego/prutal) 正式开源，对标 Thrift 的 [Frugal](https://github.com/cloudwego/frugal) 库，新版本 Kitex 默认集成 Prutal。特点：
 
     - 产物体积最小化，只需生成结构体
 
@@ -31,30 +31,30 @@ description: >
 
     - 兼容官方 Protobuf 及衍生版本的生成代码
 
-    详细信息参考 [Prutal](/docs/kitex/tutorials/code-gen/prutal)
+    详细信息参考 [Prutal](/zh/docs/kitex/tutorials/code-gen/prutal)
 
 ### **功能/体验优化**
 1. TTHeader Streaming 支持配置接口级别 Recv 超时
     本版本 TTHeader Streaming 在原有的 Kitex Client 级别基础上，额外支持接口级别的 Recv 超时配置，配置更为灵活。
 
-    详见 Kitex - StreamX 超时控制
+    详见 [StreamX 超时控制](/zh/docs/kitex/tutorials/basic/streamx/timeout-control)
 
 2. Thrift 默认传输协议由 Buffered 改为 Framed
-    可以利用 FastCodec 获得更高的编解码性能。
+    这个变更可以利用 FastCodec 以获得更高的编解码性能。
 
 ### **其他**
 1. 产物简化
     - 默认不生成 Set 数据结构的重复校验代码与各结构体的 DeepEqual 函数
 
-     - 若只想恢复 DeepEqual，生成命令追加 -thrift gen_deep_equal=true
+     - 若只想恢复 DeepEqual，生成命令追加```-thrift gen_deep_equal=true```
 
-     - 若想恢复 Set 的重复校验，生成命令追加 -thrift validate_set=true, -thrift gen_deep_equal=true
+     - 若想恢复 Set 的重复校验，生成命令追加```-thrift validate_set=true, -thrift gen_deep_equal=true```
 
     - 默认不生成 Apache Codec 相关代码
 
-     - 若想恢复，生成命令追加 -thrift no_default_serdes=false
+     - 若想恢复，生成命令追加```-thrift no_default_serdes=false```
 2. Go 支持版本变化
-    支持版本 Go 1.19~1.24，最低支持版本变为 Go 1.19，如果 Go 版本过低，编译时会有提示：note: module requires Go 1.19
+    支持版本 Go 1.19~1.24，最低支持版本变为 Go 1.19，如果 Go 版本过低，编译时会有提示：```note: module requires Go 1.19```
 
 ## **详细变更**
 ### Feature
