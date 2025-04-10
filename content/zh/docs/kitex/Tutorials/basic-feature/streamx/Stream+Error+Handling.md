@@ -19,14 +19,14 @@ description: ""
 Server 实现：
 
 ```go
-func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *Request, stream streamx.ServerStreamingServer[Response]) error {
+func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *echo.Request, stream echo.TestService_ServerStreamWithErrServer) error {
     // 检查用户账户余额
     for isHasBalance (req.UserId) {
         stream.Send(ctx, res)
     }
     // 返回用户余额不足错误
     bizErr := kerrors.NewBizStatusErrorWithExtra(
-        10001, "insufficient user balance", map[string]string{"testKey": "testVal"}，
+        10001, "insufficient user balance", map[string]string{"testKey": "testVal"},
     )
     return bizErr
 }
@@ -35,11 +35,11 @@ func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *Reques
 Client 实现：
 
 ```go
-svrStream, err = streamClient.ServerStreamWithErr(ctx, req)
+stream, err = cli.ServerStreamWithErr(ctx, req)
 
 var err error
 for {
-    res, err = stream.Recv(ctx)
+    res, err = stream.Recv(stream.Context())
     if err != nil {
          break
     }
@@ -57,7 +57,7 @@ if ok {
 Server 实现：
 
 ```go
-func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *Request, stream streamx.ServerStreamingServer[Response]) error {
+func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *echo.Request, stream echo.TestService_ServerStreamWithErrServer) error {
     // ...
     return errors.New("test error")
 }
@@ -66,12 +66,11 @@ func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *Reques
 Client 实现：
 
 ```go
-svrStream, err = streamClient.ServerStreamWithErr(ctx, req)
-test.Assert(t, err == nil, err)
+stream, err = cli.ServerStreamWithErr(ctx, req)
 
 var err error
 for {
-    res, err = stream.Recv(ctx)
+    res, err = stream.Recv(stream.Context())
     if err != nil {
          break
     }

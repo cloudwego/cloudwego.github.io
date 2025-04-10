@@ -8,7 +8,7 @@ description: ""
 
 ## Preface
 
-The overall usage of message pass-through is similar to [Kitex - 元信息透传](https://bytedance.larkoffice.com/wiki/Y3ChwldJzihF4Vkb6Ekcie38no4), except that each stream can only **pass-through meta-information when created** , and sending messages cannot pass-through.
+The overall usage of message pass-through is similar to [Metainfo](/docs/kitex/tutorials/advanced-feature/metainfo/), except that each stream can only **pass-through meta-information when created** , and sending messages cannot pass-through.
 
 ## User guide
 
@@ -18,14 +18,15 @@ The overall usage of message pass-through is similar to [Kitex - 元信息透传
 ctx = metainfo.WithPersistentValue(ctx, "k1", "v1")
 ctx = metainfo.WithValue(ctx, "k2", "v2")
 
-s, err := streamClient.ClientStream(ctx)
+stream, err := cli.EchoClient(ctx)
 ```
+> If using gRPC streaming, make sure the key is uppercase and use _ instead of - or it will be discarded. TTHeader streaming does not make this requirement.
 
 ### Server receives meta message
 
 ```go
-func (s *streamingService) ClientStream(ctx context.Context,
-    stream streamx.ClientStreamingServer[Request, Response]) (*Response, error) {
+func (s *streamingService) EchoClient(ctx context.Context,
+    stream echo.TestService_EchoClientServer) (err error) {
    
    v, ok := metainfo.GetPersistentValue(ctx, "k1")
    // v == "v1"
@@ -36,20 +37,24 @@ func (s *streamingService) ClientStream(ctx context.Context,
 
 ### Server reverse pass-through meta-message
 
-Reverse pass-through introduces a new concept, Header and Trailer. Any complete data stream must include Header and Trailer. Use these two frames to reverse pass-through information.
+Reverse pass-through introduces a new concept, Header and Trailer. Any complete data stream must include Header and Trailer.
+
+Use these two frames to reverse pass-through information.
 
 ```go
-func (s *streamingService) ClientStream(ctx context.Context,
-    stream streamx.ClientStreamingServer[Request, Response]) (*Response, error) {
+import "github.com/cloudwego/pkg/streaming"
+
+func (s *streamingService) EchoClient(ctx context.Context,
+    stream echo.TestService_EchoClientServer) (err error) {
     
-    // SetTrailer set 的 trailer 会在 server handler 结束后发送
-    err := stream.SetTrailer(streamx.Trailer{"t1": "v1"})
-    // 立刻发送 Header
-    err = stream.SendHeader(streamx.Header{"h1": "v1"})
+    // the trailer set by SetTrailer would be sent after server handler finishing
+    err := stream.SetTrailer(streaming.Trailer{"t1": "v1"})
+    // send Header directly
+    err = stream.SendHeader(streaming.Header{"h1": "v1"})
     if err != nil {
         return err
     }
-    // 发送正常数据
+    // send normal data
     err = stream.Send(req)
 }
 ```
@@ -57,12 +62,12 @@ func (s *streamingService) ClientStream(ctx context.Context,
 ### Client receives a reverse pass-through meta message
 
 ```go
-s, err := streamClient.ClientStream(ctx)
+stream, err := cli.EchoClient(ctx)
 
-// Header/Trailer 函数会一直阻塞到对端发送了 Header/Trailer 为止，或中间发生了错误
-hd, err := s.Header()
+// Header/Trailer calling would block constantly until the remote side has sent Header/Trailer, or there was an error in the intermediate process
+hd, err := stream.Header()
 // hd["h1"] == "v1"
-tl, err := s.Trailer()
+tl, err := stream.Trailer()
 // tl["t1"] == "v1"
 ```
 
@@ -72,6 +77,6 @@ tl, err := s.Trailer()
 
 Because the concept of flow is different from , under the flow, the Header can be sent independently, which means that my server can send the Header in the first second, send the Data after 10 seconds, and send the Trailer after 1 second.
 
-At the same time, the client can also choose whether to call `.Header () ` or `.Trailer () ` to block.
+At the same time, the client can also choose whether to call `.Header()` or `.Trailer ()` to block.
 
-Therefore, the semantics of traditional CTX cannot meet the reverse pass-through function of streams. Forward pass-through is still consistent with the original .
+Therefore, the semantics of traditional ctx cannot meet the reverse pass-through function of streams. Forward pass-through is still consistent with the original.
