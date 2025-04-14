@@ -27,8 +27,14 @@ h.Engine.OnShutdown = append(h.Engine.OnShutdown, shutDownFunc)
 
 `waitSignal` is default implementation for signal waiter,which is executed as follows:
 
+Version **< v0.9.6**
+
 - SIGTERM triggers immediately close.
 - SIGHUP|SIGINT triggers graceful shutdown.
+
+Version **>= v0.9.6**
+
+- SIGTERM|SIGHUP|SIGINT triggers graceful shutdown.
 
 If Default one is not met the requirement, `SetCustomSignalWaiter` set this function to customize.
 
