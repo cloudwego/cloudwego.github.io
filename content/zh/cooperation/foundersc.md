@@ -309,7 +309,7 @@ Tracing 信息上报到 OpenTelemetry Collector 中，然后透传给 Jaeger。�
 ```json
 {
   "file": "get_repositories.go:33",
-  "func": "gitlab.fzzqft.com/ifte-quark/quark-api/biz/service.(*GetRepositoriesService).Run",
+  "func": "xxx/ifte-quark/quark-api/biz/service.(*GetRepositoriesService).Run",
   "level": "info",
   "msg": "GetRepositoriesService Run req: page:1 limit:10 service_name:\"kitex\"",
   "span_id": "aa26bab58cdf6806",
@@ -383,19 +383,19 @@ Metrics 是衡量系统性能和行为的关键数据，如请求速率、响应
 
 - 接口管理
 
-  此前我们使用的是独立仓库配合 gitlabci 的方式来管理 [Kitex][Kitex] 服务的 IDL 产物：
+  此前我们使用的是独立仓库配合 CI 的方式来管理 [Kitex][Kitex] 服务的 IDL 产物：
   ![huaxing_interface_impl](/img/users/foundersc/foundersc12.jpg)
   在实际使用过程中，存在以下痛点：
 
-  1. 调用方需要通过小窗方式（私聊）获取IDL产物仓库的地址、分支或版本号
+  1. 调用方需要通过小窗方式（私聊）获取 IDL 产物仓库的地址、分支或版本号
   2. 服务提供方式需要同时关注服务项目仓库和对应的产物仓库
-  3. Gitlabci 强依赖 runner，新的 group 需要找管理员配置才可用
+  3. CI 强依赖 runner，新的 group 需要找管理员配置才可用
   4. 无法与现有的 CICD 流程深度绑定
 
   为解决上述问题与痛点，故设计开发了接口管理平台。
   ![huaxing_interface_platform](/img/users/foundersc/foundersc13.jpg)
 
-  服务在构建打包时，触发 IDL 产物更新流程，平台将自动检测服务类型，并生成对应的 IDL 产物提交到 gitlab 独立仓库中。用户也可以在平台中手动创建或更新 IDL 产物。调用方只需复制执行 import 路径命令，就能获取对应版本的服务依赖。
+  服务在构建打包时，触发 IDL 产物更新流程，平台将自动检测服务类型，并生成对应的 IDL 产物提交到独立仓库中。用户也可以在平台中手动创建或更新 IDL 产物。调用方只需复制执行 import 路径命令，就能获取对应版本的服务依赖。
 
 - 接口测试
   ![huaxing_interface_test_logic](/img/users/foundersc/foundersc14.jpg)
