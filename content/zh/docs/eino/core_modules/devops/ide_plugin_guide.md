@@ -65,6 +65,7 @@ weight: 1
 </td><td><li>VS Code</li>
 在底部找到「<strong>Eino Dev</strong>」并点击：
 <a href="/img/eino/SFfAbLJPiosHNMxx7zfcFD2mn1g.png" target="_blank"><img src="/img/eino/SFfAbLJPiosHNMxx7zfcFD2mn1g.png" width="100%" /></a>
+
 </td></tr></tbody></table>
 
 ### Graph 编排

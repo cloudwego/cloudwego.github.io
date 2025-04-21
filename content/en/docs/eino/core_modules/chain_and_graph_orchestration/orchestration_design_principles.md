@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: 'Eino: The design concept of orchestration'
@@ -168,6 +168,48 @@ The dimensions of type alignment in Workflow have been changed from the overall 
 
 The principles and rules are the same as for overall type alignment.
 
+### Type Alignment of StateHandler
+
+StatePreHandler: The input type needs to be aligned with the non-streaming input type of the corresponding node.
+
+```go
+// The input type is []*schema.Message, which is aligned with the non-streaming input type of ChatModel
+preHandler := func(ctx context.Context, input []*schema.Message, state *state) ([]*schema.Message, error) {
+    // your handler logic
+}
+AddChatModelNode("xxx", model, WithStatePreHandler(preHandler))
+```
+
+StatePostHandler: The input type needs to be aligned with the non-streaming output type of the corresponding node.
+
+```go
+// The input type is *schema.Message, which is aligned with the non-streaming output type of ChatModel
+postHandler := func(ctx context.Context, input *schema.Message, state *state) (*schema.Message, error) {
+    // your handler logic
+}
+AddChatModelNode("xxx", model, WithStatePostHandler(postHandler))
+```
+
+StreamStatePreHandler: The input type needs to be aligned with the streaming input type of the corresponding node.
+
+```go
+// The input type is *schema.StreamReader[[]*schema.Message], which is aligned with the streaming input type of ChatModel
+preHandler := func(ctx context.Context, input *schema.StreamReader[[]*schema.Message], state *state) (*schema.StreamReader[[]*schema.Message], error) {
+    // your handler logic
+}
+AddChatModelNode("xxx", model, WithStreamStatePreHandler(preHandler))
+```
+
+StreamStatePostHandler: The input type needs to be aligned with the streaming output type of the corresponding node.
+
+```go
+// The input type is *schema.StreamReader[*schema.Message], which is aligned with the streaming output type of ChatModel
+postHandler := func(ctx context.Context, input *schema.StreamReader[*schema.Message], state *state) (*schema.StreamReader[*schema.Message], error) {
+    // your handler logic
+}
+AddChatModelNode("xxx", model, WithStreamStatePostHandler(postHandler))
+```
+
 ### **Alignment of Types under invoke and stream**
 
 In Eino, the result of orchestration is either a graph or a chain. To execute it, you need to use `Compile()` to generate a `Runnable` interface.
@@ -297,6 +339,17 @@ This principle also applies to Chunks in the StreamReader.
 - In non-streaming scenarios, after merging, it becomes a single map that contains all key-value pairs from all upstream sources.
 - In streaming scenarios, multiple upstream StreamReaders of the same type are merged into one StreamReader. When actually receiving data from the merged StreamReader, the effect is to read fairly from multiple upstream StreamReaders.
 
+When adding a node (AddNode), you can add the WithOutputKey option to convert the output of the node into a Map:
+
+```go
+// The output of this node will be changed from string to map[string]any. 
+// And there is only one element in the map. The key is your_output_key, and the value is the actual string output by the node. 
+graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
+    // your logic
+    return
+}), compose.WithOutputKey("your_output_key"))
+```
+
 Workflow can map the output fields of multiple predecessor nodes to different input fields of the successor node. Eino converts the Struct output from each predecessor to a Map before any merge process, still conforming to the above rules.
 
 ### **Streaming Processing**
@@ -398,7 +451,8 @@ When `NodeTriggerMode == AllPredecessor`, the graph executes using the dag engin
 
 - Each node has a specific predecessor node, and this node is only executable once all predecessor nodes are complete.
 - An eager mode can be selected, where there is no SuperStep concept. Each node, upon completion, immediately checks which subsequent nodes can be run and executes them at the earliest time.
-- Does not support Branch, does not support cycles in the graph, as it breaks the "each node has a specific predecessor node" assumption.
+- Does not support cycles in the graph, as it breaks the "each node has a specific predecessor node" assumption.
+- Support Branch. At runtime, mark the unselected nodes of Branch as skipped, which does not affect the semantics of AllPredecessor.
 - No need for manual SuperStep alignment.
 
 In summary, the pregel mode is flexible and powerful but comes with additional mental overhead, while the dag mode is clear and simple but limited in application scenarios. In the Eino framework, Chain uses the pregel mode, Workflow uses the dag mode, and Graph supports both; users can choose between pregel and dag.
