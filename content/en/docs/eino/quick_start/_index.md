@@ -18,8 +18,8 @@ These small applications are only for getting started quickly. For a more detail
 >
 > Eino's observation capability is implemented by default based on [Fornax Trace](https://fornax.bytedance.net/space) (the following examples do not include the code for enabling observation)
 >
-> - When using Chain/Graph orchestration, a global EinoCallback aspect can be registered to report the input and output related information of the node in the form of Trace. For details on the usage, please refer to: [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
-> - When only using Eino components without using Eino orchestration, it is necessary to manually inject Callback Manager information through callbacks.InitCallbacks when calling the component to enable the Trace reporting capability of the component aspect (only for components that have implemented the component aspect). For details on the usage, please refer to: [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
+> - When using Chain/Graph orchestration, a global EinoCallback aspect can be registered to report the input and output related information of the node in the form of Trace. For details on the usage, please refer to: [Eino: Callback Mannual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
+> - When only using Eino components without using Eino orchestration, it is necessary to manually inject Callback Manager information through callbacks.InitCallbacks when calling the component to enable the Trace reporting capability of the component aspect (only for components that have implemented the component aspect). For details on the usage, please refer to: [Eino: Callback Mannual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
 
 ## **Quick Start Examples**
 
