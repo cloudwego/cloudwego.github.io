@@ -108,6 +108,7 @@ func arkExample() {
     arkModel, err := ark.NewChatModel(context.Background(), ark.ChatModelConfig{
         APIKey: os.Getenv("ARK_API_KEY"),
         Model:  os.Getenv("ARK_MODEL"),
+        BaseURL: os.Getenv("ARK_BASE_URL"),
     })
 
     agent, err := react.NewAgent(ctx, react.AgentConfig{
