@@ -48,13 +48,12 @@ func main() {
     
     // 初始化所需的 tools
     tools := compose.ToolsNodeConfig{
-        InvokableTools:  []tool.InvokableTool{mytool},
-        StreamableTools: []tool.StreamableTool{myStreamTool},
+        Tools: []tool.BaseTool{mytool},
     }
     
     // 创建 agent
-    agent, err := react.NewAgent(ctx, react.AgentConfig{
-        Model: toolableChatModel,
+    agent, err := react.NewAgent(ctx, &react.AgentConfig{
+        ToolCallingModel: toolableChatModel,
         ToolsConfig: tools,
         ...
     }
@@ -96,21 +95,21 @@ func openaiExample() {
         Model:   "{{model name which support tool call}}",
     })
 
-    agent, err := react.NewAgent(ctx, react.AgentConfig{
-        Model: chatModel,
+    agent, err := react.NewAgent(ctx, &react.AgentConfig{
+        ToolCallingModel: chatModel,
         ToolsConfig: ...,
     })
 }
 
 func arkExample() {
-    arkModel, err := ark.NewChatModel(context.Background(), ark.ChatModelConfig{
+    arkModel, err := ark.NewChatModel(context.Background(), &ark.ChatModelConfig{
         APIKey: os.Getenv("ARK_API_KEY"),
         Model:  os.Getenv("ARK_MODEL"),
         BaseURL: os.Getenv("ARK_BASE_URL"),
     })
 
-    agent, err := react.NewAgent(ctx, react.AgentConfig{
-        Model: arkModel,
+    agent, err := react.NewAgent(ctx, &react.AgentConfig{
+        ToolCallingModel: arkModel,
         ToolsConfig: ...,
     })
 }
@@ -193,7 +192,7 @@ import (
 
 func main() {
     agent, err := react.NewAgent(ctx, &react.AgentConfig{
-        Model: toolableChatModel,
+        ToolCallingModel: toolableChatModel,
         ToolsConfig: tools,
         
         MessageModifier: func(ctx context.Context, input []*schema.Message) []*schema.Message {
@@ -225,7 +224,7 @@ func main() {
 ```go
 func main() {
     agent, err := react.NewAgent(ctx, &react.AgentConfig{
-        Model: toolableChatModel,
+        ToolCallingModel: toolableChatModel,
         ToolsConfig: tools,
         MaxStep: 20,
     }
@@ -238,7 +237,7 @@ func main() {
 
 ```go
 a, err = NewAgent(ctx, &AgentConfig{
-    Model: cm,
+    ToolCallingModel: cm,
     ToolsConfig: compose.ToolsNodeConfig{
        Tools: []tool.BaseTool{fakeTool, fakeStreamTool},
     },
