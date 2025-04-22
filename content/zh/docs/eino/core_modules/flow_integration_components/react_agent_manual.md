@@ -48,7 +48,10 @@ func main() {
     
     // 初始化所需的 tools
     tools := compose.ToolsNodeConfig{
-        Tools: []tool.BaseTool{mytool},
+        Tools: []tool.BaseTool{
+            mytool,
+            ...
+        },
     }
     
     // 创建 agent
@@ -169,7 +172,10 @@ userInfoTool := utils.NewTool(
     })
     
 toolConfig := &compose.ToolsNodeConfig{
-    InvokableTools:  []tool.InvokableTool{invokeTool},
+    	Tools: []tool.BaseTool{
+			mytool,
+            ...
+		},
 }
 ```
 
