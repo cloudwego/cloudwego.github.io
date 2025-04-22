@@ -251,37 +251,68 @@ a, err = NewAgent(ctx, &AgentConfig{
 
 ### **StreamToolCallChecker**
 
-Different models may output tool calls differently in streaming mode: some models (such as OpenAI) directly output tool calls; some models (such as Claude) first output text and then output tool calls. Therefore, different methods are needed to determine this. This field is used to specify the function that determines whether the model's streaming output contains tool calls.
+Different models may output tool calls in different ways in streaming mode: some models (e.g., OpenAI) will output tool calls directly; some models (e.g., Claude) will output text first and then output tool calls. Therefore, different methods are needed for judgment. This field is used to specify a function for judging whether the streaming output of the model contains tool calls.
 
-Optional to fill in, if not filled, the determination will be based on whether the first package contains a tool call.
+It is optional. If not filled in, the method of judging whether the "non-empty package" contains tool calls will be used:
 
 ```go
-agent, err := react.NewAgent(ctx, &react.AgentConfig{
-    Model: toolableChatModel,
-    ToolsConfig: tools,
-    StreamToolCallChecker: func(___ context.Context, _sr_ *schema.StreamReader[*schema.Message]) (bool, error) {
-        defer sr.Close()
+func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
 
-        msg, err := sr.Recv()
-        if err != nil {
-            return false, err
-        }
+    for {
+       msg, err := sr.Recv()
+       if err == io.EOF {
+          return false, nil
+       }
+       if err != nil {
+          return false, err
+       }
 
-        if len(msg.ToolCalls) == 0 {
-            return false, nil
-        }
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
 
-        return true, nil
+       if len(msg.Content) == 0 { // skip empty chunks at the front
+          continue
+       }
+
+       return false, nil
     }
 }
 ```
+The above default implementation applies to the situation where there are only Tool Calls in the Tool Call Message output by the model.
 
-Some models output a piece of text first when they output tool calls in streaming mode (such as Claude), which may cause the default StreamToolCallChecker to mistakenly determine that there is no tool call and directly return. When using such models, you must implement the correct StreamToolCallChecker yourself.
+Situations where the default implementation does not apply: There is a non - empty content chunk before outputting the Tool Call. In this case, you need to customize the tool Call checker as follows:
+
+```go
+toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+    for {
+       msg, err := sr.Recv()
+       if err != nil {
+          if errors.Is(err, io.EOF) {
+             // finish
+             break
+          }
+
+          return false, err
+       }
+
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
+    }
+    return false, nil
+}
+```
+
+The custom StreamToolCallChecker above may need to check whether all packages contain ToolCall in extreme cases, resulting in the loss of the "streaming judgment" effect. If you want to retain the "streaming judgment" effect as much as possible, the suggestion to solve this problem is:
+
 
 > 💡
-> For models that output a piece of text before outputting tool calls in streaming mode, you can try adding prompts to constrain the model from generating extra text during the tool call, thus addressing this issue. For example, "If you decide to call the tool, simply output the tool, do not output text."
->
-> Different models may be affected differently by prompts, so adjustments to the prompt and validation of the effect are necessary when actually using them.
+> Try to add a prompt to restrict the model from outputting additional text when invoking tools. For example: "If you need to invoke the tool, directly output the tool's name without additional text."
+> 
+> Different models may be affected by prompts to different extents. In actual use, you need to adjust the prompt by yourself and verify the effect.
 
 ## **Invocation**
 

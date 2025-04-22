@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-01-23"
+date: "2025-03-18"
 lastmod: ""
 tags: []
-title: EinoDev 可视化编排插件功能指南
+title: Eino Dev 可视化编排插件功能指南
 weight: 2
 ---
 

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-04-21"
 lastmod: ""
 tags: []
 title: 'Eino: ChatTemplate guide'
@@ -62,6 +62,23 @@ The Prompt component uses Options to define optional parameters. ChatTemplate do
 
 ChatTemplate is generally used for context preparation before ChatModel.
 
+### create chat template
+
+- `prompt.FromMessages()`
+  - Used to create a template.
+- `schema.Message{}`
+  - schema.Message is a struct that implements the Format interface, so you can directly construct `schema.Message{}` as a template.
+- `schema.SystemMessage()`
+  - This method is a shortcut for constructing a message with the role of "system".
+- `schema.AssistantMessage()`
+  - This method is a shortcut for constructing a message with the role of "assistant".
+- `schema.UserMessage()`
+  - This method is a shortcut for constructing a message with the role of "user".
+- `schema.ToolMessage()`
+  - This method is a shortcut for constructing a message with the role of "tool".
+- `schema.MessagesPlaceholder()`
+  - Can be used to insert a `[]*schema.Message` into a message list, often used for inserting historical conversations.
+
 ### **Standalone Usage**
 
 ```go
@@ -72,10 +89,8 @@ import (
 
 // Create template
 template := prompt.FromMessages(schema.FString,
-  &schema.Message{
-    Role:    schema.System,
-    Content: "You are a {role}.",
-  },
+  schema.SystemMessage("You are a {role}."),
+  schema.MessagesPlaceholder("history_key", false),
   &schema.Message{
     Role:    schema.User,
     Content: "Please help me {task}.",
@@ -86,13 +101,11 @@ template := prompt.FromMessages(schema.FString,
 variables := map[string]any{
   "role": "professional assistant",
   "task": "write a poem",
+  "history_key": []*schema.Message{{Role: schema.User, Content: "what is golang?"}, {Role: schema.Assistant, Content: "golang is xxx"}},
 }
 
 // Format template
-messages, err := template.Format(ctx, variables)
-if err != nil {
-  return err
-}
+messages, err := template.Format(context.Background(), variables)
 ```
 
 ### **Usage in Orchestration**

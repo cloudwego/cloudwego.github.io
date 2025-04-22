@@ -279,12 +279,40 @@ func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[
 }
 ```
 
-部分模型流式输出工具调用时会先输出一段文本（比如Claude，以及部分豆包模型），这会导致默认 StreamToolCallChecker 错误判断没有工具调用而直接返回，使用这类模型时可自行实现正确的StreamToolCallChecker，极端情况下可能需要判断所有包是否包含 ToolCall，从而导致“流式判断”的效果丢失。解决这一问题的建议是：
+上述默认实现适用于：模型输出的 Tool Call Message 中只有 Tool Call。¡
+
+默认实现不适用的情况：在输出 Tool Call 前，有非空的 content chunk。此时，需要自定义 tool Call checker 如下：
+
+```go
+toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+    for {
+        msg, err := sr.Recv()
+        if err != nil {
+            if errors.Is(err, io.EOF) {
+                // finish
+                break
+            }
+
+            return false, err
+        }
+
+        if len(msg.ToolCalls) > 0 {
+            return true, nil
+        }
+    }
+        
+    return false, nil
+}    
+```
+
+
+上面这个自定义 StreamToolCallChecker，在极端情况下可能需要判断所有包是否包含 ToolCall，从而导致“流式判断”的效果丢失。如果希望尽可能保留“流式判断”效果，解决这一问题的建议是：
 
 > 💡
-> 对于流式输出工具调用时会先输出一段文本的模型，可以尝试添加 prompt 来约束模型在工具调用时不额外输出文本，从而解决这一问题，例如：“如果需要调用 tool，直接输出 tool，不要输出文本”。
->
-> 不同模型受 prompt 影响可能不同，实际使用时需要自行调整 prompt 并验证效果。
+> 尝试添加 prompt 来约束模型在工具调用时不额外输出文本，例如：“如果需要调用tool，直接输出tool，不要输出文本”。 
+> 
+> 不同模型受 prompt 影响可能不同，实际使用时需要自行调整prompt并验证效果。
 
 ## 调用
 

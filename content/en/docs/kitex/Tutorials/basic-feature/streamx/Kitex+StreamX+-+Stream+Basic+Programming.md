@@ -14,10 +14,10 @@ Current support:
 
   - Transport protocol: TTHeader
   - IDL Definition Language and Serialization Protocol: Thrift
-- **gRPC Streaming** : ~~~~(planned implementation)
+- **gRPC Streaming**
 
-  - ~~Transport protocol: gRPC~~
-  - ~~IDL Definition Language and Serialization Protocol: Protobuf Encoding~~
+  - Transport protocol: gRPC
+  - IDL Definition Language and Serialization Protocol: Thrift / Protobuf
 
 The protocol selected here only affects code generated from IDL. Regardless of the protocol, the following usage is consistent.
 
@@ -44,38 +44,42 @@ service TestService {
 ```
 
 #### Generate code
-
-To maintain compatibility with legacy stream-generated code, Command Line needs to add `the -streamx ` flag.
-
+Please make sure that Kitex Tool has been upgraded to v0.13.0+:
 ```
-kitex -streamx -module <go module> -service P.S.M echo.thrift
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 ```
 
-##### Initialization
+To maintain compatibility with legacy stream-generated code, Command Line needs to add the `-streamx` flag.
+
+```
+kitex -streamx -module <go module> -service service echo.thrift
+```
+
+### Initialization
 
 #### Create Client
 
 ```go
 import ".../kitex_gen/echo/testservice"
-import "github.com/cloudwego/kitex/client/streamxclient"
+import "github.com/cloudwego/kitex/client"
 
 cli, err := testservice.NewClient(
     "a.b.c",
-    streamxclient.WithStreamRecvMiddleware(...),
-    streamxclient.WithStreamSendMiddleware(...),
+    client.WithStreamRecvMiddleware(...),
+    client.WithStreamSendMiddleware(...),
 )
 ```
 
 #### Create Server
 
 ```go
-import ".../kitex_gen/echo/streamserver"
-import "github.com/cloudwego/kitex/server/streamxserver"
+import ".../kitex_gen/echo/testservice"
+import "github.com/cloudwego/kitex/server"
 
-svr := streamserver.NewServer(
+svr := testservice.NewServer(
     new(serviceImpl),
-    streamxserver.WithStreamRecvMiddleware(...),
-    streamxserver.WithStreamSendMiddleware(...),
+    server.WithStreamRecvMiddleware(...),
+    server.WithStreamSendMiddleware(...),
 )
 ```
 
@@ -101,14 +105,14 @@ client.CloseAndRecv(res) === EOF ==>       server.Recv(EOF)
 
 #### Client Usage
 
-- [**Must**] : The client must call the CloseAndRecv () or (CloseSend + Recv) method to inform the server that there is no new data to send.
+- [**Must**] : The client must call the CloseAndRecv() or (CloseSend + Recv) method to inform the server that there is no new data to send.
 
 ```go
-ctx, cs, err := cli.ClientStream(ctx)
+stream, err := cli.EchoClient(ctx)
 for i := 0; i < 3; i++ {
-    err = cs.Send(ctx, req)
+    err = stream.Send(stream.Context(), req)
 }
-res, err = cs.CloseAndRecv(ctx)
+res, err = stream.CloseAndRecv(stream.Context())
 ```
 
 #### Server usage
@@ -117,14 +121,14 @@ res, err = cs.CloseAndRecv(ctx)
 
 ```go
 
-func (si *serviceImpl) ClientStream(
-    ctx context.Context, stream streamx.ClientStreamingServer[Request, Response]
-) (res *Response, err error) {
+func (si *serviceImpl) EchoClient(
+    ctx context.Context, stream echo.TestService_EchoClientServer
+) (err error) {
     for {
        req, err := stream.Recv(ctx)
        if err == io.EOF {
            res := new(Response)
-           return res, nil
+           return stream.SendAndClose(ctx, res)
        }
        if err != nil {
           return nil, err
@@ -153,12 +157,12 @@ client.Recv(EOF)   <== EOF ===   server handler return
 
 #### Client Usage
 
-- [**Must**] : The client must check the io. EOF error and end the loop
+- [**Must**] : The client must check the io.EOF error and end the loop
 
 ```go
-ctx, ss, err := cli.ServerStream(ctx, req)
+stream, err := cli.EchoServer(ctx, req)
 for {
-    res, err := ss.Recv(ctx)
+    res, err := stream.Recv(stream.Context())
     if errors.Is(err, io.EOF) {
        break
     }
@@ -168,7 +172,7 @@ for {
 #### Server usage
 
 ```go
-func (si *serviceImpl) ServerStream(ctx context.Context, req *Request, stream streamx.ServerStreamingServer[Response]) error {
+func (si *serviceImpl) EchoServer(ctx context.Context, req *echo.Request, stream echo.TestService_EchoServerServer) error {
     for i := 0; i < 3; i++ {
        err := stream.Send(ctx, resp)
        if err != nil {
@@ -204,23 +208,23 @@ client.Recv(EOF)   <== EOF ===   server handler return
 #### Client Usage
 
 - [**Must**] : client must call CloseSend after sending
-- [**Must**] : client must judge io. EOF and end the loop when Recv
+- [**Must**] : client must judge io.EOF and end the loop when Recv
 
 ```go
-ctx, bs, err := cli.BidiStream(ctx)
+stream, err := cli.EchoBidi(ctx)
 var wg sync.WaitGroup
 wg.Add(2)
 go func() {
     defer wg.Done()
     for i := 0; i < round; i++ {
-       err := bs.Send(ctx, req)
+       err := stream.Send(stream.Context(), req)
     }
-    err = bs.CloseSend(ctx)
+    err = stream.CloseSend(stream.Context())
 }()
 go func() {
     defer wg.Done()
     for {
-       res, err := bs.Recv(ctx)
+       res, err := stream.Recv(stream.Context())
        if errors.Is(err, io.EOF) {
           break
        }
@@ -234,7 +238,7 @@ wg.Wait()
 - [**Must**] : The server must determine io. EOF and end the loop when Recv
 
 ```go
-func (si *serviceImpl) BidiStream(ctx context.Context, stream streamx.BidiStreamingServer[Request, Response]) error {
+func (si *serviceImpl) EchoBidi(ctx context.Context, stream echo.TestService_EchoBidiServer) error {
     for {
        req, err := stream.Recv(ctx)
        if err == io.EOF {

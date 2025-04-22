@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: Callback - Langfuse
@@ -26,7 +26,7 @@ func main() {
         SecretKey: "sk-xxx",
     })
     
-    **callbacks**.InitCallbackHandlers([]**callbacks**._Handler_{cbh}) // Set langfuse as a global callback
+    callbacks.AppendGlobalHandlers(cbh) // Set langfuse as a global callback
     
     g := NewGraph[string,string]()
     /*

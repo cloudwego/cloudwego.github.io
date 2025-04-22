@@ -19,14 +19,14 @@ Unlike  RPC, stream errors can occur at any time during stream processing. For e
 Server implementation:
 
 ```go
-func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *Request, stream streamx.ServerStreamingServer[Response]) error {
+func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *echo.Request, stream echo.TestService_ServerStreamWithErrServer) error {
     // 检查用户账户余额
     for isHasBalance (req.UserId) {
         stream.Send(ctx, res)
     }
     // 返回用户余额不足错误
     bizErr := kerrors.NewBizStatusErrorWithExtra(
-        10001, "insufficient user balance", map[string]string{"testKey": "testVal"}，
+        10001, "insufficient user balance", map[string]string{"testKey": "testVal"},
     )
     return bizErr
 }
@@ -35,11 +35,11 @@ func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *Reques
 Client implementation:
 
 ```go
-svrStream, err = streamClient.ServerStreamWithErr(ctx, req)
+stream, err = cli.ServerStreamWithErr(ctx, req)
 
 var err error
 for {
-    res, err = stream.Recv(ctx)
+    res, err = stream.Recv(stream.Context())
     if err != nil {
          break
     }
@@ -52,12 +52,12 @@ if ok {
 
 ### Other errors
 
-If the Error returned by the Server is a non-business exception, the framework will be uniformly encapsulated as `(* thrift.ApplicationException) `. At this time, only the error Message can be obtained.
+If the Error returned by the Server is a non-business exception, the framework will be uniformly encapsulated as `(*thrift.ApplicationException)`. At this time, only the error Message can be obtained.
 
 Server implementation:
 
 ```go
-func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *Request, stream streamx.ServerStreamingServer[Response]) error {
+func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *echo.Request, stream echo.TestService_ServerStreamWithErrServer) error {
     // ...
     return errors.New("test error")
 }
@@ -66,16 +66,16 @@ func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *Reques
 Client implementation:
 
 ```go
-svrStream, err = streamClient.ServerStreamWithErr(ctx, req)
-test.Assert(t, err == nil, err)
+stream, err = cli.ServerStreamWithErr(ctx, req)
 
 var err error
 for {
-    res, err = stream.Recv(ctx)
+    res, err = stream.Recv(stream.Context())
     if err != nil {
          break
     }
 }
+
 ex, ok := err.(*thrift.ApplicationException)
 if ok {
      println(ex.TypeID(), ex.Msg())

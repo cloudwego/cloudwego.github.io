@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-04-21"
 lastmod: ""
 tags: []
 title: 'Eino: Document Parser guide'
@@ -166,6 +166,7 @@ log.Printf("===== call File Loader directly =====")
 loader, err := file.NewFileLoader(ctx, &file.FileLoaderConfig{
     // Configuration parameters
     UseNameAsID: true,
+    Parser:      &parser.TextParser{}, // use TextParser as default parser
 })
 if err != nil {
     log.Fatalf("file.NewFileLoader failed, err=%v", err)

@@ -53,7 +53,7 @@ _, err = cli.Initialize(ctx, initRequest)
 Then use the Client to create the adapter , which implements Eino ChatTemplate:
 
 ```go
-import "github.com/cloudwego/eino-ext/components/tool/mcp"
+import "github.com/cloudwego/eino-ext/components/prompt/mcp"
 
 tpl, err := mcp.NewPromptTemplate(ctx, &mcp.Config{
     Cli: cli,

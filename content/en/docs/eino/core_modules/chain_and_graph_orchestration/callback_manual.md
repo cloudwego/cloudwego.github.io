@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-03-18"
 lastmod: ""
 tags: []
 title: 'Eino: Callback Manual'
@@ -145,7 +145,7 @@ Handlers need to be injected into the Context to be triggered.
 
 ### **Globally Injecting Handlers**
 
-Use `callbacks.InitCallbackHandlers` to inject global Handlers. Once injected, all triggered callback actions will automatically trigger these global Handlers. Typical scenarios include tracing, logging, and other globally consistent, business-agnostic functions.
+Use `callbacks.AppendGlobalHandlers` to inject global Handlers. Once injected, all triggered callback actions will automatically trigger these global Handlers. Typical scenarios include tracing, logging, and other globally consistent, business-agnostic functions.
 
 It is not thread-safe. It is recommended to inject it once during service initialization.
 

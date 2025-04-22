@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-22"
+date: "2025-04-21"
 lastmod: ""
 tags: []
 title: 'Eino: Document Parser 接口使用说明'
@@ -166,6 +166,7 @@ log.Printf("===== call File Loader directly =====")
 loader, err := file.NewFileLoader(ctx, &file.FileLoaderConfig{
     // 配置参数
     UseNameAsID: true,
+    Parser:      &parser.TextParser{}, // 使用 TextParser 作为默认解析器, 可自定义，例如使用 parser.NewExtParser() 创建不同文件类型的解析器
 })
 if err != nil {
     log.Fatalf("file.NewFileLoader failed, err=%v", err)
