@@ -382,7 +382,7 @@ Agent 可作为 Lambda 嵌入到其他的 Graph 中:
 
 ```go
 agent, _ := NewAgent(ctx, &AgentConfig{
-    Model: cm,
+    ToolCallingModel: cm,
     ToolsConfig: compose.ToolsNodeConfig{
        Tools: []tool.BaseTool{fakeTool, &fakeStreamToolGreetForTest{}},
     },
