@@ -50,13 +50,15 @@ func main() {
     
     // Initialize the required tools
     tools := compose.ToolsNodeConfig{
-        InvokableTools:  []tool.InvokableTool{mytool},
-        StreamableTools: []tool.StreamableTool{myStreamTool},
+        Tools: []tool.BaseTool{
+            mytool,
+            ...
+        },
     }
     
     // Create an agent
-    agent, err := react.NewAgent(ctx, react.AgentConfig{
-        Model: toolableChatModel,
+    agent, err := react.NewAgent(ctx, &react.AgentConfig{
+        ToolCallingModel: toolableChatModel,
         ToolsConfig: tools,
         ...
     })
@@ -99,20 +101,20 @@ func openaiExample() {
     })
 
     agent, err := react.NewAgent(ctx, react.AgentConfig{
-        Model: chatModel,
+        ToolCallingModel: chatModel,
         ToolsConfig: ...,
     })
 }
 
 func arkExample() {
-    arkModel, err := ark.NewChatModel(context.Background(), ark.ChatModelConfig{
+    arkModel, err := ark.NewChatModel(context.Background(), &ark.ChatModelConfig{
         APIKey: os.Getenv("ARK_API_KEY"),
         Model:  os.Getenv("ARK_MODEL"),
         BaseURL: os.Getenv("ARK_BASE_URL"),
     })
 
-    agent, err := react.NewAgent(ctx, react.AgentConfig{
-        Model: arkModel,
+    agent, err := react.NewAgent(ctx, &react.AgentConfig{
+        ToolCallingModel: arkModel,
         ToolsConfig: ...,
     })
 }
@@ -172,7 +174,10 @@ userInfoTool := utils.NewTool(
     })
     
 toolConfig := &compose.ToolsNodeConfig{
-    InvokableTools:  []tool.InvokableTool{invokeTool},
+    Tools: []tool.BaseTool{
+        mytool,
+        ...
+    },
 }
 ```
 
@@ -227,7 +232,7 @@ Similarly, if you want the Agent to run up to 10 loops (10 ChatModel + 9 Tools),
 ```go
 func main() {
     agent, err := react.NewAgent(ctx, &react.AgentConfig{
-        Model: toolableChatModel,
+        ToolCallingModel: toolableChatModel,
         ToolsConfig: tools,
         MaxStep: 20,
     }
@@ -240,7 +245,7 @@ If you wish for the Agent to directly return the Tool's Response ToolMessage aft
 
 ```go
 a, err = NewAgent(ctx, &AgentConfig{
-    Model: cm,
+    ToolCallingModel: cm,
     ToolsConfig: compose.ToolsNodeConfig{
        Tools: []tool.BaseTool{fakeTool, fakeStreamTool},
     },
@@ -377,7 +382,7 @@ Agent can be embedded as a Lambda into other Graphs:
 
 ```go
 agent, _ := NewAgent(ctx, &AgentConfig{
-    Model: cm,
+    ToolCallingModel: cm,
     ToolsConfig: compose.ToolsNodeConfig{
        Tools: []tool.BaseTool{fakeTool, &fakeStreamToolGreetForTest{}},
     },
