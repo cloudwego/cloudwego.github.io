@@ -20,11 +20,12 @@ import (
 )
 
 func main() {
-    cbh, flusher := NewLangfuseHandler(&_Config_{
+    cbh, flusher := langfuse.NewLangfuseHandler(&langfuse.Config{
         Host: "https://cloud.langfuse.com",
         PublicKey: "pk-xxx",
         SecretKey: "sk-xxx",
     })
+    defer flusher() // Exit after all trace reporting is complete
     
     callbacks.AppendGlobalHandlers(cbh) // Set langfuse as a global callback
     
@@ -32,8 +33,6 @@ func main() {
     /*
     * compose and run graph
     */
-    
-    flusher() // Exit after all trace reporting is complete
 }
 ```
 
