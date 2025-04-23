@@ -334,9 +334,18 @@ This principle also applies to Chunks in the StreamReader.
 
 ### **Fan-In and Merging**
 
-**Fan-in**: Outputs from multiple predecessor nodes converge to a successor node and together serve as the input for the successor node. It is necessary to clearly define how the outputs of multiple predecessor nodes are **merged**. Eino's choice is as follows. First, it requires that the **actual types** of the outputs of multiple predecessor nodes must be the same Map type, and the keys among them must not be repeated. Second:
+**Fan-in**: Outputs from multiple predecessor nodes converge to a successor node and together serve as the input for the successor node. It is necessary to clearly define how the outputs of multiple predecessor nodes are **merged**. Eino's choice is as follows. First, it requires that the **actual types** of the outputs of multiple predecessor nodes must be the same and of a mergeable type.
 
-- In non-streaming scenarios, after merging, it becomes a single map that contains all key-value pairs from all upstream sources.
+Mergeable types can be:
+
+- Map type, and the keys are not repeated among each other.
+- Any type, and a merge function is registered through `compose.RegisterValuesMergeFunc`.
+
+Second,
+
+- In non-streaming scenarios, 
+  - if the input type has a registered merge function, it will be merged into a single value using the registered function.
+  - if the input type is a Map, it will be merged into a single Map containing all key-value pairs from all upstream sources.
 - In streaming scenarios, multiple upstream StreamReaders of the same type are merged into one StreamReader. When actually receiving data from the merged StreamReader, the effect is to read fairly from multiple upstream StreamReaders.
 
 When adding a node (AddNode), you can add the WithOutputKey option to convert the output of the node into a Map:
