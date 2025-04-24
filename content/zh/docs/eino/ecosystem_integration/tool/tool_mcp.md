@@ -57,7 +57,7 @@ _, err = cli.Initialize(ctx, initRequest)
 ```go
 import "github.com/cloudwego/eino-ext/components/tool/mcp"
 
-tools, err := mcp.GetTools(ctx, &mcp.Config{Cli: cli})
+mcpTools, err := mcp.GetTools(ctx, &mcp.Config{Cli: cli})
 ```
 
 tool 可以直接调用：
