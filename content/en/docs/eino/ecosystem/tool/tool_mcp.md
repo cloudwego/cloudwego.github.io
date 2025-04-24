@@ -55,7 +55,7 @@ Then use the Client to create the adapter , which implements Eino Tool:
 ```go
 import "github.com/cloudwego/eino-ext/components/tool/mcp"
 
-tools, err := mcp.GetTools(ctx, &mcp.Config{Cli: cli})
+mcpTools, err := mcp.GetTools(ctx, &mcp.Config{Cli: cli})
 ```
 
 You can call this adapter directly:
