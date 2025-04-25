@@ -32,7 +32,7 @@ import (
 )
 
 func main() {
-    loader, err := file.NewFileLoader(ctx, &FileLoaderConfig{
+    loader, err := file.NewFileLoader(ctx, &file.FileLoaderConfig{
         UseNameAsID: true,                // Whether to use the file name as the document ID
         Parser:      &parser.TextParser{}, // Optional: specify a custom parser
     })
