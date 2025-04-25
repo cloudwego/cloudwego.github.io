@@ -32,7 +32,7 @@ import (
 )
 
 func main() {
-    loader, err := file.NewFileLoader(ctx, &FileLoaderConfig{
+    loader, err := file.NewFileLoader(ctx, &file.FileLoaderConfig{
         UseNameAsID: true,                // 是否使用文件名作为文档ID
         Parser:      &parser.TextParser{}, // 可选：指定自定义解析器
     })
