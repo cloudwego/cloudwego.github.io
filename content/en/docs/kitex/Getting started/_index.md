@@ -11,11 +11,11 @@ description: "This document covers the preparation of the development environmen
 
 The Quick Start section is primarily aimed at developers who are new to Kitex. This section does not cover complex service governance topics but aims to provide users with a basic understanding and quick usage of Kitex's RPC functionality. You can find more information in the [Tutorials](/docs/kitex/tutorials/).
 
-If you are a beginner, it is recommended to follow the order of **Prerequisites** -> **Basic Examples** -> **Advanced Tutorials** to complete the Quick Start section. If you already have some development experience, you can directly read the **Advanced Tutorials** and start your Kitex journey after completing all the sections.
+If you are a beginner, it is recommended to follow the order of **Pre-knowledge** -> **Prerequisite** -> **Basic Examples** -> **Advanced Tutorials** to complete the Quick Start section. If you already have some development experience, you can directly read the **Advanced Tutorials** and start your Kitex journey after completing all the sections.
 
 ## What You Will Learn
 
-Through the **Prerequisites** and **Basic Examples** sections, you will gain a preliminary understanding of RPC concepts and use Kitex to quickly start our sample code, launching an RPC service and making calls.
+Through the **Pre-knowledge**, **Prerequisite**, and **Basic Examples** sections, you will gain a preliminary understanding of RPC concepts, complete the development environment setup, and use Kitex to quickly start our sample code, launching an RPC service and making calls.
 
 In the **Advanced Tutorials** section, you will learn how to build RPC servers and clients from scratch using Kitex, and perform client-to-server calls.
 
