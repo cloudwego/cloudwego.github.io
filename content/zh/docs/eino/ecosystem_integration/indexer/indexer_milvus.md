@@ -17,7 +17,7 @@ Eino 的向量存储和检索系统，增强语义搜索能力。
 ### 安装
 
 ```bash
-go get github.com/eino-project/eino/indexer/milvus@latest
+go get github.com/cloudwego/eino-ext/components/indexer/milvus
 ```
 
 ### 创建 Milvus 存储
@@ -34,7 +34,7 @@ import (
 	"github.com/cloudwego/eino/schema"
 	"github.com/milvus-io/milvus-sdk-go/v2/client"
 	
-	"github.com/cloudwego/eino-ext/components/retriever/milvus"
+	"github.com/cloudwego/eino-ext/components/indexer/milvus"
 )
 
 func main() {
