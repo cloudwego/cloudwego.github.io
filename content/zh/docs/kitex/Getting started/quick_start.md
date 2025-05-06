@@ -138,6 +138,12 @@ service Hello {
 kitex -module "github.com/cloudwego/kitex-examples" -service a.b.c hello.thrift
 ```
 
+> **注意**：`-service` 参数指定的服务名称（这里是 `a.b.c`）必须与客户端代码中 `NewClient` 的第一个参数保持一致，例如：
+> ```go
+> client, err := hello.NewClient("a.b.c", client.WithHostPorts("0.0.0.0:8888"))
+> ```
+> 服务名称不一致会导致客户端无法正确连接到服务端。
+
 执行完上述命令后，`kitex` 工具将更新下述文件
 
 1. 更新 `./handler.go`，在里面增加一个 `Add` 方法的基本实现
