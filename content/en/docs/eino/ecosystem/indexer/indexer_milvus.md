@@ -18,7 +18,7 @@ with Eino's vector storage and retrieval system for enhanced semantic search cap
 ### Installation
 
 ```bash
-go get github.com/eino-project/eino/indexer/milvus@latest
+go get github.com/cloudwego/eino-ext/components/indexer/milvus
 ```
 
 ### Create the Milvus Indexer
@@ -35,7 +35,7 @@ import (
 	"github.com/cloudwego/eino/schema"
 	"github.com/milvus-io/milvus-sdk-go/v2/client"
 	
-	"github.com/cloudwego/eino-ext/components/retriever/milvus"
+	"github.com/cloudwego/eino-ext/components/indexer/milvus"
 )
 
 func main() {

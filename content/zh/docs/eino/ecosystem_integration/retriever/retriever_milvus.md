@@ -19,7 +19,7 @@ Eino 的向量存储和检索系统，增强语义搜索能力。
 ### 安装
 
 ```bash
-go get github.com/eino-project/eino/retriever/milvus@latest
+go get github.com/cloudwego/eino-ext/components/retriever/milvus
 ```
 
 ### 创建 Milvus 搜索
