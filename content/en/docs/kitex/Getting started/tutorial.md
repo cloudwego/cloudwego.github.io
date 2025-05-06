@@ -200,7 +200,7 @@ github.com/apache/thrift/lib/go/thrift: ambiguous import: found package github.c
 github.com/cloudwego/kitex@v0.X.X/pkg/utils/thrift.go: not enough arguments in call to t.tProt.WriteMessageBegin
 ```
 
-Execute the following commands before proceeding:
+Please first execute the following two commands:
 
 ```bash
 go mod edit -droprequire=github.com/apache/thrift/lib/go/thrift
@@ -208,6 +208,12 @@ go mod edit -replace=github.com/apache/thrift=github.com/apache/thrift@v0.13.0
 ```
 
 This is because the Thrift official library introduced a breaking change in version 0.14, which makes the generated code incompatible.
+
+Then **be sure to run** `go mod tidy` again to retrieve dependencies:
+
+```bash
+go mod tidy
+```
 
 If you want to upgrade the Kitex version, execute `go get -v github.com/cloudwego/kitex@latest`.
 
