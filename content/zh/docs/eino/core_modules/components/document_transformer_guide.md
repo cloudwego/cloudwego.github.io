@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-22"
+date: "2025-05-07"
 lastmod: ""
 tags: []
 title: 'Eino: Document Transformer 使用说明'
@@ -240,24 +240,21 @@ func (t *MyTransformer) Transform(ctx context.Context, src []*schema.Document, o
     }
     options = document.GetTransformerImplSpecificOptions(options, opts...)
     
-    // 2. 获取 callback manager
-    cm := callbacks.ManagerFromContext(ctx)
-    
-    // 3. 开始转换前的回调
-    ctx = cm.OnStart(ctx, info, &document.TransformerCallbackInput{
+    // 2. 开始转换前的回调
+    ctx = callbacks.OnStart(ctx, info, &document.TransformerCallbackInput{
         Input: src,
     })
     
-    // 4. 执行转换逻辑
+    // 3. 执行转换逻辑
     docs, err := t.doTransform(ctx, src, options)
     
-    // 5. 处理错误和完成回调
+    // 4. 处理错误和完成回调
     if err != nil {
-        ctx = cm.OnError(ctx, info, err)
+        ctx = callbacks.OnError(ctx, info, err)
         return nil, err
     }
     
-    ctx = cm.OnEnd(ctx, info, &document.TransformerCallbackOutput{
+    ctx = callbacks.OnEnd(ctx, info, &document.TransformerCallbackOutput{
         Output: docs,
     })
     

@@ -170,9 +170,9 @@ log.Printf("doc content: %v", outDocs[0].Content)
 
 ## **Existing Implementations**
 
-1. File Loader: Used to load documents from the local file system [Loader - local file](/docs/eino/ecosystem/document/loader_local_file)
-2. Web Loader: Used to load documents pointed by web URLs [Loader - web url](/docs/eino/ecosystem/document/loader_web_url)
-3. S3 Loader: Used to load documents stored in S3 compatible storage systems [Loader - amazon s3](/docs/eino/ecosystem/document/loader_amazon_s3)
+1. File Loader: Used to load documents from the local file system [Loader - local file](/docs/eino/ecosystem_integration/document/loader_local_file)
+2. Web Loader: Used to load documents pointed by web URLs [Loader - web url](/docs/eino/ecosystem_integration/document/loader_web_url)
+3. S3 Loader: Used to load documents stored in S3 compatible storage systems [Loader - amazon s3](/docs/eino/ecosystem_integration/document/loader_amazon_s3)
 
 ## **Reference for Self-Implementation**
 

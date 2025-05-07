@@ -17,7 +17,7 @@ This section introduces the adapter of MCPTool, which implements the [Eino Tool]
 
 Other adapters：
 
-[ChatTemplate - MCP](/docs/eino/ecosystem/chat_template/chat_template_mcp)
+[ChatTemplate - MCP](/docs/eino/ecosystem_integration/chat_template/chat_template_mcp)
 
 ## HowToUse
 

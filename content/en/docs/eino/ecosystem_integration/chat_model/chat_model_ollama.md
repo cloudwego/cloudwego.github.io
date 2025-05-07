@@ -209,6 +209,6 @@ func main() {
 
 - [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide)
 - [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
-- [ChatModel - OpenAI](/docs/eino/ecosystem/chat_model/chat_model_openai)
-- [ChatModel - ARK](/docs/eino/ecosystem/chat_model/chat_model_ark)
+- [ChatModel - OpenAI](/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
+- [ChatModel - ARK](/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
 - [Ollama Model Library](https://ollama.ai/library)
