@@ -100,6 +100,6 @@ func main() {
 ## **Related Documentation**
 
 - [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide)
-- [Embedding - ARK](/docs/eino/ecosystem/embedding/embedding_ark)
+- [Embedding - ARK](/docs/eino/ecosystem_integration/embedding/embedding_ark)
 - __OpenAI Embedding API Documentation__
 - [Azure OpenAI Service Documentation](https://learn.microsoft.com/azure/cognitive-services/openai/)

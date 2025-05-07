@@ -195,7 +195,7 @@ fmt.Printf("vikingDB store success, docs=%v, resp ids=%v\n", docs, outIDs)
 
 ## **Existing Implementation**
 
-1. Volc VikingDB Indexer: Vector database indexer based on Volcano Engine VikingDB [Indexer - volc VikingDB](/docs/eino/ecosystem/indexer/indexer_volc_vikingdb)
+1. Volc VikingDB Indexer: Vector database indexer based on Volcano Engine VikingDB [Indexer - volc VikingDB](/docs/eino/ecosystem_integration/indexer/indexer_volc_vikingdb)
 
 ## **Custom Implementation Reference**
 

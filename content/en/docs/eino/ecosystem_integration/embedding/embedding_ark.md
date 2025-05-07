@@ -100,5 +100,5 @@ func main() {
 ## **Related Documentation**
 
 - [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide)
-- [Embedding - OpenAI](/docs/eino/ecosystem/embedding/embedding_openai)
+- [Embedding - OpenAI](/docs/eino/ecosystem_integration/embedding/embedding_openai)
 - [Volcengine Ark Services](https://www.volcengine.com/product/ark)
