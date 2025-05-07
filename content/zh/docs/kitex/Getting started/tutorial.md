@@ -454,7 +454,7 @@ func Handler(ctx context.Context, c *app.RequestContext) {
 
 ### 测试接口
 
-打开游览器访问 `localhost:8889/api/item`，看到如下信息，代表请求成功。
+打开浏览器访问 `localhost:8889/api/item`，看到如下信息，代表请求成功。
 
 ```
 GetItemResp({Item:Item({Id:1024 Title:Kitex Description:Kitex is an excellent framework! Stock:0}) BaseResp:BaseResp({Code: Msg:})})
@@ -606,7 +606,7 @@ func main() {
 
 ## 测试接口
 
-打开游览器访问 `localhost:8889/api/item`，看到如下信息，代表请求成功。
+打开浏览器访问 `localhost:8889/api/item`，看到如下信息，代表请求成功。
 
 ```
 GetItemResp({Item:Item({Id:1024 Title:Kitex Description:Kitex is an excellent framework! Stock:1024}) BaseResp:BaseResp({Code: Msg:})})
@@ -865,7 +865,7 @@ func main() {
 
 #### 测试
 
-为商品服务添加代码后需要重新启动，然后再启动 API 服务，打开游览器访问 `localhost:8889/api/item`，看到如下信息，代表请求成功。
+为商品服务添加代码后需要重新启动，然后再启动 API 服务，打开浏览器访问 `localhost:8889/api/item`，看到如下信息，代表请求成功。
 
 ```
 GetItemResp({Item:Item({Id:1024 Title:Kitex Description:Kitex is an excellent framework! Stock:1024}) BaseResp:BaseResp({Code: Msg:})})
