@@ -595,7 +595,14 @@ func main() {
 
 Since the stock service is running on port 8890, we specify that port when creating the client.
 
-With this, the item service code is complete. Recompile and launch the item service as mentioned earlier. If you see the following output, it means the service is running successfully:
+At this point, the item service code is complete. Recompile and start the item service with the following commands:
+
+```bash
+sh build.sh
+sh output/bootstrap.sh
+```
+
+If you see the following output, it means the service is running successfully:
 
 ```
 2024/01/21 00:18:29.522546 server.go:83: [Info] KITEX: server listen at addr=[::]:8888
