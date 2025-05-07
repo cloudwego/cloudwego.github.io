@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-05-07"
 lastmod: ""
 tags: []
 title: 'Eino: ChatModel guide'
@@ -23,10 +23,18 @@ The Model component is used to interact with large language models (LLM). Its pr
 > Code Location: eino/components/model/interface.go
 
 ```go
-type ChatModel interface {
+type BaseChatModel interface {
     Generate(ctx context.Context, input []*schema.Message, opts ...Option) (*schema.Message, error)
-    Stream(ctx context.Context, input []*schema.Message, opts ...Option) (*schema.StreamReader[*schema.Message], error)
-    BindTools(tools []*schema.ToolInfo) error
+    Stream(ctx context.Context, input []*schema.Message, opts ...Option) (
+        *schema.StreamReader[*schema.Message], error)
+}
+
+type ToolCallingChatModel interface {
+    BaseChatModel
+
+    // WithTools returns a new ToolCallingChatModel instance with the specified tools bound.
+    // This method does not modify the current instance, making it safer for concurrent use.
+    WithTools(tools []*schema.ToolInfo) (ToolCallingChatModel, error)
 }
 ```
 
@@ -49,12 +57,13 @@ type ChatModel interface {
   - `*schema.StreamReader[*schema.Message]`: Stream reader for model response
   - error: Error information during the generation process
 
-#### **BindTools Method**
+#### **WithTools Method**
 
 - Function: Binds available tools to the model
 - Parameters:
   - tools: List of tool information
 - Return values:
+  - ToolCallingChatModel:  chatmodel that with tools info
   - error: Error information during the binding process
 
 ### **Message Structure**
@@ -275,9 +284,10 @@ result, err := runnable.Invoke(ctx, messages, compose.WithCallbacks(helper))
 
 ## **Existing Implementations**
 
-1. OpenAI ChatModel: Use OpenAI's GPT series models [ChatModel - OpenAI](/docs/eino/ecosystem/chat_model/chat_model_openai)
-2. Ollama ChatModel: Use Ollama local models [ChatModel - Ollama](/docs/eino/ecosystem/chat_model/chat_model_ollama)
-3. ARK ChatModel: Use ARK platform's model service [ChatModel - ARK](/docs/eino/ecosystem/chat_model/chat_model_ark)
+1. OpenAI ChatModel: Use OpenAI's GPT series models [ChatModel - OpenAI](/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
+2. Ollama ChatModel: Use Ollama local models [ChatModel - Ollama](/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
+3. ARK ChatModel: Use ARK platform's model service [ChatModel - ARK](/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
+4. See more implementation at: [Eino ChatModel](https://www.cloudwego.io/zh/docs/eino/ecosystem_integration/chat_model/)
 
 ## **Self-Implementation Reference**
 
