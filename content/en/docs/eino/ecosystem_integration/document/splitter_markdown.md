@@ -127,5 +127,5 @@ This is the content of Chapter 2.
 - [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
 - [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
 - [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide)
-- [Splitter - recursive](/docs/eino/ecosystem/document/splitter_recursive)
-- [Splitter - semantic](/docs/eino/ecosystem/document/splitter_semantic)
+- [Splitter - recursive](/docs/eino/ecosystem_integration/document/splitter_recursive)
+- [Splitter - semantic](/docs/eino/ecosystem_integration/document/splitter_semantic)

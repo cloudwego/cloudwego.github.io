@@ -150,4 +150,4 @@ Refer to the [Eino: Document Parser guide](/docs/eino/core_modules/components/do
 
 - [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
 - [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
-- [Parser - pdf](/docs/eino/ecosystem/document/parser_pdf)
+- [Parser - pdf](/docs/eino/ecosystem_integration/document/parser_pdf)

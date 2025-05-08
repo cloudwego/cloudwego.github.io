@@ -135,5 +135,5 @@ func main() {
 ## **Related Documentation**
 
 - [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
-- [Tool - Googlesearch](/docs/eino/ecosystem/tool/tool_googlesearch)
+- [Tool - Googlesearch](/docs/eino/ecosystem_integration/tool/tool_googlesearch)
 - [DuckDuckGo Help Pages](https://duckduckgo.com/duckduckgo-help-pages/settings/params/)

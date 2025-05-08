@@ -17,7 +17,7 @@ This section introduces the adapter of MCPPrompt, which implements the [Eino Cha
 
 Other adapters：
 
-[Tool - MCP](/docs/eino/ecosystem/tool/tool_mcp)
+[Tool - MCP](/docs/eino/ecosystem_integration/tool/tool_mcp)
 
 ## HowToUse
 

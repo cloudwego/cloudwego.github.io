@@ -140,8 +140,8 @@ func main() {
 
 ### **Other Implementations**
 
-- pdf parser, used for extracting and parsing PDF formatted files: [Parser - pdf](/docs/eino/ecosystem/document/parser_pdf)
-- html parser, used for extracting and parsing HTML formatted content: [Parser - html](/docs/eino/ecosystem/document/parser_html)
+- pdf parser, used for extracting and parsing PDF formatted files: [Parser - pdf](/docs/eino/ecosystem_integration/document/parser_pdf)
+- html parser, used for extracting and parsing HTML formatted content: [Parser - html](/docs/eino/ecosystem_integration/document/parser_html)
 
 ## **Using ****Document Loader**
 

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-05-07"
 lastmod: ""
 tags: []
 title: 'Eino: Document Transformer guide'
@@ -160,9 +160,9 @@ for idx, doc := range outDocs {
 
 ## **Existing Implementations**
 
-1. Markdown Header Splitter: Document splitting based on Markdown headers [Splitter - markdown](/docs/eino/ecosystem/document/splitter_markdown)
-2. Text Splitter: Document splitting based on text length or delimiters [Splitter - semantic](/docs/eino/ecosystem/document/splitter_semantic)
-3. Document Filter: Filtering document content based on rules [Splitter - recursive](/docs/eino/ecosystem/document/splitter_recursive)
+1. Markdown Header Splitter: Document splitting based on Markdown headers [Splitter - markdown](/docs/eino/ecosystem_integration/document/splitter_markdown)
+2. Text Splitter: Document splitting based on text length or delimiters [Splitter - semantic](/docs/eino/ecosystem_integration/document/splitter_semantic)
+3. Document Filter: Filtering document content based on rules [Splitter - recursive](/docs/eino/ecosystem_integration/document/splitter_recursive)
 
 ## **Reference Implementation**
 
@@ -240,24 +240,21 @@ func (t *MyTransformer) Transform(ctx context.Context, src []*schema.Document, o
     }
     options = document.GetTransformerImplSpecificOptions(options, opts...)
     
-    // 2. Get the callback manager
-    cm := callbacks.ManagerFromContext(ctx)
-    
-    // 3. Trigger the pre-transformation callback
-    ctx = cm.OnStart(ctx, info, &document.TransformerCallbackInput{
+    // 2. Trigger the pre-transformation callback
+    ctx = callbacks.OnStart(ctx, info, &document.TransformerCallbackInput{
         Input: src,
     })
     
-    // 4. Execute the transformation logic
+    // 3. Execute the transformation logic
     docs, err := t.doTransform(ctx, src, options)
     
     // 5. Handle errors and trigger the completion callback
     if err != nil {
-        ctx = cm.OnError(ctx, info, err)
+        ctx = callbacks.OnError(ctx, info, err)
         return nil, err
     }
     
-    ctx = cm.OnEnd(ctx, info, &document.TransformerCallbackOutput{
+    ctx = callbacks.OnEnd(ctx, info, &document.TransformerCallbackOutput{
         Output: docs,
     })
     

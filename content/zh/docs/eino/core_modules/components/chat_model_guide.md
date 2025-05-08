@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-22"
+date: "2025-05-07"
 lastmod: ""
 tags: []
 title: 'Eino: ChatModel 使用说明'
@@ -23,10 +23,18 @@ Model 组件是一个用于与大语言模型交互的组件。它的主要作�
 > 代码位置：eino/components/model/interface.go
 
 ```go
-type ChatModel interface {
+type BaseChatModel interface {
     Generate(ctx context.Context, input []*schema.Message, opts ...Option) (*schema.Message, error)
-    Stream(ctx context.Context, input []*schema.Message, opts ...Option) (*schema.StreamReader[*schema.Message], error)
-    BindTools(tools []*schema.ToolInfo) error
+    Stream(ctx context.Context, input []*schema.Message, opts ...Option) (
+        *schema.StreamReader[*schema.Message], error)
+}
+
+type ToolCallingChatModel interface {
+    BaseChatModel
+
+    // WithTools returns a new ToolCallingChatModel instance with the specified tools bound.
+    // This method does not modify the current instance, making it safer for concurrent use.
+    WithTools(tools []*schema.ToolInfo) (ToolCallingChatModel, error)
 }
 ```
 
@@ -49,12 +57,13 @@ type ChatModel interface {
   - `*schema.StreamReader[*schema.Message]`：模型响应的流式读取器
   - error：生成过程中的错误信息
 
-#### BindTools 方法
+#### WithTools 方法
 
 - 功能：为模型绑定可用的工具
 - 参数：
   - tools：工具信息列表
 - 返回值：
+  - ToolCallingChatModel: 绑定了 tools 后的 chatmodel
   - error：绑定过程中的错误信息
 
 ### Message 结构体
@@ -278,6 +287,7 @@ result, err := runnable.Invoke(ctx, messages, compose.WithCallbacks(helper))
 1. OpenAI ChatModel: 使用 OpenAI 的 GPT 系列模型 [ChatModel - OpenAI](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
 2. Ollama ChatModel: 使用 Ollama 本地模型 [ChatModel - Ollama](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
 3. ARK ChatModel: 使用 ARK 平台的模型服务 [ChatModel - ARK](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
+4. 更多查看： [Eino ChatModel](https://www.cloudwego.io/zh/docs/eino/ecosystem_integration/chat_model/)
 
 ## 自行实现参考
 
@@ -462,9 +472,9 @@ func (m *MyChatModel) Stream(ctx context.Context, messages []*schema.Message, op
     }), nil
 }
 
-func (m *MyChatModel) BindTools(tools []*schema.ToolInfo) error {
+func (m *MyChatModel)  WithTools(tools []*schema.ToolInfo) (model.ToolCallingChatModel, error) {
     // 实现工具绑定逻辑
-    return nil
+    return nil, nil
 }
 
 func (m *MyChatModel) doGenerate(ctx context.Context, messages []*schema.Message, opts *MyChatModelOptions) (*schema.Message, error) {

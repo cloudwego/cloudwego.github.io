@@ -119,7 +119,7 @@ chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
 })
 ```
 
-> For detailed information on OpenAI ChatModel, refer to: [ChatModel - OpenAI](/docs/eino/ecosystem/chat_model/chat_model_openai)
+> For detailed information on OpenAI ChatModel, refer to: [ChatModel - OpenAI](/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
 
 #### **Ollama (select either this or OpenAI above)**
 
@@ -138,7 +138,7 @@ chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
 })
 ```
 
-> For information on OpenAI, refer to: [ChatModel - Ollama](/docs/eino/ecosystem/chat_model/chat_model_ollama)
+> For information on OpenAI, refer to: [ChatModel - Ollama](/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
 
 Regardless of the implementation used, ChatModel provides a consistent interface, allowing you to easily switch between different models without modifying a large amount of code.
 

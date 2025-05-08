@@ -137,8 +137,8 @@ log.Printf("vectors in chain: %v", vectors)
 
 ## **Existing Implementations**
 
-1. OpenAI Embedding: Generate vectors using OpenAI's text embedding model [Embedding - OpenAI](/docs/eino/ecosystem/embedding/embedding_openai)
-2. ARK Embedding: Generate vectors using the ARK platform's model [Embedding - ARK](/docs/eino/ecosystem/embedding/embedding_ark)
+1. OpenAI Embedding: Generate vectors using OpenAI's text embedding model [Embedding - OpenAI](/docs/eino/ecosystem_integration/embedding/embedding_openai)
+2. ARK Embedding: Generate vectors using the ARK platform's model [Embedding - ARK](/docs/eino/ecosystem_integration/embedding/embedding_ark)
 
 ## **Custom Implementation Reference**
 

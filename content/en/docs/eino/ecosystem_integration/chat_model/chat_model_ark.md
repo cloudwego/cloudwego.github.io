@@ -233,6 +233,6 @@ func main() {
 
 - [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide)
 - [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
-- [ChatModel - OpenAI](/docs/eino/ecosystem/chat_model/chat_model_openai)
-- [ChatModel - Ollama](/docs/eino/ecosystem/chat_model/chat_model_ollama)
+- [ChatModel - OpenAI](/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
+- [ChatModel - Ollama](/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
 - [Volcano Engine Official Website](https://www.volcengine.com/product/doubao)

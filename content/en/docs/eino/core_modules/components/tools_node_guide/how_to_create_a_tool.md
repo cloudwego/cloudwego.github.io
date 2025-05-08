@@ -327,7 +327,7 @@ func useInInvoke() {
 
 ## Method 3 - Use the tool provided in eino-ext
 
-In addition to the various custom tools that need to be implemented by yourself, there are also many general tools implemented in the eino-ext project that can be used out of the box, such [Tool - Googlesearch](/docs/eino/ecosystem/tool/tool_googlesearch) 、[Tool - DuckDuckGoSearch](/docs/eino/ecosystem/tool/tool_duckduckgo_search)   、wikipedia、httprequest , etc. You can refer to [https://github.com/cloudwego/eino-ext/tree/main/components/tool](https://github.com/cloudwego/eino-ext/tree/main/components/tool)  for various implementations.
+In addition to the various custom tools that need to be implemented by yourself, there are also many general tools implemented in the eino-ext project that can be used out of the box, such [Tool - Googlesearch](/docs/eino/ecosystem_integration/tool/tool_googlesearch) 、[Tool - DuckDuckGoSearch](/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search)   、wikipedia、httprequest , etc. You can refer to [https://github.com/cloudwego/eino-ext/tree/main/components/tool](https://github.com/cloudwego/eino-ext/tree/main/components/tool)  for various implementations.
 
 ## Method 4 - Use the MCP protocol
 

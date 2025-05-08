@@ -143,5 +143,5 @@ splitter, err := recursive.NewSplitter(ctx, &recursive.Config{
 - [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
 - [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
 - [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide)
-- [Splitter - semantic](/docs/eino/ecosystem/document/splitter_semantic)
-- [Splitter - markdown](/docs/eino/ecosystem/document/splitter_markdown)
+- [Splitter - semantic](/docs/eino/ecosystem_integration/document/splitter_semantic)
+- [Splitter - markdown](/docs/eino/ecosystem_integration/document/splitter_markdown)

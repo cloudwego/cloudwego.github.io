@@ -157,4 +157,4 @@ func main() {
 
 - [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
 - [Google Custom Search API Documentation](https://developers.google.com/custom-search/v1/overview)
-- [Tool - DuckDuckGoSearch](/docs/eino/ecosystem/tool/tool_duckduckgo_search)
+- [Tool - DuckDuckGoSearch](/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search)

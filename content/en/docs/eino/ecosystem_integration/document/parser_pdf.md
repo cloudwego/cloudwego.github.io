@@ -123,4 +123,4 @@ Refer to the example in the [Eino: Document Loader guide](/docs/eino/core_module
 
 - [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
 - [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
-- [Parser - html](/docs/eino/ecosystem/document/parser_html)
+- [Parser - html](/docs/eino/ecosystem_integration/document/parser_html)
