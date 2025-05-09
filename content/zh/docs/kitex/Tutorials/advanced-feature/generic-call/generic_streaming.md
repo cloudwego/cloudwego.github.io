@@ -54,15 +54,9 @@ ctx := context.Background()
 // 初始化泛化客户端
 dOpts := proto.Options{}
 p, err := generic.NewPbFileProviderWithDynamicGo(idlPath, ctx, dOpts)
-if err != nil {
-	log.Fatal(err)
-}
 
 // 创建 JSON 泛化对象
 g, err := generic.JSONPbGeneric(p)
-if err != nil {
-	log.Fatal(err)
-}
 
 // 初始化流式客户端
 cli, err := genericclient.NewStreamingClient(
@@ -114,15 +108,9 @@ service TestService {
 ```go
 // 1. 创建 Thrift 文件提供者
 p, err := generic.NewThriftFileProvider("../idl/streaming.thrift")
-if err != nil {
-	log.Fatal(err)
-}
 
 // 2. 创建 JSON Thrift 泛化调用
 g, err := generic.JSONThriftGeneric(p)
-if err != nil {
-	log.Fatal(err)
-}
 
 // 3. 创建流式客户端
 cli, err := genericclient.NewStreamingClient(
@@ -130,7 +118,9 @@ cli, err := genericclient.NewStreamingClient(
 	g,
 	client.WithTransportProtocol(transport.GRPC),
 	client.WithHostPorts("127.0.0.1:8888"),
+	client.WithMetaHandler(transmeta.ClientHTTP2Handler),
 )
+
 // ... 其他流式调用示例 ...
 ```
 
