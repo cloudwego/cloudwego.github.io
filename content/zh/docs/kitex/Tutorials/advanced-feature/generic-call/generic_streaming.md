@@ -273,4 +273,4 @@ strResp, ok := resp.(string) // 响应为 json 字符串
 go get -u github.com/cloudwego/kitex@v0.12.1-0.20241220085925-b5894d2f9e0c
 ```
 
-如需完整 main 函数示例，请参考官方 demo。 
+如需完整 main 函数示例，请参考[官方 demo](https://github.com/cloudwego/kitex-examples/tree/main/generic_streaming)。 
