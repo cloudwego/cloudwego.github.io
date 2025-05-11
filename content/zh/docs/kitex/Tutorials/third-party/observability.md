@@ -172,6 +172,7 @@ func main(){
 ```
 
 Server
+注意事项：重复调用`NewOpenTelemetryProvider`时，必须先`Shutdown`前一个provider，再`NewOpenTelemetryProvider`，否则会导致资源泄漏和网络连接混乱。
 
 ```go
 import (
