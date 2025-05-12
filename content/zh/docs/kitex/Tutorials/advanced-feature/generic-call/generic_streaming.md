@@ -1,6 +1,6 @@
 ---
 title: "流式泛化调用用户指南"
-date: 2025-05-09
+date: 2025-05-12
 weight: 6
 keywords: ["流式泛化调用用户指南"]
 description: ""
@@ -159,7 +159,7 @@ strResp, ok := resp.(string) // 响应为 json 字符串
 
 ### 服务端流（Server Streaming）
 
-注意：`Recv` 返回非 nil 错误（包括 `io.EOF`）表示服务端已发送完毕或出错。
+注意：`Recv` 返回 `io.EOF` 错误表示服务端已发送完毕并正常关闭流，其它非 nil 错误表示出错。
 
 示例：
 

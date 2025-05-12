@@ -154,7 +154,7 @@ strResp, ok := resp.(string) // response is json string
 
 ### Server Streaming
 
-Note: A non-nil error (including `io.EOF`) returned by `Recv` indicates that the server has finished sending (or encountered an error)
+Note: An `io.EOF` error returned by `Recv` indicates that the server has finished sending and normally closed the stream, while other non-nil errors indicate actual errors.
 
 Example:
 
