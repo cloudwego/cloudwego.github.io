@@ -108,11 +108,11 @@ service TestService {
 
 上述 IDL 包含以下场景：
 
-1. 客户端流：客户端发送多条消息，服务端返回一条消息后关闭流。
-2. 服务端流：客户端发送一条消息，服务端返回多条消息后关闭流，适合大模型等场景。
-3. 双向流：客户端和服务端可独立收发消息，顺序可自定义。
-4. 单次调用（gRPC）：带 `streaming.mode` 注解的非流式（不推荐，性能有损失）。
-5. Ping Pong 模式（KitexThrift）：传统的 Thrift 一发一收模式，不使用流机制，性能更好，推荐使用。
+1. Client Streaming：客户端发送多条消息，服务端返回一条消息后关闭流。
+2. Server Streaming：客户端发送一条消息，服务端返回多条消息后关闭流，适合大模型等场景。
+3. Bidirectional Streaming：客户端和服务端可独立收发消息，顺序可自定义。
+4. Unary (gRPC)：带 `streaming.mode` 注解的非流式（不推荐，性能有损失）。
+5. Ping Pong (KitexThrift)：传统的 Thrift 一发一收模式，不使用流机制，性能更好，推荐使用。
 
 流式客户端初始化示例：
 
@@ -135,7 +135,7 @@ cli, err := genericclient.NewStreamingClient(
 // ... 其他流式调用示例 ...
 ```
 
-### 客户端流（Client Streaming）
+### Client Streaming
 
 示例：
 
@@ -165,7 +165,7 @@ resp, err := streamCli.CloseAndRecv()
 strResp, ok := resp.(string) // 响应为 json 字符串
 ```
 
-### 服务端流（Server Streaming）
+### Server Streaming
 
 注意：`Recv` 返回 `io.EOF` 错误表示服务端已发送完毕并正常关闭流，其它非 nil 错误表示出错。
 
@@ -197,7 +197,7 @@ for {
 }
 ```
 
-### 双向流（Bidirectional Streaming）
+### Bidirectional Streaming
 
 示例：
 
@@ -273,7 +273,7 @@ go func() {
 wg.Wait()
 ```
 
-### 单次调用（PingPong）
+### Ping Pong
 
 用法与普通（非流式）泛化调用类似。
 
