@@ -140,6 +140,14 @@ cli, err := genericclient.NewStreamingClient(
 示例：
 
 ```go
+import (
+	"context"
+	"fmt"
+	"time"
+	
+	"github.com/cloudwego/kitex/client/genericclient"
+)
+
 // 使用已创建的流式客户端初始化 client streaming
 streamCli, err := genericclient.NewClientStreaming(ctx, cli, "EchoClient")
 
@@ -164,6 +172,14 @@ strResp, ok := resp.(string) // 响应为 json 字符串
 示例：
 
 ```go
+import (
+	"context"
+	"fmt"
+	"io"
+	
+	"github.com/cloudwego/kitex/client/genericclient"
+)
+
 // 使用已创建的流式客户端初始化 server streaming，并发送消息
 streamCli, err := genericclient.NewServerStreaming(ctx, cli, "EchoServer", `{"message": "grpc server streaming generic request"}`)
 
@@ -186,6 +202,16 @@ for {
 示例：
 
 ```go
+import (
+	"context"
+	"fmt"
+	"io"
+	"sync"
+	
+	"github.com/cloudwego/kitex/client/genericclient"
+	"github.com/cloudwego/kitex/pkg/klog"
+)
+
 // 使用已创建的流式客户端初始化 bidirectional streaming
 streamCli, err := genericclient.NewBidirectionalStreaming(ctx, cli, "Echo")
 if err != nil {
@@ -254,6 +280,12 @@ wg.Wait()
 示例：
 
 ```go
+import (
+	"context"
+	
+	"github.com/cloudwego/kitex/client/genericclient"
+)
+
 resp, err := cli.GenericCall(ctx, "EchoPingPong", `{"message": "unary request"}`)
 strResp, ok := resp.(string) // 响应为 json 字符串
 ```

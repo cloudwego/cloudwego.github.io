@@ -139,6 +139,14 @@ cli, err := genericclient.NewStreamingClient("destService", g,
 Example:
 
 ```go
+import (
+	"context"
+	"fmt"
+	"time"
+	
+	"github.com/cloudwego/kitex/client/genericclient"
+)
+
 // initialize client streaming client using the streaming client you created
 streamCli, err := genericclient.NewClientStreaming(ctx, cli, "StreamRequestEcho")
 for i := 0; i < 3; i++ {
@@ -159,6 +167,15 @@ Note: An `io.EOF` error returned by `Recv` indicates that the server has finishe
 Example:
 
 ```go
+import (
+	"context"
+	"fmt"
+	"io"
+	
+	"github.com/cloudwego/kitex/client/genericclient"
+	"github.com/cloudwego/kitex/pkg/klog"
+)
+
 // initialize server streaming client using the streaming client you created, and send a message
 streamCli, err := genericclient.NewServerStreaming(ctx, cli, "StreamResponseEcho", `{"message": "grpc server streaming generic request"}`)
 for {
@@ -181,6 +198,16 @@ for {
 Example:
 
 ```go
+import (
+	"context"
+	"fmt"
+	"io"
+	"sync"
+	
+	"github.com/cloudwego/kitex/client/genericclient"
+	"github.com/cloudwego/kitex/pkg/klog"
+)
+
 // initialize bidirectional streaming client using the streaming client you created
 streamCli, err := genericclient.NewBidirectionalStreaming(ctx, cli, "BidirectionalEcho")
 
@@ -239,6 +266,12 @@ The usage of unary call is similar to normal (non-streaming) generic call.
 Example:
 
 ```go
+import (
+	"context"
+	
+	"github.com/cloudwego/kitex/client/genericclient"
+)
+
 resp, err := cli.GenericCall(ctx, "UnaryEcho", `{"message": "unary request"}`)
 strResp, ok := resp.(string) // response is json string
 ```
