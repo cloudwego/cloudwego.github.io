@@ -14,7 +14,7 @@ description: ""
 
 ### Generic Streaming Client Initialization
 
-#### protobuf
+#### Protobuf
 
 Take the following Protobuf IDL as an example:
 
@@ -280,9 +280,9 @@ strResp, ok := resp.(string) // response is json string
 
 ### Recv() got err: rpc error: code = 12 desc = Method not found!
 
-This error occurs when calling with Kitex **protobuf** generic streaming when the downstream is **gRPC-python** (gRPC libraries for other languages may also have this problem).
+This error occurs when calling with Kitex **Protobuf** generic streaming when the downstream is **gRPC-python** (gRPC libraries for other languages may also have this problem).
 
-The root cause is that Kitex does not parse the package in the protobuf idl, so the package part of `:path` in the gPRC request is missing, and gRPC-python can't find the corresponding method.
+The root cause is that Kitex does not parse the package in the Protobuf IDL, so the package part of `:path` in the gPRC request is missing, and gRPC-python can't find the corresponding method.
 
 e.g.
 
@@ -290,7 +290,7 @@ e.g.
 
 `:path` - /search.gpt_engine.GPTStreamService/GPTGeneration
 
-- protobuf generic client
+- Protobuf generic client
 
 `:path` - /GPTStreamService/GPTGeneration
 

@@ -14,7 +14,7 @@ description: ""
 
 ### 泛化流式客户端初始化
 
-#### protobuf
+#### Protobuf
 
 以如下 Protobuf IDL 为例：
 
@@ -294,9 +294,9 @@ strResp, ok := resp.(string) // 响应为 json 字符串
 
 ### Recv() got err: rpc error: code = 12 desc = Method not found!
 
-该错误出现在 Kitex **protobuf** 泛化流式调用下游为 **gRPC-python**（或其他语言 gRPC 库）时。
+该错误出现在 Kitex **Protobuf** 泛化流式调用下游为 **gRPC-python**（或其他语言 gRPC 库）时。
 
-根因是 Kitex 没有解析 protobuf idl 的 package，导致 gRPC 请求的 `:path` 缺少 package 部分，gRPC-python 找不到对应方法。
+根因是 Kitex 没有解析 Protobuf IDL 的 package，导致 gRPC 请求的 `:path` 缺少 package 部分，gRPC-python 找不到对应方法。
 
 例如：
 
@@ -304,7 +304,7 @@ strResp, ok := resp.(string) // 响应为 json 字符串
 
 `:path` - /search.gpt_engine.GPTStreamService/GPTGeneration
 
-- protobuf 泛化客户端
+- Protobuf 泛化客户端
 
 `:path` - /GPTStreamService/GPTGeneration
 
