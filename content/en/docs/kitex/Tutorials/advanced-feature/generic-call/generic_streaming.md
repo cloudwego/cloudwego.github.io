@@ -42,10 +42,10 @@ service Echo {
 
 The four methods included in the example IDL correspond to four scenarios:
 
-1. Client streaming: the client sends multiple messages, the server returns one message, and then closes the stream.
-2. Server streaming: The client sends one message, the server returns multiple messages, and then closes the stream. It's suitable for LLM scenarios.
-3. Bidirectional streaming: The sending and receiving of client/server are independent, which can be organized in arbitrary order.
-4. Unary: non streaming.
+1. Client Streaming: the client sends multiple messages, the server returns one message, and then closes the stream.
+2. Server Streaming: The client sends one message, the server returns multiple messages, and then closes the stream. It's suitable for LLM scenarios.
+3. Bidirectional Streaming: The sending and receiving of client/server are independent, which can be organized in arbitrary order.
+4. Unary: In gRPC, this is a single call mode without using streams, similar to the Ping Pong mode in Thrift.
 
 First of all, please initialize the streaming client. Here is an example of streaming client initialization.
 
@@ -100,11 +100,11 @@ service TestService {
 
 The four methods included in the example IDL correspond to four scenarios:
 
-1. Client streaming: the client sends multiple messages, the server returns one message, and then closes the stream.
-2. Server streaming: The client sends one message, the server returns multiple messages, and then closes the stream. It's suitable for LLM scenarios.
-3. Bidirectional streaming: The sending and receiving of client/server are independent, which can be organized in arbitrary order.
-4. Unary (gRPC): Non-streaming. With `streaming.mode` annotation. Not recommended due to performance loss.
-5. Unary (KitexThrift): Non-streaming. Recommended.
+1. Client Streaming: the client sends multiple messages, the server returns one message, and then closes the stream.
+2. Server Streaming: The client sends one message, the server returns multiple messages, and then closes the stream. It's suitable for LLM scenarios.
+3. Bidirectional Streaming: The sending and receiving of client/server are independent, which can be organized in arbitrary order.
+4. Unary (gRPC): Non-streaming with `streaming.mode` annotation. Not recommended due to performance loss.
+5. Ping Pong mode (KitexThrift): Traditional Thrift request-response pattern without using streams. Better performance, recommended.
 
 Here is an example of streaming client initialization.
 
