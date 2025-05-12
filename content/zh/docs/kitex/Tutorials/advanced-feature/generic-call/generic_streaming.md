@@ -44,7 +44,7 @@ service StreamingService {
 1. Client Streaming：客户端发送多条消息，服务端返回一条消息后关闭流。
 2. Server Streaming：客户端发送一条消息，服务端返回多条消息后关闭流，适合大模型等场景。
 3. Bidirectional Streaming：客户端和服务端可独立收发消息，顺序可自定义。
-4. Unary：gRPC 中的单次调用模式，不使用流机制，类似于 Thrift 中的 Ping Pong 模式。
+4. Unary：gRPC 中的单次调用模式，类似于 Thrift 中的 Ping Pong 模式。
 
 流式客户端初始化示例：
 
@@ -117,6 +117,16 @@ service TestService {
 流式客户端初始化示例：
 
 ```go
+import (
+	"context"
+	
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/client/genericclient"
+	"github.com/cloudwego/kitex/pkg/generic"
+	"github.com/cloudwego/kitex/pkg/transmeta"
+	"github.com/cloudwego/kitex/transport"
+)
+
 // 1. 创建 Thrift 文件提供者
 p, err := generic.NewThriftFileProvider("../idl/streaming.thrift")
 
