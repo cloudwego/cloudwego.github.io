@@ -51,10 +51,17 @@ First of all, please initialize the streaming client. Here is an example of stre
 
 ```go
 import (
-    dproto "github.com/cloudwego/dynamicgo/proto"
+    "context"
+    
+    "github.com/cloudwego/kitex/client"
+    "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/kitex/pkg/generic"
+    "github.com/cloudwego/kitex/pkg/generic/proto"
+    "github.com/cloudwego/kitex/pkg/transmeta"
+    "github.com/cloudwego/kitex/transport"
 )
 
-dOpts := dproto.Options{} // you can specify parsing options as you want
+dOpts := proto.Options{} // you can specify parsing options as you want
 p, err := generic.NewPbFileProviderWithDynamicGo(your_idl, ctx, dOpts)
 // create json pb generic
 g, err := generic.JSONPbGeneric(p)
@@ -102,6 +109,16 @@ The four methods included in the example IDL correspond to four scenarios:
 Here is an example of streaming client initialization.
 
 ```go
+import (
+    "context"
+    
+    "github.com/cloudwego/kitex/client"
+    "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/kitex/pkg/generic"
+    "github.com/cloudwego/kitex/pkg/transmeta"
+    "github.com/cloudwego/kitex/transport"
+)
+
 p, err := generic.NewThriftFileProvider(your_idl_path)
 /*
 // if you use dynamicgo

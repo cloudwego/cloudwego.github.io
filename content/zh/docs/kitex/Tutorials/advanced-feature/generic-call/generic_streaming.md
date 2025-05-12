@@ -41,14 +41,25 @@ service StreamingService {
 
 上述 IDL 包含四种方法，分别对应四种场景：
 
-1. 客户端流：客户端发送多条消息，服务端返回一条消息后关闭流。
-2. 服务端流：客户端发送一条消息，服务端返回多条消息后关闭流，适合大模型等场景。
-3. 双向流：客户端和服务端可独立收发消息，顺序可自定义。
-4. 单次调用（非流式）。
+1. Client Streaming：客户端发送多条消息，服务端返回一条消息后关闭流。
+2. Server Streaming：客户端发送一条消息，服务端返回多条消息后关闭流，适合大模型等场景。
+3. Bidirectional Streaming：客户端和服务端可独立收发消息，顺序可自定义。
+4. Unary：单次调用（非流式）。
 
 流式客户端初始化示例：
 
 ```go
+import (
+	"context"
+	
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/client/genericclient"
+	"github.com/cloudwego/kitex/pkg/generic"
+	"github.com/cloudwego/kitex/pkg/generic/proto"
+	"github.com/cloudwego/kitex/pkg/transmeta"
+	"github.com/cloudwego/kitex/transport"
+)
+
 ctx := context.Background()
 
 // 初始化泛化客户端
