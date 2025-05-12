@@ -263,8 +263,8 @@ e.g.
 
 #### Solution
 
-Use the following branch to solve it and wait for the official release of Kitex v1.18.1 to fix this issue.
+Use the following branch to solve it and wait for the official release of Kitex v0.13.1 to fix this issue.
 
 ```shell
-go get -u github.com/cloudwego/kitex@v0.12.1-0.20241220085925-b5894d2f9e0c
+go get -u github.com/cloudwego/kitex@v0.13.1
 ```

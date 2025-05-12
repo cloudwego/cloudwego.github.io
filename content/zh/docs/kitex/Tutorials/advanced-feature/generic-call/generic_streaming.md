@@ -278,10 +278,10 @@ strResp, ok := resp.(string) // 响应为 json 字符串
 
 #### 解决办法
 
-可用如下分支修复，等待 Kitex v1.18.1 正式发布后即可解决：
+可用如下分支修复，等待 Kitex v0.13.1 正式发布后即可解决：
 
 ```shell
-go get -u github.com/cloudwego/kitex@v0.12.1-0.20241220085925-b5894d2f9e0c
+go get -u github.com/cloudwego/kitex@v0.13.1
 ```
 
 如需完整 main 函数示例，请参考[官方 demo](https://github.com/cloudwego/kitex-examples/tree/main/generic_streaming)。 
