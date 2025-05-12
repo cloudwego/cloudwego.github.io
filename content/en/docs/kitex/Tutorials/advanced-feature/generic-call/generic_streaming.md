@@ -296,7 +296,7 @@ e.g.
 
 #### Solution
 
-Use the following branch to solve it and wait for the official release of Kitex v0.13.1 to fix this issue.
+Use Kitex v0.13.1 or higher version to fix this issue. Kitex v0.13.1 was released in April 2025 ([See release notes](https://github.com/cloudwego/kitex/releases/tag/v0.13.1)):
 
 ```shell
 go get -u github.com/cloudwego/kitex@v0.13.1

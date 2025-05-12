@@ -320,7 +320,7 @@ strResp, ok := resp.(string) // 响应为 json 字符串
 
 #### 解决办法
 
-可用如下分支修复，等待 Kitex v0.13.1 正式发布后即可解决：
+使用 Kitex v0.13.1 及以上版本可解决此问题。Kitex v0.13.1 已于 2025年4月发布（[查看发布说明](https://github.com/cloudwego/kitex/releases/tag/v0.13.1)）：
 
 ```shell
 go get -u github.com/cloudwego/kitex@v0.13.1
