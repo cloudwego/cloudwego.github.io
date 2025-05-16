@@ -173,6 +173,8 @@ func main(){
 
 Server
 
+注意事项：通过`NewOpenTelemetryProvider`创建的provider实例会持有trace/metric exporter client，在重复初始化时需要显式调用前一个实例的`Shutdown`方法来关闭其维护的所有exporter client，否则将导致资源泄露和网络连接混乱问题。
+
 ```go
 import (
     ...
