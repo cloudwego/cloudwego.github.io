@@ -44,7 +44,7 @@ type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
 type StreamRecvEndpoint func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error)
 type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
 
-// Send middleware 和 Recv middlware 定义类似...
+// Send middleware 和 Recv middleware 定义类似...
 ```
 
 **参数说明**：

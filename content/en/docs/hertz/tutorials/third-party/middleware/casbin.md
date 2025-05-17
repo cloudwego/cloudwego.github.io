@@ -174,7 +174,7 @@ middleware provide methods that perform authentication operation.
 method parameter format is as follows:
 
 ```go
-func (m *Middleware) exampleMiddlwareMethod(expression string, opts ...Option) app.HandlerFunc
+func (m *Middleware) exampleMiddlewareMethod(expression string, opts ...Option) app.HandlerFunc
 ```
 
 it contains **expression** and **opts** two params.
