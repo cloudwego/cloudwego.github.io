@@ -60,7 +60,7 @@ func (MyServiceImpl) SomeMethod(ctx context.Context, req *SomeRequest) (res *Som
     println(logid) // "12345"
 
     // 如果需要调用其他服务的话
-    req2 := myservice2.NewRequset()
+    req2 := myservice2.NewRequest()
     res2, err2 := cli2.SomeMethod2(ctx, req2) // 在调用其他服务时继续传递收到的 context，可以让持续的元信息继续传递下去
     ...
 }

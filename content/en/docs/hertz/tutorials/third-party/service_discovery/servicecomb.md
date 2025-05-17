@@ -353,7 +353,7 @@ func main() {
 
 ### NewSCResolver
 
-`NewSCReslover` uses service-comb to create a new service discovery center. It needs to pass in a custom client. The configuration of the service discovery center can be customized.
+`NewSCResolver` uses service-comb to create a new service discovery center. It needs to pass in a custom client. The configuration of the service discovery center can be customized.
 
 Function signature:
 

@@ -79,7 +79,7 @@ var (
 )
 
 func initDescriptor() {
-    sdesc, err := dt.NewDescritorFromPath(context.Background(), "idl/example.thrift")
+    sdesc, err := dt.NewDescriptorFromPath(context.Background(), "idl/example.thrift")
     if err != nil {
         panic(err)
     }
@@ -435,7 +435,7 @@ It can be seen that as the data level continues to increase, the performance adv
 You can use [generic.DescriptorToPathNode ](https://github.com/cloudwego/dynamicgo/tree/main/thrift/generic#func-descriptortopathnode)to quickly construct the struct DOM ( **zero value**)
 
 ```go
-svc, err := thrift.NewDescritorFromPath(context.Background(), IDLPATH)
+svc, err := thrift.NewDescriptorFromPath(context.Background(), IDLPATH)
 desc := svc.Functions()[METHODNAME].Request().Struct().FieldById(1).Type() // ex: service.METHOD(1: req)
 
 var dom = new(PathNode)

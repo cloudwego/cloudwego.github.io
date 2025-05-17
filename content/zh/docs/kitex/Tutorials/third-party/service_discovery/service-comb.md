@@ -188,7 +188,7 @@ func main() {
 
 #### NewSCResolver
 
-`NewSCReslover` 使用 service-comb 创建一个新的服务发现中心。需要传入自定义客户端。可自定义服务发现中心配置，配置详情见 Option。
+`NewSCResolver` 使用 service-comb 创建一个新的服务发现中心。需要传入自定义客户端。可自定义服务发现中心配置，配置详情见 Option。
 
 函数签名：
 

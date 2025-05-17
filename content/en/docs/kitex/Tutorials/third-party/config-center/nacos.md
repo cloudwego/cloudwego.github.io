@@ -354,7 +354,7 @@ Example：
 
 The echo method uses the following configuration (0.3, 100) and other methods use the global default configuration (0.5, 200)
 
-> configDataId: `ClientName.ServiecName.circuit_break`
+> configDataId: `ClientName.ServiceName.circuit_break`
 
 ```json
 {

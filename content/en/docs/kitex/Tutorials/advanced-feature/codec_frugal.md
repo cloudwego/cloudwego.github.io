@@ -193,7 +193,7 @@ Note:
 1. If Framed is not set, there may be issues:
    1. The server may not be able to decode with frugal without Payload Size (refer to: "Kitex Server -> Notes");
    2. The server won't reply with a `Framed` payload, thus the Client may also not be able to decode with frugal (no Payload Size again);
-2. If the target server does not support `Framed`, then don't use it; the client can encode without it, but if the response (from the server) is not Framed (i.e. with preprended payload size), the client may not be able to decode with Frugal (so in this case, do not use slim template);
+2. If the target server does not support `Framed`, then don't use it; the client can encode without it, but if the response (from the server) is not Framed (i.e. with prepended payload size), the client may not be able to decode with Frugal (so in this case, do not use slim template);
 3. `TTHeaderFramed` is an alternative (it's the BIT-OR result of `TTHeader | Framed`).
 
 ##### Example Code

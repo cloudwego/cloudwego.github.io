@@ -18,7 +18,7 @@ description: >
 ### **Optimization**
 
 1. **Frugal Performance Optimization** : Support frugal precompile (pretouch) when new client or server, which is to reduce the impact of dynamic compilation on latency.
-2. **Connpool Optimiztion** : Refactor connection pool to improve the idle connections cleanup.
+2. **Connpool Optimization** : Refactor connection pool to improve the idle connections cleanup.
 
 ---
 

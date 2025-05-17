@@ -65,7 +65,7 @@ func WithRefreshInterval(interval int) Option
 
 ```go
 func main() {
-    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithRereshInterval(5))
+    r := redis.NewRedisRegistry("127.0.0.1:6379", redis.WithRefreshInterval(5))
     // ...
     h := server.Default(
     server.WithHostPorts(addr),

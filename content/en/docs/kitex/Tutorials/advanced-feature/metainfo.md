@@ -60,7 +60,7 @@ func (MyServiceImpl) SomeMethod(ctx context.Context, req *SomeRequest) (res *Som
     println(logid) // "12345"
 
     // if we need to call another service
-    req2 := myservice2.NewRequset()
+    req2 := myservice2.NewRequest()
     res2, err2 := cli2.SomeMethod2(ctx, req2) // pass the context to other service for the persistent meta information to be transmitted continuously
     ...
 }

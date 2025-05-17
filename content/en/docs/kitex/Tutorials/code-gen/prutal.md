@@ -18,7 +18,7 @@ Technically Prutal and Frugal are similar to the use of struct tags and efficien
 
 Currently open source, the specific implementation and subsequent benchmark data can be viewed: https://github.com/cloudwego/prutal
 
-## **Using Advices**
+## **Using Advises**
     
 Initially, it is not recommended that users use Prutal directly, and currently only promises forward and backward compatibility with Prutal integration in Kitex.
 
