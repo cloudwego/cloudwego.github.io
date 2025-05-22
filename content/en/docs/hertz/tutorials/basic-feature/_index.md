@@ -23,6 +23,8 @@ keywords:
     "Constants",
     "Render",
     "JSON Marshal Library",
+    "SSE",
+    "http.Handler adaptor",
   ]
 description: "Basic feature of Hertz."
 ---
