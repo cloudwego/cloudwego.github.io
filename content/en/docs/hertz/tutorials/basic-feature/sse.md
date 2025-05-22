@@ -46,6 +46,7 @@ Client connection is disconnected, possibly due to no response data for too long
 ### Initiating a Request
 
 It's exactly the same as initiating a regular HTTP request with Hertz.
+
 Note: New Hertz versions will automatically identify SSE streams, so you don't need to explicitly set WithResponseBodyStream(true)
 
 **Some Optional Headers**

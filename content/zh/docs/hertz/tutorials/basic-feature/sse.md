@@ -46,6 +46,7 @@ Client 连接断开，可能是太久没有响应数据，请检查相应配置�
 ### 发起请求
 
 与正常 Hertz 发起一个普通的 http 请求完全一致。
+
 注意：新 hertz 版本会自动识别 SSE 流，不用显式设置 WithResponseBodyStream(true)
 
 **部分可选 Header**
