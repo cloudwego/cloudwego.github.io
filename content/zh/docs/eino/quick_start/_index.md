@@ -37,3 +37,6 @@ AI 的应用中，最基础的场景就是 prompt + chat model 的场景，这�
 
 - 理解 Eino 的核心模块和概念： [Eino: 核心模块](/zh/docs/eino/core_modules)，这是你自如玩转使用 Eino 做应用开发的关键信息。
 - Eino 保持开放生态的姿态，提供了大量生态集成组件：[Eino: 生态集成](/zh/docs/eino/ecosystem_integration)，你可以使用这些组件快速构建自己的业务应用。
+
+如果您觉得这个项目还不错或者给到了你帮助，请给 [Eino](https://github.com/cloudwego/eino) 点个 star 吧！这将是对我们最大的鼓励和支持！
+如果你有任何问题或者建议，欢迎在 [GitHub Issues](https://github.com/cloudwego/eino/issues) 留言。

@@ -343,3 +343,77 @@ HandOff to answer_with_journal with argument {"reason":"To find out the user's m
 Answer:
 You got up at 7:00 in the morning.
 ```
+
+## FAQ
+
+### Host direct answer does not have streaming effect
+
+Host Multi-Agent provides a configuration for `StreamToolCallChecker` to determine whether the Host outputs directly.
+
+Different models may output tool calls in different ways in streaming mode: some models (e.g., OpenAI) output tool calls directly; some models (e.g., Claude) output text first and then output tool calls. Therefore, different methods are needed for the determination. This field is used to specify a function for determining whether the model's streaming output contains tool calls.
+
+It is optional. If not filled, the determination of whether the "non-empty package" contains tool calls is used:
+
+```go
+func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+
+    for {
+       msg, err := sr.Recv()
+       if err == io.EOF {
+          return false, nil
+       }
+       if err != nil {
+          return false, err
+       }
+
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
+
+       if len(msg.Content) == 0 { // skip empty chunks at the front
+          continue
+       }
+
+       return false, nil
+    }
+}
+```
+
+The above default implementation is applicable when the Tool Call Message output by the model contains only Tool Calls.
+
+The default implementation is not applicable when there is a non-empty content chunk before outputting the Tool Call. In this case, a custom tool call checker is required as follows:
+
+```go
+toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+    for {
+       msg, err := sr.Recv()
+       if err != nil {
+          if errors.Is(err, io.EOF) {
+             // finish
+             break
+          }
+
+          return false, err
+       }
+
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
+    }
+    return false, nil
+}
+```
+
+This custom `StreamToolCallChecker` may need to check **all packages** for the presence of ToolCalls in extreme cases, resulting in the loss of the "streaming judgment" effect. If you want to maintain the "streaming judgment" effect as much as possible, the suggested solution is:
+
+Try to add a prompt to constrain the model not to output additional text when making tool calls, for example: "If you need to call a tool, output the tool directly without outputting text."
+
+Different models may be affected by the prompt differently. You need to adjust the prompt and verify the effect in actual use.
+
+### Host picks multiple Specialists simultaneously
+
+The Host provides the selection of Specialists in the form of Tool Calls, so it may select multiple Specialists simultaneously in the form of a Tool Call list. At this time, the Host Multi-Agent will route the request to these multiple Specialists at the same time. After the multiple Specialists complete their tasks, the Summarizer node will summarize multiple Messages into one Message as the final output of the Host Multi-Agent.
+
+Users can customize the behavior of the Summarizer by configuring the Summarizer, specifying a ChatModel and a SystemPrompt. If not specified, the Host Multi-Agent will concatenate the output Message Contents of multiple Specialists and return the result.
