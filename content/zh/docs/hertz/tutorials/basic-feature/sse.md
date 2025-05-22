@@ -7,13 +7,6 @@ description: "Hertz 提供的 SSE 能力"
 ---
 ```代码：https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/sse```
 
-**Changelog**
-
-- 2025/05/15 已发布到开源版本 v0.10.0
-- 2025/05/13 [d3c68463] 增加 Get / SetLastEventID
-- 2025/05/13 [3952e956] Reader ForEach 接口支持传入 ctx
-- 2025/04/24 [cf38573ce] 第一版本完成
-
 ## 什么是 Server-Sent Events (SSE)
 
 - SSE 是一个 HTML 标准，用于描述浏览器 EventSource API 的实现。严格说，不是 http 协议。

@@ -8,15 +8,15 @@ description: ""
 
 ## Background
 
-- We will deprecate the Hertz's native file system
-- Provide an fs implementation that is both compatible and performs well, using the official net/http ecosystem.
-- Reduce the implementation of a large number of extensions by expanding the hertz function through the official net/http ecosystem
+- Phasing out the poorly maintained hertz app.FS implementation
+- Providing a compatible and performant fs implementation through the official net/http ecosystem
+- Extending hertz functionality through the official net/http ecosystem to reduce custom implementations
 
 ## What is adaptor.HertzHandler
 
-- You are allowed to directly convert your existing http.HandlerFunc method into a HertzHandler.
-- You can directly use http.FileServer, embed.FS, and other official ecosystems
-- You can even use this directly at Hertz github.com/gorilla/websocket
+- Allows you to convert existing http.HandlerFunc methods directly to HertzHandler
+- Enables direct use of standard library methods like http.FileServer and embed.FS
+- Even allows direct use of github.com/gorilla/websocket in Hertz
 
 ## Example
 
