@@ -23,6 +23,8 @@ keywords:
     "常量",
     "渲染",
     "JSON Marshal 库",
+    "SSE",
+    "http.Handler adaptor",
   ]
 description: "Hertz 基本特性。"
 ---
