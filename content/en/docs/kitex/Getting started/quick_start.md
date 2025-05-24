@@ -138,6 +138,12 @@ Run the following command to automatically update the code files based on the `h
 kitex -module "github.com/cloudwego/kitex-examples" -service a.b.c hello.thrift
 ```
 
+> **Note**: The service name specified by the `-service` parameter (here `a.b.c`) must match the first parameter in the `NewClient` call in your client code, for example:
+> ```go
+> client, err := hello.NewClient("a.b.c", client.WithHostPorts("0.0.0.0:8888"))
+> ```
+> Inconsistent service names will prevent the client from connecting to the server correctly.
+
 After running the above command, the `kitex` tool will update the following files:
 
 1. Update `./handler.go` and add a basic implementation of the `Add` method.
