@@ -184,3 +184,6 @@ hz update -idl hello.thrift
 ## 更多示例
 
 参考：[代码示例](/zh/docs/hertz/tutorials/example/)
+
+如果您觉得这个项目还不错或者给到了你帮助，请给 [Hertz](https://github.com/cloudwego/hertz) 点个 star 吧！这将是对我们最大的鼓励和支持！
+如果你有任何问题或者建议，欢迎在 [GitHub Issues](https://github.com/cloudwego/hertz/issues) 留言。

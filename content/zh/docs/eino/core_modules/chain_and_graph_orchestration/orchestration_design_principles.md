@@ -365,6 +365,13 @@ graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Co
 }), compose.WithOutputKey("your_output_key"))
 ```
 
+也可以通过注册 Merge 方法来实现任意类型的 merge：
+
+```go
+// eino/compose/values_merge.go
+func RegisterValuesMergeFunc[T any](fn func([]T) (T, error))
+```
+
 Workflow 可以做到多个上游的输出字段映射到下游节点的不同字段。Eino 内部会将上游输出的 Struct 转换为 Map，因此 Merge 依然符合上面的规则。
 
 ### 流式处理
@@ -468,5 +475,10 @@ Eino 支持各种维度的 Call Option 分配方式：
 - 不支持图中有环，因为会打破“每个节点有确定的前序节点”这一假定。
 - 支持 Branch。在运行时，将 Branch 未选中的节点记为已跳过，不影响 AllPredecessor 的语义。
 - 不需要手动对齐 SuperStep。
+
+> 💡
+> 设置 NodeTriggerMode == AllPredecessor 后，节点会在所有前驱就绪后执行，但并不是立即执行，而是依然遵循 SuperStep——在一批节点全部执行完成后再运行新的可运行节点。
+>
+> 如果在 Compile 是传入 compose.WithEagerExecution()，则就绪的节点会立刻运行。
 
 总结起来，pregel 模式灵活强大但有额外的心智负担，dag 模式清晰简单但场景受限。在 Eino 框架中，Chain 是 pregel 模式，Workflow 是 dag 模式，Graph 则都支持，可由用户从 pregel 和 dag 中选择。

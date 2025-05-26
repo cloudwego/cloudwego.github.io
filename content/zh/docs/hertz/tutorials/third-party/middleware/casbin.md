@@ -174,7 +174,7 @@ func main() {
 该中间件的方法参数格式如下：
 
 ```go
-func (m *Middleware) exampleMiddlwareMethod(expression string, opts ...Option) app.HandlerFunc
+func (m *Middleware) exampleMiddlewareMethod(expression string, opts ...Option) app.HandlerFunc
 ```
 
 其中包含 **expression** 和 **opts** 两个参数，

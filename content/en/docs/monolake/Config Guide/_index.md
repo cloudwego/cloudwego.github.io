@@ -2,7 +2,7 @@
 title: "Config Guide"
 linkTitle: "Config Guide"
 weight: 5
-description: "Comphrensive guide to configuring monolake proxy"
+description: "Comprehensive guide to configuring monolake proxy"
 ---
 
 # Proxy Configuration Guide

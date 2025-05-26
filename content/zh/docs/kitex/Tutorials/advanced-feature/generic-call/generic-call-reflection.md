@@ -79,7 +79,7 @@ var (
 )
 
 func initDescriptor() {
-    sdesc, err := dt.NewDescritorFromPath(context.Background(), "idl/example.thrift")
+    sdesc, err := dt.NewDescriptorFromPath(context.Background(), "idl/example.thrift")
     if err != nil {
         panic(err)
     }
@@ -435,7 +435,7 @@ BenchmarkThriftReflectExample_DOM-16             321       3719926 ns/op     433
 可以使用 [generic.DescriptorToPathNode ](https://github.com/cloudwego/dynamicgo/tree/main/thrift/generic#func-descriptortopathnode)进行快速构造 struct DOM（**零值）**
 
 ```go
-svc, err := thrift.NewDescritorFromPath(context.Background(), IDLPATH)
+svc, err := thrift.NewDescriptorFromPath(context.Background(), IDLPATH)
 desc := svc.Functions()[METHODNAME].Request().Struct().FieldById(1).Type() // ex: service.METHOD(1: req)
 
 var dom = new(PathNode)
