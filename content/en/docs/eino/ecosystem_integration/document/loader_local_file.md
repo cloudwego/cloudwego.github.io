@@ -28,7 +28,7 @@ The local file loader is initialized via the `NewFileLoader` function, with the 
 
 ```go
 import (
-    "github.com/cloudwego/eino/components/document/loader/file"
+    "github.com/cloudwego/eino-ext/components/document/loader/file"
 )
 
 func main() {
