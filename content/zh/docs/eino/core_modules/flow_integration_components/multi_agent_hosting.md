@@ -343,3 +343,77 @@ HandOff to answer_with_journal with argument {"reason":"To find out the user's m
 Answer:
 You got up at 7:00 in the morning.
 ```
+
+## FAQ
+
+### Host 直接输出时没有流式
+
+Host Multi-Agent 提供了一个 StreamToolCallChecker 的配置，用于判断 Host 是否直接输出。
+
+不同的模型在流式模式下输出工具调用的方式可能不同: 某些模型(如 OpenAI) 会直接输出工具调用；某些模型 (如 Claude) 会先输出文本，然后再输出工具调用。因此需要使用不同的方法来判断，这个字段用来指定判断模型流式输出中是否包含工具调用的函数。
+
+可选填写，未填写时使用“非空包”是否包含工具调用判断：
+
+```go
+func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+
+    for {
+       msg, err := sr.Recv()
+       if err == io.EOF {
+          return false, nil
+       }
+       if err != nil {
+          return false, err
+       }
+
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
+
+       if len(msg.Content) == 0 { // skip empty chunks at the front
+          continue
+       }
+
+       return false, nil
+    }
+}
+```
+
+上述默认实现适用于：模型输出的 Tool Call Message 中只有 Tool Call。
+
+默认实现不适用的情况：在输出 Tool Call 前，有非空的 content chunk。此时，需要自定义 tool Call checker 如下：
+
+```go
+toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+    for {
+       msg, err := sr.Recv()
+       if err != nil {
+          if errors.Is(err, io.EOF) {
+             // finish
+             break
+          }
+
+          return false, err
+       }
+
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
+    }
+    return false, nil
+}
+```
+
+上面这个自定义 StreamToolCallChecker，在极端情况下可能需要判断**所有包**是否包含 ToolCall，从而导致“流式判断”的效果丢失。如果希望尽可能保留“流式判断”效果，解决这一问题的建议是：
+
+> 💡
+> 尝试添加 prompt 来约束模型在工具调用时不额外输出文本，例如：“如果需要调用 tool，直接输出 tool，不要输出文本”。
+> 不同模型受 prompt 影响可能不同，实际使用时需要自行调整 prompt 并验证效果。
+
+### Host 同时选择多个 Specialist
+
+Host 以 Tool Call 的形式给出对 Specialist 的选择，因此可能以 Tool Call 列表的形式同时选中多个 Specialist。此时 Host Multi-Agent 会同时将请求路由到这多个 Specialist，并在多个 Specialist 完成后，通过 Summarizer 节点总结多条 Message 为一条 Message，作为 Host Multi-Agent 的最终输出。
+
+用户可通过配置 Summarizer，指定一个 ChatModel 以及 SystemPrompt，来定制化 Summarizer 的行为。如未指定，Host Multi-Agent 会将多个 Specialist 的输出 Message Content 拼接后返回。

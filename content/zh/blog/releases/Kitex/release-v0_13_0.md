@@ -90,7 +90,7 @@ description: >
 
 [[#1725](https://github.com/cloudwego/kitex/pull/1725)] fix: code gen import issue for streamx mode, stream call judgement bug and set ttheader streaming as default
 
-[[#1727](https://github.com/cloudwego/kitex/pull/1727)] fix(tool): fix tool UseStdLib remains unexcepted lib issue.
+[[#1727](https://github.com/cloudwego/kitex/pull/1727)] fix(tool): fix tool UseStdLib remains unexpected lib issue.
 
 ### Refactor
 [[#1658](https://github.com/cloudwego/kitex/pull/1658)] refactor: streamx api to adapt both grpc and ttheader streaming protocol and provide more user-friendly interface

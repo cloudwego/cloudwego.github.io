@@ -45,3 +45,7 @@ In this example, we will use a react agent to build an agent that can interact w
 
 - Understand the core modules and concepts of Eino: [Eino: Core Modules](/docs/eino/core_modules), which is crucial information for mastering the use of Eino for application development.
 - Eino maintains an open ecosystem stance and provides a large number of ecosystem integration components: [Eino: ecosystem](/docs/eino/ecosystem). You can use these components to quickly build your own business applications.
+
+
+If you find this project is good and helpful, please give [Eino](https://github.com/cloudwego/eino) a star! Your support will be our greatest encouragement!  
+If you have any questions or suggestions, feel free to leave a message in [GitHub Issues](https://github.com/cloudwego/eino/issues).

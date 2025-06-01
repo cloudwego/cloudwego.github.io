@@ -24,3 +24,5 @@ In the **Code Examples** section, we provide practical examples of various Kitex
 ## Seeking Help
 
 If you have any questions or cannot resolve any issues with the documentation on your own, please submit an issue on the corresponding project repository on GitHub. The community maintainers will promptly address and assist you.
+
+If you think this project is good and helpful, please give [Kitex](https://github.com/cloudwego/kitex) a star! This will be the greatest encouragement and support for us!
