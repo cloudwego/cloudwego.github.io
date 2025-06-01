@@ -61,12 +61,15 @@ func main() {
 		log.Fatalf("read file failed, err=%v", err)
 	}
 
-	client, _ := elasticsearch.NewClient(elasticsearch.Config{
+	client, err := elasticsearch.NewClient(elasticsearch.Config{
 		Addresses: []string{"https://localhost:9200"},
 		Username:  username,
 		Password:  password,
 		CACert:    cert,
 	})
+    if err != nil {
+		log.Panic("connect es8 failed, err=%v", err)
+	}
 
 	// create embedding component
 	emb := createYourEmbedding()
@@ -75,7 +78,7 @@ func main() {
 	docs := loadYourDocs()
 
 	// create es indexer component
-	indexer, _ := es8.NewIndexer(ctx, &es8.IndexerConfig{
+	indexer, err := es8.NewIndexer(ctx, &es8.IndexerConfig{
 		Client:    client,
 		Index:     indexName,
 		BatchSize: 10,
@@ -92,8 +95,14 @@ func main() {
 		},
 		Embedding: emb, // replace it with real embedding component
 	})
+    if err != nil {
+		log.Panic("create indexer failed, err=%v", err)
+	}
 
-	ids, _ := indexer.Store(ctx, docs)
+	ids, err := indexer.Store(ctx, docs)
+    if err != nil {
+		log.Panic("store docs failed, err=%v", err)
+	}
 
 	fmt.Println(ids)
     // Use with Eino's system
