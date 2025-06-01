@@ -70,7 +70,7 @@ func main() {
 		CACert:    cert,
 	})
 	if err != nil {
-		log.Panic("connect es8 failed, err=%v", err)
+		log.Panicf("connect es8 failed, err=%v", err)
 	}
 
 	// 创建检索器组件
@@ -124,13 +124,13 @@ func main() {
 		Embedding: emb, // 你的 embedding 组件
 	})
 	if err != nil {
-		log.Panic("create retriever failed, err=%v", err)
+		log.Panicf("create retriever failed, err=%v", err)
 	}
 
 	// 无过滤条件搜索
 	docs, err := retriever.Retrieve(ctx, "tourist attraction")
 	if err != nil {
-		log.Panic("retrieve docs failed, err=%v", err)
+		log.Panicf("retrieve docs failed, err=%v", err)
 	}
 
 	// 带过滤条件搜索
@@ -145,7 +145,7 @@ func main() {
 		}}),
 	)
 	if err != nil {
-		log.Panic("retrieve docs failed, err=%v", err)
+		log.Panicf("retrieve docs failed, err=%v", err)
 	}
 }
 ```
