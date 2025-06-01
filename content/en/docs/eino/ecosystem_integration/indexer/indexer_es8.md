@@ -67,8 +67,8 @@ func main() {
 		Password:  password,
 		CACert:    cert,
 	})
-    if err != nil {
-		log.Panic("connect es8 failed, err=%v", err)
+	if err != nil {
+		log.Panicf("connect es8 failed, err=%v", err)
 	}
 
 	// create embedding component
@@ -95,13 +95,13 @@ func main() {
 		},
 		Embedding: emb, // replace it with real embedding component
 	})
-    if err != nil {
-		log.Panic("create indexer failed, err=%v", err)
+	if err != nil {
+		log.Panicf("create indexer failed, err=%v", err)
 	}
 
 	ids, err := indexer.Store(ctx, docs)
-    if err != nil {
-		log.Panic("store docs failed, err=%v", err)
+	if err != nil {
+		log.Panicf("store docs failed, err=%v", err)
 	}
 
 	fmt.Println(ids)
