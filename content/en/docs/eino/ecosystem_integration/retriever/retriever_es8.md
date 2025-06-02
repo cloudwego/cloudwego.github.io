@@ -130,7 +130,7 @@ func main() {
 	// search without filter
 	docs, err := retriever.Retrieve(ctx, "tourist attraction")
 	if err != nil {
-		log.Panicf("retieve docs failed, err=%v", err)
+		log.Panicf("retrieve docs failed, err=%v", err)
 	}
 
 	// search with filter
@@ -145,7 +145,7 @@ func main() {
 		}}),
 	)
 	if err != nil {
-		log.Panicf("retieve docs failed, err=%v", err)
+		log.Panicf("retrieve docs failed, err=%v", err)
 	}
 }
 ```
