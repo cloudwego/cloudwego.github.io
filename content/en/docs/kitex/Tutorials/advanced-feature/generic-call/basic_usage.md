@@ -82,12 +82,12 @@ includes := map[string]string{
    `,
 }
 
-p, err := generic.NewThriftContentProvider(content, includes)
+p, err := generic.NewThriftContentProvider(path, includes)
 if err != nil {
     panic(err)
 }
 
-p, err := generic.NewThriftContentProviderWithDynamicGo(content, includes)
+p, err := generic.NewThriftContentProviderWithDynamicGo(path, includes)
 if err != nil {
     panic(err)
 }
