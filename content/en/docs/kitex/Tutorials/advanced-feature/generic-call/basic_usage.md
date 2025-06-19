@@ -150,12 +150,12 @@ includes := map[string]string{
    "a/z.thrift": "namespace go kitex.test.server",
 }
 
-p, err := generic.NewThriftContentWithAbsIncludePathProvider(content, includes)
+p, err := generic.NewThriftContentWithAbsIncludePathProvider(path, includes)
 if err != nil {
     panic(err)
 }
 
-p, err := generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo(content, includes)
+p, err := generic.NewThriftContentWithAbsIncludePathProviderWithDynamicGo(path, includes)
 if err != nil {
     panic(err)
 }
