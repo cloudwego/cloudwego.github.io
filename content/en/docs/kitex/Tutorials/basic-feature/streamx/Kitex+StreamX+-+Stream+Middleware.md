@@ -58,7 +58,7 @@ type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
 | StreamRecvMiddleware | - The data is not really collected, just called the stream.Recv () function.<br><br>- Res parameter is empty          | - Data received or encountered an error<br><br>- The res parameter has a real value                |
 | StreamSendMiddleware | - The data was not actually sent, just called the stream.Send () function<br><br>- The req parameter is a real request | - Data transmission completed or encountered an error<br><br>- The req parameter is a real request |
 
-### Unary Middlware
+### Unary Middleware
 
 For all non-streaming interfaces, we additionally provide ```UnaryMiddleware``` for injecting middleware that only works on all unary methods.
 

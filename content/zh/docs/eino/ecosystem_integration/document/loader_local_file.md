@@ -28,7 +28,7 @@ local file 文件加载器是 Document Loader 接口的一个实现，用于从�
 
 ```go
 import (
-    "github.com/cloudwego/eino/components/document/loader/file"
+    "github.com/cloudwego/eino-ext/components/document/loader/file"
 )
 
 func main() {

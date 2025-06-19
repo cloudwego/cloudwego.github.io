@@ -60,7 +60,7 @@ weight: 2
 ### 插槽 （ Slot ）
 
 - 不同类型的 Component 的生成会依赖其他组件，将其作为自身配置依赖的一部分，这部分依赖被称作插槽（ Slot ）。
-- 比如官方提供的 volc_vikingDB  组件，其依赖了 Embeding Component 作为插槽；再比如官方提供的 ToolsNode 组件，其依赖了多个 Tool  Component。
+- 比如官方提供的 volc_vikingDB  组件，其依赖了 Embedding Component 作为插槽；再比如官方提供的 ToolsNode 组件，其依赖了多个 Tool  Component。
    <table><tbody><tr>
    <td>
       <a href="/img/eino/eino_orchestration_add_slot_page.png" target="_blank"><img src="/img/eino/eino_orchestration_add_slot_page.png" width="100%" /></a>

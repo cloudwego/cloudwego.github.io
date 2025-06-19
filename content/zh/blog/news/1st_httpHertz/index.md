@@ -218,7 +218,7 @@ Ginex 是一个基于 Gin 的开源封装，所以它本身在迭代方面是受
 
 #### bufio.Reader 的问题
 
-这样做出现的问题是，原生的 bufio.Reader 长度是固定的，请求的 Header 大小超出 buffer 长度后，`.Peek()` 方法直接报错 `(ErrBufferFul)`，无法完成既定语义功能。
+这样做出现的问题是，原生的 bufio.Reader 长度是固定的，请求的 Header 大小超出 buffer 长度后，`.Peek()` 方法直接报错 `(ErrBufferFull)`，无法完成既定语义功能。
 
 #### 一些可能的解
 

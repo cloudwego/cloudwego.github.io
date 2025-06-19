@@ -359,6 +359,13 @@ graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Co
 }), compose.WithOutputKey("your_output_key"))
 ```
 
+You can also register custom merge method to support any type:
+
+```go
+// eino/compose/values_merge.go
+func RegisterValuesMergeFunc[T any](fn func([]T) (T, error))
+```
+
 Workflow can map the output fields of multiple predecessor nodes to different input fields of the successor node. Eino converts the Struct output from each predecessor to a Map before any merge process, still conforming to the above rules.
 
 ### **Streaming Processing**
@@ -463,5 +470,10 @@ When `NodeTriggerMode == AllPredecessor`, the graph executes using the dag engin
 - Does not support cycles in the graph, as it breaks the "each node has a specific predecessor node" assumption.
 - Support Branch. At runtime, mark the unselected nodes of Branch as skipped, which does not affect the semantics of AllPredecessor.
 - No need for manual SuperStep alignment.
+
+> 💡
+> When NodeTriggerMode is set to AllPredecessor, the node will execute after all predecessors are ready, but it will not execute immediately. Instead, it still follows the SuperStep - running new runnable nodes after a batch of nodes have completed execution.
+>
+> If compose.WithEagerExecution() is passed in Compile, the ready nodes will run immediately.
 
 In summary, the pregel mode is flexible and powerful but comes with additional mental overhead, while the dag mode is clear and simple but limited in application scenarios. In the Eino framework, Chain uses the pregel mode, Workflow uses the dag mode, and Graph supports both; users can choose between pregel and dag.

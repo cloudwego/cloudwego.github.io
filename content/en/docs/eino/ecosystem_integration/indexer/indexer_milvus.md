@@ -116,6 +116,7 @@ type IndexerConfig struct {
     // Default Collection config
     // Collection is the collection name in milvus database
     // Optional, and the default value is "eino_collection"
+    // If you want to use this configuration, you must include the Fields configuration
     Collection string
     // Description is the description for collection
     // Optional, and the default value is "the collection for eino"

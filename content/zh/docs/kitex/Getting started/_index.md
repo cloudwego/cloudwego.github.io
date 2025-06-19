@@ -23,4 +23,6 @@ description: "Kitex 开发环境准备、快速上手与基础教程。"
 
 ## 寻求帮助
 
-如果你对文档内容有任何疑问无法自行解决，请在 Github 对应项目仓库提交 Issue，社区维护者会及时跟进处理。
+如果你对文档内容有任何疑问无法自行解决，请在 Kitex 项目仓库提交 [Issue](https://github.com/cloudwego/kitex/issues)，社区维护者会及时跟进处理。
+
+如果您觉得这个项目还不错或者给到了你帮助，请给 [Kitex](https://github.com/cloudwego/kitex) 点个 star 吧！这将是对我们最大的鼓励和支持！

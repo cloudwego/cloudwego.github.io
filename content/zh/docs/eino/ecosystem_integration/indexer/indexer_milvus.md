@@ -115,6 +115,7 @@ type IndexerConfig struct {
 	// 默认集合配置
 	// Collection 是 milvus 数据库中的集合名称
 	// 可选，默认值为 "eino_collection"
+    // 如果你想使用这个配置，必须加上Field配置，否则无法正常运行
 	Collection string
 	// Description 是集合的描述
 	// 可选，默认值为 "the collection for eino"
