@@ -294,7 +294,7 @@ authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 
 ### PayloadFunc
 
-用于设置登录时为 `token` 添加自定义负载信息的函数，如果不传入这个参数，则 `token` 的 `payload` 部分默认存储 `token` 的过期时间和创建时间，如下则额外存储了用户名信息。
+用于设置登录时为 `token` 添加自定义负载信息的函数，如果不传入这个参数，则 `token` 的 `payload` 部分默认存储 `token` 的过期时间和创建时间，如下则额外存储了用户名信息。需要注意的是，如果 `payload` 中包含一个由雪花算法等生成的大整数（`int64`），中间件在解析该 `token` 时，默认会将这个大整数识别为 `float64` 类型。由于 `float64` 的有效精度限制，这会导致原始的 `int64` 值丢失精度，可能会得到一个错误的ID。建议将大整数转为`string`，或者启用 ParserOption 选项的 [WithJSONNumber](https://www.cloudwego.io/zh/docs/hertz/tutorials/third-party/middleware/jwt/#parseoptions)。
 
 函数签名：
 
