@@ -51,7 +51,7 @@ Hertz provides a series of code examples designed to help users get start with H
 - [HTTP2](https://github.com/hertz-contrib/http2/tree/main/examples) : Example of hertz using HTTP2 protocol
 - [HTTP3](https://github.com/hertz-contrib/http3/tree/main/examples/quic-go) : Example of hertz using HTTP3 protocol
 - [Websocket](https://github.com/hertz-contrib/websocket/tree/main/examples) : Example of hertz using Websocket protocol
-- [SSE](https://github.com/hertz-contrib/sse/tree/main/examples) : Example of hertz using SSE protocol
+- [SSE](https://github.com/cloudwego/hertz-examples/tree/main/sse) : Example of hertz using SSE protocol
 
 ### Route
 
