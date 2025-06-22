@@ -169,45 +169,26 @@ async fn main() {
 
 Then add the required dependencies to the `Cargo.toml` file, which looks like this:
 
-```toml
+```toml {hl_lines=["17-19"]}
 [package]
-name = "volo-example"
+name = "volo_example"
 version = "0.1.0"
 edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[workspace]
-members = ["volo-gen"]
-resolver = "2"
-package.edition = "2021"
-
-[workspace.dependencies]
-anyhow = "1"
-async-trait = "0.1"
-lazy_static = "1"
-tokio = { version = "1", features = ["full"] }
-tracing = "0.1"
-tracing-subscriber = "0.3"
-
-# we recommend to use the latest framework version for new features and bug fixes
-pilota = "*"
-volo = "*"
-volo-thrift = "*"
-volo-build = "*"
-
 [dependencies]
-anyhow.workspace = true
-async-trait.workspace = true
-lazy_static.workspace = true
-tokio.workspace = true
-tracing.workspace = true
-tracing-subscriber.workspace = true
-pilota.workspace = true
+volo-gen = { path = "./volo-gen" }
+
 volo.workspace = true
 volo-thrift.workspace = true
+pilota.workspace = true
 
-volo-gen = { path = "./volo-gen" }
+anyhow.workspace = true
+tokio = { workspace = true, features = ["full"] }
+tracing-subscriber = "0.3.19"
+lazy_static = "1.5.0"
+tracing = "0.1.41"
 
 [profile.release]
 opt-level = 3
@@ -219,6 +200,23 @@ panic = 'unwind'
 incremental = false
 codegen-units = 1
 rpath = false
+
+[workspace]
+members = ["volo-gen"]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+
+[workspace.dependencies]
+# we recommend to use the latest framework version for new features and bug fixes
+volo = "*"
+volo-build = "*"
+volo-thrift = "*"
+pilota = "*"
+
+anyhow = "1"
+tokio = "1"
 ```
 
 Then, **create a new terminal** and run the following command to start our server:
