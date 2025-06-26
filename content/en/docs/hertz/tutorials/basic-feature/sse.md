@@ -84,6 +84,7 @@ func HandleSSE(ctx context.Context, resp *protocol.Response) error {
 ```
 
 ### Example Codes
+
 - [SSE](https://github.com/cloudwego/hertz-examples/tree/main/sse) : Example of hertz using SSE protocol
 
 ### Common Issues
