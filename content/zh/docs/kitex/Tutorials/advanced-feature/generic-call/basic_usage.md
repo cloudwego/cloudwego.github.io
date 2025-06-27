@@ -150,7 +150,7 @@ package main
 
 import (
     "github.com/cloudwego/kitex/pkg/generic"
-    bgeneric "github.com/cloudwego[/kitex/](http://code.byted.org/kite/kitex/byted/generic)[server/genericserver](http://code.byted.org/kite/kitex/byted/generic)"
+    bgeneric "github.com/cloudwego/kitex/server/genericserver"
 )
 
 var genericCli genericclient.Client
@@ -767,7 +767,7 @@ import (
     "context"
     "fmt"
 
-    "code.byted.org/kite/kitex/pkg/generic"
+    "github.com/cloudwego/kitex/pkg/generic"
     "github.com/cloudwego/gopkg/bufiox"
     "github.com/cloudwego/gopkg/protocol/thrift/base"
     "github.com/cloudwego/kitex/pkg/generic/thrift"
