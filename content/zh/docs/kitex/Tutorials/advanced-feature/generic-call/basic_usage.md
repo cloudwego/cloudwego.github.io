@@ -6,7 +6,7 @@ keywords: ["generic-call", "HTTP", "Thrift"]
 description: "泛化调用基本使用"
 ---
 
-> 如果走流式调用，请升级 ****github.com/cloudwego/kitex**** 至 >= v0.14.1**
+> 如果走流式调用，请升级 **github.com/cloudwego/kitex** 至 >= v0.14.1
 
 ## 什么是泛化调用
 在标准的 Kitex Client -> Kitex Server 请求中，业务代码中可以直接构造一个 Go  struct（method的Request），调用 Kitex Client 对应的 method，在方法内部完成序列化，再发送给 Server。

@@ -6,7 +6,7 @@ keywords: ["generic-call", "HTTP", "Thrift"]
 description: "Basic usage of generic call"
 ---
 
-> For stream calls, please upgrade ****github.com/cloudwego/kitex**** to >= v0.14.1
+> For stream calls, please upgrade **github.com/cloudwego/kitex** to >= v0.14.1
 
 ## What is Generic Call?
 In a standard Kitex Client -> Kitex Server request, the business code can directly construct a Go struct (the method's Request), call the corresponding method of the Kitex Client, perform serialization within the method, and then send it to the Server.
