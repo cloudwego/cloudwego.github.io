@@ -29,12 +29,6 @@ description: >
    支持了优雅退出功能，用于解决因为服务升级/更新而导致的上游报错问题。
    
    用户文档：[gRPC Streaming 优雅退出](/zh/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
-   
-3. **JSON 泛化调用支持 gRPC Streaming**
-   
-   JSON 泛化调用支持 gRPC Streaming 流式接口（仅限 client），经过 v0.10.0 试用，正式发布。
-   
-   用户文档：[User Guide to Generic Call for Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
 
 ### 体验优化
 1. **gRPC Streaming 日志优化**
