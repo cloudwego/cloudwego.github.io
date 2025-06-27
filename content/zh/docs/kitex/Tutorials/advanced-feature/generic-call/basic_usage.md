@@ -72,7 +72,7 @@ err = p.UpdateIDL("a/a.thrift", map[string]string{
 Test case: https://github.com/cloudwego/kitex/blob/develop/pkg/generic/thriftidl_provider_test.go
 
 ### Thrift 二进制流转发
-需要用户自行编码，或者接收消息包转发用于流量中转场景。二进制泛化只支持 Framed 或 TTHeader 请求，不支持 Bufferd Binary。
+需要用户自行编码，或者接收消息包转发用于流量中转场景。二进制泛化只支持 Framed 或 TTHeader 请求，不支持 Buffered Binary。
 
 注意：不支持 oneway 方法
 
@@ -136,7 +136,7 @@ result, err:= genericCli.GenericCall(ctx, methodName, buf)
 
 #### 服务端使用（如需要）
 1. 服务端用于只做流量转发的服务
-    - 二进制泛化上游 client 和 下游 server **不需要配套** 使用，二进制泛化 Server 可以接受正常的 Thrift 请求，但是接受的协议必须是Framed 或 TTHeader，**不支持 Bufferd Binary**
+    - 二进制泛化上游 client 和 下游 server **不需要配套** 使用，二进制泛化 Server 可以接受正常的 Thrift 请求，但是接受的协议必须是Framed 或 TTHeader，**不支持 Buffered Binary**
         - 原因：二进制泛化不解 Thrift 包，需要有头部的协议来处理
     - client 传入**正确的thrift编码二进制**，是可以访问普通的 Thrift server。
 
@@ -325,12 +325,12 @@ func main() {
 
 3. proto文件内与thrift对应的method必须同名。
 
-扩展注解示例是增加 agw.source='not_body_struct' 注解，表示某个字段本身没有对 HTTP 请求字段的映射，需要遍历其子字段从 HTTP 请求中获取对应的值。使用方式如下：
+扩展注解示例是增加 api.source='not_body_struct' 注解，表示某个字段本身没有对 HTTP 请求字段的映射，需要遍历其子字段从 HTTP 请求中获取对应的值。使用方式如下：
 
 ```thrift
 struct Request {
     1: optional i64 v_int64(api.query = 'v_int64')
-    2: optional CommonParam common_param (agw.source='not_body_struct')
+    2: optional CommonParam common_param (api.source='not_body_struct')
 }
 
 struct CommonParam {
@@ -344,18 +344,18 @@ struct CommonParam {
 
 ```go
 func init() {
-        descriptor.RegisterAnnotation(new(agwNotBodyStruct))
+        descriptor.RegisterAnnotation(new(apiNotBodyStruct))
 }
 
 // 实现descriptor.Annotation
-type agwNotBodyStruct struct {
+type apiNotBodyStruct struct {
 }
 
-func (a *agwNotBodyStruct) Equal(key, value string) bool {
-        return key == "agw.source" && value == "not_body_struct"
+func (a *apiNotBodyStruct) Equal(key, value string) bool {
+        return key == "api.source" && value == "not_body_struct"
 }
 
-func (a *agwNotBodyStruct) Handle() interface{} {
+func (a *apiNotBodyStruct) Handle() interface{} {
         return newNotBodyStruct
 }
 
@@ -444,7 +444,7 @@ resp, err := genericCli.GenericCall(ctx, "UnaryTest", buf)
 // client streaming
 stream, err := genericCli.ClientStreaming(ctx, "ClientStreamingTest")
 // server streaming
-stream, err := genericCli.ServerStreaming(ctx, "ServerStreamingTest")
+stream, err := genericCli.ServerStreaming(ctx, "ServerStreamingTest", buf)
 // bidi streaming
 stream, err := genericCli.BidirectionalStreaming(ctx, "BidirectionalStreamingTest")
 ```

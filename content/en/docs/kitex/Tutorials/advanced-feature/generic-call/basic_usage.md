@@ -310,12 +310,12 @@ For usage, refer to: https://github.com/cloudwego/kitex/pull/638/files#diff-bd83
 2. Nesting structs in thrift IDL default values is not supported.
 3. The method corresponding to thrift in the proto file must have the same name.
 
-An example of an extended annotation is adding `agw.source='not_body_struct'`, which indicates that a certain field itself does not have a mapping to an HTTP request field, and it is necessary to traverse its subfields to get the corresponding value from the HTTP request. The usage is as follows:
+An example of an extended annotation is adding `api.source='not_body_struct'`, which indicates that a certain field itself does not have a mapping to an HTTP request field, and it is necessary to traverse its subfields to get the corresponding value from the HTTP request. The usage is as follows:
 
 ```thrift
 struct Request {
     1: optional i64 v_int64(api.query = 'v_int64')
-    2: optional CommonParam common_param (agw.source='not_body_struct')
+    2: optional CommonParam common_param (api.source='not_body_struct')
 }
 
 struct CommonParam {
@@ -328,18 +328,18 @@ The extension method is as follows:
 
 ```go
 func init() {
-        descriptor.RegisterAnnotation(new(agwNotBodyStruct))
+        descriptor.RegisterAnnotation(new(apiNotBodyStruct))
 }
 
 // Implement descriptor.Annotation
-type agwNotBodyStruct struct {
+type apiNotBodyStruct struct {
 }
 
-func (a *agwNotBodyStruct) Equal(key, value string) bool {
-        return key == "agw.source" && value == "not_body_struct"
+func (a *apiNotBodyStruct) Equal(key, value string) bool {
+        return key == "api.source" && value == "not_body_struct"
 }
 
-func (a *agwNotBodyStruct) Handle() interface{} {
+func (a *apiNotBodyStruct) Handle() interface{} {
         return newNotBodyStruct
 }
 
@@ -422,7 +422,7 @@ resp, err := genericCli.GenericCall(ctx, "UnaryTest", buf)
 // client streaming
 stream, err := genericCli.ClientStreaming(ctx, "ClientStreamingTest")
 // server streaming
-stream, err := genericCli.ServerStreaming(ctx, "ServerStreamingTest")
+stream, err := genericCli.ServerStreaming(ctx, "ServerStreamingTest", buf)
 // bidi streaming
 stream, err := genericCli.BidirectionalStreaming(ctx, "BidirectionalStreamingTest")
 ```
