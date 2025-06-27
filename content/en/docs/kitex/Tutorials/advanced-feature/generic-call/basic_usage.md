@@ -268,7 +268,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    // Construct a request, or get it from ginex
+    // Construct a request
     body := map[string]interface{}{
                 "text": "text",
                 "some": map[string]interface{}{
@@ -293,7 +293,7 @@ func main() {
     }
     req.Header.Set("token", "1")
     customReq, err := generic.FromHTTPRequest(req) // Considering that the business might use a third-party http request, you can construct a conversion function yourself
-    // customReq *generic.HttpRequest
+    // customReq *generic.HTTPRequest
     // Since the method for http generic call is obtained from the http request through bam rules, just leave it empty
     resp, err := cli.GenericCall(ctx, "", customReq)
     realResp := resp.(*generic.HTTPResponse)
@@ -345,18 +345,18 @@ func (a *agwNotBodyStruct) Handle() interface{} {
 
 type notBodyStruct struct{}
 
-var newNotBodyStruct descriptor.NewHttpMapping = func(value string) descriptor.HttpMapping {
+var newNotBodyStruct descriptor.NewHTTPMapping = func(value string) descriptor.HTTPMapping {
         return &notBodyStruct{}
 }
 
 // get value from request
-func (m *notBodyStruct) Request(req *descriptor.HttpRequest, field *descriptor.FieldDescriptor) (interface{}, bool) {
+func (m *notBodyStruct) Request(req *descriptor.HTTPRequest, field *descriptor.FieldDescriptor) (interface{}, bool) {
         // The role of the not_body_struct annotation is equivalent to "step into", so return req itself to let the current field continue to query the required value from the Request
         return req, true
 }
 
 // set value to response
-func (m *notBodyStruct) Response(resp *descriptor.HttpResponse, field *descriptor.FieldDescriptor, val interface{}) {
+func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descriptor.FieldDescriptor, val interface{}) {
 }
 ```
 
@@ -431,8 +431,6 @@ Detailed usage example: https://github.com/cloudwego/kitex-tests/blob/main/gener
 
 ### Map-Mapping Generic Call
 Map-mapping generic call means that users can directly construct Map request parameters or returns according to the specification, and Kitex will perform the corresponding Thrift encoding and decoding.
-
-Note: Users with high performance requirements can consider **[Thrift Reflection Generic Call]**, see below.
 
 #### Map Construction
 Kitex will strictly verify the field names and types constructed by the user according to the given IDL. Field names only support string types corresponding to Map Keys (the map key preferentially takes the value defined by the json tag, followed by the field name, refer to the **Special Note - JSON Generic** section). The type mapping of field Values is shown in the table below.
@@ -1277,12 +1275,12 @@ It may be that the idl of the client and server are different, for example, the 
 > github.com/cloudwego/kitex/pkg/generic/thrift.writeInt8(...)
 >         /.../github.com/cloudwego/kitex@v0.4.4/pkg/generic/thrift/write.go:312 +0xb4
 
-**Reason**: thriftgo aligns with the implementation of apache thrift and converts all byte type fields in the IDL to int8 type in go. Therefore, older versions of kitex (<1.12.0) did not adapt for the byte type in `writeInt8`.
+**Reason**: thriftgo aligns with the implementation of apache thrift and converts all byte type fields in the IDL to int8 type in go. Therefore, older versions of kitex (<0.6.0) did not adapt for the byte type in `writeInt8`.
 
 **Suggestion**:
 
 1. Client side:
-    - Upgrade to a new version: kitex >= 1.12.0 (or)
+    - Upgrade to a new version: kitex >= 0.6.0 (or)
     - Keep the old version: use `int(byteVal)` to assign a value to the field when constructing the map.
 2. Server side: convert the int8 field to byte type (if there are values > 127).
 

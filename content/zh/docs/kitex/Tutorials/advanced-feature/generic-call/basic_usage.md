@@ -281,7 +281,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    // 构造request，或者从ginex获取
+    // 构造request
     body := map[string]interface{}{
                 "text": "text",
                 "some": map[string]interface{}{
@@ -361,7 +361,7 @@ func (a *agwNotBodyStruct) Handle() interface{} {
 
 type notBodyStruct struct{}
 
-var newNotBodyStruct descriptor.NewHttpMapping = func(value string) descriptor.HttpMapping {
+var newNotBodyStruct descriptor.NewHTTPMapping = func(value string) descriptor.HTTPMapping {
         return &notBodyStruct{}
 }
 
@@ -372,7 +372,7 @@ func (m *notBodyStruct) Request(req *descriptor.HttpRequest, field *descriptor.F
 }
 
 // set value to response
-func (m *notBodyStruct) Response(resp *descriptor.HttpResponse, field *descriptor.FieldDescriptor, val interface{}) {
+func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descriptor.FieldDescriptor, val interface{}) {
 }
 ```
 
@@ -453,8 +453,6 @@ stream, err := genericCli.BidirectionalStreaming(ctx, "BidirectionalStreamingTes
 
 ### Map映射泛化调用
 Map 映射泛化调用是指用户可以直接按照规范构造 Map 请求参数或返回，Kitex 会对应完成 Thrift 编解码。
-
-注意：对性能要求比较高的用户可以考虑 **【Thrift Reflection 泛化调用】**，见下文。
 
 #### Map 构造
 Kitex 会根据给出的 IDL 严格校验用户构造的字段名和类型，字段名只支持字符串类型对应 Map Key（map key优先取json tag定义的值，其次取字段名，参考 **特别说明 - JSON泛化** 一节），字段 Value 的类型映射见下表。
@@ -818,7 +816,6 @@ Map 泛化序列化中，序列化请求后**需要调用** `w.Flush()` 。若�
 JSON 映射泛化调用是指用户可以直接按照规范构造 JSON String 请求参数或返回，Kitex 会对应完成 Thrift 编解码。
 
 注意：Kitex 已支持更高性能的泛化调用实现，使用方式见[泛化调用接入 dynamicgo 指南](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/) 。
-
 
 
 #### **JSON 构造**
@@ -1332,12 +1329,12 @@ p, err := NewThriftFileProviderWithOption(path, opts)
 > github.com/cloudwego/kitex/pkg/generic/thrift.writeInt8(...)
 >         /.../github.com/cloudwego/kitex@v0.4.4/pkg/generic/thrift/write.go:312 +0xb4
 
-**原因**：thriftgo 对齐 apache thrift 的实现，会将 IDL 中的 byte 类型字段都转成 go 中的 int8 类型，所以旧版本 kitex（<1.12.0) 在 `writeInt8` 中没有针对 byte 类型做适配。
+**原因**：thriftgo 对齐 apache thrift 的实现，会将 IDL 中的 byte 类型字段都转成 go 中的 int8 类型，所以旧版本 cloudwego/kitex（<0.6.0) 在 `writeInt8` 中没有针对 byte 类型做适配。
 
 **建议**：
 
 1. client 端：
-    - 升级新版本：kitex >= 1.12.0 （或）
+    - 升级新版本：kitex >= 0.6.0 （或）
     - 保留旧版本：在构造 map 时使用 `int(byteVal)` 给该字段赋值。
 
 2. server 端：将该 int8 字段转成 byte 类型（如果存在值 > 127的情况）
