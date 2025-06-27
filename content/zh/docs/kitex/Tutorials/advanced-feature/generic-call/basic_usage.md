@@ -107,13 +107,13 @@ import (
     gopkg "github.com/cloudwego/gopkg/protocol/thrift"
 )
 
-// 以下用 kitex **提供****的**** ****thrift**** ****编解码包****构造一个编码完成的 Thrift binary **([]byte)
+// 以下用 kitex 提供的 thrift 编解码包构造一个编码完成的 Thrift binary ([]byte)
 // 需要满足 thrift 编码格式 [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)
 
 // 构造一个请求参数 MethodArgs 
 // 注：kitex_gen 下生成的类型，MethodArgs 封装了 MethodReq，[点击](https://github.com/cloudwego/kitex-examples/blob/v0.2.2/hello/kitex_gen/api/hello.go#L461)可查看示例
-args := &**HelloEchoArgs**** **{
-    Req: &**Request** {
+args := &HelloEchoArgs{
+    Req: &Request {
         Message: "hello",
     },
 }
