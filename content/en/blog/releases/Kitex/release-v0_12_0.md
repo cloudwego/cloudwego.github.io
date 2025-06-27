@@ -29,12 +29,6 @@ Future version plans: Kitex will remove Apache products by default. User guide: 
    Added support for a graceful shutdown feature to address upstream errors caused by service upgrades or updates.
    
    For usage: [gRPC Streaming Graceful Shutdown](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/graceful_shutdown/)
-   
-3. **JSON Generic Call Supports gRPC Streaming**
-   
-   JSON generic calls now support gRPC Streaming interfaces (client-side only). This is the official release after trial in v0.10.0.
-   
-   For usage: [User Guide to Generic Call for Streaming](/docs/kitex/tutorials/advanced-feature/generic-call/generic_streaming)
 
 ### Experience Optimization
 1. **gRPC Streaming Log Optimization**
