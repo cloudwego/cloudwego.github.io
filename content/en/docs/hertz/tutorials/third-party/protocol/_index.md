@@ -2,7 +2,7 @@
 title: "Protocol"
 date: 2022-05-23
 weight: 1
-keywords: ["Websocket", "HTTP2", "HTTP3", "SSE"]
+keywords: ["Websocket", "HTTP2", "HTTP3"]
 description: "Protocol extensions supported by Hertz."
 ---
 
@@ -17,7 +17,3 @@ Hertz references [net/http2](https://github.com/golang/net/tree/master/http2) to
 ## HTTP3
 
 Hertz reference [quic-go](https://github.com/quic-go/quic-go) to implement support for HTTP3.
-
-## SSE
-
-Hertz supports SSE, allowing the server to send events to the client through simple HTTP response.
