@@ -66,7 +66,7 @@ import "github.com/cloudwego/hertz/pkg/protocol/sse"
 func HandleSSE(ctx context.Context, resp *protocol.Response) error {
     r, err := sse.NewReader(resp)
     if err != nil {
-    return err
+        return err
     }
 
     // You can also manually call the r.Read method
