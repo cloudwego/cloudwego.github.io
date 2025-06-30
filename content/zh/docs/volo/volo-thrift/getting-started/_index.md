@@ -171,27 +171,26 @@ async fn main() {
 
 然后，在 `Cargo.toml` 文件中加入所需的依赖，加入后的文件如下：
 
-```toml
+```toml {hl_lines=["17-19"]}
 [package]
-name = "volo-example"
+name = "volo_example"
 version = "0.1.0"
-edition = "2021"
+edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1"
-async-trait = "0.1"
-lazy_static = "1"
-tokio = { version = "1", features = ["full"] }
-tracing = "0.1"
-tracing-subscriber = "0.3"
-
-pilota = "*"
-volo =  "*"        # we recommend to use the latest framework version for new features and bug fixes
-volo-thrift =  "*"  # we recommend to use the latest framework version for new features and bug fixes
-
 volo-gen = { path = "./volo-gen" }
+
+volo.workspace = true
+volo-thrift.workspace = true
+pilota.workspace = true
+
+anyhow.workspace = true
+tokio = { workspace = true, features = ["full"] }
+tracing-subscriber = "0.3.19"
+lazy_static = "1.5.0"
+tracing = "0.1.41"
 
 [profile.release]
 opt-level = 3
@@ -207,6 +206,19 @@ rpath = false
 [workspace]
 members = ["volo-gen"]
 resolver = "2"
+
+[workspace.package]
+edition = "2021"
+
+[workspace.dependencies]
+# we recommend to use the latest framework version for new features and bug fixes
+volo = "*"
+volo-build = "*"
+volo-thrift = "*"
+pilota = "*"
+
+anyhow = "1"
+tokio = "1"
 ```
 
 接着，**新建一个 terminal**，执行以下命令，把我们的 server 端跑起来：

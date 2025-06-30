@@ -83,6 +83,10 @@ func HandleSSE(ctx context.Context, resp *protocol.Response) error {
 }
 ```
 
+### 代码示例
+
+- [SSE](https://github.com/cloudwego/hertz-examples/tree/main/sse) : hertz SSE 代码示例
+
 ### 常见问题
 
 #### 如何实现多级的 SSE / SSE Proxy?
