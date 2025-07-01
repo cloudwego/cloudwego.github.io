@@ -5,7 +5,12 @@ weight: 2
 description: >
 ---
 
-cwgo 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优势，以提高开发者的体验。
+## 注意
+由于字节内部用户普遍使用 Kitex 和 Hertz 内置工具，cwgo 在缺乏字节内部落地场景的前提下无法保障代码质量和新需求的人力投入，本着对用户负责任的态度，我们决定对 cwgo 项目进行归档。感谢大家对 cwgo 项目的支持和关注。
+
+后续该文档将会做下线处理。
+
+> cwgo 是 CloudWeGo All in one 代码生成工具，整合了各个组件的优势，以提高开发者的体验。
 
 ## 准备 Golang 开发环境
 
