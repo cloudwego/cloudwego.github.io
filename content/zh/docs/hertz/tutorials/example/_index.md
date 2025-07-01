@@ -14,10 +14,6 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 
 - [hertz_gorm](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_gorm) ：在 hertz server 中使用 gorm 的示例
 
-### hertz_gorm_gen
-
-- [hertz_gorm_gen](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_gorm_gen) ：在 hertz server 中使用 gorm/gen & proto IDL 的示例
-
 ### hertz_jwt
 
 - [hertz_jwt](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_jwt) ：在 hertz server 中使用 jwt 的示例

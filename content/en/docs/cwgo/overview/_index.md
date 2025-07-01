@@ -4,8 +4,13 @@ linkTitle: "Overview"
 weight: 1
 description: >
 ---
+## Notes
 
-The cwgo tool supports development in MAC, Linux, and Windows environments, and its main features are as follows:
+Due to the widespread use of the built-in tools of Kitex and Hertz by internal ByteDance users, and the lack of internal adoption scenarios for cwgo, we are unable to ensure sufficient code quality and manpower investment for new feature development. In the spirit of being responsible to our users, we have decided to archive the cwgo project. We sincerely thank you all for your support and attention to the cwgo project.
+
+This document will be taken offline in the future.
+
+> The cwgo tool supports development in MAC, Linux, and Windows environments, and its main features are as follows:
 
 ## Features
 

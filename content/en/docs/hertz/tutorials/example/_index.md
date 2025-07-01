@@ -14,10 +14,6 @@ Hertz provides a series of code examples designed to help users get start with H
 
 - [hertz_gorm](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_gorm) ：Example of using gorm in hertz server
 
-### hertz_gorm_gen
-
-- [hertz_gorm_gen](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_gorm_gen) ：Example of using gorm/gen & proto IDL in hertz server
-
 ### hertz_jwt
 
 - [hertz_jwt](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_jwt) ：Example of using jwt in hertz server
