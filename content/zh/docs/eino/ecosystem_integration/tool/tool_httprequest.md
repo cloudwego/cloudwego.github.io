@@ -7,30 +7,30 @@ title: Tool - httprequest
 weight: 0
 ---
 
-## HTTP Request Tools
+## HTTP 请求工具
 
-A set of HTTP request tools for [Eino](https://github.com/cloudwego/eino) that implement the `InvokableTool` interface. These tools allow you to perform GET, POST, PUT and DELETE requests easily and integrate them with Eino’s chat model interaction system and `ToolsNode` for enhanced functionality.
+一组为 [Eino](https://github.com/cloudwego/eino) 实现的 HTTP 请求工具，遵循 `InvokableTool` 接口。这些工具允许你轻松执行 GET、POST、PUT 和 DELETE 请求，并可与 Eino 的聊天模型交互系统及 `ToolsNode` 集成，实现更强大的功能。
 
-## Features
+## 功能
 
-- Implements `github.com/cloudwego/eino/components/tool.InvokableTool`
-- Supports GET, POST, PUT, and DELETE requests.
-- Configurable request headers and HttpClient
-- Simple integration with Eino’s tool system
+- 实现了 `github.com/cloudwego/eino/components/tool.InvokableTool` 接口
+- 支持 GET、POST、PUT 和 DELETE 请求
+- 可配置请求头和 HttpClient
+- 可与 Eino 工具系统简单集成
 
-## Installation
+## 安装
 
-Use `go get` to install the package (adjust the module path to your project structure):
+使用 `go get` 安装该包（请根据你的项目结构调整模块路径）：
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/tool/httprequest
 ```
 
-## Quick Start
+## 快速开始
 
-Below are two examples demonstrating how to use the GET and POST tools individually.
+下面分别展示了如何单独使用 GET 和 POST 工具的示例。
 
-### GET Request Example
+### GET 请求示例
 
 ```go
 package main
@@ -87,7 +87,7 @@ func main() {
 }
 ```
 
-### POST Request Example
+### POST 请求示例
 
 ```go
 package main
@@ -133,50 +133,49 @@ func main() {
 
 ```
 
-## Configuration
+## 配置
 
-GET, POST, PUT and DELETE tools share similar configuration parameters defined in their respective `Config` structs. For example:
+GET、POST、PUT 和 DELETE 工具共享类似的配置参数，这些参数在各自的 `Config` 结构体中定义。例如：
 
 ```go
-// Config represents the common configuration for HTTP request tools.
+// Config 表示 HTTP 请求工具的通用配置。
 type Config struct {
-	// Inspired by the "Requests" tool from the LangChain project, specifically the RequestsGetTool.
-	// For more details, visit: https://python.langchain.com/docs/integrations/tools/requests/
-	// Optional. Default: "request_get".
+	// 灵感来源于 LangChain 项目的 "Requests" 工具，特别是 RequestsGetTool。
+	// 详情请见：https://python.langchain.com/docs/integrations/tools/requests/
+	// 可选。默认值: "request_get"。
 	ToolName string `json:"tool_name"`
-	// Optional. Default: "A portal to the internet. Use this tool when you need to fetch specific content from a website.
+	// 可选。默认值: "A portal to the internet. Use this tool when you need to fetch specific content from a website.
 	// Input should be a URL (e.g., https://www.google.com). The output will be the text response from the GET request."
 	ToolDesc string `json:"tool_desc"`
 
-	// Headers is a map of HTTP header names to their corresponding values.
-	// These headers will be included in every request made by the tool.
+	// Headers 是 HTTP 头部名称与对应值的映射。
+	// 这些头部会包含在工具发起的每个请求中。
 	Headers map[string]string `json:"headers"`
 
-	// HttpClient is the HTTP client used to perform the requests.
-	// If not provided, a default client with a 30-second timeout and a standard transport
-	// will be initialized and used.
+	// HttpClient 用于执行请求的 HTTP 客户端。
+	// 如果未提供，将初始化并使用一个默认的 30 秒超时和标准传输的客户端。
 	HttpClient *http.Client
 }
 ```
 
-For the GET tool, the request schema is defined as:
+对于 GET 工具，请求结构如下：
 
 ```go
 type GetRequest struct {
-	URL string `json:"url" jsonschema_description:"The URL to perform the GET request"`
+	URL string `json:"url" jsonschema_description:"要执行 GET 请求的 URL"`
 }
 ```
 
-And for the POST tool, the request schema is:
+对于 POST 工具，请求结构如下：
 
 ```go
 type PostRequest struct {
-	URL  string `json:"url" jsonschema_description:"The URL to perform the POST request"`
-	Body string `json:"body" jsonschema_description:"The request body to be sent in the POST request"`
+	URL  string `json:"url" jsonschema_description:"要执行 POST 请求的 URL"`
+	Body string `json:"body" jsonschema_description:"POST 请求要发送的请求体"`
 }
 ```
 
-## Example with agent 
+## 与 agent 集成示例
 
 ```go
 package main
@@ -366,7 +365,7 @@ Here is documentation on the API:
 }
 ```
 
-## For More Details
-- [Eino Documentation](https://github.com/cloudwego/eino)
-- [InvokableTool Interface Reference](https://pkg.go.dev/github.com/cloudwego/eino/components/tool)
-- [langchain_community Reference](https://python.langchain.com/docs/integrations/tools/requests/)
+## 更多详情
+- [Eino 文档](https://github.com/cloudwego/eino)
+- [InvokableTool 接口参考](https://pkg.go.dev/github.com/cloudwego/eino/components/tool)
+- [langchain_community 参考](https://python.langchain.com/docs/integrations/tools/requests/)
