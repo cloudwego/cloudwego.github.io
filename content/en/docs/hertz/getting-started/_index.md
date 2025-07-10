@@ -119,10 +119,19 @@ For more information on how to use hz, please refer to: [hz](/zh/docs/hertz/tuto
   - Code generation by specifying an already defined idl file, e.g. `hz new -idl hello.thrift`.
 
     ```thrift
-    namespace go hello.world
-
+    // idl/hello.thrift
+    namespace go hello.example
+    
+    struct HelloReq {
+        1: string Name (api.query="name"); // Add api annotation for easy parameter binding
+    }
+    
+    struct HelloResp {
+        1: string RespBody;
+    }
+    
     service HelloService {
-        string Hello(1: string name) (api.get="/hello");
+        HelloResp HelloMethod(1: HelloReq request) (api.get="/hello");
     }
     ```
 
@@ -150,30 +159,41 @@ If the server is launched successfully, you will see following message:
 2022/05/17 21:47:09.629874 transport.go:84: [Info] HERTZ: HTTP server listening on address=[::]:8888
 ```
 
-Then, we can test the interface:
+Then, we can test the `ping` interface:
 
 ```bash
 curl http://127.0.0.1:8888/ping
-```
-
-If nothing goes wrong, we can see the following output:
-
-```bash
 {"message":"pong"}
 ```
 
-You have now successfully launched Hertz Server successfully and completed an API call.
+To test the `hello` interface:
+
+```bash
+curl http://127.0.0.1:8888/hello?name=bob
+{"RespBody":""}
+```
+
+You have now successfully launched Hertz Server successfully and completed two API calls.
 
 ### Updating project code
 
 If you need to make further updates to the project, you should use the `hz update` command, here is an example of adding a `Bye` method.
 
 ```thrift
-namespace go hello.world
+// idl/hello.thrift
+namespace go hello.example
+
+struct HelloReq {
+    1: string Name (api.query="name"); // 添加 api 注解为方便进行参数绑定
+}
+
+struct HelloResp {
+    1: string RespBody;
+}
 
 service HelloService {
-    string Hello(1: string name) (api.get="/hello");
-    string Bye(1: string name) (api.get="/bye");
+    HelloResp HelloMethod(1: HelloReq request) (api.get="/hello");
+    HelloResp ByeMethod(1: HelloReq request) (api.get="/bye");
 }
 ```
 
@@ -181,6 +201,12 @@ At this point, run `hz update` from the project root directory to update the pro
 
 ```bash
 hz update -idl hello.thrift
+```
+
+Compile & launch the server again.
+
+```bash
+go build -o hertz_demo && ./hertz_demo
 ```
 
 ## More examples

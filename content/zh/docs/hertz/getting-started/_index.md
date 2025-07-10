@@ -116,13 +116,22 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具，可以�
 - 直接使用 `hz new`，若当前不在 `GOPATH`，需要添加 `-module` 或者 `-mod` flag 指定一个自定义的模块名称。详细参考[这里](/zh/docs/hertz/tutorials/toolkit/usage/)。
 - 通过指定已经定义好的 idl 文件进行代码生成，例如 `hz new -idl hello.thrift`。
 
-  ```thrift
-  namespace go hello.world
-
-  service HelloService {
-      string Hello(1: string name) (api.get="/hello");
-  }
-  ```
+    ```thrift
+    // idl/hello.thrift
+    namespace go hello.example
+    
+    struct HelloReq {
+        1: string Name (api.query="name"); // 添加 api 注解为方便进行参数绑定
+    }
+    
+    struct HelloResp {
+        1: string RespBody;
+    }
+    
+    service HelloService {
+        HelloResp HelloMethod(1: HelloReq request) (api.get="/hello");
+    }
+    ```
 
   执行完毕后, 会在当前目录下生成 Hertz 项目的脚手架, 自带一个 `ping` 接口用于测试。
 
@@ -148,30 +157,41 @@ go build -o hertz_demo && ./hertz_demo
 2022/05/17 21:47:09.629874 transport.go:84: [Info] HERTZ: HTTP server listening on address=[::]:8888
 ```
 
-接下来，我们可以对接口进行测试：
+接下来，我们可以对 `ping` 接口进行测试：
 
 ```bash
 curl http://127.0.0.1:8888/ping
-```
-
-如果不出意外，我们可以看到类似如下输出：
-
-```bash
 {"message":"pong"}
 ```
 
-到现在，我们已经成功启动了 Hertz Server，并完成了一次调用。
+接下来，我们可以对 `hello` 接口进行测试：
+
+```bash
+curl http://127.0.0.1:8888/hello?name=bob
+{"RespBody":""}
+```
+
+到现在，我们已经成功启动了 Hertz Server，并完成了两次调用。
 
 ### 更新项目代码
 
-如果需要对项目进行进一步的更新, 应使用 `hz update` 命令, 这里以添加一个 `Bye` 方法为例。
+如果需要对项目进行进一步的更新, 应使用 `hz update` 命令, 这里以添加一个 `ByeMethod` 方法为例。
 
 ```thrift
-namespace go hello.world
+// idl/hello.thrift
+namespace go hello.example
+
+struct HelloReq {
+    1: string Name (api.query="name"); // 添加 api 注解为方便进行参数绑定
+}
+
+struct HelloResp {
+    1: string RespBody;
+}
 
 service HelloService {
-    string Hello(1: string name) (api.get="/hello");
-    string Bye(1: string name) (api.get="/bye");
+    HelloResp HelloMethod(1: HelloReq request) (api.get="/hello");
+    HelloResp ByeMethod(1: HelloReq request) (api.get="/bye");
 }
 ```
 
@@ -179,6 +199,12 @@ service HelloService {
 
 ```bash
 hz update -idl hello.thrift
+```
+
+重新编译并启动 Server。
+
+```bash
+go build -o hertz_demo && ./hertz_demo
 ```
 
 ## 更多示例
