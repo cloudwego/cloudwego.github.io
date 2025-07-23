@@ -11,13 +11,13 @@ weight: 0
 
 Model Context Protocol(MCP)是 Anthropic 推出的供模型访问的资源的标准化开放协议，Eino 提供了相关封装，使用这些封装可以直接访问已有 MCP Server 上的资源。
 
-本节介绍 MCPPrompt 的封装，封装实现了 Eino ChatTemplate 接口（[Eino: ChatTemplate 使用说明](/zh/docs/eino/core_modules/components/chat_template_guide)）。
+本节介绍 MCPPrompt 的封装，封装实现了 Eino ChatTemplate 接口（详见 [Eino: ChatTemplate 使用说明](/zh/docs/eino/core_modules/components/chat_template_guide)）。
 
 <a href="/img/eino/N1UgbTQFioeqPaxeL9XcWNqGn5g.png" target="_blank"><img src="/img/eino/N1UgbTQFioeqPaxeL9XcWNqGn5g.png" width="100%" /></a>
 
 其他封装参见：
 
-[[WIP]Tool - MCP](/zh/docs/eino/ecosystem_integration/tool/tool_mcp)
+[Tool - MCP](/zh/docs/eino/ecosystem_integration/tool/tool_mcp)
 
 ## 使用方式
 
