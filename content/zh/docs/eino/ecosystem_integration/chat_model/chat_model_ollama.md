@@ -9,7 +9,7 @@ weight: 0
 
 ## **基本介绍**
 
-Ollama 模型是 ChatModel 接口的一个实现，用于与 Ollama 本地大语言模型服务进行交互，Ollama 是一个开源的本地大语言模型运行框架，支持多种开源模型（如 Llama、Mistral 等），提供简单的 API 接口和完整的性能监控。。该组件实现了 [Eino: ChatModel 使用说明](/zh/docs/eino/core_modules/components/chat_model_guide)
+Ollama 模型是 ChatModel 接口的一个实现，用于与 Ollama 本地大语言模型服务进行交互，Ollama 是一个开源的本地大语言模型运行框架，支持多种开源模型（如 Llama、Mistral 等），提供简单的 API 接口和完整的性能监控。该组件实现了 [Eino: ChatModel 使用说明](/zh/docs/eino/core_modules/components/chat_model_guide)
 
 ## **使用方式**
 
