@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-07-22"
+date: "2025-07-23"
 lastmod: ""
 tags: []
 title: 'Eino ADK: 概述'
@@ -249,7 +249,7 @@ Eino ADK 中将内置多种 Single Agent 实现，方便在各种业务场景中
 
 ChatModelAgent 实现了 ReAct 范式的 Agent，基于 Eino 中的 Graph 编排出 ReAct Agent 控制流，通过 callbacks.Handler 导出 ReAct Agent 运行过程中产生的事件，转换成 AgentEvent 返回。
 
-关于什么是 ReAct Agent，可参考：[Eino: ReAct Agent 使用手册](/zh/docs/eino/core_modules/flow_integration_components/react_agent_manual)
+想要进一步了解 ChatModelAgent，请看：[Eino ADK: ChatModelAgent](/zh/docs/eino/core_modules/eino_adk/Eino ADK: Agent 实现/Eino ADK: ChatModelAgent)
 
 ```go
 type ChatModelAgentConfig struct {
