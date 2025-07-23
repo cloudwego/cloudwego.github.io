@@ -3,7 +3,8 @@
   command = "hugo"
 
 [context.production.environment]
-  HUGO_VERSION = "0.142.0"  # 替换为你项目实际使用的 Hugo 版本
+  HUGO_VERSION = "0.142.0"
 
 [context.deploy-preview]
   command = "hugo --buildDrafts --buildFuture"
+  HUGO_VERSION = "0.142.0"
