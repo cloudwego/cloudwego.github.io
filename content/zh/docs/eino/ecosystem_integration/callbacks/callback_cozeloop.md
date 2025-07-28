@@ -9,8 +9,6 @@ weight: 0
 
 # CozeLoop 回调
 
-[English](README.md) | 简体中文
-
 这是一个为 [CozeLoop](https://github.com/cloudwego/eino) 实现的 Trace 回调。该工具实现了 `Handler` 接口，可以与 Eino 的应用无缝集成以提供增强的可观测能力。
 
 ## 特性
