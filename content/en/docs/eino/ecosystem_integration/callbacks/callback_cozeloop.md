@@ -36,7 +36,7 @@ import (
 )
 
 func main() {
-	// 设置相关环境变量
+	// Set relevant environment variables
 	// COZELOOP_WORKSPACE_ID=your workspace id
 	// COZELOOP_API_TOKEN=your token
 	client, err := cozeloop.NewClient()
@@ -44,7 +44,7 @@ func main() {
 		panic(err)
 	}
 	defer client.Close(ctx)
-	// 在服务 init 时 once 调用
+	// Call once during service initialization
 	handler := ccb.NewLoopHandler(client)
 	callbacks.AppendGlobalHandlers(handler)
 }
