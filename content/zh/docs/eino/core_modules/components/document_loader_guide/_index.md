@@ -108,7 +108,7 @@ log.Printf("doc content: %v", docs[0].Content)
 
 ```go
 // 在 Chain 中使用
-chain := compose.NewChain[string, []*schema.Document]()
+chain := compose.NewChain[document.Source, []*schema.Document]()
 chain.AppendLoader(loader)
 
 // 编译并运行
