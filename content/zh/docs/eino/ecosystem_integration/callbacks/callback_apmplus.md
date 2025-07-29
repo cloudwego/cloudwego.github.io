@@ -7,13 +7,11 @@ title: Callback - APMPlus
 weight: 0
 ---
 
-# APMPlus 回调
-
 Eino 基于 [graph callback](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) 能力封装了 APMPlus 的 trace 和 metrics 能力（参见 [文档](https://www.volcengine.com/docs/6431/69092) 和 [控制台](https://console.volcengine.com/apmplus-server)）
 
 ## 特性
 
-- 实现了 `github.com/cloudwego/eino/internel/callbacks.Handler` 接口
+- 实现了 `github.com/cloudwego/eino/callbacks.Handler` 接口
 - 实现了会话功能，能够将 Eino 应用中的同一个会话里的多个请求关联起来
 - 易于与 Eino 应用集成
 

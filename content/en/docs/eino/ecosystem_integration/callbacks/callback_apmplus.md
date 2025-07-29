@@ -7,13 +7,11 @@ title: Callback - APMPlus
 weight: 0
 ---
 
-# APMPlus Callbacks
-
 Eino encapsulates APMPlus's trace and metrics capabilities based on [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) capabilities (see [Document](https://www.volcengine.com/docs/6431/69092) and [Console](https://console.volcengine.com/apmplus-server)).
 
 ## Features
 
-- Implements `github.com/cloudwego/eino/internel/callbacks.Handler`
+- Implements `github.com/cloudwego/eino/callbacks.Handler`
 - Implements session functionality to associate multiple requests in a single session
 - Easy integration with Eino's application
 
