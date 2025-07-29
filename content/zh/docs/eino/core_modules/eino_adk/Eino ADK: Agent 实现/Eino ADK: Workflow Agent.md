@@ -91,7 +91,7 @@ import (
 
     "github.com/cloudwego/eino/adk"
 
-    "github.com/cloudwego/eino-examples/adk/intro/workflow/sequential/internal"
+    "github.com/cloudwego/eino-examples/adk/intro/workflow/sequential/subagents"
 )
 
 func main() {
@@ -100,7 +100,7 @@ func main() {
     a, err := adk.NewSequentialAgent(ctx, &adk.SequentialAgentConfig{
        Name:        "ResearchAgent",
        Description: "A sequential workflow for planning and writing a research report.",
-       SubAgents:   []adk.Agent{internal.NewPlanAgent(), internal.NewWriterAgent()},
+       SubAgents:   []adk.Agent{subagents.NewPlanAgent(), subagents.NewWriterAgent()},
     })
     if err != nil {
        log.Fatal(err)

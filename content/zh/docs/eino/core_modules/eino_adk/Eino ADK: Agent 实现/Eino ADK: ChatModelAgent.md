@@ -126,12 +126,12 @@ import (
 
     "github.com/cloudwego/eino/adk"
 
-    "github.com/cloudwego/eino-examples/adk/intro/chatmodel/internal"
+    "github.com/cloudwego/eino-examples/adk/intro/chatmodel/subagents"
 )
 
 func main() {
     ctx := context.Background()
-    a := internal.NewBookRecommendAgent()
+    a := subagents.NewBookRecommendAgent()
     runner := adk.NewRunner(ctx, adk.RunnerConfig{
        Agent: a,
     })
@@ -385,7 +385,7 @@ func NewBookRecommendAgent() adk.Agent {
 ```go
 func main() {
     ctx := context.Background()
-    a := internal.NewBookRecommendAgent()
+    a := subagents.NewBookRecommendAgent()
     runner := adk.NewRunner(ctx, adk.RunnerConfig{
        Agent:           a,
        CheckPointStore: newInMemoryStore(),
