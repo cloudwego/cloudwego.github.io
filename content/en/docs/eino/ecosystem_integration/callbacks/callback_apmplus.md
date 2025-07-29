@@ -12,7 +12,7 @@ Eino encapsulates APMPlus's trace and metrics capabilities based on [Eino: Callb
 ## Features
 
 - Implements `github.com/cloudwego/eino/callbacks.Handler`
-- Implements session functionality to associate multiple requests in a single session
+- Implements session functionality to associate multiple requests in a single session and conduct [AI Session Analysis](https://www.volcengine.com/docs/6431/1587839)
 - Easy integration with Eino's application
 
 ## Installation
@@ -71,3 +71,9 @@ func main() {
 You can view the trace and metrics in the [APMPlus](https://console.volcengine.com/apmplus-server):
 
 <a href="/img/eino/callback_apmplus.gif" target="_blank"><img src="/img/eino/callback_apmplus.gif" width="100%" /></a>
+
+After passing the Session information when calling the Eino application, you can view [AI Session Analysis](https://www.volcengine.com/docs/6431/1587839) in APMPlus:
+
+<a href="/img/eino/eino_callback_apmplus_session1.png" target="_blank"><img src="/img/eino/eino_callback_apmplus_session1.png" width="100%" /></a>
+
+<a href="/img/eino/eino_callback_apmplus_session2.png" target="_blank"><img src="/img/eino/eino_callback_apmplus_session2.png" width="100%" /></a>

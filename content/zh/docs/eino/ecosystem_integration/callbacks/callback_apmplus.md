@@ -12,7 +12,7 @@ Eino 基于 [graph callback](/zh/docs/eino/core_modules/chain_and_graph_orchestr
 ## 特性
 
 - 实现了 `github.com/cloudwego/eino/callbacks.Handler` 接口
-- 实现了会话功能，能够将 Eino 应用中的同一个会话里的多个请求关联起来
+- 实现了会话功能，能够将 Eino 应用中的同一个会话里的多个请求关联起来，并进行 [AI 会话分析](https://www.volcengine.com/docs/6431/1587839)
 - 易于与 Eino 应用集成
 
 ## 安装
@@ -74,3 +74,9 @@ func main() {
 可以在 [APMPlus](https://console.volcengine.com/apmplus-server) 中查看 trace 和 metrics：
 
 <a href="/img/eino/callback_apmplus.gif" target="_blank"><img src="/img/eino/callback_apmplus.gif" width="100%" /></a>
+
+在调用 Eino 应用过程中传入 Session 信息后，可以在 APMPlus 中查看 [AI 会话分析](https://www.volcengine.com/docs/6431/1587839)：
+
+<a href="/img/eino/eino_callback_apmplus_session1.png" target="_blank"><img src="/img/eino/eino_callback_apmplus_session1.png" width="100%" /></a>
+
+<a href="/img/eino/eino_callback_apmplus_session2.png" target="_blank"><img src="/img/eino/eino_callback_apmplus_session2.png" width="100%" /></a>
