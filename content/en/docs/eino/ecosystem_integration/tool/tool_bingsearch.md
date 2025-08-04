@@ -84,6 +84,7 @@ MaxRetries int               `json:"max_retries"` // optional, default: 3
 ## Search
 
 ### Request Schema
+
 ```go
 type SearchRequest struct {
     Query  string `json:"query" jsonschema_description:"The query to search the web for"`
@@ -92,6 +93,7 @@ type SearchRequest struct {
 ```
 
 ### Response Schema
+
 ```go
 type SearchResponse struct {
     Results []*searchResult `json:"results" jsonschema_description:"The results of the search"`
@@ -106,5 +108,5 @@ type searchResult struct {
 
 ## For More Details
 
-- [DuckDuckGo Search Library Documentation](ddgsearch/README.md)
+- [DuckDuckGo Search Library Documentation](tool_duckduckgo_search)
 - [Eino Documentation](https://github.com/cloudwego/eino)

@@ -98,7 +98,7 @@ ChatModel is one of the core components in the Eino framework, providing a unifi
 - Ark: Model services on the Volcano Engine (e.g., ByteDance's Doubao LLM)
 - More models are being supported
 
-> For supported models, refer to: [Eino: Ecosystem](/docs/eino/ecosystem)
+> For supported models, refer to: [Eino: Ecosystem](/docs/eino/ecosystem_integration/chat_model/)
 
 Below, we demonstrate how to create and use ChatModel with OpenAI and Ollama as examples:
 
@@ -155,7 +155,7 @@ After obtaining the input messages and initializing the ChatModel instance in th
 
 /*** create chat model
 * chatModel, err := xxx
-*/ 
+*/
 
 result, err := chatModel.Generate(ctx, messages)
 streamResult, err := chatModel.Stream(ctx, messages)
