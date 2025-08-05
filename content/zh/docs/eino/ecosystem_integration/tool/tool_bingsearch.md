@@ -86,6 +86,7 @@ type Config struct {
 ## Search
 
 ### 请求 Schema
+
 ```go
 type SearchRequest struct {
     Query  string `json:"query" jsonschema_description:"The query to search the web for"`
@@ -94,6 +95,7 @@ type SearchRequest struct {
 ```
 
 ### 响应 Schema
+
 ```go
 type SearchResponse struct {
     Results []*searchResult `json:"results" jsonschema_description:"The results of the search"`
@@ -108,5 +110,5 @@ type searchResult struct {
 
 ## 更多详情
 
-- [DuckDuckGo 搜索库文档](ddgsearch/README_zh.md)
-- [Eino 文档](https://github.com/cloudwego/eino) 
+- [DuckDuckGo 搜索库文档](tool_duckduckgo_search/)
+- [Eino 文档](https://github.com/cloudwego/eino)
