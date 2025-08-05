@@ -227,7 +227,7 @@ func (e *MyEmbedder) EmbedStrings(ctx context.Context, texts []string, opts ...e
         BatchSize: e.batchSize,
     }
     options.Options = embedding.GetCommonOptions(options.Options, opts...)
-    options = embedding.GetImplSpecificOptions(options.Options, opts...)
+    options = embedding.GetImplSpecificOptions(options, opts...)
     
     // 2. 获取 callback manager
     cm := callbacks.ManagerFromContext(ctx)
