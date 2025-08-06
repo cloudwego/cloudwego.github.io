@@ -4,7 +4,7 @@ date: "2025-08-06"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Workflow Agent'
-weight: 0
+weight: 1
 ---
 
 WorkflowAgent 支持以静态的模式运行多个 Agent。所谓“静态”，是指 Agent 之间的协作流程（如顺序、并行）是在代码中预先定义好的，而不是在运行时由 Agent 动态决定的。Eino ADK 提供了三种基础 Workflow Agent：Sequential、Parallel、Loop，他们之间可以互相嵌套以完成更复杂的任务。

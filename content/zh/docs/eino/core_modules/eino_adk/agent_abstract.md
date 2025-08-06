@@ -4,7 +4,7 @@ date: "2025-08-06"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 抽象'
-weight: 0
+weight: 2
 ---
 
 todo：更新 eino-examples 代码的链接引用

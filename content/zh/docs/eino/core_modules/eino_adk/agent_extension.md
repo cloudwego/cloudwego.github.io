@@ -4,7 +4,7 @@ date: "2025-08-06"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 扩展'
-weight: 0
+weight: 3
 ---
 
 # Agent Runner
@@ -79,7 +79,7 @@ Runner 在终止运行后会将当前运行状态（原始输入、对话历史�
 func (r *Runner) Resume(ctx context.Context, checkPointID string, opts ...AgentRunOption) (*AsyncIterator[*AgentEvent], error)
 ```
 
-恢复 Agent 运行需要发生中断的 Agent 实现了 ResumableAgent 实现了 ResumableAgent 接口， Runner 从 CheckPointerStore 读取运行状态并恢复运行，其中 InterruptInfo 和上次运行配置的 EnableStreaming 会作为输入提供给 Agent：
+恢复 Agent 运行需要发生中断的 Agent 实现了 ResumableAgent 接口， Runner 从 CheckPointerStore 读取运行状态并恢复运行，其中 InterruptInfo 和上次运行配置的 EnableStreaming 会作为输入提供给 Agent：
 
 ```go
 // github.com/cloudwego/eino/adk/interface.go

@@ -4,7 +4,7 @@ date: "2025-08-06"
 lastmod: ""
 tags: []
 title: 'Eino ADK: ChatModelAgent'
-weight: 0
+weight: 1
 ---
 
 ChatModelAgent 是 Eino ADK 中的一个核心预构建 的 Agent，它封装了与大语言模型（LLM）进行交互、并支持使用工具来完成任务的复杂逻辑。
