@@ -7,6 +7,14 @@ title: 'Eino ADK: 概述'
 weight: 0
 ---
 
+### Resources
+| Category      | Location                                                                                                                                          |
+|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Core Code** | [`cloudwego/eino@feat/adk`](https://github.com/cloudwego/eino/tree/feat/adk/adk)                                                                  |
+| **Releases**  | Branch `release/v0.5.0-alpha.X`<br>(e.g. [`v0.5.0-alpha.1`](https://github.com/cloudwego/eino/releases/tag/v0.5.0-alpha.1))                       |  
+| **Examples**  | [`cloudwego/eino-examples@feat/adk`](https://github.com/cloudwego/eino-examples/tree/feat/adk/adk)                                                |  
+| **Documentation** | [`cloudwego/cloudwego.github.io@feat/adk`](https://github.com/cloudwego/cloudwego.github.io/tree/main/content/zh/docs/eino/core_modules/eino_adk) |  
+
 # 什么是 Eino ADK？
 
 Eino ADK 参考  [Google-ADK](https://google.github.io/adk-docs/agents/) 的设计，提供了 Go 语言 的 Agents 开发的灵活组合框架，即 Agent、Multi-Agent 开发框架。Eino ADK 为多 Agent 交互时，沉淀了通用的 上下文传递、事件流分发和转换、任务控制权转让、中断与恢复、通用切面等能力。 适用场景广泛、模型无关、部署无关，让 Agent、Multi-Agent 开发更加简单、便利，并提供完善的生产级应用的治理能力。
