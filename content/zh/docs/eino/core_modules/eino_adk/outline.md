@@ -1,19 +1,11 @@
 ---
 Description: ""
-date: "2025-07-23"
+date: "2025-08-06"
 lastmod: ""
 tags: []
 title: 'Eino ADK: 概述'
 weight: 0
 ---
-
-### Resources
-| Category      | Location                                                                                                                                          |
-|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Core Code** | [`cloudwego/eino@feat/adk`](https://github.com/cloudwego/eino/tree/feat/adk/adk)                                                                  |
-| **Releases**  | Branch `release/v0.5.0-alpha.X`<br>(e.g. [`v0.5.0-alpha.1`](https://github.com/cloudwego/eino/releases/tag/v0.5.0-alpha.1))                       |  
-| **Examples**  | [`cloudwego/eino-examples@feat/adk`](https://github.com/cloudwego/eino-examples/tree/feat/adk/adk)                                                |  
-| **Documentation** | [`cloudwego/cloudwego.github.io@feat/adk`](https://github.com/cloudwego/cloudwego.github.io/tree/main/content/zh/docs/eino/core_modules/eino_adk) |  
 
 # 什么是 Eino ADK？
 
@@ -25,7 +17,7 @@ Eino ADK 旨在帮助开发者开发、管理 Agent 应用。提供灵活且鲁�
 
 Eino ADK 的整体模块构成，如下图所示：
 
-![](/img/eino/eino_adk_architecture.png)
+<a href="/img/eino/eino_adk_architecture.png" target="_blank"><img src="/img/eino/eino_adk_architecture.png" width="100%" /></a>
 
 ## Agent Interface
 
@@ -91,34 +83,25 @@ Agent 协作过程中，可能存在的协作原语：
 - Agent 间协作方式
 
 <table>
-<tr>
-<td>协助方式<br/></td><td>描述<br/></td><td><br/></td></tr>
-<tr>
-<td> Transfer<br/></td><td>直接将任务转让给另外一个 Agent，本 Agent 则执行结束后退出，不关心转让 Agent 的任务执行状态<br/></td><td><br/></td></tr>
-<tr>
-<td>ToolCall<br/>(AgentAsTool)<br/></td><td>将 Agent 当成 ToolCall 调用，等待 Agent 的响应，并可获取被调用Agent 的输出结果，进行下一轮处理<br/></td><td><br/></td></tr>
+<tr><td>协助方式</td><td>描述</td><td></td></tr>
+<tr><td> Transfer</td><td>直接将任务转让给另外一个 Agent，本 Agent 则执行结束后退出，不关心转让 Agent 的任务执行状态</td><td></td></tr>
+<tr><td>ToolCall(AgentAsTool)</td><td>将 Agent 当成 ToolCall 调用，等待 Agent 的响应，并可获取被调用Agent 的输出结果，进行下一轮处理</td><td></td></tr>
 </table>
 
 - AgentInput 的上下文策略
 
 <table>
-<tr>
-<td>上下文策略<br/></td><td>描述<br/></td><td><br/></td></tr>
-<tr>
-<td>上游 Agent 全对话<br/></td><td>获取本 Agent 的上游 Agent 的完整对话记录<br/></td><td><br/></td></tr>
-<tr>
-<td>全新任务描述<br/></td><td>忽略掉上游 Agent 的完整对话记录，给出一个全新的任务总结，作为子 Agent 的 AgentInput 输入<br/></td><td><br/></td></tr>
+<tr><td>上下文策略</td><td>描述</td><td></td></tr>
+<tr><td>上游 Agent 全对话</td><td>获取本 Agent 的上游 Agent 的完整对话记录</td><td></td></tr>
+<tr><td>全新任务描述</td><td>忽略掉上游 Agent 的完整对话记录，给出一个全新的任务总结，作为子 Agent 的 AgentInput 输入</td><td></td></tr>
 </table>
 
 - 决策自主性
 
 <table>
-<tr>
-<td>决策自主性<br/></td><td>描述<br/></td><td><br/></td></tr>
-<tr>
-<td>自主决策<br/><br/></td><td>在 Agent 内部，基于其可选的下游 Agent， 如需协助时，自主选择下游 Agent 进行协助。 一般来说，Agent 内部是基于 LLM 进行决策，不过即使是基于预设逻辑进行选择，从 Agent 外部看依然视为自主决策<br/></td><td><br/></td></tr>
-<tr>
-<td>预设决策<br/></td><td>事先预设好一个Agent 执行任务后的下一个 Agent。 Agent 的执行顺序是事先确定、可预测的<br/></td><td><br/></td></tr>
+<tr><td>决策自主性</td><td>描述</td><td></td></tr>
+<tr><td>自主决策</td><td>在 Agent 内部，基于其可选的下游 Agent， 如需协助时，自主选择下游 Agent 进行协助。 一般来说，Agent 内部是基于 LLM 进行决策，不过即使是基于预设逻辑进行选择，从 Agent 外部看依然视为自主决策</td><td></td></tr>
+<tr><td>预设决策</td><td>事先预设好一个Agent 执行任务后的下一个 Agent。 Agent 的执行顺序是事先确定、可预测的</td><td></td></tr>
 </table>
 
 接下来简要说明下，Agent Compose 下的不同的组合原语。
@@ -141,7 +124,7 @@ func SetSubAgents(ctx context.Context, agent Agent, subAgents []Agent) (Agent, e
 }
 ```
 
-![](/img/eino/sub_agents_outline.png)
+<a href="/img/eino/sub_agents_outline.png" target="_blank"><img src="/img/eino/sub_agents_outline.png" width="100%" /></a>
 
 ### Workflow
 
@@ -173,7 +156,7 @@ func NewSequentialAgent(ctx context.Context, config *SequentialAgentConfig) (Age
 }
 ```
 
-![](/img/eino/sequential_workflow.png)
+<a href="/img/eino/sequential_workflow.png" target="_blank"><img src="/img/eino/sequential_workflow.png" width="100%" /></a>
 
 #### Parallel
 
@@ -197,7 +180,7 @@ func NewParallelAgent(ctx context.Context, config *ParallelAgentConfig) (Agent, 
 }
 ```
 
-![](/img/eino/parallel_workflow_outline.png)
+<a href="/img/eino/parallel_workflow_outline.png" target="_blank"><img src="/img/eino/parallel_workflow_outline.png" width="100%" /></a>
 
 #### Loop
 
@@ -207,7 +190,7 @@ func NewParallelAgent(ctx context.Context, config *ParallelAgentConfig) (Agent, 
 
 将用户提供的 SubAgents 列表，按照数组顺序依次执行，循环往复，组合成 Loop Agent，其中的 Name 和 Description 作为 Loop Agent 的名称标识和描述。
 
-Sequential Agent 执行时，将 SubAgents 列表，并发执行，待所有 Agent 执行完成后结束。
+Sequencial Agent 执行时，将 SubAgents 列表，并发执行，待所有 Agent 执行完成后结束。
 
 ```go
 type LoopAgentConfig struct {
@@ -223,7 +206,7 @@ func NewLoopAgent(ctx context.Context, config *LoopAgentConfig) (Agent, error) {
 }
 ```
 
-![](/img/eino/loop_workflow_outline.png)
+<a href="/img/eino/loop_workflow_outline.png" target="_blank"><img src="/img/eino/loop_workflow_outline.png" width="100%" /></a>
 
 ### AgentAsTool
 
@@ -245,7 +228,7 @@ func NewAgentTool(_ context.Context, agent Agent, options ...AgentToolOption) to
 
 - AgentAsTool 可作为 Supervisor Multi-Agent 的一种实现方式
 
-![](/img/eino/agent_as_tool_outline.png)
+<a href="/img/eino/agent_as_tool_outline.png" target="_blank"><img src="/img/eino/agent_as_tool_outline.png" width="100%" /></a>
 
 ## Single Agent
 
@@ -257,7 +240,7 @@ Eino ADK 中将内置多种 Single Agent 实现，方便在各种业务场景中
 
 ChatModelAgent 实现了 ReAct 范式的 Agent，基于 Eino 中的 Graph 编排出 ReAct Agent 控制流，通过 callbacks.Handler 导出 ReAct Agent 运行过程中产生的事件，转换成 AgentEvent 返回。
 
-想要进一步了解 ChatModelAgent，请看：[Eino ADK: ChatModelAgent](/zh/docs/eino/core_modules/eino_adk/Eino ADK: Agent 实现/Eino ADK: ChatModelAgent)
+想要进一步了解 ChatModelAgent，请看：[Eino ADK: ChatModelAgent](/zh/docs/eino/core_modules/eino_adk/agent_implementation/chat_model_agent)
 
 ```go
 type ChatModelAgentConfig struct {
