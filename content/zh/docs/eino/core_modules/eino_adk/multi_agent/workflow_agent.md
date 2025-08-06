@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-07-22"
+date: "2025-08-06"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Workflow Agent'
-weight: 0
+weight: 1
 ---
 
 WorkflowAgent 支持以静态的模式运行多个 Agent。所谓“静态”，是指 Agent 之间的协作流程（如顺序、并行）是在代码中预先定义好的，而不是在运行时由 Agent 动态决定的。Eino ADK 提供了三种基础 Workflow Agent：Sequential、Parallel、Loop，他们之间可以互相嵌套以完成更复杂的任务。
@@ -17,7 +17,7 @@ WorkflowAgent 支持以静态的模式运行多个 Agent。所谓“静态”，
 
 SequentialAgent 会按照你提供的顺序，依次执行一系列 Agent：
 
-![](/img/eino/sequential_agents.png)
+<a href="/img/eino/sequential_agents.png" target="_blank"><img src="/img/eino/sequential_agents.png" width="100%" /></a>
 
 我们通过一个包含两个子 Agent 的 Research Agent 来介绍 SequentialAgent 的用法，其中第一个 Plan Agent 会接收一个研究主题，并生成研究计划；第二个 Write Agent 会接收研究主题与 Plan 产生研究计划（Write Agent 的输入依据 History 章节中介绍的默认方式生成，也可以通过 WithHistoryRewriter 自定义），并撰写报告。
 
@@ -91,7 +91,7 @@ import (
 
     "github.com/cloudwego/eino/adk"
 
-    "github.com/cloudwego/eino-examples/adk/intro/workflow/sequential/subagents"
+    "github.com/cloudwego/eino-examples/adk/intro/workflow/sequential/internal"
 )
 
 func main() {
@@ -100,7 +100,7 @@ func main() {
     a, err := adk.NewSequentialAgent(ctx, &adk.SequentialAgentConfig{
        Name:        "ResearchAgent",
        Description: "A sequential workflow for planning and writing a research report.",
-       SubAgents:   []adk.Agent{subagents.NewPlanAgent(), subagents.NewWriterAgent()},
+       SubAgents:   []adk.Agent{internal.NewPlanAgent(), internal.NewWriterAgent()},
     })
     if err != nil {
        log.Fatal(err)
@@ -174,7 +174,7 @@ usage: &{74 1066 1140}
 
 LoopAgent 基于 SequentialAgent 实现，在 SequentialAgent 运行完成后，再次从头运行：
 
-![](/img/eino/loop_agents.png)
+<a href="/img/eino/loop_agents.png" target="_blank"><img src="/img/eino/loop_agents.png" width="100%" /></a>
 
 Agent 产生 ExitAction Event 时退出 LoopAgent，也可以配置 MaxIteration 来控制最大循环次数。通过 adk.NewLoopAgent 创建：
 
@@ -191,7 +191,7 @@ adk.NewLoopAgent(ctx, &adk.LoopAgentConfig{
 
 ParallelAgent 会并发运行若干 Agent：
 
-![](/img/eino/parallel_agents.png)
+<a href="/img/eino/parallel_agents.png" target="_blank"><img src="/img/eino/parallel_agents.png" width="100%" /></a>
 
 通过 adk.NewParallelAgent 创建：
 

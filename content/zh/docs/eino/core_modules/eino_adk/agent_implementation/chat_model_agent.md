@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-07-22"
+date: "2025-08-06"
 lastmod: ""
 tags: []
 title: 'Eino ADK: ChatModelAgent'
-weight: 0
+weight: 1
 ---
 
 ChatModelAgent 是 Eino ADK 中的一个核心预构建 的 Agent，它封装了与大语言模型（LLM）进行交互、并支持使用工具来完成任务的复杂逻辑。
@@ -13,7 +13,7 @@ ChatModelAgent 是 Eino ADK 中的一个核心预构建 的 Agent，它封装了
 
 - 工具定义
 
-对图书推荐 Agent，需要一个根据能够根据用户要求（题材、评分等）检索图书的工具 `book_search` 利用 Eino 提供的工具方法可以方便地创建（可参考[如何创建一个 tool ?](/zh/docs/eino/core_modules/components/tools_node_guide/如何创建一个 tool ?)）：
+对图书推荐 Agent，需要一个根据能够根据用户要求（题材、评分等）检索图书的工具 `book_search` 利用 Eino 提供的工具方法可以方便地创建（可参考[如何创建一个 tool ?](/zh/docs/eino/core_modules/components/tools_node_guide/how_to_create_a_tool)）：
 
 ```go
 import (
@@ -126,12 +126,12 @@ import (
 
     "github.com/cloudwego/eino/adk"
 
-    "github.com/cloudwego/eino-examples/adk/intro/chatmodel/subagents"
+    "github.com/cloudwego/eino-examples/adk/intro/chatmodel/internal"
 )
 
 func main() {
     ctx := context.Background()
-    a := subagents.NewBookRecommendAgent()
+    a := internal.NewBookRecommendAgent()
     runner := adk.NewRunner(ctx, adk.RunnerConfig{
        Agent: a,
     })
@@ -185,7 +185,7 @@ ChatModelAgent 内使用了 [ReAct](https://react-lm.github.io/) 模式，该模
 - ChatModelAgent 执行工具（Act）
 - 它将工具结果返回给 ChatModel（Observation），然后开始新的循环，直到 ChatModel 判断不需要调用 Tool 结束。
 
-![](/img/eino/react_agent_pattern.png)
+<a href="/img/eino/react_agent_pattern.png" target="_blank"><img src="/img/eino/react_agent_pattern.png" width="100%" /></a>
 
 可以通过 ToolsConfig 为 ChatModelAgent 配置 Tool：
 
@@ -385,7 +385,7 @@ func NewBookRecommendAgent() adk.Agent {
 ```go
 func main() {
     ctx := context.Background()
-    a := subagents.NewBookRecommendAgent()
+    a := internal.NewBookRecommendAgent()
     runner := adk.NewRunner(ctx, adk.RunnerConfig{
        Agent:           a,
        CheckPointStore: newInMemoryStore(),

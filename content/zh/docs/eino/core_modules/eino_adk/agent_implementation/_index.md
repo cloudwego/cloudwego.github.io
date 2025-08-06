@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-07-22"
+date: "2025-08-06"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 实现'
-weight: 0
+weight: 4
 ---
 
 用户可以通过实现 Agent 接口自定义 Agent。自定义 Agent 建议严格遵守上述规则，在应用、迭代、合作中可以带来便利。

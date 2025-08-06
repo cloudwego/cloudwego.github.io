@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-07-22"
+date: "2025-08-06"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 抽象'
-weight: 0
+weight: 2
 ---
 
 todo：更新 eino-examples 代码的链接引用
@@ -24,14 +24,10 @@ type Agent interface {
 ```
 
 <table>
-<tr>
-<td>Method<br/></td><td> 说明<br/></td></tr>
-<tr>
-<td>Name<br/></td><td>Agent 的名称，作为 Agent 的标识<br/></td></tr>
-<tr>
-<td>Description<br/></td><td>Agent 的职能描述信息，主要用于让其他的 Agent 了解和判断该 Agent 的职责或功能<br/></td></tr>
-<tr>
-<td>Run<br/></td><td>Agent 的核心执行方法，返回一个迭代器，调用者可以通过这个迭代器持续接收 Agent 产生的事件<br/></td></tr>
+<tr><td>Method</td><td> 说明</td></tr>
+<tr><td>Name</td><td>Agent 的名称，作为 Agent 的标识</td></tr>
+<tr><td>Description</td><td>Agent 的职能描述信息，主要用于让其他的 Agent 了解和判断该 Agent 的职责或功能</td></tr>
+<tr><td>Run</td><td>Agent 的核心执行方法，返回一个迭代器，调用者可以通过这个迭代器持续接收 Agent 产生的事件</td></tr>
 </table>
 
 ADK 提供了一些常用的 Agent 实现，单 Agent 如：ChatModelAgent；静态路由的多 Agent 如：SequentialAgent；动态路由的多 Agent 如：Supervisor 等。
@@ -71,7 +67,7 @@ EnableStreaming 用于向 Agent **建议**其输出模式，但它并非一个�
 
 如下图所示，ChatModel 既可以输出非流也可以输出流，Tool 只能输出非流，当 EnableStream=false 时，二者均输出非流；当 EnableStream=true 时，ChatModel 输出流，Tool 因为不具备输出流的能力，仍然输出非流。
 
-![](/img/eino/difference_when_enable_stream.png)
+<a href="/img/eino/difference_when_enable_stream.png" target="_blank"><img src="/img/eino/difference_when_enable_stream.png" width="100%" /></a>
 
 在 AgentOutput 中，会标明实际输出类型。
 
@@ -291,7 +287,7 @@ Eino ADK 提供了多 Agent 协作能力，包括由 Agent 在运行时动态决
 
 通过这种方式，其他 Agent 的行为被当作了提供给当前 Agent 的“外部信息”或“事实陈述”，而不是它自己的行为，从而避免了 LLM 的上下文混乱。
 
-![](/img/eino/transfer_agent_input.png)
+<a href="/img/eino/transfer_agent_input.png" target="_blank"><img src="/img/eino/transfer_agent_input.png" width="100%" /></a>
 
 在 Eino ADK 中，当为一个 Agent 构建 AgentInput 时，会对 History 中的 Event 进行过滤，确保 Agent 只会接收到当前 Agent 的直接或间接父 Agent 产生的 Event。换句话说，只有当 Event 的 RunPath “属于”当前 Agent 的 RunPath 时，该 Event 才会参与构建 Agent 的 Input。
 
@@ -363,7 +359,7 @@ type OnSubAgents interface {
 
 接下来以一个多功能对话 Agent 演示 Transfer 能力，目标是搭建一个可以查询天气或者与用户对话的 Agent，Agent 结构如下：
 
-![](/img/eino/transfer_sub_agents.png)
+<a href="/img/eino/transfer_sub_agents.png" target="_blank"><img src="/img/eino/transfer_sub_agents.png" width="100%" /></a>
 
 三个 Agent 均使用 ChatModelAgent 实现：
 
@@ -464,13 +460,13 @@ import (
 
     "github.com/cloudwego/eino/adk"
 
-    "github.com/cloudwego/eino-examples/adk/intro/transfer/subagents"
+    "github.com/cloudwego/eino-examples/adk/intro/transfer/internal"
 )
 
 func main() {
-    weatherAgent := subagents.NewWeatherAgent()
-    chatAgent := subagents.NewChatAgent()
-    routerAgent := subagents.NewRouterAgent()
+    weatherAgent := internal.NewWeatherAgent()
+    chatAgent := internal.NewChatAgent()
+    routerAgent := internal.NewRouterAgent()
 
     ctx := context.Background()
     a, err := adk.SetSubAgents(ctx, routerAgent, []adk.Agent{chatAgent, weatherAgent})
@@ -522,7 +518,8 @@ func main() {
 
 得到结果：
 
->>>>>>>>> query weather<<<<<<<<<
+>>>>>>>>>> query weather<<<<<<<<<
+>>>>>>>>>>
 >>>>>>>>>
 >>>>>>>>
 >>>>>>>
@@ -584,7 +581,8 @@ func main() {
 >
 > ======
 >
->>>>>>>>> failed to route<<<<<<<<<
+>>>>>>>>>> failed to route<<<<<<<<<
+>>>>>>>>>>
 >>>>>>>>>
 >>>>>>>>
 >>>>>>>
