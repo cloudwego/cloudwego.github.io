@@ -190,7 +190,7 @@ func NewParallelAgent(ctx context.Context, config *ParallelAgentConfig) (Agent, 
 
 将用户提供的 SubAgents 列表，按照数组顺序依次执行，循环往复，组合成 Loop Agent，其中的 Name 和 Description 作为 Loop Agent 的名称标识和描述。
 
-Sequencial Agent 执行时，将 SubAgents 列表，并发执行，待所有 Agent 执行完成后结束。
+Sequential Agent 执行时，将 SubAgents 列表，并发执行，待所有 Agent 执行完成后结束。
 
 ```go
 type LoopAgentConfig struct {
