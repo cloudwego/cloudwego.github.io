@@ -4,7 +4,7 @@ date: "2025-02-10"
 lastmod: ""
 tags: []
 title: Eino 流式编程要点
-weight: 0
+weight: 3
 ---
 
 > 💡

@@ -4,7 +4,7 @@ date: "2025-03-18"
 lastmod: ""
 tags: []
 title: 'Eino: Callback Manual'
-weight: 0
+weight: 4
 ---
 
 ## **Problem Solved**

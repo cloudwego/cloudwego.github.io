@@ -4,7 +4,7 @@ date: "2025-03-18"
 lastmod: ""
 tags: []
 title: 'Eino: The design concept of orchestration'
-weight: 0
+weight: 2
 ---
 
 In the LLM application orchestration solutions, the most popular ones are langchain and langgraph, which officially provide SDKs for Python and TypeScript. These two languages are known for their flexibility, which brings great convenience to SDK development but also causes significant confusion and cognitive burden for SDK users.
