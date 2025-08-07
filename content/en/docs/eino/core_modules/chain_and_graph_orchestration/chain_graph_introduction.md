@@ -4,7 +4,7 @@ date: "2025-03-28"
 lastmod: ""
 tags: []
 title: 'Eino: Chain/Graph Orchestration Introduction'
-weight: 0
+weight: 1
 ---
 
 > All code examples in this document can be found at: [https://github.com/cloudwego/eino-examples/tree/main/compose](https://github.com/cloudwego/eino-examples/tree/main/compose)

@@ -4,7 +4,7 @@ date: "2025-01-22"
 lastmod: ""
 tags: []
 title: 'Eino: CallOption 能力与规范'
-weight: 0
+weight: 5
 ---
 
 **CallOption**: 对 Graph 编译产物进行调用时，直接传递数据给特定的一组节点(Component、Implementation、Node)的渠道
