@@ -40,7 +40,7 @@ description: >
     
     In addition to the existing Client level, this release of TTHeader Streaming supports interface-level Recv timeout configuration, making configuration more flexible.
 
-    User documentation: [StreamX Timeout Control](/docs/kitex/tutorials/basic-feature/streamx/kitex+streamx+-+stream+timeout+control/)
+    User documentation: [StreamX Timeout Control](/docs/kitex/tutorials/basic-feature/streamx/streamx_timeout_control/)
 
 2. **Default Thrift transport protocol changed from Buffered to Framed** 
 

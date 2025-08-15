@@ -40,7 +40,7 @@ description: >
 
     本版本 TTHeader Streaming 在原有的 Kitex Client 级别基础上，额外支持接口级别的 Recv 超时配置，配置更为灵活。
 
-    详见 [StreamX 流超时控制](/zh/docs/kitex/tutorials/basic-feature/streamx/stream+timeout+control/)。
+    详见 [StreamX 流超时控制](/zh/docs/kitex/tutorials/basic-feature/streamx/streamx_timeout_control/)。
 
 2. **Thrift 默认传输协议由 Buffered 改为 Framed**
 
