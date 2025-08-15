@@ -73,10 +73,10 @@ tl, err := stream.Trailer()
 
 ## FAQ
 
-### Why is the reverse pass-through interface inconsistent with 's reverse pass-through?
+### Why is the reverse pass-through interface inconsistent with PingPong's reverse pass-through?
 
-Because the concept of flow is different from , under the flow, the Header can be sent independently, which means that my server can send the Header in the first second, send the Data after 10 seconds, and send the Trailer after 1 second.
+Because the concept of flow is different from PingPong. On top of streams, the Header can be sent independently, which means that my server can send the Header in the first second, send the Data after 10 seconds, and send the Trailer after 1 second.
 
-At the same time, the client can also choose whether to call `.Header()` or `.Trailer ()` to block.
+At the same time, the client can also choose whether to call `.Header()` or `.Trailer ()` to block and wait for the meta info.
 
 Therefore, the semantics of traditional ctx cannot meet the reverse pass-through function of streams. Forward pass-through is still consistent with the original.
