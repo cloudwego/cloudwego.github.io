@@ -35,6 +35,7 @@ cli, err := client.NewSSEMCPClient(myBaseURL)
 // while stdio does not require it.
 err = cli.Start(ctx)
 ```
+mcp-go also supports other methods for creating a Client (such as InProcess). For more information, please refer to: https://mcp-go.dev/transports
 
 Considering the reusability of multiple adapters for the MCP client, the adapter assumes that the client has completed initialization with the Server's [Initialize](https://spec.modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle/), so users need to complete the client initialization themselves, for example:
 

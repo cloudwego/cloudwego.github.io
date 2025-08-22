@@ -14,10 +14,6 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 
 - [hertz_gorm](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_gorm) ：在 hertz server 中使用 gorm 的示例
 
-### hertz_gorm_gen
-
-- [hertz_gorm_gen](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_gorm_gen) ：在 hertz server 中使用 gorm/gen & proto IDL 的示例
-
 ### hertz_jwt
 
 - [hertz_jwt](https://github.com/cloudwego/hertz-examples/tree/main/bizdemo/hertz_jwt) ：在 hertz server 中使用 jwt 的示例
@@ -51,7 +47,7 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 - [HTTP2](https://github.com/hertz-contrib/http2/tree/main/examples) : hertz 使用 HTTP2 协议的示例
 - [HTTP3](https://github.com/hertz-contrib/http3/tree/main/examples/quic-go) : hertz 使用 HTTP3 协议的示例
 - [Websocket](https://github.com/hertz-contrib/websocket/tree/main/examples) : hertz 使用 Websocket 协议的示例
-- [SSE](https://github.com/hertz-contrib/sse/tree/main/examples) : hertz 使用 SSE 协议的示例
+- [SSE](https://github.com/cloudwego/hertz-examples/tree/main/sse) : hertz 使用 SSE 协议的示例
 
 ### 路由
 

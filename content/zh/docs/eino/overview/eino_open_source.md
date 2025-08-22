@@ -158,7 +158,7 @@ agent, _ := graph.Compile(ctx, WithMaxRunSteps(config.MaxStep))
 
 Eino 框架结构图：
 
-<a href="/img/eino/eino_projects_and_structure.png" target="_blank"><img src="/img/eino/eino_projects_and_structure.png" width="100%" /></a>
+<a href="/img/eino/eino_structure.png" target="_blank"><img src="/img/eino/eino_structure.png" width="100%" /></a>
 
 ### 实践驱动
 

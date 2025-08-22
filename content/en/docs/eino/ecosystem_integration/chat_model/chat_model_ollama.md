@@ -30,7 +30,7 @@ model, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
 
     // Model Configuration
     Model:     "llama2",                // Model name
-    Format:    json.RawMessage("json"), // Output format (optional)
+    Format:    json.RawMessage(`"json"`), // Output format (optional)
     KeepAlive: &keepAlive,              // Keep-alive time
 
     // Model Parameters

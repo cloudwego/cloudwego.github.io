@@ -4,7 +4,7 @@ date: "2025-02-11"
 lastmod: ""
 tags: []
 title: 'Eino: CallOption capabilities and specification'
-weight: 0
+weight: 5
 ---
 
 **CallOption**: A channel for directly passing data to a specific set of nodes (Component, Implementation, Node) when invoking Graph compilation products.

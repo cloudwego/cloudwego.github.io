@@ -37,6 +37,7 @@ cli, err := client.NewSSEMCPClient(myBaseURL)
 // while stdio does not require it.
 err = cli.Start(ctx)
 ```
+mcp-go 还支持了其他创建 Client 的方法（比如 InProcess），更多信息可以参考：https://mcp-go.dev/transports
 
 考虑到 client 的复用，封装假设 client 已经完成和 Server 的 [Initialize](https://spec.modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle/)，用户需要自行完成 client 初始化：
 

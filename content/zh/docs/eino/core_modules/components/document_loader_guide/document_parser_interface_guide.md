@@ -182,8 +182,8 @@ if err != nil {
 }
 
 log.Printf("doc content: %v", docs[0].Content)
-log.Printf("Extension: %s\n", docs[0].MetaData[file._MetaKeyExtension_]) // 输出: Extension: .txt
-log.Printf("Source: %s\n", docs[0].MetaData[file._MetaKeySource_])       // 输出: Source: ./document.txt
+log.Printf("Extension: %s\n", docs[0].MetaData[file.MetaKeyExtension]) // 输出: Extension: .txt
+log.Printf("Source: %s\n", docs[0].MetaData[file.MetaKeySource])       // 输出: Source: ./document.txt
 ```
 
 ## **自定义解析器实现**

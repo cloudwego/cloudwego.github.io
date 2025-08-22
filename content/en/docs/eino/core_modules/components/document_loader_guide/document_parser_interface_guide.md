@@ -182,8 +182,8 @@ if err != nil {
 }
 
 log.Printf("doc content: %v", docs[0].Content)
-log.Printf("Extension: %s\n", docs[0].MetaData[file._MetaKeyExtension_]) // Output: Extension: .txt
-log.Printf("Source: %s\n", docs[0].MetaData[file._MetaKeySource_])       // Output: Source: ./document.txt
+log.Printf("Extension: %s\n", docs[0].MetaData[file.MetaKeyExtension]) // Output: Extension: .txt
+log.Printf("Source: %s\n", docs[0].MetaData[file.MetaKeySource])       // Output: Source: ./document.txt
 ```
 
 ## **Custom Parser Implementation**

@@ -3,7 +3,7 @@ date: 2023-12-21
 title: "CloudWeGo 易用性建设：提升 Go 语言云原生工程效率之路"
 projects: ["CloudWeGo"]
 linkTitle: "CloudWeGo 易用性建设：提升 Go 语言云原生工程效率之路"
-keywords: ["CloudWeGo", "RPC", "Golang", "cwgo", "易用性", "工程效率"]
+keywords: ["CloudWeGo", "RPC", "Golang", "易用性", "工程效率"]
 description: "本文介绍了 CloudWeGo 易用性建设的简单背景，以及我们针对易用性建设做了哪些工作，最后会对未来的工作进行展望。"
 author: <a href="https://github.com/FGYFFFF" target="_blank">GuangyuFan</a>
 ---
@@ -17,7 +17,7 @@ author: <a href="https://github.com/FGYFFFF" target="_blank">GuangyuFan</a>
 CloudWeGo 是一套由字节跳动基础架构服务框架团队开源的、可快速构建企业级云原生微服务架构的中间件集合。
 CloudWeGo 下的项目主要有三个特点：**高性能**、**高扩展性**以及**高可靠性**；并且，在开源后我们也更加重视易用性的建设，我们意识到易用性可以给社区带来很多用户、进而形成活跃的社区氛围，推动社区持续发展，而且易用性可帮助用户快速完成业务逻辑开发，提升效率。
 
-针对易用性，我们在研发体验、用户体验以及社区宣传等均做了诸多工作，下面我来一一介绍。另外这次分享主要会重点介绍 [Hertz][Hertz] 以及围绕 [cwgo][cwgo] 的易用性建设。
+针对易用性，我们在研发体验、用户体验以及社区宣传等均做了诸多工作，下面我来一一介绍。另外这次分享主要会重点介绍 [Hertz][Hertz] 的易用性建设。
 
 ## 易用性 Feature 建设
 
@@ -69,29 +69,6 @@ CloudWeGo 下的项目主要有三个特点：**高性能**、**高扩展性**�
 
 Client 端生成的目的主要是可以屏蔽掉初始化 Hertz client 、发送请求等一系列固定的操作、为用户提供一个类似 HTTP 请求一键发送的能力，并能够和 hz 生成的 server 直接进行通信。
 
-### CWGO
-
-下面我来介绍另外一个工具 [cwgo][cwgo]。cwgo 是我们针对 CloudWeGo Golang 框架推出的一个统一的工具。
-
-大家可以看下图，CloudWeGo 在 Golang 下存在多个代码生成工具，虽然我们的 Kitex 和 Hertz 均已经提供了一层封装，但是他们的使用还是略有不同，导致用户的学习成本偏高。 这个问题正是 cwgo 要解决的问题之一。
-
-![image](/img/blog/CloudWeGo_Usability_Construction/cwgo.png)
-
-此外，目前 CloudWeGo 社区的 Go 项目还面临如下问题：
-
-1. API 管理能力相对薄弱， IDL 本身能够作为接口描述/定义工具贯穿整个业务开发迭代过程，但实际 CloudWeGo 对外并没有一个明确的实践方案，目前和企业用户对接时基本上是要求业务方自行围绕 IDL 进行 API 相关的管理
-2. 各个组件相对独立，在共同使用的时候不能无缝的配合
-3. 缺少常用的单测、DB 等代码的生成及配置
-
-随着未来 CloudWeGo 开源组件不断增多，零碎的用户体验也会不断地割裂，因此我们发布了 CloudWeGo all in one 工具 cwgo，旨在从一个全局的视角去解决以上问题。提供一个更简单、易用的微服务生成、管理形式。
-
-下面来介绍 cwgo 的几个特性
-
-1. cwgo 集成了 hz/kitex 脚手架的能力，并将他们的命令进行抽象、简化，统一在 cwgo 工具上展示，并且会打通生成的结构体、注解、Validator 等功能，无论用户使用 RPC 还是 HTTP，都能为用户提供一个统一的生成代码体验
-2. 交互式命令行，这个能力注意是面向初阶用户，以交互式的形式为用户生成目标代码，极大减少学习成本，用户只需要点点点就可以完成微服务的生成。
-3. 我们会生成更加服务企业需求的 mvc 模版，如右图所示，协助业务的快速开发落地，并方便日后的迭代及维护；并且，cwgo 支持自定义模版、模版托管等能力，也更便于完成模板的管理以及快速替换。
-4. 我们在 cwgo 上提供了一个全新的 微服务部署形态，目前命名为 hex 计划，是 Hertz 和 Kitex 的缩写。Hex 计划的目标是在微服务可在同一个端口同时监听 HTTP/RPC 请求，基于协议嗅探实现零 overhead 的请求分发， 将请求分发给 Hertz 和 Kitex 进行处理。从而可以解决业务在 rpc 服务同时需要提供 HTTP API 接口时在研发效率、复杂度以及性能上的诸多妥协，目前该能力已经在 cwgo 正式发布，大家可按需体验。
-
 ## 用户体验优化
 
 ### 文档优化
@@ -124,16 +101,5 @@ Client 端生成的目的主要是可以屏蔽掉初始化 Hertz client 、发�
 
 截止目前，CSG 活动已经举办了 5 期，分别带大家了解了 Hertz/kitex/volo 框架的诸多源码和最佳实践，帮助开发者更好的了解和使用框架。大家可以在 [cloudwego/community](https://github.com/cloudwego/community) 仓库的 issue 查看往期活动的 issue 介绍与回放。
 
-## 展望
 
-未来，我们还将继续对 CloudWeGo 的易用性进行持续性的投入和打磨，为用户提供更好的研发体验
-
-1. 通用研发流程：为用户一套可直接使用的企业级研发流程，并协作各个框架，完成业务高效开发全流程
-   - API 一站式管理：统一 CloudWeGo 项目的 API 管理方式，一站式完成描述、开发、测试全流程
-   - 分布式 IDL 管理：IDL& 产物与业务代码分开管理，降低维护成本
-2. CWGO x LLM：基于 LLM 提供更多智能的辅助能力
-   - 智能代码生成：在 IDL 中添加业务描述，在生成代码时结合 LLM 填充业务代码逻辑
-   - 文档自动化：文档自动撰写、优化、翻译、纠错等
-
-[cwgo]: https://github.com/cloudwego/cwgo
 [Hertz]: https://github.com/cloudwego/hertz
