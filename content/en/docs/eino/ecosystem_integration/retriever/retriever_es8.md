@@ -63,15 +63,18 @@ func main() {
 		log.Fatalf("read file failed, err=%v", err)
 	}
 
-	client, _ := elasticsearch.NewClient(elasticsearch.Config{
+	client, err := elasticsearch.NewClient(elasticsearch.Config{
 		Addresses: []string{"https://localhost:9200"},
 		Username:  username,
 		Password:  password,
 		CACert:    cert,
 	})
+	if err != nil {
+		log.Panicf("connect es8 failed, err=%v", err)
+	}
 
 	// create retriever component
-	retriever, _ := es8.NewRetriever(ctx, &es8.RetrieverConfig{
+	retriever, err := es8.NewRetriever(ctx, &es8.RetrieverConfig{
 		Client: client,
 		Index:  indexName,
 		TopK:   5,
@@ -120,12 +123,18 @@ func main() {
 		},
 		Embedding: emb, // your embedding component
 	})
+	if err != nil {
+		log.Panicf("create retriever failed, err=%v", err)
+	}
 
 	// search without filter
-	docs, _ := retriever.Retrieve(ctx, "tourist attraction")
+	docs, err := retriever.Retrieve(ctx, "tourist attraction")
+	if err != nil {
+		log.Panicf("retrieve docs failed, err=%v", err)
+	}
 
 	// search with filter
-	docs, _ = retriever.Retrieve(ctx, "tourist attraction",
+	docs, err = retriever.Retrieve(ctx, "tourist attraction",
 		es8.WithFilters([]types.Query{{
 			Term: map[string]types.TermQuery{
 				fieldExtraLocation: {
@@ -135,6 +144,9 @@ func main() {
 			},
 		}}),
 	)
+	if err != nil {
+		log.Panicf("retrieve docs failed, err=%v", err)
+	}
 }
 ```
 

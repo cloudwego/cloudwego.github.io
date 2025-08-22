@@ -7,37 +7,36 @@ title: Indexer - es8
 weight: 0
 ---
 
-## ES8 Indexer
+## ES8 索引器
 
-An Elasticsearch 8.x indexer implementation for [Eino](https://github.com/cloudwego/eino) that implements the `Indexer` interface. This enables seamless integration with Eino's vector storage and retrieval system for enhanced semantic search capabilities.
+这是一个 [Eino](https://github.com/cloudwego/eino) 的 Elasticsearch 8.x 索引器实现，它实现了 `Indexer` 接口。这使得与 Eino 的向量存储和检索系统无缝集成，从而增强了语义搜索能力。
 
-## Features
+## 特性
 
-- Implements `github.com/cloudwego/eino/components/indexer.Indexer`
-- Easy integration with Eino's indexer system
-- Configurable Elasticsearch parameters
-- Support for vector similarity search
-- Bulk indexing operations
-- Custom field mapping support
-- Flexible document vectorization
+  - 实现了 `github.com/cloudwego/eino/components/indexer.Indexer`
+  - 易于与 Eino 的索引系统集成
+  - 可配置的 Elasticsearch 参数
+  - 支持向量相似度搜索
+  - 批量索引操作
+  - 支持自定义字段映射
+  - 灵活的文档向量化
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/indexer/es8@latest
 ```
 
-## Quick Start
+## 快速开始
 
-Here's a quick example of how to use the indexer, you could read components/indexer/es8/examples/indexer/add_documents.go for more details:
+这是一个如何使用索引器的快速示例，你可以阅读 `components/indexer/es8/examples/indexer/add_documents.go` 获取更多细节：
 
 ```go
 import (
 	"github.com/cloudwego/eino/components/embedding"
 	"github.com/cloudwego/eino/schema"
 	"github.com/elastic/go-elasticsearch/v8"
-
-	"github.com/cloudwego/eino-ext/components/indexer/es8"
+	"github.com/cloudwego/eino-ext/components/indexer/es8" // 导入 es8 索引器
 )
 
 const (
@@ -51,7 +50,7 @@ const (
 func main() {
 	ctx := context.Background()
 
-	// es supports multiple ways to connect
+	// es 支持多种连接方式
 	username := os.Getenv("ES_USERNAME")
 	password := os.Getenv("ES_PASSWORD")
 	httpCACertPath := os.Getenv("ES_HTTP_CA_CERT_PATH")
@@ -61,21 +60,24 @@ func main() {
 		log.Fatalf("read file failed, err=%v", err)
 	}
 
-	client, _ := elasticsearch.NewClient(elasticsearch.Config{
+	client, err := elasticsearch.NewClient(elasticsearch.Config{
 		Addresses: []string{"https://localhost:9200"},
 		Username:  username,
 		Password:  password,
 		CACert:    cert,
 	})
+	if err != nil {
+		log.Panicf("connect es8 failed, err=%v", err)
+	}
 
-	// create embedding component
+	// 创建 embedding 组件
 	emb := createYourEmbedding()
 
-	// load docs
+	// 加载文档
 	docs := loadYourDocs()
 
-	// create es indexer component
-	indexer, _ := es8.NewIndexer(ctx, &es8.IndexerConfig{
+	// 创建 es 索引器组件
+	indexer, err := es8.NewIndexer(ctx, &es8.IndexerConfig{
 		Client:    client,
 		Index:     indexName,
 		BatchSize: 10,
@@ -83,50 +85,56 @@ func main() {
 			return map[string]es8.FieldValue{
 				fieldContent: {
 					Value:    doc.Content,
-					EmbedKey: fieldContentVector, // vectorize doc content and save vector to field "content_vector"
+					EmbedKey: fieldContentVector, // 对文档内容进行向量化并保存向量到 "content_vector" 字段
 				},
 				fieldExtraLocation: {
 					Value: doc.MetaData[docExtraLocation],
 				},
 			}, nil
 		},
-		Embedding: emb, // replace it with real embedding component
+		Embedding: emb, // 替换为真实的 embedding 组件
 	})
+	if err != nil {
+		log.Panicf("create indexer failed, err=%v", err)
+	}
 
-	ids, _ := indexer.Store(ctx, docs)
+	ids, err := indexer.Store(ctx, docs)
+	if err != nil {
+		log.Panicf("create docs failed, err=%v", err)
+	}
 
 	fmt.Println(ids)
-    // Use with Eino's system
-    // ... configure and use with Eino
+	// 与 Eino 系统一起使用
+	// ... 配置并与 Eino 一起使用
 }
 ```
 
-## Configuration
+## 配置
 
-The indexer can be configured using the `IndexerConfig` struct:
+索引器可以通过 `IndexerConfig` 结构体进行配置：
 
 ```go
 type IndexerConfig struct {
-    Client *elasticsearch.Client // Required: Elasticsearch client instance
-    Index  string                // Required: Index name to store documents
-    BatchSize int                // Optional: Max texts size for embedding (default: 5)
-    
-    // Required: Function to map Document fields to Elasticsearch fields
-    DocumentToFields func(ctx context.Context, doc *schema.Document) (map[string]FieldValue, error)
-    
-    // Optional: Required only if vectorization is needed
-    Embedding embedding.Embedder
+	Client *elasticsearch.Client // 必填：Elasticsearch 客户端实例
+	Index  string                // 必填：存储文档的索引名称
+	BatchSize int                // 可选：embedding 的最大文本大小（默认：5）
+	
+	// 必填：将文档字段映射到 Elasticsearch 字段的函数
+	DocumentToFields func(ctx context.Context, doc *schema.Document) (map[string]FieldValue, error)
+	
+	// 可选：仅当需要向量化时才需要
+	Embedding embedding.Embedder
 }
 
-// FieldValue defines how a field should be stored and vectorized
+// FieldValue 定义了字段应如何存储和向量化
 type FieldValue struct {
-    Value     any    // Original value to store
-    EmbedKey  string // If set, Value will be vectorized and saved
-    Stringify func(val any) (string, error) // Optional: custom string conversion
+	Value     any    // 要存储的原始值
+	EmbedKey  string // 如果设置，Value 将被向量化并保存
+	Stringify func(val any) (string, error) // 可选：自定义字符串转换
 }
 ```
 
-## For More Details
+## 更多详情
 
-- [Eino Documentation](https://github.com/cloudwego/eino)
-- [Elasticsearch Go Client Documentation](https://github.com/elastic/go-elasticsearch)
+  - [Eino 文档](https://github.com/cloudwego/eino)
+  - [Elasticsearch Go 客户端文档](https://github.com/elastic/go-elasticsearch)

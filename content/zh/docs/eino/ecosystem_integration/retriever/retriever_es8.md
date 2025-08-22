@@ -7,29 +7,29 @@ title: Retriever - es8
 weight: 0
 ---
 
-## ES8 Retriever
+## ES8 检索器
 
-An Elasticsearch 8.x retriever implementation for [Eino](https://github.com/cloudwego/eino) that implements the `Retriever` interface. This enables seamless integration with Eino's vector retrieval system for enhanced semantic search capabilities.
+这是一个 [Eino](https://github.com/cloudwego/eino) 的 Elasticsearch 8.x 检索器实现，它实现了 `Retriever` 接口。这使得与 Eino 的向量检索系统无缝集成，从而增强了语义搜索能力。
 
-## Features
+## 特性
 
-- Implements `github.com/cloudwego/eino/components/retriever.Retriever`
-- Easy integration with Eino's retrieval system
-- Configurable Elasticsearch parameters
-- Support for vector similarity search
-- Multiple search modes including approximate search
-- Custom result parsing support
-- Flexible document filtering
+  - 实现了 `github.com/cloudwego/eino/components/retriever.Retriever`
+  - 易于与 Eino 的检索系统集成
+  - 可配置的 Elasticsearch 参数
+  - 支持向量相似度搜索
+  - 多种搜索模式，包括近似搜索
+  - 支持自定义结果解析
+  - 灵活的文档过滤
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/retriever/es8@latest
 ```
 
-## Quick Start
+## 快速开始
 
-Here's a quick example of how to use the retriever with approximate search mode, you could read components/retriever/es8/examples/approximate/approximate.go for more details:
+这是一个如何在近似搜索模式下使用检索器的快速示例，你可以阅读 `components/retriever/es8/examples/approximate/approximate.go` 获取更多细节：
 
 ```go
 import (
@@ -53,7 +53,7 @@ const (
 func main() {
 	ctx := context.Background()
 
-	// es supports multiple ways to connect
+	// es 支持多种连接方式
 	username := os.Getenv("ES_USERNAME")
 	password := os.Getenv("ES_PASSWORD")
 	httpCACertPath := os.Getenv("ES_HTTP_CA_CERT_PATH")
@@ -63,15 +63,18 @@ func main() {
 		log.Fatalf("read file failed, err=%v", err)
 	}
 
-	client, _ := elasticsearch.NewClient(elasticsearch.Config{
+	client, err := elasticsearch.NewClient(elasticsearch.Config{
 		Addresses: []string{"https://localhost:9200"},
 		Username:  username,
 		Password:  password,
 		CACert:    cert,
 	})
+	if err != nil {
+		log.Panicf("connect es8 failed, err=%v", err)
+	}
 
-	// create retriever component
-	retriever, _ := es8.NewRetriever(ctx, &es8.RetrieverConfig{
+	// 创建检索器组件
+	retriever, err := es8.NewRetriever(ctx, &es8.RetrieverConfig{
 		Client: client,
 		Index:  indexName,
 		TopK:   5,
@@ -79,8 +82,8 @@ func main() {
 			QueryFieldName:  fieldContent,
 			VectorFieldName: fieldContentVector,
 			Hybrid:          true,
-			// RRF only available with specific licenses
-			// see: https://www.elastic.co/subscriptions
+			// RRF 仅在特定许可证下可用
+			// 参见：https://www.elastic.co/subscriptions
 			RRF:             false,
 			RRFRankConstant: nil,
 			RRFWindowSize:   nil,
@@ -118,14 +121,20 @@ func main() {
 
 			return doc, nil
 		},
-		Embedding: emb, // your embedding component
+		Embedding: emb, // 你的 embedding 组件
 	})
+	if err != nil {
+		log.Panicf("create retriever failed, err=%v", err)
+	}
 
-	// search without filter
-	docs, _ := retriever.Retrieve(ctx, "tourist attraction")
+	// 无过滤条件搜索
+	docs, err := retriever.Retrieve(ctx, "tourist attraction")
+	if err != nil {
+		log.Panicf("retrieve docs failed, err=%v", err)
+	}
 
-	// search with filter
-	docs, _ = retriever.Retrieve(ctx, "tourist attraction",
+	// 带过滤条件搜索
+	docs, err = retriever.Retrieve(ctx, "tourist attraction",
 		es8.WithFilters([]types.Query{{
 			Term: map[string]types.TermQuery{
 				fieldExtraLocation: {
@@ -135,31 +144,34 @@ func main() {
 			},
 		}}),
 	)
+	if err != nil {
+		log.Panicf("retrieve docs failed, err=%v", err)
+	}
 }
 ```
 
-## Configuration
+## 配置
 
-The retriever can be configured using the `RetrieverConfig` struct:
+检索器可以通过 `RetrieverConfig` 结构体进行配置：
 
 ```go
 type RetrieverConfig struct {
-    Client *elasticsearch.Client // Required: Elasticsearch client instance
-    Index  string               // Required: Index name to retrieve documents from
-    TopK   int                  // Required: Number of results to return
-    
-    // Required: Search mode configuration
-    SearchMode search_mode.SearchMode
-    
-    // Required: Function to parse Elasticsearch hits into Documents
-    ResultParser func(ctx context.Context, hit types.Hit) (*schema.Document, error)
-    
-    // Optional: Required only if query vectorization is needed
-    Embedding embedding.Embedder
+	Client *elasticsearch.Client // 必填：Elasticsearch 客户端实例
+	Index  string                // 必填：要从中检索文档的索引名称
+	TopK   int                   // 必填：要返回的结果数量
+	
+	// 必填：搜索模式配置
+	SearchMode search_mode.SearchMode
+	
+	// 必填：将 Elasticsearch 命中解析为 Document 的函数
+	ResultParser func(ctx context.Context, hit types.Hit) (*schema.Document, error)
+	
+	// 可选：仅当需要查询向量化时才需要
+	Embedding embedding.Embedder
 }
 ```
 
-## For More Details
+## 更多详情
 
-- [Eino Documentation](https://github.com/cloudwego/eino)
-- [Elasticsearch Go Client Documentation](https://github.com/elastic/go-elasticsearch)
+  - [Eino 文档](https://github.com/cloudwego/eino)
+  - [Elasticsearch Go 客户端文档](https://github.com/elastic/go-elasticsearch)
