@@ -62,7 +62,6 @@ Hertz[həːts] 是一个 Golang 微服务 HTTP 框架，在设计之初参考了
 
 ## 相关文章
 
-- [Hertz 支持 QUIC & HTTP/3](/zh/blog/2023/08/02/hertz-支持-quic-http/3/)
 - [HTTP 框架 Hertz 实践入门：性能测试指南](/zh/blog/2023/02/24/http-框架-hertz-实践入门性能测试指南/)
 - [助力字节降本增效，大规模企业级 HTTP 框架 Hertz 设计实践](/zh/blog/2022/09/27/助力字节降本增效大规模企业级-http-框架-hertz-设计实践/)
 - [字节跳动在 Go 网络库上的实践](/zh/blog/2020/05/24/字节跳动在-go-网络库上的实践/)
