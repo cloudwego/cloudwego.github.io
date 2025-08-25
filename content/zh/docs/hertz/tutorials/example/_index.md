@@ -45,7 +45,6 @@ Hertz 提供了一系列示例代码旨在帮助用户快速上手 Hertz 并了�
 - [HTTP1](https://github.com/cloudwego/hertz-examples/tree/main/protocol/http1) : hertz 使用 HTTP1 协议的示例
 - [TLS](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) : hertz 使用 TLS 协议的示例
 - [HTTP2](https://github.com/hertz-contrib/http2/tree/main/examples) : hertz 使用 HTTP2 协议的示例
-- [HTTP3](https://github.com/hertz-contrib/http3/tree/main/examples/quic-go) : hertz 使用 HTTP3 协议的示例
 - [Websocket](https://github.com/hertz-contrib/websocket/tree/main/examples) : hertz 使用 Websocket 协议的示例
 - [SSE](https://github.com/cloudwego/hertz-examples/tree/main/sse) : hertz 使用 SSE 协议的示例
 
