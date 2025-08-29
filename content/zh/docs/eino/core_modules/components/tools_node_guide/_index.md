@@ -140,11 +140,16 @@ import (
 )
 
 // 创建工具节点
-toolsNode := compose.NewToolsNode([]tool.Tool{
-    searchTool,    // 搜索工具
-    weatherTool,   // 天气查询工具
-    calculatorTool, // 计算器工具
+toolsNode, err := compose.NewToolNode(ctx, &compose.ToolsNodeConfig{
+    Tools: []tool.BaseTool{
+        searchTool,     // 搜索工具
+        weatherTool,    // 天气查询工具
+        calculatorTool, // 计算器工具
+    },
 })
+if err != nil {
+    return err
+}
 
 // Mock LLM 输出作为输入
 input := &schema.Message{
@@ -176,11 +181,16 @@ import (
 )
 
 // 创建工具节点，一个工具节点可包含多种工具
-toolsNode := compose.NewToolsNode([]tool.BaseTool{
-    searchTool,    // 搜索工具
-    weatherTool,   // 天气查询工具
-    calculatorTool, // 计算器工具
+toolsNode, err := compose.NewToolNode(ctx, &compose.ToolsNodeConfig{
+    Tools: []tool.BaseTool{
+        searchTool,     // 搜索工具
+        weatherTool,    // 天气查询工具
+        calculatorTool, // 计算器工具
+    },
 })
+if err != nil {
+    return err
+}
 
 // 在 Chain 中使用
 chain := compose.NewChain[*schema.Message, []*schema.Message]()
