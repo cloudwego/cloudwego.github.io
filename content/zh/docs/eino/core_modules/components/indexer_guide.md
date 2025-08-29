@@ -262,7 +262,7 @@ func NewMyIndexer(config *MyIndexerConfig) (*MyIndexer, error) {
 
 func (i *MyIndexer) Store(ctx context.Context, docs []*schema.Document, opts ...indexer.Option) ([]string, error) {
     // 1. 处理选项
-    options := &indexer.Options{},
+    options := &indexer.Options{}
     options = indexer.GetCommonOptions(options, opts...)
     
     // 2. 获取 callback manager
