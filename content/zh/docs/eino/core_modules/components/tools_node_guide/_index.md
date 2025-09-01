@@ -30,7 +30,7 @@ type BaseTool interface {
     Info(ctx context.Context) (*schema.ToolInfo, error)
 }
 
-// 可调用的工具接口，支持同步调用
+// 支持同步调用的工具接口
 type InvokableTool interface {
     BaseTool
     InvokableRun(ctx context.Context, argumentsInJSON string, opts ...Option) (string, error)
@@ -49,7 +49,7 @@ type StreamableTool interface {
 - 参数：
   - ctx：上下文对象
 - 返回值：
-  - `*schema.ToolInfo`：工具的描述信息
+  - `*schema.ToolInfo`：工具的描述信息，用于提供给大模型
   - error：获取信息过程中的错误
 
 #### **InvokableRun 方法**
@@ -97,6 +97,39 @@ type ToolInfo struct {
 
 Tool 组件使用 ToolOption 来定义可选参数， ToolsNode 没有抽象公共的 option。每个具体的实现可以定义自己的特定 Option，通过 WrapToolImplSpecificOptFn 函数包装成统一的 ToolOption 类型。
 
+```go
+package tool
+
+// Option defines call option for InvokableTool or StreamableTool component, which is part of component interface signature.
+// Each tool implementation could define its own options struct and option funcs within its own package,
+// then wrap the impl specific option funcs into this type, before passing to InvokableRun or StreamableRun.
+type Option struct {
+	implSpecificOptFn any
+}
+
+// WrapImplSpecificOptFn wraps the impl specific option functions into Option type.
+// T: the type of the impl specific options struct.
+// Tool implementations are required to use this function to convert its own option functions into the unified Option type.
+// For example, if the tool defines its own options struct:
+//
+//	type customOptions struct {
+//	    conf string
+//	}
+//
+// Then the tool needs to provide an option function as such:
+//
+//	func WithConf(conf string) Option {
+//	    return WrapImplSpecificOptFn(func(o *customOptions) {
+//			o.conf = conf
+//		}
+//	}
+func WrapImplSpecificOptFn[T any](optFn func(*T)) Option {
+	return Option{
+		implSpecificOptFn: optFn,
+	}
+}
+```
+
 ## **使用方式**
 
 ```go
@@ -107,11 +140,16 @@ import (
 )
 
 // 创建工具节点
-toolsNode := compose.NewToolsNode([]tool.Tool{
-    searchTool,    // 搜索工具
-    weatherTool,   // 天气查询工具
-    calculatorTool, // 计算器工具
+toolsNode, err := compose.NewToolNode(ctx, &compose.ToolsNodeConfig{
+    Tools: []tool.BaseTool{
+        searchTool,     // 搜索工具
+        weatherTool,    // 天气查询工具
+        calculatorTool, // 计算器工具
+    },
 })
+if err != nil {
+    return err
+}
 
 // Mock LLM 输出作为输入
 input := &schema.Message{
@@ -131,6 +169,8 @@ toolMessages, err := toolsNode.Invoke(ctx, input)
 
 ToolsNode 通常不会被单独使用，一般用于编排之中接在 ChatModel 之后。
 
+如果要和 ChatModel 共同使用，即 ChatModel 产生tool call调用指令，Eino解析tool call指令来调用 ToolsNode, 需要调用 ChatModel 的 WithTools() 函数将工具描述信息传递给大模型。
+
 ### **在编排中使用**
 
 ```go
@@ -140,12 +180,17 @@ import (
     "github.com/cloudwego/eino/schema"
 )
 
-// 创建工具节点
-toolsNode := compose.NewToolsNode([]tool.Tool{
-    searchTool,    // 搜索工具
-    weatherTool,   // 天气查询工具
-    calculatorTool, // 计算器工具
+// 创建工具节点，一个工具节点可包含多种工具
+toolsNode, err := compose.NewToolNode(ctx, &compose.ToolsNodeConfig{
+    Tools: []tool.BaseTool{
+        searchTool,     // 搜索工具
+        weatherTool,    // 天气查询工具
+        calculatorTool, // 计算器工具
+    },
 })
+if err != nil {
+    return err
+}
 
 // 在 Chain 中使用
 chain := compose.NewChain[*schema.Message, []*schema.Message]()
@@ -156,7 +201,9 @@ graph := compose.NewGraph[*schema.Message, []*schema.Message]()
 graph.AddToolsNode(toolsNode)
 ```
 
-## **Option 机制**
+## **Option 和 Callback 使用**
+
+### **Option 使用示例**
 
 自定义 Tool 可根据自己需要实现特定的 Option：
 
@@ -176,9 +223,38 @@ func WithTimeout(timeout time.Duration) tool.Option {
         o.Timeout = timeout
     })
 }
+
+type MyTool struct {
+    options MyToolOptions
+}
+
+func (t *MyTool) Info(ctx context.Context) (*schema.ToolInfo, error) {
+    // 省略具体实现
+    return nil, err
+}
+func (t *MyTool) StreamableRun(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (*schema.StreamReader[string], error) {
+    // 省略具体实现
+    return nil, err
+}
+
+func (t *MyTool) InvokableRun(ctx context.Context, argument string, opts ...tool.Option) (string, error) {
+	// 将执行编排时传入的自定义配置设置到MyToolOptions中
+    tmpOptions := tool.GetImplSpecificOptions(&t.options, opts...)
+
+    // 根据tmpOptions中Timeout的值处理Timeout逻辑
+	return "", nil
+}
 ```
 
-## **Option 和 Callback 使用**
+执行编排时，可以使用 compose.WithToolsNodeOption() 传入 ToolsNode 相关的Option设置，ToolsNode下的所有 Tool 都能接收到
+```go
+streamReader, err := graph.Stream(ctx, []*schema.Message{
+    {
+        Role:    schema.User,
+        Content: "hello",
+    },
+}, compose.WithToolsNodeOption(compose.WithToolOption(WithTimeout(10 * time.Second))))
+```
 
 ### **Callback 使用示例**
 
