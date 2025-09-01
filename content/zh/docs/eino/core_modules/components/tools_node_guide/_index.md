@@ -169,7 +169,7 @@ toolMessages, err := toolsNode.Invoke(ctx, input)
 
 ToolsNode 通常不会被单独使用，一般用于编排之中接在 ChatModel 之后。
 
-如果要通过 ChatModel 调用 ToolsNode, 需要调用 ChatModel 的 WithTools() 函数将工具描述信息传递给大模型。
+如果要和 ChatModel 共同使用，即 ChatModel 产生tool call调用指令，Eino解析tool call指令来调用 ToolsNode, 需要调用 ChatModel 的 WithTools() 函数将工具描述信息传递给大模型。
 
 ### **在编排中使用**
 
