@@ -117,7 +117,7 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具，可以�
 - 通过指定已经定义好的 idl 文件进行代码生成，例如 `hz new -idl hello.thrift`。
 
     ```thrift
-    // idl/hello.thrift
+    // ./hello.thrift
     namespace go hello.example
     
     struct HelloReq {
@@ -178,7 +178,7 @@ curl http://127.0.0.1:8888/hello?name=bob
 如果需要对项目进行进一步的更新, 应使用 `hz update` 命令, 这里以添加一个 `ByeMethod` 方法为例。
 
 ```thrift
-// idl/hello.thrift
+// ./hello.thrift
 namespace go hello.example
 
 struct HelloReq {
