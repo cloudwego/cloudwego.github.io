@@ -119,17 +119,17 @@ For more information on how to use hz, please refer to: [hz](/zh/docs/hertz/tuto
   - Code generation by specifying an already defined idl file, e.g. `hz new -idl hello.thrift`.
 
     ```thrift
-    // idl/hello.thrift
+    // ./hello.thrift
     namespace go hello.example
-    
+
     struct HelloReq {
         1: string Name (api.query="name"); // Add api annotation for easy parameter binding
     }
-    
+
     struct HelloResp {
         1: string RespBody;
     }
-    
+
     service HelloService {
         HelloResp HelloMethod(1: HelloReq request) (api.get="/hello");
     }
@@ -180,7 +180,7 @@ You have now successfully launched Hertz Server successfully and completed two A
 If you need to make further updates to the project, you should use the `hz update` command, here is an example of adding a `Bye` method.
 
 ```thrift
-// idl/hello.thrift
+// ./hello.thrift
 namespace go hello.example
 
 struct HelloReq {
