@@ -400,7 +400,7 @@ func main() {
           log.Fatal(event.Err)
        }
        if event.Action != nil && event.Action.Interrupted != nil {
-          fmt.Printf("\ninterrupt happened, info: %+v\n", event.Action.Interrupted.Data.(*compose.InterruptInfo).RerunNodesExtra["ToolNode"])
+          fmt.Printf("\ninterrupt happened, info: %+v\n", event.Action.Interrupted.Data.(*adk.ChatModelAgentInterruptInfo).Info.RerunNodesExtra["ToolNode"])
           continue
        }
        msg, err := event.Output.MessageOutput.GetMessage()
