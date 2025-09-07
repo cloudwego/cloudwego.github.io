@@ -174,8 +174,9 @@ engine.go:276: [Info] HERTZ: Execute OnShutdownHooks timeout: error=context dead
 
 ## OnAccept
 
-`OnAccept` is a function to be called **after** connection accepted
+In netpoll libaray, `OnAccept` is a function to be called **after** connection accepted
 but **before** adding it to epoll.
+In go net library, `OnAccept` is executed **after** connection accepted but **before** establishing TLS connection.
 
 ```go
 OnAccept func(conn net.Conn) context.Context
@@ -224,7 +225,8 @@ main.go:38: [Info] pong
 
 ## OnConnect
 
-`OnConnect` is a function to be called **after** adding it to epoll. The difference is that onConnect can get data but OnAccept cannot.
+In netpoll library, `OnConnect` is a function to be called **after** adding it to epoll. The difference is that onConnect can get data but OnAccept cannot.
+In go net, `OnConnect` is executed after establishing TLS connection.
 
 ```go
 OnConnect func(ctx context.Context, conn network.Conn) context.Context
