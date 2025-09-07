@@ -127,7 +127,7 @@ func main() {
 提示：终止服务，将在控制台**乱序**打印三个 `ShutdownHook` 函数的日志。
 
 ```shell
-hertz.go:77: [Info] HERTZ: Begin graceful shutdown, wait at most num=5 seconds...
+hertz.go:77: [Info] HERTZ: Begin graceful shutdown, wait at most 5s ...
 main.go:22: [Info] run the third shutdown hook
 main.go:16: [Info] run the first shutdown hook
 main.go:19: [Info] run the second shutdown hook
@@ -169,7 +169,7 @@ func main() {
 提示：终止服务时，因为钩子函数执行时间超过 2 秒，打印超时日志。
 
 ```shell
-hertz.go:77: [Info] HERTZ: Begin graceful shutdown, wait at most num=2 seconds...
+hertz.go:77: [Info] HERTZ: Begin graceful shutdown, wait at most 2s ...
 main.go:17: [Info] run shutdown hook
 engine.go:276: [Info] HERTZ: Execute OnShutdownHooks timeout: error=context deadline exceeded
 ```

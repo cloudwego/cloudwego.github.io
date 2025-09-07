@@ -167,7 +167,7 @@ func main() {
 Note: When terminating the service, the timeout log is printed because the hook function took more than 2 seconds to execute.
 
 ```shell
-hertz.go:77: [Info] HERTZ: Begin graceful shutdown, wait at most num=2 seconds...
+hertz.go:77: [Info] HERTZ: Begin graceful shutdown, wait at most 2s ...
 main.go:17: [Info] run shutdown hook
 engine.go:276: [Info] HERTZ: Execute OnShutdownHooks timeout: error=context deadline exceeded
 ```
