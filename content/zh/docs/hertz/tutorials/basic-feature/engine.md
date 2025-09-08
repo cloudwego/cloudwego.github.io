@@ -313,7 +313,7 @@ Hertz Server 支持流式写入响应。
            }()
 
            go func() {
-               <-c..Finished()
+               <-c.Finished()
                fmt.Println("request process end")
            }()
        })
@@ -335,7 +335,7 @@ Hertz Server 支持流式写入响应。
            }()
 
            go func() {
-               <-c..Finished()
+               <-c.Finished()
                fmt.Println("request process end")
            }()
        })
