@@ -18,7 +18,7 @@ Document Loader 是一个用于加载文档的组件。它的主要作用是从�
 
 ### **接口定义**
 
-> 代码位置：eino/components/document/parser/interface.go
+> 代码位置：eino/components/document/interface.go
 
 ```go
 type Loader interface {
