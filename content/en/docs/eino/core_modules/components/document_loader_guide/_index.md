@@ -18,7 +18,7 @@ Document Loader is a component used for loading documents. Its primary function 
 
 ### **Interface Definition**
 
-> Code Location: eino/components/document/parser/interface.go
+> Code Location: eino/components/document/interface.go
 
 ```go
 type Loader interface {
