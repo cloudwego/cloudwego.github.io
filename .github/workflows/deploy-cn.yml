@@ -39,4 +39,4 @@ jobs:
       - name: setup-ossutil2
         uses: rogerogers/setup-ossutil2@v1.0.0
       - name: upload to oss
-        run: ossutil cp -r -u public oss://cloudwego-website-cn
+        run: ossutil sync public/ oss://cloudwego-website-cn/ --delete
