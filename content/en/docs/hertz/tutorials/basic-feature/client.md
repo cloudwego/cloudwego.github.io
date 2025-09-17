@@ -241,7 +241,7 @@ func main() {
 
 ### Get
 
-The `Get` function returns the status code of the URL and the response body. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned.
+The `Get` function returns the status code of the URL and the response body. The contents of dst will be replaced by the body and returned, if the dst is too small a new slice will be allocated.
 
 The function will automatically follow the redirect.
 
@@ -268,7 +268,7 @@ func main() {
 
 ### Post
 
-The `Post` function sends a POST request to the specified URL using the given POST parameters. If dst is too small, it will be replaced by the response body and returned, otherwise a new slice will be assigned.
+The `Post` function sends a POST request to the specified URL using the given POST parameters. The contents of dst will be replaced by the body and returned, if the dst is too small a new slice will be allocated.
 
 The function will automatically follow the redirect.
 
