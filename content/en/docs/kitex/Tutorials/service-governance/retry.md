@@ -34,6 +34,7 @@ Mixed Retry function with both Failure Retry and Backup Request functions. Advan
 - Make sure your targeting service method is idempotent before enabling retry.
 - Failure Retry and Backup Request cannot be enabled on the same method at the same time. If you need to enable it at the same time, please use Mixed Retry.
 - Timeout retry will increase latency
+- Streaming API doesn't yet support Retry
 
 ## 2. Retry Policy
 
