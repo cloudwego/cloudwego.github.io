@@ -34,7 +34,7 @@ If you want to use custom implementations for the message or transport protocol,
 
 #### Thrift
 
-1. Framed (by default): prepend a 4-byte (int32) length before the Thrift pure payload
+1. Framed : prepend a 4-byte (int32) length before the Thrift pure payload. Kitex client uses Framed by default since v0.13.0, before v0.13.0, it used to be Buffered PurePayload.
 2. configure Buffered：add the below client option to set only send PurePayload
 
 ```go
