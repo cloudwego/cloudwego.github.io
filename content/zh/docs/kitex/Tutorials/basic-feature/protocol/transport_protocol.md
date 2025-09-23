@@ -33,11 +33,11 @@ Kitex 目前支持两种传输协议：[TTHeader](/zh/docs/kitex/reference/trans
 
 #### Thrift
 
-1. 默认 Buffered：PurePayload
-2. 指定 Framed：PurePayload 前增加 4 个字节（int32）指定 Payload Size
+1. 默认 Framed 协议：在 PurePayload 前增加 4 个字节（int32）指定 Payload Size。Kitex 在 v0.13.0 及以后默认使用 Framed 协议，之前版本默认使用 Buffered PurePayload。
+2. 指定 Buffered：按下面的方式设置 option，手动设置为只发送 PurePayload
 
 ```go
-cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.Framed))
+cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.PurePayload))
 ```
 
 3. 指定 TTHeader：
