@@ -44,7 +44,11 @@ description: >
 
 2. **Thrift 默认传输协议由 Buffered 改为 Framed**
 
-    这个变更可以利用 FastCodec 以获得更高的编解码性能。
+    这个变更可以利用 FastCodec 以获得更高的编解码性能。通常 Kitex 下游都支持自动识别 Framed 协议，这个变更是无感的。但如果你的下游是其他框架，不支持 Framed，需要改回 Buffered 协议，你可以通过下面的方式配置：
+
+```go
+cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.PurePayload))
+```
 
 ### **其他**
 1. 产物简化

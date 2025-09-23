@@ -46,6 +46,13 @@ description: >
 
     This change can leverage FastCodec for better performance.
 
+   This change can leverage FastCodec for better performance. Generally, Kitex downstream will auto recognition Framed protocol, making this change seamless. However, if your downstream uses other frameworks that do not support Framed and requires reverting to the Buffered protocol, you can configure it:
+
+```go
+cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.PurePayload))
+```
+
+
 ### **Others**
 1. **Code Product Simplification** 
     
