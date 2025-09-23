@@ -42,11 +42,12 @@ description: >
 
     User documentation: [StreamX Timeout Control](/docs/kitex/tutorials/basic-feature/streamx/streamx_timeout_control/)
 
-2. **Default Thrift transport protocol changed from Buffered to Framed** 
 
-    This change can leverage FastCodec for better performance.
+### **Special Change**
 
-   This change can leverage FastCodec for better performance. Generally, Kitex downstream will auto recognition Framed protocol, making this change seamless. However, if your downstream uses other frameworks that do not support Framed and requires reverting to the Buffered protocol, you can configure it:
+1. **Default Thrift transport protocol changed from Buffered to Framed**
+
+   This change leverages FastCodec for higher codec performance. Since Kitex server supports protocol detection, this behavioral change is compatible. Framed protocol is generally supported by most thrift frameworks, and we assess the impact to be minimal. However, if the downstream does not support Framed protocol, please manually revert to the Buffered protocol as follows:
 
 ```go
 cli := xxx.NewClient("service_name", client.WithTransportProtocol(transport.PurePayload))
