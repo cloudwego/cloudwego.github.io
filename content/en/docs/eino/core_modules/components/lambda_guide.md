@@ -52,7 +52,7 @@ From the perspective of the unified specification of Eino's component interface,
 - InvokableLambda
 
 ```go
-// input and output types are any types customized by oneself.
+// The types of input and output types can be any types.
 lambda := compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
     // some logic
 })
@@ -61,7 +61,7 @@ lambda := compose.InvokableLambda(func(ctx context.Context, input string) (outpu
 - StreamableLambda
 
 ```go
-// The types of 'input' and 'output' are any custom types. 
+// The type of input can be any custom type and the type of output must be *schema.StreamReader[O]，O can be any type.
 lambda := compose.StreamableLambda(func(ctx context.Context, input string) (output *schema.StreamReader[string], err error) {
     // some logic
 })
@@ -70,7 +70,7 @@ lambda := compose.StreamableLambda(func(ctx context.Context, input string) (outp
 - CollectableLambda
 
 ```go
-// The types of 'input' and 'output' can be any custom type. 
+// The type of input must be *schema.StreamReader[I]，I can be any type and the type of output can be any custom type. 
 lambda := compose.CollectableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (output string, err error) {
     // some logic
 })
@@ -79,7 +79,7 @@ lambda := compose.CollectableLambda(func(ctx context.Context, input *schema.Stre
 - TransformableLambda
 
 ```go
-// The types of input and output are any custom types.
+// The type of input must be *schema.StreamReader[I]，I can be any type and the type of output must be *schema.StreamReader[O]，O can be any type.
 lambda := compose.TransformableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (output *schema.StreamReader[string], err error) {
     // some logic
 })

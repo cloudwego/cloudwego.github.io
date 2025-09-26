@@ -64,7 +64,7 @@ lambda := compose.InvokableLambda(func(ctx context.Context, input string) (outpu
 - StreamableLambda
 
 ```go
-// input 可以是任意类型，output 必须是 *schema.StreamReader[O]，其中 O 可以是任意类型
+// input 可以是任意类型；output 必须是 *schema.StreamReader[O]，其中 O 可以是任意类型
 lambda := compose.StreamableLambda(func(ctx context.Context, input string) (output *schema.StreamReader[string], err error) {
     // some logic
 })
@@ -73,7 +73,7 @@ lambda := compose.StreamableLambda(func(ctx context.Context, input string) (outp
 - CollectableLambda
 
 ```go
-// input 必须是 *schema.StreamReader[I]，其中 I 可以是任意类型，output 可以是任意类型
+// input 必须是 *schema.StreamReader[I]，其中 I 可以是任意类型；output 可以是任意类型
 lambda := compose.CollectableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (output string, err error) {
     // some logic
 })
@@ -82,7 +82,7 @@ lambda := compose.CollectableLambda(func(ctx context.Context, input *schema.Stre
 - TransformableLambda
 
 ```go
-// input 和 output 必须是 *schema.StreamReader[I]，其中 I 可以是任意类型
+// input 必须是 *schema.StreamReader[I]，其中 I 可以是任意类型；output 必须是 *schema.StreamReader[O]，其中 O 可以是任意类型
 lambda := compose.TransformableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (output *schema.StreamReader[string], err error) {
     // some logic
 })
