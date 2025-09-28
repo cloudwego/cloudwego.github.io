@@ -1,9 +1,9 @@
 ---
 title: "Basic Usage"
-date: 2024-01-24
+date: 2025-09-28
 weight: 2
-keywords: ["generic-call", "HTTP", "Thrift"]
-description: "Basic usage of generic call"
+keywords: ["generic-call", "HTTP", "Thrift", "Protobuf", "Map", "JSON"]
+description: "Complete guide to Kitex generic calls including binary forwarding, HTTP mapping, Map/JSON mapping, and Protobuf binary generic calls."
 ---
 
 > For stream calls, please upgrade **github.com/cloudwego/kitex** to >= v0.14.1
@@ -22,11 +22,11 @@ In some scenarios, the business code might receive:
 In these scenarios, there may be multiple target downstream services/methods, and it is impossible (or unsuitable) for the business code to construct a Go struct for each piece of data. Therefore, Kitex's generic call capability is needed.
 
 ## Supported Scenarios
-1. Thrift Binary Forwarding: For traffic forwarding scenarios (non-streaming only).
-2. HTTP-Mapping Generic Call: For API gateway scenarios (non-streaming only).
-3. Protobuf Binary Generic Call (supports streaming and non-streaming).
-4. Map-Thrift Mapping Generic Call (supports streaming and non-streaming).
-5. JSON-Mapping Generic Call (supports streaming and non-streaming, and supports mapping to thrift / protobuf).
+1. **Thrift Binary Forwarding**: For traffic forwarding scenarios.
+2. **HTTP-Mapping Generic Call**: For API gateway scenarios (non-streaming only).
+3. **Protobuf Binary Generic Call**
+4. **Map-Thrift Mapping Generic Call**
+5. **JSON-Mapping Generic Call**: Supports mapping to thrift / protobuf.
 
 ## Usage Examples
 
@@ -36,7 +36,7 @@ Generic calls require a runtime descriptor from the IDL, which is provided by an
 #### Parsing Local Files
 ```go
 import "github.com/cloudwego/kitex/pkg/generic"
- 
+
  // equals to `kitex -I /idl ./Your_IDL_File_Path`
  p, err := generic.NewThriftFileProvider("./Your_IDL_File_Path", "/idl")
  if err != nil {
@@ -63,93 +63,281 @@ The first argument of `NewThriftContentWithAbsIncludePathProvider` is the main I
 #### Testcase
 Test case: https://github.com/cloudwego/kitex/blob/develop/pkg/generic/thriftidl_provider_test.go
 
-### Thrift Binary Stream Forwarding
+### Thrift Binary Generic - V2 Interface
+For proxy applications, Kitex provides a best practice guide, please refer to: [Proxy Application Development Guide](../proxy_application_development/).
+
+Thrift Binary Generic Call V2 interface requires cloudwego/kitex >= v0.15.1.
+
+#### Client Usage
+##### Initialize Client
+Note: **Do not** create a new Client for each request (as each client consumes extra resources). It is recommended to create one client for each downstream service when the process starts, or use a Client Pool indexed by the downstream service.
+
+```go
+import (
+   "github.com/cloudwego/kitex/client/genericclient"
+   "github.com/cloudwego/kitex/pkg/generic"
+   "github.com/cloudwego/kitex/client"
+   "github.com/cloudwego/kitex/transport"
+   "github.com/cloudwego/kitex/pkg/transmeta"
+)
+
+// service is the downstream service name, while idlServiceName is the name defined in the thrift/pb idl.
+genericCli, err := genericclient.NewClient(service, generic.BinaryThriftGenericV2(idlServiceName),
+    client.WithHostPorts(addr.String()),
+    client.WithTransportProtocol(transport.TTHeader | transport.TTHeaderStreaming),
+    client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
+    client.WithMetaHandler(transmeta.ClientHTTP2Handler))
+```
+
+Note that the thrift binary generic interface must specify the IDL service name, which corresponds to a service defined within an IDL. A client can only access RPC methods of a specific IDL service.
+
+If the client needs to support streaming generic calls, you need to confirm the streaming call protocol. By default, the generic client generated through the above method uses TTHeaderStreaming for streaming protocols, while non-streaming messages use Framed or TTHeaderFramed. If you need to configure streaming methods to use GRPC protocol without changing the protocol of non-streaming methods, add the following client options:
+
+```go
+cli, err := genericclient.NewClient("service", g, client.WithTransportProtocol(transport.GRPCStreaming))
+```
+
+##### Unary Generic Call
+Note: Binary encoding does not encode the original Thrift request parameters (example: api.Request), but rather encapsulates the method parameters in KitexArgs (also a struct generated in kitex_gen from IDL, example: api.HelloEchoArgs).
+
+```go
+import (
+    "github.com/bytedance/gopkg/lang/dirtmake"
+    "github.com/cloudwego/frugal"
+)
+
+// Construct a request parameter MethodArgs
+// Note: type generated under kitex_gen, MethodArgs encapsulates MethodReq
+args := &HelloEchoArgs{Req: &Request{Message: "hello"}}
+
+size := frugal.EncodedSize(args)
+buf := dirtmake.Bytes(size, size)
+_, err := frugal.EncodeObject(buf, nil, args)
+
+// Obtain the encoded Thrift binary from some method (not containing thrift header), directly call the generic Client to request downstream
+result, err:= genericCli.GenericCall(ctx, methodName, buf)
+
+resp := &HelloEchoResult{}
+_, err = frugal.DecodeObject(res.([]byte), resp)
+```
+
+##### Streaming Generic Call
+Kitex streaming interface's binary payload is the value after raw request/response serialization, without Args/Results struct encapsulation, which differs from the unary interface. The streaming interface provides three streaming call modes. For detailed usage, see: [StreamX Basic Stream Programming](../../basic-feature/streamx/).
+
+```go
+import (
+    "github.com/bytedance/gopkg/lang/dirtmake"
+    "github.com/cloudwego/frugal"
+)
+
+req := &Request{Message: "hello"}
+
+size := frugal.EncodedSize(req)
+buf := dirtmake.Bytes(size, size)
+_, err := frugal.EncodeObject(buf, nil, req)
+
+stream, err := genericCli.BidirectionalStreaming(ctx, methodName)
+
+err = stream.Send(stream.Context(), buf)
+rbuf, err := stream.Recv(stream.Context())
+
+resp := &Response{}
+_, err = frugal.DecodeObject(rbuf.([]byte), resp)
+```
+
+#### Server Usage
+Since the thrift binary generic V2 interface must强制 specify the idl service name, and the idl service name must be carried by header protocols such as ttheader/grpc header/ttstream header, traffic from protocols like framed/buffered cannot carry idl service name and may not hit these specified idl service names, which could cause server processing errors.
+
+Therefore, for thrift binary generic servers, Kitex framework recommends using the built-in UnknownServiceOrMethodHandler. Detailed usage is as follows:
+
+```go
+import (
+    "github.com/cloudwego/kitex/server"
+    "github.com/cloudwego/kitex/server/genericserver"
+    "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/kitex/pkg/generic"
+    "github.com/cloudwego/kitex/pkg/transmeta"
+)
+
+opts := []server.Option{
+    server.WithListener(ln),
+    server.WithMetaHandler(transmeta.ServerTTHeaderHandler),
+    server.WithMetaHandler(transmeta.ServerHTTP2Handler),
+}
+
+svr := server.NewServer(opts...)
+err := genericserver.RegisterUnknownServiceOrMethodHandler(svr, &genericserver.UnknownServiceOrMethodHandler{
+    DefaultHandler:   defaultUnknownHandler,
+    StreamingHandler: streamingUnknownHandler,
+})
+```
+
+The `genericserver.UnknownServiceOrMethodHandler` needs to be injected with server handlers as needed. If the server does not receive streaming/grpc traffic, only inject the DefaultHandler; otherwise, you also need to inject the StreamingHandler. At least one of these two handlers must be injected.
+
+##### DefaultHandler
+The DefaultHandler injects the server handler for handling ping-pong traffic (excluding grpc unary traffic), which is the familiar kitex standard RPC mode. This usually includes buffered/framed/ttheader traffic, supporting thrift and protobuf message protocols. Here's an example using thrift idl:
+
+```go
+import (
+    "github.com/bytedance/gopkg/lang/dirtmake"
+    "github.com/cloudwego/frugal"
+)
+
+func defaultUnknownHandler(ctx context.Context, service, method string, request interface{}) (response interface{}, err error) {
+    args := &HelloEchoArgs{}
+    if _, err = frugal.DecodeObject(request.([]byte), args); err != nil {
+        return nil, err
+    }
+    req := args.Req
+    if req == nil {
+        return nil, fmt.Errorf("req is nil")
+    }
+    resp := runner.ProcessRequest(req)
+    result := &HelloEchoResult{Success: resp}
+    size := frugal.EncodedSize(result)
+    buf := dirtmake.Bytes(size, size)
+    _, err = frugal.EncodeObject(buf, nil, result)
+    return buf, err
+}
+```
+
+According to the handler method signature, service is the service name defined in the IDL. If the request does not carry IDL Service name, the parameter value is empty.
+
+##### StreamingHandler
+The StreamingHandler injects the server handler for all streaming methods (including grpc unary traffic), which is streaming RPC mode traffic. This usually includes grpc/ttstream traffic, supporting thrift and protobuf message formats. Here's an example using thrift:
+
+```go
+func streamingUnknownHandler(ctx context.Context, service, method string, stream generic.BidiStreamingServer) (err error) {
+    for {
+        request, err := stream.Recv(ctx)
+        if err == io.EOF {
+           return nil
+        }
+        if err != nil {
+           return err
+        }
+        req := &Request{}
+        if _, err = frugal.DecodeObject(request.([]byte), req); err != nil {
+            return nil, err
+        }
+        resp := runner.ProcessRequest(req)
+        size := frugal.EncodedSize(resp)
+        buf := dirtmake.Bytes(size, size)
+        _, err = frugal.EncodeObject(buf, nil, resp)
+        err = stream.Send(ctx, buf)
+        if err != nil {
+           return err
+        }
+    }
+}
+```
+
+Due to the lack of IDL Info, all binary traffic received by binary generic servers is treated as bidirectional streaming. Users need to ensure that the actual sending/receiving streaming mode is consistent with the IDL definition, otherwise it will cause processing errors on the peer side.
+
+##### Unknown Handler
+If the service itself has already defined services, such as creating a server through the generated code's NewServer function, or injecting services through json/map and other generic call interfaces:
+
+```go
+svr := servicea.NewServer()
+// register multi services
+err := serviceb.RegisterService(svr, new(ServiceBImpl))
+```
+
+Then when injecting unknown service handler again, all traffic that originally returned "unknown service" or "unknown method" errors when the client called this server will be received and processed by the unknownHandler.
+
+```go
+import "github.com/cloudwego/kitex/server/genericserver"
+
+genericserver.RegisterUnknownServiceOrMethodHandler(svr, unknownHandler)
+```
+
+### [DEPRECATED] Thrift Binary Generic
 This requires users to encode the data themselves or to forward message packets in traffic forwarding scenarios. Binary generic calls only support Framed or TTHeader requests, not Buffered Binary.
 
 Note: Oneway methods are not supported.
 
 #### Client-side Usage
-1. Initialize the Client
-
+##### Initialize the Client
 Note: **Do not** create a new Client for each request (as each client consumes extra resources). It is recommended to create one client for each downstream service when the process starts, or use a Client Pool indexed by the downstream service.
 
 ```go
 import (
-   genericclient "github.com/cloudwego/kitex/client/genericclient"
+   "github.com/cloudwego/kitex/client/genericclient"
    "github.com/cloudwego/kitex/pkg/generic"
+   "github.com/cloudwego/kitex/client"
+   "github.com/cloudwego/kitex/transport"
+   "github.com/cloudwego/kitex/pkg/transmeta"
 )
 
-func NewGenericClient(service string) genericclient.Client {
-    genericCli, err := genericclient.NewClient(service, generic.BinaryThriftGeneric())
-    // ...
-    return genericCli
-}
+genericCli, err := genericclient.NewClient(service, generic.BinaryThriftGeneric(),
+    client.WithHostPorts(addr.String()),
+    client.WithTransportProtocol(transport.TTHeader),
+    client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
+    client.WithMetaHandler(transmeta.ClientHTTP2Handler))
 ```
 
-2. Generic Call
+##### Generic Call
+Usage can be referenced at: https://github.com/cloudwego/kitex/blob/develop/pkg/generic/binary_test/generic_test.go#L117
 
-For usage, refer to https://github.com/cloudwego/kitex/blob/develop/pkg/generic/binary_test/generic_test.go#L117
-
-Note:
-- The binary encoding is not performed on the original Thrift request parameters (e.g., [api.Request](https://github.com/cloudwego/kitex-examples/blob/v0.2.0/hello/kitex_gen/api/hello.go#L12)), but on the **KitexArgs** that wrap the method parameters (also a struct generated from the IDL under `kitex_gen`, e.g., [api.HelloEchoArgs](https://github.com/cloudwego/kitex-examples/blob/v0.2.0/hello/kitex_gen/api/hello.go#L461)).
+Note: Binary encoding does not encode the original Thrift request parameters (example: api.Request), but rather encapsulates the method parameters in KitexArgs (also a struct generated in kitex_gen from IDL, example: api.HelloEchoArgs).
 
 ```go
 import (
-    "github.com/cloudwego/kitex/pkg/utils"
     gopkg "github.com/cloudwego/gopkg/protocol/thrift"
 )
 
-// The following uses the thrift codec package provided by kitex to construct an encoded Thrift binary ([]byte)
-// It must conform to the Thrift encoding format [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)
+// Use the thrift encoding/decoding package provided by kitex to construct an encoded Thrift binary ([]byte)
+// Need to satisfy thrift encoding format thrift/thrift-binary-protocol.md
 
 // Construct a request parameter MethodArgs
-// Note: This is a type generated under kitex_gen.MethodArgs wraps MethodReq. [Click here](https://github.com/cloudwego/kitex-examples/blob/v0.2.2/hello/kitex_gen/api/hello.go#L461) for an example.
-args := &HelloEchoArgs{
+// Note: type generated under kitex_gen, MethodArgs encapsulates MethodReq
+args := &HelloEchoArgs {
     Req: &Request {
         Message: "hello",
     },
 }
 
 var buf []byte
-buf, err := gopkg.MarshalFastMsg(methodName, gopkg.CALL, /*seqID*/ 0, args)
+buf, err = gopkg.MarshalFastMsg(methodName, gopkg.CALL, /*seqID*/ 0, args)
 
-// The code above is for demonstration purposes only on how to get a Thrift Binary
-// The actual scenario for binary generic calls is often to receive the Thrift Binary directly
+// The above code is only for demonstrating how to get Thrift Binary
+// The actual scenario for binary generic calls is often directly obtaining Thrift Binary
 
-// After obtaining the encoded Thrift binary in some way, directly call the generic Client to request the downstream service
+// Obtain the encoded Thrift binary from some method, directly call the generic Client to request downstream
 result, err:= genericCli.GenericCall(ctx, methodName, buf)
 ```
 
-Note:
+Note: seqID is the request sequence number. The SeqID set by the user here will not take effect; the framework will generate and reset it, so just write 0. Server scenarios need to actively set seqID, specifically see the server section.
 
-1. `seqID` is the request sequence number. The `SeqID` set by the user here will not take effect; the framework will generate and reset it, so you can just write 0. In server-side scenarios, you need to set the `seqID` actively, see the server-side section for details.
-2. The apparent type of the returned `result` is `interface{}`, but its actual type is `[]uint8`, which is the Thrift payload from the server response. It can be decoded into a `KitexResult` type.
+The returned result has a surface type of interface{}, actual type is []uint8, which is the thrift payload in the server response, and can be decoded to the KitexResult type.
 
-#### Server-side Usage (if needed)
-1. The server is used for services that only do traffic forwarding.
-    - The upstream client for binary generic calls and the downstream server **do not need to be paired**. A binary generic server can accept normal Thrift requests, but the protocol must be Framed or TTHeader; **Buffered Binary is not supported**.
-        - Reason: Binary generic calls do not decode the Thrift packet, so a protocol with a header is needed for processing.
-    - If the client passes a **correctly thrift-encoded binary**, it can access a normal Thrift server.
+#### Server Usage (if needed)
+Used for servers that only do traffic forwarding.
 
-2. Pay attention to the usage in the following scenario:
-   Scenario: normal client -> [generic server -> generic client] -> normal server. You need to ensure that the `seqID` of the packet returned by the generic server to the upstream is consistent, otherwise it will cause an error on the upstream side.
+The binary generic upstream client and downstream server do not need to be used in pairs. A binary generic server can accept normal Thrift requests, but the accepted protocol must be Framed or TTHeader, not Buffered Binary.
 
-   **Solution**: Get the upstream `seqID` via `generic.GetSeqID(buff)`. When the generic server receives the `buff` returned from the generic client, reset the `seqID` of the data packet returned to the upstream using `generic.SetSeqID(seqID, transBuff)`.
+Reason: Binary generic does not parse Thrift packets, so it needs protocols with headers to handle them.
+
+If the client passes the correct thrift encoded binary, it can access normal Thrift servers.
+
+Note the usage in the following scenario:
+Scenario: normal client -> [generic server-> generic client]-> normal server, you need to ensure that the packet returned by the generic server to the upstream has consistent seqID, otherwise it will cause upstream errors.
+
+Handling method: Get the upstream seqID through `generic.GetSeqID(buff)`, after the generic server receives the buff returned by the generic client, reset the seqID of the data packet returned to the upstream through `generic.SetSeqID(seqID, transBuff)`.
 
 ```go
 package main
 
 import (
     "github.com/cloudwego/kitex/pkg/generic"
-    bgeneric "github.com/cloudwego/kitex/server/genericserver"
+    "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/kitex/server"
+    "github.com/cloudwego/kitex/server/genericserver"
 )
 
-var genericCli genericclient.Client
-
 func main() {
-    genericCli = NewGenericClient("targetServiceName")
     g := generic.BinaryThriftGeneric()
-    svr := bgeneric.NewServer(&GenericServiceImpl{}, g)
+    svr := genericserver.NewServer(&GenericServiceImpl{}, g)
     err := svr.Run()
     if err != nil {
             panic(err)
@@ -160,39 +348,111 @@ type GenericServiceImpl struct {}
 
 // GenericCall ...
 func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, request interface{}) (response interface{}, err error) {
-    // For thrift protocol binary format, refer to: [thrift/thrift-binary-protocol.md](https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md#message)
+    // thrift protocol binary format, reference: thrift/thrift-binary-protocol.md
     reqBuf := request.([]byte)
-    // The method name is already parsed
-    // e.g. 
+    // method name is already parsed
+    // e.g.
     seqID, err := generic.GetSeqID(reqBuf)
     if err != nil {
-        // Theoretically impossible, the request packet is invalid
+        // theoretically impossible, request packet is illegal
     }
-    // If it's a proxy scenario - request the target downstream
+    // Assume proxy scenario - request target downstream
     respBuf, err:= genericCli.GenericCall(ctx, methodName, reqBuf)
     // Execute handler logic
-    // Construct a respBuf: 1. Serialize the downstream response 2. // It can also be the response from a binary generic call, satisfying the "request passthrough" requirement
+    // Construct a respBuf: 1. Serialize the downstream return 2. // Can also be the return of binary generic call, satisfying "request passthrough" requirements
     generic.SetSeqID(seqID, respBuf)
     return respBuf, nil
 }
+```
 
-func NewGenericClient(service string) genericclient.Client {
-    genericCli, err := genericclient.NewClient(service, generic.BinaryThriftGeneric())
-    // ...
-    return genericCli
+### Protobuf Binary Generic Call
+For proxy applications, Kitex provides a best practice guide, please refer to: [Proxy Application Development Guide](../proxy_application_development/).
+
+Protobuf Binary Generic Call supports streaming and non-streaming calls, requiring cloudwego/kitex >= v0.15.1.
+
+#### Client Usage
+##### Initialize Client
+Note: **Do not** create a new Client for each request (as each client consumes extra resources). It is recommended to create one client for each downstream service when the process starts, or use a Client Pool indexed by the downstream service.
+
+```go
+import (
+   "github.com/cloudwego/kitex/client/genericclient"
+   "github.com/cloudwego/kitex/pkg/generic"
+   "github.com/cloudwego/kitex/client"
+   "github.com/cloudwego/kitex/transport"
+   "github.com/cloudwego/kitex/pkg/transmeta"
+)
+
+g := generic.BinaryPbGeneric(serviceName, packageName)
+genericCli, err := genericclient.NewClient(service, g,
+    client.WithHostPorts(addr.String()),
+    client.WithTransportProtocol(transport.TTHeader | transport.TTHeaderStreaming),
+    client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
+    client.WithMetaHandler(transmeta.ClientHTTP2Handler))
+```
+
+Where serviceName and packageName correspond to the service name and package name defined in the idl, such as "Mock" and "protobuf/pbapi" in the following pb idl.
+
+```protobuf
+syntax = "proto3";
+package pbapi;
+
+option go_package = "protobuf/pbapi";
+
+message MockReq {
+  string message = 1;
+}
+
+message MockResp {
+  string message = 1;
+}
+
+service Mock {
+  rpc UnaryTest (MockReq) returns (MockResp) {}
+  rpc ClientStreamingTest (stream MockReq) returns (MockResp) {}
+  rpc ServerStreamingTest (MockReq) returns (stream MockResp) {}
+  rpc BidirectionalStreamingTest (stream MockReq) returns (stream MockResp) {}
 }
 ```
 
-### HTTP-Mapping Generic Call
+If the client needs to support streaming generic calls, you need to confirm the streaming call protocol. By default, the generic client generated through the above method uses TTHeaderStreaming for streaming protocols, while non-streaming messages use Framed or TTHeaderFramed. If you need to configure to use GRPC protocol, add the following client options:
 
-Note:
+```go
+genericclient.NewClient("service", generic.BinaryThriftGeneric(), client.WithTransportProtocol(transport.GRPC))
+```
 
-1. Only the generic client is supported, which converts an HTTP Request into a Thrift request and sends it, while also converting the downstream Thrift response into an HTTP Response.
-2. Kitex has supported a higher-performance implementation of generic calls. For usage, see [Guide to Accessing dynamicgo for Generic Calls](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
+##### Generic Call
+The request/response or stream message passed in generic calls are the results after protobuf serialization. After the generic client is initialized, it provides 4 streaming mode call methods. For detailed streaming usage, see: [StreamX Basic Stream Programming](../../basic-feature/streamx/).
 
-#### Generic Call Example (JSON data format)
-`YOUR_IDL.thrift`
+```go
+// unary
+resp, err := genericCli.GenericCall(ctx, "UnaryTest", buf)
+// client streaming
+stream, err := genericCli.ClientStreaming(ctx, "ClientStreamingTest")
+// server streaming
+stream, err := genericCli.ServerStreaming(ctx, "ServerStreamingTest", buf)
+// bidi streaming
+stream, err := genericCli.BidirectionalStreaming(ctx, "BidirectionalStreamingTest")
+```
 
+Detailed usage example: https://github.com/cloudwego/kitex-tests/blob/main/generic/binarypb/generic_test.go
+
+#### Server Usage
+Since the protobuf binary generic interface must specify the idl service name, and the idl service name must be carried by header protocols such as ttheader/grpc header/ttstream header, traffic from protocols like framed/buffered (kitex-protobuf) cannot carry idl service name and may not hit these specified idl service names, which could cause server processing errors.
+
+Therefore, for protobuf binary generic servers, the recommended usage is to use the built-in UnknownServiceOrMethodHandler. For its usage, please refer to the thrift binary generic - server usage section. The usage of protobuf and thrift is completely consistent, only the message encoding format differs.
+
+#### Unknown Handler
+For unknown handler, also refer to thrift binary generic - unknown handler.
+
+### HTTP Mapping Generic Call
+
+Note: Only supports generic clients, converting HTTP Request to Thrift request, and will convert downstream Thrift return to HTTP Response.
+
+Kitex now supports higher performance generic call implementation, usage see [Generic Call Access DynamicGo Guide](../generic-call-dynamicgo/).
+
+#### Generic Call Example (data format is json)
+**YOUR_IDL.thrift**
 ```thrift
 namespace go http
 
@@ -220,11 +480,11 @@ struct RspItem{
 }
 
 struct BizResponse {
-    1: optional string T                             (api.header= 'T') 
+    1: optional string T                             (api.header= 'T')
     2: optional map<i64, RspItem> rsp_items           (api.body='rsp_items')
     3: optional i32 v_enum                       (api.none = '')
     4: optional list<RspItem> rsp_item_list            (api.body = 'rsp_item_list')
-    5: optional i32 http_code                         (api.http_code = '') 
+    5: optional i32 http_code                         (api.http_code = '')
     6: optional list<i64> item_count (api.header = 'item_count')
 }
 
@@ -235,40 +495,45 @@ service BizService {
 }
 ```
 
-- Request
-
+**Request**
 Type: *generic.HTTPRequest
 
-- Response
-
+**Response**
 Type: *generic.HTTPResponse
 
 ```go
 package main
 
 import (
-    bgeneric "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/kitex/client/genericclient"
     "github.com/cloudwego/kitex/pkg/generic"
+    "github.com/cloudwego/kitex/client"
+    "github.com/cloudwego/kitex/transport"
+    "github.com/cloudwego/kitex/pkg/transmeta"
 )
 
 func main() {
-    // Parse local IDL file
-    // YOUR_IDL_PATH thrift file path: e.g., ./idl/example.thrift
-    // includeDirs: specify include paths, defaults to using relative paths from the current file to find includes
+    // Local file idl parsing
+    // YOUR_IDL_PATH thrift file path: example ./idl/example.thrift
+    // includeDirs: specify include paths, default uses relative path of current file to find includes
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // Construct an HTTP-type generic call
+    // Construct http type generic call
     g, err := generic.HTTPThriftGeneric(p)
     if err != nil {
         panic(err)
     }
-    cli, err := bgeneric.NewClient("service", g, opts...)
+    cli, err := genericclient.NewClient("service", g,
+        client.WithHostPorts(addr.String()),
+        client.WithTransportProtocol(transport.TTHeader),
+        client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
+        client.WithMetaHandler(transmeta.ClientHTTP2Handler))
     if err != nil {
         panic(err)
     }
-    // Construct a request
+    // Construct request
     body := map[string]interface{}{
                 "text": "text",
                 "some": map[string]interface{}{
@@ -292,191 +557,70 @@ func main() {
         panic(err)
     }
     req.Header.Set("token", "1")
-    customReq, err := generic.FromHTTPRequest(req) // Considering that the business might use a third-party http request, you can construct a conversion function yourself
+    customReq, err := generic.FromHTTPRequest(req) // Considering that business may use third-party http request, you can construct conversion function yourself
     // customReq *generic.HTTPRequest
-    // Since the method for http generic call is obtained from the http request through bam rules, just leave it empty
+    // Since the method for http generic is obtained from http request through bam rules, just fill in empty
     resp, err := cli.GenericCall(ctx, "", customReq)
     realResp := resp.(*generic.HTTPResponse)
-    realResp.Write(w) // Write back to ResponseWriter, for http gateway
+    realResp.Write(w) // Write back ResponseWriter, used for http gateway
 }
 ```
 
-#### Generic Call Example (Protobuf data format)
-For usage, refer to: https://github.com/cloudwego/kitex/pull/638/files#diff-bd83f811aba6a67986c66e48a85a0566579ab64757ea75ba8f9a39dcb363d1d5
+### Map Mapping Generic Call
+Map mapping generic call means that users can directly construct Map request parameters or returns according to the specification, and Kitex will complete Thrift encoding and decoding accordingly.
 
-**Note the following points:**
-
-1. Fields in the thrift struct modified with `api.body` must correspond one-to-one with the field IDs in the proto file; other fields are not mapped to proto and have no requirements.
-2. Nesting structs in thrift IDL default values is not supported.
-3. The method corresponding to thrift in the proto file must have the same name.
-
-An example of an extended annotation is adding `api.source='not_body_struct'`, which indicates that a certain field itself does not have a mapping to an HTTP request field, and it is necessary to traverse its subfields to get the corresponding value from the HTTP request. The usage is as follows:
-
-```thrift
-struct Request {
-    1: optional i64 v_int64(api.query = 'v_int64')
-    2: optional CommonParam common_param (api.source='not_body_struct')
-}
-
-struct CommonParam {
-    1: optional i64 api_version (api.query = 'api_version')
-    2: optional i32 token(api.header = 'token')
-}
-```
-
-The extension method is as follows:
-
-```go
-func init() {
-        descriptor.RegisterAnnotation(new(apiNotBodyStruct))
-}
-
-// Implement descriptor.Annotation
-type apiNotBodyStruct struct {
-}
-
-func (a *apiNotBodyStruct) Equal(key, value string) bool {
-        return key == "api.source" && value == "not_body_struct"
-}
-
-func (a *apiNotBodyStruct) Handle() interface{} {
-        return newNotBodyStruct
-}
-
-type notBodyStruct struct{}
-
-var newNotBodyStruct descriptor.NewHTTPMapping = func(value string) descriptor.HTTPMapping {
-        return &notBodyStruct{}
-}
-
-// get value from request
-func (m *notBodyStruct) Request(req *descriptor.HTTPRequest, field *descriptor.FieldDescriptor) (interface{}, bool) {
-        // The role of the not_body_struct annotation is equivalent to "step into", so return req itself to let the current field continue to query the required value from the Request
-        return req, true
-}
-
-// set value to response
-func (m *notBodyStruct) Response(resp *descriptor.HTTPResponse, field *descriptor.FieldDescriptor, val interface{}) {
-}
-```
-
-### Protobuf Binary Generic Call
-Protobuf binary generic calls support both streaming and non-streaming calls, currently only for client-side use, and require `cloudwego/kitex >= v0.14.1`.
-
-#### Client-side Usage
-1. Initialize the Client
-
-Note: **Do not** create a new Client for each request (as each client consumes extra resources). It is recommended to create one client for each downstream service when the process starts, or use a Client Pool indexed by the downstream service.
-
-```go
-import (
-   genericclient "github.com/cloudwego/kitex/client/genericclient"
-   "github.com/cloudwego/kitex/pkg/generic"
-)
-
-func NewGenericClient(service string) genericclient.Client {
-    g := generic.BinaryPbGeneric(serviceName, packageName)
-    genericCli, err := genericclient.NewClient(service, generic.BinaryThriftGeneric())
-    // ...
-    return genericCli
-}
-```
-
-Here `serviceName` and `packageName` correspond to the service name and package name defined in the IDL, such as `"Mock"` and `"protobuf/pbapi"` in the following pb idl.
-
-```protobuf
-syntax = "proto3";
-package pbapi;
-
-option go_package = "protobuf/pbapi";
-
-message MockReq {
-  string message = 1;
-}
-
-message MockResp {
-  string message = 1;
-}
-
-service Mock {
-  rpc UnaryTest (MockReq) returns (MockResp) {}
-  rpc ClientStreamingTest (stream MockReq) returns (MockResp) {}
-  rpc ServerStreamingTest (MockReq) returns (stream MockResp) {}
-  rpc BidirectionalStreamingTest (stream MockReq) returns (stream MockResp) {}
-}
-```
-
-If the client needs to support streaming generic calls, the streaming protocol must be confirmed. By default, the streaming protocol for the generic client generated in this way is `TTHeaderStreaming`, and non-streaming messages are `Framed` or `TTHeaderFramed`. **If you need to configure it to use the GRPC protocol, add the following client options**:
-
-```go
-genericclient.NewClient("service", generic.BinaryThriftGeneric(), client.WithTransportProtocol(transport.GRPC))
-```
-
-2. Generic Call
-
-The request/response or stream messages passed in a generic call are the result of protobuf serialization. After the generic client is initialized, it provides 4 streaming mode call methods. For detailed usage of streaming, see: [StreamX Basic Stream Programming](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/streamx/stream+basic+programming/).
-
-```go
-// unary
-resp, err := genericCli.GenericCall(ctx, "UnaryTest", buf)
-// client streaming
-stream, err := genericCli.ClientStreaming(ctx, "ClientStreamingTest")
-// server streaming
-stream, err := genericCli.ServerStreaming(ctx, "ServerStreamingTest", buf)
-// bidi streaming
-stream, err := genericCli.BidirectionalStreaming(ctx, "BidirectionalStreamingTest")
-```
-
-Detailed usage example: https://github.com/cloudwego/kitex-tests/blob/main/generic/streamxbinarypb/generic_test.go
-
-### Map-Mapping Generic Call
-Map-mapping generic call means that users can directly construct Map request parameters or returns according to the specification, and Kitex will perform the corresponding Thrift encoding and decoding.
+Note: For users with high performance requirements, consider [Using Thrift Dynamic Reflection to Improve Generic Call Performance](../generic-call-reflection/).
 
 #### Map Construction
-Kitex will strictly verify the field names and types constructed by the user according to the given IDL. Field names only support string types corresponding to Map Keys (the map key preferentially takes the value defined by the json tag, followed by the field name, refer to the **Special Note - JSON Generic** section). The type mapping of field Values is shown in the table below.
+Kitex will strictly validate the field names and types constructed by users according to the given IDL. Field names only support string type corresponding to Map Key (map key优先取json tag定义的值，其次取字段名，参考 特别说明 - JSON泛化 一节), and the type mapping of field Value is shown in the table below.
 
-For the return, it will verify the Field ID and type of the Response, and generate the corresponding Map Key according to the Field Name in the IDL.
+For returns, the Response's Field ID and type will be validated, and the corresponding Map Key will be generated according to the Field Name of the IDL.
 
 #### Type Mapping
-The mapping between Golang and Thrift IDL types is as follows:
+Golang 与 Thrift IDL 类型映射如下：
 
 **Write Mapping**
 
-| **Golang Type**<br> | **Thrift IDL Type**<br>     |
-| --- |---------------------------|
-| bool<br> | bool<br>                  |
-| int8, byte<br> | i8, byte<br>              |
-| int16<br> | i16<br>                   |
-| int32<br> | i32, i16, i8<br>          |
-| int64<br> | i64<br>                   |
-| float64<br> | double, i64, i32, i16, i8<br> |
-| string<br> | string,binary<br>         |
-| []byte<br> | binary,string<br>         |
-| []interface{} <br> | list/set<br>              |
-| map[interface{}]interface{}<br> | map<br>                   |
-| map[string]interface{}<br> | struct<br>                |
-| int32<br> | enum<br>                  |
+| Golang Type | Thrift IDL Type |
+|-------------|-----------------|
+| bool | bool |
+| int8, byte | i8, byte |
+| int16 | i16 |
+| int32 | i32, i16, i8 |
+| int64 | i64 |
+| float64 | double, i64, i32, i16, i8 |
+| string | string,binary |
+| []byte | binary,string |
+| []interface{} | list/set |
+| map[interface{}]interface{} | map |
+| map[string]interface{} | struct |
+| int32 | enum |
 
 **Read Mapping**
 
-| **Thrift IDL Type**<br> | **Golang Type (read)**<br>         | **Note**<br> |
-|-----------------------|---------------------------------| --- |
-| bool<br>              | bool<br>                        | <br> |
-| i8, <br>              | int8<br>                        | <br> |
-| byte<br>              | byte<br>                        | <br> |
-| i16<br>               | int16<br>                       | <br> |
-| i32<br>               | int32<br>                       | <br> |
-| i64<br>               | int64<br>                       | <br> |
-| double<br>            | float64<br>                     | <br> |
-| string<br>            | string<br>                      | <br> |
-| binary<br>            | []byte<br>                      | By default, it returns a String. If you need to return []byte, you need to set it through [SetBinaryWithByteSlice](https://github.com/cloudwego/kitex/blob/develop/pkg/generic/generic.go#L159).<br>g, err := generic.MapThriftGeneric(p)<br>err = generic.SetBinaryWithByteSlice(g, true)<br> |
-| list/set<br>          | []interface{} <br>              | <br> |
-| map<br>               | map[interface{}]interface{}<br> | <br> |
-| struct<br>            | map[string]interface{}<br>      | <br> |
-| enum<br>              | int32<br>                       | <br> |
+| Thrift IDL Type | Golang Type (read) | Remarks |
+|---------------|-------------------|---------|
+| bool | bool | |
+| i8, | int8 | |
+| byte | byte | |
+| i16 | int16 | |
+| i32 | int32 | |
+| i64 | int64 | |
+| double | float64 | |
+| string | string | |
+| binary | []byte | Default return is String, if you need to return []byte, you need to set through SetBinaryWithByteSlice. |
+| list/set | []interface{} | |
+| map | map[interface{}]interface{} | |
+| struct | map[string]interface{} | |
+| enum | int32 | |
+
+```go
+g, err := generic.MapThriftGeneric(p)
+err = generic.SetBinaryWithByteSlice(g, true)
+```
 
 #### Data Example
-Taking the following IDL as an example:
+Take the following IDL as an example:
 
 ```thrift
 enum ErrorCode {
@@ -528,112 +672,68 @@ req := map[string]interface{}{
                         },
                         "ID": int64(232324),
                 },
-                // Note: A value in the format of ([]interface{})(nil) will also be treated as a null value for encoding.
+                //Note:传入形如 ([]interface{})(nil) 格式的value也会被视为空值进行编码
         }
 ```
 
-`base.thrift`
+#### Client Usage
+Streaming calls on the client side require cloudwego/kitex >= v0.14.1.
 
-```cpp
-namespace py base
-namespace go base
-namespace java com.bytedance.thrift.base
-
-struct TrafficEnv {
-    1: bool Open = false,
-    2: string Env = "",
-}
-
-struct Base {
-    1: string LogID = "",
-    2: string Caller = "",
-    3: string Addr = "",
-    4: string Client = "",
-    5: optional TrafficEnv TrafficEnv,
-    6: optional map<string, string> Extra,
-}
-
-struct BaseResp {
-    1: string StatusMessage = "",
-    2: i32 StatusCode = 0,
-    3: optional map<string, string> Extra,
-}
-```
-
-`YOUR_IDL.thrift`
-
-```thrift
-include "base.thrift"
-namespace go kitex.test.server
-
-struct ExampleReq {
-    1: required string Msg,
-    255: base.Base Base,
-}
-struct ExampleResp {
-    1: required string Msg,
-    255: base.BaseResp BaseResp,
-}
-service ExampleService {
-    ExampleResp ExampleMethod(1: ExampleReq req),
-}
-```
-
-#### Client-side Usage (supports streaming and non-streaming calls)
-Streaming calls require `cloudwego/kitex >= v0.14.1`.
-
-1. Client Initialization
-
+##### Client Initialization
 Note: **Do not** create a new Client for each request (as each client consumes extra resources). It is recommended to create one client for each downstream service when the process starts, or use a Client Pool indexed by the downstream service.
 
 ```go
 package main
 
 import (
-   genericclient "github.com/cloudwego/kitex/client/genericclient"
-   "github.com/cloudwego/kitex/pkg/generic"
+    "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/kitex/pkg/generic"
+    "github.com/cloudwego/kitex/client"
+    "github.com/cloudwego/kitex/transport"
+    "github.com/cloudwego/kitex/pkg/transmeta"
 )
 
 func main() {
-    // Parse local IDL file
-    // YOUR_IDL_PATH thrift file path: e.g., ./idl/example.thrift
-    // includeDirs: specify include paths, defaults to using relative paths from the current file to find includes
+    // Local file idl parsing
+    // YOUR_IDL_PATH thrift file path: example ./idl/example.thrift
+    // includeDirs: specify include paths, default uses relative path of current file to find includes
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // Construct a map request and response type generic call
+    // Construct map request and return type generic call
     g, err := generic.MapThriftGeneric(p)
     if err != nil {
         panic(err)
     }
-    cli, err := genericclient.NewClient("service", g)
+    cli, err := genericclient.NewClient("service", g,
+        client.WithHostPorts(addr.String()),
+        client.WithTransportProtocol(transport.TTHeader | transport.TTHeaderStreaming),
+        client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
+        client.WithMetaHandler(transmeta.ClientHTTP2Handler))
     if err != nil {
         panic(err)
     }
 }
 ```
 
-If the client needs to support streaming generic calls, the streaming protocol must be confirmed. By default, the streaming protocol for the generic client generated in this way is `TTHeaderStreaming`, and non-streaming messages are `Framed` or `TTHeaderFramed`. **If you need to configure streaming methods to use the GRPC protocol without changing the protocol for non-streaming methods, add the following client options**:
+If the client needs to support streaming generic calls, you need to confirm the streaming call protocol. By default, the generic client generated through the above method uses TTHeaderStreaming for streaming protocols, while non-streaming messages use Framed or TTHeaderFramed. If you need to configure streaming methods to use GRPC protocol without changing the protocol of non-streaming methods, add the following client options:
 
 ```go
 cli, err := genericclient.NewClient("service", g, client.WithTransportProtocol(transport.GRPCStreaming))
 ```
 
-2. Generic Call
+##### Generic Call
+The request/response or stream message passed in generic calls are map[string]interface{} type. After the generic client is initialized, it provides 4 streaming mode call methods. For detailed streaming usage, see: [StreamX Basic Stream Programming](../../basic-feature/streamx/).
 
-The request/response or stream messages passed in a generic call are of type `map[string]interface{}`. After the generic client is initialized, it provides 4 streaming mode call methods. For detailed usage of streaming, see: [StreamX Basic Stream Programming](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/streamx/stream+basic+programming/).
-
-- **Request**
-
+**Request**
 Type: map[string]interface{}
 
-- **Response**
-
+**Response**
 Type: map[string]interface{}
 
 ```go
-// unary
+// uanry
 resp, err := cli.GenericCall(ctx, "ExampleMethod", map[string]interface{}{
     "msg": "hello", // keys should be the same as defined in json tag
 }) // resp is a map[string]interface{}
@@ -648,15 +748,15 @@ stream, err := genericCli.ServerStreaming(ctx, "ServerStreamingTest", map[string
 stream, err := genericCli.BidirectionalStreaming(ctx, "BidirectionalStreamingTest")
 ```
 
-Detailed usage example: https://github.com/cloudwego/kitex-tests/blob/main/generic/streamxmap/generic_test.go
+Detailed usage example: https://github.com/cloudwego/kitex-tests/blob/main/generic/map/client_test.go
 
-#### Server-side Usage (non-streaming requests only)
-- **Request**
+#### Server Usage
+For servers using map generic calls with streaming interfaces, please ensure cloudwego/kitex >= v0.15.1.
 
+**Request**
 Type: map[string]interface{}
 
-- **Response**
-
+**Response**
 Type: map[string]interface{}
 
 ```go
@@ -664,22 +764,32 @@ package main
 
 import (
     "github.com/cloudwego/kitex/pkg/generic"
-    bgeneric "github.com/cloudwego/kitex/server/genericserver"
+    "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/kitex/server"
+    "github.com/cloudwego/kitex/server/genericserver"
+    "github.com/cloudwego/kitex/pkg/transmeta"
 )
 
 func main() {
-    // Parse local IDL file
+    // Local file idl parsing
     // YOUR_IDL_PATH thrift file path: e.g. ./idl/example.thrift
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // Construct a map request and response type generic call
+    // Construct map request and return type generic call
     g, err := generic.MapThriftGeneric(p)
     if err != nil {
         panic(err)
     }
-    svc := bgeneric.NewServer(new(GenericServiceImpl), g, opts...)
+    // Old generic call interface, only supports ping pong
+    svc := genericserver.NewServer(new(GenericServiceImpl), g,
+        server.WithMetaHandler(transmeta.ServerTTHeaderHandler),
+        server.WithMetaHandler(transmeta.ServerHTTP2Handler))
+    // v2 generic call interface, supports streaming
+    svc := genericserver.NewServerV2(utils.ServiceV2Iface2ServiceV2(&GenericServiceImplV2{}), g,
+        server.WithMetaHandler(transmeta.ServerTTHeaderHandler),
+        server.WithMetaHandler(transmeta.ServerHTTP2Handler))
     if err != nil {
         panic(err)
     }
@@ -689,127 +799,51 @@ func main() {
     }
     // resp is a map[string]interface{}
 }
-
-type GenericServiceImpl struct {
-}
-
-func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, request interface{}) (response interface{}, err error) {
-        m := request.(map[string]interface{})
-        fmt.Printf("Recv: %v\n", m)
-        return  map[string]interface{}{
-            "Msg": "world",
-        }, nil
-}
 ```
 
-#### Special Note - Map Generic
-1. It will verify the field ID and type of the response and generate the corresponding map key according to the field name in the IDL. The field ID and type here need to be consistent with the IDL definition; otherwise, it will lead to undefined behavior.
-2. If you confirm that all map type keys defined in thrift are string type and you do not want to use `map[interface{}]interface{}` type parameters to construct/parse messages, you can use `MapThriftGenericForJSON` to construct the generic call.
-3. For an **empty struct**, the generic call will generate an empty map by default instead of an empty struct, which means **its subfields will not appear in the map**. If you need to set its subfields in the empty map at the same time, you can use the setting [EnableSetFieldsForEmptyStruct](https://github.com/cloudwego/kitex/pull/1265/files#diff-605c96e826099f4fa61d7d4a328caa529da4097e99585917afa3c38cf291eb7bR206).
+Detailed usage can be referenced at https://github.com/cloudwego/kitex-tests/blob/main/generic/map/server.go#L81C6-L81C24
 
-#### Map-Mapping Generic Serialization (generally no need to pay attention)
-Main interfaces:
+#### Special Notes - Map Generic
+- The response's field id and type will be validated and the corresponding map key will be generated according to the idl's field name. The field id and type here need to be consistent with the idl definition, otherwise it will lead to undefined behavior;
+- If you confirm that all map types defined in thrift have string type keys, and you do not want to use map[interface{}]interface{} type parameters to construct/parse messages, you can use MapThriftGenericForJSON to construct generic;
 
-- Serialization
+(Note: Kitex v1.17.*~v1.19.* versions introduced a bug that caused this interface to fail, see MapThriftGenericForJSON does not take effect)
 
-```go
-func (m *WriteStruct) Write(ctx context.Context, out bufiox.Writer, msg interface{}, method string, isClient bool, requestBase *base.Base) error
-```
+For empty structs, generic calls will default to generating an empty map rather than an empty struct, meaning its subfields will not appear in this map. If you need to set subfields in an empty map at the same time, you can use EnableSetFieldsForEmptyStruct.
 
-- Deserialization
+### JSON Mapping Generic Call
+JSON mapping generic call means that users can directly construct JSON String request parameters or returns according to the specification, and Kitex will complete Thrift encoding and decoding accordingly.
 
-```go
-func (m *ReadStruct) Read(ctx context.Context, method string, isClient bool, dataLen int, in bufiox.Reader) (interface{}, error)
-```
-
-- Use Case
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-
-    "github.com/cloudwego/kitex/pkg/generic"
-    "github.com/cloudwego/gopkg/bufiox"
-    "github.com/cloudwego/gopkg/protocol/thrift/base"
-    "github.com/cloudwego/kitex/pkg/generic/thrift"
-)
-
-func main() {
-    // Parse local IDL file
-    // YOUR_IDL_PATH thrift file path: e.g. ./idl/example.thrift
-    // includeDirs: specify include paths, defaults to using relative paths from the current file to find includes
-    p, err := generic.NewThriftFileProvider("YOUR_IDL_PATH")
-    if err != nil {
-        panic(err)
-    }
-
-    // Get a reader writer from p
-    var (
-        rw         = thrift.NewStructReaderWriter(<-p.Provide())
-        buf []byte = nil // Recommended to be nil
-        req        = map[string]interface{}{"Msg": "hello"}
-        w          = bufiox.NewBytesWriter(&buf)
-    )
-
-    // Serialize the request
-    err = rw.Write(context.Background(), w, req, "ExampleMethod", true, &base.Base{LogID: "1"})
-    if err != nil {
-        panic(err)
-    }
-
-    w.Flush() // Important!!!
-    fmt.Println("buf:", buf, len(buf), cap(buf))
-
-    // Deserialize the request
-    // If deserializing a response, then isClient = true
-    r := bufiox.NewBytesReader(buf)
-    req2, err := rw.Read(context.Background(), "ExampleMethod", false, len(buf), r)
-    if err != nil {
-        panic(err)
-    }
-
-    // req2: map[Base:map[Addr: Caller: Client: LogID:1] Msg:hello]
-    fmt.Println("req2:", req2)
-}
-```
-
-In Map generic serialization, you **need to call** `w.Flush()` after serializing the request. If the initial `len(buf)` > `len(serialized message)`, the message body will be at the end of `buf`. It is recommended to initialize `buf` as `nil`.
-
-### JSON-Mapping Generic Call
-JSON-mapping generic call means that users can directly construct JSON String request parameters or returns according to the specification, and Kitex will perform the corresponding Thrift encoding and decoding.
-
-Note: Kitex has supported a higher-performance implementation of generic calls. For usage, see [Guide to Accessing dynamicgo for Generic Calls](https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/).
+Note: Kitex now supports higher performance generic call implementation, usage see [Generic Call Access DynamicGo Guide](../generic-call-dynamicgo/).
 
 #### JSON Construction
-Unlike Map generic calls, which strictly verify the field names and types constructed by the user, JSON generic calls will convert the user's request parameters according to the given IDL, without requiring the user to specify explicit types like int32 or int64.
+Unlike MAP generic calls which strictly validate the field names and types constructed by users, JSON generic calls will convert the user's request parameters according to the given IDL, without requiring users to specify explicit types such as int32 or int64.
 
-For the Response, it will verify the Field ID and type, and generate the corresponding JSON Field according to the Field Name in the IDL.
+For Response, the Field ID and type will be validated, and the corresponding JSON Field will be generated according to the Field Name of the IDL.
 
-Currently supports **Kitex-Thrift** and **Kitex-Protobuf** for downstream calls.
+Currently supports Kitex-Thrift and Kitex-Protobuf as downstream for calls
 
 #### JSON<>Thrift Generic
 ##### Type Mapping
-The mapping between Golang and Thrift IDL types is as follows:
+Golang 与 Thrift IDL 类型映射如下：
 
-| Golang Type<br> | Thrift IDL Type<br> | Note<br> |
-| --- | --- | --- |
-| bool<br> | bool<br> | <br> |
-| int8<br> | i8<br> | <br> |
-| int16<br> | i16<br> | <br> |
-| int32<br> | i32<br> | <br> |
-| int64<br> | i64<br> | <br> |
-| float64<br> | double<br> |
-| []byte<br> | binary<br> | binary construction requires base64 encoding<br>[Generic call binary type compatibility](https://bytedance.feishu.cn/docx/doxcnxkmeIRGVe6K5M0vVIAN5be)<br> |
-| []interface{}<br> | list/set<br> | <br> |
-| map[interface{}]interface{}<br> | map<br> | <br> |
-| map[string]interface{}<br> | struct<br> | <br> |
-| int32<br> | enum<br> | <br> |
+| Golang Type | Thrift IDL Type | Note |
+|-------------|-----------------|------|
+| bool | bool | |
+| int8 | i8 | |
+| int16 | i16 | |
+| int32 | i32 | |
+| int64 | i64 | |
+| float64 | double | |
+| string | string | |
+| []byte | binary | binary construction requires base64 encoding |
+| []interface{} | list/set | |
+| map[interface{}]interface{} | map | |
+| map[string]interface{} | struct | |
+| int32 | enum | |
 
 ##### Data Example
-Taking the following IDL as an example:
+Take the following IDL as an example:
 
 ```thrift
 enum ErrorCode {
@@ -832,7 +866,7 @@ struct EchoRequest {
     7: set<string> Set
     8: list<string> List
     9: ErrorCode ErrorCode
-   10: Info Info
+    10: Info Info
 
     255: optional Base Base
 }
@@ -840,121 +874,75 @@ struct EchoRequest {
 
 Construct the request as follows:
 
-```go
-req := "{
-  \"Msg\": \"hello\",
-  \"I8\": 1,
-  \"I16\": 1,
-  \"I32\": 1,
-  \"I64\": 1,
-  \"Map\": \"{\"hello\":\"world\"}\",
-  \"Set\": [\"hello\", \"world\"],
-  \"List\": [\"hello\", \"world\"],
-  \"ErrorCode\": 1,
-  \"Info\": \"{\"Map\":\"{\"hello\":\"world\"}\", \"ID\":232324}\"
-}"
-```
-
-Example IDL:
-
-`base.thrift`
-
-```thrift
-namespace py base
-namespace go base
-namespace java com.xxx.thrift.base
-
-struct TrafficEnv {
-    1: bool Open = false,
-    2: string Env = "",
-}
-
-struct Base {
-    1: string LogID = "",
-    2: string Caller = "",
-    3: string Addr = "",
-    4: string Client = "",
-    5: optional TrafficEnv TrafficEnv,
-    6: optional map<string, string> Extra,
-}
-
-struct BaseResp {
-    1: string StatusMessage = "",
-    2: i32 StatusCode = 0,
-    3: optional map<string, string> Extra,
+```json
+{
+  "Msg": "hello",
+  "I8": 1,
+  "I16": 1,
+  "I32": 1,
+  "I64": 1,
+  "Map": "{\"hello\":\"world\"}",
+  "Set": ["hello", "world"],
+  "List": ["hello", "world"],
+  "ErrorCode": 1,
+  "Info": "{\"Map\":\"{\"hello\":\"world\"}\", \"ID\":232324}"
 }
 ```
 
-`example_service.thrift`
+#### Client Usage
+Streaming calls require cloudwego/kitex >= v0.14.1.
 
-```go
-include "base.thrift"
-namespace go kitex.test.server
-
-struct ExampleReq {
-    1: required string Msg,
-    255: base.Base Base,
-}
-struct ExampleResp {
-    1: required string Msg,
-    255: base.BaseResp BaseResp,
-}
-service ExampleService {
-    ExampleResp ExampleMethod(1: ExampleReq req),
-}
-```
-
-##### Client-side Usage (supports streaming and non-streaming calls)
-Streaming calls require `cloudwego/kitex >= v0.14.1`.
-
-1. Client Initialization
-
+##### Client Initialization
 Note: **Do not** create a new Client for each request (as each client consumes extra resources). It is recommended to create one client for each downstream service when the process starts, or use a Client Pool indexed by the downstream service.
 
 ```go
 package main
 
 import (
+    "github.com/cloudwego/kitex/client/genericclient"
     "github.com/cloudwego/kitex/pkg/generic"
-     bgeneric "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/kitex/client"
+    "github.com/cloudwego/kitex/transport"
+    "github.com/cloudwego/kitex/pkg/transmeta"
 )
 
 func main() {
-    // Parse local IDL file
-    // YOUR_IDL_PATH thrift file path: e.g. ./idl/example.thrift
-    // includeDirs: specify include paths, defaults to using relative paths from the current file to find includes
+    // Local file idl parsing
+    // YOUR_IDL_PATH thrift file path: example ./idl/example.thrift
+    // includeDirs: specify include paths, default uses relative path of current file to find includes
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // Construct a JSON request and response type generic call
+    // Construct JSON request and return type generic call
     g, err := generic.JSONThriftGeneric(p)
     if err != nil {
         panic(err)
     }
-    cli, err := bgeneric.NewClient("service", g, opts...)
+    cli, err := genericclient.NewClient("service", g,
+        client.WithHostPorts(addr.String()),
+        client.WithTransportProtocol(transport.TTHeader | transport.TTHeaderStreaming),
+        client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
+        client.WithMetaHandler(transmeta.ClientHTTP2Handler))
     if err != nil {
         panic(err)
     }
 }
 ```
 
-If the client needs to support streaming generic calls, the streaming protocol must be confirmed. By default, the streaming protocol for the generic client generated in this way is `TTHeaderStreaming`, and non-streaming messages are `Framed` or `TTHeaderFramed`. **If you need to configure streaming methods to use the GRPC protocol without changing the protocol for non-streaming methods, add the following client options**:
+If the client needs to support streaming generic calls, you need to confirm the streaming call protocol. By default, the generic client generated through the above method uses TTHeaderStreaming for streaming protocols, while non-streaming messages use Framed or TTHeaderFramed. If you need to configure streaming methods to use GRPC protocol without changing the protocol of non-streaming methods, add the following client options:
 
 ```go
-cli, err := bgeneric.NewClient("service", g, client.WithTransportProtocol(transport.GRPCStreaming))
+cli, err := genericclient.NewClient("service", g, client.WithTransportProtocol(transport.GRPCStreaming))
 ```
 
-2. Generic Call
+##### Generic Call
+The request/response or stream message passed in generic calls are JSON string type. After the generic client is initialized, it provides 4 streaming mode call methods. For detailed streaming usage, see: [StreamX Basic Stream Programming](../../basic-feature/streamx/).
 
-The request/response or stream messages passed in a generic call are of type JSON string. After the generic client is initialized, it provides 4 streaming mode call methods. For detailed usage of streaming, see: [StreamX Basic Stream Programming](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/streamx/stream+basic+programming/).
-
-- **Request**
-
+**Request**
 Type: JSON string
 
-- **Response**
-
+**Response**
 Type: JSON string
 
 ```go
@@ -970,13 +958,13 @@ stream, err := genericCli.BidirectionalStreaming(ctx, "BidirectionalStreamingTes
 
 Detailed usage example: https://github.com/cloudwego/kitex-tests/blob/main/generic/streamxjson/generic_test.go
 
-##### **Server-side Usage (non-streaming requests only)**
-- **Request**
+#### Server Usage
+For servers using json generic calls with streaming interfaces, please ensure cloudwego/kitex >= v0.15.1.
 
+**Request**
 Type: JSON string
 
-- **Response**
-
+**Response**
 Type: JSON string
 
 ```go
@@ -984,22 +972,32 @@ package main
 
 import (
     "github.com/cloudwego/kitex/pkg/generic"
-    bgeneric "github.com/cloudwego/kitex/server/genericserver"
+    "github.com/cloudwego/kitex/client/genericclient"
+    "github.com/cloudwego/kitex/server"
+    "github.com/cloudwego/kitex/server/genericserver"
+    "github.com/cloudwego/kitex/pkg/transmeta"
 )
 
 func main() {
-    // Parse local IDL file
+    // Local file idl parsing
     // YOUR_IDL_PATH thrift file path: e.g. ./idl/example.thrift
     p, err := generic.NewThriftFileProvider("./YOUR_IDL_PATH")
     if err != nil {
         panic(err)
     }
-    // Construct a JSON request and response type generic call
+    // Construct JSON request and return type generic call
     g, err := generic.JSONThriftGeneric(p)
     if err != nil {
         panic(err)
     }
-    svc := bgeneric.NewServer(new(GenericServiceImpl), g, opts...)
+    // Old generic call interface, only supports ping pong
+    svc := genericserver.NewServer(new(GenericServiceImpl), g,
+        server.WithMetaHandler(transmeta.ServerTTHeaderHandler),
+        server.WithMetaHandler(transmeta.ServerHTTP2Handler))
+    // v2 generic call interface, supports streaming
+    svc := genericserver.NewServerV2(utils.ServiceV2Iface2ServiceV2(&GenericServiceImplV2{}), g,
+        server.WithMetaHandler(transmeta.ServerTTHeaderHandler),
+        server.WithMetaHandler(transmeta.ServerHTTP2Handler))
     if err != nil {
         panic(err)
     }
@@ -1009,31 +1007,24 @@ func main() {
     }
     // resp is a JSON string
 }
-
-type GenericServiceImpl struct {
-}
-
-func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, request interface{}) (response interface{}, err error) {
-        // use jsoniter or other json parse sdk to assert request 
-        m := request.(string)
-        fmt.Printf("Recv: %v\n", m)
-        return  "{\"Msg\": \"world\"}", nil
-}
 ```
 
-##### Special Note
-- Since JSON generic currently uses gjson, it performs a forced conversion for each field of the user's request according to the IDL (https://github.com/cloudwego/kitex/blob/develop/pkg/generic/thrift/write.go#L130). Therefore, when the user passes the wrong field type, it will be replaced with a default value. For example, if the "test" field in the IDL requires i64, but the request is {"test":"abc"}, this situation will not currently report an error, but will be modified to {"test":0}. This issue will be more strictly restricted when switching to dynamicgo.
+Detailed usage can be referenced at https://github.com/cloudwego/kitex-tests/blob/main/generic/json/server.go#L84
 
-- You can choose whether to globally enable the use of the `go.tag` value as the json key by setting an environment variable. This also applies to Map generic calls.
+#### Special Notes
+Since JSON generic currently uses gjson, it will forcibly convert each field of the user's request according to the IDL (https://github.com/cloudwego/kitex/blob/develop/pkg/generic/thrift/write.go#L130), so when the user's field type is passed incorrectly, it will be replaced with the default value. For example: "test" field in IDL requires i64, but request contains {"test":"abc"}, this situation will not report an error now, but will be modified to {"test":0}. This problem will be more strictly limited when switching to dynamicgo.
 
-```
-# Use the original key as the key for JSON generic or Map generic calls, and disable the use of the go.tag key
+By setting environment variables, you can choose whether to globally enable using go.tag values as JSON keys, which also applies to Map generic calls.
+
+```bash
+# Use original Key as JSON generic or Map generic call Key, disable the use of go.tag Key
 KITEX_GENERIC_GOTAG_ALIAS_DISABLED = True
 ```
 
-- Starting from cloudwego/kitex@v0.12.0, go.tag can be disabled via the `generic.WithGoTagDisabled` option. This allows specifying whether to disable the go.tag annotation for client/server generic calls individually.
+Starting from cloudwego/kitex@v0.12.0, go.tag can be disabled through generic.WithGoTagDisabled option. This allows separately specifying whether to disable go.tag annotations for client/server generic calls.
 
 Example:
+
 ```go
 // when you use ThriftFileProvider
 p, err := generic.NewThriftFileProviderWithOption(path, []generic.ThriftIDLProviderOption{generic.WithGoTagDisabled(true)})
@@ -1046,30 +1037,12 @@ p, err := generic.NewThriftContentWithAbsIncludePathProvider(path, includes, gen
 ```
 
 #### JSON<>Protobuf Generic
-Currently only for the **KitexProtobuf protocol**. Pass in the IDL Provider and optional Option parameters to return a Protobuf JSON generic call object. For Option parameters, see the Guide to Accessing DynamicGo for Generic Calls.
+Currently only targets KitexProtobuf protocol. Pass in IDL Provider and optional Option parameters, return Protobuf JSON generic call object, Option parameters see Generic Call Access DynamicGo Guide.
 
 ##### Type Mapping
-The mapping between Golang and Proto IDL types is as follows:
+Golang 与 Proto IDL 类型映射如下：
 
-| Protocol Buffers Type	| Golang Type |
-| --- | --- |
-| float | 	float32|
-| double	| float64|
-| int32	| int32|
-| int64	| int64|
-| uint32	| uint32|
-| uint64	| uint64 |
-| sint32	| int32|
-| sint64	| int64|
-| fixed32	| uint32|
-| fixed64	| uint64|
-| sfixed32	| int32|
-| sfixed64	| uint64|
-| bool	| bool|
-| string	| string|
-| bytes	| byte[]|
-
-It also supports lists and dictionaries in JSON, mapping them to `repeated V` and `map<K,V>` in protobuf. Special types in protobuf, such as `Enum` and `oneof`, are not supported.
+Additionally supports lists and dictionaries in JSON, mapping them to repeated V and map<K,V> in protobuf. Does not support special types in protobuf, such as Enum, oneof.
 
 ##### Example IDL
 ```protobuf
@@ -1103,6 +1076,7 @@ import (
         "github.com/cloudwego/kitex/pkg/generic"
         "github.com/cloudwego/kitex/pkg/klog"
         "github.com/cloudwego/kitex/transport"
+        "github.com/cloudwego/kitex/pkg/transmeta"
 )
 
 const serverHostPort = "127.0.0.1:9999"
@@ -1128,6 +1102,8 @@ func main() {
         var opts []client.Option
         opts = append(opts, client.WithHostPorts(serverHostPort))
         opts = append(opts, client.WithTransportProtocol(transport.TTHeader))
+        opts = append(opts, client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
+        opts = append(opts, client.WithMetaHandler(transmeta.ClientHTTP2Handler))
 
         cli, err := genericclient.NewClient("server_name_for_discovery", g, opts...)
         if err != nil {
@@ -1155,6 +1131,7 @@ import (
         "github.com/cloudwego/kitex/pkg/klog"
         "github.com/cloudwego/kitex/server"
         "github.com/cloudwego/kitex/server/genericserver"
+        "github.com/cloudwego/kitex/pkg/transmeta"
         "net"
 )
 
@@ -1175,6 +1152,8 @@ func (g *GenericEchoImpl) GenericCall(ctx context.Context, method string, reques
 func main() {
         var opts []server.Option
         opts = append(opts, WithServiceAddr(serverHostPort))
+        opts = append(opts, server.WithMetaHandler(transmeta.ServerTTHeaderHandler))
+        opts = append(opts, server.WithMetaHandler(transmeta.ServerHTTP2Handler))
 
         path := "./YOUR_IDL_PATH"
 
@@ -1196,43 +1175,56 @@ func main() {
 }
 ```
 
-## Performance Benchmark Comparison
-The following test results use a complex struct with multiple nests as the benchmark payload, with concurrency controlled at 100. The server is allocated a 4-core `Intel(R) Xeon(R) Gold 5118 CPU @ 2.30GHz`. The benchmark code can be found at this [link](https://github.com/cloudwego/kitex-benchmark/pull/57/files).
+### Performance Benchmark Comparison
+The following test results use complex nested structures as benchmark payloads, with concurrency controlled at 100, server allocated 4 cores Intel(R) Xeon(R) Gold 5118 CPU @ 2.30GHz, benchmark code link.
 
-| **Generic Type**<br> | **TPS**<br><br> | **TP99**<br><br> | **TP999**<br><br> | **Server CPU AVG**<br> | **Client CPU AVG**<br> | **Throughput Difference (vs. no generic)**<br> |
-| --- | --- | --- | --- | --- | --- | --- |
-| **No Generic**<br> | 147006<br> | 1.60ms<br> | 3.45ms<br> | 391.48<br> | 544.83<br> | 0%<br> |
-| **Map Generic**<br> | 78104<br> | 3.58ms<br> | 21.88ms<br> | 392.62<br> | 509.70<br> | -47%<br> |
-| **JSON Generic - No dynamicgo**<br> | 19647<br> | 21.49ms<br> | 61.52ms<br> | 392.20<br> | 494.30<br> | -86%<br> |
-| **HTTP Generic - No dynamicgo**<br> | 136093<br> | 2.57ms<br> | 5.18ms<br> | 369.61<br><br> | 1329.26<br> | -8%<br> |
+| Generic Type | TPS | TP99 | TP999 | Server CPU AVG | Client CPU AVG | Throughput differences (compared to non-generic) |
+|-------------|-----|------|-------|----------------|----------------|---------------------------------------------|
+| Non-generic | 147006 | 1.60ms | 3.45ms | 391.48 | 544.83 | 0% |
+| Map generic | 78104 | 3.58ms | 21.88ms | 392.62 | 509.70 | -47% |
+| JSON generic-No dynamicgo | 19647 | 21.49ms | 61.52ms | 392.20 | 494.30 | -86% |
+| HTTP generic-No dynamicgo | 136093 | 2.57ms | 5.18ms | 369.61 | 1329.26 | -8% |
 
-Json / http generic supports using dynamicgo for higher performance. The following are the performance test results under 2k qps, 100 concurrency, and 10k packet size. The server is allocated a 4-core `Intel (R) Xeon (R) Gold 5118 CPU @2.30GHz`.
+Json / http generic support using dynamicgo for higher performance, the following are performance test results under 2k qps, 100 concurrency, 10k package size. Server allocated 4 cores Intel (R) Xeon (R) Gold 5118 CPU @2.30GHz.
 
-| **Generic Type**<br> | **With dynamicgo**<br> | **TPS**<br> | **TP99**<br> | **TP999**<br> | **Throughput differences**<br> |
-| --- | --- | --- | --- | --- | --- |
-| **json generic**<br> | no<br> | 2466.90<br> | 141.38ms<br> | 206.25ms<br> | 0%<br> |
-| <br> | yes<br> | 9179.28<br> | 34.75ms<br> | 80.75ms<br> | +272%<br> |
-| **http generic**<br><br> | no<br> | 8338.20<br> | 90.92ms<br> | 139.31ms<br> | 0%<br> |
-| <br> | yes<br> | 27243.95<br> | 9.57ms<br> | 23.76ms<br> | +227%<br> |
+| Generic Type | With dynamicgo | TPS | TP99 | TP999 | Throughput differences |
+|-------------|---------------|-----|------|-------|---------------------|
+| JSON generic | no | 2466.90 | 141.38ms | 206.25ms | 0% |
+| | yes | 9179.28 | 34.75ms | 80.75ms | +272% |
+| HTTP generic | no | 8338.20 | 90.92ms | 139.31ms | 0% |
+| | yes | 27243.95 | 9.57ms | 23.76ms | +227% |
 
-## FAQ
-### Q: Is it necessary to reference the IDL for generic calls?
-- Binary stream forwarding: No
-- HTTP/MAP/JSON: Yes
-    - Because the request only contains field names, the IDL is needed to provide the mapping from "field name -> field ID". The serialized thrift binary only contains field IDs.
+Note: During the above testing process, map/json generic are enabled simultaneously on client/server, http generic only supports client side so it is only enabled on client side. Since the benchmark only limits the server CPU upper limit, please pay attention to client cpu overhead when comparing results.
 
-### Q: Will the framework do corresponding metrics reporting when using binary stream forwarding?
+### FAQ
+**Q：Do generic calls need to reference IDL?**
+
+- Binary stream forwarding: No need
+- HTTP/Map/JSON: Need
+
+Because the request only contains field names, IDL is needed to provide the mapping relationship of "field name -> field ID". The serialized thrift binary only contains field IDs.
+
+**Q：Will the framework do corresponding monitoring and reporting when using binary stream forwarding?**
+
 Yes, it will.
 
-### Q: "missing version in Thrift Message"
-This indicates that the passed buffer is not a correctly encoded Thrift buff. Please confirm the usage.
-Note: The binary encoding is not performed on the original Thrift request (e.g., [api.Request](https://github.com/cloudwego/kitex-examples/blob/v0.2.0/hello/kitex_gen/api/hello.go#L12)) parameters, but on the **XXXArgs** that wrap the method parameters (e.g., [api.HelloEchoArgs](https://github.com/cloudwego/kitex-examples/blob/v0.2.0/hello/kitex_gen/api/hello.go#L461)).
+**Q: "missing version in Thrift Message"**
 
-### Q: Is protobuf supported?
-Currently, map generic supports it, and json generic is planned to support it.
+This indicates that the passed buff is not correctly encoded Thrift, please confirm the usage.
 
-### Q: Does generic call support default values defined in the idl?
-Kitex map/http/json generic supports setting default values defined in the idl when reading, as in the idl file in the following example:
+Note: Binary encoding does not encode the original Thrift request parameters (example: api.Request), but rather encapsulates method parameters in XXXArgs (example: api.HelloEchoArgs).
+
+**Q: Does it support protobuf?**
+
+Currently map generic supports it, json generic plans to support it.
+
+**Q：How to check if annotation key is standardized in HTTP generic calls?**
+
+You can use the Parse method under pkg/generic/thrift/parse.go to check, if it's not a key in BAM specification, it will return error.
+
+**Q：Do generic calls support default values defined in idl?**
+
+Kitex map/http/json generic supports setting default values defined in idl when reading, as in the following example idl file:
 
 ```thrift
 struct BaseElem {
@@ -1249,16 +1241,18 @@ struct Request {
 }
 ```
 
-When encoding a request containing the above default values to the peer,
-- For map generic, it will automatically add k-v pairs with the above field names as keys and default values as values.
-- For json generic, the encoded json string will contain the k-v pairs defined with default values.
-- For http generic, it will set the default value at the field where the response annotation is located.
+When encoding requests containing the above default values to the peer,
+- For map generic, it will automatically add the above field names as keys, default values as values k-v pairs;
+- For json generic, it will include k-v pairs with defined default values in the encoded json string;
+- For http generic, it will set default values at response annotation fields.
 
-### Q: The generated type for a field modified with optional has a pointer. Does the value in map generic also need to be a pointer?
-No.
+**Q：For fields modified by optional, the generated type carries pointers, does the value of Map generic also need to use pointers?**
 
-### Q: There are multiple services defined in the idl file. How to handle this in generic calls?
-Each generic client/server uses the last service definition by default. You can specify a particular service to parse with the following code:
+No need.
+
+**Q：If multiple services are defined in idl file, how to handle them in generic calls?**
+
+Each generic client/server defaults to using the last service definition, you can specify parsing specific service through the following code:
 
 ```go
 import "github.com/cloudwego/kitex/pkg/generic"
@@ -1268,32 +1262,37 @@ opts := []ThriftIDLProviderOption{WithIDLServiceName("ExampleService")}
 p, err := NewThriftFileProviderWithOption(path, opts)
 ```
 
-### Q: Server error "[ReadString] the string size greater than buf length"
-It may be that the idl of the client and server are different, for example, the field types are inconsistent.
+**Q: Server reports error "[ReadString] the string size greater than buf length"**
 
-### Q: map generic call byte type field panics in writeInt8 function
-> github.com/cloudwego/kitex/pkg/generic/thrift.writeInt8(...)
->         /.../github.com/cloudwego/kitex@v0.4.4/pkg/generic/thrift/write.go:312 +0xb4
+It may be that the client and server have idl differences, such as inconsistent field types.
 
-**Reason**: thriftgo aligns with the implementation of apache thrift and converts all byte type fields in the IDL to int8 type in go. Therefore, older versions of kitex (<0.6.0) did not adapt for the byte type in `writeInt8`.
-
-**Suggestion**:
-
-1. Client side:
-    - Upgrade to a new version: kitex >= 0.6.0 (or)
-    - Keep the old version: use `int(byteVal)` to assign a value to the field when constructing the map.
-2. Server side: convert the int8 field to byte type (if there are values > 127).
-
-Note: Converting between byte and int8 does not lose precision.
-
-### Q: binary generic-server: "invalid trans buffer in binaryThriftCodec Unmarshal" ?
-The packet received by a binary generic server must have a header size, because binary generic does not parse the Thrift packet, and packets without a header size cannot be processed normally.
-If you encounter this problem, the upstream client needs to configure the transport protocol to framed or ttheader. See [How to specify the transport protocol](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/protocol/transport_protocol/).
-
-### Q: How to inject different generic implementations for different idl services under one server?
-All generic call types **except BinaryThriftGeneric** are supported. BinaryThriftGeneric can only be enabled via `genericserver.NewServer` or `genericserver.NewServerWithServiceInfo`.
-
+**Q：map generic call byte type field panics in writeInt8 function**
 ```
+github.com/cloudwego/kitex/pkg/generic/thrift.writeInt8(...)
+        /.../github.com/cloudwego/kitex@v0.4.4/pkg/generic/thrift/write.go:312 +0xb4
+```
+Reason: thriftgo aligns with apache thrift implementation, will convert byte type fields in IDL to int8 type in go, so old version cloudwego/kitex (<0.6.0) does not have adaptation for byte type in writeInt8.
+
+Suggestion:
+- Client side: Upgrade to new version: cloudwego/kitex >= 0.6.0 (or)
+- Keep old version: Use int(byteVal) to assign values to this field when constructing map.
+- Server side: Convert the int8 field to byte type (if there are values > 127)
+
+Note: Converting between byte and int8 will not lose precision.
+
+**Q: binary generic-server: "invalid trans buffer in binaryThriftCodec Unmarshal" ?**
+
+The binary generic server received packets must have header size, because binary generic does not parse Thrift packets, packets without header size cannot be processed normally.
+
+Internal services must enable ingress traffic proxy.
+
+If you encounter this problem, the upstream client needs to configure the transmission protocol framed or ttheader, see how to specify transmission protocol.
+
+**Q：How to inject different generic implementations for different idl services under one server?**
+
+Support all generic call types except BinaryThriftGeneric, BinaryThriftGeneric only supports enabling through genericserver.NewServer or genericserver.NewServerWithServiceInfo.
+
+```go
 func runServer(ln net.Listener) error {
     svr := server.NewServer()
 
@@ -1311,13 +1310,13 @@ func runServer(ln net.Listener) error {
     if err != nil {
        panic(err)
     }
-    g, err := generic.JSONThriftGeneric(p)
+    g, err = generic.JSONThriftGeneric(p)
     if err != nil {
        panic(err)
     }
 
     svr.RegisterService(generic.ServiceInfoWithGeneric(g), &JsonGenericServiceImpl{})
-    
+
     return svr.Run()
 }
 ```

@@ -1,6 +1,6 @@
 ---
 title: "Proxy Application Development"
-date: 2024-09-28
+date: 2025-09-28
 weight: 15
 keywords: ["Proxy", "Generic Call", "Advanced Feature"]
 description: "A comprehensive guide for developing proxy applications using Kitex generic calls, including server initialization, client setup, and traffic forwarding."

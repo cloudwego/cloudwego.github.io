@@ -1,6 +1,6 @@
 ---
 title: "Proxy 应用开发指南"
-date: 2024-09-28
+date: 2025-09-28
 weight: 15
 keywords: ["Proxy", "泛化调用", "高级特性"]
 description: "使用 Kitex 泛化调用开发 Proxy 应用的完整指南，包括服务端初始化、客户端设置和流量转发。"
