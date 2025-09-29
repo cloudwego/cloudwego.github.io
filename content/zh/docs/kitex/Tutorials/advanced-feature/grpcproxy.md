@@ -6,6 +6,14 @@ keywords: ["Kitex", "gRPC", "Proxy"]
 description: Kitex 支持对未注册的 gRPC 方法调用进行自定义 Proxy 路由处理。
 ---
 
+> **⚠️ 已废弃**
+>
+> 本文档已废弃，请参考新的综合版 [Proxy 应用开发指南](./proxy_application_development/) 获取更完整和最新的 Proxy 开发文档。
+>
+> 新指南涵盖了所有代理场景，包括 gRPC、TTHeader 等协议，并提供更好的示例和最佳实践。
+
+---
+
 Kitex 对 gRPC 场景提供了 `WithGRPCUnknownServiceHandler` 功能，当服务器接收到未注册的 gRPC 方法调用的请求时，将执行自定义的 Unknown Service Handler 函数进行处理：
 
 ```go

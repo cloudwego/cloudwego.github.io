@@ -6,6 +6,14 @@ keywords: ["Kitex", "gRPC", "Proxy"]
 description: Kitex supports custom Proxy routing for unregistered gRPC method calls.
 ---
 
+> **⚠️ Deprecated**
+>
+> This document has been deprecated. Please refer to the new comprehensive [Proxy Application Development Guide](./proxy_application_development/) for more up-to-date and complete proxy development documentation.
+>
+> The new guide covers all proxy scenarios including gRPC, TTHeader, and other protocols with better examples and best practices.
+
+---
+
 Kitex provides the `WithGRPCUnknownServiceHandler` function when transport is using gRPC. When the server receives a request from an unknown gRPC method, it will execute the unknown service handler:
 
 ```go
