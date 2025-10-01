@@ -62,6 +62,108 @@ Kitex 会保证内部用户正常使用方式的兼容性。但个别用户可�
 
 本版本对 `remote.Message`、`rpcinfo.RPCInfo` 或 `generic.Generic` 接口非普通使用方式做了微调，如果有特殊的使用需要调整至符合新版本的接口定义。
 
+1. `rpcinfo.RPCInfo().Invocation()` 新增了 `MethodInfo()` 方法，返回当前 rpc 的 MethodInfo：
+```diff
+commit 62979e4b95e5a5ed73d0bfd9e218cfc61c5ce253
+type Invocation interface {
+        PackageName() string
+        ServiceName() string
+        MethodName() string
++       MethodInfo() serviceinfo.MethodInfo
+        StreamingMode() serviceinfo.StreamingMode
+        SeqID() int32
+        BizStatusErr() kerrors.BizStatusErrorIface
+}
+```
+
+2. `remote.Message` 接口删除了部分冗余接口：
+```diff
+ // Message is the core abstraction for Kitex message.
+ type Message interface {
+        RPCInfo() rpcinfo.RPCInfo
+-       ServiceInfo() *serviceinfo.ServiceInfo
+-       SpecifyServiceInfo(svcName, methodName string) (*serviceinfo.ServiceInfo, error)
+        Data() interface{}
+        NewData(method string) (ok bool)
+        MessageType() MessageType
+        SetPayloadLen(size int)
+        TransInfo() TransInfo
+        Tags() map[string]interface{}
+-       ProtocolInfo() ProtocolInfo
+-       SetProtocolInfo(ProtocolInfo)
+        PayloadCodec() PayloadCodec
+        SetPayloadCodec(pc PayloadCodec)
+        Recycle()
+ }
+```
+对 `ProtocolInfo()` 接口的依赖请修改为依赖 `remote.Message().RPCInfo().Config().TransportProtocol()`。
+
+3. `generic.Generic` 接口做了大幅调整：
+```diff
+ commit 024fedbc2da33956cd81cd0a8226f817e5eac777
+ // Generic ...
+ type Generic interface {
+        Closer
+-       // PayloadCodec return codec implement
+-       // this is used for generic which does not need IDL
+-       PayloadCodec() remote.PayloadCodec
+        // PayloadCodecType return the type of codec
+        PayloadCodecType() serviceinfo.PayloadCodec
+-       // RawThriftBinaryGeneric must be framed
+-       Framed() bool
+-       // GetMethod is to get method name if needed
+-       GetMethod(req interface{}, method string) (*Method, error)
++       // GenericMethod return generic method func
++       GenericMethod() serviceinfo.GenericMethodFunc
+        // IDLServiceName returns idl service name
+        IDLServiceName() string
+-       // MessageReaderWriter returns reader and writer
+-       // this is used for generic which needs IDL
+-       MessageReaderWriter() interface{}
++       // GetExtra returns extra info by key
++       GetExtra(key string) interface{}
+ }
+```
+- 完全删除了 `PayloadCodec()` 接口，这一调整是因为 kitex generic 接口支持了 multi service 功能后，已经不再依赖此接口劫持 PayloadCodec 的方式注入泛化编解码器，而是通过劫持 Args/Results 结构体实现。当前仅 `generic.BinaryThriftGeneric()` 接口依赖此方式，但该接口已经标注为废弃，请迁移至使用 `generic.BinaryThriftGenericV2()`，参考 [泛化调用使用指南](/zh/docs/kitex/tutorials/advanced-feature/generic-call/basic_usage)
+- `Framed() bool` 是废弃接口，因为 kitex 自 v0.13.* 开始已经默认对 client 启用 framed；
+- `MessageReaderWriter` 和 `GetMethod` 接口整合为一个统一的 `GenericMethod()` 接口。统一后的新接口返回一个闭包函数，该函数接受 context 和 method name 入参，返回对应的 method info，其中 metainfo info 就包含了劫持的 Args/Results 参数，从而实现不同类型的泛化调用编解码逻辑。
+
+
+4. `remote.ServiceSearcher` 的 Get/Set 方式变更，`codec.SetOrCheckMethodName` 参数调整：
+```diff
+commit a1008887b9ab4553a79ce82cf6d3db324c344977
+-const keyServiceSearcher = "rpc_info_service_searcher"
++type keyServiceSearcher struct{}
+
+-// GetServiceSearcher returns the service searcher from rpcinfo.RPCInfo.
+-func GetServiceSearcher(ri rpcinfo.RPCInfo) ServiceSearcher {
+-       svcInfo, _ := ri.Invocation().Extra(keyServiceSearcher).(ServiceSearcher)
+-       return svcInfo
++// GetServiceSearcher returns the service searcher from context.
++func GetServiceSearcher(ctx context.Context) ServiceSearcher {
++       svcSearcher, _ := ctx.Value(keyServiceSearcher{}).(ServiceSearcher)
++       return svcSearcher
+ }
+
+-// SetServiceSearcher sets the service searcher to rpcinfo.RPCInfo.
+-func SetServiceSearcher(ri rpcinfo.RPCInfo, svcSearcher ServiceSearcher) {
+-       setter := ri.Invocation().(rpcinfo.InvocationSetter)
+-       setter.SetExtra(keyServiceSearcher, svcSearcher)
++// WithServiceSearcher sets the service searcher to context.
++func WithServiceSearcher(ctx context.Context, svcSearcher ServiceSearcher) context.Context {
++       return context.WithValue(ctx, keyServiceSearcher{}, svcSearcher)
+ }
+```
+- 旧版本将 `ServiceSearcher` 设置在 rpcinfo，新版本为优化 Get/Set 的性能将其设置到 context。
+
+```diff
+commit a1008887b9ab4553a79ce82cf6d3db324c344977
+// SetOrCheckMethodName is used to set method name to invocation.
+-func SetOrCheckMethodName(methodName string, message remote.Message) error {
++func SetOrCheckMethodName(ctx context.Context, methodName string, message remote.Message) error {
+```
+- 同时影响到 `codec.SetOrCheckMethodName` 的定义，添加 `context.Context` 作为入参。
+`
 ## **详细变更**
 
 ### Feature
