@@ -62,6 +62,107 @@ Kitex will ensure compatibility with normal usage patterns of internal users. Ho
 
 This version has made minor adjustments to non-standard usage of `remote.Message`, `rpcinfo.RPCInfo` or `generic.Generic` interfaces. If there are special usages, they need to be adjusted to conform to the new version's interface definition.
 
+1. `rpcinfo.RPCInfo().Invocation()` added `MethodInfo()` method, returning MethodInfo for the current RPC:
+```diff
+commit 62979e4b95e5a5ed73d0bfd9e218cfc61c5ce253
+type Invocation interface {
+        PackageName() string
+        ServiceName() string
+        MethodName() string
++       MethodInfo() serviceinfo.MethodInfo
+        StreamingMode() serviceinfo.StreamingMode
+        SeqID() int32
+        BizStatusErr() kerrors.BizStatusErrorIface
+}
+```
+
+2. `remote.Message` interface removed some redundant interfaces:
+```diff
+ // Message is the core abstraction for Kitex message.
+ type Message interface {
+        RPCInfo() rpcinfo.RPCInfo
+-       ServiceInfo() *serviceinfo.ServiceInfo
+-       SpecifyServiceInfo(svcName, methodName string) (*serviceinfo.ServiceInfo, error)
+        Data() interface{}
+        NewData(method string) (ok bool)
+        MessageType() MessageType
+        SetPayloadLen(size int)
+        TransInfo() TransInfo
+        Tags() map[string]interface{}
+-       ProtocolInfo() ProtocolInfo
+-       SetProtocolInfo(ProtocolInfo)
+        PayloadCodec() PayloadCodec
+        SetPayloadCodec(pc PayloadCodec)
+        Recycle()
+ }
+```
+Dependencies on `ProtocolInfo()` should be modified to rely on `remote.Message().RPCInfo().Config().TransportProtocol()`.
+
+3. `generic.Generic` interface underwent significant adjustments:
+```diff
+ commit 024fedbc2da33956cd81cd0a8226f817e5eac777
+ // Generic ...
+ type Generic interface {
+        Closer
+-       // PayloadCodec return codec implement
+-       // this is used for generic which does not need IDL
+-       PayloadCodec() remote.PayloadCodec
+        // PayloadCodecType return the type of codec
+        PayloadCodecType() serviceinfo.PayloadCodec
+-       // RawThriftBinaryGeneric must be framed
+-       Framed() bool
+-       // GetMethod is to get method name if needed
+-       GetMethod(req interface{}, method string) (*Method, error)
++       // GenericMethod return generic method func
++       GenericMethod() serviceinfo.GenericMethodFunc
+        // IDLServiceName returns idl service name
+        IDLServiceName() string
+-       // MessageReaderWriter returns reader and writer
+-       // this is used for generic which needs IDL
+-       MessageReaderWriter() interface{}
++       // GetExtra returns extra info by key
++       GetExtra(key string) interface{}
+ }
+```
+- The `PayloadCodec()` interface was completely removed. This adjustment was made because, after Kitex generic interface supported the multi-service feature, it no longer relies on hijacking PayloadCodec to inject the generic codec; instead, it's implemented by hijacking Args/Results structs. Currently, only `generic.BinaryThriftGeneric()` relies on the old method, but this interface has been marked as deprecated. Please migrate to using `generic.BinaryThriftGenericV2()`, refer to [Generic Call User Guide](/docs/kitex/tutorials/advanced-feature/generic-call/basic_usage).
+- `Framed() bool` is a deprecated interface because Kitex has defaulted to framed mode for clients since v0.13.*.
+- `MessageReaderWriter` and `GetMethod` interfaces are merged into a unified `GenericMethod()` interface. The new unified interface returns a closure function that accepts context and method name as arguments and returns the corresponding method info. This method info includes the hijacked Args/Results parameters, thus implementing different types of generic call codec logic.
+
+4. `remote.ServiceSearcher` Get/Set method changes, `codec.SetOrCheckMethodName` parameter adjustment:
+```diff
+commit a1008887b9ab4553a79ce82cf6d3db324c344977
+-const keyServiceSearcher = "rpc_info_service_searcher"
++type keyServiceSearcher struct{}
+
+-// GetServiceSearcher returns the service searcher from rpcinfo.RPCInfo.
+-func GetServiceSearcher(ri rpcinfo.RPCInfo) ServiceSearcher {
+-       svcInfo, _ := ri.Invocation().Extra(keyServiceSearcher).(ServiceSearcher)
+-       return svcInfo
++// GetServiceSearcher returns the service searcher from context.
++func GetServiceSearcher(ctx context.Context) ServiceSearcher {
++       svcSearcher, _ := ctx.Value(keyServiceSearcher{}).(ServiceSearcher)
++       return svcSearcher
+ }
+
+-// SetServiceSearcher sets the service searcher to rpcinfo.RPCInfo.
+-func SetServiceSearcher(ri rpcinfo.RPCInfo, svcSearcher ServiceSearcher) {
+-       setter := ri.Invocation().(rpcinfo.InvocationSetter)
+-       setter.SetExtra(keyServiceSearcher, svcSearcher)
++// WithServiceSearcher sets the service searcher to context.
++func WithServiceSearcher(ctx context.Context, svcSearcher ServiceSearcher) context.Context {
++       return context.WithValue(ctx, keyServiceSearcher{}, svcSearcher)
+ }
+```
+- The old version set `ServiceSearcher` on rpcinfo; the new version moves it to context to optimize Get/Set performance.
+```diff
+commit a1008887b9ab4553a79ce82cf6d3db324c344977
+// SetOrCheckMethodName is used to set method name to invocation.
+-func SetOrCheckMethodName(methodName string, message remote.Message) error {
++func SetOrCheckMethodName(ctx context.Context, methodName string, message remote.Message) error {
+```
+- This simultaneously affects the definition of `codec.SetOrCheckMethodName`, adding `context.Context` as a parameter.
+
+
 ## **Full Change**
 
 ### Feature
