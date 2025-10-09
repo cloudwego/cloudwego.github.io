@@ -29,13 +29,13 @@ description: >
 4. **TTHeader Streaming：支持 ctx cancel 控制流生命周期**
 
    - 快速结束流式调用，节省模型资源
-   - 对齐 gPRC，详细用法见[流生命周期控制最佳实践](/zh/docs/kitex/tutorials/basic-feature/streamx/StreamX_Lifecycle_Control)
+   - 对齐 gPRC，详细用法见[流生命周期控制最佳实践](/zh/docs/kitex/tutorials/basic-feature/streamx/streamx_lifecycle_control)
    - 支持 Client 主动调用 cancel 结束流式调用
    - 支持 Client 感知所处 Handler 的 ctx cancel 信号，级联结束流式调用
 
 5. **流式错误处理优化**
 
-   - 快速对应具体错误场景，加速级联 cancel 链路问题排查，详情见[流错误处理最佳实践](/zh/docs/kitex/tutorials/basic-feature/streamx/StreamX_Error_Handling)
+   - 快速对应具体错误场景，加速级联 cancel 链路问题排查，详情见[流错误处理最佳实践](/zh/docs/kitex/tutorials/basic-feature/streamx/streamx_error_handling)
    - 级联 cancel 场景，错误描述包含完整 cancel 链路，快速定位主动 cancel 的第一跳服务
    - 错误描述包含具体的错误场景，以及与之唯一对应的错误码
    - 统一方便的 cancel 错误处理方式，无需使用繁琐的字符串匹配
