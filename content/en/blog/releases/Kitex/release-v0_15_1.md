@@ -11,6 +11,7 @@ description: >
 ### **Announcements**
 1. **Go Version Support Changes**: Kitex's minimum declared Go version has been adjusted to Go1.20 and supports up to Go1.25
    - Currently does not affect Go v1.18/v1.19 compilation, but after being declared for higher versions, subsequent versions will introduce features of higher versions
+2. **Breaking Change for Partial interfaces**: No impact on regular users, but may affect those with extensions or special api dependencies. For details, refer to the [**Special Changes**] section.
 
 ### **New Features**
 1. **Generic Call: New v2 API Supporting Multi-Services and Streaming Calls**
