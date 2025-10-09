@@ -29,13 +29,13 @@ description: >
 4. **TTHeader Streaming: Support for ctx Cancel to Control Flow Lifecycle**
 
    - Quickly terminate streaming calls, saving model resources
-   - Aligns with gRPC, for detailed usage see [Stream Lifecycle Control Best Practices](/docs/kitex/tutorials/basic-feature/streamx/StreamX_Lifecycle_Control)
+   - Aligns with gRPC, for detailed usage see [Stream Lifecycle Control Best Practices](/docs/kitex/tutorials/basic-feature/streamx/streamx_lifecycle_control)
    - Supports Client actively invoking cancel to end streaming calls
    - Supports Client sensing the ctx cancel signal of the current Handler and cascading to end streaming calls
 
 5. **Streaming Error Handling Optimization**
 
-   - Quickly address specific error scenarios, accelerate troubleshooting of cascade cancel link issues, see [Stream Error Handling Best Practices](/docs/kitex/tutorials/basic-feature/streamx/StreamX_Error_Handling) for details
+   - Quickly address specific error scenarios, accelerate troubleshooting of cascade cancel link issues, see [Stream Error Handling Best Practices](/docs/kitex/tutorials/basic-feature/streamx/streamx_error_handling) for details
    - In cascade cancel scenarios, error description includes complete cancel link, quickly locating the first-hop service that actively cancels
    - Error description includes specific error scenarios and corresponding unique error codes
    - Unified and convenient cancel error handling method, eliminating the need for cumbersome string matching
