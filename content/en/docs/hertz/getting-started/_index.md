@@ -141,6 +141,11 @@ For more information on how to use hz, please refer to: [hz](/zh/docs/hertz/tuto
 
    ```bash
    go mod init # If your codes are not placed under `GOPATH`, you can skip `go mod init`.
+
+   # Check whether the github.com/apache/thrift version in go.mod is v0.13.0 (if you are planning to use .thrift as IDL)
+   go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
+
+   # Tidy & get dependencies
    go mod tidy
    ```
 
