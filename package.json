@@ -30,5 +30,8 @@
     "postcss": "^8.4.27",
     "postcss-cli": "^10.1.0",
     "simple-git-hooks": "^2.9.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "6.7.2"
   }
 }
