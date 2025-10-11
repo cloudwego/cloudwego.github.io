@@ -139,6 +139,10 @@ hz 是 Hertz 框架提供的一个用于生成代码的命令行工具，可以�
 
    ```bash
    go mod init # 当前目录不在 GOPATH 下不需要 `go mod init` 这一步
+
+   # 由于本示例使用 .thrift 作为 IDL，请确保 go.mod 中的 github.com/apache/thrift 版本为 v0.13.0
+   go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
+
    go mod tidy
    ```
 
