@@ -15,10 +15,10 @@ defaultContentLanguageInSubdir = false
 enableMissingTranslationPlaceholders = true
 
 [services]
-  [services.disqus]
-    shortname = ''
-  [services.googleAnalytics]
-    id = "G-QYWRQRLPRM"
+[services.disqus]
+shortname = ''
+[services.googleAnalytics]
+id = "G-QYWRQRLPRM"
 
 #disableKinds = ["taxonomy", "taxonomyTerm"]
 [taxonomies]
@@ -81,17 +81,17 @@ url = "https://space.bilibili.com/3494360534485730/channel/collectiondetail?sid=
 weight = 60
 parent = "社区"
 
-  [[languages.zh.menu.main]]
-      name = "[new]企业级解决方案"
-      identifier = "business_solution"
-      weight = 45
+[[languages.zh.menu.main]]
+name = "[new]企业级解决方案"
+identifier = "business_solution"
+weight = 45
 
-  [[languages.zh.menu.main]]
-      name = "可观测解决方案"
-      url = "https://www.volcengine.com/docs/6431/1469323"
-      weight = 10
-      parent = "business_solution"
-      params = { target = "_blank", rel = "noopener noreferrer" }
+[[languages.zh.menu.main]]
+name = "可观测解决方案"
+url = "https://www.volcengine.com/docs/6431/1469323"
+weight = 10
+parent = "business_solution"
+params = { target = "_blank", rel = "noopener noreferrer" }
 
 [languages.zh.params]
 description = "A leading practice for building enterprise cloud native middleware!"
@@ -228,13 +228,13 @@ desc = "Follow us on Twitter to get the latest news!"
 [[params.links.developer]]
 name = "GitHub"
 url = "https://github.com/cloudwego"
-icon = "fab fa-github"
+icon = "fa-brands fa-github"
 desc = "Development takes place here!"
 
 [[params.links.developer]]
 name = "Discord"
 url = "https://discord.gg/jceZSE7DsW"
-icon = "fab fa-discord"
+icon = "fa-brands fa-discord"
 desc = "Chat with other project developers"
 
 [outputFormats]
@@ -244,3 +244,11 @@ isHTML = true
 mediaType = "text/html"
 path = "_print"
 permalinkable = false
+
+[[module.mounts]]
+source = "assets"
+target = "assets"
+
+[[module.mounts]]
+source = "node_modules/@fortawesome/fontawesome-free"
+target = "assets/vendor/Font-Awesome"

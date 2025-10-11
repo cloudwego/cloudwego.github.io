@@ -27,7 +27,7 @@ You may participate in the community through GitHub, or simply by interacting wi
         rel="noopener"
         href="https://github.com/cloudwego"
       >
-        <i class="fab fa-github"></i> GitHub:
+        <i class="fa-brands fa-github"></i> GitHub:
       </a>
       Development takes place here!
     </li>
@@ -37,7 +37,7 @@ You may participate in the community through GitHub, or simply by interacting wi
         rel="noopener"
         href="https://discord.gg/jceZSE7DsW"
       >
-        <i class="fab fa-discord"></i> Discord:
+        <i class="fa-brands fa-discord"></i> Discord:
       </a>
       Connect with us.
     </li>
