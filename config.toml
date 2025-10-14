@@ -252,3 +252,7 @@ target = "assets"
 [[module.mounts]]
 source = "node_modules/@fortawesome/fontawesome-free"
 target = "assets/vendor/Font-Awesome"
+
+[[module.mounts]]
+source = "node_modules/bootstrap"
+target = "assets/vendor/bootstrap"
