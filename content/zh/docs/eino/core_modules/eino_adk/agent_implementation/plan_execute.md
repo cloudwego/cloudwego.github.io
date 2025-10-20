@@ -143,11 +143,12 @@ type ReplannerConfig struct {
   - 内层 `LoopAgent`：循环执行 `Executor` 和 `Replanner`，直至任务完成或达到最大迭代次数
 
 ```go
-// NewPlanExecuteAgent creates a new plan execute agent with the given configuration.
-func NewPlanExecuteAgent(ctx context.Context, cfg *PlanExecuteConfig) (adk.Agent, error)
+// github.com/cloudwego/eino/adk/prebuilt/planexecute
+// New creates a new plan execute agent with the given configuration.
+func New(ctx context.Context, cfg *PlanExecuteConfig) (adk.Agent, error)
 
-// PlanExecuteConfig provides configuration options for creating a plan execute agent.
-type PlanExecuteConfig struct {
+// Config provides configuration options for creating a plan execute agent.
+type Config struct {
     Planner       adk.Agent
     Executor      adk.Agent
     Replanner     adk.Agent
@@ -174,8 +175,9 @@ Plan-Execute Agent 的完整工作流程如下：
 
 ### 场景说明
 
-1. **Planner**：为【生成旅游计划】这个目标规划详细步骤
-2. **Executor**：使用多种工具（天气查询、航班酒店搜索、目的地吸引力）执行计划。允许在用户请求不明确或缺乏执行所需要的信息时，要求用户输入澄清来补充信息（Human in the loop 场景）
+实现一个「调研」Agent：
+1. **Planner**：为调研目标规划详细步骤
+2. **Executor**：执行计划中的首个步骤，必要时使用搜索工具（duckduckgo）
 3. **Replanner**：评估执行结果，若信息不足则调整计划，否则生成最终总结
 
 ### 代码实现
@@ -192,7 +194,7 @@ func newToolCallingModel(ctx context.Context) model.ToolCallingChatModel {
     if err != nil {
         log.Fatalf("初始化模型失败: %v", err)
     }
-    return cm.(model.ToolCallingChatModel)
+    return cm
 }
 
 // 初始化搜索工具（用于 Executor 调用）
@@ -330,7 +332,7 @@ func main() {
        }
        // 打印智能体输出（计划、执行结果、最终响应等）
        if msg, err := event.Output.MessageOutput.GetMessage(); err == nil && msg.Content != "" {
-          log.Printf("\n=== Agent Output ===\n%s\n", msg.Content)
+          // code...
        }
     }
 }
