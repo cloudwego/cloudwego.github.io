@@ -275,7 +275,7 @@ func newPlanExecuteAgent(ctx context.Context) adk.Agent {
     replanner := newReplanner(ctx, model)
 
     // 组合为 PlanExecuteAgent（固定 execute - replan 最大迭代 10 次）
-    planExecuteAgent, err := planexecute.NewPlanExecuteAgent(ctx, &planexecute.PlanExecuteConfig{
+    planExecuteAgent, err := planexecute.New(ctx, &planexecute.Config{
        Planner:       planner,
        Executor:      executor,
        Replanner:     replanner,
