@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-05-07"
+date: "2025-10-17"
 lastmod: ""
 tags: []
 title: 'Eino: ChatModel 使用说明'
@@ -77,7 +77,14 @@ type Message struct {
     // Content 是消息的文本内容
     Content string
     // MultiContent 是多模态内容，支持文本、图片、音频等
+    // Deprecated: 已废弃，使用UserInputMultiContent替代
     MultiContent []ChatMessagePart
+    // UserInputMultiContent 用来存储用户输入的多模态数据，支持文本、图片、音频、视频、文件
+    // 使用此字段时限制模型角色为User
+    UserInputMultiContent []MessageInputPart
+    // AssistantGenMultiContent 用来承接模型输出的多模态数据，支持文本、图片、音频、视频
+    // 使用此字段时限制模型角色为Assistant
+    AssistantGenMultiContent []MessageOutputPart
     // Name 是消息的发送者名称
     Name string
     // ToolCalls 是 assistant 消息中的工具调用信息
