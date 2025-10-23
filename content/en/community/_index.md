@@ -53,7 +53,6 @@ If you're looking for a place to start for your first contribution, here's a few
 - Hertz (Hertz & Hertz ecosystem & hertz-contrib)
 - Volo (Volo & Volo ecosystem & volo-rs & Motore & Pilota)
 - Netpoll (Netpoll & Netpoll ecosystem)
-- Monoio (Monoio & Monoio ecosystem)
 - Serdes (Thriftgo & Frugal & Fastpb & Sonic ecosystem & thrift-gen-validator)
 - Shmipc (shmipc-spec & shmipc-go)
 - Website & Docs (cloudwego.github.io)

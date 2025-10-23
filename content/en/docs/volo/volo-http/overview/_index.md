@@ -56,4 +56,3 @@ reduce the overhead of each place as much as possible, and improve the performan
 ## Related Articles
 
 - [China's First Rust-based RPC Framework - Volo is Officially Open Source!](https://www.cloudwego.io/blog/2022/08/30/chinas-first-rust-based-rpc-framework-volo-is-officially-open-source/)
-- [Introducing Monoio: a high-performance Rust Runtime based on io-uring](https://www.cloudwego.io/blog/2023/04/17/introducing-monoio-a-high-performance-rust-runtime-based-on-io-uring/)
