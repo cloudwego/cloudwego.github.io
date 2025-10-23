@@ -33,7 +33,7 @@ Key features of Volo include:
 
 Rust's reputation for high performance and safety guides the design and implementation of Volo. Every aspect of the framework is optimized to minimize overhead and maximize performance.
 It is important to note that directly comparing the performance of Volo and Kitex would be unfair, and the performance data provided should be viewed as a reference. We aim to avoid unnecessary controversy, especially since there is no mature Async version of a Thrift RPC framework in the Rust open-source community. Instead, we focus on sharing our own limit QPS (queries per second) data.
-Under the same test conditions as [Kitex](https://github.com/cloudwego/kitex) (limited to 4 cores), Volo achieves a limit QPS of 350,000 (35W). Furthermore, we are internally validating a version based on [Monoio](https://github.com/bytedance/monoio), which can achieve a limit QPS of 440,000 (44W).
+Under the same test conditions as [Kitex](https://github.com/cloudwego/kitex) (limited to 4 cores), Volo achieves a limit QPS of 350,000 (35W).
 Judging from the flame graph of our online business, thanks to Rust's static distribution and excellent compilation optimization, the overhead of the framework part is basically negligible (excluding syscall overhead).
 
 ### Based on GAT design
