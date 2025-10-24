@@ -122,12 +122,14 @@ Eino 会在上述代码背后自动完成一些重要工作：
 ```go
 handler := NewHandlerBuilder().
   OnStartFn(
-    func(ctx context.Context, info *RunInfo, input CallbackInput) context.Context) {
+    func(ctx context.Context, info *RunInfo, input CallbackInput) context.Context {
         log.Infof("onStart, runInfo: %v, input: %v", info, input)
+        return ctx
     }).
   OnEndFn(
-    func(ctx context.Context, info *RunInfo, output CallbackOutput) context.Context) {
+    func(ctx context.Context, info *RunInfo, output CallbackOutput) context.Context {
         log.Infof("onEnd, runInfo: %v, out: %v", info, output)
+        return ctx
     }).
   Build()
   
