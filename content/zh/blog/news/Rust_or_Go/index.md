@@ -195,7 +195,7 @@ Rust 以难学难用而闻名，我们希望尽可能地降低用户使用 [Volo
 如果过多谈论框架的性能对比，容易引战。但是基于 Rust 语言的性能优势以及 CloudWeGo 团队对于极致性能的追求，我们可以预想到 [Volo][Volo] 的性能也是非常高的。
 
 如果把 [Volo][Volo] 和 [Kitex][Kitex] 进行跨语言的对比也是不太公平的，但是因为很多用户都关注性能数据，为了让使用者对 [Volo][Volo] 框架的性能有大致的了解，我们只给出比较简单的性能数据。
-在与 [Kitex][Kitex] 相同的测试条件（限制 4C）下，[Volo][Volo] 极限 QPS 为 35W。同时，我们内部正在验证基于 [Monoio][Monoio]（CloudWeGo 开源的 Rust Async Runtime）的版本，极限 QPS 可以达到 44W。
+在与 [Kitex][Kitex] 相同的测试条件（限制 4C）下，[Volo][Volo] 极限 QPS 为 35W。
 
 当然还有很多其他的性能指标，比如响应时间也是非常影响用户体验的。所以除了 Benchmark，我们选取了由 Go 迁移到 [Volo][Volo] 框架的两个业务，呈现真实的业务落地收益。
 
@@ -293,4 +293,3 @@ Rust 以难学难用而闻名，我们希望尽可能地降低用户使用 [Volo
 [Volo]: https://github.com/cloudwego/volo
 [Frugal]: https://github.com/cloudwego/frugal
 [Sonic]: https://github.com/bytedance/sonic
-[Monoio]: https://github.com/bytedance/monoio

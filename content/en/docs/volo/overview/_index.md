@@ -31,7 +31,7 @@ Rust is known for its high performance and safety. We always take high performan
 
 First of all, **it is very unfair to compare the performance with the Go framework**, so we will not focus on comparing the performance of Volo and Kitex, and the data we give can only be used as a reference, I hope everyone can view it objectively; at the same time, due to the open source community has not found another mature Rust async version Thrift RPC framework, and performance comparison is always easy to lead to war, so we hope to weaken the comparison of performance data as much as possible, and we'll only publish our own QPS data.
 
-Under the same test conditions as Kitex (limited to 4C), the Volo QPS is 35W; at the same time, we are internally verifying the version based on [Monoio](https://github.com/bytedance/monoio) (CloudWeGo's open source Rust async runtime), and the QPS can reach 44W.
+Under the same test conditions as Kitex (limited to 4C), the Volo QPS is 35W; at the same time, we are internally verifying the version based on [Monoio](https://github.com/bytedance/monoio) , and the QPS can reach 44W.
 
 From the flame graph of our online business, thanks to Rust's static distribution and excellent compilation optimization, the overhead of the framework part is basically negligible (excluding syscall overhead).
 
