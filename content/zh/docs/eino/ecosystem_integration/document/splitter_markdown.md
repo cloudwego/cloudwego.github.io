@@ -48,14 +48,14 @@ package main
 
 import (
     "context"
-    
+
     "github.com/cloudwego/eino-ext/components/document/transformer/splitter/markdown"
     "github.com/cloudwego/eino/schema"
 )
 
 func main() {
     ctx := context.Background()
-    
+
     // 初始化分割器
     splitter, err := markdown.NewHeaderSplitter(ctx, &markdown.HeaderConfig{
         Headers: map[string]string{
@@ -68,12 +68,13 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
+
     // 准备要分割的文档
     docs := []*schema.Document{
         {
             ID: "doc1",
-            Content: `# 文档标题
+            Content: `
+# 文档标题
 
 这是介绍部分的内容。
 
@@ -89,19 +90,16 @@ func main() {
 
 这是第二章的内容。
 
-\`\`\`
-# 这是代码块中的注释，不会被识别为标题
-\`\`\`
-`,
+` + "```\n# 这是代码块中的注释，不会被识别为标题\n```",
         },
     }
-    
+
     // 执行分割
     results, err := splitter.Transform(ctx, docs)
     if err != nil {
         panic(err)
     }
-    
+
     // 处理分割结果
     for i, doc := range results {
         println("片段", i+1, ":", doc.Content)
@@ -113,6 +111,7 @@ func main() {
         }
     }
 }
+
 ```
 
 ## **特性说明**
