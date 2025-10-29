@@ -17,120 +17,42 @@ description: "This document introduces the core concepts of the Motore framework
  */
 
 // -----------------------------------------------------------------------------
-// 1. Core Abstraction: `Service` Trait (Recommended: Use the macro)
+// 1. Implement a `Service`
 // -----------------------------------------------------------------------------
 
-// The core of `motore` is the `Service` trait (defined in motore/src/service/mod.rs).
-// It represents a service that receives a `Cx` context and a `Request`, and asynchronously returns a `Response`.
-
-// `motore-macros/src/lib.rs` provides the `#[motore::service]` macro,
-// which is our recommended and most convenient way to implement the `Service` trait.
-use motore::service;
-use motore::service::Service;
-
-// We define a context
+// First, let's define a context
 #[derive(Debug, Clone)]
 struct MyContext {
     request_id: u32,
     processing_steps: u32, // Example: a writable context state
 }
 
-struct MyMacroService;
+use motore::service::Service;
+use std::convert::Infallible; 
 
-// --- Implement `Service` using the `#[service]` macro ---
-#[service]
-impl Service<MyContext, String> for MyMacroService {
-    async fn call(&self, cx: &mut MyContext, req: String) -> Result<String, Infallible> {
+// This is our "string to uppercase" service
+struct ToUppercaseService;
+
+// --- Implement the Service trait for ToUppercaseService ---
+impl Service<MyContext, String> for ToUppercaseService {
+    type Response = String;
+    type Error = Infallible; // Infallible means this service will never fail
+
+    async fn call(&self, cx: &mut MyContext, req: String) -> Result<Self::Response, Self::Error> {
         // --- Demonstrate modifying &mut Cx ---
         cx.processing_steps += 1;
         
-        println!("[MacroService] handling req id: {}, step: {}", cx.request_id, cx.processing_steps);
+        println!("[ToUppercaseService] handling req id: {}, step: {}", cx.request_id, cx.processing_steps);
         let res = Ok(req.to_uppercase());
-        println!("[MacroService] responding req id: {}, step: {}", cx.request_id, cx.processing_steps);
+        println!("[ToUppercaseService] responding req id: {}, step: {}", cx.request_id, cx.processing_steps);
         res
     }
 }
 
 
 // -----------------------------------------------------------------------------
-// 2. Deeper Dive: The `Service` Trait
+// 2. Implement a `Layer`
 // -----------------------------------------------------------------------------
-
-// In fact, behind the scenes, the `#[service]` macro:
-// - Automatically infers from `Result<String, Infallible>`:
-//   - `type Response = String;`
-//   - `type Error = Infallible;`
-// - Automatically converts `async fn call` to the `fn call(...) -> impl Future` signature required by the trait
-// - Automatically wraps the function body in an `async move { ... }` block
-
-// Finally, the macro transforms the Service you just implemented into the real core `Service` trait in `motore/src/service/mod.rs`
-
-/*
-pub trait Service<Cx, Request> {
-    /// The response type returned when the service processes successfully
-    type Response;
-    /// The error type returned when the service fails to process
-    type Error;
-
-    /// Core method: process the request and return the response asynchronously
-    /// Note this signature: it is *not* `async fn call`.
-    /// It is a regular function that returns `impl Future` (RPITIT style).
-    fn call(
-        &self,
-        cx: &mut Cx,
-        req: Request,
-    ) -> impl std::future::Future<Output = Result<Self::Response, Self::Error>> + Send;
-}
-*/
-
-// Because it defines `fn call(...) -> impl Future`,
-// if you don't use the macro, you have to *manually* match this signature:
-
-use std::convert::Infallible;
-use std::future::Future;
-
-// This is our "business logic" service
-struct MyManualService;
-
-// --- Manually implement `Service` without the macro ---
-//
-// This is very tedious. You need to:
-// 1. Explicitly define `type Response`
-// 2. Explicitly define `type Error`
-// 3. Write the correct `fn call(...) -> impl Future` signature
-// 4. Return an `async move { ... }` block inside `call`
-//
-// This is exactly what the `#[service]` macro does for you automatically!
-impl Service<MyContext, String> for MyManualService {
-    type Response = String;
-    type Error = Infallible; // Infallible means this service will never fail
-
-    // Manually implement `call`
-    fn call(
-        &self,
-        cx: &mut MyContext,
-        req: String,
-    ) -> impl Future<Output = Result<Self::Response, Self::Error>> + Send {
-        // In this example, we only read the context, not modify it
-        println!("[ManualService] handling req id: {}, step: {}", cx.request_id, cx.processing_steps);
-
-        // You must return something that implements Future, usually an async block
-        async move {
-            let res = Ok(req.to_uppercase());
-            println!("[ManualService] responding req id: {}, step: {}", cx.request_id, cx.processing_steps);
-            res
-        }
-    }
-}
-
-// Conclusion: The macro greatly simplifies the implementation of Service, allowing you to focus on the `async fn` business logic instead of the `impl Future` trait signature boilerplate.
-
-
-// -----------------------------------------------------------------------------
-// 3. Middleware: The `Layer` Trait
-// -----------------------------------------------------------------------------
-
-use motore::layer::Layer;
 
 // `Layer` (from `motore/src/layer/mod.rs`) is a factory
 // that takes an inner service `S` and returns a new, wrapped service `Self::Service`.
@@ -160,9 +82,10 @@ struct LogService<S> {
     target: &'static str,
 }
 
-// Implement the `Layer` trait
+use motore::layer::Layer;
+// Implement the Layer trait for LogLayer
 impl<S> Layer<S> for LogLayer {
-    type Service = LogService<S>; // Specify the return type
+    type Service = LogService<S>;
 
     fn layer(self, inner: S) -> Self::Service {
         // Return the new, wrapped Service
@@ -173,81 +96,28 @@ impl<S> Layer<S> for LogLayer {
     }
 }
 
-// --- Manually implement the `Service` trait for `LogService` ---
-//
-// Again, this is tedious.
 impl<Cx, Req, S> Service<Cx, Req> for LogService<S>
 where
     // `S` must also be a Service and satisfy constraints like Send/Sync
     S: Service<Cx, Req> + Send + Sync,
-    S::Response: Send,
-    S::Error: Send,
-    Cx: Send, // LogService is generic, it doesn't care about the concrete type of Cx
-    Req: Send, 
+    Cx: Send + 'static,
+    Req: Send + 'static,
 {
     // The response and error types are usually the same as the inner service
     type Response = S::Response;
     type Error = S::Error;
 
-    fn call(
-        &self,
-        cx: &mut Cx,
-        req: Req,
-    ) -> impl Future<Output = Result<Self::Response, Self::Error>> + Send {
-        println!("[LogLayer] (Manual) target: {}, enter", self.target);
+    async fn call(&self, cx: &mut Cx, req: Req) -> Result<Self::Response, Self::Error> {
+        // Execute logic before calling the inner service
+        println!("[LogLayer] target: {}, enter", self.target);
         
-        // Must return an async block
-        async move {
-            // Execute logic before calling the inner service
-            
-            // Call the inner service
-            let result = self.inner.call(cx, req).await;
-
-            // Execute logic after the inner service returns
-            match &result {
-                Ok(_) => println!("[LogLayer] (Manual) target: {}, exit (Ok)", self.target),
-                Err(_) => println!("[LogLayer] (Manual) target: {}, exit (Err)", self.target),
-            }
-            
-            result
-        }
-    }
-}
-
-// -----------------------------------------------------------------------------
-// 4. Implementing the `Service` part of a `Layer` with a macro
-// -----------------------------------------------------------------------------
-
-// We can also use the macro on the `impl` block for `LogService<S>`
-// (Note: the `impl` block for the `Layer` trait remains unchanged, the macro is only for the `Service` trait)
-
-#[derive(Clone)]
-struct LogServiceMacro<S> {
-    inner: S,
-    target: &'static str,
-}
-
-// (The `impl Layer` part is omitted, it's the same as above, returning `LogServiceMacro<S>`)
-
-// --- Implement `LogService` using the macro ---
-#[service]
-impl<Cx, Req, S> Service<Cx, Req> for LogServiceMacro<S>
-where
-    S: Service<Cx, Req> + Send + Sync, // Inner service constraints
-    Cx: Send + 'static,
-    Req: Send + 'static,
-{
-    // Again, we just need to write `async fn`
-    // The macro will automatically infer `Response = S::Response` and `Error = S::Error`
-    async fn call(&self, cx: &mut Cx, req: Req) -> Result<S::Response, S::Error> {
-        println!("[LogLayer] (Macro) target: {}, enter", self.target);
-        
-        // The logic is identical, but the code is cleaner
+        // Call the inner service
         let result = self.inner.call(cx, req).await;
-        
+
+        // Execute logic after the inner service returns
         match &result {
-            Ok(_) => println!("[LogLayer] (Macro) target: {}, exit (Ok)", self.target),
-            Err(_) => println!("[LogLayer] (Macro) target: {}, exit (Err)", self.target),
+            Ok(_) => println!("[LogLayer] target: {}, exit (Ok)", self.target),
+            Err(_) => println!("[LogLayer] target: {}, exit (Err)", self.target),
         }
         
         result
@@ -255,15 +125,61 @@ where
 }
 
 // -----------------------------------------------------------------------------
-// 5. Composition: `ServiceBuilder`
+// 3. Extended Knowledge: How `async fn call` works
 // -----------------------------------------------------------------------------
 
-use motore::builder::ServiceBuilder;
-use motore::timeout::TimeoutLayer; // A Layer that comes with Motore (motore/src/timeout.rs)
-use std::time::Duration;
+// The core `Service` trait in `motore` (defined in motore/src/service/mod.rs)
+// is actually defined like this:
+/*
+pub trait Service<Cx, Request> {
+    /// The response type returned when the service processes successfully
+    type Response;
+    /// The error type returned when the service fails to process
+    type Error;
+
+    /// Core method: process the request and return the response asynchronously
+    ///
+    /// Note this signature! It is *not* `async fn`.
+    /// It is a regular function that returns `impl Future`.
+    /// This syntax is known as "Return Position `impl Trait` in Trait" (RPITIT).
+    fn call(
+        &self,
+        cx: &mut Cx,
+        req: Request,
+    ) -> impl std::future::Future<Output = Result<Self::Response, Self::Error>> + Send;
+}
+*/
+
+// You might have noticed:
+// Why does the `Service` trait require the signature `fn call(...) -> impl Future`,
+// but what we wrote (in ToUppercaseService and LogService) was `async fn call`?
+// These two signatures are different, so why does it compile?
+
+// The answer is the `async fn in trait` (AFIT) feature.
+
+// With the AFIT feature, `async fn` in a trait is actually "syntactic sugar"
+// for `fn ... -> impl Future`.
+
+// When the Rust compiler sees you trying to implement a trait
+// that expects `fn call(...) -> impl Future` with `async fn call`,
+// it automatically performs this "syntactic sugar" conversion (the process is called desugaring).
+
+// **In summary:**
+// 1. Motore's `Service` trait is defined using RPITIT (`fn ... -> impl Future`).
+// 2. Rust's AFIT feature allows us to implement this trait directly using `async fn`.
+// 3. When writing services and middleware, we get both the convenience of `async/await` and the zero-cost abstractions of `impl Trait`.
+
+
+// -----------------------------------------------------------------------------
+// 4. Assembling Services and Middleware with `ServiceBuilder`
+// -----------------------------------------------------------------------------
 
 // `ServiceBuilder` (from `motore/src/builder.rs`)
-// allows you to compose multiple Layers onto a Service.
+// allows you to stack multiple Layers onto a Service.
+
+use motore::builder::ServiceBuilder;
+use std::time::Duration;
+use motore::timeout::TimeoutLayer; // A Layer that comes with Motore
 
 async fn run_builder() {
     // 1. Create a ServiceBuilder
@@ -272,12 +188,12 @@ async fn run_builder() {
         //    Request execution order: top to bottom
         //    Response execution order: bottom to top
         .layer(LogLayer { target: "Outer" })
-        .layer(TimeoutLayer::new(Some(Duration::from_secs(1)))) // A Layer provided by default in Motore
+        .layer(TimeoutLayer::new(Some(Duration::from_secs(1))))
         .layer(LogLayer { target: "Inner" });
 
     // 3. Apply the Layer stack to an "innermost" service
-    //    Here we use `MyMacroService` as the core business service
-    let service = builder.service(MyMacroService);
+    //    Here we use `ToUppercaseService` as the core business service
+    let service = builder.service(ToUppercaseService);
 
     // 4. Prepare the context and request
     //    Note: processing_steps starts at 0
@@ -292,12 +208,12 @@ async fn run_builder() {
     /*
      * Expected output:
      *
-     * [LogLayer] (Manual) target: Outer, enter
-     * [LogLayer] (Manual) target: Inner, enter
-     * [MacroService] handling req id: 42, step: 1   <-- step becomes 1
-     * [MacroService] responding req id: 42, step: 1
-     * [LogLayer] (Manual) target: Inner, exit (Ok)
-     * [LogLayer] (Manual) target: Outer, exit (Ok)
+     * [LogLayer] target: Outer, enter
+     * [LogLayer] target: Inner, enter
+     * [ToUppercaseService] handling req id: 42, step: 1     <-- step becomes 1
+     * [ToUppercaseService] responding req id: 42, step: 1
+     * [LogLayer] target: Inner, exit (Ok)
+     * [LogLayer] target: Outer, exit (Ok)
      *
      * Final response: Ok("HELLO MOTORE")
      */
@@ -307,7 +223,7 @@ async fn run_builder() {
 }
 
 // -----------------------------------------------------------------------------
-// 6. Helper Utility: `service_fn`
+// 5. Helper Utility: `service_fn`
 // -----------------------------------------------------------------------------
 
 // Sometimes you don't want to create a new struct for a simple service.
@@ -324,7 +240,8 @@ async fn my_handler_func(cx: &mut MyContext, req: String) -> Result<String, Infa
 }
 
 
-#[tokio::main] async fn main() {
+#[tokio::main]
+async fn main() {
     println!("\n--- Example 1: Running `run_builder` ---");
 
     run_builder().await;
@@ -360,7 +277,7 @@ async fn my_handler_func(cx: &mut MyContext, req: String) -> Result<String, Infa
 ## What you've learned
 
 -  Motore's core design: Service, Layer, and the mutable Cx context
--  The use of `#[motore::service]`
+-  Rust's AFIT and RPITIT features, and their application in Motore
 -  How to assemble Services and Layers using `ServiceBuilder`
 
 ## What's Next?
