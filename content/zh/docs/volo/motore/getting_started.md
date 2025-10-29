@@ -240,6 +240,30 @@ async fn run_builder() {
      println!("Final context steps: {}", cx.processing_steps); // 将打印 1
 }
 
+// 讲个好玩的，ServiceBuilder 也实现了 Layer trait，所以能把一个 ServiceBuilder 放在另外一个 ServiceBuilder 的 layer 方法里面：
+// --- 有一堆中间件 ---
+// struct LogLayer;
+// struct TimeoutLayer;
+// struct AuthLayer;
+// struct MetricsLayer;
+// struct MyCoreService;
+//
+// 1. 我们可以创建一个可复用的 "鉴权" 中间件栈
+// let auth_stack = ServiceBuilder::new()
+//     .layer(MetricsLayer)
+//     .layer(AuthLayer);
+//
+// 2. 现在，auth_stack 是一个 ServiceBuilder<...>
+//    因为 ServiceBuilder 实现了 Layer，
+//    所以我们可以把整个 auth_stack 当作一个 Layer 来使用！
+//
+// 3. 在我们的主 ServiceBuilder 中使用 auth_stack
+// let final_service = ServiceBuilder::new()
+//     .layer(LogLayer)
+//     .layer(auth_stack) // <-- 这一步之所以能成功，就是因为 ServiceBuilder 实现了 Layer
+//     .layer(TimeoutLayer)
+//     .service(MyCoreService);
+
 // -----------------------------------------------------------------------------
 // 5. 辅助工具：`service_fn`
 // -----------------------------------------------------------------------------

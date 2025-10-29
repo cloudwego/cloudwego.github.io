@@ -242,6 +242,31 @@ async fn run_builder() {
      println!("Final context steps: {}", cx.processing_steps); // Will print 1
 }
 
+// Fun fact: `ServiceBuilder` also implements the `Layer` trait, which means
+// you can nest one `ServiceBuilder` inside another `ServiceBuilder`'s `layer` method:
+// --- Suppose we have a bunch of middleware ---
+// struct LogLayer;
+// struct TimeoutLayer;
+// struct AuthLayer;
+// struct MetricsLayer;
+// struct MyCoreService;
+//
+// 1. We can create a reusable "authentication" middleware stack
+// let auth_stack = ServiceBuilder::new()
+//     .layer(MetricsLayer)
+//     .layer(AuthLayer);
+//
+// 2. Now, `auth_stack` is a `ServiceBuilder<...>`
+//    Since `ServiceBuilder` implements `Layer`,
+//    we can use the entire `auth_stack` as a single `Layer`!
+//
+// 3. Use `auth_stack` in our main `ServiceBuilder`
+// let final_service = ServiceBuilder::new()
+//     .layer(LogLayer)
+//     .layer(auth_stack) // <-- This step works precisely because `ServiceBuilder` implements `Layer`
+//     .layer(TimeoutLayer)
+//     .service(MyCoreService);
+
 // -----------------------------------------------------------------------------
 // 5. Helper Utility: `service_fn`
 // -----------------------------------------------------------------------------

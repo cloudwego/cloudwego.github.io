@@ -6,9 +6,9 @@ keywords: ["Motore", "Volo", "Relationship", "Middleware", "RPC"]
 description: "Motore provides the core middleware abstraction for Volo. Volo uses Motore as the foundation of its core middleware abstraction layer, on top of which RPC-related functions and implementations are built."
 ---
 
-Understanding the relationship between them is crucial for in-depth use of Volo, framework extension, or developing custom middleware.
+Understanding the relationship between them is crucial for in-depth use of Volo (such as framework extension, developing custom middleware, etc.).
 
-In simple terms: **Motore defines the two general and core asynchronous middleware abstract interfaces, `Service` and `Layer`, while Volo is the main user of these abstract interfaces and the implementer in specific scenarios (RPC)**.
+In simple terms: **Motore defines the two general and core asynchronous middleware abstract interfaces, `Service` and `Layer`, while Volo is the user of these abstract interfaces and the implementer in specific scenarios (RPC)**.
 
 Motore is more general and can theoretically be used in any place that requires asynchronous service abstraction. Volo is more specific, focusing on the RPC field and utilizing Motore's abstraction to implement RPC-specific functions.
 
@@ -21,15 +21,15 @@ Motore is an independent Rust crate ([cloudwego/motore](https://github.com/cloud
 Motore mainly defines two core Traits:
 
 1.  **`Service<Cx, Request>`**:
-    *   Represents a functional unit that processes requests and asynchronously returns a `Result<Response, Error>`.
-    *   This is the most basic component in Motore and can represent a client, a server, or the middleware itself.
-    *   Its core is the `async fn call(&self, cx: &mut Cx, req: Request) -> Result<Self::Response, Self::Error>` method. It receives a context `Cx` and a request `Request`, and asynchronously returns the result.
+    * Represents a functional unit that processes requests and asynchronously returns a `Result<Response, Error>`.
+    * This is the most basic component in Motore and can represent a client, a server, or the middleware itself.
+    * Its core is the `async fn call(&self, cx: &mut Cx, req: Request) -> Result<Self::Response, Self::Error>` method. It receives a context `Cx` and a request `Request`, and asynchronously returns the result.
 
 2.  **`Layer<S>`**:
-    *   Represents a "decorator" or "factory" used to wrap and enhance a `Service`.
-    *   It receives an inner `Service` (generic `S`) and returns a new, wrapped `Service` (`Self::Service`).
-    *   `Layer` itself does not directly handle requests but is used to build and compose `Service` chains (i.e., middleware stacks).
-    *   Its core is the `fn layer(self, inner: S) -> Self::Service` method.
+    * Represents a "decorator" or "factory" used to wrap and enhance a `Service`.
+    * It receives an inner `Service` (generic `S`) and returns a new, wrapped `Service` (`Self::Service`).
+    * `Layer` itself does not directly handle requests but is used to build and compose `Service` chains (i.e., middleware stacks).
+    * Its core is the `fn layer(self, inner: S) -> Self::Service` method.
 
 Motore aims to provide a protocol-agnostic, reusable middleware infrastructure. It focuses on the abstraction itself, rather than a framework for a specific application domain like RPC (as Volo is), but Motore can serve as a foundation for building such frameworks.
 
@@ -44,19 +44,19 @@ Motore also provides some auxiliary tools, such as `ServiceBuilder` for chaining
 Volo is a full-featured RPC framework that supports Thrift and gRPC. Volo **directly depends on and is deeply integrated with Motore** as the foundation of its internal middleware system.
 
 1.  **Dependency and Re-export**:
-    *   Volo directly depends on the `motore` crate in its `Cargo.toml`.
-    *   Volo **re-exports** Motore's core Traits at the entry point of its library (`volo/src/lib.rs`): `pub use motore::{Service, layer, Layer, service};`. When you use `volo::Service` or `volo::Layer` in a Volo project, you are **actually using the Traits from Motore**.
+    * Volo directly depends on the `motore` crate in its `Cargo.toml`.
+    * Volo **re-exports** Motore's core Traits at the entry point of its library (`volo/src/lib.rs`): `pub use motore::{Service, layer, Layer, service};`. When you use `volo::Service` or `volo::Layer` in a Volo project, you are **actually using the Traits from Motore**.
 
 2.  **Specific Implementation**:
-    *   The Volo framework extensively uses the abstractions provided by Motore to build its functionality. For example:
-        *   Load balancing (`LoadBalanceLayer`) is a component that implements Motore's `Layer`.
-        *   Features like timeout control, logging, and metrics collection can be integrated by implementing Motore's `Layer`.
-        *   The RPC service handling logic (Handler) written by the end-user, as well as the client-side calling logic generated by the framework, will be wrapped into a form that conforms to the Motore `Service` interface.
-    *   Volo provides many `Layer` **implementations** that are **specific to the RPC scenario**, such as handling Thrift or gRPC protocol details, service discovery integration, etc. These implementations all follow the `Layer` interface defined by Motore.
+    * The Volo framework extensively uses the abstractions provided by Motore to build its functionality. For example:
+        * Load balancing (`LoadBalanceLayer`) is a component that implements Motore's `Layer`.
+        * Features like timeout control, logging, and metrics collection can be integrated by implementing Motore's `Layer`.
+        * The RPC service handling logic (Handler) written by the end-user, as well as the client-side calling logic generated by the framework, will be wrapped into a form that conforms to the Motore `Service` interface.
+    * Volo provides many `Layer` **implementations** that are **specific to the RPC scenario**, such as handling Thrift or gRPC protocol details, service discovery integration, etc. These implementations all follow the `Layer` interface defined by Motore.
 
 3.  **User Interaction**:
-    *   Volo users generally configure and add middleware through the APIs provided by `Client::builder()` or `Server::new()`. These APIs internally use `motore::ServiceBuilder` or the low-level `motore::layer::Stack` to apply the `Layer`s provided by the user to the `Service`.
-    *   If users need to write custom middleware, they also need to implement the `motore::Layer` Trait (or directly implement `motore::Service` to wrap another Service).
+    * Volo users generally configure and add middleware through the APIs provided by `Client::builder()` or `Server::new()`. These APIs internally use `motore::ServiceBuilder` or the low-level `motore::layer::Stack` to apply the `Layer`s provided by the user to the `Service`.
+    * If users need to write custom middleware, they also need to implement the `motore::Layer` Trait (or directly implement `motore::Service` to wrap another Service).
 
 ## Why is Motore needed?
 

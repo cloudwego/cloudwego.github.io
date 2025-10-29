@@ -6,17 +6,17 @@ keywords: ["Motore", "Volo", "关系", "中间件", "RPC"]
 description: "Motore 为 Volo 提供了核心的中间件抽象，Volo 使用 Motore 作为其核心中间件抽象层的基础，在此之上构建了 RPC 相关的功能和实现。"
 ---
 
-理解它们之间的关系对于深入使用 Volo、进行框架扩展或开发自定义中间件至关重要。
+理解它们之间的关系对深入使用 Volo（进行框架扩展、开发自定义中间件 等等）至关重要。
 
-简单来说：**Motore 定义了 `Service` 和 `Layer` 这两个通用的、核心的异步中间件抽象接口，而 Volo 是这些抽象接口的主要使用者和特定场景（RPC）下的实现者**。
+简单来说：**Motore 定义了 `Service` 和 `Layer` 这两个通用的、核心的异步中间件抽象接口，而 Volo 是这些抽象接口的使用者和特定场景（RPC）下的实现者**。
 
 Motore 更通用，理论上可用于任何需要异步服务抽象的地方。Volo 则更具体地专注于 RPC 领域，利用 Motore 的抽象来实现 RPC 特有的功能。
 
-可以将 Motore 视为 Volo 中间件系统的"骨架"，Volo 本身为 "骨架" 注入了 "血肉"（实现 RPC 所需的框架层面的组件和逻辑），用户最终在 Volo 上去填充具体的业务逻辑。
+可以将 Motore 视为 Volo 中间件系统的 "骨架"，Volo 本身为 "骨架" 注入了 "血肉"（实现 RPC 所需的框架层面的组件和逻辑），用户最终在 Volo 上去填充具体的业务逻辑。
 
 ## Motore: 核心抽象层
 
-Motore 是一个独立的 Rust crate ([cloudwego/motore](https://github.com/cloudwego/motore))，其设计目标是提供一套简洁、高效且符合人体工程学的异步中间件抽象。它受到了业界广泛使用的 [Tower](https://github.com/tower-rs/tower) 库的启发，但在设计上利用了 Rust 最新的 **AFIT (async fn in trait)** 和 **RPITIT (return position impl trait in trait)** 特性。
+Motore 是一个独立的 Rust crate ([cloudwego/motore](https://github.com/cloudwego/motore))，其设计目标是提供一套简洁、高效且符合人体工程学的异步中间件抽象。虽然它受到了业界广泛使用的 [Tower](https://github.com/tower-rs/tower) 库的启发，但在设计上它利用了 Rust 最新的 **AFIT (async fn in trait)** 和 **RPITIT (return position impl trait in trait)** 特性。
 
 Motore 主要定义了两个核心 Trait：
 
@@ -48,7 +48,7 @@ Volo 是一个功能完备的 RPC 框架，支持 Thrift 和 gRPC。Volo **直�
     * Volo 在其库的入口（`volo/src/lib.rs`）**重新导出**了 Motore 的核心 Trait：`pub use motore::{Service, layer, Layer, service};`。当你在 Volo 项目中使用 `volo::Service` 或 `volo::Layer` 时，你**实际上用的就是 Motore 那边的 Trait**。
 
 2.  **具体实现**:
-    * Volo 框架内部大量使用了 Motore 提供的抽象来构建其功能。例如：
+    * Volo 框架内部大量使用 Motore 提供的抽象来构建其功能。例如：
         * 负载均衡 (`LoadBalanceLayer`) 是一个实现了 Motore `Layer` 的组件。
         * 超时控制、日志记录、指标收集等功能都可以通过实现 Motore `Layer` 来集成。
         * 最终用户编写的 RPC 服务处理逻辑（Handler），以及框架生成的客户端调用逻辑，都会被包装成符合 Motore `Service` 接口的形式。
