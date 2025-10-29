@@ -5,6 +5,26 @@ weight: 1
 keywords: ["Motore", "Volo", "Rust", "Middleware", "Getting Started"]
 description: "This document introduces the core concepts of the Motore framework through a complete example to help you quickly understand Motore."
 ---
+## Prepare the Environment
+
+The tutorial text itself is runnable Rust code. You can read it directly, or you can copy and paste the tutorial text into the `src/main.rs` file of a new cargo package and view it in an IDE. This provides many benefits, such as seeing type hints from rust-analyzer, which enhances the tutorial experience.
+
+Don't forget to add the dependencies required by the tutorial text to your `Cargo.toml` file:
+
+```toml
+[package]
+name = "hello-motore"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+motore = { version = "0"}
+
+# Motore depends on tokio, and we also need a tokio runtime to execute the main function
+tokio = { version = "1", features = ["full"] }
+```
+
+## Tutorial Text
 
 ```rust
 /*

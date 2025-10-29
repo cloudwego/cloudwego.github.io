@@ -5,6 +5,25 @@ weight: 1
 keywords: ["Motore", "Volo", "Rust", "中间件", "快速开始"]
 description: "通过一个完整的示例介绍 Motore 框架的核心概念，帮助你快速了解 Motore。"
 ---
+## 准备环境
+
+教程正文本身就是能运行的 Rust 代码。你可以直接看，也可以把教程正文复制粘贴到一个新 cargo 包的 `src/main.rs` 中，然后用 IDE 看，这样就有 可以看到 rust-analyzer 的类型提示 等等诸多好处，提升本教程效果。
+
+不要忘了在 `Cargo.toml` 文件中加入教程正文所需的依赖：
+```toml
+[package]
+name = "hello-motore"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+motore = { version = "0"}
+
+# Motore 依赖 tokio，我们也需要一个 tokio 运行时来执行 main 函数
+tokio = { version = "1", features = ["full"] }
+```
+
+## 教程正文
 
 ```rust
 /*
