@@ -80,7 +80,7 @@ func main() {
 
     // Create search request
     searchReq := &duckduckgo.SearchRequest{
-        Query: "Golang programming development",
+        Query: "Go programming development",
         Page:  1,
     }
 
