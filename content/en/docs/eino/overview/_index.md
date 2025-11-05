@@ -9,7 +9,7 @@ weight: 1
 
 ## Introduction
 
-**Eino['aino]** (pronounced similarly to "I know, hoping that the framework can achieve the vision of "I know") aims to be the ultimate LLM application development framework in Golang. Drawing inspiration from many excellent LLM application development frameworks in the open-source community such as LangChain & LlamaIndex, etc., as well as learning from cutting-edge research and real world applications, Eino offers an LLM application development framework that emphasizes simplicity, scalability, reliability and effectiveness that better aligns with Golang programming conventions.
+**Eino['aino]** (pronounced similarly to "I know, hoping that the framework can achieve the vision of "I know") aims to be the ultimate LLM application development framework in Go. Drawing inspiration from many excellent LLM application development frameworks in the open-source community such as LangChain & LlamaIndex, etc., as well as learning from cutting-edge research and real world applications, Eino offers an LLM application development framework that emphasizes simplicity, scalability, reliability and effectiveness that better aligns with Go programming conventions.
 
 What Eino provides are:
 

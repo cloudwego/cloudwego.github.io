@@ -45,7 +45,7 @@ Eino 对「编排」有着这样的洞察：
   - 详细信息参考：[Eino: Callback 用户手册](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
 - 提供了 call option 的机制，**扩展性**是快速迭代中的系统最基本的诉求
   - 详细信息参考：[Eino: CallOption 能力与规范](/zh/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
-- 提供了 “类型对齐” 的开发方式的强化，降低开发者心智负担，把 golang 的**类型安全**特性发挥出来
+- 提供了 “类型对齐” 的开发方式的强化，降低开发者心智负担，把 Go 的**类型安全**特性发挥出来
   - 详细信息参考：[Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 - 提供了 “**流的自动转换**” 能力，让 “流” 在「编排系统的复杂性来源榜」中除名
   - 详细信息参考：[Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)

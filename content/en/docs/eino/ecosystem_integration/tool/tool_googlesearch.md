@@ -82,7 +82,7 @@ func main() {
 
     // prepare params
     req := googlesearch.SearchRequest{
-        Query: "Golang concurrent programming",
+        Query: "Go concurrent programming",
         Num:   3,
         Lang:  "en",
     }
@@ -123,7 +123,7 @@ func main() {
     // 2. Title: Concurrency — An Introduction to Programming in Go | Go Resources
     //    Link: https://www.golang-book.com/books/intro/10
     //    Desc:
-    // 3. Title: The Comprehensive Guide to Concurrency in Golang | by Brandon ...
+    // 3. Title: The Comprehensive Guide to Concurrency in Go | by Brandon ...
     //    Link: https://bwoff.medium.com/the-comprehensive-guide-to-concurrency-in-golang-aaa99f8bccf6
     //    Desc: Update (November 20, 2023) — This article has undergone a comprehensive revision for enhanced clarity and conciseness. I’ve streamlined the…
 
@@ -135,7 +135,7 @@ func main() {
 
 ```json
 {
-    "query": "Golang concurrent programming",
+    "query": "Go concurrent programming",
     "items": [
         {
             "link": "https://example.com/article1",
