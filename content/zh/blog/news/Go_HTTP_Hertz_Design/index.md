@@ -15,7 +15,7 @@ author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 如：函数计算平台 FaaS、压测平台、各类网关、Service Mesh 控制面等，均收到不错的使用反馈。在如此大规模的场景下，[Hertz][Hertz] 拥有极强的稳定性和性能，在内部实践中某些典型服务，
 如框架占比较高的服务、网关等服务，迁移 [Hertz][Hertz] 后相比 Gin 框架，资源使用显著减少，CPU 使用率随流量大小降低 30%—60%，时延也有明显降低。
 
-[Hertz][Hertz] 坚持 **内外维护一套代码** ，为开源使用提供了强有力的保障。通过开源， [Hertz][Hertz] 也将丰富云原生的 Golang 中间件体系，完善 CloudWeGo 生态矩阵，
+[Hertz][Hertz] 坚持 **内外维护一套代码** ，为开源使用提供了强有力的保障。通过开源， [Hertz][Hertz] 也将丰富云原生的 Go 中间件体系，完善 CloudWeGo 生态矩阵，
 为更多开发者和企业搭建云原生化的大规模分布式系统，提供一种现代的、资源高效的的技术方案。
 
 本文将重点关注 [Hertz][Hertz] 的**架构设计**与 **功能特性** 。
@@ -23,7 +23,7 @@ author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 ## 02 项目缘起
 
 最初，字节跳动内部的 HTTP 框架是对 Gin 框架的封装，具备不错的易用性、生态完善等优点。随着内部业务的不断发展，高性能、多场景的需求日渐强烈。
-而 Gin 是对 Golang 原生 net/http 进行的二次开发，在按需扩展和性能优化上受到很大局限。因此，为了满足业务需求，更好的服务各大业务线，
+而 Gin 是对 Go 原生 net/http 进行的二次开发，在按需扩展和性能优化上受到很大局限。因此，为了满足业务需求，更好的服务各大业务线，
 2020 年初，字节跳动服务框架团队经过内部使用场景和外部主流开源 HTTP 框架 Fasthttp、Gin、Echo 的调研后，开始基于自研网络库 [Netpoll][Netpoll] 开发内部框架 [Hertz][Hertz]，
 让 [Hertz][Hertz] 在面对企业级需求时，有更好的性能及稳定性表现，也能够满足业务发展和应对不断演进的技术需求。
 
@@ -79,7 +79,7 @@ author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 传输层负责底层的网络库的抽象和实现。
 
 [Hertz][Hertz] 支持底层网络库的扩展。[Hertz][Hertz] 原生完美适配 [Netpoll][Netpoll]，在时延方面有很多深度的优化，非常适合时延敏感的业务接入。[Netpoll][Netpoll] 对 TLS 能力的支持有待完善，而 TLS 能力又是 HTTP 框架必备能力，
-为此 [Hertz][Hertz] 底层同时支持基于 Golang 标准网络库的实现适配，同时支持网络库的一键切换，用户可根据自己的需求选择合适的网络库进行替换。如果用户有更加高效的网络库或其他网络库需求，也完全可以根据需求自行扩展。
+为此 [Hertz][Hertz] 底层同时支持基于 Go 标准网络库的实现适配，同时支持网络库的一键切换，用户可根据自己的需求选择合适的网络库进行替换。如果用户有更加高效的网络库或其他网络库需求，也完全可以根据需求自行扩展。
 
 **网络库的扩展**：
 [网络库扩展](/zh/docs/hertz/tutorials/framework-exten/network-lib/)
