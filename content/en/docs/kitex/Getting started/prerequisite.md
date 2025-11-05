@@ -7,17 +7,17 @@ keywords: ["Kitex", "Golang", "Go", "Environment Preparation"]
 description: "Environment preparation for Kitex development"
 ---
 
-Kitex, as a Golang microservice RPC framework, requires the following environment preparation: a **language environment** and **code generation tools**.
+Kitex, as a Go microservice RPC framework, requires the following environment preparation: a **language environment** and **code generation tools**.
 
 > **Note: Be sure to complete this section**
 
-## Golang
+## Go
 
 **Go** (also known as **Golang**) is a statically typed, compiled, concurrent programming language developed by Google.
 
-- Refer to [Golang Installation](https://go.dev/doc/install) for the environment setup of the Go language.
-- It is recommended to use the latest version of Golang. We ensure compatibility with the latest three official versions (currently >= **v1.17**).
-- Make sure to enable go mod support (enabled by default in Golang >= 1.15).
+- Refer to [Go Installation](https://go.dev/doc/install) for the environment setup of the Go language.
+- It is recommended to use the latest version of Go. We ensure compatibility with the latest three official versions (currently >= **v1.17**).
+- Make sure to enable go mod support (enabled by default in Go >= 1.15).
 - For Windows environment, kitex version >= v0.5.2 is required.
 
 After completing the installation, open your terminal and enter `go version`. If the output displays the Go version and system architecture information correctly, it means the installation was successful. For example:
