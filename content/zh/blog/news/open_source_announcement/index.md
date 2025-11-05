@@ -12,7 +12,7 @@ author: 字节跳动基础架构团队
 
 [CloudWeGo](https://github.com/cloudwego) 是一套由字节跳动开源的、以 Go 语言为核心的、可快速构建企业级云原生架构的中间件集合，专注于微服务通信与治理，具备高性能、可扩展、高可靠的特点。
 
-字节跳动内部使用 Golang 作为主要的业务开发语言，我们支持着数万个 Golang 微服务的可靠通信，经过数量众多的微服务和海量流量的验证，我们已经有了较为成熟的微服务最佳实践，于是考虑将内部的实践开源出去丰富社区生态。
+字节跳动内部使用 Go 作为主要的业务开发语言，我们支持着数万个 Go 微服务的可靠通信，经过数量众多的微服务和海量流量的验证，我们已经有了较为成熟的微服务最佳实践，于是考虑将内部的实践开源出去丰富社区生态。
 但微服务相关的项目较多，每个项目单独开源对外部用户并不友好，为了更好地让大家聚焦于微服务，我们以 CloudWeGo 作为项目名，逐步将内部微服务体系的项目开源，内外统一使用开源库，各项目以开源库为主进行迭代。
 
 内外维护一套代码，统一迭代演进，是我们开源前明确的原则，但毕竟涉及到代码库的调整，我们要保证内部用户尽可能无感知的迁移到开源库，本着对内部和开源用户负责的态度，我们要先确认内部可以平滑过渡，所以开源时并未对外宣传。
@@ -20,9 +20,9 @@ author: 字节跳动基础架构团队
 
 CloudWeGo 不仅仅是一个对外的开源项目，也是一个真实的超大规模企业级实践项目。
 
-我们希望通过 CloudWeGo 丰富云原生社区的 Golang 产品体系，助力其他企业快速构建云原生架构，也希望吸引外部开发者共建，促进面向多元场景支持的演进，丰富产品能力。
+我们希望通过 CloudWeGo 丰富云原生社区的 Go 产品体系，助力其他企业快速构建云原生架构，也希望吸引外部开发者共建，促进面向多元场景支持的演进，丰富产品能力。
 
-因为 CloudWeGo 下的项目会依赖很多内部的基础工具库，我们也推动将内部常用的 Golang 基础工具库开源出去，统一在 [bytedance/gopkg](https://github.com/bytedance/gopkg) 维护。
+因为 CloudWeGo 下的项目会依赖很多内部的基础工具库，我们也推动将内部常用的 Go 基础工具库开源出去，统一在 [bytedance/gopkg](https://github.com/bytedance/gopkg) 维护。
 
 ## CloudWeGo 开源项目
 
@@ -32,8 +32,8 @@ CloudWeGo 第一批以 [Kitex][Kitex] RPC 框架和 [Netpoll][Netpoll] 网络库
 
 ### Kitex
 
-[Kitex][Kitex] 是字节跳动内部的 Golang 微服务 RPC 框架，具有高性能、强可扩展的主要特点。在 [Kitex][Kitex] 之前内部的 Golang 框架是 Kite，但 Kite 与 Thrift 深度耦合、生成代码逻辑重，
-很难从网络模型或编解码层面改造优化，继续支持新特性势必会造成代码越发臃肿迭代受阻问题，于是我们针对曾经的痛点设计了新的框架 [Kitex][Kitex]。虽然 [Kitex][Kitex] 是新框架，但已经在线上应用一年多，目前字节内部超过 50% 的 Golang 微服务使用 [Kitex][Kitex]。
+[Kitex][Kitex] 是字节跳动内部的 Go 微服务 RPC 框架，具有高性能、强可扩展的主要特点。在 [Kitex][Kitex] 之前内部的 Go 框架是 Kite，但 Kite 与 Thrift 深度耦合、生成代码逻辑重，
+很难从网络模型或编解码层面改造优化，继续支持新特性势必会造成代码越发臃肿迭代受阻问题，于是我们针对曾经的痛点设计了新的框架 [Kitex][Kitex]。虽然 [Kitex][Kitex] 是新框架，但已经在线上应用一年多，目前字节内部超过 50% 的 Go 微服务使用 [Kitex][Kitex]。
 
 以下简述 [Kitex][Kitex] 的一些特性：
 
@@ -53,7 +53,7 @@ CloudWeGo 第一批以 [Kitex][Kitex] RPC 框架和 [Netpoll][Netpoll] 网络库
 
 ### Netpoll
 
-[Netpoll][Netpoll] 是字节跳动内部的 Golang 高性能、I/O 非阻塞的网络库，专注于 RPC 场景。
+[Netpoll][Netpoll] 是字节跳动内部的 Go 高性能、I/O 非阻塞的网络库，专注于 RPC 场景。
 
 RPC 通常有较重的处理逻辑（业务逻辑、编解码），耗时长，不能像 Redis 一样采用串行处理(必须异步)。而 Go 的标准库 net 设计了 BIO(Blocking I/O) 模式的 API，
 为了保证异步处理，RPC 框架设计上需要为每个连接都分配一个 goroutine，这在空闲连接较多时，产生大量的空闲 goroutine，增加调度开销。
@@ -66,15 +66,15 @@ RPC 通常有较重的处理逻辑（业务逻辑、编解码），耗时长，�
 
 ### Thriftgo
 
-[Thriftgo][Thriftgo] 是 Go 语言实现的 Thrift IDL 解析和代码生成器，支持完善的 Thrift IDL 语法和语义检查，相较 Apache Thrift 官方的 Golang 生成代码，[Thriftgo][Thriftgo] 做了一些问题修复且支持插件机制，用户可根据需求自定义生成代码。
+[Thriftgo][Thriftgo] 是 Go 语言实现的 Thrift IDL 解析和代码生成器，支持完善的 Thrift IDL 语法和语义检查，相较 Apache Thrift 官方的 Go 生成代码，[Thriftgo][Thriftgo] 做了一些问题修复且支持插件机制，用户可根据需求自定义生成代码。
 
 [Kitex][Kitex] 的代码生成工具就是 [Thriftgo][Thriftgo] 的插件，CloudWeGo 近期也会开源另一个 [Thriftgo][Thriftgo] 的插件 thrift-gen-validator，支持 IDL Validator，用于字段值校验，解决开发者需要自行实现代码校验逻辑的负担，弥补 Thrift 缺失的能力。
 
-[Thriftgo][Thriftgo] 目前虽然仅支持生成 Golang Thrift 代码，但其定位是可支持各语言的 Thrift 代码生成，未来如果有需求，我们也会考虑生成其他语言的代码，同时我们也将尝试将其回馈至 Apache Thrift 社区。
+[Thriftgo][Thriftgo] 目前虽然仅支持生成 Go Thrift 代码，但其定位是可支持各语言的 Thrift 代码生成，未来如果有需求，我们也会考虑生成其他语言的代码，同时我们也将尝试将其回馈至 Apache Thrift 社区。
 
 ### Netpoll-http2
 
-Netpoll-http2 是基于 Golang 标准库 golang.org/x/net/http2 的源码替换 go net 为 [Netpoll][Netpoll]，目前用于 [Kitex][Kitex] 对 gRPC 协议的支持，对 HTTP2 有需求的外部开发者也可以使用此库。
+Netpoll-http2 是基于 Go 标准库 golang.org/x/net/http2 的源码替换 go net 为 [Netpoll][Netpoll]，目前用于 [Kitex][Kitex] 对 gRPC 协议的支持，对 HTTP2 有需求的外部开发者也可以使用此库。
 
 ## 内外版本维护
 
