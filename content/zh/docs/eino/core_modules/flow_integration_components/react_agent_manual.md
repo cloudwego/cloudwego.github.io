@@ -204,7 +204,7 @@ func main() {
         MessageModifier: func(ctx context.Context, input []*schema.Message) []*schema.Message {
             res := make([]*schema.Message, 0, len(input)+1)
     
-            res = append(res, schema.SystemMessage("你是一个 golang 开发专家."))
+            res = append(res, schema.SystemMessage("你是一个 Go 开发专家."))
             res = append(res, input...)
             return res
         },
@@ -213,7 +213,7 @@ func main() {
     agent.Generate(ctx, []*schema.Message{schema.UserMessage("写一个 hello world 的代码")})
     // 模型得到的实际输入为：
     // []*schema.Message{
-    //    {Role: schema.System, Content: "You are an expert golang developer."},
+    //    {Role: schema.System, Content: "You are an expert Go developer."},
     //    {Role: schema.Human, Content: "Write a hello world code"}
     //}
 }
@@ -329,7 +329,7 @@ agent, _ := react.NewAgent(...)
 
 var outMessage *schema.Message
 outMessage, err = agent.Generate(ctx, []*schema.Message{
-    schema.UserMessage("写一个 golang 的 hello world 程序"),
+    schema.UserMessage("写一个 Go 的 hello world 程序"),
 })
 ```
 
@@ -340,7 +340,7 @@ agent, _ := react.NewAgent(...)
 
 var msgReader *schema.StreamReader[*schema.Message]
 msgReader, err = agent.Stream(ctx, []*schema.Message{
-    schema.UserMessage("写一个 golang 的 hello world 程序"),
+    schema.UserMessage("写一个 Go 的 hello world 程序"),
 })
 
 for {

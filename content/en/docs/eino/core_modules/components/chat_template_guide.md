@@ -101,7 +101,7 @@ template := prompt.FromMessages(schema.FString,
 variables := map[string]any{
   "role": "professional assistant",
   "task": "write a poem",
-  "history_key": []*schema.Message{{Role: schema.User, Content: "what is golang?"}, {Role: schema.Assistant, Content: "golang is xxx"}},
+  "history_key": []*schema.Message{{Role: schema.User, Content: "what is Go?"}, {Role: schema.Assistant, Content: "Go is xxx"}},
 }
 
 // Format template

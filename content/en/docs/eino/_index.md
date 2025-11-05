@@ -1,5 +1,5 @@
 ---
-Description: Eino is an AI application development framework based on Golang
+Description: Eino is an AI application development framework based on Go
 date: "2025-02-21"
 lastmod: ""
 linktitle: Eino
@@ -19,7 +19,7 @@ weight: 6
 > 💡
 > Eino：An AI  Application Development Framework Built with Go
 
-Eino aims to provide an AI  application development framework built with Go. Eino refers to many excellent AI application development frameworks in the open-source community, such as LangChain, LangGraph, LlamaIndex, etc., and provides an AI application development framework that is more in line with the programming habits of Golang.
+Eino aims to provide an AI  application development framework built with Go. Eino refers to many excellent AI application development frameworks in the open-source community, such as LangChain, LangGraph, LlamaIndex, etc., and provides an AI application development framework that is more in line with the programming habits of Go.
 
 Eino provides rich capabilities such as **atomic components**, **integrated components**, **component orchestration**, and **aspect extension** that assist in AI application development, which can help developers more simply and conveniently develop AI applications with a clear architecture, easy maintenance, and high availability.
 

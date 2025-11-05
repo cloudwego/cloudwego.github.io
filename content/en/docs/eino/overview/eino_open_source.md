@@ -7,7 +7,7 @@ title: Large Language Model Application Development Framework — Eino is Now Op
 weight: 0
 ---
 
-Today, after more than six months of internal use and iteration at ByteDance, the Golang-based comprehensive LLM application development framework — Eino, has been officially open-sourced on CloudWeGo!
+Today, after more than six months of internal use and iteration at ByteDance, the Go-based comprehensive LLM application development framework — Eino, has been officially open-sourced on CloudWeGo!
 
 Based on clear "component" definitions, Eino provides powerful process "orchestration" covering the entire development lifecycle, aiming to help developers create the most sophisticated LLM applications in the shortest time possible.
 
@@ -15,7 +15,7 @@ Have you ever felt this way: wanting to add LLM capabilities to your application
 
 - Stable core, simple and understandable API, clear onboarding path, and smooth learning curve.
 - Ultimate extensibility, highly active development work, long-term sustainability.
-- Based on strongly-typed Golang, readable code, easy maintenance, high reliability.
+- Based on strongly-typed Go, readable code, easy maintenance, high reliability.
 - Backed by extensive practical experience from ByteDance's core business lines.
 - Provides out-of-the-box supporting tools.
 
@@ -116,7 +116,7 @@ Behind these dozens of lines of code, Eino automatically handles several things:
 
 LLM-based software applications are in a rapid development phase, with new technologies, ideas, and practices constantly emerging. As application developers, we need to efficiently and reliably implement industry-consensus best practices while continuously learning and improving our understanding to comprehend the possibilities in this new field. Therefore, an excellent LLM application development framework needs to both **encapsulate the "unchanging" universal core elements** in the domain and **enable agile horizontal and vertical expansion** based on latest developments.
 
-On the other hand, current mainstream frameworks like LangChain and LlamaIndex are Python-based. While they can quickly implement diverse functionalities by leveraging Python's rich ecosystem, they also inherit issues like "weak type checking" and "high long-term maintenance costs" that come with Python being a dynamic language. As LLM applications rapidly enter large-scale online operation phase, the **high reliability** and **high maintainability** achieved through Golang as a strongly-typed language are becoming increasingly valuable.
+On the other hand, current mainstream frameworks like LangChain and LlamaIndex are Python-based. While they can quickly implement diverse functionalities by leveraging Python's rich ecosystem, they also inherit issues like "weak type checking" and "high long-term maintenance costs" that come with Python being a dynamic language. As LLM applications rapidly enter large-scale online operation phase, the **high reliability** and **high maintainability** achieved through Go as a strongly-typed language are becoming increasingly valuable.
 
 LLM-based application development is a relatively new field, sometimes requiring exploration and validation through practice. Leveraging ByteDance's high-frequency applications like Doubao and Douyin with their diverse scenarios, rapid iteration, and massive feedback, Eino has unique advantages in **practice-driven design**.
 
@@ -150,7 +150,7 @@ In summary, the Eino framework possesses comprehensive extensibility:
 
 ### High Reliability and Maintainability
 
-When writing Eino code in Golang, developers can fully utilize Golang's strong typing features to declare specific types for all components, Lambdas, and orchestration products. This is like drawing a precise map for the code, allowing developers to maintain and extend along clear paths. Even as the project scale grows and functionality continues to iterate, high maintainability can still be preserved.
+When writing Eino code in Go, developers can fully utilize Go's strong typing features to declare specific types for all components, Lambdas, and orchestration products. This is like drawing a precise map for the code, allowing developers to maintain and extend along clear paths. Even as the project scale grows and functionality continues to iterate, high maintainability can still be preserved.
 
 At the same time, Eino's orchestration capabilities also fully utilize the compile-time verification capabilities of the strong type system, exposing type matching issues at graph compilation time rather than runtime whenever possible. Early and clear exposure of type matching issues helps developers quickly locate and fix problems, reducing hard-to-diagnose failures and performance issues caused by type errors at runtime.
 

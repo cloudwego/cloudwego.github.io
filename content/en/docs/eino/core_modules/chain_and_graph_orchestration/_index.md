@@ -45,7 +45,7 @@ Specifically, the following features are implemented:
   - For more details, refer to: [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
 - Provides a call option mechanism, **extensibility** is the most fundamental requirement of the system in rapid iterations.
   - For more details, refer to: [Eino: CallOption capabilities and specification](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
-- Provides an enhanced "type alignment" development method, reducing the mental burden on developers and leveraging Golang's **type safety** features.
+- Provides an enhanced "type alignment" development method, reducing the mental burden on developers and leveraging Go's **type safety** features.
   - For more details, refer to: [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 - Provides an **"automated stream conversion"** capability, removing "stream" from the "source of complexity ranking" in the orchestration system.
   - For more details, refer to: [Eino Points of Streaming Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)

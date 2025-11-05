@@ -9,7 +9,7 @@ weight: 2
 
 In the LLM application orchestration solutions, the most popular ones are langchain and langgraph, which officially provide SDKs for Python and TypeScript. These two languages are known for their flexibility, which brings great convenience to SDK development but also causes significant confusion and cognitive burden for SDK users.
 
-As an extremely simple programming language, Golang's defined `static types` are one of the key reasons why it remains straightforward, and Eino maintains this critical characteristic: `defined types` + `compile-time type checking`.
+As an extremely simple programming language, Go's defined `static types` are one of the key reasons why it remains straightforward, and Eino maintains this critical characteristic: `defined types` + `compile-time type checking`.
 
 ## Basic Principle of `Type Alignment` in Upstream and Downstream
 
@@ -17,11 +17,11 @@ The most fundamental orchestration method in eino is the graph, along with the s
 
 This entails a basic assumption: **the output value of the previous node can serve as the input value for the next node.**
 
-In Golang, there are two basic approaches to achieving this assumption:
+In Go, there are two basic approaches to achieving this assumption:
 
 1. Convert the input and output of different nodes into a more generalized type, such as `any` or `map[string]any`.
    1. Adopting the approach to generalize into any, but the corresponding cost is that developers need to explicitly convert it into a specific type when writing code to use it. This significantly increases the mental burden on developers, hence this approach was ultimately abandoned.
-   2. The langchain approach can be seen as passing `map[string]any` throughout the process, where each logical node retrieves the corresponding value with the corresponding key based on its needs. In langchaingo's implementation, this approach is adopted. However, in Golang, they still need to be used with `type assertions`. This approach still imposes a significant mental burden on the developer.
+   2. The langchain approach can be seen as passing `map[string]any` throughout the process, where each logical node retrieves the corresponding value with the corresponding key based on its needs. In langchaingo's implementation, this approach is adopted. However, in Go, they still need to be used with `type assertions`. This approach still imposes a significant mental burden on the developer.
 2. Keep the input and output types of each node as expected by the developer, ensuring type consistency between upstream and downstream during the Compile phase.
 
 Approach 2 is the final approach selected by eino. This approach is the easiest to understand during orchestration. The whole process is like `building blocks`, where the protruding and recessed parts of each block have their own specifications, and only matching specifications can form upstream and downstream relationships.

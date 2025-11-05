@@ -118,7 +118,7 @@ Complex streaming operation scenarios:
   - When copying streams, both consumption coordination and 'Close' coordination need to be considered. If any stream isn't properly closed, it may prevent resources from being properly released
 - Merging multiple streams into one stream
 
-To make the Stream API interface clearer and easier to use, it aligns with Golang's built-in io.Pipe() method definition.
+To make the Stream API interface clearer and easier to use, it aligns with Go's built-in io.Pipe() method definition.
 
 - API interface is defined as: `schema.Pipe[T any](cap int) (*StreamReader[T], *StreamWriter[T])`
   - where cap indicates the stream's buffer size, i.e., how many chunks the sender can send without blocking when there's no consumption
