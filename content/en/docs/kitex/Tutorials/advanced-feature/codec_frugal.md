@@ -37,7 +37,7 @@ type Request struct {
 
 Note:
 
-1. Frugal relies on these tags. For example, set and list are both mapped to slice in golang, which can only be distinguished by frugal tag;
+1. Frugal relies on these tags. For example, set and list are both mapped to slice in Go, which can only be distinguished by frugal tag;
 2. Without frugal tags, kitex will automatically fallback to the default Go codec (provided not using slim template);
 3. If you don't want to generate frugal tags, use `-thrift frugal_tag=false`.
 
@@ -228,7 +228,7 @@ func frugalClient() {
 
 In some scenarios (such as recording traffic), there's a need to call frugal directly (without Kitex clients/servers).
 
-#### Golang Struct
+#### Go Struct
 
 Frugal's JIT compiler relies on Go structs with proper frugal tags.
 
@@ -374,7 +374,7 @@ Run kitex with `-thrift frugal_tag=false`.
 Note:
 
 1. If frugal tags are not generated, you can not use frugal codec
-   1. In Golang, Thrift's set and list are both mapped to slice, and can only be distinguished by frugal tags.
+   1. In Go, Thrift's set and list are both mapped to slice, and can only be distinguished by frugal tags.
    2. If Kitex detects that the request/response type does not contain a tag, it will NOT use frugal, and fallback to the standard Go codec.
 2. If slim template is used, frugal tags must be generated.
 
