@@ -18,7 +18,7 @@ author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 ## 01 Hertz 概述
 
 [Hertz][Hertz] 是一个超大规模的企业级微服务 HTTP 框架，具有高易用性、易扩展、低时延等特点。最初，字节跳动内部的 HTTP 框架是对 Gin 框架的封装，具备不错的易用性、生态完善等优点。
-随着内部业务的不断发展，对高性能、多场景的需求日渐强烈。而 Gin 是对 Golang 原生 net/http 进行的二次开发，在按需扩展和性能优化上受到很大局限。
+随着内部业务的不断发展，对高性能、多场景的需求日渐强烈。而 Gin 是对 Go 原生 net/http 进行的二次开发，在按需扩展和性能优化上受到很大局限。
 因此，为了满足业务需求，更好的服务各大业务线，2020 年初，字节跳动服务框架团队经过内部对使用场景和外部主流开源 HTTP 框架 Fasthttp、Gin、Echo 的调研后，
 开始基于自研网络库 [Netpoll][Netpoll] 开发内部框架 [Hertz][Hertz]，让 [Hertz][Hertz] 在面对企业级需求时，有更好的性能及稳定性表现，也能够满足业务发展和应对不断演进的技术需求。
 2021 年 7 月，[Hertz][Hertz] 正式上线 1.0 版本。
@@ -74,7 +74,7 @@ author: <a href="https://github.com/CloudWeGo" target="_blank">CloudWeGo</a>
 
 ## 03 RoadMap
 
-对于基础架构团队而言，[Hertz][Hertz] 不仅仅是一个开源项目，它也是一个**真实的超大规模企业级实践项目**。通过开源，我们希望 [Hertz][Hertz] 能丰富云原生社区的 Golang 中间件体系，
+对于基础架构团队而言，[Hertz][Hertz] 不仅仅是一个开源项目，它也是一个**真实的超大规模企业级实践项目**。通过开源，我们希望 [Hertz][Hertz] 能丰富云原生社区的 Go 中间件体系，
 完善 CloudWeGo 生态矩阵，为更多开发者和企业搭建云原生化的大规模分布式系统，提供一种现代的、资源高效的的技术方案。
 
 如前文所述，目前 [Hertz][Hertz] 只开源了内部经过稳定性验证的部分，未来，我们会进一步推动其走向完善：

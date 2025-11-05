@@ -14,7 +14,7 @@ author: <a href="https://github.com/CoderPoet" target="_blank">CoderPoet</a>
 
 ### **Kitex Proxyless**
 
-> [Kitex][Kitex] 是字节开源的 Golang RPC 框架，已经原生支持了 xDS 标准协议，支持以 Proxyless 的方式被 ServiceMesh 统一纳管。
+> [Kitex][Kitex] 是字节开源的 Go RPC 框架，已经原生支持了 xDS 标准协议，支持以 Proxyless 的方式被 ServiceMesh 统一纳管。
 >
 > - 详细设计见：
 >   [Proposal: Kitex support xDS Protocol · Issue #461 · cloudwego/kitex](https://github.com/cloudwego/kitex/issues/461)

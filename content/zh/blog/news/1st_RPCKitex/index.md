@@ -10,7 +10,7 @@ keywords:
     "RPC",
     "开源",
     "Kite",
-    "Golang",
+    "Go",
     "Thrift",
     "Protobuf",
     "gRPC",
@@ -26,11 +26,11 @@ author: <a href="https://github.com/YangruiEmma" target="_blank">YangruiEmma</a>
 
 ### CloudWeGo 和 Kitex
 
-[Kitex][Kitex] 是 CloudWeGo 开源的第一个微服务框架，它是一个 **支持多协议的 Golang RPC 框架** ，从网络库、序列化库到框架的实现**基本完全自研**的。
+[Kitex][Kitex] 是 CloudWeGo 开源的第一个微服务框架，它是一个 **支持多协议的 Go RPC 框架** ，从网络库、序列化库到框架的实现**基本完全自研**的。
 特别地，[Kitex][Kitex] 对 gRPC 协议的支持使用了 gRPC 官方的源码，但是我们对 gRPC 的实现做了 **深度且定制的优化** ，所以 [Kitex][Kitex] 支持的 gRPC 协议性能优于 gRPC 官方框架。
-同时这也是 [Kitex][Kitex] 与目前已经开源的、支持 gRPC 协议的其他 Golang 框架的主要差异。如果用户想使用 gRPC 又对性能有很高的要求，那么 [Kitex][Kitex] 框架将会是一个很不错的选择。
+同时这也是 [Kitex][Kitex] 与目前已经开源的、支持 gRPC 协议的其他 Go 框架的主要差异。如果用户想使用 gRPC 又对性能有很高的要求，那么 [Kitex][Kitex] 框架将会是一个很不错的选择。
 
-继 [Kitex][Kitex] 开源后，今年 CloudWeGo 又陆续开源了 Golang HTTP 框架 [Hertz](https://github.com/cloudwego/hertz)，Rust RPC 框架 [Volo](https://github.com/cloudwego/volo)，同时围绕这些微服务框架和微服务的一些通用能力，
+继 [Kitex][Kitex] 开源后，今年 CloudWeGo 又陆续开源了 Go HTTP 框架 [Hertz](https://github.com/cloudwego/hertz)，Rust RPC 框架 [Volo](https://github.com/cloudwego/volo)，同时围绕这些微服务框架和微服务的一些通用能力，
 我们还开源了一些高性能的基础库。关于更多 CloudWeGo 开源的子项目，可以进入 CloudWeGo [官网](/zh/)详细了解。
 
 [CloudWeGo 官网](/)
@@ -44,13 +44,13 @@ author: <a href="https://github.com/YangruiEmma" target="_blank">YangruiEmma</a>
 
 ### Kitex 发展历史
 
-2014 年，字节跳动开始引入 Golang。2015 年，字节跳动内部的服务化开启。在 RPC 调用的场景选择了 Thrift 协议，在内部开始支持 RPC 框架。2016 年，第一个 Golang RPC 框架 Kite 正式发布。
+2014 年，字节跳动开始引入 Go。2015 年，字节跳动内部的服务化开启。在 RPC 调用的场景选择了 Thrift 协议，在内部开始支持 RPC 框架。2016 年，第一个 Go RPC 框架 Kite 正式发布。
 通常在一个公司高速发展的初期，基础能力都是为了快速支持需求落地，面对的需求场景也较单一，设计上不会有较多考量，其实这也是合理的，因为探索阶段并不完全清楚还需要支持哪些场景，过多的考虑反而会出现过度设计的问题。
 
 但是，随着业务场景复杂化，需求也会多样化，而且接入服务及调用量逐年增长，Kite 已经不足以支持后续的迭代，在线上服役三年多后，2019 年我们开启了新的项目 [Kitex][Kitex]，2020 年初发布了正式版本，在 2020 年底字节内部已经有 1w+ 服务接入 Kitex。
 
-从 2014 年到 2020 年，Golang 已经是字节跳动内部主要的业务开发语言，应该是业界 Golang 应用最多的公司。我们的服务框架支持着数万个 Golang 微服务的可靠通信，
-经过数量众多的微服务和海量流量的验证，我们已经有了较为成熟的微服务最佳实践，于是考虑将内部的实践开源出去丰富云原生社区的 Golang 产品体系。
+从 2014 年到 2020 年，Go 已经是字节跳动内部主要的业务开发语言，应该是业界 Go 应用最多的公司。我们的服务框架支持着数万个 Go 微服务的可靠通信，
+经过数量众多的微服务和海量流量的验证，我们已经有了较为成熟的微服务最佳实践，于是考虑将内部的实践开源出去丰富云原生社区的 Go 产品体系。
 在 2021年，我们以 CloudWeGo 品牌正式开源了第一个服务框架 [Kitex][Kitex]。截至今年 8 月，[Kitex][Kitex] 已经为字节跳动内部 **6w+** 的服务提供支持， **峰值 QPS 达到上亿级别** 。
 
 ![image](/img/blog/1st_RPC_Kitex/3.png)
@@ -68,7 +68,7 @@ author: <a href="https://github.com/YangruiEmma" target="_blank">YangruiEmma</a>
 如此，我们就可以将 [Kitex][Kitex] Core 和 Tool 部分开源出去。我们将代码做了拆分，[Kitex][Kitex] 的核心代码和工具部分迁移到开源库，集成内部扩展的模块作为 [Kitex][Kitex] 的扩展保留在内部库，同时内部库封装一层壳保证内部用户可以无感知地升级。
 
 那么 [Kitex][Kitex] 的开源就只是代码拆分这么简单吗？显然不是。2021 年 2 月，我们开始筹备 [Kitex][Kitex] 的开源，虽然基于 [Kitex][Kitex] 的扩展性，我们可以与内部基础设施集成的能力解耦，但是 [Kitex][Kitex] 仍然依赖内部的一些基础库，如果要开源必须先开源基础库的能力。
-所以我们首先做了依赖库的梳理，与相关的同学合作首先开源了 **bytedance/gopkg** 库。这个库由 CloudWeGo 与字节跳动的语言团队合作维护，里面包含也了对 Golang 标准库能力的增强，感兴趣的同学可以关注使用。
+所以我们首先做了依赖库的梳理，与相关的同学合作首先开源了 **bytedance/gopkg** 库。这个库由 CloudWeGo 与字节跳动的语言团队合作维护，里面包含也了对 Go 标准库能力的增强，感兴趣的同学可以关注使用。
 
 bytedance/gopkg: https://github.com/bytedance/gopkg
 
@@ -138,7 +138,7 @@ Protobuf 的泛化也是应用在 API 网关的场景。原来的 HTTP 泛化传
 **目前 [Kitex][Kitex] 的泛化主要针对后端的 Thrift 服务，无论是 Protobuf、Map 还是 JSON，[Kitex][Kitex] 都会在调用端结合 IDL 解析，将这些数据映射编码为 Thrift 包发给后端服务。**
 
 那么为什么把泛化放在调用端而不是服务端呢？大家广泛了解的泛化都是服务端对泛化请求做了解析处理，当然调用端也要相应地提供泛化的 Client。
-但是泛化面向的是通用服务，泛化使用成本其实是比较高的，它并不适用于普通的 RPC 场景，而通用服务面向的是所有后端的服务，有 Golang/Java/C++/Python/Rust，如果每一种语言框架都支持泛化，成本是非常高的。
+但是泛化面向的是通用服务，泛化使用成本其实是比较高的，它并不适用于普通的 RPC 场景，而通用服务面向的是所有后端的服务，有 Go/Java/C++/Python/Rust，如果每一种语言框架都支持泛化，成本是非常高的。
 就算各个语言都对泛化做了支持，框架版本收敛又是一个漫长的过程，对于通用服务来说，对接所有的服务就显得不太现实。综合以上原因，泛化放在调用端支持。
 
 #### 重试能力增强

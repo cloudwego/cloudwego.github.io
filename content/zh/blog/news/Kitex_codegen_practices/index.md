@@ -20,8 +20,8 @@ author: <a href="https://github.com/HeyJavaBean" target="_blank">HeyJavaBean</a>
 
 （btw，用 IDL 生成 RPC 代码通常也比手搓一堆结构体和 Getter Setter 要方便不少）
 
-Kitex RPC 开发步骤也是先写 IDL，再由 Kitex Tool 生成 Golang 代码：
-1. IDL 里的结构体定义会被生成为 Golang 的桩结构体（和一些 Getter Setter）
+Kitex RPC 开发步骤也是先写 IDL，再由 Kitex Tool 生成 Go 代码：
+1. IDL 里的结构体定义会被生成为 Go 的桩结构体（和一些 Getter Setter）
 2. IDL 里 Service 和 Method 会被生成为 NewKitexClient、NewKitexServer、KitexServiceInfo 这些框架使用相关的脚手架函数
 
 但如果你仔细观察过 kitex_gen 的内容，会发现上面代码占比并不多，主要是 FastRead、FastWrite 这些序列化相关的函数占了很多行。
@@ -288,7 +288,7 @@ Apache Codec 的序列化实现是读一段内容解析一段内容，而 Skip D
 
 #### 简介
 
-Frugal 是一款动态的不需要编解码代码的 Thrift 编解码器，通过启用 slim 模板，Kitex 可以只生成 Golang Types，上文提到的 Apache Codec 和 Fast Codec 都不需要了，编解码在运行时通过反射或 JIT 实现。这样可以大幅减少生成的代码量，减少 IDE 加载时间，相比正常的 kitex_gen，体积缩小 90%，且性能仍然较高。
+Frugal 是一款动态的不需要编解码代码的 Thrift 编解码器，通过启用 slim 模板，Kitex 可以只生成 Go Types，上文提到的 Apache Codec 和 Fast Codec 都不需要了，编解码在运行时通过反射或 JIT 实现。这样可以大幅减少生成的代码量，减少 IDE 加载时间，相比正常的 kitex_gen，体积缩小 90%，且性能仍然较高。
 
 #### 使用
 
@@ -304,7 +304,7 @@ Frugal 是一款动态的不需要编解码代码的 Thrift 编解码器，通�
 
 #### 其他
 
-近期我们实现了一个基于 Golang 反射版的 Frugal，对不同系统的兼容性较好，而且也不会有太严重的首次耗时，后续会更新文档和相关使用方式
+近期我们实现了一个基于 Go 反射版的 Frugal，对不同系统的兼容性较好，而且也不会有太严重的首次耗时，后续会更新文档和相关使用方式
 
 长期规划中，我们期望 Frugal 能逐渐广泛落地，让绝大多数 Kitex 项目不再需要生成大量代码，只有当对性能有更高要求的场景，才使用 FastCodec 这种静态生成的编解码。
 
@@ -316,9 +316,9 @@ Frugal 是一款动态的不需要编解码代码的 Thrift 编解码器，通�
 
 #### 简介
 
-当要使用 Kitex Tool 生成代码，以往都只能安装 Kitex Tool （以及 Thriftgo、Validator 等工具链），然后执行命令来触发。一些代码生成项目，是通过在 Golang 代码里起一个进程，通过 os.Exec 来调用本地的 Kitex Tool，实现代码生成的。
+当要使用 Kitex Tool 生成代码，以往都只能安装 Kitex Tool （以及 Thriftgo、Validator 等工具链），然后执行命令来触发。一些代码生成项目，是通过在 Go 代码里起一个进程，通过 os.Exec 来调用本地的 Kitex Tool，实现代码生成的。
 
-之前这样设计是想着能跨语言、插件进程可拔插，不过实际场景用到的很少。所以在 v0.11.0 之后，Kitex Tool 提供了 SDK 化调用的能力，可以通过引入依赖包 + Golang 函数来生成代码，而无需再安装 Kitex Tool、Thriftgo、Validator 插件等一系列工具链了
+之前这样设计是想着能跨语言、插件进程可拔插，不过实际场景用到的很少。所以在 v0.11.0 之后，Kitex Tool 提供了 SDK 化调用的能力，可以通过引入依赖包 + Go 函数来生成代码，而无需再安装 Kitex Tool、Thriftgo、Validator 插件等一系列工具链了
 
 #### 使用
 

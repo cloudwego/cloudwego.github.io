@@ -3,7 +3,7 @@ date: 2022-09-27
 title: "助力字节降本增效，大规模企业级 HTTP 框架 Hertz 设计实践"
 projects: ["Hertz"]
 linkTitle: "助力字节降本增效，大规模企业级 HTTP 框架 Hertz 设计实践"
-keywords: ["Hertz", "HTTP", "Golang", "Gin", "高性能", "可扩展"]
+keywords: ["Hertz", "HTTP", "Go", "Gin", "高性能", "可扩展"]
 description: "本文描述了字节跳动内部的大规模企业级 HTTP 框架 Hertz 的设计实践，包括 Hertz 的项目起源、架构设计、功能特性，性能表现等方面。"
 author: <a href="https://github.com/welkeyever" target="_blank">welkeyever</a>
 ---
@@ -22,7 +22,7 @@ author: <a href="https://github.com/welkeyever" target="_blank">welkeyever</a>
 
 ### 基于 Gin 封装
 
-众所周知，字节内部使用 Golang 比较早，在大约 2014 年左右，公司就已经开始尝试做一些 Golang 业务的转型。2016 年，我们基于已开源的 Golang HTTP 框架 Gin 框架，封装了 Ginex，这是 Ginex 刚开始出现的时期。
+众所周知，字节内部使用 Go 比较早，在大约 2014 年左右，公司就已经开始尝试做一些 Go 业务的转型。2016 年，我们基于已开源的 Go HTTP 框架 Gin 框架，封装了 Ginex，这是 Ginex 刚开始出现的时期。
 
 同时，2016 年还是一个开荒的时代，这个时期框架伴随着业务快速野蛮地生长，我们的口号是“大力出奇迹”，把优先解决业务需求作为第一要务。Ginex 的迭代方式是业务侧和框架侧在同一个仓库里面共同维护和迭代。
 
@@ -42,7 +42,7 @@ Ginex 是一个基于 Gin 的开源封装，所以它本身在迭代方面是受
 
 - **无法满足性能敏感业务需求**
 
-另外，我们能用 Gin 做的性能优化非常少，因为 Gin 的底层是基于 Golang 的一个原生库，所以如果我们要做优化，需要在原生库的基础上做很多改造，这个其实是非常困难的。
+另外，我们能用 Gin 做的性能优化非常少，因为 Gin 的底层是基于 Go 的一个原生库，所以如果我们要做优化，需要在原生库的基础上做很多改造，这个其实是非常困难的。
 
 - **无法满足不同场景的功能需求**
 
@@ -67,7 +67,7 @@ Ginex 是一个基于 Gin 的开源封装，所以它本身在迭代方面是受
 
 - **早期基于开源框架封装**
 
-基于早期开源的 Golang HTTP 框架，实现了 Ginex 的封装。
+基于早期开源的 Go HTTP 框架，实现了 Ginex 的封装。
 
 - **随着实践发展，问题逐渐出现**
 

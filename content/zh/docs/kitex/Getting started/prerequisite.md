@@ -7,17 +7,17 @@ keywords: ["Kitex", "Golang", "Go", "环境准备"]
 description: "Kitex 开发环境准备"
 ---
 
-Kitex 作为一款 Golang 微服务 RPC 框架，需要准备的环境包括**语言环境**与**代码生成工具**。
+Kitex 作为一款 Go 微服务 RPC 框架，需要准备的环境包括**语言环境**与**代码生成工具**。
 
 > **注意：务必完成此小节内容**
 
-## Golang
+## Go
 
 **Go**（又称**Golang**）是 Google 开发的一种静态强类型、编译型、并发型，并具有垃圾回收功能的编程语言。
 
-- Go 语言的环境准备参考 [Golang 安装](https://go.dev/doc/install)
-- 推荐使用最新版本的 Golang，我们保证最新三个正式版本的兼容性(现在 >= **v1.18**)。
-- 确保打开 go mod 支持 (Golang >= 1.15时，默认开启)
+- Go 语言的环境准备参考 [Go 安装](https://go.dev/doc/install)
+- 推荐使用最新版本的 Go，我们保证最新三个正式版本的兼容性(现在 >= **v1.18**)。
+- 确保打开 go mod 支持 (Go >= 1.15时，默认开启)
 - 在 Windows 环境使用，需要 kitex 版本 >= v0.5.2
 
 完成安装后打开终端并输入 `go version` ，正确输出 Go 版本以及系统架构信息代表安装成功。例如

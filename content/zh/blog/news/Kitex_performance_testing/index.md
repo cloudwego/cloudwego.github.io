@@ -8,7 +8,7 @@ description: "本文介绍了如何使用 Kitex 进行性能测试，以及如�
 author: <a href="https://github.com/joway" target="_blank">Joway</a>
 ---
 
-日前，字节跳动服务框架团队正式开源 CloudWeGo ，在抖音、今日头条均有深度应用的 Golang 微服务 RPC 框架 [Kitex][Kitex] 也包含在其中。
+日前，字节跳动服务框架团队正式开源 CloudWeGo ，在抖音、今日头条均有深度应用的 Go 微服务 RPC 框架 [Kitex][Kitex] 也包含在其中。
 
 本文旨在分享开发者在压测 [Kitex][Kitex] 时需要了解的场景和技术问题。这些建议有助于用户更好地结合真实 RPC 场景对 [Kitex][Kitex] 进行调优，使之更贴合业务需要、发挥最佳性能。用户也可以参考官方提供的压测项目 [kitex-benchmark](https://github.com/cloudwego/kitex-benchmark) 了解更多细节。
 
@@ -90,7 +90,7 @@ author: <a href="https://github.com/joway" target="_blank">Joway</a>
 
 ## 结语
 
-在当前主流的 Golang 开源 RPC 框架中，每个框架其实在设计目标上都各有侧重：有些框架侧重于通用性，有些侧重于类似 Redis 这种轻业务逻辑的场景，有些侧重于吞吐性能，而有些则更侧重 P99 时延。
+在当前主流的 Go 开源 RPC 框架中，每个框架其实在设计目标上都各有侧重：有些框架侧重于通用性，有些侧重于类似 Redis 这种轻业务逻辑的场景，有些侧重于吞吐性能，而有些则更侧重 P99 时延。
 
 字节跳动的业务在日常迭代中，常常会出现因某个 feature 导致一个指标上升，另一个指标下降的情况，因此 [Kitex][Kitex] 在设计之初就更倾向于解决大规模微服务场景下各种问题。
 

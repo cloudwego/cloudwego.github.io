@@ -33,9 +33,9 @@ CloudWeGo 是字节跳动基础架构团队开源出来的项目，它是一套�
 
 CloudWeGo 在第一阶段开源了四个项目：
 
-- [Kitex][Kitex]：高性能、强可扩展的 Golang RPC 框架
+- [Kitex][Kitex]：高性能、强可扩展的 Go RPC 框架
 - [Netpoll][Netpoll]：高性能、I/O 非阻塞、专注于 RPC 场景的网络框架
-- [Thriftgo][Thriftgo]：Golang 实现的 thrift 编译器，支持插件机制和语义检查
+- [Thriftgo][Thriftgo]：Go 实现的 thrift 编译器，支持插件机制和语义检查
 - Netpoll-http2：基于 [Netpoll][Netpoll] 的 HTTP/2 实现
 
 除了这几个主要项目外，CloudWeGo 紧随其后陆续开源了 [**Kitex-benchmark**](https://github.com/cloudwego/kitex-benchmark)、[**Netpoll-benchmark**](https://github.com/cloudwego/netpoll-benchmark)、
@@ -43,8 +43,8 @@ CloudWeGo 在第一阶段开源了四个项目：
 
 鉴于文章篇幅有限，下文将重点介绍 CloudWeGo 核心项目 [Kitex][Kitex]。
 
-从**演进历史**来看，2014 年，字节跳动技术团队引入 Golang 解决长连接推送业务面临的高并发问题，两年后，内部技术团队基于 Golang 推出了一个名为 Kite 的框架，同时对开源项目 Gin 做了一层很薄的封装，推出了 Ginex。
-这两个框架极大推动了 Golang 在公司内部的应用。此后，围绕性能和可扩展性设计，字节跳动重构 Kite，并在次年 10 月完成并发布 Kitex，投入到内部应用中。据悉，截至 2021 年 9 月，线上有 3w+ 微服务使用 Kitex，大部分服务迁移新框架后可以收获 CPU 和延迟上的收益。
+从**演进历史**来看，2014 年，字节跳动技术团队引入 Go 解决长连接推送业务面临的高并发问题，两年后，内部技术团队基于 Go 推出了一个名为 Kite 的框架，同时对开源项目 Gin 做了一层很薄的封装，推出了 Ginex。
+这两个框架极大推动了 Go 在公司内部的应用。此后，围绕性能和可扩展性设计，字节跳动重构 Kite，并在次年 10 月完成并发布 Kitex，投入到内部应用中。据悉，截至 2021 年 9 月，线上有 3w+ 微服务使用 Kitex，大部分服务迁移新框架后可以收获 CPU 和延迟上的收益。
 
 ![image](/img/blog/Microservices_Open_CloudWeGo/Framework.PNG)
 
@@ -181,7 +181,7 @@ ConsistentHash 在使用时，需要注意如下事项：
 ![image](/img/blog/Microservices_Open_CloudWeGo/Service_Mesh.png)
 
 进入云原生时代，随着服务网格技术的逐步发展，我们也要用发展的眼光进行架构规划和设计，微服务框架和服务网格未来必定会是并存的，统一组成服务治理体系。
-在字节跳动，服务治理体系就是由服务框架和服务治理组成。以 Golang 服务为例，CloudWeGo 提供业务强相关、强侵入的服务治理，
+在字节跳动，服务治理体系就是由服务框架和服务治理组成。以 Go 服务为例，CloudWeGo 提供业务强相关、强侵入的服务治理，
 字节 Service Mesh 提供业务弱相关、弱侵入的服务治理，相互搭配，相互协商，既解决了业务开发所需的脚手架和开发模式，又让服务治理的接入更加容易。
 
 与此同时，在服务网格和服务框架同时使用的场景下，服务框架必须要支持灵活卸载治理能力，服务网格也需要保证功能的稳定性。在未来技术的演进方向上，服务框架也主要专注于编解码、通信效率、多协议支持等方面，而服务网格则可以深入更多无侵入的服务治理功能研发中。
