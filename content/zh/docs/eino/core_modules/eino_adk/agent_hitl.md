@@ -611,104 +611,156 @@ human-in-the-loop框架保持与现有代码的完全向后兼容性。所有先
 
 ### 1. 图中断兼容性
 
-在节点/工具中使用 `NewInterruptAndRerunErr` 的先前图中断流程继续保持不变：
+在节点/工具中使用已弃用的 `NewInterruptAndRerunErr` 或 `InterruptAndRerun` 的先前图中断流程将继续被支持，但需要一个关键的额外步骤：**错误包装**。
+
+由于这些遗留函数不是地址感知的，调用它们的组件有责任捕获错误，并使用 `WrapInterruptAndRerunIfNeeded` 辅助函数将地址信息包装进去。这通常在协调遗留组件的复合节点内部完成。
+
+> **注意**：如果您选择**不**使用 `WrapInterruptAndRerunIfNeeded`，遗留行为将被保留。最终用户仍然可以像以前一样使用 `ExtractInterruptInfo` 从错误中获取信息。但是，由于产生的中断上下文将缺少正确的地址，因此将无法对该特定中断点使用新的定向恢复 API。要完全启用新的地址感知功能，必须进行包装。
 
 ```go
-// 先前的方法仍然有效
-func myTool(ctx context.Context, input string) (string, error) {
+// 1. 一个使用已弃用中断的遗留工具
+func myLegacyTool(ctx context.Context, input string) (string, error) {
     // ... tool 逻辑
+    // 这个错误不是地址感知的。
     return "", compose.NewInterruptAndRerunErr("需要用户批准")
 }
 
-// 最终用户代码保持不变
+// 2. 一个调用遗留工具的复合节点
+var legacyToolNode = compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+    out, err := myLegacyTool(ctx, input)
+    if err != nil {
+        // 关键：调用者必须包装错误以添加地址。
+        // "tool:legacy_tool" 段将被附加到当前地址。
+        segment := compose.AddressSegment{Type: "tool", ID: "legacy_tool"}
+        return "", compose.WrapInterruptAndRerunIfNeeded(ctx, segment, err)
+    }
+    return out, nil
+})
+
+// 3. 最终用户代码现在可以看到完整地址。
 _, err := graph.Invoke(ctx, input)
 if err != nil {
     interruptInfo, exists := compose.ExtractInterruptInfo(err)
     if exists {
-        // 现在你可以获得增强的信息
-        fmt.Printf("中断上下文: %+v\n", interruptInfo.InterruptContexts)
-        // 先前的字段仍然可用
-        fmt.Printf("Before nodes: %v\n", interruptInfo.BeforeNodes)
+        // 中断上下文现在将拥有一个正确的、完全限定的地址。
+        fmt.Printf("Interrupt Address: %s\n", interruptInfo.InterruptContexts[0].Address.String())
     }
 }
 ```
 
-**增强功能**：`InterruptInfo` 现在包含一个额外的 `[]*InterruptCtx` 字段，提供对中断链的结构化访问，同时保留所有现有功能。
+**增强功能**：通过包装错误，`InterruptInfo` 将包含一个正确的 `[]*InterruptCtx`，其中包含完全限定的地址，从而允许遗留组件无缝集成到新的人机协同框架中。
 
-### 2. 静态图中断兼容性
+### 2. 对编译时静态中断图的兼容性
 
-通过 `WithInterruptBeforeNodes` 或 `WithInterruptAfterNodes` 添加到图上的先前静态中断继续工作：
+通过 `WithInterruptBeforeNodes` 或 `WithInterruptAfterNodes` 添加的先前静态中断图继续有效，但状态处理的方式得到了显著改进。
+
+当静态中断被触发时，会生成一个 `InterruptCtx`，其地址指向图本身。关键在于，`InterruptCtx.Info` 字段现在直接暴露了该图的状态。
+
+这启用了一个更直接、更直观的工作流：
+1.  最终用户收到 `InterruptCtx`，并可以通过 `.Info` 字段检查图的实时状态。
+2.  他们可以直接修改这个状态对象。
+3.  然后，他们可以通过 `ResumeWithData` 和 `InterruptCtx.ID` 将修改后的状态对象传回以恢复执行。
+
+这种新模式通常不再需要使用旧的 `WithStateModifier` 选项，尽管为了完全的向后兼容性，该选项仍然可用。
 
 ```go
-// 先前的静态中断配置仍然有效
-graph, err := myGraph.Compile(ctx, 
-    compose.WithInterruptBeforeNodes([]string{"critical_node"}),
-    compose.WithInterruptAfterNodes([]string{"validation_node"})
-)
+// 1. 定义一个拥有自己本地状态的图
+type MyGraphState struct {
+    SomeValue string
+}
 
-// 当中断时，最终用户获得增强的信息
-interruptInfo, exists := compose.ExtractInterruptInfo(err)
-if exists {
-    // 先前的字段仍然可用
-    fmt.Printf("Before nodes: %v\n", interruptInfo.BeforeNodes)
-    fmt.Printf("After nodes: %v\n", interruptInfo.AfterNodes)
-    
-    // 新的增强功能：访问结构化的中断上下文
-    if len(interruptInfo.InterruptContexts) > 0 {
-        interruptCtx := interruptInfo.InterruptContexts[0]
-        fmt.Printf("图状态: %+v\n", interruptCtx.Info)
-        
-        // 最终用户可以直接修改状态并将其传回
-        // 不再需要使用 WithStateModifier（尽管它仍然有效）
+g := compose.NewGraph[string, string](compose.WithGenLocalState(func(ctx context.Context) *MyGraphState {
+    return &MyGraphState{SomeValue: "initial"}
+}))
+// ... 向图中添加节点1和节点2 ...
+
+// 2. 使用静态中断点编译图
+// 这将在 "node_1" 节点完成后中断图本身。
+graph, err := g.Compile(ctx, compose.WithInterruptAfterNodes([]string{"node_1"}))
+
+// 3. 运行图，这将触发静态中断
+_, err = graph.Invoke(ctx, "start")
+
+// 4. 提取中断上下文和图的状态
+interruptInfo, isInterrupt := compose.ExtractInterruptInfo(err)
+if isInterrupt {
+    interruptCtx := interruptInfo.InterruptContexts[0]
+
+    // .Info 字段暴露了图的当前状态
+    graphState, ok := interruptCtx.Info.(*MyGraphState)
+    if ok {
+        // 5. 直接修改状态
+        fmt.Printf("Original state value: %s\n", graphState.SomeValue) // 打印 "initial"
+        graphState.SomeValue = "a-new-value-from-user"
+
+        // 6. 通过传回修改后的状态对象来恢复
+        resumeCtx := compose.ResumeWithData(context.Background(), interruptCtx.ID, graphState)
+        result, err := graph.Invoke(resumeCtx, "start")
+        // ... 执行将继续，并且 node_2 现在将看到修改后的状态。
     }
 }
 ```
-
-**增强功能**：除了 `[]BeforeNodes` 和 `[]AfterNodes`，现在还返回一个 `InterruptCtx`，使最终用户可以直接访问图状态。对于喜欢先前方法的开发者，`WithStateModifier` 选项仍然可用。
 
 ### 3. Agent 中断兼容性
 
-先前的 agent 中断流程继续保持不变：
+与旧版 agent 的兼容性是在数据结构层面维护的，确保了旧的 agent 实现能在新框架内继续运作。其关键在于 `adk.InterruptInfo` 和 `adk.ResumeInfo` 结构体是如何被填充的。
+
+**对最终用户（应用层）而言：**
+当从 agent 收到一个中断时，`adk.InterruptInfo` 结构体中会同时填充以下两者：
+- 新的、结构化的 `InterruptContexts` 字段。
+- 遗留的 `Data` 字段，它将包含原始的中断信息（例如 `ChatModelAgentInterruptInfo` 或 `WorkflowInterruptInfo`）。
+
+这使得最终用户可以逐步迁移他们的应用逻辑来使用更丰富的 `InterruptContexts`，同时在需要时仍然可以访问旧的 `Data` 字段。
+
+**对 Agent 开发者而言：**
+当一个旧版 agent 的 `Resume` 方法被调用时，它收到的 `adk.ResumeInfo` 结构体仍然包含现已弃用的嵌入式 `InterruptInfo` 字段。该字段被填充了相同的遗留数据结构，允许 agent 开发者维持其现有的恢复逻辑，而无需立即更新到新的地址感知 API。
 
 ```go
-// Agent 中断模式保持不变
-func (a *myAgent) Run(ctx context.Context, input *adk.AgentInput) *adk.AsyncIterator[*adk.AgentEvent] {
-    // ... agent 逻辑
-    return adk.Interrupt(ctx, "需要用户输入")
+// --- 最终用户视角 ---
+
+// 在 agent 运行后，你收到了一个中断事件。
+if event.Action != nil && event.Action.Interrupted != nil {
+    interruptInfo := event.Action.Interrupted
+
+    // 1. 新方式：访问结构化的中断上下文
+    if len(interruptInfo.InterruptContexts) > 0 {
+        fmt.Printf("New structured context available: %+v\n", interruptInfo.InterruptContexts[0])
+    }
+
+    // 2. 旧方式（仍然有效）：访问遗留的 Data 字段
+    if chatInterrupt, ok := interruptInfo.Data.(*adk.ChatModelAgentInterruptInfo); ok {
+        fmt.Printf("Legacy ChatModelAgentInterruptInfo still accessible.\n")
+        // ... 使用旧结构体的逻辑
+    }
 }
 
-// 最终用户访问模式保持不变
-func (a *myAgent) Resume(ctx context.Context, info *adk.ResumeInfo) *adk.AsyncIterator[*adk.AgentEvent] {
-    // 先前的信息仍然可用
-    if info.WasInterrupted {
-        fmt.Printf("中断数据: %v\n", info.InterruptInfo.Data)
-        // 增强：现在还可以访问结构化的中断上下文
-        if info.InterruptInfo != nil && len(info.InterruptInfo.InterruptContexts) > 0 {
-            fmt.Printf("中断上下文: %+v\n", info.InterruptInfo.InterruptContexts[0])
+
+// --- Agent 开发者视角 ---
+
+// 在一个旧版 agent 的 Resume 方法内部：
+func (a *myLegacyAgent) Resume(ctx context.Context, info *adk.ResumeInfo) *adk.AsyncIterator[*adk.AgentEvent] {
+    // 已弃用的嵌入式 InterruptInfo 字段仍然会被填充。
+    // 这使得旧的恢复逻辑可以继续工作。
+    if info.InterruptInfo != nil {
+        if chatInterrupt, ok := info.InterruptInfo.Data.(*adk.ChatModelAgentInterruptInfo); ok {
+            // ... 依赖于旧的 ChatModelAgentInterruptInfo 结构体的现有恢复逻辑
+            fmt.Println("Resuming based on legacy InterruptInfo.Data field.")
         }
     }
     
-    // 恢复逻辑：继续正常执行或处理恢复数据
-    if info.IsResumeTarget && info.ResumeData != nil {
-        // 处理恢复数据并继续
-        return a.handleResumeWithData(ctx, info.ResumeData)
-    }
-    
-    // 继续正常执行
-    return a.Run(ctx, input)
+    // ... 继续执行
+    return a.Run(ctx, &adk.AgentInput{Input: "resumed execution"})
 }
 ```
 
-**增强功能**：来自 `AgentEvent` 的 `InterruptInfo` 包含所有先前的信息，最终用户仍然可以在 `ResumeInfo` 中访问此信息，并额外受益于结构化的中断上下文。
-
 ### 迁移优势
 
-- **无重大变更**：现有代码无需修改即可继续工作。
-- **渐进式采用**：团队可以按照自己的节奏采用新功能。
-- **增强的功能**：新的寻址系统在保留现有 API 的同时提供了更丰富的上下文。
-- **灵活的状态管理**：最终用户可以选择直接状态修改（新）或 `WithStateModifier`（现有）。
+- **保留遗留行为**: 现有代码将继续按其原有方式运行。旧的中断模式不会导致程序崩溃，但它们也不会在不经修改的情况下自动获得新的地址感知能力。
+- **渐进式采用**: 团队可以根据具体情况选择性地启用新功能。例如，你可以只在你需要定向恢复的工作流中，用 `WrapInterruptAndRerunIfNeeded` 来包装遗留的中断。
+- **增强的功能**: 新的寻址系统为所有中断提供了更丰富的结构化上下文 (`InterruptCtx`)，同时旧的数据字段仍然会被填充以实现完全兼容。
+- **灵活的状态管理**: 对于静态图中断，你可以选择通过 `.Info` 字段进行现代、直接的状态修改，或者继续使用旧的 `WithStateModifier` 选项。
 
-这种向后兼容性确保了现有用户的平滑过渡，同时为human-in-the-loop交互提供了强大的新功能。
+这种向后兼容性模型确保了现有用户的平滑过渡，同时为采用强大的新的 human-in-the-loop 交互功能提供了清晰的路径。
 
 ## 实现示例
 
