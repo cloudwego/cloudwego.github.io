@@ -330,6 +330,8 @@ func WithNoDirectDependency() WorkflowAddInputOpt {
 
 在上图中，普通连线是“控制 + 数据”，虚线是“只有数据”，加粗线是“只有控制”。逻辑是：输入一个初始价格，竞拍者 1 给出报价 1，分支判断是否足够高，如果足够高则直接结束，否则把初始价格再给到竞拍者 2，给出报价 2，最后将报价 1、2 汇总输出。
 
+当竞拍者 1 给出报价后，发布公告”竞拍者完成竞拍“。注意 bidder1->announcer 是粗实线，“只有控制”，因为发布公告的时候需要对金额保密！
+
 分支出来的两条加粗线，都是“只有控制”，因为无论 bidder2 还是 END，都不依赖分支给出数据。在代码中通过 `AddDependency(fromNode)` 来指定纯控制流：
 
 ```go
@@ -341,6 +343,38 @@ func main() {
     bidder2 := func(ctx context.Context, in float64) (float64, error) {
        return in + 2.0, nil
     }
+
+    announcer := func(ctx context.Context, in any) (any, error) {
+        logs.Infof("bidder1 had lodged his bid!")
+        return nil, nil
+    }
+    
+    wf := compose.NewWorkflow[float64, map[string]float64]()
+    
+    wf.AddLambdaNode("b1", compose.InvokableLambda(bidder1)).
+        AddInput(compose.START)
+    
+    // just add a node to announce bidder1 had lodged his bid!
+    // It should be executed strictly after bidder1, so we use `AddDependency("b1")`.
+    // Note that `AddDependency()` will only form control relationship,
+    // but not data passing relationship.
+    wf.AddLambdaNode("announcer", compose.InvokableLambda(announcer)).
+        AddDependency("b1")
+    
+    // add a branch just like adding branch in Graph.
+    wf.AddBranch("b1", compose.NewGraphBranch(func(ctx context.Context, in float64) (string, error) {
+        if in > 5.0 {
+           return compose.END, nil
+        }
+        return "b2", nil
+    }, map[string]bool{compose.END: true, "b2": true}))
+    
+    wf.AddLambdaNode("b2", compose.InvokableLambda(bidder2)).
+        // b2 executes strictly after b1 (through branch dependency),
+        // but does not rely on b1's output,
+        // which means b2 depends on b1 conditionally,
+        // but no data passing between them.
+        AddInputWithOptions(compose.START, nil, compose.WithNoDirectDependency())
 
     wf := compose.NewWorkflow[float64, map[string]float64]()
 
