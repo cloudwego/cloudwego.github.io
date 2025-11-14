@@ -4,7 +4,7 @@ date: "2025-03-04"
 lastmod: ""
 tags: []
 title: 字节跳动大模型应用 Go 开发框架 —— Eino 实践
-weight: 0
+weight: 1
 ---
 
 ## 前言

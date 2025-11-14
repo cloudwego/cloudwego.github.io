@@ -4,7 +4,7 @@ date: "2025-03-04"
 lastmod: ""
 tags: []
 title: 大语言模型应用开发框架 —— Eino 正式开源！
-weight: 0
+weight: 1
 ---
 
 今天，经过字节跳动内部半年多的使用和迭代，基于 Go 的大模型应用综合开发框架 —— Eino，已在 CloudWeGo 正式开源啦！
