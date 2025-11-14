@@ -330,6 +330,8 @@ Imagine a scenario of "sequential bidding with confidential quotes": START -> Bi
 
 In the above figure, the normal connection is "control + data", the dashed line is "data only", and the bold line is "control only". The logic is: input an initial price, bidder 1 gives bid 1, a branch determines whether it is high enough; if it is high enough, it ends directly; otherwise, the initial price is given to bidder 2, who gives bid 2, and finally bids 1 and 2 are aggregated and output.
 
+When Bidder 1 gives an offer, issue an announcement saying "The bidder has completed the auction." Note that the line from bidder1 to announcer is a thick solid line, indicating "control only", because the amount needs to be kept confidential when issuing the announcement!
+
 The two bold lines branching out are both "control only" because neither bidder2 nor END depends on the data provided by the branch. In the code, the pure control flow is specified through `AddDependency(fromNode)`:
 
 ```go
@@ -341,6 +343,38 @@ func main() {
     bidder2 := func(ctx context.Context, in float64) (float64, error) {
        return in + 2.0, nil
     }
+    
+    announcer := func(ctx context.Context, in any) (any, error) {
+        logs.Infof("bidder1 had lodged his bid!")
+        return nil, nil
+    }
+    
+    wf := compose.NewWorkflow[float64, map[string]float64]()
+    
+    wf.AddLambdaNode("b1", compose.InvokableLambda(bidder1)).
+        AddInput(compose.START)
+    
+    // just add a node to announce bidder1 had lodged his bid!
+    // It should be executed strictly after bidder1, so we use `AddDependency("b1")`.
+    // Note that `AddDependency()` will only form control relationship,
+    // but not data passing relationship.
+    wf.AddLambdaNode("announcer", compose.InvokableLambda(announcer)).
+        AddDependency("b1")
+    
+    // add a branch just like adding branch in Graph.
+    wf.AddBranch("b1", compose.NewGraphBranch(func(ctx context.Context, in float64) (string, error) {
+        if in > 5.0 {
+           return compose.END, nil
+        }
+        return "b2", nil
+    }, map[string]bool{compose.END: true, "b2": true}))
+    
+    wf.AddLambdaNode("b2", compose.InvokableLambda(bidder2)).
+        // b2 executes strictly after b1 (through branch dependency),
+        // but does not rely on b1's output,
+        // which means b2 depends on b1 conditionally,
+        // but no data passing between them.
+        AddInputWithOptions(compose.START, nil, compose.WithNoDirectDependency())
 
     wf := compose.NewWorkflow[float64, map[string]float64]()
 
