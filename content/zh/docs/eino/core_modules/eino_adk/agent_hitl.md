@@ -22,6 +22,204 @@ weight: 8
 2. 帮助最终用户尽可能轻松地回答上述问题。
 3. 使框架能够自动并开箱即用地回答上述问题。
 
+## 快速开始
+
+我们用一个简单的订票 Agent 来演示功能，这个 Agent 在实际完成订票前，会向用户寻求“确认”，用户可以“同意”或者“拒绝”本次订票操作。这个例子的完整代码在：[https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/1_approval](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/1_approval)
+
+1. 创建一个 ChatModelAgent，并配置一个用来订票的 Tool。
+
+```go
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/cloudwego/eino/adk"
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/components/tool/utils"
+    "github.com/cloudwego/eino/compose"
+
+    "github.com/cloudwego/eino-examples/adk/common/model"
+    tool2 "github.com/cloudwego/eino-examples/adk/common/tool"
+)
+
+func NewTicketBookingAgent() adk.Agent {
+    ctx := context.Background()
+
+    type bookInput struct {
+       Location             string `json:"location"`
+       PassengerName        string `json:"passenger_name"`
+       PassengerPhoneNumber string `json:"passenger_phone_number"`
+    }
+
+    getWeather, err := utils.InferTool(
+       "BookTicket",
+       "this tool can book ticket of the specific location",
+       func(ctx context.Context, input bookInput) (output string, err error) {
+          return "success", nil
+       })
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+       Name:        "TicketBooker",
+       Description: "An agent that can book tickets",
+       Instruction: `You are an expert ticket booker.
+Based on the user's request, use the "BookTicket" tool to book tickets.`,
+       Model: model.NewChatModel(),
+       ToolsConfig: adk.ToolsConfig{
+          ToolsNodeConfig: compose.ToolsNodeConfig{
+             Tools: []tool.BaseTool{
+                // InvokableApprovableTool 是 eino-examples 提供的一个 tool 装饰器，
+                // 可以为任意的 InvokableTool 加上“审批中断”功能
+                &tool2.InvokableApprovableTool{InvokableTool: getWeather},
+             },
+          },
+       },
+    })
+    if err != nil {
+       log.Fatal(fmt.Errorf("failed to create chatmodel: %w", err))
+    }
+
+    return a
+}
+```
+
+2. 创建一个 Runner，配置 CheckPointStore，并运行，传入一个 CheckPointID。Eino 用 CheckPointStore 来保存 Agent 中断时的运行状态，这里用的 InMemoryStore，保存在内存中。实际使用中，推荐用分布式存储比如 redis。另外，Eino 用 CheckPointID 来唯一标识和串联“中断前”和“中断后”的两次（或多次）运行。
+
+```go
+a := NewTicketBookingAgent()
+runner := adk.NewRunner(ctx, adk.RunnerConfig{
+    EnableStreaming: true, // you can disable streaming here
+    Agent:           a,
+
+    // provide a CheckPointStore for eino to persist the execution state of the agent for later resumption.
+    // Here we use an in-memory store for simplicity.
+    // In the real world, you can use a distributed store like Redis to persist the checkpoints.
+    CheckPointStore: store.NewInMemoryStore(),
+})
+iter := runner.Query(ctx, "book a ticket for Martin, to Beijing, on 2025-12-01, the phone number is 1234567. directly call tool.", adk.WithCheckPointID("1"))
+```
+
+3. 从 AgentEvent 中拿到 interrupt 信息 `event.Action.Interrupted.InterruptContexts[0].Info`，在这里是“准备给谁订哪趟车，是否同意”。同时会拿到一个 InterruptID(`event.Action.Interrupted.InterruptContexts[0].ID`)，Eino 框架用这个 InterruptID 来标识“哪里发生了中断”。这里直接打印在了终端上，实际使用中，可能需要作为 HTTP 响应返回给前端。
+
+```go
+var lastEvent *adk.AgentEvent
+for {
+    event, ok := iter.Next()
+    if !ok {
+       break
+    }
+    if event.Err != nil {
+       log.Fatal(event.Err)
+    }
+
+    prints.Event(event)
+
+    lastEvent = event
+}
+
+// this interruptID is crucial 'locator' for Eino to know where the interrupt happens,
+// so when resuming later, you have to provide this same `interruptID` along with the approval result back to Eino
+interruptID := lastEvent.Action.Interrupted.InterruptContexts[0].ID
+```
+
+4. 给用户展示 interrupt 信息，并接收到用户的响应，比如“同意”。在这个例子里面，都是在本地终端上展示给用户和接收用户输入的。在实际应用中，可能是用 ChatBot 做输入输出。
+
+```go
+var apResult *tool.ApprovalResult
+for {
+    scanner := bufio.NewScanner(os.Stdin)
+    fmt.Print("your input here: ")
+    scanner.Scan()
+    fmt.Println()
+    nInput := scanner.Text()
+    if strings.ToUpper(nInput) == "Y" {
+       apResult = &tool.ApprovalResult{Approved: true}
+       break
+    } else if strings.ToUpper(nInput) == "N" {
+       // Prompt for reason when denying
+       fmt.Print("Please provide a reason for denial: ")
+       scanner.Scan()
+       reason := scanner.Text()
+       fmt.Println()
+       apResult = &tool.ApprovalResult{Approved: false, DisapproveReason: &reason}
+       break
+    }
+
+    fmt.Println("invalid input, please input Y or N")
+}
+```
+
+样例输出：
+
+```json
+name: TicketBooker
+path: [{TicketBooker}]
+tool name: BookTicket
+arguments: {"location":"Beijing","passenger_name":"Martin","passenger_phone_number":"1234567"}
+
+name: TicketBooker
+path: [{TicketBooker}]
+tool 'BookTicket' interrupted with arguments '{"location":"Beijing","passenger_name":"Martin","passenger_phone_number":"1234567"}', waiting for your approval, please answer with Y/N
+
+your input here: Y
+```
+
+5. 调用 Runner.ResumeWithParams，传入同一个 InterruptID，以及用来恢复的数据，这里是“同意”。在这个例子里，首次 `Runner.Query` 和之后的 `Runner.ResumeWithParams` 是在一个实例中，在真实场景，可能是 ChatBot 前端的两次请求，打到服务端的两个实例中。只要 CheckPointID 两次相同，且给 Runner 配置的 CheckPointStore 是分布式存储，Eino 就能做到跨实例的中断恢复。
+
+```go
+_// here we directly resumes right in the same instance where the original `Runner.Query` happened.
+// In the real world, the original `Runner.Run/Query` and the subsequent `Runner.ResumeWithParams`
+// can happen in different processes or machines, as long as you use the same `CheckPointID`,
+// and you provided a distributed `CheckPointStore` when creating the `Runner` instance.
+iter, err := runner.ResumeWithParams(ctx, "1", &adk.ResumeParams{
+    Targets: map[string]any{
+       interruptID: apResult,
+    },
+})
+if err != nil {
+    log.Fatal(err)
+}
+for {
+    event, ok := iter.Next()
+    if !ok {
+       break
+    }
+
+    if event.Err != nil {
+       log.Fatal(event.Err)
+    }
+
+    prints.Event(event)
+__}_
+```
+
+完整样例输出：
+
+```yaml
+name: TicketBooker
+path: [{TicketBooker}]
+tool name: BookTicket
+arguments: {"location":"Beijing","passenger_name":"Martin","passenger_phone_number":"1234567"}
+
+name: TicketBooker
+path: [{TicketBooker}]
+tool 'BookTicket' interrupted with arguments '{"location":"Beijing","passenger_name":"Martin","passenger_phone_number":"1234567"}', waiting for your approval, please answer with Y/N
+
+your input here: Y
+
+name: TicketBooker
+path: [{TicketBooker}]
+tool response: success
+
+name: TicketBooker
+path: [{TicketBooker}]
+answer: The ticket for Martin to Beijing on 2025-12-01 has been successfully booked. If you need any more assistance, feel free
+ to ask!
+```
+
 ## 架构概述
 
 以下流程图说明了高层次的中断/恢复流程：
