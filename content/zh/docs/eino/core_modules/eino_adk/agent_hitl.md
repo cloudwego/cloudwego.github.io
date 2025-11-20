@@ -11,16 +11,6 @@ weight: 8
 
 本文档提供 Eino 的human-in-the-loop (Human-in-the-Loop, HITL) 框架架构的技术细节，重点介绍中断/恢复机制和底层的寻址系统。
 
-## Alpha 版本发布公告
-
-> **注意**：本文档中描述的human-in-the-loop框架是一个 **Alpha 功能**。
-
-- **发布标签**：`v0.7.0-alpha.X`
-- **稳定性**：在正式发布前，API 和功能可能会发生变化。
-- **Alpha 阶段**：Alpha 阶段预计将在 2025 年 11 月底前结束。
-
-我们欢迎在此阶段提供反馈和贡献，以帮助我们改进该框架。
-
 ## human-in-the-loop的需求
 
 下图说明了在中断/恢复过程中，每个组件必须回答的关键问题。理解这些需求是掌握架构设计背后原因的关键。
@@ -191,22 +181,22 @@ if event.Action != nil && event.Action.Interrupted != nil {
 
 ### 3. 用于最终用户恢复的 API
 
-#### `(*Runner).TargetedResume`
+#### `(*Runner).ResumeWithParams`
 使用“显式定向恢复”策略从检查点继续中断的执行。这是最常见和最强大的恢复方式，允许您定位特定的中断点并为其提供数据。
 
 使用此方法时：
-- 地址在 `targets` 映射中的组件将是显式目标。
-- 地址不在 `targets` 映射中的被中断组件必须重新中断自己以保留其状态。
+- 地址在 `ResumeParams.Targets` 映射中的组件将是显式目标。
+- 地址不在 `ResumeParams.Targets` 映射中的被中断组件必须重新中断自己以保留其状态。
 
 ```go
-func (r *Runner) TargetedResume(ctx context.Context, checkPointID string, 
-    targets map[string]any, opts ...AgentRunOption) (*AsyncIterator[*AgentEvent], error)
+func (r *Runner) ResumeWithParams(ctx context.Context, checkPointID string, 
+    params *ResumeParams, opts ...AgentRunOption) (*AsyncIterator[*AgentEvent], error)
 ```
 
 **参数:**
 - `ctx`: 用于恢复的上下文。
 - `checkPointID`: 要从中恢复的检查点的标识符。
-- `targets`: 中断 ID 到恢复数据的映射。这些 ID 可以指向整个执行图中的任何可中断组件。
+- `params`: 中断参数，包含中断 ID 到恢复数据的映射。这些 ID 可以指向整个执行图中的任何可中断组件。
 - `opts`: 额外的运行选项。
 
 **返回:** agent 事件的异步迭代器。
@@ -222,7 +212,7 @@ resumeData := map[string]any{
 }
 
 // 使用目标数据恢复执行。
-resumeIterator, err := runner.TargetedResume(ctx, "my-checkpoint-id", resumeData)
+resumeIterator, err := runner.ResumeWithParams(ctx, "my-checkpoint-id", &ResumeParams{Targets: resumeData})
 if err != nil {
     // 处理错误
 }
@@ -251,7 +241,7 @@ type ResumeInfo struct {
     // InterruptState 持有通过 StatefulInterrupt 或 CompositeInterrupt 保存的状态。
     InterruptState any
 
-    // IsResumeTarget 指示此 agent 是否是 TargetedResume 的特定目标。
+    // IsResumeTarget 指示此 agent 是否是 ResumeWithParams 的特定目标。
     IsResumeTarget bool
 
     // ResumeData 持有用户为此 agent 提供的数据。
