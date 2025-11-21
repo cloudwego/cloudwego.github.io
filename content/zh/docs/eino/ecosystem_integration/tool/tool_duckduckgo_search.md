@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-19"
+date: "2025-11-21"
 lastmod: ""
 tags: []
 title: Tool - DuckDuckGoSearch
@@ -15,19 +15,16 @@ DuckDuckGo 搜索工具是 Tool InvokableTool 接口的一个实现，用于通�
 
 ### **组件初始化**
 
-DuckDuckGo 搜索工具通过 `NewTool` 函数进行初始化，主要配置参数如下：
+DuckDuckGo 搜索工具通过 `NewTextSearchTool` 函数进行初始化，主要配置参数如下：
 
 ```go
-import "github.com/cloudwego/eino-ext/components/tool/duckduckgo"
+import "github.com/cloudwego/eino-ext/components/tool/duckduckgo/v2"
 
-tool, err := duckduckgo.NewTool(ctx, &duckduckgo.Config{
-    ToolName:    "duckduckgo_search",     // 工具名称
-    ToolDesc:    "search web for information by duckduckgo", // 工具描述
-    Region:      ddgsearch.RegionWT,      // 搜索地区
-    MaxResults:  10,                      // 每页结果数量
-    SafeSearch:  ddgsearch.SafeSearchOff, // 安全搜索级别
-    TimeRange:   ddgsearch.TimeRangeAll,  // 时间范围
-    DDGConfig:   &ddgsearch.Config{},     // DuckDuckGo 配置
+tool, err := duckduckgo.NewTextSearchTool(ctx, &duckduckgo.Config{
+    ToolName:    "duckduckgo_search",     
+    ToolDesc:    "search for information by duckduckgo",
+    Region:      ddgsearch.RegionWT,      // The geographical region for results.
+    MaxResults:  3,                      // Limit the number of results returned.
 })
 ```
 
@@ -36,9 +33,12 @@ tool, err := duckduckgo.NewTool(ctx, &duckduckgo.Config{
 搜索请求支持以下参数：
 
 ```go
-type SearchRequest struct {
-    Query string `json:"query"` // 搜索关键词
-    Page  int    `json:"page"`  // 页码
+type TextSearchRequest struct {
+    // Query is the user's search query
+    Query string `json:"query"`
+    // TimeRange is the search time range
+    // Default: TimeRangeAny
+    TimeRange TimeRange `json:"time_range"`
 }
 ```
 
@@ -54,8 +54,7 @@ import (
     "log"
     "time"
 
-    "github.com/cloudwego/eino-ext/components/tool/duckduckgo"
-    "github.com/cloudwego/eino-ext/components/tool/duckduckgo/ddgsearch"
+    "github.com/cloudwego/eino-ext/components/tool/duckduckgo/v2"
 )
 
 func main() {
@@ -63,50 +62,47 @@ func main() {
 
     // Create configuration
     config := &duckduckgo.Config{
-        MaxResults: 3, // Limit to return 3 results
-        Region:     ddgsearch.RegionCN,
-        DDGConfig: &ddgsearch.Config{
-            Timeout:    10 * time.Second,
-            Cache:      true,
-            MaxRetries: 5,
-        },
+       MaxResults: 3, // Limit to return 20 results
+       Region:     duckduckgo.RegionWT,
+       Timeout:    10 * time.Second,
     }
 
     // Create search client
-    tool, err := duckduckgo.NewTool(ctx, config)
+    tool, err := duckduckgo.NewTextSearchTool(ctx, config)
     if err != nil {
-        log.Fatalf("NewTool of duckduckgo failed, err=%v", err)
+       log.Fatalf("NewTextSearchTool of duckduckgo failed, err=%v", err)
     }
 
-    // Create search request
-    searchReq := &duckduckgo.SearchRequest{
-        Query: "Go programming development",
-        Page:  1,
-    }
+    results := make([]*duckduckgo.TextSearchResult, 0, config.MaxResults)
 
+    searchReq := &duckduckgo.TextSearchRequest{
+       Query: "eino",
+    }
     jsonReq, err := json.Marshal(searchReq)
     if err != nil {
-        log.Fatalf("Marshal of search request failed, err=%v", err)
+       log.Fatalf("Marshal of search request failed, err=%v", err)
     }
 
-    // Execute search
     resp, err := tool.InvokableRun(ctx, string(jsonReq))
     if err != nil {
-        log.Fatalf("Search of duckduckgo failed, err=%v", err)
+       log.Fatalf("Search of duckduckgo failed, err=%v", err)
     }
 
-    var searchResp duckduckgo.SearchResponse
-    if err := json.Unmarshal([]byte(resp), &searchResp); err != nil {
-        log.Fatalf("Unmarshal of search response failed, err=%v", err)
+    var searchResp duckduckgo.TextSearchResponse
+    if err = json.Unmarshal([]byte(resp), &searchResp); err != nil {
+       log.Fatalf("Unmarshal of search response failed, err=%v", err)
     }
+
+    results = append(results, searchResp.Results...)
 
     // Print results
     fmt.Println("Search Results:")
     fmt.Println("==============")
-    for i, result := range searchResp.Results {
-        fmt.Printf("\n%d. Title: %s\n", i+1, result.Title)
-        fmt.Printf("   Link: %s\n", result.Link)
-        fmt.Printf("   Description: %s\n", result.Description)
+    fmt.Printf("%s\n", searchResp.Message)
+    for i, result := range results {
+       fmt.Printf("\n%d. Title: %s\n", i+1, result.Title)
+       fmt.Printf("   URL: %s\n", result.URL)
+       fmt.Printf("   Summary: %s\n", result.Summary)
     }
     fmt.Println("")
     fmt.Println("==============")
@@ -117,16 +113,22 @@ func main() {
 
 ```json
 {
+    "message": "Found 3 results successfully.",
     "results": [
         {
-            "title": "Go 并发编程实践",
-            "description": "这是一篇关于 Go 语言并发编程的文章...",
-            "link": "https://example.com/article1"
+            "title": "GitHub - cloudwego/eino: The ultimate LLM/AI application development ...",
+            "url": "https://github.com/cloudwego/eino",
+            "summary": "Eino ['aino] (pronounced similarly to \"I know\") aims to be the ultimate LLM application development framework in Golang. Drawing inspirations from many excellent LLM application development frameworks in the open-source community such as LangChain & LlamaIndex, etc., as well as learning from cutting-edge research and real world applications, Eino offers an LLM application development framework ..."
         },
         {
-            "title": "Understanding Concurrency in Go",
-            "description": "A comprehensive guide to concurrent programming...",
-            "link": "https://example.com/article2"
+            "title": "Eino: Overview | CloudWeGo",
+            "url": "https://www.cloudwego.io/docs/eino/overview/",
+            "summary": "Eino is a framework that simplifies and standardizes the development of LLM applications in Golang. It provides component abstractions, orchestration APIs, best practices, tools and examples for building and running LLM applications."
+        }
+  {
+            "title": "Home - Eino - AI powered network planning",
+            "url": "https://www.eino.ai/",
+            "summary": "An easy-to-use, AI powered networking planning app that helps network planners create digital twins for their projects and plan every network type."
         }
     ]
 }
