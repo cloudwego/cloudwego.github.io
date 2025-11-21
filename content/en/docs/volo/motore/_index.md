@@ -28,7 +28,7 @@ pub trait Service<Cx, Request> {
 }
 ```
 
-## Getting Started
+## Features
 
 Using AFIT, we can write asynchronous code in a very concise and readable way.
 
