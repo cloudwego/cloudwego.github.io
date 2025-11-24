@@ -28,7 +28,7 @@ pub trait Service<Cx, Request> {
 }
 ```
 
-## 快速上手
+## 特色介绍
 
 使用 AFIT，我们可以以非常简洁易读的方式编写异步代码：
 
