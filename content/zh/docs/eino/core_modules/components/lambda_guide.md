@@ -48,7 +48,7 @@ type Transform[I, O, TOption any] func(ctx context.Context, input *schema.Stream
 - 仅提供一种已选定输入输出是否为流的交互函数
   - 不带自定义 Option
   - 使用自定义 Option
-- 从 4 中交互函数中自定义 n(n<=4) 种的函数： AnyLambda
+- 从 4 种交互函数中自定义 n(n<=4) 种的函数： AnyLambda
 
 #### 不带自定义 Option
 
