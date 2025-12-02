@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-18"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 'Eino: 编排的设计理念'
@@ -9,7 +9,7 @@ weight: 2
 
 大模型应用编排方案中，最火的就是 langchain 以及 langgraph，其官方提供了 python 和 ts 的 sdk，这两门语言以其灵活性著称，灵活性给 sdk 的开发带来了极大的便利，但同时，也给 sdk 的使用者带来了极大的困扰和心智负担。
 
-Go 作为一门 极其简单 的编程语言，确定的 `静态类型` 是让其变得简单的重要原因之一，而 eino，则保持了这一重要特性: `确定的类型` + `Compile 时类型检查`。
+golang 作为一门 极其简单 的编程语言，确定的 `静态类型` 是让其变得简单的重要原因之一，而 eino，则保持了这一重要特性: `确定的类型` + `Compile 时类型检查`。
 
 ## 以上下游 `类型对齐` 为基本准则
 
@@ -17,7 +17,7 @@ eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是
 
 这之间蕴含了一个基本假设：**前一个运行节点的输出值，可以作为下一个节点的输入值。**
 
-在 Go 中，要实现这个假设，有两个基本方案：
+在 golang 中，要实现这个假设，有两个基本方案：
 
 1. 把不同节点的输入输出都变成一种更泛化的类型，例如 `any` 、`map[string]any` 等。
    1. 采用泛化成 any 的方案，但对应的代价是: 开发者在写代码时，需要显式转换成具体类型才能使用。这会极大增加开发者的心智负担，因此最终放弃此方案。
@@ -222,7 +222,7 @@ AddChatModelNode("xxx", model, WithStreamStatePostHandler(postHandler))
 
 Runnable 的一个重要作用就是提供了 「Invoke」、「Stream」、「Collect」、「Transform」 四种调用方式。
 
-> 上述几种调用方式的介绍以及详细的 Runnable 介绍可以查看: [Eino: 基础概念介绍](/zh/docs/eino/overview)
+> 上述几种调用方式的介绍以及详细的 Runnable 介绍可以查看: [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials#share-AqaQddcjSoFFojxmFVcchOHTnsf)
 
 假设我们有一个 `Graph[[]*schema.Message, []*schema.Message]`，里面有一个 ChatModel 节点，一个 Lambda 节点，Compile 之后是一个 `Runnable[[]*schema.Message, []*schema.Message]`。
 
@@ -285,11 +285,10 @@ func TestTypeMatch(t *testing.T) {
 
 在 stream 模式下，拼接帧 是一个非常常见的操作，拼接时，会先把 `*StreamReader[T] ` 中的所有元素取出来转成 `[]T`，再尝试把 `[]T` 拼接成一个完整的 `T`。框架内已经内置支持了如下类型的拼接:
 
-- `*schema.Message`:  详情见 `schema.ConcatMessages()`
+- `*schema.Message`:  详情见 `schema.``ConcatMessages``()`
 - `string`: 实现逻辑等同于 `+=`
 - `[]*schema.Message`: 详情见 `compose.concatMessageArray()`
 - `Map`: 把相同 key 的 val 进行合并，合并逻辑同上，若存在无法合并的类型，则失败 (ps: 不是覆盖)
-- `Struct` 或 `Struct 指针`：先转成 `[]map[string]any` 的，再以 map 的逻辑合并。要求 struct 中不能有 unexported field。
 - 其他 slice：只有当 slice 中只有一个元素是非零值时，才能合并。
 
 对其他场景，或者当用户想用定制逻辑覆盖掉上面的默认行为时，开发者可自行实现 concat 方法，并使用 `compose.RegisterStreamChunkConcatFunc()` 注册到全局的拼接函数中。
@@ -340,19 +339,12 @@ Eino 的 Graph 中的数据在 Node、Branch、Handler 间流转时，一律是�
 
 ### 扇入与合并
 
-**扇入**：多个上游的数据汇入到下游，一起作为下游的输入。需要明确定义多个上游的输出，如何**合并（Merge）**起来。Eino 的选择是，首先要求多个上游输出的**实际类型**必须相同且为可合并的类型。
+**扇入**：多个上游的数据汇入到下游，一起作为下游的输入。需要明确定义多个上游的输出，如何**合并（Merge）**起来。
 
-可合并的类型可以是：
+默认情况下，首先要求多个上游输出的**实际类型**必须相同且为 Map，且相互间 key 不可重复。其次：
 
-- Map 类型，且相互间 key 不重复。
-- 任意类型，且通过 `compose.RegisterValuesMergeFunc` 注册了合并函数。
-
-其次：
-
-- 在非流式场景下，
-  - 如果输入的类型有注册过合并函数，则使用注册的合并函数合并为一个值。
-  - 如果输入的类型是 Map，则合并成为一个 Map，包含所有上游的所有键值对。
-- 在流式场景下，将类型相同的多个上游 StreamReader 合并为一个 StreamReader。实际 Recv 时从效果为从多个上游 StreamReader 中公平读取。
+- 在非流式场景下，合并后成为一个 Map，包含所有上游的所有键值对。
+- 在流式场景下，将类型相同的多个上游 StreamReader 合并为一个 StreamReader。实际 Recv 时效果为从多个上游 StreamReader 中公平读取。
 
 在 AddNode 时，可以通过添加 WithOutputKey 这个 Option 来把节点的输出转成 Map：
 
@@ -474,11 +466,12 @@ Eino 支持各种维度的 Call Option 分配方式：
 - 每个节点有确定的前序节点，当所有前序节点都完成后，本节点才具备运行条件。
 - 不支持图中有环，因为会打破“每个节点有确定的前序节点”这一假定。
 - 支持 Branch。在运行时，将 Branch 未选中的节点记为已跳过，不影响 AllPredecessor 的语义。
-- 不需要手动对齐 SuperStep。
 
 > 💡
-> 设置 NodeTriggerMode == AllPredecessor 后，节点会在所有前驱就绪后执行，但并不是立即执行，而是依然遵循 SuperStep——在一批节点全部执行完成后再运行新的可运行节点。
+> 设置 NodeTriggerMode = AllPredecessor 后，节点会在所有前驱就绪后执行，但并不是立即执行，而是依然遵循 SuperStep——在一批节点全部执行完成后再运行新的可运行节点。
 >
-> 如果在 Compile 是传入 compose.WithEagerExecution()，则就绪的节点会立刻运行。
+> 如果在 Compile 时传入 compose.WithEagerExecution()，则就绪的节点会立刻运行。
+>
+> 在 Eino v0.4.0 版本及之后的版本中，设置 NodeTriggerMode = AllPredecessor 后会默认开启 EagerExecution。
 
 总结起来，pregel 模式灵活强大但有额外的心智负担，dag 模式清晰简单但场景受限。在 Eino 框架中，Chain 是 pregel 模式，Workflow 是 dag 模式，Graph 则都支持，可由用户从 pregel 和 dag 中选择。

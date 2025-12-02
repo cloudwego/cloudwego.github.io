@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-09-30"
+date: "2025-12-01"
 lastmod: ""
 tags: []
 title: 'Eino ADK MultiAgent: Plan-Execute Agent'
@@ -11,15 +11,13 @@ weight: 3
 
 ### Import Path
 
-```
-import github.com/cloudwego/eino/adk/prebuilt/planexecute
-```
+`import ``github.com/cloudwego/eino/adk/prebuilt``/planexecute`
 
 ### 什么是 Plan-Execute Agent？
 
 Plan-Execute Agent 是 Eino ADK 中一种基于「规划-执行-反思」范式的多智能体协作框架，旨在解决复杂任务的分步拆解、执行与动态调整问题。它通过 **Planner（规划器）**、**Executor（执行器）**和 **Replanner（重规划器）** 三个核心智能体的协同工作，实现任务的结构化规划、工具调用执行、进度评估与动态 replanning，最终达成用户目标。
 
-<a href="/img/eino/T0StwIywMhjI4HbwCOcc847jn3e.png" target="_blank"><img src="/img/eino/T0StwIywMhjI4HbwCOcc847jn3e.png" width="60%" /></a>
+<a href="/img/eino/eino_adk_plan_execute_steps.png" target="_blank"><img src="/img/eino/eino_adk_plan_execute_steps.png" width="100%" /></a>
 
 Plan-Execute Agent 适用于需要多步骤推理、工具集成或动态调整策略的场景（如研究分析、复杂问题解决、自动化工作流等），其核心优势在于：
 
@@ -30,13 +28,15 @@ Plan-Execute Agent 适用于需要多步骤推理、工具集成或动态调整�
 
 ### Plan-Execute Agent 结构
 
-Plan-Execute Agent 由三个核心智能体与一个协调器构成，各组件职责如下：
+Plan-Execute Agent 由三个核心智能体与一个协调器构成，基于 ADK 中提供的 ChatModelAgent 和 WorkflowAgents 能力共同完成构建：
+
+<a href="/img/eino/eino_adk_plan_execute_replan_architecture_overview.png" target="_blank"><img src="/img/eino/eino_adk_plan_execute_replan_architecture_overview.png" width="100%" /></a>
 
 #### 1. Planner
 
 - **核心功能**：根据用户目标生成初始任务计划（结构化步骤序列）
 - **实现方式**：
-  - 基于工具调用模型（如 GPT-4），通过 `PlanTool` 生成符合 JSON Schema 的步骤列表
+  - 使用支持工具调用的模型（如 GPT-4），通过 `PlanTool` 生成符合 JSON Schema 的步骤列表
   - 或直接使用支持结构化输出的模型，直接生成 `Plan` 格式结果
 - **输出**：`Plan` 对象（包含有序步骤列表），存储于 Session 中供后续流程使用
 
@@ -143,7 +143,6 @@ type ReplannerConfig struct {
   - 内层 `LoopAgent`：循环执行 `Executor` 和 `Replanner`，直至任务完成或达到最大迭代次数
 
 ```go
-// github.com/cloudwego/eino/adk/prebuilt/planexecute
 // New creates a new plan execute agent with the given configuration.
 func New(ctx context.Context, cfg *PlanExecuteConfig) (adk.Agent, error)
 
@@ -176,6 +175,7 @@ Plan-Execute Agent 的完整工作流程如下：
 ### 场景说明
 
 实现一个「调研」Agent：
+
 1. **Planner**：为调研目标规划详细步骤
 2. **Executor**：执行计划中的首个步骤，必要时使用搜索工具（duckduckgo）
 3. **Replanner**：评估执行结果，若信息不足则调整计划，否则生成最终总结
@@ -275,7 +275,7 @@ func newPlanExecuteAgent(ctx context.Context) adk.Agent {
     replanner := newReplanner(ctx, model)
 
     // 组合为 PlanExecuteAgent（固定 execute - replan 最大迭代 10 次）
-    planExecuteAgent, err := planexecute.New(ctx, &planexecute.Config{
+    planExecuteAgent, err := planexecute.NewPlanExecuteAgent(ctx, &planexecute.PlanExecuteConfig{
        Planner:       planner,
        Executor:      executor,
        Replanner:     replanner,
@@ -332,7 +332,7 @@ func main() {
        }
        // 打印智能体输出（计划、执行结果、最终响应等）
        if msg, err := event.Output.MessageOutput.GetMessage(); err == nil && msg.Content != "" {
-          // code...
+          log.Printf("\n=== Agent Output ===\n%s\n", msg.Content)
        }
     }
 }
@@ -486,3 +486,25 @@ Plan-Execute Agent 通过「规划-执行-反思」的闭环工作流，将复�
 - **动态适应性**：根据执行反馈实时调整策略，应对不确定性
 
 通过 Eino ADK 提供的 `PlanExecuteAgent`，开发者可快速搭建具备复杂任务处理能力的智能体系统，适用于研究分析、自动化办公、智能客服等多种场景。
+
+## 常见问题
+
+### 报错 [NodeRunError] no tool call
+
+Planner / Replanner 必须通过工具调用生成计划，出现此报错时请检查：
+
+1. 所使用的模型是否支持强制工具调用（例如 openai tool_choice="required")
+2. 所使用的模型 eino-ext 封装是否升级到最新（例如旧版本 ark sdk 不支持强制工具调用）
+
+### 报错 [NodeRunError] unexpected tool call
+
+Replanner 注册的 ChatModel 不应该通过 WithTools 方法携带额外工具，如有该情况请清空工具
+
+### 报错 [NodeRunError] unmarshal plan error
+
+Planner / Replanner config 中基于 PlanTool 和 NewPlan 两个字段共同生成计划：
+
+- PlanTool 作为向模型提供的 Plan 描述
+- NewPlan 方法作为框架构建 plan 的 builder，用于将模型返回的 Plan unmarshal 到该 struct 上供后续步骤运行
+
+当出现该错误时，请检查 PlanTool 中提供的字段描述是否和 NewPlan 方法中返回的结构体字段匹配，对齐后重新运行即可。

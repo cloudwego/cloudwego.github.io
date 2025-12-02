@@ -2,9 +2,77 @@
 {{ if .enable }}
 (function($) {
     var needMermaid = false;
-    $('.language-mermaid').parent().replaceWith(function() {
+    function preprocessMermaid(text) {
+        var fm = text.match(/^\s*---\s*\n([\s\S]*?)\n---\s*\n?/);
+        var directive = '';
+        var body = text;
+        if (fm) {
+            var yaml = fm[1];
+            var obj = {};
+            var current = null;
+            yaml.split('\n').forEach(function(line) {
+                var l = line.trim();
+                if (!l) return;
+                if (/^[\w-]+\s*:\s*$/.test(l)) {
+                    current = l.replace(/:\s*$/, '').trim();
+                    obj[current] = obj[current] || {};
+                    return;
+                }
+                var m = l.match(/^(\w[\w-]*)\s*:\s*(.*)$/);
+                if (m) {
+                    var k = m[1];
+                    var v = m[2].trim();
+                    v = v.replace(/^['"]|['"]$/g, '');
+                    if (current) {
+                        obj[current][k] = v;
+                    } else {
+                        obj[k] = v;
+                    }
+                }
+            });
+            var cfg = obj.config || obj;
+            directive = '%%{init: ' + JSON.stringify(cfg) + '}%%\n';
+            body = text.replace(fm[0], '');
+        }
+        body = body.replace(/<br\s*\/?>(?![^`]*`)/gi, '\\n');
+        body = body.split('\n').map(function(line) {
+            var m = line.match(/^\s*([A-Za-z0-9_]+)\s*@\{\s*([^}]*)\s*\}\s*$/);
+            if (m) {
+                var id = m[1];
+                var props = m[2];
+                var lm = props.match(/label\s*:\s*("[^"]*"|'[^']*'|[^,]+)/);
+                var label = lm ? lm[1].replace(/^['"]|['"]$/g, '') : id;
+                return id + '["' + label + '"]';
+            }
+            return line;
+        }).join('\n');
+        return directive + body;
+    }
+
+    function isMermaidLike(text) {
+        var t = text.trim();
+        return /^%%\{init:/.test(t) || /^---\s*/.test(t) || /^(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|gantt|pie)\b/.test(t);
+    }
+
+    var toReplace = [];
+    $('pre > code.language-mermaid').each(function() { toReplace.push($(this)); });
+    $('pre > code').each(function() {
+        var $c = $(this);
+        if ($c.hasClass('language-mermaid')) return;
+        if (isMermaidLike($c.text())) toReplace.push($c);
+    });
+
+    toReplace.forEach(function($code) {
         needMermaid = true;
-        return $('<pre class="mermaid">').text($(this).text());
+        var raw = $code.text();
+        var processed = preprocessMermaid(raw);
+        var $wrapper = $code.closest('div[class*=language-]');
+        var $new = $('<pre class="mermaid">').text(processed);
+        if ($wrapper.length) {
+            $wrapper.replaceWith($new);
+        } else {
+            $code.parent().replaceWith($new);
+        }
     });
 
     if (!needMermaid)  {

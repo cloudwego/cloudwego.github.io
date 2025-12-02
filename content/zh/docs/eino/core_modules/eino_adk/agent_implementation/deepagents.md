@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-14"
+date: "2025-12-01"
 lastmod: ""
 tags: []
 title: 'Eino ADK MultiAgent: DeepAgents'
@@ -27,7 +27,7 @@ agent, err := deep.New(ctx, &deep.Config{})
 
 DeepAgents 是一种多智能体（Multi-Agent）架构，其核心思想在于通过一个主代理（MainAgent）来协调、规划和委派任务。主代理本身不直接执行所有操作，而是利用其内置的大模型和一系列工具来与外部世界交互或将复杂任务分解给专门的子代理（SubAgents）。
 
-<a href="/img/eino/JcXAbPMIjodRxPxfBEtcEztQnrb.png" target="_blank"><img src="/img/eino/JcXAbPMIjodRxPxfBEtcEztQnrb.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_deep_agent_definition.png" target="_blank"><img src="/img/eino/eino_adk_deep_agent_definition.png" width="100%" /></a>
 
 上图展示了 DeepAgents 的核心组件与它们之间的调用关系：
 
@@ -45,7 +45,7 @@ DeepAgents 是一种多智能体（Multi-Agent）架构，其核心思想在于�
 
 WriteTodos 的 Description 描述了任务拆解、规划的原则，主 Agent 通过调用 WriteTodos 工具，在上下文中添加子任务列表来启发后续推理、执行过程：
 
-<a href="/img/eino/H04SbFvATod8oRx3VVXcxhhRnKf.png" target="_blank"><img src="/img/eino/H04SbFvATod8oRx3VVXcxhhRnKf.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_write_todos.png" target="_blank"><img src="/img/eino/eino_adk_write_todos.png" width="100%" /></a>
 
 1. 模型接收用户输入。
 2. 模型调用 WriteTodos 工具，参数为依照 WriteTodos Description 产生的任务列表。这次工具调用被添加到上下文中，供后续参考。
@@ -101,14 +101,14 @@ Excel Agent 是一个“看得懂 Excel 的智能助手”，它先把问题拆�
 
 用 DeepAgents 搭建的 Excel Agent 结构如下：
 
-<a href="/img/eino/NkWDbNKykog8nQxmGu3crnzsnkB.png" target="_blank"><img src="/img/eino/NkWDbNKykog8nQxmGu3crnzsnkB.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_excel_using_deep.png" target="_blank"><img src="/img/eino/eino_adk_excel_using_deep.png" width="100%" /></a>
 
 1. 在主 Agent 添加 ReadFile 工具，允许主 Agent 查看文件内容，辅助子任务制定
 2. 添加 Code 和 WebSearch 两个子 Agent：Code 可以编写 python 代码来操作 excel 表格；WebSearch 可以搜索信息并总结。
 
 ### 代码实现
 
-https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/deep
+[https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/deep](https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/deep)
 
 ### 运行结果
 
@@ -153,5 +153,6 @@ answer: 已成功将 `questions.csv` 表格中的第一列数据提取至新文�
 4b131973/first_column.csv`
 
 操作过程中已处理路径拼接和异常捕获（如文件不存在、格式错误等问题），确保数据
-提取完整性和文件生成稳定性。若需要调整文件路径或对数据格式有进一步要求，请随时告知。
+提取完整性和文件生成稳定性。若需要调整文件路径或对数据格式有进一步要求，请随时告知
+。
 ```

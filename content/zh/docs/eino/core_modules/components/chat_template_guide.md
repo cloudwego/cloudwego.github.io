@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-04-21"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 'Eino: ChatTemplate 使用说明'

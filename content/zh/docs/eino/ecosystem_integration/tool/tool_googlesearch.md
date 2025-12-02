@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-20"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: Tool - Googlesearch
@@ -30,6 +30,8 @@ tool, err := googlesearch.NewTool(ctx, &googlesearch.Config{
     ToolDesc:       "google search tool",  // 可选：工具描述
 })
 ```
+
+注：Google Search 的 APIKey、SearchEngineID，请到 Google 搜索引擎官网申请：[https://programmablesearchengine.google.com/controlpanel/all](https://programmablesearchengine.google.com/controlpanel/all)
 
 ### **搜索参数**
 
@@ -82,7 +84,7 @@ func main() {
 
     // prepare params
     req := googlesearch.SearchRequest{
-        Query: "Go concurrent programming",
+        Query: "Golang concurrent programming",
         Num:   3,
         Lang:  "en",
     }
@@ -123,7 +125,7 @@ func main() {
     // 2. Title: Concurrency — An Introduction to Programming in Go | Go Resources
     //    Link: https://www.golang-book.com/books/intro/10
     //    Desc:
-    // 3. Title: The Comprehensive Guide to Concurrency in Go | by Brandon ...
+    // 3. Title: The Comprehensive Guide to Concurrency in Golang | by Brandon ...
     //    Link: https://bwoff.medium.com/the-comprehensive-guide-to-concurrency-in-golang-aaa99f8bccf6
     //    Desc: Update (November 20, 2023) — This article has undergone a comprehensive revision for enhanced clarity and conciseness. I’ve streamlined the…
 
@@ -135,7 +137,7 @@ func main() {
 
 ```json
 {
-    "query": "Go concurrent programming",
+    "query": "Golang concurrent programming",
     "items": [
         {
             "link": "https://example.com/article1",

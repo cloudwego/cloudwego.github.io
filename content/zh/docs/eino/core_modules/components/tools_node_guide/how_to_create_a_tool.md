@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-04-09"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 如何创建一个 tool ?
-weight: 0
+weight: 1
 ---
 
 ## Tool 的基本结构

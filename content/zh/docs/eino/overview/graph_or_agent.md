@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-25"
+date: "2025-12-02"
 lastmod: ""
 tags: []
 title: Agent 还是 Graph？AI 应用路线辨析
@@ -18,7 +18,41 @@ weight: 5
 - 以“聊天框”为代表性标志的“Agent（智能体）”。**Agent 以 LLM（大语言模型）为决策中心，自主规划并能进行多轮交互**，天然适合处理开放式、持续性的任务，表现为一种“对话”形态。
 - 以“按钮”或者“API”为代表性标志的“Graph（流程图）”。比如上面的“录音纪要”这个“按钮”，其背后的 Graph 大概是“录音”-》“LLM 理解并总结” -》“保存录音”这种固定流程。**Graph 的核心在于其流程的确定性与任务的封闭性**，通过预定义的节点和边来完成特定目标，表现为一种“功能”形态。
 
-<a href="/img/eino/eino_ai_app_form_mermaid.png" target="_blank"><img src="/img/eino/eino_ai_app_form_mermaid.png" width="100%" /></a>
+```mermaid
+---
+config:
+  theme: 'neutral'
+---
+
+flowchart TD
+  linkStyle default stroke-width:2px,stroke:#000000
+
+  classDef startend_style fill:#EAE2FE,stroke:#000000,stroke-width:2px,color:#1f2329
+  classDef process_style fill:#F0F4FC,stroke:#000000,stroke-width:2px,color:#1f2329
+  classDef decision_style fill:#FEF1CE,stroke:#000000,stroke-width:2px,color:#1f2329
+  classDef subgraph_style fill:#f5f5f5,stroke:#bbbfc4,stroke-width:1px,color:#000000
+
+  S(["AI 应用形态"]) 
+  D{"任务特征"}
+  A("Agent")
+  G("Graph")
+  A1("LLM 决策中心")
+  A2("多轮交互")
+  G1("预设拓扑结构")
+  G2("确定性输出")
+
+  S --> D
+  D -->|"开放式或不确定"| A
+  D -->|"封闭且确定"| G
+  A --> A1
+  A --> A2
+  G --> G1
+  G --> G2
+
+  class S startend_style
+  class D decision_style
+  class A,G,A1,A2,G1,G2 process_style
+```
 
 本文详细探讨了 Agent 和 Graph 两种 AI 应用形态的区别和联系，提出“两者的最佳结合点，在于将 Graph 封装为 Agent 的 Tool（工具）”，并为 [Eino](https://github.com/cloudwego/eino) 开发者给出建议的使用姿势。
 
@@ -44,13 +78,49 @@ weight: 5
 
 总结：Agent 可认为是自主的，整体由 LLM 驱动，以 Tool Call 的形式使用外部能力。Graph 是确定性的，以明确拓扑结构串联外部能力，同时在局部利用 LLM 做决策/生成等。
 
-<a href="/img/eino/eino_ai_app_concept.png" target="_blank"><img src="/img/eino/eino_ai_app_concept.png" width="100%" /></a>
+```mermaid
+flowchart TD
+    subgraph AIApp["AI 应用"]
+        Agent["Agent (自主性)"]
+        Graph["Graph (确定性)"]
+    end
+
+    subgraph CoreDrive["智能来源"]
+        LLM["LLM (决策/生成)"]
+    end
+
+    subgraph ExternalCap["外部能力"]
+        Tool["External Capacity<br>(函数/API)"]
+    end
+
+    Agent -- "驱动力来源" --> LLM
+    Graph -- "包含节点" --> LLM
+    Agent -- "工具调用" --> Tool
+    Graph -- "包含节点" --> Tool
+
+    classDef agent fill:#EAE2FE,stroke:#000000
+    classDef graphClass fill:#F0F4FC,stroke:#000000
+    classDef llm fill:#FEF1CE,stroke:#000000
+    classDef tool fill:#DFF5E5,stroke:#000000
+
+    class Agent agent
+    class Graph graphClass
+    class LLM llm
+    class Tool tool
+```
 
 ## 历史视角：从确定性走向自主性
 
 当 Langchain 框架在 2022 年首次发布时，LLM 世界的 API 范式还是 OpenAI 的 [Completions API](https://platform.openai.com/docs/guides/completions)，一个简单的“文本进，文本出”的 API。发布之初，Langchain 的口号是“[connect LLMs to external sources of computation and data](https://blog.langchain.com/langchain-second-birthday/)”。典型的“Chain”可能是这样的：
 
-<a href="/img/eino/eino_ai_app_chain.png" target="_blank"><img src="/img/eino/eino_ai_app_chain.png" width="100%" /></a>
+```mermaid
+flowchart LR
+  S[retrievers, loaders, <br>prompt templates, etc...]
+  L[LLM]
+  P[output parsers, other handlers, etc...]
+
+  S-->L-->P
+```
 
 随后，[ReAct](https://react-lm.github.io/)（Reasoning and Acting）范式的提出，首次系统性地展示了如何让 LLM 不仅生成文本，更能通过“思考-行动-观察”的循环来与外部交互，解决复杂问题。这一突破为 Agent 的自主规划能力奠定了理论基础。近乎同时，OpenAI 推出了 [ChatCompletions API](https://platform.openai.com/docs/api-reference/chat)，推动了 LLM 交互能力从“单次的文本输入输出”向“多轮对话”转变。之后 [Function Calling](https://platform.openai.com/docs/guides/function-calling)（函数调用） 能力出现，LLM 具备了标准的与外部函数和 API 交互的能力。至此，我们已经可以搭建出“多轮对话并与可以与外界自主交互”的 LLM 应用场景，即 Agent。在这个背景下，AI 应用框架产生了两个重要发展：
 
@@ -61,11 +131,34 @@ weight: 5
 
 - 交付物的不匹配：编排出的 ReAct Agent 的输出是“最终结果”，而实际应用往往关注各种中间过程。用 Callback 等方案可以解决，足够完备，但依然属于“补丁”。
 
-<a href="/img/eino/eino_ai_app_deliverable.png" target="_blank"><img src="/img/eino/eino_ai_app_deliverable.png" width="100%" /></a>
+```mermaid
+flowchart LR
+  A[ReAct Agent]
+  P@{ shape: processes, label: "全过程数据" }
+  A--o|关注|P
+
+  G[Graph]
+  F[最终结果]
+  G-->|主流程输出，<br>但被旁路输出涵盖|F
+
+  G-.->|旁路抽取|P
+```
 
 - 运行模式的不匹配：由于是同步运行，所以“为了尽快把 LLM 的回复展示给用户”，要求 ReAct Agent 编排内的各节点都尽量“快”，这主要是“在判断 LLM 的输出是否包含 ToolCall”的分支判断逻辑中，要尽可能根据第一个包或者前几个包完成判断。这个分支判断逻辑可以自定义，比如“读流式输出直到看到 Content，才判断为没有 ToolCall”，但有时并不能完全解决问题，只能通过 Callback 这样的“旁路”手动切换“同步”为“异步”。
 
-<a href="/img/eino/eino_ai_app_run_form.png" target="_blank"><img src="/img/eino/eino_ai_app_run_form.png" width="100%" /></a>
+```mermaid
+flowchart LR
+  L[LLM 节点]
+  S@{ shape: processes, label: "流式内容"}
+  L-->|生成|S
+
+  B{是否包含<br>工具调用}
+  D@{ shape: processes, label: "流式内容"}
+
+  B-->|否,上屏展示|D
+
+  S-->|逐帧判断|B
+```
 
 这些痛点源于两者本质的差异。一个为确定性流程（Graph）设计的框架，很难原生支持一个以动态“思考链”为核心的自主系统（Agent）。
 
@@ -87,15 +180,44 @@ Eino 框架的目标是同时支持 Graph 和 Agent 两种场景。我们的演�
 
 - 层级调用（Agent as Tool）：这是最常见的模式（参考 Google ADK 的[定义](https://google.github.io/adk-docs/agents/multi-agents/#c-explicit-invocation-agenttool)和[举例](https://google.github.io/adk-docs/agents/multi-agents/#hierarchical-task-decomposition)）。一个上层 Agent 将特定子任务委托给专门的“Tool Agent”。例如，一个主 Agent 负责与用户交互，当需要执行代码时，它会调用一个“代码执行 Agent”。在这种模式下，子 Agent 通常是无状态的，不与主 Agent 共享记忆，其交互是一个简单的 Function Call。上层 Agent 和子 Agent 只有一种关系：调用与被调用。因此，我们可以得出，Agent as Tool 的 Multi-Agent 模式，不是“Graph 编排”中的“节点流转”关系。
 
-<a href="/img/eino/eino_ai_app_agent_as_tool.png" target="_blank"><img src="/img/eino/eino_ai_app_agent_as_tool.png" width="100%" /></a>
+```mermaid
+flowchart LR
+  subgraph 主 Agent
+    L[主 Agent 的 LLM]
+    T1[子 Agent 1]
+    T2[子 Agent 2]
+
+    L-->|工具调用|T1
+    L-->|工具调用|T2
+  end
+```
 
 - 预设流程：对于一些成熟的协作模式，如“规划-执行-反思”（Plan-Execute-Replan）（参考 Langchain 的[样例](https://langchain-ai.github.io/langgraph/tutorials/plan-and-execute/plan-and-execute/)），Agent 间的交互顺序和角色是固定的。框架（如 Eino adk）可以将这些模式封装为“预制 Multi-Agent 模式”，开发者可以直接使用，无需关心内部的细节，也不需要手动设置或调整子 Agent 之间的流程关系。因此，我们可以得出，针对成熟的协作模式，“Graph 编排”是封装在预制模式内部的实现细节，开发者不感知。
 
-<a href="/img/eino/eino_ai_app_prebuilt.png" target="_blank"><img src="/img/eino/eino_ai_app_prebuilt.png" width="100%" /></a>
+```mermaid
+flowchart LR
+  subgraph Plan-Execute-Replan
+    P[planner]
+    E[executor]
+    R[Replanner]
+    P-->E
+    E-->R
+    R-->E
+  end
+
+  user -->|整体使用| Plan-Execute-Replan
+```
 
 - 动态协作：在更复杂的场景中，Agent 的协作方式是动态的（参考 Google ADK 的[定义](https://google.github.io/adk-docs/agents/multi-agents/#b-llm-driven-delegation-agent-transfer)和[举例](https://google.github.io/adk-docs/agents/multi-agents/#coordinatordispatcher-pattern)），可能涉及竞价、投票或由一个“协调者 Agent”在运行时决定。这种模式下，Agent 之间的关系是“Agent 流转”，与“Graph 编排”中的“节点流转”有相似之处，都是“控制权”由 A 到 B 的完全转交。但是，这里的“Agent 流转”可以是完全动态的，其动态特性不仅体现在“可以流转到哪些 Agent”，更体现在“如何做出流转到哪个 Agent 的决策”上，都不是由开发者预设的，而是 LLM 的实时动态行为。这与“Graph 编排”的静态确定性形成了鲜明的对比。因此，我们可以得出，动态协作的 Multi-Agent 模式，从本质上与“Graph 编排”完全不同，更适合在 Agent 框架层面给出独立的解决方案。
 
-<a href="/img/eino/eino_ai_app_transfer.png" target="_blank"><img src="/img/eino/eino_ai_app_transfer.png" width="100%" /></a>
+```mermaid
+flowchart LR
+  A[Agent 1]
+  B[Agent 2]
+  C[Agent 3]
+
+  A-.->|动态转交|B-.->|动态转交|C
+```
 
 综上所述，Multi-Agent 的协作问题，或可通过“Agent as Tool”模式降维解决，或可由框架提供固化模式，或是本质上完全动态的协作，其对“编排”的需求与 Graph 的静态的、确定性的流程编排有着本质区别。
 
@@ -108,7 +230,17 @@ Eino 框架的目标是同时支持 Graph 和 Agent 两种场景。我们的演�
 - Agent 的输入来源更为多样，除了能接收来自上游节点的结构化数据外，还严重依赖于自身的会话历史（Memory）。这与 Graph 节点严格依赖其上游输出作为唯一输入的特性形成了鲜明对比。
 - Agent 的输出是异步的全过程数据。这意味着其他节点很难使用“Agent 节点”的输出。
 
-<a href="/img/eino/eino_ai_app_agent_node.png" target="_blank"><img src="/img/eino/eino_ai_app_agent_node.png" width="100%" /></a>
+```mermaid
+flowchart LR
+  U[前置节点]
+  A[Agent 节点]
+  D[后置节点]
+  M[Memory]
+
+  U-->|不是全部输入<br>|A
+  M-.->|外部状态注入|A
+  A-->|全过程数据<br>面向用户或 LLM<br>|D
+```
 
 因此，向 Graph 中加入 Agent 节点，意味着将一个需要多轮交互、长时记忆和异步输出的 Agent 强行嵌入到一个确定性的、同步执行的 Graph 节点中，这通常是不优雅的。Agent 的启动可以被 Graph 编排，但其内部的复杂交互不应阻塞主流程。
 
@@ -126,7 +258,7 @@ Eino 框架的目标是同时支持 Graph 和 Agent 两种场景。我们的演�
 <tr><td>特征维度</td><td>Graph</td><td>Tool</td></tr>
 <tr><td>输入</td><td><strong>结构化的数据</strong></td><td><strong>结构化的数据</strong></td></tr>
 <tr><td>交付物</td><td><strong>聚焦最终结果</strong></td><td><strong>聚焦最终结果</strong></td></tr>
-<tr><td>状态管理</td><td><strong>单次执行、stateless</strong></td><td><strong>单次执行、stateless。</strong></td></tr>
+<tr><td>状态管理</td><td><strong>单次执行、stateless</strong></td><td><strong>单次执行、stateless</strong></td></tr>
 <tr><td>运行模式</td><td><strong>整体是同步</strong></td><td> <strong>LLM 的视角 Tool 是同步的</strong></td></tr>
 </table>
 
@@ -134,7 +266,35 @@ Eino 框架的目标是同时支持 Graph 和 Agent 两种场景。我们的演�
 
 “Agent”与“Graph”的“路线之争”，实现了对立统一。
 
-<a href="/img/eino/eino_ai_app_graph_tool.png" target="_blank"><img src="/img/eino/eino_ai_app_graph_tool.png" width="100%" /></a>
+```mermaid
+flowchart TD
+    subgraph Agent ["Agent"]
+        A["LLM 决策"] --> B{"调用工具?"}
+        B -- "是" --> C["Tool: my_graph_tool"]
+    end
+
+    subgraph Tool ["Tool"]
+        C -- "封装" --> D["Graph: my_graph"]
+    end
+
+    subgraph Graph ["Graph"]
+        D -- "执行" --> E["节点1"]
+        E --> F["节点2"]
+        F --> G["返回结果"]
+    end
+
+    G -- "输出" --> C
+    C -- "结果" --> A
+
+    classDef agent fill:#EAE2FE,stroke:#000000
+    classDef tool fill:#DFF5E5,stroke:#000000
+    classDef graphGroup fill:#F0F4FC,stroke:#000000
+    class A,B agent
+    class C tool
+    class D,E,F,G graphGroup
+```
+
+Graph-Tool-Agent 关系图
 
 ## 结论
 
@@ -145,7 +305,7 @@ Agent 与 Graph 并非路线之争，而是能力互补的两种 AI 应用范式
 
 两者的最佳结合点，在于将 Graph 封装为 Agent 的 Tool。
 
-通过这种方式，我们可以充分利用 Graph 在流程编排和生态集成上的强大能力，来扩展 Agent 的 Tool 列表一个复杂的 Graph 应用（如一套完整的 RAG 流程、一个数据分析管道）可以被简化成 Agent 的一个原子能力，被其在合适的时机动态调用。
+通过这种方式，我们可以充分利用 Graph 在流程编排和生态集成上的强大能力，来扩展 Agent 的 Tool 列表。一个复杂的 Graph 应用（如一套完整的 RAG 流程、一个数据分析管道）可以被简化成 Agent 的一个原子能力，被其在合适的时机动态调用。
 
 对于 Eino 的开发者而言，这意味着：
 

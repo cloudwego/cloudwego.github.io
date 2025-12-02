@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-03-18"
+date: "2025-12-01"
 lastmod: ""
 tags: []
 title: 'Eino: Callback 用户手册'
-weight: 4
+weight: 5
 ---
 
 ## 解决的问题
@@ -94,7 +94,7 @@ type RunInfo struct {
   - 有接口的 Component：是啥接口，就是啥
   - Lambda：固定值 Lambda
   - Graph Node: 用内部的 Component/Lambda/Graph 的值。
-  - Graph 自身：固定值 Graph / Chain. （之前曾有 StateGraph / StateChain ，现已整合到 Graph / Chain 中）
+  - Graph 自身：固定值 Graph / Chain / Workflow. （之前曾有 StateGraph / StateChain ，现已整合到 Graph / Chain 中）
 
 ### Callback Input & Output
 
