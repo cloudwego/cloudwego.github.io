@@ -1,33 +1,33 @@
 ---
 Description: ""
-date: "2025-10-22"
+date: "2025-12-02"
 lastmod: ""
 tags: []
 title: ChatModel - claude
 weight: 0
 ---
 
-A Claude model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
+一个为 [Eino](https://github.com/cloudwego/eino) 实现的 Claude 模型，它实现了 `ToolCallingChatModel` 接口。这使得能够与 Eino 的 LLM 功能无缝集成，以增强自然语言处理和生成能力。
 
-## Features
+## 特性
 
-- Implements `github.com/cloudwego/eino/components/model.Model`
-- Easy integration with Eino's model system
-- Configurable model parameters
-- Support for chat completion
-- Support for streaming responses
-- Custom response parsing support
-- Flexible model configuration
+- 实现了 `github.com/cloudwego/eino/components/model.Model`
+- 轻松与 Eino 的模型系统集成
+- 可配置的模型参数
+- 支持聊天补全
+- 支持流式响应
+- 支持自定义响应解析
+- 灵活的模型配置
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/claude@latest
 ```
 
-## Quick Start
+## 快速开始
 
-Here's a quick example of how to use the Claude model:
+以下是如何使用 Claude 模型的快速示例：
 
 ```go
 package main
@@ -104,12 +104,11 @@ func main() {
 			resp.ResponseMeta.Usage.TotalTokens)
 	}
 }
-
 ```
 
-## Configuration
+## 配置
 
-The model can be configured using the `claude.ChatModelConfig` struct:
+可以使用 `claude.ChatModelConfig` 结构体配置模型：
 
 ```go
 type Config struct {
@@ -190,16 +189,11 @@ type Config struct {
 }
 ```
 
+## 示例
 
-
-
-
-## examples
-
-### generate
+### 文本生成
 
 ```go
-
 package main
 
 import (
@@ -274,13 +268,11 @@ func main() {
 			resp.ResponseMeta.Usage.TotalTokens)
 	}
 }
-
 ```
 
-### generate_with_image
+### 多模态支持(图片理解)
 
 ```go
-
 package main
 
 import (
@@ -360,13 +352,11 @@ func main() {
 func of[T any](v T) *T {
 	return &v
 }
-
 ```
 
-### stream
+### 流式生成
 
 ```go
-
 package main
 
 import (
@@ -461,13 +451,136 @@ func main() {
 	}
 	fmt.Println("\n----------")
 }
-
 ```
 
-### claude_prompt_cache
+### 工具调用
 
 ```go
+package main
 
+import (
+	"context"
+	"fmt"
+
+	"io"
+	"log"
+	"os"
+
+	"github.com/cloudwego/eino-ext/components/model/claude"
+	"github.com/cloudwego/eino/schema"
+	"github.com/eino-contrib/jsonschema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
+)
+
+func main() {
+	ctx := context.Background()
+	apiKey := os.Getenv("CLAUDE_API_KEY")
+	modelName := os.Getenv("CLAUDE_MODEL")
+	baseURL := os.Getenv("CLAUDE_BASE_URL")
+	if apiKey == "" {
+		log.Fatal("CLAUDE_API_KEY environment variable is not set")
+	}
+
+	var baseURLPtr *string = nil
+	if len(baseURL) > 0 {
+		baseURLPtr = &baseURL
+	}
+
+	// Create a Claude model
+	cm, err := claude.NewChatModel(ctx, &claude.Config{
+		// if you want to use Aws Bedrock Service, set these four field.
+		// ByBedrock:       true,
+		// AccessKey:       "",
+		// SecretAccessKey: "",
+		// Region:          "us-west-2",
+		APIKey: apiKey,
+		// Model:     "claude-3-5-sonnet-20240620",
+		BaseURL:   baseURLPtr,
+		Model:     modelName,
+		MaxTokens: 3000,
+	})
+	if err != nil {
+		log.Fatalf("NewChatModel of claude failed, err=%v", err)
+	}
+
+	_, err = cm.WithTools([]*schema.ToolInfo{
+		{
+			Name: "get_weather",
+			Desc: "Get current weather information for a city",
+			ParamsOneOf: schema.NewParamsOneOfByJSONSchema(&jsonschema.Schema{
+				Type: "object",
+				Properties: orderedmap.New[string, *jsonschema.Schema](orderedmap.WithInitialData[string, *jsonschema.Schema](
+					orderedmap.Pair[string, *jsonschema.Schema]{
+						Key: "city",
+						Value: &jsonschema.Schema{
+							Type:        "string",
+							Description: "The city name",
+						},
+					},
+					orderedmap.Pair[string, *jsonschema.Schema]{
+						Key: "unit",
+						Value: &jsonschema.Schema{
+							Type: "string",
+							Enum: []interface{}{"celsius", "fahrenheit"},
+						},
+					},
+				)),
+				Required: []string{"city"},
+			}),
+		},
+	})
+	if err != nil {
+		log.Printf("Bind tools error: %v", err)
+		return
+	}
+
+	streamResp, err := cm.Stream(ctx, []*schema.Message{
+		schema.SystemMessage("You are a helpful AI assistant. Be concise in your responses."),
+		schema.UserMessage("call 'get_weather' to query what's the weather like in Paris today? Please use Celsius."),
+	})
+	if err != nil {
+		log.Printf("Generate error: %v", err)
+		return
+	}
+
+	msgs := make([]*schema.Message, 0)
+	for {
+		msg, err := streamResp.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Stream receive error: %v", err)
+		}
+		msgs = append(msgs, msg)
+	}
+	resp, err := schema.ConcatMessages(msgs)
+	if err != nil {
+		log.Fatalf("Concat error: %v", err)
+	}
+
+	fmt.Printf("assistant content:\n  %v\n----------\n", resp.Content)
+	if len(resp.ToolCalls) > 0 {
+		fmt.Printf("Function called: %s\n", resp.ToolCalls[0].Function.Name)
+		fmt.Printf("Arguments: %s\n", resp.ToolCalls[0].Function.Arguments)
+
+		weatherResp, err := cm.Generate(ctx, []*schema.Message{
+			schema.UserMessage("What's the weather like in Paris today? Please use Celsius."),
+			resp,
+			schema.ToolMessage(`{"temperature": 18, "condition": "sunny"}`, resp.ToolCalls[0].ID),
+		})
+		if err != nil {
+			log.Printf("Generate error: %v", err)
+			return
+		}
+		fmt.Printf("Final response: %s\n", weatherResp.Content)
+	}
+}
+```
+
+### Claude 提示词缓存
+
+```go
 package main
 
 import (
@@ -739,136 +852,9 @@ func sessionCache() {
 
 ```
 
-### function_call
-
-```go
-
-package main
-
-import (
-	"context"
-	"fmt"
-
-	"io"
-	"log"
-	"os"
-
-	"github.com/cloudwego/eino-ext/components/model/claude"
-	"github.com/cloudwego/eino/schema"
-	"github.com/eino-contrib/jsonschema"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
-)
-
-func main() {
-	ctx := context.Background()
-	apiKey := os.Getenv("CLAUDE_API_KEY")
-	modelName := os.Getenv("CLAUDE_MODEL")
-	baseURL := os.Getenv("CLAUDE_BASE_URL")
-	if apiKey == "" {
-		log.Fatal("CLAUDE_API_KEY environment variable is not set")
-	}
-
-	var baseURLPtr *string = nil
-	if len(baseURL) > 0 {
-		baseURLPtr = &baseURL
-	}
-
-	// Create a Claude model
-	cm, err := claude.NewChatModel(ctx, &claude.Config{
-		// if you want to use Aws Bedrock Service, set these four field.
-		// ByBedrock:       true,
-		// AccessKey:       "",
-		// SecretAccessKey: "",
-		// Region:          "us-west-2",
-		APIKey: apiKey,
-		// Model:     "claude-3-5-sonnet-20240620",
-		BaseURL:   baseURLPtr,
-		Model:     modelName,
-		MaxTokens: 3000,
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel of claude failed, err=%v", err)
-	}
-
-	_, err = cm.WithTools([]*schema.ToolInfo{
-		{
-			Name: "get_weather",
-			Desc: "Get current weather information for a city",
-			ParamsOneOf: schema.NewParamsOneOfByJSONSchema(&jsonschema.Schema{
-				Type: "object",
-				Properties: orderedmap.New[string, *jsonschema.Schema](orderedmap.WithInitialData[string, *jsonschema.Schema](
-					orderedmap.Pair[string, *jsonschema.Schema]{
-						Key: "city",
-						Value: &jsonschema.Schema{
-							Type:        "string",
-							Description: "The city name",
-						},
-					},
-					orderedmap.Pair[string, *jsonschema.Schema]{
-						Key: "unit",
-						Value: &jsonschema.Schema{
-							Type: "string",
-							Enum: []interface{}{"celsius", "fahrenheit"},
-						},
-					},
-				)),
-				Required: []string{"city"},
-			}),
-		},
-	})
-	if err != nil {
-		log.Printf("Bind tools error: %v", err)
-		return
-	}
-
-	streamResp, err := cm.Stream(ctx, []*schema.Message{
-		schema.SystemMessage("You are a helpful AI assistant. Be concise in your responses."),
-		schema.UserMessage("call 'get_weather' to query what's the weather like in Paris today? Please use Celsius."),
-	})
-	if err != nil {
-		log.Printf("Generate error: %v", err)
-		return
-	}
-
-	msgs := make([]*schema.Message, 0)
-	for {
-		msg, err := streamResp.Recv()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Fatalf("Stream receive error: %v", err)
-		}
-		msgs = append(msgs, msg)
-	}
-	resp, err := schema.ConcatMessages(msgs)
-	if err != nil {
-		log.Fatalf("Concat error: %v", err)
-	}
-
-	fmt.Printf("assistant content:\n  %v\n----------\n", resp.Content)
-	if len(resp.ToolCalls) > 0 {
-		fmt.Printf("Function called: %s\n", resp.ToolCalls[0].Function.Name)
-		fmt.Printf("Arguments: %s\n", resp.ToolCalls[0].Function.Arguments)
-
-		weatherResp, err := cm.Generate(ctx, []*schema.Message{
-			schema.UserMessage("What's the weather like in Paris today? Please use Celsius."),
-			resp,
-			schema.ToolMessage(`{"temperature": 18, "condition": "sunny"}`, resp.ToolCalls[0].ID),
-		})
-		if err != nil {
-			log.Printf("Generate error: %v", err)
-			return
-		}
-		fmt.Printf("Final response: %s\n", weatherResp.Content)
-	}
-}
-
-```
 
 
-
-## For More Details
+## 更多信息
 
 - [Eino Documentation](https://www.cloudwego.io/zh/docs/eino/)
 - [Claude Documentation](https://docs.claude.com/en/api/messages)

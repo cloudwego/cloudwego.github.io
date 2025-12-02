@@ -1,30 +1,30 @@
 ---
 Description: ""
-date: "2025-10-22"
+date: "2025-12-02"
 lastmod: ""
 tags: []
 title: ChatModel - ark
 weight: 0
 ---
 
-A Volcengine Ark model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
+一个 [Eino](https://github.com/cloudwego/eino) 的 Volcengine Ark 模型实现，实现了 `ToolCallingChatModel` 接口。这使得与 Eino 的 LLM 功能无缝集成，以增强自然语言处理和生成能力。
 
-This package provides two distinct models:
-- **ChatModel**: For text-based and multi-modal chat completions.
-- **ImageGenerationModel**: For generating images from text prompts or image.
-- **ResponseAPI**: Contains methods and other services that help with interacting with the openai API.
+该软件包提供了两种不同的模型：
+- **ChatModel**：用于基于文本和多模态的聊天补全。
+- **ImageGenerationModel**：用于从文本提示或图像生成图像。
+- **ResponseAPI**：包含有助于与 openai API 交互的方法和其他服务。
 
-## Features
+## 特性
 
-- Implements `github.com/cloudwego/eino/components/model.Model`
-- Easy integration with Eino's model system
-- Configurable model parameters
-- Support for both chat completion, image generation and response api
-- Support for streaming responses
-- Custom response parsing support
-- Flexible model configuration
+- 实现了 `github.com/cloudwego/eino/components/model.Model`
+- 轻松与 Eino 的模型系统集成
+- 可配置的模型参数
+- 支持聊天补全、图像生成和响应 API
+- 支持流式响应
+- 支持自定义响应解析
+- 灵活的模型配置
 
-## Installation
+## 快速安装
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/ark@latest
@@ -32,13 +32,13 @@ go get github.com/cloudwego/eino-ext/components/model/ark@latest
 
 ---
 
-## Chat Completion
+## 聊天
 
-This model is used for standard chat and text generation tasks.
+该模型用于标准聊天和文本生成任务。
 
-### Quick Start
+### 快速开始
 
-Here's a quick example of how to use the `ChatModel`:
+以下是如何使用 `ChatModel` 的快速示例：
 
 ```go
 package main
@@ -81,9 +81,8 @@ func main() {
 	}
 
 	log.Printf("generate output: \n")
-	log.Printf("  request_id: %s\n")
 	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+	log.Printf("  body: %s \n", string(respBody))
 
 	sr, err := chatModel.Stream(ctx, inMsgs)
 	if err != nil {
@@ -109,15 +108,15 @@ func main() {
 	}
 
 	log.Printf("stream final output: \n")
-	log.Printf("  request_id: %s\n")
+	log.Printf("  request_id: %s \n")
 	respBody, _ = json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+	log.Printf("body: %s \n", string(respBody))
 }
 ```
 
-### Configuration
+### 配置
 
-The `ChatModel` can be configured using the `ark.ChatModelConfig` struct:
+`ChatModel` 可以使用 `ark.ChatModelConfig` 结构进行配置：
 
 ```go
 type ChatModelConfig struct {
@@ -189,25 +188,15 @@ type ChatModelConfig struct {
 }
 ```
 
-### Request Options
-
-The `ChatModel` supports various request options to customize the behavior of API calls. Here are the available options:
-
-```go
-// WithCustomHeader sets custom headers for a single request
-// the headers will override all the headers given in ChatModelConfig.CustomHeader
-func WithCustomHeader(m map[string]string) model.Option {}
-```
-
 ---
 
-## Image Generation
+## 图像生成
 
-This model is used specifically for generating images from text prompts.
+该模型专门用于从文本提示生成图像。
 
-### Quick Start
+### 快速开始
 
-Here's a quick example of how to use the `ImageGenerationModel`:
+以下是如何使用 `ImageGenerationModel` 的快速示例：
 
 ```go
 package main
@@ -247,16 +236,17 @@ func main() {
 		log.Fatalf("Generate failed, err=%v", err)
 	}
 
-	log.Printf("\ngenerate output: \n")
+	log.Printf("generate output:")
+	log.Printf("  request_id: %s", ark.GetArkRequestID(msg))
 	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+	log.Printf("  body: %s", string(respBody))
 
 	sr, err := imageGenerationModel.Stream(ctx, inMsgs)
 	if err != nil {
 		log.Fatalf("Stream failed, err=%v", err)
 	}
 
-	log.Printf("stream output: \n")
+	log.Printf("stream output:")
 	index := 0
 	for {
 		msgChunk, err := sr.Recv()
@@ -268,68 +258,92 @@ func main() {
 		}
 
 		respBody, _ = json.MarshalIndent(msgChunk, "  ", "  ")
-		log.Printf("stream chunk %d: body: %s\n", index, string(respBody))
+		log.Printf("stream chunk %d: body: %s \n", index, string(respBody))
 		index++
 	}
 }
 ```
 
-### Configuration
+### 配置
 
-The `ImageGenerationModel` can be configured using the `ark.ImageGenerationConfig` struct:
+`ImageGenerationModel` 可以使用 `ark.ImageGenerationConfig` 结构进行配置：
 
 ```go
+
 type ImageGenerationConfig struct {
-    // --- Authentication and basic connection settings ---
-    // (Timeout, HTTPClient, RetryTimes, BaseURL, Region, APIKey)
-    // ...
-
-    // --- Image Generation Specific Parameters ---
-    // Ref: https://www.volcengine.com/docs/82379/1541523
-
-    // Model specifies the ID of the image generation endpoint on the Ark platform.
-    // Required.
+    // For authentication, APIKey is required as the image generation API only supports API Key authentication.
+    // For authentication details, see: https://www.volcengine.com/docs/82379/1298459
+    // Required
+    APIKey string `json:"api_key"`
+    
+    // Model specifies the ID of endpoint on ark platform
+    // Required
     Model string `json:"model"`
-
+    
+    // Timeout specifies the maximum duration to wait for API responses
+    // If HTTPClient is set, Timeout will not be used.
+    // Optional. Default: 10 minutes
+    Timeout *time.Duration `json:"timeout"`
+    
+    // HTTPClient specifies the client to send HTTP requests.
+    // If HTTPClient is set, Timeout will not be used.
+    // Optional. Default &http.Client{Timeout: Timeout}
+    HTTPClient *http.Client `json:"http_client"`
+    
+    // RetryTimes specifies the number of retry attempts for failed API calls
+    // Optional. Default: 2
+    RetryTimes *int `json:"retry_times"`
+    
+    // BaseURL specifies the base URL for Ark service
+    // Optional. Default: "https://ark.cn-beijing.volces.com/api/v3"
+    BaseURL string `json:"base_url"`
+    
+    // Region specifies the region where Ark service is located
+    // Optional. Default: "cn-beijing"
+    Region string `json:"region"`
+    
+    // The following fields correspond to Ark's image generation API parameters
+    // Ref: https://www.volcengine.com/docs/82379/1541523
+    
     // Size specifies the dimensions of the generated image.
-	// It can be a resolution keyword (e.g., "1K", "2K", "4K") or a custom resolution
-	// in "{width}x{height}" format (e.g., "1920x1080").
-	// When using custom resolutions, the total pixels must be between 1280x720 and 4096x4096,
-	// and the aspect ratio (width/height) must be between 1/16 and 16.
-	// Optional. Defaults to "2048x2048".
-	Size string `json:"size"`
-
-	// SequentialImageGeneration determines if the model should generate a sequence of images.
-	// Possible values:
-	//  - "auto": The model decides whether to generate multiple images based on the prompt.
-	//  - "disabled": Only a single image is generated.
-	// Optional. Defaults to "disabled".
-	SequentialImageGeneration SequentialImageGeneration `json:"sequential_image_generation"`
-
-	// SequentialImageGenerationOption sets the maximum number of images to generate when
-	// SequentialImageGeneration is set to "auto".
-	// The value must be between 1 and 15.
-	// Optional. Defaults to 15.
-	SequentialImageGenerationOption *model.SequentialImageGenerationOptions `json:"sequential_image_generation_option"`
-
-	// ResponseFormat specifies how the generated image data is returned.
-	// Possible values:
-	//  - "url": A temporary URL to download the image (valid for 24 hours).
-	//  - "b64_json": The image data encoded as a Base64 string in the response.
-	// Optional. Defaults to "url".
-	ResponseFormat ImageResponseFormat `json:"response_format"`
-
-	// DisableWatermark, if set to true, removes the "AI Generated" watermark
-	// from the bottom-right corner of the image.
-	// Optional. Defaults to false.
-	DisableWatermark bool `json:"disable_watermark"`
+    // It can be a resolution keyword (e.g., "1K", "2K", "4K") or a custom resolution
+    // in "{width}x{height}" format (e.g., "1920x1080").
+    // When using custom resolutions, the total pixels must be between 1280x720 and 4096x4096,
+    // and the aspect ratio (width/height) must be between 1/16 and 16.
+    // Optional. Defaults to "2048x2048".
+    Size string `json:"size"`
+    
+    // SequentialImageGeneration determines if the model should generate a sequence of images.
+    // Possible values:
+    //  - "auto": The model decides whether to generate multiple images based on the prompt.
+    //  - "disabled": Only a single image is generated.
+    // Optional. Defaults to "disabled".
+    SequentialImageGeneration SequentialImageGeneration `json:"sequential_image_generation"`
+    
+    // SequentialImageGenerationOption sets the maximum number of images to generate when
+    // SequentialImageGeneration is set to "auto".
+    // The value must be between 1 and 15.
+    // Optional. Defaults to 15.
+    SequentialImageGenerationOption *model.SequentialImageGenerationOptions `json:"sequential_image_generation_option"`
+    
+    // ResponseFormat specifies how the generated image data is returned.
+    // Possible values:
+    //  - "url": A temporary URL to download the image (valid for 24 hours).
+    //  - "b64_json": The image data encoded as a Base64 string in the response.
+    // Optional. Defaults to "url".
+    ResponseFormat ImageResponseFormat `json:"response_format"`
+    
+    // DisableWatermark, if set to true, removes the "AI Generated" watermark
+    // from the bottom-right corner of the image.
+    // Optional. Defaults to false.
+    DisableWatermark bool `json:"disable_watermark"`
 }
 ```
 
 
-## examples
+## 示例
 
-### generate
+### 文本生成
 
 ```go
 
@@ -373,10 +387,10 @@ func main() {
 		log.Fatalf("Generate failed, err=%v", err)
 	}
 
-	log.Printf("\ngenerate output: \n")
-	log.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
+	log.Printf("generate output:")
+	log.Printf("  request_id: %s", ark.GetArkRequestID(msg))
 	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+	log.Printf("  body: %s", string(respBody))
 
 	sr, err := chatModel.Stream(ctx, inMsgs)
 	if err != nil {
@@ -401,15 +415,15 @@ func main() {
 		log.Fatalf("ConcatMessages failed, err=%v", err)
 	}
 
-	log.Printf("stream final output: \n")
-	log.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
+	log.Printf("stream final output:")
+	log.Printf("  request_id: %s", ark.GetArkRequestID(msg))
 	respBody, _ = json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+	log.Printf("  body: %s \n", string(respBody))
 }
 
 ```
 
-### generate_with_image
+### 多模态支持(图片理解)
 
 ```go
 
@@ -421,8 +435,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
+	"github.com/cloudwego/eino/components/prompt"
+	"github.com/cloudwego/eino/compose"
 	"github.com/cloudwego/eino/schema"
+
+	"github.com/cloudwego/eino-ext/components/model/ark"
 )
 
 func main() {
@@ -440,7 +457,7 @@ func main() {
 	multiModalMsg := schema.UserMessage("")
 	image, err := os.ReadFile("./examples/generate_with_image/eino.png")
 	if err != nil {
-		log.Fatalf("os.ReadFile failed, err=%v\n", err)
+		log.Fatalf("os.ReadFile failed, err=%v \n", err)
 	}
 
 	imageStr := base64.StdEncoding.EncodeToString(image)
@@ -469,12 +486,51 @@ func main() {
 		log.Fatalf("Generate failed, err=%v", err)
 	}
 
-	log.Printf("Ark ChatModel output: \n%v", resp)
+	log.Printf("Ark ChatModel output:%v \n", resp)
+
+	// demonstrate how to use ChatTemplate to generate with image
+	imgPlaceholder := "{img}"
+	ctx = context.Background()
+	chain := compose.NewChain[map[string]any, *schema.Message]()
+	_ = chain.AppendChatTemplate(prompt.FromMessages(schema.FString,
+		&schema.Message{
+			Role: schema.User,
+			UserInputMultiContent: []schema.MessageInputPart{
+				{
+					Type: schema.ChatMessagePartTypeText,
+					Text: "What do you see in this image?",
+				},
+				{
+					Type: schema.ChatMessagePartTypeImageURL,
+					Image: &schema.MessageInputImage{
+						MessagePartCommon: schema.MessagePartCommon{
+							Base64Data: &imgPlaceholder,
+							MIMEType:   "image/png",
+						},
+						Detail: schema.ImageURLDetailAuto,
+					},
+				},
+			},
+		}))
+	_ = chain.AppendChatModel(chatModel)
+	r, err := chain.Compile(ctx)
+	if err != nil {
+		log.Fatalf("Compile failed, err=%v", err)
+	}
+
+	resp, err = r.Invoke(ctx, map[string]any{
+		"img": imageStr,
+	})
+	if err != nil {
+		log.Fatalf("Run failed, err=%v", err)
+	}
+
+	log.Printf("Ark ChatModel output with ChatTemplate:%v \n", resp)
 }
 
 ```
 
-### stream
+### 流式生成
 
 ```go
 
@@ -489,6 +545,7 @@ import (
 
 	"github.com/cloudwego/eino-ext/components/model/ark"
 	"github.com/cloudwego/eino/schema"
+	arkModel "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
 )
 
 func main() {
@@ -509,7 +566,7 @@ func main() {
 			Role:    schema.User,
 			Content: "as a machine, how do you answer user's question?",
 		},
-	})
+	}, ark.WithReasoningEffort(arkModel.ReasoningEffortHigh))
 
 	if err != nil {
 		log.Printf("Generate failed, err=%v", err)
@@ -528,7 +585,7 @@ func main() {
 		}
 		msgs = append(msgs, msg)
 		if err != nil {
-			log.Printf("\nstream.Recv failed, err=%v", err)
+			log.Printf("stream.Recv failed, err=%v", err)
 			return
 		}
 		fmt.Print(msg.Content)
@@ -540,107 +597,12 @@ func main() {
 		return
 	}
 
-	log.Printf("output: %s\n", msg.Content)
+	log.Printf("output: %s \n", msg.Content)
 }
 
 ```
 
-### image_generate
-
-```go
-
-package main
-
-import (
-	"context"
-	"encoding/json"
-	"errors"
-	"io"
-	"log"
-	"os"
-
-	"github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
-
-	"github.com/cloudwego/eino-ext/components/model/ark"
-	"github.com/cloudwego/eino/schema"
-)
-
-func ptr[T any](v T) *T {
-	return &v
-}
-
-func main() {
-	ctx := context.Background()
-
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	imageGenerationModel, err := ark.NewImageGenerationModel(ctx, &ark.ImageGenerationConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-
-		// Control the size of image generated by the model.
-		Size: "1K",
-
-		// Control whether to generate a set of images.
-		SequentialImageGeneration: ark.SequentialImageGenerationAuto,
-
-		// Control the maximum number of images to generate
-		SequentialImageGenerationOption: &model.SequentialImageGenerationOptions{
-			MaxImages: ptr(2),
-		},
-
-		// Control the format of the generated jpeg image.
-		ResponseFormat: ark.ImageResponseFormatURL,
-
-		// Control whether to add a watermark to the generated image
-		DisableWatermark: false,
-	})
-
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
-
-	inMsgs := []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "generate two images of a cat",
-		},
-	}
-
-	// Use ImageGeneration API
-	msg, err := imageGenerationModel.Generate(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
-
-	log.Printf("\ngenerate output: \n")
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
-
-	sr, err := imageGenerationModel.Stream(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Stream failed, err=%v", err)
-	}
-
-	log.Printf("stream output: \n")
-	index := 0
-	for {
-		msgChunk, err := sr.Recv()
-		if errors.Is(err, io.EOF) {
-			break
-		}
-		if err != nil {
-			log.Fatalf("Stream Recv failed, err=%v", err)
-		}
-
-		respBody, _ = json.MarshalIndent(msgChunk, "  ", "  ")
-		log.Printf("stream chunk %d: body: %s\n", index, string(respBody))
-		index++
-	}
-}
-
-```
-
-### intent_tool
+### 工具调用
 
 ```go
 
@@ -721,12 +683,119 @@ func main() {
 		return
 	}
 
-	log.Printf("output: \n%v", resp)
+	log.Printf("output:%v \n", resp)
 }
 
 ```
 
-### prefixcache-contextapi
+### 图像生成
+
+```go
+
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"io"
+	"log"
+	"os"
+
+	"github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
+
+	"github.com/cloudwego/eino-ext/components/model/ark"
+	"github.com/cloudwego/eino/schema"
+)
+
+func ptr[T any](v T) *T {
+	return &v
+}
+
+func main() {
+	ctx := context.Background()
+
+	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+	imageGenerationModel, err := ark.NewImageGenerationModel(ctx, &ark.ImageGenerationConfig{
+		APIKey: os.Getenv("ARK_API_KEY"),
+		Model:  os.Getenv("ARK_MODEL_ID"),
+
+		// Control the size of image generated by the model.
+		Size: "1K",
+
+		// Control whether to generate a set of images.
+		SequentialImageGeneration: ark.SequentialImageGenerationAuto,
+
+		// Control the maximum number of images to generate
+		SequentialImageGenerationOption: &model.SequentialImageGenerationOptions{
+			MaxImages: ptr(2),
+		},
+
+		// Control the format of the generated jpeg image.
+		ResponseFormat: ark.ImageResponseFormatURL,
+
+		// Control whether to add a watermark to the generated image
+		DisableWatermark: false,
+	})
+
+	if err != nil {
+		log.Fatalf("NewChatModel failed, err=%v", err)
+	}
+
+	inMsgs := []*schema.Message{
+		{
+			Role:    schema.User,
+			Content: "generate two images of a cat",
+		},
+	}
+
+	// Use ImageGeneration API
+	msg, err := imageGenerationModel.Generate(ctx, inMsgs)
+	if err != nil {
+		log.Fatalf("Generate failed, err=%v", err)
+	}
+
+	log.Printf("generate output:")
+	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+	log.Printf("  body: %s \n", string(respBody))
+
+	sr, err := imageGenerationModel.Stream(ctx, inMsgs)
+	if err != nil {
+		log.Fatalf("Stream failed, err=%v", err)
+	}
+
+	log.Printf("stream output:")
+	index := 0
+	chunks := make([]*schema.Message, 0, 1024)
+	for {
+		msgChunk, err := sr.Recv()
+		if errors.Is(err, io.EOF) {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Stream Recv failed, err=%v", err)
+		}
+
+		chunks = append(chunks, msgChunk)
+
+		respBody, _ = json.MarshalIndent(msgChunk, "  ", "  ")
+		log.Printf("stream chunk %d: body: %s\n", index, string(respBody))
+		index++
+	}
+
+	msg, err = schema.ConcatMessages(chunks)
+	if err != nil {
+		log.Fatalf("ConcatMessages failed, err=%v", err)
+	}
+	log.Printf("stream final output:")
+	log.Printf("  request_id: %s \n", ark.GetArkRequestID(msg))
+	respBody, _ = json.MarshalIndent(msg, "  ", "  ")
+	log.Printf("  body: %s \n", string(respBody))
+}
+
+```
+
+### ContextAPI 前缀缓存
 
 ```go
 
@@ -815,7 +884,7 @@ func main() {
 
 ```
 
-### prefixcache-responsesapi
+### Response API 前缀缓存
 
 ```go
 
@@ -826,8 +895,6 @@ import (
 	"encoding/json"
 	"log"
 	"os"
-
-	arkModel "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
 
 	"github.com/cloudwego/eino/schema"
 
@@ -841,44 +908,111 @@ func main() {
 	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
 		APIKey: os.Getenv("ARK_API_KEY"),
 		Model:  os.Getenv("ARK_MODEL_ID"),
+		Cache: &ark.CacheConfig{
+			APIType: ptrOf(ark.ResponsesAPI),
+		},
 	})
 	if err != nil {
 		log.Fatalf("NewChatModel failed, err=%v", err)
 	}
 
-	chatModelWithTools, err := chatModel.WithTools([]*schema.ToolInfo{
+	err = chatModel.BindTools([]*schema.ToolInfo{
 		{
-			Name: "get_weather",
-			Desc: "Get the current weather in a given location",
+			Name: "article_content_extractor",
+			Desc: "Extract key statements and chapter summaries from the provided article content",
 			ParamsOneOf: schema.NewParamsOneOfByParams(
 				map[string]*schema.ParameterInfo{
-					"location": {
-						Type: "string",
-						Desc: "The city and state, e.g. San Francisco, CA",
+					"content": {
+						Type:     schema.String,
+						Desc:     "The full article content to analyze and extract key information from",
+						Required: true,
 					},
-				},
-			),
+				}),
 		},
 	})
+
 	if err != nil {
-		log.Fatalf("WithTools failed, err=%v", err)
+		log.Fatalf("BindTools failed, err=%v", err)
 	}
 
-	thinking := &arkModel.Thinking{
-		Type: arkModel.ThinkingTypeDisabled,
+	// create response prefix cache, note: more than 1024 tokens are required, otherwise the prefix cache cannot be created
+	cacheInfo, err := chatModel.CreatePrefixCache(ctx, []*schema.Message{
+		schema.SystemMessage(`Once upon a time, in a quaint little village surrounded by vast green forests and blooming meadows, there lived a spirited young girl known as Little Red Riding Hood. She earned her name from the vibrant red cape that her beloved grandmother had sewn for her, a gift that she cherished deeply. This cape was more than just a piece of clothing; it was a symbol of the bond between her and her grandmother, who lived on the other side of the great woods, near a sparkling brook that bubbled merrily all year round.
+
+			One sunny morning, Little Red Riding Hood's mother called her into the cozy kitchen, where the aroma of freshly baked bread filled the air. “My dear,” she said, “your grandmother isn’t feeling well today. I want you to take her this basket of treats. There are some delicious cakes, a jar of honey, and her favorite herbal tea. Can you do that for me?”
+			
+			Little Red Riding Hood’s eyes sparkled with excitement as she nodded eagerly. “Yes, Mama! I’ll take good care of them!” Her mother handed her a beautifully woven basket, filled to the brim with goodies, and reminded her, “Remember to stay on the path and don’t talk to strangers.”
+			
+			“I promise, Mama!” she replied confidently, pulling her red hood over her head and setting off on her adventure. The sun shone brightly, and birds chirped merrily as she walked, making her feel like she was in a fairy tale.
+			
+			As she journeyed through the woods, the tall trees whispered secrets to one another, and colorful flowers danced in the gentle breeze. Little Red Riding Hood was so enchanted by the beauty around her that she began to hum a tune, her voice harmonizing with the sounds of nature.
+			
+			However, unbeknownst to her, lurking in the shadows was a cunning wolf. The wolf was known throughout the forest for his deceptive wit and insatiable hunger. He watched Little Red Riding Hood with keen interest, contemplating his next meal.
+			
+			“Good day, little girl!” the wolf called out, stepping onto the path with a friendly yet sly smile.
+			
+			Startled, she halted and took a step back. “Hello there! I’m just on my way to visit my grandmother,” she replied, clutching the basket tightly.
+			
+			“Ah, your grandmother! I know her well,” the wolf said, his eyes glinting with mischief. “Why don’t you pick some lovely flowers for her? I’m sure she would love them, and I’m sure there are many beautiful ones just off the path.”
+			
+			Little Red Riding Hood hesitated for a moment but was easily convinced by the wolf’s charming suggestion. “That’s a wonderful idea! Thank you!” she exclaimed, letting her curiosity pull her away from the safety of the path. As she wandered deeper into the woods, her gaze fixed on the vibrant blooms, the wolf took a shortcut towards her grandmother’s house.
+			
+			When the wolf arrived at Grandma’s quaint cottage, he knocked on the door with a confident swagger. “It’s me, Little Red Riding Hood!” he shouted in a high-pitched voice to mimic the girl.
+			
+			“Come in, dear!” came the frail voice of the grandmother, who had been resting on her cozy bed, wrapped in warm blankets. The wolf burst through the door, his eyes gleaming with the thrill of his plan.
+			
+			With astonishing speed, the wolf gulped down the unsuspecting grandmother whole. Afterward, he dressed in her nightgown, donning her nightcap and climbing into her bed. He lay there, waiting for Little Red Riding Hood to arrive, concealing his wicked smile behind a facade of innocence.
+			
+			Meanwhile, Little Red Riding Hood was merrily picking flowers, completely unaware of the impending danger. After gathering a beautiful bouquet of wildflowers, she finally made her way back to the path and excitedly skipped towards her grandmother’s cottage.
+			
+			Upon arriving, she noticed the door was slightly ajar. “Grandmother, it’s me!” she called out, entering the dimly lit home. It was silent, with only the faint sound of an old clock ticking in the background. She stepped into the small living room, a feeling of unease creeping over her.
+			
+			“Grandmother, are you here?” she asked, peeking into the bedroom. There, she saw a figure lying under the covers. 
+			
+			“Grandmother, what big ears you have!” she exclaimed, taking a few cautious steps closer.
+			
+			“All the better to hear you with, my dear,” the wolf replied in a voice that was deceptively sweet.
+			
+			“Grandmother, what big eyes you have!” Little Red Riding Hood continued, now feeling an unsettling chill in the air.
+			
+			“All the better to see you with, my dear,” the wolf said, his eyes narrowing as he tried to contain his glee.
+			
+			“Grandmother, what big teeth you have!” she exclaimed, the terror flooding her senses as she began to realize this was no ordinary visit.
+			
+			“All the better to eat you with!” the wolf roared, springing out of the bed with startling speed.
+			
+			Just as the wolf lunged towards her, a brave woodsman, who had been passing by the cottage and heard the commotion, burst through the door. His strong presence was a beacon of hope in the dire situation. “Stay back, wolf!” he shouted with authority, brandishing his axe.
+			
+			The wolf, taken aback by the sudden intrusion, hesitated for a moment. Before he could react, the woodsman swung his axe with determination, and with a swift motion, he drove the wolf away, rescuing Little Red Riding Hood and her grandmother from certain doom.
+			
+			Little Red Riding Hood was shaking with fright, but relief washed over her as the woodsman helped her grandmother out from behind the bed where the wolf had hidden her. The grandmother, though shaken, was immensely grateful to the woodsman for his bravery. “Thank you so much! You saved us!” she cried, embracing him warmly.
+			
+			Little Red Riding Hood, still in shock but filled with gratitude, looked up at the woodsman and said, “I promise I will never stray from the path again. Thank you for being our hero!”
+			
+			From that day on, the woodland creatures spoke of the brave woodsman who saved Little Red Riding Hood and her grandmother. Little Red Riding Hood learned a valuable lesson about being cautious and listening to her mother’s advice. The bond between her and her grandmother grew stronger, and they often reminisced about that day’s adventure over cups of tea, surrounded by cookies and laughter.
+			
+			To ensure safety, Little Red Riding Hood always took extra precautions when traveling through the woods, carrying a small whistle her grandmother had given her. It would alert anyone nearby if she ever found herself in trouble again.
+			
+			And so, in the heart of that small village, life continued, filled with love, laughter, and the occasional adventure, as Little Red Riding Hood and her grandmother thrived, forever grateful for the friendship of the woodsman who had acted as their guardian that fateful day.
+			
+			And they all lived happily ever after.
+			
+			The end.`),
+	}, 300)
+	if err != nil {
+		log.Fatalf("CreatePrefixCache failed, err=%v", err)
 	}
+
+	// use cache information in subsequent requests
 	cacheOpt := &ark.CacheOption{
-		APIType: ark.ResponsesAPI,
-		SessionCache: &ark.SessionCacheConfig{
-			EnableCache: true,
-			TTL:         86400,
-		},
+		APIType:                ark.ResponsesAPI,
+		HeadPreviousResponseID: &cacheInfo.ResponseID,
 	}
 
-	outMsg, err := chatModelWithTools.Generate(ctx, []*schema.Message{
-		schema.UserMessage("my name is megumin"),
-	}, ark.WithThinking(thinking),
-		ark.WithCache(cacheOpt))
+	outMsg, err := chatModel.Generate(ctx, []*schema.Message{
+		schema.UserMessage("What is the main idea expressed above？"),
+	}, ark.WithCache(cacheOpt))
+
 	if err != nil {
 		log.Fatalf("Generate failed, err=%v", err)
 	}
@@ -888,27 +1022,19 @@ func main() {
 		log.Fatalf("not found response id in message")
 	}
 
-	msg, err := chatModelWithTools.Generate(ctx, []*schema.Message{
-		schema.UserMessage("what is my name?"),
-	}, ark.WithThinking(thinking),
-		ark.WithCache(&ark.CacheOption{
-			APIType:                ark.ResponsesAPI,
-			HeadPreviousResponseID: &respID,
-		}),
-	)
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
-
 	log.Printf("\ngenerate output: \n")
-	log.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+	log.Printf("  request_id: %s\n", respID)
+	respBody, _ := json.MarshalIndent(outMsg, "  ", "  ")
 	log.Printf("  body: %s\n", string(respBody))
+}
+func ptrOf[T any](v T) *T {
+	return &v
+
 }
 
 ```
 
-### sessioncache-contextapi
+### ContextAPI Session 缓存
 
 ```go
 
@@ -1028,8 +1154,8 @@ func main() {
 
 ```
 
-### sessioncache-responsesapi
 
+### ResponseAPI Session缓存
 ```go
 
 package main
@@ -1043,8 +1169,9 @@ import (
 
 	arkModel "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
 	"github.com/cloudwego/eino/schema"
+
+	"github.com/cloudwego/eino-ext/components/model/ark"
 )
 
 func main() {
@@ -1054,6 +1181,12 @@ func main() {
 	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
 		APIKey: os.Getenv("ARK_API_KEY"),
 		Model:  os.Getenv("ARK_MODEL_ID"),
+		Cache: &ark.CacheConfig{
+			SessionCache: &ark.SessionCacheConfig{
+				EnableCache: true,
+				TTL:         86400,
+			},
+		},
 	})
 	if err != nil {
 		log.Fatalf("NewChatModel failed, err=%v", err)
@@ -1114,7 +1247,7 @@ func main() {
 
 
 
-## For More Details
+## 更多信息
 
 - [Eino Documentation](https://www.cloudwego.io/zh/docs/eino/)
 - [Volcengine Ark Model Documentation](https://www.volcengine.com/docs/82379/1263272)
