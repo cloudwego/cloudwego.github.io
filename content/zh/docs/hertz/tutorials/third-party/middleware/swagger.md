@@ -6,6 +6,10 @@ keywords: ["Swagger", "RESTful API"]
 description: "用 Swagger 2.0 来自动生成 RESTful API 文档的 Hertz 中间件。"
 ---
 
+> **⚠️ 已废弃**
+>
+> 本文档已废弃，请参考 [HTTP Adaptor 指南](../../basic-feature/http-adaptor/) 了解如何在不使用Hertz中间件的情况下直接集成Swagger。
+
 这是一个用 Swagger 2.0 来自动生成 RESTful API 文档的 Hertz 中间件。
 
 参考了 gin 的 [实现](https://github.com/swaggo/gin-swagger)，对 Hertz 进行了适配。

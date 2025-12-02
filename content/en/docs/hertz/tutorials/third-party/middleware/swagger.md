@@ -6,6 +6,10 @@ keywords: ["Swagger", "RESTful API"]
 description: "Hertz middleware to automatically generate RESTful API documentation with Swagger 2.0."
 ---
 
+> **⚠️ Deprecated**
+>
+> This document has been deprecated. Please refer to [HTTP Adaptor Guide](../../basic-feature/http-adaptor/) to learn how to directly integrate swagger without hertz middleware.
+
 Hertz middleware to automatically generate RESTful API documentation with Swagger 2.0.
 
 The implementation of the [swagger](https://github.com/hertz-contrib/swagger) extension refers to the implementation of [Gin](https://github.com/swaggo/gin-swagger).
