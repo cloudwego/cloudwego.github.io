@@ -88,7 +88,7 @@ eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是
 
 ```go
 func TestChain() {
-    chain := compose.NewChain[map[string]interface,string]()
+    chain := compose.NewChain[map[string]any,string]()
     
     nodeTemplate := &fakeChatTemplate{} // input: map[string]any, output: []*schema.Message
     
