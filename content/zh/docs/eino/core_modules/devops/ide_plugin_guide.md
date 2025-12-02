@@ -51,7 +51,7 @@ weight: 1
 
 - 在 VS Code 中点击「Extension 图标」，进入插件市场，搜索 Eino Dev，安装即可
 
-<a href="/img/eino/JKDUbMAnDoZa4TxUXafcCXO4nqg.png" target="_blank"><img src="/img/eino/JKDUbMAnDoZa4TxUXafcCXO4nqg.png" width="100%" /></a>
+<a href="/img/eino/eino_dev_plugin_vscode.png" target="_blank"><img src="/img/eino/eino_dev_plugin_vscode.png" width="100%" /></a>
 
 ## 功能简介
 
@@ -61,10 +61,10 @@ weight: 1
 <table><tbody><tr>
 <td><li>Goland</li>
 右侧边栏找到「<strong>Eino Dev</strong>」图标并点击：
-<a href="/img/eino/WuuYbKYoHo6slixKBLbcPSf6n8f.png" target="_blank"><img src="/img/eino/WuuYbKYoHo6slixKBLbcPSf6n8f.png" width="100%" /></a>
+<a href="/img/eino/eino_dev_ide_plugin_guide_2.png" target="_blank"><img src="/img/eino/eino_dev_ide_plugin_guide_2.png" width="100%" /></a>
 </td><td><li>VS Code</li>
 在底部找到「<strong>Eino Dev</strong>」并点击：
-<a href="/img/eino/SFfAbLJPiosHNMxx7zfcFD2mn1g.png" target="_blank"><img src="/img/eino/SFfAbLJPiosHNMxx7zfcFD2mn1g.png" width="100%" /></a>
+<a href="/img/eino/eino_dev_ide_plugin_guide_1.png" target="_blank"><img src="/img/eino/eino_dev_ide_plugin_guide_1.png" width="100%" /></a>
 
 </td></tr></tbody></table>
 

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-04"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: Eino Dev 可视化调试插件功能指南
@@ -334,3 +334,67 @@ IP 和 Port 配置完成后，点击确认，调试插件会自动连接到目�
 1. 点击确认，查看调试结果。
 
 <a href="/img/eino/eino_debug_panel_2.png" target="_blank"><img src="/img/eino/eino_debug_panel_2.png" width="100%" /></a>
+
+#### map[string]any 调试
+
+这里再解释下输入类型为 map[string]any 时如何调试；如果某个节点的输入类型为 map[string]any，如下所示：
+
+```go
+func RegisterAnyInputGraph(ctx context.Context) {
+        g := compose.NewGraph[map[string]any, string]()
+
+        _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input map[string]any) (output string, err error) {
+                for k, v := range input {
+                        switch v.(type) {
+                        case string:
+                                output += k + ":" + v.(string) + ","
+                        case int:
+                                output += k + ":" + fmt.Sprintf("%d", v.(int))
+                        default:
+                                return "", fmt.Errorf("unsupported type: %T", v)
+                        }
+                }
+
+                return output, nil
+        }))
+
+        _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+                return input + " process by node_2,", nil
+        }))
+
+        _ = g.AddEdge(compose.START, "node_1")
+
+        _ = g.AddEdge("node_1", "node_2")
+
+        _ = g.AddEdge("node_2", compose.END)
+
+        r, err := g.Compile(ctx)
+        if err != nil {
+                logs.Errorf("compile graph failed, err=%v", err)
+                return
+        }
+
+        message, err := r.Invoke(ctx, map[string]any{"name": "bob", "score": 100})
+        if err != nil {
+                logs.Errorf("invoke graph failed, err=%v", err)
+                return
+        }
+
+        logs.Infof("eino any input graph output is: %v", message)
+}
+```
+
+调试过程中，在 Test Run 的 Json 输入框中，你需要输入以下格式的内容：
+
+```json
+{
+    "name": {
+       "_value": "alice",
+       "_eino_go_type": "string"
+    },
+    "score": {
+       "_value": "99",
+       "_eino_go_type": "int"
+    }
+}
+```

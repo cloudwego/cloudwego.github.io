@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-02-19"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 'Eino: Document Loader 使用说明'
-weight: 6
+weight: 8
 ---
 
 ## **基本介绍**
@@ -108,7 +108,7 @@ log.Printf("doc content: %v", docs[0].Content)
 
 ```go
 // 在 Chain 中使用
-chain := compose.NewChain[document.Source, []*schema.Document]()
+chain := compose.NewChain[string, []*schema.Document]()
 chain.AppendLoader(loader)
 
 // 编译并运行

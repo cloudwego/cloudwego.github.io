@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-11-20"
 lastmod: ""
 tags: []
-title: Tool - MCP
+title: Eino Tool - MCP
 weight: 0
 ---
 
@@ -13,7 +13,7 @@ weight: 0
 
 本节介绍 [MCPTool](https://modelcontextprotocol.io/docs/concepts/tools) 的封装，封装实现了 Eino InvokableTool 接口（[Eino: ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)）。
 
-<a href="/img/eino/V3NwbrJrvoS4qdxyosscHDnon8b.png" target="_blank"><img src="/img/eino/V3NwbrJrvoS4qdxyosscHDnon8b.png" width="100%" /></a>
+<a href="/img/eino/eino_mcp_tool_architecture.png" target="_blank"><img src="/img/eino/eino_mcp_tool_architecture.png" width="100%" /></a>
 
 其他封装参见：
 
@@ -37,7 +37,8 @@ cli, err := client.NewSSEMCPClient(myBaseURL)
 // while stdio does not require it.
 err = cli.Start(ctx)
 ```
-mcp-go 还支持了其他创建 Client 的方法（比如 InProcess），更多信息可以参考：https://mcp-go.dev/transports
+
+mcp-go 还支持了其他创建 Client 的方法（比如 InProcess），更多信息可以参考：[https://mcp-go.dev/transports](https://mcp-go.dev/transports)
 
 考虑到 client 的复用，封装假设 client 已经完成和 Server 的 [Initialize](https://spec.modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle/)，用户需要自行完成 client 初始化：
 
@@ -58,7 +59,7 @@ _, err = cli.Initialize(ctx, initRequest)
 ```go
 import "github.com/cloudwego/eino-ext/components/tool/mcp"
 
-mcpTools, err := mcp.GetTools(ctx, &mcp.Config{Cli: cli})
+tools, err := mcp.GetTools(ctx, &mcp.Config{Cli: cli})
 ```
 
 tool 可以直接调用：

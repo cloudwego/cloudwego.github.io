@@ -1,21 +1,19 @@
 ---
 Description: ""
-date: "2025-09-30"
+date: "2025-12-01"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Workflow Agents'
 weight: 2
 ---
 
-## Workflow Agents 概述
+# Workflow Agents 概述
 
-### 导入路径
+## 导入路径
 
-```
-import github.com/cloudwego/eino/adk
-```
+`import ``github.com/cloudwego/eino/adk`
 
-### 什么是 Workflow Agents
+## 什么是 Workflow Agents
 
 Workflow Agents 是 eino ADK 中的一种特殊 Agent 类型，它允许开发者以预设的流程来组织和执行多个子 Agent。
 
@@ -29,13 +27,13 @@ Eino ADK 提供了三种基础的 Workflow Agent 类型：
 
 这些 Workflow Agent 可以相互嵌套，构建更复杂的执行流程，满足各种业务场景需求。
 
-## SequentialAgent
+# SequentialAgent
 
-### 功能
+## 功能
 
 SequentialAgent 是最基础的 Workflow Agent，它按照配置中提供的顺序，依次执行一系列子 Agent。每个子 Agent 执行完成后，其输出会通过 History 机制传递给下一个子 Agent，形成一个线性的执行链。
 
-<a href="/img/eino/FrwxwAnJGhUVnvb1n05cA7N8n2e.png" target="_blank"><img src="/img/eino/FrwxwAnJGhUVnvb1n05cA7N8n2e.png" width="80%" /></a>
+<a href="/img/eino/eino_adk_sequential_definition.png" target="_blank"><img src="/img/eino/eino_adk_sequential_definition.png" width="100%" /></a>
 
 ```go
 type SequentialAgentConfig struct {
@@ -59,7 +57,7 @@ SequentialAgent 适用于以下场景：
 - **管道式处理**：每个步骤的输出作为下个步骤的输入
 - **有依赖关系的任务序列**：后续任务依赖前面任务的结果
 
-### 示例
+## 示例
 
 示例展示了如何使用 SequentialAgent 创建一个三步骤的文档处理流水线：
 
@@ -245,13 +243,13 @@ func main() {
 文档处理流水线执行完成！
 ```
 
-## LoopAgent
+# LoopAgent
 
-### 功能
+## 功能
 
 LoopAgent 基于 SequentialAgent 实现，它会重复执行配置的子 Agent 序列，直到达到最大迭代次数或某个子 Agent 产生 ExitAction。LoopAgent 特别适用于需要迭代优化、反复处理或持续监控的场景。
 
-<a href="/img/eino/L1jTwKR8WhZyEUbqQpKcgaJBnbh.png" target="_blank"><img src="/img/eino/L1jTwKR8WhZyEUbqQpKcgaJBnbh.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_implementation_nested_loop_sequential.png" target="_blank"><img src="/img/eino/eino_adk_implementation_nested_loop_sequential.png" width="100%" /></a>
 
 ```go
 type LoopAgentConfig struct {
@@ -277,7 +275,7 @@ LoopAgent 适用于以下场景：
 - **反复处理**：需要多轮处理才能达到满意结果的任务
 - **自我改进**：Agent 根据前面的执行结果不断改进自己的输出
 
-### 示例
+## 示例
 
 示例展示了如何使用 LoopAgent 创建一个代码优化循环：
 
@@ -445,12 +443,13 @@ func processData(data []int) []int {
 
 运行结果为:
 
-```go
+```java
 开始代码优化循环...
 
 === 第 1 轮 - CodeAnalyzer ===
 分析提供的代码：
 
+```go
 func processData(data []int) []int {
     result := []int{}
     for i := 0; i < len(data); i++ {
@@ -463,7 +462,7 @@ func processData(data []int) []int {
     }
     return result
 }
-
+```
 
 ### 1. 性能瓶颈
 
@@ -500,6 +499,7 @@ func processData(data []int) []int {
 
 优化代码：
 
+```go
 func processData(data []int) []int {
     if len(data) == 0 {
         return nil
@@ -521,6 +521,7 @@ func processData(data []int) []int {
 
     return result
 }
+```
 
 ### 优化点说明
 
@@ -535,6 +536,7 @@ func processData(data []int) []int {
 
 === 第 1 轮 - CodeOptimizer ===
 
+```go
 // processData 返回输入切片中所有大于最小元素的值。
 // 如果输入为空，则返回 nil。
 func processData(data []int) []int {
@@ -560,7 +562,7 @@ func processData(data []int) []int {
 
     return result
 }
-
+```
 
 === 第 1 轮 - ExitController ===
 TERMINATE
@@ -568,14 +570,45 @@ TERMINATE
 === 第 2 轮 - CodeAnalyzer ===
 EXIT: 代码质量已达到标准
 
-...中间轮次省略...
+=== 第 2 轮 - CodeOptimizer ===
 
-=== 第 5 轮 - CodeAnalyzer ===
+```go
+// processData 返回输入切片中所有大于最小元素的值。
+// 如果输入为空，则返回 nil。
+func processData(data []int) []int {
+    if len(data) == 0 {
+        return nil
+    }
+
+    // 找出切片中的最小值
+    minVal := data[0]
+    for _, v := range data[1:] {
+        if v < minVal {
+            minVal = v
+        }
+    }
+
+    // 收集所有大于最小值的元素
+    result := make([]int, 0, len(data))
+    for _, v := range data {
+        if v > minVal {
+            result = append(result, v)
+        }
+    }
+
+    return result
+}
+```
+
+=== 第 2 轮 - ExitController ===
+TERMINATE
+
+=== 第 3 轮 - CodeAnalyzer ===
 EXIT: 代码质量已达到标准
 
-=== 第 5 轮 - CodeOptimizer ===
+=== 第 3 轮 - CodeOptimizer ===
 
-
+```go
 // processData 返回输入切片中所有大于最小元素的值。
 // 如果输入为空，则返回 nil。
 func processData(data []int) []int {
@@ -599,7 +632,75 @@ func processData(data []int) []int {
 
     return result
 }
+```
 
+=== 第 3 轮 - ExitController ===
+TERMINATE
+
+=== 第 4 轮 - CodeAnalyzer ===
+EXIT: 代码质量已达到标准
+
+=== 第 4 轮 - CodeOptimizer ===
+
+```go
+// processData 返回切片中所有大于最小元素的元素。
+// 如果输入为空，则返回 nil。
+func processData(data []int) []int {
+    if len(data) == 0 {
+        return nil
+    }
+
+    minVal := data[0]
+    for _, v := range data[1:] {
+        if v < minVal {
+            minVal = v
+        }
+    }
+
+    result := make([]int, 0, len(data))
+    for _, v := range data {
+        if v > minVal {
+            result = append(result, v)
+        }
+    }
+
+    return result
+}
+```
+
+=== 第 4 轮 - ExitController ===
+TERMINATE
+
+=== 第 5 轮 - CodeAnalyzer ===
+EXIT: 代码质量已达到标准
+
+=== 第 5 轮 - CodeOptimizer ===
+
+```go
+// processData 返回输入切片中所有大于最小元素的值。
+// 如果输入为空，则返回 nil。
+func processData(data []int) []int {
+    if len(data) == 0 {
+        return nil
+    }
+
+    minVal := data[0]
+    for _, v := range data[1:] {
+        if v < minVal {
+            minVal = v
+        }
+    }
+
+    result := make([]int, 0, len(data))
+    for _, v := range data {
+        if v > minVal {
+            result = append(result, v)
+        }
+    }
+
+    return result
+}
+```
 
 === 第 5 轮 - ExitController ===
 TERMINATE
@@ -610,17 +711,56 @@ TERMINATE
 
 
 
-## ParallelAgent
+
+## BreakLoop
 
 
-### 功能
+在 Loop Agent 中，当某个 Agent 需要中断循环运行时，您可以使用 ADK 提供的对应 Break Action。
 
+```go
+// BreakLoopAction is a programmatic-only agent action used to prematurely
+// terminate the execution of a loop workflow agent.
+// When a loop workflow agent receives this action from a sub-agent, it will stop its
+// current iteration and will not proceed to the next one.
+// It will mark the BreakLoopAction as Done, signalling to any 'upper level' loop agent
+// that this action has been processed and should be ignored further up.
+// This action is not intended to be used by LLMs.
+type BreakLoopAction struct {
+    // From records the name of the agent that initiated the break loop action.
+    From string
+    // Done is a state flag that can be used by the framework to mark when the
+    // action has been handled.
+    Done bool
+    // CurrentIterations is populated by the framework to record at which
+    // iteration the loop was broken.
+    CurrentIterations int
+}
+
+// NewBreakLoopAction creates a new BreakLoopAction, signaling a request
+// to terminate the current loop.
+func NewBreakLoopAction(agentName string) *AgentAction {
+    return &AgentAction{BreakLoop: &BreakLoopAction{
+       From: agentName,
+    }}
+}
+```
+
+Break Action 在达到中断目的的同时不影响 Loop Agent 外的其他 Agent 运行，而 Exit Action 会立刻中断所有后续的 Agent 运行。
+
+以下图为例：
+
+<a href="/img/eino/eino_adk_sequential_with_loop.png" target="_blank"><img src="/img/eino/eino_adk_sequential_with_loop.png" width="100%" /></a>
+
+- 当 Agent1 发出 BreakAction 时，Loop Agent 将中断，Sequential 继续运行 Agent3
+- 当 Agent1 发出 ExitAction 时，Sequential 运行流程整体终止，Agent2 / Agent3 均不会运行
+
+# ParallelAgent
+
+## 功能
 
 ParallelAgent 允许多个子 Agent 基于相同的输入上下文并发执行，所有子 Agent 同时开始执行，并等待全部完成后结束。这种模式特别适用于可以独立并行处理的任务，能够显著提高执行效率。
 
-<a href="/img/eino/IyblwV7Y8hilJKbHYgHcdfxlnre.png" target="_blank"><img src="/img/eino/IyblwV7Y8hilJKbHYgHcdfxlnre.png" width="90%" /></a>
-
-
+<a href="/img/eino/eino_adk_parallel_definition.png" target="_blank"><img src="/img/eino/eino_adk_parallel_definition.png" width="100%" /></a>
 
 ```go
 type ParallelAgentConfig struct {
@@ -651,7 +791,7 @@ ParallelAgent 适用于以下场景：
 - **性能优化**：通过并行执行减少总体执行时间
 - **多专家咨询**：同时咨询多个专业领域的 Agent
 
-### 示例
+## 示例
 
 示例展示了如何使用 ParallelAgent 同时从四个不同角度分析产品方案：
 
@@ -1120,6 +1260,6 @@ func main() {
 共收到 4 个分析结果
 ```
 
-## 总结
+# 总结
 
 Workflow Agents 为 Eino ADK 提供了强大的多 Agent 协作能力，通过合理选择和组合这些 Workflow Agent，开发者可以构建出高效、可靠的多 Agent 协作系统，满足各种复杂的业务需求。

@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-03-18"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 'Eino: Lambda 使用说明'
-weight: 9
+weight: 5
 ---
 
 ## **基本介绍**
@@ -64,7 +64,7 @@ lambda := compose.InvokableLambda(func(ctx context.Context, input string) (outpu
 - StreamableLambda
 
 ```go
-// input 可以是任意类型；output 必须是 *schema.StreamReader[O]，其中 O 可以是任意类型
+// input 可以是任意类型，output 必须是 *schema.StreamReader[O]，其中 O 可以是任意类型
 lambda := compose.StreamableLambda(func(ctx context.Context, input string) (output *schema.StreamReader[string], err error) {
     // some logic
 })
@@ -73,7 +73,7 @@ lambda := compose.StreamableLambda(func(ctx context.Context, input string) (outp
 - CollectableLambda
 
 ```go
-// input 必须是 *schema.StreamReader[I]，其中 I 可以是任意类型；output 可以是任意类型
+// input 必须是 *schema.StreamReader[I]，其中 I 可以是任意类型，output 可以是任意类型
 lambda := compose.CollectableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (output string, err error) {
     // some logic
 })
@@ -82,11 +82,15 @@ lambda := compose.CollectableLambda(func(ctx context.Context, input *schema.Stre
 - TransformableLambda
 
 ```go
-// input 必须是 *schema.StreamReader[I]，其中 I 可以是任意类型；output 必须是 *schema.StreamReader[O]，其中 O 可以是任意类型
+// input 和 output 必须是 *schema.StreamReader[I]，其中 I 可以是任意类型
 lambda := compose.TransformableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (output *schema.StreamReader[string], err error) {
     // some logic
 })
 ```
+
+- 四种 Lambda 方法的构造方法中，具有如下几个相同的 Option 选项
+- compose.WithLambdaType():  修改 Lambda 组件的 Component 类型，默认是：Lambda
+- compose.WithLambdaCallbackEnable(): 关闭 Lambda 组件默认 在 Graph 中开启的 Node Callback
 
 #### 使用自定义 Option
 
@@ -144,7 +148,7 @@ lambda, err := compose.AnyLambda(
 
 在 Graph 中可以通过 AddLambdaNode 添加 Lambda 节点：
 
-```go
+```mermaid
 graph := compose.NewGraph[string, *MyStruct]()
 graph.AddLambdaNode(
     "node1",

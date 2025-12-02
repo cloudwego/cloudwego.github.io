@@ -1,25 +1,23 @@
 ---
 Description: ""
-date: "2025-09-30"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 'Eino ADK: ChatModelAgent'
 weight: 1
 ---
 
-## ChatModelAgent 概述
+# ChatModelAgent 概述
 
-### Import Path
+## Import Path
 
-```
-import github.com/cloudwego/eino/adk
-```
+`import ``github.com/cloudwego/eino/adk`
 
-### 什么是 ChatModelAgent
+## 什么是 ChatModelAgent
 
 `ChatModelAgent` 是 Eino ADK 中的一个核心预构建 的 Agent，它封装了与大语言模型（LLM）进行交互、并支持使用工具来完成任务的复杂逻辑。
 
-### ChatModelAgent ReAct 模式
+## ChatModelAgent ReAct 模式
 
 `ChatModelAgent` 内使用了 [ReAct](https://react-lm.github.io/) 模式，该模式旨在通过让 ChatModel 进行显式的、一步一步的“思考”来解决复杂问题。为 `ChatModelAgent` 配置了工具后，它在内部的执行流程就遵循了 ReAct 模式：
 
@@ -30,7 +28,7 @@ import github.com/cloudwego/eino/adk
 
 当没有配置工具时，`ChatModelAgent` 退化为一次 ChatModel 调用。
 
-<a href="/img/eino/NSX1w1ZJghC4f8bmyfeczj0lnGb.png" target="_blank"><img src="/img/eino/NSX1w1ZJghC4f8bmyfeczj0lnGb.png" width="50%" /></a>
+<a href="/img/eino/eino_adk_chat_model_agent_view.png" target="_blank"><img src="/img/eino/eino_adk_chat_model_agent_view.png" width="100%" /></a>
 
 可以通过 ToolsConfig 为 ChatModelAgent 配置 Tool：
 
@@ -48,7 +46,7 @@ type ToolsConfig struct {
 
 ToolsConfig 复用了 Eino Graph ToolsNodeConfig，详细参考：[Eino: ToolsNode&Tool 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)。额外提供了 ReturnDirectly 配置，ChatModelAgent 调用配置在 ReturnDirectly 中的 Tool 后会直接退出。
 
-### ChatModelAgent 配置字段
+## ChatModelAgent 配置字段
 
 ```go
 type ChatModelAgentConfig struct {
@@ -139,7 +137,7 @@ func (et ExitTool) InvokableRun(ctx context.Context, argumentsInJSON string, _ .
 }
 ```
 
-### ChatModelAgent Transfer
+## ChatModelAgent Transfer
 
 `ChatModelAgent` 支持将其他 Agent 的元信息转为自身的 Tool ，经由 ChatModel 判断实现动态 Transfer：
 
@@ -170,7 +168,7 @@ func genTransferToAgentInstruction(ctx context.Context, agents []Agent) string {
 - `Transfer Tool` 运行会设置 Transfer Event，指定跳转到目标 Agent 上，完成后 ChatModelAgent 退出。
 - Agent Runner 接收到 Transfer Event 后，跳转到目标 Agent 上执行，完成 Transfer 操作
 
-### ChatModelAgent AgentAsTool
+## ChatModelAgent AgentAsTool
 
 当需要被调用的 Agent 不需要完整的运行上下文，仅需要明确清晰的入参即可正确运行时，该 Agent 可以转换为 Tool 交由 `ChatModelAgent` 判断调用：
 
@@ -198,12 +196,13 @@ a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 })
 ```
 
-## ChatModelAgent 使用示例
+# ChatModelAgent 使用示例
 
-### 场景说明
+## 场景说明
 
 创建一个图书推荐 Agent，Agent 将能够根据用户的输入推荐相关图书。
 
+## 代码实现
 
 ### 步骤 1: 定义工具
 
@@ -311,6 +310,7 @@ func NewBookRecommendAgent() adk.Agent {
 }
 ```
 
+### 
 
 ### 步骤 4: 通过 Runner 运行
 
@@ -350,7 +350,7 @@ func main() {
 }
 ```
 
-### 运行结果
+## 运行结果
 
 ```yaml
 message:
@@ -377,9 +377,9 @@ usage: &{185 31 216}
 ======
 ```
 
-## ChatModelAgent 中断与恢复
+# ChatModelAgent 中断与恢复
 
-### 介绍
+## 介绍
 
 `ChatModelAgent` 使用了 Eino Graph 实现，因此在 agent 中可以复用 Eino Graph 的 Interrupt&Resume 能力。
 
@@ -409,7 +409,7 @@ func WithNewInput(input string) tool.Option {
 }
 ```
 
-### 场景说明
+## 示例
 
 下面我们将基于上面【ChatModelAgent 使用示例】小节中的代码，为 `BookRecommendAgent` 增加一个工具 `ask_for_clarification`，当用户提供的信息不足以支持推荐时，Agent 将调用这个工具向用户询问更多信息，`ask_for_clarification` 使用了 Interrupt&Resume 能力来实现向用户“询问”。
 
@@ -594,7 +594,7 @@ usage: &{317 20 337}
 ======
 ```
 
-## 总结
+# 总结
 
 `ChatModelAgent` 是 ADK 核心 Agent 实现，充当应用程序 "思考" 的部分，利用 LLM 强大的功能进行推理、理解自然语言、作出决策、生成相应、进行工具交互。
 

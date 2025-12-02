@@ -28,11 +28,11 @@ local file 文件加载器是 Document Loader 接口的一个实现，用于从�
 
 ```go
 import (
-    "github.com/cloudwego/eino-ext/components/document/loader/file"
+    "github.com/cloudwego/eino/components/document/loader/file"
 )
 
 func main() {
-    loader, err := file.NewFileLoader(ctx, &file.FileLoaderConfig{
+    loader, err := file.NewFileLoader(ctx, &FileLoaderConfig{
         UseNameAsID: true,                // 是否使用文件名作为文档ID
         Parser:      &parser.TextParser{}, // 可选：指定自定义解析器
     })

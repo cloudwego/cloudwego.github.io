@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-01-17"
+date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino Tutorial: Host Multi-Agent '
-weight: 0
+title: 'Eino Tutorial: Host Multi-Agent'
+weight: 2
 ---
 
 Host Multi-Agent 是一个 Host 做意图识别后，跳转到某个专家 agent 做实际的生成。
@@ -384,25 +384,25 @@ func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[
 
 默认实现不适用的情况：在输出 Tool Call 前，有非空的 content chunk。此时，需要自定义 tool Call checker 如下：
 
-```go
-toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
-    defer sr.Close()
-    for {
-       msg, err := sr.Recv()
-       if err != nil {
-          if errors.Is(err, io.EOF) {
-             // finish
-             break
-          }
+```
+_toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {_
+_    defer sr.Close()_
+_    for {_
+_       msg, err := sr.Recv()_
+_       if err != nil {_
+_          if errors.Is(err, io.EOF) {_
+_             // finish_
+_             break_
+_          }_
 
-          return false, err
-       }
+_          return false, err_
+_       }_
 
-       if len(msg.ToolCalls) > 0 {
-          return true, nil
-       }
-    }
-    return false, nil
+_       if len(msg.ToolCalls) > 0 {_
+_          return true, nil_
+_       }_
+_    }_
+_    return false, nil_
 }
 ```
 
@@ -410,6 +410,7 @@ toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Mes
 
 > 💡
 > 尝试添加 prompt 来约束模型在工具调用时不额外输出文本，例如：“如果需要调用 tool，直接输出 tool，不要输出文本”。
+>
 > 不同模型受 prompt 影响可能不同，实际使用时需要自行调整 prompt 并验证效果。
 
 ### Host 同时选择多个 Specialist
