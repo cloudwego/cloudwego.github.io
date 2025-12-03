@@ -1,25 +1,25 @@
 ---
 Description: ""
-date: "2025-03-18"
+date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino: Retriever guide'
-weight: 0
+title: 'Eino: Retriever 使用说明'
+weight: 4
 ---
 
-## **Basic Introduction**
+## **基本介绍**
 
-The Retriever component is used to retrieve documents from various data sources. Its main function is to retrieve the most relevant documents from a document library based on a user's query. This component is particularly useful in the following scenarios:
+Retriever 组件是一个用于从各种数据源检索文档的组件。它的主要作用是根据用户的查询（query）从文档库中检索出最相关的文档。这个组件在以下场景中特别有用：
 
-- Document retrieval based on vector similarity
-- Document search based on keywords
-- Knowledge base Q&A system (rag)
+- 基于向量相似度的文档检索
+- 基于关键词的文档搜索
+- 知识库问答系统 (rag)
 
-## **Component Definition**
+## **组件定义**
 
-### **Interface Definition**
+### **接口定义**
 
-> Code Location: eino/components/retriever/interface.go
+> 代码位置：eino/components/retriever/interface.go
 
 ```go
 type Retriever interface {
@@ -27,81 +27,83 @@ type Retriever interface {
 }
 ```
 
-#### **Retrieve Method**
+#### **Retrieve 方法**
 
-- Function: Retrieve relevant documents based on the query
-- Parameters:
-  - ctx: Context object used to transfer request-level information and to pass the Callback Manager
-  - query: Query string
-  - opts: Retrieval options used to configure retrieval behavior
-- Return Values:
-  - `[]*schema.Document`: List of retrieved documents
-  - error: Error information during the retrieval process
+- 功能：根据查询检索相关文档
+- 参数：
+  - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
+  - query：查询字符串
+  - opts：检索选项，用于配置检索行为
+- 返回值：
+  - `[]*schema.Document`：检索到的文档列表
+  - error：检索过程中的错误信息
 
-### **Document Struct**
+### **Document 结构体**
 
 ```go
 type Document struct {
-    // ID is the unique identifier of the document
+    // ID 是文档的唯一标识符
     ID string
-    // Content is the content of the document
+    // Content 是文档的内容
     Content string
-    // MetaData is used to store metadata information of the document
+    // MetaData 用于存储文档的元数据信息
     MetaData map[string]any
 }
 ```
 
-### **Common Options**
+### **公共 Option**
 
-The Retriever component uses RetrieverOption to define optional parameters. The following are the common options that the Retriever component needs to implement. Additionally, each specific implementation can define its own specific options, which can be wrapped into a unified RetrieverOption type through the WrapRetrieverImplSpecificOptFn function.
+Retriever 组件使用 RetrieverOption 来定义可选参数， 以下是 Retriever 组件需要实现的公共 option。另外，每个具体的实现可以定义自己的特定 Option，通过 WrapRetrieverImplSpecificOptFn 函数包装成统一的 RetrieverOption 类型。
 
 ```go
 type Options struct {
-    // Index is the index used by the retriever. The meaning of the index may vary across different retrievers.
+    // Index 是检索器使用的索引，不同检索器中的索引可能有不同含义
     Index *string
     
-    // SubIndex is the sub-index used by the retriever. The meaning of the sub-index may vary across different retrievers.
+    // SubIndex 是检索器使用的子索引，不同检索器中的子索引可能有不同含义
     SubIndex *string
     
-    // TopK is the upper limit on the number of documents retrieved
+    // TopK 是检索的文档数量上限
     TopK *int
     
-    // ScoreThreshold is the threshold for document similarity, e.g., 0.5 means the document's similarity score must be greater than 0.5
+    // ScoreThreshold 是文档相似度的阈值，例如 0.5 表示文档的相似度分数必须大于 0.5
     ScoreThreshold *float64
     
-    // Embedding is the component used for generating query vectors
+    // Embedding 是用于生成查询向量的组件
     Embedding embedding.Embedder
     
-    // DSLInfo is the DSL information used for retrieval, only used in Viking-type retrievers
+    // DSLInfo 是用于检索的 DSL 信息，仅在 viking 类型的检索器中使用
     DSLInfo map[string]interface{}
 }
 ```
 
-The options can be set as follows:
+可以通过以下方式设置选项：
 
 ```go
-// Set the index
+// 设置索引
 WithIndex(index string) Option
 
-// Set the sub-index
+// 设置子索引
 WithSubIndex(subIndex string) Option
 
-// Set the upper limit on the number of retrieved documents
+// 设置检索文档数量上限
 WithTopK(topK int) Option
 
-// Set the similarity threshold
+// 设置相似度阈值
 WithScoreThreshold(threshold float64) Option
 
-// Set the vector generation component
+// 设置向量生成组件
 WithEmbedding(emb embedding.Embedder) Option
 
-// Set DSL information (only for Viking-type retrievers)
+// 设置 DSL 信息（仅用于 viking 类型检索器）
 WithDSLInfo(dsl map[string]any) Option
-```## **Usage**
+```
 
-### **Standalone Usage**
+## **使用方式**
 
-> Code location: eino-ext/components/retriever/volc_vikingdb/examples/builtin_embedding
+### **单独使用**
+
+> 代码位置：eino-ext/components/retriever/volc_vikingdb/examples/builtin_embedding
 
 ```go
 import (
@@ -116,25 +118,25 @@ collectionName := "eino_test"
 indexName := "test_index_1"
 
 /*
- * In the following example, a dataset called eino_test has been pre-built, and an hnsw-hybrid index called test_index_1 has been built on this dataset.
- * The dataset fields are configured as:
- * Field Name       Field Type     Vector Dimension
+ * 下面示例中提前构建了一个名为 eino_test 的数据集 (collection)，并在此数据集上构建了一个名为 test_index_1 的 hnsw-hybrid 索引 (index)
+ * 数据集字段配置为:
+ * 字段名称       字段类型         向量维度
  * ID            string
  * vector         vector       1024
- * sparse_vector sparse_vector
- * content       string
- * extra_field_1 string
+ * sparse_vector    sparse_vector
+ * content        string
+ * extra_field_1    string
  *
- * Note when using the component:
- * 1. The field names and types of ID / vector / sparse_vector / content should be consistent with the above configuration.
- * 2. The vector dimension should be consistent with the vector dimension output by the model corresponding to ModelName.
- * 3. Some models do not output sparse vectors. In this case, set UseSparse to false, and the collection does not need to set the sparse_vector field.
+ * component 使用时注意:
+ * 1. ID / vector / sparse_vector / content 的字段名称与类型与上方配置一致
+ * 2. vector 向量维度需要与 ModelName 对应的模型所输出的向量维度一致
+ * 3. 部分模型不输出稀疏向量，此时 UseSparse 需要设置为 false，collection 可以不设置 sparse_vector 字段
  */
 
 cfg := &volc_vikingdb.RetrieverConfig{
-    // https://api-vikingdb.volces.com (North China)
-    // https://api-vikingdb.mlp.cn-shanghai.volces.com (East China)
-    // https://api-vikingdb.mlp.ap-mya.byteplus.com (Overseas - Johor)
+    // https://api-vikingdb.volces.com （华北）
+    // https://api-vikingdb.mlp.cn-shanghai.volces.com（华东）
+    // https://api-vikingdb.mlp.ap-mya.byteplus.com（海外-柔佛）
     Host:              "api-vikingdb.volces.com",
     Region:            "cn-beijing",
     AK:                ak,
@@ -149,10 +151,10 @@ cfg := &volc_vikingdb.RetrieverConfig{
        UseSparse:   true,
        DenseWeight: 0.4,
     },
-    Partition:      "", // Corresponding to the partition field in the index; when not set, leave it blank
+    Partition:      "", // 对应索引中的【子索引划分字段】, 未设置时至空即可
     TopK:           of(10),
     ScoreThreshold: of(0.1),
-    FilterDSL:      nil, // Corresponding to the scalar filtering field in the index; when not set, leave it blank; see https://www.volcengine.com/docs/84313/1254609 for the expression
+    FilterDSL:      nil, // 对应索引中的【标量过滤字段】，未设置时至空即可，表达式详见 https://www.volcengine.com/docs/84313/1254609
 }
 
 volcRetriever, _ := volc_vikingdb.NewRetriever(ctx, cfg)
@@ -164,23 +166,23 @@ docs, _ := volcRetriever.Retrieve(ctx, query)
 log.Printf("vikingDB retrieve success, query=%v, docs=%v", query, docs)
 ```
 
-### **Usage in Composition**
+### **在编排中使用**
 
 ```go
-// Using in Chain
+// 在 Chain 中使用
 chain := compose.NewChain[string, []*schema.Document]()
 chain.AppendRetriever(retriever)
 
-// Using in Graph
+// 在 Graph 中使用
 graph := compose.NewGraph[string, []*schema.Document]()
 graph.AddRetrieverNode("retriever_node", retriever)
 ```
 
-## **Option and Cal****lback Usage**
+## **Option 和 Callback 使用**
 
-### **Callback Example**
+### **Callback 使用示例**
 
-> Code location: eino-ext/components/retriever/volc_vikingdb/examples/builtin_embedding
+> 代码位置：eino-ext/components/retriever/volc_vikingdb/examples/builtin_embedding
 
 ```go
 import (
@@ -192,7 +194,7 @@ import (
     "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
 )
 
-// Create callback handler
+// 创建 callback handler
 handler := &callbacksHelper.RetrieverCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *retriever.CallbackInput) context.Context {
        log.Printf("input access, content: %s\n", input.Query)
@@ -205,7 +207,7 @@ handler := &callbacksHelper.RetrieverCallbackHandler{
     // OnError
 }
 
-// Use callback handler
+// 使用 callback handler
 helper := callbacksHelper.NewHandlerHelper().
     Retriever(handler).
     Handler()
@@ -213,7 +215,7 @@ helper := callbacksHelper.NewHandlerHelper().
 chain := compose.NewChain[string, []*schema.Document]()
 chain.AppendRetriever(volcRetriever)
 
-// Use at runtime
+// 在运行时使用
 run, _ := chain.Compile(ctx)
 
 outDocs, _ := run.Invoke(ctx, query, compose.WithCallbacks(helper))
@@ -221,27 +223,27 @@ outDocs, _ := run.Invoke(ctx, query, compose.WithCallbacks(helper))
 log.Printf("vikingDB retrieve success, query=%v, docs=%v", query, outDocs)
 ```
 
-## **Existing Implementations**
+## **已有实现**
 
-- Volc VikingDB Retriever: Retrieval implementation based on Volcano Engine VikingDB [Retriever - volc VikingDB](/docs/eino/ecosystem_integration/retriever/retriever_volc_vikingdb)
+- Volc VikingDB Retriever: 基于火山引擎 VikingDB 的检索实现 [Retriever - VikingDB](/zh/docs/eino/ecosystem_integration/retriever/retriever_volc_vikingdb)
 
-## **Reference for Custom Implementation**
+## **自行实现参考**
 
-When implementing a custom Retriever component, pay attention to the following points:
+实现自定义的 Retriever 组件时，需要注意以下几点：
 
-1. Handle the option mechanism properly and manage common options.
-2. Handle callbacks appropriately.
-3. Inject specific metadata for use by subsequent nodes.
+1. 注意 option 机制的处理，及处理公共的 option.
+2. 注意处理 callback
+3. 注意需要注入特定的 metadata，以便后续节点使用
 
-### **Option Mechanism**
+### **option 机制**
 
-The Retriever component provides a set of common options that need to be correctly handled during implementation:
+Retriever 组件提供了一组公共选项，实现时需要正确处理这些选项：
 
 ```go
-// Use GetCommonOptions to handle common options
+// 使用 GetCommonOptions 处理公共 option
 func (r *MyRetriever) Retrieve(ctx context.Context, query string, opts ...retriever.Option) ([]*schema.Document, error) {
-    // 1. Initialize and read options
-    options := &retriever.Options{ // You can set default values
+    // 1. 初始化及读取 option
+    options := &retriever.Options{ // 可设置default值
         Index: &r.index,
         TopK: &r.topK,
         Embedding: r.embedder,
@@ -252,12 +254,12 @@ func (r *MyRetriever) Retrieve(ctx context.Context, query string, opts ...retrie
 }
 ```
 
-### **Callback Handling**
+### **Callback 处理**
 
-Retriever implementations need to trigger callbacks at appropriate times. The following structures are defined by the retriever component:
+Retriever 实现需要在适当的时机触发回调，以下结构体是 retriever 组件定义好的结构：
 
 ```go
-// Define callback input and output
+// 定义回调输入输出
 type CallbackInput struct {
     Query string
     TopK int
@@ -272,7 +274,7 @@ type CallbackOutput struct {
 }
 ```
 
-### **Complete Implementation Example**
+### **完整实现示例**
 
 ```go
 type MyRetriever struct {
@@ -290,7 +292,7 @@ func NewMyRetriever(config *MyRetrieverConfig) (*MyRetriever, error) {
 }
 
 func (r *MyRetriever) Retrieve(ctx context.Context, query string, opts ...retriever.Option) ([]*schema.Document, error) {
-    // 1. Handle options
+    // 1. 处理选项
     options := &retriever.Options{
         Index: &r.index,
         TopK: &r.topK,
@@ -298,19 +300,19 @@ func (r *MyRetriever) Retrieve(ctx context.Context, query string, opts ...retrie
     }
     options = retriever.GetCommonOptions(options, opts...)
     
-    // 2. Get callback manager
+    // 2. 获取 callback manager
     cm := callbacks.ManagerFromContext(ctx)
     
-    // 3. Callback before starting retrieval
+    // 3. 开始检索前的回调
     ctx = cm.OnStart(ctx, info, &retriever.CallbackInput{
         Query: query,
         TopK: *options.TopK,
     })
     
-    // 4. Execute retrieval logic
+    // 4. 执行检索逻辑
     docs, err := r.doRetrieve(ctx, query, options)
     
-    // 5. Handle errors and complete callback
+    // 5. 处理错误和完成回调
     if err != nil {
         ctx = cm.OnError(ctx, info, err)
         return nil, err
@@ -324,7 +326,7 @@ func (r *MyRetriever) Retrieve(ctx context.Context, query string, opts ...retrie
 }
 
 func (r *MyRetriever) doRetrieve(ctx context.Context, query string, opts *retriever.Options) ([]*schema.Document, error) {
-    // 1. If Embedding is set, generate vector representation of the query (pay attention to handling common options)
+    // 1. 如果设置了 Embedding，生成查询的向量表示 (注意公共option的逻辑处理)
     var queryVector []float64
     if opts.Embedding != nil {
         vectors, err := opts.Embedding.EmbedStrings(ctx, []string{query})
@@ -334,7 +336,7 @@ func (r *MyRetriever) doRetrieve(ctx context.Context, query string, opts *retrie
         queryVector = vectors[0]
     }
     
-    // 2. Other logic
+    // 2. 其他逻辑
     return docs, nil
 }
 ```

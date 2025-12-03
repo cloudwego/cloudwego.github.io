@@ -1,26 +1,22 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino: Core Modules'
+title: 'Eino: 核心模块'
 weight: 3
 ---
 
-The core modules in Eino include the following parts:
+Eino 中的核心模块有如下几个部分：
 
-- **Components**: [Eino: Components](/docs/eino/core_modules/components)
+- **Components 组件**：[Eino: Components 组件](/zh/docs/eino/core_modules/components)
 
-Eino abstracts commonly used components in LLM applications, such as `ChatModel`, `Embedding`, `Retriever`, etc. These are the building blocks for constructing an LLM application, forming the foundation of application capabilities and serving as atomic objects for complex logic orchestration.
+Eino 抽象出来的大模型应用中常用的组件，例如 `ChatModel`、`Embedding`、`Retriever` 等，这是实现一个大模型应用搭建的积木，是应用能力的基础，也是复杂逻辑编排时的原子对象。
 
-- **Chain/Graph Orchestration**: [Eino: Chain & Graph Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration)
+- **Chain/Graph 编排**：[Eino: Chain/Graph 编排功能](/zh/docs/eino/core_modules/chain_and_graph_orchestration/chain_graph_introduction)
 
-Using multiple components in combination to implement the chain of business logic, Eino provides orchestration methods through Chains/Graphs, encapsulating the complexity of linking business logic within Eino itself. It offers easy-to-understand business logic orchestration interfaces and provides a unified cross-sectional governance capability.
+多个组件混合使用来实现业务逻辑的串联，Eino 提供 Chain/Graph 的编排方式，把业务逻辑串联的复杂度封装在了 Eino 内部，提供易于理解的业务逻辑编排接口，提供统一的横切面治理能力。
 
-- **Flow Integration Tools (Agents)**: [Eino: Flow integration components](/docs/eino/core_modules/flow_integration_components)
+- **Flow 集成工具 (agents)**: [Eino: Flow 集成组件](/zh/docs/eino/core_modules/flow_integration_components)
 
-Eino packages the most commonly used LLM application modes into simple and easy-to-use tools, ultra-simplifying the development of LLM applications for generic scenarios. Currently, it provides `ReAct Agent` and `Host Multi Agent`.
-
-- **EinoDev Development Assistant Tool**: [EinoDev: Devops tools](/docs/eino/core_modules/devops)
-
-Eino is dedicated to making the development of large-scale model applications with full-code very simple, and EinoDev provides a `visual` and `interactive` development and debugging solution for Eino orchestration, which allows developers to see the results immediately, releasing their energy from the `debugging hell` and focusing on the scene logic.
+Eino 把最常用的大模型应用模式封装成简单、易用的工具，让通用场景的大模型应用开发极致简化，目前提供了 `ReAct Agent` 和 `Host Multi Agent`。

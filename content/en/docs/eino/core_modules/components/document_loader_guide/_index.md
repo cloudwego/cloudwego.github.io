@@ -1,24 +1,24 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino: Document Loader guide'
-weight: 0
+title: 'Eino: Document Loader 使用说明'
+weight: 8
 ---
 
-## **Basic Introduction**
+## **基本介绍**
 
-Document Loader is a component used for loading documents. Its primary function is to load document content from different sources (such as web URLs, local files, etc.) and convert it into a standard document format. This component plays an important role in scenarios where document content needs to be sourced from various origins, such as:
+Document Loader 是一个用于加载文档的组件。它的主要作用是从不同来源（如网络 URL、本地文件等）加载文档内容，并将其转换为标准的文档格式。这个组件在处理需要从各种来源获取文档内容的场景中发挥重要作用，比如:
 
-- Loading web page content from a web URL
-- Reading local documents in formats such as PDF, Word, etc.
+- 从网络 URL 加载网页内容
+- 读取本地 PDF、Word 等格式的文档
 
-## **Component Definition**
+## **组件定义**
 
-### **Interface Definition**
+### **接口定义**
 
-> Code Location: eino/components/document/interface.go
+> 代码位置：eino/components/document/interface.go
 
 ```go
 type Loader interface {
@@ -26,18 +26,18 @@ type Loader interface {
 }
 ```
 
-#### **Load Method**
+#### **Load 方法**
 
-- Function: Loads documents from a specified data source
-- Parameters:
-  - ctx: Context object used to pass request-level information, and to pass the Callback Manager as well
-  - src: Document source containing the URI information of the document
-  - opts: Load options used to configure loading behavior
-- Returns:
-  - `[]*schema.Document`: List of loaded documents
-  - error: Error information during the loading process
+- 功能：从指定的数据源加载文档
+- 参数：
+  - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
+  - src：文档来源，包含文档的 URI 信息
+  - opts：加载选项，用于配置加载行为
+- 返回值：
+  - `[]*schema.Document`：加载的文档列表
+  - error：加载过程中的错误信息
 
-### **Source Struct**
+### **Source 结构体**
 
 ```go
 type Source struct {
@@ -45,43 +45,43 @@ type Source struct {
 }
 ```
 
-The Source struct defines the source information of a document:
+Source 结构体定义了文档的来源信息：
 
-- URI: The Uniform Resource Identifier of the document, which can be a web URL or a local file path
+- URI：文档的统一资源标识符，可以是网络 URL 或本地文件路径
 
-### **Document Struct**
+### **Document 结构体**
 
 ```go
 type Document struct {
-    // ID is the unique identifier of the document
+    // ID 是文档的唯一标识符
     ID string
-    // Content is the content of the document
+    // Content 是文档的内容
     Content string
-    // MetaData is used to store metadata information of the document
+    // MetaData 用于存储文档的元数据信息
     MetaData map[string]any
 }
 ```
 
-The Document struct is the standard format of a document, containing the following important fields:
+Document 结构体是文档的标准格式，包含以下重要字段：
 
-- ID: The unique identifier of the document, used to uniquely identify a document in the system
-- Content: The actual content of the document
-- MetaData: The metadata of the document, which can store the following information:
-  - Source information of the document
-  - Vector representation of the document (used for vector retrieval)
-  - Score of the document (used for sorting)
-  - Sub-index of the document (used for hierarchical retrieval)
-  - Other custom metadata
+- ID：文档的唯一标识符，用于在系统中唯一标识一个文档
+- Content：文档的实际内容
+- MetaData：文档的元数据，可以存储如下信息：
+  - 文档的来源信息
+  - 文档的向量表示（用于向量检索）
+  - 文档的分数（用于排序）
+  - 文档的子索引（用于分层检索）
+  - 其他自定义元数据
 
-### **Common Options**
+### **公共选项**
 
-The Loader component uses `LoaderOption` to define loading options. Currently, Loader does not have common Options; each specific implementation can define its own specific options, which are wrapped into a unified `LoaderOption` type through the `WrapLoaderImplSpecificOptFn` function.
+Loader 组件使用 `LoaderOption` 来定义加载选项。Loader 目前没有公共的 Option，每个具体的实现可以定义自己的特定选项，通过 `WrapLoaderImplSpecificOptFn` 函数包装成统一的 `LoaderOption` 类型。
 
-## **Usage**
+## **使用方式**
 
-### **Standalone Use**
+### **单独使用**
 
-> Code Location: eino-ext/components/document/loader/file/examples/fileloader
+> 代码位置：eino-ext/components/document/loader/file/examples/fileloader
 
 ```go
 import (
@@ -89,13 +89,13 @@ import (
     "github.com/cloudwego/eino-ext/components/document/loader/file"
 )
 
-// Initialize loader (take file loader as an example)
+// 初始化 loader (以file loader为例)
 loader, _ := file.NewFileLoader(ctx, &file.FileLoaderConfig{
-    // Configuration parameters
+    // 配置参数
     UseNameAsID: true,
 })
 
-// Load document
+// 加载文档
 filePath := "../../testdata/test.md"
 docs, _ := loader.Load(ctx, document.Source{
     URI: filePath,
@@ -104,28 +104,28 @@ docs, _ := loader.Load(ctx, document.Source{
 log.Printf("doc content: %v", docs[0].Content)
 ```
 
-### **Use in Orchestration**
+### **在编排中使用**
 
 ```go
-// Use in Chain
-chain := compose.NewChain[document.Source, []*schema.Document]()
+// 在 Chain 中使用
+chain := compose.NewChain[string, []*schema.Document]()
 chain.AppendLoader(loader)
 
-// Compile and run
+// 编译并运行
 runnable, _ := chain.Compile()
 
 result, _ := runnable.Invoke(ctx, input)
 
-// Use in Graph
+// 在 Graph 中使用
 graph := compose.NewGraph[string, []*schema.Document]()
 graph.AddLoaderNode("loader_node", loader)
 ```
 
-## **Option and Callback Usage**
+## **Option 和 Callback 使用**
 
-### **Callback Usage Example**
+### **Callback 使用示例**
 
-> Code location: eino-ext/components/document/loader/file/examples/fileloader
+> 代码位置：eino-ext/components/document/loader/file/examples/fileloader
 
 ```go
 import (
@@ -138,7 +138,7 @@ import (
     "github.com/cloudwego/eino-ext/components/document/loader/file"
 )
 
-// Create callback handler
+// 创建 callback handler
 handler := &callbacksHelper.LoaderCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *document.LoaderCallbackInput) context.Context {
        log.Printf("start loading docs...: %s\n", input.Source.URI)
@@ -151,14 +151,14 @@ handler := &callbacksHelper.LoaderCallbackHandler{
     // OnError
 }
 
-// Use callback handler
+// 使用 callback handler
 helper := callbacksHelper.NewHandlerHelper().
     Loader(handler).
     Handler()
 
 chain := compose.NewChain[document.Source, []*schema.Document]()
 chain.AppendLoader(loader)
-// Use at runtime
+// 在运行时使用
 run, _ := chain.Compile(ctx)
 
 outDocs, _ := run.Invoke(ctx, document.Source{
@@ -168,28 +168,28 @@ outDocs, _ := run.Invoke(ctx, document.Source{
 log.Printf("doc content: %v", outDocs[0].Content)
 ```
 
-## **Existing Implementations**
+## **已有实现**
 
-1. File Loader: Used to load documents from the local file system [Loader - local file](/docs/eino/ecosystem_integration/document/loader_local_file)
-2. Web Loader: Used to load documents pointed by web URLs [Loader - web url](/docs/eino/ecosystem_integration/document/loader_web_url)
-3. S3 Loader: Used to load documents stored in S3 compatible storage systems [Loader - amazon s3](/docs/eino/ecosystem_integration/document/loader_amazon_s3)
+1. File Loader: 用于加载本地文件系统中的文档 [Loader - local file](/zh/docs/eino/ecosystem_integration/document/loader_local_file)
+2. Web Loader: 用于加载网络 URL 指向的文档 [Loader - web url](/zh/docs/eino/ecosystem_integration/document/loader_web_url)
+3. S3 Loader: 用于加载存储在 S3 兼容存储系统中的文档 [Loader - amazon s3](/zh/docs/eino/ecosystem_integration/document/loader_amazon_s3)
 
-## **Reference for Self-Implementation**
+## **自行实现参考**
 
-When self-implementing a loader component, attention must be paid to the option mechanism and callback handling.
+自行实现 loader 组件时，需要注意 option 机制和 callback 的处理。
 
-### **Option Mechanism**
+### option **机制**
 
-Custom Loaders need to implement their own Option parameter mechanism:
+自定义 Loader 需要实现自己的 Option 参数机制：
 
 ```go
-// Define the options struct
+// 定义选项结构体
 type MyLoaderOptions struct {
     Timeout time.Duration
     RetryCount int
 }
 
-// Define option functions
+// 定义选项函数
 func WithTimeout(timeout time.Duration) document.LoaderOption {
     return document.WrapLoaderImplSpecificOptFn(func(o *MyLoaderOptions) {
         o.Timeout = timeout
@@ -203,14 +203,14 @@ func WithRetryCount(count int) document.LoaderOption {
 }
 ```
 
-### **Callback Handling**
+### **Callback 处理**
 
-Loader implementations need to trigger callbacks at appropriate times:
+Loader 实现需要在适当的时机触发回调：
 
-> Code Location: eino/components/document/callback_extra_loader.go
+> 代码位置：eino/components/document/callback_extra_loader.go
 
 ```go
-// These are the callback input and output defined by the loader component. Implementations should satisfy the parameter meanings.
+// 这是由loader组件定义的回调输入输出, 在实现时需要满足参数的含义
 type LoaderCallbackInput struct {
     Source Source
     Extra map[string]any
@@ -223,7 +223,7 @@ type LoaderCallbackOutput struct {
 }
 ```
 
-### **Complete Implementation Example**
+### **完整实现示例**
 
 ```go
 import (
@@ -233,44 +233,44 @@ import (
 )
 
 func NewCustomLoader(config *Config) (*CustomLoader, error) {
-    return & CustomLoader {
-       timeout: config.DefaultTimeout,
+    return &CustomLoader{
+       timeout:    config.DefaultTimeout,
        retryCount: config.DefaultRetryCount,
     }, nil
 }
 
 type CustomLoader struct {
-    timeout time.Duration
+    timeout    time.Duration
     retryCount int
 }
 
 type Config struct {
-    DefaultTimeout time.Duration
+    DefaultTimeout    time.Duration
     DefaultRetryCount int
 }
 
 func (l *CustomLoader) Load(ctx context.Context, src document.Source, opts ...document.LoaderOption) ([]*schema.Document, error) {
-    // 1. Handle options
+    // 1. 处理 option
     options := &customLoaderOptions{
-       Timeout: l.timeout,
+       Timeout:    l.timeout,
        RetryCount: l.retryCount,
     }
     options = document.GetLoaderImplSpecificOptions(options, opts...)
     var err error
 
-    // 2. Handle errors and trigger error callbacks
+    // 2. 处理错误，并进行错误回调方法
     defer func() {
        if err != nil {
           callbacks.OnError(ctx, err)
        }
     }()
 
-    // 3. Trigger pre-load callback
+    // 3. 开始加载前的回调
     ctx = callbacks.OnStart(ctx, &document.LoaderCallbackInput{
        Source: src,
     })
 
-    // 4. Execute load logic
+    // 4. 执行加载逻辑
     docs, err := l.doLoad(ctx, src, options)
 
     if err != nil {
@@ -286,23 +286,23 @@ func (l *CustomLoader) Load(ctx context.Context, src document.Source, opts ...do
 }
 
 func (l *CustomLoader) doLoad(ctx context.Context, src document.Source, opts *customLoaderOptions) ([]*schema.Document, error) {
-    // Implement document load logic
-    // 1. Load document content
-    // 2. Construct Document objects, ensuring to save important information such as document source in MetaData
+    // 实现文档加载逻辑
+    // 1. 加载文档内容
+    // 2. 构造 Document 对象，注意可在 MetaData 中保存文档来源等重要信息
     return []*schema.Document{{
        Content: "Hello World",
     }}, nil
 }
 ```
 
-### **Precautions**
+### **注意事项**
 
-- MetaData is an important part of the document, used to save various metadata of the document
-- Return meaningful error information when document loading fails to facilitate error troubleshooting
+- MetaData 是文档的重要组成部分，用于保存文档的各种元信息
+- 文档加载失败时返回有意义的错误信息，便于做错误的排查
 
-## **Other Reference Documents**
+## 其他参考文档
 
-- [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide)
-- [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide)
-- [Eino: Indexer guide](/docs/eino/core_modules/components/indexer_guide)
-- [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)
+- [[🚧]Eino: Document Transformer 使用说明](/zh/docs/eino/core_modules/components/document_transformer_guide)
+- [[🚧]Eino: Embedding 使用说明](/zh/docs/eino/core_modules/components/embedding_guide)
+- [[🚧]Eino: Indexer 使用说明](/zh/docs/eino/core_modules/components/indexer_guide)
+- [[🚧]Eino: Retriever 使用说明](/zh/docs/eino/core_modules/components/retriever_guide)

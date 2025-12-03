@@ -4,7 +4,7 @@ date: "2025-07-21"
 lastmod: ""
 tags: []
 title: 'Eino: 贡献规范'
-weight: 0
+weight: 7
 ---
 
 Eino 代码的贡献形式：

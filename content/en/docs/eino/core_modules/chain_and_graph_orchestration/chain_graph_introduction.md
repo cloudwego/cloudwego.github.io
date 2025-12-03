@@ -1,15 +1,15 @@
 ---
 Description: ""
-date: "2025-03-28"
+date: "2025-12-09"
 lastmod: ""
 tags: []
-title: 'Eino: Chain/Graph Orchestration Introduction'
+title: 'Eino: Chain/Graph 编排介绍'
 weight: 1
 ---
 
-> All code examples in this document can be found at: [https://github.com/cloudwego/eino-examples/tree/main/compose](https://github.com/cloudwego/eino-examples/tree/main/compose)
+> 本文所有代码样例都在：[https://github.com/cloudwego/eino-examples/tree/main/compose](https://github.com/cloudwego/eino-examples/tree/main/compose)
 
-## Graph Orchestration
+## Graph 编排
 
 ### Graph
 
@@ -47,7 +47,7 @@ func main() {
     _ = g.AddEdge(nodeOfPrompt, nodeOfModel)
     _ = g.AddEdge(nodeOfModel, compose.END)
 
-    r, err := g.Compile(ctx, compose.WithMaxRunSteps(10))
+    r, err := g.Compile(ctx)
     if err != nil {
        panic(err)
     }
@@ -161,15 +161,15 @@ func main() {
     userInfoTool := utils.NewTool(
        &schema.ToolInfo{
           Name: "user_info",
-          Desc: "Query the user's company, position, and salary information based on the user's name and email. ",
+          Desc: "根据用户的姓名和邮箱，查询用户的公司、职位、薪酬信息",
           ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
              "name": {
                 Type: "string",
-                Desc: "The user's name",
+                Desc: "用户的姓名",
              },
              "email": {
                 Type: "string",
-                Desc: "User's mailbox",
+                Desc: "用户的邮箱",
              },
           }),
        },
@@ -243,7 +243,7 @@ func main() {
 
     out, err := r.Invoke(ctx, map[string]any{
        "message_histories": []*schema.Message{},
-       "user_query":        "My name is zhangsan, and my email is [zhangsan@bytedance.com](mailto:zhangsan@bytedance.com). Please recommend a property for me.",
+       "user_query":        "我叫 zhangsan, 邮箱是 zhangsan@bytedance.com, 帮我推荐一处房产",
     })
     if err != nil {
        logs.Errorf("Invoke failed, err=%v", err)
@@ -296,7 +296,7 @@ func (l *loggerCallbacks) OnEndWithStreamOutput(ctx context.Context, info *callb
 
 ### Graph with state
 
-Graph can own a 'global' state, created by using the WithGenLocalState Option during NewGraph:
+Graph 可以有 graph 自身的“全局”状态，在创建 Graph 时传入 WithGenLocalState Option 开启此功能：
 
 ```go
 // compose/generic_graph.go
@@ -308,7 +308,7 @@ func WithGenLocalState[S any](gls GenLocalState[S]) NewGraphOption {
 }
 ```
 
-When adding nodes, add Pre/Post Handlers to process this State：
+Add node 时添加 Pre/Post Handler 来处理 State：
 
 ```go
 // compose/graph_add_node_options.go
@@ -325,7 +325,7 @@ func WithStatePostHandler[O, S any](post StatePostHandler[O, S]) GraphAddNodeOpt
 }
 ```
 
-Within nodes, use `ProcessState` to process State by passing in a function that can read/write state：
+在 Node 内部，用 `ProcessState`，传入一个读写 State 的 函数：
 
 ```go
 // flow/agent/react/react.go
@@ -342,7 +342,7 @@ err = compose.ProcessState[*state](ctx, func(_ context.Context, state *state) er
 })
 ```
 
-Full example:
+完整使用例子：
 
 ```go
 package main
@@ -396,13 +396,14 @@ func main() {
     }
 
     _ = sg.AddLambdaNode(nodeOfL1, l1,
-       compose.WithStatePreHandler(l1StateToInput), compose.WithStatePostHandler(l1StateToOutput))
+       compose.WithStatePreHandler(l1StateToInput),   compose.WithStatePostHandler(l1StateToOutput))
 
     l2 := compose.StreamableLambda(func(ctx context.Context, input string) (output *schema.StreamReader[string], err error) {
        outStr := "StreamableLambda: " + input
 
        sr, sw := schema.Pipe[string](utf8.RuneCountInString(outStr))
 
+       // nolint: byted_goroutine_recover
        go func() {
           for _, field := range strings.Fields(outStr) {
              sw.Send(field+" ", nil)
@@ -543,7 +544,7 @@ func main() {
 
 ## Chain
 
-> Chain can be regarded as a simplified encapsulation of Graph.
+> Chain 可以视为是 Graph 的简化封装
 
 ```go
 package main
@@ -572,7 +573,7 @@ func main() {
     ctx := context.Background()
     // build branch func
     const randLimit = 2
-    branchCond := func(ctx context.Context, input map[string]any) (string, error) {
+    branchCond := func(ctx context.Context, input map[string]any) (string, error) { // nolint: byted_all_nil_return
        if rand.Intn(randLimit) == 1 {
           return "b1", nil
        }
@@ -613,7 +614,7 @@ func main() {
           return role, nil
        })).
        AddLambda("input", compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (string, error) {
-          return "What is your cry like? ", nil
+          return "你的叫声是怎样的？", nil
        }))
 
     modelConf := &openai.ChatModelConfig{

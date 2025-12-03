@@ -165,7 +165,7 @@ prism_syntax_highlighting = true
 [params.mermaid]
 enable = true
 theme = "default"
-securitylevel = "strict"
+securitylevel = "loose"
 
 # User interface configuration
 [params.ui]

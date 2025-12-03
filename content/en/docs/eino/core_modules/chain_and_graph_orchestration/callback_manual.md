@@ -1,46 +1,46 @@
 ---
 Description: ""
-date: "2025-03-18"
+date: "2025-12-09"
 lastmod: ""
 tags: []
-title: 'Eino: Callback Manual'
-weight: 4
+title: 'Eino: Callback 用户手册'
+weight: 5
 ---
 
-## **Problem Solved**
+## 解决的问题
 
-Components (including Lambda) and Graph orchestration together solve the problem of "defining business logic." However, cross-cutting features such as logging, tracing, metrics, and on-screen display need mechanisms to inject functionality into Components (including Lambda) and Graphs.
+Component（包括 Lambda）、Graph 编排共同解决“把业务逻辑定义出来”的问题。而 logging, tracing, metrics, 上屏展示等横切面性质的功能，需要有机制把功能注入到 Component（包括 Lambda）、Graph 中。
 
-On the other hand, users might want to obtain intermediate information during the execution process of a specific Component implementation. For instance, VikingDBRetriever might provide additional query DB Names, and ArkChatModel might provide additional parameters like the requested temperature. There needs to be a mechanism to expose intermediate states.
+另一方面，用户可能想拿到某个具体 Component 实现的执行过程中的中间信息，比如 VikingDBRetriever 额外给出查询的 DB Name，ArkChatModel 额外给出请求的 temperature 等参数。需要有机制把中间状态透出。
 
-Callbacks support both "**cross-cutting feature injection**" and "**intermediate state exposure**". Specifically, users provide and register "functions" (Callback Handlers). Components and Graphs call back these functions at designated "times" (or cut points, locations) and provide the corresponding information.
+Callbacks 支持“**横切面功能注入**”和“**中间状态透出**”，具体是：用户提供、注册“function”（Callback Handler），Component 和 Graph 在固定的“时机”（或者说切面、位点）回调这些 function，给出对应的信息。
 
-## **Core Concepts**
+## 核心概念
 
-The core concepts interconnected within Eino include entities such as Components and Graphs, which at specific **timings** (Callback Timing), callback user-provided **functions** (Callback Handlers), conveying **what they are** (RunInfo), and **what happened** at that moment (Callback Input & Output).
+核心概念串起来，就是：Eino 中的 Component 和 Graph 等**实体**，在固定的**时机** (Callback Timing)，回调用户提供的 **function** (Callback Handler)，并把**自己是谁** (RunInfo)，以及**当时发生了什么** (Callback Input & Output) 传出去。
 
-### **Trigger Entities**
+### 触发实体
 
-Component (including types defined officially and Lambda), Graph Node (as well as Chain Node), and the Graph itself (including Chain). These three types of entities require cross-cutting functionality injection and intermediate state exposure, thus they all trigger callbacks. See the section on “[Trigger Methods](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)” below for details.
+Component（包括官方定义的组件类型和 Lambda），Graph Node（以及 Chain/Workflow Node），Graph 自身（以及 Chain/Workflow）。这三类实体，都有横切面功能注入、中间状态透出的需求，因此都会触发 callback。具体见下面的“[触发方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)”一节。
 
-### **Trigger Timings**
+### 触发时机
 
 ```go
 // CallbackTiming enumerates all the timing of callback aspects.
 type CallbackTiming = callbacks.CallbackTiming
 
 const (
-    TimingOnStart CallbackTiming = iota // Enter and begin execution
-    TimingOnEnd // Successfully complete and about to return
-    TimingOnError // Fail and about to return an error
-    TimingOnStartWithStreamInput // OnStart, but the input is StreamReader
-    TimingOnEndWithStreamOutput // OnEnd, but the output is StreamReader
+    TimingOnStart CallbackTiming = iota // 进入并开始执行
+    TimingOnEnd // 成功完成即将 return
+    TimingOnError // 失败并即将 return err 
+    TimingOnStartWithStreamInput // OnStart，但是输入是 StreamReader
+    TimingOnEndWithStreamOutput // OnEnd，但是输出是 StreamReader
 )
 ```
 
-Different trigger entities, in various scenarios, determine whether to trigger OnStart or OnStartWithStreamInput (similarly, OnEnd/OnEndWithStreamOutput). Specific rules are detailed in the section on “[Trigger Methods](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)” below.
+不同的触发实体，在不同场景下，是触发 OnStart 还是 OnStartWithStreamInput  (OnEnd/OnEndWithStreamOutput 同理），具体的规则，详见下面的“[触发方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)”一节。
 
-### **Callback Handler**
+### Callback Handler
 
 ```go
 type Handler interface {
@@ -54,21 +54,21 @@ type Handler interface {
 }
 ```
 
-A Handler is a struct that implements the 5 methods above (corresponding to the 5 trigger timings). Each method receives three pieces of information:
+一个 Handler 是一个实现了上面 5 个方法（对应 5 个触发时机）的结构体。每个方法都会接收三个信息：
 
-- Context: Used for **receiving custom information** that might be set by previous trigger timings of the same Handler.
-- RunInfo: Metadata of the entity triggering the callback.
-- Input/Output/InputStream/OutputStream: Business information at the time of triggering the callback.
+- Context: 用于**接收同一个 Handler 的前序触发时机**可能设置的定制信息。
+- RunInfo: 触发回调的实体元信息。
+- Input/Output/InputStream/OutputStream: 触发回调时的业务信息。
 
-Each method also returns a new context: used for **passing information between different trigger timings** of the same Handler.
+并都会返回新的 Context：用于**同一个 Handler 的不同触发时机之间**传递信息。
 
-If a Handler does not want to focus on all 5 trigger timings but only a subset, for example, just OnStart, it is recommended to use `NewHandlerBuilder().OnStartFn(...).Build()`. If it only wants to focus on specific components, such as ChatModel, it is recommended to use `NewHandlerHelper().ChatModel(...).Handler()`, which receives callbacks from only ChatModel and obtains a specific type of CallbackInput/CallbackOutput. See the section on “[Handler Implementation Methods](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)” for details.
+如果一个 Handler，不想关注所有的 5 个触发时机，只想关注一部分，比如只关注 OnStart，建议使用 `NewHandlerBuilder().OnStartFn(...).Build()`。如果不想关注所有的组件类型，只想关注特定组件，比如 ChatModel，建议使用 `NewHandlerHelper().ChatModel(...).Handler()`，可以只接收 ChatModel 的回调并拿到一个具体类型的 CallbackInput/CallbackOutput。具体见“[Handler 实现方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)”一节。
 
-The order of triggering between different Handlers is **not** guaranteed.
+不同 Handler 之间，触发顺序**没有**保证。
 
-### **RunInfo**
+### RunInfo
 
-Describes the metadata of the entity that triggers the Callback.
+描述了触发 Callback 的实体自身的元信息。
 
 ```go
 // RunInfo contains information about the running component that triggers callbacks.
@@ -79,33 +79,33 @@ type RunInfo struct {
 }
 ```
 
-- Name: Meaningful business name, to be specified by the user; if not specified, it defaults to an empty string. For different triggering entities:
-  - Component: When in Graph, use Node Name. When used standalone outside Graph, user sets it manually. See "Injecting RunInfo" and "Using Component Standalone" for details.
-  - Graph Node: Use Node Name `func WithNodeName(n string) GraphAddNodeOpt`
-  - Graph itself:
-    - For the top-level graph, use Graph Name `func WithGraphName(graphName string) GraphCompileOption`
-    - For nested graphs, use the Node Name added when joining the upper-level graph.
-- Type: Specified by the component's specific implementation:
-  - Component with interface: If it implements Typer interface, use the result of the GetType() method. Otherwise, use reflection to get the Struct/Func name.
-  - Lambda: If Type is specified using `func WithLambdaType(t string) LambdaOpt`, use it, otherwise it defaults to an empty string.
-  - Graph Node: Use the value of the internal Component/Lambda/Graph.
-  - Graph itself: Defaults to an empty string.
+- Name：有业务含义的名称，需用户指定，不指定就是空字符串。对不同的触发实体：
+  - Component：在 Graph 中时，用 Node Name。在 Graph 外单独的使用时，用户手动设置。详见“注入 RunInfo” 和 “单独使用 Component”
+  - Graph Node：用 Node Name `func WithNodeName(n string) GraphAddNodeOpt`
+  - Graph 自身：
+    - 顶层图用 Graph Name `func WithGraphName(graphName string) GraphCompileOption`
+    - 内部嵌套图，会用加入到上级图时添加的 Node Name
+- Type：组件具体实现来规定：
+  - 有接口的 Component：如果实现了 Typer 接口，用 GetType() 方法的结果。否则用反射获取 Struct/Func 名。
+  - Lambda：如果用 `func WithLambdaType(t string) LambdaOpt` 指定了 Type，用这个，否则是空字符串。
+  - Graph Node：用内部 Component/Lambda/Graph 的值。
+  - Graph 自身：空字符串。
 - Component:
-  - Component with interface: Corresponds to its interface.
-  - Lambda: Fixed value Lambda.
-  - Graph Node: Use the value of the internal Component/Lambda/Graph.
-  - Graph itself: Fixed values Graph / Chain. (Previously had StateGraph / StateChain, now consolidated into Graph / Chain.)
+  - 有接口的 Component：是啥接口，就是啥
+  - Lambda：固定值 Lambda
+  - Graph Node: 用内部的 Component/Lambda/Graph 的值。
+  - Graph 自身：固定值 Graph / Chain / Workflow. （之前曾有 StateGraph / StateChain ，现已整合到 Graph / Chain 中）
 
-### **Callback Input & Output**
+### Callback Input & Output
 
-Essentially of any type, as the input, output, and internal state of different Components can vary greatly.
+本质是任意类型，因为不同的 Component 的输入输出、内部状态完全不同。
 
 ```go
 type CallbackInput any
 type CallbackOutput any
 ```
 
-For a specific component, there are more specific types, such as Chat Model.
+具体到某个组件，有更具体的类型，比如 Chat Model
 
 ```go
 // CallbackInput is the input for the model callback.
@@ -133,63 +133,63 @@ type CallbackOutput struct {
 }
 ```
 
-In the specific implementation of Chat Model, such as OpenAI Chat Model, it is recommended that component authors pass specific Input/Output types to the Callback Handler instead of Any. This allows for more specific, customized intermediate state information to be exposed.
+在 Chat Model 的具体实现，比如 OpenAI Chat Model 中，建议组件作者向 Callback Handler 中传入具体的 Input/Output 类型，而不是 Any。这样可以透出更具体的、定制化的中间状态信息。
 
-If a Graph Node triggers the Callback, since the Node cannot obtain the internal intermediate state information of the component, it can only get the input and output specified by the component interface. For Chat Model, this would be []*schema.Message and *schema.Message.
+如果是 Graph Node 来触发 Callback，因为 Node 拿不到组件内部中间状态信息，只能拿到组件接口中规定的输入和输出，所以给 Callback Handler 的只能是这些。对 Chat Model，就是 []*schema.Message 和 *schema.Message。
 
-When the Graph itself triggers the Callback, the input and output are the overall input and output of the Graph.
+Graph 自身触发 Callback 时，输入输出就是 Graph 整体的输入和输出。
 
-## Injecting Handlers
+## 注入 Handler
 
-Handlers need to be injected into the Context to be triggered.
+Handler 需要注入到 Context 中才能被触发。
 
-### **Globally Injecting Handlers**
+### 全局注入 Handler
 
-Use `callbacks.AppendGlobalHandlers` to inject global Handlers. Once injected, all triggered callback actions will automatically trigger these global Handlers. Typical scenarios include tracing, logging, and other globally consistent, business-agnostic functions.
+通过 `callbacks.AppendGlobalHandlers` 注入全局的 Handler。注入后，所有的触发回调行为，都会自动触发这些全局的 Handler。典型的场景是 tracing，logging 等全局一致、业务场景无关的功能。
 
-It is not thread-safe. It is recommended to inject it once during service initialization.
+不是并发安全的。建议在服务初始化时注入一次。
 
-### **Injecting Handlers into the Graph**
+### 向 Graph 中注入 Handler
 
-Use `compose.WithCallbacks` to inject Handlers at runtime within the graph. These Handlers will be effective throughout the current execution of the graph, including each Node within the Graph and the Graph itself (as well as any nested graphs).
+通过 `compose.WithCallbacks` 在 graph 运行时注入 Handler，这些 Handler 会在 graph 的本次运行整体上生效，包括 Graph 内各 Node 和 Graph 自身（以及各内嵌的 graph）。
 
-Use `compose.WithCallbacks(...).DesignateNode(...)` to inject a Handler into a specific Node of the top-level Graph. If this Node itself is a nested Graph, it will be injected into the nested Graph itself and each Node within it.
+通过 `compose.WithCallbacks(...).DesignateNode(...)` 向顶层 Graph 的某个 Node 注入 Handler。当这个 Node 自身是个内嵌的 Graph 时，会注入到这个内嵌 Graph 自身和其内部的各 Node。
 
-Use `compose.WithCallbacks(...).DesignateNodeForPath(...)` to inject a Handler into a specific Node of a nested Graph.
+通过 `compose.WithCallbacks(...).DesignateNodeForPath(...)` 向内部嵌套的 Graph 的某个 Node 注入 Handler。
 
-### **Injecting Handlers Outside the Graph**
+### 在 Graph 外注入 Handler
 
-If you do not want to use the Graph but still want to use Callbacks:
+不想使用 Graph，但却想使用 Callback，则：
 
-Use `InitCallbacks(ctx context.Context, info *RunInfo, handlers ...Handler)` to get a new Context and inject Handlers and RunInfo.
+通过 `InitCallbacks(ctx context.Context, info *RunInfo, handlers ...Handler)` 获取一个新的 Context 并注入 Handlers 以及 RunInfo。
 
-### **Handler Inheritance**
+### Handler 继承
 
-Similar to how a child Context inherits all Values from its parent Context, a child Context will also inherit all Handlers from its parent Context. For example, if Handlers are already present in the Context passed into the Graph at runtime, these Handlers will be inherited and effective throughout the entire execution of the Graph.
+与子 Context 继承父 Context 中的所有 Values 相同，子 Context 也会继承父 Context 中的所有 Handlers。举个例子，Graph 运行时传入的 Context 中如果已经有了 Handler，则这些 Handlers 都会被整个 Graph 的这次运行继承和生效。
 
-## **Injecting RunInfo**
+## 注入 RunInfo
 
-RunInfo also needs to be injected into the Context to be available to Handlers when callbacks are triggered.
+RunInfo 也需要注入到 Context 中，才会在触发回调时给到 Handler。
 
-### **RunInfo Managed by the Graph**
+### Graph 托管 RunInfo
 
-The Graph will automatically inject RunInfo for all internal Nodes. The mechanism is that each Node's execution is a new child Context, and the Graph injects the corresponding Node's RunInfo into this new Context.
+Graph 会为内部所有的 Node 自动注入 RunInfo。机制是每个 Node 的运行，都是一个新的子 Context，Graph 向这个新的 Context 中注入对应 Node 的 RunInfo。
 
-### **Injecting RunInfo Outside the Graph**
+### 在 Graph 外注入 RunInfo
 
-If you do not want to use the Graph but still want to use Callbacks:
+不想使用 Graph，但却想使用 Callback，则：
 
-Use `InitCallbacks(ctx context.Context, info *RunInfo, handlers ...Handler)` to get a new Context and inject Handlers and RunInfo.
+通过 `InitCallbacks(ctx context.Context, info *RunInfo, handlers ...Handler)` 获取一个新的 Context 并注入 Handlers 以及 RunInfo。
 
-Use `ReuseHandlers(ctx context.Context, info *RunInfo)` to get a new Context, reuse the Handlers from the previous Context, and set the new RunInfo.
+通过 `ReuseHandlers(ctx context.Context, info *RunInfo)` 来获取一个新的 Context，复用之前 Context 中的 Handler，并设置新的 RunInfo。
 
-## **Trigger Methods**
+## 触发方式
 
 <a href="/img/eino/graph_node_callback_run_place.png" target="_blank"><img src="/img/eino/graph_node_callback_run_place.png" width="100%" /></a>
 
-### **Component Callback**
+### 组件实现内部触发(Component Callback)
 
-In the implementation code of the component, call `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), OnEndWithStreamOutput()`  from the callbacks package. Taking Ark's ChatModel implementation as an example, in the Generate method:
+在组件实现的代码中，调用 callbacks 包中的 `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), OnEndWithStreamOutput()`。以 Ark 的 ChatModel 实现为例，在 Generate 方法中：
 
 ```go
 func (cm *ChatModel) Generate(ctx context.Context, in []*schema.Message, opts ...fmodel.Option) (
@@ -222,10 +222,10 @@ func (cm *ChatModel) Generate(ctx context.Context, in []*schema.Message, opts ..
 }
 ```
 
-In the Stream method:
+在 Stream 方法中：
 
 ```go
-func (cm *ChatModel) Stream(ctx context.Context, in []*schema.Message, opts ...fmodel.Option) (
+func (cm *ChatModel) Stream(ctx context.Context, in []*schema.Message, opts ...fmodel.Option) ( // byted_s_too_many_lines_in_func
     outStream *schema.StreamReader[*schema.Message], err error) {
 
     defer func() {
@@ -259,17 +259,17 @@ func (cm *ChatModel) Stream(ctx context.Context, in []*schema.Message, opts ...f
 }
 ```
 
-As can be seen, when the Generate method is called, OnEnd is triggered, whereas in the Stream method, OnEndWithStreamOutput is triggered:
+可以看到 Generate 调用时，触发的是 OnEnd，而 Stream 调用时，触发的是 OneEndWithStreamOutput：
 
-When triggering Callbacks within the component implementation:
+组件实现内部触发 Callbacks 时:
 
-- **When the component input is StreamReader, trigger OnStartWithStreamInput, otherwise trigger OnStart**
-- **When the component output is StreamReader, trigger OnEndWithStreamOutput, otherwise trigger OnEnd**
+- **当组件输入为 StreamReader 时，触发 OnStartWithStreamInput，否则触发 OnStart**
+- **当组件输出为 StreamReader 时，触发 OnEndWithStreamOutput，否则触发 OnEnd**
 
-Components that internally implement callback triggers should implement the Checker interface, returning true from IsCallbacksEnabled, to convey to the outside that "I have internally implemented callback triggers":
+内部实现了 callback 触发的组件，应当实现 Checker 接口，IsCallbacksEnabled 返回 true，向外部传达“我内部实现了 callback 触发”的信息：
 
 ```go
-// Checker tells the callback aspect status of the component’s implementation.
+// Checker tells callback aspect status of component's implementation
 // When the Checker interface is implemented and returns true, the framework will not start the default aspect.
 // Instead, the component will decide the callback execution location and the information to be injected.
 type Checker interface {
@@ -277,32 +277,32 @@ type Checker interface {
 }
 ```
 
-If a component implementation does not implement the Checker interface, or IsCallbacksEnabled returns false, it can be assumed that the component does not trigger callbacks internally, and Graph Node is needed to handle the injection and triggering (when used within the Graph).
+如果一个组件实现，没有实现 Checker 接口，或者 IsCallbacksEnabled 返回  false，可以认为该组件内部没有触发回调，需要 Graph Node 来负责注入和触发（在 Graph 内使用时）。
 
-### Graph Node Trigger (Node Callback)
+### Graph Node 触发(Node Callback)
 
-When a Component is organized into a Graph, it becomes a Node. At this time, if the Component itself triggers a callback, the Node will reuse the Component's callback handling. Otherwise, the Node will place a callback handler at the points outside the Component. These points correspond to the streaming paradigm of the Component itself. For example, a ChatModelNode will have OnStart/OnEnd/OnError outside the Generate method, and OnStart/OnEndWithStreamOutput/OnError outside the Stream method.
+当一个 Component 被编排入 Graph 时，成为一个 Node。这时，如果 Component 自身会触发 callback，Node 就复用 Component 的 callback 处理。否则，Node 会在 Component 外面埋上 callback handler 触发点位。这些点位与 Component 自身的流式范式对应。比如一个 ChatModelNode，会在 Generate 方法外面埋上 OnStart/OnEnd/OnError，同时会在 Stream 方法外面埋上 OnStart/OnEndWithStreamOutput/OnError。
 
-When the Graph is running, each component will operate in either Invoke or Transform paradigm, and will call the corresponding component methods based on the specific implementation of the component's business streaming paradigm. For example, if the Graph runs in Invoke, the Chat Model Node will run in Invoke, calling the Generate method. However, if the Graph runs in Stream, the Chat Model Node will run in Transform, but since the Chat Model's business streaming paradigm does not include Transform, it will automatically downgrade to calling the Stream method. Therefore:
+在 Graph 运行时，各组件会以 Invoke 或 Transform 范式运行，又会根据组件具体实现的业务流式范式，调用对应的组件方法。比如 Graph 以 Invoke 运行，Chat Model Node 会以 Invoke 运行，调用 Generate 方法。而当 Graph 以 Stream 运行，Chat Model Node 会以 Transform 运行，但 Chat Model 的业务流式范式中没有 Transform，会自动降级成调用 Stream 方法。因此：
 
-**Which specific trigger points a Graph Node executes (OnStart or OnStartWithStreamInput) depends on the component's business streaming paradigm and the Graph running mode.**
+**Graph Node 具体触发哪个位点（OnStart 还是 OnStartWithStreamInput），取决于组件实现的业务流式范式和 Graph 运行方式两个因素。**
 
-For a detailed introduction to Eino's streaming programming, refer to [Eino Points of Streaming Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+关于 Eino 流式编程的详细介绍，参见 [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
-### **Graph Self Trigger (Graph Callback)**
+### Graph 自身触发(Graph Callback)
 
-The Graph triggers the Callback Handler at its own start, end, and error moments. If the Graph is called in Invoke form, it triggers OnStart/OnEnd/OnError. If called in Stream/Collect/Transform form, it triggers OnStartWithStreamInput/OnEndWithStreamOutput/OnError. This is because **the Graph will always execute internally in Invoke or Transform**. See [Eino Points of Streaming Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
+Graph 在自身的开始、结束、err 的时机触发 Callback Handler。如果 Graph 以 Invoke 形式调用，触发 OnStart/OnEnd/OnError。如果以 Stream/Collect/Transform 形式调用，触发 OnStartWithStreamInput/OnEndWithStreamOutput/OnError。这是因为 **Graph 内部会始终以 Invoke 或 Transform 执行**。参见 [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
-It is worth noting that a graph is also a kind of component, so a graph callback is also a special form of component callback. According to the definition of Node Callback, when the component inside the Node implements the perception and processing of the trigger moments, the Node will directly reuse the Component's implementation and will not implement the Node Callback again. This means when a graph is added to another Graph as a Node through the AddGraphNode method, this Node will reuse the internal graph's graph callback.
+值得注意的是：graph 也是 component 的一种，因此 graph callback 也是 component callback 的一种特殊形式。根据 Node Callback 的定义，当 Node 内部的 component 实现了对触发时机的感知和处理时，Node 会直接复用 Component 的实现，不会再实现 Node Callback。这意味着当一个 graph 通过 AddGraphNode 的方式加入到另外一个 Graph 中作为一个 Node 时，这个 Node 会复用内部 graph 的 graph callback。
 
-## **Parsing Callback Input & Output**
+## 解析 Callback Input & Output
 
-As mentioned earlier, the underlying type of Callback Input & Output is Any, and different component types might pass in their specific types when triggering callbacks. Also, in the interface definition of the Callback Handler, the input parameters of various methods are also Callback Input & Output of type Any.
+从上文得知，Callback Input & Output 的底层是 Any，只是不同组件类型在具体触发回调时，可能会传入自己特定的类型。并且 Callback Handler 的接口定义中，各方法的入参也是 Any 类型的 Callback Input & Output。
 
-Therefore, in the specific Handler implementation, two things need to be done:
+因此，具体的 Handler 实现中，需要做两个事情：
 
-1. Determine which component type triggered the callback using RunInfo. For example, RunInfo.Component == "ChatModel" or RunInfo.Type == "xxx Chat Model".
-2. Convert the Callback Input & Output of type any to the corresponding specific type. For instance, if RunInfo.Component == "ChatModel":
+1. 根据 RunInfo 判断当前触发回调的是哪个组件类型，比如 RunInfo.Component == "ChatModel"，或者 RunInfo.Type == "xxx Chat Model"。
+2. 把 any 类型的 Callback Input & Output 转成对应的具体类型，以 RunInfo.Component == "ChatModel" 为例：
 
 ```go
 // ConvCallbackInput converts the callback input to the model callback input.
@@ -334,23 +334,27 @@ func ConvCallbackOutput(src callbacks.CallbackOutput) *CallbackOutput {
 }
 ```
 
-If the Handler needs to add switch cases to determine RunInfo.Component and, for each case, call the corresponding conversion function to convert Any to the specific type, it does get somewhat complex. To reduce the repetitive labor of writing glue code, we provide two convenient utility functions for implementing Handlers.
+如果 Handler 里面需要增加 switch case 来判断 RunInfo.Component，并且对每一个 case，需要调对应的转换函数把 Any 转成具体类型，确实有些复杂。为了减少写胶水代码的重复劳动，我们提供了两种实现 Handler 的便捷工具函数。
 
-## Handler Implementation
+## Handler 实现方式
 
-In addition to implementing the Handler interface directly, Eino provides two convenient tools for implementing Handlers.
+除了直接实现 Handler 接口外，Eino 提供了两种 Handler 的便捷实现工具。
 
-### **HandlerHelper**
+### HandlerHelper
 
-If the user's Handler only focuses on specific types of components, such as in the scenario of ReactAgent, which only focuses on ChatModel and Tool, it is recommended to use HandlerHelper to quickly create a Callback Handler for a specific type:
+如果用户的  Handler 只关注特定类型的组件，比如 ReactAgent 的场景，只关注 ChatModel 和 Tool，建议使用 HandlerHelper 来快速创建具体类型的 Callback Handler：
 
 ```go
-handler := NewHandlerHelper().ChatModel(modelHandler).Tool(toolHandler).Handler()
+import ucb "github.com/cloudwego/eino/utils/callbacks"
+
+handler := ucb.NewHandlerHelper().ChatModel(modelHandler).Tool(toolHandler).Handler()
 ```
 
-Where modelHandler is a further encapsulation of the callback handler for the Chat Model component:
+其中 modelHandler 是 Chat Model 组件对 callback handler 的进一步封装：
 
 ```go
+// from package utils/callbacks
+
 // ModelCallbackHandler is the handler for the model callback.
 type ModelCallbackHandler struct {
     OnStart               func(ctx context.Context, runInfo *callbacks.RunInfo, input *model.CallbackInput) context.Context
@@ -360,87 +364,375 @@ type ModelCallbackHandler struct {
 }
 ```
 
-The above ModelCallbackHandler encapsulates three operations:
+上面的 ModelCallbackHandler，封装了三个操作：
 
-1. No longer needing to determine RunInfo.Component to select the callback triggered by ChatModel, as the filtering is already done automatically.
-2. Only requiring the implementation of the trigger timings supported by the Chat Model component, here removing unsupported OnStartWithStreamInput. Additionally, if the user only focuses on specific trigger timings supported by the Chat Model, such as only OnStart, they can only implement OnStart.
-3. Input/Output is no longer of any type but has been converted to model.CallbackInput, model.CallbackOutput.
+1. 不再需要判断 RunInfo.Component 来选择属于 ChatModel 触发的回调，而是已经自动做了过滤。
+2. 只要求实现 Chat Model 这个组件支持的触发时机，这里去掉了不支持的 OnStartWithStreamInput。同时，如果用户只关注 Chat Model 支持的四个时机的某几个，比如只有 OnStart，也可以只实现 OnStart。
+3. Input / Output 不再是 Any 类型，而是已经转化好的 model.CallbackInput, model.CallbackOutput。
 
-HandlerHelper supports all official components. The current list includes: ChatModel, ChatTemplate, Retriever, Indexer, Embedding, Document.Loader, Document.Transformer, Tool, ToolsNode.
+HandlerHelper 支持全部的官方组件，目前的列表是：ChatModel, ChatTemplate, Retriever, Indexer, Embedding, Document.Loader, Document.Transformer, Tool, ToolsNode.
 
-For components like Lambda, Graph, Chain, which have indeterminate input and output types, you can also use HandlerHelper, but it can only achieve the first point mentioned above, i.e., automatic filtering by component type. Points 2 and 3 still need to be implemented by the user themselves:
-
-```go
-handler := NewHandlerHelper().Lambda(callbacks.Handler).Graph(callbacks.Handler)...Handler()
-```
-
-At this time, NewHandlerHelper().Lambda() needs to pass in callbacks.Handler, which can be achieved using the HandlerBuilder below.
-
-### **HandlerBuilder**
-
-If the user's Handler needs to focus on multiple component types but only on specific trigger timings, HandlerBuilder can be used:
+针对 Lambda，Graph，Chain 这些输入输出类型不确定的“组件”，也可以使用 HandlerHelper，但是只能做到上面的第 1 点，即按照组件类型做自动的过滤，2、3 点依然需要用户自己实现：
 
 ```go
-handler := NewHandlerBuilder().OnStartFn(fn)...Build()
+import ucb "github.com/cloudwego/eino/utils/callbacks"
+
+handler := ucb.NewHandlerHelper().Lambda(callbacks.Handler).Graph(callbacks.Handler)...Handler()
 ```
 
-## **Best Practices**
+这时，NewHandlerHelper().Lambda() 需要传入 callbacks.Handler 可以用下面的 HandlerBuilder 来实现。
 
-### **Usage in Graph**
+### HandlerBuilder
 
-- Actively use Global Handlers, registering handlers that are always in effect.
-- Inject Handlers at runtime using the `WithHandlers` option, and designate the Node, nested internal Graph, or internal Graph's Node where they apply using `DesignateNode` or `DesignateNodeByPath`.
+如果用户的 Handler 需要关注多个组件类型，但却只需要关注部分的触发时机，可以使用 HandlerBuilder：
 
-### **Usage Outside of Graph**
+```go
+import "github.com/cloudwego/eino/callbacks"
 
-Use `InitCallbacks` to inject `RunInfo` and `Handlers`. You need to set the fields of `RunInfo` yourself。Global Handlers will be automatically injected。
-
-```
-ctx = callbacks.InitCallbacks(ctx, runInfo, handlers...)
-componentA.Invoke(ctx, input)
+handler := callbacks.NewHandlerBuilder().OnStartFn(fn)...Build()
 ```
 
-If componentA invokes componentB internally(e.g. ToolsNode invokes Tool), you need to replace `RunInfo` before invoking componentB:
+## 最佳实践
 
-```
-func ComponentARun(ctx, inputA) {
-    // reuse handlers exist in ctx(including Global Handlers), only replace RunInfo
-    ctx = callbacks.ReuseHandlers(ctx, newRunInfo)
-    componentB.Invoke(ctx, inputB)
-    
-    // replace both RunInfo and Handlers
-    ctx = callbacks.InitCallbacks(ctx, newRunInfo, newHandlers...)
-    componentB.Invoke(ctx, inputB)
+### 在 Graph 中使用
+
+- 积极使用 Global Handlers，注册始终生效的 Handlers。
+
+```go
+package main
+
+import (
+        "context"
+        "log"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/compose"
+)
+
+func main() {
+        // Build a simple global handler
+        handler := callbacks.NewHandlerBuilder().
+                OnStartFn(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
+                        log.Printf("[Global Start] component=%s name=%s input=%T", info.Component, info.Name, input)
+                        return ctx
+                }).
+                OnEndFn(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
+                        log.Printf("[Global End] component=%s name=%s output=%T", info.Component, info.Name, output)
+                        return ctx
+                }).
+                OnErrorFn(func(ctx context.Context, info *callbacks.RunInfo, err error) context.Context {
+                        log.Printf("[Global Error] component=%s name=%s err=%v", info.Component, info.Name, err)
+                        return ctx
+                }).
+                Build()
+
+        // Register as global callbacks (applies to all subsequent runs)
+        callbacks.AppendGlobalHandlers(handler)
+
+        // Example graph usage; the global handler will be invoked automatically
+        g := compose.NewGraph[string, string]()
+        // ... add nodes/edges ...
+        r, _ := g.Compile(context.Background())
+        _, _ = r.Invoke(context.Background(), "hello") // triggers global callbacks
 }
 ```
 
-### **Handler Reading/Writing of Input & Output**
+- 通过 WithHandlers option 在运行时注入 Handler，通过 DesignateNode 或 DesignateNodeByPath 指定生效的 Node / 嵌套的内部 Graph / 内部 Graph 的 Node。
 
-When Input & Output flow through a graph, it is a direct variable assignment. As shown in the figure below, NodeA.Output, NodeB.Input, NodeC.Input, as well as the input & output obtained in each Handler, if they are reference types such as structure pointers or Maps, are all the same piece of data. Therefore, whether inside a Node or a Handler, modifying Input & Output is not recommended, as it can lead to concurrency issues. Even in a synchronous situation, Node B and Node C may have concurrency, resulting in concurrency between handler1 and handler2 inside them. When there are asynchronous processing logics, there are even more possible concurrent scenarios.
+```go
+package main
 
-<a href="/img/eino/eino_callback_start_end_place.png" target="_blank"><img src="/img/eino/eino_callback_start_end_place.png" width="100%" /></a>
+import (
+        "context"
 
-In the scenario of stream transmission, the input streams in all successor nodes and their handlers are streams obtained by StreamReader.Copy(n) and can be read independently of each other. However, for each chunk in the stream, it is a direct variable assignment. If the chunk is a reference type such as a struct pointer or a map, the streams after each copy will read the same data. Therefore, within Node and Handler, it is also not recommended to modify the chunk of the stream, as there are concurrency issues.
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/compose"
+        "github.com/cloudwego/eino/components/prompt"
+        "github.com/cloudwego/eino/schema"
+)
+
+func main() {
+        ctx := context.Background()
+
+        top := compose.NewGraph[map[string]any, []*schema.Message]()
+        sub := compose.NewGraph[map[string]any, []*schema.Message]()
+        _ = sub.AddChatTemplateNode("tmpl_nested", prompt.FromMessages(schema.FString, schema.UserMessage("Hello, {name}!")))
+        _ = sub.AddEdge(compose.START, "tmpl_nested")
+        _ = sub.AddEdge("tmpl_nested", compose.END)
+        _ = top.AddGraphNode("sub_graph", sub)
+        _ = top.AddEdge(compose.START, "sub_graph")
+        _ = top.AddEdge("sub_graph", compose.END)
+        r, _ := top.Compile(ctx)
+
+        optGlobal := compose.WithCallbacks(
+                callbacks.NewHandlerBuilder().OnEndFn(func(ctx context.Context, _ *callbacks.RunInfo, _ callbacks.CallbackOutput) context.Context { return ctx }).Build(),
+        )
+        optNode := compose.WithCallbacks(
+                callbacks.NewHandlerBuilder().OnStartFn(func(ctx context.Context, _ *callbacks.RunInfo, _ callbacks.CallbackInput) context.Context { return ctx }).Build(),
+        ).DesignateNode("sub_graph")
+        optNested := compose.WithChatTemplateOption(
+                prompt.WrapImplSpecificOptFn(func(_ *struct{}) {}),
+        ).DesignateNodeWithPath(
+                compose.NewNodePath("sub_graph", "tmpl_nested"),
+        )
+
+        _, _ = r.Invoke(ctx, map[string]any{"name": "Alice"}, optGlobal, optNode, optNested)
+}
+```
+
+### 在 Graph 外使用
+
+这个场景是：不使用 Graph/Chain/Workflow 等编排能力，单独用代码去调用 ChatModel/Tool/Lambda 等各种组件，且希望这些组件能成功触发 Callback Handlers。
+
+此场景需要用户解决的问题是：手动设置正确的 RunInfo 和 Handlers，因为没有 Graph 来帮助用户自动设置 RunInfo 和 Handlers 了。
+
+完整示例：
+
+```go
+package main
+
+import (
+        "context"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/compose"
+)
+
+func innerLambda(ctx context.Context, input string) (string, error) {
+        // 作为 ComponentB 的实现方：进入组件时补默认 RunInfo（Name 无法给默认值）
+        ctx = callbacks.EnsureRunInfo(ctx, "Lambda", compose.ComponentOfLambda)
+        ctx = callbacks.OnStart(ctx, input)
+        out := "inner:" + input
+        ctx = callbacks.OnEnd(ctx, out)
+        return out, nil
+}
+
+func outerLambda(ctx context.Context, input string) (string, error) {
+        // 作为 ComponentA 的实现方：进入组件时补默认 RunInfo
+        ctx = callbacks.EnsureRunInfo(ctx, "Lambda", compose.ComponentOfLambda)
+        ctx = callbacks.OnStart(ctx, input)
+
+        // 推荐：调用前替换 RunInfo，确保内层组件拿到正确的 name/type/component
+        ctxInner := callbacks.ReuseHandlers(ctx,
+                &callbacks.RunInfo{Name: "ComponentB", Type: "Lambda", Component: compose.ComponentOfLambda},
+        )
+        out1, _ := innerLambda(ctxInner, input) // 内层 RunInfo.Name = "ComponentB"
+
+        // 未替换：框架清空 RunInfo，只能靠 EnsureRunInfo 补默认值（Name 为空）
+        out2, _ := innerLambda(ctx, input) // 内层 RunInfo.Name == ""
+
+        final := out1 + "|" + out2
+        ctx = callbacks.OnEnd(ctx, final)
+        return final, nil
+}
+
+func main() {
+        // 在 graph 外单独使用组件：初始化 RunInfo 与 Handlers
+        h := callbacks.NewHandlerBuilder().Build()
+        ctx := callbacks.InitCallbacks(context.Background(),
+                &callbacks.RunInfo{Name: "ComponentA", Type: "Lambda", Component: compose.ComponentOfLambda},
+                h,
+        )
+
+        _, _ = outerLambda(ctx, "ping")
+}
+```
+
+对上面的样例代码做下说明：
+
+- 初始化：在 graph/chain 外使用组件时，用 InitCallbacks 设置首个 RunInfo 与 Handlers ，让后续组件执行能拿到完整回调上下文。
+- 内部调用：在组件 A 内部调用组件 B 前，用 ReuseHandlers 替换 RunInfo （保留原有 handlers），确保 B 的回调拿到正确的 Type/Component/Name 。
+- 不替换的后果：Eino 在一组 Callbacks 完整触发后，会清空当前 ctx 中的 RunInfo，此时因为 RunInfo 为空，Eino 就不再会触发 Callbacks；组件 B 的开发者只能在自身实现里用 EnsureRunInfo 补 Type/Component 的默认值，来确保 RunInfo 非空且大致正确，从而能成功触发 Callbacks。但无法给出合理 Name ，因此 RunInfo.Name 会是空字符串。
+
+### 组件嵌套使用
+
+场景：在一个组件，比如 Lambda 内，手动调用另外一个组件，比如 ChatModel。
+
+这时，如果外层的组件的 ctx 中有 callback handler，因为这个 ctx 也会传入内部的组件，所以内部的组件也会收到同样的 callback handler。
+
+按“是否希望内部组件触发 callback”区分：
+
+1. 希望触发：基本等同于上面一小节的情况，建议通过 `ReuseHandlers` 来手动为内部组件设置 `RunInfo`。
+
+```go
+package main
+
+import (
+        "context"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/components"
+        "github.com/cloudwego/eino/components/model"
+        "github.com/cloudwego/eino/compose"
+        "github.com/cloudwego/eino/schema"
+)
+
+// 外层 Lambda，在内部手动调用 ChatModel
+func OuterLambdaCallsChatModel(cm model.BaseChatModel) *compose.Lambda {
+        return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+                // 1) 复用外层 handlers，并为内部组件显式设置 RunInfo
+                innerCtx := callbacks.ReuseHandlers(ctx, &callbacks.RunInfo{
+                        Type:      "InnerCM",                          // 可自定义
+                        Component: components.ComponentOfChatModel,    // 标注组件类型
+                        Name:      "inner-chat-model",                 // 可自定义
+                })
+
+                // 2) 构造输入消息
+                msgs := []*schema.Message{{Role: schema.User, Content: input}}
+
+                // 3) 调用 ChatModel（内部会触发相应的回调）
+                out, err := cm.Generate(innerCtx, msgs)
+                if err != nil {
+                        return "", err
+                }
+                return out.Content, nil
+        })
+}
+```
+
+上面的代码假设了“内部的 ChatModel 的 Generate 方法内部，已经调用了 OnStart，OnEnd，OnError 这些方法”。如果没有，则需要在外部组件内部“替内部组件”调用这些方法：
+
+```go
+func OuterLambdaCallsChatModel(cm model.BaseChatModel) *compose.Lambda {
+        return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+                // 复用外层 handlers，并为内部组件显式设置 RunInfo
+                ctx = callbacks.ReuseHandlers(ctx, &callbacks.RunInfo{
+                        Type:      "InnerCM",
+                        Component: components.ComponentOfChatModel,
+                        Name:      "inner-chat-model",
+                })
+
+                // 构造输入消息
+                msgs := []*schema.Message{{Role: schema.User, Content: input}}
+
+                // 显式触发 OnStart
+                ctx = callbacks.OnStart(ctx, msgs)
+
+                // 调用 ChatModel
+                resp, err := cm.Generate(ctx, msgs)
+                if err != nil {
+                        // 显式触发 OnError
+                        ctx = callbacks.OnError(ctx, err)
+                        return "", err
+                }
+
+                // 显式触发 OnEnd
+                ctx = callbacks.OnEnd(ctx, resp)
+
+                return resp.Content, nil
+        })
+}
+```
+
+1. 不希望触发：这里假定内部组件实现了 `IsCallbacksEnabled()` 且返回 true，并且在内部调用了 `EnsureRunInfo`。这时默认内部 callbacks 会触发。如不希望触发，最简单的办法是去掉 ctx 中的 handler，比如为内部组件传一个新的 ctx:
+
+   ```go
+   package main
+
+   import (
+           "context"
+
+           "github.com/cloudwego/eino/components/model"
+           "github.com/cloudwego/eino/compose"
+           "github.com/cloudwego/eino/schema"
+   )
+
+   func OuterLambdaNoCallbacks(cm model.BaseChatModel) *compose.Lambda {
+           return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+                   // 使用一个全新的 ctx，不复用外层的 handlers
+                   innerCtx := context.Background()
+
+                   msgs := []*schema.Message{{Role: schema.User, Content: input}}
+                   out, err := cm.Generate(innerCtx, msgs)
+                   if err != nil {
+                           return "", err
+                   }
+                   return out.Content, nil
+           })
+   }
+   ```
+
+   1. 但有时用户可能希望“只不触发某个特定的 callback handlers，但是还触发其他的 callback handlers”。建议的使用姿势是在这个 callback handler 中加代码，按 RunInfo 过滤掉内部组件：
+
+```go
+package main
+
+import (
+        "context"
+        "log"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/components"
+        "github.com/cloudwego/eino/compose"
+)
+
+// 一个按 RunInfo 过滤的 handler：对内部 ChatModel（Type=InnerCM，Name=inner-chat-model）不做任何处理
+func newSelectiveHandler() callbacks.Handler {
+        return callbacks.
+                NewHandlerBuilder().
+                OnStartFn(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
+                        if info != nil && info.Component == components.ComponentOfChatModel &&
+                                info.Type == "InnerCM" && info.Name == "inner-chat-model" {
+                                // 过滤目标：内部 ChatModel，直接返回，不做处理
+                                return ctx
+                        }
+                        log.Printf("[OnStart] %s/%s (%s)", info.Type, info.Name, info.Component)
+                        return ctx
+                }).
+                OnEndFn(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
+                        if info != nil && info.Component == components.ComponentOfChatModel &&
+                                info.Type == "InnerCM" && info.Name == "inner-chat-model" {
+                                // 过滤目标：内部 ChatModel，直接返回，不做处理
+                                return ctx
+                        }
+                        log.Printf("[OnEnd] %s/%s (%s)", info.Type, info.Name, info.Component)
+                        return ctx
+                }).
+                Build()
+}
+
+// 组合示例：外层调用希望触发，特定 handler 通过 RunInfo 过滤掉内部 ChatModel
+func Example(cm model.BaseChatModel) (compose.Runnable[string, string], error) {
+        handler := newSelectiveHandler()
+
+        chain := compose.NewChain[string, string]().
+                AppendLambda(OuterLambdaCallsChatModel(cm)) // 内部会 ReuseHandlers + RunInfo
+
+        return chain.Compile(
+                context.Background(),
+                // 挂载 handler（也可结合全局 handlers）
+                compose.WithCallbacks(handler),
+        )
+}
+```
+
+### Handler 内读写 input & output
+
+Input & output 在 graph 中流转时，是直接变量赋值。如下图所示，NodeA.Output, NodeB.Input, NodeC.Input, 以及各个 Handler 中拿到的 input & output，如果是结构体指针或 Map 等引用类型，则都是同一份数据。因此，无论在 Node 内还是 Handler 内，都不建议修改 Input & Output，会产生并发问题：即使同步情况下，Node B 和 Node C 有并发，导致内部的 handler1 和 handler2 有并发。存在异步处理逻辑时，并发的可能场景更多。
+
+<a href="/img/eino/eino_callback_start_end_place.png" target="_blank"><img src="/img/eino/eino_callback_start_end_place.png" width="60%" /></a>
+
+在流传递的场景，所有下游节点和 handler 中的输入流，都是 StreamReader.Copy(n) 得到的流，可相互独立的读取流。但是，流中的每个 chunk，是直接变量赋值，如果 chunk 是结构体指针或 Map 等引用类型，各个 Copy 后的流读到的是同一份数据。因此，在 Node 和 Handler 内，同样不建议修改流的 chunk，有并发问题。
 
 <a href="/img/eino/eino_callback_stream_place.png" target="_blank"><img src="/img/eino/eino_callback_stream_place.png" width="100%" /></a>
 
-### **Information Transfer Between Handlers**
+### Handler 间传递信息
 
-You can transfer information between different time points of the same Handler through `ctx`. For example, in `OnStart`, use `context.WithValue` to return a new context, and retrieve this value from the context in `OnEnd`.
+同一个 Handler 的不同时机之间，可通过 ctx 传递信息，如 OnStart 中通过 context.WithValue 返回一个新的 context，在 OnEnd 中从 context 中再取出这个 value。
 
-There's no guaranteed execution order between different Handlers, so it's not advised to transfer information between Handlers via this mechanism. Essentially, you cannot ensure that the context returned by one Handler will definitely be used in the execution function of the next Handler.
+不同 Handler 之间，没有执行顺序的保证，因此不建议通过上面的机制在不同 Handler 间传递信息。本质上是无法保证某一个 Handler 返回的 context，一定会进入下一个 Handler 的函数执行中。
 
-Should you need to transfer information between Handlers, it’s recommended to set a global, request-scoped variable in the outermost context (like the context passed during graph execution) as a public information storage space. You can read and update this public variable as needed in each Handler. For streams, extra attention is needed to ensure the thread safety of this public variable.
+如果需要在不同 Handler 之间传递信息，建议的方式是在最外层的 context（如 graph 执行时传入的 context）中，设置一个全局的、请求维度的变量作为公共信息的存取空间，在各个 Handler 中按需读取和更新这个公共变量。用户需要自行保证这个公共变量的并发安全。
 
-### **Always Close Streams**
+### 流切记要 Close
 
-Take a node like `ChatModel`, which has true stream output, for example. When there is a Callback aspect, the output stream from `ChatModel`:
+以存在 ChatModel 这种具有真流输出的节点为例，当存在 Callback 切面时，ChatModel 的输出流：
 
-- Must be consumed as input by downstream nodes and also be consumed by the Callback aspect.
-- A single frame (Chunk) in a stream can only be consumed by one consumer, meaning the stream is not broadcast.
+- 既要被下游节点作为输入来消费，又要被 Callback 切面来消费
+- 一个流中的一个帧(Chunk)，只能被一个消费方消费到，即流不是广播模型
 
-Thus, the stream needs to be duplicated, with the duplication relationship as follows:
+所以此时需要将流进行复制，其复制关系如下：
 
-<a href="/img/eino/en_eino_stream_copy_for_callback.png" target="_blank"><img src="/img/eino/en_eino_stream_copy_for_callback.png" width="100%" /></a>
+<a href="/img/eino/graph_stream_chunk_copy.png" target="_blank"><img src="/img/eino/graph_stream_chunk_copy.png" width="100%" /></a>
 
-- If one of the Callbacks does not close the corresponding stream, it may result in the original Stream being unable to close and release resources.
+- 如果其中一个 Callback n 没有 Close 对应的流，可能导致原始 Stream 无法 Close 和释放资源。

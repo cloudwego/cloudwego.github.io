@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 协作'
@@ -63,10 +63,13 @@ History 对应【上游 Agent 全对话上下文策略】，多 Agent 系统中�
 
 <a href="/img/eino/eino_adk_message_event.png" target="_blank"><img src="/img/eino/eino_adk_message_event.png" width="100%" /></a>
 
-在 Eino ADK 中，当为一个 Agent 构建 AgentInput 时，会对 History 中的 Event 进行过滤，确保 Agent 只会接收到当前 Agent 的直接或间接父 Agent 产生的 Event。换句话说，只有当 Event 的 RunPath “属于”当前 Agent 的 RunPath 时，该 Event 才会参与构建 Agent 的 Input。
+在 Eino ADK 中，当为一个 Agent 构建 AgentInput 时，它能看到的 History 是“所有在我之前产生的 AgentEvent”。
 
-> 💡
-> RunPathA “属于” RunPathB 定义为 RunPathA 与 RunPathB 相同或者 RunPathA 是 RunPathB 的前缀
+值得一提的是 ParallelWorkflowAgent：并行的两个子 Agent（A，B），在并行执行过程中，相互不可见对方产生的 AgentEvent，因为并行的 A、B 没有谁是在另一个之前。
+
+#### RunPath
+
+History 中每个 AgentEvent 都是由“特定 Agent 在特定的执行序列中产生的”，也就是 AgentEvent 有自身的 RunPath。RunPath 的作用是传递出这个信息，在 eino 框架中不乘载其他功能。
 
 下面表格中给出各种编排模式下，Agent 执行时的具体 RunPath：
 

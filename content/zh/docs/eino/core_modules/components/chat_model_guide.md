@@ -4,7 +4,7 @@ date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 'Eino: ChatModel 使用说明'
-weight: 0
+weight: 1
 ---
 
 ## 基本介绍

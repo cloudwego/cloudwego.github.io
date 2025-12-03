@@ -1,74 +1,76 @@
 ---
 Description: ""
-date: "2025-03-13"
+date: "2025-01-20"
 lastmod: ""
 tags: []
-title: EinoDev IDE Plugin Introduction
+title: Eino Dev 插件安装指南
 weight: 1
 ---
 
-## **Background**
+## 背景 & 简介
 
-> [Eino: Overview](/docs/eino/overview)
->
-> **🚀  Eino is a Go AI component development framework that provides commonly used AI application components and integration component orchestration capabilities. To better assist developers in using Eino, we offer a GoLand Eino IDE plugin to help you develop efficiently  🚀**
+> [Eino: 概述](/zh/docs/eino/overview)
 
-## **Introduction**
+**Eino 是 Go AI 集成组件的研发框架**，提供常用的 **AI 组件**以及集成组件**编排能力**。为了更好的辅助开发者使用 Eino，我们提供了「**Eino Dev**」插件，助力 AI 应用高效开发  🚀。
 
-<a href="/img/eino/en_eino_debug_plugin.png" target="_blank"><img src="/img/eino/en_eino_debug_plugin.png" width="60%" /></a>
+<a href="/img/eino/eino_dev_ability_introduction_page.png" target="_blank"><img src="/img/eino/eino_dev_ability_introduction_page.png" width="100%" /></a>
 
-## **Installation Version Requirements**
+## 如何安装
 
-<table>
-<tr><td><strong>Plugin Version</strong></td><td><strong>Goland IDE Version</strong></td><td><strong>VS Code Version</strong></td><td><strong>Eino-Ext/devops</strong> <strong> Version</strong></td></tr>
-<tr><td>1.1.0</td><td>2023.2+</td><td>1.97.x</td><td>0.1.0</td></tr>
-<tr><td>1.0.7      </td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
-<tr><td>1.0.6      </td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
-<tr><td>1.0.5     </td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
-<tr><td>1.0.4</td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
-</table>
+### 版本安装依赖
 
-**Plugin Version :**  Plugin version information
+   <table>
+   <tr><td><strong>Plugin Version</strong></td><td><strong>GoLand IDE Version</strong></td><td><strong>VS Code Version</strong></td><td><strong>eino-ext/devops  Version</strong></td></tr>
+   <tr><td>1.1.0</td><td>2023.2+</td><td>1.97.x</td><td>0.1.0</td></tr>
+   <tr><td>1.0.7      </td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
+   <tr><td>1.0.6      </td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
+   <tr><td>1.0.5     </td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
+   <tr><td>1.0.4</td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
+   </table>
 
-**Goland IDE Version** :  The minimum version supported by the GoLand IDE
+**Plugin** **Version**：插件版本信息
 
-**VS Code Version** :  The minimum version supported by the VS Code
+**Goland IDE Version**： Goland IDE 可支持的最小版本
 
-**Eino-Ext/devops  Version :**  The comfortable version for  debug module of [eino-ext/devops](https://github.com/cloudwego/eino-ext/tree/main/devops)
+**VS Code Version**： VS Code 可支持的最小版本
 
-## **Install**
+**Eino-Ext/devops  Version**： [eino-ext/devops](https://github.com/cloudwego/eino-ext/tree/main/devops) 调试模块对应的合适版本
 
-### Goland
+### 安装
+
+#### GoLand
 
 <table><tbody><tr>
-<td><li><strong>Enter GoLand, click on Settings, and select Plugin.</strong></li>
+<td><li>进入 <strong>GoLand</strong>，点击<strong>设置</strong>，选择<strong> </strong><strong>Plugin</strong><strong>s</strong></li>
 <a href="/img/eino/eino_install_page.png" target="_blank"><img src="/img/eino/eino_install_page.png" width="100%" /></a>
-</td><td><li><strong>Through Marketplace, search for Eino Dev plugin and follow</strong></li>
+</td><td><li>在 <strong>Marketplace</strong> 中搜索 <strong>E</strong><strong>ino</strong><strong> Dev</strong> 插件并安装</li>
 <a href="/img/eino/eino_install_page_2_page.png" target="_blank"><img src="/img/eino/eino_install_page_2_page.png" width="100%" /></a>
-
 </td></tr></tbody></table>
 
-### VS Code
+#### VS Code
 
-- In VS Code, click on the "Extensions icon" to enter the extension marketplace. Search for EinoDev and install it.
+- 在 VS Code 中点击「Extension 图标」，进入插件市场，搜索 Eino Dev，安装即可
 
-   <a href="/img/eino/H7vbbB8Igoi380x8TCXcDCWznFg.png" target="_blank"><img src="/img/eino/H7vbbB8Igoi380x8TCXcDCWznFg.png" width="100%" /></a>
+<a href="/img/eino/eino_dev_plugin_vscode.png" target="_blank"><img src="/img/eino/eino_dev_plugin_vscode.png" width="100%" /></a>
+
+## 功能简介
 
 > 💡
-> **After the plugin installation is completed, you can find the EinoDev debug plugin icon in the plugin list on the right side of the IDE. Now, you can experience the debugging and orchestration capabilities provided by the plugin.**
+> **插件安装完毕** ✅，**接下来就可以体验插件提供的调试与编排能力了** ～
 
 <table><tbody><tr>
 <td><li>Goland</li>
-Find the 「 <strong>EinoDev </strong>」 icon in the right sidebar and click it.：
-<a href="/img/eino/ZRadbTP8jojvgxxjpJ4czaVnnfh.png" target="_blank"><img src="/img/eino/ZRadbTP8jojvgxxjpJ4czaVnnfh.png" width="100%" /></a>
+右侧边栏找到「<strong>Eino Dev</strong>」图标并点击：
+<a href="/img/eino/eino_dev_ide_plugin_guide_2.png" target="_blank"><img src="/img/eino/eino_dev_ide_plugin_guide_2.png" width="100%" /></a>
 </td><td><li>VS Code</li>
-Find 「<strong>EinoDev</strong>」 at the bottom and click it.：
-<a href="/img/eino/OiF9b24QNocuMLxSrZ2c9PkAnzf.png" target="_blank"><img src="/img/eino/OiF9b24QNocuMLxSrZ2c9PkAnzf.png" width="100%" /></a>
+在底部找到「<strong>Eino Dev</strong>」并点击：
+<a href="/img/eino/eino_dev_ide_plugin_guide_1.png" target="_blank"><img src="/img/eino/eino_dev_ide_plugin_guide_1.png" width="100%" /></a>
+
 </td></tr></tbody></table>
 
-## Function Introduction
+### Graph 编排
 
-### EinoDev Graph Orchestration
+详情 👉：[Eino Dev 可视化编排插件功能指南](/zh/docs/eino/core_modules/devops/visual_orchestration_plugin_guide)
 
 <table><tbody><tr>
 <td>
@@ -77,7 +79,9 @@ Find 「<strong>EinoDev</strong>」 at the bottom and click it.：
 <a href="/img/eino/eino_orchestration_show_nodes_2_page.png" target="_blank"><img src="/img/eino/eino_orchestration_show_nodes_2_page.png" width="100%" /></a>
 </td></tr></tbody></table>
 
-### EinoDev Graph Debugging
+### Graph 调试
+
+详情 👉：[Eino Dev 可视化调试插件功能指南](/zh/docs/eino/core_modules/devops/visual_debug_plugin_guide)
 
 <table><tbody><tr>
 <td>

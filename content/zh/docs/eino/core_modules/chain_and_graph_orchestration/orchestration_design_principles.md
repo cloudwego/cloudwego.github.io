@@ -88,7 +88,7 @@ eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是
 
 ```go
 func TestChain() {
-    chain := compose.NewChain[map[string]any,string]()
+    chain := compose.NewChain[map[string]interface,string]()
     
     nodeTemplate := &fakeChatTemplate{} // input: map[string]any, output: []*schema.Message
     
@@ -222,7 +222,7 @@ AddChatModelNode("xxx", model, WithStreamStatePostHandler(postHandler))
 
 Runnable 的一个重要作用就是提供了 「Invoke」、「Stream」、「Collect」、「Transform」 四种调用方式。
 
-> 上述几种调用方式的介绍以及详细的 Runnable 介绍可以查看: [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials#share-AqaQddcjSoFFojxmFVcchOHTnsf)
+> 上述几种调用方式的介绍以及详细的 Runnable 介绍可以查看: [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
 假设我们有一个 `Graph[[]*schema.Message, []*schema.Message]`，里面有一个 ChatModel 节点，一个 Lambda 节点，Compile 之后是一个 `Runnable[[]*schema.Message, []*schema.Message]`。
 

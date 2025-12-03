@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-07-21"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: 'Eino Tutorial: Host Multi-Agent'
@@ -384,25 +384,25 @@ func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[
 
 默认实现不适用的情况：在输出 Tool Call 前，有非空的 content chunk。此时，需要自定义 tool Call checker 如下：
 
-```
-_toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {_
-_    defer sr.Close()_
-_    for {_
-_       msg, err := sr.Recv()_
-_       if err != nil {_
-_          if errors.Is(err, io.EOF) {_
-_             // finish_
-_             break_
-_          }_
+```go
+toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+    for {
+       msg, err := sr.Recv()
+       if err != nil {
+          if errors.Is(err, io.EOF) {
+             // finish
+             break
+          }
 
-_          return false, err_
-_       }_
+          return false, err
+       }
 
-_       if len(msg.ToolCalls) > 0 {_
-_          return true, nil_
-_       }_
-_    }_
-_    return false, nil_
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
+    }
+    return false, nil
 }
 ```
 

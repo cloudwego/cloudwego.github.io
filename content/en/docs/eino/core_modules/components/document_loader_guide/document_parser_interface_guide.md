@@ -1,25 +1,25 @@
 ---
 Description: ""
-date: "2025-04-21"
+date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino: Document Parser guide'
-weight: 0
+title: 'Eino: Document Parser 接口使用说明'
+weight: 1
 ---
 
-## **Basic Introduction**
+## **基本介绍**
 
-Document Parser is a toolkit for parsing document content. It is not a standalone component but an internal tool used by Document Loader to parse raw content of various formats into standard document formats. The Parser supports:
+Document Parser 是一个用于解析文档内容的工具包。它不是一个独立的组件，而是作为 Document Loader 的内部工具，用于将不同格式的原始内容解析成标准的文档格式。Parser 支持：
 
-- Parsing document content of different formats (such as text, PDF, Markdown, etc.)
-- Automatically selecting the appropriate parser based on the file extension (e.g., ExtParser)
-- Adding metadata information to the parsed documents
+- 解析不同格式的文档内容（如文本、PDF、Markdown 等）
+- 根据文件扩展名自动选择合适的解析器 (eg：ExtParser)
+- 为解析后的文档添加元数据信息
 
-## **Interface Definition**
+## **接口定义**
 
-### **Parser Interface**
+### **Parser 接口**
 
-> Code Location: eino/components/document/parser/interface.go
+> 代码位置：eino/components/document/parser/interface.go
 
 ```go
 import (
@@ -32,41 +32,41 @@ type Parser interface {
 }
 ```
 
-#### **Parse Method**
+#### **Parse 方法**
 
-- Function: Parses the document content from a Reader
-- Parameters:
-  - ctx: Context object
-  - reader: Reader providing the raw content
-  - opts: Parsing options
-- Return Values:
-  - `[]*schema.Document`: List of parsed documents
-  - error: Errors encountered during parsing
+- 功能：从 Reader 中解析文档内容
+- 参数：
+  - ctx：上下文对象
+  - reader：提供原始内容的 Reader
+  - opts：解析选项
+- 返回值：
+  - `[]*schema.Document`：解析后的文档列表
+  - error：解析过程中的错误
 
-### **Common Option Definitions**
+### **公共 Option 定义**
 
 ```go
 type Options struct {
-    // URI indicates the source of the document
+    // URI 表示文档的来源
     URI string
 
-    // ExtraMeta will be merged into each parsed document's metadata
+    // ExtraMeta 会被合并到每个解析出的文档的元数据中
     ExtraMeta map[string]any
 }
 ```
 
-Two basic option functions are provided:
+提供了两个基础的选项函数：
 
-- WithURI: Sets the URI of the document, used in ExtParser to select the parser
-- WithExtraMeta: Sets additional metadata
+- WithURI：设置文档的 URI，在 ExtParser 中用于选择解析器
+- WithExtraMeta：设置额外的元数据
 
-## **Built-in Parsers**
+## **内置解析器**
 
-### **TextPars****er**
+### **TextParser**
 
-The most basic text parser, which directly uses the input content as document content:
+最基础的文本解析器，将输入内容直接作为文档内容：
 
-> Code Location: eino-examples/components/document/parser/textparser
+> 代码位置：eino-examples/components/document/parser/textparser
 
 ```go
 import "github.com/cloudwego/eino/components/document/parser"
@@ -79,9 +79,9 @@ logs.Infof("text content: %v", docs[0].Content)
 
 ### **ExtParser**
 
-File extension-based parser, which can automatically choose the appropriate parser based on the file extension:
+基于文件扩展名的解析器，可以根据文件扩展名自动选择合适的解析器：
 
-> Code Location: eino-examples/components/document/parser/extparser
+> 代码位置：eino-examples/components/document/parser/extparser
 
 ```go
 package main
@@ -109,23 +109,23 @@ func main() {
 
     pdfParser, _ := pdf.NewPDFParser(ctx, &pdf.Config{})
 
-    // Create extension parser
+    // 创建扩展解析器
     extParser, _ := parser.NewExtParser(ctx, &parser.ExtParserConfig{
-       // Register parsers for specific extensions
+       // 注册特定扩展名的解析器
        Parsers: map[string]parser.Parser{
           ".html": htmlParser,
           ".pdf":  pdfParser,
        },
-       // Set default parser for handling unknown formats
+       // 设置默认解析器，用于处理未知格式
        FallbackParser: textParser,
     })
 
-    // Use the parser
+    // 使用解析器
     filePath := "./testdata/test.html"
     file, _ := os.Open(filePath)
     
     docs, _ := extParser.Parse(ctx, file,
-       // Must provide URI for ExtParser to choose the correct parser
+       // 必须提供 URI ExtParser 选择正确的解析器进行解析
        parser.WithURI(filePath),
        parser.WithExtraMeta(map[string]any{
           "source": "local",
@@ -138,18 +138,18 @@ func main() {
 }
 ```
 
-### **Other Implementations**
+### 其他实现
 
-- pdf parser, used for extracting and parsing PDF formatted files: [Parser - pdf](/docs/eino/ecosystem_integration/document/parser_pdf)
-- html parser, used for extracting and parsing HTML formatted content: [Parser - html](/docs/eino/ecosystem_integration/document/parser_html)
+- pdf parser, 用于提取和 parse pdf 格式的文件: [[🚧]Parser - pdf](/zh/docs/eino/ecosystem_integration/document/parser_pdf)
+- html parser, 用于提取和 parse html 格式的内容:  [[🚧]Parser - html](/zh/docs/eino/ecosystem_integration/document/parser_html)
 
-## **Using ****Document Loader**
+## **在 Document Loader 中使用**
 
-The parser is mainly used in the Document Loader to parse the loaded document content. Here are some typical usage scenarios:
+Parser 主要在 Document Loader 中使用，用于解析加载的文档内容。以下是一些典型的使用场景：
 
-### **File Loader**
+### **文件加载器**
 
-> Code Location: eino-ext/components/document/loader/file/examples/fileloader
+> 代码位置：eino-ext/components/document/loader/file/examples/fileloader
 
 ```go
 import (
@@ -158,21 +158,21 @@ import (
     "github.com/cloudwego/eino-ext/components/document/loader/file"
 )
 
-// Use FileLoader to load local files
+// 使用 FileLoader 加载本地文件
 ctx := context.Background()
 
 log.Printf("===== call File Loader directly =====")
-// Initialize the loader (using file loader as an example)
+// 初始化 loader (以file loader为例)
 loader, err := file.NewFileLoader(ctx, &file.FileLoaderConfig{
-    // Configuration parameters
+    // 配置参数
     UseNameAsID: true,
-    Parser:      &parser.TextParser{}, // use TextParser as default parser
+    Parser:      &parser.TextParser{}, // 使用 TextParser 作为默认解析器, 可自定义，例如使用 parser.NewExtParser() 创建不同文件类型的解析器
 })
 if err != nil {
     log.Fatalf("file.NewFileLoader failed, err=%v", err)
 }
 
-// Load the document
+// 加载文档
 filePath := "../../testdata/test.md"
 docs, err := loader.Load(ctx, document.Source{
     URI: filePath,
@@ -182,26 +182,26 @@ if err != nil {
 }
 
 log.Printf("doc content: %v", docs[0].Content)
-log.Printf("Extension: %s\n", docs[0].MetaData[file.MetaKeyExtension]) // Output: Extension: .txt
-log.Printf("Source: %s\n", docs[0].MetaData[file.MetaKeySource])       // Output: Source: ./document.txt
+log.Printf("Extension: %s\n", docs[0].MetaData[file._MetaKeyExtension_]) // 输出: Extension: .txt
+log.Printf("Source: %s\n", docs[0].MetaData[file._MetaKeySource_])       // 输出: Source: ./document.txt
 ```
 
-## **Custom Parser Implementation**
+## **自定义解析器实现**
 
-### **option Mechanism**
+### option **机制**
 
-Custom parsers can define their own options:
+自定义解析器可以定义自己的 option：
 
 ```go
 // options
-// Customize the option structure independently
+// 定制实现自主定义的 option 结构体
 type options struct {
     Encoding string
     MaxSize  int64
 }
 
 // WithEncoding
-// Customize the Option method independently
+// 定制实现自主定义的 Option 方法
 func WithEncoding(encoding string) parser.Option {
     return parser.WrapImplSpecificOptFn(func(o *options) {
        o.Encoding = encoding
@@ -215,9 +215,9 @@ func WithMaxSize(size int64) parser.Option {
 }
 ```
 
-### **Complete Implementation Example**
+### **完整实现示例**
 
-> Code Location: eino-examples/components/document/parser/customparser/custom_parser.go
+> 代码位置：eino-examples/components/document/parser/customparser/custom_parser.go
 
 ```go
 import (
@@ -243,18 +243,18 @@ func NewCustomParser(config *Config) (*CustomParser, error) {
 }
 
 func (p *CustomParser) Parse(ctx context.Context, reader io.Reader, opts ...parser.Option) ([]*schema.Document, error) {
-    // 1. Handle common options
+    // 1. 处理通用选项
     commonOpts := parser.GetCommonOptions(&parser.Options{}, opts...)
     _ = commonOpts
 
-    // 2. Handle specific options
+    // 2. 处理特定选项
     myOpts := &options{
        Encoding: p.defaultEncoding,
        MaxSize:  p.defaultMaxSize,
     }
     myOpts = parser.GetImplSpecificOptions(myOpts, opts...)
     _ = myOpts
-    // 3. Implement parsing logic
+    // 3. 实现解析逻辑
 
     return []*schema.Document{{
        Content: "Hello World",
@@ -262,7 +262,7 @@ func (p *CustomParser) Parse(ctx context.Context, reader io.Reader, opts ...pars
 }
 ```
 
-### **Notes**
+### **注意事项**
 
-1. Pay attention to handling abstract common options
-2. Pay attention to the setting and passing of metadata
+1. 注意对公共 option 抽象的处理
+2. 注意 metadata 的设置和传递

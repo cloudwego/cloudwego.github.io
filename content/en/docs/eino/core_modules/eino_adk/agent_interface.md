@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 抽象'
@@ -288,6 +288,8 @@ type AgentAction struct {
     Interrupted *InterruptInfo
 
     TransferToAgent *TransferToAgentAction
+    
+    BreakLoop *BreakLoopAction
 
     CustomizedAction any
 }
@@ -301,7 +303,7 @@ type TransferToAgentAction struct {
 }
 ```
 
-Eino ADK 当前预设 Action 有三种：
+Eino ADK 当前预设 Action 有四种：
 
 1. 退出：当 Agent 产生 Exit Action 时，Multi-Agent 会立刻退出
 
@@ -329,3 +331,5 @@ h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
     },
 }})
 ```
+
+4. 中止循环：当 LoopAgent 的一个子 Agent 发出 BreakLoopAction 时，对应的 LoopAgent 会停止循环并正常退出。

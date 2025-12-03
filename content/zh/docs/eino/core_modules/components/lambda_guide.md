@@ -148,7 +148,7 @@ lambda, err := compose.AnyLambda(
 
 在 Graph 中可以通过 AddLambdaNode 添加 Lambda 节点：
 
-```mermaid
+```go
 graph := compose.NewGraph[string, *MyStruct]()
 graph.AddLambdaNode(
     "node1",

@@ -1,19 +1,19 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-12-09"
 lastmod: ""
 tags: []
-title: 'Eino Tutorial: Host Multi-Agent '
-weight: 0
+title: 'Eino Tutorial: Host Multi-Agent'
+weight: 2
 ---
 
-Host Multi-Agent is a Host that performs intent recognition and then delegates the actual generation task to a specific expert agent.
+Host Multi-Agent 是一个 Host 做意图识别后，跳转到某个专家 agent 做实际的生成。只转发，不生成子任务。
 
-Take a simple "Journal Assistant" as an example: it can write journals, read journals, and answer questions based on journal entries.
+以一个简单的“日记助手”做例子：可以写日记、读日记、根据日记回答问题。
 
-> For a full example, see: [https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal](https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal)
+完整样例参见：[https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal](https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal)
 
-Host:
+Host：
 
 ```go
 func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host, error) {
@@ -34,7 +34,7 @@ func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host
 }
 ```
 
-The "specialist" for writing journals: after the host recognizes that the user's intent is to write a journal, it delegates the task here, where the user's intended content is written to a file.
+写日记的“专家”：host 识别出用户意图是写日记后，会跳转到这里，把用户想要写的内容写到文件里。
 
 ```go
 func newWriteJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
@@ -46,7 +46,7 @@ func newWriteJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
           Temperature: 0.000001,
        },
     })
-    if (err != nil) {
+    if err != nil {
        return nil, err
     }
 
@@ -62,7 +62,7 @@ func newWriteJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
     chain.AppendLambda(compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) ([]*schema.Message, error) {
        systemMsg := &schema.Message{
           Role:    schema._System_,
-          Content: "You are responsible for preparing the user query for insertion into journal. The user's query is expected to contain the actual text the user wants to write to the journal, as well as convey the intention that this query should be written to the journal. Your job is to remove that intention from the user query, while preserving as much as possible the user's original query, and output ONLY the text to be written into the journal.",
+          Content: "You are responsible for preparing the user query for insertion into journal. The user's query is expected to contain the actual text the user want to write to journal, as well as convey the intention that this query should be written to journal. You job is to remove that intention from the user query, while preserving as much as possible the user's original query, and output ONLY the text to be written into journal",
        }
        return append([]*schema.Message{systemMsg}, input...), nil
     })).
@@ -95,7 +95,7 @@ func newWriteJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
 }
 ```
 
-The "specialist" for reading journals: after the host recognizes that the user's intent is to read a journal, it delegates the task here. This specialist reads the journal file content and outputs it line by line. It functions as a local function.
+读日记的“专家”：host 识别出用户意图是读日记后，会跳转到这里，读日记文件内容并一行行的输出。就是一个本地的 function。
 
 ```go
 func newReadJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
@@ -141,7 +141,7 @@ func newReadJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
 }
 ```
 
-According to the journal answer specialist:
+根据日记回答问题的"专家"：
 
 ```go
 func newAnswerWithJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
@@ -230,7 +230,7 @@ func newAnswerWithJournalSpecialist(ctx context.Context) (*host.Specialist, erro
 }
 ```
 
-Compose into a host multi-agent and start it via command line:
+编排成 host multi agent 并在命令行启动：
 
 ```go
 func main() {
@@ -269,11 +269,11 @@ func main() {
 
     cb := &logCallback{}
 
-    for { // Multi-turn conversation, loops continuously unless the user inputs "exit"
-       println("\n\nYou: ") // Prompting for user input
+    for { // 多轮对话，除非用户输入了 "exit"，否则一直循环
+       println("\n\nYou: ") // 提示轮到用户输入了
 
        var message string
-       scanner := bufio.NewScanner(os.Stdin) // Getting user input from command line
+       scanner := bufio.NewScanner(os.Stdin) // 获取用户在命令行的输入
        for scanner.Scan() {
           message += scanner.Text()
           break
@@ -315,10 +315,10 @@ func main() {
 }
 ```
 
-Running console output:
+运行 console 输出：
 
 ```go
-You:
+You: 
 write journal: I got up at 7:00 in the morning
 
 HandOff to write_journal with argument {"reason":"I got up at 7:00 in the morning"}
@@ -326,7 +326,7 @@ HandOff to write_journal with argument {"reason":"I got up at 7:00 in the mornin
 Answer:
 Journal written successfully: I got up at 7:00 in the morning
 
-You:
+You: 
 read journal
 
 HandOff to view_journal_content with argument {"reason":"User wants to read the journal content."}
@@ -335,7 +335,7 @@ Answer:
 I got up at 7:00 in the morning
 
 
-You:
+You: 
 when did I get up in the morning?
 
 HandOff to answer_with_journal with argument {"reason":"To find out the user's morning wake-up times"}
@@ -346,13 +346,13 @@ You got up at 7:00 in the morning.
 
 ## FAQ
 
-### Host direct answer does not have streaming effect
+### Host 直接输出时没有流式
 
-Host Multi-Agent provides a configuration for `StreamToolCallChecker` to determine whether the Host outputs directly.
+Host Multi-Agent 提供了一个 StreamToolCallChecker 的配置，用于判断 Host 是否直接输出。
 
-Different models may output tool calls in different ways in streaming mode: some models (e.g., OpenAI) output tool calls directly; some models (e.g., Claude) output text first and then output tool calls. Therefore, different methods are needed for the determination. This field is used to specify a function for determining whether the model's streaming output contains tool calls.
+不同的模型在流式模式下输出工具调用的方式可能不同: 某些模型(如 OpenAI) 会直接输出工具调用；某些模型 (如 Claude) 会先输出文本，然后再输出工具调用。因此需要使用不同的方法来判断，这个字段用来指定判断模型流式输出中是否包含工具调用的函数。
 
-It is optional. If not filled, the determination of whether the "non-empty package" contains tool calls is used:
+可选填写，未填写时使用“非空包”是否包含工具调用判断：
 
 ```go
 func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
@@ -380,9 +380,9 @@ func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[
 }
 ```
 
-The above default implementation is applicable when the Tool Call Message output by the model contains only Tool Calls.
+上述默认实现适用于：模型输出的 Tool Call Message 中只有 Tool Call。
 
-The default implementation is not applicable when there is a non-empty content chunk before outputting the Tool Call. In this case, a custom tool call checker is required as follows:
+默认实现不适用的情况：在输出 Tool Call 前，有非空的 content chunk。此时，需要自定义 tool Call checker 如下：
 
 ```go
 toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
@@ -406,14 +406,15 @@ toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Mes
 }
 ```
 
-This custom `StreamToolCallChecker` may need to check **all packages** for the presence of ToolCalls in extreme cases, resulting in the loss of the "streaming judgment" effect. If you want to maintain the "streaming judgment" effect as much as possible, the suggested solution is:
+上面这个自定义 StreamToolCallChecker，在极端情况下可能需要判断**所有包**是否包含 ToolCall，从而导致“流式判断”的效果丢失。如果希望尽可能保留“流式判断”效果，解决这一问题的建议是：
 
-Try to add a prompt to constrain the model not to output additional text when making tool calls, for example: "If you need to call a tool, output the tool directly without outputting text."
+> 💡
+> 尝试添加 prompt 来约束模型在工具调用时不额外输出文本，例如：“如果需要调用 tool，直接输出 tool，不要输出文本”。
+>
+> 不同模型受 prompt 影响可能不同，实际使用时需要自行调整 prompt 并验证效果。
 
-Different models may be affected by the prompt differently. You need to adjust the prompt and verify the effect in actual use.
+### Host 同时选择多个 Specialist
 
-### Host picks multiple Specialists simultaneously
+Host 以 Tool Call 的形式给出对 Specialist 的选择，因此可能以 Tool Call 列表的形式同时选中多个 Specialist。此时 Host Multi-Agent 会同时将请求路由到这多个 Specialist，并在多个 Specialist 完成后，通过 Summarizer 节点总结多条 Message 为一条 Message，作为 Host Multi-Agent 的最终输出。
 
-The Host provides the selection of Specialists in the form of Tool Calls, so it may select multiple Specialists simultaneously in the form of a Tool Call list. At this time, the Host Multi-Agent will route the request to these multiple Specialists at the same time. After the multiple Specialists complete their tasks, the Summarizer node will summarize multiple Messages into one Message as the final output of the Host Multi-Agent.
-
-Users can customize the behavior of the Summarizer by configuring the Summarizer, specifying a ChatModel and a SystemPrompt. If not specified, the Host Multi-Agent will concatenate the output Message Contents of multiple Specialists and return the result.
+用户可通过配置 Summarizer，指定一个 ChatModel 以及 SystemPrompt，来定制化 Summarizer 的行为。如未指定，Host Multi-Agent 会将多个 Specialist 的输出 Message Content 拼接后返回。

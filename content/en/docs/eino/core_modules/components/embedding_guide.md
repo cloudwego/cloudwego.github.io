@@ -1,23 +1,23 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino: Embedding guide'
-weight: 0
+title: 'Eino: Embedding 使用说明'
+weight: 7
 ---
 
-## **Basic Introduction**
+## **基本介绍**
 
-The Embedding component is used to convert text into vector representations. Its main function is to map text content into a high-dimensional vector space, so that semantically similar texts are closer in the vector space. This component plays an important role in the following scenarios:
+Embedding 组件是一个用于将文本转换为向量表示的组件。它的主要作用是将文本内容映射到向量空间，使得语义相似的文本在向量空间中的距离较近。这个组件在以下场景中发挥重要作用：
 
-- Text similarity calculation
-- Semantic search
-- Text clustering analysis
+- 文本相似度计算
+- 语义搜索
+- 文本聚类分析
 
-## **Component Definition**
+## **组件定义**
 
-### **Interface Definition**
+### **接口定义**
 
 ```go
 type Embedder interface {
@@ -25,40 +25,40 @@ type Embedder interface {
 }
 ```
 
-#### **EmbedStrings Method**
+#### **EmbedStrings 方法**
 
-- Function: Convert a set of texts into vector representations
-- Parameters:
-  - ctx: Context object, used to pass request-level information, and also for passing Callback Manager
-  - texts: List of texts to be converted
-  - opts: Conversion options, used to configure the conversion behavior
-- Return values:
-  - `[][]float64`: List of vector representations corresponding to the texts, the dimension of each vector is determined by the specific implementation
-  - error: Error information during the conversion process
+- 功能：将一组文本转换为向量表示
+- 参数：
+  - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
+  - texts：待转换的文本列表
+  - opts：转换选项，用于配置转换行为
+- 返回值：
+  - `[][]float64`：文本对应的向量表示列表，每个向量的维度由具体的实现决定
+  - error：转换过程中的错误信息
 
-### **Common Option**
+### **公共 Option**
 
-The Embedding component uses EmbeddingOption to define optional parameters. Below are the abstract common options. Each specific implementation can define its specific options, which can be wrapped into a unified EmbeddingOption type through the WrapEmbeddingImplSpecificOptFn function.
+Embedding 组件使用 EmbeddingOption 来定义可选参数，下方是抽象出的公共 option。每个具体的实现可以定义自己的特定 Option，通过 WrapEmbeddingImplSpecificOptFn 函数包装成统一的 EmbeddingOption 类型。
 
 ```go
 type Options struct {
-    // Model is the name of the model used to generate vectors
+    // Model 是用于生成向量的模型名称
     Model *string
 }
 ```
 
-Options can be set as follows:
+可以通过以下方式设置选项：
 
 ```go
-// Set model name
+// 设置模型名称
 WithModel(model string) Option
 ```
 
-## **Usage**
+## **使用方式**
 
-### **Standalone Usage**
+### **单独使用**
 
-> Code location: eino-ext/components/embedding/openai/examples/embedding
+> 代码位置：eino-ext/components/embedding/openai/examples/embedding
 
 ```go
 import "github.com/cloudwego/eino-ext/components/embedding/openai"
@@ -73,34 +73,34 @@ embedder, _ := openai.NewEmbedder(ctx, &openai.EmbeddingConfig{
 vectorIDs, _ := embedder.EmbedStrings(ctx, []string{"hello", "how are you"})
 ```
 
-### **Usage in Orchestration**
+### **在编排中使用**
 
-> Code location: eino-ext/components/embedding/openai/examples/embedding
+> 代码位置：eino-ext/components/embedding/openai/examples/embedding
 
 ```go
-// Use in Chain
+// 在 Chain 中使用
 chain := compose.NewChain[[]string, [][]float64]()
 chain.AppendEmbedding(embedder)
 
-// Use in Graph
+// 在 Graph 中使用
 graph := compose.NewGraph[[]string, [][]float64]()
 graph.AddEmbeddingNode("embedding_node", embedder)
 ```
 
-## **Option and Callback Usage**
+## **Option 和 Callback 使用**
 
-### **Option Usage Example**
+### **Option 使用示例**
 
 ```go
-// Use options (example for standalone usage)
+// 使用选项 (以独立使用组件为例)
 vectors, err := embedder.EmbedStrings(ctx, texts,
     embedding.WithModel("text-embedding-3-small"),
 )
 ```
 
-### **Callback Usage Example**
+### **Callback 使用示例**
 
-> Code location: eino-ext/components/embedding/openai/examples/embedding
+> 代码位置：eino-ext/components/embedding/openai/examples/embedding
 
 ```go
 import (
@@ -127,7 +127,7 @@ callbackHandler := callbacksHelper.NewHandlerHelper().Embedding(handler).Handler
 chain := compose.NewChain[[]string, [][]float64]()
 chain.AppendEmbedding(embedder)
 
-// Compile and run
+// 编译并运行
 runnable, _ := chain.Compile(ctx)
 vectors, _ = runnable.Invoke(ctx, []string{"hello", "how are you"},
     compose.WithCallbacks(callbackHandler))
@@ -135,31 +135,31 @@ vectors, _ = runnable.Invoke(ctx, []string{"hello", "how are you"},
 log.Printf("vectors in chain: %v", vectors)
 ```
 
-## **Existing Implementations**
+## **已有实现**
 
-1. OpenAI Embedding: Generate vectors using OpenAI's text embedding model [Embedding - OpenAI](/docs/eino/ecosystem_integration/embedding/embedding_openai)
-2. ARK Embedding: Generate vectors using the ARK platform's model [Embedding - ARK](/docs/eino/ecosystem_integration/embedding/embedding_ark)
+1. OpenAI Embedding: 使用 OpenAI 的文本嵌入模型生成向量 [Embedding - OpenAI](/zh/docs/eino/ecosystem_integration/embedding/embedding_openai)
+2. ARK Embedding: 使用 ARK 平台的模型生成向量 [Embedding - ARK](/zh/docs/eino/ecosystem_integration/embedding/embedding_ark)
 
-## **Custom Implementation Reference**
+## **自行实现参考**
 
-When implementing a custom Embedding component, the following points need to be noted:
+实现自定义的 Embedding 组件时，需要注意以下几点：
 
-1. Pay attention to handling common options
-2. Implement the callback mechanism properly
+1. 注意处理公共 option
+2. 注意实现 callback 机制
 
-### **Option Mechanism**
+### **Option 机制**
 
-Custom Embedding needs to implement its own Option mechanism:
+自定义 Embedding 需要实现自己的 Option 机制：
 
 ```go
-// Define the Option struct
+// 定义 Option 结构体
 type MyEmbeddingOptions struct {
     BatchSize int
     MaxRetries int
     Timeout time.Duration
 }
 
-// Define the Option function
+// 定义 Option 函数
 func WithBatchSize(size int) embedding.Option {
     return embedding.WrapEmbeddingImplSpecificOptFn(func(o *MyEmbeddingOptions) {
         o.BatchSize = size
@@ -167,45 +167,45 @@ func WithBatchSize(size int) embedding.Option {
 }
 ```
 
-### **Callback Handling**
+### **Callback 处理**
 
-The Embedder implementation needs to trigger callbacks at appropriate times. The framework has defined standard callback input and output structs:
+Embedder 实现需要在适当的时机触发回调。框架已经定义了标准的回调输入输出结构体：
 
 ```go
-// CallbackInput is the input for the embedding callback
+// CallbackInput 是 embedding 回调的输入
 type CallbackInput struct {
-    // Texts are the list of texts to be converted
+    // Texts 是待转换的文本列表
     Texts []string
-    // Config is the configuration information for generating vectors
+    // Config 是生成向量的配置信息
     Config *Config
-    // Extra is additional information for the callback
+    // Extra 是回调的额外信息
     Extra map[string]any
 }
 
-// CallbackOutput is the output for the embedding callback
+// CallbackOutput 是 embedding 回调的输出
 type CallbackOutput struct {
-    // Embeddings are the list of generated vectors
+    // Embeddings 是生成的向量列表
     Embeddings [][]float64
-    // Config is the configuration information for generating vectors
+    // Config 是生成向量的配置信息
     Config *Config
-    // TokenUsage is the token usage information
+    // TokenUsage 是 token 使用情况
     TokenUsage *TokenUsage
-    // Extra is additional information for the callback
+    // Extra 是回调的额外信息
     Extra map[string]any
 }
 
-// TokenUsage is the token usage information
+// TokenUsage 是 token 使用情况
 type TokenUsage struct {
-    // PromptTokens is the number of tokens in the prompt
+    // PromptTokens 是提示词的 token 数量
     PromptTokens int
-    // CompletionTokens is the number of tokens in the completion
+    // CompletionTokens 是补全的 token 数量
     CompletionTokens int
-    // TotalTokens is the total number of tokens
+    // TotalTokens 是总的 token 数量
     TotalTokens int
 }
 ```
 
-### **Complete Implementation Example**
+### **完整实现示例**
 
 ```go
 type MyEmbedder struct {
@@ -221,18 +221,18 @@ func NewMyEmbedder(config *MyEmbedderConfig) (*MyEmbedder, error) {
 }
 
 func (e *MyEmbedder) EmbedStrings(ctx context.Context, texts []string, opts ...embedding.Option) ([][]float64, error) {
-    // 1. Handle the options
+    // 1. 处理选项
     options := &MyEmbeddingOptions{
         Options: &embedding.Options{},
         BatchSize: e.batchSize,
     }
     options.Options = embedding.GetCommonOptions(options.Options, opts...)
-    options = embedding.GetImplSpecificOptions(options, opts...)
+    options = embedding.GetImplSpecificOptions(options.Options, opts...)
     
-    // 2. Get the callback manager
+    // 2. 获取 callback manager
     cm := callbacks.ManagerFromContext(ctx)
     
-    // 3. Trigger the pre-generation callback
+    // 3. 开始生成前的回调
     ctx = cm.OnStart(ctx, info, &embedding.CallbackInput{
         Texts: texts,
         Config: &embedding.Config{
@@ -240,10 +240,10 @@ func (e *MyEmbedder) EmbedStrings(ctx context.Context, texts []string, opts ...e
         },
     })
     
-    // 4. Execute the vector generation logic
+    // 4. 执行向量生成逻辑
     vectors, tokenUsage, err := e.doEmbed(ctx, texts, options)
     
-    // 5. Handle errors and trigger the completion callback
+    // 5. 处理错误和完成回调
     if err != nil {
         ctx = cm.OnError(ctx, info, err)
         return nil, err
@@ -261,13 +261,13 @@ func (e *MyEmbedder) EmbedStrings(ctx context.Context, texts []string, opts ...e
 }
 
 func (e *MyEmbedder) doEmbed(ctx context.Context, texts []string, opts *MyEmbeddingOptions) ([][]float64, *TokenUsage, error) {
-    // Implementation logic
+    // 实现逻辑
     return vectors, tokenUsage, nil
 }
 ```
 
-## **Other Reference Documents**
+## 其他参考文档
 
-- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Indexer guide](/docs/eino/core_modules/components/indexer_guide)
-- [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)
+- [Eino: Document Loader 使用说明](/zh/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Indexer 使用说明](/zh/docs/eino/core_modules/components/indexer_guide)
+- [Eino: Retriever 使用说明](/zh/docs/eino/core_modules/components/retriever_guide)

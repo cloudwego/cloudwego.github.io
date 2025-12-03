@@ -1,50 +1,50 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino: CallOption capabilities and specification'
-weight: 5
+title: 'Eino: CallOption 能力与规范'
+weight: 6
 ---
 
-**CallOption**: A channel for directly passing data to a specific set of nodes (Component, Implementation, Node) when invoking Graph compilation products.
+**CallOption**: 对 Graph 编译产物进行调用时，直接传递数据给特定的一组节点(Component、Implementation、Node)的渠道
 
-- Difference from Node Config: Node Config is an instance-level configuration, meaning the values in Config are set from instance creation to instance destruction and do not need to change once determined.
-- CallOption: This is request-level configuration, where values differ for each request. It is more like node parameters, but these parameters are directly passed from the Graph entrance rather than from upstream nodes.
-- Example: Passing a Temperature configuration to a ChatModel node; passing a custom option to a Lambda node.
+- 和 节点 Config 的区别： 节点 Config 是实例粒度的配置，也就是从实例创建到实例消除，Config 中的值一旦确定就不需要改变了
+- CallOption：是请求粒度的配置，不同的请求，其中的值是不一样的。更像是节点入参，但是这个入参是直接由 Graph 的入口直接传入，而不是上游节点传入。
+  - 举例：给一个 ChatModel 节点传入 Temperature 配置；给一个 Lambda 节点传入自定义 option。
 
-## **Component CallOption Form**
+## 组件 CallOption 形态
 
-Component CallOption configuration has two levels:
+组件 CallOption 配置，有两个粒度：
 
-- CallOption configuration uniformly defined by the abstract (Abstract/Interface) of the component [Component Abstract CallOption]
-- CallOption configuration defined by the implementation (Type/Implementation) of the component for that specific type [Component Implementation CallOption]
+- 组件的抽象(Abstract/Interface)统一定义的 CallOption 配置【组件抽象 CallOption】
+- 组件的实现(Type/Implementation)定义的该类型组件专用的 CallOption 配置【组件实现 CallOption】
 
-Taking the ChatModel component as an example, the form of CallOption is introduced
+以 ChatModel 这个 Component 为例，介绍 CallOption 的形态
 
-### **Directory of Model Abstract and Implementation**
+### Model 抽象与实现的目录
 
 ```
-// Location of the abstract in the code
+// 抽象所在代码位置
 eino/components/model
 ├── interface.go
-├── option.go // CallOption parameter at the component abstract level
+├── option.go // Component 抽象粒度的 CallOption 入参
 
-// Location of the abstract implementation in the code
+// 抽象实现所在代码位置
 eino-ext/components/model
 ├── claude
-│   ├── option.go // CallOption parameter for one implementation of the component
-│   └── chatmodel.go
+│   ├── option.go // Component 的一种实现的 CallOption 入参
+│   └── chatmodel.go
 ├── ollama
-│   ├── call_option.go // CallOption parameter for one implementation of the component
-│   ├── chatmodel.go
+│   ├── call_option.go // Component 的一种实现的 CallOption 入参
+│   ├── chatmodel.go
 ```
 
-### **Model Abstraction**
+### Model 抽象
 
-As mentioned above, when defining the CallOption for a component, it is necessary to distinguish between the [Component Abstract CallOption] and the [Component Implementation CallOption] scenarios. Whether to provide the [Component Implementation CallOption] is determined by the Component Abstraction.
+如上所述，在定义组件的 CallOption 时，需要区分【组件抽象 CallOption】、【组件实现 CallOption】两种场景。 而是否要提供 【组件实现 CallOption】，则是由 组件抽象 来决定的。
 
-The CallOption extension capabilities provided by the Component Abstraction are as follows (taking Model as an example, other components are similar):
+组件抽象提供的 CallOption 扩展能力如下（以 Model 为例，其他组件类似）：
 
 ```go
 package model
@@ -60,12 +60,12 @@ type ChatModel interface {
     BindTools(tools []*schema.ToolInfo) error
 }
 
-// This structure is the unified definition of [Component Abstract CallOption]. The component implementation can extract information from [Component Abstract CallOption] according to its own needs.
+// 此结构体是【组件抽象CallOption】的统一定义。 组件的实现可根据自己的需要取用【组件抽象CallOption】的信息
 // Options is the common options for the model.
 type Options struct {
     // Temperature is the temperature for the model, which controls the randomness of the model.
     Temperature *float32
-    // MaxTokens is the max number of tokens, if reached the max tokens, the model will stop generating, and mostly return a finish reason of "length".
+    // MaxTokens is the max number of tokens, if reached the max tokens, the model will stop generating, and mostly return an finish reason of "length".
     MaxTokens *int
     // Model is the model name.
     Model *string
@@ -75,14 +75,14 @@ type Options struct {
     Stop []string
 }
 
-// Option is the call option for the ChatModel component.
+// Option is the call option for ChatModel component.
 type Option struct {
-    // This field serves the apply method for [Component Abstract CallOption], such as WithTemperature
-    // If the component abstraction does not want to provide the [Component Abstract CallOption], this field can be omitted, along with the GetCommonOptions() method.
+    // 此字段是为【组件抽象CallOption】服务的 apply 方法，例如 WithTemperature
+    // 如果组件抽象不想提供【组件抽象CallOption】，可不提供此字段，同时不提供 GetCommonOptions() 方法
     apply func(opts *Options)
-
-    // This field serves the apply method for [Component Implementation CallOption], and it is assumed the apply method is: func(*T)
-    // If the component abstraction does not want to provide [Component Implementation CallOption], this field can be omitted along with the GetImplSpecificOptions() method.
+    
+    // 此字段是为【组件实现CallOption】服务的 apply 方法。并假设 apply 方法为：func(*T)
+    // 如果组件抽象不想提供【组件实现CallOption】，可不提供此字段，同时不提供 GetImplSpecificOptions() 方法
     implSpecificOptFn any
 }
 
@@ -147,14 +147,14 @@ func GetCommonOptions(base *Options, opts ...Option) *Options {
     return base
 }
 
-// Component implementers can use this method to encapsulate their own Option functions: func WithXXX(xxx string) Option{}
+// 组件实现方基于此方法，封装自己的Option函数：func WithXXX(xxx string) Option{}
 func WrapImplSpecificOptFn[T any](optFn func(*T)) Option {
     return Option{
        implSpecificOptFn: optFn,
     }
 }
 
-// GetImplSpecificOptions provides tool authors the ability to extract their own custom options from the unified Option type.
+// GetImplSpecificOptions provides tool author the ability to extract their own custom options from the unified Option type.
 // T: the type of the impl specific options struct.
 // This function should be used within the tool implementation's InvokableRun or StreamableRun functions.
 // It is recommended to provide a base T as the first argument, within which the tool author can provide default values for the impl specific options.
@@ -177,9 +177,9 @@ func GetImplSpecificOptions[T any](base *T, opts ...Option) *T {
 }
 ```
 
-### **Claude Implementation**
+### Claude 实现
 
-> [https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/option.go](https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/option.go)
+[https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/option.go](https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/option.go)
 
 ```go
 package claude
@@ -199,7 +199,7 @@ func WithTopK(k int32) model.Option {
 }
 ```
 
-> [https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/claude.go](https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/claude.go)
+[https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/claude.go](https://github.com/cloudwego/eino-ext/blob/main/components/model/claude/claude.go)
 
 ```go
 func (c *claude) genMessageNewParams(input []*schema.Message, opts ...model.Option) (anthropic.MessageNewParams, error) {
@@ -221,11 +221,11 @@ func (c *claude) genMessageNewParams(input []*schema.Message, opts ...model.Opti
 }
 ```
 
-## **CallOption in Composition**
+## 编排中的 CallOption
 
-> [https://github.com/cloudwego/eino/blob/main/compose/runnable.go](https://github.com/cloudwego/eino/blob/main/compose/runnable.go)
+[https://github.com/cloudwego/eino/blob/main/compose/runnable.go](https://github.com/cloudwego/eino/blob/main/compose/runnable.go)
 
-Graph compilation result is Runnable
+Graph 编译产物是 Runnable
 
 ```go
 type Runnable[I, O any] interface {
@@ -236,11 +236,11 @@ type Runnable[I, O any] interface {
 }
 ```
 
-Each method of Runnable accepts a list of compose.Option.
+Runnable 各方法均接收 compose.Option 列表。
 
-> [https://github.com/cloudwego/eino/blob/main/compose/graph_call_options.go](https://github.com/cloudwego/eino/blob/main/compose/graph_call_options.go)
+[https://github.com/cloudwego/eino/blob/main/compose/graph_call_options.go](https://github.com/cloudwego/eino/blob/main/compose/graph_call_options.go)
 
-Including overall configuration for graph run, configuration of various components, and specific Lambda configurations, etc.
+包括 graph run 整体的配置，各类组件的配置，特定 Lambda 的配置等。
 
 ```go
 // Option is a functional option type for calling a graph.
@@ -286,20 +286,21 @@ func WithEmbeddingOption(opts ...embedding.Option) Option {
 }
 ```
 
-compose.Option can be assigned to different nodes in the Graph as needed.
+compose.Option 可以按需分配给 Graph 中不同的节点。
 
-<a href="/img/eino/en_eino_graph_compile.gif" target="_blank"><img src="/img/eino/en_eino_graph_compile.gif" width="100%" /></a>
+<a href="/img/eino/graph_runnable_after_compile.png" target="_blank"><img src="/img/eino/graph_runnable_after_compile.png" width="100%" /></a>
 
 ```go
-// Call option effective for all nodes
+// 所有节点都生效的 call option
 compiledGraph.Invoke(ctx, input, WithCallbacks(handler))
 
-// Call option effective for specific types of nodes
+// 只对特定类型节点生效的 call option
 compiledGraph.Invoke(ctx, input, WithChatModelOption(WithTemperature(0.5))
+compiledGraph.Invoke(ctx, input, WithToolOption(WithXXX("xxx"))
 
-// Call option effective only for specific nodes
+// 只对特定节点生效的 call option
 compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
 
-// Call option effective only for specific nested graphs or nodes within them
+// 只对特定内部嵌套图或其中节点生效的 Call option
 compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNodeWithPath(NewNodePath("1", "2"))
 ```

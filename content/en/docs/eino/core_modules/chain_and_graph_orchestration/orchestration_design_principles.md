@@ -1,88 +1,90 @@
 ---
 Description: ""
-date: "2025-03-18"
+date: "2025-12-09"
 lastmod: ""
 tags: []
-title: 'Eino: The design concept of orchestration'
+title: 'Eino: 编排的设计理念'
 weight: 2
 ---
 
-In the LLM application orchestration solutions, the most popular ones are langchain and langgraph, which officially provide SDKs for Python and TypeScript. These two languages are known for their flexibility, which brings great convenience to SDK development but also causes significant confusion and cognitive burden for SDK users.
+大模型应用编排框架的主流语言是 python，这门语言以其灵活性著称，灵活性给 sdk 的开发带来便利，但同时也给 sdk 的使用者带来了心智负担。
 
-As an extremely simple programming language, Go's defined `static types` are one of the key reasons why it remains straightforward, and Eino maintains this critical characteristic: `defined types` + `compile-time type checking`.
+基于 golang 的 eino 则是 `静态类型` ，在 Compile 时做类型检查，避免了 python 等动态语言的运行时类型问题。
 
-## Basic Principle of `Type Alignment` in Upstream and Downstream
+## 以上下游 `类型对齐` 为基本准则
 
-The most fundamental orchestration method in eino is the graph, along with the simplified wrapped chain. Regardless of the orchestration method, it essentially consists of `logical nodes` + `upstream and downstream relationships`. At runtime, the product of the orchestration starts from one logical node and then proceeds to run the next node that is connected to the current node.
+eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是哪种编排方式，其本质都是 `逻辑节点` + `上下游关系` 。在编排的产物运行时，都是从一个逻辑节点运行，然后下一步运行和这个节点相连的下一个节点。
 
-This entails a basic assumption: **the output value of the previous node can serve as the input value for the next node.**
+这之间蕴含了一个基本假设：**前一个运行节点的输出值，可以作为下一个节点的输入值。**
 
-In Go, there are two basic approaches to achieving this assumption:
+在 golang 中，要实现这个假设，有两个基本方案：
 
-1. Convert the input and output of different nodes into a more generalized type, such as `any` or `map[string]any`.
-   1. Adopting the approach to generalize into any, but the corresponding cost is that developers need to explicitly convert it into a specific type when writing code to use it. This significantly increases the mental burden on developers, hence this approach was ultimately abandoned.
-   2. The langchain approach can be seen as passing `map[string]any` throughout the process, where each logical node retrieves the corresponding value with the corresponding key based on its needs. In langchaingo's implementation, this approach is adopted. However, in Go, they still need to be used with `type assertions`. This approach still imposes a significant mental burden on the developer.
-2. Keep the input and output types of each node as expected by the developer, ensuring type consistency between upstream and downstream during the Compile phase.
+1. 把不同节点的输入输出都变成一种更泛化的类型，例如 `any` 、`map[string]any` 等。
+   1. 采用泛化成 any 的方案，但对应的代价是: 开发者在写代码时，需要显式转换成具体类型才能使用。这会极大增加开发者的心智负担，因此最终放弃此方案。
+   2. langchain 的方案可以看做是全程传递 `map[string]any`，各个逻辑节点根据自己的需要，用对应的 key 去取对应的 value。在 langchaingo 的实现中，即是按照这种方式实现，但同样，golang 中的 any 要被使用依然要使用 `类型断言` 才可使用。这种方案在开发者使用时依然有很大的心智负担。
+2. 每一个节点的输入输出类型保持开发者的预期，在 Compile 阶段保证上下游的类型是一致的。
 
-Approach 2 is the final approach selected by eino. This approach is the easiest to understand during orchestration. The whole process is like `building blocks`, where the protruding and recessed parts of each block have their own specifications, and only matching specifications can form upstream and downstream relationships.
+方案 2 即是 eino 最终选定的方案。这种方案是编排时最容易被理解的，整个过程就像是 `搭积木` 一样，每一个积木突出的部分和凹陷的部分有各自的规格，仅有规格匹配了才能成为上下游关系。
 
-As shown in the diagram below:
+就如下图：
 
-<a href="/img/eino/en_eino_parallel_type.png" target="_blank"><img src="/img/eino/en_eino_parallel_type.png" width="100%" /></a>
+<a href="/img/eino/edge_type_validate.png" target="_blank"><img src="/img/eino/edge_type_validate.png" width="100%" /></a>
 
-For orchestration, it can only run properly if the downstream can recognize and process the upstream output. This basic assumption is clearly expressed in eino, allowing developers to be confident and clear about how orchestration logic operates and flows when using eino, rather than guessing whether the passed values are correct from a series of any.
+对于一个编排而言，只有下游能识别和处理上游的输出，这个编排才能正常运行。 这个基本假设在 eino 中被清晰地表达了出来，让开发者在用 eino 做编排时，能够有十足的信心清楚编排的逻辑是如何运行和流转的，而不是从一系列的 any 中去猜测传过来的值是否正确。
 
-### **Type Alignment in Graph**
+### graph 中的类型对齐
 
-#### **Edge**
+#### edge
 
-In a graph, the output of a node will flow to the next node along an `edge`, so the nodes connected by an edge must have type alignment.
+在 graph 中，一个节点的输出将顺着 `边(edge)` 流向下一节点，因此，用边连接的节点间必须要类型对齐。
 
-As shown in the figure below:
+如下图：
 
-> This is a scenario simulating ① Direct conversation with a LLM ② Using RAG mode, and the final results can be used to compare the effects of the two modes
+> 这是一个模拟 ① 直接和大模型对话 ② 使用 RAG 模式 的场景，最后结果可用于对比两种模式的效果
 
-<a href="/img/eino/en_eino_graph_node_type.png" target="_blank"><img src="/img/eino/en_eino_graph_node_type.png" width="100%" /></a>
+<a href="/img/eino/input_output_type_validate.png" target="_blank"><img src="/img/eino/input_output_type_validate.png" width="100%" /></a>
 
-The green part in the figure represents the ordinary edge connection, which requires that the upstream output must be able to be `assigned` downstream, and the types that can be accepted are:
+图中绿色的部分，就是普通的 Edge 连接，其要求上游的输出必须能 `assign` 给下游，可以接收的类型有：
 
-① The same type for both upstream and downstream: For example, the upstream output is *schema.Message, and the downstream input is also *schema.Message.
+① 上下游类型相同: 例如上游输出 *schema.Message 下游输入也是 *schema.Message
 
-② The downstream accepts an interface, and the upstream implements that interface: For example, the upstream structure implements the Format() interface, and the downstream accepts an interface{ Format() }. A special situation is when the downstream is any (empty interface), the upstream definitely implements any, so they can certainly connect.
+② 下游接收接口，上游实现了该接口: 例如上游结构体实现了 Format() 接口，下游接收的是一个 interface{ Format() }。特殊情况是下游是 any（空接口），上游一定实现了 any，因此一定可以连接。
 
-③ The upstream is an interface, and the downstream is a specific type: When the downstream specific type implements the upstream's interface type, it may or may not work, which cannot be determined at compile time, only at runtime when the explicit type of upstream is determined. For detailed description, see: [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+③  上游是  interface，下游是具体类型:  当下游具体类型 implements 上游的 interface 类型时，有可能可以，有可能不行，在 compile 时无法确定，只有在运行时，等上游的具体类型确定了，才能最终确定。时，详细描述可见: [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 
-The yellow part in the figure represents another type conversion mechanism provided by eino, that is: if downstream receives a type `map[string]any`, but the upstream output type is not map[string]any, you can use `graph.AddXXXNode(node_key, xxx, compose.WithOutputKey("outkey")` to convert the upstream output type to map[string]any, where the key of the map is the OutputKey specified in the option. This mechanism is generally convenient to use when multiple edges converge to a single node.
+图中黄色的部分，则是 eino 提供的另一个类型转换的机制，即: 若下游接收的类型是 `map[string]any`，但是上游输出的类型并不是 map[string]any，可以使用 `graph.AddXXXNode(node_key, xxx, compose.WithOutputKey("outkey")` 的方式将上游输出的类型转化为 map[string]any，其中 map 的 key 是 option 中指定的 OutputKey。 一般在多条边汇聚到某一个节点时，这种机制使用起来较为方便。
 
-#### **Branch**
+同理，若上游是 `map[string]any` ，但是下游输入的类型并不是 map[string]any，则可以使用 `graph.AddXXXNode(node_key, xxx, compose.WithInputKey("inkey")` 来获取上游输出的其中一个 key 的 value，作为下游的输入。
 
-If a node is connected to multiple edges, the downstream nodes of each edge will run once. Branch is another mechanism: a branch followed by n nodes will only run the node corresponding to the key returned by the condition. The nodes following the same branch must also be type aligned.
+#### branch
 
-As shown in the figure below:
+如果一个节点后面连接了多个 edge，则每条 edge 的下游节点都会运行一次。branch 则是另一种机制： 一个 branch 后接了 n 个节点，但仅会运行 condition 返回的那个 node key 对应的节点。同一个 branch 后的节点，必须要类型对齐。
 
-> This is a scenario simulating the running logic of a react agent
+如下图:
 
-<a href="/img/eino/en_eino_react_agent_graph.png" target="_blank"><img src="/img/eino/en_eino_react_agent_graph.png" width="100%" /></a>
+> 这是一个模拟 react agent 的运行逻辑
 
-You can see that a branch itself has a `condition`, the input of this function must be type aligned with the upstream. At the same time, the nodes following the branch must also be able to receive the upstream's output just like the condition.
+<a href="/img/eino/branch_to_draw_loop.png" target="_blank"><img src="/img/eino/branch_to_draw_loop.png" width="100%" /></a>
 
-### Type Alignment in Chains
+可以看到，一个 branch 本身拥有一个 `condition`, 这个 function 的输入必须和上游类型对齐。同时，一个 branch 后所接的各个节点，也必须和 condition 一样，要能接收上游的输出。
 
-#### **Chain**
+### chain 中的类型对齐
 
-From an abstract perspective, a chain is a `sequence`, as shown below:
+#### chain
 
-<a href="/img/eino/en_chain_abstract_perspective.png" target="_blank"><img src="/img/eino/en_chain_abstract_perspective.png" width="100%" /></a>
+从抽象角度看，chain 就是一个 `链条`，如下所示：
 
-The types of logical nodes can be divided into three categories:
+<a href="/img/eino/what_is_chain.png" target="_blank"><img src="/img/eino/what_is_chain.png" width="100%" /></a>
 
-- Orchestrable components (e.g., chat model, chat template, retriever, lambda, graph, etc.)
-- Branch nodes
-- Parallel nodes
+逻辑节点的类型可以分为 3 类：
 
-As can be seen, from the perspective of a chain, whether it is a simple node (e.g., chat model) or a complex node (e.g., graph, branch, parallel), they are treated the same. During execution, each step corresponds to the execution of a node.
+- 可编排组件 (例如 chat model、 chat template、 retriever、 lambda、graph 等等)
+- branch 节点
+- parallel 节点
 
-Therefore, the types of upstream and downstream nodes in a chain must be aligned, as shown below:
+可以看到，在 chain 的视角下，不论是简单的节点(eg： chat model) 还是复杂的节点 (eg: graph、branch、parallel)，都是一样的，在运行过程中，一步的执行就是一个节点的运行。
+
+也因此，chain 的上下游节点间，类型必须是对齐的，如下：
 
 ```go
 func TestChain() {
@@ -104,25 +106,25 @@ func TestChain() {
 }
 ```
 
-The logic above can be represented by the following diagram:
+上面的逻辑用图来表示如下：
 
 <a href="/img/eino/nodes_type_validate.png" target="_blank"><img src="/img/eino/nodes_type_validate.png" width="100%" /></a>
 
-If the types of upstream and downstream nodes are not aligned, the chain will return an error during chain.Compile(). In contrast, the graph will report an error when calling graph.AddXXXNode().
+若上下游的类型没有对齐，chain 会在 chain.Compile() 时返回错误。而 graph 会在 graph.AddXXXNode() 时就报错。
 
 #### parallel
 
-Parallel is a special type of node within a chain. From the perspective of the chain, a parallel node is no different from other nodes. Internally, the basic topology of a parallel node is as follows:
+parallel 在 chain 中是一类特殊的节点，从 chain 的角度看 parallel 和其他的节点没啥区别。在 parallel 内部，其基本拓扑结构如下：
 
-<a href="/img/eino/en_eino_type_in_parallel.png" target="_blank"><img src="/img/eino/en_eino_type_in_parallel.png" width="100%" /></a>
+<a href="/img/eino/same_type_of_parallel.png" target="_blank"><img src="/img/eino/same_type_of_parallel.png" width="100%" /></a>
 
-One structure formed by multiple edges in the graph is illustrated here. The basic assumption is that there is exactly one node on each edge of a parallel node. Of course, that one node can also be a graph. However, note that the current framework does not directly provide the capability to nest branch or parallel within a parallel node.
+graph 中的多 edge 形成的结构其中一种就是这个，这里的基本假设是： 一个 parallel 的每一条边上有且仅有一个节点。当然，这一个节点也可以是 graph。但注意，目前框架没有直接提供在 parallel 中嵌套 branch 或 parallel 的能力。
 
-Each node within a parallel node has the same upstream node, and thus they must align with the output type of the upstream node. For example, if the upstream node outputs `*schema.Message` as shown in the diagram, then each node must be able to receive this type. The receiving method is consistent with that in the graph, typically using `same type`, `interface definition`, `any`, or `input key option`.
+在 parallel 中的每个节点，由于其上游节点是同一个，因此他们都要和上游节点的输出类型对齐，比如图中上游节点输出了 `*schema.Message` ，则每个节点都要能接收这个类型。接收的方式和 graph 中的一致，通常可以用 `相同类型` 、`接口定义` 、`any`、`input key option` 的方式。
 
-The output of a parallel node is always a `map[string]any`, where the key is specified as output_key when calling `parallel.AddXXX(output_key, xxx, opts...)`, and the value is the actual output of the node.
+parallel 节点的输出一定是一个 `map[string]any`，其中的 key 则是在 `parallel.AddXXX(output_key, xxx, opts...)` 时指定的 output_key，value 是节点内部的实际输出。
 
-An example of constructing a parallel node is as follows:
+一个 parallel 的构建例子如下：
 
 ```go
 func TestParallel() {
@@ -146,79 +148,83 @@ func TestParallel() {
 }
 ```
 
-A parallel node from the perspective of a chain looks like this:
+一个 parallel 在 chain 中的视角如下：
 
-> The diagram simulates the same question being answered by different LLMs. The results can be used for comparison.
+> 图中是模拟同一个提问，由不同的大模型去回答，结果可用于对比效果
 
-<a href="/img/eino/en_chain_inner_nodes.png" target="_blank"><img src="/img/eino/en_chain_inner_nodes.png" width="100%" /></a>
+<a href="/img/eino/graph_as_chain_node.png" target="_blank"><img src="/img/eino/graph_as_chain_node.png" width="100%" /></a>
 
-> It is important to note that this structure is only a logical perspective. Since the chain itself is also implemented using a graph, the parallel node will be spread out in the underlying graph.
+> 需要注意的是，这个结构只是逻辑上的视角，由于 chain 本身也是用 graph 实现的，parallel 在底层 graph 中会平铺到图中。
 
 #### branch
 
-The branch in a chain is similar to the branch in a graph; all nodes in the branch must be aligned with the type of upstream nodes. This will not be elaborated further here. The special nature of a chain branch is that all possible branch nodes in the branch will either connect to the same node in the chain or all connect to END.
+chain 的 branch 和 graph 中的 branch 类似，branch 中的所有节点都要和上游节点的类型对齐，此处不再赘述。chain branch 的特殊之处是，branch 的所有可能的分支节点，都会连到 chain 中的同一个节点，或者都会连到 END。
 
-### Type Alignment in Workflow
+### Workflow 中的类型对齐
 
-The dimensions of type alignment in Workflow have been changed from the overall Input & Output to the field level. Specifically, it can be divided into:
+Workflow 的类型对齐的维度，由整体的 Input & Output 改成了字段级别。具体可分为：
 
-- The overall output of the upstream is type-aligned to a specific field downstream.
-- A specific field of upstream output is type-aligned to the overall downstream.
-- A specific field of upstream output is type-aligned to a specific field of downstream input.
+- 上游输出的整体，类型对齐到下游的某个具体字段。
+- 上游输出的某个具体字段，类型对齐到下游的整体。
+- 上游输出的某个具体字段，类型对齐到下游输入的某个具体字段。
 
-The principles and rules are the same as for overall type alignment.
+原理和规则与整体的类型对齐相同。
 
-### Type Alignment of StateHandler
+### StateHandler 的类型对齐
 
-StatePreHandler: The input type needs to be aligned with the non-streaming input type of the corresponding node.
+StatePreHandler: 输入类型需要对齐对应节点的非流式输入类型。
 
 ```go
-// The input type is []*schema.Message, which is aligned with the non-streaming input type of ChatModel
+// input 类型为 []*schema.Message，对齐 ChatModel 的非流式输入类型
 preHandler := func(ctx context.Context, input []*schema.Message, state *state) ([]*schema.Message, error) {
     // your handler logic
 }
+
 AddChatModelNode("xxx", model, WithStatePreHandler(preHandler))
 ```
 
-StatePostHandler: The input type needs to be aligned with the non-streaming output type of the corresponding node.
+StatePostHandler: 输入类型需要对齐对应节点的非流式输出类型。
 
 ```go
-// The input type is *schema.Message, which is aligned with the non-streaming output type of ChatModel
+// input 类型为 *schema.Message，对齐 ChatModel 的非流式输出类型
 postHandler := func(ctx context.Context, input *schema.Message, state *state) (*schema.Message, error) {
     // your handler logic
 }
+
 AddChatModelNode("xxx", model, WithStatePostHandler(postHandler))
 ```
 
-StreamStatePreHandler: The input type needs to be aligned with the streaming input type of the corresponding node.
+StreamStatePreHandler: 输入类型需要对齐对应节点的流式输入类型。
 
 ```go
-// The input type is *schema.StreamReader[[]*schema.Message], which is aligned with the streaming input type of ChatModel
+// input 类型为 *schema.StreamReader[[]*schema.Message]，对齐 ChatModel 的流式输入类型
 preHandler := func(ctx context.Context, input *schema.StreamReader[[]*schema.Message], state *state) (*schema.StreamReader[[]*schema.Message], error) {
     // your handler logic
 }
+
 AddChatModelNode("xxx", model, WithStreamStatePreHandler(preHandler))
 ```
 
-StreamStatePostHandler: The input type needs to be aligned with the streaming output type of the corresponding node.
+StreamStatePostHandler: 输入类型需要对齐对应节点的流式输出类型。
 
 ```go
-// The input type is *schema.StreamReader[*schema.Message], which is aligned with the streaming output type of ChatModel
+// input 类型为 *schema.StreamReader[*schema.Message]，对齐 ChatModel 的流式输出类型
 postHandler := func(ctx context.Context, input *schema.StreamReader[*schema.Message], state *state) (*schema.StreamReader[*schema.Message], error) {
     // your handler logic
 }
+
 AddChatModelNode("xxx", model, WithStreamStatePostHandler(postHandler))
 ```
 
-### **Alignment of Types under invoke and stream**
+### invoke 和 stream 下的类型对齐方式
 
-In Eino, the result of orchestration is either a graph or a chain. To execute it, you need to use `Compile()` to generate a `Runnable` interface.
+在 Eino 中，编排的结果是 graph 或 chain，若要运行，则需要使用 `Compile()` 来生成一个 `Runnable` 接口。
 
-One important function of Runnable is to provide four calling methods: "Invoke", "Stream", "Collect", and "Transform".
+Runnable 的一个重要作用就是提供了 「Invoke」、「Stream」、「Collect」、「Transform」 四种调用方式。
 
-> You can check the introduction of the above calling methods and detailed runnable introduction in: [Eino: Overview](/docs/eino/overview)
+> 上述几种调用方式的介绍以及详细的 Runnable 介绍可以查看: [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
-Suppose we have a `Graph[[]*schema.Message, []*schema.Message]`, which contains a ChatModel node and a Lambda node. After compiling, it becomes a `Runnable[[]*schema.Message, []*schema.Message]`.
+假设我们有一个 `Graph[[]*schema.Message, []*schema.Message]`，里面有一个 ChatModel 节点，一个 Lambda 节点，Compile 之后是一个 `Runnable[[]*schema.Message, []*schema.Message]`。
 
 ```go
 package main
@@ -275,28 +281,27 @@ func TestTypeMatch(t *testing.T) {
 }
 ```
 
-When we call the compiled Runnable in Stream mode, the model node outputs `*schema.StreamReader[*Message]`, but the lambda node is an InvokableLambda that only accepts non-streaming `*schema.Message` as input. This complies with the type alignment rule because the Eino framework automatically concatenates streaming Messages into a complete Message.
+当我们以 Stream 方式调用上面编译好的 Runnable 时，model 节点会输出 `*schema.StreamReader[*Message]`，但是 lambda 节点是 InvokableLambda，只接收非流式的 `*schema.Message` 作为输入。这也符合类型对齐规则，因为 Eino 框架会自动把流式的 Message 拼接成完整的 Message。
 
-In stream mode, concatenating frames is a very common operation. During concatenation, all elements from `*StreamReader[T]` are first extracted and converted into `[]T`, and then an attempt is made to concatenate `[]T` into a complete `T`. The framework has built-in support for concatenating the following types:
+在 stream 模式下，拼接帧 是一个非常常见的操作，拼接时，会先把 `*StreamReader[T] ` 中的所有元素取出来转成 `[]T`，再尝试把 `[]T` 拼接成一个完整的 `T`。框架内已经内置支持了如下类型的拼接:
 
-- `*schema.Message`: See `schema.ConcatMessages()` for details
-- `string`: The implementation logic is equivalent to `+=`
-- `[]*schema.Message`: See `compose.concatMessageArray()` for details
-- `Map`: Merge values with the same key; the merging logic is the same as above. If there is an un-combinable type, it fails (ps: it is not overwritten)
-- `Struct` or `Struct pointer`: First converted into `[]map[string]any`, then merged according to the map logic. The struct must not contain unexported fields.
-- Other slices: Can only be merged if there is exactly one non-zero value element in the slice.
+- `*schema.Message`:  详情见 `schema.``ConcatMessages``()`
+- `string`: 实现逻辑等同于 `+=`
+- `[]*schema.Message`: 详情见 `compose.concatMessageArray()`
+- `Map`: 把相同 key 的 val 进行合并，合并逻辑同上，若存在无法合并的类型，则失败 (ps: 不是覆盖)
+- 其他 slice：只有当 slice 中只有一个元素是非零值时，才能合并。
 
-For other scenarios, or when users want to override the default behavior with custom logic, developers can implement their own concat method and register it to the global concatenation function using `compose.RegisterStreamChunkConcatFunc()`.
+对其他场景，或者当用户想用定制逻辑覆盖掉上面的默认行为时，开发者可自行实现 concat 方法，并使用 `compose.RegisterStreamChunkConcatFunc()` 注册到全局的拼接函数中。
 
-Here is an example:
+示例如下：
 
 ```go
-// Suppose our own structure is as follows
+// 假设我们自己的结构体如下
 type tStreamConcatItemForTest struct {
     s string
 }
 
-// Implement a splicing method
+// 实现一个拼接的方法
 func concatTStreamForTest(items []*tStreamConcatItemForTest) (*tStreamConcatItemForTest, error) {
     var s string
     for _, item := range items {
@@ -307,173 +312,166 @@ func concatTStreamForTest(items []*tStreamConcatItemForTest) (*tStreamConcatItem
 }
 
 func Init() {
-    // Register in the global splicing method
+    // 注册到全局的拼接方法中
     compose.RegisterStreamChunkConcatFunc(concatTStreamForTest)
 }
 ```
 
-### **Runtime Type Alignment Check Scenarios**
+### 类型对齐在运行时检查的场景
 
-Eino's Graph type alignment check will verify if the types of the two nodes match during `err = graph.AddEdge("node1", "node2")`. This allows for type mismatch errors to be identified either during the `graph construction process` or the `Compile process`, adhering to rules ①②③ as listed in [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles).
+eino 的 Graph 类型对齐检查，会在 `err = graph.AddEdge("node1", "node2")` 时检查两个节点类型是否匹配，也就能在 `构建 graph 的过程`，或 `Compile 的过程` 发现类型不匹配的错误，这适用于 [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles) 中所列举的 ① ② ③ 条规则。
 
-When the upstream node's output is an `interface`, and the downstream node type implements that `interface`, it is likely that upstream can be converted to downstream type (type assertion). However, whether the conversion succeeds can only be determined during the `runtime process`, so type checks in this scenario are deferred to runtime.
+当上游节点的输出为 `interface` 时，若下游节点类型实现了该 `interface`，则上游有可能可以转成下游类型 (类型断言)，但只能在 `运行过程` 才能清楚能否转换成功，该场景的类型检查移到了运行过程中。
 
-The structure is shown in the diagram below:
+其结构可见下图：
 
-<a href="/img/eino/en_eino_graph_parallel_node_type.png" target="_blank"><img src="/img/eino/en_eino_graph_parallel_node_type.png" width="100%" /></a>
+<a href="/img/eino/input_type_output_type_in_edge.png" target="_blank"><img src="/img/eino/input_type_output_type_in_edge.png" width="100%" /></a>
 
-This scenario is suitable for developers who can handle upstream and downstream type alignment on their own and choose the appropriate downstream execution nodes based on different types.# User Manual for Eino
+这种场景适用于开发者能自行处理好上下游类型对齐的情况，可根据不同类型选择下游执行节点。
 
-## Opinionated **Design Choices**
+## 带有明确倾向性的设计选择
 
-### Principle of Read-Only External Variables
+### 外部变量只读原则
 
-When data in Eino's Graph flows among Nodes, Branches, and Handlers, it is always variable assignment, not copying. When the Input is of a reference type, such as a Struct pointer, map, or slice, modifying the Input inside Nodes, Branches, or Handlers will have side effects on the outside and may lead to concurrency issues. Therefore, Eino follows the principle of read-only external variables: do not modify the Input inside Nodes, Branches, or Handlers. If modification is required, make a copy first.
+Eino 的 Graph 中的数据在 Node、Branch、Handler 间流转时，一律是变量赋值，不是 Copy。当 Input 是引用类型，如 Struct 指针、map、slice 时，在 Node、Branch、Handler 内部对 Input 的修改，会对外部有副作用，可能导致并发问题。因此，Eino 遵循外部变量只读原则：Node、Branch、Handler 内部不对 Input 做修改，如需修改，先自行 Copy。
 
-This principle also applies to Chunks in the StreamReader.
+这个原则对 StreamReader 中的 Chunk 同样生效。
 
-### **Fan-In and Merging**
+### 扇入与合并
 
-**Fan-in**: Outputs from multiple predecessor nodes converge to a successor node and together serve as the input for the successor node. It is necessary to clearly define how the outputs of multiple predecessor nodes are **merged**. Eino's choice is as follows. First, it requires that the **actual types** of the outputs of multiple predecessor nodes must be the same and of a mergeable type.
+**扇入**：多个上游的数据汇入到下游，一起作为下游的输入。需要明确定义多个上游的输出，如何**合并（Merge）**起来。
 
-Mergeable types can be:
+默认情况下，首先要求多个上游输出的**实际类型**必须相同且为 Map，且相互间 key 不可重复。其次：
 
-- Map type, and the keys are not repeated among each other.
-- Any type, and a merge function is registered through `compose.RegisterValuesMergeFunc`.
+- 在非流式场景下，合并后成为一个 Map，包含所有上游的所有键值对。
+- 在流式场景下，将类型相同的多个上游 StreamReader 合并为一个 StreamReader。实际 Recv 时效果为从多个上游 StreamReader 中公平读取。
 
-Second,
-
-- In non-streaming scenarios, 
-  - if the input type has a registered merge function, it will be merged into a single value using the registered function.
-  - if the input type is a Map, it will be merged into a single Map containing all key-value pairs from all upstream sources.
-- In streaming scenarios, multiple upstream StreamReaders of the same type are merged into one StreamReader. When actually receiving data from the merged StreamReader, the effect is to read fairly from multiple upstream StreamReaders.
-
-When adding a node (AddNode), you can add the WithOutputKey option to convert the output of the node into a Map:
+在 AddNode 时，可以通过添加 WithOutputKey 这个 Option 来把节点的输出转成 Map：
 
 ```go
-// The output of this node will be changed from string to map[string]any. 
-// And there is only one element in the map. The key is your_output_key, and the value is the actual string output by the node. 
+// 这个节点的输出，会从 string 改成 map[string]any，
+// 且 map 中只有一个元素，key 是 your_output_key，value 是实际的的节点输出的 string
 graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
     // your logic
     return
 }), compose.WithOutputKey("your_output_key"))
 ```
 
-You can also register custom merge method to support any type:
+也可以通过注册 Merge 方法来实现任意类型的 merge：
 
 ```go
 // eino/compose/values_merge.go
 func RegisterValuesMergeFunc[T any](fn func([]T) (T, error))
 ```
 
-Workflow can map the output fields of multiple predecessor nodes to different input fields of the successor node. Eino converts the Struct output from each predecessor to a Map before any merge process, still conforming to the above rules.
+Workflow 可以做到多个上游的多个输出字段映射到下游节点的不同字段。这并不属于合并场景，而是点对点的字段映射。事实上，eino workflow 目前不支持“多个上游字段同时映射到相同的下游字段”。
 
-### **Streaming Processing**
+### 流式处理
 
-Eino believes that components should only need to implement genuine streaming paradigms from the business scenario. For example, a ChatModel does not need to implement Collect. Therefore, in orchestration scenarios, Eino automatically completes the **missing streaming paradigms** for all nodes.
+Eino 认为，组件应当只需要实现业务场景中真实的流式范式，比如 ChatModel 不需要实现 Collect。因此，在编排场景中，Eino 自动帮助所有的节点**补全缺失的流式范式**。
 
-When running a Graph via Invoke, all internal nodes operate in Invoke mode. When running a Graph via Stream, Collect, or Transform, all internal nodes operate in Transform mode.
+以 Invoke 方式运行 Graph，内部各节点均以 Invoke 范式运行，以 Stream, Collect 或 Transform 方式运行 Graph，内部各节点均以 Transform 范式运行。
 
-**Auto Concatenate**: In scenarios where Stream chunks are concatenated into complete content, the user-defined concatenation function registered by the user is preferred. Otherwise, default behaviors provided by the framework are performed, including Message, Message arrays, String, Map, and Struct/Struct pointers.
+**自动拼接(Concatenate)**：Stream chunk 拼接为完整内容的场景，优先使用用户注册的自定义拼接函数，其次执行框架提供的默认行为，包括 Message, Message 数组，String，Map 和 Struct 及 Struct 指针。
 
-**Auto Boxing**: In scenarios requiring the conversion of non-stream type T to StreamReader[T], the framework automates the process.
+**自动流化(Box)**：需要将非流式的 T 变成 StreamReader[T] 的场景，框架自动执行。
 
-**Auto Merge**: See the above section on "Fan-In and Merging."
+**自动合并(Merge)**：见上文“扇入与合并”环节。
 
-**Auto Copy**: In scenarios requiring the replication of streams, the framework automatically handles stream copying, including instances where a single stream fans out to multiple downstream nodes, or a single stream enters one or more callback handlers.
+**自动复制(Copy)**：在需要做流的复制的场景自动进行流的复制，包括一个流扇出到多个下游节点，一个流进入一个或多个 callback handler。
 
-Finally, Eino requires all orchestration elements to be aware of and capable of handling streams. This includes branches, state handlers, callback handlers, passthroughs, lambdas, etc.
+最后，Eino 要求所有编排元素能够感知和处理流。包括 branch，state handler，callback handler，passthrough，lambda 等。
 
-For more details on Eino's streaming capabilities, refer to [Eino Points of Streaming Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+关于 Eino 对流的处理能力，详见 [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)。
 
-### **Global State**
+### 全局状态
 
-**State**: In NewGraph, pass in the creation method of State through `compose.WithGenLocalState`. This globally scoped state at the request level can be read from and written to during various stages of a single request.
+**State**：在 NewGraph 时通过 `compose.WithGenLocalState` 传入 State 的创建方法。这个请求维度的全局状态在一次请求的各环节可读写使用。
 
-Eino recommends using `StatePreHandler` and `StatePostHandler`:
+Eino 推荐用 `StatePreHandler` 和  `StatePostHandler`，功能定位是：
 
-- StatePreHandler: Before the execution of each node, read from and write to State. Replace the node's input as needed.
-- StatePostHandler: After the execution of each node, read from and write to State. Replace the node's output as needed.
+- StatePreHandler：在每个节点执行前读写 State，以及按需替换节点的 Input。输入需对齐节点的非流式输入类型。
+- StatePostHandler：在每个节点执行后读写 State，以及按需替换节点的 Output。输入需对齐节点的非流式输出类型。
 
-For streaming scenarios, use the corresponding `StreamStatePreHandler` and `StreamStatePostHandler`.
+针对流式场景，使用对应的 `StreamStatePreHandler` 和 `StreamStatePostHandler`，输入需分别对齐节点的流式输入和流式输出类型。
 
-These state handlers are located outside the nodes and affect the nodes by modifying the Input or Output, thus ensuring the "stateless" property of the nodes.
+这些 state handlers 位于节点外部，通过对 Input 或 Output 的修改影响节点，从而保证了节点的“状态无关”特性。
 
-If you need to read from and write to State inside the nodes, Eino provides the `ProcessState[S any](ctx context.Context, handler func(context.Context, S) error) error` function.
+如果需要在节点内部读写 State，Eino 提供了 `ProcessState[S any](ctx context.Context`**, **`handler func(context.Context`**, **`S) error) error` 函数。
 
-The Eino framework will add locks at all positions where the State is read from or written to.
+Eino 框架会在所有读写 State 的位置加锁。
 
-### **Callback Injection**
+### 回调注入
 
-Eino's orchestration framework considers that components entering the orchestration might have internally embedded Callback aspects or might not. This information is determined by whether the component implements the `Checker` interface and the return value of the `IsCallbacksEnabled` method in the interface.
+Eino 编排框架认为，进入编排的组件，可能内部埋入了 Callback 切面，也可以没有。这个信息由组件是否实现了 `Checker` 接口，以及接口中 `IsCallbacksEnabled` 方法的返回值来判断。
 
-- When `IsCallbacksEnabled` returns true, Eino's orchestration framework uses the component's internally implemented Callback aspects.
-- Otherwise, it automatically wraps the component implementation with external Callback aspects, (only) reporting input and output.
+- 当 `IsCallbacksEnabled` 返回 true 时，Eino 编排框架使用组件实现内部的 Callback 切面。
+- 否则，自动在组件实现外部包上 Callback 切面，（只能）上报 input 和 output。
 
-In either case, RunInfo will be automatically inferred.
+无论哪种，都会自动推断出 RunInfo。
 
-Additionally, for the Graph as a whole, Callback aspects will always be injected, with RunInfo being the Graph itself.
+同时，对 Graph 整体，也一定会注入 Callback 切面，RunInfo 为 Graph 自身。
 
-For a complete explanation of Eino's Callback capabilities, see [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
+关于 Eino 的 Callback 能力完整说明，见 [Eino: Callback 用户手册](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)。
 
-### **Option Allocation**
+### Option 分配
 
-Eino supports various dimensions of Call Option allocation methods:
+Eino 支持各种维度的 Call Option 分配方式：
 
-- Default global allocation, i.e., allocated to all nodes, including nested internal graphs.
-- An option can be added to a specific component type, in which case it is by default allocated to all nodes of that type, such as AddChatModelOption. Lambdas that have defined unique Option types can also specify the Option for themselves in this way.
-- Any specific nodes can be designated using `DesignateNode(key ...string)`.
-- Any depth of nested graphs, or any specific nodes within them, can be designated using `DesignateNodeWithPath(path ...*NodePath)`.
+- 默认全局，即分配到所有节点，包括嵌套的内部图。
+- 可添加某个组件类型的 Option，这时默认分配到该类型的所有节点，比如 AddChatModelOption。定义了独有 Option 类型的 Lambda，也可以这样把 Option 指定到自身。
+- 可指定任意个具体的节点，使用 `DesignateNode(key ...string)`.
+- 可指定任意深度的嵌套图，或者其中的任意个具体的节点，使用 `DesignateNodeWithPath(path ...*NodePath)`.
 
-For a complete explanation of Eino's Call Option capabilities, see [Eino: CallOption capabilities and specification](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities).
+关于 Eino 的 Call Option 能力完整说明，见 [Eino: CallOption 能力与规范](/zh/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)。
 
-### **Graph Nesting**
+### 图嵌套
 
-The outcome of graph orchestration, `Runnable`, is very similar in interface form to Lambda. Therefore, a compiled graph can be simply encapsulated as a Lambda and nested into other graphs as a Lambda node.
+图编排产物 `Runnable` 与 Lambda 的接口形式非常相似。因此编译好的图可以简单的封装为 Lambda，并以 Lambda 节点的形式嵌套进其他图中。
 
-Another way is that, before compilation, Graph, Chain, Workflow, etc., can be nested directly into other graphs using AddGraph. The differences between the two methods are:
+另一种方式，在编译前，Graph，Chain，Workflow 等都可以直接通过 AddGraph 的方式嵌套进其他图中。两个方式的差异是：
 
-- The Lambda method adds an additional Lambda node in the trace. From the perspective of other Callback handlers, there will also be an additional layer.
-- The Lambda method requires using the Lambda's Option to inherit CallOption and cannot use DesignateNodeWithPath.
-- The Lambda method requires the internal graph to be precompiled. Directly using AddGraph allows the internal graph to be compiled together with the parent graph.
+- Lambda 的方式，在 trace 上会多一级 Lambda 节点。其他 Callback handler 视角看也会多一层。
+- Lambda 的方式，需要通过 Lambda 的 Option 来承接 CallOption，无法通过 DesignateNodeWithPath。
+- Lambda 的方式，内部图需事先编译。直接 AddGraph，则内部图随上级图一起编译。
 
-## **Internal Mechanism**
+## 内部机制
 
-### **Execution Sequence**
+### 执行时序
 
-Taking an InvokableLambda (input as string, output as int) with StatePreHandler, StatePostHandler, InputKey, OutputKey added, and no Callback aspect implemented internally as an example, the complete flow execution sequence in the diagram is as follows:
+以一个添加了 StatePreHandler、StatePostHandler、InputKey、OutputKey，且内部没有实现 Callback 切面的 InvokableLambda（输入为 string，输出为 int）为例，在图中的流式执行完整时序如下：
 
-<a href="/img/eino/en_eino_callbacks.png" target="_blank"><img src="/img/eino/en_eino_callbacks.png" width="100%" /></a>
+<a href="/img/eino/graph_node_run_wrapper.png" target="_blank"><img src="/img/eino/graph_node_run_wrapper.png" width="100%" /></a>
 
-In the workflow scenario, field mapping occurs in two places:
+在 workflow 的场景中，字段映射发生在两个位置：
 
-- After the node execution's StatePostHandler and the "stream replication" step, each downstream-required field will be separately extracted.
-- After the "merge" step before node execution, and before StatePreHandler, the extracted upstream field values will be converted to the current node's input.
+- 在节点执行后的 StatePostHandler 以及“流复制”步骤后，每个下游需要的字段会分别抽取出来。
+- 在节点执行前的“合并”步骤之后、StatePreHandler 之前，会将抽取出来的上游字段值转换为当前节点的输入。
 
-### **Runtime Engine**
+### 运行引擎
 
-When `NodeTriggerMode == AnyPredecessor`, the graph executes using the pregel engine, corresponding to a directed graph with cycles. Characteristics include:
+`NodeTriggerMode == AnyPredecessor` 时，图以 pregel 引擎执行，对应的拓扑结构是有向有环图。特点是：
 
-- One or more currently executing nodes' all subsequent nodes collectively execute as a SuperStep. At this time, these new nodes become the "current" nodes.
-- Supports Branch, supports loops in the graph, but it may require manually adding passthrough nodes to ensure SuperStep nodes meet expectations, as illustrated below:
+- 当前执行中的一个或多个节点，所有的后序节点，作为一个 SuperStep，整体一起执行。这时，这些新的节点，会成为“当前”节点。
+- 支持 Branch，支持图中有环，但是可能需要人为添加 passthrough 节点，来确保 SuperStep 中的节点符合预期，如下图：
 
-<a href="/img/eino/en_eino_run_steps.png" target="_blank"><img src="/img/eino/en_eino_run_steps.png" width="100%" /></a>
+<a href="/img/eino/graph_steps_in_graph2.png" target="_blank"><img src="/img/eino/graph_steps_in_graph2.png" width="100%" /></a>
 
-In the above image, Node 4 and Node 5 are executed together as per rules, which likely does not meet expectations. It needs to be changed to:
+上图中 Node 4 和 Node 5 按规则被放在一起执行，大概率不符合预期。需要改成：
 
 <a href="/img/eino/graph_steps_in_graph.png" target="_blank"><img src="/img/eino/graph_steps_in_graph.png" width="100%" /></a>
 
-When `NodeTriggerMode == AllPredecessor`, the graph executes using the dag engine, corresponding to a directed acyclic graph. Characteristics include:
+`NodeTriggerMode == AllPredecessor` 时，图以 dag 引擎执行，对应的拓扑结构是有向无环图。特点是：
 
-- Each node has a specific predecessor node, and this node is only executable once all predecessor nodes are complete.
-- An eager mode can be selected, where there is no SuperStep concept. Each node, upon completion, immediately checks which subsequent nodes can be run and executes them at the earliest time.
-- Does not support cycles in the graph, as it breaks the "each node has a specific predecessor node" assumption.
-- Support Branch. At runtime, mark the unselected nodes of Branch as skipped, which does not affect the semantics of AllPredecessor.
-- No need for manual SuperStep alignment.
+- 每个节点有确定的前序节点，当所有前序节点都完成后，本节点才具备运行条件。
+- 不支持图中有环，因为会打破“每个节点有确定的前序节点”这一假定。
+- 支持 Branch。在运行时，将 Branch 未选中的节点记为已跳过，不影响 AllPredecessor 的语义。
 
 > 💡
-> When NodeTriggerMode is set to AllPredecessor, the node will execute after all predecessors are ready, but it will not execute immediately. Instead, it still follows the SuperStep - running new runnable nodes after a batch of nodes have completed execution.
+> 设置 NodeTriggerMode = AllPredecessor 后，节点会在所有前驱就绪后执行，但并不是立即执行，而是依然遵循 SuperStep——在一批节点全部执行完成后再运行新的可运行节点。
 >
-> If compose.WithEagerExecution() is passed in Compile, the ready nodes will run immediately.
+> 如果在 Compile 时传入 compose.WithEagerExecution()，则就绪的节点会立刻运行。
+>
+> 在 Eino v0.4.0 版本及之后的版本中，设置 NodeTriggerMode = AllPredecessor 后会默认开启 EagerExecution。
 
-In summary, the pregel mode is flexible and powerful but comes with additional mental overhead, while the dag mode is clear and simple but limited in application scenarios. In the Eino framework, Chain uses the pregel mode, Workflow uses the dag mode, and Graph supports both; users can choose between pregel and dag.
+总结起来，pregel 模式灵活强大但有额外的心智负担，dag 模式清晰简单但场景受限。在 Eino 框架中，Chain 是 pregel 模式，Workflow 是 dag 模式，Graph 则都支持，可由用户从 pregel 和 dag 中选择。
