@@ -23,7 +23,7 @@ import "github.com/cloudwego/eino-ext/components/tool/duckduckgo/v2"
 tool, err := duckduckgo.NewTextSearchTool(ctx, &duckduckgo.Config{
     ToolName:    "duckduckgo_search",     
     ToolDesc:    "search for information by duckduckgo",
-    Region:      ddgsearch.RegionWT,      // The geographical region for results.
+    Region:      duckduckgo.RegionWT,      // The geographical region for results.
     MaxResults:  3,                      // Limit the number of results returned.
 })
 ```
