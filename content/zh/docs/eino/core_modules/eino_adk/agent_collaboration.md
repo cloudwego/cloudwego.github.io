@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 协作'
@@ -124,8 +124,8 @@ func WithSessionValues(v map[string]any) AgentRunOption
 runner := adk.NewRunner(ctx, adk.RunnerConfig{Agent: agent})
 iterator := runner.Run(ctx, []adk.Message{schema.UserMessage("xxx")},
     adk.WithSessionValues(map[string]any{
-       _PlanSessionKey_:      123,
-       _UserInputSessionKey_: []adk.Message{schema.UserMessage("yyy")},
+       PlanSessionKey:      123,
+       UserInputSessionKey: []adk.Message{schema.UserMessage("yyy")},
     }),
 )
 ```

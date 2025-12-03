@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-01"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: 'Eino ADK MultiAgent: Plan-Execute Agent'
@@ -11,7 +11,7 @@ weight: 3
 
 ### Import Path
 
-`import ``github.com/cloudwego/eino/adk/prebuilt``/planexecute`
+`import ``github.com/cloudwego/eino/adk/prebuilt/planexecute`
 
 ### 什么是 Plan-Execute Agent？
 

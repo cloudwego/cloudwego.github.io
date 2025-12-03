@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 抽象'
@@ -34,8 +34,8 @@ Run 方法接收 AgentInput 作为 Agent 的输入：
 
 ```go
 type AgentInput struct {
-    Messages        []_Message_
-_    _EnableStreaming bool
+    Messages        []Message
+    EnableStreaming bool
 }
 
 type Message = *schema.Message

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: Agent 还是 Graph？AI 应用路线辨析
@@ -19,11 +19,6 @@ weight: 5
 - 以“按钮”或者“API”为代表性标志的“Graph（流程图）”。比如上面的“录音纪要”这个“按钮”，其背后的 Graph 大概是“录音”-》“LLM 理解并总结” -》“保存录音”这种固定流程。**Graph 的核心在于其流程的确定性与任务的封闭性**，通过预定义的节点和边来完成特定目标，表现为一种“功能”形态。
 
 ```mermaid
----
-config:
-  theme: 'neutral'
----
-
 flowchart TD
   linkStyle default stroke-width:2px,stroke:#000000
 

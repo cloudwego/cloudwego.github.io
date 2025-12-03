@@ -34,18 +34,21 @@
             directive = '%%{init: ' + JSON.stringify(cfg) + '}%%\n';
             body = text.replace(fm[0], '');
         }
+        var isV10 = typeof mermaid !== 'undefined' && mermaid.version && parseInt(mermaid.version.split('.')[0], 10) >= 10;
         body = body.replace(/<br\s*\/?>(?![^`]*`)/gi, '\\n');
-        body = body.split('\n').map(function(line) {
-            var m = line.match(/^\s*([A-Za-z0-9_]+)\s*@\{\s*([^}]*)\s*\}\s*$/);
-            if (m) {
-                var id = m[1];
-                var props = m[2];
-                var lm = props.match(/label\s*:\s*("[^"]*"|'[^']*'|[^,]+)/);
-                var label = lm ? lm[1].replace(/^['"]|['"]$/g, '') : id;
-                return id + '["' + label + '"]';
-            }
-            return line;
-        }).join('\n');
+        if (!isV10) {
+            body = body.split('\n').map(function(line) {
+                var m = line.match(/^\s*([A-Za-z0-9_]+)\s*@\{\s*([^}]*)\s*\}\s*$/);
+                if (m) {
+                    var id = m[1];
+                    var props = m[2];
+                    var lm = props.match(/label\s*:\s*("[^"]*"|'[^']*'|[^,]+)/);
+                    var label = lm ? lm[1].replace(/^['"]|['"]$/g, '') : id;
+                    return id + '["' + label + '"]';
+                }
+                return line;
+            }).join('\n');
+        }
         return directive + body;
     }
 

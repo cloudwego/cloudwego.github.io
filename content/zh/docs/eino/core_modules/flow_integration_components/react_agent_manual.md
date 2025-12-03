@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: 'Eino: ReAct Agent 使用手册'
@@ -270,27 +270,27 @@ a, err = NewAgent(ctx, &AgentConfig{
 可选填写，未填写时使用“非空包”是否包含工具调用判断：
 
 ```go
-**func **firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
-    **defer **sr.Close()
+func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
 
-    **for **{
+    for {
        msg, err := sr.Recv()
-       **if **err == io.EOF {
-          **return **false, nil
+       if err == io.EOF {
+          return false, nil
        }
-       **if **err != nil {
-          **return **false, err
-       }
-
-       **if **len(msg.ToolCalls) > 0 {
-          **return **true, nil
+       if err != nil {
+          return false, err
        }
 
-       **if **len(msg.Content) == 0 { // skip empty chunks at the front
-          **continue**
-**       **}
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
 
-       **return **false, nil
+       if len(msg.Content) == 0 { // skip empty chunks at the front
+          continue
+       }
+
+       return false, nil
     }
 }
 ```
@@ -299,25 +299,25 @@ a, err = NewAgent(ctx, &AgentConfig{
 
 默认实现不适用的情况：在输出 Tool Call 前，有非空的 content chunk。此时，需要自定义 tool Call checker 如下：
 
-```
-_toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {_
-_    defer sr.Close()_
-_    for {_
-_       msg, err := sr.Recv()_
-_       if err != nil {_
-_          if errors.Is(err, io.EOF) {_
-_             // finish_
-_             break_
-_          }_
+```go
+toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+    for {
+       msg, err := sr.Recv()
+       if err != nil {
+          if errors.Is(err, io.EOF) {
+             // finish
+             break
+          }
 
-_          return false, err_
-_       }_
+          return false, err
+       }
 
-_       if len(msg.ToolCalls) > 0 {_
-_          return true, nil_
-_       }_
-_    }_
-_    return false, nil_
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
+    }
+    return false, nil
 }
 ```
 
@@ -394,18 +394,18 @@ React agent 支持通过运行时 Option 动态修改
 场景 1：运行时修改 Agent 中的 Model 配置，通过：
 
 ```go
-_// WithChatModelOptions returns an agent option that specifies model.Option for the chat model in agent._
-**func **WithChatModelOptions(opts ...model.Option) agent.AgentOption {
-    **return **agent.WithComposeOptions(compose.WithChatModelOption(opts...))
+// WithChatModelOptions returns an agent option that specifies model.Option for the chat model in agent.
+func WithChatModelOptions(opts ...model.Option) agent.AgentOption {
+    return agent.WithComposeOptions(compose.WithChatModelOption(opts...))
 }
 ```
 
 场景 2：运行时修改 Tool 列表，通过：
 
 ```go
-_// WithToolList returns an agent option that specifies the list of tools can be called which are BaseTool but must implement InvokableTool or StreamableTool._
-**func **WithToolList(tools ...tool.BaseTool) agent.AgentOption {
-    **return **agent.WithComposeOptions(compose.WithToolsNodeOption(compose.WithToolList(tools...)))
+// WithToolList returns an agent option that specifies the list of tools can be called which are BaseTool but must implement InvokableTool or StreamableTool.
+func WithToolList(tools ...tool.BaseTool) agent.AgentOption {
+    return agent.WithComposeOptions(compose.WithToolsNodeOption(compose.WithToolList(tools...)))
 }
 ```
 
@@ -414,9 +414,9 @@ _// WithToolList returns an agent option that specifies the list of tools can be
 场景 3：运行时修改某个 Tool 的 option，通过：
 
 ```go
-_// WithToolOptions returns an agent option that specifies tool.Option for the tools in agent._
-**func **WithToolOptions(opts ...tool.Option) agent.AgentOption {
-    **return **agent.WithComposeOptions(compose.WithToolsNodeOption(compose.WithToolOption(opts...)))
+// WithToolOptions returns an agent option that specifies tool.Option for the tools in agent.
+func WithToolOptions(opts ...tool.Option) agent.AgentOption {
+    return agent.WithComposeOptions(compose.WithToolsNodeOption(compose.WithToolOption(opts...)))
 }
 ```
 
@@ -429,11 +429,11 @@ _// WithToolOptions returns an agent option that specifies tool.Option for the t
 如果希望实时拿到 React Agent 执行过程中产生的 *schema.Message，可以先通过 WithMessageFuture 获取一个运行时 Option 和一个 MessageFuture：
 
 ```go
-_// WithMessageFuture returns an agent option and a MessageFuture interface instance._
-_// The option configures the agent to collect messages generated during execution,_
-_// while the MessageFuture interface allows users to asynchronously retrieve these messages._
-**func **WithMessageFuture() (agent.AgentOption, MessageFuture) {
-    h := &cbHandler{started: make(**chan struct**{})}
+// WithMessageFuture returns an agent option and a MessageFuture interface instance.
+// The option configures the agent to collect messages generated during execution,
+// while the MessageFuture interface allows users to asynchronously retrieve these messages.
+func WithMessageFuture() (agent.AgentOption, MessageFuture) {
+    h := &cbHandler{started: make(chan struct{})}
 
     cmHandler := &ub.ModelCallbackHandler{
        OnEnd:                 h.onChatModelEnd,
@@ -453,7 +453,7 @@ _// while the MessageFuture interface allows users to asynchronously retrieve th
 
     option := agent.WithComposeOptions(compose.WithCallbacks(cb))
 
-    **return **option, h
+    return option, h
 }
 ```
 

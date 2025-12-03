@@ -4,7 +4,7 @@ date: "2025-12-01"
 lastmod: ""
 tags: []
 title: FAQ
-weight: 0
+weight: 6
 ---
 
 # Q: cannot use openapi3.TypeObject (untyped string constant "object") as *openapi3.Types value in struct literal，cannot use types (variable of type string) as *openapi3.Types value in struct literal

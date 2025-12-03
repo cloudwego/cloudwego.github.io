@@ -4,7 +4,7 @@ date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 'Eino: ToolsNode&Tool 使用说明'
-weight: 0
+weight: 3
 ---
 
 ## **基本介绍**

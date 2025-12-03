@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: Eino human-in-the-loop框架：技术架构指南
@@ -240,7 +240,7 @@ your input here: Y
 1. 调用 Runner.ResumeWithParams，传入同一个 InterruptID，以及用来恢复的数据，这里是“同意”。在这个例子里，首次 `Runner.Query` 和之后的 `Runner.ResumeWithParams` 是在一个实例中，在真实场景，可能是 ChatBot 前端的两次请求，打到服务端的两个实例中。只要 CheckPointID 两次相同，且给 Runner 配置的 CheckPointStore 是分布式存储，Eino 就能做到跨实例的中断恢复。
 
 ```go
-_// here we directly resumes right in the same instance where the original `Runner.Query` happened.
+// here we directly resumes right in the same instance where the original `Runner.Query` happened.
 // In the real world, the original `Runner.Run/Query` and the subsequent `Runner.ResumeWithParams`
 // can happen in different processes or machines, as long as you use the same `CheckPointID`,
 // and you provided a distributed `CheckPointStore` when creating the `Runner` instance.
@@ -263,7 +263,7 @@ for {
     }
 
     prints.Event(event)
-__}_
+}
 ```
 
 完整样例输出：

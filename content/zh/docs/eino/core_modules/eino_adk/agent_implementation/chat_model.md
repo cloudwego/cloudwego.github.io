@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: 'Eino ADK: ChatModelAgent'
@@ -145,7 +145,7 @@ func (et ExitTool) InvokableRun(ctx context.Context, argumentsInJSON string, _ .
 
 ```go
 const (
-    _TransferToAgentInstruction _= `Available other agents: %s
+    TransferToAgentInstruction = `Available other agents: %s
 
 Decision rule:
 - If you're best suited for the question according to your description: ANSWER
@@ -161,7 +161,7 @@ func genTransferToAgentInstruction(ctx context.Context, agents []Agent) string {
           agent.Name(ctx), agent.Description(ctx)))
     }
 
-    return fmt.Sprintf(_TransferToAgentInstruction_, sb.String(), _TransferToAgentToolName_)
+    return fmt.Sprintf(TransferToAgentInstruction, sb.String(), TransferToAgentToolName)
 }
 ```
 
