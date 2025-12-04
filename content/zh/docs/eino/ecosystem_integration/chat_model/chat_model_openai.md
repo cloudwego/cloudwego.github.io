@@ -1,15 +1,15 @@
 ---
 Description: ""
-date: "2025-10-22"
+date: "2025-12-02"
 lastmod: ""
 tags: []
 title: ChatModel - openai
 weight: 0
 ---
 
-A OpenAI model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
+一个针对 [Eino](https://github.com/cloudwego/eino) 的 OpenAI 模型实现，实现了 `ToolCallingChatModel` 接口。这使得能够与 Eino 的 LLM 功能无缝集成，以增强自然语言处理和生成能力。
 
-## Features
+## 特性
 
 - Implements `github.com/cloudwego/eino/components/model.Model`
 - Easy integration with Eino's model system
@@ -19,15 +19,15 @@ A OpenAI model implementation for [Eino](https://github.com/cloudwego/eino) that
 - Custom response parsing support
 - Flexible model configuration
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/openai@latest
 ```
 
-## Quick Start
+## 快速开始
 
-Here's a quick example of how to use the OpenAI model:
+以下是如何使用 OpenAI 模型的快速示例：
 
 ```go
 
@@ -47,7 +47,7 @@ func main() {
 	ctx := context.Background()
 
 	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-		// if you want to use Azure OpenAI Service, set these two field.
+		// 如果您想使用 Azure OpenAI 服务，请设置这两个字段。
 		// BaseURL: "https://{RESOURCE_NAME}.openai.azure.com",
 		// ByAzure: true,
 		// APIVersion: "2024-06-01",
@@ -82,9 +82,9 @@ func main() {
 
 ```
 
-## Configuration
+## 配置
 
-The model can be configured using the `openai.ChatModelConfig` struct:
+可以使用 `openai.ChatModelConfig` 结构体配置模型：
 
 ```go
 
@@ -162,8 +162,8 @@ Stop []string `json:"stop,omitempty"`
 // Optional. Default: 0
 PresencePenalty *float32 `json:"presence_penalty,omitempty"`
 
-// ResponseFormat specifies the format of the model's response
-// Optional. Use for structured outputs
+// ResponseFormat 指定模型响应的格式
+// 可选。用于结构化输出
 ResponseFormat *ChatCompletionResponseFormat `json:"response_format,omitempty"`
 
 // Seed enables deterministic sampling for consistent outputs
@@ -201,9 +201,9 @@ Audio *Audio `json:"audio,omitempty"`
 ```
 
 
-## examples
+## 示例
 
-### generate
+### 文本生成
 
 ```go
 
@@ -215,15 +215,16 @@ import (
 	"log"
 	"os"
 
-	"github.com/cloudwego/eino-ext/components/model/openai"
 	"github.com/cloudwego/eino/schema"
+
+	"github.com/cloudwego/eino-ext/components/model/openai"
 )
 
 func main() {
 	ctx := context.Background()
 
 	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-		// if you want to use Azure OpenAI Service, set these two field.
+		// 如果您想使用 Azure OpenAI 服务，请设置这两个字段。
 		// BaseURL: "https://{RESOURCE_NAME}.openai.azure.com",
 		// ByAzure: true,
 		// APIVersion: "2024-06-01",
@@ -257,7 +258,7 @@ func main() {
 
 ```
 
-### generate_with_image
+### 多模态支持(图片理解)
 
 ```go
 
@@ -327,7 +328,7 @@ func of[T any](a T) *T {
 
 ```
 
-### stream
+### 流式生成
 
 ```go
 
@@ -392,72 +393,7 @@ func main() {
 
 ```
 
-### audio_generate
-
-```go
-
-package main
-
-import (
-	"context"
-
-	"log"
-	"os"
-
-	"github.com/bytedance/sonic"
-	"github.com/cloudwego/eino-ext/components/model/openai"
-	"github.com/cloudwego/eino/schema"
-)
-
-func main() {
-	ctx := context.Background()
-
-	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-		// if you want to use Azure OpenAI Service, set these two field.
-		// BaseURL: "https://{RESOURCE_NAME}.openai.azure.com",
-		// ByAzure: true,
-		// APIVersion: "2024-06-01",
-		APIKey:  os.Getenv("OPENAI_API_KEY"),
-		Model:   os.Getenv("OPENAI_MODEL"),
-		BaseURL: os.Getenv("OPENAI_BASE_URL"),
-		ByAzure: func() bool {
-			if os.Getenv("OPENAI_BY_AZURE") == "true" {
-				return true
-			}
-			return false
-		}(),
-		ReasoningEffort: openai.ReasoningEffortLevelHigh,
-		Modalities:      []openai.Modality{openai.AudioModality, openai.TextModality},
-		Audio: &openai.Audio{
-			Format: openai.AudioFormatMp3,
-			Voice:  openai.AudioVoiceAlloy,
-		},
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
-
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role: schema.User,
-			UserInputMultiContent: []schema.MessageInputPart{
-				{Type: schema.ChatMessagePartTypeText, Text: "help me convert the following text to speech"},
-				{Type: schema.ChatMessagePartTypeText, Text: "Hello, what can I help you with?"},
-			},
-		},
-	})
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
-
-	respBody, _ := sonic.MarshalIndent(resp, " ", " ")
-	log.Printf(" body: %s\n", string(respBody))
-
-}
-
-```
-
-### intent_tool
+### 工具调用
 
 ```go
 
@@ -555,7 +491,72 @@ func main() {
 
 ```
 
-### structured
+### 音频生成
+
+```go
+
+package main
+
+import (
+	"context"
+
+	"log"
+	"os"
+
+	"github.com/bytedance/sonic"
+	"github.com/cloudwego/eino-ext/components/model/openai"
+	"github.com/cloudwego/eino/schema"
+)
+
+func main() {
+	ctx := context.Background()
+
+	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+		// 如果您想使用 Azure OpenAI 服务，请设置这两个字段。
+		// BaseURL: "https://{RESOURCE_NAME}.openai.azure.com",
+		// ByAzure: true,
+		// APIVersion: "2024-06-01",
+		APIKey:  os.Getenv("OPENAI_API_KEY"),
+		Model:   os.Getenv("OPENAI_MODEL"),
+		BaseURL: os.Getenv("OPENAI_BASE_URL"),
+		ByAzure: func() bool {
+			if os.Getenv("OPENAI_BY_AZURE") == "true" {
+				return true
+			}
+			return false
+		}(),
+		ReasoningEffort: openai.ReasoningEffortLevelHigh,
+		Modalities:      []openai.Modality{openai.AudioModality, openai.TextModality},
+		Audio: &openai.Audio{
+			Format: openai.AudioFormatMp3,
+			Voice:  openai.AudioVoiceAlloy,
+		},
+	})
+	if err != nil {
+		log.Fatalf("NewChatModel failed, err=%v", err)
+	}
+
+	resp, err := chatModel.Generate(ctx, []*schema.Message{
+		{
+			Role: schema.User,
+			UserInputMultiContent: []schema.MessageInputPart{
+				{Type: schema.ChatMessagePartTypeText, Text: "help me convert the following text to speech"},
+				{Type: schema.ChatMessagePartTypeText, Text: "Hello, what can I help you with?"},
+			},
+		},
+	})
+	if err != nil {
+		log.Fatalf("Generate failed, err=%v", err)
+	}
+
+	respBody, _ := sonic.MarshalIndent(resp, " ", " ")
+	log.Printf(" body: %s\n", string(respBody))
+
+}
+
+```
+
+### 结构化输出
 
 ```go
 
@@ -661,7 +662,7 @@ func main() {
 
 
 
-## For More Details
+## 更多信息
 
 - [Eino Documentation](https://www.cloudwego.io/zh/docs/eino/)
 - [OpenAI Documentation](https://platform.openai.com/docs/api-reference/chat/create)

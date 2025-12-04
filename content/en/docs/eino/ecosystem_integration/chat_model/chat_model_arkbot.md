@@ -7,29 +7,30 @@ title: ChatModel - arkbot
 weight: 0
 ---
 
-一个为 [Eino](https://github.com/cloudwego/eino) 实现的 Volcengine Ark Bot，它实现了 `ToolCallingChatModel` 接口。这使得能够与 Eino 的 LLM 功能无缝集成，以增强自然语言处理和生成能力。
+A Volcengine Ark Bot implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
 
-## 特性
+## Features
 
-- 实现了 `github.com/cloudwego/eino/components/model.ToolCallingChatModel`
-- 轻松与 Eino 的模型系统集成
-- 可配置的模型参数
-- 支持聊天补全
-- 支持流式响应
-- 支持自定义响应解析
-- 灵活的模型配置
+- Implements `github.com/cloudwego/eino/components/model.ToolCallingChatModel`
+- Easy integration with Eino's model system
+- Configurable model parameters
+- Support for chat completion
+- Support for streaming responses
+- Custom response parsing support
+- Flexible model configuration
 
-## 安装
+## Installation
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/arkbot@latest
 ```
 
-## 快速开始
+## Quick Start
 
-以下是如何使用 Ark Bot 的快速示例：
+Here's a quick example of how to use the Ark Bot:
 
 ```go
+
 package main
 
 import (
@@ -68,28 +69,30 @@ func main() {
 		log.Fatalf("Generate failed, err=%v", err)
 	}
 
-	log.Printf("generate output:")
-	log.Printf("  request_id: %s", arkbot.GetArkRequestID(msg))
+	log.Printf("generate output: \n")
+	log.Printf("  request_id: %s\n", arkbot.GetArkRequestID(msg))
 	if bu, ok := arkbot.GetBotUsage(msg); ok {
 		bbu, _ := json.Marshal(bu)
-		log.Printf("  bot_usage: %s \n", string(bbu))
+		log.Printf("  bot_usage: %s\n", string(bbu))
 	}
 	if ref, ok := arkbot.GetBotChatResultReference(msg); ok {
 		bRef, _ := json.Marshal(ref)
 		log.Printf("  bot_chat_result_reference: %s\n", bRef)
 	}
 	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s \n", string(respBody))
+	log.Printf("  body: %s\n", string(respBody))
 }
+
+
 ```
 
-## 配置
+## Configuration
 
-可以使用 `arkbot.Config` 结构体配置模型：
+The model can be configured using the `arkbot.Config` struct:
 
 ```go
-
-type Config struct {
+    
+    type Config struct {
     // Timeout specifies the maximum duration to wait for API responses
     // If HTTPClient is set, Timeout will not be used.
     // Optional. Default: 10 minutes
@@ -173,9 +176,9 @@ type Config struct {
     }
 ```
 
-## 请求选项
+## Request Options
 
-Ark 模型支持各种请求选项以自定义 API 调用的行为。以下是可用的选项：
+The Ark model supports various request options to customize the behavior of API calls. Here are the available options:
 
 ```go
 // WithCustomHeader sets custom headers for a single request
@@ -183,11 +186,13 @@ Ark 模型支持各种请求选项以自定义 API 调用的行为。以下是�
 func WithCustomHeader(m map[string]string) model.Option {}
 ```
 
-## 示例
 
-### 文本生成
+## examples
+
+### generate
 
 ```go
+
 package main
 
 import (
@@ -226,24 +231,26 @@ func main() {
 		log.Fatalf("Generate failed, err=%v", err)
 	}
 
-	log.Printf("generate output:\n")
-	log.Printf("  request_id: %s \n", arkbot.GetArkRequestID(msg))
+	log.Printf("generate output: \n")
+	log.Printf("  request_id: %s\n", arkbot.GetArkRequestID(msg))
 	if bu, ok := arkbot.GetBotUsage(msg); ok {
 		bbu, _ := json.Marshal(bu)
-		log.Printf("  bot_usage: %s \n", string(bbu))
+		log.Printf("  bot_usage: %s\n", string(bbu))
 	}
 	if ref, ok := arkbot.GetBotChatResultReference(msg); ok {
 		bRef, _ := json.Marshal(ref)
-		log.Printf("  bot_chat_result_reference: %s \n", bRef)
+		log.Printf("  bot_chat_result_reference: %s\n", bRef)
 	}
 	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s \n", string(respBody))
+	log.Printf("  body: %s\n", string(respBody))
 }
+
 ```
 
-### 流式生成
+### stream
 
 ```go
+
 package main
 
 import (
@@ -296,7 +303,7 @@ func main() {
 		}
 		msgs = append(msgs, msg)
 		if err != nil {
-			log.Printf("stream.Recv failed, err=%v", err)
+			log.Printf("\nstream.Recv failed, err=%v", err)
 			return
 		}
 		fmt.Print(msg.Content)
@@ -309,21 +316,24 @@ func main() {
 	}
 
 	log.Printf("generate output: \n")
-	log.Printf("  request_id: %s \n", arkbot.GetArkRequestID(msg))
+	log.Printf("  request_id: %s\n", arkbot.GetArkRequestID(msg))
 	if bu, ok := arkbot.GetBotUsage(msg); ok {
 		bbu, _ := json.Marshal(bu)
-		log.Printf("  bot_usage: %s \n", string(bbu))
+		log.Printf("  bot_usage: %s\n", string(bbu))
 	}
 	if ref, ok := arkbot.GetBotChatResultReference(msg); ok {
 		bRef, _ := json.Marshal(ref)
-		log.Printf("  bot_chat_result_reference: %s \n", bRef)
+		log.Printf("  bot_chat_result_reference: %s\n", bRef)
 	}
 	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s \n", string(respBody))
+	log.Printf("  body: %s\n", string(respBody))
 }
+
 ```
 
-## 更多信息
+
+
+## For More Details
 
 - [Eino Documentation](https://www.cloudwego.io/zh/docs/eino/)
 - [Volcengine Ark Model Documentation](https://www.volcengine.com/docs/82379/1263272)

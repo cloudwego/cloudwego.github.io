@@ -1,33 +1,33 @@
 ---
 Description: ""
-date: "2025-10-22"
+date: "2025-12-02"
 lastmod: ""
 tags: []
 title: ChatModel - qianfan
 weight: 0
 ---
 
-A Qianfan model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
+一个针对 [Eino](https://github.com/cloudwego/eino) 的千帆模型实现，实现了 `ToolCallingChatModel` 接口。这使得能够与 Eino 的 LLM 功能无缝集成，以增强自然语言处理和生成能力。
 
-## Features
+## 特性
 
-- Implements `github.com/cloudwego/eino/components/model.Model`
-- Easy integration with Eino's model system
-- Configurable model parameters
-- Support for chat completion
-- Support for streaming responses
-- Custom response parsing support
-- Flexible model configuration
+- 实现了 `github.com/cloudwego/eino/components/model.Model`
+- 轻松与 Eino 的模型系统集成
+- 可配置的模型参数
+- 支持聊天补全
+- 支持流式响应
+- 自定义响应解析支持
+- 灵活的模型配置
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/qianfan@latest
 ```
 
-## Quick Start
+## 快速开始
 
-Here's a quick example of how to use the Qianfan model:
+以下是如何使用千帆模型的快速示例：
 
 
 ```go
@@ -80,9 +80,9 @@ func of[T any](t T) *T {
 }
 ```
 
-## Configuration
+## 配置
 
-The model can be configured using the `qianfan.ChatModelConfig` struct:
+可以使用 `qianfan.ChatModelConfig` 结构体配置模型：
 
 
 ```go
@@ -134,7 +134,6 @@ type ChatModelConfig struct {
 	// ResponseFormat specifies the format of the response.
 	ResponseFormat *ResponseFormat
 }
-
 ```
 
 
@@ -144,9 +143,9 @@ type ChatModelConfig struct {
 
 
 
-## examples
+## 示例
 
-### generate
+### 文本生成
 
 ```go
 
@@ -199,7 +198,7 @@ func of[T any](t T) *T {
 
 ```
 
-### generate_with_image
+### 多模态理解(图片理解)
 
 ```go
 
@@ -274,7 +273,7 @@ func of[T any](t T) *T {
 
 ```
 
-### stream
+### 流式生成
 
 ```go
 
@@ -344,7 +343,7 @@ func of[T any](t T) *T {
 
 ```
 
-### tool
+### 工具调用
 
 ```go
 
@@ -440,7 +439,7 @@ func of[T any](t T) *T {
 
 
 
-## For More Details
+## 更多信息
 
-- [Eino Documentation](https://www.cloudwego.io/zh/docs/eino/)
-- [Qianfan Documentation](https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq)
+- [Eino 文档](https://www.cloudwego.io/zh/docs/eino/)
+- [千帆文档](https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq)
