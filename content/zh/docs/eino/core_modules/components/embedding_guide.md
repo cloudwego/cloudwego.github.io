@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-02-10"
+date: "2025-07-21"
 lastmod: ""
 tags: []
 title: 'Eino: Embedding 使用说明'
@@ -227,7 +227,7 @@ func (e *MyEmbedder) EmbedStrings(ctx context.Context, texts []string, opts ...e
         BatchSize: e.batchSize,
     }
     options.Options = embedding.GetCommonOptions(options.Options, opts...)
-    options = embedding.GetImplSpecificOptions(options, opts...)
+    options = embedding.GetImplSpecificOptions(options.Options, opts...)
     
     // 2. 获取 callback manager
     cm := callbacks.ManagerFromContext(ctx)

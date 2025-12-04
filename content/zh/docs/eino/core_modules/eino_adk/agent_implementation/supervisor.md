@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-09-30"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: 'Eino ADK MultiAgent: Supervisor Agent'
@@ -11,15 +11,13 @@ weight: 4
 
 ### Import Path
 
-```
-import github.com/cloudwego/eino/adk/prebuilt/supervisor
-```
+`import ``github.com/cloudwego/eino/adk/prebuilt/supervisor`
 
 ### 什么是 Supervisor Agent？
 
 Supervisor Agent 是一种中心化多 Agent 协作模式，由一个监督者（Supervisor Agent） 和多个子 Agent（SubAgents）组成。Supervisor 负责任务的分配、子 Agent 执行过程的监控，以及子 Agent 完成后的结果汇总与下一步决策；子 Agent 则专注于执行具体任务，并在完成后通过 WithDeterministicTransferTo 自动将任务控制权交回 Supervisor。
 
-<a href="/img/eino/FNtXwQ05ahvjP4bfyK4cK61ynpe.png" target="_blank"><img src="/img/eino/FNtXwQ05ahvjP4bfyK4cK61ynpe.png" width="80%" /></a>
+<a href="/img/eino/eino_adk_supervisor_definition.png" target="_blank"><img src="/img/eino/eino_adk_supervisor_definition.png" width="100%" /></a>
 
 该模式适用于需要动态协调多个专业 Agent 完成复杂任务的场景，例如：
 

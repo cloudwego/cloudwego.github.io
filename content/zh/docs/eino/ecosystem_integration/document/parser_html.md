@@ -79,7 +79,7 @@ func main() {
     }
     
     // HTML 内容
-    document := `
+    html := `
     <html lang="zh">
         <head>
             <title>示例页面</title>
@@ -96,7 +96,7 @@ func main() {
     `
     
     // 解析文档
-    docs, err := p.Parse(ctx, strings.NewReader(document),
+    docs, err := p.Parse(ctx, strings.NewReader(html),
         parser.WithURI("https://example.com"),
         parser.WithExtraMeta(map[string]any{
             "custom": "value",
@@ -108,10 +108,10 @@ func main() {
     
     // 使用解析结果
     doc := docs[0]
-	fmt.Println("内容:", doc.Content)
-	fmt.Println("标题:", doc.MetaData[html.MetaKeyTitle])
-	fmt.Println("描述:", doc.MetaData[html.MetaKeyDesc])
-	fmt.Println("语言:", doc.MetaData[html.MetaKeyLang])
+    println("内容:", doc.Content)
+    println("标题:", doc.MetaData[html.MetaKeyTitle])
+    println("描述:", doc.MetaData[html.MetaKeyDesc])
+    println("语言:", doc.MetaData[html.MetaKeyLang])
 }
 ```
 

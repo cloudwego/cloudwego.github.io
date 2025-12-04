@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-01-22"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 'Eino: CallOption 能力与规范'
-weight: 5
+weight: 6
 ---
 
 **CallOption**: 对 Graph 编译产物进行调用时，直接传递数据给特定的一组节点(Component、Implementation、Node)的渠道
@@ -296,6 +296,7 @@ compiledGraph.Invoke(ctx, input, WithCallbacks(handler))
 
 // 只对特定类型节点生效的 call option
 compiledGraph.Invoke(ctx, input, WithChatModelOption(WithTemperature(0.5))
+compiledGraph.Invoke(ctx, input, WithToolOption(WithXXX("xxx"))
 
 // 只对特定节点生效的 call option
 compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))

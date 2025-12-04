@@ -1,11 +1,18 @@
 ---
 Description: ""
-date: "2025-08-07"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: 'Eino: Interrupt & CheckPoint使用手册'
-weight: 6
+weight: 7
 ---
+
+> 💡
+> 注意：v0.3.26 版本中因为代码编写错误导致 CheckPoint 的序列化内容产生 break，新接入 CheckPoint 使用 v0.3.26 以后的版本，建议直接使用最新。
+>
+> eino 提供了兼容分支，使用了 checkpoint 且版本低于 v0.3.26 的业务在升级 eino 时可以先升级到兼容分支，老数据淘汰后再升级到主干。
+>
+> 因为兼容分支会引入额外的性能开销并且一般来说业务 agent checkpoint 有不太长的有效期，所以分支没有合入主干。
 
 # 介绍
 
@@ -236,7 +243,7 @@ g.AddAnyGraph("node1", subGraph, WithGraphCompileOptions(
     WithInterruptAfterNodes([]string{"node2"}),
 ))
     
-g.Compile(ctx, WithCheckPointer(cp))
+g.Compile(ctx, WithCheckPointStore(cp))
 ```
 
 如果在子图中 interrupt，resume 时修改的 state 应为子图 state。TODO，说明下 StateModifier 中 Path 使用

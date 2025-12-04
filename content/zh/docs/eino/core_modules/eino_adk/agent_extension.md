@@ -1,21 +1,19 @@
 ---
 Description: ""
-date: "2025-09-30"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent Runner 与扩展'
-weight: 6
+weight: 3
 ---
 
-## Agent Runner
+# Agent Runner
 
-### 定义
+## 定义
 
-Runner 是 Eino ADK 中负责执行 Agent 的核心引擎。它的主要作用是管理和控制 Agent 的整个生命周期，如处理多 Agent 协作，保存传递上下文等，interrupt、callback 等切面能力也均依赖 Runner 实现。
+Runner 是 Eino ADK 中负责执行 Agent 的核心引擎。它的主要作用是管理和控制 Agent 的整个生命周期，如处理多 Agent 协作，保存传递上下文等，interrupt、callback 等切面能力也均依赖 Runner 实现。任何 Agent 都应通过 Runner 来运行。
 
-任何 Agent 都应通过 Runner 来运行。
-
-### Interrupt & Resume
+## Interrupt & Resume
 
 Agent Runner 提供运行时中断与恢复的功能，该功能允许一个正在运行的 Agent 主动中断其执行并保存当前状态，支持从中断点恢复执行。该功能常用于 Agent 处理流程中需要外部输入、长时间等待或可暂停等场景。
 

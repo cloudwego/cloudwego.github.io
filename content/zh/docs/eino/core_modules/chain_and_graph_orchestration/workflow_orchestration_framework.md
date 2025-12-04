@@ -1,17 +1,26 @@
 ---
 Description: ""
-date: "2025-08-07"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: 'Eino: Workflow 编排框架'
-weight: 7
+weight: 3
 ---
 
 ## 什么是 Eino Workflow
 
 是一套编排的 API，与 Graph API 在架构上处于同一层：
 
-<a href="/img/eino/workflow_api_layer.png" target="_blank"><img src="/img/eino/workflow_api_layer.png" width="100%" /></a>
+```mermaid
+flowchart LR
+  E[Eino compose engine]
+  G[Graph API]
+  W[Workflow API]
+  C[Chain API]
+  E --> G
+  E --> W
+  G --> C
+```
 
 本质特点是：
 
@@ -70,7 +79,7 @@ Graph 编排时，因为“类型对齐”的要求，如果 f1 -> f2，则 f1 �
 
 ### 最简单的 workflow
 
-START -> node -> END.
+START -> node -> END
 
 <a href="/img/eino/workflow_simple.png" target="_blank"><img src="/img/eino/workflow_simple.png" width="100%" /></a>
 
@@ -148,66 +157,66 @@ START（输入 struct）-> [并行 lambda1, lambda2] -> END（输出 map）。
 上图中，workflow 整体的输入是 message 结构体，c1, c2 两个 lambda 的输入都是 counter 结构体，输出都是 int，workflow 整体输出是 map[string]any. 代码如下：
 
 ```go
-// demonstrates the field mapping ability of eino workflow.
+_// demonstrates the field mapping ability of eino workflow._
 func main() {
     type counter struct {
-       FullStr string // exported because we will do field mapping for this field
-       SubStr  string // exported because we will do field mapping for this field
-    }
+       FullStr string _// exported because we will do field mapping for this field_
+_       _SubStr  string _// exported because we will do field mapping for this field_
+_    _}
 
-    // wordCounter is a lambda function that count occurrences of SubStr within FullStr
-    wordCounter := func(ctx context.Context, c counter) (int, error) {
+    _// wordCounter is a lambda function that count occurrences of SubStr within FullStr_
+_    _wordCounter := func(ctx context.Context, c counter) (int, error) {
        return strings.Count(c.FullStr, c.SubStr), nil
     }
 
     type message struct {
-       *schema.Message        // exported because we will do field mapping for this field
-       SubStr          string // exported because we will do field mapping for this field
-    }
+       *schema.Message        _// exported because we will do field mapping for this field_
+_       _SubStr          string _// exported because we will do field mapping for this field_
+_    _}
 
-    // create a workflow just like a Graph
-    wf := compose.NewWorkflow[message, map[string]any]()
+    _// create a workflow just like a Graph_
+_    _wf := compose.NewWorkflow[message, map[string]any]()
 
-    // add lambda c1 just like in Graph
-    wf.AddLambdaNode("c1", compose.InvokableLambda(wordCounter)).
-       AddInput(compose.START, // add an input from START, specifying 2 field mappings
-          // map START's SubStr field to lambda c1's SubStr field
-          compose.MapFields("SubStr", "SubStr"),
-          // map START's Message's Content field to lambda c1's FullStr field
-          compose.MapFieldPaths([]string{"Message", "Content"}, []string{"FullStr"}))
+    _// add lambda c1 just like in Graph_
+_    _wf.AddLambdaNode("c1", compose.InvokableLambda(wordCounter)).
+       AddInput(compose._START_, _// add an input from START, specifying 2 field mappings_
+_          // map START's SubStr field to lambda c1's SubStr field_
+_          _compose.MapFields("SubStr", "SubStr"),
+          _// map START's Message's Content field to lambda c1's FullStr field_
+_          _compose.MapFieldPaths([]string{"Message", "Content"}, []string{"FullStr"}))
 
-    // add lambda c2 just like in Graph
-    wf.AddLambdaNode("c2", compose.InvokableLambda(wordCounter)).
-       AddInput(compose.START, // add an input from START, specifying 2 field mappings
-          // map START's SubStr field to lambda c1's SubStr field
-          compose.MapFields("SubStr", "SubStr"),
-          // map START's Message's ReasoningContent field to lambda c1's FullStr field
-          compose.MapFieldPaths([]string{"Message", "ReasoningContent"}, []string{"FullStr"}))
+    _// add lambda c2 just like in Graph_
+_    _wf.AddLambdaNode("c2", compose.InvokableLambda(wordCounter)).
+       AddInput(compose._START_, _// add an input from START, specifying 2 field mappings_
+_          // map START's SubStr field to lambda c1's SubStr field_
+_          _compose.MapFields("SubStr", "SubStr"),
+          _// map START's Message's ReasoningContent field to lambda c1's FullStr field_
+_          _compose.MapFieldPaths([]string{"Message", "ReasoningContent"}, []string{"FullStr"}))
 
-    wf.End(). // Obtain the compose.END for method chaining
-       // add an input from c1,
-       // mapping full output of c1 to the map key 'content_count'
-       AddInput("c1", compose.ToField("content_count")).
-       // also add an input from c2,
-       // mapping full output of c2 to the map key 'reasoning_content_count'
-       AddInput("c2", compose.ToField("reasoning_content_count"))
+    wf.End(). _// Obtain the compose.END for method chaining_
+_       // add an input from c1,_
+_       // mapping full output of c1 to the map key 'content_count'_
+_       _AddInput("c1", compose.ToField("content_count")).
+       _// also add an input from c2,_
+_       // mapping full output of c2 to the map key 'reasoning_content_count'_
+_       _AddInput("c2", compose.ToField("reasoning_content_count"))
 
-    // compile the workflow just like compiling a Graph
-    run, err := wf.Compile(context.Background())
+    _// compile the workflow just like compiling a Graph_
+_    _run, err := wf.Compile(context.Background())
     if err != nil {
        logs.Errorf("workflow compile error: %v", err)
        return
     }
 
-    // invoke the workflow just like invoking a Graph
-    result, err := run.Invoke(context.Background(), message{
+    _// invoke the workflow just like invoking a Graph_
+_    _result, err := run.Invoke(context.Background(), message{
        Message: &schema.Message{
-          Role:             schema.Assistant,
+          Role:             schema._Assistant_,
           Content:          "Hello world!",
           ReasoningContent: "I need to say something meaningful",
        },
-       SubStr: "o", // would like to count the occurrences of 'o'
-    })
+       SubStr: "o", _// would like to count the occurrences of 'o'_
+_    _})
     if err != nil {
        logs.Errorf("workflow run err: %v", err)
        return
@@ -376,25 +385,6 @@ func main() {
         // but no data passing between them.
         AddInputWithOptions(compose.START, nil, compose.WithNoDirectDependency())
 
-    wf := compose.NewWorkflow[float64, map[string]float64]()
-
-    wf.AddLambdaNode("b1", compose.InvokableLambda(bidder1)).
-       AddInput(compose.START)
-
-    // add a branch just like adding branch in Graph.
-    wf.AddBranch("b1", compose.NewGraphBranch(func(ctx context.Context, in float64) (string, error) {
-       if in > 5.0 {
-          return compose.END, nil
-       }
-       return "b2", nil
-    }, map[string]bool{compose.END: true, "b2": true}))
-
-    wf.AddLambdaNode("b2", compose.InvokableLambda(bidder2)).
-       // b2 executes strictly after b1, but does not rely on b1's output,
-       // which means b2 depends on b1, but no data passing between them.
-       AddDependency("b1").
-       AddInputWithOptions(compose.START, nil, compose.WithNoDirectDependency())
-
     wf.End().AddInput("b1", compose.ToField("bidder1")).
        AddInput("b2", compose.ToField("bidder2"))
 
@@ -420,7 +410,7 @@ func main() {
 
 ```go
 func (n *WorkflowNode) AddDependency(fromNodeKey string) *WorkflowNode {
-    return n.addDependencyRelation(fromNodeKey, nil, &workflowAddInputOpts{dependencyWithoutInput: true})
+    return n.addDependencyRelation(fromNodeKey, nil, &workflowAddInputOpts{dependencyWithoutInput: _true_})
 }
 ```
 
@@ -431,7 +421,7 @@ func (n *WorkflowNode) AddDependency(fromNodeKey string) *WorkflowNode {
 在上面的例子中，我们用与 Graph API 几乎完全相同的方式添加了一个 branch：
 
 ```go
-    // add a branch just like adding branch in Graph.
+// add a branch just like adding branch in Graph.
     wf.AddBranch("b1", compose.NewGraphBranch(func(ctx context.Context, in float64) (string, error) {
        if in > 5.0 {
           return compose.END, nil
@@ -473,7 +463,7 @@ func (wf *Workflow[I, O]) AddBranch(fromNodeKey string, branch *GraphBranch) *Wo
 
 让我们修改下上面的“竞拍”例子，给竞拍者 1 和竞拍者 2 分别给一个“预算”的静态配置：
 
-<a href="/img/eino/workflow_auction_static_values.png" target="_blank"><img src="/img/eino/workflow_auction_static_values.png" width="100%" /></a>
+<a href="/img/eino/workflow_auction_static_values_en.png" target="_blank"><img src="/img/eino/workflow_auction_static_values_en.png" width="100%" /></a>
 
 budget1 和 budget2 会分别以“静态值”的形式注入到 bidder1 和 bidder2 的 input 中。使用 `SetStaticValue` 方法给 workflow 节点配置静态值：
 
@@ -712,7 +702,7 @@ Merge 是指一个节点的输入映射自多个 `FieldMapping` 的情况。
 ```go
 t.Run("custom extract from array element", func(t *testing.T) {
     wf := NewWorkflow[[]int, map[string]int]()
-    wf.End().AddInput(START, ToField("a", WithCustomExtractor(func(input any) (any, error) {
+    wf.End().AddInput(_START_, ToField("a", WithCustomExtractor(func(input any) (any, error) {
        return input.([]int)[0], nil
     })))
     r, err := wf.Compile(context.Background())

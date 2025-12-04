@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-14"
+date: "2025-12-02"
 lastmod: ""
 tags: []
 title: 用 Eino ADK 构建你的第一个 AI 智能体：从 Excel Agent 实战开始
@@ -9,7 +9,7 @@ weight: 4
 
 ## 从 Excel Agent 详解 Eino ADK
 
-本文将会向您介绍如何利用 **Eino ADK(Agent Development Kit)** 构建一个强大的多智能体系统，往期 Eino ADK 介绍链接：[Eino ADK：一文搞定 AI Agent 核心设计模式，从 0 到 1 搭建智能体系统](https://mp.weixin.qq.com/s/ffGjlDEzEzroo8w6knlLqw)
+本文将会向您介绍如何利用 **Eino ADK** (**Agent Development Kit**) 构建一个强大的多智能体系统，往期 Eino ADK 介绍链接：[Eino ADK：一文搞定 AI Agent 核心设计模式，从 0 到 1 搭建智能体系统](https://mp.weixin.qq.com/s/ffGjlDEzEzroo8w6knlLqw)
 
 示例以 Excel Agent 这个实际业务场景为基础，Excel Agent 是一个能够“听懂你的话、看懂你的表格、写出并执行代码”的智能助手。它把复杂的 Excel 处理工作拆解为清晰的步骤，通过自动规划、工具调用与结果校验，稳定完成各项 Excel 数据处理任务。
 
@@ -23,7 +23,7 @@ Excel Agent 是一个“看得懂 Excel 的智能助手”，它先把问题拆�
 
 Excel Agent 整体是基于 Eino ADK 实现的 Multi-Agent 系统，完整架构如下图所示：
 
-<a href="/img/eino/JTjGwKheGhTZrhbCIgZciClgnab.png" target="_blank"><img src="/img/eino/JTjGwKheGhTZrhbCIgZciClgnab.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_excel_agent_architecture.png" target="_blank"><img src="/img/eino/eino_adk_excel_agent_architecture.png" width="100%" /></a>
 
 Excel Agent 内部包含的几个 Agent 功能分别为：
 
@@ -45,7 +45,7 @@ Excel Agent 内部包含的几个 Agent 功能分别为：
 
 Excel Agent 的完整运行动线为：
 
-<a href="/img/eino/C7J2wMDQNhDCHfbPYsIcgw8Yn9g.png" target="_blank"><img src="/img/eino/C7J2wMDQNhDCHfbPYsIcgw8Yn9g.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_excel_agent_complete.png" target="_blank"><img src="/img/eino/eino_adk_excel_agent_complete.png" width="100%" /></a>
 
 > 💡
 > **核心收益**：
@@ -62,7 +62,7 @@ Excel Agent 既可以单独使用，也可以作为子 Agent，集成在一个�
 
 `ChatModelAgent` 是 Eino ADK 中的一个核心预构建的 Agent，内部使用了 [ReAct](https://react-lm.github.io/) 模式（一种让模型‘思考-行动-观察’的链式推理模式）：
 
-<a href="/img/eino/SviabfhOUoGC1TxrucAckWkmnqg.png" target="_blank"><img src="/img/eino/SviabfhOUoGC1TxrucAckWkmnqg.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_react_pattern.png" target="_blank"><img src="/img/eino/eino_adk_react_pattern.png" width="100%" /></a>
 
 `ChatModelAgent` 旨在让 ChatModel 进行显式的、一步一步的“思考”，结合思考过程驱动行动，观测历史思考过程与行动结果继续进行下一步的思考与行动，最终解决复杂问题：
 
@@ -71,7 +71,7 @@ Excel Agent 既可以单独使用，也可以作为子 Agent，集成在一个�
 - ChatModelAgent 执行工具（Act）
 - 将工具结果返回给 LLM（Observation），结合之前的上下文继续生成，直到模型判断不需要调用工具后结束
 
-<a href="/img/eino/XI1Kw4OUNhx1pubKkE1cJk6xnVg.png" target="_blank"><img src="/img/eino/XI1Kw4OUNhx1pubKkE1cJk6xnVg.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_excel_chat_model_agent_view.png" target="_blank"><img src="/img/eino/eino_adk_excel_chat_model_agent_view.png" width="100%" /></a>
 
 在 Excel Agent 中，每个 Agent 的核心都是这样一个 `ChatModelAgent`，以 Executor 运行【读取用户输入表格的头信息】这个步骤为例 ，我们可以通过观察完整的运行过程来理解 ReAct 模式在 `ChatModelAgent` 中的表现：
 
@@ -86,7 +86,7 @@ Excel Agent 既可以单独使用，也可以作为子 Agent，集成在一个�
 
 ### Plan-Execute Agent：基于「规划-执行-反思」的多智能体协作框架
 
-Plan-Execute Agent 是 Eino ADK 中一种基于「规划-执行-反思」范式的多智能体协作框架，旨在解决复杂任务的分步拆解、执行与动态调整问题。它通过 **Planner（规划器）**、**Executor（执行器）** 和 **Replanner（重规划器）** 三个核心智能体的协同工作，实现任务的结构化规划、工具调用执行、进度评估与动态 replanning，最终达成用户目标：
+Plan-Execute Agent 是 Eino ADK 中一种基于「规划-执行-反思」范式的多智能体协作框架，旨在解决复杂任务的分步拆解、执行与动态调整问题。它通过 **Planner（规划器）**、**Executor（执行器）**和 **Replanner（重规划器）** 三个核心智能体的协同工作，实现任务的结构化规划、工具调用执行、进度评估与动态 replanning，最终达成用户目标：
 
 ```go
 // 完整代码: https://github.com/cloudwego/eino/blob/main/adk/prebuilt/planexecute/plan_execute.go
@@ -104,11 +104,11 @@ func NewReplanner(_ context.Context, cfg *ReplannerConfig) (adk.Agent, error)
 func New(ctx context.Context, cfg *Config) (adk.Agent, error)
 ```
 
-<a href="/img/eino/SjhmwZUNzhch0rb8SdUcwotpnaf.png" target="_blank"><img src="/img/eino/SjhmwZUNzhch0rb8SdUcwotpnaf.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_why_excel_plan_executor.png" target="_blank"><img src="/img/eino/eino_adk_why_excel_plan_executor.png" width="100%" /></a>
 
 而 Excel Agent 的核心能力恰好为【解决用户在 excel 领域的问题】，与该智能体协作框架定位一致：
 
-- **规划者（Planner）**：明确目标，自动拆解可执行步骤
+- **规划者**（**Planner**）：明确目标，自动拆解可执行步骤
 - **执行者（Executor）**：调用工具（Excel 读取、系统命令、Python 代码）完成规划中的每一个详细步骤
 - **反思者（Replanner）**：根据执行进度决定继续、调整规划或结束
 
@@ -165,7 +165,7 @@ Excel Agent 中，存在一些需要按照特定顺序运行 agent 的情况：
   })
   ```
 
-<a href="/img/eino/LuyNwCiyHhoL4Wb48XHcsHS6nrf.png" target="_blank"><img src="/img/eino/LuyNwCiyHhoL4Wb48XHcsHS6nrf.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_excel_agent_sequential.png" target="_blank"><img src="/img/eino/eino_adk_excel_agent_sequential.png" width="100%" /></a>
 
 - **LoopAgent**：重复执行配置的子 Agent 序列，直到达到最大迭代次数或某个子 Agent 产生 ExitAction，每次迭代的结果都会累积，后续迭代的输入可以访问所有历史信息。LoopAgent 基于 SequentialAgent 实现。
 
@@ -184,7 +184,7 @@ Excel Agent 中，存在一些需要按照特定顺序运行 agent 的情况：
   })
   ```
 
-<a href="/img/eino/JCOUw5vAJhghRPbakhec9wolnfc.png" target="_blank"><img src="/img/eino/JCOUw5vAJhghRPbakhec9wolnfc.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_loop_agent_max_iterations_example.png" target="_blank"><img src="/img/eino/eino_adk_loop_agent_max_iterations_example.png" width="100%" /></a>
 
 - **ParallelAgent**：允许多个子 Agent 基于相同的输入上下文并发执行。所有子 Agent 接收相同的初始输入，各自在独立的 goroutine（Go 语言中一种轻量级的并发执行单元） 运行，最终收集所有子 Agent 的执行结果并按顺序输出到 `AsyncIterator` 中。
 
@@ -202,7 +202,7 @@ Excel Agent 中，存在一些需要按照特定顺序运行 agent 的情况：
   })
   ```
 
-<a href="/img/eino/UL4Zw6Rj7hXg2rbNHLAcPhZOnrn.png" target="_blank"><img src="/img/eino/UL4Zw6Rj7hXg2rbNHLAcPhZOnrn.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_yet_another_parallel.png" target="_blank"><img src="/img/eino/eino_adk_yet_another_parallel.png" width="100%" /></a>
 
 ### Agent 抽象：灵活定义 Agent 的基础
 
@@ -221,8 +221,8 @@ Eino ADK 的核心是一个简洁而强大的 Agent 接口，每个 Agent 都有
 
   ```go
   type AgentInput struct {
-      Messages        []_Message_
-  _    _EnableStreaming bool
+      Messages        []Message
+      EnableStreaming bool
   }
 
   type Message = *schema.Message // *schema.Message 是模型输入输出的结构定义
@@ -296,7 +296,7 @@ Eino ADK 包含两种基础的数据传递机制：
 
 - **History**：每一个 Agent 产生的 AgentEvent 都会被保存到这个隐藏的 History 中，调用一个新 Agent 时 History 中的 AgentEvent 会被转换并拼接到 AgentInput 中。默认情况下，其他 Agent 的 Assistant 或 Tool Message，被转换为 User Message，这相当于在告诉当前的 LLM：“刚才， Agent_A 调用了 some_tool ，返回了 some_result 。现在，轮到你来决策了。”。 通过这种方式，其他 Agent 的行为被当作了提供给当前 Agent 的“外部信息”或“事实陈述”，而不是它自己的行为，从而避免了 LLM 的上下文混乱。
 
-<a href="/img/eino/HyrlwkG2Bh2tAfbDPRUcJjoXnje.png" target="_blank"><img src="/img/eino/HyrlwkG2Bh2tAfbDPRUcJjoXnje.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_history.png" target="_blank"><img src="/img/eino/eino_adk_history.png" width="100%" /></a>
 
 - **共享 Session**：单次运行过程中持续存在的 KV 存储，用于支持跨 Agent 的状态管理和数据共享，一次运行中的任何 Agent 可以在任何时间读写 SessionValues。以 Plan-Execute Agent 模式为例，Planner 生成首个计划并写入 Session；Executor 从 Session 读取计划并执行；Replanner 从 Session 读取当前计划后，结合运行结果，将更新后的计划写回 Session 覆盖当前的计划。
 
@@ -317,14 +317,14 @@ Eino ADK 包含两种基础的数据传递机制：
   func WithSessionValues(v map[string]any) AgentRunOption
   ```
 
-<a href="/img/eino/SSmjw7ooshk8rybm87XchHPtn7K.png" target="_blank"><img src="/img/eino/SSmjw7ooshk8rybm87XchHPtn7K.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_plan_execute_replan_session.png" target="_blank"><img src="/img/eino/eino_adk_plan_execute_replan_session.png" width="100%" /></a>
 
 除了完善的 Agent 间数据传递机制，Eino ADK 从实践出发，提供了多种 Agent 协作模式：
 
 - **预设 Agent 运行顺序（Workflow）**：以代码中预设好的流程运行， Agent 的执行顺序是事先确定、可预测的。对应 Workflow Agents 章节提到的三种范式。
 - **移交运行（Transfer）**：携带本 Agent 输出结果上下文，将任务移交至子 Agent 继续处理。适用于智能体功能可以清晰的划分边界与层级的场景，常结合 ChatModelAgent 使用，通过 LLM 的生成结果进行动态路由。结构上，以此方式进行协作的两个 Agent 称为父子 Agent：
 
-<a href="/img/eino/R2CBwqMnbhjTQJbOAJQcyojLnIe.png" target="_blank"><img src="/img/eino/R2CBwqMnbhjTQJbOAJQcyojLnIe.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_excel_transfer.png" target="_blank"><img src="/img/eino/eino_adk_excel_transfer.png" width="100%" /></a>
 
 ```go
 // 设置父子 Agent 关系
@@ -336,7 +336,7 @@ func NewTransferToAgentAction(destAgentName string) *AgentAction
 
 - **显式调用（ToolCall）**：将 Agent 视为工具进行调用，适用于 Agent 运行仅需要明确清晰的参数而非完整运行上下文的场景。常结合 ChatModelAgent，将 Agent 作为工具运行后将结果返回给 ChatModel 继续处理。除此之外，ToolCall 同样支持调用符合工具接口构造的、不含 Agent 的普通工具。
 
-<a href="/img/eino/SnmTwoOFGh2ZMHbDVoNcH2eInsQ.png" target="_blank"><img src="/img/eino/SnmTwoOFGh2ZMHbDVoNcH2eInsQ.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_agent_as_tool_case.png" target="_blank"><img src="/img/eino/eino_adk_agent_as_tool_case.png" width="100%" /></a>
 
 ```go
 // 将 Agent 转换为 Tool
@@ -379,7 +379,7 @@ Excel Agent 单次运行会在输出路径下创建一个新的工作目录，�
 
 以 `请帮我将 question.csv 表格中的第一列提取到一个新的 csv 中` 这个任务为例，运行完成后在工作目录下的文件包含：
 
-<a href="/img/eino/ActebkYfUo7bCwxPk8ocOLEOnsf.png" target="_blank"><img src="/img/eino/ActebkYfUo7bCwxPk8ocOLEOnsf.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_excel_directory.png" target="_blank"><img src="/img/eino/eino_adk_excel_directory.png" width="100%" /></a>
 
 1. 原始输入：从输入路径获取到的 `question.csv`
 2. Planner / Replanner 给出的运行计划：`plan.md`
@@ -538,4 +538,4 @@ Excel Agent  所呈现的并非“单一智能体”的技巧，而是一套以 
 >
 > Eino ADK，让智能体开发变得简单而强大！
 
-<a href="/img/eino/Wt3Nbd2t4oMlUtxKw8hct36EnKb.png" target="_blank"><img src="/img/eino/Wt3Nbd2t4oMlUtxKw8hct36EnKb.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_excel_agent_user_group.png" target="_blank"><img src="/img/eino/eino_adk_excel_agent_user_group.png" width="100%" /></a>
