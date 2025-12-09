@@ -1,27 +1,25 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: ChatTemplate - MCP
 weight: 0
 ---
 
-## Introduction
+## Overview
 
-Model Context Protocol(MCP) is a standardized open protocol for model access introduced by Anthropic. Eino provides adapters, which can directly access resources on existing MCP Servers.
+Model Context Protocol (MCP) is an open protocol from Anthropic for standardized access to resources by models. Eino provides wrappers so you can directly access resources served by an existing MCP Server.
 
-This section introduces the adapter of MCPPrompt, which implements the [Eino ChatTemplate interface](/docs/eino/core_modules/components/chat_template_guide).
+This section introduces the MCPPrompt wrapper, which implements Eino’s ChatTemplate interface ([Eino: ChatTemplate Guide](/en/docs/eino/core_modules/components/chat_template_guide)).
 
-<a href="/img/eino/ZiP5b3fivouCBbxCggYcWHqanRv.png" target="_blank"><img src="/img/eino/ZiP5b3fivouCBbxCggYcWHqanRv.png" width="100%" /></a>
+<a href="/img/eino/eino_mcp_prompt.png" target="_blank"><img src="/img/eino/eino_mcp_prompt.png" width="100%" /></a>
 
-Other adapters：
+Also see: [Tool - MCP](/en/docs/eino/ecosystem_integration/tool/tool_mcp)
 
-[Tool - MCP](/docs/eino/ecosystem_integration/tool/tool_mcp)
+## Usage
 
-## HowToUse
-
-Eino MCP adapters referenced the open-source SDK [mcp-go](https://github.com/mark3labs/mcp-go), first initialize a MCP client：
+First create an MCP client. Eino leverages the open-source SDK [mark3labs/mcp-go](https://github.com/mark3labs/mcp-go):
 
 ```go
 import "github.com/mark3labs/mcp-go/client"
@@ -31,12 +29,12 @@ cli, err := client.NewStdioMCPClient(myCommand, myEnvs, myArgs...)
 
 // sse client
 cli, err := client.NewSSEMCPClient(myBaseURL)
-// sse client  needs to manually start asynchronous communication
+// sse client needs to manually start asynchronous communication
 // while stdio does not require it.
 err = cli.Start(ctx)
 ```
 
-Considering the reusability of multiple adapters for the MCP client, the adapter assumes that the client has completed initialization with the Server's [Initialize](https://spec.modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle/), so users need to complete the client initialization themselves, for example:
+Considering client reuse, the wrapper assumes the client has finished [Initialize](https://spec.modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle/) with the Server; you need to perform client initialization yourself:
 
 ```go
 import "github.com/mark3labs/mcp-go/mcp"
@@ -50,7 +48,7 @@ initRequest.Params.ClientInfo = mcp.Implementation{
 _, err = cli.Initialize(ctx, initRequest)
 ```
 
-Then use the Client to create the adapter , which implements Eino ChatTemplate:
+Then create the Eino ChatTemplate using the Client:
 
 ```go
 import "github.com/cloudwego/eino-ext/components/prompt/mcp"
@@ -61,13 +59,13 @@ tpl, err := mcp.NewPromptTemplate(ctx, &mcp.Config{
 })
 ```
 
-You can call this adapter directly:
+The template can be invoked directly:
 
 ```
 result, err := tpl.Format(ctx, map[string]interface{}{/* input k-v */})
 ```
 
-It can also be used in any Eino Agent, taking the simplest llm chain as an example:
+Or used within any Eino Agent; for a simple LLM chain:
 
 ```
 import (
@@ -89,4 +87,4 @@ runner, err := compose.NewChain[map[string]any, *schema.Message]().
 
 ## More Information
 
-Examples can be referred to: [https://github.com/cloudwego/eino-ext/blob/main/components/prompt/mcp/examples/mcp.go](https://github.com/cloudwego/eino-ext/blob/main/components/prompt/mcp/examples/mcp.go)
+Example: https://github.com/cloudwego/eino-ext/blob/main/components/prompt/mcp/examples/mcp.go

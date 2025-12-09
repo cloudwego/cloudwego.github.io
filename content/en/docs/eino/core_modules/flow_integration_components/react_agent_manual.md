@@ -1,30 +1,29 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2025-12-03"
 lastmod: ""
 tags: []
-title: 'Eino: ReAct Agent 使用手册'
+title: 'Eino: ReAct Agent Manual'
 weight: 1
 ---
 
-# 简介
+# Introduction
 
-Eino React Agent 是实现了 [React 逻辑](https://react-lm.github.io/) 的智能体框架，用户可以用来快速灵活地构建并调用 React Agent.
+Eino’s ReAct Agent implements the [ReAct logic](https://react-lm.github.io/), enabling fast, flexible agent construction and invocation.
 
-> 💡
-> 代码实现详见：[实现代码目录](https://github.com/cloudwego/eino/tree/main/flow/agent/react)
+> Code: [Implementation Directory](https://github.com/cloudwego/eino/tree/main/flow/agent/react)
 
-## 节点拓扑&数据流图
+## Topology and Data Flow
 
-react agent 底层使用 `compose.Graph` 作为编排方案，一般来说有 2 个节点: ChatModel、Tools，中间运行过程中的所有历史消息都会放入 state 中，在将所有历史消息传递给 ChatModel 之前，会 copy 消息交由 MessageModifier 进行处理，处理的结果再传递给 ChatModel。直到 ChatModel 返回的消息中不再有 tool call，则返回最终消息。
+Under the hood, ReAct Agent uses `compose.Graph`. Typically two nodes: `ChatModel` and `Tools`. All historical messages are stored in `state`. Before passing history to `ChatModel`, messages are copied and processed by `MessageModifier`. When `ChatModel` returns without any tool call, the final message is returned.
 
 <a href="/img/eino/react_agent_graph.png" target="_blank"><img src="/img/eino/react_agent_graph.png" width="100%" /></a>
 
-当 Tools 列表中至少有一个 Tool 配置了 ReturnDirectly 时，ReAct Agent 结构会更复杂：在 ToolsNode 之后会增加一个 Branch，判断是否调用了一个 ReturnDirectly 的 Tool，如果是，直接 END，否则照旧进入 ChatModel。
+If any tool is marked `ReturnDirectly`, a `Branch` follows `ToolsNode` to short-circuit and end when such a tool is invoked; otherwise the flow returns to `ChatModel`.
 
-## 初始化
+## Initialization
 
-提供了 ReactAgent 初始化函数，必填参数为 Model 和 ToolsConfig，选填参数为 MessageModifier, MaxStep, ToolReturnDirectly 和 StreamToolCallChecker.
+Provide a `ToolCallingChatModel` and `ToolsConfig`. Optional: `MessageModifier`, `MaxStep`, `ToolReturnDirectly`, `StreamToolCallChecker`.
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/openai@latest
@@ -43,16 +42,16 @@ import (
 )
 
 func main() {
-    // 先初始化所需的 chatModel
+    // initialize chat model
     toolableChatModel, err := openai.NewChatModel(...)
     
-    // 初始化所需的 tools
+    // initialize tools
     tools := compose.ToolsNodeConfig{
         InvokableTools:  []tool.InvokableTool{mytool},
         StreamableTools: []tool.StreamableTool{myStreamTool},
     }
     
-    // 创建 agent
+    // create agent
     agent, err := react.NewAgent(ctx, &react.AgentConfig{
         ToolCallingModel: toolableChatModel,
         ToolsConfig: tools,
@@ -63,9 +62,7 @@ func main() {
 
 ### Model
 
-由于 ReAct Agent 需要进行工具调用，Model 需要拥有 ToolCall 的能力，因此需要配置一个 ToolCallingChatModel。
-
-在 Agent 内部，会调用 WithTools 接口向模型注册 Agent 的工具列表，定义为:
+ReAct requires a `ToolCallingChatModel`. Inside the agent, `WithTools` is called to bind the agent’s tools to the model:
 
 ```go
 // BaseChatModel defines the basic interface for chat models.
@@ -91,13 +88,11 @@ type ToolCallingChatModel interface {
 }
 ```
 
-目前，eino 提供了 openai, ark 等实现，只要底层模型支持 tool call 即可。
-
+Supported implementations include OpenAI and Ark (any provider that supports tool calls).
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/openai@latest
 go get github.com/cloudwego/eino-ext/components/model/ark@latest
 ```
-
 ```go
 import (
     "github.com/cloudwego/eino-ext/components/model/openai"
@@ -133,8 +128,7 @@ func arkExample() {
 
 ### ToolsConfig
 
-toolsConfig 类型为 `compose.ToolsNodeConfig`, 在 eino 中，若要构建一个 Tool 节点，则需要提供 Tool 的信息，以及调用 Tool 的 function。tool 的接口定义如下:
-
+`toolsConfig` is `compose.ToolsNodeConfig`. To build a Tools node, provide Tool info and a run function. Tool interfaces:
 ```go
 type InvokableRun func(ctx context.Context, arguments string, opts ...Option) (content string, err error)
 type StreamableRun func(ctx context.Context, arguments string, opts ...Option) (content *schema.StreamReader[string], err error)
@@ -156,8 +150,7 @@ type StreamableTool interface {
 }
 ```
 
-用户可以根据 tool 的接口定义自行实现所需的 tool，同时框架也提供了更简便的构建 tool 的方法：
-
+You can implement tools per the interfaces, or use helpers to construct tools:
 ```go
 userInfoTool := utils.NewTool(
     &schema.ToolInfo{
@@ -191,14 +184,14 @@ toolConfig := &compose.ToolsNodeConfig{
 
 ### MessageModifier
 
-MessageModifier 会在每次把所有历史消息传递给 ChatModel 之前执行，定义为：
+Executed before each call to `ChatModel`:
 
 ```go
 // modify the input messages before the model is called.
 type MessageModifier func(ctx context.Context, input []*schema.Message) []*schema.Message
 ```
 
-在 Agent 中配置 MessageModifier 可以修改传入模型的 messages，常用于添加前置的 system message：
+Configure `MessageModifier` inside the Agent to adjust the messages passed to the model:
 
 ```go
 import (
@@ -221,131 +214,58 @@ func main() {
     })
     
     agent.Generate(ctx, []*schema.Message{schema.UserMessage("写一个 hello world 的代码")})
-    // 模型得到的实际输入为：
+    // 实际输入：
     // []*schema.Message{
     //    {Role: schema.System, Content:"你是一个 golang 开发专家."},
     //    {Role: schema.Human, Content: "写一个 hello world 的代码"}
-    //}
+    // }
 }
 ```
-
-### MessageRewriter
-
-MessageRewriter 在每次 ChatModel 之前执行，会修改并更新保存全局状态中的历史消息：
-
-```go
-// MessageRewriter modifies message in the state, before the ChatModel is called.
-// It takes the messages stored accumulated in state, modify them, and put the modified version back into state.
-// Useful for compressing message history to fit the model context window,
-// or if you want to make changes to messages that take effect across multiple model calls.
-// NOTE: if both MessageModifier and MessageRewriter are set, MessageRewriter will be called before MessageModifier.
-MessageRewriter MessageModifier
-```
-
-常用于上下文压缩这种在多轮 ReAct 循环中需要一直生效的消息变更。
-
-对比 MessageModifier（只变更不持久，因此适合 system prompt），MessageRewriter 的变更在后续的 ReAct 循环也可见。
 
 ### MaxStep
 
-指定 Agent 最大运行步长，每次从一个节点转移到下一个节点为一步，默认值为 node 个数 + 2。
+Specify the maximum number of steps. One loop is `ChatModel` + `Tools` (2 steps). Default is `node count + 2`.
 
-由于 Agent 中一次循环为 ChatModel + Tools，即为 2 步，因此默认值 12 最多可运行 6 个循环。但由于最后一步必须为 ChatModel 返回 (因为 ChatModel 结束后判断无须运行 tool 才能返回最终结果)，因此最多运行 5 次 tool。
+Since one loop is 2 steps, default `12` supports up to 6 loops. The final step must be a `ChatModel` result (no tool call), so at most 5 Tools.
 
-同理，若希望最多可运行 10 个循环 (10 次 ChatModel + 9 次 Tools)，则需要设置 MaxStep 为 20。若希望最多运行 20 个循环，则 MaxStep 需为 40。
+For 10 loops (10×ChatModel + 9×Tools), set `MaxStep` to 20; for 20 loops set `MaxStep` to 40.
 
-```go
-func main() {
-    agent, err := react.NewAgent(ctx, &react.AgentConfig{
-        ToolCallingModel: toolableChatModel,
-        ToolsConfig: tools,
-        MaxStep: 20,
-    }
-}
-```
+### ToolReturnDirectly and Stream Tool Call Checking
 
-### ToolReturnDirectly
+If a tool is `ReturnDirectly`, its output is returned immediately; configure `ToolReturnDirectly` with the tool name. For streaming models, set `StreamToolCallChecker` to determine tool-call presence in streams (model-dependent behavior).
 
-如果希望当 ChatModel 选择了特定的 Tool 并执行后，Agent 直接把 Tool 的 Response ToolMessage 返回去，则可以在 ToolReturnDirectly 中配置这个 Tool。
-
-```go
-a, err = NewAgent(ctx, &AgentConfig{
-    Model: cm,
-    ToolsConfig: compose.ToolsNodeConfig{
-       Tools: []tool.BaseTool{fakeTool, fakeStreamTool},
-    },
-
-    MaxStep:            40,
-    ToolReturnDirectly: map[string]struct{}{fakeToolName: {}}, // one of the two tools is return directly
-})
-```
-
-### StreamToolCallChecker
-
-不同的模型在流式模式下输出工具调用的方式可能不同: 某些模型(如 OpenAI) 会直接输出工具调用；某些模型 (如 Claude) 会先输出文本，然后再输出工具调用。因此需要使用不同的方法来判断，这个字段用来指定判断模型流式输出中是否包含工具调用的函数。
-
-可选填写，未填写时使用“非空包”是否包含工具调用判断：
-
+Default checker (first non-empty chunk must be tool-call):
 ```go
 func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
     defer sr.Close()
-
     for {
-       msg, err := sr.Recv()
-       if err == io.EOF {
-          return false, nil
-       }
-       if err != nil {
-          return false, err
-       }
-
-       if len(msg.ToolCalls) > 0 {
-          return true, nil
-       }
-
-       if len(msg.Content) == 0 { // skip empty chunks at the front
-          continue
-       }
-
-       return false, nil
+        msg, err := sr.Recv()
+        if errors.Is(err, io.EOF) { return false, nil }
+        if err != nil { return false, err }
+        if len(msg.ToolCalls) > 0 { return true, nil }
+        if len(msg.Content) == 0 { continue }
+        return false, nil
     }
 }
 ```
 
-上述默认实现适用于：模型输出的 Tool Call Message 中只有 Tool Call。
-
-默认实现不适用的情况：在输出 Tool Call 前，有非空的 content chunk。此时，需要自定义 tool Call checker 如下：
-
+If the provider outputs non-empty text before tool-calls, implement a custom checker that scans all chunks for tool-calls:
 ```go
 toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
     defer sr.Close()
     for {
-       msg, err := sr.Recv()
-       if err != nil {
-          if errors.Is(err, io.EOF) {
-             // finish
-             break
-          }
-
-          return false, err
-       }
-
-       if len(msg.ToolCalls) > 0 {
-          return true, nil
-       }
+        msg, err := sr.Recv()
+        if errors.Is(err, io.EOF) { break }
+        if err != nil { return false, err }
+        if len(msg.ToolCalls) > 0 { return true, nil }
     }
     return false, nil
 }
 ```
 
-上面这个自定义 StreamToolCallChecker，在极端情况下可能需要判断**所有包**是否包含 ToolCall，从而导致“流式判断”的效果丢失。如果希望尽可能保留“流式判断”效果，解决这一问题的建议是：
+Tip: add a prompt like “If you need to call tools, output only tool-calls, not text” to preserve a streaming experience where possible.
 
-> 💡
-> 尝试添加 prompt 来约束模型在工具调用时不额外输出文本，例如：“如果需要调用 tool，直接输出 tool，不要输出文本”。
->
-> 不同模型受 prompt 影响可能不同，实际使用时需要自行调整 prompt 并验证效果。
-
-## 调用
+## Invocation
 
 ### Generate
 
@@ -387,7 +307,7 @@ for {
 
 ### WithCallbacks
 
-Callback 是在 Agent 运行时特定时机执行的回调，由于 Agent 这个 Graph 里面只有 ChatModel 和 ToolsNode，因此 Agent 的 Callback 就是 ChatModel 和 Tool 的 Callback。react 包中提供了一个 helper function 来帮助用户快速构建针对这两个组件类型的 Callback Handler。
+Callback handlers run at defined timings. Since the agent graph has only ChatModel and ToolsNode, the agent’s callbacks are those two component callbacks. A helper is provided to build them:
 
 ```go
 import (
@@ -406,9 +326,9 @@ func BuildAgentCallback(modelHandler *template.ModelCallbackHandler, toolHandler
 
 ### Options
 
-React agent 支持通过运行时 Option 动态修改
+React agent supports dynamic runtime options.
 
-场景 1：运行时修改 Agent 中的 Model 配置，通过：
+Scenario 1: modify the model config at runtime:
 
 ```go
 // WithChatModelOptions returns an agent option that specifies model.Option for the chat model in agent.
@@ -417,7 +337,7 @@ func WithChatModelOptions(opts ...model.Option) agent.AgentOption {
 }
 ```
 
-场景 2：运行时修改 Tool 列表，通过：
+Scenario 2: modify the Tool list at runtime:
 
 ```go
 // WithToolList returns an agent option that specifies the list of tools can be called which are BaseTool but must implement InvokableTool or StreamableTool.
@@ -426,9 +346,9 @@ func WithToolList(tools ...tool.BaseTool) agent.AgentOption {
 }
 ```
 
-另外，也需要修改 ChatModel 中绑定的 tool: `WithChatModelOptions(model.WithTools(...))`
+Also update ChatModel’s bound tools: `WithChatModelOptions(model.WithTools(...))`
 
-场景 3：运行时修改某个 Tool 的 option，通过：
+Scenario 3: modify options for a specific Tool:
 
 ```go
 // WithToolOptions returns an agent option that specifies tool.Option for the tools in agent.
@@ -437,13 +357,9 @@ func WithToolOptions(opts ...tool.Option) agent.AgentOption {
 }
 ```
 
-### Prompt
+### Get Intermediate Results
 
-运行时修改 prompt，其实就是在 Generate 或者 Stream 的时候，传入不同的 Message 列表。
-
-### 获取中间结果
-
-如果希望实时拿到 React Agent 执行过程中产生的 *schema.Message，可以先通过 WithMessageFuture 获取一个运行时 Option 和一个 MessageFuture：
+Use `WithMessageFuture` to capture intermediate `*schema.Message` during execution:
 
 ```go
 // WithMessageFuture returns an agent option and a MessageFuture interface instance.
@@ -474,43 +390,17 @@ func WithMessageFuture() (agent.AgentOption, MessageFuture) {
 }
 ```
 
-这个运行时 Option 就正常传递给 Generate 或者 Stream 方法。这个 MessageFuture 可以 GetMessages 或者 GetMessageStreams 来获取各中间状态的 Message。
+Pass the option into Generate or Stream. Use `GetMessages` or `GetMessageStreams` to read intermediate messages.
 
-> 💡
-> 传入 MessageFuture 的 Option 后，Agent 仍然会阻塞运行，通过 MessageFuture 接收中间结果需要和 Agent 运行异步（在 goroutine 中读 MessageFuture 或在 goroutine 中运行 Agent）
+Tip: the agent still runs synchronously. Read the future in a goroutine or run the agent in a goroutine.
 
-## Agent In Graph/Chain
+### Agent In Graph/Chain
 
-Agent 可作为 Lambda 嵌入到其他的 Graph 中:
-
-```go
-agent, _ := NewAgent(ctx, &AgentConfig{
-    ToolCallingModel: cm,
-    ToolsConfig: compose.ToolsNodeConfig{
-       Tools: []tool.BaseTool{fakeTool, &fakeStreamToolGreetForTest{}},
-    },
-
-    MaxStep: 40,
-})
-
-chain := compose.NewChain[[]*schema.Message, string]()
-agentLambda, _ := compose.AnyLambda(agent.Generate, agent.Stream, nil, nil)
-
-chain.
-    AppendLambda(agentLambda).
-    AppendLambda(compose.InvokableLambda(func(ctx context.Context, input *schema.Message) (string, error) {
-       t.Log("got agent response: ", input.Content)
-       return input.Content, nil
-    }))
-r, _ := chain.Compile(ctx)
-
-res, _ := r.Invoke(ctx, []*schema.Message{{Role: schema.User, Content: "hello"}},
-    compose.WithCallbacks(callbackForTest))
-```
+Agent can be embedded via `compose.AnyLambda` and appended to Chain/Graph.
 
 ## Demo
 
-### 基本信息
+### Basic Info
 
 简介：这是一个拥有两个 tool (query_restaurants 和 query_dishes ) 的 `美食推荐官`
 
@@ -586,6 +476,6 @@ res, _ := r.Invoke(ctx, []*schema.Message{{Role: schema.User, Content: "hello"}}
 
 - 得到所有 tool call 返回的结果后，再次进入 `ChatModel` 节点，这次大模型发现已经拥有了回答用户提问的所有信息，因此整合信息后输出结论，由于调用时使用的 `Stream` 方法，因此流式返回的大模型结果。
 
-## 关联阅读
+## Related Reading
 
-- [Eino Tutorial: Host Multi-Agent ](/zh/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
+- [Eino Tutorial: Host Multi-Agent ](/en/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)

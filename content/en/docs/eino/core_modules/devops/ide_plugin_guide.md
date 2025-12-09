@@ -3,74 +3,68 @@ Description: ""
 date: "2025-01-20"
 lastmod: ""
 tags: []
-title: Eino Dev 插件安装指南
+title: Eino Dev Plugin Installation Guide
 weight: 1
 ---
 
-## 背景 & 简介
+## Background & Overview
 
-> [Eino: 概述](/zh/docs/eino/overview)
+> See [Eino: Overview](/en/docs/eino/overview)
 
-**Eino 是 Go AI 集成组件的研发框架**，提供常用的 **AI 组件**以及集成组件**编排能力**。为了更好的辅助开发者使用 Eino，我们提供了「**Eino Dev**」插件，助力 AI 应用高效开发  🚀。
+Eino is a Go framework for AI component integration and orchestration. The “Eino Dev” plugin helps you build AI applications more efficiently. 🚀
 
 <a href="/img/eino/eino_dev_ability_introduction_page.png" target="_blank"><img src="/img/eino/eino_dev_ability_introduction_page.png" width="100%" /></a>
 
-## 如何安装
+## Installation
 
-### 版本安装依赖
+### Version Compatibility
 
-   <table>
-   <tr><td><strong>Plugin Version</strong></td><td><strong>GoLand IDE Version</strong></td><td><strong>VS Code Version</strong></td><td><strong>eino-ext/devops  Version</strong></td></tr>
-   <tr><td>1.1.0</td><td>2023.2+</td><td>1.97.x</td><td>0.1.0</td></tr>
-   <tr><td>1.0.7      </td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
-   <tr><td>1.0.6      </td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
-   <tr><td>1.0.5     </td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
-   <tr><td>1.0.4</td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
-   </table>
+<table>
+<tr><td><strong>Plugin Version</strong></td><td><strong>GoLand IDE Version</strong></td><td><strong>VS Code Version</strong></td><td><strong>eino-ext/devops Version</strong></td></tr>
+<tr><td>1.1.0</td><td>2023.2+</td><td>1.97.x</td><td>0.1.0</td></tr>
+<tr><td>1.0.7</td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
+<tr><td>1.0.6</td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
+<tr><td>1.0.5</td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
+<tr><td>1.0.4</td><td>2023.2+</td><td>-</td><td>0.1.0</td></tr>
+</table>
 
-**Plugin** **Version**：插件版本信息
+- Plugin Version: plugin release
+- GoLand IDE Version: minimum compatible version
+- VS Code Version: minimum compatible version
+- eino-ext/devops Version: matching version of [eino-ext/devops](https://github.com/cloudwego/eino-ext/tree/main/devops)
 
-**Goland IDE Version**： Goland IDE 可支持的最小版本
-
-**VS Code Version**： VS Code 可支持的最小版本
-
-**Eino-Ext/devops  Version**： [eino-ext/devops](https://github.com/cloudwego/eino-ext/tree/main/devops) 调试模块对应的合适版本
-
-### 安装
-
-#### GoLand
+### GoLand
 
 <table><tbody><tr>
-<td><li>进入 <strong>GoLand</strong>，点击<strong>设置</strong>，选择<strong> </strong><strong>Plugin</strong><strong>s</strong></li>
+<td><li>Open <strong>GoLand</strong> → <strong>Settings</strong> → <strong>Plugins</strong></li>
 <a href="/img/eino/eino_install_page.png" target="_blank"><img src="/img/eino/eino_install_page.png" width="100%" /></a>
-</td><td><li>在 <strong>Marketplace</strong> 中搜索 <strong>E</strong><strong>ino</strong><strong> Dev</strong> 插件并安装</li>
+</td><td><li>Search for <strong>Eino Dev</strong> in <strong>Marketplace</strong> and install</li>
 <a href="/img/eino/eino_install_page_2_page.png" target="_blank"><img src="/img/eino/eino_install_page_2_page.png" width="100%" /></a>
 </td></tr></tbody></table>
 
-#### VS Code
+### VS Code
 
-- 在 VS Code 中点击「Extension 图标」，进入插件市场，搜索 Eino Dev，安装即可
+- Open Extensions, search for “Eino Dev”, and install.
 
 <a href="/img/eino/eino_dev_plugin_vscode.png" target="_blank"><img src="/img/eino/eino_dev_plugin_vscode.png" width="100%" /></a>
 
-## 功能简介
+## Features
 
-> 💡
-> **插件安装完毕** ✅，**接下来就可以体验插件提供的调试与编排能力了** ～
+> 💡 After installation, you can use the debugging and orchestration features immediately.
 
 <table><tbody><tr>
-<td><li>Goland</li>
-右侧边栏找到「<strong>Eino Dev</strong>」图标并点击：
+<td><li>GoLand</li>
+Find the “<strong>Eino Dev</strong>” icon in the right sidebar and click it:
 <a href="/img/eino/eino_dev_ide_plugin_guide_2.png" target="_blank"><img src="/img/eino/eino_dev_ide_plugin_guide_2.png" width="100%" /></a>
 </td><td><li>VS Code</li>
-在底部找到「<strong>Eino Dev</strong>」并点击：
+Click “<strong>Eino Dev</strong>” at the bottom:
 <a href="/img/eino/eino_dev_ide_plugin_guide_1.png" target="_blank"><img src="/img/eino/eino_dev_ide_plugin_guide_1.png" width="100%" /></a>
 
 </td></tr></tbody></table>
 
-### Graph 编排
+### Graph Orchestration
 
-详情 👉：[Eino Dev 可视化编排插件功能指南](/zh/docs/eino/core_modules/devops/visual_orchestration_plugin_guide)
+Details: [Eino Dev Visual Orchestration Guide](/en/docs/eino/core_modules/devops/visual_orchestration_plugin_guide)
 
 <table><tbody><tr>
 <td>
@@ -79,9 +73,9 @@ weight: 1
 <a href="/img/eino/eino_orchestration_show_nodes_2_page.png" target="_blank"><img src="/img/eino/eino_orchestration_show_nodes_2_page.png" width="100%" /></a>
 </td></tr></tbody></table>
 
-### Graph 调试
+### Graph Debugging
 
-详情 👉：[Eino Dev 可视化调试插件功能指南](/zh/docs/eino/core_modules/devops/visual_debug_plugin_guide)
+Details: [Eino Dev Visual Debugging Guide](/en/docs/eino/core_modules/devops/visual_debug_plugin_guide)
 
 <table><tbody><tr>
 <td>
@@ -89,3 +83,4 @@ weight: 1
 </td><td>
 <a href="/img/eino/eino_debug_test_run_of_mock_data_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_of_mock_data_page.png" width="100%" /></a>
 </td></tr></tbody></table>
+

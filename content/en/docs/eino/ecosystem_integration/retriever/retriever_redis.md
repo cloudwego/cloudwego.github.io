@@ -7,4 +7,4 @@ title: Retriever - redis
 weight: 0
 ---
 
-you can use redis-stack as retriever.
+You can use redis-stack as retriever.

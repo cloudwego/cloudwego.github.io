@@ -9,12 +9,12 @@ weight: 0
 
 ## Bing Search Tool
 
-A Bing search tool implementation for [Eino](https://github.com/cloudwego/eino) that implements the `InvokableTool` interface. This enables seamless integration with Eino's ChatModel interaction system and `ToolsNode` for enhanced search capabilities.
+This is a Bing search tool for [Eino](https://github.com/cloudwego/eino) implementing the `InvokableTool` interface. It integrates seamlessly with Eino’s ChatModel interaction system and `ToolsNode`.
 
 ## Features
 
 - Implements `github.com/cloudwego/eino/components/tool.InvokableTool`
-- Easy integration with Eino's tool system
+- Easy integration with Eino’s tool system
 - Configurable search parameters
 
 ## Installation
@@ -29,60 +29,72 @@ go get github.com/cloudwego/eino-ext/components/tool/bingsearch
 package main
 
 import (
-	"context"
-	"log"
-	"os"
-	"time"
-	
-	"github.com/bytedance/sonic"
-	"github.com/cloudwego/eino-ext/components/tool/bingsearch"
+    "context"
+    "log"
+    "os"
+    "time"
+
+    "github.com/bytedance/sonic"
+    "github.com/cloudwego/eino-ext/components/tool/bingsearch"
 )
 
 func main() {
-	// Set the Bing Search API key
-	bingSearchAPIKey := os.Getenv("BING_SEARCH_API_KEY")
-	
-	// Create a context
-	ctx := context.Background()
-	
-	// Create the Bing Search tool
-	bingSearchTool, err := bingsearch.NewTool(ctx, &bingsearch.Config{
-		APIKey: bingSearchAPIKey,
-		Cache:  5 * time.Minute,
-	})
-	
-	if err != nil {
-		log.Fatalf("Failed to create tool: %v", err)
-	}
-	// ... configure and use with ToolsNode
+    // Set Bing Search API key
+    bingSearchAPIKey := os.Getenv("BING_SEARCH_API_KEY")
+
+    // Create context
+    ctx := context.Background()
+
+    // Create Bing Search tool
+    bingSearchTool, err := bingsearch.NewTool(ctx, &bingsearch.Config{
+        APIKey: bingSearchAPIKey,
+        Cache:  5 * time.Minute,
+    })
+
+    if err != nil {
+        log.Fatalf("Failed to create tool: %v", err)
+    }
+    // ... configure and use ToolsNode
+}
 ```
 
 ## Configuration
 
-The tool can be configured using the `Config` struct:
+Tool is configurable via `Config`:
 
 ```go
 // Config represents the Bing search tool configuration.
 type Config struct {
-ToolName string `json:"tool_name"` // optional, default is "bing_search"
-ToolDesc string `json:"tool_desc"` // optional, default is "search web for information by bing"
+    // ToolName: optional, default "bing_search"
+    ToolName string `json:"tool_name"`
+    // ToolDesc: optional, default "search web for information by bing"
+    ToolDesc string `json:"tool_desc"`
 
-APIKey     string     `json:"api_key"`     // required
-Region     Region     `json:"region"`      // optional, default: ""
-MaxResults int        `json:"max_results"` // optional, default: 10
-SafeSearch SafeSearch `json:"safe_search"` // optional, default: SafeSearchModerate
-TimeRange  TimeRange  `json:"time_range"`  // optional, default: nil
+    // APIKey: required
+    APIKey     string     `json:"api_key"`
+    // Region: optional, default ""
+    Region     Region     `json:"region"`
+    // MaxResults: optional, default 10
+    MaxResults int        `json:"max_results"`
+    // SafeSearch: optional, default SafeSearchModerate
+    SafeSearch SafeSearch `json:"safe_search"`
+    // TimeRange: optional, default nil
+    TimeRange  TimeRange  `json:"time_range"`
 
-Headers    map[string]string `json:"headers"`     // optional, default: map[string]string{}
-Timeout    time.Duration     `json:"timeout"`     // optional, default: 30 * time.Second
-ProxyURL   string            `json:"proxy_url"`   // optional, default: ""
-Cache      time.Duration     `json:"cache"`       // optional, default: 0 (disabled)
-MaxRetries int               `json:"max_retries"` // optional, default: 3
+    // Headers: optional, default map[string]string{}
+    Headers    map[string]string `json:"headers"`
+    // Timeout: optional, default 30 * time.Second
+    Timeout    time.Duration     `json:"timeout"`
+    // ProxyURL: optional, default ""
+    ProxyURL   string            `json:"proxy_url"`
+    // Cache: optional, default 0 (disabled)
+    Cache      time.Duration     `json:"cache"`
+    // MaxRetries: optional, default 3
+    MaxRetries int               `json:"max_retries"`
 }
 ```
 
 ## Search
-
 ### Request Schema
 
 ```go
@@ -106,7 +118,7 @@ type searchResult struct {
 }
 ```
 
-## For More Details
+## More Details
 
-- [DuckDuckGo Search Library Documentation](tool_duckduckgo_search)
+- [DuckDuckGo Search Tool](tool_duckduckgo_search/)
 - [Eino Documentation](https://github.com/cloudwego/eino)

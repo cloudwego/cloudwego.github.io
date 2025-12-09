@@ -1,29 +1,25 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Loader - web url
 weight: 0
 ---
 
-## **Basic Introduction**
+## **Overview**
 
-The URL Document Loader is an implementation of the Document Loader interface, used to load document content from web URLs. This component implements the [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide).
+URL document loader is an implementation of the Document Loader interface that loads content from web URLs. It follows [Eino: Document Loader Guide](/en/docs/eino/core_modules/components/document_loader_guide).
 
-### **Feature Introduction**
+### **Features**
 
-The URL Document Loader has the following features:
-
-- Default support for HTML web content parsing
-- Customizable HTTP client configurations (e.g., custom proxies, etc.)
-- Supports custom content parsers (e.g., body, or other specific containers)
+- HTML page parsing by default
+- Customizable HTTP client configuration (e.g., proxy)
+- Custom content parser (e.g., body or specific container)
 
 ## **Usage**
 
-### **Component Initialization**
-
-The URL Document Loader is initialized using the `NewLoader` function with the main configuration parameters as follows:
+### **Initialization**
 
 ```go
 import (
@@ -39,29 +35,25 @@ func main() {
 }
 ```
 
-Explanation of configuration parameters:
+Parameters:
 
-- `Parser`: Document parser, defaults to the HTML parser, which extracts the main content of the web page
-- `Client`: HTTP client which can be customized with timeout, proxy, and other configurations
-- `RequestBuilder`: Request builder used to customize request methods, headers, etc.
+- `Parser`: document parser; default HTML parser extracts main body content
+- `Client`: HTTP client; customize timeout, proxy, etc.
+- `RequestBuilder`: request builder for method/headers customization
 
-### **Loading Documents**
-
-Documents are loaded through the `Load` method:
+### **Load Documents**
 
 ```go
-docs, err := loader.Load(ctx, document.Source{
-    URI: "https://example.com/document",
-})
+docs, err := loader.Load(ctx, document.Source{ URI: "https://example.com/document" })
 ```
 
-Note:
+Notes:
 
-- The URI must be a valid HTTP/HTTPS URL
-- The default request method is GET
-- If other HTTP methods or custom headers are needed, configure the RequestBuilder, for example in authentication scenarios
+- URI must be a valid HTTP/HTTPS URL
+- Default method is GET
+- For other methods or custom headers (e.g., auth), configure `RequestBuilder`
 
-### **Complete Usage Example**
+### **Complete Examples**
 
 #### **Basic Usage**
 
@@ -70,36 +62,24 @@ package main
 
 import (
     "context"
-    
+
     "github.com/cloudwego/eino-ext/components/document/loader/url"
     "github.com/cloudwego/eino/components/document"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize the loader with default configuration
+
     loader, err := url.NewLoader(ctx, nil)
-    if (err != nil) {
-        panic(err)
-    }
-    
-    // Load documents
-    docs, err := loader.Load(ctx, document.Source{
-        URI: "https://example.com/article",
-    })
-    if (err != nil) {
-        panic(err)
-    }
-    
-    // Use document content
-    for _, doc := range docs {
-        println(doc.Content)
-    }
+    if err != nil { panic(err) }
+
+    docs, err := loader.Load(ctx, document.Source{ URI: "https://example.com/article" })
+    if err != nil { panic(err) }
+    for _, doc := range docs { println(doc.Content) }
 }
 ```
 
-#### **Custom Configuration Example**
+#### **Custom Configuration**
 
 ```go
 package main
@@ -108,55 +88,33 @@ import (
     "context"
     "net/http"
     "time"
-    
+
     "github.com/cloudwego/eino-ext/components/document/loader/url"
     "github.com/cloudwego/eino/components/document"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Custom HTTP client
-    client := &http.Client{
-        Timeout: 10 * time.Second,
-    }
-    
-    // Custom request builder
+
+    client := &http.Client{ Timeout: 10 * time.Second }
+
     requestBuilder := func(ctx context.Context, src document.Source, opts ...document.LoaderOption) (*http.Request, error) {
         req, err := http.NewRequestWithContext(ctx, "GET", src.URI, nil)
-        if err != nil {
-            return nil, err
-        }
-        // Add custom headers
+        if err != nil { return nil, err }
         req.Header.Add("User-Agent", "MyBot/1.0")
         return req, nil
     }
-    
-    // Initialize the loader
-    loader, err := url.NewLoader(ctx, &url.LoaderConfig{
-        Client:         client,
-        RequestBuilder: requestBuilder,
-    })
-    if (err != nil) {
-        panic(err)
-    }
-    
-    // Load documents
-    docs, err := loader.Load(ctx, document.Source{
-        URI: "https://example.com/article",
-    })
-    if (err != nil) {
-        panic(err)
-    }
-    
-    // Use document content
-    for _, doc := range docs {
-        println(doc.Content)
-    }
+
+    loader, err := url.NewLoader(ctx, &url.LoaderConfig{ Client: client, RequestBuilder: requestBuilder })
+    if err != nil { panic(err) }
+
+    docs, err := loader.Load(ctx, document.Source{ URI: "https://example.com/article" })
+    if err != nil { panic(err) }
+    for _, doc := range docs { println(doc.Content) }
 }
 ```
 
-## **Related Documentation**
+## **References**
 
-- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader Guide](/en/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Document Parser Interface Guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)

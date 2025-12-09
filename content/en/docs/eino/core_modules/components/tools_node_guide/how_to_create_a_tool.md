@@ -1,22 +1,20 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2025-12-03"
 lastmod: ""
 tags: []
-title: 如何创建一个 tool ?
+title: How to Create a Tool
 weight: 1
 ---
 
-## Tool 的基本结构
+## Tool Structure Basics
 
-一个 agent 要调用 tool，需要有两步： ① 大模型根据 tool 的功能和参数需求构建调用参数 ② 实际调用 tool
+An agent calling a tool involves two steps: (1) the LLM constructs parameters according to the tool definition; (2) the tool executes with those parameters. A tool therefore needs:
 
-这两个基本步骤也就要求了 tool 需要包含两个部分：
+- Tool metadata and parameter constraints
+- An execution interface
 
-- tool 的功能介绍和调用这个 tool 所需要的参数信息
-- 调用这个 tool 的接口
-
-在 Eino 中，BaseTool 接口要求任何一个 tool 都要有 `Info()` 接口返回 tool 信息，如下：
+In Eino, any tool must implement `Info()` to return tool metadata:
 
 ```go
 type BaseTool interface {
@@ -24,7 +22,7 @@ type BaseTool interface {
 }
 ```
 
-而根据一个 tool 被调用后的返回结构是否是流式的，可以分为 InvokableTool 和 StreamableTool，也同样是以接口方式定义：
+Execution interfaces depend on whether the result is streaming:
 
 ```go
 type InvokableTool interface {
@@ -41,16 +39,16 @@ type StreamableTool interface {
 }
 ```
 
-## ToolInfo 的表示方式
+## ToolInfo Representations
 
-在大模型的 function call 调用过程中，由大模型生成需要调用的 function call 的参数，这就要求大模型能理解生成的参数是否符合约束。在 Eino 中，根据开发者的使用习惯和领域标准两方面因素，提供了 `params map[string]*ParameterInfo` 和 `*openapi3.Schema` 两种参数约束的表达方式。
+In LLM function-call flows, the model must understand whether generated parameters satisfy constraints. Eino supports two representations: a map-based description and OpenAPI 3.0 `Schema`.
 
-### 方式 1 - map[string]*ParameterInfo
+### 1) `map[string]*ParameterInfo`
 
-在很多开发者的直观习惯中，对于参数的描述方式可以用一个 map 来表示，key 即为参数名，value 则是这个参数的详细约束。Eino 中定义了 ParameterInfo 来表示一个参数的描述，如下：
+Intuitive map-based parameter descriptions:
 
 ```go
-// 结构定义详见: https://github.com/cloudwego/eino/blob/main/schema/tool.go
+// Full definition: https://github.com/cloudwego/eino/blob/main/schema/tool.go
 type ParameterInfo struct {
     Type DataType    // The type of the parameter.
     ElemInfo *ParameterInfo    // The element type of the parameter, only for array.
@@ -61,7 +59,7 @@ type ParameterInfo struct {
 }
 ```
 
-比如，一个表示 User 的参数可以表示为：
+Example:
 
 ```go
 map[string]*schema.ParameterInfo{
@@ -73,38 +71,33 @@ map[string]*schema.ParameterInfo{
         Type: schema.Integer,
     },
     "gender": &schema.ParameterInfo{
-        Type: schema.String,    
+        Type: schema.String,
         Enum: []string{"male", "female"},
     },
 }
 ```
 
-这样的表示方式非常简单直观，当参数由开发者通过编码的方式手动维护时常用。
+### 2) OpenAPI 3.0 Schema
 
-### 方式 2 - JSON Schema
+Eino also supports `openapi3.Schema` for JSON Schema-based constraints. In practice, you often generate it from existing specs or helper functions.
 
-另一种常用于表示参数约束的方式是 `JSON schema`: [https://json-schema.org/draft/2020-12](https://json-schema.org/draft/2020-12).
+#### `GoStruct2ParamsOneOf`
 
-JSON Schema 的标准中对参数的约束方式非常丰富。在实际的使用中，一般不由开发者自行构建此结构体，而是使用一些方法来生成。
-
-#### 使用 GoStruct2ParamsOneOf 生成
-
-Eino 提供了在结构体中通过 go tag 描述参数约束的方式，并提供了 GoStruct2ParamsOneOf 方法来生成一个 struct 的参数约束，其函数签名如下：
+Describe constraints via Go tags on a struct and generate `ParamsOneOf`:
 
 ```go
 func GoStruct2ParamsOneOf[T any](opts ...Option) (*schema.ParamsOneOf, error)
 ```
 
-其中从 T 中提取参数的字段名称和描述，提取时所用的 Tag 如下：
+Supported tags:
 
-- jsonschema_description:"xxx " [推荐]或者 jsonschema: "description=xxx"
-  - description 中一般会有逗号，且 tag 中逗号是不同字段的分隔符，且不可被转义，强烈推荐使用 jsonschema_description 这个单独的 Tag 标签
-- jsonschema: "enum=xxx,enum=yyy,enum=zzz"
-- jsonschema: "required"
-- json: "xxx,omitempty" => 可用 json tag 的 omitempty 代表非 required
-- 使用 utils.WithSchemaModifier 实现自定义的解析方法
+- `jsonschema:"description=xxx"`
+- `jsonschema:"enum=xxx,enum=yyy"`
+- `jsonschema:"required"`
+- `json:"xxx,omitempty"` → `omitempty` implies not required
+- Customize via `utils.WithSchemaCustomizer`
 
-可参考如下例子：
+Example:
 
 ```go
 package main
@@ -115,8 +108,8 @@ import (
 )
 
 type User struct {
-    Name   string `json:"name" jsonschema_description=the name of the user jsonschema:"required"`
-    Age    int    `json:"age" jsonschema_description:"the age of the user"`
+    Name   string `json:"name" jsonschema:"required,description=the name of the user"`
+    Age    int    `json:"age" jsonschema:"description=the age of the user"`
     Gender string `json:"gender" jsonschema:"enum=male,enum=female"`
 }
 
@@ -125,13 +118,15 @@ func main() {
 }
 ```
 
-这个方法一般不由开发者调用，往往直接使用 `utils.GoStruct2ToolInfo()` 来构建 ToolInfo，或者直接用 `utils.InferTool()` 直接构建 tool，可详见下方把 “本地函数转为 tool” 部分。
+You usually won’t call this directly; prefer `utils.GoStruct2ToolInfo()` or `utils.InferTool()`.
 
-## 实现 Tool 的方式
+#### From `openapi.json`
 
-### 方式 1 - 直接实现接口
+If your tool wraps HTTP APIs, generating from an `openapi.json` is convenient. See `eino-examples` for sample usage: https://github.com/cloudwego/eino-examples/blob/main/components/tool/openapi3/main.go#L33
 
-由于 tool 的定义都是接口，因此最直接实现一个 tool 的方式即实现接口，以 InvokableTool 为例：
+## Approach 1 — Implement Interfaces Directly
+
+Implement `InvokableTool`:
 
 ```go
 type AddUser struct{}
@@ -141,49 +136,44 @@ func (t *AddUser) Info(_ context.Context) (*schema.ToolInfo, error) {
         Name: "add_user",
         Desc: "add user",
         ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
-            // omit，参考上文中构建 params 约束的方式
+            // omitted; see earlier for building params constraints
         }),
     }, nil
 }
 
 func (t *AddUser) InvokableRun(_ context.Context, argumentsInJSON string, _ ...tool.Option) (string, error) {
-    // 1. 反序列化 argumentsInJSON，处理 option 等
+    // 1. Deserialize argumentsInJSON and handle options
     user, _ := json.Unmarshal([]byte(argumentsInJSON))
-    // 2. 处理业务逻辑
-    // 3. 把结果序列化为 string 并返回
+    // 2. Handle business logic
+    // 3. Serialize the result to string and return
 
     return `{"msg": "ok"}`, nil
 }
 ```
 
-由于大模型给出的 function call 参数始终是一个 string，对应到 Eino 框架中，tool 的调用参数入参也就是一个序列化成 string 的 json。因此，这种方式需要开发者自行处理参数的反序列化，并且调用的结果也用 string 的方式返回。
+Because the LLM always supplies a JSON string, the tool receives `argumentsInJSON`; you deserialize it and return a JSON string.
 
-### 方式 2 - 把本地函数转为 tool
+## Approach 2 — Wrap a Local Function
 
-在开发过程中，我们经常需要把一个本地函数封装成 Eino 的 tool，比如我们代码中本身已经有了一个 `AddUser` 的方法，但为了让大模型可以自主决策如何调用这个方法，我们要把这个方法变成一个 tool 并 bind 到大模型上。
+Often you have an existing function (e.g., `AddUser`) and want the LLM to decide when/how to call it. Eino provides `NewTool` for this, and `InferTool` for tag-based parameter constraints.
 
-Eino 中提供了 `NewTool` 的方法来把一个函数转成 tool，同时，针对为参数约束通过结构体的 tag 来表示的场景提供了 InferTool 的方法，让构建的过程更加简单。
+> See tests in `cloudwego/eino/components/tool/utils/invokable_func_test.go` and `streamable_func_test.go`.
 
-> 下方方法的示例可以参考  [cloudwego/eino/components/tool/utils/invokable_func_test.go](https://github.com/cloudwego/eino/blob/main/components/tool/utils/invokable_func_test.go) 和  [cloudwego/eino/components/tool/utils/streamable_func_test.go](https://github.com/cloudwego/eino/blob/main/components/tool/utils/streamable_func_test.go) 中的单元测试。此处仅以 InvokableTool 为例，StreamableTool 也有对应的构建方法。
+### `NewTool`
 
-#### 使用 NewTool 方法
-
-当一个函数满足下面这种函数签名时，就可以用 NewTool 把其变成一个 InvokableTool ：
+For functions of signature:
 
 ```go
 type InvokeFunc[T, D any] func(ctx context.Context, input T) (output D, err error)
 ```
 
-NewTool 的方法如下：
+Use:
 
 ```go
-// 代码见: github.com/cloudwego/eino/components/tool/utils/invokable_func.go
 func NewTool[T, D any](desc *schema.ToolInfo, i InvokeFunc[T, D], opts ...Option) tool.InvokableTool
 ```
 
-> 同理 NewStreamTool 可创建 StreamableTool
-
-以 AddUser 为例，就可以用如下的方式构建：
+Example:
 
 ```go
 import (
@@ -220,7 +210,7 @@ func createTool() tool.InvokableTool {
                     Type: schema.Integer,
                 },
                 "gender": &schema.ParameterInfo{
-                    Type: schema.String,    
+                    Type: schema.String,
                     Enum: []string{"male", "female"},
                 },
             },
@@ -231,19 +221,15 @@ func createTool() tool.InvokableTool {
 }
 ```
 
-#### 使用 InferTool 方法
+### `InferTool`
 
-从 NewTool 中可以看出，构建一个 tool 的过程需要分别传入 ToolInfo 和 InvokeFunc ，其中，ToolInfo 中包含 ParamsOneOf 的部分，这代表着函数的入参约束，同时，InvokeFunc 的函数签名中也有 input 的参数，这就意味着： ParamsOneOf 的部分和 InvokeFunc 的 input 参数需要保持一致。
-
-当一个函数完全由开发者自行实现的时候，就需要开发者手动维护 input 参数和 ParamsOneOf 以保持一致。更优雅的解决方法是 “参数约束直接维护在 input 参数类型定义中”，可参考上方 `GoStruct2ParamsOneOf` 的介绍。
-
-当参数约束信息包含在 input 参数类型定义中时，就可以使用 InferTool 来实现，函数签名如下：
+When parameter constraints live in the input struct tags, use `InferTool`:
 
 ```go
 func InferTool[T, D any](toolName, toolDesc string, i InvokeFunc[T, D], opts ...Option) (tool.InvokableTool, error)
 ```
 
-以 AddUser 为例:
+Example:
 
 ```go
 import (
@@ -271,17 +257,17 @@ func createTool() (tool.InvokableTool, error) {
 }
 ```
 
-#### 使用 InferOptionableTool 方法
+### `InferOptionableTool`
 
-Option 机制是 Eino 提供的一种在运行时传递动态参数的机制，详情可以参考 [Eino: CallOption 能力与规范](/zh/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)，这套机制在自定义 tool 中同样适用。
+Eino’s Option mechanism passes dynamic runtime parameters. Details: `Eino: CallOption capabilities and conventions` at `/en/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities`. The same mechanism applies to custom tools.
 
-当开发者要实现一个需要自定义 option 参数时则可使用 InferOptionableTool 这个方法，相比于 InferTool 对函数签名的要求，这个方法的签名增加了一个 option 参数，签名如下：
+When you need custom option parameters, use `InferOptionableTool`:
 
 ```go
 func InferOptionableTool[T, D any](toolName, toolDesc string, i OptionableInvokeFunc[T, D], opts ...Option) (tool.InvokableTool, error)
 ```
 
-示例如下（改编自 [cloudwego/eino/components/tool/utils/invokable_func_test.go](https://github.com/cloudwego/eino/blob/main/components/tool/utils/invokable_func_test.go)）：
+Example (adapted from `cloudwego/eino/components/tool/utils/invokable_func_test.go`):
 
 ```go
 import (
@@ -323,15 +309,18 @@ func useInInvoke() {
 }
 ```
 
-### 方式 3 - 使用 eino-ext 中提供的 tool
+## Approach 3 — Use tools from eino-ext
 
-除了自定义的各种 tool 需要自行实现外，eino-ext 项目中还有很多通用的 tool 实现，可以实现开箱即用，比如 [Tool - Googlesearch](/zh/docs/eino/ecosystem_integration/tool/tool_googlesearch)、[Tool - DuckDuckGoSearch](/zh/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search) 、wikipedia、httprequest 等等，可以参考 [https://github.com/cloudwego/eino-ext/tree/main/components/tool](https://github.com/cloudwego/eino-ext/tree/main/components/tool) 中的各种实现。
+Beyond custom tools, the `eino-ext` project provides many ready-to-use implementations: `Googlesearch`, `DuckDuckGoSearch`, `wikipedia`, `httprequest`, etc. See implementations at https://github.com/cloudwego/eino-ext/tree/main/components/tool and docs:
 
-### 方式 4 - 使用 MCP 协议
+- Tool — Googlesearch: `/en/docs/eino/ecosystem_integration/tool/tool_googlesearch`
+- Tool — DuckDuckGoSearch: `/en/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search`
 
-MCP（Model Context Protocol）是一个开放的模型上下文协议，现在越来越多的工具和平台都在基于这套协议把自身的能力暴露给大模型调用，eino 可以把基于 MCP 提供的可调用工具作为 tool，这将极大扩充 tool 的种类。
+## Approach 4 — Use MCP protocol
 
-在 Eino 中使用 MCP 提供的 tool 非常方便：
+MCP (Model Context Protocol) is an open protocol for exposing tool capabilities to LLMs. Eino can treat tools provided via MCP as regular tools, greatly expanding available capabilities.
+
+Using MCP tools in Eino is straightforward:
 
 ```go
 import (
@@ -373,4 +362,4 @@ func getMCPTool(ctx context.Context) []tool.BaseTool {
 }
 ```
 
-> 代码参考： [https://github.com/cloudwego/eino-ext/blob/main/components/tool/mcp/examples/mcp.go](https://github.com/cloudwego/eino-ext/blob/main/components/tool/mcp/examples/mcp.go)
+Code reference: https://github.com/cloudwego/eino-ext/blob/main/components/tool/mcp/examples/mcp.go

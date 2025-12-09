@@ -3,23 +3,23 @@ Description: ""
 date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino: ChatTemplate 使用说明'
+title: 'Eino: ChatTemplate Guide'
 weight: 2
 ---
 
-## **基本介绍**
+## Introduction
 
-Prompt 组件是一个用于处理和格式化提示模板的组件。它的主要作用是将用户提供的变量值填充到预定义的消息模板中，生成用于与语言模型交互的标准消息格式。这个组件可用于以下场景：
+The `Prompt` component formats message templates by filling user-provided variables into predefined message structures. It’s used to generate standardized messages for model interaction and is useful for:
 
-- 构建结构化的系统提示
-- 处理多轮对话的模板 (包括 history)
-- 实现可复用的提示模式
+- Structured system prompts
+- Multi-turn dialogue templates (including history)
+- Reusable prompt patterns
 
-## **组件定义**
+## Component Definition
 
-### **接口定义**
+### Interface
 
-> 代码位置：eino/components/prompt/interface.go
+> Code: `eino/components/prompt/interface.go`
 
 ```go
 type ChatTemplate interface {
@@ -27,62 +27,52 @@ type ChatTemplate interface {
 }
 ```
 
-#### **Format 方法**
+#### Format
 
-- 功能：将变量值填充到消息模板中
-- 参数：
-  - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
-  - vs：变量值映射，用于填充模板中的占位符
-  - opts：可选参数，用于配置格式化行为
-- 返回值：
-  - `[]*schema.Message`：格式化后的消息列表
-  - error：格式化过程中的错误信息
+- Purpose: fill variables into the message template
+- Params:
+  - `ctx`: request-scoped info and callback manager
+  - `vs`: variables map used to fill placeholders
+  - `opts`: optional formatting controls
+- Returns:
+  - `[]*schema.Message`: formatted messages
+  - `error`
 
-### **内置模板化方式**
+### Built-in Templating
 
-Prompt 组件内置支持三种模板化方式：
+Prompt supports three built-in templating modes:
 
-1. FString 格式 (schema.FString)
+1. `FString` (`schema.FString`)
+   - `{variable}` syntax for substitution
+   - Simple and direct for basic text replacement
+   - Example: `"You are a {role}. Please help me {task}."`
+2. `GoTemplate` (`schema.GoTemplate`)
+   - Go `text/template` syntax
+   - Supports conditionals, loops, etc.
+   - Example: `"{{if .expert}}As an expert{{end}} please {{.action}}"`
+3. `Jinja2` (`schema.Jinja2`)
+   - Jinja2 template syntax
+   - Example: `"{% if level == 'expert' %}From an expert perspective{% endif %} analyze {{topic}}"`
 
-   - 使用 `{variable}` 语法进行变量替换
-   - 简单直观，适合基础文本替换场景
-   - 示例：`"你是一个{role}，请帮我{task}。"`
-2. GoTemplate 格式 (schema.GoTemplate)
+### Options
 
-   - 使用 Go 标准库的 text/template 语法
-   - 支持条件判断、循环等复杂逻辑
-   - 示例：`"{{if .expert}}作为专家{{end}}请{{.action}}"`
-3. Jinja2 格式 (schema.Jinja2)
+Prompt includes an `Option` mechanism; there’s no global option abstraction. Each implementation may define its own specific options and wrap them via `WrapImplSpecificOptFn`.
 
-   - 使用 Jinja2 模板语法
-   - 示例：`"{% if level == 'expert' %}以专家的角度{% endif %}分析{{topic}}"`
+## Usage
 
-### **公共 Option**
+`ChatTemplate` is typically used before `ChatModel` to prepare context.
 
-Prompt 组件使用 Option 来定义可选参数， ChatTemplate 没有公共的 option 抽象。每个具体的实现可以定义自己的特定 Option，通过 WrapImplSpecificOptFn 函数包装成统一的 Option 类型。
+### Creation Methods
 
-## **使用方式**
+- `prompt.FromMessages()` — compose multiple messages into a template.
+- `schema.Message{}` — since `Message` implements `Format`, you can use it directly as a template.
+- `schema.SystemMessage()` — create a system-role message.
+- `schema.AssistantMessage()` — create an assistant-role message.
+- `schema.UserMessage()` — create a user-role message.
+- `schema.ToolMessage()` — create a tool-role message.
+- `schema.MessagesPlaceholder()` — insert a `[]*schema.Message` (e.g., history) into the message list.
 
-ChatTemplate 一般用于 ChatModel 之前做上下文准备的。
-
-### 创建方法
-
-- `prompt.FromMessages()`
-  - 用于把多个 message 变成一个 chat template。
-- `schema.Message{}`
-  - schema.Message 是实现了 Format 接口的结构体，因此可直接构建 `schema.Message{}` 作为 template
-- `schema.SystemMessage()`
-  - 此方法是构建 role 为 "system" 的 message 快捷方法
-- `schema.AssistantMessage()`
-  - 此方法是构建 role 为 "assistant" 的 message 快捷方法
-- `schema.UserMessage()`
-  - 此方法是构建 role 为 "user" 的 message 快捷方法
-- `schema.ToolMessage()`
-  - 此方法是构建 role 为 "tool" 的 message 快捷方法
-- `schema.MessagesPlaceholder()`
-  - 可用于把一个 `[]*schema.Message` 插入到 message 列表中，常用于插入历史对话
-
-### **单独使用**
+### Standalone Usage
 
 ```go
 import (
@@ -90,28 +80,25 @@ import (
     "github.com/cloudwego/eino/schema"
 )
 
-// 创建模板
+// Create template
 template := prompt.FromMessages(schema.FString,
     schema.SystemMessage("你是一个{role}。"),
     schema.MessagesPlaceholder("history_key", false),
-    &schema.Message{
-        Role:    schema.User,
-        Content: "请帮我{task}。",
-    },
+    &schema.Message{ Role: schema.User, Content: "请帮我{task}。" },
 )
 
-// 准备变量
+// Variables
 variables := map[string]any{
     "role": "专业的助手",
     "task": "写一首诗",
     "history_key": []*schema.Message{{Role: schema.User, Content: "告诉我油画是什么?"}, {Role: schema.Assistant, Content: "油画是xxx"}},
 }
 
-// 格式化模板
+// Format
 messages, err := template.Format(context.Background(), variables)
 ```
 
-### **在编排中使用**
+### In Orchestration
 
 ```go
 import (
@@ -120,40 +107,38 @@ import (
     "github.com/cloudwego/eino/compose"
 )
 
-// 在 Chain 中使用
+// Use in Chain
 chain := compose.NewChain[map[string]any, []*schema.Message]()
 chain.AppendChatTemplate(template)
 
-// 编译并运行
+// Compile and run
 runnable, err := chain.Compile()
 if err != nil {
     return err
 }
 result, err := runnable.Invoke(ctx, variables)
 
-// 在 Graph 中使用
+// Use in Graph
 graph := compose.NewGraph[map[string]any, []*schema.Message]()
 graph.AddChatTemplateNode("template_node", template)
 ```
 
-### 从前驱节点的输出中获取数据
+### Pull Data from a Predecessor Node
 
-在 AddNode 时，可以通过添加 WithOutputKey 这个 Option 来把节点的输出转成 Map：
+Use `WithOutputKey` to map a node’s output into a keyed `map[string]any`:
 
 ```go
-// 这个节点的输出，会从 string 改成 map[string]any，
-// 且 map 中只有一个元素，key 是 your_output_key，value 是实际的的节点输出的 string
 graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
     // your logic
     return
 }), compose.WithOutputKey("your_output_key"))
 ```
 
-把前驱节点的输出转成 map[string]any 并设置好 key 后，在后置的 ChatTemplate 节点中使用该 key 对应的 value。
+Then refer to that key within a downstream `ChatTemplate` node.
 
-## **Option 和 Callback 使用**
+## Options and Callbacks
 
-### **Callback 使用示例**
+### Callback Example
 
 ```go
 import (
@@ -165,70 +150,55 @@ import (
     "github.com/cloudwego/eino/components/prompt"
 )
 
-// 创建 callback handler
 handler := &callbackHelper.PromptCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *prompt.CallbackInput) context.Context {
-        fmt.Printf("开始格式化模板，变量: %v\n", input.Variables)
+        fmt.Printf("Formatting template; variables: %v\n", input.Variables)
         return ctx
     },
     OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *prompt.CallbackOutput) context.Context {
-        fmt.Printf("模板格式化完成，生成消息数量: %d\n", len(output.Result))
+        fmt.Printf("Template formatted; messages: %d\n", len(output.Result))
         return ctx
     },
 }
 
-// 使用 callback handler
 helper := callbackHelper.NewHandlerHelper().
     Prompt(handler).
     Handler()
 
-// 在运行时使用
 runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
 result, err := runnable.Invoke(ctx, variables, compose.WithCallbacks(helper))
 ```
 
-## **自行实现参考**
+## Implementation Notes
 
-### Option **机制**
+### Option Mechanism
 
-若有需要，组件实现者可实现自定义 prompt option：
+If needed, define custom prompt options:
 
 ```go
 import (
     "github.com/cloudwego/eino/components/prompt"
 )
 
-// 定义 Option 结构体
 type MyPromptOptions struct {
     StrictMode bool
     DefaultValues map[string]string
 }
 
-// 定义 Option 函数
 func WithStrictMode(strict bool) prompt.Option {
-    return prompt.WrapImplSpecificOptFn(func(o *MyPromptOptions) {
-        o.StrictMode = strict
-    })
+    return prompt.WrapImplSpecificOptFn(func(o *MyPromptOptions) { o.StrictMode = strict })
 }
 
 func WithDefaultValues(values map[string]string) prompt.Option {
-    return prompt.WrapImplSpecificOptFn(func(o *MyPromptOptions) {
-        o.DefaultValues = values
-    })
+    return prompt.WrapImplSpecificOptFn(func(o *MyPromptOptions) { o.DefaultValues = values })
 }
 ```
 
-### **Callback 处理**
+### Callback Structures
 
-Prompt 实现需要在适当的时机触发回调，以下结构是组件定义好的：
-
-> 代码位置：eino/components/prompt/callback_extra.go
+> Code: `eino/components/prompt/callback_extra.go`
 
 ```go
-// 定义回调输入输出
 type CallbackInput struct {
     Variables map[string]any
     Templates []schema.MessagesTemplate
@@ -242,7 +212,7 @@ type CallbackOutput struct {
 }
 ```
 
-### **完整实现示例**
+### Complete Implementation Example
 
 ```go
 type MyPrompt struct {
@@ -262,36 +232,25 @@ func NewMyPrompt(config *MyPromptConfig) (*MyPrompt, error) {
 }
 
 func (p *MyPrompt) Format(ctx context.Context, vs map[string]any, opts ...prompt.Option) ([]*schema.Message, error) {
-    // 1. 处理 Option
     options := &MyPromptOptions{
         StrictMode: p.strictMode,
         DefaultValues: p.defaultValues,
     }
     options = prompt.GetImplSpecificOptions(options, opts...)
-    
-    // 2. 获取 callback manager
     cm := callbacks.ManagerFromContext(ctx)
-    
-    // 3. 开始格式化前的回调
     ctx = cm.OnStart(ctx, info, &prompt.CallbackInput{
         Variables: vs,
         Templates: p.templates,
     })
-    
-    // 4. 执行格式化逻辑
     messages, err := p.doFormat(ctx, vs, options)
-    
-    // 5. 处理错误和完成回调
     if err != nil {
         ctx = cm.OnError(ctx, info, err)
         return nil, err
     }
-    
     ctx = cm.OnEnd(ctx, info, &prompt.CallbackOutput{
         Result: messages,
         Templates: p.templates,
     })
-    
     return messages, nil
 }
 

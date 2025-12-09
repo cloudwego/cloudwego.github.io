@@ -7,4 +7,4 @@ title: Embedding - qianfan
 weight: 0
 ---
 
-you can use embedding services served by qianfan (from baidu).
+You can use Qianfan (Baidu) platform embedding service.

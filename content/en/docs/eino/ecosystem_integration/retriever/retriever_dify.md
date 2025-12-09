@@ -9,14 +9,14 @@ weight: 0
 
 ## Dify Retriever
 
-A Dify retriever implementation for [Eino](https://github.com/cloudwego/eino) that implements the `Retriever` interface. This enables seamless integration with Eino's retrieval system for retrieving relevant documents from Dify datasets.
+This is a Dify retriever for [Eino](https://github.com/cloudwego/eino) implementing the `Retriever` interface. It integrates with Eino’s retrieval system and fetches relevant documents from Dify datasets.
 
 ## Features
 
 - Implements `github.com/cloudwego/eino/components/retriever.Retriever`
-- Easy integration with Eino's retrieval system
-- Support for configurable retrieval parameters
-- Reranking support
+- Easy integration with Eino retrieval
+- Configurable retrieval parameters
+- Supports reranking
 
 ## Installation
 
@@ -30,81 +30,68 @@ go get github.com/cloudwego/eino-ext/components/retriever/dify
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
+    "context"
+    "fmt"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino-ext/components/retriever/dify"
+    "github.com/cloudwego/eino-ext/components/retriever/dify"
 )
 
-
-
 func main() {
-	APIKey := os.Getenv("DIFY_DATASET_API_KEY")
-	Endpoint := os.Getenv("DIFY_ENDPOINT")
-	DatasetID := os.Getenv("DIFY_DATASET_ID")
-	ctx := context.Background()
+    APIKey := os.Getenv("DIFY_DATASET_API_KEY")
+    Endpoint := os.Getenv("DIFY_ENDPOINT")
+    DatasetID := os.Getenv("DIFY_DATASET_ID")
+    ctx := context.Background()
 
-	// create Dify Retriever
-	ret, err := dify.NewRetriever(ctx, &dify.RetrieverConfig{
-		APIKey:    APIKey,
-		Endpoint:  Endpoint,
-		DatasetID: DatasetID,
-	})
-	if err != nil {
-		log.Fatalf("Failed to create retriever: %v", err)
-	}
+    ret, err := dify.NewRetriever(ctx, &dify.RetrieverConfig{ APIKey: APIKey, Endpoint: Endpoint, DatasetID: DatasetID })
+    if err != nil { log.Fatalf("Failed to create retriever: %v", err) }
 
-	// do search
-	docs, err := ret.Retrieve(ctx, "test query")
-	if err != nil {
-		log.Fatalf("Failed to retrieve: %v", err)
-	}
+    docs, err := ret.Retrieve(ctx, "test query")
+    if err != nil { log.Fatalf("Failed to retrieve: %v", err) }
 
-	// print docs
-	for _, doc := range docs {
-		fmt.Printf("doc id: %s\n", doc.ID)
-		fmt.Printf("doc content: %s\n", doc.Content)
-		fmt.Printf("score: %v\n\n", doc.Score())
-	}
+    for _, doc := range docs {
+        fmt.Printf("doc id: %s\n", doc.ID)
+        fmt.Printf("doc content: %s\n", doc.Content)
+        fmt.Printf("score: %v\n\n", doc.Score())
+    }
 }
 ```
 
 ## Configuration
 
-The retriever can be configured using the `RetrieverConfig` struct:
+Configure via `RetrieverConfig`:
 
 ```go
 type RetrieverConfig struct {
-    APIKey string   // Dify Datasets API key
-    Endpoint string // Endpoint of the Dify API, default: https://api.dify.ai/v1
-    DatasetID string    // DatasetID of the Dify datasets
-    RetrievalModel *RetrievalModel  // Retrieval model configuration 
-    Timeout time.Duration   // HTTP connection timeout
+    APIKey string
+    Endpoint string // default: https://api.dify.ai/v1
+    DatasetID string
+    RetrievalModel *RetrievalModel
+    Timeout time.Duration
 }
 
 type RetrievalModel struct {
-    SearchMethod          SearchMethod    // Search method
-    RerankingEnable      *bool           // Enable reranking
-    RerankingMode        *string         // Reranking mode
-    RerankingModel       *RerankingModel // Reranking model settings
-    Weights              *float64        // Search weights
-    TopK                 *int            // Number of documents to retrieve
-    ScoreThresholdEnabled *bool          // Enable score threshold
-    ScoreThreshold       *float64        // Minimum score threshold
+    SearchMethod          SearchMethod
+    RerankingEnable       *bool
+    RerankingMode         *string
+    RerankingModel        *RerankingModel
+    Weights               *float64
+    TopK                  *int
+    ScoreThresholdEnabled *bool
+    ScoreThreshold        *float64
 }
 ```
 
 ## Document Metadata
 
-The retriever adds the following metadata to retrieved documents:
+Adds the following metadata on retrieved docs:
 
-- `orig_doc_id`: Original document ID in Dify
-- `orig_doc_name`: Original document name in Dify
-- `keywords`: Keywords extracted from the document
+- `orig_doc_id`: original doc ID in Dify
+- `orig_doc_name`: original doc name in Dify
+- `keywords`: extracted keywords
 
-You can access these metadata using the helper functions:
+Helpers:
 
 ```go
 docID := dify.GetOrgDocID(doc)
@@ -112,7 +99,7 @@ docName := dify.GetOrgDocName(doc)
 keywords := dify.GetKeywords(doc)
 ```
 
-## For More Details
+## More Details
 
-- [Dify API Documentation](https://github.com/langgenius/dify)
-- [Eino Documentation](https://github.com/cloudwego/eino)
+- Dify: https://github.com/langgenius/dify
+- Eino: https://github.com/cloudwego/eino

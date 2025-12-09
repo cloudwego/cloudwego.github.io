@@ -1,25 +1,23 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Loader - amazon s3
 weight: 0
 ---
 
-## **Introduction**
+## **Overview**
 
-The S3 Document Loader is an implementation of the Document Loader interface, used to load document content from AWS S3 buckets. This component implements the [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide).
+S3 document loader is an implementation of the Document Loader interface that loads content from AWS S3 buckets. It follows [Eino: Document Loader Guide](/en/docs/eino/core_modules/components/document_loader_guide).
 
-### **Introduction to AWS S3 Service**
+### **AWS S3 Service Overview**
 
-Amazon Simple Storage Service (Amazon S3) is an object storage service offering industry-leading scalability, data availability, security, and performance. This component interacts with the S3 service using the AWS SDK for Go v2 and supports authentication through access keys or default credentials.
+Amazon S3 is an object storage service with high scalability, availability, security, and performance. This component interacts with S3 via AWS SDK for Go v2 and supports authentication via access keys or default credentials.
 
 ## **Usage**
 
-### **Component Initialization**
-
-The S3 Document Loader is initialized via the `NewS3Loader` function with the following main configuration parameters:
+### **Initialization**
 
 ```go
 import (
@@ -28,54 +26,48 @@ import (
 
 func main() {
     loader, err := s3.NewS3Loader(ctx, &s3.LoaderConfig{
-        Region:           aws.String("us-east-1"),        // AWS Region
-        AWSAccessKey:     aws.String("your-access-key"),  // AWS Access Key ID
-        AWSSecretKey:     aws.String("your-secret-key"),  // AWS Secret Access Key
-        UseObjectKeyAsID: true,                           // Whether to use the object key as the document ID
-        Parser:           &parser.TextParser{},           // Document parser, defaults to TextParser
+        Region:           aws.String("us-east-1"),        // AWS region
+        AWSAccessKey:     aws.String("your-access-key"),  // AWS access key ID
+        AWSSecretKey:     aws.String("your-secret-key"),  // AWS secret key
+        UseObjectKeyAsID: true,                           // use object key as document ID
+        Parser:           &parser.TextParser{},           // document parser (default TextParser)
     })
 }
 ```
 
-Configuration parameter descriptions:
+Parameters:
 
-- `Region`: The AWS region where the S3 bucket is located
-- `AWSAccessKey` and `AWSSecretKey`: AWS access credentials; if not provided, the default credential chain will be used
-- `UseObjectKeyAsID`: Whether to use the S3 object's key as the document ID
-- `Parser`: The parser used for parsing document content, defaults to TextParser to directly convert content to a string
+- `Region`: AWS region of the bucket
+- `AWSAccessKey` and `AWSSecretKey`: credentials; use default credential chain if not provided
+- `UseObjectKeyAsID`: use S3 object key as document ID
+- `Parser`: parser to convert content to text; default TextParser
 
-### **Loading Documents**
-
-Documents are loaded through the `Load` method:
+### **Load Documents**
 
 ```go
-docs, err := loader.Load(ctx, document.Source{
-    URI: "s3://bucket-name/path/to/document.txt",
-})
+docs, err := loader.Load(ctx, document.Source{ URI: "s3://bucket-name/path/to/document.txt" })
 ```
 
-URI format description:
+URI format:
 
 - Must start with `s3://`
-- Followed by the bucket name and object key
+- Followed by bucket name and object key
 - Example: `s3://my-bucket/folder/document.pdf`
 
-Precautions:
+Notes:
 
-- Currently, batch loading of documents via prefix is not supported
-- The URI must point to a specific object and cannot end with `/`
-- Ensure sufficient permissions to access the specified bucket and object
+- Prefix-based bulk loading is not supported
+- URI must point to a concrete object (not ending with `/`)
+- Ensure sufficient permissions to access the bucket and object
 
-### **Complete Usage Example**
-
-#### **Standalone Usage**
+### **Complete Example**
 
 ```go
 package main
 
 import (
     "context"
-    
+
     "github.com/aws/aws-sdk-go-v2/aws"
     "github.com/cloudwego/eino-ext/components/document/loader/s3"
     "github.com/cloudwego/eino/components/document"
@@ -90,26 +82,15 @@ func main() {
         AWSSecretKey:     aws.String("your-secret-key"),
         UseObjectKeyAsID: true,
     })
-    if err != nil {
-        panic(err)
-    }
-    
-    // Loading documents
-    docs, err := loader.Load(ctx, document.Source{
-        URI: "s3://my-bucket/documents/sample.txt",
-    })
-    if err != nil {
-        panic(err)
-    }
-    
-    // Using document content
-    for _, doc := range docs {
-        println(doc.Content)
-    }
+    if err != nil { panic(err) }
+
+    docs, err := loader.Load(ctx, document.Source{ URI: "s3://my-bucket/documents/sample.txt" })
+    if err != nil { panic(err) }
+    for _, doc := range docs { println(doc.Content) }
 }
 ```
 
-## **Related Documentation**
+## **References**
 
-- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader Guide](/en/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Document Parser Interface Guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)

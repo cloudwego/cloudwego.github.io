@@ -7,4 +7,4 @@ title: Embedding - dashscope
 weight: 0
 ---
 
-you can use embedding services served by dashscope (from aliyun).
+You can use Alibaba Cloud’s DashScope platform embedding service.

@@ -3,8 +3,9 @@ Description: ""
 date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino Dev: 应用开发工具链'
+title: 'Eino Dev: Application Tooling'
 weight: 5
 ---
 
-🚀  Eino 是 Go AI 集成组件的研发框架，提供了 AI 应用相关的常用组件以及集成组件编排能力，为了更好的辅助开发者使用 Eino，我们提供了 「Eino Dev 插件」 ，现在就安装插件 ( [EinoDev 插件安装指南](/zh/docs/eino/core_modules/devops/ide_plugin_guide))，助你高效开发  🚀
+🚀 Eino is a Go framework for AI component integration and orchestration. To help developers use Eino efficiently, we provide the “Eino Dev” plugin. Install it now ([Eino Dev Plugin Installation Guide](/en/docs/eino/core_modules/devops/ide_plugin_guide)) to accelerate development. 🚀
+

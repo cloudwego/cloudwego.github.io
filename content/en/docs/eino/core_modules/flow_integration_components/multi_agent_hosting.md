@@ -1,19 +1,19 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2025-12-03"
 lastmod: ""
 tags: []
 title: 'Eino Tutorial: Host Multi-Agent'
 weight: 2
 ---
 
-Host Multi-Agent 是一个 Host 做意图识别后，跳转到某个专家 agent 做实际的生成。只转发，不生成子任务。
+Host Multi-Agent is a pattern where a Host recognizes intent and hands off to a specialist agent to perform the actual generation.
 
-以一个简单的“日记助手”做例子：可以写日记、读日记、根据日记回答问题。
+Example: a “journal assistant” that can write journal, read journal, and answer questions based on journal.
 
-完整样例参见：[https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal](https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal)
+Full sample: https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal
 
-Host：
+Host:
 
 ```go
 func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host, error) {
@@ -34,7 +34,7 @@ func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host
 }
 ```
 
-写日记的“专家”：host 识别出用户意图是写日记后，会跳转到这里，把用户想要写的内容写到文件里。
+Write-journal specialist:
 
 ```go
 func newWriteJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
@@ -95,7 +95,7 @@ func newWriteJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
 }
 ```
 
-读日记的“专家”：host 识别出用户意图是读日记后，会跳转到这里，读日记文件内容并一行行的输出。就是一个本地的 function。
+Read-journal specialist (streams lines):
 
 ```go
 func newReadJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
@@ -141,7 +141,7 @@ func newReadJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
 }
 ```
 
-根据日记回答问题的"专家"：
+Answer-with-journal specialist:
 
 ```go
 func newAnswerWithJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
@@ -230,7 +230,7 @@ func newAnswerWithJournalSpecialist(ctx context.Context) (*host.Specialist, erro
 }
 ```
 
-编排成 host multi agent 并在命令行启动：
+Compose host multi-agent and run a CLI:
 
 ```go
 func main() {
@@ -269,56 +269,56 @@ func main() {
 
     cb := &logCallback{}
 
-    for { // 多轮对话，除非用户输入了 "exit"，否则一直循环
-       println("\n\nYou: ") // 提示轮到用户输入了
+    for { // multi-turn until user enters "exit"
+       println("\n\nYou: ") // prompt for user input
 
-       var message string
-       scanner := bufio.NewScanner(os.Stdin) // 获取用户在命令行的输入
-       for scanner.Scan() {
-          message += scanner.Text()
-          break
-       }
+        var message string
+        scanner := bufio.NewScanner(os.Stdin) // read from CLI
+        for scanner.Scan() {
+           message += scanner.Text()
+           break
+        }
 
-       if err := scanner.Err(); err != nil {
-          panic(err)
-       }
+        if err := scanner.Err(); err != nil {
+           panic(err)
+        }
 
-       if message == "exit" {
-          return
-       }
+        if message == "exit" {
+           return
+        }
 
-       msg := &schema.Message{
-          Role:    schema._User_,
-          Content: message,
-       }
+        msg := &schema.Message{
+           Role:    schema._User_,
+           Content: message,
+        }
 
-       out, err := hostMA.Stream(ctx, []*schema.Message{msg}, host.WithAgentCallbacks(cb))
-       if err != nil {
-          panic(err)
-       }
+        out, err := hostMA.Stream(ctx, []*schema.Message{msg}, host.WithAgentCallbacks(cb))
+        if err != nil {
+           panic(err)
+        }
 
-       defer out.Close()
+        defer out.Close()
 
-       println("\nAnswer:")
+        println("\nAnswer:")
 
-       for {
-          msg, err := out.Recv()
-          if err != nil {
-             if err == io.EOF {
-                break
-             }
-          }
+        for {
+           msg, err := out.Recv()
+           if err != nil {
+              if err == io.EOF {
+                 break
+              }
+           }
 
-          print(msg.Content)
-       }
+           print(msg.Content)
+        }
     }
 }
 ```
 
-运行 console 输出：
+Console output example:
 
 ```go
-You: 
+You:
 write journal: I got up at 7:00 in the morning
 
 HandOff to write_journal with argument {"reason":"I got up at 7:00 in the morning"}
@@ -326,7 +326,7 @@ HandOff to write_journal with argument {"reason":"I got up at 7:00 in the mornin
 Answer:
 Journal written successfully: I got up at 7:00 in the morning
 
-You: 
+You:
 read journal
 
 HandOff to view_journal_content with argument {"reason":"User wants to read the journal content."}
@@ -334,8 +334,7 @@ HandOff to view_journal_content with argument {"reason":"User wants to read the 
 Answer:
 I got up at 7:00 in the morning
 
-
-You: 
+You:
 when did I get up in the morning?
 
 HandOff to answer_with_journal with argument {"reason":"To find out the user's morning wake-up times"}
@@ -346,13 +345,13 @@ You got up at 7:00 in the morning.
 
 ## FAQ
 
-### Host 直接输出时没有流式
+### No streaming when Host outputs directly
 
-Host Multi-Agent 提供了一个 StreamToolCallChecker 的配置，用于判断 Host 是否直接输出。
+Host Multi-Agent provides `StreamToolCallChecker` to determine whether Host outputs directly.
 
-不同的模型在流式模式下输出工具调用的方式可能不同: 某些模型(如 OpenAI) 会直接输出工具调用；某些模型 (如 Claude) 会先输出文本，然后再输出工具调用。因此需要使用不同的方法来判断，这个字段用来指定判断模型流式输出中是否包含工具调用的函数。
+Different providers in streaming mode may output tool calls differently: some output tool calls directly (e.g., OpenAI); some output text first then tool calls (e.g., Claude). Configure a checker accordingly.
 
-可选填写，未填写时使用“非空包”是否包含工具调用判断：
+Default checker (first non-empty chunk must be tool-call):
 
 ```go
 func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
@@ -380,9 +379,9 @@ func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[
 }
 ```
 
-上述默认实现适用于：模型输出的 Tool Call Message 中只有 Tool Call。
+The default fits providers whose Tool Call messages contain only tool calls.
 
-默认实现不适用的情况：在输出 Tool Call 前，有非空的 content chunk。此时，需要自定义 tool Call checker 如下：
+When a provider outputs non-empty content before tool calls, define a custom checker:
 
 ```go
 toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
@@ -406,15 +405,12 @@ toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Mes
 }
 ```
 
-上面这个自定义 StreamToolCallChecker，在极端情况下可能需要判断**所有包**是否包含 ToolCall，从而导致“流式判断”的效果丢失。如果希望尽可能保留“流式判断”效果，解决这一问题的建议是：
+Note: in extreme cases you may need to scan all chunks, degrading the streaming decision. To preserve streaming behavior as much as possible:
 
-> 💡
-> 尝试添加 prompt 来约束模型在工具调用时不额外输出文本，例如：“如果需要调用 tool，直接输出 tool，不要输出文本”。
->
-> 不同模型受 prompt 影响可能不同，实际使用时需要自行调整 prompt 并验证效果。
+> Tip: add a prompt such as “If you need to call tools, output the tool calls only, do not output text.” Prompt effectiveness varies; adjust and verify with your provider.
 
-### Host 同时选择多个 Specialist
+### Host selects multiple Specialists
 
-Host 以 Tool Call 的形式给出对 Specialist 的选择，因此可能以 Tool Call 列表的形式同时选中多个 Specialist。此时 Host Multi-Agent 会同时将请求路由到这多个 Specialist，并在多个 Specialist 完成后，通过 Summarizer 节点总结多条 Message 为一条 Message，作为 Host Multi-Agent 的最终输出。
+Host may select multiple specialists via a list of tool calls. In that case, Host Multi-Agent routes to all selected specialists in parallel, and after they finish, summarizes multiple messages into one via a Summarizer node as the final output.
 
-用户可通过配置 Summarizer，指定一个 ChatModel 以及 SystemPrompt，来定制化 Summarizer 的行为。如未指定，Host Multi-Agent 会将多个 Specialist 的输出 Message Content 拼接后返回。
+Users can configure a Summarizer (ChatModel + SystemPrompt) to customize behavior. If unspecified, Host Multi-Agent concatenates contents from multiple specialists.

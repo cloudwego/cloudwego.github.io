@@ -1,26 +1,26 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino: ChatModel 使用说明'
+title: 'Eino: ChatModel Guide'
 weight: 1
 ---
 
-## 基本介绍
+## Overview
 
-Model 组件是一个用于与大语言模型交互的组件。它的主要作用是将用户的输入消息发送给语言模型，并获取模型的响应。这个组件在以下场景中发挥重要作用：
+The `Model` component enables interaction with large language models. It sends user messages to the model and receives responses. It’s essential for:
 
-- 自然语言对话
-- 文本生成和补全
-- 工具调用的参数生成
-- 多模态交互（文本、图片、音频等）
+- Natural-language dialogues
+- Text generation and completion
+- Generating tool-call parameters
+- Multimodal interactions (text, image, audio, etc.)
 
-## 组件定义
+## Component Definition
 
-### 接口定义
+### Interfaces
 
-> 代码位置：eino/components/model/interface.go
+> Code: `eino/components/model/interface.go`
 
 ```go
 type BaseChatModel interface {
@@ -38,116 +38,114 @@ type ToolCallingChatModel interface {
 }
 ```
 
-#### Generate 方法
+#### Generate
 
-- 功能：生成完整的模型响应
-- 参数：
-  - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
-  - input：输入消息列表
-  - opts：可选参数，用于配置模型行为
-- 返回值：
-  - `*schema.Message`：模型生成的响应消息
-  - error：生成过程中的错误信息
+- Purpose: produce a complete model response
+- Params:
+  - `ctx`: context for request-scoped info and callback manager
+  - `input`: list of input messages
+  - `opts`: options to configure model behavior
+- Returns:
+  - `*schema.Message`: the generated response
+  - `error`: if generation fails
 
-#### Stream 方法
+#### Stream
 
-- 功能：以流式方式生成模型响应
-- 参数：与 Generate 方法相同
-- 返回值：
-  - `*schema.StreamReader[*schema.Message]`：模型响应的流式读取器
-  - error：生成过程中的错误信息
+- Purpose: produce a response as a stream
+- Params: same as `Generate`
+- Returns:
+  - `*schema.StreamReader[*schema.Message]`: stream reader for response chunks
+  - `error`
 
-#### WithTools 方法
+#### WithTools
 
-- 功能：为模型绑定可用的工具
-- 参数：
-  - tools：工具信息列表
-- 返回值：
-  - ToolCallingChatModel: 绑定了 tools 后的 chatmodel
-  - error：绑定过程中的错误信息
+- Purpose: bind available tools to the model
+- Params:
+  - `tools`: list of tool info definitions
+- Returns:
+  - `ToolCallingChatModel`: a model instance with tools bound
+  - `error`
 
-### Message 结构体
+### Message Struct
 
-> 代码位置：eino/schema/message.go
+> Code: `eino/schema/message.go`
 
 ```go
 type Message struct {
-    // Role 表示消息的角色（system/user/assistant/tool）
+    // Role indicates system/user/assistant/tool
     Role RoleType
-    // Content 是消息的文本内容
+    // Content is textual content
     Content string
-    // MultiContent 是多模态内容，支持文本、图片、音频等
-    // Deprecated: 已废弃，使用UserInputMultiContent替代
-  ~~  MultiContent []ChatMessagePart~~
-    // UserInputMultiContent 用来存储用户输入的多模态数据，支持文本、图片、音频、视频、文件
-    // 使用此字段时限制模型角色为User
+    // MultiContent is deprecated; use UserInputMultiContent
+    // Deprecated
+    // MultiContent []ChatMessagePart
+    // UserInputMultiContent holds multimodal user inputs (text, image, audio, video, file)
+    // Use only for user-role messages
     UserInputMultiContent []MessageInputPart
-    // AssistantGenMultiContent 用来承接模型输出的多模态数据，支持文本、图片、音频、视频
-    // 使用此字段时限制模型角色为Assistant
+    // AssistantGenMultiContent holds multimodal outputs from the model
+    // Use only for assistant-role messages
     AssistantGenMultiContent []MessageOutputPart
-    // Name 是消息的发送者名称
+    // Name of the sender
     Name string
-    // ToolCalls 是 assistant 消息中的工具调用信息
+    // ToolCalls in assistant messages
     ToolCalls []ToolCall
-    // ToolCallID 是 tool 消息的工具调用 ID
+    // ToolCallID for tool messages
     ToolCallID string
-    // ResponseMeta 包含响应的元信息
+    // ResponseMeta contains metadata
     ResponseMeta *ResponseMeta
-    // Extra 用于存储额外信息
+    // Extra for additional information
     Extra map[string]any
 }
 ```
 
-Message 结构体是模型交互的基本结构，支持：
+Message supports:
 
-- 多种角色：system（系统）、user（用户）、assistant（ai）、tool（工具）
-- 多模态内容：文本、图片、音频、视频、文件
-- 工具调用：支持模型调用外部工具和函数
-- 元信息：包含响应原因、token 使用统计等
+- Roles: `system`, `user`, `assistant`, `tool`
+- Multimodal content: text, image, audio, video, file
+- Tool calls and function invocation
+- Metadata (reasoning, token usage, etc.)
 
-### 公共 Option
+### Common Options
 
-Model 组件提供了一组公共 Option 用于配置模型行为：
-
-> 代码位置：eino/components/model/option.go
+> Code: `eino/components/model/option.go`
 
 ```go
 type Options struct {
-    // Temperature 控制输出的随机性
+    // Temperature controls randomness
     Temperature *float32
-    // MaxTokens 控制生成的最大 token 数量
+    // MaxTokens caps output tokens
     MaxTokens *int
-    // Model 指定使用的模型名称
+    // Model selects a model name
     Model *string
-    // TopP 控制输出的多样性
+    // TopP controls diversity
     TopP *float32
-    // Stop 指定停止生成的条件
+    // Stop lists stop conditions
     Stop []string
 }
 ```
 
-可以通过以下方式设置 Option：
+Use options as:
 
 ```go
-// 设置温度
+// Set temperature
 WithTemperature(temperature float32) Option
 
-// 设置最大 token 数
+// Set max tokens
 WithMaxTokens(maxTokens int) Option
 
-// 设置模型名称
+// Set model name
 WithModel(name string) Option
 
-// 设置 top_p 值
+// Set top_p
 WithTopP(topP float32) Option
 
-// 设置停止词
+// Set stop words
 WithStop(stop []string) Option
 ```
 
-## 使用方式
+## Usage
 
-### 单独使用
+### Standalone
 
 ```go
 import (
@@ -160,48 +158,33 @@ import (
     "github.com/cloudwego/eino/schema"
 )
 
-// 初始化模型 (以openai为例)
+// Initialize model (OpenAI example)
 cm, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-    // 配置参数
+    // config
 })
 
-// 准备输入消息
+// Prepare messages
 messages := []*schema.Message{
-    {
-       Role:    schema.System,
-       Content: "你是一个有帮助的助手。",
-    },
-    {
-       Role:    schema.User,
-       Content: "你好！",
-    },
+    { Role: schema.System, Content: "你是一个有帮助的助手。" },
+    { Role: schema.User, Content: "你好！" },
 }
 
-// 生成响应
+// Generate response
 response, err := cm.Generate(ctx, messages, model.WithTemperature(0.8))
-
-// 响应处理
 fmt.Print(response.Content)
 
-// 流式生成
+// Stream response
 streamResult, err := cm.Stream(ctx, messages)
-
 defer streamResult.Close()
-
 for {
     chunk, err := streamResult.Recv()
-    if err == io.EOF {
-       break
-    }
-    if err != nil {
-       // 错误处理
-    }
-    // 响应片段处理
+    if err == io.EOF { break }
+    if err != nil { /* handle error */ }
     fmt.Print(chunk.Content)
 }
 ```
 
-### 在编排中使用
+### In Orchestration
 
 ```go
 import (
@@ -209,28 +192,26 @@ import (
     "github.com/cloudwego/eino/compose"
 )
 
-/*** 初始化ChatModel
+/*** Initialize ChatModel
 * cm, err := xxx
 */
 
-// 在 Chain 中使用
+// Use in Chain
 c := compose.NewChain[[]*schema.Message, *schema.Message]()
 c.AppendChatModel(cm)
 
-
-// 在 Graph 中使用
+// Use in Graph
 g := compose.NewGraph[[]*schema.Message, *schema.Message]()
 g.AddChatModelNode("model_node", cm)
 ```
 
-## Option 和 Callback 使用
+## Options and Callbacks
 
-### Option 使用示例
+### Options Example
 
 ```go
 import "github.com/cloudwego/eino/components/model"
 
-// 使用 Option
 response, err := cm.Generate(ctx, messages,
     model.WithTemperature(0.7),
     model.WithMaxTokens(2000),
@@ -238,7 +219,7 @@ response, err := cm.Generate(ctx, messages,
 )
 ```
 
-### Callback 使用示例
+### Callback Example
 
 ```go
 import (
@@ -252,122 +233,79 @@ import (
     callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
 )
 
-// 创建 callback handler
+// define callback handler
 handler := &callbacksHelper.ModelCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *model.CallbackInput) context.Context {
-       fmt.Printf("开始生成，输入消息数量: %d\n", len(input.Messages))
-       return ctx
+        fmt.Printf("start, input messages: %d\n", len(input.Messages))
+        return ctx
     },
     OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *model.CallbackOutput) context.Context {
-       fmt.Printf("生成完成，Token 使用情况: %+v\n", output.TokenUsage)
-       return ctx
+        fmt.Printf("end, token usage: %+v\n", output.TokenUsage)
+        return ctx
     },
     OnEndWithStreamOutput: func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[*model.CallbackOutput]) context.Context {
-        fmt.Println("开始接收流式输出")
+        fmt.Println("stream started")
         defer output.Close()
-    
-        for {
-            chunk, err := output.Recv()
-            if errors.Is(err, io.EOF) {
-                break
-            }
-            if err != nil {
-                fmt.Printf("流读取错误: %v\n", err)
-                return
-            }
-            if chunk == nil || chunk.Message == nil {
-                continue
-            }
-    
-            // 仅在模型输出包含 ToolCall 时打印
-            if len(chunk.Message.ToolCalls) > 0 {
-                for _, tc := range chunk.Message.ToolCalls {
-                    fmt.Printf("检测到 ToolCall，arguments: %s\n", tc.Function.Arguments)
-                }
-            }
-        }
-    
         return ctx
     },
 }
 
-// 使用 callback handler
+// use callback handler
 helper := callbacksHelper.NewHandlerHelper().
     ChatModel(handler).
     Handler()
 
-/*** compose a chain
-* chain := NewChain
-* chain.appendxxx().
-*       appendxxx().
-*       ...
-*/
-
-// 在运行时使用
-runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
-result, err := runnable.Invoke(ctx, messages, compose.WithCallbacks(helper))
+chain := compose.NewChain[[]*schema.Message, *schema.Message]()
+chain.AppendChatModel(cm)
+run, _ := chain.Compile(ctx)
+result, _ := run.Invoke(ctx, messages, compose.WithCallbacks(helper))
 ```
 
-## **已有实现**
+## Existing Implementations
 
-1. OpenAI ChatModel: 使用 OpenAI 的 GPT 系列模型 [ChatModel - OpenAI](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
-2. Ollama ChatModel: 使用 Ollama 本地模型 [ChatModel - Ollama](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
-3. ARK ChatModel: 使用 ARK 平台的模型服务 [ChatModel - ARK](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
-4. 更多查看： [Eino ChatModel](https://www.cloudwego.io/zh/docs/eino/ecosystem_integration/chat_model/)
+1. OpenAI ChatModel: [ChatModel — OpenAI](/en/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
+2. Ollama ChatModel: [ChatModel — Ollama](/en/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
+3. Ark ChatModel: [ChatModel — Ark](/en/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
+4. More: [Eino ChatModel](/en/docs/eino/ecosystem_integration/chat_model/)
 
-## 自行实现参考
+## Implementation Notes
 
-实现自定义的 ChatModel 组件时，需要注意以下几点：
+1. Implement common options and any provider‑specific options
+2. Implement callbacks correctly for both Generate and Stream
+3. Close the stream writer after streaming completes to avoid resource leaks
 
-1. 注意要实现公共的 option
-2. 注意实现 callback 机制
-3. 在流式输出时记得完成输出后要 close writer
+### Option Mechanism
 
-### Option 机制
-
-自定义 ChatModel 如果需要公共 Option 以外的 Option，可以利用组件抽象的工具函数实现自定义的 Option，例如：
+Custom ChatModels can define additional options beyond common `model.Options` using helper wrappers:
 
 ```go
 import (
     "time"
-
     "github.com/cloudwego/eino/components/model"
 )
 
-// 定义 Option 结构体
 type MyChatModelOptions struct {
     Options    *model.Options
     RetryCount int
     Timeout    time.Duration
 }
 
-// 定义 Option 函数
 func WithRetryCount(count int) model.Option {
-    return model.WrapImplSpecificOptFn(func(o *MyChatModelOptions) {
-       o.RetryCount = count
-    })
+    return model.WrapImplSpecificOptFn(func(o *MyChatModelOptions) { o.RetryCount = count })
 }
 
 func WithTimeout(timeout time.Duration) model.Option {
-    return model.WrapImplSpecificOptFn(func(o *MyChatModelOptions) {
-       o.Timeout = timeout
-    })
+    return model.WrapImplSpecificOptFn(func(o *MyChatModelOptions) { o.Timeout = timeout })
 }
 ```
 
-### Callback 处理
+### Callback Handling
 
-ChatModel 实现需要在适当的时机触发回调，以下结构由 ChatModel 组件定义：
+ChatModel implementations should trigger callbacks at appropriate times. Structures defined by the component:
 
 ```go
-import (
-    "github.com/cloudwego/eino/schema"
-)
+import "github.com/cloudwego/eino/schema"
 
-// 定义回调输入输出
 type CallbackInput struct {
     Messages    []*schema.Message
     Model       string
@@ -383,7 +321,7 @@ type CallbackOutput struct {
 }
 ```
 
-### 完整实现示例
+### Complete Implementation Example
 
 ```go
 import (
@@ -406,113 +344,73 @@ type MyChatModel struct {
     retryCount int
 }
 
-type MyChatModelConfig struct {
-    APIKey string
-}
+type MyChatModelConfig struct { APIKey string }
 
 func NewMyChatModel(config *MyChatModelConfig) (*MyChatModel, error) {
-    if config.APIKey == "" {
-       return nil, errors.New("api key is required")
-    }
-
-    return &MyChatModel{
-       client: &http.Client{},
-       apiKey: config.APIKey,
-    }, nil
+    if config.APIKey == "" { return nil, errors.New("api key is required") }
+    return &MyChatModel{ client: &http.Client{}, apiKey: config.APIKey }, nil
 }
 
 func (m *MyChatModel) Generate(ctx context.Context, messages []*schema.Message, opts ...model.Option) (*schema.Message, error) {
-    // 1. 处理选项
     options := &MyChatModelOptions{
-       Options: &model.Options{
-          Model: &m.model,
-       },
-       RetryCount: m.retryCount,
-       Timeout:    m.timeout,
+        Options: &model.Options{ Model: &m.model },
+        RetryCount: m.retryCount,
+        Timeout:    m.timeout,
     }
     options.Options = model.GetCommonOptions(options.Options, opts...)
     options = model.GetImplSpecificOptions(options, opts...)
 
-    // 2. 开始生成前的回调
     ctx = callbacks.OnStart(ctx, &model.CallbackInput{
-       Messages: messages,
-       Config: &model.Config{
-          Model: *options.Options.Model,
-       },
+        Messages: messages,
+        Config: &model.Config{
+            Model: *options.Options.Model,
+        },
     })
 
-    // 3. 执行生成逻辑
     response, err := m.doGenerate(ctx, messages, options)
+    if err != nil { callbacks.OnError(ctx, err); return nil, err }
 
-    // 4. 处理错误和完成回调
-    if err != nil {
-       ctx = callbacks.OnError(ctx, err)
-       return nil, err
-    }
-
-    ctx = callbacks.OnEnd(ctx, &model.CallbackOutput{
-       Message: response,
-    })
-
+    callbacks.OnEnd(ctx, &model.CallbackOutput{ Message: response })
     return response, nil
 }
 
 func (m *MyChatModel) Stream(ctx context.Context, messages []*schema.Message, opts ...model.Option) (*schema.StreamReader[*schema.Message], error) {
-    // 1. 处理选项
     options := &MyChatModelOptions{
-       Options: &model.Options{
-          Model: &m.model,
-       },
-       RetryCount: m.retryCount,
-       Timeout:    m.timeout,
+        Options: &model.Options{ Model: &m.model },
+        RetryCount: m.retryCount,
+        Timeout:    m.timeout,
     }
     options.Options = model.GetCommonOptions(options.Options, opts...)
     options = model.GetImplSpecificOptions(options, opts...)
 
-    // 2. 开始流式生成前的回调
     ctx = callbacks.OnStart(ctx, &model.CallbackInput{
-       Messages: messages,
-       Config: &model.Config{
-          Model: *options.Options.Model,
-       },
+        Messages: messages,
+        Config: &model.Config{
+            Model: *options.Options.Model,
+        },
     })
 
-    // 3. 创建流式响应
-    // Pipe产生一个StreamReader和一个StreamWrite，向StreamWrite中写入可以从StreamReader中读到，二者并发安全。
-    // 实现中异步向StreamWrite中写入生成内容，返回StreamReader作为返回值
-    // ***StreamReader是一个数据流，仅可读一次，组件自行实现Callback时，既需要通过OnEndWithCallbackOutput向callback传递数据流，也需要向返回一个数据流，需要对数据流进行一次拷贝
-    // 考虑到此种情形总是需要拷贝数据流，OnEndWithCallbackOutput函数会在内部拷贝并返回一个未被读取的流
-    // 以下代码演示了一种流处理方式，处理方式不唯一
+    // Pipe produces a StreamReader and StreamWriter; writes to the writer are readable from the reader
     sr, sw := schema.Pipe[*model.CallbackOutput](1)
 
-    // 4. 启动异步生成
+    // Asynchronously generate and write to the stream
     go func() {
-       defer sw.Close()
-
-       // 流式写入
-       m.doStream(ctx, messages, options, sw)
+        defer sw.Close()
+        m.doStream(ctx, messages, options, sw)
     }()
 
-    // 5. 完成回调
+    // Copy stream for callbacks and return a fresh reader
     _, nsr := callbacks.OnEndWithStreamOutput(ctx, sr)
-
-    return schema.StreamReaderWithConvert(nsr, func(t *model.CallbackOutput) (*schema.Message, error) {
-       return t.Message, nil
-    }), nil
+    return schema.StreamReaderWithConvert(nsr, func(t *model.CallbackOutput) (*schema.Message, error) { return t.Message, nil }), nil
 }
 
-func (m *MyChatModel)  WithTools(tools []*schema.ToolInfo) (model.ToolCallingChatModel, error) {
-    // 实现工具绑定逻辑
+func (m *MyChatModel) WithTools(tools []*schema.ToolInfo) (model.ToolCallingChatModel, error) {
     return nil, nil
 }
 
 func (m *MyChatModel) doGenerate(ctx context.Context, messages []*schema.Message, opts *MyChatModelOptions) (*schema.Message, error) {
-    // 实现生成逻辑
     return nil, nil
 }
 
-func (m *MyChatModel) doStream(ctx context.Context, messages []*schema.Message, opts *MyChatModelOptions, sr *schema.StreamWriter[*model.CallbackOutput]) {
-    // 流式生成文本写入sr中
-    return
-}
+func (m *MyChatModel) doStream(ctx context.Context, messages []*schema.Message, opts *MyChatModelOptions, sw *schema.StreamWriter[*model.CallbackOutput]) {}
 ```

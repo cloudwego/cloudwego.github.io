@@ -54,16 +54,16 @@
 
     function isMermaidLike(text) {
         var t = text.trim();
-        return /^%%\{init:/.test(t) || /^---\s*/.test(t) || /^(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|gantt|pie)\b/.test(t);
+        if (/^%%\{init:/.test(t) || /^---\s*/.test(t)) return true;
+        var firstLine = t.split('\n')[0].trim();
+        if (/^(flowchart|sequenceDiagram|classDiagram|stateDiagram|gantt|pie)\b/.test(firstLine)) return true;
+        // Only treat as mermaid when 'graph' starts with a valid direction token
+        if (/^graph\s+(TD|TB|LR|RL)\b/.test(firstLine)) return true;
+        return false;
     }
 
     var toReplace = [];
     $('pre > code.language-mermaid').each(function() { toReplace.push($(this)); });
-    $('pre > code').each(function() {
-        var $c = $(this);
-        if ($c.hasClass('language-mermaid')) return;
-        if (isMermaidLike($c.text())) toReplace.push($c);
-    });
 
     toReplace.forEach(function($code) {
         needMermaid = true;

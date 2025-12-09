@@ -1,42 +1,42 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-11-20"
 lastmod: ""
 tags: []
-title: Agent-Enable LLM to have hands
+title: Agent — Give Your LLM Hands
 weight: 2
 ---
 
-## **What is an Agent**
+## What Is an Agent?
 
-An Agent (intelligent agent) is a system that can perceive the environment and take actions to achieve specific goals. In AI applications, an Agent can autonomously complete complex tasks by combining the understanding capabilities of large language models (LLMs) with the execution capabilities of predefined tools. This will be the main form in which AI is applied to daily life and production in the future.
+An Agent is a system that perceives its environment and takes actions to achieve a goal. In AI applications, agents combine the language understanding of LLMs with tool execution, enabling them to autonomously complete complex tasks — a key form factor for how AI integrates into everyday work and life.
 
 > 💡
-> For code snippets exemplified in this article, see: [eino-examples/quickstart/todoagent](https://github.com/cloudwego/eino-examples/blob/master/quickstart/todoagent/main.go)
+> Example code snippets: [eino-examples/quickstart/todoagent](https://github.com/cloudwego/eino-examples/blob/master/quickstart/todoagent/main.go)
 
-## **Core Components of an Agent**
+## Core Components of an Agent
 
-In Eino, to implement an Agent, you mainly need two core components: ChatModel and Tool.
+In Eino, an agent typically consists of two core parts: a `ChatModel` and one or more `Tools`.
 
-### **ChatModel**
+### ChatModel
 
-ChatModel is the brain of the Agent, processing the user's natural language input through powerful language understanding capabilities. When a user makes a request, ChatModel deeply understands the user's intent, analyzes the task requirements, and decides whether specific tools need to be called to complete the task. When tools need to be used, it can accurately choose the appropriate tools and generate the correct parameters. Moreover, ChatModel can convert the results of tool execution into natural language responses that are easy for users to understand, achieving smooth human-computer interaction.
+`ChatModel` is the agent’s brain. It processes the user’s natural language input, understands intent, analyzes requirements, and decides whether a tool is needed. When tools are required, it selects the right tool with the right parameters and converts tool outputs back into natural-language responses.
 
-> For more detailed information on ChatModel, refer to: [Eino: ChatModel guide](/docs/eino/core_modules/components/chat_model_guide)
+> More about ChatModel: [Eino: ChatModel Guide](/en/docs/eino/core_modules/components/chat_model_guide)
 
-### **Tool**
+### Tool
 
-Tool is the executor of the Agent, providing specific functionality implementations. Each Tool has clear functional definitions and parameter specifications, enabling ChatModel to call them accurately. Tools can achieve various functions, encapsulating everything from simple data operations to complex external service calls.
+`Tool` is the agent’s executor. Each tool has a clear function definition and parameter schema, allowing the `ChatModel` to call it accurately. Tools can wrap anything from simple data ops to sophisticated external service calls.
 
-> For more detailed information on Tool and ToolsNode, refer to: [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
+> More about tools and ToolsNode: [Eino: ToolsNode Guide](/en/docs/eino/core_modules/components/tools_node_guide)
 
-## **Implementation of Tools**
+## Implementing Tools
 
-In Eino, we provide multiple ways to implement a tool. Below, we'll illustrate this with an example of a Todo management system.
+Eino offers multiple ways to implement tools. We illustrate with a simple Todo management system.
 
-### Way 1: Using NewTool to Construct
+### Approach 1: Build with `NewTool`
 
-This method is suitable for simple tool implementations, where a tool is created by defining the tool information and handling function:
+This is ideal for simpler tools: define tool metadata and a handler function.
 
 ```go
 import (
@@ -47,14 +47,14 @@ import (
     "github.com/cloudwego/eino/schema"
 )
 
-// Handling function
+// Handler
 func AddTodoFunc(_ context.Context, params *TodoAddParams) (string, error) {
-    // Mock processing logic
+    // Mock
     return `{"msg": "add todo success"}`, nil
 }
 
 func getAddTodoTool() tool.InvokableTool {
-    // Tool information
+    // Tool metadata
     info := &schema.ToolInfo{
         Name: "add_todo",
         Desc: "Add a todo item",
@@ -75,16 +75,16 @@ func getAddTodoTool() tool.InvokableTool {
         }),
     }
 
-    // Use NewTool to create the tool
+    // Build with NewTool
     return utils.NewTool(info, AddTodoFunc)
 }
 ```
 
-While this method is straightforward, it has a notable disadvantage: the parameter information (ParamsOneOf) is manually defined in the ToolInfo and is separate from the actual parameter structure (TodoAddParams). This not only causes code redundancy but also requires simultaneous modifications in two places when parameters change, which can easily lead to inconsistencies and make maintenance more cumbersome.
+This approach is straightforward but has a drawback: parameter descriptions (`ParamsOneOf`) are separate from the actual parameter struct (`TodoAddParams`). Changes require updating both, risking inconsistency.
 
-### Way 2: Build Using InferTool
+### Approach 2: Build with `InferTool`
 
-This method is more concise, defining parameter information through the struct's tag, allowing the parameter struct and description information to be in sync without maintaining two sets of information:
+This is more concise. Use struct tags to define parameter metadata so the description and struct share the same source.
 
 ```go
 import (
@@ -102,22 +102,22 @@ type TodoUpdateParams struct {
     Done      *bool   `json:"done,omitempty" jsonschema:"description=done status"`
 }
 
-// Handler function
+// Handler
 func UpdateTodoFunc(_ context.Context, params *TodoUpdateParams) (string, error) {
-    // Mock processing logic
+    // Mock
     return `{"msg": "update todo success"}`, nil
 }
 
-// Create tool using InferTool
+// Build tool with InferTool
 updateTool, err := utils.InferTool(
     "update_todo", // tool name 
-    "Update a todo item, eg: content, deadline...", // tool description
+    "Update a todo item, eg: content,deadline...", // description
     UpdateTodoFunc)
 ```
 
-### Way 3: Implementing the Tool Interface
+### Approach 3: Implement the Tool Interface
 
-For scenarios requiring more custom logic, you can create by implementing the Tool interface:
+For advanced scenarios, implement the `Tool` interface.
 
 ```go
 import (
@@ -144,31 +144,32 @@ func (lt *ListTodoTool) Info(ctx context.Context) (*schema.ToolInfo, error) {
 }
 
 func (lt *ListTodoTool) InvokableRun(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
-    // Mock invocation logic
-    return `{"todos": [{"id": "1", "content": "Prepare the Eino project presentation by December 10, 2024", "started_at": 1717401600, "deadline": 1717488000, "done": false}]}`, nil
+    // Mock
+    return `{"todos": [{"id": "1", "content": "Prepare Eino demo slides before 2024-12-10", "started_at": 1717401600, "deadline": 1717488000, "done": false}]}` , nil
 }
 ```
 
-### Way 4: Using Officially Packaged Tools
+### Approach 4: Use Official Tools
 
-In addition to implementing tools yourself, we also provide many ready-to-use tools. These tools have been fully tested and optimized and can be directly integrated into your Agent. For example, take the duckduckgo Search tool:
+Beyond custom tools, Eino provides many well-tested, ready-to-use tools. For example, DuckDuckGo Search:
 
 ```go
 import (
     "github.com/cloudwego/eino-ext/components/tool/duckduckgo"
 )
 
-// Create the duckduckgo Search tool
+
+// Create DuckDuckGo Search tool
 searchTool, err := duckduckgo.NewTool(ctx, &duckduckgo.Config{})
 ```
 
-Using the tools provided by eino-ext not only avoids the workload of redundant development but also ensures the stability and reliability of the tools. These tools have been thoroughly tested and are continually maintained, allowing them to be directly integrated into the project for use.
+Using tools from `eino-ext` avoids reinvention and ensures reliability — they’re maintained and continuously improved.
 
-## **Using Chain to Construct an Agent**
+## Build an Agent with Chain
 
-When constructing an Agent, the ToolsNode is a core component responsible for managing and executing tool invocations. ToolsNode can integrate multiple tools and provides a unified invocation interface. It supports both synchronous invocation (Invoke) and streaming invocation (Stream), allowing flexible handling of different types of tool execution requirements.
+`ToolsNode` is a core component for agents, managing tool invocation. It can host multiple tools and supports both synchronous (`Invoke`) and streaming (`Stream`) execution.
 
-To create a ToolsNode, you need to provide a configuration for a list of tools:
+To create a `ToolsNode`, provide a tool list configuration:
 
 ```go
 import (
@@ -179,12 +180,12 @@ import (
 )
 
 conf := &compose.ToolsNodeConfig{
-    Tools: []tool.BaseTool{tool1, tool2},  // Tools can be InvokableTool or StreamableTool
+    Tools: []tool.BaseTool{tool1, tool2},  // tools can be InvokableTool or StreamableTool
 }
 toolsNode, err := compose.NewToolNode(context.Background(), conf)
 ```
 
-Below is a complete example of an Agent that uses OpenAI's ChatModel in conjunction with the aforementioned Todo tools:
+Below is a complete agent example using OpenAI’s `ChatModel` and the Todo tools above:
 
 ```go
 import (
@@ -202,10 +203,10 @@ import (
 func main() {
     // Initialize tools
     todoTools := []tool.BaseTool{
-        getAddTodoTool(),                               // NewTool construction
-        updateTool,                                     // InferTool construction
-        &ListTodoTool{},                                // Implements Tool interface
-        searchTool,                                     // Officially packaged tool
+        getAddTodoTool(),                               // NewTool
+        updateTool,                                     // InferTool
+        &ListTodoTool{},                                // Implement Tool interface
+        searchTool,                                     // Official tool
     }
 
     // Create and configure ChatModel
@@ -216,7 +217,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    // Get tool information and bind to ChatModel
+    // Bind tool infos to ChatModel
     toolInfos := make([]*schema.ToolInfo, 0, len(todoTools))
     for _, tool := range todoTools {
         info, err := tool.Info(ctx)
@@ -230,6 +231,7 @@ func main() {
         log.Fatal(err)
     }
 
+
     // Create tools node
     todoToolsNode, err := compose.NewToolNode(context.Background(), &compose.ToolsNodeConfig{
         Tools: todoTools,
@@ -238,13 +240,13 @@ func main() {
         log.Fatal(err)
     }
 
-    // Build the complete processing chain
+    // Build chain
     chain := compose.NewChain[[]*schema.Message, []*schema.Message]()
     chain.
         AppendChatModel(chatModel, compose.WithNodeName("chat_model")).
         AppendToolsNode(todoToolsNode, compose.WithNodeName("tools"))
 
-    // Compile and run the chain
+    // Compile and run
     agent, err := chain.Compile(ctx)
     if err != nil {
         log.Fatal(err)
@@ -254,45 +256,46 @@ func main() {
     resp, err := agent.Invoke(ctx, []*schema.Message{
         {
            Role:    schema.User,
-           Content: "Add a TODO for learning Eino and search for the repository address of cloudwego/eino",
+           Content: "Add a TODO to learn Eino and search for the cloudwego/eino repo URL",
         },
     })
     if err != nil {
         log.Fatal(err)
     }
 
-    // Output the result
+    // Print output
     for _, msg := range resp {
         fmt.Println(msg.Content)
     }
 }
 ```
 
-This example assumes that the ChatModel will always make a tool invocation decision.
+This example assumes the `ChatModel` will decide to make tool calls when appropriate.
 
-## **Creating Agents Using Other Methods**
+## Other Ways to Build Agents
 
-In addition to the aforementioned Chain/Graph-based agents, Eino also provides encapsulation of common Agent models.
+Beyond Chain/Graph-based agents, Eino provides ready-made agent patterns.
 
-### **ReAct Agent**
+### ReAct Agent
 
-ReAct (Reasoning + Acting) Agent combines reasoning and action capabilities through a think-act-observe loop to solve complex problems. It can conduct deep reasoning while performing tasks and adjust strategies based on observations, making it particularly suitable for complex scenarios requiring multi-step reasoning.
+ReAct (Reasoning + Acting) combines deep reasoning with action through a think–act–observe loop. It’s well-suited for multi-step reasoning in complex tasks.
 
-> For more details on react agent, see: [Eino: React Agent Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
+> Learn more: [Eino: ReAct Agent Manual](/en/docs/eino/core_modules/flow_integration_components/react_agent_manual)
 
-### **Multi Agent**
+### Multi Agent
 
-A Multi Agent system consists of multiple agents working in cooperation, each with its own specific responsibilities and expertise. Through interaction and collaboration among agents, it can handle more complex tasks and achieve division of labor and cooperation. This approach is particularly suitable for scenarios that require the integration of knowledge from multiple specialized fields.
+Multi-agent systems coordinate multiple agents, each with distinct responsibilities and expertise. Through interaction and collaboration, they can tackle complex tasks requiring multiple areas of knowledge.
 
-> For more details on multi agent, see: [Eino Tutorial: Host Multi-Agent ](/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
+> Learn more: [Eino Tutorial: Host Multi-Agent](/en/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
 
-## **Conclusion**
+## Summary
 
-This document introduces the basic methods of constructing agents using the Eino framework. By using different methods such as Chain, Tool Calling, and ReAct, we can flexibly build AI Agents according to actual needs.
+This article introduced core approaches to building agents with Eino. Using chains, tool calling, or ReAct patterns, you can flexibly construct AI agents to meet practical needs.
 
-Agents are an important direction in the development of AI technology. They can not only understand user intentions but also take proactive actions to complete complex tasks by calling various tools. As the capabilities of LLMs continue to improve, agents will play an increasingly important role in the future, becoming a crucial bridge connecting AI and the real world. We hope that Eino can provide users with stronger and more user-friendly Agent construction solutions, promoting more innovation in applications based on Agents.
+Agents are a vital direction in AI — they understand user intent and take action by calling tools to accomplish complex tasks. As LLMs advance, agents will increasingly bridge AI and the real world. We hope Eino helps you build powerful, user-friendly agents and inspires new agent-driven applications.
 
-## **Related Reading**
+## Related Reading
 
 - Quick Start
-  - [Implement an easy LLM application](/docs/eino/quick_start/simple_llm_application)
+  - [Build a Minimal LLM Application — ChatModel](/en/docs/eino/quick_start/simple_llm_application)
+

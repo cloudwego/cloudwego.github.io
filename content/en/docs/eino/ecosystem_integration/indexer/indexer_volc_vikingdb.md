@@ -1,80 +1,80 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-01-20"
 lastmod: ""
 tags: []
-title: Indexer - volc VikingDB
+title: Indexer - volc vikingdb
 weight: 0
 ---
 
-## **Basic Introduction**
+## **Overview**
 
-Volcano Engine VikingDB Vector Indexer is an implementation of the Indexer interface, used to store document content into Volcano Engine's VikingDB vector database. This component implements the instructions detailed in [Eino: Indexer guide](/docs/eino/core_modules/components/indexer_guide).
+Volcengine VikingDB vector indexer is an implementation of the Indexer interface. It stores document content into Volcengine’s VikingDB vector database. This component follows the guide [Eino: Indexer Guide](/en/docs/eino/core_modules/components/indexer_guide).
 
-### **Volcano Engine VikingDB Service Introduction**
+### **VikingDB Service Overview**
 
-Volcano Engine VikingDB is a high-performance vector database service that provides vector storage, retrieval, and vectorization functionalities. This component interacts with the service via the Volcano Engine SDK and supports two vectorization methods:
+VikingDB is a high‑performance vector database service that provides vector storage, retrieval, and embedding. This component interacts with the service via the Volcengine SDK and supports two embedding approaches:
 
-- Using VikingDB's built-in vectorization method (Embedding V2)
-- Using custom vector embedding models
+- Use VikingDB’s built‑in embedding (Embedding V2)
+- Use a custom embedding model
 
 ## **Usage**
 
-### **Component Initialization**
+### **Initialization**
 
-The Volcengine VikingDB indexer is initialized via the `NewIndexer` function. The main configuration parameters are as follows:
+Initialize the VikingDB indexer via `NewIndexer` with key configuration options:
 
 ```go
 import "github.com/cloudwego/eino-ext/components/indexer/volc_vikingdb"
 
 indexer, err := volc_vikingdb.NewIndexer(ctx, &volc_vikingdb.IndexerConfig{
-    Host:              "api-vikingdb.volces.com", // Service address
-    Region:            "cn-beijing",             // Region
-    AK:                "your-ak",                // Access Key
-    SK:                "your-sk",                // Secret Key
-    Scheme:            "https",                  // Protocol
-    ConnectionTimeout: 30,                       // Connection timeout (seconds)
-    
-    Collection: "your-collection",               // Collection name
-    
+    Host:              "api-vikingdb.volces.com", // service host
+    Region:            "cn-beijing",              // region
+    AK:                "your-ak",                 // Access Key
+    SK:                "your-sk",                 // Secret Key
+    Scheme:            "https",                   // protocol
+    ConnectionTimeout: 30,                        // connection timeout (seconds)
+
+    Collection: "your-collection",                // collection name
+
     EmbeddingConfig: volc_vikingdb.EmbeddingConfig{
-        UseBuiltin: true,                        // Whether to use built-in vectorization
-        ModelName:  "text2vec-base",             // Model name
-        UseSparse:  true,                        // Whether to use sparse vectors
-        Embedding:  embedder,                    // Custom vector embedder
+        UseBuiltin: true,                          // use built-in embedding
+        ModelName:  "text2vec-base",             // model name
+        UseSparse:  true,                          // use sparse vectors
+        Embedding:  embedder,                      // custom embedder
     },
-    
-    AddBatchSize: 5,                             // Batch add size
+
+    AddBatchSize: 5,                              // batch add size
 })
 ```
 
-### **Complete Usage Example**
+### **Complete Examples**
 
-#### **Using Built-In Vectorization**
+#### **Using Built‑in Embedding**
 
 ```go
 package main
 
 import (
     "context"
-    
+
     volcvikingdb "github.com/cloudwego/eino-ext/components/indexer/volc_vikingdb"
     "github.com/cloudwego/eino/schema"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize the indexer
+
+    // init indexer
     idx, err := volcvikingdb.NewIndexer(ctx, &volcvikingdb.IndexerConfig{
         Host:     "api-vikingdb.volces.com",
         Region:   "cn-beijing",
         AK:       "your-ak",
         SK:       "your-sk",
         Scheme:   "https",
-        
+
         Collection: "test-collection",
-        
+
         EmbeddingConfig: volcvikingdb.EmbeddingConfig{
             UseBuiltin: true,
             ModelName:  "text2vec-base",
@@ -84,38 +84,33 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
-    // Prepare documents
+
+    // documents
     docs := []*schema.Document{
-        {
-            Content: "This is the content of the first document",
-        },
-        {
-            Content: "This is the content of the second document",
-        },
+        { Content: "This is the first document content" },
+        { Content: "This is the second document content" },
     }
-    
-    // Store documents
+
+    // store
     ids, err := idx.Store(ctx, docs)
     if err != nil {
         panic(err)
     }
-    
-    // Handle returned IDs
+
     for i, id := range ids {
-        println("Document", i+1, "storage ID:", id)
+        println("doc", i+1, "stored ID:", id)
     }
 }
 ```
 
-#### **Using Custom Vector Embedding**
+#### **Using Custom Embedding**
 
 ```go
 package main
 
 import (
     "context"
-    
+
     volcvikingdb "github.com/cloudwego/eino-ext/components/indexer/volc_vikingdb"
     "github.com/cloudwego/eino/components/embedding"
     "github.com/cloudwego/eino/schema"
@@ -123,23 +118,23 @@ import (
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize vector embedder (openai example)
+
+    // init embedder (openai example)
     embedder, err := &openai.NewEmbedder(ctx, &openai.EmbeddingConfig{})
     if err != nil {
         panic(err)
     }
-    
-    // Initialize the indexer
+
+    // init indexer
     idx, err := volcvikingdb.NewIndexer(ctx, &volcvikingdb.IndexerConfig{
         Host:     "api-vikingdb.volces.com",
         Region:   "cn-beijing",
         AK:       "your-ak",
         SK:       "your-sk",
         Scheme:   "https",
-        
+
         Collection: "test-collection",
-        
+
         EmbeddingConfig: volcvikingdb.EmbeddingConfig{
             UseBuiltin: false,
             Embedding:  embedder,
@@ -148,32 +143,25 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
-    // Prepare documents
+
     docs := []*schema.Document{
-        {
-            Content: "Document content one",
-        },
-        {
-            Content: "Document content two",
-        },
+        { Content: "Document content one" },
+        { Content: "Document content two" },
     }
-    
-    // Store documents
+
     ids, err := idx.Store(ctx, docs)
     if err != nil {
         panic(err)
     }
-    
-    // Handle returned IDs
+
     for i, id := range ids {
-        println("Document", i+1, "storage ID:", id)
+        println("doc", i+1, "stored ID:", id)
     }
 }
 ```
 
-## **Related Documents**
+## **References**
 
-- [Eino: Indexer guide](/docs/eino/core_modules/components/indexer_guide)
-- [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)
-- [Volcano Engine VikingDB User Guide](https://www.volcengine.com/docs/84313/1254617)
+- [Eino: Indexer Guide](/en/docs/eino/core_modules/components/indexer_guide)
+- [Eino: Retriever Guide](/en/docs/eino/core_modules/components/retriever_guide)
+- VikingDB: https://www.volcengine.com/docs/84313/1254617

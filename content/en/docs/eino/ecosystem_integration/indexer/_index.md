@@ -1,10 +1,11 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Indexer
 weight: 0
 ---
 
-To index and store text, the Indexer typically uses [Embedding](/docs/eino/ecosystem_integration/embedding) for semantic indexing, and can also perform word segmentation indexing, etc., for recall and use in the [Retriever](/docs/eino/ecosystem_integration/retriever).
+Indexers store and index text for later retrieval. Semantic indexing generally uses [Embedding](/en/docs/eino/ecosystem_integration/embedding), but keyword/token indexing is also supported. See retrievers under [Retriever](/en/docs/eino/ecosystem_integration/retriever).
+

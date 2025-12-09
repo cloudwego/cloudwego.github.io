@@ -3,21 +3,19 @@ Description: ""
 date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino: Indexer 使用说明'
+title: 'Eino: Indexer Guide'
 weight: 6
 ---
 
-## **基本介绍**
+## Introduction
 
-Indexer 组件是一个用于存储和索引文档的组件。它的主要作用是将文档及其向量表示存储到后端存储系统中，并提供高效的检索能力。这个组件在以下场景中发挥重要作用：
+The `Indexer` component stores documents (and vectors) into backend systems and provides efficient retrieval. It’s useful for building vector databases for semantic search.
 
-- 构建向量数据库，以用于语义关联搜索
+## Component Definition
 
-## **组件定义**
+### Interface
 
-### **接口定义**
-
-> 代码位置：eino/components/indexer/interface.go
+> Code: `eino/components/indexer/interface.go`
 
 ```go
 type Indexer interface {
@@ -25,42 +23,38 @@ type Indexer interface {
 }
 ```
 
-#### **Store 方法**
+#### Store
 
-- 功能：存储文档并建立索引
-- 参数：
-  - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
-  - docs：待存储的文档列表
-  - opts：存储选项，用于配置存储行为
-- 返回值：
-  - ids：存储成功的文档 ID 列表
-  - error：存储过程中的错误信息
+- Purpose: store documents and build indexes
+- Params:
+  - `ctx`: context and callback manager
+  - `docs`: documents to store
+  - `opts`: options for storage
+- Returns:
+  - `ids`: stored document IDs
+  - `error`
 
-### **公共 Option**
+### Common Options
 
-Indexer 组件使用 IndexerOption 来定义可选参数，Indexer 定义了如下的公共 option。另外，每个具体的实现可以定义自己的特定 Option，通过 WrapIndexerImplSpecificOptFn 函数包装成统一的 IndexerOption 类型。
+`IndexerOption` defines options. Implementations may add specific options via `WrapIndexerImplSpecificOptFn`.
 
 ```go
 type Options struct {
-    // SubIndexes 是要建立索引的子索引列表
-    SubIndexes []string   
-    // Embedding 是用于生成文档向量的组件
+    SubIndexes []string
     Embedding embedding.Embedder
 }
 ```
 
-可以通过以下方式设置选项：
+Set options:
 
 ```go
-// 设置子索引
 WithSubIndexes(subIndexes []string) Option
-// 设置向量生成组件
 WithEmbedding(emb embedding.Embedder) Option
 ```
 
-## **使用方式**
+## Usage
 
-### **单独使用**
+### Standalone
 
 ```go
 import (
@@ -71,24 +65,24 @@ import (
 collectionName := "eino_test"
 
 /*
- * 下面示例中提前构建了一个名为 eino_test 的数据集 (collection)，字段配置为:
- * 字段名称       字段类型         向量维度
- * ID            string
- * vector         vector       1024
+ * In the following example, a dataset (collection) named "eino_test" is pre-created with fields:
+ * Field Name       Field Type      Vector Dim
+ * ID               string
+ * vector           vector          1024
  * sparse_vector    sparse_vector
- * content        string
+ * content          string
  * extra_field_1    string
  *
- * component 使用时注意:
- * 1. ID / vector / sparse_vector / content 的字段名称与类型与上方配置一致
- * 2. vector 向量维度需要与 ModelName 对应的模型所输出的向量维度一致
- * 3. 部分模型不输出稀疏向量，此时 UseSparse 需要设置为 false，collection 可以不设置 sparse_vector 字段
+ * Component usage notes:
+ * 1. Field names and types for ID / vector / sparse_vector / content must match the above configuration
+ * 2. The vector dimension must match the output dimension of the model indicated by ModelName
+ * 3. Some models do not output sparse vectors; set UseSparse=false and the collection may omit sparse_vector
  */
 
 cfg := &volc_vikingdb.IndexerConfig{
-    // https://api-vikingdb.volces.com （华北）
-    // https://api-vikingdb.mlp.cn-shanghai.volces.com（华东）
-    // https://api-vikingdb.mlp.ap-mya.byteplus.com（海外-柔佛）
+    // https://api-vikingdb.volces.com (North China)
+    // https://api-vikingdb.mlp.cn-shanghai.volces.com (East China)
+    // https://api-vikingdb.mlp.ap-mya.byteplus.com (Overseas - Johor)
     Host:              "api-vikingdb.volces.com",
     Region:            "cn-beijing",
     AK:                ak,
@@ -106,62 +100,48 @@ cfg := &volc_vikingdb.IndexerConfig{
 
 volcIndexer, _ := volc_vikingdb.NewIndexer(ctx, cfg)
 
-doc := &schema.Document{
-    ID:      "mock_id_1",
-    Content: "A ReAct prompt consists of few-shot task-solving trajectories, with human-written text reasoning traces and actions, as well as environment observations in response to actions",
-}
+doc := &schema.Document{ ID: "mock_id_1", Content: "A ReAct prompt consists of..." }
 volc_vikingdb.SetExtraDataFields(doc, map[string]interface{}{"extra_field_1": "mock_ext_abc"})
 volc_vikingdb.SetExtraDataTTL(doc, 1000)
 
 docs := []*schema.Document{doc}
 resp, _ := volcIndexer.Store(ctx, docs)
-
 fmt.Printf("vikingDB store success, docs=%v, resp ids=%v\n", docs, resp)
 ```
 
-### **在编排中使用**
+### In Orchestration
 
 ```go
-// 在 Chain 中使用
+// Chain
 chain := compose.NewChain[[]*schema.Document, []string]()
 chain.AppendIndexer(indexer)
 
-// 在 Graph 中使用
+// Graph
 graph := compose.NewGraph[[]*schema.Document, []string]()
 graph.AddIndexerNode("indexer_node", indexer)
 ```
 
-## **Option 和 Callback 使用**
+## Options and Callbacks
 
-### **Option 使用示例**
+### Options Example
 
 ```go
-// 使用选项 (单独使用时)
 ids, err := indexer.Store(ctx, docs,
-    // 设置子索引
     indexer.WithSubIndexes([]string{"kb_1", "kb_2"}),
-    // 设置向量生成组件
     indexer.WithEmbedding(embedder),
 )
 ```
 
-### **Callback 使用示例**
+### Callback Example
 
-> 代码位置：eino-ext/components/indexer/volc_vikingdb/examples/builtin_embedding
+> Code: `eino-ext/components/indexer/volc_vikingdb/examples/builtin_embedding`
 
 ```go
 import (
-    "context"
-    "fmt"
-    "log"
-    "os"
-
     "github.com/cloudwego/eino/callbacks"
     "github.com/cloudwego/eino/components/indexer"
     "github.com/cloudwego/eino/compose"
-    "github.com/cloudwego/eino/schema"
     callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
-
     "github.com/cloudwego/eino-ext/components/indexer/volc_vikingdb"
 )
 
@@ -177,75 +157,47 @@ handler := &callbacksHelper.IndexerCallbackHandler{
     // OnError
 }
 
-// 使用 callback handler
-helper := callbacksHelper.NewHandlerHelper().
-    Indexer(handler).
-    Handler()
+helper := callbacksHelper.NewHandlerHelper().Indexer(handler).Handler()
 
 chain := compose.NewChain[[]*schema.Document, []string]()
 chain.AppendIndexer(volcIndexer)
-
-// 在运行时使用
 run, _ := chain.Compile(ctx)
-
 outIDs, _ := run.Invoke(ctx, docs, compose.WithCallbacks(helper))
-
-fmt.Printf("vikingDB store success, docs=%v, resp ids=%v\n", docs, outIDs)
 ```
 
-## **已有实现**
+## Existing Implementations
 
-1. Volc VikingDB Indexer: 基于火山引擎 VikingDB 实现的向量数据库索引器 [Indexer - VikingDB](/zh/docs/eino/ecosystem_integration/indexer/indexer_volc_vikingdb)
+1. Volc VikingDB Indexer: [Indexer — VikingDB](/en/docs/eino/ecosystem_integration/indexer/indexer_volc_vikingdb)
 
-## **自行实现参考**
+## Implementation Notes
 
-实现自定义的 Indexer 组件时，需要注意以下几点：
+1. Handle common options and implementation-specific options.
+2. Implement callbacks correctly.
 
-1. 注意对公共 option 的处理以及组件实现级的 option 处理
-2. 注意对 callback 的处理
-
-### **Option 机制**
-
-自定义 Indexer 可根据需要实现自己的 Option：
+### Options
 
 ```go
-// 定义 Option 结构体
-type MyIndexerOptions struct {
-    BatchSize int
-    MaxRetries int
-}
-
-// 定义 Option 函数
+type MyIndexerOptions struct { BatchSize int; MaxRetries int }
 func WithBatchSize(size int) indexer.Option {
-    return indexer.WrapIndexerImplSpecificOptFn(func(o *MyIndexerOptions) {
-        o.BatchSize = size
-    })
+    return indexer.WrapIndexerImplSpecificOptFn(func(o *MyIndexerOptions) { o.BatchSize = size })
 }
 ```
 
-### **Callback 处理**
-
-Indexer 实现需要在适当的时机触发回调。框架已经定义了标准的回调输入输出结构体：
+### Callback Structures
 
 ```go
-// CallbackInput 是 indexer 回调的输入
 type CallbackInput struct {
-    // Docs 是待索引的文档列表
     Docs []*schema.Document
-    // Extra 是回调的额外信息
     Extra map[string]any
 }
 
-// CallbackOutput 是 indexer 回调的输出
 type CallbackOutput struct {
-    // IDs 是索引器返回的文档 ID 列表
     IDs []string
-    // Extra 是回调的额外信息
     Extra map[string]any
 }
 ```
 
-### **完整实现示例**
+### Full Implementation Example
 
 ```go
 type MyIndexer struct {
@@ -261,22 +213,22 @@ func NewMyIndexer(config *MyIndexerConfig) (*MyIndexer, error) {
 }
 
 func (i *MyIndexer) Store(ctx context.Context, docs []*schema.Document, opts ...indexer.Option) ([]string, error) {
-    // 1. 处理选项
-    options := &indexer.Options{},
+    // 1. handle options
+    options := &indexer.Options{}
     options = indexer.GetCommonOptions(options, opts...)
     
-    // 2. 获取 callback manager
+    // 2. get callback manager
     cm := callbacks.ManagerFromContext(ctx)
     
-    // 3. 开始存储前的回调
+    // 3. before-store callback
     ctx = cm.OnStart(ctx, info, &indexer.CallbackInput{
         Docs: docs,
     })
     
-    // 4. 执行存储逻辑
+    // 4. perform storage
     ids, err := i.doStore(ctx, docs, options)
     
-    // 5. 处理错误和完成回调
+    // 5. handle error and finish callback
     if err != nil {
         ctx = cm.OnError(ctx, info, err)
         return nil, err
@@ -290,26 +242,23 @@ func (i *MyIndexer) Store(ctx context.Context, docs []*schema.Document, opts ...
 }
 
 func (i *MyIndexer) doStore(ctx context.Context, docs []*schema.Document, opts *indexer.Options) ([]string, error) {
-    // 实现文档存储逻辑 (注意处理公共option的参数)
-    // 1. 如果设置了 Embedding 组件，生成文档的向量表示
+    // implement storage logic (handle common options)
+    // 1. If Embedding is set, generate vectors for documents
     if opts.Embedding != nil {
-        // 提取文档内容
         texts := make([]string, len(docs))
         for j, doc := range docs {
             texts[j] = doc.Content
         }
-        // 生成向量
         vectors, err := opts.Embedding.EmbedStrings(ctx, texts)
         if err != nil {
             return nil, err
         }
-        // 将向量存储到文档的 MetaData 中
-        for j, doc := range docs {
-            doc.WithVector(vectors[j])
+        for j := range docs {
+            docs[j].WithVector(vectors[j])
         }
     }
     
-    // 2. 其他自定义逻辑
+    // 2. other custom logic
     return ids, nil
 }
 ```

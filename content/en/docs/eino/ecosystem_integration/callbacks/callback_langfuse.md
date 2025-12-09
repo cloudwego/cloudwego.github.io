@@ -7,9 +7,7 @@ title: Callback - Langfuse
 weight: 0
 ---
 
-Eino encapsulates langfuse's trace capabilities based on [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) capabilities (see [https://langfuse.com/docs/get-started](https://langfuse.com/docs/get-started)).
-
-An example usage is as follows:
+Eino provides Langfuse tracing wrappers based on [graph callbacks](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) (see https://langfuse.com/docs/get-started). Example:
 
 ```go
 package main
@@ -20,22 +18,23 @@ import (
 )
 
 func main() {
-    cbh, flusher := langfuse.NewLangfuseHandler(&langfuse.Config{
+    cbh, flusher := NewLangfuseHandler(&Config{
         Host: "https://cloud.langfuse.com",
         PublicKey: "pk-xxx",
         SecretKey: "sk-xxx",
     })
-    defer flusher() // Exit after all trace reporting is complete
-    
-    callbacks.AppendGlobalHandlers(cbh) // Set langfuse as a global callback
-    
+
+    callbacks.AppendGlobalHandlers(cbh) // set langfuse as global callback
+
     g := NewGraph[string,string]()
     /*
     * compose and run graph
     */
+
+    flusher() // wait until all traces are flushed before exit
 }
 ```
 
-You can view the trace in the Langfuse project:
+You can view traces in the Langfuse project:
 
-<a href="/img/eino/langfuse_callback.gif" target="_blank"><img src="/img/eino/langfuse_callback.gif" width="100%" /></a>
+<a href="/img/eino/eino_callback_langfuse_usage.gif" target="_blank"><img src="/img/eino/eino_callback_langfuse_usage.gif" width="100%" /></a>

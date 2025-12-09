@@ -1,109 +1,103 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: Tool - MCP
 weight: 0
 ---
 
-## Introduction
+## Overview
 
-Model Context Protocol(MCP) is a standardized open protocol for model access introduced by Anthropic. Eino provides adapters, which can directly access resources on existing MCP Servers.
+Model Context Protocol (MCP) standardizes model access to external resources. Eino provides wrappers so you can directly use resources exposed by an existing MCP Server.
 
-This section introduces the adapter of MCPTool, which implements the [Eino Tool](/docs/eino/core_modules/components/tools_node_guide).
+This section introduces the `MCPTool` wrapper, which implements Eino’s `InvokableTool` interface ([Eino: ToolsNode guide](/en/docs/eino/core_modules/components/tools_node_guide)).
 
-<a href="/img/eino/HotzbOFL6oZFQWxWP10caT9Wnuc.png" target="_blank"><img src="/img/eino/HotzbOFL6oZFQWxWP10caT9Wnuc.png" width="100%" /></a>
+<a href="/img/eino/eino_mcp_tool_architecture.png" target="_blank"><img src="/img/eino/eino_mcp_tool_architecture.png" width="100%" /></a>
 
-Other adapters：
+Also see: [ChatTemplate - MCP](/en/docs/eino/ecosystem_integration/chat_template/chat_template_mcp)
 
-[ChatTemplate - MCP](/docs/eino/ecosystem_integration/chat_template/chat_template_mcp)
+## Usage
 
-## HowToUse
+### QuickStart
 
-Eino MCP adapters referenced the open-source SDK [mcp-go](https://github.com/mark3labs/mcp-go), first initialize a MCP client：
+First create an MCP client. Eino leverages the open-source SDK `mark3labs/mcp-go`:
 
 ```go
 import "github.com/mark3labs/mcp-go/client"
 
-// stdio client
-cli, err := client.NewStdioMCPClient(myCommand, myEnvs, myArgs...)
-
-// sse client
-cli, err := client.NewSSEMCPClient(myBaseURL)
-// sse client  needs to manually start asynchronous communication
+// stdio
+cli, _ := client.NewStdioMCPClient(cmd, envs, args...)
+// sse
+cli, _ := client.NewSSEMCPClient(baseURL)
+// sse client needs to manually start asynchronous communication
 // while stdio does not require it.
-err = cli.Start(ctx)
+_ = cli.Start(ctx)
 ```
-mcp-go also supports other methods for creating a Client (such as InProcess). For more information, please refer to: https://mcp-go.dev/transports
 
-Considering the reusability of multiple adapters for the MCP client, the adapter assumes that the client has completed initialization with the Server's [Initialize](https://spec.modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle/), so users need to complete the client initialization themselves, for example:
+Considering client reuse, the wrapper assumes the client has finished `Initialize` with the Server; you need to perform client initialization yourself:
 
 ```go
 import "github.com/mark3labs/mcp-go/mcp"
 
-initRequest := mcp.InitializeRequest{}
-initRequest.Params.ProtocolVersion = mcp.LATEST_PROTOCOL_VERSION
-initRequest.Params.ClientInfo = mcp.Implementation{
-    Name:    "example-client",
-    Version: "1.0.0",
-}
-_, err = cli.Initialize(ctx, initRequest)
+init := mcp.InitializeRequest{}
+init.Params.ProtocolVersion = mcp.LATEST_PROTOCOL_VERSION
+init.Params.ClientInfo = mcp.Implementation{ Name: "example-client", Version: "1.0.0" }
+_, _ = cli.Initialize(ctx, init)
 ```
 
-Then use the Client to create the adapter , which implements Eino Tool:
+Then create Eino tools using the Client:
 
 ```go
 import "github.com/cloudwego/eino-ext/components/tool/mcp"
 
-mcpTools, err := mcp.GetTools(ctx, &mcp.Config{Cli: cli})
+tools, _ := mcp.GetTools(ctx, &mcp.Config{ Cli: cli })
 ```
 
-You can call this adapter directly:
+Tools can be called directly:
 
 ```
-for i, mcpTool := range mcpTools {
+for i, mcpTool := range tools {
     fmt.Println(i, ":")
     info, err := mcpTool.Info(ctx)
-    if err != nil {
-       log.Fatal(err)
-    }
+    if err != nil { log.Fatal(err) }
     fmt.Println("Name:", info.Name)
     fmt.Println("Desc:", info.Desc)
     fmt.Println()
 }
 ```
 
-It can also be used in any Eino Agent, taking the  [ReAct Agent](/docs/eino/core_modules/flow_integration_components/react_agent_manual) as an example:
+You can also use tools within any Eino Agent; for example with [ReAct Agent](/en/docs/eino/core_modules/flow_integration_components/react_agent_manual):
 
 ```
 import (
     "github.com/cloudwego/eino/flow/agent/react"
-    "github.com/cloudwego/eino-ext/components/tool/mcp"    
+    "github.com/cloudwego/eino-ext/components/tool/mcp"
 )
 
 llm, err := /*create a chat model*/
 tools, err := mcp.GetTools(ctx, &mcp.Config{Cli: cli})
 
 agent, err := react.NewAgent(ctx, &react.AgentConfig{
-    Model:                 llm,
-    ToolsConfig:           compose.ToolsNodeConfig{Tools: tools},
+    Model:       llm,
+    ToolsConfig: compose.ToolsNodeConfig{Tools: tools},
 })
 ```
 
-### SpecifyToolName
+### Specify Tool by Name
 
-You can use the field ToolNameList in config to specify the tools you want to call, avoiding calling unexpected tools：
+`GetTools` supports filtering by tool names to avoid unintended tools:
 
 ```go
-import "github.com/cloudwego/eino-ext/components/tool/mcp"
+tools, _ := mcp.GetTools(ctx, &mcp.Config{ Cli: cli, ToolNameList: []string{"name"} })
+```
 
-tools, err := mcp.GetTools(ctx, &mcp.Config{
-    Cli: cli,
-    ToolNameList: []string{"your tool name"},
-})
+Or use tools within any Eino Agent; for example with [ReAct Agent](/en/docs/eino/core_modules/flow_integration_components/react_agent_manual):
+
+```go
+agent, _ := react.NewAgent(ctx, &react.AgentConfig{ Model: llm, ToolsConfig: compose.ToolsNodeConfig{ Tools: tools } })
 ```
 
 ## More Information
 
-Examples can be referred to: [https://github.com/cloudwego/eino-ext/blob/main/components/tool/mcp/examples/mcp.go](https://github.com/cloudwego/eino-ext/blob/main/components/tool/mcp/examples/mcp.go)
+Practice example: https://github.com/cloudwego/eino-ext/blob/main/components/tool/mcp/examples/mcp.go

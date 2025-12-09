@@ -3,31 +3,29 @@ Description: ""
 date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino ADK: Agent Runner 与扩展'
+title: 'Eino ADK: Agent Runner & Extensions'
 weight: 3
 ---
 
 # Agent Runner
 
-## 定义
+## Definition
 
-Runner 是 Eino ADK 中负责执行 Agent 的核心引擎。它的主要作用是管理和控制 Agent 的整个生命周期，如处理多 Agent 协作，保存传递上下文等，interrupt、callback 等切面能力也均依赖 Runner 实现。任何 Agent 都应通过 Runner 来运行。
+Runner is the core engine that executes Agents in Eino ADK. It manages the full lifecycle: multi‑agent collaboration, context passing, and cross‑cutting aspects like interrupt and callback. Any Agent should run via Runner.
 
 ## Interrupt & Resume
 
-Agent Runner 提供运行时中断与恢复的功能，该功能允许一个正在运行的 Agent 主动中断其执行并保存当前状态，支持从中断点恢复执行。该功能常用于 Agent 处理流程中需要外部输入、长时间等待或可暂停等场景。
+Runner provides runtime interrupt and resume. It allows a running Agent to actively interrupt execution and persist current state, then resume from the breakpoint. Commonly used when external input is needed, long waits occur, or workflows are pausable.
 
-下面将对一次中断到恢复过程中的三个关键点进行介绍：
+Three key points in one interrupt→resume process:
 
-1. Interrupted Action：由 Agent 抛出中断事件，Agent Runner 拦截
-2. Checkpoint：Agent Runner 拦截事件后保存当前运行状态
-3. Resume：运行条件重新 ready 后，由 Agent Runner 从断点恢复运行
+1. Interrupted Action: emitted by Agent, intercepted by Runner
+2. Checkpoint: after intercepting, Runner persists current state
+3. Resume: when conditions are ready, Runner resumes from the breakpoint
 
 ### Interrupted Action
 
-在 Agent 的执行过程中，可以通过产生包含 Interrupted Action 的 AgentEvent 来主动中断 Runner 的运行。
-
-当 Event 中的 Interrupted 不为空时，Agent Runner 便会认为发生中断：
+During execution, an Agent can actively interrupt Runner by emitting an AgentEvent containing Interrupted Action. Runner treats an event as interrupted when `Interrupted` is non‑nil:
 
 ```go
 // github.com/cloudwego/eino/adk/interface.go
@@ -43,13 +41,13 @@ type InterruptInfo struct {
 }
 ```
 
-当中断发生时，可以通过 InterruptInfo 结构体附带自定义的中断信息。此信息：
+When interruption occurs, use `InterruptInfo` to attach custom data. This data:
 
-1. 会被传递给调用者，可以通过该信息向调用者说明中断原因等
-2. 如果后续需要恢复 Agent 运行，InterruptInfo 会在恢复时重新传递给中断的 Agent，Agent 可以依据该信息恢复运行
+1. Is returned to the caller to explain the interruption reason
+2. Will be passed back to the interrupted Agent on resume, so the Agent can recover based on it
 
 ```go
-// 例如 ChatModelAgent 中断时，会发送如下的 AgentEvent：
+// e.g., ChatModelAgent emits the following AgentEvent on interrupt:
 h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
     Interrupted: &InterruptInfo{
        Data: &ChatModelAgentInterruptInfo{Data: data, Info: info},
@@ -57,11 +55,11 @@ h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
 }})
 ```
 
-### 状态持久化 (Checkpoint)
+### State Persistence (Checkpoint)
 
-当 Runner 捕获到这个带有 Interrupted Action 的 Event 时，会立即终止当前的执行流程。 如果：
+Runner terminates the current run after capturing an event with Interrupted Action. If:
 
-1. Runner 中设置了 CheckPointStore
+1. CheckPointStore is set in Runner
 
 ```go
 // github.com/cloudwego/eino/adk/runner.go
@@ -77,28 +75,25 @@ type CheckPointStore interface {
 }
 ```
 
-1. 调用 Runner 时通过 AgentRunOption WithCheckPointID 传入 CheckPointID
+2. WithCheckPointID is passed when calling Runner
 
 ```go
 // github.com/cloudwego/eino/adk/interrupt.go
 func WithCheckPointID(id string) _AgentRunOption_
 ```
 
-Runner 在终止运行后会将当前运行状态（原始输入、对话历史等）以及 Agent 抛出的 InterruptInfo 以 CheckPointID 为 key 持久化到 CheckPointStore 中。
+Runner persists current state (original input, history, etc.) and the Agent’s InterruptInfo into CheckPointStore under CheckPointID.
 
-> 💡
-> 为了保存 interface 中数据的原本类型，Eino ADK 使用 gob（[https://pkg.go.dev/encoding/gob](https://pkg.go.dev/encoding/gob)）序列化运行状态。因此在使用自定义类型时需要提前使用 gob.Register 或 gob.RegisterName 注册类型（更推荐后者，前者使用路径加类型名作为默认名字，因此类型的位置和名字均不能发生变更）。Eino 会自动注册框架内置的类型。
+> To preserve interface concrete types, Eino ADK uses gob (https://pkg.go.dev/encoding/gob) to serialize runtime state. For custom types, register via gob.Register or gob.RegisterName (prefer the latter; the former uses path+type name as default identifiers, so both location and name must remain unchanged). Eino auto‑registers framework built‑in types.
 
 ### Resume
-
-运行中断，调用 Runner 的 Resume 接口传入中断时的 CheckPointID 可以恢复运行：
 
 ```go
 // github.com/cloudwego/eino/adk/runner.go
 func (r *Runner) Resume(ctx context.Context, checkPointID string, opts ...AgentRunOption) (*AsyncIterator[*AgentEvent], error)
 ```
 
-恢复 Agent 运行需要发生中断的 Agent 实现了 ResumableAgent 接口， Runner 从 CheckPointerStore 读取运行状态并恢复运行，其中 InterruptInfo 和上次运行配置的 EnableStreaming 会作为输入提供给 Agent：
+Resume requires the interrupted Agent to implement `ResumableAgent`. Runner reads state from CheckPointStore and resumes; `InterruptInfo` and last run’s `EnableStreaming` are provided as inputs:
 
 ```go
 // github.com/cloudwego/eino/adk/interface.go
@@ -115,4 +110,4 @@ type ResumeInfo struct {
 }
 ```
 
-Resume 如果向 Agent 传入新信息，可以定义 AgentRunOption，在调用 Runner.Resume 时传入。
+If Resume needs to pass new inputs to the Agent, define AgentRunOption and supply it when calling Runner.Resume.
