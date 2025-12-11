@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Quickstart'

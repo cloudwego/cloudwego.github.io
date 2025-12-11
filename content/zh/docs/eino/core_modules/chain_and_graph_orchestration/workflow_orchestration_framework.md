@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: Workflow 编排框架'
@@ -157,66 +157,66 @@ START（输入 struct）-> [并行 lambda1, lambda2] -> END（输出 map）。
 上图中，workflow 整体的输入是 message 结构体，c1, c2 两个 lambda 的输入都是 counter 结构体，输出都是 int，workflow 整体输出是 map[string]any. 代码如下：
 
 ```go
-_// demonstrates the field mapping ability of eino workflow._
+// demonstrates the field mapping ability of eino workflow.
 func main() {
     type counter struct {
-       FullStr string _// exported because we will do field mapping for this field_
-_       _SubStr  string _// exported because we will do field mapping for this field_
-_    _}
+       FullStr string // exported because we will do field mapping for this field
+       SubStr  string // exported because we will do field mapping for this field
+    }
 
-    _// wordCounter is a lambda function that count occurrences of SubStr within FullStr_
-_    _wordCounter := func(ctx context.Context, c counter) (int, error) {
+    // wordCounter is a lambda function that count occurrences of SubStr within FullStr
+    wordCounter := func(ctx context.Context, c counter) (int, error) {
        return strings.Count(c.FullStr, c.SubStr), nil
     }
 
     type message struct {
-       *schema.Message        _// exported because we will do field mapping for this field_
-_       _SubStr          string _// exported because we will do field mapping for this field_
-_    _}
+       *schema.Message        // exported because we will do field mapping for this field
+       SubStr          string // exported because we will do field mapping for this field
+    }
 
-    _// create a workflow just like a Graph_
-_    _wf := compose.NewWorkflow[message, map[string]any]()
+    // create a workflow just like a Graph
+    wf := compose.NewWorkflow[message, map[string]any]()
 
-    _// add lambda c1 just like in Graph_
-_    _wf.AddLambdaNode("c1", compose.InvokableLambda(wordCounter)).
-       AddInput(compose._START_, _// add an input from START, specifying 2 field mappings_
-_          // map START's SubStr field to lambda c1's SubStr field_
-_          _compose.MapFields("SubStr", "SubStr"),
-          _// map START's Message's Content field to lambda c1's FullStr field_
-_          _compose.MapFieldPaths([]string{"Message", "Content"}, []string{"FullStr"}))
+    // add lambda c1 just like in Graph
+    wf.AddLambdaNode("c1", compose.InvokableLambda(wordCounter)).
+       AddInput(compose.START, // add an input from START, specifying 2 field mappings
+          // map START's SubStr field to lambda c1's SubStr field
+          compose.MapFields("SubStr", "SubStr"),
+          // map START's Message's Content field to lambda c1's FullStr field
+          compose.MapFieldPaths([]string{"Message", "Content"}, []string{"FullStr"}))
 
-    _// add lambda c2 just like in Graph_
-_    _wf.AddLambdaNode("c2", compose.InvokableLambda(wordCounter)).
-       AddInput(compose._START_, _// add an input from START, specifying 2 field mappings_
-_          // map START's SubStr field to lambda c1's SubStr field_
-_          _compose.MapFields("SubStr", "SubStr"),
-          _// map START's Message's ReasoningContent field to lambda c1's FullStr field_
-_          _compose.MapFieldPaths([]string{"Message", "ReasoningContent"}, []string{"FullStr"}))
+    // add lambda c2 just like in Graph
+    wf.AddLambdaNode("c2", compose.InvokableLambda(wordCounter)).
+       AddInput(compose.START, // add an input from START, specifying 2 field mappings
+          // map START's SubStr field to lambda c1's SubStr field
+          compose.MapFields("SubStr", "SubStr"),
+          // map START's Message's ReasoningContent field to lambda c1's FullStr field
+          compose.MapFieldPaths([]string{"Message", "ReasoningContent"}, []string{"FullStr"}))
 
-    wf.End(). _// Obtain the compose.END for method chaining_
-_       // add an input from c1,_
-_       // mapping full output of c1 to the map key 'content_count'_
-_       _AddInput("c1", compose.ToField("content_count")).
-       _// also add an input from c2,_
-_       // mapping full output of c2 to the map key 'reasoning_content_count'_
-_       _AddInput("c2", compose.ToField("reasoning_content_count"))
+    wf.End(). // Obtain the compose.END for method chaining
+       // add an input from c1,
+       // mapping full output of c1 to the map key 'content_count'
+       AddInput("c1", compose.ToField("content_count")).
+       // also add an input from c2,
+       // mapping full output of c2 to the map key 'reasoning_content_count'
+       AddInput("c2", compose.ToField("reasoning_content_count"))
 
-    _// compile the workflow just like compiling a Graph_
-_    _run, err := wf.Compile(context.Background())
+    // compile the workflow just like compiling a Graph
+    run, err := wf.Compile(context.Background())
     if err != nil {
        logs.Errorf("workflow compile error: %v", err)
        return
     }
 
-    _// invoke the workflow just like invoking a Graph_
-_    _result, err := run.Invoke(context.Background(), message{
+    // invoke the workflow just like invoking a Graph
+    result, err := run.Invoke(context.Background(), message{
        Message: &schema.Message{
-          Role:             schema._Assistant_,
+          Role:             schema.Assistant,
           Content:          "Hello world!",
           ReasoningContent: "I need to say something meaningful",
        },
-       SubStr: "o", _// would like to count the occurrences of 'o'_
-_    _})
+       SubStr: "o", // would like to count the occurrences of 'o'
+    })
     if err != nil {
        logs.Errorf("workflow run err: %v", err)
        return

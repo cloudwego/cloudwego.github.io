@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: ChatModel 使用说明'
@@ -263,9 +263,31 @@ handler := &callbacksHelper.ModelCallbackHandler{
        return ctx
     },
     OnEndWithStreamOutput: func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[*model.CallbackOutput]) context.Context {
-       fmt.Println("开始接收流式输出")
-       defer output.Close()
-       return ctx
+        fmt.Println("开始接收流式输出")
+        defer output.Close()
+    
+        for {
+            chunk, err := output.Recv()
+            if errors.Is(err, io.EOF) {
+                break
+            }
+            if err != nil {
+                fmt.Printf("流读取错误: %v\n", err)
+                return
+            }
+            if chunk == nil || chunk.Message == nil {
+                continue
+            }
+    
+            // 仅在模型输出包含 ToolCall 时打印
+            if len(chunk.Message.ToolCalls) > 0 {
+                for _, tc := range chunk.Message.ToolCalls {
+                    fmt.Printf("检测到 ToolCall，arguments: %s\n", tc.Function.Arguments)
+                }
+            }
+        }
+    
+        return ctx
     },
 }
 

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: ReAct Agent 使用手册'
@@ -198,7 +198,7 @@ MessageModifier 会在每次把所有历史消息传递给 ChatModel 之前执�
 type MessageModifier func(ctx context.Context, input []*schema.Message) []*schema.Message
 ```
 
-在 Agent 中配置 MessageModifier 可以修改传入模型的 messages：
+在 Agent 中配置 MessageModifier 可以修改传入模型的 messages，常用于添加前置的 system message：
 
 ```go
 import (
@@ -228,6 +228,23 @@ func main() {
     //}
 }
 ```
+
+### MessageRewriter
+
+MessageRewriter 在每次 ChatModel 之前执行，会修改并更新保存全局状态中的历史消息：
+
+```go
+// MessageRewriter modifies message in the state, before the ChatModel is called.
+// It takes the messages stored accumulated in state, modify them, and put the modified version back into state.
+// Useful for compressing message history to fit the model context window,
+// or if you want to make changes to messages that take effect across multiple model calls.
+// NOTE: if both MessageModifier and MessageRewriter are set, MessageRewriter will be called before MessageModifier.
+MessageRewriter MessageModifier
+```
+
+常用于上下文压缩这种在多轮 ReAct 循环中需要一直生效的消息变更。
+
+对比 MessageModifier（只变更不持久，因此适合 system prompt），MessageRewriter 的变更在后续的 ReAct 循环也可见。
 
 ### MaxStep
 

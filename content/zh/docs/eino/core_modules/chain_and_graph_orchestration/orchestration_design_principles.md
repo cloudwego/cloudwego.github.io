@@ -1,15 +1,15 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: 编排的设计理念'
 weight: 2
 ---
 
-大模型应用编排方案中，最火的就是 langchain 以及 langgraph，其官方提供了 python 和 ts 的 sdk，这两门语言以其灵活性著称，灵活性给 sdk 的开发带来了极大的便利，但同时，也给 sdk 的使用者带来了极大的困扰和心智负担。
+大模型应用编排框架的主流语言是 python，这门语言以其灵活性著称，灵活性给 sdk 的开发带来便利，但同时也给 sdk 的使用者带来了心智负担。
 
-golang 作为一门 极其简单 的编程语言，确定的 `静态类型` 是让其变得简单的重要原因之一，而 eino，则保持了这一重要特性: `确定的类型` + `Compile 时类型检查`。
+基于 golang 的 eino 则是 `静态类型` ，在 Compile 时做类型检查，避免了 python 等动态语言的运行时类型问题。
 
 ## 以上下游 `类型对齐` 为基本准则
 
@@ -364,7 +364,7 @@ graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Co
 func RegisterValuesMergeFunc[T any](fn func([]T) (T, error))
 ```
 
-Workflow 可以做到多个上游的输出字段映射到下游节点的不同字段。Eino 内部会将上游输出的 Struct 转换为 Map，因此 Merge 依然符合上面的规则。
+Workflow 可以做到多个上游的多个输出字段映射到下游节点的不同字段。这并不属于合并场景，而是点对点的字段映射。事实上，eino workflow 目前不支持“多个上游字段同时映射到相同的下游字段”。
 
 ### 流式处理
 

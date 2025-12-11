@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-01"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: FAQ
@@ -9,7 +9,7 @@ weight: 6
 
 # Q: cannot use openapi3.TypeObject (untyped string constant "object") as *openapi3.Types value in struct literal，cannot use types (variable of type string) as *openapi3.Types value in struct literal
 
-检查 github.com/getkin/kin-openapi 依赖版本不能超过 v0.118.0
+检查 github.com/getkin/kin-openapi 依赖版本不能超过 v0.118.0。eino V0.6.0 之后的版本不再依赖 kin-openapi 库。
 
 # Q: Agent 流式调用时不会进入 ToolsNode 节点。或流式效果丢失，表现为非流式。
 
@@ -20,27 +20,27 @@ weight: 6
 ReAct Agent 的 Config 中有一个 StreamToolCallChecker 字段，如未填写，Agent 会使用“非空包”是否包含工具调用判断：
 
 ```go
-**func **firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
-    **defer **sr.Close()
+func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
 
-    **for **{
+    for {
        msg, err := sr.Recv()
-       **if **err == io.EOF {
-          **return **false, nil
+       if err == io.EOF {
+          return false, nil
        }
-       **if **err != nil {
-          **return **false, err
-       }
-
-       **if **len(msg.ToolCalls) > 0 {
-          **return **true, nil
+       if err != nil {
+          return false, err
        }
 
-       **if **len(msg.Content) == 0 { // skip empty chunks at the front
-          **continue**
-**       **}
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
 
-       **return **false, nil
+       if len(msg.Content) == 0 { // skip empty chunks at the front
+          continue
+       }
+
+       return false, nil
     }
 }
 ```
@@ -49,25 +49,25 @@ ReAct Agent 的 Config 中有一个 StreamToolCallChecker 字段，如未填写�
 
 默认实现不适用的情况：在输出 Tool Call 前，有非空的 content chunk。此时，需要自定义 tool Call checker 如下：
 
-```
-_toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {_
-_    defer sr.Close()_
-_    for {_
-_       msg, err := sr.Recv()_
-_       if err != nil {_
-_          if errors.Is(err, io.EOF) {_
-_             // finish_
-_             break_
-_          }_
+```go
+toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+    for {
+       msg, err := sr.Recv()
+       if err != nil {
+          if errors.Is(err, io.EOF) {
+             // finish
+             break
+          }
 
-_          return false, err_
-_       }_
+          return false, err
+       }
 
-_       if len(msg.ToolCalls) > 0 {_
-_          return true, nil_
-_       }_
-_    }_
-_    return false, nil_
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
+    }
+    return false, nil
 }
 ```
 
@@ -93,10 +93,6 @@ Eino 目前不支持批处理，可选方法有两种
 1. 每次请求按需动态构建 graph，额外成本不高。 这种方法需要注意 Chain Parallel 要求其中并行节点数量大于一，
 2. 自定义批处理节点，节点内自行批处理任务
 
-# Q: fornax sdk 中发生 panic / panic 栈中存在 fornax sdk
-
-先把 Fornax sdk 和 eino 版本升级到最新试下
-
 # Q: eino 支持把模型结构化输出吗
 
 分两步，第一步要求模型输出结构化数据，有三个方法：
@@ -109,19 +105,30 @@ Eino 目前不支持批处理，可选方法有两种
 
 # Q：图片识别场景中报错：One or more parameters specified in the request are not valid
 
-检查模型是否支持图片输入（doubao 系列只有带 vision 的模型才支持）
+检查模型是否支持图片输入
 
 # Q: 如何获取模型(chat model)输出的 Reasoning Content/推理/深度思考 内容：
 
-如果模型封装支持输出 Reasoning Content/推理/深度思考 内容，这些内容会储存到模型输出的 Message 的 Extra 字段，在封装目录下会提供类似 GetReasoningContent/GetThinking 函数，用这些方法可以从 message 中获取到。
+如果模型封装支持输出 Reasoning Content/推理/深度思考 内容，这些内容会储存到模型输出的 Message 的 ReasoningContent 字段。
 
 # Q：报错中包含"context deadline exceeded" "timeout" "context canceled"
 
-超时或者 ctx 被框架服务框架或人为取消，调整超时或者排查代码即可。  如果觉得模型等组件返回时间过长不符合预期，可以直接去找服务提供方，eino 只做透传，不需要提 eino oncall
+分情况讨论：
+
+1. context.canceled: 在执行 graph 或者 agent 时，用户侧传入了一个可以 cancel 的 context，并发起了取消。排查应用层代码的 context cancel 操作。此报错与 eino 框架无关。
+2. Context deadline exceeded: 可能是两种情况：
+   1. 在执行 graph 或者 agent 时，用户侧传入了一个带 timeout 的 context，触发了超时。
+   2. 给 ChatModel 或者其他外部资源配置了 timeout 或带 timeout 的 httpclient，触发了超时。
+
+查看抛出的 error 中的 `node path: [node name x]`，如果 node name 不是 ChatModel 等带外部调用的节点，大概率是 2-a 这种情况，反之大概率是 2-b 这种情况。
+
+如果怀疑是 2-a 这种情况，自行排查下上游链路那个环节给 context 设置了 timeout，常见的可能性如 faas 平台等。
+
+如果怀疑是 2-b 这种情况，看下节点是否自行配置了超时，比如 Ark ChatModel 配置了 Timeout，或者 OpenAI ChatModel 配置了 HttpClient（内部配置了 Timeout）。如果都没有配置，但依然超时了，可能是模型侧 SDK 的默认超时。已知 Ark SDK 默认超时 10 分钟，Deepseek SDK 默认超时 5 分钟。
 
 # Q：想要在子图中获取父图的 State 怎么做
 
-如果父图和子图存在 state ，子图的 state 会覆盖父图的 state 。因此，需要自定义 context key ，在调用子图前，调用 compose.ProcessState() 方法先获取父图的 state ，将父图 state 传入到自定义的 context key 中。
+如果子图和父图的 State 类型不同，则可以通过 `ProcessState[父图 state type]()` 来处理父图的 State。如果子图和父图的 State 类型相同，则想办法让 State 类型变成不同的，比如用类型别名：`type NewParentStateType StateType`。
 
 # Q:  eino-ext 支持的 Model 模型的如何适配多模特的输入输出 ？
 
@@ -139,6 +146,6 @@ eino-ext 部分 module 报错 undefined: schema.NewParamsOneOfByOpenAPIV3 等问
 
 如果 schema 改造比较复杂，可以使用 [JSONSchema 转换方法](https://bytedance.larkoffice.com/wiki/ZMaawoQC4iIjNykzahwc6YOknXf)文档中的工具方法辅助转换。
 
-# Q: context canceled / context deadline exceeded
+Q:  Eino-ext 提供的 ChatModel 有哪些模型是支持 Response API 形式调用嘛？
 
-调用 eino 时传入的 ctx 被取消/超时了，与框架无关。
+- Eino-ext 默认生成的 Chatmodel 不支持 Response API 形式调用，只支持 Chat Completion 接口，特别的 ARK Chat Model 下 隐式支持了 Response API 的调用，用户需要配置 Cache.APIType = _ResponsesAPI;_

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: 'Eino: Callback 用户手册'
@@ -21,7 +21,7 @@ Callbacks 支持“**横切面功能注入**”和“**中间状态透出**”�
 
 ### 触发实体
 
-Component（包括官方定义的组件类型和 Lambda），Graph Node（以及 Chain Node），Graph 自身（以及 Chain）。这三类实体，都有横切面功能注入、中间状态透出的需求，因此都会触发 callback。具体见下面的“[触发方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)”一节。
+Component（包括官方定义的组件类型和 Lambda），Graph Node（以及 Chain/Workflow Node），Graph 自身（以及 Chain/Workflow）。这三类实体，都有横切面功能注入、中间状态透出的需求，因此都会触发 callback。具体见下面的“[触发方式](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)”一节。
 
 ### 触发时机
 
@@ -345,12 +345,16 @@ func ConvCallbackOutput(src callbacks.CallbackOutput) *CallbackOutput {
 如果用户的  Handler 只关注特定类型的组件，比如 ReactAgent 的场景，只关注 ChatModel 和 Tool，建议使用 HandlerHelper 来快速创建具体类型的 Callback Handler：
 
 ```go
-handler := NewHandlerHelper().ChatModel(modelHandler).Tool(toolHandler).Handler()
+import ucb "github.com/cloudwego/eino/utils/callbacks"
+
+handler := ucb.NewHandlerHelper().ChatModel(modelHandler).Tool(toolHandler).Handler()
 ```
 
 其中 modelHandler 是 Chat Model 组件对 callback handler 的进一步封装：
 
 ```go
+// from package utils/callbacks
+
 // ModelCallbackHandler is the handler for the model callback.
 type ModelCallbackHandler struct {
     OnStart               func(ctx context.Context, runInfo *callbacks.RunInfo, input *model.CallbackInput) context.Context
@@ -371,7 +375,9 @@ HandlerHelper 支持全部的官方组件，目前的列表是：ChatModel, Chat
 针对 Lambda，Graph，Chain 这些输入输出类型不确定的“组件”，也可以使用 HandlerHelper，但是只能做到上面的第 1 点，即按照组件类型做自动的过滤，2、3 点依然需要用户自己实现：
 
 ```go
-handler := NewHandlerHelper().Lambda(callbacks.Handler).Graph(callbacks.Handler)...Handler()
+import ucb "github.com/cloudwego/eino/utils/callbacks"
+
+handler := ucb.NewHandlerHelper().Lambda(callbacks.Handler).Graph(callbacks.Handler)...Handler()
 ```
 
 这时，NewHandlerHelper().Lambda() 需要传入 callbacks.Handler 可以用下面的 HandlerBuilder 来实现。
@@ -381,7 +387,9 @@ handler := NewHandlerHelper().Lambda(callbacks.Handler).Graph(callbacks.Handler)
 如果用户的 Handler 需要关注多个组件类型，但却只需要关注部分的触发时机，可以使用 HandlerBuilder：
 
 ```go
-handler := NewHandlerBuilder().OnStartFn(fn)...Build()
+import "github.com/cloudwego/eino/callbacks"
+
+handler := callbacks.NewHandlerBuilder().OnStartFn(fn)...Build()
 ```
 
 ## 最佳实践
@@ -389,28 +397,312 @@ handler := NewHandlerBuilder().OnStartFn(fn)...Build()
 ### 在 Graph 中使用
 
 - 积极使用 Global Handlers，注册始终生效的 Handlers。
+
+```go
+package main
+
+import (
+        "context"
+        "log"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/compose"
+)
+
+func main() {
+        // Build a simple global handler
+        handler := callbacks.NewHandlerBuilder().
+                OnStartFn(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
+                        log.Printf("[Global Start] component=%s name=%s input=%T", info.Component, info.Name, input)
+                        return ctx
+                }).
+                OnEndFn(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
+                        log.Printf("[Global End] component=%s name=%s output=%T", info.Component, info.Name, output)
+                        return ctx
+                }).
+                OnErrorFn(func(ctx context.Context, info *callbacks.RunInfo, err error) context.Context {
+                        log.Printf("[Global Error] component=%s name=%s err=%v", info.Component, info.Name, err)
+                        return ctx
+                }).
+                Build()
+
+        // Register as global callbacks (applies to all subsequent runs)
+        callbacks.AppendGlobalHandlers(handler)
+
+        // Example graph usage; the global handler will be invoked automatically
+        g := compose.NewGraph[string, string]()
+        // ... add nodes/edges ...
+        r, _ := g.Compile(context.Background())
+        _, _ = r.Invoke(context.Background(), "hello") // triggers global callbacks
+}
+```
+
 - 通过 WithHandlers option 在运行时注入 Handler，通过 DesignateNode 或 DesignateNodeByPath 指定生效的 Node / 嵌套的内部 Graph / 内部 Graph 的 Node。
+
+```go
+package main
+
+import (
+        "context"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/compose"
+        "github.com/cloudwego/eino/components/prompt"
+        "github.com/cloudwego/eino/schema"
+)
+
+func main() {
+        ctx := context.Background()
+
+        top := compose.NewGraph[map[string]any, []*schema.Message]()
+        sub := compose.NewGraph[map[string]any, []*schema.Message]()
+        _ = sub.AddChatTemplateNode("tmpl_nested", prompt.FromMessages(schema.FString, schema.UserMessage("Hello, {name}!")))
+        _ = sub.AddEdge(compose.START, "tmpl_nested")
+        _ = sub.AddEdge("tmpl_nested", compose.END)
+        _ = top.AddGraphNode("sub_graph", sub)
+        _ = top.AddEdge(compose.START, "sub_graph")
+        _ = top.AddEdge("sub_graph", compose.END)
+        r, _ := top.Compile(ctx)
+
+        optGlobal := compose.WithCallbacks(
+                callbacks.NewHandlerBuilder().OnEndFn(func(ctx context.Context, _ *callbacks.RunInfo, _ callbacks.CallbackOutput) context.Context { return ctx }).Build(),
+        )
+        optNode := compose.WithCallbacks(
+                callbacks.NewHandlerBuilder().OnStartFn(func(ctx context.Context, _ *callbacks.RunInfo, _ callbacks.CallbackInput) context.Context { return ctx }).Build(),
+        ).DesignateNode("sub_graph")
+        optNested := compose.WithChatTemplateOption(
+                prompt.WrapImplSpecificOptFn(func(_ *struct{}) {}),
+        ).DesignateNodeWithPath(
+                compose.NewNodePath("sub_graph", "tmpl_nested"),
+        )
+
+        _, _ = r.Invoke(ctx, map[string]any{"name": "Alice"}, optGlobal, optNode, optNested)
+}
+```
 
 ### 在 Graph 外使用
 
-使用 InitCallbacks 注入 RunInfo 和 Handlers。RunInfo 的各字段需自行设置。Global Handlers 会自动注入。
+这个场景是：不使用 Graph/Chain/Workflow 等编排能力，单独用代码去调用 ChatModel/Tool/Lambda 等各种组件，且希望这些组件能成功触发 Callback Handlers。
 
-```
-ctx = callbacks.InitCallbacks(ctx, runInfo, handlers...)
-componentA.Invoke(ctx, input)
+此场景需要用户解决的问题是：手动设置正确的 RunInfo 和 Handlers，因为没有 Graph 来帮助用户自动设置 RunInfo 和 Handlers 了。
+
+完整示例：
+
+```go
+package main
+
+import (
+        "context"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/compose"
+)
+
+func innerLambda(ctx context.Context, input string) (string, error) {
+        // 作为 ComponentB 的实现方：进入组件时补默认 RunInfo（Name 无法给默认值）
+        ctx = callbacks.EnsureRunInfo(ctx, "Lambda", compose.ComponentOfLambda)
+        ctx = callbacks.OnStart(ctx, input)
+        out := "inner:" + input
+        ctx = callbacks.OnEnd(ctx, out)
+        return out, nil
+}
+
+func outerLambda(ctx context.Context, input string) (string, error) {
+        // 作为 ComponentA 的实现方：进入组件时补默认 RunInfo
+        ctx = callbacks.EnsureRunInfo(ctx, "Lambda", compose.ComponentOfLambda)
+        ctx = callbacks.OnStart(ctx, input)
+
+        // 推荐：调用前替换 RunInfo，确保内层组件拿到正确的 name/type/component
+        ctxInner := callbacks.ReuseHandlers(ctx,
+                &callbacks.RunInfo{Name: "ComponentB", Type: "Lambda", Component: compose.ComponentOfLambda},
+        )
+        out1, _ := innerLambda(ctxInner, input) // 内层 RunInfo.Name = "ComponentB"
+
+        // 未替换：框架清空 RunInfo，只能靠 EnsureRunInfo 补默认值（Name 为空）
+        out2, _ := innerLambda(ctx, input) // 内层 RunInfo.Name == ""
+
+        final := out1 + "|" + out2
+        ctx = callbacks.OnEnd(ctx, final)
+        return final, nil
+}
+
+func main() {
+        // 在 graph 外单独使用组件：初始化 RunInfo 与 Handlers
+        h := callbacks.NewHandlerBuilder().Build()
+        ctx := callbacks.InitCallbacks(context.Background(),
+                &callbacks.RunInfo{Name: "ComponentA", Type: "Lambda", Component: compose.ComponentOfLambda},
+                h,
+        )
+
+        _, _ = outerLambda(ctx, "ping")
+}
 ```
 
-如果一个 componentA 内部调用了其他的 componentB (比如 ToolsNode 内部调用 Tool），需要在 componentB 执行前替换 RunInfo：
+对上面的样例代码做下说明：
 
+- 初始化：在 graph/chain 外使用组件时，用 InitCallbacks 设置首个 RunInfo 与 Handlers ，让后续组件执行能拿到完整回调上下文。
+- 内部调用：在组件 A 内部调用组件 B 前，用 ReuseHandlers 替换 RunInfo （保留原有 handlers），确保 B 的回调拿到正确的 Type/Component/Name 。
+- 不替换的后果：Eino 在一组 Callbacks 完整触发后，会清空当前 ctx 中的 RunInfo，此时因为 RunInfo 为空，Eino 就不再会触发 Callbacks；组件 B 的开发者只能在自身实现里用 EnsureRunInfo 补 Type/Component 的默认值，来确保 RunInfo 非空且大致正确，从而能成功触发 Callbacks。但无法给出合理 Name ，因此 RunInfo.Name 会是空字符串。
+
+### 组件嵌套使用
+
+场景：在一个组件，比如 Lambda 内，手动调用另外一个组件，比如 ChatModel。
+
+这时，如果外层的组件的 ctx 中有 callback handler，因为这个 ctx 也会传入内部的组件，所以内部的组件也会收到同样的 callback handler。
+
+按“是否希望内部组件触发 callback”区分：
+
+1. 希望触发：基本等同于上面一小节的情况，建议通过 `ReuseHandlers` 来手动为内部组件设置 `RunInfo`。
+
+```go
+package main
+
+import (
+        "context"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/components"
+        "github.com/cloudwego/eino/components/model"
+        "github.com/cloudwego/eino/compose"
+        "github.com/cloudwego/eino/schema"
+)
+
+// 外层 Lambda，在内部手动调用 ChatModel
+func OuterLambdaCallsChatModel(cm model.BaseChatModel) *compose.Lambda {
+        return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+                // 1) 复用外层 handlers，并为内部组件显式设置 RunInfo
+                innerCtx := callbacks.ReuseHandlers(ctx, &callbacks.RunInfo{
+                        Type:      "InnerCM",                          // 可自定义
+                        Component: components.ComponentOfChatModel,    // 标注组件类型
+                        Name:      "inner-chat-model",                 // 可自定义
+                })
+
+                // 2) 构造输入消息
+                msgs := []*schema.Message{{Role: schema.User, Content: input}}
+
+                // 3) 调用 ChatModel（内部会触发相应的回调）
+                out, err := cm.Generate(innerCtx, msgs)
+                if err != nil {
+                        return "", err
+                }
+                return out.Content, nil
+        })
+}
 ```
-func ComponentARun(ctx, inputA) {
-    // 复用 ctx 中已有的 Handlers（包括 Global Handlers），只替换 RunInfo
-    ctx = callbacks.ReuseHandlers(ctx, newRunInfo)
-    componentB.Invoke(ctx, inputB)
-    
-    // RunInfo 和 Handlers 都替换
-    ctx = callbacks.InitCallbacks(ctx, newRunInfo, newHandlers...)
-    componentB.Invoke(ctx, inputB)
+
+上面的代码假设了“内部的 ChatModel 的 Generate 方法内部，已经调用了 OnStart，OnEnd，OnError 这些方法”。如果没有，则需要在外部组件内部“替内部组件”调用这些方法：
+
+```go
+func OuterLambdaCallsChatModel(cm model.BaseChatModel) *compose.Lambda {
+        return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+                // 复用外层 handlers，并为内部组件显式设置 RunInfo
+                ctx = callbacks.ReuseHandlers(ctx, &callbacks.RunInfo{
+                        Type:      "InnerCM",
+                        Component: components.ComponentOfChatModel,
+                        Name:      "inner-chat-model",
+                })
+
+                // 构造输入消息
+                msgs := []*schema.Message{{Role: schema.User, Content: input}}
+
+                // 显式触发 OnStart
+                ctx = callbacks.OnStart(ctx, msgs)
+
+                // 调用 ChatModel
+                resp, err := cm.Generate(ctx, msgs)
+                if err != nil {
+                        // 显式触发 OnError
+                        ctx = callbacks.OnError(ctx, err)
+                        return "", err
+                }
+
+                // 显式触发 OnEnd
+                ctx = callbacks.OnEnd(ctx, resp)
+
+                return resp.Content, nil
+        })
+}
+```
+
+1. 不希望触发：这里假定内部组件实现了 `IsCallbacksEnabled()` 且返回 true，并且在内部调用了 `EnsureRunInfo`。这时默认内部 callbacks 会触发。如不希望触发，最简单的办法是去掉 ctx 中的 handler，比如为内部组件传一个新的 ctx:
+
+   ```go
+   package main
+
+   import (
+           "context"
+
+           "github.com/cloudwego/eino/components/model"
+           "github.com/cloudwego/eino/compose"
+           "github.com/cloudwego/eino/schema"
+   )
+
+   func OuterLambdaNoCallbacks(cm model.BaseChatModel) *compose.Lambda {
+           return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+                   // 使用一个全新的 ctx，不复用外层的 handlers
+                   innerCtx := context.Background()
+
+                   msgs := []*schema.Message{{Role: schema.User, Content: input}}
+                   out, err := cm.Generate(innerCtx, msgs)
+                   if err != nil {
+                           return "", err
+                   }
+                   return out.Content, nil
+           })
+   }
+   ```
+
+   1. 但有时用户可能希望“只不触发某个特定的 callback handlers，但是还触发其他的 callback handlers”。建议的使用姿势是在这个 callback handler 中加代码，按 RunInfo 过滤掉内部组件：
+
+```go
+package main
+
+import (
+        "context"
+        "log"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/components"
+        "github.com/cloudwego/eino/compose"
+)
+
+// 一个按 RunInfo 过滤的 handler：对内部 ChatModel（Type=InnerCM，Name=inner-chat-model）不做任何处理
+func newSelectiveHandler() callbacks.Handler {
+        return callbacks.
+                NewHandlerBuilder().
+                OnStartFn(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
+                        if info != nil && info.Component == components.ComponentOfChatModel &&
+                                info.Type == "InnerCM" && info.Name == "inner-chat-model" {
+                                // 过滤目标：内部 ChatModel，直接返回，不做处理
+                                return ctx
+                        }
+                        log.Printf("[OnStart] %s/%s (%s)", info.Type, info.Name, info.Component)
+                        return ctx
+                }).
+                OnEndFn(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
+                        if info != nil && info.Component == components.ComponentOfChatModel &&
+                                info.Type == "InnerCM" && info.Name == "inner-chat-model" {
+                                // 过滤目标：内部 ChatModel，直接返回，不做处理
+                                return ctx
+                        }
+                        log.Printf("[OnEnd] %s/%s (%s)", info.Type, info.Name, info.Component)
+                        return ctx
+                }).
+                Build()
+}
+
+// 组合示例：外层调用希望触发，特定 handler 通过 RunInfo 过滤掉内部 ChatModel
+func Example(cm model.BaseChatModel) (compose.Runnable[string, string], error) {
+        handler := newSelectiveHandler()
+
+        chain := compose.NewChain[string, string]().
+                AppendLambda(OuterLambdaCallsChatModel(cm)) // 内部会 ReuseHandlers + RunInfo
+
+        return chain.Compile(
+                context.Background(),
+                // 挂载 handler（也可结合全局 handlers）
+                compose.WithCallbacks(handler),
+        )
 }
 ```
 

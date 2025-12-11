@@ -1,13 +1,13 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino Tutorial: Host Multi-Agent'
 weight: 2
 ---
 
-Host Multi-Agent 是一个 Host 做意图识别后，跳转到某个专家 agent 做实际的生成。
+Host Multi-Agent 是一个 Host 做意图识别后，跳转到某个专家 agent 做实际的生成。只转发，不生成子任务。
 
 以一个简单的“日记助手”做例子：可以写日记、读日记、根据日记回答问题。
 

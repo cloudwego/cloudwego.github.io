@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Eino 流式编程要点
@@ -212,7 +212,7 @@ type Runnable[I, O any] interface {
   - 目前 Eino 的实现，A、B 都以 Invoke 调用，需要把 A 的输出流 Concat，并把 B 的输入做成假流式。失去了真流式的内部语义。
 - A，B 两个组件编排为一个 Chain，以 Collect 调用。其中 A 实现了 Transform 和 Collect，B 实现了 Invoke。两个选择：
   - A 以 Collect 调用，B 以 Invoke 调用：整体还是 Collect 的语义，不需要框架做任何的自动转化和装箱操作。
-  - 目前 Eino 的实现，A、B 都以 Transform 调用，由于 A 的业务接口里实现了 Transform，因此 A 的输出和 B 的输入都可能是真流式，而 B 的业务接口里只实现了 Invoke，根据上面的分析，B 的入参会需要由真流式 concat 成非流式。这时就需要用户额外提供 B 的入参的 cancat 函数，这本可以避免。
+  - 目前 Eino 的实现，A、B 都以 Transform 调用，由于 A 的业务接口里实现了 Transform，因此 A 的输出和 B 的输入都可能是真流式，而 B 的业务接口里只实现了 Invoke，根据上面的分析，B 的入参会需要由真流式 concat 成非流式。这时就需要用户额外提供 B 的入参的 concat 函数，这本可以避免。
 
 上面两个例子，都可以找到一个明确的、与 Eino 的约定不同的，但却更优的流式调用路径。但是，当泛化到任意的编排场景时，很难找到一个明确定义的、与 Eino 的约定不同的、却总是更优的普适的规则。比如，A->B->C，以 Collect 语义调用，是 A->B 的时候 Collect，还是 B->C 的时候 Collect？潜在的因素有 A、B、C 具体实现的业务接口，可能还有“尽量多的使用真流式”的判断，也许还有哪个参数实现了 Concat，哪个没有实现。如果是更复杂的 Graph，需要考虑的因素会快速增加。在这种情况下，即使框架能定义出一套明确的、更优的普适规则，也很难解释清楚，理解和使用成本会很高，很可能已经超过了这个新规则实际带来的好处。
 
