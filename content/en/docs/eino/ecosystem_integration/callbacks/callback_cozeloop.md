@@ -1,54 +1,54 @@
 ---
 Description: ""
-date: "2025-03-04"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Callback - CozeLoop
 weight: 0
 ---
 
-# CozeLoop Callback
+# **CozeLoop Callback**
 
 This is a Trace callback implementation for [CozeLoop](https://github.com/cloudwego/eino). It implements the `Handler` interface and integrates seamlessly with Eino applications to provide enhanced observability.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/internel/callbacks.Handler` interface
 - Easy integration with Eino applications
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/callbacks/cozeloop
 ```
 
-## Quick Start
+## **Quick Start**
 
 ```go
 package main
 import (
-    "context"
-    "log"
+        "context"
+        "log"
 
-    ccb "github.com/cloudwego/eino-ext/callbacks/cozeloop"
-    "github.com/cloudwego/eino/callbacks"
-    "github.com/coze-dev/cozeloop-go"
+        ccb "github.com/cloudwego/eino-ext/callbacks/cozeloop"
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/coze-dev/cozeloop-go"
 )
 
 func main() {
-    // Set environment variables
-    // COZELOOP_WORKSPACE_ID=your workspace id
-    // COZELOOP_API_TOKEN=your token
-    client, err := cozeloop.NewClient()
-    if err != nil {
-        panic(err)
-    }
-    defer client.Close(ctx)
-    // Call once during service init
-    handler := ccb.NewLoopHandler(client)
-    callbacks.AppendGlobalHandlers(handler)
+        // Set environment variables
+        // COZELOOP_WORKSPACE_ID=your workspace id
+        // COZELOOP_API_TOKEN=your token
+        client, err := cozeloop.NewClient()
+        if err != nil {
+                panic(err)
+        }
+        defer client.Close(ctx)
+        // Call once during service init
+        handler := ccb.NewLoopHandler(client)
+        callbacks.AppendGlobalHandlers(handler)
 }
 ```
 
-## More Details
+## **More Details**
 - [CozeLoop Docs](https://github.com/coze-dev/cozeloop-go)

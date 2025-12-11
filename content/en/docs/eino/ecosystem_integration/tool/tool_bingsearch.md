@@ -1,29 +1,29 @@
 ---
 Description: ""
-date: "2025-03-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Tool - Bingsearch
 weight: 0
 ---
 
-## Bing Search Tool
+## **Bing Search Tool**
 
 This is a Bing search tool for [Eino](https://github.com/cloudwego/eino) implementing the `InvokableTool` interface. It integrates seamlessly with Eino’s ChatModel interaction system and `ToolsNode`.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/tool.InvokableTool`
 - Easy integration with Eino’s tool system
 - Configurable search parameters
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/tool/bingsearch
 ```
 
-## Quick Start
+## **Quick Start**
 
 ```go
 package main
@@ -58,7 +58,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 Tool is configurable via `Config`:
 
@@ -94,8 +94,8 @@ type Config struct {
 }
 ```
 
-## Search
-### Request Schema
+## **Search**
+### **Request Schema**
 
 ```go
 type SearchRequest struct {
@@ -104,7 +104,7 @@ type SearchRequest struct {
 }
 ```
 
-### Response Schema
+### **Response Schema**
 
 ```go
 type SearchResponse struct {
@@ -118,7 +118,7 @@ type searchResult struct {
 }
 ```
 
-## More Details
+## **More Details**
 
 - [DuckDuckGo Search Tool](tool_duckduckgo_search/)
 - [Eino Documentation](https://github.com/cloudwego/eino)

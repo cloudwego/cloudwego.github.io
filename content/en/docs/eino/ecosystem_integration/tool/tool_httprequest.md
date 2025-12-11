@@ -1,33 +1,33 @@
 ---
 Description: ""
-date: "2025-03-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Tool - httprequest
 weight: 0
 ---
 
-## HTTP Request Tool
+## **HTTP Request Tool**
 
 A set of HTTP request tools for [Eino](https://github.com/cloudwego/eino) implementing the `InvokableTool` interface. These tools let you easily perform GET/POST/PUT/DELETE requests and integrate with Eino’s ChatModel interaction system and `ToolsNode` for powerful capabilities.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/tool.InvokableTool`
 - Supports GET, POST, PUT, and DELETE requests
 - Configurable headers and `http.Client`
 - Simple integration with Eino’s tool system
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/tool/httprequest
 ```
 
-## Quick Start
+## **Quick Start**
 Below are standalone examples for GET and POST tools.
 
-### GET Example
+### **GET Example**
 
 ```go
 package main
@@ -84,7 +84,7 @@ func main() {
 }
 ```
 
-### POST Example
+### **POST Example**
 
 ```go
 package main
@@ -128,7 +128,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 Shared `Config` fields (example):
 
@@ -166,7 +166,7 @@ type PostRequest struct {
 }
 ```
 
-## Agent Integration Example
+## **Agent Integration Example**
 
 Bind tool info to a `ToolCallingChatModel` and run via `ToolsNode`. Full example:
 
@@ -297,7 +297,7 @@ paths:
 }
 ```
 
-## More Information
+## **More Information**
 
 - [Eino Documentation](https://github.com/cloudwego/eino)
 - [InvokableTool Reference](https://pkg.go.dev/github.com/cloudwego/eino/components/tool)

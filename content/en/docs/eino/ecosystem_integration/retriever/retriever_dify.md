@@ -1,30 +1,30 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Retriever - dify
+title: Retriever - Dify
 weight: 0
 ---
 
-## Dify Retriever
+## **Dify Retriever**
 
 This is a Dify retriever for [Eino](https://github.com/cloudwego/eino) implementing the `Retriever` interface. It integrates with Eino’s retrieval system and fetches relevant documents from Dify datasets.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/retriever.Retriever`
 - Easy integration with Eino retrieval
 - Configurable retrieval parameters
 - Supports reranking
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/retriever/dify
 ```
 
-## Quick Start
+## **Quick Start**
 
 ```go
 package main
@@ -58,7 +58,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 Configure via `RetrieverConfig`:
 
@@ -83,7 +83,7 @@ type RetrievalModel struct {
 }
 ```
 
-## Document Metadata
+## **Document Metadata**
 
 Adds the following metadata on retrieved docs:
 
@@ -99,7 +99,7 @@ docName := dify.GetOrgDocName(doc)
 keywords := dify.GetKeywords(doc)
 ```
 
-## More Details
+## **More Details**
 
 - Dify: https://github.com/langgenius/dify
 - Eino: https://github.com/cloudwego/eino

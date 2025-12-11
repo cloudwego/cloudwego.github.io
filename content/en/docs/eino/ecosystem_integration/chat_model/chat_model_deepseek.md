@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: ChatModel - deepseek
@@ -9,7 +9,7 @@ weight: 0
 
 A DeepSeek model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities to enhance natural language processing and generation.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/model.Model`
 - Easy integration with Eino's model system
@@ -19,13 +19,13 @@ A DeepSeek model implementation for [Eino](https://github.com/cloudwego/eino) th
 - Supports custom response parsing
 - Flexible model configuration
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/deepseek@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Here's a quick example of how to use the DeepSeek model:
 
@@ -93,7 +93,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 You can configure the model using the `deepseek.ChatModelConfig` struct:
 
@@ -173,9 +173,9 @@ type ChatModelConfig struct {
 
 ```
 
-## Examples
+## **Examples**
 
-### Text Generation
+### **Text Generation**
 
 ```go
 
@@ -244,7 +244,7 @@ func main() {
 
 ```
 
-### Text Generation with Prefix
+### **Text Generation with Prefix**
 
 ```go
 
@@ -300,7 +300,7 @@ func main() {
 
 ```
 
-### Streaming Generation
+### **Streaming Generation**
 
 ```go
 
@@ -374,7 +374,7 @@ func main() {
 
 ```
 
-### Tool Calling
+### **Tool Calling**
 
 ```go
 
@@ -475,7 +475,7 @@ func main() {
 
 ```
 
-## More Information
+## **More Information**
 
 - [Eino Documentation](https://www.cloudwego.io/en/docs/eino/)
 - [DeepSeek Documentation](https://api-docs.deepseek.com/api/create-chat-completion)

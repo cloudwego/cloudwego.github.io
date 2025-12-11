@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: ChatModel - ollama
@@ -9,7 +9,7 @@ weight: 0
 
 A Ollama model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities to enhance natural language processing and generation.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/model.Model`
 - Easy integration with Eino's model system
@@ -19,13 +19,13 @@ A Ollama model implementation for [Eino](https://github.com/cloudwego/eino) that
 - Supports custom response parsing
 - Flexible model configuration
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/ollama@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Here's a quick example of how to use the Ollama model:
 
@@ -71,7 +71,7 @@ func main() {
 
 ```
 
-## Configuration
+## **Configuration**
 
 The model can be configured using the `ollama.ChatModelConfig` struct:
 
@@ -134,9 +134,9 @@ type ThinkValue struct {
 
 ```
 
-## Examples
+## **Examples**
 
-### Text Generation
+### **Text Generation**
 
 ```go
 
@@ -180,7 +180,7 @@ func main() {
 
 ```
 
-### Multimodal Support (Image Understanding)
+### **Multimodal Support (Image Understanding)**
 
 ```go
 
@@ -243,7 +243,7 @@ func of[T any](a T) *T {
 
 ```
 
-### Streaming Generation
+### **Streaming Generation**
 
 ```go
 
@@ -305,7 +305,7 @@ func main() {
 
 ```
 
-### Tool Calling
+### **Tool Calling**
 
 ```go
 
@@ -392,7 +392,7 @@ func main() {
 
 ```
 
-### Enable Thinking Mode
+### **Enable Thinking Mode**
 
 ```go
 
@@ -440,7 +440,11 @@ func main() {
 
 ```
 
-## More Information
+### [More Examples](https://github.com/cloudwego/eino-ext/tree/main/components/model/ollama/examples)
 
-- [Eino Documentation](https://www.cloudwego.io/en/docs/eino/)
-- [Ollama Documentation](https://ollama.readthedocs.io/api/#generate-a-chat-completion)
+## **Related Documentation**
+
+- `Eino: ChatModel Guide` at `/en/docs/eino/core_modules/components/chat_model_guide`
+- `ChatModel - OpenAI` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_openai`
+- `Eino: ToolsNode Guide` at `/en/docs/eino/core_modules/components/tools_node_guide`
+- [Ollama Model Library](https://ollama.ai/library)

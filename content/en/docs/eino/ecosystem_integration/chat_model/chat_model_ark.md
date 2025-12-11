@@ -1234,7 +1234,11 @@ func main() {
 
 ```
 
-## More Information
+### [More Examples](https://github.com/cloudwego/eino-ext/tree/main/components/model/ark/examples)
 
-- [Eino Documentation](https://www.cloudwego.io/en/docs/eino/)
-- [Volcengine Ark Model Documentation](https://www.volcengine.com/docs/82379/1263272)
+## **Related Documentation**
+
+- `Eino: ChatModel Guide` at `/en/docs/eino/core_modules/components/chat_model_guide`
+- `ChatModel - OpenAI` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_openai`
+- `ChatModel - Ollama` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ollama`
+- [Volcengine Official Site](https://www.volcengine.com/product/doubao)

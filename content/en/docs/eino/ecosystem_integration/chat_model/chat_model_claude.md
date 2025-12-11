@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: ChatModel - claude
@@ -9,7 +9,7 @@ weight: 0
 
 A Claude model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities to enhance natural language processing and generation.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/model.Model`
 - Easy integration with Eino's model system
@@ -19,13 +19,13 @@ A Claude model implementation for [Eino](https://github.com/cloudwego/eino) that
 - Supports custom response parsing
 - Flexible model configuration
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/claude@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Here's a quick example of how to use the Claude model:
 
@@ -107,7 +107,7 @@ func main() {
 
 ```
 
-## Configuration
+## **Configuration**
 
 You can configure the model using the `claude.ChatModelConfig` struct:
 
@@ -190,9 +190,9 @@ type Config struct {
 }
 ```
 
-## Examples
+## **Examples**
 
-### Text Generation
+### **Text Generation**
 
 ```go
 
@@ -273,7 +273,7 @@ func main() {
 
 ```
 
-### Multimodal Support (Image Understanding)
+### **Multimodal Support (Image Understanding)**
 
 ```go
 
@@ -359,7 +359,7 @@ func of[T any](v T) *T {
 
 ```
 
-### Streaming Generation
+### **Streaming Generation**
 
 ```go
 
@@ -460,7 +460,7 @@ func main() {
 
 ```
 
-### Claude Prompt Cache
+### **Claude Prompt Cache**
 
 ```go
 
@@ -696,7 +696,7 @@ func sessionCache() {
 
 ```
 
-### function_call
+### **function_call**
 
 ```go
 
@@ -823,7 +823,11 @@ func main() {
 
 ```
 
-## More Information
+### [More Examples](https://github.com/cloudwego/eino-ext/tree/main/components/model/claude/examples)
 
-- [Eino Documentation](https://www.cloudwego.io/en/docs/eino/)
-- [Claude Documentation](https://docs.claude.com/en/api/messages)
+## **Related Documentation**
+
+- `Eino: ChatModel Guide` at `/en/docs/eino/core_modules/components/chat_model_guide`
+- `Eino: ToolsNode & Tool Guide` at `/en/docs/eino/core_modules/components/tools_node_guide`
+- `ChatModel - ARK` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ark`
+- `ChatModel - Ollama` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ollama`

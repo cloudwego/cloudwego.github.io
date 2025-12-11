@@ -1,33 +1,33 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Indexer - es8
+title: Indexer - ES8
 weight: 0
 ---
 
-## ES8 Indexer
+## **ES8 Indexer**
 
 This is an Elasticsearch 8.x indexer implementation for [Eino](https://github.com/cloudwego/eino) that implements the `Indexer` interface. It integrates with Eino’s vector storage and retrieval system for semantic search.
 
-## Features
+## **Features**
 
-  - Implements `github.com/cloudwego/eino/components/indexer.Indexer`
-  - Easy integration with Eino indexing
-  - Configurable Elasticsearch parameters
-  - Supports vector similarity search
-  - Batch indexing operations
-  - Custom field mapping
-  - Flexible document embedding
+- Implements `github.com/cloudwego/eino/components/indexer.Indexer`
+- Easy integration with Eino indexing
+- Configurable Elasticsearch parameters
+- Supports vector similarity search
+- Batch indexing operations
+- Custom field mapping
+- Flexible document embedding
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/indexer/es8@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Example usage (see `components/indexer/es8/examples/indexer/add_documents.go` for details):
 
@@ -88,7 +88,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 Configure via `IndexerConfig`:
 
@@ -112,7 +112,7 @@ type FieldValue struct {
 }
 ```
 
-## More Details
+## **More Details**
 
   - [Eino docs](https://github.com/cloudwego/eino)
   - [Elasticsearch Go client](https://github.com/elastic/go-elasticsearch)

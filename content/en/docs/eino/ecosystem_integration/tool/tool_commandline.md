@@ -1,30 +1,30 @@
 ---
 Description: ""
-date: "2025-03-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Tool - Commandline
 weight: 0
 ---
 
-## CommandLine Tool
+## **CommandLine Tool**
 
 CommandLine Tools implementation for [Eino](https://github.com/cloudwego/eino) that implements the `Tool` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
 > **Note**: This implementation is inspired by and references the [OpenManus](https://github.com/mannaandpoem/OpenManus) project.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/tool.InvokableTool`
 - Easy integration with Eino's tool system
 - Support executing command-line instructions in Docker containers
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/tool/commandline@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Editor:
 
@@ -110,6 +110,6 @@ func main() {
 }
 ```
 
-## For More Details
+## **For More Details**
 
 - [Eino Documentation](https://github.com/cloudwego/eino)

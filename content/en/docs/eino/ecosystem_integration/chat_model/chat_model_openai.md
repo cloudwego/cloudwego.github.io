@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: ChatModel - openai
@@ -9,7 +9,7 @@ weight: 0
 
 An OpenAI model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/model.Model`
 - Easy integration with Eino's model system
@@ -19,13 +19,13 @@ An OpenAI model implementation for [Eino](https://github.com/cloudwego/eino) tha
 - Custom response parsing support
 - Flexible model configuration
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/openai@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Here's a quick example of how to use the OpenAI model:
 
@@ -70,7 +70,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 You can configure the model using the `openai.ChatModelConfig` struct:
 
@@ -188,9 +188,9 @@ Audio *Audio `json:"audio,omitempty"`
 }
 ```
 
-## Examples
+## **Examples**
 
-### Text Generation
+### **Text Generation**
 
 ```go
 package main
@@ -242,7 +242,7 @@ func main() {
 }
 ```
 
-### Multimodal Support (Image Understanding)
+### **Multimodal Support (Image Understanding)**
 
 ```go
 package main
@@ -280,7 +280,7 @@ func main() {
 func of[T any](a T) *T { return &a }
 ```
 
-### Streaming Generation
+### **Streaming Generation**
 
 ```go
 package main
@@ -321,7 +321,7 @@ func main() {
 }
 ```
 
-### Audio Generation
+### **Audio Generation**
 
 ```go
 package main
@@ -363,7 +363,7 @@ func main() {
 }
 ```
 
-### Tool Calling
+### **Tool Calling**
 
 ```go
 package main
@@ -409,7 +409,7 @@ func main() {
 }
 ```
 
-### Structured Output
+### **Structured Output**
 
 ```go
 package main
@@ -454,7 +454,11 @@ func main() {
 }
 ```
 
-## More Information
+### [More Examples](https://github.com/cloudwego/eino-ext/tree/main/components/model/openai/examples)
 
-- [Eino Documentation](https://www.cloudwego.io/en/docs/eino/)
-- [OpenAI Documentation](https://platform.openai.com/docs/api-reference/chat/create)
+## **Related Documentation**
+
+- `Eino: ChatModel Guide` at `/en/docs/eino/core_modules/components/chat_model_guide`
+- `Eino: ToolsNode Guide` at `/en/docs/eino/core_modules/components/tools_node_guide`
+- `ChatModel - ARK` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ark`
+- `ChatModel - Ollama` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ollama`

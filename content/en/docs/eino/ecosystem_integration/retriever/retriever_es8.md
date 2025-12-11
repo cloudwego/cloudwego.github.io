@@ -1,33 +1,33 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Retriever - es8
+title: Retriever - ES8
 weight: 0
 ---
 
-## ES8 Retriever
+## **ES8 Retriever**
 
 This is an Elasticsearch 8.x retriever implementation for [Eino](https://github.com/cloudwego/eino) that implements the `Retriever` interface. It integrates seamlessly with Eino’s vector retrieval system to enhance semantic search.
 
-## Features
+## **Features**
 
-  - Implements `github.com/cloudwego/eino/components/retriever.Retriever`
-  - Easy integration with Eino retrieval
-  - Configurable Elasticsearch parameters
-  - Supports vector similarity search
-  - Multiple search modes including approximate
-  - Custom result parsing
-  - Flexible document filtering
+- Implements `github.com/cloudwego/eino/components/retriever.Retriever`
+- Easy integration with Eino retrieval
+- Configurable Elasticsearch parameters
+- Supports vector similarity search
+- Multiple search modes including approximate
+- Custom result parsing
+- Flexible document filtering
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/retriever/es8@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Approximate search example (see `components/retriever/es8/examples/approximate/approximate.go` for details):
 
@@ -130,7 +130,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 Configure via `RetrieverConfig`:
 
@@ -151,7 +151,7 @@ type RetrieverConfig struct {
 }
 ```
 
-## More Details
+## **More Details**
 
   - [Eino docs](https://github.com/cloudwego/eino)
   - [Elasticsearch Go client](https://github.com/elastic/go-elasticsearch)

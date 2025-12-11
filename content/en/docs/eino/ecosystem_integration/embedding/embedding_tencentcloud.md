@@ -1,17 +1,17 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Embedding - tencentcloud
+title: Embedding - TencentCloud
 weight: 0
 ---
 
-## Tencent Cloud Hunyuan Embedding
+## **Tencent Cloud Hunyuan Embedding**
 
 This is a Tencent Cloud Hunyuan Embedding component for [Eino](https://github.com/cloudwego/eino) implementing the `Embedder` interface. It integrates seamlessly with Eino’s embedding system and provides text vectorization.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/embedding.Embedder`
 - Easy to integrate into Eino RAG workflows
@@ -19,13 +19,13 @@ This is a Tencent Cloud Hunyuan Embedding component for [Eino](https://github.co
 - Automatically batches large text arrays
 - Built‑in callback support
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/embedding/tencentcloud
 ```
 
-## Quick Start
+## **Quick Start**
 
 ```go
 package main
@@ -64,7 +64,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 Configure via `EmbeddingConfig`:
 
@@ -76,26 +76,26 @@ type EmbeddingConfig struct {
 }
 ```
 
-## Details
+## **Details**
 
-### Auto Batching
+### **Auto Batching**
 
 Automatically handles large text arrays. Per Tencent Cloud API limits, a single request can process up to 200 texts; the embedder splits larger arrays into proper batches.
 
-### Token Usage Tracking
+### **Token Usage Tracking**
 
 Tracks token usage via Eino’s callback system:
 - input token count
 - total token count
 
-### Callback Support
+### **Callback Support**
 
 Fully supports Eino callbacks:
 - error tracking
 - start/end event monitoring
 - token usage statistics
 
-## More Information
+## **More Information**
 
 - Tencent Hunyuan API: https://cloud.tencent.com/document/product/1729/102832
 - Eino docs: https://github.com/cloudwego/eino

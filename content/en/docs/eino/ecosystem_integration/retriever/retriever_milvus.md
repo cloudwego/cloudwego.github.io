@@ -1,25 +1,25 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Retriever - milvus
+title: Retriever - Milvus
 weight: 0
 ---
 
-## Milvus Search
+## **Milvus Search**
 
 Vector search based on Milvus 2.x that provides a `Retriever` implementation for [Eino](https://github.com/cloudwego/eino). Integrates with Eino’s vector storage and retrieval for semantic search.
 
-## Quick Start
+## **Quick Start**
 
-### Installation
+### **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/retriever/milvus
 ```
 
-### Create Milvus Search
+### **Create Milvus Search**
 
 ```go
 package main
@@ -83,7 +83,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 ```go
 type RetrieverConfig struct {

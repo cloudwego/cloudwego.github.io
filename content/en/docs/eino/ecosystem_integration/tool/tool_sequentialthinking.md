@@ -1,23 +1,23 @@
 ---
 Description: ""
-date: "2025-03-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Tool - sequentialthinking
 weight: 0
 ---
 
-## Sequential Thinking Tool
+## **Sequential Thinking Tool**
 
 Sequential Thinking Tool is for dynamic and reflective problem solving. Inspired by MCP’s `sequentialthinking`, it guides a large language model to think step by step via a series of questions.
 
-## Features
+## **Features**
 
 - Guided step-by-step thinking
 - Dynamic prompts and self-reflection
 - Improves problem-solving quality
 
-## Use Cases
+## **Use Cases**
 
 - Decompose complex problems into steps
 - Plan and iterate with room for adjustments
@@ -26,13 +26,13 @@ Sequential Thinking Tool is for dynamic and reflective problem solving. Inspired
 - Maintain context across multiple steps
 - Filter irrelevant information
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/tool/sequentialthinking@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 ```go
 package main

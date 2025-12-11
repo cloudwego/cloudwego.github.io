@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: ChatModel - qwen
@@ -9,7 +9,7 @@ weight: 0
 
 A Qwen model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/model.Model`
 - Easy integration with Eino's model system
@@ -19,13 +19,13 @@ A Qwen model implementation for [Eino](https://github.com/cloudwego/eino) that i
 - Custom response parsing support
 - Flexible model configuration
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/qwen@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Here's a quick example of how to use the Qwen model:
 
@@ -77,7 +77,7 @@ func of[T any](t T) *T {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 The model can be configured using the `qwen.ChatModelConfig` struct:
 
@@ -102,9 +102,9 @@ type ChatModelConfig struct {
 }
 ```
 
-## Examples
+## **Examples**
 
-### Text Generation
+### **Text Generation**
 
 ```go
 package main
@@ -152,7 +152,7 @@ func main() {
 func of[T any](t T) *T { return &t }
 ```
 
-### Multimodal Understanding (Image Understanding)
+### **Multimodal Understanding (Image Understanding)**
 
 ```go
 package main
@@ -197,7 +197,7 @@ func main() {
 func of[T any](t T) *T { return &t }
 ```
 
-### Streaming Generation
+### **Streaming Generation**
 
 ```go
 package main
@@ -259,7 +259,7 @@ func main() {
 func of[T any](t T) *T { return &t }
 ```
 
-### Tool Calling
+### **Tool Calling**
 
 ```go
 package main
@@ -300,7 +300,11 @@ func main() {
 func of[T any](t T) *T { return &t }
 ```
 
-## More Information
+### [More Examples](https://github.com/cloudwego/eino-ext/tree/main/components/model/qwen/examples)
 
-- [Eino Documentation](https://www.cloudwego.io/en/docs/eino/)
-- [Qwen Documentation](https://help.aliyun.com/zh/model-studio/use-qwen-by-calling-api)
+## **Related Documentation**
+
+- `Eino: ChatModel Guide` at `/en/docs/eino/core_modules/components/chat_model_guide`
+- `Eino: ToolsNode Guide` at `/en/docs/eino/core_modules/components/tools_node_guide`
+- `ChatModel - ARK` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ark`
+- `ChatModel - Ollama` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ollama`

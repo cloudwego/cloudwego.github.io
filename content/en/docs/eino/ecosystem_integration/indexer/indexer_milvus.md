@@ -1,25 +1,25 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Indexer - milvus
+title: Indexer - Milvus
 weight: 0
 ---
 
-## Milvus Storage
+## **Milvus Storage**
 
 Vector storage based on Milvus 2.x that provides an `Indexer` implementation for [Eino](https://github.com/cloudwego/eino). Integrates with Eino’s vector storage and retrieval for semantic search.
 
-## Quick Start
+## **Quick Start**
 
-### Installation
+### **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/indexer/milvus
 ```
 
-### Create Milvus Storage
+### **Create Milvus Storage**
 
 ```go
 package main
@@ -65,7 +65,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 ```go
 type IndexerConfig struct {
@@ -91,7 +91,7 @@ type IndexerConfig struct {
 }
 ```
 
-## Default Schema
+## **Default Schema**
 
 | field    | type            | column type   | index type                     | desc        | note         |
 |----------|-----------------|---------------|--------------------------------|-------------|--------------|

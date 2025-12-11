@@ -1,29 +1,29 @@
 ---
 Description: ""
-date: "2025-03-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Tool - wikipedia
 weight: 0
 ---
 
-## Overview
+## **Overview**
 
 This is a Wikipedia search tool for [Eino](https://github.com/cloudwego/eino) implementing the `InvokableTool` interface. It integrates with Eino’s ChatModel system and `ToolsNode`.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/tool.InvokableTool`
 - Easy integration with Eino’s tool system
 - Configurable search parameters
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/tool/wikipedia
 ```
 
-## Quick Start
+## **Quick Start**
 
 ```go
 package main
@@ -56,7 +56,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 ```go
 type Config struct {
@@ -95,7 +95,7 @@ type Config struct {
 }
 ```
 
-### Request Schema
+### **Request Schema**
 
 ```go
 type SearchRequest struct {
@@ -103,7 +103,7 @@ type SearchRequest struct {
 }
 ```
 
-### Response Schema
+### **Response Schema**
 
 ```go
 type SearchResponse struct {
@@ -117,6 +117,6 @@ type SearchResult struct {
 }
 ```
 
-## More Details
+## **More Details**
 
 - [Eino Documentation](https://github.com/cloudwego/eino)

@@ -1,15 +1,15 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: ChatModel - arkbot
+title: ChatModel - ARKBot
 weight: 0
 ---
 
 A Volcengine Ark Bot implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities to enhance natural language processing and generation.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/model.ToolCallingChatModel`
 - Easy integration with Eino's model system
@@ -19,13 +19,13 @@ A Volcengine Ark Bot implementation for [Eino](https://github.com/cloudwego/eino
 - Supports custom response parsing
 - Flexible model configuration
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/arkbot@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Here's a quick example of how to use the Ark Bot:
 
@@ -85,7 +85,7 @@ func main() {
 
 ```
 
-## Configuration
+## **Configuration**
 
 You can configure the model using the `arkbot.Config` struct:
 
@@ -175,7 +175,7 @@ type Config struct {
 }
 ```
 
-## Request Options
+## **Request Options**
 
 ```go
 // WithCustomHeader sets custom headers for a single request
@@ -183,9 +183,9 @@ type Config struct {
 func WithCustomHeader(m map[string]string) model.Option {}
 ```
 
-## Examples
+## **Examples**
 
-### Text Generation
+### **Text Generation**
 
 ```go
 
@@ -243,7 +243,7 @@ func main() {
 
 ```
 
-### Streaming Generation
+### **Streaming Generation**
 
 ```go
 
@@ -327,7 +327,7 @@ func main() {
 
 ```
 
-## More Information
+## **More Information**
 
 - [Eino Documentation](https://www.cloudwego.io/en/docs/eino/)
 - [Volcengine Ark Model Documentation](https://www.volcengine.com/docs/82379/1263272)

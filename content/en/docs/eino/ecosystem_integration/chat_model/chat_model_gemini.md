@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: ChatModel - gemini
@@ -9,7 +9,7 @@ weight: 0
 
 A Google Gemini implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/model.Model`
 - Easy integration with Eino's model system
@@ -20,13 +20,13 @@ A Google Gemini implementation for [Eino](https://github.com/cloudwego/eino) tha
 - Flexible model configuration
 - Supports caching of generated responses
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/gemini@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Here's a quick example of how to use the Gemini model:
 
@@ -118,7 +118,7 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
 You can configure the model using the `gemini.Config` struct:
 
@@ -186,7 +186,7 @@ type CacheConfig struct {
 }
 ```
 
-## Cache
+## **Cache**
 
 This component supports two caching strategies to improve latency and reduce API calls:
 
@@ -222,9 +222,9 @@ msg, err := cm.Generate(ctx, []*schema.Message{
     }, gemini.WithCachedContentName(cacheInfo.Name))
 ```
 
-## Examples
+## **Examples**
 
-### Text Generation
+### **Text Generation**
 
 ```go
 package main
@@ -283,7 +283,7 @@ func main() {
 
 ```
 
-### Multimodal Support (Image Understanding)
+### **Multimodal Support (Image Understanding)**
 
 ```go
 package main
@@ -357,7 +357,7 @@ func main() {
 
 ```
 
-### Text Generation with Prefix Cache
+### **Text Generation with Prefix Cache**
 
 ```go
 package main
@@ -466,7 +466,7 @@ always include the start_time and end_time of the transcript in the output`,
 
 ```
 
-### Streaming Generation
+### **Streaming Generation**
 
 ```go
 package main
@@ -540,7 +540,7 @@ func main() {
 
 ```
 
-### Tool Calling
+### **Tool Calling**
 
 ```go
 package main
@@ -646,7 +646,7 @@ func main() {
 
 ```
 
-### Image Generation
+### **Image Generation**
 
 ```go
 package main
@@ -727,7 +727,7 @@ func main() {
 
 ```
 
-### React Agent Mode Example
+### **React Agent Mode Example**
 
 ```go
 package main
@@ -829,7 +829,11 @@ func main() {
 
 ```
 
-## More Information
+### [More Examples](https://github.com/cloudwego/eino-ext/tree/main/components/model/gemini/examples)
 
-- [Eino Documentation](https://github.com/cloudwego/eino)
-- [Gemini API Documentation](https://ai.google.dev/api/generate-content?hl=zh-cn#v1beta.GenerateContentResponse)
+## **Related Documentation**
+
+- `Eino: ChatModel Guide` at `/en/docs/eino/core_modules/components/chat_model_guide`
+- `Eino: ToolsNode & Tool Guide` at `/en/docs/eino/core_modules/components/tools_node_guide`
+- `ChatModel - ARK` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ark`
+- `ChatModel - Ollama` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ollama`
