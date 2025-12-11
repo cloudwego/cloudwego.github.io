@@ -3,13 +3,13 @@ Description: ""
 date: "2025-01-20"
 lastmod: ""
 tags: []
-title: Embedding - ark
+title: Embedding - ARK
 weight: 0
 ---
 
 ## **Overview**
 
-Ark Embedding is an implementation of Eino’s Embedding interface that converts text to vectors. Volcengine Ark provides model inference services, including text embedding. This component follows [Eino: Embedding Guide](/en/docs/eino/core_modules/components/embedding_guide).
+Ark Embedding is an implementation of Eino’s Embedding interface that converts text to vectors. Volcengine Ark provides model inference services, including text embedding. This component follows [[🚧]Eino: Embedding Guide](/en/docs/eino/core_modules/components/embedding_guide).
 
 ## **Usage**
 
@@ -41,6 +41,8 @@ embedder, err := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{
 ```
 
 ### **Generate Embeddings**
+
+Text vectorization is done via `EmbedStrings`:
 
 ```go
 embeddings, err := embedder.EmbedStrings(ctx, []string{
@@ -88,6 +90,7 @@ func main() {
         panic(err)
     }
 
+    // use generated vectors
     for i, embedding := range embeddings {
         println("text", i+1, "vector dim:", len(embedding))
     }
@@ -97,5 +100,5 @@ func main() {
 ## **References**
 
 - [Eino: Embedding Guide](/en/docs/eino/core_modules/components/embedding_guide)
-- [Embedding — OpenAI](/en/docs/eino/ecosystem_integration/embedding/embedding_openai)
+- [Embedding - OpenAI](/en/docs/eino/ecosystem_integration/embedding/embedding_openai)
 - Volcengine Ark: https://www.volcengine.com/product/ark
