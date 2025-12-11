@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Master Core Agent Patterns and Build a Production-Grade Agent System'

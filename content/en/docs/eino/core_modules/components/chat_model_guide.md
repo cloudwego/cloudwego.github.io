@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: ChatModel Guide'
@@ -246,6 +246,17 @@ handler := &callbacksHelper.ModelCallbackHandler{
     OnEndWithStreamOutput: func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[*model.CallbackOutput]) context.Context {
         fmt.Println("stream started")
         defer output.Close()
+        for {
+            chunk, err := output.Recv()
+            if errors.Is(err, io.EOF) { break }
+            if err != nil { fmt.Printf("stream read error: %v\n", err); break }
+            if chunk == nil || chunk.Message == nil { continue }
+            if len(chunk.Message.ToolCalls) > 0 {
+                for _, tc := range chunk.Message.ToolCalls {
+                    fmt.Printf("ToolCall detected, arguments: %s\n", tc.Function.Arguments)
+                }
+            }
+        }
         return ctx
     },
 }

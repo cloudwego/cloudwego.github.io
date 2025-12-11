@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent Interface'
@@ -229,8 +229,13 @@ Control multi‑agent collaboration: exit, interrupt, transfer, or custom:
 ```go
 type AgentAction struct {
     Exit bool
+
     Interrupted *InterruptInfo
+
     TransferToAgent *TransferToAgentAction
+    
+    BreakLoop *BreakLoopAction
+
     CustomizedAction any
 }
 

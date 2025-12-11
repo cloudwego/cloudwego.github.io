@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: Orchestration Design Principles'
@@ -186,6 +186,10 @@ Graph verifies type alignment during `AddEdge("node1", "node2")` and at `Compile
 <a href="/img/eino/input_type_output_type_in_edge.png" target="_blank"><img src="/img/eino/input_type_output_type_in_edge.png" width="100%" /></a>
 
 ## Opinionated Design Choices
+
+### External Variables Are Read-Only
+
+Data flows in Graph across Nodes, Branches, and Handlers via direct assignment, not deep copies. When inputs are reference types (struct pointers, maps, slices), mutating them inside Nodes/Branches/Handlers causes side effects and potential races. Treat external inputs as read-only; if mutation is needed, copy first. The same applies to streamed chunks in `StreamReader`.
 
 ### Fan‑in and Merge
 

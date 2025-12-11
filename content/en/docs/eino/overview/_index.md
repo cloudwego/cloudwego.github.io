@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: Overview'
@@ -249,4 +249,3 @@ Please **do not** create a public GitHub issue.
 ## License
 
 This project is licensed under the [[Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0.txt)].
-

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: How to Create a Tool
@@ -41,7 +41,7 @@ type StreamableTool interface {
 
 ## ToolInfo Representations
 
-In LLM function-call flows, the model must understand whether generated parameters satisfy constraints. Eino supports two representations: a map-based description and OpenAPI 3.0 `Schema`.
+In LLM function-call flows, the model must understand whether generated parameters satisfy constraints. Eino supports two representations: `params map[string]*ParameterInfo` and `*openapi3.Schema`.
 
 ### 1) `map[string]*ParameterInfo`
 
@@ -77,9 +77,9 @@ map[string]*schema.ParameterInfo{
 }
 ```
 
-### 2) OpenAPI 3.0 Schema
+### 2) JSON Schema (2020-12)
 
-Eino also supports `openapi3.Schema` for JSON Schema-based constraints. In practice, you often generate it from existing specs or helper functions.
+JSON Schema’s constraint system is rich. In practice, you usually generate it from struct tags or helper functions.
 
 #### `GoStruct2ParamsOneOf`
 
@@ -91,11 +91,12 @@ func GoStruct2ParamsOneOf[T any](opts ...Option) (*schema.ParamsOneOf, error)
 
 Supported tags:
 
-- `jsonschema:"description=xxx"`
-- `jsonschema:"enum=xxx,enum=yyy"`
+- `jsonschema_description:"xxx"` [recommended] or `jsonschema:"description=xxx"`
+- Note: descriptions often include commas; tag commas separate fields and cannot be escaped. Prefer `jsonschema_description`.
+- `jsonschema:"enum=xxx,enum=yyy,enum=zzz"`
 - `jsonschema:"required"`
 - `json:"xxx,omitempty"` → `omitempty` implies not required
-- Customize via `utils.WithSchemaCustomizer`
+- Customize via `utils.WithSchemaModifier`
 
 Example:
 
@@ -108,8 +109,8 @@ import (
 )
 
 type User struct {
-    Name   string `json:"name" jsonschema:"required,description=the name of the user"`
-    Age    int    `json:"age" jsonschema:"description=the age of the user"`
+    Name   string `json:"name" jsonschema_description=the name of the user jsonschema:"required"`
+    Age    int    `json:"age" jsonschema_description:"the age of the user"`
     Gender string `json:"gender" jsonschema:"enum=male,enum=female"`
 }
 
@@ -120,9 +121,7 @@ func main() {
 
 You usually won’t call this directly; prefer `utils.GoStruct2ToolInfo()` or `utils.InferTool()`.
 
-#### From `openapi.json`
-
-If your tool wraps HTTP APIs, generating from an `openapi.json` is convenient. See `eino-examples` for sample usage: https://github.com/cloudwego/eino-examples/blob/main/components/tool/openapi3/main.go#L33
+ 
 
 ## Approach 1 — Implement Interfaces Directly
 

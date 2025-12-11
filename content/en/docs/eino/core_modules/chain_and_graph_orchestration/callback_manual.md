@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: 'Eino: Callback Manual'
@@ -279,29 +279,312 @@ handler := NewHandlerBuilder().OnStartFn(fn).Build()
 
 ### Best Practices
 
-- In Graph: use Global Handlers; inject per-run handlers via `WithCallbacks`; target nodes via `DesignateNode` or `DesignateNodeForPath`.
-- Outside Graph: use `InitCallbacks(ctx, runInfo, handlers...)` to inject RunInfo and Handlers; global handlers apply automatically.
+#### In Graph
+
+- Actively use Global Handlers for always-on concerns.
 
 ```go
-ctx = callbacks.InitCallbacks(ctx, runInfo, handlers...)
-componentA.Invoke(ctx, input)
+package main
+
+import (
+        "context"
+        "log"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/compose"
+)
+
+func main() {
+        // Build a simple global handler
+        handler := callbacks.NewHandlerBuilder().
+                OnStartFn(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
+                        log.Printf("[Global Start] component=%s name=%s input=%T", info.Component, info.Name, input)
+                        return ctx
+                }).
+                OnEndFn(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
+                        log.Printf("[Global End] component=%s name=%s output=%T", info.Component, info.Name, output)
+                        return ctx
+                }).
+                OnErrorFn(func(ctx context.Context, info *callbacks.RunInfo, err error) context.Context {
+                        log.Printf("[Global Error] component=%s name=%s err=%v", info.Component, info.Name, err)
+                        return ctx
+                }).
+                Build()
+
+        // Register as global callbacks (applies to all subsequent runs)
+        callbacks.AppendGlobalHandlers(handler)
+
+        // Example graph usage; the global handler will be invoked automatically
+        g := compose.NewGraph[string, string]()
+        // ... add nodes/edges ...
+        r, _ := g.Compile(context.Background())
+        _, _ = r.Invoke(context.Background(), "hello") // triggers global callbacks
+}
 ```
 
-If `componentA` calls another `componentB` internally (e.g., ToolsNode calls Tool), switch `RunInfo` before invoking `componentB`:
+- Inject per-run handlers with `WithCallbacks` and target nodes via `DesignateNode` or by path.
 
 ```go
-func ComponentARun(ctx, inputA) {
-    // Reuse handlers (including global) and replace RunInfo
-    ctx = callbacks.ReuseHandlers(ctx, newRunInfo)
-    componentB.Invoke(ctx, inputB)
-    
-    // Replace both RunInfo and Handlers
-    ctx = callbacks.InitCallbacks(ctx, newRunInfo, newHandlers...)
-    componentB.Invoke(ctx, inputB)
+package main
+
+import (
+        "context"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/compose"
+        "github.com/cloudwego/eino/components/prompt"
+        "github.com/cloudwego/eino/schema"
+)
+
+func main() {
+        ctx := context.Background()
+
+        top := compose.NewGraph[map[string]any, []*schema.Message]()
+        sub := compose.NewGraph[map[string]any, []*schema.Message]()
+        _ = sub.AddChatTemplateNode("tmpl_nested", prompt.FromMessages(schema.FString, schema.UserMessage("Hello, {name}!")))
+        _ = sub.AddEdge(compose.START, "tmpl_nested")
+        _ = sub.AddEdge("tmpl_nested", compose.END)
+        _ = top.AddGraphNode("sub_graph", sub)
+        _ = top.AddEdge(compose.START, "sub_graph")
+        _ = top.AddEdge("sub_graph", compose.END)
+        r, _ := top.Compile(ctx)
+
+        optGlobal := compose.WithCallbacks(
+                callbacks.NewHandlerBuilder().OnEndFn(func(ctx context.Context, _ *callbacks.RunInfo, _ callbacks.CallbackOutput) context.Context { return ctx }).Build(),
+        )
+        optNode := compose.WithCallbacks(
+                callbacks.NewHandlerBuilder().OnStartFn(func(ctx context.Context, _ *callbacks.RunInfo, _ callbacks.CallbackInput) context.Context { return ctx }).Build(),
+        ).DesignateNode("sub_graph")
+        optNested := compose.WithChatTemplateOption(
+                prompt.WrapImplSpecificOptFn(func(_ *struct{}) {}),
+        ).DesignateNodeWithPath(
+                compose.NewNodePath("sub_graph", "tmpl_nested"),
+        )
+
+        _, _ = r.Invoke(ctx, map[string]any{"name": "Alice"}, optGlobal, optNode, optNested)
 }
 ```
 
 <a href="/img/eino/graph_node_callback_run_place.png" target="_blank"><img src="/img/eino/graph_node_callback_run_place.png" width="100%" /></a>
+
+#### Outside Graph
+
+This scenario: you do not use Graph/Chain/Workflow orchestration, but you directly call components like ChatModel/Tool/Lambda and still want callbacks to trigger.
+
+You must manually set correct `RunInfo` and Handlers because there is no Graph to do it for you.
+
+```go
+package main
+
+import (
+        "context"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/compose"
+)
+
+func innerLambda(ctx context.Context, input string) (string, error) {
+        // As provider of ComponentB: ensure default RunInfo when entering the component (Name cannot default)
+        ctx = callbacks.EnsureRunInfo(ctx, "Lambda", compose.ComponentOfLambda)
+        ctx = callbacks.OnStart(ctx, input)
+        out := "inner:" + input
+        ctx = callbacks.OnEnd(ctx, out)
+        return out, nil
+}
+
+func outerLambda(ctx context.Context, input string) (string, error) {
+        // As provider of ComponentA: ensure default RunInfo when entering
+        ctx = callbacks.EnsureRunInfo(ctx, "Lambda", compose.ComponentOfLambda)
+        ctx = callbacks.OnStart(ctx, input)
+
+        // Recommended: replace RunInfo before calling inner component, ensuring correct name/type/component
+        ctxInner := callbacks.ReuseHandlers(ctx,
+                &callbacks.RunInfo{Name: "ComponentB", Type: "Lambda", Component: compose.ComponentOfLambda},
+        )
+        out1, _ := innerLambda(ctxInner, input) // inner RunInfo.Name = "ComponentB"
+
+        // Without replacement: framework clears RunInfo after a complete callback cycle; EnsureRunInfo adds defaults (Name empty)
+        out2, _ := innerLambda(ctx, input) // inner RunInfo.Name == ""
+
+        final := out1 + "|" + out2
+        ctx = callbacks.OnEnd(ctx, final)
+        return final, nil
+}
+
+func main() {
+        // Standalone components outside graph: initialize RunInfo and Handlers
+        h := callbacks.NewHandlerBuilder().Build()
+        ctx := callbacks.InitCallbacks(context.Background(),
+                &callbacks.RunInfo{Name: "ComponentA", Type: "Lambda", Component: compose.ComponentOfLambda},
+                h,
+        )
+
+        _, _ = outerLambda(ctx, "ping")
+}
+```
+
+Notes:
+
+- Initialization: use `InitCallbacks` to set the first `RunInfo` and Handlers when using components outside graph/chain so subsequent components receive the full callback context.
+- Internal calls: before Component A calls Component B, use `ReuseHandlers` to replace `RunInfo` (keeping existing handlers) so B receives correct `Type/Component/Name`.
+- Without replacement: after a complete set of callbacks, Eino clears `RunInfo` from the current context; providers can call `EnsureRunInfo` to supply default `Type/Component` to keep callbacks working, but `Name` cannot be inferred and will be empty.
+
+#### Component Nesting
+
+Scenario: inside a component (e.g., a Lambda), manually call another component (e.g., ChatModel).
+
+If the outer component’s context has handlers, the inner component receives the same handlers. To control whether the inner component triggers callbacks:
+
+1) Want callbacks triggered: set `RunInfo` for the inner component using `ReuseHandlers`.
+
+```go
+package main
+
+import (
+        "context"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/components"
+        "github.com/cloudwego/eino/components/model"
+        "github.com/cloudwego/eino/compose"
+        "github.com/cloudwego/eino/schema"
+)
+
+// Outer lambda calls ChatModel inside
+func OuterLambdaCallsChatModel(cm model.BaseChatModel) *compose.Lambda {
+        return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+                // 1) Reuse outer handlers and set RunInfo explicitly for the inner component
+                innerCtx := callbacks.ReuseHandlers(ctx, &callbacks.RunInfo{
+                        Type:      "InnerCM",
+                        Component: components.ComponentOfChatModel,
+                        Name:      "inner-chat-model",
+                })
+
+                // 2) Build input messages
+                msgs := []*schema.Message{{Role: schema.User, Content: input}}
+
+                // 3) Call ChatModel (inner implementation triggers its callbacks)
+                out, err := cm.Generate(innerCtx, msgs)
+                if err != nil {
+                        return "", err
+                }
+                return out.Content, nil
+        })
+}
+```
+
+If the inner ChatModel’s `Generate` does not trigger callbacks, the outer component should trigger them around the inner call:
+
+```go
+func OuterLambdaCallsChatModel(cm model.BaseChatModel) *compose.Lambda {
+        return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+                // Reuse outer handlers and set RunInfo explicitly for inner component
+                ctx = callbacks.ReuseHandlers(ctx, &callbacks.RunInfo{
+                        Type:      "InnerCM",
+                        Component: components.ComponentOfChatModel,
+                        Name:      "inner-chat-model",
+                })
+
+                // Build input messages
+                msgs := []*schema.Message{{Role: schema.User, Content: input}}
+
+                // Explicitly trigger OnStart
+                ctx = callbacks.OnStart(ctx, msgs)
+
+                // Call ChatModel
+                resp, err := cm.Generate(ctx, msgs)
+                if err != nil {
+                        // Explicitly trigger OnError
+                        ctx = callbacks.OnError(ctx, err)
+                        return "", err
+                }
+
+                // Explicitly trigger OnEnd
+                ctx = callbacks.OnEnd(ctx, resp)
+
+                return resp.Content, nil
+        })
+}
+```
+
+2) Do not want inner callbacks: assume the inner component implements `IsCallbacksEnabled()` returning true and calls `EnsureRunInfo`. By default, inner callbacks will trigger. To disable, pass a new context without handlers to the inner component:
+
+```go
+package main
+
+import (
+        "context"
+
+        "github.com/cloudwego/eino/components/model"
+        "github.com/cloudwego/eino/compose"
+        "github.com/cloudwego/eino/schema"
+)
+
+func OuterLambdaNoCallbacks(cm model.BaseChatModel) *compose.Lambda {
+        return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+                // Use a brand-new context; do not reuse outer handlers
+                innerCtx := context.Background()
+
+                msgs := []*schema.Message{{Role: schema.User, Content: input}}
+                out, err := cm.Generate(innerCtx, msgs)
+                if err != nil {
+                        return "", err
+                }
+                return out.Content, nil
+        })
+}
+```
+
+Sometimes you may want to disable a specific handler for inner components but keep others. Implement filtering by `RunInfo` inside that handler:
+
+```go
+package main
+
+import (
+        "context"
+        "log"
+
+        "github.com/cloudwego/eino/callbacks"
+        "github.com/cloudwego/eino/components"
+        "github.com/cloudwego/eino/compose"
+)
+
+// A selective handler: no-ops for the inner ChatModel (Type=InnerCM, Name=inner-chat-model)
+func newSelectiveHandler() callbacks.Handler {
+        return callbacks.
+                NewHandlerBuilder().
+                OnStartFn(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
+                        if info != nil && info.Component == components.ComponentOfChatModel &&
+                                info.Type == "InnerCM" && info.Name == "inner-chat-model" {
+                                return ctx
+                        }
+                        log.Printf("[OnStart] %s/%s (%s)", info.Type, info.Name, info.Component)
+                        return ctx
+                }).
+                OnEndFn(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
+                        if info != nil && info.Component == components.ComponentOfChatModel &&
+                                info.Type == "InnerCM" && info.Name == "inner-chat-model" {
+                                return ctx
+                        }
+                        log.Printf("[OnEnd] %s/%s (%s)", info.Type, info.Name, info.Component)
+                        return ctx
+                }).
+                Build()
+}
+
+// Composition example: outer call triggers; selective handler filters out inner ChatModel
+func Example(cm model.BaseChatModel) (compose.Runnable[string, string], error) {
+        handler := newSelectiveHandler()
+
+        chain := compose.NewChain[string, string]().
+                AppendLambda(OuterLambdaCallsChatModel(cm))
+
+        return chain.Compile(
+                context.Background(),
+                compose.WithCallbacks(handler),
+        )
+}
+```
 
 ### Read/Write Input & Output Carefully
 

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: Build a Minimal LLM Application
@@ -205,4 +205,3 @@ This example shows how to build an LLM-powered application in Eino via `ChatMode
 
 - Quick Start
   - [Agent — Give your LLM hands](/en/docs/eino/quick_start/agent_llm_with_tools)
-

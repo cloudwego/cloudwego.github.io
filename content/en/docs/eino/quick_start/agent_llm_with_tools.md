@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: Agent — Give Your LLM Hands
@@ -298,4 +298,3 @@ Agents are a vital direction in AI — they understand user intent and take acti
 
 - Quick Start
   - [Build a Minimal LLM Application — ChatModel](/en/docs/eino/quick_start/simple_llm_application)
-

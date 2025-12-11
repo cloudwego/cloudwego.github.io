@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: ReAct Agent Manual'

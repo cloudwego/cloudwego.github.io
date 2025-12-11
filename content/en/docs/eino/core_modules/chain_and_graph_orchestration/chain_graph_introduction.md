@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-01"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: Chain/Graph Orchestration Introduction'
@@ -47,7 +47,7 @@ func main() {
     _ = g.AddEdge(nodeOfPrompt, nodeOfModel)
     _ = g.AddEdge(nodeOfModel, compose.END)
 
-    r, err := g.Compile(ctx, compose.WithMaxRunSteps(10))
+    r, err := g.Compile(ctx)
     if err != nil {
        panic(err)
     }

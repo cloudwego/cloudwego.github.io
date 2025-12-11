@@ -1,6 +1,6 @@
 ---
 Description: Eino is a Golang-based AI application development framework
-date: "2025-11-20"
+date: "2025-12-09"
 lastmod: ""
 linktitle: Eino
 menu:
@@ -11,5 +11,4 @@ tags: []
 title: Eino User Manual
 weight: 6
 ---
-
 

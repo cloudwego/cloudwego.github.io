@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent Collaboration'
@@ -388,4 +388,64 @@ func NewSupervisor(ctx context.Context, conf *SupervisorConfig) (adk.Agent, erro
 
         return adk.SetSubAgents(ctx, conf.Supervisor, subAgents)
 }
+```
+
+## Workflow Agents
+
+WorkflowAgent runs agents according to a preset flow. ADK provides three base Workflow agents: Sequential, Parallel, and Loop. They can be nested to build more complex tasks.
+
+By default, each agent’s input in a Workflow is generated via the History mechanism described earlier; you can customize `AgentInput` generation with `WithHistoryRewriter`.
+
+When an agent emits an `ExitAction` event, the Workflow agent exits immediately, regardless of remaining agents.
+
+See details and examples: `/en/docs/eino/core_modules/eino_adk/agent_implementation/workflow`
+
+### SequentialAgent
+
+Run a series of agents in the provided order:
+
+<a href="/img/eino/eino_adk_sequential_agent.png" target="_blank"><img src="/img/eino/eino_adk_sequential_agent.png" width="100%" /></a>
+
+```go
+type SequentialAgentConfig struct {
+    Name        string
+    Description string
+    SubAgents   []Agent
+}
+
+func NewSequentialAgent(ctx context.Context, config *SequentialAgentConfig) (Agent, error)
+```
+
+### LoopAgent
+
+Based on SequentialAgent; after completing one run, it starts from the beginning again:
+
+<a href="/img/eino/eino_adk_loop_definition.png" target="_blank"><img src="/img/eino/eino_adk_loop_definition.png" width="100%" /></a>
+
+```go
+type LoopAgentConfig struct {
+    Name        string
+    Description string
+    SubAgents   []Agent
+
+    MaxIterations int
+}
+
+func NewLoopAgent(ctx context.Context, config *LoopAgentConfig) (Agent, error)
+```
+
+### ParallelAgent
+
+Run agents concurrently:
+
+<a href="/img/eino/eino_adk_parallel_agent.png" target="_blank"><img src="/img/eino/eino_adk_parallel_agent.png" width="100%" /></a>
+
+```go
+type ParallelAgentConfig struct {
+    Name        string
+    Description string
+    SubAgents   []Agent
+}
+
+func NewParallelAgent(ctx context.Context, config *ParallelAgentConfig) (Agent, error)
 ```
