@@ -1,36 +1,33 @@
 ---
 Description: ""
-date: "2025-11-21"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Tool - DuckDuckGoSearch
 weight: 0
 ---
 
-## **Basic Introduction**
+## **Overview**
 
-The DuckDuckGo Search Tool is an implementation of the Tool InvokableTool interface for conducting web searches through the DuckDuckGo search engine. DuckDuckGo is a privacy-focused search engine that does not track users' search behavior and can be used directly without the need for API key authentication. This component implements the [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide).
+DuckDuckGo search tool is an implementation of the Tool `InvokableTool` interface, used to perform web search via DuckDuckGo. DuckDuckGo is a privacy‑focused search engine that does not track user behavior, and more importantly it requires no API key to use directly. This component implements the [Eino: ToolsNode Guide](/docs/eino/core_modules/components/tools_node_guide).
 
 ## **Usage**
+### **Initialization**
 
-### **Component Initialization**
-
-The DuckDuckGo Search Tool is initialized through the `NewTextSearchTool` function. The main configuration parameters are as follows:
+DuckDuckGo search tool is initialized via `NewTextSearchTool`, with core config parameters:
 
 ```go
 import "github.com/cloudwego/eino-ext/components/tool/duckduckgo/v2"
 
 tool, err := duckduckgo.NewTextSearchTool(ctx, &duckduckgo.Config{
-    ToolName:    "duckduckgo_search",     
+    ToolName:    "duckduckgo_search",
     ToolDesc:    "search for information by duckduckgo",
-    Region:      ddgsearch.RegionWT,      // The geographical region for results.
-    MaxResults:  3,                      // Limit the number of results returned.
+    Region:      duckduckgo.RegionWT,      // The geographical region for results.
+    MaxResults:  3,                        // Limit the number of results returned.
 })
 ```
 
 ### **Search Parameters**
-
-The search request supports the following parameters:
 
 ```go
 type TextSearchRequest struct {
@@ -42,7 +39,7 @@ type TextSearchRequest struct {
 }
 ```
 
-### **Complete Usage Example**
+### **Complete Example**
 
 ```go
 package main
@@ -124,8 +121,8 @@ func main() {
             "title": "Eino: Overview | CloudWeGo",
             "url": "https://www.cloudwego.io/docs/eino/overview/",
             "summary": "Eino is a framework that simplifies and standardizes the development of LLM applications in Golang. It provides component abstractions, orchestration APIs, best practices, tools and examples for building and running LLM applications."
-        }
-  {
+        },
+        {
             "title": "Home - Eino - AI powered network planning",
             "url": "https://www.eino.ai/",
             "summary": "An easy-to-use, AI powered networking planning app that helps network planners create digital twins for their projects and plan every network type."
@@ -134,8 +131,8 @@ func main() {
 }
 ```
 
-## **Related Documentation**
+## **References**
 
-- [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
+- [Eino: ToolsNode Guide](/docs/eino/core_modules/components/tools_node_guide)
 - [Tool - Googlesearch](/docs/eino/ecosystem_integration/tool/tool_googlesearch)
-- [DuckDuckGo Help Pages](https://duckduckgo.com/duckduckgo-help-pages/settings/params/)
+- [DuckDuckGo Help](https://duckduckgo.com/duckduckgo-help-pages/settings/params/)

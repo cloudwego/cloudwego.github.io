@@ -1,25 +1,25 @@
 ---
 Description: ""
-date: "2025-04-21"
+date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino: ChatTemplate guide'
-weight: 0
+title: 'Eino: ChatTemplate Guide'
+weight: 2
 ---
 
-## **Basic Introduction**
+## Introduction
 
-The Prompt component is a tool for processing and formatting prompt templates. Its primary function is to fill user-provided variable values into predefined message templates, generating standard message formats for interacting with language models. This component can be used in the following scenarios:
+The `Prompt` component formats message templates by filling user-provided variables into predefined message structures. It’s used to generate standardized messages for model interaction and is useful for:
 
-- Constructing structured system prompts
-- Handling templates for multi-turn conversations (including history)
-- Implementing reusable prompt patterns
+- Structured system prompts
+- Multi-turn dialogue templates (including history)
+- Reusable prompt patterns
 
-## **Component Definition**
+## Component Definition
 
-### **Interface Definition**
+### Interface
 
-> Code Location：eino/components/prompt/interface.go
+> Code: `eino/components/prompt/interface.go`
 
 ```go
 type ChatTemplate interface {
@@ -27,59 +27,52 @@ type ChatTemplate interface {
 }
 ```
 
-#### **Format Method**
+#### Format
 
-- Function: Fills variable values into message templates.
-- Parameters:
-  - ctx: Context object used to pass request-level information as well as the Callback Manager
-  - vs: Variable value map used to fill placeholders in the template
-  - opts: Optional parameters to configure formatting behavior
-- Return Values:
-  - `[]*schema.Message`: Formatted message list
-  - error: Error information during the formatting process
+- Purpose: fill variables into the message template
+- Params:
+  - `ctx`: request-scoped info and callback manager
+  - `vs`: variables map used to fill placeholders
+  - `opts`: optional formatting controls
+- Returns:
+  - `[]*schema.Message`: formatted messages
+  - `error`
 
-### **Built-in Template Formats**
+### Built-in Templating
 
-The Prompt component supports three built-in template formats:
+Prompt supports three built-in templating modes:
 
-1. FString Format (schema.FString)
-   - Uses `{variable}` syntax for variable replacement
-   - Simple and intuitive, suitable for basic text replacement scenarios
-   - Example: `"You are a {role}, please help me {task}."`
-2. GoTemplate Format (schema.GoTemplate)
-   - Uses Go standard library's text/template syntax
-   - Supports conditional judgments, loops, and other complex logic
-   - Example: `"{{if .expert}}As an expert{{end}}, please {{.action}}"`
-3. Jinja2 Format (schema.Jinja2)
-   - Uses Jinja2 template syntax
-   - Example: `"{% if level == 'expert' %}From an expert's perspective{% endif %} analyze {{topic}}"`
+1. `FString` (`schema.FString`)
+   - `{variable}` syntax for substitution
+   - Simple and direct for basic text replacement
+   - Example: `"You are a {role}. Please help me {task}."`
+2. `GoTemplate` (`schema.GoTemplate`)
+   - Go `text/template` syntax
+   - Supports conditionals, loops, etc.
+   - Example: `"{{if .expert}}As an expert{{end}} please {{.action}}"`
+3. `Jinja2` (`schema.Jinja2`)
+   - Jinja2 template syntax
+   - Example: `"{% if level == 'expert' %}From an expert perspective{% endif %} analyze {{topic}}"`
 
-### **Common Options**
+### Options
 
-The Prompt component uses Options to define optional parameters. ChatTemplate does not have a common option abstraction. Each specific implementation can define its own specific Options, which can be wrapped into a unified Option type via the WrapImplSpecificOptFn function.
+Prompt includes an `Option` mechanism; there’s no global option abstraction. Each implementation may define its own specific options and wrap them via `WrapImplSpecificOptFn`.
 
-## **Usage**
+## Usage
 
-ChatTemplate is generally used for context preparation before ChatModel.
+`ChatTemplate` is typically used before `ChatModel` to prepare context.
 
-### create chat template
+### Creation Methods
 
-- `prompt.FromMessages()`
-  - Used to create a template.
-- `schema.Message{}`
-  - schema.Message is a struct that implements the Format interface, so you can directly construct `schema.Message{}` as a template.
-- `schema.SystemMessage()`
-  - This method is a shortcut for constructing a message with the role of "system".
-- `schema.AssistantMessage()`
-  - This method is a shortcut for constructing a message with the role of "assistant".
-- `schema.UserMessage()`
-  - This method is a shortcut for constructing a message with the role of "user".
-- `schema.ToolMessage()`
-  - This method is a shortcut for constructing a message with the role of "tool".
-- `schema.MessagesPlaceholder()`
-  - Can be used to insert a `[]*schema.Message` into a message list, often used for inserting historical conversations.
+- `prompt.FromMessages()` — compose multiple messages into a template.
+- `schema.Message{}` — since `Message` implements `Format`, you can use it directly as a template.
+- `schema.SystemMessage()` — create a system-role message.
+- `schema.AssistantMessage()` — create an assistant-role message.
+- `schema.UserMessage()` — create a user-role message.
+- `schema.ToolMessage()` — create a tool-role message.
+- `schema.MessagesPlaceholder()` — insert a `[]*schema.Message` (e.g., history) into the message list.
 
-### **Standalone Usage**
+### Standalone Usage
 
 ```go
 import (
@@ -89,26 +82,23 @@ import (
 
 // Create template
 template := prompt.FromMessages(schema.FString,
-  schema.SystemMessage("You are a {role}."),
-  schema.MessagesPlaceholder("history_key", false),
-  &schema.Message{
-    Role:    schema.User,
-    Content: "Please help me {task}.",
-  },
+    schema.SystemMessage("你是一个{role}。"),
+    schema.MessagesPlaceholder("history_key", false),
+    &schema.Message{ Role: schema.User, Content: "请帮我{task}。" },
 )
 
-// Prepare variables
+// Variables
 variables := map[string]any{
-  "role": "professional assistant",
-  "task": "write a poem",
-  "history_key": []*schema.Message{{Role: schema.User, Content: "what is Go?"}, {Role: schema.Assistant, Content: "Go is xxx"}},
+    "role": "专业的助手",
+    "task": "写一首诗",
+    "history_key": []*schema.Message{{Role: schema.User, Content: "告诉我油画是什么?"}, {Role: schema.Assistant, Content: "油画是xxx"}},
 }
 
-// Format template
+// Format
 messages, err := template.Format(context.Background(), variables)
 ```
 
-### **Usage in Orchestration**
+### In Orchestration
 
 ```go
 import (
@@ -124,7 +114,7 @@ chain.AppendChatTemplate(template)
 // Compile and run
 runnable, err := chain.Compile()
 if err != nil {
-  return err
+    return err
 }
 result, err := runnable.Invoke(ctx, variables)
 
@@ -133,9 +123,22 @@ graph := compose.NewGraph[map[string]any, []*schema.Message]()
 graph.AddChatTemplateNode("template_node", template)
 ```
 
-## **Usage of Option and Callback**
+### Pull Data from a Predecessor Node
 
-### **Callback Usage Example**
+Use `WithOutputKey` to map a node’s output into a keyed `map[string]any`:
+
+```go
+graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
+    // your logic
+    return
+}), compose.WithOutputKey("your_output_key"))
+```
+
+Then refer to that key within a downstream `ChatTemplate` node.
+
+## Options and Callbacks
+
+### Callback Example
 
 ```go
 import (
@@ -147,70 +150,55 @@ import (
     "github.com/cloudwego/eino/components/prompt"
 )
 
-// Create callback handler
 handler := &callbackHelper.PromptCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *prompt.CallbackInput) context.Context {
-        fmt.Printf("Starting template formatting, variables: %v\n", input.Variables)
+        fmt.Printf("Formatting template; variables: %v\n", input.Variables)
         return ctx
     },
     OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *prompt.CallbackOutput) context.Context {
-        fmt.Printf("Template formatting completed, number of generated messages: %d\n", len(output.Result))
+        fmt.Printf("Template formatted; messages: %d\n", len(output.Result))
         return ctx
     },
 }
 
-// Use callback handler
-helper := template.NewHandlerHelper().
+helper := callbackHelper.NewHandlerHelper().
     Prompt(handler).
     Handler()
 
-// Use at runtime
 runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
 result, err := runnable.Invoke(ctx, variables, compose.WithCallbacks(helper))
 ```
 
-## **Reference for Custom Implementation**
+## Implementation Notes
 
-### **Option Mechanism**
+### Option Mechanism
 
-If necessary, component implementers can create custom prompt options:
+If needed, define custom prompt options:
 
 ```go
 import (
     "github.com/cloudwego/eino/components/prompt"
 )
 
-// Define Option struct
 type MyPromptOptions struct {
     StrictMode bool
     DefaultValues map[string]string
 }
 
-// Define Option functions
 func WithStrictMode(strict bool) prompt.Option {
-    return prompt.WrapImplSpecificOptFn(func(o *MyPromptOptions) {
-        o.StrictMode = strict
-    })
+    return prompt.WrapImplSpecificOptFn(func(o *MyPromptOptions) { o.StrictMode = strict })
 }
 
 func WithDefaultValues(values map[string]string) prompt.Option {
-    return prompt.WrapImplSpecificOptFn(func(o *MyPromptOptions) {
-        o.DefaultValues = values
-    })
+    return prompt.WrapImplSpecificOptFn(func(o *MyPromptOptions) { o.DefaultValues = values })
 }
 ```
 
-### **Callback Handling**
+### Callback Structures
 
-Prompt implementation needs to trigger callbacks at the appropriate times. The following structure is predefined by the component:
-
-> Code Location: eino/components/prompt/callback_extra.go
+> Code: `eino/components/prompt/callback_extra.go`
 
 ```go
-// Define callback input and output
 type CallbackInput struct {
     Variables map[string]any
     Templates []schema.MessagesTemplate
@@ -224,7 +212,7 @@ type CallbackOutput struct {
 }
 ```
 
-### **Complete Implementation Example**
+### Complete Implementation Example
 
 ```go
 type MyPrompt struct {
@@ -244,41 +232,30 @@ func NewMyPrompt(config *MyPromptConfig) (*MyPrompt, error) {
 }
 
 func (p *MyPrompt) Format(ctx context.Context, vs map[string]any, opts ...prompt.Option) ([]*schema.Message, error) {
-    // 1. Handle Option
     options := &MyPromptOptions{
         StrictMode: p.strictMode,
         DefaultValues: p.defaultValues,
     }
     options = prompt.GetImplSpecificOptions(options, opts...)
-    
-    // 2. Get callback manager
     cm := callbacks.ManagerFromContext(ctx)
-    
-    // 3. Callback before formatting starts
     ctx = cm.OnStart(ctx, info, &prompt.CallbackInput{
         Variables: vs,
         Templates: p.templates,
     })
-    
-    // 4. Execute formatting logic
     messages, err := p.doFormat(ctx, vs, options)
-    
-    // 5. Handle errors and completion callback
     if err != nil {
         ctx = cm.OnError(ctx, info, err)
         return nil, err
     }
-    
     ctx = cm.OnEnd(ctx, info, &prompt.CallbackOutput{
         Result: messages,
         Templates: p.templates,
     })
-    
     return messages, nil
 }
 
 func (p *MyPrompt) doFormat(ctx context.Context, vs map[string]any, opts *MyPromptOptions) ([]*schema.Message, error) {
-    // Implement custom logic
+    // 实现自己定义逻辑
     return messages, nil
 }
 ```

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-18"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: Agent-让大模型拥有双手
@@ -149,7 +149,7 @@ func (lt *ListTodoTool) InvokableRun(ctx context.Context, argumentsInJSON string
 }
 ```
 
-### **方式四：使用官方封装的工具**
+### **方式四：使用****官方封装的工具**
 
 除了自己实现工具，我们还提供了许多开箱即用的工具。这些工具经过充分测试和优化，可以直接集成到你的 Agent 中。以 duckduckgo Search 工具为例：
 

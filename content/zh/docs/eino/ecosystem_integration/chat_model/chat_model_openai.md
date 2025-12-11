@@ -1,85 +1,84 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-03"
 lastmod: ""
 tags: []
-title: ChatModel - openai
+title: ChatModel - OpenAI
 weight: 0
 ---
 
-一个针对 [Eino](https://github.com/cloudwego/eino) 的 OpenAI 模型实现，实现了 `ToolCallingChatModel` 接口。这使得能够与 Eino 的 LLM 功能无缝集成，以增强自然语言处理和生成能力。
+## **OpenAI 模型**
 
-## 特性
+一个针对 [Eino](https://github.com/cloudwego/eino) 的 OpenAI 模型实现，实现了 `ToolCallingChatModel` 接口。这使得能够与 Eino 的 LLM 功能无缝集成，以增强自然语言处理和生成能力
 
-- Implements `github.com/cloudwego/eino/components/model.Model`
-- Easy integration with Eino's model system
-- Configurable model parameters
-- Support for chat completion
-- Support for streaming responses
-- Custom response parsing support
-- Flexible model configuration
+## **特性**
+
+- 实现了 `github.com/cloudwego/eino/components/model.Model`
+- 轻松与 Eino 的模型系统集成
+- 可配置的模型参数
+- 支持聊天补全
+- 支持流式响应
+- 支持自定义响应解析
+- 灵活的模型配置
 
 ## 安装
 
-```bash
+```go
 go get github.com/cloudwego/eino-ext/components/model/openai@latest
 ```
 
-## 快速开始
+## 快速开始[ ](http://localhost:1313/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai/#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B)
 
 以下是如何使用 OpenAI 模型的快速示例：
 
 ```go
-
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
+        "context"
+        "fmt"
+        "log"
+        "os"
 
-	"github.com/cloudwego/eino-ext/components/model/openai"
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino-ext/components/model/openai"
+        "github.com/cloudwego/eino/schema"
 )
 
 func main() {
-	ctx := context.Background()
+        ctx := context.Background()
 
-	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-		// 如果您想使用 Azure OpenAI 服务，请设置这两个字段。
-		// BaseURL: "https://{RESOURCE_NAME}.openai.azure.com",
-		// ByAzure: true,
-		// APIVersion: "2024-06-01",
-		APIKey:  os.Getenv("OPENAI_API_KEY"),
-		Model:   os.Getenv("OPENAI_MODEL"),
-		BaseURL: os.Getenv("OPENAI_BASE_URL"),
-		ByAzure: func() bool {
-			if os.Getenv("OPENAI_BY_AZURE") == "true" {
-				return true
-			}
-			return false
-		}(),
-		ReasoningEffort: openai.ReasoningEffortLevelHigh,
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+        chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+                // 如果您想使用 Azure OpenAI 服务，请设置这两个字段。
+                // BaseURL: "https://{RESOURCE_NAME}.openai.azure.com",
+                // ByAzure: true,
+                // APIVersion: "2024-06-01",
+                APIKey:  os.Getenv("OPENAI_API_KEY"),
+                Model:   os.Getenv("OPENAI_MODEL"),
+                BaseURL: os.Getenv("OPENAI_BASE_URL"),
+                ByAzure: func() bool {
+                        if os.Getenv("OPENAI_BY_AZURE") == "true" {
+                                return true
+                        }
+                        return false
+                }(),
+                ReasoningEffort: openai.ReasoningEffortLevelHigh,
+        })
+        if err != nil {
+                log.Fatalf("NewChatModel failed, err=%v", err)
+        }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "as a machine, how do you answer user's question?",
-		},
-	})
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
-	fmt.Printf("output: \n%v", resp)
+        resp, err := chatModel.Generate(ctx, []*schema.Message{
+                {
+                        Role:    schema.User,
+                        Content: "as a machine, how do you answer user's question?",
+                },
+        })
+        if err != nil {
+                log.Fatalf("Generate failed, err=%v", err)
+        }
+        fmt.Printf("output: \n%v", resp)
 
 }
-
-
 ```
 
 ## 配置
@@ -87,7 +86,6 @@ func main() {
 可以使用 `openai.ChatModelConfig` 结构体配置模型：
 
 ```go
-
 type ChatModelConfig struct {
 // APIKey is your authentication key
 // Use OpenAI API key or Azure API key depending on the service
@@ -200,469 +198,743 @@ Audio *Audio `json:"audio,omitempty"`
 }
 ```
 
-
 ## 示例
 
-### 文本生成
+### 文本生成[ ](http://localhost:1313/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai/#%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90)
 
 ```go
-
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
+        "context"
+        "fmt"
+        "log"
+        "os"
 
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/openai"
+        "github.com/cloudwego/eino-ext/components/model/openai"
 )
 
 func main() {
-	ctx := context.Background()
+        ctx := context.Background()
 
-	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-		// 如果您想使用 Azure OpenAI 服务，请设置这两个字段。
-		// BaseURL: "https://{RESOURCE_NAME}.openai.azure.com",
-		// ByAzure: true,
-		// APIVersion: "2024-06-01",
-		APIKey:  os.Getenv("OPENAI_API_KEY"),
-		Model:   os.Getenv("OPENAI_MODEL"),
-		BaseURL: os.Getenv("OPENAI_BASE_URL"),
-		ByAzure: func() bool {
-			if os.Getenv("OPENAI_BY_AZURE") == "true" {
-				return true
-			}
-			return false
-		}(),
-		ReasoningEffort: openai.ReasoningEffortLevelHigh,
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+        chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+                // 如果您想使用 Azure OpenAI 服务，请设置这两个字段。
+                // BaseURL: "https://{RESOURCE_NAME}.openai.azure.com",
+                // ByAzure: true,
+                // APIVersion: "2024-06-01",
+                APIKey:  os.Getenv("OPENAI_API_KEY"),
+                Model:   os.Getenv("OPENAI_MODEL"),
+                BaseURL: os.Getenv("OPENAI_BASE_URL"),
+                ByAzure: func() bool {
+                        if os.Getenv("OPENAI_BY_AZURE") == "true" {
+                                return true
+                        }
+                        return false
+                }(),
+                ReasoningEffort: openai.ReasoningEffortLevelHigh,
+        })
+        if err != nil {
+                log.Fatalf("NewChatModel failed, err=%v", err)
+        }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "as a machine, how do you answer user's question?",
-		},
-	})
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
-	fmt.Printf("output: \n%v", resp)
+        resp, err := chatModel.Generate(ctx, []*schema.Message{
+                {
+                        Role:    schema.User,
+                        Content: "as a machine, how do you answer user's question?",
+                },
+        })
+        if err != nil {
+                log.Fatalf("Generate failed, err=%v", err)
+        }
+        fmt.Printf("output: \n%v", resp)
 
 }
-
 ```
 
-### 多模态支持(图片理解)
+### 多模态支持(图片理解)[ ](http://localhost:1313/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai/#%E5%A4%9A%E6%A8%A1%E6%80%81%E6%94%AF%E6%8C%81%E5%9B%BE%E7%89%87%E7%90%86%E8%A7%A3)
 
 ```go
-
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
+        "context"
+        "fmt"
+        "log"
+        "os"
 
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/openai"
+        "github.com/cloudwego/eino-ext/components/model/openai"
 )
 
 func main() {
-	ctx := context.Background()
+        ctx := context.Background()
 
-	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-		APIKey:  os.Getenv("OPENAI_API_KEY"),
-		Model:   os.Getenv("OPENAI_MODEL"),
-		BaseURL: os.Getenv("OPENAI_BASE_URL"),
-		ByAzure: func() bool {
-			if os.Getenv("OPENAI_BY_AZURE") == "true" {
-				return true
-			}
-			return false
-		}(),
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
+        chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+                APIKey:  os.Getenv("OPENAI_API_KEY"),
+                Model:   os.Getenv("OPENAI_MODEL"),
+                BaseURL: os.Getenv("OPENAI_BASE_URL"),
+                ByAzure: func() bool {
+                        if os.Getenv("OPENAI_BY_AZURE") == "true" {
+                                return true
+                        }
+                        return false
+                }(),
+        })
+        if err != nil {
+                log.Fatalf("NewChatModel failed, err=%v", err)
 
-	}
+        }
 
-	multiModalMsg := &schema.Message{
-		UserInputMultiContent: []schema.MessageInputPart{
-			{
-				Type: schema.ChatMessagePartTypeText,
-				Text: "this picture is a landscape photo, what's the picture's content",
-			},
-			{
-				Type: schema.ChatMessagePartTypeImageURL,
-				Image: &schema.MessageInputImage{
-					MessagePartCommon: schema.MessagePartCommon{
-						URL: of("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT11qEDxU4X_MVKYQVU5qiAVFidA58f8GG0bQ&s"),
-					},
-					Detail: schema.ImageURLDetailAuto,
-				},
-			},
-		},
-	}
+        multiModalMsg := &schema.Message{
+                UserInputMultiContent: []schema.MessageInputPart{
+                        {
+                                Type: schema.ChatMessagePartTypeText,
+                                Text: "this picture is a landscape photo, what's the picture's content",
+                        },
+                        {
+                                Type: schema.ChatMessagePartTypeImageURL,
+                                Image: &schema.MessageInputImage{
+                                        MessagePartCommon: schema.MessagePartCommon{
+                                                URL: of("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT11qEDxU4X_MVKYQVU5qiAVFidA58f8GG0bQ&s"),
+                                        },
+                                        Detail: schema.ImageURLDetailAuto,
+                                },
+                        },
+                },
+        }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		multiModalMsg,
-	})
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+        resp, err := chatModel.Generate(ctx, []*schema.Message{
+                multiModalMsg,
+        })
+        if err != nil {
+                log.Fatalf("Generate failed, err=%v", err)
+        }
 
-	fmt.Printf("output: \n%v", resp)
+        fmt.Printf("output: \n%v", resp)
 }
 
 func of[T any](a T) *T {
-	return &a
+        return &a
 }
-
 ```
 
 ### 流式生成
 
 ```go
-
 package main
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"log"
-	"os"
+        "context"
+        "fmt"
+        "io"
+        "log"
+        "os"
 
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/openai"
+        "github.com/cloudwego/eino-ext/components/model/openai"
 )
 
 func main() {
-	ctx := context.Background()
-	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-		APIKey:  os.Getenv("OPENAI_API_KEY"),
-		Model:   os.Getenv("OPENAI_MODEL"),
-		BaseURL: os.Getenv("OPENAI_BASE_URL"),
-		ByAzure: func() bool {
-			if os.Getenv("OPENAI_BY_AZURE") == "true" {
-				return true
-			}
-			return false
-		}(),
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel of openai failed, err=%v", err)
-	}
+        ctx := context.Background()
+        chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+                APIKey:  os.Getenv("OPENAI_API_KEY"),
+                Model:   os.Getenv("OPENAI_MODEL"),
+                BaseURL: os.Getenv("OPENAI_BASE_URL"),
+                ByAzure: func() bool {
+                        if os.Getenv("OPENAI_BY_AZURE") == "true" {
+                                return true
+                        }
+                        return false
+                }(),
+        })
+        if err != nil {
+                log.Fatalf("NewChatModel of openai failed, err=%v", err)
+        }
 
-	streamMsgs, err := chatModel.Stream(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "as a machine, how do you answer user's question?",
-		},
-	})
+        streamMsgs, err := chatModel.Stream(ctx, []*schema.Message{
+                {
+                        Role:    schema.User,
+                        Content: "as a machine, how do you answer user's question?",
+                },
+        })
 
-	if err != nil {
-		log.Fatalf("Stream of openai failed, err=%v", err)
-	}
+        if err != nil {
+                log.Fatalf("Stream of openai failed, err=%v", err)
+        }
 
-	defer streamMsgs.Close()
+        defer streamMsgs.Close()
 
-	fmt.Printf("typewriter output:")
-	for {
-		msg, err := streamMsgs.Recv()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Fatalf("Recv of streamMsgs failed, err=%v", err)
-		}
-		fmt.Print(msg.Content)
-	}
+        fmt.Printf("typewriter output:")
+        for {
+                msg, err := streamMsgs.Recv()
+                if err == io.EOF {
+                        break
+                }
+                if err != nil {
+                        log.Fatalf("Recv of streamMsgs failed, err=%v", err)
+                }
+                fmt.Print(msg.Content)
+        }
 
-	fmt.Print("\n")
+        fmt.Print("\n")
 }
-
 ```
 
-### 工具调用
+### 工具调用[ ](http://localhost:1313/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai/#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8)
 
 ```go
-
 package main
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"log"
-	"os"
+        "context"
+        "fmt"
+        "io"
+        "log"
+        "os"
 
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/openai"
+        "github.com/cloudwego/eino-ext/components/model/openai"
 )
 
 func main() {
-	ctx := context.Background()
-	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-		APIKey:  os.Getenv("OPENAI_API_KEY"),
-		Model:   os.Getenv("OPENAI_MODEL"),
-		BaseURL: os.Getenv("OPENAI_BASE_URL"),
-		ByAzure: func() bool {
-			if os.Getenv("OPENAI_BY_AZURE") == "true" {
-				return true
-			}
-			return false
-		}(),
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel of openai failed, err=%v", err)
-	}
-	err = chatModel.BindForcedTools([]*schema.ToolInfo{
-		{
-			Name: "user_company",
-			Desc: "Retrieve the user's company and position based on their name and email.",
-			ParamsOneOf: schema.NewParamsOneOfByParams(
-				map[string]*schema.ParameterInfo{
-					"name":  {Type: "string", Desc: "user's name"},
-					"email": {Type: "string", Desc: "user's email"}}),
-		}, {
-			Name: "user_salary",
-			Desc: "Retrieve the user's salary based on their name and email.\n",
-			ParamsOneOf: schema.NewParamsOneOfByParams(
-				map[string]*schema.ParameterInfo{
-					"name":  {Type: "string", Desc: "user's name"},
-					"email": {Type: "string", Desc: "user's email"},
-				}),
-		}})
-	if err != nil {
-		log.Fatalf("BindForcedTools of openai failed, err=%v", err)
-	}
-	resp, err := chatModel.Generate(ctx, []*schema.Message{{
-		Role:    schema.System,
-		Content: "As a real estate agent, provide relevant property information based on the user's salary and job using the user_company and user_salary APIs. An email address is required.",
-	}, {
-		Role:    schema.User,
-		Content: "My name is John and my email is john@abc.com，Please recommend some houses that suit me.",
-	}})
-	if err != nil {
-		log.Fatalf("Generate of openai failed, err=%v", err)
-	}
-	fmt.Printf("output: \n%v", resp)
+        ctx := context.Background()
+        chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+                APIKey:  os.Getenv("OPENAI_API_KEY"),
+                Model:   os.Getenv("OPENAI_MODEL"),
+                BaseURL: os.Getenv("OPENAI_BASE_URL"),
+                ByAzure: func() bool {
+                        if os.Getenv("OPENAI_BY_AZURE") == "true" {
+                                return true
+                        }
+                        return false
+                }(),
+        })
+        if err != nil {
+                log.Fatalf("NewChatModel of openai failed, err=%v", err)
+        }
+        err = chatModel.BindForcedTools([]*schema.ToolInfo{
+                {
+                        Name: "user_company",
+                        Desc: "Retrieve the user's company and position based on their name and email.",
+                        ParamsOneOf: schema.NewParamsOneOfByParams(
+                                map[string]*schema.ParameterInfo{
+                                        "name":  {Type: "string", Desc: "user's name"},
+                                        "email": {Type: "string", Desc: "user's email"}}),
+                }, {
+                        Name: "user_salary",
+                        Desc: "Retrieve the user's salary based on their name and email.\n",
+                        ParamsOneOf: schema.NewParamsOneOfByParams(
+                                map[string]*schema.ParameterInfo{
+                                        "name":  {Type: "string", Desc: "user's name"},
+                                        "email": {Type: "string", Desc: "user's email"},
+                                }),
+                }})
+        if err != nil {
+                log.Fatalf("BindForcedTools of openai failed, err=%v", err)
+        }
+        resp, err := chatModel.Generate(ctx, []*schema.Message{{
+                Role:    schema.System,
+                Content: "As a real estate agent, provide relevant property information based on the user's salary and job using the user_company and user_salary APIs. An email address is required.",
+        }, {
+                Role:    schema.User,
+                Content: "My name is John and my email is john@abc.com，Please recommend some houses that suit me.",
+        }})
+        if err != nil {
+                log.Fatalf("Generate of openai failed, err=%v", err)
+        }
+        fmt.Printf("output: \n%v", resp)
 
-	streamResp, err := chatModel.Stream(ctx, []*schema.Message{
-		{
-			Role:    schema.System,
-			Content: "As a real estate agent, provide relevant property information based on the user's salary and job using the user_company and user_salary APIs. An email address is required.",
-		}, {
-			Role:    schema.User,
-			Content: "My name is John and my email is john@abc.com，Please recommend some houses that suit me.",
-		},
-	})
-	if err != nil {
-		log.Fatalf("Stream of openai failed, err=%v", err)
-	}
-	var messages []*schema.Message
-	for {
-		chunk, err := streamResp.Recv()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Fatalf("Recv of streamResp failed, err=%v", err)
-		}
-		messages = append(messages, chunk)
-	}
-	resp, err = schema.ConcatMessages(messages)
-	if err != nil {
-		log.Fatalf("ConcatMessages of openai failed, err=%v", err)
-	}
-	fmt.Printf("stream output: \n%v", resp)
+        streamResp, err := chatModel.Stream(ctx, []*schema.Message{
+                {
+                        Role:    schema.System,
+                        Content: "As a real estate agent, provide relevant property information based on the user's salary and job using the user_company and user_salary APIs. An email address is required.",
+                }, {
+                        Role:    schema.User,
+                        Content: "My name is John and my email is john@abc.com，Please recommend some houses that suit me.",
+                },
+        })
+        if err != nil {
+                log.Fatalf("Stream of openai failed, err=%v", err)
+        }
+        var messages []*schema.Message
+        for {
+                chunk, err := streamResp.Recv()
+                if err == io.EOF {
+                        break
+                }
+                if err != nil {
+                        log.Fatalf("Recv of streamResp failed, err=%v", err)
+                }
+                messages = append(messages, chunk)
+        }
+        resp, err = schema.ConcatMessages(messages)
+        if err != nil {
+                log.Fatalf("ConcatMessages of openai failed, err=%v", err)
+        }
+        fmt.Printf("stream output: \n%v", resp)
 }
-
 ```
 
-### 音频生成
+### 音频生成[ ](http://localhost:1313/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai/#%E9%9F%B3%E9%A2%91%E7%94%9F%E6%88%90)
 
 ```go
-
 package main
 
 import (
-	"context"
+        "context"
 
-	"log"
-	"os"
+        "log"
+        "os"
 
-	"github.com/bytedance/sonic"
-	"github.com/cloudwego/eino-ext/components/model/openai"
-	"github.com/cloudwego/eino/schema"
+        "github.com/bytedance/sonic"
+        "github.com/cloudwego/eino-ext/components/model/openai"
+        "github.com/cloudwego/eino/schema"
 )
 
 func main() {
-	ctx := context.Background()
+        ctx := context.Background()
 
-	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-		// 如果您想使用 Azure OpenAI 服务，请设置这两个字段。
-		// BaseURL: "https://{RESOURCE_NAME}.openai.azure.com",
-		// ByAzure: true,
-		// APIVersion: "2024-06-01",
-		APIKey:  os.Getenv("OPENAI_API_KEY"),
-		Model:   os.Getenv("OPENAI_MODEL"),
-		BaseURL: os.Getenv("OPENAI_BASE_URL"),
-		ByAzure: func() bool {
-			if os.Getenv("OPENAI_BY_AZURE") == "true" {
-				return true
-			}
-			return false
-		}(),
-		ReasoningEffort: openai.ReasoningEffortLevelHigh,
-		Modalities:      []openai.Modality{openai.AudioModality, openai.TextModality},
-		Audio: &openai.Audio{
-			Format: openai.AudioFormatMp3,
-			Voice:  openai.AudioVoiceAlloy,
-		},
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+        chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+                // 如果您想使用 Azure OpenAI 服务，请设置这两个字段。
+                // BaseURL: "https://{RESOURCE_NAME}.openai.azure.com",
+                // ByAzure: true,
+                // APIVersion: "2024-06-01",
+                APIKey:  os.Getenv("OPENAI_API_KEY"),
+                Model:   os.Getenv("OPENAI_MODEL"),
+                BaseURL: os.Getenv("OPENAI_BASE_URL"),
+                ByAzure: func() bool {
+                        if os.Getenv("OPENAI_BY_AZURE") == "true" {
+                                return true
+                        }
+                        return false
+                }(),
+                ReasoningEffort: openai.ReasoningEffortLevelHigh,
+                Modalities:      []openai.Modality{openai.AudioModality, openai.TextModality},
+                Audio: &openai.Audio{
+                        Format: openai.AudioFormatMp3,
+                        Voice:  openai.AudioVoiceAlloy,
+                },
+        })
+        if err != nil {
+                log.Fatalf("NewChatModel failed, err=%v", err)
+        }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role: schema.User,
-			UserInputMultiContent: []schema.MessageInputPart{
-				{Type: schema.ChatMessagePartTypeText, Text: "help me convert the following text to speech"},
-				{Type: schema.ChatMessagePartTypeText, Text: "Hello, what can I help you with?"},
-			},
-		},
-	})
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+        resp, err := chatModel.Generate(ctx, []*schema.Message{
+                {
+                        Role: schema.User,
+                        UserInputMultiContent: []schema.MessageInputPart{
+                                {Type: schema.ChatMessagePartTypeText, Text: "help me convert the following text to speech"},
+                                {Type: schema.ChatMessagePartTypeText, Text: "Hello, what can I help you with?"},
+                        },
+                },
+        })
+        if err != nil {
+                log.Fatalf("Generate failed, err=%v", err)
+        }
 
-	respBody, _ := sonic.MarshalIndent(resp, " ", " ")
-	log.Printf(" body: %s\n", string(respBody))
+        respBody, _ := sonic.MarshalIndent(resp, " ", " ")
+        log.Printf(" body: %s\n", string(respBody))
 
 }
-
 ```
 
 ### 结构化输出
 
 ```go
-
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"log"
-	"os"
+        "context"
+        "encoding/json"
+        "fmt"
+        "log"
+        "os"
 
-	"github.com/eino-contrib/jsonschema"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
+        "github.com/eino-contrib/jsonschema"
+        orderedmap "github.com/wk8/go-ordered-map/v2"
 
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/openai"
+        "github.com/cloudwego/eino-ext/components/model/openai"
 )
 
 func main() {
-	type Person struct {
-		Name   string `json:"name"`
-		Height int    `json:"height"`
-		Weight int    `json:"weight"`
-	}
+        type Person struct {
+                Name   string `json:"name"`
+                Height int    `json:"height"`
+                Weight int    `json:"weight"`
+        }
 
-	js := &jsonschema.Schema{
-		Type: string(schema.Object),
-		Properties: orderedmap.New[string, *jsonschema.Schema](
-			orderedmap.WithInitialData[string, *jsonschema.Schema](
-				orderedmap.Pair[string, *jsonschema.Schema]{
-					Key: "name",
-					Value: &jsonschema.Schema{
-						Type: string(schema.String),
-					},
-				},
-				orderedmap.Pair[string, *jsonschema.Schema]{
-					Key: "height",
-					Value: &jsonschema.Schema{
-						Type: string(schema.Integer),
-					},
-				},
-				orderedmap.Pair[string, *jsonschema.Schema]{
-					Key: "weight",
-					Value: &jsonschema.Schema{
-						Type: string(schema.Integer),
-					},
-				},
-			),
-		),
-	}
+        js := &jsonschema.Schema{
+                Type: string(schema.Object),
+                Properties: orderedmap.New[string, *jsonschema.Schema](
+                        orderedmap.WithInitialData[string, *jsonschema.Schema](
+                                orderedmap.Pair[string, *jsonschema.Schema]{
+                                        Key: "name",
+                                        Value: &jsonschema.Schema{
+                                                Type: string(schema.String),
+                                        },
+                                },
+                                orderedmap.Pair[string, *jsonschema.Schema]{
+                                        Key: "height",
+                                        Value: &jsonschema.Schema{
+                                                Type: string(schema.Integer),
+                                        },
+                                },
+                                orderedmap.Pair[string, *jsonschema.Schema]{
+                                        Key: "weight",
+                                        Value: &jsonschema.Schema{
+                                                Type: string(schema.Integer),
+                                        },
+                                },
+                        ),
+                ),
+        }
 
-	ctx := context.Background()
-	chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
-		APIKey:  os.Getenv("OPENAI_API_KEY"),
-		Model:   os.Getenv("OPENAI_MODEL"),
-		BaseURL: os.Getenv("OPENAI_BASE_URL"),
-		ByAzure: func() bool {
-			if os.Getenv("OPENAI_BY_AZURE") == "true" {
-				return true
-			}
-			return false
-		}(),
-		ResponseFormat: &openai.ChatCompletionResponseFormat{
-			Type: openai.ChatCompletionResponseFormatTypeJSONSchema,
-			JSONSchema: &openai.ChatCompletionResponseFormatJSONSchema{
-				Name:        "person",
-				Description: "data that describes a person",
-				Strict:      false,
-				JSONSchema:  js,
-			},
-		},
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+        ctx := context.Background()
+        chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+                APIKey:  os.Getenv("OPENAI_API_KEY"),
+                Model:   os.Getenv("OPENAI_MODEL"),
+                BaseURL: os.Getenv("OPENAI_BASE_URL"),
+                ByAzure: func() bool {
+                        if os.Getenv("OPENAI_BY_AZURE") == "true" {
+                                return true
+                        }
+                        return false
+                }(),
+                ResponseFormat: &openai.ChatCompletionResponseFormat{
+                        Type: openai.ChatCompletionResponseFormatTypeJSONSchema,
+                        JSONSchema: &openai.ChatCompletionResponseFormatJSONSchema{
+                                Name:        "person",
+                                Description: "data that describes a person",
+                                Strict:      false,
+                                JSONSchema:  js,
+                        },
+                },
+        })
+        if err != nil {
+                log.Fatalf("NewChatModel failed, err=%v", err)
+        }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role:    schema.System,
-			Content: "Parse the user input into the specified json struct",
-		},
-		{
-			Role:    schema.User,
-			Content: "John is one meter seventy tall and weighs sixty kilograms",
-		},
-	})
+        resp, err := chatModel.Generate(ctx, []*schema.Message{
+                {
+                        Role:    schema.System,
+                        Content: "Parse the user input into the specified json struct",
+                },
+                {
+                        Role:    schema.User,
+                        Content: "John is one meter seventy tall and weighs sixty kilograms",
+                },
+        })
 
-	if err != nil {
-		log.Fatalf("Generate of openai failed, err=%v", err)
-	}
+        if err != nil {
+                log.Fatalf("Generate of openai failed, err=%v", err)
+        }
 
-	result := &Person{}
-	err = json.Unmarshal([]byte(resp.Content), result)
-	if err != nil {
-		log.Fatalf("Unmarshal of openai failed, err=%v", err)
-	}
-	fmt.Printf("%+v", *result)
+        result := &Person{}
+        err = json.Unmarshal([]byte(resp.Content), result)
+        if err != nil {
+                log.Fatalf("Unmarshal of openai failed, err=%v", err)
+        }
+        fmt.Printf("%+v", *result)
 }
-
 ```
 
+## **使用方式**
 
+### **组件初始化**
 
-## 更多信息
+OpenAI 模型通过 `NewChatModel` 函数进行初始化，主要配置参数如下：
 
-- [Eino Documentation](https://www.cloudwego.io/zh/docs/eino/)
-- [OpenAI Documentation](https://platform.openai.com/docs/api-reference/chat/create)
+```go
+import "github.com/cloudwego/eino-ext/components/model/openai"
+
+model, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+    // Azure OpenAI Service 配置（可选）
+    ByAzure:    false,           // 是否使用 Azure OpenAI
+    BaseURL:    "your-url",      // Azure API 基础 URL
+    APIVersion: "2023-05-15",    // Azure API 版本
+
+    // 基础配置
+    APIKey:  "your-key",         // API 密钥
+    Timeout: 30 * time.Second,   // 超时时间
+
+    // 模型参数
+    Model:            "gpt-4",   // 模型名称
+    MaxTokens:        &maxTokens,// 最大生成长度
+    Temperature:      &temp,     // 温度
+    TopP:             &topP,     // Top-P 采样
+    Stop:             []string{},// 停止词
+    PresencePenalty:  &pp,      // 存在惩罚
+    FrequencyPenalty: &fp,      // 频率惩罚
+
+    // 高级参数
+    ResponseFormat:   &format,   // 响应格式
+    Seed:            &seed,      // 随机种子
+    LogitBias:       map[string]int{}, // Token 偏置
+    User:            &user,      // 用户标识
+    
+    ReasoningEffort:openai.ReasoningEffortLevelHigh, // 推理级别, 默认 "medium"
+    
+    Modalities:     make([]openai.Modality, 0), // 模型回复模态类型: ["text","audio"] 默认 text
+    
+    Audio: &openai.Audio{  //  音频输出参数，当模态存在audio时，此字段必填
+        Format: openai.AudioFormatMp3,
+        Voice:  openai.AudioVoiceAlloy,
+    },
+    
+    ExtraFields： map[string]any{}, // 额外字段，此字段将新增或者覆盖访问请求字段，用于实验性验证
+       
+})
+```
+
+> - 参数具体含义，可以参考: [https://platform.openai.com/docs/api-reference/chat/create](https://platform.openai.com/docs/api-reference/chat/create)
+> - azure 相关服务，可以参考: [https://learn.microsoft.com/en-us/azure/ai-services/openai/](https://learn.microsoft.com/en-us/azure/ai-services/openai/)
+
+### **生成对话**
+
+对话生成支持普通模式和流式模式：
+
+```go
+// invoke模式
+response, err := model.Generate(ctx, messages)
+    
+// 流式模式
+stream, err := model.Stream(ctx, messages)
+```
+
+消息格式示例：
+
+```go
+import (
+    "os"
+   "encoding/base64"
+
+    "github.com/cloudwego/eino/schema"
+)
+
+// base64 格式的图片数据
+image, err := os.ReadFile("./examples/image/eino.png")
+    if err != nil {
+        log.Fatalf("os.ReadFile failed, err=%v\n", err)
+    }
+
+imageStr := base64.StdEncoding.EncodeToString(image)
+
+messages := []*schema.Message{
+    // 系统消息
+    schema.SystemMessage("你是一个助手"),
+    
+    // 多模态消息（包含图片）
+    {
+        Role: schema.User,
+        UserInputMultiContent: []schema.MessageInputPart{
+            {
+                Type: schema.ChatMessagePartTypeImageURL,
+                Image: &schema.MessageInputImage{
+                    MessagePartCommon: schema.MessagePartCommon{
+                        Base64Data: &imageStr,
+                        MIMEType:   "image/png",    // required when use Base64Data
+                    },
+                Detail: schema.ImageURLDetailAuto,
+                },
+            },
+            {
+                Type: schema.ChatMessagePartTypeText,
+                Text: "这张图片是什么？",
+            },
+        },
+    },
+}
+```
+
+### **工具调用**
+
+支持绑定工具和强制工具调用：
+
+```go
+import "github.com/cloudwego/eino/schema"
+
+// 定义工具
+tools := []*schema.ToolInfo{
+    {
+       Name: "search",
+       Desc: "搜索信息",
+       ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
+          "query": {
+             Type:     schema.String,
+             Desc:     "搜索关键词",
+             Required: true,
+          },
+       }),
+    },
+}
+// 绑定可选工具
+err := model.BindTools(tools)
+
+// 绑定强制工具
+err := model.BindForcedTools(tools)
+```
+
+> 工具相关信息，可以参考 [Eino: ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)
+
+### **完整使用示例**
+
+#### **直接对话**
+
+```go
+package main
+
+import (
+    "context"
+    "time"
+    
+    "github.com/cloudwego/eino-ext/components/model/openai"
+    "github.com/cloudwego/eino/schema"
+)
+
+func main() {
+    ctx := context.Background()
+    
+    // 初始化模型
+    model, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+        APIKey:  "your-api-key", // required
+        Timeout: 30 * time.Second,
+        Model:   "gpt-4", // required
+        
+        // 如果模型支持语音生成，并且有需求生成语音时，需要进行如下配置
+        // Modalities: []openai.Modality{openai.AudioModality, openai.TextModality},
+        //Audio: &openai.Audio{
+        //        Format: openai.AudioFormatMp3,
+        //        Voice:  openai.AudioVoiceAlloy,
+        //},
+},
+        
+    })
+    if err != nil {
+        panic(err)
+    }
+    
+    // base64 格式的图片数据
+    image, err := os.ReadFile("./examples/image/cat.png")
+        if err != nil {
+            log.Fatalf("os.ReadFile failed, err=%v\n", err)
+        }
+
+    imageStr := base64.StdEncoding.EncodeToString(image)
+
+    // 请求消息
+    messages := []*schema.Message{
+        schema.SystemMessage("你是一个图片生成助手，可以仿照用户给定的图片生成一个风格近似的图片"),
+        {
+            Role: schema.User,
+            UserInputMultiContent: []schema.MessageInputPart{
+                {
+                    Type: schema.ChatMessagePartTypeImage,
+                    Image: &schema.MessageInputImage{
+                    MessagePartCommon: schema.MessagePartCommon{
+                        Base64Data: &imageStr,
+                        MIMEType:   "image/png",    // required when use Base64Data
+                    },
+                    Detail: schema.ImageURLDetailAuto,
+                },
+                {
+                    Type: schema.ChatMessagePartTypeText,
+                    Text: "Generate an image of a cat",
+                },
+            },
+        },
+    }
+    
+    // 生成回复
+    response, err := model.Generate(ctx, messages)
+    if err != nil {
+        panic(err)
+    }
+          
+    // 处理回复
+    /*
+        生成的多模态内容存储在 response.AssistantGentMultiContent 字段中
+        本例中最终生成的 message 形如：
+        AssistantMessage = schema.Message{
+                        Role: schema.Assistant,
+                         AssistantGenMultiContent : []schema.MessageOutputPart{
+                             {Type: schema.ChatMessagePartTypeImageURL,
+                              Image: &schema.MessageOutputImage{
+                                  MessagePartCommon: schema.MessagePartCommon{
+                                      Base64Data: &DataStr, 
+                                      MIMEType: "image/png",
+                                      },
+                                  },
+                              },
+                          },
+                      }
+    */
+    
+    fmt.Printf("Assistant: %s\n", resp)
+}
+```
+
+#### **流式对话**
+
+```go
+package main
+
+import (
+    "context"
+    "time"
+    
+    "github.com/cloudwego/eino-ext/components/model/openai"
+    "github.com/cloudwego/eino/schema"
+)
+
+func main() {
+    ctx := context.Background()
+    
+    // 初始化模型
+    model, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+        APIKey:  "your-api-key",
+        Timeout: 30 * time.Second,
+        Model:   "gpt-4",
+    })
+    if err != nil {
+        panic(err)
+    }
+    
+    // 准备消息
+    messages := []*schema.Message{
+        schema.SystemMessage("你是一个助手"),
+        schema.UserMessage("写一个故事"),
+    }
+    
+    // 获取流式回复
+    reader, err := model.Stream(ctx, messages)
+    if err != nil {
+        panic(err)
+    }
+    defer reader.Close() // 注意要关闭
+    
+    // 处理流式内容
+    for {
+        chunk, err := reader.Recv()
+        if err != nil {
+            break
+        }
+        print(chunk.Content)
+    }
+}
+```
+
+### [更多示例](https://github.com/cloudwego/eino-ext/tree/main/components/model/openai/examples)
+
+## **相关文档**
+
+- [Eino: ChatModel 使用说明](/zh/docs/eino/core_modules/components/chat_model_guide)
+- [Eino: ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)
+- [ChatModel - ARK](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
+- [ChatModel - Ollama](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)

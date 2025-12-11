@@ -18,19 +18,20 @@ import (
 )
 
 func main() {
-    cbh, flusher := langfuse.NewLangfuseHandler(&langfuse.Config{
+    cbh, flusher := NewLangfuseHandler(&Config{
         Host: "https://cloud.langfuse.com",
         PublicKey: "pk-xxx",
         SecretKey: "sk-xxx",
     })
-    defer flusher() // 等待所有trace上报完成后退出
-
+    
     callbacks.AppendGlobalHandlers(cbh) // 设置langfuse为全局callback
     
     g := NewGraph[string,string]()
     /*
     * compose and run graph
     */
+    
+    flusher() // 等待所有trace上报完成后退出
 }
 ```
 

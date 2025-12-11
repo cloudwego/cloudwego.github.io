@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-10-17"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: ChatModel 使用说明'
-weight: 0
+weight: 1
 ---
 
 ## 基本介绍
@@ -78,7 +78,7 @@ type Message struct {
     Content string
     // MultiContent 是多模态内容，支持文本、图片、音频等
     // Deprecated: 已废弃，使用UserInputMultiContent替代
-    MultiContent []ChatMessagePart
+  ~~  MultiContent []ChatMessagePart~~
     // UserInputMultiContent 用来存储用户输入的多模态数据，支持文本、图片、音频、视频、文件
     // 使用此字段时限制模型角色为User
     UserInputMultiContent []MessageInputPart
@@ -263,9 +263,31 @@ handler := &callbacksHelper.ModelCallbackHandler{
        return ctx
     },
     OnEndWithStreamOutput: func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[*model.CallbackOutput]) context.Context {
-       fmt.Println("开始接收流式输出")
-       defer output.Close()
-       return ctx
+        fmt.Println("开始接收流式输出")
+        defer output.Close()
+    
+        for {
+            chunk, err := output.Recv()
+            if errors.Is(err, io.EOF) {
+                break
+            }
+            if err != nil {
+                fmt.Printf("流读取错误: %v\n", err)
+                return
+            }
+            if chunk == nil || chunk.Message == nil {
+                continue
+            }
+    
+            // 仅在模型输出包含 ToolCall 时打印
+            if len(chunk.Message.ToolCalls) > 0 {
+                for _, tc := range chunk.Message.ToolCalls {
+                    fmt.Printf("检测到 ToolCall，arguments: %s\n", tc.Function.Arguments)
+                }
+            }
+        }
+    
+        return ctx
     },
 }
 

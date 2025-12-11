@@ -13,7 +13,7 @@ description: "Hertz middleware to automatically generate RESTful API documentati
 >
 > See the migration guide below.
 
-## Migration Guide 
+## Migration Guide
 
 1. Remove deprecated dependencies
 
@@ -125,6 +125,7 @@ On a web browser, go to http://localhost:8888/swagger/index.html or whichever ad
 
 For users who want to create their own custom UI, they will need to download the Swagger UI dist files, and serve the UI files as static assets.
 Copy the following files from [swagger-ui/dist](https://github.com/swagger-api/swagger-ui/tree/master/dist) and place them in `swagger-ui/`.
+
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/favicon-16x16.png
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/favicon-32x32.png
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/swagger-ui.css

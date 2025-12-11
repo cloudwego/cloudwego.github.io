@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-02-10"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Eino 流式编程要点
-weight: 3
+weight: 4
 ---
 
 > 💡
@@ -174,29 +174,29 @@ type Runnable[I, O any] interface {
 
 如果用户通过 **Invoke** 来调用 Graph，则 Graph 内部所有组件都以 Invoke 范式来调用。如果某个组件，没有实现 Invoke 范式，则 Eino 框架自动根据组件实现了的流式范式，封装出 Invoke 调用范式，优先顺位如下：
 
-- 若组件实现了 Stream，则通过 Stream 封装 Invoke，即自动 concat 输出流。
+- 若组件实现了 Stream，则将 Stream 封装成 Invoke，即自动 concat 输出流。
 
 <a href="/img/eino/invoke_outside_stream_inside.png" target="_blank"><img src="/img/eino/invoke_outside_stream_inside.png" width="100%" /></a>
 
-- 否则，若组件实现了 Collect，则通过 Collect 封装 Invoke，即非流式入参转单帧流。
+- 否则，若组件实现了 Collect，则将 Collect 封装成 Invoke，即非流式入参转单帧流。
 
 <a href="/img/eino/invoke_outside_collect_inside.png" target="_blank"><img src="/img/eino/invoke_outside_collect_inside.png" width="100%" /></a>
 
-- 如果都没实现，则必须实现 Transform，通过 Transform 封装 Invoke，即入参转单帧流，出参 concat。
+- 如果都没实现，则必须实现 Transform，将 Transform 封装成 Invoke，即入参转单帧流，出参 concat。
 
 <a href="/img/eino/invoke_outside_transform_inside.png" target="_blank"><img src="/img/eino/invoke_outside_transform_inside.png" width="100%" /></a>
 
 如果用户通过 **Stream/Collect/Transform** 来调用 Graph，则 Graph 内部所有组件都以 Transform 范式来调用。如果某个组件，没有实现 Transform 范式，则 Eino 框架自动根据组件实现了的流式范式，封装出 Transform 调用范式，优先顺位如下：
 
-- 若组件实现了 Stream，则通过 Stream 封装 Transform，即自动 concat 输入流。
+- 若组件实现了 Stream，则将 Stream 封装成 Transform，即自动 concat 输入流。
 
 <a href="/img/eino/transform_inside_stream_inside.png" target="_blank"><img src="/img/eino/transform_inside_stream_inside.png" width="100%" /></a>
 
-- 否则，若组件实现了 Collect，则通过 Collect 封装 Transform，即非流式出参转单帧流。
+- 否则，若组件实现了 Collect，则将 Collect 封装成 Transform，即非流式出参转单帧流。
 
 <a href="/img/eino/transform_outside_stream_inside.png" target="_blank"><img src="/img/eino/transform_outside_stream_inside.png" width="100%" /></a>
 
-- 如果都没实现，则必须实现 Invoke，通过 Invoke 封装 Transform，即入参流 concat，出参转单帧流
+- 如果都没实现，则必须实现 Invoke，将 Invoke 封装成 Transform，即入参流 concat，出参转单帧流
 
 <a href="/img/eino/transform_outside_invoke_inside.png" target="_blank"><img src="/img/eino/transform_outside_invoke_inside.png" width="100%" /></a>
 
@@ -212,7 +212,7 @@ type Runnable[I, O any] interface {
   - 目前 Eino 的实现，A、B 都以 Invoke 调用，需要把 A 的输出流 Concat，并把 B 的输入做成假流式。失去了真流式的内部语义。
 - A，B 两个组件编排为一个 Chain，以 Collect 调用。其中 A 实现了 Transform 和 Collect，B 实现了 Invoke。两个选择：
   - A 以 Collect 调用，B 以 Invoke 调用：整体还是 Collect 的语义，不需要框架做任何的自动转化和装箱操作。
-  - 目前 Eino 的实现，A、B 都以 Transform 调用，由于 A 的业务接口里实现了 Transform，因此 A 的输出和 B 的输入都可能是真流式，而 B 的业务接口里只实现了 Invoke，根据上面的分析，B 的入参会需要由真流式 concat 成非流式。这时就需要用户额外提供 B 的入参的 cancat 函数，这本可以避免。
+  - 目前 Eino 的实现，A、B 都以 Transform 调用，由于 A 的业务接口里实现了 Transform，因此 A 的输出和 B 的输入都可能是真流式，而 B 的业务接口里只实现了 Invoke，根据上面的分析，B 的入参会需要由真流式 concat 成非流式。这时就需要用户额外提供 B 的入参的 concat 函数，这本可以避免。
 
 上面两个例子，都可以找到一个明确的、与 Eino 的约定不同的，但却更优的流式调用路径。但是，当泛化到任意的编排场景时，很难找到一个明确定义的、与 Eino 的约定不同的、却总是更优的普适的规则。比如，A->B->C，以 Collect 语义调用，是 A->B 的时候 Collect，还是 B->C 的时候 Collect？潜在的因素有 A、B、C 具体实现的业务接口，可能还有“尽量多的使用真流式”的判断，也许还有哪个参数实现了 Concat，哪个没有实现。如果是更复杂的 Graph，需要考虑的因素会快速增加。在这种情况下，即使框架能定义出一套明确的、更优的普适规则，也很难解释清楚，理解和使用成本会很高，很可能已经超过了这个新规则实际带来的好处。
 

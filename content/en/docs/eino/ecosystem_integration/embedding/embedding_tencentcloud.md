@@ -1,31 +1,31 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Embedding - tencentcloud
+title: Embedding - TencentCloud
 weight: 0
 ---
 
-## Tencent Cloud Hunyuan Embedding
+## **Tencent Cloud Hunyuan Embedding**
 
-A Tencent Cloud Hunyuan embedding implementation for [Eino](https://github.com/cloudwego/eino) that implements the `Embedder` interface. This enables seamless integration with Eino's embedding system for text embedding capabilities.
+This is a Tencent Cloud Hunyuan Embedding component for [Eino](https://github.com/cloudwego/eino) implementing the `Embedder` interface. It integrates seamlessly with Eino’s embedding system and provides text vectorization.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/embedding.Embedder`
-- Easy integration with Eino's rag workflow
-- Built-in token usage tracking
-- Automatic batch processing for large text arrays
-- Built-in callback support
+- Easy to integrate into Eino RAG workflows
+- Built‑in token usage tracking
+- Automatically batches large text arrays
+- Built‑in callback support
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/embedding/tencentcloud
 ```
 
-## Quick Start
+## **Quick Start**
 
 ```go
 package main
@@ -34,27 +34,27 @@ import (
     "context"
     "fmt"
     "os"
-    
+
     "github.com/cloudwego/eino-ext/components/embedding/tencentcloud"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Create embedder config
+
+    // config
     cfg := &tencentcloud.EmbeddingConfig{
         SecretID:  os.Getenv("TENCENTCLOUD_SECRET_ID"),
         SecretKey: os.Getenv("TENCENTCLOUD_SECRET_KEY"),
         Region:    "ap-guangzhou",
     }
 
-    // Create the embedder
+    // create embedder
     embedder, err := tencentcloud.NewEmbedder(ctx, cfg)
     if err != nil {
         panic(err)
     }
 
-    // Get embeddings for texts
+    // get embeddings
     embeddings, err := embedder.EmbedStrings(ctx, []string{"hello world", "bye world"})
     if err != nil {
         panic(err)
@@ -64,39 +64,38 @@ func main() {
 }
 ```
 
-## Configuration
+## **Configuration**
 
-The embedder can be configured using the `EmbeddingConfig` struct:
+Configure via `EmbeddingConfig`:
 
 ```go
 type EmbeddingConfig struct {
     SecretID  string // Tencent Cloud Secret ID
     SecretKey string // Tencent Cloud Secret Key
-    Region    string // Tencent Cloud Region (e.g. "ap-hongkong")
+    Region    string // Tencent Cloud region (e.g., "ap-guangzhou")
 }
 ```
 
-## Features Details
+## **Details**
 
-### Automatic Batch Processing
+### **Auto Batching**
 
-The embedder automatically handles batch processing for large text arrays. According to Tencent Cloud's API limitations, each request can process up to 200 texts. The embedder will automatically split larger arrays into appropriate batches.
+Automatically handles large text arrays. Per Tencent Cloud API limits, a single request can process up to 200 texts; the embedder splits larger arrays into proper batches.
 
-### Token Usage Tracking
+### **Token Usage Tracking**
 
-The embedder tracks token usage through Eino's callback system. Token usage information includes:
-- Prompt tokens
-- Total tokens
+Tracks token usage via Eino’s callback system:
+- input token count
+- total token count
 
-### Callbacks Support
+### **Callback Support**
 
-The embedder fully supports Eino's callback system, enabling:
-- Error tracking
-- Start/End event monitoring
-- Token usage statistics
+Fully supports Eino callbacks:
+- error tracking
+- start/end event monitoring
+- token usage statistics
 
-## For More Details
+## **More Information**
 
-- [Tencent Cloud Hunyuan API Documentation](https://cloud.tencent.com/document/product/1729/102832)
-- [Eino Documentation](https://github.com/cloudwego/eino)
-
+- Tencent Hunyuan API: https://cloud.tencent.com/document/product/1729/102832
+- Eino docs: https://github.com/cloudwego/eino

@@ -1,10 +1,11 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'EinoDev: Devops tools'
-weight: 0
+title: 'Eino Dev: Application Tooling'
+weight: 5
 ---
 
-🚀  Eino is a development framework for Go AI integration components, providing common components related to AI applications as well as integration component orchestration capabilities. To better assist developers in using Eino, we offer the "GoLand Eino IDE Plugin". Install the plugin now ([EinoDev Plugin Installation Guide](/docs/eino/core_modules/devops/ide_plugin_guide)) to help you develop efficiently. 🚀
+🚀 Eino is a Go framework for AI component integration and orchestration. To help developers use Eino efficiently, we provide the “Eino Dev” plugin. Install it now ([Eino Dev Plugin Installation Guide](/docs/eino/core_modules/devops/ide_plugin_guide)) to accelerate development. 🚀
+

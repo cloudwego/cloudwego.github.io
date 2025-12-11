@@ -1,31 +1,31 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: ChatModel - ollama
 weight: 0
 ---
 
-A Ollama model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
+A Ollama model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities to enhance natural language processing and generation.
 
-## Features
+## **Features**
 
 - Implements `github.com/cloudwego/eino/components/model.Model`
 - Easy integration with Eino's model system
 - Configurable model parameters
-- Support for chat completion
-- Support for streaming responses
-- Custom response parsing support
+- Supports chat completion
+- Supports streaming responses
+- Supports custom response parsing
 - Flexible model configuration
 
-## Installation
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/ollama@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 Here's a quick example of how to use the Ollama model:
 
@@ -33,45 +33,45 @@ Here's a quick example of how to use the Ollama model:
 package main
 
 import (
-	"context"
-	"log"
-	"os"
+    "context"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/ollama"
+    "github.com/cloudwego/eino-ext/components/model/ollama"
 )
 
 func main() {
-	ctx := context.Background()
-	modelName := os.Getenv("MODEL_NAME")
-	
-	chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
-		BaseURL: "http://localhost:11434",
-		Model:   modelName,
-	})
-	if err != nil {
-		log.Printf("NewChatModel failed, err=%v\n", err)
-		return
-	}
+    ctx := context.Background()
+    modelName := os.Getenv("MODEL_NAME")
+    
+    chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
+        BaseURL: "http://localhost:11434",
+        Model:   modelName,
+    })
+    if err != nil {
+        log.Printf("NewChatModel failed, err=%v\n", err)
+        return
+    }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "as a machine, how do you answer user's question?",
-		},
-	})
-	if err != nil {
-		log.Printf("Generate failed, err=%v\n", err)
-		return
-	}
+    resp, err := chatModel.Generate(ctx, []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "as a machine, how do you answer user's question?",
+        },
+    })
+    if err != nil {
+        log.Printf("Generate failed, err=%v\n", err)
+        return
+    }
 
-	log.Printf("output: \n%v\n", resp)
+    log.Printf("output: \n%v\n", resp)
 }
 
 ```
 
-## Configuration
+## **Configuration**
 
 The model can be configured using the `ollama.ChatModelConfig` struct:
 
@@ -134,316 +134,317 @@ type ThinkValue struct {
 
 ```
 
+## **Examples**
 
-## examples
-
-### generate
+### **Text Generation**
 
 ```go
 
 package main
 
 import (
-	"context"
-	"log"
-	"os"
+    "context"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/ollama"
+    "github.com/cloudwego/eino-ext/components/model/ollama"
 )
 
 func main() {
-	ctx := context.Background()
-	modelName := os.Getenv("MODEL_NAME")
-	chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
-		BaseURL: "http://localhost:11434",
-		Model:   modelName,
-	})
-	if err != nil {
-		log.Printf("NewChatModel failed, err=%v\n", err)
-		return
-	}
+    ctx := context.Background()
+    modelName := os.Getenv("MODEL_NAME")
+    chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
+        BaseURL: "http://localhost:11434",
+        Model:   modelName,
+    })
+    if err != nil {
+        log.Printf("NewChatModel failed, err=%v\n", err)
+        return
+    }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "as a machine, how do you answer user's question?",
-		},
-	})
-	if err != nil {
-		log.Printf("Generate failed, err=%v\n", err)
-		return
-	}
+    resp, err := chatModel.Generate(ctx, []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "as a machine, how do you answer user's question?",
+        },
+    })
+    if err != nil {
+        log.Printf("Generate failed, err=%v\n", err)
+        return
+    }
 
-	log.Printf("output: \n%v\n", resp)
+    log.Printf("output: \n%v\n", resp)
 }
 
 ```
 
-### generate_with_image
+### **Multimodal Support (Image Understanding)**
 
 ```go
 
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
+    "context"
+    "fmt"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/ollama"
+    "github.com/cloudwego/eino-ext/components/model/ollama"
 )
 
 func main() {
-	ctx := context.Background()
-	modelName := os.Getenv("MODEL_NAME")
-	chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
-		BaseURL: "http://localhost:11434",
-		Model:   modelName,
-	})
-	if err != nil {
-		log.Printf("NewChatModel failed, err=%v\n", err)
-		return
-	}
+    ctx := context.Background()
+    modelName := os.Getenv("MODEL_NAME")
+    chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
+        BaseURL: "http://localhost:11434",
+        Model:   modelName,
+    })
+    if err != nil {
+        log.Printf("NewChatModel failed, err=%v\n", err)
+        return
+    }
 
-	multiModalMsg := &schema.Message{
-		UserInputMultiContent: []schema.MessageInputPart{
-			{
-				Type: schema.ChatMessagePartTypeText,
-				Text: "this picture is a landscape photo, what's the picture's content",
-			},
-			{
-				Type: schema.ChatMessagePartTypeImageURL,
-				Image: &schema.MessageInputImage{
-					MessagePartCommon: schema.MessagePartCommon{
-						URL: of("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT11qEDxU4X_MVKYQVU5qiAVFidA58f8GG0bQ&s"),
-					},
-					Detail: schema.ImageURLDetailAuto,
-				},
-			},
-		},
-	}
+    multiModalMsg := &schema.Message{
+        UserInputMultiContent: []schema.MessageInputPart{
+            {
+                Type: schema.ChatMessagePartTypeText,
+                Text: "this picture is a landscape photo, what's the picture's content",
+            },
+            {
+                Type: schema.ChatMessagePartTypeImageURL,
+                Image: &schema.MessageInputImage{
+                    MessagePartCommon: schema.MessagePartCommon{
+                        URL: of("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT11qEDxU4X_MVKYQVU5qiAVFidA58f8GG0bQ&s"),
+                    },
+                    Detail: schema.ImageURLDetailAuto,
+                },
+            },
+        },
+    }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		multiModalMsg,
-	})
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+    resp, err := chatModel.Generate(ctx, []*schema.Message{
+        multiModalMsg,
+    })
+    if err != nil {
+        log.Fatalf("Generate failed, err=%v", err)
+    }
 
-	fmt.Printf("output: \n%v", resp)
+    fmt.Printf("output: \n%v", resp)
 }
 
 func of[T any](a T) *T {
-	return &a
+    return &a
 }
 
 ```
 
-### stream
+### **Streaming Generation**
 
 ```go
 
 package main
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"log"
-	"os"
+    "context"
+    "fmt"
+    "io"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/ollama"
+    "github.com/cloudwego/eino-ext/components/model/ollama"
 )
 
 func main() {
-	ctx := context.Background()
-	modelName := os.Getenv("MODEL_NAME")
-	chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
-		BaseURL: "http://localhost:11434",
-		Model:   modelName,
-	})
-	if err != nil {
-		log.Printf("NewChatModel failed, err=%v", err)
-		return
-	}
+    ctx := context.Background()
+    modelName := os.Getenv("MODEL_NAME")
+    chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
+        BaseURL: "http://localhost:11434",
+        Model:   modelName,
+    })
+    if err != nil {
+        log.Printf("NewChatModel failed, err=%v", err)
+        return
+    }
 
-	streamMsgs, err := chatModel.Stream(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "as a machine, how do you answer user's question?",
-		},
-	})
+    streamMsgs, err := chatModel.Stream(ctx, []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "as a machine, how do you answer user's question?",
+        },
+    })
 
-	if err != nil {
-		log.Printf("Generate failed, err=%v", err)
-		return
-	}
+    if err != nil {
+        log.Printf("Generate failed, err=%v", err)
+        return
+    }
 
-	defer streamMsgs.Close()
+    defer streamMsgs.Close()
 
-	log.Println("typewriter output:")
-	for {
-		msg, err := streamMsgs.Recv()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Printf("\nstream.Recv failed, err=%v", err)
-			return
-		}
-		fmt.Print(msg.Content)
-	}
+    log.Println("typewriter output:")
+    for {
+        msg, err := streamMsgs.Recv()
+        if err == io.EOF {
+            break
+        }
+        if err != nil {
+            log.Printf("\nstream.Recv failed, err=%v", err)
+            return
+        }
+        fmt.Print(msg.Content)
+    }
 
-	fmt.Print("\n")
+    fmt.Print("\n")
 }
 
 ```
 
-### intent_tool
+### **Tool Calling**
 
 ```go
 
 package main
 
 import (
-	"context"
-	"log"
-	"os"
+    "context"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/ollama"
+    "github.com/cloudwego/eino-ext/components/model/ollama"
 )
 
 func main() {
 
-	ctx := context.Background()
-	modelName := os.Getenv("MODEL_NAME")
-	chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
-		BaseURL: "http://localhost:11434",
-		Model:   modelName,
-	})
-	if err != nil {
-		log.Printf("NewChatModel failed, err=%v", err)
-		return
-	}
+    ctx := context.Background()
+    modelName := os.Getenv("MODEL_NAME")
+    chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
+        BaseURL: "http://localhost:11434",
+        Model:   modelName,
+    })
+    if err != nil {
+        log.Printf("NewChatModel failed, err=%v", err)
+        return
+    }
 
-	err = chatModel.BindTools([]*schema.ToolInfo{
-		{
-			Name: "user_company",
-			Desc: "Query the user's company and position information based on their name and email",
-			ParamsOneOf: schema.NewParamsOneOfByParams(
-				map[string]*schema.ParameterInfo{
-					"name": {
-						Type: "string",
-						Desc: "The user's name",
-					},
-					"email": {
-						Type: "string",
-						Desc: "The user's email",
-					},
-				}),
-		},
-		{
-			Name: "user_salary",
-			Desc: "Query the user's salary information based on their name and email",
-			ParamsOneOf: schema.NewParamsOneOfByParams(
-				map[string]*schema.ParameterInfo{
-					"name": {
-						Type: "string",
-						Desc: "The user's name",
-					},
-					"email": {
-						Type: "string",
-						Desc: "The user's email",
-					},
-				}),
-		},
-	})
-	if err != nil {
-		log.Printf("BindForcedTools failed, err=%v", err)
-		return
-	}
+    err = chatModel.BindTools([]*schema.ToolInfo{
+        {
+            Name: "user_company",
+            Desc: "Query the user's company and position information based on their name and email",
+            ParamsOneOf: schema.NewParamsOneOfByParams(
+                map[string]*schema.ParameterInfo{
+                    "name": {
+                        Type: "string",
+                        Desc: "The user's name",
+                    },
+                    "email": {
+                        Type: "string",
+                        Desc: "The user's email",
+                    },
+                }),
+        },
+        {
+            Name: "user_salary",
+            Desc: "Query the user's salary information based on their name and email",
+            ParamsOneOf: schema.NewParamsOneOfByParams(
+                map[string]*schema.ParameterInfo{
+                    "name": {
+                        Type: "string",
+                        Desc: "The user's name",
+                    },
+                    "email": {
+                        Type: "string",
+                        Desc: "The user's email",
+                    },
+                }),
+        },
+    })
+    if err != nil {
+        log.Printf("BindForcedTools failed, err=%v", err)
+        return
+    }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role:    schema.System,
-			Content: "You are a real estate agent. Use the user_company and user_salary APIs to provide relevant property information based on the user's salary and job. Email is required",
-		},
-		{
-			Role:    schema.User,
-			Content: "My name is zhangsan, and my email is zhangsan@bytedance.com. Please recommend some suitable houses for me.",
-		},
-	})
+    resp, err := chatModel.Generate(ctx, []*schema.Message{
+        {
+            Role:    schema.System,
+            Content: "You are a real estate agent. Use the user_company and user_salary APIs to provide relevant property information based on the user's salary and job. Email is required",
+        },
+        {
+            Role:    schema.User,
+            Content: "My name is zhangsan, and my email is zhangsan@bytedance.com. Please recommend some suitable houses for me.",
+        },
+    })
 
-	if err != nil {
-		log.Printf("Generate failed, err=%v", err)
-		return
-	}
+    if err != nil {
+        log.Printf("Generate failed, err=%v", err)
+        return
+    }
 
-	log.Printf("output: \n%+v", resp)
+    log.Printf("output: \n%+v", resp)
 }
 
 ```
 
-### thinking
+### **Enable Thinking Mode**
 
 ```go
 
 package main
 
 import (
-	"context"
-	"log"
-	"os"
+    "context"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/schema"
-	ollamaapi "github.com/eino-contrib/ollama/api"
+    "github.com/cloudwego/eino/schema"
+    ollamaapi "github.com/eino-contrib/ollama/api"
 
-	"github.com/cloudwego/eino-ext/components/model/ollama"
+    "github.com/cloudwego/eino-ext/components/model/ollama"
 )
 
 func main() {
-	ctx := context.Background()
-	modelName := os.Getenv("MODEL_NAME")
-	thinking := ollamaapi.ThinkValue{Value: true}
-	chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
-		BaseURL:  "http://localhost:11434",
-		Model:    modelName,
-		Thinking: &thinking,
-	})
-	if err != nil {
-		log.Printf("NewChatModel failed, err=%v\n", err)
-		return
-	}
+    ctx := context.Background()
+    modelName := os.Getenv("MODEL_NAME")
+    thinking := ollamaapi.ThinkValue{Value: true}
+    chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
+        BaseURL:  "http://localhost:11434",
+        Model:    modelName,
+        Thinking: &thinking,
+    })
+    if err != nil {
+        log.Printf("NewChatModel failed, err=%v\n", err)
+        return
+    }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "as a machine, how do you answer user's question?",
-		},
-	})
-	if err != nil {
-		log.Printf("Generate failed, err=%v\n", err)
-		return
-	}
+    resp, err := chatModel.Generate(ctx, []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "as a machine, how do you answer user's question?",
+        },
+    })
+    if err != nil {
+        log.Printf("Generate failed, err=%v\n", err)
+        return
+    }
 
-	log.Printf("output thinking: \n%v\n", resp.ReasoningContent)
-	log.Printf("output content: \n%v\n", resp.Content)
+    log.Printf("output thinking: \n%v\n", resp.ReasoningContent)
+    log.Printf("output content: \n%v\n", resp.Content)
 }
 
 ```
 
+### [More Examples](https://github.com/cloudwego/eino-ext/tree/main/components/model/ollama/examples)
 
+## **Related Documentation**
 
-## For More Details
-
-- [Eino Documentation](https://www.cloudwego.io/zh/docs/eino/)
-- [Ollama Documentation](https://ollama.readthedocs.io/api/#generate-a-chat-completion)
+- `Eino: ChatModel Guide` at `/docs/eino/core_modules/components/chat_model_guide`
+- `ChatModel - OpenAI` at `/docs/eino/ecosystem_integration/chat_model/chat_model_openai`
+- `Eino: ToolsNode Guide` at `/docs/eino/core_modules/components/tools_node_guide`
+- [Ollama Model Library](https://ollama.ai/library)

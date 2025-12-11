@@ -1,39 +1,39 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Parser - pdf
 weight: 0
 ---
 
-## **Introduction**
+## **Overview**
 
-The PDF Document Parser is an implementation of the Document Parser interface used to parse the contents of PDF files into plain text. This component implements the [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide) and is mainly used for the following scenarios:
+The PDF document parser is an implementation of the Document Parser interface that parses PDF file content into plain text. It follows [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide) and is used for:
 
-- When you need to convert PDF documents into a processable plain text format
-- When you need to split the contents of a PDF document by page
+- converting PDF documents into plain text
+- splitting PDF content by pages
 
 ### **Features**
 
-The PDF parser has the following features:
+PDF parser provides:
 
-- Supports basic PDF text extraction
-- Optionally splits documents by page
-- Automatically handles PDF fonts and encoding
-- Supports multi-page PDF documents
+- basic text extraction
+- optional page‑based splitting
+- automatic handling of fonts and encodings
+- support for multi‑page PDFs
 
 Notes:
 
-- May not fully support all PDF formats currently
-- Will not retain formatting like spaces and line breaks
-- Complex PDF layouts may affect extraction results
+- may not fully support all PDF formats
+- does not preserve whitespace/newline formatting
+- complex layouts may affect extraction quality
 
 ## **Usage**
 
-### **Component Initialization**
+### **Initialization**
 
-The PDF parser is initialized using the `NewPDFParser` function, with the main configuration parameters as follows:
+Initialize via `NewPDFParser` with configuration:
 
 ```go
 import (
@@ -42,29 +42,27 @@ import (
 
 func main() {
     parser, err := pdf.NewPDFParser(ctx, &pdf.Config{
-        ToPages: true,  // Whether to split the document by page
+        ToPages: true,  // split by pages
     })
 }
 ```
 
-Configuration parameters description:
+Config:
 
-- `ToPages`: Whether to split the PDF into multiple documents by page, default is false
+- `ToPages`: whether to split the PDF into multiple documents by pages, default false
 
-### **Parsing Documents**
-
-Document parsing is done using the `Parse` method:
+### **Parse Documents**
 
 ```go
 docs, err := parser.Parse(ctx, reader, opts...)
 ```
 
-Parsing options:
+Options:
 
-- Supports setting the document URI using `parser.WithURI`
-- Supports adding extra metadata using `parser.WithExtraMeta`
+- `parser.WithURI` to set document URI
+- `parser.WithExtraMeta` to add extra metadata
 
-### **Complete Usage Example**
+### **Complete Example**
 
 #### **Basic Usage**
 
@@ -74,53 +72,47 @@ package main
 import (
     "context"
     "os"
-    
+
     "github.com/cloudwego/eino-ext/components/document/parser/pdf"
     "github.com/cloudwego/eino/components/document/parser"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize the parser
-    p, err := pdf.NewPDFParser(ctx, &pdf.Config{
-        ToPages: false, // Do not split by page
-    })
+
+    // init parser
+    p, err := pdf.NewPDFParser(ctx, &pdf.Config{ ToPages: false })
     if err != nil {
         panic(err)
     }
-    
-    // Open the PDF file
+
+    // open file
     file, err := os.Open("document.pdf")
     if err != nil {
         panic(err)
     }
     defer file.Close()
-    
-    // Parse the document
-    docs, err := p.Parse(ctx, file, 
+
+    // parse
+    docs, err := p.Parse(ctx, file,
         parser.WithURI("document.pdf"),
-        parser.WithExtraMeta(map[string]any{
-            "source": "./document.pdf",
-        }),
+        parser.WithExtraMeta(map[string]any{ "source": "./document.pdf" }),
     )
     if err != nil {
         panic(err)
     }
-    
-    // Use the parsed results
+
     for _, doc := range docs {
         println(doc.Content)
     }
 }
 ```
 
-#### **Using loader**
+#### In loader
 
-Refer to the example in the [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
+See examples in [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
 
-## **Related Documents**
+## **References**
 
-- [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
-- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
-- [Parser - html](/docs/eino/ecosystem_integration/document/parser_html)
+- [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader Guide](/docs/eino/core_modules/components/document_loader_guide)

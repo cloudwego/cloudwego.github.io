@@ -1,63 +1,63 @@
 ---
 Description: ""
-date: "2025-03-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Tool - Bingsearch
 weight: 0
 ---
 
-## Bing Search Tool
+## **Bing Search Tool**
 
 这是一个为 [Eino](https://github.com/cloudwego/eino) 实现的 Bing 搜索工具。该工具实现了 `InvokableTool` 接口，可以与 Eino 的 ChatModel 交互系统和 `ToolsNode` 无缝集成。
 
-## 特性
+## **特性**
 
 - 实现了 `github.com/cloudwego/eino/components/tool.InvokableTool` 接口
 - 易于与 Eino 工具系统集成
 - 可配置的搜索参数
 
-## 安装
+## **安装**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/tool/bingsearch
 ```
 
-## 快速开始
+## **快速开始**
 
 ```go
 package main
 
 import (
-	"context"
-	"log"
-	"os"
-	"time"
-	
-	"github.com/bytedance/sonic"
-	"github.com/cloudwego/eino-ext/components/tool/bingsearch"
+        "context"
+        "log"
+        "os"
+        "time"
+        
+        "github.com/bytedance/sonic"
+        "github.com/cloudwego/eino-ext/components/tool/bingsearch"
 )
 
 func main() {
-	// 设置 Bing Search API 密钥
-	bingSearchAPIKey := os.Getenv("BING_SEARCH_API_KEY")
-	
-	// 创建上下文
-	ctx := context.Background()
-	
-	// 创建 Bing Search 工具
-	bingSearchTool, err := bingsearch.NewTool(ctx, &bingsearch.Config{
-		APIKey: bingSearchAPIKey,
-		Cache:  5 * time.Minute,
-	})
-	
-	if err != nil {
-		log.Fatalf("Failed to create tool: %v", err)
-	}
+        // 设置 Bing Search API 密钥
+        bingSearchAPIKey := os.Getenv("BING_SEARCH_API_KEY")
+        
+        // 创建上下文
+        ctx := context.Background()
+        
+        // 创建 Bing Search 工具
+        bingSearchTool, err := bingsearch.NewTool(ctx, &bingsearch.Config{
+                APIKey: bingSearchAPIKey,
+                Cache:  5 * time.Minute,
+        })
+        
+        if err != nil {
+                log.Fatalf("Failed to create tool: %v", err)
+        }
     // ... 配置并使用 ToolsNode
 ```
 
-## 配置
+## **配置**
 
 工具可以通过 `Config` 结构体进行配置：
 
@@ -83,9 +83,9 @@ type Config struct {
 }
 ```
 
-## Search
+## **Search**
 
-### 请求 Schema
+### **请求 Schema**
 
 ```go
 type SearchRequest struct {
@@ -94,7 +94,7 @@ type SearchRequest struct {
 }
 ```
 
-### 响应 Schema
+### **响应 Schema**
 
 ```go
 type SearchResponse struct {
@@ -108,7 +108,7 @@ type searchResult struct {
 }
 ```
 
-## 更多详情
+## **更多详情**
 
-- [DuckDuckGo 搜索库文档](tool_duckduckgo_search/)
+- DuckDuckGo 搜索库文档
 - [Eino 文档](https://github.com/cloudwego/eino)

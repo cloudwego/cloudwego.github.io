@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-14"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: Eino ADK：一文搞定 AI Agent 核心设计模式，从 0 到 1 搭建智能体系统
@@ -13,7 +13,7 @@ weight: 3
 
 但技术演进中痛点也随之凸显，有的团队因不懂如何衔接 LLM 与业务系统，导致 Agent 只能 “空谈”；有的因状态管理缺失，让 Agent 执行任务时频频 “失忆”，复杂的交互流程也进一步增加了开发难度。
 
-为此，Eino ADK（Agent Development Kit）应运而生，为 Go 开发者提供了一套完整、灵活且强大的智能体开发框架，直接解决传统开发中的核心难题。
+为此，**Eino ADK（Agent Development Kit）应运而生，为 Go 开发者提供了一套完整、灵活且强大的智能体开发框架**，直接解决传统开发中的核心难题。
 
 ## 🙋 什么是 Agent？
 
@@ -54,9 +54,9 @@ Agent 代表一个独立的、可执行的智能任务单元，能够自主学�
 3. ChatModelAgent 执行工具（Act）
 4. 将工具结果返回给 LLM（Observation），结合之前的上下文继续生成，直到模型判断不需要调用 Tool 后结束。
 
-<a href="/img/eino/RZONwQH7shiID5bGLolcQFBlncd.png" target="_blank"><img src="/img/eino/RZONwQH7shiID5bGLolcQFBlncd.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_chatmodel_agent.png" target="_blank"><img src="/img/eino/eino_adk_chatmodel_agent.png" width="100%" /></a>
 
-ReAct 模式的核心是**思考 → 行动 → 观察 → 再思考**的闭环，解决传统 Agent “盲目行动”或“推理与行动脱节”的痛点，以下是几种可能的实践场景：
+ReAct 模式的核心是“**思考 → 行动 → 观察 → 再思考**”的闭环，解决传统 Agent “盲目行动”或“推理与行动脱节”的痛点，以下是几种可能的实践场景：
 
 - **行业赛道分析**：使用 ReAct 模式避免了一次性搜集全部信息导致的信息过载，通过逐步推理聚焦核心问题；同时使用数据验证思考，而非凭空靠直觉决策，过程可解释，提升了生成报告的准确性。
   - **Think-1**：判断赛道潜力，需要 “政策支持力度、行业增速、龙头公司盈利能力、产业链瓶颈”4 类信息。
@@ -102,7 +102,7 @@ Eino ADK 提供了专用于协调子 Agent 执行流程的 WorkflowAgents 模式
   - **线性执行**：严格按照 SubAgents 数组的顺序执行。
   - **运行结果传递**：配置中的每个 Agent 都能够获取 Sequential Agent 的完整输入以及前序 Agent 的输出。
   - **支持提前退出**：如果任何一个子 Agent 产生退出 / 中断动作，整个 Sequential 流程会立即终止。
-- **可能的实践场景有**：
+- 可能的实践场景有：
   - **数据 ETL**：`ExtractAgent`（从 MySQL 抽取订单数据）→ `TransformAgent`（清洗空值、格式化日期）→ `LoadAgent`（加载到数据仓库）
   - **CI / CD 流水线**：`CodeCloneAgent`（从代码仓库拉取代码）→`UnitTestAgent`（运行单元测试，用例失败时返回错误与分析报告）→`CompileAgent`（编译代码）→`DeployAgent`（部署到目标环境）
 
@@ -120,7 +120,7 @@ sequential := adk.NewSequentialAgent(ctx, &adk.SequentialAgentConfig{
 })
 ```
 
-<a href="/img/eino/MnhMwjIsnhb9WsbSvFHcz3VqnWd.png" target="_blank"><img src="/img/eino/MnhMwjIsnhb9WsbSvFHcz3VqnWd.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_sequential.png" target="_blank"><img src="/img/eino/eino_adk_sequential.png" width="100%" /></a>
 
 - **Parallel Agent**: 将配置中注册的 Agents 并发执行，所有 Agent 执行完毕后结束，运行遵循以下原则：
   - **并发执行**：所有子 Agent 同时启动，在独立的 goroutine 中并行执行。
@@ -144,7 +144,7 @@ parallel := adk.NewParallelAgent(ctx, &adk.ParallelAgentConfig{
 })
 ```
 
-<a href="/img/eino/FpLow6LeihMbFGbOVrlcWyAqnif.png" target="_blank"><img src="/img/eino/FpLow6LeihMbFGbOVrlcWyAqnif.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_parallel.png" target="_blank"><img src="/img/eino/eino_adk_parallel.png" width="100%" /></a>
 
 - **Loop Agent**：将配置中注册的 Agents 按顺序依次执行并循环多次，运行遵循以下原则：
   - **循环执行**：重复执行 SubAgents 序列，每次循环都是一个完整的 Sequential 执行过程。
@@ -169,7 +169,7 @@ loop := adk.NewLoopAgent(ctx, &adk.LoopAgentConfig{
 })
 ```
 
-<a href="/img/eino/KxH0wlxpfhRWGfbhUMecv0O1n9f.png" target="_blank"><img src="/img/eino/KxH0wlxpfhRWGfbhUMecv0O1n9f.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_loop_controller.png" target="_blank"><img src="/img/eino/eino_adk_loop_controller.png" width="100%" /></a>
 
 ## 🛠️ 预构建的 Multi-Agent 范式
 
@@ -182,7 +182,7 @@ Supervisor Agent 是 ADK 提供的一种中心化 Multi-Agent 协作模式，旨
 - Supervisor Agent 负责任务的分配、子 Agent 完成后的结果汇总与下一步决策。
 - 子 Agents 专注于执行具体任务，并在完成后自动将任务控制权交回 Supervisor。
 
-<a href="/img/eino/JVo8wOsuZhcf38b5ljHcJmGYnDc.png" target="_blank"><img src="/img/eino/JVo8wOsuZhcf38b5ljHcJmGYnDc.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_supervisor_flow.png" target="_blank"><img src="/img/eino/eino_adk_supervisor_flow.png" width="100%" /></a>
 
 Supervisor 模式有如下特点：
 
@@ -218,7 +218,7 @@ Plan-Execute Agent 是 ADK 提供的基于「规划-执行-反思」范式的 Mu
 - **Executor**：执行当前计划中的首个步骤
 - **Replanner**：评估执行进度，决定是修正计划继续交由 Executor 运行，或是结束任务
 
-<a href="/img/eino/OF0JwDhHwhUQc9bpa9jc4ZK0nGg.png" target="_blank"><img src="/img/eino/OF0JwDhHwhUQc9bpa9jc4ZK0nGg.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_plan_execute_replan_detail.png" target="_blank"><img src="/img/eino/eino_adk_plan_execute_replan_detail.png" width="100%" /></a>
 
 Plan-Execute 模式有如下特点：
 
@@ -255,6 +255,45 @@ researchAssistant := planexecute.New(ctx, &planexecute.Config{
         },
     }),
     Replanner: replannerAgent,
+})
+```
+
+#### 🎯 DeepAgents 模式：规划驱动的集中式协作
+
+DeepAgents 是一种在 Main Agent 统一协调下的 Multi-Agent 模式。Main Agent 借助具备工具调用能力的 ChatModel 以 ReAct 流程运行：
+
+- 通过 WriteTodos 将用户目标拆解为结构化待办并记录京都
+- 通过统一入口 TaskTool 选择并调用对应的 SubAgent 执行子任务；主/子代理上下文隔离，避免中间步骤污染主流程。
+- 汇总各子代理返回的结果；必要时再次调用 WriteTodos 更新进度或进行重规划，直至完成。
+
+<a href="/img/eino/eino_adk_deep_agents_overview.png" target="_blank"><img src="/img/eino/eino_adk_deep_agents_overview.png" width="100%" /></a>
+
+DeepAgents 模式的特点为：
+
+- **强化任务拆解与进度管理**：通过 WriteTodos 形成明确的子任务与里程碑，使复杂目标可分解、可跟踪。
+- **上下文隔离更稳健**：子代理在“干净”上下文中执行，主代理仅汇总结果，减少冗余思维链和工具调用痕迹对主流程的干扰。
+- **统一委派入口、易扩展**：TaskTool 将所有子代理与工具能力抽象为统一调用面，便于新增或替换专业子代理。
+- **计划与执行的灵活闭环**：规划作为工具可按需调用；对简单任务可跳过不必要规划，从而降低 LLM 调用成本与耗时。
+- **边界与权衡**：过度拆解会增加调用次数与成本；对子任务划分与提示词调优提出更高要求，模型需具备稳定的工具调用与规划能力。
+
+DeepAgent 的核心价值在于自动化处理需要多步骤、多角色协作的复杂工作流。它不仅仅是单一功能的执行者，更是一个具备深度思考、规划和动态调整能力的“项目经理”，适配场景有：
+
+- **多角色协作的复杂业务流程**：围绕研发、测试、发布、法务、运营多角色协作，集中委派子任务并统一汇总；每个阶段设定关口与回退策略，进度可视且可重试。
+- **长流程的阶段性管理**：规划拆解清洗、校验、血缘分析、质检等步骤，子代理在隔离上下文中运行；出现异常时仅重跑相关阶段，产物统一对账与汇总。
+- **需要严格上下文隔离的执行环境**：统一入口收集材料与请求，TaskTool 将法务、风控、财务等子任务分别路由；子任务之间边界清晰互不可见，进度与留痕可审计，失败可重试而不影响其他环节。
+
+```go
+import github.com/cloudwego/eino/adk/prebuilt/deep
+
+agent, err := deep.New(ctx, &deep.Config{
+    Name:      "deep-agent",
+    ChatModel: gpt4Model,
+    SubAgents: []adk.Agent{
+       LegalAgent,
+       RiskControlAgent,
+       FinanceAgent,
+    },
+    MaxIteration: 100,
 })
 ```
 
@@ -304,7 +343,7 @@ func AddSessionValues(ctx context.Context, kvs map[string]any)
 
 - **移交运行（Transfer）**：携带本 Agent 输出结果上下文，将任务移交至子 Agent 继续处理。适用于智能体功能可以清晰的划分边界与层级的场景，常结合 ChatModelAgent 使用，通过 LLM 的生成结果进行动态路由。结构上，以此方式进行协作的两个 Agent 称为父子 Agent：
 
-<a href="/img/eino/Kgoew8X0RhWDvtbBZqnc1WWlnie.png" target="_blank"><img src="/img/eino/Kgoew8X0RhWDvtbBZqnc1WWlnie.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_transfer.png" target="_blank"><img src="/img/eino/eino_adk_transfer.png" width="100%" /></a>
 
 ```go
 // 设置父子 Agent 关系
@@ -316,7 +355,7 @@ func NewTransferToAgentAction(destAgentName string) *AgentAction
 
 - **显式调用（ToolCall）**：将 Agent 视为工具进行调用。适用于 Agent 运行仅需要明确清晰的参数而非完整运行上下文的场景，常结合 ChatModelAgent，作为工具运行后将结果返回给 ChatModel 继续处理。除此之外，ToolCall 同样支持调用符合工具接口构造的、不含 Agent 的普通工具。
 
-<a href="/img/eino/IHwSwc4uHhqHZDbUuzvc679OnRd.png" target="_blank"><img src="/img/eino/IHwSwc4uHhqHZDbUuzvc679OnRd.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_agent_as_tool.png" target="_blank"><img src="/img/eino/eino_adk_agent_as_tool.png" width="100%" /></a>
 
 ```go
 // 将 Agent 转换为 Tool
@@ -391,7 +430,7 @@ go get github.com/cloudwego/eino@latest
   - **对已有项目的完善**：项目经理从评论 Agent 获得项目仍旧需要完善的功能点，交由编码 Agent 进行实现，再交由评论 Agent 对修改后的代码进行评审。
   - **开展技术调研**：项目经理要求调研 Agent 生成技术调研报告，然后由评论 Agent 给出评审意见。调用方结合返回的技术调研报告和评审意见，决定后续动作。
 
-<a href="/img/eino/IhrFw8gxShD1gabCYIScuypjnVc.png" target="_blank"><img src="/img/eino/IhrFw8gxShD1gabCYIScuypjnVc.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_project_manager.png" target="_blank"><img src="/img/eino/eino_adk_project_manager.png" width="100%" /></a>
 
 该示例的设计涵盖了文中介绍的大部分概念，您可以基于示例回顾之前的提到的种种设计理念。另外，请试想普通开发模式下如何完成该示例的编写，ADK 的优势便立刻凸显了出来：
 
@@ -529,4 +568,4 @@ Eino ADK 不仅仅是一个开发框架，更是一个完整的智能体开发�
 >
 > Eino ADK，让智能体开发变得简单而强大！
 
-<a href="/img/eino/RVsgbX5Y0oQtUDxhDGzc0hAbnFc.png" target="_blank"><img src="/img/eino/RVsgbX5Y0oQtUDxhDGzc0hAbnFc.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_user_group.png" target="_blank"><img src="/img/eino/eino_adk_user_group.png" width="100%" /></a>

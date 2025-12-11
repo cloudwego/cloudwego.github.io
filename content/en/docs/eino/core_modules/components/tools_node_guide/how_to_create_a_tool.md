@@ -1,22 +1,20 @@
 ---
 Description: ""
-date: "2025-04-09"
+date: "2025-12-09"
 lastmod: ""
 tags: []
-title: How to create a tool?
-weight: 0
+title: How to Create a Tool
+weight: 1
 ---
 
-## The basic structure of Tool
+## Tool Structure Basics
 
-An agent needs to take two steps to invoke a tool: ① The large model constructs invocation parameters based on the tool's functions and parameter requirements. ② Actually invokes the tool
+An agent calling a tool involves two steps: (1) the LLM constructs parameters according to the tool definition; (2) the tool executes with those parameters. A tool therefore needs:
 
-These two basic steps also require the tool to include two parts:
+- Tool metadata and parameter constraints
+- An execution interface
 
-- Introduction to the functions of the tool and the parameter information needed to invoke this tool.
-- Call the interface of this tool
-
-In Eino, the BaseTool interface requires any tool to have a ` Info()`  interface that returns tool information, as follows:
+In Eino, any tool must implement `Info()` to return tool metadata:
 
 ```go
 type BaseTool interface {
@@ -24,7 +22,7 @@ type BaseTool interface {
 }
 ```
 
-And according to whether the return structure of a tool is streamable after it is invoked, it can be divided into InvokableTool and StreamableTool, which are also defined in the form of interfaces:
+Execution interfaces depend on whether the result is streaming:
 
 ```go
 type InvokableTool interface {
@@ -41,16 +39,16 @@ type StreamableTool interface {
 }
 ```
 
-## The representation of ToolInfo
+## ToolInfo Representations
 
-In the process of function call in a large model, the large model generates the parameters needed for the function call, which requires the large model to understand whether the generated parameters meet the constraints. In Eino, based on the developers' usage habits and domain standards, it provides ` params map[string]*ParameterInfo`  and ` *openapi3.Schema`  two ways to express parameter constraints.
+In LLM function-call flows, the model must understand whether generated parameters satisfy constraints. Eino supports two representations: `params map[string]*ParameterInfo` and `*openapi3.Schema`.
 
-### Method 1 - map[string]*ParameterInfo
+### 1) `map[string]*ParameterInfo`
 
-In the intuitive habits of many developers, the description of parameters can be represented by a map, where the key is the parameter name and the value is the detailed constraint of this parameter. In Eino, ParameterInfo is defined to represent the description of a parameter, as follows:
+Intuitive map-based parameter descriptions:
 
 ```go
-// watch at: https://github.com/cloudwego/eino/blob/main/schema/tool.go
+// Full definition: https://github.com/cloudwego/eino/blob/main/schema/tool.go
 type ParameterInfo struct {
     Type DataType    // The type of the parameter.
     ElemInfo *ParameterInfo    // The element type of the parameter, only for array.
@@ -61,7 +59,7 @@ type ParameterInfo struct {
 }
 ```
 
-For example, a parameter representing "User" can be expressed as:
+Example:
 
 ```go
 map[string]*schema.ParameterInfo{
@@ -73,48 +71,46 @@ map[string]*schema.ParameterInfo{
         Type: schema.Integer,
     },
     "gender": &schema.ParameterInfo{
-        Type: schema.String,    
+        Type: schema.String,
         Enum: []string{"male", "female"},
     },
 }
 ```
 
-This representation method is very simple and intuitive, and it is often used when parameters are manually maintained by developers through coding.
+### 2) JSON Schema (2020-12)
 
-### Method 2 - openapi3.Schema
+JSON Schema’s constraint system is rich. In practice, you usually generate it from struct tags or helper functions.
 
-Another common way to represent parameter constraints is ` JSON schema` , which is defined by OAI. [ OpenAPI](https://github.com/OAI/OpenAPI-Specification)  is the most commonly used standard, and Eino also supports the use of openapi3.Schema to represent parameter constraints.
+#### `GoStruct2ParamsOneOf`
 
-The OpenAPI 3 standard offers a wide range of constraints for parameters, and a detailed description can be found in [ OpenAPI 3.03](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#schema-object) . In actual use, developers typically do not build this structure themselves, but use some methods to generate it.
-
-#### Generate using GoStruct2ParamsOneOf
-
-Eino provides a way to describe parameter constraints in structures using go tags, and it also offers the GoStruct2ParamsOneOf method to generate parameter constraints for a struct. Its function signature is as follows:
+Describe constraints via Go tags on a struct and generate `ParamsOneOf`:
 
 ```go
 func GoStruct2ParamsOneOf[T any](opts ...Option) (*schema.ParamsOneOf, error)
 ```
 
-Extract the field name and description of the parameters from T, and the Tag used for extraction is as follows:
+Supported tags:
 
-- jsonschema: "description=xxx"
-- jsonschema: "enum=xxx,enum=yyy,enum=zzz"
-- jsonschema: "required"
-- json: "xxx,omitempty" => The "omitempty" in json tag represents that it is not required
-- Implement a custom parsing method using utils.WithSchemaCustomizer
+- `jsonschema_description:"xxx"` [recommended] or `jsonschema:"description=xxx"`
+- Note: descriptions often include commas; tag commas separate fields and cannot be escaped. Prefer `jsonschema_description`.
+- `jsonschema:"enum=xxx,enum=yyy,enum=zzz"`
+- `jsonschema:"required"`
+- `json:"xxx,omitempty"` → `omitempty` implies not required
+- Customize via `utils.WithSchemaModifier`
 
-You can refer to the following examples:
+Example:
 
 ```go
 package main
 
 import (
+    "context"
     "github.com/cloudwego/eino/components/tool/utils"
 )
 
 type User struct {
-    Name   string `json:"name" jsonschema:"required,description=the name of the user"`
-    Age    int    `json:"age" jsonschema:"description=the age of the user"`
+    Name   string `json:"name" jsonschema_description=the name of the user jsonschema:"required"`
+    Age    int    `json:"age" jsonschema_description:"the age of the user"`
     Gender string `json:"gender" jsonschema:"enum=male,enum=female"`
 }
 
@@ -123,17 +119,13 @@ func main() {
 }
 ```
 
-This method is generally not invoked by developers, and is often directly used ` utils.GoStruct2ToolInfo()`  to build ToolInfo, or directly use ` utils.InferTool()`  to directly build a tool. You can refer to the "Convert local functions into tools" section below for more details.
+You usually won’t call this directly; prefer `utils.GoStruct2ToolInfo()` or `utils.InferTool()`.
 
-#### Generated through the openapi.json file
+ 
 
-Since OpenAPI is a very universal standard, many tools or platforms can export OpenAPI.json files, especially in some HTTP interface management tools. If the tool is a wrapper for some OpenAPI, you can use this method.
+## Approach 1 — Implement Interfaces Directly
 
-See the usage examples in [ eino-examples](https://github.com/cloudwego/eino-examples/blob/main/components/tool/openapi3/main.go#L33) 。
-
-## Method 1 - Directly implement the interface
-
-Since the definition of a tool is an interface, the most direct way to implement a tool is to implement the interface. Take InvokableTool as an example:
+Implement `InvokableTool`:
 
 ```go
 type AddUser struct{}
@@ -143,49 +135,44 @@ func (t *AddUser) Info(_ context.Context) (*schema.ToolInfo, error) {
         Name: "add_user",
         Desc: "add user",
         ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
-           // omit. Refer to the way of constructing params constraints in the above text.
+            // omitted; see earlier for building params constraints
         }),
     }, nil
 }
 
 func (t *AddUser) InvokableRun(_ context.Context, argumentsInJSON string, _ ...tool.Option) (string, error) {
-    // 1. Deserialize argumentsInJSON and handle options, etc.
+    // 1. Deserialize argumentsInJSON and handle options
     user, _ := json.Unmarshal([]byte(argumentsInJSON))
     // 2. Handle business logic
-    // 3. Serialize the result to a string and return it
+    // 3. Serialize the result to string and return
 
     return `{"msg": "ok"}`, nil
 }
 ```
 
-Since the function call parameters given by the large model are always a string, in the Eino framework, the imported parameter of the tool is also a json serialized into a string. Therefore, this approach requires developers to handle the deserialization of parameters themselves, and the result of the call is also returned as a string.
+Because the LLM always supplies a JSON string, the tool receives `argumentsInJSON`; you deserialize it and return a JSON string.
 
-## Method 2 - Convert local functions into tools
+## Approach 2 — Wrap a Local Function
 
-During development, we often need to encapsulate a local function into a tool of Eino, for example, we already have an ` AddUser`  method in our code, but to allow the large model to independently decide how to call this method, we need to turn this method into a tool and bind it to the large model.
+Often you have an existing function (e.g., `AddUser`) and want the LLM to decide when/how to call it. Eino provides `NewTool` for this, and `InferTool` for tag-based parameter constraints.
 
-Eino provides ` NewTool`  methods to convert a function into a tool. Additionally, it offers InferTool methods for scenarios where parameter constraints are represented through the tag of a struct, making the build process simpler.
+> See tests in `cloudwego/eino/components/tool/utils/invokable_func_test.go` and `streamable_func_test.go`.
 
-> You can refer to the examples of the following methods:[ cloudwego/eino/components/tool/utils/invokable_func_test.go](https://github.com/cloudwego/eino/blob/main/components/tool/utils/invokable_func_test.go)  and [ cloudwego/eino/components/tool/utils/streamable_func_test.go](https://github.com/cloudwego/eino/blob/main/components/tool/utils/streamable_func_test.go)  in the unit test. Here, we only take InvokableTool as an example, and StreamableTool also has corresponding construction methods
+### `NewTool`
 
-### Use the NewTool method
-
-When a function satisfies the following function signature, you can use NewTool to turn it into an InvokableTool:
+For functions of signature:
 
 ```go
 type InvokeFunc[T, D any] func(ctx context.Context, input T) (output D, err error)
 ```
 
-The method of NewTool is as follows:
+Use:
 
 ```go
-// See the code at: github.com/cloudwego/eino/components/tool/utils/invokable_func.go
 func NewTool[T, D any](desc *schema.ToolInfo, i InvokeFunc[T, D], opts ...Option) tool.InvokableTool
 ```
 
-> Similarly, NewStreamTool can create StreamableTool
-
-Take AddUser as an example, you can build it in the following way:
+Example:
 
 ```go
 import (
@@ -222,7 +209,7 @@ func createTool() tool.InvokableTool {
                     Type: schema.Integer,
                 },
                 "gender": &schema.ParameterInfo{
-                    Type: schema.String,    
+                    Type: schema.String,
                     Enum: []string{"male", "female"},
                 },
             },
@@ -233,19 +220,15 @@ func createTool() tool.InvokableTool {
 }
 ```
 
-### Use the InferTool method
+### `InferTool`
 
-As we can see from NewTool, the process of building a tool requires us to pass in ToolInfo and InvokeFunc separately. Among them, ToolInfo contains the part of ParamsOneOf, which represents the constraint of the imported parameter of the function. At the same time, the function signature of InvokeFunc also has input parameters, which means: The part of ParamsOneOf and the input parameters of InvokeFunc need to be consistent.
-
-When a function is fully implemented by developers themselves, they need to manually maintain the input parameters and ParamsOneOf to keep them consistent. A more elegant solution is to "directly maintain parameter constraints in the input parameter type definition", which can be referred to the introduction of ` GoStruct2ParamsOneOf`  above.
-
-When the parameter constraint information is included in the input parameter type definition, you can use InferTool to implement it. The function signature is as follows:
+When parameter constraints live in the input struct tags, use `InferTool`:
 
 ```go
 func InferTool[T, D any](toolName, toolDesc string, i InvokeFunc[T, D], opts ...Option) (tool.InvokableTool, error)
 ```
 
-Take AddUser as an example:
+Example:
 
 ```go
 import (
@@ -273,17 +256,17 @@ func createTool() (tool.InvokableTool, error) {
 }
 ```
 
-### Use the InferOptionableTool method
+### `InferOptionableTool`
 
-The Option mechanism is a feature provided by Eino for passing dynamic parameters at runtime. For more details, you can refer to [Eino: CallOption capabilities and specification](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities) . This mechanism is also applicable in custom tools.
+Eino’s Option mechanism passes dynamic runtime parameters. Details: `Eino: CallOption capabilities and conventions` at `/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities`. The same mechanism applies to custom tools.
 
-When developers want to implement a function that requires custom option parameters, they can use the InferOptionableTool method. Compared to the requirements for function signatures in InferTool, this method's signature adds an option parameter, as follows:
+When you need custom option parameters, use `InferOptionableTool`:
 
 ```go
 func InferOptionableTool[T, D any](toolName, toolDesc string, i OptionableInvokeFunc[T, D], opts ...Option) (tool.InvokableTool, error)
 ```
 
-Here is an example (adapted from[ cloudwego/eino/components/tool/utils/invokable_func_test.go](https://github.com/cloudwego/eino/blob/main/components/tool/utils/invokable_func_test.go) ):
+Example (adapted from `cloudwego/eino/components/tool/utils/invokable_func_test.go`):
 
 ```go
 import (
@@ -325,20 +308,24 @@ func useInInvoke() {
 }
 ```
 
-## Method 3 - Use the tool provided in eino-ext
+## Approach 3 — Use tools from eino-ext
 
-In addition to the various custom tools that need to be implemented by yourself, there are also many general tools implemented in the eino-ext project that can be used out of the box, such [Tool - Googlesearch](/docs/eino/ecosystem_integration/tool/tool_googlesearch) 、[Tool - DuckDuckGoSearch](/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search)   、wikipedia、httprequest , etc. You can refer to [https://github.com/cloudwego/eino-ext/tree/main/components/tool](https://github.com/cloudwego/eino-ext/tree/main/components/tool)  for various implementations.
+Beyond custom tools, the `eino-ext` project provides many ready-to-use implementations: `Googlesearch`, `DuckDuckGoSearch`, `wikipedia`, `httprequest`, etc. See implementations at https://github.com/cloudwego/eino-ext/tree/main/components/tool and docs:
 
-## Method 4 - Use the MCP protocol
+- Tool — Googlesearch: `/docs/eino/ecosystem_integration/tool/tool_googlesearch`
+- Tool — DuckDuckGoSearch: `/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search`
 
-MCP (Model Context Protocol) is an open model context protocol. Now more and more tools and platforms are exposing their own capabilities to large models based on this protocol. eino can use the callable tools provided by MCP as tools, which will greatly expand the variety of tools.
+## Approach 4 — Use MCP protocol
 
-It's very convenient to use the tools provided by MCP in Eino:
+MCP (Model Context Protocol) is an open protocol for exposing tool capabilities to LLMs. Eino can treat tools provided via MCP as regular tools, greatly expanding available capabilities.
+
+Using MCP tools in Eino is straightforward:
 
 ```go
 import (
     "fmt"
     "log"
+    "context"
     "github.com/mark3labs/mcp-go/client"
     mcpp "github.com/cloudwego/eino-ext/components/tool/mcp"
 )
@@ -374,4 +361,4 @@ func getMCPTool(ctx context.Context) []tool.BaseTool {
 }
 ```
 
-> Code reference: [https://github.com/cloudwego/eino-ext/blob/main/components/tool/mcp/examples/mcp.go](https://github.com/cloudwego/eino-ext/blob/main/components/tool/mcp/examples/mcp.go)
+Code reference: https://github.com/cloudwego/eino-ext/blob/main/components/tool/mcp/examples/mcp.go

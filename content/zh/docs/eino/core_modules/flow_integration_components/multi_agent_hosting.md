@@ -1,13 +1,13 @@
 ---
 Description: ""
-date: "2025-01-17"
+date: "2025-12-09"
 lastmod: ""
 tags: []
-title: 'Eino Tutorial: Host Multi-Agent '
-weight: 0
+title: 'Eino Tutorial: Host Multi-Agent'
+weight: 2
 ---
 
-Host Multi-Agent 是一个 Host 做意图识别后，跳转到某个专家 agent 做实际的生成。
+Host Multi-Agent 是一个 Host 做意图识别后，跳转到某个专家 agent 做实际的生成。只转发，不生成子任务。
 
 以一个简单的“日记助手”做例子：可以写日记、读日记、根据日记回答问题。
 
@@ -410,6 +410,7 @@ toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Mes
 
 > 💡
 > 尝试添加 prompt 来约束模型在工具调用时不额外输出文本，例如：“如果需要调用 tool，直接输出 tool，不要输出文本”。
+>
 > 不同模型受 prompt 影响可能不同，实际使用时需要自行调整 prompt 并验证效果。
 
 ### Host 同时选择多个 Specialist

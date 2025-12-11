@@ -1,15 +1,15 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: ChatModel - arkbot
+title: ChatModel - ARKBot
 weight: 0
 ---
 
 一个为 [Eino](https://github.com/cloudwego/eino) 实现的 Volcengine Ark Bot，它实现了 `ToolCallingChatModel` 接口。这使得能够与 Eino 的 LLM 功能无缝集成，以增强自然语言处理和生成能力。
 
-## 特性
+## **特性**
 
 - 实现了 `github.com/cloudwego/eino/components/model.ToolCallingChatModel`
 - 轻松与 Eino 的模型系统集成
@@ -19,13 +19,13 @@ weight: 0
 - 支持自定义响应解析
 - 灵活的模型配置
 
-## 安装
+## **安装**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/arkbot@latest
 ```
 
-## 快速开始
+## **快速开始**
 
 以下是如何使用 Ark Bot 的快速示例：
 
@@ -33,62 +33,61 @@ go get github.com/cloudwego/eino-ext/components/model/arkbot@latest
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"log"
-	"os"
+        "context"
+        "encoding/json"
+        "log"
+        "os"
 
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/arkbot"
+        "github.com/cloudwego/eino-ext/components/model/arkbot"
 )
 
 func main() {
-	ctx := context.Background()
+        ctx := context.Background()
 
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := arkbot.NewChatModel(ctx, &arkbot.Config{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-	})
+        // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+        chatModel, err := arkbot.NewChatModel(ctx, &arkbot.Config{
+                APIKey: os.Getenv("ARK_API_KEY"),
+                Model:  os.Getenv("ARK_MODEL_ID"),
+        })
 
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+        if err != nil {
+                log.Fatalf("NewChatModel failed, err=%v", err)
+        }
 
-	inMsgs := []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "What's the weather in Beijing?",
-		},
-	}
+        inMsgs := []*schema.Message{
+                {
+                        Role:    schema.User,
+                        Content: "What's the weather in Beijing?",
+                },
+        }
 
-	msg, err := chatModel.Generate(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+        msg, err := chatModel.Generate(ctx, inMsgs)
+        if err != nil {
+                log.Fatalf("Generate failed, err=%v", err)
+        }
 
-	log.Printf("generate output:")
-	log.Printf("  request_id: %s", arkbot.GetArkRequestID(msg))
-	if bu, ok := arkbot.GetBotUsage(msg); ok {
-		bbu, _ := json.Marshal(bu)
-		log.Printf("  bot_usage: %s \n", string(bbu))
-	}
-	if ref, ok := arkbot.GetBotChatResultReference(msg); ok {
-		bRef, _ := json.Marshal(ref)
-		log.Printf("  bot_chat_result_reference: %s\n", bRef)
-	}
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s \n", string(respBody))
+        log.Printf("generate output:")
+        log.Printf("  request_id: %s", arkbot.GetArkRequestID(msg))
+        if bu, ok := arkbot.GetBotUsage(msg); ok {
+                bbu, _ := json.Marshal(bu)
+                log.Printf("  bot_usage: %s \n", string(bbu))
+        }
+        if ref, ok := arkbot.GetBotChatResultReference(msg); ok {
+                bRef, _ := json.Marshal(ref)
+                log.Printf("  bot_chat_result_reference: %s\n", bRef)
+        }
+        respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+        log.Printf("  body: %s \n", string(respBody))
 }
 ```
 
-## 配置
+## **配置**
 
 可以使用 `arkbot.Config` 结构体配置模型：
 
 ```go
-
 type Config struct {
     // Timeout specifies the maximum duration to wait for API responses
     // If HTTPClient is set, Timeout will not be used.
@@ -173,7 +172,7 @@ type Config struct {
     }
 ```
 
-## 请求选项
+## **请求选项**
 
 Ark 模型支持各种请求选项以自定义 API 调用的行为。以下是可用的选项：
 
@@ -183,147 +182,147 @@ Ark 模型支持各种请求选项以自定义 API 调用的行为。以下是�
 func WithCustomHeader(m map[string]string) model.Option {}
 ```
 
-## 示例
+## **示例**
 
-### 文本生成
-
-```go
-package main
-
-import (
-	"context"
-	"encoding/json"
-	"log"
-	"os"
-
-	"github.com/cloudwego/eino/schema"
-
-	"github.com/cloudwego/eino-ext/components/model/arkbot"
-)
-
-func main() {
-	ctx := context.Background()
-
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := arkbot.NewChatModel(ctx, &arkbot.Config{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-	})
-
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
-
-	inMsgs := []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "What's the weather in Beijing?",
-		},
-	}
-
-	msg, err := chatModel.Generate(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
-
-	log.Printf("generate output:\n")
-	log.Printf("  request_id: %s \n", arkbot.GetArkRequestID(msg))
-	if bu, ok := arkbot.GetBotUsage(msg); ok {
-		bbu, _ := json.Marshal(bu)
-		log.Printf("  bot_usage: %s \n", string(bbu))
-	}
-	if ref, ok := arkbot.GetBotChatResultReference(msg); ok {
-		bRef, _ := json.Marshal(ref)
-		log.Printf("  bot_chat_result_reference: %s \n", bRef)
-	}
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s \n", string(respBody))
-}
-```
-
-### 流式生成
+### **文本生成**
 
 ```go
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"io"
-	"log"
-	"os"
+        "context"
+        "encoding/json"
+        "log"
+        "os"
 
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/arkbot"
+        "github.com/cloudwego/eino-ext/components/model/arkbot"
 )
 
 func main() {
-	ctx := context.Background()
+        ctx := context.Background()
 
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := arkbot.NewChatModel(ctx, &arkbot.Config{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-	})
-	if err != nil {
-		log.Printf("NewChatModel failed, err=%v", err)
-		return
-	}
+        // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+        chatModel, err := arkbot.NewChatModel(ctx, &arkbot.Config{
+                APIKey: os.Getenv("ARK_API_KEY"),
+                Model:  os.Getenv("ARK_MODEL_ID"),
+        })
 
-	streamMsgs, err := chatModel.Stream(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "What's the weather in Beijing?",
-		},
-	})
+        if err != nil {
+                log.Fatalf("NewChatModel failed, err=%v", err)
+        }
 
-	if err != nil {
-		log.Printf("Generate failed, err=%v", err)
-		return
-	}
+        inMsgs := []*schema.Message{
+                {
+                        Role:    schema.User,
+                        Content: "What's the weather in Beijing?",
+                },
+        }
 
-	defer streamMsgs.Close() // do not forget to close the stream
+        msg, err := chatModel.Generate(ctx, inMsgs)
+        if err != nil {
+                log.Fatalf("Generate failed, err=%v", err)
+        }
 
-	msgs := make([]*schema.Message, 0)
-
-	log.Printf("stream output:")
-	for {
-		msg, err := streamMsgs.Recv()
-		if err == io.EOF {
-			break
-		}
-		msgs = append(msgs, msg)
-		if err != nil {
-			log.Printf("stream.Recv failed, err=%v", err)
-			return
-		}
-		fmt.Print(msg.Content)
-	}
-
-	msg, err := schema.ConcatMessages(msgs)
-	if err != nil {
-		log.Printf("ConcatMessages failed, err=%v", err)
-		return
-	}
-
-	log.Printf("generate output: \n")
-	log.Printf("  request_id: %s \n", arkbot.GetArkRequestID(msg))
-	if bu, ok := arkbot.GetBotUsage(msg); ok {
-		bbu, _ := json.Marshal(bu)
-		log.Printf("  bot_usage: %s \n", string(bbu))
-	}
-	if ref, ok := arkbot.GetBotChatResultReference(msg); ok {
-		bRef, _ := json.Marshal(ref)
-		log.Printf("  bot_chat_result_reference: %s \n", bRef)
-	}
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s \n", string(respBody))
+        log.Printf("generate output:\n")
+        log.Printf("  request_id: %s \n", arkbot.GetArkRequestID(msg))
+        if bu, ok := arkbot.GetBotUsage(msg); ok {
+                bbu, _ := json.Marshal(bu)
+                log.Printf("  bot_usage: %s \n", string(bbu))
+        }
+        if ref, ok := arkbot.GetBotChatResultReference(msg); ok {
+                bRef, _ := json.Marshal(ref)
+                log.Printf("  bot_chat_result_reference: %s \n", bRef)
+        }
+        respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+        log.Printf("  body: %s \n", string(respBody))
 }
 ```
 
-## 更多信息
+### **流式生成**
+
+```go
+package main
+
+import (
+        "context"
+        "encoding/json"
+        "fmt"
+        "io"
+        "log"
+        "os"
+
+        "github.com/cloudwego/eino/schema"
+
+        "github.com/cloudwego/eino-ext/components/model/arkbot"
+)
+
+func main() {
+        ctx := context.Background()
+
+        // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+        chatModel, err := arkbot.NewChatModel(ctx, &arkbot.Config{
+                APIKey: os.Getenv("ARK_API_KEY"),
+                Model:  os.Getenv("ARK_MODEL_ID"),
+        })
+        if err != nil {
+                log.Printf("NewChatModel failed, err=%v", err)
+                return
+        }
+
+        streamMsgs, err := chatModel.Stream(ctx, []*schema.Message{
+                {
+                        Role:    schema.User,
+                        Content: "What's the weather in Beijing?",
+                },
+        })
+
+        if err != nil {
+                log.Printf("Generate failed, err=%v", err)
+                return
+        }
+
+        defer streamMsgs.Close() // do not forget to close the stream
+
+        msgs := make([]*schema.Message, 0)
+
+        log.Printf("stream output:")
+        for {
+                msg, err := streamMsgs.Recv()
+                if err == io.EOF {
+                        break
+                }
+                msgs = append(msgs, msg)
+                if err != nil {
+                        log.Printf("stream.Recv failed, err=%v", err)
+                        return
+                }
+                fmt.Print(msg.Content)
+        }
+
+        msg, err := schema.ConcatMessages(msgs)
+        if err != nil {
+                log.Printf("ConcatMessages failed, err=%v", err)
+                return
+        }
+
+        log.Printf("generate output: \n")
+        log.Printf("  request_id: %s \n", arkbot.GetArkRequestID(msg))
+        if bu, ok := arkbot.GetBotUsage(msg); ok {
+                bbu, _ := json.Marshal(bu)
+                log.Printf("  bot_usage: %s \n", string(bbu))
+        }
+        if ref, ok := arkbot.GetBotChatResultReference(msg); ok {
+                bRef, _ := json.Marshal(ref)
+                log.Printf("  bot_chat_result_reference: %s \n", bRef)
+        }
+        respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+        log.Printf("  body: %s \n", string(respBody))
+}
+```
+
+## **更多信息**
 
 - [Eino Documentation](https://www.cloudwego.io/zh/docs/eino/)
 - [Volcengine Ark Model Documentation](https://www.volcengine.com/docs/82379/1263272)

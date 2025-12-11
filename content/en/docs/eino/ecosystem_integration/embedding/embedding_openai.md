@@ -1,49 +1,49 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Embedding - OpenAI
 weight: 0
 ---
 
-## **Basic Introduction**
+## **Overview**
 
-The OpenAI Vector Embedder is an implementation of the Eino Embedding interface used to convert text into vector representations. This component implements [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide) and is primarily used in the following scenarios:
+OpenAI embedder is an implementation of Eino’s Embedding interface that converts text into vector representations. It follows [[🚧]Eino: Embedding Guide](/docs/eino/core_modules/components/embedding_guide) and is typically used for:
 
-- When text needs to be converted into high-dimensional vector representations
-- Using OpenAI's embedding models
-- Using Azure OpenAI Service's embedding models
+- Converting text into high‑dimensional vectors
+- Using OpenAI’s embedding models
+- Using Azure OpenAI Service embedding models
 
-## **Usage Instructions**
+## **Usage**
 
-### **Component Initialization**
+### **Initialization**
 
-The OpenAI Vector Embedder is initialized through the `NewEmbedder` function, with the main configuration parameters as follows:
+Initialize via `NewEmbedder` with key configuration options:
 
 ```go
 import "github.com/cloudwego/eino-ext/components/embedding/openai"
 
 embedder, err := openai.NewEmbedder(ctx, &openai.EmbeddingConfig{
-    // OpenAI API Configuration
+    // OpenAI API config
     APIKey:  "your-api-key",
     Model:   "text-embedding-ada-002",
     Timeout: 30 * time.Second,
-    
-    // Optional: Azure OpenAI Service Configuration
+
+    // Optional: Azure OpenAI Service config
     ByAzure:    true,
     BaseURL:    "https://your-resource.openai.azure.com",
     APIVersion: "2023-05-15",
 
-    EncodingFormat: &format,    // Encoding format
-    Dimensions:     &dimension, // Vector dimensions
-    User:          &user,      // User identification
+    EncodingFormat: &format,    // encoding format
+    Dimensions:     &dimension, // vector dimension
+    User:           &user,      // user identifier
 })
 ```
 
-### **Generating Vector Embeddings**
+### **Generate Embeddings**
 
-Text vectorization is achieved through the `EmbedStrings` method:
+Vectorization is done via `EmbedStrings`:
 
 ```go
 embeddings, err := embedder.EmbedStrings(ctx, []string{
@@ -52,7 +52,7 @@ embeddings, err := embedder.EmbedStrings(ctx, []string{
 })
 ```
 
-### **Complete Usage Example**
+### **Complete Example**
 
 #### **Basic Usage**
 
@@ -62,14 +62,14 @@ package main
 import (
     "context"
     "time"
-    
+
     "github.com/cloudwego/eino-ext/components/embedding/openai"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initializing the embedder
+
+    // init embedder
     embedder, err := openai.NewEmbedder(ctx, &openai.EmbeddingConfig{
         APIKey:  "your-api-key",
         Model:   "text-embedding-ada-002",
@@ -78,28 +78,28 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
-    // Generating text vectors
+
+    // generate embeddings
     texts := []string{
         "This is the first sample text",
         "This is the second sample text",
     }
-    
+
     embeddings, err := embedder.EmbedStrings(ctx, texts)
     if err != nil {
         panic(err)
     }
-    
-    // Using the generated vectors
+
+    // use vectors
     for i, embedding := range embeddings {
-        println("Text", i+1, "vector dimensions:", len(embedding))
+        println("text", i+1, "vector dim:", len(embedding))
     }
 }
 ```
 
-## **Related Documentation**
+## **References**
 
-- [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide)
-- [Embedding - ARK](/docs/eino/ecosystem_integration/embedding/embedding_ark)
-- __OpenAI Embedding API Documentation__
-- [Azure OpenAI Service Documentation](https://learn.microsoft.com/azure/cognitive-services/openai/)
+- [Eino: Embedding Guide](/docs/eino/core_modules/components/embedding_guide)
+- [Embedding - Ark](/docs/eino/ecosystem_integration/embedding/embedding_ark)
+- OpenAI Embedding API: https://platform.openai.com/docs/guides/embeddings
+- Azure OpenAI Service: https://learn.microsoft.com/azure/cognitive-services/openai/

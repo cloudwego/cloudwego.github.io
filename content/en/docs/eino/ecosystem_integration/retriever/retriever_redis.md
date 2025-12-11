@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Retriever - redis
+title: Retriever - Redis
 weight: 0
 ---
 
-you can use redis-stack as retriever.
+You can use redis-stack as retriever.

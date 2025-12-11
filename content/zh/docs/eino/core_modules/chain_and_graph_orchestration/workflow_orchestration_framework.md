@@ -1,17 +1,26 @@
 ---
 Description: ""
-date: "2025-08-07"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: Workflow 编排框架'
-weight: 7
+weight: 3
 ---
 
 ## 什么是 Eino Workflow
 
 是一套编排的 API，与 Graph API 在架构上处于同一层：
 
-<a href="/img/eino/workflow_api_layer.png" target="_blank"><img src="/img/eino/workflow_api_layer.png" width="100%" /></a>
+```mermaid
+flowchart LR
+  E[Eino compose engine]
+  G[Graph API]
+  W[Workflow API]
+  C[Chain API]
+  E --> G
+  E --> W
+  G --> C
+```
 
 本质特点是：
 
@@ -70,7 +79,7 @@ Graph 编排时，因为“类型对齐”的要求，如果 f1 -> f2，则 f1 �
 
 ### 最简单的 workflow
 
-START -> node -> END.
+START -> node -> END
 
 <a href="/img/eino/workflow_simple.png" target="_blank"><img src="/img/eino/workflow_simple.png" width="100%" /></a>
 
@@ -376,25 +385,6 @@ func main() {
         // but no data passing between them.
         AddInputWithOptions(compose.START, nil, compose.WithNoDirectDependency())
 
-    wf := compose.NewWorkflow[float64, map[string]float64]()
-
-    wf.AddLambdaNode("b1", compose.InvokableLambda(bidder1)).
-       AddInput(compose.START)
-
-    // add a branch just like adding branch in Graph.
-    wf.AddBranch("b1", compose.NewGraphBranch(func(ctx context.Context, in float64) (string, error) {
-       if in > 5.0 {
-          return compose.END, nil
-       }
-       return "b2", nil
-    }, map[string]bool{compose.END: true, "b2": true}))
-
-    wf.AddLambdaNode("b2", compose.InvokableLambda(bidder2)).
-       // b2 executes strictly after b1, but does not rely on b1's output,
-       // which means b2 depends on b1, but no data passing between them.
-       AddDependency("b1").
-       AddInputWithOptions(compose.START, nil, compose.WithNoDirectDependency())
-
     wf.End().AddInput("b1", compose.ToField("bidder1")).
        AddInput("b2", compose.ToField("bidder2"))
 
@@ -420,7 +410,7 @@ func main() {
 
 ```go
 func (n *WorkflowNode) AddDependency(fromNodeKey string) *WorkflowNode {
-    return n.addDependencyRelation(fromNodeKey, nil, &workflowAddInputOpts{dependencyWithoutInput: true})
+    return n.addDependencyRelation(fromNodeKey, nil, &workflowAddInputOpts{dependencyWithoutInput: _true_})
 }
 ```
 
@@ -431,7 +421,7 @@ func (n *WorkflowNode) AddDependency(fromNodeKey string) *WorkflowNode {
 在上面的例子中，我们用与 Graph API 几乎完全相同的方式添加了一个 branch：
 
 ```go
-    // add a branch just like adding branch in Graph.
+// add a branch just like adding branch in Graph.
     wf.AddBranch("b1", compose.NewGraphBranch(func(ctx context.Context, in float64) (string, error) {
        if in > 5.0 {
           return compose.END, nil
@@ -473,7 +463,7 @@ func (wf *Workflow[I, O]) AddBranch(fromNodeKey string, branch *GraphBranch) *Wo
 
 让我们修改下上面的“竞拍”例子，给竞拍者 1 和竞拍者 2 分别给一个“预算”的静态配置：
 
-<a href="/img/eino/workflow_auction_static_values.png" target="_blank"><img src="/img/eino/workflow_auction_static_values.png" width="100%" /></a>
+<a href="/img/eino/workflow_auction_static_values_en.png" target="_blank"><img src="/img/eino/workflow_auction_static_values_en.png" width="100%" /></a>
 
 budget1 和 budget2 会分别以“静态值”的形式注入到 bidder1 和 bidder2 的 input 中。使用 `SetStaticValue` 方法给 workflow 节点配置静态值：
 
@@ -712,7 +702,7 @@ Merge 是指一个节点的输入映射自多个 `FieldMapping` 的情况。
 ```go
 t.Run("custom extract from array element", func(t *testing.T) {
     wf := NewWorkflow[[]int, map[string]int]()
-    wf.End().AddInput(START, ToField("a", WithCustomExtractor(func(input any) (any, error) {
+    wf.End().AddInput(_START_, ToField("a", WithCustomExtractor(func(input any) (any, error) {
        return input.([]int)[0], nil
     })))
     r, err := wf.Compile(context.Background())

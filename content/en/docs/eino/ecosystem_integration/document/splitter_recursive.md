@@ -1,126 +1,110 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Splitter - recursive
 weight: 0
 ---
 
-## **Basic Introduction**
+## **Overview**
 
-The Recursive Splitter is an implementation of the Document Transformer interface, used to recursively split long documents into smaller segments according to a specified size. This component implements the [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide).
+Recursive splitter is an implementation of the Document Transformer interface that recursively splits long documents into smaller chunks by target size. It follows [Eino: Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide).
 
-### **Working Principle**
+### **How It Works**
 
-The Recursive Splitter works through the following steps:
-
-1. Try to split the document in the order of the separator list
-2. If the current separator cannot split the document into segments smaller than the target size, use the next separator
-3. Merge the resulting segments to ensure the segment size is close to the target size
-4. Maintain an overlapping region of the specified size during the merging process
+1. Try splitting the document using separators in order
+2. If the current separator cannot produce chunks under the target size, use the next separator
+3. Merge split fragments to ensure sizes are close to the target
+4. Maintain a specified overlap area during merging
 
 ## **Usage**
 
-### **Component Initialization**
+### **Initialization**
 
-The recursive splitter is initialized via the `NewSplitter` function, with the main configuration parameters as follows:
+Initialize via `NewSplitter` with configuration:
 
 ```go
 splitter, err := recursive.NewSplitter(ctx, &recursive.Config{
-    ChunkSize:    1000,           // Required: Target chunk size
-    OverlapSize:  200,            // Optional: Chunk overlap size
-    Separators:   []string{"\n", ".", "?", "!"}, // Optional: List of separators
-    LenFunc:      nil,            // Optional: Custom length calculation function
-    KeepType:     recursive.KeepTypeNone, // Optional: Separator retention strategy
+    ChunkSize:   1000,                         // required: target chunk size
+    OverlapSize: 200,                          // optional: overlap size
+    Separators:  []string{"\n\n", "\n", "。", "！", "？"}, // optional: separator list
+    LenFunc:     nil,                          // optional: custom length func
+    KeepType:    recursive.KeepTypeEnd,        // optional: keep-type strategy
 })
 ```
 
-Configuration parameters explanation:
+Parameters:
 
-- `ChunkSize`: Required parameter, specifies the target chunk size
-- `OverlapSize`: Overlap size between chunks, used to maintain context coherence
-- `Separators`: List of separators, used in order of priority
-- `LenFunc`: Custom text length calculation function, defaults to `len()`
-- `KeepType`: Separator retention strategy, optional values:
-  - `KeepTypeNone`: Do not retain separators
-  - `KeepTypeStart`: Retain separators at the start of the chunk
-  - `KeepTypeEnd`: Retain separators at the end of the chunk
+- `ChunkSize`: required, target chunk size
+- `OverlapSize`: overlap between chunks to keep context
+- `Separators`: ordered list of separators by priority
+- `LenFunc`: custom length function, default `len()`
+- `KeepType`: separator keep strategy, values:
+  - `KeepTypeNone`: do not keep separators
+  - `KeepTypeStart`: keep at the start
+  - `KeepTypeEnd`: keep at the end
 
-### **Complete Usage Example**
+### **Complete Example**
 
 ```go
 package main
 
 import (
     "context"
-    
+
     "github.com/cloudwego/eino-ext/components/document/transformer/splitter/recursive"
     "github.com/cloudwego/eino/schema"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize the splitter
+
     splitter, err := recursive.NewSplitter(ctx, &recursive.Config{
         ChunkSize:   1000,
         OverlapSize: 200,
         Separators:  []string{"\n\n", "\n", "。", "！", "？"},
         KeepType:    recursive.KeepTypeEnd,
     })
-    if err != nil {
-        panic(err)
-    }
-    
-    // Prepare the documents to be split
-    docs := []*schema.Document{
-        {
-            ID: "doc1",
-            Content: `这是第一个段落，包含了一些内容。
-            
-            这是第二个段落。这个段落有多个句子！这些句子通过标点符号分隔。
-            
-            这是第三个段落。这里有更多的内容。`,
-        },
-    }
-    
-    // Perform splitting
+    if err != nil { panic(err) }
+
+    docs := []*schema.Document{{
+        ID: "doc1",
+        Content: `This is the first paragraph, with some content.
+
+This is the second paragraph. This paragraph has multiple sentences! These sentences are separated by punctuation.
+
+This is the third paragraph. Here is more content.`,
+    }}
+
     results, err := splitter.Transform(ctx, docs)
-    if err != nil {
-        panic(err)
-    }
-    
-    // Handle the split results
-    for i, doc := range results {
-        println("Chunk", i+1, ":", doc.Content)
-    }
+    if err != nil { panic(err) }
+
+    for i, doc := range results { println("fragment", i+1, ":", doc.Content) }
 }
 ```
 
 ### **Advanced Usage**
 
-Custom length calculation:
+Custom length function:
 
 ```go
 splitter, err := recursive.NewSplitter(ctx, &recursive.Config{
     ChunkSize: 1000,
     LenFunc: func(s string) int {
-        // e.g.: Use the number of Unicode characters instead of bytes
+        // use unicode rune count instead of byte length
         return len([]rune(s))
     },
 })
 ```
 
-Adjusting overlap strategy:
+Adjust overlap strategy:
 
 ```go
 splitter, err := recursive.NewSplitter(ctx, &recursive.Config{
     ChunkSize:   1000,
-    // Increase overlap area to retain more context
-    OverlapSize: 300,
-    // Retain separator at the end of the chunk
-    KeepType:    recursive.KeepTypeEnd,
+    OverlapSize: 300,                     // larger overlap to keep more context
+    KeepType:    recursive.KeepTypeEnd,   // keep separator at end of fragments
 })
 ```
 
@@ -129,19 +113,16 @@ Custom separators:
 ```go
 splitter, err := recursive.NewSplitter(ctx, &recursive.Config{
     ChunkSize: 1000,
-    // List of separators sorted by priority
     Separators: []string{
-        "\n\n",     // Empty line (paragraph separator)
-        "\n",       // Line break
-        "。",       // Period
+        "\n\n", // blank line (paragraph)
+        "\n",   // newline
+        "。",    // period
     },
 })
 ```
 
-## **Related Documents**
+## **References**
 
-- [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
-- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Document Transformer guide](/docs/eino/core_modules/components/document_transformer_guide)
-- [Splitter - semantic](/docs/eino/ecosystem_integration/document/splitter_semantic)
+- [Eino: Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide)
 - [Splitter - markdown](/docs/eino/ecosystem_integration/document/splitter_markdown)
+- [Splitter - semantic](/docs/eino/ecosystem_integration/document/splitter_semantic)

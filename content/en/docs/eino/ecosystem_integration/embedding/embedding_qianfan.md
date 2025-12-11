@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Embedding - qianfan
+title: Embedding - Qianfan
 weight: 0
 ---
 
-you can use embedding services served by qianfan (from baidu).
+You can use Qianfan (Baidu) platform embedding service.

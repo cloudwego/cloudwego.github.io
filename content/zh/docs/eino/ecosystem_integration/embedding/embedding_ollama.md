@@ -1,83 +1,85 @@
 ---
 Description: ""
-date: "2025-07-30"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Embedding - Ollama
 weight: 0
 ---
 
-## 基本介绍
+## **基本介绍**
+
 这是一个为 [Eino](https://github.com/cloudwego/eino) 实现的 Ollama Embedding 组件，实现了 `Embedder` 接口，可无缝集成到 Eino 的 embedding 系统中，提供文本向量化能力。
 
-## 特性
-- 实现 `github.com/cloudwego/eino/components/embedding.Embedder` 接口
-- 易于集成到 Eino的工作流
-- 支持自定义 Ollama 服务端点和模型
-- Eino内置回调支持
+## **特性**
 
-## 安装
+- 实现 `github.com/cloudwego/eino/components/embedding.Embedder` 接口
+- 易于集成到 Eino 的工作流
+- 支持自定义 Ollama 服务端点和模型
+- Eino 内置回调支持
+
+## **安装**
+
 ```bash
-  go get github.com/cloudwego/eino-ext/components/embedding/ollama
+go get github.com/cloudwego/eino-ext/components/embedding/ollama
 ```
 
-
-## 快速开始
+## **快速开始**
 
 ```go
 package main
 
 import (
-	"context"
-	"log"
-	"os"
-	"time"
+        "context"
+        "log"
+        "os"
+        "time"
 
-	"github.com/cloudwego/eino-ext/components/embedding/ollama"
+        "github.com/cloudwego/eino-ext/components/embedding/ollama"
 )
 
 func main() {
-	ctx := context.Background()
+        ctx := context.Background()
 
-	baseURL := os.Getenv("OLLAMA_BASE_URL")
-	if baseURL == "" {
-		baseURL = "http://localhost:11434" // 默认本地
-	}
-	model := os.Getenv("OLLAMA_EMBED_MODEL")
-	if model == "" {
-		model = "nomic-embed-text"
-	}
+        baseURL := os.Getenv("OLLAMA_BASE_URL")
+        if baseURL == "" {
+                baseURL = "http://localhost:11434" // 默认本地
+        }
+        model := os.Getenv("OLLAMA_EMBED_MODEL")
+        if model == "" {
+                model = "nomic-embed-text"
+        }
 
-	embedder, err := ollama.NewEmbedder(ctx, &ollama.EmbeddingConfig{
-		BaseURL: baseURL,
-		Model:   model,
-		Timeout: 10 * time.Second,
-	})
-	if err != nil {
-		log.Fatalf("NewEmbedder of ollama error: %v", err)
-		return
-	}
+        embedder, err := ollama.NewEmbedder(ctx, &ollama.EmbeddingConfig{
+                BaseURL: baseURL,
+                Model:   model,
+                Timeout: 10 * time.Second,
+        })
+        if err != nil {
+                log.Fatalf("NewEmbedder of ollama error: %v", err)
+                return
+        }
 
-	log.Printf("===== call Embedder directly =====")
+        log.Printf("===== call Embedder directly =====")
 
-	vectors, err := embedder.EmbedStrings(ctx, []string{"hello", "how are you"})
-	if err != nil {
-		log.Fatalf("EmbedStrings of Ollama failed, err=%v", err)
-	}
+        vectors, err := embedder.EmbedStrings(ctx, []string{"hello", "how are you"})
+        if err != nil {
+                log.Fatalf("EmbedStrings of Ollama failed, err=%v", err)
+        }
 
-	log.Printf("vectors : %v", vectors)
+        log.Printf("vectors : %v", vectors)
 
-	// you can use WithModel to specify the model
-	vectors, err = embedder.EmbedStrings(ctx, []string{"hello", "how are you"}, embedding.WithModel(model))
-	if err != nil {
-		log.Fatalf("EmbedStrings of Ollama failed, err=%v", err)
-	}
+        // you can use WithModel to specify the model
+        vectors, err = embedder.EmbedStrings(ctx, []string{"hello", "how are you"}, embedding.WithModel(model))
+        if err != nil {
+                log.Fatalf("EmbedStrings of Ollama failed, err=%v", err)
+        }
 
-	log.Printf("vectors : %v", vectors)
+        log.Printf("vectors : %v", vectors)
 }
 ```
 
-## 配置说明
+## **配置说明**
 
 embedder 可以通过 `EmbeddingConfig` 结构体进行配置：
 

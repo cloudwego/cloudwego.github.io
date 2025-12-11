@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-07-21"
 lastmod: ""
 tags: []
 title: 'Eino: 组件集成'
-weight: 0
+weight: 5
 ---
 
 ## 组件集成

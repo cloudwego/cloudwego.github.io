@@ -1,57 +1,54 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-07-21"
 lastmod: ""
 tags: []
 title: 'Eino: Chain & Graph & Workflow Orchestration'
-weight: 0
+weight: 2
 ---
 
-In LLM applications, `Components` are the smallest units that provide "atomic capabilities," such as:
+In LLM applications, `Components` provide atomic capabilities such as:
 
-- `ChatModel` provides the conversation capability of LLM
-- `Embedding` provides semantic-based text vectorization capabilities
-- `Retriever` provides relevant content retrieval capabilities
-- `ToolsNode` provides the capability to execute external tools
+- `ChatModel`: chat-oriented LLM interaction
+- `Embedding`: semantic vectorization for text
+- `Retriever`: retrieving relevant content
+- `ToolsNode`: invoking external tools
 
-> For detailed information on components, refer to: [Eino: Components](/docs/eino/core_modules/components)
+> For component details: [Eino: Components](/docs/eino/core_modules/components)
 
-An LLM application, in addition to needing these atomic capabilities, also needs to **combine and sequence** these atomic capabilities based on contextual business logic. This is called **Orchestration**.
+Beyond atomic capabilities, applications must combine and chain them according to business scenarios. This is **orchestration**.
 
-Developing LLM applications has its own typical characteristics: The custom business logic itself is usually not very complex, primarily involving the combination and sequencing of "atomic capabilities."
+LLM application development has a typical character: custom business logic is rarely complex; most of the work is composing and chaining atomic capabilities.
 
-In traditional code development, business logic is expressed through "code execution logic." When transitioning to LLM application development, the most straightforward approach is "to call components manually and use the results as inputs for subsequent component calls." Such an approach results in `messy code`, `difficulty in reuse`, and `lack of aspect-oriented capabilities`...
+If you simply call components manually and pass outputs downstream by hand, you end up with code that is messy, hard to reuse, and lacks cross-cutting aspects.
 
-When developers pursue code that is '**elegant**' and follows the '**clean code principles**,' they find a significant gap when applying traditional code organization methods to LLM applications.
+To keep code elegant and clean, Eino makes LLM app development simple, intuitive, and robust.
 
-Eino's initial goal was to make LLM application development extremely simple, ensuring that the application code logic is "simple," "intuitive," "elegant," and "robust."
+Eino’s perspective on orchestration:
 
-Eino has the following insights into "Orchestration":
+- Orchestration should be a clear layer above business logic — **do not blend business logic into orchestration**.
+- LLM applications center on composing components; **components are first-class citizens of orchestration**.
+- Abstractly, orchestration builds a network through which data flows. Each node imposes requirements on the data’s format/content. A smooth network hinges on **type alignment between upstream and downstream nodes**.
+- Real-world complexity appears in orchestration artifacts; only **horizontal governance** keeps complexity controlled.
+- LLMs and applications evolve quickly; only **extensible applications** remain viable.
 
-- Orchestration should become a clear layer on top of business logic, **without embedding business logic into orchestration**.
-- The core of the LLM application is "sequencing and combining components that provide atomic capabilities," **with components being the "first citizens" of orchestration**.
-- From an abstract perspective, orchestration builds a network where data flows through. Each node within the network has specific format/content requirements for the flowing data. The key to a seamlessly flowing data network is "**whether the data formats between upstream and downstream nodes are aligned**?".
-- The complexity of business scenarios will be reflected in the complexity of orchestration artifacts. Only **horizontal governance capabilities** can keep complex scenarios under control.
-- LLMs will continue to develop rapidly, and so will LLM applications. Only applications with **expansion capabilities** will have vitality.
+Therefore, Eino offers a graph-based model (`node + edge`) where **components** are atomic nodes and **type alignment** underpins orchestration.
 
-Therefore, Eino provides a solution for "orchestration based on the Graph model (node + edge), with **components** as atomic nodes and **upstream-downstream type alignment** as the foundation."
+Specifically:
 
-Specifically, the following features are implemented:
+- Everything centers on components. Clear encapsulation yields clear responsibilities and natural reuse.
+  - See: [Eino: Components](/docs/eino/core_modules/components)
+- Push business complexity into component implementations; the orchestration layer maintains global clarity.
+- Provide aspect capabilities via callbacks, enabling **unified governance** at the node level.
+  - See: [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
+- Provide call options for **extensibility** during rapid iteration.
+  - See: [Eino: Call Option Capabilities](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
+- Reinforce **type alignment** to reduce cognitive load and leverage Go’s type safety.
+  - See: [Eino: Orchestration Design Principles](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+- Provide **automatic stream conversion**, removing “stream handling” from the list of orchestration complexity sources.
+  - See: [Eino: Streaming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
-- Everything is centered around "components," standardizing the encapsulation of business functionalities, making **division of responsibilities clear** and **reuse** natural.
-  - For more details, refer to: [Eino: Components](/docs/eino/core_modules/components)
-- The complexity of business logic is encapsulated within the components, giving the orchestration layer a more global perspective, making **logic layers very clear**.
-- Provides aspect capabilities and a callback mechanism that supports node-based **unified governance capabilities**.
-  - For more details, refer to: [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
-- Provides a call option mechanism, **extensibility** is the most fundamental requirement of the system in rapid iterations.
-  - For more details, refer to: [Eino: CallOption capabilities and specification](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
-- Provides an enhanced "type alignment" development method, reducing the mental burden on developers and leveraging Go's **type safety** features.
-  - For more details, refer to: [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
-- Provides an **"automated stream conversion"** capability, removing "stream" from the "source of complexity ranking" in the orchestration system.
-  - For more details, refer to: [Eino Points of Streaming Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
+Graphs are powerful and semantically complete; you can express branches, parallelism, and loops. The tradeoff is using `graph.AddXXXNode()` and `graph.AddEdge()` — powerful, but a bit verbose.
 
-Graph itself is powerful and semantically complete, capable of rendering almost any "data flow network," such as "branching," "parallel," and "loop."
+Most real scenarios only need sequential chaining. Eino exposes `Chain`, a simpler interface that wraps `Graph`. Except for cycles, `Chain` surfaces nearly all `Graph` capabilities.
 
-However, Graph is not without its drawbacks. Based on the "node" and "edge" model, Graph requires developers to use the `graph.AddXXXNode()` and `graph.AddEdge()` interfaces to create a data channel, which is powerful but somewhat complex.
-
-In most real-world business scenarios, simply "connecting in sequence" is often sufficient. Therefore, Eino encapsulates an easier-to-use interface called `Chain`. Chain is a wrapper around Graph, exposing almost all of Graph's capabilities except for "loops."

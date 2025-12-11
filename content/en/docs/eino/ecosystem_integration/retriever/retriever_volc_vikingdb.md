@@ -1,70 +1,68 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-01-20"
 lastmod: ""
 tags: []
-title: Retriever - volc VikingDB
+title: Retriever - volc vikingdb
 weight: 0
 ---
 
-## **Basic Introduction**
+## **Overview**
 
-The Volcano Engine VikingDB Retriever is an implementation of the Retriever interface. The Volcano Engine VikingDB is a vector database service provided by Volcano Engine, offering high-performance vector retrieval capabilities. This component interacts with the service through the Volcano Engine VikingDB Go SDK. The component implements the [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)
+Volcengine VikingDB retriever is an implementation of the Retriever interface. VikingDB is a high‑performance vector database service that provides vector retrieval capabilities. This component interacts with the service via the Volcengine VikingDB Go SDK. It follows [Eino: Retriever Guide](/docs/eino/core_modules/components/retriever_guide).
 
 ## **Usage**
 
-### **Component Initialization**
+### **Initialization**
 
-The Volcengine VikingDB Retriever is initialized using the `NewRetriever` function, with the main configuration parameters as follows:
+Initialize the VikingDB retriever via `NewRetriever` with key configuration options:
 
 ```go
-import  "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
+import "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
 
 retriever, err := volc_vikingdb.NewRetriever(ctx, &volc_vikingdb.RetrieverConfig{
-    // Service Configuration
-    Host:              "api-vikingdb.volces.com", // Service address
-    Region:            "cn-beijing",            // Region
-    AK:                "your-ak",               // Access key ID
-    SK:                "your-sk",               // Access key secret
-    Scheme:            "https",                 // Protocol
-    ConnectionTimeout: 30,                      // Connection timeout (seconds)
-    
-    // Data Configuration
-    Collection: "collection-name",  // Collection name
-    Index:      "index-name",      // Index name
-    
-    // Embedding Configuration
+    // service config
+    Host:              "api-vikingdb.volces.com", // service host
+    Region:            "cn-beijing",              // region
+    AK:                "your-ak",                 // Access Key
+    SK:                "your-sk",                 // Secret Key
+    Scheme:            "https",                   // protocol
+    ConnectionTimeout: 30,                        // connection timeout (seconds)
+
+    // data config
+    Collection: "collection-name",  // collection name
+    Index:      "index-name",       // index name
+
+    // embedding config
     EmbeddingConfig: volc_vikingdb.EmbeddingConfig{
-        UseBuiltin:   true,        // Use built-in embedding
-        ModelName:    "model-name",// Model name
-        UseSparse:    true,        // Use sparse vectors
-        DenseWeight:  0.5,         // Dense vector weight
-        Embedding:    embedder,    // Custom embedder
+        UseBuiltin:  true,             // use built-in embedding
+        ModelName:   "model-name",    // model name
+        UseSparse:   true,             // use sparse vector
+        DenseWeight: 0.5,              // dense vector weight
+        Embedding:   embedder,         // custom embedder
     },
-    
-    // Retrieval Configuration
-    Partition:      "partition",   // Partition name
-    TopK:           ptrOf(100),   // Number of results to return
-    ScoreThreshold: ptrOf(0.7),   // Similarity threshold
-    
-    // Filter Configuration
-    FilterDSL: map[string]any{    // DSL filter conditions
-        "term": map[string]any{
-            "field": "value",
-        },
+
+    // retrieval config
+    Partition:      "partition",      // partition name
+    TopK:           ptrOf(100),        // number of results
+    ScoreThreshold: ptrOf(0.7),        // similarity threshold
+
+    // filter config
+    FilterDSL: map[string]any{         // DSL filter conditions
+        "term": map[string]any{ "field": "value" },
     },
 })
 ```
 
 ### **Retrieve Documents**
 
-Document retrieval is implemented via the `Retrieve` method:
+Retrieve documents via `Retrieve`:
 
 ```go
 docs, err := retriever.Retrieve(ctx, "query text", retriever.WithTopK(5))
 ```
 
-### **Complete Usage Example**
+### **Complete Examples**
 
 #### **Basic Retrieval**
 
@@ -73,14 +71,14 @@ package main
 
 import (
     "context"
-    
+
     "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize the retriever
+
+    // init retriever
     r, err := volc_vikingdb.NewRetriever(ctx, &volc_vikingdb.RetrieverConfig{
         Host:       "api-vikingdb.volces.com",
         Region:     "cn-beijing",
@@ -89,28 +87,24 @@ func main() {
         Collection: "your-collection",
         Index:      "your-index",
         EmbeddingConfig: volc_vikingdb.EmbeddingConfig{
-            UseBuiltin: true,
-            ModelName:  "model-name",
-            UseSparse:  true,
+            UseBuiltin:  true,
+            ModelName:   "model-name",
+            UseSparse:   true,
             DenseWeight: 0.5,
         },
         TopK: ptrOf(5),
     })
-    if err != nil {
-        panic(err)
-    }
-    
-    // Execute retrieval
+    if err != nil { panic(err) }
+
+    // retrieve
     docs, err := r.Retrieve(ctx, "How to use VikingDB?")
-    if err != nil {
-        panic(err)
-    }
-    
-    // Process results
+    if err != nil { panic(err) }
+
+    // handle results
     for _, doc := range docs {
-        println("Document ID:", doc.ID)
-        println("Content:", doc.Content)
-        println("Similarity:", doc.MetaData["_score"])
+        println("docID:", doc.ID)
+        println("content:", doc.Content)
+        println("score:", doc.MetaData["_score"])
     }
 }
 ```
@@ -122,21 +116,19 @@ package main
 
 import (
     "context"
-    
+
     "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
     "github.com/cloudwego/eino/components/embedding"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize embedder (using openai as an example)
+
+    // init embedder (openai example)
     embedder, err := &openai.NewEmbedder(ctx, &openai.EmbeddingConfig{})
-    if err != nil {
-        panic(err)
-    }
-    
-    // Initialize the retriever
+    if err != nil { panic(err) }
+
+    // init retriever
     r, err := volc_vikingdb.NewRetriever(ctx, &volc_vikingdb.RetrieverConfig{
         Host:       "api-vikingdb.volces.com",
         Region:     "cn-beijing",
@@ -149,24 +141,17 @@ func main() {
             Embedding:  embedder,
         },
     })
-    if err != nil {
-        panic(err)
-    }
-    
-    // Execute retrieval
+    if err != nil { panic(err) }
+
+    // retrieve
     docs, err := r.Retrieve(ctx, "query text")
-    if err != nil {
-        panic(err)
-    }
-    
-    // Process results
-    for _, doc := range docs {
-        println(doc.Content)
-    }
+    if err != nil { panic(err) }
+
+    for _, doc := range docs { println(doc.Content) }
 }
 ```
 
-## **Related Documents**
+## **References**
 
-- [Eino: Retriever guide](/docs/eino/core_modules/components/retriever_guide)
-- [Volcano Engine VikingDB Documentation](https://www.volcengine.com/docs/84313)
+- [Eino: Retriever Guide](/docs/eino/core_modules/components/retriever_guide)
+- VikingDB: https://www.volcengine.com/docs/84313

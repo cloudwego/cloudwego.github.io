@@ -1,110 +1,109 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Retriever - milvus
+title: Retriever - Milvus
 weight: 0
 ---
 
-## Milvus 搜索
+## **Milvus 搜索**
 
-基于 Milvus 2.x 的向量搜索实现，为 [Eino](https://github.com/cloudwego/eino) 提供了符合 `Retriever` 接口的存储方案。该组件可无缝集成
-Eino 的向量存储和检索系统，增强语义搜索能力。
+基于 Milvus 2.x 的向量搜索实现，为 [Eino](https://github.com/cloudwego/eino) 提供了符合 `Retriever` 接口的存储方案。该组件可无缝集成 Eino 的向量存储和检索系统，增强语义搜索能力。
 
-## 快速开始
+## **快速开始**
 
-### 安装
+### **安装**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/retriever/milvus
 ```
 
-### 创建 Milvus 搜索
+### **创建 Milvus 搜索**
 
 ```go
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
-	
-	"github.com/cloudwego/eino-ext/components/embedding/ark"
-	"github.com/milvus-io/milvus-sdk-go/v2/client"
-	
-	"github.com/cloudwego/eino-ext/components/retriever/milvus"
+        "context"
+        "fmt"
+        "log"
+        "os"
+        
+        "github.com/cloudwego/eino-ext/components/embedding/ark"
+        "github.com/milvus-io/milvus-sdk-go/v2/client"
+        
+        "github.com/cloudwego/eino-ext/components/retriever/milvus"
 )
 
 func main() {
-	// Get the environment variables
-	addr := os.Getenv("MILVUS_ADDR")
-	username := os.Getenv("MILVUS_USERNAME")
-	password := os.Getenv("MILVUS_PASSWORD")
-	arkApiKey := os.Getenv("ARK_API_KEY")
-	arkModel := os.Getenv("ARK_MODEL")
-	
-	// Create a client
-	ctx := context.Background()
-	cli, err := client.NewClient(ctx, client.Config{
-		Address:  addr,
-		Username: username,
-		Password: password,
-	})
-	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
-		return
-	}
-	defer cli.Close()
-	
-	// Create an embedding model
-	emb, err := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{
-		APIKey: arkApiKey,
-		Model:  arkModel,
-	})
-	
-	// Create a retriever
-	retriever, err := milvus.NewRetriever(ctx, &milvus.RetrieverConfig{
-		Client:      cli,
-		Collection:  "",
-		Partition:   nil,
-		VectorField: "",
-		OutputFields: []string{
-			"id",
-			"content",
-			"metadata",
-		},
-		DocumentConverter: nil,
-		MetricType:        "",
-		TopK:              0,
-		ScoreThreshold:    5,
-		Sp:                nil,
-		Embedding:         emb,
-	})
-	if err != nil {
-		log.Fatalf("Failed to create retriever: %v", err)
-		return
-	}
-	
-	// Retrieve documents
-	documents, err := retriever.Retrieve(ctx, "milvus")
-	if err != nil {
-		log.Fatalf("Failed to retrieve: %v", err)
-		return
-	}
-	
-	// Print the documents
-	for i, doc := range documents {
-		fmt.Printf("Document %d:\n", i)
-		fmt.Printf("title: %s\n", doc.ID)
-		fmt.Printf("content: %s\n", doc.Content)
-		fmt.Printf("metadata: %v\n", doc.MetaData)
-	}
+        // Get the environment variables
+        addr := os.Getenv("MILVUS_ADDR")
+        username := os.Getenv("MILVUS_USERNAME")
+        password := os.Getenv("MILVUS_PASSWORD")
+        arkApiKey := os.Getenv("ARK_API_KEY")
+        arkModel := os.Getenv("ARK_MODEL")
+        
+        // Create a client
+        ctx := context.Background()
+        cli, err := client.NewClient(ctx, client.Config{
+                Address:  addr,
+                Username: username,
+                Password: password,
+        })
+        if err != nil {
+                log.Fatalf("Failed to create client: %v", err)
+                return
+        }
+        defer cli.Close()
+        
+        // Create an embedding model
+        emb, err := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{
+                APIKey: arkApiKey,
+                Model:  arkModel,
+        })
+        
+        // Create a retriever
+        retriever, err := milvus.NewRetriever(ctx, &milvus.RetrieverConfig{
+                Client:      cli,
+                Collection:  "",
+                Partition:   nil,
+                VectorField: "",
+                OutputFields: []string{
+                        "id",
+                        "content",
+                        "metadata",
+                },
+                DocumentConverter: nil,
+                MetricType:        "",
+                TopK:              0,
+                ScoreThreshold:    5,
+                Sp:                nil,
+                Embedding:         emb,
+        })
+        if err != nil {
+                log.Fatalf("Failed to create retriever: %v", err)
+                return
+        }
+        
+        // Retrieve documents
+        documents, err := retriever.Retrieve(ctx, "milvus")
+        if err != nil {
+                log.Fatalf("Failed to retrieve: %v", err)
+                return
+        }
+        
+        // Print the documents
+        for i, doc := range documents {
+                fmt.Printf("Document %d:\n", i)
+                fmt.Printf("title: %s\n", doc.ID)
+                fmt.Printf("content: %s\n", doc.Content)
+                fmt.Printf("metadata: %v\n", doc.MetaData)
+        }
 }
 ```
 
-## 配置
+## **配置**
 
 ```go
 type RetrieverConfig struct {

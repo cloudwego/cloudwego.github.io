@@ -1,23 +1,21 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino: Indexer guide'
-weight: 0
+title: 'Eino: Indexer Guide'
+weight: 6
 ---
 
-## **Basic Introduction**
+## Introduction
 
-The Indexer component is used for storing and indexing documents. Its primary function is to store documents and their vector representations into a backend storage system and provide efficient retrieval capabilities. This component plays a significant role in the following scenarios:
+The `Indexer` component stores documents (and vectors) into backend systems and provides efficient retrieval. It’s useful for building vector databases for semantic search.
 
-- Building a vector database for semantic association search
+## Component Definition
 
-## **Component Definition**
+### Interface
 
-### **Interface Definition**
-
-> Code Location: eino/components/indexer/interface.go
+> Code: `eino/components/indexer/interface.go`
 
 ```go
 type Indexer interface {
@@ -25,42 +23,38 @@ type Indexer interface {
 }
 ```
 
-#### **Store Method**
+#### Store
 
-- Function: Store documents and build an index
-- Parameters:
-  - ctx: Context object used to pass request-level information and the Callback Manager
-  - docs: List of documents to be stored
-  - opts: Storage options used to configure storage behavior
+- Purpose: store documents and build indexes
+- Params:
+  - `ctx`: context and callback manager
+  - `docs`: documents to store
+  - `opts`: options for storage
 - Returns:
-  - ids: List of successfully stored document IDs
-  - error: Error information during the storage process
+  - `ids`: stored document IDs
+  - `error`
 
-### **Common Options**
+### Common Options
 
-The Indexer component uses IndexerOption to define optional parameters. Indexer defines the following common options. Additionally, each specific implementation can define its specific options, wrapped as a unified IndexerOption type through the WrapIndexerImplSpecificOptFn function.
+`IndexerOption` defines options. Implementations may add specific options via `WrapIndexerImplSpecificOptFn`.
 
 ```go
 type Options struct {
-    // SubIndexes is the list of sub-indexes to be created
-    SubIndexes []string   
-    // Embedding is the component used to generate document vectors
+    SubIndexes []string
     Embedding embedding.Embedder
 }
 ```
 
-Options can be set in the following ways:
+Set options:
 
 ```go
-// Set sub-indexes
 WithSubIndexes(subIndexes []string) Option
-// Set vector generation component
 WithEmbedding(emb embedding.Embedder) Option
 ```
 
-## **Usage**
+## Usage
 
-### **Standalone Use**
+### Standalone
 
 ```go
 import (
@@ -71,24 +65,24 @@ import (
 collectionName := "eino_test"
 
 /*
- * In the following example, a dataset named eino_test is prebuilt with the field configuration as:
- * Field Name       Field Type         Vector Dimension
+ * In the following example, a dataset (collection) named "eino_test" is pre-created with fields:
+ * Field Name       Field Type      Vector Dim
  * ID               string
- * vector           vector             1024
+ * vector           vector          1024
  * sparse_vector    sparse_vector
  * content          string
  * extra_field_1    string
  *
- * When using the component, note:
- * 1. The field names and types for ID / vector / sparse_vector / content should be consistent with the above configuration
- * 2. The vector dimension must match the vector dimension output by the model corresponding to ModelName
- * 3. Some models do not output sparse vectors. In this case, UseSparse needs to be set to false, and the collection can omit the sparse_vector field
+ * Component usage notes:
+ * 1. Field names and types for ID / vector / sparse_vector / content must match the above configuration
+ * 2. The vector dimension must match the output dimension of the model indicated by ModelName
+ * 3. Some models do not output sparse vectors; set UseSparse=false and the collection may omit sparse_vector
  */
 
 cfg := &volc_vikingdb.IndexerConfig{
     // https://api-vikingdb.volces.com (North China)
     // https://api-vikingdb.mlp.cn-shanghai.volces.com (East China)
-    // https://api-vikingdb.mlp.ap-mya.byteplus.com (Overseas-Johor)
+    // https://api-vikingdb.mlp.ap-mya.byteplus.com (Overseas - Johor)
     Host:              "api-vikingdb.volces.com",
     Region:            "cn-beijing",
     AK:                ak,
@@ -106,62 +100,48 @@ cfg := &volc_vikingdb.IndexerConfig{
 
 volcIndexer, _ := volc_vikingdb.NewIndexer(ctx, cfg)
 
-doc := &schema.Document{
-    ID:      "mock_id_1",
-    Content: "A ReAct prompt consists of few-shot task-solving trajectories, with human-written text reasoning traces and actions, as well as environment observations in response to actions",
-}
+doc := &schema.Document{ ID: "mock_id_1", Content: "A ReAct prompt consists of..." }
 volc_vikingdb.SetExtraDataFields(doc, map[string]interface{}{"extra_field_1": "mock_ext_abc"})
 volc_vikingdb.SetExtraDataTTL(doc, 1000)
 
 docs := []*schema.Document{doc}
 resp, _ := volcIndexer.Store(ctx, docs)
-
 fmt.Printf("vikingDB store success, docs=%v, resp ids=%v\n", docs, resp)
 ```
 
-### **Use in Orchestration**
+### In Orchestration
 
 ```go
-// Use in Chain
+// Chain
 chain := compose.NewChain[[]*schema.Document, []string]()
 chain.AppendIndexer(indexer)
 
-// Use in Graph
+// Graph
 graph := compose.NewGraph[[]*schema.Document, []string]()
 graph.AddIndexerNode("indexer_node", indexer)
 ```
 
-## **Option and Callback Usage**
+## Options and Callbacks
 
-### **Option Usage Example**
+### Options Example
 
 ```go
-// Using options (when used individually)
 ids, err := indexer.Store(ctx, docs,
-    // Set subindex
     indexer.WithSubIndexes([]string{"kb_1", "kb_2"}),
-    // Set embedding component
     indexer.WithEmbedding(embedder),
 )
 ```
 
-### **Callback Usage Example**
+### Callback Example
 
-> Code location: eino-ext/components/indexer/volc_vikingdb/examples/builtin_embedding
+> Code: `eino-ext/components/indexer/volc_vikingdb/examples/builtin_embedding`
 
 ```go
 import (
-    "context"
-    "fmt"
-    "log"
-    "os"
-
     "github.com/cloudwego/eino/callbacks"
     "github.com/cloudwego/eino/components/indexer"
     "github.com/cloudwego/eino/compose"
-    "github.com/cloudwego/eino/schema"
     callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
-
     "github.com/cloudwego/eino-ext/components/indexer/volc_vikingdb"
 )
 
@@ -177,75 +157,47 @@ handler := &callbacksHelper.IndexerCallbackHandler{
     // OnError
 }
 
-// Using callback handler
-helper := callbacksHelper.NewHandlerHelper().
-    Indexer(handler).
-    Handler()
+helper := callbacksHelper.NewHandlerHelper().Indexer(handler).Handler()
 
 chain := compose.NewChain[[]*schema.Document, []string]()
 chain.AppendIndexer(volcIndexer)
-
-// At runtime
 run, _ := chain.Compile(ctx)
-
 outIDs, _ := run.Invoke(ctx, docs, compose.WithCallbacks(helper))
-
-fmt.Printf("vikingDB store success, docs=%v, resp ids=%v\n", docs, outIDs)
 ```
 
-## **Existing Implementation**
+## Existing Implementations
 
-1. Volc VikingDB Indexer: Vector database indexer based on Volcano Engine VikingDB [Indexer - volc VikingDB](/docs/eino/ecosystem_integration/indexer/indexer_volc_vikingdb)
+1. Volc VikingDB Indexer: [Indexer — VikingDB](/docs/eino/ecosystem_integration/indexer/indexer_volc_vikingdb)
 
-## **Custom Implementation Reference**
+## Implementation Notes
 
-When implementing a custom Indexer component, please pay attention to the following points:
+1. Handle common options and implementation-specific options.
+2. Implement callbacks correctly.
 
-1. Proper handling of common options and component-specific options
-2. Proper handling of callbacks
-
-### **Option Mechanism**
-
-Custom Indexers can implement their own Options as needed:
+### Options
 
 ```go
-// Define Option struct
-type MyIndexerOptions struct {
-    BatchSize int
-    MaxRetries int
-}
-
-// Define Option function
+type MyIndexerOptions struct { BatchSize int; MaxRetries int }
 func WithBatchSize(size int) indexer.Option {
-    return indexer.WrapIndexerImplSpecificOptFn(func(o *MyIndexerOptions) {
-        o.BatchSize = size
-    })
+    return indexer.WrapIndexerImplSpecificOptFn(func(o *MyIndexerOptions) { o.BatchSize = size })
 }
 ```
 
-### **Callback Handling**
-
-The Indexer implementation needs to trigger callbacks at appropriate times. The framework has already defined standard callback input and output structs:
+### Callback Structures
 
 ```go
-// CallbackInput is the input for the indexer callback
 type CallbackInput struct {
-    // Docs is the list of documents to be indexed
     Docs []*schema.Document
-    // Extra is the additional information for the callback
     Extra map[string]any
 }
 
-// CallbackOutput is the output for the indexer callback
 type CallbackOutput struct {
-    // IDs is the list of document IDs returned by the indexer
     IDs []string
-    // Extra is the additional information for the callback
     Extra map[string]any
 }
 ```
 
-### **Complete Implementation Example**
+### Full Implementation Example
 
 ```go
 type MyIndexer struct {
@@ -261,23 +213,23 @@ func NewMyIndexer(config *MyIndexerConfig) (*MyIndexer, error) {
 }
 
 func (i *MyIndexer) Store(ctx context.Context, docs []*schema.Document, opts ...indexer.Option) ([]string, error) {
-    // 1. Handle options
+    // 1. handle options
     options := &indexer.Options{}
     options = indexer.GetCommonOptions(options, opts...)
     
-    // 2. Get callback manager
+    // 2. get callback manager
     cm := callbacks.ManagerFromContext(ctx)
     
-    // 3. Callback before starting storage
+    // 3. before-store callback
     ctx = cm.OnStart(ctx, info, &indexer.CallbackInput{
         Docs: docs,
     })
     
-    // 4. Execute storage logic
+    // 4. perform storage
     ids, err := i.doStore(ctx, docs, options)
     
-    // 5. Handle errors and complete the callback
-    if (err != nil) {
+    // 5. handle error and finish callback
+    if err != nil {
         ctx = cm.OnError(ctx, info, err)
         return nil, err
     }
@@ -290,26 +242,23 @@ func (i *MyIndexer) Store(ctx context.Context, docs []*schema.Document, opts ...
 }
 
 func (i *MyIndexer) doStore(ctx context.Context, docs []*schema.Document, opts *indexer.Options) ([]string, error) {
-    // Implement document storage logic (make sure to handle common option parameters)
-    // 1. If an Embedding component is set, generate vector representations for the documents
+    // implement storage logic (handle common options)
+    // 1. If Embedding is set, generate vectors for documents
     if opts.Embedding != nil {
-        // Extract document content
         texts := make([]string, len(docs))
         for j, doc := range docs {
             texts[j] = doc.Content
         }
-        // Generate vectors
         vectors, err := opts.Embedding.EmbedStrings(ctx, texts)
         if err != nil {
             return nil, err
         }
-        // Store vectors in the documents' Metadata
-        for j, doc := range docs {
-            doc.WithVector(vectors[j])
+        for j := range docs {
+            docs[j].WithVector(vectors[j])
         }
     }
     
-    // 2. Additional custom logic
+    // 2. other custom logic
     return ids, nil
 }
 ```

@@ -1,479 +1,282 @@
 ---
 Description: ""
-date: "2025-03-18"
+date: "2025-12-09"
 lastmod: ""
 tags: []
-title: 'Eino: The design concept of orchestration'
+title: 'Eino: Orchestration Design Principles'
 weight: 2
 ---
 
-In the LLM application orchestration solutions, the most popular ones are langchain and langgraph, which officially provide SDKs for Python and TypeScript. These two languages are known for their flexibility, which brings great convenience to SDK development but also causes significant confusion and cognitive burden for SDK users.
+`langchain`/`langgraph` are popular orchestration solutions in Python/TS — both highly flexible languages. Flexibility accelerates SDK development but often burdens users with ambiguity. Go’s simplicity and static typing help reduce cognitive load. Eino embraces this with “deterministic types” plus “compile-time type checking”.
 
-As an extremely simple programming language, Go's defined `static types` are one of the key reasons why it remains straightforward, and Eino maintains this critical characteristic: `defined types` + `compile-time type checking`.
+## Upstream–Downstream Type Alignment as a First Principle
 
-## Basic Principle of `Type Alignment` in Upstream and Downstream
+Eino’s orchestration centers on Graph (and simplified Chain). Fundamentally, it’s “logic nodes” plus “upstream/downstream relations”. At runtime, outputs of one node become inputs of the next.
 
-The most fundamental orchestration method in eino is the graph, along with the simplified wrapped chain. Regardless of the orchestration method, it essentially consists of `logical nodes` + `upstream and downstream relationships`. At runtime, the product of the orchestration starts from one logical node and then proceeds to run the next node that is connected to the current node.
+We assume: the upstream output can be fed to the downstream input.
 
-This entails a basic assumption: **the output value of the previous node can serve as the input value for the next node.**
+In Go, two approaches:
 
-In Go, there are two basic approaches to achieving this assumption:
+1) Use generalized types (e.g., `any`, `map[string]any`) everywhere.
+   - With `any`, developers must assert types repeatedly; high cognitive load.
+   - With `map[string]any`, nodes extract values by keys. Still requires type assertions, not ideal.
 
-1. Convert the input and output of different nodes into a more generalized type, such as `any` or `map[string]any`.
-   1. Adopting the approach to generalize into any, but the corresponding cost is that developers need to explicitly convert it into a specific type when writing code to use it. This significantly increases the mental burden on developers, hence this approach was ultimately abandoned.
-   2. The langchain approach can be seen as passing `map[string]any` throughout the process, where each logical node retrieves the corresponding value with the corresponding key based on its needs. In langchaingo's implementation, this approach is adopted. However, in Go, they still need to be used with `type assertions`. This approach still imposes a significant mental burden on the developer.
-2. Keep the input and output types of each node as expected by the developer, ensuring type consistency between upstream and downstream during the Compile phase.
+2) Preserve each node’s expected types, and enforce upstream–downstream compatibility at compile time.
 
-Approach 2 is the final approach selected by eino. This approach is the easiest to understand during orchestration. The whole process is like `building blocks`, where the protruding and recessed parts of each block have their own specifications, and only matching specifications can form upstream and downstream relationships.
+Eino chooses (2). Orchestration becomes like “LEGO”: only matching studs/sockets connect.
 
-As shown in the diagram below:
+<a href="/img/eino/edge_type_validate.png" target="_blank"><img src="/img/eino/edge_type_validate.png" width="100%" /></a>
 
-<a href="/img/eino/en_eino_parallel_type.png" target="_blank"><img src="/img/eino/en_eino_parallel_type.png" width="100%" /></a>
+Only downstream nodes that understand upstream outputs can run. Eino makes this explicit so developers can build with confidence instead of guessing with `any`.
 
-For orchestration, it can only run properly if the downstream can recognize and process the upstream output. This basic assumption is clearly expressed in eino, allowing developers to be confident and clear about how orchestration logic operates and flows when using eino, rather than guessing whether the passed values are correct from a series of any.
+### Type Alignment in Graph
 
-### **Type Alignment in Graph**
+#### Edges
 
-#### **Edge**
+<a href="/img/eino/input_output_type_validate.png" target="_blank"><img src="/img/eino/input_output_type_validate.png" width="100%" /></a>
 
-In a graph, the output of a node will flow to the next node along an `edge`, so the nodes connected by an edge must have type alignment.
+Edges require assignable types:
 
-As shown in the figure below:
+1) Same types: e.g., upstream `*schema.Message` → downstream `*schema.Message`.
+2) Downstream expects an interface that upstream implements. Special case: downstream `any` — everything assigns.
+3) Upstream is an interface, downstream is a concrete type: depends on runtime concrete type; compile-time cannot guarantee. Only when the upstream concrete type implements the downstream expectation will it work.
 
-> This is a scenario simulating ① Direct conversation with a LLM ② Using RAG mode, and the final results can be used to compare the effects of the two modes
+Yellow paths show Eino’s map conversion: when downstream needs `map[string]any` but upstream doesn’t produce it, use `compose.WithOutputKey("outkey")` to wrap upstream output into a map with the given key. Similarly, `compose.WithInputKey("inkey")` lets downstream pick a specific key from upstream’s map output.
 
-<a href="/img/eino/en_eino_graph_node_type.png" target="_blank"><img src="/img/eino/en_eino_graph_node_type.png" width="100%" /></a>
+#### Branches
 
-The green part in the figure represents the ordinary edge connection, which requires that the upstream output must be able to be `assigned` downstream, and the types that can be accepted are:
+A node with multiple edges runs all downstream nodes. A `Branch` chooses exactly one downstream based on a condition function. All branch targets must be type-compatible with upstream outputs.
 
-① The same type for both upstream and downstream: For example, the upstream output is *schema.Message, and the downstream input is also *schema.Message.
+<a href="/img/eino/branch_to_draw_loop.png" target="_blank"><img src="/img/eino/branch_to_draw_loop.png" width="100%" /></a>
 
-② The downstream accepts an interface, and the upstream implements that interface: For example, the upstream structure implements the Format() interface, and the downstream accepts an interface{ Format() }. A special situation is when the downstream is any (empty interface), the upstream definitely implements any, so they can certainly connect.
+### Type Alignment in Chain
 
-③ The upstream is an interface, and the downstream is a specific type: When the downstream specific type implements the upstream's interface type, it may or may not work, which cannot be determined at compile time, only at runtime when the explicit type of upstream is determined. For detailed description, see: [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+#### Chain
 
-The yellow part in the figure represents another type conversion mechanism provided by eino, that is: if downstream receives a type `map[string]any`, but the upstream output type is not map[string]any, you can use `graph.AddXXXNode(node_key, xxx, compose.WithOutputKey("outkey")` to convert the upstream output type to map[string]any, where the key of the map is the OutputKey specified in the option. This mechanism is generally convenient to use when multiple edges converge to a single node.
+<a href="/img/eino/what_is_chain.png" target="_blank"><img src="/img/eino/what_is_chain.png" width="100%" /></a>
 
-#### **Branch**
-
-If a node is connected to multiple edges, the downstream nodes of each edge will run once. Branch is another mechanism: a branch followed by n nodes will only run the node corresponding to the key returned by the condition. The nodes following the same branch must also be type aligned.
-
-As shown in the figure below:
-
-> This is a scenario simulating the running logic of a react agent
-
-<a href="/img/eino/en_eino_react_agent_graph.png" target="_blank"><img src="/img/eino/en_eino_react_agent_graph.png" width="100%" /></a>
-
-You can see that a branch itself has a `condition`, the input of this function must be type aligned with the upstream. At the same time, the nodes following the branch must also be able to receive the upstream's output just like the condition.
-
-### Type Alignment in Chains
-
-#### **Chain**
-
-From an abstract perspective, a chain is a `sequence`, as shown below:
-
-<a href="/img/eino/en_chain_abstract_perspective.png" target="_blank"><img src="/img/eino/en_chain_abstract_perspective.png" width="100%" /></a>
-
-The types of logical nodes can be divided into three categories:
-
-- Orchestrable components (e.g., chat model, chat template, retriever, lambda, graph, etc.)
-- Branch nodes
-- Parallel nodes
-
-As can be seen, from the perspective of a chain, whether it is a simple node (e.g., chat model) or a complex node (e.g., graph, branch, parallel), they are treated the same. During execution, each step corresponds to the execution of a node.
-
-Therefore, the types of upstream and downstream nodes in a chain must be aligned, as shown below:
+All node pairs must align. Example:
 
 ```go
-func TestChain() {
-    chain := compose.NewChain[map[string]interface,string]()
-    
-    nodeTemplate := &fakeChatTemplate{} // input: map[string]any, output: []*schema.Message
-    
-    nodeHistoryLambda := &fakeLambda{} // input: []*schema.Message, output: []*schema.Message
-    
-    nodeChatModel := &fakeChatModel{} // input: []*schema.Message, output: *schema.Message
-    
-    nodeConvertResLambda := &fakeLambda{} // input: *schema.Message, output: string
-    
-    chain.
-        AppendChatTemplate(nodeTemplate).
-        AppendLambda(nodeHistoryLambda).
-        AppendChatModel(nodeChatModel).
-        AppendLambda(nodeConvertResLambda)
-}
+chain := compose.NewChain[map[string]interface{}, string]()
+chain.
+  AppendChatTemplate(&fakeChatTemplate{}).
+  AppendLambda(&fakeLambda{}).
+  AppendChatModel(&fakeChatModel{}).
+  AppendLambda(&fakeLambda{})
 ```
-
-The logic above can be represented by the following diagram:
 
 <a href="/img/eino/nodes_type_validate.png" target="_blank"><img src="/img/eino/nodes_type_validate.png" width="100%" /></a>
 
-If the types of upstream and downstream nodes are not aligned, the chain will return an error during chain.Compile(). In contrast, the graph will report an error when calling graph.AddXXXNode().
+Misalignment causes compile errors: Chain errors at `Compile()`, Graph errors at `AddXXXNode()`.
 
-#### parallel
+#### Parallel
 
-Parallel is a special type of node within a chain. From the perspective of the chain, a parallel node is no different from other nodes. Internally, the basic topology of a parallel node is as follows:
+<a href="/img/eino/same_type_of_parallel.png" target="_blank"><img src="/img/eino/same_type_of_parallel.png" width="100%" /></a>
 
-<a href="/img/eino/en_eino_type_in_parallel.png" target="_blank"><img src="/img/eino/en_eino_type_in_parallel.png" width="100%" /></a>
+Parallel assumes exactly one node per branch (that node can itself be a Graph). All parallel nodes must accept the upstream’s output type. Parallel outputs a `map[string]any`, with keys from `AddXXX(outKey, ...)` and values as node outputs.
 
-One structure formed by multiple edges in the graph is illustrated here. The basic assumption is that there is exactly one node on each edge of a parallel node. Of course, that one node can also be a graph. However, note that the current framework does not directly provide the capability to nest branch or parallel within a parallel node.
+<a href="/img/eino/graph_as_chain_node.png" target="_blank"><img src="/img/eino/graph_as_chain_node.png" width="100%" /></a>
 
-Each node within a parallel node has the same upstream node, and thus they must align with the output type of the upstream node. For example, if the upstream node outputs `*schema.Message` as shown in the diagram, then each node must be able to receive this type. The receiving method is consistent with that in the graph, typically using `same type`, `interface definition`, `any`, or `input key option`.
+#### Branch in Chain
 
-The output of a parallel node is always a `map[string]any`, where the key is specified as output_key when calling `parallel.AddXXX(output_key, xxx, opts...)`, and the value is the actual output of the node.
-
-An example of constructing a parallel node is as follows:
-
-```go
-func TestParallel() {
-    chain := compose.NewChain[map[string]any, map[string]*schema.Message]()
-    
-    parallel := compose.NewParallel()
-    model01 := &fakeChatModel{} // input: []*schema.Message, output: *schema.Message
-    model02 := &fakeChatModel{} // input: []*schema.Message, output: *schema.Message
-    model03 := &fakeChatModel{} // input: []*schema.Message, output: *schema.Message
-    
-    parallel.
-        AddChatModel("outkey_01", model01).
-        AddChatModel("outkey_02", model02).
-        AddChatModel("outkey_03", model03)
-    
-    lambdaNode := &fakeLambdaNode{} // input: map[string]any, output: map[string]*schema.Message
-    
-    chain.
-        AppendParallel(parallel).
-        AppendLambda(lambdaNode)
-}
-```
-
-A parallel node from the perspective of a chain looks like this:
-
-> The diagram simulates the same question being answered by different LLMs. The results can be used for comparison.
-
-<a href="/img/eino/en_chain_inner_nodes.png" target="_blank"><img src="/img/eino/en_chain_inner_nodes.png" width="100%" /></a>
-
-> It is important to note that this structure is only a logical perspective. Since the chain itself is also implemented using a graph, the parallel node will be spread out in the underlying graph.
-
-#### branch
-
-The branch in a chain is similar to the branch in a graph; all nodes in the branch must be aligned with the type of upstream nodes. This will not be elaborated further here. The special nature of a chain branch is that all possible branch nodes in the branch will either connect to the same node in the chain or all connect to END.
+Similar to Graph; all branch targets must align. Chain branches typically converge to the same downstream node or END.
 
 ### Type Alignment in Workflow
 
-The dimensions of type alignment in Workflow have been changed from the overall Input & Output to the field level. Specifically, it can be divided into:
+Field-level mapping replaces whole-object alignment:
 
-- The overall output of the upstream is type-aligned to a specific field downstream.
-- A specific field of upstream output is type-aligned to the overall downstream.
-- A specific field of upstream output is type-aligned to a specific field of downstream input.
+- Whole output → specific field
+- Specific field → whole input
+- Specific field → specific field
 
-The principles and rules are the same as for overall type alignment.
+Same principles apply as whole-object alignment.
 
-### Type Alignment of StateHandler
+### StateHandlers
 
-StatePreHandler: The input type needs to be aligned with the non-streaming input type of the corresponding node.
+StatePreHandler: input type must align with the node’s non‑streaming input type.
 
 ```go
-// The input type is []*schema.Message, which is aligned with the non-streaming input type of ChatModel
+// input type: []*schema.Message, aligns to ChatModel non‑streaming input
 preHandler := func(ctx context.Context, input []*schema.Message, state *state) ([]*schema.Message, error) {
     // your handler logic
 }
+
 AddChatModelNode("xxx", model, WithStatePreHandler(preHandler))
 ```
 
-StatePostHandler: The input type needs to be aligned with the non-streaming output type of the corresponding node.
+StatePostHandler: input type must align with the node’s non‑streaming output type.
 
 ```go
-// The input type is *schema.Message, which is aligned with the non-streaming output type of ChatModel
+// input type: *schema.Message, aligns to ChatModel non‑streaming output
 postHandler := func(ctx context.Context, input *schema.Message, state *state) (*schema.Message, error) {
     // your handler logic
 }
+
 AddChatModelNode("xxx", model, WithStatePostHandler(postHandler))
 ```
 
-StreamStatePreHandler: The input type needs to be aligned with the streaming input type of the corresponding node.
+StreamStatePreHandler: input type must align with the node’s streaming input type.
 
 ```go
-// The input type is *schema.StreamReader[[]*schema.Message], which is aligned with the streaming input type of ChatModel
+// input type: *schema.StreamReader[[]*schema.Message], aligns to ChatModel streaming input
 preHandler := func(ctx context.Context, input *schema.StreamReader[[]*schema.Message], state *state) (*schema.StreamReader[[]*schema.Message], error) {
     // your handler logic
 }
+
 AddChatModelNode("xxx", model, WithStreamStatePreHandler(preHandler))
 ```
 
-StreamStatePostHandler: The input type needs to be aligned with the streaming output type of the corresponding node.
+StreamStatePostHandler: input type must align with the node’s streaming output type.
 
 ```go
-// The input type is *schema.StreamReader[*schema.Message], which is aligned with the streaming output type of ChatModel
+// input type: *schema.StreamReader[*schema.Message], aligns to ChatModel streaming output
 postHandler := func(ctx context.Context, input *schema.StreamReader[*schema.Message], state *state) (*schema.StreamReader[*schema.Message], error) {
     // your handler logic
 }
+
 AddChatModelNode("xxx", model, WithStreamStatePostHandler(postHandler))
 ```
 
-### **Alignment of Types under invoke and stream**
+### Invoke vs Stream Alignment
 
-In Eino, the result of orchestration is either a graph or a chain. To execute it, you need to use `Compile()` to generate a `Runnable` interface.
+`Runnable` offers `Invoke/Stream/Collect/Transform`. See [Streaming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
 
-One important function of Runnable is to provide four calling methods: "Invoke", "Stream", "Collect", and "Transform".
-
-> You can check the introduction of the above calling methods and detailed runnable introduction in: [Eino: Overview](/docs/eino/overview)
-
-Suppose we have a `Graph[[]*schema.Message, []*schema.Message]`, which contains a ChatModel node and a Lambda node. After compiling, it becomes a `Runnable[[]*schema.Message, []*schema.Message]`.
+Assume a `Graph[[]*schema.Message, []*schema.Message]` with a ChatModel node and a Lambda node, compiled to `Runnable[[]*schema.Message, []*schema.Message]`:
 
 ```go
-package main
+g1 := compose.NewGraph[[]*schema.Message, string]()
+_ = g1.AddChatModelNode("model", &mockChatModel{})
+_ = g1.AddLambdaNode("lambda", compose.InvokableLambda(func(_ context.Context, msg *schema.Message) (string, error) {
+   return msg.Content, nil
+}))
+_ = g1.AddEdge(compose.START, "model")
+_ = g1.AddEdge("model", "lambda")
+_ = g1.AddEdge("lambda", compose.END)
 
-import (
-    "context"
-    "io"
-    "testing"
-
-    "github.com/cloudwego/eino/compose"
-    "github.com/cloudwego/eino/schema"
-    "github.com/stretchr/testify/assert"
-)
-
-func TestTypeMatch(t *testing.T) {
-    ctx := context.Background()
-
-    g1 := compose.NewGraph[[]*schema.Message, string]()
-    _ = g1.AddChatModelNode("model", &mockChatModel{})
-    _ = g1.AddLambdaNode("lambda", compose.InvokableLambda(func(_ context.Context, msg *schema.Message) (string, error) {
-       return msg.Content, nil
-    }))
-    _ = g1.AddEdge(compose.START, "model")
-    _ = g1.AddEdge("model", "lambda")
-    _ = g1.AddEdge("lambda", compose.END)
-
-    runner, err := g1.Compile(ctx)
-    assert.NoError(t, err)
-
-    c, err := runner.Invoke(ctx, []*schema.Message{
-       schema.UserMessage("what's the weather in beijing?"),
-    })
-    assert.NoError(t, err)
-    assert.Equal(t, "the weather is good", c)
-
-    s, err := runner.Stream(ctx, []*schema.Message{
-       schema.UserMessage("what's the weather in beijing?"),
-    })
-    assert.NoError(t, err)
-
-    var fullStr string
-    for {
-       chunk, err := s.Recv()
-       if err != nil {
-          if err == io.EOF {
-             break
-          }
-          panic(err)
-       }
-
-       fullStr += chunk
-    }
-    assert.Equal(t, c, fullStr)
+runner, _ := g1.Compile(ctx)
+c, _ := runner.Invoke(ctx, []*schema.Message{ schema.UserMessage("what's the weather in beijing?") })
+s, _ := runner.Stream(ctx, []*schema.Message{ schema.UserMessage("what's the weather in beijing?") })
+var fullStr string
+for {
+   chunk, err := s.Recv()
+   if err != nil {
+      if err == io.EOF { break }
+      panic(err)
+   }
+   fullStr += chunk
 }
 ```
 
-When we call the compiled Runnable in Stream mode, the model node outputs `*schema.StreamReader[*Message]`, but the lambda node is an InvokableLambda that only accepts non-streaming `*schema.Message` as input. This complies with the type alignment rule because the Eino framework automatically concatenates streaming Messages into a complete Message.
+In Stream mode, ChatModel outputs `*schema.StreamReader[*schema.Message]`, while the downstream InvokableLambda expects non‑stream `*schema.Message`. Eino auto‑concatenates streamed frames into a full message, satisfying type alignment.
 
-In stream mode, concatenating frames is a very common operation. During concatenation, all elements from `*StreamReader[T]` are first extracted and converted into `[]T`, and then an attempt is made to concatenate `[]T` into a complete `T`. The framework has built-in support for concatenating the following types:
+Concatenation behavior:
+- `*schema.Message`: see `schema.ConcatMessages()`
+- `string`: equivalent to `+=`
+- `[]*schema.Message`: concatenated via framework helper
+- `Map`: merge values by key with type‑appropriate concatenation; fails if types cannot be merged
+- Other slices: only concatenated when exactly one element is non‑zero
 
-- `*schema.Message`: See `schema.ConcatMessages()` for details
-- `string`: The implementation logic is equivalent to `+=`
-- `[]*schema.Message`: See `compose.concatMessageArray()` for details
-- `Map`: Merge values with the same key; the merging logic is the same as above. If there is an un-combinable type, it fails (ps: it is not overwritten)
-- `Struct` or `Struct pointer`: First converted into `[]map[string]any`, then merged according to the map logic. The struct must not contain unexported fields.
-- Other slices: Can only be merged if there is exactly one non-zero value element in the slice.
+You can override defaults by registering custom concat functions via `compose.RegisterStreamChunkConcatFunc`.
 
-For other scenarios, or when users want to override the default behavior with custom logic, developers can implement their own concat method and register it to the global concatenation function using `compose.RegisterStreamChunkConcatFunc()`.
+### Runtime Type Checks
 
-Here is an example:
+Graph verifies type alignment during `AddEdge("node1", "node2")` and at `Compile()` for rules above. When upstream outputs an interface and the downstream expects a concrete type, the final assignability is only known at runtime once the upstream concrete type is available; the framework performs runtime checks for that scenario.
 
-```go
-// Suppose our own structure is as follows
-type tStreamConcatItemForTest struct {
-    s string
-}
+<a href="/img/eino/input_type_output_type_in_edge.png" target="_blank"><img src="/img/eino/input_type_output_type_in_edge.png" width="100%" /></a>
 
-// Implement a splicing method
-func concatTStreamForTest(items []*tStreamConcatItemForTest) (*tStreamConcatItemForTest, error) {
-    var s string
-    for _, item := range items {
-        s += item.s
-    }
+## Opinionated Design Choices
 
-    return &tStreamConcatItemForTest{s: s}, nil
-}
+### External Variables Are Read-Only
 
-func Init() {
-    // Register in the global splicing method
-    compose.RegisterStreamChunkConcatFunc(concatTStreamForTest)
-}
-```
+Data flows in Graph across Nodes, Branches, and Handlers via direct assignment, not deep copies. When inputs are reference types (struct pointers, maps, slices), mutating them inside Nodes/Branches/Handlers causes side effects and potential races. Treat external inputs as read-only; if mutation is needed, copy first. The same applies to streamed chunks in `StreamReader`.
 
-### **Runtime Type Alignment Check Scenarios**
+### Fan‑in and Merge
 
-Eino's Graph type alignment check will verify if the types of the two nodes match during `err = graph.AddEdge("node1", "node2")`. This allows for type mismatch errors to be identified either during the `graph construction process` or the `Compile process`, adhering to rules ①②③ as listed in [Eino: The design concept of orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles).
+Multiple upstreams can feed into one downstream. Define how to merge outputs:
 
-When the upstream node's output is an `interface`, and the downstream node type implements that `interface`, it is likely that upstream can be converted to downstream type (type assertion). However, whether the conversion succeeds can only be determined during the `runtime process`, so type checks in this scenario are deferred to runtime.
-
-The structure is shown in the diagram below:
-
-<a href="/img/eino/en_eino_graph_parallel_node_type.png" target="_blank"><img src="/img/eino/en_eino_graph_parallel_node_type.png" width="100%" /></a>
-
-This scenario is suitable for developers who can handle upstream and downstream type alignment on their own and choose the appropriate downstream execution nodes based on different types.# User Manual for Eino
-
-## Opinionated **Design Choices**
-
-### Principle of Read-Only External Variables
-
-When data in Eino's Graph flows among Nodes, Branches, and Handlers, it is always variable assignment, not copying. When the Input is of a reference type, such as a Struct pointer, map, or slice, modifying the Input inside Nodes, Branches, or Handlers will have side effects on the outside and may lead to concurrency issues. Therefore, Eino follows the principle of read-only external variables: do not modify the Input inside Nodes, Branches, or Handlers. If modification is required, make a copy first.
-
-This principle also applies to Chunks in the StreamReader.
-
-### **Fan-In and Merging**
-
-**Fan-in**: Outputs from multiple predecessor nodes converge to a successor node and together serve as the input for the successor node. It is necessary to clearly define how the outputs of multiple predecessor nodes are **merged**. Eino's choice is as follows. First, it requires that the **actual types** of the outputs of multiple predecessor nodes must be the same and of a mergeable type.
-
-Mergeable types can be:
-
-- Map type, and the keys are not repeated among each other.
-- Any type, and a merge function is registered through `compose.RegisterValuesMergeFunc`.
-
-Second,
-
-- In non-streaming scenarios, 
-  - if the input type has a registered merge function, it will be merged into a single value using the registered function.
-  - if the input type is a Map, it will be merged into a single Map containing all key-value pairs from all upstream sources.
-- In streaming scenarios, multiple upstream StreamReaders of the same type are merged into one StreamReader. When actually receiving data from the merged StreamReader, the effect is to read fairly from multiple upstream StreamReaders.
-
-When adding a node (AddNode), you can add the WithOutputKey option to convert the output of the node into a Map:
+- Without custom merge functions, upstream actual types must be identical and be a `map`; keys must be disjoint. Non‑stream: merged into one map; stream: merged into one `StreamReader` with fair reading.
+- Use `WithOutputKey` to convert a node’s output into a map:
 
 ```go
-// The output of this node will be changed from string to map[string]any. 
-// And there is only one element in the map. The key is your_output_key, and the value is the actual string output by the node. 
 graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
     // your logic
     return
 }), compose.WithOutputKey("your_output_key"))
 ```
 
-You can also register custom merge method to support any type:
+- Register custom merge:
 
 ```go
 // eino/compose/values_merge.go
 func RegisterValuesMergeFunc[T any](fn func([]T) (T, error))
 ```
 
-Workflow can map the output fields of multiple predecessor nodes to different input fields of the successor node. Eino converts the Struct output from each predecessor to a Map before any merge process, still conforming to the above rules.
+Workflow maps fields across nodes; upstream structs are converted to maps, so the same merge rules apply.
 
-### **Streaming Processing**
+### Streaming Handling
 
-Eino believes that components should only need to implement genuine streaming paradigms from the business scenario. For example, a ChatModel does not need to implement Collect. Therefore, in orchestration scenarios, Eino automatically completes the **missing streaming paradigms** for all nodes.
+- Auto concatenate: prefer user‑registered concat functions, then framework defaults (Message, Message array, string, map, struct and pointers)
+- Auto boxing: convert non‑stream `T` to `StreamReader[T]`
+- Auto merge: see Fan‑in above
+- Auto copy: duplicate streams where needed (fan‑out to multiple downstreams, callbacks)
 
-When running a Graph via Invoke, all internal nodes operate in Invoke mode. When running a Graph via Stream, Collect, or Transform, all internal nodes operate in Transform mode.
+All orchestration elements can sense/handle streams (branch, state handler, callback handler, passthrough, lambda, etc.). See [Streaming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
 
-**Auto Concatenate**: In scenarios where Stream chunks are concatenated into complete content, the user-defined concatenation function registered by the user is preferred. Otherwise, default behaviors provided by the framework are performed, including Message, Message arrays, String, Map, and Struct/Struct pointers.
+### Global State
 
-**Auto Boxing**: In scenarios requiring the conversion of non-stream type T to StreamReader[T], the framework automates the process.
+- Provide `State` via `compose.WithGenLocalState` when creating a Graph; request‑scoped and readable/writable across steps
+- Use `StatePreHandler` and `StatePostHandler` to read/write state and optionally replace node input/output; match input types to node non‑stream types (and the streaming variants for stream types)
+- External handlers modify inputs/outputs outside nodes, preserving node statelessness
+- Internal state access: `compose.ProcessState[S any](ctx context.Context, handler func(context.Context, S) error)`
+- All state access is synchronized by the framework
 
-**Auto Merge**: See the above section on "Fan-In and Merging."
+### Callback Injection
 
-**Auto Copy**: In scenarios requiring the replication of streams, the framework automatically handles stream copying, including instances where a single stream fans out to multiple downstream nodes, or a single stream enters one or more callback handlers.
+Components may or may not implement callback aspects. If a component implements `Checker` with `IsCallbacksEnabled()==true`, the framework uses the component’s internal callbacks; otherwise it wraps external callbacks reporting only input/output. Graph always injects callbacks with `RunInfo` for itself. See [Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
 
-Finally, Eino requires all orchestration elements to be aware of and capable of handling streams. This includes branches, state handlers, callback handlers, passthroughs, lambdas, etc.
+### Option Distribution
 
-For more details on Eino's streaming capabilities, refer to [Eino Points of Streaming Orchestration](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+- Global by default — applies to all nodes, including nested graphs
+- Component‑type options — e.g., `AddChatModelOption` applies to all ChatModel nodes; Lambda with its own option type can be targeted similarly
+- Specific nodes — `DesignateNode(key ...string)`
+- Nested graphs or their nodes — `DesignateNodeWithPath(path ...*NodePath)`
 
-### **Global State**
+See [CallOption Capabilities](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities).
 
-**State**: In NewGraph, pass in the creation method of State through `compose.WithGenLocalState`. This globally scoped state at the request level can be read from and written to during various stages of a single request.
+### Graph Nesting
 
-Eino recommends using `StatePreHandler` and `StatePostHandler`:
+Compiled graphs (`Runnable`) are Lambda‑like; you can wrap them as a Lambda and nest into other graphs, or add subgraphs pre‑compile via `AddGraph`.
 
-- StatePreHandler: Before the execution of each node, read from and write to State. Replace the node's input as needed.
-- StatePostHandler: After the execution of each node, read from and write to State. Replace the node's output as needed.
+- Lambda wrapping adds an extra Lambda level in traces/callbacks
+- Lambda wrapping carries options via Lambda options, not `DesignateNodeWithPath`
+- Lambda wrapping requires pre‑compilation; `AddGraph` compiles the inner graph with the parent
 
-For streaming scenarios, use the corresponding `StreamStatePreHandler` and `StreamStatePostHandler`.
+### Internal Mechanics
 
-These state handlers are located outside the nodes and affect the nodes by modifying the Input or Output, thus ensuring the "stateless" property of the nodes.
+#### Execution Sequence
 
-If you need to read from and write to State inside the nodes, Eino provides the `ProcessState[S any](ctx context.Context, handler func(context.Context, S) error) error` function.
+Full streaming execution sequence for an InvokableLambda (string→int) with State handlers, InputKey/OutputKey and external callbacks:
 
-The Eino framework will add locks at all positions where the State is read from or written to.
+<a href="/img/eino/graph_node_run_wrapper.png" target="_blank"><img src="/img/eino/graph_node_run_wrapper.png" width="100%" /></a>
 
-### **Callback Injection**
+Workflow performs field mapping after `StatePostHandler` and stream copy, and before `StatePreHandler` via merge.
 
-Eino's orchestration framework considers that components entering the orchestration might have internally embedded Callback aspects or might not. This information is determined by whether the component implements the `Checker` interface and the return value of the `IsCallbacksEnabled` method in the interface.
+#### Execution Engines
 
-- When `IsCallbacksEnabled` returns true, Eino's orchestration framework uses the component's internally implemented Callback aspects.
-- Otherwise, it automatically wraps the component implementation with external Callback aspects, (only) reporting input and output.
+- `NodeTriggerMode == AnyPredecessor` → pregel engine (directed cyclic graph)
+  - After current nodes run, all successors form a SuperStep and run together
+  - Supports Branch and cycles; may need passthrough nodes to shape SuperSteps
 
-In either case, RunInfo will be automatically inferred.
+<a href="/img/eino/graph_steps_in_graph2.png" target="_blank"><img src="/img/eino/graph_steps_in_graph2.png" width="100%" /></a>
 
-Additionally, for the Graph as a whole, Callback aspects will always be injected, with RunInfo being the Graph itself.
-
-For a complete explanation of Eino's Callback capabilities, see [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
-
-### **Option Allocation**
-
-Eino supports various dimensions of Call Option allocation methods:
-
-- Default global allocation, i.e., allocated to all nodes, including nested internal graphs.
-- An option can be added to a specific component type, in which case it is by default allocated to all nodes of that type, such as AddChatModelOption. Lambdas that have defined unique Option types can also specify the Option for themselves in this way.
-- Any specific nodes can be designated using `DesignateNode(key ...string)`.
-- Any depth of nested graphs, or any specific nodes within them, can be designated using `DesignateNodeWithPath(path ...*NodePath)`.
-
-For a complete explanation of Eino's Call Option capabilities, see [Eino: CallOption capabilities and specification](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities).
-
-### **Graph Nesting**
-
-The outcome of graph orchestration, `Runnable`, is very similar in interface form to Lambda. Therefore, a compiled graph can be simply encapsulated as a Lambda and nested into other graphs as a Lambda node.
-
-Another way is that, before compilation, Graph, Chain, Workflow, etc., can be nested directly into other graphs using AddGraph. The differences between the two methods are:
-
-- The Lambda method adds an additional Lambda node in the trace. From the perspective of other Callback handlers, there will also be an additional layer.
-- The Lambda method requires using the Lambda's Option to inherit CallOption and cannot use DesignateNodeWithPath.
-- The Lambda method requires the internal graph to be precompiled. Directly using AddGraph allows the internal graph to be compiled together with the parent graph.
-
-## **Internal Mechanism**
-
-### **Execution Sequence**
-
-Taking an InvokableLambda (input as string, output as int) with StatePreHandler, StatePostHandler, InputKey, OutputKey added, and no Callback aspect implemented internally as an example, the complete flow execution sequence in the diagram is as follows:
-
-<a href="/img/eino/en_eino_callbacks.png" target="_blank"><img src="/img/eino/en_eino_callbacks.png" width="100%" /></a>
-
-In the workflow scenario, field mapping occurs in two places:
-
-- After the node execution's StatePostHandler and the "stream replication" step, each downstream-required field will be separately extracted.
-- After the "merge" step before node execution, and before StatePreHandler, the extracted upstream field values will be converted to the current node's input.
-
-### **Runtime Engine**
-
-When `NodeTriggerMode == AnyPredecessor`, the graph executes using the pregel engine, corresponding to a directed graph with cycles. Characteristics include:
-
-- One or more currently executing nodes' all subsequent nodes collectively execute as a SuperStep. At this time, these new nodes become the "current" nodes.
-- Supports Branch, supports loops in the graph, but it may require manually adding passthrough nodes to ensure SuperStep nodes meet expectations, as illustrated below:
-
-<a href="/img/eino/en_eino_run_steps.png" target="_blank"><img src="/img/eino/en_eino_run_steps.png" width="100%" /></a>
-
-In the above image, Node 4 and Node 5 are executed together as per rules, which likely does not meet expectations. It needs to be changed to:
+Refactor with passthrough to meet expectations:
 
 <a href="/img/eino/graph_steps_in_graph.png" target="_blank"><img src="/img/eino/graph_steps_in_graph.png" width="100%" /></a>
 
-When `NodeTriggerMode == AllPredecessor`, the graph executes using the dag engine, corresponding to a directed acyclic graph. Characteristics include:
+- `NodeTriggerMode == AllPredecessor` → DAG engine (directed acyclic graph)
+  - Each node runs only after all predecessors complete
+  - Cycles not supported; Branch is supported (unselected branch nodes are marked skipped at runtime)
+  - SuperStep semantics apply; use `compose.WithEagerExecution()` to run ready nodes immediately. In v0.4.0+, AllPredecessor defaults to eager execution.
 
-- Each node has a specific predecessor node, and this node is only executable once all predecessor nodes are complete.
-- An eager mode can be selected, where there is no SuperStep concept. Each node, upon completion, immediately checks which subsequent nodes can be run and executes them at the earliest time.
-- Does not support cycles in the graph, as it breaks the "each node has a specific predecessor node" assumption.
-- Support Branch. At runtime, mark the unselected nodes of Branch as skipped, which does not affect the semantics of AllPredecessor.
-- No need for manual SuperStep alignment.
-
-> 💡
-> When NodeTriggerMode is set to AllPredecessor, the node will execute after all predecessors are ready, but it will not execute immediately. Instead, it still follows the SuperStep - running new runnable nodes after a batch of nodes have completed execution.
->
-> If compose.WithEagerExecution() is passed in Compile, the ready nodes will run immediately.
-
-In summary, the pregel mode is flexible and powerful but comes with additional mental overhead, while the dag mode is clear and simple but limited in application scenarios. In the Eino framework, Chain uses the pregel mode, Workflow uses the dag mode, and Graph supports both; users can choose between pregel and dag.
+Summary: pregel is flexible but cognitively heavy; DAG is clear but constrained. In Eino, Chain uses pregel, Workflow uses DAG, Graph supports both selectable by users.

@@ -1,13 +1,13 @@
 ---
 Description: ""
-date: "2025-09-30"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 抽象'
 weight: 3
 ---
 
-## Agent 定义
+# Agent 定义
 
 Eino 定义了 Agent 的基础接口，实现此接口的 Struct 可被视为一个 Agent：
 
@@ -21,21 +21,21 @@ type Agent interface {
 }
 ```
 
-<table class="bd-browser-bugs table table-bordered table-hover">
+<table>
 <tr><td>Method</td><td> 说明</td></tr>
 <tr><td>Name</td><td>Agent 的名称，作为 Agent 的标识</td></tr>
 <tr><td>Description</td><td>Agent 的职能描述信息，主要用于让其他的 Agent 了解和判断该 Agent 的职责或功能</td></tr>
 <tr><td>Run</td><td>Agent 的核心执行方法，返回一个迭代器，调用者可以通过这个迭代器持续接收 Agent 产生的事件</td></tr>
 </table>
 
-### AgentInput
+## AgentInput
 
 Run 方法接收 AgentInput 作为 Agent 的输入：
 
 ```go
 type AgentInput struct {
-    Messages        []_Message_
-_    _EnableStreaming bool
+    Messages        []Message
+    EnableStreaming bool
 }
 
 type Message = *schema.Message
@@ -68,9 +68,9 @@ input := &adk.AgentInput{
 - 当 `EnableStream=false` 时，二者均输出非流
 - 当 `EnableStream=true` 时，ChatModel 输出流，Tool 因为不具备输出流的能力，仍然输出非流。
 
-<a href="/img/eino/DRSQw67dlhjtW9bOEUqcHirtn6e.png" target="_blank"><img src="/img/eino/DRSQw67dlhjtW9bOEUqcHirtn6e.png" width="90%" /></a>
+<a href="/img/eino/eino_adk_streaming.png" target="_blank"><img src="/img/eino/eino_adk_streaming.png" width="100%" /></a>
 
-### AgentRunOption
+## AgentRunOption
 
 `AgentRunOption` 由 Agent 实现定义，可以在请求维度修改 Agent 配置或者控制 Agent 行为。
 
@@ -118,7 +118,7 @@ func genOpt() {
 }
 ```
 
-### AsyncIterator
+## AsyncIterator
 
 `Agent.Run` 返回了一个迭代器 `AsyncIterator[*AgentEvent]`：
 
@@ -183,7 +183,7 @@ func (m *MyAgent) Run(ctx context.Context, input *adk.AgentInput, opts ...adk.Ag
 }
 ```
 
-### AgentWithOptions
+## AgentWithOptions
 
 使用 `AgentWithOptions` 方法可以在 Eino ADK Agent 中进行一些通用配置。
 
@@ -199,7 +199,7 @@ Eino ADK 当前内置支持的配置有：
 - `WithDisallowTransferToParent`：配置该 SubAgent 不允许 Transfer 到 ParentAgent，会触发该 SubAgent 的 `OnDisallowTransferToParent` 回调方法
 - `WithHistoryRewriter`：配置后该 Agent 在执行前会通过该方法重写接收到的上下文信息
 
-## AgentEvent
+# AgentEvent
 
 AgentEvent 是 Agent 在其运行过程中产生的核心事件数据结构。其中包含了 Agent 的元信息、输出、行为和报错：
 
@@ -222,7 +222,7 @@ type AgentEvent struct {
 func EventFromMessage(msg Message, msgStream MessageStream, role schema.RoleType, toolName string) *AgentEvent
 ```
 
-### AgentName & RunPath
+## AgentName & RunPath
 
 `AgentName` 和 `RunPath` 字段是由框架自动进行填充，它们提供了关于事件来源的重要上下文信息，在复杂的、由多个 Agent 构成的系统中至关重要。
 
@@ -235,7 +235,7 @@ type RunStep struct {
 - `AgentName` 标明了是哪一个 Agent 实例产生了当前的 AgentEvent 。
 - `RunPath` 记录了到达当前 Agent 的完整调用链路。`RunPath` 是一个 `RunStep` 切片，它按顺序记录了从最初的入口 Agent 到当前产生事件的 Agent 的所有 `AgentName`。
 
-### AgentOutput
+## AgentOutput
 
 `AgentOutput` 封装了 Agent 产生的输出。
 
@@ -275,7 +275,7 @@ type MessageVariant struct {
 
 这样做的好处是，代码在需要根据消息类型进行路由或决策时， 无需深入解析 Message 对象的具体内容 ，可以直接从 MessageVariant 的顶层字段获取所需信息，从而简化了逻辑，提高了代码的可读性和效率。
 
-### AgentAction
+## AgentAction
 
 Agent 产生包含 AgentAction 的 Event 可以控制多 Agent 协作，比如立刻退出、中断、跳转等：
 
@@ -288,6 +288,8 @@ type AgentAction struct {
     Interrupted *InterruptInfo
 
     TransferToAgent *TransferToAgentAction
+    
+    BreakLoop *BreakLoopAction
 
     CustomizedAction any
 }
@@ -301,7 +303,7 @@ type TransferToAgentAction struct {
 }
 ```
 
-Eino ADK 当前预设 Action 有三种：
+Eino ADK 当前预设 Action 有四种：
 
 1. 退出：当 Agent 产生 Exit Action 时，Multi-Agent 会立刻退出
 
@@ -311,7 +313,7 @@ func NewExitAction() *AgentAction {
 }
 ```
 
-2. 跳转：当 Agent 产生 Transfer Action 时，会跳转到目标 Agent 运行
+1. 跳转：当 Agent 产生 Transfer Action 时，会跳转到目标 Agent 运行
 
 ```go
 func NewTransferToAgentAction(destAgentName string) *AgentAction {
@@ -319,7 +321,7 @@ func NewTransferToAgentAction(destAgentName string) *AgentAction {
 }
 ```
 
-3. 中断：当 Agent 产生 Interrupt Action 时，会中断 Runner 的运行。由于中断可能发生在任何位置，同时中断时需要向外传递独特的信息，Action 中提供了 `Interrupted` 字段供 Agent 设置自定义数据，Runner 接收到 Interrupted 不为空的 Action 时则认为产生了中断。Interrupt & Resume 内部机制较为复杂，在 【Eino ADK: Agent Runner】-【Eino ADK: Interrupt & Resume】章节会展开详述。
+1. 中断：当 Agent 产生 Interrupt Action 时，会中断 Runner 的运行。由于中断可能发生在任何位置，同时中断时需要向外传递独特的信息，Action 中提供了 `Interrupted` 字段供 Agent 设置自定义数据，Runner 接收到 Interrupted 不为空的 Action 时则认为产生了中断。Interrupt & Resume 内部机制较为复杂，在 【Eino ADK: Agent Runner】-【Eino ADK: Interrupt & Resume】章节会展开详述。
 
 ```go
 // 例如 ChatModelAgent 中断时，会发送如下的 AgentEvent：
@@ -329,3 +331,5 @@ h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
     },
 }})
 ```
+
+4. 中止循环：当 LoopAgent 的一个子 Agent 发出 BreakLoopAction 时，对应的 LoopAgent 会停止循环并正常退出。

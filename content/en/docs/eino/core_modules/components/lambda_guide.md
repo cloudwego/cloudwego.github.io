@@ -1,145 +1,124 @@
 ---
 Description: ""
-date: "2025-03-18"
+date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino: Lambda guide'
-weight: 0
+title: 'Eino: Lambda Guide'
+weight: 5
 ---
 
-## **Introduction**
+## Introduction
 
-Lambda is the most fundamental component type in Eino, allowing users to embed custom function logic in the workflow. The underlying Lambda component consists of 4 types of running functions, corresponding to 4 interaction modes: Invoke, Stream, Collect, and Transform.
+`Lambda` is the simplest component type, allowing you to embed custom function logic in a workflow. Lambdas can implement one or more of the four paradigms formed by streaming/non-streaming input/output: `Invoke`, `Stream`, `Collect`, `Transform`.
 
-When users build Lambda, they can only implement one of them or more, and the framework will perform conversion according to certain rules. For detailed introduction, please refer to: [Eino: Overview](/docs/eino/overview) (see at Runnable)
+The framework converts among paradigms under defined rules. See [Overview](/docs/eino/overview) for details (Runnable section).
 
-## **Component Definition and Implementation**
+## Definition and Construction
 
-The core of the Lambda component is the `Lambda` structure, which wraps the lambda function provided by the user. Users can create a Lambda component through the construction method:
+> Code: `eino/compose/types_lambda.go`
 
 ```go
-// definition at: https://github.com/cloudwego/eino/blob/main/compose/types_lambda.go
-type Lambda struct {
-    executor *composableRunnable
-}
+type Lambda struct { executor *composableRunnable }
 ```
 
-The four function types supported by Lambda are defined as follows. That is, the lambda function provided by the user needs to satisfy these function signatures:
+Lambda function signatures:
 
 ```go
 type Invoke[I, O, TOption any] func(ctx context.Context, input I, opts ...TOption) (output O, err error)
-
 type Stream[I, O, TOption any] func(ctx context.Context, input I, opts ...TOption) (output *schema.StreamReader[O], err error)
-
 type Collect[I, O, TOption any] func(ctx context.Context, input *schema.StreamReader[I], opts ...TOption) (output O, err error)
-
 type Transform[I, O, TOption any] func(ctx context.Context, input *schema.StreamReader[I], opts ...TOption) (output *schema.StreamReader[O], err error)
 ```
 
-## **Usage**
+## Usage
 
-### **Construction method**
+> Examples: [https://github.com/cloudwego/eino-examples/blob/main/components/lambda](https://github.com/cloudwego/eino-examples/blob/main/components/lambda)
 
-From the perspective of the unified specification of Eino's component interface, a callable method of a component needs to have 3 parameters and 2 return values: func (ctx, input,... option) (output, error). However, in scenarios where Lambda is used, it is often desirable to provide only a simple function. Therefore, the construction methods are divided into 3 categories:
+### Constructors
 
-- Functions that provide only one interaction method
-  - Without Option
-  - Handling custom Option
-- Functions that fully customize each interaction method: AnyLambda
+Eino components generally accept `func(ctx, input, ...option) (output, error)`. For lambdas, simpler constructors are provided:
 
-#### Without custom options
+- Provide exactly one paradigm function
+  - Without custom options
+  - With custom options
+- Provide any subset of the four paradigms via `AnyLambda`
 
-- InvokableLambda
+#### Without Custom Options
+
+- `InvokableLambda`
 
 ```go
-// The types of input and output types can be any types.
-lambda := compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+// input and output can be any custom types
+lambda := compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
     // some logic
 })
 ```
 
-- StreamableLambda
+- `StreamableLambda`
 
 ```go
-// The type of input can be any custom type and the type of output must be *schema.StreamReader[O]，O can be any type.
-lambda := compose.StreamableLambda(func(ctx context.Context, input string) (output *schema.StreamReader[string], err error) {
+// input is any type; output must be *schema.StreamReader[O]
+lambda := compose.StreamableLambda(func(ctx context.Context, input string) (*schema.StreamReader[string], error) {
     // some logic
 })
 ```
 
-- CollectableLambda
+- `CollectableLambda`
 
 ```go
-// The type of input must be *schema.StreamReader[I]，I can be any type and the type of output can be any custom type. 
-lambda := compose.CollectableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (output string, err error) {
+// input must be *schema.StreamReader[I]; output can be any type
+lambda := compose.CollectableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (string, error) {
     // some logic
 })
 ```
 
-- TransformableLambda
+- `TransformableLambda`
 
 ```go
-// The type of input must be *schema.StreamReader[I]，I can be any type and the type of output must be *schema.StreamReader[O]，O can be any type.
-lambda := compose.TransformableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (output *schema.StreamReader[string], err error) {
+// input and output must be *schema.StreamReader[I]
+lambda := compose.TransformableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (*schema.StreamReader[string], error) {
     // some logic
 })
 ```
 
-#### **Using custom options**
+Shared options:
 
-Each interaction method corresponds to a construction method. The following takes Invoke as an example:
+- `compose.WithLambdaType()` — change component type (default: Lambda)
+- `compose.WithLambdaCallbackEnable()` — disable default node callbacks in Graph
+
+#### With Custom Options
 
 ```go
-type Options struct {
-    Field1 string
-}
+type Options struct { Field1 string }
 type MyOption func(*Options)
 
 lambda := compose.InvokableLambdaWithOption(
-    func(ctx context.Context, input string, opts ...MyOption) (output string, err error) {
+    func(ctx context.Context, input string, opts ...MyOption) (string, error) {
         // handle opts
         // some logic
-    }
+    },
 )
 ```
 
-#### **AnyLambda**
+#### AnyLambda
 
-AnyLambda allows for the implementation of multiple types of Lambda functions with different interaction patterns simultaneously.
+Implement multiple paradigms at once:
 
 ```go
-type Options struct {
-    Field1 string
-}
-
+type Options struct { Field1 string }
 type MyOption func(*Options)
 
-// The types of 'input' and 'output' are any custom types. 
 lambda, err := compose.AnyLambda(
-    // Invoke Function
-    func(ctx context.Context, input string, opts ...MyOption) (output string, err error) {
-        // some logic
-    },
-    // Stream Function
-    func(ctx context.Context, input string, opts ...MyOption) (output *schema.StreamReader[string], err error) {
-        // some logic
-    },
-    // Collect Function
-    func(ctx context.Context, input *schema.StreamReader[string], opts ...MyOption) (output string, err error) {
-        // some logic
-    },
-    // Transform Function
-    func(ctx context.Context, input *schema.StreamReader[string], opts ...MyOption) (output *schema.StreamReader[string], err error) {
-        // some logic
-    },
+    func(ctx context.Context, input string, opts ...MyOption) (string, error) { /* ... */ },
+    func(ctx context.Context, input string, opts ...MyOption) (*schema.StreamReader[string], error) { /* ... */ },
+    func(ctx context.Context, input *schema.StreamReader[string], opts ...MyOption) (string, error) { /* ... */ },
+    func(ctx context.Context, input *schema.StreamReader[string], opts ...MyOption) (*schema.StreamReader[string], error) { /* ... */ },
 )
 ```
 
-### **Used in orchestration**
+### In Orchestration
 
-#### In Graph
-
-In Graph, a Lambda node can be added through AddLambdaNode:
+#### Graph
 
 ```go
 graph := compose.NewGraph[string, *MyStruct]()
@@ -151,9 +130,7 @@ graph.AddLambdaNode(
 )
 ```
 
-#### In Chain
-
-In Chain, Lambda nodes can be added through AppendLambda:
+#### Chain
 
 ```go
 chain := compose.NewChain[string, string]()
@@ -162,46 +139,43 @@ chain.AppendLambda(compose.InvokableLambda(func(ctx context.Context, input strin
 }))
 ```
 
-### Two built-in Lambda nodes
+### Built-in Lambdas
 
 #### ToList
 
-`ToList` is a built-in lambda that is used to convert a single input into a list:
+Convert a single element into a one-item slice:
 
 ```go
-// Create a ToList Lambda
 lambda := compose.ToList[*schema.Message]()
-
-// add to Chain
 chain := compose.NewChain[[]*schema.Message, []*schema.Message]()
-chain.AppendChatModel(chatModel)  // chatModel returns *schema.Message
-chain.AppendLambda(lambda)        // convert *schema.Message to []*schema.Message
+chain.AppendChatModel(chatModel)
+chain.AppendLambda(lambda)
 ```
 
 #### MessageParser
 
-MessageParser is a built-in Lambda used to parse JSON messages into the specified structure (mostly generate by LLM).
+Parse a JSON message (often from an LLM) into a struct:
 
 ```go
-// Define the parsing target structure body 
+// define target struct
 type MyStruct struct {
     ID int `json:"id"`
 }
 
-// Create a parser
+// create parser
 parser := schema.NewMessageJSONParser[*MyStruct](&schema.MessageJSONParseConfig{
     ParseFrom: schema.MessageParseFromContent,
-    ParseKeyPath: "", // If you only need to parse the sub-field, you can use "key.sub.grandsub"
+    ParseKeyPath: "", // use "key.sub.grandsub" to parse subfields
 })
 
-// Create a parsing Lambda
+// create parser lambda
 parserLambda := compose.MessageParser(parser)
 
-// Used in Chain 
+// use in Chain
 chain := compose.NewChain[*schema.Message, *MyStruct]()
 chain.AppendLambda(parserLambda)
 
-// Invoke example
+// example
 runner, err := chain.Compile(context.Background())
 parsed, err := runner.Invoke(context.Background(), &schema.Message{
     Content: `{"id": 1}`,
@@ -209,10 +183,10 @@ parsed, err := runner.Invoke(context.Background(), &schema.Message{
 // parsed.ID == 1
 ```
 
-MessageParser supports parsing data from the message content (Content) or the result of tool invocation (ToolCall), which is commonly used in scenarios such as intent recognition:
+Parsing from tool call results is also supported:
 
 ```go
-// Parsing from the result of the tool invocation 
+// parse from tool call results
 parser := schema.NewMessageJSONParser[*MyStruct](&schema.MessageJSONParseConfig{
     ParseFrom: schema.MessageParseFromToolCall,
 })

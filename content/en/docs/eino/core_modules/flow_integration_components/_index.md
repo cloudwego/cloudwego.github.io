@@ -1,24 +1,24 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino: Flow integration'
-weight: 0
+title: 'Eino: Flow Integration'
+weight: 3
 ---
 
-LLM applications have **common scenarios and patterns**. By abstracting these scenarios, templates can be provided to help developers quickly build LLM applications. Eino's Flow module is designed to do just this.
+LLM applications have common patterns. Abstracting them yields templates that accelerate development. Eino’s Flow module provides these ready-to-use integrations.
 
-Currently, Eino has integrated two commonly used Agent patterns, `react agent` and `host multi agent`, as well as MultiQueryRetriever, ParentIndexer, and others.
+Currently integrated: `ReAct Agent`, `Host Multi-Agent`, `MultiQueryRetriever`, `ParentIndexer`, and more.
 
-- React Agent: [Eino: React Agent Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
-- Multi Agent: [Eino Tutorial: Host Multi-Agent ](/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
+- ReAct Agent: [Eino: ReAct Agent Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
+- Multi Agent: [Eino Tutorial: Host Multi-Agent](/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
 
-## Orchestrate Flows
+## Using Flows in Orchestration
 
-The Flow integration component itself is generally composed of one or more graphs. At the same time, these flows can also be used as nodes to participate in the orchestration of other graphs, and there are three ways to do this:
+Flows are often backed by one or more graphs. You can embed them as nodes in other graphs in three ways:
 
-1. If a flow implements the interface of a certain component, methods such as AddXXXNode corresponding to that component can be used to add it to a graph. For example, for the multiquery retriever:
+1. If a flow implements a component interface, add it via the component’s `AddXXXNode` methods, e.g., `multiquery retriever`:
 
 ```go
 // instantiate the flow: multiquery.NewRetriever
@@ -59,7 +59,7 @@ _ = graph.AddChatTemplateNode("template", prompt.FromMessages(schema._FString_, 
 // ...
 ```
 
-1. If a flow is internally orchestrated by a single graph and the function of the flow is completely equivalent to the operation of this graph (there is no customized logic that cannot be covered within the graph run), the graph of the flow can be exported and added to orchestration through methods such as AddGraphNode, like ReActAgent and Host Multi-Agent:
+2. If a flow is internally a single graph and the flow’s behavior is fully equivalent to that graph (no extra custom logic), export the graph and add it via `AddGraphNode`, e.g., Host Multi‑Agent:
 
 ```go
 // instantiate the host multi-agent
@@ -92,7 +92,7 @@ out, err := fullGraph.Invoke(ctx, map[string]any{"country_name": "China"},
         DesignateNodeWithPath(compose.NewNodePath("host_ma_node", hostMA.HostNodeKey())))
 ```
 
-1. All flows can be encapsulable as Lambdas and added to orchestration through methods such as AddLambdaNode. Currently, all flows can be added to orchestration through method 1 or 2, so there is no need to downgrade to using Lambdas. We give an example just in case you need it:
+3. All flows can be wrapped into Lambda and added via `AddLambdaNode`. Current flows can already be added via methods 1 or 2, so wrapping is not needed; if used:
 
 ```go
 // instantiate the flow
@@ -127,11 +127,11 @@ res, err := r.Invoke(ctx, []*schema.Message{{Role: schema._User_, Content: "hell
     compose.WithCallbacks(callbackForTest))
 ```
 
-The comparison of the three methods is as follows:
+Comparison:
 
 <table>
-<tr><td>Method</td><td>Applicable Scenario</td><td>Advantage</td></tr>
-<tr><td>As a Component</td><td>Need to implement the interface of the component</td><td>Simple and straightforward, with clear semantics</td></tr>
-<tr><td>As a Graph</td><td>Orchestrated by a single graph, and the function does not exceed the scope of this graph</td><td>The nodes within the graph are exposed to the outer graph. Runtime options can be uniformly allocated. There is one less layer of conversion compared to using Lambda. The relationship between the upper and lower graphs can be obtained through GraphCompileCallback</td></tr>
-<tr><td>As a Lambda</td><td>All scenarios</td><td>Universal</td></tr>
+<tr><td>Mode</td><td>Scenario</td><td>Advantages</td></tr>
+<tr><td>As Component</td><td>Implements the component’s interface</td><td>Simple and clear semantics</td></tr>
+<tr><td>As Graph</td><td>Single graph composition; behavior fully within that graph</td><td>Inner nodes exposed to outer graph; unified runtime options; fewer conversions than Lambda; can obtain graph nesting via GraphCompileCallback</td></tr>
+<tr><td>As Lambda</td><td>All</td><td>Universal</td></tr>
 </table>

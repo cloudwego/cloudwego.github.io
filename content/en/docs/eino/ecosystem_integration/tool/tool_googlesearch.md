@@ -1,21 +1,20 @@
 ---
 Description: ""
-date: "2025-03-20"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: Tool - Googlesearch
 weight: 0
 ---
 
-## **Basic Introduction**
+## **Overview**
 
-Google Search Tool is an implementation of the Eino InvokableTool interface, used for web search through the Google Custom Search API. This component implements the [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide).
+Google search tool is an implementation of Eino’s InvokableTool that performs web searches via Google Custom Search API. Follows [ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide).
 
 ## **Usage**
+### **Initialization**
 
-### **Component Initialization**
-
-The Google Search Tool is initialized via the `NewGoogleSearchTool` function, with the primary configuration parameters as follows:
+Google search tool is initialized via `NewGoogleSearchTool` with core parameters:
 
 ```go
 import "github.com/cloudwego/eino-ext/components/tool/googlesearch"
@@ -23,28 +22,28 @@ import "github.com/cloudwego/eino-ext/components/tool/googlesearch"
 tool, err := googlesearch.NewTool(ctx, &googlesearch.Config{
     APIKey:         "your-api-key",        // Google API key
     SearchEngineID: "your-engine-id",      // Search engine ID
-    BaseURL:        "custom-base-url",     // Optional: Custom API base URL, default: https://customsearch.googleapis.com
-    Num:            5,                    // Optional: Number of results per page
-    Lang:           "zh-CN",               // Optional: Search interface language
-    ToolName:       "google_search",       // Optional: Tool name
-    ToolDesc:       "google search tool",  // Optional: Tool description
+    BaseURL:        "custom-base-url",     // Optional: custom API base URL, default: https://customsearch.googleapis.com
+    Num:            5,                      // Optional: results per page
+    Lang:           "zh-CN",               // Optional: UI language
+    ToolName:       "google_search",       // Optional: tool name
+    ToolDesc:       "google search tool",  // Optional: tool description
 })
 ```
 
-### **Search Parameters**
+Note: obtain APIKey and SearchEngineID from Google Programmable Search Engine: https://programmablesearchengine.google.com/controlpanel/all
 
-The search request supports the following parameters:
+### **Search Parameters**
 
 ```go
 type SearchRequest struct {
-    Query  string `json:"query"`   // Search keywords
-    Num    int    `json:"num"`     // Number of results returned
-    Offset int    `json:"offset"`  // Start position of results
-    Lang   string `json:"lang"`    // Search language
+    Query  string `json:"query"`
+    Num    int    `json:"num"`
+    Offset int    `json:"offset"`
+    Lang   string `json:"lang"`
 }
 ```
 
-### **Complete Usage Example**
+### **Complete Example**
 
 ```go
 package main
@@ -82,7 +81,7 @@ func main() {
 
     // prepare params
     req := googlesearch.SearchRequest{
-        Query: "Go concurrent programming",
+        Query: "Golang concurrent programming",
         Num:   3,
         Lang:  "en",
     }
@@ -123,7 +122,7 @@ func main() {
     // 2. Title: Concurrency — An Introduction to Programming in Go | Go Resources
     //    Link: https://www.golang-book.com/books/intro/10
     //    Desc:
-    // 3. Title: The Comprehensive Guide to Concurrency in Go | by Brandon ...
+    // 3. Title: The Comprehensive Guide to Concurrency in Golang | by Brandon ...
     //    Link: https://bwoff.medium.com/the-comprehensive-guide-to-concurrency-in-golang-aaa99f8bccf6
     //    Desc: Update (November 20, 2023) — This article has undergone a comprehensive revision for enhanced clarity and conciseness. I’ve streamlined the…
 
@@ -131,16 +130,16 @@ func main() {
 }
 ```
 
-### **Search Results Example**
+### **Search Result Example**
 
 ```json
 {
-    "query": "Go concurrent programming",
+    "query": "Golang concurrent programming",
     "items": [
         {
             "link": "https://example.com/article1",
-            "title": "Go Concurrent Programming Practice",
-            "snippet": "This is an article about concurrent programming in Go...",
+            "title": "Go 并发编程实践",
+            "snippet": "An article about Go concurrent programming...",
             "desc": "Detailed introduction to goroutines and channels in Go..."
         },
         {
@@ -153,8 +152,8 @@ func main() {
 }
 ```
 
-## **Related Documents**
+## **References**
 
-- [Eino: ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
-- [Google Custom Search API Documentation](https://developers.google.com/custom-search/v1/overview)
+- [ToolsNode guide](/docs/eino/core_modules/components/tools_node_guide)
+- [Google Custom Search API](https://developers.google.com/custom-search/v1/overview)
 - [Tool - DuckDuckGoSearch](/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search)

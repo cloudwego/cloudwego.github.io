@@ -1,32 +1,32 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Parser - html
 weight: 0
 ---
 
-## **Basic Introduction**
+## **Overview**
 
-The HTML Document Parser is an implementation of the Document Parser interface, used to parse the content of HTML web pages into plain text. This component implements the [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide), mainly used in the following scenarios:
+The HTML document parser is an implementation of the Document Parser interface that parses HTML page content into plain text. It follows [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide) and is used for:
 
-- When plain text content needs to be extracted from web pages
-- When metadata of web pages (title, description, etc.) needs to be retrieved
+- extracting plain text from web pages
+- retrieving page metadata (title, description, etc.)
 
-### **Feature Introduction**
+### **Features**
 
-The HTML parser has the following features:
+HTML parser provides:
 
-- Supports selective extraction of page content with flexible content selector configuration (html selector)
-- Automatically extracts web page metadata (metadata)
-- Secure HTML parsing
+- selective content extraction with flexible selectors (html selector)
+- automatic metadata extraction
+- safe HTML parsing
 
 ## **Usage**
 
-### **Component Initialization**
+### **Initialization**
 
-The HTML parser is initialized using the `NewParser` function, with the main configuration parameters listed below:
+Initialize via `NewParser` with configuration:
 
 ```go
 import (
@@ -34,27 +34,27 @@ import (
 )
 
 parser, err := html.NewParser(ctx, &html.Config{
-    Selector: &selector, // Optional: content selector, defaults to body
+    Selector: &selector, // optional: content selector, defaults to body
 })
 ```
 
-Configuration parameter description:
+Config:
 
-- `Selector`: Optional parameter, specifies the content area to extract, using goquery selector syntax
-  - For example: `body` indicates extracting the content of the `<body>` tag
-  - `#content` indicates extracting the content of the element with id "content"
+- `Selector`: optional, the region to extract using goquery selector syntax
+  - e.g., `body` extracts `<body>` content
+  - `#content` extracts the element with id "content"
 
-### **Metadata Description**
+### **Metadata Keys**
 
-The parser will automatically extract the following metadata:
+Parser auto‑extracts:
 
-- `html.MetaKeyTitle` ("_title"): Webpage title
-- `html.MetaKeyDesc` ("_description"): Webpage description
-- `html.MetaKeyLang` ("_language"): Webpage language
-- `html.MetaKeyCharset` ("_charset"): Character encoding
-- `html.MetaKeySource` ("_source"): Document source URI
+- `html.MetaKeyTitle` ("_title"): page title
+- `html.MetaKeyDesc` ("_description"): page description
+- `html.MetaKeyLang` ("_language"): page language
+- `html.MetaKeyCharset` ("_charset"): charset
+- `html.MetaKeySource` ("_source"): document source URI
 
-### **Complete Usage Example**
+### **Complete Example**
 
 #### **Basic Usage**
 
@@ -64,23 +64,23 @@ package main
 import (
     "context"
     "strings"
-    
+
     "github.com/cloudwego/eino-ext/components/document/parser/html"
     "github.com/cloudwego/eino/components/document/parser"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize parser
-    p, err := html.NewParser(ctx, nil) // Use default configuration
-    if (err != nil) {
+
+    // init parser
+    p, err := html.NewParser(ctx, nil) // default config
+    if err != nil {
         panic(err)
     }
-    
+
     // HTML content
-    html := `
-    <html lang="zh">
+    htmlContent := `
+    <html lang="en">
         <head>
             <title>Sample Page</title>
             <meta name="description" content="This is a sample page">
@@ -89,65 +89,62 @@ func main() {
         <body>
             <div id="content">
                 <h1>Welcome</h1>
-                <p>This is the main content.</p>
+                <p>Main body.</p>
             </div>
         </body>
     </html>
     `
-    
-    // Parse the document
-    docs, err := p.Parse(ctx, strings.NewReader(html),
+
+    // parse
+    docs, err := p.Parse(ctx, strings.NewReader(htmlContent),
         parser.WithURI("https://example.com"),
         parser.WithExtraMeta(map[string]any{
             "custom": "value",
         }),
     )
-    if (err != nil) {
+    if err != nil {
         panic(err)
     }
-    
-    // Use the parsing results
+
     doc := docs[0]
-    println("Content:", doc.Content)
-    println("Title:", doc.MetaData[html.MetaKeyTitle])
-    println("Description:", doc.MetaData[html.MetaKeyDesc])
-    println("Language:", doc.MetaData[html.MetaKeyLang])
+    println("content:", doc.Content)
+    println("title:", doc.MetaData[html.MetaKeyTitle])
+    println("desc:", doc.MetaData[html.MetaKeyDesc])
+    println("lang:", doc.MetaData[html.MetaKeyLang])
 }
 ```
 
-#### **Using Selector**
+#### **Using Selectors**
 
 ```go
 package main
 
 import (
     "context"
-    
+
     "github.com/cloudwego/eino-ext/components/document/parser/html"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Specify to only extract the content of the element with id "content"
+
+    // only extract element with id content
     selector := "#content"
-    p, err := html.NewParser(ctx, &html.Config{
-        Selector: &selector,
-    })
-    if (err != nil) {
+    p, err := html.NewParser(ctx, &html.Config{ Selector: &selector })
+    if err != nil {
         panic(err)
     }
-    
-    // ... code to parse the document ...
+
+    // ... parsing code ...
 }
 ```
 
-#### **Using Loader**
+#### In loader
 
-Refer to the [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide) for examples.
+See examples in [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
 
-## **Related Documents**
+## **References**
 
-- [Eino: Document Parser guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
-- [Eino: Document Loader guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader Guide](/docs/eino/core_modules/components/document_loader_guide)
 - [Parser - pdf](/docs/eino/ecosystem_integration/document/parser_pdf)

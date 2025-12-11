@@ -1,18 +1,18 @@
 ---
 Description: ""
-date: "2025-03-12"
+date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino: Component Integration'
-weight: 0
+title: 'Eino: Ecosystem Integration'
+weight: 5
 ---
 
-## Components
+## Ecosystem Integration
 
 ### ChatModel
 
 - openai: [ChatModel - OpenAI](/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
-- ark: [ChatModel - ARK](/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
+- ark: [ChatModel - Ark](/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
 - ollama: [ChatModel - Ollama](/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
 
 ### Document
@@ -36,7 +36,7 @@ weight: 0
 
 ### Embedding
 
-- ark: [Embedding - ARK](/docs/eino/ecosystem_integration/embedding/embedding_ark)
+- ark: [Embedding - Ark](/docs/eino/ecosystem_integration/embedding/embedding_ark)
 - openai: [Embedding - OpenAI](/docs/eino/ecosystem_integration/embedding/embedding_openai)
 
 ### Indexer

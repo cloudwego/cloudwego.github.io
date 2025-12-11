@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-03-04"
+date: "2025-12-09"
 lastmod: ""
 tags: []
 title: 'Eino: 概述'
@@ -94,15 +94,19 @@ out, err := compiledGraph.Invoke(ctx, map[string]any{
 <a href="/img/eino/graph_node_type1.png" target="_blank"><img src="/img/eino/graph_node_type1.png" width="100%" /></a>
 
 ```go
-wf := NewWorkflow[[]*Message, *Message]()
+wf := NewWorkflow[[]*schema.Message, *schema.Message]()
 wf.AddChatModelNode("model", model).AddInput(START)
-wf.AddLambdaNode("l1", lambda1).AddInput("model", MapFields("Content", "Input"))
-wf.AddLambdaNode("l2", lambda2).AddInput("model", MapFields("Role", "Role"))
-wf.AddLambdaNode("l3", lambda3).AddInput("l1", MapFields("Output", "Query")).
-    AddInput("l2", MapFields("Output", "MetaData"))
-wf.AddEnd("node_l3")
-runnable, _ := wf.Compile(ctx)
-runnable.Invoke(ctx, []*Message{UserMessage("kick start this workflow!")})
+wf.AddLambdaNode("lambda1", lambda1).AddInput("model", MapFields("Content", "Input"))
+wf.AddLambdaNode("lambda2", lambda2).AddInput("model", MapFields("Role", "Role"))
+wf.AddLambdaNode("lambda3", lambda3).
+        AddInput("lambda1", MapFields("Output", "Query")).
+        AddInput("lambda2", MapFields("Output", "MetaData"))
+wf.End().AddInput("lambda3")
+runnable, err := wf.Compile(ctx)
+if err != nil {
+    return err
+}
+our, err := runnable.Invoke(ctx, []*schema.Message{schema.UserMessage("kick start this workflow!")})
 ```
 
 现在，咱们来创建一个 “ReAct” 智能体：一个 ChatModel 绑定了一些 Tool。它接收输入的消息，自主判断是调用 Tool 还是输出最终结果。Tool 的执行结果会再次成为聊天模型的输入消息，并作为下一轮自主判断的上下文。
@@ -122,14 +126,12 @@ Eino 会在上述代码背后自动完成一些重要工作：
 ```go
 handler := NewHandlerBuilder().
   OnStartFn(
-    func(ctx context.Context, info *RunInfo, input CallbackInput) context.Context {
+    func(ctx context.Context, info *RunInfo, input CallbackInput) context.Context) {
         log.Infof("onStart, runInfo: %v, input: %v", info, input)
-        return ctx
     }).
   OnEndFn(
-    func(ctx context.Context, info *RunInfo, output CallbackOutput) context.Context {
+    func(ctx context.Context, info *RunInfo, output CallbackOutput) context.Context) {
         log.Infof("onEnd, runInfo: %v, out: %v", info, output)
-        return ctx
     }).
   Build()
   
@@ -164,7 +166,7 @@ compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
 ### 强大的编排 (Graph/Chain/Workflow)
 
 - 数据从 Retriever / Document Loader / ChatTemplate 流向 ChatModel，接着流向 Tool ，并被解析为最终答案。这种通过多个组件的有向、可控的数据流，可以通过**图编排**来实现。
-- 组件实例是图的 **节点（Node）** ，而 **边（Edge）** 则是数据流通道。
+- 组件实例是图的**节点（Node）**，而**边（Edge）**则是数据流通道。
 - 图编排功能强大且足够灵活，能够实现复杂的业务逻辑：
   - **类型检查、流处理、并发管理、切面注入和选项分配**都由框架处理。
   - 在运行时进行**分支（Branch）**执行、读写全局**状态（State）**，或者使用工作流进行字段级别的数据映射。
@@ -197,7 +199,7 @@ compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
 
 ## Eino 框架结构
 
-<a href="/img/eino/eino_structure.png" target="_blank"><img src="/img/eino/eino_structure.png" width="100%" /></a>
+<a href="/img/eino/eino_architecture_overview.png" target="_blank"><img src="/img/eino/eino_architecture_overview.png" width="100%" /></a>
 
 Eino 框架由几个部分组成：
 

@@ -1,48 +1,48 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-01-20"
 lastmod: ""
 tags: []
 title: Embedding - ARK
 weight: 0
 ---
 
-## **Introduction**
+## **Overview**
 
-Ark Embedding is an implementation of the Eino Embedding interface used to convert text into vector representations. Volcengine Ark is a platform that provides machine learning model inference services, including text vectorization services. This component implements the [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide).
+Ark Embedding is an implementation of Eino’s Embedding interface that converts text to vectors. Volcengine Ark provides model inference services, including text embedding. This component follows [[🚧]Eino: Embedding Guide](/docs/eino/core_modules/components/embedding_guide).
 
 ## **Usage**
 
-### **Component Initialization**
+### **Initialization**
 
-The Ark vector embedder is initialized using the `NewEmbedder` function with the main configuration parameters as follows:
+Initialize via `NewEmbedder` with key configuration options:
 
 ```go
 import "github.com/cloudwego/eino-ext/components/embedding/ark"
 
 embedder, err := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{
-    // Authentication configuration (choose one)
-    APIKey: "your-api-key",  // Use API Key for authentication
-    // Or use AK/SK authentication
+    // authentication (choose one)
+    APIKey: "your-api-key",  // API Key auth
+    // or AK/SK auth
     AccessKey: "your-access-key",
     SecretKey: "your-secret-key",
-    
-    // Service configuration
-    Model:   "ep-xxxxxxx-xxxxx", // Endpoint ID for the Ark platform
-    BaseURL: "https://ark.cn-beijing.volces.com/api/v3", // Optional, default is the Beijing region
-    Region:  "cn-beijing",         // Optional, default is the Beijing region
-    
-    // Advanced configuration
-    Timeout:    &timeout,    // Request timeout
-    RetryTimes: &retryTimes, // Number of retries
-    Dimensions: &dimensions, // Output vector dimensions
-    User:       &user,      // User identifier
+
+    // service config
+    Model:   "ep-xxxxxxx-xxxxx",                // Ark endpoint ID
+    BaseURL: "https://ark.cn-beijing.volces.com/api/v3", // optional, defaults to Beijing
+    Region:  "cn-beijing",                      // optional, defaults to Beijing
+
+    // advanced
+    Timeout:    &timeout,    // request timeout
+    RetryTimes: &retryTimes, // retry times
+    Dimensions: &dimensions, // output vector dimension
+    User:       &user,       // user identifier
 })
 ```
 
-### **Generate Vector Embeddings**
+### **Generate Embeddings**
 
-Text vectorization is achieved through the `EmbedStrings` method:
+Text vectorization is done via `EmbedStrings`:
 
 ```go
 embeddings, err := embedder.EmbedStrings(ctx, []string{
@@ -51,7 +51,7 @@ embeddings, err := embedder.EmbedStrings(ctx, []string{
 })
 ```
 
-### **Complete Usage Example**
+### **Complete Example**
 
 #### **Basic Usage**
 
@@ -61,14 +61,14 @@ package main
 import (
     "context"
     "time"
-    
+
     "github.com/cloudwego/eino-ext/components/embedding/ark"
 )
 
 func main() {
     ctx := context.Background()
-    
-    // Initialize embedder
+
+    // init embedder
     timeout := 30 * time.Second
     embedder, err := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{
         APIKey:  "your-api-key",
@@ -78,27 +78,27 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
-    // Generate text vectors
+
+    // generate embeddings
     texts := []string{
-        "This is an example text segment one",
-        "This is an example text segment two",
+        "This is the first sample text",
+        "This is the second sample text",
     }
-    
+
     embeddings, err := embedder.EmbedStrings(ctx, texts)
     if err != nil {
         panic(err)
     }
-    
-    // Use generated vectors
+
+    // use generated vectors
     for i, embedding := range embeddings {
-        println("Text", i+1, "vector dimension:", len(embedding))
+        println("text", i+1, "vector dim:", len(embedding))
     }
 }
 ```
 
-## **Related Documentation**
+## **References**
 
-- [Eino: Embedding guide](/docs/eino/core_modules/components/embedding_guide)
+- [Eino: Embedding Guide](/docs/eino/core_modules/components/embedding_guide)
 - [Embedding - OpenAI](/docs/eino/ecosystem_integration/embedding/embedding_openai)
-- [Volcengine Ark Services](https://www.volcengine.com/product/ark)
+- Volcengine Ark: https://www.volcengine.com/product/ark

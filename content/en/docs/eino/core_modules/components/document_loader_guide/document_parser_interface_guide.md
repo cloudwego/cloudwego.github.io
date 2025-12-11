@@ -1,87 +1,85 @@
 ---
 Description: ""
-date: "2025-04-21"
+date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino: Document Parser guide'
-weight: 0
+title: 'Eino: Document Parser Interface Guide'
+weight: 1
 ---
 
-## **Basic Introduction**
+## Introduction
 
-Document Parser is a toolkit for parsing document content. It is not a standalone component but an internal tool used by Document Loader to parse raw content of various formats into standard document formats. The Parser supports:
+`Document Parser` is a toolkit for parsing raw content into standard documents. It is not a standalone component; it’s used inside `Document Loader`. Parsers support:
 
-- Parsing document content of different formats (such as text, PDF, Markdown, etc.)
-- Automatically selecting the appropriate parser based on the file extension (e.g., ExtParser)
-- Adding metadata information to the parsed documents
+- Parsing various formats (text, PDF, Markdown, etc.)
+- Automatically selecting a parser by file extension (`ExtParser`)
+- Adding metadata to parsed documents
 
-## **Interface Definition**
+## Interfaces
 
-### **Parser Interface**
+### Parser
 
-> Code Location: eino/components/document/parser/interface.go
+> Code: `eino/components/document/parser/interface.go`
 
 ```go
 import (
     "github.com/cloudwego/eino/schema"
 )
 
-// Parser is a document parser, can be used to parse a document from a reader.
 type Parser interface {
     Parse(ctx context.Context, reader io.Reader, opts ...Option) ([]*schema.Document, error)
 }
 ```
 
-#### **Parse Method**
+#### Parse
 
-- Function: Parses the document content from a Reader
-- Parameters:
-  - ctx: Context object
-  - reader: Reader providing the raw content
-  - opts: Parsing options
-- Return Values:
-  - `[]*schema.Document`: List of parsed documents
-  - error: Errors encountered during parsing
+- Purpose: parse from a `Reader`
+- Params:
+  - `ctx`: context
+  - `reader`: raw content
+  - `opts`: parsing options
+- Returns:
+  - `[]*schema.Document`: parsed documents
+  - `error`
 
-### **Common Option Definitions**
+### Common Options
 
 ```go
 type Options struct {
-    // URI indicates the source of the document
+    // URI of the document source
     URI string
 
-    // ExtraMeta will be merged into each parsed document's metadata
+    // ExtraMeta merged into each parsed document’s metadata
     ExtraMeta map[string]any
 }
 ```
 
-Two basic option functions are provided:
+Provided helpers:
 
-- WithURI: Sets the URI of the document, used in ExtParser to select the parser
-- WithExtraMeta: Sets additional metadata
+- `WithURI`: set document URI (used by `ExtParser` to select parser)
+- `WithExtraMeta`: set additional metadata
 
-## **Built-in Parsers**
+## Built-in Parsers
 
-### **TextPars****er**
+### TextParser
 
-The most basic text parser, which directly uses the input content as document content:
+Basic text parser; uses input as content directly.
 
-> Code Location: eino-examples/components/document/parser/textparser
+> Code: `eino-examples/components/document/parser/textparser`
 
 ```go
 import "github.com/cloudwego/eino/components/document/parser"
 
 textParser := parser.TextParser{}
 docs, _ := textParser.Parse(ctx, strings.NewReader("hello world"))
-
 logs.Infof("text content: %v", docs[0].Content)
 ```
 
-### **ExtParser**
+### ExtParser
 
-File extension-based parser, which can automatically choose the appropriate parser based on the file extension:
+Selects parsers by file extension; falls back to a default parser.
 
-> Code Location: eino-examples/components/document/parser/extparser
+> Code: `eino-examples/components/document/parser/extparser`
 
 ```go
 package main
@@ -103,33 +101,19 @@ func main() {
 
     textParser := parser.TextParser{}
 
-    htmlParser, _ := html.NewParser(ctx, &html.Config{
-       Selector: gptr.Of("body"),
-    })
-
+    htmlParser, _ := html.NewParser(ctx, &html.Config{ Selector: gptr.Of("body") })
     pdfParser, _ := pdf.NewPDFParser(ctx, &pdf.Config{})
 
-    // Create extension parser
     extParser, _ := parser.NewExtParser(ctx, &parser.ExtParserConfig{
-       // Register parsers for specific extensions
-       Parsers: map[string]parser.Parser{
-          ".html": htmlParser,
-          ".pdf":  pdfParser,
-       },
-       // Set default parser for handling unknown formats
+       Parsers: map[string]parser.Parser{ ".html": htmlParser, ".pdf": pdfParser },
        FallbackParser: textParser,
     })
 
-    // Use the parser
     filePath := "./testdata/test.html"
     file, _ := os.Open(filePath)
-    
     docs, _ := extParser.Parse(ctx, file,
-       // Must provide URI for ExtParser to choose the correct parser
        parser.WithURI(filePath),
-       parser.WithExtraMeta(map[string]any{
-          "source": "local",
-       }),
+       parser.WithExtraMeta(map[string]any{ "source": "local" }),
     )
 
     for idx, doc := range docs {
@@ -138,18 +122,18 @@ func main() {
 }
 ```
 
-### **Other Implementations**
+### Other Implementations
 
-- pdf parser, used for extracting and parsing PDF formatted files: [Parser - pdf](/docs/eino/ecosystem_integration/document/parser_pdf)
-- html parser, used for extracting and parsing HTML formatted content: [Parser - html](/docs/eino/ecosystem_integration/document/parser_html)
+- PDF parser: [Parser — PDF](/docs/eino/ecosystem_integration/document/parser_pdf)
+- HTML parser: [Parser — HTML](/docs/eino/ecosystem_integration/document/parser_html)
 
-## **Using ****Document Loader**
+## Using Parsers in Document Loader
 
-The parser is mainly used in the Document Loader to parse the loaded document content. Here are some typical usage scenarios:
+Parsers are primarily used by `Document Loader` to parse loaded content.
 
-### **File Loader**
+### File Loader Example
 
-> Code Location: eino-ext/components/document/loader/file/examples/fileloader
+> Code: `eino-ext/components/document/loader/file/examples/fileloader`
 
 ```go
 import (
@@ -158,66 +142,41 @@ import (
     "github.com/cloudwego/eino-ext/components/document/loader/file"
 )
 
-// Use FileLoader to load local files
 ctx := context.Background()
-
-log.Printf("===== call File Loader directly =====")
-// Initialize the loader (using file loader as an example)
 loader, err := file.NewFileLoader(ctx, &file.FileLoaderConfig{
-    // Configuration parameters
     UseNameAsID: true,
-    Parser:      &parser.TextParser{}, // use TextParser as default parser
+    Parser:      &parser.TextParser{}, // Or parser.NewExtParser()
 })
-if err != nil {
-    log.Fatalf("file.NewFileLoader failed, err=%v", err)
-}
 
-// Load the document
 filePath := "../../testdata/test.md"
-docs, err := loader.Load(ctx, document.Source{
-    URI: filePath,
-})
-if err != nil {
-    log.Fatalf("loader.Load failed, err=%v", err)
-}
-
+docs, err := loader.Load(ctx, document.Source{ URI: filePath })
 log.Printf("doc content: %v", docs[0].Content)
-log.Printf("Extension: %s\n", docs[0].MetaData[file.MetaKeyExtension]) // Output: Extension: .txt
-log.Printf("Source: %s\n", docs[0].MetaData[file.MetaKeySource])       // Output: Source: ./document.txt
+log.Printf("Extension: %s\n", docs[0].MetaData[file._MetaKeyExtension_])
+log.Printf("Source: %s\n", docs[0].MetaData[file._MetaKeySource_])
 ```
 
-## **Custom Parser Implementation**
+## Custom Parser Implementation
 
-### **option Mechanism**
-
-Custom parsers can define their own options:
+### Options
 
 ```go
-// options
-// Customize the option structure independently
 type options struct {
     Encoding string
     MaxSize  int64
 }
 
-// WithEncoding
-// Customize the Option method independently
 func WithEncoding(encoding string) parser.Option {
-    return parser.WrapImplSpecificOptFn(func(o *options) {
-       o.Encoding = encoding
-    })
+    return parser.WrapImplSpecificOptFn(func(o *options) { o.Encoding = encoding })
 }
 
 func WithMaxSize(size int64) parser.Option {
-    return parser.WrapImplSpecificOptFn(func(o *options) {
-       o.MaxSize = size
-    })
+    return parser.WrapImplSpecificOptFn(func(o *options) { o.MaxSize = size })
 }
 ```
 
-### **Complete Implementation Example**
+### Example
 
-> Code Location: eino-examples/components/document/parser/customparser/custom_parser.go
+> Code: `eino-examples/components/document/parser/customparser/custom_parser.go`
 
 ```go
 import (
@@ -243,18 +202,15 @@ func NewCustomParser(config *Config) (*CustomParser, error) {
 }
 
 func (p *CustomParser) Parse(ctx context.Context, reader io.Reader, opts ...parser.Option) ([]*schema.Document, error) {
-    // 1. Handle common options
     commonOpts := parser.GetCommonOptions(&parser.Options{}, opts...)
     _ = commonOpts
 
-    // 2. Handle specific options
     myOpts := &options{
        Encoding: p.defaultEncoding,
        MaxSize:  p.defaultMaxSize,
     }
     myOpts = parser.GetImplSpecificOptions(myOpts, opts...)
     _ = myOpts
-    // 3. Implement parsing logic
 
     return []*schema.Document{{
        Content: "Hello World",
@@ -262,7 +218,7 @@ func (p *CustomParser) Parse(ctx context.Context, reader io.Reader, opts ...pars
 }
 ```
 
-### **Notes**
+### Notes
 
-1. Pay attention to handling abstract common options
-2. Pay attention to the setting and passing of metadata
+1. Handle common options consistently via the shared abstraction
+2. Set and propagate metadata appropriately

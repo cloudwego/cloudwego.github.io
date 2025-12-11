@@ -1,122 +1,116 @@
 ---
 Description: ""
-date: "2025-02-21"
+date: "2025-11-20"
 lastmod: ""
 tags: []
-title: EinoDev visual debug plugin guide
+title: Eino Dev Visual Debugging Guide
 weight: 3
 ---
 
-## **Introduction**
+## Overview
 
 > 💡
-> Using this plugin, you can visually debug the orchestration products (Graph, Chain) written using the Eino framework:
+> Use this plugin to visually debug orchestration artifacts built with Eino (Graph, Chain):
 >
-> 1. Visualization rendering of orchestration products;
-> 2. Debug by mocking inputs starting from any operational node.
+> 1. Visual rendering of orchestration
+> 2. Start from any operable node and debug with mock input
 
-## **Quick Start**
+## Quick Start
 
-### **Download** eino-example
+### Download eino-examples
 
-> github repo：_[https://github.com/cloudwego/eino-examples](https://github.com/cloudwego/eino-examples)_
+Repo: [https://github.com/cloudwego/eino-examples](https://github.com/cloudwego/eino-examples)
 
 ```bash
-# HTTPS
-git clone https://github.com/cloudwego/eino-examples.git 
-
-# SSH
+git clone https://github.com/cloudwego/eino-examples.git
+# or
 git clone git@github.com:cloudwego/eino-examples.git
 ```
 
-### **Install Dependencies**
+### Install Dependencies
 
-Execute the following commands in the project directory
+In the project directory, run the following in order:
 
 ```bash
-# 1. Pull latest devops repository 
 go get github.com/cloudwego/eino-ext/devops@latest
-
-# 2. Cleans and updates go.mod and go.sum
 go mod tidy
 ```
 
-### Run Demo
+### Run the Demo
 
-Go to `eino-examples/devops/debug/main.go`, and run `main.go`. Since the plugin will also start a local HTTP service to connect the user service process, a network connection warning will pop up. Click Allow.
+Open `eino-examples/devops/debug/main.go` and run `main.go`. The plugin launches a local HTTP service to connect to your process; allow network access if prompted.
 
 <a href="/img/eino/eino_debug_enter_config_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_config_page.png" width="100%" /></a>
 
-### **Configure Debug Address**
+### Configure Debug Address
 
 <table><tbody><tr>
 <td>
-1.Click the debugging feature on the left or in the middle to enter the debugging configuration
+1) Click the debug feature entry on the left or center to open configuration
 <a href="/img/eino/eino_debug_enter_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_page.png" width="100%" /></a>
 </td><td>
-2.Click to configure the debug address
+2) Click “Configure Address”
 <a href="/img/eino/eino_debug_config_3_page.png" target="_blank"><img src="/img/eino/eino_debug_config_3_page.png" width="100%" /></a>
 </td></tr></tbody></table>
 
 <table><tbody><tr>
 <td>
-3.Enter 127.0.0.1:52538
+3) Enter 127.0.0.1:52538
 <a href="/img/eino/eino_debug_config_2_page.png" target="_blank"><img src="/img/eino/eino_debug_config_2_page.png" width="100%" /></a>
 </td><td>
-4.Click Confirm to enter the debug interface, selecting the Graph to debug
+4) Confirm to enter the debug view, then select the Graph to debug
 <a href="/img/eino/eino_orchestration_index_2_page.png" target="_blank"><img src="/img/eino/eino_orchestration_index_2_page.png" width="100%" /></a>
 </td></tr></tbody></table>
 
-### **Start Debugging**
+### Start Debugging
 
 <table><tbody><tr>
 <td>
-1.Click "Test Run" to execute from the start node
+1) Click “Test Run” to start from START
 <a href="/img/eino/eino_debug_enter_test_run_2_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_test_run_2_page.png" width="100%" /></a>
 </td><td>
-2.Enter "hello eino", and click Confirm
+2) Enter "hello eino" and confirm
 <a href="/img/eino/eino_debug_run_input_mock_data_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_page.png" width="100%" /></a>
 
 </td></tr></tbody></table>
 
 <table><tbody><tr>
-<td>
-3.The debugging area displays the input and output of each node
-<a href="/img/eino/eino_debug_test_run_detail_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_detail_page.png" width="100%" /></a>
-</td><td>
-4.Click Input and Output to switch and view node information
-<a href="/img/eino/eino_debug_index_page.png" target="_blank"><img src="/img/eino/eino_debug_index_page.png" width="100%" /></a>
-</td></tr></tbody></table>
+<td>3) Inspect per-node inputs/outputs</td><td>4) Switch Input/Output views</td>
+</tr>
+<tr>
+<td><a href="/img/eino/eino_debug_test_run_detail_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_detail_page.png" width="100%" /></a></td>
+<td><a href="/img/eino/eino_debug_index_page.png" target="_blank"><img src="/img/eino/eino_debug_index_page.png" width="100%" /></a></td>
+</tr></tbody></table>
 
-## **Features Overview**
+## Feature Overview
 
-### **Local or Remote Debugging**
+### Local or Remote Debugging
 
-Regardless of whether the target debugging orchestration output is on a local computer or a remote server, you can actively connect to the server where the target debugging object is located by configuring IP:Port.
+Configure `IP:Port` to connect to the target process, whether local or remote.
 
 <a href="/img/eino/eino_debug_run_config_page.png" target="_blank"><img src="/img/eino/eino_debug_run_config_page.png" width="100%" /></a>
 
-### **Orchestration Topology Visualization**
+### Orchestration Visualization
 
-Supports Graph and Chain orchestration topology visualization.
+Supports Graph and Chain topology visualization.
 
 <a href="/img/eino/eino_debug_list_nodes_page.png" target="_blank"><img src="/img/eino/eino_debug_list_nodes_page.png" width="100%" /></a>
 
-### **Debug From Any Node**
+### Start from Any Node
 
 <a href="/img/eino/eino_debug_test_run_of_one_node_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_of_one_node_page.png" width="100%" /></a>
 
-### **View Node Execution Results**
+### Inspect Node Results
 
-The execution results of each node are displayed in the debugging area in the order of execution, including: input, output, execution time
+Each node’s input, output, and execution time are shown in order.
 
 <a href="/img/eino/eino_debug_run_detail_v2_page.png" target="_blank"><img src="/img/eino/eino_debug_run_detail_v2_page.png" width="100%" /></a>
 
-## **Debugging From Scratch**
+## Debugging from Scratch
 
-### **Orchestrating with Eino**
+### Orchestrate with Eino
 
-The plugin supports debugging the orchestration outputs of Graph and Chain. Assuming you already have the following orchestration code:
+The plugin supports debugging Graph and Chain artifacts. Example registration:
 
 ```go
 func RegisterSimpleGraph(ctx context.Context) {
@@ -144,48 +138,41 @@ func RegisterSimpleGraph(ctx context.Context) {
 }
 ```
 
-### **Install Dependencies**
-
-In the project directory, execute the following commands in sequence:
+### Install Dependencies
 
 ```bash
-# 1. Pull latest devops repository 
 go get github.com/cloudwego/eino-ext/devops@latest
-
-# 2. Cleans and updates go.mod and go.sum
 go mod tidy
 ```
 
-### **Call Debug Initialization Function**
+### Initialize Debugging
 
-Because debugging requires starting an HTTP service in the user's main process to interact with local debugging plugins, the user needs to proactively call `Init()` from _github.com/cloudwego/eino-ext/devops_ to start the debugging service.
+Because debugging starts an HTTP service in your main process to interact with the local plugin, you must call `Init()` from `github.com/cloudwego/eino-ext/devops` to start the debug service.
 
 > 💡
-> Notice:
+> Notes
 >
-> 1. Make sure that the orchestration product of the target debugging has executed `Compile()` at least once.
-> 2. The execution of `devops.Init()` must be carried out before calling `Compile()`.
-> 3. Users need to ensure that the main process does not exit after the execution of `devops.Init()`.
-
-For example, adding the debugging service startup code in the `main()` function:
+> 1. Ensure the target orchestration has run `Compile()` at least once.
+> 2. `devops.Init()` must run before calling `Compile()`.
+> 3. Make sure the main process stays alive after `devops.Init()`.
 
 ```go
-// 1. Call the debug service initialization function
+// 1. Initialize debug service
 err := devops.Init(ctx)
 if err != nil {
     logs.Errorf("[eino dev] init failed, err=%v", err)
     return
 }
 
-// 2. Compile the target debug orchestration artifact
+// 2. Compile the target orchestration artifact to debug
 RegisterSimpleGraph(ctx)
 ```
 
-### **Run User Process**
+### Run Your Process
 
-Run your process on a local computer or remote environment and ensure the main process does not exit.
+Run your process locally or remotely, and ensure the main process does not exit.
 
-In github.com/cloudwego/eino-examples/devops/debug/main.go, the `main()` code is as follows:
+In `github.com/cloudwego/eino-examples/devops/debug/main.go`, `main()` looks like:
 
 ```go
 func main() {
@@ -212,125 +199,159 @@ func main() {
 }
 ```
 
-### **Configure Debug Address**
+### Configure Address
 
-- **IP**：The IP address of the server where the user process is running.
-  - If the user process is running on a local computer, enter `127.0.0.1`.
-  - If the user process is running on a remote server, enter the remote server's IP address, compatible with both IPv4 and IPv6.
-- **Port**：The port on which the debugging service is listening, default is `52538`, and can be modified using the `WithDevServerPort` option method.
+- IP: `127.0.0.1` for local; remote server IP for remote (IPv4/IPv6).
+- Port: default `52538`, configurable via `WithDevServerPort`.
 
-> 💡
-> Notes
->
-> - Local computer debugging: The system might pop up a network access warning, just allow the access.
-> - Remote server debugging: You need to ensure the port is accessible.
-
-After configuring the IP and Port, click confirm, and the debugging plugin will automatically connect to the target debugging server. If successfully connected, the connection status indicator will turn green.
+Allow network prompts locally; ensure remote ports are reachable. Once connected, the status indicator turns green.
 
 <a href="/img/eino/eino_debug_ip_port_show_page.png" target="_blank"><img src="/img/eino/eino_debug_ip_port_show_page.png" width="100%" /></a>
 
-### Select Target Debugging Orchestration
+### Select an Artifact
 
-Ensure the orchestration product you want to debug has been executed at least once using `Compile()`. Since debugging is designed for instances of orchestration product, multiple executions of `Compile()` will register multiple products with the debugging service, resulting in multiple selectable debugging targets in the list.
+Ensure your target orchestration has been compiled at least once. Multiple `Compile()` runs register multiple artifacts; you’ll see them in the selection list.
 
 <a href="/img/eino/eino_debug_panel_3.png" target="_blank"><img src="/img/eino/eino_debug_panel_3.png" width="100%" /></a>
 
-### **Start Debugging**
+### Start Debugging
 
-Debugging can start from any node, including the start node and other intermediate nodes.
-
-- Start debugging from the START node: Click "Test Run", enter the mock input (if the input is complex, the input structure will be inferred automatically), and then click Confirm to execute your graph. The result of each node will be displayed below.
+- From START: click “Test Run”, enter mock input (complex types are inferred), and confirm.
 
 <a href="/img/eino/eino_debug_run_code_2.png" target="_blank"><img src="/img/eino/eino_debug_run_code_2.png" width="100%" /></a>
 
 <a href="/img/eino/eino_debug_run_input_mock_data_2_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_2_page.png" width="100%" /></a>
 
-- Start debugging from any operable node: For example, execute starting from the second node.
+- From a specific node: click the run button on that node.
 
 <a href="/img/eino/eino_debug_button_run_code.png" target="_blank"><img src="/img/eino/eino_debug_button_run_code.png" width="100%" /></a>
 
-<a href="/img/eino/eino_debug_run_of_mock_input_of_page.png" target="_blank"><img src="/img/eino/eino_debug_run_of_mock_input_of_page.png" width="100%" /></a>
+## Advanced
 
-### **View Execution Results**
+### Specify Implementation Type for Interface Fields
 
-Start debugging from the START node, click Test Run, and view the debugging results below the plugin.
+Interface-typed fields render as `{}` by default. Type a space inside `{}` to select an implementation type. The plugin uses a special JSON structure:
 
-<a href="/img/eino/eino_debug_test_run_result_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_result_page.png" width="100%" /></a>
-
-Debug from any operable node and view the debugging results below the plugin.
-
-<a href="/img/eino/eino_debug_results.png" target="_blank"><img src="/img/eino/eino_debug_results.png" width="100%" /></a>
-
-## Advanced Features
-
-### **Specifying Implementation Types for Interface Fields**
-
-For fields of the interface type, they are rendered as `{}` by default. By entering a space within `{}`, a list of interface implementation types will appear. After selecting a type, the system will generate a special structure to represent the interface information; this special structure is defined as follows:
-
-```go
+```json
 {
-    "_value": {} // JSON value generated according to the specific type
-    "_eino_go_type": "*model.MyConcreteType" // Go type name
+  "_value": {},           // JSON value of the concrete type
+  "_eino_go_type": "*model.MyConcreteType" // Go type name
 }
 ```
 
 > 💡
-> The system has some common interface types built-in, such as `string`, `schema.Message`, etc., which can be used directly. If you need to customize the interface implementation type, you can register it using the `AppendType` method provided by `devops`.
+> Common interface types like `string`, `schema.Message` are built-in. To register custom types, use `devops.AppendType` during `Init()`.
 
-1. Suppose you already have the following orchestration code, where the input of the graph is defined as `any`, and the input of `node_1` is defined as `*NodeInfo`:
+1) Suppose you have orchestration code where the graph input is `any`, and `node_1` takes `*NodeInfo`:
 
-   ```go
-   type NodeInfo struct {
-       Message string
-   }
+```go
+type NodeInfo struct {
+    Message string
+}
 
-   func RegisterGraphOfInterfaceType(ctx context.Context) {
-       // Define a graph that input parameter is any.
-       g := compose.NewGraph[any, string]()
+func RegisterGraphOfInterfaceType(ctx context.Context) {
+    // Define a graph that input parameter is any.
+    g := compose.NewGraph[any, string]()
 
-       _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input *NodeInfo) (output string, err error) {
-          if input == nil {
-             return "", nil
-          }
-          return input.Message + " process by node_1,", nil
-       }))
-
-       _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
-          return input + " process by node_2,", nil
-       }))
-
-       _ = g.AddLambdaNode("node_3", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
-          return input + " process by node_3,", nil
-       }))
-
-       _ = g.AddEdge(compose._START_, "node_1")
-
-       _ = g.AddEdge("node_1", "node_2")
-
-       _ = g.AddEdge("node_2", "node_3")
-
-       _ = g.AddEdge("node_3", compose._END_)
-
-       r, err := g.Compile(ctx)
-       if err != nil {
-          logs.Errorf("compile graph failed, err=%v", err)
-          return
+    _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input *NodeInfo) (output string, err error) {
+       if input == nil {
+          return "", nil
        }
-   }
-   ```
-2. Before debugging, register the custom `*NodeInfo` type by using the `AppendType` method:
+       return input.Message + " process by node_1,", nil
+    }))
 
-   ```go
-   err := devops.Init(ctx, devops.AppendType(&graph.NodeInfo{}))
-   ```
-3. During debugging, in the Json input box of the Test Run, fields of the interface type will be presented as `{}` by default. You can view all built-in and custom registered data types by typing a space within `{}` and selecting the specific implementation type of the interface.
+    _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+       return input + " process by node_2,", nil
+    }))
 
-<a href="/img/eino/eino_debug_run_code.png" target="_blank"><img src="/img/eino/eino_debug_run_code.png" width="100%" /></a>
+    _ = g.AddLambdaNode("node_3", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+       return input + " process by node_3,", nil
+    }))
 
-1. Complete the debug node input in the `_value` field.
+    _ = g.AddEdge(compose._START_, "node_1")
 
-<a href="/img/eino/eino_debug_run_code_3.png" target="_blank"><img src="/img/eino/eino_debug_run_code_3.png" width="100%" /></a>
+    _ = g.AddEdge("node_1", "node_2")
 
-1. Click confirm to view the debugging results.
+    _ = g.AddEdge("node_2", "node_3")
 
-<a href="/img/eino/eino_debug_panel_2.png" target="_blank"><img src="/img/eino/eino_debug_panel_2.png" width="100%" /></a>
+    _ = g.AddEdge("node_3", compose._END_)
+
+    r, err := g.Compile(ctx)
+    if err != nil {
+       logs.Errorf("compile graph failed, err=%v", err)
+       return
+    }
+}
+```
+
+2) Before debugging, register the custom `*NodeInfo` type with `AppendType` at `Init()`:
+
+```go
+err := devops.Init(ctx, devops.AppendType(&graph.NodeInfo{}))
+```
+
+3) During Test Run, interface fields show `{}` by default. Type a space inside `{}` to view all built-in and custom types, select the concrete implementation, then fill `_value`.
+
+### Debugging `map[string]any`
+
+If a node input is `map[string]any`:
+
+```go
+func RegisterAnyInputGraph(ctx context.Context) {
+        g := compose.NewGraph[map[string]any, string]()
+
+        _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input map[string]any) (output string, err error) {
+                for k, v := range input {
+                        switch v.(type) {
+                        case string:
+                                output += k + ":" + v.(string) + ","
+                        case int:
+                                output += k + ":" + fmt.Sprintf("%d", v.(int))
+                        default:
+                                return "", fmt.Errorf("unsupported type: %T", v)
+                        }
+                }
+
+                return output, nil
+        }))
+
+        _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+                return input + " process by node_2,", nil
+        }))
+
+        _ = g.AddEdge(compose.START, "node_1")
+
+        _ = g.AddEdge("node_1", "node_2")
+
+        _ = g.AddEdge("node_2", compose.END)
+
+        r, err := g.Compile(ctx)
+        if err != nil {
+                logs.Errorf("compile graph failed, err=%v", err)
+                return
+        }
+
+        message, err := r.Invoke(ctx, map[string]any{"name": "bob", "score": 100})
+        if err != nil {
+                logs.Errorf("invoke graph failed, err=%v", err)
+                return
+        }
+
+        logs.Infof("eino any input graph output is: %v", message)
+}
+```
+
+During debugging, in the Test Run JSON input box, use the following format to specify concrete types for values:
+
+```json
+{
+  "name": {
+    "_value": "alice",
+    "_eino_go_type": "string"
+  },
+  "score": {
+    "_value": "99",
+    "_eino_go_type": "int"
+  }
+}
+```

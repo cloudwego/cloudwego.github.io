@@ -18,7 +18,7 @@ weight: 0
 火山引擎 VikingDB 检索器通过 `NewRetriever` 函数进行初始化，主要配置参数如下：
 
 ```go
-import    "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
+import "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
 
 retriever, err := volc_vikingdb.NewRetriever(ctx, &volc_vikingdb.RetrieverConfig{
     // 服务配置

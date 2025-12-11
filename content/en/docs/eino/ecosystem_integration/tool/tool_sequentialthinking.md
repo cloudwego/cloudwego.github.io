@@ -1,84 +1,59 @@
 ---
 Description: ""
-date: "2025-03-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
 title: Tool - sequentialthinking
 weight: 0
 ---
 
-## Sequential Thinking Tool
+## **Sequential Thinking Tool**
 
-**Sequential Thinking Tool** is a tool for dynamic and reflective problem-solving through a structured thinking process.
-Inspired by [@modelcontextprotocol
-/sequentialthinking](https://github.com/modelcontextprotocol/servers/tree/HEAD/src/sequentialthinking), it guides LLM
-through a series of questions to help them think through problems step-by-step.
+Sequential Thinking Tool is for dynamic and reflective problem solving. Inspired by MCP’s `sequentialthinking`, it guides a large language model to think step by step via a series of questions.
 
-## Features
+## **Features**
 
-- Guided step-by-step thinking process.
-- Dynamic questioning and reflection.
-- Enhances problem-solving abilities.
+- Guided step-by-step thinking
+- Dynamic prompts and self-reflection
+- Improves problem-solving quality
 
-## Usage
+## **Use Cases**
 
-The Sequential Thinking tool is designed for:
+- Decompose complex problems into steps
+- Plan and iterate with room for adjustments
+- Analyze directions that may need correction
+- Handle ambiguous scope early on
+- Maintain context across multiple steps
+- Filter irrelevant information
 
-- Breaking down complex problems into steps
-- Planning and design with room for revision
-- Analysis that might need course correction
-- Problems where the full scope might not be clear initially
-- Tasks that need to maintain context over multiple steps
-- Situations where irrelevant information needs to be filtered out
-
-## Install
+## **Installation**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/tool/sequentialthinking@latest
 ```
 
-## Quick Start
+## **Quick Start**
 
 ```go
 package main
 
 import (
-	"context"
-	"fmt"
-	
-	"github.com/bytedance/sonic"
-	
-	"github.com/cloudwego/eino-ext/components/tool/sequentialthinking"
+    "context"
+    "fmt"
+    
+    "github.com/bytedance/sonic"
+    
+    "github.com/cloudwego/eino-ext/components/tool/sequentialthinking"
 )
 
 func main() {
-	ctx := context.Background()
-	
-	// Instantiate the tool
-	tool, err := sequentialthinking.NewTool()
-	if err != nil {
-		panic(err)
-	}
-	
-	args := &sequentialthinking.ThoughtRequest{
-		Thought:           "This is a test thought",
-		ThoughtNumber:     1,
-		TotalThoughts:     3,
-		NextThoughtNeeded: true,
-	}
-	
-	argsStr, _ := sonic.Marshal(args)
-	
-	// Use the tool
-	// (This is just a placeholder; actual usage will depend on the tool's functionality)
-	result, err := tool.InvokableRun(ctx, string(argsStr))
-	if err != nil {
-		panic(err)
-	}
-	
-	// Process the result
-	// (This is just a placeholder; actual processing will depend on the tool's output)
-	fmt.Println(result)
+    ctx := context.Background()
+    tool, err := sequentialthinking.NewTool()
+    if err != nil { panic(err) }
+    args := &sequentialthinking.ThoughtRequest{ Thought: "This is a test thought", ThoughtNumber: 1, TotalThoughts: 3, NextThoughtNeeded: true }
+    argsStr, _ := sonic.Marshal(args)
+    result, err := tool.InvokableRun(ctx, string(argsStr))
+    if err != nil { panic(err) }
+    fmt.Println(result)
 }
-
 ```

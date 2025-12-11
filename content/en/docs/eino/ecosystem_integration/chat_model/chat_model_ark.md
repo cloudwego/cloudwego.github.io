@@ -7,24 +7,24 @@ title: ChatModel - ark
 weight: 0
 ---
 
-A Volcengine Ark model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities for enhanced natural language processing and generation.
+A Volcengine Ark model implementation for [Eino](https://github.com/cloudwego/eino) that implements the `ToolCallingChatModel` interface. This enables seamless integration with Eino's LLM capabilities to enhance natural language processing and generation.
 
-This package provides two distinct models:
-- **ChatModel**: For text-based and multi-modal chat completions.
-- **ImageGenerationModel**: For generating images from text prompts or image.
-- **ResponseAPI**: Contains methods and other services that help with interacting with the openai API.
+This package provides three components:
+- **ChatModel**: for text-based and multi-modal chat completion.
+- **ImageGenerationModel**: for generating images from text prompts or images.
+- **ResponseAPI**: methods and helpers for interacting with the OpenAI-compatible API.
 
 ## Features
 
 - Implements `github.com/cloudwego/eino/components/model.Model`
 - Easy integration with Eino's model system
 - Configurable model parameters
-- Support for both chat completion, image generation and response api
-- Support for streaming responses
-- Custom response parsing support
+- Supports chat completion, image generation, and Response API
+- Supports streaming responses
+- Supports custom response parsing
 - Flexible model configuration
 
-## Installation
+## Quick Install
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/ark@latest
@@ -32,92 +32,91 @@ go get github.com/cloudwego/eino-ext/components/model/ark@latest
 
 ---
 
-## Chat Completion
+## Chat
 
 This model is used for standard chat and text generation tasks.
 
 ### Quick Start
 
-Here's a quick example of how to use the `ChatModel`:
+Here's a quick example of how to use `ChatModel`:
 
 ```go
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"errors"
-	"io"
-	"log"
-	"os"
+    "context"
+    "encoding/json"
+    "errors"
+    "io"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
+    "github.com/cloudwego/eino-ext/components/model/ark"
 )
 
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
-	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-	})
+    chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_MODEL_ID"),
+    })
 
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+    if err != nil {
+        log.Fatalf("NewChatModel failed, err=%v", err)
+    }
 
-	inMsgs := []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "how do you generate answer for user question as a machine, please answer in short?",
-		},
-	}
+    inMsgs := []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "how do you generate answer for user question as a machine, please answer in short?",
+        },
+    }
 
-	msg, err := chatModel.Generate(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+    msg, err := chatModel.Generate(ctx, inMsgs)
+    if err != nil {
+        log.Fatalf("Generate failed, err=%v", err)
+    }
 
-	log.Printf("generate output: \n")
-	log.Printf("  request_id: %s\n")
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+    log.Printf("generate output: \n")
+    respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+    log.Printf("  body: %s \n", string(respBody))
 
-	sr, err := chatModel.Stream(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Stream failed, err=%v", err)
-	}
+    sr, err := chatModel.Stream(ctx, inMsgs)
+    if err != nil {
+        log.Fatalf("Stream failed, err=%v", err)
+    }
 
-	chunks := make([]*schema.Message, 0, 1024)
-	for {
-		msgChunk, err := sr.Recv()
-		if errors.Is(err, io.EOF) {
-			break
-		}
-		if err != nil {
-			log.Fatalf("Stream Recv failed, err=%v", err)
-		}
+    chunks := make([]*schema.Message, 0, 1024)
+    for {
+        msgChunk, err := sr.Recv()
+        if errors.Is(err, io.EOF) {
+            break
+        }
+        if err != nil {
+            log.Fatalf("Stream Recv failed, err=%v", err)
+        }
 
-		chunks = append(chunks, msgChunk)
-	}
+        chunks = append(chunks, msgChunk)
+    }
 
-	msg, err = schema.ConcatMessages(chunks)
-	if err != nil {
-		log.Fatalf("ConcatMessages failed, err=%v", err)
-	}
+    msg, err = schema.ConcatMessages(chunks)
+    if err != nil {
+        log.Fatalf("ConcatMessages failed, err=%v", err)
+    }
 
-	log.Printf("stream final output: \n")
-	log.Printf("  request_id: %s\n")
-	respBody, _ = json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+    log.Printf("stream final output: \n")
+    log.Printf("  request_id: %s \n")
+    respBody, _ = json.MarshalIndent(msg, "  ", "  ")
+    log.Printf("body: %s \n", string(respBody))
 }
 ```
 
 ### Configuration
 
-The `ChatModel` can be configured using the `ark.ChatModelConfig` struct:
+`ChatModel` can be configured using the `ark.ChatModelConfig` struct:
 
 ```go
 type ChatModelConfig struct {
@@ -189,97 +188,87 @@ type ChatModelConfig struct {
 }
 ```
 
-### Request Options
-
-The `ChatModel` supports various request options to customize the behavior of API calls. Here are the available options:
-
-```go
-// WithCustomHeader sets custom headers for a single request
-// the headers will override all the headers given in ChatModelConfig.CustomHeader
-func WithCustomHeader(m map[string]string) model.Option {}
-```
-
 ---
 
 ## Image Generation
 
-This model is used specifically for generating images from text prompts.
+This model is specifically designed for generating images from text prompts.
 
 ### Quick Start
 
-Here's a quick example of how to use the `ImageGenerationModel`:
+Here's a quick example of how to use `ImageGenerationModel`:
 
 ```go
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"log"
-	"os"
+    "context"
+    "encoding/json"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/schema"
-	"github.com/cloudwego/eino-ext/components/model/ark"
+    "github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino-ext/components/model/ark"
 )
 
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
-	// Get ARK_API_KEY and an image generation model ID
-	imageGenerationModel, err := ark.NewImageGenerationModel(ctx, &ark.ImageGenerationConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_IMAGE_MODEL_ID"), // Use an appropriate image model ID
-	})
+    // Get ARK_API_KEY and an image generation model ID
+    imageGenerationModel, err := ark.NewImageGenerationModel(ctx, &ark.ImageGenerationConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_IMAGE_MODEL_ID"), // Use an appropriate image model ID
+    })
 
-	if err != nil {
-		log.Fatalf("NewImageGenerationModel failed, err=%v", err)
-	}
+    if err != nil {
+        log.Fatalf("NewImageGenerationModel failed, err=%v", err)
+    }
 
-	inMsgs := []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "a photo of a cat sitting on a table",
-		},
-	}
+    inMsgs := []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "a photo of a cat sitting on a table",
+        },
+    }
 
-	msg, err := imageGenerationModel.Generate(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+    msg, err := imageGenerationModel.Generate(ctx, inMsgs)
+    if err != nil {
+        log.Fatalf("Generate failed, err=%v", err)
+    }
 
-	log.Printf("\ngenerate output: \n")
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+    log.Printf("generate output:")
+    log.Printf("  request_id: %s", ark.GetArkRequestID(msg))
+    respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+    log.Printf("  body: %s", string(respBody))
 
-	sr, err := imageGenerationModel.Stream(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Stream failed, err=%v", err)
-	}
+    sr, err := imageGenerationModel.Stream(ctx, inMsgs)
+    if err != nil {
+        log.Fatalf("Stream failed, err=%v", err)
+    }
 
-	log.Printf("stream output: \n")
-	index := 0
-	for {
-		msgChunk, err := sr.Recv()
-		if errors.Is(err, io.EOF) {
-			break
-		}
-		if err != nil {
-			log.Fatalf("Stream Recv failed, err=%v", err)
-		}
+    log.Printf("stream output:")
+    index := 0
+    for {
+        msgChunk, err := sr.Recv()
+        if errors.Is(err, io.EOF) {
+            break
+        }
+        if err != nil {
+            log.Fatalf("Stream Recv failed, err=%v", err)
+        }
 
-		respBody, _ = json.MarshalIndent(msgChunk, "  ", "  ")
-		log.Printf("stream chunk %d: body: %s\n", index, string(respBody))
-		index++
-	}
+        respBody, _ = json.MarshalIndent(msgChunk, "  ", "  ")
+        log.Printf("stream chunk %d: body: %s \n", index, string(respBody))
+        index++
+    }
 }
 ```
 
 ### Configuration
 
-The `ImageGenerationModel` can be configured using the `ark.ImageGenerationConfig` struct:
+`ImageGenerationModel` can be configured using the `ark.ImageGenerationConfig` struct:
 
 ```go
-
 type ImageGenerationConfig struct {
     // For authentication, APIKey is required as the image generation API only supports API Key authentication.
     // For authentication details, see: https://www.volcengine.com/docs/82379/1298459
@@ -350,914 +339,906 @@ type ImageGenerationConfig struct {
 }
 ```
 
+## Examples
 
-## examples
-
-### generate
+### Text Generation
 
 ```go
-
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"errors"
-	"io"
-	"log"
-	"os"
+    "context"
+    "encoding/json"
+    "errors"
+    "io"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
+    "github.com/cloudwego/eino-ext/components/model/ark"
 )
 
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-	})
+    // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+    chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_MODEL_ID"),
+    })
 
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+    if err != nil {
+        log.Fatalf("NewChatModel failed, err=%v", err)
+    }
 
-	inMsgs := []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "how do you generate answer for user question as a machine, please answer in short?",
-		},
-	}
+    inMsgs := []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "how do you generate answer for user question as a machine, please answer in short?",
+        },
+    }
 
-	msg, err := chatModel.Generate(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+    msg, err := chatModel.Generate(ctx, inMsgs)
+    if err != nil {
+        log.Fatalf("Generate failed, err=%v", err)
+    }
 
-	log.Printf("\ngenerate output: \n")
-	log.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+    log.Printf("generate output:")
+    log.Printf("  request_id: %s", ark.GetArkRequestID(msg))
+    respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+    log.Printf("  body: %s", string(respBody))
 
-	sr, err := chatModel.Stream(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Stream failed, err=%v", err)
-	}
+    sr, err := chatModel.Stream(ctx, inMsgs)
+    if err != nil {
+        log.Fatalf("Stream failed, err=%v", err)
+    }
 
-	chunks := make([]*schema.Message, 0, 1024)
-	for {
-		msgChunk, err := sr.Recv()
-		if errors.Is(err, io.EOF) {
-			break
-		}
-		if err != nil {
-			log.Fatalf("Stream Recv failed, err=%v", err)
-		}
+    chunks := make([]*schema.Message, 0, 1024)
+    for {
+        msgChunk, err := sr.Recv()
+        if errors.Is(err, io.EOF) {
+            break
+        }
+        if err != nil {
+            log.Fatalf("Stream Recv failed, err=%v", err)
+        }
 
-		chunks = append(chunks, msgChunk)
-	}
+        chunks = append(chunks, msgChunk)
+    }
 
-	msg, err = schema.ConcatMessages(chunks)
-	if err != nil {
-		log.Fatalf("ConcatMessages failed, err=%v", err)
-	}
+    msg, err = schema.ConcatMessages(chunks)
+    if err != nil {
+        log.Fatalf("ConcatMessages failed, err=%v", err)
+    }
 
-	log.Printf("stream final output: \n")
-	log.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
-	respBody, _ = json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+    log.Printf("stream final output:")
+    log.Printf("  request_id: %s", ark.GetArkRequestID(msg))
+    respBody, _ = json.MarshalIndent(msg, "  ", "  ")
+    log.Printf("  body: %s \n", string(respBody))
 }
 
 ```
 
-### generate_with_image
+### Multimodal Support (Image Understanding)
 
 ```go
-
 package main
 
 import (
-	"context"
-	"encoding/base64"
-	"log"
-	"os"
+    "context"
+    "encoding/base64"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/components/prompt"
-	"github.com/cloudwego/eino/compose"
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/components/prompt"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
+    "github.com/cloudwego/eino-ext/components/model/ark"
 )
 
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+    // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+    chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_MODEL_ID"),
+    })
+    if err != nil {
+        log.Fatalf("NewChatModel failed, err=%v", err)
+    }
 
-	multiModalMsg := schema.UserMessage("")
-	image, err := os.ReadFile("./examples/generate_with_image/eino.png")
-	if err != nil {
-		log.Fatalf("os.ReadFile failed, err=%v\n", err)
-	}
+    multiModalMsg := schema.UserMessage("")
+    image, err := os.ReadFile("./examples/generate_with_image/eino.png")
+    if err != nil {
+        log.Fatalf("os.ReadFile failed, err=%v \n", err)
+    }
 
-	imageStr := base64.StdEncoding.EncodeToString(image)
+    imageStr := base64.StdEncoding.EncodeToString(image)
 
-	multiModalMsg.UserInputMultiContent = []schema.MessageInputPart{
-		{
-			Type: schema.ChatMessagePartTypeText,
-			Text: "What do you see in this image?",
-		},
-		{
-			Type: schema.ChatMessagePartTypeImageURL,
-			Image: &schema.MessageInputImage{
-				MessagePartCommon: schema.MessagePartCommon{
-					Base64Data: &imageStr,
-					MIMEType:   "image/png",
-				},
-				Detail: schema.ImageURLDetailAuto,
-			},
-		},
-	}
+    multiModalMsg.UserInputMultiContent = []schema.MessageInputPart{
+        {
+            Type: schema.ChatMessagePartTypeText,
+            Text: "What do you see in this image?",
+        },
+        {
+            Type: schema.ChatMessagePartTypeImageURL,
+            Image: &schema.MessageInputImage{
+                MessagePartCommon: schema.MessagePartCommon{
+                    Base64Data: &imageStr,
+                    MIMEType:   "image/png",
+                },
+                Detail: schema.ImageURLDetailAuto,
+            },
+        },
+    }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		multiModalMsg,
-	})
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+    resp, err := chatModel.Generate(ctx, []*schema.Message{
+        multiModalMsg,
+    })
+    if err != nil {
+        log.Fatalf("Generate failed, err=%v", err)
+    }
 
-	log.Printf("Ark ChatModel output: \n%v", resp)
+    log.Printf("Ark ChatModel output:%v \n", resp)
 
-	// demonstrate how to use ChatTemplate to generate with image
-	imgPlaceholder := "{img}"
-	ctx = context.Background()
-	chain := compose.NewChain[map[string]any, *schema.Message]()
-	_ = chain.AppendChatTemplate(prompt.FromMessages(schema.FString,
-		&schema.Message{
-			Role: schema.User,
-			UserInputMultiContent: []schema.MessageInputPart{
-				{
-					Type: schema.ChatMessagePartTypeText,
-					Text: "What do you see in this image?",
-				},
-				{
-					Type: schema.ChatMessagePartTypeImageURL,
-					Image: &schema.MessageInputImage{
-						MessagePartCommon: schema.MessagePartCommon{
-							Base64Data: &imgPlaceholder,
-							MIMEType:   "image/png",
-						},
-						Detail: schema.ImageURLDetailAuto,
-					},
-				},
-			},
-		}))
-	_ = chain.AppendChatModel(chatModel)
-	r, err := chain.Compile(ctx)
-	if err != nil {
-		log.Fatalf("Compile failed, err=%v", err)
-	}
+    // demonstrate how to use ChatTemplate to generate with image
+    imgPlaceholder := "{img}"
+    ctx = context.Background()
+    chain := compose.NewChain[map[string]any, *schema.Message]()
+    _ = chain.AppendChatTemplate(prompt.FromMessages(schema.FString,
+        &schema.Message{
+            Role: schema.User,
+            UserInputMultiContent: []schema.MessageInputPart{
+                {
+                    Type: schema.ChatMessagePartTypeText,
+                    Text: "What do you see in this image?",
+                },
+                {
+                    Type: schema.ChatMessagePartTypeImageURL,
+                    Image: &schema.MessageInputImage{
+                        MessagePartCommon: schema.MessagePartCommon{
+                            Base64Data: &imgPlaceholder,
+                            MIMEType:   "image/png",
+                        },
+                        Detail: schema.ImageURLDetailAuto,
+                    },
+                },
+            },
+        }))
+    _ = chain.AppendChatModel(chatModel)
+    r, err := chain.Compile(ctx)
+    if err != nil {
+        log.Fatalf("Compile failed, err=%v", err)
+    }
 
-	resp, err = r.Invoke(ctx, map[string]any{
-		"img": imageStr,
-	})
-	if err != nil {
-		log.Fatalf("Run failed, err=%v", err)
-	}
+    resp, err = r.Invoke(ctx, map[string]any{
+        "img": imageStr,
+    })
+    if err != nil {
+        log.Fatalf("Run failed, err=%v", err)
+    }
 
-	log.Printf("Ark ChatModel output with ChatTemplate: \n%v", resp)
+    log.Printf("Ark ChatModel output with ChatTemplate:%v \n", resp)
 }
 
 ```
 
-### stream
+### Streaming Generation
 
 ```go
-
 package main
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"log"
-	"os"
+    "context"
+    "fmt"
+    "io"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
-	"github.com/cloudwego/eino/schema"
-	arkModel "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
+    "github.com/cloudwego/eino-ext/components/model/ark"
+    "github.com/cloudwego/eino/schema"
+    arkModel "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
 )
 
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-	})
-	if err != nil {
-		log.Printf("NewChatModel failed, err=%v", err)
-		return
-	}
+    // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+    chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_MODEL_ID"),
+    })
+    if err != nil {
+        log.Printf("NewChatModel failed, err=%v", err)
+        return
+    }
 
-	streamMsgs, err := chatModel.Stream(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "as a machine, how do you answer user's question?",
-		},
-	}, ark.WithReasoningEffort(arkModel.ReasoningEffortHigh))
+    streamMsgs, err := chatModel.Stream(ctx, []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "as a machine, how do you answer user's question?",
+        },
+    }, ark.WithReasoningEffort(arkModel.ReasoningEffortHigh))
 
-	if err != nil {
-		log.Printf("Generate failed, err=%v", err)
-		return
-	}
+    if err != nil {
+        log.Printf("Generate failed, err=%v", err)
+        return
+    }
 
-	defer streamMsgs.Close() // do not forget to close the stream
+    defer streamMsgs.Close() // do not forget to close the stream
 
-	msgs := make([]*schema.Message, 0)
+    msgs := make([]*schema.Message, 0)
 
-	log.Printf("typewriter output:")
-	for {
-		msg, err := streamMsgs.Recv()
-		if err == io.EOF {
-			break
-		}
-		msgs = append(msgs, msg)
-		if err != nil {
-			log.Printf("\nstream.Recv failed, err=%v", err)
-			return
-		}
-		fmt.Print(msg.Content)
-	}
+    log.Printf("typewriter output:")
+    for {
+        msg, err := streamMsgs.Recv()
+        if err == io.EOF {
+            break
+        }
+        msgs = append(msgs, msg)
+        if err != nil {
+            log.Printf("stream.Recv failed, err=%v", err)
+            return
+        }
+        fmt.Print(msg.Content)
+    }
 
-	msg, err := schema.ConcatMessages(msgs)
-	if err != nil {
-		log.Printf("ConcatMessages failed, err=%v", err)
-		return
-	}
+    msg, err := schema.ConcatMessages(msgs)
+    if err != nil {
+        log.Printf("ConcatMessages failed, err=%v", err)
+        return
+    }
 
-	log.Printf("output: %s\n", msg.Content)
+    log.Printf("output: %s \n", msg.Content)
 }
 
 ```
 
-### intent_tool
+### Tool Calling
 
 ```go
-
 package main
 
 import (
-	"context"
-	"log"
-	"os"
+    "context"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino-ext/components/model/ark"
+    "github.com/cloudwego/eino/schema"
 )
 
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-	})
-	if err != nil {
-		log.Printf("NewChatModel failed, err=%v", err)
-		return
-	}
+    // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+    chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_MODEL_ID"),
+    })
+    if err != nil {
+        log.Printf("NewChatModel failed, err=%v", err)
+        return
+    }
 
-	err = chatModel.BindTools([]*schema.ToolInfo{
-		{
-			Name: "user_company",
-			Desc: "Query the user's company and position information based on their name and email",
-			ParamsOneOf: schema.NewParamsOneOfByParams(
-				map[string]*schema.ParameterInfo{
-					"name": {
-						Type: "string",
-						Desc: "The user's name",
-					},
-					"email": {
-						Type: "string",
-						Desc: "The user's email",
-					},
-				}),
-		},
-		{
-			Name: "user_salary",
-			Desc: "Query the user's salary information based on their name and email",
-			ParamsOneOf: schema.NewParamsOneOfByParams(
-				map[string]*schema.ParameterInfo{
-					"name": {
-						Type: "string",
-						Desc: "The user's name",
-					},
-					"email": {
-						Type: "string",
-						Desc: "The user's email",
-					},
-				}),
-		},
-	})
-	if err != nil {
-		log.Printf("BindForcedTools failed, err=%v", err)
-		return
-	}
+    err = chatModel.BindTools([]*schema.ToolInfo{
+        {
+            Name: "user_company",
+            Desc: "Query the user's company and position information based on their name and email",
+            ParamsOneOf: schema.NewParamsOneOfByParams(
+                map[string]*schema.ParameterInfo{
+                    "name": {
+                        Type: "string",
+                        Desc: "The user's name",
+                    },
+                    "email": {
+                        Type: "string",
+                        Desc: "The user's email",
+                    },
+                }),
+        },
+        {
+            Name: "user_salary",
+            Desc: "Query the user's salary information based on their name and email",
+            ParamsOneOf: schema.NewParamsOneOfByParams(
+                map[string]*schema.ParameterInfo{
+                    "name": {
+                        Type: "string",
+                        Desc: "The user's name",
+                    },
+                    "email": {
+                        Type: "string",
+                        Desc: "The user's email",
+                    },
+                }),
+        },
+    })
+    if err != nil {
+        log.Printf("BindForcedTools failed, err=%v", err)
+        return
+    }
 
-	resp, err := chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role:    schema.System,
-			Content: "You are a real estate agent. Use the user_company and user_salary APIs to provide relevant property information based on the user's salary and job. Email is required",
-		},
-		{
-			Role:    schema.User,
-			Content: "My name is zhangsan, and my email is zhangsan@bytedance.com. Please recommend some suitable houses for me.",
-		},
-	})
+    resp, err := chatModel.Generate(ctx, []*schema.Message{
+        {
+            Role:    schema.System,
+            Content: "You are a real estate agent. Use the user_company and user_salary APIs to provide relevant property information based on the user's salary and job. Email is required",
+        },
+        {
+            Role:    schema.User,
+            Content: "My name is zhangsan, and my email is zhangsan@bytedance.com. Please recommend some suitable houses for me.",
+        },
+    })
 
-	if err != nil {
-		log.Printf("Generate failed, err=%v", err)
-		return
-	}
+    if err != nil {
+        log.Printf("Generate failed, err=%v", err)
+        return
+    }
 
-	log.Printf("output: \n%v", resp)
+    log.Printf("output:%v \n", resp)
 }
 
 ```
 
-### image_generate
+### Image Generation
 
 ```go
-
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"errors"
-	"io"
-	"log"
-	"os"
+    "context"
+    "encoding/json"
+    "errors"
+    "io"
+    "log"
+    "os"
 
-	"github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
+    "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino-ext/components/model/ark"
+    "github.com/cloudwego/eino/schema"
 )
 
 func ptr[T any](v T) *T {
-	return &v
+    return &v
 }
 
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	imageGenerationModel, err := ark.NewImageGenerationModel(ctx, &ark.ImageGenerationConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
+    // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+    imageGenerationModel, err := ark.NewImageGenerationModel(ctx, &ark.ImageGenerationConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_MODEL_ID"),
 
-		// Control the size of image generated by the model.
-		Size: "1K",
+        // Control the size of image generated by the model.
+        Size: "1K",
 
-		// Control whether to generate a set of images.
-		SequentialImageGeneration: ark.SequentialImageGenerationAuto,
+        // Control whether to generate a set of images.
+        SequentialImageGeneration: ark.SequentialImageGenerationAuto,
 
-		// Control the maximum number of images to generate
-		SequentialImageGenerationOption: &model.SequentialImageGenerationOptions{
-			MaxImages: ptr(2),
-		},
+        // Control the maximum number of images to generate
+        SequentialImageGenerationOption: &model.SequentialImageGenerationOptions{
+            MaxImages: ptr(2),
+        },
 
-		// Control the format of the generated jpeg image.
-		ResponseFormat: ark.ImageResponseFormatURL,
+        // Control the format of the generated jpeg image.
+        ResponseFormat: ark.ImageResponseFormatURL,
 
-		// Control whether to add a watermark to the generated image
-		DisableWatermark: false,
-	})
+        // Control whether to add a watermark to the generated image
+        DisableWatermark: false,
+    })
 
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+    if err != nil {
+        log.Fatalf("NewChatModel failed, err=%v", err)
+    }
 
-	inMsgs := []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "generate two images of a cat",
-		},
-	}
+    inMsgs := []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "generate two images of a cat",
+        },
+    }
 
-	// Use ImageGeneration API
-	msg, err := imageGenerationModel.Generate(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+    // Use ImageGeneration API
+    msg, err := imageGenerationModel.Generate(ctx, inMsgs)
+    if err != nil {
+        log.Fatalf("Generate failed, err=%v", err)
+    }
 
-	log.Printf("\ngenerate output: \n")
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+    log.Printf("generate output:")
+    respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+    log.Printf("  body: %s \n", string(respBody))
 
-	sr, err := imageGenerationModel.Stream(ctx, inMsgs)
-	if err != nil {
-		log.Fatalf("Stream failed, err=%v", err)
-	}
+    sr, err := imageGenerationModel.Stream(ctx, inMsgs)
+    if err != nil {
+        log.Fatalf("Stream failed, err=%v", err)
+    }
 
-	log.Printf("stream output: \n")
-	index := 0
-	chunks := make([]*schema.Message, 0, 1024)
-	for {
-		msgChunk, err := sr.Recv()
-		if errors.Is(err, io.EOF) {
-			break
-		}
-		if err != nil {
-			log.Fatalf("Stream Recv failed, err=%v", err)
-		}
+    log.Printf("stream output:")
+    index := 0
+    chunks := make([]*schema.Message, 0, 1024)
+    for {
+        msgChunk, err := sr.Recv()
+        if errors.Is(err, io.EOF) {
+            break
+        }
+        if err != nil {
+            log.Fatalf("Stream Recv failed, err=%v", err)
+        }
 
-		chunks = append(chunks, msgChunk)
+        chunks = append(chunks, msgChunk)
 
-		respBody, _ = json.MarshalIndent(msgChunk, "  ", "  ")
-		log.Printf("stream chunk %d: body: %s\n", index, string(respBody))
-		index++
-	}
+        respBody, _ = json.MarshalIndent(msgChunk, "  ", "  ")
+        log.Printf("stream chunk %d: body: %s\n", index, string(respBody))
+        index++
+    }
 
-	msg, err = schema.ConcatMessages(chunks)
-	if err != nil {
-		log.Fatalf("ConcatMessages failed, err=%v", err)
-	}
-	log.Printf("stream final output: \n")
-	log.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
-	respBody, _ = json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
-}
-
-```
-
-### prefixcache-contextapi
-
-```go
-
-package main
-
-import (
-	"context"
-	"encoding/json"
-	"io"
-	"log"
-	"os"
-
-	"github.com/cloudwego/eino/schema"
-
-	"github.com/cloudwego/eino-ext/components/model/ark"
-)
-
-func main() {
-	ctx := context.Background()
-
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
-
-	info, err := chatModel.CreatePrefixCache(ctx, []*schema.Message{
-		schema.UserMessage("my name is megumin"),
-	}, 3600)
-	if err != nil {
-		log.Fatalf("CreatePrefix failed, err=%v", err)
-	}
-
-	inMsgs := []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "what is my name?",
-		},
-	}
-
-	msg, err := chatModel.Generate(ctx, inMsgs, ark.WithCache(&ark.CacheOption{
-		APIType:   ark.ContextAPI,
-		ContextID: &info.ContextID,
-	}))
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
-
-	log.Printf("\ngenerate output: \n")
-	log.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
-
-	outStreamReader, err := chatModel.Stream(ctx, inMsgs, ark.WithCache(&ark.CacheOption{
-		APIType:   ark.ContextAPI,
-		ContextID: &info.ContextID,
-	}))
-	if err != nil {
-		log.Fatalf("Stream failed, err=%v", err)
-	}
-
-	var msgs []*schema.Message
-	for {
-		item, e := outStreamReader.Recv()
-		if e == io.EOF {
-			break
-		}
-		if e != nil {
-			log.Fatal(e)
-		}
-
-		msgs = append(msgs, item)
-	}
-	msg, err = schema.ConcatMessages(msgs)
-	if err != nil {
-		log.Fatalf("ConcatMessages failed, err=%v", err)
-	}
-	log.Printf("\nstream output: \n")
-	log.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
-	respBody, _ = json.MarshalIndent(msg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+    msg, err = schema.ConcatMessages(chunks)
+    if err != nil {
+        log.Fatalf("ConcatMessages failed, err=%v", err)
+    }
+    log.Printf("stream final output:")
+    log.Printf("  request_id: %s \n", ark.GetArkRequestID(msg))
+    respBody, _ = json.MarshalIndent(msg, "  ", "  ")
+    log.Printf("  body: %s \n", string(respBody))
 }
 
 ```
 
-### prefixcache-responsesapi
+### ContextAPI Prefix Cache
 
 ```go
-
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"log"
-	"os"
+    "context"
+    "encoding/json"
+    "io"
+    "log"
+    "os"
 
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
+    "github.com/cloudwego/eino-ext/components/model/ark"
 )
 
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-		Cache: &ark.CacheConfig{
-			APIType: ptrOf(ark.ResponsesAPI),
-		},
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+    // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+    chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_MODEL_ID"),
+    })
+    if err != nil {
+        log.Fatalf("NewChatModel failed, err=%v", err)
+    }
 
-	err = chatModel.BindTools([]*schema.ToolInfo{
-		{
-			Name: "article_content_extractor",
-			Desc: "Extract key statements and chapter summaries from the provided article content",
-			ParamsOneOf: schema.NewParamsOneOfByParams(
-				map[string]*schema.ParameterInfo{
-					"content": {
-						Type:     schema.String,
-						Desc:     "The full article content to analyze and extract key information from",
-						Required: true,
-					},
-				}),
-		},
-	})
+    info, err := chatModel.CreatePrefixCache(ctx, []*schema.Message{
+        schema.UserMessage("my name is megumin"),
+    }, 3600)
+    if err != nil {
+        log.Fatalf("CreatePrefix failed, err=%v", err)
+    }
 
-	if err != nil {
-		log.Fatalf("BindTools failed, err=%v", err)
-	}
+    inMsgs := []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "what is my name?",
+        },
+    }
 
-	// create response prefix cache, note: more than 1024 tokens are required, otherwise the prefix cache cannot be created
-	cacheInfo, err := chatModel.CreatePrefixCache(ctx, []*schema.Message{
-		schema.SystemMessage(`Once upon a time, in a quaint little village surrounded by vast green forests and blooming meadows, there lived a spirited young girl known as Little Red Riding Hood. She earned her name from the vibrant red cape that her beloved grandmother had sewn for her, a gift that she cherished deeply. This cape was more than just a piece of clothing; it was a symbol of the bond between her and her grandmother, who lived on the other side of the great woods, near a sparkling brook that bubbled merrily all year round.
+    msg, err := chatModel.Generate(ctx, inMsgs, ark.WithCache(&ark.CacheOption{
+        APIType:   ark.ContextAPI,
+        ContextID: &info.ContextID,
+    }))
+    if err != nil {
+        log.Fatalf("Generate failed, err=%v", err)
+    }
 
-			One sunny morning, Little Red Riding Hood's mother called her into the cozy kitchen, where the aroma of freshly baked bread filled the air. “My dear,” she said, “your grandmother isn’t feeling well today. I want you to take her this basket of treats. There are some delicious cakes, a jar of honey, and her favorite herbal tea. Can you do that for me?”
-			
-			Little Red Riding Hood’s eyes sparkled with excitement as she nodded eagerly. “Yes, Mama! I’ll take good care of them!” Her mother handed her a beautifully woven basket, filled to the brim with goodies, and reminded her, “Remember to stay on the path and don’t talk to strangers.”
-			
-			“I promise, Mama!” she replied confidently, pulling her red hood over her head and setting off on her adventure. The sun shone brightly, and birds chirped merrily as she walked, making her feel like she was in a fairy tale.
-			
-			As she journeyed through the woods, the tall trees whispered secrets to one another, and colorful flowers danced in the gentle breeze. Little Red Riding Hood was so enchanted by the beauty around her that she began to hum a tune, her voice harmonizing with the sounds of nature.
-			
-			However, unbeknownst to her, lurking in the shadows was a cunning wolf. The wolf was known throughout the forest for his deceptive wit and insatiable hunger. He watched Little Red Riding Hood with keen interest, contemplating his next meal.
-			
-			“Good day, little girl!” the wolf called out, stepping onto the path with a friendly yet sly smile.
-			
-			Startled, she halted and took a step back. “Hello there! I’m just on my way to visit my grandmother,” she replied, clutching the basket tightly.
-			
-			“Ah, your grandmother! I know her well,” the wolf said, his eyes glinting with mischief. “Why don’t you pick some lovely flowers for her? I’m sure she would love them, and I’m sure there are many beautiful ones just off the path.”
-			
-			Little Red Riding Hood hesitated for a moment but was easily convinced by the wolf’s charming suggestion. “That’s a wonderful idea! Thank you!” she exclaimed, letting her curiosity pull her away from the safety of the path. As she wandered deeper into the woods, her gaze fixed on the vibrant blooms, the wolf took a shortcut towards her grandmother’s house.
-			
-			When the wolf arrived at Grandma’s quaint cottage, he knocked on the door with a confident swagger. “It’s me, Little Red Riding Hood!” he shouted in a high-pitched voice to mimic the girl.
-			
-			“Come in, dear!” came the frail voice of the grandmother, who had been resting on her cozy bed, wrapped in warm blankets. The wolf burst through the door, his eyes gleaming with the thrill of his plan.
-			
-			With astonishing speed, the wolf gulped down the unsuspecting grandmother whole. Afterward, he dressed in her nightgown, donning her nightcap and climbing into her bed. He lay there, waiting for Little Red Riding Hood to arrive, concealing his wicked smile behind a facade of innocence.
-			
-			Meanwhile, Little Red Riding Hood was merrily picking flowers, completely unaware of the impending danger. After gathering a beautiful bouquet of wildflowers, she finally made her way back to the path and excitedly skipped towards her grandmother’s cottage.
-			
-			Upon arriving, she noticed the door was slightly ajar. “Grandmother, it’s me!” she called out, entering the dimly lit home. It was silent, with only the faint sound of an old clock ticking in the background. She stepped into the small living room, a feeling of unease creeping over her.
-			
-			“Grandmother, are you here?” she asked, peeking into the bedroom. There, she saw a figure lying under the covers. 
-			
-			“Grandmother, what big ears you have!” she exclaimed, taking a few cautious steps closer.
-			
-			“All the better to hear you with, my dear,” the wolf replied in a voice that was deceptively sweet.
-			
-			“Grandmother, what big eyes you have!” Little Red Riding Hood continued, now feeling an unsettling chill in the air.
-			
-			“All the better to see you with, my dear,” the wolf said, his eyes narrowing as he tried to contain his glee.
-			
-			“Grandmother, what big teeth you have!” she exclaimed, the terror flooding her senses as she began to realize this was no ordinary visit.
-			
-			“All the better to eat you with!” the wolf roared, springing out of the bed with startling speed.
-			
-			Just as the wolf lunged towards her, a brave woodsman, who had been passing by the cottage and heard the commotion, burst through the door. His strong presence was a beacon of hope in the dire situation. “Stay back, wolf!” he shouted with authority, brandishing his axe.
-			
-			The wolf, taken aback by the sudden intrusion, hesitated for a moment. Before he could react, the woodsman swung his axe with determination, and with a swift motion, he drove the wolf away, rescuing Little Red Riding Hood and her grandmother from certain doom.
-			
-			Little Red Riding Hood was shaking with fright, but relief washed over her as the woodsman helped her grandmother out from behind the bed where the wolf had hidden her. The grandmother, though shaken, was immensely grateful to the woodsman for his bravery. “Thank you so much! You saved us!” she cried, embracing him warmly.
-			
-			Little Red Riding Hood, still in shock but filled with gratitude, looked up at the woodsman and said, “I promise I will never stray from the path again. Thank you for being our hero!”
-			
-			From that day on, the woodland creatures spoke of the brave woodsman who saved Little Red Riding Hood and her grandmother. Little Red Riding Hood learned a valuable lesson about being cautious and listening to her mother’s advice. The bond between her and her grandmother grew stronger, and they often reminisced about that day’s adventure over cups of tea, surrounded by cookies and laughter.
-			
-			To ensure safety, Little Red Riding Hood always took extra precautions when traveling through the woods, carrying a small whistle her grandmother had given her. It would alert anyone nearby if she ever found herself in trouble again.
-			
-			And so, in the heart of that small village, life continued, filled with love, laughter, and the occasional adventure, as Little Red Riding Hood and her grandmother thrived, forever grateful for the friendship of the woodsman who had acted as their guardian that fateful day.
-			
-			And they all lived happily ever after.
-			
-			The end.`),
-	}, 300)
-	if err != nil {
-		log.Fatalf("CreatePrefixCache failed, err=%v", err)
-	}
+    log.Printf("\ngenerate output: \n")
+    log.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
+    respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+    log.Printf("  body: %s\n", string(respBody))
 
-	// use cache information in subsequent requests
-	cacheOpt := &ark.CacheOption{
-		APIType:                ark.ResponsesAPI,
-		HeadPreviousResponseID: &cacheInfo.ResponseID,
-	}
+    outStreamReader, err := chatModel.Stream(ctx, inMsgs, ark.WithCache(&ark.CacheOption{
+        APIType:   ark.ContextAPI,
+        ContextID: &info.ContextID,
+    }))
+    if err != nil {
+        log.Fatalf("Stream failed, err=%v", err)
+    }
 
-	outMsg, err := chatModel.Generate(ctx, []*schema.Message{
-		schema.UserMessage("What is the main idea expressed above？"),
-	}, ark.WithCache(cacheOpt))
+    var msgs []*schema.Message
+    for {
+        item, e := outStreamReader.Recv()
+        if e == io.EOF {
+            break
+        }
+        if e != nil {
+            log.Fatal(e)
+        }
 
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+        msgs = append(msgs, item)
+    }
+    msg, err = schema.ConcatMessages(msgs)
+    if err != nil {
+        log.Fatalf("ConcatMessages failed, err=%v", err)
+    }
+    log.Printf("\nstream output: \n")
+    log.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
+    respBody, _ = json.MarshalIndent(msg, "  ", "  ")
+    log.Printf("  body: %s\n", string(respBody))
+}
 
-	respID, ok := ark.GetResponseID(outMsg)
-	if !ok {
-		log.Fatalf("not found response id in message")
-	}
+```
 
-	log.Printf("\ngenerate output: \n")
-	log.Printf("  request_id: %s\n", respID)
-	respBody, _ := json.MarshalIndent(outMsg, "  ", "  ")
-	log.Printf("  body: %s\n", string(respBody))
+### Response API Prefix Cache
+
+```go
+package main
+
+import (
+    "context"
+    "encoding/json"
+    "log"
+    "os"
+
+    "github.com/cloudwego/eino/schema"
+
+    "github.com/cloudwego/eino-ext/components/model/ark"
+)
+
+func main() {
+    ctx := context.Background()
+
+    // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+    chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_MODEL_ID"),
+        Cache: &ark.CacheConfig{
+            APIType: ptrOf(ark.ResponsesAPI),
+        },
+    })
+    if err != nil {
+        log.Fatalf("NewChatModel failed, err=%v", err)
+    }
+
+    err = chatModel.BindTools([]*schema.ToolInfo{
+        {
+            Name: "article_content_extractor",
+            Desc: "Extract key statements and chapter summaries from the provided article content",
+            ParamsOneOf: schema.NewParamsOneOfByParams(
+                map[string]*schema.ParameterInfo{
+                    "content": {
+                        Type:     schema.String,
+                        Desc:     "The full article content to analyze and extract key information from",
+                        Required: true,
+                    },
+                }),
+        },
+    })
+
+    if err != nil {
+        log.Fatalf("BindTools failed, err=%v", err)
+    }
+
+    // create response prefix cache, note: more than 1024 tokens are required, otherwise the prefix cache cannot be created
+    cacheInfo, err := chatModel.CreatePrefixCache(ctx, []*schema.Message{
+        schema.SystemMessage(`Once upon a time, in a quaint little village surrounded by vast green forests and blooming meadows, there lived a spirited young girl known as Little Red Riding Hood. She earned her name from the vibrant red cape that her beloved grandmother had sewn for her, a gift that she cherished deeply. This cape was more than just a piece of clothing; it was a symbol of the bond between her and her grandmother, who lived on the other side of the great woods, near a sparkling brook that bubbled merrily all year round.
+
+            One sunny morning, Little Red Riding Hood's mother called her into the cozy kitchen, where the aroma of freshly baked bread filled the air. “My dear,” she said, “your grandmother isn’t feeling well today. I want you to take her this basket of treats. There are some delicious cakes, a jar of honey, and her favorite herbal tea. Can you do that for me?”
+            
+            Little Red Riding Hood’s eyes sparkled with excitement as she nodded eagerly. “Yes, Mama! I’ll take good care of them!” Her mother handed her a beautifully woven basket, filled to the brim with goodies, and reminded her, “Remember to stay on the path and don’t talk to strangers.”
+            
+            “I promise, Mama!” she replied confidently, pulling her red hood over her head and setting off on her adventure. The sun shone brightly, and birds chirped merrily as she walked, making her feel like she was in a fairy tale.
+            
+            As she journeyed through the woods, the tall trees whispered secrets to one another, and colorful flowers danced in the gentle breeze. Little Red Riding Hood was so enchanted by the beauty around her that she began to hum a tune, her voice harmonizing with the sounds of nature.
+            
+            However, unbeknownst to her, lurking in the shadows was a cunning wolf. The wolf was known throughout the forest for his deceptive wit and insatiable hunger. He watched Little Red Riding Hood with keen interest, contemplating his next meal.
+            
+            “Good day, little girl!” the wolf called out, stepping onto the path with a friendly yet sly smile.
+            
+            Startled, she halted and took a step back. “Hello there! I’m just on my way to visit my grandmother,” she replied, clutching the basket tightly.
+            
+            “Ah, your grandmother! I know her well,” the wolf said, his eyes glinting with mischief. “Why don’t you pick some lovely flowers for her? I’m sure she would love them, and I’m sure there are many beautiful ones just off the path.”
+            
+            Little Red Riding Hood hesitated for a moment but was easily convinced by the wolf’s charming suggestion. “That’s a wonderful idea! Thank you!” she exclaimed, letting her curiosity pull her away from the safety of the path. As she wandered deeper into the woods, her gaze fixed on the vibrant blooms, the wolf took a shortcut towards her grandmother’s house.
+            
+            When the wolf arrived at Grandma’s quaint cottage, he knocked on the door with a confident swagger. “It’s me, Little Red Riding Hood!” he shouted in a high-pitched voice to mimic the girl.
+            
+            “Come in, dear!” came the frail voice of the grandmother, who had been resting on her cozy bed, wrapped in warm blankets. The wolf burst through the door, his eyes gleaming with the thrill of his plan.
+            
+            With astonishing speed, the wolf gulped down the unsuspecting grandmother whole. Afterward, he dressed in her nightgown, donning her nightcap and climbing into her bed. He lay there, waiting for Little Red Riding Hood to arrive, concealing his wicked smile behind a facade of innocence.
+            
+            Meanwhile, Little Red Riding Hood was merrily picking flowers, completely unaware of the impending danger. After gathering a beautiful bouquet of wildflowers, she finally made her way back to the path and excitedly skipped towards her grandmother’s cottage.
+            
+            Upon arriving, she noticed the door was slightly ajar. “Grandmother, it’s me!” she called out, entering the dimly lit home. It was silent, with only the faint sound of an old clock ticking in the background. She stepped into the small living room, a feeling of unease creeping over her.
+            
+            “Grandmother, are you here?” she asked, peeking into the bedroom. There, she saw a figure lying under the covers. 
+            
+            “Grandmother, what big ears you have!” she exclaimed, taking a few cautious steps closer.
+            
+            “All the better to hear you with, my dear,” the wolf replied in a voice that was deceptively sweet.
+            
+            “Grandmother, what big eyes you have!” Little Red Riding Hood continued, now feeling an unsettling chill in the air.
+            
+            “All the better to see you with, my dear,” the wolf said, his eyes narrowing as he tried to contain his glee.
+            
+            “Grandmother, what big teeth you have!” she exclaimed, the terror flooding her senses as she began to realize this was no ordinary visit.
+            
+            “All the better to eat you with!” the wolf roared, springing out of the bed with startling speed.
+            
+            Just as the wolf lunged towards her, a brave woodsman, who had been passing by the cottage and heard the commotion, burst through the door. His strong presence was a beacon of hope in the dire situation. “Stay back, wolf!” he shouted with authority, brandishing his axe.
+            
+            The wolf, taken aback by the sudden intrusion, hesitated for a moment. Before he could react, the woodsman swung his axe with determination, and with a swift motion, he drove the wolf away, rescuing Little Red Riding Hood and her grandmother from certain doom.
+            
+            Little Red Riding Hood was shaking with fright, but relief washed over her as the woodsman helped her grandmother out from behind the bed where the wolf had hidden her. The grandmother, though shaken, was immensely grateful to the woodsman for his bravery. “Thank you so much! You saved us!” she cried, embracing him warmly.
+            
+            Little Red Riding Hood, still in shock but filled with gratitude, looked up at the woodsman and said, “I promise I will never stray from the path again. Thank you for being our hero!”
+            
+            From that day on, the woodland creatures spoke of the brave woodsman who saved Little Red Riding Hood and her grandmother. Little Red Riding Hood learned a valuable lesson about being cautious and listening to her mother’s advice. The bond between her and her grandmother grew stronger, and they often reminisced about that day’s adventure over cups of tea, surrounded by cookies and laughter.
+            
+            To ensure safety, Little Red Riding Hood always took extra precautions when traveling through the woods, carrying a small whistle her grandmother had given her. It would alert anyone nearby if she ever found herself in trouble again.
+            
+            And so, in the heart of that small village, life continued, filled with love, laughter, and the occasional adventure, as Little Red Riding Hood and her grandmother thrived, forever grateful for the friendship of the woodsman who had acted as their guardian that fateful day.
+            
+            And they all lived happily ever after.
+            
+            The end.`),
+    }, 300)
+    if err != nil {
+        log.Fatalf("CreatePrefixCache failed, err=%v", err)
+    }
+
+    // use cache information in subsequent requests
+    cacheOpt := &ark.CacheOption{
+        APIType:                ark.ResponsesAPI,
+        HeadPreviousResponseID: &cacheInfo.ResponseID,
+    }
+
+    outMsg, err := chatModel.Generate(ctx, []*schema.Message{
+        schema.UserMessage("What is the main idea expressed above？"),
+    }, ark.WithCache(cacheOpt))
+
+    if err != nil {
+        log.Fatalf("Generate failed, err=%v", err)
+    }
+
+    respID, ok := ark.GetResponseID(outMsg)
+    if !ok {
+        log.Fatalf("not found response id in message")
+    }
+
+    log.Printf("\ngenerate output: \n")
+    log.Printf("  request_id: %s\n", respID)
+    respBody, _ := json.MarshalIndent(outMsg, "  ", "  ")
+    log.Printf("  body: %s\n", string(respBody))
 }
 func ptrOf[T any](v T) *T {
-	return &v
+    return &v
 
 }
 
 ```
 
-### sessioncache-contextapi
+### ContextAPI Session Cache
 
 ```go
-
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"io"
-	"log"
-	"os"
-	"time"
+    "context"
+    "encoding/json"
+    "fmt"
+    "io"
+    "log"
+    "os"
+    "time"
 
-	arkModel "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
+    arkModel "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino-ext/components/model/ark"
+    "github.com/cloudwego/eino/schema"
 )
 
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+    // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+    chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_MODEL_ID"),
+    })
+    if err != nil {
+        log.Fatalf("NewChatModel failed, err=%v", err)
+    }
 
-	instructions := []*schema.Message{
-		schema.SystemMessage("Your name is superman"),
-	}
+    instructions := []*schema.Message{
+        schema.SystemMessage("Your name is superman"),
+    }
 
-	cacheInfo, err := chatModel.CreateSessionCache(ctx, instructions, 86400, nil)
-	if err != nil {
-		log.Fatalf("CreateSessionCache failed, err=%v", err)
-	}
+    cacheInfo, err := chatModel.CreateSessionCache(ctx, instructions, 86400, nil)
+    if err != nil {
+        log.Fatalf("CreateSessionCache failed, err=%v", err)
+    }
 
-	thinking := &arkModel.Thinking{
-		Type: arkModel.ThinkingTypeDisabled,
-	}
+    thinking := &arkModel.Thinking{
+        Type: arkModel.ThinkingTypeDisabled,
+    }
 
-	cacheOpt := &ark.CacheOption{
-		APIType:   ark.ContextAPI,
-		ContextID: &cacheInfo.ContextID,
-		SessionCache: &ark.SessionCacheConfig{
-			EnableCache: true,
-			TTL:         86400,
-		},
-	}
+    cacheOpt := &ark.CacheOption{
+        APIType:   ark.ContextAPI,
+        ContextID: &cacheInfo.ContextID,
+        SessionCache: &ark.SessionCacheConfig{
+            EnableCache: true,
+            TTL:         86400,
+        },
+    }
 
-	msg, err := chatModel.Generate(ctx, instructions,
-		ark.WithThinking(thinking),
-		ark.WithCache(cacheOpt))
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+    msg, err := chatModel.Generate(ctx, instructions,
+        ark.WithThinking(thinking),
+        ark.WithCache(cacheOpt))
+    if err != nil {
+        log.Fatalf("Generate failed, err=%v", err)
+    }
 
-	<-time.After(500 * time.Millisecond)
+    <-time.After(500 * time.Millisecond)
 
-	msg, err = chatModel.Generate(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "What's your name?",
-		},
-	},
-		ark.WithThinking(thinking),
-		ark.WithCache(cacheOpt))
-	if err != nil {
-		log.Fatalf("Generate failed, err=%v", err)
-	}
+    msg, err = chatModel.Generate(ctx, []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "What's your name?",
+        },
+    },
+        ark.WithThinking(thinking),
+        ark.WithCache(cacheOpt))
+    if err != nil {
+        log.Fatalf("Generate failed, err=%v", err)
+    }
 
-	fmt.Printf("\ngenerate output: \n")
-	fmt.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
-	respBody, _ := json.MarshalIndent(msg, "  ", "  ")
-	fmt.Printf("  body: %s\n", string(respBody))
+    fmt.Printf("\ngenerate output: \n")
+    fmt.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
+    respBody, _ := json.MarshalIndent(msg, "  ", "  ")
+    fmt.Printf("  body: %s\n", string(respBody))
 
-	outStreamReader, err := chatModel.Stream(ctx, []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "What do I ask you last time?",
-		},
-	},
-		ark.WithThinking(thinking),
-		ark.WithCache(cacheOpt))
-	if err != nil {
-		log.Fatalf("Stream failed, err=%v", err)
-	}
+    outStreamReader, err := chatModel.Stream(ctx, []*schema.Message{
+        {
+            Role:    schema.User,
+            Content: "What do I ask you last time?",
+        },
+    },
+        ark.WithThinking(thinking),
+        ark.WithCache(cacheOpt))
+    if err != nil {
+        log.Fatalf("Stream failed, err=%v", err)
+    }
 
-	fmt.Println("\ntypewriter output:")
-	var msgs []*schema.Message
-	for {
-		item, e := outStreamReader.Recv()
-		if e == io.EOF {
-			break
-		}
-		if e != nil {
-			log.Fatal(e)
-		}
+    fmt.Println("\ntypewriter output:")
+    var msgs []*schema.Message
+    for {
+        item, e := outStreamReader.Recv()
+        if e == io.EOF {
+            break
+        }
+        if e != nil {
+            log.Fatal(e)
+        }
 
-		fmt.Print(item.Content)
-		msgs = append(msgs, item)
-	}
+        fmt.Print(item.Content)
+        msgs = append(msgs, item)
+    }
 
-	msg, err = schema.ConcatMessages(msgs)
-	if err != nil {
-		log.Fatalf("ConcatMessages failed, err=%v", err)
-	}
-	fmt.Print("\n\nstream output: \n")
-	fmt.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
-	respBody, _ = json.MarshalIndent(msg, "  ", "  ")
-	fmt.Printf("  body: %s\n", string(respBody))
+    msg, err = schema.ConcatMessages(msgs)
+    if err != nil {
+        log.Fatalf("ConcatMessages failed, err=%v", err)
+    }
+    fmt.Print("\n\nstream output: \n")
+    fmt.Printf("  request_id: %s\n", ark.GetArkRequestID(msg))
+    respBody, _ = json.MarshalIndent(msg, "  ", "  ")
+    fmt.Printf("  body: %s\n", string(respBody))
 }
 
 ```
 
-### sessioncache-responsesapi
+### ResponseAPI Session Cache
 
 ```go
-
 package main
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"log"
-	"os"
+    "context"
+    "fmt"
+    "io"
+    "log"
+    "os"
 
-	arkModel "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
+    arkModel "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
 
-	"github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/schema"
 
-	"github.com/cloudwego/eino-ext/components/model/ark"
+    "github.com/cloudwego/eino-ext/components/model/ark"
 )
 
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
-	// Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
-	chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-		APIKey: os.Getenv("ARK_API_KEY"),
-		Model:  os.Getenv("ARK_MODEL_ID"),
-		Cache: &ark.CacheConfig{
-			SessionCache: &ark.SessionCacheConfig{
-				EnableCache: true,
-				TTL:         86400,
-			},
-		},
-	})
-	if err != nil {
-		log.Fatalf("NewChatModel failed, err=%v", err)
-	}
+    // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+    chatModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
+        APIKey: os.Getenv("ARK_API_KEY"),
+        Model:  os.Getenv("ARK_MODEL_ID"),
+        Cache: &ark.CacheConfig{
+            SessionCache: &ark.SessionCacheConfig{
+                EnableCache: true,
+                TTL:         86400,
+            },
+        },
+    })
+    if err != nil {
+        log.Fatalf("NewChatModel failed, err=%v", err)
+    }
 
-	thinking := &arkModel.Thinking{
-		Type: arkModel.ThinkingTypeDisabled,
-	}
-	cacheOpt := &ark.CacheOption{
-		APIType: ark.ResponsesAPI,
-		SessionCache: &ark.SessionCacheConfig{
-			EnableCache: true,
-			TTL:         86400,
-		},
-	}
+    thinking := &arkModel.Thinking{
+        Type: arkModel.ThinkingTypeDisabled,
+    }
+    cacheOpt := &ark.CacheOption{
+        APIType: ark.ResponsesAPI,
+        SessionCache: &ark.SessionCacheConfig{
+            EnableCache: true,
+            TTL:         86400,
+        },
+    }
 
-	useMsgs := []*schema.Message{
-		schema.UserMessage("Your name is superman"),
-		schema.UserMessage("What's your name?"),
-		schema.UserMessage("What do I ask you last time?"),
-	}
+    useMsgs := []*schema.Message{
+        schema.UserMessage("Your name is superman"),
+        schema.UserMessage("What's your name?"),
+        schema.UserMessage("What do I ask you last time?"),
+    }
 
-	var input []*schema.Message
-	for _, msg := range useMsgs {
-		input = append(input, msg)
+    var input []*schema.Message
+    for _, msg := range useMsgs {
+        input = append(input, msg)
 
-		streamResp, err := chatModel.Stream(ctx, input,
-			ark.WithThinking(thinking),
-			ark.WithCache(cacheOpt))
-		if err != nil {
-			log.Fatalf("Stream failed, err=%v", err)
-		}
+        streamResp, err := chatModel.Stream(ctx, input,
+            ark.WithThinking(thinking),
+            ark.WithCache(cacheOpt))
+        if err != nil {
+            log.Fatalf("Stream failed, err=%v", err)
+        }
 
-		var messages []*schema.Message
-		for {
-			chunk, err := streamResp.Recv()
-			if err == io.EOF {
-				break
-			}
-			if err != nil {
-				log.Fatalf("Recv of streamResp failed, err=%v", err)
-			}
-			messages = append(messages, chunk)
-		}
+        var messages []*schema.Message
+        for {
+            chunk, err := streamResp.Recv()
+            if err == io.EOF {
+                break
+            }
+            if err != nil {
+                log.Fatalf("Recv of streamResp failed, err=%v", err)
+            }
+            messages = append(messages, chunk)
+        }
 
-		resp, err := schema.ConcatMessages(messages)
-		if err != nil {
-			log.Fatalf("ConcatMessages of ark failed, err=%v", err)
-		}
+        resp, err := schema.ConcatMessages(messages)
+        if err != nil {
+            log.Fatalf("ConcatMessages of ark failed, err=%v", err)
+        }
 
-		fmt.Printf("stream output: \n%v\n\n", resp)
+        fmt.Printf("stream output: \n%v\n\n", resp)
 
-		input = append(input, resp)
-	}
+        input = append(input, resp)
+    }
 }
 
 ```
 
+### [More Examples](https://github.com/cloudwego/eino-ext/tree/main/components/model/ark/examples)
 
+## **Related Documentation**
 
-## For More Details
-
-- [Eino Documentation](https://www.cloudwego.io/zh/docs/eino/)
-- [Volcengine Ark Model Documentation](https://www.volcengine.com/docs/82379/1263272)
+- `Eino: ChatModel Guide` at `/docs/eino/core_modules/components/chat_model_guide`
+- `ChatModel - OpenAI` at `/docs/eino/ecosystem_integration/chat_model/chat_model_openai`
+- `ChatModel - Ollama` at `/docs/eino/ecosystem_integration/chat_model/chat_model_ollama`
+- [Volcengine Official Site](https://www.volcengine.com/product/doubao)

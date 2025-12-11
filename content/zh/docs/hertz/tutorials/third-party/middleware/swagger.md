@@ -125,6 +125,7 @@ go run main.go
 
 对于想要创建自己的自定义 UI 的用户，他们需要下载 Swagger UI 分发文件，并将 UI 文件作为静态资源提供。
 从 [swagger-ui/dist](https://github.com/swagger-api/swagger-ui/tree/master/dist) 中复制以下文件到 `swagger-ui/`
+
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/favicon-16x16.png
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/favicon-32x32.png
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/swagger-ui.css
