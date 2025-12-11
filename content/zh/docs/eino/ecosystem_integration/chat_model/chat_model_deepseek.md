@@ -1,15 +1,15 @@
 ---
 Description: ""
-date: "2025-12-02"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: ChatModel - deepseek
+title: ChatModel - DeepSeek
 weight: 0
 ---
 
 一个针对 [Eino](https://github.com/cloudwego/eino) 的 DeepSeek 模型实现，实现了 `ToolCallingChatModel` 接口。这使得能够与 Eino 的 LLM 功能无缝集成，以增强自然语言处理和生成能力。
 
-## 特性
+## **特性**
 
 - 实现了 `github.com/cloudwego/eino/components/model.Model`
 - 轻松与 Eino 的模型系统集成
@@ -19,13 +19,13 @@ weight: 0
 - 支持自定义响应解析
 - 灵活的模型配置
 
-## 安装
+## **安装**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/deepseek@latest
 ```
 
-## 快速开始
+## **快速开始**
 
 以下是如何使用 DeepSeek 模型的快速示例：
 
@@ -33,68 +33,68 @@ go get github.com/cloudwego/eino-ext/components/model/deepseek@latest
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
-	"time"
+        "context"
+        "fmt"
+        "log"
+        "os"
+        "time"
 
-	"github.com/cloudwego/eino-ext/components/model/deepseek"
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino-ext/components/model/deepseek"
+        "github.com/cloudwego/eino/schema"
 )
 
 func main() {
-	ctx := context.Background()
-	apiKey := os.Getenv("DEEPSEEK_API_KEY")
-	if apiKey == "" {
-		log.Fatal("DEEPSEEK_API_KEY environment variable is not set")
-	}
-	cm, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
-		APIKey:  apiKey,                          
-		Model:    os.Getenv("MODEL_NAME"),           
-		BaseURL: "https://api.deepseek.com/beta", 
-	
+        ctx := context.Background()
+        apiKey := os.Getenv("DEEPSEEK_API_KEY")
+        if apiKey == "" {
+                log.Fatal("DEEPSEEK_API_KEY environment variable is not set")
+        }
+        cm, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
+                APIKey:  apiKey,                          
+                Model:    os.Getenv("MODEL_NAME"),           
+                BaseURL: "https://api.deepseek.com/beta", 
+        
 
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
+        })
+        if err != nil {
+                log.Fatal(err)
+        }
 
-	messages := []*schema.Message{
-		{
-			Role:    schema.System,
-			Content: "You are a helpful AI assistant. Be concise in your responses.",
-		},
-		{
-			Role:    schema.User,
-			Content: "What is the capital of France?",
-		},
-	}
+        messages := []*schema.Message{
+                {
+                        Role:    schema.System,
+                        Content: "You are a helpful AI assistant. Be concise in your responses.",
+                },
+                {
+                        Role:    schema.User,
+                        Content: "What is the capital of France?",
+                },
+        }
 
-	resp, err := cm.Generate(ctx, messages)
-	if err != nil {
-		log.Printf("Generate error: %v", err)
-		return
-	}
+        resp, err := cm.Generate(ctx, messages)
+        if err != nil {
+                log.Printf("Generate error: %v", err)
+                return
+        }
 
-	reasoning, ok := deepseek.GetReasoningContent(resp)
-	if !ok {
-		fmt.Printf("Unexpected: non-reasoning")
-	} else {
-		fmt.Printf("Reasoning Content: %s \n", reasoning)
-	}
-	fmt.Printf("Assistant: %s\n", resp.Content)
-	if resp.ResponseMeta != nil && resp.ResponseMeta.Usage != nil {
-		fmt.Printf("Tokens used: %d (prompt) + %d (completion) = %d (total) \n",
-			resp.ResponseMeta.Usage.PromptTokens,
-			resp.ResponseMeta.Usage.CompletionTokens,
-			resp.ResponseMetaUsage.TotalTokens)
-	}
+        reasoning, ok := deepseek.GetReasoningContent(resp)
+        if !ok {
+                fmt.Printf("Unexpected: non-reasoning")
+        } else {
+                fmt.Printf("Reasoning Content: %s \n", reasoning)
+        }
+        fmt.Printf("Assistant: %s\n", resp.Content)
+        if resp.ResponseMeta != nil && resp.ResponseMeta.Usage != nil {
+                fmt.Printf("Tokens used: %d (prompt) + %d (completion) = %d (total) \n",
+                        resp.ResponseMeta.Usage.PromptTokens,
+                        resp.ResponseMeta.Usage.CompletionTokens,
+                        resp.ResponseMetaUsage.TotalTokens)
+        }
 
 }
 ```
 
-## 配置
+## **配置**
 
 可以使用 `deepseek.ChatModelConfig` 结构体配置模型：
 
@@ -172,307 +172,299 @@ type ChatModelConfig struct {
 }
 ```
 
-## 示例
+## **示例**
 
-### 文本生成
+### **文本生成**
 
 ```go
-
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
-	"time"
+        "context"
+        "fmt"
+        "log"
+        "os"
+        "time"
 
-	"github.com/cloudwego/eino-ext/components/model/deepseek"
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino-ext/components/model/deepseek"
+        "github.com/cloudwego/eino/schema"
 )
 
 func main() {
-	ctx := context.Background()
-	apiKey := os.Getenv("DEEPSEEK_API_KEY")
-	if apiKey == "" {
-		log.Fatal("DEEPSEEK_API_KEY environment variable is not set")
-	}
+        ctx := context.Background()
+        apiKey := os.Getenv("DEEPSEEK_API_KEY")
+        if apiKey == "" {
+                log.Fatal("DEEPSEEK_API_KEY environment variable is not set")
+        }
 
-	cm, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
-		APIKey:  apiKey,
-		Model:   os.Getenv("MODEL_NAME"),
-		BaseURL: "https://api.deepseek.com/beta",
-		Timeout: 30 * time.Second,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
+        cm, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
+                APIKey:  apiKey,
+                Model:   os.Getenv("MODEL_NAME"),
+                BaseURL: "https://api.deepseek.com/beta",
+                Timeout: 30 * time.Second,
+        })
+        if err != nil {
+                log.Fatal(err)
+        }
 
-	messages := []*schema.Message{
-		{
-			Role:    schema.System,
-			Content: "You are a helpful AI assistant. Be concise in your responses.",
-		},
-		{
-			Role:    schema.User,
-			Content: "What is the capital of France?",
-		},
-	}
+        messages := []*schema.Message{
+                {
+                        Role:    schema.System,
+                        Content: "You are a helpful AI assistant. Be concise in your responses.",
+                },
+                {
+                        Role:    schema.User,
+                        Content: "What is the capital of France?",
+                },
+        }
 
-	resp, err := cm.Generate(ctx, messages)
-	if err != nil {
-		log.Printf("Generate error: %v", err)
-		return
-	}
+        resp, err := cm.Generate(ctx, messages)
+        if err != nil {
+                log.Printf("Generate error: %v", err)
+                return
+        }
 
-	reasoning, ok := deepseek.GetReasoningContent(resp)
-	if !ok {
-		fmt.Printf("Unexpected: non-reasoning")
-	} else {
-		fmt.Printf("Reasoning Content: %s\n", reasoning)
-	}
-	fmt.Printf("Assistant: %s \n", resp.Content)
-	if resp.ResponseMeta != nil && resp.ResponseMeta.Usage != nil {
-		fmt.Printf("Tokens used: %d (prompt) + %d (completion) = %d (total) \n",
-			resp.ResponseMeta.Usage.PromptTokens,
-			resp.ResponseMeta.Usage.CompletionTokens,
-			resp.ResponseMeta.Usage.TotalTokens)
-	}
+        reasoning, ok := deepseek.GetReasoningContent(resp)
+        if !ok {
+                fmt.Printf("Unexpected: non-reasoning")
+        } else {
+                fmt.Printf("Reasoning Content: %s\n", reasoning)
+        }
+        fmt.Printf("Assistant: %s \n", resp.Content)
+        if resp.ResponseMeta != nil && resp.ResponseMeta.Usage != nil {
+                fmt.Printf("Tokens used: %d (prompt) + %d (completion) = %d (total) \n",
+                        resp.ResponseMeta.Usage.PromptTokens,
+                        resp.ResponseMeta.Usage.CompletionTokens,
+                        resp.ResponseMeta.Usage.TotalTokens)
+        }
 
 }
-
 ```
 
-### 带前缀文本生成
+### **带前缀文本生成**
 
 ```go
-
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
-	"time"
+        "context"
+        "fmt"
+        "log"
+        "os"
+        "time"
 
-	"github.com/cloudwego/eino-ext/components/model/deepseek"
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino-ext/components/model/deepseek"
+        "github.com/cloudwego/eino/schema"
 )
 
 func main() {
-	ctx := context.Background()
-	apiKey := os.Getenv("DEEPSEEK_API_KEY")
-	if apiKey == "" {
-		log.Fatal("DEEPSEEK_API_KEY environment variable is not set")
-	}
-	cm, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
-		APIKey:  apiKey,
-		Model:   os.Getenv("MODEL_NAME"),
-		BaseURL: "https://api.deepseek.com/beta",
-		Timeout: 30 * time.Second,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
+        ctx := context.Background()
+        apiKey := os.Getenv("DEEPSEEK_API_KEY")
+        if apiKey == "" {
+                log.Fatal("DEEPSEEK_API_KEY environment variable is not set")
+        }
+        cm, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
+                APIKey:  apiKey,
+                Model:   os.Getenv("MODEL_NAME"),
+                BaseURL: "https://api.deepseek.com/beta",
+                Timeout: 30 * time.Second,
+        })
+        if err != nil {
+                log.Fatal(err)
+        }
 
-	messages := []*schema.Message{
-		schema.UserMessage("Please write quick sort code"),
-		schema.AssistantMessage("```python \n", nil),
-	}
-	deepseek.SetPrefix(messages[1])
+        messages := []*schema.Message{
+                schema.UserMessage("Please write quick sort code"),
+                schema.AssistantMessage("```python \n", nil),
+        }
+        deepseek.SetPrefix(messages[1])
 
-	result, err := cm.Generate(ctx, messages)
-	if err != nil {
-		log.Printf("Generate error: %v", err)
-	}
+        result, err := cm.Generate(ctx, messages)
+        if err != nil {
+                log.Printf("Generate error: %v", err)
+        }
 
-	reasoningContent, ok := deepseek.GetReasoningContent(result)
-	if !ok {
-		fmt.Printf("No reasoning content")
-	} else {
-		fmt.Printf("Reasoning: %v \n", reasoningContent)
-	}
-	fmt.Printf("Content: %v\n", result)
+        reasoningContent, ok := deepseek.GetReasoningContent(result)
+        if !ok {
+                fmt.Printf("No reasoning content")
+        } else {
+                fmt.Printf("Reasoning: %v \n", reasoningContent)
+        }
+        fmt.Printf("Content: %v\n", result)
 
 }
-
 ```
 
-### 流式生成
-```go
+### **流式生成**
 
+```go
 package main
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"log"
-	"os"
-	"time"
+        "context"
+        "fmt"
+        "io"
+        "log"
+        "os"
+        "time"
 
-	"github.com/cloudwego/eino-ext/components/model/deepseek"
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino-ext/components/model/deepseek"
+        "github.com/cloudwego/eino/schema"
 )
 
 func main() {
-	ctx := context.Background()
-	apiKey := os.Getenv("DEEPSEEK_API_KEY")
-	if apiKey == "" {
-		log.Fatal("DEEPSEEK_API_KEY environment variable is not set")
-	}
-	cm, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
-		APIKey:  apiKey,
-		Model:   os.Getenv("MODEL_NAME"),
-		BaseURL: "https://api.deepseek.com/beta",
-		Timeout: 30 * time.Second,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
+        ctx := context.Background()
+        apiKey := os.Getenv("DEEPSEEK_API_KEY")
+        if apiKey == "" {
+                log.Fatal("DEEPSEEK_API_KEY environment variable is not set")
+        }
+        cm, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
+                APIKey:  apiKey,
+                Model:   os.Getenv("MODEL_NAME"),
+                BaseURL: "https://api.deepseek.com/beta",
+                Timeout: 30 * time.Second,
+        })
+        if err != nil {
+                log.Fatal(err)
+        }
 
-	messages := []*schema.Message{
-		{
-			Role:    schema.User,
-			Content: "Write a short poem about spring, word by word.",
-		},
-	}
+        messages := []*schema.Message{
+                {
+                        Role:    schema.User,
+                        Content: "Write a short poem about spring, word by word.",
+                },
+        }
 
-	stream, err := cm.Stream(ctx, messages)
-	if err != nil {
-		log.Printf("Stream error: %v", err)
-		return
-	}
+        stream, err := cm.Stream(ctx, messages)
+        if err != nil {
+                log.Printf("Stream error: %v", err)
+                return
+        }
 
-	fmt.Print("Assistant: ")
-	for {
-		resp, err := stream.Recv()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Printf("Stream receive error: %v", err)
-			return
-		}
-		if reasoning, ok := deepseek.GetReasoningContent(resp); ok {
-			fmt.Printf("Reasoning Content: %s\n", reasoning)
-		}
-		if len(resp.Content) > 0 {
-			fmt.Printf("Content: %s\n", resp.Content)
-		}
-		if resp.ResponseMeta != nil && resp.ResponseMeta.Usage != nil {
-			fmt.Printf("Tokens used: %d (prompt) + %d (completion) = %d (total) \n",
-				resp.ResponseMeta.Usage.PromptTokens,
-				resp.ResponseMeta.Usage.CompletionTokens,
-				resp.ResponseMeta.Usage.TotalTokens)
-		}
-	}
+        fmt.Print("Assistant: ")
+        for {
+                resp, err := stream.Recv()
+                if err == io.EOF {
+                        break
+                }
+                if err != nil {
+                        log.Printf("Stream receive error: %v", err)
+                        return
+                }
+                if reasoning, ok := deepseek.GetReasoningContent(resp); ok {
+                        fmt.Printf("Reasoning Content: %s\n", reasoning)
+                }
+                if len(resp.Content) > 0 {
+                        fmt.Printf("Content: %s\n", resp.Content)
+                }
+                if resp.ResponseMeta != nil && resp.ResponseMeta.Usage != nil {
+                        fmt.Printf("Tokens used: %d (prompt) + %d (completion) = %d (total) \n",
+                                resp.ResponseMeta.Usage.PromptTokens,
+                                resp.ResponseMeta.Usage.CompletionTokens,
+                                resp.ResponseMeta.Usage.TotalTokens)
+                }
+        }
 }
-
 ```
 
-### 工具调用
+### **工具调用**
 
 ```go
-
 package main
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"log"
-	"os"
-	"time"
+        "context"
+        "fmt"
+        "io"
+        "log"
+        "os"
+        "time"
 
-	"github.com/cloudwego/eino-ext/components/model/deepseek"
-	"github.com/cloudwego/eino/schema"
+        "github.com/cloudwego/eino-ext/components/model/deepseek"
+        "github.com/cloudwego/eino/schema"
 )
 
 func main() {
-	ctx := context.Background()
-	apiKey := os.Getenv("DEEPSEEK_API_KEY")
-	if apiKey == "" {
-		log.Fatal("DEEPSEEK_API_KEY environment variable is not set")
-	}
-	cm, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
-		APIKey:  apiKey,
-		Model:   os.Getenv("MODEL_NAME"),
-		BaseURL: "https://api.deepseek.com/beta",
-		Timeout: 30 * time.Second,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
+        ctx := context.Background()
+        apiKey := os.Getenv("DEEPSEEK_API_KEY")
+        if apiKey == "" {
+                log.Fatal("DEEPSEEK_API_KEY environment variable is not set")
+        }
+        cm, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
+                APIKey:  apiKey,
+                Model:   os.Getenv("MODEL_NAME"),
+                BaseURL: "https://api.deepseek.com/beta",
+                Timeout: 30 * time.Second,
+        })
+        if err != nil {
+                log.Fatal(err)
+        }
 
-	_, err = cm.WithTools([]*schema.ToolInfo{
-		{
-			Name: "user_company",
-			Desc: "Retrieve the user's company and position based on their name and email.",
-			ParamsOneOf: schema.NewParamsOneOfByParams(
-				map[string]*schema.ParameterInfo{
-					"name":  {Type: "string", Desc: "user's name"},
-					"email": {Type: "string", Desc: "user's email"}}),
-		}, {
-			Name: "user_salary",
-			Desc: "Retrieve the user's salary based on their name and email.",
-			ParamsOneOf: schema.NewParamsOneOfByParams(
-				map[string]*schema.ParameterInfo{
-					"name":  {Type: "string", Desc: "user's name"},
-					"email": {Type: "string", Desc: "user's email"},
-				}),
-		}})
-	if err != nil {
-		log.Fatalf("BindTools of deepseek failed, err=%v", err)
-	}
-	resp, err := cm.Generate(ctx, []*schema.Message{{
-		Role:    schema.System,
-		Content: "As a real estate agent, provide relevant property information based on the user's salary and job using the user_company and user_salary APIs. An email address is required.",
-	}, {
-		Role:    schema.User,
-		Content: "My name is John and my email is john@abc.com，Please recommend some houses that suit me.",
-	}})
-	if err != nil {
-		log.Fatalf("Generate of deepseek failed, err=%v", err)
-	}
-	fmt.Printf("output:%v \n", resp)
+        _, err = cm.WithTools([]*schema.ToolInfo{
+                {
+                        Name: "user_company",
+                        Desc: "Retrieve the user's company and position based on their name and email.",
+                        ParamsOneOf: schema.NewParamsOneOfByParams(
+                                map[string]*schema.ParameterInfo{
+                                        "name":  {Type: "string", Desc: "user's name"},
+                                        "email": {Type: "string", Desc: "user's email"}}),
+                }, {
+                        Name: "user_salary",
+                        Desc: "Retrieve the user's salary based on their name and email.",
+                        ParamsOneOf: schema.NewParamsOneOfByParams(
+                                map[string]*schema.ParameterInfo{
+                                        "name":  {Type: "string", Desc: "user's name"},
+                                        "email": {Type: "string", Desc: "user's email"},
+                                }),
+                }})
+        if err != nil {
+                log.Fatalf("BindTools of deepseek failed, err=%v", err)
+        }
+        resp, err := cm.Generate(ctx, []*schema.Message{{
+                Role:    schema.System,
+                Content: "As a real estate agent, provide relevant property information based on the user's salary and job using the user_company and user_salary APIs. An email address is required.",
+        }, {
+                Role:    schema.User,
+                Content: "My name is John and my email is john@abc.com，Please recommend some houses that suit me.",
+        }})
+        if err != nil {
+                log.Fatalf("Generate of deepseek failed, err=%v", err)
+        }
+        fmt.Printf("output:%v \n", resp)
 
-	streamResp, err := cm.Stream(ctx, []*schema.Message{
-		{
-			Role:    schema.System,
-			Content: "As a real estate agent, provide relevant property information based on the user's salary and job using the user_company and user_salary APIs. An email address is required.",
-		}, {
-			Role:    schema.User,
-			Content: "My name is John and my email is john@abc.com，Please recommend some houses that suit me.",
-		},
-	})
-	if err != nil {
-		log.Fatalf("Stream of deepseek failed, err=%v", err)
-	}
-	var messages []*schema.Message
-	for {
-		chunk, err := streamResp.Recv()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Fatalf("Recv of streamResp failed, err=%v", err)
-		}
-		messages = append(messages, chunk)
-	}
-	resp, err = schema.ConcatMessages(messages)
-	if err != nil {
-		log.Fatalf("ConcatMessages of deepseek failed, err=%v", err)
-	}
-	fmt.Printf("stream output:%v \n", resp)
+        streamResp, err := cm.Stream(ctx, []*schema.Message{
+                {
+                        Role:    schema.System,
+                        Content: "As a real estate agent, provide relevant property information based on the user's salary and job using the user_company and user_salary APIs. An email address is required.",
+                }, {
+                        Role:    schema.User,
+                        Content: "My name is John and my email is john@abc.com，Please recommend some houses that suit me.",
+                },
+        })
+        if err != nil {
+                log.Fatalf("Stream of deepseek failed, err=%v", err)
+        }
+        var messages []*schema.Message
+        for {
+                chunk, err := streamResp.Recv()
+                if err == io.EOF {
+                        break
+                }
+                if err != nil {
+                        log.Fatalf("Recv of streamResp failed, err=%v", err)
+                }
+                messages = append(messages, chunk)
+        }
+        resp, err = schema.ConcatMessages(messages)
+        if err != nil {
+                log.Fatalf("ConcatMessages of deepseek failed, err=%v", err)
+        }
+        fmt.Printf("stream output:%v \n", resp)
 
 }
-
 ```
 
-
-## 更多信息
+## **更多信息**
 
 - [Eino Documentation](https://www.cloudwego.io/zh/docs/eino/)
 - [DeepSeek Documentation](https://api-docs.deepseek.com/api/create-chat-completion)

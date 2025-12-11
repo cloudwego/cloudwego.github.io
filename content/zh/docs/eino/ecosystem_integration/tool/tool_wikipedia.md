@@ -1,68 +1,68 @@
 ---
 Description: ""
-date: "2025-03-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Tool - wikipedia
+title: Tool - Wikipedia
 weight: 0
 ---
 
-## 维基百科搜索工具
+## **维基百科搜索工具**
 
 这是一个为 [Eino](https://github.com/cloudwego/eino) 实现的维基百科搜索工具。该工具实现了 `InvokableTool` 接口，可以与 Eino 的 ChatModel 交互系统和 `ToolsNode` 无缝集成。
 
-## 特性
+## **特性**
 
 - 实现了 `github.com/cloudwego/eino/components/tool.InvokableTool` 接口
 - 易于与 Eino 工具系统集成
 - 可配置的搜索参数
 
-## 安装
+## **安装**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/tool/wikipedia
 ```
 
-## 快速开始
+## **快速开始**
 
 ```go
 package main
 
 import (
-	"context"
-	"github.com/cloudwego/eino-ext/components/tool/wikipedia"
-	"github.com/cloudwego/eino/components/tool"
-	"log"
-	"time"
+        "context"
+        "github.com/cloudwego/eino-ext/components/tool/wikipedia"
+        "github.com/cloudwego/eino/components/tool"
+        "log"
+        "time"
 )
 
 func main() {
-	ctx := context.Background()
+        ctx := context.Background()
 
-	// 创建工具配置
-	// 下面所有这些参数都是默认值，仅作用法展示
-	config := &wikipedia.Config{
-		UserAgent:   "eino (https://github.com/cloudwego/eino)",
-		DocMaxChars: 2000,
-		Timeout:     15 * time.Second,
-		TopK:        3,
-		MaxRedirect: 3,
-		Language:    "en",
-	}
+        // 创建工具配置
+        // 下面所有这些参数都是默认值，仅作用法展示
+        config := &wikipedia.Config{
+                UserAgent:   "eino (https://github.com/cloudwego/eino)",
+                DocMaxChars: 2000,
+                Timeout:     15 * time.Second,
+                TopK:        3,
+                MaxRedirect: 3,
+                Language:    "en",
+        }
 
-	// 创建搜索工具
-	t, err := wikipedia.NewTool(ctx, config)
-	if err != nil {
-		log.Fatal("Failed to create tool:", err)
-	}
+        // 创建搜索工具
+        t, err := wikipedia.NewTool(ctx, config)
+        if err != nil {
+                log.Fatal("Failed to create tool:", err)
+        }
 
-	// 与 Eino 的 ToolsNode 一起使用
-	tools := []tool.BaseTool{t}
-	// ... 配置并使用 ToolsNode
+        // 与 Eino 的 ToolsNode 一起使用
+        tools := []tool.BaseTool{t}
+        // ... 配置并使用 ToolsNode
 }
 ```
 
-## 配置
+## **配置**
 
 工具可以通过 `Config` 结构体进行配置：
 
@@ -101,16 +101,15 @@ type Config struct {
     // Language 是用于 Wikipedia 搜索的语言。
     // 可选。默认值: "en"。
     Language string `json:"language"`
-	
+        
     ToolName string `json:"tool_name"` // 可选。默认值: "wikipedia_search"。
     ToolDesc string `json:"tool_desc"` // 可选。默认值: "this tool provides quick and efficient access to information from the Wikipedia"。
 }
-
 ```
 
-## Search
+## **Search**
 
-### 请求 Schema
+### **请求 Schema**
 
 ```go
 type SearchRequest struct {
@@ -119,7 +118,7 @@ type SearchRequest struct {
 }
 ```
 
-### 响应 Schema
+### **响应 Schema**
 
 ```go
 type SearchResponse struct {
@@ -138,6 +137,6 @@ type SearchResult struct {
 }
 ```
 
-## 更多详情
+## **更多详情**
 
 - [Eino 文档](https://github.com/cloudwego/eino)

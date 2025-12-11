@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-02-11"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Indexer - redis
+title: Indexer - Redis
 weight: 0
 ---
 
-you can use redis-stack as indexer.
+You can use redis-stack as an indexer.

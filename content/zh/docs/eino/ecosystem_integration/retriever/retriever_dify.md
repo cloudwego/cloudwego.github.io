@@ -1,76 +1,76 @@
 ---
 Description: ""
-date: "2025-01-20"
+date: "2025-12-11"
 lastmod: ""
 tags: []
-title: Retriever - dify
+title: Retriever - Dify
 weight: 0
 ---
 
-## Dify 检索器
+## **Dify 检索器**
 
 这是一个为 [Eino](https://github.com/cloudwego/eino) 实现的 Dify 检索器，实现了 `Retriever` 接口。它能够与 Eino 的检索系统无缝集成，从 Dify 知识库中检索相关文档。
 
-## 特性
+## **特性**
 
 - 实现了 `github.com/cloudwego/eino/components/retriever.Retriever` 接口
 - 易于与 Eino 的检索系统集成
 - 支持可配置的检索参数
 - 支持重排序功能
 
-## 安装
+## **安装**
 
 ```bash
 go get github.com/cloudwego/eino-ext/components/retriever/dify
 ```
 
-## 快速开始
+## **快速开始**
 
 ```go
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
+        "context"
+        "fmt"
+        "log"
+        "os"
 
-	"github.com/cloudwego/eino-ext/components/retriever/dify"
+        "github.com/cloudwego/eino-ext/components/retriever/dify"
 )
 
 func main() {
-	APIKey := os.Getenv("DIFY_DATASET_API_KEY")
-	Endpoint := os.Getenv("DIFY_ENDPOINT")
-	DatasetID := os.Getenv("DIFY_DATASET_ID")
-	// 创建基本的 Dify Retriever
-	ctx := context.Background()
+        APIKey := os.Getenv("DIFY_DATASET_API_KEY")
+        Endpoint := os.Getenv("DIFY_ENDPOINT")
+        DatasetID := os.Getenv("DIFY_DATASET_ID")
+        // 创建基本的 Dify Retriever
+        ctx := context.Background()
 
-	// 创建基本的 Dify Retriever
-	ret, err := dify.NewRetriever(ctx, &dify.RetrieverConfig{
-		APIKey:    APIKey,
-		Endpoint:  Endpoint,
-		DatasetID: DatasetID,
-	})
-	if err != nil {
-		log.Fatalf("Failed to create retriever: %v", err)
-	}
+        // 创建基本的 Dify Retriever
+        ret, err := dify.NewRetriever(ctx, &dify.RetrieverConfig{
+                APIKey:    APIKey,
+                Endpoint:  Endpoint,
+                DatasetID: DatasetID,
+        })
+        if err != nil {
+                log.Fatalf("Failed to create retriever: %v", err)
+        }
 
-	// 执行检索
-	docs, err := ret.Retrieve(ctx, "test query")
-	if err != nil {
-		log.Fatalf("Failed to retrieve: %v", err)
-	}
+        // 执行检索
+        docs, err := ret.Retrieve(ctx, "test query")
+        if err != nil {
+                log.Fatalf("Failed to retrieve: %v", err)
+        }
 
-	// 处理检索结果
-	for _, doc := range docs {
-		fmt.Printf("doc id: %s\n", doc.ID)
-		fmt.Printf("doc content: %s\n", doc.Content)
-		fmt.Printf("score: %v\n\n", doc.Score())
-	}
+        // 处理检索结果
+        for _, doc := range docs {
+                fmt.Printf("doc id: %s\n", doc.ID)
+                fmt.Printf("doc content: %s\n", doc.Content)
+                fmt.Printf("score: %v\n\n", doc.Score())
+        }
 }
 ```
 
-## 配置
+## **配置**
 
 检索器可以使用 `RetrieverConfig` 结构体进行配置：
 
@@ -95,7 +95,7 @@ type RetrievalModel struct {
 }
 ```
 
-## 文档元数据
+## **文档元数据**
 
 检索器会为检索到的文档添加以下元数据：
 
@@ -111,7 +111,7 @@ docName := dify.GetOrgDocName(doc)
 keywords := dify.GetKeywords(doc)
 ```
 
-## 更多详情
+## **更多详情**
 
 - [Dify 文档](https://github.com/langgenius/dify)
 - [Eino 文档](https://github.com/cloudwego/eino)
