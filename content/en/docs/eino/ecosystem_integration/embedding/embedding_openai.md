@@ -9,7 +9,7 @@ weight: 0
 
 ## **Overview**
 
-OpenAI embedder is an implementation of Eino’s Embedding interface that converts text into vector representations. It follows [[🚧]Eino: Embedding Guide](/en/docs/eino/core_modules/components/embedding_guide) and is typically used for:
+OpenAI embedder is an implementation of Eino’s Embedding interface that converts text into vector representations. It follows [[🚧]Eino: Embedding Guide](/docs/eino/core_modules/components/embedding_guide) and is typically used for:
 
 - Converting text into high‑dimensional vectors
 - Using OpenAI’s embedding models
@@ -99,7 +99,7 @@ func main() {
 
 ## **References**
 
-- [Eino: Embedding Guide](/en/docs/eino/core_modules/components/embedding_guide)
-- [Embedding - Ark](/en/docs/eino/ecosystem_integration/embedding/embedding_ark)
+- [Eino: Embedding Guide](/docs/eino/core_modules/components/embedding_guide)
+- [Embedding - Ark](/docs/eino/ecosystem_integration/embedding/embedding_ark)
 - OpenAI Embedding API: https://platform.openai.com/docs/guides/embeddings
 - Azure OpenAI Service: https://learn.microsoft.com/azure/cognitive-services/openai/

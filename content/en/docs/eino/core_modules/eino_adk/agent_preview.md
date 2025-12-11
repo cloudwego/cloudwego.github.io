@@ -19,7 +19,7 @@ Eino ADK helps developers build and manage agent applications, providing a resil
 
 ## Agent Interface
 
-The core of ADK is the `Agent` abstraction. See the full details in [Eino ADK: Agent Interface](/en/docs/eino/core_modules/eino_adk/agent_interface).
+The core of ADK is the `Agent` abstraction. See the full details in [Eino ADK: Agent Interface](/docs/eino/core_modules/eino_adk/agent_interface).
 
 ```go
 type Agent interface {
@@ -47,7 +47,7 @@ type Agent interface {
 
 ## Collaboration
 
-ADK provides rich composition primitives to build Multi‑Agent systems: Supervisor, Plan‑Execute, Group‑Chat, etc. See [Eino ADK: Agent Collaboration](/en/docs/eino/core_modules/eino_adk/agent_collaboration).
+ADK provides rich composition primitives to build Multi‑Agent systems: Supervisor, Plan‑Execute, Group‑Chat, etc. See [Eino ADK: Agent Collaboration](/docs/eino/core_modules/eino_adk/agent_collaboration).
 
 Primitives:
 
@@ -86,7 +86,7 @@ Compositions:
 
 ## ChatModelAgent
 
-`ChatModelAgent` is the key implementation of the agent abstraction. It wraps LLM interaction and implements a ReAct‑style control flow via Eino Graph, exporting events as `AgentEvent`s. See [Eino ADK: ChatModelAgent](/en/docs/eino/core_modules/eino_adk/agent_implementation/chat_model).
+`ChatModelAgent` is the key implementation of the agent abstraction. It wraps LLM interaction and implements a ReAct‑style control flow via Eino Graph, exporting events as `AgentEvent`s. See [Eino ADK: ChatModelAgent](/docs/eino/core_modules/eino_adk/agent_implementation/chat_model).
 
 ```go
 type ChatModelAgentConfig struct {
@@ -132,7 +132,7 @@ func NewChatModelAgent(_ context.Context, config *ChatModelAgentConfig) (*ChatMo
 
 ## AgentRunner
 
-Runner executes agents and enables advanced features. See [Eino ADK: Agent Runner & Extensions](/en/docs/eino/core_modules/eino_adk/agent_extension).
+Runner executes agents and enables advanced features. See [Eino ADK: Agent Runner & Extensions](/docs/eino/core_modules/eino_adk/agent_extension).
 
 Runner‑only capabilities:
 

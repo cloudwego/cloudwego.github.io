@@ -477,5 +477,5 @@ func main() {
 
 ## **More Information**
 
-- [Eino Documentation](https://www.cloudwego.io/en/docs/eino/)
+- [Eino Documentation](https://www.cloudwego.io/docs/eino/)
 - [DeepSeek Documentation](https://api-docs.deepseek.com/api/create-chat-completion)

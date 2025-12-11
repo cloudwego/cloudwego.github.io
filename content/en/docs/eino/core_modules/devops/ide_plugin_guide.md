@@ -9,7 +9,7 @@ weight: 1
 
 ## Background & Overview
 
-> See [Eino: Overview](/en/docs/eino/overview)
+> See [Eino: Overview](/docs/eino/overview)
 
 Eino is a Go framework for AI component integration and orchestration. The “Eino Dev” plugin helps you build AI applications more efficiently. 🚀
 
@@ -64,7 +64,7 @@ Click “<strong>Eino Dev</strong>” at the bottom:
 
 ### Graph Orchestration
 
-Details: [Eino Dev Visual Orchestration Guide](/en/docs/eino/core_modules/devops/visual_orchestration_plugin_guide)
+Details: [Eino Dev Visual Orchestration Guide](/docs/eino/core_modules/devops/visual_orchestration_plugin_guide)
 
 <table><tbody><tr>
 <td>
@@ -75,7 +75,7 @@ Details: [Eino Dev Visual Orchestration Guide](/en/docs/eino/core_modules/devops
 
 ### Graph Debugging
 
-Details: [Eino Dev Visual Debugging Guide](/en/docs/eino/core_modules/devops/visual_debug_plugin_guide)
+Details: [Eino Dev Visual Debugging Guide](/docs/eino/core_modules/devops/visual_debug_plugin_guide)
 
 <table><tbody><tr>
 <td>

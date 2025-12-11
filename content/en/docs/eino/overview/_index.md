@@ -215,13 +215,13 @@ The Eino framework consists of several parts:
 - [Eino DevOps](https://github.com/cloudwego/eino-ext/tree/main/devops): Visual development and debugging.
 - [EinoExamples](https://github.com/cloudwego/eino-examples): Example applications and best practices.
 
-See also: [Eino Architecture Overview](/en/docs/eino/overview/)
+See also: [Eino Architecture Overview](/docs/eino/overview/)
 
 ## Documentation
 
-For learning and using Eino, we provide a comprehensive user manual to help you grasp Eino’s concepts and build AI applications with Eino effectively. Try it here: [Eino User Manual](https://www.cloudwego.io/en/docs/eino/)
+For learning and using Eino, we provide a comprehensive user manual to help you grasp Eino’s concepts and build AI applications with Eino effectively. Try it here: [Eino User Manual](https://www.cloudwego.io/docs/eino/)
 
-If you want to get hands-on quickly, start with: [Eino: Quick Start](https://www.cloudwego.io/en/docs/eino/quick_start/)
+If you want to get hands-on quickly, start with: [Eino: Quick Start](https://www.cloudwego.io/docs/eino/quick_start/)
 
 Complete API reference: [https://pkg.go.dev/github.com/cloudwego/eino](https://pkg.go.dev/github.com/cloudwego/eino)
 

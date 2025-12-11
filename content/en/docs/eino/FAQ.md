@@ -134,7 +134,7 @@ If the subgraph and parent graph have different `State` types, use `ProcessState
 
 # Q: How does `eino-ext` adapt multimodal input/output for supported models?
 
-For multimodal support, see [https://www.cloudwego.io/en/docs/eino/ecosystem_integration/chat_model](https://www.cloudwego.io/en/docs/eino/ecosystem_integration/chat_model) and the corresponding examples for each model.
+For multimodal support, see [https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model](https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model) and the corresponding examples for each model.
 
 # Q: Using `UserInputMultiContent` for multimodal input, but the model side seems to miss the data or cannot read `multicontent`
 

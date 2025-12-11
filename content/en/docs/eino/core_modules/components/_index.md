@@ -26,41 +26,41 @@ Mapping components to patterns:
 
 1. Template and parameter preparation for LLM interaction: `ChatTemplate`
 
-   - See [Eino: ChatTemplate Guide](/en/docs/eino/core_modules/components/chat_template_guide)
+   - See [Eino: ChatTemplate Guide](/docs/eino/core_modules/components/chat_template_guide)
 
 2. Direct LLM interaction: `ChatModel`
 
-   - See [Eino: ChatModel Guide](/en/docs/eino/core_modules/components/chat_model_guide)
+   - See [Eino: ChatModel Guide](/docs/eino/core_modules/components/chat_model_guide)
 
 **Text semantics components:**
 
 1. Document acquisition and processing: `Document.Loader`, `Document.Transformer`
 
-   - See [Document Loader Guide](/en/docs/eino/core_modules/components/document_loader_guide) and [Document Transformer Guide](/en/docs/eino/core_modules/components/document_transformer_guide)
+   - See [Document Loader Guide](/docs/eino/core_modules/components/document_loader_guide) and [Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide)
 
 2. Semantic embedding of documents: `Embedding`
 
-   - See [Embedding Guide](/en/docs/eino/core_modules/components/embedding_guide)
+   - See [Embedding Guide](/docs/eino/core_modules/components/embedding_guide)
 
 3. Indexing and storage of embeddings: `Indexer`
 
-   - See [Indexer Guide](/en/docs/eino/core_modules/components/indexer_guide)
+   - See [Indexer Guide](/docs/eino/core_modules/components/indexer_guide)
 
 4. Retrieval of semantically related documents: `Retriever`
 
-   - See [Retriever Guide](/en/docs/eino/core_modules/components/retriever_guide)
+   - See [Retriever Guide](/docs/eino/core_modules/components/retriever_guide)
 
 **Decision and execution components:**
 
 1. Tool-enabled decision making for LLMs: `ToolsNode`
 
-   - See [ToolsNode Guide](/en/docs/eino/core_modules/components/tools_node_guide)
+   - See [ToolsNode Guide](/docs/eino/core_modules/components/tools_node_guide)
 
 **Custom logic:**
 
 1. User-defined business logic: `Lambda`
 
-   - See [Lambda Guide](/en/docs/eino/core_modules/components/lambda_guide)
+   - See [Lambda Guide](/docs/eino/core_modules/components/lambda_guide)
 
 Components provide application capabilities — the bricks and mortar of LLM app construction. Eino’s component abstractions follow these principles:
 

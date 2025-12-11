@@ -14,7 +14,7 @@ In LLM applications, `Components` provide atomic capabilities such as:
 - `Retriever`: retrieving relevant content
 - `ToolsNode`: invoking external tools
 
-> For component details: [Eino: Components](/en/docs/eino/core_modules/components)
+> For component details: [Eino: Components](/docs/eino/core_modules/components)
 
 Beyond atomic capabilities, applications must combine and chain them according to business scenarios. This is **orchestration**.
 
@@ -37,16 +37,16 @@ Therefore, Eino offers a graph-based model (`node + edge`) where **components** 
 Specifically:
 
 - Everything centers on components. Clear encapsulation yields clear responsibilities and natural reuse.
-  - See: [Eino: Components](/en/docs/eino/core_modules/components)
+  - See: [Eino: Components](/docs/eino/core_modules/components)
 - Push business complexity into component implementations; the orchestration layer maintains global clarity.
 - Provide aspect capabilities via callbacks, enabling **unified governance** at the node level.
-  - See: [Eino: Callback Manual](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
+  - See: [Eino: Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)
 - Provide call options for **extensibility** during rapid iteration.
-  - See: [Eino: Call Option Capabilities](/en/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
+  - See: [Eino: Call Option Capabilities](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)
 - Reinforce **type alignment** to reduce cognitive load and leverage Go’s type safety.
-  - See: [Eino: Orchestration Design Principles](/en/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+  - See: [Eino: Orchestration Design Principles](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 - Provide **automatic stream conversion**, removing “stream handling” from the list of orchestration complexity sources.
-  - See: [Eino: Streaming Essentials](/en/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
+  - See: [Eino: Streaming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
 
 Graphs are powerful and semantically complete; you can express branches, parallelism, and loops. The tradeoff is using `graph.AddXXXNode()` and `graph.AddEdge()` — powerful, but a bit verbose.
 

@@ -457,7 +457,7 @@ Eino ADK is not just a framework — it’s a complete agent development ecosyst
 > 💡
 > **Start your agent development journey now**
 >
-> - Docs (EN): https://www.cloudwego.io/en/docs/eino/core_modules/eino_adk/
+> - Docs (EN): https://www.cloudwego.io/docs/eino/core_modules/eino_adk/
 > - Source: https://github.com/cloudwego/eino/tree/main/adk
 > - Examples: https://github.com/cloudwego/eino-examples/tree/main/adk
 > - Community: join other developers to share experience and best practices

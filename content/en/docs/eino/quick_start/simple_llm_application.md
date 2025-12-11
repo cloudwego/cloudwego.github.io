@@ -16,7 +16,7 @@ This guide helps you quickly get started building a simple LLM application with 
 
 `ChatModel` is Eino’s abstraction over chat-oriented LLMs. It provides a unified interface to interact with various model providers such as OpenAI and Ollama.
 
-> For a detailed component guide, see: [Eino: ChatModel Guide](/en/docs/eino/core_modules/components/chat_model_guide)
+> For a detailed component guide, see: [Eino: ChatModel Guide](/docs/eino/core_modules/components/chat_model_guide)
 
 ## Message Structure and Usage
 
@@ -49,7 +49,7 @@ Eino provides versatile templating for constructing messages sent to the model:
 schema.MessagesPlaceholder("chat_history", false)
 ```
 
-> For details, see: [Eino: ChatTemplate Guide](/en/docs/eino/core_modules/components/chat_template_guide)
+> For details, see: [Eino: ChatTemplate Guide](/docs/eino/core_modules/components/chat_template_guide)
 
 Complete example using `FString` format and a messages placeholder:
 
@@ -99,7 +99,7 @@ messages, err := template.Format(context.Background(), map[string]any{
 - Ark: models on Volcano Engine (e.g., ByteDance’s Doubao)
 - More providers are coming
 
-> Supported models: [Eino: Ecosystem Integration](/en/docs/eino/ecosystem_integration)
+> Supported models: [Eino: Ecosystem Integration](/docs/eino/ecosystem_integration)
 
 Examples using OpenAI and Ollama:
 
@@ -120,7 +120,7 @@ chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
 })
 ```
 
-> Details: [ChatModel — OpenAI](/en/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
+> Details: [ChatModel — OpenAI](/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
 
 #### Ollama (use either this or OpenAI above)
 
@@ -140,7 +140,7 @@ chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
 })
 ```
 
-> Details: [ChatModel — Ollama](/en/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
+> Details: [ChatModel — Ollama](/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
 
 Thanks to Eino’s unified `ChatModel` abstraction and ready-to-use implementations, your business logic remains focused and insulated from provider specifics. You can swap models without broad code changes.
 
@@ -204,4 +204,4 @@ This example shows how to build an LLM-powered application in Eino via `ChatMode
 ## Related Reading
 
 - Quick Start
-  - [Agent — Give your LLM hands](/en/docs/eino/quick_start/agent_llm_with_tools)
+  - [Agent — Give your LLM hands](/docs/eino/quick_start/agent_llm_with_tools)

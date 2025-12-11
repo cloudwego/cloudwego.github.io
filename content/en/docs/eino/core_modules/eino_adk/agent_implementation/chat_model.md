@@ -42,7 +42,7 @@ type ToolsConfig struct {
 }
 ```
 
-ToolsConfig reuses Eino Graph `ToolsNodeConfig`. See: [Eino: ToolsNode & Tool Guide](/en/docs/eino/core_modules/components/tools_node_guide)
+ToolsConfig reuses Eino Graph `ToolsNodeConfig`. See: [Eino: ToolsNode & Tool Guide](/docs/eino/core_modules/components/tools_node_guide)
 
 ## Configuration Fields
 
@@ -99,7 +99,7 @@ type GenModelInput func(ctx context.Context, instruction string, input *AgentInp
 - `Instruction`: system prompt when calling ChatModel; supports f‑string rendering
 - `Model`: ToolCallingChatModel is required to support tool calls
 - `ToolsConfig`: tool configuration
-  - Reuses Eino Graph `ToolsNodeConfig` (see: [Eino: ToolsNode & Tool Guide](/en/docs/eino/core_modules/components/tools_node_guide)).
+  - Reuses Eino Graph `ToolsNodeConfig` (see: [Eino: ToolsNode & Tool Guide](/docs/eino/core_modules/components/tools_node_guide)).
   - `ReturnDirectly`: after calling a listed tool, ChatModelAgent exits immediately with the result; if multiple tools are listed, only the first match returns. Map key is the tool name.
 - `GenModelInput`: transforms `Instruction` and `AgentInput` to ChatModel messages; default:
   1. Prepend `Instruction` as a System Message to `AgentInput.Messages`

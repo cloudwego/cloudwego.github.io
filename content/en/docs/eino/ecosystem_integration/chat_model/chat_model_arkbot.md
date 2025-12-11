@@ -329,5 +329,5 @@ func main() {
 
 ## **More Information**
 
-- [Eino Documentation](https://www.cloudwego.io/en/docs/eino/)
+- [Eino Documentation](https://www.cloudwego.io/docs/eino/)
 - [Volcengine Ark Model Documentation](https://www.volcengine.com/docs/82379/1263272)

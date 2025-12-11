@@ -7,7 +7,7 @@ title: Callback - Langfuse
 weight: 0
 ---
 
-Eino provides Langfuse tracing wrappers based on [graph callbacks](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) (see https://langfuse.com/docs/get-started). Example:
+Eino provides Langfuse tracing wrappers based on [graph callbacks](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) (see https://langfuse.com/docs/get-started). Example:
 
 ```go
 package main

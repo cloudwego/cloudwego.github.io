@@ -258,7 +258,7 @@ func createTool() (tool.InvokableTool, error) {
 
 ### `InferOptionableTool`
 
-Eino’s Option mechanism passes dynamic runtime parameters. Details: `Eino: CallOption capabilities and conventions` at `/en/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities`. The same mechanism applies to custom tools.
+Eino’s Option mechanism passes dynamic runtime parameters. Details: `Eino: CallOption capabilities and conventions` at `/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities`. The same mechanism applies to custom tools.
 
 When you need custom option parameters, use `InferOptionableTool`:
 
@@ -312,8 +312,8 @@ func useInInvoke() {
 
 Beyond custom tools, the `eino-ext` project provides many ready-to-use implementations: `Googlesearch`, `DuckDuckGoSearch`, `wikipedia`, `httprequest`, etc. See implementations at https://github.com/cloudwego/eino-ext/tree/main/components/tool and docs:
 
-- Tool — Googlesearch: `/en/docs/eino/ecosystem_integration/tool/tool_googlesearch`
-- Tool — DuckDuckGoSearch: `/en/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search`
+- Tool — Googlesearch: `/docs/eino/ecosystem_integration/tool/tool_googlesearch`
+- Tool — DuckDuckGoSearch: `/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search`
 
 ## Approach 4 — Use MCP protocol
 

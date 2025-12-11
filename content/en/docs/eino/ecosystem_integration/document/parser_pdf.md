@@ -9,7 +9,7 @@ weight: 0
 
 ## **Overview**
 
-The PDF document parser is an implementation of the Document Parser interface that parses PDF file content into plain text. It follows [Eino: Document Parser Interface Guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide) and is used for:
+The PDF document parser is an implementation of the Document Parser interface that parses PDF file content into plain text. It follows [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide) and is used for:
 
 - converting PDF documents into plain text
 - splitting PDF content by pages
@@ -110,9 +110,9 @@ func main() {
 
 #### In loader
 
-See examples in [Eino: Document Parser Interface Guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+See examples in [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
 
 ## **References**
 
-- [Eino: Document Parser Interface Guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
-- [Eino: Document Loader Guide](/en/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader Guide](/docs/eino/core_modules/components/document_loader_guide)

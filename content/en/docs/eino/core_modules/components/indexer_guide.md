@@ -167,7 +167,7 @@ outIDs, _ := run.Invoke(ctx, docs, compose.WithCallbacks(helper))
 
 ## Existing Implementations
 
-1. Volc VikingDB Indexer: [Indexer — VikingDB](/en/docs/eino/ecosystem_integration/indexer/indexer_volc_vikingdb)
+1. Volc VikingDB Indexer: [Indexer — VikingDB](/docs/eino/ecosystem_integration/indexer/indexer_volc_vikingdb)
 
 ## Implementation Notes
 

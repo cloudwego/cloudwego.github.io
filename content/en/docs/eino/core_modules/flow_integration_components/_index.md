@@ -11,8 +11,8 @@ LLM applications have common patterns. Abstracting them yields templates that ac
 
 Currently integrated: `ReAct Agent`, `Host Multi-Agent`, `MultiQueryRetriever`, `ParentIndexer`, and more.
 
-- ReAct Agent: [Eino: ReAct Agent Manual](/en/docs/eino/core_modules/flow_integration_components/react_agent_manual)
-- Multi Agent: [Eino Tutorial: Host Multi-Agent](/en/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
+- ReAct Agent: [Eino: ReAct Agent Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
+- Multi Agent: [Eino Tutorial: Host Multi-Agent](/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
 
 ## Using Flows in Orchestration
 

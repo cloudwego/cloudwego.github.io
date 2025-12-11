@@ -8,7 +8,7 @@ weight: 4
 ---
 
 > 💡
-> Recommended reading first: [Eino: Overview](/en/docs/eino/overview) and [Eino: Orchestration Design Principles](/en/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+> Recommended reading first: [Eino: Overview](/docs/eino/overview) and [Eino: Orchestration Design Principles](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 
 ## Streaming in Orchestration: Overview
 
@@ -76,7 +76,7 @@ type Retriever interface {
 <tr><td>Tool</td><td>yes</td><td>yes</td><td>no</td><td>no</td></tr>
 </table>
 
-Official Eino components: only `ChatModel` and `Tool` also support `Stream`; all others support `Invoke` only. See: [Eino: Components](/en/docs/eino/core_modules/components)
+Official Eino components: only `ChatModel` and `Tool` also support `Stream`; all others support `Invoke` only. See: [Eino: Components](/docs/eino/core_modules/components)
 
 `Collect` and `Transform` are generally useful only within orchestration.
 
@@ -99,7 +99,7 @@ If the Tool is `StreamableTool` (output is `StreamReader[Message]`), then Tool �
 Eino’s automatic `StreamReader[T] → T` conversion applies whenever a component expects `T` but upstream produces `StreamReader[T]`. You may need to provide a custom concat function for `T`.
 
 > 💡
-> The `StreamReader[T] → T` conversion may require a user-provided concat function. See [Orchestration Design Principles](/en/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles) under “merge frames”.
+> The `StreamReader[T] → T` conversion may require a user-provided concat function. See [Orchestration Design Principles](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles) under “merge frames”.
 
 Conversely, consider another ReAct diagram:
 

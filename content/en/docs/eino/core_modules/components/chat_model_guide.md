@@ -274,10 +274,10 @@ result, _ := run.Invoke(ctx, messages, compose.WithCallbacks(helper))
 
 ## Existing Implementations
 
-1. OpenAI ChatModel: [ChatModel — OpenAI](/en/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
-2. Ollama ChatModel: [ChatModel — Ollama](/en/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
-3. Ark ChatModel: [ChatModel — Ark](/en/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
-4. More: [Eino ChatModel](/en/docs/eino/ecosystem_integration/chat_model/)
+1. OpenAI ChatModel: [ChatModel — OpenAI](/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
+2. Ollama ChatModel: [ChatModel — Ollama](/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
+3. Ark ChatModel: [ChatModel — Ark](/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
+4. More: [Eino ChatModel](/docs/eino/ecosystem_integration/chat_model/)
 
 ## Implementation Notes
 

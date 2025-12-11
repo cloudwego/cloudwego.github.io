@@ -1238,7 +1238,7 @@ func main() {
 
 ## **Related Documentation**
 
-- `Eino: ChatModel Guide` at `/en/docs/eino/core_modules/components/chat_model_guide`
-- `ChatModel - OpenAI` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_openai`
-- `ChatModel - Ollama` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ollama`
+- `Eino: ChatModel Guide` at `/docs/eino/core_modules/components/chat_model_guide`
+- `ChatModel - OpenAI` at `/docs/eino/ecosystem_integration/chat_model/chat_model_openai`
+- `ChatModel - Ollama` at `/docs/eino/ecosystem_integration/chat_model/chat_model_ollama`
 - [Volcengine Official Site](https://www.volcengine.com/product/doubao)

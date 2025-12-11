@@ -189,11 +189,11 @@ func (cm *ChatModel) Stream(ctx context.Context, in []*schema.Message, opts ...f
 
 When a Component is orchestrated into a Graph Node, and the Component does not implement callbacks, the Node injects callback trigger points matching the Component’s streaming paradigm. For example, a ChatModelNode triggers OnStart/OnEnd around `Generate`, and OnStart/OnEndWithStreamOutput around `Stream`. Which timing is triggered depends on both Graph’s execution mode (Invoke/Stream/Collect/Transform) and the Component’s streaming support.
 
-See [Streaming Essentials](/en/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+See [Streaming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
 
 ### Graph-level Callbacks
 
-Graph triggers callbacks at its own start/end/error timings. If Graph is called via `Invoke`, it triggers `OnStart/OnEnd/OnError`. If called via `Stream/Collect/Transform`, it triggers `OnStartWithStreamInput/OnEndWithStreamOutput/OnError` because Graph internally always executes as `Invoke` or `Transform`. See [Streaming Essentials](/en/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+Graph triggers callbacks at its own start/end/error timings. If Graph is called via `Invoke`, it triggers `OnStart/OnEnd/OnError`. If called via `Stream/Collect/Transform`, it triggers `OnStartWithStreamInput/OnEndWithStreamOutput/OnError` because Graph internally always executes as `Invoke` or `Transform`. See [Streaming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
 
 Note: Graph is also a component. Therefore, a graph callback is a special form of component callback. Per Node Callback semantics, when a node’s internal component (including a nested graph added via `AddGraphNode`) implements callback timings itself, the node reuses the component’s behavior and does not add duplicate node-level callbacks.
 

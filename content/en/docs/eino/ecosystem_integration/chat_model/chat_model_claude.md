@@ -827,7 +827,7 @@ func main() {
 
 ## **Related Documentation**
 
-- `Eino: ChatModel Guide` at `/en/docs/eino/core_modules/components/chat_model_guide`
-- `Eino: ToolsNode & Tool Guide` at `/en/docs/eino/core_modules/components/tools_node_guide`
-- `ChatModel - ARK` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ark`
-- `ChatModel - Ollama` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_ollama`
+- `Eino: ChatModel Guide` at `/docs/eino/core_modules/components/chat_model_guide`
+- `Eino: ToolsNode & Tool Guide` at `/docs/eino/core_modules/components/tools_node_guide`
+- `ChatModel - ARK` at `/docs/eino/ecosystem_integration/chat_model/chat_model_ark`
+- `ChatModel - Ollama` at `/docs/eino/ecosystem_integration/chat_model/chat_model_ollama`

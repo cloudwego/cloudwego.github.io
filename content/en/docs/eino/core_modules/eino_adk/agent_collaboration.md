@@ -398,7 +398,7 @@ By default, each agent’s input in a Workflow is generated via the History mech
 
 When an agent emits an `ExitAction` event, the Workflow agent exits immediately, regardless of remaining agents.
 
-See details and examples: `/en/docs/eino/core_modules/eino_adk/agent_implementation/workflow`
+See details and examples: `/docs/eino/core_modules/eino_adk/agent_implementation/workflow`
 
 ### SequentialAgent
 

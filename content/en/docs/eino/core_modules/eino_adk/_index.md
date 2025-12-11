@@ -16,16 +16,16 @@ Eino ADK is a Go-first Agent and Multi-Agent development kit. It provides:
 
 Start here:
 
-- Overview: [Eino ADK: Overview](/en/docs/eino/core_modules/eino_adk/agent_preview)
-- Interface: [Eino ADK: Agent Interface](/en/docs/eino/core_modules/eino_adk/agent_interface)
-- Quickstart: [Eino ADK: Quickstart](/en/docs/eino/core_modules/eino_adk/agent_quickstart)
-- Collaboration: [Eino ADK: Agent Collaboration](/en/docs/eino/core_modules/eino_adk/agent_collaboration)
-- Runner & Extensions: [Eino ADK: Agent Runner & Extensions](/en/docs/eino/core_modules/eino_adk/agent_extension)
-- HITL: [Eino ADK: Human-in-the-Loop](/en/docs/eino/core_modules/eino_adk/agent_hitl)
+- Overview: [Eino ADK: Overview](/docs/eino/core_modules/eino_adk/agent_preview)
+- Interface: [Eino ADK: Agent Interface](/docs/eino/core_modules/eino_adk/agent_interface)
+- Quickstart: [Eino ADK: Quickstart](/docs/eino/core_modules/eino_adk/agent_quickstart)
+- Collaboration: [Eino ADK: Agent Collaboration](/docs/eino/core_modules/eino_adk/agent_collaboration)
+- Runner & Extensions: [Eino ADK: Agent Runner & Extensions](/docs/eino/core_modules/eino_adk/agent_extension)
+- HITL: [Eino ADK: Human-in-the-Loop](/docs/eino/core_modules/eino_adk/agent_hitl)
 - Implementations:
-  - [ChatModelAgent](/en/docs/eino/core_modules/eino_adk/agent_implementation/chat_model)
-  - [Plan-Execute](/en/docs/eino/core_modules/eino_adk/agent_implementation/plan_execute)
-  - [Supervisor](/en/docs/eino/core_modules/eino_adk/agent_implementation/supervisor)
-  - [DeepAgents](/en/docs/eino/core_modules/eino_adk/agent_implementation/deepagents)
-  - [Workflow](/en/docs/eino/core_modules/eino_adk/agent_implementation/workflow)
+  - [ChatModelAgent](/docs/eino/core_modules/eino_adk/agent_implementation/chat_model)
+  - [Plan-Execute](/docs/eino/core_modules/eino_adk/agent_implementation/plan_execute)
+  - [Supervisor](/docs/eino/core_modules/eino_adk/agent_implementation/supervisor)
+  - [DeepAgents](/docs/eino/core_modules/eino_adk/agent_implementation/deepagents)
+  - [Workflow](/docs/eino/core_modules/eino_adk/agent_implementation/workflow)
 

@@ -9,7 +9,7 @@ weight: 0
 
 ## **Overview**
 
-Volcengine VikingDB retriever is an implementation of the Retriever interface. VikingDB is a high‑performance vector database service that provides vector retrieval capabilities. This component interacts with the service via the Volcengine VikingDB Go SDK. It follows [Eino: Retriever Guide](/en/docs/eino/core_modules/components/retriever_guide).
+Volcengine VikingDB retriever is an implementation of the Retriever interface. VikingDB is a high‑performance vector database service that provides vector retrieval capabilities. This component interacts with the service via the Volcengine VikingDB Go SDK. It follows [Eino: Retriever Guide](/docs/eino/core_modules/components/retriever_guide).
 
 ## **Usage**
 
@@ -153,5 +153,5 @@ func main() {
 
 ## **References**
 
-- [Eino: Retriever Guide](/en/docs/eino/core_modules/components/retriever_guide)
+- [Eino: Retriever Guide](/docs/eino/core_modules/components/retriever_guide)
 - VikingDB: https://www.volcengine.com/docs/84313

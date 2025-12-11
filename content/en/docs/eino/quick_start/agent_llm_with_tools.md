@@ -22,13 +22,13 @@ In Eino, an agent typically consists of two core parts: a `ChatModel` and one or
 
 `ChatModel` is the agent’s brain. It processes the user’s natural language input, understands intent, analyzes requirements, and decides whether a tool is needed. When tools are required, it selects the right tool with the right parameters and converts tool outputs back into natural-language responses.
 
-> More about ChatModel: [Eino: ChatModel Guide](/en/docs/eino/core_modules/components/chat_model_guide)
+> More about ChatModel: [Eino: ChatModel Guide](/docs/eino/core_modules/components/chat_model_guide)
 
 ### Tool
 
 `Tool` is the agent’s executor. Each tool has a clear function definition and parameter schema, allowing the `ChatModel` to call it accurately. Tools can wrap anything from simple data ops to sophisticated external service calls.
 
-> More about tools and ToolsNode: [Eino: ToolsNode Guide](/en/docs/eino/core_modules/components/tools_node_guide)
+> More about tools and ToolsNode: [Eino: ToolsNode Guide](/docs/eino/core_modules/components/tools_node_guide)
 
 ## Implementing Tools
 
@@ -280,13 +280,13 @@ Beyond Chain/Graph-based agents, Eino provides ready-made agent patterns.
 
 ReAct (Reasoning + Acting) combines deep reasoning with action through a think–act–observe loop. It’s well-suited for multi-step reasoning in complex tasks.
 
-> Learn more: [Eino: ReAct Agent Manual](/en/docs/eino/core_modules/flow_integration_components/react_agent_manual)
+> Learn more: [Eino: ReAct Agent Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
 
 ### Multi Agent
 
 Multi-agent systems coordinate multiple agents, each with distinct responsibilities and expertise. Through interaction and collaboration, they can tackle complex tasks requiring multiple areas of knowledge.
 
-> Learn more: [Eino Tutorial: Host Multi-Agent](/en/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
+> Learn more: [Eino Tutorial: Host Multi-Agent](/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
 
 ## Summary
 
@@ -297,4 +297,4 @@ Agents are a vital direction in AI — they understand user intent and take acti
 ## Related Reading
 
 - Quick Start
-  - [Build a Minimal LLM Application — ChatModel](/en/docs/eino/quick_start/simple_llm_application)
+  - [Build a Minimal LLM Application — ChatModel](/docs/eino/quick_start/simple_llm_application)

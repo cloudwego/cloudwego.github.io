@@ -221,7 +221,7 @@ type CallbackOutput struct {
 
 ## Existing Implementations
 
-- Volc VikingDB Retriever: [Retriever — VikingDB](/en/docs/eino/ecosystem_integration/retriever/retriever_volc_vikingdb)
+- Volc VikingDB Retriever: [Retriever — VikingDB](/docs/eino/ecosystem_integration/retriever/retriever_volc_vikingdb)
 
 ## Implementation Notes
 

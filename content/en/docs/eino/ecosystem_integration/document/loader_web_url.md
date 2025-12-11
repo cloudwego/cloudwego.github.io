@@ -9,7 +9,7 @@ weight: 0
 
 ## **Overview**
 
-URL document loader is an implementation of the Document Loader interface that loads content from web URLs. It follows [Eino: Document Loader Guide](/en/docs/eino/core_modules/components/document_loader_guide).
+URL document loader is an implementation of the Document Loader interface that loads content from web URLs. It follows [Eino: Document Loader Guide](/docs/eino/core_modules/components/document_loader_guide).
 
 ### **Features**
 
@@ -116,5 +116,5 @@ func main() {
 
 ## **References**
 
-- [Eino: Document Loader Guide](/en/docs/eino/core_modules/components/document_loader_guide)
-- [Eino: Document Parser Interface Guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader Guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)

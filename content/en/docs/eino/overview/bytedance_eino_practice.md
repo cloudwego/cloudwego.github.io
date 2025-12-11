@@ -175,8 +175,8 @@ Two parts:
 
 <table>
 <tr><td>Tooling</td><td>Required</td><td>Purpose</td><td>References</td></tr>
-<tr><td>Eino</td><td>Yes</td><td>Go-first LLM framework plus components and orchestration</td><td><li>https://github.com/cloudwego/eino</li><li>https://github.com/cloudwego/eino-ext</li><li><a href="https://www.cloudwego.io/en/docs/eino/">Eino User Manual</a></li></td></tr>
-<tr><td>EinoDev (GoLand/VS Code)</td><td>No</td><td>Visual orchestration and debugging</td><td><li><a href="/en/docs/eino/core_modules/devops/ide_plugin_guide/">Installation</a></li><li><a href="/en/docs/eino/core_modules/devops/visual_orchestration_plugin_guide/">Orchestration Guide</a></li></td></tr>
+<tr><td>Eino</td><td>Yes</td><td>Go-first LLM framework plus components and orchestration</td><td><li>https://github.com/cloudwego/eino</li><li>https://github.com/cloudwego/eino-ext</li><li><a href="https://www.cloudwego.io/docs/eino/">Eino User Manual</a></li></td></tr>
+<tr><td>EinoDev (GoLand/VS Code)</td><td>No</td><td>Visual orchestration and debugging</td><td><li><a href="/docs/eino/core_modules/devops/ide_plugin_guide/">Installation</a></li><li><a href="/docs/eino/core_modules/devops/visual_orchestration_plugin_guide/">Orchestration Guide</a></li></td></tr>
 <tr><td>Volc Doubao (model/embedding)</td><td>Yes</td><td>Chat model and embedding for indexing</td><td><a href="https://console.volcengine.com/ark">Doubao Console</a></td></tr>
 <tr><td>Docker</td><td>No</td><td>Deploy RedisSearch (or install manually)</td><td><a href="https://docs.docker.com/get-started/">Docker Docs</a></td></tr>
 <tr><td>Eino Assistant Sample</td><td>Yes</td><td>Complete sample code</td><td><a href="https://github.com/cloudwego/eino-examples/tree/main/quickstart/eino_assistant">Sample repo</a></td></tr>
@@ -231,7 +231,7 @@ docker-compose up -d
 > Visual orchestration lowers the learning curve and speeds up development. Experienced users can skip and build directly with Eino APIs.
 
 1) Install EinoDev and open the Eino Workflow panel
-   - Installation: `/en/docs/eino/core_modules/devops/ide_plugin_guide`
+   - Installation: `/docs/eino/core_modules/devops/ide_plugin_guide`
 
    - Graph name: `KnowledgeIndexing`
    - Node trigger mode: triggered after all predecessor nodes are executed
@@ -401,7 +401,7 @@ Open the web UI:
 
 Project: https://github.com/cloudwego/eino, https://github.com/cloudwego/eino-ext
 
-Eino User Manual: https://www.cloudwego.io/en/docs/eino/
+Eino User Manual: https://www.cloudwego.io/docs/eino/
 
 Website: __https://www.cloudwego.io__
 

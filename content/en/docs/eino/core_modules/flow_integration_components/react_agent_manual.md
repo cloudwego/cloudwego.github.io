@@ -478,4 +478,4 @@ Agent can be embedded via `compose.AnyLambda` and appended to Chain/Graph.
 
 ## Related Reading
 
-- [Eino Tutorial: Host Multi-Agent ](/en/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)
+- [Eino Tutorial: Host Multi-Agent ](/docs/eino/core_modules/flow_integration_components/multi_agent_hosting)

@@ -55,7 +55,7 @@ Example: a ReAct Agent — a `ChatModel` “binds” tools, receives `Message` i
 Implemented via components plus graph orchestration; concise code cleanly maps to the diagram.
 
 - Implementation: `flow/agent/react` in the repo
-- User manual: `/en/docs/eino/core_modules/flow_integration_components/react_agent_manual/`
+- User manual: `/docs/eino/core_modules/flow_integration_components/react_agent_manual/`
 
 This orchestration is just a few dozen lines:
 
@@ -144,7 +144,7 @@ Tracing, debugging, and visualization are first-class. Eino ships tracing callba
 
 Explore the Eino User Manual to learn concepts and build AI apps with Eino:
 
-- Quick Start: `/en/docs/eino/quick_start/`
+- Quick Start: `/docs/eino/quick_start/`
 
 For questions, reach us via the community or [Eino Issues](https://github.com/cloudwego/eino/issues).
 

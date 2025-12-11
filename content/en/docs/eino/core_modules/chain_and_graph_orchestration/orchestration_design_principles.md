@@ -140,7 +140,7 @@ AddChatModelNode("xxx", model, WithStreamStatePostHandler(postHandler))
 
 ### Invoke vs Stream Alignment
 
-`Runnable` offers `Invoke/Stream/Collect/Transform`. See [Streaming Essentials](/en/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+`Runnable` offers `Invoke/Stream/Collect/Transform`. See [Streaming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
 
 Assume a `Graph[[]*schema.Message, []*schema.Message]` with a ChatModel node and a Lambda node, compiled to `Runnable[[]*schema.Message, []*schema.Message]`:
 
@@ -221,7 +221,7 @@ Workflow maps fields across nodes; upstream structs are converted to maps, so th
 - Auto merge: see Fan‑in above
 - Auto copy: duplicate streams where needed (fan‑out to multiple downstreams, callbacks)
 
-All orchestration elements can sense/handle streams (branch, state handler, callback handler, passthrough, lambda, etc.). See [Streaming Essentials](/en/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+All orchestration elements can sense/handle streams (branch, state handler, callback handler, passthrough, lambda, etc.). See [Streaming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
 
 ### Global State
 
@@ -233,7 +233,7 @@ All orchestration elements can sense/handle streams (branch, state handler, call
 
 ### Callback Injection
 
-Components may or may not implement callback aspects. If a component implements `Checker` with `IsCallbacksEnabled()==true`, the framework uses the component’s internal callbacks; otherwise it wraps external callbacks reporting only input/output. Graph always injects callbacks with `RunInfo` for itself. See [Callback Manual](/en/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
+Components may or may not implement callback aspects. If a component implements `Checker` with `IsCallbacksEnabled()==true`, the framework uses the component’s internal callbacks; otherwise it wraps external callbacks reporting only input/output. Graph always injects callbacks with `RunInfo` for itself. See [Callback Manual](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual).
 
 ### Option Distribution
 
@@ -242,7 +242,7 @@ Components may or may not implement callback aspects. If a component implements 
 - Specific nodes — `DesignateNode(key ...string)`
 - Nested graphs or their nodes — `DesignateNodeWithPath(path ...*NodePath)`
 
-See [CallOption Capabilities](/en/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities).
+See [CallOption Capabilities](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities).
 
 ### Graph Nesting
 

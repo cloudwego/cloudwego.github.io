@@ -11,7 +11,7 @@ weight: 5
 
 `Lambda` is the simplest component type, allowing you to embed custom function logic in a workflow. Lambdas can implement one or more of the four paradigms formed by streaming/non-streaming input/output: `Invoke`, `Stream`, `Collect`, `Transform`.
 
-The framework converts among paradigms under defined rules. See [Overview](/en/docs/eino/overview) for details (Runnable section).
+The framework converts among paradigms under defined rules. See [Overview](/docs/eino/overview) for details (Runnable section).
 
 ## Definition and Construction
 

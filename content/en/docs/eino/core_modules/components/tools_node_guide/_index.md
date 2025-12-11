@@ -298,9 +298,9 @@ result, err := runnable.Invoke(ctx, input, compose.WithCallbacks(helper))
 
 ## Implementations
 
-1. Google Search: [Tool — GoogleSearch](/en/docs/eino/ecosystem_integration/tool/tool_googlesearch)
-2. DuckDuckGo: [Tool — DuckDuckGoSearch](/en/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search)
-3. MCP server as tool: [Tool — MCP](/en/docs/eino/ecosystem_integration/tool/tool_mcp)
+1. Google Search: [Tool — GoogleSearch](/docs/eino/ecosystem_integration/tool/tool_googlesearch)
+2. DuckDuckGo: [Tool — DuckDuckGoSearch](/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search)
+3. MCP server as tool: [Tool — MCP](/docs/eino/ecosystem_integration/tool/tool_mcp)
 
 ### v0.5.x → v0.6.x Migration
 

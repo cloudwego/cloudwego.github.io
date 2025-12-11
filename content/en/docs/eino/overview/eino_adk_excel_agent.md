@@ -11,7 +11,7 @@ weight: 4
 
 This article shows how to build a robust multi-agent system using **Eino ADK**, via a practical Excel Agent. The Excel Agent “understands your instructions, reads your sheets, writes and runs code” — decomposing tasks, invoking tools, and validating outcomes to complete Excel data tasks reliably.
 
-Earlier Eino ADK introduction: https://www.cloudwego.io/en/docs/eino/core_modules/eino_adk/
+Earlier Eino ADK introduction: https://www.cloudwego.io/docs/eino/core_modules/eino_adk/
 
 Full source: [eino-examples/adk/multiagent/integration-excel-agent](https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/integration-excel-agent)
 
@@ -457,7 +457,7 @@ Excel Agent demonstrates a Multi-Agent engineering methodology on Eino ADK:
 > **Start your agent development journey**
 >
 > - ⌨️ View Excel Agent source: https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/integration-excel-agent
-> - 📚 Read more docs: https://www.cloudwego.io/en/docs/eino/core_modules/eino_adk/
+> - 📚 Read more docs: https://www.cloudwego.io/docs/eino/core_modules/eino_adk/
 > - 🛠️ Browse ADK source: https://github.com/cloudwego/eino/tree/main/adk
 > - 💡 Explore all ADK examples: https://github.com/cloudwego/eino-examples/tree/main/adk
 > - 🤝 Join the developer community: share experiences and best practices

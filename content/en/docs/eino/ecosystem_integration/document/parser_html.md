@@ -9,7 +9,7 @@ weight: 0
 
 ## **Overview**
 
-The HTML document parser is an implementation of the Document Parser interface that parses HTML page content into plain text. It follows [Eino: Document Parser Interface Guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide) and is used for:
+The HTML document parser is an implementation of the Document Parser interface that parses HTML page content into plain text. It follows [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide) and is used for:
 
 - extracting plain text from web pages
 - retrieving page metadata (title, description, etc.)
@@ -141,10 +141,10 @@ func main() {
 
 #### In loader
 
-See examples in [Eino: Document Parser Interface Guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+See examples in [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
 
 ## **References**
 
-- [Eino: Document Parser Interface Guide](/en/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
-- [Eino: Document Loader Guide](/en/docs/eino/core_modules/components/document_loader_guide)
-- [Parser - pdf](/en/docs/eino/ecosystem_integration/document/parser_pdf)
+- [Eino: Document Parser Interface Guide](/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide)
+- [Eino: Document Loader Guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Parser - pdf](/docs/eino/ecosystem_integration/document/parser_pdf)

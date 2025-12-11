@@ -141,9 +141,9 @@ log.Printf("doc content: %v", outDocs[0].Content)
 
 ## Existing Implementations
 
-1. File Loader — local filesystem: [Loader — local file](/en/docs/eino/ecosystem_integration/document/loader_local_file)
-2. Web Loader — HTTP/HTTPS: [Loader — web url](/en/docs/eino/ecosystem_integration/document/loader_web_url)
-3. S3 Loader — S3-compatible storage: [Loader — Amazon S3](/en/docs/eino/ecosystem_integration/document/loader_amazon_s3)
+1. File Loader — local filesystem: [Loader — local file](/docs/eino/ecosystem_integration/document/loader_local_file)
+2. Web Loader — HTTP/HTTPS: [Loader — web url](/docs/eino/ecosystem_integration/document/loader_web_url)
+3. S3 Loader — S3-compatible storage: [Loader — Amazon S3](/docs/eino/ecosystem_integration/document/loader_amazon_s3)
 
 ## Implementation Notes
 
@@ -252,7 +252,7 @@ func (l *CustomLoader) doLoad(ctx context.Context, src document.Source, opts *cu
 
 ## Other References
 
-- [Eino: Document Transformer Guide](/en/docs/eino/core_modules/components/document_transformer_guide)
-- [Eino: Embedding Guide](/en/docs/eino/core_modules/components/embedding_guide)
-- [Eino: Indexer Guide](/en/docs/eino/core_modules/components/indexer_guide)
-- [Eino: Retriever Guide](/en/docs/eino/core_modules/components/retriever_guide)
+- [Eino: Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide)
+- [Eino: Embedding Guide](/docs/eino/core_modules/components/embedding_guide)
+- [Eino: Indexer Guide](/docs/eino/core_modules/components/indexer_guide)
+- [Eino: Retriever Guide](/docs/eino/core_modules/components/retriever_guide)

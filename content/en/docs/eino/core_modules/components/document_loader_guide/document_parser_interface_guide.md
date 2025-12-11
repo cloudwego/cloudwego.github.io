@@ -124,8 +124,8 @@ func main() {
 
 ### Other Implementations
 
-- PDF parser: [Parser — PDF](/en/docs/eino/ecosystem_integration/document/parser_pdf)
-- HTML parser: [Parser — HTML](/en/docs/eino/ecosystem_integration/document/parser_html)
+- PDF parser: [Parser — PDF](/docs/eino/ecosystem_integration/document/parser_pdf)
+- HTML parser: [Parser — HTML](/docs/eino/ecosystem_integration/document/parser_html)
 
 ## Using Parsers in Document Loader
 

@@ -444,7 +444,7 @@ func main() {
 
 ## **Related Documentation**
 
-- `Eino: ChatModel Guide` at `/en/docs/eino/core_modules/components/chat_model_guide`
-- `ChatModel - OpenAI` at `/en/docs/eino/ecosystem_integration/chat_model/chat_model_openai`
-- `Eino: ToolsNode Guide` at `/en/docs/eino/core_modules/components/tools_node_guide`
+- `Eino: ChatModel Guide` at `/docs/eino/core_modules/components/chat_model_guide`
+- `ChatModel - OpenAI` at `/docs/eino/ecosystem_integration/chat_model/chat_model_openai`
+- `Eino: ToolsNode Guide` at `/docs/eino/core_modules/components/tools_node_guide`
 - [Ollama Model Library](https://ollama.ai/library)

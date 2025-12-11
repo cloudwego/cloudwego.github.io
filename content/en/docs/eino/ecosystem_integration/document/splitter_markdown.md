@@ -9,7 +9,7 @@ weight: 0
 
 ## **Overview**
 
-Markdown splitter is an implementation of the Document Transformer interface that splits by Markdown heading levels. It follows [Eino: Document Transformer Guide](/en/docs/eino/core_modules/components/document_transformer_guide).
+Markdown splitter is an implementation of the Document Transformer interface that splits by Markdown heading levels. It follows [Eino: Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide).
 
 ### **How It Works**
 
@@ -110,6 +110,6 @@ Chapter two content.
 
 ## **References**
 
-- [Eino: Document Transformer Guide](/en/docs/eino/core_modules/components/document_transformer_guide)
-- [Splitter - recursive](/en/docs/eino/ecosystem_integration/document/splitter_recursive)
-- [Splitter - semantic](/en/docs/eino/ecosystem_integration/document/splitter_semantic)
+- [Eino: Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide)
+- [Splitter - recursive](/docs/eino/ecosystem_integration/document/splitter_recursive)
+- [Splitter - semantic](/docs/eino/ecosystem_integration/document/splitter_semantic)

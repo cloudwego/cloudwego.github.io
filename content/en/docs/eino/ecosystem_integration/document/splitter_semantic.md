@@ -9,7 +9,7 @@ weight: 0
 
 ## **Overview**
 
-Semantic splitter is an implementation of the Document Transformer interface that splits long documents based on semantic similarity. It follows [Eino: Document Transformer Guide](/en/docs/eino/core_modules/components/document_transformer_guide).
+Semantic splitter is an implementation of the Document Transformer interface that splits long documents based on semantic similarity. It follows [Eino: Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide).
 
 ### **How It Works**
 
@@ -119,6 +119,6 @@ splitter, err := semantic.NewSplitter(ctx, &semantic.Config{
 
 ## **References**
 
-- [Eino: Document Transformer Guide](/en/docs/eino/core_modules/components/document_transformer_guide)
-- [Splitter - recursive](/en/docs/eino/ecosystem_integration/document/splitter_recursive)
-- [Splitter - markdown](/en/docs/eino/ecosystem_integration/document/splitter_markdown)
+- [Eino: Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide)
+- [Splitter - recursive](/docs/eino/ecosystem_integration/document/splitter_recursive)
+- [Splitter - markdown](/docs/eino/ecosystem_integration/document/splitter_markdown)

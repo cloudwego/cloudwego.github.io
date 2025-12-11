@@ -240,7 +240,7 @@ func StatefulInterrupt(ctx context.Context, info any, state any) error
 func CompositeInterrupt(ctx context.Context, info any, state any, errs ...error)
 ```
 
-See design details: [Eino human-in-the-loop framework: architecture guide](/en/docs/eino/core_modules/eino_adk/agent_hitl)
+See design details: [Eino human-in-the-loop framework: architecture guide](/docs/eino/core_modules/eino_adk/agent_hitl)
 
 ## CheckPoint in Streaming
 
