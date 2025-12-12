@@ -8,7 +8,7 @@ description: "用 Swagger 2.0 来自动生成 RESTful API 文档的 Hertz 中间
 
 > **⚠️ 已废弃**
 >
-> `hertz-contrib.swagger` 中间件已被废弃。
+> `hertz-contrib/swagger` 中间件已被废弃。
 > Hertz 推荐所有用户迁移到官方 `swaggo/swag` 工具链，使用 [Hertz HTTP Adaptor](../../basic-feature/http-adaptor/)。
 >
 > 迁移指南如下。

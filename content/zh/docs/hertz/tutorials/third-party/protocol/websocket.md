@@ -1,6 +1,6 @@
 ---
 title: "Websocket"
-date: 2022-09-13
+date: 2025-12-12
 weight: 4
 keywords: ["WebSocket", "HTTP", "hijack", "TCP"]
 description: "Hertz 基于 hijack 的方式实现了对 WebSocket 的支持。"
@@ -8,9 +8,110 @@ description: "Hertz 基于 hijack 的方式实现了对 WebSocket 的支持。"
 
 WebSocket 是一种可以在单个 TCP 连接上进行全双工通信，位于 OSI 模型的应用层。WebSocket 使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在 WebSocket API 中，浏览器和服务器只需要完成一次握手，两者之间就可以创建持久性的连接，并进行双向数据传输。
 
-Hertz 提供了 WebSocket 的支持，参考 [gorilla/websocket](http://github.com/gorilla/websocket) 库使用 `hijack` 的方式在 Hertz 进行了适配，用法和参数基本保持一致。
+Hertz 提供了 WebSocket 的支持，参考 [gorilla/websocket](http://github.com/gorilla/websocket) 库使用 `hijack` 的方式在 Hertz 进行了适配，用法和参数基本保持一致
 
-## 安装
+> **⚠️ 已废弃**
+>
+> `hertz-contrib/websocket` 中间件已被废弃。
+> Hertz 推荐所有用户迁移到官方 `gorilla/websocket` 工具链，使用 [Hertz HTTP Adaptor](../../basic-feature/http-adaptor/)。
+>
+> 迁移指南如下。
+
+## 迁移指南
+
+1. 移除已废弃的依赖项
+
+```sh
+github.com/hertz-contrib/websocket
+```
+
+2. 利用 hertz adaptor
+
+```go
+// 旧版本（使用 hertz-contrib/websocket)
+import "github.com/hertz-contrib/websocket"
+var upgrader = websocket.HertzUpgrader{}
+func echo(_ context.Context, c *app.RequestContext) {
+    err := upgrader.Upgrade(c, func(conn *websocket.Conn) {
+        // 具体实现
+    })
+}
+h.GET("/echo", echo)
+
+// 新版本（使用 hertz adaptor)
+import "github.com/gorilla/websocket"
+var upgrader = websocket.Upgrader{}
+func echo(w http.ResponseWriter, r *http.Request) {
+    c, err := upgrader.Upgrade(w, r, nil)
+    // 具体实现
+}
+
+h.GET("/echo", adaptor.HertzHandler(http.HandlerFunc(echo)))
+```
+
+## 示例用法
+
+下面的示例展示了如何修改 hertz-contrib/echo [示例](https://github.com/hertz-contrib/websocket/tree/main/examples/echo) 中的 `server.go` 代码，以便直接使用适配器与 gorilla/websocket 一起工作。`client.go` 无需做任何修改。
+
+```go
+package main
+
+import (
+    "flag"
+    "html/template"
+    "log"
+    "net/http"
+
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/adaptor"
+    "github.com/gorilla/websocket"
+)
+
+var addr = flag.String("addr", "localhost:8080", "http service address")
+
+var upgrader = websocket.Upgrader{} // use default options
+
+func echo(w http.ResponseWriter, r *http.Request) {
+    c, err := upgrader.Upgrade(w, r, nil)
+    if err != nil {
+        log.Print("upgrade:", err)
+        return
+    }
+    defer c.Close()
+    for {
+        mt, message, err := c.ReadMessage()
+        if err != nil {
+            log.Println("read:", err)
+            break
+        }
+        log.Printf("recv: %s", message)
+        err = c.WriteMessage(mt, message)
+        if err != nil {
+            log.Println("write:", err)
+            break
+        }
+    }
+}
+
+func home(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    homeTemplate.Execute(w, "ws://"+r.Host+"/echo")
+}
+
+func main() {
+    h := server.New(server.WithHostPorts(":8080"))
+
+    h.GET("/", adaptor.HertzHandler(http.HandlerFunc(home)))
+    h.GET("/echo", adaptor.HertzHandler(http.HandlerFunc(echo)))
+
+    h.Spin()
+}
+
+// 网络客户端代码详见：https://github.com/hertz-contrib/websocket/blob/main/examples/echo/server.go#L64，此处省略
+var homeTemplate = ""
+```
+
+## 安装（已废弃）
 
 ```shell
 go get github.com/hertz-contrib/websocket
