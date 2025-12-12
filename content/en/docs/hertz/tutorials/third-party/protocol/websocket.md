@@ -1,9 +1,9 @@
 ---
 title: "Websocket"
-date: 2022-09-13
+date: 2025-12-12
 weight: 4
 keywords: ["WebSocket", "HTTP", "hijack", "TCP"]
-description: "Hertz implements support for WebSocket based on hijack."
+description: "Hertz implements support for Gorilla WebSocket based on hijack."
 ---
 
 WebSocket is a type of full-duplex communication that can be performed on a single TCP connection and is located at the application layer of the OSI model.
@@ -13,7 +13,108 @@ In the WebSocket API, the browser and the server only need to complete a handsha
 Hertz provides support for WebSocket and adapts it in Hertz by referring to [gorilla/websocket](https://github.com/gorilla/websocket) using `hijack`.
 The usage and parameters are basically the same.
 
-## Install
+> **⚠️ Deprecated**
+>
+> The `hertz-contrib/websocket` middleware is now deprecated.  
+> Hertz recommends all users to migrate to the official `gorilla/websocket` toolchain using the [Hertz HTTP Adaptor](../../basic-feature/http-adaptor/).
+>
+> See the migration guide below.
+
+## Migration Guide
+
+1. Remove deprecated dependencies
+
+```sh
+github.com/hertz-contrib/websocket
+```
+
+2. Use hertz adaptor
+
+```go
+// Before (using hertz-contrib/websocket)
+import "github.com/hertz-contrib/websocket"
+var upgrader = websocket.HertzUpgrader{}
+func echo(_ context.Context, c *app.RequestContext) {
+    err := upgrader.Upgrade(c, func(conn *websocket.Conn) {
+        // Implementation
+    })
+}
+h.GET("/echo", echo)
+
+// After (using hertz adaptor)
+import "github.com/gorilla/websocket"
+var upgrader = websocket.Upgrader{}
+func echo(w http.ResponseWriter, r *http.Request) {
+    c, err := upgrader.Upgrade(w, r, nil)
+    // Implementation
+}
+
+h.GET("/echo", adaptor.HertzHandler(http.HandlerFunc(echo)))
+```
+
+## Example Usage
+
+The following example demonstrates how to modify the `server.go` code in the hertz-contrib/echo [example](https://github.com/hertz-contrib/websocket/tree/main/examples/echo) to directly use the adaptor with gorilla/websocket. There is no change to `client.go`
+
+```go
+package main
+
+import (
+    "flag"
+    "html/template"
+    "log"
+    "net/http"
+
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/adaptor"
+    "github.com/gorilla/websocket"
+)
+
+var addr = flag.String("addr", "localhost:8080", "http service address")
+
+var upgrader = websocket.Upgrader{} // use default options
+
+func echo(w http.ResponseWriter, r *http.Request) {
+    c, err := upgrader.Upgrade(w, r, nil)
+    if err != nil {
+        log.Print("upgrade:", err)
+        return
+    }
+    defer c.Close()
+    for {
+        mt, message, err := c.ReadMessage()
+        if err != nil {
+            log.Println("read:", err)
+            break
+        }
+        log.Printf("recv: %s", message)
+        err = c.WriteMessage(mt, message)
+        if err != nil {
+            log.Println("write:", err)
+            break
+        }
+    }
+}
+
+func home(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    homeTemplate.Execute(w, "ws://"+r.Host+"/echo")
+}
+
+func main() {
+    h := server.New(server.WithHostPorts(":8080"))
+
+    h.GET("/", adaptor.HertzHandler(http.HandlerFunc(home)))
+    h.GET("/echo", adaptor.HertzHandler(http.HandlerFunc(echo)))
+
+    h.Spin()
+}
+
+// Web client code details are available at: https://github.com/hertz-contrib/websocket/blob/main/examples/echo/server.go#L64
+var homeTemplate = ""
+```
+
+## Install (Deprecated)
 
 ```shell
 go get github.com/hertz-contrib/websocket
