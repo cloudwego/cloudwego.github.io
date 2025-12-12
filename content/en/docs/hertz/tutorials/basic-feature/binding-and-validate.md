@@ -1,6 +1,6 @@
 ---
 title: "Binding and validate"
-date: 2022-06-21
+date: 2025-12-08
 weight: 8
 keywords:
   ["Binding and validate", "go-tagexpr", "tag", "Parameter binding precedence"]
@@ -129,7 +129,7 @@ type TagRequiredReq struct {
 
 ### Customise binder
 
-> hertz version >= v0.7.0 support
+> hertz version >= v0.10.3 support
 
 You need to implement the Binder interface and inject it into the hertz engine in a configurable way.
 
@@ -138,13 +138,13 @@ type Binder interface {
     Name() string // The name of the binder.
     // The following are the various binding methods
     Bind(*protocol.Request, interface{}, param.Params) error
-    BindAndValidate(*protocol.Request, interface{}, param.Params) error
     BindQuery(*protocol.Request, interface{}) error
     BindHeader(*protocol.Request, interface{}) error
     BindPath(*protocol.Request, interface{}, param.Params) error
     BindForm(*protocol.Request, interface{}) error
     BindJSON(*protocol.Request, interface{}) error
     BindProtobuf(*protocol.Request, interface{}) error
+    Validate(*protocol.Request, interface{}) error
 }
 ```
 
@@ -168,10 +168,6 @@ func (m *mockBinder) Name() string {
 
 func (m *mockBinder) Bind(request *protocol.Request, i interface{}, params param.Params) error {
 	return nil
-}
-
-func (m *mockBinder) BindAndValidate(request *protocol.Request, i interface{}, params param.Params) error {
-	return fmt.Errorf("test binder")
 }
 
 func (m *mockBinder) BindQuery(request *protocol.Request, i interface{}) error {
@@ -198,15 +194,42 @@ func (m *mockBinder) BindProtobuf(request *protocol.Request, i interface{}) erro
 	return nil
 }
 
+func (m *mockBinder) Validate(request *protocol.Request, i interface{}) error {
+	return nil
+}
+
 ```
 
 Currently expanded binders:
+
+> ⚠️ Note: The `hertz-contrib/binding` middleware is now deprecated.
+> Users are recommended to use built-in functionality in Hertz or their own custom binder.
 
 - bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (binding library used before refactoring)
 
 ### Custom validator
 
-> Supported by hertz version >= v0.7.0.
+> Supported by hertz version >= v0.10.3.
+
+```go
+import (
+	"github.com/go-playground/validator/v10"
+)
+
+func main() {
+	vd := validator.New(validator.WithRequiredStructEnabled())
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"),
+		server.WithCustomValidatorFunc(func(_ *protocol.Request, req any) error {
+			return vd.Struct(req)
+		}),
+	)
+    h.Spin()
+}
+```
+
+#### Custom validator (Deprecated)
+
+> Supported by Hertz versions 0.7.0 to 0.10.2.
 
 You need to implement the Validator interface and inject it into the hertz engine in a configurable way.
 
@@ -247,17 +270,91 @@ func (m *mockValidator) ValidateTag() string {
 
 Currently expanded validators:
 
+> ⚠️ Note: The `hertz-contrib/binding` middleware is now deprecated.
+> Users are recommended to use the built-in functionality in Hertz. If custom validation is required, users can use the validator from [go-playground/validator](https://github.com/go-playground/validator).
+
 - go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
 
 ### Customize the error of binding and validation
 
 When an error occurs in the binding parameter and the parameter validation fails, user can customize the Error（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_error)）For example：
 The user can customise the content of the Error in case of binding parameter errors and parameter validation failures, using the following method:<br>
-**hertz version >= v0.7.0**
+**hertz version >= v0.10.3**
 
 > Custom bind errors are not supported at this time.
 
 Custom validate error:
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/go-playground/validator/v10"
+)
+
+type User struct {
+	Name  string `form:"name" validate:"required"`
+	Age   uint8  `form:"age"  validate:"gte=0,lte=130"`
+	Email string `form:"email" validate:"required,email"`
+}
+
+type ValidateError struct {
+   ErrType, FailField, Msg string
+}
+
+func (e *ValidateError) Error() string {
+    if e.Msg != "" {
+		return e.ErrType + ": expr_path=" + e.FailField + ", cause=" + e.Msg
+	}
+	return e.ErrType + ": expr_path=" + e.FailField + ", cause=invalid"
+}
+
+func main() {
+	v := validator.New(validator.WithRequiredStructEnabled())
+
+	h := server.Default(
+		server.WithHostPorts("127.0.0.1:8080"),
+		server.WithCustomValidatorFunc(func(_ *protocol.Request, req any) error {
+			err := v.Struct(req)
+			if err == nil {
+				return nil
+			}
+
+			if ve, ok := err.(validator.ValidationErrors); ok {
+				fe := ve[0]
+
+				return &ValidateError{
+					ErrType:   "validateErr",
+					FailField: fe.Field(),
+					Msg:       fe.Tag(),
+				}
+			}
+
+			return err
+		}),
+	)
+
+	h.GET("/bind", func(ctx context.Context, c *app.RequestContext) {
+		var user User
+		err := c.BindAndValidate(&user)
+		if err != nil {
+			fmt.Println("CUSTOM:", err.Error())
+			return
+		}
+		fmt.Println("OK:", user)
+	})
+
+	h.Spin()
+}
+```
+
+**hertz versions 0.7.0 to 0.10.2**<br>
 
 ```go
 package main
@@ -357,34 +454,6 @@ In the parameter binding, for some special types, when the default behavior can 
 **hertz version >= v0.7.0**<br>
 
 ```go
-import "github.com/cloudwego/hertz/pkg/app/server/binding"
-
-type Nested struct {
-   B string
-   C string
-}
-
-type TestBind struct {
-   A Nested `query:"a,required"`
-}
-
-func init() {
-   binding.MustRegTypeUnmarshal(reflect.TypeOf(Nested{}), func(v string, emptyAsZero bool) (reflect.Value, error) {
-      if v == "" && emptyAsZero {
-         return reflect.ValueOf(Nested{}), nil
-      }
-      val := Nested{
-         B: v[:5],
-         C: v[5:],
-      }
-      return reflect.ValueOf(val), nil
-   })
-}
-```
-
-### Customize the validation function
-
-```go
 package main
 
 import (
@@ -402,7 +471,7 @@ type TestBind struct {
 }
 
 func main() {
-    bindConfig := &binding.BindConfig{}
+    bindConfig := binding.NewBindConfig()
     // After v0.7.0 refactoring, on the basis of the original increase in the request content and routing parameters,
     // which can be more flexible for the user to customise the type of parsing
     // Note: Only after a tag is successfully matched will the custom logic go through.
@@ -456,8 +525,55 @@ func init() {
 
 ### Custom validation function
 
-Complex validation logic can be implemented in the `vd` annotation by registering a custom validation function:<br>
-**hertz version >= v0.7.0**<br>
+Complex validation logic can be implemented in the `validate` annotation by registering a custom validation function:<br>
+**hertz version >= v0.10.3**<br>
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/app/server/binding"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/go-playground/validator/v10"
+)
+
+type Req struct {
+	A string `query:"a" validate:"test"`
+}
+
+func main() {
+	vd := validator.New(validator.WithRequiredStructEnabled())
+
+	vd.RegisterValidation("test", func(fl validator.FieldLevel) bool {
+		return fl.Field().String() != "123"
+	})
+
+	h := server.Default(
+		server.WithHostPorts("127.0.0.1:8080"),
+		server.WithCustomValidatorFunc(func(_ *protocol.Request, req any) error {
+			return vd.Struct(req)
+		}),
+	)
+
+	h.GET("/test", func(ctx context.Context, c *app.RequestContext) {
+		var r Req
+		if err := c.BindAndValidate(&r); err != nil {
+			fmt.Println("VALIDATION ERROR:", err.Error())
+			return
+		}
+		fmt.Println("OK:", r)
+	})
+
+	h.Spin()
+}
+```
+
+**hertz versions 0.7.0 to 0.10.2**<br>
 
 ```go
 package main
