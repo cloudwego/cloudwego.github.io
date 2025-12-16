@@ -3,7 +3,7 @@ title: "Swagger"
 date: 2025-12-04
 weight: 8
 keywords: ["Swagger", "RESTful API"]
-description: "Hertz middleware to automatically generate RESTful API documentation with Swagger 2.0."
+description: "Generate RESTful API documentation with the official Swagger toolchain and HTTP adaptor."
 ---
 
 > **⚠️ Deprecated**
@@ -28,26 +28,29 @@ github.com/swaggo/files
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-3. Replace swagger handler
-
-If the project has already been set up, replace the code below.
+3. Use hertz adaptor
 
 ```go
-// Before (using hertz-contrib/swagger)
+// Before (deprecated: hertz-contrib/swagger)
 import "github.com/hertz-contrib/swagger"
 import swaggerFiles "github.com/swaggo/files"
 
 url := swagger.URL("http://localhost:8888/swagger/doc.json")
 h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url))
+```
 
-// After (using http adaptor)
+```go
+// After (recommended: adaptor)
 import "github.com/cloudwego/hertz/pkg/common/adaptor"
 import httpSwagger "github.com/swaggo/http-swagger"
 
 h.GET("/swagger/*any", adaptor.HertzHandler(httpSwagger.WrapHandler))
 ```
 
-If starting a new project, follow the sample code below as an example.
+## Example Usage
+
+The following example demonstrates how to integrate Swagger documentation and Swagger UI
+into a Hertz application using the Hertz HTTP adaptor.
 
 ```go
 package main
@@ -105,13 +108,13 @@ func main() {
 }
 ```
 
-4. Generate Swagger docs
+1. Generate Swagger docs
 
 ```sh
 swag init
 ```
 
-5. Run program
+2. Run program
 
 Start the Hertz server.
 
@@ -121,10 +124,11 @@ go run main.go
 
 On a web browser, go to http://localhost:8888/swagger/index.html or whichever address that is configured to see the Swagger UI.
 
-6. Provide custom Swagger UI
+### Custom Swagger UI
 
 For users who want to create their own custom UI, they will need to download the Swagger UI dist files, and serve the UI files as static assets.
-Copy the following files from [swagger-ui/dist](https://github.com/swagger-api/swagger-ui/tree/master/dist) and place them in `swagger-ui/`.
+
+1. Copy the following files from [swagger-ui/dist](https://github.com/swagger-api/swagger-ui/tree/master/dist) and place them in `swagger-ui/`.
 
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/favicon-16x16.png
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/favicon-32x32.png
@@ -132,7 +136,7 @@ Copy the following files from [swagger-ui/dist](https://github.com/swagger-api/s
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/swagger-ui-bundle.js
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/swagger-ui-standalone-preset.js
 
-Create an `index.html` file in the same directory with the following template. The original configuration options present in the old `hertz-contrib/swagger` middleware can be directly configured in the HTML file.
+2. Create an `index.html` file in the same directory with the following template. The original configuration options present in the old `hertz-contrib/swagger` middleware can be directly configured in the HTML file.
 
 **Note: The HTML file below is just a sample and should be modified accordingly to the user's needs.**
 
@@ -259,7 +263,7 @@ project/
 └── go.sum
 ```
 
-7. Serve static files
+3. Serve static files
 
 Add this line into `main.go`
 
@@ -274,7 +278,7 @@ h.Spin()
 // Rest of code
 ```
 
-8. Run program
+4. Run program
 
 ```sh
 go run main.go
@@ -288,7 +292,7 @@ Hertz middleware to automatically generate RESTful API documentation with Swagge
 
 The implementation of the [swagger](https://github.com/hertz-contrib/swagger) extension refers to the implementation of [Gin](https://github.com/swaggo/gin-swagger).
 
-## Usage
+### Usage
 
 1. Add comments to your API source code, See [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format).
 
@@ -341,7 +345,7 @@ import "github.com/hertz-contrib/swagger" // hertz-swagger middleware
 import "github.com/swaggo/files" // swagger embed files
 ```
 
-## Example
+### Example
 
 Now assume you have implemented a simple api as following:
 
@@ -450,11 +454,11 @@ Demo project tree, `swag init` is run at relative `.`.
 └── main.go
 ```
 
-## Multiple APIs
+### Multiple APIs
 
 This feature was introduced in swag v1.7.9.
 
-## Configuration
+### Configuration
 
 You can configure Swagger using different configuration options.
 

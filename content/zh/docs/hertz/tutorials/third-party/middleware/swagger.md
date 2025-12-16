@@ -3,7 +3,7 @@ title: "Swagger"
 date: 2025-12-04
 weight: 8
 keywords: ["Swagger", "RESTful API"]
-description: "用 Swagger 2.0 来自动生成 RESTful API 文档的 Hertz 中间件。"
+description: "使用官方 Swagger 工具链和 HTTP Adaptor 生成 RESTful API 文档"
 ---
 
 > **⚠️ 已废弃**
@@ -28,26 +28,28 @@ github.com/swaggo/files
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-3. 替换 Swagger handler
-
-如果项目已经设置好，替换下面的代码。
+3. 利用 hertz adaptor
 
 ```go
-// 旧版本（使用 hertz-contrib/swagger）
+// 旧版本（已废弃：hertz-contrib/swagger）
 import "github.com/hertz-contrib/swagger"
 import swaggerFiles "github.com/swaggo/files"
 
 url := swagger.URL("http://localhost:8888/swagger/doc.json")
 h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url))
+```
 
-// 新版本（使用 http adaptor）
+```go
+// 新版本（推荐：adaptor）
 import "github.com/cloudwego/hertz/pkg/common/adaptor"
 import httpSwagger "github.com/swaggo/http-swagger"
 
 h.GET("/swagger/*any", adaptor.HertzHandler(httpSwagger.WrapHandler))
 ```
 
-如果是新项目，请参考以下示例代码：
+## 示例用法
+
+本示例演示了如何使用 HTTP Adaptor 在 Hertz 应用中集成 Swagger UI。
 
 ```go
 package main
@@ -105,13 +107,13 @@ func main() {
 }
 ```
 
-4. 更新 Swagger 注释
+1. 更新 Swagger 注释
 
 ```sh
 swag init
 ```
 
-5. 运行程序
+2. 运行程序
 
 启动 Hertz 服务器。
 
@@ -121,10 +123,11 @@ go run main.go
 
 在浏览器中访问 http://localhost:8888/swagger/index.html 或配置的地址，即可查看 Swagger UI。
 
-6. 使用自定义 Swagger UI
+### 自定义 Swagger UI
 
 对于想要创建自己的自定义 UI 的用户，他们需要下载 Swagger UI 分发文件，并将 UI 文件作为静态资源提供。
-从 [swagger-ui/dist](https://github.com/swagger-api/swagger-ui/tree/master/dist) 中复制以下文件到 `swagger-ui/`
+
+1. 从 [swagger-ui/dist](https://github.com/swagger-api/swagger-ui/tree/master/dist) 中复制以下文件到 `swagger-ui/`
 
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/favicon-16x16.png
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/favicon-32x32.png
@@ -132,7 +135,7 @@ go run main.go
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/swagger-ui-bundle.js
 - https://github.com/swagger-api/swagger-ui/blob/master/dist/swagger-ui-standalone-preset.js
 
-在同一目录下创建一个 `index.html` 文件，示例模板如下。旧版 hertz-contrib/swagger 中的配置项都可以直接在 HTML 文件里设置。
+2. 在同一目录下创建一个 `index.html` 文件，示例模板如下。旧版 hertz-contrib/swagger 中的配置项都可以直接在 HTML 文件里设置。
 
 **注意：以下 HTML 文件仅为示例，应根据用户需求进行修改。**
 
@@ -259,7 +262,7 @@ project/
 └── go.sum
 ```
 
-7. 提供静态资源服务
+3. 提供静态资源服务
 
 在 `main.go` 中加入
 
@@ -274,7 +277,7 @@ h.Spin()
 // 其他代码
 ```
 
-8. 运行程序
+4. 运行程序
 
 ```sh
 go run main.go
@@ -288,7 +291,7 @@ go run main.go
 
 参考了 gin 的 [实现](https://github.com/swaggo/gin-swagger)，对 Hertz 进行了适配。
 
-## 使用用法
+### 使用用法
 
 1. 在你的 API 源代码中添加注释，参考 [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format)。
 
@@ -340,7 +343,7 @@ import "github.com/hertz-contrib/swagger" // hertz-swagger middleware
 import "github.com/swaggo/files" // swagger embed files
 ```
 
-## 示例代码
+### 示例代码
 
 现在假设你已经实现了一个简单的 api，如下所示：
 
@@ -451,11 +454,11 @@ func main() {
 └── main.go
 ```
 
-## 支持多个 API
+### 支持多个 API
 
 这个功能是在 swag v1.7.9 中引入的。
 
-## 配置
+### 配置
 
 你可以使用不同的配置选项来配置 Swagger。
 

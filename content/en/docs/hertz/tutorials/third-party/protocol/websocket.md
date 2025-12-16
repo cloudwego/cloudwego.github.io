@@ -6,19 +6,22 @@ keywords: ["WebSocket", "HTTP", "hijack", "TCP"]
 description: "Hertz implements support for Gorilla WebSocket based on hijack."
 ---
 
-WebSocket is a type of full-duplex communication that can be performed on a single TCP connection and is located at the application layer of the OSI model.
-WebSocket makes data exchange between client and server easier, allowing the server to actively push data to the client.
-In the WebSocket API, the browser and the server only need to complete a handshake that a persistent connection can be created between the two, and two-way data transmission can be performed.
-
-Hertz provides support for WebSocket and adapts it in Hertz by referring to [gorilla/websocket](https://github.com/gorilla/websocket) using `hijack`.
-The usage and parameters are basically the same.
-
 > **⚠️ Deprecated**
 >
 > The `hertz-contrib/websocket` middleware is now deprecated.  
 > Hertz recommends all users to migrate to the official `gorilla/websocket` toolchain using the [Hertz HTTP Adaptor](../../basic-feature/http-adaptor/).
 >
 > See the migration guide below.
+
+## Overview
+
+WebSocket is a type of full-duplex communication that can be performed on a single TCP connection and is located at the application layer of the OSI model.
+WebSocket makes data exchange between client and server easier, allowing the server to actively push data to the client.
+In the WebSocket API, the browser and the server only need to complete a handshake that a persistent connection can be created between the two, and two-way data transmission can be performed.
+
+Historically, Hertz provided WebSocket support via [`hertz-contrib/websocket`](https://github.com/hertz-contrib/websocket), which adapts
+[`gorilla/websocket`](https://github.com/gorilla/websocket) using HTTP connection hijacking.
+This approach is now deprecated in favor of using the official Gorilla WebSocket implementation directly via the Hertz HTTP Adaptor.
 
 ## Migration Guide
 
@@ -31,7 +34,7 @@ github.com/hertz-contrib/websocket
 2. Use hertz adaptor
 
 ```go
-// Before (using hertz-contrib/websocket)
+// Before (deprecated: hertz-contrib/websocket)
 import "github.com/hertz-contrib/websocket"
 var upgrader = websocket.HertzUpgrader{}
 func echo(_ context.Context, c *app.RequestContext) {
@@ -40,9 +43,12 @@ func echo(_ context.Context, c *app.RequestContext) {
     })
 }
 h.GET("/echo", echo)
+```
 
-// After (using hertz adaptor)
+```go
+// After (recommended: gorilla/websocket + adaptor)
 import "github.com/gorilla/websocket"
+import "github.com/cloudwego/hertz/pkg/common/adaptor"
 var upgrader = websocket.Upgrader{}
 func echo(w http.ResponseWriter, r *http.Request) {
     c, err := upgrader.Upgrade(w, r, nil)
@@ -114,13 +120,15 @@ func main() {
 var homeTemplate = ""
 ```
 
-## Install (Deprecated)
+## Legacy Documentation (Deprecated)
+
+### Install
 
 ```shell
 go get github.com/hertz-contrib/websocket
 ```
 
-## Example
+### Example
 
 ```go
 package main
@@ -189,7 +197,7 @@ go run server.go
 
 In the example code above, the server includes a simple web client. To use this client, open [http://127.0.0.1:8080]() in your browser and follow the instructions on the page.
 
-## Config
+### Config
 
 The following is the optional configuration parameters for using Hertz WebSocket.
 
@@ -205,7 +213,7 @@ This section is organized around the `websocket.HertzUpgrader` structure.
 | `CheckOrigin`       | Used to set a check function for Origin header for the request. If the Origin header of the request is acceptable, CheckOrigin returns true.                                                                                                                                                                                                                                 |
 | `EnableCompression` | Used to set whether the server should attempt to negotiate compression for each message (RFC 7692). Setting this value to true does not guarantee that compression will be supported.                                                                                                                                                                                        |
 
-### WriteBufferPool
+#### WriteBufferPool
 
 If this value is not set, an additional write buffer is initialized and allocated to the connection for the current lifetime. The buffer pool is most useful when the application has a moderate amount of writes on a large number of connections.
 
@@ -246,13 +254,13 @@ var upgrader = websocket.HertzUpgrader{
 }
 ```
 
-### Subprotocols
+#### Subprotocols
 
 WebSocket simply defines a mechanism for exchanging arbitrary messages. What those messages mean, what kind of messages the client can expect at any given point in time, or what kind of messages they are allowed to send, depends entirely on the implementing application.
 
 So you need an agreement between the server and the client about these things. The subprotocol parameters simply allow the client and server to formally exchange this information. You can make up any name for any protocol you want. The server can simply check that the client has followed that protocol during the handshake.
 
-### Error
+#### Error
 
 If Error is nil, then use the API provided by Hertz to generate the HTTP error response.
 
@@ -273,7 +281,7 @@ var upgrader = websocket.HertzUpgrader{
 }
 ```
 
-### CheckOrigin
+#### CheckOrigin
 
 CheckOrigin returns true if the request Origin header is acceptable. If CheckOrigin is nil, then a safe default is used: return false if the Origin request header is present and the origin host is not equal to request Host header.
 
@@ -302,13 +310,13 @@ func fastHTTPCheckSameOrigin(c *app.RequestContext) bool {
 }
 ```
 
-### EnableCompression
+#### EnableCompression
 
 The server accepts one or more extension fields that are included in the `Sec-WebSocket-Extensions` header field extensions requested by the client. When EnableCompression is true, the server matches the extensions it currently supports with its extensions, and supports compression if the match is successful.
 
 Currently only the "no context takeover" mode is supported, as described in the `HertzUpgrader.Upgrade`.
 
-### SetReadTimeout/SetWriteTimeout
+#### SetReadTimeout/SetWriteTimeout
 
 When using websockets for reading and writing, the read timeout or write timeout can be set similarly as follows.
 
@@ -330,7 +338,7 @@ func echo(_ context.Context, c *app.RequestContext) {
 }
 ```
 
-## NoHijackConnPool
+### NoHijackConnPool
 
 > The hijack conn used for Hertz connection hijacking is pooled and therefore does not support asynchronous operations when the hijacked connection is used in a websocket.
 
