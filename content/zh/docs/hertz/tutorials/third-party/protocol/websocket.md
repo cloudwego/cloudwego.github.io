@@ -6,16 +6,19 @@ keywords: ["WebSocket", "HTTP", "hijack", "TCP"]
 description: "Hertz 基于 hijack 的方式实现了对 WebSocket 的支持。"
 ---
 
-WebSocket 是一种可以在单个 TCP 连接上进行全双工通信，位于 OSI 模型的应用层。WebSocket 使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在 WebSocket API 中，浏览器和服务器只需要完成一次握手，两者之间就可以创建持久性的连接，并进行双向数据传输。
-
-Hertz 提供了 WebSocket 的支持，参考 [gorilla/websocket](http://github.com/gorilla/websocket) 库使用 `hijack` 的方式在 Hertz 进行了适配，用法和参数基本保持一致
-
 > **⚠️ 已废弃**
 >
 > `hertz-contrib/websocket` 中间件已被废弃。
 > Hertz 推荐所有用户迁移到官方 `gorilla/websocket` 工具链，使用 [Hertz HTTP Adaptor](../../basic-feature/http-adaptor/)。
 >
 > 迁移指南如下。
+
+## 概览
+
+WebSocket 是一种可以在单个 TCP 连接上进行全双工通信，位于 OSI 模型的应用层。WebSocket 使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在 WebSocket API 中，浏览器和服务器只需要完成一次握手，两者之间就可以创建持久性的连接，并进行双向数据传输。
+
+早期，Hertz 通过 [`hertz-contrib/websocket`](https://github.com/hertz-contrib/websocket) 提供 WebSocket 支持，该实现基于 HTTP 连接劫持（hijack）对 [`gorilla/websocket`](https://github.com/gorilla/websocket) 进行了适配。
+目前该方案已被弃用，推荐直接通过 Hertz HTTP Adaptor 使用官方的 Gorilla WebSocket 实现。
 
 ## 迁移指南
 
@@ -28,7 +31,7 @@ github.com/hertz-contrib/websocket
 2. 利用 hertz adaptor
 
 ```go
-// 旧版本（使用 hertz-contrib/websocket)
+// 旧版本（已废弃：hertz-contrib/websocket)
 import "github.com/hertz-contrib/websocket"
 var upgrader = websocket.HertzUpgrader{}
 func echo(_ context.Context, c *app.RequestContext) {
@@ -37,9 +40,12 @@ func echo(_ context.Context, c *app.RequestContext) {
     })
 }
 h.GET("/echo", echo)
+```
 
-// 新版本（使用 hertz adaptor)
+```go
+// 新版本（推荐：gorilla/websocket + adaptor）
 import "github.com/gorilla/websocket"
+import "github.com/cloudwego/hertz/pkg/common/adaptor"
 var upgrader = websocket.Upgrader{}
 func echo(w http.ResponseWriter, r *http.Request) {
     c, err := upgrader.Upgrade(w, r, nil)
@@ -111,13 +117,15 @@ func main() {
 var homeTemplate = ""
 ```
 
-## 安装（已废弃）
+## 旧版文档（已废弃）
+
+### 安装
 
 ```shell
 go get github.com/hertz-contrib/websocket
 ```
 
-## 示例代码
+### 示例代码
 
 ```go
 package main
@@ -186,7 +194,7 @@ go run server.go
 
 上述示例代码中，服务器包括一个简单的网络客户端。要使用该客户端，在浏览器中打开 [http://127.0.0.1:8080]()，并按照页面上的指示操作。
 
-## 配置
+### 配置
 
 以下是 Hertz WebSocket 使用过程中可选的配置参数。
 
@@ -202,7 +210,7 @@ go run server.go
 | `CheckOrigin`       | 用于设置针对请求的 Origin 头的校验函数，如果请求的 Origin 头是可接受的，CheckOrigin 返回 true。                                                                                                                              |
 | `EnableCompression` | 用于设置服务器是否应该尝试协商每个消息的压缩（RFC 7692）。将此值设置为 true 并不能保证压缩会被支持。                                                                                                                         |
 
-### WriteBufferPool
+#### WriteBufferPool
 
 如果该值没有被设置，则额外初始化写缓冲区，并在当前生命周期内分配给该连接。当应用程序在大量的连接上有适度的写入量时，缓冲池是最有用的。
 
@@ -243,13 +251,13 @@ var upgrader = websocket.HertzUpgrader{
 }
 ```
 
-### Subprotocols
+#### Subprotocols
 
 WebSocket 只是定义了一种交换任意消息的机制。这些消息是什么意思，客户端在任何特定的时间点可以期待什么样的消息，或者他们被允许发送什么样的消息，完全取决于实现应用程序。
 
 所以你需要在服务器和客户端之间就这些事情达成协议。子协议参数只是让客户端和服务端正式地交换这些信息。你可以为你想要的任何协议编造任何名字。服务器可以简单地检查客户在握手过程中是否遵守了该协议。
 
-### Error
+#### Error
 
 如果 Error 为 nil，则使用 Hertz 提供的 API 来生成 HTTP 错误响应。
 
@@ -270,7 +278,7 @@ var upgrader = websocket.HertzUpgrader{
 }
 ```
 
-### CheckOrigin
+#### CheckOrigin
 
 如果 CheckOrigin 为 nil，则使用一个安全的默认值：如果 Origin 请求头存在，并且源主机不等于请求主机头，则返回 false。CheckOrigin 函数应该仔细验证请求的来源，以防止跨站请求伪造。
 
@@ -296,13 +304,13 @@ func fastHTTPCheckSameOrigin(c *app.RequestContext) bool {
 }
 ```
 
-### EnableCompression
+#### EnableCompression
 
 服务端接受一个或者多个扩展字段，这些扩展字段是包含客户端请求的 `Sec-WebSocket-Extensions` 头字段扩展中的。当 EnableCompression 为 true 时，服务端根据当前自身支持的扩展与其进行匹配，如果匹配成功则支持压缩。
 
 目前仅支持“无上下文接管”模式，详见 `HertzUpgrader.Upgrade` 的实现。
 
-### SetReadTimeout/SetWriteTimeout
+#### SetReadTimeout/SetWriteTimeout
 
 当使用 websocket 进行读写的时候，可以通过类似如下方式设置读超时或写超时的时间。
 
@@ -324,7 +332,7 @@ func echo(_ context.Context, c *app.RequestContext) {
 }
 ```
 
-## NoHijackConnPool
+### NoHijackConnPool
 
 > Hertz 连接劫持时所使用的 hijack conn 是池化管理的，因此被劫持的连接在 websocket 中使用的时候，不支持异步操作。
 
