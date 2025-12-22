@@ -80,8 +80,52 @@ if err := svr.Run(); err != nil {
 
 客户端埋点时序图
 
-![client_tracing_timeline](/img/docs/client_tracing_timeline.png)
+```mermaid
+%%{init: {'theme': 'base', 'flowchart': {'nodeSpacing': 10, 'rankSpacing': 20}}}%%
+flowchart TD
+    A[发起调用] --> B[RPCStart]
+    B --> C[中间件]
+    C --> D[ClientConnStart]
+    D --> E[ClientConnFinish]
+    E --> F[WriteStart]
+    F --> G[请求编码]
+    G --> H[WriteFinish]
+    H --> I[等待响应]
+    I --> J[ReadStart]
+    J --> K[WaitReadStart]
+    K --> L[WaitReadFinish]
+    L --> M[响应解码]
+    M --> N[ReadFinish]
+    N --> O[中间件]
+    O --> P[RPCFinish]
+    classDef event fill:#fff,stroke:#ff0000,stroke-width:2px,color:#000
+    classDef process fill:#fff,stroke:#000000,stroke-width:2px,color:#000
+    class B,D,E,F,H,J,K,L,N,P event
+    class A,C,G,I,M,O process
+```
 
 服务端埋点时序图
 
-![server_tracing_timeline](/img/docs/server_tracing_timeline.png)
+```mermaid
+%%{init: {'theme': 'base', 'flowchart': {'nodeSpacing': 10, 'rankSpacing': 20}}}%%
+flowchart TD
+    A[调用开始] --> B[RPCStart]
+    B --> C[ReadStart]
+    C --> D[WaitReadStart]
+    D --> E[WaitReadFinish]
+    E --> F[请求解码]
+    F --> G[ReadFinish]
+    G --> H[中间件]
+    H --> I[ServerHandleStart]
+    I --> J[handler处理]
+    J --> K[ServerHandleFinish]
+    K --> L[中间件]
+    L --> M[WriteStart]
+    M --> N[响应编码]
+    N --> O[WriteFinish]
+    O --> P[RPCFinish]
+    classDef event fill:#fff,stroke:#ff0000,stroke-width:2px,color:#000
+    classDef process fill:#fff,stroke:#000000,stroke-width:2px,color:#000
+    class B,C,D,E,G,I,K,M,O,P event
+    class A,F,H,J,L,N process
+```

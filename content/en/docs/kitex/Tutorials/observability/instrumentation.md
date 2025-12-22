@@ -80,8 +80,52 @@ Timeline:
 
 client stats events timeline:
 
-![client_tracing_timeline](/img/docs/client_tracing_timeline.png)
+```mermaid
+%%{init: {'theme': 'base', 'flowchart': {'nodeSpacing': 10, 'rankSpacing': 20}}}%%
+flowchart TD
+    A[Start Invocation] --> B[RPCStart]
+    B --> C[Middlewares]
+    C --> D[ClientConnStart]
+    D --> E[ClientConnFinish]
+    E --> F[WriteStart]
+    F --> G[Marshal Request]
+    G --> H[WriteFinish]
+    H --> I[Wait for Response]
+    I --> J[ReadStart]
+    J --> K[WaitReadStart]
+    K --> L[WaitReadFinish]
+    L --> M[Unmarshal Response]
+    M --> N[ReadFinish]
+    N --> O[Middlewares]
+    O --> P[RPCFinish]
+    classDef event fill:#fff,stroke:#ff0000,stroke-width:2px,color:#000
+    classDef process fill:#fff,stroke:#000000,stroke-width:2px,color:#000
+    class B,D,E,F,H,J,K,L,N,P event
+    class A,C,G,I,M,O process
+```
 
 server stats events timeline:
 
-![server_tracing_timeline](/img/docs/server_tracing_timeline.png)
+```mermaid
+%%{init: {'theme': 'base', 'flowchart': {'nodeSpacing': 10, 'rankSpacing': 20}}}%%
+flowchart TD
+    A[Invocation Started] --> B[RPCStart]
+    B --> C[ReadStart]
+    C --> D[WaitReadStart]
+    D --> E[WaitReadFinish]
+    E --> F[Unmarshal Request]
+    F --> G[ReadFinish]
+    G --> H[Middlewares]
+    H --> I[ServerHandleStart]
+    I --> J[Handler Process]
+    J --> K[ServerHandleFinish]
+    K --> L[Middlewares]
+    L --> M[WriteStart]
+    M --> N[Marshal Response]
+    N --> O[WriteFinish]
+    O --> P[RPCFinish]
+    classDef event fill:#fff,stroke:#ff0000,stroke-width:2px,color:#000
+    classDef process fill:#fff,stroke:#000000,stroke-width:2px,color:#000
+    class B,C,D,E,G,I,K,M,O,P event
+    class A,F,H,J,L,N process
+```
