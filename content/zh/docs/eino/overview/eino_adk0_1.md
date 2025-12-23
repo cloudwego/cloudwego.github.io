@@ -262,7 +262,7 @@ researchAssistant := planexecute.New(ctx, &planexecute.Config{
 
 DeepAgents 是一种在 Main Agent 统一协调下的 Multi-Agent 模式。Main Agent 借助具备工具调用能力的 ChatModel 以 ReAct 流程运行：
 
-- 通过 WriteTodos 将用户目标拆解为结构化待办并记录京都
+- 通过 WriteTodos 将用户目标拆解为结构化待办并记录进度
 - 通过统一入口 TaskTool 选择并调用对应的 SubAgent 执行子任务；主/子代理上下文隔离，避免中间步骤污染主流程。
 - 汇总各子代理返回的结果；必要时再次调用 WriteTodos 更新进度或进行重规划，直至完成。
 
