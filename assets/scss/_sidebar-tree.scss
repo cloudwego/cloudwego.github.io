@@ -71,6 +71,7 @@
         }
 
         &.active {
+            color: blue;
             font-weight: $font-weight-bold;
         }
     }
