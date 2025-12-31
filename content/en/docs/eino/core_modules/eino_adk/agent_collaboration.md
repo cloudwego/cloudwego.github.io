@@ -15,7 +15,7 @@ ADK defines collaboration and composition primitives to build multi‑agent syst
 
 - Collaboration mode
 
-  <table>
+  <table class="bd-browser-bugs table table-bordered table-hover">
   <tr><td>Mode</td><td>Description</td></tr>
   <tr><td>Transfer</td><td>Hand off the task to another agent. The current agent exits and does not wait for the child agent’s completion.</td></tr>
   <tr><td>ToolCall (AgentAsTool)</td><td>Treat an agent as a tool, wait for its response, and use the output for subsequent processing.</td></tr>
@@ -23,7 +23,7 @@ ADK defines collaboration and composition primitives to build multi‑agent syst
 
 - Input context strategy
 
-  <table>
+  <table class="bd-browser-bugs table table-bordered table-hover">
   <tr><td>Strategy</td><td>Description</td></tr>
   <tr><td>Upstream full dialogue</td><td>Receive complete conversation history from upstream agents.</td></tr>
   <tr><td>New task description</td><td>Ignore upstream dialogue and generate a fresh summary as input for the child agent.</td></tr>
@@ -31,7 +31,7 @@ ADK defines collaboration and composition primitives to build multi‑agent syst
 
 - Decision autonomy
 
-  <table>
+  <table class="bd-browser-bugs table table-bordered table-hover">
   <tr><td>Autonomy</td><td>Description</td></tr>
   <tr><td>Autonomous</td><td>Agent internally selects downstream agents (often via LLM) when needed. Even preset logic is considered autonomous from the outside.</td></tr>
   <tr><td>Preset</td><td>Agent execution order is predetermined and predictable.</td></tr>
@@ -39,7 +39,7 @@ ADK defines collaboration and composition primitives to build multi‑agent syst
 
 ## Composition Types
 
-<table>
+<table class="bd-browser-bugs table table-bordered table-hover">
 <tr><td>Type</td><td>Description</td><td>Diagram</td><td>Collab</td><td>Context</td><td>Decision</td></tr>
 <tr><td><strong>SubAgents</strong></td><td>Build a parent agent with a list of named subagents, forming a tree. Agent names must be unique within the tree.</td><td><a href="/img/eino/eino_adk_self_driving.png" target="_blank"><img src="/img/eino/eino_adk_self_driving.png" width="100%" /></a></td><td>Transfer</td><td>Upstream full dialogue</td><td>Autonomous</td></tr>
 <tr><td><strong>Sequential</strong></td><td>Run subagents in order once, then finish.</td><td><a href="/img/eino/eino_adk_sequential_controller.png" target="_blank"><img src="/img/eino/eino_adk_sequential_controller.png" width="100%" /></a></td><td>Transfer</td><td>Upstream full dialogue</td><td>Preset</td></tr>
@@ -61,7 +61,7 @@ Concept
 
 By default, assistant/tool messages from other agents are converted into user messages. This tells the current LLM: “Agent_A called some_tool with some_result. Now it’s your turn to decide.” It treats other agents’ behavior as external information rather than the current agent’s own actions, avoiding role confusion.
 
-<a href="/img/eino/eino_adk_message_event.png" target="_blank"><img src="/img/eino/eino_adk_message_event.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_message_event.png" target="_blank"><img src="/img/eino/eino_adk_message_event.png" width="60%" /></a>
 
 Filtering by RunPath
 
@@ -71,12 +71,12 @@ Definition: RunPathA “belongs to” RunPathB when RunPathA equals RunPathB or 
 
 Examples of RunPath in different orchestrations:
 
-<table>
+<table class="bd-browser-bugs table table-bordered table-hover">
 <tr><td>Example</td><td>RunPath</td></tr>
-<tr><td><a href="/img/eino/eino_adk_run_path_sub_agent.png" target="_blank"><img src="/img/eino/eino_adk_run_path_sub_agent.png" width="100%" /></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li></td></tr>
-<tr><td><a href="/img/eino/eino_adk_run_path.png" target="_blank"><img src="/img/eino/eino_adk_run_path.png" width="100%" /></a></td><td><li>Agent: [Agent]</li><li>Agent (after function call): [Agent]</li></td></tr>
+<tr><td><a href="/img/eino/eino_adk_run_path_sub_agent.png" target="_blank"><img src="/img/eino/eino_adk_run_path_sub_agent.png" width="20%" /></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li></td></tr>
+<tr><td><a href="/img/eino/eino_adk_run_path.png" target="_blank"><img src="/img/eino/eino_adk_run_path.png" width="30%" /></a></td><td><li>Agent: [Agent]</li><li>Agent (after function call): [Agent]</li></td></tr>
 <tr><td><a href="/img/eino/eino_adk_collaboration_run_path_sequential.png" target="_blank"><img src="/img/eino/eino_adk_collaboration_run_path_sequential.png" width="100%" /></a></td><td><li>Agent1: [SequentialAgent, LoopAgent, Agent1]</li><li>Agent2: [SequentialAgent, LoopAgent, Agent1, Agent2]</li><li>Agent1: [SequentialAgent, LoopAgent, Agent1, Agent2, Agent1]</li><li>Agent2: [SequentialAgent, LoopAgent, Agent1, Agent2, Agent1, Agent2]</li><li>Agent3: [SequentialAgent, LoopAgent, Agent3]</li><li>Agent4: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent4]</li><li>Agent5: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent5]</li><li>Agent6: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent6]</li></td></tr>
-<tr><td><a href="/img/eino/eino_adk_run_path_deterministic.png" target="_blank"><img src="/img/eino/eino_adk_run_path_deterministic.png" width="100%" /></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li><li>Agent: [Agent, SubAgent, Agent]</li></td></tr>
+<tr><td><a href="/img/eino/eino_adk_run_path_deterministic.png" target="_blank"><img src="/img/eino/eino_adk_run_path_deterministic.png" width="50%" /></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li><li>Agent: [Agent, SubAgent, Agent]</li></td></tr>
 </table>
 
 Customize via `WithHistoryRewriter`:
@@ -366,7 +366,7 @@ func AgentWithDeterministicTransferTo(_ context.Context, config *DeterministicTr
 
 Used by Supervisor to ensure subagents return control deterministically:
 
-<a href="/img/eino/eino_adk_deterministic_transfer.png" target="_blank"><img src="/img/eino/eino_adk_deterministic_transfer.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_deterministic_transfer.png" target="_blank"><img src="/img/eino/eino_adk_deterministic_transfer.png" width="50%" /></a>
 
 ```go
 // github.com/cloudwego/eino/adk/prebuilt/supervisor.go
@@ -404,7 +404,7 @@ See details and examples: `/docs/eino/core_modules/eino_adk/agent_implementation
 
 Run a series of agents in the provided order:
 
-<a href="/img/eino/eino_adk_sequential_agent.png" target="_blank"><img src="/img/eino/eino_adk_sequential_agent.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_sequential_agent.png" target="_blank"><img src="/img/eino/eino_adk_sequential_agent.png" width="70%" /></a>
 
 ```go
 type SequentialAgentConfig struct {
@@ -420,7 +420,7 @@ func NewSequentialAgent(ctx context.Context, config *SequentialAgentConfig) (Age
 
 Based on SequentialAgent; after completing one run, it starts from the beginning again:
 
-<a href="/img/eino/eino_adk_loop_definition.png" target="_blank"><img src="/img/eino/eino_adk_loop_definition.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_loop_definition.png" target="_blank"><img src="/img/eino/eino_adk_loop_definition.png" width="80%" /></a>
 
 ```go
 type LoopAgentConfig struct {
@@ -438,7 +438,7 @@ func NewLoopAgent(ctx context.Context, config *LoopAgentConfig) (Agent, error)
 
 Run agents concurrently:
 
-<a href="/img/eino/eino_adk_parallel_agent.png" target="_blank"><img src="/img/eino/eino_adk_parallel_agent.png" width="100%" /></a>
+<a href="/img/eino/eino_adk_parallel_agent.png" target="_blank"><img src="/img/eino/eino_adk_parallel_agent.png" width="80%" /></a>
 
 ```go
 type ParallelAgentConfig struct {
