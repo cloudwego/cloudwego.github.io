@@ -1,6 +1,6 @@
 ---
 title: "绑定与校验"
-date: 2022-05-23
+date: 2025-12-08
 weight: 8
 keywords: ["绑定与校验", "go-tagexpr", "tag", "参数绑定优先级"]
 description: "Hertz 支持的参数绑定与校验相关功能及用法。"
@@ -128,7 +128,7 @@ type TagRequiredReq struct {
 
 ### 自定义 binder
 
-> hertz version >= v0.7.0 支持
+> hertz version >= v0.10.3 支持
 
 需要实现 Binder 接口，并通过配置方式注入到 hertz engine
 
@@ -137,13 +137,13 @@ type Binder interface {
 	Name() string // 绑定器的名字
 	// 下面为各种绑定方法
 	Bind(*protocol.Request, interface{}, param.Params) error
-	BindAndValidate(*protocol.Request, interface{}, param.Params) error
 	BindQuery(*protocol.Request, interface{}) error
 	BindHeader(*protocol.Request, interface{}) error
 	BindPath(*protocol.Request, interface{}, param.Params) error
 	BindForm(*protocol.Request, interface{}) error
 	BindJSON(*protocol.Request, interface{}) error
 	BindProtobuf(*protocol.Request, interface{}) error
+    Validate(*protocol.Request, interface{}) error
 }
 ```
 
@@ -167,10 +167,6 @@ func (m *mockBinder) Name() string {
 
 func (m *mockBinder) Bind(request *protocol.Request, i interface{}, params param.Params) error {
 	return nil
-}
-
-func (m *mockBinder) BindAndValidate(request *protocol.Request, i interface{}, params param.Params) error {
-	return fmt.Errorf("test binder")
 }
 
 func (m *mockBinder) BindQuery(request *protocol.Request, i interface{}) error {
@@ -197,15 +193,42 @@ func (m *mockBinder) BindProtobuf(request *protocol.Request, i interface{}) erro
 	return nil
 }
 
+func (m *mockBinder) Validate(request *protocol.Request, i interface{}) error {
+	return nil
+}
+
 ```
 
 目前已拓展的绑定器：
+
+> ⚠️ 注意：`hertz-contrib/binding` 中间件已被废弃。
+> 建议用户使用 Hertz 内置功能或自定义绑定器。
 
 - bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (重构前使用的绑定库)
 
 ### 自定义 validator
 
-> hertz version >= v0.7.0 支持
+> hertz version >= v0.10.3 支持
+
+```go
+import (
+	"github.com/go-playground/validator/v10"
+)
+
+func main() {
+	vd := validator.New(validator.WithRequiredStructEnabled())
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"),
+		server.WithCustomValidatorFunc(func(_ *protocol.Request, req any) error {
+			return vd.Struct(req)
+		}),
+	)
+    h.Spin()
+}
+```
+
+#### 自定义 validator (已废弃)
+
+> hertz versions 0.7.0 至 0.10.2 支持
 
 需要实现 Validator 接口，并通过配置方式注入到 hertz engine
 
@@ -246,16 +269,90 @@ func (m *mockValidator) ValidateTag() string {
 
 目前已拓展的校验器：
 
+> ⚠️ 注意：`hertz-contrib/binding` 中间件已被废弃。
+> 建议用户使用 Hertz 内置的功能。如果需要自定义验证，用户可以使用 [go-playground/validator](https://github.com/go-playground/validator) 中的 validator。
+
 - go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
 
 ### 自定义 bind 和 validate 的 Error
 
 在绑定参数发生错误和参数校验失败的时候，用户可以自定义 Error 的内容，使用方法如下：<br>
-**hertz version >= v0.7.0**
+**hertz version >= v0.10.3**
 
 > 暂不支持自定义 bind error
 
 自定义 validate error:
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/go-playground/validator/v10"
+)
+
+type User struct {
+	Name  string `form:"name" validate:"required"`
+	Age   uint8  `form:"age"  validate:"gte=0,lte=130"`
+	Email string `form:"email" validate:"required,email"`
+}
+
+type ValidateError struct {
+   ErrType, FailField, Msg string
+}
+
+func (e *ValidateError) Error() string {
+   if e.Msg != "" {
+      return e.ErrType + ": expr_path=" + e.FailField + ", cause=" + e.Msg
+   }
+   return e.ErrType + ": expr_path=" + e.FailField + ", cause=invalid"
+}
+
+func main() {
+	v := validator.New(validator.WithRequiredStructEnabled())
+
+	h := server.Default(
+		server.WithHostPorts("127.0.0.1:8080"),
+		server.WithCustomValidatorFunc(func(_ *protocol.Request, req any) error {
+			err := v.Struct(req)
+			if err == nil {
+				return nil
+			}
+
+			if ve, ok := err.(validator.ValidationErrors); ok {
+				fe := ve[0]
+
+				return &ValidateError{
+					ErrType:   "validateErr",
+					FailField: fe.Field(),
+					Msg:       fe.Tag(),
+				}
+			}
+
+			return err
+		}),
+	)
+
+	h.GET("/bind", func(ctx context.Context, c *app.RequestContext) {
+		var user User
+		err := c.BindAndValidate(&user)
+		if err != nil {
+			fmt.Println("CUSTOM:", err.Error())
+			return
+		}
+		fmt.Println("OK:", user)
+	})
+
+	h.Spin()
+}
+```
+
+**hertz versions 0.7.0 至 0.10.2**<br>
 
 ```go
 package main
@@ -371,8 +468,8 @@ type TestBind struct {
 }
 
 func main() {
-    bindConfig := &binding.BindConfig{}
-	// v0.7.0 重构后，在原基础上增加了请求 Request 内容以及路由参数，可方便用户更加灵活的自定义类型解析
+    bindConfig := binding.NewBindConfig()
+    // v0.7.0 重构后，在原基础上增加了请求 Request 内容以及路由参数，可方便用户更加灵活的自定义类型解析
 	// 注意：只有 tag 成功匹配后，才会走到自定义的逻辑
     bindConfig.MustRegTypeUnmarshal(reflect.TypeOf(Nested{}), func(req *protocol.Request, params param.Params, text string) (reflect.Value, error) {
         if text == "" {
@@ -424,8 +521,55 @@ func init() {
 
 ### 自定义验证函数
 
-可以通过注册自定义验证函数，在 `vd` 注解中实现复杂的验证逻辑:<br>
-**hertz version >= v0.7.0**<br>
+可以通过注册自定义验证函数，在 `validate` 注解中实现复杂的验证逻辑:<br>
+**hertz version >= v0.10.3**<br>
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/app/server/binding"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/go-playground/validator/v10"
+)
+
+type Req struct {
+	A string `query:"a" validate:"test"`
+}
+
+func main() {
+	vd := validator.New(validator.WithRequiredStructEnabled())
+
+	vd.RegisterValidation("test", func(fl validator.FieldLevel) bool {
+		return fl.Field().String() != "123"
+	})
+
+	h := server.Default(
+		server.WithHostPorts("127.0.0.1:8080"),
+		server.WithCustomValidatorFunc(func(_ *protocol.Request, req any) error {
+			return vd.Struct(req)
+		}),
+	)
+
+	h.GET("/test", func(ctx context.Context, c *app.RequestContext) {
+		var r Req
+		if err := c.BindAndValidate(&r); err != nil {
+			fmt.Println("VALIDATION ERROR:", err.Error())
+			return
+		}
+		fmt.Println("OK:", r)
+	})
+
+	h.Spin()
+}
+```
+
+**hertz versions 0.7.0 至 0.10.2**<br>
 
 ```go
 package main
