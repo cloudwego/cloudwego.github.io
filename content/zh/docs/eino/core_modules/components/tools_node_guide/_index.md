@@ -93,7 +93,7 @@ ChatModel(LLM) 生成要调用的 []ToolCall（包含 ToolName，Argument 等）
 
 每个 ToolCall 调用完成后的结果，又会封装为 *schema.Message，作为 ToolsNode 输出的一部分。
 
-## **Tool ****定义**
+## **Tool 定义**
 
 ### **接口定义**
 
