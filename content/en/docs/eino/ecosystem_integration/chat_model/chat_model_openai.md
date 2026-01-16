@@ -267,10 +267,13 @@ func main() {
     })
     if err != nil { log.Fatalf("NewChatModel failed, err=%v", err) }
 
-    multi := &schema.Message{ UserInputMultiContent: []schema.MessageInputPart{
-        {Type: schema.ChatMessagePartTypeText, Text: "this picture is a landscape photo, what's the picture's content"},
-        {Type: schema.ChatMessagePartTypeImageURL, Image: &schema.MessageInputImage{ MessagePartCommon: schema.MessagePartCommon{ URL: of("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT11qEDxU4X_MVKYQVU5qiAVFidA58f8GG0bQ&s") }, Detail: schema.ImageURLDetailAuto }},
-    } }
+    multi := &schema.Message{
+		Role: schema.User,
+		UserInputMultiContent: []schema.MessageInputPart{
+			{Type: schema.ChatMessagePartTypeText, Text: "this picture is a landscape photo, what's the picture's content"},
+			{Type: schema.ChatMessagePartTypeImageURL, Image: &schema.MessageInputImage{MessagePartCommon: schema.MessagePartCommon{URL: of("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT11qEDxU4X_MVKYQVU5qiAVFidA58f8GG0bQ&s")}, Detail: schema.ImageURLDetailAuto}},
+		},
+	}
 
     resp, err := chatModel.Generate(ctx, []*schema.Message{ multi })
     if err != nil { log.Fatalf("Generate failed, err=%v", err) }
