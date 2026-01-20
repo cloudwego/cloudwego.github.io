@@ -70,7 +70,7 @@ AgenticChatTemplate 一般用于 AgenticModel 之前做上下文准备的。
 - `prompt.FromAgenticMessages()`
   - 用于把多个 message 变成一个 agentic chat template。
 - `schema.AgenticMessage{}`
-  - schema.AgenticMesasge 是实现了 Format 接口的结构体，因此可直接构建 `schema.AgenticMesasge{}` 作为 template
+  - schema.AgenticMessage 是实现了 Format 接口的结构体，因此可直接构建 `schema.AgenticMessage{}` 作为 template
 - `schema.DeveloperAgenticMessage()`
   - 此方法是构建 role 为 "developer" 的 message 快捷方法
 - `schema.SystemAgenticMessage()`

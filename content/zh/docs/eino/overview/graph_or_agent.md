@@ -20,8 +20,6 @@ weight: 5
 
 <a href="/img/eino/eino_complex_workflow_as_api.png" target="_blank"><img src="/img/eino/eino_complex_workflow_as_api.png" width="100%" /></a>
 
-参见：[bytetech.info](https://bytetech.info/articles/7566483315809583150#SGV5dPX3XoDPeWxpgjxlcd8hgob)
-
 ```mermaid
 flowchart TD
   linkStyle default stroke-width:2px,stroke:#000000
