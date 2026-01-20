@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Retriever 使用说明'
@@ -103,6 +103,8 @@ WithDSLInfo(dsl map[string]any) Option
 
 ### **单独使用**
 
+#### VikingDB 示例
+
 > 代码位置：eino-ext/components/retriever/volc_vikingdb/examples/builtin_embedding
 
 ```go
@@ -166,6 +168,102 @@ docs, _ := volcRetriever.Retrieve(ctx, query)
 log.Printf("vikingDB retrieve success, query=%v, docs=%v", query, docs)
 ```
 
+#### Milvus 示例
+
+```go
+import (
+        "github.com/cloudwego/eino-ext/components/retriever/milvus2"
+        "github.com/cloudwego/eino-ext/components/retriever/milvus2/search_mode"
+)
+
+// 创建 retriever
+retriever, err := milvus2.NewRetriever(ctx, &milvus2.RetrieverConfig{
+        ClientConfig: &milvusclient.ClientConfig{
+                Address:  addr,
+                Username: username,
+                Password: password,
+        },
+        Collection: "my_collection",
+        TopK:       10,
+        SearchMode: search_mode.NewApproximate(milvus2.COSINE),
+        Embedding:  emb,
+})
+
+// 检索文档
+documents, err := retriever.Retrieve(ctx, "search query")
+```
+
+#### ElasticSearch 7 示例
+
+```go
+import (
+        "github.com/cloudwego/eino/schema"
+        elasticsearch "github.com/elastic/go-elasticsearch/v7"
+
+        "github.com/cloudwego/eino-ext/components/retriever/es7"
+        "github.com/cloudwego/eino-ext/components/retriever/es7/search_mode"
+)
+
+client, _ := elasticsearch.NewClient(elasticsearch.Config{
+        Addresses: []string{"http://localhost:9200"},
+        Username:  username,
+        Password:  password,
+})
+
+// 创建带有稠密向量相似度搜索的检索器
+retriever, _ := es7.NewRetriever(ctx, &es7.RetrieverConfig{
+        Client:     client,
+        Index:      "my_index",
+        TopK:       10,
+        SearchMode: search_mode.DenseVectorSimilarity(search_mode.DenseVectorSimilarityTypeCosineSimilarity, "content_vector"),
+        Embedding:  emb,
+})
+
+// 检索文档
+docs, _ := retriever.Retrieve(ctx, "search query")
+```
+
+#### OpenSearch 2 示例
+
+```go
+package main
+
+import (
+        "github.com/cloudwego/eino/schema"
+        opensearch "github.com/opensearch-project/opensearch-go/v2"
+
+        "github.com/cloudwego/eino-ext/components/retriever/opensearch2"
+        "github.com/cloudwego/eino-ext/components/retriever/opensearch2/search_mode"
+)
+
+client, err := opensearch.NewClient(opensearch.Config{
+        Addresses: []string{"http://localhost:9200"},
+})
+
+// 创建检索器组件
+retriever, _ := opensearch2.NewRetriever(ctx, &opensearch2.RetrieverConfig{
+        Client: client,
+        Index:  "your_index_name",
+        TopK:   5,
+        // 选择搜索模式
+        SearchMode: search_mode.Approximate(&search_mode.ApproximateConfig{
+                VectorField: "content_vector",
+                K:           5,
+        }),
+        ResultParser: func(ctx context.Context, hit map[string]interface{}) (*schema.Document, error) {
+                // 解析 hit map 为 Document
+                id, _ := hit["_id"].(string)
+                source := hit["_source"].(map[string]interface{})
+                content, _ := source["content"].(string)
+                return &schema.Document{ID: id, Content: content}, nil
+        },
+        Embedding: emb,
+})
+
+// 检索文档
+docs, err := retriever.Retrieve(ctx, "search query")
+```
+
 ### **在编排中使用**
 
 ```go
@@ -226,6 +324,12 @@ log.Printf("vikingDB retrieve success, query=%v, docs=%v", query, outDocs)
 ## **已有实现**
 
 - Volc VikingDB Retriever: 基于火山引擎 VikingDB 的检索实现 [Retriever - VikingDB](/zh/docs/eino/ecosystem_integration/retriever/retriever_volc_vikingdb)
+- Milvus v2.5+ Retriever: 基于 Milvus 实现的向量数据库检索器 [Retriever - Milvus 2 (v2.5+) ](/zh/docs/eino/ecosystem_integration/retriever/retriever_milvusv2)
+- Milvus v2.4- Retriever: 基于 Milvus 实现的向量数据库检索器 [Retriever - Milvus (v2.4-)](/zh/docs/eino/ecosystem_integration/retriever/retriever_milvus)
+- Elasticsearch 8 Retriever: 基于 ES8 实现的通用搜索引擎检索器 [Retriever - Elasticsearch 8](/zh/docs/eino/ecosystem_integration/retriever/retriever_es8)
+- ElasticSearch 7 Retriever: 基于 ES7 实现的通用搜索引擎检索器 [Retriever - Elasticsearch 7](/zh/docs/eino/ecosystem_integration/retriever/retriever_elasticsearch7)
+- OpenSearch 3 Retriever: 基于 OpenSearch 3 实现的通用搜索引擎检索器 [Retriever - OpenSearch 3](/zh/docs/eino/ecosystem_integration/retriever/retriever_opensearch3)
+- OpenSearch 2 Retriever: 基于 OpenSearch 2 实现的通用搜索引擎检索器 [Retriever - OpenSearch 2](/zh/docs/eino/ecosystem_integration/retriever/retriever_opensearch2)
 
 ## **自行实现参考**
 

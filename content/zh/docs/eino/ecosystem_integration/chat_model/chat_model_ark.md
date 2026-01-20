@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: ChatModel - ARK
@@ -1011,6 +1011,8 @@ func ptrOf[T any](v T) *T {
 }
 ```
 
+当针对已经被缓存的消息，不想使用缓存时，可调用 `InvalidateMessageCaches(messages []*schema.Message) error` 清楚消息中的缓存标记。这样 ARK SDK 在构造 Responses API 的请求时，便无法根据缓存标记找到对应的 ResponseID，从而不再给 Responses API 中的 PreviousResponseID 赋值
+
 ### ContextAPI Session 缓存
 
 ```go
@@ -1217,6 +1219,8 @@ func main() {
         }
 }
 ```
+
+当针对已经被缓存的消息，不想使用缓存时，可调用 `InvalidateMessageCaches(messages []*schema.Message) error` 清楚消息中的缓存标记。这样 ARK SDK 在构造 Responses API 的请求时，便无法根据缓存标记找到对应的 ResponseID，从而不再给 Responses API 中的 PreviousResponseID 赋值
 
 ## **使用方式**
 

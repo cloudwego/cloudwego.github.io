@@ -3,7 +3,7 @@ Description: ""
 date: "2026-01-20"
 lastmod: ""
 tags: []
-title: Indexer - ElasticSearch 8
+title: Indexer - Elasticsearch 9
 weight: 0
 ---
 
@@ -11,7 +11,7 @@ weight: 0
 >
 > 云搜索服务（Cloud Search）是一个全托管、一站式信息检索与分析平台，提供了 ElasticSearch 和 OpenSearch 引擎，支持全文检索、向量检索、混合搜索及时空检索等多种核心能力。
 
-为 [Eino](https://github.com/cloudwego/eino) 实现的 Elasticsearch 8.x 索引器，实现了 `Indexer` 接口。这使得可以与 Eino 的向量存储和检索系统无缝集成，从而增强语义搜索能力。
+为 [Eino](https://github.com/cloudwego/eino) 实现的 Elasticsearch 9.x 索引器，实现了 `Indexer` 接口。这使得可以与 Eino 的向量存储和检索系统无缝集成，从而增强语义搜索能力。
 
 ## 功能特性
 
@@ -26,24 +26,26 @@ weight: 0
 ## 安装
 
 ```bash
-go get github.com/cloudwego/eino-ext/components/indexer/es8@latest
+go get github.com/cloudwego/eino-ext/components/indexer/es9@latest
 ```
 
 ## 快速开始
 
-这里是使用索引器的快速示例，更多细节请阅读 components/indexer/es8/examples/indexer/add_documents.go：
+这里是使用索引器的快速示例，更多细节请阅读 components/indexer/es9/examples/indexer/add_documents.go：
 
 ```go
 import (
         "context"
+        "fmt"
+        "log"
         "os"
 
         "github.com/cloudwego/eino/components/embedding"
         "github.com/cloudwego/eino/schema"
-        elasticsearch "github.com/elastic/go-elasticsearch/v8"
+        "github.com/elastic/go-elasticsearch/v9"
 
         "github.com/cloudwego/eino-ext/components/embedding/ark"
-        "github.com/cloudwego/eino-ext/components/indexer/es8"
+        "github.com/cloudwego/eino-ext/components/indexer/es9"
 )
 
 const (
@@ -56,14 +58,16 @@ const (
 
 func main() {
         ctx := context.Background()
-        // es supports multiple ways to connect
+
+        // ES 支持多种连接方式
         username := os.Getenv("ES_USERNAME")
         password := os.Getenv("ES_PASSWORD")
-
-        // 1. 创建 ES 客户端
         httpCACertPath := os.Getenv("ES_HTTP_CA_CERT_PATH")
+
+        var cert []byte
+        var err error
         if httpCACertPath != "" {
-                cert, err := os.ReadFile(httpCACertPath)
+                cert, err = os.ReadFile(httpCACertPath)
                 if err != nil {
                         log.Fatalf("read file failed, err=%v", err)
                 }
@@ -76,8 +80,8 @@ func main() {
                 CACert:    cert,
         })
 
-        // 2. 创建 embedding 组件
-        // 使用火山引擎 Ark，替换环境变量为真实配置
+        // 2. 创建 embedding 组件 (使用 Ark)
+        // 请将 "ARK_API_KEY", "ARK_REGION", "ARK_MODEL" 替换为实际配置
         emb, _ := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{
                 APIKey: os.Getenv("ARK_API_KEY"),
                 Region: os.Getenv("ARK_REGION"),
@@ -85,7 +89,8 @@ func main() {
         })
 
         // 3. 准备文档
-        // 文档通常包含 ID 和 Content。也可以添加额外的元数据用于过滤等用途。
+        // 文档通常包含 ID 和 Content
+        // 也可以包含额外的 Metadata 用于过滤或其他用途
         docs := []*schema.Document{
                 {
                         ID:      "1",
@@ -104,19 +109,19 @@ func main() {
         }
 
         // 4. 创建 ES 索引器组件
-        indexer, _ := es8.NewIndexer(ctx, &es8.IndexerConfig{
+        indexer, _ := es9.NewIndexer(ctx, &es9.IndexerConfig{
                 Client:    client,
                 Index:     indexName,
                 BatchSize: 10,
                 // DocumentToFields 指定如何将文档字段映射到 ES 字段
-                DocumentToFields: func(ctx context.Context, doc *schema.Document) (field2Value map[string]es8.FieldValue, err error) {
-                        return map[string]es8.FieldValue{
+                DocumentToFields: func(ctx context.Context, doc *schema.Document) (field2Value map[string]es9.FieldValue, err error) {
+                        return map[string]es9.FieldValue{
                                 fieldContent: {
                                         Value:    doc.Content,
-                                        EmbedKey: fieldContentVector, // 向量化文档内容并保存到 "content_vector" 字段
+                                        EmbedKey: fieldContentVector, // 对文档内容进行向量化并保存到 "content_vector" 字段
                                 },
                                 fieldExtraLocation: {
-                                        // 额外的元数据字段
+                                        // 额外的 metadata 字段
                                         Value: doc.MetaData[docExtraLocation],
                                 },
                         }, nil

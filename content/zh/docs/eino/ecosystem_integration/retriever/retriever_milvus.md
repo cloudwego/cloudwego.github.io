@@ -1,11 +1,15 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-20"
 lastmod: ""
 tags: []
-title: Retriever - Milvus
+title: Retriever - Milvus v1 (旧版)
 weight: 0
 ---
+
+> **模块说明：** 本模块 (`EINO-ext/milvus`) 基于 `milvus-sdk-go` 实现。鉴于底层 SDK 已停止维护，且最高仅适配至 Milvus 2.4 版本，本模块仅作为向后兼容组件保留。
+>
+> **建议：** 新接入的用户请直接使用 [Retriever - Milvus 2 (v2.5+) ](/zh/docs/eino/ecosystem_integration/retriever/retriever_milvusv2) 模块以获得持续支持。
 
 ## **Milvus 搜索**
 
@@ -145,3 +149,21 @@ type RetrieverConfig struct {
     Embedding embedding.Embedder
 }
 ```
+
+## 获取帮助
+
+- [[集团内部版] Milvus 快速入门](https://bytedance.larkoffice.com/wiki/P3JBw4PtKiLGPhkUCQZcXbHFnkf)
+
+如果有任何问题 或者任何功能建议，欢迎进这个群 oncall。
+
+### 外部参考
+
+- [Milvus 文档](https://milvus.io/docs)
+- [Milvus 索引类型](https://milvus.io/docs/index.md)
+- [Milvus 度量类型](https://milvus.io/docs/metric.md)
+- [milvus-sdk-go 参考](https://milvus.io/api-reference/go/v2.4.x/About.md)
+
+### 相关文档
+
+- [Eino: Indexer 使用说明](/zh/docs/eino/core_modules/components/indexer_guide)
+- [Eino: Retriever 使用说明](/zh/docs/eino/core_modules/components/retriever_guide)

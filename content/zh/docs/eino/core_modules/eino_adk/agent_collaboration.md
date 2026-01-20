@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 协作'
@@ -15,7 +15,7 @@ weight: 4
 
   - Agent 间协作方式
 
-   <table class="bd-browser-bugs table table-bordered table-hover">
+   <table>
    <tr><td>协作方式</td><td>描述</td></tr>
    <tr><td> Transfer</td><td>直接将任务转让给另外一个 Agent，本 Agent 则执行结束后退出，不关心转让 Agent 的任务执行状态</td></tr>
    <tr><td>ToolCall(AgentAsTool)</td><td>将 Agent 当成 ToolCall 调用，等待 Agent 的响应，并可获取被调用Agent 的输出结果，进行下一轮处理</td></tr>
@@ -23,7 +23,7 @@ weight: 4
 
   - AgentInput 的上下文策略
 
-   <table class="bd-browser-bugs table table-bordered table-hover">
+   <table>
    <tr><td>上下文策略</td><td>描述</td></tr>
    <tr><td>上游 Agent 全对话</td><td>获取本 Agent 的上游 Agent 的完整对话记录</td></tr>
    <tr><td>全新任务描述</td><td>忽略掉上游 Agent 的完整对话记录，给出一个全新的任务总结，作为子 Agent 的 AgentInput 输入</td></tr>
@@ -31,14 +31,14 @@ weight: 4
 
   - 决策自主性
 
-   <table class="bd-browser-bugs table table-bordered table-hover">
+   <table>
    <tr><td>决策自主性</td><td>描述</td></tr>
    <tr><td>自主决策</td><td>在 Agent 内部，基于其可选的下游 Agent， 如需协助时，自主选择下游 Agent 进行协助。 一般来说，Agent 内部是基于 LLM 进行决策，不过即使是基于预设逻辑进行选择，从 Agent 外部看依然视为自主决策</td></tr>
    <tr><td>预设决策</td><td>事先预设好一个Agent 执行任务后的下一个 Agent。 Agent 的执行顺序是事先确定、可预测的</td></tr>
    </table>
 - 组合原语
 
-   <table class="bd-browser-bugs table table-bordered table-hover">
+   <table>
    <tr><td>类型</td><td>描述</td><td>运行模式</td><td>协作方式</td><td>上下文策略</td><td>决策自主性</td></tr>
    <tr><td><strong>SubAgents</strong></td><td>将用户提供的 agent 作为 父Agent，用户提供的 subAgents 列表作为 子Agents，组合而成可自主决策的 Agent，其中的 Name 和 Description 作为该 Agent 的名称标识和描述。<li>当前限定一个 Agent 只能有一个 父 Agent</li><li>可采用 SetSubAgents 函数，构建 「多叉树」 形式的 Multi-Agent</li><li>在这个「多叉树」中，AgentName 需要保持唯一</li></td><td><a href="/img/eino/eino_adk_self_driving.png" target="_blank"><img src="/img/eino/eino_adk_self_driving.png" width="100%" /></a></td><td>Transfer</td><td>上游 Agent 全对话</td><td>自主决策</td></tr>
    <tr><td><strong>Sequential</strong></td><td>将用户提供的 SubAgents 列表，组合成按照顺序依次执行的 Sequential Agent，其中的 Name 和 Description 作为 Sequential Agent 的名称标识和描述。Sequential Agent 执行时，将 SubAgents 列表，按照顺序依次执行，直至将所有 Agent 执行一遍后结束。</td><td><a href="/img/eino/eino_adk_sequential_controller.png" target="_blank"><img src="/img/eino/eino_adk_sequential_controller.png" width="100%" /></a></td><td>Transfer</td><td>上游 Agent 全对话</td><td>预设决策</td></tr>
@@ -61,7 +61,7 @@ History 对应【上游 Agent 全对话上下文策略】，多 Agent 系统中�
 
 通过这种方式，其他 Agent 的行为被当作了提供给当前 Agent 的“外部信息”或“事实陈述”，而不是它自己的行为，从而避免了 LLM 的上下文混乱。
 
-<a href="/img/eino/eino_adk_message_event.png" target="_blank"><img src="/img/eino/eino_adk_message_event.png" width="60%" /></a>
+<a href="/img/eino/eino_adk_message_event.png" target="_blank"><img src="/img/eino/eino_adk_message_event.png" width="100%" /></a>
 
 在 Eino ADK 中，当为一个 Agent 构建 AgentInput 时，它能看到的 History 是“所有在我之前产生的 AgentEvent”。
 
@@ -73,12 +73,12 @@ History 中每个 AgentEvent 都是由“特定 Agent 在特定的执行序列�
 
 下面表格中给出各种编排模式下，Agent 执行时的具体 RunPath：
 
-<table class="bd-browser-bugs table table-bordered table-hover">
+<table>
 <tr><td>Example</td><td>RunPath</td></tr>
-<tr><td><a href="/img/eino/eino_adk_run_path_sub_agent.png" target="_blank"><img src="/img/eino/eino_adk_run_path_sub_agent.png" width="20%" /></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li></td></tr>
-<tr><td><a href="/img/eino/eino_adk_run_path.png" target="_blank"><img src="/img/eino/eino_adk_run_path.png" width="30%" /></a></td><td><li>Agent: [Agent]</li><li>Agent（after function call）: [Agent]</li></td></tr>
+<tr><td><a href="/img/eino/eino_adk_run_path_sub_agent.png" target="_blank"><img src="/img/eino/eino_adk_run_path_sub_agent.png" width="100%" /></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li></td></tr>
+<tr><td><a href="/img/eino/eino_adk_run_path.png" target="_blank"><img src="/img/eino/eino_adk_run_path.png" width="100%" /></a></td><td><li>Agent: [Agent]</li><li>Agent（after function call）: [Agent]</li></td></tr>
 <tr><td><a href="/img/eino/eino_adk_collaboration_run_path_sequential.png" target="_blank"><img src="/img/eino/eino_adk_collaboration_run_path_sequential.png" width="100%" /></a></td><td><li>Agent1: [SequentialAgent, LoopAgent, Agent1]</li><li>Agent2: [SequentialAgent, LoopAgent, Agent1, Agent2]</li><li>Agent1: [SequentialAgent, LoopAgent, Agent1, Agent2, Agent1]</li><li>Agent2: [SequentialAgent, LoopAgent, Agent1, Agent2, Agent1, Agent2]</li><li>Agent3: [SequentialAgent, LoopAgent, Agent3]</li><li>Agent4: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent4]</li><li>Agent5: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent5]</li><li>Agent6: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent6]</li></td></tr>
-<tr><td><a href="/img/eino/eino_adk_run_path_deterministic.png" target="_blank"><img src="/img/eino/eino_adk_run_path_deterministic.png" width="50%" /></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li><li>Agent: [Agent, SubAgent, Agent]</li></td></tr>
+<tr><td><a href="/img/eino/eino_adk_run_path_deterministic.png" target="_blank"><img src="/img/eino/eino_adk_run_path_deterministic.png" width="100%" /></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li><li>Agent: [Agent, SubAgent, Agent]</li></td></tr>
 </table>
 
 #### 自定义
@@ -177,7 +177,7 @@ type OnSubAgents interface {
 
 接下来以一个多功能对话 Agent 演示 Transfer 能力，目标是搭建一个可以查询天气或者与用户对话的 Agent，Agent 结构如下：
 
-<a href="/img/eino/eino_adk_collaboration_example.png" target="_blank"><img src="/img/eino/eino_adk_collaboration_example.png" width="50%" /></a>
+<a href="/img/eino/eino_adk_collaboration_example.png" target="_blank"><img src="/img/eino/eino_adk_collaboration_example.png" width="100%" /></a>
 
 三个 Agent 均使用 ChatModelAgent 实现：
 
@@ -405,7 +405,7 @@ func AgentWithDeterministicTransferTo(_ context.Context, config *DeterministicTr
 
 在 Supervisor 模式中，子 Agent 执行完毕后固定回到 Supervisor，由 Supervisor 生成下一步任务目标。此时可以使用 AgentWithDeterministicTransferTo：
 
-<a href="/img/eino/eino_adk_deterministic_transfer.png" target="_blank"><img src="/img/eino/eino_adk_deterministic_transfer.png" width="70%" /></a>
+<a href="/img/eino/eino_adk_deterministic_transfer.png" target="_blank"><img src="/img/eino/eino_adk_deterministic_transfer.png" width="100%" /></a>
 
 ```go
 // github.com/cloudwego/eino/adk/prebuilt/supervisor.go
@@ -443,7 +443,7 @@ WorkflowAgent 支持以代码中预设好的流程运行 Agents。Eino ADK 提�
 
 SequentialAgent 会按照你提供的顺序，依次执行一系列 Agent：
 
-<a href="/img/eino/eino_adk_sequential_agent.png" target="_blank"><img src="/img/eino/eino_adk_sequential_agent.png" width="80%" /></a>
+<a href="/img/eino/eino_adk_sequential_agent.png" target="_blank"><img src="/img/eino/eino_adk_sequential_agent.png" width="100%" /></a>
 
 ```go
 type SequentialAgentConfig struct {
@@ -459,7 +459,7 @@ func NewSequentialAgent(ctx context.Context, config *SequentialAgentConfig) (Age
 
 LoopAgent 基于 SequentialAgent 实现，在 SequentialAgent 运行完成后，再次从头运行：
 
-<a href="/img/eino/eino_adk_loop_definition.png" target="_blank"><img src="/img/eino/eino_adk_loop_definition.png" width="80%" /></a>
+<a href="/img/eino/eino_adk_loop_definition.png" target="_blank"><img src="/img/eino/eino_adk_loop_definition.png" width="100%" /></a>
 
 ```go
 type LoopAgentConfig struct {
@@ -477,7 +477,7 @@ func NewLoopAgent(ctx context.Context, config *LoopAgentConfig) (Agent, error)
 
 ParallelAgent 会并发运行若干 Agent：
 
-<a href="/img/eino/eino_adk_parallel_agent.png" target="_blank"><img src="/img/eino/eino_adk_parallel_agent.png" width="80%" /></a>
+<a href="/img/eino/eino_adk_parallel_agent.png" target="_blank"><img src="/img/eino/eino_adk_parallel_agent.png" width="100%" /></a>
 
 ```go
 type ParallelAgentConfig struct {
@@ -498,3 +498,21 @@ func NewAgentTool(_ context.Context, agent Agent, options ...AgentToolOption) to
 ```
 
 转换为 Tool 后，Agent 可以被支持 function calling 的 ChatModel 调用，也可以被所有基于 LLM 驱动的 Agent 调用，调用方式取决于 Agent 实现。
+
+消息历史隔离：作为 Tool 的 Agent，不会继承上级 Agent 的消息历史（History）。
+
+SessionValues 共享：但是，会共享上级 Agent 的 SessionValues，即读写同一个 KV map。
+
+内部事件透出：作为 Tool 的 Agent 也是 Agent，会产生 AgentEvent。这些内部的 AgentEvent，默认情况下，不会通过 `Runner` 返回的 `AsyncIterator` 透出。在部分业务场景中，如果需要像用户透出内部 AgentTool 的 AgentEvent，需要在 AgentTool 的上级 `ChatModelAgent` 的 `ToolsConfig` 中增加配置，开启内部事件透出：
+
+```go
+// from adk/chatmodel.go
+
+**type **ToolsConfig **struct **{
+    // other configurations...
+
+    _// EmitInternalEvents indicates whether internal events from agentTool should be emitted_
+_    // to the parent generator via a tool option injection at run-time._
+_    _EmitInternalEvents bool
+}
+```

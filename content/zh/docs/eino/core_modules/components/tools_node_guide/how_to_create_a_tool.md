@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 如何创建一个 tool ?
@@ -43,7 +43,7 @@ type StreamableTool interface {
 
 ## ToolInfo 的表示方式
 
-在大模型的 function call 调用过程中，由大模型生成需要调用的 function call 的参数，这就要求大模型能理解生成的参数是否符合约束。在 Eino 中，根据开发者的使用习惯和领域标准两方面因素，提供了 `params map[string]*ParameterInfo` 和 `*openapi3.Schema` 两种参数约束的表达方式。
+在大模型的 function call 调用过程中，由大模型生成需要调用的 function call 的参数，这就要求大模型能理解生成的参数是否符合约束。在 Eino 中，根据开发者的使用习惯和领域标准两方面因素，提供了 `params map[string]*ParameterInfo` 和 `JSON Schema` 两种参数约束的表达方式。
 
 ### 方式 1 - map[string]*ParameterInfo
 
