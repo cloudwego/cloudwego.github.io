@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: How to Create a Tool
@@ -119,11 +119,11 @@ func main() {
 }
 ```
 
-You usually won’t call this directly; prefer `utils.GoStruct2ToolInfo()` or `utils.InferTool()`.
+You usually won't call this directly; prefer `utils.GoStruct2ToolInfo()` or `utils.InferTool()`.
 
- 
+## Ways to Implement a Tool
 
-## Approach 1 — Implement Interfaces Directly
+### Approach 1 — Implement Interfaces Directly
 
 Implement `InvokableTool`:
 
@@ -152,13 +152,13 @@ func (t *AddUser) InvokableRun(_ context.Context, argumentsInJSON string, _ ...t
 
 Because the LLM always supplies a JSON string, the tool receives `argumentsInJSON`; you deserialize it and return a JSON string.
 
-## Approach 2 — Wrap a Local Function
+### Approach 2 — Wrap a Local Function
 
 Often you have an existing function (e.g., `AddUser`) and want the LLM to decide when/how to call it. Eino provides `NewTool` for this, and `InferTool` for tag-based parameter constraints.
 
 > See tests in `cloudwego/eino/components/tool/utils/invokable_func_test.go` and `streamable_func_test.go`.
 
-### `NewTool`
+#### `NewTool`
 
 For functions of signature:
 
@@ -220,7 +220,7 @@ func createTool() tool.InvokableTool {
 }
 ```
 
-### `InferTool`
+#### `InferTool`
 
 When parameter constraints live in the input struct tags, use `InferTool`:
 
@@ -256,7 +256,7 @@ func createTool() (tool.InvokableTool, error) {
 }
 ```
 
-### `InferOptionableTool`
+#### `InferOptionableTool`
 
 Eino’s Option mechanism passes dynamic runtime parameters. Details: `Eino: CallOption capabilities and conventions` at `/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities`. The same mechanism applies to custom tools.
 
@@ -308,14 +308,14 @@ func useInInvoke() {
 }
 ```
 
-## Approach 3 — Use tools from eino-ext
+### Approach 3 — Use tools from eino-ext
 
 Beyond custom tools, the `eino-ext` project provides many ready-to-use implementations: `Googlesearch`, `DuckDuckGoSearch`, `wikipedia`, `httprequest`, etc. See implementations at https://github.com/cloudwego/eino-ext/tree/main/components/tool and docs:
 
 - Tool — Googlesearch: `/docs/eino/ecosystem_integration/tool/tool_googlesearch`
 - Tool — DuckDuckGoSearch: `/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search`
 
-## Approach 4 — Use MCP protocol
+### Approach 4 — Use MCP protocol
 
 MCP (Model Context Protocol) is an open protocol for exposing tool capabilities to LLMs. Eino can treat tools provided via MCP as regular tools, greatly expanding available capabilities.
 

@@ -1,9 +1,11 @@
+---
 Description: ""
-date: "2025-12-03"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino ADK MultiAgent: Supervisor Agent'
 weight: 4
+---
 
 ## Supervisor Agent Overview
 
@@ -20,41 +22,47 @@ Supervisor Agent is a centralized multi-agent collaboration pattern composed of 
 This pattern fits scenarios requiring dynamic coordination among specialized agents to complete complex tasks, such as:
 
 - Research project management (Supervisor assigns research, experiments, and report writing tasks to different subagents)
-- Customer service workflows (Supervisor routes based on issue type to tech support, after‑sales, sales, etc.)
+- Customer service workflows (Supervisor routes based on issue type to tech support, after-sales, sales, etc.)
 
-### Structure
+### Supervisor Agent Structure
 
-- Supervisor Agent: the collaboration core with task assignment logic (rule‑based or LLM‑driven); manages subagents via `SetSubAgents`
-- SubAgents: each subagent is enhanced by WithDeterministicTransferTo with `ToAgentNames` preset to the Supervisor’s name, ensuring automatic transfer back after completion
+Core structure of the Supervisor pattern:
 
-### Features
+- **Supervisor Agent**: the collaboration core with task assignment logic (rule-based or LLM-driven); manages subagents via `SetSubAgents`
+- **SubAgents**: each subagent is enhanced by WithDeterministicTransferTo with `ToAgentNames` preset to the Supervisor's name, ensuring automatic transfer back after completion
 
-1. Deterministic callback: when a subagent finishes without interruption, WithDeterministicTransferTo automatically triggers a Transfer event to hand control back to the Supervisor
-2. Centralized control: Supervisor manages subagents and dynamically adjusts assignments based on results
-3. Loose coupling: subagents can be developed, tested, and replaced independently as long as they implement `Agent` and are bound to the Supervisor
-4. Interrupt/resume support: if subagents or the Supervisor implement `ResumableAgent`, the collaboration can resume after interrupts, preserving context continuity
+### Supervisor Agent Features
 
-### Run Flow
+1. **Deterministic callback**: when a subagent finishes without interruption, WithDeterministicTransferTo automatically triggers a Transfer event to hand control back to the Supervisor, preventing collaboration flow interruption.
+2. **Centralized control**: Supervisor manages subagents and dynamically adjusts task assignments based on subagent results (e.g., assign to another subagent or generate final result directly).
+3. **Loose coupling**: subagents can be developed, tested, and replaced independently as long as they implement the `Agent` interface and are bound to the Supervisor.
+4. **Interrupt/resume support**: if subagents or the Supervisor implement `ResumableAgent`, the collaboration can resume after interrupts, preserving task context continuity.
 
-1. Start: Runner triggers the Supervisor with an initial task (e.g., “Write a report on the history of LLMs”)
-2. Assign: Supervisor transfers the task to a designated subagent (e.g., ResearchAgent)
-3. Execute: Subagent performs its task and emits output events
-4. Auto‑callback: upon completion, WithDeterministicTransferTo triggers a Transfer event back to Supervisor
-5. Process result: Supervisor decides next steps (e.g., transfer to WriterAgent or output final result)
+### Supervisor Agent Run Flow
 
-## Usage Example
+Typical collaboration flow of the Supervisor pattern:
+
+1. **Start**: Runner triggers the Supervisor with an initial task (e.g., "Write a report on the history of LLMs")
+2. **Assign**: Supervisor transfers the task via Transfer event to a designated subagent (e.g., "ResearchAgent")
+3. **Execute**: Subagent performs its task (e.g., research LLM key milestones) and generates result events
+4. **Auto-callback**: upon completion, WithDeterministicTransferTo triggers a Transfer event back to Supervisor
+5. **Process result**: Supervisor receives subagent results and decides next steps (e.g., transfer to "WriterAgent" for further processing, or output final result directly)
+
+## Supervisor Agent Usage Example
 
 ### Scenario
 
-Build a report generation system:
+Create a research report generation system:
 
-- Supervisor: given a topic, assigns tasks to ResearchAgent and WriterAgent, aggregates the final report
-- ResearchAgent: generates a research plan (e.g., LLM key milestones)
-- WriterAgent: writes a full report based on the plan
+- **Supervisor**: given a research topic from user input, assigns tasks to "ResearchAgent" and "WriterAgent", and aggregates the final report
+- **ResearchAgent**: generates a research plan (e.g., key stages of LLM development)
+- **WriterAgent**: writes a complete report based on the research plan
 
-### Code
+### Code Implementation
 
-#### Step 1: Subagents
+#### Step 1: Implement SubAgents
+
+First create two subagents responsible for research and writing tasks:
 
 ```go
 // ResearchAgent: generate a research plan
@@ -84,10 +92,12 @@ Output ONLY the report, no extra text.`,
 }
 ```
 
-#### Step 2: Supervisor Agent
+#### Step 2: Implement Supervisor Agent
+
+Create the Supervisor Agent with task assignment logic (simplified here as rule-based: first assign to ResearchAgent, then to WriterAgent):
 
 ```go
-// ReportSupervisor: coordinate research and writing
+// ReportSupervisor: coordinate research and writing tasks
 func NewReportSupervisor(model model.ToolCallingChatModel) adk.Agent {
     agent, _ := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
         Name:        "ReportSupervisor",
@@ -107,7 +117,9 @@ Workflow:
 }
 ```
 
-#### Step 3: Compose and Run
+#### Step 3: Compose Supervisor and SubAgents
+
+Use `NewSupervisor` to compose the Supervisor and subagents:
 
 ```go
 import (
@@ -123,24 +135,24 @@ import (
 func main() {
     ctx := context.Background()
 
-    // 1) Create model (e.g., GPT‑4o)
+    // 1. Create LLM model (e.g., GPT-4o)
     model, _ := openai.NewChatModel(ctx, &openai.ChatModelConfig{
        APIKey: "YOUR_API_KEY",
        Model:  "gpt-4o",
     })
 
-    // 2) Create subagents and supervisor
+    // 2. Create subagents and Supervisor
     researchAgent := NewResearchAgent(model)
     writerAgent := NewWriterAgent(model)
     reportSupervisor := NewReportSupervisor(model)
 
-    // 3) Compose supervisor and subagents
+    // 3. Compose Supervisor and subagents
     supervisorAgent, _ := supervisor.New(ctx, &supervisor.Config{
        Supervisor: reportSupervisor,
        SubAgents:  []adk.Agent{researchAgent, writerAgent},
     })
 
-    // 4) Run Supervisor pattern
+    // 4. Run Supervisor pattern
     iter := supervisorAgent.Run(ctx, &adk.AgentInput{
        Messages: []adk.Message{
           schema.UserMessage("Write a report on the history of Large Language Models."),
@@ -148,7 +160,7 @@ func main() {
        EnableStreaming: true,
     })
 
-    // 5) Consume event stream (print results)
+    // 5. Consume event stream (print results)
     for {
        event, ok := iter.Next()
        if !ok {
@@ -189,7 +201,7 @@ Agent[ResearchAgent]:
 
 4. **Stakeholder Mapping**  
    - Task: Identify key organizations (OpenAI, Google DeepMind, Meta AI, Microsoft Research) and academic labs (Stanford, Berkeley) driving LLM development.  
-   - Task: Document institutional contributions (e.g., OpenAI’s GPT series, Google’s BERT/PaLM, Meta’s Llama) and research priorities (open vs. closed models).  
+   - Task: Document institutional contributions (e.g., OpenAI's GPT series, Google's BERT/PaLM, Meta's Llama) and research priorities (open vs. closed models).  
    - Milestone: 5-day stakeholder profile draft with org-specific timelines and model lineages.  
 
 5. **Technical Evolution & Innovation Trajectory**  
@@ -261,19 +273,19 @@ The year 2017 marked the dawn of the LLM era with the publication of *"Attention
 
 #### Key Models and Breakthroughs:  
 - **2018**: OpenAI released **GPT-1** (Radford et al.), the first transformer-based LLM. With 124 million parameters, it introduced the "pretraining-fine-tuning" paradigm: pretraining on a large unlabeled corpus (BooksCorpus) to learn general language patterns, then fine-tuning on task-specific labeled data (e.g., sentiment analysis).  
-- **2018**: Google published **BERT** (Devlin et al.), a bidirectional transformer that processed text from left-to-right *and* right-to-left, outperforming GPT-1 on context-dependent tasks like question answering. BERT’s success popularized "contextual embeddings," where word meaning depends on surrounding text (e.g., "bank" as a financial institution vs. a riverbank).  
+- **2018**: Google published **BERT** (Devlin et al.), a bidirectional transformer that processed text from left-to-right *and* right-to-left, outperforming GPT-1 on context-dependent tasks like question answering. BERT's success popularized "contextual embeddings," where word meaning depends on surrounding text (e.g., "bank" as a financial institution vs. a riverbank).  
 - **2019**: OpenAI scaled up with **GPT-2** (1.5 billion parameters), demonstrating improved text generation but sparking early concerns about misuse (OpenAI initially delayed full release over fears of disinformation).  
-- **2020**: Google’s **T5** (Text-to-Text Transfer Transformer) unified NLP tasks under a single "text-to-text" framework, simplifying model adaptation.  
+- **2020**: Google's **T5** (Text-to-Text Transfer Transformer) unified NLP tasks under a single "text-to-text" framework, simplifying model adaptation.  
 
 
 ### 2.3 2020–Present: Scaling, Emergence, and Mainstream Adoption  
 The 2020s saw LLMs transition from research curiosities to global phenomena, driven by exponential scaling of parameters, data, and compute.  
 
 #### Key Developments:  
-- **2020**: OpenAI’s **GPT-3** (175 billion parameters) marked a turning point. Trained on 45 TB of text, it exhibited "few-shot" and "zero-shot" learning. GPT-3’s API release introduced LLMs to developers.  
+- **2020**: OpenAI's **GPT-3** (175 billion parameters) marked a turning point. Trained on 45 TB of text, it exhibited "few-shot" and "zero-shot" learning. GPT-3's API release introduced LLMs to developers.  
 - **2022**: **ChatGPT** (GPT-3.5) brought LLMs to the public with **RLHF** alignment.  
-- **2023**: Meta’s **Llama 2** opened weights for research and commercial use; OpenAI’s **GPT-4** expanded multimodality and reasoning.  
-- **2023–2024**: Scaling race continued (PaLM 2, Claude 2, Mistral, Falcon); compute usage skyrocketed.  
+- **2023**: Meta's **Llama 2** opened weights for research and commercial use; OpenAI's **GPT-4** expanded multimodality and reasoning.  
+- **2023–2024**: Scaling race continued (PaLM 2, Claude 2, Mistral, Falcon); compute usage skyrocketed.
 ===========
 Agent[WriterAgent]:
 
@@ -287,59 +299,65 @@ successfully transferred to agent [ReportSupervisor]
 
 ### What Is WithDeterministicTransferTo?
 
-WithDeterministicTransferTo is an ADK agent enhancer that injects Transfer capability. It lets developers predefine a fixed transfer path for a target agent so that, upon completion (not interrupted), it automatically generates a Transfer event to route the task to predefined destination agents. This is the foundation of the Supervisor collaboration pattern, ensuring subagents hand control back reliably to form a "assign–execute–feedback" loop.
+`WithDeterministicTransferTo` is an ADK agent enhancer that injects Transfer capability. It lets developers predefine a fixed transfer path for a target agent so that, upon completion (not interrupted), it automatically generates a Transfer event to route the task to predefined destination agents.
 
-### Core Implementation
+This capability is the foundation of the Supervisor Agent collaboration pattern, ensuring subagents reliably hand control back to the Supervisor, forming a "assign-execute-feedback" closed-loop collaboration flow.
 
-#### Config
+### WithDeterministicTransferTo Core Implementation
+
+#### Config Structure
+
+Define core parameters for task transfer via `DeterministicTransferConfig`:
 
 ```go
-// Wrapper
+// Wrapper method
 func AgentWithDeterministicTransferTo(_ context.Context, config *DeterministicTransferConfig) Agent
 
-// Config
+// Config details
 type DeterministicTransferConfig struct {
-    Agent        Agent    // target agent to enhance
-    ToAgentNames []string // destination agent names to transfer to after completion
+    Agent        Agent          // Target agent to enhance
+    ToAgentNames []string       // Destination agent names to transfer to after completion
 }
 ```
 
-- Agent: the original agent to be enhanced
-- ToAgentNames: destination agent names (in order) to transfer to when the agent completes without interruption
+- `Agent`: the original agent to add transfer capability to
+- `ToAgentNames`: destination agent names (in order) to automatically transfer to when the agent completes without interruption
 
 #### Agent Wrapping
 
-WithDeterministicTransferTo wraps the original agent. Depending on whether it implements `ResumableAgent`, it returns `agentWithDeterministicTransferTo` or `resumableAgentWithDeterministicTransferTo`, preserving compatibility with original capabilities (like `Resume`). The wrapper overrides `Run` (and `Resume` for resumable agents) to append Transfer events after the original event stream.
+WithDeterministicTransferTo wraps the original agent. Depending on whether it implements `ResumableAgent` (supports interrupt/resume), it returns `agentWithDeterministicTransferTo` or `resumableAgentWithDeterministicTransferTo`, ensuring enhanced capability is compatible with the agent's original features (like `Resume` method).
+
+The wrapped agent overrides `Run` method (and `Resume` for `ResumableAgent`), appending Transfer events after the original agent's event stream:
 
 ```go
 // Wrapper for a regular Agent
 type agentWithDeterministicTransferTo struct {
-    agent        Agent    // original agent
-    toAgentNames []string // destination agent names
+    agent        Agent          // Original agent
+    toAgentNames []string       // Destination agent names
 }
 
-// Run: execute original agent and append Transfer after completion
+// Run: execute original agent and append Transfer event after completion
 func (a *agentWithDeterministicTransferTo) Run(ctx context.Context, input *AgentInput, options ...AgentRunOption) *AsyncIterator[*AgentEvent] {
     aIter := a.agent.Run(ctx, input, options...)
     
     iterator, generator := NewAsyncIteratorPair[*AgentEvent]()
     
-    // asynchronously forward original events and append Transfer
+    // Asynchronously process original event stream and append Transfer event
     go appendTransferAction(ctx, aIter, generator, a.toAgentNames)
     
     return iterator
 }
 ```
 
-For `ResumableAgent`, implement `Resume` to ensure deterministic transfer on resume completion:
+For `ResumableAgent`, additionally implement `Resume` method to ensure deterministic transfer on resume completion:
 
 ```go
 type resumableAgentWithDeterministicTransferTo struct {
-    agent        ResumableAgent // resumable original agent
-    toAgentNames []string       // destination agent names
+    agent        ResumableAgent // Resumable original agent
+    toAgentNames []string       // Destination agent names
 }
 
-// Resume: resume original agent and append Transfer after completion
+// Resume: resume original agent and append Transfer event after completion
 func (a *resumableAgentWithDeterministicTransferTo) Resume(ctx context.Context, info *ResumeInfo, opts ...AgentRunOption) *AsyncIterator[*AgentEvent] {
     aIter := a.agent.Resume(ctx, info, opts...)
     iterator, generator := NewAsyncIteratorPair[*AgentEvent]()
@@ -348,31 +366,31 @@ func (a *resumableAgentWithDeterministicTransferTo) Resume(ctx context.Context, 
 }
 ```
 
-#### Append Transfer Event
+#### Append Transfer Event to Event Stream
 
-`appendTransferAction` consumes the original agent’s event stream and, when the task finishes without interruption, generates and sends Transfer events to destination agents:
+`appendTransferAction` is the core logic for deterministic transfer. It consumes the original agent's event stream and, when the agent task finishes normally (not interrupted), automatically generates and sends Transfer events to destination agents:
 
 ```go
 func appendTransferAction(ctx context.Context, aIter *AsyncIterator[*AgentEvent], generator *AsyncGenerator[*AgentEvent], toAgentNames []string) {
     defer func() {
-        // panic handling: capture and send as error event
+        // Exception handling: capture panic and pass error via event
         if panicErr := recover(); panicErr != nil {
             generator.Send(&AgentEvent{Err: safe.NewPanicErr(panicErr, debug.Stack())})
         }
-        generator.Close() // close generator when stream ends
+        generator.Close() // Close generator when event stream ends
     }()
 
     interrupted := false
 
-    // 1) forward all original events
+    // 1. Forward all original agent events
     for {
         event, ok := aIter.Next()
-        if !ok {
+        if !ok { // Original event stream ended
             break
         }
-        generator.Send(event)
+        generator.Send(event) // Forward event to caller
 
-        // check interrupt (e.g., InterruptAction)
+        // Check for interrupt (e.g., InterruptAction)
         if event.Action != nil && event.Action.Interrupted != nil {
             interrupted = true
         } else {
@@ -380,19 +398,19 @@ func appendTransferAction(ctx context.Context, aIter *AsyncIterator[*AgentEvent]
         }
     }
 
-    // 2) if not interrupted and destinations exist, generate Transfer events
+    // 2. If not interrupted and destination agents exist, generate Transfer events
     if !interrupted && len(toAgentNames) > 0 {
         for _, toAgentName := range toAgentNames {
-            // generate assistant tip and transfer action messages
+            // Generate transfer messages (system tip + Transfer action)
             aMsg, tMsg := GenTransferMessages(ctx, toAgentName)
-            // send assistant event
+            // Send system tip event (notify user of task transfer)
             aEvent := EventFromMessage(aMsg, nil, schema.Assistant, "")
             generator.Send(aEvent)
-            // send transfer tool event
+            // Send Transfer action event (trigger task transfer)
             tEvent := EventFromMessage(tMsg, nil, schema.Tool, tMsg.ToolName)
             tEvent.Action = &AgentAction{
                 TransferToAgent: &TransferToAgentAction{
-                    DestAgentName: toAgentName,
+                    DestAgentName: toAgentName, // Destination agent name
                 },
             }
             generator.Send(tEvent)
@@ -401,12 +419,14 @@ func appendTransferAction(ctx context.Context, aIter *AsyncIterator[*AgentEvent]
 }
 ```
 
-Key logic:
+**Key Logic**:
 
-- Event forwarding: all original events (thinking, tool calls, outputs) are forwarded intact
-- Interrupt check: if an interrupt occurs, no Transfer is triggered
-- Transfer generation: for each destination in `ToAgentNames`, send an assistant tip event and a tool event with `TransferToAgentAction` to route to the destination agent
+- **Event forwarding**: all events from the original agent (thinking, tool calls, output results) are forwarded intact, ensuring business logic is unaffected
+- **Interrupt check**: if the agent is interrupted during execution (e.g., `InterruptAction`), Transfer is not triggered (interrupt means task did not complete normally)
+- **Transfer event generation**: after task completes normally, for each `ToAgentNames`, generate two events:
+  1. System tip event (`schema.Assistant` role): notify user that task will transfer to destination agent
+  2. Transfer action event (`schema.Tool` role): carry `TransferToAgentAction` to trigger ADK runtime to transfer task to the agent specified by `DestAgentName`
 
 ## Summary
 
-WithDeterministicTransferTo provides reliable transfer capability, forming the basis of the Supervisor pattern. Supervisor achieves efficient multi-agent collaboration via centralized coordination and deterministic callback, reducing complexity in development and maintenance. Combining both, developers can quickly build flexible, extensible multi-agent systems.
+WithDeterministicTransferTo provides reliable task transfer capability for agents, serving as the core foundation for building the Supervisor pattern; the Supervisor pattern achieves efficient multi-agent collaboration through centralized coordination and deterministic callback, significantly reducing development and maintenance costs for complex tasks. Combining both, developers can quickly build flexible, extensible multi-agent systems.

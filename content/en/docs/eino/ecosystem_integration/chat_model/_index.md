@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-07-21"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: ChatModel

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Callback Manual'
@@ -9,206 +9,311 @@ weight: 5
 
 ## Problem Statement
 
-Components (including Lambdas) and Graph orchestration define business logic. Cross-cutting concerns like logging, tracing, metrics, and UI surfacing need an injection mechanism into Components (including Lambdas) and Graphs. Users may also need internal state exposure (e.g., DB name in `VikingDBRetriever`, temperature in `ArkChatModel`).
+Components (including Lambdas) and Graph orchestration together solve the problem of "defining business logic". Cross-cutting concerns like logging, tracing, metrics, and UI surfacing need a mechanism to inject functionality into Components (including Lambdas) and Graphs.
 
-Callbacks enable both cross-cutting injection and mid-execution state exposure. Users provide and register callback handlers; Components/Graphs call them at defined timings with relevant information.
+On the other hand, users may want to access intermediate information during the execution of a specific Component implementation, such as the DB Name queried by VikingDBRetriever, or parameters like temperature requested by ArkChatModel. A mechanism is needed to expose intermediate state.
+
+Callbacks support both "**cross-cutting concern injection**" and "**intermediate state exposure**". Specifically: users provide and register "functions" (Callback Handlers), and Components and Graphs call back these functions at fixed "timings" (or aspects/points), providing corresponding information.
 
 ## Core Concepts
 
-Entities in Eino (Components, Graph Nodes/Chain Nodes, Graph/Chain itself) trigger callbacks at defined timings (Callback Timing) by invoking user-provided handlers (Callback Handlers). They pass who is running (RunInfo) and what is happening (Callback Input/Output or streams).
+The core concepts connected together: **Entities** in Eino such as Components and Graphs, at fixed **timings** (Callback Timing), call back user-provided **functions** (Callback Handlers), passing **who they are** (RunInfo) and **what happened at that moment** (Callback Input & Output).
 
 ### Triggering Entities
 
-- Components (official types and user Lambdas)
-- Graph Nodes (and Chain Nodes)
-- Graph itself (and Chain)
+Components (including officially defined component types and Lambdas), Graph Nodes (as well as Chain/Workflow Nodes), and Graphs themselves (as well as Chain/Workflow). All three types of entities have needs for cross-cutting concern injection and intermediate state exposure, so they all trigger callbacks. See the "[Triggering Methods](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)" section below for details.
 
-All can inject cross-cutting concerns and expose intermediate state.
-
-### Timings
+### Triggering Timings
 
 ```go
+// CallbackTiming enumerates all the timing of callback aspects.
 type CallbackTiming = callbacks.CallbackTiming
 
 const (
-    TimingOnStart
-    TimingOnEnd
-    TimingOnError
-    TimingOnStartWithStreamInput
-    TimingOnEndWithStreamOutput
+    TimingOnStart CallbackTiming = iota // Enter and start execution
+    TimingOnEnd // Successfully completed and about to return
+    TimingOnError // Failed and about to return err 
+    TimingOnStartWithStreamInput // OnStart, but input is StreamReader
+    TimingOnEndWithStreamOutput // OnEnd, but output is StreamReader
 )
 ```
 
-Entity type and execution mode determine whether OnStart vs OnStartWithStreamInput (and similarly for end). See triggering rules below.
+Different triggering entities, in different scenarios, whether to trigger OnStart or OnStartWithStreamInput (same for OnEnd/OnEndWithStreamOutput), the specific rules are detailed in the "[Triggering Methods](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)" section below.
 
-### Handler Interface
+### Callback Handler
 
 ```go
 type Handler interface {
     OnStart(ctx context.Context, info *RunInfo, input CallbackInput) context.Context
     OnEnd(ctx context.Context, info *RunInfo, output CallbackOutput) context.Context
     OnError(ctx context.Context, info *RunInfo, err error) context.Context
-    OnStartWithStreamInput(ctx context.Context, info *RunInfo, input *schema.StreamReader[CallbackInput]) context.Context
-    OnEndWithStreamOutput(ctx context.Context, info *RunInfo, output *schema.StreamReader[CallbackOutput]) context.Context
+    OnStartWithStreamInput(ctx context.Context, info *RunInfo,
+       input *schema.StreamReader[CallbackInput]) context.Context
+    OnEndWithStreamOutput(ctx context.Context, info *RunInfo,
+       output *schema.StreamReader[CallbackOutput]) context.Context
 }
 ```
 
-Each method receives:
+A Handler is a struct that implements the above 5 methods (corresponding to 5 triggering timings). Each method receives three pieces of information:
 
-- `context.Context`: carries data across timings within the same handler
-- `RunInfo`: metadata of the running entity
-- `Input/Output` or `InputStream/OutputStream`: business information at the timing
+- Context: Used to **receive custom information that may have been set by preceding timings of the same Handler**.
+- RunInfo: Metadata of the entity triggering the callback.
+- Input/Output/InputStream/OutputStream: Business information at the time of callback triggering.
 
-All return a context for passing info across timings for the same handler.
+And all return a new Context: used to **pass information between different triggering timings of the same Handler**.
 
-Use builders/helpers to focus on subsets:
+If a Handler doesn't want to focus on all 5 triggering timings, but only some of them, such as only OnStart, it's recommended to use `NewHandlerBuilder().OnStartFn(...).Build()`. If you don't want to focus on all component types, but only specific components like ChatModel, it's recommended to use `NewHandlerHelper().ChatModel(...).Handler()`, which only receives ChatModel callbacks and gets typed CallbackInput/CallbackOutput. See the "[Handler Implementation Methods](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)" section for details.
 
-- `NewHandlerBuilder().OnStartFn(...).Build()` to handle selected timings only
-- `NewHandlerHelper().ChatModel(...).Handler()` to target specific component types and get typed inputs/outputs
-
-Handlers have no guaranteed ordering.
+There is **no** guaranteed triggering order between different Handlers.
 
 ### RunInfo
 
+Describes the metadata of the entity triggering the Callback.
+
 ```go
+// RunInfo contains information about the running component that triggers callbacks.
 type RunInfo struct {
-    Name      string               // user-specified name with business meaning
-    Type      string               // specific implementation type (e.g., OpenAI)
-    Component components.Component // abstract component type (e.g., ChatModel)
+    Name      string               // the 'Name' with semantic meaning for the running component, specified by end-user
+    Type      string               // the specific implementation 'Type' of the component, e.g. 'OpenAI'
+    Component components.Component // the component abstract type, e.g. 'ChatModel'
 }
 ```
 
-- Name: user-specified
-  - Component: Node Name in Graph; manual when used standalone
-  - Graph Node: Node Name (set via `WithNodeName(n string)`)
-  - Graph: Graph Name for top-level (set via `WithGraphName(name string)`); node name when nested
-- Type: provider decides
-  - Interface components: `GetType()` if `Typer` implemented; fallback to reflection
-  - Lambda: `WithLambdaType` or empty
-  - Graph Node: type of internal component/lambda/graph
-  - Graph itself: empty
-- Component: abstract type (ChatModel/Lambda/Graph; Graph/Chain/Workflow for graph itself)
+- Name: A name with business meaning, needs to be specified by the user, empty string if not specified. For different triggering entities:
+  - Component: When in a Graph, uses Node Name. When used standalone outside a Graph, manually set by user. See "Injecting RunInfo" and "Using Components Standalone"
+  - Graph Node: Uses Node Name `func WithNodeName(n string) GraphAddNodeOpt`
+  - Graph itself:
+    - Top-level graph uses Graph Name `func WithGraphName(graphName string) GraphCompileOption`
+    - Nested internal graphs use the Node Name added when joining the parent graph
+- Type: Determined by the specific component implementation:
+  - Components with interfaces: If Typer interface is implemented, uses GetType() method result. Otherwise uses reflection to get Struct/Func name.
+  - Lambda: If Type is specified with `func WithLambdaType(t string) LambdaOpt`, uses that, otherwise empty string.
+  - Graph Node: Uses the value of internal Component/Lambda/Graph.
+  - Graph itself: Empty string.
+- Component:
+  - Components with interfaces: Whatever interface it is
+  - Lambda: Fixed value Lambda
+  - Graph Node: Uses the value of internal Component/Lambda/Graph.
+  - Graph itself: Fixed value Graph / Chain / Workflow. (Previously there were StateGraph / StateChain, now integrated into Graph / Chain)
 
 ### Callback Input & Output
 
-Types vary per component.
+Essentially any type, because different Components have completely different inputs/outputs and internal states.
 
 ```go
 type CallbackInput any
 type CallbackOutput any
 ```
 
-Example for ChatModel:
+For specific components, there are more specific types, such as Chat Model:
 
 ```go
+// CallbackInput is the input for the model callback.
 type CallbackInput struct {
+    // Messages is the messages to be sent to the model.
     Messages []*schema.Message
-    Tools    []*schema.ToolInfo
-    Config   *Config
-    Extra    map[string]any
+    // Tools is the tools to be used in the model.
+    Tools []*schema.ToolInfo
+    // Config is the config for the model.
+    Config *Config
+    // Extra is the extra information for the callback.
+    Extra map[string]any
 }
 
+// CallbackOutput is the output for the model callback.
 type CallbackOutput struct {
-    Message    *schema.Message
-    Config     *Config
+    // Message is the message generated by the model.
+    Message *schema.Message
+    // Config is the config for the model.
+    Config *Config
+    // TokenUsage is the token usage of this request.
     TokenUsage *TokenUsage
-    Extra      map[string]any
+    // Extra is the extra information for the callback.
+    Extra map[string]any
 }
 ```
 
-Providers should pass typed inputs/outputs to expose richer state. Graph Nodes only have component interface-level inputs/outputs; they cannot access internal provider state.
+In specific implementations of Chat Model, such as OpenAI Chat Model, component authors are recommended to pass specific Input/Output types to Callback Handlers, rather than Any. This exposes more specific, customized intermediate state information.
 
-Graph itself uses graph-level input/output.
+If a Graph Node triggers the Callback, since the Node cannot access the component's internal intermediate state information, it can only get the inputs and outputs defined in the component interface, so that's all it can give to the Callback Handler. For Chat Model, that's []*schema.Message and *schema.Message.
+
+When Graph itself triggers Callback, the input and output are the overall input and output of the Graph.
 
 ## Injecting Handlers
 
-### Global Handlers
+Handlers need to be injected into the Context to be triggered.
 
-Use `callbacks.AppendGlobalHandlers` to register. Suitable for universal concerns (tracing, logging). Not concurrency-safe; register at service init.
+### Injecting Handlers Globally
 
-### Handlers in Graph Execution
+Inject global Handlers through `callbacks.AppendGlobalHandlers`. After injection, all callback triggering behaviors will automatically trigger these global Handlers. Typical scenarios are globally consistent, business-scenario-independent functions like tracing and logging.
 
-- `compose.WithCallbacks` injects handlers for the current graph run (includes nested graphs and nodes)
-- `compose.WithCallbacks(...).DesignateNode(...)` targets a specific top-level node (injects into a nested graph and its nodes when the node is a graph)
-- `compose.WithCallbacks(...).DesignateNodeForPath(...)` targets a nested node by path
+Not concurrency-safe. It's recommended to inject once during service initialization.
 
-### Outside Graph
+### Injecting Handlers into Graph
 
-Use `InitCallbacks(ctx, info, handlers...)` to obtain a new context with handlers and RunInfo.
+Inject Handlers at graph runtime through `compose.WithCallbacks`, these Handlers will take effect for the entire current run of the graph, including all Nodes within the Graph and the Graph itself (as well as all nested graphs).
+
+Inject Handlers to a specific Node of the top-level Graph through `compose.WithCallbacks(...).DesignateNode(...)`. When this Node itself is a nested Graph, it will be injected into this nested Graph itself and its internal Nodes.
+
+Inject Handlers to a specific Node of an internally nested Graph through `compose.WithCallbacks(...).DesignateNodeForPath(...)`.
+
+### Injecting Handlers Outside Graph
+
+If you don't want to use Graph but want to use Callbacks:
+
+Obtain a new Context and inject Handlers and RunInfo through `InitCallbacks(ctx context.Context, info *RunInfo, handlers ...Handler)`.
 
 ### Handler Inheritance
 
-Child contexts inherit parent handlers. A graph run inherits handlers present in the incoming context.
+Same as child Context inheriting all Values from parent Context, child Context also inherits all Handlers from parent Context. For example, if the Context passed in when running a Graph already has Handlers, these Handlers will be inherited and take effect for this entire Graph run.
 
 ## Injecting RunInfo
 
+RunInfo also needs to be injected into the Context to be provided to the Handler when callbacks are triggered.
+
 ### Graph-Managed RunInfo
 
-Graph injects RunInfo for all internal nodes automatically using child contexts.
+Graph automatically injects RunInfo for all internal Nodes. The mechanism is that each Node's execution is a new child Context, and Graph injects the corresponding Node's RunInfo into this new Context.
 
-### Outside Graph
+### Injecting RunInfo Outside Graph
 
-Use `InitCallbacks(ctx, info, handlers...)` or `ReuseHandlers(ctx, info)` to set RunInfo with existing handlers.
+If you don't want to use Graph but want to use Callbacks:
 
-## Triggering
+Obtain a new Context and inject Handlers and RunInfo through `InitCallbacks(ctx context.Context, info *RunInfo, handlers ...Handler)`.
 
-### Component-level Callbacks
+Obtain a new Context through `ReuseHandlers(ctx context.Context, info *RunInfo)`, reusing the Handlers in the previous Context and setting new RunInfo.
 
-Providers should trigger `callbacks.OnStart/OnEnd/OnError/OnStartWithStreamInput/OnEndWithStreamOutput` inside component implementations. Example (Ark ChatModel):
+## Triggering Methods
+
+<a href="/img/eino/graph_node_callback_run_place.png" target="_blank"><img src="/img/eino/graph_node_callback_run_place.png" width="100%" /></a>
+
+### Component Implementation Internal Triggering (Component Callback)
+
+In the component implementation code, call `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), OnEndWithStreamOutput()` from the callbacks package. Taking Ark's ChatModel implementation as an example, in the Generate method:
 
 ```go
-func (cm *ChatModel) Generate(ctx context.Context, in []*schema.Message, opts ...fmodel.Option) (outMsg *schema.Message, err error) {
-    defer func() { if err != nil { _ = callbacks.OnError(ctx, err) } }()
+func (cm *ChatModel) Generate(ctx context.Context, in []*schema.Message, opts ...fmodel.Option) (
+    outMsg *schema.Message, err error) {
 
-    // assemble request config
-    ctx = callbacks.OnStart(ctx, &fmodel.CallbackInput{ Messages: in, Tools: append(cm.rawTools), ToolChoice: nil, Config: reqConf })
+    defer func() {
+       if err != nil {
+          _ = callbacks.OnError(ctx, err)
+       }
+    }()
 
-    // invoke provider API and read response
+    // omit multiple lines... instantiate req conf
+        
+    ctx = callbacks.OnStart(ctx, &fmodel.CallbackInput{
+       Messages:   in,
+       Tools:      append(cm.rawTools), // join tool info from call options
+       ToolChoice: nil,                 // not support in api
+       Config:     reqConf,
+    })
 
-    _ = callbacks.OnEnd(ctx, &fmodel.CallbackOutput{ Message: outMsg, Config: reqConf, TokenUsage: toModelCallbackUsage(outMsg.ResponseMeta) })
+    // omit multiple lines... invoke Ark chat API and get the response
+    
+    _ = callbacks.OnEnd(ctx, &fmodel.CallbackOutput{
+       Message:    outMsg,
+       Config:     reqConf,
+       TokenUsage: toModelCallbackUsage(outMsg.ResponseMeta),
+    })
+
     return outMsg, nil
-}
-
-func (cm *ChatModel) Stream(ctx context.Context, in []*schema.Message, opts ...fmodel.Option) (outStream *schema.StreamReader[*schema.Message], err error) {
-    defer func() { if err != nil { _ = callbacks.OnError(ctx, err) } }()
-
-    // assemble request config
-    ctx = callbacks.OnStart(ctx, &fmodel.CallbackInput{ Messages: in, Tools: append(cm.rawTools), ToolChoice: nil, Config: reqConf })
-
-    // invoke provider API and convert response to StreamReader[model.CallbackOutput]
-    _, sr = callbacks.OnEndWithStreamOutput(ctx, sr)
-
-    return schema.StreamReaderWithConvert(sr, func(src *fmodel.CallbackOutput) (*schema.Message, error) {
-        if src.Message == nil { return nil, schema.ErrNoValue }
-        return src.Message, nil
-    }), nil
 }
 ```
 
-### Graph/Node-level Callbacks
+In the Stream method:
 
-When a Component is orchestrated into a Graph Node, and the Component does not implement callbacks, the Node injects callback trigger points matching the Component’s streaming paradigm. For example, a ChatModelNode triggers OnStart/OnEnd around `Generate`, and OnStart/OnEndWithStreamOutput around `Stream`. Which timing is triggered depends on both Graph’s execution mode (Invoke/Stream/Collect/Transform) and the Component’s streaming support.
+```go
+func (cm *ChatModel) Stream(ctx context.Context, in []*schema.Message, opts ...fmodel.Option) ( // byted_s_too_many_lines_in_func
+    outStream *schema.StreamReader[*schema.Message], err error) {
 
-See [Streaming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+    defer func() {
+       if err != nil {
+          _ = callbacks.OnError(ctx, err)
+       }
+    }()
+    
+    // omit multiple lines... instantiate req conf
 
-### Graph-level Callbacks
+    ctx = callbacks.OnStart(ctx, &fmodel.CallbackInput{
+       Messages:   in,
+       Tools:      append(cm.rawTools), // join tool info from call options
+       ToolChoice: nil,                 // not support in api
+       Config:     reqConf,
+    })
+    
+    // omit multiple lines... make request to Ark API and convert response stream to StreamReader[model.*CallbackOutput]
 
-Graph triggers callbacks at its own start/end/error timings. If Graph is called via `Invoke`, it triggers `OnStart/OnEnd/OnError`. If called via `Stream/Collect/Transform`, it triggers `OnStartWithStreamInput/OnEndWithStreamOutput/OnError` because Graph internally always executes as `Invoke` or `Transform`. See [Streaming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials).
+    _, sr = callbacks.OnEndWithStreamOutput(ctx, sr)
 
-Note: Graph is also a component. Therefore, a graph callback is a special form of component callback. Per Node Callback semantics, when a node’s internal component (including a nested graph added via `AddGraphNode`) implements callback timings itself, the node reuses the component’s behavior and does not add duplicate node-level callbacks.
+    return schema.StreamReaderWithConvert(sr,
+       func(src *fmodel.CallbackOutput) (*schema.Message, error) {
+          if src.Message == nil {
+             return nil, schema.ErrNoValue
+          }
+
+          return src.Message, nil
+       },
+    ), nil
+}
+```
+
+You can see that Generate call triggers OnEnd, while Stream call triggers OnEndWithStreamOutput:
+
+When triggering Callbacks inside component implementations:
+
+- **When component input is StreamReader, trigger OnStartWithStreamInput, otherwise trigger OnStart**
+- **When component output is StreamReader, trigger OnEndWithStreamOutput, otherwise trigger OnEnd**
+
+Components that implement callback triggering internally should implement the Checker interface, with IsCallbacksEnabled returning true, to communicate "I have implemented callback triggering internally" to the outside:
+
+```go
+// Checker tells callback aspect status of component's implementation
+// When the Checker interface is implemented and returns true, the framework will not start the default aspect.
+// Instead, the component will decide the callback execution location and the information to be injected.
+type Checker interface {
+    IsCallbacksEnabled() bool
+}
+```
+
+If a component implementation doesn't implement the Checker interface, or IsCallbacksEnabled returns false, it can be assumed that the component doesn't trigger callbacks internally, and Graph Node needs to be responsible for injection and triggering (when used within a Graph).
+
+### Graph Node Triggering (Node Callback)
+
+When a Component is orchestrated into a Graph, it becomes a Node. At this point, if the Component itself triggers callbacks, the Node reuses the Component's callback handling. Otherwise, the Node wraps callback handler trigger points around the Component. These points correspond to the Component's streaming paradigm. For example, a ChatModelNode wraps OnStart/OnEnd/OnError around the Generate method, and OnStart/OnEndWithStreamOutput/OnError around the Stream method.
+
+At Graph runtime, components run in Invoke or Transform paradigm, and based on the component's specific business streaming paradigm, call the corresponding component methods. For example, when Graph runs with Invoke, Chat Model Node runs with Invoke, calling the Generate method. When Graph runs with Stream, Chat Model Node runs with Transform, but since Chat Model's business streaming paradigm doesn't have Transform, it automatically falls back to calling the Stream method. Therefore:
+
+**Which timing point (OnStart vs OnStartWithStreamInput) a Graph Node specifically triggers depends on two factors: the component implementation's business streaming paradigm and the Graph's execution mode.**
+
+For detailed introduction to Eino streaming programming, see [Eino Streaming Programming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
+
+### Graph Self-Triggering (Graph Callback)
+
+Graph triggers Callback Handlers at its own start, end, and error timings. If Graph is called in Invoke form, it triggers OnStart/OnEnd/OnError. If called in Stream/Collect/Transform form, it triggers OnStartWithStreamInput/OnEndWithStreamOutput/OnError. This is because **Graph internally always executes as Invoke or Transform**. See [Eino Streaming Programming Essentials](/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
+
+It's worth noting: graph is also a type of component, so graph callback is also a special form of component callback. According to the Node Callback definition, when the component inside a Node implements awareness and handling of triggering timings, the Node directly reuses the Component's implementation and won't implement Node Callback. This means when a graph is added to another Graph as a Node via AddGraphNode, this Node reuses the internal graph's graph callback.
 
 ## Parsing Callback Input & Output
 
-Underlying types are `any`, while specific components may pass their own typed inputs/outputs. Handler method parameters are `any` as well, so convert as needed.
+From the above, we know that Callback Input & Output's underlying type is Any, but different component types may pass their own specific types when actually triggering callbacks. And in the Callback Handler interface definition, the parameters of each method are also Any-typed Callback Input & Output.
+
+Therefore, specific Handler implementations need to do two things:
+
+1. Determine which component type is currently triggering the callback based on RunInfo, such as RunInfo.Component == "ChatModel", or RunInfo.Type == "xxx Chat Model".
+2. Convert the any-typed Callback Input & Output to the corresponding specific type, taking RunInfo.Component == "ChatModel" as an example:
 
 ```go
 // ConvCallbackInput converts the callback input to the model callback input.
 func ConvCallbackInput(src callbacks.CallbackInput) *CallbackInput {
     switch t := src.(type) {
-    case *CallbackInput: // component implementation already passed typed *model.CallbackInput
+    case *CallbackInput: // when callback is triggered within component implementation, the input is usually already a typed *model.CallbackInput
        return t
-    case []*schema.Message: // graph node injected callback passes ChatModel interface input: []*schema.Message
-       return &CallbackInput{ Messages: t }
+    case []*schema.Message: // when callback is injected by graph node, not the component implementation itself, the input is the input of Chat Model interface, which is []*schema.Message
+       return &CallbackInput{
+          Messages: t,
+       }
     default:
        return nil
     }
@@ -217,31 +322,39 @@ func ConvCallbackInput(src callbacks.CallbackInput) *CallbackInput {
 // ConvCallbackOutput converts the callback output to the model callback output.
 func ConvCallbackOutput(src callbacks.CallbackOutput) *CallbackOutput {
     switch t := src.(type) {
-    case *CallbackOutput: // component implementation already passed typed *model.CallbackOutput
+    case *CallbackOutput: // when callback is triggered within component implementation, the output is usually already a typed *model.CallbackOutput
        return t
-    case *schema.Message: // graph node injected callback passes ChatModel interface output: *schema.Message
-       return &CallbackOutput{ Message: t }
+    case *schema.Message: // when callback is injected by graph node, not the component implementation itself, the output is the output of Chat Model interface, which is *schema.Message
+       return &CallbackOutput{
+          Message: t,
+       }
     default:
        return nil
     }
 }
 ```
 
-To reduce boilerplate, prefer helpers/builders when focusing on specific components or timings.
+If the Handler needs to add switch cases to determine RunInfo.Component, and for each case, call the corresponding conversion function to convert Any to a specific type, it's indeed somewhat complex. To reduce the repetitive work of writing glue code, we provide two convenient tool functions for implementing Handlers.
 
-## Handler Implementation
+## Handler Implementation Methods
+
+Besides directly implementing the Handler interface, Eino provides two convenient Handler implementation tools.
 
 ### HandlerHelper
 
-When a handler only targets specific component types (e.g., in ReAct scenarios focusing on ChatModel and Tool), use `HandlerHelper` to quickly create typed handlers:
+If the user's Handler only focuses on specific component types, such as in ReActAgent scenarios only focusing on ChatModel and Tool, it's recommended to use HandlerHelper to quickly create typed Callback Handlers:
 
 ```go
-handler := NewHandlerHelper().ChatModel(modelHandler).Tool(toolHandler).Handler()
+import ucb "github.com/cloudwego/eino/utils/callbacks"
+
+handler := ucb.NewHandlerHelper().ChatModel(modelHandler).Tool(toolHandler).Handler()
 ```
 
-The `modelHandler` can use a typed helper for ChatModel callbacks:
+Where modelHandler is Chat Model component's further encapsulation of callback handler:
 
 ```go
+// from package utils/callbacks
+
 // ModelCallbackHandler is the handler for the model callback.
 type ModelCallbackHandler struct {
     OnStart               func(ctx context.Context, runInfo *callbacks.RunInfo, input *model.CallbackInput) context.Context
@@ -251,37 +364,39 @@ type ModelCallbackHandler struct {
 }
 ```
 
-This encapsulation provides:
+The above ModelCallbackHandler encapsulates three operations:
 
-- Automatic filtering by component type (no need to switch on `RunInfo.Component`)
-- Only the timings supported by ChatModel (drops `OnStartWithStreamInput`); implement any subset
-- Typed `Input/Output` (`model.CallbackInput`, `model.CallbackOutput`) instead of `any`
+1. No longer need to determine RunInfo.Component to select callbacks triggered by ChatModel, as automatic filtering is already done.
+2. Only requires implementing the triggering timings supported by Chat Model component, here removing the unsupported OnStartWithStreamInput. Also, if the user only cares about some of the four timings supported by Chat Model, such as only OnStart, they can implement only OnStart.
+3. Input / Output are no longer Any types, but already converted model.CallbackInput, model.CallbackOutput.
 
-`HandlerHelper` supports official components: ChatModel, ChatTemplate, Retriever, Indexer, Embedding, Document.Loader, Document.Transformer, Tool, ToolsNode. For Lambda/Graph/Chain, it filters by type but you still implement generic `callbacks.Handler` for timings and conversions:
+HandlerHelper supports all official components, the current list is: ChatModel, ChatTemplate, Retriever, Indexer, Embedding, Document.Loader, Document.Transformer, Tool, ToolsNode.
+
+For Lambda, Graph, Chain and other "components" with uncertain input/output types, HandlerHelper can also be used, but can only achieve point 1 above, i.e., automatic filtering by component type, points 2 and 3 still need to be implemented by the user:
 
 ```go
-handler := NewHandlerHelper().Lambda(callbacks.Handler).Graph(callbacks.Handler).Handler()
+import ucb "github.com/cloudwego/eino/utils/callbacks"
+
+handler := ucb.NewHandlerHelper().Lambda(callbacks.Handler).Graph(callbacks.Handler)...Handler()
 ```
+
+At this point, NewHandlerHelper().Lambda() needs to pass in callbacks.Handler which can be implemented using the HandlerBuilder below.
 
 ### HandlerBuilder
 
-If a handler needs to target multiple component types but only a subset of timings, use `HandlerBuilder`:
+If the user's Handler needs to focus on multiple component types, but only needs to focus on some triggering timings, HandlerBuilder can be used:
 
 ```go
-handler := NewHandlerBuilder().OnStartFn(fn).Build()
+import "github.com/cloudwego/eino/callbacks"
+
+handler := callbacks.NewHandlerBuilder().OnStartFn(fn)...Build()
 ```
 
-## Usage Notes
+## Best Practices
 
-- Prefer typed inputs/outputs for provider-specific handlers
-- Use global handlers for common concerns; node-specific handlers for fine-grained control
-- Remember handler order is unspecified; design idempotent handlers
+### Using in Graph
 
-### Best Practices
-
-#### In Graph
-
-- Actively use Global Handlers for always-on concerns.
+- Actively use Global Handlers to register always-effective Handlers.
 
 ```go
 package main
@@ -322,7 +437,7 @@ func main() {
 }
 ```
 
-- Inject per-run handlers with `WithCallbacks` and target nodes via `DesignateNode` or by path.
+- Inject Handlers at runtime through WithHandlers option, and specify effective Nodes / nested internal Graphs / internal Graph Nodes through DesignateNode or DesignateNodeByPath.
 
 ```go
 package main
@@ -365,13 +480,13 @@ func main() {
 }
 ```
 
-<a href="/img/eino/graph_node_callback_run_place.png" target="_blank"><img src="/img/eino/graph_node_callback_run_place.png" width="100%" /></a>
+### Using Outside Graph
 
-#### Outside Graph
+This scenario is: not using Graph/Chain/Workflow orchestration capabilities, but directly calling ChatModel/Tool/Lambda and other components with code, and hoping these components can successfully trigger Callback Handlers.
 
-This scenario: you do not use Graph/Chain/Workflow orchestration, but you directly call components like ChatModel/Tool/Lambda and still want callbacks to trigger.
+The problem users need to solve in this scenario is: manually setting correct RunInfo and Handlers, because there's no Graph to help users automatically set RunInfo and Handlers.
 
-You must manually set correct `RunInfo` and Handlers because there is no Graph to do it for you.
+Complete example:
 
 ```go
 package main
@@ -384,7 +499,7 @@ import (
 )
 
 func innerLambda(ctx context.Context, input string) (string, error) {
-        // As provider of ComponentB: ensure default RunInfo when entering the component (Name cannot default)
+        // As ComponentB's implementer: add default RunInfo when entering the component (Name cannot be given a default value)
         ctx = callbacks.EnsureRunInfo(ctx, "Lambda", compose.ComponentOfLambda)
         ctx = callbacks.OnStart(ctx, input)
         out := "inner:" + input
@@ -393,17 +508,17 @@ func innerLambda(ctx context.Context, input string) (string, error) {
 }
 
 func outerLambda(ctx context.Context, input string) (string, error) {
-        // As provider of ComponentA: ensure default RunInfo when entering
+        // As ComponentA's implementer: add default RunInfo when entering the component
         ctx = callbacks.EnsureRunInfo(ctx, "Lambda", compose.ComponentOfLambda)
         ctx = callbacks.OnStart(ctx, input)
 
-        // Recommended: replace RunInfo before calling inner component, ensuring correct name/type/component
+        // Recommended: replace RunInfo before calling, ensuring inner component gets correct name/type/component
         ctxInner := callbacks.ReuseHandlers(ctx,
                 &callbacks.RunInfo{Name: "ComponentB", Type: "Lambda", Component: compose.ComponentOfLambda},
         )
         out1, _ := innerLambda(ctxInner, input) // inner RunInfo.Name = "ComponentB"
 
-        // Without replacement: framework clears RunInfo after a complete callback cycle; EnsureRunInfo adds defaults (Name empty)
+        // Without replacement: framework clears RunInfo, can only rely on EnsureRunInfo to add default values (Name is empty)
         out2, _ := innerLambda(ctx, input) // inner RunInfo.Name == ""
 
         final := out1 + "|" + out2
@@ -412,7 +527,7 @@ func outerLambda(ctx context.Context, input string) (string, error) {
 }
 
 func main() {
-        // Standalone components outside graph: initialize RunInfo and Handlers
+        // Using components standalone outside graph: initialize RunInfo and Handlers
         h := callbacks.NewHandlerBuilder().Build()
         ctx := callbacks.InitCallbacks(context.Background(),
                 &callbacks.RunInfo{Name: "ComponentA", Type: "Lambda", Component: compose.ComponentOfLambda},
@@ -423,19 +538,21 @@ func main() {
 }
 ```
 
-Notes:
+Explanation of the above sample code:
 
-- Initialization: use `InitCallbacks` to set the first `RunInfo` and Handlers when using components outside graph/chain so subsequent components receive the full callback context.
-- Internal calls: before Component A calls Component B, use `ReuseHandlers` to replace `RunInfo` (keeping existing handlers) so B receives correct `Type/Component/Name`.
-- Without replacement: after a complete set of callbacks, Eino clears `RunInfo` from the current context; providers can call `EnsureRunInfo` to supply default `Type/Component` to keep callbacks working, but `Name` cannot be inferred and will be empty.
+- Initialization: When using components outside graph/chain, use InitCallbacks to set the first RunInfo and Handlers, so subsequent component execution can get the complete callback context.
+- Internal calls: Before component A calls component B internally, use ReuseHandlers to replace RunInfo (keeping original handlers), ensuring B's callbacks get correct Type/Component/Name.
+- Consequences of not replacing: After a complete set of Callbacks is triggered, Eino clears the RunInfo in the current ctx. At this point, because RunInfo is empty, Eino won't trigger Callbacks anymore; Component B's developer can only use EnsureRunInfo in their own implementation to add default values for Type/Component, to ensure RunInfo is non-empty and roughly correct, thus successfully triggering Callbacks. But cannot give a reasonable Name, so RunInfo.Name will be an empty string.
 
-#### Component Nesting
+### Component Nesting Usage
 
-Scenario: inside a component (e.g., a Lambda), manually call another component (e.g., ChatModel).
+Scenario: Inside one component, such as Lambda, manually call another component, such as ChatModel.
 
-If the outer component’s context has handlers, the inner component receives the same handlers. To control whether the inner component triggers callbacks:
+At this point, if the outer component's ctx has callback handlers, because this ctx is also passed to the inner component, the inner component will also receive the same callback handlers.
 
-1) Want callbacks triggered: set `RunInfo` for the inner component using `ReuseHandlers`.
+Distinguishing by "whether you want the inner component to trigger callbacks":
+
+1. Want to trigger: Basically equivalent to the situation in the previous section, it's recommended to manually set `RunInfo` for the inner component through `ReuseHandlers`.
 
 ```go
 package main
@@ -450,20 +567,20 @@ import (
         "github.com/cloudwego/eino/schema"
 )
 
-// Outer lambda calls ChatModel inside
+// Outer Lambda, manually calls ChatModel inside
 func OuterLambdaCallsChatModel(cm model.BaseChatModel) *compose.Lambda {
         return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
-                // 1) Reuse outer handlers and set RunInfo explicitly for the inner component
+                // 1) Reuse outer handlers and explicitly set RunInfo for inner component
                 innerCtx := callbacks.ReuseHandlers(ctx, &callbacks.RunInfo{
-                        Type:      "InnerCM",
-                        Component: components.ComponentOfChatModel,
-                        Name:      "inner-chat-model",
+                        Type:      "InnerCM",                          // Customizable
+                        Component: components.ComponentOfChatModel,    // Mark component type
+                        Name:      "inner-chat-model",                 // Customizable
                 })
 
                 // 2) Build input messages
                 msgs := []*schema.Message{{Role: schema.User, Content: input}}
 
-                // 3) Call ChatModel (inner implementation triggers its callbacks)
+                // 3) Call ChatModel (internally triggers corresponding callbacks)
                 out, err := cm.Generate(innerCtx, msgs)
                 if err != nil {
                         return "", err
@@ -473,12 +590,12 @@ func OuterLambdaCallsChatModel(cm model.BaseChatModel) *compose.Lambda {
 }
 ```
 
-If the inner ChatModel’s `Generate` does not trigger callbacks, the outer component should trigger them around the inner call:
+The above code assumes "the inner ChatModel's Generate method internally has already called OnStart, OnEnd, OnError methods". If not, you need to call these methods "on behalf of the inner component" inside the outer component:
 
 ```go
 func OuterLambdaCallsChatModel(cm model.BaseChatModel) *compose.Lambda {
         return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
-                // Reuse outer handlers and set RunInfo explicitly for inner component
+                // Reuse outer handlers and explicitly set RunInfo for inner component
                 ctx = callbacks.ReuseHandlers(ctx, &callbacks.RunInfo{
                         Type:      "InnerCM",
                         Component: components.ComponentOfChatModel,
@@ -507,35 +624,35 @@ func OuterLambdaCallsChatModel(cm model.BaseChatModel) *compose.Lambda {
 }
 ```
 
-2) Do not want inner callbacks: assume the inner component implements `IsCallbacksEnabled()` returning true and calls `EnsureRunInfo`. By default, inner callbacks will trigger. To disable, pass a new context without handlers to the inner component:
+1. Don't want to trigger: This assumes the inner component implements `IsCallbacksEnabled()` and returns true, and internally calls `EnsureRunInfo`. At this point, inner callbacks will trigger by default. If you don't want them to trigger, the simplest way is to remove handlers from ctx, such as passing a new ctx to the inner component:
 
-```go
-package main
+   ```go
+   package main
 
-import (
-        "context"
+   import (
+           "context"
 
-        "github.com/cloudwego/eino/components/model"
-        "github.com/cloudwego/eino/compose"
-        "github.com/cloudwego/eino/schema"
-)
+           "github.com/cloudwego/eino/components/model"
+           "github.com/cloudwego/eino/compose"
+           "github.com/cloudwego/eino/schema"
+   )
 
-func OuterLambdaNoCallbacks(cm model.BaseChatModel) *compose.Lambda {
-        return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
-                // Use a brand-new context; do not reuse outer handlers
-                innerCtx := context.Background()
+   func OuterLambdaNoCallbacks(cm model.BaseChatModel) *compose.Lambda {
+           return compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+                   // Use a brand new ctx, don't reuse outer handlers
+                   innerCtx := context.Background()
 
-                msgs := []*schema.Message{{Role: schema.User, Content: input}}
-                out, err := cm.Generate(innerCtx, msgs)
-                if err != nil {
-                        return "", err
-                }
-                return out.Content, nil
-        })
-}
-```
+                   msgs := []*schema.Message{{Role: schema.User, Content: input}}
+                   out, err := cm.Generate(innerCtx, msgs)
+                   if err != nil {
+                           return "", err
+                   }
+                   return out.Content, nil
+           })
+   }
+   ```
 
-Sometimes you may want to disable a specific handler for inner components but keep others. Implement filtering by `RunInfo` inside that handler:
+   1. But sometimes users may want to "only not trigger a specific callback handler, but still trigger other callback handlers". The recommended approach is to add code in this callback handler to filter out inner components by RunInfo:
 
 ```go
 package main
@@ -549,13 +666,14 @@ import (
         "github.com/cloudwego/eino/compose"
 )
 
-// A selective handler: no-ops for the inner ChatModel (Type=InnerCM, Name=inner-chat-model)
+// A handler that filters by RunInfo: does nothing for inner ChatModel (Type=InnerCM, Name=inner-chat-model)
 func newSelectiveHandler() callbacks.Handler {
         return callbacks.
                 NewHandlerBuilder().
                 OnStartFn(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
                         if info != nil && info.Component == components.ComponentOfChatModel &&
                                 info.Type == "InnerCM" && info.Name == "inner-chat-model" {
+                                // Filter target: inner ChatModel, return directly without processing
                                 return ctx
                         }
                         log.Printf("[OnStart] %s/%s (%s)", info.Type, info.Name, info.Component)
@@ -564,6 +682,7 @@ func newSelectiveHandler() callbacks.Handler {
                 OnEndFn(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
                         if info != nil && info.Component == components.ComponentOfChatModel &&
                                 info.Type == "InnerCM" && info.Name == "inner-chat-model" {
+                                // Filter target: inner ChatModel, return directly without processing
                                 return ctx
                         }
                         log.Printf("[OnEnd] %s/%s (%s)", info.Type, info.Name, info.Component)
@@ -572,32 +691,48 @@ func newSelectiveHandler() callbacks.Handler {
                 Build()
 }
 
-// Composition example: outer call triggers; selective handler filters out inner ChatModel
+// Composition example: outer call wants to trigger, specific handler filters out inner ChatModel through RunInfo
 func Example(cm model.BaseChatModel) (compose.Runnable[string, string], error) {
         handler := newSelectiveHandler()
 
         chain := compose.NewChain[string, string]().
-                AppendLambda(OuterLambdaCallsChatModel(cm))
+                AppendLambda(OuterLambdaCallsChatModel(cm)) // Internally will ReuseHandlers + RunInfo
 
         return chain.Compile(
                 context.Background(),
+                // Mount handler (can also combine with global handlers)
                 compose.WithCallbacks(handler),
         )
 }
 ```
 
-### Read/Write Input & Output Carefully
+### Reading and Writing Input & Output in Handler
 
-Inputs/outputs flow by direct assignment; pointers/maps refer to the same data across nodes and handlers. Avoid mutations inside nodes and handlers to prevent race conditions.
+When input & output flow through the graph, they are direct variable assignments. As shown in the figure below, NodeA.Output, NodeB.Input, NodeC.Input, and the input & output obtained in each Handler, if they are reference types like struct pointers or Maps, they are all the same piece of data. Therefore, whether in Node or Handler, it's not recommended to modify Input & Output, as it will cause concurrency issues: even in synchronous situations, Node B and Node C are concurrent, causing internal handler1 and handler2 to be concurrent. When there's asynchronous processing logic, there are more possible concurrency scenarios.
 
 <a href="/img/eino/eino_callback_start_end_place.png" target="_blank"><img src="/img/eino/eino_callback_start_end_place.png" width="60%" /></a>
 
-### Stream Closing
+In stream passing scenarios, all downstream nodes and handlers' input streams are streams obtained from StreamReader.Copy(n), which can be read independently. However, each chunk in the stream is direct variable assignment, if the chunk is a reference type like struct pointer or Map, each copied stream reads the same piece of data. Therefore, in Node and Handler, it's also not recommended to modify stream chunks, there are concurrency issues.
 
-With true streaming components (e.g., ChatModel streams), callback consumers and downstream nodes both consume the stream. Streams are copied per consumer; ensure callback readers close their streams to avoid blocking resource release.
-
-<a href="/img/eino/graph_stream_chunk_copy.png" target="_blank"><img src="/img/eino/graph_stream_chunk_copy.png" width="100%" /></a>
+<a href="/img/eino/eino_callback_stream_place.png" target="_blank"><img src="/img/eino/eino_callback_stream_place.png" width="100%" /></a>
 
 ### Passing Information Between Handlers
 
-Use the returned `context.Context` to pass information across timings within the same handler (e.g., set with `context.WithValue` in `OnStart`, read in `OnEnd`). Do not rely on ordering between different handlers; if sharing data is required, store request-scoped shared state on the outermost context and ensure concurrency safety.
+Between different timings of the same Handler, information can be passed through ctx, such as returning a new context through context.WithValue in OnStart, and then retrieving this value from context in OnEnd.
+
+Between different Handlers, there's no guarantee of execution order, so it's not recommended to pass information between different Handlers through the above mechanism. Essentially, there's no guarantee that the context returned by one Handler will definitely enter the function execution of the next Handler.
+
+If you need to pass information between different Handlers, the recommended approach is to set a global, request-scoped variable in the outermost context (such as the context passed in when graph executes) as a shared space for storing and retrieving common information, and read and update this shared variable as needed in each Handler. Users need to ensure the concurrency safety of this shared variable themselves.
+
+### Remember to Close Streams
+
+Taking the existence of ChatModel, a node with true streaming output, as an example, when there are Callback aspects, ChatModel's output stream:
+
+- Needs to be consumed by downstream nodes as input, and also consumed by Callback aspects
+- A frame (Chunk) in a stream can only be consumed by one consumer, i.e., streams are not broadcast models
+
+So at this point, the stream needs to be copied, the copy relationship is as follows:
+
+<a href="/img/eino/graph_stream_chunk_copy.png" target="_blank"><img src="/img/eino/graph_stream_chunk_copy.png" width="100%" /></a>
+
+- If one of the Callback n doesn't Close the corresponding stream, it may cause the original Stream to be unable to Close and release resources.

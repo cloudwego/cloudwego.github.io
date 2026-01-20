@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: ToolsNode & Tool Guide'
@@ -246,18 +246,18 @@ import (
     "github.com/cloudwego/eino/components/tool"
 )
 
-// 创建 callback handler
+// Create callback handler
 handler := &callbackHelper.ToolCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *tool.CallbackInput) context.Context {
-       fmt.Printf("开始执行工具，参数: %s\n", input.ArgumentsInJSON)
+       fmt.Printf("Starting tool execution, arguments: %s\n", input.ArgumentsInJSON)
        return ctx
     },
     OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *tool.CallbackOutput) context.Context {
-       fmt.Printf("工具执行完成，结果: %s\n", output.Response)
+       fmt.Printf("Tool execution completed, result: %s\n", output.Response)
        return ctx
     },
     OnEndWithStreamOutput: func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[*tool.CallbackOutput]) context.Context {
-       fmt.Println("工具开始流式输出")
+       fmt.Println("Tool starting streaming output")
        go func() {
           defer output.Close()
 
@@ -269,14 +269,14 @@ handler := &callbackHelper.ToolCallbackHandler{
              if err != nil {
                 return
              }
-             fmt.Printf("收到流式输出: %s\n", chunk.Response)
+             fmt.Printf("Received streaming output: %s\n", chunk.Response)
           }
        }()
        return ctx
     },
 }
 
-// 使用 callback handler
+// Use callback handler
 helper := callbackHelper.NewHandlerHelper().
     Tool(handler).
     Handler()
@@ -288,13 +288,17 @@ helper := callbackHelper.NewHandlerHelper().
 *       ...
 */
 
-// 在运行时使用
+// Use at runtime
 runnable, err := chain.Compile()
 if err != nil {
     return err
 }
 result, err := runnable.Invoke(ctx, input, compose.WithCallbacks(helper))
 ```
+
+## How to Get ToolCallID
+
+In the tool function body or tool callback handler, you can use `compose.GetToolCallID(ctx)` to get the current Tool's ToolCallID.
 
 ## Implementations
 

@@ -3,15 +3,15 @@ Description: ""
 date: "2026-01-20"
 lastmod: ""
 tags: []
-title: Indexer - ElasticSearch 8
+title: 'Indexer - Elasticsearch 7 '
 weight: 0
 ---
 
 > **Cloud Search Service Introduction**
 >
-> Cloud Search Service is a fully managed, one-stop information retrieval and analysis platform that provides ElasticSearch and OpenSearch engines, supporting full-text search, vector search, hybrid search, and spatio-temporal search capabilities.
+> Cloud Search Service is a fully managed, one-stop information retrieval and analysis platform that provides ElasticSearch and OpenSearch engines, supporting full-text search, vector search, hybrid search, and spatiotemporal search capabilities.
 
-This is an Elasticsearch 8.x indexer implementation for [Eino](https://github.com/cloudwego/eino) that implements the `Indexer` interface. It integrates with Eino's vector storage and retrieval system for semantic search.
+An Elasticsearch 7.x indexer implementation for [Eino](https://github.com/cloudwego/eino), implementing the `Indexer` interface. This component seamlessly integrates with Eino's document indexing system, providing powerful vector storage and retrieval capabilities.
 
 ## Features
 
@@ -19,31 +19,33 @@ This is an Elasticsearch 8.x indexer implementation for [Eino](https://github.co
 - Easy integration with Eino indexing system
 - Configurable Elasticsearch parameters
 - Supports vector similarity search
-- Batch indexing operations
-- Custom field mapping support
-- Flexible document embedding
+- Supports batch indexing operations
+- Supports custom field mapping
+- Flexible document vectorization support
 
 ## Installation
 
 ```bash
-go get github.com/cloudwego/eino-ext/components/indexer/es8@latest
+go get github.com/cloudwego/eino-ext/components/indexer/es7@latest
 ```
 
 ## Quick Start
 
-Here is a quick example of using the indexer. For more details, please read components/indexer/es8/examples/indexer/add_documents.go:
+Here is a simple example of using the indexer:
 
 ```go
 import (
         "context"
+        "fmt"
+        "log"
         "os"
 
         "github.com/cloudwego/eino/components/embedding"
         "github.com/cloudwego/eino/schema"
-        elasticsearch "github.com/elastic/go-elasticsearch/v8"
+        elasticsearch "github.com/elastic/go-elasticsearch/v7"
 
         "github.com/cloudwego/eino-ext/components/embedding/ark"
-        "github.com/cloudwego/eino-ext/components/indexer/es8"
+        "github.com/cloudwego/eino-ext/components/indexer/es7"
 )
 
 const (
@@ -56,36 +58,25 @@ const (
 
 func main() {
         ctx := context.Background()
-        // es supports multiple ways to connect
+
+        // ES supports multiple connection methods
         username := os.Getenv("ES_USERNAME")
         password := os.Getenv("ES_PASSWORD")
 
-        // 1. Create ES client
-        httpCACertPath := os.Getenv("ES_HTTP_CA_CERT_PATH")
-        if httpCACertPath != "" {
-                cert, err := os.ReadFile(httpCACertPath)
-                if err != nil {
-                        log.Fatalf("read file failed, err=%v", err)
-                }
-        }
-
         client, _ := elasticsearch.NewClient(elasticsearch.Config{
-                Addresses: []string{"https://localhost:9200"},
+                Addresses: []string{"http://localhost:9200"},
                 Username:  username,
                 Password:  password,
-                CACert:    cert,
         })
 
-        // 2. Create embedding component
-        // Using Volcengine Ark, replace environment variables with real configuration
+        // Create embedding component using Volcengine ARK
         emb, _ := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{
                 APIKey: os.Getenv("ARK_API_KEY"),
                 Region: os.Getenv("ARK_REGION"),
                 Model:  os.Getenv("ARK_MODEL"),
         })
 
-        // 3. Prepare documents
-        // Documents typically contain ID and Content. You can also add extra metadata for filtering and other purposes.
+        // Load documents
         docs := []*schema.Document{
                 {
                         ID:      "1",
@@ -103,29 +94,25 @@ func main() {
                 },
         }
 
-        // 4. Create ES indexer component
-        indexer, _ := es8.NewIndexer(ctx, &es8.IndexerConfig{
+        // Create ES indexer component
+        indexer, _ := es7.NewIndexer(ctx, &es7.IndexerConfig{
                 Client:    client,
                 Index:     indexName,
                 BatchSize: 10,
-                // DocumentToFields specifies how to map document fields to ES fields
-                DocumentToFields: func(ctx context.Context, doc *schema.Document) (field2Value map[string]es8.FieldValue, err error) {
-                        return map[string]es8.FieldValue{
+                DocumentToFields: func(ctx context.Context, doc *schema.Document) (field2Value map[string]es7.FieldValue, err error) {
+                        return map[string]es7.FieldValue{
                                 fieldContent: {
                                         Value:    doc.Content,
-                                        EmbedKey: fieldContentVector, // Embed document content and save to "content_vector" field
+                                        EmbedKey: fieldContentVector, // Vectorize document content and save to "content_vector" field
                                 },
                                 fieldExtraLocation: {
-                                        // Extra metadata field
                                         Value: doc.MetaData[docExtraLocation],
                                 },
                         }, nil
                 },
-                // Provide embedding component for vectorization
                 Embedding: emb,
         })
 
-        // 5. Index documents
         ids, err := indexer.Store(ctx, docs)
         if err != nil {
                 fmt.Printf("index error: %v\n", err)
@@ -137,24 +124,24 @@ func main() {
 
 ## Configuration
 
-Configure the indexer using the `IndexerConfig` struct:
+The indexer can be configured using the `IndexerConfig` struct:
 
 ```go
 type IndexerConfig struct {
     Client *elasticsearch.Client // Required: Elasticsearch client instance
-    Index  string                // Required: Index name to store documents
-    BatchSize int                // Optional: Maximum number of texts for embedding (default: 5)
+    Index  string                // Required: Index name for storing documents
+    BatchSize int                // Optional: Maximum text embedding batch size (default: 5)
 
     // Required: Function to map Document fields to Elasticsearch fields
     DocumentToFields func(ctx context.Context, doc *schema.Document) (map[string]FieldValue, error)
 
-    // Optional: Only required when vectorization is needed
+    // Optional: Required only when vectorization is needed
     Embedding embedding.Embedder
 }
 
 // FieldValue defines how a field should be stored and vectorized
 type FieldValue struct {
-    Value     any    // Raw value to store
+    Value     any    // Original value to store
     EmbedKey  string // If set, Value will be vectorized and saved
     Stringify func(val any) (string, error) // Optional: Custom string conversion
 }

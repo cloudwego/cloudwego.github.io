@@ -1,15 +1,19 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-20"
 lastmod: ""
 tags: []
-title: Retriever - Milvus
+title: Retriever - Milvus v1 (Legacy)
 weight: 0
 ---
 
+> **Module Note:** This module (`EINO-ext/milvus`) is based on `milvus-sdk-go`. Since the underlying SDK has been discontinued and only supports up to Milvus 2.4, this module is retained only for backward compatibility.
+>
+> **Recommendation:** New users should use [Retriever - Milvus 2 (v2.5+)](/docs/eino/ecosystem_integration/retriever/retriever_milvusv2) for continued support.
+
 ## **Milvus Search**
 
-Vector search based on Milvus 2.x that provides a `Retriever` implementation for [Eino](https://github.com/cloudwego/eino). Integrates with Eino’s vector storage and retrieval for semantic search.
+Vector search implementation based on Milvus 2.x that provides a `Retriever` interface implementation for [Eino](https://github.com/cloudwego/eino). This component seamlessly integrates with Eino's vector storage and retrieval system to enhance semantic search capabilities.
 
 ## **Quick Start**
 
@@ -25,61 +29,81 @@ go get github.com/cloudwego/eino-ext/components/retriever/milvus
 package main
 
 import (
-    "context"
-    "fmt"
-    "log"
-    "os"
-
-    "github.com/cloudwego/eino-ext/components/embedding/ark"
-    "github.com/milvus-io/milvus-sdk-go/v2/client"
-
-    "github.com/cloudwego/eino-ext/components/retriever/milvus"
+        "context"
+        "fmt"
+        "log"
+        "os"
+        
+        "github.com/cloudwego/eino-ext/components/embedding/ark"
+        "github.com/milvus-io/milvus-sdk-go/v2/client"
+        
+        "github.com/cloudwego/eino-ext/components/retriever/milvus"
 )
 
 func main() {
-    // env vars
-    addr := os.Getenv("MILVUS_ADDR")
-    username := os.Getenv("MILVUS_USERNAME")
-    password := os.Getenv("MILVUS_PASSWORD")
-    arkApiKey := os.Getenv("ARK_API_KEY")
-    arkModel := os.Getenv("ARK_MODEL")
-
-    // client
-    ctx := context.Background()
-    cli, err := client.NewClient(ctx, client.Config{ Address: addr, Username: username, Password: password })
-    if err != nil { log.Fatalf("Failed to create client: %v", err); return }
-    defer cli.Close()
-
-    // embedder
-    emb, err := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{ APIKey: arkApiKey, Model: arkModel })
-
-    // retriever
-    retriever, err := milvus.NewRetriever(ctx, &milvus.RetrieverConfig{
-        Client:       cli,
-        Collection:   "",
-        Partition:    nil,
-        VectorField:  "",
-        OutputFields: []string{ "id", "content", "metadata" },
-        DocumentConverter: nil,
-        MetricType:        "",
-        TopK:              0,
-        ScoreThreshold:    5,
-        Sp:                nil,
-        Embedding:         emb,
-    })
-    if err != nil { log.Fatalf("Failed to create retriever: %v", err); return }
-
-    // retrieve
-    documents, err := retriever.Retrieve(ctx, "milvus")
-    if err != nil { log.Fatalf("Failed to retrieve: %v", err); return }
-
-    // print
-    for i, doc := range documents {
-        fmt.Printf("Document %d:\n", i)
-        fmt.Printf("title: %s\n", doc.ID)
-        fmt.Printf("content: %s\n", doc.Content)
-        fmt.Printf("metadata: %v\n", doc.MetaData)
-    }
+        // Get the environment variables
+        addr := os.Getenv("MILVUS_ADDR")
+        username := os.Getenv("MILVUS_USERNAME")
+        password := os.Getenv("MILVUS_PASSWORD")
+        arkApiKey := os.Getenv("ARK_API_KEY")
+        arkModel := os.Getenv("ARK_MODEL")
+        
+        // Create a client
+        ctx := context.Background()
+        cli, err := client.NewClient(ctx, client.Config{
+                Address:  addr,
+                Username: username,
+                Password: password,
+        })
+        if err != nil {
+                log.Fatalf("Failed to create client: %v", err)
+                return
+        }
+        defer cli.Close()
+        
+        // Create an embedding model
+        emb, err := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{
+                APIKey: arkApiKey,
+                Model:  arkModel,
+        })
+        
+        // Create a retriever
+        retriever, err := milvus.NewRetriever(ctx, &milvus.RetrieverConfig{
+                Client:      cli,
+                Collection:  "",
+                Partition:   nil,
+                VectorField: "",
+                OutputFields: []string{
+                        "id",
+                        "content",
+                        "metadata",
+                },
+                DocumentConverter: nil,
+                MetricType:        "",
+                TopK:              0,
+                ScoreThreshold:    5,
+                Sp:                nil,
+                Embedding:         emb,
+        })
+        if err != nil {
+                log.Fatalf("Failed to create retriever: %v", err)
+                return
+        }
+        
+        // Retrieve documents
+        documents, err := retriever.Retrieve(ctx, "milvus")
+        if err != nil {
+                log.Fatalf("Failed to retrieve: %v", err)
+                return
+        }
+        
+        // Print the documents
+        for i, doc := range documents {
+                fmt.Printf("Document %d:\n", i)
+                fmt.Printf("title: %s\n", doc.ID)
+                fmt.Printf("content: %s\n", doc.Content)
+                fmt.Printf("metadata: %v\n", doc.MetaData)
+        }
 }
 ```
 
@@ -87,29 +111,57 @@ func main() {
 
 ```go
 type RetrieverConfig struct {
-    // Milvus client (required)
+    // Client is the milvus client to call
+    // Required
     Client client.Client
 
-    // Collection name (optional, default "eino_collection")
+    // Retriever common configuration
+    // Collection is the collection name in milvus database
+    // Optional, default value is "eino_collection"
     Collection string
-    // Partition names (optional)
+    // Partition is the partition name of the collection
+    // Optional, default value is empty
     Partition []string
-    // Vector field name (optional, default "vector")
+    // VectorField is the vector field name in the collection
+    // Optional, default value is "vector"
     VectorField string
-    // Fields to return (optional)
+    // OutputFields are the fields to return
+    // Optional, default value is empty
     OutputFields []string
-    // Convert search result to schema.Document (optional, default converter)
+    // DocumentConverter is the function to convert search result to s.Document
+    // Optional, default value is defaultDocumentConverter
     DocumentConverter func(ctx context.Context, doc client.SearchResult) ([]*s.Document, error)
-    // Vector metric type (optional, default "HAMMING")
+    // MetricType is the metric type of the vector
+    // Optional, default value is "HAMMING"
     MetricType entity.MetricType
-    // Number of results (optional, default 5)
+    // TopK is the top k results to return
+    // Optional, default value is 5
     TopK int
-    // Score threshold (optional, default 0)
+    // ScoreThreshold is the threshold of the search result
+    // Optional, default value is 0
     ScoreThreshold float64
-    // Search params (optional, default entity.IndexAUTOINDEXSearchParam, level 1)
+    // SearchParams
+    // Optional, default value is entity.IndexAUTOINDEXSearchParam, level 1
     Sp entity.SearchParam
 
-    // Embedding for query/content (required)
+    // Embedding is the method to embed values from s.Document content that need to be embedded
+    // Required
     Embedding embedding.Embedder
 }
 ```
+
+## Getting Help
+
+If you have any questions or feature suggestions, feel free to reach out.
+
+### External References
+
+- [Milvus Documentation](https://milvus.io/docs)
+- [Milvus Index Types](https://milvus.io/docs/index.md)
+- [Milvus Metric Types](https://milvus.io/docs/metric.md)
+- [milvus-sdk-go Reference](https://milvus.io/api-reference/go/v2.4.x/About.md)
+
+### Related Documentation
+
+- [Eino: Indexer Guide](/docs/eino/core_modules/components/indexer_guide)
+- [Eino: Retriever Guide](/docs/eino/core_modules/components/retriever_guide)

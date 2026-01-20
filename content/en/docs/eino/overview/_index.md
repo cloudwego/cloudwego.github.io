@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Overview'
@@ -215,7 +215,7 @@ The Eino framework consists of several parts:
 - [Eino DevOps](https://github.com/cloudwego/eino-ext/tree/main/devops): Visual development and debugging.
 - [EinoExamples](https://github.com/cloudwego/eino-examples): Example applications and best practices.
 
-See also: [Eino Architecture Overview](/docs/eino/overview/)
+See also: [Eino Architecture Overview](/docs/eino/overview/eino_arch/)
 
 ## Documentation
 
@@ -228,7 +228,7 @@ Complete API reference: [https://pkg.go.dev/github.com/cloudwego/eino](https://p
 ## Dependencies
 
 - Go 1.18 or higher
-- Eino depends on [kin-openapi](https://github.com/getkin/kin-openapi) for OpenAPI JSONSchema. To remain compatible with Go 1.18, we pin kin-openapi at `v0.118.0`.
+- Eino depends on [kin-openapi](https://github.com/getkin/kin-openapi) for OpenAPI JSONSchema. To remain compatible with Go 1.18, we pin kin-openapi at `v0.118.0`. This dependency has been removed after V0.6.0.
 
 ## Security
 

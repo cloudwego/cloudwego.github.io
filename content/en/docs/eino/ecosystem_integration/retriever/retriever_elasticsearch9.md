@@ -3,47 +3,52 @@ Description: ""
 date: "2026-01-20"
 lastmod: ""
 tags: []
-title: Retriever - Elasticsearch 8
+title: Retriever - Elasticsearch 9
 weight: 0
 ---
 
 > **Cloud Search Service Introduction**
 >
-> Cloud Search Service is a fully managed, one-stop information retrieval and analysis platform that provides ElasticSearch and OpenSearch engines, supporting full-text search, vector search, hybrid search, and spatiotemporal search capabilities.
+> Cloud Search Service is a fully managed, one-stop information retrieval and analysis platform that provides Elasticsearch and OpenSearch engines, supporting full-text search, vector search, hybrid search, and spatio-temporal search capabilities.
 
-## **ES8 Retriever**
+An Elasticsearch 9.x retriever implementation for [Eino](https://github.com/cloudwego/eino) that implements the `Retriever` interface. This enables seamless integration with Eino's vector retrieval system to enhance semantic search capabilities.
 
-This is an Elasticsearch 8.x retriever implementation for [Eino](https://github.com/cloudwego/eino) that implements the `Retriever` interface. It integrates seamlessly with Eino's vector retrieval system to enhance semantic search capabilities.
-
-## **Features**
+## Features
 
 - Implements `github.com/cloudwego/eino/components/retriever.Retriever`
 - Easy integration with Eino's retrieval system
 - Configurable Elasticsearch parameters
-- Supports vector similarity search
-- Multiple search modes including approximate search
-- Supports custom result parsing
+- Support for vector similarity search
+- Multiple search modes (including approximate search)
+- Custom result parsing support
 - Flexible document filtering
 
-## **Installation**
+## Installation
 
 ```bash
-go get github.com/cloudwego/eino-ext/components/retriever/es8@latest
+go get github.com/cloudwego/eino-ext/components/retriever/es9@latest
 ```
 
-## **Quick Start**
+## Quick Start
 
-Here is a quick example of how to use the retriever in approximate search mode. You can read `components/retriever/es8/examples/approximate/approximate.go` for more details:
+Here is a quick example using approximate search mode. For more details, see components/retriever/es9/examples/approximate/approximate.go:
 
 ```go
 import (
+        "context"
+        "encoding/json"
+        "fmt"
+        "log"
+        "os"
+
         "github.com/cloudwego/eino/components/embedding"
         "github.com/cloudwego/eino/schema"
-        elasticsearch "github.com/elastic/go-elasticsearch/v8"
-        "github.com/elastic/go-elasticsearch/v8/typedapi/types"
+        "github.com/elastic/go-elasticsearch/v9"
+        "github.com/elastic/go-elasticsearch/v9/typedapi/types"
 
-        "github.com/cloudwego/eino-ext/components/retriever/es8"
-        "github.com/cloudwego/eino-ext/components/retriever/es8/search_mode"
+        "github.com/cloudwego/eino-ext/components/embedding/ark"
+        "github.com/cloudwego/eino-ext/components/retriever/es9"
+        "github.com/cloudwego/eino-ext/components/retriever/es9/search_mode"
 )
 
 const (
@@ -62,23 +67,32 @@ func main() {
         password := os.Getenv("ES_PASSWORD")
         httpCACertPath := os.Getenv("ES_HTTP_CA_CERT_PATH")
 
-        cert, err := os.ReadFile(httpCACertPath)
-        if err != nil {
-                log.Fatalf("read file failed, err=%v", err)
+        var cert []byte
+        var err error
+        if httpCACertPath != "" {
+                cert, err = os.ReadFile(httpCACertPath)
+                if err != nil {
+                        log.Fatalf("read file failed, err=%v", err)
+                }
         }
 
-        client, err := elasticsearch.NewClient(elasticsearch.Config{
+        client, _ := elasticsearch.NewClient(elasticsearch.Config{
                 Addresses: []string{"https://localhost:9200"},
                 Username:  username,
                 Password:  password,
                 CACert:    cert,
         })
-        if err != nil {
-                log.Panicf("connect es8 failed, err=%v", err)
-        }
+
+        // 2. Create embedding component (using Ark)
+        // Replace "ARK_API_KEY", "ARK_REGION", "ARK_MODEL" with actual configuration
+        emb, _ := ark.NewEmbedder(ctx, &ark.EmbeddingConfig{
+                APIKey: os.Getenv("ARK_API_KEY"),
+                Region: os.Getenv("ARK_REGION"),
+                Model:  os.Getenv("ARK_MODEL"),
+        })
 
         // Create retriever component
-        retriever, err := es8.NewRetriever(ctx, &es8.RetrieverConfig{
+        retriever, _ := es9.NewRetriever(ctx, &es9.RetrieverConfig{
                 Client: client,
                 Index:  indexName,
                 TopK:   5,
@@ -86,7 +100,7 @@ func main() {
                         QueryFieldName:  fieldContent,
                         VectorFieldName: fieldContentVector,
                         Hybrid:          true,
-                        // RRF is only available under specific licenses
+                        // RRF is only available under certain licenses
                         // See: https://www.elastic.co/subscriptions
                         RRF:             false,
                         RRFRankConstant: nil,
@@ -125,21 +139,15 @@ func main() {
 
                         return doc, nil
                 },
-                Embedding: emb, // Your embedding component
+                Embedding: emb,
         })
-        if err != nil {
-                log.Panicf("create retriever failed, err=%v", err)
-        }
 
         // Search without filters
-        docs, err := retriever.Retrieve(ctx, "tourist attraction")
-        if err != nil {
-                log.Panicf("retrieve docs failed, err=%v", err)
-        }
+        docs, _ := retriever.Retrieve(ctx, "tourist attraction")
 
         // Search with filters
-        docs, err = retriever.Retrieve(ctx, "tourist attraction",
-                es8.WithFilters([]types.Query{{
+        docs, _ = retriever.Retrieve(ctx, "tourist attraction",
+                es9.WithFilters([]types.Query{{
                         Term: map[string]types.TermQuery{
                                 fieldExtraLocation: {
                                         CaseInsensitive: of(true),
@@ -148,30 +156,36 @@ func main() {
                         },
                 }}),
         )
-        if err != nil {
-                log.Panicf("retrieve docs failed, err=%v", err)
-        }
+
+        fmt.Printf("retrieved docs: %+v\n", docs)
+}
+
+func of[T any](v T) *T {
+        return &v
 }
 ```
 
-## **Configuration**
+## Configuration
 
-The retriever can be configured via the `RetrieverConfig` struct:
+The retriever can be configured using the `RetrieverConfig` struct:
 
 ```go
 type RetrieverConfig struct {
-        Client *elasticsearch.Client // Required: Elasticsearch client instance
-        Index  string                // Required: Index name to retrieve documents from
-        TopK   int                   // Required: Number of results to return
-        
-        // Required: Search mode configuration
-        SearchMode search_mode.SearchMode
-        
-        // Required: Function to parse Elasticsearch hits into Documents
-        ResultParser func(ctx context.Context, hit types.Hit) (*schema.Document, error)
-        
-        // Optional: Only needed when query vectorization is required
-        Embedding embedding.Embedder
+    Client *elasticsearch.Client // Required: Elasticsearch client instance
+    Index  string               // Required: Index name for retrieving documents
+    TopK   int                  // Required: Number of results to return
+
+    // Required: Search mode configuration
+    SearchMode search_mode.SearchMode
+
+    // Optional: Function to parse Elasticsearch hits into Documents
+    // If not provided, a default parser will be used:
+    // 1. Extract "content" field from source as Document.Content
+    // 2. Use other source fields as Document.MetaData
+    ResultParser func(ctx context.Context, hit types.Hit) (*schema.Document, error)
+
+    // Optional: Required only when query vectorization is needed
+    Embedding embedding.Embedder
 }
 ```
 
@@ -179,5 +193,5 @@ type RetrieverConfig struct {
 
 If you have any questions or feature suggestions, feel free to reach out.
 
-- [Eino Documentation](https://github.com/cloudwego/eino)
+- [Eino Documentation](https://www.cloudwego.io/docs/eino/)
 - [Elasticsearch Go Client Documentation](https://github.com/elastic/go-elasticsearch)
