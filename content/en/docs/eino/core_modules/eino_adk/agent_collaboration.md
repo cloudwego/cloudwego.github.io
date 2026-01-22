@@ -516,3 +516,5 @@ _    // to the parent generator via a tool option injection at run-time._
 _    _EmitInternalEvents bool
 }
 ```
+
+These internal events will not enter the parent agent's context (except for the last message that would enter anyway), and various AgentActions will not take effect (except for InterruptAction).

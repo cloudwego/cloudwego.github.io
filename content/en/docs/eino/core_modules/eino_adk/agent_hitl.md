@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-01-22"
 lastmod: ""
 tags: []
 title: 'Eino Human-in-the-Loop Framework: Architecture Guide'
@@ -635,7 +635,7 @@ func (a *myAgent) Resume(ctx context.Context, info *adk.ResumeInfo, opts ...adk.
 
 ## Compose Package APIs
 
-The `compose` package provides low-level building blocks for creating complex, interruptible workflows.
+The `compose` package provides low-level building blocks for creating complex, interruptible workflows. Suitable for throwing interrupts and handling resumes in Graph Nodes.
 
 ### 1. APIs for Interrupting
 
@@ -838,12 +838,12 @@ if wasInterrupted {
 Checks if the current component is a target of a resume operation and retrieves any user-provided data. This is typically called after `GetInterruptState` confirms the component was interrupted.
 
 ```go
-func GetResumeContext[T any](ctx context.Context) (isResumeFlow bool, hasData bool, data T)
+func GetResumeContext[T any](ctx context.Context) (isResumeTarget bool, hasData bool, data T)
 ```
 
 **Return values:**
 
-- `isResumeFlow`: `true` if the component was explicitly targeted by the resume call. If `false`, the component must re-interrupt to preserve its state.
+- `isResumeTarget`: `true` if the component was explicitly targeted by the resume call. If `false`, the component must re-interrupt to preserve its state. Note that if a component is not directly targeted but is a parent of a directly targeted component, `isResumeTarget` will still be `true`. For example, if NodeA is interrupted and targeted for resume, then GraphA containing NodeA will also be a resume target.
 - `hasData`: `true` if data was provided for this component.
 - `data`: The typed data provided by the user.
 
@@ -869,6 +869,10 @@ if wasInterrupted {
     }
 }
 ```
+
+## Tool Package APIs
+
+Completely symmetric with the Compose Package APIs, used for throwing interrupts and handling resumes inside Tools. See the `components/tool/interrupt.go` file.
 
 ## Underlying Architecture: Addressing System
 

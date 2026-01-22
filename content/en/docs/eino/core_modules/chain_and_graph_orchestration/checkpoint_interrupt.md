@@ -258,6 +258,8 @@ func WithGraphInterruptTimeout(timeout time.Duration) GraphInterruptOption {
 }
 ```
 
+When an external interrupt is triggered, the node has no opportunity to save local state (including the node's input), so Eino automatically saves the input of externally interrupted nodes and restores it on the next execution. For non-external interrupt scenarios, when a node initiates an interrupt internally, saving the input is the responsibility of each node, which can be done by saving to the graph state or using `compose.StatefulInterrupt` to save local state.
+
 ## CheckPoint in Streaming
 
 Streaming checkpoints require concatenation of chunks. Register a concat function:
