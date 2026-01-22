@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-01-22"
 lastmod: ""
 tags: []
 title: Eino human-in-the-loop框架：技术架构指南
@@ -635,7 +635,7 @@ func (a *myAgent) Resume(ctx context.Context, info *adk.ResumeInfo, opts ...adk.
 
 ## Compose 包 API
 
-`compose` 包提供了用于创建复杂、可中断工作流的低级构建块。
+`compose` 包提供了用于创建复杂、可中断工作流的低级构建块。适用于在 Graph Node 中抛出中断、处理恢复。
 
 ### 1. 用于中断的 API
 
@@ -838,13 +838,13 @@ if wasInterrupted {
 检查当前组件是否是恢复操作的目标，并检索用户提供的任何数据。这通常在 `GetInterruptState` 确认组件被中断后调用。
 
 ```go
-func GetResumeContext[T any](ctx context.Context) (isResumeFlow bool, hasData bool, data T)
+func GetResumeContext[T any](ctx context.Context) (isResumeTarget bool, hasData bool, data T)
 ```
 
 **返回值:**
 
-- `isResumeFlow`: 如果组件被恢复调用明确指定为目标，则为 `true`。如果为 `false`，组件必须重新中断以保留其状态。
-- `hasData`: 如果为此组件提供了数据，则为 `true`。
+- `isResume``Target`: 如果组件被恢复调用明确指定为目标，则为 `true`。如果为 `false`，组件必须重新中断以保留其状态。注意，如果组件没有被直接指定，但是是被直接指定的组件的上级，`isResumeTarget` 的结果依然为 `true`。比如 NodeA 中断且被指定为恢复目标，则 NodeA 所在的 GraphA 也会是恢复目标。
+- `hasData`: 如果为此组件提供了恢复数据，则为 `true`。
 - `data`: 用户提供的类型化数据。
 
 **示例:**
@@ -869,6 +869,10 @@ if wasInterrupted {
     }
 }
 ```
+
+## Tool 包 API
+
+与 Compose 包 API 完全对称，用于在 Tool 内部抛出中断、处理恢复。查看 `components/tool/interrupt.go` 文件。
 
 ## 底层架构：寻址系统
 

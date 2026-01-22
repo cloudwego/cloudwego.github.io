@@ -516,3 +516,5 @@ _    // to the parent generator via a tool option injection at run-time._
 _    _EmitInternalEvents bool
 }
 ```
+
+这些内部事件，不会进入上级 agent 的上下文（除了本来就会进入的最后一条 message），各种 AgentAction 也不会生效（InterruptAction 除外）。
