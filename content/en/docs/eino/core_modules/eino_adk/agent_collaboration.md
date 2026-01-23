@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-01-23"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent Collaboration'
@@ -11,41 +11,42 @@ weight: 4
 
 The overview document has provided basic explanations for Agent collaboration. Below, we will introduce the design and implementation of collaboration and composition primitives with code:
 
-- Collaboration Primitives
+## Collaboration Primitives
 
-  - Agent Collaboration Modes
+### Agent Collaboration Modes
 
-   <table>
-   <tr><td>Mode</td><td>Description</td></tr>
-   <tr><td>Transfer</td><td>Directly transfer the task to another Agent. The current Agent exits after execution and does not care about the task execution status of the transferred Agent</td></tr>
-   <tr><td>ToolCall (AgentAsTool)</td><td>Treat an Agent as a ToolCall, wait for the Agent's response, and obtain the output result of the called Agent for the next round of processing</td></tr>
-   </table>
+<table>
+<tr><td>Mode</td><td>Description</td></tr>
+<tr><td> Transfer</td><td>Directly transfer the task to another Agent. The current Agent exits after execution and does not care about the task execution status of the transferred Agent</td></tr>
+<tr><td>ToolCall(AgentAsTool)</td><td>Treat an Agent as a ToolCall, wait for the Agent's response, and obtain the output result of the called Agent for the next round of processing</td></tr>
+</table>
 
-  - AgentInput Context Strategies
+### AgentInput Context Strategies
 
-   <table>
-   <tr><td>Context Strategy</td><td>Description</td></tr>
-   <tr><td>Upstream Agent Full Dialogue</td><td>Get the complete conversation history of the upstream Agent</td></tr>
-   <tr><td>New Task Description</td><td>Ignore the complete conversation history of the upstream Agent and provide a new task summary as the AgentInput for the sub-Agent</td></tr>
-   </table>
+<table>
+<tr><td>Context Strategy</td><td>Description</td></tr>
+<tr><td>Upstream Agent Full Dialogue</td><td>Get the complete conversation history of the upstream Agent</td></tr>
+<tr><td>New Task Description</td><td>Ignore the complete conversation history of the upstream Agent and provide a new task summary as the AgentInput for the sub-Agent</td></tr>
+</table>
 
-  - Decision Autonomy
+### Decision Autonomy
 
-   <table>
-   <tr><td>Decision Autonomy</td><td>Description</td></tr>
-   <tr><td>Autonomous Decision</td><td>Within the Agent, based on its available downstream Agents, autonomously select a downstream Agent for assistance when needed. Generally, the Agent makes decisions based on LLM internally, but even if selection is based on preset logic, it is still considered autonomous decision from the Agent's external perspective</td></tr>
-   <tr><td>Preset Decision</td><td>Pre-set the next Agent after an Agent executes a task. The execution order of Agents is predetermined and predictable</td></tr>
-   </table>
-- Composition Primitives
+<table>
+<tr><td>Decision Autonomy</td><td>Description</td></tr>
+<tr><td>Autonomous Decision</td><td>Within the Agent, based on its available downstream Agents, autonomously select a downstream Agent for assistance when needed. Generally, the Agent makes decisions based on LLM internally, but even if selection is based on preset logic, it is still considered autonomous decision from the Agent's external perspective</td></tr>
+<tr><td>Preset Decision</td><td>Pre-set the next Agent after an Agent executes a task. The execution order of Agents is predetermined and predictable</td></tr>
+</table>
 
-   <table>
-   <tr><td>Type</td><td>Description</td><td>Running Mode</td><td>Collaboration Mode</td><td>Context Strategy</td><td>Decision Autonomy</td></tr>
-   <tr><td><strong>SubAgents</strong></td><td>Combine the user-provided agent as the parent Agent and the user-provided subAgents list as child Agents to form an Agent capable of autonomous decision-making, where Name and Description serve as the Agent's name identifier and description.<li>Currently limited to one Agent having only one parent Agent</li><li>Use the SetSubAgents function to build a "multi-branch tree" form of Multi-Agent</li><li>In this "multi-branch tree", AgentName must remain unique</li></td><td><a href="/img/eino/eino_adk_self_driving.png" target="_blank"><img src="/img/eino/eino_adk_self_driving.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Autonomous Decision</td></tr>
-   <tr><td><strong>Sequential</strong></td><td>Combine the user-provided SubAgents list into a Sequential Agent that executes in order, where Name and Description serve as the Sequential Agent's name identifier and description. When the Sequential Agent executes, it runs the SubAgents list in order until all Agents have been executed once.</td><td><a href="/img/eino/eino_adk_sequential_controller.png" target="_blank"><img src="/img/eino/eino_adk_sequential_controller.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Preset Decision</td></tr>
-   <tr><td><strong>Parallel</strong></td><td>Combine the user-provided SubAgents list into a Parallel Agent that executes concurrently based on the same context, where Name and Description serve as the Parallel Agent's name identifier and description. When the Parallel Agent executes, it runs the SubAgents list concurrently and finishes after all Agents complete execution.</td><td><a href="/img/eino/eino_adk_parallel_yet_another_2.png" target="_blank"><img src="/img/eino/eino_adk_parallel_yet_another_2.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Preset Decision</td></tr>
-   <tr><td><strong>Loop</strong></td><td>Execute the user-provided SubAgents list in array order, cycling repeatedly, to form a Loop Agent, where Name and Description serve as the Loop Agent's name identifier and description. When the Loop Agent executes, it runs the SubAgents list in order and finishes after all Agents complete execution.</td><td><a href="/img/eino/eino_adk_loop_exit.png" target="_blank"><img src="/img/eino/eino_adk_loop_exit.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Preset Decision</td></tr>
-   <tr><td><strong>AgentAsTool</strong></td><td>Convert an Agent into a Tool to be used as a regular Tool by other Agents. Whether an Agent can call other Agents as Tools depends on its own implementation. The ChatModelAgent provided in adk supports the AgentAsTool functionality</td><td><a href="/img/eino/eino_collaboration_agent_as_tool_thumbnail.png" target="_blank"><img src="/img/eino/eino_collaboration_agent_as_tool_thumbnail.png" width="100%" /></a></td><td>ToolCall</td><td>New Task Description</td><td>Autonomous Decision</td></tr>
-   </table>
+### Composition Primitives
+
+<table>
+<tr><td>Type</td><td>Description</td><td>Running Mode</td><td>Collaboration Mode</td><td>Context Strategy</td><td>Decision Autonomy</td></tr>
+<tr><td><strong>SubAgents</strong></td><td>Combine the user-provided agent as the parent Agent and the user-provided subAgents list as child Agents to form an Agent capable of autonomous decision-making, where Name and Description serve as the Agent's name identifier and description.<li>Currently limited to one Agent having only one parent Agent</li><li>Use the SetSubAgents function to build a "multi-branch tree" form of Multi-Agent</li><li>In this "multi-branch tree", AgentName must remain unique</li></td><td><a href="/img/eino/eino_adk_self_driving.png" target="_blank"><img src="/img/eino/eino_adk_self_driving.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Autonomous Decision</td></tr>
+<tr><td><strong>Sequential</strong></td><td>Combine the user-provided SubAgents list into a Sequential Agent that executes in order, where Name and Description serve as the Sequential Agent's name identifier and description. When the Sequential Agent executes, it runs the SubAgents list in order until all Agents have been executed once.</td><td><a href="/img/eino/eino_adk_sequential_controller.png" target="_blank"><img src="/img/eino/eino_adk_sequential_controller.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Preset Decision</td></tr>
+<tr><td><strong>Parallel</strong></td><td>Combine the user-provided SubAgents list into a Parallel Agent that executes concurrently based on the same context, where Name and Description serve as the Parallel Agent's name identifier and description. When the Parallel Agent executes, it runs the SubAgents list concurrently and finishes after all Agents complete execution.</td><td><a href="/img/eino/eino_adk_parallel_yet_another_2.png" target="_blank"><img src="/img/eino/eino_adk_parallel_yet_another_2.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Preset Decision</td></tr>
+<tr><td><strong>Loop</strong></td><td>Execute the user-provided SubAgents list in array order, cycling repeatedly, to form a Loop Agent, where Name and Description serve as the Loop Agent's name identifier and description. When the Loop Agent executes, it runs the SubAgents list in order and finishes after all Agents complete execution.</td><td><a href="/img/eino/eino_adk_loop_exit.png" target="_blank"><img src="/img/eino/eino_adk_loop_exit.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Preset Decision</td></tr>
+<tr><td><strong>AgentAsTool</strong></td><td>Convert an Agent into a Tool to be used as a regular Tool by other Agents. Whether an Agent can call other Agents as Tools depends on its own implementation. The ChatModelAgent provided in adk supports the AgentAsTool functionality</td><td><a href="/img/eino/eino_collaboration_agent_as_tool_thumbnail.png" target="_blank"><img src="/img/eino/eino_collaboration_agent_as_tool_thumbnail.png" width="100%" /></a></td><td>ToolCall</td><td>New Task Description</td><td>Autonomous Decision</td></tr>
+</table>
 
 ## Context Passing
 

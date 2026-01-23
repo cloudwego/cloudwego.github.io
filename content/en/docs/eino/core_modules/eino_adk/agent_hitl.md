@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-22"
+date: "2026-01-23"
 lastmod: ""
 tags: []
 title: 'Eino Human-in-the-Loop Framework: Architecture Guide'
