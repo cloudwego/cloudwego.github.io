@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-22"
+date: "2026-01-23"
 lastmod: ""
 tags: []
 title: Eino human-in-the-loop框架：技术架构指南
@@ -843,7 +843,7 @@ func GetResumeContext[T any](ctx context.Context) (isResumeTarget bool, hasData 
 
 **返回值:**
 
-- `isResume``Target`: 如果组件被恢复调用明确指定为目标，则为 `true`。如果为 `false`，组件必须重新中断以保留其状态。注意，如果组件没有被直接指定，但是是被直接指定的组件的上级，`isResumeTarget` 的结果依然为 `true`。比如 NodeA 中断且被指定为恢复目标，则 NodeA 所在的 GraphA 也会是恢复目标。
+- `isResumeTarget`: 如果组件被恢复调用明确指定为目标，则为 `true`。如果为 `false`，组件必须重新中断以保留其状态。注意，如果组件没有被直接指定，但是是被直接指定的组件的上级，`isResumeTarget` 的结果依然为 `true`。比如 NodeA 中断且被指定为恢复目标，则 NodeA 所在的 GraphA 也会是恢复目标。
 - `hasData`: 如果为此组件提供了恢复数据，则为 `true`。
 - `data`: 用户提供的类型化数据。
 

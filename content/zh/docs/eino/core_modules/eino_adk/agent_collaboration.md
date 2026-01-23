@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-01-23"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent 协作'
@@ -11,41 +11,42 @@ weight: 4
 
 概述文档已经对 Agent 协作提供了基础的说明，下面将结合代码，对协作与组合原语的设计与实现进行介绍：
 
-- 协作原语
+## 协作原语
 
-  - Agent 间协作方式
+### Agent 间协作方式
 
-   <table>
-   <tr><td>协作方式</td><td>描述</td></tr>
-   <tr><td> Transfer</td><td>直接将任务转让给另外一个 Agent，本 Agent 则执行结束后退出，不关心转让 Agent 的任务执行状态</td></tr>
-   <tr><td>ToolCall(AgentAsTool)</td><td>将 Agent 当成 ToolCall 调用，等待 Agent 的响应，并可获取被调用Agent 的输出结果，进行下一轮处理</td></tr>
-   </table>
+<table>
+<tr><td>协作方式</td><td>描述</td></tr>
+<tr><td> Transfer</td><td>直接将任务转让给另外一个 Agent，本 Agent 则执行结束后退出，不关心转让 Agent 的任务执行状态</td></tr>
+<tr><td>ToolCall(AgentAsTool)</td><td>将 Agent 当成 ToolCall 调用，等待 Agent 的响应，并可获取被调用Agent 的输出结果，进行下一轮处理</td></tr>
+</table>
 
-  - AgentInput 的上下文策略
+### AgentInput 的上下文策略
 
-   <table>
-   <tr><td>上下文策略</td><td>描述</td></tr>
-   <tr><td>上游 Agent 全对话</td><td>获取本 Agent 的上游 Agent 的完整对话记录</td></tr>
-   <tr><td>全新任务描述</td><td>忽略掉上游 Agent 的完整对话记录，给出一个全新的任务总结，作为子 Agent 的 AgentInput 输入</td></tr>
-   </table>
+<table>
+<tr><td>上下文策略</td><td>描述</td></tr>
+<tr><td>上游 Agent 全对话</td><td>获取本 Agent 的上游 Agent 的完整对话记录</td></tr>
+<tr><td>全新任务描述</td><td>忽略掉上游 Agent 的完整对话记录，给出一个全新的任务总结，作为子 Agent 的 AgentInput 输入</td></tr>
+</table>
 
-  - 决策自主性
+### 决策自主性
 
-   <table>
-   <tr><td>决策自主性</td><td>描述</td></tr>
-   <tr><td>自主决策</td><td>在 Agent 内部，基于其可选的下游 Agent， 如需协助时，自主选择下游 Agent 进行协助。 一般来说，Agent 内部是基于 LLM 进行决策，不过即使是基于预设逻辑进行选择，从 Agent 外部看依然视为自主决策</td></tr>
-   <tr><td>预设决策</td><td>事先预设好一个Agent 执行任务后的下一个 Agent。 Agent 的执行顺序是事先确定、可预测的</td></tr>
-   </table>
-- 组合原语
+<table>
+<tr><td>决策自主性</td><td>描述</td></tr>
+<tr><td>自主决策</td><td>在 Agent 内部，基于其可选的下游 Agent， 如需协助时，自主选择下游 Agent 进行协助。 一般来说，Agent 内部是基于 LLM 进行决策，不过即使是基于预设逻辑进行选择，从 Agent 外部看依然视为自主决策</td></tr>
+<tr><td>预设决策</td><td>事先预设好一个Agent 执行任务后的下一个 Agent。 Agent 的执行顺序是事先确定、可预测的</td></tr>
+</table>
 
-   <table>
-   <tr><td>类型</td><td>描述</td><td>运行模式</td><td>协作方式</td><td>上下文策略</td><td>决策自主性</td></tr>
-   <tr><td><strong>SubAgents</strong></td><td>将用户提供的 agent 作为 父Agent，用户提供的 subAgents 列表作为 子Agents，组合而成可自主决策的 Agent，其中的 Name 和 Description 作为该 Agent 的名称标识和描述。<li>当前限定一个 Agent 只能有一个 父 Agent</li><li>可采用 SetSubAgents 函数，构建 「多叉树」 形式的 Multi-Agent</li><li>在这个「多叉树」中，AgentName 需要保持唯一</li></td><td><a href="/img/eino/eino_adk_self_driving.png" target="_blank"><img src="/img/eino/eino_adk_self_driving.png" width="100%" /></a></td><td>Transfer</td><td>上游 Agent 全对话</td><td>自主决策</td></tr>
-   <tr><td><strong>Sequential</strong></td><td>将用户提供的 SubAgents 列表，组合成按照顺序依次执行的 Sequential Agent，其中的 Name 和 Description 作为 Sequential Agent 的名称标识和描述。Sequential Agent 执行时，将 SubAgents 列表，按照顺序依次执行，直至将所有 Agent 执行一遍后结束。</td><td><a href="/img/eino/eino_adk_sequential_controller.png" target="_blank"><img src="/img/eino/eino_adk_sequential_controller.png" width="100%" /></a></td><td>Transfer</td><td>上游 Agent 全对话</td><td>预设决策</td></tr>
-   <tr><td><strong>Parallel</strong></td><td>将用户提供的 SubAgents 列表，组合成基于相同上下文，并发执行的 Parallel Agent，其中的 Name 和 Description 作为 Parallel Agent 的名称标识和描述。Parallel Agent 执行时，将 SubAgents 列表，并发执行，待所有 Agent 执行完成后结束。</td><td><a href="/img/eino/eino_adk_parallel_yet_another_2.png" target="_blank"><img src="/img/eino/eino_adk_parallel_yet_another_2.png" width="100%" /></a></td><td>Transfer</td><td>上游 Agent 全对话</td><td>预设决策</td></tr>
-   <tr><td><strong>Loop</strong></td><td>将用户提供的 SubAgents 列表，按照数组顺序依次执行，循环往复，组合成 Loop Agent，其中的 Name 和 Description 作为 Loop Agent 的名称标识和描述。Loop Agent 执行时，将 SubAgents 列表，顺序执行，待所有 Agent 执行完成后结束。</td><td><a href="/img/eino/eino_adk_loop_exit.png" target="_blank"><img src="/img/eino/eino_adk_loop_exit.png" width="100%" /></a></td><td>Transfer</td><td>上游 Agent 全对话</td><td>预设决策</td></tr>
-   <tr><td><strong>AgentAsTool</strong></td><td>将一个 Agent 转换成 Tool，被其他的 Agent 当成普通的 Tool 使用。一个 Agent 能否将其他 Agent 当成 Tool 进行调用，取决于自身的实现。adk 中提供的 ChatModelAgent 支持 AgentAsTool 的功能</td><td><a href="/img/eino/eino_collaboration_agent_as_tool_thumbnail.png" target="_blank"><img src="/img/eino/eino_collaboration_agent_as_tool_thumbnail.png" width="100%" /></a></td><td>ToolCall</td><td>全新任务描述</td><td>自主决策</td></tr>
-   </table>
+### 组合原语
+
+<table>
+<tr><td>类型</td><td>描述</td><td>运行模式</td><td>协作方式</td><td>上下文策略</td><td>决策自主性</td></tr>
+<tr><td><strong>SubAgents</strong></td><td>将用户提供的 agent 作为 父Agent，用户提供的 subAgents 列表作为 子Agents，组合而成可自主决策的 Agent，其中的 Name 和 Description 作为该 Agent 的名称标识和描述。<li>当前限定一个 Agent 只能有一个 父 Agent</li><li>可采用 SetSubAgents 函数，构建 「多叉树」 形式的 Multi-Agent</li><li>在这个「多叉树」中，AgentName 需要保持唯一</li></td><td><a href="/img/eino/eino_adk_self_driving.png" target="_blank"><img src="/img/eino/eino_adk_self_driving.png" width="100%" /></a></td><td>Transfer</td><td>上游 Agent 全对话</td><td>自主决策</td></tr>
+<tr><td><strong>Sequential</strong></td><td>将用户提供的 SubAgents 列表，组合成按照顺序依次执行的 Sequential Agent，其中的 Name 和 Description 作为 Sequential Agent 的名称标识和描述。Sequential Agent 执行时，将 SubAgents 列表，按照顺序依次执行，直至将所有 Agent 执行一遍后结束。</td><td><a href="/img/eino/eino_adk_sequential_controller.png" target="_blank"><img src="/img/eino/eino_adk_sequential_controller.png" width="100%" /></a></td><td>Transfer</td><td>上游 Agent 全对话</td><td>预设决策</td></tr>
+<tr><td><strong>Parallel</strong></td><td>将用户提供的 SubAgents 列表，组合成基于相同上下文，并发执行的 Parallel Agent，其中的 Name 和 Description 作为 Parallel Agent 的名称标识和描述。Parallel Agent 执行时，将 SubAgents 列表，并发执行，待所有 Agent 执行完成后结束。</td><td><a href="/img/eino/eino_adk_parallel_yet_another_2.png" target="_blank"><img src="/img/eino/eino_adk_parallel_yet_another_2.png" width="100%" /></a></td><td>Transfer</td><td>上游 Agent 全对话</td><td>预设决策</td></tr>
+<tr><td><strong>Loop</strong></td><td>将用户提供的 SubAgents 列表，按照数组顺序依次执行，循环往复，组合成 Loop Agent，其中的 Name 和 Description 作为 Loop Agent 的名称标识和描述。Loop Agent 执行时，将 SubAgents 列表，顺序执行，待所有 Agent 执行完成后结束。</td><td><a href="/img/eino/eino_adk_loop_exit.png" target="_blank"><img src="/img/eino/eino_adk_loop_exit.png" width="100%" /></a></td><td>Transfer</td><td>上游 Agent 全对话</td><td>预设决策</td></tr>
+<tr><td><strong>AgentAsTool</strong></td><td>将一个 Agent 转换成 Tool，被其他的 Agent 当成普通的 Tool 使用。一个 Agent 能否将其他 Agent 当成 Tool 进行调用，取决于自身的实现。adk 中提供的 ChatModelAgent 支持 AgentAsTool 的功能</td><td><a href="/img/eino/eino_collaboration_agent_as_tool_thumbnail.png" target="_blank"><img src="/img/eino/eino_collaboration_agent_as_tool_thumbnail.png" width="100%" /></a></td><td>ToolCall</td><td>全新任务描述</td><td>自主决策</td></tr>
+</table>
 
 ## 上下文传递
 
