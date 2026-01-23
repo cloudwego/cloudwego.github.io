@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: Callback - CozeLoop
@@ -51,4 +51,5 @@ func main() {
 ```
 
 ## **More Details**
+
 - [CozeLoop Docs](https://github.com/coze-dev/cozeloop-go)

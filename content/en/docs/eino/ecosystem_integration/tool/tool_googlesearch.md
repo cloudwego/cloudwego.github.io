@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: Tool - Googlesearch
@@ -138,7 +138,7 @@ func main() {
     "items": [
         {
             "link": "https://example.com/article1",
-            "title": "Go 并发编程实践",
+            "title": "Go Concurrent Programming Practice",
             "snippet": "An article about Go concurrent programming...",
             "desc": "Detailed introduction to goroutines and channels in Go..."
         },

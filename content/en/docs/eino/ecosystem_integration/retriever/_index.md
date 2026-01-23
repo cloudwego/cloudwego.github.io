@@ -7,5 +7,5 @@ title: Retriever
 weight: 0
 ---
 
-Retrievers recall content indexed by [Indexer](/docs/eino/ecosystem_integration/indexer). In AI applications, they typically use [Embedding](/docs/eino/ecosystem_integration/embedding) vectors for semantic similarity recall.
+Retriever is used to recall content indexed by [Indexer](/docs/eino/ecosystem_integration/indexer). In AI applications, [Embedding](/docs/eino/ecosystem_integration/embedding) is typically used for semantic similarity recall.
 

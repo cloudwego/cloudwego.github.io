@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-07-21"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Indexer 使用说明'
@@ -62,6 +62,8 @@ WithEmbedding(emb embedding.Embedder) Option
 
 ### **单独使用**
 
+#### VikingDB 示例
+
 ```go
 import (
     "github.com/cloudwego/eino/schema"
@@ -117,6 +119,129 @@ docs := []*schema.Document{doc}
 resp, _ := volcIndexer.Store(ctx, docs)
 
 fmt.Printf("vikingDB store success, docs=%v, resp ids=%v\n", docs, resp)
+```
+
+#### Milvus 示例
+
+```go
+package main
+
+import (
+        "github.com/cloudwego/eino/schema"
+        "github.com/milvus-io/milvus/client/v2/milvusclient"
+        "github.com/cloudwego/eino-ext/components/indexer/milvus2"
+)
+
+// 创建索引器
+indexer, err := milvus2.NewIndexer(ctx, &milvus2.IndexerConfig{
+        ClientConfig: &milvusclient.ClientConfig{
+                Address:  addr,
+                Username: username,
+                Password: password,
+        },
+        Collection:   "my_collection",
+        Dimension:    1024, // 与 embedding 模型维度匹配
+        MetricType:   milvus2.COSINE,
+        IndexBuilder: milvus2.NewHNSWIndexBuilder().WithM(16).WithEfConstruction(200),
+        Embedding:    emb,
+})
+
+// 索引文档
+docs := []*schema.Document{
+        {
+                ID:      "doc1",
+                Content: "EINO is a framework for building AI applications",
+        },
+}
+ids, err := indexer.Store(ctx, docs)
+```
+
+#### ElasticSearch 7 示例
+
+```go
+import (
+        "github.com/cloudwego/eino/components/embedding"
+        "github.com/cloudwego/eino/schema"
+        elasticsearch "github.com/elastic/go-elasticsearch/v7"
+        "github.com/cloudwego/eino-ext/components/indexer/es7"
+)
+
+client, _ := elasticsearch.NewClient(elasticsearch.Config{
+        Addresses: []string{"http://localhost:9200"},
+        Username:  username,
+        Password:  password,
+})
+
+// 创建 ES 索引器组件
+indexer, _ := es7.NewIndexer(ctx, &es7.IndexerConfig{
+        Client:    client,
+        Index:     indexName,
+        BatchSize: 10,
+        DocumentToFields: func(ctx context.Context, doc *schema.Document) (field2Value map[string]es7.FieldValue, err error) {
+                return map[string]es7.FieldValue{
+                        fieldContent: {
+                                Value:    doc.Content,
+                                EmbedKey: fieldContentVector, // 对文档内容进行向量化并保存到 "content_vector" 字段
+                        },
+                        fieldExtraLocation: {
+                                Value: doc.MetaData[docExtraLocation],
+                        },
+                }, nil
+        },
+        Embedding: emb,
+})
+
+// 索引文档
+docs := []*schema.Document{
+        {
+                ID:      "doc1",
+                Content: "EINO is a framework for building AI applications",
+        },
+}
+ids, err := indexer.Store(ctx, docs)
+```
+
+#### OpenSearch 2 示例
+
+```go
+package main
+
+import (
+        "github.com/cloudwego/eino/schema"
+        opensearch "github.com/opensearch-project/opensearch-go/v2"
+        "github.com/cloudwego/eino-ext/components/indexer/opensearch2"
+)
+
+client, err := opensearch.NewClient(opensearch.Config{
+        Addresses: []string{"http://localhost:9200"},
+        Username:  username,
+        Password:  password,
+})
+
+// 创建 opensearch 索引器组件
+indexer, _ := opensearch2.NewIndexer(ctx, &opensearch2.IndexerConfig{
+        Client:    client,
+        Index:     "your_index_name",
+        BatchSize: 10,
+        DocumentToFields: func(ctx context.Context, doc *schema.Document) (map[string]opensearch2.FieldValue, error) {
+                return map[string]opensearch2.FieldValue{
+                        "content": {
+                                Value:    doc.Content,
+                                EmbedKey: "content_vector",
+                        },
+                }, nil
+        },
+        Embedding: emb,
+})
+
+// 索引文档
+docs := []*schema.Document{
+        {
+                ID:      "doc1",
+                Content: "EINO is a framework for building AI applications",
+        },
+}
+ids, err := indexer.Store(ctx, docs)
 ```
 
 ### **在编排中使用**
@@ -195,7 +320,13 @@ fmt.Printf("vikingDB store success, docs=%v, resp ids=%v\n", docs, outIDs)
 
 ## **已有实现**
 
-1. Volc VikingDB Indexer: 基于火山引擎 VikingDB 实现的向量数据库索引器 [Indexer - VikingDB](/zh/docs/eino/ecosystem_integration/indexer/indexer_volc_vikingdb)
+- Volc VikingDB Indexer: 基于火山引擎 VikingDB 实现的向量数据库索引器 [Indexer - VikingDB](/zh/docs/eino/ecosystem_integration/indexer/indexer_volc_vikingdb)
+- Milvus v2.5+ Indexer: 基于 Milvus 实现的向量数据库索引器 [Indexer - Milvus 2 (v2.5+)](/zh/docs/eino/ecosystem_integration/indexer/indexer_milvusv2)
+- Milvus v2.4- Indexer: 基于 Milvus 实现的向量数据库索引器 [Indexer - Milvus (v2.4-)](/zh/docs/eino/ecosystem_integration/indexer/indexer_milvus)
+- Elasticsearch 8 Indexer: 基于 ES8 实现的通用搜索引擎索引器 [Indexer - ElasticSearch 8](/zh/docs/eino/ecosystem_integration/indexer/indexer_es8)
+- ElasticSearch 7 Indexer: 基于 ES7 实现的通用搜索引擎索引器 [Indexer - Elasticsearch 7 ](/zh/docs/eino/ecosystem_integration/indexer/indexer_elasticsearch7)
+- OpenSearch 3 Indexer: 基于 OpenSearch 3 实现的通用搜索引擎索引器 [Indexer - OpenSearch 3](/zh/docs/eino/ecosystem_integration/indexer/indexer_opensearch3)
+- OpenSearch 2 Indexer: 基于 OpenSearch 2 实现的通用搜索引擎索引器 [Indexer - OpenSearch 2](/zh/docs/eino/ecosystem_integration/indexer/indexer_opensearch2)
 
 ## **自行实现参考**
 

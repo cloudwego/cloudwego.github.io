@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-23"
 lastmod: ""
 tags: []
 title: 'Eino: ToolsNode&Tool 使用说明'
@@ -93,7 +93,7 @@ ChatModel(LLM) 生成要调用的 []ToolCall（包含 ToolName，Argument 等）
 
 每个 ToolCall 调用完成后的结果，又会封装为 *schema.Message，作为 ToolsNode 输出的一部分。
 
-## **Tool 定义**
+## Tool 定义
 
 ### **接口定义**
 

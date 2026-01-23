@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Chain/Graph Orchestration Introduction'
@@ -86,8 +86,8 @@ func (m *mockChatModel) Stream(ctx context.Context, input []*schema.Message, opt
     sr, sw := schema.Pipe[*schema.Message](0)
     go func() {
        defer sw.Close()
-        sw.Send(schema.AssistantMessage("the weather is", nil), nil)
-        sw.Send(schema.AssistantMessage("good", nil), nil)
+       sw.Send(schema.AssistantMessage("the weather is", nil), nil)
+       sw.Send(schema.AssistantMessage("good", nil), nil)
     }()
     return sr, nil
 }
@@ -134,7 +134,7 @@ func main() {
     callbacks.AppendGlobalHandlers(&loggerCallbacks{})
 
     // 1. create an instance of ChatTemplate as 1st Graph Node
-    systemTpl := `你是一名房产经纪人，结合用户的薪酬和工作，使用 user_info API，为其提供相关的房产信息。邮箱是必须的`
+    systemTpl := `You are a real estate agent. Based on the user's salary and job, use the user_info API to provide relevant property information. Email is required.`
     chatTpl := prompt.FromMessages(schema.FString,
        schema.SystemMessage(systemTpl),
        schema.MessagesPlaceholder("message_histories", true),
@@ -161,15 +161,15 @@ func main() {
     userInfoTool := utils.NewTool(
        &schema.ToolInfo{
           Name: "user_info",
-          Desc: "根据用户的姓名和邮箱，查询用户的公司、职位、薪酬信息",
+          Desc: "Query user's company, position, and salary information based on user's name and email",
           ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
              "name": {
                 Type: "string",
-                Desc: "用户的姓名",
+                Desc: "User's name",
              },
              "email": {
                 Type: "string",
-                Desc: "用户的邮箱",
+                Desc: "User's email",
              },
           }),
        },
@@ -212,8 +212,8 @@ func main() {
     )
 
     // 6. create an instance of Graph
-    // input type is 1st Graph Node's input type: map[string]any
-    // output type is last Graph Node's output type: []*schema.Message
+    // input type is 1st Graph Node's input type, that is ChatTemplate's input type: map[string]any
+    // output type is last Graph Node's output type, that is ToolsNode's output type: []*schema.Message
     g := compose.NewGraph[map[string]any, []*schema.Message]()
 
     // 7. add ChatTemplate into graph
@@ -225,13 +225,16 @@ func main() {
     // 9. add ToolsNode into graph
     _ = g.AddToolsNode(nodeKeyOfTools, toolsNode)
 
-    // 10. connect nodes
+    // 10. add connection between nodes
     _ = g.AddEdge(compose.START, nodeKeyOfTemplate)
+
     _ = g.AddEdge(nodeKeyOfTemplate, nodeKeyOfChatModel)
+
     _ = g.AddEdge(nodeKeyOfChatModel, nodeKeyOfTools)
+
     _ = g.AddEdge(nodeKeyOfTools, compose.END)
 
-    // compile Graph[I, O] to Runnable[I, O]
+    // 9. compile Graph[I, O] to Runnable[I, O]
     r, err := g.Compile(ctx)
     if err != nil {
        logs.Errorf("Compile failed, err=%v", err)
@@ -240,14 +243,16 @@ func main() {
 
     out, err := r.Invoke(ctx, map[string]any{
        "message_histories": []*schema.Message{},
-       "user_query":        "我叫 zhangsan, 邮箱是 zhangsan@bytedance.com, 帮我推荐一处房产",
+       "user_query":        "My name is zhangsan, email is zhangsan@bytedance.com, please recommend a property for me",
     })
     if err != nil {
        logs.Errorf("Invoke failed, err=%v", err)
        return
     }
     logs.Infof("Generation: %v Messages", len(out))
-    for _, msg := range out { logs.Infof("    %v", msg) }
+    for _, msg := range out {
+       logs.Infof("    %v", msg)
+    }
 }
 
 type userInfoRequest struct {
@@ -291,14 +296,16 @@ func (l *loggerCallbacks) OnEndWithStreamOutput(ctx context.Context, info *callb
 
 ### Graph with state
 
-Graph can have a graph-level "global" state. Enable it via `WithGenLocalState` when creating the Graph:
+Graph can have a graph-level "global" state. Enable it via `WithGenLocalState` option when creating the Graph:
 
 ```go
 // compose/generic_graph.go
 
 // type GenLocalState[S any] func(ctx context.Context) (state S)
 
-func WithGenLocalState[S any](gls GenLocalState[S]) NewGraphOption { /* ... */ }
+func WithGenLocalState[S any](gls GenLocalState[S]) NewGraphOption {
+    // --snip--
+}
 ```
 
 Add nodes with Pre/Post Handlers to process state:
@@ -309,8 +316,13 @@ Add nodes with Pre/Post Handlers to process state:
 // type StatePreHandler[I, S any] func(ctx context.Context, in I, state S) (I, error)
 // type StatePostHandler[O, S any] func(ctx context.Context, out O, state S) (O, error)
 
-func WithStatePreHandler[I, S any](pre StatePreHandler[I, S]) GraphAddNodeOpt { /* ... */ }
-func WithStatePostHandler[O, S any](post StatePostHandler[O, S]) GraphAddNodeOpt { /* ... */ }
+func WithStatePreHandler[I, S any](pre StatePreHandler[I, S]) GraphAddNodeOpt {
+    // --snip--
+}
+
+func WithStatePostHandler[O, S any](post StatePostHandler[O, S]) GraphAddNodeOpt {
+    // --snip--
+}
 ```
 
 Inside a node, use `ProcessState` to read/write state:
@@ -355,70 +367,152 @@ func main() {
 
     const (
        nodeOfL1 = "invokable"
-        nodeOfL2 = "streamable"
-        nodeOfL3 = "transformable"
+       nodeOfL2 = "streamable"
+       nodeOfL3 = "transformable"
     )
 
-    type testState struct { ms []string }
-    gen := func(ctx context.Context) *testState { return &testState{} }
+    type testState struct {
+       ms []string
+    }
+
+    gen := func(ctx context.Context) *testState {
+       return &testState{}
+    }
 
     sg := compose.NewGraph[string, string](compose.WithGenLocalState(gen))
 
-    l1 := compose.InvokableLambda(func(ctx context.Context, in string) (out string, err error) { return "InvokableLambda: " + in, nil })
-    l1StateToInput := func(ctx context.Context, in string, state *testState) (string, error) { state.ms = append(state.ms, in); return in, nil }
-    l1StateToOutput := func(ctx context.Context, out string, state *testState) (string, error) { state.ms = append(state.ms, out); return out, nil }
-    _ = sg.AddLambdaNode(nodeOfL1, l1, compose.WithStatePreHandler(l1StateToInput), compose.WithStatePostHandler(l1StateToOutput))
-
-    l2 := compose.StreamableLambda(func(ctx context.Context, input string) (*schema.StreamReader[string], error) {
-        outStr := "StreamableLambda: " + input
-        sr, sw := schema.Pipe[string](utf8.RuneCountInString(outStr))
-        go func() {
-            for _, field := range strings.Fields(outStr) { sw.Send(field+" ", nil) }
-            sw.Close()
-        }()
-        return sr, nil
+    l1 := compose.InvokableLambda(func(ctx context.Context, in string) (out string, err error) {
+       return "InvokableLambda: " + in, nil
     })
-    l2StateToOutput := func(ctx context.Context, out string, state *testState) (string, error) { state.ms = append(state.ms, out); return out, nil }
+
+    l1StateToInput := func(ctx context.Context, in string, state *testState) (string, error) {
+       state.ms = append(state.ms, in)
+       return in, nil
+    }
+
+    l1StateToOutput := func(ctx context.Context, out string, state *testState) (string, error) {
+       state.ms = append(state.ms, out)
+       return out, nil
+    }
+
+    _ = sg.AddLambdaNode(nodeOfL1, l1,
+       compose.WithStatePreHandler(l1StateToInput),   compose.WithStatePostHandler(l1StateToOutput))
+
+    l2 := compose.StreamableLambda(func(ctx context.Context, input string) (output *schema.StreamReader[string], err error) {
+       outStr := "StreamableLambda: " + input
+
+       sr, sw := schema.Pipe[string](utf8.RuneCountInString(outStr))
+
+       // nolint: byted_goroutine_recover
+       go func() {
+          for _, field := range strings.Fields(outStr) {
+             sw.Send(field+" ", nil)
+          }
+          sw.Close()
+       }()
+
+       return sr, nil
+    })
+
+    l2StateToOutput := func(ctx context.Context, out string, state *testState) (string, error) {
+       state.ms = append(state.ms, out)
+       return out, nil
+    }
+
     _ = sg.AddLambdaNode(nodeOfL2, l2, compose.WithStatePostHandler(l2StateToOutput))
 
-    l3 := compose.TransformableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (*schema.StreamReader[string], error) {
-        prefix := "TransformableLambda: "
-        sr, sw := schema.Pipe[string](20)
-        go func() {
-            defer func() { if panicErr := recover(); panicErr != nil { err := safe.NewPanicErr(panicErr, debug.Stack()); logs.Errorf("panic occurs: %v\n", err) } }()
-            for _, field := range strings.Fields(prefix) { sw.Send(field+" ", nil) }
-            for {
-                chunk, err := input.Recv()
-                if err != nil { if err == io.EOF { break } ; sw.Send(chunk, err); break }
-                sw.Send(chunk, nil)
-            }
-            sw.Close()
-        }()
-        return sr, nil
+    l3 := compose.TransformableLambda(func(ctx context.Context, input *schema.StreamReader[string]) (
+       output *schema.StreamReader[string], err error) {
+
+       prefix := "TransformableLambda: "
+       sr, sw := schema.Pipe[string](20)
+
+       go func() {
+
+          defer func() {
+             panicErr := recover()
+             if panicErr != nil {
+                err := safe.NewPanicErr(panicErr, debug.Stack())
+                logs.Errorf("panic occurs: %v\n", err)
+             }
+
+          }()
+
+          for _, field := range strings.Fields(prefix) {
+             sw.Send(field+" ", nil)
+          }
+
+          for {
+             chunk, err := input.Recv()
+             if err != nil {
+                if err == io.EOF {
+                   break
+                }
+                // TODO: how to trace this kind of error in the goroutine of processing sw
+                sw.Send(chunk, err)
+                break
+             }
+
+             sw.Send(chunk, nil)
+
+          }
+          sw.Close()
+       }()
+
+       return sr, nil
     })
+
     l3StateToOutput := func(ctx context.Context, out string, state *testState) (string, error) {
-        state.ms = append(state.ms, out)
-        logs.Infof("state result: ")
-        for idx, m := range state.ms { logs.Infof("    %vth: %v", idx, m) }
-        return out, nil
+       state.ms = append(state.ms, out)
+       logs.Infof("state result: ")
+       for idx, m := range state.ms {
+          logs.Infof("    %vth: %v", idx, m)
+       }
+       return out, nil
     }
+
     _ = sg.AddLambdaNode(nodeOfL3, l3, compose.WithStatePostHandler(l3StateToOutput))
 
     _ = sg.AddEdge(compose.START, nodeOfL1)
+
     _ = sg.AddEdge(nodeOfL1, nodeOfL2)
+
     _ = sg.AddEdge(nodeOfL2, nodeOfL3)
+
     _ = sg.AddEdge(nodeOfL3, compose.END)
 
     run, err := sg.Compile(ctx)
-    if err != nil { logs.Errorf("sg.Compile failed, err=%v", err); return }
+    if err != nil {
+       logs.Errorf("sg.Compile failed, err=%v", err)
+       return
+    }
 
     out, err := run.Invoke(ctx, "how are you")
-    if err != nil { logs.Errorf("run.Invoke failed, err=%v", err); return }
+    if err != nil {
+       logs.Errorf("run.Invoke failed, err=%v", err)
+       return
+    }
     logs.Infof("invoke result: %v", out)
 
     stream, err := run.Stream(ctx, "how are you")
-    if err != nil { logs.Errorf("run.Stream failed, err=%v", err); return }
-    for { chunk, err := stream.Recv(); if err != nil { if errors.Is(err, io.EOF) { break } ; logs.Infof("stream.Recv() failed, err=%v", err); break } ; logs.Tokenf("%v", chunk) }
+    if err != nil {
+       logs.Errorf("run.Stream failed, err=%v", err)
+       return
+    }
+
+    for {
+
+       chunk, err := stream.Recv()
+       if err != nil {
+          if errors.Is(err, io.EOF) {
+             break
+          }
+          logs.Infof("stream.Recv() failed, err=%v", err)
+          break
+       }
+
+       logs.Tokenf("%v", chunk)
+    }
     stream.Close()
 
     sr, sw := schema.Pipe[string](1)
@@ -426,8 +520,24 @@ func main() {
     sw.Close()
 
     stream, err = run.Transform(ctx, sr)
-    if err != nil { logs.Infof("run.Transform failed, err=%v", err); return }
-    for { chunk, err := stream.Recv(); if err != nil { if errors.Is(err, io.EOF) { break } ; logs.Infof("stream.Recv() failed, err=%v", err); break } ; logs.Infof("%v", chunk) }
+    if err != nil {
+       logs.Infof("run.Transform failed, err=%v", err)
+       return
+    }
+
+    for {
+
+       chunk, err := stream.Recv()
+       if err != nil {
+          if errors.Is(err, io.EOF) {
+             break
+          }
+          logs.Infof("stream.Recv() failed, err=%v", err)
+          break
+       }
+
+       logs.Infof("%v", chunk)
+    }
     stream.Close()
 }
 ```
@@ -461,54 +571,105 @@ func main() {
     modelName := os.Getenv("MODEL_NAME")
 
     ctx := context.Background()
+    // build branch func
     const randLimit = 2
-    branchCond := func(ctx context.Context, input map[string]any) (string, error) {
-       if rand.Intn(randLimit) == 1 { return "b1", nil }
+    branchCond := func(ctx context.Context, input map[string]any) (string, error) { // nolint: byted_all_nil_return
+       if rand.Intn(randLimit) == 1 {
+          return "b1", nil
+       }
+
        return "b2", nil
     }
 
     b1 := compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (map[string]any, error) {
        logs.Infof("hello in branch lambda 01")
-       if kvs == nil { return nil, fmt.Errorf("nil map") }
+       if kvs == nil {
+          return nil, fmt.Errorf("nil map")
+       }
+
        kvs["role"] = "cat"
        return kvs, nil
     })
+
     b2 := compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (map[string]any, error) {
        logs.Infof("hello in branch lambda 02")
-        if kvs == nil { return nil, fmt.Errorf("nil map") }
-        kvs["role"] = "dog"
-        return kvs, nil
+       if kvs == nil {
+          return nil, fmt.Errorf("nil map")
+       }
+
+       kvs["role"] = "dog"
+       return kvs, nil
     })
 
+    // build parallel node
     parallel := compose.NewParallel()
-    parallel.AddLambda("role", compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (string, error) {
-        role, ok := kvs["role"].(string)
-        if !ok || role == "" { role = "bird" }
-        return role, nil
-    })).AddLambda("input", compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (string, error) {
-        return "你的叫声是怎样的？", nil
-    }))
+    parallel.
+       AddLambda("role", compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (string, error) {
+          // may be change role to others by input kvs, for example (dentist/doctor...)
+          role, ok := kvs["role"].(string)
+          if !ok || role == "" {
+             role = "bird"
+          }
 
-    modelConf := &openai.ChatModelConfig{ BaseURL: openAPIBaseURL, APIKey: openAPIAK, ByAzure: true, Model: modelName, Temperature: gptr.Of(float32(0.7)), APIVersion: "2024-06-01" }
+          return role, nil
+       })).
+       AddLambda("input", compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (string, error) {
+          return "What does your call sound like?", nil
+       }))
+
+    modelConf := &openai.ChatModelConfig{
+       BaseURL:     openAPIBaseURL,
+       APIKey:      openAPIAK,
+       ByAzure:     true,
+       Model:       modelName,
+       Temperature: gptr.Of(float32(0.7)),
+       APIVersion:  "2024-06-01",
+    }
+
+    // create chat model node
     cm, err := openai.NewChatModel(context.Background(), modelConf)
-    if err != nil { log.Panic(err); return }
+    if err != nil {
+       log.Panic(err)
+       return
+    }
 
     rolePlayerChain := compose.NewChain[map[string]any, *schema.Message]()
-    rolePlayerChain.AppendChatTemplate(prompt.FromMessages(schema.FString, schema.SystemMessage(`You are a {role}.`), schema.UserMessage(`{input}`))).AppendChatModel(cm)
+    rolePlayerChain.
+       AppendChatTemplate(prompt.FromMessages(schema.FString, schema.SystemMessage(`You are a {role}.`), schema.UserMessage(`{input}`))).
+       AppendChatModel(cm)
 
+    // =========== build chain ===========
     chain := compose.NewChain[map[string]any, string]()
-    chain.AppendLambda(compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (map[string]any, error) {
-        logs.Infof("in view lambda: %v", kvs)
-        return kvs, nil
-    })).AppendBranch(compose.NewChainBranch(branchCond).AddLambda("b1", b1).AddLambda("b2", b2)).AppendPassthrough().AppendParallel(parallel).AppendGraph(rolePlayerChain).AppendLambda(compose.InvokableLambda(func(ctx context.Context, m *schema.Message) (string, error) {
-        logs.Infof("in view of messages: %v", m.Content)
-        return m.Content, nil
-    }))
+    chain.
+       AppendLambda(compose.InvokableLambda(func(ctx context.Context, kvs map[string]any) (map[string]any, error) {
+          // do some logic to prepare kv as input val for next node
+          // just pass through
+          logs.Infof("in view lambda: %v", kvs)
+          return kvs, nil
+       })).
+       AppendBranch(compose.NewChainBranch(branchCond).AddLambda("b1", b1).AddLambda("b2", b2)). // nolint: byted_use_receiver_without_nilcheck
+       AppendPassthrough().
+       AppendParallel(parallel).
+       AppendGraph(rolePlayerChain).
+       AppendLambda(compose.InvokableLambda(func(ctx context.Context, m *schema.Message) (string, error) {
+          // do some logic to check the output or something
+          logs.Infof("in view of messages: %v", m.Content)
+          return m.Content, nil
+       }))
 
+    // compile
     r, err := chain.Compile(ctx)
-    if err != nil { log.Panic(err); return }
+    if err != nil {
+       log.Panic(err)
+       return
+    }
+
     output, err := r.Invoke(context.Background(), map[string]any{})
-    if err != nil { log.Panic(err); return }
+    if err != nil {
+       log.Panic(err)
+       return
+    }
+
     logs.Infof("output is : %v", output)
 }
 ```

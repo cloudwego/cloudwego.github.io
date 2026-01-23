@@ -1,11 +1,15 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-20"
 lastmod: ""
 tags: []
-title: Retriever - ES8
+title: Retriever - Elasticsearch 8
 weight: 0
 ---
+
+> **云搜索服务介绍**
+>
+> 云搜索服务（Cloud Search）是一个全托管、一站式信息检索与分析平台，提供了 ElasticSearch 和 OpenSearch 引擎，支持全文检索、向量检索、混合搜索及时空检索等多种核心能力。
 
 ## **ES8 检索器**
 
@@ -35,7 +39,7 @@ go get github.com/cloudwego/eino-ext/components/retriever/es8@latest
 import (
         "github.com/cloudwego/eino/components/embedding"
         "github.com/cloudwego/eino/schema"
-        "github.com/elastic/go-elasticsearch/v8"
+        elasticsearch "github.com/elastic/go-elasticsearch/v8"
         "github.com/elastic/go-elasticsearch/v8/typedapi/types"
 
         "github.com/cloudwego/eino-ext/components/retriever/es8"
@@ -171,7 +175,9 @@ type RetrieverConfig struct {
 }
 ```
 
-## **更多详情**
+## 获取帮助
+
+如果有任何问题 或者任何功能建议，欢迎进这个群 oncall。
 
 - [Eino 文档](https://github.com/cloudwego/eino)
 - [Elasticsearch Go 客户端文档](https://github.com/elastic/go-elasticsearch)

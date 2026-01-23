@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: ChatModel 使用说明'
@@ -143,6 +143,29 @@ WithTopP(topP float32) Option
 
 // 设置停止词
 WithStop(stop []string) Option
+
+// WithTools is the option to set tools for the model.
+func WithTools(tools []*schema.ToolInfo) Option {
+        if tools == nil {
+                tools = []*schema.ToolInfo{}
+        }
+        return Option{
+                apply: func(opts *Options) {
+                        opts.Tools = tools
+                },
+        }
+}
+
+// WithToolChoice sets the tool choice for the model. It also allows for providing a list of
+// tool names to constrain the model to a specific subset of the available tools.
+func WithToolChoice(toolChoice schema.ToolChoice, allowedToolNames ...string) Option {
+        return Option{
+                apply: func(opts *Options) {
+                        opts.ToolChoice = &toolChoice
+                        opts.AllowedToolNames = allowedToolNames
+                },
+        }
+}
 ```
 
 ## 使用方式

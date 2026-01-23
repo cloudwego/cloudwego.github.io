@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-22"
 lastmod: ""
 tags: []
 title: 'Eino: 概述'
@@ -110,6 +110,8 @@ our, err := runnable.Invoke(ctx, []*schema.Message{schema.UserMessage("kick star
 ```
 
 现在，咱们来创建一个 “ReAct” 智能体：一个 ChatModel 绑定了一些 Tool。它接收输入的消息，自主判断是调用 Tool 还是输出最终结果。Tool 的执行结果会再次成为聊天模型的输入消息，并作为下一轮自主判断的上下文。
+
+<a href="/img/eino/eino_adk_react_illustration.png" target="_blank"><img src="/img/eino/eino_adk_react_illustration.png" width="100%" /></a>
 
 我们在 Eino 的 `flow` 包中提供了开箱即用的 ReAct 智能体的完整实现。代码参见： [flow/agent/react](https://github.com/cloudwego/eino/blob/main/flow/agent/react/react.go)
 
@@ -229,7 +231,7 @@ Eino 框架由几个部分组成：
 ## 依赖说明
 
 - Go 1.18 及以上版本
-- Eino 依赖了 [kin-openapi](https://github.com/getkin/kin-openapi) 的 OpenAPI JSONSchema 实现。为了能够兼容 Go 1.18 版本，我们将 kin-openapi 的版本固定在了 v0.118.0。
+- Eino 依赖了 [kin-openapi](https://github.com/getkin/kin-openapi) 的 OpenAPI JSONSchema 实现。为了能够兼容 Go 1.18 版本，我们将 kin-openapi 的版本固定在了 v0.118.0。V0.6.0 之后已去除此依赖。
 
 ## 安全
 

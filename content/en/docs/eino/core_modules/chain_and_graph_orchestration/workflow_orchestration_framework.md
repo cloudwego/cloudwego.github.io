@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Workflow Orchestration Framework'
@@ -37,23 +37,43 @@ Key traits:
 
 ### Flexible Input/Output Types
 
-Easily orchestrate existing business functions with unique `struct` inputs/outputs and map fields directly between them, preserving original signatures without forcing common types or `map[string]any` everywhere.
+For example, you need to orchestrate two lambda nodes containing two "existing business functions f1, f2" with specific struct inputs/outputs suited to business scenarios, each different:
 
 <a href="/img/eino/workflow_existing_biz_func.png" target="_blank"><img src="/img/eino/workflow_existing_biz_func.png" width="100%" /></a>
 
+When orchestrating with Workflow, map f1's output field F1 directly to f2's input field F3, while preserving the original function signatures of f1 and f2. The effect achieved is: **each node's input/output is "determined by the business scenario", without needing to consider "who provides my input and who uses my output"**.
+
+When orchestrating with Graph, due to the "type alignment" requirement, if f1 → f2, then f1's output type and f2's input type need to align. You must choose one of two options:
+
+- Define a new common struct, and change both f1's output type and f2's input type to this common struct. This has costs and may intrude on business logic.
+- Change both f1's output type and f2's input type to map. This loses the strong typing alignment characteristic.
+
 ### Separate Control and Data Flow
+
+Consider the following scenario:
 
 <a href="/img/eino/workflow_data_control_separate.png" target="_blank"><img src="/img/eino/workflow_data_control_separate.png" width="100%" /></a>
 
-- Dashed lines denote data-only edges; no execution dependency (A’s completion doesn’t gate D’s start).
-- Bold arrows denote control-only edges; no data transfer (D’s completion gates E’s start but E doesn’t read D’s outputs).
-- Other edges combine control and data.
+Node D references certain output fields from A, B, and C simultaneously. The dashed line from A to D is purely "data flow", not carrying "control" information - meaning whether A completes execution does not determine whether D starts execution.
 
-Data transfers require the existence of a control path; a node can only read from predecessors.
+The bold arrow from node D to E represents that node E does not reference any output from node D - it is purely "control flow", not carrying "data". Whether D completes execution determines whether E starts execution, but D's output does not affect E's input.
 
-Example: cross-node data passing in Workflow vs Graph/Chain. In Workflow, a ChatTemplate can take exactly `{"prompt": ..., "context": ...}` from START and a Retriever; in Graph/Chain this either requires heavy map wrapping or state usage.
+Other lines in the diagram combine control flow and data flow.
+
+Note that data flow can only be transmitted when a control flow path exists. For example, the A→D data flow depends on the existence of A→branch→B→D or A→branch→C→D control flow. Data flow can only reference outputs from predecessor nodes.
+
+For example, this "cross-node" specific data passing scenario:
 
 <a href="/img/eino/workflow_cross_node_pass_data.png" target="_blank"><img src="/img/eino/workflow_cross_node_pass_data.png" width="100%" /></a>
+
+In the diagram above, the chat template node's input can be very explicit:
+
+`map[string]any{"prompt": "prompt from START", "context": "retrieved context"}`
+
+In contrast, if using Graph or Chain API, you must choose one of two options:
+
+- Use OutputKey to convert node output types (can't add to START node, so need an extra passthrough node), and the ChatTemplate node's input will include the full output of START and retriever (rather than just the specific fields actually needed).
+- Put START node's prompt in state, and ChatTemplate reads from state. This introduces additional state.
 
 ## Using Workflow
 
@@ -69,31 +89,70 @@ START → node → END
 // (by using AddInput without field mappings),
 // this simple workflow is equivalent to a Graph: START -> lambda -> END.
 func main() {
+    // create a Workflow, just like creating a Graph
     wf := compose.NewWorkflow[int, string]()
-    wf.AddLambdaNode("lambda", compose.InvokableLambda(func(ctx context.Context, in int) (string, error) {
-        return strconv.Itoa(in), nil
-    })).AddInput(compose.START)
-    wf.End().AddInput("lambda")
+
+    // add a lambda node to the Workflow, just like adding the lambda to a Graph
+    wf.AddLambdaNode("lambda", compose.InvokableLambda(
+       func(ctx context.Context, in int) (string, error) {
+          return strconv.Itoa(in), nil
+       })).
+       // add an input to this lambda node from START.
+       // this means mapping all output of START to the input of the lambda.
+       // the effect of AddInput is to set both a control dependency
+       // and a data dependency.
+       AddInput(compose.START)
+
+    // obtain the compose.END of the workflow for method chaining
+    wf.End().
+       // add an input to compose.END,
+       // which means 'using ALL output of lambda node as output of END'.
+       AddInput("lambda")
+
+    // compile the Workflow, just like compiling a Graph
     run, err := wf.Compile(context.Background())
-    if err != nil { logs.Errorf("workflow compile error: %v", err); return }
+    if err != nil {
+       logs.Errorf("workflow compile error: %v", err)
+       return
+    }
+
+    // invoke the Workflow, just like invoking a Graph
     result, err := run.Invoke(context.Background(), 1)
-    if err != nil { logs.Errorf("workflow run err: %v", err); return }
+    if err != nil {
+       logs.Errorf("workflow run err: %v", err)
+       return
+    }
+
     logs.Infof("%v", result)
 }
 ```
 
+[Eino example link](https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/1_simple/main.go)
+
 Core APIs:
 
-- `NewWorkflow[I, O](...)` — same as `NewGraph`
-- `AddXXXNode(key, comp, ...) *WorkflowNode` — same node types as Graph; returns `WorkflowNode` for chaining
-- `(*WorkflowNode).AddInput(fromKey string, inputs ...*FieldMapping) *WorkflowNode` — add field mappings
-- `Compile(ctx, ...) (Runnable[I, O], error)` — same signature as Graph
+- `func NewWorkflow[I, O any](opts ...NewGraphOption) *Workflow[I, O]`
+  - Creates a new Workflow.
+  - Signature is identical to `NewGraph`.
+- `func (wf *Workflow[I, O]) AddChatModelNode(key string, chatModel model.BaseChatModel, opts ...GraphAddNodeOpt) *WorkflowNode`
+  - Adds a new node to the Workflow.
+  - Supported node types are identical to Graph.
+  - Unlike Graph's AddXXXNode which returns an error immediately, Workflow defers error handling to the final Compile step.
+  - AddXXXNode returns a WorkflowNode, allowing subsequent field mapping operations via method chaining.
+- `func (n *WorkflowNode) AddInput(fromNodeKey string, inputs ...*FieldMapping) *WorkflowNode`
+  - Adds input field mappings to a WorkflowNode.
+  - Returns WorkflowNode for continued method chaining.
+- `(wf *Workflow[I, O]) Compile(ctx context.Context, opts ...GraphCompileOption) (Runnable[I, O], error)`
+  - Compiles a Workflow.
+  - Signature is identical to compiling a Graph.
 
 ### Field Mapping
 
 START (struct input) → [parallel lambda c1, c2] → END (map output).
 
-We demonstrate counting occurrences of a substring in two different fields. The workflow input is an Eino `Message` plus a `SubStr`; `c1` counts occurrences in `Content`, `c2` counts occurrences in `ReasoningContent`. The two lambdas run in parallel and map their results to END:
+We demonstrate counting occurrences of a substring in two different fields. The workflow input is an Eino `Message` plus a `SubStr`; `c1` counts occurrences in `Content`, `c2` counts occurrences in `ReasoningContent`. The two lambdas run in parallel and map their results to END.
+
+In the diagram below, the workflow's overall input is a message struct, both `c1` and `c2` lambdas have counter struct inputs, both output int, and the workflow's overall output is `map[string]any`:
 
 <a href="/img/eino/workflow_char_counter.png" target="_blank"><img src="/img/eino/workflow_char_counter.png" width="100%" /></a>
 
@@ -165,7 +224,7 @@ func main() {
 }
 ```
 
-Eino example link: https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/2_field_mapping/main.go
+[Eino example link](https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/2_field_mapping/main.go)
 
 The `AddInput` method accepts 0–n field mappings and can be called multiple times. This means:
 
@@ -183,13 +242,13 @@ The `AddInput` method accepts 0–n field mappings and can be called multiple ti
 
 ## Advanced Features
 
-### Data-only Edges
+### Data-only Edges (No Control Flow)
 
-Imagine: START → adder → multiplier → END. The multiplier consumes one field from START and the adder’s result:
+Imagine a simple scenario: START → adder node → multiplier node → END. The "multiplier node" multiplies one field from START with the result from the adder node:
 
 <a href="/img/eino/workflow_calculator.png" target="_blank"><img src="/img/eino/workflow_calculator.png" width="100%" /></a>
 
-Use `AddInputWithOptions(fromNode, fieldMappings, WithNoDirectDependency)` to declare pure data dependencies:
+In the diagram above, the multiplier node executes after the adder node, meaning the "multiplier node" is controlled by the "adder node". However, the START node does not directly control the "multiplier node"; it only passes data to it. In code, use `AddInputWithOptions(fromNode, fieldMappings, WithNoDirectDependency)` to specify a pure data flow:
 
 ```go
 func main() {
@@ -248,9 +307,9 @@ func main() {
 }
 ```
 
-Eino examples link: https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/3_data_only/main.go
+[Eino examples link](https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/3_data_only/main.go)
 
-New API:
+New API introduced in this example:
 
 ```go
 func (n *WorkflowNode) AddInputWithOptions(fromNodeKey string, inputs []*FieldMapping, opts ...WorkflowAddInputOpt) *WorkflowNode {
@@ -258,13 +317,29 @@ func (n *WorkflowNode) AddInputWithOptions(fromNodeKey string, inputs []*FieldMa
 }
 ```
 
-### Control-only Edges
+And the new Option:
 
-Consider a “sequential bidding, prices kept confidential” scenario: START → bidder1 → branch → bidder2 → END.
+```go
+func WithNoDirectDependency() WorkflowAddInputOpt {
+    return func(opt *workflowAddInputOpts) {
+       opt.noDirectDependency = true
+    }
+}
+```
+
+Combined, these can add pure "data dependency relationships" to nodes.
+
+### Control-only Edges (No Data Flow)
+
+Imagine a "sequential bidding with confidential prices" scenario: START → bidder1 → threshold check → bidder2 → END:
 
 <a href="/img/eino/workflow_auction.png" target="_blank"><img src="/img/eino/workflow_auction.png" width="100%" /></a>
 
-Bold lines are control-only edges. After bidder1 bids, we announce completion without passing the bid amount. Use `AddDependency(fromNode)` to declare control without data:
+In the diagram above, regular lines are "control + data", dashed lines are "data only", and bold lines are "control only". The logic is: input an initial price, bidder1 makes bid1, a branch checks if it's high enough - if so, end directly; otherwise, pass the initial price to bidder2 for bid2, and finally aggregate both bids for output.
+
+After bidder1 bids, an announcement is made: "bidder completed bidding". Note that bidder1→announcer is a bold solid line, "control only", because the amount must be kept confidential when announcing!
+
+The two bold lines from the branch are both "control only" because neither bidder2 nor END depends on data from the branch. In code, use `AddDependency(fromNode)` to specify pure control flow:
 
 ```go
 func main() {
@@ -327,38 +402,46 @@ func main() {
 }
 ```
 
-Eino examples link: https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/4_control_only_branch/main.go
+[Eino examples link](https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/4_control_only_branch/main.go)
 
-New API:
+New API introduced in this example:
 
 ```go
 func (n *WorkflowNode) AddDependency(fromNodeKey string) *WorkflowNode {
-    return n.addDependencyRelation(fromNodeKey, nil, &workflowAddInputOpts{dependencyWithoutInput: true})
+    return n.addDependencyRelation(fromNodeKey, nil, &workflowAddInputOpts{dependencyWithoutInput: _true_})
 }
 ```
 
+You can use `AddDependency` to specify pure "control dependency relationships" for nodes.
+
 ### Branch
 
-Add branches similarly to Graph, with Workflow branches carrying control only; data for branch targets is mapped via `AddInput*`:
+In the example above, we added a branch in almost the same way as with the Graph API:
 
 ```go
-wf.AddBranch("b1", compose.NewGraphBranch(func(ctx context.Context, in float64) (string, error) {
-   if in > 5.0 { return compose.END, nil }
-   return "b2", nil
-}, map[string]bool{compose.END: true, "b2": true}))
+// add a branch just like adding branch in Graph.
+    wf.AddBranch("b1", compose.NewGraphBranch(func(ctx context.Context, in float64) (string, error) {
+       if in > 5.0 {
+          return compose.END, nil
+       }
+       return "b2", nil
+    }, map[string]bool{compose.END: true, "b2": true}))
 ```
 
-Branch semantics in Workflow (AllPredecessor mode) mirror Graph:
+Branch semantics are the same as Graph's AllPredecessor mode:
 
-- Exactly one `fromNode` per branch
-- Single-select (`NewGraphBranch`) or multi-select (`NewGraphMultiBranch`)
-- Selected targets execute; unselected targets are marked skipped
-- A node executes only when all incoming edges finish (success or skip) and at least one succeeded
-- If all incoming edges are skip, all outgoing edges are auto-marked skip
+- There is exactly one 'fromNode', meaning a branch can only have one predecessor control node.
+- Can be single-select (`NewGraphBranch`) or multi-select (`NewGraphMultiBranch`).
+- Selected branches can execute. Unselected branches are marked as skip.
+- A node can only execute when all incoming edges are complete (success or skip), and at least one edge succeeded. (Like END in the example above)
+- If all incoming edges of a node are skip, all outgoing edges of that node are automatically marked as skip.
 
-Workflow branches differ from Graph: Workflow branches are control-only; branch targets must declare their input mappings via `AddInput*`.
+Additionally, there is one key difference between workflow branch and graph branch:
 
-API:
+- Graph branch is always "control and data combined"; the downstream node's input of a branch is always the output of the branch's fromNode.
+- Workflow branch is always "control only"; the downstream node's input is specified via `AddInputWithOptions`.
+
+Related API:
 
 ```go
 func (wf *Workflow[I, O]) AddBranch(fromNodeKey string, branch *GraphBranch) *WorkflowBranch {
@@ -372,11 +455,15 @@ func (wf *Workflow[I, O]) AddBranch(fromNodeKey string, branch *GraphBranch) *Wo
 }
 ```
 
+Signature is almost identical to `Graph.AddBranch`, allowing you to add a branch to the workflow.
+
 ### Static Values
 
-Inject constants into node inputs via `SetStaticValue(fieldPath, value)`.
+Let's modify the "bidding" example above by giving bidder1 and bidder2 each a static "budget" configuration:
 
 <a href="/img/eino/workflow_auction_static_values_en.png" target="_blank"><img src="/img/eino/workflow_auction_static_values_en.png" width="100%" /></a>
+
+budget1 and budget2 will be injected into bidder1 and bidder2's inputs as "static values" respectively. Use the `SetStaticValue` method to configure static values for workflow nodes:
 
 ```go
 func main() {
@@ -435,9 +522,9 @@ func main() {
 }
 ```
 
-Eino examples link: https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/5_static_values/main.go
+[Eino examples link](https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/5_static_values/main.go)
 
-API:
+Related API:
 
 ```go
 func (n *WorkflowNode) SetStaticValue(path FieldPath, value any) *WorkflowNode {
@@ -446,18 +533,22 @@ func (n *WorkflowNode) SetStaticValue(path FieldPath, value any) *WorkflowNode {
 }
 ```
 
+Use this method to set static values on specified fields of Workflow nodes.
+
 ### Streaming Effects
 
-Return to the “character counting” example, but now the workflow input is a stream of messages and the counting function returns a stream of counts:
+Returning to the previous "character counting" example, if our workflow's input is no longer a single message but a message stream, and our counting function can count each message chunk in the stream separately and return a "count stream":
 
 <a href="/img/eino/workflow_stream.png" target="_blank"><img src="/img/eino/workflow_stream.png" width="100%" /></a>
 
-Changes:
+We make some modifications to the previous example:
 
-- Use `TransformableLambda` to consume and produce streams
-- Make `SubStr` a static value injected into both `c1` and `c2`
-- Workflow input type becomes `*schema.Message`
-- Call the workflow via `Transform` with a stream of two messages
+- Change `InvokableLambda` to `TransformableLambda`, so it can consume streams and produce streams.
+- Change the `SubStr` in the input to a static value, injected into c1 and c2.
+- Change the Workflow's overall input to `*schema.Message`.
+- Call the workflow using Transform, passing a stream containing 2 `*schema.Message`.
+
+The completed code:
 
 ```go
 // demonstrates the stream field mapping ability of eino workflow.
@@ -555,10 +646,10 @@ func main() {
           return
        }
 
-        logs.Infof("%v", chunk)
+       logs.Infof("%v", chunk)
 
-        contentCount += chunk["content_count"]
-        reasoningCount += chunk["reasoning_content_count"]
+       contentCount += chunk["content_count"]
+       reasoningCount += chunk["reasoning_content_count"]
     }
 
     logs.Infof("content count: %d", contentCount)
@@ -566,48 +657,50 @@ func main() {
 }
 ```
 
-Eino examples link: https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/6_stream_field_map/main.go
+[Eino examples link](https://github.com/cloudwego/eino-examples/blob/main/compose/workflow/6_stream_field_map/main.go)
 
-Characteristics of streaming in Workflow:
+Based on the example above, we summarize some characteristics of workflow streaming:
 
-- Still 100% Eino stream: invoke/stream/collect/transform auto converted, copied, concatenated and merged by the framework
-- Field mappings need no special stream handling; Eino performs mapping over streams transparently
-- Static values need no special stream handling; they are injected into the input stream and may arrive after the first chunk
+- Still 100% Eino stream: four paradigms (invoke, stream, collect, transform), automatically converted, copied, concatenated, and merged by the Eino framework.
+- Field mapping configuration doesn't require special handling for streams: regardless of whether the actual input/output is a stream, the `AddInput` syntax is the same. The Eino framework handles stream-based mapping.
+- Static values don't require special handling for streams: even if the actual input is a stream, you can use `SetStaticValue` the same way. The Eino framework will place static values in the input stream, but not necessarily in the first chunk read.
 
 ### Field Mapping Scenarios
 
 #### Type Alignment
 
-- Identical types: passes compile and aligns at runtime
-- Different types but upstream assignable to downstream (e.g., upstream concrete type, downstream `any`): passes compile and aligns at runtime
-- Upstream not assignable to downstream (e.g., upstream `int`, downstream `string`): compile error
-- Upstream may be assignable only at runtime (e.g., upstream `any`, downstream `int`): compile defers; runtime checks actual upstream type and errors if not assignable
+Workflow follows the same type alignment rules as Graph, except the alignment granularity changes from complete input/output alignment to alignment between mapped field pairs. Specifically:
+
+- Identical types: passes compile-time validation and will definitely align.
+- Different types but upstream can be assigned to downstream (e.g., upstream is a concrete type, downstream is `any`): passes compile-time validation and will definitely align.
+- Upstream cannot be assigned to downstream (e.g., upstream is `int`, downstream is `string`): compile error.
+- Upstream may be assignable to downstream (e.g., upstream is `any`, downstream is `int`): cannot be determined at compile time, deferred to runtime. At runtime, the actual upstream type is extracted and checked. If upstream cannot be assigned to downstream, an error is thrown.
 
 #### Merge Scenarios
 
-Merging applies when a node’s input is mapped from multiple `FieldMapping`s:
+Merge refers to situations where a node's input is mapped from multiple `FieldMapping`s:
 
-- Map to multiple different fields: supported
-- Map to the same single field: not supported
-- Map whole input along with field mappings: conflict, not supported
+- Mapping to multiple different fields: supported
+- Mapping to the same single field: not supported
+- Mapping to the whole input while also having mappings to specific fields: conflict, not supported
 
 #### Nested `map[string]any`
 
-For mappings like `ToFieldPath([]string{"a","b"})` where the target input type is `map[string]any`, the framework ensures nested maps are created:
+For example, this mapping: `ToFieldPath([]string{"a","b"})`, where the target node's input type is `map[string]any`, the mapping order is:
 
-1. Level "a": `map[string]any{"a": nil}`
-2. Level "b": `map[string]any{"a": map[string]any{"b": x}}`
+1. First level "a": result is `map[string]any{"a": nil}`
+2. Second level "b": result is `map[string]any{"a": map[string]any{"b": x}}`
 
-At the second level, Eino replaces `any` with the actual `map[string]any` as needed.
+As you can see, at the second level, the Eino framework automatically replaces `any` with the actual `map[string]any`.
 
 #### CustomExtractor
 
-When standard field mapping semantics cannot express the intent (e.g., source is `[]int` and you need the first element), use `WithCustomExtractor`:
+In some scenarios, standard field mapping semantics cannot support the requirement. For example, if upstream is `[]int` and you want to extract the first element to map to downstream, use `WithCustomExtractor`:
 
 ```go
 t.Run("custom extract from array element", func(t *testing.T) {
-    wf := compose.NewWorkflow[[]int, map[string]int]()
-    wf.End().AddInput(compose.START, compose.ToField("a", compose.WithCustomExtractor(func(input any) (any, error) {
+    wf := NewWorkflow[[]int, map[string]int]()
+    wf.End().AddInput(_START_, ToField("a", WithCustomExtractor(func(input any) (any, error) {
        return input.([]int)[0], nil
     })))
     r, err := wf.Compile(context.Background())
@@ -618,18 +711,20 @@ t.Run("custom extract from array element", func(t *testing.T) {
 })
 ```
 
-With `WithCustomExtractor`, compile-time type alignment checks cannot be performed and are deferred to runtime.
+When using `WithCustomExtractor`, all compile-time type alignment checks cannot be performed and can only be deferred to runtime validation.
 
 ### Constraints
 
-- Map key restrictions: only `string`, or string aliases convertible to `string`
-- Unsupported compile options:
-  - `WithNodeTriggerMode` (fixed `AllPredecessor`)
-  - `WithMaxRunSteps` (no cycles)
-- If the mapping source is a map key, the key must exist. For streams, existence across chunks cannot be verified ahead of time.
-- For struct fields as mapping sources or targets, fields must be exported (reflection is used internally).
-- Nil sources are generally supported; errors when the target cannot be nil (e.g., basic types).
+- Map key restrictions: only `string`, or string alias (types that can be converted to `string`).
+- Unsupported CompileOptions:
+  - `WithNodeTriggerMode`, because it's fixed to `AllPredecessor`.
+  - `WithMaxRunSteps`, because there are no cycles.
+- If the mapping source is a Map Key, the Map must contain this key. However, if the mapping source is a Stream, Eino cannot determine whether this key appears at least once across all frames in the stream, so validation cannot be performed for Streams.
+- If the mapping source field or target field belongs to a struct, these fields must be exported, because reflection is used internally.
+- Nil mapping source: generally supported, only errors when the mapping target cannot be nil, such as basic types (int, etc.).
 
 ## Real-world Usage
 
-Coze‑Studio’s open source workflow engine is built on Eino Workflow. See: https://github.com/coze-dev/coze-studio/wiki/11.-%E6%96%B0%E5%A2%9E%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%90%8E%E7%AB%AF%EF%BC%89
+### Coze-Studio Workflow
+
+[Coze-Studio](https://github.com/coze-dev/coze-studio) open source version's workflow engine is built on the Eino Workflow orchestration framework. See: [11. Adding New Workflow Node Types (Backend)](https://github.com/coze-dev/coze-studio/wiki/11.-%E6%96%B0%E5%A2%9E%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%90%8E%E7%AB%AF%EF%BC%89)

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Workflow Agents'

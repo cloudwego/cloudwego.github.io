@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino ADK: ChatModelAgent'
@@ -41,12 +41,19 @@ type ToolsConfig struct {
     // Names of the tools that will make agent return directly when the tool is called.
     // When multiple tools are called and more than one tool is in the return directly list, only the first one will be returned.
     ReturnDirectly map[string]bool
+    
+    // EmitInternalEvents indicates whether internal events from agentTool should be emitted
+    // to the parent generator via a tool option injection at run-time.
+    EmitInternalEvents bool
 }
 ```
 
 ToolsConfig 复用了 Eino Graph ToolsNodeConfig，详细参考：[Eino: ToolsNode&Tool 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)。额外提供了 ReturnDirectly 配置，ChatModelAgent 调用配置在 ReturnDirectly 中的 Tool 后会直接退出。
 
 ## ChatModelAgent 配置字段
+
+> 💡
+> 注意：GenModelInput 默认情况下，会通过 adk.GetSessionValues() 并以 F-String 的格式渲染 Instruction，如需关闭此行为，可定制 GenModelInput 方法。
 
 ```go
 type ChatModelAgentConfig struct {
@@ -83,6 +90,12 @@ type ChatModelAgentConfig struct {
     // The agent will terminate with an error if this limit is exceeded.
     // Optional. Defaults to 20.
     MaxIterations int
+    
+    // ModelRetryConfig configures retry behavior for the ChatModel.
+    // When set, the agent will automatically retry failed ChatModel calls
+    // based on the configured policy.
+    // Optional. If nil, no retry will be performed.
+    ModelRetryConfig *ModelRetryConfig
 }
 
 type ToolsConfig struct {
@@ -91,6 +104,10 @@ type ToolsConfig struct {
     // Names of the tools that will make agent return directly when the tool is called.
     // When multiple tools are called and more than one tool is in the return directly list, only the first one will be returned.
     ReturnDirectly map[string]bool
+    
+    // EmitInternalEvents indicates whether internal events from agentTool should be emitted
+    // to the parent generator via a tool option injection at run-time.
+    EmitInternalEvents bool
 }
 
 type GenModelInput func(ctx context.Context, instruction string, input *AgentInput) ([]Message, error)
@@ -103,9 +120,14 @@ type GenModelInput func(ctx context.Context, instruction string, input *AgentInp
 - `ToolsConfig`：工具配置
   - ToolsConfig 复用了 Eino Graph ToolsNodeConfig，详细参考：[Eino: ToolsNode&Tool 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)。
   - ReturnDirectly：当 ChatModelAgent 调用配置在 ReturnDirectly 中的 Tool 后，将携带结果立刻退出，不会按照 react 模式返回 ChatModel。如果命中了多个 Tool，只有首个 Tool 会返回。Map key 为 Tool 名称。
+  - EmitInternalEvents：当通过 adk.AgentTool() 将一个 Agent 通过 ToolCall 的形式当成 SubAgent 时，默认情况下，这个 SubAgent 不会发送 AgentEvent，只将最终结果作为 ToolResult 返回。
 - `GenModelInput`：Agent 被调用时会使用该方法将 `Instruction` 和 `AgentInput` 转换为调用 ChatModel 的 Messages。Agent 提供了默认的 GenModelInput 方法：
   1. 将 `Instruction` 作为 `System Message` 加到 `AgentInput.Messages` 前
   2. 将 `SessionValues` 为 variables 渲染到步骤 1 的 message list 中
+
+> 💡
+> 默认的 `GenModelInput` 使用 pyfmt 渲染，message list 中的文本会被作为 pyfmt 模板，这意味着文本中的 '{' 与 '}' 都会被视为关键字，如果希望直接输入这两个字符，需要进行转义 '{{'、'}}'
+
 - `OutputKey`：配置后，ChatModelAgent 运行产生的最后一条 Message 将会以 `OutputKey` 为 key 设置到 `SessionValues` 中
 - `MaxIterations`：react 模式下 ChatModel 最大生成次数，超过时 Agent 会报错退出，默认值为 20
 - `Exit`：Exit 是一个特殊的 Tool，当模型调用这个工具并执行后，ChatModelAgent 将直接退出，效果与 `ToolsConfig.ReturnDirectly` 类似。ADK 提供了一个默认 ExitTool 实现供用户使用：
@@ -134,6 +156,47 @@ func (et ExitTool) InvokableRun(ctx context.Context, argumentsInJSON string, _ .
     }
 
     return params.FinalResult, nil
+}
+```
+
+- `ModelRetryConfig`: 配置后，ChatModel 请求过程中发生的各种错误（包括直接返回错误、流式响应过程中发生错误等），都会按照配置的策略选择是否以及何时进行重试。如果是流式响应过程中发生错误，则这一次流式响应依然会第一时间通过 AgentEvent 的形式返回出去。如果这次流式响应过程中的错误，按照配置的策略，会进行重试，则消费 AgentEvent 中的 message stream，会得到 `WillRetryError`。用户可以处理这个 error，做对应的上屏展示等处理，示例如下：
+
+```go
+iterator := agent.Run(ctx, input)
+for {
+    event, ok := iterator.Next()
+    if !ok {
+        break
+    }
+    
+    if event.Err != nil {
+        handleFinalError(event.Err)
+        break
+    }
+    
+    // Process streaming output
+    if event.Output != nil && event.Output.MessageOutput.IsStreaming {
+        stream := event.Output.MessageOutput.MessageStream
+        for {
+            msg, err := stream.Recv()
+            if err == io.EOF {
+                break  // Stream completed successfully
+            }
+            if err != nil {
+                // Check if this error will be retried (more streams coming)
+                var willRetry *adk.WillRetryError
+                if errors.As(err, &willRetry) {
+                    log.Printf("Attempt %d failed, retrying...", willRetry.RetryAttempt)
+                    break  // Wait for next event with new stream
+                }
+                // Original error - won't retry, agent will stop and the next AgentEvent probably will be an error
+                log.Printf("Final error (no retry): %v", err)
+                break
+            }
+            // Display chunk to user
+            displayChunk(msg)
+        }
+    }
 }
 ```
 
@@ -468,6 +531,8 @@ func NewBookRecommendAgent() adk.Agent {
           ToolsNodeConfig: compose.ToolsNodeConfig{
              Tools: []tool.BaseTool{NewBookRecommender(), NewAskForClarificationTool()},
           },
+          // Tool 内部通过 AgentTool() 调用 SubAgent 时，是否将这个 SubAgent 的 AgentEvent 输出
+          EmitInternalEvents: true,
        },
     })
     // xxx

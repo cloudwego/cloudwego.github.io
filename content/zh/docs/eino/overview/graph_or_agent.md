@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: Agent 还是 Graph？AI 应用路线辨析
@@ -16,7 +16,9 @@ weight: 5
 这张看似简单的截图，代表了“AI 应用”的两种形态：
 
 - 以“聊天框”为代表性标志的“Agent（智能体）”。**Agent 以 LLM（大语言模型）为决策中心，自主规划并能进行多轮交互**，天然适合处理开放式、持续性的任务，表现为一种“对话”形态。
-- 以“按钮”或者“API”为代表性标志的“Graph（流程图）”。比如上面的“录音纪要”这个“按钮”，其背后的 Graph 大概是“录音”-》“LLM 理解并总结” -》“保存录音”这种固定流程。**Graph 的核心在于其流程的确定性与任务的封闭性**，通过预定义的节点和边来完成特定目标，表现为一种“功能”形态。
+- 以“按钮”或者“API”为代表性标志的“Graph（流程图）”。比如上面的“录音纪要”这个“按钮”，其背后的 Graph 大概是“录音”-》“LLM 理解并总结” -》“保存录音”这种固定流程。**Graph 的核心在于其流程的确定性与任务的封闭性**，通过预定义的节点和边来完成特定目标，表现为一种“功能”形态。举个例子，视频生成是 “API”形态 AI 应用：
+
+<a href="/img/eino/eino_complex_workflow_as_api.png" target="_blank"><img src="/img/eino/eino_complex_workflow_as_api.png" width="100%" /></a>
 
 ```mermaid
 flowchart TD
@@ -342,3 +344,5 @@ func (g *InvokableGraphTool[I, O]) Info(_ context.Context) (*schema.ToolInfo, er
     return g.tInfo, nil
 }
 ```
+
+[eino-example 项目链接](https://github.com/cloudwego/eino-examples/tree/main/adk/common/tool/graphtool)

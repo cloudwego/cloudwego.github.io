@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2026-01-22"
 lastmod: ""
 tags: []
 title: 'Eino: Quick Start'

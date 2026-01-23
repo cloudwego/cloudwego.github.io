@@ -1,12 +1,13 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Interrupt & CheckPoint Manual'
 weight: 7
 ---
 
+> 💡
 > Note: A bug in v0.3.26 broke CheckPoint serialization. For new CheckPoint usage, use v0.3.26+ (preferably latest).
 >
 > Eino provides a compatibility branch for users with pre-v0.3.26 checkpoints to migrate; once old data is invalidated, upgrade to mainline. The branch incurs overhead and is not merged due to typical short checkpoint lifetimes.
@@ -15,6 +16,7 @@ weight: 7
 
 `Interrupt & CheckPoint` lets you pause a Graph at specified locations and resume later. For `StateGraph`, you can modify `State` before resuming.
 
+> 💡
 > Resuming restores inputs and per-node runtime data. Ensure the Graph orchestration is identical and pass the same CallOptions again (unless you explicitly rely on CallOptions to carry resume-time data).
 
 ## Using Static Interrupt
@@ -28,9 +30,9 @@ import (
 
 func main() {
     g := NewGraph[string, string]()
-    err := g.AddLambdaNode("node1", compose.InvokableLambda(func(ctx **context**._Context_, input string) (output string, err error) {/*invokable func*/})
+    err := g.AddLambdaNode("node1", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {/*invokable func*/})
     if err != nil {/* error handle */}
-    err = g.AddLambdaNode("node2", compose.InvokableLambda(func(ctx **context**._Context_, input string) (output string, err error) {/*invokable func*/})
+    err = g.AddLambdaNode("node2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {/*invokable func*/})
     if err != nil {/* error handle */}
     
     /** other graph composed code
@@ -42,11 +44,14 @@ func main() {
 }
 ```
 
+> 💡
 > Tip: Currently only compile-time static breakpoints are supported. If you need request-time configuration, please open an issue.
 
 Extract interrupt info from the run error:
 
 ```go
+// compose/checkpoint.go
+
 type InterruptInfo struct {
     State             any
     BeforeNodes       []string
@@ -57,7 +62,7 @@ type InterruptInfo struct {
     InterruptContexts []*InterruptCtx
 }
 
-func ExtractInterruptInfo(err error) (info *InterruptInfo, existed bool)
+func ExtractInterruptInfo(err error) (info *InterruptInfo, existed bool) {}
 ```
 
 Example:
@@ -80,6 +85,7 @@ if err != nil {
 }
 ```
 
+> 💡
 > During interrupt, the output is empty and should be ignored.
 
 ## Using CheckPoint
@@ -94,8 +100,8 @@ CheckPoint records Graph runtime state to support resuming.
 // compose/checkpoint.go
 
 type CheckpointStore interface {
-    Get(ctx **context**._Context_, key string) (value []byte, existed bool,err error)
-    Set(ctx **context**._Context_, key string, value []byte) (err error)
+    Get(ctx context.Context, key string) (value []byte, existed bool,err error)
+    Set(ctx context.Context, key string, value []byte) (err error)
 }
 ```
 
@@ -116,13 +122,15 @@ type MyState struct {
 func init() {
         // Register the type with a stable name for serialization/persistence.
         // Use the pointer form if you persist pointers to this type.
-        // Recommended to register within init() in the same file where the type is declared.
+        // It's recommended to register types within the `init()` function 
+        // within the same file your type is declared.
         schema.RegisterName[*MyState]("my_state_v1")
 }
 ```
 
 After registration, type metadata is included during serialization. On deserialization, Eino can restore the correct type even when the destination is `interface{}`. The key uniquely identifies the type; once chosen, do not change it, otherwise persisted checkpoints cannot be restored.
 
+> 💡
 > Struct unexported fields are inaccessible and thus not stored/restored.
 
 By default, Eino uses its built-in serializer. If a registered type implements `json.Marshaler` and `json.Unmarshaler`, those custom methods are used.
@@ -144,7 +152,7 @@ Eino also provides an option to use `gob` serialization:
 ```go
 r, err := compose.NewChain[*AgentInput, Message]().
     AppendLambda(compose.InvokableLambda(func(ctx context.Context, input *AgentInput) ([]Message, error) {
-       return a.genModelInput(ctx, instruction, input
+       return a.genModelInput(ctx, instruction, input)
     })).
     AppendChatModel(a.model).
     Compile(ctx, compose.WithGraphName(a.name),
@@ -175,32 +183,13 @@ func main() {
 
 At request time, provide a checkpoint ID:
 
-```go
-func WithCheckPointID(checkPointID string, sm StateModifier) Option
+```
+// compose/checkpoint.go
+
+func WithCheckPointID(checkPointID string) Option
 ```
 
 The checkpoint ID is used as the `CheckpointStore` key. During execution, if the ID exists, the graph resumes from it; on interrupt, the graph stores its state under that ID.
-
-```go
-/* graph compose and compile
-xxx
-*/
-
-// first run interrupt
-id := GenUUID()
-_, err := runner.Invoke(ctx, input, WithCheckPointID(id))
-
-// resume from id
-_, err = runner.Invoke(ctx, input/*unused*/, 
-    WithCheckPointID(id),
-    WithStateModifier(func(ctx context.Context, path NodePath, state any) error{
-        state.(*testState).Field1 = "hello"
-        return nil
-    }),
-)
-```
-
-> During resume, input is ignored; pass a zero value.
 
 ## Dynamic Interrupt
 
@@ -218,7 +207,7 @@ var InterruptAndRerun = errors.New("interrupt and rerun")
 func NewInterruptAndRerunErr(extra any) error
 ```
 
-When the graph receives such an error, it interrupts. On resume, the node runs again; before rerun, `StateModifier` is applied if configured. The rerun’s input is replaced with a zero value rather than the original; if the original input is needed, save it into `State` beforehand.
+When the graph receives such an error, it interrupts. On resume, the node runs again; before rerun, `StateModifier` is applied if configured. The rerun's input is replaced with a zero value rather than the original; if the original input is needed, save it into `State` beforehand.
 
 ### From Eino v0.7.0 onward
 
@@ -234,19 +223,49 @@ func Interrupt(ctx context.Context, info any) error
 // persistent LOCALLY-DEFINED state
 func StatefulInterrupt(ctx context.Context, info any, state any) error
 
-// emit an interrupt signal WRAPPING other interrupt signals
-// emitted from inner processes,
+// emit an interrupt signal WRAPPING other interrupt signals 
+// emitted from inner processes, 
 // such as ToolsNode wrapping Tools.
 func CompositeInterrupt(ctx context.Context, info any, state any, errs ...error)
 ```
 
 See design details: [Eino human-in-the-loop framework: architecture guide](/docs/eino/core_modules/eino_adk/agent_hitl)
 
+## External Active Interrupt
+
+Sometimes, we want to actively trigger an interrupt from outside the Graph, save the state, and resume later. These scenarios may include graceful instance shutdown, etc. In such cases, you can call `WithGraphInterrupt` to get a ctx and an interrupt function. The ctx is passed to `graph.Invoke()` and other run methods, while the interrupt function is called when you want to actively interrupt:
+
+```go
+// from compose/graph_call_options.go
+
+// WithGraphInterrupt creates a context with graph cancellation support.
+// When the returned context is used to invoke a graph or workflow, calling the interrupt function will trigger an interrupt.
+// The graph will wait for current tasks to complete by default.
+func WithGraphInterrupt(parent context.Context) (ctx context.Context, interrupt func(opts ...GraphInterruptOption)) {}
+```
+
+When actively calling the interrupt function, you can pass parameters such as timeout:
+
+```go
+// from compose/graph_call_options.go
+
+// WithGraphInterruptTimeout specifies the max waiting time before generating an interrupt.
+// After the max waiting time, the graph will force an interrupt. Any unfinished tasks will be re-run when the graph is resumed.
+func WithGraphInterruptTimeout(timeout time.Duration) GraphInterruptOption {
+    return func(o *graphInterruptOptions) {
+       o.timeout = &timeout
+    }
+}
+```
+
+When an external interrupt is triggered, the node has no opportunity to save local state (including the node's input), so Eino automatically saves the input of externally interrupted nodes and restores it on the next execution. For non-external interrupt scenarios, when a node initiates an interrupt internally, saving the input is the responsibility of each node, which can be done by saving to the graph state or using `compose.StatefulInterrupt` to save local state.
+
 ## CheckPoint in Streaming
 
 Streaming checkpoints require concatenation of chunks. Register a concat function:
 
 ```go
+// compose/stream_concat.go
 func RegisterStreamChunkConcatFunc[T any](fn func([]T) (T, error))
 
 // example
@@ -271,6 +290,9 @@ Eino provides defaults for `*schema.Message`, `[]*schema.Message`, and `string`.
 When the parent sets a `CheckpointStore`, use `WithGraphCompileOptions` during `AddGraphNode` to configure child interrupts:
 
 ```go
+/* graph compose code
+xxx
+*/
 g.AddGraphNode("node1", subGraph, WithGraphCompileOptions(
     WithInterruptAfterNodes([]string{"node2"}),
 ))
@@ -278,7 +300,7 @@ g.AddGraphNode("node1", subGraph, WithGraphCompileOptions(
 g.Compile(ctx, WithCheckPointStore(cp))
 ```
 
-If a child interrupts, resuming modifies the child’s state. TODO: clarify Path usage in `StateModifier`.
+If a child interrupts, resuming modifies the child's state. TODO: clarify Path usage in `StateModifier`.
 
 ## Recovery
 
@@ -307,7 +329,7 @@ id := GenUUID()
 _, err := runner.Invoke(ctx, input, WithCheckPointID(id))
 
 // resume from id
-_, err = runner.Invoke(ctx, input/*unused*/,
+_, err = runner.Invoke(ctx, input/*unused*/, 
     WithCheckPointID(id),
     WithStateModifier(func(ctx context.Context, path NodePath, state any) error{
         state.(*testState).Field1 = "hello"
@@ -316,6 +338,7 @@ _, err = runner.Invoke(ctx, input/*unused*/,
 )
 ```
 
+> 💡
 > During resume, input is ignored; pass a zero value.
 
 ### From Eino v0.7.0 onward
@@ -323,7 +346,7 @@ _, err = runner.Invoke(ctx, input/*unused*/,
 In addition to `StateModifier`, you can selectively resume particular interrupt points and provide resume data:
 
 ```go
-// specifically resume particular interrupt point(s),
+// specifically resume particular interrupt point(s), 
 // without specifying resume data
 func Resume(ctx context.Context, interruptIDs ...string) context.Context
 
@@ -388,14 +411,26 @@ func (i InvokableApprovableTool) InvokableRun(ctx context.Context, argumentsInJS
 }
 ```
 
-## Examples
+# Examples
 
-- https://github.com/cloudwego/eino-examples/tree/main/compose/graph/react_with_interrupt
-- https://github.com/cloudwego/eino/blob/main/compose/resume_test.go
+### Prior to Eino v0.7.0
 
-- `TestInterruptStateAndResumeForRootGraph`: simple dynamic interrupt
-- `TestInterruptStateAndResumeForSubGraph`: subgraph interrupt
-- `TestInterruptStateAndResumeForToolInNestedSubGraph`: nested subgraph tool interrupt
-- `TestMultipleInterruptsAndResumes`: parallel interrupts
-- `TestReentryForResumedTools`: tool interrupt in ReAct Agent, multiple re-entries after resume
-- `TestGraphInterruptWithinLambda`: Lambda node contains a standalone Graph and interrupts internally
+[https://github.com/cloudwego/eino-examples/tree/main/compose/graph/react_with_interrupt](https://github.com/cloudwego/eino-examples/tree/main/compose/graph/react_with_interrupt)
+
+### From Eino v0.7.0 onward
+
+[https://github.com/cloudwego/eino/blob/main/compose/resume_test.go](https://github.com/cloudwego/eino/blob/main/compose/resume_test.go)
+
+Including:
+
+`TestInterruptStateAndResumeForRootGraph`: simple dynamic interrupt
+
+`TestInterruptStateAndResumeForSubGraph`: subgraph interrupt
+
+`TestInterruptStateAndResumeForToolInNestedSubGraph`: nested subgraph tool interrupt
+
+`TestMultipleInterruptsAndResumes`: parallel interrupts
+
+`TestReentryForResumedTools`: tool interrupt in ReAct Agent, multiple re-entries after resume
+
+`TestGraphInterruptWithinLambda`: Lambda node contains a standalone Graph and interrupts internally

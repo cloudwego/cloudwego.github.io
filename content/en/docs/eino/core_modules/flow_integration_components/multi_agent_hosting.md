@@ -1,17 +1,17 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino Tutorial: Host Multi-Agent'
 weight: 2
 ---
 
-Host Multi-Agent is a pattern where a Host recognizes intent and hands off to a specialist agent to perform the actual generation.
+Host Multi-Agent is a pattern where a Host recognizes intent and hands off to a specialist agent to perform the actual generation. It only forwards requests, without generating subtasks.
 
-Example: a “journal assistant” that can write journal, read journal, and answer questions based on journal.
+Example: a "journal assistant" that can write journal, read journal, and answer questions based on journal.
 
-Full sample: https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal
+Full sample: [https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal](https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal)
 
 Host:
 
@@ -34,7 +34,7 @@ func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host
 }
 ```
 
-Write-journal specialist:
+Write-journal specialist: after the host recognizes that the user's intent is to write a journal, it hands off to this specialist to write the content to a file.
 
 ```go
 func newWriteJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
@@ -95,7 +95,7 @@ func newWriteJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
 }
 ```
 
-Read-journal specialist (streams lines):
+Read-journal specialist: after the host recognizes that the user's intent is to read a journal, it hands off to this specialist to read the journal file content and output it line by line. This is a local function.
 
 ```go
 func newReadJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
@@ -141,7 +141,7 @@ func newReadJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
 }
 ```
 
-Answer-with-journal specialist:
+Answer-with-journal specialist: answers questions based on journal content.
 
 ```go
 func newAnswerWithJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
@@ -269,48 +269,48 @@ func main() {
 
     cb := &logCallback{}
 
-    for { // multi-turn until user enters "exit"
+    for { // multi-turn conversation, loops until user enters "exit"
        println("\n\nYou: ") // prompt for user input
 
-        var message string
-        scanner := bufio.NewScanner(os.Stdin) // read from CLI
-        for scanner.Scan() {
-           message += scanner.Text()
-           break
-        }
+       var message string
+       scanner := bufio.NewScanner(os.Stdin) // read user input from CLI
+       for scanner.Scan() {
+          message += scanner.Text()
+          break
+       }
 
-        if err := scanner.Err(); err != nil {
-           panic(err)
-        }
+       if err := scanner.Err(); err != nil {
+          panic(err)
+       }
 
-        if message == "exit" {
-           return
-        }
+       if message == "exit" {
+          return
+       }
 
-        msg := &schema.Message{
-           Role:    schema._User_,
-           Content: message,
-        }
+       msg := &schema.Message{
+          Role:    schema._User_,
+          Content: message,
+       }
 
-        out, err := hostMA.Stream(ctx, []*schema.Message{msg}, host.WithAgentCallbacks(cb))
-        if err != nil {
-           panic(err)
-        }
+       out, err := hostMA.Stream(ctx, []*schema.Message{msg}, host.WithAgentCallbacks(cb))
+       if err != nil {
+          panic(err)
+       }
 
-        defer out.Close()
+       defer out.Close()
 
-        println("\nAnswer:")
+       println("\nAnswer:")
 
-        for {
-           msg, err := out.Recv()
-           if err != nil {
-              if err == io.EOF {
-                 break
-              }
-           }
+       for {
+          msg, err := out.Recv()
+          if err != nil {
+             if err == io.EOF {
+                break
+             }
+          }
 
-           print(msg.Content)
-        }
+          print(msg.Content)
+       }
     }
 }
 ```
@@ -318,7 +318,7 @@ func main() {
 Console output example:
 
 ```go
-You:
+You: 
 write journal: I got up at 7:00 in the morning
 
 HandOff to write_journal with argument {"reason":"I got up at 7:00 in the morning"}
@@ -326,7 +326,7 @@ HandOff to write_journal with argument {"reason":"I got up at 7:00 in the mornin
 Answer:
 Journal written successfully: I got up at 7:00 in the morning
 
-You:
+You: 
 read journal
 
 HandOff to view_journal_content with argument {"reason":"User wants to read the journal content."}
@@ -334,7 +334,8 @@ HandOff to view_journal_content with argument {"reason":"User wants to read the 
 Answer:
 I got up at 7:00 in the morning
 
-You:
+
+You: 
 when did I get up in the morning?
 
 HandOff to answer_with_journal with argument {"reason":"To find out the user's morning wake-up times"}
@@ -351,7 +352,7 @@ Host Multi-Agent provides `StreamToolCallChecker` to determine whether Host outp
 
 Different providers in streaming mode may output tool calls differently: some output tool calls directly (e.g., OpenAI); some output text first then tool calls (e.g., Claude). Configure a checker accordingly.
 
-Default checker (first non-empty chunk must be tool-call):
+Optional. If not set, the default checks whether the first "non-empty chunk" contains a tool call:
 
 ```go
 func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
@@ -379,9 +380,9 @@ func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[
 }
 ```
 
-The default fits providers whose Tool Call messages contain only tool calls.
+The default implementation is suitable for: models whose Tool Call Message contains only Tool Calls.
 
-When a provider outputs non-empty content before tool calls, define a custom checker:
+The default implementation is NOT suitable for: cases where there are non-empty content chunks before the Tool Call output. In such cases, you need to define a custom tool call checker:
 
 ```go
 toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
@@ -405,12 +406,15 @@ toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Mes
 }
 ```
 
-Note: in extreme cases you may need to scan all chunks, degrading the streaming decision. To preserve streaming behavior as much as possible:
+The custom StreamToolCallChecker above may need to check **all chunks** for ToolCalls in extreme cases, which can cause the "streaming decision" effect to be lost. To preserve the "streaming decision" effect as much as possible, the recommendation is:
 
-> Tip: add a prompt such as “If you need to call tools, output the tool calls only, do not output text.” Prompt effectiveness varies; adjust and verify with your provider.
+> 💡
+> Try adding a prompt to constrain the model not to output additional text when calling tools, for example: "If you need to call a tool, output the tool directly, do not output text."
+>
+> Different models may be affected differently by prompts, so you need to adjust the prompt and verify the effect in actual use.
 
 ### Host selects multiple Specialists
 
-Host may select multiple specialists via a list of tool calls. In that case, Host Multi-Agent routes to all selected specialists in parallel, and after they finish, summarizes multiple messages into one via a Summarizer node as the final output.
+Host selects Specialists in the form of Tool Calls, so it may select multiple Specialists simultaneously as a list of Tool Calls. In this case, Host Multi-Agent routes the request to all selected Specialists simultaneously, and after all Specialists complete, it summarizes multiple Messages into one Message through the Summarizer node as the final output of Host Multi-Agent.
 
-Users can configure a Summarizer (ChatModel + SystemPrompt) to customize behavior. If unspecified, Host Multi-Agent concatenates contents from multiple specialists.
+Users can configure a Summarizer by specifying a ChatModel and SystemPrompt to customize the Summarizer's behavior. If not specified, Host Multi-Agent will concatenate the Message Contents from multiple Specialists and return them.

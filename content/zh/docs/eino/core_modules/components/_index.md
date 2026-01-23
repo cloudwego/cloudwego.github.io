@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-07-21"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Components 组件'
@@ -24,13 +24,13 @@ weight: 1
 
 **对话处理类组件：**
 
-1. 模板化处理和大模型交互参数的组件抽象： `ChatTemplate`
+1. 模板化处理和大模型交互参数的组件抽象： `ChatTemplate`、`AgenticChatTemplate`
 
-   > 详见 [Eino: ChatTemplate 使用说明](/zh/docs/eino/core_modules/components/chat_template_guide)
+   > 详见 [Eino: ChatTemplate 使用说明](/zh/docs/eino/core_modules/components/chat_template_guide)、[Eino: AgenticChatTemplate 使用说明[Beta]](/zh/docs/eino/core_modules/components/agentic_chat_template_guide)
    >
-2. 直接和大模型交互的组件抽象： `ChatModel`
+2. 直接和大模型交互的组件抽象： `ChatModel`、`AgenticModel`
 
-   > 详见 [Eino: ChatModel 使用说明](/zh/docs/eino/core_modules/components/chat_model_guide)
+   > 详见 [Eino: ChatModel 使用说明](/zh/docs/eino/core_modules/components/chat_model_guide)、[Eino: AgenticModel 使用说明[Beta]](/zh/docs/eino/core_modules/components/agentic_chat_model_guide)
    >
 
 **文本语义处理类组件：**
@@ -54,9 +54,9 @@ weight: 1
 
 **决策执行类组件**：
 
-1. 大模型能够做决策并调用工具的组件抽象：`ToolsNode`
+1. 大模型能够做决策并调用工具的组件抽象：`ToolsNode`、`AgenticToolsNode`
 
-   > 详见 [Eino: ToolsNode 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)
+   > 详见 [Eino: ToolsNode&Tool 使用说明](/zh/docs/eino/core_modules/components/tools_node_guide)、[Eino: AgenticToolsNode&Tool 使用说明[Beta]](/zh/docs/eino/core_modules/components/agentic_tools_node_guide)
    >
 
 **自定义组件：**

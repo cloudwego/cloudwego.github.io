@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Interrupt & CheckPoint使用手册'
@@ -188,7 +188,7 @@ func main() {
 ```
 // compose/checkpoint.go
 
-func WithCheckPointID(checkPointID string, sm StateModifier) Option
+func WithCheckPointID(checkPointID string) Option
 ```
 
 Checkpoint id 会被作为 CheckPointStore 的 key 使用，graph 运行时会检查 CheckPointStore 是否存在此 id，如果存在则从 checkpoint 中恢复运行；interrupt 是会把 graph 状态保存到此 id 中。
@@ -234,6 +234,35 @@ func CompositeInterrupt(ctx context.Context, info any, state any, errs ...error)
 ```
 
 详细设计参见：[Eino human-in-the-loop 框架：技术架构指南](/zh/docs/eino/core_modules/eino_adk/agent_hitl)
+
+## 外部主动 Interrupt
+
+有时，我们希望能在 Graph 外部主动触发中断，保存现场，之后择机恢复。这些场景可能包括实例优雅退出等。这时，可以通过调用 `WithGraphInterrupt` 获取一个 ctx 和一个 interrupt function。其中 ctx 用于传递给 `graph.Invoke()` 等运行方法，interrupt function 用于在用户希望主动中断时调用：
+
+```go
+// from compose/graph_call_options.go
+
+_// WithGraphInterrupt creates a context with graph cancellation support._
+_// When the returned context is used to invoke a graph or workflow, calling the interrupt function will trigger an interrupt._
+_// The graph will wait for current tasks to complete by default._
+**func **WithGraphInterrupt(parent context.Context) (ctx context.Context, interrupt **func**(opts ...GraphInterruptOption)) {}
+```
+
+在主动调用 interrupt function 时，可以传递超时等参数：
+
+```go
+// from compose/graph_call_options.go
+
+_// WithGraphInterruptTimeout specifies the max waiting time before generating an interrupt._
+_// After the max waiting time, the graph will force an interrupt. Any unfinished tasks will be re-run when the graph is resumed._
+**func **WithGraphInterruptTimeout(timeout time.Duration) GraphInterruptOption {
+    **return func**(o *graphInterruptOptions) {
+       o.timeout = &timeout
+    }
+}
+```
+
+当外部触发中断时，节点内部没有机会保存局部状态（包括节点的 input），所以 eino 会自动保存被外部中断的节点的 input，在下次执行时自动恢复。非外部触发中断的场景，节点内部发起中断时，保存 input 是每个节点的职责，可通过保存到 graph state 中或使用 `compose.StatefulInterrupt` 保存局部状态。
 
 ## 流式传输中的 CheckPoint
 

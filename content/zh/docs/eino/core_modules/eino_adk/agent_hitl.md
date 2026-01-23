@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-23"
 lastmod: ""
 tags: []
 title: Eino human-in-the-loop框架：技术架构指南
@@ -289,6 +289,16 @@ path: [{TicketBooker}]
 answer: The ticket for Martin to Beijing on 2025-12-01 has been successfully booked. If you need any more assistance, feel free
  to ask!
 ```
+
+### 更多样例
+
+- 审查与编辑模式：允许在执行前进行人工审查和原地编辑工具调用参数。[https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/2_review-and-edit](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/2_review-and-edit)
+- 反馈循环模式：迭代优化模式，其中 agent 生成内容，人类提供定性反馈以进行改进。[https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/3_feedback-loop](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/3_feedback-loop)
+- 追问模式：主动模式，其中 agent 识别出不充分的工具输出并请求澄清或下一步行动。[https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/4_follow-up](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/4_follow-up)
+- 在 supervisor 架构内中断：[https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/5_supervisor](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/5_supervisor)
+- 在 plan-execute-replan 架构内中断：[https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/6_plan-execute-replan](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/6_plan-execute-replan)
+- 在 deep-agents 架构内中断：[https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/7_deep-agents](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/7_deep-agents)
+- 在 supervisor 的一个子 agent 是 plan-execute-replan 的情况下中断：[https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/8_supervisor-plan-execute](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/8_supervisor-plan-execute)
 
 ## 架构概述
 
@@ -625,7 +635,7 @@ func (a *myAgent) Resume(ctx context.Context, info *adk.ResumeInfo, opts ...adk.
 
 ## Compose 包 API
 
-`compose` 包提供了用于创建复杂、可中断工作流的低级构建块。
+`compose` 包提供了用于创建复杂、可中断工作流的低级构建块。适用于在 Graph Node 中抛出中断、处理恢复。
 
 ### 1. 用于中断的 API
 
@@ -828,13 +838,13 @@ if wasInterrupted {
 检查当前组件是否是恢复操作的目标，并检索用户提供的任何数据。这通常在 `GetInterruptState` 确认组件被中断后调用。
 
 ```go
-func GetResumeContext[T any](ctx context.Context) (isResumeFlow bool, hasData bool, data T)
+func GetResumeContext[T any](ctx context.Context) (isResumeTarget bool, hasData bool, data T)
 ```
 
 **返回值:**
 
-- `isResumeFlow`: 如果组件被恢复调用明确指定为目标，则为 `true`。如果为 `false`，组件必须重新中断以保留其状态。
-- `hasData`: 如果为此组件提供了数据，则为 `true`。
+- `isResumeTarget`: 如果组件被恢复调用明确指定为目标，则为 `true`。如果为 `false`，组件必须重新中断以保留其状态。注意，如果组件没有被直接指定，但是是被直接指定的组件的上级，`isResumeTarget` 的结果依然为 `true`。比如 NodeA 中断且被指定为恢复目标，则 NodeA 所在的 GraphA 也会是恢复目标。
+- `hasData`: 如果为此组件提供了恢复数据，则为 `true`。
 - `data`: 用户提供的类型化数据。
 
 **示例:**
@@ -859,6 +869,10 @@ if wasInterrupted {
     }
 }
 ```
+
+## Tool 包 API
+
+与 Compose 包 API 完全对称，用于在 Tool 内部抛出中断、处理恢复。查看 `components/tool/interrupt.go` 文件。
 
 ## 底层架构：寻址系统
 
@@ -1173,25 +1187,3 @@ func (a *myLegacyAgent) Resume(ctx context.Context, info *adk.ResumeInfo) *adk.A
 - **灵活的状态管理**: 对于静态图中断，你可以选择通过 `.Info` 字段进行现代、直接的状态修改，或者继续使用旧的 `WithStateModifier` 选项。
 
 这种向后兼容性模型确保了现有用户的平滑过渡，同时为采用新的 human-in-the-loop 功能提供了清晰的路径。
-
-## 实现示例
-
-有关 human-in-the-loop 模式的完整、可工作的示例，请参阅 [eino-examples repository](https://github.com/cloudwego/eino-examples/pull/125)。该仓库包含四个作为独立示例实现的典型模式：
-
-### 1. 审批模式
-
-在关键工具调用之前的简单、显式批准。非常适合不可逆操作，如数据库修改或金融交易。
-
-### 2. 审查与编辑模式
-
-高级模式，允许在执行前进行人工审查和原地编辑工具调用参数。非常适合纠正误解。
-
-### 3. 反馈循环模式
-
-迭代优化模式，其中 agent 生成内容，人类提供定性反馈以进行改进。
-
-### 4. 追问模式
-
-主动模式，其中 agent 识别出不充分的工具输出并请求澄清或下一步行动。
-
-这些示例演示了中断/恢复机制的实际用法，并附有可重用的工具包装器和详细文档。
