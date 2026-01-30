@@ -4,7 +4,7 @@ date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Ecosystem Integration'
-weight: 5
+weight: 6
 ---
 
 ## Ecosystem Integration

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-01-30"
 lastmod: ""
 tags: []
 title: How to Create a Tool
@@ -41,7 +41,7 @@ type StreamableTool interface {
 
 ## ToolInfo Representations
 
-In LLM function-call flows, the model must understand whether generated parameters satisfy constraints. Eino supports two representations: `params map[string]*ParameterInfo` and `*openapi3.Schema`.
+In LLM function-call flows, the model must understand whether generated parameters satisfy constraints. Based on developer habits and domain standards, Eino provides two representations: `params map[string]*ParameterInfo` and `JSON Schema`.
 
 ### 1) `map[string]*ParameterInfo`
 
@@ -77,26 +77,27 @@ map[string]*schema.ParameterInfo{
 }
 ```
 
-### 2) JSON Schema (2020-12)
+### 2) JSON Schema
 
-JSON Schema’s constraint system is rich. In practice, you usually generate it from struct tags or helper functions.
+Another common way to represent parameter constraints is `JSON Schema`: [https://json-schema.org/draft/2020-12](https://json-schema.org/draft/2020-12).
 
-#### `GoStruct2ParamsOneOf`
+The JSON Schema standard provides very rich ways to constrain parameters. In practice, developers generally don't construct this structure themselves, but use methods to generate it.
 
-Describe constraints via Go tags on a struct and generate `ParamsOneOf`:
+#### Using GoStruct2ParamsOneOf
+
+Eino provides a way to describe parameter constraints through go tags in structs, and provides the GoStruct2ParamsOneOf method to generate parameter constraints for a struct:
 
 ```go
 func GoStruct2ParamsOneOf[T any](opts ...Option) (*schema.ParamsOneOf, error)
 ```
 
-Supported tags:
+The tags used to extract parameter field names and descriptions from T are as follows:
 
-- `jsonschema_description:"xxx"` [recommended] or `jsonschema:"description=xxx"`
-- Note: descriptions often include commas; tag commas separate fields and cannot be escaped. Prefer `jsonschema_description`.
-- `jsonschema:"enum=xxx,enum=yyy,enum=zzz"`
-- `jsonschema:"required"`
-- `json:"xxx,omitempty"` → `omitempty` implies not required
-- Customize via `utils.WithSchemaModifier`
+- jsonschema_description:"xxx" [recommended] or jsonschema:"description=xxx"
+  - Descriptions often contain commas, and commas in tags are separators for different fields and cannot be escaped. It's strongly recommended to use the separate jsonschema_description tag.
+- jsonschema:"enum=xxx,enum=yyy,enum=zzz"
+- Fields are required by default; json:"xxx,omitempty" => use json tag's omitempty to indicate not required
+- Use utils.WithSchemaModifier to implement custom parsing methods
 
 Example:
 
@@ -109,7 +110,7 @@ import (
 )
 
 type User struct {
-    Name   string `json:"name" jsonschema_description=the name of the user jsonschema:"required"`
+    Name   string `json:"name,omitempty" jsonschema_description=the name of the user`
     Age    int    `json:"age" jsonschema_description:"the age of the user"`
     Gender string `json:"gender" jsonschema:"enum=male,enum=female"`
 }
@@ -119,7 +120,7 @@ func main() {
 }
 ```
 
-You usually won't call this directly; prefer `utils.GoStruct2ToolInfo()` or `utils.InferTool()`.
+This method is generally not called by developers directly; instead, use `utils.GoStruct2ToolInfo()` to build ToolInfo, or use `utils.InferTool()` directly to build a tool. See the "Converting local functions to tools" section below for details.
 
 ## Ways to Implement a Tool
 
@@ -238,9 +239,9 @@ import (
 )
 
 type User struct {
-    Name   string `json:"name" jsonschema:"required,description=the name of the user"`
-    Age    int    `json:"age" jsonschema:"description=the age of the user"`
-    Gender string `json:"gender" jsonschema:"enum=male,enum=female"`
+    Name   string `json:"name" jsonschema:"description=the name of the user"`
+    Age    int    `json:"age,omitempty" jsonschema:"description=the age of the user"`
+    Gender string `json:"gender,omitempty" jsonschema:"enum=male,enum=female"`
 }
 
 type Result struct {
@@ -256,9 +257,9 @@ func createTool() (tool.InvokableTool, error) {
 }
 ```
 
-#### `InferOptionableTool`
+#### Using InferOptionableTool
 
-Eino’s Option mechanism passes dynamic runtime parameters. Details: `Eino: CallOption capabilities and conventions` at `/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities`. The same mechanism applies to custom tools.
+The Option mechanism is a mechanism provided by Eino for passing dynamic parameters at runtime. For details, see [Eino: CallOption Capabilities and Conventions](/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities). This mechanism also applies to custom tools.
 
 When you need custom option parameters, use `InferOptionableTool`:
 
@@ -310,10 +311,7 @@ func useInInvoke() {
 
 ### Approach 3 — Use tools from eino-ext
 
-Beyond custom tools, the `eino-ext` project provides many ready-to-use implementations: `Googlesearch`, `DuckDuckGoSearch`, `wikipedia`, `httprequest`, etc. See implementations at https://github.com/cloudwego/eino-ext/tree/main/components/tool and docs:
-
-- Tool — Googlesearch: `/docs/eino/ecosystem_integration/tool/tool_googlesearch`
-- Tool — DuckDuckGoSearch: `/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search`
+Beyond custom tools that need to be implemented yourself, the eino-ext project has many general-purpose tool implementations that can be used out of the box, such as [Tool - Googlesearch](/docs/eino/ecosystem_integration/tool/tool_googlesearch), [Tool - DuckDuckGoSearch](/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search), wikipedia, httprequest, etc. See various implementations at [https://github.com/cloudwego/eino-ext/tree/main/components/tool](https://github.com/cloudwego/eino-ext/tree/main/components/tool).
 
 ### Approach 4 — Use MCP protocol
 
