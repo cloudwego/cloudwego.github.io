@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-22"
+date: "2026-01-30"
 lastmod: ""
 tags: []
 title: 'Eino: 概述'
@@ -14,7 +14,8 @@ weight: 1
 Eino 提供的价值如下：
 
 - 精心整理的一系列 **组件（component）** 抽象与实现，可轻松复用与组合，用于构建 LLM 应用。
-- 强大的 **编排（orchestration）** 框架，为用户承担繁重的类型检查、流数据处理、并发管理、切面注入、选项赋值等工作。
+- **智能体开发套件（ADK）**，提供构建 AI 智能体的高级抽象，支持多智能体编排、人机协作中断机制以及预置的智能体模式。
+- 强大的 **编排（orchestration）** 框架，为用户承担繁重的类型检查、流式处理、并发管理、切面注入、选项赋值等工作。
 - 一套精心设计、注重简洁明了的 **API**。
 - 以集成 **流程（flow）** 和 **示例（example）** 形式不断扩充的最佳实践集合。
 - 一套实用 **工具（DevOps tools）**，涵盖从可视化开发与调试到在线追踪与评估的整个开发生命周期。
@@ -83,10 +84,9 @@ _ = graph.AddEdge("node_converter", END)
 
 compiledGraph, err := graph.Compile(ctx)
 if err != nil {
-    return err
+return err
 }
-out, err := compiledGraph.Invoke(ctx, map[string]any{
-    "query":"Beijing's weather this weekend"})
+out, err := compiledGraph.Invoke(ctx, map[string]any{"query":"Beijing's weather this weekend"})
 ```
 
 现在，我们来创建一个 Workflow，它能在字段级别灵活映射输入与输出：
@@ -94,34 +94,61 @@ out, err := compiledGraph.Invoke(ctx, map[string]any{
 <a href="/img/eino/graph_node_type1.png" target="_blank"><img src="/img/eino/graph_node_type1.png" width="100%" /></a>
 
 ```go
+type Input1 struct {
+    Input string
+}
+
+type Output1 struct {
+    Output string
+}
+
+type Input2 struct {
+    Role schema.RoleType
+}
+
+type Output2 struct {
+    Output string
+}
+
+type Input3 struct {
+    Query string
+    MetaData string
+}
+
+var (
+    ctx context.Context
+    m model.BaseChatModel
+    lambda1 func(context.Context, Input1) (Output1, error)
+    lambda2 func(context.Context, Input2) (Output2, error)
+    lambda3 func(context.Context, Input3) (*schema.Message, error)
+)
+
 wf := NewWorkflow[[]*schema.Message, *schema.Message]()
-wf.AddChatModelNode("model", model).AddInput(START)
-wf.AddLambdaNode("lambda1", lambda1).AddInput("model", MapFields("Content", "Input"))
-wf.AddLambdaNode("lambda2", lambda2).AddInput("model", MapFields("Role", "Role"))
-wf.AddLambdaNode("lambda3", lambda3).
-        AddInput("lambda1", MapFields("Output", "Query")).
-        AddInput("lambda2", MapFields("Output", "MetaData"))
+wf.AddChatModelNode("model", m).AddInput(START)
+wf.AddLambdaNode("lambda1", InvokableLambda(lambda1)).
+    AddInput("model", MapFields("Content", "Input"))
+wf.AddLambdaNode("lambda2", InvokableLambda(lambda2)).
+    AddInput("model", MapFields("Role", "Role"))
+wf.AddLambdaNode("lambda3", InvokableLambda(lambda3)).
+    AddInput("lambda1", MapFields("Output", "Query")).
+    AddInput("lambda2", MapFields("Output", "MetaData"))
 wf.End().AddInput("lambda3")
 runnable, err := wf.Compile(ctx)
 if err != nil {
     return err
 }
-our, err := runnable.Invoke(ctx, []*schema.Message{schema.UserMessage("kick start this workflow!")})
+our, err := runnable.Invoke(ctx, []*schema.Message{
+    schema.UserMessage("kick start this workflow!"),
+})
 ```
 
-现在，咱们来创建一个 “ReAct” 智能体：一个 ChatModel 绑定了一些 Tool。它接收输入的消息，自主判断是调用 Tool 还是输出最终结果。Tool 的执行结果会再次成为聊天模型的输入消息，并作为下一轮自主判断的上下文。
-
-<a href="/img/eino/eino_adk_react_illustration.png" target="_blank"><img src="/img/eino/eino_adk_react_illustration.png" width="100%" /></a>
-
-我们在 Eino 的 `flow` 包中提供了开箱即用的 ReAct 智能体的完整实现。代码参见： [flow/agent/react](https://github.com/cloudwego/eino/blob/main/flow/agent/react/react.go)
-
-Eino 会在上述代码背后自动完成一些重要工作：
+Eino 的**图编排**开箱即用地提供以下能力：
 
 - **类型检查**：在编译时确保两个节点的输入和输出类型匹配。
 - **流处理**：如有需要，在将消息流传递给 ChatModel 和 ToolsNode 节点之前进行拼接，以及将该流复制到 callback handler 中。
-- **状态管理**：确保共享的 state 可以被安全地读写。
+- **并发管理**：由于 StatePreHandler 是线程安全的，共享的 state 可以被安全地读写。
 - **切面注入**：如果指定的 ChatModel 实现未自行注入，会在 ChatModel 执行之前和之后注入回调切面。
-- **选项赋值**：运行时 Option 可以全局设置，也可以针对特定组件类型或特定节点进行设置。
+- **选项赋值**：调用 Option 可以全局设置，也可以针对特定组件类型或特定节点进行设置。
 
 例如，你可以轻松地通过回调扩展已编译的图：
 
@@ -153,6 +180,103 @@ compiledGraph.Invoke(ctx, input, WithChatModelOption(WithTemperature(0.5))
 compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
 ```
 
+现在，咱们来创建一个 “ReAct” 智能体：一个 ChatModel 绑定了一些 Tool。它接收输入的消息，自主判断是调用 Tool 还是输出最终结果。Tool 的执行结果会再次成为聊天模型的输入消息，并作为下一轮自主判断的上下文。
+
+<a href="/img/eino/eino_adk_react_illustration.png" target="_blank"><img src="/img/eino/eino_adk_react_illustration.png" width="100%" /></a>
+
+Eino 的**智能体开发套件（ADK）**提供了开箱即用的 `ChatModelAgent` 来实现这一模式：
+
+```go
+agent, _ := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    Name:        "assistant",
+    Description: "A helpful assistant that can use tools",
+    Model:       chatModel,
+    ToolsConfig: adk.ToolsConfig{
+        ToolsNodeConfig: compose.ToolsNodeConfig{
+            Tools: []tool.BaseTool{weatherTool, calculatorTool},
+        },
+    },
+})
+
+runner := adk.NewRunner(ctx, adk.RunnerConfig{Agent: agent})
+iter := runner.Query(ctx, "What's the weather in Beijing this weekend?")
+for {
+    event, ok := iter.Next()
+    if !ok {
+        break
+    }
+    // process agent events (model outputs, tool calls, etc.)
+}
+```
+
+ADK 在内部处理 ReAct 循环，为智能体推理过程的每个步骤发出事件。
+
+除了基本的 ReAct 模式，ADK 还提供了构建生产级智能体系统的强大能力：
+
+**多智能体与上下文管理**：智能体可以将控制权转移给子智能体，或被封装为工具。框架会自动管理跨智能体边界的对话上下文：
+
+```go
+// 设置智能体层级 - mainAgent 现在可以转移到子智能体
+mainAgentWithSubs, _ := adk.SetSubAgents(ctx, mainAgent, []adk.Agent{researchAgent, codeAgent})
+```
+
+当 `mainAgent` 转移到 `researchAgent` 时，对话历史会自动重写，为子智能体提供适当的上下文。
+
+智能体也可以被封装为工具，允许一个智能体在其工具调用工作流中调用另一个智能体：
+
+```go
+// 将智能体封装为可被其他智能体调用的工具
+researchTool := adk.NewAgentTool(ctx, researchAgent)
+```
+
+**随处中断，直接恢复**：任何智能体都可以暂停执行以等待人工审批或外部输入，并从中断处精确恢复：
+
+```go
+// 在工具或智能体内部，触发中断
+return adk.Interrupt(ctx, "Please confirm this action")
+
+// 稍后，从检查点恢复
+iter, _ := runner.Resume(ctx, checkpointID)
+```
+
+**预置智能体模式**：为常见架构提供开箱即用的实现：
+
+```go
+// Deep Agent：经过实战检验的复杂任务编排模式，
+// 内置任务管理、子智能体委派和进度跟踪
+deepAgent, _ := deep.New(ctx, &deep.Config{
+    Name:        "deep_agent",
+    Description: "An agent that breaks down and executes complex tasks",
+    ChatModel:   chatModel,
+    SubAgents:   []adk.Agent{researchAgent, codeAgent},
+    ToolsConfig: adk.ToolsConfig{...},
+})
+
+// Supervisor 模式：一个智能体协调多个专家
+supervisorAgent, _ := supervisor.New(ctx, &supervisor.Config{
+    Supervisor: coordinatorAgent,
+    SubAgents:  []adk.Agent{writerAgent, reviewerAgent},
+})
+
+// 顺序执行：智能体依次运行
+seqAgent, _ := adk.NewSequentialAgent(ctx, &adk.SequentialAgentConfig{
+    SubAgents: []adk.Agent{plannerAgent, executorAgent, summarizerAgent},
+})
+```
+
+**可扩展的中间件系统**：在不修改核心逻辑的情况下为智能体添加能力：
+
+```go
+fsMiddleware, _ := filesystem.NewMiddleware(ctx, &filesystem.Config{
+    Backend: myFileSystem,
+})
+
+agent, _ := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    // ...
+    Middlewares: []adk.AgentMiddleware{fsMiddleware},
+})
+```
+
 ## 关键特性
 
 ### 丰富的组件(Component)
@@ -165,13 +289,32 @@ compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
   - ReAct 智能体（React Agent）、多查询检索器（MultiQueryRetriever）、主机多智能体（Host MultiAgent）等。它们由多个组件和复杂的业务逻辑构成。
   - 从外部看，它们的实现细节依然透明。例如在任何接受 Retriever 的地方，都可以使用 MultiQueryRetriever。
 
+## **智能体开发套件（ADK）**
+
+**ADK** 包提供了针对构建 AI 智能体优化的高级抽象：
+
+- **ChatModelAgent**：ReAct 风格的智能体，自动处理工具调用、对话状态和推理循环。
+- **多智能体与上下文工程**：构建层级化智能体系统，对话历史在智能体转移和智能体作为工具调用时自动管理，实现专业智能体间的无缝上下文共享。
+- **工作流智能体**：使用 `SequentialAgent`、`ParallelAgent` 和 `LoopAgent` 组合智能体，实现复杂的执行流程。
+- **人机协作**：`Interrupt` 和 `Resume` 机制，支持检查点持久化，适用于需要人工审批或输入的工作流。
+- **预置模式**：开箱即用的实现，包括 Deep Agent（任务编排）、Supervisor（层级协调）和 Plan-Execute-Replan。
+- **智能体中间件**：可扩展的中间件系统，用于添加工具（文件系统操作）和管理上下文（token 缩减）。
+
 ### 强大的编排 (Graph/Chain/Workflow)
 
-- 数据从 Retriever / Document Loader / ChatTemplate 流向 ChatModel，接着流向 Tool ，并被解析为最终答案。这种通过多个组件的有向、可控的数据流，可以通过**图编排**来实现。
-- 组件实例是图的**节点（Node）**，而**边（Edge）**则是数据流通道。
+如需细粒度控制，Eino 提供**图编排**能力，数据从 Retriever / Document Loader / ChatTemplate 流向 ChatModel，接着流向 Tool ，并被解析为最终答案。
+
+- 组件实例是图的 **节点（Node）** ，而 **边（Edge）** 则是数据流通道。
 - 图编排功能强大且足够灵活，能够实现复杂的业务逻辑：
   - **类型检查、流处理、并发管理、切面注入和选项分配**都由框架处理。
-  - 在运行时进行**分支（Branch）**执行、读写全局**状态（State）**，或者使用工作流进行字段级别的数据映射。
+  - 在运行时进行**分支（Branch）执行、读写全局状态（State）**，或者使用工作流进行字段级别的数据映射。
+
+## **切面（Callbacks）**
+
+**切面**处理日志记录、追踪、指标统计等横切关注点。切面可以直接应用于组件、编排图或 ADK 智能体。
+
+- 支持五种切面类型：OnStart、OnEnd、OnError、OnStartWithStreamInput、OnEndWithStreamOutput。
+- 可通过 Option 在运行时添加自定义回调处理程序。
 
 ### 完善的流处理(Streaming)
 
@@ -191,13 +334,6 @@ compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
 <tr><td>Collect</td><td>接收流类型 StreamReader[I] ， 返回非流类型 O</td></tr>
 <tr><td>Transform</td><td>接收流类型 StreamReader[I] ， 返回流类型 StreamReader[O]</td></tr>
 </table>
-
-### 易扩展的的切面(Callbacks)
-
-- 切面用于处理诸如日志记录、追踪、指标统计等横切面关注点，同时也用于暴露组件实现的内部细节。
-- 支持五种切面：**OnStart、OnEnd、OnError、OnStartWithStreamInput、OnEndWithStreamOutput**。
-- 开发者可以轻松创建自定义回调处理程序，在图运行期间通过 Option 添加它们，这些处理程序会在图运行时被调用。
-- 图还能将切面注入到那些自身不支持回调的组件实现中。
 
 ## Eino 框架结构
 
@@ -231,7 +367,20 @@ Eino 框架由几个部分组成：
 ## 依赖说明
 
 - Go 1.18 及以上版本
-- Eino 依赖了 [kin-openapi](https://github.com/getkin/kin-openapi) 的 OpenAPI JSONSchema 实现。为了能够兼容 Go 1.18 版本，我们将 kin-openapi 的版本固定在了 v0.118.0。V0.6.0 之后已去除此依赖。
+
+## **代码规范**
+
+本仓库开启了 `golangci-lint` 检查以约束基础代码规范，可通过以下命令在本地检查：
+
+```bash
+golangci-lint run ./...
+```
+
+主要规则包括：
+
+- 导出的函数、接口、package 等需要添加注释，且注释符合 GoDoc 规范。
+- 代码格式需符合 `gofmt -s` 规范。
+- import 顺序需符合 `goimports` 规范（std -> third party -> local）。
 
 ## 安全
 

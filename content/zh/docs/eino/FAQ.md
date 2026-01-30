@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-01-30"
 lastmod: ""
 tags: []
 title: FAQ
-weight: 6
+weight: 7
 ---
 
 # Q: cannot use openapi3.TypeObject (untyped string constant "object") as *openapi3.Types value in struct literal，cannot use types (variable of type string) as *openapi3.Types value in struct literal

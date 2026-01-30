@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-01-30"
 lastmod: ""
 tags: []
 title: 'Eino: Callback 用户手册'
@@ -155,7 +155,7 @@ Handler 需要注入到 Context 中才能被触发。
 
 通过 `compose.WithCallbacks(...).DesignateNode(...)` 向顶层 Graph 的某个 Node 注入 Handler。当这个 Node 自身是个内嵌的 Graph 时，会注入到这个内嵌 Graph 自身和其内部的各 Node。
 
-通过 `compose.WithCallbacks(...).DesignateNodeForPath(...)` 向内部嵌套的 Graph 的某个 Node 注入 Handler。
+通过 `compose.WithCallbacks(...).DesignateNodeWithPath(...)` 向内部嵌套的 Graph 的某个 Node 注入 Handler。
 
 ### 在 Graph 外注入 Handler
 
