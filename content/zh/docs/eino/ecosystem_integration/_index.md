@@ -4,7 +4,7 @@ date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: 组件集成'
-weight: 5
+weight: 6
 ---
 
 ## 组件集成

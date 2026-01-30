@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-01-30"
 lastmod: ""
 tags: []
 title: 'Eino: Callback Manual'
@@ -155,7 +155,7 @@ Inject Handlers at graph runtime through `compose.WithCallbacks`, these Handlers
 
 Inject Handlers to a specific Node of the top-level Graph through `compose.WithCallbacks(...).DesignateNode(...)`. When this Node itself is a nested Graph, it will be injected into this nested Graph itself and its internal Nodes.
 
-Inject Handlers to a specific Node of an internally nested Graph through `compose.WithCallbacks(...).DesignateNodeForPath(...)`.
+Inject Handlers to a specific Node of an internally nested Graph through `compose.WithCallbacks(...).DesignateNodeWithPath(...)`.
 
 ### Injecting Handlers Outside Graph
 

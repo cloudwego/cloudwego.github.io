@@ -2,37 +2,31 @@
 {{ if .enable }}
 (function($) {
     var needMermaid = false;
+    function parseFrontMatter(text) {
+        var m = text.match(/^\s*---\s*[\r\n]([\s\S]*?)[\r\n]---\s*[\r\n]?/);
+        if (!m) return { cfg: null, body: text };
+        var yamlStr = m[1];
+        var doc = null;
+        try {
+            if (window.jsyaml && typeof window.jsyaml.load === 'function') {
+                doc = window.jsyaml.load(yamlStr);
+            } else {
+                doc = JSON.parse(yamlStr);
+            }
+        } catch (e) {
+            console.warn('Mermaid front matter parse failed, fallback to global settings:', e);
+            return { cfg: null, body: text.replace(m[0], '') };
+        }
+        var cfg = doc && typeof doc === 'object' && doc.config ? doc.config : doc;
+        return { cfg: cfg, body: text.replace(m[0], '') };
+    }
+
     function preprocessMermaid(text) {
-        var fm = text.match(/^\s*---\s*\n([\s\S]*?)\n---\s*\n?/);
+        var fm = parseFrontMatter(text);
         var directive = '';
-        var body = text;
-        if (fm) {
-            var yaml = fm[1];
-            var obj = {};
-            var current = null;
-            yaml.split('\n').forEach(function(line) {
-                var l = line.trim();
-                if (!l) return;
-                if (/^[\w-]+\s*:\s*$/.test(l)) {
-                    current = l.replace(/:\s*$/, '').trim();
-                    obj[current] = obj[current] || {};
-                    return;
-                }
-                var m = l.match(/^(\w[\w-]*)\s*:\s*(.*)$/);
-                if (m) {
-                    var k = m[1];
-                    var v = m[2].trim();
-                    v = v.replace(/^['"]|['"]$/g, '');
-                    if (current) {
-                        obj[current][k] = v;
-                    } else {
-                        obj[k] = v;
-                    }
-                }
-            });
-            var cfg = obj.config || obj;
-            directive = '%%{init: ' + JSON.stringify(cfg) + '}%%\n';
-            body = text.replace(fm[0], '');
+        var body = fm.body;
+        if (fm.cfg && typeof fm.cfg === 'object' && Object.keys(fm.cfg).length > 0) {
+            directive = '%%{init: ' + JSON.stringify(fm.cfg) + '}%%\n';
         }
         var isV10 = typeof mermaid !== 'undefined' && mermaid.version && parseInt(mermaid.version.split('.')[0], 10) >= 10;
         body = body.replace(/<br\s*\/?>(?![^`]*`)/gi, '\\n');

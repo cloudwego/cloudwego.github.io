@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-01-30"
 lastmod: ""
 tags: []
 title: 如何创建一个 tool ?
@@ -100,8 +100,7 @@ func GoStruct2ParamsOneOf[T any](opts ...Option) (*schema.ParamsOneOf, error)
 - jsonschema_description:"xxx " [推荐]或者 jsonschema: "description=xxx"
   - description 中一般会有逗号，且 tag 中逗号是不同字段的分隔符，且不可被转义，强烈推荐使用 jsonschema_description 这个单独的 Tag 标签
 - jsonschema: "enum=xxx,enum=yyy,enum=zzz"
-- jsonschema: "required"
-- json: "xxx,omitempty" => 可用 json tag 的 omitempty 代表非 required
+- 字段默认为 required，json: "xxx,omitempty" => 可用 json tag 的 omitempty 代表非 required
 - 使用 utils.WithSchemaModifier 实现自定义的解析方法
 
 可参考如下例子：
@@ -115,7 +114,7 @@ import (
 )
 
 type User struct {
-    Name   string `json:"name" jsonschema_description=the name of the user jsonschema:"required"`
+    Name   string `json:"name,omitempty" jsonschema_description=the name of the user`
     Age    int    `json:"age" jsonschema_description:"the age of the user"`
     Gender string `json:"gender" jsonschema:"enum=male,enum=female"`
 }
@@ -253,9 +252,9 @@ import (
 )
 
 type User struct {
-    Name   string `json:"name" jsonschema:"required,description=the name of the user"`
-    Age    int    `json:"age" jsonschema:"description=the age of the user"`
-    Gender string `json:"gender" jsonschema:"enum=male,enum=female"`
+    Name   string `json:"name" jsonschema:"description=the name of the user"`
+    Age    int    `json:"age,omitempty" jsonschema:"description=the age of the user"`
+    Gender string `json:"gender,omitempty" jsonschema:"enum=male,enum=female"`
 }
 
 type Result struct {
