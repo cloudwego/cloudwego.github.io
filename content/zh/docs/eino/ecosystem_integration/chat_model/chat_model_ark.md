@@ -105,7 +105,7 @@ func main() {
         }
 
         log.Printf("stream final output: \n")
-        log.Printf("  request_id: %s \n")
+        log.Printf("request_id: %s \n", ark.GetArkRequestID(msg))
         respBody, _ = json.MarshalIndent(msg, "  ", "  ")
         log.Printf("body: %s \n", string(respBody))
 }
@@ -120,66 +120,66 @@ type ChatModelConfig struct {
     // Timeout specifies the maximum duration to wait for API responses
     // Optional. Default: 10 minutes
     Timeout *time.Duration `json:"timeout"`
-    
+
     // RetryTimes specifies the number of retry attempts for failed API calls
     // Optional. Default: 2
     RetryTimes *int `json:"retry_times"`
-    
+
     // BaseURL specifies the base URL for Ark service
     // Optional. Default: "https://ark.cn-beijing.volces.com/api/v3"
     BaseURL string `json:"base_url"`
     // Region specifies the region where Ark service is located
     // Optional. Default: "cn-beijing"
     Region string `json:"region"`
-    
+
     // The following three fields are about authentication - either APIKey or AccessKey/SecretKey pair is required
     // For authentication details, see: https://www.volcengine.com/docs/82379/1298459
     // APIKey takes precedence if both are provided
     APIKey    string `json:"api_key"`
     AccessKey string `json:"access_key"`
     SecretKey string `json:"secret_key"`
-    
+
     // The following fields correspond to Ark's chat completion API parameters
     // Ref: https://www.volcengine.com/docs/82379/1298454
-    
+
     // Model specifies the ID of endpoint on ark platform
     // Required
     Model string `json:"model"`
-    
+
     // MaxTokens limits the maximum number of tokens that can be generated in the chat completion and the range of values is [0, 4096]
     // Optional. Default: 4096
     MaxTokens *int `json:"max_tokens,omitempty"`
-    
+
     // Temperature specifies what sampling temperature to use
     // Generally recommend altering this or TopP but not both
     // Range: 0.0 to 1.0. Higher values make output more random
     // Optional. Default: 1.0
     Temperature *float32 `json:"temperature,omitempty"`
-    
+
     // TopP controls diversity via nucleus sampling
     // Generally recommend altering this or Temperature but not both
     // Range: 0.0 to 1.0. Lower values make output more focused
     // Optional. Default: 0.7
     TopP *float32 `json:"top_p,omitempty"`
-    
+
     // Stop sequences where the API will stop generating further tokens
     // Optional. Example: []string{"\n", "User:"}
     Stop []string `json:"stop,omitempty"`
-    
+
     // FrequencyPenalty prevents repetition by penalizing tokens based on frequency
     // Range: -2.0 to 2.0. Positive values decrease likelihood of repetition
     // Optional. Default: 0
     FrequencyPenalty *float32 `json:"frequency_penalty,omitempty"`
-    
+
     // LogitBias modifies likelihood of specific tokens appearing in completion
     // Optional. Map token IDs to bias values from -100 to 100
     LogitBias map[string]int `json:"logit_bias,omitempty"`
-    
+
     // PresencePenalty prevents repetition by penalizing tokens based on presence
     // Range: -2.0 to 2.0. Positive values increase likelihood of new topics
     // Optional. Default: 0
     PresencePenalty *float32 `json:"presence_penalty,omitempty"`
-    
+
     // CustomHeader the http header passed to model when requesting model
     CustomHeader map[string]string `json:"custom_header"`
 }
@@ -267,36 +267,36 @@ type ImageGenerationConfig struct {
     // For authentication details, see: https://www.volcengine.com/docs/82379/1298459
     // Required
     APIKey string `json:"api_key"`
-    
+
     // Model specifies the ID of endpoint on ark platform
     // Required
     Model string `json:"model"`
-    
+
     // Timeout specifies the maximum duration to wait for API responses
     // If HTTPClient is set, Timeout will not be used.
     // Optional. Default: 10 minutes
     Timeout *time.Duration `json:"timeout"`
-    
+
     // HTTPClient specifies the client to send HTTP requests.
     // If HTTPClient is set, Timeout will not be used.
     // Optional. Default &http.Client{Timeout: Timeout}
     HTTPClient *http.Client `json:"http_client"`
-    
+
     // RetryTimes specifies the number of retry attempts for failed API calls
     // Optional. Default: 2
     RetryTimes *int `json:"retry_times"`
-    
+
     // BaseURL specifies the base URL for Ark service
     // Optional. Default: "https://ark.cn-beijing.volces.com/api/v3"
     BaseURL string `json:"base_url"`
-    
+
     // Region specifies the region where Ark service is located
     // Optional. Default: "cn-beijing"
     Region string `json:"region"`
-    
+
     // The following fields correspond to Ark's image generation API parameters
     // Ref: https://www.volcengine.com/docs/82379/1541523
-    
+
     // Size specifies the dimensions of the generated image.
     // It can be a resolution keyword (e.g., "1K", "2K", "4K") or a custom resolution
     // in "{width}x{height}" format (e.g., "1920x1080").
@@ -304,27 +304,27 @@ type ImageGenerationConfig struct {
     // and the aspect ratio (width/height) must be between 1/16 and 16.
     // Optional. Defaults to "2048x2048".
     Size string `json:"size"`
-    
+
     // SequentialImageGeneration determines if the model should generate a sequence of images.
     // Possible values:
     //  - "auto": The model decides whether to generate multiple images based on the prompt.
     //  - "disabled": Only a single image is generated.
     // Optional. Defaults to "disabled".
     SequentialImageGeneration SequentialImageGeneration `json:"sequential_image_generation"`
-    
+
     // SequentialImageGenerationOption sets the maximum number of images to generate when
     // SequentialImageGeneration is set to "auto".
     // The value must be between 1 and 15.
     // Optional. Defaults to 15.
     SequentialImageGenerationOption *model.SequentialImageGenerationOptions `json:"sequential_image_generation_option"`
-    
+
     // ResponseFormat specifies how the generated image data is returned.
     // Possible values:
     //  - "url": A temporary URL to download the image (valid for 24 hours).
     //  - "b64_json": The image data encoded as a Base64 string in the response.
     // Optional. Defaults to "url".
     ResponseFormat ImageResponseFormat `json:"response_format"`
-    
+
     // DisableWatermark, if set to true, removes the "AI Generated" watermark
     // from the bottom-right corner of the image.
     // Optional. Defaults to false.
@@ -647,7 +647,7 @@ func main() {
                 },
         })
         if err != nil {
-                log.Printf("BindForcedTools failed, err=%v", err)
+                log.Printf("BindTools failed, err=%v", err)
                 return
         }
 
@@ -871,6 +871,8 @@ package main
 import (
         "context"
         "encoding/json"
+        "errors"
+        "io"
         "log"
         "os"
 
@@ -918,63 +920,63 @@ func main() {
                 schema.SystemMessage(`Once upon a time, in a quaint little village surrounded by vast green forests and blooming meadows, there lived a spirited young girl known as Little Red Riding Hood. She earned her name from the vibrant red cape that her beloved grandmother had sewn for her, a gift that she cherished deeply. This cape was more than just a piece of clothing; it was a symbol of the bond between her and her grandmother, who lived on the other side of the great woods, near a sparkling brook that bubbled merrily all year round.
 
                         One sunny morning, Little Red Riding Hood's mother called her into the cozy kitchen, where the aroma of freshly baked bread filled the air. “My dear,” she said, “your grandmother isn’t feeling well today. I want you to take her this basket of treats. There are some delicious cakes, a jar of honey, and her favorite herbal tea. Can you do that for me?”
-                        
+
                         Little Red Riding Hood’s eyes sparkled with excitement as she nodded eagerly. “Yes, Mama! I’ll take good care of them!” Her mother handed her a beautifully woven basket, filled to the brim with goodies, and reminded her, “Remember to stay on the path and don’t talk to strangers.”
-                        
+
                         “I promise, Mama!” she replied confidently, pulling her red hood over her head and setting off on her adventure. The sun shone brightly, and birds chirped merrily as she walked, making her feel like she was in a fairy tale.
-                        
+
                         As she journeyed through the woods, the tall trees whispered secrets to one another, and colorful flowers danced in the gentle breeze. Little Red Riding Hood was so enchanted by the beauty around her that she began to hum a tune, her voice harmonizing with the sounds of nature.
-                        
+
                         However, unbeknownst to her, lurking in the shadows was a cunning wolf. The wolf was known throughout the forest for his deceptive wit and insatiable hunger. He watched Little Red Riding Hood with keen interest, contemplating his next meal.
-                        
+
                         “Good day, little girl!” the wolf called out, stepping onto the path with a friendly yet sly smile.
-                        
+
                         Startled, she halted and took a step back. “Hello there! I’m just on my way to visit my grandmother,” she replied, clutching the basket tightly.
-                        
+
                         “Ah, your grandmother! I know her well,” the wolf said, his eyes glinting with mischief. “Why don’t you pick some lovely flowers for her? I’m sure she would love them, and I’m sure there are many beautiful ones just off the path.”
-                        
+
                         Little Red Riding Hood hesitated for a moment but was easily convinced by the wolf’s charming suggestion. “That’s a wonderful idea! Thank you!” she exclaimed, letting her curiosity pull her away from the safety of the path. As she wandered deeper into the woods, her gaze fixed on the vibrant blooms, the wolf took a shortcut towards her grandmother’s house.
-                        
+
                         When the wolf arrived at Grandma’s quaint cottage, he knocked on the door with a confident swagger. “It’s me, Little Red Riding Hood!” he shouted in a high-pitched voice to mimic the girl.
-                        
+
                         “Come in, dear!” came the frail voice of the grandmother, who had been resting on her cozy bed, wrapped in warm blankets. The wolf burst through the door, his eyes gleaming with the thrill of his plan.
-                        
+
                         With astonishing speed, the wolf gulped down the unsuspecting grandmother whole. Afterward, he dressed in her nightgown, donning her nightcap and climbing into her bed. He lay there, waiting for Little Red Riding Hood to arrive, concealing his wicked smile behind a facade of innocence.
-                        
+
                         Meanwhile, Little Red Riding Hood was merrily picking flowers, completely unaware of the impending danger. After gathering a beautiful bouquet of wildflowers, she finally made her way back to the path and excitedly skipped towards her grandmother’s cottage.
-                        
+
                         Upon arriving, she noticed the door was slightly ajar. “Grandmother, it’s me!” she called out, entering the dimly lit home. It was silent, with only the faint sound of an old clock ticking in the background. She stepped into the small living room, a feeling of unease creeping over her.
-                        
-                        “Grandmother, are you here?” she asked, peeking into the bedroom. There, she saw a figure lying under the covers. 
-                        
+
+                        “Grandmother, are you here?” she asked, peeking into the bedroom. There, she saw a figure lying under the covers.
+
                         “Grandmother, what big ears you have!” she exclaimed, taking a few cautious steps closer.
-                        
+
                         “All the better to hear you with, my dear,” the wolf replied in a voice that was deceptively sweet.
-                        
+
                         “Grandmother, what big eyes you have!” Little Red Riding Hood continued, now feeling an unsettling chill in the air.
-                        
+
                         “All the better to see you with, my dear,” the wolf said, his eyes narrowing as he tried to contain his glee.
-                        
+
                         “Grandmother, what big teeth you have!” she exclaimed, the terror flooding her senses as she began to realize this was no ordinary visit.
-                        
+
                         “All the better to eat you with!” the wolf roared, springing out of the bed with startling speed.
-                        
+
                         Just as the wolf lunged towards her, a brave woodsman, who had been passing by the cottage and heard the commotion, burst through the door. His strong presence was a beacon of hope in the dire situation. “Stay back, wolf!” he shouted with authority, brandishing his axe.
-                        
+
                         The wolf, taken aback by the sudden intrusion, hesitated for a moment. Before he could react, the woodsman swung his axe with determination, and with a swift motion, he drove the wolf away, rescuing Little Red Riding Hood and her grandmother from certain doom.
-                        
+
                         Little Red Riding Hood was shaking with fright, but relief washed over her as the woodsman helped her grandmother out from behind the bed where the wolf had hidden her. The grandmother, though shaken, was immensely grateful to the woodsman for his bravery. “Thank you so much! You saved us!” she cried, embracing him warmly.
-                        
+
                         Little Red Riding Hood, still in shock but filled with gratitude, looked up at the woodsman and said, “I promise I will never stray from the path again. Thank you for being our hero!”
-                        
+
                         From that day on, the woodland creatures spoke of the brave woodsman who saved Little Red Riding Hood and her grandmother. Little Red Riding Hood learned a valuable lesson about being cautious and listening to her mother’s advice. The bond between her and her grandmother grew stronger, and they often reminisced about that day’s adventure over cups of tea, surrounded by cookies and laughter.
-                        
+
                         To ensure safety, Little Red Riding Hood always took extra precautions when traveling through the woods, carrying a small whistle her grandmother had given her. It would alert anyone nearby if she ever found herself in trouble again.
-                        
+
                         And so, in the heart of that small village, life continued, filled with love, laughter, and the occasional adventure, as Little Red Riding Hood and her grandmother thrived, forever grateful for the friendship of the woodsman who had acted as their guardian that fateful day.
-                        
+
                         And they all lived happily ever after.
-                        
+
                         The end.`),
         }, 300)
         if err != nil {
@@ -1240,15 +1242,15 @@ model, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
     HTTPClient: httpClient,                                 // 自定义 HTTP 客户端
     Timeout:    &timeout,                                   // 超时时间
     RetryTimes: &retries,                                  // 重试次数
-    
+
     // 认证配置（二选一）
     APIKey:    "your-api-key",     // API Key 认证
     AccessKey: "your-ak",          // AK/SK 认证
     SecretKey: "your-sk",
-    
+
     // 模型配置
     Model:     "endpoint-id",      // 模型端点 ID
-    
+
     // 生成参数
     MaxTokens:         &maxTokens, // 最大生成长度
     Temperature:       &temp,      // 温度
@@ -1256,7 +1258,7 @@ model, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
     Stop:             []string{},  // 停止词
     FrequencyPenalty: &fp,        // 频率惩罚
     PresencePenalty:  &pp,        // 存在惩罚
-    
+
     // 高级参数
     LogitBias:        map[string]int{}, // Token 偏置
     CustomHeader:     map[string]string{}, // http custom header
@@ -1271,7 +1273,7 @@ model, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
 func main() {
     // 普通模式
     response, err := model.Generate(ctx, messages)
-    
+
     // 流式模式
     stream, err := model.Stream(ctx, messages)
 }
@@ -1283,11 +1285,11 @@ func main() {
 
 ```go
 func main() {
-    imgUrl := "https://example.com/image.jpg",
+    imgUrl := "https://example.com/image.jpg"
     messages := []*schema.Message{
         // 系统消息
         schema.SystemMessage("你是一个助手"),
-        
+
         // 多模态消息（包含图片）
         {
             Role: schema.User,
@@ -1399,14 +1401,14 @@ package main
 import (
     "context"
     "time"
-    
+
     "github.com/cloudwego/eino-ext/components/model/ark"
     "github.com/cloudwego/eino/schema"
 )
 
 func main() {
     ctx := context.Background()
-    
+
     // 初始化模型
     model, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
         APIKey:  "your-api-key",
@@ -1415,20 +1417,20 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
+
     // 准备消息
     messages := []*schema.Message{
         schema.SystemMessage("你是一个助手"),
         schema.UserMessage("介绍一下 Eino"),
     }
-    
+
     // 获取流式回复
     reader, err := model.Stream(ctx, messages)
     if err != nil {
         panic(err)
     }
     defer reader.Close() // 注意要关闭
-    
+
     // 处理流式内容
     for {
         chunk, err := reader.Recv()
@@ -1457,18 +1459,18 @@ imageGenerationModel, err := ark.NewImageGenerationModel(ctx, &ark.ImageGenerati
     HTTPClient: httpClient,                                 // 自定义 HTTP 客户端
     Timeout:    &timeout,                                   // 超时时间
     RetryTimes: &retries,                                  // 重试次数
-    
+
     // 模型配置
     APIKey: os.Getenv("ARK_API_KEY"),
     Model:  os.Getenv("ARK_MODEL_ID"),
 
     // 生成配置
     Size:                             "1K",                                     // 指定生成图片的大小
-    SequentialImageGeneration:        ark._SequentialImageGenerationAuto_,        // 决定是否生成组图
+    SequentialImageGeneration:        ark.SequentialImageGenerationAuto,        // 决定是否生成组图
     SequentialImageGenerationOption:  &model.SequentialImageGenerationOptions{  // 生成组图时的最大图片数量
        MaxImages: ptr(2),
     },
-    ResponseFormat:   ark._ImageResponseFormatURL_,                               // 图片数据的返回方式，URL或者Base64二选一
+    ResponseFormat:   ark.ImageResponseFormatURL,                               // 图片数据的返回方式，URL或者Base64二选一
     DisableWatermark: false,                                                    // 是否带有 "AI 生成" 水印
 })
 ```
@@ -1481,7 +1483,7 @@ imageGenerationModel, err := ark.NewImageGenerationModel(ctx, &ark.ImageGenerati
 func main() {
     // 普通模式
     response, err := model.Generate(ctx, messages)
-    
+
     // 流式模式
     stream, err := model.Stream(ctx, messages)
 }
@@ -1518,8 +1520,8 @@ func main() {
        APIKey: os.Getenv("ARK_API_KEY"),
        Model:  os.Getenv("ARK_MODEL_ID"),
        Size: "1920x1080",
-       SequentialImageGeneration: ark._SequentialImageGenerationDisabled_,
-       ResponseFormat: ark._ImageResponseFormatURL_,
+       SequentialImageGeneration: ark.SequentialImageGenerationDisabled,
+       ResponseFormat: ark.ImageResponseFormatURL,
        DisableWatermark: false,
     })
 
@@ -1530,7 +1532,7 @@ func main() {
     // 准备消息
     inMsgs := []*schema.Message{
        {
-          Role:    schema._User_,
+          Role:    schema.User,
           Content: "generate two images of a cat",
        },
     }
@@ -1577,11 +1579,11 @@ func main() {
        APIKey: os.Getenv("ARK_API_KEY"),
        Model:  os.Getenv("ARK_MODEL_ID"),
        Size: "1K",
-       SequentialImageGeneration: ark._SequentialImageGenerationAuto_,
+       SequentialImageGeneration: ark.SequentialImageGenerationAuto,
        SequentialImageGenerationOption: &model.SequentialImageGenerationOptions{
           MaxImages: ptr(2),
        },
-       ResponseFormat: ark._ImageResponseFormatURL_,
+       ResponseFormat: ark.ImageResponseFormatURL,
        DisableWatermark: false,
     })
 
@@ -1592,7 +1594,7 @@ func main() {
     // 准备消息
     inMsgs := []*schema.Message{
        {
-          Role:    schema._User_,
+          Role:    schema.User,
           Content: "generate two images of a cat",
        },
     }
@@ -1602,7 +1604,7 @@ func main() {
     if err != nil {
         log.Fatalf("Stream failed, err=%v", err)
     }
-    
+
     // 处理流式信息
     log.Printf("stream output: \n")
     index := 0
@@ -1614,7 +1616,7 @@ func main() {
         if err != nil {
            log.Fatalf("Stream Recv failed, err=%v", err)
         }
-    
+
         respBody, _ = json.MarshalIndent(msgChunk, "  ", "  ")
         log.Printf("stream chunk %d: body: %s\n", index, string(respBody))
         index++

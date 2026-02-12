@@ -720,7 +720,7 @@ func main() {
           
     // 处理回复
     /*
-        生成的多模态内容存储在 response.AssistantGentMultiContent 字段中
+        生成的多模态内容存储在 response.AssistantGenMultiContent 字段中
         本例中最终生成的 message 形如：
         AssistantMessage = schema.Message{
                         Role: schema.Assistant,
