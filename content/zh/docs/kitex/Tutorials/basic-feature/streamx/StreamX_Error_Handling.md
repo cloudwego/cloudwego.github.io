@@ -56,7 +56,7 @@ TTHeader Streaming 错误汇总
 ```go
 func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *echo.Request, stream echo.TestService_ServerStreamWithErrServer) error {
     // 检查用户账户余额
-    for isHasBalance (req.UserId) {
+    for hasBalance(req.UserId) {
         stream.Send(ctx, res)
     }
     // 返回用户余额不足错误

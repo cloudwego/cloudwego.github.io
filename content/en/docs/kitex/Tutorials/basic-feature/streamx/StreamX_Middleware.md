@@ -76,7 +76,7 @@ type UnaryMiddleware func(next UnaryEndpoint) UnaryEndpoint
 ### Inject client-side middlewares
 
 ```go
-import "github.com/cloudwego/client"
+import "github.com/cloudwego/kitex/client"
 
 cli, err := xxx.NewClient(
     "a.b.c",
@@ -109,7 +109,7 @@ cli, err := xxx.NewClient(
 ### Inject server-side middlewares
 
 ```go
-import "github.com/cloudwego/server"
+import "github.com/cloudwego/kitex/server"
 
 svr, err := xxx.NewServer(
     //...

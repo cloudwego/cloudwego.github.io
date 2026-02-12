@@ -16,7 +16,7 @@ kitex 会在检查用户不再持有 stream 对象时，主动调用一次 Close
 
 ### Client 持久化 stream 导致 stream 泄漏
 
-如果用户长期持有 stream 对象，而且不主动调用 stream.CloseSend ，框架会理所应当认为该 stream 还需要被使用，进而不会关闭 stream 以及相关 gorotuine。
+如果用户长期持有 stream 对象，而且不主动调用 stream.CloseSend()，框架会认为该 stream 仍需使用，进而不会关闭 stream 以及相关 goroutine。
 
 ### Server 调用 Recv 卡死
 

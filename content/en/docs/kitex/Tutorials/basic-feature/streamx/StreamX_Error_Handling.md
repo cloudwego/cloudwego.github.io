@@ -56,7 +56,7 @@ Usage example: For example, in the ChatGPT scenario, we need to constantly check
 ```go
 func (si *streamingService) ServerStreamWithErr(ctx context.Context, req *echo.Request, stream echo.TestService_ServerStreamWithErrServer) error {
     // Check user account balance
-    for isHasBalance (req.UserId) {
+    for hasBalance(req.UserId) {
         stream.Send(ctx, res)
     }
     // Return insufficient user balance error
