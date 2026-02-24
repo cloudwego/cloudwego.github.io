@@ -58,7 +58,7 @@ func main() {
 
     cm, err := gemini.NewChatModel(ctx, &gemini.Config{
         Client: client,
-        Model:  "gemini-1.5-flash",
+        Model:  "gemini-2.5-flash",
         ThinkingConfig: &genai.ThinkingConfig{
             IncludeThoughts: true,
             ThinkingBudget:  nil,
@@ -68,7 +68,7 @@ func main() {
         log.Fatalf("NewChatModel of gemini failed, err=%v", err)
     }
 
-    // If you are using a model that supports image understanding (e.g., gemini-1.5-flash-image-preview),
+    // If you are using a model that supports image understanding (e.g., gemini-2.5-flash-image),
     // you can provide both image and text input like this:
     /*
         image, err := os.ReadFile("./path/to/your/image.jpg")
@@ -129,7 +129,7 @@ type Config struct {
     Client *genai.Client
 
     // Model specifies which Gemini model to use
-    // Examples: "gemini-pro", "gemini-pro-vision", "gemini-1.5-flash"
+    // Examples: "gemini-pro", "gemini-pro-vision", "gemini-2.5-flash"
     Model string
 
     // MaxTokens limits the maximum number of tokens in the response
@@ -168,8 +168,8 @@ type Config struct {
 
     // ResponseModalities specifies the modalities the model can return.
     // Optional.
-    ResponseModalities []
-    
+    ResponseModalities []gemini.GeminiResponseModality
+
     MediaResolution genai.MediaResolution
 
     // Cache controls prefix cache settings for the model.
@@ -194,6 +194,7 @@ This component supports two caching strategies to improve latency and reduce API
 - Implicit cache: Managed by Gemini itself. The service may automatically reuse previous requests or responses. Expiration and reuse are controlled by Gemini and cannot be configured.
 
 The example below shows how to create a prefix cache and reuse it in subsequent calls.
+
 ```go
 toolInfoList := []*schema.ToolInfo{
     {

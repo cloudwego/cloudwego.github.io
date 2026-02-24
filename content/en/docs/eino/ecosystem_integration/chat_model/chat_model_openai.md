@@ -678,18 +678,18 @@ model, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
     Seed:            &seed,      // Random seed
     LogitBias:       map[string]int{}, // Token bias
     User:            &user,      // User identifier
-    
+
     ReasoningEffort:openai.ReasoningEffortLevelHigh, // Reasoning level, default "medium"
-    
+
     Modalities:     make([]openai.Modality, 0), // Model response modality types: ["text","audio"] default text
-    
+
     Audio: &openai.Audio{  // Audio output parameters, required when modality includes audio
         Format: openai.AudioFormatMp3,
         Voice:  openai.AudioVoiceAlloy,
     },
-    
+
     ExtraFields： map[string]any{}, // Extra fields, will add or override request fields, used for experimental validation
-       
+
 })
 ```
 
@@ -703,7 +703,7 @@ Conversation generation supports both normal mode and streaming mode:
 ```go
 // Invoke mode
 response, err := model.Generate(ctx, messages)
-    
+
 // Streaming mode
 stream, err := model.Stream(ctx, messages)
 ```
@@ -729,7 +729,7 @@ imageStr := base64.StdEncoding.EncodeToString(image)
 messages := []*schema.Message{
     // System message
     schema.SystemMessage("You are an assistant"),
-    
+
     // Multimodal message (with image)
     {
         Role: schema.User,
@@ -793,20 +793,20 @@ package main
 import (
     "context"
     "time"
-    
+
     "github.com/cloudwego/eino-ext/components/model/openai"
     "github.com/cloudwego/eino/schema"
 )
 
 func main() {
     ctx := context.Background()
-    
+
     // Initialize model
     model, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
         APIKey:  "your-api-key", // required
         Timeout: 30 * time.Second,
         Model:   "gpt-4", // required
-        
+
         // If the model supports audio generation and you need to generate audio, configure as follows
         // Modalities: []openai.Modality{openai.AudioModality, openai.TextModality},
         //Audio: &openai.Audio{
@@ -814,12 +814,12 @@ func main() {
         //        Voice:  openai.AudioVoiceAlloy,
         //},
 },
-        
+
     })
     if err != nil {
         panic(err)
     }
-    
+
     // Base64 format image data
     image, err := os.ReadFile("./examples/image/cat.png")
         if err != nil {
@@ -850,16 +850,16 @@ func main() {
             },
         },
     }
-    
+
     // Generate response
     response, err := model.Generate(ctx, messages)
     if err != nil {
         panic(err)
     }
-          
+
     // Process response
     /*
-        The generated multimodal content is stored in the response.AssistantGentMultiContent field
+        The generated multimodal content is stored in the response.AssistantGenMultiContent field
         In this example, the final generated message looks like:
         AssistantMessage = schema.Message{
                         Role: schema.Assistant,
@@ -867,7 +867,7 @@ func main() {
                              {Type: schema.ChatMessagePartTypeImageURL,
                               Image: &schema.MessageOutputImage{
                                   MessagePartCommon: schema.MessagePartCommon{
-                                      Base64Data: &DataStr, 
+                                      Base64Data: &DataStr,
                                       MIMEType: "image/png",
                                       },
                                   },
@@ -875,7 +875,7 @@ func main() {
                           },
                       }
     */
-    
+
     fmt.Printf("Assistant: %s\n", resp)
 }
 ```
@@ -888,14 +888,14 @@ package main
 import (
     "context"
     "time"
-    
+
     "github.com/cloudwego/eino-ext/components/model/openai"
     "github.com/cloudwego/eino/schema"
 )
 
 func main() {
     ctx := context.Background()
-    
+
     // Initialize model
     model, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
         APIKey:  "your-api-key",
@@ -905,20 +905,20 @@ func main() {
     if err != nil {
         panic(err)
     }
-    
+
     // Prepare messages
     messages := []*schema.Message{
         schema.SystemMessage("You are an assistant"),
         schema.UserMessage("Write a story"),
     }
-    
+
     // Get streaming response
     reader, err := model.Stream(ctx, messages)
     if err != nil {
         panic(err)
     }
     defer reader.Close() // Remember to close
-    
+
     // Process streaming content
     for {
         chunk, err := reader.Recv()

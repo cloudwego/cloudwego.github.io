@@ -60,7 +60,7 @@ func main() {
 
         cm, err := gemini.NewChatModel(ctx, &gemini.Config{
                 Client: client,
-                Model:  "gemini-1.5-flash",
+                Model:  "gemini-2.5-flash",
                 ThinkingConfig: &genai.ThinkingConfig{
                         IncludeThoughts: true,
                         ThinkingBudget:  nil,
@@ -70,7 +70,7 @@ func main() {
                 log.Fatalf("NewChatModel of gemini failed, err=%v", err)
         }
 
-        // If you are using a model that supports image understanding (e.g., gemini-1.5-flash-image-preview),
+        // If you are using a model that supports image understanding (e.g., gemini-2.5-flash-image),
         // you can provide both image and text input like this:
         /*
                 image, err := os.ReadFile("./path/to/your/image.jpg")
@@ -131,7 +131,7 @@ type Config struct {
         Client *genai.Client
 
         // Model specifies which Gemini model to use
-        // Examples: "gemini-pro", "gemini-pro-vision", "gemini-1.5-flash"
+        // Examples: "gemini-pro", "gemini-pro-vision", "gemini-2.5-flash"
         Model string
 
         // MaxTokens limits the maximum number of tokens in the response
@@ -170,8 +170,8 @@ type Config struct {
 
         // ResponseModalities specifies the modalities the model can return.
         // Optional.
-        ResponseModalities []
-        
+        ResponseModalities []gemini.GeminiResponseModality
+
         MediaResolution genai.MediaResolution
 
         // Cache controls prefix cache settings for the model.
@@ -856,14 +856,14 @@ cm, err := gemini.NewChatModel(ctx, &gemini.Config{
     // 模型及服务配置
     Client: client,                          // 配置好的 client
     Model:  "gemini-2.5-flash",              // 使用的模型
-    
+
     // 生成参数
     MaxTokens:         &maxTokens, // 最大生成长度
     Temperature:       &temp,      // 温度
     TopP:             &topP,      // Top-P 采样
 
     // 多模态设置
-    ResponseModalities: []GeminiResponseModality{}  // 指定模型返回的模态 支持 "TEXT", "IMAGE", "AUDIO"
+    ResponseModalities: []gemini.GeminiResponseModality{}  // 指定模型返回的模态 支持 "TEXT", "IMAGE", "AUDIO"
 })
 ```
 
@@ -874,7 +874,7 @@ cm, err := gemini.NewChatModel(ctx, &gemini.Config{
 ```go
 // invoke模式
 response, err := model.Generate(ctx, messages)
-    
+
 // 流式模式
 stream, err := model.Stream(ctx, messages)
 ```
@@ -884,6 +884,7 @@ stream, err := model.Stream(ctx, messages)
 ```go
 import (
     "encoding/base64"
+    "log"
     "os"
 
     "github.com/cloudwego/eino/schema"
@@ -900,7 +901,7 @@ imageStr := base64.StdEncoding.EncodeToString(image)
 messages := []*schema.Message{
     // 系统消息
     schema.SystemMessage("你是一个助手"),
-    
+
     // 多模态消息（包含图片）
     {
         Role: schema.User,
@@ -997,7 +998,7 @@ func main() {
         log.Printf("NewChatModel error: %v", err)
         return
     }
-    
+
     // 生成 base64 格式的图片数据
     image, err := os.ReadFile("./examples/image/cat.png")
         if err != nil {
@@ -1006,7 +1007,7 @@ func main() {
 
     imageStr := base64.StdEncoding.EncodeToString(image)
 
-    
+
     // 准备消息
     messages := []*schema.Message{
         schema.SystemMessage("你是一个图片生成助手，可以仿照用户给定的图片生成一个风格近似的图片"),
@@ -1014,7 +1015,7 @@ func main() {
             Role: schema.User,
             UserInputMultiContent: []schema.MessageInputPart{
                 {
-                    Type: schema.ChatMessagePartTypeImage,
+                    Type: schema.ChatMessagePartTypeImageURL,
                     Image: &schema.MessageInputImage{
                     MessagePartCommon: schema.MessagePartCommon{
                         Base64Data: &imageStr,
@@ -1029,16 +1030,16 @@ func main() {
             },
         },
     }
-    
+
     // 生成回复
-    response, err := model.Generate(ctx, messages)
+        resp, err := cm.Generate(ctx, messages)
     if err != nil {
         panic(err)
     }
-          
+
     // 处理回复
     /*
-    生成的多模态内容存储在 AssistantGentMultiContent 字段中
+    生成的多模态内容存储在 AssistantGenMultiContent 字段中
         本例中最终生成的 message 形如：
         AssistantMessage = schema.Message{
                         Role: schema.Assistant,
@@ -1046,7 +1047,7 @@ func main() {
                              {Type: schema.ChatMessagePartTypeImageURL,
                               Image: &schema.MessageOutputImage{
                                   MessagePartCommon: schema.MessagePartCommon{
-                                      Base64Data: &DataStr, 
+                                      Base64Data: &DataStr,
                                       MIMEType: "image/png",
                                       },
                                   },
@@ -1054,7 +1055,7 @@ func main() {
                           },
                       }
     */
-    fmt.Printf("Assistant: %s\n", resp)
+    fmt.Printf("Assistant: %s\n", resp.Content)
 }
 ```
 
@@ -1099,7 +1100,7 @@ func main() {
         log.Printf("NewChatModel error: %v", err)
         return
     }
-    
+
     // 准备消息
     messages := []*schema.Message{
         schema.SystemMessage("你是一个助手"),
@@ -1113,21 +1114,21 @@ func main() {
             },
         },
     }
-    
+
     // 获取流式回复
-    reader, err := model.Stream(ctx, messages)
+    reader, err := cm.Stream(ctx, messages)
     if err != nil {
         panic(err)
     }
     defer reader.Close() // 注意要关闭
-    
+
     // 处理流式内容
     for {
         chunk, err := reader.Recv()
         if err != nil {
             break
         }
-        fmt.Printf("Assistant: %s\n", chunk)
+        fmt.Printf("Assistant: %s\n", chunk.Content)
     }
 }
 ```
