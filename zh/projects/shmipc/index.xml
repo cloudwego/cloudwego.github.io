@@ -1,0 +1,79 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – Shmipc</title><link>https://www.cloudwego.io/zh/projects/shmipc/</link><description>Recent content in Shmipc on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate>Tue, 04 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cloudwego.io/zh/projects/shmipc/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: 字节跳动开源 Shmipc：基于共享内存的高性能 IPC</title><link>https://www.cloudwego.io/zh/blog/2023/04/04/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-shmipc%E5%9F%BA%E4%BA%8E%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD-ipc/</link><pubDate>Tue, 04 Apr 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2023/04/04/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-shmipc%E5%9F%BA%E4%BA%8E%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD-ipc/</guid><description>
+&lt;h2 id="简介"&gt;简介&lt;/h2&gt;
+&lt;p&gt;Shmipc 是字节跳动服务框架团队研发的&lt;strong&gt;高性能进程间通讯库&lt;/strong&gt;，它基于&lt;strong&gt;共享内存&lt;/strong&gt;构建，具有&lt;strong&gt;零拷贝&lt;/strong&gt;的特点，同时它引入的同步机制具有&lt;strong&gt;批量收割 IO&lt;/strong&gt; 的能力，相对于其他进程间通讯方式能明显提升性能。
+在字节内部，Shmipc 应用于 Service Mesh 场景下，mesh proxy 进程与业务逻辑进程、与通用 sidecar 进程的通讯， 在&lt;strong&gt;大包场景&lt;/strong&gt;和 &lt;strong&gt;IO 密集型场景&lt;/strong&gt;能够取得了显著的性能收益。&lt;/p&gt;
+&lt;p&gt;开源社区关于这方面的资料不多，Shmipc 的开源希望能为社区贡献一份力量，提供一份参考。本文主要介绍 Shmipc 的一些主要的设计思路、落地过程遇到的问题以及后续的演进规划。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;go 版本实现: &lt;a href="https://github.com/cloudwego/shmipc-go"&gt;https://github.com/cloudwego/shmipc-go&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;设计细节: &lt;a href="https://github.com/cloudwego/shmipc-spec"&gt;https://github.com/cloudwego/shmipc-spec&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="项目背景"&gt;项目背景&lt;/h2&gt;
+&lt;p&gt;在字节，Service Mesh 在落地的过程中进行了大量的性能优化工作，其中 Service Mesh 的流量劫持是通过，mesh proxy 与微服务框架约定的地址进行进程间通讯来完成，
+性能会优于开源方案中的 iptables。但常规的优化手段已不能带来明显的性能提升。于是我们把目光放到了进程间通讯上，Shmipc 由此诞生。&lt;/p&gt;
+&lt;h2 id="设计思路"&gt;设计思路&lt;/h2&gt;
+&lt;h3 id="零拷贝"&gt;零拷贝&lt;/h3&gt;
+&lt;p&gt;在生产环境中比较广泛使用的进程间通讯方式是 unix domain socket 与 TCP loopback（localhost:$PORT），两者从 benchmark 看性能差异不大。
+从技术细节看，都需要将通讯的数据在用户态和内核态之间进行拷贝。在 RPC 场景下，一次 RPC 流程中在进程间通讯上会有四次的内存拷贝，Request 路径两次， Response 路径两次。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Shmipc_Open_Source/zero_copy.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;虽然现代 CPU 上进行顺序的 copy 非常快，但如果我们能够消除这多达四次的内存拷贝，在大包场景下也能在一定程度上节省 CPU 使用。
+而基于共享内存通讯零拷贝的特性，我们可以很容易达成这一点。但为了达到零拷贝的效果，围绕共享内存本身，还会产生有许多额外的工作，比如：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;深入微服务框架的序列化与反序列化。我们希望当 Request 或 Response 序列化完成时，对应的二进制数据已经存在共享内存中。而不是序列化到一块非共享内存的 buffer 中，然后再拷贝到共享内存 buffer。&lt;/li&gt;
+&lt;li&gt;实现一种进程同步机制。当一个进程把数据写入共享内存后，另外一个进程并不知道，因此需要同步机制进行通知。&lt;/li&gt;
+&lt;li&gt;高效的内存分配和回收。保证跨进程的共享内存的分配和回收机制的开销足够低，避免其掩盖零拷贝的特性带来的收益。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="同步机制"&gt;同步机制&lt;/h3&gt;
+&lt;p&gt;分场景考虑：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;按需实时同步。适用于在线场景，对时延极其敏感，每次写入操作完成后都通知对端进程。Linux 下，可做选择的比较多，TCP loopback、unix domain socket、event fd 等。
+event fd 的 benchmark 性能会略好，但跨进程传递 fd 会引入过多复杂性，其带来的性能提升在 IPC 上不太明显，复杂性与性能中间的权衡需要慎重考虑。在字节，我们选择了 unix domain socket 来进行进程同步。&lt;/li&gt;
+&lt;li&gt;定时同步。适用于离线场景，对时延不敏感。通过高间隔的 sleep 访问共享内存中自定义的标志位来鉴别是否有数据写入。但注意 sleep 本身也需要系统调用，开销大于 unix domain socket 的读写。&lt;/li&gt;
+&lt;li&gt;轮询同步。适用于时延非常敏感，CPU 不那么敏感的场景。可以通过单核轮询共享内存中的自定义标志位来完成。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;总的来说按需实时同步和定期同步需要系统调用来完成，轮询同步不需要系统调用，但需要常态跑满一个 CPU 核心。&lt;/p&gt;
+&lt;h3 id="批量收割-io"&gt;批量收割 IO&lt;/h3&gt;
+&lt;p&gt;在线场景中按需实时同步，每次数据写入都需要进行一次进行进程同步（下图中的 4），虽然延迟问题解决了，但在性能上，需要交互的数据包需要大于一个比较大的阈值，零拷贝带来的收益才能突显。
+因此在共享内存中构造了一个 IO 队列的来完成批量收割 IO，使其在小包 IO 密集场景也能显现收益。核心思想是：当一个进程把请求写入 IO 队列后，会给另外一个进程发通知来处理。
+那么在下一个请求进来时（对应下图中的 IOEvent 2~N，一个 IOEvent 可以独立描述一个请求在共享内存中的位置），如果对端进程还在处理 IO 队列中的请求，那么就不必进行通知。因此，IO 越密集，批处理效果就越好。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Shmipc_Open_Source/share_memory.jpeg" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;另外就是离线场景中，定时同步本身就是批量处理 IO 的，批处理的效果能够有效减少进程同步带来的系统调用，sleep 间隔越高，进程同步的开销就越低。
+对于轮询同步则不需要考虑批量收割 IO，因为这个机制本身是为了减少进程同步开销。而轮询同步直接占满一个 CPU 核心，相当于默认把同步机制的开销拉满以获取极低的同步延迟。&lt;/p&gt;
+&lt;h2 id="性能收益"&gt;性能收益&lt;/h2&gt;
+&lt;h3 id="benchmark"&gt;Benchmark&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Shmipc_Open_Source/benchmark.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;其中 X 轴为数据包大小，Y 轴为一次 Ping-Pong 的耗时，单位为微秒，越小越好。可以看到在小包场景下，Shmipc 相对于 unix domain socket 也能获得一些收益，并且随着&lt;strong&gt;包大小越大性能越好&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;数据源： &lt;code&gt;git clone https://github.com/cloudwego/shmipc-go &amp;amp;&amp;amp; go test -bench=BenchmarkParallelPingPong -run BenchmarkParallelPingPong&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id="生产环境"&gt;生产环境&lt;/h3&gt;
+&lt;p&gt;在字节生产环境的 Service Mesh 生态中，我们在&lt;strong&gt;3000+服务、100w+实例上&lt;/strong&gt;的应用了 Shmipc。不同的业务场景显现出不同的收益，
+其中收益最高的风控业务降低了整体&lt;strong&gt;24%的资源使用&lt;/strong&gt;，当然也有无明显收益的甚至劣化的场景出现。但&lt;strong&gt;在大包和 IO 密集型场景均能显现出显著收益&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id="采坑记录"&gt;采坑记录&lt;/h2&gt;
+&lt;p&gt;在字节实际落地的过程中我们也踩了一些坑，导致一些线上事故，比较具有参考价值。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;共享内存泄漏。IPC 过程共享内存分配和回收涉及到两个进程，稍有不慎就容易发生共享内存的泄漏。问题虽然非常棘手，但只要能够做到泄漏时主动发现，以及泄漏之后有观测手段可以排查即可。
+&lt;ol&gt;
+&lt;li&gt;主动发现。可以通过增加一些统计信息然后汇总到监控系统来做到主动发现，比如总分配和总回收的内存大小。&lt;/li&gt;
+&lt;li&gt;观测手段。在设计共享内存的布局时增加一些元信息，使得在发生泄漏之后，我们可以通过内置的 debug 工具 dump 泄漏时刻的共享内存来进行分析。能够知道所泄漏的内存有多少，里面的内容是什么，以及和这部分内容相关的一些元信息。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;串包。串包是最头疼的问题，出现的原因是千奇百怪的，往往造成严重后果。我们曾在某业务上发生串包事故，出现的原因是因为大包导致共享内存耗尽，
+fallback 到常规路径的过程中设计存在缺陷，小概率出现串包。排查过程和原因并不具备共性，可以提供更多的参考是增加更多场景的集成测试和单元测试将串包扼杀在摇篮中。&lt;/li&gt;
+&lt;li&gt;共享内存踩踏。应该尽可能使用 &lt;strong&gt;memfd&lt;/strong&gt; 来共享内存，而不是 mmap 文件系统中的某个路径。早期我们通过 mmap 文件系统的路径来共享内存，Shmipc 的开启和共享内存的路径由环境变量指定，
+启动过程由引导进程注入应用进程。那么存在一种情况是应用进程可能会 fork 出一个进程，该进程继承了应用进程的环境变量并且也集成了 Shmipc，然后 fork 的进程和应用进程 mmap 了同一块共享内存，发现踩踏。
+在字节的事故场景是应用进程使用了 Go 的 plugin 机制从外部加载 &lt;code&gt;.so&lt;/code&gt; 来运行，该 &lt;code&gt;.so&lt;/code&gt; 集成了 Shmipc，并且跑在应用进程里，能看到所有环境变量，于是就和应用进程 mmap 了同一片共享内存，运行过程发生未定义行为。&lt;/li&gt;
+&lt;li&gt;Sigbus coredump。早期我们通过 mmap &lt;code&gt;/dev/shm/&lt;/code&gt;路径（tmpfs）下的文件来共享内存，应用服务大都运行在 docker 容器实例中。
+容器实例对 tmpfs 有容量限制（可以通过 df -h 观测），这会使得 mmap 的共享内存如果超过该限制就会出现 Sigbus，
+并且 mmap 本身不会有任何报错，但在运行期，使用到超过限制的地址空间时才会出现 Sigbus 导致应用进程崩溃。 解决方式和第三点一样，使用 &lt;strong&gt;memfd&lt;/strong&gt; 来共享内存。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="后续演进"&gt;后续演进&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;整合至微服务 RPC 框架 &lt;a href="https://github.com/cloudwego/kitex"&gt;CloudWeGo/Kitex&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;整合至微服务 HTTP 框架 &lt;a href="https://github.com/cloudwego/hertz"&gt;CloudWeGo/Hertz&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;开源 Rust 版本的 Shmipc 并整合至 Rust RPC 框架 &lt;a href="https://github.com/cloudwego/volo"&gt;CloudWeGo/Volo&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;开源 C++ 版本的 Shmipc。&lt;/li&gt;
+&lt;li&gt;引入定时同步机制适用于离线场景。&lt;/li&gt;
+&lt;li&gt;引入轮询同步的同步机制适用于对延迟有极致要求的场景。&lt;/li&gt;
+&lt;li&gt;赋能其他 IPC 场景， 比如 Log SDK 与 Log Agent， Metrics SDK 与 Metrics Agent 等。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="总结"&gt;总结&lt;/h2&gt;
+&lt;p&gt;希望本文能让大家对于 Shmipc 有一个初步的了解，知晓其设计原理，更多实现细节以及使用方法请参考文章开头给出的项目地址。
+欢迎各位感兴趣的同学向 Shmipc 项目提交 Issue 和 PR，共同建设 &lt;a href="https://github.com/cloudwego"&gt;CloudWeGo&lt;/a&gt; 开源社区，也期望 Shmipc 在 IPC 领域助力越来越多开发者和企业构建高性能云原生架构。&lt;/p&gt;</description></item></channel></rss>

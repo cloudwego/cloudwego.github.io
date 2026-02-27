@@ -1,0 +1,976 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – Hertz</title><link>https://www.cloudwego.io/zh/projects/hertz/</link><description>Recent content in Hertz on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate>Wed, 21 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cloudwego.io/zh/projects/hertz/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Hertz Release</title><link>https://www.cloudwego.io/zh/blog/releases/hertz/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/releases/hertz/</guid><description/></item><item><title>Blog: Hertz Release v0.10.0</title><link>https://www.cloudwego.io/zh/blog/2025/05/21/hertz-release-v0.10.0/</link><pubDate>Wed, 21 May 2025 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2025/05/21/hertz-release-v0.10.0/</guid><description>
+&lt;p&gt;Hertz v0.10.0 版本新增两项功能并修复了一些问题。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;集成 SSE 功能。使用方法请参阅 &lt;a href="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/sse/"&gt;SSE&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;添加 http.Handler 适配器，使用官方 net/http 生态系统扩展 Hertz。使用方法请参阅 &lt;a href="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/http-adaptor/"&gt;Adaptor&lt;/a&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1327"&gt;#1327&lt;/a&gt;] feat(adaptor): 为 http.Handler 添加新的 HertzHandler&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1349"&gt;#1349&lt;/a&gt;] feat(sse): SetLastEventID&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1343"&gt;#1343&lt;/a&gt;] feat(sse): reader 支持取消流&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1341"&gt;#1341&lt;/a&gt;] feat(server): 检测请求 race&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1339"&gt;#1339&lt;/a&gt;] feat(sse): 添加 LastEventID helper&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1335"&gt;#1335&lt;/a&gt;] feat(protocol): 新的 sse 包&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1322"&gt;#1322&lt;/a&gt;] feat: server 使用标准 go net 传输时感知客户端连接关闭&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1340"&gt;#1340&lt;/a&gt;] fix:仅在 amd64/arm64 linux/darwin 上使用 netpoll 和 sonic&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1333"&gt;#1333&lt;/a&gt;] fix(protocol): 非预期的设置 resp.bodyStream&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1329"&gt;#1329&lt;/a&gt;] fix(client): sse 场景下自动切换为 stream body 模式&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1332"&gt;#1332&lt;/a&gt;] fix(server): server 关闭时检查 ExitWaitTimeout&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1316"&gt;#1316&lt;/a&gt;] fix: 优先使用自定义 validator&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="tests"&gt;Tests&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1336"&gt;#1336&lt;/a&gt;] test(protocol): 修复硬编码的监听地址&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1353"&gt;#1353&lt;/a&gt;] chore：更新 netpoll 依赖&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1337"&gt;#1337&lt;/a&gt;] chore(hz): 更新 hz 工具 v0.9.7&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1328"&gt;#1328&lt;/a&gt;] ci: 禁用 codecov 注释&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Blog: Hertz v0.9.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2024/05/30/hertz-v0.9.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 30 May 2024 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2024/05/30/hertz-v0.9.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;p&gt;Hertz v0.9.0 版本中主要支持常规迭代与优化。&lt;/p&gt;
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1101"&gt;#1101&lt;/a&gt;] 增加一个方法能够放逐掉当前的 RequestContext（请求结束不入池）&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1056"&gt;#1056&lt;/a&gt;] 为参数绑定提供更多的默认类型支持&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1057"&gt;#1057&lt;/a&gt;] 当请求缺少Host短路时或者非法path时设置全局中间件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/921"&gt;#921&lt;/a&gt;] 对路由进行严格排序，防止生成代码出现大量的 diff&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1037"&gt;#1037&lt;/a&gt;] 在 trace 中过滤 shortConnErr 错误&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1102"&gt;#1102&lt;/a&gt;] 修复当使用 ResponseHeader.Set/Add 设置 Trailer 时，有可能会 panic 的问题&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1107"&gt;#1107&lt;/a&gt;] 修复路由排序的失效问题&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1064"&gt;#1064&lt;/a&gt;] 重构 client query 对于 enum 传递的配置形式&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Blog: Hertz v0.8.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2024/01/12/hertz-v0.8.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Fri, 12 Jan 2024 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2024/01/12/hertz-v0.8.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;p&gt;Hertz v0.8.0 版本中，除了常规迭代优化之外，我们还带来了一个重要 feature。&lt;/p&gt;
+&lt;h2 id="partitioned-cookies"&gt;Partitioned cookies&lt;/h2&gt;
+&lt;p&gt;在 Hertz v0.8.0 版本中，我们支持了 partitioned cookies 特性。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz/pull/1041"&gt;https://github.com/cloudwego/hertz/pull/1041&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id="背景"&gt;背景&lt;/h3&gt;
+&lt;p&gt;三方 Cookie 为 Web 提供了跨站点跟踪的能力，它的存在为 Web 用户的隐私和安全都带来了巨大威胁。Chrome 从 2024 年第一季度开始对 1% 的用户禁用第三方 Cookie，从 2024 年第三季度开始逐步将禁用范围扩大到 100%。
+Partitioned Cookies Cookies Having Independent Partitioned State (CHIPS) 作为三方Cookie的替代方案，提供了跨站（cross-site）请求携带三方 Cookie 的能力。&lt;/p&gt;
+&lt;h4 id="通过-set-cookie-header-设置-partitioned-cookie"&gt;通过 Set-Cookie Header 设置 Partitioned Cookie&lt;/h4&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;Set-Cookie header:
+Set-Cookie: __Host-name=value; Secure; Path=/; SameSite=None; Partitioned;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="how-to"&gt;How to&lt;/h3&gt;
+&lt;h4 id="升级-hertz-版本"&gt;升级 Hertz 版本&lt;/h4&gt;
+&lt;p&gt;Hertz 在 v0.8.0 添加了对 Partitioned Cookies 的支持，你需要升级到&amp;gt;=v0.8.0来使用 Partitioned Cookie。&lt;/p&gt;
+&lt;h4 id="如何使用-partitioned-cookies"&gt;如何使用 Partitioned Cookies&lt;/h4&gt;
+&lt;p&gt;目前 Hertz 支持 Partitioned Cookies，但还不支持通过 SetCookie 传入是否为 Partitioned，我们将在下个小版本增加此功能。在此之前，你可以参考下面的代码示例来使用 Partitioned Cookies。&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;func SetPartitionedCookie(c *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
+if path == &amp;#34;&amp;#34; {
+path = &amp;#34;/&amp;#34;
+}
+cookie := protocol.AcquireCookie()
+defer protocol.ReleaseCookie(cookie)
+cookie.SetKey(name)
+cookie.SetValue(url.QueryEscape(value))
+cookie.SetMaxAge(maxAge)
+// 如果 name 前缀为 __Host，则 Path 必须为/
+cookie.SetPath(path)
+cookie.SetDomain(domain)
+// Secure 必须为 true。
+cookie.SetSecure(secure)
+cookie.SetHTTPOnly(httpOnly)
+cookie.SetSameSite(sameSite)
+cookie.SetPartitioned(true)
+c.Response.Header.SetCookie(cookie)
+}
+func main() {
+h := server.Default()
+h.GET(&amp;#34;/partitioned&amp;#34;, func(ctx context.Context, c *app.RequestContext) {
+SetPartitionedCookie(c, &amp;#34;user&amp;#34;, &amp;#34;hertz&amp;#34;, 1, &amp;#34;/&amp;#34;, &amp;#34;localhost&amp;#34;, protocol.CookieSameSiteNoneMode, true, true)
+c.JSON(consts.StatusOK, utils.H{&amp;#34;partitioned&amp;#34;: &amp;#34;yes&amp;#34;})
+})
+h.Spin()
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;验证 Set-Cookie Header&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;curl -v http://localhost:8888/partitioned
+* Trying [::1]:8888...
+* Connected to localhost (::1) port 8888
+&amp;gt; GET /partitioned HTTP/1.1
+&amp;gt; Host: localhost:8888
+&amp;gt; User-Agent: curl/8.4.0
+&amp;gt; Accept: */*
+&amp;gt;
+&amp;lt; HTTP/1.1 200 OK
+&amp;lt; Server: hertz
+&amp;lt; Date: Fri, 12 Jan 2024 07:01:02 GMT
+&amp;lt; Content-Type: application/json; charset=utf-8
+&amp;lt; Content-Length: 21
+&amp;lt; Set-Cookie: user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned
+&amp;lt;
+* Connection #0 to host localhost left intact
+{&amp;#34;partitioned&amp;#34;:&amp;#34;yes&amp;#34;}%
+&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>Blog: Hertz v0.7.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2023/09/26/hertz-v0.7.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Tue, 26 Sep 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2023/09/26/hertz-v0.7.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;p&gt;Hertz v0.7.0 版本中，除了常规迭代优化之外，我们还带来了一个重要 feature。&lt;/p&gt;
+&lt;h2 id="参数绑定重构"&gt;参数绑定重构&lt;/h2&gt;
+&lt;p&gt;在 Hertz v0.7.0 版本中，我们重构了 hertz 参数绑定&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz/pull/541"&gt;https://github.com/cloudwego/hertz/pull/541&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id="重构说明"&gt;重构说明&lt;/h3&gt;
+&lt;p&gt;在 Hertz v0.7.0 版本中，我们重构了参数绑定能力，将参数绑定能力收敛到框架本身，以更好地支持用户的需求。本次重构主要有以下特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;功能一致：
+&lt;ul&gt;
+&lt;li&gt;Binder：重构后在 Hertz 内部实现了一个默认的 Binder，其功能与重构前完全对齐，并将重构前的绑定能力以拓展的形式实现在 hertz-contrib 下&lt;/li&gt;
+&lt;li&gt;Validator： 仍使用 go-tagexpr 作为默认实现，保证功能一致&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;配置收敛：
+&lt;ul&gt;
+&lt;li&gt;重构前：参数绑定的行为大多通过全局参数的形式进行配置，可能导致多个组件出现配置冲突&lt;/li&gt;
+&lt;li&gt;重构后：以 BindConfig 和 ValidateConfig 的结构通过 &amp;lsquo;WithOption&amp;rsquo; 的形式注入到 Hertz Engine 中，既能统一配置形式，又能避免配置冲突的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;可自定义 Binder 和 Validator：
+&lt;ul&gt;
+&lt;li&gt;自定义 Binder：可使用 &amp;ldquo;WithCustomBinder&amp;rdquo; 来注入自定义的 Binder，目前已有拓展 hertz-contrib/binding/go_tagexpr&lt;/li&gt;
+&lt;li&gt;自定义 Validator：可使用 &amp;ldquo;WithCustomValidator&amp;rdquo; 来注入自定义的 Validator，目前已经将 go-playground/validator 进行了拓展&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;性能提升：重构后绑定性能较之前有提升，详见后文压测数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="使用方法"&gt;使用方法&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;package&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;main&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;import&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;github.com/cloudwego/hertz/pkg/app/server/binding&amp;#34;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;github.com/cloudwego/hertz/pkg/app/server&amp;#34;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;func&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;main&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;bindConfig&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;:=&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;binding&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;NewBindConfig&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;bindConfig&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;LooseZeroMode&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;true&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;h&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;:=&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;server&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;New&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;server&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;WithBindConfig&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;bindConfig&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;))&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;...&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;h&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Spin&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="压测数据"&gt;压测数据&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz-benchmark/tree/main/binding"&gt;https://github.com/cloudwego/hertz-benchmark/tree/main/binding&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;完整的 Release Note 可以参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hertz: &lt;a href="https://github.com/cloudwego/hertz/releases/tag/v0.7.0"&gt;https://github.com/cloudwego/hertz/releases/tag/v0.7.0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hz(脚手架): &lt;a href="https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.7.0"&gt;https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.7.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz v0.6.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2023/03/02/hertz-v0.6.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 02 Mar 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2023/03/02/hertz-v0.6.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;p&gt;Hertz 0.6.0 版本中，除了常规迭代优化之外，我们还带来了多个重要 feature。&lt;/p&gt;
+&lt;h2 id="支持-http-trailer"&gt;支持 HTTP Trailer&lt;/h2&gt;
+&lt;p&gt;在 Hertz v0.6.0 版本中，我们支持了 HTTP Trailer 的编码和解析。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz-examples/tree/main/trailer"&gt;https://github.com/cloudwego/hertz-examples/tree/main/trailer&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;写 Trailer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// server 端&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;func&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;handler&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;ctx&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;*&lt;/span&gt;&lt;span style="color:#000"&gt;app&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;RequestContext&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;){&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Response&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Header&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Trailer&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;().&lt;/span&gt;&lt;span style="color:#000"&gt;Set&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Hertz&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Good&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// client 端&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000"&gt;req&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Header&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Trailer&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;().&lt;/span&gt;&lt;span style="color:#000"&gt;Set&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Hertz&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Good&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;读 Trailer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// server 端&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;func&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;handler&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;ctx&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;*&lt;/span&gt;&lt;span style="color:#000"&gt;app&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;RequestContext&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;){&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Request&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Header&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Trailer&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;().&lt;/span&gt;&lt;span style="color:#000"&gt;Get&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Hertz&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// client 端&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000"&gt;resp&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Header&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Trailer&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;().&lt;/span&gt;&lt;span style="color:#000"&gt;Get&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Hertz&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="http11-支持-response-writer-劫持"&gt;HTTP/1.1 支持 Response Writer 劫持&lt;/h2&gt;
+&lt;p&gt;在 Hertz v0.6.0 版本中，我们扩展了 HTTP/1.1 写请求的方式，在原来写请求流程的基础之上，支持用户在业务 handler/中间件中劫持 Response Writer，实现更加灵活的写请求方式。
+简单来说，原来所有的“底层写”逻辑统一放到 handler/中间件返回之后，这个带来两个比较明显的局限性：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;用户无法控制请求真正 flush 到对端的时机&lt;/li&gt;
+&lt;li&gt;针对 chunk 方式增量产生数据 &amp;amp; 实时写到对端的场景，在老的架构之上用法相对复杂，限制相对较多&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;基于此我们扩展出一套能够提供自行 flush 请求头和请求体的能力，同时提供了一个支持用户按需发送 chunk 数据的 Writer。详细实现参考：https://github.com/cloudwego/hertz/pull/610&lt;/p&gt;
+&lt;h3 id="主要变更"&gt;主要变更&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;增加了一个扩展 Writer 的接口定义，实现了这个接口的 Writer 都可以用作劫持 Response Writer：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;type&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;ExtWriter&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;interface&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;io&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Writer&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Flush&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;error&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// Finalize will be called by framework before the writer is released.&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// Implementations must guarantee that Finalize is safe for multiple calls.&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Finalize&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;error&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;提供了一个实现了上述接口的 Chunk Writer（有类似需求都可以参考这个来实现）：&lt;code&gt;chunkedBodyWrite&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;HTTP/1.1 具体写请求的地方针对被劫持了 Writer 的 Response 写操作做了对应的处理（跳过默认写请求逻辑），最后调用&lt;code&gt;ExtWriter&lt;/code&gt;接口的&lt;code&gt;Finalize()&lt;/code&gt;方法完成一次请求写回&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="使用方法"&gt;使用方法&lt;/h3&gt;
+&lt;p&gt;如上，Hertz 提供了一个默认的&lt;code&gt;ExtWriter&lt;/code&gt;实现满足用户在 handler/中间件中的主动 flush 需求，使用方式也非常简单：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#000"&gt;h&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;GET&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;/flush/chunk&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;func&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;ctx&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;*&lt;/span&gt;&lt;span style="color:#000"&gt;app&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;RequestContext&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// Hijack the writer of response&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Response&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;HijackWriter&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;resp&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;NewChunkedBodyWriter&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;&amp;amp;&lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Response&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;GetWriter&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()))&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;for&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;i&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;:=&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;0&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;i&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;&amp;lt;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;10&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;i&lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;++&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Write&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;([]&lt;/span&gt;&lt;span style="color:#204a87"&gt;byte&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;fmt&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Sprintf&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;chunk %d: %s&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;i&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;strings&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Repeat&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;hi~&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;i&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;))))&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// nolint: errcheck&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Flush&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// nolint: errcheck&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;time&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Sleep&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;200&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;*&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;time&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Millisecond&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;})&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="脚手架使用优化--最佳实践"&gt;脚手架使用优化 &amp;amp; 最佳实践&lt;/h2&gt;
+&lt;p&gt;在 hz v0.6.0 版本中，我们对生成代码的组织结构进行一系列的优化，从而可生成更加灵活的代码组织结构&lt;/p&gt;
+&lt;h3 id="主要优化"&gt;主要优化&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;new&lt;/code&gt; 命令支持 &amp;ldquo;router_dir&amp;rdquo; 选项，并配合已有的 &amp;ldquo;handler_dir&amp;rdquo;、&amp;ldquo;model_dir&amp;rdquo;，可完全自定义 IDL 生成产物的路径；并且会将这些自定义选项持久化到 &amp;ldquo;.hz&amp;rdquo; 文件中，可在 &lt;code&gt;update&lt;/code&gt; 时自动读取，减少命令的复杂度&lt;/li&gt;
+&lt;li&gt;增加向上搜索 &amp;ldquo;go.mod&amp;rdquo; 文件的能力，从而使得 hertz 在作为一个子项目时可以和其他项目共享同一个 &amp;ldquo;go module&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;增加 &amp;ldquo;handler&amp;rdquo; 中引用第三方 IDL 产物的能力，可将 IDL 产物放到第三方仓库单独维护，使其不在项目目录中存放，进一步增强 IDL 管理能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="最佳实践"&gt;最佳实践&lt;/h3&gt;
+&lt;p&gt;我们利用 &amp;ldquo;hz v0.6.0&amp;rdquo; 重写了 &amp;ldquo;&lt;a href="https://github.com/cloudwego/biz-demo/pull/26"&gt;biz-demo/easy-note&lt;/a&gt;&amp;quot;，主要利用了如下 hz 的特性&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;利用 &amp;ldquo;hz client&amp;rdquo; 的能力，基于 IDL 生成访问 &amp;ldquo;api server&amp;rdquo; 的 hertz client 调用代码&lt;/li&gt;
+&lt;li&gt;利用自定义 &amp;ldquo;router_dir&amp;rdquo;、 &amp;ldquo;handler_dir&amp;rdquo;、&amp;ldquo;model_dir&amp;rdquo; 选项，重新调整 &amp;ldquo;api server&amp;rdquo; 代码的组织结构，去掉 &amp;ldquo;biz&amp;rdquo; 目录的限制&lt;/li&gt;
+&lt;li&gt;利用 &amp;ldquo;向上搜索 go.mod&amp;rdquo; 的能力，使得 &amp;ldquo;api server&amp;rdquo; 可以作为 &amp;ldquo;easy-note&amp;rdquo; 的子项目共享同一个 &amp;ldquo;go module&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;利用 &amp;ldquo;handler 引用第三方 IDL 产物&amp;rdquo; 的能力并配合 &amp;ldquo;hz model&amp;rdquo; 的能力，使得 IDL 产物单独存到到 &amp;ldquo;easy-note&amp;rdquo; 项目里，而并不存放到 &amp;ldquo;api server&amp;rdquo; 子项目里&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="完整-release-note"&gt;完整 Release Note&lt;/h2&gt;
+&lt;p&gt;完整的 Release Note 可以参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hertz: &lt;a href="https://github.com/cloudwego/hertz/releases/tag/v0.6.0"&gt;https://github.com/cloudwego/hertz/releases/tag/v0.6.0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hz(脚手架): &lt;a href="https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.6.0"&gt;https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.6.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: HTTP 框架 Hertz 实践入门：性能测试指南</title><link>https://www.cloudwego.io/zh/blog/2023/02/24/http-%E6%A1%86%E6%9E%B6-hertz-%E5%AE%9E%E8%B7%B5%E5%85%A5%E9%97%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/</link><pubDate>Fri, 24 Feb 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2023/02/24/http-%E6%A1%86%E6%9E%B6-hertz-%E5%AE%9E%E8%B7%B5%E5%85%A5%E9%97%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97/</guid><description>
+&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
+&lt;p&gt;2021 年 9 月 8 日，字节跳动宣布正式开源 &lt;a href="https://github.com/cloudwego"&gt;CloudWeGo&lt;/a&gt;。CloudWeGo 是一套字节跳动内部微服务中间件集合，具备&lt;strong&gt;高性能、强扩展性和稳定性&lt;/strong&gt;的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。
+2022 年 6 月 21 日，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 正式开源。日前，CloudWeGo 团队正式开源字节跳动最大的 HTTP 框架 Hertz。Hertz 自发布以来，得到了大量用户的关注，累计收获了 3K+ star。有很多用户自己进行了测试，感谢大家对我们的关注和支持。
+本文旨在分享开发者在压测 Hertz 时需要了解的场景和技术问题。这些建议有助于用户更好地结合真实 HTTP 场景对 Hertz 进行调优，使之更贴合业务需要、发挥最佳性能。用户也可以参考官方提供的压测项目 &lt;a href="https://github.com/cloudwego/hertz-benchmark"&gt;hertz-benchmark&lt;/a&gt; 了解更多细节。&lt;/p&gt;
+&lt;h2 id="微服务-http-场景的特点"&gt;微服务 HTTP 场景的特点&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 诞生于字节跳动大规模微服务架构实践，面向的场景自然是微服务场景，因此下面会先介绍微服务 HTTP 场景的特点，方便开发者深入理解 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的设计思考。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;HTTP 通信模型&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;微服务间的通信通常以 Ping-Pong 模型为主，除了常规的吞吐性能指标外，每次 HTTP 的&lt;strong&gt;平均时延&lt;/strong&gt;也是开发者需要考虑的点。吞吐达到瓶颈时可以通过增加机器快速解决，但对用户使用体验有显著影响的时延却没有那么容易降低。
+在微服务场景下，一次调用往往需要多个微服务协作完成，即使每个节点延迟很低，最终汇聚到链路上的时延也会被放大，因此微服务场景下时延指标是开发者更应该关注的点。&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 在保证吞吐的前提下，也针对时延做了一定优化。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;长短连接使用&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;由于 TCP 连接首次建立时需要三次握手，如果每个请求都建立新连接，这部分的开销是非常大的。因此对于时延敏感型服务，尽量使用长连接完成请求。在 HTTP 1.1 中，长连接也是默认的选项。
+但是没有银弹，维持连接也需要消耗资源，长连接的水平扩展能力也不如短连接。因此，在某些场景下并不适合使用长连接，比如定时拉取配置的场景，
+在这个场景下，建连时延对配置影响并不大，且当配置中心负载过高时，希望能够方便的进行水平扩容，这时短连接可能是一个更好的选择。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;包体积大小&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一个服务的包大小取决于实际的业务场景。HTTP 场景的数据可以放在 query、path、header、body 等地方，不同位置对解析造成的影响也不一样。
+HTTP 的 header 是标识符协议，在没有找到特定的标识符之前，框架并不知道 header 还有多少，因此框架需要收到全部的 header 后才能够解析完成，对框架的内存模型不很友好。
+&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 也针对 header 解析做了特殊的优化，分配足够的 buffer 空间给 header，减少 header 处理时跨包拷贝的开销。&lt;/p&gt;
+&lt;p&gt;同时在字节跳动内部线上服务的统计中，发现大部分包在 1K 以内（但是太小的包没有实际意义，比如固定返回 &amp;ldquo;hello world&amp;rdquo;），同时大包场景上不封顶，各个包大小均有涉及，所以 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 在最常用的 128k 以内的包的性能（吞吐和时延）进行了重点优化。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;并发数量&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;每个实例的上游可能会有很多个，不会只接受某个实例的请求；而且，HTTP 1 的连接不能够多路复用，每条连接上只能同时处理一个请求。因此 Server 需要接受多个连接同时处理。
+不同服务的连接使用率也不同，比如压测服务的连接使用率很高，一个请求完成后马上就会进行下一个请求；有的服务连接使用率很低，虽然是长连接，但是只使用一次。这两者使用的连接模型并不相同，
+前者应使用 goroutine per connection 的模型减少上下文的切换，后者应使用协程池减少过多 goroutine 的调度开销。&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 也同时支持这两种场景，用户可以根据自己的业务场景选择合适的配置。&lt;/p&gt;
+&lt;h2 id="针对-http-场景进行压测"&gt;针对 HTTP 场景进行压测&lt;/h2&gt;
+&lt;h3 id="使用贴近自己的场景"&gt;使用贴近自己的场景&lt;/h3&gt;
+&lt;p&gt;Github 上的压测项目有很多，网络上也有很多性能测试报告，但是这些项目和测试不一定贴合自己。举个极端一点的例子，在真实场景中你会写一个项目无论 Client 发什么 Server 都只回 &lt;strong&gt;&lt;code&gt;hello world&lt;/code&gt;&lt;/strong&gt; 吗？很遗憾，很多的压测项目就是这么做的。&lt;/p&gt;
+&lt;p&gt;在进行压测前，应考虑自己真正的使用场景，比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;长短连接的使用&lt;/strong&gt; ：使用长连接还是短连接更符合自己的场景。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;连接使用率的估算&lt;/strong&gt; ：如果使用长连接，且连接使用率很高（大部分场景），则使用默认配置即可；如果连接使用率很低，可以添加配置：&lt;strong&gt;&lt;code&gt;server.WithIdleTimeout(0)&lt;/code&gt;&lt;/strong&gt;，将 goroutine per connection 的模型修改为协程池模型，并进行对比测试。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据位置及大小的确定&lt;/strong&gt; ：上面提到不同位置（如 query、header、body 等）及大小的数据对框架可能造成影响，如果所有框架的性能都比较一般，可以考虑换一个数据传输位置。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;并发数的确定&lt;/strong&gt; ：有的服务属于轻业务重框架，这个时候框架的并发可能会很高；有的服务属于重业务轻框架，这个时候框架的并发可能会很低。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果只是想看一下框架的性能，可以使用常规的场景：&lt;strong&gt;长连接、较高连接使用率、1k body、100 并发&lt;/strong&gt;等。&lt;a href="https://github.com/cloudwego/hertz-benchmark"&gt;hertz-benchmark&lt;/a&gt; 仓库默认的压测配置也是如此。
+同时 &lt;a href="https://github.com/cloudwego/hertz-benchmark"&gt;hertz-benchmark&lt;/a&gt; 仓库也开发给用户 header、body、并发数的配置，用户可以方便的修改这些配置完成贴合自己的压测。&lt;/p&gt;
+&lt;h3 id="确定压测对象"&gt;确定压测对象&lt;/h3&gt;
+&lt;p&gt;衡量一个 RPC 框架的性能需要从两个视角分别去思考：Client 视角与 Server 视角。在大规模的业务架构中，上游 Client 不见得使用的也是下游的框架，而开发者调用的下游服务也同样如此，如果再考虑到 Service Mesh 的情况就更复杂了。&lt;/p&gt;
+&lt;p&gt;一些压测项目通常会把 Client 和 Server 进程混部进行压测，然后得出&lt;strong&gt;整个框架&lt;/strong&gt;的性能数据，这其实和线上实际运行情况很可能是不符的。&lt;/p&gt;
+&lt;p&gt;如果要压测 Server，应该给 Client 尽可能多的资源，把 Server 压到极限，反之亦然。如果 Client 和 Server 都只给了 4 核 CPU 进行压测，会导致开发者无法判断最终得出来的性能数据是哪个视角下的，更无法给线上服务做实际的参考。&lt;/p&gt;
+&lt;h3 id="使用独占-cpu"&gt;使用独占 CPU&lt;/h3&gt;
+&lt;p&gt;虽然线上应用通常是多个进程共享 CPU，但在压测场景下，Client 与 Server 进程都处于极端繁忙的状况，此时共享 CPU 会导致大量上下文切换，从而使得数据缺乏可参考性，且容易产生前后很大波动。&lt;/p&gt;
+&lt;p&gt;所以我们建议是将 Client 与 Server 进程隔离在不同 CPU 或者不同独占机器上进行。如果还想要进一步避免其他进程产生影响，可以再加上 nice -n -20 命令调高压测进程的调度优先级。&lt;/p&gt;
+&lt;p&gt;另外如果条件允许，相比云平台虚拟机，使用真实物理机会使得测试结果更加严谨与具备可复现性。&lt;/p&gt;
+&lt;h2 id="性能数据参考"&gt;性能数据参考&lt;/h2&gt;
+&lt;p&gt;在满足上述要求的前提下，我们基于当前最新版本对多个框架进行了压测对比，压测代码在 &lt;a href="https://github.com/cloudwego/hertz-benchmark"&gt;hertz-benchmark&lt;/a&gt; 仓库。
+在充分压满 Server 的目标下，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的 P99 延迟在所有压测框架中最低，吞吐也是属于第一梯队，且在持续优化中。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU: AMD EPYC 7Y83 64-Core Processor 2.7GHz
+&lt;ul&gt;
+&lt;li&gt;运行限定 server 4-CPUs，client 16-CPUS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;OS：Debian GNU/Linux 10 (buster)&lt;/li&gt;
+&lt;li&gt;Go 1.19&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/hertz/releases/tag/v0.3.2"&gt;hertz v0.3.2&lt;/a&gt;，&lt;a href="https://github.com/valyala/fasthttp/releases/tag/v1.40.0"&gt;fasthttp v1.40.0&lt;/a&gt;，
+&lt;a href="https://github.com/gin-gonic/gin/releases/tag/v1.8.1"&gt;gin v1.8.1&lt;/a&gt;，&lt;a href="https://github.com/gofiber/fiber/releases/tag/v2.38.1"&gt;fiber v2.38.1&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Hertz-benchmark/1.png" alt="image"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;四个框架的吞吐和时延比较&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Hertz-benchmark/2.png" alt="image"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;三个框架的吞吐和时延比较&lt;/p&gt;
+&lt;h2 id="结语"&gt;结语&lt;/h2&gt;
+&lt;p&gt;作为一个超大规模企业级的微服务 HTTP 框架，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 在设计之初就更倾向于解决大规模微服务场景下的各种问题。在推广过程中也遇到了各种各样的服务，踩了各种各样的坑，也是基于以上经验写了本文。
+欢迎广大开发者基于本文提供的测试指南，针对自己的实际场景选择合适的工具。更多问题，请在 GitHub 上提 &lt;a href="https://github.com/cloudwego/hertz/issues"&gt;Issue&lt;/a&gt; 交流。&lt;/p&gt;</description></item><item><title>Blog: Hertz v0.5.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2023/01/12/hertz-v0.5.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 12 Jan 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2023/01/12/hertz-v0.5.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;p&gt;Hertz 0.5.0 版本中，除了常规迭代优化之外，我们还带来了多个重要 feature。&lt;/p&gt;
+&lt;h2 id="网络层和协议层支持基于流的接口"&gt;网络层和协议层支持基于流的接口&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz/pull/467"&gt;https://github.com/cloudwego/hertz/pull/467&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;在 Hertz v0.5.0 版本中，我们进一步加强了 Hertz 传输层 &amp;amp; 协议层可扩展能力，支持无缝对接基于流的传输层协议 QUIC，以及在此之上构建的 &lt;a href="https://github.com/cloudwego/hertz/issues/458"&gt;HTTP3 协议。&lt;/a&gt;
+此外，我们在此基础上还增加和完善了 &amp;ldquo;ALPN&amp;rdquo;(应用层协议协商)、&amp;ldquo;QUIC/TLS parallel monitoring&amp;rdquo;(QUIC/TLS并行监听)、&amp;ldquo;Alt-Svc&amp;rdquo;(备选服务) 等功能。&lt;/p&gt;
+&lt;h3 id="主要变更"&gt;主要变更&lt;/h3&gt;
+&lt;h4 id="传输层"&gt;传输层&lt;/h4&gt;
+&lt;p&gt;我们在保证兼容性能的基础之上增加了一个针对基于流（stream-based）的网络连接接口抽象&lt;code&gt;StreamConn&lt;/code&gt;，同时调整传输层和协议层的交互逻辑，实现针对连接类型的分发正确的协议层处理（protocol server）。
+针对需要同时监听监听 TCP（TLS）以及 UDP(QUIC)的场景我们提供了一个&lt;code&gt;WithAltTransporter&lt;/code&gt;选项，方便将备用 transporter 传递到主 transporter 中，便于实现 QUIC/TLS 并行监听的能力。&lt;/p&gt;
+&lt;h4 id="协议层"&gt;协议层&lt;/h4&gt;
+&lt;p&gt;支持添加基于流的协议层实现（protocol server）&lt;code&gt;StreamServer&lt;/code&gt;，以便于在新增的基于流的传输层扩展之上构建对应处理协议（HTTP/3）。
+为了便捷的实现为某个主协议（HTTP/3）配置备选服务元信息，&lt;code&gt;ProtocolSuite&lt;/code&gt;对外暴露&lt;code&gt;SetAltHeader&lt;/code&gt;接口。
+同时，我们也为&lt;code&gt;StreamConn&lt;/code&gt;设计了 ALPN 能力，以便于在 QUIC 内提供协议协商的能力。&lt;/p&gt;
+&lt;h4 id="通用层"&gt;通用层&lt;/h4&gt;
+&lt;p&gt;同时我们在通用层中新增了能够与 Golang 标准 Handler 进行转换的辅助函数，以便于快速的将基于 Golang 标准 Handler 实现移植到 Hertz 中来。在之后提供的基于 &lt;a href="https://github.com/lucas-clemente/quic-go"&gt;quic-go&lt;/a&gt; 的 &lt;a href="https://github.com/hertz-contrib/http3/pull/1"&gt;QUIC &amp;amp; HTTP/3 扩展&lt;/a&gt;中，就用到了这个函数提供的能力。&lt;/p&gt;
+&lt;h4 id="feature-状态"&gt;Feature 状态&lt;/h4&gt;
+&lt;p&gt;Hertz 核心库能力已经发布，具体实现后续将以&lt;a href="https://github.com/hertz-contrib/http3/pull/1"&gt;扩展包&lt;/a&gt;的形式发布，欢迎试用~&lt;/p&gt;
+&lt;p&gt;更多详细的设计说明可以参考：&lt;a href="https://www.cloudwego.io/zh/blog/2023/08/02/hertz-%E6%94%AF%E6%8C%81-quic-http/3/"&gt;Hertz 支持 QUIC &amp;amp; HTTP/3&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="脚手架工具支持生成-hertz-client-代码"&gt;脚手架工具支持生成 hertz client 代码&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz/pull/471"&gt;https://github.com/cloudwego/hertz/pull/471&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;在脚手架工具(Hz)的 v0.5.0 的版本，我们支持了基于 IDL 自动生成 hertz client 代码的功能，并实现了类 RPC 调用形式的 HTTP 请求一键调用。
+使用方法：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;具体详见：https://github.com/cloudwego/hertz-examples/tree/main/hz_client&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;定义 IDL&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#000"&gt;namespace&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;go&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;toutiao&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;middleware&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;hzClient&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;struct&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;QueryReq&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;1&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;:&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;string&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;QueryValue&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;api&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;query&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;query1&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;);&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;struct&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Resp&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;1&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;:&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;string&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Resp&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000"&gt;service&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Hertz121&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Resp&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;QueryMethod&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;1&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;:&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;QueryReq&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;request&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;api&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;get&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;/query&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;api&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;handler_path&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;get&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;);&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}(&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;api&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;base_domain&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;http://127.0.0.1:8888&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;生成代码&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可基于上述 IDL，分别生成 server 和 client 端代码：&lt;/p&gt;
+&lt;p&gt;server：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#000"&gt;hz&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;new&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;--&lt;/span&gt;&lt;span style="color:#000"&gt;idl&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;psm&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;thrift&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;--&lt;/span&gt;&lt;span style="color:#000"&gt;handler_by_method&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;-&lt;/span&gt;&lt;span style="color:#000"&gt;t&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;template&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;slim&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;client：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#000"&gt;hz&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;client&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;--&lt;/span&gt;&lt;span style="color:#000"&gt;idl&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;psm&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;thrift&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;--&lt;/span&gt;&lt;span style="color:#000"&gt;model_dir&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;hertz_gen&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;-&lt;/span&gt;&lt;span style="color:#000"&gt;t&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;template&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;slim&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;--&lt;/span&gt;&lt;span style="color:#000"&gt;client_dir&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;hz_client&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="3"&gt;
+&lt;li&gt;调用 client 代码发起 HTTP 请求，实现 client 端和 server 端的互通&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="完整-release-note"&gt;完整 Release Note&lt;/h2&gt;
+&lt;p&gt;完整的 Release Note 可以参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hertz: &lt;a href="https://github.com/cloudwego/hertz/releases/tag/v0.5.0"&gt;https://github.com/cloudwego/hertz/releases/tag/v0.5.0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hz(脚手架): &lt;a href="https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.5.0"&gt;https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.5.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz v0.4.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2022/10/28/hertz-v0.4.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Fri, 28 Oct 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/10/28/hertz-v0.4.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/289"&gt;#289&lt;/a&gt;] feat: render 支持 IndentedJSON。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/304"&gt;#304&lt;/a&gt;] feat: recovery 中间件支持用户自定义错误输出格式。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/278"&gt;#278&lt;/a&gt;] feat: 增加编译 tag 控制实际使用的 json 库。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/239"&gt;#239&lt;/a&gt;] feat: 给 client 扩展复杂重试能力。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/265"&gt;#265&lt;/a&gt;] feat: 在标准网络库扩展上添加 CloseNoResetBuffer 方法。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/258"&gt;#258&lt;/a&gt;] feat: 支持 &lt;code&gt;errors&lt;/code&gt; 的格式化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/295"&gt;#295&lt;/a&gt;] optimize: 服务端忽略客户端主动断连的写错误。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/322"&gt;#322&lt;/a&gt;] optimize: 修改 recovery 中间件的默认日志。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/266"&gt;#266&lt;/a&gt;] optimize(hlog): 区分系统日志和默认日志，提供更自由的 logger 定制化能力。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/280"&gt;#280&lt;/a&gt;] optimize: 使用标准库时 listen 前添加日志。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/318"&gt;#318&lt;/a&gt;] refactor: 添加 SetRetryIf 保持兼容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="test"&gt;Test&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/299"&gt;#299&lt;/a&gt;] test: 提高对 &lt;code&gt;hertz/pkg/protocol/header&lt;/code&gt; 的单测覆盖率。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/290"&gt;#290&lt;/a&gt;] test: 为 &lt;code&gt;pkg/app/server/option.go&lt;/code&gt; 补充单元测试。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/274"&gt;#274&lt;/a&gt;] test: 增加 internal/bytesconv 包测试覆盖率，覆盖率从 1.68% 提高到了 82.35%。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/285"&gt;#285&lt;/a&gt;] test: 给 &lt;code&gt;pkg/protocol/request.go&lt;/code&gt; 文件单测覆盖率 51.31% 提高到 85.3%。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/271"&gt;#271&lt;/a&gt;] test: 为 &lt;code&gt;pkg/network&lt;/code&gt; 补充单元测试。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/264"&gt;#264&lt;/a&gt;] test: 增加对 &lt;code&gt;hertz/pkg/common/adaptor&lt;/code&gt; 的单测，覆盖率从 76.6% 提高到了 92.3%。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/267"&gt;#267&lt;/a&gt;] test(pkg/common/config): 增加 pkg/common/config 包测试覆盖率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="docs"&gt;Docs&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/328"&gt;#328&lt;/a&gt;] docs: 添加 lark 扩展到 readme.md。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/325"&gt;#325&lt;/a&gt;] docs: 更新 README 和 README_cn 的性能数据。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/307"&gt;#307&lt;/a&gt;] docs(README): 将 Hertz 扩展添加到 readme 列表中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="style"&gt;Style&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/316"&gt;#316&lt;/a&gt;] style: 去掉 license 顶层的空注释。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/272"&gt;#272&lt;/a&gt;] chore: 更新 sonic 版本。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/310"&gt;#310&lt;/a&gt;] chore: 修改注释信息为行注释避免 buildtag 格式问题的导致 ci 报错。&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: 助力字节降本增效，大规模企业级 HTTP 框架 Hertz 设计实践</title><link>https://www.cloudwego.io/zh/blog/2022/09/27/%E5%8A%A9%E5%8A%9B%E5%AD%97%E8%8A%82%E9%99%8D%E6%9C%AC%E5%A2%9E%E6%95%88%E5%A4%A7%E8%A7%84%E6%A8%A1%E4%BC%81%E4%B8%9A%E7%BA%A7-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/</link><pubDate>Tue, 27 Sep 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/09/27/%E5%8A%A9%E5%8A%9B%E5%AD%97%E8%8A%82%E9%99%8D%E6%9C%AC%E5%A2%9E%E6%95%88%E5%A4%A7%E8%A7%84%E6%A8%A1%E4%BC%81%E4%B8%9A%E7%BA%A7-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/</guid><description>
+&lt;h2 id="字节跳动内部-go-http-框架的变迁"&gt;字节跳动内部 Go HTTP 框架的变迁&lt;/h2&gt;
+&lt;p&gt;在正式开始介绍第一部分的内容之前，先展示一组关键词。2020 年初 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 立项，2020 年 10 月，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 发布&lt;strong&gt;第一个可用版本&lt;/strong&gt; 。
+&lt;strong&gt;2022 年 6 月，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 正式开源。&lt;/strong&gt; 截至目前，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 在字节内部已经支撑&lt;strong&gt;超过 1.4 万个业务服务&lt;/strong&gt; ， &lt;strong&gt;日峰值 QPS 超过 5000 万&lt;/strong&gt; 。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 不仅支持业务服务，同时还会横向支持字节内部的各种基础组件，包括但不限于字节跳动服务网格控制面、公司级别压测平台以及 FaaS，还包括各种业务网关等等。
+&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的高性能和极强的稳定性可以支撑业务复杂多变的场景。在公司内部 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 接替了大量基于 Gin 框架开发的存量服务，大幅度降低了业务资源使用成本以及服务延时，助力公司层面的降本增效。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/1.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;下面我们可以从 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 出现的背景以及 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的设计目标和思路体会到，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的出现绝不是偶然。&lt;/p&gt;
+&lt;h3 id="基于-gin-封装"&gt;基于 Gin 封装&lt;/h3&gt;
+&lt;p&gt;众所周知，字节内部使用 Go 比较早，在大约 2014 年左右，公司就已经开始尝试做一些 Go 业务的转型。2016 年，我们基于已开源的 Go HTTP 框架 Gin 框架，封装了 Ginex，这是 Ginex 刚开始出现的时期。&lt;/p&gt;
+&lt;p&gt;同时，2016 年还是一个开荒的时代，这个时期框架伴随着业务快速野蛮地生长，我们的口号是“大力出奇迹”，把优先解决业务需求作为第一要务。Ginex 的迭代方式是业务侧和框架侧在同一个仓库里面共同维护和迭代。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/2.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="问题显现"&gt;问题显现&lt;/h3&gt;
+&lt;p&gt;2017 - 2019 年期间，也就是 Ginex 发布之后，问题逐渐显现。主要有以下几点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;迭代受开源项目限制&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ginex 是一个基于 Gin 的开源封装，所以它本身在迭代方面是受到一些限制的。一旦有针对公司级的需求开发，以及 Bugfix 等等，我们都需要和开源框架 Gin 做联合开发和维护，这个周期不能完全由我们自己控制。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;代码混乱膨胀、维护困难&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;由于我们和业务同学共同开发和维护 Ginex 框架，因此我们对于控制整个框架的走向没有完全的自主权，从而导致了整体代码混乱膨胀，到后期我们发现越来越难维护。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;无法满足性能敏感业务需求&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;另外，我们能用 Gin 做的性能优化非常少，因为 Gin 的底层是基于 Go 的一个原生库，所以如果我们要做优化，需要在原生库的基础上做很多改造，这个其实是非常困难的。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;无法满足不同场景的功能需求&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们内部逐渐出现了一些新的场景，因此会有对 HTTP Client 的需求，支持 Websocket、支持 HTTP/2 以及支持 HTTP/3 等等需求，而在原生的 Ginex 上还是很难扩展的这些功能需求。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/3.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="魔改开源框架"&gt;魔改开源框架&lt;/h3&gt;
+&lt;p&gt;逐渐地，某些业务线开始做初步的尝试，他们会对另外的一些开源框架进行魔改。比较典型的例子是有一些业务线尝试基于 Fasthttp 进行魔改，Fasthttp 是一款主打高性能的开源框架，基于它进行魔改可以短期内帮助业务解决问题。
+这种魔改现象带来的问题是，框架魔改是一些业务线自发的行为，各个业务线可能会基于自身业务特性进行各自维护，从而导致维护成本上升非常严重。&lt;/p&gt;
+&lt;p&gt;到这里我们仿佛陷入了 Ginex 的怪圈。如前段时间爆火的电视剧《开端》一样，我们仿佛是从一辆开往学院南路的 45 路公交车上醒来，发现自己要前往公司进行下一代 Ginex 框架的维护工作。&lt;/p&gt;
+&lt;p&gt;大家也可以思考一下，如果是你来应对这样的场景，你会怎么做呢？&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/4.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="小结"&gt;小结&lt;/h3&gt;
+&lt;p&gt;第一章节的内容总结如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;早期基于开源框架封装&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;基于早期开源的 Go HTTP 框架，实现了 Ginex 的封装。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;随着实践发展，问题逐渐出现&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;框架混乱膨胀，框架的维护越来越困难，业务的新需求无法得到很好地满足。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;为了解决问题出现基于另外的开源框架魔改的萌芽&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们需要思考如何跳出魔改的怪圈，把字节内部的企业级框架做得更好。&lt;/p&gt;
+&lt;p&gt;另外，还有一个遗留问题，就是应该如何跳出这个魔改的怪圈呢？这个问题第二章节会为大家进行解答。&lt;/p&gt;
+&lt;h2 id="企业级-http-框架的设计考量和落地思路"&gt;企业级 HTTP 框架的设计考量和落地思路&lt;/h2&gt;
+&lt;h3 id="跳出怪圈"&gt;跳出怪圈&lt;/h3&gt;
+&lt;p&gt;为了跳出魔改的怪圈，我们决定从以下三个方面开始着手。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;自主研发&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;既然 Ginex 是因为基于开源框架 Gin，没法做一些灵活的控制，那我们就改为完全自主研发框架。自主研发框架的代码全链路自主可控，也可以避免引入任何三方不可控因素，这样我们能够对自己的框架有一个比较完备的掌控力。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;质量控制&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下图列举了一些常规的质量控制手段。我要着重强调的是模糊测试，模糊测试在字节内部是广泛应用于 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 框架的稳定性测试中。它的核心点在于 &lt;strong&gt;通过一系列的模拟服务，尝试模拟出线上用户在使用我们的框架时，
+实际遇到的一些场景和使用方式&lt;/strong&gt; 。然后通过一些随机的算法，生成尽可能复杂、覆盖各种 Case 的场景，这可以让我们 &lt;strong&gt;检测出一些潜在的问题&lt;/strong&gt; 。这套测试也在 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 早期的质量建设中，帮助我们将一些问题防患于未然。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;严格准入&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;既然 Ginex 的问题是大家都在向里面写入内容，那么我们可以控制入口，建立一套完备的需求开发以及 Review 的闭环，控制迭代的整体流程，从而控制代码准入。同时我们配备统一的需求管理以及严格的发版准入规范，做一个标准的公司级别的框架。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/5.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;举一个比较形象的例子，如果我们把下一代框架比作一个人——“框架人”，自主研发表示这个“框架人”首先会拥有对自己身体的主导权，他不会受到来自于环境或者他人的影响；
+质量控制表示“框架人”能够定期体检，提早发现一些潜在的疾病，将其扼杀于摇篮；严格准入表示“框架人”有科学的饮食摄入和自律的生活习惯。可想而知，如果我们能够做到以上三点，我们的“框架人”就能够拥有一个健康的体魄。&lt;/p&gt;
+&lt;h3 id="痛点梳理"&gt;痛点梳理&lt;/h3&gt;
+&lt;p&gt;明确了应该如何跳出怪圈之后，我们还应该明确知道这个框架要具备哪些功能和特性，也就是首先应该聚焦到框架的核心痛点上。“框架人”不能只有健康的体魄，还应该拥有有趣的思想和灵魂。
+一个成熟的框架不仅仅要&lt;strong&gt;应对来自业务侧的需求&lt;/strong&gt; ，如功能需求、性能需求和易用稳定等，还要考虑&lt;strong&gt;框架自身的发展&lt;/strong&gt; ，而这一点恰恰是我们在 Ginex 的迭代过程中忽略的。&lt;/p&gt;
+&lt;p&gt;如下图右侧金字塔所示，最上层是&lt;strong&gt;高效支撑&lt;/strong&gt; ，毋庸置疑框架的存在肯定是为了支撑我们的业务需求。中间层是一个&lt;strong&gt;质量保证&lt;/strong&gt;的红线框架，框架需要保证它自身的质量，
+只有以高质量完成的框架才能有自信承担字节内部的 5000 万 QPS，以及各种各样的使用场景。金字塔的最底层是&lt;strong&gt;长期、可持续性发展&lt;/strong&gt; ，这也是作为未来想要保持持续迭代的框架最重要的一点。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/6.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="框架科学发展观"&gt;框架科学发展观&lt;/h3&gt;
+&lt;p&gt;基于上一部分，我们可以进一步梳理出框架的需求痛点。&lt;strong&gt;痛点&lt;/strong&gt;主要有两个方面：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;多样的需求&lt;/strong&gt;：支撑支撑各个业务线及基础设施 （横向扩展性）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;灵活的结构&lt;/strong&gt;：贯穿 HTTP 生命周期的掌控力 （纵向模块化）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在此基础上进一步抽象出框架的 &lt;strong&gt;科学发展观&lt;/strong&gt; ：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;聚类需求&lt;/strong&gt;：面向通用能力展开设计。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;跳出局部&lt;/strong&gt;：针对一些复杂问题，在更大范围内寻求最优解。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/7.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;后续我会针对这个科学发展观进一步阐述 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 究竟是如何实现的。&lt;/p&gt;
+&lt;h3 id="小结-1"&gt;小结&lt;/h3&gt;
+&lt;p&gt;第二章节的内容总结如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;跳出怪圈&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;引入“框架人”的概念，帮助大家理解框架的自研、质量控制和严格准入。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;痛点梳理&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为“框架人”注入有趣的灵魂，框架需要应对来自业务侧的多样化需求，还要保证自己的可持续性发展。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;框架科学发展观&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;需求聚类，跳出局部。&lt;/p&gt;
+&lt;h2 id="hertz-的核心特点"&gt;Hertz 的核心特点&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 框架是如何实现第二章节中提到的框架痛点和科学发展观的呢？本章节将具体进行介绍。&lt;/p&gt;
+&lt;h3 id="分层抽象"&gt;分层抽象&lt;/h3&gt;
+&lt;p&gt;首先介绍 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 框架的架构设计。下图是一个请求从建立、连接到完成的全过程。&lt;strong&gt;左侧是客户端，右侧是服务端&lt;/strong&gt; ，在我们发起链接建立请求之后，链接建立完成；
+之后客户端发起请求到服务端，服务端进行路由处理，然后将路由导向业务逻辑处理；业务逻辑处理完毕后，服务端返回这个请求，完成一次 HTTP 请求的调用。&lt;/p&gt;
+&lt;p&gt;那么在这个过程中我们的框架到底做了哪些事情呢？从图中不难发现，首先框架进行了&lt;strong&gt;链接处理&lt;/strong&gt; ，其次是&lt;strong&gt;协议处理&lt;/strong&gt; ，之后基于路由做了逻辑分发，
+即&lt;strong&gt;路由处理&lt;/strong&gt; ，最后做了&lt;strong&gt;业务逻辑处理&lt;/strong&gt; 。我们把框架做成一个结构之后会发现，这个结构包含的就是这四部分。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/8.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;基于这个逻辑，我们可以看一下 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的整体架构图。如下图所示，从下往上看红线框圈住的部分，可以发现这就是上文提到的请求建立的全过程。各层的能力及作用如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;传输层 Transport：抽象网络接口；&lt;/li&gt;
+&lt;li&gt;协议层 Protocol：解析请求，渲染响应编码；&lt;/li&gt;
+&lt;li&gt;路由层 Route：基于URL进行逻辑分发；&lt;/li&gt;
+&lt;li&gt;应用层 Application：业务直接交互，出现大量 API。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们可以看到图中除了中间部分包含的四层，左右两侧各有两列。&lt;strong&gt;右侧是通用层 Common&lt;/strong&gt; ，主要负责&lt;strong&gt;提供通用能力、常用的日志接口、链路追踪以及一些配置处理相关的能力&lt;/strong&gt;等。
+&lt;strong&gt;左侧是 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的代码生成工具 Hz，又称脚手架工具&lt;/strong&gt; ，它可以帮助我们在内部 &lt;strong&gt;基于 IDL 快速地生成项目骨架&lt;/strong&gt; ，以加速业务迭代。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/9.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的分层设计是能够和代码组织结构一一映射的。下图是 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 仓库里面的代码组织结构，可以看到根目录下的 cmd 包里面存放着 Hz 工具，
+在 pkg 包下存放着上述主要四层以及通用层 Common。因此同学们看到架构设计图之后，可以直接在 Github 学习 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的代码。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/10.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;总体来说，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的架构设计理念就是 &lt;strong&gt;“简洁有序，保证让所有开发者轻松理解，在开发的过程中持续贯彻”&lt;/strong&gt; 。&lt;/p&gt;
+&lt;h3 id="易用可扩展"&gt;易用可扩展&lt;/h3&gt;
+&lt;p&gt;那么基于 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的架构设计，应该如何展开易用性和可扩展性呢？下图是 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 架构主要四个层级的抽象。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;应用层&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;应用层提供了一些通用能力，包括&lt;strong&gt;绑定请求、响应渲染、服务发现/注册/负载均衡以及服务治理&lt;/strong&gt;等等。其中，&lt;strong&gt;洋葱模型中间件&lt;/strong&gt;的核心目的是让业务开发同学&lt;strong&gt;基于这个中间件快速地给业务逻辑进行扩展&lt;/strong&gt;，
+扩展方式是可以在业务逻辑处理前和处理后分别插桩埋点做相应处理。一些比较有代表性的应用，包括日志打点、前置的安全检测，都是通过洋葱模型中间件进行处理的。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;路由层&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;路由层也是非常通用的，主要提供&lt;strong&gt;静态路由、参数路由、为路由配置优先级以及路由修复&lt;/strong&gt;的能力，如果我们的路由层没办法满足用户需求，
+它还能支撑用户做&lt;strong&gt;自定义路由&lt;/strong&gt;的扩展。但实际应用中这些路由能力完全能够满足绝大多数用户的需求。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;协议层&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 同时提供 &lt;strong&gt;HTTP/1.1&lt;/strong&gt; 和 &lt;strong&gt;HTTP/2&lt;/strong&gt;，&lt;strong&gt;HTTP/3&lt;/strong&gt; 也是我们在建设中的能力，我们还会提供 &lt;strong&gt;Websocket 等 HTTP 相关的多协议支持&lt;/strong&gt; ，以及支持完全由业务决定的&lt;strong&gt;自定义协议层扩展&lt;/strong&gt; 。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;传输层&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;目前我们已经内置了两个高性能的传输层实现。一个是&lt;strong&gt;基于 CloudWeGo 开源的高性能网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;&lt;/strong&gt; 的传输层扩展，另一个是支持&lt;strong&gt;基于标准库&lt;/strong&gt;的传输层扩展。此外，我们也同样能支持在传输层上进行&lt;strong&gt;自定义传输层协议扩展&lt;/strong&gt; 。&lt;/p&gt;
+&lt;p&gt;下图每一层中标红的能力都能够体现出，我们能够在框架的任何一个分层上支撑用户做最大程度的自由定制，这样可以最大程度地满足企业级内部用户和潜在用户的业务需求。
+如果同学们想要深入了解 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;，可以参考 CloudWeGo 官网的 &lt;a href="https://www.cloudwego.io/zh/docs/hertz/"&gt;Hertz&lt;/a&gt; 部分，上述所有内容均有具体描述。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/11.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="性能探索"&gt;性能探索&lt;/h3&gt;
+&lt;p&gt;在性能方面，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 又是如何在自主可控的范围内做高性能探索的呢？&lt;/p&gt;
+&lt;h4 id="场景描述"&gt;场景描述&lt;/h4&gt;
+&lt;p&gt;熟悉 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 代码的同学会发现，我们的 &lt;strong&gt;HTTP/1.1&lt;/strong&gt; 协议借鉴了一些 Fasthttp 的优化思路和手段。HTTP/1.1 协议中的 Header 为不定长数据段，往往需要解析到最后一行，才能够确定是否完成解析。
+同时，为了减少系统调用次数，提升整体解析效率，涉及 IO 操作时，我们通常引入带 buffer 的 IO 数据结构。如下图所示，它的核心点是最下层的 buffer，buffer 是一个类似于一块完整的内存空间，我们可以将 IO 读到的数据放进这个空间做暂存。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/12.png" alt="image"&gt;&lt;/p&gt;
+&lt;h4 id="bufioreader-的问题"&gt;bufio.Reader 的问题&lt;/h4&gt;
+&lt;p&gt;这样做出现的问题是，原生的 bufio.Reader 长度是固定的，请求的 Header 大小超出 buffer 长度后，&lt;code&gt;.Peek()&lt;/code&gt; 方法直接报错 &lt;code&gt;(ErrBufferFull)&lt;/code&gt;，无法完成既定语义功能。&lt;/p&gt;
+&lt;h4 id="一些可能的解"&gt;一些可能的解&lt;/h4&gt;
+&lt;p&gt;对于上述问题，其实有一些可能的解决方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;直接利用 bufio.Reader 的局限当做 Feature，通过 buffer 大小作为 Header 大小的限制。如果超出这个大小，Header 直接解析报错，这也是 Fasthttp 的做法。
+但实际上超出 buffer 长度后报错会导致我们没办法处理这部分请求，从而导致框架 &lt;strong&gt;功能受限&lt;/strong&gt; 。&lt;/li&gt;
+&lt;li&gt;header 解析带状态，暂存中间数据，通过在上层堆叠额外复杂度的方式突破 bufio 本身的限制。但是暂存中间态会涉及到一些内存的拷贝，必然会导致 &lt;strong&gt;性能受限&lt;/strong&gt; 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="真实使用环境复杂多变"&gt;真实使用环境复杂多变&lt;/h4&gt;
+&lt;p&gt;字节内部的使用场景非常多，我们不仅要支持各种业务线的开发，还要支持一些横向的基础组件。不同的业务，不同的场景，数据规模各异。
+如何成为通用且高效的地解决 bufio.Reader 的问题成为 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 面临的内部重要挑战。我们既然已经站在 Fasthttp 这个“巨人”的肩膀上了，能否往前再走一步呢？&lt;/p&gt;
+&lt;p&gt;答案是肯定的。基于内部的使用场景，同时结合 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 的优势，我们设计出了 &lt;strong&gt;自适应 linked buffer&lt;/strong&gt; ，并且用它替代掉了原生的 bufio.Reader。
+从下图可以看到，我们的 buffer 不再是一个固定长度的 buffer，而是一条链，这条链上的每一个 buffer 大小能够&lt;strong&gt;根据线上真实请求进行动态扩缩容调整&lt;/strong&gt; ，同时搭配 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 中&lt;strong&gt;基于 LT 触发的模型做数据预拷贝&lt;/strong&gt; 。
+从实施效果上来看，这个自适应调整能够让我们的业务方完全无感地支撑任何他们的业务特性。也是因为我们能够将 buffer 进行动态扩缩容调整，从而能够保证在&lt;strong&gt;协议层最大程度做到零拷贝协议解析&lt;/strong&gt; ，这能够带来整体解析上的性能提升，时延也会更低。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/13.png" alt="image"&gt;&lt;/p&gt;
+&lt;h4 id="针对-http11-进行中的优化"&gt;针对 HTTP/1.1 进行中的优化&lt;/h4&gt;
+&lt;p&gt;因为目前在字节内部 HTTP/1.1 还是一个比较主流的协议，所以我们基于 HTTP/1.1 做了很多尝试。&lt;/p&gt;
+&lt;p&gt;首先是&lt;strong&gt;协议层探索&lt;/strong&gt; 。我们正在尝试基于 &lt;strong&gt;Header Passer 的重构&lt;/strong&gt; ，把解析 Header 的流程做得更高效。我们还尝试了做一些&lt;strong&gt;传输层预解析&lt;/strong&gt; ，将一些比较固化的逻辑下沉到传输层做加速。&lt;/p&gt;
+&lt;p&gt;其次是&lt;strong&gt;传输层探索&lt;/strong&gt; 。这包括&lt;strong&gt;使用 writev 整合发送 Header &amp;amp; Body&lt;/strong&gt; 达到减少系统调用次数的目的，以及通过&lt;strong&gt;新增接口整合 &lt;code&gt;.Peek() + .Skip()&lt;/code&gt;&lt;/strong&gt; 语义，在内部提供一个更高效的实现。&lt;/p&gt;
+&lt;h4 id="hertz-benchmark"&gt;Hertz Benchmark&lt;/h4&gt;
+&lt;p&gt;下图是 Benchmark 的开源数据。左侧第一张图是在同等的机器环境上，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 和横向的框架 Gin、Fasthttp 极限 QPS 比较情况，蓝线是 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 处于较高极限 QPS 的状态。
+第二张图是 TP99 时延状态，第三张图是 TP999 时延状态，可以看到 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的整体时延是处于一个更低的水平上。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/14.png" alt="image"&gt;&lt;/p&gt;
+&lt;h4 id="字节跳动服务网格控制面从-gin-迁移至-hertz"&gt;字节跳动服务网格控制面从 Gin 迁移至 Hertz&lt;/h4&gt;
+&lt;p&gt;CloudWeGo 公众号曾发布关于字节跳动服务网格控制面的文章，讲述字节跳动服务网格从 Gin 框架迁移到 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的落地实践。下图是他们代码展示的真实收益，从 Gin 框架替换成为 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 框架后，
+&lt;strong&gt;CPU 流量从大概快到 4K 降到大约只有 2.5K，Goroutine 数量从 6w 降到不足 100 个&lt;/strong&gt; ，Goroutine 稳定性得到极大地提升。
+同时替换成 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 后，&lt;strong&gt;框架相关的开销已经基本消失，服务网格在线上稳定承载了超过 13M QPS 的流量&lt;/strong&gt; 。&lt;/p&gt;
+&lt;p&gt;字节跳动服务网格基于 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 框架的实践：https://mp.weixin.qq.com/s/koi9q_57Vk59YYtO9cyAFA&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/1st_HTTP_Hertz/15.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="小结-2"&gt;小结&lt;/h3&gt;
+&lt;p&gt;第三章节的内容总结如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;分层抽象&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;解构 HTTP 框架，分层解耦。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;易用可扩展&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;提供了更丰富 API 和足够灵活的拓展能力，在每一层抽象中都提供了一个足够灵活的扩展能力应对可能的需求。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;自主可控的高性能探索&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自适应 buffer，零拷贝解析，未来将会进行更多的高性能探索。&lt;/p&gt;
+&lt;h2 id="未来规划和挑战"&gt;未来规划和挑战&lt;/h2&gt;
+&lt;p&gt;我认为 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 未来的发展规划主要围绕以下几个方面：首先，&lt;strong&gt;打造泛 HTTP 框架&lt;/strong&gt; 。我们的最终目标是希望 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 能够解决在 HTTP 领域内的所有问题；其次，&lt;strong&gt;助力 CloudWeGo&lt;/strong&gt; ，希望 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 能够助力 CloudWeGo 打造一个企业级云原生微服务矩阵；最后希望 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 能够&lt;strong&gt;持续服务更多的用户&lt;/strong&gt; 。&lt;/p&gt;
+&lt;h3 id="总结"&gt;总结&lt;/h3&gt;
+&lt;p&gt;本次分享的主要内容总结如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;字节跳动内部 Go HTTP 框架的变迁：从基于开源封装，到开启自研之路；&lt;/li&gt;
+&lt;li&gt;企业级 HTTP 框架的设计考量和落地思路：破圈、需求提炼、框架科学发展观；&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 核心特点：分层抽象、易用可扩展、自主可控的性能探索；&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 未来的规划和挑战：框架持续打磨、助力 CloudWeGo、服务更多用户。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最后欢迎对 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 感兴趣的同学积极参与到 CloudWeGo 社区中，我们一起完善 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;，共同建设 CloudWeGo！&lt;/p&gt;</description></item><item><title>Blog: Hertz v0.3.2 版本发布</title><link>https://www.cloudwego.io/zh/blog/2022/09/20/hertz-v0.3.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Tue, 20 Sep 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/09/20/hertz-v0.3.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/198"&gt;#198&lt;/a&gt;] feat: 添加获取 Hertz client dialer 名称的方法。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/251"&gt;#251&lt;/a&gt;] feat: Hertz server 启动日志添加网络库的名称。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/238"&gt;#238&lt;/a&gt;] refactor: 重构 Hertz client 初始化 HostClient 和 TLSHostClient 的逻辑。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/226"&gt;#226&lt;/a&gt;] optimize: 使用 &amp;ldquo;warning&amp;rdquo; 日志提示非法的 http 状态码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/249"&gt;#249&lt;/a&gt;] fix: 修复 Hertz server 优雅退出时无法执行完全部 hook 函数的问题。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/232"&gt;#232&lt;/a&gt;] fix: 修复路由尾斜线重定向在边缘情况失效的问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/217"&gt;#217&lt;/a&gt;] chore: 更新提交 PR 时的填写模板。&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz v0.3.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2022/08/29/hertz-v0.3.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Mon, 29 Aug 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/08/29/hertz-v0.3.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/182"&gt;#182&lt;/a&gt;] feat: 添加服务注册 &amp;amp; 服务发现 &amp;amp; 负载均衡。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/6"&gt;[#6]&lt;/a&gt; feat: 添加 zookeeper 服务注册与发现的扩展。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/7"&gt;[#7]&lt;/a&gt; feat: 添加 nacos 服务注册与发现的扩展。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/8"&gt;[#8]&lt;/a&gt; feat: 添加 Consul 服务注册与发现的扩展。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/9"&gt;[#9]&lt;/a&gt; feat: 添加 polaris 服务注册与发现的扩展。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/14"&gt;[#14]&lt;/a&gt; feat: 添加 etcd 服务注册与发现的扩展。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/15"&gt;[#15]&lt;/a&gt; feat: 添加 servicecomb 服务注册与发现的扩展。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/16"&gt;[#16]&lt;/a&gt; feat: 添加 eureka 服务注册与发现的扩展。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/175"&gt;#175&lt;/a&gt;] refactor: 区别全局默认 dialer 和 client 局部 dialer（指定了 dialer 的 client 不再受全局 dialer 改变而改变）修改全局 dialer 影响面较大，标记 deprecated，后续统一到 client 初始化时传参指定 dialer 方式修改局部 dialer，以及移除了功能完全被 dialer 覆盖的 dialFunc 扩展。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/205"&gt;#205&lt;/a&gt;] optimize: 更改默认返回值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="test"&gt;Test&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/174"&gt;#174&lt;/a&gt;] test: 修正 TestRouterMiddlewareAndStatic 单测。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/190"&gt;#190&lt;/a&gt;] fix: 修改同名的路由组。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/192"&gt;#192&lt;/a&gt;] fix: 修复 handler 中的引用相同包名的问题，并把获取 unique 变量名的方法单独提出来。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/208"&gt;#208&lt;/a&gt;] fix: 当服务停止时修复取消注册失败。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/202"&gt;#202&lt;/a&gt;] fix: 获取到了错误的 IPv6 本地回环地址。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/196"&gt;#196&lt;/a&gt;] fix: 修复 typo。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/155"&gt;#155&lt;/a&gt;] fix: 修复thrift的命名方式，struct name 与 thriftgo 的 namestyle 保持一致。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/169"&gt;#169&lt;/a&gt;] fix: 修复 thrift 的 namespace 尾缀包含&amp;quot;.thrift&amp;quot;的问题。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/184"&gt;#184&lt;/a&gt;] fix: 修复使用标准网络库劫持连接时的超时错误。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/162"&gt;#162&lt;/a&gt;] fix: 修复 IDL 中定义的路由最后一级为&amp;quot;/&amp;ldquo;时的报错。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/189"&gt;#189&lt;/a&gt;] 回滚 &lt;a href="https://github.com/cloudwego/hertz/pull/162"&gt;cloudwego/hertz#162&lt;/a&gt; 的修改。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/203"&gt;#203&lt;/a&gt;] AddMissingPort 函数增加对裸 v6 地址的处理。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/186"&gt;#186&lt;/a&gt;] 支持 codecov。&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz v0.2.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2022/07/22/hertz-v0.2.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Fri, 22 Jul 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/07/22/hertz-v0.2.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/124"&gt;#124&lt;/a&gt;] feat: 增加参数控制是否使用 hijackConnPool。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/116"&gt;#116&lt;/a&gt;] feat: update 也可使用模板更新 handler 及 middleware。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/130"&gt;#130&lt;/a&gt;] feat: 如果 Cookie.Value 中存在非法字符，则打印告警日志。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/143"&gt;#143&lt;/a&gt;] feat: 增加一个接口支持自定义信号捕捉逻辑，以便根据场景调节优雅退出需要应对的信号类型。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/114"&gt;#114&lt;/a&gt;] feat: 标准网络库 Read 方法中调用 connection.Release()，防止在多次少量调用 Read 方法时不回收内存导致的 OOM。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/112"&gt;#112&lt;/a&gt;] feat: 修正了 x-www-form-urlencoded 编码下无法读到 bodystream 类型数据。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/105"&gt;#105&lt;/a&gt;] feat: client 为 ALPN 和 http2 抽象出协议层 HostClient。client 删除 readbuffersize 和 writebuffersize 配置项。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/92"&gt;#92&lt;/a&gt;] feat: hz 命名行工具支持 windows。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/102"&gt;#102&lt;/a&gt;] feat: Hertz client 关闭默认的重试逻辑。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/111"&gt;#111&lt;/a&gt;] optimize: 调用 bytesconv.AppendHTTPDate 时，为切片预分配容量，以防止产生额外的拷贝。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/128"&gt;#128&lt;/a&gt;] optimize: 去掉路由树中无用逻辑。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/108"&gt;#108&lt;/a&gt;] optimize: 通过提前调用 regexp.MustCompile，避免程序重复解析正则表达式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/125"&gt;#125&lt;/a&gt;] chore: 更新 license check 方式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/104"&gt;#104&lt;/a&gt;] fix: cacheLock 可能会因潜在发生的 panic 导致解锁失败。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/96"&gt;#96&lt;/a&gt;] fix: ci 可能被调度到 arm 机器上导致报错 exec format error。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="style"&gt;Style&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/103"&gt;#103&lt;/a&gt;] style: 修正不符合语义的错误拼写 “Ungzipped”。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/90"&gt;#90&lt;/a&gt;] style: 常量替换和去掉了重复的类型转换。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/94"&gt;#94&lt;/a&gt;] refactor: 使用 appendCookiePart 函数简化代码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="docs"&gt;Docs&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/97"&gt;#97&lt;/a&gt;] docs: 文档标点符号优化。&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: 超大规模的企业级微服务 HTTP 框架 — Hertz 正式开源！</title><link>https://www.cloudwego.io/zh/blog/2022/06/21/%E8%B6%85%E5%A4%A7%E8%A7%84%E6%A8%A1%E7%9A%84%E4%BC%81%E4%B8%9A%E7%BA%A7%E5%BE%AE%E6%9C%8D%E5%8A%A1-http-%E6%A1%86%E6%9E%B6-hertz-%E6%AD%A3%E5%BC%8F%E5%BC%80%E6%BA%90/</link><pubDate>Tue, 21 Jun 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/06/21/%E8%B6%85%E5%A4%A7%E8%A7%84%E6%A8%A1%E7%9A%84%E4%BC%81%E4%B8%9A%E7%BA%A7%E5%BE%AE%E6%9C%8D%E5%8A%A1-http-%E6%A1%86%E6%9E%B6-hertz-%E6%AD%A3%E5%BC%8F%E5%BC%80%E6%BA%90/</guid><description>
+&lt;p&gt;今天，经过了字节跳动内部一年多的使用和迭代，高性能企业级 HTTP 框架—— &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;，已在 CloudWeGo 正式开源啦！&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 已经成为了字节跳动内部最大的 HTTP 框架，线上接入的服务数量超过 &lt;strong&gt;1 万&lt;/strong&gt;，
+峰值 QPS 超过 &lt;strong&gt;4 千万&lt;/strong&gt;，具有 &lt;strong&gt;高易用性&lt;/strong&gt; 、 &lt;strong&gt;易扩展&lt;/strong&gt; 、&lt;strong&gt;低时延&lt;/strong&gt;的特点。对于字节跳动服务框架团队和 CloudWeGo 而言，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 将不仅仅是一个开源项目，它也是一个真实的超大规模企业级实践。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;项目地址：https://github.com/cloudwego/hertz&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;未来，字节跳动基础架构团队将以 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 开源库为主进行迭代，坚持内外维护一套代码，统一进行迭代演进，为用户提供更好的体验。&lt;/p&gt;
+&lt;h2 id="01-hertz-概述"&gt;01 Hertz 概述&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 是一个超大规模的企业级微服务 HTTP 框架，具有高易用性、易扩展、低时延等特点。最初，字节跳动内部的 HTTP 框架是对 Gin 框架的封装，具备不错的易用性、生态完善等优点。
+随着内部业务的不断发展，对高性能、多场景的需求日渐强烈。而 Gin 是对 Go 原生 net/http 进行的二次开发，在按需扩展和性能优化上受到很大局限。
+因此，为了满足业务需求，更好的服务各大业务线，2020 年初，字节跳动服务框架团队经过内部对使用场景和外部主流开源 HTTP 框架 Fasthttp、Gin、Echo 的调研后，
+开始基于自研网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 开发内部框架 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;，让 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 在面对企业级需求时，有更好的性能及稳定性表现，也能够满足业务发展和应对不断演进的技术需求。
+2021 年 7 月，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 正式上线 1.0 版本。&lt;/p&gt;
+&lt;p&gt;在经历了字节跳动内部一年多的使用后，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 框架成为了字节跳动内部最大的 HTTP 框架，&lt;strong&gt;线上接入的服务数量超过 1 万，峰值 QPS 超过 4 千万&lt;/strong&gt;。
+&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 除了业务线的同学使用外，也服务于内部很多基础组件，如：函数计算平台 FaaS、压测平台、各类网关、Service Mesh 控制面等，均收到不错的使用反馈。
+在如此大规模的场景下，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 拥有极强的稳定性和性能，bug 和 kernel case 也几乎暴露无遗并进行修复。同时 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 坚持的内外维护一套代码，也为开源出去的 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 框架提供了强有力的保障。&lt;/p&gt;
+&lt;p&gt;下面是 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的一些特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;稳定性&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 在如此大规模的场景下，每一个 PR 的合入、每一次发版都要慎之又慎，稍有不慎便可能造成千万甚至更多的损失。我们制定了规范的 PR、发版流程，每次合入代码需要由有经验的同学审核。
+即便如此，为了降低风险，我们也搭建了各种测试场景，包括兼容性、高并发、大小包等场景，每次的 PR、发版都需要测试一段时间，充分测试，将每次发版的风险减少到最低。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;高易用性&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在开发过程中，快速写出正确的代码往往是重要的。&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 在设计 API 时，考虑到用户的使用习惯，参考业界主流框架使用 API 的方式，并加以优化。在 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 在迭代过程中，积极听取用户意见，持续打磨框架，
+比如很多用户希望 Client 也有 Trace 的能力，为此，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; Client 支持了中间件能力；在代理场景中，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; Client 也支持了流式处理。
+在做中间件和流式处理设计时，也考虑到用户实际使用习惯，帮助用户更快地写出正确的代码。&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 也提供了命令行工具，一键生成代码，提高框架的易用性。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;易扩展&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 采用了分层设计，提供了较多的接口以及默认的扩展实现，用户也可以自行扩展，详情可参考 CloudWeGo 官网的 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 扩展部分。
+同时得益于框架的分层设计，框架的扩展性也会大很多。目前仅将稳定的能力开源给社区，更多的规划参考 RoadMap。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;低延时&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 默认使用自研的高性能网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，在一些特殊场景中，相较于 go net，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 在 QPS、时延上均具有一定优势。关于性能数据，可参考下图 Echo 数据。
+在内部实践中，某些典型服务，如框架占比较高的服务、网关等服务，迁移 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 后相比 Gin 框架，资源使用显著减少，&lt;strong&gt;CPU 使用率随流量大小降低 30%—60%。&lt;/strong&gt;
+关于详细的性能数据，可参考：https://github.com/cloudwego/hertz-benchmark。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Hertz_Open_Source/Echo.png" alt="image"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;命令行工具&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 提供了一个简单易用的命令行工具 Hz，用户只需提供一个 IDL，根据定义好的接口信息，Hz 便可以一键生成项目脚手架，开箱即用使用 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;；Hz 也提供更新能力，用户的 IDL 如果发生改变，Hz 可以更新脚手架。
+目前 Hz 支持了 Thrift 和 Protobuf 两种 IDL 定义。命令行工具内置丰富的选项，可以根据自己的需求使用。
+同时它底层依赖 Protobuf 官方的编译器和自研的 Thriftgo 的编译器，两者都支持自定义的生成代码插件。如果觉得默认模板不能够满足的需求，可以自定义生成的模板。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 发布以来，内部反响优异。在内部，除最常见的前后端通信场景外，还涉及网关、上传、下载、代理等场景；所用到的交互模式除 ping-pong 外，还有 streaming、chunk 等；
+使用的协议除 HTTP1 外，还有 HTTP2、Websocket 等。这些复杂的交互场景和交互模式都对 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的 Server 和 Client 的可用性和稳定性提出了不小的挑战。
+为此，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 快速响应用户需求；搭建稳定性测试服务尽可能模拟线上真实复杂场景；较高的单测覆盖率保证代码逻辑正常。&lt;/p&gt;
+&lt;h2 id="02-内外版本维护"&gt;02 内外版本维护&lt;/h2&gt;
+&lt;p&gt;字节跳动内部有着完善的微服务体系，团队非常重视开源建设和承诺，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 和 CloudWeGo 中的开源项目 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 相同，&lt;strong&gt;保持内外一致&lt;/strong&gt;，项目的核心能力均迁移至开源库中，
+在内部仅封装一层壳帮助企业内无感升级，以保证对开源长期维护的承诺，并且&lt;strong&gt;所有开源特性，都会在内部的稳定性验证后才会开源出来&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;后续，团队将持续以 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 开源库为主进行迭代，及时响应社区需求与问题，为用户提供更好的体验和使用保障。&lt;/p&gt;
+&lt;p&gt;对于 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的开发者来说，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 同样支持对框架进行灵活的扩展，以适应业务需求。我们也欢迎外部的开发者将自己的贡献提交到社区当中，在社区进行开源共建，共同打造一款有着完善生态、极致性能和高易用性的 HTTP 框架。&lt;/p&gt;
+&lt;h2 id="03-roadmap"&gt;03 RoadMap&lt;/h2&gt;
+&lt;p&gt;对于基础架构团队而言，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 不仅仅是一个开源项目，它也是一个&lt;strong&gt;真实的超大规模企业级实践项目&lt;/strong&gt;。通过开源，我们希望 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 能丰富云原生社区的 Go 中间件体系，
+完善 CloudWeGo 生态矩阵，为更多开发者和企业搭建云原生化的大规模分布式系统，提供一种现代的、资源高效的的技术方案。&lt;/p&gt;
+&lt;p&gt;如前文所述，目前 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 只开源了内部经过稳定性验证的部分，未来，我们会进一步推动其走向完善：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;云原生能力支持&lt;/strong&gt;。支持 xDS API，从 Istio 动态获取服务配置。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;多协议的支持&lt;/strong&gt;。&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 目前只开源了 HTTP1 的部分，未来我们还会开源其他协议，如：HTTP2、Websocket、ALPN 等，为开发者提供更多场景的微服务需求支持。如果有需求也可以提交 issue 告诉我们，让我们知道您的需求以便快速支持。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;更好用的命令行工具&lt;/strong&gt;。我们将继续迭代 Hz，持续集成各种常用的中间件，提供模块化构建能力，用户可以按需选择所需组件。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;更完善的生态支持&lt;/strong&gt;。由于 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 没有采用 go net 的数据结构，需要更多的生态支持。第一批开源我们只开源了 CORS、Trace、Metrics 等生态。未来我们还将支持包括反向代理、Session 等生态。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;结合内外部用户需求，持续迭代&lt;/strong&gt;。项目开源后，我们也会根据开发者需求开展迭代。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;欢迎大家向 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 提交 issue 和 PR 一起来共建。&lt;/p&gt;
+&lt;p&gt;我们诚心期待更多的开发者加入，也期待 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 助力越来越多的企业快速构建云原生架构。我们也真诚欢迎企业用户迁移使用，我们会提供专项技术支持和交流，欢迎入群咨询。&lt;/p&gt;
+&lt;h2 id="04-相关链接"&gt;04 相关链接&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;项目地址: &lt;a href="https://github.com/cloudwego/hertz"&gt;https://github.com/cloudwego/hertz&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;周边生态: &lt;a href="https://github.com/hertz-contrib"&gt;https://github.com/hertz-contrib&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: 字节跳动开源 Go HTTP 框架 Hertz 设计实践</title><link>https://www.cloudwego.io/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/</link><pubDate>Tue, 21 Jun 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/06/21/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90-go-http-%E6%A1%86%E6%9E%B6-hertz-%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5/</guid><description>
+&lt;h2 id="01-前言"&gt;01 前言&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 是字节跳动服务框架团队研发的超大规模的企业级微服务 HTTP 框架，具有高易用性、易扩展、低时延等特点。在经过了字节跳动内部一年多的使用和迭代后，如今已在 CloudWeGo 正式开源。
+目前，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 已经成为了字节跳动内部最大的 HTTP 框架，线上接入的服务数量超过 1 万，峰值 QPS 超过 4 千万。除了各个业务线的同学使用外，也服务于内部很多基础组件，
+如：函数计算平台 FaaS、压测平台、各类网关、Service Mesh 控制面等，均收到不错的使用反馈。在如此大规模的场景下，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 拥有极强的稳定性和性能，在内部实践中某些典型服务，
+如框架占比较高的服务、网关等服务，迁移 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 后相比 Gin 框架，资源使用显著减少，CPU 使用率随流量大小降低 30%—60%，时延也有明显降低。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 坚持 &lt;strong&gt;内外维护一套代码&lt;/strong&gt; ，为开源使用提供了强有力的保障。通过开源， &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 也将丰富云原生的 Go 中间件体系，完善 CloudWeGo 生态矩阵，
+为更多开发者和企业搭建云原生化的大规模分布式系统，提供一种现代的、资源高效的的技术方案。&lt;/p&gt;
+&lt;p&gt;本文将重点关注 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的&lt;strong&gt;架构设计&lt;/strong&gt;与 &lt;strong&gt;功能特性&lt;/strong&gt; 。&lt;/p&gt;
+&lt;h2 id="02-项目缘起"&gt;02 项目缘起&lt;/h2&gt;
+&lt;p&gt;最初，字节跳动内部的 HTTP 框架是对 Gin 框架的封装，具备不错的易用性、生态完善等优点。随着内部业务的不断发展，高性能、多场景的需求日渐强烈。
+而 Gin 是对 Go 原生 net/http 进行的二次开发，在按需扩展和性能优化上受到很大局限。因此，为了满足业务需求，更好的服务各大业务线，
+2020 年初，字节跳动服务框架团队经过内部使用场景和外部主流开源 HTTP 框架 Fasthttp、Gin、Echo 的调研后，开始基于自研网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 开发内部框架 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;，
+让 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 在面对企业级需求时，有更好的性能及稳定性表现，也能够满足业务发展和应对不断演进的技术需求。&lt;/p&gt;
+&lt;h2 id="03-架构设计"&gt;03 架构设计&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 设计之初调研了大量业界优秀的 HTTP 框架，同时参考了近年来内部实践中积累的经验。为了保证框架整体上满足：1. 极致性能优化的可能性；2. 面对未来不可控需求的扩展能力，
+&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 采用了 4 层分层设计，保证各个层级功能内聚，同时通过层级之间的接口达到灵活扩展的目标。整体架构图如图 1 所示。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/Hertz_Architectural.png" alt="image"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;
+图1 Hertz 架构图
+&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 从上到下分为：应用层、路由层、协议层和传输层，每一层各司其职，同时公共能力被统一抽象到公共层（Common），做到跨层级复用。
+另外，同主库一同发布的还有作为子模块的 Hz 脚手架，它能够协助使用者快速搭建出项目核心骨架以及提供实用的构建工具链。&lt;/p&gt;
+&lt;h3 id="应用层"&gt;应用层&lt;/h3&gt;
+&lt;p&gt;应用层是和用户直接交互的一层，提供丰富易用的 API，主要包括 Server、Client 和一些其他通用抽象。Server 提供了注册 HandlerFunc、Binding、Rendering 等能力；Client 提供了调用下游和服务发现等能力；
+以及抽象一个 HTTP 请求所必须涉及到的请求（Request）、响应（Response）、上下文（RequestContext）、中间件（Middleware）等等。 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的 Server 和 Client 都能够提供中间件这样的扩展能力。&lt;/p&gt;
+&lt;p&gt;应用层中一个非常重要的抽象就是对 Server HandlerFunc 的抽象。早期，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 路由的处理函数 （HandlerFunc）中并没有接收标准的 context.Context，我们在大量的实践过程中发现，
+业务方通常需要一个标准的上下文在 RPC Client 或者日志、Tracing 等组件间传递，但由于请求上下文（RequestContext）生命周期局限于一次 HTTP 请求之内，而以上提到的场景往往存在异步的传递和处理，
+导致如果直接传递请求上下文，会导致出现一些数据不一致的问题。为此我们做了诸多尝试，但是因为核心原因在于请求上下文（RequestContext）的生命周期无法优雅的按需延长，
+最终在各种设计权衡下，我们在路由的处理函数签名中增加一个标准的上下文入参，通过分离出生命周期长短各异的两个上下文的方式，从根本上解决各种因为上下文生命周期不一致导致的异常问题，即：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/RequestContext.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="路由层"&gt;路由层&lt;/h3&gt;
+&lt;p&gt;路由层负责根据 URI 匹配对应的处理函数。&lt;/p&gt;
+&lt;p&gt;起初，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的路由基于 &lt;a href="https://github.com/julienschmidt/httprouter"&gt;httprouter&lt;/a&gt; 开发，但随着使用的用户越来越多，&lt;a href="https://github.com/julienschmidt/httprouter"&gt;httprouter&lt;/a&gt; 渐渐不能够满足需求，主要体现在 &lt;a href="https://github.com/julienschmidt/httprouter"&gt;httprouter&lt;/a&gt; 不能够同时注册静态路由和参数路由，
+即 &lt;code&gt;/a/b&lt;/code&gt;， &lt;code&gt;/:c/d&lt;/code&gt; 这两个路由不能够同时注册；甚至有一些更特殊的需求，如 &lt;code&gt;/a/b&lt;/code&gt;、&lt;code&gt;/:c/b&lt;/code&gt; ，当匹配 &lt;code&gt;/a/b&lt;/code&gt; 路由时，两个路由都能够匹配上。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 为满足这些需求重新构造了路由树，用户在注册路由时拥有很高的自由度：支持静态路由、参数路由的注册；支持按优先级匹配，如上述例子会优先匹配静态路由 &lt;code&gt;/a/b&lt;/code&gt;；支持路由回溯，
+如注册 &lt;code&gt;/a/b&lt;/code&gt;、&lt;code&gt;/:c/d&lt;/code&gt;，当匹配 &lt;code&gt;/a/d&lt;/code&gt; 时仍然能够匹配上；支持尾斜线重定向，如注册 &lt;code&gt;/a/b&lt;/code&gt;，当匹配 &lt;code&gt;/a/b/&lt;/code&gt; 时能够重定向到 &lt;code&gt;/a/b&lt;/code&gt; 上。
+&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 提供了丰富的路由能力来满足用户的需求，更多的功能可以参考 &lt;a href="https://www.cloudwego.io/zh/docs/hertz/reference/config/"&gt;Hertz 配置文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id="协议层"&gt;协议层&lt;/h3&gt;
+&lt;p&gt;协议层负责不同协议的实现和扩展。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 支持&lt;a href="https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/protocol/"&gt;协议的扩展&lt;/a&gt;，用户只需要实现下面的接口便可以按照自己的需求在引擎（Engine）上扩展协议，
+同时也支持通过 ALPN 协议协商的方式注册。&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 首批只开源了 HTTP1 实现，未来会陆续开源 HTTP2、QUIC 等实现。
+协议层扩展提供的灵活性甚至可以超越 HTTP 协议的范畴，用户完全可以按需注册任意符合自身需求的协议层实现，并且加入到 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的引擎中来，同时，也能够无缝享受到传输层带来的极致性能。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/Server.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="传输层"&gt;传输层&lt;/h3&gt;
+&lt;p&gt;传输层负责底层的网络库的抽象和实现。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 支持底层网络库的扩展。&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 原生完美适配 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，在时延方面有很多深度的优化，非常适合时延敏感的业务接入。&lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 对 TLS 能力的支持有待完善，而 TLS 能力又是 HTTP 框架必备能力，
+为此 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 底层同时支持基于 Go 标准网络库的实现适配，同时支持网络库的一键切换，用户可根据自己的需求选择合适的网络库进行替换。如果用户有更加高效的网络库或其他网络库需求，也完全可以根据需求自行扩展。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;网络库的扩展&lt;/strong&gt;：
+&lt;a href="https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/network-lib/"&gt;网络库扩展&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="hz-脚手架"&gt;Hz 脚手架&lt;/h3&gt;
+&lt;p&gt;与 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 一并开源的还有一个易用的命令行工具 Hz，用户只需提供一个 IDL，根据定义好的接口信息，Hz 便可以一键生成项目脚手架，让 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 达到开箱即用的状态；
+Hz 也支持基于 IDL 的更新能力，能够基于 IDL 变动智能地更新项目代码。目前 Hz 支持了 Thrift 和 Protobuf 两种 IDL 定义。命令行工具内置丰富的选项，可以根据自己的需求使用。
+同时它底层依赖 Protobuf 官方的编译器和自研的 Thriftgo 的编译器，两者都支持自定义的生成代码插件。如果默认模板不能够满足需求，完全能够按需定义。&lt;/p&gt;
+&lt;p&gt;未来，我们将继续迭代 Hz，持续集成各种常用的中间件，提供更高层面的模块化构建能力。给 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的用户提供按需调整的能力，通过灵活的自定义配置打造一套满足自身开发需求的脚手架。&lt;/p&gt;
+&lt;h3 id="common-组件"&gt;Common 组件&lt;/h3&gt;
+&lt;p&gt;Common 组件主要存放一些公共的能力，比如错误处理、单元测试能力、可观测性相关能力（Log、Trace、Metrics 等）。对于服务可观测性的能力，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 提供了默认的实现，用户可以按需装配；
+如果用户有特殊的需求，也可以通过 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 提供的接口注入。比如对于 Trace 能力，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 提供了默认的实现，也提供了将 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 和 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 串起来的 Example。如果想注入自己的实现，也可以实现下面的接口：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/Common.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;：
+&lt;a href="https://github.com/cloudwego/hertz-examples/blob/main/tracer/README.md"&gt;https://github.com/cloudwego/hertz-examples/blob/main/tracer/README.md&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="04-功能特性"&gt;04 功能特性&lt;/h2&gt;
+&lt;h3 id="中间件"&gt;中间件&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 除了提供 Server 的中间件能力，还提供了 Client 中间件能力。用户可以使用中间件能力将通用逻辑（如：日志记录、性能统计、异常处理、鉴权逻辑等等）和业务逻辑区分开，让用户更加专注于业务代码。
+Server 和 Client 中间件使用方式相同，使用 Use 方法注册中间件，中间件执行顺序和注册顺序相同，同时支持预处理和后处理逻辑。&lt;/p&gt;
+&lt;p&gt;Server 和 Client 的中间件实现方式并不相同。对于 Server 来说，我们希望减少栈的深度，同时也希望中间件能够默认的执行下一个，用户需要手动终止中间件的执行。
+因此，我们将 Server 的中间件分成了两种类型，即不在同一个函数调用栈（该中间件调用完后返回，由上一个中间件调用下一个中间件，如图 2 中 B 和 C）和在同一个函数调用栈的中间件（该中间件调用完后由该中间件继续调用下一个中间件，如图 2 中 C 和 Business Handler）。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/Middleware.png" alt="image"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;
+图2 中间件链路
+&lt;/p&gt;
+&lt;p&gt;其核心是需要一个地方存下当前的调用位置 index，并始终保持其递增。恰好 RequestContext 就是一个存储 index 合适的位置。
+但是对于 Client，由于没有合适的地方存储 index，我们只能退而求其次，抛弃 index 的实现，将所有的中间件构造在同一调用链上，需要用户手动调用下一个中间件。&lt;/p&gt;
+&lt;h3 id="流式处理"&gt;流式处理&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 提供 Server 和 Client 的流式处理能力。HTTP 的文件场景是十分常见的场景，除了 Server 侧的上传场景之外，Client 的下载场景也十分常见。
+为此，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 支持了 Server 和 Client 的流式处理。在内部网关场景中，从 Gin 迁移到 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 后，CPU 使用量随流量大小不同可节省 30%—60% 不等，服务压力越大，收益越大。
+&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 开启流式功能的方式也很容易，只需要在 Server 上或 Client 上添加一个配置即可，可参考 CloudWeGo 官网 Hertz 文档的 &lt;a href="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/engine/#%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86"&gt;Server 流式处理&lt;/a&gt; 部分和 &lt;a href="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/client/#%E6%B5%81%E5%BC%8F%E8%AF%BB%E5%93%8D%E5%BA%94%E5%86%85%E5%AE%B9"&gt;Client 流式处理&lt;/a&gt; 部分。&lt;/p&gt;
+&lt;p&gt;由于 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 采用 LT 的触发模式，由网络库主动将将数据从 TCP 缓冲区读到用户态，并存储到 buffer 中，否则 epoll 事件会持续触发。
+因此 Server 在超大请求的场景下，由于 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 持续将数据读到用户态内存中，可能会有 OOM 的风险。HTTP 文件上传场景就是一个典型的场景，但 HTTP 上传服务又是很常见的场景，
+因此我们支持标准网络库 go net，并针对 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 做了特殊优化，暴露出 Read() 接口，防止 OOM 发生。&lt;/p&gt;
+&lt;p&gt;对于 Client，情况并不相同。流式场景下会将连接封装成 Reader 暴露给用户，而 Client 有连接池管理，那这样连接就多了一种状态，何时关连接，何时复用连接成了一个问题。
+由于框架侧并不知道该连接何时会用完，框架侧复用该连接不现实，会导致串包问题。由于 GC 会关闭连接，因此我们起初设想流式场景下的连接交由用户后，由 GC 负责关闭，这样也不会导致资源泄漏。
+但是在测试后发现，由于 GC 存在一定时间间隔，另外 TCP 中主动关闭连接的一方需要等待 2RTT，在高并发场景下会导致 fd 被打满的情况。
+最终我们提供了复用连接的接口，对于性能有场要求用户，在使用完连接后可以将连接重新放入连接池中复用。&lt;/p&gt;
+&lt;h2 id="05-性能表现"&gt;05 性能表现&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 使用字节跳动自研高性能网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，在提高网络库效率方面有诸多实践，参考已发布文章 &lt;strong&gt;字节跳动在 Go 网络库上的实践&lt;/strong&gt; 。
+除此之外，&lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 还针对 HTTP 场景进行优化，通过减少拷贝和系统调用次数提高吞吐以及降低时延。为了衡量 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 性能指标，我们选取了社区中有代表性的框架 Gin（net/http）和 Fasthttp 作为对比，如图 3 所示。
+可以看到，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的极限吞吐、TP99 等指标均处于业界领先水平。未来，&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 还将继续和 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 深度配合，探索 HTTP 框架性能的极限。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/Fasthttp.png" alt="image"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;
+图3 Hertz 和其他框架性能对比
+&lt;/p&gt;
+&lt;h2 id="06-一个-demo"&gt;06 一个 Demo&lt;/h2&gt;
+&lt;p&gt;下面简单演示一下 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 是如何开发一个服务的。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先，定义 IDL，这里使用 Thrift 作为 IDL 的定义（也支持使用 Protobuf 定义的 IDL），编写一个名为 Demo 的 service。这个服务有一个 API: Hello，它的请求参数是一个 query，响应是一个包含一个 RespBody 字段的 Json。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/Hello.png" alt="image"&gt;&lt;/p&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;接下来我们使用 Hz 生成代码，并整理和拉取依赖。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/Hz.png" alt="image"&gt;&lt;/p&gt;
+&lt;ol start="3"&gt;
+&lt;li&gt;填充业务逻辑，比如我们返回 &lt;code&gt;hello，${Name}&lt;/code&gt;，那我们在 &lt;code&gt;biz/handler/example/hello_service.go&lt;/code&gt; 中添加以下代码即可。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/Hello_service.png" alt="image"&gt;&lt;/p&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;编译并运行项目。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/Build.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;到现在一个简单的 Hertz 项目已经生成，下面我们来测试一下。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Go_HTTP_Hertz/Hertz-Examples.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;以上 Demo 可以在 &lt;a href="https://github.com/cloudwego/hertz-examples"&gt;Hertz-Examples&lt;/a&gt; 中查看，之后就可以愉快地构建自己的项目了。&lt;/p&gt;
+&lt;h2 id="07-后记"&gt;07 后记&lt;/h2&gt;
+&lt;p&gt;希望以上的分享能够让大家对 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 有一个整体上的认识。同时，我们也在不断地迭代 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;、完善 CloudWeGo 整体生态。欢迎各位感兴趣的同学们加入我们，共同建设 CloudWeGo。&lt;/p&gt;
+&lt;h2 id="08-参考资料"&gt;08 参考资料&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://www.cloudwego.io/zh/docs/hertz/"&gt;&lt;strong&gt;Hertz Doc&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.cloudwego.io/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/"&gt;&lt;strong&gt;字节跳动在 Go 网络库上的实践&lt;/strong&gt; &lt;/a&gt;&lt;/p&gt;</description></item><item><title>Blog: Hertz v0.1.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2022/06/20/hertz-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Mon, 20 Jun 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/06/20/hertz-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/70"&gt;#70&lt;/a&gt;] feat: 增加 hz 脚手架。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/64"&gt;#64&lt;/a&gt;] feat: 增加 Hertz Request &amp;amp; Response 到 net/http Request &amp;amp; ResponseWriter 的适配器。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/45"&gt;#45&lt;/a&gt;] feat: 添加 ctx.Body() 方法。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/44"&gt;#44&lt;/a&gt;] feat: 在 request header 上添加 VisitAllCustomHeader 方法，使得传入的函数 f 只作用在用户自定义的 header 上（除了 cookie, host, content-length, content-type, user-agent 和 connection 以外的 header）。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/59"&gt;#59&lt;/a&gt;] feat: 支持 windows 开发环境。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/37"&gt;#37&lt;/a&gt;] refactor: 统一设置 request options 的入口，防止 options 未初始化导致 panic。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/52"&gt;#52&lt;/a&gt;] refactor: 去掉 for 循环中多余的判空。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/33"&gt;#33&lt;/a&gt;] refactor:
+当子串长度确定为 1 时，可以直接调用 strings.IndexByte 函数而不是像 strings.Index 一样先调用 len() 判断子串长度后再调用 strings.IndexByte 函数；
+为省去整型数字转字符串的工作，可以将相关变量直接定义成 string 类型而不是 int 类型；
+net 包下的 JoinHostPort 函数会再次判断 &amp;lsquo;:&amp;rsquo; 是否在 addr 中，如果不在则将 host 与 port 相关字符串连接起来。然而在 AddingMissingPort 函数中调用 net.JoinHostPort 时，&amp;rsquo;:&amp;rsquo; 应不在 addr 中。所以在此可以不调用 net.JoinHostPort，而是直接连接 host 和 port 信息。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/27"&gt;#27&lt;/a&gt;] refactor: 当字符串不需要格式化时，使用 hertz 的 errors.NewPublic 创建 error 而不是使用 fmt.Errorf。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="style"&gt;Style&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/29"&gt;#29&lt;/a&gt;] style(*): 修正拼写错误。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/57"&gt;#57&lt;/a&gt;] optimize: 使用 http.TimeFormat 格式化 HTTP 中的 Date 信息，避免产生更多的复制。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/58"&gt;#58&lt;/a&gt;] optimize: 服务端错误日志中添加对端地址。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/41"&gt;#41&lt;/a&gt;] optimize(recovery): 使用 &amp;lsquo;CtxErrorf&amp;rsquo; 代替 &amp;lsquo;Errorf&amp;rsquo; 当服务 panic。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="docs"&gt;Docs&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/60"&gt;#60&lt;/a&gt;] docs: readme 文件中添加 icon。&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

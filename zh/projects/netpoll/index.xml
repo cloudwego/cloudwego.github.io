@@ -1,0 +1,306 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – Netpoll</title><link>https://www.cloudwego.io/zh/projects/netpoll/</link><description>Recent content in Netpoll on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate>Mon, 04 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cloudwego.io/zh/projects/netpoll/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Netpoll Release</title><link>https://www.cloudwego.io/zh/blog/releases/netpoll/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/releases/netpoll/</guid><description/></item><item><title>Blog: Netpoll v0.6.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2024/03/04/netpoll-v0.6.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Mon, 04 Mar 2024 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2024/03/04/netpoll-v0.6.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/306"&gt;#306&lt;/a&gt;] feat: 懒加载 pollers 以避免在 netpoll 没有被使用时，创建任何 poller goroutines&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/303"&gt;#303&lt;/a&gt;] feat: 支持 WithOnDisconnect 回调&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/300"&gt;#300&lt;/a&gt;] feat: netpoll exception 实现 net.Error 接口&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/294"&gt;#294&lt;/a&gt;] feat: netpoll 支持 SetRunner 参数&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/307"&gt;#307&lt;/a&gt;] fix: 修复当 disconnect 与 connect 回调同时运行时，访问 ctx race 的问题&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/304"&gt;#304&lt;/a&gt;] fix: 当对端关闭连接但是 OnRequest 回调刚刚返回时，连接可能泄漏的问题&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/296"&gt;#296&lt;/a&gt;] fix: 当 readtrigger 被 error 触发时候，停止 timer&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/302"&gt;#302&lt;/a&gt;] ci: 升级 &lt;code&gt;actions/checkout&lt;/code&gt; 和 &lt;code&gt;actions/setup-go&lt;/code&gt; 的版本&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Blog: Netpoll v0.5.1 版本发布</title><link>https://www.cloudwego.io/zh/blog/2023/10/18/netpoll-v0.5.1-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Wed, 18 Oct 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2023/10/18/netpoll-v0.5.1-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/289"&gt;#289&lt;/a&gt;] fix: 解决当建立建立超时时，遇到 panic 或 fault 错误&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="optimise"&gt;Optimise&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/290"&gt;#290&lt;/a&gt;] optimise: 移除已经不使用的 inputBarrier&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Blog: Netpoll v0.5.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2023/09/26/netpoll-v0.5.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Tue, 26 Sep 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2023/09/26/netpoll-v0.5.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/274"&gt;#274&lt;/a&gt;] optimize: 添加初始 bookSize 到 8KB 以减少连接最初读取时的开销&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/273"&gt;#273&lt;/a&gt;] optimize: 当读取一个已经关闭连接时，忽略 EOF 错误&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/283"&gt;#283&lt;/a&gt;] fix: 保护 operator 不被 detach 两次&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/280"&gt;#280&lt;/a&gt;] fix: 修复 detach operator race 问题&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/278"&gt;#278&lt;/a&gt;] fix: OnRequest 应该等待所有 readable 数据都被消费完毕&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/276"&gt;#276&lt;/a&gt;] fix: 缺少 import 库引入的编译错误&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/238"&gt;#238&lt;/a&gt;] fix: 当 server 的 OnRequest panic 时，应该关闭连接&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="docs"&gt;Docs&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/243"&gt;#243&lt;/a&gt;] docs: 移除过时信息&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Blog: Netpoll v0.4.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2023/06/14/netpoll-v0.4.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Wed, 14 Jun 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2023/06/14/netpoll-v0.4.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="feature"&gt;Feature:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/249"&gt;#249&lt;/a&gt;] feat: 添加 Detach 函数来支持从连接的 poller 中删除连接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/250"&gt;#250&lt;/a&gt;] optimize: 优化 WriteDirect 实现，避免 remainLen 为 0 时 panic 和重复创建冗余的 LinkBufferNode.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="bugfix"&gt;Bugfix:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/256"&gt;#256&lt;/a&gt;] fix: 调用 openPoll 失败时关闭已经创建的 poll&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/251"&gt;#251&lt;/a&gt;] fix: err to e0&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/226"&gt;#226&lt;/a&gt;] fix: 在关闭连接前 poller 读取所有未读的 data&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/237"&gt;#237&lt;/a&gt;] fix: shard queue 状态关闭错误&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/189"&gt;#189&lt;/a&gt;] fix: 当 readv syscall return 0, nil 时关闭连接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/233"&gt;#233&lt;/a&gt;] refactor: 简化 race 和 norace event loop&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Netpoll v0.3.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2022/11/09/netpoll-v0.3.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Wed, 09 Nov 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/11/09/netpoll-v0.3.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="feat"&gt;Feat&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/206"&gt;#206&lt;/a&gt;] feat: 连接 Flush 接口支持写超时设置。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/182"&gt;#182&lt;/a&gt;] feat: 支持在 ipv6 only 环境下创建连接。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/200"&gt;#200&lt;/a&gt;] fix: 修复 #166 中的代码错误：close fd 没有正确的被 detach。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/196"&gt;#196&lt;/a&gt;] fix: 系统 io 调用使用 int32 存储 size, 超限调用会导致 EINVAL。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/179"&gt;#179&lt;/a&gt;] fix: 修复 buffer 长度 int32 溢出的问题。&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/netpoll/pull/183"&gt;#183&lt;/a&gt;] fix: 当 EPOLLERR 发生时，跳过检查 EPOLLOUT。&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Netpoll v0.2.2 版本发布</title><link>https://www.cloudwego.io/zh/blog/2022/04/28/netpoll-v0.2.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/04/28/netpoll-v0.2.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="improvement"&gt;Improvement&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fix: Loops 缩容不再全部重置&lt;/li&gt;
+&lt;li&gt;Chore: mcache bsr 计算使用 math/bits.Len 代替，以提升性能。&lt;/li&gt;
+&lt;li&gt;Feat: 修复 LinkBuffer Close 时没有回收 caches 的问题（不是内存泄漏）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fix: 修复短链接 send&amp;amp;close 场景无法触发 OnRequest 回调的问题&lt;/li&gt;
+&lt;li&gt;Fix: 修复 zcReader 读到 io.EOF 后丢失部分数据的问题&lt;/li&gt;
+&lt;li&gt;Fix: 修复 flush 没有检查连接关闭的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="doc"&gt;Doc&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Doc: 更新了用户文档&lt;/li&gt;
+&lt;li&gt;Doc: 增加了 Reader.Slice 的定义描述&lt;/li&gt;
+&lt;li&gt;Doc: 修复了 examples 中的死链&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="revert"&gt;Revert&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Revert: 重置了 loops 初始化数量&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Netpoll v0.2.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2022/02/22/netpoll-v0.2.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Tue, 22 Feb 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/02/22/netpoll-v0.2.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="improvement"&gt;Improvement&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Feat: 添加 OnConnect 回调&lt;/li&gt;
+&lt;li&gt;Feat: 新增 Until API&lt;/li&gt;
+&lt;li&gt;Feat: 支持不带 timeout 的 dial&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fix: 修复当只设置了 onConnect 回调时，不会触发 close callback 的 bug&lt;/li&gt;
+&lt;li&gt;Fix: 添加最大节点限制，避免异常情况下的 OOM 问题&lt;/li&gt;
+&lt;li&gt;Fix: 修复 reset operator 时，没有 reset OnWrite 的问题&lt;/li&gt;
+&lt;li&gt;Fix: 修复连接关闭时，写 panic 的问题&lt;/li&gt;
+&lt;li&gt;Fix: 修复单测失败问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;docs: 更新 readme&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Netpoll v0.1.2 版本发布</title><link>https://www.cloudwego.io/zh/blog/2021/12/13/netpoll-v0.1.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Mon, 13 Dec 2021 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2021/12/13/netpoll-v0.1.2-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="bug-修复"&gt;Bug 修复:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;LinkBuffer 增加了空值校验&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Netpoll v0.1.1 版本发布</title><link>https://www.cloudwego.io/zh/blog/2021/12/09/netpoll-v0.1.1-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 09 Dec 2021 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2021/12/09/netpoll-v0.1.1-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="优化"&gt;优化:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;优化了多路复用下，分片队列的性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="bug-修复"&gt;Bug 修复:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;修复了 book 方法在多路复用下的 bug&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="文档"&gt;文档&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;修正了一些大小写和语法问题，并更新了链接&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Netpoll v0.1.0 版本发布</title><link>https://www.cloudwego.io/zh/blog/2021/12/01/netpoll-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Wed, 01 Dec 2021 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2021/12/01/netpoll-v0.1.0-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="功能"&gt;功能:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;增加了分片队列，用于支持连接多路复用&lt;/li&gt;
+&lt;li&gt;优化方案：尽可能的维护单节点 LinkBuffer 来减少 copy&lt;/li&gt;
+&lt;li&gt;优化方案：修复了 waitReadSize 的 bug，并优化了 input trigger 效率&lt;/li&gt;
+&lt;li&gt;优化方案：减少了 waitRead 和 inputAck 冲突时产生的超时错误&lt;/li&gt;
+&lt;li&gt;逻辑简化：简化了连接状态机&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="bug-修复"&gt;Bug 修复:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;修复了 eventLoop 提前 GC 的 bug&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="文档"&gt;文档&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;更新 README，将 Performance 部分移动至 netpoll-benchmark 项目&lt;/li&gt;
+&lt;li&gt;更新了 reference，添加了官网信息，移除了 change log&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="重大变更"&gt;重大变更&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;WriteBuffer 返回值由 (n int, err error) 改为 (err error)&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Netpoll v0.0.4 版本发布</title><link>https://www.cloudwego.io/zh/blog/2021/09/16/netpoll-v0.0.4-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</link><pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2021/09/16/netpoll-v0.0.4-%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/</guid><description>
+&lt;h2 id="优化"&gt;优化:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;默认支持 TCP_NODELAY&lt;/li&gt;
+&lt;li&gt;支持在一个循环中读写&lt;/li&gt;
+&lt;li&gt;返回 nocopy rw 的真实错误&lt;/li&gt;
+&lt;li&gt;更改了循环策略的默认数量&lt;/li&gt;
+&lt;li&gt;重新定义了 EventLoop.Serve arg: Listener -&amp;gt; net.Listener&lt;/li&gt;
+&lt;li&gt;在 DisableGopool 中增加了 API&lt;/li&gt;
+&lt;li&gt;删除了读锁&lt;/li&gt;
+&lt;li&gt;连接 Flush API 调整为阻塞的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="bug-修复"&gt;Bug 修复:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;设置剩余待读取大小。&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: 字节跳动在 Go 网络库上的实践</title><link>https://www.cloudwego.io/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/</link><pubDate>Sun, 24 May 2020 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/</guid><description>
+&lt;blockquote&gt;
+&lt;p&gt;本文选自“字节跳动基础架构实践”系列文章。&lt;/p&gt;
+&lt;p&gt;“字节跳动基础架构实践”系列文章是由字节跳动基础架构部门各技术团队及专家倾力打造的技术干货内容，和大家分享团队在基础架构发展和演进过程中的实践经验与教训，与各位技术同学一起交流成长。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
+&lt;p&gt;RPC 框架作为研发体系中重要的一环，承载了几乎所有的服务流量。随着公司内 Go 语言使用越来越广，业务对框架的要求越来越高，而 Go 原生 net 网络库却无法提供足够的性能和控制力，如无法感知连接状态、连接数量多导致利用率低、无法控制协程数量等。
+为了能够获取对于网络层的完全控制权，同时先于业务做一些探索并最终赋能业务，框架组推出了全新的基于 epoll 的自研网络库 —— Netpoll，并基于其之上开发了字节内新一代 Go 框架 Kitex。&lt;/p&gt;
+&lt;p&gt;由于 epoll 原理已有较多文章描述，本文将仅简单介绍 Netpoll 的设计；随后，我们会尝试梳理一下我们基于 Netpoll 所做的一些实践；最后，我们将分享一个我们遇到的问题，以及我们解决的思路。同时，欢迎对于 Go 语言以及框架感兴趣的同学加入我们！&lt;/p&gt;
+&lt;h2 id="新型网络库设计"&gt;新型网络库设计&lt;/h2&gt;
+&lt;h3 id="reactor---事件监听和调度核心"&gt;Reactor - 事件监听和调度核心&lt;/h3&gt;
+&lt;p&gt;Netpoll 核心是 Reactor 事件监听调度器，主要功能为使用 epoll 监听连接的文件描述符（fd），通过回调机制触发连接上的 读、写、关闭 三种事件。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/bytedance_gonet_practice_img/reactor.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="server---主从-reactor-实现"&gt;Server - 主从 Reactor 实现&lt;/h3&gt;
+&lt;p&gt;Netpoll 将 Reactor 以 1:N 的形式组合成主从模式。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;MainReactor 主要管理 Listener，负责监听端口，建立新连接；&lt;/li&gt;
+&lt;li&gt;SubReactor 负责管理 Connection，监听分配到的所有连接，并将所有触发的事件提交到协程池里进行处理。&lt;/li&gt;
+&lt;li&gt;Netpoll 在 I/O Task 中引入了主动的内存管理，向上层提供 NoCopy 的调用接口，由此支持 NoCopy RPC。&lt;/li&gt;
+&lt;li&gt;使用协程池集中处理 I/O Task，减少 goroutine 数量和调度开销。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/bytedance_gonet_practice_img/server_reactor.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="client---共享-reactor-能力"&gt;Client - 共享 Reactor 能力&lt;/h3&gt;
+&lt;p&gt;client 端和 server 端共享 SubReactor，Netpoll 同样实现了 dialer，提供创建连接的能力。client 端使用上和 net.Conn 相似，Netpoll 提供了 write -&amp;gt; wait read callback 的底层支持。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/bytedance_gonet_practice_img/client_reactor.png" alt="image"&gt;&lt;/p&gt;
+&lt;h2 id="nocopy-buffer"&gt;Nocopy Buffer&lt;/h2&gt;
+&lt;h3 id="为什么需要-nocopy-buffer-"&gt;为什么需要 Nocopy Buffer ?&lt;/h3&gt;
+&lt;p&gt;在上述提及的 Reactor 和 I/O Task 设计中，epoll 的触发方式会影响 I/O 和 buffer 的设计，大体来说分为两种方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;采用水平触发(LT)&lt;/strong&gt;，则需要同步的在事件触发后主动完成 I/O，并向上层代码直接提供 buffer。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;采用边沿触发(ET)&lt;/strong&gt;，可选择只管理事件通知(如 go net 设计)，由上层代码完成 I/O 并管理 buffer。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;两种方式各有优缺，Netpoll 采用前者策略，水平触发时效性更好，容错率高，主动 I/O 可以集中内存使用和管理，提供 nocopy 操作并减少 GC。事实上一些热门开源网络库也是采用方式一的设计，如 easygo、evio、gnet 等。&lt;/p&gt;
+&lt;p&gt;但使用 LT 也带来另一个问题，即底层主动 I/O 和上层代码并发操作 buffer，引入额外的并发开销。比如：I/O 读数据写 buffer 和上层代码读 buffer 存在并发读写，反之亦然。
+为了保证数据正确性，同时不引入锁竞争，现有的开源网络库通常采取 同步处理 buffer(easygo, evio) 或者将 buffer 再 copy 一份提供给上层代码(gnet) 等方式，均不适合业务处理或存在 copy 开销。&lt;/p&gt;
+&lt;p&gt;另一方面，常见的 bytes、bufio、ringbuffer 等 buffer 库，均存在 growth 需要 copy 原数组数据，以及只能扩容无法缩容，占用大量内存等问题。因此我们希望引入一种新的 Buffer 形式，一举解决上述两方面的问题。&lt;/p&gt;
+&lt;h3 id="nocopy-buffer-设计和优势"&gt;Nocopy Buffer 设计和优势&lt;/h3&gt;
+&lt;p&gt;Nocopy Buffer 基于链表数组实现，如下图所示，我们将 []byte 数组抽象为 block，并以链表拼接的形式将 block 组合为 Nocopy Buffer，同时引入了引用计数、nocopy API 和对象池。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/bytedance_gonet_practice_img/buffer.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;Nocopy Buffer 相比常见的 bytes、bufio、ringbuffer 等有以下优势：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;读写并行无锁，支持 nocopy 地流式读写
+&lt;ul&gt;
+&lt;li&gt;读写分别操作头尾指针，相互不干扰。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;高效扩缩容
+&lt;ul&gt;
+&lt;li&gt;扩容阶段，直接在尾指针后添加新的 block 即可，无需 copy 原数组。&lt;/li&gt;
+&lt;li&gt;缩容阶段，头指针会直接释放使用完毕的 block 节点，完成缩容。每个 block 都有独立的引用计数，当释放的 block 不再有引用时，主动回收 block 节点。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;灵活切片和拼接 buffer (链表特性)
+&lt;ul&gt;
+&lt;li&gt;支持任意读取分段(nocopy)，上层代码可以 nocopy 地并行处理数据流分段，无需关心生命周期，通过引用计数 GC。&lt;/li&gt;
+&lt;li&gt;支持任意拼接(nocopy)，写 buffer 支持通过 block 拼接到尾指针后的形式，无需 copy，保证数据只写一次。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Nocopy Buffer 池化，减少 GC
+&lt;ul&gt;
+&lt;li&gt;将每个 []byte 数组视为 block 节点，构建对象池维护空闲 block，由此复用 block，减少内存占用和 GC。基于该 Nocopy Buffer，我们实现了 Nocopy Thrift，使得编解码过程内存零分配零拷贝。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="连接多路复用"&gt;连接多路复用&lt;/h2&gt;
+&lt;p&gt;RPC 调用通常采用短连接或者长连接池的形式，一次调用绑定一个连接，那么当上下游规模很大的情况下，网络中存在的连接数以 MxN 的速度扩张，带来巨大的调度压力和计算开销，给服务治理造成困难。
+因此，我们希望引入一种 &amp;ldquo;在单一长连接上并行处理调用&amp;rdquo; 的形式，来减少网络中的连接数，这种方案即称为 &amp;ldquo;连接多路复用&amp;rdquo;。&lt;/p&gt;
+&lt;p&gt;当前业界也存在一些开源的连接多路复用方案，掣肘于代码层面的束缚，这些方案均需要 copy buffer 来实现数据分包和合并，导致实际性能并不理想。
+而上述 Nocopy Buffer 基于其灵活切片和拼接的特性，很好的支持了 nocopy 的数据分包和合并，使得实现高性能连接多路复用方案成为可能。&lt;/p&gt;
+&lt;p&gt;基于 Netpoll 的连接多路复用设计如下图所示，我们将 Nocopy Buffer(及其分片) 抽象为虚拟连接，使得上层代码保持同 net.Conn 相同的调用体验。
+与此同时，在底层代码上通过协议分包将真实连接上的数据灵活的分配到虚拟连接上；或通过协议编码合并发送虚拟连接数据。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/bytedance_gonet_practice_img/client_server.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;连接多路复用方案包含以下核心要素：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;虚拟连接&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;实质上是 Nocopy Buffer，目的是替换真正的连接，规避内存 copy。&lt;/li&gt;
+&lt;li&gt;上层的业务逻辑/编解码 均在虚拟连接上完成，上层逻辑可以异步独立并行执行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Shared map&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;引入分片锁来减少锁力度。&lt;/li&gt;
+&lt;li&gt;在调用端使用 sequence id 来标记请求，并使用分片锁存储 id 对应的回调。&lt;/li&gt;
+&lt;li&gt;在接收响应数据后，根据 sequence id 来找到对应回调并执行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;协议分包和编码&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如何识别完整的请求响应数据包是连接多路复用方案可行的关键，因此需要引入协议。&lt;/li&gt;
+&lt;li&gt;这里采用 thrift header protocol 协议，通过消息头判断数据包完整性，通过 sequence id 标记请求和响应的对应关系。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="zerocopy"&gt;ZeroCopy&lt;/h2&gt;
+&lt;p&gt;这里所说的 ZeroCopy，指的是 Linux 所提供的 ZeroCopy 的能力。上一章中我们说了业务层的零拷贝，而众所周知，当我们调用 sendmsg 系统调用发包的时候，
+实际上仍然是会产生一次数据的拷贝的，并且在大包场景下这个拷贝的消耗非常明显。以 100M 为例，perf 可以看到如下结果：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/bytedance_gonet_practice_img/perf.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;这还仅仅是普通 tcp 发包的占用，在我们的场景下，大部分服务都会接入 Service Mesh，所以在一次发包中，一共会有 3 次拷贝：业务进程到内核、内核到 sidecar、sidecar 再到内核。
+这使得有大包需求的业务，拷贝所导致的 cpu 占用会特别明显，如下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/bytedance_gonet_practice_img/cpu.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;为了解决这个问题，我们选择了使用 Linux 提供的 ZeroCopy API（在 4.14 以后支持 send；5.4 以后支持 receive）。但是这引入了一个额外的工程问题：ZeroCopy send API 和原先调用方式不兼容，无法很好地共存。
+这里简单介绍一下 ZeroCopy send 的工作方式：业务进程调用 sendmsg 之后，sendmsg 会记录下 iovec 的地址并立即返回，这时候业务进程不能释放这段内存，需要通过 epoll 等待内核回调一个信号表明某段 iovec 已经发送成功之后才能释放。
+由于我们并不希望更改业务方的使用方法，需要对上层提供同步收发的接口，所以很难基于现有的 API 同时提供 ZeroCopy 和非 ZeroCopy 的抽象；而由于 ZeroCopy 在小包场景下是有性能损耗的，所以也不能将这个作为默认的选项。&lt;/p&gt;
+&lt;p&gt;于是，字节跳动框架组和字节跳动内核组合作，由内核组提供了同步的接口：当调用 sendmsg 的时候，内核会监听并拦截内核原先给业务的回调，并且在回调完成后才会让 sendmsg 返回。
+这使得我们无需更改原有模型，可以很方便地接入 ZeroCopy send。同时，字节跳动内核组还实现了基于 unix domain socket 的 ZeroCopy，可以使得业务进程与 Mesh sidecar 之间的通信也达到零拷贝。&lt;/p&gt;
+&lt;p&gt;在使用了 ZeroCopy send 后，perf 可以看到内核不再有 copy 的占用：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/bytedance_gonet_practice_img/perf2.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;从 cpu 占用数值上看，大包场景下 ZeroCopy 能够比非 ZeroCopy 节省一半的 cpu。&lt;/p&gt;
+&lt;h2 id="go-调度导致的延迟问题分享"&gt;Go 调度导致的延迟问题分享&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;PS: 该问题在新版本的 Netpoll 中已经修复，修复方法是通过 EpollWait Timeout 为 0 并且通过主动让出执行权，在 Goroutine 调度上做优化从而改善延迟。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;在我们实践过程中，发现我们新写的 Netpoll 虽然在 avg 延迟上表现胜于 Go 原生的 net 库，但是在 p99 和 max 延迟上要普遍略高于 Go 原生的 net 库，
+并且尖刺也会更加明显，如下图（Go 1.13，蓝色为 Netpoll + 多路复用，绿色为 Netpoll + 长连接，黄色为 net 库 + 长连接）：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/bytedance_gonet_practice_img/delay.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;我们尝试了很多种办法去优化，但是收效甚微。最终，我们定位出这个延迟并非是由于 Netpoll 本身的开销导致的，而是由于 go 的调度导致的，比如说：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;由于在 Netpoll 中，SubReactor 本身也是一个 goroutine，受调度影响，不能保证 EpollWait 回调之后马上执行，所以这一块会有延迟；&lt;/li&gt;
+&lt;li&gt;同时，由于用来处理 I/O 事件的 SubReactor 和用来处理连接监听的 MainReactor 本身也是 goroutine，所以实际上很难保证在多核情况之下，这些 Reactor 能并行执行；
+甚至在最极端情况之下，可能这些 Reactor 会挂在同一个 P 下，最终变成了串行执行，无法充分利用多核优势；&lt;/li&gt;
+&lt;li&gt;由于 EpollWait 回调之后，SubReactor 内是串行处理 I/O 事件的，导致排在最后的事件可能会有长尾问题；&lt;/li&gt;
+&lt;li&gt;在连接多路复用场景下，由于每个连接绑定了一个 SubReactor，故延迟完全取决于这个 SubReactor 的调度，导致尖刺会更加明显。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;由于 Go 在 runtime 中对于 net 库有做特殊优化，所以 net 库不会有以上情况；同时 net 库是 goroutine-per-connection 的模型，所以能确保请求能并行执行而不会相互影响。&lt;/p&gt;
+&lt;p&gt;对于以上这个问题，我们目前解决的思路有两个：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;修改 Go runtime 源码，在 Go runtime 中注册一个回调，每次调度时调用 EpollWait，把获取到的 fd 传递给回调执行；&lt;/li&gt;
+&lt;li&gt;与字节跳动内核组合作，支持同时批量读/写多个连接，解决串行问题。另外，经过我们的测试，Go 1.14 能够使得延迟略有降低同时更加平稳，但是所能达到的极限 QPS 更低。希望我们的思路能够给业界同样遇到此问题的同学提供一些参考。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="后记"&gt;后记&lt;/h2&gt;
+&lt;p&gt;希望以上的分享能够对社区有所帮助。同时，我们也在加速建设 Netpoll 以及基于 Netpoll 的新框架 Kitex。欢迎各位感兴趣的同学加入我们，共同建设 Go 语言生态！&lt;/p&gt;
+&lt;h2 id="参考资料"&gt;参考资料&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://man7.org/linux/man-pages/man7/epoll.7.html"&gt;http://man7.org/linux/man-pages/man7/epoll.7.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://go.dev/src/runtime/proc.go"&gt;https://go.dev/src/runtime/proc.go&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/panjf2000/gnet"&gt;https://github.com/panjf2000/gnet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/tidwall/evio"&gt;https://github.com/tidwall/evio&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

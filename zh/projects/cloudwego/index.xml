@@ -1,0 +1,571 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – CloudWeGo</title><link>https://www.cloudwego.io/zh/projects/cloudwego/</link><description>Recent content on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate>Thu, 21 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cloudwego.io/zh/projects/cloudwego/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: CloudWeGo 易用性建设：提升 Go 语言云原生工程效率之路</title><link>https://www.cloudwego.io/zh/blog/2023/12/21/cloudwego-%E6%98%93%E7%94%A8%E6%80%A7%E5%BB%BA%E8%AE%BE%E6%8F%90%E5%8D%87-go-%E8%AF%AD%E8%A8%80%E4%BA%91%E5%8E%9F%E7%94%9F%E5%B7%A5%E7%A8%8B%E6%95%88%E7%8E%87%E4%B9%8B%E8%B7%AF/</link><pubDate>Thu, 21 Dec 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2023/12/21/cloudwego-%E6%98%93%E7%94%A8%E6%80%A7%E5%BB%BA%E8%AE%BE%E6%8F%90%E5%8D%87-go-%E8%AF%AD%E8%A8%80%E4%BA%91%E5%8E%9F%E7%94%9F%E5%B7%A5%E7%A8%8B%E6%95%88%E7%8E%87%E4%B9%8B%E8%B7%AF/</guid><description>
+&lt;blockquote&gt;
+&lt;p&gt;本篇文章是 CloudWeGo 两周年庆典系列的第二篇。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;这次分享会首先给大家同步下 CloudWeGo 易用性建设的一个简单背景，然后会介绍我们针对易用性建设做了哪些工作，最后会对未来的工作进行展望。&lt;/p&gt;
+&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
+&lt;p&gt;CloudWeGo 是一套由字节跳动基础架构服务框架团队开源的、可快速构建企业级云原生微服务架构的中间件集合。
+CloudWeGo 下的项目主要有三个特点：&lt;strong&gt;高性能&lt;/strong&gt;、&lt;strong&gt;高扩展性&lt;/strong&gt;以及&lt;strong&gt;高可靠性&lt;/strong&gt;；并且，在开源后我们也更加重视易用性的建设，我们意识到易用性可以给社区带来很多用户、进而形成活跃的社区氛围，推动社区持续发展，而且易用性可帮助用户快速完成业务逻辑开发，提升效率。&lt;/p&gt;
+&lt;p&gt;针对易用性，我们在研发体验、用户体验以及社区宣传等均做了诸多工作，下面我来一一介绍。另外这次分享主要会重点介绍 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 的易用性建设。&lt;/p&gt;
+&lt;h2 id="易用性-feature-建设"&gt;易用性 Feature 建设&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 作为企业级的 HTTP 框架，易用性一直是我们非常重视的方面，因为它能够极大提升研发体验。因此，自从开源以来，我们一直非常重视用户提出的各种关于易用性的建议，并进行了总结：第一个问题是我们在一些 Feature 的使用上与常见的框架有些差别，导致迁移过来的用户可能会不习惯；
+第二个问题是框架的脚手架工具较多，例如 CloudWeGo 下就有 hz 和 kitex 两个脚手架，这无疑增加了用户的学习成本；第三个问题是文档的问题，我们在 issue 和用户群的用户反馈中看出，目前我们的文档存在描述不清晰，内容缺失等问题，导致用户遇到问题，往往无法快速解决。&lt;/p&gt;
+&lt;p&gt;针对以上问题，我们开发了多种能力以快速支持用户需求。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;多协议支持&lt;/strong&gt;：首先需要介绍的是 Hertz 可支持无缝切换多协议，目前一些开源的框架已经支持了 h2/h3 协议了，因此我们基于 Hertz 协议层的拓展能力，完成了 http2/http3 的实现，并放到了 hertz-contrib 下。其使用方式非常简单，只需要在 Hertz engine 上将对应的协议注册上就可以啦。 http3 协议的支持也类似，不过我们需要将传输层指定为 Hertz 拓展的 quic 协议的传输层，其他的操作就和 http2 一样了。
+&lt;img src="https://www.cloudwego.io/img/blog/CloudWeGo_Usability_Construction/multi_protocols.png" alt="image"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Response Writer 劫持&lt;/strong&gt;：接下来，再给大家介绍一下 Response Writer 劫持能力。在介绍 Writer 劫持前，先说一下 Hertz 读写报文的流程(图中数字部分)，Hertz 会先在连接中读数据&amp;amp;解析，然后会根据请求内容进行路由匹配、业务逻辑处理、创建响应数据等，并在这些工作结束后，由框架将数据发送给对端。这么做可完全简化用户操作，不过在一些场景下却存在问题，首先是用户无法控制响应真正 flush 到对端的时机，因此在一些增量生成数据、实时性要求高的场景，用户限制较多。
+&lt;img src="https://www.cloudwego.io/img/blog/CloudWeGo_Usability_Construction/response_writer.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;因此，我们开发了 Response Writer 劫持能力，在原来写响应流程的基础之上，支持用户在业务 handler/中间件中劫持 Response Writer，提前将响应数据发回到对端，实现更加灵活的写请求方式。 我们已经基于 Response Writer 的能力实现了 handler flush、SSE、流式 Gzip 等能力，更多能力也期待大家贡献。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;参数绑定重构：介绍完 Writer 劫持后，再来给大家介绍一个重要的 Feature - 参数绑定。重构之前 Hertz 的参数绑定依赖了第三方的实现，这会存在以下问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;依赖第三方实现，用户的需求需要诉诸于开发者&lt;/li&gt;
+&lt;li&gt;提供接口较少，迁移过来的同学会增加学习成本&lt;/li&gt;
+&lt;li&gt;性能差，之前的实现适配的是标准 http 库的存储模型，Hertz 用需要多一次转换，性能差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为解决这些问题，我们重构了参数绑定的能力，将其实现放到 Hertz 内部，作为我们应用层的一个重要实现，重构后它支持和之前一样的绑定规则和使用方法，并且性能也会完全优于之前。另外还支持了自定义 binder 和 Validator，方便用户使用其熟悉的语法。另外，我们将所有的配置统一收敛到一个结构体，使用 withOption 的形式注入到 Hertz engine 上。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;以上 3 个就是 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 比较重要的易用性建设方面的 Feature。&lt;/p&gt;
+&lt;h2 id="生态建设"&gt;生态建设&lt;/h2&gt;
+&lt;p&gt;接下来给大家介绍一下 Hertz 相关的&lt;a href="https://github.com/hertz-contrib"&gt;生态建设&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;目前我们将一些通用的能力以中间件的形式提供给了大家，这样开发者可以更好的关注业务逻辑了，只需要调用中间件就可以使用这些通用的能力。
+截止当前，我们已经提供了包括认证/授权、安全、性能、HTTP 通用能力、治理观测拓展能力等各类超过 20 个中间件拓展，基本可满足大部分的业务需求。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/CloudWeGo_Usability_Construction/middleware_1.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/CloudWeGo_Usability_Construction/middleware_2.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;当然，我们也会继续投入这些中间件生态的建设，也欢迎大家来参与到我们的社区开发中来。&lt;/p&gt;
+&lt;h2 id="脚手架优化"&gt;脚手架优化&lt;/h2&gt;
+&lt;p&gt;下面我来针对脚手架工具的优化进行介绍。&lt;/p&gt;
+&lt;h3 id="hz"&gt;Hz&lt;/h3&gt;
+&lt;p&gt;在开源的时候，Hertz 的脚手架工具 &lt;a href="https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/"&gt;hz&lt;/a&gt; 已经提供基于 IDL 生成 server 的能力，也就是图中的 3、4、5 部分我们已经支持了，目前可以根据 IDL 的接口定义来自动生成路由注册、handler 代码等功能；
+但是作为一个通信框架，我们也需要完成 client 端的生成工作，也就是图中的 1、2、6 过程，因此 hz 在开源后支持了生成 client 代码的能力。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/CloudWeGo_Usability_Construction/hz.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;Client 端生成的目的主要是可以屏蔽掉初始化 Hertz client 、发送请求等一系列固定的操作、为用户提供一个类似 HTTP 请求一键发送的能力，并能够和 hz 生成的 server 直接进行通信。&lt;/p&gt;
+&lt;h2 id="用户体验优化"&gt;用户体验优化&lt;/h2&gt;
+&lt;h3 id="文档优化"&gt;文档优化&lt;/h3&gt;
+&lt;p&gt;自从开源来，CloudWeGo 下的项目一直都注重文档的问题，但是每次都是哪里有问题修哪里，无法全面解决问题&lt;/p&gt;
+&lt;p&gt;因此，我们参与 CCF GLCC 项目发起了文档优化专项的工作，在该专项中我们主要做了以下工作：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;全方位地对文档进行重新体验，包括代码、图片、内容等，并记录相关问题&lt;/li&gt;
+&lt;li&gt;根据记录的相关问题，我们有专人来对文档进行优化，解决了一些逻辑混乱、描述不清晰等问题，并着重优化了 新人教程、Hertz 核心能力等常用文档。根据反馈，优化后的文档已经可以解决基本所有常见问题&lt;/li&gt;
+&lt;li&gt;此外，我们还对文档格式、目录结构进行了统一的调整，提供更好的视觉体验
+目前，该优化专项目前已在 CloudWeGo 其他项目下进行，也欢迎大家多多给我们反馈文档的问题。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="示例代码库"&gt;示例代码库&lt;/h3&gt;
+&lt;p&gt;其次，我们提供了丰富的示例代码库。&lt;/p&gt;
+&lt;p&gt;目前，我们提供了 &lt;a href="https://github.com/cloudwego/hertz-examples"&gt;hertz-example&lt;/a&gt;、&lt;a href="https://github.com/cloudwego/kitex-examples"&gt;kitex-example&lt;/a&gt; 代码库，这里包含了所有常用 Feature 的可执行的使用实例，并且定期更新、维护。&lt;/p&gt;
+&lt;p&gt;另外，为了使得业务更快地能使用 CloudWeGo 项目完成业务逻辑开发，我们提供了若干个真实场景的 demo，目前提供了如下的 demo，其中下面的几个业务代码都是使用了 Hertz 和 Kitex 进行开发或者重构，大家可以在此基础上拓展自己的业务逻辑，完成业务的快速上线。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/biz-demo/tree/main/bookinfo"&gt;Bookinfo&lt;/a&gt;: 使用 Hertz+Kitex 重新实现 IstioBookinfo&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/biz-demo/tree/main/easy_note"&gt;Easy Note&lt;/a&gt;: 使用 Hertz+Kitex 微服务的形式实现一个笔记服务&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/biz-demo/tree/main/book-shop"&gt;Book Shop&lt;/a&gt;: 使用 Hertz+Kitex 实现一个电商示例&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/biz-demo/tree/main/open-payment-platform"&gt;Open Payment Platform&lt;/a&gt;: 使用 Hertz+Kitex 实现支持多商户的开放式支付平台&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="csg-活动"&gt;CSG 活动&lt;/h3&gt;
+&lt;p&gt;我们还定期举办 CSG 活动，CSG 活动旨在帮助开发者了解框架的源码以及最佳用法。&lt;/p&gt;
+&lt;p&gt;截止目前，CSG 活动已经举办了 5 期，分别带大家了解了 Hertz/kitex/volo 框架的诸多源码和最佳实践，帮助开发者更好的了解和使用框架。大家可以在 &lt;a href="https://github.com/cloudwego/community"&gt;cloudwego/community&lt;/a&gt; 仓库的 issue 查看往期活动的 issue 介绍与回放。&lt;/p&gt;</description></item><item><title>Blog: 开源社区的长期主义与新变化 — CloudWeGo 开源社区实践</title><link>https://www.cloudwego.io/zh/blog/2022/09/13/%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E7%9A%84%E9%95%BF%E6%9C%9F%E4%B8%BB%E4%B9%89%E4%B8%8E%E6%96%B0%E5%8F%98%E5%8C%96-cloudwego-%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E5%AE%9E%E8%B7%B5/</link><pubDate>Tue, 13 Sep 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/09/13/%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E7%9A%84%E9%95%BF%E6%9C%9F%E4%B8%BB%E4%B9%89%E4%B8%8E%E6%96%B0%E5%8F%98%E5%8C%96-cloudwego-%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E5%AE%9E%E8%B7%B5/</guid><description>
+&lt;h2 id="概述"&gt;概述&lt;/h2&gt;
+&lt;p&gt;CloudWeGo 开源一周年以来收获了超过 &lt;strong&gt;1w&lt;/strong&gt; 的 star 数，这一年 CloudWeGo 从项目的数量、性能的提升、社区的活跃、生态的拓展等各个方面都有一些整体的变化。
+同时，通过一周年的开源，我们收获了非常多的开源社区用户，这些用户在社区里也提供了很多项目的使用反馈。基于这些反馈，我们发现随着技术发展和用户业务的不停迭代，用户需求也在发生着变化。
+因此我们梳理了新一代关于云原生微服务用户的画像，作为指导我们社区持续演进的重要参考。&lt;/p&gt;
+&lt;h2 id="cloudwego-开源一周年的变化"&gt;CloudWeGo 开源一周年的变化&lt;/h2&gt;
+&lt;h3 id="全景图"&gt;全景图&lt;/h3&gt;
+&lt;p&gt;CloudWeGo 是一套由字节跳动开源的云原生微服务架构中间件集合。在 2021 年 9 月正式推出的时候，只开源了 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 高性能 RPC 框架、高性能网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，还有相关的辅助工具和基础库。&lt;/p&gt;
+&lt;p&gt;经过一年的建设，CloudWeGo 社区目前有 &lt;strong&gt;11&lt;/strong&gt; 个重点项目齐头并进。我们不仅有 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 框架，还有基于 HTTP 相关的高性能框架 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;，同时开源了高性能的 Rust RPC 框架 &lt;a href="https://github.com/cloudwego/volo"&gt;Volo&lt;/a&gt;，这也是国内首个开源 Rust RPC 框架。&lt;/p&gt;
+&lt;p&gt;从 CloudWeGo 开源的项目也能感受到我们对性能的极致追求，我们不仅开源了框架相关的项目，同时也把深度优化的一些编解码库、网络库都进行了开源。
+在 CloudWeGo 整体的项目中，始终都保持着三高的特性，即 &lt;strong&gt;高性能&lt;/strong&gt; 、&lt;strong&gt;高可靠性&lt;/strong&gt;和 &lt;strong&gt;高扩展性&lt;/strong&gt; 。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/1.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;与此同时，这一年我们也在致力于开源社区的建设：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;易用性&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CloudWeGo 非常重视整个项目的易用性建设。我们有非常完整的官方文档体系，包括整体的扩展和 Example 的建设，以及各大云厂商生态的对接等。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;落地支持&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了帮助更多对高性能微服务架构有需求的用户，能够让他们真实地把高性能的技术解决方案落地，我们提供了 Benchmark 的性能测试和选型参考，同时提供免费的企业支持，帮助用户解决自己业务特异性上的一些问题。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;活动 &amp;amp; 布道&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了让更多有需求的用户能够在社区找到高性能技术解决方案，我们开设了相关的活动和布道体系的建设。在 CloudWeGo 开源一周年之际，项目整体收获了很多用户支持，也收获了很多企业用户的使用反馈。&lt;/p&gt;
+&lt;h3 id="cloudwego-开源社区的长期主义"&gt;CloudWeGo 开源社区的长期主义&lt;/h3&gt;
+&lt;h4 id="高性能技术解决方案的持续探索"&gt;高性能技术解决方案的持续探索&lt;/h4&gt;
+&lt;p&gt;CloudWeGo 开源一周年的历程，其实就是对高性能技术解决方案持续探索的历程。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/2.png" alt="image"&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;CloudWeGo 从 2021 年 9 月 8 日正式开源。推出高性能的 RPC 框架 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt;、配合 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 使用的高性能网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;、基于 Thrift 代码生成工具 Thriftgo 和基础库 Sonic。&lt;/li&gt;
+&lt;li&gt;2022 年 5 月，开源了基于 JIT 的编解码工具 Frugal。&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 配合 Frugal 的使用，能够带来 5 倍的性能提升。&lt;/li&gt;
+&lt;li&gt;2022 年 6 月，开源高性能 HTTP 框架 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;。&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 不仅仅是一个 高性能的 HTTP 的开源框架，同时也是一个超大规模的企业落地实践。在我们内部的网关场景下，替换 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 框架之后的 CPU 使用节省了超过 40%。&lt;/li&gt;
+&lt;li&gt;2022 年 7 月，我们响应社区呼声最高的关于 Protobuf 的性能优化，带来了高性能的 Protobuf 序列化反序列化库 FastPB，再次对相关的性能进行提升。&lt;/li&gt;
+&lt;li&gt;开源一周年之际，我们又进行了更深度的高性能框架能力探索，开源了国内首个 Rust RPC 框架 &lt;a href="https://github.com/cloudwego/volo"&gt;Volo&lt;/a&gt;。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;CloudWeGo 开源一周年的时间线，隐藏着 CloudWeGo 社区运营的第一个长期主义关键词：&lt;strong&gt;高性能技术解决方案的持续探索&lt;/strong&gt; 。&lt;/p&gt;
+&lt;h4 id="活跃--高可靠性的长期承诺"&gt;活跃 &amp;amp; 高可靠性的长期承诺&lt;/h4&gt;
+&lt;p&gt;CloudWeGo 开源一年来，收获了超过 1w 的 star 数，整个社区的活跃度也有了飞速提升。&lt;/p&gt;
+&lt;p&gt;社区保持着 2-3 个月发布一次中版本的发版频率，PR 和 Issue 数量在开源一年的时间内实现稳步提升，从每月 47 条 PR 合入增加到每月超过 160 条 PR 合入。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/3.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;其实高活跃的社区并不少见，但是我们社区还有一个关键词：&lt;strong&gt;坚持活跃 &amp;amp; 高可靠性的长期承诺&lt;/strong&gt;。CloudWeGo 社区对可靠性的坚持，要求我们不仅要维持活跃，还要保持活跃且可靠。&lt;/p&gt;
+&lt;p&gt;CloudWeGo 开源社区一直保持着我们所有的开源项目内外一致的承诺，同时我们开源到外部的所有能力和项目都是在内部经过可靠性验证的。这也正是 CloudWeGo 开源社区坚持的另一个长期主义。&lt;/p&gt;
+&lt;h4 id="高易用性设计"&gt;高易用性设计&lt;/h4&gt;
+&lt;p&gt;我们非常希望 CloudWeGo 开源出来的高性能技术解决方案，能够更好地帮助更多用户搭建自己的微服务架构体系。因此，CloudWeGo 在社区建设上围绕着易用性建设做了非常多的拓展：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CloudWeGo 文档建设&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;首先，在文档建设方面，CloudWeGo 官网上线了近 3 万字较为完善的文档体系。内容覆盖从 1 分钟快速上手，到各个相关模块的基本特性介绍，再到一些拓展能力的建设。&lt;/p&gt;
+&lt;p&gt;其次，我们为了达到真正的开箱即用，节省用户对接各个扩展项目的使用成本，上线了 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 和 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 相关的 Example，帮忙建设了相关从注册发现，到各个中间件使用的一些开箱即用的 Demo。&lt;/p&gt;
+&lt;p&gt;另外，为了提升更多开发者的使用体验，官网也上线了静态文档的搜索能力。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/4.png" alt="image"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CloudWeGo 生态建设&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;想在内部构建一套完整的云原生微服务架构体系，仅仅使用 CloudWeGo 的一个框架项目，是远远不够的。因此，CloudWeGo 在易用性方面大力拓展相关的生态建设。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;CloudWeGo 在 2021 年加入 CNCF Landscape，希望给用户一个更加明确的产品定位。同时，支持对接各大云厂商，为 CloudWeGo 项目的用户提供更多公有云的使用选择。&lt;/li&gt;
+&lt;li&gt;为帮助大家减少相关的使用成本，我们非常积极地和上下游的开源项目进行深度合作，建设了一整套微服务开源供应链的合作体系，搭建了 CloudWeGo 框架对接各个项目的相关 Demo 和开箱即用的 Example。&lt;/li&gt;
+&lt;li&gt;从考虑未来发展的角度而言，当企业落地了一整套微服务架构之后，可能会存在易用性或性能方面的问题。当出现更好的技术解决和性能提升方案，基于原有架构的耦合和复杂度，很难推进新的架构进行整体的迭代。
+因此，我们也非常积极地在推进建设云原生微服务治理的整体标准。希望更多的项目，能够形成统一的接入和对接的标准，从而在未来的一些新的、更高性能的技术解决方案的迁移和过渡上，能够让迁移和使用成本降到最低。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/5.png" alt="image"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CloudWeGo 的开发者活动&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CloudWeGo 项目包括整个社区都对高性能有非常热烈的追求。因此，我们也在不停地迭代。&lt;/p&gt;
+&lt;p&gt;CloudWeGo 一直在不断追求高性能框架以及高性能技术解决最新方案。每次上线新的技术解决方案和一些相关能力之后，我们都期望让更多的用户知道这些方案是怎样的，让用户能够更便捷地学习到一些相关的技术指南。&lt;/p&gt;
+&lt;p&gt;因此，我们针对性地设计了 CloudWeGo Study Group 学习计划，这是为了将一些全新的性能解决方案进行体系化的学习分享，即通过一些类似于从框架入门到核心能力的解读、再到一些学习路径的分享以及扩展知识的相关介绍对外开放给社区。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/6.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;我们会提供一份完整的学习资料，降低用户学习新的技术解决方案的成本，也能够让用户了解到自己的学习是否适合其业务场景。在整个学习和使用的过程中，降低最终学习的时长，通过体系化的学习更快地理解技术方案的性能亮点和需要学习的相关点。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/7.png" alt="image"&gt;&lt;/p&gt;
+&lt;h4 id="小结"&gt;小结&lt;/h4&gt;
+&lt;p&gt;CloudWeGo 开源社区坚持的长期主义：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/8.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="cloudwego-的用户"&gt;CloudWeGo 的用户&lt;/h3&gt;
+&lt;p&gt;基于开源社区长期主义的坚持，CloudWeGo 自 2021 年 9 月开源，至今开源 1 年，获得超过 1w star，支持完成了证券、电商、中台、社交、游戏、AI 等行业企业客户的落地使用。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/9.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="cloudwego-的贡献者"&gt;CloudWeGo 的贡献者&lt;/h3&gt;
+&lt;p&gt;在活跃的社区氛围下，我们收获了从最初刚开源只有 20 个内部贡献者，到现在已经有了超过 200 个代码贡献者。这些贡献者在深度使用了 CloudWeGo 开源项目之后，也为 CloudWeGo 开源项目贡献了大量生态方面相关对接能力。&lt;/p&gt;
+&lt;h4 id="贡献者体系更新"&gt;贡献者体系更新&lt;/h4&gt;
+&lt;p&gt;基于越来越多的贡献者在我们的开源社区里做了大量深度贡献，CloudWeGo 开源社区在一周年的周年庆之际，推出 &lt;strong&gt;全新的贡献者激励体系&lt;/strong&gt; 。&lt;/p&gt;
+&lt;p&gt;我们新增开放了三个角色体系，希望通过这种完善的角色机制，赋予社区开发者更多的社区治理权限。同时我们也鼓励更多的贡献者能够成为项目的维护者，希望长期的维护者能够真正带领我们的项目持续进行高性能的优化和相关的演进。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/10.png" alt="image"&gt;&lt;/p&gt;
+&lt;h4 id="贡献者多样化"&gt;贡献者多样化&lt;/h4&gt;
+&lt;p&gt;在开源项目的运营和维护中，包括开源社区的建设，不仅仅是依赖代码贡献者的参与，还有很多其他方面的贡献，其中包括企业支持场景的贡献、布道活动的贡献、整体活动组织的贡献等多元参与。
+这些贡献者在 CloudWeGo 社区也是被大力支持的，因此我们专门针对多元贡献上线了 CloudWeGo 年度激励计划。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/11.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;社区在 8 月份刚刚完成了 2021 - 2022 年度 CloudWeGo Awesome Contributor 的评选，我们非常荣幸地收获了 84 位年度优秀贡献者。
+在完成了社区的提名与公示后，这些同学已经顺利成为了 CloudWeGo 年度优秀贡献者，之后我们会为这些优秀贡献者送上 CloudWeGo 一周年的荣誉纪念徽章。&lt;/p&gt;
+&lt;h3 id="cloudwego-社区遇到的问题"&gt;CloudWeGo 社区遇到的问题&lt;/h3&gt;
+&lt;p&gt;正是因为社区较高的活跃度以及众多贡献者的参与，大量用户加入了 CloudWeGo 社区。我们逐渐发现用户的使用场景开始慢慢发生了拓展。
+从最初可能只是想了解一下微服务的框架、单独一个项目如何去落地和使用，到后来慢慢变成探索一整套微服务架构的设计，以及多个项目之间的实践配合和相关生态能力的建设。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/12.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;这些其实是非常体系化、大规模的需求，因此我们联合一些企业用户进行了相关场景的实践贡献。CloudWeGo 之前支持了包括证券、电商、AI 和各个行业用户场景落地，我们也和这些企业用户进行了相关场景的梳理。&lt;/p&gt;
+&lt;h3 id="cloudwego-的企业用户贡献"&gt;CloudWeGo 的企业用户贡献&lt;/h3&gt;
+&lt;h4 id="华兴证券"&gt;华兴证券&lt;/h4&gt;
+&lt;p&gt;&lt;a href="https://www.cloudwego.io/zh/cooperation/huaxingsec/"&gt;案例链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;华兴证券的张天老师团队向社区贡献了来自证券行业使用 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 完成混合云部署下跨机房使用场景的案例。&lt;/p&gt;
+&lt;p&gt;我们在跟张天老师团队合作的时候发现，他们遇到的最大的问题是有的业务部署在金融云机房上，有的业务部署在私有机房上，所以存在跨机房调用的问题。
+因为他们使用 K8s 集群，还会出现同集群调用和跨集群调用的问题。整个调用的链路非常长，这中间就会出现很多不可观测的问题，当出现问题的时候，排查难度就极其大。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/13.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;于是张天老师团队在和 CloudWeGo 合作之后，整体搭建了一个 &lt;strong&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; + K8s&lt;/strong&gt; 的可观测性系统，也将相关的搭建实践贡献到了开源社区。感兴趣的同学可以通过 CloudWeGo 公众号查看相关的企业案例和最终的实践场景。&lt;/p&gt;
+&lt;h4 id="森马"&gt;森马&lt;/h4&gt;
+&lt;p&gt;&lt;a href="https://www.cloudwego.io/zh/cooperation/semir/"&gt;案例链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;CloudWeGo 和森马共同梳理了与电商行业相关的一个整体使用场景。非常感谢森马团队，贡献了电商行业使用 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 接入 Istio，以提高对高并发订单处理能力的使用场景。&lt;/p&gt;
+&lt;p&gt;森马团队还贡献了基于微服务架构的两种模式，为有相关高性能业务需求的用户提供了&lt;strong&gt;服务网格 + &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt;&lt;/strong&gt; 治理模式相关的选型依据，并且给出了相关的压测报告，也给社区有相同需求的小伙伴提供重要参考。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/14.png" alt="image"&gt;&lt;/p&gt;
+&lt;h4 id="飞书"&gt;飞书&lt;/h4&gt;
+&lt;p&gt;&lt;a href="https://www.cloudwego.io/zh/cooperation/feishu/"&gt;案例链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 开源后，很多用户会问到内部网关平台架构的设计思路，包括内部网关平台如何配合 &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; 整体使用？&lt;/p&gt;
+&lt;p&gt;飞书之前是一个 all-in-one 的套件开发模式，各个业务团队会将业务代码提交到飞书网关平台的代码仓里面，由飞书网关相关的同学来做 web 逻辑的开发。
+这就导致他们所有的服务都是融在一起的，没有办法做到发布隔离，极大地阻碍了网关平台架构的演进和迭代速度。&lt;/p&gt;
+&lt;p&gt;因此，飞书团队将前端 Node 单体服务做了微前端架构拆分，配合 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 泛化调用各个业务的微服务，实现了各个业务发布完全隔离，这使得他们不再依赖网关平台的业务开发，进而加快了整个网关业务迭代的速度。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/15.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="来自社区的用户具体问题"&gt;来自社区的用户具体问题&lt;/h3&gt;
+&lt;p&gt;我们非常感谢企业用户贡献的相关问题，CloudWeGo 配合企业用户的场景案例也获得了社区用户的众多好评。与此同时，有更多的用户也提出了新的问题，这些问题非常具体。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/16.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;通过总结发现，这些问题具有显著的业务特异性。我们也很好奇这些用户在内部到底是如何搭建其微服务体系的？&lt;/p&gt;
+&lt;p&gt;因此我们开始梳理 CloudWeGo 开源社区的云原生微服务用户画像。&lt;/p&gt;
+&lt;h2 id="新一代云原生微服务用户画像"&gt;新一代云原生微服务用户画像&lt;/h2&gt;
+&lt;p&gt;我们将社区的用户大概分成了三种类型：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/17.png" alt="image"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;字节跳动&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;字节跳动是我们目前最大的用户。字节跳动的线上微服务数量已经超过了 10 万，服务端峰值 QPS 已经达到了数亿的级别，业务复杂性非常大，存在跨语言、跨平台、跨终端、跨集群、跨机房等多种复杂的问题。&lt;/p&gt;
+&lt;p&gt;同时字节跳动内部有非常完善的微服务架构体系，整体的微服务治理已经全面迈入了 2.0 的时代，用微服务框架配合服务网格携手并进。&lt;/p&gt;
+&lt;p&gt;在这个场景之下，字节跳动最大的需求就是高性能和可扩展性，这也是 CloudWeGo 作为字节跳动内部孵化的一个优秀的高性能技术解决方案最初开源时所具有的特性。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;处于转型期的用户&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;社区里数量最大的群体，这些用户可能是电商的、证券的、后台的以及一些创业公司，他们的节点数量不是特别多，可能在 5-1000 以内，
+线上微服务数量处于 5000 以内的水平，但这些用户可能本身就是云原生架构，或者已经在往这方面做一些相关的迁移。&lt;/p&gt;
+&lt;p&gt;这类用户在 CloudWeGo 开源社区的诉求，主要是针对业务的特异性方面存在高性能相关的需求。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;非云原生架构企业用户&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这一类用户属于非云原生架构的企业，他们的服务可能还没有完全云化，具有一定的历史迁移负担。这类用户着重会优先考虑如何将自己的服务迁移上云。&lt;/p&gt;
+&lt;p&gt;因此可以看到，第二类用户是目前社区数量最大，且最需求最迫切的一类用户。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/18.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;我们认为理想状态下用户整个云原生架构体系的搭建过程：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;第一个阶段：服务上云&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;类似第三类用户，当前面临的问题就是怎么把自己的业务迁移上云。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;第二个阶段：云原生部署&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;类似第二类社区大量的用户，其实已经是云原生部署的企业，用到了相关容器化和编排调度的技术。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;第三个阶段：微服务架构&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;继续往前演进，开始搭建相关的微服务架构，以及会做服务的拆分和通信的治理。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;第四个阶段：微服务治理&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当用户在线上有了一定数量的微服务之后，会开始出现依赖管理和一致性保障的问题。&lt;/p&gt;
+&lt;p&gt;但是我们在跟用户沟通过程中发现，这其实不是一种绝对意义上的区分。&lt;/p&gt;
+&lt;p&gt;因为很多公司其实并不是完全属于其中一种状态，而是一种长久的中间态，公司的业务会处于不同的状态。同时，我们在和相关用户进行深度的沟通时，发现这些业务场景其实并不是完全不可复制的，而是具有一定的行业聚合性和相似性。&lt;/p&gt;
+&lt;p&gt;于是，我们开始探索如何通过社区更好地帮助这些开发者解决痛点问题，这也正是 CloudWeGo 开源社区接下来整体的演进方向。&lt;/p&gt;
+&lt;h2 id="持续演进的-cloudwego-开源社区"&gt;持续演进的 CloudWeGo 开源社区&lt;/h2&gt;
+&lt;p&gt;CloudWeGo 1.0 社区搭建的主要方向，是将字节跳动内部孵化的高性能框架解决方案触达给更多的用户，让更多对高性能解决方案有需求的用户能够真正地在内部落地和使用这些方案。&lt;/p&gt;
+&lt;p&gt;当我们发现用户出现特异性的行业需求后，ClouWeGo 2.0 希望社区建设以开发者服务为主，能真正地帮助到社区的开发者，解决其在微服务治理过程中遇到的一些真实存在的问题。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/19.png" alt="image"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;行业解决方案&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通过用户问题、场景和解决方案的行业共建，形成社区的 Go 云原生微服务最佳实践，希望能够针对有特异性需求的用户给到一定的参考。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;易用性建设&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们会持续和开源链条的上下游深入合作，建设云原生微服务相关的标准治理。致力于后续易用性的建设，希望能够给到成本更低的迁移，以及建立后期维护的治理标准。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;持续投资高性能方案&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;继续维持 CloudWeGo 开源社区的长期主义。我们会深入投入对高性能解决方案的持续探索，也会在 Rust 领域持续开展相关生态和开源的建设，共建 Rust 中国的开源生态。&lt;/p&gt;
+&lt;p&gt;基于此，引出 CloudWeGo 开源社区 2.0：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/opensource_community/20.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;CloudWeGo 2.0 的阶段，我们希望社区能够跨越项目边界，真正能够帮助社区用户搭建一套高性能的微服务治理架构和整体的微服务治理体系：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过 Go 领域相关微服务治理的标准和最佳实践的建设，为一些通用性技术和行业最佳实践提供参考；&lt;/li&gt;
+&lt;li&gt;对接开源项目上下游进行深度合作，极大地提升整个项目的易用性；&lt;/li&gt;
+&lt;li&gt;推进高性能 Rust 解决方案的落地，持续探索 Rust 高性能技术解决方案，构建 Rust 相关生态。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果大家对 CloudWeGo 开源社区，以及刚才提到的一些技术解决方案、企业的落地支持有任何的疑问，可以关注 CloudWeGo 公众号，
+我们会在公众号上发布一些新闻动态以及各个相关场景的案例报道，同时我们也会在公众号上提供相关的技术支持。感谢大家的关注！&lt;/p&gt;</description></item><item><title>Blog: 从 CloudWeGo 谈云原生时代的微服务与开源</title><link>https://www.cloudwego.io/zh/blog/2022/05/26/%E4%BB%8E-cloudwego-%E8%B0%88%E4%BA%91%E5%8E%9F%E7%94%9F%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%8E%E5%BC%80%E6%BA%90/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/05/26/%E4%BB%8E-cloudwego-%E8%B0%88%E4%BA%91%E5%8E%9F%E7%94%9F%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%8E%E5%BC%80%E6%BA%90/</guid><description>
+&lt;h1 id="从-cloudwego-谈云原生时代的微服务与开源"&gt;从 CloudWeGo 谈云原生时代的微服务与开源&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文整理自罗广明在 DIVE 全球基础软件创新大会 2022 的演讲分享，主题为《从 CloudWeGo 谈云原生时代的微服务与开源》。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id="01-项目创造的思考与哲学"&gt;&lt;strong&gt;01 项目创造的思考与哲学&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;我们团队经常会被人问到，你们为什么创造一个新的项目？我认为这是一个哲学问题。&lt;/p&gt;
+&lt;p&gt;纵观整个开源社区，每个时间段都会有各种各样的项目被重复地创造出来，这其中的大部分项目很快便销声匿迹了，只有一部分项目能够存活下来。
+当旁观者看到这样一番景象时，渐渐地，越来越多的人停留于项目搜寻，而放弃了成为项目创作者的机会。久而久之，我们开始忧虑下一代是否还会有新的项目可以使用？难道未来在同一领域，一个项目就能统一整个市场？&lt;/p&gt;
+&lt;p&gt;其实，在程序员的世界里，参考旧的项目来创造新的项目一点都不可耻。创造不仅意味着思考、权衡与设计，更需要我们贡献项目的特殊与差异。这其中涌现了很多后起之秀，正是他们促成了开源社区的多样性。
+“每一行代码都是一次精心的设计”是我们对优秀创造者的最佳赞誉。而一项优秀的代码设计往往包含两个最基本的特性：正确性和可维护性。同时，这两种特性恰恰又对应了两种不同的人格。&lt;/p&gt;
+&lt;p&gt;第一种人格，设计者与实现者，其驾驭是相对简单的，只要功能实现，通过测试，运行正确就算完成了。然而，第二种人格，阅读者和维护者，却要求更高的代码质量，更明晰的代码结构和更好的扩展性。
+只有同时具备这两种人格，开发者才能游刃有余地创造出一个优秀的项目。&lt;/p&gt;
+&lt;p&gt;优秀的项目被创造出来意味着什么呢？千千万万的用户可以评估并且使用它。这也从侧面表明了开源本身可以避免更多项目被重复地创造出来。&lt;/p&gt;
+&lt;h2 id="02-cloudwego-简介"&gt;&lt;strong&gt;02 CloudWeGo 简介&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;CloudWeGo 是字节跳动基础架构团队开源出来的项目，它是一套可快速构建&lt;strong&gt;企业级&lt;/strong&gt;云原生架构的中间件集合，它专注于微服务通信与治理，具备&lt;strong&gt;高性能&lt;/strong&gt;、&lt;strong&gt;可扩展&lt;/strong&gt;、&lt;strong&gt;高可靠&lt;/strong&gt;的特点，且关注&lt;strong&gt;易用性&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;CloudWeGo 在第一阶段开源了四个项目：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt;：高性能、强可扩展的 Go RPC 框架&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;：高性能、I/O 非阻塞、专注于 RPC 场景的网络框架&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/thriftgo"&gt;Thriftgo&lt;/a&gt;：Go 实现的 thrift 编译器，支持插件机制和语义检查&lt;/li&gt;
+&lt;li&gt;Netpoll-http2：基于 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 的 HTTP/2 实现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;除了这几个主要项目外，CloudWeGo 紧随其后陆续开源了 &lt;a href="https://github.com/cloudwego/kitex-benchmark"&gt;&lt;strong&gt;Kitex-benchmark&lt;/strong&gt;&lt;/a&gt;、&lt;a href="https://github.com/cloudwego/netpoll-benchmark"&gt;&lt;strong&gt;Netpoll-benchmark&lt;/strong&gt;&lt;/a&gt;、
+&lt;a href="https://github.com/cloudwego/thrift-gen-validator"&gt;&lt;strong&gt;Thrift-gen-validator&lt;/strong&gt;&lt;/a&gt;、&lt;a href="https://github.com/cloudwego/kitex-examples"&gt;&lt;strong&gt;Kitex-examples&lt;/strong&gt;&lt;/a&gt; 、&lt;a href="https://github.com/cloudwego/netpoll-examples"&gt;&lt;strong&gt;Netpoll-examples&lt;/strong&gt;&lt;/a&gt;等项目。&lt;/p&gt;
+&lt;p&gt;鉴于文章篇幅有限，下文将重点介绍 CloudWeGo 核心项目 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;从&lt;strong&gt;演进历史&lt;/strong&gt;来看，2014 年，字节跳动技术团队引入 Go 解决长连接推送业务面临的高并发问题，两年后，内部技术团队基于 Go 推出了一个名为 Kite 的框架，同时对开源项目 Gin 做了一层很薄的封装，推出了 Ginex。
+这两个框架极大推动了 Go 在公司内部的应用。此后，围绕性能和可扩展性设计，字节跳动重构 Kite，并在次年 10 月完成并发布 Kitex，投入到内部应用中。据悉，截至 2021 年 9 月，线上有 3w+ 微服务使用 Kitex，大部分服务迁移新框架后可以收获 CPU 和延迟上的收益。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Framework.PNG" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;从&lt;strong&gt;架构&lt;/strong&gt;上看，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 主要分为两部分。其中 Kitex Core 是它的的主干逻辑，定义了框架的层次结构、接口，还有接口的默认实现。
+最上面 Client 和 Server 是对用户暴露的，包含 Option 配置以及其初始化的逻辑；中间的 Modules 模块是框架治理层面的功能模块和交互元信息，而 Remote 模块是与对端交互的模块，包括编解码和网络通信。
+另一部分 Kitex Tool 则是对应生成代码相关的实现，生成代码工具就是编译这个包得到的，里面包括 IDL 解析、校验、代码生成、插件支持、自更新等。&lt;/p&gt;
+&lt;p&gt;从&lt;strong&gt;功能与特性&lt;/strong&gt;这两个角度来看，主要可以分为以下七个方面：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Functions_Features.PNG" alt="image"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;高性能&lt;/strong&gt;：网络传输模块 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 默认集成了自研的网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，性能相较使用 go net 有显著优势；除了网络库带来的性能收益，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 对 Thrift 编解码也做了深度优化。关于性能数据可参考 &lt;a href="https://github.com/cloudwego/kitex-benchmark"&gt;kitex-benchmark&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;扩展性&lt;/strong&gt;：&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 CloudWeGo &lt;a href="https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/"&gt;官网文档&lt;/a&gt;。&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 也并未耦合 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，开发者也可以选择其它网络库扩展使用。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;消息协议&lt;/strong&gt;：RPC 消息协议默认支持 Thrift、Kitex Protobuf、gRPC。Thrift 支持 Buffered 和 Framed 二进制协议；Kitex Protobuf 是 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 自定义的 Protobuf 消息协议，协议格式类似 Thrift；gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 互通。除此之外，使用者也可以扩展自己的消息协议。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;传输协议&lt;/strong&gt;：传输协议封装消息协议进行 RPC 互通，传输协议可以额外透传元信息，用于服务治理，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 支持的传输协议有 TTHeader、HTTP2。TTHeader 可以和 Thrift、Kitex Protobuf 结合使用；HTTP2 目前主要是结合 gRPC 协议使用，后续也会支持 Thrift。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;多消息类型&lt;/strong&gt;：支持 PingPong、Oneway、双向 Streaming。其中 Oneway 目前只对 Thrift 协议支持，双向 Streaming 只对 gRPC 支持，后续会考虑支持 Thrift 的双向 Streaming。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;服务治理&lt;/strong&gt;：支持服务注册/发现、负载均衡、熔断、限流、重试、监控、链路跟踪、日志、诊断等服务治理模块，大部分均已提供默认扩展，使用者可选择集成。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 内置代码生成工具，可支持生成 Thrift、Protobuf 以及脚手架代码&lt;/strong&gt;。原生的 Thrift 代码由本次一起开源的 &lt;a href="https://github.com/cloudwego/thriftgo"&gt;Thriftgo&lt;/a&gt; 生成，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 对 Thrift 的优化由 Kitex Tool 作为插件支持。Protobuf 代码由 Kitex 作为官方 protoc 插件生成 ，目前暂未单独支持 Protobuf IDL 的解析和代码生成。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;简单总结一下，CloudWeGo 不仅仅是一个开源的项目，也是一个真实的、超大规模的&lt;strong&gt;企业级&lt;/strong&gt;最佳实践。它源自企业，所以天生就适合在企业内部落地；它源自开源，最终也拥抱了开源，从 Go 基础库，到 Go 网络库和 Thrift 编译器，再到上层的服务框架，以及框架拥有的所有企业级治理能力，均对外开放开源。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Enterprise.PNG" alt="image"&gt;&lt;/p&gt;
+&lt;h2 id="03-cloudwego-的微服务治理"&gt;&lt;strong&gt;03 CloudWeGo 的微服务治理&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;微服务架构是当前软件开发领域的技术热点。大系统终究会拆解成小系统，“合久必分，分而治之”，传统行业的系统架构大多都是庞大的单体架构，微服务是架构发展过程中一个非常自然的演变状态。&lt;/p&gt;
+&lt;p&gt;那么，什么是微服务治理呢？众说纷纭，业界没有达成一个共识。广义上，服务治理关注服务生命周期相关要素，包括服务的架构设计、应用发布、注册发现、流量管理，监控与可观测性、故障定位、安全性等；
+又或将其分为架构治理、研发治理、测试治理、运维治理、管理治理。狭义上，服务治理技术包括服务注册与发现、可观测性、流量管理、安全、控制。
+后续主要是从狭义上服务治理的角度出发，展开介绍 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 相关的思考和探索。&lt;/p&gt;
+&lt;h3 id="服务注册与发现"&gt;&lt;strong&gt;服务注册与发现&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 并不提供默认的服务注册发现，体现了框架的&lt;strong&gt;中立&lt;/strong&gt;特征。&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 支持自定义注册模块和发现模块，使用者可自行扩展集成其他注册中心和服务发现实现，该扩展分别定义在 Pkg/Registry 和 Pkg/Discovery 下。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 服务注册扩展接口如下所示，更多详情可以查看官网框架扩展 -&amp;gt; &lt;a href="https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/registry/"&gt;服务注册扩展&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Service_registry.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 服务发现扩展接口如下所示，更多详情可以查看官网框架扩展 -&amp;gt; &lt;a href="https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/service_discovery/"&gt;服务发现扩展&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Service_discovery.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;截止日前，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 已经通过社区开发者的支持，完成了 ETCD、ZooKeeper、Eureka、Consul、Nacos、Polaris 多种服务发现模式，当然也支持 DNS 解析以及 Static IP 直连访问模式，建立起了强大且完备的社区生态，供用户按需灵活选用。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Community_ecology.PNG" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;特别鸣谢 @li-jin-gou @liu-song @baiyutang @duduainankai @horizonzy @Hanson 等几位社区贡献者对上述服务发现扩展库的实现与支持。更多代码详情可以查看 &lt;a href="https://github.com/kitex-contrib"&gt;https://github.com/kitex-contrib&lt;/a&gt; 。&lt;/p&gt;
+&lt;h3 id="熔断"&gt;&lt;strong&gt;熔断&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;前面介绍了 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 服务注册与发现机制，这一点对于业务接入框架非常重要，缺少这一环节微服务之间无法实现互通。那么熔断对于微服务有什么作用呢？&lt;/p&gt;
+&lt;p&gt;在微服务进行 RPC 调用时，下游服务难免会出错，当下游出现问题时，如果上游继续对其进行调用，既妨碍了下游的恢复，也浪费了上游的资源。为了解决这个问题，可以设置一些动态开关，当下游出错时，手动的关闭对下游的调用，然而更好的办法是使用熔断器，自动解决这个问题。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 提供了熔断器的实现，但是没有默认开启，需要用户主动开启后即可使用。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 大部分服务治理模块都是通过 Middleware 集成，熔断也是一样。&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 提供了一套 CBSuite，封装了服务粒度的熔断器和实例粒度的熔断器。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;服务粒度熔断&lt;/strong&gt;：按照服务粒度进行熔断统计，通过 WithMiddleware 添加。服务粒度的具体划分取决于 Circuit Breaker Key，即熔断统计的 Key，初始化 CBSuite 时需要传入 &lt;strong&gt;GenServiceCBKeyFunc&lt;/strong&gt;。
+默认提供的是 &lt;code&gt;circuitbreaker.RPCInfo2Key&lt;/code&gt;，该 Key 的格式是 &lt;code&gt;fromServiceName/toServiceName/method&lt;/code&gt;，即按照方法级别的异常做熔断统计。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;实例粒度熔断&lt;/strong&gt;：按照实例粒度进行熔断统计，主要用于解决单实例异常问题，如果触发了实例级别熔断，框架会自动重试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;熔断器的思路很简单根据 RPC 成功或失败的情况，限制对下游的访问&lt;/strong&gt;。通常熔断器分为三个时期：CLOSED、OPEN、HALFOPEN。当 RPC 正常时，为 CLOSED；
+当 RPC 错误增多时，熔断器会被触发，进入 OPEN；OPEN 后经过一定的冷却时间，熔断器变为 HALFOPEN；HALFOPEN 时会对下游进行一些有策略的访问，
+然后根据结果决定是变为 CLOSED，还是 OPEN。总的来说三个状态的转换大致如下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Conversion.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;关于 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 熔断器实现的更多细节和原理，可以查看官网基本特性 -&amp;gt; &lt;a href="https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/circuitbreaker/"&gt;熔断器&lt;/a&gt;章节。&lt;/p&gt;
+&lt;h3 id="限流"&gt;&lt;strong&gt;限流&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;如果说熔断是从客户端出发保护调用链，以防止系统雪崩，那么限流则是一种保护服务端的措施，防止上游某个 Client 流量突增导致 Server 过载。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 支持限制最大连接数和最大 QPS。在初始化 Server 的时候，增加一个 Option：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Server.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;其中 &lt;code&gt;MaxConnections&lt;/code&gt; 表示最大连接数，MaxQPS` 表示最大 QPS，此外，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 还提供了动态修改限流阈值的能力。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 分别使用了 ConcurrencyLimiter 和 RateLimiter 对最大连接数和最大 QPS 进行限流，其中 ConcurrencyLimiter 采用了简单的计数器算法，RateLimiter 采用了“令牌桶算法”。&lt;/p&gt;
+&lt;p&gt;限流状态的监控也是重要的一环，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 定义了 &lt;code&gt;LimitReporter&lt;/code&gt; 接口，用于限流状态监控，例如当前连接数过多、QPS 过大等。如有需求，用户需要自行实现该接口，并通过 &lt;code&gt;WithLimitReporter&lt;/code&gt; 注入。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/LimitReporter.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="请求重试"&gt;&lt;strong&gt;请求重试&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 提供三类重试：超时重试、Backup Request，建连失败重试。其中建连失败是网络层面问题，由于请求未发出，框架会默认重试，下面重点介绍前两类重试的使用。需要注意的是，因为很多的业务请求不具有&lt;strong&gt;幂等性&lt;/strong&gt;，这两类重试不会作为默认策略，用户需要按需开启。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;超时重试&lt;/strong&gt;：错误重试的一种，即客户端收到超时错误的时候，发起重试请求。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Backup Request&lt;/strong&gt;：客户端在一段时间内还没收到返回，发起重试请求，任一请求成功即算成功。Backup Request 的等待时间 &lt;code&gt;RetryDelay&lt;/code&gt; 建议配置为 TP99，一般远小于配置的超时时间 &lt;code&gt;Timeout&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Timeout.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;服务中的长尾请求增加了服务的整体延迟，而长尾请求占比很低，如上图所示，一个真实服务的延迟分布，能明显看出长尾现象，最大延迟 60ms，而 99% 服务可以在 13ms 返回。
+当请求延迟达到 13ms 的时候就已经进入长尾请求，这个时候我们可以再发出一条请求，这条请求大概率会在 13ms 内返回，任意一次请求返回我们就认为请求成功，即通过增加适当的负载，大大减少了响应时间的波动。
+关于超时重试和 Backup Request 的优缺点以及适用场景，可见下表：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Backup_Request.PNG" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="负载均衡"&gt;&lt;strong&gt;负载均衡&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 默认提供了两种负载均衡算法实现：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;WeightedRandom&lt;/strong&gt;：这个算法使用的是基于权重的随机策略，也是 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 的默认策略。它会依据实例的权重进行加权随机，并保证每个实例分配到的负载和自己的权重成比例。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ConsistentHash&lt;/strong&gt;：一致性哈希主要适用于对上下文（如实例本地缓存）依赖程度高的场景，如希望同一个类型的请求打到同一台机器，则可使用该负载均衡方法。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ConsistentHash 在使用时，需要注意如下事项：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;下游节点发生变动时，一致性哈希结果可能会改变，某些 Key 可能会发生变化；&lt;/li&gt;
+&lt;li&gt;如果下游节点非常多，第一次冷启动时 Build 时间可能会较长，如果 RPC 超时短的话可能会导致超时；&lt;/li&gt;
+&lt;li&gt;如果第一次请求失败，并且 Replica 不为 0，那么会请求到 Replica 上；而第二次及以后仍然会请求第一个实例。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="可观测性"&gt;&lt;strong&gt;可观测性&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;框架自身不提供监控打点实现，提供了 &lt;code&gt;Tracer&lt;/code&gt; 接口，用户可以根据需求实现该接口，并通过 &lt;code&gt;WithTracer&lt;/code&gt; Option 注入到框架中。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Tracer.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 的监控打点、Metrics 上报以及链路追踪，都可以通过上述接口进行扩展。&lt;/p&gt;
+&lt;p&gt;目前 &lt;a href="https://github.com/kitex-contrib"&gt;kitex-contrib&lt;/a&gt; 组织下提供了 &lt;a href="https://github.com/kitex-contrib/monitor-prometheus"&gt;Prometheus&lt;/a&gt; 的监控扩展，
+&lt;a href="https://github.com/kitex-contrib/tracer-opentracing"&gt;OpenTracing&lt;/a&gt; 的链路追踪扩展，
+以及 &lt;a href="https://github.com/kitex-contrib/obs-opentelemetry"&gt;OpenTelemetry&lt;/a&gt; 可观测性全家桶（Metrics + Tracing + Logging）扩展实现，用户可以按需接入相应的扩展。&lt;/p&gt;
+&lt;h3 id="微服务框架与服务网格"&gt;&lt;strong&gt;微服务框架与服务网格&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;服务框架&lt;/strong&gt;是传统微服务技术的核心所在。早期微服务技术中的服务注册、发现、调用、治理、观测都离不开服务框架。这也带来了一些问题，比如业务研发者需要感知并使用服务框架的服务治理能力，框架版本升级困难，框架越来越重难于维护等等。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;服务网格（Service Mesh）&lt;/strong&gt; 是将无侵入服务治理定义的更为深入的微服务架构方案，被称为第二代微服务架构。通过将微服务治理能力以独立组件（Sidecar）整合并下沉到基础设施，服务网格可以实现应用业务逻辑与服务治理逻辑完全分离，这也使支持&lt;strong&gt;多语言&lt;/strong&gt;、&lt;strong&gt;热升级&lt;/strong&gt;等高阶特性变得顺理成章。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Service_Mesh.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;进入云原生时代，随着服务网格技术的逐步发展，我们也要用发展的眼光进行架构规划和设计，微服务框架和服务网格未来必定会是并存的，统一组成服务治理体系。
+在字节跳动，服务治理体系就是由服务框架和服务治理组成。以 Go 服务为例，CloudWeGo 提供业务强相关、强侵入的服务治理，
+字节 Service Mesh 提供业务弱相关、弱侵入的服务治理，相互搭配，相互协商，既解决了业务开发所需的脚手架和开发模式，又让服务治理的接入更加容易。&lt;/p&gt;
+&lt;p&gt;与此同时，在服务网格和服务框架同时使用的场景下，服务框架必须要支持灵活卸载治理能力，服务网格也需要保证功能的稳定性。在未来技术的演进方向上，服务框架也主要专注于编解码、通信效率、多协议支持等方面，而服务网格则可以深入更多无侵入的服务治理功能研发中。&lt;/p&gt;
+&lt;p&gt;此外，在大规模场景下，针对服务治理新功能的研发需求决策，我们往往还需要考虑以下因素：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;性能:&lt;/strong&gt; 大部分业务很在意，也是团队一直努力的重点；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;普遍性&lt;/strong&gt;:需要评估是不是所有业务都需要的能力；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;简洁&lt;/strong&gt;: 通俗说，我们不太希望引入太多的线上问题或者太复杂的使用说明文档；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ROI&lt;/strong&gt;：功能迭代、产品升级需要考虑整体投资回报率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="04-cloudwego-的开源之路"&gt;&lt;strong&gt;04 CloudWeGo 的开源之路&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Library.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;字节内部版本的 Kitex 是依赖于开源版本的 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt;，因此可以理解为 Kitex 内外同源，不存在两个 Kitex。&lt;/p&gt;
+&lt;h3 id="开源的原因"&gt;&lt;strong&gt;开源的原因&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;回到开篇的问题，为什么要创造一个新的项目，并且开源 CloudWeGo 呢？&lt;/p&gt;
+&lt;p&gt;首先，CloudWeGo 里面的项目都是在字节内部经过大规模落地实践验证的，开源后每个功能的迭代也都是第一时间在内部使用验证过的，是一个真正的企业级落地项目，开源用户和字节内部业务使用的是同一套服务框架；
+其次，CloudWeGo 提供的功能，尤其是协议支持和服务治理，都是能解决真实业务痛点的，每一行代码优化都能实实在在地提升用户服务的性能；
+最后，CloudWeGo 的研发也借鉴了一些知名开源项目的设计思路，同时也依赖一些开源项目的实现，我们把 CloudWeGo 开源出去也是为了回馈社区，给开源社区贡献一份力量。&lt;/p&gt;
+&lt;p&gt;CloudWeGo 在设计之初，就同时考虑了正确性和可维护性，除了代码逻辑的正确性，高质量的代码、明晰的代码结构和优良的扩展性一直都是 CloudWeGo 追求的方向和实践的信条。&lt;/p&gt;
+&lt;p&gt;CloudWeGo 服务于用户、需求驱动，为用户提供开箱即用的服务框架及相关中间件，希望可以服务于更多企业和独立开发者，避免用户重复创造。&lt;/p&gt;
+&lt;h3 id="开源的历程"&gt;&lt;strong&gt;开源的历程&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Course.PNG" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;CloudWeGo 自 2021 年 9 月 8 日正式对外官宣，主要子项目 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 先后发布 v0.1.0 和 v0.2.0，支持了许多新的功能，对性能、代码、文档也相继做了许多优化。
+截止到 2022 年 4 月，距离首次官宣 7 个月，仅 CloudWeGo-Kitex 就收获了 &lt;strong&gt;4000&lt;/strong&gt; 个 Star，累计近 &lt;strong&gt;50&lt;/strong&gt; 个 Contributors，达到了一个新的里程碑，这很有趣，并且十分振奋人心，不是吗？&lt;/p&gt;
+&lt;p&gt;CloudWeGo 团队自开源之初就非常重视社区建设，“&lt;strong&gt;Community Over Code&lt;/strong&gt;” 也是 CloudWeGo 社区所遵循的文化和目标。&lt;/p&gt;
+&lt;p&gt;从搭建用户群，建设官网和文档，积极维护项目 Issue，及时处理新的 PR，再到我们与贡献者的深入沟通和对他们的培养，每一个动作都体现我们的决心。为了推进社区建设规范化和标准化，CloudWeGo 团队先后创建了 Community 仓库用来定义社区成员晋升机制以及存档社区材料。&lt;/p&gt;
+&lt;p&gt;为了践行公开透明和开源开放的开源文化，搭建开放的对话与交流平台，CloudWeGo 组织了社区双周例会，在例会上同步社区近期计划并积极听取社区成员的建议，与社区贡献者讨论相关技术方案实现。&lt;/p&gt;
+&lt;p&gt;截止目前，通过社区 Maintainer 的培养、Contributor 的主动申请、社区管理委员会的投票审批，已经正式通过了 5 位 Committer 的加入申请，极大地壮大了 CloudWeGo 社区核心力量，他们为社区的发展作出了重大贡献。&lt;/p&gt;
+&lt;h3 id="后续的规划"&gt;&lt;strong&gt;后续的规划&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;CloudWeGo 在 2021 年底收录进入 CNCF Landscape，丰富了 CNCF 在 RPC 领域的生态，给全球用户在做技术选型时提供了一套新的选择。&lt;/p&gt;
+&lt;p&gt;尽管取得了一些小小的成绩，但是 CloudWeGo 仍旧还是一个年轻的项目，开源贵在持之以恒、长期建设，CloudWeGo 团队也会持续完善，继续向前。&lt;/p&gt;
+&lt;p&gt;从社区建设方面来看，CloudWeGo 团队将继续提供更多新人友好的 Good-first-issue，坚持组织社区例会，定期举办开源技术沙龙，提供更易于理解的技术文档，另外也将继续欢迎更多新的开发者参与到社区建设中来。&lt;/p&gt;
+&lt;p&gt;从开源规划来看，HTTP 框架 Hertz 开源在即，还有更多中间件小工具、扩展库也都在持续开源中。此外，CloudWeGo 主创团队还研发了一套 Rust RPC 框架，正在内部落地实践验证中，在不久的将来，也将对外开源。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Microservices_Open_CloudWeGo/Plan.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;从功能研发计划来看，以 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 为例，将继续以内外部用户需求为驱动力，持续开发新的功能并迭代完善已有的功能。其中，包括支持连接预热、自定义异常重试、对 Protobuf 支持的性能优化，支持 xDS 协议等。&lt;/p&gt;
+&lt;p&gt;从开源生态来看，目前 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 已经完成了诸多开源项目的对接，未来也将会按需支持更多开源生态。
+此外，CloudWeGo 也在和国内外主流公有云厂商进行合作对接，提供开箱即用、稳定可靠的微服务托管与治理产品的基座；CloudWeGo 也积极与国内外软件基金会开展合作和交流，探索新的合作模式。&lt;/p&gt;
+&lt;p&gt;CloudWeGo 未来可期，我们期待更多用户使用我们的项目，也期待有更多开发者可以加入共建 CloudWeGo 社区，共同见证云原生时代一个初生但了不起的微服务中间件和开源项目。&lt;/p&gt;</description></item><item><title>Blog: CloudWeGo 助 NextArch 基金会推动标准化建设</title><link>https://www.cloudwego.io/zh/blog/2022/04/01/cloudwego-%E5%8A%A9-nextarch-%E5%9F%BA%E9%87%91%E4%BC%9A%E6%8E%A8%E5%8A%A8%E6%A0%87%E5%87%86%E5%8C%96%E5%BB%BA%E8%AE%BE/</link><pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/04/01/cloudwego-%E5%8A%A9-nextarch-%E5%9F%BA%E9%87%91%E4%BC%9A%E6%8E%A8%E5%8A%A8%E6%A0%87%E5%87%86%E5%8C%96%E5%BB%BA%E8%AE%BE/</guid><description>
+&lt;blockquote&gt;
+&lt;p&gt;导语：2022 年 3 月，NextArch 基金会正式成立微服务技术小组，致力于推动微服务技术和开源生态的持续发展，根据各个企业在微服务生产实践中遇到的问题，针对不同行业和应用场景输出标准化解决方案，
+并且联合 PolarisMesh、TARS、go-zero、GoFrame、&lt;strong&gt;&lt;a href="https://github.com/cloudwego"&gt;CloudWeGo&lt;/a&gt;&lt;/strong&gt; 和 Spring Cloud Tencent 等开源社区提供开箱即用的实现，降低终端用户的使用门槛。
+来自腾讯、字节跳动、七牛云、快手、BIGO、好未来和蓝色光标等多家企业的技术专家已经加入技术小组，欢迎更多企业和开源社区加入。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;2021 年 11 月，Linux 基金会正式成立 NextArch 基金会，共计 40 余家企业或单位联合参与了该基金会的筹建工作，并作为首批共建和支持单位加入，目前已增至 53 家企业。NextArch 基金会致力于在异构基础设施、多元化技术栈和混合云场景下的构建下一代技术架构，始终秉承一个开放中立的治理模式，发展适合企业数字化转型的开源生态。&lt;/p&gt;
+&lt;p&gt;微服务是下一代架构的关键部分，越来越多企业采用微服务架构。市场调研表明，随着企业数字化转型持续深入，2023 年微服务云市场的规模达到 18.8 亿美元，从 2018 到 2023 年的复合年增长率达到 22.4%。众所周知，微服务相比于传统架构具有诸多优势，但是，我们在微服务实施的各个环节中都可能面临问题。&lt;/p&gt;
+&lt;p&gt;为了降低微服务架构的落地成本，来自腾讯、快手、字节跳动、好未来、七牛云和蓝色光标等多家企业的技术专家在 NextArch 基金会成立微服务技术小组，共同探讨各自企业在微服务领域中遇到的问题，分享大家在生产过程中的实践经验，并且面向不同的应用场景和终端用户，联合相关开源社区输出标准化的解决方案。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/CloudWeGo_helps_NextArch/community.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;在采用微服务架构之前，我们需要思考为什么采用微服务架构，并不是所有的开发团队和发展阶段都适合采用微服务架构。通常，采用微服务架构可以解决以下问题：首先，开发团队具有一定的规模，所有成员共同开发一个单体应用的内耗太高，如果采用微服务架构，每个服务可以由单个或者少数成员独立负责。第二，业务系统的功能模块很多，耦合在一起会增加测试和部署的成本，任何一个模块故障也会导致整个系统故障。第三，功能模块之间的负载无法隔离，容易互相影响，没有办法针对热点模块的计算层或者存储层进行扩容。&lt;/p&gt;
+&lt;p&gt;如果我们采用微服务架构，单个服务是⾮常简单的，但是，分布式服务之间的功能调用远⽐单体应用内部更加复杂。在单体应用中，⼀个函数可以调⽤其他任何一个公共函数。在微服务架构中，一个函数只可以调⽤同⼀个微服务的函数。如何实现分布式服务之间的通信是微服务架构的首要问题，构建高性能、高可用的远程调用能力并不容易。值得庆幸的是，已经有 grpc、thrift、tars、go-zero、GoFrame、&lt;a href="https://github.com/cloudwego/kitex"&gt;cloudwego/kitex&lt;/a&gt; 和 spring cloud 等大量开源的分布式服务开发框架，这些框架可以帮助终端用户快速地构建微服务。不幸的是，仅仅把服务开发出来并且跑通是不够的，保障大规模服务的稳定运营还需要考虑诸多问题，例如：在分布式架构中如何处理基础设施以及应用层的各种异常、如何实现大规模服务的无损发布和流量调度，如何定位和分析复杂调用链路中出现的问题等。对于中大型企业来说，还存在异构的开发技术栈和运行时环境，存在跨地域和混合云的架构要求，如何在更加复杂的应用场景中解决上述问题，面临更多的挑战。&lt;/p&gt;
+&lt;p&gt;目前，这个方向还没有开箱即用的解决方案，终端用户必须在不同的基础设施和适当的工具之间做出抉择，才能解决各种问题。近日，NextArch 微服务技术小组向基金会提交了首个提案，根据各自企业在分布式或者微服务生产实践中的经验和痛点，面向多语言、多框架和异构基础设施，针对不同行业和应用场景输出微服务落地的标准化方案，并且依托相关开源社区提供推荐实现，方便终端用户落地。我们也期待更多企业和开源社区加入 NextArch 基金会，共同探讨分布式或者微服务治理的标准化方案。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/CloudWeGo_helps_NextArch/framework.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="部分-nextarch-microservice-sig-成员引文"&gt;部分 NextArch Microservice SIG 成员引文：&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;PolarisMesh 单家骏&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;腾讯云专家工程师，具备 10 年以上中间件研发经验。北极星开源社区（PolarisMesh）联合发起人，负责开源项目的技术规划、代码开发和社区运营等工作。&lt;/p&gt;
+&lt;p&gt;自分布式架构发展至今，微服务成为了复杂业务系统的首选模式，在企业得到了充分的生产落地，然而各个微服务框架及工具链，对于微服务治理体系的理解存在差异性，使得业务系统在实现微服务治理上存在较大的成本，同时也不利于微服务技术的沉淀及长期发展。北极星是腾讯自研和开源的微服务治理框架，覆盖了腾讯内部 90% 以上的业务，解决了业务系统因多语言、多框架以及业务差异性所带来的服务治理不一致的问题，在腾讯内部完成了服务发现和治理的标准化。我们期望通过加入 NextArch 基金会这样一个中立组织，可以讨论业界微服务治理的相关实践及解决方案，沉淀出标准化的服务治理体系，促进微服务生态的进一步发展，也期望北极星开源社区可以推动并承载微服务治理标准体系的落地。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;go-zero 万俊峰&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;万俊峰，七牛云技术副总裁，go-zero 开源社区/go-zero 作者。负责 go-zero 框架的规划、代码编写、代码 review、工具链规划、社区建设、开源推广&lt;/p&gt;
+&lt;p&gt;微服务在发展了这么多年之后，已经呈现出百花齐放的状态，各种微服务框架和治理能力在很多公司都得到了充分的落地，并带来了巨大的业务价值。但当前的现状也没有形成足够的技术共识和规范，我们需要进一步提炼和抽象微服务的能力，并加以标准化。这样可以更好的沉淀经验，并将各语言的微服务框架提供规划化对接，从而推动微服务技术的进一步发展。同时也期望在 SIG 组织能够更多的讨论微服务落地的各种最佳实践，也期望能够通过 go-zero 开源社区帮助推动共识的微服务治理标准落地。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;GoFrame 郭强&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;腾讯高级工程师，GoFrame 开源框架项目发起人及主要贡献者，负责 GoFrame 框架发展规划、社区建设维护、核心代码开发。GoFrame 是一款模块化、高性能、企业级的 Go 基础开发框架。&lt;/p&gt;
+&lt;p&gt;微服务是一种架构设计思想，目的是为了有效解决业务复杂度提高带来的项目架构问题。微服务需要解决的不仅是技术问题，也是项目协作问题。在&amp;quot;微服务化&amp;quot;过后，项目架构将引入更多的痛点：职责边界界定、服务高效通信、分布事务处理、微服务化治理、服务版本管理、项目迭代协作等等。微服务思想发展至今，这些痛点的解决方案已比较成熟，并且大同小异。NextArch 微服务 SIG 需要做的是在这些方案之上分析共性之处，形成统一化和规范化的解决方案。以帮助企业更快速地实现微服务化，同时，也需要提供一些最佳实践，帮助企业提高在服务化后的项目管理手段。80% 的解决方案抽象，20% 的最佳实践沉淀。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CloudWeGo 罗广明&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;字节跳动微服务架构师，CloudWeGo 开源负责人。CloudWeGo 是一套由字节跳动开源的、可快速构建企业级云原生架构的中间件集合，专注于解决微服务通信与治理的难题，具备高性能、可扩展、高可靠的特点。&lt;/p&gt;
+&lt;p&gt;微服务技术发展至今，业界涌现出一大批微服务开发框架、技术和最佳实践。这个多样化是不可避免的，没有一个微服务开发框架能够统一所有的语言，但是微服务架构里面所涉及的服务治理体系，却可以做到统一和规范化。NextArch 微服务 SIG 正是在这样的背景下诞生了，旨在提供统一服务治理体系，解决共性问题，将促进微服务框架和技术的进一步演进和发展。&lt;/p&gt;</description></item><item><title>Blog: 一文了解字节跳动微服务中间件 CloudWeGo</title><link>https://www.cloudwego.io/zh/blog/2022/03/28/%E4%B8%80%E6%96%87%E4%BA%86%E8%A7%A3%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%AD%E9%97%B4%E4%BB%B6-cloudwego/</link><pubDate>Mon, 28 Mar 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2022/03/28/%E4%B8%80%E6%96%87%E4%BA%86%E8%A7%A3%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%AD%E9%97%B4%E4%BB%B6-cloudwego/</guid><description>
+&lt;p&gt;云原生时代，各行各业的基础架构都在经历微服务架构转型，研发效率和稳定性是所有互联网公司需要考虑的问题。开发者想要搭建微服务，离不开配套的微服务治理，如治理平台、监控、链路跟踪、注册/发现、配置中心、服务网格等。
+随着 Go 逐渐成为云原生时代的主要编程语言，基于 Go 的微服务中间件在开源社区有着较强的诉求。&lt;/p&gt;
+&lt;p&gt;字节跳动也同样面临这些问题。2014 年，字节跳动引入 Go 解决长连接推送业务面临的高并发问题，两年后，内部技术团队基于 Go 推出了一个名为 Kite 的框架，
+同时对开源项目 Gin 做了一层很薄的封装，推出了 Ginex。字节跳动基础架构/服务框架团队负责人成国柱在 QCon 2021 的分享中表示，这两个原始框架的推出，极大推动了 Go 在公司内部的应用。&lt;/p&gt;
+&lt;p&gt;但是由于关联技术迭代和业务诉求增加，深度耦合的 Kite 和 Thrift ，很难从网络模型或编解码层面改造优化，继续支持新特性势必会造成代码臃肿、迭代受阻问题。
+2019 年下半年，字节跳动技术团队开始重新设计 Go RPC 框架，同时为了在网络通信上有更好的性能并能支持连接多路复用、感知连接状态，自研了网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;字节跳动重构 Kite 为 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; ，围绕性能和可扩展性设计，并在次年 10 月完成发布，投入到内部应用中。
+据悉，截至 2021 年 9 月，线上有 3w+ 微服务使用 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt;，大部分服务迁移新框架后可以收获 CPU 和延迟上的收益。&lt;/p&gt;
+&lt;p&gt;“在 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 得到内部广泛使用后，我们决定围绕微服务逐步把我们的实践开源出去，并且对外保持统一。
+”字节跳动 CloudWeGo 技术专家谈道，“但微服务相关的项目较多，每个项目单独开源对外部用户并不友好，因此我们以 CloudWeGo 作为项目名，逐步将内部整个微服务体系开源，内外统一使用开源库，各项目以开源库为主进行迭代。”&lt;/p&gt;
+&lt;p&gt;2021 年 9 月 8 日，字节跳动宣布正式开源 CloudWeGo。&lt;/p&gt;
+&lt;h2 id="中间件工具箱cloudwego"&gt;&lt;strong&gt;中间件“工具箱”CloudWeGo&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;CloudWeGo 是一套字节跳动内部微服务中间件集合，具备高性能、强扩展性和稳定性的特点，专注于解决微服务通信与治理的难题，满足不同业务在不同场景的诉求。
+此外，CloudWeGo 也重视与云原生生态的集成，支持对接 K8s 注册中心、Prometheus 监控以及 OpenTracing 链路追踪等。&lt;/p&gt;
+&lt;p&gt;目前，CloudWeGo 第一批开源了四个项目：&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt;、&lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;、&lt;a href="https://github.com/cloudwego/thriftgo"&gt;Thriftgo&lt;/a&gt; 和 &lt;a href="https://github.com/cloudwego/netpoll-http2"&gt;netpoll-http2&lt;/a&gt;，
+以 RPC 框架 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 和网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 为主。&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 内置了部分治理策略以及丰富的扩展接口，便于融入微服务体系中；&lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 主要面向对高性能有诉求的场景。&lt;/p&gt;
+&lt;p&gt;CloudWeGo 的每一个组件都可以单独使用。“很多人担心 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 是一个很重的框架，其实 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 没有耦合任何其他组件包括 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 内置的一些治理能力，用户也可以选择性集成。
+&lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 作为一个网络库，其他 RPC 框架、HTTP 框架都可以单独接入使用。&lt;a href="https://github.com/cloudwego/thriftgo"&gt;Thriftgo&lt;/a&gt; 是 Thrift IDL 解析和代码生成器，也是独立的工具，并且提供插件机制，用户可定制生成代码。”
+字节跳动 CloudWeGo 技术专家表示，“我们会继续开源其他内部项目，如 HTTP 框架 Hertz、基于共享内存的 IPC 通信库 ShmIPC 等，提供更多场景的微服务需求支持。”&lt;/p&gt;
+&lt;h2 id="cloudwego-的优势和局限"&gt;&lt;strong&gt;CloudWeGo 的优势和局限&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;微服务中间件和业务紧密联系，是整个业务架构的基础，在进行技术选型时必须慎重。业内公认的选型标准关键在于两方面：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;能解决实际业务问题和上生产抗流量，且易用性高、可治理、成熟稳定&lt;/li&gt;
+&lt;li&gt;技术是开源的，且开源项目的 star 数、项目活跃度（Issue&amp;amp;PR）、文档更新频率、发版周期稳定可靠&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CloudWeGo 的优势在于，已经在字节跳动经过大规模生产流量验证，有可以参考的稳定性和可靠性实际案例。“CloudWeGo 的特点之一是高性能，但实际上在开发之初它经常遇到性能瓶颈，
+于是内部专门进行了网络库、Thrift 序列化的专项优化，优化的过程会比较漫长，一个瓶颈点要花很长时间反复测试调整实现，我们也发过两篇文章&lt;a href="https://www.cloudwego.io/zh/blog/2021/09/23/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-go-rpc-%E6%A1%86%E6%9E%B6-kitex-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/"&gt;《字节跳动 Go RPC 框架 Kitex 性能优化实践》&lt;/a&gt;和&lt;a href="https://www.cloudwego.io/zh/blog/2020/05/24/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%9C%A8-go-%E7%BD%91%E7%BB%9C%E5%BA%93%E4%B8%8A%E7%9A%84%E5%AE%9E%E8%B7%B5/"&gt;《字节跳动在 Go 网络库上的实践》&lt;/a&gt;分享了优化实践。”字节跳动 CloudWeGo 技术专家表示。&lt;/p&gt;
+&lt;p&gt;据悉，与同类型项目相比，CloudWeGo 开发团队不仅考虑了高性能、强扩展性，还考虑到了易用性。“以 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 为例，目前从治理功能的多样性上不及一些开源框架，
+从性能、扩展性、使用体验多维度综合来看，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 具有一定的优势。&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 支持多协议，由于内部以 Thrift 为主，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 对 Thrift 支持也做了性能优化，
+如果使用 Thrift，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 将是最佳的选择。”字节跳动 CloudWeGo 技术专家告诉 InfoQ。&lt;/p&gt;
+&lt;p&gt;此外，为了遵守长期投入承诺，内外维护一套代码、统一迭代，字节跳动已经将与内部生态没有耦合的项目直接迁移到 CloudWeGo 开源库，并将内部依赖调整为开源库。
+而对于需要集成治理能力融入微服务体系的 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt;，开源团队则对内外部代码做了拆分，把 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 的核心代码迁移到开源库，内部库封装一层壳保证用户无感知升级，
+而集成内部治理特性的模块则作为 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 的扩展保留在内部库。未来，字节跳动也会持续把已经在内部经过稳定性验证的新特性，迁移到开源库。&lt;/p&gt;
+&lt;p&gt;在字节跳动内部，为了便于 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 融入内部的治理体系，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 面向内部提供了 Byted Suite 扩展，集成内部的注册中心、配置中心、监控等，内部 ServiceMesh 已经得到了大规模落地，
+&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 会根据服务的信息判断是否是 ServiceMesh 模式，若是，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 则会卸载治理组件，治理能力下沉至 Mesh 中。
+为了提高与 ServiceMesh 通信的性能，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 单独扩展 TransHandler 模块集成内部实现的 ShmIPC，与 ServiceMesh 通信走 ShmIPC ，后续 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 对 ShmIPC 的扩展以及 ShmIPC 库也会开源出来。&lt;/p&gt;
+&lt;p&gt;不过 CloudWeGo 依然有自己的局限性。字节跳动 CloudWeGo 技术专家告诉 InfoQ：CloudWeGo 功能的丰富度和多样性还不够，还需要进一步完善，字节跳动技术团队会收集外部用户的需求，评估排期支持，期待更多的开发者加入。
+目前 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; Server 性能优势明显，但 Client 相比 Server 性能表现不佳，后续会重点对 Client 进行优化。此外，基于不同的语言框架，默认场景必须能兼容互通而非性能最佳。
+“刚开源时得到大家的关注，看到一些压测对比显示 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 性能表现一般，主要是压测场景未对齐，后续我们也会考虑面向开源尽量提供性能较优的策略。”&lt;/p&gt;
+&lt;h2 id="开源不是为了完成-kpi-"&gt;&lt;strong&gt;“开源”不是为了“完成 KPI ”&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;目前，CloudWeGo 在社区中也比较有活力。据悉，在未被正式宣布开源前，一个月内 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 收获了 1.2k stars，&lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 收获了 700+ stars。
+9 月 8 日，字节跳动正式宣布开源 CloudWeGo 后，截至 10 月初，项目整体 star 数已经超过 4800，且已被收录进 CNCF landscape。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/article_to_learn_about_CloudWeGo/image.png" alt="image"&gt;&lt;/p&gt;
+&lt;p&gt;字节跳动 CloudWeGo 技术专家表示：“我们收到了来自社区的大量反馈，如很多用户对 Protobuf 的诉求较为强烈，我们已经针对这个问题，计划开展 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 对 Protobuf 支持的性能优化。
+欢迎大家向 CloudWeGo 提交 issue 和 PR，共建 CloudWeGo。我们也为企业和组织使用 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 和 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 设置了专项支持，希望 CloudWeGo 将来能真正成为通用的、可落地的微服务通信与治理开源方案。”&lt;/p&gt;
+&lt;p&gt;关于开源，字节跳动 CloudWeGo 技术专家的观点旗帜鲜明：“完成 KPI 不是这个项目开源的目的。健康的开源模式注重开放共享，共同成长和长期主义。CloudWeGo 认同个体参与、社区价值以及开源共同体带来的归属感。”&lt;/p&gt;
+&lt;p&gt;“字节跳动作为开源项目的受益者、参与者，也希望成为开源项目的推动者、主导者，将内部优秀的最佳实践反馈给开源社区，与社区共同建设、丰富基础架构领域开源生态，为广大开发者和企业在技术选型时提供更多更优的选择。”
+字节跳动 CloudWeGo 技术专家谈道，“我们拥抱开源的文化，倾听社区的反馈，积极响应用户的需求，并且提供友好的中英文文档和快速开发 guideline，为社区开发者快速深入了解 CloudWeGo 以及参与贡献提供便利与支持。”&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;项目地址：&lt;/strong&gt;&lt;a href="https://github.com/cloudwego"&gt;https://github.com/cloudwego&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;受访嘉宾:&lt;/strong&gt; 字节跳动 CloudWeGo 技术专家罗广明、杨芮、马子昂&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;原文链接:&lt;/strong&gt; &lt;a href="https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j"&gt;https://www.infoq.cn/article/9ixlu4kjapg3ufhymm3j&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Blog: 字节跳动开源内部微服务中间件 CloudWeGo</title><link>https://www.cloudwego.io/zh/blog/2021/09/07/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90%E5%86%85%E9%83%A8%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%AD%E9%97%B4%E4%BB%B6-cloudwego/</link><pubDate>Tue, 07 Sep 2021 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/zh/blog/2021/09/07/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E5%BC%80%E6%BA%90%E5%86%85%E9%83%A8%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B8%AD%E9%97%B4%E4%BB%B6-cloudwego/</guid><description>
+&lt;h2 id="开源背景"&gt;开源背景&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego"&gt;CloudWeGo&lt;/a&gt; 是一套由字节跳动开源的、以 Go 语言为核心的、可快速构建企业级云原生架构的中间件集合，专注于微服务通信与治理，具备高性能、可扩展、高可靠的特点。&lt;/p&gt;
+&lt;p&gt;字节跳动内部使用 Go 作为主要的业务开发语言，我们支持着数万个 Go 微服务的可靠通信，经过数量众多的微服务和海量流量的验证，我们已经有了较为成熟的微服务最佳实践，于是考虑将内部的实践开源出去丰富社区生态。
+但微服务相关的项目较多，每个项目单独开源对外部用户并不友好，为了更好地让大家聚焦于微服务，我们以 CloudWeGo 作为项目名，逐步将内部微服务体系的项目开源，内外统一使用开源库，各项目以开源库为主进行迭代。&lt;/p&gt;
+&lt;p&gt;内外维护一套代码，统一迭代演进，是我们开源前明确的原则，但毕竟涉及到代码库的调整，我们要保证内部用户尽可能无感知的迁移到开源库，本着对内部和开源用户负责的态度，我们要先确认内部可以平滑过渡，所以开源时并未对外宣传。
+让我们欣慰的是，在未宣传的情况下，一个月内 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 收获了 1.2k stars，&lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 收获了 700+ stars。&lt;/p&gt;
+&lt;p&gt;CloudWeGo 不仅仅是一个对外的开源项目，也是一个真实的超大规模企业级实践项目。&lt;/p&gt;
+&lt;p&gt;我们希望通过 CloudWeGo 丰富云原生社区的 Go 产品体系，助力其他企业快速构建云原生架构，也希望吸引外部开发者共建，促进面向多元场景支持的演进，丰富产品能力。&lt;/p&gt;
+&lt;p&gt;因为 CloudWeGo 下的项目会依赖很多内部的基础工具库，我们也推动将内部常用的 Go 基础工具库开源出去，统一在 &lt;a href="https://github.com/bytedance/gopkg"&gt;bytedance/gopkg&lt;/a&gt; 维护。&lt;/p&gt;
+&lt;h2 id="cloudwego-开源项目"&gt;CloudWeGo 开源项目&lt;/h2&gt;
+&lt;p&gt;CloudWeGo 第一批以 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; RPC 框架和 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 网络库为主开源四个项目。&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 和 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 开源前我们发布过两篇文章 &lt;a href="https://mp.weixin.qq.com/s/Xoaoiotl7ZQoG2iXo9_DWg"&gt;字节跳动 Go RPC 框架 Kitex 性能优化实践&lt;/a&gt;
+和 &lt;a href="https://mp.weixin.qq.com/s?__biz=MzI1MzYzMjE0MQ==&amp;amp;mid=2247485756&amp;amp;idx=1&amp;amp;sn=4d2712e4bfb9be27a790fa15159a7be1&amp;amp;chksm=e9d0c2dedea74bc8179af39888a5b2b99266587cad32744ad11092b91ec2e2babc74e69090e6&amp;amp;scene=21#wechat_redirect"&gt;字节跳动在 Go 网络库上的实践&lt;/a&gt;
+分享我们的实践，文章发布后大家都在关注我们什么时候开源，因为我们希望将成熟的实践开源出去，所以没有过早的推动开源。&lt;/p&gt;
+&lt;h3 id="kitex"&gt;Kitex&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 是字节跳动内部的 Go 微服务 RPC 框架，具有高性能、强可扩展的主要特点。在 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 之前内部的 Go 框架是 Kite，但 Kite 与 Thrift 深度耦合、生成代码逻辑重，
+很难从网络模型或编解码层面改造优化，继续支持新特性势必会造成代码越发臃肿迭代受阻问题，于是我们针对曾经的痛点设计了新的框架 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt;。虽然 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 是新框架，但已经在线上应用一年多，目前字节内部超过 50% 的 Go 微服务使用 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;以下简述 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 的一些特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;高性能：网络传输模块 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 默认集成了自研的网络库 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，性能相较使用 go net 有显著优势；除了网络库带来的性能收益，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 对 Thrift 编解码也做了优化，详见 &lt;a href="https://mp.weixin.qq.com/s/Xoaoiotl7ZQoG2iXo9_DWg"&gt;优化实践&lt;/a&gt;。关于性能数据可参考 &lt;a href="https://github.com/cloudwego/kitex-benchmark"&gt;kitex-benchmark&lt;/a&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;扩展性：&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 设计上做了模块划分，提供了较多的扩展接口以及默认的扩展实现，使用者也可以根据需要自行定制扩展，更多扩展能力参见 &lt;a href="https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/"&gt;文档&lt;/a&gt;。&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 也并未耦合 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，开发者也可以选择其它网络库扩展使用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;消息协议：RPC 消息协议默认支持 Thrift、Kitex Protobuf、gRPC。Thrift 支持 Buffered 和 Framed 二进制协议；Kitex Protobuf 是 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 自定义的 Protobuf 消息协议，协议格式类似 Thrift；gRPC 是对 gRPC 消息协议的支持，可以与 gRPC 互通。除此之外，使用者也可以扩展自己的消息协议。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;传输协议：传输协议封装消息协议进行 RPC 互通，传输协议可以额外透传元信息，用于服务治理，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 支持的传输协议有 TTHeader、HTTP2。TTHeader 可以和 Thrift、Kitex Protobuf 结合使用；HTTP2 目前主要是结合 gRPC 协议使用，后续也会支持 Thrift。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;多消息类型：支持 PingPong、Oneway、双向 Streaming。其中 Oneway 目前只对 Thrift 协议支持，双向 Streaming 只对 gRPC 支持，后续会考虑支持 Thrift 的双向 Streaming。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;服务治理：支持服务注册/发现、负载均衡、熔断、限流、重试、监控、链路跟踪、日志、诊断等服务治理模块，大部分均已提供默认扩展，使用者可选择集成。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 内置代码生成工具，可支持生成 Thrift、Protobuf 以及脚手架代码。原生的 Thrift 代码由本次一起开源的 &lt;a href="https://github.com/cloudwego/thriftgo"&gt;Thriftgo&lt;/a&gt; 生成，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 对 Thrift 的优化由 Kitex Tool 作为插件支持。Protobuf 代码由 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 作为官方 protoc 插件生成 ，目前暂未单独支持 Protobuf IDL 的解析和代码生成。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="netpoll"&gt;Netpoll&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 是字节跳动内部的 Go 高性能、I/O 非阻塞的网络库，专注于 RPC 场景。&lt;/p&gt;
+&lt;p&gt;RPC 通常有较重的处理逻辑（业务逻辑、编解码），耗时长，不能像 Redis 一样采用串行处理(必须异步)。而 Go 的标准库 net 设计了 BIO(Blocking I/O) 模式的 API，
+为了保证异步处理，RPC 框架设计上需要为每个连接都分配一个 goroutine，这在空闲连接较多时，产生大量的空闲 goroutine，增加调度开销。
+此外，&lt;a href="https://github.com/golang/go/blob/master/src/net/net.go"&gt;net.Conn&lt;/a&gt; 没有提供检查连接活性的 API，很难设计出高效的连接池，池中的失效连接无法及时清理，复用低效。&lt;/p&gt;
+&lt;p&gt;开源社区目前缺少专注于 RPC 方案的 Go 网络库。类似的项目如：&lt;a href="https://github.com/tidwall/evio"&gt;evio&lt;/a&gt; , &lt;a href="https://github.com/panjf2000/gnet"&gt;gnet&lt;/a&gt; 等，均面向 Redis, Haproxy 这样的场景。&lt;/p&gt;
+&lt;p&gt;因此 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 应运而生，它借鉴了 evio 和 Netty 的优秀设计，具有出色的 &lt;a href="https://github.com/cloudwego/netpoll/blob/main/README_CN.md#%e6%80%a7%e8%83%bd"&gt;性能&lt;/a&gt;，更适用于微服务架构。
+同时，&lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt; 还提供了一些 &lt;a href="https://github.com/cloudwego/netpoll/blob/main/README_CN.md#%e7%89%b9%e6%80%a7"&gt;特性&lt;/a&gt;，推荐在 RPC 框架中作为底层网络库。&lt;/p&gt;
+&lt;h3 id="thriftgo"&gt;Thriftgo&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/thriftgo"&gt;Thriftgo&lt;/a&gt; 是 Go 语言实现的 Thrift IDL 解析和代码生成器，支持完善的 Thrift IDL 语法和语义检查，相较 Apache Thrift 官方的 Go 生成代码，&lt;a href="https://github.com/cloudwego/thriftgo"&gt;Thriftgo&lt;/a&gt; 做了一些问题修复且支持插件机制，用户可根据需求自定义生成代码。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 的代码生成工具就是 &lt;a href="https://github.com/cloudwego/thriftgo"&gt;Thriftgo&lt;/a&gt; 的插件，CloudWeGo 近期也会开源另一个 &lt;a href="https://github.com/cloudwego/thriftgo"&gt;Thriftgo&lt;/a&gt; 的插件 thrift-gen-validator，支持 IDL Validator，用于字段值校验，解决开发者需要自行实现代码校验逻辑的负担，弥补 Thrift 缺失的能力。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/thriftgo"&gt;Thriftgo&lt;/a&gt; 目前虽然仅支持生成 Go Thrift 代码，但其定位是可支持各语言的 Thrift 代码生成，未来如果有需求，我们也会考虑生成其他语言的代码，同时我们也将尝试将其回馈至 Apache Thrift 社区。&lt;/p&gt;
+&lt;h3 id="netpoll-http2"&gt;Netpoll-http2&lt;/h3&gt;
+&lt;p&gt;Netpoll-http2 是基于 Go 标准库 golang.org/x/net/http2 的源码替换 go net 为 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，目前用于 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 对 gRPC 协议的支持，对 HTTP2 有需求的外部开发者也可以使用此库。&lt;/p&gt;
+&lt;h2 id="内外版本维护"&gt;内外版本维护&lt;/h2&gt;
+&lt;p&gt;完整的微服务体系离不开基础的云生态，无论在公有云、私有云还是基于自己的基础设施开发微服务，都需要搭建额外的服务以很好的支持微服务的治理，比如治理平台、监控、链路跟踪、注册/发现、配置中心、服务网格等，
+而且还存在一些定制的规范。字节跳动自然也有完善的内部服务支持微服务体系，但这些服务短期还无法开源，那 CloudWeGo 如何内外维护一套代码，统一迭代呢？&lt;/p&gt;
+&lt;p&gt;CloudWeGo 下与内部生态没有耦合的项目，如 &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;，直接迁移到开源库，内部依赖调整为开源库。&lt;/p&gt;
+&lt;p&gt;而需要集成治理能力融入微服务体系的 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 则基于其扩展性，将内外部的代码做了拆分，&lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 的核心代码迁移到开源库，内部库封装一层壳保证内部用户无感知升级。
+集成内部治理特性的模块则作为 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 的扩展保留在内部库，同时对于一些新的特性也会优先在内部库支持，稳定后迁移到开源库。&lt;/p&gt;
+&lt;p&gt;对于使用 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 的开源用户，同样可以对 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 进行扩展，将 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 融入自己的微服务体系中，也希望开发者能贡献自己的扩展到 &lt;a href="https://github.com/kitex-contrib"&gt;kitex-contrib&lt;/a&gt;，为更多用户提供便利。&lt;/p&gt;
+&lt;h2 id="未来展望"&gt;未来展望&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;继续开源其他内部项目&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我们会继续开源其他内部项目，如 HTTP 框架 Hertz、基于共享内存的 IPC 通信库 ShmIPC 等，提供更多场景的微服务需求支持。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;逐步开源经验证的、稳定的特性&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CloudWeGo 的主要项目均为字节内部微服务提供支持，新的特性通常会在内部验证，相对成熟后我们会逐步开源出去，比如对 ShmIPC 的集成、无序列化、无生成代码的支持等等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;结合内外部用户需求，持续迭代&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;CloudWeGo 开源后除向内部提供支持外，我们也希望 CloudWeGo 能为外部用户提供良好的支持，帮助大家快速搭建自己的微服务体系，所以我们会面向内外部用户迭代。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;就开源一个月的反馈看，大家对 Protobuf 的诉求较为强烈。坦诚来说 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 虽然支持多协议，但字节内部 RPC 通信协议是 Thrift，对 Protobuf 无论是 Kitex Protobuf 还是兼容 gRPC 更多的是支持少部分内部用户的需求，
+所以暂时未开展性能优化，生成代码也是直接使用 Protobuf 官方的二进制（gogo/protobuf 是基于生成代码优化 Protobuf 序列化性能的优秀开源库，
+但很遗憾该库目前是停止维护状态，所以 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 并未选择 gogo），但鉴于大家强烈的诉求，我们会计划开展 &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; 对 Protobuf 支持的性能优化。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;欢迎大家向 CloudWeGo 提交 issue 和 PR 共建 CloudWeGo，我们诚心期待更多的开发者加入，也期待 CloudWeGo 助力越来越多的企业快速构建云原生架构。如果企业客户想内部试用，我们可以排期提供专项技术支持和交流，欢迎入群咨询。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/LarkGroup.png" alt="!image"&gt;&lt;/p&gt;</description></item></channel></rss>

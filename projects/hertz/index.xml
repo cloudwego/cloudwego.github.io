@@ -1,0 +1,630 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CloudWeGo – Hertz</title><link>https://www.cloudwego.io/projects/hertz/</link><description>Recent content in Hertz on CloudWeGo</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 21 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://www.cloudwego.io/projects/hertz/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Hertz Release</title><link>https://www.cloudwego.io/blog/releases/hertz/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/releases/hertz/</guid><description/></item><item><title>Blog: Hertz Release v0.10.0</title><link>https://www.cloudwego.io/blog/2025/05/21/hertz-release-v0.10.0/</link><pubDate>Wed, 21 May 2025 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2025/05/21/hertz-release-v0.10.0/</guid><description>
+&lt;p&gt;The Hertz v0.10.0 release adds two features and some fixes.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Integrate SSE functionality. Refer to &lt;a href="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/sse/"&gt;SSE&lt;/a&gt; for usage.&lt;/li&gt;
+&lt;li&gt;Added http.Handler adaptor, extending Hertz using the official net/http ecosystem. Refer to &lt;a href="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/http-adaptor/"&gt;Adaptor&lt;/a&gt; for usage.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1327"&gt;#1327&lt;/a&gt;] feat(adaptor): new HertzHandler for http.Handler&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1349"&gt;#1349&lt;/a&gt;] feat(sse): SetLastEventID&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1343"&gt;#1343&lt;/a&gt;] feat(sse): reader supports cancel stream&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1341"&gt;#1341&lt;/a&gt;] feat(server): detect request race&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1339"&gt;#1339&lt;/a&gt;] feat(sse): add LastEventID helpers&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1335"&gt;#1335&lt;/a&gt;] feat(protocol): new sse pkg&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1322"&gt;#1322&lt;/a&gt;] feat: std transport sense client connection close&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1340"&gt;#1340&lt;/a&gt;] fix: only use netpoll &amp;amp; sonic on amd64/arm64 linux/darwin&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1333"&gt;#1333&lt;/a&gt;] fix(protocol): unexpected set resp.bodyStream&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1329"&gt;#1329&lt;/a&gt;] fix(client): stream body for sse instead of timeout&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1332"&gt;#1332&lt;/a&gt;] fix(server): Shutdown checks ExitWaitTimeout&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1316"&gt;#1316&lt;/a&gt;] fix: prioritize custom validator&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="tests"&gt;Tests&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1336"&gt;#1336&lt;/a&gt;] test(protocol): fix hardcoded listen addr&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1353"&gt;#1353&lt;/a&gt;] chore: update netpoll dependency&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1337"&gt;#1337&lt;/a&gt;] chore(hz): update hz tool v0.9.7&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1328"&gt;#1328&lt;/a&gt;] ci: disable codecov annotations&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Blog: Hertz Release v0.9.0</title><link>https://www.cloudwego.io/blog/2024/05/30/hertz-release-v0.9.0/</link><pubDate>Thu, 30 May 2024 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2024/05/30/hertz-release-v0.9.0/</guid><description>
+&lt;p&gt;The Hertz v0.9.0 release mainly supports general iteration and optimization.&lt;/p&gt;
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1101"&gt;#1101&lt;/a&gt;] feat: add method to exile requestContext&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1056"&gt;#1056&lt;/a&gt;] feat: add more default type for binding&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1057"&gt;#1057&lt;/a&gt;] feat: add SetHandlers when fast fail for no valid host and invalid rPath&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/921"&gt;#921&lt;/a&gt;] optimize(hz): sort route strictly which preventing sorting inconsistencies&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1037"&gt;#1037&lt;/a&gt;] optimize: filter shortConnErr in tracer&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1102"&gt;#1102&lt;/a&gt;] fix: resp set trailer will panic&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1107"&gt;#1107&lt;/a&gt;] fix: router sort&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/1064"&gt;#1064&lt;/a&gt;] refactor(hz): client query enum&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Blog: Hertz Release v0.8.0</title><link>https://www.cloudwego.io/blog/2024/01/12/hertz-release-v0.8.0/</link><pubDate>Fri, 12 Jan 2024 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2024/01/12/hertz-release-v0.8.0/</guid><description>
+&lt;p&gt;In Hertz v0.8.0, in addition to the regular iterative optimization, we have also introduced an important feature.&lt;/p&gt;
+&lt;h2 id="partitioned-cookies"&gt;Partitioned cookies&lt;/h2&gt;
+&lt;p&gt;In Hertz v0.8.0, we support the partitioned cookies feature.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz/pull/1041"&gt;https://github.com/cloudwego/hertz/pull/1041&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id="background"&gt;Background&lt;/h3&gt;
+&lt;p&gt;Third-party cookies provide the ability for cross-site tracking for the web, and their existence poses a huge threat to the privacy and security of web users. Chrome will disable third-party cookies for 1% of users starting from Quarter 1 of 2024, and gradually expand the disabling scope to 100% starting from the third quarter of 2024.
+Partitioned Cookies Cookies Having Independent Partitioned State (CHIPS) serve as an alternative to third-party cookies, providing the ability to carry third-party cookies on cross-site requests.&lt;/p&gt;
+&lt;h4 id="set-partitioned-cookies-with-the-set-cookie-header"&gt;Set Partitioned Cookies with the Set-Cookie Header&lt;/h4&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;Set-Cookie header:
+Set-Cookie: __Host-name=value; Secure; Path=/; SameSite=None; Partitioned;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="how-to"&gt;How to&lt;/h3&gt;
+&lt;h4 id="upgrade-hertz-version"&gt;Upgrade Hertz version&lt;/h4&gt;
+&lt;p&gt;Hertz added support for Partitioned Cookies in v0.8.0. You need to upgrade to &amp;gt; = v0.8.0 to use Partitioned Cookies.&lt;/p&gt;
+&lt;h4 id="how-to-use-partitioned-cookies"&gt;How to use Partitioned Cookies&lt;/h4&gt;
+&lt;p&gt;Currently, Hertz supports Partitioned Cookies, but does not yet support passing whether it is Partitioned through SetCookie. We will add this feature in the next minor version. Before that, you can refer to the following code example to use Partitioned Cookies.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;func SetPartitionedCookie(c *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
+if path == &amp;#34;&amp;#34; {
+path = &amp;#34;/&amp;#34;
+}
+cookie := protocol.AcquireCookie()
+defer protocol.ReleaseCookie(cookie)
+cookie.SetKey(name)
+cookie.SetValue(url.QueryEscape(value))
+cookie.SetMaxAge(maxAge)
+// If name has the prefix of __Host，Path must be /
+cookie.SetPath(path)
+cookie.SetDomain(domain)
+// Secure must be true。
+cookie.SetSecure(secure)
+cookie.SetHTTPOnly(httpOnly)
+cookie.SetSameSite(sameSite)
+cookie.SetPartitioned(true)
+c.Response.Header.SetCookie(cookie)
+}
+func main() {
+h := server.Default()
+h.GET(&amp;#34;/partitioned&amp;#34;, func(ctx context.Context, c *app.RequestContext) {
+SetPartitionedCookie(c, &amp;#34;user&amp;#34;, &amp;#34;hertz&amp;#34;, 1, &amp;#34;/&amp;#34;, &amp;#34;localhost&amp;#34;, protocol.CookieSameSiteNoneMode, true, true)
+c.JSON(consts.StatusOK, utils.H{&amp;#34;partitioned&amp;#34;: &amp;#34;yes&amp;#34;})
+})
+h.Spin()
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Verify Set-Cookie Header&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;curl -v http://localhost:8888/partitioned
+* Trying [::1]:8888...
+* Connected to localhost (::1) port 8888
+&amp;gt; GET /partitioned HTTP/1.1
+&amp;gt; Host: localhost:8888
+&amp;gt; User-Agent: curl/8.4.0
+&amp;gt; Accept: */*
+&amp;gt;
+&amp;lt; HTTP/1.1 200 OK
+&amp;lt; Server: hertz
+&amp;lt; Date: Fri, 12 Jan 2024 07:01:02 GMT
+&amp;lt; Content-Type: application/json; charset=utf-8
+&amp;lt; Content-Length: 21
+&amp;lt; Set-Cookie: user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned
+&amp;lt;
+* Connection #0 to host localhost left intact
+{&amp;#34;partitioned&amp;#34;:&amp;#34;yes&amp;#34;}%
+&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>Blog: Hertz Release v0.7.0</title><link>https://www.cloudwego.io/blog/2023/09/26/hertz-release-v0.7.0/</link><pubDate>Tue, 26 Sep 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2023/09/26/hertz-release-v0.7.0/</guid><description>
+&lt;p&gt;In version 0.7.0 of Hertz, in addition to regular iterative optimization, we also brought several important features.&lt;/p&gt;
+&lt;h2 id="refactor-binding"&gt;Refactor Binding&lt;/h2&gt;
+&lt;p&gt;In version 0.7.0 of Hertz，we refactored the binding feature for Hertz&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz/pull/541"&gt;https://github.com/cloudwego/hertz/pull/541&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id="description-of-refactoring"&gt;Description Of Refactoring&lt;/h3&gt;
+&lt;p&gt;In version 0.7.0 of Hertz，we refactored the binding feature for Hertz to better support user requirements。This refactoring has the following characteristics:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Consistent functionality:
+&lt;ul&gt;
+&lt;li&gt;Binder: After the refactoring, we have implemented a default Binder within Hertz, which has the same functionality as before. The previous binding capabilities have been implemented as extensions under hertz-contrib.&lt;/li&gt;
+&lt;li&gt;Validator: We are still using go-tagexpr as the default implementation to ensure consistent functionality.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Converged configuration:
+&lt;ul&gt;
+&lt;li&gt;Before the refactoring, the behavior of parameter binding was mostly configured through global parameters, which could lead to conflicts when multiple components were configured.&lt;/li&gt;
+&lt;li&gt;After the refactoring, the binding and validation configurations are injected into the Hertz Engine through &lt;code&gt;BindConfig&lt;/code&gt; and &lt;code&gt;ValidateConfig&lt;/code&gt; struct using the &amp;lsquo;WithOption&amp;rsquo; function. This not only unifies the configuration format but also avoids configuration conflicts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Customizable Binder and Validator:
+&lt;ul&gt;
+&lt;li&gt;Custom Binder: You can use &amp;ldquo;WithCustomBinder&amp;rdquo; to inject your own custom Binder. We have already provided an extension called hertz-contrib/binding/go_tagexpr.&lt;/li&gt;
+&lt;li&gt;Custom Validator: You can use &amp;ldquo;WithCustomValidator&amp;rdquo; to inject your own custom Validator. We have also extended go-playground/validator for this purpose.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Performance improvements: The refactoring has resulted in improved binding performance compared to the previous version. Please refer to the benchmark data below for more details.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="usage"&gt;Usage&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;package&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;main&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;import&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;github.com/cloudwego/hertz/pkg/app/server/binding&amp;#34;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;github.com/cloudwego/hertz/pkg/app/server&amp;#34;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;func&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;main&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;bindConfig&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;:=&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;binding&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;NewBindConfig&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;bindConfig&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;LooseZeroMode&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;true&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;h&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;:=&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;server&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;New&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;server&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;WithBindConfig&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;bindConfig&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;))&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;...&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;h&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Spin&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="benchmark-data"&gt;Benchmark Data&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz-benchmark/tree/main/binding"&gt;https://github.com/cloudwego/hertz-benchmark/tree/main/binding&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="full-release-note"&gt;Full Release Note&lt;/h2&gt;
+&lt;p&gt;The complete Release Note can refer to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hertz: &lt;a href="https://github.com/cloudwego/hertz/releases/tag/v0.7.0"&gt;https://github.com/cloudwego/hertz/releases/tag/v0.7.0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hz(scaffolding): &lt;a href="https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.7.0"&gt;https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.7.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz Release v0.6.0</title><link>https://www.cloudwego.io/blog/2023/03/02/hertz-release-v0.6.0/</link><pubDate>Thu, 02 Mar 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2023/03/02/hertz-release-v0.6.0/</guid><description>
+&lt;p&gt;In version 0.6.0 of Hertz, in addition to regular iterative optimization, we also brought several important features.&lt;/p&gt;
+&lt;h2 id="http-trailer-support"&gt;HTTP Trailer support&lt;/h2&gt;
+&lt;p&gt;In Hertz v0.6.0, we support encoding and parsing of HTTP Trailer.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz-examples/tree/main/trailer"&gt;https://github.com/cloudwego/hertz-examples/tree/main/trailer&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Write Trailer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// server&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;func&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;handler&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;ctx&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;*&lt;/span&gt;&lt;span style="color:#000"&gt;app&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;RequestContext&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;){&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Response&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Header&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Trailer&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;().&lt;/span&gt;&lt;span style="color:#000"&gt;Set&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Hertz&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Good&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// client&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000"&gt;req&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Header&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Trailer&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;().&lt;/span&gt;&lt;span style="color:#000"&gt;Set&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Hertz&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Good&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Read Trailer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// server&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;func&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;handler&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;ctx&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;*&lt;/span&gt;&lt;span style="color:#000"&gt;app&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;RequestContext&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;){&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Request&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Header&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Trailer&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;().&lt;/span&gt;&lt;span style="color:#000"&gt;Get&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Hertz&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// client&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000"&gt;resp&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Header&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Trailer&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;().&lt;/span&gt;&lt;span style="color:#000"&gt;Get&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;Hertz&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="http11-supports-for-response-writer-hijacking"&gt;HTTP/1.1 supports for Response Writer hijacking&lt;/h2&gt;
+&lt;p&gt;In Hertz v0.6.0, we extended the HTTP/1.1 write request approach. Based on the original write request flow, we support users to hijack the Response Writer in the business handler/middleware to achieve a more flexible write request approach.&lt;/br&gt;
+In simple terms, all the original &amp;ldquo;underlying write&amp;rdquo; logic is unified behind the handler/middleware return, which has two obvious limitations.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The user has no control over the timing of the request flush to the other end&lt;/li&gt;
+&lt;li&gt;For the scenario of incremental data generation &amp;amp; real-time writing to the peer by chunk, the usage is relatively complicated and restrictive on top of the old architecture&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Based on this, we extend a Writer that provides the ability to flush request headers and request bodies on its own, while providing support for users to send chunk data on demand. See &lt;a href="https://github.com/cloudwego/hertz/pull/610"&gt;https://github.com/cloudwego/hertz/pull/610&lt;/a&gt; for a detailed implementation.&lt;/p&gt;
+&lt;h3 id="major-changes"&gt;Major Changes&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Added an interface definition that extends Writer, &lt;code&gt;Writers&lt;/code&gt; that implement this interface can be used to hijack Response Writer:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;type&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;ExtWriter&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;interface&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;io&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Writer&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Flush&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;error&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// Finalize will be called by framework before the writer is released.&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// Implementations must guarantee that Finalize is safe for multiple calls.&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Finalize&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;error&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Provides a &lt;code&gt;Chunk Writer&lt;/code&gt; that implements the above interface (you can refer to this for similar requirements): &lt;code&gt;chunkedBodyWrite&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;HTTP/1.1 does the corresponding processing (skipping the default write request logic) for Response write operations where the Writer has been hijacked, and finally calls the &lt;code&gt;Finalize()&lt;/code&gt; method of the &lt;code&gt;ExtWriter&lt;/code&gt; interface to complete a request write back&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="usage"&gt;Usage&lt;/h3&gt;
+&lt;p&gt;As above, Hertz provides a default &lt;code&gt;ExtWriter&lt;/code&gt; implementation to meet the user&amp;rsquo;s active flush needs in the handler/middleware, and it is very simple to use.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#000"&gt;h&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;GET&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;/flush/chunk&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;func&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;ctx&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Context&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;*&lt;/span&gt;&lt;span style="color:#000"&gt;app&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;RequestContext&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// Hijack the writer of response&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Response&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;HijackWriter&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;resp&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;NewChunkedBodyWriter&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;&amp;amp;&lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Response&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;GetWriter&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()))&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;for&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;i&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;:=&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;0&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;i&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;&amp;lt;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;10&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;i&lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;++&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Write&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;([]&lt;/span&gt;&lt;span style="color:#204a87"&gt;byte&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;fmt&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Sprintf&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;chunk %d: %s&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;i&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;strings&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Repeat&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;hi~&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;i&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;))))&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// nolint: errcheck&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;c&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Flush&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;()&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#8f5902;font-style:italic"&gt;// nolint: errcheck&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;time&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Sleep&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;200&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;*&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;time&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Millisecond&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;})&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="scaffolding-tool-usage-optimization--best-practices"&gt;Scaffolding Tool Usage Optimization &amp;amp; Best Practices&lt;/h2&gt;
+&lt;p&gt;In hz v0.6.0, we have made a number of optimizations to the organization of the generated code, allowing for a more flexible code organization&lt;/p&gt;
+&lt;h3 id="major-optimization"&gt;Major Optimization&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;new&lt;/code&gt; command supports the &amp;ldquo;router_dir&amp;rdquo; option and works with the existing &amp;ldquo;handler_dir&amp;rdquo; and &amp;ldquo;model_dir&amp;rdquo; to fully customize the path to the IDL generation product; it also persists these custom options in the &amp;ldquo;.hz&amp;rdquo; file, which can be read automatically during &lt;code&gt;update&lt;/code&gt;, reducing the complexity of the command&lt;/li&gt;
+&lt;li&gt;Add the ability to search up the &amp;ldquo;go.mod&amp;rdquo; file so that hertz can share the same &amp;ldquo;go module&amp;rdquo; with other projects when it is a subproject&lt;/li&gt;
+&lt;li&gt;Add the ability to reference third-party IDL products in the &amp;ldquo;handler&amp;rdquo;, so that IDL products can be maintained separately in the third-party repository and not stored in the project directory, further enhancing IDL management capabilities&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="best-practices"&gt;Best Practices&lt;/h3&gt;
+&lt;p&gt;We have rewritten &amp;ldquo;&lt;a href="https://github.com/cloudwego/biz-demo/pull/26"&gt;biz-demo/easy-note&lt;/a&gt;&amp;rdquo; with &amp;ldquo;hz v0.6.0&amp;rdquo; to take advantage of the following hz features&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Generate hertz client call code for accessing &amp;ldquo;api server&amp;rdquo; based on IDL using the capabilities of &amp;ldquo;hz client&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Reorganize the &amp;ldquo;api server&amp;rdquo; code with custom &amp;ldquo;router_dir&amp;rdquo;, &amp;ldquo;handler_dir&amp;rdquo;, and &amp;ldquo;model_dir&amp;rdquo; options, and remove the &amp;ldquo;biz&amp;rdquo; directory restriction&lt;/li&gt;
+&lt;li&gt;Use the ability to &amp;ldquo;search up go.mod&amp;rdquo; so that &amp;ldquo;api server&amp;rdquo; can share the same &amp;ldquo;go module&amp;rdquo; as a subproject of &amp;ldquo;easy-note&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Use the ability of &amp;ldquo;handler to refer to third-party IDL products&amp;rdquo; and the ability of &amp;ldquo;hz model&amp;rdquo; to store IDL products separately in the &amp;ldquo;easy-note&amp;rdquo; project and not in the &amp;ldquo;api server&amp;rdquo; subproject&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="full-release-note"&gt;Full Release Note&lt;/h2&gt;
+&lt;p&gt;The complete Release Note can refer to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hertz: &lt;a href="https://github.com/cloudwego/hertz/releases/tag/v0.6.0"&gt;https://github.com/cloudwego/hertz/releases/tag/v0.6.0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hz(scaffolding): &lt;a href="https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.6.0"&gt;https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.6.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Getting Started with Hertz: Performance Testing Guide</title><link>https://www.cloudwego.io/blog/2023/02/24/getting-started-with-hertz-performance-testing-guide/</link><pubDate>Fri, 24 Feb 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2023/02/24/getting-started-with-hertz-performance-testing-guide/</guid><description>
+&lt;h2 id="background"&gt;Background&lt;/h2&gt;
+&lt;p&gt;On September 8, 2021, ByteDance officially announced the open-sourcing of &lt;a href="https://github.com/cloudwego"&gt;CloudWeGo&lt;/a&gt;.
+CloudWeGo is a set of microservices middleware developed by ByteDance, characterized by high performance, strong scalability, and high stability.
+It focuses on solving the difficulties of microservices communication and governance, and meets the demands of different businesses in different scenarios.
+On June 21, 2022, the CloudWeGo team has officially open-sourced &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;, ByteDance&amp;rsquo;s largest HTTP framework. Hertz has gained a lot of attention from users since its release,
+and has received 3K+ stars by now. Many users have tested it themselves, and we are very grateful for your attention and support.
+This blog aims to share the scenarios and technical issues that developers need to be aware of when conducting load testing on Hertz.
+These suggestions can help users better optimize Hertz based on real HTTP scenarios to better fit their business needs and achieve optimal performance.
+Users can also refer to the official load testing project &lt;a href="https://github.com/cloudwego/hertz-benchmark"&gt;hertz-benchmark&lt;/a&gt; for more details.&lt;/p&gt;
+&lt;h2 id="characteristics-of-http-microservices"&gt;Characteristics of HTTP Microservices&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; was born out of large-scale microservices practice at ByteDance, and is naturally designed for microservices scenarios.
+Therefore, in the following, we will first introduce the characteristics of the HTTP microservices to facilitate developers&amp;rsquo; deeper understanding of &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;&amp;rsquo;s design considerations.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;HTTP Communication Model&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Communication between microservices typically follows a Ping-Pong model. In addition to conventional throughput performance metrics, developers also need to consider the average latency of each HTTP request.
+While increasing the number of machines can quickly resolve throughput bottlenecks, reducing latency, which significantly affects user experience, is not as easy.&lt;/p&gt;
+&lt;p&gt;In the environment of microservices, a single call often requires collaboration from multiple microservices. Even if each node has low latency, the final latency on the entire chain can be amplified.
+Therefore, latency is a more critical metric for developers to pay attention to in microservices. &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; has made certain optimizations for latency while ensuring throughput.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;The Use of Long and Short Connections&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Since establishing a TCP connection requires a three-way handshake, the overhead of creating a new connection for each request can be very high for latency-sensitive services.
+Therefore, it is recommended to use persistent connections to complete requests whenever possible. In HTTP 1.1, Long connections are also the default option.
+However, there is no silver bullet, as maintaining connections also consumes resources, and the horizontal scalability of persistent connections is not as good as that of short connections.
+Therefore, in some scenarios, long connections may not be suitable. For example, in a scenario where configurations need to be pulled periodically,
+the connection establishment delay may not have a significant impact on configurations, and it may be more appropriate to use short connections if horizontal scalability is a concern when the configuration center is under high load.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Packet Size&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The package size of a service depends on the actual business scenario. In HTTP scenarios, data can be placed in query, path, header, body, etc., and different locations have different effects on parsing.
+HTTP header is an identifier protocol, and the framework does not know how many headers there are until it finds a specific identifier. Therefore, the framework needs to receive all the headers before it can complete the parsing,
+which is not very friendly to the framework&amp;rsquo;s memory model. &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; has also made special optimizations for header parsing, allocating enough buffer space for headers to reduce the overhead of cross-package copying during header processing.&lt;/p&gt;
+&lt;p&gt;Meanwhile, in the internal statistics of online services at ByteDance, it was found that most packages are within 1K (but too small packages have no practical significance, such as a fixed return of &amp;ldquo;hello world&amp;rdquo;).
+At the same time, there is no upper limit on the size of large packages, and various package sizes are involved. Therefore, &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; has focused on optimizing the performance (throughput and latency) of packages within the most commonly used range of 128k or less.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Concurrency Quantity&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Each instance may have multiple upstreams and will not only accept requests from a single instance. Moreover, HTTP 1 doesn&amp;rsquo;t support multiplexing,
+and each connection can only handle one request at a time. Therefore, the Server needs to accept multiple connections and process them simultaneously.&lt;/p&gt;
+&lt;p&gt;Different services have different connection utilization rates. For example, load testing services have high connection utilization rates, and a new request is made immediately after the completion of the previous request.
+Some services have low connection utilization rates, even though they are long-lived, they are only used once. The connection models used by these two services are not the same.&lt;/p&gt;
+&lt;p&gt;For the former, the goroutine per connection model should be used to reduce the overhead of context switching. For the latter, a coroutine pool should be used to reduce the scheduling overhead of too many goroutines.
+&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; supports both models, and users can choose the appropriate configuration based on their business needs.&lt;/p&gt;
+&lt;h2 id="load-testing-for-http-scenarios"&gt;Load Testing for HTTP Scenarios&lt;/h2&gt;
+&lt;h3 id="using-scenarios-that-resemble-real-usage"&gt;Using Scenarios That Resemble Real Usage&lt;/h3&gt;
+&lt;p&gt;There are many load testing projects on GitHub and performance testing reports available online, but they may not be tailored to your specific needs.
+For example, in a real-world scenario, would you create a project that only responds with &lt;strong&gt;&lt;code&gt;hello world&lt;/code&gt;&lt;/strong&gt; no matter what the client sends? Unfortunately, many load testing projects do just that.&lt;/p&gt;
+&lt;p&gt;Before conducting load testing, consider your actual usage scenarios, such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Long vs Short Connections&lt;/strong&gt;: Determine whether using long or short connections is more suitable for your scenario.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Estimating Connection Usage&lt;/strong&gt;: If using long connections and connection usage is high (which is the case in most scenarios), use the default configuration.
+If connection usage is low, consider adding the configuration option &lt;strong&gt;&lt;code&gt;server.WithIdleTimeout(0)&lt;/code&gt;&lt;/strong&gt; to modify the goroutine per connection model to a coroutine pool model and conduct comparative testing.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Determining Data Location and Size&lt;/strong&gt;: As mentioned earlier, data in different locations (such as query, header, body, etc.) and of different sizes can affect the framework&amp;rsquo;s performance.
+If the performance of all frameworks is similar, consider using a different data transmission location.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Determining Concurrency Quantity&lt;/strong&gt;: Some services are lightweight on business logic but heavy on framework, resulting in high framework concurrency.
+Conversely, some services are heavy on business logic but light on framework, resulting in low framework concurrency.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you just want to test the performance of the framework, you can use the common scenario: &lt;strong&gt;long connection, high connection usage, 1k body, 100 concurrency&lt;/strong&gt;, and so on.
+The &lt;a href="https://github.com/cloudwego/hertz-benchmark"&gt;hertz-benchmark&lt;/a&gt; repository also uses this default load test configuration.
+At the same time, the &lt;a href="https://github.com/cloudwego/hertz-benchmark"&gt;hertz-benchmark&lt;/a&gt; repository also provides configuration options for users to modify headers, body, and concurrency, making it easy to customize the load test to fit their own needs.&lt;/p&gt;
+&lt;h3 id="determine-the-target-of-load-testing"&gt;Determine the Target of Load Testing&lt;/h3&gt;
+&lt;p&gt;Measuring the performance of an RPC framework requires thinking from two perspectives: the Client perspective and the Server perspective. In a large-scale business architecture,
+the upstream Client may not necessarily use the downstream framework, and the downstream services called by developers are also likely to be different. This is even more complicated when considering the situation of Service Mesh.&lt;/p&gt;
+&lt;p&gt;Some load testing projects usually conduct load testing for Client and Server processes in a hybrid deployment, and then obtain performance data for the &lt;strong&gt;entire framework&lt;/strong&gt;, which may not be consistent with the actual operation in production.&lt;/p&gt;
+&lt;p&gt;If you want to conduct load testing the Server, you should give the Client as many resources as possible and push the Server to the limit, and vice versa.
+If both the Client and Server are only given 4 cores for load testing, developers will not be able to determine the performance data under which perspective, let alone provide actual reference for online services.&lt;/p&gt;
+&lt;h3 id="use-dedicated-cpus"&gt;Use Dedicated CPUs&lt;/h3&gt;
+&lt;p&gt;Although online applications usually share CPUs among multiple processes, in a load testing scenario, both the Client and Server processes are extremely busy. Sharing CPUs at this time will result in a large number of context switches, which will make the data less reliable and prone to large fluctuations.&lt;/p&gt;
+&lt;p&gt;Therefore, we recommend isolating Client and Server processes on different CPUs or different dedicated machines. If you want to further avoid the impact of other processes, you can also use the nice -n -20 command to increase the scheduling priority of the load testing process.&lt;/p&gt;
+&lt;p&gt;In addition, if conditions permit, using physical machines instead of virtual machines on cloud platforms will make the test results more rigorous and reproducible.&lt;/p&gt;
+&lt;h2 id="performance-data-reference"&gt;Performance Data Reference&lt;/h2&gt;
+&lt;p&gt;On the premise of meeting the above requirements, we compared the load testing result of multiple frameworks based on the latest version. The pressure test code is in the &lt;a href="https://github.com/cloudwego/hertz-benchmark"&gt;hertz-benchmark&lt;/a&gt; repository.
+With the goal of fully filling the load of Server, &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; has the lowest P99 latency of all the frameworks tested, and the throughput is also in the first tier and under continuous optimization.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU: AMD EPYC 7Y83 64-Core Processor 2.7GHz
+&lt;ul&gt;
+&lt;li&gt;limits: server 4-CPUs，client 16-CPUS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;OS：Debian GNU/Linux 10 (buster)&lt;/li&gt;
+&lt;li&gt;Go 1.19&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/cloudwego/hertz/releases/tag/v0.3.2"&gt;hertz v0.3.2&lt;/a&gt;，&lt;a href="https://github.com/valyala/fasthttp/releases/tag/v1.40.0"&gt;fasthttp v1.40.0&lt;/a&gt;，
+&lt;a href="https://github.com/gin-gonic/gin/releases/tag/v1.8.1"&gt;gin v1.8.1&lt;/a&gt;，&lt;a href="https://github.com/gofiber/fiber/releases/tag/v2.38.1"&gt;fiber v2.38.1&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Hertz-benchmark/1.png" alt="image"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;Comparison of throughput and latency of four frameworks&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Hertz-benchmark/2.png" alt="image"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;Comparison of throughput and latency of three frameworks&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;As a very large scale enterprise microservices HTTP framework, &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; was designed to solve a variety of problems in the large-scale microservices scenario.
+In the process of promotion, we encountered all kinds of services and solved many kinds of problem.
+Based on those experience, we wrote this blog. As a developer, you are always welcome to choose the right tool for your own scenario based on the testing guide provided above.
+If you have any questions, feel free to raise an &lt;a href="https://github.com/cloudwego/hertz/issues"&gt;Issue&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Blog: Hertz Release v0.5.0</title><link>https://www.cloudwego.io/blog/2023/01/12/hertz-release-v0.5.0/</link><pubDate>Thu, 12 Jan 2023 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2023/01/12/hertz-release-v0.5.0/</guid><description>
+&lt;p&gt;In version 0.5.0 of Hertz, in addition to regular iterative optimization, we also brought several important features.&lt;/p&gt;
+&lt;h2 id="network-layer-and-protocol-layer-support-stream-based-interface"&gt;Network layer and protocol layer support stream-based interface&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz/pull/467"&gt;https://github.com/cloudwego/hertz/pull/467&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;In the Hertz v0.5.0 version, we have further enhanced the scalability of the Hertz transport layer &amp;amp; protocol layer, supporting the seamless connection of the stream-based transport layer protocol QUIC, and the &lt;a href="https://github.com/cloudwego/hertz/issues/458"&gt;HTTP3 protocol&lt;/a&gt; built on top of it.
+In addition, on this basis, we have added and improved functions such as &amp;ldquo;ALPN&amp;rdquo; (application layer protocol negotiation), &amp;ldquo;QUIC/TLS parallel monitoring&amp;rdquo; (QUIC/TLS parallel monitoring), &amp;ldquo;Alt-Svc&amp;rdquo; (alternative service).&lt;/p&gt;
+&lt;h3 id="major-changes"&gt;Major Changes&lt;/h3&gt;
+&lt;h4 id="transport-layer"&gt;Transport layer&lt;/h4&gt;
+&lt;p&gt;On the basis of ensuring compatibility performance, we have added an abstract stream-based network connection interface &lt;code&gt;StreamConn&lt;/code&gt;, and adjusted the interaction logic between the transport layer and the protocol layer to achieve the correct protocol layer for the distribution of connection types Processing (protocol server).
+For scenarios that need to monitor TCP (TLS) and UDP (QUIC) at the same time, we provide a &lt;code&gt;WithAltTransporter&lt;/code&gt; option, which facilitates passing the backup transporter to the main transporter, and facilitates the ability to monitor QUIC/TLS in parallel.&lt;/p&gt;
+&lt;h4 id="protocol-layer"&gt;Protocol Layer&lt;/h4&gt;
+&lt;p&gt;Support adding a stream-based protocol layer implementation (protocol server) &lt;code&gt;StreamServer&lt;/code&gt;, so as to build a corresponding processing protocol (HTTP/3) on top of the newly added stream-based transport layer extension.
+In order to facilitate the configuration of alternative service meta-information for a main protocol (HTTP/3), &lt;code&gt;ProtocolSuite&lt;/code&gt; exposes the &lt;code&gt;SetAltHeader&lt;/code&gt; interface.
+At the same time, we also designed the ALPN capability for &lt;code&gt;StreamConn&lt;/code&gt;, so as to provide the ability of protocol negotiation in QUIC.&lt;/p&gt;
+&lt;h4 id="common-layer"&gt;Common layer&lt;/h4&gt;
+&lt;p&gt;At the same time, we have added an auxiliary function that can convert with the Golang standard Handler in the general layer, so as to quickly port the implementation based on the Golang standard Handler to Hertz. The &lt;a href="https://github.com/hertz-contrib/http3"&gt;QUIC &amp;amp; HTTP/3 extension&lt;/a&gt; based on &lt;a href="https://github.com/lucas-clemente/quic-go"&gt;quic-go&lt;/a&gt; provided later /pull/1), the capabilities provided by this function are used.&lt;/p&gt;
+&lt;h4 id="feature-status"&gt;Feature Status&lt;/h4&gt;
+&lt;p&gt;The Hertz core library capability has been released, and the specific implementation will be released in the form of &lt;a href="https://github.com/hertz-contrib/http3/pull/1"&gt;extension package&lt;/a&gt;, welcome to try~&lt;/p&gt;
+&lt;p&gt;For more detailed design instructions, please refer to: &lt;a href="https://www.cloudwego.io/zh/blog/2023/08/02/hertz-%E6%94%AF%E6%8C%81-quic-http/3/"&gt;Hertz supports QUIC &amp;amp; HTTP/3&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="scaffolding-tools-support-generating-hertz-client-code"&gt;Scaffolding tools support generating hertz client code&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz/pull/471"&gt;https://github.com/cloudwego/hertz/pull/471&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;In the v0.5.0 version of the scaffolding tool (Hz), we support the function of automatically generating the hertz client code based on IDL, and realize the one-click call of the HTTP request in the form of an RPC call.
+Instructions:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;For details, see: &lt;a href="https://github.com/cloudwego/hertz-examples/tree/main/hz_client"&gt;https://github.com/cloudwego/hertz-examples/tree/main/hz_client&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;Define the IDL&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#000"&gt;namespace&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;go&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;toutiao&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;middleware&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;hzClient&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;struct&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;QueryReq&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;1&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;:&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;string&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;QueryValue&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;api&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;query&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;query1&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;);&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;struct&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Resp&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;1&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;:&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;string&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Resp&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000"&gt;service&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Hertz121&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;Resp&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;QueryMethod&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#0000cf;font-weight:bold"&gt;1&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;:&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;QueryReq&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;request&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;(&lt;/span&gt;&lt;span style="color:#000"&gt;api&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;get&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;/query&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;,&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;api&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;handler_path&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;get&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;);&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;}(&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;api&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;base_domain&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#4e9a06"&gt;&amp;#34;http://127.0.0.1:8888&amp;#34;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;;&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;)&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;Generate code&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Based on the above IDL, the server and client codes can be generated separately:&lt;/p&gt;
+&lt;p&gt;Server:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#000"&gt;hz&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;new&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;--&lt;/span&gt;&lt;span style="color:#000"&gt;idl&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;psm&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;thrift&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;--&lt;/span&gt;&lt;span style="color:#000"&gt;handler_by_method&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;-&lt;/span&gt;&lt;span style="color:#000"&gt;t&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;template&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;slim&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Client:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#000"&gt;hz&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;client&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;--&lt;/span&gt;&lt;span style="color:#000"&gt;idl&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;psm&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;thrift&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;--&lt;/span&gt;&lt;span style="color:#000"&gt;model_dir&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;hertz_gen&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;-&lt;/span&gt;&lt;span style="color:#000"&gt;t&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;template&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;slim&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt; &lt;/span&gt;&lt;span style="color:#ce5c00;font-weight:bold"&gt;--&lt;/span&gt;&lt;span style="color:#000"&gt;client_dir&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;=&lt;/span&gt;&lt;span style="color:#000"&gt;hz_client&lt;/span&gt;&lt;span style="color:#f8f8f8;text-decoration:underline"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="3"&gt;
+&lt;li&gt;Call the client code to initiate an HTTP request to realize the intercommunication between the client end and the server end&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="full-release-note"&gt;Full Release Note&lt;/h2&gt;
+&lt;p&gt;The complete Release Note can refer to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hertz: &lt;a href="https://github.com/cloudwego/hertz/releases/tag/v0.5.0"&gt;https://github.com/cloudwego/hertz/releases/tag/v0.5.0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hz(scaffolding): &lt;a href="https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.5.0"&gt;https://github.com/cloudwego/hertz/releases/tag/cmd%2Fhz%2Fv0.5.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz Release v0.4.0</title><link>https://www.cloudwego.io/blog/2022/10/28/hertz-release-v0.4.0/</link><pubDate>Fri, 28 Oct 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2022/10/28/hertz-release-v0.4.0/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/289"&gt;#289&lt;/a&gt;] feat: render support IndentedJSON.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/304"&gt;#304&lt;/a&gt;] feat: support errors format for the recovery middleware.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/278"&gt;#278&lt;/a&gt;] feat: add compile tag for json implementation.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/239"&gt;#239&lt;/a&gt;] feat: add retry extension for client.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/265"&gt;#265&lt;/a&gt;] feat: add closeNoResetBuffer method for standard network.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/258"&gt;#258&lt;/a&gt;] feat: errors support format.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/295"&gt;#295&lt;/a&gt;] optimize: ignore flushing error when connection is closed or reset.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/322"&gt;#322&lt;/a&gt;] optimize: modify the default log of the recovery middleware.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/266"&gt;#266&lt;/a&gt;] optimize(hlog): distinguish systemlogger and defaultlogger.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/280"&gt;#280&lt;/a&gt;] optimize: add listening log when using standard lib.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/318"&gt;#318&lt;/a&gt;] refactor: add SetRetryIf to remain compatible.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="test"&gt;Test&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/299"&gt;#299&lt;/a&gt;] test: enrich ut for pkg/protocol/header.go.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/290"&gt;#290&lt;/a&gt;] test: enrich ut for pkg/app/server/option.go.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/274"&gt;#274&lt;/a&gt;] test: increase internal/bytesconv unit test statement coverage.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/285"&gt;#285&lt;/a&gt;] test: enrich unit tests for pkg/protocol/request.go.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/271"&gt;#271&lt;/a&gt;] test: ut supplementary for pkg/network.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/264"&gt;#264&lt;/a&gt;] test: add ut for hertz/pkg/common/adaptor.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/267"&gt;#267&lt;/a&gt;] test(pkg/common/config): pkg/common/config test coverage.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="docs"&gt;Docs&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/328"&gt;#328&lt;/a&gt;] docs: add lark extension to readme.md.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/325"&gt;#325&lt;/a&gt;] docs: update performance data in README and README_cn.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/307"&gt;#307&lt;/a&gt;] docs(README): add hertz extensions list.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="style"&gt;Style&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/316"&gt;#316&lt;/a&gt;] style: remove empty comments for license.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/272"&gt;#272&lt;/a&gt;] chore: upgrade sonic version.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/310"&gt;#310&lt;/a&gt;] chore: change license header style to avoid format error of buildtag from CI check.&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz Release v0.3.2</title><link>https://www.cloudwego.io/blog/2022/09/20/hertz-release-v0.3.2/</link><pubDate>Tue, 20 Sep 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2022/09/20/hertz-release-v0.3.2/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/198"&gt;#198&lt;/a&gt;] feat: add the function to get the client dialer name.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/251"&gt;#251&lt;/a&gt;] feat: add a startup log to display the name of the loaded network library.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/238"&gt;#238&lt;/a&gt;] refactor: refactor the client logic initialize for HostClient and TLSHostClient.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/226"&gt;#226&lt;/a&gt;] optimize: add a warning log for illegal status code.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/249"&gt;#249&lt;/a&gt;] fix: add channel signal judge to allow onShutdownHook to complete or timeout.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/232"&gt;#232&lt;/a&gt;] fix: fix some trailing slash redirect bugs.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/217"&gt;#217&lt;/a&gt;] chore: update pr template.&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz Release v0.3.0</title><link>https://www.cloudwego.io/blog/2022/08/29/hertz-release-v0.3.0/</link><pubDate>Mon, 29 Aug 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2022/08/29/hertz-release-v0.3.0/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/182"&gt;#182&lt;/a&gt;] feat: add service registration &amp;amp; service discovery &amp;amp; load balancing.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/6"&gt;[#6]&lt;/a&gt; feat: add zookeeper register.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/7"&gt;[#7]&lt;/a&gt; feat: add nacos registry.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/8"&gt;[#8]&lt;/a&gt; feat: Support Hertz to use Consul for service discovery and registration.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/9"&gt;[#9]&lt;/a&gt; feat: add polaris registry.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/14"&gt;[#14]&lt;/a&gt; feat: add etcd registry.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/15"&gt;[#15]&lt;/a&gt; feat: support servicecomb.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hertz-contrib/registry/pull/16"&gt;[#16]&lt;/a&gt; feat: support service registration and discovery with Netflix Eureka.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/175"&gt;#175&lt;/a&gt;] refactor: distinguish between global dialer and local dialer.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/205"&gt;#205&lt;/a&gt;] optimize: func checkPathValid returns true if the path is valid.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="test"&gt;Test&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/174"&gt;#174&lt;/a&gt;] test: correcting TestRouterMiddlewareAndStatic.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/190"&gt;#190&lt;/a&gt;] fix: modify the same middleware name.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/192"&gt;#192&lt;/a&gt;] fix: fix the problem of the same package name in handler.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/208"&gt;#208&lt;/a&gt;] fix: deregister failed when service shutdown.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/202"&gt;#202&lt;/a&gt;] fix: get wrong local loopback IPv6.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/196"&gt;#196&lt;/a&gt;] fix: typo.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/155"&gt;#155&lt;/a&gt;] fix: name_style_thrift.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/169"&gt;#169&lt;/a&gt;] fix: thrift namespace.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/184"&gt;#184&lt;/a&gt;] fix: hijack conn throw timeout err when using standard network lib.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/162"&gt;#162&lt;/a&gt;] fix: generate router register error.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/189"&gt;#189&lt;/a&gt;] Revert &amp;ldquo;fix: generate router register error&amp;rdquo;.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/203"&gt;#203&lt;/a&gt;] add v6 support for AddMissingPort function.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/186"&gt;#186&lt;/a&gt;] chore: support codecov.&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz Release v0.2.0</title><link>https://www.cloudwego.io/blog/2022/07/22/hertz-release-v0.2.0/</link><pubDate>Fri, 22 Jul 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2022/07/22/hertz-release-v0.2.0/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/124"&gt;#124&lt;/a&gt;] feat: add option to remove hijackConnPool.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/116"&gt;#116&lt;/a&gt;] feat: update for template.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/130"&gt;#130&lt;/a&gt;] feat: add a warning log for invalid character in Cookie.Value.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/143"&gt;#143&lt;/a&gt;] feat: custom signal to graceful shutdown&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/114"&gt;#114&lt;/a&gt;] feat: release buffer in standard network method.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/112"&gt;#112&lt;/a&gt;] feat: parse post args in bodystream.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/105"&gt;#105&lt;/a&gt;] feat: client abstracts hostclient layer.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/92"&gt;#92&lt;/a&gt;] feat: hz support windows.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/102"&gt;#102&lt;/a&gt;] feat: client removes default retry logic.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/111"&gt;#111&lt;/a&gt;] optimize: pre-allocate slice when calling bytesconv.AppendHTTPDate.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/128"&gt;#128&lt;/a&gt;] optimize: remove useless judgement.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/108"&gt;#108&lt;/a&gt;] optimize: avoid parsing regular expression repeatedly.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="chore"&gt;Chore&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/125"&gt;#125&lt;/a&gt;] Update pr-check.yml.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="fix"&gt;Fix&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/104"&gt;#104&lt;/a&gt;] fix: use defer to guarantee that mutex will be unlocked.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/96"&gt;#96&lt;/a&gt;] fix: ci exec /bin/license-eye: exec format error&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="style"&gt;Style&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/103"&gt;#103&lt;/a&gt;] style: fixed the typo &amp;ldquo;ungzipped&amp;rdquo; to &amp;ldquo;gunzipped&amp;rdquo;.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/90"&gt;#90&lt;/a&gt;] style: use const var and remove duplicate type conversions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/94"&gt;#94&lt;/a&gt;] refactor: use appendCookiePart to simplify code.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="docs"&gt;Docs&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/97"&gt;#97&lt;/a&gt;] docs: use comma to separate &amp;amp;&amp;amp; remove extra space.&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz, an Ultra Large Scale Enterprise-Level Microservice HTTP Framework, is Now Officially Open Source!</title><link>https://www.cloudwego.io/blog/2022/06/21/hertz-an-ultra-large-scale-enterprise-level-microservice-http-framework-is-now-officially-open-source/</link><pubDate>Tue, 21 Jun 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2022/06/21/hertz-an-ultra-large-scale-enterprise-level-microservice-http-framework-is-now-officially-open-source/</guid><description>
+&lt;p&gt;Today, after more than a year of internal use and iteration at ByteDance, &lt;strong&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;&lt;/strong&gt;, a &lt;strong&gt;high-performance enterprise-level HTTP framework&lt;/strong&gt;, is officially open-sourced on &lt;a href="https://github.com/cloudwego"&gt;CloudWeGo&lt;/a&gt;! Hertz has become the largest HTTP framework within ByteDance, with more than &lt;strong&gt;10,000&lt;/strong&gt; online services and a peak QPS (Query Per Second) of more than &lt;strong&gt;40 million&lt;/strong&gt;. It has the characteristics of high usability, easy expansion, and low latency. For the ByteDance service framework team and CloudWeGo, &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; will not only be an open source project, but also a real ultra-large-scale enterprise-level practice.&lt;/p&gt;
+&lt;p&gt;Project website: &lt;a href="https://github.com/cloudwego/hertz"&gt;https://github.com/cloudwego/hertz&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In the future, ByteDance infrastructure team will iterate on the Hertz open source library, maintaining a unified codebase both internally and externally, and facilitating iterative evolution to enhance user experience.&lt;/p&gt;
+&lt;h2 id="hertz-overview"&gt;Hertz Overview&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt; is a high-usability, high-performance, highly extensible, and low-latency Golang HTTP framework that assists developers in building microservices. Originally, the HTTP framework used within ByteDance was an encapsulation of the Gin framework, which offered advantages such as ease of use and a comprehensive ecosystem. However, as the internal business continued to grow, the demand for high performance and versatility rapidly increased.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/gin-gonic/gin"&gt;Gin&lt;/a&gt;, being a secondary development of Golang&amp;rsquo;s native net/http, faced limitations in terms of on-demand expansion and performance optimization. In order to meet the evolving business needs and effectively serve major functions, the ByteDance service framework team embarked on research based on their self-developed networking library, &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;. This research led to the development of the internal framework, Hertz, which exhibits enhanced performance and stability when faced with enterprise-level requirements. Hertz also facilitates business development and addresses evolving technical requirements. In July 2021, Hertz officially launched version 1.0.&lt;/p&gt;
+&lt;p&gt;After over a year of internal usage at ByteDance, the Hertz framework has become the largest HTTP framework within the organization. It boasts more than 10,000 online services and reaches a peak QPS of over 40 million. In addition to being utilized by various business lines, Hertz also serves numerous internal core components, such as the function computing platform FaaS, stress testing platform, gateways, and Service Mesh control plane. It has received positive feedback regarding its usage.
+In such a large-scale scenario, Hertz demonstrates remarkable stability and performance. Bugs and kernel issues are promptly identified and rectified. Furthermore, Hertz maintains a set of codes both internally and externally, providing a strong foundation for the open-source Hertz framework.&lt;/p&gt;
+&lt;h2 id="features"&gt;Features&lt;/h2&gt;
+&lt;p&gt;Key features of Hertz include:&lt;/p&gt;
+&lt;h3 id="stability"&gt;Stability&lt;/h3&gt;
+&lt;p&gt;In a large-scale environment, Hertz exercises caution during every PR integration and release. Great care is taken to avoid any potential losses, which can amount to millions or even more. A standardized PR and release process has been formulated, requiring review by experienced developers for every code merge. Each PR and version release is to be tested for a period of time, and fully tested. Various testing scenarios, including compatibility, high concurrency, and package size, are employed to minimize risks.&lt;/p&gt;
+&lt;h3 id="high-usability"&gt;High Usability&lt;/h3&gt;
+&lt;p&gt;Hertz prioritizes the ability to write correct code quickly during development. When designing the API, Hertz considers user usage habits and draws inspiration from the industry&amp;rsquo;s mainstream framework API usage. Continuous iteration and user feedback contribute to the framework&amp;rsquo;s refinement. For instance, many users hope that the Client also has the ability to trace. For this reason, Hertz Client supports middleware capabilities. Additionally, the Client supports stream processing in proxy scenarios. Middleware and stream processing are designed with the user&amp;rsquo;s actual habits in mind, promoting faster development of correct code. Hertz also provides a one-click command-line tool for code generation, enhancing the framework&amp;rsquo;s ease of use.&lt;/p&gt;
+&lt;h3 id="easy-expandability"&gt;Easy expandability&lt;/h3&gt;
+&lt;p&gt;Hertz employs a layered design, offering a range of interfaces and default extension implementations for users to expand upon. Details regarding &lt;a href="https://www.cloudwego.io/zh/docs/hertz/tutorials/framework-exten/"&gt;Hertz extension&lt;/a&gt; can be found on the &lt;a href="https://www.cloudwego.io/"&gt;CloudWeGo official website&lt;/a&gt;. The framework&amp;rsquo;s layered design enhances its scalability. Currently, only stable capabilities are open-sourced, with more planned for the future. Please refer to the &lt;a href="https://github.com/cloudwego/hertz/blob/develop/ROADMAP.md"&gt;Hertz roadmap&lt;/a&gt; for further details.&lt;/p&gt;
+&lt;h3 id="low-latency"&gt;Low latency&lt;/h3&gt;
+&lt;p&gt;Hertz utilizes the internally developed high-performance network library, &lt;a href="https://github.com/cloudwego/netpoll"&gt;Netpoll&lt;/a&gt;, by default. In certain special scenarios, Hertz demonstrates advantages in terms of QPS and delay compared to the go net package.&lt;/p&gt;
+&lt;p&gt;For performance data, please refer to the Echo data in the figure below. Internal testing has shown significant reduction in resource usage, including a &lt;strong&gt;30%-60% decrease in CPU usage&lt;/strong&gt; for services predominantly utilizing frameworks and gateway services. For detailed performance data, please refer to: &lt;a href="https://github.com/cloudwego/hertz-benchmark"&gt;https://github.com/cloudwego/hertz-benchmark&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://www.cloudwego.io/img/blog/Hertz_Open_Source/Echo.png" alt="image"&gt;&lt;/p&gt;
+&lt;h3 id="command-line-tool"&gt;Command line tool&lt;/h3&gt;
+&lt;p&gt;Hertz provides a simple and user-friendly command-line tool called Hz. Users simply need to provide an Interface Definition Language (IDL). Based on the defined interface information, Hz can generate project scaffolding with a single click, enabling users to use Hertz out of the box. Additionally, Hz offers update capabilities, allowing users to update the scaffolding when changes are made to the IDL. Currently, Hz supports two IDL definitions: Thrift and Protobuf. The command-line tool provides a range of built-in options that can be tailored to individual needs. It relies on the official Protobuf compiler and the self-developed Thriftgo compiler, both of which support custom code plug-ins for generating templates that meet specific requirements.&lt;/p&gt;
+&lt;p&gt;Since the launch of Hertz, the internal response has been excellent. It has been extensively used in various scenarios including front-end and back-end communication, as well as gateway, upload, download, and proxy scenarios. The supported interaction modes encompass not only ping-pong but also streaming and chunk interactions. Hertz supports multiple protocols such as HTTP1, HTTP2, and Websocket. Managing such complex interaction scenarios and modes poses significant challenges to the usability and stability of Hertz&amp;rsquo;s Server and Client components. In response, Hertz promptly addresses user needs and establishes a stability test service that simulates real-world and complex online scenarios as accurately as possible. With a high single-test coverage rate, Hertz ensures that the code logic functions normally and reliably.&lt;/p&gt;
+&lt;h2 id="internal-and-external-version-maintenance"&gt;Internal and external version maintenance&lt;/h2&gt;
+&lt;p&gt;ByteDance possesses a comprehensive internal microservice system, and the team places significant emphasis on open source development and commitment. This principle applies to both the Hertz project and CloudWeGo&amp;rsquo;s &lt;a href="https://github.com/cloudwego/kitex"&gt;Kitex&lt;/a&gt; project, ensuring consistency between internal and external versions. The core capabilities of the project have been migrated to the open source library, with only one internal layer of encapsulation. This approach facilitates enterprise upgrades without disruptions, thus guaranteeing long-term maintenance commitments. All open source features will be released after undergoing internal stability verification.&lt;/p&gt;
+&lt;p&gt;Moving forward, the team will continue to iterate based on the Hertz open source library, promptly addressing community needs and issues to enhance user experience and ensure a reliable framework. Hertz developers can also leverage its flexible expansion capabilities to meet specific business requirements. Furthermore, external developers are encouraged to &lt;a href="https://github.com/cloudwego/hertz/blob/develop/CONTRIBUTING.md"&gt;contribute&lt;/a&gt; to the community, collaboratively constructing an HTTP framework with a comprehensive ecosystem, exceptional performance, and user-friendly features.&lt;/p&gt;
+&lt;h2 id="roadmap"&gt;Roadmap&lt;/h2&gt;
+&lt;p&gt;For the infrastructure team, Hertz represents not only an open source project but also a genuine ultra-large-scale enterprise-level practice. By open sourcing Hertz, our aim is to enrich the Golang middleware system within the cloud-native community, enhance the CloudWeGo ecosystem, and enable more developers and enterprises to build cloud-native large-scale distributed systems. We aspire to provide modern, resource-efficient technical solutions.&lt;/p&gt;
+&lt;p&gt;As mentioned earlier, Hertz has currently open sourced only the internally verified stable components. However, we intend to further enhance the framework by pursuing the following objectives:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cloud native capability support&lt;/strong&gt;: Integrate support for the xDS API to dynamically obtain service configurations from Istio.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Multi-protocol support&lt;/strong&gt;: Hertz currently only open-sources HTTP1. In the future, we will open-source other protocols, such as HTTP2, Websocket, ALPN, etc., to provide developers with support for micro-service requirements in more scenarios. If you have a need, you can also submit an issue and let us know your needs for quick support.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Improved command-line tools&lt;/strong&gt;: Continuously iterate on Hz, integrating various commonly used middleware and providing modular construction capabilities, enabling users to select the required components as needed.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Enhanced ecosystem support&lt;/strong&gt;: Since Hertz does not adopt go net&amp;rsquo;s data structure, additional ecosystem support is required. In the initial batch of open source releases, we have included CORS, Trace, and Metrics. In the future, we plan to support additional aspects such as reverse proxy and Session.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Iteration based on user feedback&lt;/strong&gt;: Following the project&amp;rsquo;s open sourcing, we will iterate based on developer feedback and requirements.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We welcome everyone to &lt;a href="https://github.com/cloudwego/hertz/blob/develop/CONTRIBUTING.md"&gt;contribute&lt;/a&gt; by submitting issues and PRs to &lt;a href="https://github.com/cloudwego/hertz"&gt;Hertz&lt;/a&gt;, fostering collaborative development. We eagerly anticipate the involvement of more developers and anticipate Hertz aiding enterprises in swiftly constructing cloud-native architectures. Enterprise users are invited to migrate and utilize Hertz, and we will provide dedicated technical support and communication. Feel free to &lt;a href="https://discord.gg/jceZSE7DsW"&gt;join our Discord community&lt;/a&gt; for further consultations and assistance.&lt;/p&gt;
+&lt;h2 id="related-links"&gt;Related Links&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Project &lt;a href="https://github.com/cloudwego/hertz"&gt;address&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Community &lt;a href="https://github.com/hertz-contrib"&gt;ecosystem&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hertz benchmark &lt;a href="https://www.cloudwego.io/blog/2023/02/24/getting-started-with-hertz-performance-testing-guide/"&gt;blog&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Blog: Hertz Release v0.1.0</title><link>https://www.cloudwego.io/blog/2022/06/20/hertz-release-v0.1.0/</link><pubDate>Mon, 20 Jun 2022 00:00:00 +0000</pubDate><guid>https://www.cloudwego.io/blog/2022/06/20/hertz-release-v0.1.0/</guid><description>
+&lt;h2 id="feature"&gt;Feature&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/31"&gt;#31&lt;/a&gt;] feat: close connection after responding to the short-connection request.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/44"&gt;#44&lt;/a&gt;] feat: add the VisitAllCustomHeader method.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/59"&gt;#59&lt;/a&gt;] feat: support windows.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/70"&gt;#70&lt;/a&gt;] feat: add code generator hz.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/64"&gt;#64&lt;/a&gt;] feat: add adaptor for Hertz Request &amp;amp; Response to net/http Request &amp;amp; ResponseWriter.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/45"&gt;#45&lt;/a&gt;] feat: add ctx.Body().&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="optimize"&gt;Optimize&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/57"&gt;#57&lt;/a&gt;] optimize: use http.TimeFormat as layout for http date, which can avoid more copying.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/58"&gt;#58&lt;/a&gt;] optimize: add remote address to the error log when server processes the error.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/41"&gt;#41&lt;/a&gt;] optimize: use CtxErrorf instead of ‘Errorf’ when server panic.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="refactor"&gt;Refactor&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/37"&gt;#37&lt;/a&gt;] refactor: unify the entry of setting request options to prevent options uninitialized from causing panic.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/52"&gt;#52&lt;/a&gt;] refactor: omit redundant nil check around loop.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/33"&gt;#33&lt;/a&gt;] refactor: simplify code in AddMissingPort.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/27"&gt;#27&lt;/a&gt;] refactor: use errors.NewPublic rather than fmt.Errorf.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/34"&gt;#34&lt;/a&gt;] refactor: remove fshandler and related tests.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="style"&gt;Style&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/29"&gt;#29&lt;/a&gt;] style(*): fix typos.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="docs"&gt;Docs&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/60"&gt;#60&lt;/a&gt;] docs: add icon in README.md and README_cn.md.&lt;/li&gt;
+&lt;li&gt;[&lt;a href="https://github.com/cloudwego/hertz/pull/54"&gt;#54&lt;/a&gt;] docs: Update README.md.&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

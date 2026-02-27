@@ -1,4 +1,0 @@
-{{ $baseURL := urls.Parse .Site.BaseURL }}
-{{- if hasSuffix $baseURL.Hostname "cloudwego.cn" -}}
-    <div class="text-white mt-1">备案号：<a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">京ICP备18026016号-10</a></div>
-{{- end -}}
