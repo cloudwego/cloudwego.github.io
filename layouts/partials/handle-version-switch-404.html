@@ -1,0 +1,9 @@
+<script type='text/javascript'>
+  (function() {
+    var sameBaseUrlRegExp = new RegExp('^' + location.protocol + '//' + location.host.replace('.', '\\.') + '/.*', 'i');
+    var cloudwegoDocumentationUrlRegExp = new RegExp('^https?://([^/]+\\.)?cloudwego\\.io/.*', 'i');
+    if (!sameBaseUrlRegExp.test(document.referrer) && cloudwegoDocumentationUrlRegExp.test(document.referrer)) {
+      location.replace('/');
+    }
+  })();
+</script>

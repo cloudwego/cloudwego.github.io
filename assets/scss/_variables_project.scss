@@ -1,0 +1,13 @@
+/* full override: we're not tracking changes to the docsy base file. */
+
+$primary: #3c8fa8;
+$secondary: #086480;
+$dark: #024053;
+
+a.cloudwego-link {
+    color: #3996ec;
+}
+
+a.cloudwego-link:hover {
+    color: #fff;
+}

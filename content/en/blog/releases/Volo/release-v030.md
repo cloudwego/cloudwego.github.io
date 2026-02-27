@@ -1,0 +1,137 @@
+---
+title: "Volo Release 0.3.0"
+linkTitle: "Release 0.3.0"
+projects: ["Volo"]
+date: 2022-12-22
+description: >
+---
+
+In Volo 0.3.0 version, in addition to regular bugfixes, we also brought several important features.
+
+## Service Trait refactoring
+
+In version 0.3.0 of Volo, we refactored `Service` Trait to make the implementation of `Service` Trait easier and provide more flexibility.
+
+Specifically, we changed the definition of `Service` Trait from:
+
+```rust
+pub trait Service<Cx, Request> {
+     /// Responses given by the service.
+     type Response;
+     /// Errors produced by the service.
+     type Error;
+
+     /// The future response value.
+     type Future<'cx>: Future<Output = Result<Self::Response, Self::Error>> + Send + 'cx
+     where
+         Cx: 'cx,
+         Self: 'cx;
+
+     /// Process the request and return the response asynchronously.
+     fn call<'cx, 's>(&'s mut self, cx: &'cx mut Cx, req: Request) -> Self::Future<'cx>
+     where
+         's: 'cx;
+}
+```
+
+changed to:
+
+```rust
+pub trait Service<Cx, Request> {
+     /// Responses given by the service.
+     type Response;
+     /// Errors produced by the service.
+     type Error;
+
+     /// The future response value.
+     type Future<'cx>: Future<Output = Result<Self::Response, Self::Error>> + Send + 'cx
+     where
+         Cx: 'cx,
+         Self: 'cx;
+
+     /// Process the request and return the response asynchronously.
+     fn call<'cx, 's>(&'s self, cx: &'cx mut Cx, req: Request) -> Self::Future<'cx>
+     where
+         's: 'cx;
+}
+```
+
+The most obvious change is that the self parameter of the Service Trait method call() is changed from `&mut self` to `&self`. The purpose of this is that if we relied on `&mut self` before, we have to clone to take ownership before calling, and we need `Service` users to ensure that the overhead of Clone is low; in fact, this clone is completely unnecessary, and this decision should be handed over to the user to decide. If there is a need to change the internal state, they can lock it internally or use atomic, which can save the cost of cloning.
+
+## gRPC multi-Service support
+
+In this version, we also support the scenario where the gRPC server supports multiple Services at the same time, and each Service can have its own layer; of course, the Server can also have a globally valid layer.
+
+If a middleware needs to perceive the specific type of Request / Response and process it, or only for a single Service, it can be added as the Service's own layer.
+
+This is a breaking change. Users of previous versions may need to modify the code. Specifically, it needs to change from this:
+
+```rust
+#[volo::main]
+async fn main() {
+     let addr: SocketAddr = "[::]:8080".parse().unwrap();
+     let addr = volo::net::Address::from(addr);
+
+     volo_gen::proto_gen::hello::HelloServiceServer::new(S)
+         .run(addr)
+         .await
+         .unwrap();
+}
+```
+
+Change it to this:
+
+```rust
+use std::net::SocketAddr;
+
+use volo_grpc::server::{Server, ServiceBuilder};
+
+#[volo::main]
+async fn main() {
+     let addr: SocketAddr = "[::]:8080".parse().unwrap();
+     let addr = volo::net::Address::from(addr);
+
+     Server::new()
+         .add_service(ServiceBuilder::new(volo_gen::proto_gen::hello::GreeterServer::new(S)).build())
+         .run(addr)
+         .await
+         .unwrap();
+}
+```
+
+## gRPC Compression
+
+Thanks to [@tuchg](https://github.com/tuchg) for bringing us gRPC compression and decompression support in [#91](https://github.com/cloudwego/volo/pull/91) , if there is a requirement for the transmission size, this function can be used.
+
+## Thrift Codec refactoring
+
+In the previous Codec design, Thrift codec was specified by `CodecType`, which brought two problems:
+
+1. It is not easy to extend new protocol support, all supported protocols need to be implemented in the framework and hard-coded into CodecType;
+2. It is impossible to decouple and arrange the Transport and Serialize protocols. For example, if we want to support the TCompact protocol, then we need to add multiple variants: TTHeaderFramedCompact, TTheaderCompact, FramedCompact, Compact...
+
+At the same time, the previous codec did not achieve Zero Copy, and there is room for improvement in performance.
+
+This refactoring solves all the above problems at once. We no longer rely on `CodecType` to specify the codec method, but use the `make_codec` interface to specify the Codec generation method, so that we can easily Expand new protocol support, and also decouple and arrange Transport and Serialize protocols.
+
+For details, please refer to [codec documentation](https://docs.rs/volo-thrift/latest/volo_thrift/codec/index.html).
+
+## Thrift generated code default field change
+
+In the previous generated code, the binary type will generate `Vec<u8>`, and the string type will generate String, which will cause a clone to be performed when decoding and encoding, and the performance loss will be large; in this version, we will use these two The Rust type generated by default for this type has been changed to Bytes and [FastStr](https://docs.rs/faststr/latest/faststr/) to achieve full-link Zero Copy, because in practice we have observed absolutely Most of the binary and string in Request / Response will not be modified, and even if the user needs to modify, it is at the cost of one Clone, and the performance will not be worse than before.
+
+This is a breaking change. Users of previous versions may need to modify the code after upgrading. Generally speaking, only need to modify the type according to the error message.
+
+If there is still a need to generate `String` for string, you can add an annotation of `pilota.rust_type="string"` to the corresponding field in the thrift idl file, as follows:
+
+```thrift
+struct Item {
+     1: required string name (pilota. rust_type="string");
+}
+```
+
+In addition, Pilota also supports other annotations. For details, please refer to: [Pilota Supported Annotations](/docs/volo/pilota/#pilota-supported-annotations)
+
+## Full Release Note
+
+The complete Release Note can be referred to: https://github.com/cloudwego/volo/releases/tag/volo-0.3.0
