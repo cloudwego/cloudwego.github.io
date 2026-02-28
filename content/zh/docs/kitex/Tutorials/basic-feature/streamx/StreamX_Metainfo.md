@@ -41,7 +41,7 @@ func (s *streamingService) EchoClient(ctx context.Context,
 反向透传引入了一个新的概念，Header 和 Trailer ，任何完整数据流必定包含 Header(头包) 和 Trailer(尾包)，使用这两个帧来反向透传信息。
 
 ```go
-import "github.com/cloudwego/pkg/streaming"
+import "github.com/cloudwego/kitex/pkg/streaming"
 
 func (s *streamingService) EchoClient(ctx context.Context,
     stream echo.TestService_EchoClientServer) (err error) {
@@ -54,7 +54,7 @@ func (s *streamingService) EchoClient(ctx context.Context,
         return err
     }
     // 发送正常数据
-    err = stream.Send(req)
+    err = stream.Send(ctx, resp)
 }
 ```
 

@@ -16,11 +16,11 @@ Note that since the check depends on the GC timing, the delay monitoring of the 
 
 ### Client persistent stream object causes stream leak
 
-If the user holds the stream object for a long time and does not actively call stream. CloseSend, the framework will naturally assume that the stream still needs to be used, and will not close the stream and related gorotuines.
+If the user holds the stream object for a long time and does not actively call stream.CloseSend(), the framework will naturally assume that the stream still needs to be used, and will not close the stream and related goroutines.
 
 ### Server call Recv stuck
 
-If the client keeps a stream active and does not call CloseSend, the stream. Recv () function will not return.
+If the client keeps a stream active and does not call CloseSend, the stream.Recv() function will not return.
 
 If the server wants to avoid problems caused by incorrect usage of client users, it can customize its own timeout logic in the ctx of Recv (ctx). For example:
 

@@ -42,7 +42,7 @@ Reverse pass-through introduces a new concept, Header and Trailer. Any complete 
 Use these two frames to reverse pass-through information.
 
 ```go
-import "github.com/cloudwego/pkg/streaming"
+import "github.com/cloudwego/kitex/pkg/streaming"
 
 func (s *streamingService) EchoClient(ctx context.Context,
     stream echo.TestService_EchoClientServer) (err error) {
@@ -55,7 +55,7 @@ func (s *streamingService) EchoClient(ctx context.Context,
         return err
     }
     // send normal data
-    err = stream.Send(req)
+    err = stream.Send(ctx, resp)
 }
 ```
 

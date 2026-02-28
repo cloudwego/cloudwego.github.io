@@ -30,5 +30,4 @@ import (
 cli, err := NewClient("service")
 // 调用下游某个流式接口
 stream, err := cli.NewStream(ctx, streamcall.WithRecvTimeout(timeout))
-效果
 ``` 

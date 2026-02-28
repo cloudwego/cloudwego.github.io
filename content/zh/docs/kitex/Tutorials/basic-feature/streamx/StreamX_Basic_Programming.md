@@ -31,7 +31,7 @@ description: ""
 
 文件 `echo.thrift`:
 
-```go
+```thrift
 namespace go echo
 
 service TestService {
@@ -60,14 +60,16 @@ kitex -streamx -module <go module> -service service echo.thrift
 #### 创建 Client
 
 ```go
-// 生成代码目录，streamserver 为 IDL 定义的 service name
+// 生成代码目录，testservice 为 IDL 定义的 service name
 import ".../kitex_gen/echo/testservice"
 import "github.com/cloudwego/kitex/client"
 
 cli, err := testservice.NewClient(
     "a.b.c",
-    client.WithStreamRecvMiddleware(...),
-    client.WithStreamSendMiddleware(...),
+    client.WithStreamOptions(
+        client.WithStreamRecvMiddleware(...),
+        client.WithStreamSendMiddleware(...),
+    ),
 )
 ```
 
@@ -79,8 +81,10 @@ import "github.com/cloudwego/kitex/server"
 
 svr := testservice.NewServer(
     new(serviceImpl),
-    streamxserver.WithStreamRecvMiddleware(...),
-    streamxserver.WithStreamSendMiddleware(...),
+    server.WithStreamOptions(
+        server.WithStreamRecvMiddleware(...),
+        server.WithStreamSendMiddleware(...),
+    ),
 )
 ```
 
@@ -111,9 +115,9 @@ client.CloseAndRecv(res) === EOF ==>       server.Recv(EOF)
 ```go
 stream, err := cli.EchoClient(ctx)
 for i := 0; i < 3; i++ {
-    err = cs.Send(stream.Context(), req)
+    err = stream.Send(stream.Context(), req)
 }
-res, err = cs.CloseAndRecv(stream.Context())
+res, err = stream.CloseAndRecv(stream.Context())
 ```
 
 #### Server 用法
@@ -220,7 +224,7 @@ go func() {
     for i := 0; i < round; i++ {
        err := stream.Send(stream.Context(), req)
     }
-    err = bs.CloseSend(stream.Context())
+    err = stream.CloseSend(stream.Context())
 }()
 go func() {
     defer wg.Done()
