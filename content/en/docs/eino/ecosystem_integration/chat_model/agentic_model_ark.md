@@ -1,13 +1,16 @@
 ---
 Description: ""
-date: "2026-01-22"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: AgenticModel - ARK
-weight: 0
+weight: 2
 ---
 
-A Volcengine Ark model implementation based on [Eino](https://github.com/cloudwego/eino), implementing the `AgenticModel` component interface. This enables the model to seamlessly integrate into Eino's Agent capabilities, providing enhanced natural language processing and generation features.
+An implementation of the Volcengine Ark model based on [Eino](https://github.com/cloudwego/eino), implementing the `AgenticModel` component interface. This enables the model to seamlessly integrate into Eino's Agent capabilities, providing enhanced natural language processing and generation features.
+
+> 💡
+> This component was introduced in version alpha/09
 
 ## Features
 
@@ -27,7 +30,7 @@ go get github.com/cloudwego/eino-ext/components/model/agenticark@latest
 
 ## Quick Start
 
-Here is a quick example of how to use `AgenticModel`:
+Here's a quick example of how to use `AgenticModel`:
 
 ```go
 package main
@@ -84,7 +87,7 @@ type Config struct {
     // Optional. Default: 10 minutes
     Timeout *time.Duration
     
-    // HTTPClient specifies the client used to send HTTP requests.
+    // HTTPClient specifies the client to use for sending HTTP requests.
     // If HTTPClient is set, Timeout will not be used.
     // Optional. Default: &http.Client{Timeout: Timeout}
     HTTPClient *http.Client
@@ -93,7 +96,7 @@ type Config struct {
     // Optional. Default: 2
     RetryTimes *int
     
-    // BaseURL specifies the base URL for the Ark service
+    // BaseURL specifies the base URL of the Ark service
     // Optional. Default: "https://agenticark.cn-beijing.volces.com/api/v3"
     BaseURL string 
     
@@ -101,8 +104,8 @@ type Config struct {
     // Optional. Default: "cn-beijing"
     Region string
     
-    // The following three fields are related to authentication - either APIKey or AccessKey/SecretKey pair is required
-    // For details on authentication, see: https://www.volcengine.com/docs/82379/1298459
+    // The following three fields are authentication related - either APIKey or AccessKey/SecretKey pair is required
+    // For authentication details, see: https://www.volcengine.com/docs/82379/1298459
     // If both are provided, APIKey takes precedence
     APIKey string 
     
@@ -122,14 +125,14 @@ type Config struct {
         MaxTokens *int
     
     // Temperature specifies the sampling temperature to use
-    // It is generally recommended to modify this or TopP, but not both
-    // Range: 0.0 to 1.0. Higher values make output more random
+    // It's generally recommended to modify this or TopP, but not both
+    // Range: 0.0 to 1.0. Higher values make the output more random
     // Optional. Default: 1.0
     Temperature *float64
     
-    // TopP controls diversity via nucleus sampling
-    // It is generally recommended to modify this or Temperature, but not both
-    // Range: 0.0 to 1.0. Lower values make output more focused
+    // TopP controls diversity through nucleus sampling
+    // It's generally recommended to modify this or Temperature, but not both
+    // Range: 0.0 to 1.0. Lower values make the output more focused
     // Optional. Default: 0.7
     TopP *float64
     
@@ -139,7 +142,7 @@ type Config struct {
     Stop []string
     
     // FrequencyPenalty penalizes tokens based on frequency to prevent repetition
-    // Range: -2.0 to 2.0. Positive values reduce likelihood of repetition
+    // Range: -2.0 to 2.0. Positive values reduce the likelihood of repetition
     // Optional. Default: 0
     FrequencyPenalty *float64 
     
@@ -148,11 +151,11 @@ type Config struct {
     LogitBias map[string]int32
     
     // PresencePenalty penalizes tokens based on presence to prevent repetition
-    // Range: -2.0 to 2.0. Positive values increase likelihood of new topics
+    // Range: -2.0 to 2.0. Positive values increase the likelihood of new topics
     // Optional. Default: 0
     PresencePenalty *float64
         
-    // LogProbs specifies whether to return log probabilities of output tokens.
+    // LogProbs specifies whether to return log probabilities of the output tokens.
     LogProbs *bool
     
     // TopLogProbs specifies the number of most likely tokens to return at each token position, each with an associated log probability.
@@ -166,7 +169,7 @@ type Config struct {
     // Enabled by default.
     Thinking *responses.ResponsesThinking
 
-    // Reasoning specifies the reasoning effort of the model.
+    // Reasoning specifies the reasoning effort for the model.
     // Optional.
 
     // EnablePassBackReasoning controls whether the model passes back reasoning items in the next request.
@@ -182,11 +185,11 @@ type Config struct {
     // Optional.
     ParallelToolCalls *bool
 
-    // ServerTools specifies the server-side tools available to the model.
+    // ServerTools specifies server-side tools available to the model.
     // Optional.
     ServerTools []*ServerToolConfig
 
-    // MCPTools specifies the MCP tools available to the model.
+    // MCPTools specifies MCP tools available to the model.
     // Optional.
     MCPTools []*responses.ToolMcp
 
@@ -194,7 +197,7 @@ type Config struct {
     // Optional.
     Cache *CacheConfig
 
-    // CustomHeader HTTP headers passed when requesting the model
+    // CustomHeader HTTP headers to pass when requesting the model
     CustomHeader map[string]string 
 }
 ```
@@ -203,7 +206,7 @@ type Config struct {
 
 ### Tool Calling
 
-`AgenticModel` supports tool calling, including function tools, MCP tools, and server tools.
+`AgenticModel` supports tool calling, including Function Tools, MCP Tools, and Server Tools.
 
 #### Function Tool Example
 

@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino ADK MultiAgent: Supervisor Agent'
-weight: 4
+title: 'Eino ADK: Supervisor Agent'
+weight: 3
 ---
 
 ## Supervisor Agent 概述

@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: 'Eino ADK: ChatModelAgent'
@@ -257,6 +257,237 @@ a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
         },
     },
 })
+```
+
+## ChatModelAgent Middleware
+
+`ChatModelAgentMiddleware` 是 `ChatModelAgent` 的扩展机制，允许开发者在 Agent 执行的各个阶段注入自定义逻辑：
+
+<a href="/img/eino/TXVlwT7Iohh1EtbEeC6cIptxnZd.png" target="_blank"><img src="/img/eino/TXVlwT7Iohh1EtbEeC6cIptxnZd.png" width="100%" /></a>
+
+`ChatModelAgentMiddleware` 定义为 interface，开发者可以实现此 interface 并通过配置到 `ChatModelAgentConfig` 使其在 `ChatModelAgent` 中生效：
+
+```go
+type ChatModelAgentMiddleware interface {
+    // ...
+}
+
+a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    // ...
+    Handlers: []adk.ChatModelAgentMiddleware{
+        &MyMiddleware{},
+    },
+})
+```
+
+**使用 BaseChatModelAgentMiddleware**
+
+`BaseChatModelAgentMiddleware` 提供所有方法的默认空实现。通过嵌入它，可以只覆盖需要的方法：
+
+```go
+type MyMiddleware struct {
+    *adk.BaseChatModelAgentMiddleware
+    // 自定义字段
+    logger *log.Logger
+}
+
+// 只需覆盖需要的方法
+func (m *MyMiddleware) BeforeModelRewriteState(
+    ctx context.Context, 
+    state *adk.ChatModelAgentState, 
+    mc *adk.ModelContext,
+) (context.Context, *adk.ChatModelAgentState, error) {
+    m.logger.Printf("Messages count: %d", len(state.Messages))
+    return ctx, state, nil
+}
+```
+
+### BeforeAgent
+
+在每次 Agent 运行前调用，可用于修改指令和工具配置。ChatModelAgentContext 定义了 BeforeAgent 中可读写的内容：
+
+```go
+type ChatModelAgentContext struct {
+    // InstructionAgent 是当前 Agent 的指令
+    Instruction string
+    // Tools 是当前配置的原始工具列表
+    Tools []tool.BaseTool
+    // ReturnDirectly 配置调用后直接返回的工具名称集合
+    ReturnDirectly map[string]bool
+}
+
+type ChatModelAgentMiddleware interface {
+    // ...
+    BeforeAgent(ctx context.Context, runCtx *ChatModelAgentContext) (context.Context, *ChatModelAgentContext, error)
+    // ...
+}
+```
+
+例子：
+
+```go
+func (m *MyMiddleware) BeforeAgent(
+    ctx context.Context, 
+    runCtx *adk.ChatModelAgentContext,
+) (context.Context, *adk.ChatModelAgentContext, error) {
+    // 拷贝 runCtx，避免修改输入
+    nRunCtx := *runCtx
+    
+    // 修改指令
+    nRunCtx.Instruction += "\n\n请始终使用中文回复。"
+    
+    // 添加工具
+    nRunCtx.Tools = append(runCtx.Tools, myCustomTool)
+    
+    // 设置工具直接返回
+    nRunCtx.ReturnDirectly["my_tool"] = true
+    
+    return ctx, &nRunCtx, nil
+}
+```
+
+### BeforeModelRewriteState / AfterModelRewriteState
+
+在每次模型调用前/后调用，可用于检查和修改消息历史。ModelContext 定义了只读内容，ChatModelAgentState 定义了可读写内容：
+
+```go
+type ModelContext struct {
+    // Tools 包含当前配置给 Agent 的工具列表
+    // 在请求时填充，包含将要发送给模型的工具信息
+    Tools []*schema.ToolInfo
+
+    // ModelRetryConfig 包含模型的重试配置
+    // 从 Agent 的 ModelRetryConfig 填充
+    ModelRetryConfig *ModelRetryConfig
+}
+
+type ChatModelAgentState struct {
+    // Messages 包含当前会话中的所有消息
+    Messages []Message
+}
+
+type ChatModelAgentMiddleware interface {
+    BeforeModelRewriteState(ctx context.Context, state *ChatModelAgentState, mc *ModelContext) (context.Context, *ChatModelAgentState, error)
+    AfterModelRewriteState(ctx context.Context, state *ChatModelAgentState, mc *ModelContext) (context.Context, *ChatModelAgentState, error)
+}
+```
+
+例子：
+
+```go
+func (m *MyMiddleware) BeforeModelRewriteState(
+    ctx context.Context,
+    state *adk.ChatModelAgentState,
+    mc *adk.ModelContext,
+) (context.Context, *adk.ChatModelAgentState, error) {
+    // 拷贝 state，避免修改入参
+    nState := *state
+    
+    // 检查消息历史
+    if len(state.Messages) > 50 {
+        // 截断过旧的消息
+        nState.Messages = state.Messages[len(state.Messages)-50:]
+    }
+    return ctx, &nState, nil
+}
+
+func (m *MyMiddleware) AfterModelRewriteState(
+    ctx context.Context,
+    state *adk.ChatModelAgentState,
+    mc *adk.ModelContext,
+) (context.Context, *adk.ChatModelAgentState, error) {
+    // 模型响应是最后一条消息
+    lastMsg := state.Messages[len(state.Messages)-1]
+    m.logger.Printf("Model response: %s", lastMsg.Content)
+    return ctx, state, nil
+}
+```
+
+### WrapModel
+
+包装模型调用，可用于拦截和修改模型的输入输出：
+
+```go
+type ChatModelAgentMiddleware interface {
+    WrapModel(ctx context.Context, m model.BaseChatModel, mc *ModelContext) (model.BaseChatModel, error)
+}
+```
+
+例子：
+
+```go
+func (m *MyMiddleware) WrapModel(
+    ctx context.Context,
+    chatModel model.BaseChatModel,
+    mc *adk.ModelContext,
+) (model.BaseChatModel, error) {
+    return &loggingModel{
+        inner: chatModel,
+        logger: m.logger,
+    }, nil
+}
+
+type loggingModel struct {
+    inner  model.BaseChatModel
+    logger *log.Logger
+}
+
+func (m *loggingModel) Generate(ctx context.Context, msgs []*schema.Message, opts ...model.Option) (*schema.Message, error) {
+    m.logger.Printf("Input messages: %d", len(msgs))
+    resp, err := m.inner.Generate(ctx, msgs, opts...)
+    m.logger.Printf("Output: %v, error: %v", resp != nil, err)
+    return resp, err
+}
+
+func (m *loggingModel) Stream(ctx context.Context, msgs []*schema.Message, opts ...model.Option) (*schema.StreamReader[*schema.Message], error) {
+    return m.inner.Stream(ctx, msgs, opts...)
+}
+```
+
+### WrapInvokableToolCall / WrapStreamableToolCall
+
+包装工具调用，可用于拦截和修改工具的输入输出：
+
+```go
+// InvokableToolCallEndpoint 是工具调用的函数签名。
+// Middleware 开发者围绕这个 Endpoint 添加自定义逻辑。
+type InvokableToolCallEndpoint func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error)
+
+// StreamableToolCallEndpoint 是流式工具调用的函数签名。
+// Middleware 开发者围绕这个 Endpoint 添加自定义逻辑。
+type StreamableToolCallEndpoint func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (*schema.StreamReader[string], error)
+
+type ToolContext struct {
+    // Name 说明了本次调用工具的名称
+    Name   string
+    // CallID 说明了本次调用工具的 ToolCallID
+    CallID string
+}
+
+type ChatModelAgentMiddleware interface {
+    WrapInvokableToolCall(ctx context.Context, endpoint InvokableToolCallEndpoint, tCtx *ToolContext) (InvokableToolCallEndpoint, error)
+    WrapStreamableToolCall(ctx context.Context, endpoint StreamableToolCallEndpoint, tCtx *ToolContext) (StreamableToolCallEndpoint, error)
+}
+```
+
+例子：
+
+```go
+func (m *MyMiddleware) WrapInvokableToolCall(
+    ctx context.Context,
+    endpoint adk.InvokableToolCallEndpoint,
+    tCtx *adk.ToolContext,
+) (adk.InvokableToolCallEndpoint, error) {
+    return func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
+        m.logger.Printf("Calling tool: %s (ID: %s)", tCtx.Name, tCtx.CallID)
+        start := time.Now()
+        
+        result, err := endpoint(ctx, argumentsInJSON, opts...)
+        
+        m.logger.Printf("Tool %s completed in %v", tCtx.Name, time.Since(start))
+        return result, err
+    }, nil
+}
 ```
 
 # ChatModelAgent 使用示例

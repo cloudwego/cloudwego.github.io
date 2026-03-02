@@ -11,9 +11,9 @@ weight: 6
 
 ### ChatModel
 
-- openai: [ChatModel - OpenAI](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
-- ark: [ChatModel - ARK](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
-- ollama: [ChatModel - Ollama](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
+- openai: [ChatModel - OpenAI](https://bytedance.larkoffice.com/wiki/NguEw85n6iJjShkVtdQcHpydnld)
+- ark: [ChatModel - ARK](https://bytedance.larkoffice.com/wiki/WUzzwaX8ricGwZk1i1mcJHHNnEl)
+- ollama: [ChatModel - Ollama](https://bytedance.larkoffice.com/wiki/WWngw1XMViwgyYkNuZgcjZnxnke)
 
 ### Document
 

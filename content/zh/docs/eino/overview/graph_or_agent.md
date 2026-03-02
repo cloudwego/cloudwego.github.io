@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: Agent 还是 Graph？AI 应用路线辨析
-weight: 5
+weight: 8
 ---
 
 ## 引言：两种并存的 AI 交互范式

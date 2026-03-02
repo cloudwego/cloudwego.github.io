@@ -4,7 +4,7 @@ date: "2025-07-21"
 lastmod: ""
 tags: []
 title: 'Eino: Embedding 使用说明'
-weight: 7
+weight: 2
 ---
 
 ## **基本介绍**

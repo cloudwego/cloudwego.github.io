@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: 'Eino ADK: ChatModelAgent'
@@ -15,22 +15,22 @@ weight: 1
 
 ## What is ChatModelAgent
 
-`ChatModelAgent` is a core prebuilt Agent in Eino ADK. It encapsulates the complex logic of interacting with large language models (LLMs) and supports using tools to accomplish tasks.
+`ChatModelAgent` is a core prebuilt Agent in Eino ADK that encapsulates the complex logic of interacting with Large Language Models (LLMs) and supports using tools to complete tasks.
 
-## ChatModelAgent ReAct Mode
+## ChatModelAgent ReAct Pattern
 
-`ChatModelAgent` uses the [ReAct](https://react-lm.github.io/) pattern, designed to solve complex problems by letting the ChatModel perform explicit, step-by-step "thinking". When tools are configured for `ChatModelAgent`, its internal execution follows the ReAct pattern:
+`ChatModelAgent` uses the [ReAct](https://react-lm.github.io/) pattern internally, which is designed to solve complex problems by having the ChatModel perform explicit, step-by-step "thinking". After configuring tools for `ChatModelAgent`, its internal execution flow follows the ReAct pattern:
 
 - Call ChatModel (Reason)
-- LLM returns a tool-call request (Action)
-- ChatModelAgent executes the tool (Act)
-- It sends the tool result back to ChatModel (Observation), then starts a new loop until the model decides no tool is needed and stops
+- LLM returns tool call request (Action)
+- ChatModelAgent executes tool (Act)
+- It returns the tool result to ChatModel (Observation), then starts a new cycle until ChatModel determines no Tool call is needed and ends.
 
-When no tools are configured, `ChatModelAgent` falls back to a single ChatModel call.
+When no tools are configured, `ChatModelAgent` degrades to a single ChatModel call.
 
 <a href="/img/eino/eino_adk_chat_model_agent_view.png" target="_blank"><img src="/img/eino/eino_adk_chat_model_agent_view.png" width="100%" /></a>
 
-Configure tools for ChatModelAgent via ToolsConfig:
+You can configure Tools for ChatModelAgent through ToolsConfig:
 
 ```go
 // github.com/cloudwego/eino/adk/chatmodel.go
@@ -48,12 +48,12 @@ type ToolsConfig struct {
 }
 ```
 
-ToolsConfig reuses Eino Graph ToolsNodeConfig. See: [Eino: ToolsNode & Tool Guide](/docs/eino/core_modules/components/tools_node_guide). Additionally, it provides the ReturnDirectly configuration - ChatModelAgent will exit directly after calling a tool configured in ReturnDirectly.
+ToolsConfig reuses Eino Graph ToolsNodeConfig, see [Eino: ToolsNode & Tool Usage Guide](/docs/eino/core_modules/components/tools_node_guide) for details. Additionally, it provides the ReturnDirectly configuration. ChatModelAgent will exit directly after calling a Tool configured in ReturnDirectly.
 
 ## ChatModelAgent Configuration Fields
 
 > 💡
-> Note: By default, GenModelInput renders the Instruction using F-String format via adk.GetSessionValues(). To disable this behavior, you can customize the GenModelInput method.
+> Note: GenModelInput by default renders the Instruction in F-String format using adk.GetSessionValues(). To disable this behavior, customize the GenModelInput method.
 
 ```go
 type ChatModelAgentConfig struct {
@@ -116,21 +116,21 @@ type GenModelInput func(ctx context.Context, instruction string, input *AgentInp
 - `Name`: Agent name
 - `Description`: Agent description
 - `Instruction`: System Prompt when calling ChatModel, supports f-string rendering
-- `Model`: The ChatModel used for execution, must support tool calling
+- `Model`: ChatModel used for running, must support tool calling
 - `ToolsConfig`: Tool configuration
-  - ToolsConfig reuses Eino Graph ToolsNodeConfig. See: [Eino: ToolsNode & Tool Guide](/docs/eino/core_modules/components/tools_node_guide).
-  - ReturnDirectly: After ChatModelAgent calls a tool configured in ReturnDirectly, it will immediately exit with the result without returning to ChatModel in ReAct mode. If multiple tools match, only the first one returns. Map key is the tool name.
-  - EmitInternalEvents: When using adk.AgentTool() to call an Agent as a SubAgent via ToolCall, by default this SubAgent won't emit AgentEvents and will only return the final result as ToolResult.
-- `GenModelInput`: When the Agent is called, this method transforms `Instruction` and `AgentInput` into Messages for calling ChatModel. The Agent provides a default GenModelInput method:
-  1. Prepend `Instruction` as a `System Message` to `AgentInput.Messages`
+  - ToolsConfig reuses Eino Graph ToolsNodeConfig, see [Eino: ToolsNode & Tool Usage Guide](/docs/eino/core_modules/components/tools_node_guide) for details.
+  - ReturnDirectly: When ChatModelAgent calls a Tool configured in ReturnDirectly, it will immediately exit with the result, without returning to ChatModel per the react pattern. If multiple Tools are hit, only the first Tool is returned. Map key is the Tool name.
+  - EmitInternalEvents: When using adk.AgentTool() to treat an Agent as a SubAgent through ToolCall, by default, this SubAgent will not send AgentEvents, only returning the final result as ToolResult.
+- `GenModelInput`: When the Agent is called, it uses this method to convert `Instruction` and `AgentInput` into Messages for calling ChatModel. The Agent provides a default GenModelInput method:
+  1. Add `Instruction` as `System Message` before `AgentInput.Messages`
   2. Render `SessionValues` as variables into the message list from step 1
 
 > 💡
-> The default `GenModelInput` uses pyfmt rendering. Text in the message list is treated as a pyfmt template, meaning '{' and '}' are treated as keywords. To use these characters literally, escape them as '{{' and '}}'
+> The default `GenModelInput` uses pyfmt rendering. Text in the message list is treated as a pyfmt template, meaning '{' and '}' in the text are treated as keywords. If you want to input these two characters directly, they need to be escaped as '{{' and '}}'.
 
-- `OutputKey`: When configured, the last Message produced by ChatModelAgent will be stored in `SessionValues` with `OutputKey` as the key
-- `MaxIterations`: Maximum number of ChatModel generations in ReAct mode. The Agent will exit with an error if exceeded. Default is 20
-- `Exit`: Exit is a special Tool. When the model calls and executes this tool, ChatModelAgent will exit directly, similar to `ToolsConfig.ReturnDirectly`. ADK provides a default ExitTool implementation:
+- `OutputKey`: When configured, the last Message produced by ChatModelAgent running will be set in `SessionValues` with `OutputKey` as the key
+- `MaxIterations`: Maximum number of ChatModel generations in react mode. Agent will exit with error when exceeded. Default value is 20
+- `Exit`: Exit is a special Tool. When the model calls this tool and executes it, ChatModelAgent will exit directly, with an effect similar to `ToolsConfig.ReturnDirectly`. ADK provides a default ExitTool implementation for users:
 
 ```go
 type ExitTool struct{}
@@ -159,7 +159,7 @@ func (et ExitTool) InvokableRun(ctx context.Context, argumentsInJSON string, _ .
 }
 ```
 
-- `ModelRetryConfig`: When configured, various errors during ChatModel requests (including direct errors and errors during streaming responses) will be retried according to the configured policy. If an error occurs during streaming response, that streaming response will still be returned immediately via AgentEvent. If the error during streaming will be retried according to the policy, consuming the message stream in AgentEvent will yield a `WillRetryError`. Users can handle this error for display purposes, as shown below:
+- `ModelRetryConfig`: When configured, various errors during ChatModel request (including direct errors and errors during streaming response) will be retried according to the configured policy. If an error occurs during streaming response, the streaming response will still be returned through AgentEvent immediately. If the error during streaming response will be retried according to the configured policy, consuming the message stream in AgentEvent will get `WillRetryError`. Users can handle this error for corresponding display processing. Example:
 
 ```go
 iterator := agent.Run(ctx, input)
@@ -202,9 +202,9 @@ for {
 
 ## ChatModelAgent Transfer
 
-`ChatModelAgent` supports converting other Agents' metadata into its own Tools, enabling dynamic Transfer through ChatModel decisions:
+`ChatModelAgent` supports converting other Agents' meta information into its own Tools, achieving dynamic Transfer through ChatModel judgment:
 
-- `ChatModelAgent` implements the `OnSubAgents` interface. After using `SetSubAgents` to set sub-Agents for `ChatModelAgent`, it adds a `Transfer Tool` and instructs the ChatModel in the prompt to call this Tool when transfer is needed, using the target AgentName as input.
+- `ChatModelAgent` implements the `OnSubAgents` interface. After using `SetSubAgents` to set sub Agents for `ChatModelAgent`, `ChatModelAgent` will add a `Transfer Tool` and instruct ChatModel in the prompt to call this Tool when transfer is needed, using the transfer target AgentName as Tool input.
 
 ```go
 const (
@@ -228,14 +228,14 @@ func genTransferToAgentInstruction(ctx context.Context, agents []Agent) string {
 }
 ```
 
-- `Transfer Tool` execution sets a Transfer Event, specifying the jump to the target Agent, then ChatModelAgent exits.
-- Agent Runner receives the Transfer Event and jumps to the target Agent for execution, completing the Transfer operation.
+- `Transfer Tool` running sets a Transfer Event, specifying the jump to the target Agent, and ChatModelAgent exits after completion.
+- Agent Runner receives the Transfer Event and jumps to the target Agent for execution, completing the Transfer operation
 
 ## ChatModelAgent AgentAsTool
 
-When an Agent to be called doesn't need the full execution context and only requires clear input parameters to run correctly, that Agent can be converted to a Tool for `ChatModelAgent` to decide when to call:
+When the Agent being called doesn't need a complete running context but only clear and explicit input parameters to run correctly, the Agent can be converted to a Tool for `ChatModelAgent` to judge and call:
 
-- ADK provides utility methods to conveniently convert an Eino ADK Agent to a Tool for ChatModelAgent to call:
+- ADK provides utility methods to conveniently convert Eino ADK Agents to Tools for ChatModelAgent to call:
 
 ```go
 // github.com/cloudwego/eino/adk/agent_tool.go    
@@ -243,7 +243,7 @@ When an Agent to be called doesn't need the full execution context and only requ
 func NewAgentTool(_ context.Context, agent Agent, options ...AgentToolOption) tool.BaseTool
 ```
 
-- The converted Agent Tool can be registered directly in ChatModelAgent via `ToolsConfig`
+- Agents converted to Tools can be registered directly in ChatModelAgent through `ToolsConfig`
 
 ```go
 bookRecommender := NewBookRecommendAgent()
@@ -259,19 +259,250 @@ a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 })
 ```
 
+## ChatModelAgent Middleware
+
+`ChatModelAgentMiddleware` is an extension mechanism for `ChatModelAgent` that allows developers to inject custom logic at various stages of Agent execution:
+
+<a href="/img/eino/TXVlwT7Iohh1EtbEeC6cIptxnZd.png" target="_blank"><img src="/img/eino/TXVlwT7Iohh1EtbEeC6cIptxnZd.png" width="100%" /></a>
+
+`ChatModelAgentMiddleware` is defined as an interface. Developers can implement this interface and configure it in `ChatModelAgentConfig` to make it effective in `ChatModelAgent`:
+
+```go
+type ChatModelAgentMiddleware interface {
+    // ...
+}
+
+a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    // ...
+    Handlers: []adk.ChatModelAgentMiddleware{
+        &MyMiddleware{},
+    },
+})
+```
+
+**Using BaseChatModelAgentMiddleware**
+
+`BaseChatModelAgentMiddleware` provides default empty implementations for all methods. By embedding it, you can override only the methods you need:
+
+```go
+type MyMiddleware struct {
+    *adk.BaseChatModelAgentMiddleware
+    // Custom fields
+    logger *log.Logger
+}
+
+// Only override the methods you need
+func (m *MyMiddleware) BeforeModelRewriteState(
+    ctx context.Context, 
+    state *adk.ChatModelAgentState, 
+    mc *adk.ModelContext,
+) (context.Context, *adk.ChatModelAgentState, error) {
+    m.logger.Printf("Messages count: %d", len(state.Messages))
+    return ctx, state, nil
+}
+```
+
+### BeforeAgent
+
+Called before each Agent run, can be used to modify instructions and tool configuration. ChatModelAgentContext defines the content that can be read and written in BeforeAgent:
+
+```go
+type ChatModelAgentContext struct {
+    // Instruction is the current Agent's instruction
+    Instruction string
+    // Tools is the current configured original tool list
+    Tools []tool.BaseTool
+    // ReturnDirectly configures tool name sets that return directly after being called
+    ReturnDirectly map[string]bool
+}
+
+type ChatModelAgentMiddleware interface {
+    // ...
+    BeforeAgent(ctx context.Context, runCtx *ChatModelAgentContext) (context.Context, *ChatModelAgentContext, error)
+    // ...
+}
+```
+
+Example:
+
+```go
+func (m *MyMiddleware) BeforeAgent(
+    ctx context.Context, 
+    runCtx *adk.ChatModelAgentContext,
+) (context.Context, *adk.ChatModelAgentContext, error) {
+    // Copy runCtx to avoid modifying input
+    nRunCtx := *runCtx
+    
+    // Modify instruction
+    nRunCtx.Instruction += "\n\nPlease always reply in Chinese."
+    
+    // Add tool
+    nRunCtx.Tools = append(runCtx.Tools, myCustomTool)
+    
+    // Set tool to return directly
+    nRunCtx.ReturnDirectly["my_tool"] = true
+    
+    return ctx, &nRunCtx, nil
+}
+```
+
+### BeforeModelRewriteState / AfterModelRewriteState
+
+Called before/after each model call, can be used to inspect and modify message history. ModelContext defines read-only content, ChatModelAgentState defines read-write content:
+
+```go
+type ModelContext struct {
+    // Tools contains the list of tools currently configured for the Agent
+    // Populated at request time, contains tool info that will be sent to the model
+    Tools []*schema.ToolInfo
+
+    // ModelRetryConfig contains the retry configuration for the model
+    // Populated from Agent's ModelRetryConfig
+    ModelRetryConfig *ModelRetryConfig
+}
+
+type ChatModelAgentState struct {
+    // Messages contains all messages in the current session
+    Messages []Message
+}
+
+type ChatModelAgentMiddleware interface {
+    BeforeModelRewriteState(ctx context.Context, state *ChatModelAgentState, mc *ModelContext) (context.Context, *ChatModelAgentState, error)
+    AfterModelRewriteState(ctx context.Context, state *ChatModelAgentState, mc *ModelContext) (context.Context, *ChatModelAgentState, error)
+}
+```
+
+Example:
+
+```go
+func (m *MyMiddleware) BeforeModelRewriteState(
+    ctx context.Context,
+    state *adk.ChatModelAgentState,
+    mc *adk.ModelContext,
+) (context.Context, *adk.ChatModelAgentState, error) {
+    // Copy state to avoid modifying input
+    nState := *state
+    
+    // Check message history
+    if len(state.Messages) > 50 {
+        // Truncate old messages
+        nState.Messages = state.Messages[len(state.Messages)-50:]
+    }
+    return ctx, &nState, nil
+}
+
+func (m *MyMiddleware) AfterModelRewriteState(
+    ctx context.Context,
+    state *adk.ChatModelAgentState,
+    mc *adk.ModelContext,
+) (context.Context, *adk.ChatModelAgentState, error) {
+    // Model response is the last message
+    lastMsg := state.Messages[len(state.Messages)-1]
+    m.logger.Printf("Model response: %s", lastMsg.Content)
+    return ctx, state, nil
+}
+```
+
+### WrapModel
+
+Wraps model calls, can be used to intercept and modify model input and output:
+
+```go
+type ChatModelAgentMiddleware interface {
+    WrapModel(ctx context.Context, m model.BaseChatModel, mc *ModelContext) (model.BaseChatModel, error)
+}
+```
+
+Example:
+
+```go
+func (m *MyMiddleware) WrapModel(
+    ctx context.Context,
+    chatModel model.BaseChatModel,
+    mc *adk.ModelContext,
+) (model.BaseChatModel, error) {
+    return &loggingModel{
+        inner: chatModel,
+        logger: m.logger,
+    }, nil
+}
+
+type loggingModel struct {
+    inner  model.BaseChatModel
+    logger *log.Logger
+}
+
+func (m *loggingModel) Generate(ctx context.Context, msgs []*schema.Message, opts ...model.Option) (*schema.Message, error) {
+    m.logger.Printf("Input messages: %d", len(msgs))
+    resp, err := m.inner.Generate(ctx, msgs, opts...)
+    m.logger.Printf("Output: %v, error: %v", resp != nil, err)
+    return resp, err
+}
+
+func (m *loggingModel) Stream(ctx context.Context, msgs []*schema.Message, opts ...model.Option) (*schema.StreamReader[*schema.Message], error) {
+    return m.inner.Stream(ctx, msgs, opts...)
+}
+```
+
+### WrapInvokableToolCall / WrapStreamableToolCall
+
+Wraps tool calls, can be used to intercept and modify tool input and output:
+
+```go
+// InvokableToolCallEndpoint is the function signature for tool calls.
+// Middleware developers add custom logic around this Endpoint.
+type InvokableToolCallEndpoint func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error)
+
+// StreamableToolCallEndpoint is the function signature for streaming tool calls.
+// Middleware developers add custom logic around this Endpoint.
+type StreamableToolCallEndpoint func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (*schema.StreamReader[string], error)
+
+type ToolContext struct {
+    // Name indicates the name of the tool being called
+    Name   string
+    // CallID indicates the ToolCallID of this tool call
+    CallID string
+}
+
+type ChatModelAgentMiddleware interface {
+    WrapInvokableToolCall(ctx context.Context, endpoint InvokableToolCallEndpoint, tCtx *ToolContext) (InvokableToolCallEndpoint, error)
+    WrapStreamableToolCall(ctx context.Context, endpoint StreamableToolCallEndpoint, tCtx *ToolContext) (StreamableToolCallEndpoint, error)
+}
+```
+
+Example:
+
+```go
+func (m *MyMiddleware) WrapInvokableToolCall(
+    ctx context.Context,
+    endpoint adk.InvokableToolCallEndpoint,
+    tCtx *adk.ToolContext,
+) (adk.InvokableToolCallEndpoint, error) {
+    return func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
+        m.logger.Printf("Calling tool: %s (ID: %s)", tCtx.Name, tCtx.CallID)
+        start := time.Now()
+        
+        result, err := endpoint(ctx, argumentsInJSON, opts...)
+        
+        m.logger.Printf("Tool %s completed in %v", tCtx.Name, time.Since(start))
+        return result, err
+    }, nil
+}
+```
+
 # ChatModelAgent Usage Example
 
-## Scenario
+## Scenario Description
 
 Create a book recommendation Agent that can recommend relevant books based on user input.
 
-## Implementation
+## Code Implementation
 
-### Step 1: Define the Tool
+### Step 1: Define Tools
 
-The book recommendation Agent needs a tool `book_search` that can search for books based on user requirements (genre, rating, etc.).
+The book recommendation Agent needs a `book_search` tool that can search for books based on user requirements (genre, rating, etc.).
 
-You can easily create tools using the utility methods provided by Eino (see [How to Create a Tool?](/docs/eino/core_modules/components/tools_node_guide/how_to_create_a_tool)):
+Using utility methods provided by Eino makes it easy to create (see [How to create a tool?](/docs/eino/core_modules/components/tools_node_guide/how_to_create_a_tool)):
 
 ```go
 import (
@@ -307,7 +538,7 @@ func NewBookRecommender() tool.InvokableTool {
 
 ### Step 2: Create ChatModel
 
-Eino provides various ChatModel implementations (such as openai, gemini, doubao, etc. See [Eino: ChatModel Guide](/docs/eino/core_modules/components/chat_model_guide)). Here we use openai ChatModel as an example:
+Eino provides various ChatModel wrappers (such as openai, gemini, doubao, etc., see [Eino: ChatModel Usage Guide](/docs/eino/core_modules/components/chat_model_guide) for details). Here we use openai ChatModel as an example:
 
 ```go
 import (
@@ -338,7 +569,7 @@ func NewChatModel() model.ToolCallingChatModel {
 
 ### Step 3: Create ChatModelAgent
 
-In addition to configuring ChatModel and tools, you need to configure Name and Description to describe the Agent's functionality, as well as Instruction to guide the ChatModel. The Instruction will ultimately be passed to ChatModel as a system message.
+In addition to configuring ChatModel and tools, you need to configure Name and Description describing the Agent's function and purpose, as well as the Instruction that instructs the ChatModel. The Instruction will ultimately be passed to ChatModel as a system message.
 
 ```go
 import (
@@ -411,7 +642,7 @@ func main() {
 }
 ```
 
-## Run Result
+## Running Result
 
 ```yaml
 message:
@@ -438,13 +669,13 @@ usage: &{185 31 216}
 ======
 ```
 
-# ChatModelAgent Interrupt & Resume
+# ChatModelAgent Interrupt and Resume
 
 ## Introduction
 
-`ChatModelAgent` is implemented using Eino Graph, so the agent can reuse Eino Graph's Interrupt & Resume capability.
+`ChatModelAgent` is implemented using Eino Graph, so it can reuse Eino Graph's Interrupt&Resume capability in the agent.
 
-- On interrupt, return a special error from the tool to trigger Graph interrupt and emit custom info. On resume, Graph will rerun this tool:
+- On Interrupt, return a special error in the tool to make the Graph trigger an interrupt and throw custom information. On resume, the Graph will re-run this tool:
 
 ```go
 // github.com/cloudwego/eino/adk/interrupt.go
@@ -452,7 +683,7 @@ usage: &{185 31 216}
 func NewInterruptAndRerunErr(extra any) error
 ```
 
-- On resume, support custom ToolOptions to pass extra information to the Tool:
+- On Resume, custom ToolOptions are supported for passing additional information to the Tool during resume:
 
 ```go
 import (
@@ -472,9 +703,9 @@ func WithNewInput(input string) tool.Option {
 
 ## Example
 
-Below we will add an `ask_for_clarification` tool to the `BookRecommendAgent` from the [ChatModelAgent Usage Example] section above. When the user provides insufficient information for recommendations, the Agent will call this tool to ask the user for more information. `ask_for_clarification` uses the Interrupt & Resume capability to implement "asking" the user.
+Below we will build on the code from the [ChatModelAgent Usage Example] section above to add a tool `ask_for_clarification` to `BookRecommendAgent`. When the user provides insufficient information for recommendations, the Agent will call this tool to ask the user for more information. `ask_for_clarification` uses the Interrupt&Resume capability to implement "asking" the user.
 
-### Step 1: Add Tool with Interrupt Support
+### Step 1: Add Tool Supporting Interrupt
 
 ```go
 import (
@@ -529,7 +760,7 @@ func NewBookRecommendAgent() adk.Agent {
           ToolsNodeConfig: compose.ToolsNodeConfig{
              Tools: []tool.BaseTool{NewBookRecommender(), NewAskForClarificationTool()},
           },
-          // Whether to output AgentEvents when calling SubAgent via AgentTool() internally
+          // Whether to output AgentEvents from SubAgent when Tool internally calls SubAgent via AgentTool()
           EmitInternalEvents: true,
        },
     })
@@ -539,7 +770,7 @@ func NewBookRecommendAgent() adk.Agent {
 
 ### Step 3: Configure CheckPointStore in Agent Runner
 
-Configure `CheckPointStore` in the Runner (using the simplest InMemoryStore in this example), and pass `CheckPointID` when calling the Agent for use during resume. Also, on interrupt, Graph will place `InterruptInfo` in `Interrupted.Data`:
+Configure `CheckPointStore` in Runner (the example uses the simplest InMemoryStore), and pass in `CheckPointID` when calling the Agent for use during resume. Also, on interrupt, Graph places `InterruptInfo` in `Interrupted.Data`:
 
 ```go
 func newInMemoryStore() compose.CheckPointStore {
@@ -601,9 +832,9 @@ func main() {
 }
 ```
 
-### Run Result
+### Running Result
 
-Running will trigger an interrupt
+An interrupt will occur after running
 
 ```
 message:
@@ -620,7 +851,7 @@ interrupt happened, info: &{ToolCalls:[{Index:<nil> ID:call_3HAobzkJvW3JsTmSHSBR
 your input here:
 ```
 
-After stdin input, retrieve the previous interrupt state from CheckPointStore, combine with the completed input, and continue running
+After stdin input, retrieve the previous interrupt state from CheckPointStore and continue running with the completed input
 
 ```
 new input is:
@@ -661,4 +892,4 @@ usage: &{317 20 337}
 
 `ChatModelAgent` is the core Agent implementation in ADK, serving as the "thinking" part of applications. It leverages the powerful capabilities of LLMs for reasoning, understanding natural language, making decisions, generating responses, and interacting with tools.
 
-`ChatModelAgent`'s behavior is non-deterministic, dynamically deciding which tools to use or transferring control to other Agents through the LLM.
+`ChatModelAgent`'s behavior is non-deterministic, dynamically deciding which tools to use or transferring control to other Agents through LLM.

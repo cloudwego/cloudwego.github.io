@@ -1,19 +1,19 @@
 ---
 Description: ""
-date: "2026-01-23"
+date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino Human-in-the-Loop Framework: Architecture Guide'
-weight: 6
+title: 'Eino Human-in-the-Loop Framework: Technical Architecture Guide'
+weight: 7
 ---
 
 ## Overview
 
-This document provides technical details of Eino's human-in-the-loop (Human-in-the-Loop, HITL) framework architecture, focusing on the interrupt/resume mechanism and the underlying addressing system.
+This document provides technical details of Eino's human-in-the-loop (HITL) framework architecture, focusing on the interrupt/resume mechanism and the underlying addressing system.
 
-## Human-in-the-Loop Requirements
+## Requirements for Human-in-the-Loop
 
-The following diagram illustrates the key questions each component must answer during the interrupt/resume process. Understanding these requirements is key to grasping the rationale behind the architecture design.
+The diagram below illustrates the key questions that each component must answer during the interrupt/resume process. Understanding these requirements is crucial for grasping the rationale behind the architecture design.
 
 ```mermaid
 graph TD
@@ -22,8 +22,8 @@ graph TD
         subgraph Dev1 [Developer]
             direction TB
             D1[Should I interrupt now?<br/>Was I interrupted before?]
-            D2[What information should users<br/>see about this interrupt?]
-            D3[What state should I persist<br/>for later resume?]
+            D2[What info should the user<br/>see about this interrupt?]
+            D3[What state should I preserve<br/>for later resumption?]
             D1 --> D2 --> D3
         end
         
@@ -32,7 +32,7 @@ graph TD
             F1[Where in the execution hierarchy<br/>did the interrupt occur?]
             F2[How to associate state with<br/>the interrupt location?]
             F3[How to persist interrupt<br/>context and state?]
-            F4[What information does the user<br/>need to understand the interrupt?]
+            F4[What info does the user need<br/>to understand the interrupt?]
             F1 --> F2 --> F3 --> F4
         end
         
@@ -44,10 +44,10 @@ graph TD
         subgraph "End User"
             direction TB
             U1[Where in the flow did<br/>the interrupt occur?]
-            U2[What information did the<br/>developer provide?]
+            U2[What type of info did<br/>the developer provide?]
             U3[Should I resume this<br/>interrupt?]
-            U4[Should I provide data<br/>for resume?]
-            U5[What type of resume<br/>data should I provide?]
+            U4[Should I provide data<br/>for resumption?]
+            U5[What type of resume data<br/>should I provide?]
             U1 --> U2 --> U3 --> U4 --> U5
         end
     end
@@ -57,8 +57,8 @@ graph TD
         direction LR   
         subgraph Fw2 [Framework]
             direction TB
-            FR1[Which entity is interrupted<br/>and how to re-run it?]
-            FR2[How to restore context<br/>for the interrupted entity?]
+            FR1[Which entity is interrupting<br/>and how to re-run it?]
+            FR2[How to restore context for<br/>the interrupted entity?]
             FR3[How to route user data<br/>to the interrupted entity?]
             FR1 --> FR2 --> FR3
         end
@@ -67,8 +67,8 @@ graph TD
             direction TB
             DR1[Am I the explicit<br/>resume target?]
             DR2[If not target, should I<br/>re-interrupt to continue?]
-            DR3[What state did I persist<br/>on interrupt?]
-            DR4[If resume data is provided,<br/>how should I process it?]
+            DR3[What state did I preserve<br/>at interrupt time?]
+            DR4[If user resume data is provided,<br/>how to handle it?]
             DR1 --> DR2 --> DR3 --> DR4
         end
         
@@ -90,11 +90,11 @@ Therefore, our goals are:
 
 1. Help developers answer the above questions as easily as possible.
 2. Help end users answer the above questions as easily as possible.
-3. Enable the framework to answer the above questions automatically and out-of-the-box.
+3. Enable the framework to automatically answer the above questions out of the box.
 
 ## Quick Start
 
-We demonstrate the functionality with a simple ticket booking Agent that asks the user for "confirmation" before actually completing the booking. The user can "approve" or "reject" the booking operation. The complete code for this example is at: [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/1_approval](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/1_approval)
+We demonstrate the functionality with a simple ticket booking Agent. This Agent requests "confirmation" from the user before actually completing the booking, and users can "approve" or "reject" the booking operation. The complete code for this example is at: [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/1_approval](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/1_approval)
 
 1. Create a ChatModelAgent and configure a Tool for booking tickets.
 
@@ -156,7 +156,7 @@ Based on the user's request, use the "BookTicket" tool to book tickets.`,
 }
 ```
 
-2. Create a Runner, configure CheckPointStore, and run with a CheckPointID. Eino uses CheckPointStore to save the Agent's running state when interrupted. Here we use InMemoryStore, which saves in memory. In actual use, a distributed store like Redis is recommended. Additionally, Eino uses CheckPointID to uniquely identify and link the "before interrupt" and "after interrupt" runs (or multiple runs).
+1. Create a Runner, configure CheckPointStore, and run it, passing in a CheckPointID. Eino uses CheckPointStore to save the Agent's running state when interrupted. Here we use InMemoryStore, which stores in memory. In actual use, distributed storage like redis is recommended. Additionally, Eino uses CheckPointID to uniquely identify and link the "before interrupt" and "after interrupt" runs (or multiple runs).
 
 ```go
 a := NewTicketBookingAgent()
@@ -172,7 +172,7 @@ runner := adk.NewRunner(ctx, adk.RunnerConfig{
 iter := runner.Query(ctx, "book a ticket for Martin, to Beijing, on 2025-12-01, the phone number is 1234567. directly call tool.", adk.WithCheckPointID("1"))
 ```
 
-3. Get the interrupt information from AgentEvent `event.Action.Interrupted.InterruptContexts[0].Info`, which here is "preparing to book which train for whom, do you approve". You will also get an InterruptID (`event.Action.Interrupted.InterruptContexts[0].ID`), which the Eino framework uses to identify "where the interrupt occurred". Here it's printed directly to the terminal; in actual use, it may need to be returned as an HTTP response to the frontend.
+1. Get interrupt information from AgentEvent `event.Action.Interrupted.InterruptContexts[0].Info`, which in this case is "about to book which train for whom, approve or not". You'll also get an InterruptID (`event.Action.Interrupted.InterruptContexts[0].ID`), which the Eino framework uses to identify "where the interrupt occurred". Here it's printed directly to the terminal; in actual use, it may need to be returned to the frontend as an HTTP response.
 
 ```go
 var lastEvent *adk.AgentEvent
@@ -195,7 +195,7 @@ for {
 interruptID := lastEvent.Action.Interrupted.InterruptContexts[0].ID
 ```
 
-4. Show the interrupt information to the user and receive the user's response, such as "approve". In this example, everything is displayed to and received from the user on the local terminal. In actual applications, a ChatBot might be used for input/output.
+1. Display interrupt information to the user and receive the user's response, such as "approve". In this example, both display to user and receiving user input happen on the local terminal. In actual applications, it might use a ChatBot for input/output.
 
 ```go
 var apResult *tool.ApprovalResult
@@ -237,7 +237,7 @@ tool 'BookTicket' interrupted with arguments '{"location":"Beijing","passenger_n
 your input here: Y
 ```
 
-5. Call Runner.ResumeWithParams, passing the same InterruptID and the data for resumption, which here is "approve". In this example, the initial `Runner.Query` and subsequent `Runner.ResumeWithParams` are in the same instance. In real scenarios, it might be two requests from a ChatBot frontend hitting two different server instances. As long as the CheckPointID is the same both times and the CheckPointStore configured for the Runner is distributed storage, Eino can achieve cross-instance interrupt resumption.
+1. Call Runner.ResumeWithParams, passing in the same InterruptID and the data for resumption, which here is "approve". In this example, the initial `Runner.Query` and the subsequent `Runner.ResumeWithParams` are in the same instance. In real scenarios, it might be two requests from a ChatBot frontend hitting two different server instances. As long as the CheckPointID is the same for both, and the CheckPointStore configured for Runner is distributed storage, Eino can achieve cross-instance interrupt recovery.
 
 ```go
 // here we directly resumes right in the same instance where the original `Runner.Query` happened.
@@ -292,17 +292,17 @@ answer: The ticket for Martin to Beijing on 2025-12-01 has been successfully boo
 
 ### More Examples
 
-- Review and Edit Mode: Allows human review and in-place editing of tool call parameters before execution. [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/2_review-and-edit](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/2_review-and-edit)
-- Feedback Loop Mode: Iterative improvement mode where the agent generates content and humans provide qualitative feedback for improvement. [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/3_feedback-loop](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/3_feedback-loop)
-- Follow-up Mode: Proactive mode where the agent identifies insufficient tool output and requests clarification or next steps. [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/4_follow-up](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/4_follow-up)
+- Review and Edit Mode: Allows human review and in-place editing of tool call arguments before execution. [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/2_review-and-edit](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/2_review-and-edit)
+- Feedback Loop Mode: Iterative refinement pattern where agent generates content and human provides qualitative feedback for improvement. [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/3_feedback-loop](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/3_feedback-loop)
+- Follow-up Mode: Proactive pattern where agent identifies insufficient tool output and requests clarification or next steps. [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/4_follow-up](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/4_follow-up)
 - Interrupt within supervisor architecture: [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/5_supervisor](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/5_supervisor)
 - Interrupt within plan-execute-replan architecture: [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/6_plan-execute-replan](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/6_plan-execute-replan)
 - Interrupt within deep-agents architecture: [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/7_deep-agents](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/7_deep-agents)
-- Interrupt when a sub-agent of supervisor is plan-execute-replan: [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/8_supervisor-plan-execute](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/8_supervisor-plan-execute)
+- Interrupt when supervisor's sub-agent is plan-execute-replan: [https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/8_supervisor-plan-execute](https://github.com/cloudwego/eino-examples/tree/main/adk/human-in-the-loop/8_supervisor-plan-execute)
 
 ## Architecture Overview
 
-The following flowchart illustrates the high-level interrupt/resume flow:
+The following flowchart illustrates the high-level interrupt/resume process:
 
 ```mermaid
 flowchart TD
@@ -328,13 +328,13 @@ flowchart TD
         ResumeData
     end
     
-    Run -->|any number of transfer / call| E
-    R <-->|persist/restore| C
-    Resume -->|replay transfer / call| E
-    C -->|auto assigned to| E
+    Run -->|Any number of transfer / call| E
+    R <-->|Store/Restore| C
+    Resume -->|Replay transfer / call| E
+    C -->|Automatically assigned to| E
 ```
 
-The following sequence diagram shows the time-ordered interaction flow between the three main participants:
+The following sequence diagram shows the chronological interaction flow between the three main participants:
 
 ```mermaid
 sequenceDiagram
@@ -344,23 +344,23 @@ sequenceDiagram
     
    
     Note over D,F: 1. Interrupt Phase
-    D->>F: call StatefulInterrupt()<br>specify info and state
-    F->>F: persist InterruptID->{address, state}
+    D->>F: Call StatefulInterrupt()<br>specify info and state
+    F->>F: Persist InterruptID->{address, state}
     
    
     Note over F,U: 2. User Decision Phase
-    F->>U: emit InterruptID->{address, info}
-    U->>U: decide InterruptID->{resume data}
-    U->>F: call TargetedResume()<br>provide InterruptID->{resume data}
+    F->>U: Emit InterruptID->{address, info}
+    U->>U: Decide InterruptID->{resume data}
+    U->>F: Call TargetedResume()<br>provide InterruptID->{resume data}
     
    
     Note over D,F: 3. Resume Phase
-    F->>F: route to interrupted entity
-    F->>D: provide state and resume data
-    D->>D: process resume
+    F->>F: Route to interrupted entity
+    F->>D: Provide state and resume data
+    D->>D: Handle resumption
 ```
 
-## ADK Package APIs
+## ADK Package API
 
 The ADK package provides high-level abstractions for building interruptible agents with human-in-the-loop capabilities.
 
@@ -368,7 +368,7 @@ The ADK package provides high-level abstractions for building interruptible agen
 
 #### `Interrupt`
 
-Creates a basic interrupt action. Use when an agent needs to pause execution to request external input or intervention, but does not need to save any internal state for resumption.
+Creates a basic interrupt action. Use when an agent needs to pause execution to request external input or intervention but doesn't need to save any internal state for resumption.
 
 ```go
 func Interrupt(ctx context.Context, info any) *AgentEvent
@@ -379,7 +379,7 @@ func Interrupt(ctx context.Context, info any) *AgentEvent
 - `ctx`: The context of the running component.
 - `info`: User-facing data describing the reason for the interrupt.
 
-**Returns:** `*AgentEvent` with an interrupt action.
+**Returns:** `*AgentEvent` with interrupt action.
 
 **Example:**
 
@@ -394,7 +394,7 @@ return adk.Interrupt(ctx, "User query is unclear, please clarify.")
 
 #### `StatefulInterrupt`
 
-Creates an interrupt action while saving the agent's internal state. Use when an agent has internal state that must be restored to continue correctly.
+Creates an interrupt action while also saving the agent's internal state. Use when an agent has internal state that must be restored to continue correctly.
 
 ```go
 func StatefulInterrupt(ctx context.Context, info any, state any) *AgentEvent
@@ -406,14 +406,14 @@ func StatefulInterrupt(ctx context.Context, info any, state any) *AgentEvent
 - `info`: User-facing data describing the interrupt.
 - `state`: The agent's internal state object, which will be serialized and stored.
 
-**Returns:** `*AgentEvent` with an interrupt action.
+**Returns:** `*AgentEvent` with interrupt action.
 
 **Example:**
 
 ```go
 // Inside an agent's Run method:
 
-// Define the state to save.
+// Define state to save.
 type MyAgentState struct {
     ProcessedItems int
     CurrentTopic   string
@@ -432,7 +432,7 @@ return adk.StatefulInterrupt(ctx, "Need user feedback before continuing", curren
 
 #### `CompositeInterrupt`
 
-Creates an interrupt action for components that coordinate multiple sub-components. It combines interrupts from one or more child agents into a single, cohesive interrupt. Any agent containing child agents (e.g., custom `Sequential` or `Parallel` agents) uses this to propagate their children's interrupts.
+Creates an interrupt action for components that coordinate multiple sub-components. It combines one or more sub-agent interrupts into a single, cohesive interrupt. Any agent containing sub-agents (e.g., custom `Sequential` or `Parallel` agents) uses this to propagate their children's interrupts.
 
 ```go
 func CompositeInterrupt(ctx context.Context, info any, state any, 
@@ -443,29 +443,29 @@ func CompositeInterrupt(ctx context.Context, info any, state any,
 
 - `ctx`: The context of the running component.
 - `info`: User-facing data describing the coordinator's own interrupt reason.
-- `state`: The coordinator agent's own state (e.g., the index of the interrupted child agent).
-- `subInterruptSignals`: A variadic list of `InterruptSignal` objects from interrupted child agents.
+- `state`: The coordinator agent's own state (e.g., index of interrupted sub-agent).
+- `subInterruptSignals`: Variadic list of `InterruptSignal` objects from interrupted sub-agents.
 
-**Returns:** `*AgentEvent` with an interrupt action.
+**Returns:** `*AgentEvent` with interrupt action.
 
 **Example:**
 
 ```go
-// In a custom sequential agent running two child agents...
+// In a custom sequential agent that runs two sub-agents...
 subAgent1 := &myInterruptingAgent{}
 subAgent2 := &myOtherAgent{}
 
 // If subAgent1 returns an interrupt event...
 subInterruptEvent := subAgent1.Run(ctx, input)
 
-// The parent agent must capture it and wrap it in CompositeInterrupt.
+// The parent agent must catch it and wrap it in a CompositeInterrupt.
 if subInterruptEvent.Action.Interrupted != nil {
-    // The parent agent can add its own state, like which child agent was interrupted.
+    // The parent agent can add its own state, like which child was interrupted.
     parentState := map[string]int{"interrupted_child_index": 0}
     
     // Bubble up the interrupt.
     return adk.CompositeInterrupt(ctx, 
-        "A child agent needs attention", 
+        "A sub-agent needs attention", 
         parentState, 
         subInterruptEvent.Action.Interrupted.internalInterrupted,
     )
@@ -482,17 +482,17 @@ When agent execution is interrupted, the `AgentEvent` contains structured interr
 
 ```go
 type InterruptCtx struct {
-    // ID is the unique, fully qualified address of the interrupt point, used for targeted resume.
-    // For example: "agent:A;node:graph_a;tool:tool_call_123"
+    // ID is the unique, fully-qualified address of the interrupt point, used for targeted resumption.
+    // Example: "agent:A;node:graph_a;tool:tool_call_123"
     ID string
 
     // Address is a structured sequence of AddressSegment segments leading to the interrupt point.
     Address Address
 
-    // Info is the user-facing information associated with the interrupt, provided by the component that triggered it.
+    // Info is user-facing information associated with the interrupt, provided by the component that triggered it.
     Info any
 
-    // IsRootCause indicates whether the interrupt point is the exact root cause of the interrupt.
+    // IsRootCause indicates if the interrupt point is the exact root cause of the interrupt.
     IsRootCause bool
 
     // Parent points to the context of the parent component in the interrupt chain (nil for top-level interrupts).
@@ -503,7 +503,7 @@ type InterruptCtx struct {
 The following example shows how to access this information:
 
 ```go
-// At the application layer, after an interrupt:
+// At the application layer, after interruption:
 if event.Action != nil && event.Action.Interrupted != nil {
     interruptInfo := event.Action.Interrupted
     
@@ -517,11 +517,11 @@ if event.Action != nil && event.Action.Interrupted != nil {
 }
 ```
 
-### 3. APIs for End User Resume
+### 3. APIs for End User Resumption
 
 #### `(*Runner).ResumeWithParams`
 
-Continues interrupted execution from a checkpoint using the "explicit targeted resume" strategy. This is the most common and powerful way to resume, allowing you to target specific interrupt points and provide data for them.
+Continues interrupted execution from a checkpoint using the "explicit targeted resumption" strategy. This is the most common and powerful way to resume, allowing you to target specific interrupt points and provide data to them.
 
 When using this method:
 
@@ -537,7 +537,7 @@ func (r *Runner) ResumeWithParams(ctx context.Context, checkPointID string,
 
 - `ctx`: The context for resumption.
 - `checkPointID`: The identifier of the checkpoint to resume from.
-- `params`: Interrupt parameters containing a mapping from interrupt IDs to resume data. These IDs can point to any interruptible component throughout the execution graph.
+- `params`: Interrupt parameters containing a map of interrupt IDs to resume data. These IDs can point to any interruptible component across the execution graph.
 - `opts`: Additional run options.
 
 **Returns:** An async iterator of agent events.
@@ -570,24 +570,24 @@ for event := range resumeIterator.Events() {
 }
 ```
 
-### 4. APIs for Developer Resume
+### 4. APIs for Developer Resumption
 
 #### `ResumeInfo` Struct
 
-`ResumeInfo` holds all the information needed to resume an interrupted agent execution. It is created by the framework and passed to the agent's `Resume` method.
+`ResumeInfo` holds all information needed to resume interrupted agent execution. It is created by the framework and passed to the agent's `Resume` method.
 
 ```go
 type ResumeInfo struct {
-    // WasInterrupted indicates whether this agent had an interrupt in the previous Runner run.
+    // WasInterrupted indicates if this agent had an interrupt in a previous Runner run.
     WasInterrupted bool
 
     // InterruptState holds the state saved via StatefulInterrupt or CompositeInterrupt.
     InterruptState any
 
-    // IsResumeTarget indicates whether this agent is a specific target of ResumeWithParams.
+    // IsResumeTarget indicates if this agent is a specific target of ResumeWithParams.
     IsResumeTarget bool
 
-    // ResumeData holds the data provided by the user for this agent.
+    // ResumeData holds user-provided data for this agent.
     ResumeData any
 
     // ... other fields
@@ -608,16 +608,16 @@ import (
 // Inside an agent's Resume method:
 func (a *myAgent) Resume(ctx context.Context, info *adk.ResumeInfo, opts ...adk.AgentRunOption) *adk.AsyncIterator[*adk.AgentEvent] {
     if !info.WasInterrupted {
-        // Already entered the Resume method, must have WasInterrupted = true
+        // Already entered Resume method, must have WasInterrupted = true
         return adk.NewAsyncIterator([]*adk.AgentEvent{{Err: errors.New("not an interrupt")}}, nil)
     }
 
     if !info.IsResumeTarget {
-        // This agent is not a specific target, so it must re-interrupt to preserve its state.
+        // This agent is not a specific target, so must re-interrupt to preserve its state.
         return adk.StatefulInterrupt(ctx, "Waiting for another part of the workflow to be resumed", info.InterruptState)
     }
 
-    // This agent is the target. Process the resume data.
+    // This agent is the target. Handle the resume data.
     if info.ResumeData != nil {
         userInput, ok := info.ResumeData.(string)
         if ok {
@@ -633,15 +633,15 @@ func (a *myAgent) Resume(ctx context.Context, info *adk.ResumeInfo, opts ...adk.
 }
 ```
 
-## Compose Package APIs
+## Compose Package API
 
-The `compose` package provides low-level building blocks for creating complex, interruptible workflows. Suitable for throwing interrupts and handling resumes in Graph Nodes.
+The `compose` package provides low-level building blocks for creating complex, interruptible workflows. Suitable for throwing interrupts and handling resumption in Graph Nodes.
 
 ### 1. APIs for Interrupting
 
 #### `Interrupt`
 
-Creates a special error that signals the execution engine to interrupt the current run at the component's specific address and save a checkpoint. This is the standard way for a single, non-composite component to signal a resumable interrupt.
+Creates a special error that signals the execution engine to interrupt the current run at a component's specific address and save a checkpoint. This is the standard way for a single, non-composite component to signal a resumable interrupt.
 
 ```go
 func Interrupt(ctx context.Context, info any) error
@@ -656,7 +656,7 @@ func Interrupt(ctx context.Context, info any) error
 
 #### `StatefulInterrupt`
 
-Similar to `Interrupt`, but also saves the component's internal state. The state is saved in the checkpoint and provided back to the component via `GetInterruptState` on resume.
+Similar to `Interrupt`, but also saves the component's internal state. The state is saved in the checkpoint and provided back to the component via `GetInterruptState` upon resumption.
 
 ```go
 func StatefulInterrupt(ctx context.Context, info any, state any) error
@@ -666,13 +666,13 @@ func StatefulInterrupt(ctx context.Context, info any, state any) error
 
 - `ctx`: The context of the running component.
 - `info`: User-facing information about the interrupt.
-- `state`: The internal state that the interrupted component needs to persist.
+- `state`: The internal state that the interrupting component needs to persist.
 
 ---
 
 #### `CompositeInterrupt`
 
-Creates a special error representing a composite interrupt. It is designed for "composite" nodes (like `ToolsNode`) or any component that coordinates multiple independent, interruptible sub-processes. It bundles multiple child interrupt errors into a single error that the engine can deconstruct into a flat list of resumable points.
+Creates a special error representing a composite interrupt. It is designed for "composite" nodes (like `ToolsNode`) or any component that coordinates multiple independent, interruptible sub-processes. It bundles multiple sub-interrupt errors into a single error that the engine can deconstruct into a flat list of resumable points.
 
 ```go
 func CompositeInterrupt(ctx context.Context, info any, state any, errs ...error) error
@@ -681,8 +681,8 @@ func CompositeInterrupt(ctx context.Context, info any, state any, errs ...error)
 **Parameters:**
 
 - `ctx`: The context of the running composite node.
-- `info`: User-facing information for the composite node itself (can be `nil`).
-- `state`: The state of the composite node itself (can be `nil`).
+- `info`: User-facing information from the composite node itself (can be `nil`).
+- `state`: The composite node's own state (can be `nil`).
 - `errs`: A list of errors from sub-processes. These can be `Interrupt`, `StatefulInterrupt`, or nested `CompositeInterrupt` errors.
 
 **Example:**
@@ -698,7 +698,7 @@ for _, process := range processes {
     }
 }
 
-// If any sub-process interrupts, bundle them together.
+// If any sub-process interrupted, bundle them up.
 if len(errs) > 0 {
     // The composite node can save its own state, e.g., which processes have completed.
     return compose.CompositeInterrupt(ctx, "Parallel execution needs input", parentState, errs...)
@@ -709,7 +709,7 @@ if len(errs) > 0 {
 
 #### `ExtractInterruptInfo`
 
-Extracts a structured `InterruptInfo` object from an error returned by a `Runnable`'s `Invoke` or `Stream` method. This is the primary way for applications to get a list of all interrupt points after execution pauses.
+Extracts the structured `InterruptInfo` object from an error returned by a `Runnable`'s `Invoke` or `Stream` method. This is the primary way for an application to get a list of all interrupt points after execution pauses.
 
 ```go
 composeInfo, ok := compose.ExtractInterruptInfo(err)
@@ -722,23 +722,23 @@ if ok {
 **Example:**
 
 ```go
-// After calling a graph that interrupts...
+// After calling a graph that interrupted...
 _, err := graph.Invoke(ctx, "initial input")
 
 if err != nil {
     interruptInfo, isInterrupt := compose.ExtractInterruptInfo(err)
     if isInterrupt {
-        fmt.Printf("Execution was interrupted by %d interrupt points.\n", len(interruptInfo.InterruptContexts))
+        fmt.Printf("Execution was interrupted with %d interrupt points.\n", len(interruptInfo.InterruptContexts))
         // Now you can inspect interruptInfo.InterruptContexts to decide how to resume.
     }
 }
 ```
 
-### 3. APIs for End User Resume
+### 3. APIs for End User Resumption
 
 #### `Resume`
 
-Prepares the context for an "explicit targeted resume" operation by targeting one or more components without providing data. This is useful when the resume action itself is the signal.
+Prepares the context for an "explicit targeted resumption" operation by targeting one or more components without providing data. Useful when the resumption action itself is the signal.
 
 ```go
 func Resume(ctx context.Context, interruptIDs ...string) context.Context
@@ -747,7 +747,7 @@ func Resume(ctx context.Context, interruptIDs ...string) context.Context
 **Example:**
 
 ```go
-// After an interrupt, we get two interrupt IDs: id1 and id2.
+// After interrupt, we get two interrupt IDs: id1 and id2.
 // We want to resume both without providing specific data.
 resumeCtx := compose.Resume(context.Background(), id1, id2)
 
@@ -759,7 +759,7 @@ resumeCtx := compose.Resume(context.Background(), id1, id2)
 
 #### `ResumeWithData`
 
-Prepares a context to resume a single specific component with data. It is a convenience wrapper around `BatchResumeWithData`.
+Prepares a context to resume a single specific component with data. It's a convenience wrapper around `BatchResumeWithData`.
 
 ```go
 func ResumeWithData(ctx context.Context, interruptID string, data any) context.Context
@@ -778,7 +778,7 @@ resumeCtx := compose.ResumeWithData(context.Background(), interruptID, "This is 
 
 #### `BatchResumeWithData`
 
-This is the core function for preparing a resume context. It injects a mapping of resume targets (interrupt IDs) and their corresponding data into the context. Components whose interrupt IDs exist as keys will receive `isResumeFlow = true` when calling `GetResumeContext`.
+This is the core function for preparing a resume context. It injects a map of resume targets (interrupt IDs) and their corresponding data into the context. Components whose interrupt IDs exist as keys will receive `isResumeFlow = true` when calling `GetResumeContext`.
 
 ```go
 func BatchResumeWithData(ctx context.Context, resumeData map[string]any) context.Context
@@ -799,11 +799,11 @@ resumeCtx := compose.BatchResumeWithData(context.Background(), resumeData)
 // Pass this context to the next Invoke/Stream call.
 ```
 
-### 4. APIs for Developer Resume
+### 4. APIs for Developer Resumption
 
 #### `GetInterruptState`
 
-Provides a type-safe way to check and retrieve the persisted state from a previous interrupt. This is the primary function for components to learn about their past state.
+Provides a type-safe way to check and retrieve persisted state from a previous interrupt. This is the primary function for a component to learn about its past state.
 
 ```go
 func GetInterruptState[T any](ctx context.Context) (wasInterrupted bool, hasState bool, state T)
@@ -812,7 +812,7 @@ func GetInterruptState[T any](ctx context.Context) (wasInterrupted bool, hasStat
 **Return values:**
 
 - `wasInterrupted`: `true` if the node was part of a previous interrupt.
-- `hasState`: `true` if state was provided and successfully converted to type `T`.
+- `hasState`: `true` if state was provided and successfully cast to type `T`.
 - `state`: The typed state object.
 
 **Example:**
@@ -843,8 +843,8 @@ func GetResumeContext[T any](ctx context.Context) (isResumeTarget bool, hasData 
 
 **Return values:**
 
-- `isResumeTarget`: `true` if the component was explicitly targeted by the resume call. If `false`, the component must re-interrupt to preserve its state. Note that if a component is not directly targeted but is a parent of a directly targeted component, `isResumeTarget` will still be `true`. For example, if NodeA is interrupted and targeted for resume, then GraphA containing NodeA will also be a resume target.
-- `hasData`: `true` if data was provided for this component.
+- `isResumeTarget`: `true` if the component was explicitly targeted by the resume call. If `false`, the component must re-interrupt to preserve its state. Note that if a component is not directly targeted but is a parent of a directly targeted component, `isResumeTarget` will still be `true`. For example, if NodeA is interrupted and targeted for resumption, then GraphA containing NodeA will also be a resume target.
+- `hasData`: `true` if resume data was provided for this component.
 - `data`: The typed data provided by the user.
 
 **Example:**
@@ -860,37 +860,37 @@ if wasInterrupted {
         if hasData {
             fmt.Printf("Resuming with user data: %s\n", resumeData)
         }
-        // Complete work using restored state and resume data
+        // Complete the work using restored state and resume data
         result := processWithStateAndData(state, resumeData)
         return result, nil
     } else {
-        // This component is not the target, so it must re-interrupt.
+        // This component is not the target, so must re-interrupt.
         return compose.StatefulInterrupt(ctx, "Waiting for another component to be resumed", oldState)
     }
 }
 ```
 
-## Tool Package APIs
+## Tool Package API
 
-Completely symmetric with the Compose Package APIs, used for throwing interrupts and handling resumes inside Tools. See the `components/tool/interrupt.go` file.
+Completely symmetric to the Compose Package API, used for throwing interrupts and handling resumption inside Tools. See the `components/tool/interrupt.go` file.
 
-## Underlying Architecture: Addressing System
+## Underlying Architecture: The Addressing System
 
 ### The Need for Addresses
 
-The addressing system is designed to solve three fundamental needs in effective human-in-the-loop interaction:
+The addressing system is designed to solve three fundamental requirements for effective human-in-the-loop interactions:
 
 1. **State Attachment**: To attach local state to interrupt points, we need a stable, unique locator for each interrupt point.
-2. **Targeted Resume**: To provide targeted resume data for specific interrupt points, we need a way to precisely identify each point.
+2. **Targeted Resumption**: To provide targeted resume data to specific interrupt points, we need a way to precisely identify each point.
 3. **Interrupt Localization**: To tell end users exactly where in the execution hierarchy the interrupt occurred.
 
-### How Addresses Meet These Needs
+### How Addresses Meet These Requirements
 
-The address system meets these needs through three key properties:
+The address system meets these requirements through three key properties:
 
-- **Stability**: Addresses remain consistent across multiple executions, ensuring the same interrupt point can be reliably identified.
-- **Uniqueness**: Each interrupt point has a unique address, enabling precise targeting during resume.
-- **Hierarchical Structure**: Addresses provide a clear hierarchical path showing exactly where in the execution flow the interrupt occurred.
+- **Stability**: Addresses remain consistent across multiple executions, ensuring the same interrupt points can be reliably identified.
+- **Uniqueness**: Each interrupt point has a unique address, enabling precise targeting during resumption.
+- **Hierarchy**: Addresses provide a clear hierarchical path showing exactly where in the execution flow the interrupt occurred.
 
 ### Address Structure and Segment Types
 
@@ -910,7 +910,7 @@ type AddressSegment struct {
 
 #### Address Structure Diagram
 
-The following diagrams illustrate the hierarchical structure of `Address` and its `AddressSegment` from both ADK and Compose perspectives:
+The following diagrams illustrate the hierarchical structure of `Address` and its `AddressSegment` from both ADK and Compose layer perspectives:
 
 **ADK Layer Perspective** (Simplified, Agent-centric view):
 
@@ -943,7 +943,7 @@ graph TD
     style D3 fill:#e8f5e8
 ```
 
-**Compose Layer Perspective** (Detailed, full hierarchy view):
+**Compose Layer Perspective** (Detailed, complete hierarchical view):
 
 ```mermaid
 graph TD
@@ -996,16 +996,16 @@ const (
 )
 ```
 
-**Key Features:**
+**Key characteristics:**
 
-- **Agent Segment**: Represents agent-level execution segments (typically omits `SubID`).
-- **Tool Segment**: Represents tool-level execution segments (`SubID` is used to ensure uniqueness).
-- **Simplified View**: Abstracts away underlying complexity for agent developers.
-- **Example Path**: `Agent:A → Agent:B → Tool:search_tool:1`
+- **Agent segments**: Represent agent-level execution segments (typically `SubID` is omitted).
+- **Tool segments**: Represent tool-level execution segments (`SubID` is used to ensure uniqueness).
+- **Simplified view**: Abstracts away underlying complexity for agent developers.
+- **Example path**: `Agent:A → Agent:B → Tool:search_tool:1`
 
 #### Compose Layer Segment Types
 
-The `compose` layer provides fine-grained control and visibility over the entire execution hierarchy:
+The `compose` layer provides fine-grained control and visibility into the entire execution hierarchy:
 
 ```go
 type AddressSegmentType = core.AddressSegmentType
@@ -1017,19 +1017,19 @@ const (
 )
 ```
 
-**Key Features:**
+**Key characteristics:**
 
-- **Runnable Segment**: Represents top-level executables (Graph, Workflow, Chain).
-- **Node Segment**: Represents individual nodes in the execution graph.
-- **Tool Segment**: Represents specific tool calls within a `ToolsNode`.
-- **Detailed View**: Provides full visibility into the execution hierarchy.
-- **Example Path**: `Runnable:my_graph → Node:sub_graph → Node:tools_node → Tool:mcp_tool:1`
+- **Runnable segments**: Represent top-level executables (Graph, Workflow, Chain).
+- **Node segments**: Represent individual nodes in an execution graph.
+- **Tool segments**: Represent specific tool calls within a `ToolsNode`.
+- **Detailed view**: Provides full visibility into the execution hierarchy.
+- **Example path**: `Runnable:my_graph → Node:sub_graph → Node:tools_node → Tool:mcp_tool:1`
 
 ### Extensibility and Design Principles
 
-The address segment type system is designed to be **extensible**. Framework developers can add new segment types to support additional execution modes or custom components while maintaining backward compatibility.
+The address segment type system is designed to be **extensible**. Framework developers can add new segment types to support additional execution patterns or custom components while maintaining backward compatibility.
 
-**Key Design Principle**: The ADK layer provides simplified, agent-centric abstractions, while the `compose` layer handles the full complexity of the execution hierarchy. This layered approach allows developers to work at the abstraction level that suits their needs.
+**Key design principle**: The ADK layer provides simplified, agent-centric abstractions while the `compose` layer handles the full complexity of the execution hierarchy. This layered approach allows developers to work at the abstraction level that suits their needs.
 
 ## Backward Compatibility
 
@@ -1037,25 +1037,25 @@ The human-in-the-loop framework maintains full backward compatibility with exist
 
 ### 1. Graph Interrupt Compatibility
 
-Previous graph interrupt flows using the deprecated `NewInterruptAndRerunErr` or `InterruptAndRerun` in nodes/tools will continue to be supported, but require one critical additional step: **error wrapping**.
+Previous graph interrupt flows using the deprecated `NewInterruptAndRerunErr` or `InterruptAndRerun` in nodes/tools will continue to be supported, but with one critical additional step: **error wrapping**.
 
-Since these functions are unaware of the new addressing system, it is the responsibility of the component calling them to capture the error and wrap the address information into it using the `WrapInterruptAndRerunIfNeeded` helper function. This is typically done inside the composite node (like the official ToolsNode) that calls the legacy component.
+Since these functions are not aware of the new addressing system, the component calling them is responsible for catching the error and wrapping it with address information using the `WrapInterruptAndRerunIfNeeded` helper function. This is typically done inside composite nodes (like the official ToolsNode) that call legacy components.
 
-> **Note**: If you choose **not** to use `WrapInterruptAndRerunIfNeeded`, the original behavior of these functions will be preserved. End users can still use `ExtractInterruptInfo` to get information from the error as before. However, since the resulting interrupt context will lack the correct address, the new targeted resume APIs will not be available for that specific interrupt point. To fully enable the new address-aware functionality, wrapping is required.
+> **Note**: If you choose **not** to use `WrapInterruptAndRerunIfNeeded`, the original behavior of these functions will be preserved. End users can still use `ExtractInterruptInfo` to get information from the error as before. However, since the resulting interrupt context will lack the correct address, you will not be able to use the new targeted resumption APIs for that specific interrupt point. To fully enable the new address-aware features, wrapping is required.
 
-```go
+```java
 // 1. A legacy tool using deprecated interrupt
 func myLegacyTool(ctx context.Context, input string) (string, error) {
     // ... tool logic
     // This error is not address-aware.
-    return "", compose.NewInterruptAndRerunErr("Requires user approval")
+    return "", compose.NewInterruptAndRerunErr("Need user approval")
 }
 
-// 2. A composite node calling the legacy tool
+// 2. A composite node that calls the legacy tool
 var legacyToolNode = compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
     out, err := myLegacyTool(ctx, input)
     if err != nil {
-        // Critical: The caller must wrap the error to add the address.
+        // CRITICAL: Caller must wrap the error to add address.
         // The "tool:legacy_tool" segment will be appended to the current address.
         segment := compose.AddressSegment{Type: "tool", ID: "legacy_tool"}
         return "", compose.WrapInterruptAndRerunIfNeeded(ctx, segment, err)
@@ -1063,12 +1063,12 @@ var legacyToolNode = compose.InvokableLambda(func(ctx context.Context, input str
     return out, nil
 })
 
-// 3. End user code can now see the full address.
+// 3. End-user code can now see the full address.
 _, err := graph.Invoke(ctx, input)
 if err != nil {
     interruptInfo, exists := compose.ExtractInterruptInfo(err)
     if exists {
-        // The interrupt context will now have a correct, fully qualified address.
+        // The interrupt context will now have a correct, fully-qualified address.
         fmt.Printf("Interrupt Address: %s\n", interruptInfo.InterruptContexts[0].Address.String())
     }
 }
@@ -1078,15 +1078,15 @@ if err != nil {
 
 Static interrupts added via `WithInterruptBeforeNodes` or `WithInterruptAfterNodes` continue to work, but the way state is handled has been improved.
 
-When a static interrupt is triggered, an `InterruptCtx` is generated with an address pointing to the graph (or subgraph) where the interrupt was defined. The key is that the `InterruptCtx.Info` field now directly exposes the graph's state.
+When a static interrupt is triggered, an `InterruptCtx` is generated with an address pointing to the graph (or subgraph) that defined the interrupt. The key is that the `InterruptCtx.Info` field now directly exposes that graph's state.
 
 This enables a more direct and intuitive workflow:
 
 1. The end user receives the `InterruptCtx` and can inspect the graph's live state via the `.Info` field.
-2. They can directly modify this state object.
-3. They can then pass the modified graph state object back via `ResumeWithData` and `InterruptCtx.ID` to resume execution.
+2. They can modify this state object directly.
+3. They can then pass the modified graph state object back via `ResumeWithData` with the `InterruptCtx.ID` to resume execution.
 
-This new pattern often eliminates the need for the old `WithStateModifier` option, although it remains available for full backward compatibility.
+This new pattern often makes the old `WithStateModifier` option unnecessary, though it remains available for full backward compatibility.
 
 ```go
 // 1. Define a graph with its own local state
@@ -1097,24 +1097,24 @@ type MyGraphState struct {
 g := compose.NewGraph[string, string](compose.WithGenLocalState(func(ctx context.Context) *MyGraphState {
     return &MyGraphState{SomeValue: "initial"}
 }))
-// ... add nodes 1 and 2 to the graph ...
+// ... add nodes1 and node2 to graph ...
 
-// 2. Compile the graph with a static interrupt point
-// This will interrupt the graph itself after the "node_1" node completes.
+// 2. Compile graph with static interrupt point
+// This will interrupt the graph itself after "node_1" node completes.
 graph, err := g.Compile(ctx, compose.WithInterruptAfterNodes([]string{"node_1"}))
 
-// 3. Run the graph, which will trigger the static interrupt
+// 3. Run graph, this will trigger static interrupt
 _, err = graph.Invoke(ctx, "start")
 
-// 4. Extract the interrupt context and the graph's state
+// 4. Extract interrupt context and graph's state
 interruptInfo, isInterrupt := compose.ExtractInterruptInfo(err)
 if isInterrupt {
     interruptCtx := interruptInfo.InterruptContexts[0]
 
-    // The .Info field exposes the graph's current state
+    // .Info field exposes the graph's current state
     graphState, ok := interruptCtx.Info.(*MyGraphState)
     if ok {
-        // 5. Directly modify the state
+        // 5. Modify state directly
         fmt.Printf("Original state value: %s\n", graphState.SomeValue) // Prints "initial"
         graphState.SomeValue = "a-new-value-from-user"
 
@@ -1128,7 +1128,7 @@ if isInterrupt {
 
 ### 3. Agent Interrupt Compatibility
 
-Compatibility with legacy agents is maintained at the data structure level, ensuring that old agent implementations continue to work within the new framework. The key lies in how the `adk.InterruptInfo` and `adk.ResumeInfo` structs are populated.
+Compatibility with legacy agents is maintained at the data structure level, ensuring old agent implementations continue to function within the new framework. The key lies in how the `adk.InterruptInfo` and `adk.ResumeInfo` structs are populated.
 
 **For End Users (Application Layer):**
 
@@ -1137,16 +1137,16 @@ When receiving an interrupt from an agent, the `adk.InterruptInfo` struct will h
 - The new, structured `InterruptContexts` field.
 - The legacy `Data` field, which will contain the original interrupt information (e.g., `ChatModelAgentInterruptInfo` or `WorkflowInterruptInfo`).
 
-This allows end users to gradually migrate their application logic to use the richer `InterruptContexts` while still having access to the old `Data` field when needed.
+This allows end users to gradually migrate their application logic to use the richer `InterruptContexts` while still being able to access the old `Data` field when needed.
 
 **For Agent Developers:**
 
-When a legacy agent's `Resume` method is called, the `adk.ResumeInfo` struct it receives still contains the now-deprecated embedded `InterruptInfo` field. This field is populated with the same legacy data structures, allowing agent developers to maintain their existing resume logic without immediately updating to the new address-aware APIs.
+When a legacy agent's `Resume` method is called, the `adk.ResumeInfo` struct it receives still contains the now-deprecated embedded `InterruptInfo` field. This field is populated with the same legacy data structures, allowing agent developers to maintain their existing resumption logic without immediate updates to the new address-aware APIs.
 
 ```go
 // --- End User Perspective ---
 
-// After an agent run, you receive an interrupt event.
+// After agent run, you receive an interrupt event.
 if event.Action != nil && event.Action.Interrupted != nil {
     interruptInfo := event.Action.Interrupted
 
@@ -1155,10 +1155,10 @@ if event.Action != nil && event.Action.Interrupted != nil {
         fmt.Printf("New structured context available: %+v\n", interruptInfo.InterruptContexts[0])
     }
 
-    // 2. Old way (still works): Access the legacy Data field
+    // 2. Old way (still works): Access legacy Data field
     if chatInterrupt, ok := interruptInfo.Data.(*adk.ChatModelAgentInterruptInfo); ok {
         fmt.Printf("Legacy ChatModelAgentInterruptInfo still accessible.\n")
-        // ... logic using the old struct
+        // ... logic using old struct
     }
 }
 
@@ -1166,11 +1166,11 @@ if event.Action != nil && event.Action.Interrupted != nil {
 
 // Inside a legacy agent's Resume method:
 func (a *myLegacyAgent) Resume(ctx context.Context, info *adk.ResumeInfo) *adk.AsyncIterator[*adk.AgentEvent] {
-    // The deprecated embedded InterruptInfo field will still be populated.
-    // This allows old resume logic to continue working.
+    // The deprecated embedded InterruptInfo field is still populated.
+    // This allows old resumption logic to continue working.
     if info.InterruptInfo != nil {
         if chatInterrupt, ok := info.InterruptInfo.Data.(*adk.ChatModelAgentInterruptInfo); ok {
-            // ... existing resume logic relying on the old ChatModelAgentInterruptInfo struct
+            // ... existing resumption logic relying on old ChatModelAgentInterruptInfo struct
             fmt.Println("Resuming based on legacy InterruptInfo.Data field.")
         }
     }
@@ -1179,11 +1179,11 @@ func (a *myLegacyAgent) Resume(ctx context.Context, info *adk.ResumeInfo) *adk.A
 }
 ```
 
-### Migration Advantages
+### Migration Benefits
 
-- **Preserve Legacy Behavior**: Existing code will continue to work as it did. Old interrupt patterns will not cause crashes, but they also won't automatically gain new address-aware capabilities without modification.
-- **Gradual Adoption**: Teams can selectively enable new features on a case-by-case basis. For example, you can wrap legacy interrupts with `WrapInterruptAndRerunIfNeeded` only in workflows where you need targeted resume.
-- **Enhanced Functionality**: The new addressing system provides richer structured context (`InterruptCtx`) for all interrupts, while the old data fields are still populated for full compatibility.
+- **Preserved Legacy Behavior**: Existing code will continue to work as it did before. Old interrupt patterns won't cause crashes, but they also won't automatically gain the new address-aware capabilities without modification.
+- **Gradual Adoption**: Teams can selectively enable new features on a case-by-case basis. For example, you can wrap legacy interrupts with `WrapInterruptAndRerunIfNeeded` only in the workflows where you need targeted resumption.
+- **Enhanced Functionality**: The new addressing system provides richer, structured context (`InterruptCtx`) for all interrupts, while the old data fields are still populated for full compatibility.
 - **Flexible State Management**: For static graph interrupts, you can choose modern, direct state modification via the `.Info` field, or continue using the old `WithStateModifier` option.
 
 This backward compatibility model ensures a smooth transition for existing users while providing a clear path to adopting the new human-in-the-loop features.

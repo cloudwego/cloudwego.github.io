@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-30"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: 'Eino: 概述'
@@ -347,7 +347,7 @@ Eino 框架由几个部分组成：
 > 💡
 > 针对字节内部使用的组件，有对应的内部代码仓库：
 >
-> EinoBytedExt: [https://code.byted.org/search/flow/eino-byted-ext](https://code.byted.org/search/flow/eino-byted-ext)
+> EinoBytedExt: [https://code.byted.org/flow/eino-byted-ext](https://code.byted.org/flow/eino-byted-ext)
 >
 > 包含当前定位为内部使用的组件实现，如 llmgateway, bytedgpt, fornax tracing, bytees 等。
 

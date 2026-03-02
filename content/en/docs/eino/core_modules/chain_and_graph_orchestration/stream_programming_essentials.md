@@ -3,49 +3,49 @@ Description: ""
 date: "2026-01-30"
 lastmod: ""
 tags: []
-title: Eino Streaming Essentials
+title: Eino Stream Programming Essentials
 weight: 4
 ---
 
 > 💡
-> Recommended reading first: [Eino: Overview](/docs/eino/overview) and [Eino: Orchestration Design Principles](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+> Recommended reading first: [Eino: Basic Concepts Introduction](/docs/eino/overview) [Eino: Orchestration Design Principles](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
 
-## Streaming in Orchestration: Overview
+## Overview of Orchestration Streaming
 
 <a href="/img/eino/eino_component_runnable.png" target="_blank"><img src="/img/eino/eino_component_runnable.png" width="100%" /></a>
 
-Key factors when orchestrating streaming graphs:
+When orchestrating streaming Graphs, there are several key elements to consider:
 
-- Which Lambda operators does the component/Lambda offer: choose among Invoke, Stream, Collect, Transform.
-- In the topology, do upstream outputs and downstream inputs match (both streaming or both non-streaming)?
-- If they don’t match, use streaming helpers:
-  - Streaming: wrap `T` into a single-chunk `Stream[T]`.
-  - Concat: merge `Stream[T]` into a complete `T`. Each frame in `Stream[T]` is a piece of the final `T`.
+- What Lambda operators are included in components/Lambda: Choose from Invoke, Stream, Collect, Transform
+- In the orchestration topology, whether upstream and downstream nodes' inputs and outputs are both streams or both non-streams.
+- If upstream and downstream nodes' stream types cannot match, two operations are needed:
+  - Streaming: Convert T into a single-Chunk Stream[T]
+  - Concat: Merge Stream[T] into a complete T. Each "frame" in Stream[T] is part of this complete T.
 
-## Semantics of Streaming in Eino
+## The Meaning of Eino Stream Programming
 
-- Some components naturally emit frames — partial outputs of the final result — i.e., streaming output. Downstream must concat frames into a complete output. A typical example is an LLM.
-- Some components naturally accept frames and can begin meaningful processing before receiving the full input. For example, in a ReAct agent, a branch may decide to call a tool or end execution by inspecting the first frame of the ChatModel’s output.
-- Thus, each component may accept non-streaming or streaming input, and produce non-streaming or streaming output.
-- Combined, there are four streaming paradigms:
+- Some components naturally support outputting in "frames", outputting part of a complete output each time, i.e., "streaming" output. After streaming output is complete, downstream needs to concatenate these "frames" into complete output. A typical example is LLM.
+- Some components naturally support inputting in "frames", starting meaningful business processing or even completing business processing when receiving incomplete input. For example, in a react agent, the branch used to determine whether to call a tool or end the run can make a decision from the first frame of the LLM's streaming output by checking whether the message contains a tool call.
+- Therefore, a component, from the input perspective, has "non-streaming" input and "streaming" input two types. From the output perspective, has "non-streaming" output and "streaming" output two types.
+- Combined, there are four possible streaming programming paradigms
 
 <table>
-<tr><td>Function</td><td>Pattern</td><td>Interaction</td><td>Lambda Constructor</td><td>Notes</td></tr>
-<tr><td>Invoke</td><td>Non-streaming in, non-streaming out</td><td>Ping-Pong</td><td>compose.InvokableLambda()</td><td></td></tr>
-<tr><td>Stream</td><td>Non-streaming in, streaming out</td><td>Server-Streaming</td><td>compose.StreamableLambda()</td><td></td></tr>
-<tr><td>Collect</td><td>Streaming in, non-streaming out</td><td>Client-Streaming</td><td>compose.CollectableLambda()</td><td></td></tr>
-<tr><td>Transform</td><td>Streaming in, streaming out</td><td>Bidirectional-Streaming</td><td>compose.TransformableLambda()</td><td></td></tr>
+<tr><td>Function Name</td><td>Mode Description</td><td>Interaction Mode Name</td><td>Lambda Constructor</td><td>Notes</td></tr>
+<tr><td>Invoke</td><td>Non-streaming input, non-streaming output</td><td>Ping-Pong Mode</td><td>compose.InvokableLambda()</td><td></td></tr>
+<tr><td>Stream</td><td>Non-streaming input, streaming output</td><td>Server-Streaming Mode</td><td>compose.StreamableLambda()</td><td></td></tr>
+<tr><td>Collect</td><td>Streaming input, non-streaming output</td><td>Client-Streaming</td><td>compose.CollectableLambda()</td><td></td></tr>
+<tr><td>Transform</td><td>Streaming input, streaming output</td><td>Bidirectional-Streaming</td><td>compose.TransformableLambda()</td><td></td></tr>
 </table>
 
-## Streaming at the Single-Component Level
+## Streaming from Single Component Perspective
 
-Eino is a "component-first" framework; components can be used independently. Do you need to consider streaming when defining component interfaces? The simple answer is no. The complex answer is "follow real business scenarios".
+Eino is a "component first" framework where components can be used independently. When defining component interfaces, do you need to consider streaming programming issues? The simple answer is no. The complex answer is "based on real business scenarios".
 
-### Business Semantics of Components
+### Component's Own Business Paradigm
 
-A typical component, such as ChatModel or Retriever, should define its interface according to actual business semantics. If it actually supports a certain streaming paradigm, implement that paradigm. If a certain streaming paradigm has no real business scenario, there's no need to implement it. For example:
+A typical component, like Chat Model or Retriever, just needs to define interfaces based on actual business semantics. If it actually supports a certain streaming paradigm, implement that streaming paradigm. If a certain streaming paradigm has no real business scenario, then no need to implement it. For example:
 
-- ChatModel: besides `Invoke` (non-streaming), it naturally supports `Stream` (streaming). It therefore implements `Generate` and `Stream`, but `Collect` and `Transform` have no corresponding real business scenarios, so they are not implemented:
+- Chat Model, besides the non-streaming Invoke paradigm, also naturally supports the Stream streaming paradigm, so Chat Model's interface implements both Generate and Stream interfaces. But Collect and Transform have no corresponding real business scenarios, so corresponding interfaces are not implemented:
 
 ```go
 type ChatModel interface {
@@ -56,7 +56,7 @@ type ChatModel interface {
 }
 ```
 
-- Retriever: besides `Invoke` (non-streaming), the other three streaming paradigms have no real business scenarios, so it only implements `Retrieve`:
+- Retriever, besides the non-streaming Invoke paradigm, none of the other three streaming paradigms have real business scenarios, so only the Retrieve interface is implemented:
 
 ```go
 type Retriever interface {
@@ -64,12 +64,12 @@ type Retriever interface {
 }
 ```
 
-### Paradigms Supported by Components
+### Specific Paradigms Supported by Components
 
 <table>
-<tr><td>Component</td><td>Invoke</td><td>Stream</td><td>Collect</td><td>Transform</td></tr>
-<tr><td>ChatModel</td><td>yes</td><td>yes</td><td>no</td><td>no</td></tr>
-<tr><td>ChatTemplate</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>Component Name</td><td>Implements Invoke</td><td>Implements Stream</td><td>Implements Collect</td><td>Implements Transform</td></tr>
+<tr><td>Chat model</td><td>yes</td><td>yes</td><td>no</td><td>no</td></tr>
+<tr><td>Chat template</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
 <tr><td>Retriever</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
 <tr><td>Indexer</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
 <tr><td>Embedder</td><td>yes</td><td>no</td><td>no</td><td>no</td></tr>
@@ -78,36 +78,36 @@ type Retriever interface {
 <tr><td>Tool</td><td>yes</td><td>yes</td><td>no</td><td>no</td></tr>
 </table>
 
-Among official Eino components, only ChatModel and Tool additionally support `Stream`; all other components only support `Invoke`. For component details, see: [[Updating] Eino: Components Abstraction & Implementation](/docs/eino/core_modules/components)
+Among Eino official components, besides Chat Model and Tool which additionally support stream, all other components only support invoke. For specific component introduction, see: [[Updating] Eino: Components Abstraction & Implementation](/docs/eino/core_modules/components)
 
-`Collect` and `Transform` paradigms are currently only used in orchestration scenarios.
+Collect and Transform two streaming paradigms are currently only used in orchestration scenarios.
 
-## Streaming Across Multiple Components (Orchestration)
+## Streaming from Multiple Component Orchestration Perspective
 
-### Component Streaming Paradigms in Orchestration
+### Component Streaming Paradigm in Orchestration
 
-When a component is used standalone, its input and output streaming paradigms are fixed and cannot exceed the scope defined by the component interface.
+A component, when used standalone, has fixed input and output streaming paradigms that cannot exceed the range defined by the component's interface.
 
-- For example, ChatModel's input can only be non-streaming `[]Message`, and its output can be either non-streaming `Message` or streaming `StreamReader[Message]`, because ChatModel only implements the `Invoke` and `Stream` paradigms.
+- For example, Chat Model's input can only be non-streaming []Message, output can be either non-streaming Message or streaming StreamReader[Message], because Chat Model only implements Invoke and Stream paradigms.
 
-However, once a component is in an "orchestration" scenario where multiple components are combined, its input and output are no longer fixed, but depend on the "upstream output" and "downstream input" in the orchestration context. Consider a typical ReAct Agent orchestration diagram:
+However, once a component is in an "orchestration" scenario where multiple components are used together, its input and output are no longer so fixed, but depend on the "upstream output" and "downstream input" of this component in the orchestration scenario. For example, the typical orchestration diagram of React Agent:
 
 <a href="/img/eino/chatmodel_to_tool.png" target="_blank"><img src="/img/eino/chatmodel_to_tool.png" width="100%" /></a>
 
-In the diagram above, if Tool is a StreamableTool (i.e., output is `StreamReader[Message]`), then Tool → ChatModel could have streaming output. However, ChatModel has no business scenario for accepting streaming input, nor does it have a corresponding interface. At this point, Eino framework automatically provides ChatModel with the ability to accept streaming input:
+In the figure above, if Tool is a StreamableTool, i.e., output is StreamReader[Message], then Tool -> ChatModel could be streaming output. But Chat Model doesn't have a business scenario for receiving streaming input, nor a corresponding interface. At this point, the Eino framework automatically helps ChatModel complete the ability to receive streaming input:
 
 <a href="/img/eino/chatmodel_tool_loop.png" target="_blank"><img src="/img/eino/chatmodel_tool_loop.png" width="100%" /></a>
 
-The "Concat message stream" above is a capability automatically provided by the Eino framework. Even if it's not a message but any arbitrary `T`, as long as certain conditions are met, Eino framework will automatically perform this `StreamReader[T]` to `T` conversion. The condition is: **In orchestration, when a component's upstream output is `StreamReader[T]`, but the component only provides a business interface with `T` as input, the framework will automatically concat `StreamReader[T]` into `T` before inputting it to the component.**
+The Concat message stream above is automatically provided by the Eino framework. Even if it's not message, but any T, as long as specific conditions are met, the Eino framework will automatically do this StreamReader[T] to T conversion. The condition is: **In orchestration, when a component's upstream output is StreamReader[T], but the component only provides a business interface with T as input, the framework will automatically concat StreamReader[T] into T, then input to this component.**
 
 > 💡
-> The process of the framework automatically concatenating `StreamReader[T]` into `T` may require the user to provide a concat function. See [Eino: Orchestration Design Principles](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles) for the section on "merge frames".
+> The process of framework automatically concatenating StreamReader[T] into T may require users to provide a Concat function. See the chapter on "merging frames" in [Eino: Orchestration Design Principles](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles#share-FaVnd9E2foy4fAxtbTqcsgq3n5f).
 
-On the other hand, consider an opposite example. Still the ReAct Agent, this time with a more complete orchestration diagram:
+On the other hand, consider an opposite example. Still React Agent, this time a more complete orchestration diagram:
 
 <a href="/img/eino/tool_model_react.png" target="_blank"><img src="/img/eino/tool_model_react.png" width="100%" /></a>
 
-In the diagram above, the branch receives the message output from the ChatModel and decides whether to end the agent's current run and output the message directly, or call the Tool and pass the result back to the ChatModel for cyclic processing, based on whether the message contains a tool call. Since this Branch can complete its logic judgment from the first frame of the message stream, we define this Branch with the `Collect` interface, i.e., streaming input, non-streaming output:
+In the figure above, branch receives message output by chat model and, based on whether the message contains tool calls, chooses whether to directly end the agent's current run and output the message, or call Tool and give the call result to Chat Model for loop processing. Since this Branch can complete logic judgment from the first frame of the message stream, we define this Branch with a Collect interface, i.e., streaming input, non-streaming output:
 
 ```go
 compose.NewStreamGraphBranch(func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (endNode string, err error) {
@@ -122,40 +122,40 @@ compose.NewStreamGraphBranch(func(ctx context.Context, sr *schema.StreamReader[*
     }
 
     return nodeKeyTools, nil
-})
+}
 ```
 
-ReactAgent has two interfaces, `Generate` and `Stream`, which implement the `Invoke` and `Stream` streaming programming paradigms respectively. When a ReactAgent is called via `Stream`, the ChatModel's output is `StreamReader[Message]`, so the Branch's input is `StreamReader[Message]`, which matches the function signature definition of this Branch condition, and can run without any conversion.
+ReactAgent has two interfaces, Generate and Stream, implementing Invoke and Stream streaming programming paradigms respectively. When a ReactAgent is called with Stream, Chat Model's output is StreamReader[Message], so Branch's input is StreamReader[Message], matching this Branch condition's function signature definition, can run without any conversion.
 
-However, when this ReactAgent is called via `Generate`, the ChatModel's output is `Message`, so the Branch's input would also be `Message`, which does not match the `StreamReader[Message]` function signature definition of the Branch Condition. At this point, the Eino framework will automatically box `Message` into `StreamReader[Message]` and pass it to the Branch, and this StreamReader will only have one frame.
+However, when this ReactAgent is called with Generate, Chat Model's output is Message, so Branch's input will also be Message, not matching Branch Condition's StreamReader[Message] function signature definition. At this point, the Eino framework will automatically box Message into StreamReader[Message], then pass to Branch, and this StreamReader will only have one frame.
 
 > 💡
-> This kind of stream with only one frame is colloquially called a "pseudo-stream", because it doesn't bring the actual benefit of streaming, which is "low first-packet latency", but is simply boxed to meet the streaming input/output interface signature requirements.
+> This kind of stream with only one frame is commonly called "fake stream", because it doesn't bring the actual benefit of streaming, i.e., "low first packet latency", but is just simple boxing to meet the streaming input/output interface signature requirements.
 
-In summary: **In orchestration, when a component's upstream output is `T`, but the component only provides a business interface with `StreamReader[T]` as input, the framework will automatically box `T` into a single-frame `StreamReader[T]` before inputting it to the component.**
+In summary: **In orchestration, when a component's upstream output is T, but the component only provides a business interface with StreamReader[T] as input, the framework will automatically box T into a single-frame StreamReader[T], then input to this component.**
 
-### Streaming Paradigms of Orchestration Aids
+### Streaming Paradigms of Orchestration Helper Elements
 
-The Branch mentioned above is not a component that can be used standalone, but an "orchestration aid" that only makes sense in orchestration scenarios. Similar "components" that are only meaningful in orchestration scenarios include:
+The Branch mentioned above is not a standalone component, but an "orchestration helper element" that only makes sense in orchestration scenarios. There are some similar "components" that only make sense in orchestration scenarios, see the figure below:
 
 <table>
-<tr><td>Element</td><td>Use Case</td><td>Invoke</td><td>Stream</td><td>Collect</td><td>Transform</td></tr>
-<tr><td>Branch</td><td>Dynamically select one from a set of downstream Nodes based on upstream output<li>If decision can only be made after receiving complete input → implement Invoke</li><li>If decision can be made after receiving partial frames → implement Collect</li><li>Only one can be implemented</li></td><td>yes</td><td>no</td><td>yes</td><td>no</td></tr>
-<tr><td>StatePreHandler</td><td>Modify State and/or Input before entering a Node in Graph. Supports streaming.</td><td>yes</td><td>no</td><td>no</td><td>yes</td></tr>
-<tr><td>StatePostHandler</td><td>Modify State and/or Output after a Node completes in Graph. Supports streaming.</td><td>yes</td><td>no</td><td>no</td><td>yes</td></tr>
-<tr><td>Passthrough</td><td>In parallel scenarios, to balance the number of Nodes in each parallel branch, Passthrough nodes can be added to branches with fewer Nodes. Passthrough node's input and output are the same, following the upstream node's output or downstream node's input (expected to be the same).</td><td>yes</td><td>no</td><td>no</td><td>yes</td></tr>
-<tr><td>Lambda</td><td>Encapsulate business logic not defined by official components. Choose the corresponding streaming paradigm based on which paradigm the business logic is.</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>Component Name</td><td>Usage Scenario</td><td>Implements Invoke</td><td>Implements Stream</td><td>Implements Collect</td><td>Implements Transform</td></tr>
+<tr><td>Branch</td><td>Dynamically select one from a group of downstream Nodes based on upstream output<li>For cases that can only judge after receiving complete input, implement Invoke</li><li>For cases that can judge after receiving partial frames, implement Collect</li><li>Only one can be implemented</li></td><td>yes</td><td>no</td><td>yes</td><td>no</td></tr>
+<tr><td>StatePreHandler</td><td>In Graph, modify State or/and Input before entering Node. Can support streaming.</td><td>yes</td><td>no</td><td>no</td><td>yes</td></tr>
+<tr><td>StatePostHandler</td><td>In Graph, modify State or/and Output after Node completes. Can support streaming</td><td>yes</td><td>no</td><td>no</td><td>yes</td></tr>
+<tr><td>Passthrough</td><td>In parallel situations, to flatten the number of Nodes in each parallel branch, can add Passthrough nodes to branches with fewer Nodes. Passthrough node's input and output are the same, following upstream node's output or following downstream node's input (expected to be the same).</td><td>yes</td><td>no</td><td>no</td><td>yes</td></tr>
+<tr><td>Lambda</td><td>Encapsulate business logic not defined by official components. Whatever paradigm the business logic is, choose the corresponding streaming paradigm to implement.</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
 </table>
 
-Additionally, there's another type of "component" that only makes sense in orchestration scenarios: treating orchestration artifacts as a whole, such as compiled Chain, Graph. These overall orchestration artifacts can be called as "components" standalone, or added as nodes to higher-level orchestration artifacts.
+There's another type of "component" that only makes sense in orchestration scenarios, which is viewing orchestration products as a whole, like orchestrated Chain, Graph. These overall orchestration products can be called as "components" standalone, or can be added as nodes to higher-level orchestration products.
 
-## Streaming at Orchestration Level (Whole Graph)
+## Streaming from Overall Orchestration Perspective
 
-### "Business" Paradigms of Orchestration Artifacts
+### Orchestration Product's "Business" Paradigm
 
-Since overall orchestration artifacts can be viewed as "components", from a component perspective we can ask: do orchestration artifact "components" have interface paradigms that match "business scenarios" like ChatModel and other components? The answer is both "yes" and "no".
+Since overall orchestration products can be viewed as a "component", from the component perspective we can ask: Does the orchestration product as a "component" have interface paradigms that fit "business scenarios" like Chat Model and other components? The answer is both "yes" and "no".
 
-- "No": Overall, Graph, Chain and other orchestration artifacts have no business attributes themselves, they only serve abstract orchestration, so there are no interface paradigms that match business scenarios. At the same time, orchestration needs to support various paradigm business scenarios. Therefore, the `Runnable[I, O]` interface representing orchestration artifacts in Eino makes no choice and cannot choose, providing methods for all streaming paradigms:
+- "No": Overall, orchestration products like Graph, Chain have no business attributes themselves, only serving abstract orchestration, so there's no interface paradigm matching business scenarios. Also, orchestration needs to support various business scenario paradigms. So, Eino's Runnable[I, O] interface representing orchestration products, without making choices and unable to choose, provides all streaming paradigm methods:
 
 ```go
 type Runnable[I, O any] interface {
@@ -166,57 +166,57 @@ type Runnable[I, O any] interface {
 }
 ```
 
-- "Yes": Specifically, a particular Graph or Chain must carry specific business logic, so there must be streaming paradigms suitable for that specific business scenario. For example, a Graph similar to ReactAgent matches the business scenarios of `Invoke` and `Stream`, so the logical calling methods for this Graph are `Invoke` and `Stream`. Although the orchestration artifact interface `Runnable[I, O]` itself has `Collect` and `Transform` methods, normal business scenarios don't need to use them.
+- "Yes": Specifically, a specific Graph or Chain must carry specific business logic, so there must be a streaming paradigm suitable for that specific business scenario. For example, a Graph similar to React Agent, matching business scenarios are Invoke and Stream, so the logical calling methods for this Graph are Invoke and Stream. Although the orchestration product's interface Runnable[I, O] has Collect and Transform methods, normal business scenarios don't need to use them.
 
-### Runtime Paradigms of Components Inside Orchestration Artifacts
+### Paradigm of Internal Components at Runtime in Orchestration Products
 
-From another perspective, since orchestration artifacts as a whole can be viewed as "components", "components" must have their own internal implementation. For example, the internal implementation logic of ChatModel might be to convert the input `[]Message` into API requests for various models, then call the model's API, and convert the response into the output `Message`. By analogy, what is the internal implementation of the Graph "component"? It's data flowing among the various components inside the Graph in the user-specified flow direction and streaming paradigms. "Flow direction" is not within the current discussion scope, while the streaming paradigms of each component at runtime are determined by the overall triggering method of the Graph. Specifically:
+From another perspective, since orchestration products as a whole can be viewed as "components", then "components" must have their own internal implementation. For example, ChatModel's internal implementation logic might be converting input []Message to various model API requests, then calling the model API, and converting the response to output Message. So by analogy, what is Graph as a "component"'s internal implementation? It's data flowing between Graph's internal components in user-specified flow directions and streaming paradigms. Among them, "flow direction" is not within current discussion scope, while each component's streaming paradigm at runtime is determined by Graph's overall trigger method, specifically:
 
-If the user calls the Graph via **Invoke**, all internal components are called with the `Invoke` paradigm. If a component does not implement the `Invoke` paradigm, the Eino framework automatically wraps the `Invoke` calling paradigm based on the streaming paradigms the component has implemented, with the following priority:
+If user calls Graph through **Invoke**, all internal Graph components are called with Invoke paradigm. If a component hasn't implemented Invoke paradigm, Eino framework automatically wraps Invoke calling paradigm based on the streaming paradigm the component has implemented, with priority order as follows:
 
-- If the component implements `Stream`, wrap `Stream` as `Invoke`, i.e., automatically concat the output stream.
+- If component implements Stream, wrap Stream into Invoke, i.e., automatically concat output stream.
 
 <a href="/img/eino/invoke_outside_stream_inside.png" target="_blank"><img src="/img/eino/invoke_outside_stream_inside.png" width="100%" /></a>
 
-- Otherwise, if the component implements `Collect`, wrap `Collect` as `Invoke`, i.e., convert non-streaming input to single-frame stream.
+- Otherwise, if component implements Collect, wrap Collect into Invoke, i.e., non-streaming input converts to single-frame stream.
 
 <a href="/img/eino/invoke_outside_collect_inside.png" target="_blank"><img src="/img/eino/invoke_outside_collect_inside.png" width="100%" /></a>
 
-- If neither is implemented, the component must implement `Transform`, wrap `Transform` as `Invoke`, i.e., convert input to single-frame stream and concat output.
+- If neither is implemented, must implement Transform, wrap Transform into Invoke, i.e., input converts to single-frame stream, output concats.
 
 <a href="/img/eino/invoke_outside_transform_inside.png" target="_blank"><img src="/img/eino/invoke_outside_transform_inside.png" width="100%" /></a>
 
-If the user calls the Graph via **Stream/Collect/Transform**, all internal components are called with the `Transform` paradigm. If a component does not implement the `Transform` paradigm, the Eino framework automatically wraps the `Transform` calling paradigm based on the streaming paradigms the component has implemented, with the following priority:
+If user calls Graph through **Stream/Collect/Transform**, all internal Graph components are called with Transform paradigm. If a component hasn't implemented Transform paradigm, Eino framework automatically wraps Transform calling paradigm based on the streaming paradigm the component has implemented, with priority order as follows:
 
-- If the component implements `Stream`, wrap `Stream` as `Transform`, i.e., automatically concat the input stream.
+- If component implements Stream, wrap Stream into Transform, i.e., automatically concat input stream.
 
 <a href="/img/eino/transform_inside_stream_inside.png" target="_blank"><img src="/img/eino/transform_inside_stream_inside.png" width="100%" /></a>
 
-- Otherwise, if the component implements `Collect`, wrap `Collect` as `Transform`, i.e., convert non-streaming output to single-frame stream.
+- Otherwise, if component implements Collect, wrap Collect into Transform, i.e., non-streaming output converts to single-frame stream.
 
 <a href="/img/eino/transform_outside_stream_inside.png" target="_blank"><img src="/img/eino/transform_outside_stream_inside.png" width="100%" /></a>
 
-- If neither is implemented, the component must implement `Invoke`, wrap `Invoke` as `Transform`, i.e., concat input stream and convert output to single-frame stream.
+- If neither is implemented, must implement Invoke, wrap Invoke into Transform, i.e., input stream concats, output converts to single-frame stream
 
 <a href="/img/eino/transform_outside_invoke_inside.png" target="_blank"><img src="/img/eino/transform_outside_invoke_inside.png" width="100%" /></a>
 
-Combining the various cases enumerated above, Eino framework's automatic conversion between `T` and `Stream[T]` can be summarized as:
+Combining the various cases exhaustively listed above, Eino framework's automatic conversion of T and Stream[T] can be summarized as:
 
-- **T -> Stream[T]: Box the complete `T` into a single-frame `Stream[T]`. Non-streaming becomes pseudo-streaming.**
-- **Stream[T] -> T: Concat `Stream[T]` into a complete `T`. When `Stream[T]` is not a single-frame stream, a concat method for `T` may need to be provided.**
+- **T -> Stream[T]: Box complete T into single-frame Stream[T]. Non-streaming becomes fake streaming.**
+- **Stream[T] -> T: Concat Stream[T] into complete T. When Stream[T] is not single-frame stream, may need to provide Concat method for T.**
 
-After seeing the implementation principles above, you might have questions: why does calling `Invoke` on a graph require all internal components to be called with `Invoke`? And why does calling `Stream/Collect/Transform` on a graph require all internal components to be called with `Transform`? After all, some counterexamples can be given:
+After seeing the above implementation principles, there might be questions about why Invoke on graph requires all internal components to be called with Invoke? And why Stream/Collect/Transform on graph requires all internal components to be called with Transform? After all, counterexamples can be given:
 
-- Components A and B are orchestrated into a Chain, called with `Invoke`. A's business interface implements `Stream`, B's business interface implements `Collect`. At this point, there are two choices for the calling paradigm of internal components in the graph:
-  - A is called with `Stream`, B is called with `Collect`, the overall Chain still has `Invoke` semantics, while preserving true streaming internal semantics. That is, A's output stream doesn't need to be concatenated and can be input to B in real-time.
-  - Current Eino implementation: A and B are both called with `Invoke`, requiring A's output stream to be concatenated and B's input to be made into a pseudo-stream. True streaming internal semantics are lost.
-- Components A and B are orchestrated into a Chain, called with `Collect`. A implements `Transform` and `Collect`, B implements `Invoke`. Two choices:
-  - A is called with `Collect`, B is called with `Invoke`: the overall still has `Collect` semantics, no automatic conversion or boxing operations are needed by the framework.
-  - Current Eino implementation: A and B are both called with `Transform`. Since A's business interface implements `Transform`, both A's output and B's input could be true streaming, but B's business interface only implements `Invoke`. According to the analysis above, B's input will need to be concatenated from true streaming to non-streaming. At this point, the user needs to additionally provide a concat function for B's input, which could have been avoided.
+- Two components A, B orchestrated into a Chain, called with Invoke. A's business interface implements Stream, B's business interface implements Collect. At this point, there are two choices for graph internal component calling paradigms:
+  - A is called with stream, B is called with collect, the overall Chain still has Invoke semantics, while preserving true streaming internal semantics. I.e., A's output stream doesn't need Concat, can be input to B in real-time.
+  - Current Eino implementation, both A and B are called with Invoke, need to Concat A's output stream, and make B's input fake streaming. Loses true streaming internal semantics.
+- Two components A, B orchestrated into a Chain, called with Collect. A implements Transform and Collect, B implements Invoke. Two choices:
+  - A is called with Collect, B is called with Invoke: overall still has Collect semantics, no need for framework to do any automatic conversion or boxing operations.
+  - Current Eino implementation, both A and B are called with Transform. Since A's business interface implements Transform, both A's output and B's input may be true streaming. But B's business interface only implements Invoke, based on above analysis, B's input needs to be concatenated from true streaming to non-streaming. At this point, users need to additionally provide B's input concat function, which could have been avoided.
 
-The two examples above can both find a clear, different from Eino's convention, but better streaming call path. However, when generalized to arbitrary orchestration scenarios, it's difficult to find a clearly defined, different from Eino's convention, yet always better universal rule. For example, A->B->C, called with `Collect` semantics, should `Collect` happen at A->B or B->C? Potential factors include the business interfaces specifically implemented by A, B, C, possibly the judgment of "use true streaming as much as possible", and maybe which parameters implement `Concat` and which don't. If it's a more complex Graph, the factors to consider will increase rapidly. In this situation, even if the framework can define a clear, better universal rule, it would be hard to explain clearly, and the understanding and usage cost would be high, likely already exceeding the actual benefit brought by this new rule.
+Both examples above can find a clear, different from Eino's convention, but better streaming calling path. However, when generalized to arbitrary orchestration scenarios, it's hard to find a clearly defined, different from Eino's convention, yet always better universal rule. For example, A->B->C, called with Collect semantics, is it A->B that does Collect, or B->C? Potential factors include specific business interfaces implemented by A, B, C, possibly also "use as much true streaming as possible" judgment, maybe also which parameter implements Concat and which doesn't. For more complex Graphs, factors to consider increase rapidly. In this situation, even if the framework can define a set of clear, better universal rules, it would be hard to explain clearly, understanding and usage costs would be high, likely already exceeding the actual benefits brought by this new rule.
 
-In summary, we can say that the runtime paradigms of components inside Eino orchestration artifacts are **By Design**, clearly as follows:
+In summary, we can say the paradigm of each component at runtime within Eino orchestration products is **By Design**, specifically:
 
-- **Called with `Invoke` overall, all internal components are called with `Invoke`, there is no streaming process.**
-- **Called with `Stream/Collect/Transform` overall, all internal components are called with `Transform`. When `Stream[T] -> T` concat process occurs, a concat function for `T` may need to be additionally provided.**
+- **Called overall with Invoke, internal components all called with Invoke, no streaming process exists.**
+- **Called overall with Stream/Collect/Transform, internal components all called with Transform. When Stream[T] -> T concat process occurs, may need to additionally provide T's concat function.**

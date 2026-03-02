@@ -4,7 +4,7 @@ date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Indexer 使用说明'
-weight: 6
+weight: 5
 ---
 
 ## **基本介绍**
