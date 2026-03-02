@@ -7,11 +7,11 @@ title: Eino v0.8 Breaking Changes
 weight: 1
 ---
 
-> This document records all incompatible changes in the `v0.8.0.Beta` branch compared to the `main` branch.
+> This document records all breaking changes in the `v0.8.0.Beta` branch compared to the `main` branch.
 
-## 1. API Incompatible Changes
+## 1. API Breaking Changes
 
-### 1.1 filesystem Shell Interface Rename
+### 1.1 filesystem Shell Interface Renamed
 
 **Location**: `adk/filesystem/backend.go` **Change Description**: Shell-related interfaces have been renamed and no longer embed the `Backend` interface. **Before (main)**:
 
@@ -43,41 +43,41 @@ type StreamingShell interface {
 
 - `ShellBackend` renamed to `Shell`
 - `StreamingShellBackend` renamed to `StreamingShell`
-- Interfaces no longer embed `Backend`, if your implementation relies on composite interfaces, you need to implement them separately **Migration Guide**:
+- Interfaces no longer embed `Backend`. If your implementation depends on the composite interface, you need to implement them separately **Migration Guide**:
 
 ```go
 // Before
 type MyBackend struct {}
 func (b *MyBackend) Execute(...) {...}
-// MyBackend implementing ShellBackend needs to implement all Backend methods
+// MyBackend implementing ShellBackend needed to implement all Backend methods
 
 // After
 type MyShell struct {}
 func (s *MyShell) Execute(...) {...}
 // MyShell only needs to implement Shell interface methods
-// If Backend functionality is also needed, implement both interfaces separately
+// If you also need Backend functionality, implement both interfaces separately
 ```
 
 ---
 
-## 2. Behavior Incompatible Changes
+## 2. Behavioral Breaking Changes
 
 ### 2.1 AgentEvent Sending Mechanism Change
 
 **Location**: `adk/chatmodel.go` **Change Description**: `ChatModelAgent`'s `AgentEvent` sending mechanism changed from eino callback mechanism to Middleware mechanism. **Before (main)**:
 
 - `AgentEvent` was sent through eino's callback mechanism
-- If users customized ChatModel or Tool Decorator/Wrapper, and the original ChatModel/Tool had Callback points embedded, `AgentEvent` would be sent **inside** the Decorator/Wrapper
-- This applies to all ChatModels implemented by eino-ext, but may not apply to most user-implemented Tools and eino-provided Tools **After (v0.8.0.Beta)**:
+- If users customized ChatModel or Tool Decorator/Wrapper, and the original ChatModel/Tool had embedded Callback points, `AgentEvent` would be sent **inside** the Decorator/Wrapper
+- This applied to all ChatModels implemented in eino-ext, but may not apply to most user-implemented Tools and Tools provided by eino **After (v0.8.0.Beta)**:
 - `AgentEvent` is sent through Middleware mechanism
 - `AgentEvent` is sent **outside** user-customized Decorator/Wrapper **Impact**:
-- Users normally won't notice this change
-- If users previously implemented custom ChatModel or Tool Decorator/Wrapper, the relative position of event sending will change
-- Position change may also cause `AgentEvent` content to change: previous events did not include changes made by Decorator/Wrapper, now events will include them **Reason for Change**:
-- In normal business scenarios, we want events to include changes made by Decorator/Wrapper **Migration Guide**: If you previously wrapped ChatModel or Tool with Decorator/Wrapper, you need to implement the `ChatModelAgentMiddleware` interface instead:
+- Under normal circumstances, users won't notice this change
+- If users previously implemented their own ChatModel or Tool Decorator/Wrapper, the relative position of event sending will change
+- Position change may cause `AgentEvent` content to change: previous events didn't include Decorator/Wrapper modifications, current events will include them **Reason for Change**:
+- In normal business scenarios, we want emitted events to include Decorator/Wrapper modifications **Migration Guide**: If you previously wrapped ChatModel or Tool through Decorator/Wrapper, you need to implement the `ChatModelAgentMiddleware` interface instead:
 
 ```go
-// Before: Wrapping ChatModel with Decorator/Wrapper
+// Before: Wrapping ChatModel through Decorator/Wrapper
 type MyModelWrapper struct {
     inner model.BaseChatModel
 }
@@ -87,14 +87,14 @@ func (w *MyModelWrapper) Generate(ctx context.Context, input []*schema.Message, 
     return w.inner.Generate(ctx, input, opts...)
 }
 
-// After: Implement ChatModelAgentMiddleware's WrapModel method
+// After: Implement WrapModel method of ChatModelAgentMiddleware
 type MyMiddleware struct{}
 
 func (m *MyMiddleware) WrapModel(ctx context.Context, chatModel model.BaseChatModel, mc *ModelContext) (model.BaseChatModel, error) {
     return &myWrappedModel{inner: chatModel}, nil
 }
 
-// For Tool Wrapper, implement WrapInvokableToolCall / WrapStreamableToolCall methods instead
+// For Tool Wrappers, implement WrapInvokableToolCall / WrapStreamableToolCall methods instead
 ```
 
 ### 2.2 filesystem.ReadRequest.Offset Semantic Change
@@ -126,10 +126,10 @@ type ReadRequest struct {
 **Migration Guide**:
 
 ```go
-// Before: Reading from line 0 (i.e., the first line)
+// Before: Read from line 0 (i.e., first line)
 req := &ReadRequest{Offset: 0, Limit: 100}
 
-// After: Reading from line 1 (i.e., the first line)
+// After: Read from line 1 (i.e., first line)
 req := &ReadRequest{Offset: 1, Limit: 100}
 
 // If you previously used Offset: 10 to mean starting from line 11
@@ -169,7 +169,7 @@ type FileInfo struct {
 
 ### 2.4 filesystem.WriteRequest Behavior Change
 
-**Location**: `adk/filesystem/backend.go` **Change Description**: `WriteRequest`'s write behavior changed from "error if file exists" to "overwrite if file exists". **Before (main)**:
+**Location**: `adk/filesystem/backend.go` **Change Description**: `WriteRequest` write behavior changed from "error if file exists" to "overwrite if file exists". **Before (main)**:
 
 ```go
 // WriteRequest comment:
@@ -185,7 +185,7 @@ type FileInfo struct {
 
 **Impact**:
 
-- Code that relied on "error if file exists" behavior will no longer error, but will overwrite directly
+- Code that previously relied on "error if file exists" behavior will no longer error, but directly overwrite
 - May cause unexpected data loss **Migration Guide**:
 - If you need to preserve the original behavior, check if the file exists before writing
 
@@ -216,10 +216,10 @@ type FileInfo struct {
 // Before: Literal search
 req := &GrepRequest{Pattern: "interface{}"}
 
-// After: Regular expression search, special characters need escaping
+// After: Regex search, need to escape special characters
 req := &GrepRequest{Pattern: "interface\\{\\}"}
 
-// Or if searching for literals containing . * + ?, they also need escaping
+// Or if searching for literals containing . * + ?, also need to escape
 // Before
 req := &GrepRequest{Pattern: "config.json"}
 // After
@@ -230,8 +230,9 @@ req := &GrepRequest{Pattern: "config\\.json"}
 
 ## Migration Recommendations
 
-1. **Prioritize fixing compilation errors**: Type changes (such as Shell interface rename) will cause compilation failures and need to be fixed first
-2. **Pay attention to semantic changes**: `ReadRequest.Offset` changing from 0-based to 1-based, `Pattern` changing from literal to regex, these won't cause compilation errors but will change runtime behavior
-3. **Check file operations**: `WriteRequest`'s overwrite behavior change may cause data loss, needs extra checking
-4. **Migrate Decorator/Wrapper**: If you have custom ChatModel/Tool Decorator/Wrapper, migrate to implementing `ChatModelAgentMiddleware`
-5. **Test verification**: After migration, perform comprehensive testing, especially code involving file operations and search functionality
+1. **Handle compile errors first**: Type changes (like Shell interface renaming) will cause compilation failures, need to fix first
+2. **Pay attention to semantic changes**: `ReadRequest.Offset` changed from 0-based to 1-based, `Pattern` changed from literal to regex - these won't cause compile errors but will change runtime behavior
+3. **Check file operations**: `WriteRequest` overwrite behavior change may cause data loss, requires additional checks
+4. **Migrate Decorator/Wrapper**: If you have custom ChatModel/Tool Decorator/Wrapper, change to implement `ChatModelAgentMiddleware`
+5. Upgrade backend implementations as needed: If using local/ark agentkit backend provided by eino-ext, upgrade to corresponding alpha versions: [local backend v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Flocal%2Fv0.2.0-alpha.1), [ark agentkit backend v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.0-alpha.1)
+6. **Test verification**: After migration, perform comprehensive testing, especially for code involving file operations and search functionality

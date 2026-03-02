@@ -11,6 +11,8 @@ weight: 1
 
 Package: `github.com/cloudwego/eino-ext/adk/backend/agentkit`
 
+Note: If your eino version is v0.8.0 or above, you need to use ark agentkit backend [v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.0-alpha.1) version.
+
 ### Overview
 
 Agentkit Sandbox Backend is a remote sandbox implementation of EINO ADK FileSystem that executes file system operations in an isolated cloud environment through Volcengine Agentkit service.

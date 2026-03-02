@@ -11,15 +11,17 @@ weight: 2
 
 Package: `github.com/cloudwego/eino-ext/adk/backend/local`
 
+Note: If your eino version is v0.8.0 or above, you need to use local backend [v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Flocal%2Fv0.2.0-alpha.1) version.
+
 ### Overview
 
-Local Backend is a local file system implementation of EINO ADK FileSystem, directly operating on the local machine's file system, providing native performance and zero-configuration experience.
+Local Backend is the local file system implementation of EINO ADK FileSystem, directly operating on the local file system, providing native performance and zero-configuration experience.
 
 #### Core Features
 
 - Zero Configuration - Works out of the box
-- Native Performance - Direct file system access without network overhead
-- Path Security - Enforces absolute paths
+- Native Performance - Direct file system access, no network overhead
+- Path Safety - Enforces absolute paths
 - Streaming Execution - Supports real-time command output streaming
 - Command Validation - Optional security validation hooks
 
@@ -58,13 +60,13 @@ func main() {
         panic(err)
     }
 
-    // Write a file (must be absolute path)
+    // Write file (must be absolute path)
     err = backend.Write(ctx, &filesystem.WriteRequest{
         FilePath: "/tmp/hello.txt",
         Content:  "Hello, Local Backend!",
     })
 
-    // Read a file
+    // Read file
     content, err := backend.Read(ctx, &filesystem.ReadRequest{
         FilePath: "/tmp/hello.txt",
     })
@@ -108,7 +110,7 @@ middleware, _ := fsMiddleware.New(ctx, &fsMiddleware.Config{
 // Create Agent
 agent, _ := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
     Name:        "LocalFileAgent",
-    Description: "An AI Agent with local file system access capability",
+    Description: "AI Agent with local file system access capabilities",
     Model:       chatModel,
     Handlers:    []adk.ChatModelAgentMiddleware{middleware},
 })
@@ -119,10 +121,10 @@ agent, _ := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 <table>
 <tr><td>Method</td><td>Description</td></tr>
 <tr><td>LsInfo</td><td>List directory contents</td></tr>
-<tr><td>Read</td><td>Read file content (with pagination support, default 200 lines)</td></tr>
-<tr><td>Write</td><td>Create a new file (errors if already exists)</td></tr>
+<tr><td>Read</td><td>Read file content (supports pagination, default 200 lines)</td></tr>
+<tr><td>Write</td><td>Create new file (error if exists)</td></tr>
 <tr><td>Edit</td><td>Replace file content</td></tr>
-<tr><td>GrepRaw</td><td>Search file content (literal matching)</td></tr>
+<tr><td>GrepRaw</td><td>Search file content (literal match)</td></tr>
 <tr><td>GlobInfo</td><td>Find files by pattern</td></tr>
 <tr><td>Execute</td><td>Execute shell commands</td></tr>
 <tr><td>ExecuteStreaming</td><td>Execute commands with streaming output</td></tr>
@@ -136,14 +138,14 @@ files, _ := backend.LsInfo(ctx, &filesystem.LsInfoRequest{
     Path: "/home/user",
 })
 
-// Read file (with pagination)
+// Read file (paginated)
 content, _ := backend.Read(ctx, &filesystem.ReadRequest{
     FilePath: "/path/to/file.txt",
     Offset:   0,
     Limit:    50,
 })
 
-// Search content (literal matching, not regex)
+// Search content (literal match, not regex)
 matches, _ := backend.GrepRaw(ctx, &filesystem.GrepRequest{
     Path:    "/home/user/project",
     Pattern: "TODO",
@@ -190,11 +192,11 @@ All paths must be absolute paths (starting with `/`):
 // Correct
 backend.Read(ctx, &filesystem.ReadRequest{FilePath: "/home/user/file.txt"})
 
-// Wrong
+// Incorrect
 backend.Read(ctx, &filesystem.ReadRequest{FilePath: "./file.txt"})
 ```
 
-Converting relative paths:
+Convert relative paths:
 
 ```go
 absPath, _ := filepath.Abs("./relative/path")
@@ -204,11 +206,11 @@ absPath, _ := filepath.Abs("./relative/path")
 
 <table>
 <tr><td>Feature</td><td>Local</td><td>Agentkit</td></tr>
-<tr><td>Execution Model</td><td>Local direct</td><td>Remote sandbox</td></tr>
+<tr><td>Execution Model</td><td>Local Direct</td><td>Remote Sandbox</td></tr>
 <tr><td>Network Dependency</td><td>None</td><td>Required</td></tr>
-<tr><td>Configuration Complexity</td><td>Zero configuration</td><td>Requires credentials</td></tr>
-<tr><td>Security Model</td><td>OS permissions</td><td>Isolated sandbox</td></tr>
-<tr><td>Streaming Output</td><td>Supported</td><td>Not supported</td></tr>
+<tr><td>Configuration Complexity</td><td>Zero Config</td><td>Requires Credentials</td></tr>
+<tr><td>Security Model</td><td>OS Permissions</td><td>Isolated Sandbox</td></tr>
+<tr><td>Streaming Output</td><td>Supported</td><td>Not Supported</td></tr>
 <tr><td>Platform Support</td><td>Unix/Linux/macOS</td><td>Any</td></tr>
 <tr><td>Use Cases</td><td>Development/Local</td><td>Multi-tenant/Production</td></tr>
 </table>
@@ -219,14 +221,14 @@ absPath, _ := filepath.Abs("./relative/path")
 
 To prevent directory traversal attacks. Use `filepath.Abs()` to convert.
 
-**Q: Write failed**
+**Q: Write fails**
 
 File already exists (security feature), path is not absolute, or insufficient permissions.
 
 **Q: Does GrepRaw support regex?**
 
-No, it uses literal matching. Use Execute to call the system grep if you need regex.
+No, it uses literal matching. For regex, use Execute to call system grep.
 
-**Q: Is Windows supported?**
+**Q: Windows support?**
 
-No, it depends on `/bin/sh`.
+Not supported, depends on `/bin/sh`.
