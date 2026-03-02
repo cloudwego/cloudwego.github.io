@@ -1,13 +1,16 @@
 ---
 Description: ""
-date: "2026-01-22"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: AgenticModel - OpenAI
-weight: 0
+weight: 1
 ---
 
 基于 [Eino](https://github.com/cloudwego/eino) 的 OpenAI 模型实现，实现了 `AgenticModel` 组件接口。这使得该模型能够无缝集成到 Eino 的 Agent 能力中，提供增强的自然语言处理和生成功能。
+
+> 💡
+> 本组件在 alpha/09 版本引入。
 
 ## 功能特性
 

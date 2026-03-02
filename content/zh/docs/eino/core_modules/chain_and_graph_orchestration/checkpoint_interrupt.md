@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: 'Eino: Interrupt & CheckPoint使用手册'
@@ -32,9 +32,9 @@ import (
 
 func main() {
     g := NewGraph[string, string]()
-    err := g.AddLambdaNode("node1", compose.InvokableLambda(func(ctx context._Context_, input string) (output string, err error) {/*invokable func*/})
+    err := g.AddLambdaNode("node1", compose.InvokableLambda(func(ctx **context**._Context_, input string) (output string, err error) {/*invokable func*/})
     if err != nil {/* error handle */}
-    err = g.AddLambdaNode("node2", compose.InvokableLambda(func(ctx context._Context_, input string) (output string, err error) {/*invokable func*/})
+    err = g.AddLambdaNode("node2", compose.InvokableLambda(func(ctx **context**._Context_, input string) (output string, err error) {/*invokable func*/})
     if err != nil {/* error handle */}
     
     /** other graph composed code
@@ -54,13 +54,13 @@ func main() {
 ```go
 // compose/checkpoint.go
 
-type InterruptInfo struct {
+**type **InterruptInfo **struct **{
     State             any
     BeforeNodes       []string
     AfterNodes        []string
     RerunNodes        []string
-    RerunNodesExtra   map[string]any
-    SubGraphs         map[string]*InterruptInfo
+    RerunNodesExtra   **map**[string]any
+    SubGraphs         **map**[string]*InterruptInfo
     InterruptContexts []*InterruptCtx
 }
 
@@ -102,8 +102,8 @@ CheckPointStore 是一个 key 类型为 string、value 类型为[]byte 的 KV �
 // compose/checkpoint.go
 
 type CheckpointStore interface {
-    Get(ctx context._Context_, key string) (value []byte, existed bool,err error)
-    Set(ctx context._Context_, key string, value []byte) (err error)
+    Get(ctx **context**._Context_, key string) (value []byte, existed bool,err error)
+    Set(ctx **context**._Context_, key string, value []byte) (err error)
 }
 ```
 
@@ -206,7 +206,7 @@ Checkpoint id 会被作为 CheckPointStore 的 key 使用，graph 运行时会�
 var InterruptAndRerun = errors.New("interrupt and rerun")
 
 // emit an interrupt signal with extra info
-func NewInterruptAndRerunErr(extra any) error
+**func **NewInterruptAndRerunErr(extra any) error
 ```
 
 Eino Graph 接收到节点返回此错误后会发生 interrupt，恢复运行时，会再次运行此节点，再次运行前会调用 StateModifier 修改 state（如果已配置）。
@@ -245,7 +245,7 @@ func CompositeInterrupt(ctx context.Context, info any, state any, errs ...error)
 _// WithGraphInterrupt creates a context with graph cancellation support._
 _// When the returned context is used to invoke a graph or workflow, calling the interrupt function will trigger an interrupt._
 _// The graph will wait for current tasks to complete by default._
-func WithGraphInterrupt(parent context.Context) (ctx context.Context, interrupt func(opts ...GraphInterruptOption)) {}
+**func **WithGraphInterrupt(parent context.Context) (ctx context.Context, interrupt **func**(opts ...GraphInterruptOption)) {}
 ```
 
 在主动调用 interrupt function 时，可以传递超时等参数：
@@ -255,8 +255,8 @@ func WithGraphInterrupt(parent context.Context) (ctx context.Context, interrupt 
 
 _// WithGraphInterruptTimeout specifies the max waiting time before generating an interrupt._
 _// After the max waiting time, the graph will force an interrupt. Any unfinished tasks will be re-run when the graph is resumed._
-func WithGraphInterruptTimeout(timeout time.Duration) GraphInterruptOption {
-    return func(o *graphInterruptOptions) {
+**func **WithGraphInterruptTimeout(timeout time.Duration) GraphInterruptOption {
+    **return func**(o *graphInterruptOptions) {
        o.timeout = &timeout
     }
 }

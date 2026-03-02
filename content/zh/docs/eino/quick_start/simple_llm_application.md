@@ -120,7 +120,7 @@ chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
 })
 ```
 
-> OpenAI  ChatModel 的详细信息可以参考：[ChatModel - OpenAI](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
+> OpenAI  ChatModel 的详细信息可以参考：[ChatModel - OpenAI](https://bytedance.larkoffice.com/wiki/NguEw85n6iJjShkVtdQcHpydnld)
 
 #### **Ollama(和上方 openai 2 选 1)**
 
@@ -140,7 +140,7 @@ chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
 })
 ```
 
-> OpenAI 相关信息，可以参考：[ChatModel - Ollama](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
+> OpenAI 相关信息，可以参考：[ChatModel - Ollama](https://bytedance.larkoffice.com/wiki/WWngw1XMViwgyYkNuZgcjZnxnke)
 
 Eino 为大模型提供了统一的 ChatModel 抽象，并提供了开箱即用的各类 LLM 实现，因此业务代码可以无需关注模型实现细节从而专注业务逻辑编写，模型实现迭代时不会影响核心业务逻辑，这意味着开发者可以轻松地在不同的模型之间切换，而无需修改大量代码。
 

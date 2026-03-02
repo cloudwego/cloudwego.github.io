@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2026-01-23"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: 'Eino: ToolsNode&Tool 使用说明'
-weight: 3
+weight: 9
 ---
 
 ## **基本介绍**
@@ -97,9 +97,13 @@ ChatModel(LLM) 生成要调用的 []ToolCall（包含 ToolName，Argument 等）
 
 ### **接口定义**
 
-Tool 组件提供了三个层次的接口：
+Tool 组件提供了两类接口：**标准工具接口**和**增强型工具接口**。
 
-> 代码位置：eino/compose/tool/interface.go
+> 代码位置：eino/components/tool/interface.go
+
+#### **标准工具接口**
+
+标准工具接口返回字符串类型的结果：
 
 ```go
 // 基础工具接口，提供工具信息
@@ -120,6 +124,88 @@ type StreamableTool interface {
 }
 ```
 
+#### **增强型工具接口（Enhanced Tool）**
+
+增强型工具接口支持返回结构化的多模态结果（`*schema.ToolResult`），可以包含文本、图片、音频、视频和文件等多种类型的内容：
+
+```go
+// EnhancedInvokableTool 是支持返回结构化多模态结果的工具接口
+// 与返回字符串的 InvokableTool 不同，此接口返回 *schema.ToolResult
+// 可以包含文本、图片、音频、视频和文件
+type EnhancedInvokableTool interface {
+    BaseTool
+    InvokableRun(ctx context.Context, toolArgument *schema.ToolArgument, opts ...Option) (*schema.ToolResult, error)
+}
+
+// EnhancedStreamableTool 是支持返回结构化多模态结果的流式工具接口
+// 提供流式读取器以逐步访问多模态内容
+type EnhancedStreamableTool interface {
+    BaseTool
+    StreamableRun(ctx context.Context, toolArgument *schema.ToolArgument, opts ...Option) (*schema.StreamReader[*schema.ToolResult], error)
+}
+```
+
+### **增强型工具相关数据结构**
+
+> 代码位置：eino/schema/message.go
+
+#### **ToolArgument - 工具输入参数**
+
+```go
+// ToolArgument 包含工具调用的输入信息
+type ToolArgument struct {
+    // TextArgument 包含 JSON 格式的工具调用参数
+    TextArgument string
+}
+```
+
+#### **ToolResult - 工具输出结果**
+
+```go
+// ToolResult 表示工具执行的结构化多模态输出
+// 当工具需要返回不仅仅是简单字符串时使用，
+// 例如图片、文件或其他结构化数据
+type ToolResult struct {
+    // Parts 包含多模态输出部分。每个部分可以是不同类型的内容，
+    // 如文本、图片或文件
+    Parts []ToolOutputPart `json:"parts,omitempty"`
+}
+```
+
+#### **ToolOutputPart - 输出内容部分**
+
+```go
+// ToolPartType 定义工具输出部分的内容类型
+type ToolPartType string
+
+const (
+    ToolPartTypeText  ToolPartType = "text"   // 文本
+    ToolPartTypeImage ToolPartType = "image"  // 图片
+    ToolPartTypeAudio ToolPartType = "audio"  // 音频
+    ToolPartTypeVideo ToolPartType = "video"  // 视频
+    ToolPartTypeFile  ToolPartType = "file"   // 文件
+)
+
+// ToolOutputPart 表示工具执行输出的一部分
+type ToolOutputPart struct {
+    Type  ToolPartType     `json:"type"`            // 内容类型
+    Text  string           `json:"text,omitempty"`  // 文本内容
+    Image *ToolOutputImage `json:"image,omitempty"` // 图片内容
+    Audio *ToolOutputAudio `json:"audio,omitempty"` // 音频内容
+    Video *ToolOutputVideo `json:"video,omitempty"` // 视频内容
+    File  *ToolOutputFile  `json:"file,omitempty"`  // 文件内容
+    Extra map[string]any   `json:"extra,omitempty"` // 扩展信息
+}
+
+// 多媒体内容结构体，都包含 URL 或 Base64 数据以及 MIME 类型信息
+type ToolOutputImage struct { MessagePartCommon }
+type ToolOutputAudio struct { MessagePartCommon }
+type ToolOutputVideo struct { MessagePartCommon }
+type ToolOutputFile  struct { MessagePartCommon }
+```
+
+### **方法说明**
+
 #### **Info 方法**
 
 - 功能：获取工具的描述信息
@@ -129,7 +215,7 @@ type StreamableTool interface {
   - `*schema.ToolInfo`：工具的描述信息
   - error：获取信息过程中的错误
 
-#### **InvokableRun 方法**
+#### **InvokableRun 方法（标准工具）**
 
 - 功能：同步执行工具
 - 参数：
@@ -140,15 +226,37 @@ type StreamableTool interface {
   - string：执行结果
   - error：执行过程中的错误
 
-#### **StreamableRun 方法**
+#### **InvokableRun 方法（增强型工具）**
+
+- 功能：同步执行工具，返回多模态结果
+- 参数：
+  - ctx：上下文对象
+  - `toolArgument`：包含 JSON 格式参数的 `*schema.ToolArgument`
+  - opts：工具执行的选项
+- 返回值：
+  - `*schema.ToolResult`：包含多模态内容的执行结果
+  - error：执行过程中的错误
+
+#### **StreamableRun 方法（标准工具）**
 
 - 功能：以流式方式执行工具
 - 参数：
-  - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
+  - ctx：上下文对象
   - `argumentsInJSON`：JSON 格式的参数字符串
   - opts：工具执行的选项
 - 返回值：
   - `*schema.StreamReader[string]`：流式执行结果
+  - error：执行过程中的错误
+
+#### **StreamableRun 方法（增强型工具）**
+
+- 功能：以流式方式执行工具，返回多模态结果流
+- 参数：
+  - ctx：上下文对象
+  - `toolArgument`：包含 JSON 格式参数的 `*schema.ToolArgument`
+  - opts：工具执行的选项
+- 返回值：
+  - `*schema.StreamReader[*schema.ToolResult]`：流式多模态执行结果
   - error：执行过程中的错误
 
 ### **ToolInfo 结构体**
@@ -175,6 +283,8 @@ type ToolInfo struct {
 Tool 组件使用 ToolOption 来定义可选参数， ToolsNode 没有抽象公共的 option。每个具体的实现可以定义自己的特定 Option，通过 WrapToolImplSpecificOptFn 函数包装成统一的 ToolOption 类型。
 
 ## **使用方式**
+
+### **标准工具使用**
 
 ```go
 import (
@@ -206,7 +316,159 @@ input := &schema.Message{
 toolMessages, err := toolsNode.Invoke(ctx, input)
 ```
 
-ToolsNode 通常不会被单独使用，一般用于编排之中接在 ChatModel 之后。
+### **增强型工具使用**
+
+增强型工具适用于需要返回多模态内容的场景，如返回图片、音频、视频或文件等。
+
+#### **方式一：使用 InferEnhancedTool 自动推断**
+
+```go
+import (
+    "context"
+    
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/components/tool/utils"
+    "github.com/cloudwego/eino/schema"
+)
+
+// 定义输入参数结构体
+type ImageSearchInput struct {
+    Query string `json:"query" jsonschema:"description=搜索关键词"`
+}
+
+// 创建增强型工具
+imageSearchTool, err := utils.InferEnhancedTool(
+    "image_search",
+    "搜索并返回相关图片",
+    func(ctx context.Context, input *ImageSearchInput) (*schema.ToolResult, error) {
+        // 执行图片搜索逻辑...
+        imageURL := "https://example.com/image.png"
+        
+        return &schema.ToolResult{
+            Parts: []schema.ToolOutputPart{
+                {Type: schema.ToolPartTypeText, Text: "找到以下图片："},
+                {
+                    Type: schema.ToolPartTypeImage,
+                    Image: &schema.ToolOutputImage{
+                        MessagePartCommon: schema.MessagePartCommon{
+                            URL: &imageURL,
+                        },
+                    },
+                },
+            },
+        }, nil
+    },
+)
+```
+
+#### **方式二：使用 NewEnhancedTool 手动创建**
+
+```go
+import (
+    "context"
+    
+    "github.com/cloudwego/eino/components/tool/utils"
+    "github.com/cloudwego/eino/schema"
+)
+
+type FileGeneratorInput struct {
+    FileName string `json:"file_name"`
+    Content  string `json:"content"`
+}
+
+// 手动定义 ToolInfo
+toolInfo := &schema.ToolInfo{
+    Name: "file_generator",
+    Desc: "生成并返回文件",
+    ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
+        "file_name": {Type: "string", Desc: "文件名"},
+        "content":   {Type: "string", Desc: "文件内容"},
+    }),
+}
+
+// 创建增强型工具
+fileGenTool := utils.NewEnhancedTool[*FileGeneratorInput](
+    toolInfo,
+    func(ctx context.Context, input *FileGeneratorInput) (*schema.ToolResult, error) {
+        fileURL := "https://example.com/files/" + input.FileName
+        
+        return &schema.ToolResult{
+            Parts: []schema.ToolOutputPart{
+                {Type: schema.ToolPartTypeText, Text: "文件已生成：" + input.FileName},
+                {
+                    Type: schema.ToolPartTypeFile,
+                    File: &schema.ToolOutputFile{
+                        MessagePartCommon: schema.MessagePartCommon{
+                            URL:      &fileURL,
+                            MIMEType: "text/plain",
+                        },
+                    },
+                },
+            },
+        }, nil
+    },
+)
+```
+
+#### **方式三：实现 EnhancedInvokableTool 接口**
+
+```go
+import (
+    "context"
+    
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/schema"
+)
+
+type MyEnhancedTool struct {
+    info *schema.ToolInfo
+}
+
+func (t *MyEnhancedTool) Info(ctx context.Context) (*schema.ToolInfo, error) {
+    return t.info, nil
+}
+
+func (t *MyEnhancedTool) InvokableRun(ctx context.Context, toolArgument *schema.ToolArgument, opts ...tool.Option) (*schema.ToolResult, error) {
+    // 解析参数
+    // toolArgument.TextArgument 包含 JSON 格式的参数
+    
+    // 执行工具逻辑...
+    
+    return &schema.ToolResult{
+        Parts: []schema.ToolOutputPart{
+            {Type: schema.ToolPartTypeText, Text: "执行结果"},
+        },
+    }, nil
+}
+```
+
+#### **增强型流式工具**
+
+```go
+import (
+    "context"
+    
+    "github.com/cloudwego/eino/components/tool/utils"
+    "github.com/cloudwego/eino/schema"
+)
+
+type StreamInput struct {
+    Query string `json:"query"`
+}
+
+// 创建增强型流式工具
+streamTool, err := utils.InferEnhancedStreamTool(
+    "stream_search",
+    "流式搜索工具",
+    func(ctx context.Context, input *StreamInput) (*schema.StreamReader[*schema.ToolResult], error) {
+        results := []*schema.ToolResult{
+            {Parts: []schema.ToolOutputPart{{Type: schema.ToolPartTypeText, Text: "搜索中..."}}},
+            {Parts: []schema.ToolOutputPart{{Type: schema.ToolPartTypeText, Text: "找到结果"}}},
+        }
+        return schema.StreamReaderFromArray(results), nil
+    },
+)
+```
 
 ### **在编排中使用**
 
@@ -218,11 +480,13 @@ import (
 )
 
 // 创建工具节点
-toolsNode := compose.NewToolsNode([]tool.Tool{
-    searchTool,    // 搜索工具
-    weatherTool,   // 天气查询工具
-    calculatorTool, // 计算器工具
-})
+toolsNode, _ := compose.NewToolNode(ctx, &compose.ToolsNodeConfig{
+       Tools: []tool.BaseTool{
+          searchTool,     // 搜索工具
+          weatherTool,    // 天气查询工具
+          calculatorTool, // 计算器工具
+       },
+    })
 
 // 在 Chain 中使用
 chain := compose.NewChain[*schema.Message, []*schema.Message]()
@@ -230,8 +494,10 @@ chain.AppendToolsNode(toolsNode)
 
 // graph 中
 graph := compose.NewGraph[*schema.Message, []*schema.Message]()
-graph.AddToolsNode(toolsNode)
+graph.AddToolsNode("tools", toolsNode)
 ```
+
+> **注意**：当工具同时实现了标准接口和增强型接口时，ToolsNode 会优先使用增强型接口。
 
 ## **Option 机制**
 
@@ -253,6 +519,69 @@ func WithTimeout(timeout time.Duration) tool.Option {
         o.Timeout = timeout
     })
 }
+```
+
+## **Middleware 机制**
+
+ToolsNode 支持通过 Middleware 对工具调用进行拦截和增强。Middleware 分为四种类型：
+
+```go
+// compose/tool_node.go
+
+// ToolMiddleware 组合了 invokable 和 streamable 工具调用的中间件钩子
+type ToolMiddleware struct {
+    // Invokable 用于非流式标准工具调用
+    Invokable InvokableToolMiddleware
+    
+    // Streamable 用于流式标准工具调用
+    Streamable StreamableToolMiddleware
+    
+    // EnhancedInvokable 用于非流式增强型工具调用
+    EnhancedInvokable EnhancedInvokableToolMiddleware
+    
+    // EnhancedStreamable 用于流式增强型工具调用
+    EnhancedStreamable EnhancedStreamableToolMiddleware
+}
+```
+
+### **Middleware 使用示例**
+
+```go
+import (
+    "context"
+    "fmt"
+    
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+)
+
+// 创建带 Middleware 的 ToolsNode
+toolsNode, err := compose.NewToolNode(ctx, &compose.ToolsNodeConfig{
+    Tools: []tool.BaseTool{myEnhancedTool},
+    ToolCallMiddlewares: []compose.ToolMiddleware{
+        {
+            // 标准工具中间件
+            Invokable: func(next compose.InvokableToolEndpoint) compose.InvokableToolEndpoint {
+                return func(ctx context.Context, input *compose.ToolInput) (*compose.ToolOutput, error) {
+                    fmt.Printf("调用标准工具: %s\n", input.Name)
+                    return next(ctx, input)
+                }
+            },
+            // 增强型工具中间件
+            EnhancedInvokable: func(next compose.EnhancedInvokableToolEndpoint) compose.EnhancedInvokableToolEndpoint {
+                return func(ctx context.Context, input *compose.ToolInput) (*compose.EnhancedInvokableToolOutput, error) {
+                    fmt.Printf("调用增强型工具: %s\n", input.Name)
+                    output, err := next(ctx, input)
+                    if err != nil {
+                        return nil, err
+                    }
+                    fmt.Printf("增强型工具返回 %d 个内容部分\n", len(output.Result.Parts))
+                    return output, nil
+                }
+            },
+        },
+    },
+})
 ```
 
 ## **Option 和 Callback 使用**
@@ -341,3 +670,48 @@ Eino 移除了 OpenAPI schema 3.0 相关的所有定义与方法，转为使用 
 升级后，部分 eino-ext module 可能报错“_undefined: schema.NewParamsOneOfByOpenAPIV3_”等问题，升级报错的 eino-ext module 到最新版本即可。
 
 如果 schema 改造比较复杂，可以使用  [https://github.com/cloudwego/eino/discussions/397](https://github.com/cloudwego/eino/discussions/397) 中提供的工具方法辅助转换。
+
+### **v0.6.x 新增增强型工具（Enhanced Tool）**
+
+新增 `EnhancedInvokableTool` 和 `EnhancedStreamableTool` 接口，支持返回结构化的多模态结果。
+
+**主要变更：**
+
+1. **新增工具接口**：
+
+- `EnhancedInvokableTool`：接收 `*schema.ToolArgument`，返回 `*schema.ToolResult`
+- `EnhancedStreamableTool`：接收 `*schema.ToolArgument`，返回 `*schema.StreamReader[*schema.ToolResult]`
+
+1. **新增工具辅助函数**（`components/tool/utils/`）：
+
+- `InferEnhancedTool`：从函数自动推断创建增强型工具
+- `InferEnhancedStreamTool`：从函数自动推断创建增强型流式工具
+- `NewEnhancedTool`：手动创建增强型工具
+- `NewEnhancedStreamTool`：手动创建增强型流式工具
+
+1. **新增数据结构**（`schema/message.go`）：
+
+- `ToolPartType`：工具输出内容类型枚举（text、image、audio、video、file）
+- `ToolArgument`：工具输入参数结构体
+- `ToolResult`：工具多模态输出结果结构体
+- `ToolOutputPart`：工具输出内容部分
+- `ToolOutputImage/Audio/Video/File`：各类多媒体输出结构体
+
+1. **ToolsNode 增强**：
+
+- 新增 `EnhancedInvokableToolMiddleware` 和 `EnhancedStreamableToolMiddleware`
+- 支持增强型工具和标准工具混合使用
+- 当工具同时实现两种接口时，优先使用增强型接口
+
+1. **Callback 增强**：
+
+- `CallbackOutput` 新增 `ToolOutput *schema.ToolResult` 字段，用于增强型工具的多模态输出
+
+**使用场景：**
+
+增强型工具适用于需要返回富媒体内容的场景，例如：
+
+- 图片搜索工具返回搜索到的图片
+- 文件生成工具返回生成的文件
+- 音视频处理工具返回处理后的媒体文件
+- 多模态 AI Agent 场景

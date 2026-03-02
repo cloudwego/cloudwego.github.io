@@ -4,7 +4,7 @@ date: "2026-01-30"
 lastmod: ""
 tags: []
 title: 'Eino: Retriever 使用说明'
-weight: 4
+weight: 6
 ---
 
 ## **基本介绍**

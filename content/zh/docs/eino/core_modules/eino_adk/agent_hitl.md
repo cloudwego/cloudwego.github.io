@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2026-01-23"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: Eino human-in-the-loop框架：技术架构指南
-weight: 6
+weight: 7
 ---
 
 ## 概述
