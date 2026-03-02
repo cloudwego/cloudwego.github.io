@@ -11,6 +11,8 @@ weight: 2
 
 Package: `github.com/cloudwego/eino-ext/adk/backend/local`
 
+注意：如果 eino 版本是 v0.8.0 及以上，需要使用 local backend 的 [v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Flocal%2Fv0.2.0-alpha.1) 版本。
+
 ### 概述
 
 Local Backend 是 EINO ADK FileSystem 的本地文件系统实现，直接操作本机文件系统，提供原生性能和零配置体验。

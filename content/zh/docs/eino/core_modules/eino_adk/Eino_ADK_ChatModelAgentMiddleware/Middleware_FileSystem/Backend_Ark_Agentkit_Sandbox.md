@@ -11,6 +11,8 @@ weight: 1
 
 Package: `github.com/cloudwego/eino-ext/adk/backend/agentkit`
 
+注意：如果 eino 版本是 v0.8.0 及以上，需要使用 ark agentkit backend 的 [v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.0-alpha.1) 版本。
+
 ### 概述
 
 Agentkit Sandbox Backend 是 EINO ADK FileSystem 的远程沙箱实现，通过火山引擎 Agentkit 服务在隔离的云端环境中执行文件系统操作。

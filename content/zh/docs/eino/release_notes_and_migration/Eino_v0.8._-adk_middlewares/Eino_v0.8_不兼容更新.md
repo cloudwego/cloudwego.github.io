@@ -234,4 +234,5 @@ req := &GrepRequest{Pattern: "config\\.json"}
 2. **关注语义变更**: `ReadRequest.Offset` 从 0-based 改为 1-based，`Pattern` 从字面量改为正则表达式，这些不会导致编译错误但会改变运行时行为
 3. **检查文件操作**: `WriteRequest` 的覆盖行为变更可能导致数据丢失，需要额外检查
 4. **迁移 Decorator/Wrapper**: 如有自定义的 ChatModel/Tool Decorator/Wrapper，改为实现 `ChatModelAgentMiddleware`
-5. **测试验证**: 迁移后进行全面的测试，特别是涉及文件操作和搜索功能的代码
+5. 按需升级 backend 实现：如果使用 eino-ext 提供的 local/ark agentkit backend，升级到对应的 alpha 版本：[local backend v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Flocal%2Fv0.2.0-alpha.1), [ark agentkit backend v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.0-alpha.1)
+6. **测试验证**: 迁移后进行全面的测试，特别是涉及文件操作和搜索功能的代码
