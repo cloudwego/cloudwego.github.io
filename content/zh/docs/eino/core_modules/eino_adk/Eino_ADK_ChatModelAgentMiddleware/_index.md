@@ -16,7 +16,7 @@ weight: 8
 **重要说明：** 此接口专为 `ChatModelAgent` 及基于它构建的 Agent（如 `DeepAgent`）设计。
 
 > 💡
-> ChatModelAgentMiddleware 接口在 [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13) 版本引入
+> ChatModelAgentMiddleware 接口在 [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1) 版本引入
 
 ### 为什么使用 ChatModelAgentMiddleware 而非 AgentMiddleware？
 

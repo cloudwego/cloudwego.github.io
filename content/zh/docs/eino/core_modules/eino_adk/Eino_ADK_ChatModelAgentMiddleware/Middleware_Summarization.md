@@ -12,7 +12,7 @@ weight: 3
 Summarization 中间件会在对话的 token 数量超过配置阈值时，自动压缩对话历史。这有助于在长对话中保持上下文连续性，同时控制在模型的 token 限制范围内。
 
 > 💡
-> 本中间件在 [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13) 版本引入。
+> 本中间件在 [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1) 版本引入。
 
 ## 快速开始
 

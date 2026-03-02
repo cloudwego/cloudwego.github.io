@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-01-06"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: 'Eino: v0.2.*-second release'

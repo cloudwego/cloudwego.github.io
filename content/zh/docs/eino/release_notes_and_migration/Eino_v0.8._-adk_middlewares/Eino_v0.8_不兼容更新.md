@@ -7,7 +7,7 @@ title: Eino v0.8 不兼容更新
 weight: 1
 ---
 
-> 本文档记录了 `alpha/08` 分支相比 `main` 分支的所有不兼容变更。
+> 本文档记录了 `v0.8.0.Beta` 分支相比 `main` 分支的所有不兼容变更。
 
 ## 1. API 不兼容变更
 
@@ -27,7 +27,7 @@ type StreamingShellBackend interface {
 }
 ```
 
-**After (alpha/08)**:
+**After (v0.8.0.Beta)**:
 
 ```go
 type Shell interface {
@@ -64,34 +64,17 @@ func (s *MyShell) Execute(...) {...}
 
 ### 2.1 AgentEvent 发送机制变更
 
-**位置**: `adk/chatmodel.go`
-
-**变更描述**: `ChatModelAgent` 的 `AgentEvent` 发送机制从 eino callback 机制改为 Middleware 机制。
-
-**Before (main)**:
+**位置**: `adk/chatmodel.go` **变更描述**: `ChatModelAgent` 的 `AgentEvent` 发送机制从 eino callback 机制改为 Middleware 机制。**Before (main)**:
 
 - `AgentEvent` 通过 eino 的 callback 机制发送
 - 如果用户自定义了 ChatModel 或 Tool 的 Decorator/Wrapper，且原始 ChatModel/Tool 内部埋入了 Callback 点位，则 `AgentEvent` 会在 Decorator/Wrapper 的**内部**发送
-- 这对 eino-ext 实现的所有 ChatModel 适用，但对大部分用户自行实现的 Tool 以及 eino 一方提供的 Tool 可能不适用
-
-**After (alpha/08)**:
-
+- 这对 eino-ext 实现的所有 ChatModel 适用，但对大部分用户自行实现的 Tool 以及 eino 一方提供的 Tool 可能不适用 **After (v0.8.0.Beta)**:
 - `AgentEvent` 通过 Middleware 机制发送
-- `AgentEvent` 会在用户自定义的 Decorator/Wrapper 的**外部**发送
-
-**影响**:
-
+- `AgentEvent` 会在用户自定义的 Decorator/Wrapper 的**外部**发送**影响**:
 - 正常情况下用户不感知此变更
 - 如果用户之前自行实现了 ChatModel 或 Tool 的 Decorator/Wrapper，事件发送的相对位置会发生变化
-- 位置变化可能导致 `AgentEvent` 的内容也发生变化：之前的事件不包含 Decorator/Wrapper 做出的变更，现在的事件会包含
-
-**变更原因**:
-
-- 正常业务场景下，希望发出的事件包含 Decorator/Wrapper 做出的变更
-
-**迁移指南**:
-
-如果你之前通过 Decorator/Wrapper 包装了 ChatModel 或 Tool，需要改为实现 `ChatModelAgentMiddleware` 接口：
+- 位置变化可能导致 `AgentEvent` 的内容也发生变化：之前的事件不包含 Decorator/Wrapper 做出的变更，现在的事件会包含**变更原因**:
+- 正常业务场景下，希望发出的事件包含 Decorator/Wrapper 做出的变更**迁移指南**:如果你之前通过 Decorator/Wrapper 包装了 ChatModel 或 Tool，需要改为实现 `ChatModelAgentMiddleware` 接口：
 
 ```go
 // Before: 通过 Decorator/Wrapper 包装 ChatModel
@@ -127,7 +110,7 @@ type ReadRequest struct {
 }
 ```
 
-**After (alpha/08)**:
+**After (v0.8.0.Beta)**:
 
 ```go
 type ReadRequest struct {
@@ -166,7 +149,7 @@ type FileInfo struct {
 }
 ```
 
-**After (alpha/08)**:
+**After (v0.8.0.Beta)**:
 
 ```go
 type FileInfo struct {
@@ -193,7 +176,7 @@ type FileInfo struct {
 // The file will be created if it does not exist, or error if file exists.
 ```
 
-**After (alpha/08)**:
+**After (v0.8.0.Beta)**:
 
 ```go
 // WriteRequest 注释说明:
@@ -217,7 +200,7 @@ type FileInfo struct {
 // The search performs an exact substring match within the file's content.
 ```
 
-**After (alpha/08)**:
+**After (v0.8.0.Beta)**:
 
 ```go
 // Pattern is the search pattern, supports full regular expression syntax.

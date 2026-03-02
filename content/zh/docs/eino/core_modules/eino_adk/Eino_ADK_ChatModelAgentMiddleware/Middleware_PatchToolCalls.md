@@ -10,9 +10,7 @@ weight: 7
 adk/middlewares/patchtoolcalls
 
 > 💡
-> PatchToolCalls 中间件用于修复消息历史中「悬空的工具调用」（dangling tool calls）问题。
->
-> 本中间件在 [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13) 版本引入。
+> PatchToolCalls 中间件用于修复消息历史中「悬空的工具调用」（dangling tool calls）问题。本中间件在 [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1) 版本引入。
 
 ## 概述
 

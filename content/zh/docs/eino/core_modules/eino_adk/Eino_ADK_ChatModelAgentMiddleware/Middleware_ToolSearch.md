@@ -12,7 +12,7 @@ weight: 5
 adk/middlewares/dynamictool/toolsearch
 
 > 💡
-> 本中间件在 [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13) 版本引入。
+> 本中间件在 [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1) 版本引入。
 
 ## 概述
 
