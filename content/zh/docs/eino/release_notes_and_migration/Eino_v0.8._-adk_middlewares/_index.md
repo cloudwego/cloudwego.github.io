@@ -68,7 +68,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 > 💡
 > **功能**: 自动对话历史摘要，防止超出模型上下文窗口限制
 
-📚 **详细文档**: [Middleware: Summarization](https://www.feishu.cn/wiki/KFJ9wnrMmicvI4kWuz4cymnTnfe)
+📚 **详细文档**: [Middleware: Summarization](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_Summarization)
 
 当对话历史的 Token 数量超过阈值时，自动调用 LLM 生成摘要，压缩上下文。
 
@@ -95,7 +95,7 @@ mw, err := summarization.New(ctx, &summarization.Config{
 > 💡
 > **功能**: 工具结果压缩，优化上下文使用效率
 
-📚 **详细文档**: [Middleware: ToolReduction](https://www.feishu.cn/wiki/C5QAwAg3QisDo5kwaWicJBo9ndd)
+📚 **详细文档**: [Middleware: ToolReduction](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_ToolReduction)
 
 提供两阶段的工具输出管理：
 
@@ -120,7 +120,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **功能**: 文件系统操作工具集
 
-📚 **详细文档**: [Middleware: FileSystem](https://www.feishu.cn/wiki/NODlwh1Q9imdetkhmgKcyF0Vncd)
+📚 **详细文档**: [Middleware: FileSystem](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_FileSystem)
 
 **新增能力**:
 
@@ -133,7 +133,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **功能**: 动态加载和执行 Skill
 
-📚 **详细文档**: [Middleware: Skill](https://www.feishu.cn/wiki/NG1xwde86ig3qhkdMhQc5bh2nIm)
+📚 **详细文档**: [Middleware: Skill](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_Skill)
 
 **新增能力**:
 
@@ -146,7 +146,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **功能**: 任务规划和执行工具
 
-📚 **详细文档**: [Middleware: PlanTask](https://www.feishu.cn/wiki/H7dlwwO0ZiotwBk8iTpcxesKn4d)
+📚 **详细文档**: [Middleware: PlanTask](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_PlanTask)
 
 支持 Agent 创建和管理任务计划，适用于需要分步执行的复杂任务场景。
 
@@ -155,7 +155,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **功能**: 工具搜索，支持从大量工具中动态检索
 
-📚 **详细文档**: [Middleware: ToolSearch](https://www.feishu.cn/wiki/GVgXww3HJiZUx0kS7O6cfOHpnZf)
+📚 **详细文档**: [Middleware: ToolSearch](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_ToolSearch)
 
 当工具数量较多时，通过语义搜索动态选择最相关的工具，避免上下文过载。
 
@@ -164,7 +164,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **功能**: 修补悬空的工具调用，确保消息历史完整性
 
-📚 **详细文档**: [Middleware: PatchToolCalls](https://www.feishu.cn/wiki/WpkUwXnwMidkUVkGTx8ckIWWnjg)
+📚 **详细文档**: [Middleware: PatchToolCalls](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_PatchToolCalls)
 
 扫描消息历史，为缺少响应的工具调用插入占位符消息。适用于工具调用被中断或取消的场景。
 
