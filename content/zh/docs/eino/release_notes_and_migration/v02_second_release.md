@@ -54,7 +54,7 @@ weight: 2
 ### BugFix
 
 - FinishReason 可能在任意一个包中返回，不建设一定再最后一个包返回
-- callbacks.HandlerBuidler 不再提供默认的 Needed() 方法， 此方法默认返回 false，在内嵌 callbacks.HandlerBuilder 场景，会导致所有的切面函数失效
+- callbacks.HandlerBuilder 不再提供默认的 Needed() 方法， 此方法默认返回 false，在内嵌 callbacks.HandlerBuilder 场景，会导致所有的切面函数失效
 
 ## v0.2.2
 

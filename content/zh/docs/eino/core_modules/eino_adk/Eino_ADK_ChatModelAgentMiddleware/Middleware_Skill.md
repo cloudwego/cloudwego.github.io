@@ -297,7 +297,7 @@ workdir/
 └── other files
 ```
 
-- 创建本地 filesytem backend，基于 backend 创建 Skill middleware：
+- 创建本地 filesystem backend，基于 backend 创建 Skill middleware：
 
 ```go
 import （
