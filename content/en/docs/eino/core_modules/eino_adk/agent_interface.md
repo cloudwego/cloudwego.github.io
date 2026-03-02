@@ -1,335 +1,270 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2025-11-20"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Agent Interface'
-weight: 3
+weight: 1
 ---
 
-# Agent Definition
+## Agent Definition
 
-Eino defines a basic interface for Agents. Any struct implementing this interface can be considered an Agent:
+### Agent Interface Definition
+
+An Agent is a unit that can make decisions. The following defines the interface that an Agent needs to implement:
 
 ```go
 // github.com/cloudwego/eino/adk/interface.go
 
 type Agent interface {
+    Run(ctx context.Context, input *AgentInput, opts ...AgentRunOption) *AsyncIterator[*AgentEvent]
     Name(ctx context.Context) string
     Description(ctx context.Context) string
-    Run(ctx context.Context, input *AgentInput, opts ...AgentRunOption) *AsyncIterator[*AgentEvent]
 }
 ```
 
-<table>
-<tr><td>Method</td><td>Description</td></tr>
-<tr><td>Name</td><td>The name of the Agent, serving as its identifier</td></tr>
-<tr><td>Description</td><td>Description of the Agent's capabilities, mainly used to help other Agents understand and determine this Agent's responsibilities or functions</td></tr>
-<tr><td>Run</td><td>The core execution method of the Agent, returns an iterator through which the caller can continuously receive events produced by the Agent</td></tr>
-</table>
+- **Run**: Executes the Agent's logic, returning an `AsyncIterator` iterator that asynchronously returns execution events
+- **Name**: Returns the Agent's unique identifier
+- **Description**: Returns a description of the Agent's capabilities, used for collaboration between Agents
 
-## AgentInput
+### AgentInput
 
-The Run method accepts AgentInput as the Agent's input:
-
-```go
-type AgentInput struct {
-    Messages        []Message
-    EnableStreaming bool
-}
-
-type Message = *schema.Message
-```
-
-Agents typically center around a ChatModel, so the Agent's input is defined as `Messages`, which is the same type used when calling Eino ChatModel. `Messages` can include user instructions, dialogue history, background knowledge, example data, and any other data you wish to pass to the Agent. For example:
-
-```go
-import (
-    "github.com/cloudwego/eino/adk"
-    "github.com/cloudwego/eino/schema"
-)
-
-input := &adk.AgentInput{
-    Messages: []adk.Message{
-       schema.UserMessage("What's the capital of France?"),
-       schema.AssistantMessage("The capital of France is Paris.", nil),
-       schema.UserMessage("How far is it from London? "),
-    },
-}
-```
-
-`EnableStreaming` is used to **suggest** the output mode to the Agent, but it is not a mandatory constraint. Its core idea is to control the behavior of components that support both streaming and non-streaming output, such as ChatModel, while components that only support one output method will not be affected by `EnableStreaming`. Additionally, the `AgentOutput.IsStreaming` field indicates the actual output type. The runtime behavior is:
-
-- When `EnableStreaming=false`, for components that can output both streaming and non-streaming, the non-streaming mode that returns the complete result at once will be used.
-- When `EnableStreaming=true`, for components inside the Agent that can output streaming (such as ChatModel calls), results should be returned incrementally as a stream. If a component does not naturally support streaming, it can still work in its original non-streaming manner.
-
-As shown in the diagram below, ChatModel can output either streaming or non-streaming, while Tool can only output non-streaming:
-
-- When `EnableStream=false`, both output non-streaming
-- When `EnableStream=true`, ChatModel outputs streaming, while Tool still outputs non-streaming since it doesn't have streaming capability.
-
-<a href="/img/eino/eino_adk_streaming.png" target="_blank"><img src="/img/eino/eino_adk_streaming.png" width="100%" /></a>
-
-## AgentRunOption
-
-`AgentRunOption` is defined by the Agent implementation and can modify Agent configuration or control Agent behavior at the request level.
-
-Eino ADK provides some commonly defined Options for users:
-
-- `WithSessionValues`: Set cross-Agent read/write data
-- `WithSkipTransferMessages`: When configured, when the Event is Transfer SubAgent, the messages in the Event will not be appended to History
-
-Eino ADK provides two methods `WrapImplSpecificOptFn` and `GetImplSpecificOptions` for Agents to wrap and read custom `AgentRunOption`.
-
-When using the `GetImplSpecificOptions` method to read `AgentRunOptions`, AgentRunOptions that don't match the required type (like options in the example) will be ignored.
-
-For example, you can define `WithModelName` to require the Agent to change the model being called at the request level:
-
-```go
-// github.com/cloudwego/eino/adk/call_option.go
-// func WrapImplSpecificOptFn[T any](optFn func(*T)) AgentRunOption
-// func GetImplSpecificOptions[T any](base *T, opts ...AgentRunOption) *T
-
-import "github.com/cloudwego/eino/adk"
-
-type options struct {
-    modelName string
-}
-
-func WithModelName(name string) adk.AgentRunOption {
-    return adk.WrapImplSpecificOptFn(func(t *options) {
-       t.modelName = name
-    })
-}
-
-func (m *MyAgent) Run(ctx context.Context, input *adk.AgentInput, opts ...adk.AgentRunOption) *adk.AsyncIterator[*adk.AgentEvent] {
-    o := &options{}
-    o = adk.GetImplSpecificOptions(o, opts...)
-    // run code...
-}
-```
-
-Additionally, AgentRunOption has a `DesignateAgent` method. Calling this method allows you to specify which Agents the Option takes effect on when calling a multi-Agent system:
-
-```go
-func genOpt() {
-    // Specify that the option only takes effect for agent_1 and agent_2
-    opt := adk.WithSessionValues(map[string]any{}).DesignateAgent("agent_1", "agent_2")
-}
-```
-
-## AsyncIterator
-
-`Agent.Run` returns an iterator `AsyncIterator[*AgentEvent]`:
-
-```go
-// github.com/cloudwego/eino/adk/utils.go
-
-type AsyncIterator[T any] struct {
-    ...
-}
-
-func (ai *AsyncIterator[T]) Next() (T, bool) {
-    ...
-}
-```
-
-It represents an asynchronous iterator (asynchronous means there is no synchronization control between production and consumption), allowing the caller to consume a series of events produced by the Agent during execution in an ordered, blocking manner.
-
-- `AsyncIterator` is a generic struct that can be used to iterate over any type of data. Currently in the Agent interface, the iterator type returned by the Run method is fixed as `AsyncIterator[*AgentEvent]`. This means that every element you get from this iterator will be a pointer to an `AgentEvent` object. `AgentEvent` will be explained in detail in the following sections.
-- The main way to interact with the iterator is by calling its `Next()` method. This method's behavior is blocking. Each time you call `Next()`, the program pauses execution until one of the following two situations occurs:
-  - The Agent produces a new `AgentEvent`: The `Next()` method returns this event, and the caller can process it immediately.
-  - The Agent actively closes the iterator: When the Agent will no longer produce any new events (usually when the Agent finishes running), it closes this iterator. At this point, the `Next()` call ends blocking and returns false in the second return value, informing the caller that iteration has ended.
-
-Typically, you need to use a for loop to process `AsyncIterator`:
-
-```go
-iter := myAgent.Run(xxx) // get AsyncIterator from Agent.Run
-
-for {
-    event, ok := iter.Next()
-    if !ok {
-        break
-    }
-    // handle event
-}
-```
-
-`AsyncIterator` can be created by `NewAsyncIteratorPair`. The other parameter returned by this function, `AsyncGenerator`, is used to produce data:
-
-```go
-// github.com/cloudwego/eino/adk/utils.go
-
-func NewAsyncIteratorPair[T any]() (*AsyncIterator[T], *AsyncGenerator[T])
-```
-
-Agent.Run returns AsyncIterator to allow the caller to receive a series of AgentEvents produced by the Agent in real-time. Therefore, Agent.Run usually runs the Agent in a Goroutine to immediately return the AsyncIterator for the caller to listen to:
-
-```go
-import "github.com/cloudwego/eino/adk"
-
-func (m *MyAgent) Run(ctx context.Context, input *adk.AgentInput, opts ...adk.AgentRunOption) *adk.AsyncIterator[*adk.AgentEvent] {
-    // handle input
-    iter, gen := adk.NewAsyncIteratorPair[*adk.AgentEvent]()
-    go func() {
-       defer func() {
-          // recover code
-          gen.Close()
-       }()
-       // agent run code
-       // gen.Send(event)
-    }()
-    return iter
-}
-```
-
-## AgentWithOptions
-
-Using the `AgentWithOptions` method allows you to perform some common configurations in Eino ADK Agent.
-
-Unlike `AgentRunOption`, `AgentWithOptions` takes effect before running and does not support custom options.
-
-```go
-// github.com/cloudwego/eino/adk/flow.go
-func AgentWithOptions(ctx context.Context, agent Agent, opts ...AgentOption) Agent
-```
-
-Currently built-in configurations supported by Eino ADK:
-
-- `WithDisallowTransferToParent`: Configure that this SubAgent is not allowed to Transfer to ParentAgent, which will trigger the SubAgent's `OnDisallowTransferToParent` callback method
-- `WithHistoryRewriter`: When configured, this Agent will rewrite the received context information through this method before execution
-
-# AgentEvent
-
-AgentEvent is the core event data structure produced by the Agent during its execution. It contains the Agent's meta information, output, behavior, and errors:
+`AgentInput` is the input of Agent.Run(). `Input` is the original input of the entire Run, and `Messages` is the `AgentInput.Input` converted through `HistoryRewriter` as well as conversation history. Through these two, the Agent can access the complete input and conversation history.
 
 ```go
 // github.com/cloudwego/eino/adk/interface.go
 
-type AgentEvent struct {
-    AgentName string
-
-    RunPath []RunStep
-
-    Output *AgentOutput
-
-    Action *AgentAction
-
-    Err error
+type AgentInput struct {
+    // Input is the original input of the entire run
+    Input []Message
+    // Messages contains input for the Agent
+    Messages []Message
 }
-
-// EventFromMessage builds a standard event
-func EventFromMessage(msg Message, msgStream MessageStream, role schema.RoleType, toolName string) *AgentEvent
 ```
 
-## AgentName & RunPath
+By default, History (conversation history) is generated based on AgentEvents. Therefore, the content in AgentInput.Messages may already include part of the content in AgentInput.Input.
 
-The `AgentName` and `RunPath` fields are automatically filled by the framework. They provide important context information about the event source, which is crucial in complex systems composed of multiple Agents.
+### AgentEvent
+
+`AgentEvent` is the event returned by the Agent. There are three types of events, and each event contains only one type of content:
+
+1. `Output`: The content output by the Agent
+2. `Action`: Special actions that the Agent wants the Runner to perform
+3. `Err`: Error messages
+
+> 💡
+> The Output of AgentEvent will be converted to History for subsequent Agent calls by default. Different types of AgentAction have different behaviors: TransferToAgentAction triggers the Agent Runner to run the target Agent. ExitAction triggers termination of the entire Run.
 
 ```go
-type RunStep struct {
-    agentName string
+type AgentEvent struct {
+    // AgentName is the name of the Agent that generated this event.
+    AgentName string
+    // RunPath is the execution path of the Agent that generated this event.
+    // When the agent runs during Transfer, it joins the existing RunPath and forms a new RunPath.
+    RunPath []AgentRunPath
+    // Output contains the output of the Agent.
+    Output *AgentOutput
+    // Action contains the action that the Agent generated.
+    Action *AgentAction
+    // Err contains the error generated by the Agent.
+    Err error
 }
 ```
 
-- `AgentName` indicates which Agent instance produced the current AgentEvent.
-- `RunPath` records the complete call chain to reach the current Agent. `RunPath` is a slice of `RunStep` that records all `AgentName`s in order from the initial entry Agent to the Agent that produced the current event.
+### AgentOutput
 
-## AgentOutput
+`AgentOutput` is the output content of the Agent:
 
-`AgentOutput` encapsulates the output produced by the Agent.
-
-Message output is set in the MessageOutput field, while other types of custom output are set in the CustomizedOutput field:
+- `MessageOutput` is the message output that can be displayed to the user or recorded in History
 
 ```go
 // github.com/cloudwego/eino/adk/interface.go
 
 type AgentOutput struct {
-    MessageOutput *MessageVariant
-
-    CustomizedOutput any
+    // MessageOutput contains the message output generated by the Agent.
+    MessageOutput *MessageOutput
 }
 
-type MessageVariant struct {
-    IsStreaming bool
-
-    Message       Message
-    MessageStream MessageStream
-    // message role: Assistant or Tool
-    Role schema.RoleType
-    // only used when Role is Tool
+// MessageOutput contains the message output generated by the Agent.
+type MessageOutput struct {
+    // ToolName is the name of the tool if the message generated from a tool call
+    // for example, if the agent calls tool search, then this field will be set to "search"
     ToolName string
+    // Message is the complete message generated by the Agent. It is not available if IsStreaming is true.
+    // Note: Use GetMessage() to wait for and get the message.
+    Message *schema.Message
+    // MessageStream is the message stream generated by the Agent. It is only available if IsStreaming is true.
+    MessageStream *schema.StreamReader[*schema.Message]
+    // IsStreaming indicates whether the message is streaming.
+    IsStreaming bool
 }
 ```
 
-The type `MessageVariant` of the `MessageOutput` field is a core data structure with the main functions of:
+`MessageOutput` provides a `GetMessage()` method that unifies the retrieval of complete messages. When the message is in streaming mode (`IsStreaming == true`), this method iterates through the stream to concatenate the complete message. When not in streaming mode, it directly returns the `Message` field.
 
-1. Unified handling of streaming and non-streaming messages: `IsStreaming` is a flag. A value of true indicates that the current `MessageVariant` contains a streaming message (read from MessageStream), while false indicates it contains a non-streaming message (read from Message):
+```go
+func (m *MessageOutput) GetMessage() (*schema.Message, error)
+```
 
-   - Streaming: Returns a series of message fragments over time that eventually form a complete message (MessageStream).
-   - Non-streaming: Returns a complete message at once (Message).
-2. Providing convenient metadata access: The Message struct contains some important meta information internally, such as the message's Role (Assistant or Tool). To quickly identify message types and sources, MessageVariant elevates these commonly used metadata to the top level:
+### AgentAction
 
-   - `Role`: The role of the message, Assistant / Tool
-   - `ToolName`: If the message role is Tool, this field directly provides the tool's name.
+`AgentAction` is the Agent's action output. The purpose of action output is to tell the framework to perform specific behaviors. These specific behaviors are called Action Types:
 
-The benefit of this is that when code needs to route or make decisions based on message type, it doesn't need to deeply parse the specific content of the Message object. It can directly get the required information from the top-level fields of MessageVariant, thus simplifying the logic and improving code readability and efficiency.
+<table>
+<tr><td>Type</td><td>Purpose</td></tr>
+<tr><td>TransferToAgentAction</td><td>Tells the Runner to transfer the run to a SubAgent</td></tr>
+<tr><td>ExitAction</td><td>Tells the Runner to exit the entire run</td></tr>
+<tr><td>InterruptAction</td><td>Tells the Runner to interrupt the run and save the current running state</td></tr>
+</table>
 
-## AgentAction
+```go
+type AgentAction struct {
+    // TransferToAgent contains transfer target when transferring to another agent
+    TransferToAgent *TransferToAgentInfo
+    // Exit indicates whether the agent wants to exit the conversation
+    Exit bool
+    // Interrupted contains interrupt information when the agent is interrupted
+    Interrupted *InterruptInfo
+}
 
-An Agent producing an Event containing AgentAction can control multi-Agent collaboration, such as immediate exit, interruption, transfer, etc.:
+type TransferToAgentInfo struct {
+    // DestAgentName is the name of the agent to transfer the conversation to
+    DestAgentName string
+}
+
+type InterruptInfo struct {
+    // Data contains arbitrary information to save when interrupted
+    Data any
+}
+```
+
+### AsyncIterator
+
+`AsyncIterator` implements an asynchronous iterator that allows retrieving Agent execution results element by element without needing to wait for all results to complete.
 
 ```go
 // github.com/cloudwego/eino/adk/interface.go
 
-type AgentAction struct {
-    Exit bool
-
-    Interrupted *InterruptInfo
-
-    TransferToAgent *TransferToAgentAction
-    
-    BreakLoop *BreakLoopAction
-
-    CustomizedAction any
+type AsyncIterator[T any] struct {
+    // private fields
 }
 
-type InterruptInfo struct {
-    Data any
-}
-
-type TransferToAgentAction struct {
-    DestAgentName string
-}
+// Next returns the next item in the iterator.
+// It returns the item and true if there is more data, otherwise it returns nil and false.
+func (a *AsyncIterator[T]) Next() (T, bool)
 ```
 
-Eino ADK currently has four preset Actions:
+### AgentRunOption
 
-1. Exit: When an Agent produces an Exit Action, the Multi-Agent will exit immediately
+`AgentRunOption` is used to configure Agent runtime options.
 
 ```go
-func NewExitAction() *AgentAction {
-    return &AgentAction{Exit: true}
+// github.com/cloudwego/eino/adk/interface.go
+
+type AgentRunOption struct {
+    // internal use only
 }
 ```
 
-2. Transfer: When an Agent produces a Transfer Action, it will transfer to the target Agent to run
+The following options are provided:
+
+- `WithEnableStreaming`: Enables streaming mode. If the Agent supports streaming output, it returns `MessageOutput` in stream form
+- `WithToolOptions`: Specifies ToolOptions to pass to Tools
+- `WithModelOptions`: Specifies ModelOptions to pass to ChatModel
+
+## Runner Definition
+
+### Runner Interface Definition
+
+`Runner` is the core engine for executing Agents.
 
 ```go
-func NewTransferToAgentAction(destAgentName string) *AgentAction {
-    return &AgentAction{TransferToAgent: &TransferToAgentAction{DestAgentName: destAgentName}}
+// github.com/cloudwego/eino/adk/runner.go
+
+type Runner struct {
+    // private fields
+}
+
+type RunnerConfig struct {
+    Agent           Agent
+    EnableStreaming bool
+    CheckPointStore CheckPointStore
+}
+
+func NewRunner(ctx context.Context, config RunnerConfig) *Runner
+```
+
+- `Agent`: The Agent to be executed
+- `EnableStreaming`: Whether to enable streaming mode for Agent execution results
+- `CheckPointStore`: Storage for saving interrupt states
+
+### Runner Methods
+
+```go
+// Run runs the Agent with the given input messages.
+func (r *Runner) Run(ctx context.Context, input []Message, opts ...AgentRunOption) *AsyncIterator[*AgentEvent]
+
+// Query runs the Agent with a single user query string.
+func (r *Runner) Query(ctx context.Context, query string, opts ...AgentRunOption) *AsyncIterator[*AgentEvent]
+
+// Resume resumes an interrupted Agent execution from a checkpoint.
+func (r *Runner) Resume(ctx context.Context, checkPointID string, opts ...AgentRunOption) (*AsyncIterator[*AgentEvent], error)
+```
+
+## Callback
+
+### Agent Callback
+
+Agent provides runtime callbacks to monitor Agent execution status. Compared to AgentEvent, callbacks can observe more fine-grained execution stages.
+
+```go
+// github.com/cloudwego/eino/adk/callback.go
+
+type Callbacks struct {
+    // OnAgentStart is called when an agent starts.
+    OnAgentStart func(ctx context.Context, runPath []AgentRunPath, input *AgentInput)
+    // OnAgentEvent is called when an agent generates an event.
+    OnAgentEvent func(ctx context.Context, runPath []AgentRunPath, event *AgentEvent)
+    // OnAgentEnd is called when an agent ends.
+    OnAgentEnd func(ctx context.Context, runPath []AgentRunPath, input *AgentInput)
 }
 ```
 
-3. Interrupt: When an Agent produces an Interrupt Action, it will interrupt the Runner's execution. Since interruption can occur at any position and unique information needs to be passed out during interruption, the Action provides an `Interrupted` field for the Agent to set custom data. When the Runner receives an Action with non-empty Interrupted, it considers an interruption has occurred. The internal mechanism of Interrupt & Resume is relatively complex and will be detailed in the [Eino ADK: Agent Runner] - [Eino ADK: Interrupt & Resume] section.
+Register callbacks by calling WithCallbacks when calling Runner.Run():
 
 ```go
-// For example, when ChatModelAgent interrupts, it sends the following AgentEvent:
-h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
-    Interrupted: &InterruptInfo{
-       Data: &ChatModelAgentInterruptInfo{Data: data, Info: info},
-    },
-}})
+// github.com/cloudwego/eino/adk/callback.go
+
+func WithCallbacks(cb *Callbacks) AgentRunOption
 ```
 
-4. Break Loop: When a sub-Agent of LoopAgent emits a BreakLoopAction, the corresponding LoopAgent will stop looping and exit normally.
+### Graph Callback
+
+For Agents implemented based on Graph, Eino's Graph Callbacks can also be used to monitor internal Graph execution status. Note that not all built-in Agent implementations support Graph Callbacks.
+
+`ChatModelAgent` supports Graph Callbacks. See [Eino: Callbacks User Guide](/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual) for more details.
+
+## Extension Points
+
+### OnSubAgents
+
+Agents that support sub-Agents through Transfer can implement `OnSubAgents` to receive notifications about sub-Agent configuration.
+
+```go
+type OnSubAgents interface {
+    OnSetSubAgents(ctx context.Context, subAgents []Agent) error
+    OnSetAsSubAgent(ctx context.Context, parent Agent) error
+    OnDisallowTransferToParent(ctx context.Context) error
+}
+```
+
+### ResumableAgent
+
+Agents supporting interrupt and resume functionality need to implement `ResumableAgent`.
+
+```go
+type ResumableAgent interface {
+    Agent
+    Resume(ctx context.Context, info *ResumeInfo, opts ...AgentRunOption) *AsyncIterator[*AgentEvent]
+}
+```

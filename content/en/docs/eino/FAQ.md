@@ -1,23 +1,23 @@
 ---
 Description: ""
-date: "2026-01-30"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: FAQ
-weight: 7
+weight: 11
 ---
 
-# Q: cannot use openapi3.TypeObject (untyped string constant "object") as *openapi3.Types value in struct literal，cannot use types (variable of type string) as *openapi3.Types value in struct literal
+# Q: cannot use openapi3.TypeObject (untyped string constant "object") as *openapi3.Types value in struct literal, cannot use types (variable of type string) as *openapi3.Types value in struct literal
 
-Ensure the `github.com/getkin/kin-openapi` dependency version does not exceed `v0.118.0`. Starting from Eino `v0.6.0`, Eino no longer depends on the `kin-openapi` library.
+Check that the github.com/getkin/kin-openapi dependency version does not exceed v0.118.0. Versions after Eino V0.6.0 no longer depend on the kin-openapi library.
 
-# Q: During agent streaming, it never reaches ToolsNode, or streaming is lost and appears non-streaming.
+# Q: Agent streaming calls do not enter the ToolsNode node. Or streaming effect is lost, behaving as non-streaming.
 
-- First, update Eino to the latest version.
+- First update Eino to the latest version
 
-Different models output tool calls differently in streaming mode. Some models (e.g., OpenAI) emit tool calls directly; others (e.g., Claude) might emit text first and then the tool call. You therefore need different logic to determine whether a tool call is present in a streamed message.
+Different models may output tool calls differently in streaming mode: some models (like OpenAI) output tool calls directly; some models (like Claude) output text first, then output tool calls. Therefore, different methods need to be used for judgment. This field is used to specify the function that determines whether the model's streaming output contains tool calls.
 
-The ReAct Agent `Config` has a `StreamToolCallChecker`. If omitted, the agent uses a default checker that determines a tool call by inspecting whether any non-empty early chunk contains tool calls:
+The Config of ReAct Agent has a StreamToolCallChecker field. If not filled, the Agent will use "non-empty packet" to determine whether it contains tool calls:
 
 ```go
 func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
@@ -45,9 +45,9 @@ func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[
 }
 ```
 
-This default works when the Tool Call message contains only a tool call.
+The above default implementation is suitable for: Tool Call Messages output by the model only contain Tool Calls.
 
-It does not fit cases where a non-empty content chunk appears before the tool call. In such cases, provide a custom checker like this:
+Cases where the default implementation is not applicable: there are non-empty content chunks before outputting Tool Calls. In this case, a custom tool call checker is needed:
 
 ```go
 toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
@@ -71,108 +71,139 @@ toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Mes
 }
 ```
 
-Note: this custom `StreamToolCallChecker` checks all chunks for tool calls. When the model is outputting a normal answer, this may reduce "early streaming detection", because it waits until all chunks are inspected. To preserve streaming responsiveness, try guiding the model with prompts:
+The above custom StreamToolCallChecker needs to check **all packets** for ToolCall when the model normally outputs an answer, which causes the "streaming judgment" effect to be lost. To preserve the "streaming judgment" effect as much as possible, the suggestion is:
 
 > 💡
-> Add prompt constraints such as: "If a tool is required, output only the tool call; do not output text."
+> Try adding prompts to constrain the model not to output extra text when calling tools, for example: "If you need to call a tool, output the tool directly without outputting text."
 >
-> Models vary in how much they adhere to such prompts. Tune and validate for your chosen model.
+> Different models may be affected differently by prompts. In actual use, you need to adjust the prompts yourself and verify the effect.
 
 # Q: [github.com/bytedance/sonic/loader](http://github.com/bytedance/sonic/loader): invalid reference to runtime.lastmoduledatap
 
-Older versions of `sonic` are incompatible with `go1.24`. Upgrade to `v1.13.2` or higher.
+Old versions of sonic are incompatible with go1.24. Update to version greater than v1.13.2.
 
-# Q: Tool input deserialization failed: `failed to invoke tool call {tool_call_id}: unmarshal input fail`
+# Q: Tool Input deserialization failed: failed to invoke tool call {tool_call_id}: unmarshal input fail
 
-Models typically do not produce invalid JSON. Investigate the specific reason for deserialization failure; in most cases this is due to output truncation when the model's response exceeds limits.
+Currently, models generally do not produce illegal JSON output. First confirm what the deserialization failure reason is. It's most likely caused by model output being truncated due to excessive length.
 
-# Q: How can I implement batch processing nodes in Eino (like Coze's batch nodes)?
+# Q: How does Eino implement batch processing nodes? Similar to batch processing nodes in Coze
 
-Eino currently does not support batch processing. Two options:
+Eino currently does not support batch processing. There are two optional methods:
 
-1. Dynamically build the graph per request — the overhead is low. Note that `Chain Parallel` requires the number of parallel nodes to be greater than one.
-2. Implement a custom batch node and handle batching inside the node.
+1. Dynamically build the graph on demand for each request, with low additional cost. Note that Chain Parallel requires more than one parallel node.
+2. Custom batch processing node, where the node handles batch processing tasks internally
 
 Code example: [https://github.com/cloudwego/eino-examples/tree/main/compose/batch](https://github.com/cloudwego/eino-examples/tree/main/compose/batch)
 
-# Q: Does Eino support structured model outputs?
+# Q: Does Eino support structured model output?
 
-Yes, in two steps:
+Two steps. First, require the model to output structured data, with three methods:
 
-1. Ensure the model outputs structured data. Options:
-   - Some models support configuration for structured output (e.g., OpenAI response format).
-   - Use tool calls to obtain structured results.
-   - Prompt the model explicitly to output structured data.
-2. After obtaining a structured message, use `schema.NewMessageJSONParser` to parse the message into your target struct.
+1. Some models support direct configuration (like OpenAI's response format). Check if there's such configuration in the model settings.
+2. Obtain through tool call functionality
+3. Write prompts requiring the model to output structured data
 
-# Q: How to access Reasoning Content / "thinking" output from a chat model?
+After getting structured output from the model, you can use schema.NewMessageJSONParser to convert the message to the struct you need.
 
-If the model implementation supports Reasoning Content, it is stored in the `ReasoningContent` field of the output `Message`.
+# Q: How to get the Reasoning Content/reasoning/deep thinking content output by the model (chat model):
 
-# Q: Errors include `context deadline exceeded`, `timeout`, or `context canceled`
+If the model wrapper supports outputting Reasoning Content/reasoning/deep thinking content, this content will be stored in the ReasoningContent field of the Message output by the model.
 
-Cases:
+# Q: Error contains "context deadline exceeded" "timeout" "context canceled"
 
-1. `context.canceled`: While executing a graph or agent, the user code passed a cancelable context and triggered cancellation. Investigate your application's context-cancel logic. This is unrelated to the Eino framework.
-2. `context deadline exceeded`: Two common possibilities:
-   1. During graph or agent execution, the user code passed a context with a timeout, which was reached.
-   2. A `ChatModel` or other external resource has its own timeout configured (or its HTTP client does), which was reached.
+Discussion by case:
 
-Inspect the thrown error for `node path: [node name x]`. If the node name is not a `ChatModel` or any node that performs external calls, it is likely case 2-a; otherwise, it is likely case 2-b.
+1. context.canceled: When executing a graph or agent, the user passed in a cancelable context and initiated a cancellation. Check the context cancel operation in the application layer code. This error is unrelated to the Eino framework.
+2. Context deadline exceeded: Could be two situations:
+   1. When executing a graph or agent, the user passed in a context with timeout, triggering a timeout.
+   2. Timeout or httpclient with timeout was configured for ChatModel or other external resources, triggering a timeout.
 
-If you suspect 2-a, trace upstream to find where a timeout was set on the context (common sources include FaaS platforms, gateways, etc.).
+Check `node path: [node name x]` in the thrown error. If the node name is not a node with external calls like ChatModel, it's most likely situation 2-a; otherwise, it's most likely situation 2-b.
 
-If you suspect 2-b, check whether the node itself configures a timeout (e.g., Ark ChatModel `Timeout`, or OpenAI ChatModel via an `HttpClient` with `Timeout`). If none are configured but timeouts still occur, it may be the SDK's default timeout. Known defaults: Ark SDK 10 minutes; Deepseek SDK 5 minutes.
+If you suspect it's situation 2-a, check which link in the upstream chain set the timeout on context. Common possibilities include FaaS platforms, etc.
 
-# Q: How to access parent graph `State` within a subgraph?
+If you suspect it's situation 2-b, check whether the node has its own timeout configuration, such as Ark ChatModel configured with Timeout, or OpenAI ChatModel configured with HttpClient (with internal Timeout configuration). If neither is configured but still timing out, it may be the model SDK's default timeout. Known default timeouts: Ark SDK 10 minutes, Deepseek SDK 5 minutes.
 
-If the subgraph and parent graph have different `State` types, use `ProcessState[ParentStateType]()` to process the parent's state. If they share the same `State` type, make the types distinct (for example, with a type alias: `type NewParentStateType StateType`).
+# Q: How to get the parent graph's State in a subgraph
 
-# Q: How does `eino-ext` adapt multimodal input/output for supported models?
+If the subgraph and parent graph have different State types, you can use `ProcessState[parent graph state type]()` to process the parent graph's State. If the subgraph and parent graph have the same State type, make the State types different, for example, using a type alias: `type NewParentStateType StateType`.
 
-For multimodal support, see [https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model](https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model) and the corresponding examples for each model.
+# Q: How to adapt multimodal input/output for Models supported by eino-ext?
 
-# Q: Using `UserInputMultiContent` for multimodal input, but the model side seems to miss the data or cannot read `multicontent`
+For multimodal input/output scenarios supported by eino-ext, refer to the Examples in [https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model](https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model) for the corresponding model.
 
-Recent versions of Eino introduce `UserInputMultiContent` and `AssistantGenMultiContent` for multimodal user input and model output respectively. All `eino-ext` chat model implementations have been adapted. If the model does not receive the multimodal payload, upgrade the provider package to the latest version and try again.
+# Q: Using the latest multimodal support field UserInputMultiContent to input multimodal data, but the model side doesn't seem to have my multimodal data, or can't read multicontent content during multimodal input
 
-# Q: After upgrading to `0.6.x`, there are breaking changes
+The latest version of Eino introduces UserInputMultiContent and AssistantGenMultiContent to represent user-side input multimodal data and model-side returned multimodal data respectively. The chatmodel implementations in eino-ext have all been adapted. If you find that the model side has not received multimodal information, try upgrading the model package you're using. Use go get to update to the latest version and try running again to see if the problem is resolved.
 
-Per the migration plan [Migration from OpenAPI 3.0 Schema Object to JSONSchema in Eino · Discussion #397](https://github.com/cloudwego/eino/discussions/397), Eino `v0.6.1` removed the dependency on `getkin/kin-openapi` and all OpenAPI 3.0-related code.
+# Q: After upgrading to version 0.6.x, there are incompatibility issues
 
-If `eino-ext` modules error with `undefined: schema.NewParamsOneOfByOpenAPIV3`, upgrade those modules to the latest versions.
+According to the previous community announcement plan [Migration from OpenAPI 3.0 Schema Object to JSONSchema in Eino · cloudwego/eino · Discussion #397](https://github.com/cloudwego/eino/discussions/397), Eino V0.6.1 has been released. Important update content includes removing the getkin/kin-openapi dependency and all OpenAPI 3.0 related code.
 
-If schema migration is complex, use the helper tooling in the [JSONSchema conversion guide](https://bytedance.larkoffice.com/wiki/ZMaawoQC4iIjNykzahwc6YOknXf).
+For errors like undefined: schema.NewParamsOneOfByOpenAPIV3 in some eino-ext modules, upgrade the error-reporting eino-ext module to the latest version.
 
-# Q: Which ChatModels in `eino-ext` support the Responses API form?
+If schema transformation is complex, you can use the tool methods in the [JSONSchema Conversion Methods](https://bytedance.larkoffice.com/wiki/ZMaawoQC4iIjNykzahwc6YOknXf) document to assist with conversion.
 
-- In `eino-ext`, currently only the ARK Chat Model can create a ResponsesAPI ChatModel via **NewResponsesAPIChatModel**. Other models do not support creating or using ResponsesAPI.
-- In `eino-byted-ext`, only bytedgpt supports creating Response API via **NewResponsesAPIChatModel**. Other chatmodels have not implemented Response API Client.
-  - Version `components/model/gemini/v0.1.16` already supports `thought_signature` passback. Check if your gemini version meets the requirement. If using bytedgemini (code.byted.org/flow/eino-byted-ext/components/model/bytedgemini) chatmodel implementation, check if its dependency `components/model/gemini` is the latest version, or directly upgrade gemini via go get.
-  - Replace the currently used bytedgpt package with [code.byted.org/flow/eino-byted-ext/components/model/bytedgemini](http://code.byted.org/flow/eino-byted-ext/components/model/bytedgemini) implementation, upgrade to the latest version, and check the example code to confirm how to pass BaseURL.
-  - If you encounter this error, please confirm whether the base url filled in when generating chat model is the chat completion URL or the ResponseAPI URL. In most cases, it's an incorrect ResponseAPI Base URL being passed.
+# Q: Which models provided by Eino-ext ChatModel support Response API format calls?
 
-# Q: How to troubleshoot ChatModel call errors? For example: [NodeRunError] failed to create chat completion: error, status code: 400, status: 400 Bad Request.
+- Currently in Eino-Ext, only ARK's Chat Model can create ResponsesAPI ChatModel through **NewResponsesAPIChatModel**. Other models currently do not support ResponsesAPI creation and usage.
+- In Eino-byted-ext, only bytedgpt supports creating Response API through **NewResponsesAPIChatModel**. Other chatmodels have not implemented Response API Client.
+  - Version components/model/gemini/v0.1.16 already supports thought_signature passback. Check if the gemini version meets requirements. If using bytedgemini (code.byted.org/flow/eino-byted-ext/components/model/bytedgemini) chatmodel implementation, check if its dependent components/model/gemini is the latest version, or directly use go get to upgrade gemini.
+  - Replace the currently used bytedgpt package with the implementation from [code.byted.org/flow/eino-byted-ext/components/model/bytedgemini](http://code.byted.org/flow/eino-byted-ext/components/model/bytedgemini) and upgrade to the latest version. Refer to example code to confirm how to pass BaseURL.
+  - If you encounter this error, confirm whether the base url filled in when generating chat model is the chat completion URL or the ResponseAPI URL. In most cases, the Response API Base URL was incorrectly passed.
 
-This type of error comes from the model API (such as GPT, Ark, Gemini, etc.). The general approach is to check whether the actual HTTP Request to the model API has missing fields, incorrect field values, wrong BaseURL, etc. It's recommended to print the actual HTTP Request via logs and verify/modify the HTTP Request through direct HTTP requests (such as sending Curl from command line or using Postman). After identifying the problem, modify the corresponding Eino code accordingly.
+# Q: How to troubleshoot ChatModel call errors? For example, [NodeRunError] failed to create chat completion: error, status code: 400, status: 400 Bad Request.
 
-For how to print the actual HTTP Request to the model API via logs, refer to this code example: [https://github.com/cloudwego/eino-examples/tree/main/components/model/httptransport](https://github.com/cloudwego/eino-examples/tree/main/components/model/httptransport)
+This type of error is an error from the model API (such as GPT, Ark, Gemini, etc.). The general approach is to check whether the actual HTTP Request calling the model API has missing fields, incorrect field values, wrong BaseURL, etc. It's recommended to print out the actual HTTP Request through logs and verify/modify the HTTP Request through direct HTTP request methods (such as sending Curl from command line or using Postman for direct requests). After locating the problem, modify the corresponding issues in the Eino code accordingly.
 
-# Q: The gemini chat model created under eino-ext repository doesn't support passing multimodal via Image URL? How to adapt?
+For how to print out the actual HTTP Request of the model API through logs, refer to this code example: [https://github.com/cloudwego/eino-examples/tree/main/components/model/httptransport](https://github.com/cloudwego/eino-examples/tree/main/components/model/httptransport)
 
-Currently, the gemini Chat model under the Eino-ext repository has added support for passing URL types. Use `go get github.com/cloudwego/eino-ext/components/model/gemini` to update to [components/model/gemini/v0.1.22](https://github.com/cloudwego/eino-ext/releases/tag/components%2Fmodel%2Fgemini%2Fv0.1.22), the latest version, and test whether passing Image URL meets your business requirements.
+# Q: The gemini chat model created under the eino-ext repository doesn't support using Image URL to pass multimodal data? How to adapt?
 
-# Q: Before calling tools (including MCP tools), JSON Unmarshal failure error occurs. How to solve it?
+Currently, the gemini Chat model under the Eino-ext repository has already added support for passing URL types. Use go get github.com/cloudwego/eino-ext/components/model/gemini to update to [components/model/gemini/v0.1.22](https://github.com/cloudwego/eino-ext/releases/tag/components%2Fmodel%2Fgemini%2Fv0.1.22), the current latest version. Test passing Image URL to see if it meets business requirements.
 
-The Argument field in the Tool Call generated by ChatModel is a string. When the Eino framework calls the tool based on this Argument string, it first performs JSON Unmarshal. At this point, if the Argument string is not valid JSON, JSON Unmarshal will fail with an error like: `failed to call mcp tool: failed to marshal request: json: error calling MarshalJSON for type json.RawMessage: unexpected end of JSON input`
+# Q: Before calling tools (including MCP tool), getting JSON Unmarshal failure error, how to solve
 
-The fundamental solution to this problem is to rely on the model to output valid Tool Call Arguments. From an engineering perspective, we can try to fix some common JSON format issues, such as extra prefixes/suffixes, special character escaping issues, missing braces, etc., but cannot guarantee 100% correction. A similar fix implementation can be found in the code example: [https://github.com/cloudwego/eino-examples/tree/main/components/tool/middlewares/jsonfix](https://github.com/cloudwego/eino-examples/tree/main/components/tool/middlewares/jsonfix)
+The Argument field in Tool Call generated by ChatModel is a string. When the Eino framework calls tools based on this Argument string, it first does JSON Unmarshal. At this point, if the Argument string is not valid JSON, JSON Unmarshal will fail, throwing an error like: `failed to call mcp tool: failed to marshal request: json: error calling MarshalJSON for type json.RawMessage: unexpected end of JSON input`
+
+The fundamental solution to this problem is to rely on the model to output valid Tool Call Arguments. Engineering-wise, we can try to fix some common JSON format issues, such as extra prefixes/suffixes, special character escaping issues, missing braces, etc., but cannot guarantee 100% correction. A similar fix implementation can be referenced in this code example: [https://github.com/cloudwego/eino-examples/tree/main/components/tool/middlewares/jsonfix](https://github.com/cloudwego/eino-examples/tree/main/components/tool/middlewares/jsonfix)
 
 # Q: How to visualize the topology structure of a graph/chain/workflow?
 
-Use the `GraphCompileCallback` mechanism to export the topology structure during `graph.Compile`. A code example for exporting to mermaid diagram: [https://github.com/cloudwego/eino-examples/tree/main/devops/visualize](https://github.com/cloudwego/eino-examples/tree/main/devops/visualize)
+Use the `GraphCompileCallback` mechanism to export the topology structure during `graph.Compile`. A code example for exporting as a mermaid diagram: [https://github.com/cloudwego/eino-examples/tree/main/devops/visualize](https://github.com/cloudwego/eino-examples/tree/main/devops/visualize)
 
-## Q: In Eino, when using Flow/React Agent scenarios, how to get the Tool Call Message and the Tool Result of the tool invocation?
+- For obtaining intermediate structures in Flow/React Agent scenarios, refer to the document [Eino: ReAct Agent Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
 
-- For getting intermediate results in Flow/React Agent scenarios, refer to the document [Eino: ReAct Agent User Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
-  - Additionally, you can replace Flow/React Agent with ADK's ChatModel Agent. For details, refer to [Eino ADK: Overview](/docs/eino/core_modules/eino_adk/agent_preview)
+# Q: Gemini model error missing a `thought_signature`
+
+Gemini model protocol is not openai-compatible. Use the gemini wrapper [https://github.com/cloudwego/eino-ext/tree/main/components/model/gemini](https://github.com/cloudwego/eino-ext/tree/main/components/model/gemini). If using ModelHub platform models, use the internal gemini wrapper [https://code.byted.org/flow/eino-byted-ext/tree/master/components/model/bytedgemini](https://code.byted.org/flow/eino-byted-ext/tree/master/components/model/bytedgemini). Initialization reference code:
+
+```
+cm, err := bytedgemini.NewChatModel(ctx, &bytedgemini.Config{
+    ClientConfig: genai.ClientConfig{
+        APIKey:  apiKey,
+        Backend: genai.BackendGeminiAPI,
+        // uncomment if you want to print the actual request in CURL format
+        // HTTPClient: &http.Client{Transport: NewCurlLogger(http.DefaultTransport, log.Printf)},
+        HTTPOptions: genai.HTTPOptions{
+            // this is base URL for cn, other regions:
+            // - sg: gpt-i18n.byteintl.net
+            // - sg from office network: genai-sg-og.tiktok-row.org
+            // - va: search-va.byteintl.net
+            // - va from office network: genai-va-og.tiktok-row.org
+            // - Non-TT: gpt-i18n.bd.byteintl.net
+            // - US-TTP: gpt.tiktokd.net
+            // - EU-TTP, GCP: gpt.tiktoke.org
+            // - JP: gpt-jp.byteintl.net
+            // see also: https://bytedance.larkoffice.com/wiki/wikcnUPXCY2idGyg2AXKPvay4pd
+            BaseURL:    "https://search.bytedance.net/gpt/openapi/online/multimodal/crawl/google/",
+            APIVersion: "v1",
+        },
+    },
+    Model: modelName,
+    ThinkingConfig: &genai.ThinkingConfig{
+        IncludeThoughts: true,
+        ThinkingBudget:  nil,
+    },
+})
+```

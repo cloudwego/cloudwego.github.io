@@ -1,22 +1,22 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: Agent or Graph? AI Application Path Analysis
-weight: 5
+weight: 8
 ---
 
 ## Introduction: Two Coexisting AI Interaction Paradigms
 
-Many application interfaces integrate different forms of AI capabilities, as shown below:
+Many application interfaces have integrated different forms of AI capabilities, as shown below:
 
 <a href="/img/eino/eino_ai_app_form.png" target="_blank"><img src="/img/eino/eino_ai_app_form.png" width="100%" /></a>
 
 This seemingly simple screenshot represents two forms of "AI applications":
 
 - The "Agent" represented by the "chat box". **Agents use LLM (Large Language Model) as the decision center, autonomously plan and can conduct multi-turn interactions**, naturally suited for handling open-ended, continuous tasks, manifesting as a "dialogue" form.
-- The "Graph" represented by "buttons" or "APIs". For example, the "Recording Summary" button above, the Graph behind it is roughly "Recording" -> "LLM understands and summarizes" -> "Save recording" - this kind of fixed process. **The core of Graph lies in the determinism of its process and the closure of tasks**, completing specific goals through predefined nodes and edges, manifesting as a "function" form. For example, video generation is an "API" form AI application:
+- The "Graph" represented by "buttons" or "APIs". For example, the "Recording Summary" button above - the Graph behind it is roughly "Recording" → "LLM understands and summarizes" → "Save recording" - this kind of fixed process. **The core of Graph lies in the determinism of its process and the closure of tasks**, completing specific goals through predefined nodes and edges, manifesting as a "function" form. For example, video generation is an "API" form AI application:
 
 <a href="/img/eino/eino_complex_workflow_as_api.png" target="_blank"><img src="/img/eino/eino_complex_workflow_as_api.png" width="100%" /></a>
 
@@ -53,11 +53,11 @@ flowchart TD
 
 This article explores in detail the differences and connections between Agent and Graph, two forms of AI applications, proposes that "the best integration point is to encapsulate Graph as Agent's Tool", and provides recommended usage patterns for [Eino](https://github.com/cloudwego/eino) developers.
 
-## Core Concepts Clarification
+## Core Concept Analysis
 
 ### Basic Definitions
 
-- **Graph**: A flowchart **predefined** by developers with a clear topology. Its nodes can be code functions, API calls, or LLMs, and inputs and outputs are typically structured. **The core characteristic is "determinism"**, meaning given the same input, the execution path and final output are predictable.
+- **Graph**: A flowchart **predefined** by developers with a clear topology. Its nodes can be code functions, API calls, or LLMs, and inputs and outputs are typically structured. **The core characteristic is "determinism"** - given the same input, the execution path and final output are predictable.
 - **Agent**: An entity centered on LLM that can **autonomously plan, decide, and execute** tasks. It completes goals through **dynamic interaction** with the environment (Tools, users, other Agents), and its behavior is uncertain. **The core characteristic is "autonomy"**.
 - **Tool**: Any external capability that an Agent can call, typically a **function or API that encapsulates specific functionality**. Tools themselves can be synchronous or asynchronous, stateful or stateless. They are only responsible for execution and do not have autonomous decision-making capabilities.
 - **Orchestration**: The process of **organizing and coordinating multiple compute units (nodes, Agents) to work together**. In this article, it specifically refers to predefining static processes through Graphs.
@@ -65,7 +65,7 @@ This article explores in detail the differences and connections between Agent an
 ### Deep Comparison
 
 <table>
-<tr><td>Dimension</td><td>Agent</td><td>Graph</td></tr>
+<tr><td>Feature Dimension</td><td>Agent</td><td>Graph</td></tr>
 <tr><td><strong>Core Driver</strong></td><td><strong>LLM Autonomous Decision</strong></td><td><strong>Developer Preset Process</strong></td></tr>
 <tr><td><strong>Input</strong></td><td><strong>Unstructured</strong> natural language, images, etc.</td><td><strong>Structured</strong> data</td></tr>
 <tr><td><strong>Deliverable</strong></td><td><strong>Process and result equally important</strong></td><td><strong>Focused on final result</strong></td></tr>
@@ -252,7 +252,7 @@ In summary: Treating an Agent simply as a Graph node is **inefficient**; a bette
 Since direct integration of Agent and Graph at the micro level (nodes) faces difficulties, is there a more elegant way to combine them at the macro level? The answer is yes, and this bridge is "Tool". If we observe the meanings of Graph and Tool, we can find many similarities:
 
 <table>
-<tr><td>Dimension</td><td>Graph</td><td>Tool</td></tr>
+<tr><td>Feature Dimension</td><td>Graph</td><td>Tool</td></tr>
 <tr><td>Input</td><td><strong>Structured data</strong></td><td><strong>Structured data</strong></td></tr>
 <tr><td>Deliverable</td><td><strong>Focused on final result</strong></td><td><strong>Focused on final result</strong></td></tr>
 <tr><td>State Management</td><td><strong>Single execution, stateless</strong></td><td><strong>Single execution, stateless</strong></td></tr>

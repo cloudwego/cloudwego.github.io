@@ -3,17 +3,17 @@ Description: ""
 date: "2026-01-20"
 lastmod: ""
 tags: []
-title: 'Eino: Ecosystem Integration'
+title: 'Eino: Component Integration'
 weight: 6
 ---
 
-## Ecosystem Integration
+## Component Integration
 
 ### ChatModel
 
-- openai: [ChatModel - OpenAI](/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
-- ark: [ChatModel - ARK](/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
-- ollama: [ChatModel - Ollama](/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
+- openai: [ChatModel - OpenAI](https://bytedance.larkoffice.com/wiki/NguEw85n6iJjShkVtdQcHpydnld)
+- ark: [ChatModel - ARK](https://bytedance.larkoffice.com/wiki/WUzzwaX8ricGwZk1i1mcJHHNnEl)
+- ollama: [ChatModel - Ollama](https://bytedance.larkoffice.com/wiki/WWngw1XMViwgyYkNuZgcjZnxnke)
 
 ### Document
 

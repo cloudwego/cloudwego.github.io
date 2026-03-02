@@ -1,13 +1,16 @@
 ---
 Description: ""
-date: "2026-01-22"
+date: "2026-03-02"
 lastmod: ""
 tags: []
 title: AgenticModel - OpenAI
-weight: 0
+weight: 1
 ---
 
-An OpenAI model implementation based on [Eino](https://github.com/cloudwego/eino), implementing the `AgenticModel` component interface. This enables seamless integration of the model into Eino's Agent capabilities, providing enhanced natural language processing and generation features.
+An implementation of the OpenAI model based on [Eino](https://github.com/cloudwego/eino), implementing the `AgenticModel` component interface. This enables the model to seamlessly integrate into Eino's Agent capabilities, providing enhanced natural language processing and generation features.
+
+> 💡
+> This component was introduced in version alpha/09.
 
 ## Features
 
@@ -27,7 +30,7 @@ go get github.com/cloudwego/eino-ext/components/model/agenticopenai@latest
 
 ## Quick Start
 
-Here is a quick example of how to use `AgenticModel`:
+Here's a quick example of how to use `AgenticModel`:
 
 ```go
 package main
@@ -128,7 +131,7 @@ type Config struct {
         // Optional.
         Timeout *time.Duration
 
-        // HTTPClient specifies the client used to send HTTP requests.
+        // HTTPClient specifies the client to use for sending HTTP requests.
         // Optional.
         HTTPClient *http.Client
 
@@ -145,14 +148,14 @@ type Config struct {
         MaxTokens *int
 
         // Temperature controls the randomness of the model output.
-        // Higher values (e.g., 0.8) make the output more random, while lower values (e.g., 0.2) make the output more focused and deterministic.
+        // Higher values (e.g., 0.8) make output more random, while lower values (e.g., 0.2) make it more focused and deterministic.
         // Range: 0.0 to 2.0.
         // Optional.
         Temperature *float32
 
         // TopP controls diversity through nucleus sampling.
         // It specifies the cumulative probability threshold for token selection.
-        // It is recommended to modify this or Temperature, but not both.
+        // It's recommended to modify this or Temperature, but not both.
         // Range: 0.0 to 1.0.
         // Optional.
         TopP *float32
@@ -169,7 +172,7 @@ type Config struct {
         // Optional.
         Reasoning *responses.ReasoningParam
 
-        // Store specifies whether to store the response on the server.
+        // Store specifies whether to store responses on the server.
         // Optional.
         Store *bool
 
@@ -177,19 +180,19 @@ type Config struct {
         // Optional.
         MaxToolCalls *int
 
-        // ParallelToolCalls specifies whether multiple tool calls are allowed in a single turn.
+        // ParallelToolCalls specifies whether to allow multiple tool calls in a single turn.
         // Optional.
         ParallelToolCalls *bool
 
-        // Include specifies the list of additional fields to include in the response.
+        // Include specifies a list of additional fields to include in the response.
         // Optional.
         Include []responses.ResponseIncludable
 
-        // ServerTools specifies the server-side tools available to the model.
+        // ServerTools specifies server-side tools available to the model.
         // Optional.
         ServerTools []*ServerToolConfig
 
-        // MCPTools specifies the Model Context Protocol tools available to the model.
+        // MCPTools specifies Model Context Protocol tools available to the model.
         // Optional.
         MCPTools []*responses.ToolMcpParam
 
@@ -198,8 +201,8 @@ type Config struct {
         // Optional.
         CustomHeader map[string]string
 
-        // ExtraFields specifies extra fields to be added directly to the HTTP request body.
-        // This allows support for vendor-specific or future parameters not yet explicitly supported.
+        // ExtraFields specifies additional fields that will be added directly to the HTTP request body.
+        // This allows supporting vendor-specific or future parameters not yet explicitly supported.
         // Optional.
         ExtraFields map[string]any
 }
@@ -211,7 +214,7 @@ type Config struct {
 
 `AgenticModel` supports tool calling, including Function Tools, MCP Tools, and Server Tools.
 
-#### Function Tools Example
+#### Function Tool Example
 
 ```go
 package main
@@ -336,7 +339,7 @@ func main() {
 }
 ```
 
-#### Server Tools Example
+#### Server Tool Example
 
 ```go
 package main
