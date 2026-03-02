@@ -10,21 +10,19 @@ weight: 7
 adk/middlewares/patchtoolcalls
 
 > 💡
-> The PatchToolCalls middleware is used to fix "dangling tool calls" issues in message history.
->
-> This middleware was introduced in [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13).
+> The PatchToolCalls middleware is used to fix "dangling tool calls" issues in the message history. This middleware was introduced in [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1).
 
 ## Overview
 
-In multi-turn conversation scenarios, there may be cases where an Assistant message contains ToolCalls, but the conversation history lacks corresponding Tool message responses. These "dangling tool calls" can cause certain model APIs to error or produce abnormal behavior.
+In multi-turn conversation scenarios, there may be cases where an Assistant message contains ToolCalls, but the corresponding Tool message response is missing from the conversation history. Such "dangling tool calls" can cause some model APIs to throw errors or produce abnormal behavior.
 
-**Common Scenarios:**
+**Common scenarios:**
 
-- User sends a new message before tool execution completes, causing the tool call to be interrupted
-- During session recovery, some tool call results are lost
-- In human-in-the-loop scenarios, user cancels tool execution
+- User sent a new message before tool execution completed, causing the tool call to be interrupted
+- Some tool call results were lost when restoring a session
+- User canceled tool execution in a Human-in-the-loop scenario
 
-The PatchToolCalls middleware scans the message history before each model call and automatically inserts placeholder messages for tool calls missing responses.
+The PatchToolCalls middleware scans the message history before each model call and automatically inserts placeholder messages for tool calls that lack responses.
 
 ## Quick Start
 
@@ -38,7 +36,7 @@ import (
 // Create middleware with default configuration
 mw, err := patchtoolcalls.New(ctx, nil)
 if err != nil {
-    // handle error
+    // Handle error
 }
 
 // Use with ChatModelAgent
@@ -53,19 +51,19 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 ```go
 type Config struct {
     // PatchedContentGenerator custom function to generate placeholder message content
-    // Optional, uses default message when not set
+    // Optional, uses default message if not set
     PatchedContentGenerator func(ctx context.Context, toolName, toolCallID string) (string, error)
 }
 ```
 
 <table>
 <tr><td>Field</td><td>Type</td><td>Required</td><td>Description</td></tr>
-<tr><td>PatchedContentGenerator</td><td><pre>func(ctx, toolName, toolCallID string) (string, error)</pre></td><td>No</td><td>Custom function to generate placeholder message content. Parameters include tool name and call ID, returns the content to fill</td></tr>
+<tr><td>PatchedContentGenerator</td><td><pre>func(ctx, toolName, toolCallID string) (string, error)</pre></td><td>No</td><td>Custom function to generate placeholder message content. Parameters include tool name and call ID, returns the content to fill in</td></tr>
 </table>
 
 ### Default Placeholder Message
 
-If `PatchedContentGenerator` is not set, the middleware will use the default placeholder message:
+If `PatchedContentGenerator` is not set, the middleware uses a default placeholder message:
 
 **English (default):**
 
@@ -79,7 +77,7 @@ Tool call {toolName} with id {toolCallID} was cancelled - another message came i
 工具调用 {toolName}（ID 为 {toolCallID}）已被取消——在其完成之前收到了另一条消息。
 ```
 
-Language can be switched via `adk.SetLanguage()`.
+You can switch languages via `adk.SetLanguage()`.
 
 ## Usage Examples
 
@@ -88,15 +86,15 @@ Language can be switched via `adk.SetLanguage()`.
 ```go
 mw, err := patchtoolcalls.New(ctx, &patchtoolcalls.Config{
     PatchedContentGenerator: func(ctx context.Context, toolName, toolCallID string) (string, error) {
-        return fmt.Sprintf("[System Notice] Execution of tool %s was skipped (call ID: %s)", toolName, toolCallID), nil
+        return fmt.Sprintf("[System Notice] Tool %s execution was skipped (Call ID: %s)", toolName, toolCallID), nil
     },
 })
 ```
 
-### Using with Other Middlewares
+### Combined with Other Middlewares
 
 ```go
-// PatchToolCalls should typically be placed at the front of the middleware chain
+// PatchToolCalls should usually be placed at the front of the middleware chain
 // to ensure dangling tool calls are fixed before other middlewares process messages
 agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
     Model: yourChatModel,
@@ -115,35 +113,35 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 **Processing Logic:**
 
 1. Executes in the `BeforeModelRewriteState` hook
-2. Iterates through all messages, looking for Assistant messages containing `ToolCalls`
+2. Iterates through all messages to find Assistant messages containing `ToolCalls`
 3. For each ToolCall, checks if a corresponding Tool message exists in subsequent messages (matched by `ToolCallID`)
 4. If no corresponding Tool message is found, inserts a placeholder message
-5. Returns the fixed message list
+5. Returns the repaired message list
 
 ## Example Scenario
 
-### Message History Before Fix
+### Message History Before Repair
 
 ```
 [User]     "Help me check the weather"
 [Assistant] ToolCalls: [{id: "call_1", name: "get_weather"}, {id: "call_2", name: "get_location"}]
 [Tool]     "call_1: Sunny, 25°C"
-[User]     "No need to check the location, just tell me the weather in Beijing"   <- User interrupted
+[User]     "No need to check the location, just tell me Beijing's weather"   <- User interrupts
 ```
 
-### Message History After Fix
+### Message History After Repair
 
 ```
 [User]     "Help me check the weather"
 [Assistant] ToolCalls: [{id: "call_1", name: "get_weather"}, {id: "call_2", name: "get_location"}]
 [Tool]     "call_1: Sunny, 25°C"
-[Tool]     "call_2: Tool call get_location with id call_2 was cancelled..."  <- Auto-inserted
-[User]     "No need to check the location, just tell me the weather in Beijing"
+[Tool]     "call_2: Tool call get_location (ID: call_2) was cancelled..."  <- Automatically inserted
+[User]     "No need to check the location, just tell me Beijing's weather"
 ```
 
 ## Multi-language Support
 
-Placeholder messages support Chinese and English, switch via `adk.SetLanguage()`:
+Placeholder messages support both Chinese and English, switch via `adk.SetLanguage()`:
 
 ```go
 import "github.com/cloudwego/eino/adk"
@@ -155,7 +153,7 @@ adk.SetLanguage(adk.LanguageEnglish)  // English (default)
 ## Notes
 
 > 💡
-> This middleware only modifies the history messages for the current run in the `BeforeModelRewriteState` hook and does not affect the actual stored message history. The fix is temporary and only applies to the current agent invocation.
+> This middleware only modifies the history messages for the current run in the `BeforeModelRewriteState` hook, and does not affect the actual stored message history. The repair is temporary and only used for the current agent call.
 
-- It is recommended to place this middleware at the **front** of the middleware chain to ensure other middlewares process complete message history
-- If your scenario requires persisting the fixed messages, please implement the corresponding logic in `PatchedContentGenerator`
+- It's recommended to place this middleware at the **front** of the middleware chain to ensure other middlewares process a complete message history
+- If your scenario requires persisting the repaired messages, implement the corresponding logic in `PatchedContentGenerator`

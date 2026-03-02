@@ -12,14 +12,14 @@ weight: 6
 adk/middlewares/reduction
 
 > 💡
-> This middleware was introduced in [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13).
+> This middleware was introduced in [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1).
 
 ## Overview
 
 The `reduction` middleware is used to control the token count occupied by tool results, providing two strategies:
 
-1. **Truncation**: Immediately truncate overly long output when a tool returns, saving complete content to Backend
-2. **Clear**: When total tokens exceed threshold, store old tool results to file system
+1. **Truncation**: Immediately truncate overly long outputs when a tool returns, saving the complete content to Backend
+2. **Clear**: When total tokens exceed the threshold, store old tool results to the file system
 
 ---
 
@@ -32,10 +32,10 @@ Tool call returns result
 ┌─────────────────────────────────────────────────────────────┐
 │              WrapInvokableToolCall / WrapStreamableToolCall │
 │                                                             │
-│  Truncation strategy (can skip)                             │
+│  Truncation strategy (can be skipped)                       │
 │    Result length > MaxLengthForTrunc?                       │
-│      Yes → Truncate content, save complete to Backend       │
-│      No → Return as is                                      │
+│      Yes → Truncate content, save full content to Backend   │
+│      No → Return as-is                                      │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
@@ -45,11 +45,11 @@ Tool call returns result
 ┌─────────────────────────────────────────────────────────────┐
 │                  BeforeModelRewriteState                    │
 │                                                             │
-│  Clear strategy (can skip)                                  │
+│  Clear strategy (can be skipped)                            │
 │    Total tokens > MaxTokensForClear?                        │
-│      Yes → Save old tool results to Backend,                │
-│            replace with file path                           │
-│      No → No processing                                     │
+│      Yes → Store old tool results to Backend, replace with  │
+│            file paths                                       │
+│      No → Do nothing                                        │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
@@ -74,8 +74,8 @@ type Config struct {
     // SkipClear skip the clear phase
     SkipClear bool
 
-    // ReadFileToolName tool name for reading files
-    // Agent needs to use this tool to read content after offloading to file
+    // ReadFileToolName name of the tool for reading files
+    // After content is offloaded to a file, the agent needs this tool to read it
     // Default "read_file"
     ReadFileToolName string
 
@@ -90,24 +90,24 @@ type Config struct {
     MaxLengthForTrunc int
 
     // TokenCounter token counter
-    // Used to determine whether to trigger clear
+    // Used to determine if clearing needs to be triggered
     // Default uses character_count/4 estimation
     TokenCounter func(ctx context.Context, msg []adk.Message, tools []*schema.ToolInfo) (int64, error)
 
-    // MaxTokensForClear token threshold to trigger clear
+    // MaxTokensForClear token threshold to trigger clearing
     // Default 30000
     MaxTokensForClear int64
 
-    // ClearRetentionSuffixLimit retain how many recent conversation rounds without clearing
+    // ClearRetentionSuffixLimit how many recent conversation rounds to keep without clearing
     // Default 1
     ClearRetentionSuffixLimit int
 
-    // ClearPostProcess callback after clear completes
+    // ClearPostProcess callback after clearing completes
     // Can be used to save or notify current state
     ClearPostProcess func(ctx context.Context, state *adk.ChatModelAgentState) context.Context
 
     // ToolConfig configuration for specific tools
-    // Higher priority than global configuration
+    // Takes precedence over global configuration
     ToolConfig map[string]*ToolReductionConfig
 }
 ```
@@ -123,14 +123,14 @@ type ToolReductionConfig struct {
     SkipTruncation bool
 
     // TruncHandler custom truncation handler
-    // Uses default handler when not set
+    // Uses default handler if not set
     TruncHandler func(ctx context.Context, detail *ToolDetail) (*TruncResult, error)
 
-    // SkipClear skip clear for this tool
+    // SkipClear skip clearing for this tool
     SkipClear bool
 
     // ClearHandler custom clear handler
-    // Uses default handler when not set
+    // Uses default handler if not set
     ClearHandler func(ctx context.Context, detail *ToolDetail) (*ClearResult, error)
 }
 ```
@@ -142,7 +142,7 @@ type ToolDetail struct {
     // ToolContext tool metadata (tool name, call ID)
     ToolContext *adk.ToolContext
 
-    // ToolArgument input arguments
+    // ToolArgument input parameters
     ToolArgument *schema.ToolArgument
 
     // ToolResult output result
@@ -157,7 +157,7 @@ type TruncResult struct {
     // NeedTrunc whether truncation is needed
     NeedTrunc bool
 
-    // ToolResult truncated tool result
+    // ToolResult tool result after truncation
     // Required when NeedTrunc is true
     ToolResult *schema.ToolResult
 
@@ -168,7 +168,7 @@ type TruncResult struct {
     // Required when NeedOffload is true
     OffloadFilePath string
 
-    // OffloadContent content to offload
+    // OffloadContent offload content
     // Required when NeedOffload is true
     OffloadContent string
 }
@@ -178,14 +178,14 @@ type TruncResult struct {
 
 ```go
 type ClearResult struct {
-    // NeedClear whether clear is needed
+    // NeedClear whether clearing is needed
     NeedClear bool
 
-    // ToolArgument cleared tool argument
+    // ToolArgument tool argument after clearing
     // Required when NeedClear is true
     ToolArgument *schema.ToolArgument
 
-    // ToolResult cleared tool result
+    // ToolResult tool result after clearing
     // Required when NeedClear is true
     ToolResult *schema.ToolResult
 
@@ -196,7 +196,7 @@ type ClearResult struct {
     // Required when NeedOffload is true
     OffloadFilePath string
 
-    // OffloadContent content to offload
+    // OffloadContent offload content
     // Required when NeedOffload is true
     OffloadContent string
 }
@@ -247,7 +247,7 @@ config := &reduction.Config{
         },
         "read_file": {
             Backend:   readFileBackend,
-            SkipClear: true,  // read_file tool doesn't need clear
+            SkipClear: true,  // Read file tool doesn't need clearing
         },
     },
 }
@@ -255,7 +255,7 @@ config := &reduction.Config{
 middleware, err := reduction.New(ctx, config)
 ```
 
-### Using Only Truncation Strategy
+### Using Truncation Strategy Only
 
 ```go
 middleware, err := reduction.New(ctx, &reduction.Config{
@@ -264,7 +264,7 @@ middleware, err := reduction.New(ctx, &reduction.Config{
 })
 ```
 
-### Using Only Clear Strategy
+### Using Clear Strategy Only
 
 ```go
 middleware, err := reduction.New(ctx, &reduction.Config{
@@ -283,8 +283,8 @@ Handled in `WrapInvokableToolCall` / `WrapStreamableToolCall`:
 
 1. Tool returns result
 2. Call TruncHandler to determine if truncation is needed
-3. If truncation needed, save complete content to Backend
-4. Return truncated content with hint text telling agent where the complete content is
+3. If truncation needed, save full content to Backend
+4. Return truncated content with hint text telling the agent where to find the full content
 
 ### Clear
 
@@ -292,9 +292,9 @@ Handled in `BeforeModelRewriteState`:
 
 1. Use TokenCounter to calculate total tokens
 2. Only process if exceeds MaxTokensForClear
-3. Iterate from old messages, skip already processed and the most recent ClearRetentionSuffixLimit rounds
+3. Iterate from old messages, skipping already processed ones and the most recent ClearRetentionSuffixLimit rounds
 4. For each tool call in range, call ClearHandler
-5. For those needing clear, write to Backend and replace result in message with file path
+5. If clearing needed, write to Backend and replace message result with file path
 6. Call ClearPostProcess callback
 
 ---
@@ -313,6 +313,6 @@ adk.SetLanguage(adk.LanguageEnglish)  // English (default)
 ## Notes
 
 - When `SkipTruncation` is false, `Backend` must be set
-- Default TokenCounter uses `character_count / 4` estimation, which is inaccurate for Chinese. It's recommended to use `github.com/tiktoken-go/tokenizer` instead
+- The default TokenCounter uses `character_count / 4` estimation, which is not accurate for Chinese; consider using `github.com/tiktoken-go/tokenizer` as a replacement
 - Already processed messages are marked and won't be processed again
-- Configuration in `ToolConfig` has higher priority than global configuration
+- Configuration in `ToolConfig` takes precedence over global configuration

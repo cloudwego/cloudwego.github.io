@@ -12,15 +12,15 @@ weight: 5
 adk/middlewares/dynamictool/toolsearch
 
 > 💡
-> This middleware was introduced in [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13).
+> This middleware was introduced in [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1).
 
 ## Overview
 
-The `toolsearch` middleware implements dynamic tool selection. When the tool library is large, passing all tools to the model will overflow the context. This middleware's approach is:
+The `toolsearch` middleware implements dynamic tool selection. When the tool library is large, passing all tools to the model would overflow the context. This middleware's approach is:
 
-1. Add a `tool_search` meta-tool that accepts regex to search tool names
+1. Add a `tool_search` meta-tool that accepts regex patterns to search tool names
 2. Initially hide all dynamic tools
-3. After the model calls `tool_search`, matched tools appear in subsequent calls
+3. After the model calls `tool_search`, matched tools become available in subsequent calls
 
 ---
 
@@ -40,9 +40,9 @@ Agent initialization
 ┌────────────────────────────────────────────┐
 │  WrapModel                                                              │
 │    Before each Model call:                                              │
-│    1. Scan message history, find all tool_search return results         │
-│    2. All Tools minus unselected DynamicTools                           │
-│       as tool list for this Model call                                  │
+│    1. Scan message history to find all tool_search return results       │
+│    2. Full Tools minus unselected DynamicTools = tools for this Model   │
+│       call                                                              │
 └────────────────────────────────────────────┘
                                 │
                                 ▼
@@ -112,16 +112,16 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 
 1. Get all DynamicTools
 2. Create `tool_search` tool using DynamicTools
-3. Add `tool_search` and all DynamicTools to `runCtx.Tools`, at this point Agent's Tools is the full set
+3. Add `tool_search` and all DynamicTools to `runCtx.Tools`, at this point Agent has full Tools
 
 ### WrapModel
 
 Before each Model call:
 
-1. Iterate through message history, find all `tool_search` return results
+1. Iterate through message history to find all `tool_search` return results
 2. Collect selected tool names
-3. Filter out unselected DynamicTools from the full tool set
-4. Call Model with the filtered tool list
+3. Filter out unselected DynamicTools from full tools
+4. Call Model with filtered tool list
 
 ### Tool Selection Flow
 
@@ -143,4 +143,4 @@ Round 2:
 - DynamicTools cannot be empty
 - Regex matches tool names, not descriptions
 - Selected tools remain available unless the tool_search call result is deleted or modified
-- Can call tool_search multiple times, results accumulate
+- tool_search can be called multiple times, results accumulate

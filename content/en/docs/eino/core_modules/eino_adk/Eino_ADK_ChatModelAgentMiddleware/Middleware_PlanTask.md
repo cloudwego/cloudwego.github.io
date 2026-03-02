@@ -12,18 +12,18 @@ weight: 4
 adk/middlewares/plantask
 
 > 💡
-> This middleware was introduced in [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13).
+> This middleware was introduced in [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1).
 
 ## Overview
 
-`plantask` is a task management middleware that allows Agents to create and manage task lists. The middleware injects four tools via the `BeforeAgent` hook:
+`plantask` is a task management middleware that allows Agents to create and manage task lists. The middleware injects four tools through the `BeforeAgent` hook:
 
-- **TaskCreate**: Create tasks
+- **TaskCreate**: Create a task
 - **TaskGet**: View task details
-- **TaskUpdate**: Update tasks
+- **TaskUpdate**: Update a task
 - **TaskList**: List all tasks
 
-Main use cases:
+Main purposes:
 
 - Track progress of complex tasks
 - Break large tasks into smaller steps
@@ -39,10 +39,10 @@ Main use cases:
 │                                                                         │
 │  ┌───────────────────────────────────────────────────────────────────┐  │
 │  │  BeforeAgent: Inject task tools                                   │  │
-│  │    - TaskCreate                                                   │  │
-│  │    - TaskGet                                                      │  │
-│  │    - TaskUpdate                                                   │  │
-│  │    - TaskList                                                     │  │
+│  │    - TaskCreate                                                    │  │
+│  │    - TaskGet                                                       │  │
+│  │    - TaskUpdate                                                    │  │
+│  │    - TaskList                                                      │  │
 │  └───────────────────────────────────────────────────────────────────┘  │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -68,11 +68,11 @@ Main use cases:
 ```go
 type Config struct {
     Backend Backend  // Storage backend, required
-    BaseDir string   // Task files directory, required
+    BaseDir string   // Task file directory, required
 }
 ```
 
-- Note that the Backend implementation should be isolated at the session level, with different sessions corresponding to different Backends (task lists)
+- Note that the Backend implementation should be isolated by session, with different sessions corresponding to different Backends (task lists)
 
 ---
 
@@ -97,9 +97,9 @@ type task struct {
     Subject     string         `json:"subject"`     // Title
     Description string         `json:"description"` // Description
     Status      string         `json:"status"`      // Status
-    Blocks      []string       `json:"blocks"`      // Which tasks this blocks
-    BlockedBy   []string       `json:"blockedBy"`   // Which tasks block this
-    ActiveForm  string         `json:"activeForm"`  // In-progress description
+    Blocks      []string       `json:"blocks"`      // Tasks blocked by this one
+    BlockedBy   []string       `json:"blockedBy"`   // Tasks blocking this one
+    ActiveForm  string         `json:"activeForm"`  // Active form text
     Owner       string         `json:"owner"`       // Responsible agent
     Metadata    map[string]any `json:"metadata"`    // Custom data
 }
@@ -115,7 +115,7 @@ type task struct {
 <tr><td><pre>deleted</pre></td><td>Deleted (will delete the file)</td></tr>
 </table>
 
-Status flow: `pending` → `in_progress` → `completed`, any status can be directly `deleted`.
+Status transition: `pending` → `in_progress` → `completed`, any status can be directly `deleted`.
 
 ---
 
@@ -129,20 +129,20 @@ Create a task.
 <tr><td>Parameter</td><td>Type</td><td>Required</td><td>Description</td></tr>
 <tr><td><pre>subject</pre></td><td>string</td><td>Yes</td><td>Title</td></tr>
 <tr><td><pre>description</pre></td><td>string</td><td>Yes</td><td>Description</td></tr>
-<tr><td><pre>activeForm</pre></td><td>string</td><td>No</td><td>In-progress description, e.g., "Running tests"</td></tr>
+<tr><td><pre>activeForm</pre></td><td>string</td><td>No</td><td>Active form text, e.g., "Running tests"</td></tr>
 <tr><td><pre>metadata</pre></td><td>object</td><td>No</td><td>Custom data</td></tr>
 </table>
 
 When to use:
 
-- Task is complex, has more than 3 steps
-- User gave a bunch of things to do
-- Need to show progress to the user
+- The task is relatively complex with 3 or more steps
+- The user has given a list of things to do
+- You need to show progress to the user
 
 When not to use:
 
-- Just a simple task
-- Can be done quickly
+- It's just a simple task
+- Something that can be done quickly
 
 ### TaskGet
 
@@ -153,7 +153,7 @@ View task details.
 <tr><td><pre>taskId</pre></td><td>string</td><td>Yes</td><td>Task ID</td></tr>
 </table>
 
-Returns complete task information: title, description, status, dependencies, etc.
+Returns complete information about the task: title, description, status, dependencies, etc.
 
 ### TaskUpdate
 
@@ -164,23 +164,23 @@ Update a task.
 <tr><td><pre>taskId</pre></td><td>string</td><td>Yes</td><td>Task ID</td></tr>
 <tr><td><pre>subject</pre></td><td>string</td><td>No</td><td>New title</td></tr>
 <tr><td><pre>description</pre></td><td>string</td><td>No</td><td>New description</td></tr>
-<tr><td><pre>activeForm</pre></td><td>string</td><td>No</td><td>New in-progress description</td></tr>
+<tr><td><pre>activeForm</pre></td><td>string</td><td>No</td><td>New active form text</td></tr>
 <tr><td><pre>status</pre></td><td>string</td><td>No</td><td>New status</td></tr>
 <tr><td><pre>addBlocks</pre></td><td>[]string</td><td>No</td><td>Add blocked tasks</td></tr>
-<tr><td><pre>addBlockedBy</pre></td><td>[]string</td><td>No</td><td>Add blocking tasks</td></tr>
+<tr><td><pre>addBlockedBy</pre></td><td>[]string</td><td>No</td><td>Add tasks blocking this one</td></tr>
 <tr><td><pre>owner</pre></td><td>string</td><td>No</td><td>Responsible agent</td></tr>
-<tr><td><pre>metadata</pre></td><td>object</td><td>No</td><td>Custom data (set null to delete)</td></tr>
+<tr><td><pre>metadata</pre></td><td>object</td><td>No</td><td>Custom data (set to null to delete)</td></tr>
 </table>
 
 Notes:
 
-- `status: "deleted"` will delete the task file directly
+- `status: "deleted"` will directly delete the task file
 - Circular dependencies are checked when adding dependencies
-- Tasks are automatically cleaned up after all are completed
+- Automatic cleanup occurs when all tasks are completed
 
 ### TaskList
 
-List all tasks, no parameters needed.
+List all tasks, no parameters required.
 
 Returns a summary of each task: ID, status, title, responsible agent, dependencies.
 
@@ -191,8 +191,8 @@ Returns a summary of each task: ID, status, title, responsible agent, dependenci
 ```go
 ctx := context.Background()
 
-// plantask middleware should normally be at session level
-// different sessions correspond to different task lists
+// The plantask middleware should normally be session-scoped
+// Different sessions correspond to different task lists
 middleware, err := plantask.New(ctx, &plantask.Config{
     Backend: myBackend,
     BaseDir: "/tasks",
@@ -227,33 +227,33 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
        │
        ▼
 5. TaskUpdate to start working
-   - #1 changed to in_progress
+   - Change #1 to in_progress
        │
        ▼
-6. Done, TaskUpdate
-   - #1 changed to completed
+6. When done, TaskUpdate
+   - Change #1 to completed
        │
        ▼
-7. Loop 4-6 until all complete
+7. Loop 4-6 until all completed
        │
        ▼
-8. Auto cleanup
+8. Automatic cleanup
 ```
 
 ---
 
 ## Dependency Management
 
-- **blocks**: After I complete, these tasks can start
-- **blockedBy**: After these tasks complete, I can start
+- **blocks**: These tasks can start after I complete
+- **blockedBy**: I can start after these tasks complete
 
 ```
 Task #1 (blocks: ["2"])  ────►  Task #2 (blockedBy: ["1"])
 
-#2 can start after #1 completes
+#2 can only start after #1 completes
 ```
 
-Circular dependencies will error:
+Circular dependencies will throw an error:
 
 ```
 #1 blocks #2
@@ -262,18 +262,18 @@ Circular dependencies will error:
 
 ---
 
-## Auto Cleanup
+## Automatic Cleanup
 
-After all tasks are `completed`, task files will be automatically deleted.
+When all tasks are `completed`, all task files will be automatically deleted.
 
 ---
 
 ## Notes
 
-- Task files are stored in JSON format in the `BaseDir` directory, filename is `{id}.json`
-- `.highwatermark` file records the maximum allocated task ID to ensure IDs don't repeat
-- All tool operations are protected by mutex locks, concurrent-safe
-- Tool descriptions already contain detailed usage guides, Agent will use tools according to these guides
+- Task files are stored in JSON format in the `BaseDir` directory, with filenames as `{id}.json`
+- The `.highwatermark` file is used to record the maximum assigned task ID, ensuring IDs don't repeat
+- All tool operations are protected by mutex locks and are concurrency-safe
+- The tool descriptions contain detailed usage guidelines that the Agent will follow
 
 ---
 
@@ -282,10 +282,10 @@ After all tasks are `completed`, task files will be automatically deleted.
 Tool descriptions support Chinese and English switching via `adk.SetLanguage()`:
 
 ```go
-// Use Chinese description
+// Use Chinese descriptions
 adk.SetLanguage(adk.LanguageChinese)
 
-// Use English description (default)
+// Use English descriptions (default)
 adk.SetLanguage(adk.LanguageEnglish)
 ```
 

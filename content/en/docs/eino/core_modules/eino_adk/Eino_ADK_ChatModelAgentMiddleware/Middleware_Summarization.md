@@ -9,10 +9,10 @@ weight: 3
 
 ## Overview
 
-Summarization middleware automatically compresses conversation history when the token count exceeds a configured threshold. This helps maintain context continuity in long conversations while staying within the model's token limits.
+The Summarization middleware automatically compresses conversation history when the token count exceeds a configured threshold. This helps maintain context continuity in long conversations while staying within the model's token limits.
 
 > 💡
-> This middleware was introduced in [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13).
+> This middleware was introduced in [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1).
 
 ## Quick Start
 
@@ -24,10 +24,10 @@ import (
 
 // Create middleware with minimal configuration
 mw, err := summarization.New(ctx, &summarization.Config{
-    Model: yourChatModel,  // Required: model used to generate summaries
+    Model: yourChatModel,  // Required: model used for generating summaries
 })
 if err != nil {
-    // handle error
+    // Handle error
 }
 
 // Use with ChatModelAgent
@@ -41,14 +41,14 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 
 <table>
 <tr><td>Field</td><td>Type</td><td>Required</td><td>Default</td><td>Description</td></tr>
-<tr><td>Model</td><td>model.BaseChatModel</td><td>Yes</td><td><li></li></td><td>Chat model used to generate summaries</td></tr>
-<tr><td>ModelOptions</td><td>[]model.Option</td><td>No</td><td><li></li></td><td>Options passed to model when generating summaries</td></tr>
+<tr><td>Model</td><td>model.BaseChatModel</td><td>Yes</td><td><li></li></td><td>Chat model used for generating summaries</td></tr>
+<tr><td>ModelOptions</td><td>[]model.Option</td><td>No</td><td><li></li></td><td>Options passed to the model when generating summaries</td></tr>
 <tr><td>TokenCounter</td><td>TokenCounterFunc</td><td>No</td><td>~4 chars/token</td><td>Custom token counting function</td></tr>
 <tr><td>Trigger</td><td>*TriggerCondition</td><td>No</td><td>190,000 tokens</td><td>Condition to trigger summarization</td></tr>
 <tr><td>Instruction</td><td>string</td><td>No</td><td>Built-in prompt</td><td>Custom summarization instruction</td></tr>
-<tr><td>TranscriptFilePath</td><td>string</td><td>No</td><td><li></li></td><td>Path for complete conversation transcript file</td></tr>
+<tr><td>TranscriptFilePath</td><td>string</td><td>No</td><td><li></li></td><td>Full conversation transcript file path</td></tr>
 <tr><td>Prepare</td><td>PrepareFunc</td><td>No</td><td><li></li></td><td>Custom preprocessing function before summary generation</td></tr>
-<tr><td>Finalize</td><td>FinalizeFunc</td><td>No</td><td><li></li></td><td>Custom postprocessing function for final messages</td></tr>
+<tr><td>Finalize</td><td>FinalizeFunc</td><td>No</td><td><li></li></td><td>Custom post-processing function for final messages</td></tr>
 <tr><td>Callback</td><td>CallbackFunc</td><td>No</td><td><li></li></td><td>Called after Finalize to observe state changes (read-only)</td></tr>
 <tr><td>EmitInternalEvents</td><td>bool</td><td>No</td><td>false</td><td>Whether to emit internal events</td></tr>
 <tr><td>PreserveUserMessages</td><td>*PreserveUserMessages</td><td>No</td><td>Enabled: true</td><td>Whether to preserve original user messages in summary</td></tr>
@@ -67,7 +67,7 @@ type TriggerCondition struct {
 
 ```go
 type PreserveUserMessages struct {
-    // Enabled whether to enable preserving user messages
+    // Enabled whether to enable user message preservation
     Enabled bool
     
     // MaxTokens maximum tokens for preserved user messages
@@ -102,7 +102,7 @@ mw, err := summarization.New(ctx, &summarization.Config{
 })
 ```
 
-**Set Conversation Transcript File Path**
+**Set Transcript File Path**
 
 ```go
 mw, err := summarization.New(ctx, &summarization.Config{
@@ -126,7 +126,7 @@ mw, err := summarization.New(ctx, &summarization.Config{
 })
 ```
 
-**Use Callback to Observe State Changes/Storage**
+**Using Callback to Observe State Changes/Store**
 
 ```go
 mw, err := summarization.New(ctx, &summarization.Config{
@@ -157,7 +157,7 @@ mw, err := summarization.New(ctx, &summarization.Config{
 flowchart TD
     A[BeforeModelRewriteState] --> B{Token count exceeds threshold?}
     B -->|No| C[Return original state]
-    B -->|Yes| D[Send BeforeSummary event]
+    B -->|Yes| D[Emit BeforeSummary event]
     D --> E{Has custom Prepare?}
     E -->|Yes| F[Call Prepare]
     E -->|No| G[Call model to generate summary]
@@ -167,7 +167,7 @@ flowchart TD
     H -->|No| L{Has custom Callback?}
     I --> L
     L -->|Yes| M[Call Callback]
-    L -->|No| J[Send AfterSummary event]
+    L -->|No| J[Emit AfterSummary event]
     M --> J
     J --> K[Return new state]
 
@@ -187,9 +187,9 @@ flowchart TD
 When EmitInternalEvents is set to true, the middleware emits events at key points:
 
 <table>
-<tr><td>Event Type</td><td>Trigger Timing</td><td>Data Carried</td></tr>
+<tr><td>Event Type</td><td>Trigger Timing</td><td>Carried Data</td></tr>
 <tr><td>ActionTypeBeforeSummary</td><td>Before generating summary</td><td>Original message list</td></tr>
-<tr><td>ActionTypeAfterSummary</td><td>After completing summarization</td><td>Final message list</td></tr>
+<tr><td>ActionTypeAfterSummary</td><td>After completing summary</td><td>Final message list</td></tr>
 </table>
 
 **Usage Example**
@@ -205,6 +205,6 @@ mw, err := summarization.New(ctx, &summarization.Config{
 
 ## Best Practices
 
-1. **Set TranscriptFilePath**: Always provide a conversation transcript file path so the model can reference the original conversation when needed.
-2. **Adjust Token Threshold**: Adjust `Trigger.MaxTokens` based on your model's context window size. Generally recommended to set it at 80-90% of the model's limit.
-3. **Custom Token Counter**: In production environments, it's recommended to implement a custom `TokenCounter` that matches your model's tokenizer for accurate counting.
+1. **Set TranscriptFilePath**: It's recommended to always provide a conversation transcript file path so the model can reference the original conversation when needed.
+2. **Adjust Token Threshold**: Adjust `Trigger.MaxTokens` based on the model's context window size. Generally recommended to set it to 80-90% of the model's limit.
+3. **Custom Token Counter**: In production environments, it's recommended to implement a custom `TokenCounter` that matches the model's tokenizer for accurate counting.

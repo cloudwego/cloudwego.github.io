@@ -7,7 +7,7 @@ title: 'Eino ADK: Agent Callback'
 weight: 9
 ---
 
-This feature adds Callback support to ADK Agents, similar to the callback mechanism in the compose package. Through callbacks, users can observe the Agent's execution lifecycle, implementing logging, tracing, monitoring, and other functionality.
+This feature adds Callback support to ADK Agents, similar to the callback mechanism in the compose package. Through callbacks, users can observe the Agent's execution lifecycle for logging, tracing, monitoring, and other purposes.
 
 ## Overview
 
@@ -18,7 +18,7 @@ The ADK Agent Callback mechanism shares the same infrastructure as the callback 
 - Can be combined with other component callbacks (such as ChatModel, Tool, etc.)
 
 > 💡
-> Through Agent Callback, you can intervene at key points in Agent execution, implementing tracing, logging, metrics, and other observability capabilities. This feature was introduced in [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13).
+> Through Agent Callback, you can hook into key points of Agent execution to implement observability capabilities like tracing, logging, and metrics. This feature was introduced in [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1).
 
 ## Core Types
 
@@ -34,13 +34,13 @@ Used in `callbacks.RunInfo.Component` to filter callback events related only to 
 
 ### AgentCallbackInput
 
-Agent callback input type, passed in `OnStart` callback:
+Input type for Agent callbacks, passed in the `OnStart` callback:
 
 ```go
 type AgentCallbackInput struct {
-    // Input contains the Agent input for a new run. Is nil when resuming execution.
+    // Input contains the Agent input for new runs. Nil when resuming execution.
     Input *AgentInput
-    // ResumeInfo contains information when resuming from interruption. Is nil for new runs.
+    // ResumeInfo contains information when resuming from an interrupt. Nil for new runs.
     ResumeInfo *ResumeInfo
 }
 ```
@@ -53,7 +53,7 @@ type AgentCallbackInput struct {
 
 ### AgentCallbackOutput
 
-Agent callback output type, passed in `OnEnd` callback:
+Output type for Agent callbacks, passed in the `OnEnd` callback:
 
 ```go
 type AgentCallbackOutput struct {
@@ -63,7 +63,7 @@ type AgentCallbackOutput struct {
 ```
 
 > 💡
-> **Important**: The `Events` iterator should be consumed **asynchronously** to avoid blocking Agent execution. Each callback handler receives an independent copy of the event stream, without interfering with each other.
+> **Important**: The `Events` iterator should be consumed **asynchronously** to avoid blocking Agent execution. Each callback handler receives an independent copy of the event stream without interfering with each other.
 
 ## API Usage
 
@@ -87,13 +87,13 @@ func ConvAgentCallbackInput(input callbacks.CallbackInput) *AgentCallbackInput
 func ConvAgentCallbackOutput(output callbacks.CallbackOutput) *AgentCallbackOutput
 ```
 
-Returns nil if the type doesn't match.
+Functions return nil if the type doesn't match.
 
 ## Usage Examples
 
 ### Method 1: Using HandlerBuilder
 
-Build a generic callback handler using `callbacks.NewHandlerBuilder()`:
+Use `callbacks.NewHandlerBuilder()` to build a generic callback handler:
 
 ```go
 import (
@@ -137,7 +137,7 @@ iter := agent.Run(ctx, input, adk.WithCallbacks(handler))
 
 ### Method 2: Using HandlerHelper (Recommended)
 
-Using `template.HandlerHelper` allows more convenient handling of type conversions:
+Using `template.HandlerHelper` makes type conversion more convenient:
 
 ```go
 import (
@@ -176,11 +176,11 @@ iter := agent.Run(ctx, input, adk.WithCallbacks(helper))
 ```
 
 > 💡
-> `HandlerHelper` automatically handles type conversions, making the code more concise. It also supports combining callback handlers for multiple components.
+> `HandlerHelper` automatically performs type conversion, making the code more concise. It also supports combining callback handlers for multiple components.
 
-## Tracing Scenario Application
+## Tracing Application
 
-The most common application scenario for Agent Callback is implementing distributed tracing. Here's an example using OpenTelemetry for tracing:
+The most common use case for Agent Callback is implementing distributed tracing. Here's an example using OpenTelemetry for tracing:
 
 ```go
 import (
@@ -230,11 +230,11 @@ handler := callbacks.NewHandlerBuilder().
 
 ### Combining with compose Callbacks
 
-Since ADK Agent callbacks share the same infrastructure as compose callbacks, you can use the same handler to process callbacks for both Agent and other components (such as ChatModel, Tool):
+Since ADK Agent callbacks share the same infrastructure as compose callbacks, you can use the same handler to process callbacks from both Agents and other components (like ChatModel, Tool):
 
 ```go
 helper := template.NewHandlerHelper().
-    // Agent callbacks
+    // Agent callback
     Agent(&template.AgentCallbackHandler{
         OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *adk.AgentCallbackInput) context.Context {
             ctx, _ = tracer.Start(ctx, "agent:"+info.Name)
@@ -245,7 +245,7 @@ helper := template.NewHandlerHelper().
             return ctx
         },
     }).
-    // ChatModel callbacks
+    // ChatModel callback
     ChatModel(&template.ModelCallbackHandler{
         OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *model.CallbackInput) context.Context {
             ctx, _ = tracer.Start(ctx, "model:"+info.Name)
@@ -256,7 +256,7 @@ helper := template.NewHandlerHelper().
             return ctx
         },
     }).
-    // Tool callbacks
+    // Tool callback
     Tool(&template.ToolCallbackHandler{
         OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *tool.CallbackInput) context.Context {
             ctx, _ = tracer.Start(ctx, "tool:"+input.Name)
@@ -269,18 +269,16 @@ helper := template.NewHandlerHelper().
     }).
     Handler()
 
-// Use the combined handler
+// Use combined handler
 iter := agent.Run(ctx, input, adk.WithCallbacks(helper))
 ```
 
 > 💡
-> **Tip**: cozeloop's adk trace version is available at [https://github.com/cloudwego/eino-ext/releases/tag/callbacks%2Fcozeloop%2Fv0.2.0-alpha.1](https://github.com/cloudwego/eino-ext/releases/tag/callbacks%2Fcozeloop%2Fv0.2.0-alpha.1)
->
-> Fornax's adk trace version is available at [https://code.byted.org/flow/eino-byted-ext/tags/callbacks/fornax/v0.2.0-alpha.1](https://code.byted.org/flow/eino-byted-ext/tags/callbacks/fornax/v0.2.0-alpha.1)
+> **Tip**: For the cozeloop ADK trace version, see [https://github.com/cloudwego/eino-ext/releases/tag/callbacks%2Fcozeloop%2Fv0.2.0-alpha.1](https://github.com/cloudwego/eino-ext/releases/tag/callbacks%2Fcozeloop%2Fv0.2.0-alpha.1)
 
-## Agent Type Identification
+## Agent Type Identifiers
 
-Built-in Agents implement the `components.Typer` interface, returning their type identifier, which is populated into the `callbacks.RunInfo.Type` field:
+Built-in Agents implement the `components.Typer` interface, returning their type identifier, which populates the `callbacks.RunInfo.Type` field:
 
 <table>
 <tr><td>Agent Type</td><td>GetType() Return Value</td></tr>
@@ -291,7 +289,7 @@ Built-in Agents implement the `components.Typer` interface, returning their type
 <tr><td>DeterministicTransfer Agent</td><td><pre>"DeterministicTransfer"</pre></td></tr>
 </table>
 
-## Callback Behavior Description
+## Callback Behavior
 
 ### Callback Invocation Timing
 
@@ -302,7 +300,7 @@ Built-in Agents implement the `components.Typer` interface, returning their type
 
 ### OnEnd Invocation Timing
 
-The `OnEnd` callback is registered when the **iterator is created**, not when the generator closes. This allows handlers to consume events while the event stream is streaming.
+The `OnEnd` callback is registered **when the iterator is created**, not when the generator closes. This allows handlers to consume events while the stream is being transmitted.
 
 ## Notes
 
@@ -342,6 +340,6 @@ OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *adk.AgentCallb
 
 Since `Agent.Run()` and `Agent.Resume()` method signatures don't return errors, Agent callbacks **do not support** `OnError`. Error information is passed through the `AgentEvent.Err` field in the event stream.
 
-### 3. Event Stream Copy Mechanism
+### 3. Event Stream Copying Mechanism
 
 When there are multiple callback handlers, each handler receives an independent copy of the event stream without interfering with each other. The last handler receives the original events to reduce memory allocation.
