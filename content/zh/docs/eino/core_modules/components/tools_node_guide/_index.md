@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-03"
 lastmod: ""
 tags: []
 title: 'Eino: ToolsNode&Tool 使用说明'
@@ -294,7 +294,7 @@ import (
 )
 
 // 创建工具节点
-toolsNode := compose.NewToolsNode([]tool.Tool{
+toolsNode := compose.NewToolNode([]tool.Tool{
     searchTool,    // 搜索工具
     weatherTool,   // 天气查询工具
     calculatorTool, // 计算器工具

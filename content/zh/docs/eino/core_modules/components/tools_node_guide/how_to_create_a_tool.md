@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-03"
 lastmod: ""
 tags: []
 title: 如何创建一个 tool ?
@@ -208,8 +208,9 @@ func (t *AddUser) Info(_ context.Context) (*schema.ToolInfo, error) {
 }
 
 func (t *AddUser) InvokableRun(_ context.Context, argumentsInJSON string, _ ...tool.Option) (string, error) {
+    input := &AddUser{}
     // 1. 反序列化 argumentsInJSON，处理 option 等
-    user, _ := json.Unmarshal([]byte(argumentsInJSON))
+    err := json.Unmarshal([]byte(argumentsInJSON), input)
     // 2. 处理业务逻辑
     // 3. 把结果序列化为 string 并返回
 
