@@ -75,7 +75,7 @@ type Config struct {
 <tr><td>StreamingShell</td><td>提供可以流式返回结果的 Shell 能力，可选，与 Shell 互斥</td><td>execute(streaming)</td></tr>
 </table>
 
-DeepAgents 内引用 filesystem middleware 来实现内置 filesystem，此 middleware 更详细的能力说明见：[Middleware: FileSystem](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_FileSystem)
+DeepAgents 内引用 filesystem middleware 来实现内置 filesystem，此 middleware 更详细的能力说明见：[Middleware: FileSystem](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem)
 
 ### 任务拆解与规划
 

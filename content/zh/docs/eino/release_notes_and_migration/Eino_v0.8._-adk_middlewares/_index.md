@@ -59,7 +59,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 })
 ```
 
-详见 [Eino ADK: ChatModelAgentMiddleware](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware)
+详见 [Eino ADK: ChatModelAgentMiddleware](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware)
 
 ---
 
@@ -68,7 +68,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 > 💡
 > **功能**: 自动对话历史摘要，防止超出模型上下文窗口限制
 
-📚 **详细文档**: [Middleware: Summarization](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_Summarization)
+📚 **详细文档**: [Middleware: Summarization](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_summarization)
 
 当对话历史的 Token 数量超过阈值时，自动调用 LLM 生成摘要，压缩上下文。
 
@@ -95,7 +95,7 @@ mw, err := summarization.New(ctx, &summarization.Config{
 > 💡
 > **功能**: 工具结果压缩，优化上下文使用效率
 
-📚 **详细文档**: [Middleware: ToolReduction](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_ToolReduction)
+📚 **详细文档**: [Middleware: ToolReduction](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_toolreduction)
 
 提供两阶段的工具输出管理：
 
@@ -120,7 +120,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **功能**: 文件系统操作工具集
 
-📚 **详细文档**: [Middleware: FileSystem](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_FileSystem)
+📚 **详细文档**: [Middleware: FileSystem](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem)
 
 **新增能力**:
 
@@ -133,7 +133,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **功能**: 动态加载和执行 Skill
 
-📚 **详细文档**: [Middleware: Skill](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_Skill)
+📚 **详细文档**: [Middleware: Skill](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_skill)
 
 **新增能力**:
 
@@ -146,7 +146,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **功能**: 任务规划和执行工具
 
-📚 **详细文档**: [Middleware: PlanTask](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_PlanTask)
+📚 **详细文档**: [Middleware: PlanTask](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_plantask)
 
 支持 Agent 创建和管理任务计划，适用于需要分步执行的复杂任务场景。
 
@@ -155,7 +155,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **功能**: 工具搜索，支持从大量工具中动态检索
 
-📚 **详细文档**: [Middleware: ToolSearch](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_ToolSearch)
+📚 **详细文档**: [Middleware: ToolSearch](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_toolsearch)
 
 当工具数量较多时，通过语义搜索动态选择最相关的工具，避免上下文过载。
 
@@ -164,7 +164,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **功能**: 修补悬空的工具调用，确保消息历史完整性
 
-📚 **详细文档**: [Middleware: PatchToolCalls](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_PatchToolCalls)
+📚 **详细文档**: [Middleware: PatchToolCalls](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_patchtoolcalls)
 
 扫描消息历史，为缺少响应的工具调用插入占位符消息。适用于工具调用被中断或取消的场景。
 
@@ -250,7 +250,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 > 💡
 > 升级到 v0.8 前，请查阅 Breaking Changes 文档了解所有不兼容变更
 
-📚 **完整文档**: [Eino v0.8 不兼容更新](/zh/docs/eino/release_notes_and_migration/Eino_v0.8._-adk_middlewares/Eino_v0.8_不兼容更新)
+📚 **完整文档**: [Eino v0.8 不兼容更新](/zh/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/eino_v0.8_不兼容更新)
 
 **变更概览**:
 
@@ -266,7 +266,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 
 ## 升级指南
 
-详细的迁移步骤和代码示例请参考：[Eino v0.8 不兼容更新](/zh/docs/eino/release_notes_and_migration/Eino_v0.8._-adk_middlewares/Eino_v0.8_不兼容更新)
+详细的迁移步骤和代码示例请参考：[Eino v0.8 不兼容更新](/zh/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/eino_v0.8_不兼容更新)
 
 **快速检查清单**:
 

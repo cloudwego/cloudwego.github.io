@@ -24,7 +24,7 @@ my-skill/
 Skill 使用**渐进式展示（Progressive Disclosure）**来高效管理上下文：
 
 1. **发现（Discovery）**：启动时，Agent 仅加载每个可用 Skill 的名称和描述，足以判断何时可能需要使用该 Skill
-2. **激活（Activation）**：当任务匹配某个 Skill 的描述时，Agent 将完整的 `SKILL.md` 内容读入上下文
+2. **激活****（Activation）**：当任务匹配某个 Skill 的描述时，Agent 将完整的 `SKILL.md` 内容读入上下文
 3. **执行（Execution）**：Agent 遵循指令执行任务，也可以根据需要加载其他文件或执行捆绑的代码这种方式让 Agent 保持快速响应，同时能够按需访问更多上下文。
 
 > 💡

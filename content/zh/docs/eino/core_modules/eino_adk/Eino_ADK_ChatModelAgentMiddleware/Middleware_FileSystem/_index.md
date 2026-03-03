@@ -199,7 +199,7 @@ type MiddlewareConfig struct {
 # [deprecated]工具结果卸载
 
 > 💡
-> 该功能即将在 0.8.0 中 deprecate。迁移到 [Middleware: ToolReduction](/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_ToolReduction)
+> 该功能即将在 0.8.0 中 deprecate。迁移到 [Middleware: ToolReduction](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_toolreduction)
 
 当工具调用结果过大（例如读取大文件、grep 命中大量内容），如果继续将完整结果放入对话上下文，会导致：
 
