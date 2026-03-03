@@ -1,11 +1,14 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-03"
 lastmod: ""
 tags: []
 title: 'Eino: AgenticModel 使用说明[Beta]'
 weight: 10
 ---
+
+> 💡
+> 本功能在 [v0.9](https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2) 版本开始提供。
 
 ## 基本介绍
 

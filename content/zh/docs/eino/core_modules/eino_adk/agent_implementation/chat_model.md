@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-03"
 lastmod: ""
 tags: []
 title: 'Eino ADK: ChatModelAgent'
@@ -617,12 +617,12 @@ import (
 
     "github.com/cloudwego/eino/adk"
 
-    "github.com/cloudwego/eino-examples/adk/intro/chatmodel/internal"
+    "github.com/cloudwego/eino-examples/adk/intro/chatmodel/subagents"
 )
 
 func main() {
     ctx := context.Background()
-    a := internal.NewBookRecommendAgent()
+    a := subagents.NewBookRecommendAgent()
     runner := adk.NewRunner(ctx, adk.RunnerConfig{
        Agent: a,
     })
