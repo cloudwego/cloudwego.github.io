@@ -1,11 +1,14 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-03"
 lastmod: ""
 tags: []
 title: 'Eino: AgenticModel User Guide [Beta]'
 weight: 10
 ---
+
+> 💡
+> This feature is available starting from [v0.9](https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2).
 
 ## Introduction
 
