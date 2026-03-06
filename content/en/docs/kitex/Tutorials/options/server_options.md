@@ -64,6 +64,17 @@ func WithMiddlewareBuilder(mwb endpoint.MiddlewareBuilder, funcName ...string) O
 
 Add middleware depends on the context passed in by the framework that contains runtime configuration information (the context of non-RPC calls), so that the middleware can take advantage of the framework's information when initializing.
 
+### WithStreamOptions
+
+```go
+func WithStreamOptions(opts ...server.StreamOption) Option
+```
+
+**Kitex >= v0.13.0 adds this option.**
+
+Aggregate streaming-related options such as StreamMiddleware, StreamSendMiddleware, StreamRecvMiddleware, RecvTimeout. Works for streaming methods.
+See [StreamX Middleware](../../basic-feature/streamx/streamx_middleware/).
+
 ### WithLimit
 
 ```go

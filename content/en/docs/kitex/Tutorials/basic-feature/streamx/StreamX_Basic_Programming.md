@@ -31,7 +31,7 @@ The protocol selected here only affects code generated from IDL. Regardless of t
 
 File `echo.thrift `:
 
-```go
+```thrift
 namespace go echo
 
 service TestService {
@@ -65,8 +65,10 @@ import "github.com/cloudwego/kitex/client"
 
 cli, err := testservice.NewClient(
     "a.b.c",
-    client.WithStreamRecvMiddleware(...),
-    client.WithStreamSendMiddleware(...),
+    client.WithStreamOptions(
+        client.WithStreamRecvMiddleware(...),
+        client.WithStreamSendMiddleware(...),
+    ),
 )
 ```
 
@@ -78,8 +80,10 @@ import "github.com/cloudwego/kitex/server"
 
 svr := testservice.NewServer(
     new(serviceImpl),
-    server.WithStreamRecvMiddleware(...),
-    server.WithStreamSendMiddleware(...),
+    server.WithStreamOptions(
+        server.WithStreamRecvMiddleware(...),
+        server.WithStreamSendMiddleware(...),
+    ),
 )
 ```
 
