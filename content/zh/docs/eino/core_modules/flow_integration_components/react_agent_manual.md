@@ -185,7 +185,7 @@ userInfoTool := utils.NewTool(
     })
     
 toolConfig := &compose.ToolsNodeConfig{
-    InvokableTools:  []tool.InvokableTool{invokeTool},
+    InvokableTools:  []tool.InvokableTool{userInfoTool},
 }
 ```
 
