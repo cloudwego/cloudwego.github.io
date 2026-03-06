@@ -73,7 +73,7 @@ ReAct 模式的核心是“**思考 → 行动 → 观察 → 再思考**”的�
   - **Act-3**：bash 执行命令，发现日志文件过大，同时配置未开启滚动，也未设置最大日志大小
   - **Think-4**：向运维工程师提供可行的解决方案：清理日志，修改配置并开启滚动，重启日志服务与应用
 
-`ChatModelAgent` 利用 LLM 强大的功能进行推理、理解自然语言、作出决策、生成相应、进行工具交互，**充当智能体应用程序 "思考" 的部分**。您可以使用 ADK 快速构建具有 `ReAct` 能力的 `ChatModelAgent`：
+`ChatModelAgent` 利用 LLM 强大的功能进行推理、理解自然语言、作出决策、生成响应、进行工具交互，**充当智能体应用程序 "思考" 的部分**。您可以使用 ADK 快速构建具有 `ReAct` 能力的 `ChatModelAgent`：
 
 ```go
 import github.com/cloudwego/eino/adk
