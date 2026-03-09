@@ -3,7 +3,7 @@ title: "Binding and validate"
 date: 2025-12-08
 weight: 8
 keywords:
-  ["Binding and validate", "go-tagexpr", "tag", "Parameter binding precedence"]
+  ["Binding and validate", "tag", "Parameter binding precedence"]
 description: "The parameter binding and validation related functions and usage supported by Hertz."
 ---
 
@@ -16,7 +16,7 @@ func main() {
     r.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
         // Parameter binding needs to be used with a specific go tag
 		type Test struct {
-            A string `query:"a" vd:"$!='Hertz'"`
+            A string `query:"a"`
         }
 
         // BindAndValidate
@@ -28,11 +28,6 @@ func main() {
 	    // Bind
         req = Test{}
         err = c.Bind(&req)
-
-        ...
-
-        // Validate, need to use "vd" tag
-        err = c.Validate(&req)
 
         ...
     })
@@ -55,7 +50,7 @@ func main() {
 | ctx.BindJSON          | Bind JSON Body, call `json.Unmarshal()` for deserialization, need Body to be in `application/json` format                                                                                              |
 | ctx.BindProtobuf      | Bind Protobuf Body, call `proto.Unmarshal()` for deserialization, requires Body to be in `application/x-protobuf` format                                                                               |
 | ctx.BindByContentType | The binding method is automatically selected based on the Content-Type, where GET requests call `BindQuery`, and requests with Body are automatically selected based on the Content-Type.              |
-| ctx.Validate          | Parameter checksums, which require a checksum tag to be used (vd tag checksums are used by default)                                                                                                    |
+| ctx.Validate          | Perform parameter validation, requires a validation tag (e.g. `validate` tag from go-playground/validator)                                                                                             |
 
 ## Supported tags and Parameter binding precedence
 
@@ -74,31 +69,7 @@ If [api-annotations](/docs/hertz/tutorials/toolkit/annotation/#supported-api-ann
 | header   | This tag is used to bind header parameters in request                                                                                                                                                                                                                                                                   |
 | json     | This tag is used to bind json parameters in the request body which content-type is `application/json`                                                                                                                                                                                                                   |
 | raw_body | This tag is used to bind the original body (bytes type) of the request, and parameters can be bound even if the bound field name is not specified. (Note: raw_body has the lowest binding priority. When multiple tags are specified, once other tags successfully bind parameters, the body content will not be bound) |
-| vd       | `vd` short for validator, [The grammar of validation parameter](https://github.com/bytedance/go-tagexpr/tree/master/validator)                                                                                                                                                                                          |
 | default  | Set default value                                                                                                                                                                                                                                                                                                       |
-
-### Parameter Validation
-
-Specific validation syntax can be referred to [The grammar of validation parameter](https://github.com/bytedance/go-tagexpr/tree/master/validator).
-
-When generating code without IDL, directly tag the corresponding structure field, for example:
-
-```go
-type InfoRequest struct {
-		Name         string   `vd:"$!='your string'"`
-}
-```
-
-When generating code through IDL, corresponding annotations need to be added, please refer to [field-annotation](/docs/hertz/tutorials/toolkit/annotation/#field-annotation).
-
-Here are common usage examples:
-
-- length validation for string and list `len($)>0`
-- regex pattern match for string `regexp('^\\w*$')"`
-- value validation for numertic field `$>0`
-- validation for pointer field `num==nil || num>0`
-- validation for enum types `type=="hello" || type == "world"`
-- custom error message `msg:'C must be false when S.A>0'"`
 
 ### Parameter binding precedence
 
@@ -124,12 +95,7 @@ type TagRequiredReq struct {
 
 ## Common config
 
-> hertz has refactored `parameter binding` and `checksum` in version v0.7.0, which changes the behaviour of the configurations, as described below<br> respectively.
-> If you still want to use the previous binder, it is now implemented under [hertz-contrib/binding](https://github.com/hertz-contrib/binding) and can be introduced via a custom binder.
-
 ### Customise binder
-
-> hertz version >= v0.10.3 support
 
 You need to implement the Binder interface and inject it into the hertz engine in a configurable way.
 
@@ -200,13 +166,6 @@ func (m *mockBinder) Validate(request *protocol.Request, i interface{}) error {
 
 ```
 
-Currently expanded binders:
-
-> ⚠️ Note: The `hertz-contrib/binding` middleware is now deprecated.
-> Users are recommended to use built-in functionality in Hertz or their own custom binder.
-
-- bytedance/go-tagexpr: https://github.com/hertz-contrib/binding/tree/main/go_tagexpr (binding library used before refactoring)
-
 ### Custom validator
 
 > Supported by hertz version >= v0.10.3.
@@ -227,59 +186,9 @@ func main() {
 }
 ```
 
-#### Custom validator (Deprecated)
-
-> Supported by Hertz versions 0.7.0 to 0.10.2.
-
-You need to implement the Validator interface and inject it into the hertz engine in a configurable way.
-
-```go
-type StructValidator interface {
-    ValidateStruct(interface{}) error // Validation function.
-    Engine() interface{} // Returns the underlying Validator.
-    ValidateTag() string // Validation tag, declares the tag used by the validator.
-}
-```
-
-Example
-
-```go
-
-func main() {
-	// Inject the custom binder via configuration
-    h := server.New(server.WithCustomValidator(&mockValidator{}))
-    ...
-    h.Spin()
-}
-
-type mockValidator struct{}
-
-func (m *mockValidator) ValidateStruct(interface{}) error {
-    return fmt.Errorf("test mock validator")
-}
-
-func (m *mockValidator) Engine() interface{} {
-    return nil
-}
-
-func (m *mockValidator) ValidateTag() string {
-    return "vt"
-}
-
-```
-
-Currently expanded validators:
-
-> ⚠️ Note: The `hertz-contrib/binding` middleware is now deprecated.
-> Users are recommended to use the built-in functionality in Hertz. If custom validation is required, users can use the validator from [go-playground/validator](https://github.com/go-playground/validator).
-
-- go-playground/validator: https://github.com/hertz-contrib/binding/tree/main/go_playground
-
 ### Customize the error of binding and validation
 
-When an error occurs in the binding parameter and the parameter validation fails, user can customize the Error（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_error)）For example：
-The user can customise the content of the Error in case of binding parameter errors and parameter validation failures, using the following method:<br>
-**hertz version >= v0.10.3**
+When an error occurs in the binding parameter and the parameter validation fails, user can customize the Error（[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_error)）.
 
 > Custom bind errors are not supported at this time.
 
@@ -354,104 +263,9 @@ func main() {
 }
 ```
 
-**hertz versions 0.7.0 to 0.10.2**<br>
-
-```go
-package main
-
-import (
-	"github.com/cloudwego/hertz/pkg/app/server/binding"
-	"github.com/cloudwego/hertz/pkg/app/server"
-)
-
-type ValidateError struct {
-   ErrType, FailField, Msg string
-}
-
-// Error implements error interface.
-func (e *ValidateError) Error() string {
-   if e.Msg != "" {
-      return e.ErrType + ": expr_path=" + e.FailField + ", cause=" + e.Msg
-   }
-   return e.ErrType + ": expr_path=" + e.FailField + ", cause=invalid"
-}
-
-func main() {
-    validateConfig := &binding.ValidateConfig{}
-    validateConfig.SetValidatorErrorFactory(func(failField, msg string) error {
-        err := ValidateError{
-            ErrType:   "validateErr",
-            FailField: "[validateFailField]: " + failField,
-            Msg:       "[validateErrMsg]: " + msg,
-        }
-
-        return &err
-        })
-    h := server.New(server.WithValidateConfig(validateConfig))
-    ...
-    h.Spin()
-}
-```
-
-**hertz version < v0.7.0**<br>
-[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_error)
-
-```go
-import "github.com/cloudwego/hertz/pkg/app/server/binding"
-
-type BindError struct {
-    ErrType, FailField, Msg string
-}
-
-// Error implements error interface.
-func (e *BindError) Error() string {
-    if e.Msg != "" {
-        return e.ErrType + ": expr_path=" + e.FailField + ", cause=" + e.Msg
-    }
-    return e.ErrType + ": expr_path=" + e.FailField + ", cause=invalid"
-}
-
-type ValidateError struct {
-    ErrType, FailField, Msg string
-}
-
-// Error implements error interface.
-func (e *ValidateError) Error() string {
-    if e.Msg != "" {
-        return e.ErrType + ": expr_path=" + e.FailField + ", cause=" + e.Msg
-    }
-    return e.ErrType + ": expr_path=" + e.FailField + ", cause=invalid"
-}
-
-func init() {
-    CustomBindErrFunc := func(failField, msg string) error {
-        err := BindError{
-            ErrType:   "bindErr",
-            FailField: "[bindFailField]: " + failField,
-            Msg:       "[bindErrMsg]: " + msg,
-        }
-
-        return &err
-    }
-
-    CustomValidateErrFunc := func(failField, msg string) error {
-        err := ValidateError{
-            ErrType:   "validateErr",
-            FailField: "[validateFailField]: " + failField,
-            Msg:       "[validateErrMsg]: " + msg,
-        }
-
-        return &err
-    }
-
-    binding.SetErrorFactory(CustomBindErrFunc, CustomValidateErrFunc)
-}
-```
-
 ### Customize type resolution
 
-In the parameter binding, for some special types, when the default behavior can not meet the demand, you can use the custom type resolution to solve the problem, the use of the following: <br>
-**hertz version >= v0.7.0**<br>
+In the parameter binding, for some special types, when the default behavior can not meet the demand, you can use the custom type resolution to solve the problem, the use of the following:
 
 ```go
 package main
@@ -472,8 +286,6 @@ type TestBind struct {
 
 func main() {
     bindConfig := binding.NewBindConfig()
-    // After v0.7.0 refactoring, on the basis of the original increase in the request content and routing parameters,
-    // which can be more flexible for the user to customise the type of parsing
     // Note: Only after a tag is successfully matched will the custom logic go through.
     bindConfig.MustRegTypeUnmarshal(reflect.TypeOf(Nested{}), func(req *protocol.Request, params param.Params, text string) (reflect.Value, error) {
         if text == "" {
@@ -493,40 +305,9 @@ func main() {
 }
 ```
 
-**hertz version < v0.7.0**<br>
-
-[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_type_resolve)
-
-```go
-import "github.com/cloudwego/hertz/pkg/app/server/binding"
-
-type Nested struct {
-    B string
-    C string
-}
-
-type TestBind struct {
-    A Nested `query:"a,required"`
-}
-
-func init() {
-    binding.MustRegTypeUnmarshal(reflect.TypeOf(Nested{}), func(v string, emptyAsZero bool) (reflect.Value, error) {
-    if v == "" && emptyAsZero {
-        return reflect.ValueOf(Nested{}), nil
-    }
-    val := Nested{
-        B: v[:5],
-        C: v[5:],
-    }
-    return reflect.ValueOf(val), nil
-    })
-}
-```
-
 ### Custom validation function
 
-Complex validation logic can be implemented in the `validate` annotation by registering a custom validation function:<br>
-**hertz version >= v0.10.3**<br>
+Complex validation logic can be implemented by registering a custom validation function with go-playground/validator:
 
 ```go
 package main
@@ -537,7 +318,6 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/app/server/binding"
 	"github.com/cloudwego/hertz/pkg/protocol"
 	"github.com/go-playground/validator/v10"
 )
@@ -573,61 +353,9 @@ func main() {
 }
 ```
 
-**hertz versions 0.7.0 to 0.10.2**<br>
-
-```go
-package main
-
-import (
-    "github.com/cloudwego/hertz/pkg/app/server/binding"
-    "github.com/cloudwego/hertz/pkg/app/server"
-)
-
-func main() {
-    type Req struct {
-        A int `query:"a" vd:"test($)"`
-    }
-    validateConfig := &binding.ValidateConfig{}
-    validateConfig.MustRegValidateFunc("test", func(args ...interface{}) error {
-        if len(args) != 1 {
-            return fmt.Errorf("the args must be one")
-        }
-        s, _ := args[0].(string)
-        if s == "123" {
-            return fmt.Errorf("the args can not be 123")
-        }
-    return nil
-    })
-    h := server.New(server.WithValidateConfig(validateConfig))
-    ...
-    h.Spin()
-}
-```
-
-**hertz version < v0.7.0**<br>
-[demo](https://github.com/cloudwego/hertz-examples/tree/main/binding/custom_validate_func)
-
-```go
-import "github.com/cloudwego/hertz/pkg/app/server/binding"
-
-func init() {
-    binding.MustRegValidateFunc("test", func(args ...interface{}) error {
-       if len(args) != 1 {
-          return fmt.Errorf("the args must be one")
-       }
-       s, _ := args[0].(string)
-       if s == "123" {
-          return fmt.Errorf("the args can not be 123")
-       }
-       return nil
-    })
-}
-```
-
 ### Configure looseZero
 
 In some scenarios, the front-end sometimes passes information that only has a key but not a value, which can lead to errors when binding numeric types; then you need to configure looseZero mode, which can be used as follows:
-**hertz version >= v0.7.0**<br>
 
 ```go
 package main
@@ -639,8 +367,6 @@ import (
 
 func main() {
     bindConfig := binding.NewBindConfig()
-    // Works for the current Hertz Engine, no conflicts between multiple engine instances bindConfig.
-	// By default, looseZeroMode is false, and the global configuration is not affected
     bindConfig.LooseZeroMode = true
     h := server.New(server.WithBindConfig(bindConfig))
     ...
@@ -648,21 +374,9 @@ func main() {
 }
 ```
 
-**hertz version < v0.7.0**<br>
-
-```go
-import "github.com/cloudwego/hertz/pkg/app/server/binding"
-
-func init() {
-    // False by default, globally effective, if other components also use the same configuration, configuration conflicts may occur
-    binding.SetLooseZeroMode(true)
-}
-```
-
 ### Configure other json unmarshal libraries
 
 When binding parameters, if the request body is json, a json unmarshal will be performed. If users need to use other json libraries (hertz uses the open source json library [sonic](https://github.com/bytedance/sonic) by default), they can configure it themselves. For example:
-**hertz version >= v0.7.0**<br>
 
 ```go
 import (
@@ -677,23 +391,6 @@ func main() {
     h := server.New(server.WithBindConfig(bindConfig))
     ...
     h.Spin()
-}
-```
-
-**hertz version < v0.7.0**<br>
-
-```go
-import "github.com/cloudwego/hertz/pkg/app/server/binding"
-
-func init() {
-    // Use the standard library as a JSON deserialisation tool
-    binding.UseStdJSONUnmarshaler()
-
-    // Use GJSON as the JSON deserialisation tool.
-    binding.UseGJSONUnmarshaler()
-
-    // Use third-party JSON libraries as JSON deserialisers.
-    binding.UseThirdPartyJSONUnmarshaler()
 }
 ```
 
