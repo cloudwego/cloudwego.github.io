@@ -1,19 +1,17 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-10"
 lastmod: ""
 tags: []
 title: Eino v0.8 Breaking Changes
 weight: 1
 ---
 
-> This document records all breaking changes in the `v0.8.0.Beta` branch compared to the `main` branch.
-
 ## 1. API Breaking Changes
 
 ### 1.1 filesystem Shell Interface Renamed
 
-**Location**: `adk/filesystem/backend.go` **Change Description**: Shell-related interfaces have been renamed and no longer embed the `Backend` interface. **Before (main)**:
+**Location**: `adk/filesystem/backend.go` **Change Description**: Shell-related interfaces have been renamed and no longer embed the `Backend` interface. **Before (v0.7.x)**:
 
 ```go
 type ShellBackend interface {
@@ -27,7 +25,7 @@ type StreamingShellBackend interface {
 }
 ```
 
-**After (v0.8.0.Beta)**:
+**After (v0.8.0)**:
 
 ```go
 type Shell interface {
@@ -64,11 +62,11 @@ func (s *MyShell) Execute(...) {...}
 
 ### 2.1 AgentEvent Sending Mechanism Change
 
-**Location**: `adk/chatmodel.go` **Change Description**: `ChatModelAgent`'s `AgentEvent` sending mechanism changed from eino callback mechanism to Middleware mechanism. **Before (main)**:
+**Location**: `adk/chatmodel.go` **Change Description**: `ChatModelAgent`'s `AgentEvent` sending mechanism changed from eino callback mechanism to Middleware mechanism. **Before (v0.7.x)**:
 
 - `AgentEvent` was sent through eino's callback mechanism
 - If users customized ChatModel or Tool Decorator/Wrapper, and the original ChatModel/Tool had embedded Callback points, `AgentEvent` would be sent **inside** the Decorator/Wrapper
-- This applied to all ChatModels implemented in eino-ext, but may not apply to most user-implemented Tools and Tools provided by eino **After (v0.8.0.Beta)**:
+- This applied to all ChatModels implemented in eino-ext, but may not apply to most user-implemented Tools and Tools provided by eino **After (v0.8.0)**:
 - `AgentEvent` is sent through Middleware mechanism
 - `AgentEvent` is sent **outside** user-customized Decorator/Wrapper **Impact**:
 - Under normal circumstances, users won't notice this change
@@ -99,7 +97,7 @@ func (m *MyMiddleware) WrapModel(ctx context.Context, chatModel model.BaseChatMo
 
 ### 2.2 filesystem.ReadRequest.Offset Semantic Change
 
-**Location**: `adk/filesystem/backend.go` **Change Description**: `Offset` field changed from 0-based to 1-based. **Before (main)**:
+**Location**: `adk/filesystem/backend.go` **Change Description**: `Offset` field changed from 0-based to 1-based. **Before (v0.7.x)**:
 
 ```go
 type ReadRequest struct {
@@ -110,7 +108,7 @@ type ReadRequest struct {
 }
 ```
 
-**After (v0.8.0.Beta)**:
+**After (v0.8.0)**:
 
 ```go
 type ReadRequest struct {
@@ -140,7 +138,7 @@ req := &ReadRequest{Offset: 1, Limit: 100}
 
 ### 2.3 filesystem.FileInfo.Path Semantic Change
 
-**Location**: `adk/filesystem/backend.go` **Change Description**: `FileInfo.Path` field is no longer guaranteed to be an absolute path. **Before (main)**:
+**Location**: `adk/filesystem/backend.go` **Change Description**: `FileInfo.Path` field is no longer guaranteed to be an absolute path. **Before (v0.7.x)**:
 
 ```go
 type FileInfo struct {
@@ -149,7 +147,7 @@ type FileInfo struct {
 }
 ```
 
-**After (v0.8.0.Beta)**:
+**After (v0.8.0)**:
 
 ```go
 type FileInfo struct {
@@ -169,14 +167,14 @@ type FileInfo struct {
 
 ### 2.4 filesystem.WriteRequest Behavior Change
 
-**Location**: `adk/filesystem/backend.go` **Change Description**: `WriteRequest` write behavior changed from "error if file exists" to "overwrite if file exists". **Before (main)**:
+**Location**: `adk/filesystem/backend.go` **Change Description**: `WriteRequest` write behavior changed from "error if file exists" to "overwrite if file exists". **Before (v0.7.x)**:
 
 ```go
 // WriteRequest comment:
 // The file will be created if it does not exist, or error if file exists.
 ```
 
-**After (v0.8.0.Beta)**:
+**After (v0.8.0)**:
 
 ```go
 // WriteRequest comment:
@@ -193,14 +191,14 @@ type FileInfo struct {
 
 ### 2.5 GrepRequest.Pattern Semantic Change
 
-**Location**: `adk/filesystem/backend.go` **Change Description**: `GrepRequest.Pattern` changed from literal matching to regular expression matching. **Before (main)**:
+**Location**: `adk/filesystem/backend.go` **Change Description**: `GrepRequest.Pattern` changed from literal matching to regular expression matching. **Before (v0.7.x)**:
 
 ```go
 // Pattern is the literal string to search for. This is not a regular expression.
 // The search performs an exact substring match within the file's content.
 ```
 
-**After (v0.8.0.Beta)**:
+**After (v0.8.0)**:
 
 ```go
 // Pattern is the search pattern, supports full regular expression syntax.

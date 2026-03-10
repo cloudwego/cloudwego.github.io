@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino: v0.7.*-interrupt resume refactor'
+title: v0.7.*-interrupt resume refactor
 weight: 7
 ---
 

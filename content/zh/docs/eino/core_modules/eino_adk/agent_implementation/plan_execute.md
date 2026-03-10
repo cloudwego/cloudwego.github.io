@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino ADK: Plan-Execute Agent'
+title: Plan-Execute Agent
 weight: 4
 ---
 

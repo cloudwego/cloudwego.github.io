@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2026-01-20"
+date: "2026-03-09"
 lastmod: ""
 tags: []
-title: 'Eino: ChatModel 使用说明'
+title: ChatModel 使用说明
 weight: 8
 ---
 
@@ -336,10 +336,7 @@ result, err := runnable.Invoke(ctx, messages, compose.WithCallbacks(helper))
 
 ## **已有实现**
 
-1. OpenAI ChatModel: 使用 OpenAI 的 GPT 系列模型 [ChatModel - OpenAI](https://bytedance.larkoffice.com/wiki/NguEw85n6iJjShkVtdQcHpydnld)
-2. Ollama ChatModel: 使用 Ollama 本地模型 [ChatModel - Ollama](https://bytedance.larkoffice.com/wiki/WWngw1XMViwgyYkNuZgcjZnxnke)
-3. ARK ChatModel: 使用 ARK 平台的模型服务 [ChatModel - ARK](https://bytedance.larkoffice.com/wiki/WUzzwaX8ricGwZk1i1mcJHHNnEl)
-4. 更多查看： [Eino ChatModel](https://www.cloudwego.io/zh/docs/eino/ecosystem_integration/chat_model/)
+[ChatModel](/zh/docs/eino/ecosystem_integration/chat_model)
 
 ## 自行实现参考
 

@@ -3,7 +3,7 @@ Description: ""
 date: "2026-01-20"
 lastmod: ""
 tags: []
-title: 'Eino: 组件集成'
+title: 组件集成
 weight: 6
 ---
 
@@ -11,9 +11,9 @@ weight: 6
 
 ### ChatModel
 
-- openai: [ChatModel - OpenAI](https://bytedance.larkoffice.com/wiki/NguEw85n6iJjShkVtdQcHpydnld)
-- ark: [ChatModel - ARK](https://bytedance.larkoffice.com/wiki/WUzzwaX8ricGwZk1i1mcJHHNnEl)
-- ollama: [ChatModel - Ollama](https://bytedance.larkoffice.com/wiki/WWngw1XMViwgyYkNuZgcjZnxnke)
+- openai: [ChatModel - OpenAI](https://github.com/cloudwego/eino-ext/blob/main/components/model/openai/README_zh.md)
+- ark: [ChatModel - ARK](https://github.com/cloudwego/eino-ext/blob/main/components/model/ark/README_zh.md)
+- ollama: [ChatModel - Ollama](https://github.com/cloudwego/eino-ext/blob/main/components/model/ollama/README_zh.md)
 
 ### Document
 

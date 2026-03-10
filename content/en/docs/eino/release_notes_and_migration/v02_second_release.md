@@ -74,7 +74,7 @@ weight: 2
 
 ### BugFix
 
-- Fixed the SSTI vulnerability in the Jinja chat template [langchaingo has gonja template injection vulnerability](https://bytedance.larkoffice.com/docx/UvqxdlFfSoTIr1xtsQ5cIZTVn2b)
+- Fixed the SSTI vulnerability in the Jinja chat template（langchaingo gonja template injection）
 
 ## v0.2.0
 

@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-10"
 lastmod: ""
 tags: []
-title: 'Backend: 本地文件系统'
+title: 本地文件系统
 weight: 2
 ---
 
@@ -11,7 +11,7 @@ weight: 2
 
 Package: `github.com/cloudwego/eino-ext/adk/backend/local`
 
-注意：如果 eino 版本是 v0.8.0 及以上，需要使用 local backend 的 [v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Flocal%2Fv0.2.0-alpha.1) 版本。
+注意：如果 eino 版本是 v0.8.0 及以上，需要使用 local backend 的 [adk/backend/local/v0.2.1](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Flocal%2Fv0.2.1) 版本。
 
 ### 概述
 
@@ -67,9 +67,10 @@ func main() {
     })
 
     // 读取文件
-    content, err := backend.Read(ctx, &filesystem.ReadRequest{
+    fcontent, err := backend.Read(ctx, &filesystem.ReadRequest{
         FilePath: "/tmp/hello.txt",
     })
+    fmt.Println(fcontent.Content)
 }
 ```
 
@@ -139,7 +140,7 @@ files, _ := backend.LsInfo(ctx, &filesystem.LsInfoRequest{
 })
 
 // 读取文件（分页）
-content, _ := backend.Read(ctx, &filesystem.ReadRequest{
+fcontent, _ := backend.Read(ctx, &filesystem.ReadRequest{
     FilePath: "/path/to/file.txt",
     Offset:   0,
     Limit:    50,
@@ -217,17 +218,9 @@ absPath, _ := filepath.Abs("./relative/path")
 
 ### 常见问题
 
-**Q: 为什么需要绝对路径？**
-
-防止目录遍历攻击，使用 `filepath.Abs()` 转换。
-
-**Q: Write 失败**
-
-文件已存在（安全特性）、路径非绝对路径、或权限不足。
-
 **Q: GrepRaw 支持正则吗？**
 
-不支持，使用字面量匹配。需要正则可用 Execute 调用系统 grep。
+支持正则匹配，GrepRaw 底层使用的是 ripgrep 命令做的 Grep 操作
 
 **Q: Windows 支持吗？**
 

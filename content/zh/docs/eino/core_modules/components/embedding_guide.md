@@ -3,7 +3,7 @@ Description: ""
 date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino: Embedding 使用说明'
+title: Embedding 使用说明
 weight: 2
 ---
 

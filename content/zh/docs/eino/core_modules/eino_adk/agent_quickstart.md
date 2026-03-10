@@ -3,7 +3,7 @@ Description: ""
 date: "2026-01-30"
 lastmod: ""
 tags: []
-title: 'Eino ADK: Quickstart'
+title: Quickstart
 weight: 1
 ---
 

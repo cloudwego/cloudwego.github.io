@@ -120,7 +120,7 @@ chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
 })
 ```
 
-> For detailed information about OpenAI ChatModel, see: [ChatModel - OpenAI](https://bytedance.larkoffice.com/wiki/NguEw85n6iJjShkVtdQcHpydnld)
+> For detailed information about OpenAI ChatModel, see: [ChatModel - OpenAI](https://github.com/cloudwego/eino-ext/blob/main/components/model/openai/README.md)
 
 #### **Ollama (choose either this or OpenAI above)**
 
@@ -140,7 +140,7 @@ chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
 })
 ```
 
-> For Ollama related information, see: [ChatModel - Ollama](https://bytedance.larkoffice.com/wiki/WWngw1XMViwgyYkNuZgcjZnxnke)
+> For detailed information about Ollama ChatModel, see: [ChatModel - Ollama](https://github.com/cloudwego/eino-ext/blob/main/components/model/ollama/README.md)
 
 Eino provides a unified ChatModel abstraction for large models and offers ready-to-use implementations of various LLMs. Therefore, business code can focus on writing business logic without worrying about model implementation details. When model implementations are updated, they won't affect core business logic, meaning developers can easily switch between different models without modifying large amounts of code.
 

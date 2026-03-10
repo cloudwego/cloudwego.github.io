@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-09"
 lastmod: ""
 tags: []
-title: 'Middleware: Summarization'
+title: Summarization
 weight: 3
 ---
 
@@ -12,7 +12,7 @@ weight: 3
 Summarization 中间件会在对话的 token 数量超过配置阈值时，自动压缩对话历史。这有助于在长对话中保持上下文连续性，同时控制在模型的 token 限制范围内。
 
 > 💡
-> 本中间件在 [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1) 版本引入。
+> 本中间件在 v0.8.0 版本引入。
 
 ## 快速开始
 
@@ -45,9 +45,9 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 <tr><td>ModelOptions</td><td>[]model.Option</td><td>否</td><td><li></li></td><td>传递给模型生成摘要时的选项</td></tr>
 <tr><td>TokenCounter</td><td>TokenCounterFunc</td><td>否</td><td>约 4 字符/token</td><td>自定义 token 计数函数</td></tr>
 <tr><td>Trigger</td><td>*TriggerCondition</td><td>否</td><td>190,000 tokens</td><td>触发摘要的条件</td></tr>
-<tr><td>Instruction</td><td>string</td><td>否</td><td>内置 prompt</td><td>自定义摘要指令</td></tr>
+<tr><td>UserInstruction</td><td>string</td><td>否</td><td>内置 prompt</td><td>自定义摘要指令</td></tr>
 <tr><td>TranscriptFilePath</td><td>string</td><td>否</td><td><li></li></td><td>完整对话记录文件路径</td></tr>
-<tr><td>Prepare</td><td>PrepareFunc</td><td>否</td><td><li></li></td><td>自定义摘要生成前的预处理函数</td></tr>
+<tr><td>GenModelInput</td><td>GenModelInputFunc</td><td>否</td><td><li></li></td><td>自定义摘要模型输入的预处理函数</td></tr>
 <tr><td>Finalize</td><td>FinalizeFunc</td><td>否</td><td><li></li></td><td>自定义最终消息的后处理函数</td></tr>
 <tr><td>Callback</td><td>CallbackFunc</td><td>否</td><td><li></li></td><td>在 Finalize 之后调用，用于观察状态变化（只读）</td></tr>
 <tr><td>EmitInternalEvents</td><td>bool</td><td>否</td><td>false</td><td>是否发送内部事件</td></tr>
@@ -157,9 +157,9 @@ mw, err := summarization.New(ctx, &summarization.Config{
 flowchart TD
     A[BeforeModelRewriteState] --> B{Token 数量超过阈值?}
     B -->|否| C[返回原始状态]
-    B -->|是| D[发送 BeforeSummary 事件]
-    D --> E{有自定义 Prepare?}
-    E -->|是| F[调用 Prepare]
+    B -->|是| D[发送 BeforeSummarize 事件]
+    D --> E{有自定义 GenModelInput?}
+    E -->|是| F[调用 GenModelInput]
     E -->|否| G[调用模型生成摘要]
     F --> G
     G --> H{有自定义 Finalize?}
@@ -167,7 +167,7 @@ flowchart TD
     H -->|否| L{有自定义 Callback?}
     I --> L
     L -->|是| M[调用 Callback]
-    L -->|否| J[发送 AfterSummary 事件]
+    L -->|否| J[发送 AfterSummarize 事件]
     M --> J
     J --> K[返回新状态]
 
@@ -188,8 +188,8 @@ flowchart TD
 
 <table>
 <tr><td>事件类型</td><td>触发时机</td><td>携带数据</td></tr>
-<tr><td>ActionTypeBeforeSummary</td><td>生成摘要之前</td><td>原始消息列表</td></tr>
-<tr><td>ActionTypeAfterSummary</td><td>完成总结之后</td><td>最终消息列表</td></tr>
+<tr><td>ActionTypeBeforeSummarize</td><td>生成摘要之前</td><td>原始消息列表</td></tr>
+<tr><td>ActionTypeAfterSummarize</td><td>完成总结之后</td><td>最终消息列表</td></tr>
 </table>
 
 **使用示例**

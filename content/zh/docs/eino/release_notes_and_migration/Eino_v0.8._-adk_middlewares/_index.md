@@ -1,16 +1,13 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-09"
 lastmod: ""
 tags: []
-title: 'Eino: v0.8.*-adk middlewares'
+title: v0.8.*-adk middlewares
 weight: 8
 ---
 
 本文档介绍 Eino ADK v0.8.* 版本的主要新功能和改进。
-
-> 💡
-> 目前尚处于 v0.8.0.Beta 版本阶段：[https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1)
 
 ## 版本亮点
 

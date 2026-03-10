@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino: v0.6.*-jsonschema optimization'
+title: v0.6.*-jsonschema optimization
 weight: 6
 ---
 

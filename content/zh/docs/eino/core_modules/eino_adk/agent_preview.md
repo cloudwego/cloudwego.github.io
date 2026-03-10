@@ -3,7 +3,7 @@ Description: ""
 date: "2026-01-20"
 lastmod: ""
 tags: []
-title: 'Eino ADK: 概述'
+title: 概述
 weight: 2
 ---
 
@@ -145,11 +145,7 @@ AgentRunner 是 Agent 的执行器，为 Agent 运行所需要的拓展功能加
 只有通过 Runner 执行 agent 时，才可以使用 ADK 的如下功能：
 
 - Interrupt & Resume
-- 切面机制（1226 测试版本支持，正式发布前不保证 api 兼容，详见 [[WIP] Eino ADK: 切面](https://bytedance.larkoffice.com/wiki/JM9mwNJuGij69UkrvIpcHwXdnhf)。另基于 adk 切面的 fornax trace 能力：[ADK Middleware - Fornax Trace [WIP]](https://bytedance.larkoffice.com/docx/TemBdR67zoESssx1SiOczXiJnQd)）
-
-  ```go
-  go get github.com/cloudwego/eino@v0.8.0-alpha.1
-  ```
+- 切面机制（测试版本支持，正式发布前不保证 API 兼容）
 - Context 环境的预处理
 
   ```go

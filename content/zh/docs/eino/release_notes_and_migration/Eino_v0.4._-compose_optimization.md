@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino: v0.4.*-compose optimization'
+title: v0.4.*-compose optimization
 weight: 4
 ---
 
