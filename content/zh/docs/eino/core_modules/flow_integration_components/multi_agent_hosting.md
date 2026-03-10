@@ -3,7 +3,7 @@ Description: ""
 date: "2026-01-20"
 lastmod: ""
 tags: []
-title: 'Eino Tutorial: Host Multi-Agent'
+title: Host Multi-Agent
 weight: 2
 ---
 

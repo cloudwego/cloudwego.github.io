@@ -3,7 +3,7 @@ Description: ""
 date: "2025-01-06"
 lastmod: ""
 tags: []
-title: 'Eino: v0.3.*-tiny break change'
+title: v0.3.*-tiny break change
 weight: 3
 ---
 

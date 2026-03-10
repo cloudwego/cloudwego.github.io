@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino ADK: Supervisor Agent'
+title: Supervisor Agent
 weight: 3
 ---
 

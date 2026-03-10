@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino: v0.5.*-ADK implementation'
+title: v0.5.*-ADK implementation
 weight: 5
 ---
 

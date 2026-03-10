@@ -1,18 +1,18 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-09"
 lastmod: ""
 tags: []
-title: 'Middleware: ToolReduction'
+title: Reduction
 weight: 6
 ---
 
-# ToolReduction 中间件
+# Reduction 中间件
 
 adk/middlewares/reduction
 
 > 💡
-> 本中间件在 [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1) 版本引入。
+> 本中间件在 v0.8.0 版本引入。
 
 ## 概述
 

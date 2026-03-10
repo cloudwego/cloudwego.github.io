@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-10"
 lastmod: ""
 tags: []
-title: 'Middleware: Skill'
+title: Skill
 weight: 2
 ---
 
@@ -240,10 +240,10 @@ func NewLocalBackend(config *LocalBackendConfig) (*LocalBackend, error)
 
 ## 初始化
 
-创建 Skill Middleware（推荐使用 `NewChatModelAgentMiddleware`）：
+创建 Skill Middleware（推荐使用 `NewMiddleware`）：
 
 ```go
-func NewChatModelAgentMiddleware(ctx context.Context, config *Config) (adk.ChatModelAgentMiddleware, error)
+func NewMiddleware(ctx context.Context, config *Config) (adk.ChatModelAgentMiddleware, error)
 ```
 
 Config 中配置为：
@@ -300,10 +300,10 @@ workdir/
 - 创建本地 filesystem backend，基于 backend 创建 Skill middleware：
 
 ```go
-import （
+import (
     "github.com/cloudwego/eino/adk/middlewares/skill"
     "github.com/cloudwego/eino-ext/adk/backend/local"
-）
+)
 
 
 be, err := local.NewBackend(ctx, &local.Config{})
@@ -317,6 +317,8 @@ skillBackend, err := skill.NewBackendFromFilesystem(ctx, &skill.BackendFromFiles
     Backend: be,
     BaseDir: skillsDir,
 })
+
+skillMiddleware, err := NewMiddleware(ctx, &Config{Backend: backend})
 ```
 
 - 基于 backend 创建本地 Filesystem Middleware，供 agent 读取 skill 其他文件以及执行脚本：
@@ -326,7 +328,7 @@ import (
     "github.com/cloudwego/eino/adk/middlewares/filesystem"
 )
 
-fsm, err := filesystem.NewMiddleware(ctx, &filesystem.Config{
+fsm, err := filesystem.New(ctx, &filesystem.MiddlewareConfig{
     Backend:                          be,
     WithoutLargeToolResultOffloading: true,
 })
@@ -340,7 +342,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
     Description: "An agent that can analyze logs",
     Instruction: "You are a helpful assistant.",
     Model:       cm,
-    Middlewares: []adk.ChatModelAgentMiddleware{fsm, skillMiddleware},
+    Handlers:    []adk.ChatModelAgentMiddleware{fsm, skillMiddleware},
 })
 ```
 

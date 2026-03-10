@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino: v0.2.*-second release'
+title: v0.2.*-second release
 weight: 2
 ---
 
@@ -74,7 +74,7 @@ weight: 2
 
 ### BugFix
 
-- Fixed the SSTI vulnerability in the Jinja chat template [langchaingo 存在 gonja 模板注入](https://bytedance.larkoffice.com/docx/UvqxdlFfSoTIr1xtsQ5cIZTVn2b)
+- Fixed the SSTI vulnerability in the Jinja chat template（langchaingo gonja 模板注入）
 
 ## v0.2.0
 

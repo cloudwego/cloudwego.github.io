@@ -3,7 +3,7 @@ Description: ""
 date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino: ChatTemplate 使用说明'
+title: ChatTemplate 使用说明
 weight: 7
 ---
 

@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-03"
 lastmod: ""
 tags: []
-title: 'Eino: AgenticChatTemplate 使用说明[Beta]'
+title: AgenticChatTemplate 使用说明[Beta]
 weight: 11
 ---
 

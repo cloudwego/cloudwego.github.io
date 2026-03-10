@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-10"
 lastmod: ""
 tags: []
-title: 'Backend: Ark Agentkit Sandbox'
+title: Ark Agentkit Sandbox
 weight: 1
 ---
 
@@ -11,7 +11,7 @@ weight: 1
 
 Package: `github.com/cloudwego/eino-ext/adk/backend/agentkit`
 
-注意：如果 eino 版本是 v0.8.0 及以上，需要使用 ark agentkit backend 的 [v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.0-alpha.1) 版本。
+注意：如果 eino 版本是 v0.8.0 及以上，需要使用 ark agentkit backend 的[ adk/backend/agentkit/v0.2.1](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.1) 版本。
 
 ### 概述
 
@@ -92,9 +92,10 @@ func main() {
     })
 
     // 读取文件
-    content, err := backend.Read(ctx, &filesystem.ReadRequest{
+    fContent, err := backend.Read(ctx, &filesystem.ReadRequest{
         FilePath: "/home/gem/hello.txt",
     })
+    fmt.Println(fContent.Content)
 }
 ```
 
@@ -146,7 +147,7 @@ files, _ := backend.LsInfo(ctx, &filesystem.LsInfoRequest{
 })
 
 // 读取文件（分页）
-content, _ := backend.Read(ctx, &filesystem.ReadRequest{
+fcontent, _ := backend.Read(ctx, &filesystem.ReadRequest{
     FilePath: "/home/gem/file.txt",
     Offset:   0,
     Limit:    100,
@@ -191,10 +192,6 @@ result, _ := backend.Execute(ctx, &filesystem.ExecuteRequest{
 </table>
 
 ### 常见问题
-
-**Q: Write 返回 "file already exists" 错误**
-
-这是安全特性，使用不同文件名或用 Edit 修改现有文件。
 
 **Q: 认证失败**
 
