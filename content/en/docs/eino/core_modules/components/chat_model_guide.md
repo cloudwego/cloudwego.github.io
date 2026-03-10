@@ -336,9 +336,9 @@ result, err := runnable.Invoke(ctx, messages, compose.WithCallbacks(helper))
 
 ## **Existing Implementations**
 
-1. OpenAI ChatModel: Using OpenAI's GPT series models [ChatModel - OpenAI](https://bytedance.larkoffice.com/wiki/NguEw85n6iJjShkVtdQcHpydnld)
-2. Ollama ChatModel: Using Ollama local models [ChatModel - Ollama](https://bytedance.larkoffice.com/wiki/WWngw1XMViwgyYkNuZgcjZnxnke)
-3. ARK ChatModel: Using ARK platform model services [ChatModel - ARK](https://bytedance.larkoffice.com/wiki/WUzzwaX8ricGwZk1i1mcJHHNnEl)
+1. OpenAI ChatModel: Using OpenAI's GPT series models [ChatModel - OpenAI](https://github.com/cloudwego/eino-ext/blob/main/components/model/openai/README.md)
+2. Ollama ChatModel: Using Ollama local models [ChatModel - Ollama](https://github.com/cloudwego/eino-ext/blob/main/components/model/ollama/README.md)
+3. ARK ChatModel: Using ARK platform model services [ChatModel - ARK](https://github.com/cloudwego/eino-ext/blob/main/components/model/ark/README.md)
 4. More: [Eino ChatModel](https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model/)
 
 ## Implementation Reference

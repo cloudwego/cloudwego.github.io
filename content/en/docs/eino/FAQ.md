@@ -142,15 +142,12 @@ According to the previous community announcement plan [Migration from OpenAPI 3.
 
 For errors like undefined: schema.NewParamsOneOfByOpenAPIV3 in some eino-ext modules, upgrade the error-reporting eino-ext module to the latest version.
 
-If schema transformation is complex, you can use the tool methods in the [JSONSchema Conversion Methods](https://bytedance.larkoffice.com/wiki/ZMaawoQC4iIjNykzahwc6YOknXf) document to assist with conversion.
+If schema transformation is complex, you can use existing OpenAPI 3.0 → JSONSchema conversion tools to assist with conversion.
 
 # Q: Which models provided by Eino-ext ChatModel support Response API format calls?
 
 - Currently in Eino-Ext, only ARK's Chat Model can create ResponsesAPI ChatModel through **NewResponsesAPIChatModel**. Other models currently do not support ResponsesAPI creation and usage.
-- In Eino-byted-ext, only bytedgpt supports creating Response API through **NewResponsesAPIChatModel**. Other chatmodels have not implemented Response API Client.
-  - Version components/model/gemini/v0.1.16 already supports thought_signature passback. Check if the gemini version meets requirements. If using bytedgemini (code.byted.org/flow/eino-byted-ext/components/model/bytedgemini) chatmodel implementation, check if its dependent components/model/gemini is the latest version, or directly use go get to upgrade gemini.
-  - Replace the currently used bytedgpt package with the implementation from [code.byted.org/flow/eino-byted-ext/components/model/bytedgemini](http://code.byted.org/flow/eino-byted-ext/components/model/bytedgemini) and upgrade to the latest version. Refer to example code to confirm how to pass BaseURL.
-  - If you encounter this error, confirm whether the base url filled in when generating chat model is the chat completion URL or the ResponseAPI URL. In most cases, the Response API Base URL was incorrectly passed.
+  - If you encounter this error, confirm whether the base URL you used to create the chat model is the Chat Completions URL or the Responses API URL. In most cases, an incorrect Responses API base URL was passed.
 
 # Q: How to troubleshoot ChatModel call errors? For example, [NodeRunError] failed to create chat completion: error, status code: 400, status: 400 Bad Request.
 
@@ -175,35 +172,3 @@ Use the `GraphCompileCallback` mechanism to export the topology structure during
 - For obtaining intermediate structures in Flow/React Agent scenarios, refer to the document [Eino: ReAct Agent Manual](/docs/eino/core_modules/flow_integration_components/react_agent_manual)
 
 # Q: Gemini model error missing a `thought_signature`
-
-Gemini model protocol is not openai-compatible. Use the gemini wrapper [https://github.com/cloudwego/eino-ext/tree/main/components/model/gemini](https://github.com/cloudwego/eino-ext/tree/main/components/model/gemini). If using ModelHub platform models, use the internal gemini wrapper [https://code.byted.org/flow/eino-byted-ext/tree/master/components/model/bytedgemini](https://code.byted.org/flow/eino-byted-ext/tree/master/components/model/bytedgemini). Initialization reference code:
-
-```
-cm, err := bytedgemini.NewChatModel(ctx, &bytedgemini.Config{
-    ClientConfig: genai.ClientConfig{
-        APIKey:  apiKey,
-        Backend: genai.BackendGeminiAPI,
-        // uncomment if you want to print the actual request in CURL format
-        // HTTPClient: &http.Client{Transport: NewCurlLogger(http.DefaultTransport, log.Printf)},
-        HTTPOptions: genai.HTTPOptions{
-            // this is base URL for cn, other regions:
-            // - sg: gpt-i18n.byteintl.net
-            // - sg from office network: genai-sg-og.tiktok-row.org
-            // - va: search-va.byteintl.net
-            // - va from office network: genai-va-og.tiktok-row.org
-            // - Non-TT: gpt-i18n.bd.byteintl.net
-            // - US-TTP: gpt.tiktokd.net
-            // - EU-TTP, GCP: gpt.tiktoke.org
-            // - JP: gpt-jp.byteintl.net
-            // see also: https://bytedance.larkoffice.com/wiki/wikcnUPXCY2idGyg2AXKPvay4pd
-            BaseURL:    "https://search.bytedance.net/gpt/openapi/online/multimodal/crawl/google/",
-            APIVersion: "v1",
-        },
-    },
-    Model: modelName,
-    ThinkingConfig: &genai.ThinkingConfig{
-        IncludeThoughts: true,
-        ThinkingBudget:  nil,
-    },
-})
-```

@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino: Cookbook'
+title: Cookbook
 weight: 3
 ---
 
