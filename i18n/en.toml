@@ -80,3 +80,16 @@ other = "404, Page not found"
 title = 'Out projects'
 [taxo.page.header]
 projects = 'Projects'
+
+# Copy full text
+[copy_full_text]
+other = "Copy Full Text"
+
+[copy_markdown]
+other = "Copy Markdown"
+
+[copy_plain_text]
+other = "Copy Text"
+
+[copy_success]
+other = "Copied"

@@ -74,3 +74,16 @@ other = "404, 访问的页面并不存在"
 title = '项目列表'
 [taxo.page.header]
 projects = '项目'
+
+# Copy full text
+[copy_full_text]
+other = "复制全文"
+
+[copy_markdown]
+other = "复制 Markdown"
+
+[copy_plain_text]
+other = "复制文本"
+
+[copy_success]
+other = "已复制"

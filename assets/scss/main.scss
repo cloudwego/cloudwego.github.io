@@ -33,6 +33,7 @@
 @import "community";
 @import "markdown";
 @import "safety";
+@import "copy-to-llm";
 
 @if $td-enable-google-fonts {
     @import url($web-font-path);

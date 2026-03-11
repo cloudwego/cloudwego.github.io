@@ -1,0 +1,25 @@
+{{/* Copy full text button with dropdown for markdown / plain text */}}
+<div class="copy-fulltext" id="copy-fulltext">
+  <div class="copy-fulltext__main">
+    <button class="copy-fulltext__btn" id="copy-fulltext-default" title="{{ T "copy_full_text" }}">
+      <i class="fa-regular fa-copy"></i>
+      <span>{{ T "copy_full_text" }}</span>
+    </button>
+    <button class="copy-fulltext__toggle" id="copy-fulltext-toggle" aria-label="More copy options">
+      <i class="fa-solid fa-chevron-up"></i>
+    </button>
+  </div>
+  <div class="copy-fulltext__dropdown" id="copy-fulltext-dropdown">
+    <button class="copy-fulltext__option" data-copy-type="markdown">
+      {{ T "copy_markdown" }}
+    </button>
+    <button class="copy-fulltext__option" data-copy-type="text">
+      {{ T "copy_plain_text" }}
+    </button>
+  </div>
+</div>
+
+{{/* Embed raw markdown for copy-as-markdown */}}
+<script id="copy-fulltext-source" type="application/json">
+{{ dict "title" .Title "markdown" .RawContent "url" .Permalink "successText" (T "copy_success") | jsonify }}
+</script>
