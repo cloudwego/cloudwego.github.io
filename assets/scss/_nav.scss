@@ -79,7 +79,7 @@
     min-width: 100px;
   }
 
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     padding-right: 0.5rem;
     padding-left: 0.75rem;
 

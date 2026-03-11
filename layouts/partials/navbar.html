@@ -3,17 +3,17 @@
     <a class="navbar-brand" href="{{ .Site.Home.RelPermalink }}">
 		<span class="navbar-logo"><img src="{{ .Site.Params.ui.navbar_logo  }}"></span>
 	</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_navbar"
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_navbar"
 		aria-controls="main_navbar" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
-	<div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id="main_navbar">
-		<ul class="navbar-nav mt-2 mt-lg-0 ml-auto">
+	<div class="collapse navbar-collapse td-navbar-nav-scroll ms-md-auto" id="main_navbar">
+		<ul class="navbar-nav mt-2 mt-lg-0 ms-auto">
 			{{ $p := . }}
 			{{ range .Site.Menus.main	 }}
 			{{ if .HasChildren }}
 			<li class="dropdown sub-menu{{if $p.HasMenuCurrent "main" . }} active{{end}}">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					{{ .Pre }}
 					<span>{{ .Name }}</span>
 				</a>
@@ -24,7 +24,7 @@
 				</div>
 			</li>
 			{{ else }}
-			<li class="nav-item mr-4 mb-2 mb-lg-0">
+			<li class="nav-item me-4 mb-2 mb-lg-0">
 				{{ $active := or ($p.IsMenuCurrent "main" .) ($p.HasMenuCurrent "main" .) }}
 				{{ with .Page }}
 				{{ $active = or $active ( $.IsDescendant .)  }}
@@ -38,12 +38,12 @@
 			{{ end }}
 			{{ end }}
 			{{ if  .Site.Params.versions }}
-			<li class="nav-item dropdown mr-4">
+			<li class="nav-item dropdown me-4">
 				{{ partial "navbar-version-selector.html" . }}
 			</li>
 			{{ end }}
 			{{ if  (gt (len .Site.Home.Translations) 0) }}
-			<li class="nav-item dropdown mr-4">
+			<li class="nav-item dropdown me-4">
 				{{ partial "navbar-lang-selector.html" . }}
 			</li>
 			{{ end }}

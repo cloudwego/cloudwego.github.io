@@ -3,8 +3,8 @@
 
 // box-variant creates the main style for a colored section used on the site.
 @mixin box-variant($parent, $color-name, $color-value) {
-    $text-color: color-yiq($color-value);
-    $link-color: mix($blue, $text-color, lightness($color-value));
+    $text-color: color-contrast($color-value);
+    $link-color: mix($blue, $text-color);
     $link-hover-color: rgba($link-color, 0.5) !default;
 
     #{$parent} {
@@ -27,11 +27,17 @@
                     content: "";
                 }
             }
+
+            p > a {
+                color: $link-color;
+
+                &:hover,
+                &:focus {
+                    color: $link-hover-color;
+                }
+            }
         }
     }
-
-    // Improve contrast for the links in paragraphs.
-    @include link-variant("#{$parent}--#{$color-name} p > a", $link-color, $link-hover-color, false);
 
     @if $enable-gradients {
         @include bg-gradient-variant("#{$parent}--1#{$color-name}#{$parent}--gradient", $color-value,true);
