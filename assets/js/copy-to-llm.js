@@ -60,8 +60,30 @@
     var contentEl = document.querySelector('.td-content');
     if (!contentEl) return '';
     var clone = contentEl.cloneNode(true);
+
+    // Remove UI elements that shouldn't be copied
     var removals = clone.querySelectorAll('.copy-fulltext, .td-page-meta, script, style, .feedback--container');
     removals.forEach(function (el) { el.remove(); });
+
+    // Replace mermaid SVGs with placeholder (SVG textContent is gibberish)
+    clone.querySelectorAll('pre.mermaid, .mermaid').forEach(function (el) {
+      var placeholder = document.createElement('p');
+      placeholder.textContent = '[diagram]';
+      el.replaceWith(placeholder);
+    });
+
+    // Replace images with their alt text
+    clone.querySelectorAll('img').forEach(function (img) {
+      var alt = img.getAttribute('alt');
+      if (alt) {
+        var text = document.createElement('span');
+        text.textContent = '[image: ' + alt + ']';
+        img.replaceWith(text);
+      } else {
+        img.remove();
+      }
+    });
+
     return clone.textContent.replace(/\n{3,}/g, '\n\n').trim();
   }
 
