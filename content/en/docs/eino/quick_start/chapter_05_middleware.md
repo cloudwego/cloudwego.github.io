@@ -3,105 +3,105 @@ Description: ""
 date: "2026-03-12"
 lastmod: ""
 tags: []
-title: 第五章：Middleware（中间件模式）
+title: "Chapter 5: Middleware (The Middleware Pattern)"
 weight: 5
 ---
 
-本章目标：理解 Middleware 模式，实现 Tool 错误处理和 ChatModel 重试机制。
+Goal of this chapter: understand the Middleware pattern and implement Tool error handling and a ChatModel retry mechanism.
 
-## 为什么需要 Middleware
+## Why Middleware
 
-第四章我们为 Agent 添加了 Tool 能力，让 Agent 能够访问文件系统。但在实际应用场景中，**Tool 报错或 ChatModel 报错是常见的现象**，例如：
+In Chapter 4 we added Tool capability so the Agent can access the filesystem. In real applications, **Tool failures and ChatModel failures are common**, for example:
 
-- **Tool 报错**：文件不存在、参数错误、权限不足等
-- **ChatModel 报错**：API 限流（429）、网络超时、服务不可用等
+- **Tool errors**: missing files, invalid arguments, insufficient permissions, etc.
+- **ChatModel errors**: rate limiting (429), network timeouts, service unavailable, etc.
 
-### 问题一：Tool 错误会中断整个流程
+### Problem 1: Tool Errors Can Break the Whole Flow
 
-当 Tool 执行失败时，错误会直接传播到 Agent，导致整个对话中断：
+When a Tool execution fails, the error can propagate to the Agent and interrupt the conversation:
 
 ```
 [tool call] read_file(file_path: "nonexistent.txt")
 Error: open nonexistent.txt: no such file or directory
-// 对话中断，用户需要重新开始
+// conversation interrupted; the user has to restart
 ```
 
-### 问题二：模型调用可能因限流失败
+### Problem 2: Model Calls Can Fail Due to Rate Limits
 
-当模型 API 返回 429（Too Many Requests）错误时，整个对话也会中断：
+When the model API returns 429 (Too Many Requests), the conversation also gets interrupted:
 
 ```
 Error: rate limit exceeded (429)
-// 对话中断
+// conversation interrupted
 ```
 
-### 期望的行为
+### Desired Behavior
 
-这些报错信息往往**不希望直接终止 Agent 流程**，而是希望把报错信息给到模型，由模型自动纠错进行下一轮。例如：
+Often we **don’t want these errors to terminate the Agent flow**. Instead, we want to pass the error information back to the model so it can self-correct and continue, for example:
 
 ```
 [tool call] read_file(file_path: "nonexistent.txt")
 [tool result] [tool error] open nonexistent.txt: no such file or directory
-[assistant] 抱歉，文件不存在。让我先列出当前目录的文件...
+[assistant] Sorry, the file doesn't exist. Let me list the current directory first...
 [tool call] glob(pattern: "*")
 ```
 
-### Middleware 的定位
+### What Middleware Is For
 
-**Middleware 模式**可以扩展 Tool 和 ChatModel 的行为，非常适合解决这个问题：
+The **Middleware pattern** can extend the behavior of Tools and ChatModels, which fits this problem well:
 
-- **Middleware 是 Agent 的拦截器**：在调用前后插入自定义逻辑
-- **Middleware 可处理错误**：将错误转换为模型可理解的格式
-- **Middleware 可实现重试**：自动重试失败的操作
-- **Middleware 可组合**：多个 Middleware 可以串联使用
+- **Middleware is an interceptor for the Agent**: insert custom logic before/after calls
+- **Middleware can handle errors**: convert errors into model-readable formats
+- **Middleware can implement retries**: automatically retry failed operations
+- **Middleware is composable**: multiple middlewares can be chained
 
-**简单类比：**
+**Analogy:**
 
-- **Agent** = "业务逻辑"
-- **Middleware** = "AOP 切面"（日志、重试、错误处理等横切关注点）
+- **Agent** = “business logic”
+- **Middleware** = “AOP aspects” (logging, retries, error handling, and other cross-cutting concerns)
 
-## 代码位置
+## Code Location
 
-- 入口代码：[cmd/ch05/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch05/main.go)
+- Entry code: [cmd/ch05/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch05/main.go)
 
-## 前置条件
+## Prerequisites
 
-与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。同时，需要与第四章一样设置 `PROJECT_ROOT`：
+Same as Chapter 1: configure a working ChatModel (OpenAI or Ark). Also, set `PROJECT_ROOT` as in Chapter 4:
 
 ```bash
-export PROJECT_ROOT=/path/to/eino  # Eino 核心库根目录
+export PROJECT_ROOT=/path/to/eino  # Eino core repo root
 ```
 
-## 运行
+## Run
 
-在 `examples/quickstart/chatwitheino` 目录下执行：
+From `examples/quickstart/chatwitheino`:
 
 ```bash
-# 设置项目根目录
+# set project root
 export PROJECT_ROOT=/path/to/your/project
 
 go run ./cmd/ch05
 ```
 
-输出示例：
+Example output:
 
 ```
-you> 列出当前目录的文件
-[assistant] 我来帮你列出文件...
+you> List files in the current directory
+[assistant] Sure, let me list the files...
 [tool call] list_files(directory: ".")
 
-you> 读取一个不存在的文件
-[assistant] 尝试读取文件...
+you> Read a file that does not exist
+[assistant] Trying to read the file...
 [tool call] read_file(file_path: "nonexistent.txt")
 [tool result] [tool error] open nonexistent.txt: no such file or directory
-[assistant] 抱歉，文件不存在...
+[assistant] Sorry, the file doesn't exist...
 ```
 
-## 关键概念
+## Key Concepts
 
-### Middleware 接口
+### Middleware Interface
 
-`ChatModelAgentMiddleware` 是 Agent 的中间件接口：
+`ChatModelAgentMiddleware` is the middleware interface for agents:
 
 ```go
 type ChatModelAgentMiddleware interface {
@@ -139,35 +139,35 @@ type ChatModelAgentMiddleware interface {
 }
 ```
 
-**设计理念：**
+**Design ideas:**
 
-- **装饰器模式**：每个 Middleware 包装原始调用，可以修改输入、输出或错误
-- **洋葱模型**：请求从外向内穿过 Middleware，响应从内向外返回
-- **可组合**：多个 Middleware 按顺序执行
+- **Decorator pattern**: each middleware wraps the original call and can modify input/output/errors
+- **Onion model**: requests go from outer to inner; responses bubble back from inner to outer
+- **Composable**: multiple middlewares run in order
 
-### Middleware 执行顺序
+### Middleware Execution Order
 
-`Handlers`（即 Middlewares）按**数组正序**包装，形成洋葱模型：
+`Handlers` (middlewares) wrap in **array order**, forming an onion:
 
 ```go
 Handlers: []adk.ChatModelAgentMiddleware{
-    &middlewareA{},  // 最外层：最先 Wrap，最先拦截请求，但 WrapModel 最后生效
-    &middlewareB{},  // 中间层
-    &middlewareC{},  // 最内层：最后 Wrap
+    &middlewareA{},  // outermost: wraps first; intercepts requests first
+    &middlewareB{},  // middle
+    &middlewareC{},  // innermost: wraps last
 }
 ```
 
-**对于 Tool 调用的执行顺序：**
+**For Tool calls:**
 
 ```
-请求 → A.Wrap → B.Wrap → C.Wrap → 实际 Tool 执行 → C返回 → B返回 → A返回 → 响应
+request → A.Wrap → B.Wrap → C.Wrap → actual Tool execution → C returns → B returns → A returns → response
 ```
 
-**实用建议：** 将 `safeToolMiddleware`（错误捕获）放在最内层（数组末尾），确保其他 Middleware 抛出的中断错误能正确向外传播。
+Practical tip: put `safeToolMiddleware` (error capture) as the innermost layer (at the end of the array), so interrupt errors thrown by other middlewares can propagate outward correctly.
 
 ### SafeToolMiddleware
 
-`SafeToolMiddleware` 将 Tool 错误转换为字符串，让模型能够理解并处理：
+`SafeToolMiddleware` converts Tool errors into strings so the model can understand and handle them:
 
 ```go
 type safeToolMiddleware struct {
@@ -182,7 +182,7 @@ func (m *safeToolMiddleware) WrapInvokableToolCall(
     return func(ctx context.Context, args string, opts ...tool.Option) (string, error) {
         result, err := endpoint(ctx, args, opts...)
         if err != nil {
-            // 将错误转换为字符串，而不是返回错误
+            // Convert errors to strings instead of returning an error.
             return fmt.Sprintf("[tool error] %v", err), nil
         }
         return result, nil
@@ -190,27 +190,27 @@ func (m *safeToolMiddleware) WrapInvokableToolCall(
 }
 ```
 
-**效果：**
+**Effect:**
 
 ```
 [tool call] read_file(file_path: "nonexistent.txt")
 [tool result] [tool error] open nonexistent.txt: no such file or directory
-[assistant] 抱歉，文件不存在，请检查文件路径...
-// 对话继续，模型可以根据错误信息调整策略
+[assistant] Sorry, the file doesn't exist. Please check the path...
+// conversation continues; the model can adapt based on the error message
 ```
 
 ### ModelRetryConfig
 
-`ModelRetryConfig` 配置 ChatModel 的自动重试：
+`ModelRetryConfig` configures automatic retries for ChatModel:
 
 ```go
 type ModelRetryConfig struct {
-    MaxRetries int                          // 最大重试次数
-    IsRetryAble func(ctx context.Context, err error) bool  // 判断是否可重试
+    MaxRetries int                          // max retry count
+    IsRetryAble func(ctx context.Context, err error) bool  // whether an error is retryable
 }
 ```
 
-**使用方式（以 DeepAgent 为例）：**
+**Usage (DeepAgent example):**
 
 ```go
 agent, err := deep.New(ctx, &deep.Config{
@@ -218,7 +218,7 @@ agent, err := deep.New(ctx, &deep.Config{
     ModelRetryConfig: &adk.ModelRetryConfig{
         MaxRetries: 5,
         IsRetryAble: func(_ context.Context, err error) bool {
-            // 429 限流错误可重试
+            // 429 rate limit errors are retryable
             return strings.Contains(err.Error(), "429") ||
                 strings.Contains(err.Error(), "Too Many Requests") ||
                 strings.Contains(err.Error(), "qpm limit")
@@ -227,15 +227,15 @@ agent, err := deep.New(ctx, &deep.Config{
 })
 ```
 
-**重试策略：**
+**Retry strategy:**
 
-- 指数退避：每次重试间隔递增
-- 可配置条件：通过 `IsRetryAble` 判断哪些错误可重试
-- 自动恢复：无需用户干预
+- exponential backoff: retry interval increases each time
+- configurable conditions: `IsRetryAble` decides what to retry
+- automatic recovery: no user intervention needed
 
-## Middleware 的实现
+## Implementing the Middleware
 
-### 1. 实现 SafeToolMiddleware
+### 1. Implement SafeToolMiddleware
 
 ```go
 type safeToolMiddleware struct {
@@ -250,11 +250,11 @@ func (m *safeToolMiddleware) WrapInvokableToolCall(
     return func(ctx context.Context, args string, opts ...tool.Option) (string, error) {
         result, err := endpoint(ctx, args, opts...)
         if err != nil {
-            // 中断错误不转换，需要继续传播
+            // Interrupt errors must not be converted; they must keep propagating.
             if _, ok := compose.IsInterruptRerunError(err); ok {
                 return "", err
             }
-            // 其他错误转换为字符串
+            // Convert other errors to strings.
             return fmt.Sprintf("[tool error] %v", err), nil
         }
         return result, nil
@@ -262,7 +262,7 @@ func (m *safeToolMiddleware) WrapInvokableToolCall(
 }
 ```
 
-### 2. 实现流式 Tool 错误处理
+### 2. Handle Streaming Tool Errors
 
 ```go
 func (m *safeToolMiddleware) WrapStreamableToolCall(
@@ -276,18 +276,18 @@ func (m *safeToolMiddleware) WrapStreamableToolCall(
             if _, ok := compose.IsInterruptRerunError(err); ok {
                 return nil, err
             }
-            // 返回包含错误信息的单帧流
+            // Return a single-chunk stream containing the error message.
             return singleChunkReader(fmt.Sprintf("[tool error] %v", err)), nil
         }
-        // 包装流，捕获流中的错误
+        // Wrap the stream and catch errors inside the stream.
         return safeWrapReader(sr), nil
     }, nil
 }
 ```
 
-### 3. 配置 Agent 使用 Middleware
+### 3. Configure the Agent to Use Middleware
 
-本章继续使用第四章引入的 `DeepAgent`，在其 `Handlers` 字段中注册 Middleware：
+This chapter continues using `DeepAgent` from Chapter 4. Register middlewares in the `Handlers` field:
 
 ```go
 agent, err := deep.New(ctx, &deep.Config{
@@ -299,7 +299,7 @@ agent, err := deep.New(ctx, &deep.Config{
     StreamingShell: backend,
     MaxIteration:   50,
     Handlers: []adk.ChatModelAgentMiddleware{
-        &safeToolMiddleware{},  // 将 Tool 错误转换为字符串
+        &safeToolMiddleware{},  // convert Tool errors to strings
     },
     ModelRetryConfig: &adk.ModelRetryConfig{
         MaxRetries: 5,
@@ -311,12 +311,12 @@ agent, err := deep.New(ctx, &deep.Config{
 })
 ```
 
-**注意**：`Handlers` 字段（在配置中）和 "Middleware"（在文档中讨论的概念）是同一回事——`Handlers` 是配置字段名，而 `ChatModelAgentMiddleware` 是接口名。
-**关键代码片段（**注意：这是简化后的代码片段，不能直接运行，完整代码请参考** [cmd/ch05/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch05/main.go)）：
+Note: the `Handlers` field (config) and the “Middleware” concept discussed in this chapter refer to the same thing. `Handlers` is the config field name; `ChatModelAgentMiddleware` is the interface name.
 
+Key snippet (note: this is a simplified excerpt and not directly runnable; see [cmd/ch05/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch05/main.go)):
 
 ```go
-// SafeToolMiddleware 捕获 Tool 错误并转换为字符串
+// SafeToolMiddleware catches Tool errors and converts them to strings.
 type safeToolMiddleware struct {
     *adk.BaseChatModelAgentMiddleware
 }
@@ -338,7 +338,7 @@ func (m *safeToolMiddleware) WrapInvokableToolCall(
     }, nil
 }
 
-// 配置 DeepAgent（与第四章一样，新增 Handlers 和 ModelRetryConfig）
+// Configure DeepAgent (same as Chapter 4, plus Handlers and ModelRetryConfig).
 agent, _ := deep.New(ctx, &deep.Config{
     ChatModel:      cm,
     Backend:        backend,
@@ -356,64 +356,64 @@ agent, _ := deep.New(ctx, &deep.Config{
 })
 ```
 
-## Middleware 执行流程
+## Middleware Execution Flow
 
 ```
 ┌─────────────────────────────────────────┐
-│  用户：读取不存在的文件                   │
+│  user: read a nonexistent file           │
 └─────────────────────────────────────────┘
                    ↓
         ┌──────────────────────┐
-        │  Agent 分析意图       │
-        │  决定调用 read_file   │
+        │  agent analyzes intent │
+        │  chooses read_file     │
         └──────────────────────┘
                    ↓
         ┌──────────────────────┐
-        │  SafeToolMiddleware  │
-        │  拦截 Tool 调用       │
+        │  SafeToolMiddleware   │
+        │  intercepts Tool call │
         └──────────────────────┘
                    ↓
         ┌──────────────────────┐
-        │  执行 read_file       │
-        │  返回错误             │
+        │  execute read_file    │
+        │  returns an error     │
         └──────────────────────┘
                    ↓
         ┌──────────────────────┐
-        │  SafeToolMiddleware  │
-        │  将错误转换为字符串    │
+        │  SafeToolMiddleware   │
+        │  converts error to str│
         └──────────────────────┘
                    ↓
         ┌──────────────────────┐
-        │  返回 Tool Result     │
+        │  Tool Result          │
         │  "[tool error] ..."   │
         └──────────────────────┘
                    ↓
         ┌──────────────────────┐
-        │  Agent 生成回复       │
-        │  "抱歉，文件不存在..." │
+        │  agent responds       │
+        │  "sorry..."           │
         └──────────────────────┘
 ```
 
-## 本章小结
+## Summary
 
-- **Middleware**：Agent 的拦截器，可以在调用前后插入自定义逻辑
-- **SafeToolMiddleware**：将 Tool 错误转换为字符串，让模型能够理解并处理
-- **ModelRetryConfig**：配置 ChatModel 的自动重试，处理限流等临时错误
-- **装饰器模式**：Middleware 包装原始调用，可以修改输入、输出或错误
-- **洋葱模型**：请求从外向内穿过 Middleware，响应从内向外返回
+- **Middleware**: interceptors for Agents, inserting custom logic around calls
+- **SafeToolMiddleware**: converts Tool errors into strings so the model can handle them
+- **ModelRetryConfig**: automatic ChatModel retry to handle transient errors like rate limits
+- **Decorator pattern**: middleware wraps calls and can modify inputs/outputs/errors
+- **Onion model**: requests go inward; responses go outward
 
-## 扩展思考
+## Further Thoughts
 
-**Eino 内置 Middleware：**
+**Built-in Eino middlewares:**
 
 <table>
-<tr><td>Middleware</td><td>功能说明</td></tr>
-<tr><td><strong>reduction</strong></td><td>工具输出缩减，当工具返回内容过长时自动截断并卸载到文件系统，防止上下文溢出</td></tr>
-<tr><td><strong>summarization</strong></td><td>对话历史自动摘要，当 token 数量超过阈值时自动生成摘要压缩历史</td></tr>
-<tr><td><strong>skill</strong></td><td>技能加载中间件，让 Agent 能够动态加载和执行预定义的技能</td></tr>
+<tr><td>Middleware</td><td>Description</td></tr>
+<tr><td><strong>reduction</strong></td><td>Tool output reduction: truncates overly long tool outputs and offloads them to filesystem to prevent context overflow</td></tr>
+<tr><td><strong>summarization</strong></td><td>Automatic chat-history summarization when token count exceeds a threshold</td></tr>
+<tr><td><strong>skill</strong></td><td>Skill loader: dynamically loads and executes predefined skills</td></tr>
 </table>
 
-**Middleware 链示例：**
+**Example middleware chain:**
 
 ```go
 import (
@@ -422,26 +422,26 @@ import (
     "github.com/cloudwego/eino/adk/middlewares/skill"
 )
 
-// 创建 reduction middleware：管理工具输出长度
+// Create reduction middleware: manage tool output length.
 reductionMW, _ := reduction.New(ctx, &reduction.Config{
-    Backend:           filesystemBackend,     // 存储后端
-    MaxLengthForTrunc: 50000,                  // 单次工具输出最大长度
-    MaxTokensForClear: 30000,                  // 触发清理的 token 阈值
+    Backend:           filesystemBackend,     // storage backend
+    MaxLengthForTrunc: 50000,                  // max output length per tool call
+    MaxTokensForClear: 30000,                  // token threshold for cleanup
 })
 
-// 创建 summarization middleware：自动压缩对话历史
+// Create summarization middleware: compress chat history automatically.
 summarizationMW, _ := summarization.New(ctx, &summarization.Config{
-    Model: chatModel,                          // 用于生成摘要的模型
+    Model: chatModel,                          // model used to generate summaries
     Trigger: &summarization.TriggerCondition{
-        ContextTokens: 190000,                 // 触发摘要的 token 阈值
+        ContextTokens: 190000,                 // token threshold for summarization
     },
 })
 
-// 组合多个 middleware（概念示例，使用 DeepAgent 时将 adk.NewChatModelAgent 替换为 deep.New）
+// Combine middlewares (conceptual example; with DeepAgent replace adk.NewChatModelAgent with deep.New).
 agent, _ := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
-    Handlers: []adk.ChatModelAgentMiddleware{  // 注意：配置字段名为 Handlers，概念上与 Middlewares 等价
-        summarizationMW,   // 最外层：对话历史摘要
-        reductionMW,       // 中间层：工具输出缩减
+    Handlers: []adk.ChatModelAgentMiddleware{  // config field name is Handlers; conceptually equals “middlewares”
+        summarizationMW,   // outermost: chat-history summarization
+        reductionMW,       // middle: tool-output reduction
     },
 })
 ```
