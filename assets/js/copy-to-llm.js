@@ -50,7 +50,12 @@
     var el = document.getElementById('copy-fulltext-source');
     if (!el) return null;
     try {
-      return JSON.parse(el.textContent);
+      var data = JSON.parse(el.textContent);
+      var mdEl = document.getElementById('copy-fulltext-markdown');
+      if (mdEl) {
+        data.markdown = mdEl.textContent;
+      }
+      return data;
     } catch (e) {
       return null;
     }

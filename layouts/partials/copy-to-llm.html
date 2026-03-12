@@ -21,5 +21,6 @@
 
 {{/* Embed raw markdown for copy-as-markdown */}}
 <script id="copy-fulltext-source" type="application/json">
-{{ dict "title" .Title "markdown" .RawContent "url" .Permalink "successText" (T "copy_success") | jsonify }}
+{{ dict "title" .Title "url" .Permalink "successText" (T "copy_success") | jsonify }}
 </script>
+<script id="copy-fulltext-markdown" type="text/plain">{{ .RawContent }}</script>
