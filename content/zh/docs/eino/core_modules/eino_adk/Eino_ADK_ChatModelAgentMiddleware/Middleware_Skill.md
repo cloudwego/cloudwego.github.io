@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-10"
+date: "2026-03-12"
 lastmod: ""
 tags: []
 title: Skill
@@ -283,7 +283,7 @@ type Config struct {
 
 # 快速开始
 
-以从本地加载 pdf skill 为例， 完整代码见 [https://github.com/cloudwego/eino-examples/tree/alpha/08/adk/middlewares/skill](https://github.com/cloudwego/eino-examples/tree/alpha/08/adk/middlewares/skill)。
+以从本地加载 pdf skill 为例， 完整代码见 [https://github.com/cloudwego/eino-examples/tree/main/adk/middlewares/skill](https://github.com/cloudwego/eino-examples/tree/main/adk/middlewares/skill)。
 
 - 在工作目录中创建 skills 目录：
 
@@ -305,20 +305,24 @@ import (
     "github.com/cloudwego/eino-ext/adk/backend/local"
 )
 
+ctx := context.Background() 
 
 be, err := local.NewBackend(ctx, &local.Config{})
 if err != nil {
     log.Fatal(err)
 }
 
-wd, _ := os.Getwd()
-workDir := filepath.Join(wd, "adk", "middlewares", "skill", "workdir")
 skillBackend, err := skill.NewBackendFromFilesystem(ctx, &skill.BackendFromFilesystemConfig{
     Backend: be,
     BaseDir: skillsDir,
 })
+if err != nil {
+    log.Fatalf("Failed to create skill backend: %v", err)
+}
 
-skillMiddleware, err := NewMiddleware(ctx, &Config{Backend: backend})
+sm, err := skill.NewMiddleware(ctx, &skill.Config{
+    Backend: skillBackend,
+})
 ```
 
 - 基于 backend 创建本地 Filesystem Middleware，供 agent 读取 skill 其他文件以及执行脚本：
@@ -329,8 +333,8 @@ import (
 )
 
 fsm, err := filesystem.New(ctx, &filesystem.MiddlewareConfig{
-    Backend:                          be,
-    WithoutLargeToolResultOffloading: true,
+    Backend:        be,
+    StreamingShell: be,
 })
 ```
 
@@ -342,7 +346,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
     Description: "An agent that can analyze logs",
     Instruction: "You are a helpful assistant.",
     Model:       cm,
-    Handlers:    []adk.ChatModelAgentMiddleware{fsm, skillMiddleware},
+    Handlers:    []adk.ChatModelAgentMiddleware{fsm, sm},
 })
 ```
 
@@ -502,4 +506,4 @@ Important:
 <a href="/img/eino/GzIObeN6roy2SAxpEXBcMqrRnYb.png" target="_blank"><img src="/img/eino/GzIObeN6roy2SAxpEXBcMqrRnYb.png" width="100%" /></a>
 
 > 💡
-> Skill Middleware 仅提供了如上图所示的加载 SKILL.md 能力，如果 Skill 本身需要读取文件、执行脚本等，需要用户另外为 agent 配置相关能力。
+> Skill Middleware 仅提供了如上图所示的加载 SKILL.md 能力，如果 Skill 需要 agent 具备读取文件、执行脚本等能力，需要用户另外为 agent 配置。
