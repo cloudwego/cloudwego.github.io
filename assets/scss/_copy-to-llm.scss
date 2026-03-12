@@ -56,6 +56,28 @@
     }
   }
 
+  &__toast {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: $white;
+    border: 1px solid $gray-300;
+    border-radius: $border-radius;
+    box-shadow: 0 4px 12px rgba($black, 0.1);
+    font-size: 0.875rem;
+    color: $gray-700;
+    white-space: nowrap;
+    z-index: 11;
+
+    &--visible {
+      display: block;
+    }
+  }
+
   &__dropdown {
     display: none;
     position: absolute;

@@ -85,5 +85,8 @@ other = "复制 Markdown"
 [copy_plain_text]
 other = "复制文本"
 
-[copy_success]
-other = "已复制"
+[copy_success_markdown]
+other = "已复制 Markdown 格式"
+
+[copy_success_text]
+other = "已复制纯文本"

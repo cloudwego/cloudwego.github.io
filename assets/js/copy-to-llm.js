@@ -46,12 +46,15 @@
     });
   });
 
+  var toast = document.getElementById('copy-fulltext-toast');
+
   function getSourceData() {
     var mdEl = document.getElementById('copy-fulltext-markdown');
     return {
       title: container.getAttribute('data-title') || '',
       url: container.getAttribute('data-url') || '',
-      successText: container.getAttribute('data-success-text') || 'Copied',
+      successMarkdown: container.getAttribute('data-success-markdown') || 'Copied as Markdown',
+      successText: container.getAttribute('data-success-text') || 'Copied as plain text',
       markdown: mdEl ? mdEl.textContent : ''
     };
   }
@@ -90,6 +93,7 @@
   function copyContent(type) {
     var data = getSourceData();
     var text = '';
+    var actualType = type;
 
     if (type === 'markdown' && data && data.markdown) {
       text = '# ' + data.title + '\n\n' + data.markdown;
@@ -97,25 +101,26 @@
         text += '\n\n---\nSource: ' + data.url;
       }
     } else {
+      actualType = 'text';
       text = getPlainText();
     }
 
-    copyToClipboard(text, data);
+    copyToClipboard(text, data, actualType);
   }
 
-  function copyToClipboard(text, data) {
+  function copyToClipboard(text, data, type) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () {
-        showFeedback(data);
+        showFeedback(data, type);
       }).catch(function () {
-        fallbackCopy(text, data);
+        fallbackCopy(text, data, type);
       });
     } else {
-      fallbackCopy(text, data);
+      fallbackCopy(text, data, type);
     }
   }
 
-  function fallbackCopy(text, data) {
+  function fallbackCopy(text, data, type) {
     var textarea = document.createElement('textarea');
     textarea.value = text;
     textarea.style.position = 'fixed';
@@ -124,22 +129,28 @@
     textarea.select();
     try {
       document.execCommand('copy');
-      showFeedback(data);
+      showFeedback(data, type);
     } catch (e) {
       // silent fail
     }
     document.body.removeChild(textarea);
   }
 
-  function showFeedback(data) {
-    var span = defaultBtn.querySelector('span');
-    var original = span.textContent;
-    var successText = (data && data.successText) || 'Copied';
-    span.textContent = '✓ ' + successText;
+  function showFeedback(data, type) {
+    // Swap icon to checkmark
+    var icon = defaultBtn.querySelector('i');
+    icon.classList.replace('fa-copy', 'fa-check');
     defaultBtn.classList.add('copy-fulltext__btn--success');
+
+    // Show toast
+    var toastText = type === 'markdown' ? data.successMarkdown : data.successText;
+    toast.textContent = '✅ ' + toastText;
+    toast.classList.add('copy-fulltext__toast--visible');
+
     setTimeout(function () {
-      span.textContent = original;
+      icon.classList.replace('fa-check', 'fa-copy');
       defaultBtn.classList.remove('copy-fulltext__btn--success');
+      toast.classList.remove('copy-fulltext__toast--visible');
     }, 2000);
   }
 })();

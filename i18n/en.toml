@@ -91,5 +91,8 @@ other = "Copy Markdown"
 [copy_plain_text]
 other = "Copy Text"
 
-[copy_success]
-other = "Copied"
+[copy_success_markdown]
+other = "Copied as Markdown"
+
+[copy_success_text]
+other = "Copied as plain text"

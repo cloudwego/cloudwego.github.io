@@ -2,7 +2,8 @@
 <div class="copy-fulltext" id="copy-fulltext"
   data-title="{{ .Title }}"
   data-url="{{ .Permalink }}"
-  data-success-text="{{ T "copy_success" }}">
+  data-success-markdown="{{ T "copy_success_markdown" }}"
+  data-success-text="{{ T "copy_success_text" }}">
   <div class="copy-fulltext__main">
     <button class="copy-fulltext__btn" id="copy-fulltext-default" title="{{ T "copy_full_text" }}">
       <i class="fa-regular fa-copy"></i>
@@ -12,6 +13,7 @@
       <i class="fa-solid fa-chevron-up"></i>
     </button>
   </div>
+  <div class="copy-fulltext__toast" id="copy-fulltext-toast"></div>
   <div class="copy-fulltext__dropdown" id="copy-fulltext-dropdown">
     <button class="copy-fulltext__option" data-copy-type="markdown">
       {{ T "copy_markdown" }}
