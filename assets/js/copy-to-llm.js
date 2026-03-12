@@ -47,18 +47,13 @@
   });
 
   function getSourceData() {
-    var el = document.getElementById('copy-fulltext-source');
-    if (!el) return null;
-    try {
-      var data = JSON.parse(el.textContent);
-      var mdEl = document.getElementById('copy-fulltext-markdown');
-      if (mdEl) {
-        data.markdown = mdEl.textContent;
-      }
-      return data;
-    } catch (e) {
-      return null;
-    }
+    var mdEl = document.getElementById('copy-fulltext-markdown');
+    return {
+      title: container.getAttribute('data-title') || '',
+      url: container.getAttribute('data-url') || '',
+      successText: container.getAttribute('data-success-text') || 'Copied',
+      markdown: mdEl ? mdEl.textContent : ''
+    };
   }
 
   function getPlainText() {
