@@ -19,7 +19,7 @@ These small examples are meant for quick onboarding. For deeper dives into speci
 
 The most basic pattern in LLM applications is a `prompt + chat model`, which is also the primary capability offered by many AI platforms. You can define a `System Prompt` to constrain the model’s behavior (for example, “You are acting as role XXX”). In this example, you can combine Eino’s `PromptTemplate` and `ChatModel` components to build a role-playing application.
 
-- [Implement a minimal LLM application — ChatModel](/docs/eino/quick_start/simple_llm_application)
+- [Chapter 1: ChatModel and Message (Console)](/docs/eino/quick_start/chapter_01_chatmodel_and_message)
 
 ### Example: Build an Agent
 
@@ -29,12 +29,11 @@ We call the overall system that decides when to call specific tools based on mod
 
 In Eino, you can implement an agent with `ChatModel + ToolsNode`, or use the built-in `react agent` and `multi agent` packages.
 
-In this example, we’ll use the ReAct agent to build an agent that interacts with the real world.
+In this example, we’ll use a filesystem tool to build an agent that can interact with the real world.
 
-- [Agent — Give your LLM hands](/docs/eino/quick_start/agent_llm_with_tools)
+- [Chapter 4: Tools and Filesystem Access](/docs/eino/quick_start/chapter_04_tool_and_filesystem)
 
 ## Next Steps
 
 - Understand Eino’s core modules and concepts: [Eino: Core Modules](/docs/eino/core_modules). This is the key knowledge to fluently develop applications with Eino.
 - Eino embraces an open ecosystem and provides numerous integration components: [Eino: Ecosystem Integration](/docs/eino/ecosystem_integration). Use these components to quickly assemble your business applications.
-

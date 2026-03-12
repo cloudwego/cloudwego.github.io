@@ -74,7 +74,7 @@ weight: 2
 
 ### BugFix
 
-- Fixed the SSTI vulnerability in the Jinja chat template（langchaingo gonja 模板注入）
+- Fixed the SSTI vulnerability in the Jinja chat template（langchaingo 存在 gonja 模板注入）
 
 ## v0.2.0
 
