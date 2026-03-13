@@ -1,27 +1,26 @@
-{{/* Copy full text button with dropdown for markdown / plain text */}}
-<div class="copy-fulltext" id="copy-fulltext"
+{{/* Copy full text button with split dropdown for markdown / plain text */}}
+<div class="copy-fulltext btn-group" id="copy-fulltext"
   data-title="{{ .Title }}"
   data-url="{{ .Permalink }}"
   data-success-markdown="{{ T "copy_success_markdown" }}"
   data-success-text="{{ T "copy_success_text" }}">
-  <div class="copy-fulltext__main">
-    <button class="copy-fulltext__btn" id="copy-fulltext-default" title="{{ T "copy_full_text" }}">
-      <i class="fa-regular fa-copy"></i>
-      <span>{{ T "copy_full_text" }}</span>
-    </button>
-    <button class="copy-fulltext__toggle" id="copy-fulltext-toggle" aria-label="More copy options">
-      <i class="fa-solid fa-chevron-up"></i>
-    </button>
-  </div>
-  <div class="copy-fulltext__toast" id="copy-fulltext-toast"></div>
-  <div class="copy-fulltext__dropdown" id="copy-fulltext-dropdown">
-    <button class="copy-fulltext__option" data-copy-type="markdown">
+  <button type="button" class="btn btn-sm btn-outline-secondary" id="copy-fulltext-default" title="{{ T "copy_full_text" }}">
+    <i class="fa-regular fa-copy"></i>
+    <span>{{ T "copy_full_text" }}</span>
+  </button>
+  <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <div class="dropdown-menu dropdown-menu-right">
+    <button class="dropdown-item" data-copy-type="markdown">
       {{ T "copy_markdown" }}
     </button>
-    <button class="copy-fulltext__option" data-copy-type="text">
+    <button class="dropdown-item" data-copy-type="text">
       {{ T "copy_plain_text" }}
     </button>
   </div>
+  <div class="copy-fulltext__toast" id="copy-fulltext-toast"></div>
 </div>
 
 {{/* Embed raw markdown for copy-as-markdown */}}

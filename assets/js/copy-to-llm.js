@@ -4,35 +4,9 @@
   var container = document.getElementById('copy-fulltext');
   if (!container) return;
 
-  var toggleBtn = document.getElementById('copy-fulltext-toggle');
   var defaultBtn = document.getElementById('copy-fulltext-default');
-  var dropdown = document.getElementById('copy-fulltext-dropdown');
-  var options = dropdown.querySelectorAll('.copy-fulltext__option');
-
-  toggleBtn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    if (dropdown.classList.contains('copy-fulltext__dropdown--open')) {
-      closeDropdown();
-    } else {
-      openDropdown();
-    }
-  });
-
-  function openDropdown() {
-    dropdown.classList.add('copy-fulltext__dropdown--open');
-    toggleBtn.querySelector('i').classList.replace('fa-chevron-up', 'fa-chevron-down');
-  }
-
-  function closeDropdown() {
-    dropdown.classList.remove('copy-fulltext__dropdown--open');
-    toggleBtn.querySelector('i').classList.replace('fa-chevron-down', 'fa-chevron-up');
-  }
-
-  document.addEventListener('click', function (e) {
-    if (!container.contains(e.target)) {
-      closeDropdown();
-    }
-  });
+  var options = container.querySelectorAll('.dropdown-item');
+  var toast = document.getElementById('copy-fulltext-toast');
 
   // Default button copies markdown (most useful for LLM)
   defaultBtn.addEventListener('click', function () {
@@ -42,11 +16,8 @@
   options.forEach(function (opt) {
     opt.addEventListener('click', function () {
       copyContent(this.getAttribute('data-copy-type'));
-      closeDropdown();
     });
   });
-
-  var toast = document.getElementById('copy-fulltext-toast');
 
   function getSourceData() {
     var mdEl = document.getElementById('copy-fulltext-markdown');

@@ -1,59 +1,9 @@
 .copy-fulltext {
-  position: relative;
-  display: inline-flex;
   float: right;
   margin-top: 0.25rem;
 
-  &__main {
-    display: inline-flex;
-    align-items: stretch;
-    border: 1px solid $gray-300;
-    border-radius: $border-radius;
-    background: $white;
-    overflow: hidden;
-  }
-
-  &__btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    padding: 0.375rem 0.75rem;
-    border: none;
-    background: transparent;
-    color: $gray-700;
-    font-size: 0.875rem;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background-color 0.15s, color 0.15s;
-
-    &:hover {
-      background-color: $gray-100;
-      color: $gray-900;
-    }
-
-    &--success {
-      color: $success !important;
-    }
-  }
-
-  &__toggle {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.375rem 0.5rem;
-    border: none;
-    border-left: 1px solid $gray-300;
-    background: transparent;
-    color: $gray-500;
-    cursor: pointer;
-    transition: background-color 0.15s;
-
-    &:hover {
-      background-color: $gray-100;
-    }
-
-    i {
-      font-size: 0.625rem;
-    }
+  &__btn--success {
+    color: $success !important;
   }
 
   &__toast {
@@ -75,46 +25,6 @@
 
     &--visible {
       display: block;
-    }
-  }
-
-  &__dropdown {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 0.25rem;
-    min-width: 140px;
-    background: $white;
-    border: 1px solid $gray-300;
-    border-radius: $border-radius;
-    box-shadow: 0 4px 12px rgba($black, 0.1);
-    z-index: 10;
-    overflow: hidden;
-
-    &--open {
-      display: block;
-    }
-  }
-
-  &__option {
-    display: block;
-    width: 100%;
-    padding: 0.5rem 0.75rem;
-    border: none;
-    background: transparent;
-    color: $gray-700;
-    font-size: 0.875rem;
-    text-align: left;
-    cursor: pointer;
-    transition: background-color 0.15s;
-
-    &:hover {
-      background-color: $gray-100;
-    }
-
-    & + & {
-      border-top: 1px solid $gray-200;
     }
   }
 }
