@@ -80,31 +80,9 @@
   }
 
   function copyToClipboard(text, data, type) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () {
-        showFeedback(data, type);
-      }).catch(function () {
-        fallbackCopy(text, data, type);
-      });
-    } else {
-      fallbackCopy(text, data, type);
-    }
-  }
-
-  function fallbackCopy(text, data, type) {
-    var textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.select();
-    try {
-      document.execCommand('copy');
+    navigator.clipboard.writeText(text).then(function () {
       showFeedback(data, type);
-    } catch (e) {
-      // silent fail
-    }
-    document.body.removeChild(textarea);
+    });
   }
 
   function showFeedback(data, type) {
