@@ -31,10 +31,11 @@
 {{ $jsSearch := resources.Get "js/search.js" | resources.ExecuteAsTemplate "js/search.js" .Site.Home }}
 {{ $jsMermaid := resources.Get "js/mermaid.js" | resources.ExecuteAsTemplate "js/mermaid.js" . }}
 {{ $jsPlantuml := resources.Get "js/plantuml.js" | resources.ExecuteAsTemplate "js/plantuml.js" . }}
+{{ $jsCopyToLLM := resources.Get "js/copy-to-llm.js" }}
 {{ if .Site.Params.offlineSearch }}
 {{ $jsSearch = resources.Get "js/offline-search.js" }}
 {{ end }}
-{{ $js := (slice $jsBase $security $jsAnchor $jsSearch $jsMermaid $jsPlantuml) | resources.Concat "js/main.js" }}
+{{ $js := (slice $jsBase $security $jsAnchor $jsSearch $jsMermaid $jsPlantuml $jsCopyToLLM) | resources.Concat "js/main.js" }}
 {{ if hugo.IsServer }}
 <script src="{{ $js.RelPermalink }}"></script>
 {{ else }}
