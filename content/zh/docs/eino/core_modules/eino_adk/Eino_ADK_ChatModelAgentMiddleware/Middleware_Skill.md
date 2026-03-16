@@ -59,8 +59,8 @@ type FrontMatter struct {
 
 ```go
 const (
-    ContextModeFork            ContextMode = "fork"    // 复制历史消息
-    ContextModeForkWithContext ContextMode = "fork_with_context" // 隔离上下文
+    ContextModeFork            ContextMode = "fork"              // 隔离上下文
+    ContextModeForkWithContext ContextMode = "fork_with_context" // 复制历史消息
 )
 ```
 
