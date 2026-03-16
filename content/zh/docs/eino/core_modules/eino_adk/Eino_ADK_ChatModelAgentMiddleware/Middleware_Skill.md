@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-10"
+date: "2026-03-16"
 lastmod: ""
 tags: []
 title: Skill
@@ -50,7 +50,7 @@ type FrontMatter struct {
 <tr><td>字段</td><td>类型</td><td>说明</td></tr>
 <tr><td><pre>Name</pre></td><td><pre>string</pre></td><td>Skill 的唯一标识符。Agent 通过此名称调用 Skill ，建议使用简短、有意义的名称（如 <pre>pdf-processing</pre>、<pre>web-research</pre>）。对应 SKILL.md 中 frontmatter 的 <pre>name</pre> 字段</td></tr>
 <tr><td><pre>Description</pre></td><td><pre>string</pre></td><td>Skill 的功能描述。这是 Agent 判断是否使用该 Skill 的关键依据，应清晰说明技 Skill 能适用的场景和能力。对应 SKILL.md 中 frontmatter 的 <pre>description</pre> 字段</td></tr>
-<tr><td><pre>Context</pre></td><td><pre>ContextMode</pre></td><td>上下文模式。可选值：<pre>fork</pre>（复制历史消息创建新 Agent 执行）、<pre>isolate</pre>（隔离上下文创建新 Agent 执行）。留空表示内联模式（直接返回 Skill 内容）</td></tr>
+<tr><td><pre>Context</pre></td><td><pre>ContextMode</pre></td><td>上下文模式。可选值：<pre>fork_with_context</pre>（复制历史消息创建新 Agent 执行）、<pre>fork</pre>（隔离上下文创建新 Agent 执行）。留空表示内联模式（直接返回 Skill 内容）</td></tr>
 <tr><td><pre>Agent</pre></td><td><pre>string</pre></td><td>指定使用的 Agent 名称。配合 <pre>Context</pre> 字段使用，通过 <pre>AgentHub</pre> 获取对应的 Agent 工厂函数。留空时使用默认 Agent</td></tr>
 <tr><td><pre>Model</pre></td><td><pre>string</pre></td><td>指定使用的模型名称。通过 <pre>ModelHub</pre> 获取对应的模型实例。在 Context 模式下传递给 Agent 工厂；在内联模式下切换后续 ChatModel 调用使用的模型</td></tr>
 </table>
@@ -59,16 +59,16 @@ type FrontMatter struct {
 
 ```go
 const (
-    ContextModeFork    ContextMode = "fork"    // 复制历史消息
-    ContextModeIsolate ContextMode = "isolate" // 隔离上下文
+    ContextModeFork            ContextMode = "fork"    // 复制历史消息
+    ContextModeForkWithContext ContextMode = "fork_with_context" // 隔离上下文
 )
 ```
 
 <table>
 <tr><td>模式</td><td>说明</td></tr>
 <tr><td>内联（默认）</td><td>Skill 内容直接作为工具结果返回，由当前 Agent 继续处理</td></tr>
-<tr><td>Fork</td><td>创建新 Agent，复制当前对话历史，独立执行 Skill 任务后返回结果</td></tr>
-<tr><td>Isolate</td><td>创建新 Agent，使用隔离的上下文（仅包含 Skill 内容），独立执行后返回结果</td></tr>
+<tr><td>ForkWithContext</td><td>创建新 Agent，复制当前对话历史，独立执行 Skill 任务后返回结果</td></tr>
+<tr><td>Fork</td><td>创建新 Agent，使用隔离的上下文（仅包含 Skill 内容），独立执行后返回结果</td></tr>
 </table>
 
 ## Skill
@@ -283,7 +283,7 @@ type Config struct {
 
 # 快速开始
 
-以从本地加载 pdf skill 为例， 完整代码见 [https://github.com/cloudwego/eino-examples/tree/alpha/08/adk/middlewares/skill](https://github.com/cloudwego/eino-examples/tree/alpha/08/adk/middlewares/skill)。
+以从本地加载 pdf skill 为例， 完整代码见 [https://github.com/cloudwego/eino-examples/tree/main/adk/middlewares/skill](https://github.com/cloudwego/eino-examples/tree/main/adk/middlewares/skill)。
 
 - 在工作目录中创建 skills 目录：
 
@@ -305,20 +305,24 @@ import (
     "github.com/cloudwego/eino-ext/adk/backend/local"
 )
 
+ctx := context.Background() 
 
 be, err := local.NewBackend(ctx, &local.Config{})
 if err != nil {
     log.Fatal(err)
 }
 
-wd, _ := os.Getwd()
-workDir := filepath.Join(wd, "adk", "middlewares", "skill", "workdir")
 skillBackend, err := skill.NewBackendFromFilesystem(ctx, &skill.BackendFromFilesystemConfig{
     Backend: be,
     BaseDir: skillsDir,
 })
+if err != nil {
+    log.Fatalf("Failed to create skill backend: %v", err)
+}
 
-skillMiddleware, err := NewMiddleware(ctx, &Config{Backend: backend})
+sm, err := skill.NewMiddleware(ctx, &skill.Config{
+    Backend: skillBackend,
+})
 ```
 
 - 基于 backend 创建本地 Filesystem Middleware，供 agent 读取 skill 其他文件以及执行脚本：
@@ -329,8 +333,8 @@ import (
 )
 
 fsm, err := filesystem.New(ctx, &filesystem.MiddlewareConfig{
-    Backend:                          be,
-    WithoutLargeToolResultOffloading: true,
+    Backend:        be,
+    StreamingShell: be,
 })
 ```
 
@@ -342,7 +346,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
     Description: "An agent that can analyze logs",
     Instruction: "You are a helpful assistant.",
     Model:       cm,
-    Handlers:    []adk.ChatModelAgentMiddleware{fsm, skillMiddleware},
+    Handlers:    []adk.ChatModelAgentMiddleware{fsm, sm},
 })
 ```
 
@@ -502,4 +506,4 @@ Important:
 <a href="/img/eino/GzIObeN6roy2SAxpEXBcMqrRnYb.png" target="_blank"><img src="/img/eino/GzIObeN6roy2SAxpEXBcMqrRnYb.png" width="100%" /></a>
 
 > 💡
-> Skill Middleware 仅提供了如上图所示的加载 SKILL.md 能力，如果 Skill 本身需要读取文件、执行脚本等，需要用户另外为 agent 配置相关能力。
+> Skill Middleware 仅提供了如上图所示的加载 SKILL.md 能力，如果 Skill 需要 agent 具备读取文件、执行脚本等能力，需要用户另外为 agent 配置。

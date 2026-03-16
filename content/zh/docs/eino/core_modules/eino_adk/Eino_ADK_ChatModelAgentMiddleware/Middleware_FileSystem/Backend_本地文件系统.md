@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-10"
+date: "2026-03-12"
 lastmod: ""
 tags: []
 title: 本地文件系统
@@ -217,6 +217,10 @@ absPath, _ := filepath.Abs("./relative/path")
 </table>
 
 ### 常见问题
+
+**Q: 为什么运行 grep 命令报错  ripgrep (rg) is not installed or not in PATH. Please install it: ****[https://github.com/BurntSushi/ripgrep#installation](https://github.com/BurntSushi/ripgrep#installation)**
+
+local 的 Grep 命令默认依赖** ripgrep **指令，如系统没有预装 ripgrep 则需要通过文档安装 ripgrep
 
 **Q: GrepRaw 支持正则吗？**
 

@@ -11,9 +11,9 @@ weight: 6
 
 ### ChatModel
 
-- openai: [ChatModel - OpenAI](https://github.com/cloudwego/eino-ext/blob/main/components/model/openai/README.md)
-- ark: [ChatModel - ARK](https://github.com/cloudwego/eino-ext/blob/main/components/model/ark/README.md)
-- ollama: [ChatModel - Ollama](https://github.com/cloudwego/eino-ext/blob/main/components/model/ollama/README.md)
+- openai: [OpenAI](/docs/eino/ecosystem_integration/chat_model/agentic_model_openai)
+- ark: [ARK](/docs/eino/ecosystem_integration/chat_model/agentic_model_ark)
+- More components: [ChatModel component list](/docs/eino/ecosystem_integration/chat_model)
 
 ### Document
 
