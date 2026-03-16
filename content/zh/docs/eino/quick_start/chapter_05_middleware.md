@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-12"
+date: "2026-03-16"
 lastmod: ""
 tags: []
 title: 第五章：Middleware（中间件模式）
@@ -312,8 +312,9 @@ agent, err := deep.New(ctx, &deep.Config{
 ```
 
 **注意**：`Handlers` 字段（在配置中）和 "Middleware"（在文档中讨论的概念）是同一回事——`Handlers` 是配置字段名，而 `ChatModelAgentMiddleware` 是接口名。
-**关键代码片段（**注意：这是简化后的代码片段，不能直接运行，完整代码请参考** [cmd/ch05/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch05/main.go)）：
 
+```
+**关键代码片段（**注意：这是简化后的代码片段，不能直接运行，完整代码请参考** [cmd/ch05/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch05/main.go)）：
 
 ```go
 // SafeToolMiddleware 捕获 Tool 错误并转换为字符串

@@ -142,7 +142,7 @@ eino-ext 支持的多模态输入输出场景，可以查阅 [https://www.cloudw
 
 eino-ext 部分 module 报错 undefined: schema.NewParamsOneOfByOpenAPIV3 等问题，升级报错的 eino-ext module 到最新版本即可。
 
-如果 schema 改造比较复杂，可以使用 JSONSchema 转换工具方法辅助转换。
+如果 schema 改造比较复杂，可以参考上面的 Discussion #397，使用其中的 JSONSchema 转换工具方法辅助转换。
 
 # Q:  Eino-ext 提供的 ChatModel 有哪些模型是支持 Response API 形式调用嘛？
 
