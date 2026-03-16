@@ -6,7 +6,7 @@ See https://github.com/twbs/bootstrap/pull/23260
 
 @fa-font-path :        "../webfonts";
 
-// Bootstrap flags. For more, see https://getbootstrap.com/docs/4.0/getting-started/theming/
+// Bootstrap flags. For more, see https://getbootstrap.com/docs/5.3/customize/options/
 $enable-gradients: true !default;
 $enable-rounded: true !default;
 $enable-shadows: true !default;
@@ -100,14 +100,15 @@ $h6-font-size: $font-size-base !default;
 
 // Display styles
 
-$display1-weight: $font-weight-bold !default;
-$display2-weight: $font-weight-bold !default;
-$display3-weight: $font-weight-bold !default;
-$display4-weight: $font-weight-bold !default;
-$display1-size: 3rem !default;
-$display2-size: 2.5rem !default;
-$display3-size: 2rem !default;
-$display4-size: 1.75rem !default;
+$display-font-weight: $font-weight-bold !default;
+$display-font-sizes: (
+  1: 3rem,
+  2: 2.5rem,
+  3: 2rem,
+  4: 1.75rem,
+  5: 1.5rem,
+  6: 1.25rem
+) !default;
 
 // Space
 
@@ -129,5 +130,5 @@ $navbar-dark-hover-color: rgba($white, 0.5) !default;
 $navbar-dark-active-color: $white !default;
 $navbar-dark-disabled-color: rgba($white, 0.25) !default;
 
-// The yiq lightness value that determines when the lightness of color changes from "dark" to "light".
-$yiq-contrasted-threshold: 200 !default;
+// The minimum contrast ratio for text readability.
+$min-contrast-ratio: 3 !default;
