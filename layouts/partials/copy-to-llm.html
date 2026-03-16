@@ -24,4 +24,4 @@
 </div>
 
 {{/* Embed raw markdown for copy-as-markdown */}}
-<script id="copy-fulltext-markdown" type="text/plain">{{ .RawContent }}</script>
+<script id="copy-fulltext-markdown" type="text/plain">{{ .RawContent | safeHTML }}</script>

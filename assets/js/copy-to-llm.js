@@ -58,7 +58,7 @@
       }
     });
 
-    return clone.textContent.replace(/\n{3,}/g, '\n\n').trim();
+    return clone.textContent.replace(/(\s*\n){3,}/g, '\n\n').trim();
   }
 
   function copyContent(type) {
