@@ -1,0 +1,27 @@
+{{/* Copy full text button with split dropdown for markdown / plain text */}}
+<div class="copy-fulltext btn-group" id="copy-fulltext"
+  data-title="{{ .Title }}"
+  data-url="{{ .Permalink }}"
+  data-success-markdown="{{ T "copy_success_markdown" }}"
+  data-success-text="{{ T "copy_success_text" }}">
+  <button type="button" class="btn btn-sm btn-outline-secondary" id="copy-fulltext-default" title="{{ T "copy_full_text" }}">
+    <i class="fa-regular fa-copy"></i>
+    <span>{{ T "copy_full_text" }}</span>
+  </button>
+  <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <div class="dropdown-menu dropdown-menu-right">
+    <button class="dropdown-item" data-copy-type="markdown">
+      {{ T "copy_markdown" }}
+    </button>
+    <button class="dropdown-item" data-copy-type="text">
+      {{ T "copy_plain_text" }}
+    </button>
+  </div>
+  <div class="copy-fulltext__toast" id="copy-fulltext-toast"></div>
+</div>
+
+{{/* Embed raw markdown for copy-as-markdown */}}
+<script id="copy-fulltext-markdown" type="text/plain">{{ .RawContent | safeHTML }}</script>
